@@ -2411,8 +2411,8 @@
             }
           ],
           "note": {
-            "zh-CN": "阴离子间隙 = Na⁺ −（Cl⁻ + HCO₃⁻）。急诊分诊台已电话通知危急值（pH、HCO₃⁻、葡萄糖）。",
-            "en": "Anion gap = Na⁺ − (Cl⁻ + HCO₃⁻). Critical values (pH, HCO₃⁻, glucose) phoned through to the resus team."
+            "zh-CN": "阴离子间隙 = Na⁺ −（Cl⁻ + HCO₃⁻）。危急值：pH、HCO₃⁻、葡萄糖。",
+            "en": "Anion gap = Na⁺ − (Cl⁻ + HCO₃⁻). Critical values: pH, HCO₃⁻, glucose."
           },
           "critical": true
         },
@@ -4613,8 +4613,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠 500 mL 静脉推注10–15分钟（仅当收缩压 < 90 mmHg）",
-        "en": "0.9% NaCl 500 mL IV over 10–15 minutes (only if systolic BP < 90 mmHg)"
+        "zh-CN": "0.9%氯化钠 500 mL 静脉推注10–15分钟",
+        "en": "0.9% NaCl 500 mL IV over 10–15 minutes"
       },
       "requires": [
         "iv-access"
@@ -4654,8 +4654,8 @@
     {
       "id": "kcl-replacement",
       "name": {
-        "zh-CN": "静脉补钾（钾 < 3.5 mmol/L时，暂缓胰岛素）",
-        "en": "IV potassium replacement (K⁺ < 3.5 mmol/L; insulin on hold)"
+        "zh-CN": "静脉补钾（氯化钾输注）",
+        "en": "IV potassium replacement (KCl infusion)"
       },
       "kind": "medication",
       "aliases": {
@@ -4676,8 +4676,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h）；持续心电监护；每小时复查钾，钾 ≥ 3.5 mmol/L后再开始胰岛素",
-        "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; continuous ECG monitoring; recheck K⁺ hourly; start insulin only once K⁺ ≥ 3.5 mmol/L"
+        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h）；持续心电监护；每小时复查钾",
+        "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; continuous ECG monitoring; recheck K⁺ hourly"
       },
       "requires": [
         "infusion-pump"
@@ -4853,8 +4853,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通（可溶性）人胰岛素50 U加0.9%氯化钠至50 mL（1 U/mL），以5.5 mL/h泵入 = 5.5 U/h（0.1 U/kg/h × 55 kg）；不需要负荷剂量；持续至酮症酸中毒缓解",
-        "en": "Soluble (regular) human insulin 50 U made up to 50 mL with 0.9% NaCl (1 U/mL) at 5.5 mL/h = 5.5 U/h (0.1 U/kg/h × 55 kg); no bolus needed; continue until the ketoacidosis has resolved"
+        "zh-CN": "普通（可溶性）人胰岛素50 U加0.9%氯化钠至50 mL（1 U/mL），以5.5 mL/h泵入 = 5.5 U/h（0.1 U/kg/h × 55 kg）",
+        "en": "Soluble (regular) human insulin 50 U made up to 50 mL with 0.9% NaCl (1 U/mL) at 5.5 mL/h = 5.5 U/h (0.1 U/kg/h × 55 kg)"
       },
       "requires": [
         "infusion-pump"
@@ -5533,8 +5533,8 @@
     {
       "id": "dextrose-10",
       "name": {
-        "zh-CN": "加用10%葡萄糖（继续胰岛素输注）",
-        "en": "Add 10% glucose (continue the insulin infusion)"
+        "zh-CN": "10%葡萄糖静滴",
+        "en": "10% glucose infusion"
       },
       "kind": "fluid",
       "aliases": {
@@ -5554,8 +5554,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "10%葡萄糖125 mL/h，与0.9%氯化钠（含钾）并行输注；胰岛素继续0.1 U/kg/h（5.5 U/h），维持血糖约10–14 mmol/L",
-        "en": "10% glucose 125 mL/h alongside the 0.9% NaCl (with potassium); continue insulin at 0.1 U/kg/h (5.5 U/h); keep glucose about 10–14 mmol/L"
+        "zh-CN": "10%葡萄糖125 mL/h，与0.9%氯化钠（含钾）并行输注",
+        "en": "10% glucose 125 mL/h alongside the 0.9% NaCl (with potassium)"
       },
       "requires": [
         "infusion-pump"
@@ -5577,8 +5577,8 @@
         }
       ],
       "response": {
-        "zh-CN": "10%葡萄糖125 mL/h已开始，胰岛素输注维持5.5 U/h不变。",
-        "en": "10% glucose at 125 mL/h started; the insulin infusion stays at 5.5 U/h."
+        "zh-CN": "10%葡萄糖125 mL/h已开始。",
+        "en": "10% glucose at 125 mL/h started."
       }
     },
     {
@@ -5644,8 +5644,8 @@
     {
       "id": "sc-insulin-transition",
       "name": {
-        "zh-CN": "开始皮下胰岛素（停静脉胰岛素之前）",
-        "en": "Start subcutaneous insulin (before stopping IV insulin)"
+        "zh-CN": "皮下胰岛素（甘精胰岛素 + 门冬胰岛素）",
+        "en": "Subcutaneous insulin (glargine + aspart)"
       },
       "kind": "medication",
       "aliases": {
@@ -5690,8 +5690,8 @@
     {
       "id": "stop-friii",
       "name": {
-        "zh-CN": "停用静脉胰岛素输注（皮下胰岛素重叠1–2小时后）",
-        "en": "Stop the IV insulin infusion (after 1–2 h overlap with SC insulin)"
+        "zh-CN": "停用静脉胰岛素输注",
+        "en": "Stop the IV insulin infusion"
       },
       "kind": "other",
       "aliases": {
@@ -5710,8 +5710,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "皮下注射胰岛素后继续静脉胰岛素1–2小时（餐时胰岛素后至少30–60分钟）再停，同时停用10%葡萄糖",
-        "en": "Keep the IV insulin running 1–2 h after the SC basal (at least 30–60 min after the meal-time dose), then stop it together with the 10% glucose"
+        "zh-CN": "停用静脉胰岛素输注泵，同时停用10%葡萄糖",
+        "en": "Stop the IV insulin infusion together with the 10% glucose"
       },
       "requires": [],
       "risk": "moderate",
@@ -6756,8 +6756,8 @@
       "id": "k-sequencing",
       "kind": "single",
       "prompt": {
-        "zh-CN": "第一升液体正在输注。血钾3.2 mmol/L，心电图有U波。关于钾和胰岛素，下一步最恰当的是？",
-        "en": "The first litre of fluid is running. Potassium is 3.2 mmol/L and the ECG shows U waves. Regarding potassium and insulin, what is the most appropriate next step?"
+        "zh-CN": "第一升液体正在输注，入院血钾3.2 mmol/L。关于钾和胰岛素，下一步最恰当的是？",
+        "en": "The first litre of fluid is running and the admission potassium is 3.2 mmol/L. Regarding potassium and insulin, what is the most appropriate next step?"
       },
       "requires": {
         "any": [
@@ -6844,8 +6844,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。血气分析仪的钾足以指导治疗，心电图U波也印证了低钾；应现在就开始补钾，生化结果用于核对。",
-            "en": "No. The blood-gas potassium is good enough to act on, and the ECG U waves corroborate it; start replacing now and use the lab value to confirm."
+            "zh-CN": "不对。血气分析仪的钾足以指导治疗（本例心电图的U波也印证了低钾）；应现在就开始补钾，生化结果用于核对。",
+            "en": "No. The blood-gas potassium is good enough to act on (here the ECG U waves corroborate it); start replacing now and use the lab value to confirm."
           }
         }
       ]
