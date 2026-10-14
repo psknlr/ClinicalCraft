@@ -303,3 +303,6 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return false;
   }
 }
+
+/** PROTOCOL §2 name for the offline clinician plan (see `offlineClinicianTurn` in session/autopilot.ts for execution). */
+export const clinicianOffline = clinicianOfflineSteps;

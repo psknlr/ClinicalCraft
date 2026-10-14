@@ -178,6 +178,17 @@ describe("InvestigationSchema.alternativeTo", () => {
     expect(assess(c, readCbc).investigations.essentialMissing).toEqual(["marrow", "biopsy", "flow", "hbv"]);
   });
 
+  it("does not count an alternative whose read result is available: false (no information was obtained)", () => {
+    // marrow has no usable result after treatment: its post-phase record is `available: false`
+    const c = withAlternative("biopsy", "marrow");
+    const s = replay(c, [{ type: "start" }, { type: "set-phase", phase: "post" }, { type: "order", investigationId: "marrow" }, { type: "read", investigationId: "marrow" }]).state;
+    expect(s.seen).toEqual(["marrow@post"]);
+    expect(assess(c, s).investigations.essentialMissing).toEqual(["cbc", "biopsy", "flow", "hbv"]);
+    // the same alternative read in a phase with an available result does count
+    const pre = replay(c, [{ type: "start" }, { type: "order", investigationId: "marrow" }, { type: "read", investigationId: "marrow" }]).state;
+    expect(assess(c, pre).investigations.essentialMissing).toEqual(["cbc", "flow", "hbv"]);
+  });
+
   it("is checked by integrity: ids must exist; self-references are flagged", () => {
     const c = structuredClone(V4);
     const i = c.investigations.findIndex((x) => x.id === "marrow");

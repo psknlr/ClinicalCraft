@@ -160,8 +160,8 @@
         "en": "ED night shift"
       },
       "description": {
-        "zh-CN": "凌晨 02:15，急诊观察区。",
-        "en": "02:15, emergency department cubicle."
+        "zh-CN": "凌晨 02:15，急诊科。",
+        "en": "02:15, emergency department."
       },
       "learnerSwitchable": true
     }
@@ -200,7 +200,12 @@
           "什么问题",
           "主要症状",
           "来看什么病",
-          "什么情况"
+          "什么情况",
+          "哪儿难受",
+          "哪里难受",
+          "哪儿不舒服",
+          "咋了",
+          "咋啦"
         ],
         "en": [
           "brought you in",
@@ -208,12 +213,72 @@
           "what's wrong",
           "what is wrong",
           "main problem",
-          "how can i help",
-          "what's going on"
+          "what's going on",
+          "howcanihelp"
         ]
       },
       "disclosure": "volunteer",
       "required": true
+    },
+    {
+      "id": "hx-identity",
+      "topic": "other",
+      "question": {
+        "zh-CN": "先核对一下：你叫什么名字？今年多大？身高、体重大概多少？",
+        "en": "Can I check your name and age — and roughly your height and weight?"
+      },
+      "answer": {
+        "zh-CN": "周宇航，19岁。身高一米七六，体重68公斤左右。",
+        "en": "Zhou Yuhang. I'm 19. About 1.76 metres, and around 68 kilos."
+      },
+      "keywords": {
+        "zh-CN": [
+          "叫什么名字",
+          "名字",
+          "姓名",
+          "多大了",
+          "几岁",
+          "年龄",
+          "体重多少",
+          "多重",
+          "多少公斤",
+          "身高",
+          "多高"
+        ],
+        "en": [
+          "your name",
+          "how old",
+          "age",
+          "weigh",
+          "weight",
+          "height",
+          "how tall",
+          "date of birth",
+          "dob"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "下降",
+          "减轻",
+          "变化",
+          "瘦",
+          "掉秤"
+        ],
+        "en": [
+          "loss",
+          "lost",
+          "losing",
+          "change",
+          "gain"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "依据 patient.age、weightKg、heightCm 生成的模拟回答",
+        "en": "Simulated answer from patient.age, weightKg and heightCm"
+      }
     },
     {
       "id": "hx-onset",
@@ -235,7 +300,14 @@
           "哪天开始",
           "突然",
           "慢慢开始",
-          "起病"
+          "起病",
+          "痛了多久",
+          "疼了多久",
+          "多长时间了",
+          "几个小时",
+          "几个钟头",
+          "突然痛",
+          "突然疼"
         ],
         "en": [
           "when did it start",
@@ -245,10 +317,33 @@
           "onset",
           "what time did it start",
           "sudden or gradual",
-          "suddenly"
+          "suddenly",
+          "how long have you had",
+          "when did it begin",
+          "started suddenly"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "哪里",
+          "哪儿",
+          "哪个部位",
+          "什么部位",
+          "哪个位置",
+          "什么位置",
+          "在哪",
+          "肚脐",
+          "脐周"
+        ],
+        "en": [
+          "where",
+          "whichpart",
+          "bellybutton",
+          "navel",
+          "umbilic"
+        ]
+      }
     },
     {
       "id": "hx-site-initial",
@@ -269,17 +364,31 @@
           "起初哪里",
           "最早哪里",
           "开始的位置",
-          "原来在哪"
+          "原来在哪",
+          "最开始哪儿",
+          "一开始哪儿",
+          "一开始在哪",
+          "开始在哪里",
+          "从哪里开始",
+          "从哪儿开始",
+          "哪里开始痛",
+          "哪里开始疼",
+          "哪儿开始痛"
         ],
         "en": [
           "where was the pain at first",
           "pain at first",
-          "where did it begin",
           "first felt",
           "start around",
           "started somewhere else",
           "first location",
-          "originally"
+          "originally",
+          "wherediditbegin",
+          "wherediditstart",
+          "wheredidthepainstart",
+          "wheredidyourpainstart",
+          "wheredidthepainbegin",
+          "whereitstarted"
         ]
       },
       "disclosure": "on-ask"
@@ -306,7 +415,18 @@
           "移到",
           "现在在哪",
           "现在哪里疼",
-          "现在主要"
+          "现在主要",
+          "哪儿最痛",
+          "哪里最痛",
+          "哪里最疼",
+          "哪儿最疼",
+          "最痛的地方",
+          "最疼的地方",
+          "现在哪儿",
+          "哪边",
+          "哪一边",
+          "左边还是右边",
+          "指一下"
         ],
         "en": [
           "pain moved",
@@ -316,7 +436,12 @@
           "changed location",
           "where does it hurt now",
           "where is the pain located now",
-          "which side"
+          "which side",
+          "wheredoesithurt",
+          "wheresthepain",
+          "whereisthepain",
+          "point to the pain",
+          "showmewhere"
         ]
       },
       "disclosure": "on-ask",
@@ -343,7 +468,14 @@
           "胀痛",
           "刺痛",
           "钝痛",
-          "隐痛"
+          "隐痛",
+          "啥感觉",
+          "什么感觉",
+          "怎么个痛法",
+          "痛法",
+          "疼法",
+          "什么样的痛",
+          "刀割"
         ],
         "en": [
           "feel like",
@@ -354,7 +486,8 @@
           "stabbing",
           "burning pain",
           "character",
-          "type of pain"
+          "type of pain",
+          "what kind of pain"
         ]
       },
       "disclosure": "on-ask"
@@ -380,7 +513,13 @@
           "腰背",
           "腹股沟",
           "大腿根",
-          "肩膀"
+          "肩膀",
+          "痛到",
+          "疼到",
+          "背上",
+          "背部",
+          "别的地方痛",
+          "别的地方疼"
         ],
         "en": [
           "radiate",
@@ -413,7 +552,12 @@
           "疼痛评分",
           "0到10",
           "严重程度",
-          "疼得厉害吗"
+          "疼得厉害吗",
+          "痛得厉害",
+          "几分痛",
+          "多痛",
+          "有多疼",
+          "有多痛"
         ],
         "en": [
           "how bad",
@@ -423,7 +567,9 @@
           "score",
           "severity",
           "how severe",
-          "rate the pain"
+          "rate the pain",
+          "pain score",
+          "howmuchpain"
         ]
       },
       "disclosure": "on-ask"
@@ -449,7 +595,12 @@
           "颠簸",
           "活动时",
           "动一下",
-          "深呼吸"
+          "深呼吸",
+          "更痛",
+          "咳嗽的时候",
+          "咳嗽痛",
+          "咳嗽疼",
+          "一动就"
         ],
         "en": [
           "worse",
@@ -485,7 +636,13 @@
           "好一点",
           "舒服一点",
           "躺着",
-          "不动"
+          "不动",
+          "舒服点",
+          "好受点",
+          "好受些",
+          "舒服些",
+          "怎么样会好",
+          "什么姿势"
         ],
         "en": [
           "better",
@@ -494,7 +651,8 @@
           "eases",
           "lying still",
           "position",
-          "helps"
+          "helps",
+          "what helps"
         ]
       },
       "disclosure": "on-ask"
@@ -518,7 +676,13 @@
           "阵发",
           "间歇",
           "一直疼",
-          "时好时坏"
+          "时好时坏",
+          "一直痛",
+          "一阵阵",
+          "持续痛",
+          "越来越重",
+          "越来越痛",
+          "越来越疼"
         ],
         "en": [
           "constant pain",
@@ -528,7 +692,9 @@
           "waves",
           "all the time",
           "steady",
-          "on and off"
+          "on and off",
+          "constant",
+          "getting worse"
         ]
       },
       "disclosure": "on-ask"
@@ -551,7 +717,11 @@
           "想吃东西",
           "吃得下",
           "饿不饿",
-          "不想吃"
+          "不想吃",
+          "吃得下饭",
+          "吃不下",
+          "想不想吃",
+          "饿吗"
         ],
         "en": [
           "appetite",
@@ -582,7 +752,13 @@
           "吐了",
           "想吐",
           "反胃",
-          "吐过"
+          "吐过",
+          "吐出来",
+          "吐的什么",
+          "吐的是",
+          "吐血",
+          "呕血",
+          "吐了几次"
         ],
         "en": [
           "nausea",
@@ -591,7 +767,10 @@
           "throw up",
           "threw up",
           "puke",
-          "feel sick"
+          "feel sick",
+          "n/v",
+          "n&v",
+          "beensick"
         ]
       },
       "disclosure": "on-ask",
@@ -616,7 +795,12 @@
           "发冷",
           "寒战",
           "打冷颤",
-          "身上烫"
+          "身上烫",
+          "发烧过",
+          "体温高",
+          "烧不烧",
+          "量过体温",
+          "发烫"
         ],
         "en": [
           "fever",
@@ -639,8 +823,8 @@
         "en": "Any change in your bowels — diarrhoea, constipation, blood? Are you passing wind?"
       },
       "answer": {
-        "zh-CN": "昨天早上上过一次大便，是正常的，没有拉肚子，也没见血。之后就没再上过。放屁还有。",
-        "en": "I went once yesterday morning — normal. No diarrhoea, no blood. Haven't been since. I'm still passing wind."
+        "zh-CN": "昨天早上上过一次大便，是正常的，没有拉肚子，也没见血。之后就没再上过。放屁还有，肚子也不怎么胀。",
+        "en": "I went once yesterday morning — normal. No diarrhoea, no blood. Haven't been since. I'm still passing wind, and I'm not really bloated."
       },
       "keywords": {
         "zh-CN": [
@@ -651,7 +835,14 @@
           "便血",
           "排气",
           "放屁",
-          "黑便"
+          "黑便",
+          "拉稀",
+          "稀便",
+          "解大便",
+          "拉屎",
+          "肚子胀",
+          "腹胀",
+          "胀气"
         ],
         "en": [
           "bowel",
@@ -664,10 +855,26 @@
           "rectal bleeding",
           "passing wind",
           "flatus",
-          "opened your bowels"
+          "opened your bowels",
+          "bloated",
+          "bloating"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "身边",
+          "别人",
+          "其他人",
+          "室友",
+          "同学"
+        ],
+        "en": [
+          "anyoneelse",
+          "roommate",
+          "contacts"
+        ]
+      }
     },
     {
       "id": "hx-urinary",
@@ -690,7 +897,13 @@
           "尿血",
           "尿的颜色",
           "尿黄",
-          "尿色"
+          "尿色",
+          "尿尿",
+          "撒尿",
+          "解小便",
+          "小便疼",
+          "小便痛",
+          "尿疼"
         ],
         "en": [
           "urine",
@@ -700,7 +913,11 @@
           "burning",
           "frequency",
           "waterworks",
-          "pass water"
+          "pass water",
+          "dysuria",
+          "haematuria",
+          "hematuria",
+          "luts"
         ]
       },
       "disclosure": "on-ask",
@@ -722,7 +939,9 @@
           "睾丸",
           "阴囊",
           "蛋蛋",
-          "下体疼"
+          "下体疼",
+          "下面疼",
+          "下身"
         ],
         "en": [
           "testicle",
@@ -730,7 +949,8 @@
           "testis",
           "scrotum",
           "scrotal",
-          "balls"
+          "balls",
+          "testicular"
         ]
       },
       "disclosure": "on-ask",
@@ -789,7 +1009,13 @@
           "撞到",
           "摔倒",
           "运动",
-          "打球"
+          "打球",
+          "磕着",
+          "碰着",
+          "磕碰",
+          "碰到",
+          "撞伤",
+          "撞过"
         ],
         "en": [
           "injury",
@@ -823,7 +1049,12 @@
           "止痛药",
           "退烧药",
           "吃过什么药",
-          "布洛芬"
+          "布洛芬",
+          "吃啥药",
+          "平时吃药",
+          "常吃的药",
+          "长期吃药",
+          "在吃药"
         ],
         "en": [
           "meds",
@@ -834,7 +1065,8 @@
           "taken anything",
           "ibuprofen",
           "paracetamol",
-          "prescription"
+          "prescription",
+          "regular medication"
         ]
       },
       "disclosure": "on-ask"
@@ -888,7 +1120,11 @@
           "哮喘",
           "肾结石",
           "住过院",
-          "身体一直"
+          "身体一直",
+          "以前生过",
+          "生过什么病",
+          "以前有什么病",
+          "基础病"
         ],
         "en": [
           "past medical",
@@ -899,7 +1135,11 @@
           "asthma",
           "diabetes",
           "kidney stones",
-          "been in hospital"
+          "been in hospital",
+          "pmh",
+          "pmhx",
+          "past history",
+          "medical conditions"
         ]
       },
       "disclosure": "on-ask"
@@ -924,7 +1164,11 @@
           "手术史",
           "做过麻醉",
           "打过麻药",
-          "全麻过"
+          "全麻过",
+          "动过手术",
+          "割过阑尾",
+          "阑尾切了",
+          "割阑尾"
         ],
         "en": [
           "operation",
@@ -934,11 +1178,38 @@
           "general anaesthetic",
           "anaesthetic before",
           "anesthetic before",
-          "put to sleep"
+          "put to sleep",
+          "previous surgery",
+          "had surgery",
+          "psh",
+          "appendix out",
+          "had your appendix"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "爸",
+          "妈",
+          "父亲",
+          "母亲",
+          "亲戚",
+          "家人"
+        ],
+        "en": [
+          "family",
+          "dad",
+          "mum",
+          "mom",
+          "father",
+          "mother",
+          "brother",
+          "sister",
+          "relatives"
+        ]
+      }
     },
     {
       "id": "hx-last-intake",
@@ -959,7 +1230,15 @@
           "最后吃",
           "最后喝",
           "空腹",
-          "喝过水"
+          "喝过水",
+          "喝了多少",
+          "喝水",
+          "吃了什么",
+          "晚饭",
+          "午饭",
+          "早饭",
+          "上次吃饭",
+          "上一次吃"
         ],
         "en": [
           "last eat",
@@ -968,11 +1247,25 @@
           "last meal",
           "last food",
           "fasting",
-          "last had anything"
+          "last thing you ate",
+          "eat or drink",
+          "dinner",
+          "lunch",
+          "breakfast"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "药"
+        ],
+        "en": [
+          "medic",
+          "tablet",
+          "pill"
+        ]
+      }
     },
     {
       "id": "hx-sexual",
@@ -994,7 +1287,9 @@
           "性病",
           "分泌物",
           "生殖器",
-          "性伴侣"
+          "性伴侣",
+          "性行为",
+          "同房"
         ],
         "en": [
           "sexually active",
@@ -1039,7 +1334,9 @@
           "drugs",
           "cannabis",
           "vape",
-          "weed"
+          "weed",
+          "doyoudrink",
+          "drinking alcohol"
         ]
       },
       "disclosure": "on-ask"
@@ -1063,10 +1360,11 @@
           "职业",
           "学生",
           "上学",
-          "住在哪",
           "和谁住",
           "宿舍",
-          "专业"
+          "专业",
+          "住在哪里",
+          "住哪儿"
         ],
         "en": [
           "work",
@@ -1103,7 +1401,13 @@
           "身边的人",
           "其他人",
           "室友",
-          "同学也"
+          "同学也",
+          "身边有人",
+          "别人也",
+          "其他人也",
+          "有人也",
+          "也拉肚子",
+          "也吐"
         ],
         "en": [
           "travel",
@@ -1115,38 +1419,10 @@
           "anyone else ill",
           "anyone else sick",
           "sick contacts",
-          "roommate"
-        ]
-      },
-      "disclosure": "on-ask"
-    },
-    {
-      "id": "hx-urti",
-      "topic": "ros",
-      "question": {
-        "zh-CN": "最近有没有感冒、嗓子疼？",
-        "en": "Any recent cold, sore throat or flu-like illness?"
-      },
-      "answer": {
-        "zh-CN": "最近没感冒，嗓子也不疼，没有流鼻涕。",
-        "en": "No cold recently, no sore throat, no runny nose."
-      },
-      "keywords": {
-        "zh-CN": [
-          "感冒",
-          "嗓子",
-          "咽痛",
-          "喉咙",
-          "流鼻涕"
-        ],
-        "en": [
-          "a cold",
-          "common cold",
-          "sore throat",
-          "the flu",
-          "flu-like",
-          "runny nose",
-          "viral"
+          "roommate",
+          "anyone unwell",
+          "anyone at home",
+          "anyone ill"
         ]
       },
       "disclosure": "on-ask"
@@ -1155,12 +1431,12 @@
       "id": "hx-resp",
       "topic": "ros",
       "question": {
-        "zh-CN": "有没有咳嗽、气短或者胸痛？",
-        "en": "Any cough, shortness of breath or chest pain?"
+        "zh-CN": "最近有没有感冒、嗓子疼？有没有咳嗽、气短或者胸痛？",
+        "en": "Any recent cold or sore throat? Any cough, shortness of breath or chest pain?"
       },
       "answer": {
-        "zh-CN": "不咳嗽，不喘，胸口也不疼。",
-        "en": "No cough, I'm not short of breath, and no chest pain."
+        "zh-CN": "最近没感冒，嗓子不疼，也没流鼻涕；不咳嗽，不喘，胸口也不疼。",
+        "en": "No cold recently — no sore throat, no runny nose. No cough, I'm not short of breath, and no chest pain."
       },
       "keywords": {
         "zh-CN": [
@@ -1172,7 +1448,12 @@
           "气促",
           "喘不上气",
           "胸痛",
-          "胸闷"
+          "胸闷",
+          "感冒",
+          "嗓子",
+          "咽痛",
+          "喉咙",
+          "流鼻涕"
         ],
         "en": [
           "any cough",
@@ -1181,7 +1462,15 @@
           "short of breath",
           "breathless",
           "chest pain",
-          "wheeze"
+          "wheeze",
+          "a cold",
+          "common cold",
+          "sore throat",
+          "the flu",
+          "flu-like",
+          "runny nose",
+          "viral",
+          "sob"
         ]
       },
       "disclosure": "on-ask"
@@ -1199,24 +1488,81 @@
       },
       "keywords": {
         "zh-CN": [
-          "体重",
           "瘦了",
           "消瘦",
           "盗汗",
           "口腔溃疡",
           "反复腹泻",
-          "反复拉肚子"
+          "反复拉肚子",
+          "体重下降",
+          "体重减轻",
+          "体重变化",
+          "掉秤"
         ],
         "en": [
-          "weight",
           "night sweats",
           "mouth ulcers",
           "recurrent diarrh",
           "recurring diarrh",
-          "chronic"
+          "chronic",
+          "weight loss",
+          "lost weight",
+          "losing weight",
+          "weight change"
         ]
       },
       "disclosure": "on-ask"
+    },
+    {
+      "id": "hx-other-symptoms",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "还有别的不舒服吗？比如头痛、头晕、心慌、皮疹或者关节痛？",
+        "en": "Anything else bothering you — headache, dizziness, palpitations, a rash or joint pains?"
+      },
+      "answer": {
+        "zh-CN": "别的没什么了……不头疼，也不头晕，没晕倒过，心也不慌。身上没起疹子，关节不疼，也没有烧心反酸。就是肚子疼。",
+        "en": "Nothing else really… no headache, no dizziness, I haven't fainted, no palpitations. No rash, no joint pains, no heartburn. It's just my stomach."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还有别的",
+          "别的不舒服",
+          "其他不舒服",
+          "其他症状",
+          "头痛",
+          "头疼",
+          "头晕",
+          "晕倒",
+          "眼前发黑",
+          "心慌",
+          "心悸",
+          "皮疹",
+          "疹子",
+          "关节痛",
+          "关节疼",
+          "烧心",
+          "反酸"
+        ],
+        "en": [
+          "anythingelse",
+          "any other symptoms",
+          "otherwise well",
+          "headache",
+          "dizzy",
+          "dizziness",
+          "lightheaded",
+          "faint",
+          "passedout",
+          "palpitations",
+          "rash",
+          "joint pain",
+          "heartburn",
+          "indigestion"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false
     },
     {
       "id": "hx-bleeding",
@@ -1299,7 +1645,10 @@
           "亲戚",
           "父母身体",
           "爸妈身体",
-          "家族史"
+          "家族史",
+          "父母",
+          "爸爸妈妈",
+          "家里有人"
         ],
         "en": [
           "family history",
@@ -1307,10 +1656,32 @@
           "family medical",
           "hereditary",
           "relatives",
-          "parents' health"
+          "parents' health",
+          "anyone in your family",
+          "fhx",
+          "family hx",
+          "your dad",
+          "your mum",
+          "your father",
+          "your mother"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "通知",
+          "联系",
+          "打电话",
+          "告诉"
+        ],
+        "en": [
+          "call",
+          "ring",
+          "tell",
+          "contact",
+          "letyour"
+        ]
+      }
     },
     {
       "id": "hx-ice-ideas",
@@ -1329,7 +1700,10 @@
           "你认为是什么",
           "什么原因引起",
           "自己觉得",
-          "怎么回事"
+          "怎么回事",
+          "啥毛病",
+          "什么毛病",
+          "你觉得是啥"
         ],
         "en": [
           "what do you think is",
@@ -1396,7 +1770,10 @@
           "告诉爸妈",
           "联系家人",
           "给父母打电话",
-          "给你爸妈打电话"
+          "给你爸妈打电话",
+          "通知你爸妈",
+          "告诉你爸妈",
+          "要不要通知"
         ],
         "en": [
           "hoping",
@@ -1405,7 +1782,10 @@
           "want us to",
           "tell your parents",
           "contact your family",
-          "call your parents"
+          "call your parents",
+          "call your mum",
+          "ring your parents",
+          "let your parents know"
         ]
       },
       "disclosure": "on-ask"
@@ -1482,7 +1862,8 @@
           "check-up",
           "checkup",
           "blood tests before",
-          "medical exam"
+          "medical exam",
+          "check up"
         ]
       },
       "disclosure": "unknown"
@@ -2450,7 +2831,9 @@
           "胆红素",
           "脂肪酶",
           "淀粉酶",
-          "胰酶"
+          "胰酶",
+          "肝肾功",
+          "生化全套"
         ],
         "en": [
           "lft",
@@ -2594,7 +2977,12 @@
           "尿检",
           "尿液分析",
           "尿试纸",
-          "小便检查"
+          "小便检查",
+          "验尿",
+          "查尿",
+          "留尿",
+          "小便常规",
+          "尿液检查"
         ],
         "en": [
           "urinalysis",
@@ -2602,7 +2990,8 @@
           "urinedipstick",
           "dipstick",
           "urinetest",
-          "urinemicroscopy"
+          "urinemicroscopy",
+          "uadip"
         ]
       },
       "requires": [
@@ -2762,7 +3151,9 @@
           "cbg",
           "fingerprick",
           "bedsideglucose",
-          "pocglucose"
+          "pocglucose",
+          "bmstix",
+          "bmtest"
         ]
       },
       "requires": [
@@ -3122,7 +3513,8 @@
           "腹部超声",
           "右下腹超声",
           "床旁超声",
-          "pocus"
+          "pocus",
+          "阑尾超声"
         ],
         "en": [
           "ultrasound",
@@ -3131,7 +3523,15 @@
           "gradedcompression",
           "usabdomen",
           "abdominalus",
-          "pocus"
+          "pocus",
+          "usabdo",
+          "abdous",
+          "rifus",
+          "usrif",
+          "usappendix",
+          "appendixus",
+          "ultrasoundabdo",
+          "abdoultrasound"
         ]
       },
       "requires": [
@@ -3377,8 +3777,8 @@
           },
           "values": [],
           "note": {
-            "zh-CN": "腹部平片对阑尾炎的诊断敏感性和特异性都很低，极少改变处理。",
-            "en": "Plain abdominal films have poor sensitivity and specificity for appendicitis and rarely change management."
+            "zh-CN": "腹部平片对急性右下腹痛的诊断敏感性和特异性都很低，极少改变处理。",
+            "en": "Plain abdominal films have poor sensitivity and specificity in acute right iliac fossa pain and rarely change management."
           }
         }
       }
@@ -3418,8 +3818,8 @@
           },
           "values": [],
           "note": {
-            "zh-CN": "无脓毒症表现的非复杂性阑尾炎，血培养很少改变处理。",
-            "en": "In uncomplicated appendicitis without sepsis, blood cultures rarely change management."
+            "zh-CN": "局限性急腹症且无脓毒症表现时，血培养很少改变处理。",
+            "en": "In a localised acute abdomen without signs of sepsis, blood cultures rarely change management."
           }
         }
       }
@@ -3478,6 +3878,27 @@
       "拍片": [
         "inv-cxr",
         "inv-axr"
+      ],
+      "查个尿": [
+        "inv-ua"
+      ],
+      "验个尿": [
+        "inv-ua"
+      ],
+      "尿": [
+        "inv-ua"
+      ],
+      "ua": [
+        "inv-ua"
+      ],
+      "us": [
+        "inv-us"
+      ],
+      "bm": [
+        "inv-poc-glucose"
+      ],
+      "bms": [
+        "inv-poc-glucose"
       ]
     },
     "warnings": [
@@ -3513,14 +3934,17 @@
           "禁饮",
           "禁食禁水",
           "不吃不喝",
-          "npo"
+          "npo",
+          "不能吃东西"
         ],
         "en": [
           "npo",
           "nil by mouth",
           "nbm",
           "keep fasted",
-          "fasting"
+          "fasting",
+          "nothing to eat or drink",
+          "nothing by mouth"
         ]
       },
       "dose": {
@@ -3608,7 +4032,7 @@
             "value": 100
           },
           {
-            "flag": "npo"
+            "intervened": "npo"
           }
         ]
       },
@@ -3629,13 +4053,22 @@
           "吗啡",
           "阿片类镇痛",
           "阿片",
-          "静脉吗啡"
+          "静脉吗啡",
+          "止痛",
+          "镇痛",
+          "止痛药",
+          "镇痛药",
+          "打止痛针"
         ],
         "en": [
           "morphine",
           "opioid",
           "opiate",
-          "iv morphine"
+          "iv morphine",
+          "analgesia",
+          "pain relief",
+          "painkiller",
+          "analgesic"
         ]
       },
       "dose": {
@@ -3705,6 +4138,30 @@
       "response": {
         "zh-CN": "约 10 分钟后疼痛降至 3 分左右，患者明显放松、能配合查体；右下腹压痛和反跳痛的定位依旧清楚。",
         "en": "Within about 10 minutes his pain is down to around 3/10; he relaxes and cooperates with examination — the right iliac fossa tenderness and rebound remain clearly localised."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "不给",
+          "别给",
+          "先别",
+          "先不",
+          "暂不",
+          "不止痛",
+          "别止痛",
+          "不镇痛",
+          "不用止痛",
+          "不要止痛"
+        ],
+        "en": [
+          "withhold",
+          "holdoff",
+          "holdanalgesia",
+          "holdpainrelief",
+          "nopainrelief",
+          "noanalgesia",
+          "withoutanalgesia",
+          "delayanalgesia"
+        ]
       }
     },
     {
@@ -3719,14 +4176,24 @@
           "对乙酰氨基酚",
           "扑热息痛",
           "泰诺林",
-          "必理通"
+          "必理通",
+          "止痛",
+          "镇痛",
+          "止痛药",
+          "镇痛药",
+          "退烧"
         ],
         "en": [
           "paracetamol",
           "acetaminophen",
           "iv paracetamol",
           "tylenol",
-          "perfalgan"
+          "perfalgan",
+          "analgesia",
+          "pain relief",
+          "painkiller",
+          "analgesic",
+          "antipyretic"
         ]
       },
       "dose": {
@@ -3774,6 +4241,30 @@
       "response": {
         "zh-CN": "对乙酰氨基酚已输注，作为多模式镇痛的基础用药并帮助退热。",
         "en": "Paracetamol given — the backbone of multimodal analgesia, and it takes the edge off the fever."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "不给",
+          "别给",
+          "先别",
+          "先不",
+          "暂不",
+          "不止痛",
+          "别止痛",
+          "不镇痛",
+          "不用止痛",
+          "不要止痛"
+        ],
+        "en": [
+          "withhold",
+          "holdoff",
+          "holdanalgesia",
+          "holdpainrelief",
+          "nopainrelief",
+          "noanalgesia",
+          "withoutanalgesia",
+          "delayanalgesia"
+        ]
       }
     },
     {
@@ -3789,14 +4280,22 @@
           "非甾体",
           "nsaid",
           "酮咯酸",
-          "特耐"
+          "特耐",
+          "止痛",
+          "镇痛",
+          "止痛药",
+          "镇痛药"
         ],
         "en": [
           "parecoxib",
           "nsaid",
           "ketorolac",
           "dynastat",
-          "anti-inflammatory"
+          "analgesia",
+          "pain relief",
+          "painkiller",
+          "analgesic",
+          "antiinflammatory"
         ]
       },
       "dose": {
@@ -3838,6 +4337,30 @@
       "response": {
         "zh-CN": "NSAID 已给予，作为阿片类之外的辅助镇痛。",
         "en": "NSAID given as an opioid-sparing adjunct."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "不给",
+          "别给",
+          "先别",
+          "先不",
+          "暂不",
+          "不止痛",
+          "别止痛",
+          "不镇痛",
+          "不用止痛",
+          "不要止痛"
+        ],
+        "en": [
+          "withhold",
+          "holdoff",
+          "holdanalgesia",
+          "holdpainrelief",
+          "nopainrelief",
+          "noanalgesia",
+          "withoutanalgesia",
+          "delayanalgesia"
+        ]
       }
     },
     {
@@ -3895,7 +4418,9 @@
           "甲硝唑",
           "术前抗生素",
           "预防性抗生素",
-          "抗生素"
+          "抗生素",
+          "抗菌药",
+          "抗菌药物"
         ],
         "en": [
           "cefuroxime",
@@ -3904,11 +4429,13 @@
           "zinacef",
           "antibiotics",
           "pre-op antibiotics",
-          "prophylactic antibiotics"
+          "prophylactic antibiotics",
+          "abx",
+          "metro"
         ]
       },
       "dose": {
-        "zh-CN": "头孢呋辛 1.5 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；确诊后即给药（理想为切皮前 60 分钟内；若至切皮已超过 4 小时，麻醉诱导时追加头孢呋辛 1.5 g）；术中如证实为非复杂性阑尾炎，术后无需继续",
+        "zh-CN": "头孢呋辛 1.5 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；确诊后即给药（理想为切皮前 60 分钟内；若至切皮已超过 4 小时，麻醉诱导时追加头孢呋辛 1.5 g）；术中如证实为非复杂性，术后无需继续",
         "en": "Cefuroxime 1.5 g IV + metronidazole 500 mg IV, given once the diagnosis is confirmed (ideally ≤ 60 min before incision; re-dose cefuroxime 1.5 g at induction if > 4 h have elapsed); no post-operative course if uncomplicated at operation"
       },
       "requires": [
@@ -3939,7 +4466,20 @@
         ]
       },
       "contraindicatedWhen": {
-        "flag": "abx-given"
+        "any": [
+          {
+            "intervened": "abx-cefuroxime-metronidazole"
+          },
+          {
+            "intervened": "abx-ceftriaxone-metronidazole"
+          },
+          {
+            "intervened": "abx-meropenem"
+          },
+          {
+            "intervened": "abx-first-nom"
+          }
+        ]
       },
       "harm": {
         "zh-CN": "已经给过一种抗生素方案，再叠加另一种属重复用药。",
@@ -3948,6 +4488,28 @@
       "response": {
         "zh-CN": "抗生素已输注，覆盖肠道革兰阴性菌及厌氧菌。",
         "en": "Antibiotics running, covering enteric Gram-negative and anaerobic organisms."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "头孢曲松",
+          "罗氏芬",
+          "非手术",
+          "保守",
+          "代替手术",
+          "优先",
+          "只用抗生素",
+          "单用抗生素"
+        ],
+        "en": [
+          "ceftriaxone",
+          "rocephin",
+          "antibioticsfirst",
+          "instead",
+          "nonop",
+          "non-op",
+          "conservative",
+          "alone"
+        ]
       }
     },
     {
@@ -3962,17 +4524,21 @@
           "头孢曲松",
           "罗氏芬",
           "甲硝唑",
-          "抗生素"
+          "抗生素",
+          "抗菌药",
+          "抗菌药物"
         ],
         "en": [
           "ceftriaxone",
           "rocephin",
           "metronidazole",
-          "antibiotics"
+          "antibiotics",
+          "abx",
+          "metro"
         ]
       },
       "dose": {
-        "zh-CN": "头孢曲松 2 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；确诊后即给药（理想为切皮前 60 分钟内；头孢曲松半衰期长，术中一般无需追加）；术中如证实为非复杂性阑尾炎，术后无需继续",
+        "zh-CN": "头孢曲松 2 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；确诊后即给药（理想为切皮前 60 分钟内；头孢曲松半衰期长，术中一般无需追加）；术中如证实为非复杂性，术后无需继续",
         "en": "Ceftriaxone 2 g IV + metronidazole 500 mg IV, given once the diagnosis is confirmed (ideally ≤ 60 min before incision; long half-life, so no intra-operative re-dose is usually needed); no post-operative course if uncomplicated at operation"
       },
       "requires": [
@@ -4003,7 +4569,20 @@
         ]
       },
       "contraindicatedWhen": {
-        "flag": "abx-given"
+        "any": [
+          {
+            "intervened": "abx-cefuroxime-metronidazole"
+          },
+          {
+            "intervened": "abx-ceftriaxone-metronidazole"
+          },
+          {
+            "intervened": "abx-meropenem"
+          },
+          {
+            "intervened": "abx-first-nom"
+          }
+        ]
       },
       "harm": {
         "zh-CN": "已经给过一种抗生素方案，再叠加另一种属重复用药。",
@@ -4012,6 +4591,28 @@
       "response": {
         "zh-CN": "抗生素已输注，覆盖肠道革兰阴性菌及厌氧菌。",
         "en": "Antibiotics running, covering enteric Gram-negative and anaerobic organisms."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "头孢呋辛",
+          "西力欣",
+          "非手术",
+          "保守",
+          "代替手术",
+          "优先",
+          "只用抗生素",
+          "单用抗生素"
+        ],
+        "en": [
+          "cefuroxime",
+          "zinacef",
+          "antibioticsfirst",
+          "instead",
+          "nonop",
+          "non-op",
+          "conservative",
+          "alone"
+        ]
       }
     },
     {
@@ -4055,15 +4656,28 @@
       ],
       "maxDoses": 1,
       "contraindicatedWhen": {
-        "flag": "abx-given"
+        "any": [
+          {
+            "intervened": "abx-cefuroxime-metronidazole"
+          },
+          {
+            "intervened": "abx-ceftriaxone-metronidazole"
+          },
+          {
+            "intervened": "abx-meropenem"
+          },
+          {
+            "intervened": "abx-first-nom"
+          }
+        ]
       },
       "harm": {
         "zh-CN": "已经给过一种抗生素方案，再叠加另一种属重复用药。",
         "en": "An antibiotic regimen has already been given — adding another duplicates therapy."
       },
       "response": {
-        "zh-CN": "药师来电：社区获得性非复杂性阑尾炎不需要碳青霉烯类，建议改用头孢呋辛或头孢曲松联合甲硝唑（抗菌药物管理）。",
-        "en": "The pharmacist phones: carbapenems are not needed for community-acquired uncomplicated appendicitis — cefuroxime or ceftriaxone plus metronidazole is preferred (antimicrobial stewardship)."
+        "zh-CN": "药师来电：碳青霉烯类应留给重症、复杂性或耐药菌腹腔感染；社区获得性腹腔感染首选头孢呋辛或头孢曲松联合甲硝唑（抗菌药物管理）。",
+        "en": "The pharmacist phones: carbapenems are reserved for severe, complicated or resistant intra-abdominal infection — for a community-acquired abdominal source, cefuroxime or ceftriaxone plus metronidazole is preferred (antimicrobial stewardship)."
       }
     },
     {
@@ -4196,23 +4810,40 @@
       "indicatedWhen": {
         "all": [
           {
-            "flag": "surgical-consult"
-          },
-          {
-            "flag": "consent-discussed"
-          },
-          {
-            "any": [
+            "all": [
               {
-                "read": "inv-us"
+                "intervened": "surgical-consult"
               },
               {
-                "read": "inv-ct"
+                "intervened": "shared-decision-consent"
+              },
+              {
+                "any": [
+                  {
+                    "read": "inv-us"
+                  },
+                  {
+                    "read": "inv-ct"
+                  }
+                ]
               }
             ]
           },
           {
-            "flag": "abx-given"
+            "any": [
+              {
+                "intervened": "abx-cefuroxime-metronidazole"
+              },
+              {
+                "intervened": "abx-ceftriaxone-metronidazole"
+              },
+              {
+                "intervened": "abx-meropenem"
+              },
+              {
+                "intervened": "abx-first-nom"
+              }
+            ]
           }
         ]
       },
@@ -4220,10 +4851,10 @@
         "not": {
           "all": [
             {
-              "flag": "surgical-consult"
+              "intervened": "surgical-consult"
             },
             {
-              "flag": "consent-discussed"
+              "intervened": "shared-decision-consent"
             },
             {
               "any": [
@@ -4260,7 +4891,9 @@
           "保守治疗",
           "抗生素代替手术",
           "抗生素优先",
-          "厄他培南"
+          "厄他培南",
+          "只用抗生素",
+          "单用抗生素"
         ],
         "en": [
           "antibiotics first",
@@ -4268,7 +4901,9 @@
           "nonoperative",
           "conservative management",
           "antibiotics instead of surgery",
-          "ertapenem"
+          "ertapenem",
+          "antibiotics alone",
+          "antibiotic therapy alone"
         ]
       },
       "dose": {
@@ -4319,14 +4954,19 @@
           "不给止痛",
           "先不用止痛药",
           "等外科看了再止痛",
-          "不镇痛"
+          "不镇痛",
+          "先别止痛",
+          "别止痛",
+          "不止痛"
         ],
         "en": [
           "withhold analgesia",
-          "no analgesia",
-          "no pain relief",
           "hold pain relief",
-          "wait for the surgeon before analgesia"
+          "wait for the surgeon before analgesia",
+          "noanalgesia",
+          "nopainrelief",
+          "holdanalgesia",
+          "delay analgesia"
         ]
       },
       "requires": [],
@@ -4427,8 +5067,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "疑似阑尾炎时使用泻药或灌肠可升高肠腔内压力、可能促发穿孔，并违反禁食原则；患者也没有便秘的证据。",
-        "en": "Laxatives or enemas in suspected appendicitis raise intraluminal pressure, may precipitate perforation and break the fast — and there is no evidence of constipation."
+        "zh-CN": "未明确诊断、伴局限性腹膜刺激征的急腹症使用泻药或灌肠，可升高肠腔内压力、可能促发炎症肠段穿孔，并违反禁食原则；患者也没有便秘的证据。",
+        "en": "Laxatives or enemas in an undiagnosed acute abdomen with localised peritonism raise intraluminal pressure, may precipitate perforation of an inflamed segment and break the fast — and there is no evidence of constipation."
       },
       "response": {
         "zh-CN": "护士核对医嘱时提出疑问：“他是右下腹压痛，要通便吗？”",
@@ -4448,14 +5088,17 @@
           "允许吃",
           "流质",
           "正常饮食",
-          "可以喝水"
+          "可以喝水",
+          "吃点东西"
         ],
         "en": [
           "allow food",
           "eat and drink",
           "oral intake",
           "light diet",
-          "free fluids"
+          "free fluids",
+          "let him eat",
+          "let him drink"
         ]
       },
       "requires": [],
@@ -4474,6 +5117,25 @@
       "response": {
         "zh-CN": "护士提醒：外科评估前应保持禁食。",
         "en": "The nurse reminds you he should stay nil by mouth until the surgical assessment."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "禁",
+          "不吃",
+          "不能吃",
+          "别吃",
+          "不要吃",
+          "不喝",
+          "别喝"
+        ],
+        "en": [
+          "nothing",
+          "nil",
+          "npo",
+          "nbm",
+          "fasted",
+          "fasting"
+        ]
       }
     },
     {
@@ -4591,7 +5253,17 @@
         "startMinute": 0,
         "max": 2,
         "until": {
-          "flag": "analgesia-given"
+          "any": [
+            {
+              "intervened": "morphine"
+            },
+            {
+              "intervened": "paracetamol"
+            },
+            {
+              "intervened": "parecoxib"
+            }
+          ]
         },
         "recoverPerMinute": 0.02
       },
@@ -4602,7 +5274,17 @@
         "startMinute": 0,
         "max": 3,
         "until": {
-          "flag": "analgesia-given"
+          "any": [
+            {
+              "intervened": "morphine"
+            },
+            {
+              "intervened": "paracetamol"
+            },
+            {
+              "intervened": "parecoxib"
+            }
+          ]
         },
         "recoverPerMinute": 0.02
       },
@@ -4613,7 +5295,20 @@
         "startMinute": 0,
         "max": 0.8,
         "until": {
-          "flag": "abx-given"
+          "any": [
+            {
+              "intervened": "abx-cefuroxime-metronidazole"
+            },
+            {
+              "intervened": "abx-ceftriaxone-metronidazole"
+            },
+            {
+              "intervened": "abx-meropenem"
+            },
+            {
+              "intervened": "abx-first-nom"
+            }
+          ]
         },
         "recoverPerMinute": 0.002
       }
@@ -4630,7 +5325,17 @@
             },
             {
               "not": {
-                "flag": "analgesia-given"
+                "any": [
+                  {
+                    "intervened": "morphine"
+                  },
+                  {
+                    "intervened": "paracetamol"
+                  },
+                  {
+                    "intervened": "parecoxib"
+                  }
+                ]
               }
             }
           ]
@@ -4655,12 +5360,25 @@
             },
             {
               "not": {
-                "flag": "abx-given"
+                "any": [
+                  {
+                    "intervened": "abx-cefuroxime-metronidazole"
+                  },
+                  {
+                    "intervened": "abx-ceftriaxone-metronidazole"
+                  },
+                  {
+                    "intervened": "abx-meropenem"
+                  },
+                  {
+                    "intervened": "abx-first-nom"
+                  }
+                ]
               }
             },
             {
               "not": {
-                "flag": "appendectomy-booked"
+                "intervened": "lap-appendectomy"
               }
             }
           ]
@@ -4685,12 +5403,25 @@
             },
             {
               "not": {
-                "flag": "abx-given"
+                "any": [
+                  {
+                    "intervened": "abx-cefuroxime-metronidazole"
+                  },
+                  {
+                    "intervened": "abx-ceftriaxone-metronidazole"
+                  },
+                  {
+                    "intervened": "abx-meropenem"
+                  },
+                  {
+                    "intervened": "abx-first-nom"
+                  }
+                ]
               }
             },
             {
               "not": {
-                "flag": "appendectomy-booked"
+                "intervened": "lap-appendectomy"
               }
             }
           ]
@@ -4708,9 +5439,64 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "护士急呼：“他说疼痛突然扩散到整个下腹部，一碰就疼，心率和体温都明显升高了（见监护仪）！”——需考虑阑尾穿孔，立即请上级及外科。",
-          "en": "Nurse, urgently: \"He says the pain has suddenly spread across his whole lower abdomen and he can't bear being touched — his heart rate and temperature are well up (see the monitor)!\" — consider perforation; call your senior and the surgeons now."
+          "zh-CN": "护士急呼：“他说疼痛突然扩散到整个下腹部，一碰就疼，心率和体温都明显升高了（见监护仪）！”——需考虑穿孔，立即请上级及外科（此前记录的查体和影像反映的是这次变化之前的状态）。",
+          "en": "Nurse, urgently: \"He says the pain has suddenly spread across his whole lower abdomen and he can't bear being touched — his heart rate and temperature are well up (see the monitor)!\" — consider perforation; call your senior and the surgeons now (the examination and imaging recorded earlier describe his state before this change)."
         }
+      },
+      {
+        "id": "evt-mark-theatre-premature",
+        "when": {
+          "all": [
+            {
+              "intervened": "lap-appendectomy"
+            },
+            {
+              "not": {
+                "all": [
+                  {
+                    "intervened": "surgical-consult"
+                  },
+                  {
+                    "intervened": "shared-decision-consent"
+                  },
+                  {
+                    "any": [
+                      {
+                        "read": "inv-us"
+                      },
+                      {
+                        "read": "inv-ct"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "theatre-premature"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "evt-mark-nom-without-ct",
+        "when": {
+          "all": [
+            {
+              "intervened": "abx-first-nom"
+            },
+            {
+              "not": {
+                "read": "inv-ct"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "nom-without-ct"
+        ],
+        "severity": "info"
       }
     ],
     "noise": 1
@@ -4727,12 +5513,12 @@
         "en": "History"
       },
       "hint": {
-        "zh-CN": "按 SOCRATES 询问：疼痛从哪里开始、现在在哪里、伴随症状（食欲、恶心呕吐、发热）；别忘了泌尿系统和睾丸症状这些用于鉴别的阴性信息。",
-        "en": "Use SOCRATES: where it started, where it is now, associated symptoms (appetite, nausea/vomiting, fever) — and the urinary and testicular questions that rule mimics in or out."
+        "zh-CN": "按 SOCRATES 询问：疼痛从哪里开始、现在在哪里、伴随症状（食欲、恶心呕吐、发热）；别忘了泌尿系统和睾丸症状这些用于鉴别的阴性信息。他疼得厉害（7/10）——不必等病史问完才镇痛。",
+        "en": "Use SOCRATES: where it started, where it is now, associated symptoms (appetite, nausea/vomiting, fever) — and the urinary and testicular questions that rule mimics in or out. He is in a lot of pain (7/10): you don't have to finish the history before treating it."
       },
       "guidance": {
-        "zh-CN": "和患者交谈，弄清疼痛的起始部位、演变过程和伴随症状。",
-        "en": "Talk to the patient: establish where the pain began, how it has evolved and what came with it."
+        "zh-CN": "和患者交谈，弄清疼痛的起始部位、演变过程和伴随症状；他还没用过任何止痛药。",
+        "en": "Talk to the patient: establish where the pain began, how it has evolved and what came with it. He has had no analgesia yet."
       },
       "completeWhen": {
         "all": [
@@ -4820,10 +5606,20 @@
       "completeWhen": {
         "all": [
           {
-            "flag": "npo"
+            "intervened": "npo"
           },
           {
-            "flag": "analgesia-given"
+            "any": [
+              {
+                "intervened": "morphine"
+              },
+              {
+                "intervened": "paracetamol"
+              },
+              {
+                "intervened": "parecoxib"
+              }
+            ]
           },
           {
             "intervened": "iv-fluids"
@@ -4939,6 +5735,22 @@
             ]
           },
           "target": "imaging"
+        },
+        {
+          "unless": {
+            "all": [
+              {
+                "read": "inv-fbc"
+              },
+              {
+                "read": "inv-crp"
+              },
+              {
+                "read": "inv-ua"
+              }
+            ]
+          },
+          "target": "lab-hematology"
         }
       ]
     },
@@ -4990,13 +5802,26 @@
       "completeWhen": {
         "all": [
           {
-            "flag": "abx-given"
+            "any": [
+              {
+                "intervened": "abx-cefuroxime-metronidazole"
+              },
+              {
+                "intervened": "abx-ceftriaxone-metronidazole"
+              },
+              {
+                "intervened": "abx-meropenem"
+              },
+              {
+                "intervened": "abx-first-nom"
+              }
+            ]
           },
           {
             "intervened": "surgical-consult"
           },
           {
-            "flag": "consent-discussed"
+            "intervened": "shared-decision-consent"
           },
           {
             "decided": "dec-definitive"
@@ -5009,7 +5834,20 @@
       "waypoints": [
         {
           "unless": {
-            "flag": "abx-given"
+            "any": [
+              {
+                "intervened": "abx-cefuroxime-metronidazole"
+              },
+              {
+                "intervened": "abx-ceftriaxone-metronidazole"
+              },
+              {
+                "intervened": "abx-meropenem"
+              },
+              {
+                "intervened": "abx-first-nom"
+              }
+            ]
           },
           "target": "iv-access"
         },
@@ -5034,11 +5872,18 @@
         "en": "While the tests and imaging are pending, which measures should you take now? (Select all that apply)"
       },
       "requires": {
-        "examined": "ex-abd-palp"
+        "all": [
+          {
+            "examined": "ex-abd-palp"
+          },
+          {
+            "asked": "hx-vomiting"
+          }
+        ]
       },
       "need": {
-        "zh-CN": "完成腹部触诊后作答。",
-        "en": "Palpate the abdomen first."
+        "zh-CN": "完成腹部触诊并询问恶心、呕吐后作答。",
+        "en": "Palpate the abdomen and ask about nausea and vomiting first."
       },
       "options": [
         {
@@ -5061,8 +5906,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确：心动过速、口干、尿液浓缩提示轻度脱水，且已禁食。",
-            "en": "Correct — tachycardia, a dry mouth and concentrated urine suggest mild dehydration, and he is fasting."
+            "zh-CN": "正确：心动过速，从昨天起几乎没怎么进食进水，现在又需要禁食；查体所见的口唇舌面干燥也符合轻度脱水。",
+            "en": "Correct — he is tachycardic, has had almost nothing to eat or drink since yesterday and must now stay nil by mouth; dry mucous membranes on examination fit mild dehydration."
           }
         },
         {
@@ -5224,6 +6069,15 @@
             "read": "inv-fbc"
           },
           {
+            "read": "inv-crp"
+          },
+          {
+            "read": "inv-ua"
+          },
+          {
+            "examined": "ex-testes"
+          },
+          {
             "any": [
               {
                 "read": "inv-us"
@@ -5236,8 +6090,8 @@
         ]
       },
       "need": {
-        "zh-CN": "阅读血常规和影像报告后作答。",
-        "en": "Read the blood count and the imaging report first."
+        "zh-CN": "先阅读血常规、CRP、尿常规和影像报告，并完成睾丸检查后作答。",
+        "en": "Read the blood count, CRP, urinalysis and imaging report, and examine the testes first."
       },
       "options": [
         {
@@ -5563,11 +6417,11 @@
       "domain": "diagnosis",
       "weight": 2,
       "text": {
-        "zh-CN": "作出急性非复杂性阑尾炎的诊断",
-        "en": "Diagnosed acute uncomplicated appendicitis"
+        "zh-CN": "首次作答即诊断为急性非复杂性阑尾炎",
+        "en": "Diagnosed acute uncomplicated appendicitis at the first attempt"
       },
       "met": {
-        "decided": "dec-diagnosis"
+        "decidedFirstTry": "dec-diagnosis"
       }
     },
     {
@@ -5575,13 +6429,27 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "及时给予充分镇痛（未等到护士提醒）",
-        "en": "Gave prompt, adequate analgesia (before the nurse had to ask)"
+        "zh-CN": "及时、充分镇痛：在护士催促前给予静脉阿片类滴定（或帕瑞昔布联合对乙酰氨基酚的多模式镇痛）",
+        "en": "Gave prompt, adequate analgesia — titrated IV opioid (or parecoxib plus paracetamol) before the nurse had to ask"
       },
       "met": {
         "all": [
           {
-            "flag": "analgesia-given"
+            "any": [
+              {
+                "intervened": "morphine"
+              },
+              {
+                "all": [
+                  {
+                    "intervened": "parecoxib"
+                  },
+                  {
+                    "intervened": "paracetamol"
+                  }
+                ]
+              }
+            ]
           },
           {
             "not": {
@@ -5602,7 +6470,7 @@
       "met": {
         "all": [
           {
-            "flag": "npo"
+            "intervened": "npo"
           },
           {
             "intervened": "iv-fluids"
@@ -5615,17 +6483,36 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "给予合适的术前静脉抗生素（覆盖革兰阴性菌及厌氧菌，未使用碳青霉烯类）",
-        "en": "Gave appropriate pre-operative IV antibiotics (Gram-negative + anaerobic cover, no carbapenem)"
+        "zh-CN": "给予一种恰当的术前静脉抗生素方案（覆盖革兰阴性菌及厌氧菌；不用碳青霉烯类，不重复用药）",
+        "en": "Gave one appropriate pre-operative IV antibiotic regimen (Gram-negative + anaerobic cover; no carbapenem, no duplicate regimen)"
       },
       "met": {
         "all": [
           {
-            "flag": "preop-abx"
+            "any": [
+              {
+                "intervened": "abx-cefuroxime-metronidazole"
+              },
+              {
+                "intervened": "abx-ceftriaxone-metronidazole"
+              }
+            ]
           },
           {
             "not": {
-              "flag": "broad-spectrum-abx"
+              "all": [
+                {
+                  "intervened": "abx-cefuroxime-metronidazole"
+                },
+                {
+                  "intervened": "abx-ceftriaxone-metronidazole"
+                }
+              ]
+            }
+          },
+          {
+            "not": {
+              "intervened": "abx-meropenem"
             }
           }
         ]
@@ -5636,8 +6523,8 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "请外科会诊并安排腹腔镜阑尾切除术",
-        "en": "Referred to surgery and arranged laparoscopic appendectomy"
+        "zh-CN": "请外科会诊，并在外科评估、影像确认和知情同意之后安排腹腔镜阑尾切除术",
+        "en": "Referred to surgery and arranged laparoscopic appendectomy after surgical review, imaging and consent"
       },
       "met": {
         "all": [
@@ -5649,6 +6536,11 @@
           },
           {
             "decided": "dec-definitive"
+          },
+          {
+            "not": {
+              "flag": "theatre-premature"
+            }
           }
         ]
       }
@@ -5658,23 +6550,32 @@
       "domain": "safety",
       "weight": 3,
       "text": {
-        "zh-CN": "未发生不安全操作：未扣留镇痛、未让患者离院、未通便、未允许进食",
-        "en": "No unsafe actions: analgesia not withheld, no discharge, no laxative, no oral intake"
+        "zh-CN": "无不安全操作或可避免的伤害：未拒绝镇痛，未让其出院、未用泻药、未允许进食；外科评估、影像和知情同意完成后才安排手术；未在无 CT 时启动“抗生素优先”；未因延误导致穿孔",
+        "en": "No unsafe actions or avoidable harm: analgesia not withheld; no discharge, laxative or oral intake; theatre booked only after surgical review, imaging and consent; no antibiotics-first without a CT; no perforation from delay"
       },
       "met": {
         "not": {
           "any": [
             {
-              "flag": "analgesia-withheld"
+              "intervened": "withhold-analgesia"
             },
             {
-              "flag": "discharge-attempted"
+              "intervened": "discharge"
             },
             {
-              "flag": "laxative-given"
+              "intervened": "laxative"
             },
             {
-              "flag": "oral-intake-allowed"
+              "intervened": "oral-intake"
+            },
+            {
+              "flag": "theatre-premature"
+            },
+            {
+              "flag": "nom-without-ct"
+            },
+            {
+              "flag": "perforation-suspected"
             }
           ]
         }
@@ -5702,6 +6603,34 @@
             }
           ]
         }
+      }
+    },
+    {
+      "id": "r-eff-timely",
+      "domain": "efficiency",
+      "text": {
+        "zh-CN": "及时处置：在护士 3 小时升级提醒之前已给予抗生素或安排手术，并给予了术前抗生素",
+        "en": "Acted in time: antibiotics given or theatre booked before the nurse's 3-hour escalation, and pre-operative antibiotics given"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "any": [
+              {
+                "intervened": "abx-cefuroxime-metronidazole"
+              },
+              {
+                "intervened": "abx-ceftriaxone-metronidazole"
+              }
+            ]
+          },
+          {
+            "not": {
+              "flag": "delayed-source-control"
+            }
+          }
+        ]
       }
     },
     {
@@ -5763,8 +6692,8 @@
         "en": "Dr Zhao Lin, on-call radiology"
       },
       "knowledge": {
-        "zh-CN": "可讨论影像选择：年轻、体型偏瘦的成人首选分级加压超声；超声不确定或怀疑并发症时行（低剂量）增强 CT；MRI 主要用于孕妇。超声对阑尾粪石不如 CT 敏感。只解读已经完成并由学员调阅的检查。",
-        "en": "Can discuss imaging choice: graded-compression ultrasound first in young, slim adults; (low-dose) contrast CT if ultrasound is inconclusive or complications are suspected; MRI mainly in pregnancy. Ultrasound is less sensitive than CT for appendicoliths. Interprets only studies that have been performed and that the learner has read."
+        "zh-CN": "可讨论影像选择：年轻、体型偏瘦的成人首选分级加压超声；超声不确定或怀疑并发症时行（低剂量）增强 CT；MRI 主要用于孕妇。超声对阑尾粪石不如 CT 敏感。只解读已经完成并由学员调阅的检查；学员阅片前不给出诊断。",
+        "en": "Can discuss imaging choice: graded-compression ultrasound first in young, slim adults; (low-dose) contrast CT if ultrasound is inconclusive or complications are suspected; MRI mainly in pregnancy. Ultrasound is less sensitive than CT for appendicoliths. Interprets only studies that have been performed and that the learner has read; gives no diagnosis before then."
       },
       "interprets": [
         "inv-us",
@@ -5780,8 +6709,8 @@
         "en": "Dr Liu Zhiyuan, general surgery registrar"
       },
       "knowledge": {
-        "zh-CN": "接到会诊后到场，复核学员已获得的病史、查体和结果。外科常规：非复杂性阑尾炎在急诊手术台行腹腔镜阑尾切除术；术前单次静脉头孢呋辛 1.5 g + 甲硝唑 500 mg（或头孢曲松 2 g + 甲硝唑 500 mg）；术中证实为非复杂性者术后不再使用抗生素。能介绍“抗生素优先”的证据（APPAC、CODA）：需 CT 确认非复杂性且无粪石，约四分之一到三分之一一年内仍需手术。负责签署手术知情同意。",
-        "en": "Attends when referred and reviews the history, examination and results the learner already has. Surgical routine: laparoscopic appendectomy on the emergency list for uncomplicated appendicitis; single pre-operative dose of cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg); no post-operative antibiotics if uncomplicated at operation. Can explain the antibiotics-first evidence (APPAC, CODA): requires CT-confirmed uncomplicated disease without an appendicolith; roughly a quarter to a third need an appendectomy within a year. Takes surgical consent."
+        "zh-CN": "接到会诊后到场，复核学员已获得的病史、查体和结果；先请学员汇报工作诊断及依据，学员作出诊断前不替其下诊断。外科常规（仅在学员提出诊断后讨论）：非复杂性阑尾炎在急诊手术台行腹腔镜阑尾切除术；术前单次静脉头孢呋辛 1.5 g + 甲硝唑 500 mg（或头孢曲松 2 g + 甲硝唑 500 mg）；术中证实为非复杂性者术后不再使用抗生素。能介绍“抗生素优先”的证据（APPAC、CODA）：需 CT 确认非复杂性且无粪石，约四分之一到三分之一一年内仍需手术。负责签署手术知情同意。",
+        "en": "Attends when referred and reviews the history, examination and results the learner already has; asks the learner for their working diagnosis and the evidence for it, and does not offer a diagnosis before the learner commits to one. Surgical routine (discussed only once the learner has proposed the diagnosis): laparoscopic appendectomy on the emergency list for uncomplicated appendicitis; single pre-operative dose of cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg); no post-operative antibiotics if uncomplicated at operation. Can explain the antibiotics-first evidence (APPAC, CODA): requires CT-confirmed uncomplicated disease without an appendicolith; roughly a quarter to a third need an appendectomy within a year. Takes surgical consent."
       },
       "interprets": [
         "inv-us",
@@ -5797,8 +6726,8 @@
         "en": "Dr Sun Lei, ED attending"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，不直接给出诊断。常问：根据你已有的数据，Alvarado 和 AIR 评分各是多少？（参考答案仅在学员算出后确认：读完血常规和 CRP 后 Alvarado 10/10，AIR 7，按反跳痛/肌紧张中度计 2 分；若按轻度计为 6，仍属中危。）为什么这里先做超声而不是 CT？年轻男性腹痛必须记录哪些阴性体征？阿片类会掩盖腹膜刺激征吗？“抗生素优先”的利弊是什么？",
-        "en": "Socratic; never states the diagnosis. Typical questions: From the data you have, what are the Alvarado and AIR scores? (Confirm only after the learner has calculated them: once FBC and CRP are read, Alvarado 10/10 and AIR 7, scoring rebound/guarding as moderate = 2; scored as light it is 6 — still intermediate.) Why ultrasound before CT here? Which pertinent negatives must you document in a young man with abdominal pain? Do opioids mask peritonism? What are the pros and cons of antibiotics-first?"
+        "zh-CN": "苏格拉底式带教，不直接给出诊断。常问：根据你已有的数据，Alvarado 和 AIR 评分各是多少？（参考答案仅在学员算出后确认：读完血常规和 CRP 后 Alvarado 10/10，AIR 7，按反跳痛/肌紧张中度计 2 分；若按轻度计为 6，仍属中危。）这个患者先做超声还是 CT？为什么？年轻男性腹痛必须记录哪些阴性体征？阿片类会掩盖腹膜刺激征吗？“抗生素优先”的利弊是什么？",
+        "en": "Socratic; never states the diagnosis. Typical questions: From the data you have, what are the Alvarado and AIR scores? (Confirm only after the learner has calculated them: once FBC and CRP are read, Alvarado 10/10 and AIR 7, scoring rebound/guarding as moderate = 2; scored as light it is 6 — still intermediate.) Ultrasound or CT first for this patient — and why? Which pertinent negatives must you document in a young man with abdominal pain? Do opioids mask peritonism? What are the pros and cons of antibiotics-first?"
       }
     },
     {
@@ -5808,8 +6737,8 @@
         "en": "Pharmacist Chen Jie"
       },
       "knowledge": {
-        "zh-CN": "患者体重 68 kg，肾功能正常，无已知药物过敏。剂量：吗啡静脉滴定每次 2–3 mg，总量约 0.1 mg/kg；对乙酰氨基酚 1 g 静脉每 6 小时，24 小时 ≤ 4 g；昂丹司琼 4 mg 静脉；头孢呋辛 1.5 g + 甲硝唑 500 mg 静脉（或头孢曲松 2 g + 甲硝唑 500 mg），确诊后给药（理想为切皮前 60 分钟内；头孢呋辛若至切皮超过 4 小时需在诱导时追加）；帕瑞昔布 40 mg 静脉仅在容量纠正后使用。抗菌药物管理：非复杂性社区获得性阑尾炎不使用碳青霉烯类。",
-        "en": "Patient 68 kg, normal renal function, no known drug allergies. Doses: morphine IV titrated 2–3 mg at a time up to ~0.1 mg/kg; paracetamol 1 g IV 6-hourly, ≤ 4 g/24 h; ondansetron 4 mg IV; cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg) given at diagnosis (ideally ≤ 60 min before incision; re-dose cefuroxime at induction if > 4 h have elapsed); parecoxib 40 mg IV only once volume-replete. Stewardship: no carbapenems for community-acquired uncomplicated appendicitis."
+        "zh-CN": "患者体重 68 kg，无已知药物过敏；肾功能以学员已获得的电解质/肾功能结果为准（结果出来前不作推断）。剂量：吗啡静脉滴定每次 2–3 mg，总量约 0.1 mg/kg；对乙酰氨基酚 1 g 静脉每 6 小时，24 小时 ≤ 4 g；昂丹司琼 4 mg 静脉；头孢呋辛 1.5 g + 甲硝唑 500 mg 静脉（或头孢曲松 2 g + 甲硝唑 500 mg），确诊后给药（理想为切皮前 60 分钟内；头孢呋辛若至切皮超过 4 小时需在诱导时追加）；帕瑞昔布 40 mg 静脉仅在肾功能正常且容量纠正后使用。抗菌药物管理：社区获得性、非重症的腹腔感染不首选碳青霉烯类。不讨论诊断。",
+        "en": "Patient 68 kg, no known drug allergies; renal function as per the U&E result once the learner has it (no assumption before then). Doses: morphine IV titrated 2–3 mg at a time up to ~0.1 mg/kg; paracetamol 1 g IV 6-hourly, ≤ 4 g/24 h; ondansetron 4 mg IV; cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg) given at diagnosis (ideally ≤ 60 min before incision; re-dose cefuroxime at induction if > 4 h have elapsed); parecoxib 40 mg IV only with normal renal function and once volume-replete. Stewardship: carbapenems are not first-line for community-acquired, non-severe intra-abdominal infection. Does not discuss the diagnosis."
       }
     }
   ],
@@ -5849,8 +6778,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "本病例为虚构的教学病例，在决定手术并取得知情同意时结束；术中所见、病理结果和术后过程均不在本病例范围内。监护仪上的生命体征变化为教学模型，不代表真实个体的病程；查体结果为固定记录，不随模拟时间变化。",
-      "en": "This is a fictional teaching case that ends with the decision to operate and informed consent; operative findings, histology and the post-operative course are outside its scope. Changes in the monitored vital signs come from a teaching model, not a real patient's course; examination findings are fixed records that do not change with simulated time."
+      "zh-CN": "本病例为虚构的教学病例，在决定手术并取得知情同意时结束；术中所见、病理结果和术后过程均不在本病例范围内。监护仪上的生命体征变化为教学模型，不代表真实个体的病程；查体和影像结果为固定记录，不随模拟时间变化——若因延误触发了“穿孔”事件，此前记录的体征和报告反映的是穿孔前的状态。",
+      "en": "This is a fictional teaching case that ends with the decision to operate and informed consent; operative findings, histology and the post-operative course are outside its scope. Changes in the monitored vital signs come from a teaching model, not a real patient's course; examination and imaging findings are fixed records that do not change with simulated time — if a delay triggers the perforation event, the signs and reports recorded earlier describe his state before it."
     },
     "unknowns": [
       {
@@ -6475,6 +7404,119 @@
         "locale": "en",
         "expect": [
           "hx-blood-group"
+        ]
+      },
+      {
+        "text": "咋啦？哪儿难受",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-chief"
+        ]
+      },
+      {
+        "text": "肚子痛了几个钟头了",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-onset"
+        ]
+      },
+      {
+        "text": "现在哪儿最痛",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-migration"
+        ]
+      },
+      {
+        "text": "痛起来是啥感觉",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-character"
+        ]
+      },
+      {
+        "text": "拉稀没有",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-bowels"
+        ]
+      },
+      {
+        "text": "尿尿疼不疼",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-urinary"
+        ]
+      },
+      {
+        "text": "有没有发烧过阿",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-fever"
+        ]
+      },
+      {
+        "text": "你叫啥名字，多大了？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-identity"
+        ]
+      },
+      {
+        "text": "wat does the pain feel like",
+        "locale": "en",
+        "expect": [
+          "hx-character"
+        ]
+      },
+      {
+        "text": "any n/v?",
+        "locale": "en",
+        "expect": [
+          "hx-vomiting"
+        ]
+      },
+      {
+        "text": "any dysuria or haematuria",
+        "locale": "en",
+        "expect": [
+          "hx-urinary"
+        ]
+      },
+      {
+        "text": "any PMH or PSH?",
+        "locale": "en",
+        "expect": [
+          "hx-pmh",
+          "hx-psh"
+        ]
+      },
+      {
+        "text": "r u allergic to anything",
+        "locale": "en",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "SOB or chest pain?",
+        "locale": "en",
+        "expect": [
+          "hx-resp"
+        ]
+      },
+      {
+        "text": "Where did it start?",
+        "locale": "en",
+        "expect": [
+          "hx-site-initial"
+        ]
+      },
+      {
+        "text": "Anything else bothering you?",
+        "locale": "en",
+        "expect": [
+          "hx-other-symptoms"
         ]
       }
     ],

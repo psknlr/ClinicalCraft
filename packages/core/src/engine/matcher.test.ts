@@ -309,6 +309,41 @@ describe("token matching (tightened shared-prefix rule)", () => {
     expect(same("thrombosis", "thrombolysis")).toBe(false);
     expect(same("aspirin", "aspiration")).toBe(false);
     expect(same("constant", "constipation")).toBe(false);
+    // long shared prefixes still separate different procedures/diagnoses
+    expect(same("cholecystitis", "cholecystectomy")).toBe(false);
+    expect(same("appendicitis", "appendicectomy")).toBe(false);
+    expect(same("encephalitis", "encephalopathy")).toBe(false);
+    expect(same("laparoscopy", "laparotomy")).toBe(false);
+    expect(same("gastroscopy", "gastrostomy")).toBe(false);
+  });
+
+  it("keeps long clinical derivations together (one more letter of tail after an 8-letter shared prefix)", () => {
+    const same = (a: string, b: string) => tokensMatch(tokenize(a)[0], tokenize(b)[0]);
+    expect(same("anticoagulants", "anticoagulation")).toBe(true);
+    expect(same("prophylaxis", "prophylactic")).toBe(true);
+    expect(same("anaphylaxis", "anaphylactic")).toBe(true);
+    expect(same("echocardiogram", "echocardiographic")).toBe(true);
+    expect(same("haematology", "haematological")).toBe(true);
+  });
+
+  it("folds -ological adjectives onto their -ology noun", () => {
+    expect(tokenize("pathological oncological serological cytological neurological")).toEqual(tokenize("pathology oncology serology cytology neurology"));
+    expect(tokenize("logical")).toEqual(["logical"]);
+  });
+
+  it("finds a medication-history item from its derived forms (stroke-case regression)", () => {
+    const json = fixture("mini-anaphylaxis.case.json") as { history: unknown[] };
+    json.history.push({
+      id: "anticoag",
+      topic: "medications",
+      question: { en: "Do you take blood thinners?", "zh-CN": "吃抗凝药吗？" },
+      answer: { en: "No.", "zh-CN": "不吃。" },
+      keywords: { en: ["anticoagulant", "warfarin"], "zh-CN": ["抗凝"] },
+    });
+    const c = load(json);
+    for (const q of ["Is he on any anticoagulation?", "Any anticoagulants?", "Is she anticoagulated?"]) {
+      expect(matchHistory(c, q, "en")[0], q).toEqual({ id: "anticoag", score: 1 });
+    }
   });
 
   it("folds British spellings and maps a few lemmas", () => {

@@ -1114,7 +1114,18 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "冠脉",
+          "做过造影",
+          "血管造影"
+        ],
+        "en": [
+          "angiogram",
+          "angiography"
+        ]
+      }
     },
     {
       "id": "h-pmh",
@@ -1141,7 +1152,9 @@
           "啥病",
           "得过什么病",
           "哮喘",
-          "慢阻肺"
+          "慢阻肺",
+          "心梗",
+          "冠心病"
         ],
         "en": [
           "medical history",
@@ -1156,7 +1169,8 @@
           "past medical",
           "asthma",
           "copd",
-          "hypertension"
+          "hypertension",
+          "heart attack"
         ]
       },
       "disclosure": "on-ask",
@@ -3774,7 +3788,7 @@
           "continuous obs",
           "attach monitor",
           "hook up to the monitor",
-          "monitor"
+          "put on the monitor"
         ]
       },
       "dose": {
@@ -3795,6 +3809,19 @@
       "response": {
         "zh-CN": "监护仪已连接，报警限已设置。",
         "en": "Monitor attached and alarm limits set."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "转",
+          "病房",
+          "床位"
+        ],
+        "en": [
+          "bed",
+          "transfer",
+          "hdu",
+          "icu"
+        ]
       }
     },
     {
@@ -4781,11 +4808,13 @@
           "大出血预案"
         ],
         "en": [
-          "transfuse",
-          "transfusion",
+          "blood transfusion",
+          "transfuse blood",
+          "transfuse 2 units",
           "red cells",
           "prbc",
           "packed cells",
+          "units of blood",
           "major haemorrhage protocol"
         ]
       },

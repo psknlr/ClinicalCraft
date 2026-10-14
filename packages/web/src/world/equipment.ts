@@ -15,6 +15,9 @@ import { UNIT_BOX } from "./voxels.js";
 
 type InteractionKind = Extract<InteractionTarget, { kind: "equipment" }>["interaction"];
 
+/** Interaction kinds that get a floating V4 station sign when the placement has a label. */
+export const SIGNED_KINDS = new Set(["workstation", "board", "atlas", "craft"]);
+
 const IMAGING = ["xray", "ct", "mri", "ultrasound", "pet-ct", "fluoroscopy", "echocardiography"];
 const PATHOLOGY = ["histopathology", "cytology", "cytogenetics", "molecular"];
 
@@ -175,8 +178,9 @@ export function buildPlacements(ctx: BuildContext): void {
         source: p.id,
       });
     }
-    // floating label above labelled interactive equipment (V4 station signs)
-    if (p.label && interactive) {
+    // floating label above labelled stations (V4: workstations, board, atlas kiosk, crafting bench);
+    // other equipment shows its name in the aim tooltip only (keeps dense wards readable)
+    if (p.label && SIGNED_KINDS.has(kind)) {
       const color = labelColor(kind, caps);
       const width = Math.min(3, Math.max(1.7, fp.w + 0.4));
       const sign = ctx.signs.make(label, width, color, true);

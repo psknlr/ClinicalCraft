@@ -60,6 +60,8 @@ export const CLINICALCRAFT_VERSION = "5.0.0";
 
 /** Smallest real-time clock step dispatched by `advanceRealTime` (simulated minutes). */
 export const REALTIME_MIN_STEP = 0.25;
+/** Maximum nesting of agent-to-agent asks (clinician → patient, consultant → …). */
+export const MAX_NESTED_ASKS = 3;
 
 /** Options beyond the contract `SessionOptions`. */
 export interface CreateSessionOptions extends SessionOptions {
@@ -196,6 +198,7 @@ export class ClinicalSession implements ClinicalSessionApi {
   private currentSubmission = "";
   private currentUtterance: string | null = null;
   private realtimeCarry = 0;
+  private askDepth = 0;
   private readonly offlineCursor = { value: 0 };
   private closing = false;
   private closed = false;
@@ -670,8 +673,14 @@ export class ClinicalSession implements ClinicalSessionApi {
       state: () => this._state,
       dispatch: (action) => this.dispatchInternal(action, id),
       ask: async (target, utterance, sig) => {
-        const reply = await this.runAgent(id, target, utterance, sig ?? signal);
-        return { text: reply.text, grounded: reply.grounded };
+        if (this.askDepth >= MAX_NESTED_ASKS) return { text: rt(this.locale, "tool.nestedLimit", { agent: target }), grounded: [] };
+        this.askDepth++;
+        try {
+          const reply = await this.runAgent(id, target, utterance, sig ?? signal);
+          return { text: reply.text, grounded: reply.grounded };
+        } finally {
+          this.askDepth--;
+        }
       },
       updatePlan: (plan, explanation) => this.updatePlan(id, agent, plan, explanation),
       ...(dynamic ? { dynamicTool: (tool: string, args: unknown, sig?: AbortSignal) => this.callDynamicTool(id, tool, args, sig ?? signal) } : {}),

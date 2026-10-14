@@ -120,6 +120,9 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
     resumed = replayTranscript(await readTranscript(resumePath));
   }
 
+  if (resumed?.sessionMeta && opts.caseId && opts.caseId !== resumed.sessionMeta.caseId) {
+    throw new BootstrapError(`Session ${resumed.sessionMeta.sessionId} is for case "${resumed.sessionMeta.caseId}", not "${opts.caseId}".`);
+  }
   const caseId = opts.caseId ?? resumed?.sessionMeta?.caseId ?? settings.defaultCase ?? undefined;
   if (!caseId) throw new BootstrapError(`No case selected. Available cases: ${[...content.cases.keys()].join(", ") || "(none)"}`);
   const entry = content.cases.get(caseId);

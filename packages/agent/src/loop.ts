@@ -234,7 +234,7 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
   const startedAt = now();
   p.emit({ type: "tool_call_begin", turnId: p.turnId, agent: p.agent, callId: p.call.id, tool: p.call.name, args: p.call.args });
 
-  const finish = (status: ToolCallStatus, output: ToolOutput, args: unknown): ToolCallOutcome => {
+  const finish = (status: ToolCallStatus, output: ToolOutput): ToolCallOutcome => {
     p.emit({
       type: "tool_call_end",
       turnId: p.turnId,
@@ -246,7 +246,6 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
       ...(output.data !== undefined ? { data: output.data } : {}),
       durationMs: Math.max(0, now() - startedAt),
     });
-    void args;
     return {
       callId: p.call.id,
       tool: p.call.name,
@@ -256,24 +255,24 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
       grounded: status === "ok" ? groundedOf(output.data) : [],
     };
   };
-  const fail = (status: ToolCallStatus, text: string, args: unknown) => finish(status, { ok: false, output: text }, args);
+  const fail = (status: ToolCallStatus, text: string) => finish(status, { ok: false, output: text });
 
   const tool = p.tools.find((t) => t.name === p.call.name);
-  if (!tool) return fail("invalid", rt(L, "tool.unknownTool", { tool: p.call.name, tools: p.tools.map((t) => t.name).join(", ") || "-" }), p.call.args);
+  if (!tool) return fail("invalid", rt(L, "tool.unknownTool", { tool: p.call.name, tools: p.tools.map((t) => t.name).join(", ") || "-" }));
 
   let validated = validateArgs(tool.inputSchema, p.call.args);
-  if (!validated.ok) return fail("invalid", rt(L, "tool.invalidArgs", { tool: tool.name, errors: validated.errors.join("; ") }), p.call.args);
+  if (!validated.ok) return fail("invalid", rt(L, "tool.invalidArgs", { tool: tool.name, errors: validated.errors.join("; ") }));
   let args = validated.value;
 
   const pre = await p.host.runHooks?.({ hook_event_name: "PreToolUse", agent: String(p.agent), tool_name: tool.name, tool_input: args });
   emitHookWarnings(p.emit, pre);
-  if (pre?.blocked) return fail("blocked", rt(L, "tool.blockedByHook", { reason: pre.reason ?? "" }), args);
+  if (pre?.blocked) return fail("blocked", rt(L, "tool.blockedByHook", { reason: pre.reason ?? "" }));
   if (pre && pre.updatedInput !== undefined) {
     validated = validateArgs(tool.inputSchema, pre.updatedInput);
-    if (!validated.ok) return fail("invalid", rt(L, "tool.invalidArgs", { tool: tool.name, errors: validated.errors.join("; ") }), pre.updatedInput);
+    if (!validated.ok) return fail("invalid", rt(L, "tool.invalidArgs", { tool: tool.name, errors: validated.errors.join("; ") }));
     args = validated.value;
   }
-  if (p.signal?.aborted) return fail("interrupted", rt(L, "tool.aborted"), args);
+  if (p.signal?.aborted) return fail("interrupted", rt(L, "tool.aborted"));
 
   const gate = await p.host.authorize({
     agent: p.agent,
@@ -285,12 +284,12 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
     turnId: p.turnId,
     callId: p.call.id,
   });
-  if (gate.kind === "abort") return fail("cancelled", rt(L, "tool.aborted"), args);
+  if (gate.kind === "abort") return fail("cancelled", rt(L, "tool.aborted"));
   if (gate.kind === "deny") {
     const text = gate.byLearner ? rt(L, "tool.deniedByLearner", { reason: gate.reason ? `: ${gate.reason}` : "" }) : rt(L, "tool.denied", { reason: gate.reason });
-    return fail("denied", text, args);
+    return fail("denied", text);
   }
-  if (p.signal?.aborted) return fail("interrupted", rt(L, "tool.aborted"), args);
+  if (p.signal?.aborted) return fail("interrupted", rt(L, "tool.aborted"));
 
   let output: ToolOutput;
   try {
@@ -308,7 +307,7 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
   });
   emitHookWarnings(p.emit, post);
   if (post && post.additionalContext.length > 0) output = { ...output, output: `${output.output}\n\n${post.additionalContext.join("\n")}` };
-  return finish(output.ok ? "ok" : "error", output, args);
+  return finish(output.ok ? "ok" : "error", output);
 }
 
 export interface ExecuteToolCallsResult {

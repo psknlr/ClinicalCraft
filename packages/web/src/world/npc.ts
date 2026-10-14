@@ -3,9 +3,49 @@
  * clothes, build, stature, gown, accessory), posture (standing / sitting /
  * lying on a bed), head tracking, speaking (jaw + head bob) and distress.
  */
-import { Group, Mesh, MeshStandardMaterial, Object3D, type Material } from "three";
+import { Group, Mesh, MeshStandardMaterial, Object3D, type BufferGeometry, type Material } from "three";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { MaterialLibrary } from "./materials.js";
 import { UNIT_BOX } from "./voxels.js";
+
+/**
+ * Merge the static boxes directly under `group` into one mesh per material
+ * (≈ 30 draw calls per person → ≈ 10). Meshes in `keep` stay separate
+ * (animated parts). Returns the merged mesh for each material.
+ */
+export function mergeStatic(group: Object3D, keep: Set<Object3D>): Map<Material, Mesh> {
+  const buckets = new Map<Material, Mesh[]>();
+  for (const child of [...group.children]) {
+    const m = child as Mesh;
+    if (!m.isMesh || keep.has(m) || Array.isArray(m.material) || m.geometry !== UNIT_BOX) continue;
+    const mat = m.material as Material;
+    let list = buckets.get(mat);
+    if (!list) buckets.set(mat, (list = []));
+    list.push(m);
+  }
+  const out = new Map<Material, Mesh>();
+  for (const [mat, list] of buckets) {
+    if (list.length < 2) {
+      out.set(mat, list[0]);
+      continue;
+    }
+    const geoms: BufferGeometry[] = list.map((m) => {
+      m.updateMatrix();
+      return UNIT_BOX.clone().applyMatrix4(m.matrix);
+    });
+    const merged = mergeGeometries(geoms, false);
+    for (const g of geoms) g.dispose();
+    if (!merged) continue;
+    for (const m of list) group.remove(m);
+    const mesh = new Mesh(merged, mat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.userData.merged = true;
+    group.add(mesh);
+    out.set(mat, mesh);
+  }
+  return out;
+}
 
 export interface AppearanceLike {
   skin?: string;
@@ -239,6 +279,14 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
       break;
   }
 
+  // draw-call budget: merge static boxes per material (torso breathes, mouth talks → kept separate)
+  const keep = new Set<Object3D>([torso, mouth, head]);
+  const bodyMerged = mergeStatic(body, keep);
+  const headMerged = mergeStatic(head, keep);
+  const skinParts = [bodyMerged.get(skin), headMerged.get(skin)].filter((m): m is Mesh => !!m);
+  skinMeshes.length = 0;
+  skinMeshes.push(...skinParts);
+
   // posture transforms
   let tagY = 2.62;
   if (opts.posture === "lying") {
@@ -268,11 +316,13 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
   };
 }
 
-/** Disposes per-rig materials that are not shared (oxygen mask). */
+/** Disposes per-rig resources: merged geometries and unshared materials (oxygen mask). */
 export function disposeRig(rig: PersonRig): void {
   rig.root.traverse((o) => {
-    const m = (o as Mesh).material as Material | undefined;
-    if (m && (m as MeshStandardMaterial).transparent && m.name === "") m.dispose?.();
+    const mesh = o as Mesh;
+    if (mesh.userData?.merged) mesh.geometry.dispose();
+    const m = mesh.material as Material | undefined;
+    if (m && !Array.isArray(m) && (m as MeshStandardMaterial).transparent && m.name === "") m.dispose?.();
   });
   rig.root.removeFromParent();
 }
