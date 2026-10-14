@@ -65,6 +65,26 @@ describe("createNodeSession", () => {
     expect(after.filter((i) => i.type === "session_meta")).toHaveLength(2);
   });
 
+  it.skipIf(!caseId)("resume continues with the transcript's locale, approval mode and interlocutor unless a flag overrides them", async () => {
+    const p = project();
+    const session = await createNodeSession({ caseId: caseId!, cwd: p.cwd, env: p.env, content, flags: { locale: "zh-CN" } });
+    await session.run({ type: "slash_command", name: "approval", args: "strict" });
+    await session.run({ type: "slash_command", name: "talk", args: "nurse" });
+    await session.close();
+
+    const resumed = await createNodeSession({ resume: "latest", cwd: p.cwd, env: p.env, content });
+    expect(resumed.settings.locale).toBe("zh-CN"); // CLINICALCRAFT_LOCALE=en in env does not switch a resumed session
+    expect(resumed.settings.approvalMode).toBe("strict");
+    const first = await resumed.events()[Symbol.asyncIterator]().next();
+    expect(first.value!.msg).toMatchObject({ type: "session_configured", locale: "zh-CN", approvalMode: "strict", interlocutor: "nurse" });
+    await resumed.close();
+
+    const flagged = await createNodeSession({ resume: "latest", cwd: p.cwd, env: p.env, content, flags: { locale: "en" } });
+    expect(flagged.settings.locale).toBe("en");
+    expect(flagged.settings.approvalMode).toBe("strict");
+    await flagged.close();
+  });
+
   it("reports unknown cases and missing selections", async () => {
     const p = project();
     await expect(createNodeSession({ caseId: "no-such-case", cwd: p.cwd, env: p.env, transcript: false, content })).rejects.toBeInstanceOf(BootstrapError);

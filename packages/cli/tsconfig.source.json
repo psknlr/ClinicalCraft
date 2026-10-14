@@ -1,0 +1,17 @@
+{
+  "//": "Run the CLI from TypeScript sources of every workspace package (tests, `TSX_TSCONFIG_PATH=packages/cli/tsconfig.source.json tsx packages/cli/src/bin.ts`). Not used by `tsc -b`.",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "paths": {
+      "@clinicalcraft/agent/node": ["../agent/src/node/index.ts"],
+      "@clinicalcraft/agent": ["../agent/src/index.ts"],
+      "@clinicalcraft/core": ["../core/src/index.ts"],
+      "@clinicalcraft/content": ["../content/src/index.ts"],
+      "@clinicalcraft/server": ["../server/src/index.ts"],
+      "@clinicalcraft/mcp": ["../mcp/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}

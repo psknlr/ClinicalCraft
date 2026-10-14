@@ -3,8 +3,7 @@
  * run the handler; map errors to exit codes (1 error, 2 usage).
  */
 import { resolve } from "node:path";
-import { loadSettings } from "@clinicalcraft/agent/node";
-import { loadContent } from "@clinicalcraft/agent/node";
+import { loadContent, loadSettings } from "@clinicalcraft/agent/node";
 import type { Env } from "./ansi.js";
 import { createPalette, colorEnabled } from "./ansi.js";
 import { editDistance, flagBool, flagString, lookupFlag, parseArgs, suggest, UsageError, type FlagSpec, type ParsedArgs } from "./argv.js";
@@ -22,8 +21,6 @@ export interface ResolvedCommand {
   rest: string[];
   /** `clinicalcraft help …` was used. */
   help: boolean;
-  /** The first positional did not name a command (root → play). */
-  implicit: boolean;
 }
 
 function scanSpecs(path: readonly CommandSpec[]): FlagSpec[] {
@@ -57,7 +54,7 @@ export function resolveCommand(argv: readonly string[]): ResolvedCommand {
     path.push(child);
     consumed.add(i);
   }
-  return { path, rest: argv.filter((_, i) => !consumed.has(i)), help, implicit: false };
+  return { path, rest: argv.filter((_, i) => !consumed.has(i)), help };
 }
 
 function argvValue(argv: readonly string[], name: string): string | null {
@@ -80,6 +77,14 @@ async function preliminaryLocale(argv: readonly string[], env: Env, cwd: string)
     return settings.locale;
   } catch {
     return env.CLINICALCRAFT_LOCALE?.trim() || "zh-CN";
+  }
+}
+
+function tryParse(argv: readonly string[], specs: readonly FlagSpec[], L: string): ParsedArgs | null {
+  try {
+    return parseArgs(argv, specs, L);
+  } catch {
+    return null;
   }
 }
 
@@ -117,33 +122,36 @@ export async function main(argv: readonly string[], options: { io?: CliIO; env?:
     L = await preliminaryLocale(argv, env, cwd);
 
     const resolved = resolveCommand(argv);
+    helpPath = resolved.path.slice(1).map((c) => c.name).join(" ");
     let path = resolved.path;
     let node = path[path.length - 1]!;
 
     // Root without a command word: -p → exec, otherwise play (help → root help).
     if (node === ROOT) {
-      const wantsHelp = resolved.help || argv.includes("--help") || argv.includes("-h");
+      const rootArgs = tryParse(resolved.rest, scanSpecs([ROOT]), L);
+      const wantsHelp = resolved.help || (rootArgs ? flagBool(rootArgs, "help") : false);
       if (hasPrintFlag(resolved.rest)) path = [ROOT, EXEC];
-      else if (!wantsHelp || resolved.rest.some((t) => !t.startsWith("-"))) {
-        const first = resolved.rest.find((t) => !t.startsWith("-"));
-        if (first && !resolved.help) await rejectCommandTypo(first, cwd, env, L);
-        if (!wantsHelp) path = [ROOT, PLAY];
+      else if (!wantsHelp) {
+        const first = rootArgs?.positionals[0];
+        if (first) await rejectCommandTypo(first, cwd, env, L);
+        path = [ROOT, PLAY];
       }
       node = path[path.length - 1]!;
     }
 
-    // A group without a subcommand → its default (unless a positional is an unknown subcommand).
+    // A group without a subcommand → its default (a stray positional is an unknown subcommand).
     if (node.subcommands && node !== ROOT) {
-      const args0 = parseArgs(resolved.rest, [...GLOBAL_FLAGS, ...path.flatMap((c) => c.flags ?? [])], L);
-      const first = args0.positionals[0];
+      const fallback = node.defaultSubcommand ? findChild(node, node.defaultSubcommand) : undefined;
+      const groupArgs = tryParse(resolved.rest, [...GLOBAL_FLAGS, ...path.flatMap((c) => c.flags ?? []), ...(fallback?.flags ?? [])], L);
+      const first = groupArgs?.positionals[0];
       if (first !== undefined) {
         const hint = suggest(first, node.subcommands.flatMap((c) => [c.name, ...(c.aliases ?? [])]));
-        throw new UsageError(m(L, "main.unknownSubcommand", { command: node.name, sub: first }), hint ? m(L, "argv.didYouMean", { value: hint }) : m(L, "main.seeHelp", { command: `clinicalcraft ${node.name} --help` }));
+        throw new UsageError(m(L, "main.unknownSubcommand", { command: node.name, sub: first }), hint ? m(L, "argv.didYouMean", { value: hint }) : undefined);
       }
-      const wantsHelp = resolved.help || flagBool(args0, "help");
-      if (!wantsHelp && node.defaultSubcommand) {
-        path = [...path, findChild(node, node.defaultSubcommand)!];
-        node = path[path.length - 1]!;
+      const wantsHelp = resolved.help || (groupArgs ? flagBool(groupArgs, "help") : false);
+      if (!wantsHelp && fallback) {
+        path = [...path, fallback];
+        node = fallback;
       }
     }
 

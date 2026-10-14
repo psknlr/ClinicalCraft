@@ -24,16 +24,17 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { parseCase, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { parseCase, t, verifyCase, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { counterIds, loadMiniCase, steppingClock, testSettings } from "./__fixtures__/harness.js";
+import { clinicianOfflineSteps } from "./agents/offline.js";
 import type { AgentEvent, ApprovalDecision, EventMsg, Op } from "./protocol.js";
 import { ScriptedProvider, textScript, toolCallScript, type Script } from "./providers/scripted.js";
 import type { ChatRequest, ProviderConfig, StreamEvent } from "./providers/types.js";
 import { verifyGrounding } from "./session/grounding.js";
 import { selectFacts } from "./session/patient-pipeline.js";
 import { createSession, type ClinicalSession, type CreateSessionOptions } from "./session/session.js";
-import { MemoryTranscript, replayTranscript } from "./transcript.js";
+import { MemoryTranscript, replayTranscript, resumedRuntimeConfig } from "./transcript.js";
 
 /* ------------------------------------------------------------------ */
 /* Fixtures                                                            */
@@ -311,14 +312,18 @@ async function assertResume(b: Built, caseDef: CaseDefinition, agents: string[])
   const replayed = replayTranscript(b.transcript.items);
   expect(replayed.sessionMeta?.sessionId).toBe("e2e-session");
   expect(b.transcript.items.every((item, k) => item.ordinal === k)).toBe(true);
+  const config = resumedRuntimeConfig(b.transcript.items);
+  expect(config.locale).toBe(b.session.locale);
   const resumed = await createSession({
     caseDef,
     settings: b.session.settings,
     resume: { sessionId: "e2e-session", actions: replayed.actions, messages: replayed.messages },
+    ...(config.plan || config.interlocutor ? { restore: { ...(config.plan ? { plan: config.plan } : {}), ...(config.interlocutor ? { interlocutor: config.interlocutor } : {}) } } : {}),
     newId: counterIds("r"),
     now: steppingClock(),
   });
   expect(resumed.state).toEqual(b.session.state);
+  expect(resumed.workupPlan()).toEqual(b.session.workupPlan());
   for (const agent of agents) expect(resumed.conversationOf(agent), `conversation of ${agent}`).toEqual(b.session.conversationOf(agent));
   expect(resumed.snapshot().actions).toEqual(b.session.snapshot().actions);
   await resumed.close();
@@ -739,6 +744,71 @@ describe.skipIf(!SMZL)("(b) scripted patient + clinician autopilot with approval
   });
 });
 
+/** Every built-in case that currently parses (content files may be mid-edit). */
+const CASE_IDS = ["acute-appendicitis", "acute-ischemic-stroke", "anaphylaxis-garden", "dka-adult", "new-onset-t2dm", "pediatric-asthma", "pulmonary-embolism-postop", "septic-shock-cap", "smzl-lung-adeno", "stemi-inferior-rv"];
+
+describe("(b) need-to-know sweep: scripted clinician replays every built-in case with patient voice and consults", () => {
+  for (const id of CASE_IDS) {
+    const c = loadCase(id);
+    it.skipIf(!c)(`${id}: no request leaks unrevealed facts, unread results, findings or the diagnosis`, async () => {
+      const L = "en";
+      const steps: Step[] = [];
+      const solution = clinicianOfflineSteps(c!, L).filter((s): s is Extract<typeof s, { kind: "tool" }> => s.kind === "tool");
+      const roles = [...new Set(c!.npcs.map((n) => n.role))].filter((r): r is "nurse" | "radiologist" | "pathologist" | "attending" => ["nurse", "radiologist", "pathologist", "attending"].includes(r));
+      solution.forEach((s, i) => {
+        if (i === Math.floor(solution.length / 2)) for (const role of roles) steps.push({ tool: "consult", args: { role, question: "What do you make of things so far?" } });
+        steps.push({ tool: s.tool, args: s.args });
+      });
+      steps.push({ text: "Done." });
+      let cursor = 0;
+      let sessionRef: ClinicalSession | null = null;
+      const captured: Captured[] = [];
+      const router: Script = (req): StreamEvent[] => {
+        const kind = requestKind(req);
+        captured.push({ req, state: structuredClone(sessionRef!.state), kind });
+        const afterTool = req.messages.at(-1)!.content.some((p) => p.type === "tool_result");
+        switch (kind) {
+          case "patient": {
+            const state = req.system.find((s) => s.id === "patient-state")?.text ?? "";
+            const now = [...state.matchAll(/\[([\w-]+)\] \(answer_now\)/g)].map((m) => m[1]!);
+            const say = now.map((x) => answerText(c!, x, L)).join(" ") || t(c!.patient.persona.fallbackUnknown, L);
+            return textScript(JSON.stringify({ say, nonverbal: null, usedFactIds: now, affectHint: "same" }));
+          }
+          case "rerank": {
+            const text = req.messages[0]!.content.map((p) => (p.type === "text" ? p.text : "")).join("");
+            const question = /<question>([\s\S]*?)<\/question>/.exec(text)?.[1] ?? "";
+            const ids = [...text.matchAll(/^\[([\w-]+)\] \([\w-]+\) (.*)$/gm)].filter((m) => m[2]!.trim() === question.trim()).map((m) => m[1]!);
+            return textScript(JSON.stringify({ factIds: ids.slice(0, 1), clarify: null }));
+          }
+          case "nurse":
+          case "consultant":
+            return afterTool ? textScript("Here is what I can say from the obtained results.") : toolCallScript([{ id: `g${captured.length}`, name: "get_results", args: {} }]);
+          case "attending":
+            return afterTool ? textScript("What would you do next?") : toolCallScript([{ id: `a${captured.length}`, name: "get_progress", args: {} }]);
+          case "clinician": {
+            const step = steps[cursor++];
+            if (!step) return textScript("Nothing more.");
+            return "text" in step ? textScript(step.text) : toolCallScript([{ id: `c${cursor}`, name: step.tool, args: step.args }]);
+          }
+          default:
+            return textScript("{}");
+        }
+      };
+      const b = await build({ caseDef: c!, provider: new ScriptedProvider(Array.from({ length: 600 }, () => router)), settingsPatch: { agents: { clinician: { maxToolRounds: 100 } } } });
+      sessionRef = b.session;
+      const d = b.driver;
+      d.policy = () => ({ decision: "approved" });
+      await d.run({ type: "autopilot", maxTurns: 3 });
+      if (verifyCase(c!).ok) expect(d.session.state.finished, `${id} finished`).toBe(true);
+      const violations = captured.filter((x) => x.kind !== "examiner").flatMap((cap) => auditRequest(c!, cap, L));
+      expect(violations).toEqual([]);
+      expect(captured.some((x) => x.kind === "patient")).toBe(true);
+      await d.shutdown();
+      assertInvariants(c!, d, d.session.state, L);
+    });
+  }
+});
+
 /* ------------------------------------------------------------------ */
 /* (c) Adversarial                                                     */
 /* ------------------------------------------------------------------ */
@@ -912,7 +982,7 @@ describe("(c) hooks ordering and coverage", () => {
       order.push(`clinical:${input.event.type}`);
     });
     b.session.hooks.on("SessionEnd", () => void order.push("end"));
-    d.submit({ type: "clinical_action", action: { type: "start" } });
+    await d.run({ type: "clinical_action", action: { type: "start" } }); // its ClinicalEvent hook is still running
     await d.shutdown();
     expect(order).toEqual(["clinical:session.started", "end"]);
     assertInvariants(loadMiniCase(), d, d.session.state, "en");

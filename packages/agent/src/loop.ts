@@ -9,7 +9,8 @@
  *      truncated) tool calls, `pause_turn` continues;
  *   4. every tool call: validate → PreToolUse hooks → approval gate → run →
  *      PostToolUse hooks (`additionalContext` appended as data); read-only
- *      calls run concurrently; ALL results go back in ONE user message;
+ *      calls without side effects run concurrently; ALL results go back in
+ *      ONE user message;
  *   5. loop while the model calls tools and rounds < maxToolRounds; the Stop
  *      hook may force up to 3 continuations;
  *   6. retries via `withRetry` (`api_retry` events);
@@ -319,14 +320,20 @@ export interface ExecuteToolCallsResult {
 }
 
 /**
- * Execute a round of tool calls. Consecutive read-only calls run concurrently;
- * state-changing calls run one at a time. After an abort the remaining calls
- * get "cancelled" results (no execution).
+ * Execute a round of tool calls. Consecutive read-only calls without side
+ * effects run concurrently; everything else runs one at a time — including
+ * read-only tools that talk to another agent (`consult`, sideEffect
+ * "conversation"): two parallel turns of the same agent would both start from
+ * the same history and the later commit would drop the other exchange. After
+ * an abort the remaining calls get "cancelled" results (no execution).
  */
 export async function executeToolCalls(base: Omit<ExecuteToolCallParams, "call">, calls: readonly ToolCallRequest[]): Promise<ExecuteToolCallsResult> {
   const outcomes: (ToolCallOutcome | null)[] = calls.map(() => null);
   let stop: ExecuteToolCallsResult["stop"] = null;
-  const isReadOnly = (call: ToolCallRequest) => base.tools.find((t) => t.name === call.name)?.readOnly === true;
+  const isReadOnly = (call: ToolCallRequest) => {
+    const tool = base.tools.find((t) => t.name === call.name);
+    return tool?.readOnly === true && tool.sideEffect === "none";
+  };
   let i = 0;
   while (i < calls.length && stop === null) {
     if (base.signal?.aborted) {

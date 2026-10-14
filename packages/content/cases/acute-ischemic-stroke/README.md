@@ -123,7 +123,8 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   | Nicardipine | −22 | −10 | +5 | 5 min / 10 min |
 
   * Each agent is *indicated* while BP is > 180/105.
-  * Each is *contraindicated* (over-treatment) once SBP is < 160 or HR is < 55.
+  * Each is *contraindicated* (over-treatment) once SBP is < 160; labetalol also when HR is < 55
+    (beta-blockade; bradycardia is not a contraindication to nicardipine or urapidil).
 * **Sublingual nifedipine** is always contraindicated.
   * Effect: SBP −48 over about 10 min.
   * Once SBP falls below 160, event `nifedipine-drop` fires: GCS 11 and flag `precipitous-bp-drop`
@@ -131,7 +132,7 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 * **Thrombolysis safety logic** applies to both alteplase and tenecteplase.
   * *Contraindicated* if any of these holds:
     * the CT has not been read;
-    * no glucose has been read;
+    * no glucose has been read (capillary `poc-glucose` or the laboratory plasma glucose in `chem`);
     * anticoagulant status is unknown (not asked **and** coagulation not read);
     * SBP > 185 or DBP > 110;
     * the other lytic has already been given;
@@ -162,7 +163,8 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   `reperfusion` fires: GCS 14, BP 168/94 baseline (shown as about 148/84 with the persisting
   antihypertensive effect), and the patient starts producing short phrases.
 * **Tempting wrong choices** are scored as safety events:
-  * aspirin before CT or after lysis (ARTIS);
+  * aspirin at any point in this case — before CT, in place of or just before reperfusion, or
+    within 24 h of lysis (ARTIS);
   * IV heparin for the AF;
   * mannitol;
   * oral water or tablets before the swallow screen;

@@ -396,7 +396,7 @@ export class ClinicalSession implements ClinicalSessionApi {
   advanceRealTime(ms: number): ReduceResult | null {
     const c = this.caseDef;
     const s = this._state;
-    if (c.clock.mode !== "simulated" || c.clock.realtimeScale <= 0 || !s.started || s.finished || this.closed || !(ms > 0)) return null;
+    if (c.clock.mode !== "simulated" || c.clock.realtimeScale <= 0 || !s.started || s.finished || this.closed || this.closing || !(ms > 0)) return null;
     this.realtimeCarry += (ms / 60_000) * c.clock.realtimeScale;
     if (this.realtimeCarry < REALTIME_MIN_STEP) return null;
     const minutes = Math.min(Math.round(this.realtimeCarry * 100) / 100, 24 * 60);
@@ -478,7 +478,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         case "configure":
           return this.configure(id, op.patch);
         case "compact":
-          return await this.compact(id, op.agent ?? null, "manual");
+          return await this.withTurn(id, (signal) => this.compact(id, op.agent ?? null, "manual", signal));
         case "assess":
           return void (await this.withTurn(id, (signal) => this.runAssessment(id, signal)));
         case "shutdown":
@@ -1279,9 +1279,12 @@ export class ClinicalSession implements ClinicalSessionApi {
     await this.compactAgent(id, agent, "auto", signal);
   }
 
-  private async compact(id: string, agent: AgentRole | null, trigger: "manual" | "auto"): Promise<void> {
+  private async compact(id: string, agent: AgentRole | null, trigger: "manual" | "auto", signal?: AbortSignal): Promise<void> {
     const targets = agent ? [agent] : [...this.conversations.keys()];
-    for (const name of targets) await this.compactAgent(id, name, trigger);
+    for (const name of targets) {
+      if (signal?.aborted) return;
+      await this.compactAgent(id, name, trigger, signal);
+    }
   }
 
   private async compactAgent(id: string, agent: AgentRole, trigger: "manual" | "auto", signal?: AbortSignal): Promise<void> {
@@ -1351,6 +1354,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     if (this.closed) return;
     this.closing = true;
     this.broker.cancelAll(id);
+    // SessionEnd is the last hook: let queued ClinicalEvent/Notification hooks finish first.
+    await this.hookChain;
     const hook = await this.runHook({ hook_event_name: "SessionEnd", reason: this._state.finished ? "finished" : "shutdown" });
     for (const w of hook.warnings) this.emit(id, { type: "warning", message: w });
     await this.hookChain;
@@ -1415,7 +1420,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       sendMessage: (to, text) => this.sendLearnerMessage(id, (to ?? this.interlocutor).replace(/^@/, "").toLowerCase(), text, signal),
       autopilot: (goal) => this.runAutopilot(id, goal, undefined, signal),
       assess: async () => void (await this.runAssessment(id, signal)),
-      compact: (agent) => this.compact(id, agent ?? null, "manual"),
+      compact: (agent) => this.compact(id, agent ?? null, "manual", signal),
       configure: async (patch) => this.configure(id, patch),
       clearConversations: () => {
         this.conversations.clear();

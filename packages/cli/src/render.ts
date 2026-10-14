@@ -4,7 +4,7 @@
  * clinical events (✓ objectives, ⚠ alarms, 🔔 critical results), a spinner
  * while the model is thinking, approvals, assessments and a status line.
  */
-import { progress as caseProgress, t, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
+import { progress as caseProgress, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   investigationName,
   objectiveTitle,
@@ -13,7 +13,6 @@ import {
   vitalLabel,
   vitalWithUnit,
   type AgentEvent,
-  type AssessmentReport,
   type EventMsg,
   type PlanItem,
   type RuntimeKey,

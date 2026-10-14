@@ -1854,8 +1854,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "桡动脉脉律绝对不齐，约96次/分；心尖部听诊心律绝对不齐、心音强弱不等，心尖心率略快于桡动脉脉率（轻度脉搏短绌）；未闻及杂音。四肢外周动脉搏动可及。",
-        "en": "Irregularly irregular radial pulse, about 96/min; at the apex the rhythm is irregularly irregular with heart sounds of varying intensity and the apical rate slightly exceeds the radial rate (small pulse deficit); no murmurs. Peripheral pulses present in all four limbs."
+        "zh-CN": "桡动脉脉律绝对不齐，约90次/分；心尖部听诊心律绝对不齐、心音强弱不等，心尖心率约96次/分，略快于桡动脉脉率（轻度脉搏短绌）；未闻及杂音。四肢外周动脉搏动可及。",
+        "en": "Irregularly irregular radial pulse, about 90/min; at the apex the rhythm is irregularly irregular with heart sounds of varying intensity and the apical rate (about 96/min) slightly exceeds the radial rate (small pulse deficit); no murmurs. Peripheral pulses present in all four limbs."
       },
       "abnormal": true,
       "required": true,
@@ -2279,8 +2279,8 @@
       "results": {
         "ed": {
           "text": {
-            "zh-CN": "心房颤动，平均心室率约96次/分（82–114次/分），电轴正常，QRS 90 ms，QTc 440 ms。左心室高电压（SV1 + RV5 = 3.8 mV），无劳损型ST-T改变。无急性ST段抬高或压低。",
-            "en": "Atrial fibrillation, mean ventricular rate about 96/min (82–114/min), normal axis, QRS 90 ms, QTc 440 ms. Left ventricular voltage criteria (SV1 + RV5 = 3.8 mV) without strain pattern. No acute ST elevation or depression."
+            "zh-CN": "心房颤动，平均心室率约96次/分（82–114次/分），电轴正常，QRS 90 ms，QTc 440 ms。左心室高电压（SV1 + RV5 = 4.2 mV），无劳损型ST-T改变。无急性ST段抬高或压低。",
+            "en": "Atrial fibrillation, mean ventricular rate about 96/min (82–114/min), normal axis, QRS 90 ms, QTc 440 ms. Left ventricular voltage criteria (SV1 + RV5 = 4.2 mV) without strain pattern. No acute ST elevation or depression."
           },
           "values": [
             {
@@ -2592,8 +2592,8 @@
               },
               "value": 6.2,
               "unit": "mmol/L",
-              "refLow": 3.1,
-              "refHigh": 8.0,
+              "refLow": 3.6,
+              "refHigh": 9.5,
               "flag": "N"
             },
             {
@@ -2673,7 +2673,7 @@
       ],
       "turnaroundMinutes": 50,
       "risk": "none",
-      "value": "neutral",
+      "value": "useful",
       "results": {
         "ed": {
           "text": {
@@ -2694,7 +2694,7 @@
           ],
           "note": {
             "zh-CN": "推荐检测，但不应因此延误溶栓。",
-            "en": "Reasonable to send, but it must not delay thrombolysis."
+            "en": "Recommended at baseline, but it must not delay thrombolysis."
           }
         }
       }
@@ -3079,8 +3079,8 @@
       "results": {
         "angio": {
           "text": {
-            "zh-CN": "经右股动脉入路，局麻 + 轻度镇静。左侧颈内动脉造影：左侧大脑中动脉M1段近端闭塞（eTICI 0），血栓未被静脉溶栓溶解。采用支架取栓 + 近端抽吸联合技术，第1次取栓即取出暗红色血栓：左侧大脑中动脉近完全再通，eTICI 2c（仅一支远端M4小分支未显影）。穿刺至再通26分钟。无造影剂外渗，无新发区域栓塞。台上复评NIHSS 6分（右侧面瘫1、右上肢2、右下肢1、语言1、构音障碍1）。",
-            "en": "Right femoral access under local anaesthesia with light sedation. Left ICA run: proximal left MCA M1 occlusion (eTICI 0) — the clot has not been dissolved by IV thrombolysis. Combined stent-retriever plus proximal aspiration; the first pass retrieves a dark-red thrombus with near-complete recanalisation of the left MCA, eTICI 2c (one small distal M4 branch remains unfilled). Puncture-to-reperfusion 26 minutes. No contrast extravasation and no emboli to a new territory. On-table NIHSS 6 (right face 1, right arm 2, right leg 1, language 1, dysarthria 1)."
+            "zh-CN": "经右股动脉入路，局麻 + 轻度镇静。左侧颈内动脉造影：左侧大脑中动脉M1段近端闭塞仍持续（eTICI 0）。采用支架取栓 + 近端抽吸联合技术，第1次取栓即取出暗红色血栓：左侧大脑中动脉近完全再通，eTICI 2c（仅一支远端M4小分支未显影）。穿刺至再通26分钟。无造影剂外渗，无新发区域栓塞。台上复评NIHSS 6分（右侧面瘫1、右上肢2、右下肢1、语言1、构音障碍1）。",
+            "en": "Right femoral access under local anaesthesia with light sedation. Left ICA run: the proximal left MCA M1 occlusion persists (eTICI 0). Combined stent-retriever plus proximal aspiration; the first pass retrieves a dark-red thrombus with near-complete recanalisation of the left MCA, eTICI 2c (one small distal M4 branch remains unfilled). Puncture-to-reperfusion 26 minutes. No contrast extravasation and no emboli to a new territory. On-table NIHSS 6 (right face 1, right arm 2, right leg 1, language 1, dysarthria 1)."
           },
           "values": [
             {
@@ -3512,18 +3512,9 @@
         ]
       },
       "contraindicatedWhen": {
-        "any": [
-          {
-            "vital": "sbp",
-            "op": "lt",
-            "value": 160
-          },
-          {
-            "vital": "hr",
-            "op": "lt",
-            "value": 55
-          }
-        ]
+        "vital": "sbp",
+        "op": "lt",
+        "value": 160
       },
       "harm": {
         "zh-CN": "血压已低于目标时启动强效扩血管药，可导致半暗带低灌注。溶栓前 < 185/110 mmHg、溶栓后 < 180/105 mmHg即可。",
@@ -3596,18 +3587,9 @@
         ]
       },
       "contraindicatedWhen": {
-        "any": [
-          {
-            "vital": "sbp",
-            "op": "lt",
-            "value": 160
-          },
-          {
-            "vital": "hr",
-            "op": "lt",
-            "value": 55
-          }
-        ]
+        "vital": "sbp",
+        "op": "lt",
+        "value": 160
       },
       "harm": {
         "zh-CN": "血压已低于目标时继续推注会减少半暗带灌注。溶栓前 < 185/110 mmHg、溶栓后 < 180/105 mmHg即可。",
@@ -3763,7 +3745,14 @@
             "read": "ct-head"
           },
           {
-            "read": "poc-glucose"
+            "any": [
+              {
+                "read": "poc-glucose"
+              },
+              {
+                "read": "chem"
+              }
+            ]
           },
           {
             "any": [
@@ -3800,9 +3789,18 @@
             }
           },
           {
-            "not": {
-              "read": "poc-glucose"
-            }
+            "all": [
+              {
+                "not": {
+                  "read": "poc-glucose"
+                }
+              },
+              {
+                "not": {
+                  "read": "chem"
+                }
+              }
+            ]
           },
           {
             "all": [
@@ -3886,7 +3884,14 @@
             "read": "ct-head"
           },
           {
-            "read": "poc-glucose"
+            "any": [
+              {
+                "read": "poc-glucose"
+              },
+              {
+                "read": "chem"
+              }
+            ]
           },
           {
             "any": [
@@ -3923,9 +3928,18 @@
             }
           },
           {
-            "not": {
-              "read": "poc-glucose"
-            }
+            "all": [
+              {
+                "not": {
+                  "read": "poc-glucose"
+                }
+              },
+              {
+                "not": {
+                  "read": "chem"
+                }
+              }
+            ]
           },
           {
             "all": [
@@ -4000,19 +4014,7 @@
       ],
       "maxDoses": 1,
       "contraindicatedWhen": {
-        "any": [
-          {
-            "not": {
-              "read": "ct-head"
-            }
-          },
-          {
-            "intervened": "alteplase"
-          },
-          {
-            "intervened": "tenecteplase"
-          }
-        ]
+        "always": true
       },
       "harm": {
         "zh-CN": "溶栓后24小时内（复查影像排除出血前）不应给予抗血小板药：早期联用阿司匹林增加症状性颅内出血而不改善结局（ARTIS试验）。CT排除出血前给药同样不安全；本例为溶栓候选者，阿司匹林不能替代再灌注治疗。",
@@ -4151,8 +4153,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "卒中患者在床旁吞咽筛查通过之前必须禁食禁水（包括口服药）。他有右侧面瘫、构音障碍且吞咽筛查未通过，经口摄入可导致误吸和吸入性肺炎。",
-        "en": "A stroke patient must stay nil by mouth — tablets included — until a bedside swallow screen is passed. With right facial weakness, dysarthria and a failed screen, oral intake risks aspiration and pneumonia."
+        "zh-CN": "卒中患者在床旁吞咽筛查通过之前必须禁食禁水（包括口服药）。他有右侧面瘫和构音障碍，筛查前应视为吞咽不安全（本例吞咽筛查也确实未通过），经口摄入可导致误吸和吸入性肺炎。",
+        "en": "A stroke patient must stay nil by mouth — tablets included — until a bedside swallow screen is passed. With right facial weakness and dysarthria his swallow must be presumed unsafe until screened (and here it fails the screen); oral intake risks aspiration and pneumonia."
       },
       "response": {
         "zh-CN": "喂了一小口水后患者剧烈呛咳，声音变“湿”，SpO₂短暂下降后恢复。",
@@ -4277,8 +4279,8 @@
         "read": "cta-head-neck"
       },
       "response": {
-        "zh-CN": "神经介入值班医生同意急诊取栓：团队在院内，导管室约15分钟后可接收；要求溶栓不中断、带监护转运，并在交接中说明用药与时间。",
-        "en": "The on-call neurointerventionist accepts for emergency thrombectomy: the team is in-house and the suite can take him in about 15 minutes; keep thrombolysis running, transfer on the monitor and hand over drugs and times."
+        "zh-CN": "神经介入值班医生同意急诊取栓：团队在院内，导管室约15分钟后可接收；静脉溶栓照常进行、不必等介入团队（阿替普酶输注中则不中断），带监护转运，并在交接中说明用药与时间。",
+        "en": "The on-call neurointerventionist accepts for emergency thrombectomy: the team is in-house and the suite can take him in about 15 minutes; give IV thrombolysis without waiting for the team (and don't stop an alteplase infusion that is running), transfer on the monitor and hand over drugs and times."
       }
     },
     {
@@ -4392,8 +4394,8 @@
         "en": "Stopping thrombolysis or giving antifibrinolytics without signs of bleeding throws away the benefit of reperfusion."
       },
       "response": {
-        "zh-CN": "立即停止溶栓药输注；急查头颅CT、血常规、凝血及纤维蛋白原，配血；给予冷沉淀10 U（纤维蛋白原 < 1.5 g/L时追加）或氨甲环酸1 g静滴10分钟；控制血压；请神经外科急会诊。",
-        "en": "Thrombolytic infusion stopped at once; urgent CT head, FBC, coagulation and fibrinogen, crossmatch; cryoprecipitate 10 U (more if fibrinogen < 1.5 g/L) or tranexamic acid 1 g IV over 10 minutes; BP control; urgent neurosurgical review."
+        "zh-CN": "如溶栓药仍在输注，立即停止；急查头颅CT、血常规、凝血及纤维蛋白原，配血；给予冷沉淀10 U（纤维蛋白原 < 1.5 g/L时追加）或氨甲环酸1 g静滴10分钟；控制血压；请神经外科急会诊。",
+        "en": "Any thrombolytic infusion still running is stopped at once; urgent CT head, FBC, coagulation and fibrinogen, crossmatch; cryoprecipitate 10 U (more if fibrinogen < 1.5 g/L) or tranexamic acid 1 g IV over 10 minutes; BP control; urgent neurosurgical review."
       }
     }
   ],
@@ -4614,9 +4616,18 @@
                   }
                 },
                 {
-                  "not": {
-                    "read": "poc-glucose"
-                  }
+                  "all": [
+                    {
+                      "not": {
+                        "read": "poc-glucose"
+                      }
+                    },
+                    {
+                      "not": {
+                        "read": "chem"
+                      }
+                    }
+                  ]
                 },
                 {
                   "all": [
@@ -5240,7 +5251,14 @@
             "read": "ct-head"
           },
           {
-            "read": "poc-glucose"
+            "any": [
+              {
+                "read": "poc-glucose"
+              },
+              {
+                "read": "chem"
+              }
+            ]
           },
           {
             "asked": "anticoagulants"
@@ -5368,8 +5386,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ASPECTS 9提示早期缺血范围小、可挽救脑组织多。",
-            "en": "Correct. ASPECTS 9 means little established ischaemia and plenty of salvageable brain."
+            "zh-CN": "正确。ASPECTS 9提示早期缺血范围小、可挽救脑组织多。（2022年以来的大核心梗死试验已将取栓获益扩展到部分ASPECTS 3–5分的患者，因此较低的ASPECTS本身并不一定排除取栓。）",
+            "en": "Correct. ASPECTS 9 means little established ischaemia and plenty of salvageable brain. (Large-core trials since 2022 have extended benefit to selected patients with ASPECTS 3–5, so a lower score would not by itself exclude thrombectomy.)"
           }
         },
         {
@@ -5416,8 +5434,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。不要等待溶栓效果——M1闭塞单靠静脉溶栓的再通率低，应在溶栓同时立即启动取栓。",
-            "en": "No. Don't wait for a response — IV lysis alone rarely recanalises an M1 occlusion; start thrombectomy in parallel with lysis."
+            "zh-CN": "不对。不要等待溶栓效果——M1闭塞单靠静脉溶栓的再通率低（本例血栓长约12 mm，更难溶通），应在溶栓同时立即启动取栓。",
+            "en": "No. Don't wait for a response — IV lysis alone recanalises only a minority of M1 occlusions, fewer still with a 12 mm clot like his; start thrombectomy in parallel with lysis."
           }
         },
         {
@@ -5856,8 +5874,8 @@
         "en": "ED clinical pharmacist"
       },
       "knowledge": {
-        "zh-CN": "按体重80 kg核对剂量：阿替普酶0.9 mg/kg（最大90 mg）= 72 mg，其中7.2 mg于1分钟内静推，64.8 mg于60分钟内泵入；替奈普酶0.25 mg/kg（最大25 mg）= 20 mg，单次静推5–10秒。两者只能选一种，不能叠加。降压：拉贝洛尔10–20 mg静注1–2分钟，可重复一次；尼卡地平5 mg/h起，每5–15分钟加2.5 mg/h，最大15 mg/h；乌拉地尔12.5–25 mg缓慢静注，可重复，维持约9 mg/h。提醒：禁用舌下短效硝苯地平；溶栓后24小时内不用抗血小板/抗凝药；甘露醇无指征。不讨论诊断。",
-        "en": "Checks doses for 80 kg: alteplase 0.9 mg/kg (max 90 mg) = 72 mg — 7.2 mg IV bolus over 1 minute and 64.8 mg infused over 60 minutes; tenecteplase 0.25 mg/kg (max 25 mg) = 20 mg as a single bolus over 5–10 seconds. Only one of the two, never both. BP: labetalol 10–20 mg IV over 1–2 min, may repeat once; nicardipine 5 mg/h, up by 2.5 mg/h every 5–15 min, max 15 mg/h; urapidil 12.5–25 mg slow IV, may repeat, maintenance about 9 mg/h. Warns: no sublingual short-acting nifedipine; no antiplatelets or anticoagulants within 24 h of lysis; mannitol has no indication. Does not discuss the diagnosis."
+        "zh-CN": "按体重80 kg核对剂量：阿替普酶0.9 mg/kg（最大90 mg）= 72 mg，其中7.2 mg于1分钟内静推，64.8 mg于60分钟内泵入；替奈普酶0.25 mg/kg（最大25 mg）= 20 mg，单次静推5–10秒。（部分替奈普酶说明书采用体重分档给药表，80–89 kg一档为22.5 mg；本院按0.25 mg/kg精确计算为20 mg，遵循本院方案。）两者只能选一种，不能叠加。降压：拉贝洛尔10–20 mg静注1–2分钟，可重复一次；尼卡地平5 mg/h起，每5–15分钟加2.5 mg/h，最大15 mg/h；乌拉地尔12.5–25 mg缓慢静注，可重复，维持约9 mg/h。提醒：禁用舌下短效硝苯地平；溶栓后24小时内不用抗血小板/抗凝药；甘露醇无指征。不讨论诊断。",
+        "en": "Checks doses for 80 kg: alteplase 0.9 mg/kg (max 90 mg) = 72 mg — 7.2 mg IV bolus over 1 minute and 64.8 mg infused over 60 minutes; tenecteplase 0.25 mg/kg (max 25 mg) = 20 mg as a single bolus over 5–10 seconds. (Some tenecteplase labels use a weight-band chart that puts 80–89 kg at 22.5 mg; this hospital's protocol calculates 0.25 mg/kg exactly, 20 mg.) Only one of the two, never both. BP: labetalol 10–20 mg IV over 1–2 min, may repeat once; nicardipine 5 mg/h, up by 2.5 mg/h every 5–15 min, max 15 mg/h; urapidil 12.5–25 mg slow IV, may repeat, maintenance about 9 mg/h. Warns: no sublingual short-acting nifedipine; no antiplatelets or anticoagulants within 24 h of lysis; mannitol has no indication. Does not discuss the diagnosis."
       }
     }
   ],
@@ -5940,8 +5958,8 @@
         "en": "Aphasia drags the GCS verbal score down without meaning reduced consciousness; on NIHSS item 1b, answers the patient cannot give because of aphasia count as wrong (only inability to speak for non-aphasic reasons scores 1 automatically)."
       },
       {
-        "zh-CN": "错失的机会：两年前确诊房颤（CHA₂DS₂-VASc 2分）未抗凝，3周前的短暂右手麻木很可能是TIA。卒中后CHA₂DS₂-VASc升至4分，长期口服抗凝是二级预防核心，启动时机依据梗死大小在复查影像后决定。",
-        "en": "Missed opportunities: AF diagnosed two years ago (CHA₂DS₂-VASc 2) was never anticoagulated, and the transient right-hand numbness three weeks ago was probably a TIA. After the stroke his CHA₂DS₂-VASc is 4; long-term oral anticoagulation is the core of secondary prevention, its start timed by infarct size after follow-up imaging."
+        "zh-CN": "错失的机会：两年前确诊房颤（CHA₂DS₂-VASc 2分）未抗凝，3周前的短暂右手麻木很可能是TIA。卒中后CHA₂DS₂-VASc升至4分（2024年ESC指南采用的CHA₂DS₂-VA对男性计分相同），长期口服抗凝是二级预防核心，启动时机依据梗死大小在复查影像后决定。",
+        "en": "Missed opportunities: AF diagnosed two years ago (CHA₂DS₂-VASc 2) was never anticoagulated, and the transient right-hand numbness three weeks ago was probably a TIA. After the stroke his CHA₂DS₂-VASc is 4 (the 2024 ESC CHA₂DS₂-VA score is identical for a man); long-term oral anticoagulation is the core of secondary prevention, its start timed by infarct size after follow-up imaging."
       }
     ],
     "references": [
