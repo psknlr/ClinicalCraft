@@ -4886,9 +4886,9 @@
       "effects": [
         {
           "vital": "glucose",
-          "delta": -22,
+          "delta": -24,
           "onsetMinutes": 10,
-          "rampMinutes": 380
+          "rampMinutes": 410
         },
         {
           "vital": "rr",
@@ -5571,7 +5571,7 @@
       "effects": [
         {
           "vital": "glucose",
-          "delta": 9,
+          "delta": 11,
           "onsetMinutes": 0,
           "rampMinutes": 180
         }

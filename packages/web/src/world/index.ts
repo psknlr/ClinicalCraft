@@ -190,7 +190,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     placements: new Map(),
     npcs: new Map(),
     rng: createLcg(7103),
-    shadows: q0.shadow > 0,
+    // meshes always carry castShadow flags; the renderer's shadow map (quality) decides whether they are used
+    shadows: true,
     warnings: [],
   };
 
@@ -220,6 +221,11 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   /* ---------------- NPCs ---------------- */
   const patients = new Map<string, WorldPatient>();
   const tagSigns: Object3D[] = [];
+
+  /** Name tags / labels never take the aim ray. */
+  function noRaycast(o: Object3D): void {
+    o.traverse((c) => (c.raycast = () => {}));
+  }
 
   function npcCollider(posture: Posture, onBed: boolean, x: number, z: number): Aabb | null {
     if (onBed) return null;
@@ -254,12 +260,15 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     rig.root.position.set(x, 0, z);
     rig.root.rotation.y = MathUtils.degToRad(rot);
     root.add(rig.root);
+    rig.root.updateMatrixWorld(true);
     const tag = signs.make(p.tag || p.name, 2.2);
     tag.position.set(0, rig.tagY, 0);
+    noRaycast(tag);
     rig.root.add(tag);
     tagSigns.push(tag);
     const target: InteractionTarget = { kind: "patient", slotId: p.slotId, caseId: p.caseId, name: p.name, hint: S.talk };
     rig.root.userData.action = target;
+    rig.root.userData.highlight = rig.body;
     ctx.pickables.push(rig.root);
     const collider = npcCollider(posture, posture !== "standing" && !!bed, x, z);
     if (collider) ctx.colliders.add(collider);
@@ -304,11 +313,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     const role = roleName(st.role, locale);
     const tag = signs.make(`${role} · ${name}`, 2.2, "#417868");
     tag.position.set(0, rig.tagY, 0);
+    noRaycast(tag);
     rig.root.add(tag);
     tagSigns.push(tag);
     const greeting = st.greeting ? tx(st.greeting, locale) : "";
     const target: InteractionTarget = { kind: "staff", staffId: st.id, role: st.role, name, hint: greeting ? `${S.talk} · ${greeting}` : S.talk };
     rig.root.userData.action = target;
+    rig.root.userData.highlight = rig.body;
     ctx.pickables.push(rig.root);
     const collider = ctx.colliders.add(boxCollider(st.x, 0.94, st.z, 0.85, 1.88, 0.6));
     ctx.npcs.set(`staff:${st.id}`, { kind: "staff", id: st.id, rig, x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), speaking: false, distressed: false, collider, target, label: `${role} · ${name}` });
@@ -328,6 +339,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     mesh.castShadow = mesh.receiveShadow = true;
     mesh.userData.block = { cell: [...cell], type };
     root.add(mesh);
+    mesh.updateMatrixWorld(true); // ray-pickable before the next render
     ctx.pickables.push(mesh);
     const collider = ctx.colliders.add(boxCollider(cell[0] + 0.5, cell[1] + 0.5, cell[2] + 0.5, 1, 1, 1));
     placed.set(k, { mesh, collider, type, cell: [...cell] as Cell });
@@ -389,7 +401,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
 
   const beacon = new Group();
   beacon.visible = false;
-  const beaconMat = new MeshBasicMaterial({ color: "#f3cf6b", transparent: true, opacity: 0.26, depthWrite: false, fog: false });
+  const beaconMat = new MeshBasicMaterial({ color: "#ffd25e", transparent: true, opacity: 0.34, depthWrite: false, fog: false });
   const pillar = new Mesh(UNIT_BOX, beaconMat);
   pillar.scale.set(0.55, 40, 0.55);
   pillar.position.y = 20;
@@ -463,11 +475,6 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     callbacks.onSound("door");
   }
 
-  function doorGroupFor(door: DoorRecord): DoorRecord[] {
-    // V4 toggles both leaves of the main entrance together: doors of one opening share an id.
-    return [door];
-  }
-
   function playerInDoorway(door: DoorRecord): boolean {
     const a = door.area;
     return player.x + PHYSICS.radius > a.minX && player.x - PHYSICS.radius < a.maxX && player.z + PHYSICS.radius > a.minZ && player.z - PHYSICS.radius < a.maxZ;
@@ -484,7 +491,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
           toast(S.leaveDoor);
           return;
         }
-        for (const d of doorGroupFor(door)) toggleDoor(d);
+        toggleDoor(door); // both leaves of a double door share one record (V4 toggles them together)
         return;
       }
       callbacks.onInteract(t);
@@ -589,7 +596,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     while (o && !o.userData.action) o = o.parent;
     if (!o) return null;
-    const box = new Box3().setFromObject(o);
+    const box = new Box3().setFromObject((o.userData.highlight as Object3D | undefined) ?? o);
     if (o.userData.action.kind === "door") {
       // highlight the whole doorway (both leaves)
       const door = ctx.doors.find((d) => d.id === o!.userData.action.id);
@@ -1045,7 +1052,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         beaconLabel.position.y = 4.1 + Math.sin(now * 0.003) * 0.25;
         beaconLabel.rotation.y = Math.atan2(tmpCam.x - beacon.position.x, tmpCam.z - beacon.position.z);
       }
-      beaconMat.opacity = 0.2 + 0.08 * Math.sin(now * 0.004);
+      beaconMat.opacity = 0.3 + 0.08 * Math.sin(now * 0.004);
     }
     for (const a of ctx.animated) {
       const t = now / 1000 + a.phase;

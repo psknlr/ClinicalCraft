@@ -214,7 +214,7 @@ function checkInvestigations(c: CaseDefinition, ids: Ids): Issue[] {
     if (Object.keys(inv.results).length === 0) {
       issues.push(warn(["investigations", i, "results"], `investigation "${inv.id}" has no result in any phase, so its orders can never be read`));
     }
-    inv.alternativeTo.forEach((id, j) => {
+    (inv.alternativeTo ?? []).forEach((id, j) => {
       const path = ["investigations", i, "alternativeTo", j];
       if (!ids.investigations.has(id)) issues.push(err(path, `unknown investigation "${id}"`));
       else if (id === inv.id) issues.push(warn(path, `investigation "${inv.id}" lists itself as an alternative`));

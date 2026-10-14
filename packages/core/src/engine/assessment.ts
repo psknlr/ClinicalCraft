@@ -27,8 +27,9 @@ function coverage(items: { id: string; required: boolean }[], done: string[]) {
  * (the relation is mutual: "A is an alternative to B" ⇔ "B is an alternative to A").
  */
 function alternativesOf(c: CaseDefinition, id: string): string[] {
+  // `?? []`: cases built in code (not via parseCase) may omit the defaulted field
   const own = c.investigations.find((i) => i.id === id)?.alternativeTo ?? [];
-  const reverse = c.investigations.filter((i) => i.id !== id && i.alternativeTo.includes(id)).map((i) => i.id);
+  const reverse = c.investigations.filter((i) => i.id !== id && (i.alternativeTo ?? []).includes(id)).map((i) => i.id);
   return unique([...own, ...reverse]).filter((alt) => alt !== id);
 }
 
