@@ -1,0 +1,274 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "v4-smzl-mini",
+  "version": "1.0.0",
+  "title": { "zh-CN": "脾大与三系减少（V4 迷你版）", "en": "Splenomegaly and cytopenias (V4 mini)" },
+  "summary": { "zh-CN": "测试用的静态病例，结构复刻 V4。", "en": "Static test case mirroring the V4 structure." },
+  "specialty": ["hematology", "oncology"],
+  "difficulty": 4,
+  "setting": "outpatient",
+  "facility": "clinic-v4",
+  "locales": ["zh-CN", "en"],
+  "provenance": { "kind": "adapted", "notes": { "zh-CN": "测试夹具。", "en": "Test fixture." } },
+  "patient": {
+    "displayName": { "zh-CN": "王先生", "en": "Mr Wang" },
+    "age": 66,
+    "sex": "male",
+    "chiefComplaint": { "zh-CN": "左上腹痛", "en": "Left upper quadrant pain" },
+    "persona": {
+      "personality": { "zh-CN": "配合", "en": "Cooperative" },
+      "speechStyle": { "zh-CN": "简短", "en": "Brief" },
+      "openingLine": { "zh-CN": "医生，我左上腹疼。", "en": "Doctor, my upper left belly hurts." },
+      "fallbackUnknown": { "zh-CN": "这个病例里没有记录。", "en": "That is not recorded in my notes." }
+    }
+  },
+  "phases": [
+    { "id": "pre", "label": { "zh-CN": "初诊", "en": "Diagnosis" } },
+    { "id": "post", "label": { "zh-CN": "治疗后复评", "en": "Post-treatment review" } }
+  ],
+  "history": [
+    {
+      "id": "pain",
+      "topic": "pain",
+      "question": { "zh-CN": "哪里疼，什么时候开始？", "en": "Where does it hurt and when did it start?" },
+      "answer": { "zh-CN": "这次是左上腹痛。", "en": "It is pain in the upper left of my belly." },
+      "keywords": { "zh-CN": ["疼", "痛", "腹痛"], "en": ["pain", "hurt", "ache", "started"] },
+      "required": true
+    },
+    {
+      "id": "spleen",
+      "topic": "pmh",
+      "question": { "zh-CN": "以前是否发现过脾大？", "en": "Has an enlarged spleen ever been found before?" },
+      "answer": { "zh-CN": "大约30年前就发现脾大了。", "en": "An enlarged spleen was found about 30 years ago." },
+      "keywords": { "zh-CN": ["脾大", "脾脏"], "en": ["spleen", "splenomegaly"] },
+      "required": true
+    },
+    {
+      "id": "lung",
+      "topic": "pmh",
+      "question": { "zh-CN": "既往有哪些肿瘤及治疗？", "en": "What cancers have you had and how were they treated?" },
+      "answer": { "zh-CN": "之前诊断过左上肺浸润性腺癌。", "en": "I was diagnosed with lung adenocarcinoma before." },
+      "keywords": { "zh-CN": ["肿瘤", "肺癌", "癌"], "en": ["cancer", "tumour", "tumor", "lung"] },
+      "required": true
+    },
+    {
+      "id": "other",
+      "topic": "social",
+      "disclosure": "unknown",
+      "question": { "zh-CN": "吸烟史、家族史能否补充？", "en": "Do you smoke, and is there any family history?" },
+      "answer": { "zh-CN": "这份病例没有记录吸烟史及肿瘤家族史。", "en": "My notes do not record smoking or family history." },
+      "keywords": { "zh-CN": ["吸烟", "抽烟", "家族"], "en": ["smoke", "smoking", "family"] }
+    },
+    {
+      "id": "side-effects",
+      "topic": "hpi",
+      "phases": ["post"],
+      "question": { "zh-CN": "治疗后有什么不适？", "en": "Any side effects since treatment?" },
+      "answer": { "zh-CN": "原文没有记录。", "en": "Not recorded." },
+      "keywords": { "zh-CN": ["副作用", "不适"], "en": ["side effect"] }
+    }
+  ],
+  "exam": [
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": { "zh-CN": "腹部触诊", "en": "Palpate the abdomen" },
+      "keywords": { "zh-CN": ["摸肚子", "触诊", "脾"], "en": ["abdomen", "belly", "palpate", "spleen"] },
+      "finding": { "zh-CN": "脾大。", "en": "Splenomegaly." },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "nodes",
+      "system": "lymphatic",
+      "maneuver": { "zh-CN": "浅表淋巴结检查", "en": "Examine the lymph nodes" },
+      "keywords": { "zh-CN": ["淋巴结"], "en": ["lymph", "nodes", "glands"] },
+      "finding": { "zh-CN": "原文未记录触诊结果。", "en": "Not recorded." },
+      "phases": ["pre"]
+    }
+  ],
+  "investigations": [
+    { "id": "cbc", "name": "血常规", "category": "lab", "aliases": ["血常规", "血细胞分析", "全血细胞计数", "cbc"], "value": "essential", "requires": ["lab-hematology"],
+      "results": { "pre": { "text": "白细胞3.2×10⁹/L，Hb 97 g/L，血小板71×10⁹/L。", "values": [{ "analyte": "WBC", "value": 3.2, "unit": "10^9/L", "refLow": 3.5, "refHigh": 9.5, "flag": "L" }] },
+                   "post": { "text": "原文记录“血常规基本恢复”，未提供完整复查数值。" } } },
+    { "id": "abdct", "name": "腹部增强CT", "category": "imaging", "aliases": ["腹部增强ct", "全腹增强ct", "腹部ct", "脾脏ct", "胸腹部增强ct", "胸腹增强ct", "增强ct", "ct增强", "ct平扫", "全腹部ct", "全腹ct"], "requires": ["ct"],
+      "results": { "pre": { "text": "脾大伴低密度灶。", "figures": ["fig3"] }, "post": { "text": "增大脾脏较前缩小。", "figures": ["fig6"] } } },
+    { "id": "chestct", "name": "胸部CT", "category": "imaging", "aliases": ["胸部ct", "肺部ct", "肺ct", "胸部增强ct", "肺部增强ct", "胸ct"], "requires": ["ct"],
+      "results": { "pre": { "text": "左肺上叶结节。" }, "post": { "text": "左肺上叶结节；未提供直径。" } } },
+    { "id": "us", "name": "肝胆脾胰超声", "category": "imaging", "aliases": ["超声", "彩超", "b超", "腹部b超", "脾脏超声", "脾脏彩超", "肝胆脾胰", "门静脉超声"], "requires": ["ultrasound"],
+      "results": { "pre": { "text": "脾大，脾静脉增宽。", "figures": ["fig2"] }, "post": { "text": "脾大，较前缩小。", "figures": ["fig7"] } } },
+    { "id": "nodeus", "name": "浅表淋巴结超声", "category": "imaging", "aliases": ["淋巴结超声", "淋巴结彩超", "淋巴结b超"], "requires": ["ultrasound"],
+      "results": { "pre": { "text": "双侧锁骨上淋巴结：左9×7 mm、右7×8 mm。" }, "post": { "text": "双侧锁骨上淋巴结：左6×4 mm、右7×4 mm。" } } },
+    { "id": "pet", "name": "全身PET/CT", "category": "imaging", "aliases": ["petct", "pet/ct", "pet-ct", "pet", "派特"], "value": "low-value", "requires": ["pet-ct"],
+      "results": { "pre": { "text": "脾脏明显肿大、代谢异常增高。" } } },
+    { "id": "marrow", "name": "骨髓穿刺／细胞学", "category": "pathology", "aliases": ["骨髓穿刺", "骨穿", "骨髓细胞学", "骨髓涂片", "骨髓检查"], "value": "essential", "risk": "moderate", "requires": ["cytology"],
+      "results": { "pre": { "text": "三系增生活跃，淋巴瘤样细胞占2%。" }, "post": { "available": false, "text": "没有复查骨髓细胞图片。" } } },
+    { "id": "biopsy", "name": "骨髓活检／免疫组化", "category": "pathology", "aliases": ["骨髓活检", "骨髓病理", "免疫组化", "ihc"], "value": "essential", "risk": "moderate", "requires": ["histopathology"],
+      "results": { "pre": { "text": "低级别小B细胞淋巴瘤，倾向边缘区淋巴瘤。" } } },
+    { "id": "flow", "name": "流式细胞术", "category": "lab", "aliases": ["流式", "免疫分型", "免疫表型", "flow"], "value": "essential", "requires": ["flow-cytometry"],
+      "results": { "pre": { "text": "检出约1.58%的成熟单克隆B淋巴细胞。" }, "post": { "text": "未检测到明显免疫表型异常的淋巴细胞。" } } },
+    { "id": "karyo", "name": "染色体核型分析", "category": "genetics", "aliases": ["核型", "染色体", "细胞遗传", "karyotype"], "requires": ["cytogenetics"],
+      "results": { "pre": { "text": "46,XY,t(4;12)(q23;q13)。" } } },
+    { "id": "hbv", "name": "乙肝筛查／HBV DNA", "category": "lab", "aliases": ["乙肝", "hbv", "肝炎筛查"], "value": "essential", "requires": ["lab-serology"],
+      "results": { "pre": { "text": "乙肝核心抗体阳性；HBV DNA＜1.00×10² IU/ml。" } } },
+    { "id": "ldh", "name": "乳酸脱氢酶", "category": "lab", "aliases": ["乳酸脱氢酶", "ldh"], "requires": ["lab-chemistry"],
+      "results": { "pre": { "text": "乳酸脱氢酶498 U/L。" } } },
+    { "id": "egfr", "name": "EGFR基因检测记录", "category": "genetics", "aliases": ["egfr", "基因检测", "驱动基因"], "value": "neutral", "requires": ["molecular"],
+      "results": { "pre": { "text": "EGFR突变阳性；具体位点未提供。" } } }
+  ],
+  "orderMatching": {
+    "rules": [
+      { "ifHas": "pet", "unlessMatches": "腹部|全腹|脾脏|胸腹", "remove": ["abdct"] },
+      { "ifHas": "pet", "unlessMatches": "胸部|肺部", "remove": ["chestct"] },
+      { "ifHas": "chestct", "unlessMatches": "腹部|全腹|脾脏|胸腹", "remove": ["abdct"] },
+      { "ifMatches": "^(?=.*胸腹)(?=.*ct)", "unlessHas": "chestct", "add": ["chestct"] },
+      { "ifHas": "nodeus", "remove": ["us"] },
+      { "ifMatches": "^(?=.*(心脏|甲状腺|颈动脉|下肢|肾脏|乳腺))(?=.*(超声|彩超|b超))", "remove": ["us"] },
+      { "ifMatches": "^(?=.*骨髓穿刺)(?=.*活检)", "unlessHas": "biopsy", "add": ["biopsy"] }
+    ],
+    "exact": {
+      "超声": ["us", "nodeus"],
+      "彩超": ["us", "nodeus"],
+      "b超": ["us", "nodeus"],
+      "ct": ["abdct", "chestct"],
+      "ct检查": ["abdct", "chestct"],
+      "做ct": ["abdct", "chestct"]
+    },
+    "warnings": [
+      {
+        "investigation": "abdct",
+        "ifMatches": "平扫",
+        "message": {
+          "zh-CN": "原包仅提供腹部增强CT代表图，平扫与增强CT不能视为等价。",
+          "en": "Only contrast-enhanced abdominal CT images exist in the source; a non-contrast CT is not equivalent."
+        }
+      }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "history",
+      "title": { "zh-CN": "建立病史", "en": "Take the history" },
+      "hint": { "zh-CN": "询问疼痛、脾大病程及既往肿瘤史。", "en": "Ask about the pain, the spleen and previous cancers." },
+      "completeWhen": { "all": [{ "asked": "pain" }, { "asked": "spleen" }, { "asked": "lung" }] },
+      "waypoints": [{ "target": "patient" }]
+    },
+    {
+      "id": "pattern",
+      "title": { "zh-CN": "发现异常模式", "en": "Find the pattern" },
+      "hint": { "zh-CN": "调阅血常规，以及腹部增强CT或脾脏超声。", "en": "Read the CBC and an abdominal CT or ultrasound." },
+      "completeWhen": { "all": [{ "read": "cbc", "phase": "pre" }, { "any": [{ "read": "abdct", "phase": "pre" }, { "read": "us", "phase": "pre" }] }] },
+      "waypoints": [{ "unless": { "read": "cbc", "phase": "pre" }, "target": "lab-hematology" }, { "target": "ct" }]
+    },
+    {
+      "id": "evidence",
+      "title": { "zh-CN": "获取血液学证据", "en": "Gather haematological evidence" },
+      "hint": { "zh-CN": "阅读骨髓活检／免疫组化和流式细胞术。", "en": "Read the marrow biopsy and flow cytometry." },
+      "completeWhen": { "all": [{ "read": "biopsy", "phase": "pre" }, { "read": "flow", "phase": "pre" }] },
+      "waypoints": [{ "target": "histopathology" }]
+    },
+    {
+      "id": "diagnosis",
+      "title": { "zh-CN": "提交诊断推理", "en": "Commit to a diagnosis" },
+      "hint": { "zh-CN": "避免把所有异常归为肺癌。", "en": "Do not attribute everything to the lung cancer." },
+      "completeWhen": { "decided": "diagnosis" },
+      "waypoints": [{ "target": "board" }]
+    },
+    {
+      "id": "safety",
+      "title": { "zh-CN": "完成安全与复评", "en": "Safety and review" },
+      "hint": { "zh-CN": "核对乙肝、核型、治疗后影像／流式。", "en": "Check HBV, karyotype and post-treatment imaging/flow." },
+      "completeWhen": { "all": [{ "decided": "safety" }, { "decided": "genetics" }, { "decided": "response" }] },
+      "waypoints": [{ "target": "board" }]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": { "zh-CN": "最能解释当前证据的诊断组合是？", "en": "Which diagnosis best explains the evidence?" },
+      "requires": { "all": [{ "objective": "history" }, { "objective": "pattern" }, { "objective": "evidence" }] },
+      "need": { "zh-CN": "先完成病史、血常规／腹部影像、骨髓活检及流式证据。", "en": "Complete the history, CBC/abdominal imaging, biopsy and flow first." },
+      "options": [
+        { "id": "metastasis", "text": { "zh-CN": "肺腺癌转移可以解释全部异常", "en": "Metastatic lung cancer explains everything" }, "correct": false, "feedback": { "zh-CN": "不能直接归因。", "en": "Not supported." } },
+        { "id": "dual", "text": { "zh-CN": "SMZL伴骨髓侵犯，与肺腺癌并存", "en": "SMZL with marrow involvement plus lung adenocarcinoma" }, "correct": true, "feedback": { "zh-CN": "符合原病例诊断。", "en": "Matches the source diagnosis." } },
+        { "id": "infection", "text": { "zh-CN": "单纯感染性脾大", "en": "Infective splenomegaly only" }, "correct": false, "feedback": { "zh-CN": "不能解释。", "en": "Does not explain the clone." } }
+      ]
+    },
+    {
+      "id": "safety",
+      "prompt": { "zh-CN": "开始抗CD20治疗前，哪项认识更合适？", "en": "Before anti-CD20 therapy, which is most appropriate?" },
+      "requires": { "read": "hbv", "phase": "pre" },
+      "need": { "zh-CN": "先开具并阅读乙肝筛查／HBV DNA记录。", "en": "Order and read the HBV screen first." },
+      "options": [
+        { "id": "negative", "text": { "zh-CN": "可以排除再激活风险", "en": "Reactivation risk is excluded" }, "correct": false, "feedback": { "zh-CN": "不能排除。", "en": "It cannot be excluded." } },
+        { "id": "assess", "text": { "zh-CN": "制定再激活预防与监测方案", "en": "Plan prophylaxis and monitoring" }, "correct": true, "feedback": { "zh-CN": "正确。", "en": "Correct." } }
+      ]
+    },
+    {
+      "id": "genetics",
+      "prompt": { "zh-CN": "t(4;12)(q23;q13)支持哪种结论？", "en": "What does t(4;12)(q23;q13) support?" },
+      "requires": { "read": "karyo", "phase": "pre" },
+      "need": { "zh-CN": "先阅读染色体核型原图及报告。", "en": "Read the karyotype first." },
+      "options": [
+        { "id": "same", "text": { "zh-CN": "证明共同起源", "en": "Proves a common origin" }, "correct": false, "feedback": { "zh-CN": "不足以证明。", "en": "Insufficient." } },
+        { "id": "limited", "text": { "zh-CN": "共同机制仍需验证", "en": "A shared mechanism still needs paired evidence" }, "correct": true, "feedback": { "zh-CN": "正确。", "en": "Correct." } }
+      ]
+    },
+    {
+      "id": "response",
+      "prompt": { "zh-CN": "治疗后的资料最合理支持什么结论？", "en": "What do the post-treatment data support?" },
+      "requires": { "all": [{ "any": [{ "read": "abdct", "phase": "post" }, { "read": "us", "phase": "post" }] }, { "read": "flow", "phase": "post" }] },
+      "need": { "zh-CN": "切换到复评期，阅读腹部CT或超声，以及复查流式。", "en": "Switch to the review phase and read imaging plus flow." },
+      "options": [
+        { "id": "complete", "text": { "zh-CN": "两种肿瘤都已完全缓解", "en": "Both tumours are in complete remission" }, "correct": false, "feedback": { "zh-CN": "不能。", "en": "No." } },
+        { "id": "separate", "text": { "zh-CN": "两种肿瘤仍需分别复评", "en": "Both tumours need separate re-evaluation" }, "correct": true, "feedback": { "zh-CN": "正确。", "en": "Correct." } }
+      ]
+    }
+  ],
+  "rubric": [
+    { "id": "r-history", "domain": "history", "text": { "zh-CN": "问到关键病史", "en": "Key history obtained" }, "weight": 2, "met": { "all": [{ "asked": "pain" }, { "asked": "spleen" }, { "asked": "lung" }] } },
+    { "id": "r-biopsy", "domain": "investigations", "text": { "zh-CN": "阅读骨髓活检", "en": "Read the marrow biopsy" }, "weight": 2, "met": { "read": "biopsy", "phase": "pre" } },
+    { "id": "r-diagnosis", "domain": "diagnosis", "text": { "zh-CN": "诊断正确", "en": "Correct diagnosis" }, "weight": 3, "met": { "decided": "diagnosis" } },
+    { "id": "r-exam", "domain": "examination", "text": { "zh-CN": "腹部查体", "en": "Abdominal exam" }, "weight": 1, "met": { "examined": "abdomen" } },
+    { "id": "r-comms", "domain": "communication", "text": { "zh-CN": "沟通清晰", "en": "Clear communication" }, "weight": 1, "judgeGuidance": { "zh-CN": "解释清楚", "en": "Explains clearly" } }
+  ],
+  "debrief": {
+    "title": { "zh-CN": "复盘", "en": "Debrief" },
+    "conclusion": { "zh-CN": "SMZL伴骨髓侵犯，与肺腺癌并存。", "en": "SMZL with marrow involvement coexisting with lung adenocarcinoma." },
+    "notice": { "zh-CN": "教学脚本指标，非经验证的能力评分。", "en": "Teaching-script measure, not a validated competency score." }
+  },
+  "assets": [
+    { "id": "fig2", "kind": "image", "path": "assets/fig2.png", "localOnly": true },
+    { "id": "fig3", "kind": "image", "path": "assets/fig3.png", "localOnly": true },
+    { "id": "fig6", "kind": "image", "path": "assets/fig6.png", "localOnly": true },
+    { "id": "fig7", "kind": "image", "path": "assets/fig7.png", "localOnly": true }
+  ],
+  "solution": [
+    { "type": "start" },
+    { "type": "ask", "itemId": "pain" },
+    { "type": "ask", "itemId": "spleen" },
+    { "type": "ask", "itemId": "lung" },
+    { "type": "order", "investigationId": "cbc" },
+    { "type": "read", "investigationId": "cbc" },
+    { "type": "order", "investigationId": "abdct" },
+    { "type": "read", "investigationId": "abdct" },
+    { "type": "order", "investigationId": "biopsy" },
+    { "type": "read", "investigationId": "biopsy" },
+    { "type": "order", "investigationId": "flow" },
+    { "type": "read", "investigationId": "flow" },
+    { "type": "answer", "decisionId": "diagnosis", "optionIds": ["dual"] },
+    { "type": "order", "investigationId": "hbv" },
+    { "type": "read", "investigationId": "hbv" },
+    { "type": "answer", "decisionId": "safety", "optionIds": ["assess"] },
+    { "type": "order", "investigationId": "karyo" },
+    { "type": "read", "investigationId": "karyo" },
+    { "type": "answer", "decisionId": "genetics", "optionIds": ["limited"] },
+    { "type": "set-phase", "phase": "post" },
+    { "type": "order", "investigationId": "abdct" },
+    { "type": "read", "investigationId": "abdct" },
+    { "type": "order", "investigationId": "flow" },
+    { "type": "read", "investigationId": "flow" },
+    { "type": "answer", "decisionId": "response", "optionIds": ["separate"] },
+    { "type": "finish" }
+  ]
+}

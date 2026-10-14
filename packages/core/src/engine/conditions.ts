@@ -5,7 +5,7 @@
  * conditions read the noise-free, display-rounded value at the session clock
  * (see physiology.ts), so they never flicker with monitor jitter.
  */
-import type { CaseDefinition } from "../schema/case.js";
+import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import type { OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./physiology.js";
@@ -26,7 +26,7 @@ export function parseResultKey(key: string): { investigationId: string; phase: s
  * has no record for that phase (a result with `available: false` is returned:
  * its text explains the absence).
  */
-export function resultFor(c: CaseDefinition, investigationId: string, phase: string) {
+export function resultFor(c: CaseDefinition, investigationId: string, phase: string): Result | null {
   const investigation = c.investigations.find((i) => i.id === investigationId);
   if (!investigation) return null;
   return Object.prototype.hasOwnProperty.call(investigation.results, phase) ? investigation.results[phase] : null;

@@ -10,11 +10,13 @@
  *     the first fragment); `tool_call` emitted when `finish_reason` arrives or
  *     the stream ends; invalid JSON → `{__invalid_json: raw}`;
  *   - `reasoning_content` / `reasoning` deltas → `reasoning_delta`;
- *   - per-model options from capabilities (OpenAI reasoning effort, GLM thinking).
+ *   - per-model options from capabilities (OpenAI reasoning effort, GLM thinking);
+ *   - `responseFormat` → `response_format` json_schema / json_object (+ instruction).
  */
 import { capabilitiesFor } from "./catalog.js";
 import { abortedError, classifyHttpError, networkError } from "./errors.js";
 import { parseSSE } from "./sse.js";
+import { sanitizeSchemaName, structuredOutputMode, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, StreamEvent, SystemSection } from "./types.js";
 
 /** Chat Completions message (the subset we send). */
@@ -111,12 +113,20 @@ function openAIEffort(effort: NonNullable<ChatRequest["effort"]>): string {
 export function buildOpenAIRequest(config: Pick<ProviderConfig, "id" | "model">, request: ChatRequest, caps?: ModelCapabilities): Record<string, unknown> {
   const model = request.model || config.model;
   const capabilities = caps ?? capabilitiesFor(config.id, model);
+  const format = request.responseFormat;
+  const formatMode = format ? structuredOutputMode(config.id, model) : "none";
+  const system = format && formatMode !== "json_schema" ? withJsonInstruction(request.system, format) : request.system;
   const body: Record<string, unknown> = {
     model,
-    messages: toOpenAIMessages(request.system, request.messages),
+    messages: toOpenAIMessages(system, request.messages),
     stream: true,
     stream_options: { include_usage: true },
   };
+  if (format && formatMode === "json_schema") {
+    body.response_format = { type: "json_schema", json_schema: { name: sanitizeSchemaName(format.name), schema: format.schema, strict: true } };
+  } else if (format && formatMode === "json_object") {
+    body.response_format = { type: "json_object" };
+  }
   const hasTools = Boolean(request.tools && request.tools.length > 0 && capabilities.supportsTools);
   if (hasTools) {
     body.tools = request.tools!.map((t) => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.inputSchema } }));

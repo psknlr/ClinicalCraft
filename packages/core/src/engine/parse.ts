@@ -59,6 +59,7 @@ function unionIssues(issue: ZodIssue & { code: "invalid_union" }, root: unknown)
     e.issues.filter((i): i is ZodIssue & { code: "invalid_type" } => i.code === "invalid_type" && i.path.length === depth).map((i) => i.expected),
   );
   const value = valueAt(root, issue.path);
+  if (value === undefined) return [{ path: formatPath(issue.path), message: "Required", severity: "error" }];
   const message = expected.length
     ? `expected ${[...new Set(expected)].join(" or ")}, received ${describeValue(value)}`
     : `no allowed form matches ${describeValue(value)}`;

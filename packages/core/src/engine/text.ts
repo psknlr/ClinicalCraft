@@ -13,10 +13,12 @@ import { t, tList, type LocalizedList, type LocalizedText } from "../i18n.js";
  * punctuation incl. `（）`) → ASCII, lower-case, all whitespace removed.
  */
 export function normalizeQuery(text: string): string {
-  return text
-    .replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
-    .toLowerCase()
-    .replace(/\s+/g, "");
+  return toHalfWidth(text).toLowerCase().replace(/\s+/g, "");
+}
+
+/** Full-width ASCII forms (U+FF01–U+FF5E: letters, digits, punctuation incl. `（）`) → ASCII. */
+function toHalfWidth(text: string): string {
+  return text.replace(/[\uFF01-\uFF5E]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0));
 }
 
 /** `normalizeQuery` without punctuation/symbols — the string used for character scoring. */
@@ -39,8 +41,8 @@ export const ENGLISH_STOP_WORDS: ReadonlySet<string> = new Set(
     "i me my mine myself you your yours yourself he him his she her hers it its we us our ours they them their theirs " +
     "this that these those there here what which who whom whose when where why how " +
     "any some all each every no not nor than then too very just also only ever again more most much many such own same " +
-    "please tell let get got go going let's okay ok yes yeah hi hello doctor patient sir madam mr mrs ms dr " +
-    "i'm you're it's don't isn't aren't anything something everything"
+    "please tell let get got go going okay ok yes yeah hi hello doctor patient sir madam mr mrs ms dr " +
+    "like anything something everything"
   ).split(/\s+/),
 );
 
@@ -66,15 +68,20 @@ export function stem(word: string): string {
   return word;
 }
 
-/** Latin-script word tokens (lower-case, stop-words removed, stemmed). CJK runs are dropped. */
+/** Drop English clitics: "what's" → "what", "don't" → "do", "you're" → "you". */
+function stripContraction(word: string): string {
+  return word.replace(/n't$/, "").replace(/'(s|re|ve|ll|d|m)$/, "").replace(/'/g, "");
+}
+
+/** Latin-script word tokens (lower-case, contractions and stop-words removed, stemmed). CJK runs are dropped. */
 export function tokenize(text: string): string[] {
-  const words = text
-    .replace(/[！-～]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
+  return toHalfWidth(text)
+    .replace(/[\u2018\u2019]/g, "'")
     .toLowerCase()
     .split(/[^\p{L}\p{N}']+/u)
-    .map((w) => w.replace(/^'+|'+$/g, ""))
-    .filter((w) => w.length > 0 && /^[a-z0-9']+$/.test(w) && !ENGLISH_STOP_WORDS.has(w));
-  return words.map((w) => stem(w.replace(/'/g, "")));
+    .map((w) => stripContraction(w.replace(/^'+|'+$/g, "")))
+    .filter((w) => w.length > 0 && /^[a-z0-9]+$/.test(w) && !ENGLISH_STOP_WORDS.has(w))
+    .map(stem);
 }
 
 function commonPrefixLength(a: string, b: string): number {

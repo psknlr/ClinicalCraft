@@ -9,6 +9,8 @@
  *     objects before they are emitted as `tool_call`;
  *   - never a forced `tool_choice`, never a `thinking` param (adaptive is the
  *     default on current models); depth via `output_config.effort`;
+ *   - `responseFormat` → `output_config.format` (json_schema) on first-party
+ *     Claude, else a JSON instruction appended to the system prompt;
  *   - sampling params only when the model accepts them;
  *   - server-side refusal fallbacks (`fallbacks: "default"` + beta
  *     `server-side-fallback-2026-07-01`) for the models that support them on
@@ -22,12 +24,14 @@ import type {
   BetaMessage,
   BetaMessageParam,
   BetaMessageStreamParams,
+  BetaOutputConfig,
   BetaTextBlockParam,
   BetaTool,
   BetaToolResultBlockParam,
 } from "@anthropic-ai/sdk/resources/beta/messages/messages";
 import { ANTHROPIC_BASE_URL, capabilitiesFor } from "./catalog.js";
 import { abortedError, classifyHttpError, networkError } from "./errors.js";
+import { anthropicSupportsStructuredOutput, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, ProviderErrorInfo, StreamEvent } from "./types.js";
 
 /** Beta header that gates `fallbacks: "default"`. */
@@ -178,7 +182,13 @@ export function buildAnthropicRequest(config: Pick<ProviderConfig, "id" | "baseU
     max_tokens: maxTokens,
     messages: toAnthropicMessages(request.messages),
   };
-  const system = toAnthropicSystem(request.system);
+  const outputConfig: BetaOutputConfig = {};
+  let systemSections = request.system;
+  if (request.responseFormat) {
+    if (anthropicSupportsStructuredOutput(model, firstParty)) outputConfig.format = { type: "json_schema", schema: request.responseFormat.schema };
+    else systemSections = withJsonInstruction(request.system, request.responseFormat);
+  }
+  const system = toAnthropicSystem(systemSections);
   if (system.length > 0) params.system = system;
   if (request.tools && request.tools.length > 0) {
     params.tools = request.tools.map(
@@ -193,9 +203,8 @@ export function buildAnthropicRequest(config: Pick<ProviderConfig, "id" | "baseU
   if (request.temperature != null && !capabilities.rejectsSampling) {
     params.temperature = Math.min(1, Math.max(0, request.temperature * (capabilities.temperatureScale ?? 1)));
   }
-  if (request.effort && capabilities.reasoning === "anthropic-effort") {
-    params.output_config = { effort: request.effort };
-  }
+  if (request.effort && capabilities.reasoning === "anthropic-effort") outputConfig.effort = request.effort;
+  if (Object.keys(outputConfig).length > 0) params.output_config = outputConfig;
   if (firstParty) {
     // Automatic caching of the conversation prefix (second breakpoint after the system one).
     params.cache_control = { type: "ephemeral" };
@@ -391,7 +400,8 @@ export class AnthropicProvider implements LLMProvider {
     }
 
     const stopReason = mapStopReason(final.stop_reason);
-    const content = final.content as unknown as Record<string, unknown>[];
+    // Plain JSON copy: drops the SDK's non-enumerable helper props so history/transcripts hold pure data.
+    const content = JSON.parse(JSON.stringify(final.content ?? [])) as Record<string, unknown>[];
     let boundary = -1;
     content.forEach((b, i) => {
       if (b.type === "fallback") boundary = i;

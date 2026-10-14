@@ -147,11 +147,15 @@ function baselineAt(c: CaseDefinition, s: SessionState, t: number): Partial<Vita
 export function trendContribution(trend: TrendDef, t: number, stop: number | undefined): number {
   const bound = (v: number) => clamp(v, trend.min ?? -Infinity, trend.max ?? Infinity);
   const raw = (x: number) => bound(trend.perMinute * Math.max(0, x - trend.startMinute));
-  if (stop == null || t <= stop) return raw(t);
+  if (stop == null || t <= stop) return noNegativeZero(raw(t));
   const frozen = raw(stop);
-  if (!trend.recoverPerMinute) return frozen;
+  if (!trend.recoverPerMinute) return noNegativeZero(frozen);
   const magnitude = Math.max(0, Math.abs(frozen) - trend.recoverPerMinute * (t - stop));
-  return Math.sign(frozen) * magnitude;
+  return noNegativeZero(Math.sign(frozen) * magnitude);
+}
+
+function noNegativeZero(value: number): number {
+  return value === 0 ? 0 : value;
 }
 
 /**
@@ -177,8 +181,19 @@ function applyTrends(c: CaseDefinition, s: SessionState, t: number, values: Nume
   }
 }
 
+const interventionIndexCache = new WeakMap<CaseDefinition["interventions"], Map<string, Intervention>>();
+
+function interventionIndex(c: CaseDefinition): Map<string, Intervention> {
+  let index = interventionIndexCache.get(c.interventions);
+  if (!index) {
+    index = new Map(c.interventions.map((i) => [i.id, i]));
+    interventionIndexCache.set(c.interventions, index);
+  }
+  return index;
+}
+
 function applyEffects(c: CaseDefinition, s: SessionState, t: number, values: NumericVitals): void {
-  const byId = new Map(c.interventions.map((i) => [i.id, i]));
+  const byId = interventionIndex(c);
   for (const record of s.interventions) {
     if (record.at > t) continue;
     const intervention = byId.get(record.interventionId);

@@ -50,10 +50,19 @@ function regexTest(source: string, text: string): boolean {
 /* Orders                                                              */
 /* ------------------------------------------------------------------ */
 
-/** Normalised order aliases of an investigation (all locales; the localized names count as aliases). */
-function orderAliases(investigation: CaseDefinition["investigations"][number], locale: string): string[] {
-  const phrases = [...allListEntries(investigation.aliases, locale), ...allTexts(investigation.name, locale)];
-  return unique(phrases.map(normalizeQuery).filter((p) => p.length > 0));
+type Investigation = CaseDefinition["investigations"][number];
+
+const aliasCache = new WeakMap<Investigation, string[]>();
+
+/** Normalised order aliases of an investigation (every locale; the localized names count as aliases). */
+function orderAliases(investigation: Investigation): string[] {
+  let aliases = aliasCache.get(investigation);
+  if (!aliases) {
+    const phrases = [...allListEntries(investigation.aliases, "*"), ...allTexts(investigation.name, "*")];
+    aliases = unique(phrases.map(normalizeQuery).filter((p) => p.length > 0));
+    aliasCache.set(investigation, aliases);
+  }
+  return aliases;
 }
 
 type MatchRule = CaseDefinition["orderMatching"]["rules"][number];
@@ -83,7 +92,8 @@ function exactMatch(c: CaseDefinition, query: string): string[] | null {
  * Investigation ids an order-entry query refers to (V4 semantics, generalised):
  *
  * 1. candidates = investigations (declaration order) with an alias or name
- *    (any locale, normalised) contained in the normalised query;
+ *    (of any locale — `locale` does not narrow them; normalised) contained in
+ *    the normalised query;
  * 2. `orderMatching.rules` in order — a rule applies when all of `ifHas`,
  *    `unlessHas`, `ifMatches`, `unlessMatches` hold; it removes `remove`,
  *    then appends missing `add` ids;
@@ -91,10 +101,10 @@ function exactMatch(c: CaseDefinition, query: string): string[] | null {
  *
  * Unknown ids produced by rules are dropped.
  */
-export function matchOrders(c: CaseDefinition, query: string, locale: string): string[] {
+export function matchOrders(c: CaseDefinition, query: string, _locale: string): string[] {
   const q = normalizeQuery(query);
   if (!q) return [];
-  let candidates = c.investigations.filter((inv) => orderAliases(inv, locale).some((alias) => q.includes(alias))).map((inv) => inv.id);
+  let candidates = c.investigations.filter((inv) => orderAliases(inv).some((alias) => q.includes(alias))).map((inv) => inv.id);
   for (const rule of c.orderMatching.rules) {
     if (ruleApplies(rule, candidates, q)) candidates = applyRule(rule, candidates);
   }
@@ -121,6 +131,7 @@ interface IndexedItem {
   phrases: Prepared[];
 }
 
+/** Prepared phrase indexes per case collection (case data is treated as immutable). */
 const indexCache = new WeakMap<object, Map<string, IndexedItem[]>>();
 
 function cachedIndex(owner: object, key: string, build: () => IndexedItem[]): IndexedItem[] {

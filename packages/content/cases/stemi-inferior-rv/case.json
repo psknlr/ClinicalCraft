@@ -1,0 +1,6366 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "stemi-inferior-rv",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "胸痛 · 58岁男性",
+    "en": "Chest pain · 58-year-old man"
+  },
+  "summary": {
+    "zh-CN": "58岁男性，胸痛约70分钟，由妻子陪同步入急诊抢救室。时间敏感的急诊模拟：快速评估、判读、安全处置，并决定下一步。",
+    "en": "A 58-year-old man walks into the emergency department with his wife after about 70 minutes of chest pain. A time-critical resus simulation: assess fast, interpret, treat safely and decide what happens next."
+  },
+  "specialty": [
+    "emergency-medicine",
+    "cardiology"
+  ],
+  "difficulty": 3,
+  "setting": "emergency",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 35,
+  "tags": [
+    "chest-pain",
+    "time-critical",
+    "ecg-interpretation",
+    "resuscitation",
+    "simulated-clock",
+    "synthetic"
+  ],
+  "provenance": {
+    "kind": "synthetic",
+    "authors": [
+      "ClinicalCraft content team"
+    ],
+    "license": "MIT",
+    "notes": {
+      "zh-CN": "完全虚构的教学病例，依据现行ESC/ACC-AHA/中华医学会指南编写；姓名为化名，不对应任何真实患者。",
+      "en": "Entirely fictional teaching case written to current ESC, ACC/AHA and Chinese Society of Cardiology guidance; the name is a pseudonym and corresponds to no real patient."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "虚构教学病例，不构成医疗建议。",
+    "en": "Fictional teaching case — not medical advice."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "刘振华（化名）",
+      "en": "Liu Zhenhua (pseudonym)"
+    },
+    "age": 58,
+    "ageUnit": "years",
+    "sex": "male",
+    "weightKg": 78,
+    "heightCm": 172,
+    "chiefComplaint": {
+      "zh-CN": "胸痛约70分钟",
+      "en": "Chest pain for about 70 minutes"
+    },
+    "triageNote": {
+      "zh-CN": "58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛。分诊：HR 54次/分，BP 98/62 mmHg（MAP 74），SpO₂ 96%（未吸氧），RR 18次/分，T 36.6 °C，疼痛8/10。面色苍白、出汗。已送入抢救室2床，尚未建立静脉通路。",
+      "en": "58-year-old man who walked in with his wife at 09:10 reporting chest pain since about 08:00. Triage: HR 54/min, BP 98/62 mmHg (MAP 74), SpO₂ 96% on room air, RR 18/min, T 36.6 °C, pain 8/10. Pale and sweaty. Placed in resus bay 2; no IV access yet."
+    },
+    "tags": [
+      {
+        "zh-CN": "胸痛",
+        "en": "Chest pain"
+      },
+      {
+        "zh-CN": "出汗",
+        "en": "Sweating"
+      },
+      {
+        "zh-CN": "急诊抢救室",
+        "en": "Resus bay"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "很少看病、习惯硬撑的中年男人，此刻很害怕，但说话时尽量轻描淡写；配合医生。",
+        "en": "A stoic man who rarely sees doctors; frightened now but tends to play things down; cooperative."
+      },
+      "speechStyle": {
+        "zh-CN": "普通话口语，短句，因疼痛说话断断续续，不用医学术语。",
+        "en": "Plain everyday words in short sentences, broken up by the pain; no medical jargon."
+      },
+      "healthLiteracy": "medium",
+      "affect": "in-pain",
+      "openingLine": {
+        "zh-CN": "医生……我胸口疼得厉害，一个多小时了……一直在冒冷汗。",
+        "en": "Doctor... my chest hurts badly — over an hour now... and I keep breaking out in a cold sweat."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我不太清楚，医生。",
+        "en": "I'm not sure about that, doctor."
+      },
+      "concerns": [
+        {
+          "zh-CN": "我是不是心脏出事了？我爸当年就是心脏的问题走的。",
+          "en": "Is it my heart? That's what took my dad."
+        },
+        {
+          "zh-CN": "要做手术吗？我老伴能陪着我吗？",
+          "en": "Do I need an operation? Can my wife stay with me?"
+        }
+      ],
+      "actingNotes": {
+        "zh-CN": "持续剧烈胸痛，时不时用拳头按住胸口，说话短促、偶尔停下来喘气；害怕但想显得镇定，提到父亲时声音发颤。若监护提示血压骤降（例如用药后），表现为头晕、恶心、说话无力；若发生心搏骤停则毫无反应，复苏后迷糊、只能呻吟。只说已被问到的病史内容，不主动补充细节，不使用医学术语。",
+        "en": "In constant severe pain, intermittently pressing a fist to his chest; clipped speech with pauses for breath; scared but trying to seem calm, voice wavering when his father comes up. If the monitor shows a sudden fall in blood pressure (e.g. after a drug), he becomes dizzy, nauseated and weak-voiced; in cardiac arrest he is completely unresponsive, and after resuscitation drowsy and only groaning. Only states history he has been asked about, adds no details of his own, uses no medical terms."
+      },
+      "companion": {
+        "role": "spouse",
+        "name": {
+          "zh-CN": "王丽（患者妻子，化名）",
+          "en": "Wang Li (his wife, pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "五十多岁，开车送丈夫来医院，非常焦虑但配合；会安慰丈夫、询问情况、签署同意书，不替患者回答病史。",
+          "en": "In her fifties; drove him to hospital; very anxious but cooperative; reassures him, asks what is happening and can sign consent, but does not answer history questions for him."
+        },
+        "answersHistory": false,
+        "appearance": {
+          "hairStyle": "bun",
+          "hair": "#2e2622",
+          "shirt": "#a0522d",
+          "pants": "#3b3b4f"
+        }
+      }
+    },
+    "appearance": {
+      "skin": "#d2ae8c",
+      "hair": "#4a4540",
+      "hairStyle": "short",
+      "shirt": "#5b6f8a",
+      "pants": "#2f3a40",
+      "build": "average",
+      "stature": "adult",
+      "gown": false,
+      "accessory": "none"
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "ed",
+      "label": {
+        "zh-CN": "急诊抢救室",
+        "en": "Emergency department — resus"
+      },
+      "description": {
+        "zh-CN": "到院后的评估与处置。",
+        "en": "Assessment and treatment after arrival."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "cath",
+      "label": {
+        "zh-CN": "导管室",
+        "en": "Cath lab"
+      },
+      "description": {
+        "zh-CN": "转入导管室后的直接PCI。",
+        "en": "Primary PCI after transfer to the cath lab."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "flag": "transferred-cath-lab"
+      }
+    }
+  ],
+  "initialPhase": "ed",
+  "clock": {
+    "mode": "simulated",
+    "startTime": "09:10",
+    "realtimeScale": 1,
+    "actionCosts": {
+      "ask": 0.5,
+      "examine": 1,
+      "order": 0.5,
+      "read": 0.5,
+      "intervene": 1.5,
+      "answer": 0
+    },
+    "limitMinutes": 120
+  },
+  "history": [
+    {
+      "id": "pain-site",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "胸痛具体在哪个位置？",
+        "en": "Where exactly is the pain?"
+      },
+      "answer": {
+        "zh-CN": "就在胸口正中间，胸骨后面这一片，一个多小时了。",
+        "en": "Right in the middle of my chest, behind the breastbone. It's been over an hour."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里疼",
+          "哪里痛",
+          "哪儿疼",
+          "什么位置",
+          "疼的部位",
+          "具体位置",
+          "指一下"
+        ],
+        "en": [
+          "where is the pain",
+          "where does it hurt",
+          "location of the pain",
+          "which part of your chest",
+          "point to"
+        ]
+      },
+      "disclosure": "volunteer"
+    },
+    {
+      "id": "hpi-onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "疼痛是什么时候开始的？当时在做什么？",
+        "en": "When did the pain start, and what were you doing?"
+      },
+      "answer": {
+        "zh-CN": "早上八点左右吧。刚到单位，抱着一箱文件上楼，走到一半就疼起来了，来得很快。到现在一个多小时了。",
+        "en": "Around eight this morning. I'd just got to work and was carrying a box of files up the stairs — halfway up it came on, quite suddenly. That's over an hour ago now."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么时候开始",
+          "几点开始",
+          "疼了多久",
+          "多长时间了",
+          "当时在做什么",
+          "怎么开始的",
+          "起病"
+        ],
+        "en": [
+          "when did the pain start",
+          "when did it start",
+          "what time did",
+          "how long have you had",
+          "what were you doing",
+          "how did it start",
+          "onset"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pain-character",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "是什么样的疼？",
+        "en": "What does the pain feel like?"
+      },
+      "answer": {
+        "zh-CN": "像有块大石头压在胸口上，又闷又紧，不是针扎那种。",
+        "en": "Like a big heavy stone sitting on my chest — crushing and tight. Not sharp or stabbing."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么样的疼",
+          "怎么个疼法",
+          "疼痛性质",
+          "压榨",
+          "发闷",
+          "像什么",
+          "刺痛还是"
+        ],
+        "en": [
+          "what does it feel like",
+          "describe the pain",
+          "character of the pain",
+          "crushing",
+          "sharp or dull",
+          "squeezing",
+          "tightness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pain-radiation",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "疼痛会往别的地方放射吗？",
+        "en": "Does the pain spread anywhere?"
+      },
+      "answer": {
+        "zh-CN": "会往下巴和左边胳膊窜，左手发沉、有点麻。后背倒不疼。",
+        "en": "It goes up into my jaw and down my left arm — the arm feels heavy and a bit numb. My back doesn't hurt, though."
+      },
+      "keywords": {
+        "zh-CN": [
+          "放射",
+          "传到",
+          "窜到",
+          "牵扯",
+          "别的地方",
+          "下巴",
+          "胳膊",
+          "肩膀",
+          "脖子"
+        ],
+        "en": [
+          "radiate",
+          "spread",
+          "go anywhere",
+          "move anywhere",
+          "jaw",
+          "your arm",
+          "left arm",
+          "shoulder",
+          "neck"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pain-severity",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "疼痛有多严重？0到10分打几分？",
+        "en": "How bad is the pain, from 0 to 10?"
+      },
+      "answer": {
+        "zh-CN": "八分左右……这辈子没这么疼过。",
+        "en": "About an eight... the worst I've ever had."
+      },
+      "keywords": {
+        "zh-CN": [
+          "几分",
+          "打分",
+          "多严重",
+          "有多疼",
+          "疼痛评分",
+          "疼痛程度"
+        ],
+        "en": [
+          "how bad",
+          "out of 10",
+          "out of ten",
+          "scale of",
+          "severity",
+          "how severe",
+          "pain score"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "pain-course",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "疼痛是持续的还是一阵一阵的？",
+        "en": "Is the pain constant, or does it come and go?"
+      },
+      "answer": {
+        "zh-CN": "一直疼，没停过，从开始到现在一点没轻。",
+        "en": "It's constant — it hasn't let up at all since it started."
+      },
+      "keywords": {
+        "zh-CN": [
+          "持续",
+          "一阵一阵",
+          "断断续续",
+          "一直疼",
+          "间歇",
+          "停过"
+        ],
+        "en": [
+          "constant",
+          "come and go",
+          "comes and goes",
+          "on and off",
+          "continuous",
+          "all the time",
+          "let up"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "pain-relief",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "有什么能让疼痛减轻或加重吗？",
+        "en": "Does anything make it better or worse?"
+      },
+      "answer": {
+        "zh-CN": "坐下来歇着也不管用，在车上一直疼。好像没什么能让它好点。",
+        "en": "Sitting down and resting didn't help — it kept going in the car. Nothing seems to make it better."
+      },
+      "keywords": {
+        "zh-CN": [
+          "加重",
+          "减轻",
+          "缓解",
+          "好一点",
+          "更疼",
+          "休息后"
+        ],
+        "en": [
+          "better or worse",
+          "makes it worse",
+          "makes it better",
+          "relieve",
+          "does rest help",
+          "eases"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "pain-pleuritic",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "深呼吸、咳嗽、改变体位或按压胸口时疼痛会变化吗？",
+        "en": "Does breathing in deeply, coughing, changing position or pressing on your chest change the pain?"
+      },
+      "answer": {
+        "zh-CN": "不会，吸气、翻身都一样疼，按着也不更疼。",
+        "en": "No — breathing in or turning over, it's the same. Pressing on it doesn't make it worse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "深呼吸",
+          "吸气时",
+          "咳嗽时疼",
+          "体位",
+          "躺平",
+          "前倾",
+          "按压",
+          "翻身"
+        ],
+        "en": [
+          "deep breath",
+          "breathe in",
+          "when you cough",
+          "change position",
+          "lying flat",
+          "lean forward",
+          "press on",
+          "tender"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "assoc-sweating",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有出汗？",
+        "en": "Have you been sweating?"
+      },
+      "answer": {
+        "zh-CN": "冷汗一直往外冒，衣服都湿透了。",
+        "en": "I keep breaking out in a cold sweat — my shirt's soaked."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出汗",
+          "冷汗",
+          "大汗",
+          "冒汗",
+          "湿透"
+        ],
+        "en": [
+          "sweat",
+          "sweaty",
+          "clammy",
+          "perspiring",
+          "diaphoresis"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true
+    },
+    {
+      "id": "assoc-nausea",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有恶心、呕吐？",
+        "en": "Any nausea or vomiting?"
+      },
+      "answer": {
+        "zh-CN": "恶心得很，在车上干呕了一次，没吐出东西。",
+        "en": "Really queasy. I retched once in the car but nothing came up."
+      },
+      "keywords": {
+        "zh-CN": [
+          "恶心",
+          "呕吐",
+          "想吐",
+          "吐了",
+          "反胃"
+        ],
+        "en": [
+          "nausea",
+          "nauseous",
+          "vomit",
+          "throw up",
+          "retch",
+          "feel sick"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "assoc-dyspnoea",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有气短、喘不上气？",
+        "en": "Are you short of breath?"
+      },
+      "answer": {
+        "zh-CN": "有点喘，胸口憋，但还能说话。",
+        "en": "A bit breathless, my chest feels tight — but I can talk."
+      },
+      "keywords": {
+        "zh-CN": [
+          "气短",
+          "气促",
+          "喘不上气",
+          "喘气",
+          "憋气",
+          "呼吸困难",
+          "上不来气"
+        ],
+        "en": [
+          "short of breath",
+          "breathless",
+          "shortness of breath",
+          "trouble breathing",
+          "difficulty breathing",
+          "can't breathe",
+          "winded"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "assoc-presyncope",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有头晕、眼前发黑或晕倒过？",
+        "en": "Have you felt light-headed, blacked out or fainted?"
+      },
+      "answer": {
+        "zh-CN": "下车站起来的时候眼前发黑、头晕，扶着车门站了一会儿，没晕倒。",
+        "en": "When I got out of the car and stood up, everything went dark and I felt dizzy — I held onto the door for a bit. I didn't pass out."
+      },
+      "keywords": {
+        "zh-CN": [
+          "头晕",
+          "晕倒",
+          "昏倒",
+          "眼前发黑",
+          "晕厥",
+          "站不稳",
+          "失去意识"
+        ],
+        "en": [
+          "dizzy",
+          "light-headed",
+          "lightheaded",
+          "faint",
+          "pass out",
+          "black out",
+          "blackout",
+          "collapse",
+          "lose consciousness"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "palpitations",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有心慌、心跳很快或不规律？",
+        "en": "Any palpitations — a racing or irregular heartbeat?"
+      },
+      "answer": {
+        "zh-CN": "没觉得心跳快，也没乱跳。",
+        "en": "No, I haven't felt it racing or jumping about."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心慌",
+          "心悸",
+          "心跳快",
+          "心跳乱",
+          "心跳不齐",
+          "早搏"
+        ],
+        "en": [
+          "palpitation",
+          "racing heart",
+          "heart racing",
+          "pounding",
+          "irregular heartbeat",
+          "fluttering",
+          "skipping beats"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "prodrome",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "以前有过类似的胸痛吗？最近几周呢？",
+        "en": "Have you had chest pain like this before, or in the last few weeks?"
+      },
+      "answer": {
+        "zh-CN": "这么厉害的从来没有。不过最近两个星期爬楼梯时胸口会发紧，歇两三分钟就好了，我以为是累的，没当回事。",
+        "en": "Never this bad. But for the last couple of weeks my chest would get tight climbing stairs; it went away after two or three minutes' rest. I thought I was just tired."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这样疼过",
+          "类似的疼",
+          "以前发作",
+          "最近几周",
+          "第一次这样",
+          "爬楼梯时"
+        ],
+        "en": [
+          "like this before",
+          "happened before",
+          "previous episodes",
+          "last few weeks",
+          "first time",
+          "climbing stairs"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "dissection-screen",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "疼痛是撕裂样的吗？有没有向后背放射？",
+        "en": "Is the pain tearing or ripping, and does it go through to your back?"
+      },
+      "answer": {
+        "zh-CN": "不是撕裂那种，就是压着疼。后背不疼。",
+        "en": "No, not tearing — it's a pressing pain. My back doesn't hurt."
+      },
+      "keywords": {
+        "zh-CN": [
+          "撕裂",
+          "刀割样",
+          "后背",
+          "背部",
+          "背痛",
+          "肩胛"
+        ],
+        "en": [
+          "tearing",
+          "ripping",
+          "back pain",
+          "through to your back",
+          "into your back",
+          "shoulder blades"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pe-screen",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近有没有腿肿、小腿疼，长途旅行、手术或长期卧床？",
+        "en": "Any leg swelling or calf pain, long journeys, surgery or bed rest recently?"
+      },
+      "answer": {
+        "zh-CN": "没有，腿不肿也不疼。最近没出远门，也没做过手术。",
+        "en": "No. My legs aren't swollen or sore, I haven't travelled anywhere and haven't had any operation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腿肿",
+          "小腿",
+          "长途",
+          "卧床",
+          "下肢",
+          "坐飞机",
+          "血栓"
+        ],
+        "en": [
+          "leg swelling",
+          "swollen legs",
+          "calf",
+          "long journey",
+          "long flight",
+          "bed rest",
+          "blood clot"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "infection-screen",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近有没有发烧、咳嗽或感冒？",
+        "en": "Any recent fever, cough or cold?"
+      },
+      "answer": {
+        "zh-CN": "没有，最近身体挺好的，没发烧没咳嗽。",
+        "en": "No, I've been fine — no fever, no cough."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发烧",
+          "发热",
+          "咳嗽吗",
+          "感冒",
+          "流感"
+        ],
+        "en": [
+          "fever",
+          "any cough",
+          "caught a cold",
+          "flu",
+          "temperature",
+          "infection"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "gi-screen",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "平时有没有反酸、烧心或胃病？这次跟吃饭有关系吗？",
+        "en": "Do you get heartburn or indigestion? Is this related to eating?"
+      },
+      "answer": {
+        "zh-CN": "偶尔吃多了会烧心，吃点胃药就好。这次跟那个完全不一样，也不是吃完饭疼的。",
+        "en": "I get a bit of heartburn now and then after a big meal, and an antacid sorts it out. This is completely different, and it didn't come on after eating."
+      },
+      "keywords": {
+        "zh-CN": [
+          "反酸",
+          "烧心",
+          "胃病",
+          "胃疼",
+          "消化不良",
+          "跟吃饭有关"
+        ],
+        "en": [
+          "heartburn",
+          "indigestion",
+          "reflux",
+          "stomach trouble",
+          "related to food",
+          "after eating"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "pmh-htn",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "有高血压吗？",
+        "en": "Do you have high blood pressure?"
+      },
+      "answer": {
+        "zh-CN": "有，六年了，一直吃氨氯地平，一天一片，5毫克。家里量一般一百四左右。",
+        "en": "Yes, for six years. I take amlodipine, one 5 mg tablet a day. At home it's usually around 140."
+      },
+      "keywords": {
+        "zh-CN": [
+          "高血压",
+          "血压高",
+          "平时血压",
+          "降压药"
+        ],
+        "en": [
+          "high blood pressure",
+          "hypertension",
+          "blood pressure",
+          "bp"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pmh-lipids",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "血脂高吗？",
+        "en": "Have you been told you have high cholesterol?"
+      },
+      "answer": {
+        "zh-CN": "两年前体检说血脂高，医生开了阿托伐他汀，一天20毫克。我吃了三个月，觉得没事就停了，听说伤肝。",
+        "en": "Two years ago a check-up said my cholesterol was high. The doctor gave me atorvastatin, 20 mg a day. I took it for three months, felt fine and stopped — I'd heard it's bad for the liver."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血脂高",
+          "高血脂",
+          "胆固醇高",
+          "他汀"
+        ],
+        "en": [
+          "high cholesterol",
+          "hyperlipidaemia",
+          "hyperlipidemia",
+          "statin",
+          "lipids"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "pmh-diabetes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "有没有糖尿病？",
+        "en": "Do you have diabetes?"
+      },
+      "answer": {
+        "zh-CN": "没有，没人说过我血糖高。",
+        "en": "No, nobody's ever told me my sugar is high."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糖尿病",
+          "血糖高",
+          "尿糖"
+        ],
+        "en": [
+          "diabetes",
+          "diabetic",
+          "blood sugar"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "pmh-cardiac",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有过心脏病、心梗、放支架或心衰吗？",
+        "en": "Any previous heart problems — heart attack, stents or heart failure?"
+      },
+      "answer": {
+        "zh-CN": "没有，以前没查出过心脏有毛病。",
+        "en": "No, I've never been told there was anything wrong with my heart."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏病",
+          "心梗",
+          "放过支架",
+          "冠心病",
+          "心衰",
+          "心脏问题"
+        ],
+        "en": [
+          "heart problems",
+          "heart attack",
+          "stents",
+          "heart disease",
+          "heart failure",
+          "angina"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "bleeding-history",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "有没有中风、脑出血、胃出血或其他出血问题？最近有没有手术或头部外伤？",
+        "en": "Any history of stroke, brain bleed, stomach bleeding or other bleeding problems? Any recent surgery or head injury?"
+      },
+      "answer": {
+        "zh-CN": "都没有。没中过风，没有胃出血，大便一直正常、不黑。最近没受过伤，也没开过刀。",
+        "en": "None of that. No stroke, no stomach bleeds, my stools are normal — not black. No injuries or operations recently."
+      },
+      "keywords": {
+        "zh-CN": [
+          "中风",
+          "脑出血",
+          "出血",
+          "胃出血",
+          "黑便",
+          "外伤",
+          "脑梗",
+          "近期手术"
+        ],
+        "en": [
+          "stroke",
+          "bleeding",
+          "bleed",
+          "black stools",
+          "head injury",
+          "brain haemorrhage",
+          "recent surgery"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "做过什么手术吗？",
+        "en": "Have you had any operations?"
+      },
+      "answer": {
+        "zh-CN": "二十多岁时切过阑尾，别的没有。",
+        "en": "I had my appendix out in my twenties. Nothing else."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术史",
+          "做过手术",
+          "开过刀",
+          "阑尾"
+        ],
+        "en": [
+          "operations",
+          "operated on",
+          "surgical history",
+          "appendix"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时吃什么药？今天吃了吗？",
+        "en": "What medications do you take? Did you take them today?"
+      },
+      "answer": {
+        "zh-CN": "就吃氨氯地平，一天一片5毫克，今天早上七点吃了。他汀早停了。偶尔胃不舒服吃点胃药，名字记不清了。没吃阿司匹林，也没吃什么抗凝的药。",
+        "en": "Just amlodipine 5 mg, one a day — I took it at seven this morning. I stopped the statin a long time ago. Now and then an antacid for my stomach, can't remember the name. No aspirin, no blood thinners."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "用药",
+          "药物",
+          "服药",
+          "长期吃药",
+          "抗凝药",
+          "阿司匹林"
+        ],
+        "en": [
+          "medications",
+          "medicines",
+          "tablets",
+          "pills",
+          "drugs do you take",
+          "blood thinners",
+          "aspirin"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pde5",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "最近48小时内有没有用过西地那非（伟哥）、他达拉非这类药？",
+        "en": "Have you taken sildenafil (Viagra), tadalafil or similar in the last 48 hours?"
+      },
+      "answer": {
+        "zh-CN": "没有，从来没用过那种药。",
+        "en": "No, never taken anything like that."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伟哥",
+          "西地那非",
+          "他达拉非",
+          "万艾可",
+          "壮阳药",
+          "pde5"
+        ],
+        "en": [
+          "viagra",
+          "sildenafil",
+          "tadalafil",
+          "cialis",
+          "erectile",
+          "pde5"
+        ]
+      },
+      "disclosure": "specific"
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "有没有药物或其他过敏？",
+        "en": "Are you allergic to any medicines or anything else?"
+      },
+      "answer": {
+        "zh-CN": "没有，没听说对什么过敏。",
+        "en": "No, no allergies that I know of."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "过敏史",
+          "药物过敏"
+        ],
+        "en": [
+          "allergic",
+          "allergies",
+          "allergy",
+          "reaction to"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "抽烟吗？抽多少、抽了多少年？",
+        "en": "Do you smoke? How much, and for how long?"
+      },
+      "answer": {
+        "zh-CN": "抽，一天一包，二十支，从二十岁抽到现在，三十八年了。戒过一次，没戒成。",
+        "en": "Yes, a pack a day — twenty — since I was twenty. Thirty-eight years. I tried to quit once and didn't manage."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟瘾",
+          "香烟",
+          "一天几支",
+          "戒烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco",
+          "packs",
+          "quit"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "喝酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "周末跟朋友喝两三瓶啤酒，平时不怎么喝。",
+        "en": "Two or three bottles of beer at weekends with friends. Not much during the week."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒量",
+          "啤酒",
+          "白酒"
+        ],
+        "en": [
+          "alcohol",
+          "drink",
+          "beer",
+          "wine",
+          "units"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "recreational",
+      "topic": "social",
+      "question": {
+        "zh-CN": "有没有用过可卡因、冰毒等毒品？",
+        "en": "Have you ever used cocaine, amphetamines or other recreational drugs?"
+      },
+      "answer": {
+        "zh-CN": "没有，从来不碰那些东西。",
+        "en": "No, never. I don't touch that stuff."
+      },
+      "keywords": {
+        "zh-CN": [
+          "毒品",
+          "可卡因",
+          "冰毒",
+          "吸毒",
+          "大麻",
+          "兴奋剂"
+        ],
+        "en": [
+          "cocaine",
+          "recreational drugs",
+          "street drugs",
+          "amphetamine",
+          "cannabis",
+          "illicit"
+        ]
+      },
+      "disclosure": "specific"
+    },
+    {
+      "id": "social-living",
+      "topic": "social",
+      "question": {
+        "zh-CN": "做什么工作？和谁一起住？",
+        "en": "What do you do for work, and who do you live with?"
+      },
+      "answer": {
+        "zh-CN": "在物流公司当仓库主管，坐办公室多，有时也搬东西。和老伴住，儿子在外地工作。今天是老伴开车送我来的。",
+        "en": "I'm a warehouse supervisor at a logistics company — mostly desk work, some lifting. I live with my wife; our son works in another city. My wife drove me here today."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做什么工作",
+          "职业",
+          "做什么的",
+          "和谁住",
+          "家里几口人",
+          "住在哪"
+        ],
+        "en": [
+          "what do you do for work",
+          "your job",
+          "occupation",
+          "live with",
+          "who is at home",
+          "retired"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "diet-exercise",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时运动吗？饮食怎么样？",
+        "en": "Do you exercise? What's your diet like?"
+      },
+      "answer": {
+        "zh-CN": "基本不运动，下班就坐着看电视。口味重，爱吃咸的、肥肉。",
+        "en": "Hardly any exercise — I sit and watch TV after work. I like salty food and fatty meat."
+      },
+      "keywords": {
+        "zh-CN": [
+          "运动",
+          "锻炼",
+          "饮食",
+          "口味",
+          "体育"
+        ],
+        "en": [
+          "exercise",
+          "diet",
+          "physical activity",
+          "what do you eat",
+          "sport",
+          "gym"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "last-meal",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最后一次吃东西、喝水是什么时候？",
+        "en": "When did you last eat or drink anything?"
+      },
+      "answer": {
+        "zh-CN": "早上七点吃的早饭，一碗粥、两个包子，之后就喝了几口水。",
+        "en": "Breakfast at seven — a bowl of congee and two steamed buns. Just a few sips of water since."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最后一次吃",
+          "上次吃",
+          "早饭",
+          "禁食",
+          "空腹",
+          "进食时间"
+        ],
+        "en": [
+          "when did you last eat",
+          "last meal",
+          "eaten anything",
+          "breakfast",
+          "fasting",
+          "nil by mouth"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有心脏病或突然去世的吗？",
+        "en": "Does anyone in your family have heart disease, or did anyone die suddenly?"
+      },
+      "answer": {
+        "zh-CN": "我爸六十二岁那年突然走了，说是心脏的问题。我弟弟前年放了个支架，那年他五十二。",
+        "en": "My father died suddenly at sixty-two — they said it was his heart. My younger brother had a stent put in the year before last; he was fifty-two."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族史",
+          "家里人",
+          "父亲",
+          "母亲",
+          "兄弟",
+          "遗传",
+          "突然去世"
+        ],
+        "en": [
+          "family history",
+          "in your family",
+          "your father",
+          "your mother",
+          "brother",
+          "runs in the family",
+          "relatives",
+          "parents"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "brother-details",
+      "topic": "family",
+      "question": {
+        "zh-CN": "你弟弟是哪根血管堵了？当时是心梗吗？",
+        "en": "Do you know which artery your brother had stented, or whether it was a heart attack?"
+      },
+      "answer": {
+        "zh-CN": "这个我真不清楚，他没细说。",
+        "en": "I honestly don't know — he never went into the details."
+      },
+      "keywords": {
+        "zh-CN": [
+          "弟弟哪根血管",
+          "弟弟是心梗",
+          "弟弟具体",
+          "弟弟的情况"
+        ],
+        "en": [
+          "brother's artery",
+          "which artery",
+          "brother have a heart attack",
+          "brother's details"
+        ]
+      },
+      "disclosure": "unknown"
+    },
+    {
+      "id": "prior-ecg",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前做过心电图吗？有没有以前的报告可以对比？",
+        "en": "Have you had an ECG before? Is there an old one we can compare with?"
+      },
+      "answer": {
+        "zh-CN": "去年单位体检好像做过，但报告不在身上，结果我也记不清了。",
+        "en": "I think I had one at a work check-up last year, but I don't have the report and I can't remember what it showed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前的心电图",
+          "旧心电图",
+          "既往心电图",
+          "做过心电图",
+          "对比"
+        ],
+        "en": [
+          "previous ecg",
+          "old ecg",
+          "ecg before",
+          "compare with",
+          "prior ecg"
+        ]
+      },
+      "disclosure": "unknown"
+    },
+    {
+      "id": "cholesterol-values",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "你知道血脂具体是多少吗？",
+        "en": "Do you know what your cholesterol numbers were?"
+      },
+      "answer": {
+        "zh-CN": "具体数我记不住了。",
+        "en": "I can't remember the numbers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血脂多少",
+          "胆固醇多少",
+          "具体数值",
+          "化验数值"
+        ],
+        "en": [
+          "cholesterol level",
+          "cholesterol numbers",
+          "what were the numbers",
+          "ldl"
+        ]
+      },
+      "disclosure": "unknown"
+    },
+    {
+      "id": "ice-concerns",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "你最担心的是什么？你觉得是怎么回事？",
+        "en": "What are you most worried about? What do you think is going on?"
+      },
+      "answer": {
+        "zh-CN": "我怕是心脏出事了……我爸就是这么走的。家里还指望我呢。",
+        "en": "I'm scared it's my heart... that's how my dad went. My family's relying on me."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "害怕",
+          "顾虑",
+          "你觉得是",
+          "怎么回事",
+          "期望"
+        ],
+        "en": [
+          "worried",
+          "worry",
+          "concern",
+          "scared",
+          "what do you think",
+          "expect"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "你体重大概多少？",
+        "en": "Roughly how much do you weigh?"
+      },
+      "answer": {
+        "zh-CN": "七十八公斤左右，个子一米七二。",
+        "en": "About seventy-eight kilos. I'm one metre seventy-two."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "多重",
+          "多少斤",
+          "身高",
+          "公斤"
+        ],
+        "en": [
+          "weigh",
+          "weight",
+          "kilos",
+          "height",
+          "how tall"
+        ]
+      },
+      "disclosure": "on-ask"
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况",
+        "en": "General inspection"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "外观",
+          "面色",
+          "视诊",
+          "看看病人"
+        ],
+        "en": [
+          "general appearance",
+          "general inspection",
+          "look at the patient",
+          "inspection",
+          "end of the bed"
+        ]
+      },
+      "finding": {
+        "zh-CN": "面色灰白、大汗淋漓，右手按在胸骨区，表情痛苦、焦虑。神志清楚，能说完整的句子。",
+        "en": "Grey and drenched in sweat, right hand pressed over the sternum, distressed and anxious. Alert; speaking in full sentences."
+      },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "perfusion",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "评估外周灌注（皮温、毛细血管再充盈）",
+        "en": "Assess peripheral perfusion (skin temperature, capillary refill)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "外周灌注",
+          "毛细血管再充盈",
+          "皮温",
+          "四肢温度",
+          "末梢循环"
+        ],
+        "en": [
+          "peripheral perfusion",
+          "capillary refill",
+          "crt",
+          "skin temperature",
+          "cool peripheries"
+        ]
+      },
+      "finding": {
+        "zh-CN": "四肢湿冷，甲床毛细血管再充盈时间约3秒。",
+        "en": "Cool, clammy hands and feet; capillary refill about 3 seconds."
+      },
+      "abnormal": true
+    },
+    {
+      "id": "radial-pulse",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "触诊桡动脉搏动",
+        "en": "Palpate the radial pulse"
+      },
+      "keywords": {
+        "zh-CN": [
+          "摸脉",
+          "脉搏",
+          "桡动脉",
+          "脉率"
+        ],
+        "en": [
+          "radial pulse",
+          "feel the pulse",
+          "pulse rate",
+          "pulse volume"
+        ]
+      },
+      "finding": {
+        "zh-CN": "脉搏慢而规整，搏动偏弱。",
+        "en": "Slow, regular, low-volume pulse."
+      },
+      "abnormal": true
+    },
+    {
+      "id": "bilateral-bp",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "测量双上肢血压并比较双侧脉搏",
+        "en": "Compare blood pressure in both arms and pulses on both sides"
+      },
+      "keywords": {
+        "zh-CN": [
+          "双上肢血压",
+          "两侧血压",
+          "双侧血压",
+          "脉搏对称",
+          "股动脉"
+        ],
+        "en": [
+          "both arms",
+          "bilateral blood pressure",
+          "bp in both arms",
+          "pulse deficit",
+          "femoral pulses"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双上肢血压相近（相差 < 10 mmHg）；双侧桡动脉、股动脉搏动对称。",
+        "en": "Arm pressures similar on both sides (difference < 10 mmHg); radial and femoral pulses symmetrical."
+      },
+      "requires": [
+        "cardiac-monitor"
+      ],
+      "required": true
+    },
+    {
+      "id": "jvp",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查颈静脉压",
+        "en": "Assess the jugular venous pressure"
+      },
+      "keywords": {
+        "zh-CN": [
+          "颈静脉",
+          "颈静脉压",
+          "颈静脉怒张",
+          "jvp",
+          "kussmaul"
+        ],
+        "en": [
+          "jvp",
+          "jugular venous",
+          "neck veins",
+          "kussmaul",
+          "venous pressure"
+        ]
+      },
+      "finding": {
+        "zh-CN": "45°半卧位时颈静脉充盈，高于胸骨角约5 cm；吸气时颈静脉充盈反而增加（Kussmaul征阳性）。",
+        "en": "At 45°, the JVP is raised about 5 cm above the sternal angle and rises further on inspiration (Kussmaul's sign positive)."
+      },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "heart",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊",
+        "en": "Auscultate the heart"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏听诊",
+          "听心脏",
+          "心音",
+          "杂音",
+          "摩擦音"
+        ],
+        "en": [
+          "heart sounds",
+          "auscultate the heart",
+          "listen to the heart",
+          "murmur",
+          "pericardial rub"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心律齐，心率慢；S1、S2正常，可闻及S4；未闻及杂音及心包摩擦音。",
+        "en": "Regular, slow rhythm; normal S1 and S2 with an S4; no murmur, no pericardial rub."
+      },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "双肺听诊",
+        "en": "Auscultate the lungs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肺部听诊",
+          "听肺",
+          "呼吸音",
+          "啰音",
+          "肺底"
+        ],
+        "en": [
+          "listen to the lungs",
+          "auscultate the lungs",
+          "chest auscultation",
+          "crackles",
+          "lung bases",
+          "breath sounds"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双肺呼吸音清，未闻及湿啰音或哮鸣音。",
+        "en": "Clear breath sounds bilaterally; no crackles or wheeze."
+      },
+      "required": true
+    },
+    {
+      "id": "resp-inspection",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "观察呼吸情况",
+        "en": "Observe breathing effort"
+      },
+      "keywords": {
+        "zh-CN": [
+          "呼吸情况",
+          "呼吸费力",
+          "发绀",
+          "辅助呼吸肌"
+        ],
+        "en": [
+          "work of breathing",
+          "breathing effort",
+          "cyanosis",
+          "accessory muscles"
+        ]
+      },
+      "finding": {
+        "zh-CN": "无辅助呼吸肌参与，无发绀。",
+        "en": "No accessory muscle use; not cyanosed."
+      }
+    },
+    {
+      "id": "chest-wall",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "按压胸壁",
+        "en": "Palpate the chest wall"
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸壁压痛",
+          "按压胸壁",
+          "肋软骨",
+          "触诊胸部"
+        ],
+        "en": [
+          "chest wall",
+          "palpate the chest",
+          "costochondral",
+          "reproducible tenderness"
+        ]
+      },
+      "finding": {
+        "zh-CN": "胸壁无压痛，按压不能复制疼痛。",
+        "en": "No chest-wall tenderness; pressing does not reproduce the pain."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "腹部触诊",
+        "en": "Palpate the abdomen"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "腹部触诊",
+          "上腹压痛"
+        ],
+        "en": [
+          "abdomen",
+          "abdominal exam",
+          "palpate the abdomen",
+          "epigastric"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹软，无压痛、反跳痛，未触及搏动性包块，肠鸣音正常。",
+        "en": "Soft, non-tender, no guarding, no pulsatile mass; normal bowel sounds."
+      }
+    },
+    {
+      "id": "legs",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查双下肢",
+        "en": "Examine the legs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "双下肢",
+          "腿肿",
+          "水肿",
+          "小腿",
+          "足背动脉"
+        ],
+        "en": [
+          "legs",
+          "leg oedema",
+          "ankle swelling",
+          "calves",
+          "pedal pulses"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双下肢无水肿，小腿软、无压痛，足背动脉搏动对称。",
+        "en": "No leg oedema; calves soft and non-tender; foot pulses symmetrical."
+      }
+    },
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "简要神经系统检查",
+        "en": "Brief neurological examination"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神经系统",
+          "神经查体",
+          "肌力",
+          "瞳孔",
+          "面瘫",
+          "神志"
+        ],
+        "en": [
+          "neurological",
+          "neuro exam",
+          "limb power",
+          "pupils",
+          "facial droop",
+          "focal deficit"
+        ]
+      },
+      "finding": {
+        "zh-CN": "神志清楚，定向力完整，言语清晰；四肢肌力正常、对称；无面瘫；瞳孔等大等圆，对光反射灵敏。",
+        "en": "Alert and orientated, clear speech; normal, symmetrical limb power; no facial droop; pupils equal and reactive to light."
+      }
+    },
+    {
+      "id": "skin-bleeding",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查皮肤黏膜有无出血",
+        "en": "Inspect skin and mucosa for bleeding or bruising"
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤",
+          "瘀斑",
+          "出血点",
+          "黏膜出血"
+        ],
+        "en": [
+          "skin",
+          "bruising",
+          "petechiae",
+          "mucosal bleeding"
+        ]
+      },
+      "finding": {
+        "zh-CN": "皮肤黏膜无瘀斑、出血点。",
+        "en": "No bruising, petechiae or mucosal bleeding."
+      }
+    },
+    {
+      "id": "access-site",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查右侧桡动脉及尺动脉（拟PCI入路）",
+        "en": "Check the right radial and ulnar pulses (planned PCI access)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "桡动脉入路",
+          "穿刺部位",
+          "尺动脉",
+          "allen"
+        ],
+        "en": [
+          "radial access",
+          "access site",
+          "ulnar pulse",
+          "allen"
+        ]
+      },
+      "finding": {
+        "zh-CN": "右侧桡动脉搏动好，尺动脉搏动可触及，手部侧支循环良好。",
+        "en": "Right radial pulse strong; ulnar pulse palpable; good collateral circulation to the hand."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "本病例未记录该项检查结果。",
+    "en": "This examination is not recorded for this case."
+  },
+  "investigations": [
+    {
+      "id": "ecg-12lead",
+      "name": {
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "十二导联",
+          "12导联",
+          "ecg",
+          "ekg"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "12-lead",
+          "12lead",
+          "electrocardiogram"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "turnaroundMinutes": 5,
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "窦性心动过缓，心率54次/分，节律规整。PR间期0.20 s，QRS 0.09 s，QTc 430 ms，电轴正常。II、III、aVF导联ST段弓背向上抬高（III 3.0 mm，aVF 2.5 mm，II 1.5 mm；III > II），下壁导联T波高耸；I、aVL导联ST段压低（aVL 2.0 mm，I 1.0 mm）。V1导联ST段抬高0.5 mm；V2–V3无ST段压低。III导联可见小q波。未见房室传导阻滞。",
+            "en": "Sinus bradycardia, 54 bpm, regular. PR 0.20 s, QRS 0.09 s, QTc 430 ms, normal axis. Convex ST elevation in II, III and aVF (III 3.0 mm, aVF 2.5 mm, II 1.5 mm; III > II) with hyperacute inferior T waves; reciprocal ST depression in I and aVL (aVL 2.0 mm, I 1.0 mm). V1 ST elevation 0.5 mm; no ST depression in V2–V3. Small q wave in III. No AV block."
+          },
+          "note": {
+            "zh-CN": "无既往心电图可供对比。",
+            "en": "No previous ECG is available for comparison."
+          },
+          "critical": true
+        },
+        "cath": {
+          "text": {
+            "zh-CN": "PCI术后心电图：窦性心律，66次/分。II、III、aVF导联ST段较术前回落 > 70%（III导联残余抬高0.5 mm），I、aVL导联对应性压低消失；III、aVF导联出现Q波，下壁T波开始倒置。PR 0.18 s，无房室传导阻滞。",
+            "en": "Post-PCI ECG: sinus rhythm, 66 bpm. ST elevation in II, III and aVF has resolved by > 70% (residual 0.5 mm in III); reciprocal depression in I and aVL has resolved. Q waves in III and aVF with early inferior T-wave inversion. PR 0.18 s, no AV block."
+          },
+          "note": {
+            "zh-CN": "ST段回落 > 70%提示心肌再灌注良好。",
+            "en": "ST-segment resolution > 70% indicates good myocardial reperfusion."
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg-right-sided",
+      "name": {
+        "zh-CN": "右胸及后壁导联心电图（V3R–V6R、V7–V9）",
+        "en": "Right-sided and posterior lead ECG (V3R–V6R, V7–V9)"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "右胸导联",
+          "右心导联",
+          "后壁导联",
+          "18导联",
+          "十八导联",
+          "v4r",
+          "v3r",
+          "v7"
+        ],
+        "en": [
+          "right-sided",
+          "rightsided",
+          "right sided",
+          "v4r",
+          "v3r",
+          "posterior leads",
+          "v7",
+          "18-lead",
+          "18lead"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "turnaroundMinutes": 5,
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "右胸导联（V3R–V6R）：V4R导联ST段抬高1.5 mm，T波直立；V3R导联ST段抬高1.0 mm。后壁导联（V7–V9）：无ST段抬高。节律同前（窦性心动过缓）。",
+            "en": "Right-sided leads (V3R–V6R): ST elevation 1.5 mm in V4R with an upright T wave; 1.0 mm in V3R. Posterior leads (V7–V9): no ST elevation. Rhythm unchanged (sinus bradycardia)."
+          },
+          "critical": true
+        }
+      }
+    },
+    {
+      "id": "hs-troponin",
+      "name": {
+        "zh-CN": "高敏肌钙蛋白T",
+        "en": "High-sensitivity troponin T"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肌钙蛋白",
+          "高敏肌钙蛋白",
+          "tnt",
+          "tni",
+          "ctn",
+          "心肌损伤标志物"
+        ],
+        "en": [
+          "troponin",
+          "hs-tnt",
+          "hstnt",
+          "tnt",
+          "tni",
+          "ctn",
+          "cardiac markers"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 50,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "高敏肌钙蛋白T 128 ng/L，明显升高（第99百分位上限 14 ng/L）。",
+            "en": "hs-cTnT 128 ng/L — markedly raised (99th-percentile upper reference limit 14 ng/L)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "高敏肌钙蛋白T (hs-cTnT)",
+                "en": "hs-cTnT"
+              },
+              "value": 128,
+              "unit": "ng/L",
+              "refHigh": 14,
+              "flag": "H"
+            }
+          ],
+          "note": {
+            "zh-CN": "STEMI的诊断与再灌注决策依据心电图，不应等待肌钙蛋白结果。",
+            "en": "STEMI diagnosis and the reperfusion decision rest on the ECG — do not wait for troponin."
+          },
+          "critical": true
+        }
+      }
+    },
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Full blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血象",
+          "全血细胞",
+          "血红蛋白",
+          "cbc",
+          "fbc"
+        ],
+        "en": [
+          "cbc",
+          "fbc",
+          "full blood count",
+          "complete blood count",
+          "blood count",
+          "haemoglobin",
+          "hemoglobin"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "turnaroundMinutes": 30,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "白细胞轻度升高（中性粒细胞为主）；血红蛋白、血小板正常。",
+            "en": "Mild neutrophil-predominant leucocytosis; haemoglobin and platelets normal."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞 (WBC)",
+                "en": "White cells (WBC)"
+              },
+              "value": 11.4,
+              "unit": "×10⁹/L",
+              "refLow": 3.5,
+              "refHigh": 9.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞",
+                "en": "Neutrophils"
+              },
+              "value": 8.9,
+              "unit": "×10⁹/L",
+              "refLow": 1.8,
+              "refHigh": 6.3,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "淋巴细胞",
+                "en": "Lymphocytes"
+              },
+              "value": 1.9,
+              "unit": "×10⁹/L",
+              "refLow": 1.1,
+              "refHigh": 3.2,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白 (Hb)",
+                "en": "Haemoglobin (Hb)"
+              },
+              "value": 148,
+              "unit": "g/L",
+              "refLow": 130,
+              "refHigh": 175,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "红细胞压积 (HCT)",
+                "en": "Haematocrit (HCT)"
+              },
+              "value": 0.44,
+              "unit": "L/L",
+              "refLow": 0.4,
+              "refHigh": 0.5,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "平均红细胞体积 (MCV)",
+                "en": "MCV"
+              },
+              "value": 89,
+              "unit": "fL",
+              "refLow": 82,
+              "refHigh": 100,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板 (PLT)",
+                "en": "Platelets (PLT)"
+              },
+              "value": 236,
+              "unit": "×10⁹/L",
+              "refLow": 125,
+              "refHigh": 350,
+              "flag": "N"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "renal-electrolytes",
+      "name": {
+        "zh-CN": "电解质与肾功能",
+        "en": "Electrolytes and renal function"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "电解质",
+          "肾功能",
+          "生化",
+          "肌酐",
+          "血钾",
+          "尿素",
+          "bmp"
+        ],
+        "en": [
+          "electrolytes",
+          "renal function",
+          "kidney function",
+          "u&e",
+          "bmp",
+          "creatinine",
+          "potassium",
+          "chemistry"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 40,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "电解质及肾功能正常：钠139、钾3.9、氯103、碳酸氢根24 mmol/L，阴离子间隙 = 139 − (103 + 24) = 12 mmol/L；肌酐92 µmol/L（约1.04 mg/dL），eGFR 83 mL/min/1.73 m²（CKD-EPI 2021）。静脉血浆葡萄糖8.8 mmol/L（约159 mg/dL），轻度升高。",
+            "en": "Normal electrolytes and renal function: Na 139, K 3.9, Cl 103, HCO₃ 24 mmol/L; anion gap = 139 − (103 + 24) = 12 mmol/L; creatinine 92 µmol/L (≈1.04 mg/dL), eGFR 83 mL/min/1.73 m² (CKD-EPI 2021). Venous plasma glucose 8.8 mmol/L (≈159 mg/dL), mildly raised."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "钠 (Na⁺)",
+                "en": "Sodium (Na⁺)"
+              },
+              "value": 139,
+              "unit": "mmol/L",
+              "refLow": 135,
+              "refHigh": 145,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "钾 (K⁺)",
+                "en": "Potassium (K⁺)"
+              },
+              "value": 3.9,
+              "unit": "mmol/L",
+              "refLow": 3.5,
+              "refHigh": 5.3,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "氯 (Cl⁻)",
+                "en": "Chloride (Cl⁻)"
+              },
+              "value": 103,
+              "unit": "mmol/L",
+              "refLow": 99,
+              "refHigh": 110,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碳酸氢根 (HCO₃⁻)",
+                "en": "Bicarbonate (HCO₃⁻)"
+              },
+              "value": 24,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 29,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "阴离子间隙（计算）",
+                "en": "Anion gap (calculated)"
+              },
+              "value": 12,
+              "unit": "mmol/L",
+              "refLow": 8,
+              "refHigh": 16,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿素",
+                "en": "Urea"
+              },
+              "value": 6.2,
+              "unit": "mmol/L",
+              "refLow": 2.8,
+              "refHigh": 7.6,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酐",
+                "en": "Creatinine"
+              },
+              "value": 92,
+              "unit": "µmol/L",
+              "refLow": 59,
+              "refHigh": 104,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "估算肾小球滤过率 (eGFR, CKD-EPI 2021)",
+                "en": "eGFR (CKD-EPI 2021)"
+              },
+              "value": 83,
+              "unit": "mL/min/1.73 m²",
+              "refLow": 60,
+              "refText": ">60",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血浆葡萄糖",
+                "en": "Plasma glucose"
+              },
+              "value": 8.8,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 6.1,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "镁 (Mg²⁺)",
+                "en": "Magnesium (Mg²⁺)"
+              },
+              "value": 0.86,
+              "unit": "mmol/L",
+              "refLow": 0.75,
+              "refHigh": 1.02,
+              "flag": "N"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "凝血功能",
+        "en": "Coagulation screen"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "凝血",
+          "凝血功能",
+          "凝血四项",
+          "凝血酶原",
+          "inr",
+          "aptt"
+        ],
+        "en": [
+          "coagulation",
+          "coag",
+          "clotting",
+          "inr",
+          "aptt",
+          "pt/inr"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "turnaroundMinutes": 30,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "凝血功能正常。",
+            "en": "Normal coagulation screen."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间 (PT)",
+                "en": "Prothrombin time (PT)"
+              },
+              "value": 12,
+              "unit": "s",
+              "refLow": 10,
+              "refHigh": 13.5,
+              "flag": "N"
+            },
+            {
+              "analyte": "INR",
+              "value": 1.02,
+              "unit": "",
+              "refLow": 0.8,
+              "refHigh": 1.2,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "活化部分凝血活酶时间 (APTT)",
+                "en": "APTT"
+              },
+              "value": 31,
+              "unit": "s",
+              "refLow": 25,
+              "refHigh": 37,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "纤维蛋白原",
+                "en": "Fibrinogen"
+              },
+              "value": 3.1,
+              "unit": "g/L",
+              "refLow": 2,
+              "refHigh": 4,
+              "flag": "N"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "vbg",
+      "name": {
+        "zh-CN": "静脉血气 + 乳酸",
+        "en": "Venous blood gas + lactate"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "静脉血气",
+          "血气",
+          "乳酸",
+          "vbg"
+        ],
+        "en": [
+          "vbg",
+          "venous blood gas",
+          "venous gas",
+          "blood gas",
+          "lactate"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "turnaroundMinutes": 5,
+      "risk": "low",
+      "value": "neutral",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "静脉血：pH 7.35，pCO₂ 5.9 kPa（44 mmHg），HCO₃⁻ 24 mmol/L，BE −1.1 mmol/L，乳酸2.3 mmol/L（轻度升高），K⁺ 3.9 mmol/L。静脉血气不能评估氧合。",
+            "en": "Venous sample: pH 7.35, pCO₂ 5.9 kPa (44 mmHg), HCO₃⁻ 24 mmol/L, BE −1.1 mmol/L, lactate 2.3 mmol/L (mildly raised), K⁺ 3.9 mmol/L. A venous gas does not assess oxygenation."
+          },
+          "values": [
+            {
+              "analyte": "pH",
+              "value": 7.35,
+              "unit": "",
+              "refLow": 7.31,
+              "refHigh": 7.41,
+              "flag": "N"
+            },
+            {
+              "analyte": "pCO₂",
+              "value": 5.9,
+              "unit": "kPa",
+              "refLow": 5.5,
+              "refHigh": 6.8,
+              "flag": "N"
+            },
+            {
+              "analyte": "HCO₃⁻",
+              "value": 24,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 29,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱剩余 (BE)",
+                "en": "Base excess (BE)"
+              },
+              "value": -1.1,
+              "unit": "mmol/L",
+              "refLow": -2,
+              "refHigh": 2,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸",
+                "en": "Lactate"
+              },
+              "value": 2.3,
+              "unit": "mmol/L",
+              "refLow": 0.5,
+              "refHigh": 2,
+              "flag": "H"
+            },
+            {
+              "analyte": "K⁺",
+              "value": 3.9,
+              "unit": "mmol/L",
+              "refLow": 3.5,
+              "refHigh": 5.3,
+              "flag": "N"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "abg",
+      "name": {
+        "zh-CN": "动脉血气分析",
+        "en": "Arterial blood gas"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "动脉血气",
+          "动脉血",
+          "abg",
+          "氧分压"
+        ],
+        "en": [
+          "abg",
+          "arterial blood gas",
+          "arterial gas",
+          "pao2"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "turnaroundMinutes": 5,
+      "risk": "moderate",
+      "value": "low-value",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "动脉血（左侧桡动脉，未吸氧）：pH 7.41，PaO₂ 10.8 kPa（81 mmHg），PaCO₂ 5.1 kPa（38 mmHg），HCO₃⁻ 24 mmol/L，BE −0.2 mmol/L，SaO₂ 96%，乳酸2.2 mmol/L。",
+            "en": "Arterial sample (left radial, room air): pH 7.41, PaO₂ 10.8 kPa (81 mmHg), PaCO₂ 5.1 kPa (38 mmHg), HCO₃⁻ 24 mmol/L, BE −0.2 mmol/L, SaO₂ 96%, lactate 2.2 mmol/L."
+          },
+          "values": [
+            {
+              "analyte": "pH",
+              "value": 7.41,
+              "unit": "",
+              "refLow": 7.35,
+              "refHigh": 7.45,
+              "flag": "N"
+            },
+            {
+              "analyte": "PaO₂",
+              "value": 10.8,
+              "unit": "kPa",
+              "refLow": 10.7,
+              "refHigh": 13.3,
+              "flag": "N"
+            },
+            {
+              "analyte": "PaCO₂",
+              "value": 5.1,
+              "unit": "kPa",
+              "refLow": 4.7,
+              "refHigh": 6,
+              "flag": "N"
+            },
+            {
+              "analyte": "HCO₃⁻",
+              "value": 24,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 26,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱剩余 (BE)",
+                "en": "Base excess (BE)"
+              },
+              "value": -0.2,
+              "unit": "mmol/L",
+              "refLow": -2,
+              "refHigh": 2,
+              "flag": "N"
+            },
+            {
+              "analyte": "SaO₂",
+              "value": 96,
+              "unit": "%",
+              "refLow": 95,
+              "refHigh": 100,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸",
+                "en": "Lactate"
+              },
+              "value": 2.2,
+              "unit": "mmol/L",
+              "refLow": 0.5,
+              "refHigh": 2,
+              "flag": "H"
+            }
+          ],
+          "note": {
+            "zh-CN": "SpO₂ 96%时无需动脉穿刺；即将抗凝和经桡动脉PCI，应尽量避免不必要的动脉穿刺。",
+            "en": "With SpO₂ 96% an arterial puncture adds nothing; with anticoagulation and radial-access PCI imminent, avoid unnecessary arterial punctures."
+          }
+        }
+      }
+    },
+    {
+      "id": "poc-glucose",
+      "name": {
+        "zh-CN": "床旁快速血糖",
+        "en": "Point-of-care capillary glucose"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "血糖",
+          "指尖血糖",
+          "快速血糖",
+          "微量血糖"
+        ],
+        "en": [
+          "glucose",
+          "fingerstick",
+          "capillary glucose",
+          "blood sugar",
+          "poc glucose",
+          "bedside glucose"
+        ]
+      },
+      "requires": [
+        "point-of-care"
+      ],
+      "turnaroundMinutes": 1,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "指尖毛细血管血糖8.6 mmol/L（约155 mg/dL）。",
+            "en": "Capillary glucose 8.6 mmol/L (≈155 mg/dL)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "毛细血管血糖",
+                "en": "Capillary glucose"
+              },
+              "value": 8.6,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 7.8,
+              "refText": "随机 3.9–7.8 / random 3.9–7.8",
+              "flag": "H"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lipids-hba1c",
+      "name": {
+        "zh-CN": "血脂 + 糖化血红蛋白",
+        "en": "Lipid profile + HbA1c"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血脂",
+          "胆固醇",
+          "糖化血红蛋白",
+          "糖化",
+          "hba1c"
+        ],
+        "en": [
+          "lipid",
+          "cholesterol",
+          "ldl",
+          "hba1c",
+          "a1c"
+        ]
+      },
+      "requires": [
+        "lab-chemistry",
+        "lab-endocrine"
+      ],
+      "turnaroundMinutes": 60,
+      "risk": "none",
+      "value": "neutral",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "总胆固醇6.2 mmol/L（约240 mg/dL），LDL-C 4.2 mmol/L（约162 mg/dL，Friedewald计算），HDL-C 0.9 mmol/L（约35 mg/dL），甘油三酯2.4 mmol/L（约213 mg/dL）。HbA1c 5.8%（40 mmol/mol）。",
+            "en": "Total cholesterol 6.2 mmol/L (≈240 mg/dL), LDL-C 4.2 mmol/L (≈162 mg/dL, Friedewald), HDL-C 0.9 mmol/L (≈35 mg/dL), triglycerides 2.4 mmol/L (≈213 mg/dL). HbA1c 5.8% (40 mmol/mol)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "总胆固醇",
+                "en": "Total cholesterol"
+              },
+              "value": 6.2,
+              "unit": "mmol/L",
+              "refHigh": 5.2,
+              "flag": "H"
+            },
+            {
+              "analyte": "LDL-C",
+              "value": 4.2,
+              "unit": "mmol/L",
+              "refHigh": 3.4,
+              "flag": "H"
+            },
+            {
+              "analyte": "HDL-C",
+              "value": 0.9,
+              "unit": "mmol/L",
+              "refLow": 1,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "甘油三酯",
+                "en": "Triglycerides"
+              },
+              "value": 2.4,
+              "unit": "mmol/L",
+              "refHigh": 1.7,
+              "flag": "H"
+            },
+            {
+              "analyte": "HbA1c",
+              "value": 5.8,
+              "unit": "%",
+              "refLow": 4,
+              "refHigh": 6,
+              "refText": "40 mmol/mol (IFCC)",
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "急性期不影响再灌注决策；用于二级预防（ESC 2023：LDL-C目标 < 1.4 mmol/L且较基线降低 ≥ 50%）。",
+            "en": "Does not affect the acute reperfusion decision; relevant to secondary prevention (ESC 2023: LDL-C goal < 1.4 mmol/L and ≥ 50% reduction from baseline)."
+          }
+        }
+      }
+    },
+    {
+      "id": "cxr-portable",
+      "name": {
+        "zh-CN": "床旁胸部X线片",
+        "en": "Portable chest X-ray"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "床旁胸片",
+          "胸部x线",
+          "x线胸片",
+          "cxr"
+        ],
+        "en": [
+          "chest x-ray",
+          "chestx-ray",
+          "chestxray",
+          "cxr",
+          "chest film",
+          "portable chest"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "turnaroundMinutes": 20,
+      "risk": "low",
+      "value": "neutral",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "床旁前后位胸片：心影大小在投照条件下正常；纵隔未见明显增宽（前后位片评估受限）；双肺野清晰，无肺水肿、气胸或胸腔积液。",
+            "en": "Portable AP film: heart size normal for the projection; mediastinum not obviously widened (limited on an AP film); lungs clear, no pulmonary oedema, pneumothorax or effusion."
+          },
+          "note": {
+            "zh-CN": "胸片不应延误再灌注；正常纵隔不能排除主动脉夹层。",
+            "en": "A chest film must not delay reperfusion; a normal mediastinum does not exclude dissection."
+          }
+        }
+      }
+    },
+    {
+      "id": "pocus-echo",
+      "name": {
+        "zh-CN": "床旁心脏超声（POCUS）",
+        "en": "Bedside focused echocardiography (POCUS)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "心脏超声",
+          "心超",
+          "超声心动图",
+          "床旁超声",
+          "pocus",
+          "彩超"
+        ],
+        "en": [
+          "echo",
+          "echocardiogram",
+          "pocus",
+          "bedside ultrasound",
+          "cardiac ultrasound",
+          "tte"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "turnaroundMinutes": 10,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "左室下壁及下间隔运动减低，左室射血分数目测约50%；右心室扩大（基底段右室/左室内径比约1.0），右室游离壁运动减低，TAPSE 13 mm（正常 ≥ 17 mm）；下腔静脉内径2.1 cm，吸气塌陷率 < 50%；无心包积液；主动脉根部34 mm，有限切面未见内膜片；彩色多普勒未见明显二尖瓣反流或室间隔分流。",
+            "en": "Inferior and inferoseptal LV hypokinesis, visual LVEF ≈ 50%; dilated RV (basal RV:LV ratio ≈ 1.0) with free-wall hypokinesis, TAPSE 13 mm (normal ≥ 17 mm); IVC 2.1 cm with < 50% inspiratory collapse; no pericardial effusion; aortic root 34 mm, no intimal flap on limited views; no significant mitral regurgitation or septal shunt on colour Doppler."
+          },
+          "note": {
+            "zh-CN": "床旁超声不能排除主动脉夹层；检查不应延误转运至导管室。",
+            "en": "POCUS cannot exclude aortic dissection, and it must not delay transfer to the cath lab."
+          }
+        }
+      }
+    },
+    {
+      "id": "ct-aortogram",
+      "name": {
+        "zh-CN": "胸主动脉CT血管成像（CTA）",
+        "en": "CT aortogram (thoracic CTA)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "主动脉cta",
+          "主动脉ct",
+          "ct主动脉",
+          "胸部增强ct",
+          "胸部ct",
+          "cta"
+        ],
+        "en": [
+          "ct aorta",
+          "ctaorta",
+          "ct aortogram",
+          "ctaortogram",
+          "cta",
+          "chest ct",
+          "chestct",
+          "ct angiogram",
+          "ctangiogram"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "turnaroundMinutes": 35,
+      "risk": "low",
+      "value": "low-value",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "胸主动脉管径正常（升主动脉34 mm），未见夹层内膜片或壁内血肿；双肺未见异常。本检查非心电门控，冠状动脉无法评估。",
+            "en": "Thoracic aorta of normal calibre (ascending aorta 34 mm); no dissection flap or intramural haematoma; lungs unremarkable. Non-gated study — the coronary arteries cannot be assessed."
+          },
+          "note": {
+            "zh-CN": "无主动脉夹层临床线索时，CTA会延误再灌注并增加造影剂负荷。",
+            "en": "Without clinical clues to dissection, CTA delays reperfusion and adds a contrast load."
+          }
+        }
+      }
+    },
+    {
+      "id": "d-dimer",
+      "name": {
+        "zh-CN": "D-二聚体",
+        "en": "D-dimer"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "d-二聚体",
+          "d二聚体",
+          "二聚体",
+          "d-dimer",
+          "ddimer"
+        ],
+        "en": [
+          "d-dimer",
+          "ddimer",
+          "dimer"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "turnaroundMinutes": 40,
+      "risk": "none",
+      "value": "low-value",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "D-二聚体0.42 mg/L FEU（参考值 < 0.50）。",
+            "en": "D-dimer 0.42 mg/L FEU (reference < 0.50)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "D-二聚体",
+                "en": "D-dimer"
+              },
+              "value": 0.42,
+              "unit": "mg/L FEU",
+              "refHigh": 0.5,
+              "flag": "N"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "nt-probnp",
+      "name": {
+        "zh-CN": "NT-proBNP",
+        "en": "NT-proBNP"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "bnp",
+          "nt-probnp",
+          "脑钠肽",
+          "利钠肽"
+        ],
+        "en": [
+          "bnp",
+          "nt-probnp",
+          "ntprobnp",
+          "natriuretic"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 50,
+      "risk": "none",
+      "value": "neutral",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "NT-proBNP 380 ng/L（< 75岁参考值 < 125 ng/L），轻度升高。",
+            "en": "NT-proBNP 380 ng/L (reference < 125 ng/L for age < 75), mildly raised."
+          },
+          "values": [
+            {
+              "analyte": "NT-proBNP",
+              "value": 380,
+              "unit": "ng/L",
+              "refHigh": 125,
+              "flag": "H"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ck-mb",
+      "name": {
+        "zh-CN": "肌酸激酶 + CK-MB",
+        "en": "Creatine kinase + CK-MB"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "ck-mb",
+          "ckmb",
+          "心肌酶",
+          "肌酸激酶"
+        ],
+        "en": [
+          "ck-mb",
+          "ckmb",
+          "cardiac enzymes",
+          "creatine kinase"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 45,
+      "risk": "none",
+      "value": "low-value",
+      "results": {
+        "ed": {
+          "text": {
+            "zh-CN": "肌酸激酶245 U/L（正常），CK-MB质量7.6 µg/L（轻度升高）。高敏肌钙蛋白时代CK-MB对诊断无额外价值。",
+            "en": "CK 245 U/L (normal), CK-MB mass 7.6 µg/L (mildly raised). CK-MB adds nothing diagnostically when hs-troponin is available."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "肌酸激酶 (CK)",
+                "en": "Creatine kinase (CK)"
+              },
+              "value": 245,
+              "unit": "U/L",
+              "refLow": 50,
+              "refHigh": 310,
+              "flag": "N"
+            },
+            {
+              "analyte": "CK-MB",
+              "value": 7.6,
+              "unit": "µg/L",
+              "refHigh": 5,
+              "flag": "H"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "coronary-angiography",
+      "name": {
+        "zh-CN": "冠状动脉造影（直接PCI）",
+        "en": "Coronary angiography (primary PCI)"
+      },
+      "category": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "冠脉造影",
+          "冠状动脉造影",
+          "造影",
+          "cag",
+          "pci"
+        ],
+        "en": [
+          "coronary angiography",
+          "coronary angiogram",
+          "angiography",
+          "angiogram",
+          "cag",
+          "pci",
+          "cath"
+        ]
+      },
+      "requires": [
+        "fluoroscopy"
+      ],
+      "turnaroundMinutes": 20,
+      "risk": "moderate",
+      "value": "essential",
+      "results": {
+        "cath": {
+          "text": {
+            "zh-CN": "经右桡动脉入路。右冠优势型。右冠状动脉近段（右室支开口近端）急性血栓性完全闭塞，TIMI 0级血流；前降支中段40%狭窄，TIMI 3级；回旋支无明显狭窄。于右冠近段植入药物洗脱支架1枚，术后TIMI 3级血流，右室支通畅。术中未行常规血栓抽吸。术后胸痛明显缓解（2/10）。",
+            "en": "Right radial access. Right-dominant circulation. Acute thrombotic occlusion of the proximal RCA (proximal to the RV branch), TIMI 0 flow; 40% mid-LAD stenosis with TIMI 3 flow; no significant circumflex disease. One drug-eluting stent to the proximal RCA with final TIMI 3 flow and a patent RV branch. Routine thrombus aspiration not performed. Chest pain much improved (2/10) after the procedure."
+          },
+          "note": {
+            "zh-CN": "前降支40%狭窄为非显著病变，无需处理。",
+            "en": "The 40% LAD lesion is not significant and needs no intervention."
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifMatches": "右|v3r|v4r|right|后壁|posterior|v7|v8|v9|18导联|十八导联|18-?lead",
+        "remove": [
+          "ecg-12lead"
+        ]
+      },
+      {
+        "ifMatches": "动脉|arterial|abg|pao2|氧分压",
+        "remove": [
+          "vbg"
+        ]
+      },
+      {
+        "ifHas": "ct-aortogram",
+        "remove": [
+          "coronary-angiography"
+        ]
+      },
+      {
+        "ifMatches": "糖化|hba1c|a1c",
+        "remove": [
+          "poc-glucose"
+        ]
+      }
+    ],
+    "exact": {
+      "18导联": [
+        "ecg-right-sided"
+      ],
+      "血气": [
+        "vbg"
+      ]
+    },
+    "warnings": [
+      {
+        "investigation": "coronary-angiography",
+        "ifMatches": "造影|angio|cag|pci|cath",
+        "message": {
+          "zh-CN": "冠脉造影/直接PCI在导管室进行：需先启动导管室并将患者转入导管室，结果才会出现。",
+          "en": "Coronary angiography / primary PCI happens in the cath lab: activate the lab and transfer the patient first — results exist only once he is there."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "cardiac-monitoring",
+      "name": {
+        "zh-CN": "持续心电、血压、血氧监护",
+        "en": "Continuous cardiac, BP and SpO₂ monitoring"
+      },
+      "kind": "monitoring",
+      "aliases": {
+        "zh-CN": [
+          "心电监护",
+          "监护",
+          "上监护",
+          "接监护仪"
+        ],
+        "en": [
+          "monitor",
+          "cardiac monitor",
+          "attach monitor",
+          "telemetry",
+          "monitoring"
+        ]
+      },
+      "requires": [
+        "cardiac-monitor"
+      ],
+      "risk": "none",
+      "setFlags": [
+        "monitored"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "监护仪已连接：持续心电、无创血压（每5分钟）及血氧监测。",
+        "en": "Monitor attached: continuous ECG, NIBP every 5 minutes and SpO₂."
+      }
+    },
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立静脉通路（左前臂）",
+        "en": "Peripheral IV access (left forearm)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "开放静脉",
+          "打针",
+          "抽血"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "iv line",
+          "venous access",
+          "bloods"
+        ]
+      },
+      "dose": {
+        "zh-CN": "左前臂18G留置针，同时抽血送检（保留右桡动脉供PCI入路）",
+        "en": "18G cannula in the left forearm, bloods drawn at the same time (spare the right radial artery for PCI access)"
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "setFlags": [
+        "iv-access"
+      ],
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "左前臂18G留置针已置入，血标本已留取。",
+        "en": "18G cannula sited in the left forearm; blood samples taken."
+      }
+    },
+    {
+      "id": "defib-pads",
+      "name": {
+        "zh-CN": "贴除颤/起搏电极片",
+        "en": "Apply defibrillation/pacing pads"
+      },
+      "kind": "monitoring",
+      "aliases": {
+        "zh-CN": [
+          "除颤电极",
+          "电极片",
+          "贴片",
+          "起搏电极"
+        ],
+        "en": [
+          "defib pads",
+          "pads on",
+          "pacing pads",
+          "defibrillator pads"
+        ]
+      },
+      "requires": [
+        "defibrillator"
+      ],
+      "risk": "low",
+      "setFlags": [
+        "pads-on"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "前-侧位除颤/起搏电极片已贴好并连接除颤仪。",
+        "en": "Antero-lateral defibrillation/pacing pads applied and connected to the defibrillator."
+      }
+    },
+    {
+      "id": "aspirin",
+      "name": {
+        "zh-CN": "阿司匹林负荷",
+        "en": "Aspirin loading dose"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿司匹林",
+          "拜阿司匹灵",
+          "asa"
+        ],
+        "en": [
+          "aspirin",
+          "asa",
+          "acetylsalicylic"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿司匹林 300 mg 嚼服（非肠溶片）",
+        "en": "Aspirin 300 mg chewed (non-enteric-coated)"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "setFlags": [
+        "aspirin-given"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "患者已嚼服阿司匹林300 mg。",
+        "en": "The patient has chewed aspirin 300 mg."
+      }
+    },
+    {
+      "id": "ticagrelor",
+      "name": {
+        "zh-CN": "替格瑞洛负荷",
+        "en": "Ticagrelor loading dose"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "替格瑞洛",
+          "倍林达"
+        ],
+        "en": [
+          "ticagrelor",
+          "brilinta",
+          "brilique"
+        ]
+      },
+      "dose": {
+        "zh-CN": "替格瑞洛 180 mg 口服",
+        "en": "Ticagrelor 180 mg PO"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "setFlags": [
+        "p2y12-given"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "contraindicatedWhen": {
+        "intervened": "clopidogrel"
+      },
+      "harm": {
+        "zh-CN": "已给氯吡格雷负荷，再加替格瑞洛负荷属于重复P2Y12抑制，显著增加出血风险。",
+        "en": "Clopidogrel has already been loaded — adding a ticagrelor load is duplicate P2Y12 inhibition and markedly increases bleeding risk."
+      },
+      "response": {
+        "zh-CN": "替格瑞洛180 mg已口服。注意：替格瑞洛可致呼吸困难及心室停搏，心动过缓患者需监测。",
+        "en": "Ticagrelor 180 mg given orally. Note: ticagrelor can cause dyspnoea and ventricular pauses — monitor in bradycardia."
+      }
+    },
+    {
+      "id": "clopidogrel",
+      "name": {
+        "zh-CN": "氯吡格雷负荷",
+        "en": "Clopidogrel loading dose"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "氯吡格雷",
+          "波立维"
+        ],
+        "en": [
+          "clopidogrel",
+          "plavix"
+        ]
+      },
+      "dose": {
+        "zh-CN": "氯吡格雷 600 mg 口服",
+        "en": "Clopidogrel 600 mg PO"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "setFlags": [
+        "p2y12-given"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "contraindicatedWhen": {
+        "intervened": "ticagrelor"
+      },
+      "harm": {
+        "zh-CN": "已给替格瑞洛负荷，再加氯吡格雷属于重复P2Y12抑制，增加出血风险。",
+        "en": "Ticagrelor has already been loaded — adding clopidogrel is duplicate P2Y12 inhibition and increases bleeding risk."
+      },
+      "response": {
+        "zh-CN": "氯吡格雷600 mg已口服。",
+        "en": "Clopidogrel 600 mg given orally."
+      }
+    },
+    {
+      "id": "ufh",
+      "name": {
+        "zh-CN": "普通肝素静脉推注",
+        "en": "Unfractionated heparin IV bolus"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肝素",
+          "普通肝素",
+          "ufh"
+        ],
+        "en": [
+          "heparin",
+          "ufh",
+          "unfractionated"
+        ]
+      },
+      "dose": {
+        "zh-CN": "普通肝素 70–100 U/kg 静脉推注（78 kg：约5500–7800 U，如6000 U），导管室内按ACT追加",
+        "en": "UFH 70–100 U/kg IV bolus (78 kg: ≈5,500–7,800 U, e.g. 6,000 U); further doses by ACT in the cath lab"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "setFlags": [
+        "anticoagulated"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "contraindicatedWhen": {
+        "intervened": "enoxaparin"
+      },
+      "harm": {
+        "zh-CN": "已用依诺肝素，再加普通肝素属于重复抗凝（交叉使用增加出血）。",
+        "en": "Enoxaparin has already been given — adding UFH is duplicate anticoagulation (crossover increases bleeding)."
+      },
+      "response": {
+        "zh-CN": "普通肝素6000 U已静脉推注。",
+        "en": "UFH 6,000 U given IV."
+      }
+    },
+    {
+      "id": "enoxaparin",
+      "name": {
+        "zh-CN": "依诺肝素静脉推注",
+        "en": "Enoxaparin IV bolus"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "依诺肝素",
+          "低分子肝素",
+          "克赛"
+        ],
+        "en": [
+          "enoxaparin",
+          "lmwh",
+          "clexane",
+          "lovenox"
+        ]
+      },
+      "dose": {
+        "zh-CN": "依诺肝素 0.5 mg/kg 静脉推注（78 kg：约40 mg）",
+        "en": "Enoxaparin 0.5 mg/kg IV bolus (78 kg: ≈40 mg)"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "setFlags": [
+        "anticoagulated"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "contraindicatedWhen": {
+        "intervened": "ufh"
+      },
+      "harm": {
+        "zh-CN": "已用普通肝素，再加依诺肝素属于重复抗凝，增加出血风险。",
+        "en": "UFH has already been given — adding enoxaparin is duplicate anticoagulation and increases bleeding risk."
+      },
+      "response": {
+        "zh-CN": "依诺肝素40 mg已静脉推注（直接PCI的可选替代抗凝方案）。",
+        "en": "Enoxaparin 40 mg given IV (an accepted alternative anticoagulant for primary PCI)."
+      }
+    },
+    {
+      "id": "fondaparinux",
+      "name": {
+        "zh-CN": "磺达肝癸钠",
+        "en": "Fondaparinux"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "磺达肝癸钠",
+          "安卓"
+        ],
+        "en": [
+          "fondaparinux",
+          "arixtra"
+        ]
+      },
+      "dose": {
+        "zh-CN": "磺达肝癸钠 2.5 mg 皮下注射",
+        "en": "Fondaparinux 2.5 mg SC"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "磺达肝癸钠不推荐用于直接PCI：单用时导管内血栓风险增加（OASIS-6），且不能替代PCI所需的抗凝。",
+        "en": "Fondaparinux is not recommended for primary PCI: catheter thrombosis risk when used alone (OASIS-6), and it does not provide the anticoagulation PCI needs."
+      },
+      "response": {
+        "zh-CN": "磺达肝癸钠2.5 mg已皮下注射。",
+        "en": "Fondaparinux 2.5 mg given SC."
+      }
+    },
+    {
+      "id": "atorvastatin",
+      "name": {
+        "zh-CN": "高强度他汀",
+        "en": "High-intensity statin"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "他汀",
+          "阿托伐他汀",
+          "立普妥"
+        ],
+        "en": [
+          "statin",
+          "atorvastatin",
+          "lipitor"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿托伐他汀 40–80 mg 口服",
+        "en": "Atorvastatin 40–80 mg PO"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "阿托伐他汀已口服；不影响再灌注时机。",
+        "en": "Atorvastatin given orally; it does not affect reperfusion timing."
+      }
+    },
+    {
+      "id": "nitroglycerin",
+      "name": {
+        "zh-CN": "硝酸甘油舌下含服",
+        "en": "Sublingual nitroglycerin (GTN)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "硝酸甘油",
+          "硝酸酯",
+          "含服硝酸甘油",
+          "消心痛"
+        ],
+        "en": [
+          "nitroglycerin",
+          "nitro",
+          "gtn",
+          "glyceryl trinitrate",
+          "nitrate"
+        ]
+      },
+      "dose": {
+        "zh-CN": "硝酸甘油 0.5 mg 舌下含服",
+        "en": "Nitroglycerin 0.4–0.5 mg sublingual"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 3,
+      "effects": [
+        {
+          "vital": "sbp",
+          "delta": -28,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        },
+        {
+          "vital": "dbp",
+          "delta": -16,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        },
+        {
+          "vital": "hr",
+          "delta": -4,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        },
+        {
+          "vital": "gcs",
+          "delta": -1,
+          "onsetMinutes": 2,
+          "rampMinutes": 2,
+          "durationMinutes": 15
+        },
+        {
+          "vital": "pain",
+          "delta": -1,
+          "onsetMinutes": 2,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        }
+      ],
+      "setFlags": [
+        "nitrate-given"
+      ],
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "右心室梗死时右室依赖前负荷，硝酸酯扩张静脉、减少回心血量，可导致严重低血压（常伴反射性心动过缓）。下壁STEMI未排除右室受累、收缩压 < 90 mmHg、心率 < 50次/分或48小时内用过PDE5抑制剂时均禁用。",
+        "en": "In right-ventricular infarction the RV is preload-dependent; nitrates venodilate, cut venous return and can cause profound hypotension (often with reflex bradycardia). Avoid in inferior STEMI until RV involvement is excluded, and with SBP < 90 mmHg, HR < 50 bpm or PDE5-inhibitor use within 48 h."
+      },
+      "response": {
+        "zh-CN": "硝酸甘油已含服。",
+        "en": "Nitroglycerin given sublingually."
+      }
+    },
+    {
+      "id": "morphine",
+      "name": {
+        "zh-CN": "吗啡静脉注射",
+        "en": "IV morphine"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "吗啡",
+          "镇痛",
+          "止痛"
+        ],
+        "en": [
+          "morphine",
+          "opioid",
+          "analgesia",
+          "pain relief"
+        ]
+      },
+      "dose": {
+        "zh-CN": "吗啡 2–4 mg 静脉缓慢推注，必要时5–15分钟后重复（小剂量滴定）",
+        "en": "Morphine 2–4 mg slow IV, repeat after 5–15 min if needed (small titrated doses)"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 3,
+      "effects": [
+        {
+          "vital": "pain",
+          "delta": -3,
+          "onsetMinutes": 3,
+          "rampMinutes": 5,
+          "durationMinutes": 60
+        },
+        {
+          "vital": "sbp",
+          "delta": -6,
+          "onsetMinutes": 3,
+          "rampMinutes": 5,
+          "durationMinutes": 45
+        },
+        {
+          "vital": "dbp",
+          "delta": -3,
+          "onsetMinutes": 3,
+          "rampMinutes": 5,
+          "durationMinutes": 45
+        },
+        {
+          "vital": "rr",
+          "delta": -2,
+          "onsetMinutes": 3,
+          "rampMinutes": 5,
+          "durationMinutes": 60
+        }
+      ],
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "vital": "sbp",
+            "op": "lt",
+            "value": 90
+          },
+          {
+            "vital": "rr",
+            "op": "lt",
+            "value": 12
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "低血压时使用吗啡会进一步扩张血管、降低前负荷，加重右室梗死所致低血压；并可抑制呼吸。",
+        "en": "Morphine in hypotension adds venodilation and further reduces preload, worsening RV-infarct hypotension, and may depress breathing."
+      },
+      "response": {
+        "zh-CN": "吗啡已静脉推注，疼痛稍缓解。注意：阿片类会延迟口服P2Y12抑制剂吸收（IMPRESSION研究），并可致低血压和呕吐。",
+        "en": "Morphine given IV; the pain eases a little. Note: opioids delay absorption of oral P2Y12 inhibitors (IMPRESSION) and can cause hypotension and vomiting."
+      }
+    },
+    {
+      "id": "ondansetron",
+      "name": {
+        "zh-CN": "昂丹司琼止吐",
+        "en": "Ondansetron antiemetic"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "昂丹司琼",
+          "止吐",
+          "枢复宁"
+        ],
+        "en": [
+          "ondansetron",
+          "antiemetic",
+          "zofran"
+        ]
+      },
+      "dose": {
+        "zh-CN": "昂丹司琼 4 mg 静脉注射",
+        "en": "Ondansetron 4 mg IV"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "response": {
+        "zh-CN": "昂丹司琼4 mg已静推，恶心有所减轻。",
+        "en": "Ondansetron 4 mg given IV; the nausea settles somewhat."
+      }
+    },
+    {
+      "id": "fluid-bolus",
+      "name": {
+        "zh-CN": "生理盐水补液",
+        "en": "IV saline fluid bolus"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "补液",
+          "生理盐水",
+          "扩容",
+          "快速补液",
+          "输液"
+        ],
+        "en": [
+          "fluid bolus",
+          "fluids",
+          "saline",
+          "normal saline",
+          "fluid challenge",
+          "volume"
+        ]
+      },
+      "dose": {
+        "zh-CN": "0.9%氯化钠 500 mL 静脉快速输注（10–15分钟），每次后复评血压、颈静脉和肺部啰音",
+        "en": "0.9% sodium chloride 500 mL IV over 10–15 min; reassess BP, JVP and lung bases after each bolus"
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 4,
+      "effects": [
+        {
+          "vital": "sbp",
+          "delta": 12,
+          "onsetMinutes": 2,
+          "rampMinutes": 10
+        },
+        {
+          "vital": "dbp",
+          "delta": 6,
+          "onsetMinutes": 2,
+          "rampMinutes": 10
+        }
+      ],
+      "setFlags": [
+        "fluids-given"
+      ],
+      "indicatedWhen": {
+        "vital": "sbp",
+        "op": "lt",
+        "value": 100
+      },
+      "contraindicatedWhen": {
+        "all": [
+          {
+            "intervened": "fluid-bolus",
+            "minCount": 2
+          },
+          {
+            "vital": "sbp",
+            "op": "gte",
+            "value": 110
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "血压已恢复仍持续大量补液会使右室过度扩张、室间隔左移，反而降低左室充盈并导致肺水肿——补液应以血流动力学反应为导向。",
+        "en": "Continuing large-volume fluid after BP has recovered over-distends the RV, shifts the septum, impairs LV filling and risks pulmonary oedema — give fluid to a haemodynamic response."
+      },
+      "response": {
+        "zh-CN": "500 mL生理盐水快速输注中。",
+        "en": "500 mL saline running in rapidly."
+      }
+    },
+    {
+      "id": "atropine",
+      "name": {
+        "zh-CN": "阿托品静脉注射",
+        "en": "IV atropine"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿托品"
+        ],
+        "en": [
+          "atropine"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿托品 0.5 mg 静脉推注，必要时每3–5分钟重复，总量 ≤ 3 mg（AHA方案为每次1 mg）",
+        "en": "Atropine 0.5 mg IV, repeat every 3–5 min if needed, maximum 3 mg (AHA uses 1 mg per dose)"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 6,
+      "effects": [
+        {
+          "vital": "hr",
+          "delta": 14,
+          "onsetMinutes": 1,
+          "rampMinutes": 2,
+          "durationMinutes": 30
+        },
+        {
+          "vital": "sbp",
+          "delta": 6,
+          "onsetMinutes": 2,
+          "rampMinutes": 3,
+          "durationMinutes": 30
+        },
+        {
+          "vital": "dbp",
+          "delta": 3,
+          "onsetMinutes": 2,
+          "rampMinutes": 3,
+          "durationMinutes": 30
+        }
+      ],
+      "setFlags": [
+        "atropine-given"
+      ],
+      "indicatedWhen": {
+        "any": [
+          {
+            "vital": "hr",
+            "op": "lt",
+            "value": 50
+          },
+          {
+            "all": [
+              {
+                "vital": "hr",
+                "op": "lt",
+                "value": 60
+              },
+              {
+                "vital": "sbp",
+                "op": "lt",
+                "value": 90
+              }
+            ]
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "vital": "hr",
+        "op": "gte",
+        "value": 100
+      },
+      "harm": {
+        "zh-CN": "心率已 ≥ 100次/分时使用阿托品会进一步增快心率、增加心肌耗氧，加重缺血。",
+        "en": "Atropine with HR already ≥ 100 bpm adds tachycardia and myocardial oxygen demand, worsening ischaemia."
+      },
+      "response": {
+        "zh-CN": "阿托品已静推。",
+        "en": "Atropine given IV."
+      }
+    },
+    {
+      "id": "dobutamine",
+      "name": {
+        "zh-CN": "多巴酚丁胺泵入",
+        "en": "Dobutamine infusion"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "多巴酚丁胺",
+          "强心",
+          "正性肌力"
+        ],
+        "en": [
+          "dobutamine",
+          "inotrope",
+          "inotropic"
+        ]
+      },
+      "dose": {
+        "zh-CN": "多巴酚丁胺 2.5–5 µg/kg/min 静脉泵入（78 kg：约0.2–0.4 mg/min）",
+        "en": "Dobutamine 2.5–5 µg/kg/min IV infusion (78 kg: ≈0.2–0.4 mg/min)"
+      },
+      "requires": [
+        "infusion-pump",
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "effects": [
+        {
+          "vital": "sbp",
+          "delta": 12,
+          "onsetMinutes": 3,
+          "rampMinutes": 10
+        },
+        {
+          "vital": "dbp",
+          "delta": 4,
+          "onsetMinutes": 3,
+          "rampMinutes": 10
+        },
+        {
+          "vital": "hr",
+          "delta": 8,
+          "onsetMinutes": 3,
+          "rampMinutes": 10
+        }
+      ],
+      "indicatedWhen": {
+        "all": [
+          {
+            "intervened": "fluid-bolus",
+            "minCount": 2
+          },
+          {
+            "vital": "sbp",
+            "op": "lt",
+            "value": 90
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "多巴酚丁胺开始泵入，需持续监测心律失常。",
+        "en": "Dobutamine infusion started; watch for arrhythmias."
+      }
+    },
+    {
+      "id": "metoprolol-iv",
+      "name": {
+        "zh-CN": "美托洛尔静脉注射",
+        "en": "IV metoprolol"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "美托洛尔",
+          "倍他乐克",
+          "β受体阻滞剂",
+          "b受体阻滞剂"
+        ],
+        "en": [
+          "metoprolol",
+          "beta blocker",
+          "beta-blocker",
+          "lopressor"
+        ]
+      },
+      "dose": {
+        "zh-CN": "美托洛尔 5 mg 静脉推注",
+        "en": "Metoprolol 5 mg IV"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 3,
+      "effects": [
+        {
+          "vital": "hr",
+          "delta": -10,
+          "onsetMinutes": 2,
+          "rampMinutes": 3,
+          "durationMinutes": 120
+        },
+        {
+          "vital": "sbp",
+          "delta": -12,
+          "onsetMinutes": 2,
+          "rampMinutes": 5,
+          "durationMinutes": 120
+        },
+        {
+          "vital": "dbp",
+          "delta": -6,
+          "onsetMinutes": 2,
+          "rampMinutes": 5,
+          "durationMinutes": 120
+        }
+      ],
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "vital": "hr",
+            "op": "lt",
+            "value": 60
+          },
+          {
+            "vital": "sbp",
+            "op": "lt",
+            "value": 100
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "心动过缓、低血压及右室梗死时静脉β受体阻滞剂可诱发严重心动过缓、房室传导阻滞和心源性休克。",
+        "en": "IV beta-blockade in bradycardia, hypotension and RV infarction can precipitate profound bradycardia, AV block and cardiogenic shock."
+      },
+      "response": {
+        "zh-CN": "美托洛尔已静推。",
+        "en": "Metoprolol given IV."
+      }
+    },
+    {
+      "id": "furosemide",
+      "name": {
+        "zh-CN": "呋塞米静脉注射",
+        "en": "IV furosemide"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "呋塞米",
+          "速尿",
+          "利尿",
+          "利尿剂"
+        ],
+        "en": [
+          "furosemide",
+          "frusemide",
+          "lasix",
+          "diuretic"
+        ]
+      },
+      "dose": {
+        "zh-CN": "呋塞米 40 mg 静脉推注",
+        "en": "Furosemide 40 mg IV"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 2,
+      "effects": [
+        {
+          "vital": "sbp",
+          "delta": -10,
+          "onsetMinutes": 10,
+          "rampMinutes": 20
+        },
+        {
+          "vital": "dbp",
+          "delta": -5,
+          "onsetMinutes": 10,
+          "rampMinutes": 20
+        }
+      ],
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "患者双肺清晰、无肺水肿；颈静脉怒张源于右室梗死。利尿会减少右室前负荷，加重低血压。",
+        "en": "The lungs are clear with no pulmonary oedema; the raised JVP reflects RV infarction. Diuresis removes RV preload and worsens hypotension."
+      },
+      "response": {
+        "zh-CN": "呋塞米已静推。",
+        "en": "Furosemide given IV."
+      }
+    },
+    {
+      "id": "oxygen",
+      "name": {
+        "zh-CN": "鼻导管吸氧",
+        "en": "Nasal-cannula oxygen"
+      },
+      "kind": "oxygen",
+      "aliases": {
+        "zh-CN": [
+          "吸氧",
+          "给氧",
+          "氧气",
+          "鼻导管",
+          "面罩"
+        ],
+        "en": [
+          "oxygen",
+          "o2",
+          "nasal cannula",
+          "face mask",
+          "non-rebreather"
+        ]
+      },
+      "dose": {
+        "zh-CN": "鼻导管吸氧 2–4 L/min（目标SpO₂ 94–98%）",
+        "en": "Nasal cannula 2–4 L/min (target SpO₂ 94–98%)"
+      },
+      "requires": [
+        "oxygen"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "effects": [
+        {
+          "vital": "spo2",
+          "delta": 2,
+          "onsetMinutes": 0,
+          "rampMinutes": 3
+        }
+      ],
+      "indicatedWhen": {
+        "any": [
+          {
+            "vital": "spo2",
+            "op": "lt",
+            "value": 90
+          },
+          {
+            "flag": "vf-arrest"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "all": [
+          {
+            "vital": "spo2",
+            "op": "gte",
+            "value": 90
+          },
+          {
+            "not": {
+              "flag": "vf-arrest"
+            }
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "SpO₂ ≥ 90%时不推荐常规吸氧（ESC 2023 III类）：无获益，且AVOID研究提示可能增加梗死面积。",
+        "en": "Routine oxygen is not recommended when SpO₂ ≥ 90% (ESC 2023 class III): no benefit, and AVOID suggested larger infarct size."
+      },
+      "response": {
+        "zh-CN": "已开始鼻导管吸氧。",
+        "en": "Nasal-cannula oxygen started."
+      }
+    },
+    {
+      "id": "tenecteplase",
+      "name": {
+        "zh-CN": "替奈普酶溶栓",
+        "en": "Tenecteplase fibrinolysis"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "溶栓",
+          "替奈普酶",
+          "阿替普酶",
+          "瑞替普酶",
+          "tnk"
+        ],
+        "en": [
+          "thrombolysis",
+          "fibrinolysis",
+          "tenecteplase",
+          "tnk",
+          "alteplase",
+          "lysis"
+        ]
+      },
+      "dose": {
+        "zh-CN": "替奈普酶 40 mg（8000 U，体重70–<80 kg档）单次静脉推注",
+        "en": "Tenecteplase 40 mg (8,000 U, 70–<80 kg weight band) single IV bolus"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "high",
+      "setFlags": [
+        "fibrinolysis-given"
+      ],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "本院可在120分钟内（实际约15分钟内导管室就绪）行直接PCI，溶栓只增加出血（包括颅内出血）风险而无获益；溶栓后立即PCI（易化PCI）在ASSENT-4 PCI研究中增加不良事件。",
+        "en": "Primary PCI is available well within 120 min here (lab ready in about 15 min), so fibrinolysis adds bleeding risk — including intracranial haemorrhage — without benefit; fibrinolysis followed by immediate PCI (facilitated PCI) increased adverse events in ASSENT-4 PCI."
+      },
+      "response": {
+        "zh-CN": "替奈普酶已静推。",
+        "en": "Tenecteplase given IV."
+      }
+    },
+    {
+      "id": "activate-cath-lab",
+      "name": {
+        "zh-CN": "一键启动导管室（直接PCI）",
+        "en": "Activate the cath lab for primary PCI (single call)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "启动导管室",
+          "导管室",
+          "直接pci",
+          "介入",
+          "叫心内科介入",
+          "胸痛中心"
+        ],
+        "en": [
+          "activate cath lab",
+          "cath lab",
+          "primary pci",
+          "stemi activation",
+          "call cardiology",
+          "interventional"
+        ]
+      },
+      "risk": "low",
+      "setFlags": [
+        "cath-lab-activated"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "response": {
+        "zh-CN": "介入值班医生已接到启动电话并同意直接PCI；导管室团队在院内，约15分钟后可接收患者。要求携带除颤仪、贴好电极片转运。",
+        "en": "The on-call interventional cardiologist accepts the activation for primary PCI; the team is in-house and the lab can take the patient in about 15 minutes. Transfer with the defibrillator and pads on."
+      }
+    },
+    {
+      "id": "transfer-cath-lab",
+      "name": {
+        "zh-CN": "转运至导管室",
+        "en": "Transfer to the cath lab"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "转运",
+          "送导管室",
+          "去导管室",
+          "转导管室"
+        ],
+        "en": [
+          "transfer",
+          "go to cath lab",
+          "send to cath lab",
+          "move to cath lab"
+        ]
+      },
+      "dose": {
+        "zh-CN": "医生与护士陪同，携带监护仪、除颤仪及急救药品转运",
+        "en": "Doctor- and nurse-escorted transfer with monitor, defibrillator and emergency drugs"
+      },
+      "risk": "moderate",
+      "setFlags": [
+        "transferred-cath-lab"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "flag": "cath-lab-activated"
+      },
+      "contraindicatedWhen": {
+        "all": [
+          {
+            "flag": "vf-arrest"
+          },
+          {
+            "not": {
+              "flag": "rosc"
+            }
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "患者处于心搏骤停（室颤）状态，必须先在原地除颤、复苏，恢复自主循环后再转运。",
+        "en": "The patient is in cardiac arrest (VF): defibrillate and resuscitate where he is, and transfer only after ROSC."
+      },
+      "response": {
+        "zh-CN": "患者已在医护陪同下转入导管室，并完成SBAR交接。",
+        "en": "The patient has been transferred to the cath lab with an escort, and an SBAR handover given."
+      }
+    },
+    {
+      "id": "admit-ccu",
+      "name": {
+        "zh-CN": "收入CCU保守治疗（择期造影）",
+        "en": "Admit to CCU for medical therapy (deferred angiography)"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "收入ccu",
+          "收住院",
+          "住院观察",
+          "保守治疗",
+          "ccu"
+        ],
+        "en": [
+          "admit to ccu",
+          "admit",
+          "conservative",
+          "medical management",
+          "ccu"
+        ]
+      },
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "发病12小时内的STEMI需要立即再灌注；保守治疗会丢失可挽救的心肌并增加死亡和机械并发症风险。",
+        "en": "STEMI within 12 hours of onset needs immediate reperfusion; medical therapy alone loses salvageable myocardium and raises mortality and mechanical complications."
+      },
+      "response": {
+        "zh-CN": "已联系CCU收治。",
+        "en": "CCU admission requested."
+      }
+    },
+    {
+      "id": "cpr",
+      "name": {
+        "zh-CN": "胸外按压（高质量心肺复苏）",
+        "en": "Chest compressions (high-quality CPR)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "心肺复苏",
+          "胸外按压",
+          "cpr",
+          "按压"
+        ],
+        "en": [
+          "cpr",
+          "chest compressions",
+          "compressions",
+          "start cpr"
+        ]
+      },
+      "risk": "moderate",
+      "setFlags": [
+        "cpr-started"
+      ],
+      "indicatedWhen": {
+        "all": [
+          {
+            "flag": "vf-arrest"
+          },
+          {
+            "not": {
+              "flag": "rosc"
+            }
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "not": {
+              "flag": "vf-arrest"
+            }
+          },
+          {
+            "flag": "rosc"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "患者有自主循环，不应进行胸外按压。",
+        "en": "The patient has a perfusing rhythm — chest compressions are not indicated."
+      },
+      "response": {
+        "zh-CN": "开始高质量胸外按压（100–120次/分，深5–6 cm），球囊面罩通气30:2。",
+        "en": "High-quality compressions started (100–120/min, 5–6 cm deep) with bag-mask ventilation 30:2."
+      }
+    },
+    {
+      "id": "defibrillation",
+      "name": {
+        "zh-CN": "非同步电除颤",
+        "en": "Unsynchronised defibrillation"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "除颤",
+          "电除颤",
+          "电击",
+          "非同步"
+        ],
+        "en": [
+          "defibrillate",
+          "defibrillation",
+          "shock",
+          "defib",
+          "unsynchronised"
+        ]
+      },
+      "dose": {
+        "zh-CN": "双相波 200 J（或按设备推荐 120–200 J），电击后立即继续胸外按压2分钟",
+        "en": "Biphasic 200 J (or the manufacturer's 120–200 J), then resume compressions immediately for 2 minutes"
+      },
+      "requires": [
+        "defibrillator"
+      ],
+      "risk": "high",
+      "setFlags": [
+        "shock-delivered"
+      ],
+      "indicatedWhen": {
+        "all": [
+          {
+            "flag": "vf-arrest"
+          },
+          {
+            "not": {
+              "flag": "rosc"
+            }
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "not": {
+              "flag": "vf-arrest"
+            }
+          },
+          {
+            "flag": "rosc"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "对有自主循环、意识清楚的患者进行非同步电击会造成剧痛，并可能诱发室颤。",
+        "en": "An unsynchronised shock in a conscious patient with a perfusing rhythm is painful and can itself induce VF."
+      },
+      "response": {
+        "zh-CN": "“全体离开！”——已放电。",
+        "en": "\"Stand clear!\" — shock delivered."
+      }
+    },
+    {
+      "id": "adrenaline",
+      "name": {
+        "zh-CN": "肾上腺素 1 mg 静脉推注",
+        "en": "Adrenaline (epinephrine) 1 mg IV"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肾上腺素"
+        ],
+        "en": [
+          "adrenaline",
+          "epinephrine",
+          "epi"
+        ]
+      },
+      "dose": {
+        "zh-CN": "肾上腺素 1 mg 静脉推注（可电击心律：第3次电击后给予，此后每3–5分钟）",
+        "en": "Adrenaline 1 mg IV (shockable rhythm: after the 3rd shock, then every 3–5 min)"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "high",
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "not": {
+              "flag": "vf-arrest"
+            }
+          },
+          {
+            "flag": "rosc"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "对有脉搏患者静推1 mg肾上腺素可导致严重高血压、心动过速及恶性心律失常。",
+        "en": "A 1 mg IV adrenaline bolus in a patient with a pulse causes severe hypertension, tachycardia and malignant arrhythmias."
+      },
+      "response": {
+        "zh-CN": "肾上腺素1 mg已静推。可电击心律的首要处理是尽早除颤。",
+        "en": "Adrenaline 1 mg given IV. In a shockable rhythm, early defibrillation is the priority."
+      }
+    }
+  ],
+  "physiology": {
+    "baseline": {
+      "hr": 54,
+      "sbp": 98,
+      "dbp": 62,
+      "rr": 18,
+      "spo2": 96,
+      "temp": 36.6,
+      "gcs": 15,
+      "glucose": 8.6,
+      "pain": 8,
+      "rhythm": "sinus-bradycardia",
+      "ecg": "st-elevation"
+    },
+    "trends": [
+      {
+        "id": "rv-sbp-fall",
+        "vital": "sbp",
+        "perMinute": -0.3,
+        "startMinute": 0,
+        "min": -15,
+        "until": {
+          "any": [
+            {
+              "intervened": "fluid-bolus"
+            },
+            {
+              "flag": "reperfused"
+            }
+          ]
+        },
+        "recoverPerMinute": 0.4
+      },
+      {
+        "id": "rv-dbp-fall",
+        "vital": "dbp",
+        "perMinute": -0.15,
+        "startMinute": 0,
+        "min": -8,
+        "until": {
+          "any": [
+            {
+              "intervened": "fluid-bolus"
+            },
+            {
+              "flag": "reperfused"
+            }
+          ]
+        },
+        "recoverPerMinute": 0.2
+      },
+      {
+        "id": "brady-hr-fall",
+        "vital": "hr",
+        "perMinute": -0.1,
+        "startMinute": 10,
+        "min": -8,
+        "until": {
+          "any": [
+            {
+              "intervened": "atropine"
+            },
+            {
+              "flag": "reperfused"
+            }
+          ]
+        },
+        "recoverPerMinute": 0.2
+      }
+    ],
+    "events": [
+      {
+        "id": "ecg-delay",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 10
+              }
+            },
+            {
+              "not": {
+                "read": "ecg-12lead"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "ecg-late"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "护士：“医生，病人到院已经10分钟了，心电图还没有人看。”",
+          "en": "Nurse: \"Doctor, he's been here ten minutes and nobody has looked at an ECG yet.\""
+        }
+      },
+      {
+        "id": "nitrate-crash",
+        "when": {
+          "all": [
+            {
+              "intervened": "nitroglycerin"
+            },
+            {
+              "not": {
+                "flag": "vf-arrest"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "nitrate-hypotension"
+        ],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "护士：“医生，含了硝酸甘油以后血压一直往下掉！他脸色发灰，说头晕、想吐。”",
+          "en": "Nurse: \"Doctor, his pressure is dropping fast since the nitro! He's grey and says he feels faint and sick.\""
+        }
+      },
+      {
+        "id": "atropine-response",
+        "when": {
+          "all": [
+            {
+              "intervened": "atropine"
+            },
+            {
+              "not": {
+                "flag": "vf-arrest"
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "rhythm": "sinus"
+        },
+        "severity": "info",
+        "message": {
+          "zh-CN": "监护：阿托品后心率上升。",
+          "en": "Monitor: heart rate rising after atropine."
+        }
+      },
+      {
+        "id": "troponin-wait",
+        "when": {
+          "all": [
+            {
+              "resultReady": "hs-troponin"
+            },
+            {
+              "not": {
+                "flag": "cath-lab-activated"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "waited-for-troponin"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "vf-arrest",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 35
+              }
+            },
+            {
+              "not": {
+                "flag": "cath-lab-activated"
+              }
+            },
+            {
+              "not": {
+                "flag": "transferred-cath-lab"
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 0,
+          "sbp": 0,
+          "dbp": 0,
+          "rr": 0,
+          "spo2": 45,
+          "gcs": 3,
+          "pain": 0,
+          "rhythm": "ventricular-fibrillation",
+          "ecg": "normal"
+        },
+        "setFlags": [
+          "vf-arrest"
+        ],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "监护仪报警！患者突然意识丧失、无脉搏、无正常呼吸——监护示心室颤动。",
+          "en": "Monitor alarm! The patient suddenly loses consciousness — no pulse, no normal breathing. The monitor shows ventricular fibrillation."
+        }
+      },
+      {
+        "id": "rosc",
+        "when": {
+          "all": [
+            {
+              "flag": "vf-arrest"
+            },
+            {
+              "flag": "shock-delivered"
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 92,
+          "sbp": 88,
+          "dbp": 56,
+          "rr": 20,
+          "spo2": 93,
+          "gcs": 12,
+          "pain": 5,
+          "rhythm": "sinus",
+          "ecg": "st-elevation"
+        },
+        "setFlags": [
+          "rosc"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "电击后立即继续胸外按压；2分钟后检查：规整窄QRS节律，可触及颈动脉搏动——自主循环恢复。患者呻吟，呼之能睁眼。",
+          "en": "Compressions resumed straight after the shock; at the 2-minute check there is an organised narrow-complex rhythm with a palpable carotid pulse — ROSC. He groans and opens his eyes to voice."
+        }
+      },
+      {
+        "id": "late-transfer",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 60
+              }
+            },
+            {
+              "not": {
+                "flag": "transferred-cath-lab"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "late-transfer"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "护士：“病人到院已经1小时了，还在急诊抢救室。”",
+          "en": "Nurse: \"He's been here an hour now and he's still in resus.\""
+        }
+      },
+      {
+        "id": "reperfusion",
+        "when": {
+          "all": [
+            {
+              "resultReady": "coronary-angiography",
+              "phase": "cath"
+            },
+            {
+              "any": [
+                {
+                  "not": {
+                    "flag": "vf-arrest"
+                  }
+                },
+                {
+                  "flag": "rosc"
+                }
+              ]
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 66,
+          "sbp": 106,
+          "dbp": 66,
+          "pain": 2,
+          "rhythm": "sinus",
+          "ecg": "normal"
+        },
+        "setFlags": [
+          "reperfused"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "导管室：右冠开通，TIMI 3级血流；患者胸痛明显减轻。",
+          "en": "Cath lab: RCA reopened with TIMI 3 flow; the chest pain is much better."
+        }
+      }
+    ],
+    "alarms": {
+      "hr": {
+        "low": 50,
+        "high": 120,
+        "criticalLow": 40,
+        "criticalHigh": 150
+      },
+      "sbp": {
+        "low": 90,
+        "high": 180,
+        "criticalLow": 80,
+        "criticalHigh": 220
+      },
+      "rr": {
+        "low": 10,
+        "high": 24,
+        "criticalLow": 8,
+        "criticalHigh": 30
+      },
+      "spo2": {
+        "low": 92,
+        "criticalLow": 88
+      },
+      "temp": {
+        "low": 36,
+        "high": 38.3,
+        "criticalLow": 35,
+        "criticalHigh": 40
+      },
+      "gcs": {
+        "low": 13,
+        "criticalLow": 8
+      },
+      "glucose": {
+        "low": 3.9,
+        "high": 15,
+        "criticalLow": 3,
+        "criticalHigh": 25
+      }
+    },
+    "noise": 1
+  },
+  "objectives": [
+    {
+      "id": "obj1-initial",
+      "title": {
+        "zh-CN": "初始评估",
+        "en": "Initial assessment"
+      },
+      "short": {
+        "zh-CN": "评估",
+        "en": "Assess"
+      },
+      "hint": {
+        "zh-CN": "胸痛患者到院后10分钟内要完成并判读12导联心电图；同时问清起病时间和疼痛性质，看一眼病人的整体情况。",
+        "en": "A chest-pain patient needs a 12-lead ECG acquired and read within 10 minutes of arrival; meanwhile pin down when the pain started, what it is like, and how he looks."
+      },
+      "guidance": {
+        "zh-CN": "走到抢救床旁：先做心电图，同时问诊、观察一般情况。",
+        "en": "Go to the resus bay: get the ECG started while you talk to him and look at him."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "ecg-12lead",
+            "phase": "ed"
+          },
+          {
+            "asked": "hpi-onset"
+          },
+          {
+            "asked": "pain-character"
+          },
+          {
+            "examined": "general"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "ordered": "ecg-12lead",
+            "phase": "ed"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj2-ecg",
+      "title": {
+        "zh-CN": "判读并扩展心电图",
+        "en": "Interpret and extend the ECG"
+      },
+      "short": {
+        "zh-CN": "心电图",
+        "en": "ECG"
+      },
+      "hint": {
+        "zh-CN": "哪些导联ST段抬高？III与II相比如何？有无对应性压低？这个部位的梗死还需要加做哪些导联？",
+        "en": "Which leads show ST elevation? How does III compare with II? Any reciprocal change? Which extra leads does this territory call for?"
+      },
+      "guidance": {
+        "zh-CN": "加做扩展导联心电图，然后到会诊板给出诊断。",
+        "en": "Record the extra leads, then commit to a diagnosis at the board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "ecg-right-sided"
+          },
+          {
+            "decided": "dx-diagnosis"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ecg-right-sided"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj3-bedside",
+      "title": {
+        "zh-CN": "床旁安全处置",
+        "en": "Treat safely at the bedside"
+      },
+      "short": {
+        "zh-CN": "稳定",
+        "en": "Stabilise"
+      },
+      "hint": {
+        "zh-CN": "血压偏低、心率偏慢：查颈静脉和双肺。这种血流动力学状态下哪些常用胸痛药物是危险的？前负荷该怎么处理？",
+        "en": "Low-ish BP and a slow heart rate: check the JVP and lung bases. Which routine chest-pain drugs are dangerous in this haemodynamic state, and what does preload need?"
+      },
+      "guidance": {
+        "zh-CN": "检查颈静脉和双肺，决定能否用硝酸酯，并处理血压。",
+        "en": "Examine JVP and lungs, decide about nitrates and support the blood pressure."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "jvp"
+          },
+          {
+            "examined": "lungs"
+          },
+          {
+            "decided": "nitrate-safety"
+          },
+          {
+            "intervened": "fluid-bolus"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "examined": "jvp"
+              },
+              {
+                "examined": "lungs"
+              }
+            ]
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "decided": "nitrate-safety"
+          },
+          "target": "board"
+        },
+        {
+          "target": "iv-access"
+        }
+      ]
+    },
+    {
+      "id": "obj4-definitive",
+      "title": {
+        "zh-CN": "确定性治疗方案",
+        "en": "Definitive treatment plan"
+      },
+      "short": {
+        "zh-CN": "方案",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "本院有24小时导管室。确诊依据是心电图还是化验？时间目标是多少？进导管室前需要哪些抗栓药物？",
+        "en": "This hospital has a 24/7 cath lab. Does the diagnosis rest on the ECG or on a blood test? What are the time targets? Which antithrombotics are needed before the lab?"
+      },
+      "guidance": {
+        "zh-CN": "确定再灌注策略、给予抗栓治疗并启动相应团队。",
+        "en": "Choose the reperfusion strategy, give antithrombotic therapy and mobilise the team."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "reperfusion-strategy"
+          },
+          {
+            "decided": "antithrombotic-bundle"
+          },
+          {
+            "flag": "cath-lab-activated"
+          },
+          {
+            "intervened": "aspirin"
+          },
+          {
+            "flag": "p2y12-given"
+          },
+          {
+            "flag": "anticoagulated"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "decided": "reperfusion-strategy"
+          },
+          "target": "board"
+        },
+        {
+          "unless": {
+            "all": [
+              {
+                "intervened": "aspirin"
+              },
+              {
+                "flag": "p2y12-given"
+              },
+              {
+                "flag": "anticoagulated"
+              }
+            ]
+          },
+          "target": "medications"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj5-transfer",
+      "title": {
+        "zh-CN": "交接与转运",
+        "en": "Handover and transfer"
+      },
+      "short": {
+        "zh-CN": "转运",
+        "en": "Transfer"
+      },
+      "hint": {
+        "zh-CN": "安全转运（监护、除颤仪、陪同），在导管室确认罪犯血管和再灌注效果（复查心电图看ST段回落）。",
+        "en": "Transfer safely (monitor, defibrillator, escort), then confirm the culprit and reperfusion in the lab (repeat ECG for ST resolution)."
+      },
+      "guidance": {
+        "zh-CN": "转运至导管室，查看造影结果并复查心电图。",
+        "en": "Transfer to the cath lab, review the angiogram and repeat the ECG."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "phase": "cath"
+          },
+          {
+            "read": "coronary-angiography",
+            "phase": "cath"
+          },
+          {
+            "read": "ecg-12lead",
+            "phase": "cath"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "phase": "cath"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "coronary-angiography",
+            "phase": "cath"
+          },
+          "target": "fluoroscopy"
+        },
+        {
+          "target": "ecg-12lead"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dx-diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "综合病史、查体和心电图，最可能的诊断是什么？",
+        "en": "Bringing together the history, examination and ECGs, what is the most likely diagnosis?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "ecg-12lead",
+            "phase": "ed"
+          },
+          {
+            "read": "ecg-right-sided"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先判读标准12导联及扩展导联（右胸/后壁）心电图。",
+        "en": "Read the standard 12-lead ECG and the extended (right-sided/posterior) leads first."
+      },
+      "options": [
+        {
+          "id": "dx-inferior-rv",
+          "text": {
+            "zh-CN": "急性下壁ST段抬高型心肌梗死合并右心室梗死（右冠近段闭塞可能）",
+            "en": "Acute inferior STEMI with right-ventricular involvement (likely proximal RCA occlusion)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。II/III/aVF ST段抬高且III > II、I/aVL对应性压低提示右冠；V4R ST抬高1.5 mm提示右室受累；低血压 + 颈静脉怒张/Kussmaul征 + 双肺清晰是右室梗死的典型表现。",
+            "en": "Correct. ST elevation in II/III/aVF with III > II and reciprocal depression in I/aVL points to the RCA; 1.5 mm ST elevation in V4R indicates RV involvement; hypotension with a raised JVP/Kussmaul's sign and clear lungs is the classic RV-infarct picture."
+          }
+        },
+        {
+          "id": "dx-inferior-only",
+          "text": {
+            "zh-CN": "单纯急性下壁STEMI（无右室受累）",
+            "en": "Acute inferior STEMI without RV involvement"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不完整。V4R ST段抬高 ≥ 1 mm即提示右室受累，这会改变处理（避免硝酸酯/利尿剂、需要补液）。",
+            "en": "Incomplete. ST elevation ≥ 1 mm in V4R indicates RV involvement, and that changes management (avoid nitrates/diuretics, give fluid)."
+          }
+        },
+        {
+          "id": "dx-posterior",
+          "text": {
+            "zh-CN": "急性下后壁STEMI（回旋支闭塞）",
+            "en": "Acute inferoposterior STEMI (circumflex occlusion)"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。V7–V9无ST段抬高、V2–V3无ST段压低，不支持后壁受累；III > II且I/aVL压低更支持右冠而非回旋支。",
+            "en": "No. There is no ST elevation in V7–V9 and no ST depression in V2–V3, so no posterior involvement; III > II with depression in I/aVL favours the RCA over the circumflex."
+          }
+        },
+        {
+          "id": "dx-pericarditis",
+          "text": {
+            "zh-CN": "急性心包炎",
+            "en": "Acute pericarditis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。心包炎为广泛导联凹面向上的ST抬高伴PR段压低，不应出现对应性ST压低；疼痛也无体位/呼吸相关性。",
+            "en": "No. Pericarditis gives widespread concave ST elevation with PR depression and no reciprocal depression; this pain is not positional or pleuritic."
+          }
+        },
+        {
+          "id": "dx-dissection",
+          "text": {
+            "zh-CN": "主动脉夹层累及右冠开口",
+            "en": "Aortic dissection involving the RCA ostium"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "可能性很低但需警惕：无撕裂样背痛、双上肢血压对称、脉搏对称、无新发杂音或神经体征。床旁快速筛查后不应因此延误再灌注。",
+            "en": "Unlikely but worth a thought: no tearing back pain, equal arm pressures and pulses, no new murmur or neurological signs. Screen at the bedside, then do not let it delay reperfusion."
+          }
+        },
+        {
+          "id": "dx-nstemi",
+          "text": {
+            "zh-CN": "非ST段抬高型心肌梗死",
+            "en": "NSTEMI"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。两个相邻肢体导联ST段抬高 ≥ 1 mm已满足STEMI心电图标准，不需要等待肌钙蛋白。",
+            "en": "No. ST elevation ≥ 1 mm in two contiguous limb leads meets the STEMI ECG criteria; troponin is not needed to make the diagnosis."
+          }
+        }
+      ]
+    },
+    {
+      "id": "nitrate-safety",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "患者仍有8/10胸痛。护士问：“要不要给一片硝酸甘油含服？”你的最佳回答是？",
+        "en": "He still has 8/10 chest pain. The nurse asks, \"Shall I give him a nitroglycerin tablet under the tongue?\" What is the best response?"
+      },
+      "requires": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "need": {
+        "zh-CN": "先判读12导联心电图。",
+        "en": "Read the 12-lead ECG first."
+      },
+      "options": [
+        {
+          "id": "nitro-withhold",
+          "text": {
+            "zh-CN": "不给硝酸酯；先小剂量补液维持前负荷，尽快再灌注，必要时小剂量滴定镇痛",
+            "en": "Withhold nitrates; support preload with a cautious fluid bolus, reperfuse fast, and give small titrated analgesia only if needed"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。下壁STEMI合并右室梗死且血压偏低、心率偏慢，硝酸酯可致严重低血压；最有效的止痛是尽快开通血管。",
+            "en": "Correct. In inferior STEMI with RV involvement, borderline BP and bradycardia, nitrates can cause profound hypotension; the best analgesic is opening the artery."
+          }
+        },
+        {
+          "id": "nitro-sl",
+          "text": {
+            "zh-CN": "含服硝酸甘油0.4–0.5 mg，每5分钟一次，最多3次",
+            "en": "Sublingual nitroglycerin 0.4–0.5 mg every 5 minutes, up to 3 doses"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "危险。右室梗死依赖前负荷，含服硝酸甘油可使血压骤降、甚至诱发心动过缓和晕厥。",
+            "en": "Dangerous. The infarcted RV is preload-dependent; sublingual nitrate can make the BP plummet and even trigger bradycardia and syncope."
+          }
+        },
+        {
+          "id": "nitro-iv",
+          "text": {
+            "zh-CN": "静脉泵入硝酸甘油，按疼痛滴定",
+            "en": "Start an IV nitroglycerin infusion titrated to pain"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "危险。静脉硝酸酯同样减少前负荷，且收缩压已接近90 mmHg。",
+            "en": "Dangerous. IV nitrates also reduce preload, and the SBP is already close to 90 mmHg."
+          }
+        },
+        {
+          "id": "nitro-after-fluid",
+          "text": {
+            "zh-CN": "先补液500 mL，血压 > 100 mmHg后再给硝酸甘油",
+            "en": "Give 500 mL of fluid first, then nitroglycerin once SBP > 100 mmHg"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。右室梗死本身就是硝酸酯的禁忌，补液后血压回升不改变这一点。",
+            "en": "No. RV infarction itself is the contraindication; a fluid-restored BP does not change that."
+          }
+        },
+        {
+          "id": "nitro-furosemide",
+          "text": {
+            "zh-CN": "颈静脉怒张提示容量过多，改用呋塞米",
+            "en": "The raised JVP means fluid overload — give furosemide instead"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。双肺清晰，颈静脉怒张源于右室衰竭；利尿会进一步减少前负荷，加重低血压。",
+            "en": "No. The lungs are clear; the raised JVP reflects RV failure, and diuresis would cut preload further and worsen hypotension."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reperfusion-strategy",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "本院有24小时可用的导管室，团队今天在院内。最佳再灌注策略是？",
+        "en": "This hospital runs a 24/7 cath lab and the team is in-house today. What is the best reperfusion strategy?"
+      },
+      "requires": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "need": {
+        "zh-CN": "先判读12导联心电图。",
+        "en": "Read the 12-lead ECG first."
+      },
+      "options": [
+        {
+          "id": "rep-ppci",
+          "text": {
+            "zh-CN": "立即一键启动导管室行直接PCI，目标首次医疗接触至导丝通过 ≤ 60分钟（最迟 ≤ 90分钟）",
+            "en": "Activate the cath lab now (single call) for primary PCI; aim for FMC-to-wire ≤ 60 min (and no later than 90 min)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。直接PCI是首选再灌注方式。ESC 2023：心电图诊断 ≤ 10分钟；直接就诊于PCI中心者首次医疗接触至导丝通过 ≤ 60分钟；ACC/AHA：首次医疗接触至器械 ≤ 90分钟。",
+            "en": "Correct. Primary PCI is the preferred reperfusion strategy. ESC 2023: ECG diagnosis ≤ 10 min; FMC-to-wire ≤ 60 min for patients presenting to a PCI centre; ACC/AHA: FMC-to-device ≤ 90 min."
+          }
+        },
+        {
+          "id": "rep-lysis",
+          "text": {
+            "zh-CN": "立即替奈普酶溶栓，再转导管室",
+            "en": "Give tenecteplase now, then send him to the cath lab"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。只有预计从诊断到PCI（导丝通过）> 120分钟时才首选溶栓（诊断后10分钟内给药），之后2–24小时内行造影；本院可及时PCI，溶栓只增加出血风险。",
+            "en": "No. Fibrinolysis is chosen only when the expected diagnosis-to-PCI (wire crossing) time exceeds 120 min — given within 10 min of diagnosis, followed by angiography within 2–24 h. Here PCI is timely, so lysis only adds bleeding risk."
+          }
+        },
+        {
+          "id": "rep-wait-trop",
+          "text": {
+            "zh-CN": "等高敏肌钙蛋白结果回报确认后再决定",
+            "en": "Wait for the hs-troponin result to confirm before deciding"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。STEMI依据症状 + 心电图诊断；等待肌钙蛋白（约50分钟）会丢失心肌并增加室颤风险。",
+            "en": "No. STEMI is diagnosed on symptoms plus ECG; waiting about 50 minutes for troponin loses myocardium and prolongs the window for VF."
+          }
+        },
+        {
+          "id": "rep-ccu",
+          "text": {
+            "zh-CN": "收入CCU药物治疗，24–72小时内择期造影",
+            "en": "Admit to CCU for medical therapy with angiography in 24–72 h"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。这是NSTE-ACS的策略。发病12小时内的STEMI需要立即再灌注。",
+            "en": "No. That is an NSTE-ACS strategy; STEMI within 12 hours of onset needs immediate reperfusion."
+          }
+        },
+        {
+          "id": "rep-cta",
+          "text": {
+            "zh-CN": "先行主动脉CTA排除夹层，再决定是否启动导管室",
+            "en": "Get a CT aortogram to exclude dissection before deciding on the cath lab"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。无夹层临床线索时，常规CTA会延误再灌注；床旁评估（病史、双上肢血压、脉搏、杂音、神经体征）即可。",
+            "en": "No. Without clinical clues to dissection, routine CTA delays reperfusion; bedside assessment (history, both-arm BPs, pulses, murmur, neurology) is enough."
+          }
+        }
+      ]
+    },
+    {
+      "id": "antithrombotic-bundle",
+      "kind": "multiple",
+      "prompt": {
+        "zh-CN": "进入导管室前，应给予哪些抗栓治疗？（多选，选出全部正确项）",
+        "en": "Which antithrombotic therapies should he receive before the cath lab? (Select all that apply.)"
+      },
+      "requires": {
+        "read": "ecg-12lead",
+        "phase": "ed"
+      },
+      "need": {
+        "zh-CN": "先判读12导联心电图。",
+        "en": "Read the 12-lead ECG first."
+      },
+      "options": [
+        {
+          "id": "at-aspirin",
+          "text": {
+            "zh-CN": "阿司匹林150–300 mg负荷（嚼服）",
+            "en": "Aspirin 150–300 mg loading dose (chewed)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。所有无禁忌的STEMI患者都应尽早给予阿司匹林负荷。",
+            "en": "Correct. Every STEMI patient without a contraindication should get an early aspirin load."
+          }
+        },
+        {
+          "id": "at-p2y12",
+          "text": {
+            "zh-CN": "一种P2Y12抑制剂负荷（替格瑞洛180 mg 或 氯吡格雷600 mg）",
+            "en": "One P2Y12 inhibitor load (ticagrelor 180 mg or clopidogrel 600 mg)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。直接PCI前给予强效P2Y12抑制剂负荷（中国指南推荐尽早给予；ESC 2023认为可以考虑预先给药）。",
+            "en": "Correct. Load a potent P2Y12 inhibitor before primary PCI (Chinese guidance recommends early loading; ESC 2023 says pretreatment may be considered)."
+          }
+        },
+        {
+          "id": "at-ufh",
+          "text": {
+            "zh-CN": "普通肝素70–100 U/kg静脉推注",
+            "en": "UFH 70–100 U/kg IV bolus"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。直接PCI的标准抗凝；依诺肝素0.5 mg/kg静推为可选替代。",
+            "en": "Correct. Standard anticoagulation for primary PCI; enoxaparin 0.5 mg/kg IV is an accepted alternative."
+          }
+        },
+        {
+          "id": "at-fonda",
+          "text": {
+            "zh-CN": "磺达肝癸钠2.5 mg皮下注射",
+            "en": "Fondaparinux 2.5 mg SC"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。直接PCI不推荐磺达肝癸钠（导管内血栓，OASIS-6）。",
+            "en": "No. Fondaparinux is not recommended for primary PCI (catheter thrombosis, OASIS-6)."
+          }
+        },
+        {
+          "id": "at-dual-p2y12",
+          "text": {
+            "zh-CN": "替格瑞洛180 mg加氯吡格雷600 mg同时负荷",
+            "en": "Ticagrelor 180 mg plus clopidogrel 600 mg together"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。只用一种P2Y12抑制剂；两药同时负荷增加出血而无获益。",
+            "en": "No. Use one P2Y12 inhibitor only; loading both increases bleeding with no benefit."
+          }
+        },
+        {
+          "id": "at-gpi",
+          "text": {
+            "zh-CN": "在急诊常规上游使用替罗非班（GP IIb/IIIa抑制剂）",
+            "en": "Routine upstream tirofiban (GP IIb/IIIa inhibitor) in the ED"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。GP IIb/IIIa抑制剂仅用于术中补救（无复流、血栓并发症），不常规上游使用。",
+            "en": "No. GP IIb/IIIa inhibitors are for bail-out in the lab (no-reflow, thrombotic complications), not routine upstream use."
+          }
+        },
+        {
+          "id": "at-tnk",
+          "text": {
+            "zh-CN": "替奈普酶40 mg",
+            "en": "Tenecteplase 40 mg"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。可及时行直接PCI时不给溶栓。",
+            "en": "No. No fibrinolysis when timely primary PCI is available."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "r-pain-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清起病时间、疼痛性质、放射及伴随出汗",
+        "en": "Established onset time, character, radiation and associated sweating"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "hpi-onset"
+          },
+          {
+            "asked": "pain-character"
+          },
+          {
+            "asked": "pain-radiation"
+          },
+          {
+            "asked": "assoc-sweating"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-contraindication-screen",
+      "domain": "history",
+      "text": {
+        "zh-CN": "抗栓前询问主动脉夹层线索及出血/卒中史",
+        "en": "Screened for aortic dissection and for bleeding/stroke before antithrombotics"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "dissection-screen"
+          },
+          {
+            "asked": "bleeding-history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-rv-exam",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "检查颈静脉、双肺并比较双上肢血压",
+        "en": "Examined the JVP and lung bases and compared both-arm blood pressures"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "jvp"
+          },
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "bilateral-bp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-ecg-10min",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "到院10分钟内完成并判读12导联心电图",
+        "en": "12-lead ECG acquired and read within 10 minutes of arrival"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ecg-12lead",
+            "phase": "ed"
+          },
+          {
+            "not": {
+              "flag": "ecg-late"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-right-leads",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "加做右胸导联（V4R）心电图",
+        "en": "Recorded right-sided leads (V4R)"
+      },
+      "weight": 1,
+      "met": {
+        "read": "ecg-right-sided"
+      }
+    },
+    {
+      "id": "r-diagnosis",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "诊断下壁STEMI合并右心室梗死",
+        "en": "Diagnosed inferior STEMI with RV involvement"
+      },
+      "weight": 2,
+      "met": {
+        "decided": "dx-diagnosis"
+      }
+    },
+    {
+      "id": "r-no-troponin-wait",
+      "domain": "management",
+      "text": {
+        "zh-CN": "未等待肌钙蛋白即启动导管室",
+        "en": "Activated the cath lab without waiting for troponin"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "flag": "cath-lab-activated"
+          },
+          {
+            "not": {
+              "flag": "waited-for-troponin"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-antithrombotics",
+      "domain": "management",
+      "text": {
+        "zh-CN": "给予阿司匹林 + 一种P2Y12抑制剂 + 肠外抗凝",
+        "en": "Gave aspirin + one P2Y12 inhibitor + a parenteral anticoagulant"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "intervened": "aspirin"
+          },
+          {
+            "flag": "p2y12-given"
+          },
+          {
+            "flag": "anticoagulated"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-fluid",
+      "domain": "management",
+      "text": {
+        "zh-CN": "对前负荷依赖性低血压给予补液",
+        "en": "Gave a fluid bolus for preload-dependent hypotension"
+      },
+      "weight": 1,
+      "met": {
+        "intervened": "fluid-bolus"
+      }
+    },
+    {
+      "id": "r-no-nitrate",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "未使用硝酸酯类药物",
+        "en": "No nitrate given"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "intervened": "nitroglycerin"
+        }
+      }
+    },
+    {
+      "id": "r-no-routine-o2",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "SpO₂ ≥ 90%时未常规吸氧",
+        "en": "No routine oxygen while SpO₂ ≥ 90%"
+      },
+      "weight": 1,
+      "met": {
+        "any": [
+          {
+            "not": {
+              "intervened": "oxygen"
+            }
+          },
+          {
+            "flag": "vf-arrest"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-no-harmful-drugs",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "未使用溶栓、磺达肝癸钠、利尿剂、静脉β阻滞剂，也未选择保守收治",
+        "en": "No fibrinolysis, fondaparinux, diuretic or IV beta-blocker, and no conservative admission"
+      },
+      "weight": 1,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "tenecteplase"
+            },
+            {
+              "intervened": "fondaparinux"
+            },
+            {
+              "intervened": "furosemide"
+            },
+            {
+              "intervened": "metoprolol-iv"
+            },
+            {
+              "intervened": "admit-ccu"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "r-door-to-lab",
+      "domain": "efficiency",
+      "text": {
+        "zh-CN": "到院60分钟内转入导管室且未发生室颤",
+        "en": "In the cath lab within 60 minutes of arrival, with no VF arrest"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "flag": "transferred-cath-lab"
+          },
+          {
+            "not": {
+              "flag": "late-transfer"
+            }
+          },
+          {
+            "not": {
+              "flag": "vf-arrest"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-explain-consent",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "向患者及妻子解释诊断和紧急PCI的必要性，取得知情同意并回应其担忧",
+        "en": "Explained the diagnosis and the need for emergency PCI to the patient and his wife, obtained consent and addressed their fears"
+      },
+      "judgeGuidance": {
+        "zh-CN": "通俗说明“心脏血管堵了，需要马上打通”，交代主要获益与风险（出血、造影剂、血管并发症），确认理解后取得同意；回应他对父亲经历的恐惧；语言简短、不拖延转运。",
+        "en": "Plain-language explanation (\"a heart artery is blocked and we need to open it now\"), main benefits and risks (bleeding, contrast, vascular complications), checks understanding before consent; acknowledges his fear given his father's death; brief, without delaying transfer."
+      }
+    },
+    {
+      "id": "r-handover",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "向导管室团队进行结构化交接（SBAR）并采用闭环沟通",
+        "en": "Structured (SBAR) handover to the cath-lab team using closed-loop communication"
+      },
+      "judgeGuidance": {
+        "zh-CN": "交接包含：起病时间、心电图发现（下壁 + V4R）、血流动力学与已给补液、已给药物及剂量与时间（阿司匹林、P2Y12抑制剂、肝素）、过敏史、体重、需注意避免硝酸酯；用药医嘱采用复述确认。",
+        "en": "Handover covers onset time, ECG findings (inferior + V4R), haemodynamics and fluid given, drugs with doses and times (aspirin, P2Y12 inhibitor, heparin), allergies, weight, and the nitrate warning; drug orders are read back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "何静（抢救室护士）",
+        "en": "He Jing (resus nurse)"
+      },
+      "knowledge": {
+        "zh-CN": "交班：58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛，直接送入抢救室2床。分诊生命体征与到院时监护显示一致。未经院前急救，到院前未用任何药物，静脉通路尚未建立。体重78 kg（患者自述）。物流：床旁有心电图机、除颤仪、监护仪、氧气和急救车；急诊有导管室“一键启动”专线；今天是工作日白天，介入团队在院内，启动后约15分钟可接收患者。急诊备药：阿司匹林、替格瑞洛、氯吡格雷、普通肝素、依诺肝素、磺达肝癸钠、替奈普酶、硝酸甘油、吗啡、昂丹司琼、阿托品、多巴酚丁胺、美托洛尔、呋塞米、生理盐水、阿托伐他汀、肾上腺素。到院10分钟仍未看心电图时会提醒。不解读心电图、不给出诊断。",
+        "en": "Handover: 58-year-old man who walked into the ED with his wife at 09:10 reporting chest pain since about 08:00; taken straight to resus bay 2. Triage vital signs match the monitor at arrival. No ambulance, no medicines before arrival, no IV access yet. Weight 78 kg (patient-reported). Logistics: the bay has an ECG cart, defibrillator, monitor, oxygen and crash cart; the ED has a single-call cath-lab activation line; it is a weekday daytime, the interventional team is in-house and the lab can take a patient about 15 minutes after activation. ED stock: aspirin, ticagrelor, clopidogrel, UFH, enoxaparin, fondaparinux, tenecteplase, nitroglycerin, morphine, ondansetron, atropine, dobutamine, metoprolol, furosemide, saline, atorvastatin, adrenaline. Prompts if no ECG has been read 10 minutes after arrival. Does not interpret ECGs or suggest diagnoses."
+      }
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "张医生（介入心内科值班）",
+        "en": "Dr Zhang (on-call interventional cardiologist)"
+      },
+      "knowledge": {
+        "zh-CN": "接受急诊导管室启动电话；导管室团队在院内，约15分钟就绪。只解读学员已经看过的心电图、超声和造影结果。可说明再灌注时间目标（心电图 ≤ 10分钟；直接就诊于PCI中心者首次医疗接触至导丝通过 ≤ 60分钟；首次医疗接触至器械 ≤ 90分钟；预计 > 120分钟才考虑溶栓），希望患者带除颤电极转运，并在交接时说明已用抗栓药及剂量。",
+        "en": "Takes the ED cath-lab activation call; the team is in-house and ready in about 15 minutes. Interprets only ECGs, echo and angiography the learner has already read. Can state reperfusion time targets (ECG ≤ 10 min; FMC-to-wire ≤ 60 min for direct presenters to a PCI centre; FMC-to-device ≤ 90 min; fibrinolysis only if > 120 min expected) and wants the patient transferred with pads on and a handover of antithrombotics and doses."
+      },
+      "interprets": [
+        "ecg-12lead",
+        "ecg-right-sided",
+        "pocus-echo",
+        "coronary-angiography"
+      ]
+    },
+    {
+      "role": "radiologist",
+      "name": {
+        "zh-CN": "李医生（放射科）",
+        "en": "Dr Li (radiologist)"
+      },
+      "knowledge": {
+        "zh-CN": "只解读学员已看过的床旁胸片和主动脉CTA。可指出前后位胸片对纵隔评估的局限，以及非门控CT不能评估冠脉。",
+        "en": "Interprets only the portable chest film and CT aortogram once the learner has read them. Can explain the limits of an AP film for the mediastinum and that a non-gated CT cannot assess the coronaries."
+      },
+      "interprets": [
+        "cxr-portable",
+        "ct-aortogram"
+      ]
+    },
+    {
+      "role": "pharmacist",
+      "name": {
+        "zh-CN": "周药师（急诊药师）",
+        "en": "Pharmacist Zhou (ED pharmacist)"
+      },
+      "knowledge": {
+        "zh-CN": "按78 kg体重核对剂量：普通肝素70–100 U/kg（约5500–7800 U）；依诺肝素0.5 mg/kg静推（约40 mg）；替格瑞洛180 mg或氯吡格雷600 mg（只选一种）；阿司匹林150–300 mg；替奈普酶按体重分档（70–<80 kg为40 mg）；多巴酚丁胺2.5–5 µg/kg/min。提醒：阿片类延迟口服P2Y12抑制剂吸收；替格瑞洛可致呼吸困难和心室停搏；PDE5抑制剂与硝酸酯相互作用。不提供诊断。",
+        "en": "Checks doses for 78 kg: UFH 70–100 U/kg (≈5,500–7,800 U); enoxaparin 0.5 mg/kg IV (≈40 mg); ticagrelor 180 mg or clopidogrel 600 mg (one only); aspirin 150–300 mg; tenecteplase by weight band (40 mg for 70–<80 kg); dobutamine 2.5–5 µg/kg/min. Reminders: opioids delay oral P2Y12 absorption; ticagrelor can cause dyspnoea and ventricular pauses; PDE5 inhibitors interact with nitrates. Does not give diagnoses."
+      }
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "陈医生（急诊主治）",
+        "en": "Dr Chen (ED attending)"
+      },
+      "knowledge": {
+        "zh-CN": "以苏格拉底式提问引导，不直接给出答案：“时间就是心肌——心电图什么时候做？”“哪些导联抬高？III和II哪个更高，说明什么？”“下壁梗死还应加做哪些导联？”“低血压、颈静脉怒张、双肺清晰提示什么？”“这种情况下哪些常用药会伤害他？”“本院再灌注的时间目标是多少？什么时候才选择溶栓？”“室颤风险什么时候最高？”",
+        "en": "Socratic, never gives the answer outright: \"Time is muscle — when does the ECG happen?\" \"Which leads are elevated? Is III higher than II, and what does that tell you?\" \"Which extra leads does an inferior infarct need?\" \"What do hypotension, a raised JVP and clear lungs suggest?\" \"Which routine drugs could hurt him here?\" \"What are our reperfusion time targets, and when would you choose lysis?\" \"When is the VF risk highest?\""
+      }
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "急性下壁ST段抬高型心肌梗死合并右心室梗死",
+      "en": "Acute inferior STEMI with right-ventricular involvement"
+    },
+    "conclusion": {
+      "zh-CN": "58岁男性，吸烟、高血压、血脂异常，突发持续性压榨样胸痛约70分钟，伴大汗、恶心及体位性头晕。心电图示II、III、aVF导联ST段抬高（III > II）伴I、aVL对应性压低，右胸导联V4R ST段抬高1.5 mm；查体低血压倾向、窦性心动过缓、颈静脉怒张伴Kussmaul征而双肺清晰。诊断为急性下壁STEMI合并右心室梗死（右冠近段闭塞）。正确处理：10分钟内完成心电图；一键启动导管室行直接PCI；阿司匹林 + 一种P2Y12抑制剂负荷 + 普通肝素；避免硝酸酯、利尿剂及静脉β阻滞剂；谨慎补液维持右室前负荷，症状性心动过缓用阿托品；SpO₂ ≥ 90%不常规吸氧；持续监护并贴好除颤电极。造影证实右冠近段急性闭塞，植入药物洗脱支架后TIMI 3级血流，ST段回落 > 70%。",
+      "en": "A 58-year-old smoker with hypertension and dyslipidaemia presented with about 70 minutes of constant crushing chest pain, sweating, nausea and postural light-headedness. The ECG showed ST elevation in II, III and aVF (III > II) with reciprocal depression in I and aVL, and 1.5 mm ST elevation in V4R; he had borderline hypotension, sinus bradycardia and a raised JVP with Kussmaul's sign but clear lungs. Diagnosis: acute inferior STEMI with right-ventricular involvement (proximal RCA occlusion). Correct management: ECG within 10 minutes; single-call cath-lab activation for primary PCI; aspirin + one P2Y12 inhibitor load + UFH; no nitrates, diuretics or IV beta-blockers; cautious fluid to support RV preload and atropine for symptomatic bradycardia; no routine oxygen with SpO₂ ≥ 90%; continuous monitoring with pads on. Angiography confirmed an acute proximal RCA occlusion; after a drug-eluting stent there was TIMI 3 flow and > 70% ST resolution."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "III导联ST抬高大于II导联、I/aVL对应性压低提示右冠（而非回旋支）闭塞；右冠近段闭塞累及右室支时V4R ST抬高 ≥ 1 mm。",
+        "en": "ST elevation greater in III than II with reciprocal depression in I/aVL points to the RCA rather than the circumflex; a proximal RCA occlusion involving the RV branch produces ≥ 1 mm ST elevation in V4R."
+      },
+      {
+        "zh-CN": "低血压 + 颈静脉压升高 + 双肺清晰（及Kussmaul征）是右室梗死的经典组合：右室收缩力下降，左室充盈依赖静脉回流。",
+        "en": "Hypotension + raised JVP + clear lungs (with Kussmaul's sign) is the classic RV-infarct triad: the failing RV leaves LV filling dependent on venous return."
+      },
+      {
+        "zh-CN": "因此硝酸酯、利尿剂及其他扩血管药可致严重低血压；应谨慎补液并复评，补液无效时考虑多巴酚丁胺，症状性心动过缓用阿托品，高度房室阻滞时起搏。",
+        "en": "So nitrates, diuretics and other venodilators can cause profound hypotension; give cautious, reassessed fluid boluses, add dobutamine if fluid fails, atropine for symptomatic bradycardia and pacing for high-grade AV block."
+      },
+      {
+        "zh-CN": "在可行PCI的医院，STEMI依据症状 + 心电图诊断而非肌钙蛋白：立即一键启动导管室；仅当预计诊断至导丝通过 > 120分钟时才选择溶栓。",
+        "en": "At a PCI-capable hospital, STEMI is diagnosed on symptoms + ECG, not troponin: activate the lab immediately; choose fibrinolysis only if the expected diagnosis-to-wire time exceeds 120 minutes."
+      },
+      {
+        "zh-CN": "抗栓前需快速床旁排查禁忌证与主动脉夹层（撕裂样背痛、双上肢血压差、脉搏不对称、新发杂音、神经体征），但不应以影像检查延误再灌注。",
+        "en": "Before antithrombotics, screen quickly at the bedside for contraindications and dissection (tearing back pain, arm BP difference, pulse deficit, new murmur, neurological signs) — without letting imaging delay reperfusion."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "本病例止于直接PCI及术后首份心电图。PCI后管理（双联抗血小板疗程、二级预防、心脏康复、房室传导阻滞与机械并发症监测）不在本病例范围内。床旁超声不能排除主动脉夹层。",
+      "en": "The case ends at primary PCI and the first post-PCI ECG. Post-PCI care (DAPT duration, secondary prevention, cardiac rehabilitation, surveillance for AV block and mechanical complications) is outside its scope. POCUS cannot exclude aortic dissection."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "无既往心电图可供对比。",
+        "en": "No previous ECG is available for comparison."
+      },
+      {
+        "zh-CN": "患者弟弟冠脉病变的具体情况不详。",
+        "en": "The details of the brother's coronary disease are unknown."
+      },
+      {
+        "zh-CN": "患者既往血脂具体数值不详。",
+        "en": "His previous cholesterol values are unknown."
+      },
+      {
+        "zh-CN": "远期结局（左室功能恢复、住院经过、出院情况）未记录。",
+        "en": "Longer-term outcome (LV recovery, hospital course, discharge) is not recorded."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "所有下壁STEMI都应加做右胸导联（V3R–V4R）和后壁导联（V7–V9）。",
+        "en": "Record right-sided (V3R–V4R) and posterior (V7–V9) leads in every inferior STEMI."
+      },
+      {
+        "zh-CN": "右室梗死：避免硝酸酯、利尿剂；每次补液250–500 mL后复评；维持房室同步。",
+        "en": "RV infarction: avoid nitrates and diuretics; reassess after each 250–500 mL fluid bolus; maintain AV synchrony."
+      },
+      {
+        "zh-CN": "SpO₂ ≥ 90%时不常规吸氧（ESC 2023 III类推荐；AVOID、DETO2X-AMI研究）。",
+        "en": "No routine oxygen when SpO₂ ≥ 90% (ESC 2023 class III; AVOID, DETO2X-AMI)."
+      },
+      {
+        "zh-CN": "阿片类会延迟口服P2Y12抑制剂吸收（IMPRESSION）并加重低血压和呕吐——如需镇痛应小剂量滴定。",
+        "en": "Opioids delay oral P2Y12 absorption (IMPRESSION) and worsen hypotension and vomiting — if analgesia is needed, titrate small doses."
+      },
+      {
+        "zh-CN": "直接PCI不用磺达肝癸钠（OASIS-6）；可及时PCI时不先溶栓（ASSENT-4 PCI）。",
+        "en": "No fondaparinux for primary PCI (OASIS-6); no fibrinolysis before timely PCI (ASSENT-4 PCI)."
+      },
+      {
+        "zh-CN": "STEMI最初数小时室颤风险最高：持续监护、提前贴电极；室颤时立即除颤，电击后立即继续高质量胸外按压。",
+        "en": "VF risk is highest in the first hours of STEMI: monitor continuously with pads on; in VF, shock immediately and resume high-quality compressions straight after the shock."
+      }
+    ],
+    "references": [
+      "Byrne RA, Rossello X, Coughlan JJ, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J. 2023;44(38):3720-3826.",
+      "Rao SV, O'Donoghue ML, Ruel M, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes. Circulation. 2025.",
+      "O'Gara PT, Kushner FG, Ascheim DD, et al. 2013 ACCF/AHA Guideline for the Management of ST-Elevation Myocardial Infarction. Circulation. 2013;127(4):e362-e425.",
+      "中华医学会心血管病学分会, 中华心血管病杂志编辑委员会. 急性ST段抬高型心肌梗死诊断和治疗指南(2019). 中华心血管病杂志. 2019;47(10):766-783.",
+      "Thygesen K, Alpert JS, Jaffe AS, et al. Fourth Universal Definition of Myocardial Infarction (2018). Circulation. 2018;138(20):e618-e651.",
+      "Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2021: Adult advanced life support. Resuscitation. 2021;161:115-151.",
+      "Panchal AR, Bartos JA, Cabañas JG, et al. Part 3: Adult Basic and Advanced Life Support: 2020 American Heart Association Guidelines for Cardiopulmonary Resuscitation and Emergency Cardiovascular Care. Circulation. 2020;142(16 Suppl 2):S366-S468.",
+      "Stub D, Smith K, Bernard S, et al. Air Versus Oxygen in ST-Segment-Elevation Myocardial Infarction (AVOID). Circulation. 2015;131(24):2143-2150.",
+      "Hofmann R, James SK, Jernberg T, et al. Oxygen Therapy in Suspected Acute Myocardial Infarction (DETO2X-AMI). N Engl J Med. 2017;377(13):1240-1249.",
+      "Kubica J, Adamski P, Ostrowska M, et al. Morphine delays and attenuates ticagrelor exposure and action in patients with myocardial infarction: the randomized, double-blind, placebo-controlled IMPRESSION trial. Eur Heart J. 2016;37(3):245-252.",
+      "ASSENT-4 PCI investigators. Primary versus tenecteplase-facilitated percutaneous coronary intervention in patients with ST-segment elevation acute myocardial infarction (ASSENT-4 PCI): randomised trial. Lancet. 2006;367(9510):569-578.",
+      "Yusuf S, Mehta SR, Chrolavicius S, et al. Effects of fondaparinux on mortality and reinfarction in patients with acute ST-segment elevation myocardial infarction: the OASIS-6 randomized trial. JAMA. 2006;295(13):1519-1530."
+    ],
+    "notice": {
+      "zh-CN": "本评分为教学脚本指标，并非经过验证的能力评估。",
+      "en": "This score is a teaching-script measure, not a validated competency assessment."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "既往心电图无法获得。",
+      "en": "No previous ECG is available."
+    },
+    {
+      "zh-CN": "患者弟弟冠脉病变及治疗细节不详。",
+      "en": "Details of the brother's coronary disease and treatment are unknown."
+    },
+    {
+      "zh-CN": "既往血脂化验具体数值不详。",
+      "en": "Previous cholesterol values are unknown."
+    },
+    {
+      "zh-CN": "本病例未记录PCI后的住院经过与远期结局。",
+      "en": "The post-PCI hospital course and long-term outcome are not recorded."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg-12lead"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "cardiac-monitoring"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "ask",
+      "itemId": "hpi-onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-character"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-radiation"
+    },
+    {
+      "type": "ask",
+      "itemId": "assoc-sweating"
+    },
+    {
+      "type": "ask",
+      "itemId": "assoc-nausea"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg-12lead",
+      "phase": "ed"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg-right-sided"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "activate-cath-lab"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "aspirin"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "jvp"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg-right-sided",
+      "phase": "ed"
+    },
+    {
+      "type": "answer",
+      "decisionId": "dx-diagnosis",
+      "optionIds": [
+        "dx-inferior-rv"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "dissection-screen"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "examine",
+      "findingId": "bilateral-bp"
+    },
+    {
+      "type": "examine",
+      "findingId": "heart"
+    },
+    {
+      "type": "answer",
+      "decisionId": "nitrate-safety",
+      "optionIds": [
+        "nitro-withhold"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "fluid-bolus"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "ticagrelor"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "ufh"
+    },
+    {
+      "type": "answer",
+      "decisionId": "reperfusion-strategy",
+      "optionIds": [
+        "rep-ppci"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "antithrombotic-bundle",
+      "optionIds": [
+        "at-aspirin",
+        "at-p2y12",
+        "at-ufh"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "hs-troponin"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal-electrolytes"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh-htn"
+    },
+    {
+      "type": "ask",
+      "itemId": "ice-concerns"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "defib-pads"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfer-cath-lab"
+    },
+    {
+      "type": "order",
+      "investigationId": "coronary-angiography"
+    },
+    {
+      "type": "advance-time",
+      "minutes": 20
+    },
+    {
+      "type": "read",
+      "investigationId": "coronary-angiography",
+      "phase": "cath"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg-12lead"
+    },
+    {
+      "type": "advance-time",
+      "minutes": 5
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg-12lead",
+      "phase": "cath"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "testUtterances": [
+      {
+        "text": "胸口哪里疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "什么时候开始疼的？",
+        "locale": "zh-CN",
+        "expect": [
+          "hpi-onset"
+        ]
+      },
+      {
+        "text": "是怎么个疼法？压着疼还是刺痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-character"
+        ]
+      },
+      {
+        "text": "疼痛会放射到别的地方吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-radiation"
+        ]
+      },
+      {
+        "text": "如果0到10分，你打几分？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-severity"
+        ]
+      },
+      {
+        "text": "是一直疼还是一阵一阵的？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-course"
+        ]
+      },
+      {
+        "text": "深呼吸的时候会更疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-pleuritic"
+        ]
+      },
+      {
+        "text": "有没有出冷汗？",
+        "locale": "zh-CN",
+        "expect": [
+          "assoc-sweating"
+        ]
+      },
+      {
+        "text": "恶心想吐吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "assoc-nausea"
+        ]
+      },
+      {
+        "text": "有没有头晕或者晕倒？",
+        "locale": "zh-CN",
+        "expect": [
+          "assoc-presyncope"
+        ]
+      },
+      {
+        "text": "以前这样疼过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prodrome"
+        ]
+      },
+      {
+        "text": "是撕裂样的疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "dissection-screen"
+        ]
+      },
+      {
+        "text": "平时吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "对什么东西过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "你抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "你有高血压吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "以前中过风或者有过出血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding-history"
+        ]
+      },
+      {
+        "text": "最近用过伟哥之类的药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pde5"
+        ]
+      },
+      {
+        "text": "你父亲身体怎么样？家族史呢？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "你最担心的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "ice-concerns"
+        ]
+      },
+      {
+        "text": "体重多少公斤？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "早饭什么时候吃的？",
+        "locale": "zh-CN",
+        "expect": [
+          "last-meal"
+        ]
+      },
+      {
+        "text": "你知道血脂具体数值吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cholesterol-values"
+        ]
+      },
+      {
+        "text": "When did the pain start?",
+        "locale": "en",
+        "expect": [
+          "hpi-onset"
+        ]
+      },
+      {
+        "text": "What does it feel like?",
+        "locale": "en",
+        "expect": [
+          "pain-character"
+        ]
+      },
+      {
+        "text": "Does the pain go anywhere else, like your jaw?",
+        "locale": "en",
+        "expect": [
+          "pain-radiation"
+        ]
+      },
+      {
+        "text": "Are you sweating?",
+        "locale": "en",
+        "expect": [
+          "assoc-sweating"
+        ]
+      },
+      {
+        "text": "Do you feel short of breath?",
+        "locale": "en",
+        "expect": [
+          "assoc-dyspnoea"
+        ]
+      },
+      {
+        "text": "Is it a tearing pain?",
+        "locale": "en",
+        "expect": [
+          "dissection-screen"
+        ]
+      },
+      {
+        "text": "Are you allergic to anything?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What medicines do you take regularly?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "How many cigarettes do you smoke a day?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "Have you ever had a stroke or any bleeding problems?",
+        "locale": "en",
+        "expect": [
+          "bleeding-history"
+        ]
+      },
+      {
+        "text": "Have you taken Viagra recently?",
+        "locale": "en",
+        "expect": [
+          "pde5"
+        ]
+      },
+      {
+        "text": "What are you most worried about?",
+        "locale": "en",
+        "expect": [
+          "ice-concerns"
+        ]
+      },
+      {
+        "text": "Has anyone in your family had heart trouble?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How much do you weigh?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Have you had chest pain like this before?",
+        "locale": "en",
+        "expect": [
+          "prodrome"
+        ]
+      },
+      {
+        "text": "Is there an old ECG we could compare with?",
+        "locale": "en",
+        "expect": [
+          "prior-ecg"
+        ]
+      },
+      {
+        "text": "When did you last eat?",
+        "locale": "en",
+        "expect": [
+          "last-meal"
+        ]
+      }
+    ]
+  }
+}

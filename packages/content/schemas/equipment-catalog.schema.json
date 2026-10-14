@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClinicalCraft equipment catalog (clinicalcraft/equipment-catalog@1)",
+  "description": "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction).",
+  "$ref": "#/definitions/EquipmentCatalog",
+  "definitions": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "LocalizedText": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+          }
+        }
+      ]
+    },
+    "Capability": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "HexColor": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "Material": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "pattern": {
+          "type": "string",
+          "enum": [
+            "noise",
+            "brick",
+            "plank",
+            "tile",
+            "flat",
+            "stripe",
+            "grid",
+            "dots",
+            "screen"
+          ],
+          "default": "noise"
+        },
+        "variance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "default": 0.11
+        },
+        "emissive": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "emissiveIntensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5,
+          "default": 0.3
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "roughness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.93
+        },
+        "metalness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "castShadow": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "required": [
+        "id",
+        "color"
+      ],
+      "additionalProperties": false
+    },
+    "VoxelPart": {
+      "type": "object",
+      "properties": {
+        "m": {
+          "$ref": "#/definitions/Id"
+        },
+        "p": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "s": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "r": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "anim": {
+          "type": "string",
+          "enum": [
+            "none",
+            "blink",
+            "spin",
+            "pulse",
+            "slide"
+          ],
+          "default": "none"
+        }
+      },
+      "required": [
+        "m",
+        "p",
+        "s"
+      ],
+      "additionalProperties": false
+    },
+    "EquipmentType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "name": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "imaging",
+            "laboratory",
+            "pathology",
+            "monitoring",
+            "resuscitation",
+            "therapy",
+            "surgery",
+            "furniture",
+            "computing",
+            "teaching",
+            "sanitation",
+            "storage",
+            "outdoor",
+            "structure",
+            "decor"
+          ]
+        },
+        "description": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "usage": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Capability"
+          },
+          "default": []
+        },
+        "footprint": {
+          "type": "object",
+          "properties": {
+            "w": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "d": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "h": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "w",
+            "d",
+            "h"
+          ],
+          "additionalProperties": false
+        },
+        "solid": {
+          "type": "boolean",
+          "default": true
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VoxelPart"
+          },
+          "minItems": 1
+        },
+        "interaction": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "workstation",
+                "monitor",
+                "bed",
+                "device",
+                "atlas",
+                "board",
+                "craft",
+                "door",
+                "sink",
+                "storage",
+                "none"
+              ]
+            },
+            "prompt": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false,
+          "default": {
+            "kind": "none"
+          }
+        },
+        "screen": {
+          "type": "string",
+          "enum": [
+            "none",
+            "vitals",
+            "ecg",
+            "xray",
+            "ct",
+            "pacs",
+            "lab",
+            "text",
+            "logo"
+          ],
+          "default": "none"
+        },
+        "light": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0
+            },
+            "distance": {
+              "type": "number",
+              "minimum": 0
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "color",
+            "intensity",
+            "distance",
+            "y"
+          ],
+          "additionalProperties": false
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "category",
+        "description",
+        "footprint",
+        "parts"
+      ],
+      "additionalProperties": false
+    },
+    "EquipmentCatalog": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "clinicalcraft/equipment-catalog@1"
+        },
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "name": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Material"
+          },
+          "default": []
+        },
+        "equipment": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EquipmentType"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
