@@ -26,27 +26,28 @@ import {
   type SessionState,
 } from "@clinicalcraft/core";
 import { BUILTIN_AGENTS, mergeAgentProfiles } from "../agents/builtin.js";
-import { clinicianOfflineSteps, consultantOffline, attendingOffline, examinerOffline, narrateAction, nurseOffline, stepAlreadySatisfied, type OfflineClinicianStep } from "../agents/offline.js";
+import { attendingOffline, consultantOffline, examinerOffline, narrateAction, nurseOffline } from "../agents/offline.js";
 import { agentKind, buildSystemSections, npcDisplayName, patientLocation, type PromptContext } from "../agents/prompts.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import { BUILTIN_COMMANDS, executeCommand, type CommandHost } from "../commands.js";
 import { compactConversation, estimateTokens } from "../compaction.js";
 import { emptyHookResult, HookRunner } from "../hooks/runner.js";
 import type { HookInput, HookResult } from "../hooks/types.js";
-import { addUsage, emptyUsage, executeToolCall, runAgentTurn, type AuthorizeRequest, type GateOutcome, type HookSpec, type LoopHost, type TurnResult, type TurnStopReason } from "../loop.js";
+import { addUsage, emptyUsage, executeToolCall, runAgentTurn, type AuthorizeRequest, type GateOutcome, type HookSpec, type LoopHost, type TurnResult } from "../loop.js";
 import { actionToolName, checkPermission, PermissionState } from "../permissions.js";
 import type { AgentEvent, AgentRole, ApprovalMode, EventMsg, Op, PlanItem, PracticeScope, RuntimeConfigPatch, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
-import type { ChatMessage, ChatPart, ProviderErrorInfo } from "../providers/types.js";
+import type { ChatMessage, ChatPart } from "../providers/types.js";
 import type { HookEventName, ResolvedSettings } from "../settings/schema.js";
-import { caseStatusText, rejectionText } from "../tools/clinical.js";
+import { rejectionText } from "../tools/clinical.js";
 import { ToolRegistry } from "../tools/index.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
 import { validateArgs } from "../tools/validate.js";
 import { normaliseContent, TranscriptRecorder } from "../transcript.js";
 import { ApprovalBroker } from "./approvals.js";
+import { offlineClinicianTurn, runAutopilot, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { EventHub } from "./events.js";
-import { runExaminer, type DialogueEntry } from "./examiner.js";
+import { runExaminer, type DialogueEntry, type ExaminerVerdict } from "./examiner.js";
 import { rt } from "./i18n.js";
 import { resolveAgentModel, type AgentModel } from "./models.js";
 import { reactToDomainEvent, type EventReaction } from "./notifications.js";
@@ -57,8 +58,6 @@ import type { ClinicalSessionApi, SessionOptions, SessionSnapshot } from "./type
 /** Runtime version stamped into transcripts. */
 export const CLINICALCRAFT_VERSION = "5.0.0";
 
-/** Default autopilot turn budget. */
-export const DEFAULT_AUTOPILOT_TURNS = 12;
 /** Smallest real-time clock step dispatched by `advanceRealTime` (simulated minutes). */
 export const REALTIME_MIN_STEP = 0.25;
 
@@ -74,16 +73,6 @@ export interface CreateSessionOptions extends SessionOptions {
   transcriptOrdinal?: number;
   /** Write a `session_meta` item (default true). */
   writeSessionMeta?: boolean;
-}
-
-interface AgentOutcome {
-  status: TurnStopReason;
-  text: string;
-  grounded: string[];
-  error?: ProviderErrorInfo | { message: string };
-  /** Offline clinician: the reference walkthrough is exhausted. */
-  done?: boolean;
-  toolCalls?: number;
 }
 
 const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
@@ -207,7 +196,7 @@ export class ClinicalSession implements ClinicalSessionApi {
   private currentSubmission = "";
   private currentUtterance: string | null = null;
   private realtimeCarry = 0;
-  private offlineCursor = 0;
+  private readonly offlineCursor = { value: 0 };
   private closing = false;
   private closed = false;
 
@@ -446,7 +435,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         case "compact":
           return await this.compact(id, op.agent ?? null, "manual");
         case "assess":
-          return await this.withTurn(id, (signal) => this.runAssessment(id, signal));
+          return void (await this.withTurn(id, (signal) => this.runAssessment(id, signal)));
         case "shutdown":
           return await this.shutdownSequence(id);
         case "interrupt":
@@ -894,6 +883,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       } else {
         const kind = agentKind(profile);
         if (kind === "patient" || kind === "companion") outcome = await this.runPatientAgent(id, turnId, kind, utterance, signal);
+        else if (kind === "examiner") outcome = await this.examinerTurn(id, turnId, signal);
         else if (kind === "clinician" && !this.model("clinician").provider) outcome = await this.offlineClinicianBlock(id, turnId, this.model("clinician").maxToolRounds, signal);
         else outcome = await this.runModelAgent(id, turnId, profile, utterance, signal, extraContext);
       }
@@ -1093,80 +1083,63 @@ export class ClinicalSession implements ClinicalSessionApi {
   /* Autopilot                                                         */
   /* ---------------------------------------------------------------- */
 
-  private async runAutopilot(id: string, goal: string | undefined, maxTurns: number | undefined, signal: AbortSignal): Promise<void> {
-    const m = this.model("clinician");
-    this.ensureStarted(id);
-    const turns = Math.max(1, Math.min(Math.floor(maxTurns ?? DEFAULT_AUTOPILOT_TURNS), 500));
-    let idleTurns = 0;
-    for (let i = 0; i < turns; i++) {
-      if (this._state.finished || signal.aborted) break;
-      const turnId = this.newId();
-      const started = this.now();
-      this.emit(id, { type: "turn_started", turnId, agent: "clinician" });
-      let outcome: AgentOutcome;
-      if (!m.provider) {
-        outcome = await this.offlineClinicianBlock(id, turnId, m.maxToolRounds, signal);
-      } else {
-        const status = caseStatusText({ caseDef: this.caseDef, locale: this.locale, state: () => this._state }).text;
-        const text = i === 0 ? (goal?.trim() || rt(this.locale, "clinician.goal")) : rt(this.locale, "clinician.continue", { status });
-        outcome = await this.runModelAgent(id, turnId, this.profiles.get("clinician")!, text, signal);
-      }
-      this.finishTurn(id, turnId, "clinician", outcome, started);
-      if (outcome.status === "interrupted" || outcome.status === "denied" || outcome.status === "error" || outcome.status === "refusal") break;
-      if (outcome.done) break;
-      idleTurns = (outcome.toolCalls ?? 1) === 0 ? idleTurns + 1 : 0;
-      if (idleTurns >= 2) break;
-    }
+  private runAutopilot(id: string, goal: string | undefined, maxTurns: number | undefined, signal: AbortSignal): Promise<void> {
+    return runAutopilot(this.autopilotHost(id), { goal, maxTurns, signal });
   }
 
-  /** Offline clinician: execute up to `maxSteps` reference-walkthrough steps through the tool path. */
-  private async offlineClinicianBlock(id: string, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
-    const L = this.locale;
-    const steps: OfflineClinicianStep[] = clinicianOfflineSteps(this.caseDef, L);
-    const tools = this.toolsFor("clinician");
-    const ctx = this.toolContext("clinician", id, signal);
-    let executed = 0;
-    let last = "";
-    this.ensureStarted(id);
-    while (executed < Math.max(1, maxSteps)) {
-      if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
-      if (this._state.finished) return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
-      if (this.offlineCursor >= steps.length) {
-        last = rt(L, "clinician.narrate.done");
-        this.emitAgentMessage(id, turnId, "clinician", last, []);
-        return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
-      }
-      const step = steps[this.offlineCursor++]!;
-      if (stepAlreadySatisfied(step, this._state)) continue;
-      if (step.kind === "action") {
-        this.dispatchInternal({ ...step.action, by: "agent" } as ClinicalAction, id);
-        continue;
-      }
-      last = step.narration;
-      this.emitAgentMessage(id, turnId, "clinician", step.narration, []);
-      const outcome = await executeToolCall({
-        host: this.loopHost(id),
-        agent: "clinician",
-        tools,
-        call: { id: this.newId(), name: step.tool, args: step.args },
-        ctx,
-        emit: (msg) => this.emit(id, msg),
-        turnId,
-        ...(signal ? { signal } : {}),
-        now: this.now,
-      });
-      executed++;
-      if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
-      if (outcome.status === "interrupted") return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
-    }
-    return { status: "end_turn", text: last, grounded: [], done: this._state.finished, toolCalls: executed };
+  private offlineClinicianBlock(id: string, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
+    return offlineClinicianTurn(this.autopilotHost(id), turnId, maxSteps, signal);
+  }
+
+  private autopilotHost(id: string): AutopilotHost {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const session = this;
+    return {
+      caseDef: this.caseDef,
+      get locale() {
+        return session.locale;
+      },
+      state: () => this._state,
+      newId: () => this.newId(),
+      now: () => this.now(),
+      emit: (msg) => this.emit(id, msg),
+      ensureStarted: () => this.ensureStarted(id),
+      clinicianOnline: () => this.model("clinician").provider !== null,
+      clinicianMaxSteps: () => this.model("clinician").maxToolRounds,
+      runModelTurn: (turnId, text, signal) => this.runModelAgent(id, turnId, this.profiles.get("clinician")!, text, signal),
+      finishTurn: (turnId, outcome, started) => this.finishTurn(id, turnId, "clinician", outcome, started),
+      narrate: (turnId, text) => this.emitAgentMessage(id, turnId, "clinician", text, []),
+      dispatch: (action) => void this.dispatchInternal(action, id),
+      executeTool: (turnId, name, args, signal) =>
+        executeToolCall({
+          host: this.loopHost(id),
+          agent: "clinician",
+          tools: this.toolsFor("clinician"),
+          call: { id: this.newId(), name, args },
+          ctx: this.toolContext("clinician", id, signal),
+          emit: (msg) => this.emit(id, msg),
+          turnId,
+          ...(signal ? { signal } : {}),
+          now: this.now,
+        }),
+      cursor: this.offlineCursor,
+    };
   }
 
   /* ---------------------------------------------------------------- */
   /* Assessment, compaction, configuration, shutdown                   */
   /* ---------------------------------------------------------------- */
 
-  private async runAssessment(id: string, signal: AbortSignal): Promise<void> {
+  /** Talking to the examiner runs an assessment; the narrative is its reply. */
+  private async examinerTurn(id: string, turnId: string, signal?: AbortSignal): Promise<AgentOutcome> {
+    const verdict = await this.runAssessment(id, signal ?? new AbortController().signal);
+    if (signal?.aborted) return { status: "interrupted", text: "", grounded: [] };
+    const text = verdict.narrative ?? "";
+    if (text) this.emitAgentMessage(id, turnId, "examiner", text, []);
+    return { status: "end_turn", text, grounded: [] };
+  }
+
+  private async runAssessment(id: string, signal: AbortSignal): Promise<ExaminerVerdict> {
     const report = assess(this.caseDef, this._state);
     const profile = this.profiles.get("examiner")!;
     const m = this.model("examiner");
@@ -1188,6 +1161,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       onUsage: (u) => this.trackUsage(id, "examiner", u),
     });
     this.emit(id, { type: "assessment", report, narrative: verdict.narrative, judged: verdict.judged });
+    return verdict;
   }
 
   private async maybeAutoCompact(id: string, agent: AgentRole, signal?: AbortSignal): Promise<void> {
@@ -1344,7 +1318,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         await this.runAgent(id, target, text, signal);
       },
       autopilot: (goal) => this.runAutopilot(id, goal, undefined, signal),
-      assess: () => this.runAssessment(id, signal),
+      assess: async () => void (await this.runAssessment(id, signal)),
       compact: (agent) => this.compact(id, agent ?? null, "manual"),
       configure: async (patch) => this.configure(id, patch),
       clearConversations: () => {

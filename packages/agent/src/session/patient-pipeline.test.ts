@@ -185,6 +185,28 @@ describe("patient agent — select → voice with a model", () => {
     expect(t.msgs("warning").some((w) => /boom/.test(w.message))).toBe(true);
   });
 
+  it("re-ranks 0.34–0.55 candidates with the model, restricted to the candidate ids", async () => {
+    const t = await makeSession({
+      scripts: [textScript(JSON.stringify({ factIds: ["character", "made-up"], clarify: null })), voice("Like a heavy weight pressing on me.", ["character"])],
+    });
+    await t.session.run({ type: "user_message", text: "the pain" });
+    const rerank = t.provider!.requests[0]!;
+    expect(rerank.responseFormat?.name).toBe("fact_selection");
+    expect(JSON.stringify(rerank.responseFormat?.schema)).toContain('"enum":["onset","character"]');
+    expect(JSON.stringify(rerank.messages)).not.toContain("heavy weight"); // the fact index never carries answers
+    expect(t.session.state.asked).toEqual(["character"]);
+    expect(t.msgs("agent_message")[0]!.text).toBe("Like a heavy weight pressing on me.");
+  });
+
+  it("offline: an ambiguous question gets a clarifying question by topic", async () => {
+    const t = await makeSession();
+    await t.session.run({ type: "user_message", text: "the pain" });
+    const reply = t.msgs("agent_message")[0]!;
+    expect(reply.text).toBe("Sorry, do you mean the main problem or the pain?");
+    expect((reply as unknown as { grounding: string }).grounding).toBe("clarify");
+    expect(t.session.state.asked).toEqual([]);
+  });
+
   it("tool pipeline: the model reveals facts with reveal_facts before speaking", async () => {
     const t = await makeSession({
       settingsPatch: { patient: { pipeline: "tool" } },

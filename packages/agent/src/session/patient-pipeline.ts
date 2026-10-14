@@ -119,6 +119,8 @@ export interface FactSelection {
   candidates: MatchHit[];
   /** Topics to offer in a clarifying question. */
   clarifyTopics: string[];
+  /** A clarifying question proposed by the model re-rank (verified: no facts/numbers). */
+  clarifyText?: string | null;
   open: boolean;
   method: "match" | "rerank-llm" | "rerank-offline" | "none";
 }
@@ -435,13 +437,12 @@ async function llmRerank(input: PatientTurnInput, llm: PatientLlm, selection: Fa
   const chosen = Array.isArray(obj.factIds) ? obj.factIds.filter((x): x is string => typeof x === "string" && ids.includes(x)).slice(0, MAX_SELECTED) : [];
   if (chosen.length > 0) return { ...selection, selected: [...new Set(chosen)], method: "rerank-llm" };
   const clarify = typeof obj.clarify === "string" && obj.clarify.trim() && verifyGrounding(obj.clarify, [input.utterance]).ok ? obj.clarify.trim() : null;
-  return { ...selection, method: "rerank-llm", clarifyTopics: clarify ? [`__text:${clarify}`] : [] };
+  return { ...selection, method: "rerank-llm", clarifyTopics: [], clarifyText: clarify };
 }
 
 function clarifyFromSelection(locale: string, selection: FactSelection): string | null {
   if (selection.selected.length > 0) return null;
-  const custom = selection.clarifyTopics.find((x) => x.startsWith("__text:"));
-  if (custom) return custom.slice("__text:".length);
+  if (selection.clarifyText) return selection.clarifyText;
   return selection.clarifyTopics.length > 0 ? clarifyText(locale, selection.clarifyTopics) : null;
 }
 

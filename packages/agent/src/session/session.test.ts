@@ -303,7 +303,49 @@ describe("transcript, snapshot and resume", () => {
   });
 });
 
+describe("hooks on learner input", () => {
+  it("UserPromptSubmit can block a message or add context for model agents", async () => {
+    const t = await makeSession({ scripts: [textScript("Noted.")] });
+    t.session.hooks.on("UserPromptSubmit", (input) => {
+      if (input.hook_event_name !== "UserPromptSubmit") return;
+      if (/password/.test(input.prompt)) return { decision: "block", reason: "no personal data" };
+      return { additionalContext: "Course rule: SBAR handovers." };
+    });
+    const blocked = await t.session.run({ type: "user_message", text: "@nurse my password is hunter2" });
+    expect(msgsOf(blocked, "warning")[0]!.message).toMatch(/no personal data/);
+    expect(msgsOf(blocked, "turn_started")).toHaveLength(0);
+    await t.session.run({ type: "user_message", text: "@nurse handover please" });
+    const parts = t.provider!.requests[0]!.messages.at(-1)!.content;
+    expect(parts[0]).toEqual({ type: "text", text: "handover please" });
+    expect(JSON.stringify(parts[1])).toContain("Course rule: SBAR handovers.");
+  });
+
+  it("talking to the examiner runs an assessment", async () => {
+    const t = await makeSession();
+    const events = await t.session.run({ type: "user_message", text: "@examiner how did I do?" });
+    expect(msgsOf(events, "assessment")).toHaveLength(1);
+    expect(msgsOf(events, "agent_message")[0]).toMatchObject({ agent: "examiner" });
+  });
+});
+
 describe("configure, compact, dynamic tools, shutdown", () => {
+  it("auto-compacts a long model conversation before the next turn", async () => {
+    const t = await makeSession({
+      scripts: [textScript("r1"), textScript("r2"), textScript("r3"), textScript("r4"), textScript("## Summary\nnone recorded"), textScript("r5")],
+      settingsPatch: { autoCompact: { enabled: true, thresholdTokens: 10 } },
+    });
+    let trigger = "";
+    t.session.hooks.on("PreCompact", (input) => {
+      if (input.hook_event_name === "PreCompact") trigger = input.trigger;
+    });
+    for (const q of ["q1", "q2", "q3", "q4", "q5"]) await t.session.run({ type: "user_message", text: `@nurse ${q}` });
+    expect(trigger).toBe("auto");
+    expect(t.msgs("compacted")).toHaveLength(1);
+    const lastRequest = t.provider!.requests.at(-1)!;
+    expect(JSON.stringify(lastRequest.messages[0])).toContain("conversation_summary");
+  });
+
+
   it("configure changes runtime settings and validates them", async () => {
     const t = await makeSession();
     const events = await t.session.run({ type: "configure", patch: { approvalMode: "strict", locale: "zh-CN", interlocutor: "nurse" } });

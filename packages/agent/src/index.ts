@@ -61,4 +61,5 @@ export * from "./session/approvals.js";
 export * from "./session/notifications.js";
 export * from "./session/models.js";
 export * from "./session/examiner.js";
+export * from "./session/autopilot.js";
 export * from "./session/session.js";

@@ -7,8 +7,9 @@
  * weeks") — must appear in the allowed source texts (the answers of the facts
  * used, persona text, the learner's own words). A number that carries a unit
  * must appear with the same unit, or bare. Drug names (by common suffixes,
- * a small lexicon and the case's own medication names) must appear verbatim
- * in the sources. Anything else is a violation → the caller falls back to the
+ * a small lexicon and the case's own medication names) and upper-case
+ * clinical acronyms (diagnoses/tests such as "STEMI", "CT") must appear in
+ * the sources. Anything else is a violation → the caller falls back to the
  * authored answer.
  */
 
@@ -182,6 +183,24 @@ export function extractDrugMentions(text: string, extraLexicon: readonly string[
 }
 
 /* ------------------------------------------------------------------ */
+/* Clinical acronyms                                                   */
+/* ------------------------------------------------------------------ */
+
+const ACRONYM_RE = /(?<![A-Za-z0-9])[A-Z][A-Z0-9]{1,7}(?![A-Za-z0-9])/g;
+/** Everyday capitals a patient may say without them being clinical terms. */
+const ACRONYM_STOPLIST = new Set(["OK", "TV", "AM", "PM", "ID", "UK", "US", "USA", "ER", "GP", "DR", "MR", "MRS", "MS", "NO", "OH", "SO", "MY", "IT", "IS", "AN", "AT", "TO", "IN", "ON", "OR", "BE", "DO", "GO", "HI", "UP", "WE", "ME", "HE", "A", "I"]);
+
+/**
+ * Upper-case clinical acronyms in `text` ("STEMI", "SMZL", "CT", "EGFR"):
+ * diagnoses and test names a patient should only repeat from their own facts.
+ */
+export function extractAcronyms(text: string): string[] {
+  const out = new Set<string>();
+  for (const m of text.matchAll(ACRONYM_RE)) if (!ACRONYM_STOPLIST.has(m[0])) out.add(m[0]);
+  return [...out];
+}
+
+/* ------------------------------------------------------------------ */
 /* Verification                                                        */
 /* ------------------------------------------------------------------ */
 
@@ -210,6 +229,10 @@ export function verifyGrounding(say: string, sources: readonly string[], options
   const flatAllowed = compact(allowedText);
   for (const drug of extractDrugMentions(say, options.drugLexicon)) {
     if (!flatAllowed.includes(compact(drug))) violations.push(`drug "${drug}"`);
+  }
+  const allowedAcronyms = new Set(extractAcronyms(allowedText));
+  for (const term of extractAcronyms(say)) {
+    if (!allowedAcronyms.has(term) && !flatAllowed.includes(term.toLowerCase())) violations.push(`term "${term}"`);
   }
   return { ok: violations.length === 0, violations: [...new Set(violations)] };
 }

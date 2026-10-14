@@ -45,6 +45,12 @@ describe("verifyGrounding", () => {
     expect(verifyGrounding("我吃阿美替尼。", ["服用阿美替尼。"]).ok).toBe(true);
   });
 
+  it("rejects clinical acronyms the facts do not contain", () => {
+    expect(verifyGrounding("I think it's a STEMI, doctor.", ["My chest hurts."]).violations).toEqual(['term "STEMI"']);
+    expect(verifyGrounding("The PET/CT showed it again.", ["2024年11月的PET/CT又提示脾脏明显增大。"]).ok).toBe(true);
+    expect(verifyGrounding("OK, I understand. I'll go to the GP.", ["x"]).ok).toBe(true);
+  });
+
   it("detects case-specific drug names", () => {
     expect(extractDrugMentions("they gave me the clot buster tenecteplase")).toContain("tenecteplase");
     expect(verifyGrounding("I had aspirin earlier", ["nothing about drugs"], { drugLexicon: ["aspirin"] }).ok).toBe(false);

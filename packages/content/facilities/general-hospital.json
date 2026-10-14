@@ -1850,7 +1850,7 @@
     {"id": "ed-staff-table", "type": "desk", "x": 42, "z": 9.1, "rot": 180, "room": "ed-staff"},
     {"id": "ed-hall-sanitizer", "type": "hand-sanitizer", "x": 44.2, "z": -3.575, "rot": 0, "room": "ed-hall"},
     {"id": "ed-hall-clock", "type": "wall-clock", "x": 30, "z": -3.775, "rot": 0, "room": "ed-hall"},
-    {"id": "ed-nurse-station", "type": "nurse-station-desk", "x": 21, "z": -7.6, "rot": 0, "room": "ed-station", "label": {"zh-CN": "急诊护士站", "en": "ED Nurse Station"}},
+    {"id": "ed-nurse-station", "type": "nurse-station-desk", "x": 21, "z": -7.6, "rot": 180, "room": "ed-station", "label": {"zh-CN": "急诊护士站", "en": "ED Nurse Station"}},
     {"id": "ed-station-chair", "type": "office-chair", "x": 19.4, "z": -9.1, "rot": 0, "room": "ed-station"},
     {"id": "ed-records", "type": "records-terminal", "x": 25.475, "z": -6.3, "rot": 270, "room": "ed-station", "label": {"zh-CN": "急诊电子病历终端", "en": "ED Records Terminal"}},
     {"id": "ed-glucometer", "type": "glucometer-station", "x": 25.55, "z": -7.4, "rot": 270, "room": "ed-station", "label": {"zh-CN": "床旁快速检测站", "en": "Point-of-Care Testing Station"}},
@@ -1952,7 +1952,7 @@
     {"id": "ward-oxygen-4", "type": "oxygen-outlet", "x": -28.3, "z": -41.375, "rot": 0, "room": "ward"},
     {"id": "ward-bedside-table-4", "type": "bedside-table", "x": -27.5, "z": -40.2, "rot": 270, "room": "ward"},
     {"id": "ward-curtain-4", "type": "privacy-curtain", "x": -29.4, "z": -37.85, "rot": 0, "room": "ward"},
-    {"id": "ward-nurse-station", "type": "nurse-station-desk", "x": -30.6, "z": -28.6, "rot": 180, "room": "ward", "label": {"zh-CN": "病房护士站", "en": "Ward Nurse Station"}},
+    {"id": "ward-nurse-station", "type": "nurse-station-desk", "x": -30.6, "z": -28.6, "rot": 0, "room": "ward", "label": {"zh-CN": "病房护士站", "en": "Ward Nurse Station"}},
     {"id": "ward-sink", "type": "sink", "x": -45.175, "z": -30, "rot": 90, "room": "ward"},
     {"id": "ward-med-cabinet", "type": "medication-cabinet", "x": -26.575, "z": -27.6, "rot": 270, "room": "ward", "label": {"zh-CN": "病房药品柜", "en": "Ward Medication Cabinet"}},
     {"id": "ward-crash-cart", "type": "crash-cart", "x": -26.535, "z": -29.4, "rot": 270, "room": "ward", "label": {"zh-CN": "病房抢救车", "en": "Ward Crash Cart"}},
@@ -1974,7 +1974,7 @@
     {"id": "icu-infusion-pump-2", "type": "infusion-pump", "x": -17.1, "z": -38.8, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 输液泵 2", "en": "ICU Infusion Pump 2"}},
     {"id": "icu-dialysis", "type": "dialysis-machine", "x": -13.75, "z": -38.4, "rot": 270, "room": "icu", "label": {"zh-CN": "床旁血液净化机", "en": "Bedside Dialysis Machine"}},
     {"id": "icu-curtain", "type": "privacy-curtain", "x": -19, "z": -39.3, "rot": 90, "room": "icu"},
-    {"id": "icu-station", "type": "nurse-station-desk", "x": -19, "z": -29.6, "rot": 180, "room": "icu", "label": {"zh-CN": "ICU 中央监护站", "en": "ICU Central Station"}},
+    {"id": "icu-station", "type": "nurse-station-desk", "x": -19, "z": -29.6, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 中央监护站", "en": "ICU Central Station"}},
     {"id": "icu-crash-cart", "type": "crash-cart", "x": -12.535, "z": -31.5, "rot": 270, "room": "icu", "label": {"zh-CN": "ICU 抢救车", "en": "ICU Crash Cart"}},
     {"id": "icu-defibrillator", "type": "defibrillator", "x": -12.5, "z": -33, "rot": 270, "room": "icu"},
     {"id": "icu-sink", "type": "sink", "x": -25.5, "z": -30, "rot": 90, "room": "icu"},
@@ -2044,7 +2044,7 @@
     {"id": "lamp-14", "type": "lamp-post", "x": 54, "z": 20, "rot": 0}
   ],
   "patientSlots": [
-    {"id": "consult-1", "room": "consult-1", "x": -29.125, "z": 5.6, "rot": 270, "posture": "standing", "bed": "consult-1-couch", "accepts": ["outpatient"]},
+    {"id": "consult-1", "room": "consult-1", "x": -29.125, "z": 5.6, "rot": 90, "posture": "standing", "bed": "consult-1-couch", "accepts": ["outpatient"]},
     {"id": "consult-2", "room": "consult-2", "x": -37.875, "z": 5.9, "rot": 90, "posture": "sitting", "bed": "consult-2-couch", "accepts": ["outpatient"]},
     {"id": "resus-1", "room": "ed-resus", "x": 31, "z": -17.325, "rot": 0, "posture": "lying", "bed": "resus1-bed", "monitor": "resus1-monitor", "accepts": ["emergency"]},
     {"id": "resus-2", "room": "ed-resus", "x": 41, "z": -17.325, "rot": 0, "posture": "lying", "bed": "resus2-bed", "monitor": "resus2-monitor", "accepts": ["emergency"]},
@@ -2064,8 +2064,8 @@
       "id": "receptionist",
       "role": "receptionist",
       "name": {
-        "zh-CN": "前台 何静",
-        "en": "He Jing, Reception"
+        "zh-CN": "何静",
+        "en": "He Jing"
       },
       "room": "lobby",
       "x": -6.3,
@@ -2087,8 +2087,8 @@
       "id": "triage-nurse",
       "role": "nurse",
       "name": {
-        "zh-CN": "分诊护士 杨洁",
-        "en": "Triage Nurse Yang Jie"
+        "zh-CN": "杨洁",
+        "en": "Yang Jie"
       },
       "room": "ed-triage",
       "x": 13.6,
@@ -2111,8 +2111,8 @@
       "id": "ed-nurse",
       "role": "nurse",
       "name": {
-        "zh-CN": "急诊护士 林晓",
-        "en": "ED Nurse Lin Xiao"
+        "zh-CN": "林晓",
+        "en": "Lin Xiao"
       },
       "room": "ed-station",
       "x": 21.0,
@@ -2134,8 +2134,8 @@
       "id": "paramedic",
       "role": "paramedic",
       "name": {
-        "zh-CN": "急救员 孙浩",
-        "en": "Sun Hao, Paramedic"
+        "zh-CN": "孙浩",
+        "en": "Sun Hao"
       },
       "room": "ambulance-bay",
       "x": 48.6,
@@ -2156,8 +2156,8 @@
       "id": "ward-nurse",
       "role": "nurse",
       "name": {
-        "zh-CN": "病房护士 周敏",
-        "en": "Ward Nurse Zhou Min"
+        "zh-CN": "周敏",
+        "en": "Zhou Min"
       },
       "room": "ward",
       "x": -30.6,
@@ -2179,12 +2179,12 @@
       "id": "radiologist",
       "role": "radiologist",
       "name": {
-        "zh-CN": "影像科医生 陈立",
-        "en": "Dr Chen Li, Radiologist"
+        "zh-CN": "陈立",
+        "en": "Dr Chen Li"
       },
       "room": "rad-control",
-      "x": 24.75,
-      "z": -29.9,
+      "x": 24.0,
+      "z": -29.6,
       "rot": 180,
       "appearance": {
         "skin": "#cfa47f",
@@ -2201,8 +2201,8 @@
       "id": "lab-tech",
       "role": "lab-tech",
       "name": {
-        "zh-CN": "检验技师 王悦",
-        "en": "Wang Yue, Lab Technologist"
+        "zh-CN": "王悦",
+        "en": "Wang Yue"
       },
       "room": "laboratory",
       "x": 9.5,
@@ -2225,8 +2225,8 @@
       "id": "pathologist",
       "role": "pathologist",
       "name": {
-        "zh-CN": "病理科医生 赵宁",
-        "en": "Dr Zhao Ning, Pathologist"
+        "zh-CN": "赵宁",
+        "en": "Dr Zhao Ning"
       },
       "room": "pathology",
       "x": 9.0,
@@ -2247,8 +2247,8 @@
       "id": "pharmacist",
       "role": "pharmacist",
       "name": {
-        "zh-CN": "药师 刘芳",
-        "en": "Liu Fang, Pharmacist"
+        "zh-CN": "刘芳",
+        "en": "Liu Fang"
       },
       "room": "pharmacy",
       "x": -14.4,
@@ -2268,8 +2268,8 @@
       "id": "attending",
       "role": "attending",
       "name": {
-        "zh-CN": "主治医师 许明",
-        "en": "Dr Xu Ming, Attending Physician"
+        "zh-CN": "许明",
+        "en": "Dr Xu Ming"
       },
       "room": "conference",
       "x": -5.2,
