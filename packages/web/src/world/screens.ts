@@ -2,7 +2,7 @@
  * Equipment screens: static pixel-art panels (pacs / xray / ct / lab / text /
  * logo) drawn once, and live bedside-monitor canvases redrawn at ≤ 10 Hz.
  */
-import { CanvasTexture, LinearFilter, NearestFilter, SRGBColorSpace } from "three";
+import { CanvasTexture, Color, LinearFilter, NearestFilter, SRGBColorSpace } from "three";
 import { createLcg, hashString } from "./textures.js";
 
 export type ScreenKind = "none" | "vitals" | "ecg" | "xray" | "ct" | "pacs" | "lab" | "text" | "logo";
@@ -14,8 +14,8 @@ export function screenCanvasSize(kind: ScreenKind, w: number, h: number): [numbe
     const cw = 320;
     return [cw, Math.max(96, Math.round(cw / aspect))];
   }
-  const cw = 64;
-  return [cw, Math.max(16, Math.round(cw / aspect))];
+  const cw = kind === "text" ? 32 : 64;
+  return [cw, Math.max(kind === "text" ? 8 : 16, Math.round(cw / aspect))];
 }
 
 function px(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, c: string) {
@@ -28,9 +28,37 @@ function gray(v: number): string {
   return `rgb(${g},${g},${g})`;
 }
 
-/** Paint static pixel art for a screen kind (deterministic per seed). */
-export function paintStaticScreen(ctx: CanvasRenderingContext2D, W: number, H: number, kind: ScreenKind, seed: string): void {
+/** V4 workstation screen: tile-textured teal panel with four mint/teal bars. */
+function paintV4Text(ctx: CanvasRenderingContext2D, W: number, H: number, bg: string, rnd: () => number): void {
+  const base = new Color(bg);
+  const c = new Color();
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      let d = (rnd() - 0.5) * 0.11;
+      if (x % 8 === 0 || y % 8 === 0) d = -0.07;
+      c.copy(base).offsetHSL(0, 0, d);
+      px(ctx, x, y, 1, 1, "#" + c.getHexString());
+    }
+  // V4 Q(): bars at x = −.4 + i·.25 on a 1.29-wide screen, .14 wide, (.25 + rnd·.25) tall, centred .04 below the middle
+  for (let i = 0; i < 4; i++) {
+    const u = 0.5 + (-0.4 + i * 0.25) / 1.29;
+    const bw = Math.max(2, Math.round((0.14 / 1.29) * W));
+    const bh = Math.max(3, Math.round(((0.25 + rnd() * 0.25) / 0.85) * H));
+    const cx = Math.round(u * W), cy = Math.round(0.547 * H);
+    const col = i % 2 ? "#b6ccbb" : "#387c71";
+    px(ctx, cx - Math.floor(bw / 2) - 1, cy - Math.floor(bh / 2) - 1, bw + 2, bh + 2, i % 2 ? "#7f9a8a" : "#123631");
+    px(ctx, cx - Math.floor(bw / 2), cy - Math.floor(bh / 2), bw, bh, col);
+    if (!(i % 2)) for (let y = cy - Math.floor(bh / 2); y < cy + Math.ceil(bh / 2); y += 2) px(ctx, cx - Math.floor(bw / 2), y, 1, 1, "#1c4a43");
+  }
+}
+
+/** Paint static pixel art for a screen kind (deterministic per seed). `bg` = the part's material colour. */
+export function paintStaticScreen(ctx: CanvasRenderingContext2D, W: number, H: number, kind: ScreenKind, seed: string, bg?: string): void {
   const rnd = createLcg(hashString(seed + kind));
+  if (kind === "text" && bg) {
+    paintV4Text(ctx, W, H, bg, rnd);
+    return;
+  }
   px(ctx, 0, 0, W, H, "#05090a");
   if (kind === "logo") {
     px(ctx, 0, 0, W, H, "#e4e4cd");
@@ -105,7 +133,7 @@ export function paintStaticScreen(ctx: CanvasRenderingContext2D, W: number, H: n
 }
 
 /** A CanvasTexture for a screen (static kinds are painted immediately). */
-export function createScreenTexture(kind: ScreenKind, w: number, h: number, seed: string): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; texture: CanvasTexture } {
+export function createScreenTexture(kind: ScreenKind, w: number, h: number, seed: string, bg?: string): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; texture: CanvasTexture } {
   const [cw, ch] = screenCanvasSize(kind, w, h);
   const canvas = document.createElement("canvas");
   canvas.width = cw;
@@ -121,7 +149,7 @@ export function createScreenTexture(kind: ScreenKind, w: number, h: number, seed
     texture.magFilter = NearestFilter;
     texture.minFilter = NearestFilter;
     texture.generateMipmaps = false;
-    paintStaticScreen(ctx, cw, ch, kind, seed);
+    paintStaticScreen(ctx, cw, ch, kind, seed, bg);
     texture.needsUpdate = true;
   }
   return { canvas, ctx, texture };

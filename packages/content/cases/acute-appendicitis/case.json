@@ -3147,8 +3147,8 @@
             "en": "Day of presentation (night shift)"
           },
           "text": {
-            "zh-CN": "高频线阵探头分级加压扫查：右髂窝、右髂血管及腰大肌前方见一条起自盲肠末端的盲端管状结构，加压不可压缩，外径 9 mm，壁厚 3 mm，横断面呈“靶环征”，彩色多普勒示管壁血流增多；周围系膜脂肪回声增强、不可压缩（炎性脂肪改变）。未见阑尾粪石。阑尾周围未见积液或脓肿，盆腔无游离液体。探头加压处压痛最明显（超声McBurney征阳性）。回肠末段壁厚正常；肠系膜见数枚小淋巴结（短径≤5 mm），考虑反应性。双肾无积水，膀胱未见异常，肝胆未见异常。\n印象：符合急性阑尾炎，未见穿孔或脓肿的超声征象。",
-            "en": "High-frequency linear probe, graded compression: in the right iliac fossa, anterior to the right iliac vessels and psoas, a blind-ending tubular structure arising from the caecal pole is non-compressible, outer diameter 9 mm, wall thickness 3 mm, with a 'target' appearance in transverse section and increased mural flow on colour Doppler. The surrounding mesenteric fat is echogenic and non-compressible (inflammatory fat). No appendicolith seen. No periappendiceal fluid or abscess; no free pelvic fluid. Maximal tenderness under the probe (sonographic McBurney sign positive). Terminal ileum wall thickness normal; a few small mesenteric lymph nodes (short axis ≤ 5 mm), likely reactive. No hydronephrosis; bladder, liver and gallbladder unremarkable.\nImpression: appearances consistent with acute appendicitis; no sonographic sign of perforation or abscess."
+            "zh-CN": "高频线阵探头分级加压扫查：右髂窝、右髂血管及腰大肌前方见一条起自盲肠末端的盲端管状结构，加压不可压缩，外径 9 mm，壁厚 4 mm，横断面呈“靶环征”，彩色多普勒示管壁血流增多；周围系膜脂肪回声增强、不可压缩（炎性脂肪改变）。未见阑尾粪石。阑尾周围未见积液或脓肿，盆腔无游离液体。探头加压处压痛最明显（超声McBurney征阳性）。回肠末段壁厚正常；肠系膜见数枚小淋巴结（短径≤5 mm），考虑反应性。双肾无积水，膀胱未见异常，肝胆未见异常。\n印象：符合急性阑尾炎，未见穿孔或脓肿的超声征象。",
+            "en": "High-frequency linear probe, graded compression: in the right iliac fossa, anterior to the right iliac vessels and psoas, a blind-ending tubular structure arising from the caecal pole is non-compressible, outer diameter 9 mm, wall thickness 4 mm, with a 'target' appearance in transverse section and increased mural flow on colour Doppler. The surrounding mesenteric fat is echogenic and non-compressible (inflammatory fat). No appendicolith seen. No periappendiceal fluid or abscess; no free pelvic fluid. Maximal tenderness under the probe (sonographic McBurney sign positive). Terminal ileum wall thickness normal; a few small mesenteric lymph nodes (short axis ≤ 5 mm), likely reactive. No hydronephrosis; bladder, liver and gallbladder unremarkable.\nImpression: appearances consistent with acute appendicitis; no sonographic sign of perforation or abscess."
           },
           "values": [
             {
@@ -3166,10 +3166,10 @@
                 "zh-CN": "阑尾壁厚",
                 "en": "Appendiceal wall thickness"
               },
-              "value": 3,
+              "value": 4,
               "unit": "mm",
               "refHigh": 3,
-              "flag": "N"
+              "flag": "H"
             },
             {
               "analyte": {
@@ -4557,7 +4557,7 @@
       "temp": 37.9,
       "gcs": 15,
       "pain": 7,
-      "rhythm": "sinus-tachycardia",
+      "rhythm": "sinus",
       "ecg": "normal"
     },
     "trends": [
@@ -4684,22 +4684,22 @@
             },
             {
               "not": {
-                "flag": "appendectomy-booked"
+                "flag": "abx-given"
               }
             },
             {
               "not": {
-                "flag": "nom-started"
+                "flag": "appendectomy-booked"
               }
             }
           ]
         },
         "setVitals": {
-          "hr": 118,
+          "hr": 112,
           "sbp": 112,
           "dbp": 66,
           "rr": 22,
-          "temp": 38.6,
+          "temp": 38.3,
           "pain": 9
         },
         "setFlags": [

@@ -238,6 +238,7 @@
       "keywords": {
         "zh-CN": [
           "哪里痛",
+          "痛在哪",
           "部位",
           "放射",
           "位置",
@@ -281,7 +282,7 @@
           "character",
           "describe the pain",
           "deep breath",
-          "breathe in",
+          "worse on breathing in",
           "worse with",
           "pleuritic"
         ]
@@ -339,10 +340,13 @@
           "憋气",
           "上不来气",
           "喘不过气",
-          "呼吸费力"
+          "呼吸费力",
+          "喘得厉害",
+          "喘不喘",
+          "气喘"
         ],
         "en": [
-          "breathless at rest",
+          "breathless",
           "short of breath",
           "shortness of breath",
           "dyspnoea",
@@ -410,7 +414,7 @@
         "en": [
           "palpitations",
           "racing heart",
-          "heartbeat",
+          "irregular heartbeat",
           "fluttering",
           "heart beating fast"
         ]
@@ -528,11 +532,12 @@
       },
       "keywords": {
         "zh-CN": [
-          "之前有没有",
           "类似发作",
-          "昨天有没有",
           "以前发作过",
-          "今天之前"
+          "今天之前",
+          "以前这样过",
+          "之前喘过",
+          "昨天喘过"
         ],
         "en": [
           "before today",
@@ -543,6 +548,75 @@
         ]
       },
       "disclosure": "on-ask"
+    },
+    {
+      "id": "h-mobility",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "手术后您下床活动多吗？",
+        "en": "How mobile have you been since the operation?"
+      },
+      "answer": {
+        "zh-CN": "头两天基本都躺在床上，昨天康复师扶我坐到椅子上。今天下午是第一次自己走到走廊那头的厕所。",
+        "en": "The first two days I was mostly in bed. Yesterday the physio got me sitting out in a chair. This afternoon was the first time I walked to the toilet down the corridor on my own."
+      },
+      "keywords": {
+        "zh-CN": [
+          "下床",
+          "活动",
+          "走路",
+          "卧床",
+          "躺着",
+          "行走",
+          "走动"
+        ],
+        "en": [
+          "mobile",
+          "mobility",
+          "walking",
+          "out of bed",
+          "bed rest",
+          "moving around",
+          "up and about"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "h-lmwh",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "术后每天有没有打预防血栓的针（肚皮上打的抗凝针）？昨天打了吗？",
+        "en": "Have you been getting a daily blood-thinning injection in your tummy since the operation — did you have it yesterday?"
+      },
+      "answer": {
+        "zh-CN": "肚皮上那个针？头两个晚上都打了。昨天晚上护士说刀口有点渗液，医生交代先停一次，所以昨晚没打。",
+        "en": "The one in my tummy? I had it the first two nights. Last night the nurse said the wound was weeping a bit and the doctor wanted it held, so I didn't have it."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抗凝针",
+          "肝素",
+          "低分子肝素",
+          "依诺肝素",
+          "预防血栓",
+          "皮下注射",
+          "肚皮上的针",
+          "打针"
+        ],
+        "en": [
+          "injection",
+          "blood thinner",
+          "heparin",
+          "enoxaparin",
+          "clexane",
+          "lmwh",
+          "clot prevention",
+          "prophylaxis"
+        ]
+      },
+      "disclosure": "specific",
+      "required": true
     },
     {
       "id": "h-surgery",
@@ -557,9 +631,9 @@
       },
       "keywords": {
         "zh-CN": [
-          "手术",
+          "什么手术",
+          "手术情况",
           "开刀",
-          "做了什么",
           "哪天做的",
           "手术史",
           "做的什么"
@@ -637,75 +711,6 @@
         ]
       },
       "disclosure": "on-ask"
-    },
-    {
-      "id": "h-mobility",
-      "topic": "hpi",
-      "question": {
-        "zh-CN": "手术后您下床活动多吗？",
-        "en": "How mobile have you been since the operation?"
-      },
-      "answer": {
-        "zh-CN": "头两天基本都躺在床上，昨天康复师扶我坐到椅子上。今天下午是第一次自己走到走廊那头的厕所。",
-        "en": "The first two days I was mostly in bed. Yesterday the physio got me sitting out in a chair. This afternoon was the first time I walked to the toilet down the corridor on my own."
-      },
-      "keywords": {
-        "zh-CN": [
-          "下床",
-          "活动",
-          "走路",
-          "卧床",
-          "躺着",
-          "行走",
-          "走动"
-        ],
-        "en": [
-          "mobile",
-          "mobility",
-          "walking",
-          "out of bed",
-          "bed rest",
-          "moving around",
-          "up and about"
-        ]
-      },
-      "disclosure": "on-ask"
-    },
-    {
-      "id": "h-lmwh",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "术后每天有没有打预防血栓的针（肚皮上打的抗凝针）？昨天打了吗？",
-        "en": "Have you been getting a daily blood-thinning injection in your tummy since the operation — did you have it yesterday?"
-      },
-      "answer": {
-        "zh-CN": "肚皮上那个针？头两个晚上都打了。昨天晚上护士说刀口有点渗液，医生交代先停一次，所以昨晚没打。",
-        "en": "The one in my tummy? I had it the first two nights. Last night the nurse said the wound was weeping a bit and the doctor wanted it held, so I didn't have it."
-      },
-      "keywords": {
-        "zh-CN": [
-          "抗凝针",
-          "肝素",
-          "低分子肝素",
-          "依诺肝素",
-          "预防血栓",
-          "皮下注射",
-          "肚皮上的针",
-          "打针"
-        ],
-        "en": [
-          "injection",
-          "blood thinner",
-          "heparin",
-          "enoxaparin",
-          "clexane",
-          "lmwh",
-          "clot prevention",
-          "prophylaxis"
-        ]
-      },
-      "disclosure": "specific",
-      "required": true
     },
     {
       "id": "h-stockings",
@@ -851,6 +856,7 @@
         "zh-CN": [
           "既往史",
           "以前的病",
+          "以前有什么病",
           "慢性病",
           "心脏病",
           "肺病",
@@ -862,11 +868,11 @@
           "medical history",
           "past history",
           "medical problems",
+          "heart or lung problems",
           "heart disease",
           "lung disease",
           "diabetes",
-          "illnesses",
-          "conditions"
+          "illnesses"
         ]
       },
       "disclosure": "on-ask"
@@ -920,10 +926,11 @@
           "出血倾向",
           "胃溃疡",
           "黑便",
+          "大便黑",
+          "大便颜色",
           "呕血",
           "渗血",
-          "刀口出血",
-          "凝血问题"
+          "刀口出血"
         ],
         "en": [
           "bleeding",
@@ -1112,7 +1119,7 @@
           "职业",
           "和谁住",
           "做什么工作",
-          "住在哪",
+          "住在什么地方",
           "家庭情况"
         ],
         "en": [
@@ -1152,7 +1159,8 @@
           "flew",
           "long journey",
           "trip",
-          "train"
+          "train",
+          "been anywhere recently"
         ]
       },
       "disclosure": "on-ask"
@@ -3373,6 +3381,9 @@
                 "examined": "ex-legs"
               }
             ]
+          },
+          {
+            "flag": "high-risk-pe"
           }
         ]
       },
@@ -3959,6 +3970,12 @@
           "delta": 2,
           "onsetMinutes": 2,
           "rampMinutes": 8
+        },
+        {
+          "vital": "gcs",
+          "delta": 1,
+          "onsetMinutes": 5,
+          "rampMinutes": 10
         }
       ],
       "maxDoses": 1,
@@ -4056,6 +4073,12 @@
         {
           "vital": "rr",
           "delta": -5,
+          "onsetMinutes": 30,
+          "rampMinutes": 30
+        },
+        {
+          "vital": "gcs",
+          "delta": 1,
           "onsetMinutes": 30,
           "rampMinutes": 30
         }

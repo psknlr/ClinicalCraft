@@ -82,6 +82,32 @@ try {
     const target = await page.evaluate(() => window.__WORLD__.debug.target?.name ?? null);
     summary.shots.push({ name, file, target });
   }
+  // NPC shots: stand in front of every patient slot / staff member (max 6) and look at them
+  const npcs = await page.evaluate(() => {
+    const f = window.__HARNESS__.facility;
+    const out = [];
+    for (const s of f.patientSlots.slice(0, 4)) {
+      const bed = s.bed ? f.placements.find((p) => p.id === s.bed) : null;
+      const lying = s.posture === "lying" && bed;
+      const rot = lying ? bed.rot ?? 0 : s.rot ?? 0;
+      out.push({ name: `slot-${s.id}`, x: lying ? bed.x : s.x, z: lying ? bed.z : s.z, rot, dist: lying ? 2.4 : 2.2, y: lying ? 0.9 : 1.1 });
+    }
+    for (const st of (f.staff ?? []).slice(0, 2)) out.push({ name: `staff-${st.id}`, x: st.x, z: st.z, rot: st.rot ?? 0, dist: 2.2, y: 1.2 });
+    return out;
+  });
+  for (const n of npcs) {
+    if (only.length && !only.some((o) => n.name.includes(o))) continue;
+    const a = (n.rot * Math.PI) / 180;
+    const fx = Math.sin(a), fz = Math.cos(a);
+    const px = n.x + fx * n.dist + fz * 0.6, pz = n.z + fz * n.dist - fx * 0.6;
+    const yaw = Math.atan2(px - n.x, pz - n.z);
+    const pitch = -Math.atan2(1.62 - n.y, n.dist);
+    await page.evaluate(([x, z, yaw, pitch]) => window.__WORLD__.debug.teleport(x, z, 0, yaw, pitch), [px, pz, yaw, pitch]);
+    await page.waitForTimeout(900);
+    const file = path.join(out, `world-${tag}-${n.name}.png`);
+    await page.screenshot({ path: file });
+    summary.shots.push({ name: n.name, file, target: await page.evaluate(() => window.__WORLD__.debug.target?.name ?? null) });
+  }
   summary.stats = await page.evaluate(() => window.__WORLD__.debug.stats());
   if (extras) {
     // monitor close-up in the world (first linked monitor)

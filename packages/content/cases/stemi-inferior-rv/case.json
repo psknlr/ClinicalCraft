@@ -1417,9 +1417,8 @@
         "en": [
           "general appearance",
           "general inspection",
-          "look at the patient",
-          "inspection",
-          "end of the bed"
+          "end of the bed",
+          "how unwell"
         ]
       },
       "finding": {
@@ -1557,6 +1556,7 @@
       "keywords": {
         "zh-CN": [
           "心脏听诊",
+          "听诊心脏",
           "听心脏",
           "心音",
           "杂音",
@@ -3004,7 +3004,8 @@
       {
         "ifMatches": "糖化|hba1c|a1c",
         "remove": [
-          "poc-glucose"
+          "poc-glucose",
+          "cbc"
         ]
       }
     ],
@@ -3976,22 +3977,11 @@
         }
       ],
       "contraindicatedWhen": {
-        "any": [
-          {
-            "vital": "hr",
-            "op": "lt",
-            "value": 60
-          },
-          {
-            "vital": "sbp",
-            "op": "lt",
-            "value": 100
-          }
-        ]
+        "always": true
       },
       "harm": {
-        "zh-CN": "心动过缓、低血压及右室梗死时静脉β受体阻滞剂可诱发严重心动过缓、房室传导阻滞和心源性休克。",
-        "en": "IV beta-blockade in bradycardia, hypotension and RV infarction can precipitate profound bradycardia, AV block and cardiogenic shock."
+        "zh-CN": "本例为下壁STEMI合并右室梗死、窦性心动过缓且血压偏低：静脉β受体阻滞剂可诱发严重心动过缓、房室传导阻滞和心源性休克（ESC 2023仅在收缩压 > 120 mmHg且无心衰、心动过缓或房室阻滞时考虑使用）。",
+        "en": "Inferior STEMI with RV involvement, sinus bradycardia and borderline BP: IV beta-blockade can precipitate profound bradycardia, AV block and cardiogenic shock (ESC 2023 considers it only with SBP > 120 mmHg and no heart failure, bradycardia or AV block)."
       },
       "response": {
         "zh-CN": "美托洛尔已静推。",
@@ -4189,19 +4179,19 @@
       "aliases": {
         "zh-CN": [
           "启动导管室",
-          "导管室",
+          "激活导管室",
+          "一键启动",
           "直接pci",
-          "介入",
-          "叫心内科介入",
+          "叫介入",
           "胸痛中心"
         ],
         "en": [
           "activate cath lab",
-          "cath lab",
+          "activate the cath lab",
           "primary pci",
           "stemi activation",
-          "call cardiology",
-          "interventional"
+          "call the cath lab",
+          "call interventional cardiology"
         ]
       },
       "risk": "low",

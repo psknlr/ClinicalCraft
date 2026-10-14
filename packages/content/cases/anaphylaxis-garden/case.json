@@ -124,7 +124,7 @@
       },
       "keywords": {
         "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过"],
-        "en": ["what happened", "what's wrong", "what's going on", "what brought this on", "how did this start", "tell me what happened"]
+        "en": ["what happened", "what's wrong", "what's going on", "what brought this on", "how long ago", "tell me what happened"]
       },
       "disclosure": "volunteer",
       "required": true
@@ -186,7 +186,7 @@
         "en": "So dizzy… I tried to stand up… everything went grey… had to sit back down…"
       },
       "keywords": {
-        "zh-CN": ["头晕", "晕", "眼前发黑", "要晕倒", "站不稳", "发飘", "晕厥", "头昏"],
+        "zh-CN": ["头晕", "眼前发黑", "要晕倒", "站不稳", "发飘", "晕厥", "头昏", "晕乎乎"],
         "en": ["dizzy", "faint", "lightheaded", "light-headed", "grey", "going to faint", "woozy", "collapse"]
       },
       "required": true
@@ -198,7 +198,17 @@
       "answer": { "zh-CN": "没有……没晕过去……差一点……", "en": "No… didn't pass out… nearly did…" },
       "keywords": {
         "zh-CN": ["失去意识", "昏过去", "晕过去", "不省人事", "失去知觉", "昏迷"],
-        "en": ["lose consciousness", "unconscious", "black out", "blacked out", "out cold", "loc", "knocked out"]
+        "en": ["lose consciousness", "unconscious", "black out", "blacked out", "pass out", "passed out", "knocked out"]
+      }
+    },
+    {
+      "id": "ros-other",
+      "topic": "ros",
+      "question": { "zh-CN": "还有其他不舒服吗？比如眼睛痒、流鼻涕、头痛？", "en": "Anything else — itchy eyes, runny nose, headache?" },
+      "answer": { "zh-CN": "眼睛痒，一直流眼泪……鼻子有点堵……头有点胀……", "en": "Eyes itchy and watering… nose a bit blocked… head feels full…" },
+      "keywords": {
+        "zh-CN": ["其他症状", "眼睛", "流泪", "鼻塞", "流鼻涕", "头痛", "打喷嚏"],
+        "en": ["other symptoms", "eyes", "watery", "runny nose", "blocked nose", "headache", "sneezing"]
       }
     },
     {
@@ -245,7 +255,7 @@
       "answer": { "zh-CN": "心跳得好快……不是痛……就是喘的那种紧……", "en": "Heart's racing… not pain… just tight from the breathing…" },
       "keywords": {
         "zh-CN": ["胸痛", "心慌", "心悸", "心跳", "胸口痛", "心脏"],
-        "en": ["chest pain", "palpitations", "heart racing", "pounding", "heart"]
+        "en": ["chest pain", "palpitations", "heart racing", "heart pounding", "pounding"]
       }
     },
     {
@@ -316,56 +326,6 @@
       }
     },
     {
-      "id": "allergy-drug",
-      "topic": "allergies",
-      "question": { "zh-CN": "对药物或者其他东西过敏吗？", "en": "Are you allergic to any medicines or anything else?" },
-      "answer": { "zh-CN": "药……没有过敏……就是春天有花粉症……", "en": "No… no drug allergies… just hay fever in spring…" },
-      "keywords": {
-        "zh-CN": ["过敏吗", "药物过敏", "对什么过敏", "青霉素", "过敏史", "药过敏"],
-        "en": ["allergic", "allergies", "drug allergy", "penicillin", "allergic to anything", "nkda"]
-      },
-      "required": true
-    },
-    {
-      "id": "aai-own",
-      "topic": "medications",
-      "question": { "zh-CN": "你身上带着肾上腺素自动注射笔吗？", "en": "Do you carry an adrenaline auto-injector?" },
-      "answer": { "zh-CN": "没有……从来没人说我需要……", "en": "No… nobody ever said I needed one…" },
-      "keywords": {
-        "zh-CN": ["肾上腺素笔", "自动注射笔", "随身带", "急救笔", "注射笔", "EpiPen"],
-        "en": ["epipen", "auto-injector", "autoinjector", "adrenaline pen", "epinephrine pen", "carry a pen", "jext"]
-      }
-    },
-    {
-      "id": "meds",
-      "topic": "medications",
-      "question": { "zh-CN": "平时吃什么药吗？", "en": "Do you take any regular medicines?" },
-      "answer": {
-        "zh-CN": "就吃避孕药……每天一片……春天花粉症的时候吃西替利嗪……现在没在吃……",
-        "en": "Just the contraceptive pill… one a day… cetirizine in spring for hay fever… not taking it now…"
-      },
-      "keywords": {
-        "zh-CN": ["吃什么药", "用药", "药物", "长期用药", "服药", "平时吃药", "处方", "吃药吗"],
-        "en": ["medications", "medicines", "tablets", "regular", "pills", "prescription", "take any", "meds"]
-      },
-      "required": true
-    },
-    {
-      "id": "meds-bb",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "有没有吃降压药或心脏药，比如β受体阻滞剂或者ACEI类？",
-        "en": "Do you take any blood-pressure or heart tablets, such as beta-blockers or ACE inhibitors?"
-      },
-      "answer": { "zh-CN": "没有……从来没吃过降压药或者心脏的药……", "en": "No… never taken any blood pressure or heart tablets…" },
-      "keywords": {
-        "zh-CN": ["降压药", "β受体阻滞剂", "倍他乐克", "美托洛尔", "ACEI", "普利", "心脏药", "阻滞剂"],
-        "en": ["beta blocker", "beta-blocker", "blood pressure tablets", "ace inhibitor", "propranolol", "bisoprolol", "metoprolol", "ramipril"]
-      },
-      "disclosure": "specific",
-      "required": true
-    },
-    {
       "id": "pmh-asthma",
       "topic": "pmh",
       "question": { "zh-CN": "有哮喘或者其他慢性病吗？", "en": "Do you have asthma or any other long-term condition?" },
@@ -400,16 +360,6 @@
       }
     },
     {
-      "id": "obstetric-lmp",
-      "topic": "obstetric",
-      "question": { "zh-CN": "有没有可能怀孕？末次月经是什么时候？", "en": "Could you be pregnant? When was your last period?" },
-      "answer": { "zh-CN": "不会……我在吃避孕药……两周前来的月经……", "en": "No… I'm on the pill… my period was two weeks ago…" },
-      "keywords": {
-        "zh-CN": ["怀孕", "月经", "末次月经", "例假", "妊娠", "怀孕可能"],
-        "en": ["pregnant", "pregnancy", "period", "lmp", "last menstrual", "could you be pregnant"]
-      }
-    },
-    {
       "id": "family",
       "topic": "family",
       "question": { "zh-CN": "家里人有严重过敏的吗？", "en": "Does anyone in your family have severe allergies?" },
@@ -417,6 +367,66 @@
       "keywords": {
         "zh-CN": ["家族史", "家里人", "父母", "遗传", "家人过敏", "亲属"],
         "en": ["family history", "family", "parents", "runs in the family", "relatives", "mother", "father"]
+      }
+    },
+    {
+      "id": "allergy-drug",
+      "topic": "allergies",
+      "question": { "zh-CN": "对药物或者其他东西过敏吗？", "en": "Are you allergic to any medicines or anything else?" },
+      "answer": { "zh-CN": "药……没有过敏……就是春天有花粉症……", "en": "No… no drug allergies… just hay fever in spring…" },
+      "keywords": {
+        "zh-CN": ["过敏吗", "药物过敏", "对什么过敏", "青霉素", "过敏史", "药过敏"],
+        "en": ["allergic", "allergies", "drug allergy", "penicillin", "allergic to anything", "nkda"]
+      },
+      "required": true
+    },
+    {
+      "id": "meds",
+      "topic": "medications",
+      "question": { "zh-CN": "平时吃什么药吗？", "en": "Do you take any regular medicines?" },
+      "answer": {
+        "zh-CN": "就吃避孕药……每天一片……春天花粉症的时候吃西替利嗪……现在没在吃……",
+        "en": "Just the contraceptive pill… one a day… cetirizine in spring for hay fever… not taking it now…"
+      },
+      "keywords": {
+        "zh-CN": ["吃什么药", "用药", "药物", "长期用药", "服药", "平时吃药", "处方", "吃药吗"],
+        "en": ["medications", "medicines", "tablets", "regular", "pills", "prescription", "take any", "meds"]
+      },
+      "required": true
+    },
+    {
+      "id": "meds-bb",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "有没有吃降压药或心脏药，比如β受体阻滞剂或者ACEI类？",
+        "en": "Do you take any blood-pressure or heart tablets, such as beta-blockers or ACE inhibitors?"
+      },
+      "answer": { "zh-CN": "没有……从来没吃过降压药或者心脏的药……", "en": "No… never taken any blood pressure or heart tablets…" },
+      "keywords": {
+        "zh-CN": ["降压药", "β受体阻滞剂", "倍他乐克", "美托洛尔", "ACEI", "普利", "心脏药", "阻滞剂"],
+        "en": ["beta blocker", "beta-blocker", "blood pressure tablets", "ace inhibitor", "propranolol", "bisoprolol", "metoprolol", "ramipril"]
+      },
+      "disclosure": "specific",
+      "required": true
+    },
+    {
+      "id": "aai-own",
+      "topic": "medications",
+      "question": { "zh-CN": "你身上带着肾上腺素自动注射笔吗？", "en": "Do you carry an adrenaline auto-injector?" },
+      "answer": { "zh-CN": "没有……从来没人说我需要……", "en": "No… nobody ever said I needed one…" },
+      "keywords": {
+        "zh-CN": ["肾上腺素笔", "自动注射笔", "随身带", "急救笔", "注射笔", "EpiPen"],
+        "en": ["epipen", "auto-injector", "autoinjector", "adrenaline pen", "epinephrine pen", "carry a pen", "jext"]
+      }
+    },
+    {
+      "id": "obstetric-lmp",
+      "topic": "obstetric",
+      "question": { "zh-CN": "有没有可能怀孕？末次月经是什么时候？", "en": "Could you be pregnant? When was your last period?" },
+      "answer": { "zh-CN": "不会……我在吃避孕药……两周前来的月经……", "en": "No… I'm on the pill… my period was two weeks ago…" },
+      "keywords": {
+        "zh-CN": ["怀孕", "月经", "末次月经", "例假", "妊娠", "怀孕可能"],
+        "en": ["pregnant", "pregnancy", "period", "lmp", "last menstrual", "could you be pregnant"]
       }
     },
     {
@@ -468,16 +478,6 @@
         "en": ["beekeeping", "beehive", "keep bees", "around bees", "gardening", "outdoors", "exposure", "bee farm"]
       },
       "disclosure": "specific"
-    },
-    {
-      "id": "ros-other",
-      "topic": "ros",
-      "question": { "zh-CN": "还有其他不舒服吗？比如眼睛痒、流鼻涕、头痛？", "en": "Anything else — itchy eyes, runny nose, headache?" },
-      "answer": { "zh-CN": "眼睛痒，一直流眼泪……鼻子有点堵……头有点胀……", "en": "Eyes itchy and watering… nose a bit blocked… head feels full…" },
-      "keywords": {
-        "zh-CN": ["其他症状", "眼睛", "流泪", "鼻塞", "流鼻涕", "头痛", "打喷嚏"],
-        "en": ["other symptoms", "eyes", "watery", "runny nose", "blocked nose", "headache", "sneezing"]
-      }
     },
     {
       "id": "ice-concern",
@@ -960,8 +960,8 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本实验室批量检测，现实中报告可能需1–2天。",
-            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Batched assay — in real life the report may take 1–2 days."
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         },
         "ed": {
@@ -980,8 +980,8 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本实验室批量检测，现实中报告可能需1–2天。",
-            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Batched assay — in real life the report may take 1–2 days."
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         }
       }
@@ -1015,8 +1015,8 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本实验室批量检测，现实中报告可能需1–2天。",
-            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Batched assay — in real life the report may take 1–2 days."
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         },
         "ed": {
@@ -1035,8 +1035,8 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本实验室批量检测，现实中报告可能需1–2天。",
-            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Batched assay — in real life the report may take 1–2 days."
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         }
       }
@@ -1056,25 +1056,25 @@
       "results": {
         "ed": {
           "text": {
-            "zh-CN": "静脉血气：轻度代谢性酸中毒伴乳酸升高（低灌注及肾上腺素β2效应），阴离子间隙 = Na −（Cl + HCO₃）= 139 −（106 + 19）= 14 mmol/L；血钾轻度降低（肾上腺素/沙丁胺醇致钾向细胞内转移）。静脉pO₂无解读意义。",
-            "en": "Venous gas: mild metabolic acidosis with raised lactate (hypoperfusion plus β2 effect of adrenaline); anion gap = Na − (Cl + HCO₃) = 139 − (106 + 19) = 14 mmol/L; mildly low potassium (intracellular shift from adrenaline/salbutamol). Venous pO₂ is not interpretable. pCO₂ 5.0 kPa ≈ 37.5 mmHg."
+            "zh-CN": "静脉血气：轻度代谢性酸中毒伴乳酸升高（低灌注及肾上腺素β2效应），阴离子间隙 = Na −（Cl + HCO₃）= 139 −（106 + 19）= 14 mmol/L；血钾轻度降低（肾上腺素/沙丁胺醇致钾向细胞内转移）。静脉pO₂无解读意义。pCO₂ 5.0 kPa ≈ 37.5 mmHg（呼吸代偿）。",
+            "en": "Venous gas: mild metabolic acidosis with raised lactate (hypoperfusion plus β2 effect of adrenaline); anion gap = Na − (Cl + HCO₃) = 139 − (106 + 19) = 14 mmol/L; mildly low potassium (intracellular shift from adrenaline/salbutamol). Venous pO₂ is not interpretable. pCO₂ 5.0 kPa ≈ 37.5 mmHg (respiratory compensation)."
           },
           "values": [
             {
               "analyte": { "zh-CN": "pH", "en": "pH" },
               "value": 7.32,
               "unit": "",
-              "refLow": 7.32,
-              "refHigh": 7.42,
-              "flag": "N"
+              "refLow": 7.33,
+              "refHigh": 7.43,
+              "flag": "L"
             },
             {
               "analyte": { "zh-CN": "pCO₂（静脉）", "en": "pCO₂ (venous)" },
               "value": 5,
               "unit": "kPa",
-              "refLow": 5,
-              "refHigh": 6.4,
-              "flag": "N"
+              "refLow": 5.5,
+              "refHigh": 6.8,
+              "flag": "L"
             },
             {
               "analyte": { "zh-CN": "HCO₃⁻", "en": "HCO₃⁻" },
@@ -1669,7 +1669,7 @@
       "value": "low-value",
       "results": {
         "treated": {
-          "text": { "zh-CN": "hs-cTnT 5 ng/L（<14）。", "en": "hs-cTnT 5 ng/L (<14)." },
+          "text": { "zh-CN": "高敏肌钙蛋白T 5 ng/L（参考值 <14），正常。", "en": "hs-troponin T 5 ng/L (reference <14), normal." },
           "values": [
             {
               "analyte": { "zh-CN": "高敏肌钙蛋白T", "en": "hs-troponin T" },
@@ -1682,7 +1682,7 @@
           ]
         },
         "ed": {
-          "text": { "zh-CN": "hs-cTnT 6 ng/L（<14）。", "en": "hs-cTnT 6 ng/L (<14)." },
+          "text": { "zh-CN": "高敏肌钙蛋白T 6 ng/L（参考值 <14），正常。", "en": "hs-troponin T 6 ng/L (reference <14), normal." },
           "values": [
             {
               "analyte": { "zh-CN": "高敏肌钙蛋白T", "en": "hs-troponin T" },
@@ -1711,7 +1711,7 @@
       "value": "low-value",
       "results": {
         "treated": {
-          "text": { "zh-CN": "CRP 2 mg/L（<5）。", "en": "CRP 2 mg/L (<5)." },
+          "text": { "zh-CN": "C反应蛋白 2 mg/L（参考值 <5），正常。", "en": "CRP 2 mg/L (reference <5), normal." },
           "values": [
             {
               "analyte": { "zh-CN": "C反应蛋白", "en": "CRP" },
@@ -1724,7 +1724,7 @@
           ]
         },
         "ed": {
-          "text": { "zh-CN": "CRP 2 mg/L（<5）。", "en": "CRP 2 mg/L (<5)." },
+          "text": { "zh-CN": "C反应蛋白 2 mg/L（参考值 <5），正常。", "en": "CRP 2 mg/L (reference <5), normal." },
           "values": [
             {
               "analyte": { "zh-CN": "C反应蛋白", "en": "CRP" },
@@ -3102,8 +3102,8 @@
   "debrief": {
     "title": { "zh-CN": "复盘：花园蜂蜇后的严重过敏反应", "en": "Debrief: anaphylaxis after a bee sting in the garden" },
     "conclusion": {
-      "zh-CN": "蜜蜂（膜翅目）毒液所致严重过敏反应（anaphylaxis），同时累及气道（口唇/舌血管性水肿、声音嘶哑）、呼吸（支气管痉挛，SpO₂ 92%）和循环（血压78/44 mmHg、头晕）——即过敏性休克。在现场给予肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧并于5分钟再评估后重复、平卧抬腿、高流量吸氧、晶体液扩容及沙丁胺醇雾化后好转，平卧转运至急诊。类胰蛋白酶由初始样本的13.8 µg/L升至1–2小时样本的27.4 µg/L，支持肥大细胞活化。处置：症状缓解后至少观察6小时，出院带2支肾上腺素自动注射笔并完成培训和书面应急计划，转诊变态反应专科评估蜂毒免疫治疗。",
-      "en": "Severe honeybee (Hymenoptera) venom anaphylaxis involving airway (lip/tongue angio-oedema, hoarseness), breathing (bronchospasm, SpO₂ 92%) and circulation (BP 78/44 mmHg with dizziness) — anaphylactic shock. She improved on scene with IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh, repeated after the 5-minute reassessment, lying flat with legs raised, high-flow oxygen, a crystalloid bolus and nebulised salbutamol, and was transferred lying flat to the ED. Tryptase rose from 13.8 µg/L (initial) to 27.4 µg/L (1–2 h sample), supporting mast-cell activation. Disposition: observation for at least 6 h after resolution, discharge with two adrenaline auto-injectors, training and a written action plan, and referral to allergy for venom immunotherapy assessment."
+      "zh-CN": "蜜蜂（膜翅目）毒液所致严重过敏反应（anaphylaxis），同时累及气道（口唇/舌血管性水肿、声音嘶哑）、呼吸（支气管痉挛，SpO₂ 92%）和循环（血压78/44 mmHg、头晕）——即过敏性休克。在现场给予肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧并于5分钟再评估后重复、平卧抬腿、高流量吸氧、晶体液扩容及沙丁胺醇雾化后好转，平卧转运至急诊。1–2小时定时样本类胰蛋白酶27.4 µg/L，高于初始样本，支持肥大细胞活化（初始样本数值取决于采样时间，过早可正常）。处置：症状缓解后至少观察6小时，出院带2支肾上腺素自动注射笔并完成培训和书面应急计划，转诊变态反应专科评估蜂毒免疫治疗。",
+      "en": "Severe honeybee (Hymenoptera) venom anaphylaxis involving airway (lip/tongue angio-oedema, hoarseness), breathing (bronchospasm, SpO₂ 92%) and circulation (BP 78/44 mmHg with dizziness) — anaphylactic shock. She improved on scene with IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh, repeated after the 5-minute reassessment, lying flat with legs raised, high-flow oxygen, a crystalloid bolus and nebulised salbutamol, and was transferred lying flat to the ED. The timed 1–2 h tryptase of 27.4 µg/L, higher than the initial sample, supports mast-cell activation (the initial value depends on when it was drawn and may be normal if very early). Disposition: observation for at least 6 h after resolution, discharge with two adrenaline auto-injectors, training and a written action plan, and referral to allergy for venom immunotherapy assessment."
     },
     "keyReasoning": [
       {
@@ -3286,7 +3286,9 @@
       { "text": "Have you ever had allergy testing?", "locale": "en", "expect": ["prior-testing"] },
       { "text": "When was your last tetanus jab?", "locale": "en", "expect": ["unknown-tetanus"] },
       { "text": "你平时血压多少？", "locale": "zh-CN", "expect": ["unknown-usual-bp"] },
-      { "text": "家里人有严重过敏的吗？", "locale": "zh-CN", "expect": ["family"] }
+      { "text": "家里人有严重过敏的吗？", "locale": "zh-CN", "expect": ["family"] },
+      { "text": "刚才有没有晕过去？", "locale": "zh-CN", "expect": ["hpi-loc"] },
+      { "text": "Any itchy eyes or runny nose?", "locale": "en", "expect": ["ros-other"] }
     ],
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~86 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~58 at 10 min (peri-arrest event).",

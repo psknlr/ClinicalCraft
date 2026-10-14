@@ -98,8 +98,12 @@ export function buildPlacements(ctx: BuildContext): void {
       boxes.push(partBox({ x: p.x, z: p.z, y, rot }, part as never));
       const anim = part.anim ?? "none";
       if (part.name === "screen" && screenKind !== "none") {
-        const sc = createScreenTexture(screenKind, part.s[0], part.s[1], p.id);
-        const screenMat = new MeshBasicMaterial({ map: sc.texture, toneMapped: false });
+        const sc = createScreenTexture(screenKind, part.s[0], part.s[1], p.id, ctx.lib.def(part.m)?.color);
+        const live = screenKind === "vitals" || screenKind === "ecg";
+        // live monitors are self-lit displays; static panels are lit like V4's emissive "screen" blocks
+        const screenMat = live
+          ? new MeshBasicMaterial({ map: sc.texture, toneMapped: false })
+          : new MeshStandardMaterial({ map: sc.texture, emissiveMap: sc.texture, emissive: new Color(0xffffff), emissiveIntensity: screenKind === "text" ? 0.35 : 0.85, roughness: 0.6 });
         const mats = [black, black, black, black, screenMat, black];
         const mesh = new Mesh(UNIT_BOX, mats);
         mesh.position.set(px, py, pz);

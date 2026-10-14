@@ -4599,7 +4599,7 @@
       "effects": [
         {
           "vital": "spo2",
-          "delta": 2,
+          "delta": 2.5,
           "onsetMinutes": 60,
           "rampMinutes": 120
         },
@@ -4666,7 +4666,7 @@
       "effects": [
         {
           "vital": "spo2",
-          "delta": 2,
+          "delta": 2.5,
           "onsetMinutes": 60,
           "rampMinutes": 120
         },
