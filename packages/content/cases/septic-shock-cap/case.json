@@ -358,9 +358,9 @@
         ],
         "en": [
           "chest pain",
-          "where does it hurt",
+          "where is the pain located",
           "sore chest",
-          "what is the pain like",
+          "describe the chest pain",
           "chest hurt"
         ]
       },
@@ -383,10 +383,10 @@
           "深呼吸疼",
           "吸气疼",
           "呼吸时疼",
-          "放射",
+          "往别处放射",
           "疼几分",
-          "加重",
-          "缓解",
+          "疼痛加重",
+          "什么时候更疼",
           "疼痛评分"
         ],
         "en": [
@@ -394,10 +394,9 @@
           "deep breath",
           "radiate",
           "spread anywhere",
-          "out of ten",
-          "score out of 10",
-          "makes it worse",
-          "eases it"
+          "pain score out of ten",
+          "pain worse",
+          "what eases the pain"
         ]
       },
       "disclosure": "on-ask",
@@ -739,6 +738,36 @@
       "required": false
     },
     {
+      "id": "hx-allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Any allergies to medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "过敏……没有。女儿：没有已知过敏。青霉素、头孢她以前都用过，没出过问题。",
+        "en": "Allergies… no. Daughter: No known allergies. She's had penicillin and cephalosporin antibiotics before without any problem."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "青霉素",
+          "食物过敏"
+        ],
+        "en": [
+          "allergies",
+          "allergic",
+          "allergy",
+          "penicillin",
+          "drug reaction"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
       "id": "hx-recent-healthcare",
       "topic": "pmh",
       "question": {
@@ -899,7 +928,7 @@
           "tablets",
           "pills",
           "regular drugs",
-          "what does she take",
+          "what medicines does she take",
           "drug list"
         ]
       },
@@ -928,45 +957,16 @@
         ],
         "en": [
           "fever medicine",
-          "painkillers",
+          "analgesics",
           "ibuprofen",
           "over the counter",
-          "anything for the fever",
+          "medicine for the fever",
+          "pain relief tablets",
           "self-medicated"
         ]
       },
       "disclosure": "specific",
       "required": false
-    },
-    {
-      "id": "hx-allergies",
-      "topic": "allergies",
-      "question": {
-        "zh-CN": "对什么药物或食物过敏吗？",
-        "en": "Any allergies to medicines or foods?"
-      },
-      "answer": {
-        "zh-CN": "过敏……没有。女儿：没有已知过敏。青霉素、头孢她以前都用过，没出过问题。",
-        "en": "Allergies… no. Daughter: No known allergies. She's had penicillin and cephalosporin antibiotics before without any problem."
-      },
-      "keywords": {
-        "zh-CN": [
-          "过敏",
-          "药物过敏",
-          "过敏史",
-          "青霉素",
-          "食物过敏"
-        ],
-        "en": [
-          "allergies",
-          "allergic",
-          "allergy",
-          "penicillin",
-          "drug reaction"
-        ]
-      },
-      "disclosure": "on-ask",
-      "required": true
     },
     {
       "id": "hx-psh",
@@ -4391,13 +4391,18 @@
         "zh-CN": [
           "鼻导管",
           "鼻导管吸氧",
-          "低流量吸氧"
+          "低流量吸氧",
+          "吸氧",
+          "给氧"
         ],
         "en": [
           "nasal cannula",
           "nasal prongs",
           "nasal specs",
-          "low-flow oxygen"
+          "low-flow oxygen",
+          "oxygen",
+          "give oxygen",
+          "supplemental oxygen"
         ]
       },
       "dose": {
@@ -4531,6 +4536,54 @@
       }
     },
     {
+      "id": "fluid-restrict",
+      "name": {
+        "zh-CN": "限制补液（仅维持液）",
+        "en": "Fluid restriction (maintenance only)"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "限制补液",
+          "限液",
+          "少补液",
+          "维持液",
+          "慢慢补"
+        ],
+        "en": [
+          "fluid restriction",
+          "restrict fluids",
+          "maintenance fluids only",
+          "keep her dry",
+          "run fluids slowly"
+        ]
+      },
+      "dose": {
+        "zh-CN": "担心肺炎/年龄而限制液体：仅维持液 80 mL/h",
+        "en": "Restrict fluids because of the pneumonia/age: maintenance only, 80 mL/h"
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [],
+      "indicatedWhen": {
+        "always": false
+      },
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "低血压伴乳酸4.6 mmol/L、少尿和皮肤花斑，是需要早期液体复苏的低灌注。仅给维持液会延长低灌注、加重乳酸和急性肾损伤。应分次推注平衡晶体液并反复复评。",
+        "en": "Hypotension with lactate 4.6 mmol/L, oliguria and mottling is hypoperfusion that needs early fluid resuscitation. Maintenance fluid alone prolongs hypoperfusion and worsens the lactate and the kidney injury. Give balanced crystalloid in boluses with repeated reassessment."
+      },
+      "response": {
+        "zh-CN": "维持液以80 mL/h开始输注。",
+        "en": "Maintenance fluid started at 80 mL/h."
+      }
+    },
+    {
       "id": "fluid-bolus",
       "name": {
         "zh-CN": "平衡晶体液 500 mL 快速推注",
@@ -4629,54 +4682,6 @@
       "response": {
         "zh-CN": "500 mL平衡晶体液快速输入。注意血压是否只是短暂上升；每次推注后复评再充盈时间、意识、尿量和肺部。",
         "en": "500 mL of balanced crystalloid running in fast. Watch whether the blood pressure rises only transiently; reassess capillary refill, mental state, urine output and the chest after each bolus."
-      }
-    },
-    {
-      "id": "fluid-restrict",
-      "name": {
-        "zh-CN": "限制补液（仅维持液）",
-        "en": "Fluid restriction (maintenance only)"
-      },
-      "kind": "fluid",
-      "aliases": {
-        "zh-CN": [
-          "限制补液",
-          "限液",
-          "少补液",
-          "维持液",
-          "慢慢补"
-        ],
-        "en": [
-          "fluid restriction",
-          "restrict fluids",
-          "maintenance fluids only",
-          "keep her dry",
-          "run fluids slowly"
-        ]
-      },
-      "dose": {
-        "zh-CN": "担心肺炎/年龄而限制液体：仅维持液 80 mL/h",
-        "en": "Restrict fluids because of the pneumonia/age: maintenance only, 80 mL/h"
-      },
-      "requires": [
-        "iv-access"
-      ],
-      "risk": "moderate",
-      "effects": [],
-      "setFlags": [],
-      "indicatedWhen": {
-        "always": false
-      },
-      "contraindicatedWhen": {
-        "always": true
-      },
-      "harm": {
-        "zh-CN": "低血压伴乳酸4.6 mmol/L、少尿和皮肤花斑，是需要早期液体复苏的低灌注。仅给维持液会延长低灌注、加重乳酸和急性肾损伤。应分次推注平衡晶体液并反复复评。",
-        "en": "Hypotension with lactate 4.6 mmol/L, oliguria and mottling is hypoperfusion that needs early fluid resuscitation. Maintenance fluid alone prolongs hypoperfusion and worsens the lactate and the kidney injury. Give balanced crystalloid in boluses with repeated reassessment."
-      },
-      "response": {
-        "zh-CN": "维持液以80 mL/h开始输注。",
-        "en": "Maintenance fluid started at 80 mL/h."
       }
     },
     {
@@ -5236,8 +5241,8 @@
         "en": [
           "arterial line",
           "art line",
-          "a-line",
-          "invasive bp"
+          "invasive bp",
+          "invasive blood pressure"
         ]
       },
       "dose": {

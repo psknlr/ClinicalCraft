@@ -26,7 +26,7 @@
     "chest-pain",
     "time-critical",
     "ecg-interpretation",
-    "resuscitation",
+    "emergency-department",
     "simulated-clock",
     "synthetic"
   ],
@@ -98,8 +98,8 @@
       },
       "concerns": [
         {
-          "zh-CN": "我是不是心脏出事了？我爸当年就是心脏的问题走的。",
-          "en": "Is it my heart? That's what took my dad."
+          "zh-CN": "我是不是心脏出事了？会不会有生命危险？",
+          "en": "Is it my heart? Am I going to die?"
         },
         {
           "zh-CN": "要做手术吗？我老伴能陪着我吗？",

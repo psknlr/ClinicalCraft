@@ -257,10 +257,9 @@
           "多久了",
           "怎么开始的",
           "起病",
-          "昨晚",
           "喘了多久",
           "发作经过",
-          "怎么加重",
+          "怎么加重的",
           "这次怎么了"
         ],
         "en": [
@@ -382,6 +381,43 @@
           "urine",
           "appetite",
           "feeding"
+        ]
+      }
+    },
+    {
+      "id": "hx-interval-symptoms",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "平时没发作的时候，晚上咳醒、运动后喘的情况多吗？急救喷雾一周用几次？",
+        "en": "Between attacks, how often does he cough at night or wheeze with exercise, and how often does he need the blue inhaler?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）最近一个月，一周大概有两三个晚上咳醒；在学校跑完步会喘，体育课有时候要停下来。蓝色喷雾一周要用三四次。",
+        "en": "(Mother) Over the last month he's woken coughing two or three nights a week, and he gets wheezy after running at school — sometimes he has to stop in PE. He uses the blue inhaler three or four times a week."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时症状",
+          "夜间咳嗽",
+          "晚上咳嗽",
+          "晚上咳醒",
+          "运动后喘",
+          "体育课",
+          "一周用几次",
+          "控制情况",
+          "跑步喘",
+          "平时怎么样"
+        ],
+        "en": [
+          "cough at night",
+          "between attacks",
+          "usual symptoms",
+          "exercise",
+          "sport",
+          "how often blue inhaler",
+          "control",
+          "waking at night",
+          "night-time symptoms"
         ]
       }
     },
@@ -509,7 +545,7 @@
           "choking",
           "choke",
           "foreign body",
-          "inhaled something",
+          "inhaled a foreign object",
           "swallowed something",
           "sudden onset",
           "small toy",
@@ -581,7 +617,7 @@
           "sting",
           "allergic reaction",
           "anaphylaxis",
-          "what did he eat"
+          "what did he eat last night"
         ]
       }
     },
@@ -670,9 +706,13 @@
           "PICU",
           "重症监护",
           "插管",
+          "插过管",
+          "进过icu",
+          "进过ICU",
+          "上过呼吸机",
           "呼吸机",
-          "抢救",
-          "监护室"
+          "进过监护室",
+          "抢救"
         ],
         "en": [
           "intensive care",
@@ -713,42 +753,6 @@
           "oral steroids",
           "steroid syrup",
           "steroid tablets"
-        ]
-      }
-    },
-    {
-      "id": "hx-interval-symptoms",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "平时没发作的时候，晚上咳醒、运动后喘的情况多吗？急救喷雾一周用几次？",
-        "en": "Between attacks, how often does he cough at night or wheeze with exercise, and how often does he need the blue inhaler?"
-      },
-      "answer": {
-        "zh-CN": "（妈妈）最近一个月，一周大概有两三个晚上咳醒；在学校跑完步会喘，体育课有时候要停下来。蓝色喷雾一周要用三四次。",
-        "en": "(Mother) Over the last month he's woken coughing two or three nights a week, and he gets wheezy after running at school — sometimes he has to stop in PE. He uses the blue inhaler three or four times a week."
-      },
-      "keywords": {
-        "zh-CN": [
-          "平时症状",
-          "夜间咳嗽",
-          "晚上咳醒",
-          "运动后喘",
-          "体育课",
-          "一周用几次",
-          "控制情况",
-          "跑步喘",
-          "平时怎么样"
-        ],
-        "en": [
-          "night cough",
-          "between attacks",
-          "usual symptoms",
-          "exercise",
-          "sport",
-          "how often blue inhaler",
-          "control",
-          "waking at night",
-          "day to day"
         ]
       }
     },
@@ -850,12 +854,11 @@
         "en": [
           "spacer",
           "technique",
-          "how does he use",
+          "how does he use his inhaler",
           "inhaler technique",
           "mask",
           "chamber",
-          "aerochamber",
-          "how does he take it"
+          "aerochamber"
         ]
       }
     },
@@ -905,12 +908,13 @@
       },
       "keywords": {
         "zh-CN": [
-          "过敏",
           "药物过敏",
           "食物过敏",
           "青霉素过敏",
           "过敏史",
-          "对什么过敏"
+          "对什么过敏",
+          "过敏吗",
+          "药过敏"
         ],
         "en": [
           "allergies",
@@ -1068,6 +1072,8 @@
           "爸爸",
           "遗传",
           "家人有哮喘",
+          "有人有哮喘",
+          "家里谁有",
           "妹妹",
           "父母"
         ],
@@ -1137,13 +1143,13 @@
           "家庭情况"
         ],
         "en": [
-          "home",
+          "who lives at home",
           "who lives",
           "pets",
           "cat",
           "dog",
-          "housing",
           "living situation",
+          "family at home",
           "who looks after him"
         ]
       }
@@ -1176,7 +1182,7 @@
           "what makes it worse",
           "cold air",
           "cats",
-          "allergen"
+          "allergen exposure"
         ]
       }
     },
@@ -1396,7 +1402,7 @@
           "all better",
           "ask the child",
           "still wheezy",
-          "go home"
+          "want to go home"
         ]
       }
     },
@@ -1514,12 +1520,12 @@
         ],
         "en": [
           "general appearance",
-          "look at him",
+          "overall appearance",
           "colour",
           "cyanosis",
           "posture",
-          "how does he look",
-          "inspect"
+          "how does he look overall",
+          "end of the bed"
         ]
       },
       "finding": {
@@ -1960,7 +1966,7 @@
           "conscious level",
           "GCS",
           "AVPU",
-          "alert",
+          "is he alert",
           "drowsy",
           "mental status",
           "responsive",
@@ -2481,18 +2487,18 @@
           "吸空气血氧",
           "空气下血氧",
           "脱氧试验",
-          "吸空气spo2",
-          "室内空气血氧",
+          "血氧饱和度",
+          "血氧",
           "停氧"
         ],
         "en": [
           "room air",
           "off oxygen",
           "room-air spo2",
-          "spo2 in air",
+          "spo2",
+          "sats",
           "air trial",
-          "oxygen wean trial",
-          "ra sats"
+          "oxygen wean trial"
         ]
       },
       "results": {
@@ -2698,7 +2704,7 @@
           "medical records",
           "prescription history",
           "previous visits",
-          "chart"
+          "notes"
         ]
       },
       "results": {
@@ -2763,7 +2769,6 @@
           "venous blood gas",
           "abg",
           "arterial blood gas",
-          "gas",
           "lactate"
         ]
       },
@@ -3377,11 +3382,11 @@
         ],
         "en": [
           "glucose",
-          "bm",
           "blood sugar",
           "capillary glucose",
           "finger prick",
-          "poc glucose"
+          "poc glucose",
+          "bsl"
         ]
       },
       "results": {
@@ -3836,8 +3841,7 @@
         ],
         "en": [
           "blood culture",
-          "cultures",
-          "bc"
+          "cultures"
         ]
       },
       "results": {
@@ -3899,7 +3903,9 @@
           "viral pcr",
           "respiratory pcr",
           "nasopharyngeal swab",
+          "swab",
           "virus test",
+          "viral",
           "flu test",
           "respiratory panel",
           "multiplex pcr"
@@ -4212,9 +4218,9 @@
           "ige",
           "allergy test",
           "specific ige",
-          "rast",
           "allergen test",
-          "total ige"
+          "total ige",
+          "allergy blood test"
         ]
       },
       "results": {
@@ -4272,24 +4278,23 @@
       "aliases": {
         "zh-CN": [
           "沙丁胺醇气雾剂",
+          "沙丁胺醇喷雾",
           "储雾罐",
-          "万托林",
-          "喷雾",
-          "沙丁胺醇",
-          "β2激动剂",
+          "万托林气雾剂",
+          "蓝色喷雾",
           "pmdi",
           "揿"
         ],
         "en": [
-          "salbutamol",
-          "albuterol",
-          "ventolin",
-          "spacer",
+          "salbutamol inhaler",
+          "salbutamol spacer",
+          "ventolin inhaler",
+          "via spacer",
           "puffs",
           "mdi",
           "pmdi",
-          "inhaler",
-          "saba",
+          "blue inhaler",
+          "reliever inhaler",
           "puffer"
         ]
       },
@@ -4538,7 +4543,6 @@
           "upright",
           "position",
           "on mum's lap",
-          "calm him",
           "comfort"
         ]
       },
@@ -4762,24 +4766,31 @@
         }
       ],
       "indicatedWhen": {
-        "all": [
+        "any": [
           {
-            "flag": "burst-complete"
+            "flag": "life-threatening"
           },
           {
-            "any": [
+            "all": [
               {
-                "flag": "tiring"
+                "flag": "burst-complete"
               },
               {
-                "vital": "spo2",
-                "op": "lt",
-                "value": 92
-              },
-              {
-                "vital": "rr",
-                "op": "gt",
-                "value": 35
+                "any": [
+                  {
+                    "flag": "tiring"
+                  },
+                  {
+                    "vital": "spo2",
+                    "op": "lt",
+                    "value": 92
+                  },
+                  {
+                    "vital": "rr",
+                    "op": "gt",
+                    "value": 35
+                  }
+                ]
               }
             ]
           }
@@ -5432,7 +5443,7 @@
         },
         "setVitals": {
           "spo2": 84,
-          "hr": 158,
+          "hr": 150,
           "rr": 32,
           "etco2": 46
         },
@@ -5441,8 +5452,8 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "护士：“他几乎没力气了，呼吸变浅，叫他也不太理——我马上叫上级医生！”",
-          "en": "Nurse: “He's exhausted, his breathing is getting shallow and he's barely responding — I'm calling the senior now!”"
+          "zh-CN": "护士：“他快没力气了，呼吸越来越浅，几乎说不出话——我马上叫上级医生！”",
+          "en": "Nurse: “He's exhausted, his breathing is getting shallow and he can hardly speak — I'm calling the senior now!”"
         }
       },
       {

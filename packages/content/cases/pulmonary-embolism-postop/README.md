@@ -119,7 +119,7 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 * **Long term (not simulated).** Anticoagulate for at least 3 months. If the cancer is judged
   active (pending pathology and adjuvant therapy), continue for at least 6 months, with drug
   choice agreed with oncology. Some DOACs carry a higher bleeding risk in luminal GI cancer.
-  Throphilia testing is not indicated after a surgery-provoked first VTE, and its results are
+  Thrombophilia testing is not indicated after a surgery-provoked first VTE, and its results are
   distorted during acute thrombosis and on heparin.
 
 ## Guideline and evidence references
