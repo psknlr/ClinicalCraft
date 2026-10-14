@@ -3543,6 +3543,14 @@
         "add": [
           "ctpa"
         ]
+      },
+      {
+        "ifMatches": "(平扫|noncontrast|non-contrast|withoutcontrast|plain).*ct|ct.*(平扫|noncontrast|non-contrast|withoutcontrast|plain)",
+        "unlessMatches": "头|颅|脑|腹|盆|head|brain|abdo|pelvi",
+        "add": [
+          "ctpa"
+        ],
+        "remove": []
       }
     ],
     "exact": {
