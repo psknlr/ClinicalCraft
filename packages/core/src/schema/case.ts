@@ -328,6 +328,13 @@ export const OrderMatchingSchema = z
     rules: z.array(OrderMatchRuleSchema).default([]),
     /** Exact normalised query → candidate ids (e.g. "超声" → ["us", "nodeus"]). Checked after rules. */
     exact: z.record(z.string(), z.array(IdSchema)).default({}),
+    /**
+     * Notices shown when the learner orders `investigation` with a query matching `ifMatches`
+     * (V4: ordering "平扫CT" warns that only contrast-enhanced CT images exist).
+     */
+    warnings: z
+      .array(z.object({ investigation: IdSchema, ifMatches: z.string(), message: LocalizedTextSchema }).strict())
+      .default([]),
   })
   .strict();
 

@@ -1,0 +1,21 @@
+{
+  "$schema": "../packages/content/schemas/settings.schema.json",
+  "provider": "offline",
+  "locale": "zh-CN",
+  "approvalMode": "default",
+  "practiceScope": "full",
+  "permissions": {
+    "ask": ["intervene(*thromb*)", "intervene(*lysis*)", "intervene(alteplase*)", "intervene(tenecteplase*)"],
+    "deny": []
+  },
+  "agents": {
+    "patient": { "effort": "low" },
+    "attending": { "effort": "medium" },
+    "examiner": { "effort": "high" }
+  },
+  "profiles": {
+    "osce": { "approvalMode": "strict", "practiceScope": "full", "agents": { "attending": { "maxToolRounds": 1 } } },
+    "self-study": { "approvalMode": "default" },
+    "benchmark": { "approvalMode": "bypass", "transcripts": { "enabled": true } }
+  }
+}

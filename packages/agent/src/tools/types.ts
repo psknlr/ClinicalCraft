@@ -1,0 +1,73 @@
+/**
+ * Tool contracts. Every learner/agent capability — talking, examining,
+ * ordering, treating, consulting — is a typed tool with a JSON schema, a
+ * risk classifier and a side-effect declaration (Claude Code tool registry ×
+ * ZCode tool permission spec). The same registry backs the LLM agents, the
+ * REPL slash commands, the web UI and the MCP server.
+ */
+import type { CaseDefinition, ClinicalAction, FacilityDefinition, EquipmentCatalog, ReduceResult, SessionState } from "@clinicalcraft/core";
+import type { AgentRole, PlanItem, PracticeScope, RiskLevel } from "../protocol.js";
+import type { ToolSpec } from "../providers/types.js";
+
+export type SideEffect = "none" | "conversation" | "record" | "patient" | "clock";
+
+export interface ToolContext {
+  readonly caseDef: CaseDefinition;
+  readonly facility: FacilityDefinition | null;
+  readonly catalogs: EquipmentCatalog[];
+  readonly locale: string;
+  readonly agent: AgentRole | "learner";
+  /** Current engine state (read-only snapshot). */
+  state(): SessionState;
+  /** Apply a clinical action through the engine; emits clinical_event/state_snapshot events. */
+  dispatch(action: ClinicalAction): ReduceResult;
+  /** Run another agent (patient, nurse, consultant…) and return its final text. */
+  ask(agent: AgentRole, utterance: string, signal?: AbortSignal): Promise<{ text: string; grounded: string[] }>;
+  /** Publish a workup/differential plan (Codex update_plan / Claude Code TodoWrite analogue). */
+  updatePlan(plan: PlanItem[], explanation?: string): void;
+  /** Ask the front-end to execute a world action (walk_to, use_equipment). Resolves with its output. */
+  dynamicTool?(tool: string, args: unknown, signal?: AbortSignal): Promise<{ ok: boolean; output: string }>;
+  readonly signal?: AbortSignal;
+}
+
+export interface ToolOutput {
+  ok: boolean;
+  /** What the model sees (concise, localised). */
+  output: string;
+  /** Typed payload for UIs. */
+  data?: unknown;
+}
+
+export interface ToolDefinition<A = Record<string, unknown>> {
+  name: string;
+  /** Model-facing description (English; agents answer in the session locale). */
+  description: string;
+  inputSchema: Record<string, unknown>;
+  /** Read-only tools never need approval and may run in parallel. */
+  readOnly: boolean;
+  sideEffect: SideEffect;
+  /** Minimum practice scope in which the tool is registered at all. */
+  scope: PracticeScope;
+  /** Risk of this particular call (e.g. intervene → the intervention's declared risk). */
+  risk(args: A, ctx: ToolContext): RiskLevel;
+  /** Always ask, even in auto/bypass-less modes (irreversible interventions); "approve for session" not offered. */
+  alwaysAsk?(args: A, ctx: ToolContext): boolean;
+  /** Short localised summary for approval dialogs and transcripts. */
+  summarize(args: A, ctx: ToolContext): string;
+  /** Rule specifier used by permission rules: `tool(specifier)`, e.g. intervention id. */
+  specifier?(args: A, ctx: ToolContext): string;
+  run(args: A, ctx: ToolContext): Promise<ToolOutput>;
+}
+
+export function toToolSpec(tool: ToolDefinition<any>): ToolSpec {
+  return { name: tool.name, description: tool.description, inputSchema: tool.inputSchema };
+}
+
+/** Outcome of the approval gate (ZCode-style stable rule ids for auditing). */
+export interface PermissionCheck {
+  decision: "allow" | "ask" | "deny";
+  ruleId: string;
+  reason: string;
+  risk: RiskLevel;
+  allowSession: boolean;
+}

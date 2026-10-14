@@ -137,6 +137,7 @@ interface VitalsSnapshot { minute: number; vitals: Vitals & { map: number }; ala
 // matching (offline NLU used by UI, CLI, scripted agents and as RAG hints for LLM agents)
 normalizeQuery(text: string): string                    // lower-case, strip whitespace, full-width → ASCII punctuation (V4 rules)
 matchOrders(c, query, locale): string[]                 // aliases → orderMatching.rules → exact (V4 semantics, generalised)
+orderWarnings(c, query, investigationId, locale): string[]  // orderMatching.warnings whose ifMatches matches the normalised query
 matchHistory(c, utterance, locale): { id: string; score: number }[]   // sorted desc, score 0..1
 matchExam(c, utterance, locale): { id: string; score: number }[]
 matchInterventions(c, utterance, locale): { id: string; score: number }[]
@@ -300,21 +301,35 @@ adds an in-memory allow rule (Grok CLI "don't ask again this session").
 
 ### 4.2 Virtual-patient grounding contract
 
-* System prompt = persona + **fact sheet** (every history item with id,
-  disclosure policy and canonical answer; unknown items; case unknowns) +
-  behaviour rules + project memory. Stable across the conversation (prompt
-  caching friendly); per-turn retrieval hints from `matchHistory` are
-  appended to the user turn as `<retrieved_facts ids=…/>`.
-* The patient may only state chart facts it has **revealed via the
-  `reveal_facts` tool** (ids validated against the case; the runtime records
-  `ask` actions with `via: "agent"` and returns canonical answers to
-  paraphrase). Exam findings, results and diagnoses are never spoken by the
-  patient — those come from engine actions.
-* `disclosure: "specific"` facts are only revealed when the learner's question
-  targets them; `unknown` items produce the item's answer (an explicit
-  "not recorded / I don't know"); anything else → `persona.fallbackUnknown`.
-* Offline responder: top `matchHistory` hit ≥ threshold → canonical answer
-  (and `ask`), else fallback line. Same contract, no network.
+Need-to-know context (EasyMED/AIPatient lesson): the patient model never
+sees unrevealed answers, the diagnosis, results, rubric or debrief.
+
+Default pipeline **select → voice** (`settings.patient.pipeline = "select-voice"`):
+
+1. **Route** — out-of-fiction requests (asking the "patient" for real medical
+   advice, prompt-injection, meta questions) get an in-character deflection and
+   a `warning` event; they never reach the fact selector.
+2. **Select** — `matchHistory(utterance)`: hits ≥ 0.55 are selected (≤ 3);
+   0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
+   canonical question — never answers), strict JSON `{factIds, clarify}`
+   restricted to the candidate enum; nothing → `fallbackUnknown` (or the
+   `unknown` item's authored answer when that matched).
+   `disclosure: "specific"` facts require a direct match (score ≥ 0.55);
+   `volunteer` facts may be offered on open questions (≤ 1 per turn).
+   Each newly selected id dispatches `ask` with `via: "agent"` (learner credit).
+3. **Voice** — `PatientContext` = persona, affect, companion, revealed-fact
+   ledger (re-injected every turn), selected facts (answers), volunteer
+   queue, fallback line, locale. Output JSON `{say, nonverbal, usedFactIds,
+   affectHint}` via `responseFormat`.
+4. **Verify** — numbers, units, drug names and dates in `say` must appear in
+   the answers of `usedFactIds` (or persona text); otherwise the reply is
+   replaced by the authored answer(s) and `grounding: "template"` is logged.
+5. **Offline** — steps 1-2 deterministic, step 3 = authored answer verbatim.
+
+Alternative pipeline **tool** (`"tool"`): the patient model receives the fact
+index and must call `reveal_facts {fact_ids}` to obtain answers before using
+them; the verifier still runs. Exam findings, results and diagnoses are never
+spoken by the patient — those come from engine actions.
 
 ## 5. Front-ends
 
