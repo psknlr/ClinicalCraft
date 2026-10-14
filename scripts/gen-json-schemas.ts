@@ -1,6 +1,7 @@
 /**
- * Emit JSON Schemas for content authors' editors from the zod contract in
- * `@clinicalcraft/core` (`packages/core/src/schema/*`).
+ * Emit JSON Schemas for editors from the zod contracts in
+ * `@clinicalcraft/core` (`packages/core/src/schema/*`) and the agent settings
+ * schema (`packages/agent/src/settings/schema.ts`).
  *
  *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json
  *   npx tsx scripts/gen-json-schemas.ts --check  # exit 1 if the files on disk are stale
@@ -35,6 +36,7 @@ import {
   VitalsSchema,
   VoxelPartSchema,
 } from "../packages/core/src/schema/index.js";
+import { SettingsLayerSchema, SettingsSchema } from "../packages/agent/src/settings/schema.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "packages/content/schemas");
@@ -88,6 +90,14 @@ const targets: Target[] = [
     description: "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction).",
     schema: EquipmentCatalogSchema,
     definitions: { ...common, Material: MaterialSchema, VoxelPart: VoxelPartSchema, EquipmentType: EquipmentTypeSchema },
+  },
+  {
+    file: "settings.schema.json",
+    name: "Settings",
+    title: "ClinicalCraft settings (~/.clinicalcraft/settings.json, .clinicalcraft/settings[.local].json)",
+    description: "Layered runtime settings: provider/model per agent, approval mode, practice scope, permission rules, hooks, profiles, server and transcripts.",
+    schema: SettingsSchema,
+    definitions: { SettingsLayer: SettingsLayerSchema },
   },
 ];
 
