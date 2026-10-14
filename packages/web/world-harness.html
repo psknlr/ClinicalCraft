@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClinicalCraft · World harness</title>
+    <style>
+      :root { --ink: #2e4839; --cream: #f3eed8; --gold: #e7c36b; --green: #487c59; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #b4d7da; color: var(--ink); font: 13px system-ui, "Microsoft YaHei", sans-serif; }
+      #world { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; image-rendering: pixelated; touch-action: none; }
+      #crosshair { position: fixed; left: 50%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; pointer-events: none; }
+      #crosshair::before, #crosshair::after { content: ""; position: absolute; background: #fff8; }
+      #crosshair::before { left: 8px; top: 0; width: 2px; height: 18px; }
+      #crosshair::after { top: 8px; left: 0; height: 2px; width: 18px; }
+      #hud { position: fixed; left: 12px; bottom: 12px; padding: 8px 11px; background: #2e4839d9; color: var(--cream); font: 12px ui-monospace, monospace; line-height: 1.6; min-width: 260px; pointer-events: none; }
+      #hud b { color: var(--gold); }
+      #target { position: fixed; left: 50%; top: calc(50% + 34px); transform: translateX(-50%); color: #fff; text-shadow: 0 1px 2px #000a; font-weight: 700; text-align: center; pointer-events: none; white-space: nowrap; }
+      #target small { display: block; font-weight: 400; opacity: 0.85; }
+      #bar { position: fixed; top: 10px; left: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+      #bar button { padding: 6px 10px; border: 2px solid #9aa98c; background: #e4e4cd; color: var(--ink); cursor: pointer; font: inherit; }
+      #mini { position: fixed; top: 10px; right: 12px; width: 150px; height: 150px; border: 3px solid #e4e4cd; background: #c7d6ad; image-rendering: auto; }
+      #toast { position: fixed; top: 52px; left: 50%; transform: translateX(-50%); background: #f3eed8; border: 3px solid #9aa98c; padding: 8px 14px; display: none; max-width: 70vw; }
+      .overlay { position: fixed; inset: 6vh 8vw; background: #10201bf2; border: 3px solid #9aa98c; display: none; }
+      .overlay.open { display: block; }
+      .overlay canvas { width: 100%; height: 100%; display: block; }
+      .overlay .tools { position: absolute; top: 8px; left: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+      .overlay .tools button { padding: 4px 8px; font: inherit; }
+      .overlay .status { position: absolute; left: 12px; bottom: 10px; right: 12px; color: #cfe8dc; font-size: 13px; }
+      #bigmap-wrap { inset: 8vh 22vw; background: #e4e4cd; }
+      #monitor-wrap { inset: 14vh 16vw; background: #000; }
+      #issues { position: fixed; right: 12px; bottom: 12px; max-width: 42vw; max-height: 30vh; overflow: auto; background: #5a1d14e6; color: #ffe; font: 11px ui-monospace, monospace; padding: 6px 8px; display: none; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <canvas id="world" tabindex="0"></canvas>
+    <div id="crosshair"></div>
+    <div id="target"></div>
+    <div id="bar">
+      <button id="btn-start">Start / pause</button>
+      <button id="btn-atlas">atlas</button>
+      <button id="btn-map">map</button>
+      <button id="btn-monitor">monitor</button>
+      <button id="btn-walk">walk → board</button>
+      <select id="sel-facility"></select>
+    </div>
+    <canvas id="mini" width="300" height="300"></canvas>
+    <div id="hud">loading…</div>
+    <div id="toast"></div>
+    <div id="issues"></div>
+    <div class="overlay" id="atlas-wrap">
+      <canvas id="atlas"></canvas>
+      <div class="tools">
+        <button data-mode="cutaway">cutaway</button>
+        <button data-mode="muscles">muscles</button>
+        <button data-mode="organs">organs</button>
+        <button data-mode="spleen">spleen</button>
+        <button data-focus="spleen">→ spleen</button>
+        <button data-focus="lung">→ lung</button>
+        <button data-focus="heart">→ heart</button>
+        <button data-focus="liver">→ liver</button>
+        <button data-focus="bone">→ bone</button>
+        <button id="atlas-rotate">rotate</button>
+        <button id="atlas-reset">reset</button>
+        <button id="atlas-close">close</button>
+      </div>
+      <div class="status" id="atlas-status"></div>
+    </div>
+    <div class="overlay" id="bigmap-wrap"><canvas id="bigmap" width="720" height="720"></canvas></div>
+    <div class="overlay" id="monitor-wrap"><canvas id="monitor" width="960" height="560"></canvas></div>
+    <script type="module" src="/src/harness/main.ts"></script>
+  </body>
+</html>

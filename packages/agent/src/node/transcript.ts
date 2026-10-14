@@ -4,7 +4,7 @@
  * A single writer appends through a promise chain so lines never interleave.
  */
 import { closeSync, openSync, readSync } from "node:fs";
-import { appendFile, mkdir, readdir, readFile, stat } from "node:fs/promises";
+import { appendFile, mkdir, open, readdir, readFile, stat } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import type { TranscriptItem, TranscriptSink } from "../session/types.js";
 import { clinicalcraftHome, type Env } from "./home.js";
@@ -44,6 +44,8 @@ export class JsonlTranscript implements TranscriptSink {
   readonly path: string;
   private chain: Promise<void> = Promise.resolve();
   private dirReady = false;
+  /** Resumed files may end with a torn line (crash mid-write): terminate it before appending. */
+  private checkTail = false;
   private readonly onError: ((err: Error) => void) | undefined;
   /** Number of failed writes so far. */
   failures = 0;
@@ -64,6 +66,7 @@ export class JsonlTranscript implements TranscriptSink {
   static at(path: string, onError?: (err: Error) => void): JsonlTranscript {
     const t = new JsonlTranscript(path, onError);
     t.dirReady = true;
+    t.checkTail = true;
     return t;
   }
 
@@ -81,7 +84,12 @@ export class JsonlTranscript implements TranscriptSink {
           await mkdir(dirname(this.path), { recursive: true, mode: 0o700 });
           this.dirReady = true;
         }
-        await appendFile(this.path, line, { encoding: "utf8", mode: 0o600 });
+        let prefix = "";
+        if (this.checkTail) {
+          this.checkTail = false;
+          if (!(await endsWithNewline(this.path))) prefix = "\n";
+        }
+        await appendFile(this.path, prefix + line, { encoding: "utf8", mode: 0o600 });
       } catch (err) {
         this.report(err);
       }
@@ -97,6 +105,24 @@ export class JsonlTranscript implements TranscriptSink {
   private report(err: unknown): void {
     this.failures++;
     this.onError?.(err instanceof Error ? err : new Error(String(err)));
+  }
+}
+
+async function endsWithNewline(path: string): Promise<boolean> {
+  let handle;
+  try {
+    handle = await open(path, "r");
+  } catch {
+    return true; // missing file: nothing to repair
+  }
+  try {
+    const { size } = await handle.stat();
+    if (size === 0) return true;
+    const buf = Buffer.alloc(1);
+    await handle.read(buf, 0, 1, size - 1);
+    return buf[0] === 0x0a;
+  } finally {
+    await handle.close();
   }
 }
 
