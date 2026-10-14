@@ -2,11 +2,13 @@
  * JSONL transcripts ("rollouts"): one `TranscriptItem` per line under
  * `<home>/sessions/YYYY/MM/DD/<iso-ts>-<sessionId>.jsonl` (mode 0600).
  * A single writer appends through a promise chain so lines never interleave.
+ * Credentials are masked before they reach the disk (see `redactSecrets`).
  */
 import { closeSync, openSync, readSync } from "node:fs";
 import { appendFile, mkdir, open, readdir, readFile, stat } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import type { TranscriptItem, TranscriptSink } from "../session/types.js";
+import { redactValue, secretsFromEnv } from "../transcript.js";
 import { clinicalcraftHome, type Env } from "./home.js";
 
 export interface JsonlTranscriptOptions {
@@ -18,6 +20,14 @@ export interface JsonlTranscriptOptions {
   now?: () => number;
   /** Called when a write fails (the sink keeps going). */
   onError?: (err: Error) => void;
+  /**
+   * Mask credentials before writing (default true): values of `*_API_KEY` /
+   * `*_TOKEN` / `*SECRET` variables of `env` (default `process.env`), the
+   * extra `secrets`, and well-known key formats.
+   */
+  redact?: boolean;
+  /** Extra secret values to mask (e.g. keys from user settings). */
+  secrets?: readonly string[];
 }
 
 /** Default base directory for transcripts. */
@@ -47,24 +57,27 @@ export class JsonlTranscript implements TranscriptSink {
   /** Resumed files may end with a torn line (crash mid-write): terminate it before appending. */
   private checkTail = false;
   private readonly onError: ((err: Error) => void) | undefined;
+  /** Secrets to mask, or null when redaction is off. */
+  private readonly secrets: readonly string[] | null;
   /** Number of failed writes so far. */
   failures = 0;
 
-  private constructor(path: string, onError?: (err: Error) => void) {
+  private constructor(path: string, onError: ((err: Error) => void) | undefined, redaction: Pick<JsonlTranscriptOptions, "redact" | "secrets" | "env">) {
     this.path = path;
     this.onError = onError;
+    this.secrets = redaction.redact === false ? null : [...secretsFromEnv(redaction.env ?? process.env), ...(redaction.secrets ?? [])];
   }
 
   /** New transcript file for a session (directories are created on first write). */
   static create(options: JsonlTranscriptOptions): JsonlTranscript {
     const base = options.dir || sessionsDir(options.env);
     const now = new Date((options.now ?? Date.now)());
-    return new JsonlTranscript(transcriptPath(base, options.sessionId, now), options.onError);
+    return new JsonlTranscript(transcriptPath(base, options.sessionId, now), options.onError, options);
   }
 
   /** Append to an existing transcript (resume). */
-  static at(path: string, onError?: (err: Error) => void): JsonlTranscript {
-    const t = new JsonlTranscript(path, onError);
+  static at(path: string, onError?: (err: Error) => void, redaction: Pick<JsonlTranscriptOptions, "redact" | "secrets" | "env"> = {}): JsonlTranscript {
+    const t = new JsonlTranscript(path, onError, redaction);
     t.dirReady = true;
     t.checkTail = true;
     return t;
@@ -73,7 +86,7 @@ export class JsonlTranscript implements TranscriptSink {
   write(item: TranscriptItem): Promise<void> {
     let line: string;
     try {
-      line = `${JSON.stringify(item)}\n`;
+      line = `${JSON.stringify(this.secrets ? redactValue(item, this.secrets) : item)}\n`;
     } catch (err) {
       this.report(err);
       return this.chain;

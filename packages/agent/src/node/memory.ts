@@ -3,13 +3,21 @@
  * `~/.clinicalcraft/CLINICALCRAFT.md`, then for every directory from the
  * project root down to cwd its `CLINICALCRAFT.md` (or `AGENTS.md` when absent),
  * plus `<root>/.clinicalcraft/CLINICALCRAFT.md`. Root-first order; `@path`
- * imports are resolved relative to the importing file and must stay inside
- * the project root or the ClinicalCraft home (memory is sent to model
- * providers, so a repository must not be able to pull in e.g. `~/.ssh` files).
+ * imports are resolved relative to the importing file.
+ *
+ * Memory is sent to model providers, so a repository must not be able to
+ * pull secrets into prompts. Confinement (checked on real paths, i.e. after
+ * resolving symlinks):
+ *   - every file has a root: the ClinicalCraft home for the user memory file,
+ *     the project root for project files; an import inherits its importer's
+ *     root and must stay inside it — and outside any other root nested in it
+ *     (so project memory can never read `~/.clinicalcraft/settings.json`);
+ *   - project memory files that are symlinks leaving the project are skipped;
+ *   - only text documents can be imported (`.md`, `.markdown`, `.mdx`, `.txt`).
  */
 import { closeSync, openSync, readSync, realpathSync, statSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { assembleMemory, type MemoryFile } from "../memory.js";
 import { clinicalcraftHome, expandHome, findProjectRoot, type Env } from "./home.js";
 
@@ -54,8 +62,11 @@ function canonical(path: string): string {
 
 function isInside(path: string, root: string): boolean {
   const rel = relative(root, path);
-  return rel === "" || (!rel.startsWith("..") && !isAbsolute(rel));
+  return rel === "" || (rel !== ".." && !rel.startsWith(`..${sep}`) && !isAbsolute(rel));
 }
+
+/** Extensions an `@import` may target (instruction documents only). */
+const IMPORTABLE_EXTENSIONS = new Set([".md", ".markdown", ".mdx", ".txt"]);
 
 /** Directories from `root` down to `cwd` (inclusive); just `[cwd]` when cwd is outside root. */
 function chain(root: string, cwd: string): string[] {
@@ -79,28 +90,40 @@ export function memoryCandidates(cwd: string, env: Env = process.env): string[][
   return groups;
 }
 
-/** Load and assemble memory for `cwd`. Missing files are skipped. */
+/** Load and assemble memory for `cwd`. Missing files (and project files escaping the project) are skipped. */
 export async function loadMemory(cwd: string = process.cwd(), env: Env = process.env): Promise<{ text: string; files: string[] }> {
+  const absCwd = resolve(cwd);
+  const homeRoot = canonical(clinicalcraftHome(env));
+  const projectRoot = canonical(findProjectRoot(absCwd, env) ?? absCwd);
+  const allRoots = [...new Set([homeRoot, projectRoot])];
+  /** Confinement root of every file read so far (keyed by the path handed to assembleMemory). */
+  const rootOf = new Map<string, string>();
+
   const files: MemoryFile[] = [];
-  for (const group of memoryCandidates(cwd, env)) {
+  for (const [i, group] of memoryCandidates(cwd, env).entries()) {
+    const isHomeFile = i === 0;
     for (const path of group) {
       const text = await readOptional(path);
-      if (text !== null) {
-        files.push({ path, text });
-        break; // first existing file of the group (CLINICALCRAFT.md before AGENTS.md)
-      }
+      if (text === null) continue;
+      if (!isHomeFile && !isInside(canonical(path), projectRoot)) continue; // a symlink out of the project
+      files.push({ path, text });
+      rootOf.set(path, isHomeFile ? homeRoot : projectRoot);
+      break; // first existing file of the group (CLINICALCRAFT.md before AGENTS.md)
     }
   }
   const imported: string[] = [];
-  const absCwd = resolve(cwd);
-  const allowedRoots = [findProjectRoot(absCwd, env) ?? absCwd, clinicalcraftHome(env)].map(canonical);
   const text = assembleMemory(files, (importPath, fromPath) => {
+    const root = rootOf.get(fromPath);
+    if (!root) return null;
     const expanded = expandHome(importPath, env);
     const path = isAbsolute(expanded) ? expanded : resolve(dirname(fromPath), expanded);
+    if (!IMPORTABLE_EXTENSIONS.has(extname(path).toLowerCase())) return null;
     const real = canonical(path);
-    if (!allowedRoots.some((root) => isInside(real, root))) return null;
+    if (!isInside(real, root)) return null;
+    if (allRoots.some((other) => other !== root && isInside(other, root) && isInside(real, other))) return null;
     const content = readSyncCapped(path);
     if (content === null) return null;
+    rootOf.set(path, root);
     imported.push(path);
     return { path, text: content };
   });

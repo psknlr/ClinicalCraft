@@ -108,6 +108,14 @@ export interface MatchHit {
   score: number;
 }
 
+/** Optional filters for `matchHistory` / `matchExam`. */
+export interface MatchOptions {
+  /** Drop items whose `phases` do not include this phase (items without `phases` are always eligible). */
+  phase?: string;
+  /** `false` drops history items with `disclosure: "unknown"` (default true; ignored by `matchExam`). */
+  includeUnknown?: boolean;
+}
+
 /* ------------------------------------------------------------------ */
 /* Assessment                                                          */
 /* ------------------------------------------------------------------ */

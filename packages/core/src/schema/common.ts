@@ -101,6 +101,12 @@ export type Condition =
   | { decided: string }
   /** Decision answered at least once (correct or not). */
   | { attempted: string }
+  /**
+   * Decision answered correctly on the learner's first (accepted) attempt.
+   * Once the first attempt is wrong this stays false for the rest of the
+   * session — intended for rubric items, not for objectives or `requires`.
+   */
+  | { decidedFirstTry: string }
   /** Intervention given at least `minCount` times (default 1). */
   | { intervened: string; minCount?: number }
   /** Current case phase equals. */
@@ -129,6 +135,7 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ resultReady: IdSchema, phase: IdSchema.optional() }).strict(),
     z.object({ decided: IdSchema }).strict(),
     z.object({ attempted: IdSchema }).strict(),
+    z.object({ decidedFirstTry: IdSchema }).strict(),
     z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional() }).strict(),
     z.object({ phase: IdSchema }).strict(),
     z.object({ flag: IdSchema }).strict(),

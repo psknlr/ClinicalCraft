@@ -119,6 +119,10 @@ function parseYamlSubset(lines: string[]): Record<string, FrontmatterValue> {
       continue;
     }
     const key = m[1]!;
+    if (key === "__proto__") {
+      listKey = null; // never re-prototype the data object
+      continue;
+    }
     const value = stripComment(m[2] ?? "").trim();
     // An empty value may introduce a block list (`- item` lines); otherwise it stays "".
     data[key] = value === "" ? "" : parseScalar(value);

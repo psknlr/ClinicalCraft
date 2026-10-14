@@ -32,13 +32,15 @@ function gray(v: number): string {
 function paintV4Text(ctx: CanvasRenderingContext2D, W: number, H: number, bg: string, rnd: () => number): void {
   const base = new Color(bg);
   const c = new Color();
-  for (let y = 0; y < H; y++)
-    for (let x = 0; x < W; x++) {
-      let d = (rnd() - 0.5) * 0.11;
-      if (x % 8 === 0 || y % 8 === 0) d = -0.07;
-      c.copy(base).offsetHSL(0, 0, d);
-      px(ctx, x, y, 1, 1, "#" + c.getHexString());
+  // the V4 "screen" material is a 16×16 tile texture stretched over the panel
+  const texel: string[] = [];
+  for (let ty = 0; ty < 16; ty++)
+    for (let tx = 0; tx < 16; tx++) {
+      const d = tx === 0 || ty === 0 ? -0.07 : (rnd() - 0.5) * 0.11;
+      texel.push("#" + c.copy(base).offsetHSL(0, 0, d).getHexString());
     }
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) px(ctx, x, y, 1, 1, texel[Math.floor((y * 16) / H) * 16 + Math.floor((x * 16) / W)]);
   // V4 Q(): bars at x = −.4 + i·.25 on a 1.29-wide screen, .14 wide, (.25 + rnd·.25) tall, centred .04 below the middle
   for (let i = 0; i < 4; i++) {
     const u = 0.5 + (-0.4 + i * 0.25) / 1.29;

@@ -13,8 +13,8 @@
  *   9 mode.<mode>               per approval-mode × risk table (ARCHITECTURE §4.1)
  *
  * Rule syntax (Claude Code): `tool` or `tool(specifier-glob)`; `*` matches any
- * run of characters (newlines included), `?` one character, `\\` escapes the
- * next character; case-insensitive, e.g. `intervene(alteplase*)`.
+ * run of characters (newlines included), `?` one character, a backslash escapes
+ * the next character; case-insensitive, e.g. `intervene(alteplase*)`.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
 import type { ApprovalMode, PracticeScope, RiskLevel } from "./protocol.js";
@@ -67,7 +67,7 @@ type GlobToken = { star: true } | { star: false; any: boolean; ch: string };
 
 const globCache = new Map<string, GlobToken[]>();
 
-/** Tokenise a glob: `*`, `?`, `\\x` = literal x, everything else literal (case-folded). */
+/** Tokenise a glob: `*`, `?`, backslash + x = literal x, everything else literal (case-folded). */
 function compileGlob(glob: string): GlobToken[] {
   let tokens = globCache.get(glob);
   if (!tokens) {
@@ -126,7 +126,7 @@ export function escapeGlob(text: string): string {
  * Does `rule` match a call of `toolName` with `specifier`? `tool` alone
  * matches every call of that tool; `tool(glob)` requires the specifier to
  * match (a missing specifier only matches `*`). The tool part may be a glob.
- * Globs: `*` any run, `?` one character, `\\` escapes; case-insensitive.
+ * Globs: `*` any run, `?` one character, a backslash escapes the next character; case-insensitive.
  */
 export function matchRule(rule: string, toolName: string, specifier?: string | null): boolean {
   const parsed = parseRule(rule);

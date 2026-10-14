@@ -56,6 +56,15 @@ describe("parseFrontmatter", () => {
   });
 });
 
+describe("parseFrontmatter hardening", () => {
+  it("ignores a __proto__ key instead of re-prototyping the data object", () => {
+    const { data } = parseFrontmatter("---\n__proto__: [polluted]\nname: tutor\n---\nBody");
+    expect(Object.getPrototypeOf(data)).toBe(Object.prototype);
+    expect(data).toEqual({ name: "tutor" });
+    expect(Object.keys(data)).toEqual(["name"]);
+  });
+});
+
 describe("parseAgentMarkdown", () => {
   it("applies defaults (npc, inherit, 4 rounds, no memory for npc)", () => {
     const p = parseAgentMarkdown("---\nname: porter\ndescription: Hospital porter\n---\nYou move patients.", "project");

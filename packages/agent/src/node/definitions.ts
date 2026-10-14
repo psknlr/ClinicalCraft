@@ -7,7 +7,7 @@
  * skipped and reported through `onIssue`.
  */
 import { readdir, readFile } from "node:fs/promises";
-import { basename, join, relative, resolve, sep } from "node:path";
+import { basename, join, relative, resolve } from "node:path";
 import { parseAgentMarkdown, parseCommandMarkdown } from "../agents/markdown.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import { clinicalcraftHome, findProjectRoot, type Env } from "./home.js";
@@ -65,7 +65,7 @@ export async function loadProjectAgents(cwd: string = process.cwd(), env: Env = 
 export function commandNameFor(dir: string, file: string): string {
   return relative(dir, file)
     .replace(/\.md$/i, "")
-    .split(sep)
+    .split(/[\\/]/) // both separators: Windows paths, or forward slashes passed on Windows
     .filter(Boolean)
     .join(":");
 }

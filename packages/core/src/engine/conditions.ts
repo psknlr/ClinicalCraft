@@ -75,7 +75,8 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
  * Evaluate a condition against a session.
  *
  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
- * without `phase` match any phase.
+ * without `phase` match any phase. `decidedFirstTry` looks only at the first
+ * recorded attempt (rejected answers are not attempts).
  */
 export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean {
   if ("all" in cond) return cond.all.every((x) => evaluate(c, s, x));
@@ -89,6 +90,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("resultReady" in cond) return resultReady(c, s, cond.resultReady, cond.phase);
   if ("decided" in cond) return Object.prototype.hasOwnProperty.call(s.decisions, cond.decided);
   if ("attempted" in cond) return s.attempts.some((a) => a.decisionId === cond.attempted);
+  if ("decidedFirstTry" in cond) return s.attempts.find((a) => a.decisionId === cond.decidedFirstTry)?.correct === true;
   if ("intervened" in cond) {
     const count = s.interventions.filter((r) => r.interventionId === cond.intervened).length;
     return count >= (cond.minCount ?? 1);
@@ -136,6 +138,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
       out.push({ kind: "investigation", id: node.resultReady, phase: node.phase, requiresRecord: true, path: [...path, "resultReady"] });
     else if ("decided" in node) out.push({ kind: "decision", id: node.decided, path: [...path, "decided"] });
     else if ("attempted" in node) out.push({ kind: "decision", id: node.attempted, path: [...path, "attempted"] });
+    else if ("decidedFirstTry" in node) out.push({ kind: "decision", id: node.decidedFirstTry, path: [...path, "decidedFirstTry"] });
     else if ("intervened" in node)
       out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });

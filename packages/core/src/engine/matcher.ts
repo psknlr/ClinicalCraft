@@ -9,17 +9,22 @@
  * * `matchHistory` / `matchExam` / `matchInterventions` are scored keyword
  *   matchers over candidate phrases from the requested locale and every
  *   other locale (cross-lingual), returning hits ≥ `MATCH_THRESHOLD`
- *   ordered by score, then declaration order.
+ *   ordered by score, then declaration order. An item whose
+ *   `excludeKeywords` (any locale) occur in the normalised utterance has its
+ *   score multiplied by `EXCLUDE_KEYWORD_FACTOR` before the threshold.
  */
 import type { CaseDefinition } from "../schema/case.js";
 import { t } from "../i18n.js";
-import { allListEntries, allTexts, normalizeQuery, phraseScore, prepare, unique, type Prepared } from "./text.js";
-import type { MatchHit } from "./types.js";
+import { allListEntries, allTexts, compactText, normalizeQuery, phraseScore, prepare, unique, type Prepared } from "./text.js";
+import type { MatchHit, MatchOptions } from "./types.js";
 
 export { normalizeQuery } from "./text.js";
 
 /** Minimum score for a hit to be returned. */
 export const MATCH_THRESHOLD = 0.34;
+
+/** Score multiplier for an item one of whose `excludeKeywords` occurs in the utterance. */
+export const EXCLUDE_KEYWORD_FACTOR = 0.2;
 
 /* ------------------------------------------------------------------ */
 /* Regular expressions from case data                                  */
@@ -129,6 +134,12 @@ export function orderWarnings(c: CaseDefinition, query: string, investigationId:
 interface IndexedItem {
   id: string;
   phrases: Prepared[];
+  /** `excludeKeywords` of every locale, as `compactText` (non-empty, unique). */
+  exclude: string[];
+  /** Phases the item is restricted to (undefined = every phase). */
+  phases?: string[];
+  /** History item with `disclosure: "unknown"`. */
+  unknown?: boolean;
 }
 
 /** Prepared phrase indexes per case collection (case data is treated as immutable). */
@@ -148,16 +159,25 @@ function cachedIndex(owner: object, key: string, build: () => IndexedItem[]): In
   return index;
 }
 
-function scoreItems(items: IndexedItem[], utterance: string): MatchHit[] {
+/** Items eligible under `options`: `phase` drops items restricted to other phases; `includeUnknown: false` drops unknown-disclosure items. */
+function eligible(item: IndexedItem, options: MatchOptions): boolean {
+  if (options.phase != null && item.phases && !item.phases.includes(options.phase)) return false;
+  if (options.includeUnknown === false && item.unknown) return false;
+  return true;
+}
+
+function scoreItems(items: IndexedItem[], utterance: string, options: MatchOptions = {}): MatchHit[] {
   const u = prepare(utterance);
   if (!u.compact) return [];
   const hits: MatchHit[] = [];
   for (const item of items) {
+    if (!eligible(item, options)) continue;
     let best = 0;
     for (const phrase of item.phrases) {
       best = Math.max(best, phraseScore(u, phrase));
       if (best >= 1) break;
     }
+    if (best > 0 && item.exclude.some((x) => u.compact.includes(x))) best *= EXCLUDE_KEYWORD_FACTOR;
     const score = Math.round(best * 10000) / 10000;
     if (score >= MATCH_THRESHOLD) hits.push({ id: item.id, score });
   }
@@ -170,26 +190,55 @@ function preparePhrases(texts: string[]): Prepared[] {
     .filter((p) => p.compact.length > 0);
 }
 
-/** History items matching a learner utterance (question + keywords, all locales). */
-export function matchHistory(c: CaseDefinition, utterance: string, locale: string): MatchHit[] {
-  const index = cachedIndex(c.history, `history:${locale}`, () =>
-    c.history.map((h) => ({ id: h.id, phrases: preparePhrases([...allTexts(h.question, locale), ...allListEntries(h.keywords, locale)]) })),
-  );
-  return scoreItems(index, utterance);
+/** Normalised exclude phrases of every locale (`excludeKeywords` may be absent on cases built in code). */
+function excludePhrases(list: Parameters<typeof allListEntries>[0]): string[] {
+  return unique(allListEntries(list, "*").map(compactText).filter((x) => x.length > 0));
 }
 
-/** Exam findings matching a learner utterance (maneuver + keywords, all locales). */
-export function matchExam(c: CaseDefinition, utterance: string, locale: string): MatchHit[] {
-  const index = cachedIndex(c.exam, `exam:${locale}`, () =>
-    c.exam.map((e) => ({ id: e.id, phrases: preparePhrases([...allTexts(e.maneuver, locale), ...allListEntries(e.keywords, locale)]) })),
+/**
+ * History items matching a learner utterance (question + keywords, all
+ * locales). `options.phase` drops items restricted to other phases;
+ * `options.includeUnknown: false` drops `disclosure: "unknown"` items
+ * (default: included, so the patient can say "not recorded").
+ */
+export function matchHistory(c: CaseDefinition, utterance: string, locale: string, options: MatchOptions = {}): MatchHit[] {
+  const index = cachedIndex(c.history, `history:${locale}`, () =>
+    c.history.map((h) => ({
+      id: h.id,
+      phrases: preparePhrases([...allTexts(h.question, locale), ...allListEntries(h.keywords, locale)]),
+      exclude: excludePhrases(h.excludeKeywords),
+      phases: h.phases,
+      unknown: h.disclosure === "unknown",
+    })),
   );
-  return scoreItems(index, utterance);
+  return scoreItems(index, utterance, options);
+}
+
+/**
+ * Exam findings matching a learner utterance (maneuver + keywords, all
+ * locales). `options.phase` drops findings restricted to other phases
+ * (`includeUnknown` does not apply: findings have no disclosure policy).
+ */
+export function matchExam(c: CaseDefinition, utterance: string, locale: string, options: MatchOptions = {}): MatchHit[] {
+  const index = cachedIndex(c.exam, `exam:${locale}`, () =>
+    c.exam.map((e) => ({
+      id: e.id,
+      phrases: preparePhrases([...allTexts(e.maneuver, locale), ...allListEntries(e.keywords, locale)]),
+      exclude: excludePhrases(e.excludeKeywords),
+      phases: e.phases,
+    })),
+  );
+  return scoreItems(index, utterance, options);
 }
 
 /** Interventions matching a learner utterance (name + aliases, all locales). */
 export function matchInterventions(c: CaseDefinition, utterance: string, locale: string): MatchHit[] {
   const index = cachedIndex(c.interventions, `interventions:${locale}`, () =>
-    c.interventions.map((i) => ({ id: i.id, phrases: preparePhrases([...allTexts(i.name, locale), ...allListEntries(i.aliases, locale)]) })),
+    c.interventions.map((i) => ({
+      id: i.id,
+      phrases: preparePhrases([...allTexts(i.name, locale), ...allListEntries(i.aliases, locale)]),
+      exclude: excludePhrases(i.excludeKeywords),
+    })),
   );
   return scoreItems(index, utterance);
 }

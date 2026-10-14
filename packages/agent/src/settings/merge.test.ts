@@ -157,6 +157,28 @@ describe("mergeSettings", () => {
     expect(isLoopbackUrl("not a url")).toBe(false);
   });
 
+  it("never throws on keys that shadow Object.prototype members and never pollutes prototypes", () => {
+    const raw = JSON.parse(
+      '{"constructor": 1, "toString": "x", "hasOwnProperty": true, "__proto__": {"polluted": "top"},' +
+        ' "providers": {"__proto__": {"polluted": "prov"}, "openai": {"defaultModel": "gpt-5"}},' +
+        ' "agents": {"constructor": {"model": "m"}},' +
+        ' "profiles": {"__proto__": {"locale": "fr"}, "exam": {"locale": "en", "__proto__": {"polluted": "prof"}}},' +
+        ' "permissions": {"allow": ["examine"]}}',
+    );
+    try {
+      const { settings, issues } = mergeSettingsDetailed([{ source: "user", settings: raw }], { profile: "exam" });
+      expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+      expect(settings.permissions.allow).toEqual(["examine"]);
+      expect(Object.keys(settings.providers)).toEqual(["openai"]);
+      expect(Object.getPrototypeOf(settings.providers)).toBe(Object.prototype);
+      expect(settings.agents.constructor).toEqual({ model: "m" }); // a legitimately named entry stays an own key
+      expect(settings.locale).toBe("en");
+      expect(issues.map((i) => i.path)).toEqual(expect.arrayContaining(["constructor", "toString", "hasOwnProperty", "__proto__", "providers.__proto__", "profiles.__proto__"]));
+    } finally {
+      delete (Object.prototype as Record<string, unknown>).polluted;
+    }
+  });
+
   it("applies a named profile last and reports unknown profiles", () => {
     const layers = [
       { source: "user" as const, settings: { approvalMode: "auto", profiles: { osce: { approvalMode: "strict", practiceScope: "history-only", permissions: { deny: ["consult"] } } } } },

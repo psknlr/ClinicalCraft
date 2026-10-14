@@ -31,8 +31,27 @@ export {
 } from "./physiology.js";
 
 // matching
-export { normalizeQuery, matchOrders, orderWarnings, matchHistory, matchExam, matchInterventions, MATCH_THRESHOLD } from "./matcher.js";
-export { compactText, tokenize, phraseScore, longestCommonSubstring, ENGLISH_STOP_WORDS } from "./text.js";
+export {
+  normalizeQuery,
+  matchOrders,
+  orderWarnings,
+  matchHistory,
+  matchExam,
+  matchInterventions,
+  MATCH_THRESHOLD,
+  EXCLUDE_KEYWORD_FACTOR,
+} from "./matcher.js";
+export {
+  compactText,
+  tokenize,
+  tokensMatch,
+  canonicalToken,
+  foldSpelling,
+  phraseScore,
+  longestCommonSubstring,
+  ENGLISH_STOP_WORDS,
+  ENGLISH_LEMMAS,
+} from "./text.js";
 
 // assessment
 export { assess, countCriticalAlarms } from "./assessment.js";
@@ -69,6 +88,7 @@ export type {
   VitalAlarm,
   VitalsSnapshot,
   MatchHit,
+  MatchOptions,
   AssessmentReport,
   PatientSlot,
   WaypointLocation,

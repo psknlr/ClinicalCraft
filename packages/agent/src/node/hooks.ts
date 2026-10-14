@@ -2,13 +2,22 @@
  * Command hook executor: `sh -c <command>` with the HookInput JSON on stdin,
  * cwd = project dir, env `CLINICALCRAFT_PROJECT_DIR`, a timeout and
  * AbortSignal support (the hook's process group gets SIGTERM, then SIGKILL
- * after 2 s; the promise resolves immediately). Output is capped at 1 MiB per
- * stream. Never rejects: spawn failures resolve with exit code 127.
+ * after 2 s; the promise resolves immediately). The result is settled by the
+ * hook's own exit status even when a background child keeps the pipes open.
+ * Output is capped at 1 MiB per stream. Never rejects: spawn failures resolve
+ * with exit code 127.
  */
 import { spawn } from "node:child_process";
+import { constants } from "node:os";
 import type { CommandHookExecutor, HookInput } from "../hooks/types.js";
 
 const MAX_OUTPUT = 1024 * 1024;
+/**
+ * After the hook process exits, wait this long for its remaining output. A
+ * background child that inherited stdout/stderr can keep the pipes open
+ * indefinitely; the hook's own exit status (e.g. 2 = block) must still count.
+ */
+const EXIT_GRACE_MS = 150;
 /** Exit code reported when a hook times out. */
 export const HOOK_TIMEOUT_EXIT_CODE = 124;
 /** Exit code reported when a hook is aborted. */
@@ -44,10 +53,12 @@ export function createCommandHookExecutor(cwd: string = process.cwd(), options: 
           detached: posix,
         });
 
+        let grace: ReturnType<typeof setTimeout> | undefined;
         const finish = (exitCode: number, extraErr?: string) => {
           if (settled) return;
           settled = true;
           clearTimeout(timer);
+          if (grace) clearTimeout(grace);
           signal?.removeEventListener("abort", onAbort);
           resolvePromise({ exitCode, stdout, stderr: extraErr ? `${stderr}${stderr && !stderr.endsWith("\n") ? "\n" : ""}${extraErr}` : stderr });
         };
@@ -83,8 +94,17 @@ export function createCommandHookExecutor(cwd: string = process.cwd(), options: 
         child.stderr.on("data", (chunk: string) => {
           if (stderr.length < MAX_OUTPUT) stderr += chunk.slice(0, MAX_OUTPUT - stderr.length);
         });
+        const statusOf = (code: number | null, sig: NodeJS.Signals | null) => code ?? (sig ? 128 + (constants.signals[sig] ?? 15) : 1);
         child.on("error", (err) => finish(127, `failed to start hook: ${err.message}`));
-        child.on("close", (code, sig) => finish(code ?? (sig ? 128 + 15 : 1)));
+        child.on("exit", (code, sig) => {
+          if (settled) return;
+          grace = setTimeout(() => {
+            child.stdout.destroy();
+            child.stderr.destroy();
+            finish(statusOf(code, sig));
+          }, EXIT_GRACE_MS);
+        });
+        child.on("close", (code, sig) => finish(statusOf(code, sig)));
         // The hook may exit without reading stdin (EPIPE) — ignore.
         child.stdin.on("error", () => undefined);
         child.stdin.end(`${JSON.stringify(input)}\n`);

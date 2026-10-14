@@ -114,6 +114,22 @@ describe("HookRunner command hooks (real sh)", () => {
     expect(readFileSync(out, "utf8")).toBe(tmp);
   });
 
+  it("honours the exit code as soon as the hook exits, even if a background child keeps its pipes open", async () => {
+    const runner = new HookRunner();
+    const started = Date.now();
+    const blocked = await runner.runHooks("PreToolUse", pre("intervene"), {
+      settingsHooks: { PreToolUse: [{ hooks: [{ type: "command", command: `sleep 4 & echo "needs a CT first" >&2; exit 2`, timeout: 3 }] }] },
+      executor,
+    });
+    expect(blocked).toMatchObject({ blocked: true, reason: "needs a CT first" });
+    const approved = await runner.runHooks("PreToolUse", pre("order_test"), {
+      settingsHooks: { PreToolUse: [{ hooks: [{ type: "command", command: `sleep 4 & echo '{"decision":"approve"}'`, timeout: 3 }] }] },
+      executor,
+    });
+    expect(approved).toMatchObject({ blocked: false, approved: true });
+    expect(Date.now() - started).toBeLessThan(2500);
+  });
+
   it("plain stdout becomes context for UserPromptSubmit; timeouts and executor failures are warnings", async () => {
     const runner = new HookRunner();
     const ctx = await runner.runHooks(

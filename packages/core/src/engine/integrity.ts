@@ -214,6 +214,11 @@ function checkInvestigations(c: CaseDefinition, ids: Ids): Issue[] {
     if (Object.keys(inv.results).length === 0) {
       issues.push(warn(["investigations", i, "results"], `investigation "${inv.id}" has no result in any phase, so its orders can never be read`));
     }
+    inv.alternativeTo.forEach((id, j) => {
+      const path = ["investigations", i, "alternativeTo", j];
+      if (!ids.investigations.has(id)) issues.push(err(path, `unknown investigation "${id}"`));
+      else if (id === inv.id) issues.push(warn(path, `investigation "${inv.id}" lists itself as an alternative`));
+    });
     for (const [phase, result] of Object.entries(inv.results)) {
       if (!ids.phases.has(phase)) issues.push(err(["investigations", i, "results", phase], `result phase "${phase}" is not a declared phase`));
       result.figures.forEach((fig, j) => {
@@ -327,8 +332,13 @@ function checkSolutionAction(c: CaseDefinition, ids: Ids, a: ClinicalAction, pat
   }
 }
 
+/**
+ * Per-step solution checks. `parseCase` already validates each step's shape;
+ * steps are re-parsed here so cases built in code (not via `parseCase`) still
+ * get located issues instead of a crash.
+ */
 function checkSolution(c: CaseDefinition, ids: Ids): Issue[] {
-  return c.solution.flatMap((raw, i) => {
+  return c.solution.flatMap((raw: unknown, i) => {
     const parsed = ClinicalActionSchema.safeParse(raw);
     if (!parsed.success) {
       return issuesFromZodError(parsed.error, raw).map((issue) => ({ ...issue, path: formatPath(["solution", i, ...(issue.path ? issue.path.split(".") : [])]) }));
@@ -394,6 +404,7 @@ function checkReachability(c: CaseDefinition, ids: Ids): Issue[] {
     if ("objective" in node) return ids.objectives.has(node.objective) && !objectives.has(node.objective) ? false : null;
     if ("decided" in node) return ids.decisions.has(node.decided) && !decisions.has(node.decided) ? false : null;
     if ("attempted" in node) return ids.decisions.has(node.attempted) && !decisions.has(node.attempted) ? false : null;
+    if ("decidedFirstTry" in node) return ids.decisions.has(node.decidedFirstTry) && !decisions.has(node.decidedFirstTry) ? false : null;
     const unreachablePhase = (phase: string | undefined) => phase != null && ids.phases.has(phase) && !phases.has(phase);
     // orders are keyed by the phase they were placed in, so a phase-restricted leaf needs that phase to be enterable
     if ("ordered" in node || "read" in node || "resultReady" in node) return unreachablePhase(node.phase) ? false : null;

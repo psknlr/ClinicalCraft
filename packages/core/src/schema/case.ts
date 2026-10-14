@@ -11,6 +11,8 @@ import {
   VitalKeySchema,
   VitalsSchema,
 } from "./common.js";
+// session.ts depends only on common.ts, so importing it here creates no cycle
+import { ClinicalActionSchema } from "./session.js";
 
 /**
  * Case definition — `clinicalcraft/case@1`.
@@ -182,6 +184,12 @@ export const HistoryItemSchema = z
     /** Extra trigger words/phrases for the offline intent matcher (per locale). */
     keywords: LocalizedListSchema.default([]),
     /**
+     * Phrases that argue against this item: when the normalised utterance
+     * contains one (any locale), the item's match score is multiplied by
+     * `EXCLUDE_KEYWORD_FACTOR` (0.2). E.g. "past medical" on a medications item.
+     */
+    excludeKeywords: LocalizedListSchema.default([]),
+    /**
      * volunteer — may be mentioned spontaneously (e.g. in the opening line);
      * on-ask    — revealed when the learner asks about the topic;
      * specific  — revealed only to a specific, targeted question;
@@ -228,6 +236,8 @@ export const ExamFindingSchema = z
     /** What the learner does, e.g. "Palpate the abdomen" / "腹部触诊". */
     maneuver: LocalizedTextSchema,
     keywords: LocalizedListSchema.default([]),
+    /** Phrases that down-weight this finding in `matchExam` (see `HistoryItemSchema.excludeKeywords`). */
+    excludeKeywords: LocalizedListSchema.default([]),
     finding: LocalizedTextSchema,
     abnormal: z.boolean().default(false),
     /** Equipment capabilities needed (e.g. ["stethoscope"]). */
@@ -298,6 +308,14 @@ export const InvestigationSchema = z
     risk: z.enum(["none", "low", "moderate", "high"]).default("none"),
     /** Investigations that are reasonable but not essential are `neutral`; wasteful ones `low-value`. */
     value: z.enum(["essential", "useful", "neutral", "low-value", "harmful"]).default("useful"),
+    /**
+     * Investigation ids this one can stand in for (the link is mutual). An
+     * `essential` investigation is not reported in
+     * `assess().investigations.essentialMissing` when it was ordered or when
+     * any investigation linked to it by `alternativeTo` (either direction)
+     * was read in any phase — e.g. CT pulmonary angiogram ⇄ V/Q scan.
+     */
+    alternativeTo: z.array(IdSchema).default([]),
     /** Results keyed by phase id. A phase without a key is "no record in this phase". */
     results: z.record(IdSchema, ResultSchema),
   })
@@ -365,6 +383,8 @@ export const InterventionSchema = z
     name: LocalizedTextSchema,
     kind: z.enum(["medication", "oxygen", "fluid", "procedure", "positioning", "monitoring", "consult", "disposition", "airway", "other"]),
     aliases: LocalizedListSchema.default([]),
+    /** Phrases that down-weight this intervention in `matchInterventions` (see `HistoryItemSchema.excludeKeywords`). */
+    excludeKeywords: LocalizedListSchema.default([]),
     /** Human-readable dose/route (e.g. "Aspirin 300 mg PO chewed"). */
     dose: LocalizedTextSchema.optional(),
     requires: z.array(CapabilitySchema).default([]),
@@ -546,6 +566,10 @@ export const NpcBriefSchema = z
 /* Case                                                                */
 /* ------------------------------------------------------------------ */
 
+/**
+ * @deprecated `CaseSchema.solution` is now typed with `ClinicalActionSchema`;
+ * kept only so existing imports keep compiling.
+ */
 export const ClinicalActionForSolution = z.record(z.string(), z.unknown());
 
 export const CaseSchema = z
@@ -599,9 +623,11 @@ export const CaseSchema = z
     /**
      * Reference walkthrough: a sequence of ClinicalActions that completes every
      * objective and answers every decision correctly. Used by `clinicalcraft case verify`
-     * and the test-suite; hidden from learners and agents.
+     * and the test-suite; hidden from learners and agents. Each step is
+     * validated as a `ClinicalAction` (`schema/session.ts`); ids inside steps
+     * are checked by `checkCaseIntegrity`.
      */
-    solution: z.array(ClinicalActionForSolution).default([]),
+    solution: z.array(ClinicalActionSchema).default([]),
     /** Free-form extension data for plugins. */
     extensions: z.record(z.string(), z.unknown()).default({}),
   })

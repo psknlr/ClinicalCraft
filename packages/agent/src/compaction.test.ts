@@ -85,6 +85,23 @@ describe("compactConversation", () => {
     expect(fallback.summary).toContain("较早的对话");
   });
 
+  it("can compact a long tool loop (autopilot) whose only plain user message is the goal", async () => {
+    const history: ChatMessage[] = [user("Work up this chest pain.")];
+    for (let i = 1; i <= 6; i++) history.push(call(`c${i}`), result(`c${i}`));
+    expect(compactionSplitIndex(history, 4)).toBe(8); // result(c4): its call is summarised, its output folded into text
+    const r = await compactConversation({ provider: null, messages: history, keepRecent: 4, locale: "en" });
+    expect(r.compactedCount).toBe(8);
+    const first = r.messages[0]!;
+    expect(first.role).toBe("user");
+    expect(first.content.some((p) => p.type === "tool_result")).toBe(false);
+    expect(first.content.map((p) => (p as { text?: string }).text ?? "").join("\n")).toMatch(/order_test.*c4[\s\S]*ordered/);
+    // every remaining tool_result still has its tool_call
+    const callIds = new Set(r.messages.flatMap((m) => m.content.filter((p) => p.type === "tool_call").map((p) => (p as { id: string }).id)));
+    const resultIds = r.messages.flatMap((m) => m.content.filter((p) => p.type === "tool_result").map((p) => (p as { callId: string }).callId));
+    expect(resultIds).toEqual(["c5", "c6"]);
+    expect(resultIds.every((id) => callIds.has(id))).toBe(true);
+  });
+
   it("returns the conversation unchanged when there is nothing to compact", async () => {
     const r = await compactConversation({ provider: null, messages: history.slice(0, 2), keepRecent: 6 });
     expect(r.messages).toEqual(history.slice(0, 2));

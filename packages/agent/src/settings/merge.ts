@@ -116,11 +116,14 @@ function isPlainObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v) && (Object.getPrototypeOf(v) === Object.prototype || Object.getPrototypeOf(v) === null);
 }
 
+/** `__proto__` as an own key (JSON.parse creates one) would re-prototype objects on assignment. */
+const PROTO_KEY = "__proto__";
+
 function clone<T>(v: T): T {
   if (Array.isArray(v)) return v.map(clone) as unknown as T;
   if (isPlainObject(v)) {
     const out: Record<string, unknown> = {};
-    for (const [k, val] of Object.entries(v)) out[k] = clone(val);
+    for (const [k, val] of Object.entries(v)) if (k !== PROTO_KEY) out[k] = clone(val);
     return out as T;
   }
   return v;
@@ -153,9 +156,9 @@ function concatDedupe(a: unknown[], b: unknown[]): unknown[] {
 /** Deep-merge `source` into `target` (mutates target) using the layering rules. */
 function mergeInto(target: Record<string, unknown>, source: Record<string, unknown>, path: string[] = []): void {
   for (const [key, value] of Object.entries(source)) {
-    if (value === undefined) continue;
+    if (value === undefined || key === PROTO_KEY) continue;
     const here = [...path, key];
-    const current = target[key];
+    const current = Object.hasOwn(target, key) ? target[key] : undefined;
     if (isPlainObject(value) && isPlainObject(current)) {
       mergeInto(current, value, here);
     } else if (Array.isArray(value) && Array.isArray(current) && isConcatPath(here)) {
@@ -215,6 +218,10 @@ export function validateSettingsLayer(
       }
       const profiles: Record<string, SettingsLayerData> = {};
       for (const [name, profile] of Object.entries(value)) {
+        if (name === PROTO_KEY) {
+          push(`profiles.${name}`, `invalid profile name "${name}"; ignored`, "warning");
+          continue;
+        }
         const nested = validateSettingsLayer(profile, source, file, false);
         for (const issue of nested.issues) issues.push({ ...issue, path: `profiles.${name}${issue.path ? `.${issue.path}` : ""}` });
         profiles[name] = nested.data;
@@ -230,6 +237,10 @@ export function validateSettingsLayer(
       const schema: ZodLike = key === "agents" ? AgentModelSettingsSchema : ProviderOverrideSchema;
       const entries: Record<string, unknown> = {};
       for (const [name, entry] of Object.entries(value)) {
+        if (name === PROTO_KEY) {
+          push(`${key}.${name}`, `invalid ${key === "agents" ? "agent" : "provider"} name "${name}"; ignored`, "warning");
+          continue;
+        }
         const result = schema.safeParse(entry);
         if (!result.success) {
           for (const i of zodIssues(result.error, `${key}.${name}`)) push(i.path, i.message);
@@ -242,7 +253,8 @@ export function validateSettingsLayer(
       data[key] = entries as never;
       continue;
     }
-    const fieldSchema = shape?.[key];
+    // Own keys only: `constructor`, `toString`… must not resolve to Object.prototype members.
+    const fieldSchema = shape && Object.hasOwn(shape, key) ? shape[key] : undefined;
     if (!fieldSchema) {
       push(key, `unknown setting "${key}"`, "warning");
       continue;
@@ -335,7 +347,7 @@ export function mergeSettingsDetailed(layers: readonly SettingsLayer[], options:
     issues.push(...layerIssues);
     if (data.profiles) {
       for (const [name, profile] of Object.entries(data.profiles)) {
-        const existing = profiles[name] ?? {};
+        const existing = (Object.hasOwn(profiles, name) ? profiles[name] : undefined) ?? {};
         mergeInto(existing as Record<string, unknown>, profile as Record<string, unknown>);
         profiles[name] = existing;
       }
@@ -343,7 +355,7 @@ export function mergeSettingsDetailed(layers: readonly SettingsLayer[], options:
     applyLayerData(settings, data, layer.source);
   }
   if (options.profile) {
-    const profile = profiles[options.profile];
+    const profile = Object.hasOwn(profiles, options.profile) ? profiles[options.profile] : undefined;
     if (profile) applyLayerData(settings, profile, "profile");
     else issues.push({ source: "profile", path: `profiles.${options.profile}`, message: `unknown profile "${options.profile}"`, severity: "error" });
   }

@@ -4,7 +4,7 @@
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
-import { evaluate, resultFor } from "./conditions.js";
+import { evaluate, parseResultKey, resultFor } from "./conditions.js";
 import { alarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
 import { unique } from "./text.js";
@@ -22,12 +22,25 @@ function coverage(items: { id: string; required: boolean }[], done: string[]) {
   };
 }
 
+/**
+ * Investigations linked to `id` by `alternativeTo` in either direction
+ * (the relation is mutual: "A is an alternative to B" ⇔ "B is an alternative to A").
+ */
+function alternativesOf(c: CaseDefinition, id: string): string[] {
+  const own = c.investigations.find((i) => i.id === id)?.alternativeTo ?? [];
+  const reverse = c.investigations.filter((i) => i.id !== id && i.alternativeTo.includes(id)).map((i) => i.id);
+  return unique([...own, ...reverse]).filter((alt) => alt !== id);
+}
+
 function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentReport["investigations"] {
   const orderedIds = unique(s.orders.map((o) => o.investigationId));
+  const readIds = new Set(s.seen.map((key) => parseResultKey(key).investigationId));
   const byValue = (value: string) => c.investigations.filter((i) => i.value === value && orderedIds.includes(i.id)).map((i) => i.id);
+  // an essential investigation is satisfied by ordering it, or by reading (any phase) one of its alternatives
+  const satisfied = (id: string) => orderedIds.includes(id) || alternativesOf(c, id).some((alt) => readIds.has(alt));
   return {
     ordered: s.orders.length,
-    essentialMissing: c.investigations.filter((i) => i.value === "essential" && !orderedIds.includes(i.id)).map((i) => i.id),
+    essentialMissing: c.investigations.filter((i) => i.value === "essential" && !satisfied(i.id)).map((i) => i.id),
     lowValue: byValue("low-value"),
     harmful: byValue("harmful"),
     // ordered results that carry information but were never read ("no record" / available:false results are not counted)

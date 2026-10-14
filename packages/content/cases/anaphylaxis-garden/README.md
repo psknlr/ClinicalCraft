@@ -65,8 +65,8 @@ features are present but are not required for the diagnosis.
    the nurse raises her head and shoulders slightly and keeps her legs up.
 5. High-flow O₂ 15 L/min, monitoring, an 18G cannula with bloods, and a
    500–1000 mL crystalloid bolus.
-6. Reassess. She is still hoarse and wheezy, with SBP about 87. Give a
-   **second IM dose** about 10 minutes after the first.
+6. Reassess at 5 minutes. She is still hoarse and wheezy, with SBP about 87.
+   Give a **second IM dose** about 6–7 minutes after the first.
 7. Salbutamol 5 mg nebulised for wheeze that persists after adrenaline.
 8. Remove the stinger.
 9. Take a focused history: drug allergies, medicines including beta-blockers
@@ -75,7 +75,10 @@ features are present but are not required for the diagnosis.
 11. Transfer her to the ED on a trolley, lying flat.
 12. In the ED: VBG and ECG, then cetirizine for residual itch once she can
     swallow safely.
-13. Observe for **≥ 6 h after resolution**, because two doses were needed.
+13. Keep her in overnight: observe for **≥ 12 h after resolution**. Two doses
+    alone would mean ≥ 6 h, but the reaction involved severe respiratory
+    compromise (laryngeal signs, hypoxaemia), which means ≥ 12 h (RCUK 2021,
+    adopted by NICE NG258).
 14. Prescribe two auto-injectors with training and a written action plan.
 15. Refer her to the allergy clinic for venom immunotherapy (VIT) assessment.
 
@@ -102,8 +105,9 @@ Replay of the reference solution (displayed values, including the deterministic 
 |---:|---:|---|---:|---:|---|
 | 0 | 128 | 78/44 (55) | 26 | 92 | first contact |
 | 3.5 | ≈135 | ≈71/40 (50) | ≈28 | ≈90 | 1st IM adrenaline |
-| 12 | ≈128 | ≈85/49 (61) | ≈26 | ≈96 | partial response on O₂ + legs up + fluid → 2nd dose at 13.5 |
-| 20 | ≈117 | ≈110/62 (78) | ≈23 | ≈99 | stabilising; transfer at 21.5 |
+| 8.5–10 | ≈129 | ≈87/50 (62) | ≈26 | ≈96 | 5-min reassessment: partial response on O₂ + legs up → 2nd dose at 10 |
+| 13.5 | ≈126 | ≈101/56 (71) | ≈25 | ≈98 | IV access + crystalloid bolus |
+| 20 | ≈115 | ≈113/63 (80) | ≈21 | 100 | stabilising; transfer at 21.5 |
 | 60–110 | ≈98 | ≈111/60 (77) | ≈18 | 100 | ED observation; sinus rhythm |
 
 Without adrenaline, SBP falls to about 56 by minute 10. At that point the
@@ -129,8 +133,8 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
 | **Sit her upright / stand her** with SBP < 90 | contraindicated | "Empty ventricle": SBP −14 and GCS −3 for 5 min. |
 | **Walk her (or wheelchair) to the ED** | contraindicated | Same mechanism. Transfer lying flat on a trolley after adrenaline. |
 | **Transfer before IM adrenaline** | contraindicated | Delays treatment. The phase stays `scene` until adrenaline is given. |
-| **Discharge now** | contraindicated | Two doses needed, no auto-injector, biphasic risk. |
-| Salbutamol before adrenaline | neutral | Not harmful, but it is not anaphylaxis treatment. The response text says so. |
+| **Discharge now** | contraindicated | Two doses and severe respiratory compromise (≥ 12 h), no auto-injector, biphasic risk. |
+| **Salbutamol** before adrenaline | contraindicated | "Treating it as asthma": bronchospasm only, not laryngeal oedema or shock, and it delays adrenaline (same logic as antihistamine/steroid first). After adrenaline it is indicated. |
 | CTPA | `harmful` investigation | Contrast and leaving resus during an anaphylaxis observation period, with no indication. |
 | CXR, troponin, CRP, venom sIgE | `low-value` | None changes acute management. Venom sIgE may be falsely negative early; repeat at 4–6 weeks. |
 
@@ -174,10 +178,14 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
     single dose given within 30 min of onset, complete resolution, unused
     auto-injectors already held with training, and supervision at home.
   * Two doses, or a previous biphasic reaction, mean ≥ 6 h.
-  * More than two doses, severe asthma or respiratory compromise, a
-    late-night presentation or poor access to care mean ≥ 12 h.
-  * Biphasic reactions occur in about 5 % (reported 1–20 %), mostly within
-    12 h.
+  * More than two doses, severe asthma, a reaction involving severe
+    respiratory compromise, an out-of-hours presentation or poor access to
+    care mean ≥ 12 h. Her hoarse voice with uvular oedema and hypoxaemia count
+    as severe respiratory compromise, so the correct disposition is ≥ 12 h
+    (overnight). NICE NG258 (2026) adopted these RCUK tiers.
+  * Biphasic reactions occur in about 5 % (reported 1–20 %). In a
+    meta-analysis the median onset was about 11 h (range 0.2–72 h);
+    hypotension at presentation is a risk factor.
 * **Discharge bundle.**
   * Two adrenaline auto-injectors carried at all times, with teach-back
     training.
@@ -229,7 +237,7 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
   parameter update, systematic review, and GRADE analysis.* J Allergy Clin
   Immunol. 2020;145(4):1082-1123.
 * National Institute for Health and Care Excellence. *Anaphylaxis: assessment
-  and referral after emergency treatment* (CG134). 2011, updated 2020.
+  and referral after emergency treatment* (NG258). 2026 (replaces CG134, 2011).
 * Sturm GJ, Varga EM, Roberts G, et al. *EAACI guidelines on allergen
   immunotherapy: Hymenoptera venom allergy.* Allergy. 2018;73(4):744-764.
 
@@ -250,6 +258,10 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
   interventions within a phase. For example, `ex-chest-treated` still
   describes wheeze after salbutamol. The salbutamol `response` narrates the
   improvement instead.
+* **The 5-minute repeat interval is not encoded.** The condition DSL has no
+  "minutes since the last dose", so `adrenaline-im` is `indicated` whenever
+  SBP < 90, SpO₂ < 94 or RR > 24, even if the previous dose was given a minute
+  earlier. The reference solution repeats at about 6–7 minutes.
 * **Effect offset is instant.** By engine design, effects end abruptly, so
   SBP steps down about 8 mmHg when each dose's transient component ends,
   15 min after its ramp.

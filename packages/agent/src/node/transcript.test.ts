@@ -1,4 +1,4 @@
-import { appendFileSync, mkdtempSync, rmSync, statSync } from "node:fs";
+import { appendFileSync, mkdtempSync, readFileSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
@@ -43,6 +43,34 @@ describe("JsonlTranscript", () => {
     const resumed = JsonlTranscript.at(t.path);
     await resumed.write({ type: "compacted", ordinal: 52, ts: "2026-10-14T09:00:00.000Z", payload: { agent: "patient", summary: "s" } });
     expect((await readTranscript(t.path)).at(-1)).toMatchObject({ type: "compacted", ordinal: 52 });
+  });
+
+  it("redacts API keys from the environment and well-known key formats before writing", async () => {
+    const env = {
+      CLINICALCRAFT_HOME: join(root, "redact-home"),
+      ANTHROPIC_API_KEY: "sk-ant-api03-REALKEY-0123456789",
+      CAMPUS_LLM_TOKEN: "campus-secret-value-42",
+      SHORT_KEY: "abc",
+    };
+    const t = JsonlTranscript.create({ sessionId: "r", env });
+    await t.write({
+      type: "event",
+      ordinal: 1,
+      ts: "2026-10-14T08:00:00.000Z",
+      payload: { id: "", seq: 1, msg: { type: "error", message: "401: invalid x-api-key sk-ant-api03-REALKEY-0123456789 (campus-secret-value-42)" } },
+    });
+    await t.write({ type: "message", ordinal: 2, ts: "2026-10-14T08:00:01.000Z", payload: { agent: "patient", role: "user", content: [{ type: "text", text: "My chest hurts (abc)" }] } });
+    const raw = readFileSync(t.path, "utf8");
+    expect(raw).not.toContain("REALKEY");
+    expect(raw).not.toContain("campus-secret-value-42");
+    expect(raw).toContain("My chest hurts (abc)"); // short values are never treated as secrets
+    const back = await readTranscript(t.path);
+    expect(back).toHaveLength(2);
+    expect(JSON.stringify(back[0])).toContain("[REDACTED]");
+    // explicit opt-out keeps lines verbatim
+    const plain = JsonlTranscript.create({ sessionId: "p", env, redact: false });
+    await plain.write({ type: "compacted", ordinal: 1, ts: "2026-10-14T08:00:00.000Z", payload: { agent: "patient", summary: "campus-secret-value-42" } });
+    expect(readFileSync(plain.path, "utf8")).toContain("campus-secret-value-42");
   });
 
   it("reports write failures without throwing", async () => {

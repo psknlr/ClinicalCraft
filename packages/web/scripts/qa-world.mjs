@@ -153,7 +153,7 @@ try {
       const dest = w.locate("board") ?? w.locate(window.__HARNESS__.facility.placements[0].id);
       const t0 = performance.now();
       try {
-        await Promise.race([w.walkTo(dest), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout 90s")), 90000))]);
+        await Promise.race([w.walkTo(dest), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout 240s")), 240000))]);
         return { ok: true, ms: Math.round(performance.now() - t0), at: w.position, dest };
       } catch (e) {
         return { ok: false, error: String(e), at: w.position, dest };

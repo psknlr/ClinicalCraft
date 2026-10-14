@@ -159,7 +159,7 @@ export interface ResolvedOpening extends OpeningSpec {
   y1: number;
 }
 
-/** One solid wall piece (≤ 1 unit along the wall and ≤ 1 unit high, V4 block granularity). */
+/** One solid wall piece (≈ 1 unit along the wall and ≤ 1 unit high, V4 block granularity). */
 export interface WallPiece {
   a: number;
   b: number;
@@ -191,7 +191,7 @@ export function resolveOpenings(wall: WallLine, height: number, openings: Partia
   return out.sort((p, q) => p.a - q.a);
 }
 
-/** Split [from, to] at breakpoints, then into pieces of ≤ `maxLen` (equal subdivision). */
+/** Split [from, to] at breakpoints, then each part into round(len / maxLen) equal pieces (V4 block granularity). */
 export function splitInterval(from: number, to: number, breaks: number[], maxLen = 1): [number, number][] {
   const pts = [from, ...breaks.filter((b) => b > from + EPS && b < to - EPS), to].sort((a, b) => a - b);
   const out: [number, number][] = [];

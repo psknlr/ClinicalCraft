@@ -253,31 +253,30 @@ export const monitorRenderer: MonitorRenderer = {
     const totalW = boxes.reduce((a, b) => a + b.weight, 0);
     let y = headH + 2 * u;
     const colH = H - headH - 4 * u;
-    for (const b of boxes) {
+    for (const [i, b] of boxes.entries()) {
       const bh = (colH * b.weight) / totalW;
       const lvl = live ? alarmLevel(s, b.key) ?? (b.key === "sbp" ? alarmLevel(s, "dbp") : null) : null;
       if (lvl && (flashOn || lvl === "warning")) {
         ctx.fillStyle = lvl === "critical" ? "#7a1410" : "#5a4208";
         ctx.fillRect(colX - 2 * u, y, colW + 4 * u, bh - 2 * u);
       }
+      if (i > 0) {
+        ctx.fillStyle = "#1f2a26";
+        ctx.fillRect(colX - 2 * u, y - 1 * u, colW + 4 * u, Math.max(1, u));
+      }
       const color = live ? (lvl === "critical" && flashOn ? "#ffffff" : b.color) : MONITOR_COLORS.dim;
       ctx.fillStyle = color;
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      const lf = Math.max(6, Math.round(Math.min(bh * 0.22, 10 * u)));
+      const lf = Math.max(6, Math.round(Math.min(bh * 0.2, 10 * u)));
       ctx.font = `${lf}px ui-monospace, Menlo, monospace`;
-      ctx.fillText(b.label, colX, y + 1 * u, colW);
+      ctx.fillText(b.label, colX, y + 1.5 * u, colW * 0.72);
       ctx.textAlign = "right";
-      ctx.fillText(b.unit, colX + colW, y + 1 * u);
-      const vf = Math.max(8, Math.round(Math.min(bh * 0.62, (colW / Math.max(3, b.value.length)) * 1.6)));
+      ctx.fillText(b.sub ? `${b.unit} ${b.sub}` : b.unit, colX + colW, y + 1.5 * u, colW * 0.5);
+      const vf = Math.max(8, Math.round(Math.min((bh - lf - 4 * u) * 0.95, (colW / Math.max(3, b.value.length)) * 1.6)));
       ctx.font = `bold ${vf}px ui-monospace, Menlo, Consolas, monospace`;
       ctx.textBaseline = "alphabetic";
-      ctx.fillText(b.value, colX + colW, y + bh - 3 * u - (b.sub ? 0 : 0));
-      if (b.sub) {
-        ctx.textAlign = "left";
-        ctx.font = `${Math.max(6, Math.round(vf * 0.45))}px ui-monospace, Menlo, monospace`;
-        ctx.fillText(b.sub, colX, y + bh - 3 * u);
-      }
+      ctx.fillText(b.value, colX + colW, y + bh - 3 * u);
       y += bh;
     }
 

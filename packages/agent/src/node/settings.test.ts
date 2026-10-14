@@ -1,8 +1,8 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { loadProjectAgents, loadProjectCommands } from "./definitions.js";
+import { commandNameFor, loadProjectAgents, loadProjectCommands } from "./definitions.js";
 import { clinicalcraftHome, findProjectRoot, localAssetDirs } from "./home.js";
 import { loadMemory } from "./memory.js";
 import { resolveNodeProviderConfig } from "./providers.js";
@@ -47,15 +47,21 @@ beforeAll(() => {
   write(join(proj, ".clinicalcraft", "settings.local.json"), { locale: "en", maxToolRounds: 20 });
 
   // memory
-  write(join(home, "CLINICALCRAFT.md"), "User memory.\n<!-- private note -->");
+  write(join(home, "CLINICALCRAFT.md"), "User memory.\n<!-- private note -->\n@shared.md");
   write(join(proj, "CLINICALCRAFT.md"), "Course rules.\n@docs/rubric.md");
   write(join(proj, "docs", "rubric.md"), "Rubric: SOCRATES.");
   write(join(proj, "week1", "AGENTS.md"), "Week 1 agents fallback.");
   write(join(proj, "week1", "day2", "CLINICALCRAFT.md"), "Day 2 focus: chest pain.");
-  write(join(proj, ".clinicalcraft", "CLINICALCRAFT.md"), "Hidden project memory.\n@~/secret.md\n@../../../outside.md\n@~/.clinicalcraft/shared.md");
+  write(
+    join(proj, ".clinicalcraft", "CLINICALCRAFT.md"),
+    "Hidden project memory.\n@~/secret.md\n@../../../outside.md\n@~/.clinicalcraft/settings.json\n@~/.clinicalcraft/home-notes.md\n@../docs/.env.txt\n@../docs/keys.json",
+  );
   write(join(root, "home", "secret.md"), "TOP SECRET KEY");
   write(join(root, "outside.md"), "OUTSIDE FILE");
   write(join(home, "shared.md"), "Shared user snippet.");
+  write(join(home, "home-notes.md"), "HOME NOTES");
+  write(join(proj, "docs", ".env.txt"), "Course env notes.");
+  write(join(proj, "docs", "keys.json"), '{"key": "PROJECT JSON SECRET"}');
 
   // agents & commands
   write(join(home, "agents", "tutor.md"), "---\nname: tutor\nrole: assistant\n---\nUser tutor.");
@@ -132,6 +138,19 @@ describe("saveUserSettings", () => {
   });
 });
 
+describe("saveUserSettings hardening", () => {
+  it("ignores prototype keys in a JSON patch (no global prototype pollution)", async () => {
+    const e = { CLINICALCRAFT_HOME: join(root, "proto-home") };
+    try {
+      const file = await saveUserSettings(JSON.parse('{"__proto__": {"polluted": "yes"}, "constructor": {"prototype": {"polluted": "yes"}}, "locale": "en"}'), e);
+      expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+      expect(JSON.parse(readFileSync(file, "utf8"))).toEqual({ locale: "en" });
+    } finally {
+      delete (Object.prototype as Record<string, unknown>).polluted;
+    }
+  });
+});
+
 describe("loadMemory", () => {
   it("loads home + root→cwd memory (AGENTS.md fallback), resolving imports and stripping comments", async () => {
     const m = await loadMemory(cwd, env);
@@ -142,16 +161,44 @@ describe("loadMemory", () => {
       join(proj, "week1", "AGENTS.md"),
       join(cwd, "CLINICALCRAFT.md"),
       join(home, "shared.md"),
+      join(proj, "docs", ".env.txt"),
       join(proj, "docs", "rubric.md"),
     ]);
-    // imports may not escape the project root / ClinicalCraft home
+    // Imports stay inside the importing file's root: project files → project root,
+    // home files → ClinicalCraft home; only text documents are importable.
     expect(m.text).not.toContain("TOP SECRET KEY");
     expect(m.text).not.toContain("OUTSIDE FILE");
-    expect(m.text).toContain("Shared user snippet.");
+    expect(m.text).not.toContain("user-openai-key"); // project memory cannot pull ~/.clinicalcraft/settings.json
+    expect(m.text).not.toContain("HOME NOTES"); // …nor any other file of the user's ClinicalCraft home
+    expect(m.text).not.toContain("PROJECT JSON SECRET"); // non-text files are not importable
+    expect(m.text).toContain("Course env notes.");
+    expect(m.text).toContain("Shared user snippet."); // home memory may import from the home
     const order = ["User memory.", "Hidden project memory.", "Course rules.", "Rubric: SOCRATES.", "Week 1 agents fallback.", "Day 2 focus: chest pain."].map((t) => m.text.indexOf(t));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);
     expect(m.text).not.toContain("private note");
+  });
+});
+
+describe("loadMemory confinement", () => {
+  it.skipIf(process.platform === "win32")("skips project memory files and imports that are symlinks leaving the project", async () => {
+    const other = mkdtempSync(join(tmpdir(), "cc-mem-"));
+    try {
+      const course = join(other, "course");
+      mkdirSync(join(course, ".git"), { recursive: true });
+      write(join(other, "secret.md"), "SYMLINKED SECRET");
+      write(join(other, "secret2.md"), "IMPORTED SYMLINK SECRET");
+      symlinkSync(join(other, "secret.md"), join(course, "CLINICALCRAFT.md"));
+      write(join(course, "AGENTS.md"), "Course fallback.\n@notes.md");
+      symlinkSync(join(other, "secret2.md"), join(course, "notes.md"));
+      const m = await loadMemory(course, { CLINICALCRAFT_HOME: join(other, "cchome"), HOME: other });
+      expect(m.text).not.toContain("SYMLINKED SECRET");
+      expect(m.text).not.toContain("IMPORTED SYMLINK SECRET");
+      expect(m.text).toContain("Course fallback."); // the symlinked CLINICALCRAFT.md is skipped, AGENTS.md is used
+      expect(m.files).toEqual([join(course, "AGENTS.md")]);
+    } finally {
+      rmSync(other, { recursive: true, force: true });
+    }
   });
 });
 
@@ -164,6 +211,11 @@ describe("agents & commands", () => {
     expect(byName.tutor).toMatchObject({ source: "project", prompt: "Project tutor.", tools: ["give_hint"] });
     expect(byName.porter).toMatchObject({ source: "user", role: "npc" });
     expect(issues).toEqual([join(proj, ".clinicalcraft", "agents", "broken.md")]);
+  });
+
+  it("commandNameFor treats both / and \\ as directory separators", () => {
+    expect(commandNameFor("/cmds", "/cmds/osce/station/start.md")).toBe("osce:station:start");
+    expect(commandNameFor("/cmds", "/cmds/osce\\station\\start.MD")).toBe("osce:station:start");
   });
 
   it("loads commands with dir:name for nested files", async () => {

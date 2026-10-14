@@ -740,8 +740,8 @@
         "en": ["reassess general", "general appearance", "overall appearance", "general reassessment"]
       },
       "finding": {
-        "zh-CN": "仍平卧抬腿，较前安静，能说短句；面色好转，诉心跳‘咚咚’得厉害、手有点抖。",
-        "en": "Still lying with legs raised, calmer, managing short sentences; colour improved; says her heart is pounding and her hands are shaky."
+        "zh-CN": "较前安静，能说短句；面色好转，诉心跳‘咚咚’得厉害、手有点抖。",
+        "en": "Calmer, managing short sentences; colour improved; says her heart is pounding and her hands are shaky."
       },
       "phases": ["treated"]
     },
@@ -1595,8 +1595,8 @@
       "results": {
         "ed": {
           "text": {
-            "zh-CN": "窦性心动过速，心率112次/分；电轴正常；PR 140 ms，QRS 84 ms，QTc 436 ms；无ST段偏移或T波改变；无早搏。",
-            "en": "Sinus tachycardia 112/min; normal axis; PR 140 ms, QRS 84 ms, QTc 436 ms; no ST deviation or T-wave change; no ectopy."
+            "zh-CN": "窦性心动过速，心率106次/分；电轴正常；PR 140 ms，QRS 84 ms，QTc 436 ms；无ST段偏移或T波改变；无早搏。",
+            "en": "Sinus tachycardia 106/min; normal axis; PR 140 ms, QRS 84 ms, QTc 436 ms; no ST deviation or T-wave change; no ectopy."
           },
           "values": [],
           "note": {
@@ -2081,7 +2081,7 @@
       "maxDoses": 1,
       "indicatedWhen": { "always": true },
       "response": {
-        "zh-CN": "你用卡片边缘把螫刺连同毒囊刮了出来，局部风团约3 cm。（蜇后几分钟毒液基本已注入——去除螫刺要快，但不能代替或延误全身治疗。）",
+        "zh-CN": "你用卡片边缘把螫刺连同毒囊刮了出来，局部风团约3 cm。（蜇后约1分钟内毒液基本已注入——去除螫刺要快，但不能代替或延误全身治疗。）",
         "en": "You scrape the stinger and venom sac out with the edge of a card; 3 cm local wheal. (Most venom is delivered within the first minute — remove it fast, but it never replaces or delays systemic treatment.)"
       }
     },
@@ -2115,8 +2115,8 @@
         "en": ["fluid bolus", "fluids", "crystalloid", "saline", "hartmann", "ringer", "iv fluids", "fluid challenge"]
       },
       "dose": {
-        "zh-CN": "晶体液（复方乳酸钠或0.9%氯化钠）500–1000 mL 快速静滴（5–10分钟），每次后评估，按需重复",
-        "en": "Crystalloid (Hartmann's or 0.9% sodium chloride) 500–1000 mL rapid IV (over 5–10 min); reassess after each bolus and repeat as needed"
+        "zh-CN": "晶体液（复方乳酸钠或0.9%氯化钠）500–1000 mL 加压快速静脉输注，每次后评估，按需重复",
+        "en": "Crystalloid (Hartmann's or 0.9% sodium chloride) 500–1000 mL as a rapid IV bolus (pressure bag); reassess after each bolus and repeat as needed"
       },
       "requires": [],
       "risk": "low",
@@ -2150,8 +2150,13 @@
         { "vital": "hr", "delta": 6, "onsetMinutes": 2, "rampMinutes": 5, "durationMinutes": 30 }
       ],
       "indicatedWhen": { "intervened": "adrenaline-im" },
+      "contraindicatedWhen": { "not": { "intervened": "adrenaline-im" } },
+      "harm": {
+        "zh-CN": "沙丁胺醇只针对支气管痉挛，不能治疗喉头水肿和休克；在肾上腺素之前或代替肾上腺素使用（按哮喘处理）会延误救命治疗，其β2扩血管作用还可能加重低血压。应先肌注肾上腺素，肾上腺素后仍有支气管痉挛再加用。",
+        "en": "Salbutamol treats only bronchospasm, not laryngeal oedema or shock. Giving it before or instead of adrenaline (treating this as asthma) delays life-saving treatment, and its β2 vasodilator effect can worsen hypotension. Give IM adrenaline first; add salbutamol for bronchospasm that persists afterwards."
+      },
       "response": {
-        "zh-CN": "沙丁胺醇5 mg 由便携氧气瓶驱动雾化。约10分钟后喘鸣减轻，她说‘胸口松一点了’，手抖更明显。（支气管扩张剂用于肾上腺素后仍持续的支气管痉挛，不能代替肾上腺素。）",
+        "zh-CN": "沙丁胺醇5 mg 由便携氧气瓶驱动雾化。约10分钟后哮鸣音减轻，她说‘胸口松一点了’，手抖更明显。（支气管扩张剂用于肾上腺素后仍持续的支气管痉挛，不能代替肾上腺素。）",
         "en": "Salbutamol 5 mg runs through the cylinder-driven nebuliser. Over about 10 minutes the wheeze eases — 'my chest's looser' — and her tremor increases. (A bronchodilator is for bronchospasm that persists after adrenaline; it never replaces adrenaline.)"
       }
     },
@@ -2249,19 +2254,22 @@
     },
     {
       "id": "observe-ed",
-      "name": { "zh-CN": "急诊留观（症状缓解后至少6小时）", "en": "ED observation (at least 6 h after symptoms resolve)" },
+      "name": {
+        "zh-CN": "留院观察过夜（症状缓解后至少12小时）",
+        "en": "Overnight in-hospital observation (at least 12 h after symptoms resolve)"
+      },
       "kind": "disposition",
       "aliases": {
-        "zh-CN": ["留观", "观察", "急诊观察", "收住观察", "观察6小时", "留院观察"],
-        "en": ["observe", "observation", "admit for observation", "cdu", "keep her in", "6 hours observation"]
+        "zh-CN": ["留观", "观察", "急诊观察", "收住观察", "观察12小时", "留院观察", "留观过夜", "住院观察"],
+        "en": ["observe", "observation", "admit for observation", "cdu", "keep her in", "12 hours observation", "overnight observation", "admit overnight"]
       },
       "requires": [],
       "risk": "none",
       "maxDoses": 1,
       "indicatedWhen": { "intervened": "transfer-ed" },
       "response": {
-        "zh-CN": "收入急诊观察区：持续监护，定时评估A-B-C及皮肤；因需两剂肾上腺素，症状完全缓解后至少观察6小时（如需再次给药或再次出现呼吸受累则延长至≥12小时）。",
-        "en": "Admitted to the ED observation area: continuous monitoring with regular A–B–C and skin checks; because two doses of adrenaline were needed she stays at least 6 h after full resolution (≥12 h if another dose is needed or respiratory compromise recurs)."
+        "zh-CN": "收入急诊观察病房过夜：持续心电、血压、脉氧监护，定时评估A-B-C及皮肤，床旁备好肾上腺素。她需要两剂肾上腺素（≥6小时），且此次反应有严重呼吸受累（声音嘶哑伴悬雍垂水肿、低氧、只能说短语），因此症状完全缓解后至少观察12小时（RCUK 2021）；任何复发立即再次肌注肾上腺素。",
+        "en": "Admitted overnight to the ED observation unit: continuous ECG, BP and SpO₂ monitoring, regular A–B–C and skin checks, adrenaline at the bedside. She needed two doses of adrenaline (≥ 6 h on its own), and this reaction involved severe respiratory compromise (hoarse voice with uvular oedema, hypoxaemia, speaking only in phrases), so she stays at least 12 h after full resolution (RCUK 2021); any recurrence gets IM adrenaline at once."
       }
     },
     {
@@ -2315,8 +2323,8 @@
       "maxDoses": 1,
       "contraindicatedWhen": { "always": true },
       "harm": {
-        "zh-CN": "现在出院不安全：她需要两剂肾上腺素、且有明显呼吸受累，应在症状缓解后至少观察6小时；她没有肾上腺素笔、也未受培训；双相反应可在数小时后出现。",
-        "en": "Discharge now is unsafe: she needed two doses of adrenaline and had significant respiratory involvement, so she should be observed at least 6 h after resolution; she has no auto-injector and no training; a biphasic reaction can occur hours later."
+        "zh-CN": "现在出院不安全：她需要两剂肾上腺素，且反应有严重呼吸受累，应在症状完全缓解后至少观察12小时；她没有肾上腺素笔、也未受培训；双相反应可在数小时后（偶尔长达72小时）出现。",
+        "en": "Discharge now is unsafe: she needed two doses of adrenaline and the reaction involved severe respiratory compromise, so she should be observed for at least 12 h after full resolution; she has no auto-injector and no training; a biphasic reaction can occur hours later (occasionally up to 72 h)."
       },
       "response": {
         "zh-CN": "护士拦住了你：‘她还在观察期，而且身上没有肾上腺素笔。’",
@@ -2712,7 +2720,7 @@
         },
         {
           "id": "breathing",
-          "text": { "zh-CN": "呼吸受累：喘鸣、呼吸急促、SpO₂ 92%", "en": "Breathing involvement: wheeze, tachypnoea, SpO₂ 92%" },
+          "text": { "zh-CN": "呼吸受累：哮鸣音、呼吸急促、SpO₂ 92%", "en": "Breathing involvement: wheeze, tachypnoea, SpO₂ 92%" },
           "correct": true,
           "feedback": { "zh-CN": "正确。支气管痉挛伴低氧属于呼吸受累。", "en": "Correct. Bronchospasm with hypoxaemia is breathing involvement." }
         },
@@ -2847,15 +2855,15 @@
       "need": { "zh-CN": "先给予肾上腺素并将她转运至急诊。", "en": "First give adrenaline and transfer her to the ED." },
       "options": [
         {
-          "id": "observe-6h-aai",
+          "id": "observe-12h-aai",
           "text": {
-            "zh-CN": "症状缓解后至少观察6小时（如需再次给药或再次呼吸受累则≥12小时），出院时带2支肾上腺素自动注射笔并完成培训、书面应急计划，转诊变态反应专科",
-            "en": "Observe for at least 6 h after symptoms resolve (≥12 h if a further dose is needed or respiratory compromise recurs); discharge with two adrenaline auto-injectors, training and a written action plan, and refer to the allergy clinic"
+            "zh-CN": "留院观察过夜：症状完全缓解后至少12小时；出院时带2支肾上腺素自动注射笔并完成培训、书面应急计划，转诊变态反应专科",
+            "en": "Keep her in overnight: observe for at least 12 h after full resolution; discharge with two adrenaline auto-injectors, training and a written action plan, and refer to the allergy clinic"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。需要两剂肾上腺素→至少观察6小时（RCUK 2021）；双相反应多发生在12小时内。出院必须带2支笔、会用、有书面计划，并转诊评估蜂毒免疫治疗。",
-            "en": "Correct. Two adrenaline doses → at least 6 h observation (RCUK 2021); biphasic reactions mostly occur within 12 h. She must leave with two pens, know how to use them, have a written plan and be referred for venom immunotherapy assessment."
+            "zh-CN": "正确。仅需两剂肾上腺素即要求至少观察6小时；而此次反应有严重呼吸受累（声音嘶哑伴悬雍垂水肿、SpO₂ ≤92%、只能说短语），按RCUK 2021（NICE NG258采纳）应在症状缓解后至少观察12小时——实际上就是留院过夜。就诊时低血压也是双相反应的危险因素。出院必须带2支笔、会用、有书面计划，并转诊评估蜂毒免疫治疗。",
+            "en": "Correct. Two doses alone mean at least 6 h, but this reaction involved severe respiratory compromise (hoarse voice with uvular oedema, SpO₂ ≤ 92%, speaking only in phrases), which under RCUK 2021 (adopted by NICE NG258) means at least 12 h after resolution — in practice an overnight stay. Hypotension at presentation is also a risk factor for a biphasic reaction. She must leave with two pens, know how to use them, have a written plan and be referred for venom immunotherapy assessment."
           }
         },
         {
@@ -2983,7 +2991,7 @@
       "domain": "management",
       "weight": 1,
       "text": {
-        "zh-CN": "高流量吸氧、晶体液扩容，并在肾上腺素后对持续喘鸣使用沙丁胺醇",
+        "zh-CN": "高流量吸氧、晶体液扩容，并在肾上腺素后对持续哮鸣音使用沙丁胺醇",
         "en": "High-flow oxygen, crystalloid bolus, and salbutamol for wheeze persisting after adrenaline"
       },
       "met": {
@@ -3016,11 +3024,16 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "安排≥6小时观察、2支肾上腺素自动注射笔及变态反应专科转诊",
-        "en": "Arranged ≥6 h observation, two auto-injectors and allergy referral"
+        "zh-CN": "安排≥12小时留院观察、2支肾上腺素自动注射笔及变态反应专科转诊",
+        "en": "Arranged ≥ 12 h observation, two auto-injectors and allergy referral"
       },
       "met": {
-        "all": [{ "decided": "disposition" }, { "intervened": "prescribe-aai" }, { "intervened": "allergy-referral" }]
+        "all": [
+          { "decided": "disposition" },
+          { "intervened": "observe-ed" },
+          { "intervened": "prescribe-aai" },
+          { "intervened": "allergy-referral" }
+        ]
       }
     },
     {
@@ -3059,8 +3072,8 @@
       "role": "nurse",
       "name": { "zh-CN": "护士 周敏", "en": "Nurse Zhou Min" },
       "knowledge": {
-        "zh-CN": "我是心内科病房护士周敏，刚好在花园，听见呼救就带着病区急救包跑过来了。到场时测得：血压78/44 mmHg，心率128次/分，呼吸26次/分，SpO₂ 92%（空气）。急救包里有：肾上腺素1 mg/mL（1:1000）安瓿×5，1 mL和2 mL注射器与针头；便携氧气瓶（最高15 L/min）、储氧面罩和雾化面罩；简易呼吸器；18G/20G留置针、采血管和止血带；晶体液（复方乳酸钠、0.9%氯化钠）500 mL×2袋及输液器、加压袋；沙丁胺醇雾化液5 mg；西替利嗪10 mg片；氯苯那敏10 mg注射液；氢化可的松100 mg×2；便携脉氧仪、自动血压计、血糖仪；手套、毯子。没有除颤仪、吸引器和心电图机——要等医院急救小组带推床过来（呼叫后约3–4分钟），或回急诊。急诊离花园约150米。心电图机、影像和血气分析仪都在急诊，抽的血可以送检验科。我会复述每条医嘱（药名、浓度、剂量、途径、部位）并记录给药时间；不确定的医嘱我会提出疑问。我不做诊断。",
-        "en": "I'm Zhou Min, a cardiology ward nurse. I was in the garden, heard the shout and ran over with the ward emergency bag. On arrival: BP 78/44 mmHg, HR 128/min, RR 26/min, SpO₂ 92% on air. The bag has: adrenaline 1 mg/mL (1:1000) ampoules ×5, 1 mL and 2 mL syringes and needles; a portable oxygen cylinder (up to 15 L/min) with non-rebreather and nebuliser masks; a bag-valve-mask; 18G/20G cannulas, blood tubes and tourniquet; crystalloid (Hartmann's, 0.9% sodium chloride) 500 mL ×2 with giving sets and a pressure bag; salbutamol nebules 5 mg; cetirizine 10 mg tablets; chlorphenamine 10 mg injection; hydrocortisone 100 mg ×2; portable pulse oximeter, automated BP cuff and glucometer; gloves and a blanket. No defibrillator, suction or ECG machine — those come with the hospital emergency team and trolley (about 3–4 min after the call) or in the ED, about 150 m away. The ECG machine, imaging and the blood-gas analyser are in the ED; blood samples can go to the lab. I read back every order (drug, concentration, dose, route, site) and note the time; I will question an order I'm unsure about. I don't make diagnoses."
+        "zh-CN": "我是心内科病房护士周敏，刚好在花园边的楼门口，听见呼救就拿上最近的病区急救包跑过来了。到场时测得：血压78/44 mmHg，心率128次/分，呼吸26次/分，SpO₂ 92%（空气）。急救包里有：肾上腺素1 mg/mL（1:1000）安瓿×5，1 mL和2 mL注射器与针头；便携氧气瓶（最高15 L/min）、储氧面罩和雾化面罩；简易呼吸器；18G/20G留置针、采血管和止血带；晶体液（复方乳酸钠、0.9%氯化钠）500 mL×2袋及输液器、加压袋；沙丁胺醇雾化液5 mg；西替利嗪10 mg片；氯苯那敏10 mg注射液；氢化可的松100 mg×2；便携脉氧仪、自动血压计、血糖仪；手套、毯子。没有除颤仪、吸引器和心电图机——要等医院急救小组带推床过来（呼叫后约3–4分钟），或回急诊。急诊离花园约150米。心电图机、影像和血气分析仪都在急诊，抽的血可以送检验科。我会复述每条医嘱（药名、浓度、剂量、途径、部位）并记录给药时间；不确定的医嘱我会提出疑问。我不做诊断。",
+        "en": "I'm Zhou Min, a cardiology ward nurse. I was at the building door by the garden, heard the shout, grabbed the nearest ward emergency bag and ran over. On arrival: BP 78/44 mmHg, HR 128/min, RR 26/min, SpO₂ 92% on air. The bag has: adrenaline 1 mg/mL (1:1000) ampoules ×5, 1 mL and 2 mL syringes and needles; a portable oxygen cylinder (up to 15 L/min) with non-rebreather and nebuliser masks; a bag-valve-mask; 18G/20G cannulas, blood tubes and tourniquet; crystalloid (Hartmann's, 0.9% sodium chloride) 500 mL ×2 with giving sets and a pressure bag; salbutamol nebules 5 mg; cetirizine 10 mg tablets; chlorphenamine 10 mg injection; hydrocortisone 100 mg ×2; portable pulse oximeter, automated BP cuff and glucometer; gloves and a blanket. No defibrillator, suction or ECG machine — those come with the hospital emergency team and trolley (about 3–4 min after the call) or in the ED, about 150 m away. The ECG machine, imaging and the blood-gas analyser are in the ED; blood samples can go to the lab. I read back every order (drug, concentration, dose, route, site) and note the time; I will question an order I'm unsure about. I don't make diagnoses."
       },
       "interprets": ["poc-glucose"]
     },
@@ -3102,8 +3115,8 @@
   "debrief": {
     "title": { "zh-CN": "复盘：花园蜂蜇后的严重过敏反应", "en": "Debrief: anaphylaxis after a bee sting in the garden" },
     "conclusion": {
-      "zh-CN": "蜜蜂（膜翅目）毒液所致严重过敏反应（anaphylaxis），同时累及气道（口唇/舌血管性水肿、声音嘶哑）、呼吸（支气管痉挛，SpO₂ 92%）和循环（血压78/44 mmHg、头晕）——即过敏性休克。在现场给予肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧并于5分钟再评估后重复、平卧抬腿、高流量吸氧、晶体液扩容及沙丁胺醇雾化后好转，平卧转运至急诊。1–2小时定时样本类胰蛋白酶27.4 µg/L，高于初始样本，支持肥大细胞活化（初始样本数值取决于采样时间，过早可正常）。处置：症状缓解后至少观察6小时，出院带2支肾上腺素自动注射笔并完成培训和书面应急计划，转诊变态反应专科评估蜂毒免疫治疗。",
-      "en": "Severe honeybee (Hymenoptera) venom anaphylaxis involving airway (lip/tongue angio-oedema, hoarseness), breathing (bronchospasm, SpO₂ 92%) and circulation (BP 78/44 mmHg with dizziness) — anaphylactic shock. She improved on scene with IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh, repeated after the 5-minute reassessment, lying flat with legs raised, high-flow oxygen, a crystalloid bolus and nebulised salbutamol, and was transferred lying flat to the ED. The timed 1–2 h tryptase of 27.4 µg/L, higher than the initial sample, supports mast-cell activation (the initial value depends on when it was drawn and may be normal if very early). Disposition: observation for at least 6 h after resolution, discharge with two adrenaline auto-injectors, training and a written action plan, and referral to allergy for venom immunotherapy assessment."
+      "zh-CN": "蜜蜂（膜翅目）毒液所致严重过敏反应（anaphylaxis），同时累及气道（口唇/舌血管性水肿、声音嘶哑）、呼吸（支气管痉挛，SpO₂ 92%）和循环（血压78/44 mmHg、头晕）——即过敏性休克（按Brown分级为重度：SpO₂ ≤92%、收缩压<90 mmHg）。在现场给予肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧并于5分钟再评估后重复、平卧抬腿、高流量吸氧、晶体液扩容及沙丁胺醇雾化后好转，平卧转运至急诊。1–2小时定时样本类胰蛋白酶27.4 µg/L，明显高于参考上限，支持肥大细胞活化（初始样本数值取决于采样时间，过早可正常；最终需与恢复≥24小时后的基础值比较）。处置：因严重呼吸受累，症状缓解后至少观察12小时（留院过夜），出院带2支肾上腺素自动注射笔并完成培训和书面应急计划，转诊变态反应专科评估蜂毒免疫治疗。",
+      "en": "Severe honeybee (Hymenoptera) venom anaphylaxis involving airway (lip/tongue angio-oedema, hoarseness), breathing (bronchospasm, SpO₂ 92%) and circulation (BP 78/44 mmHg with dizziness) — anaphylactic shock (severe on the Brown grading: SpO₂ ≤ 92% and systolic BP < 90 mmHg). She improved on scene with IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh, repeated after the 5-minute reassessment, lying flat with legs raised, high-flow oxygen, a crystalloid bolus and nebulised salbutamol, and was transferred lying flat to the ED. The timed 1–2 h tryptase of 27.4 µg/L, well above the upper reference limit, supports mast-cell activation (the initial value depends on when it was drawn and may be normal if very early; it is finally interpreted against a baseline taken ≥ 24 h after recovery). Disposition: because of severe respiratory compromise, observation for at least 12 h after resolution (overnight), discharge with two adrenaline auto-injectors, training and a written action plan, and referral to allergy for venom immunotherapy assessment."
     },
     "keyReasoning": [
       {
@@ -3119,12 +3132,12 @@
         "en": "Position follows the blood pressure: hypotension/dizziness → flat with legs raised; breathing problems → may sit up; both → head and shoulders slightly up, legs still raised. Never sit up, stand or walk a shocked patient ('empty ventricle' can cause arrest)."
       },
       {
-        "zh-CN": "支持治疗与肾上腺素并行：高流量吸氧、晶体液500–1000 mL快速输注、肾上腺素后仍喘鸣时加用支气管扩张剂。抗组胺药（稳定后口服非镇静类）和激素只是辅助，激素不常规使用。",
+        "zh-CN": "支持治疗与肾上腺素并行：高流量吸氧、晶体液500–1000 mL快速输注、肾上腺素后仍有哮鸣音（支气管痉挛）时加用支气管扩张剂。抗组胺药（稳定后口服非镇静类）和激素只是辅助，激素不常规使用。",
         "en": "Supportive care runs alongside adrenaline: high-flow oxygen, a 500–1000 mL crystalloid bolus, and a bronchodilator for wheeze persisting after adrenaline. Antihistamines (oral non-sedating, once stable) and steroids are adjuncts; steroids are not routine."
       },
       {
-        "zh-CN": "去向取决于严重度和所需剂量：两剂肾上腺素→症状缓解后至少观察6小时；>2剂、严重哮喘/呼吸受累、深夜就诊等→≥12小时。她不符合2小时快速出院标准（两剂、无笔）。",
-        "en": "Disposition depends on severity and doses: two doses → at least 6 h after resolution; > 2 doses, severe asthma/respiratory compromise or late-night presentation → ≥ 12 h. She does not meet 2-hour fast-track criteria (two doses, no pens)."
+        "zh-CN": "去向取决于严重度和所需剂量（RCUK 2021）：两剂肾上腺素→症状缓解后至少观察6小时；>2剂、严重哮喘、反应有严重呼吸受累、非工作时间就诊等→≥12小时。她有喉部受累征象和低氧，属于严重呼吸受累，故≥12小时（留院过夜）。她不符合2小时快速出院标准（两剂、无笔）。",
+        "en": "Disposition depends on severity and doses (RCUK 2021): two doses → at least 6 h after resolution; > 2 doses, severe asthma, a reaction with severe respiratory compromise or an out-of-hours presentation → ≥ 12 h. Her laryngeal signs and hypoxaemia are severe respiratory compromise, so she stays ≥ 12 h (overnight). She does not meet 2-hour fast-track criteria (two doses, no pens)."
       }
     ],
     "boundaries": {
@@ -3148,8 +3161,8 @@
         "en": "Tryptase: first sample as soon as feasible once resuscitation is under way (never delaying it), a second at 1–2 h (no later than 4 h), and a baseline ≥ 24 h after recovery; a normal early value does not exclude anaphylaxis."
       },
       {
-        "zh-CN": "双相反应：约5%（文献1–20%），多在12小时内；严重初始反应和需多剂肾上腺素者风险更高。预防性激素/抗组胺药不能可靠预防。",
-        "en": "Biphasic reactions: about 5% (reported 1–20%), mostly within 12 h; more likely after severe initial reactions or when several adrenaline doses were needed. Prophylactic steroids/antihistamines do not reliably prevent them."
+        "zh-CN": "双相反应：约5%（文献1–20%）；荟萃分析中位发生时间约11小时（0.2–72小时）。初始反应严重（尤其低血压）或需多剂肾上腺素者风险更高。预防性激素/抗组胺药不能可靠预防。",
+        "en": "Biphasic reactions: about 5% (reported 1–20%); in meta-analysis the median onset is about 11 h (range 0.2–72 h). More likely after a severe initial reaction (especially hypotension) or when more than one adrenaline dose was needed. Prophylactic steroids/antihistamines do not reliably prevent them."
       },
       {
         "zh-CN": "出院清单：2支自动注射笔（随身携带）、回示培训、书面应急计划、变态反应专科转诊；告知风险因素（哮喘、β受体阻滞剂/ACEI、运动/酒精/NSAID等辅因子）。",
@@ -3166,7 +3179,7 @@
       "Muraro A, Worm M, Alviani C, et al. EAACI guidelines: Anaphylaxis (2021 update). Allergy. 2022;77(2):357-377.",
       "Golden DBK, Wang J, Waserman S, et al. Anaphylaxis: A 2023 practice parameter update. Ann Allergy Asthma Immunol. 2024;132(2):124-176.",
       "Shaker MS, Wallace DV, Golden DBK, et al. Anaphylaxis—a 2020 practice parameter update, systematic review, and GRADE analysis. J Allergy Clin Immunol. 2020;145(4):1082-1123.",
-      "National Institute for Health and Care Excellence. Anaphylaxis: assessment and referral after emergency treatment (CG134). 2011, updated 2020.",
+      "National Institute for Health and Care Excellence. Anaphylaxis: assessment and referral after emergency treatment (NG258). 2026 (replaces CG134, 2011).",
       "Sturm GJ, Varga EM, Roberts G, et al. EAACI guidelines on allergen immunotherapy: Hymenoptera venom allergy. Allergy. 2018;73(4):744-764."
     ],
     "notice": {
@@ -3200,6 +3213,10 @@
     { "type": "intervene", "interventionId": "oxygen-high-flow" },
     { "type": "ask", "itemId": "hpi-breathing", "via": "button" },
     { "type": "intervene", "interventionId": "monitoring" },
+    { "type": "examine", "findingId": "ex-airway-treated" },
+    { "type": "examine", "findingId": "ex-chest-treated" },
+    { "type": "examine", "findingId": "ex-circ-treated" },
+    { "type": "intervene", "interventionId": "adrenaline-im" },
     { "type": "examine", "findingId": "ex-skin" },
     {
       "type": "answer",
@@ -3211,10 +3228,6 @@
     { "type": "intervene", "interventionId": "fluid-bolus" },
     { "type": "order", "investigationId": "tryptase-1" },
     { "type": "order", "investigationId": "poc-glucose" },
-    { "type": "examine", "findingId": "ex-airway-treated" },
-    { "type": "examine", "findingId": "ex-chest-treated" },
-    { "type": "examine", "findingId": "ex-circ-treated" },
-    { "type": "intervene", "interventionId": "adrenaline-im" },
     { "type": "intervene", "interventionId": "salbutamol-neb" },
     { "type": "examine", "findingId": "ex-sting-site" },
     { "type": "intervene", "interventionId": "remove-sting" },
@@ -3239,7 +3252,7 @@
     { "type": "read", "investigationId": "ecg" },
     { "type": "ask", "itemId": "social-bees", "via": "button" },
     { "type": "ask", "itemId": "social-home", "via": "button" },
-    { "type": "answer", "decisionId": "disposition", "optionIds": ["observe-6h-aai"] },
+    { "type": "answer", "decisionId": "disposition", "optionIds": ["observe-12h-aai"] },
     { "type": "intervene", "interventionId": "prescribe-aai" },
     { "type": "intervene", "interventionId": "allergy-referral" },
     { "type": "advance-time", "minutes": 80 },
@@ -3291,7 +3304,7 @@
       { "text": "Any itchy eyes or runny nose?", "locale": "en", "expect": ["ros-other"] }
     ],
     "authoringNotes": {
-      "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~86 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~58 at 10 min (peri-arrest event).",
+      "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",
       "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline) → ed (IM adrenaline + transfer). Phase-specific exam findings model reassessment; ECG/imaging/blood gas exist only in the ED phase."
     }
   }

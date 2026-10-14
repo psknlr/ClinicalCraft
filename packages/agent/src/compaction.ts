@@ -187,16 +187,33 @@ function hasToolResults(m: ChatMessage): boolean {
 /**
  * Index where the kept tail starts: at most `keepRecent` messages back, moved
  * earlier until it lands on a plain user message (not a tool-result carrier),
- * so tool calls and their results always stay together. 0 = nothing to compact.
+ * so tool calls and their results always stay together. A long tool loop
+ * (autopilot: one goal, then only tool rounds) has no such message; then the
+ * split falls back to the nearest tool-result message, provided at least two
+ * messages are compacted — `compactConversation` folds that message's results
+ * into text so no tool_result is left without its call. 0 = nothing to compact.
  */
 export function compactionSplitIndex(messages: readonly ChatMessage[], keepRecent: number): number {
-  let split = Math.max(0, messages.length - Math.max(0, keepRecent));
-  while (split > 0) {
-    const m = messages[split];
-    if (m && m.role === "user" && !hasToolResults(m)) break;
-    split--;
+  const target = Math.max(0, messages.length - Math.max(0, keepRecent));
+  for (let i = target; i > 0; i--) {
+    const m = messages[i];
+    if (m && m.role === "user" && !hasToolResults(m)) return i;
   }
-  return split;
+  for (let i = target; i >= 2; i--) {
+    if (messages[i]?.role === "user") return i;
+  }
+  return 0;
+}
+
+/** Tool results of the first kept message whose calls were compacted → plain text parts. */
+function foldOrphanResults(first: ChatMessage, head: readonly ChatMessage[]): ChatPart[] {
+  const names = new Map<string, string>();
+  for (const m of head) for (const p of m.content) if (p.type === "tool_call") names.set(p.id, p.name);
+  return first.content.map((p): ChatPart => {
+    if (p.type !== "tool_result") return p;
+    const label = `${names.get(p.callId) ?? "tool"} (${p.callId})${p.isError ? " — error" : ""}`;
+    return { type: "text", text: `[Earlier tool result: ${label}]\n${p.content}` };
+  });
 }
 
 export interface CompactOptions {
@@ -269,6 +286,6 @@ export async function compactConversation(options: CompactOptions): Promise<Comp
   const t = textFor(options.locale);
   const block = `${t.intro}\n<conversation_summary>\n${summary}\n</conversation_summary>`;
   const first = tail[0]!;
-  const merged: ChatMessage = { role: "user", content: [{ type: "text", text: block }, ...first.content] };
+  const merged: ChatMessage = { role: "user", content: [{ type: "text", text: block }, ...foldOrphanResults(first, head)] };
   return { messages: [merged, ...tail.slice(1)], summary, deterministic, compactedCount: head.length };
 }

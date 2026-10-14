@@ -104,7 +104,7 @@ export async function loadSettings(options: LoadSettingsOptions = {}): Promise<L
 
   const profile = options.profile ?? env.CLINICALCRAFT_PROFILE?.trim() ?? null;
   const merged = mergeSettingsDetailed(layers, { profile: profile || null });
-  if (profile && !merged.profiles[profile]) {
+  if (profile && !Object.hasOwn(merged.profiles, profile)) {
     const known = Object.keys(merged.profiles);
     throw new Error(`Unknown settings profile "${profile}"${known.length ? ` (known: ${known.join(", ")})` : " (no profiles defined)"}`);
   }
@@ -115,12 +115,15 @@ function isPlainObject(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
 }
 
+/** Keys that would reach (or re-prototype) Object.prototype when assigned through. */
+const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+
 function deepAssign(target: Record<string, unknown>, patch: Record<string, unknown>): Record<string, unknown> {
   for (const [key, value] of Object.entries(patch)) {
-    if (value === undefined) continue;
+    if (value === undefined || UNSAFE_KEYS.has(key)) continue;
     if (value === null) {
       delete target[key];
-    } else if (isPlainObject(value) && isPlainObject(target[key])) {
+    } else if (isPlainObject(value) && Object.hasOwn(target, key) && isPlainObject(target[key])) {
       deepAssign(target[key] as Record<string, unknown>, value);
     } else {
       target[key] = value;

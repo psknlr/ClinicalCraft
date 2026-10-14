@@ -3,8 +3,10 @@
  *
  * Chinese (and other CJK) text has no word boundaries, so it is scored with
  * a longest-common-substring ratio on compact strings. Latin-script text is
- * additionally tokenised on word boundaries with English stop-words removed
- * and a light suffix stemmer, so "do you smoke" matches "smoking history".
+ * additionally tokenised on word boundaries with English stop-words removed,
+ * British spellings folded to American ones, a light suffix stemmer and a
+ * tiny lemma table, so "do you smoke" matches "smoking history" while
+ * "medical" and "medication" stay distinct.
  */
 import { t, tList, type LocalizedList, type LocalizedText } from "../i18n.js";
 
@@ -68,12 +70,44 @@ export function stem(word: string): string {
   return word;
 }
 
+/**
+ * British → American spelling folds, applied to both sides before stemming:
+ * `ae`/`oe` → `e` in words of ≥ 5 letters (haemoglobin, oedema, diarrhoea,
+ * anaemia) and `-ise/-ised/-ising/-iser/-isation…` → `-iz…` after ≥ 3
+ * letters (immunisation, nebuliser).
+ */
+export function foldSpelling(word: string): string {
+  const folded = word.length >= 5 ? word.replace(/[ao]e/g, "e") : word;
+  return folded.replace(/^([a-z]{3,})is(e|es|ed|ing|er|ers|ation|ations)$/, "$1iz$2");
+}
+
+/**
+ * Stems that the shared-prefix rule must not (or cannot) relate on its own,
+ * mapped to one lemma: the medicine family (so "medical" never matches it)
+ * and adjective → noun forms whose stems diverge by more than 3 letters.
+ */
+export const ENGLISH_LEMMAS: ReadonlyMap<string, string> = new Map([
+  ["med", "medication"], // meds
+  ["medicin", "medication"], // medicine(s)
+  ["medicat", "medication"], // medicate(d)
+  ["abdominal", "abdomen"],
+]);
+
+/** Canonical token for a (lower-case, stop-word-free) word: spelling fold → stem → lemma. */
+export function canonicalToken(word: string): string {
+  const stemmed = stem(foldSpelling(word));
+  return ENGLISH_LEMMAS.get(stemmed) ?? stemmed;
+}
+
 /** Drop English clitics: "what's" → "what", "don't" → "do", "you're" → "you". */
 function stripContraction(word: string): string {
   return word.replace(/n't$/, "").replace(/'(s|re|ve|ll|d|m)$/, "").replace(/'/g, "");
 }
 
-/** Latin-script word tokens (lower-case, contractions and stop-words removed, stemmed). CJK runs are dropped. */
+/**
+ * Latin-script word tokens (lower-case, contractions and stop-words removed,
+ * then `canonicalToken`: spelling fold, stem, lemma). CJK runs are dropped.
+ */
 export function tokenize(text: string): string[] {
   return toHalfWidth(text)
     .replace(/[\u2018\u2019]/g, "'")
@@ -81,7 +115,7 @@ export function tokenize(text: string): string[] {
     .split(/[^\p{L}\p{N}']+/u)
     .map((w) => stripContraction(w.replace(/^'+|'+$/g, "")))
     .filter((w) => w.length > 0 && /^[a-z0-9]+$/.test(w) && !ENGLISH_STOP_WORDS.has(w))
-    .map(stem);
+    .map(canonicalToken);
 }
 
 function commonPrefixLength(a: string, b: string): number {
@@ -91,12 +125,26 @@ function commonPrefixLength(a: string, b: string): number {
   return i;
 }
 
-/** Token equivalence: identical, or a shared prefix of ≥ 5 letters, or one (≥ 4 letters) prefixes the other. */
+/** Longest tail either token may have after their shared prefix for the shared-prefix rule. */
+const MAX_DIVERGENT_TAIL = 3;
+
+/**
+ * Token equivalence (on canonical tokens):
+ *
+ * * identical;
+ * * one token (≥ 4 letters) is a prefix of the other — breath ~ breathless,
+ *   pain ~ painful, diabet ~ diabetic;
+ * * a shared prefix of ≥ 5 letters after which **both** tokens end within
+ *   3 letters — allergy ~ allergic, nausea ~ nauseous, pregnant ~ pregnancy —
+ *   but not medical ~ medication, history ~ historical, hypertension ~
+ *   hyperthermia, thrombosis ~ thrombolysis or pneumonia ~ pneumothorax.
+ */
 export function tokensMatch(a: string, b: string): boolean {
   if (a === b) return true;
   const shorter = Math.min(a.length, b.length);
   const prefix = commonPrefixLength(a, b);
-  return prefix >= 5 || (shorter >= 4 && prefix === shorter);
+  if (shorter >= 4 && prefix === shorter) return true;
+  return prefix >= 5 && Math.max(a.length, b.length) - prefix <= MAX_DIVERGENT_TAIL;
 }
 
 /** Length of the longest common substring (dynamic programming, O(n·m) time, O(m) space). */

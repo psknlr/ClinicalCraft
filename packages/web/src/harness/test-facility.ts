@@ -164,7 +164,7 @@ export const TEST_CATALOG: CatalogInput = {
       { m: "white", p: [-0.255 + f * 0.17, 0.21, 0], s: [0.11, 0.4, 0.11] },
       { m: "red", p: [-0.255 + f * 0.17, 0.42, 0], s: [0.12, 0.05, 0.12] },
     ]), { solid: false }),
-    eq("microscope", "显微镜", "pathology", { w: 0.6, d: 0.6, h: 0.9 }, [
+    eq("v4-microscope", "显微镜", "pathology", { w: 0.6, d: 0.6, h: 0.9 }, [
       { m: "white", p: [0, 0.06, 0.08], s: [0.5, 0.12, 0.55] },
       { m: "coal", p: [0.02, 0.41, 0], s: [0.17, 0.65, 0.14] },
       { m: "white", p: [0.17, 0.74, 0.15], s: [0.22, 0.17, 0.42] },
@@ -408,7 +408,7 @@ export const TEST_FACILITY: FacilityInput = {
       label: { "zh-CN": "病理与遗传工作台", en: "Pathology & genetics" },
       capabilities: ["histopathology", "cytogenetics", "molecular"],
     },
-    { id: "path-scope", type: "microscope", x: 6.85, z: -6.95, y: 0.96, room: "pathology" },
+    { id: "path-scope", type: "v4-microscope", x: 6.85, z: -6.95, y: 0.96, room: "pathology" },
     { id: "board", type: "evidence-board", x: 0, z: -12, room: "conference", label: { "zh-CN": "会诊 · 证据拼图", en: "Evidence board" } },
     { id: "atlas", type: "anatomy-atlas-kiosk", x: -5, z: -11.5, room: "lab", label: { "zh-CN": "公开人体解剖图谱", en: "Anatomy atlas" } },
     { id: "shelf-w", type: "bookshelf", x: -11, z: -12.52, room: "lab" },

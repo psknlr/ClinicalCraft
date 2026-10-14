@@ -4,7 +4,8 @@
  * `@clinicalcraft/agent/node` adds the JSONL file sink. `replayTranscript`
  * turns items back into what a session needs to resume: session meta,
  * accepted clinical actions (to replay through `reduce`), per-agent
- * conversations and the op log.
+ * conversations and the op log. `redactSecrets` / `redactValue` mask
+ * credentials before anything is persisted.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
 import type { AgentRole, Op } from "./protocol.js";
@@ -107,6 +108,69 @@ export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTran
   return result;
 }
 
+/* ------------------------------------------------------------------ */
+/* Secret redaction (persisted transcripts, logs)                      */
+/* ------------------------------------------------------------------ */
+
+/** Replacement text for redacted secrets. */
+export const REDACTED = "[REDACTED]";
+/** Values shorter than this are never treated as secrets (avoids masking ordinary words). */
+const MIN_SECRET_LENGTH = 8;
+
+/** Well-known credential formats (Anthropic, OpenAI-style `sk-…`, xAI, Google, Zhipu `id.secret`). */
+const SECRET_PATTERNS: readonly RegExp[] = [
+  /\bsk-ant-[A-Za-z0-9_-]{8,}/g,
+  /\bsk-[A-Za-z0-9][A-Za-z0-9_-]{15,}/g,
+  /\bxai-[A-Za-z0-9]{20,}/g,
+  /\bAIza[0-9A-Za-z_-]{30,}/g,
+  /\b[0-9a-f]{32}\.[A-Za-z0-9]{16}\b/g,
+];
+const BEARER_RE = /\b(Bearer\s+)[A-Za-z0-9._~+/=-]{8,}/gi;
+const KEY_FIELD_RE = /\b((?:x-api-key|api[_-]?key|access[_-]?token|auth[_-]?token|authorization)["']?\s*[:=]\s*["']?)(?!Bearer\b)[^\s"',;}]{8,}/gi;
+/** Environment variable names whose values are credentials. */
+const SECRET_ENV_RE = /(?:API_?KEY|AUTH_?TOKEN|ACCESS_?TOKEN|_TOKEN|SECRET|PASSWORD|PASSWD)$/i;
+
+/** Credential values found in an environment (`*_API_KEY`, `*_TOKEN`, `*SECRET`…; ≥ 8 chars). */
+export function secretsFromEnv(env: Record<string, string | undefined>): string[] {
+  const out = new Set<string>();
+  for (const [name, value] of Object.entries(env)) {
+    const v = value?.trim();
+    if (v && v.length >= MIN_SECRET_LENGTH && SECRET_ENV_RE.test(name)) out.add(v);
+  }
+  return [...out];
+}
+
+/** Mask credentials in a string: the listed `secrets` (≥ 8 chars), well-known key formats, bearer tokens and `api_key=`-style fields. */
+export function redactSecrets(text: string, secrets: readonly string[] = []): string {
+  let out = text;
+  for (const secret of [...secrets].filter((x) => x && x.length >= MIN_SECRET_LENGTH).sort((a, b) => b.length - a.length)) {
+    if (out.includes(secret)) out = out.split(secret).join(REDACTED);
+  }
+  for (const re of SECRET_PATTERNS) out = out.replace(re, REDACTED);
+  out = out.replace(BEARER_RE, `$1${REDACTED}`);
+  out = out.replace(KEY_FIELD_RE, `$1${REDACTED}`);
+  return out;
+}
+
+/**
+ * Deep copy of `value` with every string passed through `redactSecrets`.
+ * `provider_raw` parts are kept byte-exact: they are echoed back to the
+ * provider on resume and carry signed blocks (thinking signatures).
+ */
+export function redactValue<T>(value: T, secrets: readonly string[] = []): T {
+  const walk = (v: unknown): unknown => {
+    if (typeof v === "string") return redactSecrets(v, secrets);
+    if (Array.isArray(v)) return v.map(walk);
+    if (v && typeof v === "object") {
+      if ((v as { type?: unknown }).type === "provider_raw") return v;
+      if (typeof (v as { toJSON?: unknown }).toJSON === "function") return v;
+      return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
+    }
+    return v;
+  };
+  return walk(value) as T;
+}
+
 /** Monotonic item factory: stamps `ordinal` and `ts` (clock injectable). */
 export class TranscriptRecorder {
   private ordinal: number;
@@ -122,7 +186,11 @@ export class TranscriptRecorder {
   /** Write one item; returns the stamped item. */
   record<T extends TranscriptItem["type"]>(type: T, payload: Extract<TranscriptItem, { type: T }>["payload"]): Extract<TranscriptItem, { type: T }> {
     const item = { type, ordinal: this.ordinal++, ts: new Date(this.now()).toISOString(), payload } as Extract<TranscriptItem, { type: T }>;
-    void Promise.resolve(this.sink.write(item)).catch(() => undefined);
+    try {
+      void Promise.resolve(this.sink.write(item)).catch(() => undefined);
+    } catch {
+      /* a failing transcript sink must never break the session */
+    }
     return item;
   }
 

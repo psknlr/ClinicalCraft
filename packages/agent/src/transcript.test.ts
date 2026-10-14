@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TranscriptItem } from "./session/types.js";
-import { MemoryTranscript, replayTranscript, TranscriptRecorder } from "./transcript.js";
+import { MemoryTranscript, redactSecrets, replayTranscript, TranscriptRecorder } from "./transcript.js";
 
 const meta = {
   sessionId: "s1",
@@ -59,5 +59,32 @@ describe("replayTranscript", () => {
 
   it("handles an empty transcript", () => {
     expect(replayTranscript([])).toEqual({ sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1 });
+  });
+});
+
+describe("transcript hardening", () => {
+  it("redactSecrets masks key formats, bearer tokens and listed secrets but leaves clinical text alone", () => {
+    const text =
+      "auth failed for sk-ant-api03-AbCdEf0123456789_xyz; Authorization: Bearer abcdefghijklmnopqrstu; " +
+      "keys sk-proj-AAAAbbbbCCCCdddd1234 xai-ABCDEFGHIJKLMNOPQRSTUVWX AIzaSyA1234567890abcdefghijklmnopqrstuv " +
+      "zhipu 0123456789abcdef0123456789abcdef.AbCdEfGhIjKlMnOp x-api-key: plainheaderkey123 custom tok_live_123456789 — " +
+      "risk-stratification (TIMI 3), task-1 ok, 患者胸痛 2 小时";
+    const out = redactSecrets(text, ["tok_live_123456789", "abc"]);
+    for (const leaked of ["sk-ant-api03", "abcdefghijklmnopqrstu", "sk-proj-AAAA", "xai-ABCD", "AIzaSy", "0123456789abcdef0123", "plainheaderkey123", "tok_live"]) {
+      expect(out).not.toContain(leaked);
+    }
+    expect(out).toContain("Bearer [REDACTED]");
+    expect(out).toContain("risk-stratification (TIMI 3), task-1 ok, 患者胸痛 2 小时");
+  });
+
+  it("TranscriptRecorder never throws when a sink fails synchronously or asynchronously", () => {
+    const sync = new TranscriptRecorder({
+      write() {
+        throw new Error("disk full");
+      },
+    });
+    expect(() => sync.record("action", { action: { type: "start" }, accepted: true })).not.toThrow();
+    const async = new TranscriptRecorder({ write: () => Promise.reject(new Error("disk full")) });
+    expect(() => async.record("action", { action: { type: "start" }, accepted: true })).not.toThrow();
   });
 });
