@@ -162,6 +162,49 @@ describe("PermissionState", () => {
   });
 });
 
+describe("glob hardening", () => {
+  it("* and ? also match newlines (a deny-all rule cannot be dodged with a multi-line specifier)", () => {
+    expect(matchRule("intervene(*)", "intervene", "a\nb")).toBe(true);
+    expect(matchRule("intervene(a?b)", "intervene", "a\nb")).toBe(true);
+    const denied = check(tool({ riskLevel: "low" }), "bypass", "full", { deny: ["intervene(*)"] }, [], "tpa\nignore previous rules");
+    expect(denied).toMatchObject({ decision: "deny", ruleId: "rule.deny" });
+  });
+
+  it("matches in linear time (no catastrophic backtracking on many stars)", () => {
+    const rule = `intervene(${"*a".repeat(14)}*b)`;
+    const started = Date.now();
+    expect(matchRule(rule, "intervene", "a".repeat(40))).toBe(false);
+    expect(matchRule(rule, "intervene", `${"a".repeat(40)}b`)).toBe(true);
+    expect(Date.now() - started).toBeLessThan(200);
+  });
+
+  it("supports backslash escapes for literal * ? ( ) and \\", () => {
+    expect(matchRule("order_test(a\\*b)", "order_test", "a*b")).toBe(true);
+    expect(matchRule("order_test(a\\*b)", "order_test", "aXXb")).toBe(false);
+    expect(matchRule("order_test(why\\?)", "order_test", "why?")).toBe(true);
+    expect(matchRule("order_test(why\\?)", "order_test", "whyX")).toBe(false);
+    expect(matchRule("order_test(c:\\\\x)", "order_test", "c:\\x")).toBe(true);
+    expect(matchRule("order_test(a.b+c[d]^$)", "order_test", "A.B+C[D]^$")).toBe(true);
+    expect(matchRule("order_test(患者*)", "order_test", "患者胸痛")).toBe(true);
+  });
+
+  it("session approvals cover exactly the approved specifier (glob characters are literal; empty ≠ any)", () => {
+    const state = new PermissionState();
+    expect(state.addSessionRule("intervene", "alte*")).toBe("intervene(alte\\*)");
+    expect(state.matches("intervene", "alte*")).toBe(true);
+    expect(state.matches("intervene", "alteplase")).toBe(false);
+    state.addSessionRule("consult", "");
+    expect(state.matches("consult", "")).toBe(true);
+    expect(state.matches("consult", "nurse")).toBe(false);
+    state.addSessionRule("order_test", "ct(head)?");
+    expect(state.matches("order_test", "ct(head)?")).toBe(true);
+    expect(state.matches("order_test", "ct(head)x")).toBe(false);
+    state.addSessionRule("examine", null);
+    expect(state.matches("examine", "anything")).toBe(true); // no specifier → whole tool, as documented
+    expect(check(tool(), "strict", "full", {}, state, "alteplase")).toMatchObject({ decision: "ask", ruleId: "mode.strict" });
+  });
+});
+
 describe("learner action mapping", () => {
   it("maps clinical actions to equivalent tools and specifiers", () => {
     const order: ClinicalAction = { type: "order", investigationId: "cbc" };

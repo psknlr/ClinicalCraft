@@ -60,11 +60,13 @@ shows ST elevation. Alarms use the adult limits, set explicitly.
 | `defibrillation` (high risk, defibrillator) | During VF it triggers the `rosc` event: sinus 92, BP 88/56 (then falls with the untreated trend), GCS 12, ST elevation persists. A shock given *before* VF (contraindicated, `early-shock` flag) does not count, so a second shock is needed during VF. |
 | `transfer-cath-lab` | Sets `transferred-cath-lab` and moves the case to the `cath` phase. Contraindicated while in VF without ROSC. |
 | `reperfusion` event | Fires when the angiography result is ready in `cath`. HR 68 sinus, BP 106/66, GCS 15, pain 2, overlay normal; the trends recover. |
-| Bookkeeping events | `ecg-delay` (no ECG read by 10 min → `ecg-late` and a nurse prompt), `troponin-wait` (troponin ready before activation), `late-transfer` (still in ED at 60 min). |
+| Bookkeeping events | `ecg-delay` (no ECG read by 10 min → `ecg-late` and a nurse prompt), `troponin-wait` (troponin ready before activation), `routine-oxygen` (oxygen given with SpO₂ ≥ 90% before any arrest → `r-no-routine-o2` unmet; oxygen after ROSC is indicated and not flagged), `late-transfer` (still in ED at 60 min). |
 
 Tempting wrong choices you can make: sublingual or IV nitrate, morphine while
 hypotensive, furosemide, IV metoprolol, routine oxygen, fondaparinux, tenecteplase
-when PCI is available, double P2Y12 loading, UFH plus enoxaparin, CCU admission for
+when PCI is available, clopidogrel on top of a ticagrelor load (the reverse,
+ticagrelor after clopidogrel, is guideline-endorsed escalation and is not
+penalised), UFH plus enoxaparin, CCU admission for
 medical therapy, CT aortogram, ABG (radial puncture before radial PCI), D-dimer and
 CK-MB.
 
@@ -134,6 +136,9 @@ ERC/AHA resuscitation updates before high-stakes use.
   or fluid. The rhythm label (VF) and the critical alarms are what matter there.
 - Effects end instantly when their duration lapses. Nitrate and atropine offsets
   are split into stages so that BP and HR come back in steps rather than one jump.
+- Fluid effects are additive with no dose-response plateau: four 500 mL boluses
+  take SBP to about 145 mmHg, which overstates the response of an infarcted RV.
+  The 3rd and later boluses at SBP ≥ 110 are scored unsafe and carry the harm text.
 - In the web world, the cath-lab phase needs `fluoroscopy` (C-arm or cath-lab
   equipment) in the `general-hospital` facility.
 

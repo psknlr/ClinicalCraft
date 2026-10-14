@@ -13,7 +13,8 @@
  *   9 mode.<mode>               per approval-mode × risk table (ARCHITECTURE §4.1)
  *
  * Rule syntax (Claude Code): `tool` or `tool(specifier-glob)`; `*` matches any
- * run of characters, `?` one character, e.g. `intervene(alteplase*)`.
+ * run of characters (newlines included), `?` one character, `\\` escapes the
+ * next character; case-insensitive, e.g. `intervene(alteplase*)`.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
 import type { ApprovalMode, PracticeScope, RiskLevel } from "./protocol.js";
@@ -62,28 +63,77 @@ export function parseRule(rule: string): ParsedRule | null {
   return { tool: text.slice(0, open).trim(), specifier: text.slice(open + 1, -1).trim() };
 }
 
-const globCache = new Map<string, RegExp>();
-function globToRegExp(glob: string): RegExp {
-  let re = globCache.get(glob);
-  if (!re) {
-    const body = glob.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*").replace(/\?/g, ".");
-    re = new RegExp(`^${body}$`, "i");
-    globCache.set(glob, re);
+type GlobToken = { star: true } | { star: false; any: boolean; ch: string };
+
+const globCache = new Map<string, GlobToken[]>();
+
+/** Tokenise a glob: `*`, `?`, `\\x` = literal x, everything else literal (case-folded). */
+function compileGlob(glob: string): GlobToken[] {
+  let tokens = globCache.get(glob);
+  if (!tokens) {
+    tokens = [];
+    const chars = Array.from(glob);
+    for (let i = 0; i < chars.length; i++) {
+      const c = chars[i]!;
+      if (c === "\\" && i + 1 < chars.length) tokens.push({ star: false, any: false, ch: chars[++i]!.toLowerCase() });
+      else if (c === "*") {
+        if (!tokens.at(-1)?.star) tokens.push({ star: true }); // `**` ≡ `*`
+      } else tokens.push({ star: false, any: c === "?", ch: c.toLowerCase() });
+    }
+    if (globCache.size > 1000) globCache.clear();
+    globCache.set(glob, tokens);
   }
-  return re;
+  return tokens;
+}
+
+/**
+ * Case-insensitive wildcard match in O(pattern × text) — no RegExp, so no
+ * catastrophic backtracking and `*`/`?` match any character including
+ * newlines (a multi-line specifier cannot slip past a deny rule).
+ */
+export function globMatch(glob: string, text: string): boolean {
+  const pattern = compileGlob(glob);
+  const chars = Array.from(text, (c) => c.toLowerCase());
+  let p = 0;
+  let t = 0;
+  let starP = -1;
+  let starT = 0;
+  while (t < chars.length) {
+    const tok = pattern[p];
+    if (tok && !tok.star && (tok.any || tok.ch === chars[t])) {
+      p++;
+      t++;
+    } else if (tok && tok.star) {
+      starP = p++;
+      starT = t;
+    } else if (starP !== -1) {
+      p = starP + 1;
+      t = ++starT;
+    } else {
+      return false;
+    }
+  }
+  while (pattern[p]?.star) p++;
+  return p === pattern.length;
+}
+
+/** Escape glob metacharacters so `text` matches only itself. */
+export function escapeGlob(text: string): string {
+  return text.replace(/[\\*?]/g, "\\$&");
 }
 
 /**
  * Does `rule` match a call of `toolName` with `specifier`? `tool` alone
  * matches every call of that tool; `tool(glob)` requires the specifier to
  * match (a missing specifier only matches `*`). The tool part may be a glob.
+ * Globs: `*` any run, `?` one character, `\\` escapes; case-insensitive.
  */
 export function matchRule(rule: string, toolName: string, specifier?: string | null): boolean {
   const parsed = parseRule(rule);
   if (!parsed) return false;
-  if (!globToRegExp(parsed.tool).test(toolName)) return false;
+  if (!globMatch(parsed.tool, toolName)) return false;
   if (parsed.specifier === null) return true;
-  return globToRegExp(parsed.specifier).test(specifier ?? "");
+  return globMatch(parsed.specifier, specifier ?? "");
 }
 
 /** First matching rule in `rules`, if any. */
@@ -205,9 +255,14 @@ export class PermissionState {
     return [...this.rules];
   }
 
-  /** Add `tool(specifier)` (or bare `tool`) after an `approved_for_session` answer. Returns the rule. */
+  /**
+   * Add the rule for an `approved_for_session` answer: `tool(specifier)` with
+   * glob characters escaped so it covers exactly that specifier (an empty
+   * specifier stays `tool()`); bare `tool` only when the tool has no
+   * specifier (null/undefined). Returns the rule.
+   */
   addSessionRule(tool: string, specifier?: string | null): string {
-    return this.addRule(formatRule(tool, specifier));
+    return this.addRule(specifier == null ? tool : `${tool}(${escapeGlob(specifier)})`);
   }
 
   /** Add a raw rule string (deduplicated). */

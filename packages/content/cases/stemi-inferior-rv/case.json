@@ -1376,7 +1376,7 @@
         "en": "Roughly how much do you weigh?"
       },
       "answer": {
-        "zh-CN": "七十八公斤左右，个子一米七二。",
+        "zh-CN": "一百五十六斤，七十八公斤左右吧，个子一米七二。",
         "en": "About seventy-eight kilos. I'm one metre seventy-two."
       },
       "keywords": {
@@ -1791,8 +1791,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "右侧桡动脉搏动好，尺动脉搏动可触及，手部侧支循环良好。",
-        "en": "Right radial pulse strong; ulnar pulse palpable; good collateral circulation to the hand."
+        "zh-CN": "右侧桡动脉搏动可触及（偏弱，与全身灌注偏低一致），尺动脉搏动可触及，手部侧支循环良好。",
+        "en": "Right radial pulse palpable (low-volume, in keeping with his overall perfusion); ulnar pulse palpable; good collateral circulation to the hand."
       }
     }
   ],
@@ -2043,7 +2043,7 @@
             },
             {
               "analyte": {
-                "zh-CN": "红细胞压积 (HCT)",
+                "zh-CN": "血细胞比容 (HCT)",
                 "en": "Haematocrit (HCT)"
               },
               "value": 0.44,
@@ -3220,16 +3220,9 @@
         "read": "ecg-12lead",
         "phase": "ed"
       },
-      "contraindicatedWhen": {
-        "intervened": "clopidogrel"
-      },
-      "harm": {
-        "zh-CN": "已给氯吡格雷负荷，再加替格瑞洛负荷属于重复P2Y12抑制，显著增加出血风险。",
-        "en": "Clopidogrel has already been loaded — adding a ticagrelor load is duplicate P2Y12 inhibition and markedly increases bleeding risk."
-      },
       "response": {
-        "zh-CN": "替格瑞洛180 mg已口服。注意：替格瑞洛可致呼吸困难及心室停搏，心动过缓患者需监测。",
-        "en": "Ticagrelor 180 mg given orally. Note: ticagrelor can cause dyspnoea and ventricular pauses — monitor in bradycardia."
+        "zh-CN": "替格瑞洛180 mg已口服。注意：替格瑞洛可致呼吸困难及心室停搏，心动过缓患者需监测。（若此前已负荷氯吡格雷，急性期改用替格瑞洛180 mg负荷属指南认可的升级换药，与氯吡格雷的给药时间和剂量无关。）",
+        "en": "Ticagrelor 180 mg given orally. Note: ticagrelor can cause dyspnoea and ventricular pauses — monitor in bradycardia. (If clopidogrel was already loaded, switching to a ticagrelor 180 mg load in the acute phase is guideline-endorsed escalation, regardless of the timing and dose of the clopidogrel.)"
       }
     },
     {
@@ -3269,12 +3262,12 @@
         "intervened": "ticagrelor"
       },
       "harm": {
-        "zh-CN": "已给替格瑞洛负荷，再加氯吡格雷属于重复P2Y12抑制，增加出血风险。",
-        "en": "Ticagrelor has already been loaded — adding clopidogrel is duplicate P2Y12 inhibition and increases bleeding risk."
+        "zh-CN": "已给替格瑞洛负荷，再加氯吡格雷属于重复P2Y12抑制，无获益且增加出血风险；急性期如确需由替格瑞洛降级为氯吡格雷，应在末次替格瑞洛24小时后再给600 mg负荷。",
+        "en": "Ticagrelor has already been loaded — adding clopidogrel is duplicate P2Y12 inhibition with no benefit and added bleeding risk; if de-escalation to clopidogrel is ever needed in the acute phase, the 600 mg load is given 24 h after the last ticagrelor dose."
       },
       "response": {
-        "zh-CN": "氯吡格雷600 mg已口服。",
-        "en": "Clopidogrel 600 mg given orally."
+        "zh-CN": "氯吡格雷600 mg已口服。（无禁忌时首选替格瑞洛；氯吡格雷用于替格瑞洛不可用、有禁忌或出血风险高者。）",
+        "en": "Clopidogrel 600 mg given orally. (Ticagrelor is preferred unless it is unavailable or contraindicated, or bleeding risk is high.)"
       }
     },
     {
@@ -3551,8 +3544,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "右心室梗死时右室依赖前负荷，硝酸酯扩张静脉、减少回心血量，可导致严重低血压（常伴反射性心动过缓）。下壁STEMI未排除右室受累、收缩压 < 90 mmHg、心率 < 50次/分或48小时内用过PDE5抑制剂时均禁用。",
-        "en": "In right-ventricular infarction the RV is preload-dependent; nitrates venodilate, cut venous return and can cause profound hypotension (often with reflex bradycardia). Avoid in inferior STEMI until RV involvement is excluded, and with SBP < 90 mmHg, HR < 50 bpm or PDE5-inhibitor use within 48 h."
+        "zh-CN": "右心室梗死时右室依赖前负荷，硝酸酯扩张静脉、减少回心血量，可导致严重低血压（常伴反射性心动过缓）。下壁STEMI未排除右室受累、收缩压 < 90 mmHg、心率 < 50次/分或用过PDE5抑制剂（西地那非/伐地那非24小时内、他达拉非48小时内）时均禁用。",
+        "en": "In right-ventricular infarction the RV is preload-dependent; nitrates venodilate, cut venous return and can cause profound hypotension (often with reflex bradycardia). Avoid in inferior STEMI until RV involvement is excluded, and with SBP < 90 mmHg, HR < 50 bpm or after a PDE5 inhibitor (sildenafil/vardenafil within 24 h, tadalafil within 48 h)."
       },
       "response": {
         "zh-CN": "硝酸甘油已含服。",
@@ -4441,8 +4434,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "肾上腺素 1 mg 静脉推注（可电击心律：第3次电击后给予，此后每3–5分钟）",
-        "en": "Adrenaline 1 mg IV (shockable rhythm: after the 3rd shock, then every 3–5 min)"
+        "zh-CN": "肾上腺素 1 mg 静脉推注（可电击心律：ERC流程于第3次电击后、AHA流程于第2次电击后给予，此后每3–5分钟）",
+        "en": "Adrenaline 1 mg IV (shockable rhythm: after the 3rd shock in the ERC algorithm or the 2nd shock in the AHA algorithm, then every 3–5 min)"
       },
       "requires": [
         "medications",
@@ -4654,6 +4647,30 @@
           "zh-CN": "护士：“他刚才清醒、有脉搏——这一下电击让他非常痛苦！”",
           "en": "Nurse: \"He was awake with a pulse — that shock really hurt him!\""
         }
+      },
+      {
+        "id": "routine-oxygen",
+        "when": {
+          "all": [
+            {
+              "intervened": "oxygen"
+            },
+            {
+              "not": {
+                "flag": "vf-arrest"
+              }
+            },
+            {
+              "vital": "spo2",
+              "op": "gte",
+              "value": 90
+            }
+          ]
+        },
+        "setFlags": [
+          "routine-oxygen"
+        ],
+        "severity": "info"
       },
       {
         "id": "vf-arrest",
@@ -5317,13 +5334,13 @@
         {
           "id": "rep-ppci",
           "text": {
-            "zh-CN": "立即一键启动导管室行直接PCI，目标首次医疗接触至导丝通过 ≤ 60分钟（最迟 ≤ 90分钟）",
-            "en": "Activate the cath lab now (single call) for primary PCI; aim for FMC-to-wire ≤ 60 min (and no later than 90 min)"
+            "zh-CN": "立即一键启动导管室行直接PCI，目标从STEMI诊断至导丝通过 ≤ 60分钟",
+            "en": "Activate the cath lab now (single call) for primary PCI; aim for STEMI diagnosis-to-wire ≤ 60 min"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。直接PCI是首选再灌注方式。ESC 2023：心电图诊断 ≤ 10分钟；直接就诊于PCI中心者首次医疗接触至导丝通过 ≤ 60分钟；ACC/AHA：首次医疗接触至器械 ≤ 90分钟。",
-            "en": "Correct. Primary PCI is the preferred reperfusion strategy. ESC 2023: ECG diagnosis ≤ 10 min; FMC-to-wire ≤ 60 min for patients presenting to a PCI centre; ACC/AHA: FMC-to-device ≤ 90 min."
+            "zh-CN": "正确。直接PCI是首选再灌注方式。ESC 2023：首次医疗接触至心电图诊断 ≤ 10分钟；直接就诊于PCI中心者从STEMI诊断至导丝通过 ≤ 60分钟（转运患者 ≤ 90分钟）；ACC/AHA：首次医疗接触至器械 ≤ 90分钟。",
+            "en": "Correct. Primary PCI is the preferred reperfusion strategy. ESC 2023: FMC to ECG diagnosis ≤ 10 min; STEMI diagnosis to wire crossing ≤ 60 min for patients presenting to a PCI centre (≤ 90 min if transferred); ACC/AHA: FMC-to-device ≤ 90 min."
           }
         },
         {
@@ -5334,8 +5351,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。只有预计从诊断到PCI（导丝通过）> 120分钟时才首选溶栓（诊断后10分钟内给药），之后2–24小时内行造影；本院可及时PCI，溶栓只增加出血风险。",
-            "en": "No. Fibrinolysis is chosen only when the expected diagnosis-to-PCI (wire crossing) time exceeds 120 min — given within 10 min of diagnosis, followed by angiography within 2–24 h. Here PCI is timely, so lysis only adds bleeding risk."
+            "zh-CN": "不对。只有预计从诊断到PCI（导丝通过）> 120分钟时才首选溶栓（ESC 2023：诊断后10分钟内给药，成功溶栓后2–24小时内行造影；ACC/AHA：到院至溶栓 ≤ 30分钟）；本院可及时PCI，溶栓只增加出血风险。",
+            "en": "No. Fibrinolysis is chosen only when the expected diagnosis-to-PCI (wire crossing) time exceeds 120 min (ESC 2023: bolus within 10 min of diagnosis, then angiography 2–24 h after successful lysis; ACC/AHA: door-to-needle ≤ 30 min). Here PCI is timely, so lysis only adds bleeding risk."
           }
         },
         {
@@ -5380,8 +5397,8 @@
       "id": "antithrombotic-bundle",
       "kind": "multiple",
       "prompt": {
-        "zh-CN": "进入导管室前，应给予哪些抗栓治疗？（多选，选出全部正确项）",
-        "en": "Which antithrombotic therapies should he receive before the cath lab? (Select all that apply.)"
+        "zh-CN": "按本院胸痛中心流程，进入导管室前应给予哪些抗栓治疗？（多选，选出全部正确项）",
+        "en": "Under this hospital's chest-pain pathway, which antithrombotic therapies should he receive before the cath lab? (Select all that apply.)"
       },
       "requires": {
         "read": "ecg-12lead",
@@ -5412,8 +5429,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。直接PCI前给予强效P2Y12抑制剂负荷（中国指南推荐尽早给予；ESC 2023认为可以考虑预先给药）。",
-            "en": "Correct. Load a potent P2Y12 inhibitor before primary PCI (Chinese guidance recommends early loading; ESC 2023 says pretreatment may be considered)."
+            "zh-CN": "正确。本院流程在直接PCI前给予一种P2Y12抑制剂负荷（中国指南推荐尽早给予；ESC 2023将常规预先给药列为可以考虑，IIb类）。无禁忌时首选替格瑞洛而非氯吡格雷；氯吡格雷用于替格瑞洛不可用、有禁忌或出血风险高者。",
+            "en": "Correct. This pathway loads one P2Y12 inhibitor before primary PCI (Chinese guidance recommends early loading; ESC 2023 rates routine pretreatment as 'may be considered', class IIb). Ticagrelor is preferred over clopidogrel unless it is unavailable or contraindicated, or bleeding risk is high."
           }
         },
         {
@@ -5448,8 +5465,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。只用一种P2Y12抑制剂；两药同时负荷增加出血而无获益。",
-            "en": "No. Use one P2Y12 inhibitor only; loading both increases bleeding with no benefit."
+            "zh-CN": "不对。只用一种P2Y12抑制剂；两药同时负荷增加出血而无获益。（若已先给氯吡格雷，可改用替格瑞洛180 mg负荷——这是升级换药，不是联用。）",
+            "en": "No. Use one P2Y12 inhibitor only; loading both increases bleeding with no benefit. (If clopidogrel has already been given, switching to a ticagrelor 180 mg load is escalation, not combination.)"
           }
         },
         {
@@ -5509,8 +5526,8 @@
       "id": "r-contraindication-screen",
       "domain": "history",
       "text": {
-        "zh-CN": "抗栓前询问主动脉夹层线索及出血/卒中史",
-        "en": "Screened for aortic dissection and for bleeding/stroke before antithrombotics"
+        "zh-CN": "询问主动脉夹层线索及出血/卒中史（抗栓禁忌筛查）",
+        "en": "Screened for aortic dissection and bleeding/stroke history (antithrombotic contraindications)"
       },
       "weight": 1,
       "met": {
@@ -5670,23 +5687,16 @@
       },
       "weight": 1,
       "met": {
-        "any": [
-          {
-            "not": {
-              "intervened": "oxygen"
-            }
-          },
-          {
-            "flag": "vf-arrest"
-          }
-        ]
+        "not": {
+          "flag": "routine-oxygen"
+        }
       }
     },
     {
       "id": "r-no-harmful-drugs",
       "domain": "safety",
       "text": {
-        "zh-CN": "未使用溶栓、磺达肝癸钠、利尿剂、静脉β阻滞剂，也未选择保守收治",
+        "zh-CN": "未使用溶栓、磺达肝癸钠、利尿剂、静脉β受体阻滞剂，也未选择保守收治",
         "en": "No fibrinolysis, fondaparinux, diuretic or IV beta-blocker, and no conservative admission"
       },
       "weight": 1,
@@ -5784,8 +5794,8 @@
         "en": "Dr Zhang (on-call interventional cardiologist)"
       },
       "knowledge": {
-        "zh-CN": "接受急诊导管室启动电话；导管室团队在院内，约15分钟就绪。只解读学员已经看过的心电图、超声和造影结果。可说明再灌注时间目标（心电图 ≤ 10分钟；直接就诊于PCI中心者首次医疗接触至导丝通过 ≤ 60分钟；首次医疗接触至器械 ≤ 90分钟；预计 > 120分钟才考虑溶栓），希望患者带除颤电极转运，并在交接时说明已用抗栓药及剂量。",
-        "en": "Takes the ED cath-lab activation call; the team is in-house and ready in about 15 minutes. Interprets only ECGs, echo and angiography the learner has already read. Can state reperfusion time targets (ECG ≤ 10 min; FMC-to-wire ≤ 60 min for direct presenters to a PCI centre; FMC-to-device ≤ 90 min; fibrinolysis only if > 120 min expected) and wants the patient transferred with pads on and a handover of antithrombotics and doses."
+        "zh-CN": "接受急诊导管室启动电话；导管室团队在院内，约15分钟就绪。只解读学员已经看过的心电图、超声和造影结果。可说明再灌注时间目标（首次医疗接触至心电图诊断 ≤ 10分钟；直接就诊于PCI中心者STEMI诊断至导丝通过 ≤ 60分钟（ESC 2023）；首次医疗接触至器械 ≤ 90分钟（ACC/AHA）；预计诊断至导丝通过 > 120分钟才考虑溶栓），希望患者带除颤电极转运，并在交接时说明已用抗栓药及剂量。",
+        "en": "Takes the ED cath-lab activation call; the team is in-house and ready in about 15 minutes. Interprets only ECGs, echo and angiography the learner has already read. Can state reperfusion time targets (FMC to ECG diagnosis ≤ 10 min; STEMI diagnosis-to-wire ≤ 60 min for direct presenters to a PCI centre (ESC 2023); FMC-to-device ≤ 90 min (ACC/AHA); fibrinolysis only if diagnosis-to-wire is expected to exceed 120 min) and wants the patient transferred with pads on and a handover of antithrombotics and doses."
       },
       "interprets": [
         "ecg-12lead",
@@ -5816,8 +5826,8 @@
         "en": "Pharmacist Zhou (ED pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "按78 kg体重核对剂量：普通肝素70–100 U/kg（约5500–7800 U）；依诺肝素0.5 mg/kg静推（约40 mg）；替格瑞洛180 mg或氯吡格雷600 mg（只选一种）；阿司匹林150–300 mg；替奈普酶按体重分档（70–<80 kg为40 mg）；多巴酚丁胺2.5–5 µg/kg/min。提醒：阿片类延迟口服P2Y12抑制剂吸收；替格瑞洛可致呼吸困难和心室停搏；PDE5抑制剂与硝酸酯相互作用。不提供诊断。",
-        "en": "Checks doses for 78 kg: UFH 70–100 U/kg (≈5,500–7,800 U); enoxaparin 0.5 mg/kg IV (≈40 mg); ticagrelor 180 mg or clopidogrel 600 mg (one only); aspirin 150–300 mg; tenecteplase by weight band (40 mg for 70–<80 kg); dobutamine 2.5–5 µg/kg/min. Reminders: opioids delay oral P2Y12 absorption; ticagrelor can cause dyspnoea and ventricular pauses; PDE5 inhibitors interact with nitrates. Does not give diagnoses."
+        "zh-CN": "按78 kg体重核对剂量：普通肝素70–100 U/kg（约5500–7800 U）；依诺肝素0.5 mg/kg静推（约40 mg）；替格瑞洛180 mg或氯吡格雷600 mg（只选一种；已给氯吡格雷者可升级为替格瑞洛180 mg负荷，已给替格瑞洛者急性期不再加用氯吡格雷）；阿司匹林150–300 mg；替奈普酶按体重分档（70–<80 kg为40 mg）；多巴酚丁胺2.5–5 µg/kg/min。提醒：阿片类延迟口服P2Y12抑制剂吸收；替格瑞洛可致呼吸困难和心室停搏；PDE5抑制剂与硝酸酯相互作用。不提供诊断。",
+        "en": "Checks doses for 78 kg: UFH 70–100 U/kg (≈5,500–7,800 U); enoxaparin 0.5 mg/kg IV (≈40 mg); ticagrelor 180 mg or clopidogrel 600 mg (one only; after clopidogrel, escalation to a ticagrelor 180 mg load is acceptable, but clopidogrel is not added after ticagrelor in the acute phase); aspirin 150–300 mg; tenecteplase by weight band (40 mg for 70–<80 kg); dobutamine 2.5–5 µg/kg/min. Reminders: opioids delay oral P2Y12 absorption; ticagrelor can cause dyspnoea and ventricular pauses; PDE5 inhibitors interact with nitrates. Does not give diagnoses."
       }
     },
     {
@@ -5838,13 +5848,13 @@
       "en": "Acute inferior STEMI with right-ventricular involvement"
     },
     "conclusion": {
-      "zh-CN": "58岁男性，吸烟、高血压、血脂异常，突发持续性压榨样胸痛约70分钟，伴大汗、恶心及体位性头晕。心电图示II、III、aVF导联ST段抬高（III > II）伴I、aVL对应性压低，右胸导联V4R ST段抬高1.5 mm；查体低血压倾向、窦性心动过缓、颈静脉怒张伴Kussmaul征而双肺清晰。诊断为急性下壁STEMI合并右心室梗死（右冠近段闭塞）。正确处理：10分钟内完成心电图；一键启动导管室行直接PCI；阿司匹林 + 一种P2Y12抑制剂负荷 + 普通肝素；避免硝酸酯、利尿剂及静脉β阻滞剂；谨慎补液维持右室前负荷，症状性心动过缓用阿托品；SpO₂ ≥ 90%不常规吸氧；持续监护并贴好除颤电极。造影证实右冠近段急性闭塞，植入药物洗脱支架后TIMI 3级血流，ST段回落 > 70%。",
+      "zh-CN": "58岁男性，吸烟、高血压、血脂异常，突发持续性压榨样胸痛约70分钟，伴大汗、恶心及体位性头晕。心电图示II、III、aVF导联ST段抬高（III > II）伴I、aVL对应性压低，右胸导联V4R ST段抬高1.5 mm；查体低血压倾向、窦性心动过缓、颈静脉怒张伴Kussmaul征而双肺清晰。诊断为急性下壁STEMI合并右心室梗死（右冠近段闭塞）。正确处理：10分钟内完成心电图；一键启动导管室行直接PCI；阿司匹林 + 一种P2Y12抑制剂负荷 + 普通肝素；避免硝酸酯、利尿剂及静脉β受体阻滞剂；谨慎补液维持右室前负荷，症状性心动过缓用阿托品；SpO₂ ≥ 90%不常规吸氧；持续监护并贴好除颤电极。造影证实右冠近段急性闭塞，植入药物洗脱支架后TIMI 3级血流，ST段回落 > 70%。",
       "en": "A 58-year-old smoker with hypertension and dyslipidaemia presented with about 70 minutes of constant crushing chest pain, sweating, nausea and postural light-headedness. The ECG showed ST elevation in II, III and aVF (III > II) with reciprocal depression in I and aVL, and 1.5 mm ST elevation in V4R; he had borderline hypotension, sinus bradycardia and a raised JVP with Kussmaul's sign but clear lungs. Diagnosis: acute inferior STEMI with right-ventricular involvement (proximal RCA occlusion). Correct management: ECG within 10 minutes; single-call cath-lab activation for primary PCI; aspirin + one P2Y12 inhibitor load + UFH; no nitrates, diuretics or IV beta-blockers; cautious fluid to support RV preload and atropine for symptomatic bradycardia; no routine oxygen with SpO₂ ≥ 90%; continuous monitoring with pads on. Angiography confirmed an acute proximal RCA occlusion; after a drug-eluting stent there was TIMI 3 flow and > 70% ST resolution."
     },
     "keyReasoning": [
       {
-        "zh-CN": "III导联ST抬高大于II导联、I/aVL对应性压低提示右冠（而非回旋支）闭塞；右冠近段闭塞累及右室支时V4R ST抬高 ≥ 1 mm。",
-        "en": "ST elevation greater in III than II with reciprocal depression in I/aVL points to the RCA rather than the circumflex; a proximal RCA occlusion involving the RV branch produces ≥ 1 mm ST elevation in V4R."
+        "zh-CN": "III导联ST抬高大于II导联、I/aVL对应性压低提示右冠（而非回旋支）闭塞；右冠近段闭塞累及右室支时V4R导联通常出现ST段抬高 ≥ 1 mm，但该改变持续时间短，应尽早记录。",
+        "en": "ST elevation greater in III than II with reciprocal depression in I/aVL points to the RCA rather than the circumflex; a proximal RCA occlusion involving the RV branch usually produces ≥ 1 mm ST elevation in V4R — a transient sign, so record it early."
       },
       {
         "zh-CN": "低血压 + 颈静脉压升高 + 双肺清晰（及Kussmaul征）是右室梗死的经典组合：右室收缩力下降，左室充盈依赖静脉回流。",
