@@ -1182,7 +1182,15 @@
           "take regularly"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      }
     },
     {
       "id": "hx-allergies",

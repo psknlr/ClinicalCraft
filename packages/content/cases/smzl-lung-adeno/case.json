@@ -421,7 +421,15 @@
       },
       "phases": [
         "pre"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      }
     },
     {
       "id": "meds-post",
@@ -467,6 +475,14 @@
       "source": {
         "zh-CN": "正文·既往史（阿美替尼于2025-06调整为110 mg每日1次持续治疗）；依据原文整理的模拟回答",
         "en": "Main text · Past history (aumolertinib changed to 110 mg once daily in 2025-06 and continued); simulated answer compiled from the source"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
       }
     },
     {

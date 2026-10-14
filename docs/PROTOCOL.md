@@ -51,7 +51,7 @@ src/agents/markdown.ts       parseAgentMarkdown(text, source): AgentProfile; par
 src/agents/prompts.ts        buildSystemSections(profile, ctx): SystemSection[] (patient fact sheet etc.)
 src/agents/offline.ts        offline responders: patientOffline, nurseOffline, consultantOffline, attendingOffline, clinicianOffline (replays case.solution step by step with narration)
 src/loop.ts                  runAgentTurn(params): Promise<TurnResult> — the generic tool-use loop (§4)
-src/commands.ts              BUILTIN_COMMANDS + executeCommand(session, name, args)
+src/commands.ts              BUILTIN_COMMANDS + executeCommand(host: CommandHost, name, args)
 src/compaction.ts            compactConversation(provider, messages, keep): Promise<{messages, summary}>; estimateTokens()
 src/memory.ts                assembleMemory(files: {path, text}[], resolveImport): string (strips HTML comments, ≤4 import hops, 32 KiB cap)
 src/session/types.ts         (contract)
