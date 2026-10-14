@@ -318,7 +318,9 @@
           "啥时候开始",
           "什么时候喘起来",
           "喘多久了",
-          "开始喘"
+          "开始喘",
+          "怎么来医院了",
+          "什么情况"
         ],
         "en": [
           "when did it start",
@@ -333,7 +335,9 @@
           "kick off",
           "kicked off",
           "when did this start",
-          "how long has he been like this"
+          "how long has he been like this",
+          "what brings you in",
+          "what brought you in"
         ]
       },
       "excludeKeywords": {
@@ -1056,7 +1060,8 @@
           "inhaled steroid",
           "regular medicine",
           "ics",
-          "regular medicines"
+          "regular medicines",
+          "what medicines"
         ]
       },
       "excludeKeywords": {
@@ -1065,7 +1070,9 @@
           "止咳",
           "药店",
           "中药",
-          "每天都"
+          "每天都",
+          "实际上",
+          "真的每天"
         ],
         "en": [
           "regularly",
@@ -1073,7 +1080,8 @@
           "over the counter",
           "cough syrup",
           "herbal",
-          "stop"
+          "stop",
+          "actually"
         ]
       }
     },
@@ -1136,11 +1144,11 @@
         "zh-CN": [
           "储雾罐",
           "吸药方法",
-          "怎么吸",
           "吸入技术",
           "面罩",
           "喷药方法",
-          "怎么用喷雾"
+          "怎么用喷雾",
+          "怎么吸药"
         ],
         "en": [
           "spacer",
@@ -1399,8 +1407,8 @@
           "milestones",
           "year at school",
           "missed school",
-          "days off",
-          "grade"
+          "grade",
+          "days off school"
         ]
       }
     },
@@ -1543,6 +1551,38 @@
           "who looks after him"
         ]
       }
+    },
+    {
+      "id": "hx-travel",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近有没有出远门或旅行？",
+        "en": "Has he travelled anywhere recently?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）没有，最近哪儿也没去，就是上学、回家。",
+        "en": "(Mother) No, we haven't been anywhere — just school and home."
+      },
+      "keywords": {
+        "zh-CN": [
+          "旅行",
+          "旅游",
+          "出远门",
+          "去外地",
+          "出国",
+          "外出"
+        ],
+        "en": [
+          "travel",
+          "abroad",
+          "been away",
+          "trip",
+          "holiday"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false
     },
     {
       "id": "hx-triggers",
@@ -1740,7 +1780,8 @@
           "小朋友",
           "问孩子",
           "难受吗",
-          "怎么了"
+          "怎么了",
+          "现在怎么样"
         ],
         "en": [
           "how are you feeling",
@@ -1748,7 +1789,9 @@
           "buddy",
           "ask the child",
           "are you ok",
-          "what's wrong"
+          "what's wrong",
+          "how is he now",
+          "how is he doing"
         ]
       }
     },
@@ -1770,7 +1813,8 @@
           "小朋友",
           "问孩子",
           "难受吗",
-          "怎么了"
+          "怎么了",
+          "现在怎么样"
         ],
         "en": [
           "how are you feeling",
@@ -1778,7 +1822,9 @@
           "buddy",
           "ask the child",
           "are you ok",
-          "what's wrong"
+          "what's wrong",
+          "how is he now",
+          "how is he doing"
         ]
       },
       "excludeKeywords": [],
@@ -1809,7 +1855,8 @@
           "好些了吗",
           "问孩子",
           "手抖",
-          "舒服点了吗"
+          "舒服点了吗",
+          "现在怎么样"
         ],
         "en": [
           "feeling better",
@@ -1817,7 +1864,9 @@
           "how do you feel now",
           "ask the child",
           "shaky",
-          "improved"
+          "improved",
+          "how is he now",
+          "how is he doing"
         ]
       }
     },
@@ -1841,14 +1890,17 @@
           "好了吗",
           "问孩子",
           "想回家",
-          "现在还喘吗"
+          "现在还喘吗",
+          "现在怎么样"
         ],
         "en": [
           "how are you feeling now",
           "all better",
           "ask the child",
           "still wheezy",
-          "want to go home"
+          "want to go home",
+          "how is he now",
+          "how is he doing"
         ]
       }
     },

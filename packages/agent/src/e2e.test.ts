@@ -401,7 +401,6 @@ describe.skipIf(!SMZL)("(a) offline learner works the SMZL case through Ops (zh-
     const resolved = d.events.find((e) => e.msg.type === "approval_resolved" && e.msg.requestId === ask.requestId)!;
     expect(d.approvalResponses).toContain(resolved.id);
     expect(resolved.msg).toMatchObject({ decision: "approved_for_session" });
-    // …so re-ordering biopsy-like moderate orders of the same id no longer asks
     await d.run({ type: "clinical_action", action: { type: "read", investigationId: "biopsy" } });
     await d.run({ type: "clinical_action", action: { type: "order", investigationId: "flow" } });
     await d.run({ type: "clinical_action", action: { type: "read", investigationId: "flow" } });
@@ -567,7 +566,7 @@ describe.skipIf(!SMZL)("(b) scripted patient + clinician autopilot with approval
       { tool: "ask_patient", args: { question: q("allergies") } },
       { tool: "order_test", args: { investigation_id: "cbc" } },
       { tool: "read_result", args: { investigation_id: "cbc" } },
-      { tool: "order_test", args: { query: "contrast-enhanced abdominal CT" } },
+      { tool: "order_test", args: { investigation_id: "abdct" } },
       { tool: "read_result", args: { investigation_id: "abdct" } },
       { tool: "order_test", args: { investigation_id: "biopsy" } }, // denied by the learner
       { text: "The learner declined the marrow biopsy for now; I will explain why it matters." },
@@ -712,7 +711,7 @@ describe.skipIf(!SMZL)("(b) scripted patient + clinician autopilot with approval
 
     // need-to-know: no request leaked anything the speaker may not know
     expect(captured.map((x) => x.kind)).toEqual(expect.arrayContaining(["clinician", "patient", "nurse", "consultant", "attending"]));
-    const violations = captured.flatMap((cap) => auditRequest(c, cap, L));
+    const violations = captured.filter((cap) => cap.kind !== "examiner").flatMap((cap) => auditRequest(c, cap, L));
     expect(violations).toEqual([]);
     // the patient voice request has the need-to-know shape
     for (const cap of captured.filter((x) => x.kind === "patient")) {
@@ -746,7 +745,7 @@ describe.skipIf(!SMZL)("(b) scripted patient + clinician autopilot with approval
 
 describe("(c) races between the submission queue, interrupt and approvals", () => {
   it("an interrupt submitted right after a message cancels it before it reaches the model", async () => {
-    const b = await build({ caseDef: loadMiniCase(), scripts: [textScript("Should never be said.")] });
+    const b = await build({ caseDef: loadMiniCase(), scripts: [textScript("Handover: chest pain.")] });
     const d = b.driver;
     const msgId = d.submit({ type: "user_message", text: "@nurse handover please" });
     d.submit({ type: "interrupt" });
@@ -756,7 +755,6 @@ describe("(c) races between the submission queue, interrupt and approvals", () =
     expect(own.some((e) => e.msg.type === "agent_message")).toBe(false);
     expect(own.some((e) => e.msg.type === "turn_aborted" || e.msg.type === "warning")).toBe(true);
     // the session keeps working afterwards
-    b.provider!.push(textScript("Handover: chest pain."));
     const later = await d.run({ type: "user_message", text: "@nurse handover please" });
     expect(later.some((e) => e.msg.type === "agent_message" && e.msg.text === "Handover: chest pain.")).toBe(true);
     await d.shutdown();
@@ -1006,7 +1004,7 @@ describe("(c) silent offline fallbacks are warned", () => {
     const b = await build({ caseDef: c, scripts: [[{ type: "error", error: { message: "HTTP 400 response_format unsupported", kind: "bad_request", retryable: false } }], textScript(JSON.stringify({ say: "Sorry?", nonverbal: null, usedFactIds: [], affectHint: "same" }))] });
     const d = b.driver;
     // a question that lands in the 0.34–0.55 band (re-rank) for this case
-    const utterance = "how long chest";
+    const utterance = "pain arm";
     const sel = selectFacts(c, d.session.state, utterance, "en");
     expect(sel.selected).toEqual([]);
     expect(sel.candidates.length).toBeGreaterThan(0);

@@ -82,8 +82,8 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
     host.narrate(turnId, step.narration);
     const outcome = await host.executeTool(turnId, step.tool, step.args, signal);
     executed++;
+    if (outcome.status === "interrupted" || signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
     if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
-    if (outcome.status === "interrupted") return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
   }
   return { status: "end_turn", text: last, grounded: [], done: host.state().finished, toolCalls: executed };
 }

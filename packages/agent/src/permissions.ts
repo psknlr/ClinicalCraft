@@ -18,6 +18,7 @@
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
 import type { ApprovalMode, PracticeScope, RiskLevel } from "./protocol.js";
+import { rt, type RuntimeKey } from "./session/i18n.js";
 import type { PermissionCheck, ToolContext, ToolDefinition } from "./tools/types.js";
 
 /** Stable rule ids (exported for UIs, transcripts and tests). */
@@ -162,7 +163,8 @@ function safe<T>(fn: () => T, fallback: T): T {
 
 /**
  * Run the permission ladder for one tool call. Never throws: a failing risk
- * classifier is treated as `high` risk, a failing specifier as none.
+ * classifier is treated as `high` risk, a failing specifier as none. Reasons
+ * are written in `ctx.locale` (they reach learners and agents verbatim).
  */
 export function checkPermission<A>(
   tool: ToolDefinition<A>,
@@ -177,6 +179,8 @@ export function checkPermission<A>(
   const specifier = safe(() => tool.specifier?.(args, ctx) ?? null, null);
   const session = sessionRules instanceof PermissionState ? sessionRules.sessionRules : sessionRules;
   const label = formatRule(tool.name, specifier);
+  const L = ctx?.locale;
+  const say = (key: RuntimeKey, params: Record<string, string> = {}) => rt(L, key, { tool: tool.name, label, ...params });
   const result = (decision: PermissionCheck["decision"], ruleId: string, reason: string, allowSession = false): PermissionCheck => ({
     decision,
     ruleId,
@@ -187,58 +191,56 @@ export function checkPermission<A>(
 
   // 1. scope
   if (!inScope(tool.scope, scope)) {
-    return result("deny", PERMISSION_RULE_IDS.outOfScope, `${tool.name} requires practice scope "${tool.scope}" (current: "${scope}")`);
+    return result("deny", PERMISSION_RULE_IDS.outOfScope, say("perm.outOfScope", { needed: tool.scope, scope }));
   }
   // 2. deny rules
   const deny = findMatchingRule(rules.deny, tool.name, specifier);
-  if (deny) return result("deny", PERMISSION_RULE_IDS.deny, `${label} is denied by rule "${deny}"`);
+  if (deny) return result("deny", PERMISSION_RULE_IDS.deny, say("perm.deny", { rule: deny }));
   // 3. plan mode
   if (mode === "plan" && !tool.readOnly) {
-    return result("deny", PERMISSION_RULE_IDS.planStateChanging, `Plan mode: ${label} changes the case state — propose it in your plan (update_workup) instead of executing it`);
+    return result("deny", PERMISSION_RULE_IDS.planStateChanging, say("perm.plan"));
   }
   // 4. read-only
-  if (tool.readOnly) return result("allow", PERMISSION_RULE_IDS.readOnly, `${tool.name} is read-only`);
+  if (tool.readOnly) return result("allow", PERMISSION_RULE_IDS.readOnly, say("perm.readOnly"));
   // 5. always ask
   if (mode !== "bypass" && safe(() => tool.alwaysAsk?.(args, ctx) ?? false, true)) {
-    return result("ask", PERMISSION_RULE_IDS.alwaysAsk, `${label} always requires confirmation (irreversible or high risk)`, false);
+    return result("ask", PERMISSION_RULE_IDS.alwaysAsk, say("perm.alwaysAsk"), false);
   }
   // 6. ask rules
   const ask = findMatchingRule(rules.ask, tool.name, specifier);
-  if (ask) return result("ask", PERMISSION_RULE_IDS.ask, `${label} requires confirmation by rule "${ask}"`, risk !== "high");
+  if (ask) return result("ask", PERMISSION_RULE_IDS.ask, say("perm.ask", { rule: ask }), risk !== "high");
   // 7. session approvals
   const sessionRule = findMatchingRule(session, tool.name, specifier);
-  if (sessionRule) return result("allow", PERMISSION_RULE_IDS.sessionAllow, `${label} was approved for this session ("${sessionRule}")`);
+  if (sessionRule) return result("allow", PERMISSION_RULE_IDS.sessionAllow, say("perm.session", { rule: sessionRule }));
   // 8. allow rules
   const allow = findMatchingRule(rules.allow, tool.name, specifier);
-  if (allow) return result("allow", PERMISSION_RULE_IDS.allow, `${label} is allowed by rule "${allow}"`);
+  if (allow) return result("allow", PERMISSION_RULE_IDS.allow, say("perm.allow", { rule: allow }));
   // 9. mode table
-  return modeDecision(mode, risk, label, result);
+  return modeDecision(mode, risk, (key) => say(key, { risk: rt(L, `perm.risk.${risk}` as RuntimeKey) }), result);
 }
 
 function modeDecision(
   mode: ApprovalMode,
   risk: RiskLevel,
-  label: string,
+  say: (key: RuntimeKey) => string,
   result: (decision: PermissionCheck["decision"], ruleId: string, reason: string, allowSession?: boolean) => PermissionCheck,
 ): PermissionCheck {
   const offerSession = risk !== "high";
   switch (mode) {
     case "bypass":
-      return result("allow", PERMISSION_RULE_IDS.bypass, `bypass mode allows ${label}`);
+      return result("allow", PERMISSION_RULE_IDS.bypass, say("perm.bypass"));
     case "auto":
-      return risk === "high"
-        ? result("ask", PERMISSION_RULE_IDS.auto, `auto mode asks before high-risk ${label}`, false)
-        : result("allow", PERMISSION_RULE_IDS.auto, `auto mode allows ${risk}-risk ${label}`);
+      return risk === "high" ? result("ask", PERMISSION_RULE_IDS.auto, say("perm.autoAsk"), false) : result("allow", PERMISSION_RULE_IDS.auto, say("perm.autoAllow"));
     case "strict":
-      return result("ask", PERMISSION_RULE_IDS.strict, `strict mode asks before every state-changing action (${label}, risk ${risk})`, offerSession);
+      return result("ask", PERMISSION_RULE_IDS.strict, say("perm.strict"), offerSession);
     case "plan":
       // Unreachable for state-changing tools (step 3); kept for exhaustiveness.
-      return result("deny", PERMISSION_RULE_IDS.planStateChanging, `Plan mode: propose ${label} instead of executing it`);
+      return result("deny", PERMISSION_RULE_IDS.planStateChanging, say("perm.plan"));
     case "default":
     default:
       return risk === "none" || risk === "low"
-        ? result("allow", PERMISSION_RULE_IDS.default, `default mode allows ${risk}-risk ${label}`)
-        : result("ask", PERMISSION_RULE_IDS.default, `default mode asks before ${risk}-risk ${label}`, offerSession);
+        ? result("allow", PERMISSION_RULE_IDS.default, say("perm.defaultAllow"))
+        : result("ask", PERMISSION_RULE_IDS.default, say("perm.defaultAsk"), offerSession);
   }
 }
 

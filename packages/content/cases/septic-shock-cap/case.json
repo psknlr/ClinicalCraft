@@ -300,8 +300,8 @@
         "en": "Any shaking chills or rigors?"
       },
       "answer": {
-        "zh-CN": "冷……冷得直哆嗦……盖两床被子都不行。女儿：昨晚抖得床都在晃，抖了十几分钟。",
-        "en": "Cold… shaking… even under two quilts. Daughter: Last night she shook so hard the bed rattled — for more than ten minutes."
+        "zh-CN": "冷……冷得直哆嗦……盖两床被子都不行。女儿：昨晚抖得床都在晃，抖了十几分钟，抖完又出了一身汗。",
+        "en": "Cold… shaking… even under two quilts. Daughter: Last night she shook so hard the bed rattled — for more than ten minutes, and afterwards she was drenched in sweat."
       },
       "keywords": {
         "zh-CN": [
@@ -312,7 +312,8 @@
           "怕冷",
           "畏寒",
           "打寒颤",
-          "发冷"
+          "发冷",
+          "出汗"
         ],
         "en": [
           "rigors",
@@ -320,7 +321,9 @@
           "chills",
           "shivering",
           "shivers",
-          "the shakes"
+          "the shakes",
+          "sweating",
+          "sweats"
         ]
       },
       "disclosure": "on-ask",
@@ -347,7 +350,8 @@
           "哪里疼",
           "哪里痛",
           "疼痛性质",
-          "怎么个疼法"
+          "怎么个疼法",
+          "疼了"
         ],
         "en": [
           "chest pain",
@@ -360,7 +364,24 @@
         ]
       },
       "disclosure": "volunteer",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "咳嗽的时候",
+          "咳嗽时",
+          "吸气",
+          "深呼吸",
+          "更疼",
+          "加重",
+          "放射"
+        ],
+        "en": [
+          "worse",
+          "hurt when",
+          "radiat",
+          "spread"
+        ]
+      }
     },
     {
       "id": "hx-pain-modifiers",
@@ -379,6 +400,7 @@
           "吸气疼",
           "呼吸时疼",
           "咳嗽时疼",
+          "的时候胸口疼",
           "往别处放射",
           "放射痛",
           "疼几分",
@@ -397,7 +419,8 @@
           "pain better",
           "what eases the pain",
           "worse when coughing",
-          "how bad is the pain"
+          "how bad is the pain",
+          "hurt when coughing"
         ]
       },
       "disclosure": "on-ask",
@@ -421,7 +444,8 @@
           "有痰",
           "痰",
           "痰的颜色",
-          "咳得"
+          "咳得",
+          "咳了"
         ],
         "en": [
           "cough",
@@ -430,8 +454,7 @@
           "sputum",
           "productive cough",
           "colour of the sputum",
-          "mucus",
-          "bringing anything up"
+          "mucus"
         ]
       },
       "disclosure": "volunteer",
@@ -446,12 +469,14 @@
           "血丝",
           "疼吗",
           "时疼",
-          "更疼"
+          "更疼",
+          "尿"
         ],
         "en": [
           "blood",
           "hurt",
-          "worse when"
+          "worse when",
+          "hurt when"
         ]
       }
     },
@@ -511,7 +536,8 @@
           "上不来气",
           "憋气",
           "开始喘",
-          "喘得"
+          "喘得",
+          "喘了"
         ],
         "en": [
           "short of breath",
@@ -621,13 +647,13 @@
         "zh-CN": [
           "吃饭",
           "喝水",
+          "吃东西",
           "进食",
           "胃口",
+          "尿",
           "尿量",
           "小便",
           "尿少",
-          "尿得",
-          "尿了",
           "解了几次小便"
         ],
         "en": [
@@ -640,6 +666,7 @@
           "amount of urine",
           "volume of urine",
           "passing urine",
+          "pass urine",
           "peeing"
         ]
       },
@@ -649,10 +676,12 @@
         "zh-CN": [
           "小便疼",
           "小便痛",
+          "小便烧",
           "尿痛",
           "尿急",
           "尿频",
-          "小便烧",
+          "尿路",
+          "糖尿",
           "呛"
         ],
         "en": [
@@ -792,7 +821,7 @@
           "半身不遂",
           "偏瘫",
           "口角歪斜",
-          "嘴歪",
+          "歪",
           "说话含糊",
           "大舌头",
           "口齿不清",
@@ -894,11 +923,16 @@
       },
       "excludeKeywords": {
         "zh-CN": [
-          "疫苗"
+          "疫苗",
+          "手脚",
+          "一侧",
+          "一边"
         ],
         "en": [
           "vaccin",
-          "jab"
+          "jab",
+          "one side",
+          "arms or legs"
         ]
       },
       "disclosure": "on-ask",
@@ -963,10 +997,9 @@
         "en": [
           "sick contacts",
           "anyone else unwell",
-          "anyone ill",
-          "exposure",
           "contact with illness",
-          "anyone with a cold"
+          "anyone with a cold",
+          "exposure"
         ]
       },
       "disclosure": "specific",
@@ -1027,7 +1060,8 @@
           "过敏史",
           "青霉素",
           "过不过敏",
-          "食物过敏"
+          "食物过敏",
+          "头孢"
         ],
         "en": [
           "allergies",
@@ -1106,7 +1140,7 @@
           "高血压",
           "糖尿病",
           "基础病",
-          "老毛病",
+          "免疫力",
           "中风过",
           "癌症",
           "肿瘤",
@@ -1169,6 +1203,7 @@
           "肺结核",
           "结核",
           "得过肺炎",
+          "类似",
           "吸入剂"
         ],
         "en": [
@@ -1319,10 +1354,10 @@
           "ibuprofen",
           "nsaid",
           "over the counter",
+          "otc",
           "medicine for the fever",
           "pain relief tablets",
-          "painkillers",
-          "otc",
+          "painkiller tablets",
           "self-medicated"
         ]
       },
@@ -1440,12 +1475,11 @@
         "zh-CN": [
           "和谁住",
           "跟谁住",
-          "家里有谁",
+          "家里还有谁",
           "一个人住",
           "职业",
           "工作",
-          "退休",
-          "家庭情况"
+          "退休"
         ],
         "en": [
           "live with",
@@ -1509,6 +1543,7 @@
       "keywords": {
         "zh-CN": [
           "家族史",
+          "家里人得过",
           "家里人得过什么病",
           "遗传病",
           "父母",
@@ -1608,8 +1643,7 @@
           "吞咽困难",
           "喝水呛",
           "吃饭呛",
-          "误吸",
-          "咽东西"
+          "误吸"
         ],
         "en": [
           "choking",

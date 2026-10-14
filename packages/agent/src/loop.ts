@@ -284,7 +284,7 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
     turnId: p.turnId,
     callId: p.call.id,
   });
-  if (gate.kind === "abort") return fail("cancelled", rt(L, "tool.aborted"));
+  if (gate.kind === "abort") return fail(p.signal?.aborted ? "interrupted" : "cancelled", rt(L, "tool.aborted"));
   if (gate.kind === "deny") {
     const text = gate.byLearner ? rt(L, "tool.deniedByLearner", { reason: gate.reason ? `: ${gate.reason}` : "" }) : rt(L, "tool.denied", { reason: gate.reason });
     return fail("denied", text);
@@ -337,8 +337,9 @@ export async function executeToolCalls(base: Omit<ExecuteToolCallParams, "call">
     if (isReadOnly(calls[i]!)) while (batch.length + i < calls.length && isReadOnly(calls[i + batch.length]!)) batch.push(i + batch.length);
     const results = await Promise.all(batch.map((index) => executeToolCall({ ...base, call: calls[index]! })));
     results.forEach((r, k) => (outcomes[batch[k]!] = r));
-    if (results.some((r) => r.status === "cancelled")) stop = "denied";
-    else if (results.some((r) => r.status === "interrupted") || base.signal?.aborted) stop = "interrupted";
+    // An interrupt also cancels a pending approval: report it as "interrupted", not as the learner's "abort".
+    if (results.some((r) => r.status === "interrupted") || base.signal?.aborted) stop = "interrupted";
+    else if (results.some((r) => r.status === "cancelled")) stop = "denied";
     i += batch.length;
   }
   const L = base.ctx.locale;
