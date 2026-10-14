@@ -13,12 +13,12 @@
 | | |
 |---|---|
 | id / version | `acute-appendicitis` / `1.0.0` |
-| setting / facility | `emergency` / `general-hospital` (ED cubicle) |
+| setting / facility | `emergency` / `general-hospital` (first slot accepting `emergency`, currently `resus-1`; every capability the case needs is within 6 m of it) |
 | locales | `zh-CN` (source language), `en` |
 | clock | `simulated`, starts 02:15, `realtimeScale` 0.5, limit 360 min; ask 1 · examine 2 · order 1 · read 1 · intervene 2 min |
 | phases | one phase, `ed` (急诊夜班 / ED night shift) |
 | difficulty / time | 2 / 5 · about 35 min |
-| content | 39 history items (4 `unknown`, 1 `specific`, 10 required) · 19 exam findings · 15 investigations · 19 interventions (8 wrong or low-value choices) · 6 objectives · 4 decisions · 17 rubric items (14 deterministic, 3 examiner-judged) · 5 NPCs · 40 test utterances |
+| content | 40 history items (4 `unknown`, 1 `specific`, 10 required) · 19 exam findings · 15 investigations · 19 interventions (8 wrong or low-value choices) · 6 objectives · 4 decisions · 18 rubric items (15 deterministic, 3 examiner-judged) · 5 NPCs · 58 test utterances (2 unrecorded-topic negatives) |
 
 ## Clinical story
 
@@ -101,6 +101,11 @@ Other consistency checks the generator asserts:
    - The scenario event `evt-analgesia-delay` fires at simulated minute 40 if
      no analgesia has been given. It sets `analgesia-delayed`, so rubric item
      `r-mx-analgesia` cannot be met afterwards.
+   - `r-mx-analgesia` asks for *adequate* analgesia: titrated morphine, or
+     parecoxib plus paracetamol. Paracetamol alone (pain ≈ 5.5/10) stops the
+     nurse's prompt but does not meet the item.
+   - The history objective's hint and guidance say he has had no analgesia
+     and that treating pain need not wait for the history.
    - "Withhold analgesia" is an orderable wrong choice. It is contraindicated
      while pain ≥ 4.
 4. **Imaging.** Ultrasound comes first in a young, slim patient. CT is
@@ -116,7 +121,10 @@ Other consistency checks the generator asserts:
    - Give no post-operative course if the appendicitis is uncomplicated.
    - Meropenem is orderable. It is a neutral choice, but the pharmacist
      comments on stewardship and rubric item `r-mx-abx` is not met.
-   - A second antibiotic regimen is contraindicated (duplication).
+   - A second antibiotic regimen is contraindicated (duplication), and
+     `r-mx-abx` requires exactly one of the two pre-operative regimens.
+   - `r-eff-timely` requires the pre-operative antibiotics and no 3-hour
+     escalation (`evt-delay-warning`).
 6. **Antibiotics-first versus surgery** (APPAC, CODA). Antibiotics-first is a
    legitimate option for CT-confirmed uncomplicated appendicitis without an
    appendicolith, after an informed discussion. About a quarter to a third of
@@ -135,6 +143,20 @@ Other consistency checks the generator asserts:
    before surgical review, imaging and consent is also contraindicated.
    Oxygen (SpO₂ 99 % on air) and an NG tube are neutral, with explanatory
    responses.
+   - The rubric sees the time-dependent ones through two silent marker events
+     (no message): `evt-mark-theatre-premature` sets `theatre-premature` and
+     `evt-mark-nom-without-ct` sets `nom-without-ct` at the moment of the
+     unsafe order. `r-safety` (which also covers a perforation caused by
+     delay) and `r-mx-definitive` read those flags.
+8. **Decisions unlock only with their evidence.** `dec-supportive` needs
+   palpation and the nausea/vomiting question; `dec-diagnosis` needs FBC, CRP,
+   urinalysis and imaging read and the testes examined, because its feedback
+   cites them. `r-dx` uses `decidedFirstTry`, so guessing through the options
+   costs the diagnosis item.
+9. **Conditions use actions, not flags.** Objectives, rubric items, trends,
+   events and contraindications test `intervened` rather than the flags the
+   interventions set. A learner-sent `flag` action cannot complete an
+   objective or earn a positive rubric item.
 
 ## Physiology model
 
@@ -158,9 +180,16 @@ Other consistency checks the generator asserts:
   - `evt-perforation` (minute 300, no antibiotics and no surgery booked): new
     baseline HR 112, BP 112/66, RR 22, T 38.3, pain 9, plus the accumulated
     trends.
-- **Limitation:** the examination findings are fixed records. After the
-  perforation event, the nurse's message and the monitor change, but the
-  recorded abdominal signs do not.
+  - Untreated replay: the events fire at minutes 40, 180 and 300. Vitals go
+    from HR 102, T 37.9, pain 7 to HR 125–127, SBP ≈ 104, RR 24–25, T 39.1,
+    pain 10. Only warning alarms sound, never critical ones.
+  - Two silent marker events (`evt-mark-theatre-premature`,
+    `evt-mark-nom-without-ct`) feed the rubric only.
+- **Limitation:** the examination and imaging findings are fixed records.
+  After the perforation event, the nurse's message and the monitor change,
+  but the recorded abdominal signs and scan do not. The event message and the
+  debrief boundaries say that the earlier records describe his state before
+  the change.
 
 ## Reference solution
 
@@ -179,22 +208,49 @@ covers:
 
 The verify run finishes at simulated minute 118 (04:13). Every intervention
 is `indicated`, with no rejections and no alarms, and the deterministic
-rubric scores 23/23.
+rubric scores 25/25.
+
+Replayed wrong paths:
+
+| Path | Score |
+|---|---|
+| Dawdling 5 h, then finishing the standard pathway (perforation fired) | 72 % |
+| Theatre booked before surgical review and consent | 80 % |
+| Antibiotics-first without a CT | 72 % |
+| Guessing the diagnosis | 92 % (loses `r-dx` only) |
+| CT instead of ultrasound | 92 % (loses `r-inv-us-first` only) |
+| Skipping the urinalysis or the testicular history and examination | cannot finish; the diagnosis decision stays locked |
 
 ## Matcher notes (`extensions.testUtterances`)
 
-All 40 utterances (21 zh-CN, 19 en) rank the expected history item first
-and alone. Known, accepted ties that come from token stemming in the offline
-matcher:
-- "Is the pain constant?" ties `hx-timing` with `hx-bowels`, because
-  "constant" and "constipated" share a 5-letter prefix. `hx-timing` ranks
-  first by declaration order.
-- "Where did the pain start?" scores `hx-onset` 1.0 and `hx-site-initial`
-  0.67, because "where" and "when" are stop-words. Both answers are selected
-  by the patient pipeline.
-- Some English keywords are deliberately unspaced (`comeandgo`,
-  `hadthisbefore`). The matcher then scores them by compact containment
-  instead of single generic tokens.
+All 56 positive utterances (29 zh-CN, 27 en) rank an expected history item first, at or above the 0.55 selection score. Two negatives with `expect: []` (最近压力大吗？, "Do you have any kids?") select nothing, so the patient falls back to `fallbackUnknown`.
+They include 16 colloquial, typo and abbreviation paraphrases (拉稀没有,
+尿尿疼不疼, "any n/v?", "r u allergic to anything", "SOB or chest pain?").
+
+Authoring lessons for the offline matcher, all applied here:
+- **English stop words.** "how", "when", "where", "what", "it", "any",
+  "only" and "off" are dropped, so "how long", "where did it begin" or "off
+  your food" reduce to one generic token ("long", "begin", "food") that
+  matches unrelated questions. Such phrases are written unspaced and start
+  with a stop word (`howlong`, `wherediditbegin`, `offyourfood`), so they
+  match only by compact containment.
+- **Prefix rule.** An unspaced keyword must not *start* with a content word
+  of 4 or more letters. "feellike", "sincewhen", "passedout" and
+  "whatisitlike" are prefix-matched by "feel", "since", "pass" and "whats".
+- **Generic stems.** Avoid keywords that stem to everyday tokens: "testes"
+  becomes "test" (matching "blood tests" and "psoas test"), "discharge"
+  revealed the `specific` sexual-history item on "discharge you home", and
+  "how much pain" and "painkillers" matched every "pain" question.
+- **Chinese keywords.** A keyword of 3 characters whose 2-character core is an
+  everyday word (拉肚子, 怎么了, 一直疼, 住在哪, 什么病) scores 0.67, above
+  the 0.55 selection threshold, on any utterance containing that word. Use
+  4 or more characters. Note also 性病 ⊂ 慢性病.
+- **excludeKeywords.** These separate onset from site, contacts from bowels,
+  family from personal history, and identity from weight loss.
+
+On 313 paraphrases the patient pipeline's select step picks the expected
+fact 98 % of the time, with no extra fact 96 % of the time (before this
+work: 73 % and 66 %).
 
 ## Guideline references
 

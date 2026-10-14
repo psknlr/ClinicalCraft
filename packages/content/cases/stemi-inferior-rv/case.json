@@ -60,8 +60,8 @@
       "en": "Chest pain for about 70 minutes"
     },
     "triageNote": {
-      "zh-CN": "58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛。分诊：HR 54次/分，BP 98/62 mmHg（MAP 74），SpO₂ 96%（未吸氧），RR 18次/分，T 36.6 °C，疼痛8/10。面色苍白、出汗。已送入抢救室2床，尚未建立静脉通路。",
-      "en": "58-year-old man who walked in with his wife at 09:10 reporting chest pain since about 08:00. Triage: HR 54/min, BP 98/62 mmHg (MAP 74), SpO₂ 96% on room air, RR 18/min, T 36.6 °C, pain 8/10. Pale and sweaty. Placed in resus bay 2; no IV access yet."
+      "zh-CN": "58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛。分诊：HR 54次/分，BP 98/62 mmHg（MAP 74），SpO₂ 96%（未吸氧），RR 18次/分，T 36.6 °C，疼痛8/10。面色苍白、出汗。已送入抢救室，尚未建立静脉通路。",
+      "en": "58-year-old man who walked in with his wife at 09:10 reporting chest pain since about 08:00. Triage: HR 54/min, BP 98/62 mmHg (MAP 74), SpO₂ 96% on room air, RR 18/min, T 36.6 °C, pain 8/10. Pale and sweaty. Placed in resus; no IV access yet."
     },
     "tags": [
       {
@@ -107,8 +107,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "持续剧烈胸痛，时不时用拳头按住胸口，说话短促、偶尔停下来喘气；害怕但想显得镇定，提到父亲时声音发颤。若监护提示血压骤降（例如用药后），表现为头晕、恶心、说话无力；若发生心搏骤停则毫无反应，复苏后迷糊、只能呻吟。只说已被问到的病史内容，不主动补充细节，不使用医学术语。",
-        "en": "In constant severe pain, intermittently pressing a fist to his chest; clipped speech with pauses for breath; scared but trying to seem calm, voice wavering when his father comes up. If the monitor shows a sudden fall in blood pressure (e.g. after a drug), he becomes dizzy, nauseated and weak-voiced; in cardiac arrest he is completely unresponsive, and after resuscitation drowsy and only groaning. Only states history he has been asked about, adds no details of his own, uses no medical terms."
+        "zh-CN": "持续剧烈胸痛，时不时用拳头按住胸口，说话短促、偶尔停下来喘气；害怕但想显得镇定，提到父亲时声音发颤。若监护提示血压骤降（例如用药后），表现为头晕、恶心、说话无力；若护士报告他叫不太醒、血压几乎测不出，则几乎不能回应，只会含糊呻吟，血压回升后才能重新简短回答；若发生心搏骤停则毫无反应，复苏后迷糊、只能呻吟。只说已被问到的病史内容，不主动补充细节，不使用医学术语。",
+        "en": "In constant severe pain, intermittently pressing a fist to his chest; clipped speech with pauses for breath; scared but trying to seem calm, voice wavering when his father comes up. If the monitor shows a sudden fall in blood pressure (e.g. after a drug), he becomes dizzy, nauseated and weak-voiced; if the nurse reports he is barely rousable with an unrecordable pressure, he can only mumble and groan until his pressure recovers; in cardiac arrest he is completely unresponsive, and after resuscitation drowsy and only groaning. Only states history he has been asked about, adds no details of his own, uses no medical terms."
       },
       "companion": {
         "role": "spouse",
@@ -203,10 +203,13 @@
           "哪里疼",
           "哪里痛",
           "哪儿疼",
-          "什么位置",
+          "哪疼",
+          "在哪疼",
+          "疼在什么位置",
           "疼的部位",
+          "疼的地方",
           "具体位置",
-          "指一下"
+          "指一下哪里"
         ],
         "en": [
           "location of the pain",
@@ -231,8 +234,11 @@
       "keywords": {
         "zh-CN": [
           "什么时候开始",
+          "啥时候开始",
           "几点开始",
           "疼了多久",
+          "疼多久",
+          "多久了",
           "多长时间了",
           "当时在做什么",
           "怎么开始的",
@@ -243,6 +249,8 @@
           "when did it start",
           "what time did it start",
           "how long have you had the pain",
+          "how long has it been",
+          "since when",
           "what were you doing",
           "how did it start",
           "onset"
@@ -267,9 +275,12 @@
           "什么样的疼",
           "怎么个疼法",
           "疼痛性质",
+          "疼起来像什么",
           "压榨",
+          "压着",
+          "闷痛",
           "发闷",
-          "像什么",
+          "扎着疼",
           "刺痛还是"
         ],
         "en": [
@@ -279,7 +290,8 @@
           "crushing",
           "sharp or dull",
           "squeezing",
-          "tightness"
+          "tightness",
+          "chest pressure"
         ]
       },
       "disclosure": "on-ask",
@@ -300,7 +312,7 @@
         "zh-CN": [
           "放射",
           "传到",
-          "窜到",
+          "窜",
           "牵扯",
           "别的地方",
           "下巴",
@@ -340,6 +352,8 @@
           "打分",
           "多严重",
           "有多疼",
+          "疼得厉害",
+          "多厉害",
           "疼痛评分",
           "疼痛程度"
         ],
@@ -350,7 +364,8 @@
           "scale of",
           "severity",
           "how severe",
-          "pain score"
+          "pain score",
+          "rate the pain"
         ]
       },
       "disclosure": "on-ask"
@@ -359,12 +374,12 @@
       "id": "pain-course",
       "topic": "pain",
       "question": {
-        "zh-CN": "疼痛是持续的还是一阵一阵的？",
-        "en": "Is the pain constant, or does it come and go?"
+        "zh-CN": "疼痛是一直持续还是一阵一阵的？有什么能让它减轻或加重吗？",
+        "en": "Is the pain constant or does it come and go? Does anything make it better or worse?"
       },
       "answer": {
-        "zh-CN": "一直疼，没停过，从开始到现在一点没轻。",
-        "en": "It's constant — it hasn't let up at all since it started."
+        "zh-CN": "一直疼，没停过，从开始到现在一点没轻。坐下来歇着也不管用，在车上一直疼，好像没什么能让它好点。",
+        "en": "It's constant — it hasn't let up at all since it started. Sitting down and resting didn't help, it kept going in the car. Nothing seems to make it better."
       },
       "keywords": {
         "zh-CN": [
@@ -373,39 +388,21 @@
           "断断续续",
           "一直疼",
           "间歇",
-          "停过"
-        ],
-        "en": [
-          "constant",
-          "comes and goes",
-          "on and off",
-          "continuous",
-          "let up"
-        ]
-      },
-      "disclosure": "on-ask"
-    },
-    {
-      "id": "pain-relief",
-      "topic": "pain",
-      "question": {
-        "zh-CN": "有什么能让疼痛减轻或加重吗？",
-        "en": "Does anything make it better or worse?"
-      },
-      "answer": {
-        "zh-CN": "坐下来歇着也不管用，在车上一直疼。好像没什么能让它好点。",
-        "en": "Sitting down and resting didn't help — it kept going in the car. Nothing seems to make it better."
-      },
-      "keywords": {
-        "zh-CN": [
+          "停过",
           "加重",
           "减轻",
           "缓解",
           "好一点",
-          "什么能让",
+          "能让疼",
           "休息后"
         ],
         "en": [
+          "constant",
+          "comes and goes",
+          "come and go",
+          "on and off",
+          "continuous",
+          "let up",
           "better or worse",
           "makes it worse",
           "makes it better",
@@ -414,7 +411,15 @@
           "eases"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": [
+          "coming in",
+          "come in",
+          "came in"
+        ]
+      }
     },
     {
       "id": "pain-pleuritic",
@@ -431,12 +436,14 @@
         "zh-CN": [
           "深呼吸",
           "吸气时",
+          "吸气疼",
           "咳嗽的时候",
           "咳嗽时疼",
           "体位",
           "躺平",
           "前倾",
           "按压",
+          "按着疼",
           "翻身"
         ],
         "en": [
@@ -446,7 +453,7 @@
           "change position",
           "lying flat",
           "lean forward",
-          "press on",
+          "press on your chest",
           "tender"
         ]
       },
@@ -456,7 +463,7 @@
       "id": "assoc-sweating",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "有没有出汗？",
+        "zh-CN": "出汗多吗？有没有出冷汗？",
         "en": "Have you been sweating?"
       },
       "answer": {
@@ -465,10 +472,11 @@
       },
       "keywords": {
         "zh-CN": [
-          "出汗",
+          "汗",
           "冷汗",
           "大汗",
           "冒汗",
+          "虚汗",
           "湿透"
         ],
         "en": [
@@ -486,7 +494,7 @@
       "id": "assoc-nausea",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "有没有恶心、呕吐？",
+        "zh-CN": "觉得恶心吗？吐过没有？",
         "en": "Any nausea or vomiting?"
       },
       "answer": {
@@ -499,6 +507,7 @@
           "呕吐",
           "想吐",
           "吐了",
+          "吐过",
           "反胃"
         ],
         "en": [
@@ -507,7 +516,10 @@
           "vomit",
           "throw up",
           "retch",
-          "feel sick"
+          "feel sick",
+          "puke",
+          "being sick",
+          "n/v"
         ]
       },
       "disclosure": "on-ask"
@@ -528,15 +540,18 @@
           "气短",
           "气促",
           "喘不上气",
+          "喘得",
           "喘气",
           "憋气",
           "呼吸困难",
-          "上不来气"
+          "上不来气",
+          "上来气"
         ],
         "en": [
           "short of breath",
           "breathless",
           "shortness of breath",
+          "sob",
           "trouble breathing",
           "difficulty breathing",
           "can't breathe",
@@ -562,6 +577,8 @@
           "晕倒",
           "昏倒",
           "眼前发黑",
+          "眼前一黑",
+          "黑蒙",
           "晕厥",
           "站不稳",
           "失去意识"
@@ -573,7 +590,8 @@
           "faint",
           "pass out",
           "collapse",
-          "lose consciousness"
+          "lose consciousness",
+          "syncope"
         ]
       },
       "disclosure": "on-ask"
@@ -582,12 +600,12 @@
       "id": "gi-screen",
       "topic": "ros",
       "question": {
-        "zh-CN": "平时有没有反酸、烧心或胃病？这次跟吃饭有关系吗？",
-        "en": "Do you get heartburn or indigestion? Is this related to eating?"
+        "zh-CN": "平时有没有反酸、烧心或胃病？这次肚子疼吗，跟吃饭有关系吗？",
+        "en": "Do you get heartburn, indigestion or stomach trouble? Any tummy pain now, and is this related to eating?"
       },
       "answer": {
-        "zh-CN": "偶尔吃多了会烧心，吃点胃药就好。这次跟那个完全不一样，也不是吃完饭疼的。",
-        "en": "I get a bit of heartburn now and then after a big meal, and an antacid sorts it out. This is completely different, and it didn't come on after eating."
+        "zh-CN": "偶尔吃多了会烧心，吃点胃药就好，没查出过胃溃疡。这次跟那个完全不一样，肚子不疼，也不是吃完饭疼的。",
+        "en": "I get a bit of heartburn now and then after a big meal, and an antacid sorts it out — I've never been told I have an ulcer. This is completely different: my stomach doesn't hurt, and it didn't come on after eating."
       },
       "keywords": {
         "zh-CN": [
@@ -595,7 +613,11 @@
           "烧心",
           "胃病",
           "胃疼",
+          "胃不好",
+          "胃溃疡",
           "消化不良",
+          "肚子疼",
+          "腹痛",
           "跟吃饭有关"
         ],
         "en": [
@@ -603,6 +625,11 @@
           "acid reflux",
           "indigestion",
           "stomach trouble",
+          "stomach ulcer",
+          "ulcer",
+          "abdominal pain",
+          "tummy pain",
+          "stomach pain",
           "related to food",
           "worse after eating"
         ]
@@ -623,6 +650,7 @@
       "keywords": {
         "zh-CN": [
           "心慌",
+          "发慌",
           "心悸",
           "心跳快",
           "心跳乱",
@@ -631,6 +659,7 @@
         ],
         "en": [
           "palpitation",
+          "palps",
           "racing heart",
           "heart racing",
           "pounding",
@@ -657,7 +686,10 @@
           "这样疼过",
           "类似的疼",
           "以前发作",
-          "最近几周",
+          "以前犯过",
+          "犯过",
+          "最近胸口发紧",
+          "最近有没有胸闷",
           "第一次这样",
           "爬楼梯时"
         ],
@@ -667,10 +699,20 @@
           "previous episodes",
           "last few weeks",
           "first time this",
-          "climbing stairs"
+          "climbing stairs",
+          "on exertion"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "现在"
+        ],
+        "en": [
+          "pain now",
+          "still"
+        ]
+      }
     },
     {
       "id": "dissection-screen",
@@ -696,7 +738,6 @@
           "tearing",
           "ripping",
           "back pain",
-          "through to your back",
           "into your back",
           "shoulder blades"
         ]
@@ -753,16 +794,20 @@
           "发烧",
           "发热",
           "咳嗽",
+          "咳血",
+          "咯血",
           "感冒",
           "流感"
         ],
         "en": [
           "fever",
           "any cough",
+          "coughing up blood",
           "caught a cold",
           "flu",
           "temperature",
-          "infection"
+          "infection",
+          "chills"
         ]
       },
       "disclosure": "on-ask"
@@ -842,6 +887,8 @@
           "可卡因",
           "冰毒",
           "吸毒",
+          "吸过毒",
+          "嗑药",
           "大麻",
           "兴奋剂"
         ],
@@ -850,6 +897,7 @@
           "recreational drugs",
           "street drugs",
           "amphetamine",
+          "meth",
           "cannabis",
           "illicit"
         ]
@@ -860,31 +908,47 @@
       "id": "medications",
       "topic": "medications",
       "question": {
-        "zh-CN": "平时吃什么药？今天吃了吗？",
-        "en": "What medications do you take? Did you take them today?"
+        "zh-CN": "平时吃什么药？今天吃了吗？来医院之前吃过什么药没有？",
+        "en": "What medications do you take, and did you take them today? Did you take anything before coming in?"
       },
       "answer": {
-        "zh-CN": "就吃氨氯地平，一天一片5毫克，今天早上七点吃了。他汀早停了。偶尔胃不舒服吃点胃药，名字记不清了。没吃阿司匹林，也没吃什么抗凝的药。",
-        "en": "Just amlodipine 5 mg, one a day — I took it at seven this morning. I stopped the statin a long time ago. Now and then an antacid for my stomach, can't remember the name. No aspirin, no blood thinners."
+        "zh-CN": "就吃氨氯地平，一天一片5毫克，今天早上七点吃了。他汀早停了。偶尔胃不舒服吃点胃药，名字记不清了。没吃阿司匹林，也没吃什么抗凝的药。来之前什么药都没吃，家里也没备速效救心丸那些；中药、保健品都不吃。",
+        "en": "Just amlodipine 5 mg, one a day — I took it at seven this morning. I stopped the statin a long time ago. Now and then an antacid for my stomach, can't remember the name. No aspirin, no blood thinners. I didn't take anything for this before coming in — we don't keep any heart pills at home. No herbal remedies or supplements."
       },
       "keywords": {
         "zh-CN": [
           "吃什么药",
+          "吃啥药",
+          "吃的药",
           "用药",
           "药物",
           "服药",
           "长期吃药",
           "抗凝药",
-          "阿司匹林"
+          "阿司匹林",
+          "来之前吃",
+          "硝酸甘油",
+          "速效救心丸",
+          "救心丸",
+          "丹参滴丸",
+          "中药",
+          "保健品"
         ],
         "en": [
           "medications",
           "medicines",
+          "meds",
           "tablets",
           "pills",
           "prescribed drugs",
           "blood thinners",
-          "aspirin"
+          "aspirin",
+          "before coming in",
+          "nitro",
+          "gtn",
+          "herbal",
+          "supplements",
+          "over the counter"
         ]
       },
       "disclosure": "on-ask",
@@ -904,20 +968,31 @@
       "keywords": {
         "zh-CN": [
           "做什么工作",
+          "干什么工作",
+          "干啥工作",
+          "干啥的",
           "职业",
           "做什么的",
+          "上班",
           "和谁住",
           "一起住",
           "家里几口人",
-          "住在哪"
+          "住在哪",
+          "孩子",
+          "儿子",
+          "紧急联系人"
         ],
         "en": [
           "what do you do for work",
           "your job",
           "occupation",
+          "for a living",
           "live with",
           "who is at home",
-          "retired"
+          "retired",
+          "children",
+          "kids",
+          "next of kin"
         ]
       },
       "disclosure": "on-ask"
@@ -930,24 +1005,32 @@
         "en": "Does anyone in your family have heart disease, or did anyone die suddenly?"
       },
       "answer": {
-        "zh-CN": "我爸六十二岁那年突然走了，说是心脏的问题。我弟弟前年放了个支架，那年他五十二。",
-        "en": "My father died suddenly at sixty-two — they said it was his heart. My younger brother had a stent put in the year before last; he was fifty-two."
+        "zh-CN": "我爸六十二岁那年突然走了，说是心脏的问题。我弟弟前年放了个支架，那年他五十二。我妈八十多了，身体还算硬朗。",
+        "en": "My father died suddenly at sixty-two — they said it was his heart. My younger brother had a stent put in the year before last; he was fifty-two. My mum's in her eighties and still keeps pretty well."
       },
       "keywords": {
         "zh-CN": [
           "家族史",
           "家里人",
+          "家里老人",
           "父亲",
           "母亲",
+          "你爸",
+          "你妈",
+          "爸妈",
+          "父母",
           "兄弟",
           "遗传",
           "突然去世"
         ],
         "en": [
+          "family",
           "family history",
           "in your family",
           "your father",
+          "your dad",
           "your mother",
+          "your mum",
           "brothers or sisters",
           "runs in the family",
           "relatives",
@@ -970,13 +1053,15 @@
       "keywords": {
         "zh-CN": [
           "弟弟哪根血管",
+          "哪根血管",
           "弟弟是心梗",
+          "弟弟的支架",
           "弟弟具体",
           "弟弟的情况"
         ],
         "en": [
           "brother's artery",
-          "which artery",
+          "which artery your brother",
           "brother have a heart attack",
           "brother's details"
         ]
@@ -1004,6 +1089,7 @@
         "en": [
           "high blood pressure",
           "hypertension",
+          "htn",
           "blood pressure",
           "bp"
         ]
@@ -1033,6 +1119,7 @@
           "high cholesterol",
           "hyperlipidaemia",
           "hyperlipidemia",
+          "dyslipidaemia",
           "statin",
           "lipids"
         ]
@@ -1054,8 +1141,8 @@
         "zh-CN": [
           "血脂多少",
           "胆固醇多少",
-          "具体数值",
-          "化验数值"
+          "血脂具体数值",
+          "血脂化验结果"
         ],
         "en": [
           "cholesterol level",
@@ -1070,7 +1157,7 @@
       "id": "pmh-diabetes",
       "topic": "pmh",
       "question": {
-        "zh-CN": "有没有糖尿病？",
+        "zh-CN": "有糖尿病吗？血糖高不高？",
         "en": "Do you have diabetes?"
       },
       "answer": {
@@ -1086,7 +1173,8 @@
         "en": [
           "diabetes",
           "diabetic",
-          "blood sugar"
+          "blood sugar",
+          "dm"
         ]
       },
       "disclosure": "on-ask"
@@ -1104,9 +1192,13 @@
       },
       "keywords": {
         "zh-CN": [
-          "心脏病",
+          "有心脏病",
+          "心脏病史",
+          "心脏有毛病",
           "心梗",
           "放过支架",
+          "做过支架",
+          "搭桥",
           "冠心病",
           "心衰",
           "心脏问题"
@@ -1119,10 +1211,95 @@
           "heart condition",
           "heart trouble",
           "heart failure",
-          "angina"
+          "angina",
+          "mi",
+          "cabg",
+          "ihd"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "父亲",
+          "母亲",
+          "你爸",
+          "你妈",
+          "爸妈",
+          "父母",
+          "弟弟",
+          "兄弟",
+          "亲戚",
+          "老人"
+        ],
+        "en": [
+          "family",
+          "your dad",
+          "your father",
+          "your mum",
+          "your mom",
+          "your mother",
+          "your brother",
+          "relatives",
+          "parents"
+        ]
+      }
+    },
+    {
+      "id": "pmh-other",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "还有其他慢性病吗？比如肺病哮喘、肾病、肝病或甲状腺病？",
+        "en": "Any other medical conditions — lung disease or asthma, kidney, liver or thyroid problems?"
+      },
+      "answer": {
+        "zh-CN": "别的就没什么了，就是血压高、血脂高。没有哮喘，也没有气管炎、肺病；肾和肝没听说有问题，甲状腺也没毛病。",
+        "en": "Nothing else really — just the blood pressure and the cholesterol. No asthma or chest trouble, nothing wrong with my kidneys or liver that I know of, and no thyroid problems."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他病",
+          "别的病",
+          "其他慢性病",
+          "以前得过什么病",
+          "基础病",
+          "既往史",
+          "其他老毛病",
+          "哮喘",
+          "慢阻肺",
+          "气管炎",
+          "肺病",
+          "肾病",
+          "肾脏",
+          "肝病",
+          "甲状腺"
+        ],
+        "en": [
+          "other medical",
+          "medical conditions",
+          "medical history",
+          "past medical history",
+          "pmh",
+          "chronic illness",
+          "asthma",
+          "copd",
+          "lung disease",
+          "kidney",
+          "liver",
+          "thyroid"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "不舒服",
+          "症状"
+        ],
+        "en": [
+          "symptoms"
+        ]
+      }
     },
     {
       "id": "bleeding-history",
@@ -1142,7 +1319,11 @@
           "出血",
           "胃出血",
           "黑便",
+          "大便黑",
+          "便血",
           "外伤",
+          "受过伤",
+          "头部受伤",
           "脑梗",
           "近期手术"
         ],
@@ -1151,13 +1332,68 @@
           "bleeding",
           "bleed",
           "black stools",
+          "blood in your stool",
           "head injury",
           "brain haemorrhage",
-          "recent surgery"
+          "recent surgery or injury"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "风险",
+          "接受",
+          "同意"
+        ],
+        "en": [
+          "risk",
+          "consent",
+          "agree"
+        ]
+      }
+    },
+    {
+      "id": "neuro-symptoms",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有一侧手脚没劲或发麻、说话不清、看东西模糊，或者剧烈头痛？",
+        "en": "Any weakness or numbness down one side, slurred speech, trouble seeing, or a bad headache?"
+      },
+      "answer": {
+        "zh-CN": "没有，手脚都有劲，说话、看东西都正常，头也不疼。就是左边胳膊跟着胸口疼发沉、发麻。",
+        "en": "No — my arms and legs are strong, my speech and eyesight are fine, and I've no headache. It's just my left arm feeling heavy and numb along with the chest pain."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手脚无力",
+          "手脚没劲",
+          "半身",
+          "半边身子",
+          "一侧手脚",
+          "偏瘫",
+          "说话不清楚",
+          "口齿不清",
+          "嘴歪",
+          "看不清",
+          "视物模糊",
+          "头疼",
+          "头痛"
+        ],
+        "en": [
+          "weakness",
+          "one side",
+          "numbness",
+          "slurred speech",
+          "trouble speaking",
+          "vision",
+          "eyesight",
+          "headache",
+          "facial droop",
+          "stroke symptoms"
+        ]
+      },
+      "disclosure": "on-ask"
     },
     {
       "id": "psh",
@@ -1172,7 +1408,9 @@
       },
       "keywords": {
         "zh-CN": [
-          "手术史",
+          "以前做过手术",
+          "做过什么手术",
+          "既往手术史",
           "做过手术",
           "开过刀",
           "阑尾"
@@ -1181,7 +1419,60 @@
           "operations",
           "operated on",
           "surgical history",
+          "past surgery",
           "appendix"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "同意",
+          "需要做",
+          "要做",
+          "马上做",
+          "风险",
+          "接受"
+        ],
+        "en": [
+          "consent",
+          "agree",
+          "risk",
+          "need an operation",
+          "need a procedure"
+        ]
+      }
+    },
+    {
+      "id": "last-meal",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最后一次吃东西、喝水是什么时候？",
+        "en": "When did you last eat or drink anything?"
+      },
+      "answer": {
+        "zh-CN": "早上七点吃的早饭，一碗粥、两个包子，之后就喝了几口水。",
+        "en": "Breakfast at seven — a bowl of congee and two steamed buns. Just a few sips of water since."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最后一次吃",
+          "上次吃",
+          "早饭",
+          "吃饭",
+          "吃东西",
+          "吃的饭",
+          "禁食",
+          "空腹",
+          "进食时间"
+        ],
+        "en": [
+          "when did you last eat",
+          "last meal",
+          "last ate",
+          "eaten anything",
+          "breakfast",
+          "fasting",
+          "nil by mouth"
         ]
       },
       "disclosure": "on-ask"
@@ -1204,14 +1495,17 @@
           "烟瘾",
           "香烟",
           "一天几支",
+          "抽几根",
           "戒烟"
         ],
         "en": [
           "smoke",
           "smoking",
           "cigarettes",
+          "cigs",
           "tobacco",
           "packs",
+          "pack years",
           "quit"
         ]
       },
@@ -1232,6 +1526,8 @@
       "keywords": {
         "zh-CN": [
           "喝酒",
+          "喝不喝酒",
+          "喝点酒",
           "饮酒",
           "酒量",
           "啤酒",
@@ -1239,10 +1535,12 @@
         ],
         "en": [
           "alcohol",
+          "do you drink",
           "drinking habits",
           "beer",
           "wine",
-          "units of alcohol"
+          "units of alcohol",
+          "booze"
         ]
       },
       "disclosure": "on-ask"
@@ -1264,7 +1562,8 @@
           "锻炼",
           "饮食",
           "口味",
-          "体育"
+          "体育",
+          "活动量"
         ],
         "en": [
           "exercise",
@@ -1273,37 +1572,6 @@
           "eating habits",
           "sport",
           "gym"
-        ]
-      },
-      "disclosure": "on-ask"
-    },
-    {
-      "id": "last-meal",
-      "topic": "other",
-      "question": {
-        "zh-CN": "最后一次吃东西、喝水是什么时候？",
-        "en": "When did you last eat or drink anything?"
-      },
-      "answer": {
-        "zh-CN": "早上七点吃的早饭，一碗粥、两个包子，之后就喝了几口水。",
-        "en": "Breakfast at seven — a bowl of congee and two steamed buns. Just a few sips of water since."
-      },
-      "keywords": {
-        "zh-CN": [
-          "最后一次吃",
-          "上次吃",
-          "早饭",
-          "禁食",
-          "空腹",
-          "进食时间"
-        ],
-        "en": [
-          "when did you last eat",
-          "last meal",
-          "eaten anything",
-          "breakfast",
-          "fasting",
-          "nil by mouth"
         ]
       },
       "disclosure": "on-ask"
@@ -1322,14 +1590,15 @@
       "keywords": {
         "zh-CN": [
           "以前的心电图",
-          "旧心电图",
-          "既往心电图",
-          "做过心电图",
-          "对比"
+          "以前做过心电图",
+          "过去的心电图",
+          "体检时的心电图",
+          "老心电图报告",
+          "跟以前对比"
         ],
         "en": [
           "previous ecg",
-          "old ecg",
+          "old ecg to compare",
           "ecg before",
           "compare with",
           "prior ecg"
@@ -1352,8 +1621,10 @@
         "zh-CN": [
           "担心",
           "害怕",
+          "怕啥",
           "顾虑",
           "你觉得是",
+          "咋想",
           "怎么回事",
           "期望"
         ],
@@ -1385,17 +1656,38 @@
           "多重",
           "多少斤",
           "身高",
+          "多高",
+          "个子",
           "公斤"
         ],
         "en": [
           "weigh",
           "weight",
           "kilos",
+          "heavy",
           "height",
           "how tall"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "变化",
+          "减轻",
+          "瘦了",
+          "胳膊",
+          "胸口"
+        ],
+        "en": [
+          "lost weight",
+          "weight loss",
+          "losing weight",
+          "gained",
+          "arm",
+          "chest",
+          "lifting"
+        ]
+      }
     }
   ],
   "exam": [
@@ -1587,6 +1879,8 @@
       "keywords": {
         "zh-CN": [
           "肺部听诊",
+          "听诊双肺",
+          "双肺",
           "听肺",
           "呼吸音",
           "啰音",
@@ -1893,8 +2187,8 @@
       "results": {
         "ed": {
           "text": {
-            "zh-CN": "右胸导联（V3R–V6R）：V4R导联ST段抬高1.5 mm，T波直立；V3R导联ST段抬高1.0 mm。后壁导联（V7–V9）：无ST段抬高。节律同前（窦性心动过缓）。",
-            "en": "Right-sided leads (V3R–V6R): ST elevation 1.5 mm in V4R with an upright T wave; 1.0 mm in V3R. Posterior leads (V7–V9): no ST elevation. Rhythm unchanged (sinus bradycardia)."
+            "zh-CN": "右胸导联（V3R–V6R）：V4R导联ST段抬高1.5 mm，T波直立；V3R导联ST段抬高1.0 mm。后壁导联（V7–V9）：无ST段抬高。窦性节律。",
+            "en": "Right-sided leads (V3R–V6R): ST elevation 1.5 mm in V4R with an upright T wave; 1.0 mm in V3R. Posterior leads (V7–V9): no ST elevation. Sinus rhythm."
           },
           "critical": true
         }
@@ -1914,7 +2208,9 @@
           "tnt",
           "tni",
           "ctn",
-          "心肌损伤标志物"
+          "心肌损伤标志物",
+          "心肌标志物",
+          "心梗三项"
         ],
         "en": [
           "troponin",
@@ -2089,20 +2385,26 @@
         "zh-CN": [
           "电解质",
           "肾功能",
+          "肾功",
           "生化",
           "肌酐",
           "血钾",
           "尿素",
+          "血镁",
           "bmp"
         ],
         "en": [
           "electrolytes",
+          "lytes",
           "renal function",
           "kidney function",
           "u&e",
+          "u+e",
           "bmp",
           "creatinine",
+          "urea",
           "potassium",
+          "magnesium",
           "chemistry"
         ]
       },
@@ -2246,6 +2548,7 @@
           "凝血功能",
           "凝血四项",
           "凝血酶原",
+          "出凝血",
           "inr",
           "aptt"
         ],
@@ -2525,12 +2828,15 @@
           "血糖",
           "指尖血糖",
           "快速血糖",
-          "微量血糖"
+          "微量血糖",
+          "末梢血糖"
         ],
         "en": [
           "glucose",
           "fingerstick",
           "capillary glucose",
+          "cbg",
+          "bm stix",
           "blood sugar",
           "poc glucose",
           "bedside glucose"
@@ -2666,12 +2972,14 @@
           "床旁胸片",
           "胸部x线",
           "x线胸片",
+          "胸部x光",
           "cxr"
         ],
         "en": [
           "chest x-ray",
           "chestx-ray",
           "chestxray",
+          "chest xr",
           "cxr",
           "chest film",
           "portable chest"
@@ -2707,14 +3015,14 @@
         "zh-CN": [
           "心脏超声",
           "心超",
-          "超声心动图",
+          "超声心动",
           "床旁超声",
+          "心脏b超",
           "pocus",
           "彩超"
         ],
         "en": [
           "echo",
-          "echocardiogram",
           "pocus",
           "bedside ultrasound",
           "cardiac ultrasound",
@@ -2750,18 +3058,20 @@
       "aliases": {
         "zh-CN": [
           "主动脉cta",
+          "cta主动脉",
+          "胸部cta",
           "主动脉ct",
           "ct主动脉",
           "胸部增强ct",
-          "胸部ct",
-          "cta"
+          "胸部ct"
         ],
         "en": [
           "ct aorta",
           "ctaorta",
           "ct aortogram",
           "ctaortogram",
-          "cta",
+          "aortic cta",
+          "chest cta",
           "chest ct",
           "chestct",
           "ct angiogram",
@@ -2892,7 +3202,8 @@
           "ck-mb",
           "ckmb",
           "心肌酶",
-          "肌酸激酶"
+          "肌酸激酶",
+          "心梗三项"
         ],
         "en": [
           "ck-mb",
@@ -3015,6 +3326,39 @@
       ],
       "血气": [
         "vbg"
+      ],
+      "cta": [
+        "ct-aortogram"
+      ],
+      "trop": [
+        "hs-troponin"
+      ],
+      "trops": [
+        "hs-troponin"
+      ],
+      "tropt": [
+        "hs-troponin"
+      ],
+      "tropi": [
+        "hs-troponin"
+      ],
+      "ues": [
+        "renal-electrolytes"
+      ],
+      "u&es": [
+        "renal-electrolytes"
+      ],
+      "ck": [
+        "ck-mb"
+      ],
+      "bm": [
+        "poc-glucose"
+      ],
+      "mg": [
+        "renal-electrolytes"
+      ],
+      "镁": [
+        "renal-electrolytes"
       ]
     },
     "warnings": [
@@ -3022,8 +3366,8 @@
         "investigation": "coronary-angiography",
         "ifMatches": "造影|angio|cag|pci|cath",
         "message": {
-          "zh-CN": "冠脉造影/直接PCI在导管室进行：需先启动导管室并将患者转入导管室，结果才会出现。",
-          "en": "Coronary angiography / primary PCI happens in the cath lab: activate the lab and transfer the patient first — results exist only once he is there."
+          "zh-CN": "冠脉造影/直接PCI只在导管室进行，急诊抢救室没有该结果：需先启动导管室并将患者转入导管室。",
+          "en": "Coronary angiography / primary PCI is done only in the cath lab — there is no ED result: activate the lab and transfer the patient there first."
         }
       }
     ]
@@ -3287,6 +3631,19 @@
           "heparin",
           "ufh",
           "unfractionated"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "低分子",
+          "依诺"
+        ],
+        "en": [
+          "lmwh",
+          "low molecular",
+          "low-molecular",
+          "enox",
+          "clexane"
         ]
       },
       "dose": {
@@ -3720,9 +4077,25 @@
         "fluids-given"
       ],
       "indicatedWhen": {
-        "vital": "sbp",
-        "op": "lt",
-        "value": 100
+        "all": [
+          {
+            "any": [
+              {
+                "not": {
+                  "flag": "vf-arrest"
+                }
+              },
+              {
+                "flag": "rosc"
+              }
+            ]
+          },
+          {
+            "vital": "sbp",
+            "op": "lt",
+            "value": 100
+          }
+        ]
       },
       "contraindicatedWhen": {
         "all": [
@@ -3812,23 +4185,39 @@
         "atropine-given"
       ],
       "indicatedWhen": {
-        "any": [
+        "all": [
           {
-            "vital": "hr",
-            "op": "lt",
-            "value": 50
+            "any": [
+              {
+                "not": {
+                  "flag": "vf-arrest"
+                }
+              },
+              {
+                "flag": "rosc"
+              }
+            ]
           },
           {
-            "all": [
+            "any": [
               {
                 "vital": "hr",
                 "op": "lt",
-                "value": 60
+                "value": 50
               },
               {
-                "vital": "sbp",
-                "op": "lt",
-                "value": 90
+                "all": [
+                  {
+                    "vital": "hr",
+                    "op": "lt",
+                    "value": 60
+                  },
+                  {
+                    "vital": "sbp",
+                    "op": "lt",
+                    "value": 90
+                  }
+                ]
               }
             ]
           }
@@ -3867,6 +4256,14 @@
           "inotropic"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "多巴胺"
+        ],
+        "en": [
+          "dopamine"
+        ]
+      },
       "dose": {
         "zh-CN": "多巴酚丁胺 2.5–5 µg/kg/min 静脉泵入（78 kg：约0.2–0.4 mg/min）",
         "en": "Dobutamine 2.5–5 µg/kg/min IV infusion (78 kg: ≈0.2–0.4 mg/min)"
@@ -3900,6 +4297,18 @@
       "indicatedWhen": {
         "all": [
           {
+            "any": [
+              {
+                "not": {
+                  "flag": "vf-arrest"
+                }
+              },
+              {
+                "flag": "rosc"
+              }
+            ]
+          },
+          {
             "intervened": "fluid-bolus",
             "minCount": 2
           },
@@ -3913,6 +4322,89 @@
       "response": {
         "zh-CN": "多巴酚丁胺开始泵入，需持续监测心律失常。",
         "en": "Dobutamine infusion started; watch for arrhythmias."
+      }
+    },
+    {
+      "id": "noradrenaline",
+      "name": {
+        "zh-CN": "去甲肾上腺素泵入",
+        "en": "Noradrenaline (norepinephrine) infusion"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "去甲肾上腺素",
+          "去甲肾",
+          "正肾",
+          "升压药",
+          "血管活性药"
+        ],
+        "en": [
+          "noradrenaline",
+          "norepinephrine",
+          "norad",
+          "levophed",
+          "vasopressor",
+          "pressor"
+        ]
+      },
+      "dose": {
+        "zh-CN": "去甲肾上腺素 0.05–0.1 µg/kg/min 起始静脉泵入，按平均动脉压 ≥ 65 mmHg滴定（78 kg：约4–8 µg/min）",
+        "en": "Noradrenaline 0.05–0.1 µg/kg/min IV infusion to start, titrated to MAP ≥ 65 mmHg (78 kg: ≈4–8 µg/min)"
+      },
+      "requires": [
+        "infusion-pump",
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "effects": [
+        {
+          "vital": "sbp",
+          "delta": 15,
+          "onsetMinutes": 2,
+          "rampMinutes": 8
+        },
+        {
+          "vital": "dbp",
+          "delta": 8,
+          "onsetMinutes": 2,
+          "rampMinutes": 8
+        },
+        {
+          "vital": "hr",
+          "delta": 3,
+          "onsetMinutes": 2,
+          "rampMinutes": 8
+        }
+      ],
+      "indicatedWhen": {
+        "all": [
+          {
+            "any": [
+              {
+                "not": {
+                  "flag": "vf-arrest"
+                }
+              },
+              {
+                "flag": "rosc"
+              }
+            ]
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "vital": "sbp",
+            "op": "lt",
+            "value": 90
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "去甲肾上腺素已开始静脉泵入，按平均动脉压滴定；经外周静脉输注需注意渗漏。右室梗死的低血压应先保证前负荷。",
+        "en": "Noradrenaline infusion started and titrated to MAP; watch the peripheral line for extravasation. In RV infarction, preload comes first."
       }
     },
     {
@@ -4235,20 +4727,29 @@
         "flag": "cath-lab-activated"
       },
       "contraindicatedWhen": {
-        "all": [
+        "any": [
           {
-            "flag": "vf-arrest"
+            "all": [
+              {
+                "flag": "vf-arrest"
+              },
+              {
+                "not": {
+                  "flag": "rosc"
+                }
+              }
+            ]
           },
           {
             "not": {
-              "flag": "rosc"
+              "flag": "cath-lab-activated"
             }
           }
         ]
       },
       "harm": {
-        "zh-CN": "患者处于心搏骤停（室颤）状态，必须先在原地除颤、复苏，恢复自主循环后再转运。",
-        "en": "The patient is in cardiac arrest (VF): defibrillate and resuscitate where he is, and transfer only after ROSC."
+        "zh-CN": "心搏骤停（室颤）时必须先在原地除颤、复苏，恢复自主循环后再转运；导管室未启动、团队未就位时转运，患者会在无人接收的导管室里耽搁，途中缺乏抢救保障。",
+        "en": "In cardiac arrest (VF), defibrillate and resuscitate where he is and transfer only after ROSC. Transferring before the lab has been activated sends an unstable patient to a lab with no team ready to receive him."
       },
       "response": {
         "zh-CN": "患者已在医护陪同下转入导管室，并完成SBAR交接。",
@@ -4433,6 +4934,18 @@
           "epi"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "去甲",
+          "正肾"
+        ],
+        "en": [
+          "noradrenaline",
+          "norepinephrine",
+          "nor-adrenaline",
+          "norad"
+        ]
+      },
       "dose": {
         "zh-CN": "肾上腺素 1 mg 静脉推注（可电击心律：ERC流程于第3次电击后、AHA流程于第2次电击后给予，此后每3–5分钟）",
         "en": "Adrenaline 1 mg IV (shockable rhythm: after the 3rd shock in the ERC algorithm or the 2nd shock in the AHA algorithm, then every 3–5 min)"
@@ -4568,9 +5081,21 @@
               "intervened": "nitroglycerin"
             },
             {
-              "not": {
-                "flag": "vf-arrest"
-              }
+              "vital": "sbp",
+              "op": "lt",
+              "value": 85
+            },
+            {
+              "any": [
+                {
+                  "not": {
+                    "flag": "vf-arrest"
+                  }
+                },
+                {
+                  "flag": "rosc"
+                }
+              ]
             }
           ]
         },
@@ -4760,6 +5285,125 @@
         "message": {
           "zh-CN": "电击后立即继续胸外按压；2分钟后检查：规整窄QRS节律，可触及颈动脉搏动——自主循环恢复。患者呻吟，呼之能睁眼。",
           "en": "Compressions resumed straight after the shock; at the 2-minute check there is an organised narrow-complex rhythm with a palpable carotid pulse — ROSC. He groans and opens his eyes to voice."
+        }
+      },
+      {
+        "id": "activation-before-ecg",
+        "when": {
+          "all": [
+            {
+              "flag": "cath-lab-activated"
+            },
+            {
+              "not": {
+                "read": "ecg-12lead",
+                "phase": "ed"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "activation-before-ecg"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "介入医生（电话）：“好，团队先准备——心电图一出来马上传给我确认。”",
+          "en": "Interventional cardiologist (phone): \"OK, we'll start getting ready — send me the ECG the moment you have it so I can confirm.\""
+        }
+      },
+      {
+        "id": "late-activation",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 20
+              }
+            },
+            {
+              "not": {
+                "flag": "cath-lab-activated"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "late-activation"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "护士：“医生，病人到院已经20分钟了，下一步怎么安排？”",
+          "en": "Nurse: \"Doctor, he's been here twenty minutes — what's the plan?\""
+        }
+      },
+      {
+        "id": "hypotensive-collapse",
+        "when": {
+          "all": [
+            {
+              "vital": "sbp",
+              "op": "lte",
+              "value": 60
+            },
+            {
+              "any": [
+                {
+                  "not": {
+                    "flag": "vf-arrest"
+                  }
+                },
+                {
+                  "flag": "rosc"
+                }
+              ]
+            }
+          ]
+        },
+        "setVitals": {
+          "gcs": 10
+        },
+        "setFlags": [
+          "hypotensive-collapse"
+        ],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "护士：“医生！他叫不太醒了，血压几乎测不出来，脉搏很弱！”",
+          "en": "Nurse: \"Doctor! He's barely rousable — I can hardly get a blood pressure and his pulse is very weak!\""
+        }
+      },
+      {
+        "id": "collapse-recovered",
+        "when": {
+          "all": [
+            {
+              "flag": "hypotensive-collapse"
+            },
+            {
+              "vital": "sbp",
+              "op": "gte",
+              "value": 85
+            },
+            {
+              "any": [
+                {
+                  "not": {
+                    "flag": "vf-arrest"
+                  }
+                },
+                {
+                  "flag": "rosc"
+                }
+              ]
+            }
+          ]
+        },
+        "setVitals": {
+          "gcs": 14
+        },
+        "severity": "info",
+        "message": {
+          "zh-CN": "护士：“血压上来了，他清醒些了，能回答问题了。”",
+          "en": "Nurse: \"His pressure's coming up — he's more awake and answering questions.\""
         }
       },
       {
@@ -5029,12 +5673,12 @@
         "en": "Plan"
       },
       "hint": {
-        "zh-CN": "本院有24小时导管室。确诊依据是心电图还是化验？时间目标是多少？进导管室前需要哪些抗栓药物？",
-        "en": "This hospital has a 24/7 cath lab. Does the diagnosis rest on the ECG or on a blood test? What are the time targets? Which antithrombotics are needed before the lab?"
+        "zh-CN": "本院有24小时导管室。确诊依据是心电图还是化验？时间目标是多少？进导管室前需要哪些抗栓药物，给药前要排除哪些禁忌？",
+        "en": "This hospital has a 24/7 cath lab. Does the diagnosis rest on the ECG or on a blood test? What are the time targets? Which antithrombotics are needed before the lab, and which contraindications must you exclude first?"
       },
       "guidance": {
-        "zh-CN": "确定再灌注策略、给予抗栓治疗并启动相应团队。",
-        "en": "Choose the reperfusion strategy, give antithrombotic therapy and mobilise the team."
+        "zh-CN": "确定再灌注策略、筛查抗栓禁忌、给予抗栓治疗并启动相应团队。",
+        "en": "Choose the reperfusion strategy, screen for antithrombotic contraindications, give antithrombotic therapy and mobilise the team."
       },
       "completeWhen": {
         "all": [
@@ -5245,12 +5889,33 @@
         "en": "He still has 8/10 chest pain. The nurse asks, \"Shall I give him a nitroglycerin tablet under the tongue?\" What is the best response?"
       },
       "requires": {
-        "read": "ecg-12lead",
-        "phase": "ed"
+        "all": [
+          {
+            "read": "ecg-12lead",
+            "phase": "ed"
+          },
+          {
+            "any": [
+              {
+                "read": "ecg-right-sided"
+              },
+              {
+                "all": [
+                  {
+                    "examined": "jvp"
+                  },
+                  {
+                    "examined": "lungs"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "need": {
-        "zh-CN": "先判读12导联心电图。",
-        "en": "Read the 12-lead ECG first."
+        "zh-CN": "先判读12导联心电图，并加做右胸导联或检查颈静脉和双肺。",
+        "en": "Read the 12-lead ECG, then record the right-sided leads or examine the JVP and lung bases."
       },
       "options": [
         {
@@ -5401,12 +6066,19 @@
         "en": "Under this hospital's chest-pain pathway, which antithrombotic therapies should he receive before the cath lab? (Select all that apply.)"
       },
       "requires": {
-        "read": "ecg-12lead",
-        "phase": "ed"
+        "all": [
+          {
+            "read": "ecg-12lead",
+            "phase": "ed"
+          },
+          {
+            "asked": "bleeding-history"
+          }
+        ]
       },
       "need": {
-        "zh-CN": "先判读12导联心电图。",
-        "en": "Read the 12-lead ECG first."
+        "zh-CN": "先判读12导联心电图，并询问出血/卒中史（抗栓禁忌）。",
+        "en": "Read the 12-lead ECG and ask about bleeding and stroke history (antithrombotic contraindications) first."
       },
       "options": [
         {
@@ -5601,20 +6273,20 @@
       "id": "r-diagnosis",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "诊断下壁STEMI合并右心室梗死",
-        "en": "Diagnosed inferior STEMI with RV involvement"
+        "zh-CN": "首次作答即正确诊断下壁STEMI合并右心室梗死",
+        "en": "Diagnosed inferior STEMI with RV involvement at the first attempt"
       },
       "weight": 2,
       "met": {
-        "decided": "dx-diagnosis"
+        "decidedFirstTry": "dx-diagnosis"
       }
     },
     {
       "id": "r-no-troponin-wait",
       "domain": "management",
       "text": {
-        "zh-CN": "未等待肌钙蛋白即启动导管室",
-        "en": "Activated the cath lab without waiting for troponin"
+        "zh-CN": "到院20分钟内依据心电图启动导管室（未等待肌钙蛋白）",
+        "en": "Activated the cath lab on the ECG within 20 minutes of arrival (without waiting for troponin)"
       },
       "weight": 2,
       "met": {
@@ -5626,8 +6298,30 @@
             "not": {
               "flag": "waited-for-troponin"
             }
+          },
+          {
+            "not": {
+              "flag": "late-activation"
+            }
+          },
+          {
+            "not": {
+              "flag": "activation-before-ecg"
+            }
           }
         ]
+      }
+    },
+    {
+      "id": "r-reperfusion-choice",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即选择直接PCI作为再灌注策略",
+        "en": "Chose primary PCI as the reperfusion strategy at the first attempt"
+      },
+      "weight": 1,
+      "met": {
+        "decidedFirstTry": "reperfusion-strategy"
       }
     },
     {
@@ -5783,8 +6477,8 @@
         "en": "He Jing (resus nurse)"
       },
       "knowledge": {
-        "zh-CN": "交班：58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛，直接送入抢救室2床。分诊生命体征与到院时监护显示一致。未经院前急救，到院前未用任何药物，静脉通路尚未建立。体重78 kg（患者自述）。物流：床旁有心电图机、除颤仪、监护仪、氧气和急救车；急诊有导管室“一键启动”专线；今天是工作日白天，介入团队在院内，启动后约15分钟可接收患者。急诊备药：阿司匹林、替格瑞洛、氯吡格雷、普通肝素、依诺肝素、磺达肝癸钠、替奈普酶、硝酸甘油、吗啡、昂丹司琼、阿托品、多巴酚丁胺、美托洛尔、呋塞米、生理盐水、阿托伐他汀、肾上腺素。到院10分钟仍未看心电图时会提醒。不解读心电图、不给出诊断。",
-        "en": "Handover: 58-year-old man who walked into the ED with his wife at 09:10 reporting chest pain since about 08:00; taken straight to resus bay 2. Triage vital signs match the monitor at arrival. No ambulance, no medicines before arrival, no IV access yet. Weight 78 kg (patient-reported). Logistics: the bay has an ECG cart, defibrillator, monitor, oxygen and crash cart; the ED has a single-call cath-lab activation line; it is a weekday daytime, the interventional team is in-house and the lab can take a patient about 15 minutes after activation. ED stock: aspirin, ticagrelor, clopidogrel, UFH, enoxaparin, fondaparinux, tenecteplase, nitroglycerin, morphine, ondansetron, atropine, dobutamine, metoprolol, furosemide, saline, atorvastatin, adrenaline. Prompts if no ECG has been read 10 minutes after arrival. Does not interpret ECGs or suggest diagnoses."
+        "zh-CN": "交班：58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛，直接送入抢救室。分诊生命体征与到院时监护显示一致。未经院前急救，到院前未用任何药物，静脉通路尚未建立。体重78 kg（患者自述）。物流：床旁有心电图机、除颤仪、监护仪、氧气和急救车；急诊有导管室“一键启动”专线；今天是工作日白天，介入团队在院内，启动后约15分钟可接收患者。急诊备药：阿司匹林、替格瑞洛、氯吡格雷、普通肝素、依诺肝素、磺达肝癸钠、替奈普酶、硝酸甘油、吗啡、昂丹司琼、阿托品、多巴酚丁胺、去甲肾上腺素、美托洛尔、呋塞米、生理盐水、阿托伐他汀、肾上腺素。到院10分钟仍未看心电图时会提醒。不解读心电图、不给出诊断。",
+        "en": "Handover: 58-year-old man who walked into the ED with his wife at 09:10 reporting chest pain since about 08:00; taken straight to resus. Triage vital signs match the monitor at arrival. No ambulance, no medicines before arrival, no IV access yet. Weight 78 kg (patient-reported). Logistics: the bay has an ECG cart, defibrillator, monitor, oxygen and crash cart; the ED has a single-call cath-lab activation line; it is a weekday daytime, the interventional team is in-house and the lab can take a patient about 15 minutes after activation. ED stock: aspirin, ticagrelor, clopidogrel, UFH, enoxaparin, fondaparinux, tenecteplase, nitroglycerin, morphine, ondansetron, atropine, dobutamine, noradrenaline, metoprolol, furosemide, saline, atorvastatin, adrenaline. Prompts if no ECG has been read 10 minutes after arrival. Does not interpret ECGs or suggest diagnoses."
       }
     },
     {
@@ -5826,8 +6520,8 @@
         "en": "Pharmacist Zhou (ED pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "按78 kg体重核对剂量：普通肝素70–100 U/kg（约5500–7800 U）；依诺肝素0.5 mg/kg静推（约40 mg）；替格瑞洛180 mg或氯吡格雷600 mg（只选一种；已给氯吡格雷者可升级为替格瑞洛180 mg负荷，已给替格瑞洛者急性期不再加用氯吡格雷）；阿司匹林150–300 mg；替奈普酶按体重分档（70–<80 kg为40 mg）；多巴酚丁胺2.5–5 µg/kg/min。提醒：阿片类延迟口服P2Y12抑制剂吸收；替格瑞洛可致呼吸困难和心室停搏；PDE5抑制剂与硝酸酯相互作用。不提供诊断。",
-        "en": "Checks doses for 78 kg: UFH 70–100 U/kg (≈5,500–7,800 U); enoxaparin 0.5 mg/kg IV (≈40 mg); ticagrelor 180 mg or clopidogrel 600 mg (one only; after clopidogrel, escalation to a ticagrelor 180 mg load is acceptable, but clopidogrel is not added after ticagrelor in the acute phase); aspirin 150–300 mg; tenecteplase by weight band (40 mg for 70–<80 kg); dobutamine 2.5–5 µg/kg/min. Reminders: opioids delay oral P2Y12 absorption; ticagrelor can cause dyspnoea and ventricular pauses; PDE5 inhibitors interact with nitrates. Does not give diagnoses."
+        "zh-CN": "按78 kg体重核对剂量：普通肝素70–100 U/kg（约5500–7800 U）；依诺肝素0.5 mg/kg静推（约40 mg）；替格瑞洛180 mg或氯吡格雷600 mg（只选一种；已给氯吡格雷者可升级为替格瑞洛180 mg负荷，已给替格瑞洛者急性期不再加用氯吡格雷）；阿司匹林150–300 mg；替奈普酶按体重分档（70–<80 kg为40 mg）；多巴酚丁胺2.5–5 µg/kg/min；去甲肾上腺素0.05–0.1 µg/kg/min起始（约4–8 µg/min）。提醒：阿片类延迟口服P2Y12抑制剂吸收；替格瑞洛可致呼吸困难和心室停搏；PDE5抑制剂与硝酸酯相互作用。不提供诊断。",
+        "en": "Checks doses for 78 kg: UFH 70–100 U/kg (≈5,500–7,800 U); enoxaparin 0.5 mg/kg IV (≈40 mg); ticagrelor 180 mg or clopidogrel 600 mg (one only; after clopidogrel, escalation to a ticagrelor 180 mg load is acceptable, but clopidogrel is not added after ticagrelor in the acute phase); aspirin 150–300 mg; tenecteplase by weight band (40 mg for 70–<80 kg); dobutamine 2.5–5 µg/kg/min; noradrenaline starting at 0.05–0.1 µg/kg/min (≈4–8 µg/min). Reminders: opioids delay oral P2Y12 absorption; ticagrelor can cause dyspnoea and ventricular pauses; PDE5 inhibitors interact with nitrates. Does not give diagnoses."
       }
     },
     {
@@ -5837,8 +6531,8 @@
         "en": "Dr Chen (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "以苏格拉底式提问引导，不直接给出答案：“时间就是心肌——心电图什么时候做？”“哪些导联抬高？III和II哪个更高，说明什么？”“下壁梗死还应加做哪些导联？”“低血压、颈静脉怒张、双肺清晰提示什么？”“这种情况下哪些常用药会伤害他？”“本院再灌注的时间目标是多少？什么时候才选择溶栓？”“室颤风险什么时候最高？”",
-        "en": "Socratic, never gives the answer outright: \"Time is muscle — when does the ECG happen?\" \"Which leads are elevated? Is III higher than II, and what does that tell you?\" \"Which extra leads does an inferior infarct need?\" \"What do hypotension, a raised JVP and clear lungs suggest?\" \"Which routine drugs could hurt him here?\" \"What are our reperfusion time targets, and when would you choose lysis?\" \"When is the VF risk highest?\""
+        "zh-CN": "以苏格拉底式提问引导，不直接给出答案，也不替学员说出诊断：“胸痛病人到院后第一项检查是什么，多少分钟内完成？”“ST段改变在哪组导联？III和II哪个更明显，说明什么？”“这个导联分布还需要加做哪些导联？”“低血压、颈静脉怒张、双肺清晰这个组合提示什么？”“在这种血流动力学状态下，哪些常用胸痛药物会伤害他？”“本院再灌注的时间目标是多少？什么情况下才考虑溶栓？”“如果他突然恶化，床旁需要提前准备什么？”",
+        "en": "Socratic, never gives the answer outright and never names the diagnosis for the learner: \"What is the first test for chest pain on arrival, and within how many minutes?\" \"Which group of leads shows the ST change? Is III or II more marked, and what does that tell you?\" \"Which extra leads does that lead distribution call for?\" \"What does hypotension with a raised JVP and clear lungs suggest?\" \"In this haemodynamic state, which routine chest-pain drugs could hurt him?\" \"What are our reperfusion time targets, and when would you consider lysis?\" \"If he suddenly deteriorates, what do you want ready at the bedside?\""
       }
     }
   ],
@@ -5861,8 +6555,8 @@
         "en": "Hypotension + raised JVP + clear lungs (with Kussmaul's sign) is the classic RV-infarct triad: the failing RV leaves LV filling dependent on venous return."
       },
       {
-        "zh-CN": "因此硝酸酯、利尿剂及其他扩血管药可致严重低血压；应谨慎补液并复评，补液无效时考虑多巴酚丁胺，症状性心动过缓用阿托品，高度房室阻滞时起搏。",
-        "en": "So nitrates, diuretics and other venodilators can cause profound hypotension; give cautious, reassessed fluid boluses, add dobutamine if fluid fails, atropine for symptomatic bradycardia and pacing for high-grade AV block."
+        "zh-CN": "因此硝酸酯、利尿剂及其他扩血管药可致严重低血压；应谨慎补液并复评，补液后仍低血压时加用多巴酚丁胺和/或去甲肾上腺素，症状性心动过缓用阿托品，高度房室阻滞时起搏。",
+        "en": "So nitrates, diuretics and other venodilators can cause profound hypotension; give cautious, reassessed fluid boluses, add dobutamine and/or noradrenaline if hypotension persists after fluid, atropine for symptomatic bradycardia and pacing for high-grade AV block."
       },
       {
         "zh-CN": "在可行PCI的医院，STEMI依据症状 + 心电图诊断而非肌钙蛋白：立即一键启动导管室；仅当预计诊断至导丝通过 > 120分钟时才选择溶栓。",
@@ -6465,6 +7159,132 @@
         "locale": "en",
         "expect": [
           "last-meal"
+        ]
+      },
+      {
+        "text": "啥时候开始疼的？",
+        "locale": "zh-CN",
+        "expect": [
+          "hpi-onset"
+        ]
+      },
+      {
+        "text": "出虚汗没",
+        "locale": "zh-CN",
+        "expect": [
+          "assoc-sweating"
+        ]
+      },
+      {
+        "text": "心里发慌吗",
+        "locale": "zh-CN",
+        "expect": [
+          "palpitations"
+        ]
+      },
+      {
+        "text": "疼得往哪儿窜？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-radiation"
+        ]
+      },
+      {
+        "text": "平常吃啥药，来之前吃过速效救心丸没？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "吸过毒吗",
+        "locale": "zh-CN",
+        "expect": [
+          "recreational"
+        ]
+      },
+      {
+        "text": "家里老人有心脏病吗",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "有没有一侧手脚没劲、说话不清？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro-symptoms"
+        ]
+      },
+      {
+        "text": "大便黑不黑",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding-history"
+        ]
+      },
+      {
+        "text": "还有别的慢性病没，比如哮喘？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-other"
+        ]
+      },
+      {
+        "text": "SOB?",
+        "locale": "en",
+        "expect": [
+          "assoc-dyspnoea"
+        ]
+      },
+      {
+        "text": "Hx of MI?",
+        "locale": "en",
+        "expect": [
+          "pmh-cardiac"
+        ]
+      },
+      {
+        "text": "Does your dad have heart problems?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "r u allergic to anything",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Did you take anything for the pain before coming in?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Puking?",
+        "locale": "en",
+        "expect": [
+          "assoc-nausea"
+        ]
+      },
+      {
+        "text": "whats ur job",
+        "locale": "en",
+        "expect": [
+          "social-living"
+        ]
+      },
+      {
+        "text": "any HTN?",
+        "locale": "en",
+        "expect": [
+          "pmh-htn"
         ]
       }
     ]

@@ -25,7 +25,7 @@ JVP with Kussmaul's sign, and clear lungs.
 | phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic on transfer; not learner-switchable) |
 | clock | simulated, starts 09:10, `realtimeScale` 1, limit 120 min; costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1.5 min |
 | difficulty | 3 / 5 |
-| content | 39 history items (3 `unknown`), 14 exam findings, 17 investigations, 26 interventions, 5 objectives, 4 decisions, 15 rubric items, 5 NPC briefs, 40 matcher test utterances |
+| content | 40 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 58 matcher test utterances |
 
 ## Learning objectives
 
@@ -53,14 +53,16 @@ shows ST elevation. Alarms use the adult limits, set explicitly.
 |---|---|
 | Trend `rv-sbp-fall` / `rv-dbp-fall` | SBP −0.3/min (floor −15) and DBP −0.15/min (floor −8) until the first fluid bolus or reperfusion, then recovery. Untreated SBP is about 88 mmHg at 35 min. |
 | Trend `brady-hr-fall` | HR −0.1/min from minute 10 (floor −8) until atropine or reperfusion. |
-| `nitroglycerin` | Always contraindicated in this patient. SBP −28 / DBP −16 mmHg (offset staged at 12/18/25 min), HR −4, GCS −1. The `nitrate-crash` event fires a nurse alarm. Fluid and atropine rescue him. |
-| `fluid-bolus` (500 mL) | SBP +12 / DBP +6 over 10 min, persistent. Indicated while SBP < 100. A 3rd or later bolus with SBP ≥ 110 is flagged as unsafe (RV over-distension). |
-| `atropine` 0.5 mg | HR +14 (offset staged at 25/35 min). Indicated if HR < 50, or HR < 60 with SBP < 90. The monitor rhythm label changes to sinus. |
+| `nitroglycerin` | Always contraindicated in this patient. SBP −28 / DBP −16 mmHg (offset staged at 12/18/25 min), HR −4, GCS −1. The `nitrate-crash` nurse alarm fires once the SBP has actually fallen below 85 after a dose. Fluid and atropine rescue him. |
+| `hypotensive-collapse` / `collapse-recovered` | Stacked vasodilators or negative chronotropes (a second nitrate, morphine, IV metoprolol, furosemide) that take the SBP to ≤ 60 mmHg make him barely rousable (GCS 10, nurse alarm). When the SBP is back to ≥ 85 he wakes up again (GCS 14). |
+| `fluid-bolus` (500 mL) | SBP +12 / DBP +6 over 10 min, persistent. Indicated while SBP < 100 (not during VF). A 3rd or later bolus with SBP ≥ 110 is flagged as unsafe (RV over-distension). |
+| `dobutamine` / `noradrenaline` | Inotrope or vasopressor for hypotension that persists after fluid (dobutamine after 2 boluses, noradrenaline after 1, SBP < 90, not in VF). Typing 去甲肾上腺素 / noradrenaline never selects the adrenaline arrest bolus, and 多巴胺 / dopamine never selects dobutamine. |
+| `atropine` 0.5 mg | HR +14 (offset staged at 25/35 min). Indicated if HR < 50, or HR < 60 with SBP < 90, outside cardiac arrest (never in VF). The monitor rhythm label changes to sinus. |
 | `vf-arrest` event | At ≥ 35 min, **if the cath lab has not been activated** (or the patient transferred), he goes into VF: HR/BP/RR 0, SpO₂ 45, GCS 3. |
 | `defibrillation` (high risk, defibrillator) | During VF it triggers the `rosc` event: sinus 92, BP 88/56 (then falls with the untreated trend), GCS 12, ST elevation persists. A shock given *before* VF (contraindicated, `early-shock` flag) does not count, so a second shock is needed during VF. |
-| `transfer-cath-lab` | Sets `transferred-cath-lab` and moves the case to the `cath` phase. Contraindicated while in VF without ROSC. |
+| `transfer-cath-lab` | Sets `transferred-cath-lab` and moves the case to the `cath` phase. Contraindicated while in VF without ROSC, and before the cath lab has been activated. |
 | `reperfusion` event | Fires when the angiography result is ready in `cath`. HR 68 sinus, BP 106/66, GCS 15, pain 2, overlay normal; the trends recover. |
-| Bookkeeping events | `ecg-delay` (no ECG read by 10 min → `ecg-late` and a nurse prompt), `troponin-wait` (troponin ready before activation), `routine-oxygen` (oxygen given with SpO₂ ≥ 90% before any arrest → `r-no-routine-o2` unmet; oxygen after ROSC is indicated and not flagged), `late-transfer` (still in ED at 60 min). |
+| Bookkeeping events | `ecg-delay` (no ECG read by 10 min → `ecg-late` and a nurse prompt), `troponin-wait` (troponin ready before activation), `activation-before-ecg` (lab activated before any ECG was read), `late-activation` (not activated by 20 min → nurse prompt), all three → `r-no-troponin-wait` unmet, `routine-oxygen` (oxygen given with SpO₂ ≥ 90% before any arrest → `r-no-routine-o2` unmet; oxygen after ROSC is indicated and not flagged), `late-transfer` (still in ED at 60 min). |
 
 Tempting wrong choices you can make: sublingual or IV nitrate, morphine while
 hypotensive, furosemide, IV metoprolol, routine oxygen, fondaparinux, tenecteplase
@@ -68,17 +70,23 @@ when PCI is available, clopidogrel on top of a ticagrelor load (the reverse,
 ticagrelor after clopidogrel, is guideline-endorsed escalation and is not
 penalised), UFH plus enoxaparin, CCU admission for
 medical therapy, CT aortogram, ABG (radial puncture before radial PCI), D-dimer and
-CK-MB.
+CK-MB, activating the lab before reading an ECG, and transferring before the lab is activated.
 
 ## Decisions
 
 - `dx-diagnosis`: inferior STEMI with RV involvement. Distractors are inferior
   STEMI without RV involvement, inferoposterior (LCx), pericarditis, dissection
   and NSTEMI.
-- `nitrate-safety`: withhold nitrates, support preload and reperfuse.
+- `nitrate-safety`: withhold nitrates, support preload and reperfuse. Unlocks once the 12-lead
+  has been read and there is evidence of preload dependence (right-sided leads read, or JVP and
+  lung bases examined).
 - `reperfusion-strategy`: primary PCI now. Fibrinolysis is right only if the
   expected time from diagnosis to wire crossing is more than 120 min.
-- `antithrombotic-bundle` (select all): aspirin + one P2Y12 inhibitor + UFH.
+- `antithrombotic-bundle` (select all): aspirin + one P2Y12 inhibitor + UFH. Unlocks once the
+  12-lead has been read and the bleeding/stroke history has been asked.
+
+The rubric credits the diagnosis and the reperfusion strategy only when they are right at
+the first attempt (`decidedFirstTry`), so trying every option does not earn the marks.
 
 ## Reference path (`solution`)
 
@@ -90,7 +98,7 @@ allergies, medications, both-arm BP and heart sounds. Nitrate decision, then a
 decisions. Risk factors and ICE, then pads. Transfer at 28.5 min. Angiography
 (20 min), post-PCI ECG, and blood results read; finish at about 60 min. Without
 VF and in the lab within 60 min, `verifyCase` scores the deterministic rubric at
-19/19.
+20/20.
 
 ## Clinical numbers (consistency check)
 
@@ -131,16 +139,22 @@ ERC/AHA resuscitation updates before high-stakes use.
 - Results are static per phase. The `ed` 12-lead ECG reads "First ED ECG" (sinus
   bradycardia, 54/min) whenever it is ordered, including after a VF/ROSC branch.
   The post-PCI ECG is the `cath`-phase result of the same investigation.
-- The engine adds intervention effects and trends on top of scenario `setVitals`.
-  So during VF the monitor can show a small residual HR or BP from earlier atropine
-  or fluid. The rhythm label (VF) and the critical alarms are what matter there.
+- The engine adds intervention effects and trends on top of scenario `setVitals`, and
+  display jitter on top of zero. So during VF the monitor can show a small residual HR
+  or BP (from earlier atropine or fluid, or 1–2 from jitter). The rhythm label (VF) and
+  the critical alarms are what matter there.
+- After atropine the rhythm label stays "sinus" even when the effect has worn off and
+  the rate drifts back towards the low 50s.
 - Effects end instantly when their duration lapses. Nitrate and atropine offsets
   are split into stages so that BP and HR come back in steps rather than one jump.
 - Fluid effects are additive with no dose-response plateau: four 500 mL boluses
   take SBP to about 145 mmHg, which overstates the response of an infarcted RV.
   The 3rd and later boluses at SBP ≥ 110 are scored unsafe and carry the harm text.
-- In the web world, the cath-lab phase needs `fluoroscopy` (C-arm or cath-lab
-  equipment) in the `general-hospital` facility.
+- In the `general-hospital` facility the patient is assigned to resus bay 1 (the
+  triage note names no bay number). The cath-lab phase uses the C-arm in the cath lab
+  (`fluoroscopy`). The cath lab has no 12-lead ECG cart, so the post-PCI ECG is
+  ordered from an ECG cart in resus. Lab tests are ordered at the laboratory
+  workstation.
 
 ## Validation
 

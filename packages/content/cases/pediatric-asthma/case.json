@@ -174,8 +174,8 @@
         "en": "Reassessment at 1 hour"
       },
       "description": {
-        "zh-CN": "完成第一小时的3轮支气管舒张剂后（≥60分钟）自动进入：再评估治疗反应。",
-        "en": "Entered automatically once the first hour's three bronchodilator rounds are done (≥ 60 min): reassess the response."
+        "zh-CN": "完成第一小时的3轮支气管舒张剂后（≥60分钟）自动进入：再评估治疗反应。若治疗开始前已出现疲劳，须先针对反应差升级治疗（静脉硫酸镁）。",
+        "en": "Entered automatically once the first hour's three bronchodilator rounds are done (≥ 60 min): reassess the response. If he was tiring before treatment started, the poor response must first be escalated (IV magnesium)."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -195,6 +195,18 @@
             "not": {
               "flag": "life-threatening"
             }
+          },
+          {
+            "any": [
+              {
+                "not": {
+                  "flag": "tiring"
+                }
+              },
+              {
+                "intervened": "magnesium-iv"
+              }
+            ]
           }
         ]
       }
@@ -206,8 +218,8 @@
         "en": "Pre-discharge review (about 4 hours)"
       },
       "description": {
-        "zh-CN": "到院约4小时、完成再评估后自动进入：核对出院标准、宣教与随访。",
-        "en": "Entered automatically about 4 hours after arrival once the reassessment is complete: check discharge criteria, education and follow-up."
+        "zh-CN": "到院约4小时、完成再评估、已用全身激素且吸空气SpO₂恢复到≥95%后自动进入：核对出院标准、宣教与随访。",
+        "en": "Entered automatically about 4 hours after arrival once the reassessment is complete, he has had his systemic steroid and his room-air SpO₂ is back to ≥ 95%: check discharge criteria, education and follow-up."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -222,6 +234,43 @@
             "elapsed": {
               "gte": 240
             }
+          },
+          {
+            "any": [
+              {
+                "intervened": "prednisolone"
+              },
+              {
+                "intervened": "hydrocortisone-iv"
+              }
+            ]
+          },
+          {
+            "vital": "spo2",
+            "op": "gte",
+            "value": 95
+          }
+        ]
+      }
+    },
+    {
+      "id": "critical",
+      "label": {
+        "zh-CN": "病情恶化",
+        "en": "Deterioration"
+      },
+      "description": {
+        "zh-CN": "支气管舒张剂延误、病情恶化时自动进入：立即重新评估、呼叫上级并升级治疗。",
+        "en": "Entered automatically if he deteriorates after bronchodilator treatment is delayed: reassess at once, call for senior help and escalate."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "phase": "arrival"
+          },
+          {
+            "flag": "life-threatening"
           }
         ]
       }
@@ -265,7 +314,10 @@
           "喘了多久",
           "发作经过",
           "怎么加重的",
-          "这次怎么了"
+          "这次怎么了",
+          "啥时候开始",
+          "什么时候喘起来",
+          "喘多久了"
         ],
         "en": [
           "when did it start",
@@ -276,7 +328,22 @@
           "getting worse",
           "how did this begin",
           "timeline",
-          "what happened"
+          "what happened",
+          "kick off",
+          "kicked off",
+          "when did this start",
+          "how long has he been like this"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "哮喘多久",
+          "停了多久",
+          "用了多久"
+        ],
+        "en": [
+          "stopped",
+          "how long has he had asthma"
         ]
       }
     },
@@ -301,7 +368,14 @@
           "着凉",
           "病毒感染",
           "上呼吸道感染",
-          "传染"
+          "传染",
+          "上感",
+          "这次是什么诱发",
+          "这次诱因",
+          "这次为什么发作",
+          "有人生病",
+          "身边有人感冒",
+          "传染给他"
         ],
         "en": [
           "cold",
@@ -312,7 +386,14 @@
           "illness before",
           "unwell before",
           "upper respiratory infection",
-          "coryza"
+          "coryza",
+          "urti",
+          "sick contacts",
+          "anyone else unwell",
+          "anyone else ill",
+          "what set this attack off",
+          "triggered this attack",
+          "snotty"
         ]
       }
     },
@@ -338,7 +419,13 @@
           "缓解药",
           "喷了几下",
           "用药效果",
-          "急救喷雾"
+          "急救喷雾",
+          "在家用过药",
+          "来之前用过",
+          "在家喷过",
+          "在家用了什么药",
+          "最后一次喷",
+          "上次喷药"
         ],
         "en": [
           "blue inhaler",
@@ -349,7 +436,26 @@
           "how many puffs",
           "puffs",
           "inhaler help",
-          "rescue inhaler"
+          "rescue inhaler",
+          "at home so far",
+          "before coming in",
+          "last dose",
+          "last puff",
+          "given anything at home"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "平时",
+          "一周",
+          "每周"
+        ],
+        "en": [
+          "normally",
+          "usually",
+          "per week",
+          "a week",
+          "between attacks"
         ]
       }
     },
@@ -374,7 +480,13 @@
           "小便",
           "尿量",
           "胃口",
-          "吃东西"
+          "吃东西",
+          "吐过吗",
+          "吐了没",
+          "尿得",
+          "尿了",
+          "尿多",
+          "有吐"
         ],
         "en": [
           "eating",
@@ -385,8 +497,17 @@
           "wee",
           "urine",
           "appetite",
-          "feeding"
+          "feeding",
+          "vomit",
+          "peeing"
         ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "吐痰",
+          "痰"
+        ],
+        "en": []
       }
     },
     {
@@ -411,7 +532,12 @@
           "一周用几次",
           "控制情况",
           "跑步喘",
-          "平时怎么样"
+          "平时怎么样",
+          "控制得怎么样",
+          "平时控制",
+          "运动完",
+          "运动会喘",
+          "跑完步"
         ],
         "en": [
           "cough at night",
@@ -422,7 +548,12 @@
           "how often blue inhaler",
           "control",
           "waking at night",
-          "night-time symptoms"
+          "night-time symptoms",
+          "normally need his reliever",
+          "usually need his reliever",
+          "wheezy when he runs",
+          "runs",
+          "well controlled"
         ]
       }
     },
@@ -445,7 +576,7 @@
           "咳血",
           "干咳",
           "咳得厉害",
-          "怎么咳"
+          "咳嗽是什么样的"
         ],
         "en": [
           "cough",
@@ -477,7 +608,11 @@
           "烧不烧",
           "寒战",
           "退烧药",
-          "高烧"
+          "高烧",
+          "烧到",
+          "多少度",
+          "烧了吗",
+          "有烧"
         ],
         "en": [
           "fever",
@@ -486,7 +621,17 @@
           "high temperature",
           "chills",
           "shivering",
-          "hot"
+          "hot",
+          "temp"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "花粉"
+        ],
+        "en": [
+          "hayfever",
+          "hay fever"
         ]
       }
     },
@@ -523,6 +668,94 @@
       }
     },
     {
+      "id": "hx-alertness",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "他今天精神怎么样？有没有特别犯困、叫不醒或者说胡话？",
+        "en": "How alert has he been — any unusual sleepiness, confusion or floppiness?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）一晚上几乎没睡，但人是清醒的，认得我，跟他说话会点头、会回答。就是很害怕，一直要我抱着，没有迷迷糊糊或者说胡话。",
+        "en": "(Mother) He's hardly slept all night, but he's awake — he knows me and nods or answers when you talk to him. He's just frightened and wants me to hold him; he isn't drowsy or confused."
+      },
+      "keywords": {
+        "zh-CN": [
+          "精神怎么样",
+          "嗜睡",
+          "犯困",
+          "叫得醒",
+          "迷糊",
+          "说胡话",
+          "没精神",
+          "蔫",
+          "意识清楚吗",
+          "反应怎么样"
+        ],
+        "en": [
+          "drowsy",
+          "sleepy",
+          "alert",
+          "confused",
+          "floppy",
+          "responsive",
+          "more tired than usual",
+          "his usual self",
+          "consciousness"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "arrival",
+        "reassess",
+        "discharge"
+      ]
+    },
+    {
+      "id": "hx-alertness-critical",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "他现在精神怎么样？是不是越来越困？",
+        "en": "How alert is he now — is he getting sleepier?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）他越来越没劲了，眼睛老是闭上，也不哭不闹了……医生，他这样不对劲啊！",
+        "en": "(Mother) He's getting weaker and weaker — his eyes keep closing and he's stopped crying… Doctor, this isn't like him at all!"
+      },
+      "keywords": {
+        "zh-CN": [
+          "精神怎么样",
+          "嗜睡",
+          "犯困",
+          "叫得醒",
+          "迷糊",
+          "说胡话",
+          "没精神",
+          "蔫",
+          "意识清楚吗",
+          "反应怎么样"
+        ],
+        "en": [
+          "drowsy",
+          "sleepy",
+          "alert",
+          "confused",
+          "floppy",
+          "responsive",
+          "more tired than usual",
+          "his usual self",
+          "consciousness"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "critical"
+      ]
+    },
+    {
       "id": "hx-foreign-body",
       "topic": "ros",
       "required": true,
@@ -554,7 +787,11 @@
           "swallowed something",
           "sudden onset",
           "small toy",
-          "peanut"
+          "peanut",
+          "lego",
+          "bead",
+          "coin",
+          "inhaled a small object"
         ]
       }
     },
@@ -611,7 +848,11 @@
           "新食物",
           "虫咬",
           "蜂蜇",
-          "吃了什么"
+          "吃了什么",
+          "疹子",
+          "起疹",
+          "出疹",
+          "风团"
         ],
         "en": [
           "rash",
@@ -641,11 +882,11 @@
         "zh-CN": [
           "哮喘诊断",
           "什么时候诊断",
-          "哮喘多久了",
           "确诊",
           "哮喘病史",
           "以前喘过吗",
-          "既往史"
+          "既往史",
+          "得哮喘多久"
         ],
         "en": [
           "asthma diagnosed",
@@ -679,7 +920,11 @@
           "住过院",
           "发作次数",
           "急诊次数",
-          "以前发作"
+          "以前发作",
+          "以前发作过",
+          "类似发作",
+          "这样的发作",
+          "住过几次院"
         ],
         "en": [
           "admitted",
@@ -689,7 +934,11 @@
           "previous attacks",
           "hospital admission",
           "been in hospital",
-          "how many attacks"
+          "previous episodes",
+          "happened before",
+          "number of attacks",
+          "hospitalised",
+          "attacks like this before"
         ]
       }
     },
@@ -717,7 +966,8 @@
           "上过呼吸机",
           "呼吸机",
           "进过监护室",
-          "抢救"
+          "抢救",
+          "进过重症"
         ],
         "en": [
           "intensive care",
@@ -726,7 +976,9 @@
           "intubated",
           "breathing tube",
           "ventilator",
-          "life support"
+          "life support",
+          "ventilated",
+          "needed picu"
         ]
       }
     },
@@ -749,7 +1001,9 @@
           "强的松",
           "激素糖浆",
           "吃过激素",
-          "激素疗程"
+          "激素疗程",
+          "用过几次激素",
+          "强的松用过几次"
         ],
         "en": [
           "steroids",
@@ -757,7 +1011,10 @@
           "steroid course",
           "oral steroids",
           "steroid syrup",
-          "steroid tablets"
+          "steroid tablets",
+          "pred",
+          "oral steroids this year",
+          "courses of steroids"
         ]
       }
     },
@@ -783,7 +1040,8 @@
           "氟替卡松",
           "吸入激素",
           "长期用药",
-          "平时用什么药"
+          "平时用什么药",
+          "长期用啥药"
         ],
         "en": [
           "preventer",
@@ -794,7 +1052,25 @@
           "fluticasone",
           "inhaled steroid",
           "regular medicine",
-          "what medicines"
+          "ics",
+          "regular medicines"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "停",
+          "止咳",
+          "药店",
+          "中药",
+          "每天都"
+        ],
+        "en": [
+          "regularly",
+          "otc",
+          "over the counter",
+          "cough syrup",
+          "herbal",
+          "stop"
         ]
       }
     },
@@ -820,7 +1096,10 @@
           "停药",
           "用完了",
           "实际上用",
-          "每天用"
+          "每天用",
+          "停了多久",
+          "什么时候停的",
+          "停用"
         ],
         "en": [
           "every day",
@@ -830,10 +1109,14 @@
           "stopped",
           "ran out",
           "actually taking",
-          "regularly",
-          "how often does he take"
+          "how often does he take",
+          "taking it regularly",
+          "use it regularly",
+          "when did he stop",
+          "how long since he stopped"
         ]
-      }
+      },
+      "disclosure": "specific"
     },
     {
       "id": "hx-technique",
@@ -863,7 +1146,9 @@
           "inhaler technique",
           "mask",
           "chamber",
-          "aerochamber"
+          "aerochamber",
+          "take his inhaler",
+          "how he takes his inhaler"
         ]
       }
     },
@@ -894,8 +1179,16 @@
           "over the counter",
           "herbal",
           "pharmacy",
-          "any medication",
-          "cough medicine"
+          "cough medicine",
+          "otc",
+          "any other medication"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": [
+          "regular",
+          "preventer"
         ]
       }
     },
@@ -919,7 +1212,10 @@
           "过敏史",
           "对什么过敏",
           "过敏吗",
-          "药过敏"
+          "药过敏",
+          "过敏的",
+          "有过敏",
+          "啥过敏"
         ],
         "en": [
           "allergies",
@@ -927,7 +1223,26 @@
           "drug allergy",
           "food allergy",
           "penicillin",
-          "allergic to anything"
+          "allergic to anything",
+          "nkda"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "爸妈",
+          "父母",
+          "家族",
+          "家里人",
+          "家人",
+          "爸爸",
+          "妹妹"
+        ],
+        "en": [
+          "family",
+          "parents",
+          "father",
+          "sister",
+          "dad"
         ]
       }
     },
@@ -958,9 +1273,67 @@
           "atopy",
           "sneezing in spring",
           "pollen",
-          "atopic"
+          "atopic",
+          "hayfever"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "爸妈",
+          "父母",
+          "家族",
+          "家里人",
+          "家人",
+          "爸爸",
+          "妹妹"
+        ],
+        "en": [
+          "family",
+          "parents",
+          "father",
+          "sister",
+          "dad"
         ]
       }
+    },
+    {
+      "id": "hx-pmh-other",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了哮喘，他还有别的病吗？做过手术吗？",
+        "en": "Apart from asthma, does he have any other medical problems, or has he had any operations?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）没有别的病，就是小时候长过湿疹。也没做过手术。",
+        "en": "(Mother) Nothing else — just the eczema when he was little. He's never had an operation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "别的病",
+          "其他疾病",
+          "其他病",
+          "基础病",
+          "既往病史",
+          "手术",
+          "开过刀",
+          "心脏病",
+          "还有什么病"
+        ],
+        "en": [
+          "other medical problems",
+          "other illnesses",
+          "medical conditions",
+          "operations",
+          "surgery",
+          "heart problems",
+          "past medical history",
+          "pmh",
+          "anything else wrong"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false
     },
     {
       "id": "hx-birth",
@@ -1080,7 +1453,11 @@
           "有人有哮喘",
           "家里谁有",
           "妹妹",
-          "父母"
+          "父母",
+          "爸妈",
+          "有没有人哮喘",
+          "家里有人哮喘",
+          "家族里有"
         ],
         "en": [
           "family history",
@@ -1089,7 +1466,10 @@
           "parents",
           "sister",
           "relatives",
-          "anyone in the family"
+          "anyone in the family",
+          "family hx",
+          "fhx",
+          "family hx of asthma"
         ]
       }
     },
@@ -1138,14 +1518,16 @@
       },
       "keywords": {
         "zh-CN": [
-          "家里有谁",
           "住哪",
           "宠物",
           "养猫",
           "养狗",
           "居住环境",
           "谁照顾",
-          "家庭情况"
+          "家庭情况",
+          "家里都有谁",
+          "住在一起",
+          "家里几口人"
         ],
         "en": [
           "who lives at home",
@@ -1178,7 +1560,9 @@
           "过敏原",
           "冷空气",
           "猫毛",
-          "触发因素"
+          "触发因素",
+          "接触猫",
+          "碰到猫"
         ],
         "en": [
           "trigger",
@@ -1187,7 +1571,18 @@
           "what makes it worse",
           "cold air",
           "cats",
-          "allergen exposure"
+          "allergen exposure",
+          "around cats",
+          "near cats"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "这次"
+        ],
+        "en": [
+          "this attack",
+          "this time"
         ]
       }
     },
@@ -1209,7 +1604,9 @@
           "哮喘计划",
           "应急计划",
           "什么时候来医院",
-          "峰流速仪"
+          "峰流速仪",
+          "最佳值",
+          "个人最佳"
         ],
         "en": [
           "action plan",
@@ -1217,7 +1614,8 @@
           "written plan",
           "management plan",
           "when to come in",
-          "peak flow meter"
+          "peak flow meter",
+          "personal best"
         ]
       }
     },
@@ -1272,7 +1670,11 @@
           "打点滴",
           "消炎药",
           "抗生素",
-          "预期"
+          "预期",
+          "吊瓶",
+          "输液",
+          "打针",
+          "挂水"
         ],
         "en": [
           "expect",
@@ -1348,6 +1750,42 @@
       }
     },
     {
+      "id": "hx-child-feeling-critical",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "（问孩子）小朋友，你现在感觉怎么样？",
+        "en": "(To the child) How are you feeling, buddy?"
+      },
+      "answer": {
+        "zh-CN": "（孩子没有力气回答，只是微微睁眼看了你一下，又闭上眼睛，轻轻摇了摇头。）",
+        "en": "(He's too exhausted to answer — he opens his eyes briefly, looks at you, closes them again and gives a tiny shake of the head.)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "感觉怎么样",
+          "小朋友",
+          "问孩子",
+          "难受吗",
+          "怎么了"
+        ],
+        "en": [
+          "how are you feeling",
+          "how do you feel",
+          "buddy",
+          "ask the child",
+          "are you ok",
+          "what's wrong"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "critical"
+      ]
+    },
+    {
       "id": "hx-child-feeling-later",
       "topic": "presenting-complaint",
       "phases": [
@@ -1399,8 +1837,8 @@
           "现在感觉",
           "好了吗",
           "问孩子",
-          "还喘吗",
-          "想回家"
+          "想回家",
+          "现在还喘吗"
         ],
         "en": [
           "how are you feeling now",
@@ -1436,7 +1874,9 @@
           "spirometry",
           "breathing test",
           "blowing test",
-          "FEV1"
+          "FEV1",
+          "pft",
+          "pfts"
         ]
       }
     },
@@ -1981,7 +2421,12 @@
       "finding": {
         "zh-CN": "清醒（AVPU：A），GCS 15分；认得妈妈，能回答简单问题；虽然害怕，但妈妈抱着能安抚下来，无躁动；无嗜睡，无意识模糊。",
         "en": "Alert (AVPU: A), GCS 15; recognises his mother and answers simple questions; frightened but settles in his mother's arms — not agitated; not drowsy, not confused."
-      }
+      },
+      "phases": [
+        "arrival",
+        "reassess",
+        "discharge"
+      ]
     },
     {
       "id": "ex-anthropometry",
@@ -2233,6 +2678,209 @@
         "zh-CN": "双肺呼吸音清晰、对称，进气良好；平静呼吸时无哮鸣音，仅在用力呼气时偶闻少许呼气末哮鸣音；无湿啰音。",
         "en": "Good, symmetrical air entry; no wheeze during quiet breathing — only an occasional faint end-expiratory wheeze on forced expiration; no crackles."
       }
+    },
+    {
+      "id": "ex-crit-general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况（意识、面色、体位）",
+        "en": "General appearance (alertness, colour, posture)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "看起来怎么样",
+          "面色",
+          "发绀",
+          "体位",
+          "整体观察",
+          "望诊"
+        ],
+        "en": [
+          "general appearance",
+          "overall appearance",
+          "colour",
+          "cyanosis",
+          "posture",
+          "how does he look overall",
+          "end of the bed"
+        ]
+      },
+      "excludeKeywords": [],
+      "finding": {
+        "zh-CN": "疲惫地瘫靠在妈妈怀里，不再挣扎哭闹，两次呼吸之间眼睛会闭上；面色苍白，口唇发暗（轻度中心性发绀）；鼻翼扇动。",
+        "en": "Slumped exhausted against his mother, no longer crying or struggling, eyes closing between breaths; pale with dusky lips (mild central cyanosis); nasal flaring."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "critical"
+      ]
+    },
+    {
+      "id": "ex-crit-speech",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "评估说话能力（能否一口气说完整句子）",
+        "en": "Assess speech (can he finish a sentence in one breath?)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "说话",
+          "能说完整句子吗",
+          "讲话",
+          "单字",
+          "短语",
+          "说话能力",
+          "语言"
+        ],
+        "en": [
+          "speech",
+          "talking",
+          "full sentences",
+          "phrases",
+          "words",
+          "can he talk",
+          "speak"
+        ]
+      },
+      "excludeKeywords": [],
+      "finding": {
+        "zh-CN": "已经说不出话——最多挤出一个字，大多只能点头或摇头。",
+        "en": "Can no longer talk — at most a single word; mostly nods or shakes his head."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "critical"
+      ]
+    },
+    {
+      "id": "ex-crit-wob",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "视诊呼吸做功（呼吸频率、三凹征、辅助呼吸肌）",
+        "en": "Inspect work of breathing (rate, recession, accessory muscles)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "呼吸做功",
+          "三凹征",
+          "吸气凹陷",
+          "辅助呼吸肌",
+          "呼吸费力",
+          "肋间凹陷",
+          "呼吸急促",
+          "胸骨上窝",
+          "看呼吸"
+        ],
+        "en": [
+          "work of breathing",
+          "recession",
+          "retractions",
+          "accessory muscles",
+          "tracheal tug",
+          "intercostal",
+          "subcostal",
+          "breathing effort",
+          "look at breathing"
+        ]
+      },
+      "excludeKeywords": [],
+      "finding": {
+        "zh-CN": "呼吸浅、费力却无力：胸廓起伏减小，胸骨上窝及肋间凹陷仍明显，可见胸锁乳突肌/斜角肌收缩和点头样呼吸；呼吸频率较前下降是疲劳的表现，并非好转。",
+        "en": "Shallow, laboured but weak breathing: reduced chest movement, marked suprasternal and intercostal recession, visible sternomastoid/scalene contraction and head bobbing; the falling respiratory rate reflects exhaustion, not improvement."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "critical"
+      ]
+    },
+    {
+      "id": "ex-crit-auscultation",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "双肺听诊",
+        "en": "Auscultate the chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听诊",
+          "听肺",
+          "肺部听诊",
+          "呼吸音",
+          "哮鸣音",
+          "啰音",
+          "听一下胸部",
+          "进气"
+        ],
+        "en": [
+          "auscultate",
+          "listen to chest",
+          "lung sounds",
+          "breath sounds",
+          "wheeze",
+          "crackles",
+          "air entry",
+          "stethoscope"
+        ]
+      },
+      "excludeKeywords": [],
+      "finding": {
+        "zh-CN": "双肺呼吸音明显减弱、几乎听不到，仅闻及微弱的呼气相哮鸣音——接近“沉默肺”，是危险信号；无湿啰音。",
+        "en": "Air entry markedly reduced to minimal on both sides with only a faint expiratory wheeze — an almost silent chest, an ominous sign; no crackles."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "critical"
+      ]
+    },
+    {
+      "id": "ex-crit-mental",
+      "system": "mental-status",
+      "maneuver": {
+        "zh-CN": "评估意识状态（AVPU/GCS）",
+        "en": "Assess conscious level (AVPU/GCS)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "意识",
+          "神志",
+          "GCS",
+          "AVPU",
+          "嗜睡",
+          "清醒吗",
+          "精神状态",
+          "反应"
+        ],
+        "en": [
+          "conscious level",
+          "GCS",
+          "AVPU",
+          "is he alert",
+          "drowsy",
+          "mental status",
+          "responsive",
+          "consciousness"
+        ]
+      },
+      "excludeKeywords": [],
+      "finding": {
+        "zh-CN": "嗜睡，呼唤能睁眼（AVPU：V），GCS 14（E3 V5 M6）；仍认得妈妈，但反应变慢，不再害怕或挣扎。",
+        "en": "Drowsy, opens his eyes to voice (AVPU: V), GCS 14 (E3 V5 M6); still recognises his mother but responds slowly and is no longer frightened or struggling."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "critical"
+      ]
     }
   ],
   "examNotRecorded": {
@@ -2470,6 +3118,78 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "available": true,
+          "text": {
+            "zh-CN": "PRAM 12/12（重度，8–12分）：胸骨上窝凹陷 2（有）；斜角肌收缩 2（有）；进气 3（极少）；哮鸣音 3（接近沉默肺，进气极少）；SpO₂ <92% → 2。较到院时的8分升高。",
+            "en": "PRAM 12/12 (severe range 8–12): suprasternal retraction 2 (present); scalene contraction 2 (present); air entry 3 (minimal); wheeze 3 (near-silent chest with minimal air entry); SpO₂ < 92% → 2. Up from 8 on arrival."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "胸骨上窝凹陷",
+                "en": "Suprasternal retraction"
+              },
+              "value": 2,
+              "unit": "",
+              "refText": "0 absent / 2 present"
+            },
+            {
+              "analyte": {
+                "zh-CN": "斜角肌收缩",
+                "en": "Scalene muscle contraction"
+              },
+              "value": 2,
+              "unit": "",
+              "refText": "0 absent / 2 present"
+            },
+            {
+              "analyte": {
+                "zh-CN": "进气",
+                "en": "Air entry"
+              },
+              "value": 3,
+              "unit": "",
+              "refText": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+            },
+            {
+              "analyte": {
+                "zh-CN": "哮鸣音",
+                "en": "Wheezing"
+              },
+              "value": 3,
+              "unit": "",
+              "refText": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+            },
+            {
+              "analyte": {
+                "zh-CN": "SpO₂（吸空气）",
+                "en": "SpO₂ (room air)"
+              },
+              "value": 2,
+              "unit": "",
+              "refText": "0 ≥95% / 1 92–94% / 2 <92%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "PRAM 总分",
+                "en": "PRAM total"
+              },
+              "value": 12,
+              "unit": "/12",
+              "refLow": 0,
+              "refHigh": 3,
+              "refText": "0–3 mild 轻度; 4–7 moderate 中度; 8–12 severe 重度",
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "critical": false,
+          "note": {
+            "zh-CN": "PRAM 适用于2–17岁儿童，用于分级和追踪治疗反应；SpO₂ 一项按吸空气时的数值计分。不要为评分延误治疗。",
+            "en": "PRAM is validated for ages 2–17 to grade severity and track response; the SpO₂ item uses the room-air value. Never delay treatment to score."
+          }
         }
       }
     },
@@ -2494,7 +3214,9 @@
           "脱氧试验",
           "血氧饱和度",
           "血氧",
-          "停氧"
+          "停氧",
+          "指脉氧",
+          "脉氧"
         ],
         "en": [
           "room air",
@@ -2503,7 +3225,9 @@
           "spo2",
           "sats",
           "air trial",
-          "oxygen wean trial"
+          "oxygen wean trial",
+          "pulse ox",
+          "oximetry"
         ]
       },
       "results": {
@@ -2567,6 +3291,16 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "available": false,
+          "text": {
+            "zh-CN": "未做停氧试验：他正在恶化、仍然低氧，不能停氧（请看监护仪上的实时SpO₂）。",
+            "en": "No off-oxygen trial: he is deteriorating and still hypoxaemic, so oxygen must not be stopped (see the live SpO₂ on the monitor)."
+          },
+          "values": [],
+          "figures": [],
+          "critical": false
         }
       }
     },
@@ -2677,6 +3411,16 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "available": false,
+          "text": {
+            "zh-CN": "无法完成：他太疲惫、喘得太厉害，吹不了峰流速。",
+            "en": "Not possible: he is too exhausted and breathless to perform a peak flow."
+          },
+          "values": [],
+          "figures": [],
+          "critical": false
         }
       }
     },
@@ -2734,6 +3478,16 @@
           }
         },
         "discharge": {
+          "text": {
+            "zh-CN": "• 4岁：哮喘急性发作，儿科普通病房住院3天，需鼻导管吸氧；未入PICU，未插管。\n• 过去12个月：急诊就诊2次（均为病毒感染后诱发），雾化后离院，每次开具口服泼尼松龙3天。\n• 处方：丙酸氟替卡松气雾剂 50 µg/揿，每次1揿、每日2次（经储雾罐）——每支120揿（按医嘱约可用60天）；末次取药约7个月前，此后无续方。沙丁胺醇气雾剂 100 µg/揿，按需使用，末次取药约3个月前。\n• 无药物过敏记录。\n• 未见肺功能检查、过敏原检测或书面哮喘行动计划的记录。",
+            "en": "• Age 4: acute asthma, admitted to the general paediatric ward for 3 days on nasal-cannula oxygen; no PICU, never intubated.\n• Past 12 months: 2 ED attendances (both after viral infections), discharged after nebulisers, each with 3 days of oral prednisolone.\n• Prescriptions: fluticasone propionate pMDI 50 µg/puff, 1 puff twice daily via spacer — 120-dose inhaler (≈60 days as prescribed); last dispensed about 7 months ago, no refills since. Salbutamol pMDI 100 µg/puff as needed, last dispensed about 3 months ago.\n• No drug allergies recorded.\n• No record of spirometry, allergy testing or a written asthma action plan."
+          },
+          "note": {
+            "zh-CN": "一支60天用量的控制药在7个月里只取过一次：取药间隔是客观的依从性指标。",
+            "en": "One 60-day controller inhaler dispensed in 7 months: refill gaps are an objective adherence measure."
+          }
+        },
+        "critical": {
           "text": {
             "zh-CN": "• 4岁：哮喘急性发作，儿科普通病房住院3天，需鼻导管吸氧；未入PICU，未插管。\n• 过去12个月：急诊就诊2次（均为病毒感染后诱发），雾化后离院，每次开具口服泼尼松龙3天。\n• 处方：丙酸氟替卡松气雾剂 50 µg/揿，每次1揿、每日2次（经储雾罐）——每支120揿（按医嘱约可用60天）；末次取药约7个月前，此后无续方。沙丁胺醇气雾剂 100 µg/揿，按需使用，末次取药约3个月前。\n• 无药物过敏记录。\n• 未见肺功能检查、过敏原检测或书面哮喘行动计划的记录。",
             "en": "• Age 4: acute asthma, admitted to the general paediatric ward for 3 days on nasal-cannula oxygen; no PICU, never intubated.\n• Past 12 months: 2 ED attendances (both after viral infections), discharged after nebulisers, each with 3 days of oral prednisolone.\n• Prescriptions: fluticasone propionate pMDI 50 µg/puff, 1 puff twice daily via spacer — 120-dose inhaler (≈60 days as prescribed); last dispensed about 7 months ago, no refills since. Salbutamol pMDI 100 µg/puff as needed, last dispensed about 3 months ago.\n• No drug allergies recorded.\n• No record of spirometry, allergy testing or a written asthma action plan."
@@ -3094,6 +3848,114 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "静脉血：pH 7.24，pCO₂ 8.0 kPa，HCO₃⁻ 25.4 mmol/L，BE −1.3 mmol/L；Na⁺ 138、K⁺ 4.3、Cl⁻ 101 mmol/L；阴离子间隙 = 138 −（101 + 25.4）= 11.6 mmol/L；葡萄糖 6.9 mmol/L；乳酸 2.8 mmol/L。急性呼吸性酸中毒：重度哮喘患儿pCO₂升高提示呼吸肌疲劳。",
+            "en": "Venous: pH 7.24, pCO₂ 8.0 kPa (60 mmHg), HCO₃⁻ 25.4 mmol/L, BE −1.3 mmol/L; Na⁺ 138, K⁺ 4.3, Cl⁻ 101 mmol/L; anion gap = 138 − (101 + 25.4) = 11.6 mmol/L; glucose 6.9 mmol/L (124 mg/dL); lactate 2.8 mmol/L (25 mg/dL). Acute respiratory acidosis: a raised pCO₂ in a child with severe asthma signals exhaustion."
+          },
+          "values": [
+            {
+              "analyte": "pH",
+              "value": 7.24,
+              "unit": "",
+              "refLow": 7.31,
+              "refHigh": 7.41,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "pCO₂（静脉）",
+                "en": "pCO₂ (venous)"
+              },
+              "value": 8,
+              "unit": "kPa",
+              "refLow": 5.3,
+              "refHigh": 6.7,
+              "flag": "H"
+            },
+            {
+              "analyte": "HCO₃⁻",
+              "value": 25.4,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 28,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱剩余",
+                "en": "Base excess"
+              },
+              "value": -1.3,
+              "unit": "mmol/L",
+              "refLow": -3,
+              "refHigh": 3,
+              "flag": "N"
+            },
+            {
+              "analyte": "Na⁺",
+              "value": 138,
+              "unit": "mmol/L",
+              "refLow": 135,
+              "refHigh": 145,
+              "flag": "N"
+            },
+            {
+              "analyte": "K⁺",
+              "value": 4.3,
+              "unit": "mmol/L",
+              "refLow": 3.5,
+              "refHigh": 5,
+              "flag": "N"
+            },
+            {
+              "analyte": "Cl⁻",
+              "value": 101,
+              "unit": "mmol/L",
+              "refLow": 98,
+              "refHigh": 107,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "阴离子间隙",
+                "en": "Anion gap"
+              },
+              "value": 11.6,
+              "unit": "mmol/L",
+              "refLow": 8,
+              "refHigh": 16,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "葡萄糖",
+                "en": "Glucose"
+              },
+              "value": 6.9,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 7.8,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸",
+                "en": "Lactate"
+              },
+              "value": 2.8,
+              "unit": "mmol/L",
+              "refLow": 0.5,
+              "refHigh": 2.2,
+              "flag": "H"
+            }
+          ],
+          "critical": true,
+          "note": {
+            "zh-CN": "危及生命的哮喘中血气有助于判断通气衰竭；不要因等待结果而延误治疗。",
+            "en": "In life-threatening asthma a gas helps to recognise ventilatory failure; never delay treatment waiting for it."
+          }
         }
       }
     },
@@ -3127,7 +3989,10 @@
           "chemistry",
           "urea",
           "creatinine",
-          "bmp"
+          "bmp",
+          "lytes",
+          "u and e",
+          "u+e"
         ]
       },
       "results": {
@@ -3362,6 +4227,82 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "Na⁺ 138、K⁺ 4.3、Cl⁻ 101、总CO₂ 26 mmol/L；阴离子间隙 = 138 −（101 + 26）= 11 mmol/L；尿素 4.3 mmol/L，肌酐 40 µmol/L。",
+            "en": "Na⁺ 138, K⁺ 4.3, Cl⁻ 101, total CO₂ 26 mmol/L; anion gap = 138 − (101 + 26) = 11 mmol/L; urea 4.3 mmol/L (BUN 12 mg/dL), creatinine 40 µmol/L (0.45 mg/dL)."
+          },
+          "values": [
+            {
+              "analyte": "Na⁺",
+              "value": 138,
+              "unit": "mmol/L",
+              "refLow": 135,
+              "refHigh": 145,
+              "flag": "N"
+            },
+            {
+              "analyte": "K⁺",
+              "value": 4.3,
+              "unit": "mmol/L",
+              "refLow": 3.5,
+              "refHigh": 5,
+              "flag": "N"
+            },
+            {
+              "analyte": "Cl⁻",
+              "value": 101,
+              "unit": "mmol/L",
+              "refLow": 98,
+              "refHigh": 107,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "总二氧化碳（HCO₃⁻）",
+                "en": "Total CO₂ (HCO₃⁻)"
+              },
+              "value": 26,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 29,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "阴离子间隙",
+                "en": "Anion gap"
+              },
+              "value": 11,
+              "unit": "mmol/L",
+              "refLow": 8,
+              "refHigh": 16,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿素",
+                "en": "Urea"
+              },
+              "value": 4.3,
+              "unit": "mmol/L",
+              "refLow": 1.8,
+              "refHigh": 6.4,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酐",
+                "en": "Creatinine"
+              },
+              "value": 40,
+              "unit": "µmol/L",
+              "refLow": 25,
+              "refHigh": 55,
+              "flag": "N"
+            }
+          ]
         }
       }
     },
@@ -3383,7 +4324,9 @@
           "血糖",
           "指尖血糖",
           "快速血糖",
-          "床旁血糖"
+          "床旁血糖",
+          "指尖糖",
+          "末梢血糖"
         ],
         "en": [
           "glucose",
@@ -3391,7 +4334,11 @@
           "capillary glucose",
           "finger prick",
           "poc glucose",
-          "bsl"
+          "bsl",
+          "bms",
+          "bm stix",
+          "glucometer",
+          "dextrostix"
         ]
       },
       "results": {
@@ -3451,6 +4398,25 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "指尖血糖 6.9 mmol/L（124 mg/dL）。",
+            "en": "Capillary glucose 6.9 mmol/L (124 mg/dL)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "葡萄糖",
+                "en": "Glucose"
+              },
+              "value": 6.9,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 7.8,
+              "flag": "N"
+            }
+          ]
         }
       }
     },
@@ -3472,7 +4438,8 @@
           "血常规",
           "血细胞分析",
           "全血细胞计数",
-          "白细胞"
+          "白细胞",
+          "血象"
         ],
         "en": [
           "fbc",
@@ -3750,6 +4717,95 @@
             "zh-CN": "糖皮质激素引起的中性粒细胞增多和嗜酸性粒细胞减少——不是感染的证据，不需要抗生素。",
             "en": "Corticosteroid-induced neutrophilia with eosinopenia — not evidence of infection and no reason for antibiotics."
           }
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "白细胞 10.9×10⁹/L（中性粒细胞 7.2、淋巴细胞 2.9、单核细胞 0.5、嗜酸性粒细胞 0.3），血红蛋白 125 g/L，血小板 320×10⁹/L。",
+            "en": "WBC 10.9 ×10⁹/L (neutrophils 7.2, lymphocytes 2.9, monocytes 0.5, eosinophils 0.3), haemoglobin 125 g/L (12.5 g/dL), platelets 320 ×10⁹/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "WBC"
+              },
+              "value": 10.9,
+              "unit": "×10⁹/L",
+              "refLow": 4.5,
+              "refHigh": 13.5,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞",
+                "en": "Neutrophils"
+              },
+              "value": 7.2,
+              "unit": "×10⁹/L",
+              "refLow": 1.5,
+              "refHigh": 8,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "淋巴细胞",
+                "en": "Lymphocytes"
+              },
+              "value": 2.9,
+              "unit": "×10⁹/L",
+              "refLow": 1.5,
+              "refHigh": 7,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "单核细胞",
+                "en": "Monocytes"
+              },
+              "value": 0.5,
+              "unit": "×10⁹/L",
+              "refLow": 0.2,
+              "refHigh": 1,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "嗜酸性粒细胞",
+                "en": "Eosinophils"
+              },
+              "value": 0.3,
+              "unit": "×10⁹/L",
+              "refLow": 0,
+              "refHigh": 0.5,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 125,
+              "unit": "g/L",
+              "refLow": 115,
+              "refHigh": 145,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 320,
+              "unit": "×10⁹/L",
+              "refLow": 150,
+              "refHigh": 450,
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "血常规不改变急性哮喘的处理。",
+            "en": "An FBC does not change acute asthma management."
+          }
         }
       }
     },
@@ -3823,6 +4879,21 @@
               "flag": "N"
             }
           ]
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "CRP 6 mg/L。",
+            "en": "CRP 6 mg/L."
+          },
+          "values": [
+            {
+              "analyte": "CRP",
+              "value": 6,
+              "unit": "mg/L",
+              "refHigh": 10,
+              "flag": "N"
+            }
+          ]
         }
       }
     },
@@ -3879,6 +4950,16 @@
             "zh-CN": "无脓毒症表现、T 37.6 ℃、诱因为病毒感染——不需要血培养。",
             "en": "No features of sepsis, T 37.6 °C, viral trigger — a blood culture is not indicated."
           }
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "需氧血培养瓶已送检：培养中。最终报告需48–120小时，急诊期间不会有结果。",
+            "en": "Aerobic blood culture sent: incubating. Final report in 48–120 h — no result during the ED stay."
+          },
+          "note": {
+            "zh-CN": "无脓毒症表现、T 37.6 ℃、诱因为病毒感染——不需要血培养。",
+            "en": "No features of sepsis, T 37.6 °C, viral trigger — a blood culture is not indicated."
+          }
         }
       }
     },
@@ -3902,7 +4983,13 @@
           "鼻咽拭子",
           "病毒检测",
           "流感检测",
-          "多重pcr"
+          "多重pcr",
+          "流感",
+          "甲流",
+          "乙流",
+          "新冠",
+          "呼吸道病毒",
+          "rsv"
         ],
         "en": [
           "viral pcr",
@@ -3913,7 +5000,11 @@
           "viral",
           "flu test",
           "respiratory panel",
-          "multiplex pcr"
+          "multiplex pcr",
+          "npa",
+          "rsv",
+          "covid",
+          "influenza"
         ]
       },
       "results": {
@@ -4028,6 +5119,61 @@
           }
         },
         "discharge": {
+          "text": {
+            "zh-CN": "鼻病毒/肠道病毒：阳性。甲型/乙型流感病毒、呼吸道合胞病毒、SARS-CoV-2、人偏肺病毒、腺病毒、肺炎支原体：均阴性。",
+            "en": "Rhinovirus/enterovirus: DETECTED. Influenza A/B, RSV, SARS-CoV-2, human metapneumovirus, adenovirus, Mycoplasma pneumoniae: not detected."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "鼻病毒/肠道病毒",
+                "en": "Rhinovirus/enterovirus"
+              },
+              "value": "Detected",
+              "unit": "",
+              "refText": "Not detected",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "甲型/乙型流感病毒",
+                "en": "Influenza A/B"
+              },
+              "value": "Not detected",
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "呼吸道合胞病毒",
+                "en": "RSV"
+              },
+              "value": "Not detected",
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": "SARS-CoV-2",
+              "value": "Not detected",
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肺炎支原体",
+                "en": "Mycoplasma pneumoniae"
+              },
+              "value": "Not detected",
+              "unit": "",
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "证实了病毒诱因，但不改变急诊处理。",
+            "en": "Confirms a viral trigger but does not change ED management."
+          }
+        },
+        "critical": {
           "text": {
             "zh-CN": "鼻病毒/肠道病毒：阳性。甲型/乙型流感病毒、呼吸道合胞病毒、SARS-CoV-2、人偏肺病毒、腺病毒、肺炎支原体：均阴性。",
             "en": "Rhinovirus/enterovirus: DETECTED. Influenza A/B, RSV, SARS-CoV-2, human metapneumovirus, adenovirus, Mycoplasma pneumoniae: not detected."
@@ -4130,6 +5276,12 @@
             "zh-CN": "窦性心律，120次/分；PR 0.12 s，QRS 0.07 s，QTc 0.41 s；ST-T正常。",
             "en": "Sinus rhythm 120/min; PR 0.12 s, QRS 0.07 s, QTc 0.41 s; normal ST–T."
           }
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "窦性心动过速，165次/分；PR 0.11 s，QRS 0.07 s，QTc 0.42 s；电轴正常；无ST-T改变，无心律失常。",
+            "en": "Sinus tachycardia 165/min; PR 0.11 s, QRS 0.07 s, QTc 0.42 s; normal axis; no ST–T changes; no arrhythmia."
+          }
         }
       }
     },
@@ -4153,7 +5305,10 @@
           "x光",
           "胸部平片",
           "拍片",
-          "床旁胸片"
+          "床旁胸片",
+          "胸部正位",
+          "片子",
+          "胸部dr"
         ],
         "en": [
           "cxr",
@@ -4195,6 +5350,16 @@
             "zh-CN": "急性哮喘不常规拍胸片（BTS/GINA）：仅在怀疑气胸/纵隔气肿、实变，危及生命的发作、治疗无反应或需要机械通气时考虑。",
             "en": "Chest X-ray is not routine in acute asthma (BTS/GINA): reserve for suspected pneumothorax/pneumomediastinum or consolidation, life-threatening asthma, failure to respond, or if ventilation is needed."
           }
+        },
+        "critical": {
+          "text": {
+            "zh-CN": "床旁胸部正位片：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
+            "en": "Portable AP chest X-ray: hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
+          },
+          "note": {
+            "zh-CN": "急性哮喘不常规拍胸片（BTS/GINA）：仅在怀疑气胸/纵隔气肿、实变，危及生命的发作、治疗无反应或需要机械通气时考虑。",
+            "en": "Chest X-ray is not routine in acute asthma (BTS/GINA): reserve for suspected pneumothorax/pneumomediastinum or consolidation, life-threatening asthma, failure to respond, or if ventilation is needed."
+          }
         }
       }
     },
@@ -4225,7 +5390,8 @@
           "specific ige",
           "allergen test",
           "total ige",
-          "allergy blood test"
+          "allergy blood test",
+          "rast"
         ]
       },
       "results": {
@@ -4249,6 +5415,83 @@
             "zh-CN": "急诊不提供该项检测；可在哮喘专科随访时安排（如尘螨、猫毛等过敏原）。",
             "en": "Not available as an emergency test; can be arranged at asthma-clinic follow-up (e.g. house dust mite, cat)."
           }
+        },
+        "critical": {
+          "available": false,
+          "text": {
+            "zh-CN": "急诊不提供该项检测；可在哮喘专科随访时安排（如尘螨、猫毛等过敏原）。",
+            "en": "Not available as an emergency test; can be arranged at asthma-clinic follow-up (e.g. house dust mite, cat)."
+          }
+        }
+      }
+    },
+    {
+      "id": "spirometry",
+      "name": {
+        "zh-CN": "肺功能检查（肺通气功能）",
+        "en": "Spirometry (lung function test)"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "肺功能",
+          "肺通气功能",
+          "肺活量",
+          "fev1"
+        ],
+        "en": [
+          "spirometry",
+          "pft",
+          "lung function",
+          "pulmonary function",
+          "fev1"
+        ]
+      },
+      "requires": [],
+      "turnaroundMinutes": 0,
+      "risk": "none",
+      "value": "low-value",
+      "alternativeTo": [],
+      "results": {
+        "arrival": {
+          "available": false,
+          "text": {
+            "zh-CN": "急诊发作期不做肺功能检查：喘息时测定不可靠，也会加重孩子的不适。恢复后在哮喘专科随访时检查（如FEV₁及支气管舒张试验）。",
+            "en": "Spirometry is not performed during an acute attack in the ED (unreliable, and distressing while he is breathless). Arrange it at asthma-clinic follow-up once he has recovered (e.g. FEV₁ with bronchodilator reversibility)."
+          },
+          "values": [],
+          "figures": [],
+          "critical": false
+        },
+        "reassess": {
+          "available": false,
+          "text": {
+            "zh-CN": "急诊发作期不做肺功能检查：喘息时测定不可靠，也会加重孩子的不适。恢复后在哮喘专科随访时检查（如FEV₁及支气管舒张试验）。",
+            "en": "Spirometry is not performed during an acute attack in the ED (unreliable, and distressing while he is breathless). Arrange it at asthma-clinic follow-up once he has recovered (e.g. FEV₁ with bronchodilator reversibility)."
+          },
+          "values": [],
+          "figures": [],
+          "critical": false
+        },
+        "discharge": {
+          "available": false,
+          "text": {
+            "zh-CN": "急诊发作期不做肺功能检查：喘息时测定不可靠，也会加重孩子的不适。恢复后在哮喘专科随访时检查（如FEV₁及支气管舒张试验）。",
+            "en": "Spirometry is not performed during an acute attack in the ED (unreliable, and distressing while he is breathless). Arrange it at asthma-clinic follow-up once he has recovered (e.g. FEV₁ with bronchodilator reversibility)."
+          },
+          "values": [],
+          "figures": [],
+          "critical": false
+        },
+        "critical": {
+          "available": false,
+          "text": {
+            "zh-CN": "急诊发作期不做肺功能检查：喘息时测定不可靠，也会加重孩子的不适。恢复后在哮喘专科随访时检查（如FEV₁及支气管舒张试验）。",
+            "en": "Spirometry is not performed during an acute attack in the ED (unreliable, and distressing while he is breathless). Arrange it at asthma-clinic follow-up once he has recovered (e.g. FEV₁ with bronchodilator reversibility)."
+          },
+          "values": [],
+          "figures": [],
+          "critical": false
         }
       }
     }
@@ -4275,7 +5518,7 @@
       "requires": [
         "medications"
       ],
-      "maxDoses": 10,
+      "maxDoses": 6,
       "name": {
         "zh-CN": "沙丁胺醇气雾剂（pMDI）+储雾罐",
         "en": "Salbutamol pMDI via spacer"
@@ -4284,11 +5527,12 @@
         "zh-CN": [
           "沙丁胺醇气雾剂",
           "沙丁胺醇喷雾",
-          "储雾罐",
           "万托林气雾剂",
           "蓝色喷雾",
           "pmdi",
-          "揿"
+          "揿",
+          "储雾罐吸入",
+          "沙丁胺醇储雾罐"
         ],
         "en": [
           "salbutamol inhaler",
@@ -4346,6 +5590,87 @@
       "response": {
         "zh-CN": "护士协助他通过储雾罐一揿一揿吸完10揿。几分钟后呼吸开始放缓，哮鸣音减轻；心率随之上升，手有点抖。",
         "en": "With the nurse's help he takes the 10 puffs through the spacer, one at a time. Within minutes his breathing starts to ease and the wheeze softens; his heart rate climbs and his hands get a little shaky."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "雾化",
+          "教",
+          "示范"
+        ],
+        "en": [
+          "neb",
+          "teach",
+          "technique",
+          "demonstrat"
+        ]
+      },
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 2
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 6
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 3
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 5
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 4
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 4
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 5
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 3
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 6
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 2
+              }
+            ]
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "这已是第9次以上的沙丁胺醇：反复大剂量会导致心动过速、震颤、低钾和乳酸升高。若仍需如此频繁地用药，应升级处理（呼叫上级/PICU，考虑静脉治疗），而不是继续重复同样的药。",
+        "en": "That is more than 8 salbutamol doses: repeated high doses cause tachycardia, tremor, hypokalaemia and raised lactate. If he still needs it this often, escalate (senior/PICU review, IV therapy) rather than keep repeating the same drug."
       }
     },
     {
@@ -4355,7 +5680,7 @@
       "requires": [
         "nebulizer"
       ],
-      "maxDoses": 10,
+      "maxDoses": 6,
       "name": {
         "zh-CN": "沙丁胺醇氧驱动雾化吸入",
         "en": "Nebulised salbutamol (oxygen-driven)"
@@ -4423,6 +5748,88 @@
       "response": {
         "zh-CN": "戴上雾化面罩时他起初有点害怕，妈妈抱着他慢慢安静下来。雾化结束时呼吸稍平稳，心率上升，手微微发抖。",
         "en": "He is frightened of the nebuliser mask at first, but settles in his mum's arms. By the end of the neb his breathing is a little easier, his heart rate is up and his hands have a fine tremor."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "气雾剂",
+          "储雾罐",
+          "揿"
+        ],
+        "en": [
+          "spacer",
+          "puffs",
+          "inhaler",
+          "pmdi",
+          "mdi"
+        ]
+      },
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 2
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 6
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 3
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 5
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 4
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 4
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 5
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 3
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "salbutamol-neb",
+                "minCount": 6
+              },
+              {
+                "intervened": "salbutamol-mdi",
+                "minCount": 2
+              }
+            ]
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "这已是第9次以上的沙丁胺醇：反复大剂量会导致心动过速、震颤、低钾和乳酸升高。若仍需如此频繁地用药，应升级处理（呼叫上级/PICU，考虑静脉治疗），而不是继续重复同样的药。",
+        "en": "That is more than 8 salbutamol doses: repeated high doses cause tachycardia, tremor, hypokalaemia and raised lactate. If he still needs it this often, escalate (senior/PICU review, IV therapy) rather than keep repeating the same drug."
       }
     },
     {
@@ -4465,7 +5872,7 @@
         }
       ],
       "indicatedWhen": {
-        "phase": "arrival"
+        "always": true
       },
       "response": {
         "zh-CN": "与沙丁胺醇混合雾化完毕。",
@@ -4479,7 +5886,7 @@
       "requires": [
         "oxygen"
       ],
-      "maxDoses": 1,
+      "maxDoses": 3,
       "name": {
         "zh-CN": "面罩吸氧（滴定至SpO₂ 94–98%）",
         "en": "Oxygen via face mask, titrated to SpO₂ 94–98%"
@@ -4638,6 +6045,23 @@
       "response": {
         "zh-CN": "他皱着眉喝下了溶好的药液，没有呕吐。护士提醒：激素需要几个小时才起效。",
         "en": "He pulls a face but swallows the dissolved tablets and keeps them down. The nurse reminds you steroids take a few hours to work."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "吸入",
+          "静脉",
+          "控制药",
+          "预防药"
+        ],
+        "en": [
+          "inhaled",
+          "ics",
+          "preventer",
+          "controller",
+          "ivsteroid",
+          "ivhydrocortisone",
+          "intravenous"
+        ]
       }
     },
     {
@@ -4658,14 +6082,18 @@
           "氢化可的松",
           "静脉激素",
           "甲泼尼龙",
-          "静脉糖皮质激素"
+          "静脉糖皮质激素",
+          "甲强龙",
+          "甲泼尼龙琥珀酸钠"
         ],
         "en": [
           "hydrocortisone",
           "iv steroid",
           "iv hydrocortisone",
           "methylprednisolone",
-          "solu-cortef"
+          "solu-cortef",
+          "methylpred",
+          "solu-medrol"
         ]
       },
       "dose": {
@@ -4863,6 +6291,16 @@
       "response": {
         "zh-CN": "输注过程中他开始恶心，心率进一步上升。",
         "en": "During the infusion he becomes nauseated and his heart rate climbs further."
+      },
+      "indicatedWhen": {
+        "all": [
+          {
+            "flag": "life-threatening"
+          },
+          {
+            "intervened": "magnesium-iv"
+          }
+        ]
       }
     },
     {
@@ -4905,6 +6343,18 @@
       "response": {
         "zh-CN": "上级医生到床旁评估，与你一起复核严重程度和下一步升级的指征。",
         "en": "A senior doctor comes to the bedside and reviews severity and the escalation criteria with you."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "收入",
+          "转入",
+          "收住",
+          "转picu",
+          "转重症"
+        ],
+        "en": [
+          "admit"
+        ]
       }
     },
     {
@@ -4917,7 +6367,7 @@
       ],
       "name": {
         "zh-CN": "镇静剂（如咪达唑仑）",
-        "en": "Sedative for agitation (e.g. midazolam)"
+        "en": "Sedative (e.g. midazolam)"
       },
       "aliases": {
         "zh-CN": [
@@ -5039,7 +6489,11 @@
           "教用药",
           "示范",
           "回示",
-          "用药指导"
+          "用药指导",
+          "教用储雾罐",
+          "教他用储雾罐",
+          "储雾罐使用",
+          "吸入方法指导"
         ],
         "en": [
           "inhaler technique",
@@ -5047,7 +6501,10 @@
           "teach-back",
           "demonstrate inhaler",
           "inhaler education",
-          "teach technique"
+          "teach technique",
+          "teach spacer",
+          "spacer technique",
+          "show him how to use"
         ]
       },
       "indicatedWhen": {
@@ -5192,15 +6649,12 @@
           "收入picu",
           "转picu",
           "收入icu",
-          "转重症",
-          "收住院",
-          "住院"
+          "转重症"
         ],
         "en": [
           "admit to picu",
           "picu admission",
           "hdu",
-          "admit",
           "intensive care admission",
           "admit to icu"
         ]
@@ -5211,6 +6665,64 @@
       "response": {
         "zh-CN": "PICU团队接收患儿，转入重症监护继续治疗和监测。",
         "en": "The PICU team accepts him for ongoing critical care and monitoring."
+      }
+    },
+    {
+      "id": "admit-ward",
+      "name": {
+        "zh-CN": "收入儿科普通病房",
+        "en": "Admit to the paediatric ward"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "收住院",
+          "住院",
+          "收入病房",
+          "普通病房",
+          "收入儿科",
+          "住院观察",
+          "收病房"
+        ],
+        "en": [
+          "admit",
+          "admit to ward",
+          "ward admission",
+          "admission",
+          "paediatric ward",
+          "pediatric ward",
+          "inpatient"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "picu",
+          "icu",
+          "hdu",
+          "重症",
+          "监护室"
+        ],
+        "en": [
+          "intensive care"
+        ]
+      },
+      "requires": [],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "indicatedWhen": {
+        "flag": "tiring"
+      },
+      "contraindicatedWhen": {
+        "flag": "life-threatening"
+      },
+      "harm": {
+        "zh-CN": "他有危及生命的表现，需要PICU/HDU级别的监护，不能收入普通病房。",
+        "en": "He has life-threatening features: he needs PICU/HDU-level care, not a general ward bed."
+      },
+      "response": {
+        "zh-CN": "儿科病房同意接收。床位准备好之前他仍在急诊由你负责——继续再评估，并在他离开急诊前完成宣教和随访安排。",
+        "en": "The paediatric ward accepts him. Until the bed is ready he stays under your care in the ED — keep reassessing him, and complete the education and follow-up plan before he leaves."
       }
     },
     {
@@ -5453,8 +6965,8 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "护士：“他的血氧在往下掉，现在只能说单个字了，看着越来越累！”",
-          "en": "Nurse: “His sats are dropping and he's down to single words — he's looking really tired!”"
+          "zh-CN": "护士：“他的血氧在往下掉，呼吸越来越费力，看着开始累了！”",
+          "en": "Nurse: “His sats are dropping and he's working even harder — he's starting to look tired!”"
         }
       },
       {
@@ -5484,15 +6996,16 @@
           "spo2": 84,
           "hr": 150,
           "rr": 32,
-          "etco2": 46
+          "etco2": 46,
+          "gcs": 14
         },
         "setFlags": [
           "life-threatening"
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "护士：“他快没力气了，呼吸越来越浅，几乎说不出话——我马上叫上级医生！”",
-          "en": "Nurse: “He's exhausted, his breathing is getting shallow and he can hardly speak — I'm calling the senior now!”"
+          "zh-CN": "护士：“他快没力气了，呼吸越来越浅，开始犯困，几乎说不出话——得马上请上级医生来！”",
+          "en": "Nurse: “He's exhausted — his breathing is getting shallow, he's getting drowsy and can hardly speak. We need senior help now!”"
         }
       },
       {
@@ -5541,6 +7054,42 @@
         }
       },
       {
+        "id": "ev-poor-response",
+        "when": {
+          "all": [
+            {
+              "flag": "tiring"
+            },
+            {
+              "flag": "burst-complete"
+            },
+            {
+              "elapsed": {
+                "gte": 60
+              }
+            },
+            {
+              "not": {
+                "intervened": "magnesium-iv"
+              }
+            },
+            {
+              "not": {
+                "flag": "life-threatening"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "poor-response"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "护士：“三轮雾化都做完了，他还是喘得很厉害、呼吸很快，也离不开氧气——要不要升级治疗，或者请上级来看看？”",
+          "en": "Nurse: “That's three rounds of nebs done and he's still working hard — breathing fast and needing oxygen. Do you want to escalate treatment or get the senior to see him?”"
+        }
+      },
+      {
         "id": "ev-steroid-delayed",
         "when": {
           "all": [
@@ -5570,6 +7119,51 @@
         "message": {
           "zh-CN": "护士：“他来了快一个小时了，除了雾化，还有别的药要给吗？”",
           "en": "Nurse: “He's been here nearly an hour — any other medicines you want him to have besides the nebs?”"
+        }
+      },
+      {
+        "id": "ev-not-settling",
+        "when": {
+          "all": [
+            {
+              "phase": "reassess"
+            },
+            {
+              "objective": "obj-reassess"
+            },
+            {
+              "elapsed": {
+                "gte": 250
+              }
+            },
+            {
+              "any": [
+                {
+                  "not": {
+                    "any": [
+                      {
+                        "intervened": "prednisolone"
+                      },
+                      {
+                        "intervened": "hydrocortisone-iv"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "vital": "spo2",
+                  "op": "lt",
+                  "value": 95
+                }
+              ]
+            }
+          ]
+        },
+        "setFlags": [],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "护士：“他来了4个多小时了，还是喘得比较快，吸空气时血氧也不太够——要不要再看看他还缺什么治疗？”",
+          "en": "Nurse: “He's been here over 4 hours and he's still breathing fast, with borderline sats in air — is there anything else he should be having?”"
         }
       },
       {
@@ -5609,38 +7203,16 @@
         "en": "Assess severity"
       },
       "hint": {
-        "zh-CN": "先看后听：说话能力、呼吸做功（三凹征、辅助呼吸肌）、意识、SpO₂，再听进气和哮鸣音；用结构化评分（如PRAM）归类严重度——但不要为了评分延误治疗。",
-        "en": "Look before you listen: speech, work of breathing (recession, accessory muscles), conscious level and SpO₂, then air entry and wheeze; grade severity with a structured score (e.g. PRAM) — but never let scoring delay treatment."
+        "zh-CN": "先看后听：说话能力、呼吸做功（三凹征、辅助呼吸肌）、意识、SpO₂，再听进气和哮鸣音；用结构化评分（如PRAM）归类严重度——但不要为了评分延误治疗。一旦病情恶化，立即重新评估。",
+        "en": "Look before you listen: speech, work of breathing (recession, accessory muscles), conscious level and SpO₂, then air entry and wheeze; grade severity with a structured score (e.g. PRAM) — but never let scoring delay treatment. If he deteriorates, reassess at once."
       },
       "guidance": {
         "zh-CN": "到床旁评估患儿：观察说话、呼吸做功和意识，听诊双肺，完成PRAM评分，并在证据板上判断严重程度。",
         "en": "Go to the bedside: assess speech, work of breathing and conscious level, listen to the chest, complete a PRAM score and grade severity on the evidence board."
       },
       "completeWhen": {
-        "all": [
+        "any": [
           {
-            "examined": "ex-speech"
-          },
-          {
-            "examined": "ex-work-of-breathing"
-          },
-          {
-            "examined": "ex-auscultation"
-          },
-          {
-            "examined": "ex-mental-status"
-          },
-          {
-            "read": "pram"
-          },
-          {
-            "decided": "dec-severity"
-          }
-        ]
-      },
-      "waypoints": [
-        {
-          "unless": {
             "all": [
               {
                 "examined": "ex-speech"
@@ -5653,6 +7225,74 @@
               },
               {
                 "examined": "ex-mental-status"
+              },
+              {
+                "read": "pram"
+              },
+              {
+                "decided": "dec-severity"
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "flag": "life-threatening"
+              },
+              {
+                "examined": "ex-crit-speech"
+              },
+              {
+                "examined": "ex-crit-wob"
+              },
+              {
+                "examined": "ex-crit-auscultation"
+              },
+              {
+                "examined": "ex-crit-mental"
+              },
+              {
+                "read": "pram"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "any": [
+              {
+                "all": [
+                  {
+                    "examined": "ex-speech"
+                  },
+                  {
+                    "examined": "ex-work-of-breathing"
+                  },
+                  {
+                    "examined": "ex-auscultation"
+                  },
+                  {
+                    "examined": "ex-mental-status"
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "examined": "ex-crit-speech"
+                  },
+                  {
+                    "examined": "ex-crit-wob"
+                  },
+                  {
+                    "examined": "ex-crit-auscultation"
+                  },
+                  {
+                    "examined": "ex-crit-mental"
+                  }
+                ]
               }
             ]
           },
@@ -5665,7 +7305,13 @@
           "target": "cardiac-monitor"
         },
         {
+          "unless": {
+            "flag": "life-threatening"
+          },
           "target": "board"
+        },
+        {
+          "target": "patient"
         }
       ]
     },
@@ -5688,35 +7334,72 @@
         "en": "Treat the bronchospasm and the hypoxia now — and give early the treatment that takes hours to work."
       },
       "completeWhen": {
-        "all": [
+        "any": [
           {
-            "any": [
+            "all": [
               {
-                "intervened": "salbutamol-neb"
+                "any": [
+                  {
+                    "intervened": "salbutamol-neb"
+                  },
+                  {
+                    "intervened": "salbutamol-mdi"
+                  }
+                ]
               },
               {
-                "intervened": "salbutamol-mdi"
+                "intervened": "ipratropium-neb"
+              },
+              {
+                "intervened": "oxygen"
+              },
+              {
+                "any": [
+                  {
+                    "intervened": "prednisolone"
+                  },
+                  {
+                    "intervened": "hydrocortisone-iv"
+                  }
+                ]
+              },
+              {
+                "decided": "dec-first-line"
               }
             ]
           },
           {
-            "intervened": "ipratropium-neb"
-          },
-          {
-            "intervened": "oxygen"
-          },
-          {
-            "any": [
+            "all": [
               {
-                "intervened": "prednisolone"
+                "flag": "life-threatening"
               },
               {
-                "intervened": "hydrocortisone-iv"
+                "any": [
+                  {
+                    "intervened": "salbutamol-neb"
+                  },
+                  {
+                    "intervened": "salbutamol-mdi"
+                  }
+                ]
+              },
+              {
+                "intervened": "ipratropium-neb"
+              },
+              {
+                "intervened": "oxygen"
+              },
+              {
+                "any": [
+                  {
+                    "intervened": "prednisolone"
+                  },
+                  {
+                    "intervened": "hydrocortisone-iv"
+                  }
+                ]
               }
             ]
-          },
-          {
-            "decided": "dec-first-line"
           }
         ]
       },
@@ -5754,7 +7437,13 @@
           "target": "medications"
         },
         {
+          "unless": {
+            "flag": "life-threatening"
+          },
           "target": "board"
+        },
+        {
+          "target": "patient"
         }
       ]
     },
@@ -5824,8 +7513,8 @@
         "en": "Reassess"
       },
       "hint": {
-        "zh-CN": "用同一个结构化工具重复评估（PRAM、说话、听诊、吸空气SpO₂、PEF）。心率上升和手抖是沙丁胺醇的预期作用，不代表恶化。",
-        "en": "Repeat the same structured assessment (PRAM, speech, auscultation, room-air SpO₂, PEF). A rising heart rate and tremor are expected salbutamol effects, not deterioration."
+        "zh-CN": "用同一个结构化工具重复评估（PRAM、说话、听诊、吸空气SpO₂、PEF）。心率上升和手抖是沙丁胺醇的预期作用，不代表恶化。若反应差（仍呼吸急促、离不开氧气）或出现危及生命征象：呼叫上级、静脉硫酸镁。",
+        "en": "Repeat the same structured assessment (PRAM, speech, auscultation, room-air SpO₂, PEF). A rising heart rate and tremor are expected salbutamol effects, not deterioration. A poor response (still breathing fast, still needing oxygen) or life-threatening features means senior review and IV magnesium."
       },
       "guidance": {
         "zh-CN": "完成第一小时的3轮支气管舒张剂后，回到床旁再评估，并决定下一步。",
@@ -5895,8 +7584,8 @@
         "en": "Discharge plan"
       },
       "hint": {
-        "zh-CN": "出院标准：吸空气SpO₂>94%、能维持3–4小时一次的沙丁胺醇、PEF>75%预计值（能测时）；出院前完成书面行动计划、吸入技术回示、恢复控制药，并安排2个工作日内复诊。",
-        "en": "Discharge criteria: room-air SpO₂ > 94%, stable on 3–4-hourly salbutamol, PEF > 75% predicted (if measurable); before he goes: written action plan, inhaler-technique teach-back, restart the controller and arrange review within 2 working days."
+        "zh-CN": "出院标准：吸空气SpO₂>94%、能维持3–4小时一次的沙丁胺醇、PEF>75%预计值（能测时）；出院前完成书面行动计划、吸入技术回示、恢复控制药，并安排2个工作日内复诊。若有顾虑（如高危因素或家庭支持不足），收入普通病房也是可以接受的处置，但同样要完成宣教和随访安排。",
+        "en": "Discharge criteria: room-air SpO₂ > 94%, stable on 3–4-hourly salbutamol, PEF > 75% predicted (if measurable); before he goes: written action plan, inhaler-technique teach-back, restart the controller and arrange review within 2 working days. If there are concerns (risk factors, support at home), ward admission is an acceptable disposition — the education and follow-up bundle still applies."
       },
       "guidance": {
         "zh-CN": "观察他是否保持稳定，然后核对出院标准，并把这次就诊变成改善长期控制的机会。",
@@ -5926,7 +7615,14 @@
                 "decided": "dec-discharge"
               },
               {
-                "intervened": "discharge-home"
+                "any": [
+                  {
+                    "intervened": "discharge-home"
+                  },
+                  {
+                    "intervened": "admit-ward"
+                  }
+                ]
               }
             ]
           },
@@ -5992,15 +7688,18 @@
       "id": "dec-severity",
       "kind": "single",
       "prompt": {
-        "zh-CN": "根据床旁评估，这次急性发作的严重程度是？",
-        "en": "Based on your bedside assessment, how severe is this exacerbation?"
+        "zh-CN": "根据到院时的床旁初始评估，这次急性发作的严重程度是？",
+        "en": "Based on your initial bedside assessment on arrival, how severe is this exacerbation?"
       },
       "need": {
-        "zh-CN": "先评估呼吸做功、听诊双肺，并读取PRAM评分。",
-        "en": "Assess work of breathing, listen to the chest and read the PRAM score first."
+        "zh-CN": "先评估说话能力、呼吸做功和意识状态，听诊双肺，并读取到院时的PRAM评分（本题针对到院时的初始评估）。",
+        "en": "Assess speech, work of breathing and conscious level, listen to the chest and read the arrival PRAM score first (this question is about the initial assessment on arrival)."
       },
       "requires": {
         "all": [
+          {
+            "examined": "ex-speech"
+          },
           {
             "examined": "ex-work-of-breathing"
           },
@@ -6008,7 +7707,16 @@
             "examined": "ex-auscultation"
           },
           {
-            "read": "pram"
+            "examined": "ex-mental-status"
+          },
+          {
+            "read": "pram",
+            "phase": "arrival"
+          },
+          {
+            "not": {
+              "phase": "critical"
+            }
           }
         ]
       },
@@ -6057,8 +7765,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "判断过重。危及生命是指SpO₂<92%同时伴有PEF<33%、沉默肺、发绀、呼吸努力差、躁动、低血压、精疲力竭或意识改变中的任一项。他神志清楚、虽害怕但无躁动，进气虽减低但不是沉默肺、无发绀、血压正常。若治疗无反应须立即重评并升级。",
-            "en": "Over-called. Life-threatening means SpO₂ < 92% plus any of PEF < 33%, silent chest, cyanosis, poor respiratory effort, agitation, hypotension, exhaustion or altered consciousness. He is alert and frightened but not agitated, has reduced air entry but no silent chest, is pink and normotensive. If he fails to respond, reassess and escalate at once."
+            "zh-CN": "判断过重。危及生命是指SpO₂<92%同时伴有PEF<33%、沉默肺、发绀、呼吸努力差、躁动、低血压、精疲力竭或意识改变中的任一项。他神志清楚、虽害怕但无躁动，进气虽减低但不是沉默肺、无发绀、血压正常。若治疗无反应须立即重评并升级。（若之后病情恶化——精疲力竭、嗜睡、沉默肺或治疗中SpO₂仍下降——就已达到危及生命的标准，须立即升级。）",
+            "en": "Over-called. Life-threatening means SpO₂ < 92% plus any of PEF < 33%, silent chest, cyanosis, poor respiratory effort, agitation, hypotension, exhaustion or altered consciousness. He is alert and frightened but not agitated, has reduced air entry but no silent chest, is pink and normotensive. If he fails to respond, reassess and escalate at once. (If he later deteriorates — exhaustion, drowsiness, a quiet chest or falling SpO₂ despite treatment — he then meets life-threatening criteria and needs immediate escalation.)"
           }
         },
         {
@@ -6083,11 +7791,20 @@
         "en": "Which of these are first-line treatments he should receive now, within the first hour? (Select all that apply.)"
       },
       "need": {
-        "zh-CN": "先判断严重程度。",
-        "en": "Grade severity first."
+        "zh-CN": "先判断严重程度（到院时的初始评估）。",
+        "en": "Grade severity first (initial assessment on arrival)."
       },
       "requires": {
-        "decided": "dec-severity"
+        "all": [
+          {
+            "decided": "dec-severity"
+          },
+          {
+            "not": {
+              "phase": "critical"
+            }
+          }
+        ]
       },
       "options": [
         {
@@ -6196,12 +7913,19 @@
         "en": "Reassessment after the first hour: PRAM 3, full sentences, room-air SpO₂ about 93%, scattered expiratory wheeze only; heart rate about 150/min with a fine tremor. What is the most appropriate next step?"
       },
       "need": {
-        "zh-CN": "完成1小时后的再评估（读取再评估时的PRAM评分）。",
-        "en": "Complete the 1-hour reassessment (read the reassessment PRAM score)."
+        "zh-CN": "完成1小时后的再评估（再次听诊双肺并读取再评估时的PRAM评分）。",
+        "en": "Complete the 1-hour reassessment (re-auscultate the chest and read the reassessment PRAM score)."
       },
       "requires": {
-        "read": "pram",
-        "phase": "reassess"
+        "all": [
+          {
+            "read": "pram",
+            "phase": "reassess"
+          },
+          {
+            "examined": "ex-reassess-auscultation"
+          }
+        ]
       },
       "options": [
         {
@@ -6666,6 +8390,55 @@
       }
     },
     {
+      "id": "r-escalation",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "识别反应差或病情恶化并及时升级：呼叫上级、静脉硫酸镁（危及生命时收入PICU/HDU）",
+        "en": "Recognised a poor response or deterioration and escalated: senior review and IV magnesium (and PICU/HDU admission if life-threatening)"
+      },
+      "met": {
+        "any": [
+          {
+            "all": [
+              {
+                "not": {
+                  "flag": "tiring"
+                }
+              },
+              {
+                "not": {
+                  "flag": "life-threatening"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "intervened": "senior-review"
+              },
+              {
+                "intervened": "magnesium-iv"
+              },
+              {
+                "any": [
+                  {
+                    "not": {
+                      "flag": "life-threatening"
+                    }
+                  },
+                  {
+                    "intervened": "admit-picu"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "r-stewardship",
       "domain": "management",
       "weight": 1,
@@ -6851,8 +8624,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "本病例聚焦学龄儿童已知哮喘的一次急诊发作处理。不涵盖≤5岁学龄前儿童喘息、首次喘息的鉴别诊断、危及生命/濒死哮喘的高级处理（静脉沙丁胺醇持续输注、无创通气、插管）——只要求识别升级指征；长期阶梯治疗的调整应在随访时完成。若延误支气管舒张剂，模拟中患儿会进展为危及生命的发作，此时病例以升级治疗并收入PICU/HDU结束，而不是出院。",
-      "en": "This case covers ED management of one exacerbation in a school-age child with established asthma. It does not cover preschool wheeze (≤ 5 years), work-up of a first wheeze, or advanced management of life-threatening/near-fatal asthma (IV salbutamol infusion, NIV, intubation) beyond recognising escalation triggers; long-term step changes belong to follow-up. If bronchodilators are delayed the simulated child progresses to life-threatening asthma, and the case then ends with escalation and PICU/HDU admission instead of discharge."
+      "zh-CN": "本病例聚焦学龄儿童已知哮喘的一次急诊发作处理。不涵盖≤5岁学龄前儿童喘息、首次喘息的鉴别诊断、危及生命/濒死哮喘的高级处理（静脉沙丁胺醇持续输注、无创通气、插管）——只要求识别升级指征；长期阶梯治疗的调整应在随访时完成。若延误支气管舒张剂，模拟中患儿会先出现疲劳（第1小时后反应差，须静脉硫酸镁和上级评估才能进入再评估），继续延误则进入“病情恶化”阶段（危及生命的发作：嗜睡、接近沉默肺、呼吸性酸中毒），此时病例以升级治疗并收入PICU/HDU结束，而不是出院。若有高危因素或家庭支持不足，完成同样的宣教后收入普通病房也是可接受的处置。",
+      "en": "This case covers ED management of one exacerbation in a school-age child with established asthma. It does not cover preschool wheeze (≤ 5 years), work-up of a first wheeze, or advanced management of life-threatening/near-fatal asthma (IV salbutamol infusion, NIV, intubation) beyond recognising escalation triggers; long-term step changes belong to follow-up. If bronchodilators are delayed the simulated child first tires (a poor response at 1 hour that needs IV magnesium and senior review before the reassessment can start); with further delay he enters a deterioration phase (life-threatening asthma: drowsy, near-silent chest, respiratory acidosis) and the case then ends with escalation and PICU/HDU admission instead of discharge. Ward admission after the same education bundle is an acceptable alternative disposition when risk factors or support at home are a concern."
     },
     "unknowns": [
       {

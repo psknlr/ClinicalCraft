@@ -163,7 +163,7 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
       if (opts.posture !== "lying") box(body, shoe, sx * 0.18, 0.21, 0.1, 0.29, 0.18, 0.46);
     }
     // in bed: a blanket over legs and trunk (rig space: y along the body, z = up out of the bed)
-    if (opts.posture === "lying") box(body, lib.color("#9fc2cc", "stripe", 0.06), 0, 0.68, 0.06, torsoW + 0.12, 1.26, 0.36);
+    if (opts.posture === "lying") box(body, lib.color("#9fc2cc", "stripe", 0.06), 0, 0.68, 0.035, torsoW + 0.12, 1.26, 0.33);
     if (ap.gown) box(body, shirt, 0, 0.66, 0, torsoW + 0.04, 0.42, torsoD + 0.04);
     if (opts.coat) box(body, white, 0, 0.7, 0, torsoW + 0.06, 0.36, torsoD + 0.06);
   }

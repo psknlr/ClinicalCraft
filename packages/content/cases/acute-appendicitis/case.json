@@ -222,7 +222,9 @@
           "what's going on",
           "howcanihelp",
           "what happened",
-          "what's happened"
+          "what's happened",
+          "what's the matter",
+          "theproblem"
         ]
       },
       "disclosure": "volunteer",
@@ -337,7 +339,9 @@
           "when did it begin",
           "started suddenly",
           "howmanyhours",
-          "howmanydays"
+          "howmanydays",
+          "gradual",
+          "gradually"
         ]
       },
       "disclosure": "on-ask",
@@ -416,7 +420,8 @@
           "tummy did it begin",
           "stomach did it begin",
           "belly did it begin",
-          "start in the middle"
+          "start in the middle",
+          "wasitatfirst"
         ]
       },
       "disclosure": "on-ask",
@@ -433,7 +438,9 @@
           "什么时候",
           "多久",
           "几点",
-          "突然"
+          "突然",
+          "啥时候",
+          "多长时间"
         ]
       }
     },
@@ -471,7 +478,9 @@
           "哪一边",
           "左边还是右边",
           "指给我看",
-          "指一下哪里"
+          "指一下哪里",
+          "位置有变化",
+          "位置变了"
         ],
         "en": [
           "pain moved",
@@ -490,7 +499,8 @@
           "hasthepainmoved",
           "same place",
           "somewhere else",
-          "still in the middle"
+          "still in the middle",
+          "whereexactly"
         ]
       },
       "disclosure": "on-ask",
@@ -542,9 +552,9 @@
           "character",
           "type of pain",
           "what kind of pain",
-          "whatdoesitfeellike",
-          "whatsitlike",
-          "whatisitlike"
+          "doesitfeellike",
+          "isitlike",
+          "describe it"
         ]
       },
       "disclosure": "on-ask"
@@ -575,11 +585,15 @@
           "疼到",
           "背上",
           "背部",
-          "别的地方痛",
-          "别的地方疼",
           "腰上",
           "往腰",
-          "往背"
+          "往背",
+          "别处痛",
+          "别处疼",
+          "往别处",
+          "腰疼",
+          "腰痛",
+          "腰部"
         ],
         "en": [
           "radiate",
@@ -618,7 +632,8 @@
           "几分痛",
           "多痛",
           "有多疼",
-          "有多痛"
+          "有多痛",
+          "受不了"
         ],
         "en": [
           "howbad",
@@ -659,7 +674,8 @@
           "动一下疼",
           "深呼吸",
           "更痛",
-          "咳嗽的时候",
+          "咳嗽的时候疼",
+          "咳嗽的时候痛",
           "咳嗽痛",
           "咳嗽疼",
           "一动就"
@@ -789,14 +805,17 @@
           "饿吗",
           "饭量",
           "食量",
-          "吃饭怎么样"
+          "饭吃得怎么样"
         ],
         "en": [
           "appetite",
           "hungry",
           "feel like eating",
           "offyourfood",
-          "offfood"
+          "offfood",
+          "beeneating",
+          "eatingok",
+          "eatingnormally"
         ]
       },
       "disclosure": "on-ask",
@@ -838,7 +857,8 @@
           "feel sick",
           "n/v",
           "n&v",
-          "beensick"
+          "beensick",
+          "sickness"
         ]
       },
       "disclosure": "on-ask",
@@ -871,7 +891,8 @@
           "发烫",
           "怕冷",
           "发抖",
-          "打哆嗦"
+          "打哆嗦",
+          "烫不烫"
         ],
         "en": [
           "fever",
@@ -1157,7 +1178,8 @@
           "ibuprofen",
           "paracetamol",
           "prescription",
-          "regular medication"
+          "regular medication",
+          "take regularly"
         ]
       },
       "disclosure": "on-ask"
@@ -1286,7 +1308,9 @@
           "anysurgery",
           "hadyourappendixout",
           "hadyourappendix",
-          "yourappendixremoved"
+          "yourappendixremoved",
+          "had an anaesthetic",
+          "had an anesthetic"
         ]
       },
       "disclosure": "on-ask",
@@ -1368,7 +1392,10 @@
       "required": true,
       "excludeKeywords": {
         "zh-CN": [
-          "药"
+          "药",
+          "大便",
+          "小便",
+          "排便"
         ],
         "en": [
           "medic",
@@ -1420,7 +1447,9 @@
         "zh-CN": [
           "疼",
           "痛",
-          "肿"
+          "肿",
+          "不舒服",
+          "慢性"
         ],
         "en": [
           "pain",
@@ -1496,12 +1525,13 @@
           "和谁住",
           "宿舍",
           "专业",
-          "住在哪里",
-          "住在哪儿",
           "大几",
           "读大",
           "几年级",
-          "上大学"
+          "上大学",
+          "住哪",
+          "住宿舍",
+          "住学校"
         ],
         "en": [
           "work",
@@ -1557,8 +1587,8 @@
           "身边有人",
           "别人也",
           "其他人也",
-          "有人也",
-          "也拉肚子",
+          "有人也病",
+          "别人也拉肚子",
           "也吐",
           "宿舍的人",
           "同宿舍"
@@ -1634,7 +1664,17 @@
           "feelcold",
           "feelingcold",
           "shiver",
-          "chill"
+          "chill",
+          "makeitworse",
+          "worsewhen",
+          "hurtwhen",
+          "whenyoucough",
+          "coughtest"
+        ],
+        "zh-CN": [
+          "咳嗽的时候",
+          "咳嗽时",
+          "咳嗽会"
         ]
       }
     },
@@ -1690,8 +1730,9 @@
       "keywords": {
         "zh-CN": [
           "还有别的",
-          "别的不舒服",
-          "其他不舒服",
+          "还有别的不舒服",
+          "还有其他不舒服",
+          "其他地方不舒服",
           "其他症状",
           "头痛",
           "头疼",
@@ -1754,7 +1795,8 @@
           "bruise",
           "bruising",
           "clotting",
-          "haemophilia"
+          "haemophilia",
+          "bleed a lot"
         ]
       },
       "disclosure": "on-ask"
@@ -1871,11 +1913,10 @@
           "啥毛病",
           "什么毛病",
           "你觉得是啥",
-          "是什么病",
           "得了什么病",
-          "会是什么",
           "你觉得是",
-          "觉得是啥"
+          "觉得是啥",
+          "你觉得会是"
         ],
         "en": [
           "what do you think is",
@@ -2131,7 +2172,9 @@
           "杂音",
           "听心",
           "毛细血管",
-          "再充盈"
+          "再充盈",
+          "心肺",
+          "听诊心肺"
         ],
         "en": [
           "heart",
@@ -2140,7 +2183,8 @@
           "auscultate the heart",
           "capillary refill",
           "crt",
-          "peripheral perfusion"
+          "peripheral perfusion",
+          "heart and lungs"
         ]
       },
       "finding": {
@@ -2162,14 +2206,17 @@
           "呼吸音",
           "听肺",
           "啰音",
-          "胸部听诊"
+          "胸部听诊",
+          "心肺",
+          "听诊心肺"
         ],
         "en": [
           "lungs",
           "chest",
           "breath sounds",
           "auscultate the chest",
-          "crackles"
+          "crackles",
+          "heart and lungs"
         ]
       },
       "finding": {
@@ -2307,7 +2354,18 @@
         "en": "Rebound tenderness in the right iliac fossa; gentle percussion there is painful (percussion tenderness). No rebound elsewhere."
       },
       "abnormal": true,
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "肾区",
+          "肋脊角"
+        ],
+        "en": [
+          "renal",
+          "loin",
+          "costovertebral"
+        ]
+      }
     },
     {
       "id": "ex-rovsing",
@@ -4573,7 +4631,7 @@
           "ondansetron",
           "zofran",
           "antiemetic",
-          "anti-sickness"
+          "antisickness"
         ]
       },
       "dose": {
@@ -7710,6 +7768,16 @@
         "expect": [
           "hx-other-symptoms"
         ]
+      },
+      {
+        "text": "最近压力大吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "Do you have any kids?",
+        "locale": "en",
+        "expect": []
       }
     ],
     "clinicalScores": {

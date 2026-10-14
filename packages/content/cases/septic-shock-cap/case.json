@@ -188,6 +188,37 @@
           {
             "intervened": "fluid-bolus",
             "minCount": 3
+          },
+          {
+            "not": {
+              "flag": "abx-late"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "reassess-late",
+      "label": {
+        "zh-CN": "延迟抗菌后再评估",
+        "en": "Reassessment after delayed antibiotics"
+      },
+      "description": {
+        "zh-CN": "到达抢救室60分钟后才用上抗菌药物、且已完成至少3次500 mL液体推注时自动进入（代替“初始复苏后再评估”）：复评灌注、决定升压药、复查乳酸并安排去向。此阶段新开的检查反映延误后的状态。",
+        "en": "Entered automatically (instead of 'Reassessment after initial resuscitation') when antibiotics went in more than 60 minutes after she reached resus and at least three 500 mL boluses have been given: reassess perfusion, decide on vasopressors, repeat the lactate and arrange disposition. Tests ordered in this phase reflect her state after the delay."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "flag": "abx-given"
+          },
+          {
+            "intervened": "fluid-bolus",
+            "minCount": 3
+          },
+          {
+            "flag": "abx-late"
           }
         ]
       }
@@ -225,28 +256,45 @@
           "发烧",
           "发热",
           "体温",
-          "烧了多久",
+          "烧了",
           "高烧",
           "最高几度",
-          "烧到多少"
+          "最高烧到多少度"
         ],
         "en": [
           "fever",
           "temperature",
-          "how high",
           "febrile",
-          "running hot",
+          "pyrexia",
+          "running a temperature",
+          "high temperature",
+          "how high was the fever",
           "how long fever"
         ]
       },
       "disclosure": "volunteer",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "退烧药",
+          "吃了什么药",
+          "吃过什么药",
+          "吃了啥药"
+        ],
+        "en": [
+          "medicine for",
+          "tablets for",
+          "taken anything",
+          "took anything",
+          "taken for"
+        ]
+      }
     },
     {
       "id": "hx-rigors",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "有没有寒战、发抖？",
+        "zh-CN": "发烧时有没有寒战、发抖？",
         "en": "Any shaking chills or rigors?"
       },
       "answer": {
@@ -258,16 +306,19 @@
           "寒战",
           "发抖",
           "打哆嗦",
+          "哆嗦",
           "怕冷",
           "畏寒",
-          "打寒颤"
+          "打寒颤",
+          "发冷"
         ],
         "en": [
           "rigors",
           "shaking",
           "chills",
           "shivering",
-          "shivers"
+          "shivers",
+          "the shakes"
         ]
       },
       "disclosure": "on-ask",
@@ -289,17 +340,21 @@
           "胸痛",
           "胸口疼",
           "胸口痛",
+          "胸部疼痛",
+          "胸口不舒服",
           "哪里疼",
           "哪里痛",
-          "怎么个疼法",
-          "什么样的疼"
+          "疼痛性质",
+          "怎么个疼法"
         ],
         "en": [
           "chest pain",
           "where is the pain located",
           "sore chest",
           "describe the chest pain",
-          "chest hurt"
+          "chest hurt",
+          "character of the pain",
+          "pleuritic"
         ]
       },
       "disclosure": "volunteer",
@@ -318,14 +373,16 @@
       },
       "keywords": {
         "zh-CN": [
-          "深呼吸疼",
+          "深呼吸",
           "吸气疼",
           "呼吸时疼",
           "咳嗽时疼",
           "往别处放射",
+          "放射痛",
           "疼几分",
+          "多疼",
           "疼痛加重",
-          "什么时候更疼",
+          "怎样会更疼",
           "疼痛评分"
         ],
         "en": [
@@ -337,7 +394,8 @@
           "pain worse",
           "pain better",
           "what eases the pain",
-          "worse when coughing"
+          "worse when coughing",
+          "how bad is the pain"
         ]
       },
       "disclosure": "on-ask",
@@ -359,9 +417,9 @@
           "咳嗽",
           "咳痰",
           "有痰",
+          "痰",
           "痰的颜色",
-          "痰什么颜色",
-          "咳得厉害"
+          "咳得"
         ],
         "en": [
           "cough",
@@ -369,17 +427,37 @@
           "phlegm",
           "sputum",
           "productive cough",
-          "colour of the sputum"
+          "colour of the sputum",
+          "mucus",
+          "bringing anything up"
         ]
       },
       "disclosure": "volunteer",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "带血",
+          "有血",
+          "咳血",
+          "咯血",
+          "出血",
+          "血丝",
+          "疼吗",
+          "时疼",
+          "更疼"
+        ],
+        "en": [
+          "blood",
+          "hurt",
+          "worse when"
+        ]
+      }
     },
     {
       "id": "hx-haemoptysis",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "有没有咳血？",
+        "zh-CN": "咳嗽时痰里有没有带过血？",
         "en": "Has she coughed up any blood?"
       },
       "answer": {
@@ -392,14 +470,18 @@
           "咯血",
           "痰中带血",
           "痰里有血",
-          "吐血"
+          "痰带血",
+          "吐血",
+          "咳出血",
+          "痰中有血丝"
         ],
         "en": [
           "coughing up blood",
           "blood in phlegm",
           "blood in sputum",
           "haemoptysis",
-          "hemoptysis"
+          "hemoptysis",
+          "bloody sputum"
         ]
       },
       "disclosure": "specific",
@@ -409,7 +491,7 @@
       "id": "hx-dyspnoea",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "气喘吗？什么时候开始的？",
+        "zh-CN": "气喘吗？从哪天开始喘的？",
         "en": "Is she short of breath? Since when?"
       },
       "answer": {
@@ -423,7 +505,11 @@
           "气促",
           "呼吸困难",
           "喘不上气",
-          "憋气"
+          "喘不过气",
+          "上不来气",
+          "憋气",
+          "开始喘",
+          "喘得"
         ],
         "en": [
           "short of breath",
@@ -431,7 +517,10 @@
           "shortness of breath",
           "dyspnoea",
           "dyspnea",
-          "breathing difficulty"
+          "breathing difficulty",
+          "trouble breathing",
+          "out of breath",
+          "sob"
         ]
       },
       "disclosure": "on-ask",
@@ -450,15 +539,15 @@
       },
       "keywords": {
         "zh-CN": [
-          "怎么回事",
+          "这是怎么回事",
           "病情经过",
-          "怎么发展",
+          "病是怎么发展的",
           "从头说",
           "怎么开始的",
           "病程",
-          "什么情况",
-          "怎么不舒服",
-          "哪里不舒服"
+          "这次怎么不舒服",
+          "哪里不舒服",
+          "发生了什么"
         ],
         "en": [
           "what happened",
@@ -467,8 +556,9 @@
           "timeline",
           "from the beginning",
           "course of the illness",
-          "how did it start",
-          "what brings you in"
+          "how did this illness start",
+          "what brings you in",
+          "story so far"
         ]
       },
       "disclosure": "on-ask",
@@ -491,10 +581,12 @@
           "意识模糊",
           "说胡话",
           "神志",
-          "平时脑子",
+          "脑子清楚",
           "认知",
           "迷糊",
-          "认不认人"
+          "认不认人",
+          "不认人",
+          "反应慢"
         ],
         "en": [
           "confused",
@@ -504,7 +596,9 @@
           "clear-headed",
           "normally sharp",
           "memory",
-          "delirium"
+          "delirium",
+          "disoriented",
+          "acting strangely"
         ]
       },
       "disclosure": "on-ask",
@@ -528,23 +622,47 @@
           "进食",
           "胃口",
           "尿量",
-          "小便多少",
-          "解了几次小便",
-          "尿得多不多"
+          "小便",
+          "尿少",
+          "尿得",
+          "尿了",
+          "解了几次小便"
         ],
         "en": [
-          "eating",
+          "is she eating",
+          "eating and drinking",
           "appetite",
           "fluid intake",
           "oral intake",
           "urine output",
           "amount of urine",
           "volume of urine",
-          "how often urinating"
+          "how often urinating",
+          "passing urine",
+          "peeing"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "小便疼",
+          "小便痛",
+          "尿痛",
+          "尿急",
+          "尿频",
+          "小便烧",
+          "呛"
+        ],
+        "en": [
+          "burning",
+          "stinging",
+          "dysuria",
+          "painful",
+          "choke",
+          "choking"
+        ]
+      }
     },
     {
       "id": "hx-gi",
@@ -561,10 +679,13 @@
         "zh-CN": [
           "恶心",
           "呕吐",
+          "想吐",
           "腹泻",
           "拉肚子",
+          "拉稀",
           "肚子疼",
-          "腹痛"
+          "腹痛",
+          "大便"
         ],
         "en": [
           "nausea",
@@ -573,7 +694,9 @@
           "diarrhea",
           "abdominal pain",
           "tummy pain",
-          "stomach ache"
+          "stomach ache",
+          "bowels",
+          "loose stools"
         ]
       },
       "disclosure": "on-ask",
@@ -596,8 +719,10 @@
           "尿频",
           "尿急",
           "小便疼",
+          "小便痛",
           "小便烧",
-          "泌尿症状"
+          "泌尿症状",
+          "尿路感染"
         ],
         "en": [
           "burning urine",
@@ -605,7 +730,9 @@
           "urinary frequency",
           "urgency",
           "urinary symptoms",
-          "stinging"
+          "stinging",
+          "burning when passing urine",
+          "water infection"
         ]
       },
       "disclosure": "on-ask",
@@ -627,6 +754,7 @@
           "头痛",
           "头疼",
           "脖子硬",
+          "脖子僵",
           "颈部僵硬",
           "皮疹",
           "疹子",
@@ -645,6 +773,127 @@
       "required": false
     },
     {
+      "id": "hx-neuro-sx",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有一侧手脚没力、口角歪斜、说话含糊或抽搐？",
+        "en": "Any weakness on one side, facial droop, slurred speech or fits?"
+      },
+      "answer": {
+        "zh-CN": "女儿：没有。手脚都能动，嘴也不歪，说话不含糊，就是说的话前言不搭后语。没抽过筋，也没翻过白眼。",
+        "en": "Daughter: No. She moves her arms and legs, her face isn't drooping and her speech isn't slurred — what she says just doesn't make sense. No fits, and her eyes have never rolled back."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手脚没力",
+          "肢体无力",
+          "半身不遂",
+          "偏瘫",
+          "口角歪斜",
+          "嘴歪",
+          "说话含糊",
+          "口齿不清",
+          "抽搐",
+          "抽风",
+          "中风症状"
+        ],
+        "en": [
+          "one-sided weakness",
+          "weakness",
+          "facial droop",
+          "slurred speech",
+          "fits",
+          "seizures",
+          "convulsions",
+          "stroke symptoms",
+          "numbness"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false
+    },
+    {
+      "id": "hx-cvs-sx",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有心慌、头晕或晕倒过？",
+        "en": "Any palpitations, dizziness or blackouts?"
+      },
+      "answer": {
+        "zh-CN": "头……有点晕……坐起来更晕。女儿：今天扶她上厕所时她说眼前发黑，但没晕倒。心慌她没说过。",
+        "en": "Head… a bit dizzy… worse sitting up. Daughter: When I helped her to the toilet today she said everything went dark, but she didn't pass out. She hasn't mentioned palpitations."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心慌",
+          "心悸",
+          "心跳快",
+          "头晕",
+          "头昏",
+          "晕倒",
+          "昏倒",
+          "晕厥",
+          "眼前发黑"
+        ],
+        "en": [
+          "palpitations",
+          "heart racing",
+          "dizzy",
+          "dizziness",
+          "light-headed",
+          "fainted",
+          "blackouts",
+          "syncope",
+          "collapsed"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false
+    },
+    {
+      "id": "hx-flu-sx",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有流鼻涕、嗓子疼或者浑身酸痛？",
+        "en": "Any runny nose, sore throat or aching all over?"
+      },
+      "answer": {
+        "zh-CN": "浑身……酸……疼。女儿：前天发烧时就说全身酸痛、没力气；没流鼻涕，嗓子也没怎么疼。",
+        "en": "Aching… all over. Daughter: When the fever started she said she ached all over and had no energy; no runny nose, and her throat hasn't really been sore."
+      },
+      "keywords": {
+        "zh-CN": [
+          "流鼻涕",
+          "鼻塞",
+          "嗓子疼",
+          "咽痛",
+          "喉咙痛",
+          "浑身酸痛",
+          "全身酸痛",
+          "肌肉酸痛",
+          "没力气",
+          "感冒症状"
+        ],
+        "en": [
+          "runny nose",
+          "sore throat",
+          "body aches",
+          "muscle aches",
+          "achy",
+          "myalgia",
+          "aching",
+          "cold symptoms",
+          "flu-like",
+          "fatigue"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false
+    },
+    {
       "id": "hx-legs-vte",
       "topic": "ros",
       "question": {
@@ -658,6 +907,7 @@
       "keywords": {
         "zh-CN": [
           "腿肿",
+          "脚肿",
           "小腿疼",
           "下肢水肿",
           "长期卧床",
@@ -672,7 +922,8 @@
           "recent surgery",
           "long journey",
           "immobile",
-          "blood clot"
+          "blood clot",
+          "dvt"
         ]
       },
       "disclosure": "on-ask",
@@ -694,6 +945,7 @@
           "身边有人生病",
           "接触过病人",
           "家里人生病",
+          "有人感冒",
           "传染",
           "接触史"
         ],
@@ -702,7 +954,8 @@
           "anyone else unwell",
           "anyone ill",
           "exposure",
-          "contact with illness"
+          "contact with illness",
+          "anyone with a cold"
         ]
       },
       "disclosure": "specific",
@@ -738,7 +991,8 @@
           "birds",
           "poultry",
           "pets",
-          "animals"
+          "animals",
+          "been away"
         ]
       },
       "disclosure": "on-ask",
@@ -761,6 +1015,7 @@
           "药物过敏",
           "过敏史",
           "青霉素",
+          "过不过敏",
           "食物过敏"
         ],
         "en": [
@@ -768,7 +1023,9 @@
           "allergic",
           "allergy",
           "penicillin",
-          "drug reaction"
+          "drug reaction",
+          "alergies",
+          "alergic"
         ]
       },
       "disclosure": "on-ask",
@@ -793,12 +1050,14 @@
           "消炎药",
           "输液",
           "打点滴",
+          "吊水",
           "三个月内"
         ],
         "en": [
           "hospital",
           "admitted",
           "antibiotics",
+          "abx",
           "recent admission",
           "iv treatment",
           "drip",
@@ -806,7 +1065,15 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      }
     },
     {
       "id": "hx-pmh",
@@ -816,31 +1083,58 @@
         "en": "What medical conditions does she have — high blood pressure, diabetes?"
       },
       "answer": {
-        "zh-CN": "血压高……还有糖尿病。女儿：高血压十来年了，糖尿病五六年，都在社区医院开药，控制得还行。",
-        "en": "Blood pressure… and sugar. Daughter: High blood pressure for about ten years, diabetes for five or six — both managed at the community clinic, reasonably well controlled."
+        "zh-CN": "血压高……还有糖尿病。女儿：高血压十来年了，糖尿病五六年，都在社区医院开药，控制得还行；她自己有血糖仪，隔几天测一次早上空腹的，一般六七点几，这两天没测。没中过风，没得过癌症，也没有别的影响免疫力的病。",
+        "en": "Blood pressure… and sugar. Daughter: High blood pressure for about ten years, diabetes for five or six — both managed at the community clinic, reasonably well controlled. She has her own meter and checks a fasting sugar every few days, usually around six or seven; she hasn't checked these last two days. She's never had a stroke or cancer, or anything else that weakens her immunity."
       },
       "keywords": {
         "zh-CN": [
           "既往史",
-          "以前有什么病",
+          "以前得过什么病",
           "慢性病",
           "高血压",
           "糖尿病",
           "基础病",
-          "老毛病"
+          "老毛病",
+          "中风过",
+          "癌症",
+          "肿瘤",
+          "血糖控制",
+          "测血糖"
         ],
         "en": [
           "past medical history",
           "medical conditions",
           "high blood pressure",
+          "hypertension",
           "diabetes",
-          "illnesses",
           "health problems",
-          "medical history"
+          "stroke",
+          "cancer",
+          "check her sugars",
+          "pmh",
+          "htn",
+          "dm"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "父母",
+          "母亲",
+          "父亲",
+          "外婆",
+          "外公"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "mother",
+          "father"
+        ]
+      }
     },
     {
       "id": "hx-lung-disease",
@@ -861,8 +1155,9 @@
           "哮喘",
           "肺病",
           "肺结核",
-          "以前肺炎",
-          "得过肺炎"
+          "结核",
+          "得过肺炎",
+          "吸入剂"
         ],
         "en": [
           "copd",
@@ -872,17 +1167,29 @@
           "previous pneumonia",
           "pneumonia before",
           "tuberculosis",
-          "bronchitis"
+          "tb",
+          "bronchitis",
+          "inhaler"
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里人",
+          "家族"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      }
     },
     {
       "id": "hx-heart-kidney",
       "topic": "pmh",
       "question": {
-        "zh-CN": "心脏、肾脏有没有问题？",
+        "zh-CN": "心脏或肾脏以前查出过毛病吗？",
         "en": "Any heart or kidney problems?"
       },
       "answer": {
@@ -894,13 +1201,16 @@
           "心脏病",
           "心衰",
           "心脏问题",
+          "心脏不好",
           "肾病",
           "肾功能",
-          "肾脏"
+          "肾脏",
+          "肾不好"
         ],
         "en": [
           "heart problems",
           "heart failure",
+          "heart disease",
           "kidney disease",
           "kidney problems",
           "renal",
@@ -923,19 +1233,22 @@
       },
       "keywords": {
         "zh-CN": [
-          "吃什么药",
+          "平时吃什么药",
+          "平时吃哪些药",
+          "长期用药",
           "用药",
-          "平时吃药",
           "降压药",
           "降糖药",
           "药单",
-          "长期用药",
           "激素",
-          "抗凝药"
+          "抗凝药",
+          "啥药",
+          "吃的药"
         ],
         "en": [
           "medications",
           "medicines",
+          "meds",
           "tablets",
           "pills",
           "regular drugs",
@@ -947,7 +1260,22 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "退烧药",
+          "布洛芬",
+          "自己吃",
+          "自己买"
+        ],
+        "en": [
+          "allerg",
+          "fever",
+          "ibuprofen",
+          "over the counter"
+        ]
+      }
     },
     {
       "id": "hx-otc-ibuprofen",
@@ -965,22 +1293,34 @@
           "退烧药",
           "布洛芬",
           "自己吃了什么药",
+          "吃过什么药",
           "止痛药",
           "非处方药",
-          "吃过什么药"
+          "自己买的药",
+          "吃了啥药"
         ],
         "en": [
           "fever medicine",
           "analgesics",
           "ibuprofen",
+          "nsaid",
           "over the counter",
           "medicine for the fever",
           "pain relief tablets",
+          "painkillers",
           "self-medicated"
         ]
       },
       "disclosure": "specific",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      }
     },
     {
       "id": "hx-psh",
@@ -1062,7 +1402,8 @@
           "drink alcohol",
           "beer",
           "wine",
-          "spirits"
+          "spirits",
+          "etoh"
         ]
       },
       "disclosure": "on-ask",
@@ -1082,7 +1423,9 @@
       "keywords": {
         "zh-CN": [
           "和谁住",
+          "跟谁住",
           "家里有谁",
+          "一个人住",
           "职业",
           "工作",
           "退休",
@@ -1096,7 +1439,8 @@
           "work",
           "job",
           "occupation",
-          "retired"
+          "retired",
+          "alone at home"
         ]
       },
       "disclosure": "on-ask",
@@ -1118,17 +1462,19 @@
           "自理",
           "生活自理",
           "活动能力",
-          "平时活动",
-          "日常生活",
-          "能走多远"
+          "日常活动",
+          "能走多远",
+          "自己走动"
         ],
         "en": [
           "independent",
           "activities of daily living",
+          "adls",
           "mobility",
           "functional status",
           "active",
-          "baseline function"
+          "baseline function",
+          "walk"
         ]
       },
       "disclosure": "on-ask",
@@ -1148,10 +1494,11 @@
       "keywords": {
         "zh-CN": [
           "家族史",
-          "家里人",
+          "家里人得过什么病",
           "遗传病",
           "父母",
-          "家族"
+          "家族",
+          "遗传"
         ],
         "en": [
           "family history",
@@ -1190,7 +1537,8 @@
           "flu vaccine",
           "pneumococcal vaccine",
           "immunisation",
-          "immunization"
+          "immunization",
+          "jabs"
         ]
       },
       "disclosure": "unknown",
@@ -1211,6 +1559,7 @@
         "zh-CN": [
           "消瘦",
           "体重下降",
+          "瘦了",
           "盗汗",
           "夜间出汗",
           "长期咳嗽"
@@ -1240,13 +1589,16 @@
       "keywords": {
         "zh-CN": [
           "呛咳",
+          "呛",
           "吞咽困难",
           "喝水呛",
           "吃饭呛",
-          "误吸"
+          "误吸",
+          "咽东西"
         ],
         "en": [
           "choking",
+          "choke",
           "swallowing",
           "aspiration",
           "difficulty swallowing"
@@ -1270,13 +1622,15 @@
         "zh-CN": [
           "摔倒",
           "跌倒",
+          "摔跤",
+          "摔过",
           "碰到头",
-          "头部外伤",
-          "摔跤"
+          "头部外伤"
         ],
         "en": [
           "fall",
           "fallen",
+          "fell",
           "head injury",
           "hit her head",
           "tripped"
@@ -1300,20 +1654,39 @@
         "zh-CN": [
           "体重",
           "多重",
-          "多少斤",
-          "多少公斤",
-          "身高"
+          "体重多少斤",
+          "体重多少公斤",
+          "身高",
+          "几斤",
+          "几公斤"
         ],
         "en": [
           "weight",
           "weigh",
           "how heavy",
           "kilograms",
-          "height"
+          "kg",
+          "height",
+          "how tall"
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "病",
+          "严重",
+          "危险",
+          "情况"
+        ],
+        "en": [
+          "ill",
+          "serious",
+          "sick",
+          "loss",
+          "losing"
+        ]
+      }
     },
     {
       "id": "hx-goals-care",
@@ -1333,7 +1706,8 @@
           "插管",
           "生前预嘱",
           "预先医疗指示",
-          "全力抢救"
+          "全力抢救",
+          "放弃抢救"
         ],
         "en": [
           "goals of care",
@@ -1341,7 +1715,9 @@
           "advance directive",
           "ceiling of care",
           "intubation wishes",
-          "what she would want"
+          "what she would want",
+          "dnr",
+          "resus status"
         ]
       },
       "disclosure": "on-ask",
@@ -1365,7 +1741,7 @@
           "害怕",
           "最担心",
           "期望",
-          "有什么想法"
+          "想法和期望"
         ],
         "en": [
           "worried",
@@ -1373,7 +1749,8 @@
           "worries",
           "afraid",
           "expectations",
-          "what are you thinking"
+          "what are you thinking",
+          "scared"
         ]
       },
       "disclosure": "on-ask",
@@ -1393,17 +1770,19 @@
       "keywords": {
         "zh-CN": [
           "以前拍过胸片",
-          "以前的ct",
+          "以前做过ct",
           "既往影像",
           "拍过片子",
-          "以前的片子"
+          "以前拍的片子",
+          "老片子"
         ],
         "en": [
           "previous x-ray",
           "prior imaging",
           "old scans",
           "previous ct",
-          "earlier chest film"
+          "earlier chest film",
+          "old films"
         ]
       },
       "disclosure": "unknown",
@@ -1513,7 +1892,8 @@
         "zh-CN": [
           "叩诊",
           "胸部叩诊",
-          "叩一下"
+          "叩击胸部",
+          "叩胸"
         ],
         "en": [
           "percussion",
@@ -1810,8 +2190,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "GCS 14（E4 V4 M6）：对人物定向正常，对时间和地点定向错误。双侧瞳孔等大等圆，约3 mm，对光反射灵敏。四肢能按指令活动，肌力对称；无面瘫，言语不含糊；双侧巴宾斯基征阴性。",
-        "en": "GCS 14 (E4 V4 M6): oriented to person, not to time or place. Pupils equal and round, about 3 mm, briskly reactive. Moves all four limbs to command with symmetrical power; no facial droop; speech not slurred; plantars flexor bilaterally."
+        "zh-CN": "初始评估时：GCS 14（E4 V4 M6）：对人物定向正常，对时间和地点定向错误。双侧瞳孔等大等圆，约3 mm，对光反射灵敏。四肢能按指令活动，肌力对称；无面瘫，言语不含糊；双侧巴宾斯基征阴性。",
+        "en": "At initial assessment: GCS 14 (E4 V4 M6): oriented to person, not to time or place. Pupils equal and round, about 3 mm, briskly reactive. Moves all four limbs to command with symmetrical power; no facial droop; speech not slurred; plantars flexor bilaterally."
       },
       "abnormal": true,
       "required": true,
@@ -2004,6 +2384,41 @@
       ]
     },
     {
+      "id": "ex-reassess-perfusion-late",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "延迟抗菌、补液后复评灌注（再充盈、花斑、意识）",
+        "en": "Reassess perfusion after the delayed antibiotics and fluid boluses (refill, mottling, mental state)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "复评灌注",
+          "补液后再评估",
+          "再次评估灌注",
+          "复苏后评估",
+          "补液反应"
+        ],
+        "en": [
+          "reassess perfusion",
+          "reassess after fluids",
+          "re-examine after boluses",
+          "post-fluid assessment",
+          "fluid response"
+        ]
+      },
+      "excludeKeywords": [],
+      "finding": {
+        "zh-CN": "抗菌药物延迟后、液体推注后：甲床再充盈时间约5秒，花斑已蔓延至大腿中段，手足湿冷；叫名字才睁眼，很快又迷糊，答非所问。当前血压与平均动脉压以监护仪读数为准。",
+        "en": "After the delayed antibiotics and the boluses: capillary refill about 5 s, mottling now reaches mid-thigh, hands and feet cold and clammy; she opens her eyes only when called by name, drifts off again and gives muddled answers. Read the current blood pressure and MAP from the monitor."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "reassess-late"
+      ]
+    },
+    {
       "id": "ex-reassess-lungs",
       "system": "respiratory",
       "maneuver": {
@@ -2034,7 +2449,8 @@
       "required": false,
       "requires": [],
       "phases": [
-        "reassess"
+        "reassess",
+        "reassess-late"
       ]
     }
   ],
@@ -2055,14 +2471,17 @@
           "血糖",
           "指尖血糖",
           "快速血糖",
-          "末梢血糖"
+          "末梢血糖",
+          "床旁血糖"
         ],
         "en": [
           "glucose",
           "capillary glucose",
           "blood sugar",
           "fingerstick",
-          "cbg"
+          "cbg",
+          "bm",
+          "bms"
         ]
       },
       "requires": [
@@ -2113,6 +2532,27 @@
             }
           ],
           "critical": false
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "指尖血糖 11.9 mmol/L。",
+            "en": "Capillary glucose 11.9 mmol/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "指尖血糖",
+                "en": "Capillary glucose"
+              },
+              "value": 11.9,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 7.8,
+              "flag": "H"
+            }
+          ],
+          "critical": false
         }
       }
     },
@@ -2138,7 +2578,8 @@
           "lactate",
           "abg",
           "arterial gas",
-          "lactic"
+          "lactic",
+          "gas"
         ]
       },
       "requires": [
@@ -2221,8 +2662,8 @@
         "reassess": {
           "available": true,
           "text": {
-            "zh-CN": "静脉血气（初始复苏后）：pH 7.36，pCO₂ 4.0 kPa（30 mmHg），HCO₃⁻ 16.8 mmol/L，碱剩余 −7.6 mmol/L，乳酸 3.6 mmol/L（较首次4.6 mmol/L下降约22%，仍>2 mmol/L）。",
-            "en": "Venous blood gas (after initial resuscitation): pH 7.36, pCO₂ 4.0 kPa (30 mmHg), HCO₃⁻ 16.8 mmol/L, base excess −7.6 mmol/L, lactate 3.6 mmol/L (down about 22% from the first 4.6 mmol/L, still > 2 mmol/L)."
+            "zh-CN": "静脉血气（初始复苏后）：pH 7.36，pCO₂ 4.0 kPa（30 mmHg），HCO₃⁻ 16.8 mmol/L，碱剩余 −7.6 mmol/L，乳酸 3.6 mmol/L（仍>2 mmol/L）。",
+            "en": "Venous blood gas (after initial resuscitation): pH 7.36, pCO₂ 4.0 kPa (30 mmHg), HCO₃⁻ 16.8 mmol/L, base excess −7.6 mmol/L, lactate 3.6 mmol/L (still > 2 mmol/L)."
           },
           "values": [
             {
@@ -2287,6 +2728,77 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "静脉血气（延迟抗菌、初始液体推注后）：pH 7.29，pCO₂ 3.6 kPa（27 mmHg），HCO₃⁻ 12.8 mmol/L，碱剩余 −12.3 mmol/L，乳酸 5.8 mmol/L（危急值，检验科已电话通知）。",
+            "en": "Venous blood gas (after delayed antibiotics and the initial boluses): pH 7.29, pCO₂ 3.6 kPa (27 mmHg), HCO₃⁻ 12.8 mmol/L, base excess −12.3 mmol/L, lactate 5.8 mmol/L (critical value — phoned through by the lab)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "pH（静脉）",
+                "en": "pH (venous)"
+              },
+              "value": 7.29,
+              "unit": "",
+              "refLow": 7.31,
+              "refHigh": 7.41,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "pCO₂（静脉）",
+                "en": "pCO₂ (venous)"
+              },
+              "value": 3.6,
+              "unit": "kPa",
+              "refLow": 5.3,
+              "refHigh": 6.7,
+              "refText": "5.3–6.7 kPa (40–50 mmHg)",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "HCO₃⁻（计算）",
+                "en": "HCO₃⁻ (calculated)"
+              },
+              "value": 12.8,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 29,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱剩余",
+                "en": "Base excess"
+              },
+              "value": -12.3,
+              "unit": "mmol/L",
+              "refLow": -2,
+              "refHigh": 3,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸",
+                "en": "Lactate"
+              },
+              "value": 5.8,
+              "unit": "mmol/L",
+              "refLow": 0.5,
+              "refHigh": 2.2,
+              "flag": "HH"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "此标本在抗菌药物延迟给药、初始液体推注后采集：乳酸不降反升，提示持续低灌注。",
+            "en": "Taken after the delayed antibiotics and the initial boluses: the lactate is rising rather than clearing — ongoing hypoperfusion."
+          },
+          "critical": true
         }
       }
     },
@@ -2324,8 +2836,8 @@
         "resus": {
           "available": true,
           "text": {
-            "zh-CN": "复查静脉血气（初始复苏完成前）：pH 7.33，pCO₂ 3.7 kPa（28 mmHg），HCO₃⁻ 14.6 mmol/L，碱剩余 −10.1 mmol/L，乳酸 5.1 mmol/L（危急值，较前上升）。",
-            "en": "Repeat venous gas (before initial resuscitation is complete): pH 7.33, pCO₂ 3.7 kPa (28 mmHg), HCO₃⁻ 14.6 mmol/L, base excess −10.1 mmol/L, lactate 5.1 mmol/L (critical — rising)."
+            "zh-CN": "复查静脉血气：pH 7.33，pCO₂ 3.7 kPa（28 mmHg），HCO₃⁻ 14.6 mmol/L，碱剩余 −10.1 mmol/L，乳酸 5.1 mmol/L（危急值，较前上升）。",
+            "en": "Repeat venous gas: pH 7.33, pCO₂ 3.7 kPa (28 mmHg), HCO₃⁻ 14.6 mmol/L, base excess −10.1 mmol/L, lactate 5.1 mmol/L (critical — rising)."
           },
           "values": [
             {
@@ -2394,8 +2906,8 @@
         "reassess": {
           "available": true,
           "text": {
-            "zh-CN": "静脉血气（初始复苏后）：pH 7.36，pCO₂ 4.0 kPa（30 mmHg），HCO₃⁻ 16.8 mmol/L，碱剩余 −7.6 mmol/L，乳酸 3.6 mmol/L（较首次4.6 mmol/L下降约22%，仍>2 mmol/L）。",
-            "en": "Venous blood gas (after initial resuscitation): pH 7.36, pCO₂ 4.0 kPa (30 mmHg), HCO₃⁻ 16.8 mmol/L, base excess −7.6 mmol/L, lactate 3.6 mmol/L (down about 22% from the first 4.6 mmol/L, still > 2 mmol/L)."
+            "zh-CN": "复查静脉血气（初始复苏后）：pH 7.36，pCO₂ 4.0 kPa（30 mmHg），HCO₃⁻ 16.8 mmol/L，碱剩余 −7.6 mmol/L，乳酸 3.6 mmol/L（较到院时4.6 mmol/L下降约22%，仍>2 mmol/L）。",
+            "en": "Repeat venous gas (after initial resuscitation): pH 7.36, pCO₂ 4.0 kPa (30 mmHg), HCO₃⁻ 16.8 mmol/L, base excess −7.6 mmol/L, lactate 3.6 mmol/L (down about 22% from 4.6 mmol/L on arrival, still > 2 mmol/L)."
           },
           "values": [
             {
@@ -2460,6 +2972,77 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "复查静脉血气（延迟抗菌、初始液体推注后）：pH 7.29，pCO₂ 3.6 kPa（27 mmHg），HCO₃⁻ 12.8 mmol/L，碱剩余 −12.3 mmol/L，乳酸 5.8 mmol/L（危急值；较到院时4.6 mmol/L进一步升高，未见清除）。",
+            "en": "Repeat venous gas (after delayed antibiotics and the initial boluses): pH 7.29, pCO₂ 3.6 kPa (27 mmHg), HCO₃⁻ 12.8 mmol/L, base excess −12.3 mmol/L, lactate 5.8 mmol/L (critical — up from 4.6 mmol/L on arrival, not clearing)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "pH（静脉）",
+                "en": "pH (venous)"
+              },
+              "value": 7.29,
+              "unit": "",
+              "refLow": 7.31,
+              "refHigh": 7.41,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "pCO₂（静脉）",
+                "en": "pCO₂ (venous)"
+              },
+              "value": 3.6,
+              "unit": "kPa",
+              "refLow": 5.3,
+              "refHigh": 6.7,
+              "refText": "5.3–6.7 kPa (40–50 mmHg)",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "HCO₃⁻（计算）",
+                "en": "HCO₃⁻ (calculated)"
+              },
+              "value": 12.8,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 29,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱剩余",
+                "en": "Base excess"
+              },
+              "value": -12.3,
+              "unit": "mmol/L",
+              "refLow": -2,
+              "refHigh": 3,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸",
+                "en": "Lactate"
+              },
+              "value": 5.8,
+              "unit": "mmol/L",
+              "refLow": 0.5,
+              "refHigh": 2.2,
+              "flag": "HH"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "此标本在抗菌药物延迟给药、初始液体推注后采集：乳酸不降反升，提示持续低灌注。",
+            "en": "Taken after the delayed antibiotics and the initial boluses: the lactate is rising rather than clearing — ongoing hypoperfusion."
+          },
+          "critical": true
         }
       }
     },
@@ -2692,6 +3275,108 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "白细胞 17.9×10⁹/L，中性粒细胞 15.9×10⁹/L（88.8%），淋巴细胞 1.0×10⁹/L；血红蛋白 118 g/L，血细胞比容 0.36，MCV 88 fL；血小板 124×10⁹/L（较前轻度下降，考虑与稀释有关）。",
+            "en": "WBC 17.9 ×10⁹/L, neutrophils 15.9 ×10⁹/L (88.8%), lymphocytes 1.0 ×10⁹/L; haemoglobin 118 g/L, haematocrit 0.36, MCV 88 fL; platelets 124 ×10⁹/L (slightly lower, likely dilutional)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "White cell count"
+              },
+              "value": 17.9,
+              "unit": "×10⁹/L",
+              "refLow": 4.0,
+              "refHigh": 10.0,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞",
+                "en": "Neutrophils"
+              },
+              "value": 15.9,
+              "unit": "×10⁹/L",
+              "refLow": 2.0,
+              "refHigh": 7.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞百分比",
+                "en": "Neutrophils %"
+              },
+              "value": 88.8,
+              "unit": "%",
+              "refLow": 40,
+              "refHigh": 75,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "淋巴细胞",
+                "en": "Lymphocytes"
+              },
+              "value": 1.0,
+              "unit": "×10⁹/L",
+              "refLow": 1.0,
+              "refHigh": 3.3,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 118,
+              "unit": "g/L",
+              "refLow": 115,
+              "refHigh": 150,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血细胞比容",
+                "en": "Haematocrit"
+              },
+              "value": 0.36,
+              "unit": "L/L",
+              "refLow": 0.35,
+              "refHigh": 0.45,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "平均红细胞体积",
+                "en": "MCV"
+              },
+              "value": 88,
+              "unit": "fL",
+              "refLow": 82,
+              "refHigh": 100,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 124,
+              "unit": "×10⁹/L",
+              "refLow": 150,
+              "refHigh": 400,
+              "flag": "L"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
+            "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
+          }
         }
       }
     },
@@ -2722,7 +3407,10 @@
           "chem",
           "kidney function",
           "sodium",
-          "potassium"
+          "potassium",
+          "ues",
+          "u+e",
+          "cmp"
         ]
       },
       "requires": [
@@ -2935,6 +3623,108 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。白蛋白偏低时阴离子间隙会被低估（见肝功能）。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started. A low albumin makes the anion gap read falsely low (see liver panel)."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "钠 134、钾 4.4、氯 100、碳酸氢根 13 mmol/L；阴离子间隙 21 mmol/L；尿素 12.9 mmol/L；肌酐 174 µmol/L；葡萄糖 11.6 mmol/L。",
+            "en": "Sodium 134, potassium 4.4, chloride 100, bicarbonate 13 mmol/L; anion gap 21 mmol/L; urea 12.9 mmol/L; creatinine 174 µmol/L; glucose 11.6 mmol/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "钠",
+                "en": "Sodium"
+              },
+              "value": 134,
+              "unit": "mmol/L",
+              "refLow": 135,
+              "refHigh": 145,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "钾",
+                "en": "Potassium"
+              },
+              "value": 4.4,
+              "unit": "mmol/L",
+              "refLow": 3.5,
+              "refHigh": 5.3,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "氯",
+                "en": "Chloride"
+              },
+              "value": 100,
+              "unit": "mmol/L",
+              "refLow": 98,
+              "refHigh": 107,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碳酸氢根",
+                "en": "Bicarbonate"
+              },
+              "value": 13,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 29,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "阴离子间隙（计算）",
+                "en": "Anion gap (calculated)"
+              },
+              "value": 21,
+              "unit": "mmol/L",
+              "refLow": 8,
+              "refHigh": 16,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿素",
+                "en": "Urea"
+              },
+              "value": 12.9,
+              "unit": "mmol/L",
+              "refLow": 2.6,
+              "refHigh": 7.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酐",
+                "en": "Creatinine"
+              },
+              "value": 174,
+              "unit": "µmol/L",
+              "refLow": 45,
+              "refHigh": 84,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "葡萄糖",
+                "en": "Glucose"
+              },
+              "value": 11.6,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 6.1,
+              "flag": "H"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在抗菌药物延迟给药、初始液体推注后采集：肌酐较到院时继续上升（174/78 ≈ 2.2倍基线，KDIGO 2期）。白蛋白偏低时阴离子间隙会被低估（见肝功能）。",
+            "en": "Taken after the delayed antibiotics and the initial boluses: creatinine has risen further (174/78 ≈ 2.2 × baseline, KDIGO stage 2). A low albumin makes the anion gap read falsely low (see liver panel)."
+          }
         }
       }
     },
@@ -2951,14 +3741,16 @@
           "肝功",
           "胆红素",
           "白蛋白",
-          "转氨酶"
+          "转氨酶",
+          "肝肾功"
         ],
         "en": [
           "lft",
           "liver function",
           "bilirubin",
           "albumin",
-          "transaminases"
+          "transaminases",
+          "cmp"
         ]
       },
       "requires": [
@@ -3127,6 +3919,86 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "ALT 30 U/L，AST 38 U/L，ALP 88 U/L，GGT 35 U/L，总胆红素 22 µmol/L，白蛋白 29 g/L。",
+            "en": "ALT 30 U/L, AST 38 U/L, ALP 88 U/L, GGT 35 U/L, total bilirubin 22 µmol/L, albumin 29 g/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "丙氨酸氨基转移酶",
+                "en": "ALT"
+              },
+              "value": 30,
+              "unit": "U/L",
+              "refLow": 7,
+              "refHigh": 40,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "天冬氨酸氨基转移酶",
+                "en": "AST"
+              },
+              "value": 38,
+              "unit": "U/L",
+              "refLow": 13,
+              "refHigh": 35,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱性磷酸酶",
+                "en": "ALP"
+              },
+              "value": 88,
+              "unit": "U/L",
+              "refLow": 35,
+              "refHigh": 100,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "γ-谷氨酰转移酶",
+                "en": "GGT"
+              },
+              "value": 35,
+              "unit": "U/L",
+              "refLow": 7,
+              "refHigh": 45,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "总胆红素",
+                "en": "Total bilirubin"
+              },
+              "value": 22,
+              "unit": "µmol/L",
+              "refLow": 3.4,
+              "refHigh": 20.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "白蛋白",
+                "en": "Albumin"
+              },
+              "value": 29,
+              "unit": "g/L",
+              "refLow": 40,
+              "refHigh": 55,
+              "flag": "L"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
+            "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
+          }
         }
       }
     },
@@ -3149,7 +4021,8 @@
           "procalcitonin",
           "crp",
           "c-reactive protein",
-          "inflammatory markers"
+          "inflammatory markers",
+          "procal"
         ]
       },
       "requires": [
@@ -3192,6 +4065,42 @@
           "critical": false
         },
         "reassess": {
+          "available": true,
+          "text": {
+            "zh-CN": "C反应蛋白 241 mg/L；降钙素原 19.2 µg/L（ng/mL）。",
+            "en": "C-reactive protein 241 mg/L; procalcitonin 19.2 µg/L (ng/mL)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "C-reactive protein"
+              },
+              "value": 241,
+              "unit": "mg/L",
+              "refHigh": 10,
+              "refText": "< 10 mg/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "降钙素原",
+                "en": "Procalcitonin"
+              },
+              "value": 19.2,
+              "unit": "µg/L",
+              "refHigh": 0.05,
+              "refText": "< 0.05 µg/L",
+              "flag": "H"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
+            "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
+          }
+        },
+        "reassess-late": {
           "available": true,
           "text": {
             "zh-CN": "C反应蛋白 241 mg/L；降钙素原 19.2 µg/L（ng/mL）。",
@@ -3370,6 +4279,64 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "PT 14.8 s，INR 1.27，APTT 37 s，纤维蛋白原 5.9 g/L。",
+            "en": "PT 14.8 s, INR 1.27, APTT 37 s, fibrinogen 5.9 g/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间",
+                "en": "Prothrombin time"
+              },
+              "value": 14.8,
+              "unit": "s",
+              "refLow": 11.0,
+              "refHigh": 14.0,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "国际标准化比值",
+                "en": "INR"
+              },
+              "value": 1.27,
+              "unit": "",
+              "refLow": 0.85,
+              "refHigh": 1.15,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "活化部分凝血活酶时间",
+                "en": "APTT"
+              },
+              "value": 37,
+              "unit": "s",
+              "refLow": 25,
+              "refHigh": 37,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "纤维蛋白原",
+                "en": "Fibrinogen"
+              },
+              "value": 5.9,
+              "unit": "g/L",
+              "refLow": 2.0,
+              "refHigh": 4.0,
+              "flag": "H"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
+            "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
+          }
         }
       }
     },
@@ -3425,6 +4392,31 @@
           }
         },
         "reassess": {
+          "available": true,
+          "text": {
+            "zh-CN": "D-二聚体 3.2 mg/L FEU。",
+            "en": "D-dimer 3.2 mg/L FEU."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "D-二聚体",
+                "en": "D-dimer"
+              },
+              "value": 3.2,
+              "unit": "mg/L FEU",
+              "refHigh": 0.5,
+              "refText": "< 0.5 mg/L FEU (72 y: < 0.72)",
+              "flag": "H"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
+            "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
+          }
+        },
+        "reassess-late": {
           "available": true,
           "text": {
             "zh-CN": "D-二聚体 3.2 mg/L FEU。",
@@ -3524,6 +4516,31 @@
             "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
             "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "高敏肌钙蛋白T 41 ng/L（与首次相比变化3 ng/L）。",
+            "en": "High-sensitivity troponin T 41 ng/L (change of 3 ng/L from the first sample)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "高敏肌钙蛋白T",
+                "en": "hs-troponin T"
+              },
+              "value": 41,
+              "unit": "ng/L",
+              "refHigh": 14,
+              "refText": "< 14 ng/L (P99)",
+              "flag": "H"
+            }
+          ],
+          "critical": false,
+          "note": {
+            "zh-CN": "此标本在初始液体复苏（及抗菌药物）开始后采集。",
+            "en": "This sample was taken after initial fluid resuscitation (and antibiotics) had started."
+          }
         }
       }
     },
@@ -3575,6 +4592,19 @@
             "zh-CN": "若在首剂抗菌药物之后采集，血培养阳性率会下降。",
             "en": "If drawn after the first antibiotic doses, the culture yield is reduced."
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "两套血培养（每套需氧瓶+厌氧瓶）已从两个不同穿刺部位采集，已送达微生物室并开始孵育。急诊期间无阳性报警；最终报告通常需24–72小时。",
+            "en": "Two sets of blood cultures (aerobic + anaerobic bottle each) taken from two separate venepuncture sites, received by microbiology and incubating. No positive signal during the ED stay; final reports usually take 24–72 h."
+          },
+          "values": [],
+          "critical": false,
+          "note": {
+            "zh-CN": "若在首剂抗菌药物之后采集，血培养阳性率会下降。",
+            "en": "If drawn after the first antibiotic doses, the culture yield is reduced."
+          }
         }
       }
     },
@@ -3590,7 +4620,8 @@
           "痰培养",
           "痰涂片",
           "革兰染色",
-          "痰检"
+          "痰检",
+          "痰培"
         ],
         "en": [
           "sputum",
@@ -3616,6 +4647,15 @@
           "critical": false
         },
         "reassess": {
+          "available": true,
+          "text": {
+            "zh-CN": "痰标本质量合格（每低倍视野白细胞>25个、鳞状上皮细胞<10个）。革兰染色：大量革兰阳性矛头状双球菌，多成对排列；未见明显革兰阴性杆菌。痰培养：进行中。",
+            "en": "Good-quality sample (> 25 white cells and < 10 squamous epithelial cells per low-power field). Gram stain: numerous Gram-positive lancet-shaped diplococci, mostly in pairs; no significant Gram-negative bacilli. Culture: in progress."
+          },
+          "values": [],
+          "critical": false
+        },
+        "reassess-late": {
           "available": true,
           "text": {
             "zh-CN": "痰标本质量合格（每低倍视野白细胞>25个、鳞状上皮细胞<10个）。革兰染色：大量革兰阳性矛头状双球菌，多成对排列；未见明显革兰阴性杆菌。痰培养：进行中。",
@@ -3671,6 +4711,15 @@
           },
           "values": [],
           "critical": false
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "肺炎链球菌尿抗原：阳性。嗜肺军团菌（血清1型）尿抗原：阴性。",
+            "en": "Urinary pneumococcal antigen: POSITIVE. Legionella pneumophila serogroup 1 urinary antigen: negative."
+          },
+          "values": [],
+          "critical": false
         }
       }
     },
@@ -3687,7 +4736,10 @@
           "新冠",
           "呼吸道病毒",
           "病毒核酸",
-          "咽拭子"
+          "咽拭子",
+          "甲乙流",
+          "甲流",
+          "乙流"
         ],
         "en": [
           "influenza",
@@ -3696,7 +4748,8 @@
           "sars-cov-2",
           "viral pcr",
           "respiratory pcr",
-          "rsv"
+          "rsv",
+          "nasopharyngeal swab"
         ]
       },
       "requires": [
@@ -3716,6 +4769,15 @@
           "critical": false
         },
         "reassess": {
+          "available": true,
+          "text": {
+            "zh-CN": "甲型/乙型流感病毒RNA：阴性；SARS-CoV-2 RNA：阴性；呼吸道合胞病毒RNA：阴性。",
+            "en": "Influenza A/B RNA: negative; SARS-CoV-2 RNA: negative; RSV RNA: negative."
+          },
+          "values": [],
+          "critical": false
+        },
+        "reassess-late": {
           "available": true,
           "text": {
             "zh-CN": "甲型/乙型流感病毒RNA：阴性；SARS-CoV-2 RNA：阴性；呼吸道合胞病毒RNA：阴性。",
@@ -3937,6 +4999,98 @@
             }
           ],
           "critical": false
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "尿液深黄、浓缩：比重 1.030，pH 5.5，尿蛋白 1+（0.3 g/L），尿糖 微量，酮体 1+，潜血 阴性，亚硝酸盐 阴性，白细胞酯酶 阴性；镜检白细胞 0–2/HP，红细胞 0–2/HP，少量透明管型。",
+            "en": "Dark, concentrated urine: specific gravity 1.030, pH 5.5, protein 1+ (0.3 g/L), glucose trace, ketones 1+, blood negative, nitrite negative, leucocyte esterase negative; microscopy WBC 0–2/HPF, RBC 0–2/HPF, a few hyaline casts."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "比重",
+                "en": "Specific gravity"
+              },
+              "value": "1.030",
+              "unit": "",
+              "refLow": 1.003,
+              "refHigh": 1.03,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "pH",
+                "en": "pH"
+              },
+              "value": 5.5,
+              "unit": "",
+              "refLow": 4.5,
+              "refHigh": 8.0,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白",
+                "en": "Protein"
+              },
+              "value": "1+ (0.3 g/L)",
+              "unit": "",
+              "refText": "−",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿糖",
+                "en": "Glucose"
+              },
+              "value": "±",
+              "unit": "",
+              "refText": "−",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "酮体",
+                "en": "Ketones"
+              },
+              "value": "1+",
+              "unit": "",
+              "refText": "−",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "亚硝酸盐",
+                "en": "Nitrite"
+              },
+              "value": "−",
+              "unit": "",
+              "refText": "−",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "白细胞酯酶",
+                "en": "Leucocyte esterase"
+              },
+              "value": "−",
+              "unit": "",
+              "refText": "−",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "镜检白细胞",
+                "en": "Urine WBC (microscopy)"
+              },
+              "value": "0–2",
+              "unit": "/HPF",
+              "refText": "0–5 /HPF",
+              "flag": "N"
+            }
+          ],
+          "critical": false
         }
       }
     },
@@ -3953,7 +5107,9 @@
           "床旁胸片",
           "胸部x线",
           "x光",
-          "胸部平片"
+          "胸部平片",
+          "胸部dr",
+          "床旁dr"
         ],
         "en": [
           "cxr",
@@ -3988,6 +5144,15 @@
           },
           "values": [],
           "critical": false
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "床旁胸片（AP位，半卧位）：右下肺野大片实变影，内见支气管充气征，右侧膈面轮廓消失、右心缘清晰（提示右下叶而非中叶）；右侧肋膈角变钝，提示少量胸腔积液。左肺清晰。AP位不评估心胸比；未见肺静脉淤血或间质性肺水肿征象；无气胸。",
+            "en": "Portable AP chest film (semi-erect): dense air-space consolidation in the right lower zone with air bronchograms, obscuring the right hemidiaphragm while the right heart border stays sharp (right lower lobe rather than middle lobe); blunted right costophrenic angle, suggesting a small effusion. Left lung clear. Cardiothoracic ratio not assessed on an AP film; no pulmonary venous congestion or interstitial oedema; no pneumothorax."
+          },
+          "values": [],
+          "critical": false
         }
       }
     },
@@ -4004,13 +5169,15 @@
           "肺部ct",
           "胸ct",
           "肺ct",
-          "ct胸部"
+          "ct胸部",
+          "胸部增强ct"
         ],
         "en": [
           "chest ct",
           "ct chest",
           "ct thorax",
-          "ct scan of the chest"
+          "ct scan of the chest",
+          "ctpa"
         ]
       },
       "requires": [
@@ -4034,6 +5201,19 @@
           }
         },
         "reassess": {
+          "available": true,
+          "text": {
+            "zh-CN": "胸部CT平扫：右下叶大片实变伴支气管充气征，少量右侧游离胸腔积液（最大深度约1.5 cm），未见空洞、脓肿或分隔包裹；纵隔淋巴结反应性增大（短径≤9 mm）；左肺未见实变。平扫不能评估肺动脉栓塞。",
+            "en": "Non-contrast chest CT: extensive right lower lobe consolidation with air bronchograms; small free-flowing right pleural effusion (maximum depth about 1.5 cm) without cavitation, abscess or loculation; reactive mediastinal nodes (short axis ≤ 9 mm); no consolidation in the left lung. An unenhanced study cannot assess for pulmonary embolism."
+          },
+          "values": [],
+          "critical": false,
+          "note": {
+            "zh-CN": "检查需将低血压患者转运至CT室，途中需监护；结果未改变急诊处理。",
+            "en": "Required transfer of a hypotensive patient to the CT suite under monitoring; the result did not change ED management."
+          }
+        },
+        "reassess-late": {
           "available": true,
           "text": {
             "zh-CN": "胸部CT平扫：右下叶大片实变伴支气管充气征，少量右侧游离胸腔积液（最大深度约1.5 cm），未见空洞、脓肿或分隔包裹；纵隔淋巴结反应性增大（短径≤9 mm）；左肺未见实变。平扫不能评估肺动脉栓塞。",
@@ -4093,6 +5273,15 @@
           },
           "values": [],
           "critical": false
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "12导联心电图（延迟抗菌、初始补液后）：窦性心动过速，126次/分；QRS 88 ms，QTc 455 ms（Bazett）；无急性ST-T改变。",
+            "en": "12-lead ECG (after delayed antibiotics and initial fluids): sinus tachycardia 126/min; QRS 88 ms, QTc 455 ms (Bazett); no acute ST-T changes."
+          },
+          "values": [],
+          "critical": false
         }
       }
     },
@@ -4142,6 +5331,15 @@
           }
         },
         "reassess": {
+          "available": true,
+          "text": {
+            "zh-CN": "床旁超声（初始补液后）：右下肺实变同前；前胸壁仍为A线，未出现新的弥漫B线；左室收缩活跃，无心包积液；下腔静脉约1.6 cm，吸气塌陷约30–40%。",
+            "en": "POCUS (after initial boluses): right lower lobe consolidation unchanged; anterior chest still A-lines with no new diffuse B-lines; hyperdynamic LV, no pericardial effusion; IVC about 1.6 cm with about 30–40% inspiratory collapse."
+          },
+          "values": [],
+          "critical": false
+        },
+        "reassess-late": {
           "available": true,
           "text": {
             "zh-CN": "床旁超声（初始补液后）：右下肺实变同前；前胸壁仍为A线，未出现新的弥漫B线；左室收缩活跃，无心包积液；下腔静脉约1.6 cm，吸气塌陷约30–40%。",
@@ -4275,6 +5473,52 @@
             "zh-CN": "8个月前",
             "en": "8 months ago"
           }
+        },
+        "reassess-late": {
+          "available": true,
+          "text": {
+            "zh-CN": "社区卫生服务中心健康体检（8个月前）：肌酐 78 µmol/L，eGFR 70 mL/min/1.73 m²（CKD-EPI 2021）；糖化血红蛋白 6.9%（52 mmol/mol）；血压 138/82 mmHg；体重 61 kg。诊断：原发性高血压、2型糖尿病。既往住院记录仅2010年腹腔镜胆囊切除术。无耐药菌（MRSA、铜绿假单胞菌）分离记录。",
+            "en": "Community health centre check-up (8 months ago): creatinine 78 µmol/L, eGFR 70 mL/min/1.73 m² (CKD-EPI 2021); HbA1c 6.9% (52 mmol/mol); BP 138/82 mmHg; weight 61 kg. Diagnoses: essential hypertension, type 2 diabetes. Only previous admission: laparoscopic cholecystectomy in 2010. No record of resistant organisms (MRSA, Pseudomonas aeruginosa)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "肌酐（基线）",
+                "en": "Creatinine (baseline)"
+              },
+              "value": 78,
+              "unit": "µmol/L",
+              "refLow": 45,
+              "refHigh": 84,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "eGFR（CKD-EPI 2021）",
+                "en": "eGFR (CKD-EPI 2021)"
+              },
+              "value": 70,
+              "unit": "mL/min/1.73 m²",
+              "refText": "≥ 60"
+            },
+            {
+              "analyte": {
+                "zh-CN": "糖化血红蛋白",
+                "en": "HbA1c"
+              },
+              "value": 52,
+              "unit": "mmol/mol",
+              "refLow": 20,
+              "refHigh": 42,
+              "refText": "20–42 mmol/mol (4.0–6.0%)",
+              "flag": "H"
+            }
+          ],
+          "critical": false,
+          "date": {
+            "zh-CN": "8个月前",
+            "en": "8 months ago"
+          }
         }
       }
     }
@@ -4286,6 +5530,14 @@
         "remove": [
           "vbg-lactate"
         ]
+      },
+      {
+        "ifHas": "poc-glucose",
+        "ifMatches": "bmp|bmi",
+        "remove": [
+          "poc-glucose"
+        ],
+        "add": []
       }
     ],
     "exact": {},
@@ -4586,8 +5838,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "低血压伴乳酸4.6 mmol/L、少尿和皮肤花斑，是需要早期液体复苏的低灌注。仅给维持液会延长低灌注、加重乳酸和急性肾损伤。应分次推注平衡晶体液并反复复评。",
-        "en": "Hypotension with lactate 4.6 mmol/L, oliguria and mottling is hypoperfusion that needs early fluid resuscitation. Maintenance fluid alone prolongs hypoperfusion and worsens the lactate and the kidney injury. Give balanced crystalloid in boluses with repeated reassessment."
+        "zh-CN": "低血压伴少尿、皮肤花斑和意识改变，是需要早期液体复苏的低灌注。仅给维持液会延长低灌注，加重乳酸酸中毒和急性肾损伤的风险。应分次推注平衡晶体液并反复复评。",
+        "en": "Hypotension with oliguria, mottling and new confusion is hypoperfusion that needs early fluid resuscitation. Maintenance fluid alone prolongs hypoperfusion and risks worsening lactic acidosis and acute kidney injury. Give balanced crystalloid in boluses with repeated reassessment."
       },
       "response": {
         "zh-CN": "维持液以80 mL/h开始输注。",
@@ -4611,7 +5863,8 @@
           "晶体液",
           "生理盐水",
           "扩容",
-          "液体推注"
+          "液体推注",
+          "静脉补液"
         ],
         "en": [
           "fluid bolus",
@@ -4622,7 +5875,8 @@
           "plasma-lyte",
           "normal saline",
           "500 ml",
-          "fluid challenge"
+          "fluid challenge",
+          "iv fluids"
         ]
       },
       "dose": {
@@ -4726,7 +5980,8 @@
       "effects": [],
       "setFlags": [
         "abx-given",
-        "beta-lactam-given"
+        "beta-lactam-given",
+        "any-abx"
       ],
       "maxDoses": 1,
       "indicatedWhen": {
@@ -4753,7 +6008,8 @@
         "en": [
           "azithromycin",
           "macrolide",
-          "zithromax"
+          "zithromax",
+          "azithro"
         ]
       },
       "dose": {
@@ -4767,7 +6023,8 @@
       "risk": "low",
       "effects": [],
       "setFlags": [
-        "atypical-cover"
+        "atypical-cover",
+        "any-abx"
       ],
       "maxDoses": 1,
       "indicatedWhen": {
@@ -4805,7 +6062,8 @@
           "moxifloxacin",
           "respiratory fluoroquinolone",
           "fluoroquinolone",
-          "quinolone"
+          "quinolone",
+          "moxi"
         ]
       },
       "dose": {
@@ -4820,7 +6078,8 @@
       "effects": [],
       "setFlags": [
         "abx-given",
-        "atypical-cover"
+        "atypical-cover",
+        "any-abx"
       ],
       "maxDoses": 1,
       "indicatedWhen": {
@@ -4872,7 +6131,8 @@
       "effects": [],
       "setFlags": [
         "abx-given",
-        "beta-lactam-given"
+        "beta-lactam-given",
+        "any-abx"
       ],
       "maxDoses": 1,
       "response": {
@@ -4910,11 +6170,13 @@
       ],
       "risk": "moderate",
       "effects": [],
-      "setFlags": [],
+      "setFlags": [
+        "any-abx"
+      ],
       "maxDoses": 1,
       "response": {
-        "zh-CN": "万古霉素已开始滴注。她没有MRSA定植/感染史，近期无住院或静脉抗生素，痰涂片为革兰阳性双球菌——经验性抗MRSA并无指征，且在急性肾损伤时增加肾毒性风险。万古霉素也不能替代针对CAP的β-内酰胺类。",
-        "en": "Vancomycin is running. She has no history of MRSA, no recent admission or IV antibiotics, and the sputum shows Gram-positive diplococci — empirical MRSA cover is not indicated and adds nephrotoxicity in AKI. It does not replace a β-lactam for CAP."
+        "zh-CN": "万古霉素已开始滴注。她没有MRSA定植/感染史，近期无住院或静脉抗生素——经验性抗MRSA并无指征，且有肾毒性（急性肾损伤时尤甚）。万古霉素也不能替代针对CAP的β-内酰胺类。",
+        "en": "Vancomycin is running. She has no history of MRSA and no recent admission or IV antibiotics — empirical MRSA cover is not indicated, and vancomycin is nephrotoxic (especially in acute kidney injury). It does not replace a β-lactam for CAP."
       }
     },
     {
@@ -4952,8 +6214,8 @@
         }
       },
       "harm": {
-        "zh-CN": "观察性研究显示，疑似脓毒性休克患者抗菌药物每延迟一小时，死亡率随之升高。体征和床旁胸片已足以支持肺部感染灶；不稳定患者外出CT既有转运风险，又推迟了抗菌药物。",
-        "en": "In suspected septic shock, observational data link each hour of antibiotic delay with higher mortality. Her signs and the portable chest film already localise the source; sending an unstable patient to CT adds transfer risk and postpones antibiotics."
+        "zh-CN": "观察性研究显示，疑似脓毒性休克患者抗菌药物每延迟一小时，死亡率随之升高。体征加上床旁胸片就足以定位肺部感染灶；不稳定患者外出CT既有转运风险，又推迟了抗菌药物。",
+        "en": "In suspected septic shock, observational data link each hour of antibiotic delay with higher mortality. Her signs plus a portable chest film are enough to localise the source; sending an unstable patient to CT adds transfer risk and postpones antibiotics."
       },
       "response": {
         "zh-CN": "陈护士：好的，那抗生素先不配……（她看了一眼监护仪，面露担忧）",
@@ -4973,7 +6235,8 @@
           "去甲肾",
           "升压药",
           "血管活性药",
-          "noradrenaline"
+          "noradrenaline",
+          "去甲"
         ],
         "en": [
           "norepinephrine",
@@ -5138,13 +6401,15 @@
           "对乙酰氨基酚",
           "扑热息痛",
           "退热",
-          "退烧"
+          "退烧",
+          "泰诺林"
         ],
         "en": [
           "paracetamol",
           "acetaminophen",
           "antipyretic",
-          "for the fever"
+          "for the fever",
+          "tylenol"
         ]
       },
       "dose": {
@@ -5238,13 +6503,15 @@
           "动脉置管",
           "有创动脉压",
           "动脉测压",
-          "桡动脉穿刺"
+          "桡动脉穿刺",
+          "动脉线"
         ],
         "en": [
           "arterial line",
           "art line",
           "invasive bp",
-          "invasive blood pressure"
+          "invasive blood pressure",
+          "a-line"
         ]
       },
       "dose": {
@@ -5430,8 +6697,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "ICU孙医生接听：听完你的SBAR交班后同意收治，约30–45分钟内有床位，并请你继续滴定去甲肾上腺素、复查乳酸，同时与家属沟通病情和治疗目标。",
-        "en": "ICU registrar Dr Sun takes your SBAR handover and accepts her; a bed will be ready in about 30–45 minutes. She asks you to keep titrating norepinephrine, repeat the lactate, and talk with the family about severity and goals of care."
+        "zh-CN": "ICU孙医生接听：听完你的SBAR交班后同意收治，约30–45分钟内有床位。她请你在转运前把MAP维持在65 mmHg以上（必要时开始或上调去甲肾上腺素）、复查乳酸，同时与家属沟通病情和治疗目标。",
+        "en": "ICU registrar Dr Sun takes your SBAR handover and accepts her; a bed will be ready in about 30–45 minutes. Until transfer she asks you to keep the MAP ≥ 65 mmHg (starting or titrating norepinephrine as needed), repeat the lactate, and talk with the family about severity and goals of care."
       }
     },
     {
@@ -5468,8 +6735,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "需要升压药的脓毒性休克本身就符合ATS/IDSA重症CAP的主要标准（她还满足3项次要标准，CURB-65为4分），应收入ICU；普通病房无法提供升压药滴定和密切监测。",
-        "en": "Septic shock needing a vasopressor is itself an ATS/IDSA major criterion for severe CAP (she also meets 3 minor criteria, and CURB-65 is 4) — she needs ICU; a general ward cannot titrate vasopressors or monitor her closely enough."
+        "zh-CN": "补液后仍需升压药维持血压的休克本身就符合ATS/IDSA重症CAP的主要标准，应收入ICU；普通病房无法提供升压药滴定和密切监测。",
+        "en": "Shock that still needs a vasopressor after fluids is itself an ATS/IDSA major criterion for severe CAP — she needs ICU; a general ward cannot titrate vasopressors or monitor her closely enough."
       },
       "response": {
         "zh-CN": "病房护士长来电：病房没有升压药泵入和有创监测条件，要求重新评估去向。",
@@ -5625,7 +6892,7 @@
             },
             {
               "not": {
-                "flag": "abx-given"
+                "flag": "any-abx"
               }
             }
           ]
@@ -5638,6 +6905,32 @@
           "zh-CN": "陈护士：两套血培养已从两个不同部位抽好送检了（每套需氧瓶加厌氧瓶）。抗生素随时可以给。",
           "en": "Nurse Chen: Two sets of blood cultures are off from two different sites (aerobic and anaerobic bottle each). Antibiotics can go in whenever you're ready."
         }
+      },
+      {
+        "id": "ev-cultures-after-abx",
+        "when": {
+          "all": [
+            {
+              "ordered": "blood-cultures"
+            },
+            {
+              "flag": "any-abx"
+            },
+            {
+              "not": {
+                "flag": "cultures-first"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "cultures-after-abx"
+        ],
+        "message": {
+          "zh-CN": "陈护士：两套血培养抽好送检了——不过是在第一剂抗菌药物之后抽的，阳性率会打折扣。",
+          "en": "Nurse Chen: Two sets of blood cultures are off — but they were drawn after the first antibiotic dose, so the yield will be lower."
+        },
+        "severity": "info"
       },
       {
         "id": "ev-ct-before-abx",
@@ -5680,8 +6973,8 @@
         },
         "severity": "info",
         "message": {
-          "zh-CN": "陈护士：医生，她进抢救室已经半小时了，抗生素要不要先配上？药房可以马上送来。",
-          "en": "Nurse Chen: Doctor, she's been in resus for half an hour — shall I draw up the antibiotics? Pharmacy can send them straight away."
+          "zh-CN": "陈护士：医生，她进抢救室已经半小时了，经验性抗菌药物用哪种？药房可以马上送来。",
+          "en": "Nurse Chen: Doctor, she's been in resus for half an hour — which empirical antibiotics do you want? Pharmacy can send them straight away."
         }
       },
       {
@@ -5710,8 +7003,8 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "陈护士：进抢救室已经一个小时了，还没用上抗生素！她越来越叫不醒，花斑已经蔓延到大腿，血压还在往下掉。",
-          "en": "Nurse Chen: She's been in resus for an hour and still hasn't had antibiotics! She's getting harder to rouse, the mottling has spread up her thighs and her pressure keeps falling."
+          "zh-CN": "陈护士：进抢救室已经一个小时了，经验性抗菌方案还没到位！她越来越叫不醒，花斑已经蔓延到大腿，血压还在往下掉。",
+          "en": "Nurse Chen: She's been in resus for an hour and the empirical antibiotic regimen still isn't in! She's getting harder to rouse, the mottling has spread up her thighs and her pressure keeps falling."
         }
       },
       {
@@ -5809,6 +7102,18 @@
           "zh-CN": "陈护士：最初的几袋液体已经推进去了，抗生素也在滴。要再评估一下她吗？最新血压在监护仪上。",
           "en": "Nurse Chen: The first bags of fluid are in and the antibiotics are running. Do you want to reassess her? The latest BP is on the monitor."
         }
+      },
+      {
+        "id": "ev-reassess-late",
+        "when": {
+          "phase": "reassess-late"
+        },
+        "setFlags": [],
+        "message": {
+          "zh-CN": "陈护士：抗生素终于用上了，几袋液体也推进去了，可她还是叫不太醒，花斑一直到大腿。要再评估一下吗？最新血压在监护仪上。",
+          "en": "Nurse Chen: The antibiotics are finally in and the boluses are through, but she's still hard to rouse and mottled up to her thighs. Do you want to reassess her? The latest BP is on the monitor."
+        },
+        "severity": "warning"
       },
       {
         "id": "ev-icu-late",
@@ -5967,8 +7272,8 @@
         "en": "Measure lactate now; take two sets of blood cultures before antibiotics; the blood count, chemistry (renal function) and chest film locate the source and the organ dysfunction."
       },
       "guidance": {
-        "zh-CN": "开具静脉血气+乳酸、血培养、血常规、生化和床旁胸片，结果出来后逐一阅读。",
-        "en": "Order a venous gas with lactate, blood cultures, blood count, chemistry and a portable chest film, then read each result as it returns."
+        "zh-CN": "开具静脉血气+乳酸、血培养、血常规、生化和床旁胸片；乳酸几分钟就出结果，先看乳酸，其余结果出来后逐一阅读。",
+        "en": "Order a venous gas with lactate, blood cultures, blood count, chemistry and a portable chest film; the lactate is back within minutes — read it first, then the rest as they return."
       },
       "completeWhen": {
         "all": [
@@ -5979,13 +7284,13 @@
             "ordered": "blood-cultures"
           },
           {
-            "read": "cbc"
+            "ordered": "cbc"
           },
           {
-            "read": "chem"
+            "ordered": "chem"
           },
           {
-            "read": "cxr"
+            "ordered": "cxr"
           }
         ]
       },
@@ -6021,7 +7326,7 @@
           "target": "lab-chemistry"
         },
         {
-          "target": "records"
+          "target": "lab-blood-gas"
         }
       ]
     },
@@ -6036,8 +7341,8 @@
         "en": "Early treatment"
       },
       "hint": {
-        "zh-CN": "低血压+乳酸升高：1小时内静脉经验性抗菌药物（β-内酰胺+大环内酯），并开始分次推注平衡晶体液，每次后复评。",
-        "en": "Hypotension plus raised lactate: IV empirical antibiotics within the hour (β-lactam plus macrolide) and balanced crystalloid in boluses, reassessing after each."
+        "zh-CN": "低血压+乳酸升高：在不明显延误的前提下先留血培养，然后1小时内静脉经验性抗菌药物（β-内酰胺+大环内酯），并开始分次推注平衡晶体液，每次后复评。",
+        "en": "Hypotension plus raised lactate: blood cultures first if they cause no delay, then IV empirical antibiotics within the hour (β-lactam plus macrolide) and balanced crystalloid in boluses, reassessing after each."
       },
       "guidance": {
         "zh-CN": "在决策板上确定抗菌药物时机和方案，然后给药；完成至少三次500 mL液体推注。",
@@ -6047,6 +7352,9 @@
         "all": [
           {
             "flag": "abx-given"
+          },
+          {
+            "flag": "beta-lactam-given"
           },
           {
             "flag": "atypical-cover"
@@ -6125,18 +7433,40 @@
             "decided": "sepsis3"
           },
           {
-            "read": "lactate-repeat",
-            "phase": "reassess"
+            "any": [
+              {
+                "read": "lactate-repeat",
+                "phase": "reassess"
+              },
+              {
+                "read": "lactate-repeat",
+                "phase": "reassess-late"
+              }
+            ]
           },
           {
-            "examined": "ex-reassess-perfusion"
+            "any": [
+              {
+                "examined": "ex-reassess-perfusion"
+              },
+              {
+                "examined": "ex-reassess-perfusion-late"
+              }
+            ]
           }
         ]
       },
       "waypoints": [
         {
           "unless": {
-            "examined": "ex-reassess-perfusion"
+            "any": [
+              {
+                "examined": "ex-reassess-perfusion"
+              },
+              {
+                "examined": "ex-reassess-perfusion-late"
+              }
+            ]
           },
           "target": "patient"
         },
@@ -6178,11 +7508,14 @@
         "en": "Score CURB-65 from the triage data; needing a vasopressor is itself a major criterion for severe CAP. Refer to ICU with an SBAR and talk with her daughter."
       },
       "guidance": {
-        "zh-CN": "完成CURB-65判断，联系ICU交班，并向家属解释病情。",
-        "en": "Complete the CURB-65 question, hand over to ICU and explain the situation to the family."
+        "zh-CN": "阅读胸片，完成CURB-65判断，电话联系ICU交班，并向家属解释病情。",
+        "en": "Read the chest film, complete the CURB-65 question, phone the ICU handover and explain the situation to the family."
       },
       "completeWhen": {
         "all": [
+          {
+            "read": "cxr"
+          },
           {
             "decided": "curb65"
           },
@@ -6194,6 +7527,12 @@
       "waypoints": [
         {
           "unless": {
+            "read": "cxr"
+          },
+          "target": "xray"
+        },
+        {
+          "unless": {
             "decided": "curb65"
           },
           "target": "board"
@@ -6202,7 +7541,7 @@
           "unless": {
             "intervened": "icu-referral"
           },
-          "target": "icu"
+          "target": "nurse-station"
         },
         {
           "target": "patient"
@@ -6219,7 +7558,7 @@
       },
       "kind": "single",
       "requires": {
-        "any": [
+        "all": [
           {
             "read": "vbg-lactate"
           },
@@ -6229,8 +7568,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先完成肺部听诊，或拿到静脉血气/乳酸结果。",
-        "en": "Auscultate the chest or get the venous gas/lactate result first."
+        "zh-CN": "先完成肺部听诊，并拿到静脉血气/乳酸结果。",
+        "en": "Auscultate the chest and get the venous gas/lactate result first."
       },
       "options": [
         {
@@ -6507,13 +7846,36 @@
             "read": "chem"
           },
           {
+            "read": "cbc"
+          },
+          {
             "intervened": "norepinephrine"
+          },
+          {
+            "any": [
+              {
+                "read": "lactate-repeat",
+                "phase": "reassess"
+              },
+              {
+                "read": "lactate-repeat",
+                "phase": "reassess-late"
+              },
+              {
+                "read": "vbg-lactate",
+                "phase": "reassess"
+              },
+              {
+                "read": "vbg-lactate",
+                "phase": "reassess-late"
+              }
+            ]
           }
         ]
       },
       "need": {
-        "zh-CN": "先拿到乳酸和生化（器官功能）结果，并处理补液后仍存在的低血压。",
-        "en": "Get the lactate and chemistry (organ function) results and act on the hypotension that persists after fluids first."
+        "zh-CN": "先拿到乳酸、血常规和生化（器官功能）结果，处理补液后仍存在的低血压，并在初始复苏后复查乳酸。",
+        "en": "Get the lactate, blood count and chemistry (organ function) results, act on the hypotension that persists after fluids, and repeat the lactate after initial resuscitation first."
       },
       "options": [
         {
@@ -6524,8 +7886,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。她的SOFA（不含呼吸项）至少5分：GCS 14（1分）、MAP < 70 mmHg（1分；去甲肾上腺素≤0.1 µg/kg/min时计3分）、肌酐156 µmol/L（1分）、血小板132×10⁹/L（1分）、胆红素24 µmol/L（1分）；补液后仍需去甲肾上腺素，乳酸到院时4.6 mmol/L、初始补液后仍为3.6 mmol/L（>2 mmol/L）——符合脓毒性休克。",
-            "en": "Correct. Her SOFA without the respiratory component is at least 5: GCS 14 (1), MAP < 70 mmHg (1; 3 on norepinephrine ≤ 0.1 µg/kg/min), creatinine 156 µmol/L (1), platelets 132 ×10⁹/L (1), bilirubin 24 µmol/L (1). She needs norepinephrine after fluids, and her lactate was 4.6 mmol/L on arrival and still 3.6 mmol/L (> 2 mmol/L) after the initial fluids — septic shock."
+            "zh-CN": "正确。即便不计呼吸项，她的SOFA也已≥4分：GCS 14（1分）、MAP < 70 mmHg（1分；使用去甲肾上腺素≤0.1 µg/kg/min时为3分）、肌酐156 µmol/L（1分）、血小板132×10⁹/L（1分）——较基线急性增加远超2分（若查了胆红素，还可能再加分）。补液后仍需去甲肾上腺素维持MAP，且初始补液后复查乳酸仍>2 mmol/L——符合脓毒性休克。",
+            "en": "Correct. Even without the respiratory component her SOFA is already ≥ 4: GCS 14 (1), MAP < 70 mmHg (1; 3 on norepinephrine ≤ 0.1 µg/kg/min), creatinine 156 µmol/L (1) and platelets 132 ×10⁹/L (1) — an acute rise of well over 2 (bilirubin, if you checked it, may add more). She still needs norepinephrine to hold the MAP after fluids, and her repeat lactate after initial fluids is still > 2 mmol/L — septic shock."
           }
         },
         {
@@ -6725,8 +8087,8 @@
       "id": "r-dx",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "通过体征和胸片定位肺部感染灶，并按Sepsis-3正确归类为脓毒性休克",
-        "en": "Localised a pulmonary source from the signs and chest film, and classified septic shock correctly by Sepsis-3"
+        "zh-CN": "通过体征和胸片定位肺部感染灶，并按Sepsis-3正确归类为脓毒性休克（首次作答即正确）",
+        "en": "Localised a pulmonary source from the signs and chest film, and classified septic shock correctly by Sepsis-3 (first attempt)"
       },
       "weight": 1,
       "met": {
@@ -6738,7 +8100,29 @@
             "examined": "ex-resp-ausc"
           },
           {
-            "decided": "sepsis3"
+            "decidedFirstTry": "sepsis3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-reasoning",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "抗菌药物时机、升压策略和CURB-65三道决策题均首次作答正确",
+        "en": "Answered the antibiotic-timing, vasopressor and CURB-65 decisions correctly at the first attempt"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "abx-timing"
+          },
+          {
+            "decidedFirstTry": "vasopressor"
+          },
+          {
+            "decidedFirstTry": "curb65"
           }
         ]
       }
@@ -6783,7 +8167,16 @@
             "read": "vbg-lactate"
           },
           {
-            "read": "lactate-repeat"
+            "any": [
+              {
+                "read": "lactate-repeat",
+                "phase": "reassess"
+              },
+              {
+                "read": "lactate-repeat",
+                "phase": "reassess-late"
+              }
+            ]
           }
         ]
       }
@@ -6855,7 +8248,14 @@
             "minCount": 3
           },
           {
-            "examined": "ex-reassess-perfusion"
+            "any": [
+              {
+                "examined": "ex-reassess-perfusion"
+              },
+              {
+                "examined": "ex-reassess-perfusion-late"
+              }
+            ]
           }
         ]
       }
@@ -6915,6 +8315,25 @@
             "not": {
               "intervened": "ward-admission"
             }
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-med-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "问出在家自行服用布洛芬，并暂停二甲双胍、降压药和NSAIDs（休克合并急性肾损伤）",
+        "en": "Found the home ibuprofen use and held metformin, the antihypertensive and NSAIDs (shock with acute kidney injury)"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "hx-otc-ibuprofen"
+          },
+          {
+            "intervened": "hold-home-meds"
           }
         ]
       }
@@ -7008,8 +8427,8 @@
         "en": "Dr Liu (radiology)"
       },
       "knowledge": {
-        "zh-CN": "只解读学习者已调阅的影像报告：右下叶实变伴支气管充气征、右侧少量胸腔积液、无肺水肿征象、无气胸；右心缘清晰提示病变位于下叶而非中叶。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。",
-        "en": "Interprets only imaging the learner has retrieved: right lower lobe consolidation with air bronchograms, small right effusion, no oedema, no pneumothorax; a sharp right heart border places the process in the lower rather than the middle lobe. A non-contrast CT cannot assess for PE. POCUS is clinician-performed; can explain hepatisation, B-lines and the IVC and their limits. Adds no findings beyond the reports."
+        "zh-CN": "只解读学习者已调阅的影像报告：右下叶实变伴支气管充气征、右侧少量胸腔积液、无肺水肿征象、无气胸；右心缘清晰提示病变位于下叶而非中叶。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "en": "Interprets only imaging the learner has retrieved: right lower lobe consolidation with air bronchograms, small right effusion, no oedema, no pneumothorax; a sharp right heart border places the process in the lower rather than the middle lobe. A non-contrast CT cannot assess for PE. POCUS is clinician-performed; can explain hepatisation, B-lines and the IVC and their limits. Adds no findings beyond the reports. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
         "cxr",
@@ -7025,8 +8444,8 @@
         "en": "Ms Wu (microbiology lab)"
       },
       "knowledge": {
-        "zh-CN": "只解释学习者已拿到的微生物结果：痰标本质量合格；革兰阳性矛头状双球菌的形态提示（但不能确定）肺炎链球菌；尿抗原阳性支持肺炎链球菌感染；血培养和痰培养在急诊期间仍在进行，没有鉴定或药敏结果。抗菌药物后采集的标本阳性率会下降。",
-        "en": "Explains only microbiology results the learner has: the sputum sample is of good quality; Gram-positive lancet-shaped diplococci suggest (but do not prove) pneumococcus; a positive urinary antigen supports pneumococcal infection; blood and sputum cultures are still incubating during the ED stay with no identification or susceptibilities. Samples taken after antibiotics have lower yield."
+        "zh-CN": "只解释学习者已拿到的微生物结果：痰标本质量合格；革兰阳性矛头状双球菌的形态提示（但不能确定）肺炎链球菌；尿抗原阳性支持肺炎链球菌感染；血培养和痰培养在急诊期间仍在进行，没有鉴定或药敏结果。抗菌药物后采集的标本阳性率会下降。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "en": "Explains only microbiology results the learner has: the sputum sample is of good quality; Gram-positive lancet-shaped diplococci suggest (but do not prove) pneumococcus; a positive urinary antigen supports pneumococcal infection; blood and sputum cultures are still incubating during the ED stay with no identification or susceptibilities. Samples taken after antibiotics have lower yield. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
         "sputum",
@@ -7043,10 +8462,13 @@
         "en": "Pharmacist Zhao (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，间隔至少6小时（肌酐清除率≤30 mL/min）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。",
-        "en": "Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity."
+        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，间隔至少6小时（肌酐清除率≤30 mL/min）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。",
+        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity."
       },
-      "interprets": [],
+      "interprets": [
+        "ecg",
+        "chem"
+      ],
       "revealsDiagnosis": false
     },
     {
@@ -7099,8 +8521,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "这是虚构的教学病例。生理模型为简化模型（线性趋势、即时撤效），血压和乳酸对治疗的反应仅为示意；时间被压缩（“复苏后再评估”阶段代表约1小时后的状态）。急诊阶段没有血培养最终结果；ICU病程和预后未模拟。各地抗菌谱、药品剂型（如去甲肾上腺素以碱基或盐计量）和流程不同，应遵循本地规范。",
-      "en": "This is a fictional teaching case. The physiology model is simplified (linear trends, instant offsets) and the blood-pressure and lactate responses are illustrative; time is compressed (the 'reassessment' phase stands for the state roughly an hour later). No final blood-culture results exist for the ED phase, and the ICU course and outcome are not simulated. Local antibiograms, drug formulations (e.g. norepinephrine labelled as base or salt) and protocols differ — follow local guidance."
+      "zh-CN": "这是虚构的教学病例。生理模型为简化模型（线性趋势、即时撤效），血压和乳酸对治疗的反应仅为示意；时间被压缩（“复苏后再评估”阶段代表约1小时后的状态）。急诊阶段没有血培养最终结果；ICU病程和预后未模拟。各地抗菌谱、药品剂型（如去甲肾上腺素以碱基或盐计量）和流程不同，应遵循本地规范。若抗菌药物延迟超过60分钟，病例改为进入“延迟抗菌后再评估”阶段：复查乳酸不降反升（5.8 mmol/L）、肌酐继续上升、灌注更差。",
+      "en": "This is a fictional teaching case. The physiology model is simplified (linear trends, instant offsets) and the blood-pressure and lactate responses are illustrative; time is compressed (the 'reassessment' phase stands for the state roughly an hour later). No final blood-culture results exist for the ED phase, and the ICU course and outcome are not simulated. Local antibiograms, drug formulations (e.g. norepinephrine labelled as base or salt) and protocols differ — follow local guidance. If antibiotics are delayed beyond 60 minutes the case moves into a 'reassessment after delayed antibiotics' phase instead: the repeat lactate rises (5.8 mmol/L) rather than clearing, creatinine keeps climbing and perfusion is worse."
     },
     "unknowns": [
       {
