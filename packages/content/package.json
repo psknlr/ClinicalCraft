@@ -1,0 +1,19 @@
+{
+  "name": "@clinicalcraft/content",
+  "version": "5.0.0",
+  "description": "Built-in ClinicalCraft content: clinical cases, facilities and equipment catalogs, plus a Node loader",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./cases/*": "./cases/*",
+    "./facilities/*": "./facilities/*",
+    "./catalogs/*": "./catalogs/*",
+    "./schemas/*": "./schemas/*"
+  },
+  "files": ["dist", "cases", "facilities", "catalogs", "schemas"],
+  "scripts": { "build": "tsc -b" },
+  "dependencies": { "@clinicalcraft/core": "5.0.0" }
+}
