@@ -546,6 +546,1358 @@
         {"m": "coal", "p": [0.2, 0.77, 2.225], "s": [0.16, 0.06, 0.2]},
         {"m": "led-green", "p": [0.22, 0.8025, 2.225], "s": [0.04, 0.005, 0.04]}
       ]
+    },
+    {
+      "id": "ultrasound-machine",
+      "name": {
+        "zh-CN": "彩色多普勒超声仪",
+        "en": "Ultrasound machine"
+      },
+      "category": "imaging",
+      "description": {
+        "zh-CN": "推车式彩色多普勒超声仪：高分辨率显示屏、带轨迹球的控制面板、三把探头和热敏打印机。",
+        "en": "A cart-based colour Doppler ultrasound system with a high-resolution monitor, trackball console, three probes and a thermal printer."
+      },
+      "usage": {
+        "zh-CN": "选择合适探头（凸阵、线阵、相控阵）并涂耦合剂，完成腹部、血管、产科或经胸超声心动图检查。",
+        "en": "Choose the right probe (curved, linear or phased array), apply gel and perform abdominal, vascular, obstetric or transthoracic echocardiography studies."
+      },
+      "capabilities": [
+        "ultrasound",
+        "echocardiography"
+      ],
+      "footprint": {
+        "w": 0.75,
+        "d": 0.85,
+        "h": 1.7
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 使用超声仪",
+          "en": "E · Use ultrasound"
+        }
+      },
+      "screen": "pacs",
+      "tags": [
+        "imaging",
+        "ultrasound",
+        "echo",
+        "mobile",
+        "no-radiation"
+      ],
+      "parts": [
+        {"m": "rubber", "p": [-0.22, 0.05, -0.33], "s": [0.1, 0.1, 0.1]},
+        {"m": "rubber", "p": [-0.22, 0.05, 0.29], "s": [0.1, 0.1, 0.1]},
+        {"m": "rubber", "p": [0.22, 0.05, -0.33], "s": [0.1, 0.1, 0.1]},
+        {"m": "rubber", "p": [0.22, 0.05, 0.29], "s": [0.1, 0.1, 0.1]},
+        {"m": "plastic", "p": [0, 0.15, -0.02], "s": [0.56, 0.1, 0.78]},
+        {"m": "plastic", "p": [0, 0.53, -0.18], "s": [0.48, 0.66, 0.42]},
+        {"m": "mint", "p": [0, 0.44, 0.035], "s": [0.44, 0.36, 0.01]},
+        {"m": "black", "p": [0, 0.72, 0.13], "s": [0.3, 0.12, 0.2]},
+        {"m": "paper", "p": [0, 0.695, 0.255], "s": [0.12, 0.01, 0.05]},
+        {"m": "plastic", "p": [0, 0.91, -0.01], "s": [0.6, 0.1, 0.72]},
+        {"m": "black", "p": [0, 0.9675, 0.09], "s": [0.52, 0.015, 0.44]},
+        {"m": "screen-dark", "p": [0, 0.98, -0.025], "s": [0.34, 0.01, 0.17]},
+        {"m": "blue", "p": [0, 0.9875, 0.175], "s": [0.07, 0.025, 0.07]},
+        {"m": "led-green", "p": [0.17, 0.9785, 0.175], "s": [0.06, 0.007, 0.05]},
+        {"m": "teal", "p": [-0.17, 0.9785, 0.175], "s": [0.06, 0.007, 0.05]},
+        {"m": "chrome", "p": [-0.245, 0.915, 0.38], "s": [0.03, 0.03, 0.06]},
+        {"m": "chrome", "p": [0.245, 0.915, 0.38], "s": [0.03, 0.03, 0.06]},
+        {"m": "chrome", "p": [0, 0.915, 0.395], "s": [0.52, 0.03, 0.03]},
+        {"m": "black", "p": [0, 1.14, -0.315], "s": [0.08, 0.36, 0.07]},
+        {"m": "black", "p": [0, 1.5, -0.315], "s": [0.58, 0.4, 0.05]},
+        {"m": "screen", "p": [0, 1.5, -0.2875], "s": [0.54, 0.36, 0.005], "name": "screen"},
+        {"m": "plastic", "p": [0.33, 0.895, -0.06], "s": [0.06, 0.11, 0.42]},
+        {"m": "white", "p": [0.33, 1.01, -0.19], "s": [0.04, 0.12, 0.06]},
+        {"m": "plastic", "p": [0.33, 1.01, -0.06], "s": [0.04, 0.12, 0.06]},
+        {"m": "scrubs", "p": [0.33, 1.01, 0.07], "s": [0.04, 0.12, 0.06]},
+        {"m": "black", "p": [0.33, 0.63, -0.19], "s": [0.01, 0.42, 0.02]},
+        {"m": "black", "p": [0.33, 0.67, 0.07], "s": [0.01, 0.34, 0.02]},
+        {"m": "plastic", "p": [-0.33, 0.88, -0.01], "s": [0.06, 0.08, 0.12]},
+        {"m": "blue", "p": [-0.33, 0.98, -0.01], "s": [0.04, 0.12, 0.04]},
+        {"m": "white", "p": [-0.33, 1.055, -0.01], "s": [0.03, 0.03, 0.024]}
+      ]
+    },
+    {
+      "id": "pocus-cart",
+      "name": {
+        "zh-CN": "床旁超声推车",
+        "en": "POCUS cart"
+      },
+      "category": "imaging",
+      "description": {
+        "zh-CN": "床旁即时超声（POCUS）：平板式主机装在五爪脚轮立杆上，配一把探头和耗材篮。",
+        "en": "A point-of-care ultrasound tablet on a five-caster pole stand with a probe holder and supply basket."
+      },
+      "usage": {
+        "zh-CN": "推到床旁快速完成 eFAST、肺部 B 线、下腔静脉评估或引导穿刺；结果需结合临床解读。",
+        "en": "Bring it to the bedside for a quick eFAST, lung B-lines, IVC assessment or needle guidance; interpret findings in clinical context."
+      },
+      "capabilities": [
+        "ultrasound"
+      ],
+      "footprint": {
+        "w": 0.5,
+        "d": 0.5,
+        "h": 1.4
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 床旁超声",
+          "en": "E · Point-of-care ultrasound"
+        }
+      },
+      "screen": "pacs",
+      "tags": [
+        "imaging",
+        "ultrasound",
+        "pocus",
+        "bedside",
+        "mobile"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.08, 0], "s": [0.5, 0.04, 0.08]},
+        {"m": "black", "p": [0, 0.08, 0], "s": [0.08, 0.04, 0.5]},
+        {"m": "rubber", "p": [-0.22, 0.03, 0], "s": [0.06, 0.06, 0.06]},
+        {"m": "rubber", "p": [0.22, 0.03, 0], "s": [0.06, 0.06, 0.06]},
+        {"m": "rubber", "p": [0, 0.03, -0.22], "s": [0.06, 0.06, 0.06]},
+        {"m": "rubber", "p": [0, 0.03, 0.22], "s": [0.06, 0.06, 0.06]},
+        {"m": "chrome", "p": [0, 0.55, 0], "s": [0.05, 0.9, 0.05]},
+        {"m": "steel", "p": [0, 0.61, 0.1125], "s": [0.3, 0.02, 0.175]},
+        {"m": "steel", "p": [0, 0.67, 0.195], "s": [0.3, 0.1, 0.01]},
+        {"m": "steel", "p": [-0.145, 0.67, 0.1125], "s": [0.01, 0.1, 0.175]},
+        {"m": "steel", "p": [0.145, 0.67, 0.1125], "s": [0.01, 0.1, 0.175]},
+        {"m": "blue", "p": [-0.08, 0.69, 0.1], "s": [0.06, 0.14, 0.06]},
+        {"m": "white", "p": [0.06, 0.655, 0.11], "s": [0.12, 0.07, 0.1]},
+        {"m": "black", "p": [0, 1.025, -0.01], "s": [0.24, 0.05, 0.18]},
+        {"m": "black", "p": [0, 1.205, -0.04], "s": [0.42, 0.31, 0.04]},
+        {"m": "screen", "p": [0, 1.205, -0.0175], "s": [0.38, 0.27, 0.005], "name": "screen"},
+        {"m": "chrome", "p": [-0.14, 1.38, -0.04], "s": [0.02, 0.04, 0.02]},
+        {"m": "chrome", "p": [0.14, 1.38, -0.04], "s": [0.02, 0.04, 0.02]},
+        {"m": "chrome", "p": [0, 1.39, -0.04], "s": [0.3, 0.02, 0.02]},
+        {"m": "black", "p": [0.16, 0.96, 0.06], "s": [0.08, 0.08, 0.08]},
+        {"m": "plastic", "p": [0.16, 1.05, 0.06], "s": [0.04, 0.1, 0.04]},
+        {"m": "black", "p": [0.16, 0.77, 0.06], "s": [0.01, 0.3, 0.01]}
+      ]
+    },
+    {
+      "id": "radiology-console",
+      "name": {
+        "zh-CN": "影像控制台",
+        "en": "Radiology console"
+      },
+      "category": "imaging",
+      "description": {
+        "zh-CN": "影像控制台兼阅片工作站：三台显示器（扫描控制与 PACS 诊断屏）、扫描控制盒和对讲话筒，背后是铅玻璃观察窗。",
+        "en": "Radiology control console and reading station: three monitors (scan control and PACS diagnostic displays), scan control box and intercom in front of a lead-glass viewing window."
+      },
+      "usage": {
+        "zh-CN": "在此调阅 PACS 图像、对比既往检查并书写影像报告；可开具的影像检查取决于该工位放置时配置的能力。",
+        "en": "Review PACS images, compare prior studies and write reports here; which imaging studies can be ordered depends on the capabilities configured on this placement."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 2.4,
+        "d": 1,
+        "h": 2.3
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "workstation",
+        "prompt": {
+          "zh-CN": "E · 调阅影像 (PACS)",
+          "en": "E · Open PACS"
+        }
+      },
+      "screen": "pacs",
+      "tags": [
+        "imaging",
+        "radiology",
+        "pacs",
+        "computer",
+        "orders",
+        "lead-glass"
+      ],
+      "parts": [
+        {"m": "teal", "p": [0, 0.075, -0.44], "s": [2.4, 0.15, 0.12]},
+        {"m": "cream", "p": [0, 0.575, -0.44], "s": [2.4, 0.85, 0.12]},
+        {"m": "wood", "p": [0, 1.025, -0.43], "s": [2.4, 0.05, 0.14]},
+        {"m": "teal", "p": [-1.15, 1.6, -0.44], "s": [0.1, 1.1, 0.12]},
+        {"m": "teal", "p": [1.15, 1.6, -0.44], "s": [0.1, 1.1, 0.12]},
+        {"m": "lead-glass", "p": [0, 1.6, -0.44], "s": [2.2, 1.1, 0.04]},
+        {"m": "teal", "p": [0, 1.6, -0.44], "s": [0.04, 1.1, 0.06]},
+        {"m": "teal", "p": [0, 2.21, -0.44], "s": [2.4, 0.12, 0.12]},
+        {"m": "led-red", "p": [0, 2.21, -0.375], "s": [0.24, 0.06, 0.01]},
+        {"m": "wood", "p": [0, 0.76, 0.07], "s": [2.4, 0.04, 0.86]},
+        {"m": "teal", "p": [-1.15, 0.37, 0.06], "s": [0.06, 0.74, 0.76]},
+        {"m": "teal", "p": [1.15, 0.37, 0.06], "s": [0.06, 0.74, 0.76]},
+        {"m": "teal", "p": [0, 0.57, -0.345], "s": [2.24, 0.34, 0.03]},
+        {"m": "black", "p": [-0.78, 0.79, -0.23], "s": [0.24, 0.02, 0.16]},
+        {"m": "black", "p": [-0.78, 0.895, -0.235], "s": [0.06, 0.19, 0.03]},
+        {"m": "black", "p": [-0.78, 1.12, -0.2], "s": [0.58, 0.36, 0.04]},
+        {"m": "screen", "p": [-0.78, 1.12, -0.1775], "s": [0.54, 0.32, 0.005], "name": "screen"},
+        {"m": "black", "p": [0, 0.79, -0.23], "s": [0.24, 0.02, 0.16]},
+        {"m": "black", "p": [0, 0.895, -0.235], "s": [0.06, 0.19, 0.03]},
+        {"m": "black", "p": [0, 1.14, -0.2], "s": [0.62, 0.4, 0.04]},
+        {"m": "screen", "p": [0, 1.14, -0.1775], "s": [0.58, 0.36, 0.005], "name": "screen"},
+        {"m": "black", "p": [0.78, 0.79, -0.23], "s": [0.24, 0.02, 0.16]},
+        {"m": "black", "p": [0.78, 0.895, -0.235], "s": [0.06, 0.19, 0.03]},
+        {"m": "black", "p": [0.78, 1.14, -0.2], "s": [0.62, 0.4, 0.04]},
+        {"m": "screen", "p": [0.78, 1.14, -0.1775], "s": [0.58, 0.36, 0.005], "name": "screen"},
+        {"m": "white", "p": [0, 0.79, 0.185], "s": [0.5, 0.02, 0.17]},
+        {"m": "plastic", "p": [0.35, 0.79, 0.195], "s": [0.06, 0.02, 0.09]},
+        {"m": "black", "p": [-0.81, 0.81, 0.16], "s": [0.38, 0.06, 0.2]},
+        {"m": "led-red", "p": [-0.92, 0.855, 0.16], "s": [0.08, 0.03, 0.08]},
+        {"m": "led-amber", "p": [-0.8, 0.845, 0.16], "s": [0.04, 0.01, 0.04]},
+        {"m": "led-green", "p": [-0.72, 0.845, 0.16], "s": [0.04, 0.01, 0.04]},
+        {"m": "black", "p": [0.76, 0.79, 0.15], "s": [0.12, 0.02, 0.1]},
+        {"m": "chrome", "p": [0.76, 0.89, 0.15], "s": [0.02, 0.18, 0.02]},
+        {"m": "black", "p": [0.76, 1, 0.16], "s": [0.04, 0.04, 0.06]}
+      ]
+    },
+    {
+      "id": "xray-lightbox",
+      "name": {
+        "zh-CN": "X 线观片灯",
+        "en": "X-ray lightbox"
+      },
+      "category": "imaging",
+      "description": {
+        "zh-CN": "壁挂式双联 X 线观片灯，夹着两张胸片。",
+        "en": "A wall-mounted double X-ray film viewer with two chest films clipped on."
+      },
+      "usage": {
+        "zh-CN": "打开背光对比新旧胶片；如今多用 PACS 阅片，观片灯常用于会诊和教学。",
+        "en": "Switch on the backlight to compare old and new films; largely replaced by PACS but still handy for case conferences and teaching."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 1.15,
+        "d": 0.15,
+        "h": 1.8
+      },
+      "solid": false,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 观片灯",
+          "en": "E · Film viewer"
+        }
+      },
+      "screen": "xray",
+      "light": {
+        "color": "#eef6ff",
+        "intensity": 0.8,
+        "distance": 2.5,
+        "y": 1.45
+      },
+      "tags": [
+        "imaging",
+        "wall",
+        "teaching",
+        "film"
+      ],
+      "parts": [
+        {"m": "plastic", "p": [0, 1.44, -0.035], "s": [1.12, 0.68, 0.08]},
+        {"m": "lightbox", "p": [-0.265, 1.44, 0.01], "s": [0.51, 0.56, 0.01]},
+        {"m": "lightbox", "p": [0.265, 1.44, 0.01], "s": [0.51, 0.56, 0.01]},
+        {"m": "screen", "p": [-0.265, 1.43, 0.0175], "s": [0.41, 0.46, 0.005], "name": "screen"},
+        {"m": "screen", "p": [0.265, 1.43, 0.0175], "s": [0.41, 0.46, 0.005], "name": "screen"},
+        {"m": "chrome", "p": [-0.26, 1.67, 0.025], "s": [0.08, 0.06, 0.01]},
+        {"m": "chrome", "p": [0.26, 1.67, 0.025], "s": [0.08, 0.06, 0.01]},
+        {"m": "black", "p": [0.45, 1.1325, 0.01], "s": [0.1, 0.035, 0.01]},
+        {"m": "led-green", "p": [0.37, 1.1325, 0.008], "s": [0.02, 0.015, 0.006]}
+      ]
+    },
+    {
+      "id": "hematology-analyzer",
+      "name": {
+        "zh-CN": "血细胞分析仪",
+        "en": "Haematology analyser"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "落地式五分类血细胞分析仪：自动进样器上排着紫帽 EDTA 抗凝管，带触摸屏和运行指示灯。",
+        "en": "A floor-standing five-part-differential haematology analyser with an autoloader of purple-top EDTA tubes, a touchscreen and run indicators."
+      },
+      "usage": {
+        "zh-CN": "上机检测血常规（血红蛋白、白细胞分类、血小板）及凝血；异常报警提示复检或人工推片镜检。",
+        "en": "Runs the full blood count (haemoglobin, white-cell differential, platelets) and coagulation; flagged results prompt a rerun or a manual blood film."
+      },
+      "capabilities": [
+        "lab-hematology"
+      ],
+      "footprint": {
+        "w": 1,
+        "d": 1,
+        "h": 1.85
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 血液学检验",
+          "en": "E · Haematology tests"
+        }
+      },
+      "screen": "lab",
+      "tags": [
+        "laboratory",
+        "analyzer",
+        "hematology",
+        "cbc"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.04, -0.135], "s": [0.96, 0.08, 0.66]},
+        {"m": "plastic", "p": [0, 0.415, -0.135], "s": [1, 0.67, 0.7]},
+        {"m": "black", "p": [0, 0.415, 0.217], "s": [0.008, 0.59, 0.004]},
+        {"m": "chrome", "p": [-0.06, 0.63, 0.225], "s": [0.06, 0.02, 0.02]},
+        {"m": "chrome", "p": [0.06, 0.63, 0.225], "s": [0.06, 0.02, 0.02]},
+        {"m": "plastic", "p": [0, 1.1, -0.17], "s": [1, 0.7, 0.63]},
+        {"m": "teal", "p": [0, 1.325, 0.1475], "s": [1, 0.05, 0.005]},
+        {"m": "coal", "p": [-0.16, 1.12, 0.1425], "s": [0.52, 0.28, 0.005]},
+        {"m": "steel", "p": [-0.185, 1.13, 0.1475], "s": [0.03, 0.22, 0.005]},
+        {"m": "glass", "p": [-0.16, 1.12, 0.155], "s": [0.52, 0.28, 0.01]},
+        {"m": "black", "p": [0.25, 1.08, 0.175], "s": [0.14, 0.12, 0.06]},
+        {"m": "steel", "p": [0.25, 0.985, 0.17], "s": [0.01, 0.07, 0.01]},
+        {"m": "led-green", "p": [0.32, 1.39, 0.1475], "s": [0.04, 0.04, 0.005], "anim": "blink"},
+        {"m": "led-amber", "p": [0.39, 1.39, 0.1475], "s": [0.04, 0.04, 0.005]},
+        {"m": "steel", "p": [0, 0.8, 0.315], "s": [0.96, 0.1, 0.34]},
+        {"m": "blue", "p": [-0.24, 0.875, 0.315], "s": [0.4, 0.05, 0.1]},
+        {"m": "blue", "p": [0.24, 0.875, 0.315], "s": [0.4, 0.05, 0.1]},
+        {"m": "red", "p": [-0.39, 0.935, 0.315], "s": [0.04, 0.07, 0.04]},
+        {"m": "purple", "p": [-0.39, 0.985, 0.315], "s": [0.044, 0.03, 0.044]},
+        {"m": "red", "p": [-0.29, 0.935, 0.315], "s": [0.04, 0.07, 0.04]},
+        {"m": "purple", "p": [-0.29, 0.985, 0.315], "s": [0.044, 0.03, 0.044]},
+        {"m": "red", "p": [-0.19, 0.935, 0.315], "s": [0.04, 0.07, 0.04]},
+        {"m": "purple", "p": [-0.19, 0.985, 0.315], "s": [0.044, 0.03, 0.044]},
+        {"m": "red", "p": [-0.09, 0.935, 0.315], "s": [0.04, 0.07, 0.04]},
+        {"m": "purple", "p": [-0.09, 0.985, 0.315], "s": [0.044, 0.03, 0.044]},
+        {"m": "red", "p": [0.09, 0.935, 0.315], "s": [0.04, 0.07, 0.04]},
+        {"m": "purple", "p": [0.09, 0.985, 0.315], "s": [0.044, 0.03, 0.044]},
+        {"m": "red", "p": [0.19, 0.935, 0.315], "s": [0.04, 0.07, 0.04]},
+        {"m": "purple", "p": [0.19, 0.985, 0.315], "s": [0.044, 0.03, 0.044]},
+        {"m": "black", "p": [-0.3, 1.515, -0.235], "s": [0.04, 0.13, 0.04]},
+        {"m": "black", "p": [-0.3, 1.69, -0.195], "s": [0.36, 0.28, 0.04]},
+        {"m": "screen", "p": [-0.3, 1.69, -0.1725], "s": [0.32, 0.24, 0.005], "name": "screen"}
+      ]
+    },
+    {
+      "id": "chemistry-analyzer",
+      "name": {
+        "zh-CN": "生化免疫分析仪",
+        "en": "Chemistry & immunoassay analyser"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "大型全自动生化免疫分析仪：透明罩下有试剂盘与反应盘，前置样本传输轨道，顶部三色状态灯。",
+        "en": "A large automated chemistry and immunoassay analyser: reagent carousel and reaction disk under clear covers, a front sample-rack conveyor and a three-colour status beacon."
+      },
+      "usage": {
+        "zh-CN": "检测电解质、肝肾功能、心肌标志物、激素与血清学指标；黄帽或绿帽管离心后放入样本架上机。",
+        "en": "Measures electrolytes, renal and liver function, cardiac markers, hormones and serology; centrifuged gold- or green-top tubes are loaded in racks."
+      },
+      "capabilities": [
+        "lab-chemistry",
+        "lab-endocrine",
+        "lab-serology"
+      ],
+      "footprint": {
+        "w": 1.9,
+        "d": 0.95,
+        "h": 1.75
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 生化/免疫检验",
+          "en": "E · Chemistry & immunoassay"
+        }
+      },
+      "screen": "lab",
+      "tags": [
+        "laboratory",
+        "analyzer",
+        "chemistry",
+        "immunoassay",
+        "endocrine",
+        "serology"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.04, -0.125], "s": [1.86, 0.08, 0.66]},
+        {"m": "plastic", "p": [0, 0.59, -0.125], "s": [1.9, 1.02, 0.7]},
+        {"m": "mint", "p": [-0.63, 0.48, 0.23], "s": [0.6, 0.68, 0.01]},
+        {"m": "chrome", "p": [-0.63, 0.75, 0.245], "s": [0.16, 0.02, 0.02]},
+        {"m": "mint", "p": [0, 0.48, 0.23], "s": [0.62, 0.68, 0.01]},
+        {"m": "chrome", "p": [0, 0.75, 0.245], "s": [0.16, 0.02, 0.02]},
+        {"m": "mint", "p": [0.63, 0.48, 0.23], "s": [0.6, 0.68, 0.01]},
+        {"m": "chrome", "p": [0.63, 0.75, 0.245], "s": [0.16, 0.02, 0.02]},
+        {"m": "teal", "p": [0, 1.05, 0.2275], "s": [1.9, 0.04, 0.005]},
+        {"m": "led-green", "p": [0.84, 0.975, 0.2275], "s": [0.04, 0.03, 0.005]},
+        {"m": "black", "p": [-0.465, 1.11, -0.15], "s": [0.77, 0.02, 0.55]},
+        {"m": "black", "p": [0.45, 1.11, -0.15], "s": [0.8, 0.02, 0.55]},
+        {"m": "white", "p": [-0.48, 1.16, -0.175], "s": [0.48, 0.08, 0.3]},
+        {"m": "white", "p": [-0.48, 1.16, -0.175], "s": [0.32, 0.08, 0.46]},
+        {"m": "purple", "p": [-0.48, 1.21, -0.175], "s": [0.08, 0.02, 0.08]},
+        {"m": "steel", "p": [0.375, 1.15, -0.15], "s": [0.45, 0.06, 0.39]},
+        {"m": "steel", "p": [0.375, 1.15, -0.15], "s": [0.29, 0.06, 0.51]},
+        {"m": "plastic", "p": [-0.01, 1.25, -0.375], "s": [0.1, 0.26, 0.08]},
+        {"m": "plastic", "p": [-0.025, 1.35, -0.365], "s": [0.95, 0.06, 0.06]},
+        {"m": "glass", "p": [-0.475, 1.26, -0.135], "s": [0.81, 0.32, 0.64]},
+        {"m": "glass", "p": [0.455, 1.26, -0.135], "s": [0.85, 0.32, 0.64]},
+        {"m": "steel", "p": [0, 0.93, 0.35], "s": [1.8, 0.06, 0.25]},
+        {"m": "blue", "p": [-0.59, 0.98, 0.345], "s": [0.42, 0.04, 0.1]},
+        {"m": "yellow", "p": [-0.59, 1.035, 0.345], "s": [0.36, 0.07, 0.04]},
+        {"m": "gold", "p": [-0.74, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "gold", "p": [-0.64, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "gold", "p": [-0.54, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "gold", "p": [-0.44, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "blue", "p": [0.01, 0.98, 0.345], "s": [0.42, 0.04, 0.1]},
+        {"m": "yellow", "p": [0.01, 1.035, 0.345], "s": [0.36, 0.07, 0.04]},
+        {"m": "green", "p": [-0.14, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "green", "p": [-0.04, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "green", "p": [0.06, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "green", "p": [0.16, 1.085, 0.345], "s": [0.04, 0.03, 0.044]},
+        {"m": "chrome", "p": [0.91, 1.275, -0.435], "s": [0.02, 0.35, 0.02]},
+        {"m": "led-green", "p": [0.91, 1.485, -0.435], "s": [0.05, 0.07, 0.05], "anim": "pulse"},
+        {"m": "yellow", "p": [0.91, 1.555, -0.435], "s": [0.05, 0.07, 0.05]},
+        {"m": "red", "p": [0.91, 1.625, -0.435], "s": [0.05, 0.07, 0.05]},
+        {"m": "black", "p": [0.91, 1.67, -0.435], "s": [0.04, 0.02, 0.04]},
+        {"m": "black", "p": [-0.92, 1.3, 0.065], "s": [0.04, 0.4, 0.04]},
+        {"m": "black", "p": [-0.75, 1.6, 0.105], "s": [0.4, 0.3, 0.04]},
+        {"m": "screen", "p": [-0.75, 1.6, 0.1275], "s": [0.36, 0.26, 0.005], "name": "screen"}
+      ]
+    },
+    {
+      "id": "blood-gas-analyzer",
+      "name": {
+        "zh-CN": "血气分析仪",
+        "en": "Blood gas analyser"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "推车式血气分析仪：前置触摸屏、进样口、侧挂试剂包和小票打印机。",
+        "en": "A cart-mounted blood gas analyser with a front touchscreen, sample inlet, side reagent pack and receipt printer."
+      },
+      "usage": {
+        "zh-CN": "采集肝素化动脉或静脉血、排尽气泡后立即进样，约 1 分钟得到 pH、PaO2、PaCO2、乳酸与电解质。",
+        "en": "Inject a bubble-free heparinised arterial or venous sample straight away; pH, PaO2, PaCO2, lactate and electrolytes are ready in about a minute."
+      },
+      "capabilities": [
+        "lab-blood-gas"
+      ],
+      "footprint": {
+        "w": 0.6,
+        "d": 0.55,
+        "h": 1.45
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 血气分析",
+          "en": "E · Blood gas"
+        }
+      },
+      "screen": "lab",
+      "tags": [
+        "laboratory",
+        "analyzer",
+        "blood-gas",
+        "point-of-care",
+        "mobile"
+      ],
+      "parts": [
+        {"m": "rubber", "p": [-0.26, 0.04, -0.22], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [-0.26, 0.04, 0.22], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [0.26, 0.04, -0.22], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [0.26, 0.04, 0.22], "s": [0.08, 0.08, 0.08]},
+        {"m": "steel", "p": [-0.26, 0.44, -0.22], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [-0.26, 0.44, 0.22], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.26, 0.44, -0.22], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.26, 0.44, 0.22], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0, 0.215, 0], "s": [0.56, 0.03, 0.48]},
+        {"m": "teal", "p": [0, 0.71, 0.02], "s": [0.48, 0.18, 0.44]},
+        {"m": "chrome", "p": [0, 0.71, 0.25], "s": [0.16, 0.02, 0.02]},
+        {"m": "plastic", "p": [0, 0.82, 0], "s": [0.6, 0.04, 0.52]},
+        {"m": "scrubs", "p": [-0.05, 0.305, -0.015], "s": [0.3, 0.15, 0.33]},
+        {"m": "plastic", "p": [0, 1.1, -0.07], "s": [0.4, 0.52, 0.34]},
+        {"m": "black", "p": [0, 1.14, 0.105], "s": [0.34, 0.32, 0.01]},
+        {"m": "screen", "p": [0, 1.14, 0.1125], "s": [0.3, 0.28, 0.005], "name": "screen"},
+        {"m": "black", "p": [0, 0.915, 0.13], "s": [0.12, 0.07, 0.06]},
+        {"m": "teal", "p": [0, 0.96, 0.125], "s": [0.1, 0.02, 0.05]},
+        {"m": "led-green", "p": [-0.13, 0.91, 0.1025], "s": [0.04, 0.02, 0.005], "anim": "blink"},
+        {"m": "scrubs", "p": [0.225, 1.05, -0.07], "s": [0.05, 0.3, 0.22]},
+        {"m": "paper", "p": [0.1, 1.4, -0.025], "s": [0.12, 0.08, 0.01]},
+        {"m": "plastic", "p": [-0.15, 0.855, 0.17], "s": [0.18, 0.03, 0.04]},
+        {"m": "red", "p": [-0.045, 0.855, 0.17], "s": [0.03, 0.02, 0.02]},
+        {"m": "black", "p": [0.21, 0.87, 0.17], "s": [0.1, 0.06, 0.08]}
+      ]
+    },
+    {
+      "id": "centrifuge",
+      "name": {
+        "zh-CN": "离心机",
+        "en": "Centrifuge"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "落地式冷冻离心机，带锁定穹顶上盖、控制面板与进风格栅。",
+        "en": "A floor-standing refrigerated centrifuge with a locking domed lid, control panel and air-intake grille."
+      },
+      "usage": {
+        "zh-CN": "对称配平后离心血标本以分离血清或血浆，再送生化、免疫或血库检测。",
+        "en": "Balance the tubes symmetrically and spin blood samples to separate serum or plasma before chemistry, immunoassay or blood-bank testing."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 0.7,
+        "d": 0.75,
+        "h": 1
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 离心机",
+          "en": "E · Centrifuge"
+        }
+      },
+      "screen": "text",
+      "tags": [
+        "laboratory",
+        "centrifuge",
+        "sample-prep"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.03, -0.003], "s": [0.66, 0.06, 0.66]},
+        {"m": "plastic", "p": [0, 0.46, -0.003], "s": [0.7, 0.8, 0.7]},
+        {"m": "black", "p": [0, 0.21, 0.3495], "s": [0.56, 0.18, 0.005]},
+        {"m": "teal", "p": [0, 0.38, 0.3495], "s": [0.7, 0.04, 0.005]},
+        {"m": "steel", "p": [0, 0.89, -0.088], "s": [0.62, 0.06, 0.47], "name": "lid"},
+        {"m": "plastic", "p": [0, 0.945, -0.093], "s": [0.44, 0.05, 0.36]},
+        {"m": "plastic", "p": [0, 0.985, -0.093], "s": [0.3, 0.03, 0.22]},
+        {"m": "black", "p": [0, 0.89, 0.162], "s": [0.24, 0.04, 0.03]},
+        {"m": "black", "p": [0, 0.92, 0.287], "s": [0.66, 0.12, 0.12]},
+        {"m": "screen", "p": [-0.11, 0.92, 0.3495], "s": [0.28, 0.08, 0.005], "name": "screen"},
+        {"m": "led-green", "p": [0.12, 0.92, 0.3495], "s": [0.06, 0.04, 0.005]},
+        {"m": "led-red", "p": [0.22, 0.92, 0.3495], "s": [0.06, 0.04, 0.005]}
+      ]
+    },
+    {
+      "id": "microscope",
+      "name": {
+        "zh-CN": "显微镜",
+        "en": "Microscope"
+      },
+      "category": "pathology",
+      "description": {
+        "zh-CN": "小型实验台上的双目光学显微镜，带摄像头、载玻片盒和镜油。",
+        "en": "A binocular light microscope with a camera on a small bench, with a slide box and immersion oil."
+      },
+      "usage": {
+        "zh-CN": "阅读血涂片、骨髓、细胞学和组织病理切片：从低倍镜找到目标区域，再转高倍或油镜观察细节。",
+        "en": "Read blood films, bone-marrow, cytology and histology slides: find the area at low power, then move to high power or oil immersion for detail."
+      },
+      "capabilities": [
+        "cytology",
+        "histopathology"
+      ],
+      "footprint": {
+        "w": 0.9,
+        "d": 0.6,
+        "h": 1.2
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 使用显微镜",
+          "en": "E · Use microscope"
+        }
+      },
+      "screen": "none",
+      "tags": [
+        "pathology",
+        "laboratory",
+        "microscope",
+        "cytology",
+        "histology"
+      ],
+      "parts": [
+        {"m": "white", "p": [0, 0.74, 0], "s": [0.9, 0.04, 0.6]},
+        {"m": "steel", "p": [-0.43, 0.36, -0.28], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [-0.43, 0.36, 0.28], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.43, 0.36, -0.28], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.43, 0.36, 0.28], "s": [0.04, 0.72, 0.04]},
+        {"m": "teal", "p": [0, 0.6, -0.285], "s": [0.82, 0.24, 0.03]},
+        {"m": "plastic", "p": [0, 0.785, 0], "s": [0.24, 0.05, 0.28]},
+        {"m": "lamp", "p": [0, 0.8125, 0.03], "s": [0.06, 0.005, 0.06]},
+        {"m": "plastic", "p": [0, 0.965, -0.095], "s": [0.1, 0.31, 0.09]},
+        {"m": "black", "p": [0, 0.93, 0.04], "s": [0.2, 0.02, 0.18]},
+        {"m": "chrome", "p": [0, 0.9, 0.03], "s": [0.07, 0.04, 0.06]},
+        {"m": "glass", "p": [0, 0.9425, 0.04], "s": [0.1, 0.005, 0.06]},
+        {"m": "pink", "p": [0, 0.9435, 0.04], "s": [0.03, 0.007, 0.03]},
+        {"m": "chrome", "p": [0, 1.02, 0.005], "s": [0.07, 0.04, 0.11]},
+        {"m": "chrome", "p": [0, 0.98, 0.0325], "s": [0.024, 0.04, 0.025]},
+        {"m": "plastic", "p": [0, 1.08, -0.03], "s": [0.12, 0.08, 0.18]},
+        {"m": "black", "p": [-0.035, 1.13, 0.085], "s": [0.04, 0.06, 0.09]},
+        {"m": "black", "p": [0.035, 1.13, 0.085], "s": [0.04, 0.06, 0.09]},
+        {"m": "black", "p": [0.065, 0.865, -0.095], "s": [0.03, 0.05, 0.05]},
+        {"m": "black", "p": [-0.065, 0.865, -0.095], "s": [0.03, 0.05, 0.05]},
+        {"m": "black", "p": [0, 1.16, -0.09], "s": [0.08, 0.08, 0.06]},
+        {"m": "paper", "p": [0.29, 0.78, 0.05], "s": [0.18, 0.04, 0.2]},
+        {"m": "blue", "p": [0.29, 0.805, 0.05], "s": [0.18, 0.01, 0.2]},
+        {"m": "orange", "p": [-0.3, 0.8, 0.07], "s": [0.04, 0.08, 0.04]},
+        {"m": "black", "p": [-0.3, 0.85, 0.07], "s": [0.03, 0.02, 0.03]}
+      ]
+    },
+    {
+      "id": "lab-bench",
+      "name": {
+        "zh-CN": "实验台",
+        "en": "Lab bench"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "实验室边台：黑色环氧树脂台面、下柜与抽屉、试剂层架，台上有试管架、移液器和涡旋混匀器。",
+        "en": "A laboratory bench with a black epoxy worktop, base cabinets and drawers, reagent shelving, tube racks, pipettes and a vortex mixer."
+      },
+      "usage": {
+        "zh-CN": "用于手工检测、样本分装、登记与试剂准备；处理样本时戴手套并及时丢弃锐器。",
+        "en": "Work surface for manual tests, sample aliquoting, logging and reagent preparation; wear gloves and dispose of sharps promptly."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 2.4,
+        "d": 0.9,
+        "h": 1.9
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 实验台",
+          "en": "E · Lab bench"
+        }
+      },
+      "screen": "none",
+      "tags": [
+        "laboratory",
+        "bench",
+        "furniture",
+        "storage"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.04, -0.02], "s": [2.36, 0.08, 0.76]},
+        {"m": "plastic", "p": [-0.75, 0.47, 0], "s": [0.9, 0.78, 0.84]},
+        {"m": "plastic", "p": [0.8, 0.47, 0], "s": [0.8, 0.78, 0.84]},
+        {"m": "teal", "p": [0.05, 0.47, -0.4], "s": [0.7, 0.78, 0.04]},
+        {"m": "black", "p": [-0.75, 0.47, 0.422], "s": [0.008, 0.7, 0.004]},
+        {"m": "chrome", "p": [-0.81, 0.73, 0.43], "s": [0.06, 0.02, 0.02]},
+        {"m": "chrome", "p": [-0.69, 0.73, 0.43], "s": [0.06, 0.02, 0.02]},
+        {"m": "black", "p": [0.8, 0.344, 0.422], "s": [0.76, 0.008, 0.004]},
+        {"m": "black", "p": [0.8, 0.604, 0.422], "s": [0.76, 0.008, 0.004]},
+        {"m": "chrome", "p": [0.8, 0.26, 0.43], "s": [0.16, 0.02, 0.02]},
+        {"m": "chrome", "p": [0.8, 0.51, 0.43], "s": [0.16, 0.02, 0.02]},
+        {"m": "chrome", "p": [0.8, 0.77, 0.43], "s": [0.16, 0.02, 0.02]},
+        {"m": "black", "p": [0, 0.88, 0], "s": [2.4, 0.04, 0.9]},
+        {"m": "steel", "p": [-1.1, 1.35, -0.42], "s": [0.04, 0.9, 0.04]},
+        {"m": "steel", "p": [1.1, 1.35, -0.42], "s": [0.04, 0.9, 0.04]},
+        {"m": "steel", "p": [0, 1.395, -0.325], "s": [2.3, 0.03, 0.25]},
+        {"m": "steel", "p": [0, 1.785, -0.325], "s": [2.3, 0.03, 0.25]},
+        {"m": "blue", "p": [-0.94, 1.505, -0.33], "s": [0.12, 0.19, 0.14]},
+        {"m": "orange", "p": [-0.77, 1.485, -0.33], "s": [0.1, 0.15, 0.1]},
+        {"m": "white", "p": [-0.57, 1.52, -0.33], "s": [0.14, 0.22, 0.14]},
+        {"m": "green", "p": [0.56, 1.48, -0.325], "s": [0.12, 0.14, 0.11]},
+        {"m": "paper", "p": [-0.05, 1.85, -0.33], "s": [0.7, 0.1, 0.18]},
+        {"m": "scrubs", "p": [0.65, 1.84, -0.33], "s": [0.5, 0.08, 0.18]},
+        {"m": "white", "p": [-0.74, 0.925, 0.03], "s": [0.36, 0.05, 0.14]},
+        {"m": "purple", "p": [-0.88, 0.995, 0.03], "s": [0.04, 0.09, 0.04]},
+        {"m": "gold", "p": [-0.8, 0.995, 0.03], "s": [0.04, 0.09, 0.04]},
+        {"m": "blue", "p": [-0.72, 0.995, 0.03], "s": [0.04, 0.09, 0.04]},
+        {"m": "red", "p": [-0.64, 0.995, 0.03], "s": [0.04, 0.09, 0.04]},
+        {"m": "black", "p": [0.05, 0.91, -0.25], "s": [0.14, 0.02, 0.14]},
+        {"m": "black", "p": [0.05, 1.09, -0.28], "s": [0.02, 0.34, 0.04]},
+        {"m": "black", "p": [0.05, 1.23, -0.25], "s": [0.12, 0.02, 0.04]},
+        {"m": "plastic", "p": [0.0125, 1.1, -0.2475], "s": [0.025, 0.24, 0.025]},
+        {"m": "blue", "p": [0.05, 1.1, -0.2475], "s": [0.024, 0.24, 0.025]},
+        {"m": "orange", "p": [0.0875, 1.1, -0.2475], "s": [0.025, 0.24, 0.025]},
+        {"m": "plastic", "p": [0.36, 0.94, -0.03], "s": [0.12, 0.08, 0.14]},
+        {"m": "mint", "p": [0.36, 0.99, -0.03], "s": [0.06, 0.02, 0.06]},
+        {"m": "glass", "p": [-0.25, 0.96, 0.1], "s": [0.1, 0.12, 0.1]},
+        {"m": "plastic", "p": [0.74, 0.99, 0.04], "s": [0.08, 0.18, 0.08]},
+        {"m": "white", "p": [0.74, 1.11, 0.04], "s": [0.02, 0.06, 0.02]},
+        {"m": "yellow", "p": [1.035, 0.99, -0.01], "s": [0.17, 0.18, 0.18]},
+        {"m": "red", "p": [1.035, 1.09, -0.01], "s": [0.17, 0.02, 0.18]}
+      ]
+    },
+    {
+      "id": "biosafety-cabinet",
+      "name": {
+        "zh-CN": "生物安全柜",
+        "en": "Biosafety cabinet"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "II 级 A2 型生物安全柜：可升降玻璃前窗、不锈钢工作台面、HEPA 排风与内部照明。",
+        "en": "A Class II A2 biosafety cabinet with a sliding glass sash, stainless worktop, HEPA exhaust and interior light."
+      },
+      "usage": {
+        "zh-CN": "在柜内处理培养物、涂片和潜在感染性标本（革兰染色、培养接种、快速抗原/PCR）；工作前后通风并消毒台面。",
+        "en": "Handle cultures, smears and potentially infectious specimens inside (Gram stain, culture inoculation, rapid antigen/PCR); run the airflow and disinfect the worktop before and after work."
+      },
+      "capabilities": [
+        "lab-microbiology"
+      ],
+      "footprint": {
+        "w": 1.5,
+        "d": 0.8,
+        "h": 2.25
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 微生物检验",
+          "en": "E · Microbiology"
+        }
+      },
+      "screen": "text",
+      "tags": [
+        "laboratory",
+        "microbiology",
+        "biosafety",
+        "hepa"
+      ],
+      "parts": [
+        {"m": "steel", "p": [-0.695, 0.33, -0.345], "s": [0.05, 0.66, 0.05]},
+        {"m": "steel", "p": [-0.695, 0.33, 0.365], "s": [0.05, 0.66, 0.05]},
+        {"m": "steel", "p": [0.695, 0.33, -0.345], "s": [0.05, 0.66, 0.05]},
+        {"m": "steel", "p": [0.695, 0.33, 0.365], "s": [0.05, 0.66, 0.05]},
+        {"m": "steel", "p": [0, 0.69, -0.01], "s": [1.44, 0.06, 0.72]},
+        {"m": "plastic", "p": [0, 1.385, -0.35], "s": [1.5, 1.33, 0.08]},
+        {"m": "plastic", "p": [-0.725, 1.385, -0.02], "s": [0.05, 1.33, 0.74]},
+        {"m": "plastic", "p": [0.725, 1.385, -0.02], "s": [0.05, 1.33, 0.74]},
+        {"m": "plastic", "p": [0, 0.82, 0.02], "s": [1.5, 0.2, 0.66]},
+        {"m": "black", "p": [0, 0.93, 0.26], "s": [1.4, 0.02, 0.14]},
+        {"m": "steel", "p": [0, 0.935, -0.06], "s": [1.4, 0.03, 0.5]},
+        {"m": "glass", "p": [0, 1.435, 0.28], "s": [1.4, 0.57, 0.02]},
+        {"m": "steel", "p": [0, 1.14, 0.28], "s": [1.4, 0.02, 0.04]},
+        {"m": "plastic", "p": [0, 1.885, 0.02], "s": [1.5, 0.33, 0.66]},
+        {"m": "lamp", "p": [0, 1.7, -0.04], "s": [1.2, 0.04, 0.3]},
+        {"m": "black", "p": [-0.1, 1.87, 0.3525], "s": [0.44, 0.14, 0.005]},
+        {"m": "screen", "p": [-0.15, 1.87, 0.3575], "s": [0.3, 0.1, 0.005], "name": "screen"},
+        {"m": "led-green", "p": [0.06, 1.87, 0.3575], "s": [0.04, 0.04, 0.005]},
+        {"m": "plastic", "p": [0, 2.125, -0.065], "s": [1.2, 0.15, 0.55]},
+        {"m": "steel", "p": [0, 2.21, -0.09], "s": [0.8, 0.02, 0.4]},
+        {"m": "biohazard", "p": [0.54, 0.82, 0.3525], "s": [0.16, 0.12, 0.005]},
+        {"m": "white", "p": [-0.325, 0.975, -0.075], "s": [0.25, 0.05, 0.13]},
+        {"m": "purple", "p": [-0.325, 1.02, -0.07], "s": [0.19, 0.04, 0.04]},
+        {"m": "red", "p": [0.015, 0.96, -0.025], "s": [0.13, 0.02, 0.13]},
+        {"m": "red", "p": [0.015, 0.98, -0.025], "s": [0.11, 0.02, 0.11]},
+        {"m": "blue", "p": [0.265, 1.05, -0.175], "s": [0.03, 0.2, 0.03]}
+      ]
+    },
+    {
+      "id": "lab-fridge",
+      "name": {
+        "zh-CN": "实验室冷藏柜",
+        "en": "Laboratory fridge"
+      },
+      "category": "storage",
+      "description": {
+        "zh-CN": "玻璃门实验室冷藏柜（2–8 ℃），分层存放试剂盒与待检样本，带温度显示。",
+        "en": "A glass-door laboratory refrigerator (2–8 °C) with shelves of reagent kits and pending samples, and a temperature display."
+      },
+      "usage": {
+        "zh-CN": "按标签分区存放试剂、质控品与样本，取放后及时关门并每日记录温度。",
+        "en": "Store labelled reagents, controls and samples in their zones, close the door promptly and log the temperature daily."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 0.7,
+        "d": 0.75,
+        "h": 1.95
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "storage",
+        "prompt": {
+          "zh-CN": "E · 打开冷藏柜",
+          "en": "E · Open fridge"
+        }
+      },
+      "screen": "none",
+      "tags": [
+        "laboratory",
+        "storage",
+        "cold-chain",
+        "reagents"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.03, -0.035], "s": [0.66, 0.06, 0.63]},
+        {"m": "plastic", "p": [0, 0.1, -0.035], "s": [0.7, 0.08, 0.67]},
+        {"m": "plastic", "p": [0, 0.93, -0.35], "s": [0.7, 1.58, 0.04]},
+        {"m": "plastic", "p": [-0.335, 0.93, -0.035], "s": [0.03, 1.58, 0.67]},
+        {"m": "plastic", "p": [0.335, 0.93, -0.035], "s": [0.03, 1.58, 0.67]},
+        {"m": "plastic", "p": [0, 1.835, -0.035], "s": [0.7, 0.23, 0.67]},
+        {"m": "black", "p": [0, 1.84, 0.305], "s": [0.66, 0.16, 0.01]},
+        {"m": "screen-dark", "p": [-0.15, 1.84, 0.3125], "s": [0.2, 0.08, 0.005]},
+        {"m": "led-green", "p": [0.02, 1.84, 0.3125], "s": [0.04, 0.04, 0.005]},
+        {"m": "paper", "p": [0.2, 1.84, 0.3125], "s": [0.16, 0.1, 0.005]},
+        {"m": "lamp", "p": [0, 1.7, -0.1], "s": [0.56, 0.04, 0.2]},
+        {"m": "steel", "p": [0, 0.56, -0.035], "s": [0.64, 0.02, 0.59]},
+        {"m": "steel", "p": [0, 0.96, -0.035], "s": [0.64, 0.02, 0.59]},
+        {"m": "steel", "p": [0, 1.36, -0.035], "s": [0.64, 0.02, 0.59]},
+        {"m": "scrubs", "p": [-0.13, 0.28, -0.06], "s": [0.26, 0.28, 0.4]},
+        {"m": "paper", "p": [0.165, 0.23, -0.04], "s": [0.23, 0.18, 0.36]},
+        {"m": "white", "p": [-0.145, 0.6, -0.05], "s": [0.25, 0.06, 0.3]},
+        {"m": "purple", "p": [-0.145, 0.65, -0.05], "s": [0.21, 0.04, 0.14]},
+        {"m": "orange", "p": [0.09, 0.685, -0.1], "s": [0.1, 0.23, 0.12]},
+        {"m": "blue", "p": [0.22, 0.675, -0.1], "s": [0.1, 0.21, 0.12]},
+        {"m": "paper", "p": [-0.08, 1.05, -0.05], "s": [0.36, 0.16, 0.38]},
+        {"m": "green", "p": [0.205, 1.035, -0.04], "s": [0.13, 0.13, 0.28]},
+        {"m": "yellow", "p": [-0.18, 1.435, -0.1], "s": [0.16, 0.13, 0.2]},
+        {"m": "white", "p": [0.105, 1.415, -0.05], "s": [0.31, 0.09, 0.34]},
+        {"m": "glass", "p": [0, 0.93, 0.31], "s": [0.6, 1.5, 0.02]},
+        {"m": "steel", "p": [-0.325, 0.93, 0.315], "s": [0.05, 1.58, 0.03]},
+        {"m": "steel", "p": [0.325, 0.93, 0.315], "s": [0.05, 1.58, 0.03]},
+        {"m": "steel", "p": [0, 0.16, 0.315], "s": [0.6, 0.04, 0.03]},
+        {"m": "steel", "p": [0, 1.7, 0.315], "s": [0.6, 0.04, 0.03]},
+        {"m": "chrome", "p": [0.325, 1, 0.35], "s": [0.03, 0.6, 0.04]}
+      ]
+    },
+    {
+      "id": "flow-cytometer",
+      "name": {
+        "zh-CN": "流式细胞仪",
+        "en": "Flow cytometer"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "台式多色流式细胞仪，下方放鞘液桶与废液桶，旁边是分析电脑。",
+        "en": "A benchtop multicolour flow cytometer with sheath and waste tanks below and an analysis PC alongside."
+      },
+      "usage": {
+        "zh-CN": "对血液或骨髓标本进行免疫分型（CD 抗原表达），用于白血病、淋巴瘤和免疫缺陷的诊断与随访。",
+        "en": "Immunophenotypes blood or bone-marrow samples (CD antigen expression) to diagnose and follow leukaemia, lymphoma and immunodeficiency."
+      },
+      "capabilities": [
+        "flow-cytometry"
+      ],
+      "footprint": {
+        "w": 1.4,
+        "d": 0.8,
+        "h": 1.3
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 流式细胞检测",
+          "en": "E · Flow cytometry"
+        }
+      },
+      "screen": "lab",
+      "tags": [
+        "laboratory",
+        "analyzer",
+        "flow-cytometry",
+        "hematology",
+        "laser"
+      ],
+      "parts": [
+        {"m": "plastic", "p": [0, 0.74, 0], "s": [1.4, 0.04, 0.76]},
+        {"m": "steel", "p": [-0.68, 0.36, -0.36], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [-0.68, 0.36, 0.36], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.68, 0.36, -0.36], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.68, 0.36, 0.36], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0, 0.135, 0], "s": [1.32, 0.03, 0.68]},
+        {"m": "water", "p": [-0.48, 0.35, -0.04], "s": [0.24, 0.4, 0.36]},
+        {"m": "black", "p": [-0.48, 0.565, -0.04], "s": [0.08, 0.03, 0.08]},
+        {"m": "biohazard", "p": [-0.18, 0.325, -0.04], "s": [0.24, 0.35, 0.36]},
+        {"m": "black", "p": [-0.18, 0.515, -0.04], "s": [0.08, 0.03, 0.08]},
+        {"m": "black", "p": [0.52, 0.375, -0.025], "s": [0.2, 0.45, 0.45]},
+        {"m": "led-green", "p": [0.52, 0.55, 0.2025], "s": [0.04, 0.02, 0.005]},
+        {"m": "plastic", "p": [-0.25, 0.99, -0.05], "s": [0.8, 0.46, 0.6]},
+        {"m": "scrubs", "p": [-0.25, 1.24, -0.05], "s": [0.8, 0.04, 0.6]},
+        {"m": "navy", "p": [-0.25, 0.85, 0.255], "s": [0.8, 0.18, 0.01]},
+        {"m": "black", "p": [0.04, 1, 0.29], "s": [0.12, 0.08, 0.08]},
+        {"m": "paper", "p": [0.04, 0.915, 0.29], "s": [0.03, 0.09, 0.03]},
+        {"m": "warning-yellow", "p": [-0.49, 1.11, 0.2525], "s": [0.12, 0.1, 0.005]},
+        {"m": "led-green", "p": [-0.36, 1.115, 0.2525], "s": [0.04, 0.03, 0.005], "anim": "blink"},
+        {"m": "led-amber", "p": [-0.3, 1.115, 0.2525], "s": [0.04, 0.03, 0.005]},
+        {"m": "black", "p": [0.44, 0.77, -0.2], "s": [0.24, 0.02, 0.16]},
+        {"m": "black", "p": [0.44, 0.875, -0.205], "s": [0.06, 0.19, 0.03]},
+        {"m": "black", "p": [0.44, 1.07, -0.17], "s": [0.44, 0.3, 0.04]},
+        {"m": "screen", "p": [0.44, 1.07, -0.1475], "s": [0.4, 0.26, 0.005], "name": "screen"},
+        {"m": "white", "p": [0.42, 0.77, 0.125], "s": [0.36, 0.02, 0.15]},
+        {"m": "plastic", "p": [0.64, 0.77, 0.13], "s": [0.04, 0.02, 0.06]}
+      ]
+    },
+    {
+      "id": "urinalysis-analyzer",
+      "name": {
+        "zh-CN": "尿液分析仪",
+        "en": "Urinalysis analyser"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "全自动尿液分析系统：干化学试纸条读数与尿沉渣有形成分分析，前置进样架，置于设备柜上。",
+        "en": "An automated urinalysis system combining dipstick reading and urine sediment analysis, with a front sample rack, on an equipment cabinet."
+      },
+      "usage": {
+        "zh-CN": "上机检测尿常规与尿沉渣，也可读取尿酮体和尿妊娠试验；异常有形成分提示人工镜检复核。",
+        "en": "Runs urine dipstick and sediment analysis, including urine ketones and pregnancy tests; abnormal sediment prompts manual microscopy."
+      },
+      "capabilities": [
+        "lab-urinalysis"
+      ],
+      "footprint": {
+        "w": 0.95,
+        "d": 0.65,
+        "h": 1.3
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 尿液检验",
+          "en": "E · Urinalysis"
+        }
+      },
+      "screen": "lab",
+      "tags": [
+        "laboratory",
+        "analyzer",
+        "urinalysis"
+      ],
+      "parts": [
+        {"m": "rubber", "p": [-0.34, 0.04, -0.25], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [-0.34, 0.04, 0.25], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [0.38, 0.04, -0.25], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [0.38, 0.04, 0.25], "s": [0.08, 0.08, 0.08]},
+        {"m": "plastic", "p": [0.02, 0.41, 0], "s": [0.84, 0.66, 0.6]},
+        {"m": "black", "p": [0.02, 0.41, 0.302], "s": [0.008, 0.58, 0.004]},
+        {"m": "chrome", "p": [-0.04, 0.61, 0.31], "s": [0.06, 0.02, 0.02]},
+        {"m": "chrome", "p": [0.08, 0.61, 0.31], "s": [0.06, 0.02, 0.02]},
+        {"m": "plastic", "p": [0.02, 0.76, 0], "s": [0.88, 0.04, 0.64]},
+        {"m": "plastic", "p": [0.02, 0.99, -0.09], "s": [0.8, 0.42, 0.42]},
+        {"m": "teal", "p": [0.02, 1.155, 0.1225], "s": [0.8, 0.03, 0.005]},
+        {"m": "black", "p": [-0.18, 1, 0.125], "s": [0.32, 0.2, 0.01]},
+        {"m": "screen", "p": [-0.18, 1, 0.1325], "s": [0.28, 0.16, 0.005], "name": "screen"},
+        {"m": "screen-dark", "p": [0.21, 0.99, 0.1225], "s": [0.26, 0.14, 0.005]},
+        {"m": "led-green", "p": [0.34, 1.09, 0.1225], "s": [0.04, 0.02, 0.005], "anim": "blink"},
+        {"m": "steel", "p": [0.02, 0.81, 0.22], "s": [0.8, 0.06, 0.2]},
+        {"m": "white", "p": [0, 0.86, 0.22], "s": [0.56, 0.04, 0.08]},
+        {"m": "yellow", "p": [-0.23, 0.93, 0.22], "s": [0.04, 0.1, 0.04]},
+        {"m": "yellow", "p": [-0.12, 0.93, 0.22], "s": [0.04, 0.1, 0.04]},
+        {"m": "yellow", "p": [-0.01, 0.93, 0.22], "s": [0.04, 0.1, 0.04]},
+        {"m": "yellow", "p": [0.1, 0.93, 0.22], "s": [0.04, 0.1, 0.04]},
+        {"m": "yellow", "p": [0.21, 0.93, 0.22], "s": [0.04, 0.1, 0.04]},
+        {"m": "steel", "p": [-0.42, 0.87, -0.035], "s": [0.08, 0.06, 0.23]},
+        {"m": "paper", "p": [-0.42, 0.9025, -0.035], "s": [0.06, 0.005, 0.19]},
+        {"m": "paper", "p": [0.28, 1.23, -0.095], "s": [0.12, 0.06, 0.01]}
+      ]
+    },
+    {
+      "id": "pneumatic-tube-station",
+      "name": {
+        "zh-CN": "气动物流站",
+        "en": "Pneumatic tube station"
+      },
+      "category": "laboratory",
+      "description": {
+        "zh-CN": "靠墙安装的气动物流收发站：发送舱门、站号键盘、接收篮与传输瓶，管道向上穿入墙体。",
+        "en": "A wall-mounted pneumatic tube station with send hatch, station keypad, catch basket and carrier; the tube runs up into the wall."
+      },
+      "usage": {
+        "zh-CN": "将标本装袋放入传输瓶、关紧后插入发送口并输入目的站号，即可送往检验科、病理科或血库。",
+        "en": "Bag the specimens, close them in a carrier, insert it in the send hatch and key in the destination to reach the lab, pathology or blood bank."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 0.6,
+        "d": 0.4,
+        "h": 2.85
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 气动物流",
+          "en": "E · Tube station"
+        }
+      },
+      "screen": "text",
+      "tags": [
+        "laboratory",
+        "logistics",
+        "specimen-transport",
+        "wall"
+      ],
+      "parts": [
+        {"m": "plastic", "p": [0, 1, -0.155], "s": [0.6, 2, 0.06]},
+        {"m": "teal", "p": [0, 0.075, -0.12], "s": [0.6, 0.15, 0.01]},
+        {"m": "plastic", "p": [0, 1.31, 0.01], "s": [0.48, 0.62, 0.27]},
+        {"m": "teal", "p": [0, 1.58, 0.1475], "s": [0.48, 0.04, 0.005]},
+        {"m": "black", "p": [0, 1.41, 0.15], "s": [0.26, 0.22, 0.01], "name": "door"},
+        {"m": "black", "p": [-0.115, 1.16, 0.1475], "s": [0.19, 0.16, 0.005]},
+        {"m": "screen", "p": [-0.115, 1.16, 0.1525], "s": [0.17, 0.12, 0.005], "name": "screen"},
+        {"m": "black", "p": [0.11, 1.16, 0.1475], "s": [0.18, 0.16, 0.005]},
+        {"m": "led-green", "p": [0.06, 1.21, 0.1525], "s": [0.04, 0.02, 0.005]},
+        {"m": "led-amber", "p": [0.12, 1.21, 0.1525], "s": [0.04, 0.02, 0.005]},
+        {"m": "steel", "p": [0, 0.72, 0.03], "s": [0.44, 0.04, 0.31]},
+        {"m": "steel", "p": [0, 0.79, 0.175], "s": [0.44, 0.1, 0.02]},
+        {"m": "steel", "p": [-0.21, 0.79, 0.03], "s": [0.02, 0.1, 0.31]},
+        {"m": "steel", "p": [0.21, 0.79, 0.03], "s": [0.02, 0.1, 0.31]},
+        {"m": "blue", "p": [0, 0.78, 0.025], "s": [0.22, 0.08, 0.08]},
+        {"m": "red", "p": [-0.13, 0.78, 0.025], "s": [0.04, 0.07, 0.07]},
+        {"m": "red", "p": [0.13, 0.78, 0.025], "s": [0.04, 0.07, 0.07]},
+        {"m": "steel", "p": [0, 2.235, -0.025], "s": [0.14, 1.23, 0.14]},
+        {"m": "chrome", "p": [0, 2.02, -0.025], "s": [0.16, 0.04, 0.16]},
+        {"m": "steel", "p": [0, 2.78, -0.14], "s": [0.14, 0.14, 0.09]}
+      ]
+    },
+    {
+      "id": "cytogenetics-workstation",
+      "name": {
+        "zh-CN": "细胞遗传学工作站",
+        "en": "Cytogenetics workstation"
+      },
+      "category": "pathology",
+      "description": {
+        "zh-CN": "细胞遗传学工作站：带摄像头的研究级显微镜、运行核型分析软件的双显示器和主机。",
+        "en": "A cytogenetics workstation: a research microscope with camera, dual monitors running karyotyping software and a PC."
+      },
+      "usage": {
+        "zh-CN": "采集中期分裂相进行核型分析、判读 FISH 信号并审核分子检测结果；可开具的检查取决于该工位能力。",
+        "en": "Capture metaphases for karyotyping, score FISH signals and review molecular results; available tests depend on the workstation's capabilities."
+      },
+      "capabilities": [
+        "cytogenetics",
+        "molecular"
+      ],
+      "footprint": {
+        "w": 2,
+        "d": 0.8,
+        "h": 1.35
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "workstation",
+        "prompt": {
+          "zh-CN": "E · 遗传学检测",
+          "en": "E · Genetics tests"
+        }
+      },
+      "screen": "lab",
+      "tags": [
+        "pathology",
+        "genetics",
+        "karyotype",
+        "fish",
+        "molecular",
+        "computer",
+        "orders"
+      ],
+      "parts": [
+        {"m": "wood", "p": [0, 0.76, 0], "s": [2, 0.04, 0.8]},
+        {"m": "teal", "p": [-0.95, 0.37, 0], "s": [0.06, 0.74, 0.72]},
+        {"m": "teal", "p": [0.95, 0.37, 0], "s": [0.06, 0.74, 0.72]},
+        {"m": "teal", "p": [0, 0.57, -0.385], "s": [1.84, 0.34, 0.03]},
+        {"m": "plastic", "p": [-0.62, 0.805, -0.06], "s": [0.28, 0.05, 0.32]},
+        {"m": "plastic", "p": [-0.62, 0.985, -0.17], "s": [0.1, 0.31, 0.1]},
+        {"m": "black", "p": [-0.62, 0.91, -0.27], "s": [0.08, 0.1, 0.1]},
+        {"m": "black", "p": [-0.62, 0.96, -0.025], "s": [0.2, 0.02, 0.19]},
+        {"m": "chrome", "p": [-0.62, 1.045, -0.06], "s": [0.08, 0.05, 0.12]},
+        {"m": "plastic", "p": [-0.62, 1.115, -0.09], "s": [0.14, 0.09, 0.22]},
+        {"m": "black", "p": [-0.65, 1.17, 0.05], "s": [0.04, 0.06, 0.1]},
+        {"m": "black", "p": [-0.59, 1.17, 0.05], "s": [0.04, 0.06, 0.1]},
+        {"m": "black", "p": [-0.62, 1.23, -0.15], "s": [0.08, 0.14, 0.1]},
+        {"m": "led-green", "p": [-0.62, 1.305, -0.15], "s": [0.04, 0.01, 0.04]},
+        {"m": "black", "p": [-0.12, 0.79, -0.3], "s": [0.24, 0.02, 0.16]},
+        {"m": "black", "p": [-0.12, 0.915, -0.305], "s": [0.06, 0.23, 0.03]},
+        {"m": "black", "p": [-0.12, 1.15, -0.27], "s": [0.5, 0.34, 0.04]},
+        {"m": "screen", "p": [-0.12, 1.15, -0.2475], "s": [0.46, 0.3, 0.005], "name": "screen"},
+        {"m": "black", "p": [0.42, 0.79, -0.3], "s": [0.24, 0.02, 0.16]},
+        {"m": "black", "p": [0.42, 0.915, -0.305], "s": [0.06, 0.23, 0.03]},
+        {"m": "black", "p": [0.42, 1.15, -0.27], "s": [0.5, 0.34, 0.04]},
+        {"m": "screen", "p": [0.42, 1.15, -0.2475], "s": [0.46, 0.3, 0.005], "name": "screen"},
+        {"m": "white", "p": [0.175, 0.79, 0.075], "s": [0.45, 0.02, 0.15]},
+        {"m": "plastic", "p": [0.505, 0.79, 0.085], "s": [0.05, 0.02, 0.07]},
+        {"m": "paper", "p": [0.74, 0.7825, 0.15], "s": [0.24, 0.005, 0.3]},
+        {"m": "black", "p": [0.73, 0.23, -0.075], "s": [0.22, 0.46, 0.45]},
+        {"m": "led-green", "p": [0.68, 0.41, 0.1525], "s": [0.04, 0.02, 0.005]}
+      ]
+    },
+    {
+      "id": "slide-scanner",
+      "name": {
+        "zh-CN": "数字切片扫描仪",
+        "en": "Digital slide scanner"
+      },
+      "category": "pathology",
+      "description": {
+        "zh-CN": "数字病理切片扫描仪：前置玻片篮装载窗、触摸屏和状态灯带，置于设备柜上。",
+        "en": "A digital pathology slide scanner on a cabinet, with a front slide-basket loading window, touchscreen and status light bar."
+      },
+      "usage": {
+        "zh-CN": "将染色切片装篮后批量扫描成全视野数字图像，用于远程会诊、教学和 AI 辅助阅片。",
+        "en": "Load stained slides in baskets and batch-scan them into whole-slide images for remote consults, teaching and AI-assisted reading."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 0.8,
+        "d": 0.7,
+        "h": 1.3
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 切片扫描仪",
+          "en": "E · Slide scanner"
+        }
+      },
+      "screen": "text",
+      "tags": [
+        "pathology",
+        "digital-pathology",
+        "scanner"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.03, -0.01], "s": [0.76, 0.06, 0.62]},
+        {"m": "plastic", "p": [0, 0.405, -0.01], "s": [0.8, 0.69, 0.66]},
+        {"m": "black", "p": [0, 0.405, 0.322], "s": [0.008, 0.61, 0.004]},
+        {"m": "chrome", "p": [-0.06, 0.63, 0.33], "s": [0.06, 0.02, 0.02]},
+        {"m": "chrome", "p": [0.06, 0.63, 0.33], "s": [0.06, 0.02, 0.02]},
+        {"m": "plastic", "p": [0, 1.025, -0.035], "s": [0.68, 0.55, 0.55]},
+        {"m": "led-green", "p": [0, 1.2675, 0.2425], "s": [0.6, 0.015, 0.005], "anim": "pulse"},
+        {"m": "black", "p": [-0.09, 1.02, 0.2425], "s": [0.38, 0.36, 0.005]},
+        {"m": "scrubs", "p": [-0.09, 0.915, 0.2525], "s": [0.32, 0.07, 0.015]},
+        {"m": "scrubs", "p": [-0.09, 1.025, 0.2525], "s": [0.32, 0.07, 0.015]},
+        {"m": "scrubs", "p": [-0.09, 1.135, 0.2525], "s": [0.32, 0.07, 0.015]},
+        {"m": "glass", "p": [-0.09, 1.02, 0.265], "s": [0.38, 0.36, 0.01]},
+        {"m": "black", "p": [0.23, 1.09, 0.245], "s": [0.18, 0.22, 0.01]},
+        {"m": "screen", "p": [0.23, 1.09, 0.2525], "s": [0.15, 0.18, 0.005], "name": "screen"},
+        {"m": "led-green", "p": [0.18, 0.915, 0.2425], "s": [0.04, 0.03, 0.005]}
+      ]
+    },
+    {
+      "id": "microtome",
+      "name": {
+        "zh-CN": "石蜡切片机",
+        "en": "Microtome"
+      },
+      "category": "pathology",
+      "description": {
+        "zh-CN": "旋转式石蜡切片机，侧面有大手轮，前方为刀架和标本夹，旁边是摊片水浴锅。",
+        "en": "A rotary paraffin microtome with a big side handwheel, blade holder and specimen clamp, next to a flotation water bath."
+      },
+      "usage": {
+        "zh-CN": "将石蜡包埋组织块切成 3–5 微米薄片，漂浮于温水浴中展平后捞到载玻片上待染色。",
+        "en": "Cuts paraffin-embedded tissue blocks into 3–5 µm sections, which are floated flat on the warm water bath and picked up on slides for staining."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 1,
+        "d": 0.65,
+        "h": 1.1
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 切片机",
+          "en": "E · Microtome"
+        }
+      },
+      "screen": "none",
+      "tags": [
+        "pathology",
+        "histology",
+        "sectioning"
+      ],
+      "parts": [
+        {"m": "white", "p": [0, 0.74, 0], "s": [1, 0.04, 0.64]},
+        {"m": "steel", "p": [-0.48, 0.36, -0.3], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [-0.48, 0.36, 0.3], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.48, 0.36, -0.3], "s": [0.04, 0.72, 0.04]},
+        {"m": "steel", "p": [0.48, 0.36, 0.3], "s": [0.04, 0.72, 0.04]},
+        {"m": "teal", "p": [0, 0.6, -0.305], "s": [0.92, 0.24, 0.03]},
+        {"m": "plastic", "p": [-0.18, 0.91, -0.03], "s": [0.4, 0.3, 0.34]},
+        {"m": "steel", "p": [-0.18, 1.07, -0.03], "s": [0.36, 0.02, 0.3]},
+        {"m": "black", "p": [-0.18, 0.9, 0.2], "s": [0.2, 0.08, 0.12]},
+        {"m": "chrome", "p": [-0.18, 0.9475, 0.195], "s": [0.18, 0.015, 0.05]},
+        {"m": "black", "p": [-0.18, 1, 0.17], "s": [0.1, 0.08, 0.06]},
+        {"m": "beige", "p": [-0.18, 0.995, 0.215], "s": [0.06, 0.05, 0.03]},
+        {"m": "steel", "p": [-0.18, 0.775, 0.22], "s": [0.28, 0.03, 0.16]},
+        {"m": "black", "p": [0.035, 0.95, -0.03], "s": [0.03, 0.06, 0.06]},
+        {"m": "chrome", "p": [0.065, 0.95, -0.03], "s": [0.03, 0.24, 0.1]},
+        {"m": "chrome", "p": [0.065, 0.95, -0.03], "s": [0.03, 0.1, 0.24]},
+        {"m": "chrome", "p": [0.065, 0.95, -0.03], "s": [0.03, 0.18, 0.18]},
+        {"m": "black", "p": [0.115, 1.02, 0.04], "s": [0.07, 0.04, 0.04]},
+        {"m": "steel", "p": [0.32, 0.81, 0], "s": [0.28, 0.1, 0.32]},
+        {"m": "water", "p": [0.32, 0.863, 0], "s": [0.24, 0.006, 0.28]},
+        {"m": "beige", "p": [0.32, 0.8675, -0.02], "s": [0.12, 0.003, 0.04]},
+        {"m": "black", "p": [0.32, 0.81, 0.165], "s": [0.12, 0.06, 0.01]},
+        {"m": "led-amber", "p": [0.415, 0.81, 0.1625], "s": [0.03, 0.02, 0.005]},
+        {"m": "scrubs", "p": [0.23, 0.7725, 0.24], "s": [0.06, 0.025, 0.08]},
+        {"m": "pink", "p": [0.32, 0.7725, 0.24], "s": [0.06, 0.025, 0.08]}
+      ]
+    },
+    {
+      "id": "tissue-processor",
+      "name": {
+        "zh-CN": "组织脱水机",
+        "en": "Tissue processor"
+      },
+      "category": "pathology",
+      "description": {
+        "zh-CN": "全封闭组织脱水机：顶部反应罐和石蜡缸，下部玻璃门内可见乙醇、二甲苯等试剂瓶，触摸屏控制。",
+        "en": "An enclosed tissue processor with a retort and paraffin baths on top, alcohol and xylene bottles behind the lower glass door, and a touchscreen."
+      },
+      "usage": {
+        "zh-CN": "按程序对福尔马林固定后的组织依次脱水、透明和浸蜡，通常过夜运行，次日包埋切片。",
+        "en": "Runs formalin-fixed tissue through dehydration, clearing and paraffin infiltration, usually overnight, ready for embedding and sectioning next day."
+      },
+      "capabilities": [],
+      "footprint": {
+        "w": 1.1,
+        "d": 0.75,
+        "h": 1.4
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {
+          "zh-CN": "E · 组织脱水机",
+          "en": "E · Tissue processor"
+        }
+      },
+      "screen": "text",
+      "tags": [
+        "pathology",
+        "histology",
+        "processing"
+      ],
+      "parts": [
+        {"m": "black", "p": [0, 0.03, -0.018], "s": [1.06, 0.06, 0.64]},
+        {"m": "plastic", "p": [0, 0.305, -0.108], "s": [1.1, 0.49, 0.5]},
+        {"m": "plastic", "p": [-0.535, 0.305, 0.242], "s": [0.03, 0.49, 0.2]},
+        {"m": "plastic", "p": [0.535, 0.305, 0.242], "s": [0.03, 0.49, 0.2]},
+        {"m": "plastic", "p": [0, 0.09, 0.242], "s": [1.04, 0.06, 0.2]},
+        {"m": "water", "p": [-0.4, 0.27, 0.232], "s": [0.11, 0.3, 0.12]},
+        {"m": "black", "p": [-0.4, 0.435, 0.232], "s": [0.06, 0.03, 0.06]},
+        {"m": "yellow", "p": [-0.24, 0.27, 0.232], "s": [0.11, 0.3, 0.12]},
+        {"m": "black", "p": [-0.24, 0.435, 0.232], "s": [0.06, 0.03, 0.06]},
+        {"m": "pink", "p": [-0.08, 0.27, 0.232], "s": [0.11, 0.3, 0.12]},
+        {"m": "black", "p": [-0.08, 0.435, 0.232], "s": [0.06, 0.03, 0.06]},
+        {"m": "beige", "p": [0.08, 0.27, 0.232], "s": [0.11, 0.3, 0.12]},
+        {"m": "black", "p": [0.08, 0.435, 0.232], "s": [0.06, 0.03, 0.06]},
+        {"m": "blue", "p": [0.24, 0.27, 0.232], "s": [0.11, 0.3, 0.12]},
+        {"m": "black", "p": [0.24, 0.435, 0.232], "s": [0.06, 0.03, 0.06]},
+        {"m": "orange", "p": [0.4, 0.27, 0.232], "s": [0.11, 0.3, 0.12]},
+        {"m": "black", "p": [0.4, 0.435, 0.232], "s": [0.06, 0.03, 0.06]},
+        {"m": "glass", "p": [0, 0.335, 0.322], "s": [1.04, 0.43, 0.02]},
+        {"m": "plastic", "p": [0, 0.925, -0.008], "s": [1.1, 0.75, 0.7]},
+        {"m": "teal", "p": [0, 0.6, 0.3445], "s": [1.1, 0.04, 0.005]},
+        {"m": "black", "p": [0.04, 1.07, 0.347], "s": [0.52, 0.3, 0.01]},
+        {"m": "screen", "p": [0.04, 1.07, 0.3545], "s": [0.48, 0.26, 0.005], "name": "screen"},
+        {"m": "led-green", "p": [0.4, 1.165, 0.3445], "s": [0.04, 0.03, 0.005], "anim": "blink"},
+        {"m": "steel", "p": [-0.22, 1.33, -0.058], "s": [0.44, 0.06, 0.44], "name": "lid"},
+        {"m": "black", "p": [-0.22, 1.33, 0.177], "s": [0.16, 0.04, 0.03]},
+        {"m": "steel", "p": [0.26, 1.315, -0.058], "s": [0.4, 0.03, 0.44]},
+        {"m": "black", "p": [0.26, 1.335, -0.048], "s": [0.04, 0.01, 0.26]}
+      ]
+    },
+    {
+      "id": "endoscopy-tower",
+      "name": {
+        "zh-CN": "内镜主机",
+        "en": "Endoscopy tower"
+      },
+      "category": "imaging",
+      "description": {
+        "zh-CN": "内镜主机车：高清监视器、视频处理器、冷光源、CO2 送气泵和吸引装置，侧面挂着电子胃镜。",
+        "en": "An endoscopy stack with HD monitor, video processor, light source, CO2 insufflator and suction unit, with a video gastroscope hanging at the side."
+      },
+      "usage": {
+        "zh-CN": "用于胃镜、结肠镜等诊疗；术前核对禁食与抗凝/抗血小板药物，必要时取活检送病理。",
+        "en": "For gastroscopy, colonoscopy and therapeutic endoscopy; check fasting and anticoagulant/antiplatelet drugs beforehand and send biopsies to pathology."
+      },
+      "capabilities": [
+        "endoscopy"
+      ],
+      "footprint": {
+        "w": 0.8,
+        "d": 0.6,
+        "h": 2
+      },
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {
+          "zh-CN": "E · 使用内镜",
+          "en": "E · Use endoscope"
+        }
+      },
+      "screen": "text",
+      "tags": [
+        "imaging",
+        "endoscopy",
+        "gastroenterology",
+        "mobile"
+      ],
+      "parts": [
+        {"m": "rubber", "p": [-0.3, 0.04, -0.23], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [-0.3, 0.04, 0.23], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [0.18, 0.04, -0.23], "s": [0.08, 0.08, 0.08]},
+        {"m": "rubber", "p": [0.18, 0.04, 0.23], "s": [0.08, 0.08, 0.08]},
+        {"m": "plastic", "p": [-0.06, 0.12, 0], "s": [0.6, 0.08, 0.58]},
+        {"m": "steel", "p": [-0.34, 0.83, -0.27], "s": [0.04, 1.34, 0.04]},
+        {"m": "steel", "p": [0.22, 0.83, -0.27], "s": [0.04, 1.34, 0.04]},
+        {"m": "plastic", "p": [-0.06, 0.83, -0.28], "s": [0.52, 1.34, 0.02]},
+        {"m": "plastic", "p": [-0.06, 0.32, -0.01], "s": [0.54, 0.32, 0.52]},
+        {"m": "black", "p": [-0.06, 0.32, 0.255], "s": [0.52, 0.28, 0.01]},
+        {"m": "led-green", "p": [0.11, 0.415, 0.2625], "s": [0.04, 0.03, 0.005]},
+        {"m": "plastic", "p": [-0.06, 0.49, 0], "s": [0.6, 0.02, 0.58]},
+        {"m": "plastic", "p": [-0.06, 0.62, -0.01], "s": [0.54, 0.24, 0.52]},
+        {"m": "black", "p": [-0.06, 0.62, 0.255], "s": [0.52, 0.2, 0.01]},
+        {"m": "steel", "p": [0.06, 0.62, 0.27], "s": [0.08, 0.08, 0.02]},
+        {"m": "led-green", "p": [-0.24, 0.67, 0.2625], "s": [0.04, 0.02, 0.005]},
+        {"m": "plastic", "p": [-0.06, 0.75, 0], "s": [0.6, 0.02, 0.58]},
+        {"m": "plastic", "p": [-0.06, 0.88, -0.01], "s": [0.54, 0.24, 0.52]},
+        {"m": "black", "p": [-0.06, 0.88, 0.255], "s": [0.52, 0.2, 0.01]},
+        {"m": "screen-dark", "p": [-0.16, 0.88, 0.2625], "s": [0.2, 0.08, 0.005]},
+        {"m": "led-green", "p": [0.06, 0.875, 0.2625], "s": [0.04, 0.03, 0.005]},
+        {"m": "plastic", "p": [-0.06, 1.01, 0], "s": [0.6, 0.02, 0.58]},
+        {"m": "plastic", "p": [-0.06, 1.13, -0.01], "s": [0.54, 0.22, 0.52]},
+        {"m": "black", "p": [-0.06, 1.13, 0.255], "s": [0.52, 0.18, 0.01]},
+        {"m": "led-amber", "p": [-0.17, 1.135, 0.2625], "s": [0.14, 0.05, 0.005]},
+        {"m": "scrubs", "p": [0.1, 1.13, 0.27], "s": [0.08, 0.1, 0.02]},
+        {"m": "plastic", "p": [-0.06, 1.25, 0], "s": [0.6, 0.02, 0.58]},
+        {"m": "white", "p": [-0.1, 1.27, 0.12], "s": [0.36, 0.02, 0.22]},
+        {"m": "water", "p": [0.15, 1.35, -0.17], "s": [0.1, 0.18, 0.12]},
+        {"m": "black", "p": [0.15, 1.455, -0.17], "s": [0.04, 0.03, 0.04]},
+        {"m": "plastic", "p": [-0.06, 1.49, -0.165], "s": [0.6, 0.02, 0.25]},
+        {"m": "black", "p": [-0.06, 1.56, -0.2], "s": [0.08, 0.12, 0.06]},
+        {"m": "black", "p": [-0.06, 1.8, -0.16], "s": [0.68, 0.4, 0.06]},
+        {"m": "screen", "p": [-0.06, 1.8, -0.1275], "s": [0.64, 0.36, 0.005], "name": "screen"},
+        {"m": "steel", "p": [0.32, 1.24, 0], "s": [0.16, 0.04, 0.06]},
+        {"m": "black", "p": [0.36, 1.135, 0], "s": [0.08, 0.17, 0.08]},
+        {"m": "black", "p": [0.36, 0.7, 0], "s": [0.02, 0.7, 0.02]},
+        {"m": "black", "p": [0.39, 0.825, 0.05], "s": [0.02, 0.45, 0.02]},
+        {"m": "black", "p": [0.39, 0.61, 0.165], "s": [0.02, 0.02, 0.25]},
+        {"m": "black", "p": [0.25, 0.61, 0.28], "s": [0.3, 0.02, 0.02]}
+      ]
     }
   ]
 }

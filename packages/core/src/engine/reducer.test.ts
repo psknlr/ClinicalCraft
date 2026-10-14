@@ -475,3 +475,62 @@ describe("replay", () => {
     expect(r.state.seq).toBe(2);
   });
 });
+
+/* ------------------------------------------------------------------ */
+/* Hardening (adversarial review)                                      */
+/* ------------------------------------------------------------------ */
+
+/** Parse a (modified) fixture object. */
+function loadJson(json: unknown): CaseDefinition {
+  const parsed = parseCase(json);
+  if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues, null, 2));
+  return parsed.value;
+}
+
+describe("hardening: reducer edge cases", () => {
+  const raw = (name: string) => structuredClone(fixture(name)) as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  it("single-answer decisions are correct iff the chosen option is correct, even with several correct options", () => {
+    const json = raw("v4-smzl-mini.case.json");
+    const d = json.decisions.find((x: { id: string }) => x.id === "diagnosis");
+    d.requires = { always: true };
+    d.options.find((o: { id: string }) => o.id === "metastasis").correct = true; // two correct options (integrity error, but playable)
+    const c = loadJson(json);
+    const s = play(c, [{ type: "start" }]).state;
+    const r = reduce(c, s, { type: "answer", decisionId: "diagnosis", optionIds: ["metastasis"] });
+    expect(r.events[0]).toMatchObject({ type: "decision.answered", correct: true });
+    expect(r.state.decisions).toEqual({ diagnosis: 0 });
+    expect(reduce(c, s, { type: "answer", decisionId: "diagnosis", optionIds: ["infection"] }).events[0]).toMatchObject({ correct: false });
+  });
+
+  it("applies an automatic phase transition whose enterWhen is already true when the session starts", () => {
+    const json = raw("mini-anaphylaxis.case.json");
+    json.phases[1].enterWhen = { flag: "handover-done" };
+    const c = loadJson(json);
+    const { state, events } = play(c, [{ type: "flag", flag: "handover-done" }, { type: "start" }]);
+    expect(state.phase).toBe("observation");
+    expect(ofType(events, "phase.changed")).toEqual([{ type: "phase.changed", from: "arrival", to: "observation", automatic: true }]);
+    // the edge is consumed: switching back manually is not overridden while the condition stays true
+    const json2 = raw("mini-anaphylaxis.case.json");
+    json2.phases[1].enterWhen = { flag: "handover-done" };
+    json2.phases[1].learnerSwitchable = true;
+    const c2 = loadJson(json2);
+    const s2 = play(c2, [{ type: "flag", flag: "handover-done" }, { type: "start" }, { type: "set-phase", phase: "arrival" }, { type: "ask", itemId: "trigger" }]).state;
+    expect(s2.phase).toBe("arrival");
+  });
+
+  it("fires scenario events at a fractional atMinute and emits results at a fractional readyAt exactly", () => {
+    const json = raw("mini-anaphylaxis.case.json");
+    json.physiology.events[0].atMinute = 2.5;
+    json.investigations.find((i: { id: string }) => i.id === "abg").turnaroundMinutes = 1.5;
+    json.objectives.push({ id: "gas", title: "gas", hint: "gas", completeWhen: { resultReady: "abg" } });
+    const c = loadJson(json);
+    const ordered = play(c, [{ type: "start" }, { type: "order", investigationId: "abg" }]).state; // ordered at 0, ready at 1.5, clock 1
+    const { state, events } = play(c, [{ type: "advance-time", minutes: 4 }], ordered);
+    expect(state.firedEvents.stridor).toBe(2.5);
+    expect(state.objectivesDone.gas).toBe(1.5);
+    expect(ofType(events, "time.advanced")).toEqual([{ type: "time.advanced", from: 1, to: 5 }]);
+    expect(ofType(events, "scenario.event").map((e) => e.eventId)).toEqual(["stridor"]);
+    expect(ofType(events, "result.ready").map((e) => e.key)).toEqual(["abg@arrival"]);
+  });
+});

@@ -220,7 +220,11 @@ function onAnswer(ctx: Ctx, a: Action<"answer">): Outcome {
     return rejected("requirements-unmet", t(decision.need, c.locales[0]) || `decision "${decision.id}" is locked`);
   }
   const correctIds = decision.options.filter((o) => o.correct).map((o) => o.id);
-  const correct = chosen.length === correctIds.length && chosen.every((id) => correctIds.includes(id));
+  // single: the chosen option is correct; multiple: the chosen set equals the set of correct options (§3.1)
+  const correct =
+    decision.kind === "single"
+      ? correctIds.includes(chosen[0])
+      : chosen.length === correctIds.length && chosen.every((id) => correctIds.includes(id));
   const firstTry = !s.attempts.some((x) => x.decisionId === decision.id);
   s.attempts.push({ decisionId: decision.id, optionIds: chosen, correct, at: s.clock });
   if (correct) s.decisions[decision.id] = s.clock;

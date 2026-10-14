@@ -96,7 +96,7 @@ features are present but are not required for the diagnosis.
   (SpO₂ +5), each crystalloid bolus (SBP +10, HR −8 over 10 min) and
   salbutamol (SpO₂ +2, RR −3, HR +6 for 30 min).
 
-Replay of the reference solution (noise-free signal, display-rounded):
+Replay of the reference solution (displayed values, including the deterministic monitor jitter):
 
 | minute | HR | BP (MAP) | RR | SpO₂ | context |
 |---:|---:|---|---:|---:|---|
@@ -208,8 +208,8 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
   the emergency team, or are available in the ED.
 * Investigations use their real capabilities. Phases encode location:
   * In the garden (`scene` / `treated`): POC glucose and sample-based lab
-    tests drawn from the cannula (tryptase, FBC, U&E, venom sIgE; troponin
-    and CRP from `treated`).
+    tests drawn from the cannula. Tryptase, FBC and U&E are available from
+    first contact; venom sIgE, troponin and CRP from `treated`.
   * ED only: 12-lead ECG, VBG (blood-gas analyser), CXR, CTPA, POCUS and
     urine hCG.
 * Ordering one of these in the garden gives "no record in this phase". The

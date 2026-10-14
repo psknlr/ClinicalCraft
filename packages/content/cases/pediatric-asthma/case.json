@@ -190,6 +190,11 @@
             "elapsed": {
               "gte": 60
             }
+          },
+          {
+            "not": {
+              "flag": "life-threatening"
+            }
           }
         ]
       }
@@ -4122,8 +4127,8 @@
         },
         "discharge": {
           "text": {
-            "zh-CN": "窦性心律，118次/分；PR 0.12 s，QRS 0.07 s，QTc 0.41 s；ST-T正常。",
-            "en": "Sinus rhythm 118/min; PR 0.12 s, QRS 0.07 s, QTc 0.41 s; normal ST–T."
+            "zh-CN": "窦性心律，120次/分；PR 0.12 s，QRS 0.07 s，QTc 0.41 s；ST-T正常。",
+            "en": "Sinus rhythm 120/min; PR 0.12 s, QRS 0.07 s, QTc 0.41 s; normal ST–T."
           }
         }
       }
@@ -5175,6 +5180,40 @@
       }
     },
     {
+      "id": "admit-picu",
+      "kind": "disposition",
+      "risk": "moderate",
+      "name": {
+        "zh-CN": "收入儿童重症监护室（PICU/HDU）",
+        "en": "Admit to PICU/HDU"
+      },
+      "aliases": {
+        "zh-CN": [
+          "收入picu",
+          "转picu",
+          "收入icu",
+          "转重症",
+          "收住院",
+          "住院"
+        ],
+        "en": [
+          "admit to picu",
+          "picu admission",
+          "hdu",
+          "admit",
+          "intensive care admission",
+          "admit to icu"
+        ]
+      },
+      "indicatedWhen": {
+        "flag": "life-threatening"
+      },
+      "response": {
+        "zh-CN": "PICU团队接收患儿，转入重症监护继续治疗和监测。",
+        "en": "The PICU team accepts him for ongoing critical care and monitoring."
+      }
+    },
+    {
       "id": "discharge-home",
       "kind": "disposition",
       "risk": "moderate",
@@ -5793,16 +5832,36 @@
         "en": "Once the first hour's three bronchodilator rounds are done, return to the bedside, reassess and decide the next step."
       },
       "completeWhen": {
-        "all": [
+        "any": [
           {
-            "examined": "ex-reassess-auscultation"
+            "all": [
+              {
+                "examined": "ex-reassess-auscultation"
+              },
+              {
+                "read": "pram",
+                "phase": "reassess"
+              },
+              {
+                "decided": "dec-response"
+              }
+            ]
           },
           {
-            "read": "pram",
-            "phase": "reassess"
-          },
-          {
-            "decided": "dec-response"
+            "all": [
+              {
+                "flag": "life-threatening"
+              },
+              {
+                "flag": "burst-complete"
+              },
+              {
+                "intervened": "senior-review"
+              },
+              {
+                "intervened": "magnesium-iv"
+              }
+            ]
           }
         ]
       },
@@ -5844,28 +5903,42 @@
         "en": "Observe whether he stays stable, then check the discharge criteria — and turn this visit into a chance to fix long-term control."
       },
       "completeWhen": {
-        "all": [
+        "any": [
           {
-            "phase": "discharge"
+            "all": [
+              {
+                "phase": "discharge"
+              },
+              {
+                "read": "spo2-ra",
+                "phase": "discharge"
+              },
+              {
+                "intervened": "inhaler-teaching"
+              },
+              {
+                "intervened": "action-plan"
+              },
+              {
+                "intervened": "controller-ics"
+              },
+              {
+                "decided": "dec-discharge"
+              },
+              {
+                "intervened": "discharge-home"
+              }
+            ]
           },
           {
-            "read": "spo2-ra",
-            "phase": "discharge"
-          },
-          {
-            "intervened": "inhaler-teaching"
-          },
-          {
-            "intervened": "action-plan"
-          },
-          {
-            "intervened": "controller-ics"
-          },
-          {
-            "decided": "dec-discharge"
-          },
-          {
-            "intervened": "discharge-home"
+            "all": [
+              {
+                "flag": "life-threatening"
+              },
+              {
+                "intervened": "admit-picu"
+              }
+            ]
           }
         ]
       },
@@ -6778,8 +6851,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "本病例聚焦学龄儿童已知哮喘的一次急诊发作处理。不涵盖<5岁学龄前喘息、首次喘息的鉴别诊断、危及生命/濒死哮喘的高级处理（静脉沙丁胺醇持续输注、无创通气、插管）——只要求识别升级指征；长期阶梯治疗的调整应在随访时完成。",
-      "en": "This case covers ED management of one exacerbation in a school-age child with established asthma. It does not cover preschool wheeze (< 5 years), work-up of a first wheeze, or advanced management of life-threatening/near-fatal asthma (IV salbutamol infusion, NIV, intubation) beyond recognising escalation triggers; long-term step changes belong to follow-up."
+      "zh-CN": "本病例聚焦学龄儿童已知哮喘的一次急诊发作处理。不涵盖<5岁学龄前喘息、首次喘息的鉴别诊断、危及生命/濒死哮喘的高级处理（静脉沙丁胺醇持续输注、无创通气、插管）——只要求识别升级指征；长期阶梯治疗的调整应在随访时完成。若延误支气管舒张剂，模拟中患儿会进展为危及生命的发作，此时病例以升级治疗并收入PICU/HDU结束，而不是出院。",
+      "en": "This case covers ED management of one exacerbation in a school-age child with established asthma. It does not cover preschool wheeze (< 5 years), work-up of a first wheeze, or advanced management of life-threatening/near-fatal asthma (IV salbutamol infusion, NIV, intubation) beyond recognising escalation triggers; long-term step changes belong to follow-up. If bronchodilators are delayed the simulated child progresses to life-threatening asthma, and the case then ends with escalation and PICU/HDU admission instead of discharge."
     },
     "unknowns": [
       {

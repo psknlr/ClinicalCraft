@@ -274,68 +274,6 @@
       "required": false
     },
     {
-      "id": "hx-cough",
-      "topic": "presenting-complaint",
-      "question": {
-        "zh-CN": "咳嗽吗？有痰吗？痰是什么样的？",
-        "en": "Is she coughing? Bringing anything up — what does it look like?"
-      },
-      "answer": {
-        "zh-CN": "咳……一咳胸口就疼。痰……黄的……有点发红，像铁锈。女儿：前天晚上开始咳，昨天痰多了，颜色像铁锈。",
-        "en": "Coughing… hurts my chest every time. Phlegm… yellow… a bit reddish, like rust. Daughter: The cough started the night before last; since yesterday there's more phlegm, rust-coloured."
-      },
-      "keywords": {
-        "zh-CN": [
-          "咳嗽",
-          "咳痰",
-          "有痰",
-          "痰的颜色",
-          "痰什么颜色",
-          "咳得厉害"
-        ],
-        "en": [
-          "cough",
-          "coughing",
-          "phlegm",
-          "sputum",
-          "bringing anything up",
-          "productive"
-        ]
-      },
-      "disclosure": "volunteer",
-      "required": true
-    },
-    {
-      "id": "hx-haemoptysis",
-      "topic": "associated-symptoms",
-      "question": {
-        "zh-CN": "有没有咳血？",
-        "en": "Has she coughed up any blood?"
-      },
-      "answer": {
-        "zh-CN": "血……没有吧。女儿：没见过鲜血，就是痰有点铁锈色，没有整口的血。",
-        "en": "Blood… no, I don't think so. Daughter: No fresh blood — just the rusty phlegm, never mouthfuls of blood."
-      },
-      "keywords": {
-        "zh-CN": [
-          "咳血",
-          "咯血",
-          "痰中带血",
-          "痰里有血",
-          "吐血"
-        ],
-        "en": [
-          "coughing up blood",
-          "blood in phlegm",
-          "blood in sputum",
-          "haemoptysis",
-          "hemoptysis"
-        ]
-      },
-      "disclosure": "specific",
-      "required": false
-    },
-    {
       "id": "hx-chest-pain",
       "topic": "pain",
       "question": {
@@ -383,6 +321,7 @@
           "深呼吸疼",
           "吸气疼",
           "呼吸时疼",
+          "咳嗽时疼",
           "往别处放射",
           "疼几分",
           "疼痛加重",
@@ -396,10 +335,74 @@
           "spread anywhere",
           "pain score out of ten",
           "pain worse",
-          "what eases the pain"
+          "pain better",
+          "what eases the pain",
+          "worse when coughing"
         ]
       },
       "disclosure": "on-ask",
+      "required": false
+    },
+    {
+      "id": "hx-cough",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "咳嗽吗？有痰吗？痰是什么样的？",
+        "en": "Is she coughing? Bringing anything up — what does it look like?"
+      },
+      "answer": {
+        "zh-CN": "咳……一咳胸口就疼。痰……黄的……有点发红，像铁锈。女儿：前天晚上开始咳，昨天痰多了，颜色像铁锈。",
+        "en": "Coughing… hurts my chest every time. Phlegm… yellow… a bit reddish, like rust. Daughter: The cough started the night before last; since yesterday there's more phlegm, rust-coloured."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咳嗽",
+          "咳痰",
+          "有痰",
+          "痰的颜色",
+          "痰什么颜色",
+          "咳得厉害"
+        ],
+        "en": [
+          "cough",
+          "coughing",
+          "phlegm",
+          "sputum",
+          "productive cough",
+          "colour of the sputum"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true
+    },
+    {
+      "id": "hx-haemoptysis",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有咳血？",
+        "en": "Has she coughed up any blood?"
+      },
+      "answer": {
+        "zh-CN": "血……没有吧。女儿：没见过鲜血，就是痰有点铁锈色，没有整口的血。",
+        "en": "Blood… no, I don't think so. Daughter: No fresh blood — just the rusty phlegm, never mouthfuls of blood."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咳血",
+          "咯血",
+          "痰中带血",
+          "痰里有血",
+          "吐血"
+        ],
+        "en": [
+          "coughing up blood",
+          "blood in phlegm",
+          "blood in sputum",
+          "haemoptysis",
+          "hemoptysis"
+        ]
+      },
+      "disclosure": "specific",
       "required": false
     },
     {
@@ -453,7 +456,9 @@
           "从头说",
           "怎么开始的",
           "病程",
-          "什么情况"
+          "什么情况",
+          "怎么不舒服",
+          "哪里不舒服"
         ],
         "en": [
           "what happened",
@@ -462,7 +467,8 @@
           "timeline",
           "from the beginning",
           "course of the illness",
-          "how did it start"
+          "how did it start",
+          "what brings you in"
         ]
       },
       "disclosure": "on-ask",
@@ -716,6 +722,7 @@
       "keywords": {
         "zh-CN": [
           "旅行",
+          "旅游",
           "出远门",
           "养鸟",
           "家禽",
@@ -854,7 +861,8 @@
           "哮喘",
           "肺病",
           "肺结核",
-          "以前肺炎"
+          "以前肺炎",
+          "得过肺炎"
         ],
         "en": [
           "copd",
@@ -862,6 +870,7 @@
           "asthma",
           "lung disease",
           "previous pneumonia",
+          "pneumonia before",
           "tuberculosis",
           "bronchitis"
         ]
@@ -920,7 +929,9 @@
           "降压药",
           "降糖药",
           "药单",
-          "长期用药"
+          "长期用药",
+          "激素",
+          "抗凝药"
         ],
         "en": [
           "medications",
@@ -929,7 +940,10 @@
           "pills",
           "regular drugs",
           "what medicines does she take",
-          "drug list"
+          "drug list",
+          "steroids",
+          "blood thinners",
+          "anticoagulants"
         ]
       },
       "disclosure": "on-ask",
