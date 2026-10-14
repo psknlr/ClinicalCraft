@@ -49,7 +49,8 @@ about steroids and growth, and she expects antibiotics and "a drip".
 4. Reassess at 1 hour with the same tool. Recognise a good response (PRAM 8 → 3)
    and the expected β₂-agonist effects (tachycardia, tremor, hypokalaemia,
    hyperglycaemia, lactate). Reserve IV magnesium for poor response or
-   life-threatening features.
+   life-threatening features — and recognise those when they happen (the
+   delayed-treatment branches below).
 5. Apply the discharge criteria and use the visit to improve long-term control:
    * written action plan
    * inhaler-technique teach-back
@@ -68,7 +69,14 @@ about steroids and growth, and she expects antibiotics and "a drip".
 | 26 / 46 | Salbutamol + ipratropium #2 and #3 → `burst-complete` flag | HR rises to ~150–155 from transient β₂ effects |
 | ≥ 60 | Automatic phase → **reassess** | On O₂: HR ~153 · RR ~27 · SpO₂ ~98; room-air trial 93 % |
 | ~127 | O₂ effect ends (weaned) | SpO₂ ~94–95 in room air |
-| ≥ 240 | Automatic phase → **discharge** | HR ~120 · RR ~22–24 · SpO₂ ~95–96 (room air) · EtCO₂ ~35 |
+| ≥ 240 | Automatic phase → **discharge** (also requires a systemic steroid given and noise-free SpO₂ ≥ 95; 95.8 on the reference path) | HR ~120 · RR ~22–24 · SpO₂ ~95–96 (room air) · EtCO₂ ~35 |
+
+Phases are never learner-switchable. Entry rules: **reassess** = arrival +
+`burst-complete` + ≥ 60 min + not life-threatening + (not `tiring` **or** IV
+magnesium given); **discharge** = reassess objective done + ≥ 240 min +
+prednisolone/hydrocortisone given + SpO₂ ≥ 95; **critical** (deterioration) =
+arrival + `life-threatening`. The static per-phase results therefore only
+appear when the monitor agrees with them.
 
 Untreated or delayed course (scenario events and trends):
 
@@ -76,18 +84,32 @@ Untreated or delayed course (scenario events and trends):
   SpO₂ −0.1/min, RR +0.15/min, HR +0.25/min and EtCO₂ +0.15/min.
 * **15 min without a bronchodilator:** the nurse prompts you, and the
   `bronchodilator-delayed` flag is set (rubric).
-* **25 min:** `tiring` event. He is down to single words; SpO₂ ~86 %, RR ~44,
-  EtCO₂ ~40. IV magnesium becomes *indicated*.
-* **45 min:** `life-threatening` event. He is exhausted with shallow breathing;
-  SpO₂ ~79 %, EtCO₂ > 50. The reassess phase is now locked. The case can only
-  end by escalation:
+* **25 min:** `tiring` event (baseline shift: SpO₂ 88, HR 146, RR 40, EtCO₂ 36).
+  He is working harder and starting to tire; SpO₂ ~86 %, RR ~44, EtCO₂ ~40.
+  After the three-dose burst he responds only partly (RR ~31–32, still needing
+  oxygen); at ≥ 60 min the `ev-poor-response` nurse prompt fires and the
+  reassess phase stays locked until IV magnesium is given (Mg is *indicated*
+  once the burst is complete). With Mg (+ senior review) he converges on the
+  reference trajectory (room-air SpO₂ 95–96 by ~4.5 h) and the case can end
+  in discharge.
+* **45 min:** `life-threatening` event (SpO₂ 84, HR 150, RR 32, EtCO₂ 46,
+  GCS 14). He is exhausted, drowsy and quiet; SpO₂ ~79 %, EtCO₂ > 50. The case
+  moves into the **critical** phase, which has its own exam findings (dusky
+  lips, single words, poor effort, near-silent chest, GCS 14), PRAM 12/12, a
+  venous gas with acute respiratory acidosis, and no room-air trial or PEF
+  (`available: false`). `dec-severity`/`dec-first-line` lock if not already
+  answered (they are about the arrival assessment); `obj-assess` and
+  `obj-first-line` have critical-phase branches. The case can only end by
+  escalation:
   1. ≥ 3 bronchodilator rounds
   2. senior review
   3. IV magnesium
   4. **Admit to PICU/HDU** (alternative branches of `obj-reassess` and
-     `obj-discharge`)
+     `obj-discharge`); discharge home and ward admission are *contraindicated*.
 * **60 min without a systemic steroid:** the nurse prompts you, and the
   `steroid-delayed` flag is set (rubric).
+* **≥ 250 min, reassessment done but no steroid or room-air SpO₂ < 95:** the
+  `ev-not-settling` nurse prompt fires (the discharge phase is gated, above).
 
 Intervention effects and their appropriateness (the engine evaluates
 `contraindicatedWhen` and `indicatedWhen`):
@@ -96,15 +118,27 @@ Intervention effects and their appropriateness (the engine evaluates
   * SpO₂ +1.2, RR −2.5 and EtCO₂ +1.5, all persistent
   * HR −5 persistent (the work of breathing falls)
   * HR +10 transient (β₂ chronotropy, lasts 90 min)
-* **Ipratropium:** RR −0.5. It is *indicated* only in the first-hour phase, and
-  `maxDoses` is 3.
+  * `maxDoses` 6 per route (neb, pMDI). From the 9th dose (both routes
+    combined) each dose is *contraindicated* with a toxicity/escalation
+    message. Six nebs in total on the reference path give RR ~19, SpO₂ ~98,
+    HR ~121 at 4 h; only deliberate rapid-fire dosing of both routes drives
+    the additive effects to implausible values (HR ~200, RR < 10).
+* **Ipratropium:** RR −0.5. Each of its 3 doses (`maxDoses` 3) is *indicated*,
+  whatever the phase.
+* **Oxygen:** SpO₂ +4 for 120 min (auto-weaned); `maxDoses` 3 so it can be
+  restarted if room-air SpO₂ falls (overlapping doses add).
 * **Prednisolone or IV hydrocortisone:** SpO₂ +2.5, RR −5 and HR −5, with onset at
   120 min and a 120-min ramp (full effect ~4 h after the dose). Giving both is *contraindicated* (duplicate systemic
   steroid).
 * **Sedation:** always *contraindicated*. SpO₂ −5, RR −10, EtCO₂ +8, GCS −3.
-* **Aminophylline:** *contraindicated* unless life-threatening. HR +15.
+* **Aminophylline:** *contraindicated* unless life-threatening; *indicated* once
+  life-threatening and IV magnesium has been given. HR +15.
 * **Discharge home:** *contraindicated* before the discharge phase. It also sets
   the `premature-discharge` flag through a scenario event.
+* **Admit to the ward:** an acceptable alternative disposition (it completes
+  `obj-discharge` in the discharge phase with the same education bundle);
+  *indicated* on the tiring branch, *contraindicated* when life-threatening.
+  The generic aliases "admit"/"住院" map here, not to PICU.
 * **Neutral but scored down by the rubric:** antibiotics; routine CXR, VBG, FBC,
   CRP and blood culture (`low-value`); IV magnesium given to a child who is
   responding.
@@ -130,6 +164,7 @@ Paediatric alarm limits (6 years):
   | Arrival | 2 | 0 | 2 | 2 | 2 | **8** (severe) |
   | 1 h | 0 | 0 | 1 | 1 | 1 | **3** (mild) |
   | Discharge | 0 | 0 | 0 | 0 | 0 | **0** |
+  | Critical (deterioration branch) | 2 | 2 | 3 | 3 | 2 | **12** |
 
   Each score matches the exam findings of its phase.
 * **Severity.** By BTS/SIGN, a child over 5 years with any of SpO₂ < 92 %,
@@ -155,10 +190,13 @@ Paediatric alarm limits (6 years):
   | Arrival | 7.40 | 4.9 kPa (37 mmHg) | 22.7 | 138 − (104 + 22.7) = 11.3 | −1.6 |
   | 1 h | 7.38 | 4.8 kPa (36 mmHg) | 21.1 | 139 − (105 + 21.1) = 12.9 | −3.3 |
   | Discharge | 7.39 | 5.1 kPa (38 mmHg) | 22.7 | 138 − (104 + 22.7) = 11.3 | −1.7 |
+  | Critical | 7.24 | 8.0 kPa (60 mmHg) | 25.4 | 138 − (101 + 25.4) = 11.6 | −1.3 |
 
   The pH values satisfy Henderson–Hasselbalch (0.0307 mmol/L/mmHg) and the BE
-  values satisfy the Van Slyke approximation. The laboratory U&E anion gaps are
-  11, 13 and 11. The 1 h values show mild hypokalaemia (K⁺ 3.4), hyperglycaemia
+  values satisfy the Van Slyke approximation. The critical-phase gas is an acute
+  respiratory acidosis (venous pCO₂ 60 mmHg against a monitor EtCO₂ of ~52–55,
+  which under-reads in asthma). The laboratory U&E anion gaps are 11, 13, 11
+  and 11 (critical: 138 − (101 + 26)). The 1 h values show mild hypokalaemia (K⁺ 3.4), hyperglycaemia
   (8.9 mmol/L) and lactate 2.6 mmol/L, which are expected salbutamol effects.
 * **FBC.** The differentials sum to the WBC (10.9, 11.6 and 14.6 ×10⁹/L). The
   discharge picture of neutrophilia with eosinopenia is a steroid effect.
@@ -216,14 +254,28 @@ Paediatric alarm limits (6 years):
 
 ## Fidelity limits (known)
 
-* Results and exam findings are static per phase. If the learner delays
-  treatment but still reaches the reassessment phase (the tiring branch), the
-  reassessment results describe the reference good response while the monitor
-  shows a sicker child. The life-threatening branch avoids this by locking the
-  reassess and discharge phases and ending with PICU/HDU admission.
+* Results and exam findings are static per phase. Phase entry is gated so that
+  the reassess and discharge results only appear when the monitor agrees with
+  them (tiring branch → IV magnesium first; discharge → steroid given and
+  room-air SpO₂ ≥ 95), and the life-threatening branch has its own critical
+  phase. Within a phase the findings do not change: e.g. the arrival PRAM stays
+  8 while a tiring child's monitor drifts, and the critical-phase exam still
+  says "near-silent chest" after IV magnesium has improved his SpO₂ shortly
+  before PICU transfer.
+* `investigations[].value` is static, so a blood gas or chest X-ray ordered on
+  the deterioration branch (where it is reasonable) is still listed as
+  low-value by `assess()`. The rubric item `r-no-routine-tests` does exempt
+  those branches (`tiring` flag).
+* Vital effects are additive per dose (the engine has no saturation), so the
+  salbutamol limits above bound the effect; deliberate rapid-fire dosing of
+  both routes still produces implausible monitor values (flagged as unsafe).
 * Exam items and child-voice history items that are restricted to a phase share
   keywords across phases on purpose. Consumers of `matchExam`/`matchHistory`
-  should prefer items available in the current phase.
+  should pass the current phase (`MatchOptions.phase`); the agent's patient
+  pipeline already filters history by phase.
+* The 44 history items exceed the authoring guide's 15–40 because six are
+  phase variants of the same question ("how is he feeling / how alert is he"
+  for arrival, reassessment, discharge and deterioration).
 
 ## References
 
@@ -242,5 +294,6 @@ clinicalcraft cases verify pediatric-asthma
 clinicalcraft play pediatric-asthma --provider offline
 ```
 
-All 36 `extensions.testUtterances` resolve to their expected history item as
-the top `matchHistory` hit.
+All 56 `extensions.testUtterances` (28 per locale, including colloquial
+Chinese, typos and clinical abbreviations such as NKDA, URTI, ICS, PICU, pred)
+resolve to an expected history item as the top `matchHistory` hit.

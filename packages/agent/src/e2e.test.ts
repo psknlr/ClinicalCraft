@@ -993,7 +993,7 @@ describe("(c) silent offline fallbacks are warned", () => {
     for (let i = 0; i < 2; i++) {
       const events = await d.run({ type: "assess" });
       expect(events.some((e) => e.msg.type === "assessment")).toBe(true);
-      expect(events.some((e) => e.msg.type === "warning" && /examiner/.test(e.msg.message)), `assess #${i + 1} warned`).toBe(true);
+      expect(events.some((e) => e.msg.type === "warning" && /examiner/i.test(e.msg.message)), `assess #${i + 1} warned`).toBe(true);
     }
     await d.shutdown();
     assertInvariants(loadMiniCase(), d, d.session.state, "en");

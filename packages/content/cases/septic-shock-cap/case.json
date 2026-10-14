@@ -176,8 +176,8 @@
         "en": "Reassessment after initial resuscitation"
       },
       "description": {
-        "zh-CN": "抗菌药物已用、至少3次500 mL液体推注后自动进入：复评灌注、决定升压药、复查乳酸并安排去向。此阶段新开的检查反映复苏后的状态。",
-        "en": "Entered automatically once antibiotics are in and at least three 500 mL boluses have been given: reassess perfusion, decide on vasopressors, repeat the lactate and arrange disposition. Tests ordered in this phase reflect her post-resuscitation state."
+        "zh-CN": "抗菌药物在到达抢救室60分钟内用上、且至少3次500 mL液体推注后自动进入：复评灌注、决定升压药、复查乳酸并安排去向。此阶段新开的检查反映复苏后的状态。",
+        "en": "Entered automatically once antibiotics are in (within the first 60 minutes in resus) and at least three 500 mL boluses have been given: reassess perfusion, decide on vasopressors, repeat the lactate and arrange disposition. Tests ordered in this phase reflect her post-resuscitation state."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -1857,9 +1857,9 @@
         "en": [
           "general inspection",
           "general appearance",
-          "look at her",
           "end of the bed",
-          "overall appearance"
+          "overall appearance",
+          "general look"
         ]
       },
       "finding": {
@@ -1874,7 +1874,7 @@
       "id": "ex-airway",
       "system": "general",
       "maneuver": {
-        "zh-CN": "气道评估",
+        "zh-CN": "评估气道是否通畅",
         "en": "Airway assessment"
       },
       "keywords": {
@@ -1972,7 +1972,9 @@
           "听诊肺",
           "呼吸音",
           "听诊双肺",
-          "肺部检查"
+          "肺部检查",
+          "下肺",
+          "听听肺"
         ],
         "en": [
           "auscultate the lungs",
@@ -1989,7 +1991,18 @@
       },
       "abnormal": true,
       "required": true,
-      "requires": []
+      "requires": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "补液后",
+          "复评"
+        ],
+        "en": [
+          "reassess",
+          "after fluids",
+          "after boluses"
+        ]
+      }
     },
     {
       "id": "ex-perfusion",
@@ -2160,14 +2173,16 @@
           "肚子",
           "腹部触诊",
           "墨菲征",
-          "压痛"
+          "压痛",
+          "肠鸣音"
         ],
         "en": [
           "abdomen",
           "abdominal exam",
           "palpate the abdomen",
           "tummy",
-          "murphy"
+          "murphy",
+          "bowel sounds"
         ]
       },
       "finding": {
@@ -2289,7 +2304,9 @@
           "4at",
           "认知筛查",
           "注意力测试",
-          "倒数月份"
+          "倒数月份",
+          "4at评估",
+          "谵妄评估"
         ],
         "en": [
           "delirium",
@@ -2480,7 +2497,9 @@
           "补液后听肺",
           "容量负荷",
           "液体过负荷",
-          "再听双肺"
+          "再听双肺",
+          "再听听肺",
+          "再听肺"
         ],
         "en": [
           "reassess the chest",
@@ -9253,6 +9272,90 @@
         "expect": [
           "hx-legs-vte"
         ]
+      },
+      {
+        "text": "老太太烧了几天了？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-fever"
+        ]
+      },
+      {
+        "text": "咳出来的痰啥颜色？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-cough"
+        ]
+      },
+      {
+        "text": "有木有咳出血来？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-haemoptysis"
+        ]
+      },
+      {
+        "text": "她有糖尿并吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "平常吃的啥药？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-meds"
+        ]
+      },
+      {
+        "text": "有没有一边手脚没劲儿，说话大舌头？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-neuro-sx"
+        ]
+      },
+      {
+        "text": "头晕不晕？有没有晕过去？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-cvs-sx"
+        ]
+      },
+      {
+        "text": "Any SOB?",
+        "locale": "en",
+        "expect": [
+          "hx-dyspnoea"
+        ]
+      },
+      {
+        "text": "Any alergies to abx?",
+        "locale": "en",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "Any runny nose or achy muscles?",
+        "locale": "en",
+        "expect": [
+          "hx-flu-sx"
+        ]
+      },
+      {
+        "text": "PMH? any DM or HTN?",
+        "locale": "en",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "Did she take anything OTC for the temp?",
+        "locale": "en",
+        "expect": [
+          "hx-otc-ibuprofen"
+        ]
       }
     ],
     "authorChecks": {
@@ -9283,7 +9386,11 @@
       "fourAT": "alertness 0 + AMT4 2 + attention 1 + acute change 4 = 7",
       "cbc_mchc": "Hb 128 g/L / Hct 0.39 = 328 g/L; post 118/0.36 = 328 g/L",
       "differential": "neutrophils 16.3/18.4 = 88.6%; post 15.9/17.9 = 88.8%",
-      "ats_idsa_severe_cap": "major: vasopressor; minor: confusion, BUN ≥ 20 mg/dL, hypotension needing aggressive fluids (RR < 30, single lobe, WBC ≥ 4, platelets ≥ 100, T ≥ 36; P/F not available)"
+      "ats_idsa_severe_cap": "major: vasopressor; minor: confusion, BUN ≥ 20 mg/dL, hypotension needing aggressive fluids (RR < 30, single lobe, WBC ≥ 4, platelets ≥ 100, T ≥ 36; P/F not available)",
+      "vbg_hh_late": "reassess-late gas: pH 7.29, pCO2 27 mmHg (3.6 kPa) → HCO3 = 0.0307 × 27 × 10^(7.29 − 6.1) = 12.8; BE ≈ 0.93 × (12.8 − 24.4 + 14.8 × (−0.11)) = −12.3; Winter's expected arterial pCO2 1.5 × 12.8 + 8 = 27 ± 2",
+      "anion_gap_late": "134 − (100 + 13) = 21 mmol/L; albumin-corrected 21 + 0.25 × (40 − 29) ≈ 24; chemistry HCO3 13 vs gas 12.8",
+      "kdigo_late": "174/78 = 2.2 → stage 2; urea 12.9 mmol/L × 2.8 = BUN 36 mg/dL",
+      "lactate_late": "antibiotics after 60 min → reassess-late phase: lactate 4.6 → 5.8 mmol/L (+26 %, not clearing)"
     }
   }
 }

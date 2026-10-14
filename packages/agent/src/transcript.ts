@@ -8,7 +8,7 @@
  * credentials before anything is persisted.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
-import type { AgentRole, Op } from "./protocol.js";
+import type { AgentRole, ApprovalMode, Op, PlanItem, PracticeScope } from "./protocol.js";
 import type { ChatMessage, ChatPart } from "./providers/types.js";
 import type { TranscriptItem, TranscriptSink } from "./session/types.js";
 
@@ -108,6 +108,52 @@ export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTran
   return result;
 }
 
+/** Runtime configuration a resumed session should continue with (PROTOCOL §10). */
+export interface ResumedRuntimeConfig {
+  locale?: string;
+  provider?: string;
+  model?: string | null;
+  approvalMode?: ApprovalMode;
+  practiceScope?: PracticeScope;
+  interlocutor?: string;
+  /** Last published workup plan. */
+  plan?: { items: PlanItem[]; explanation: string | null };
+}
+
+/**
+ * The configuration in effect at the end of a transcript: the last
+ * `session_meta` (locale, provider, model), then every `config_changed`
+ * patch in order (`/lang`, `/approval`, `/scope`, `/talk`, `/model`…), plus
+ * the last `plan_updated`.
+ */
+export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedRuntimeConfig {
+  const sorted = [...items].filter((i) => i && typeof i === "object").sort((a, b) => (a.ordinal ?? 0) - (b.ordinal ?? 0));
+  const out: ResumedRuntimeConfig = {};
+  for (const item of sorted) {
+    if (item.type === "session_meta" && item.payload) {
+      if (item.payload.locale) out.locale = item.payload.locale;
+      if (item.payload.provider) out.provider = item.payload.provider;
+      out.model = item.payload.model || null;
+      continue;
+    }
+    if (item.type !== "event" || !item.payload?.msg) continue;
+    const msg = item.payload.msg;
+    if (msg.type === "plan_updated") out.plan = { items: msg.plan.map((p) => ({ text: p.text, status: p.status })), explanation: msg.explanation ?? null };
+    if (msg.type !== "config_changed") continue;
+    const p = msg.patch;
+    if (p.locale) out.locale = p.locale;
+    if (p.provider) {
+      out.provider = p.provider;
+      if (p.model === undefined) out.model = null;
+    }
+    if (p.model !== undefined) out.model = p.model || null;
+    if (p.approvalMode) out.approvalMode = p.approvalMode;
+    if (p.practiceScope) out.practiceScope = p.practiceScope;
+    if (p.interlocutor) out.interlocutor = p.interlocutor;
+  }
+  return out;
+}
+
 /* ------------------------------------------------------------------ */
 /* Secret redaction (persisted transcripts, logs)                      */
 /* ------------------------------------------------------------------ */
@@ -171,7 +217,10 @@ export function redactValue<T>(value: T, secrets: readonly string[] = []): T {
   return walk(value) as T;
 }
 
-/** Monotonic item factory: stamps `ordinal` and `ts` (clock injectable). */
+/**
+ * Monotonic item factory: stamps `ordinal` and `ts` (clock injectable) and
+ * passes each item through `redact` (credential masking) before the sink.
+ */
 export class TranscriptRecorder {
   private ordinal: number;
 
@@ -179,14 +228,16 @@ export class TranscriptRecorder {
     private readonly sink: TranscriptSink,
     private readonly now: () => number = () => Date.now(),
     startOrdinal = 0,
+    private readonly redact: ((item: TranscriptItem) => TranscriptItem) | null = null,
   ) {
     this.ordinal = startOrdinal;
   }
 
-  /** Write one item; returns the stamped item. */
+  /** Write one item; returns the stamped item (as written). */
   record<T extends TranscriptItem["type"]>(type: T, payload: Extract<TranscriptItem, { type: T }>["payload"]): Extract<TranscriptItem, { type: T }> {
-    const item = { type, ordinal: this.ordinal++, ts: new Date(this.now()).toISOString(), payload } as Extract<TranscriptItem, { type: T }>;
+    let item = { type, ordinal: this.ordinal++, ts: new Date(this.now()).toISOString(), payload } as Extract<TranscriptItem, { type: T }>;
     try {
+      if (this.redact) item = this.redact(item) as Extract<TranscriptItem, { type: T }>;
       void Promise.resolve(this.sink.write(item)).catch(() => undefined);
     } catch {
       /* a failing transcript sink must never break the session */

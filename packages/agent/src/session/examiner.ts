@@ -131,6 +131,8 @@ export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
   });
   const obj = res.error || res.aborted ? null : parseJsonObject(res.text);
   if (!obj) {
+    // Never a silent fallback to offline: the learner must know nothing was judged.
+    if (!res.aborted) p.emit?.({ type: "warning", message: rt(L, "warning.examinerFallback", { error: res.error?.message ?? "unparseable verdict" }) });
     const offline = examinerOffline(c, p.report, L);
     return { judged: [], narrative: offline.narrative };
   }

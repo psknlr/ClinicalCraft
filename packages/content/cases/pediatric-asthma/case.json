@@ -336,8 +336,8 @@
           "kicked off",
           "when did this start",
           "how long has he been like this",
-          "what brings you in",
-          "what brought you in"
+          "brings you in today",
+          "brings you here today"
         ]
       },
       "excludeKeywords": {
@@ -582,7 +582,9 @@
           "咳血",
           "干咳",
           "咳得厉害",
-          "咳嗽是什么样的"
+          "咳嗽是什么样的",
+          "吐痰",
+          "有痰"
         ],
         "en": [
           "cough",
@@ -681,8 +683,8 @@
         "en": "How alert has he been — any unusual sleepiness, confusion or floppiness?"
       },
       "answer": {
-        "zh-CN": "（妈妈）一晚上几乎没睡，但人是清醒的，认得我，跟他说话会点头、会回答。就是很害怕，一直要我抱着，没有迷迷糊糊或者说胡话。",
-        "en": "(Mother) He's hardly slept all night, but he's awake — he knows me and nods or answers when you talk to him. He's just frightened and wants me to hold him; he isn't drowsy or confused."
+        "zh-CN": "（妈妈）他人是清醒的，认得我，跟他说话会回答，没有迷迷糊糊或者说胡话。昨晚几乎没睡，但不是那种叫不醒的困。",
+        "en": "(Mother) He's awake and knows what's going on — he answers when you talk to him. He isn't drowsy or confused; he barely slept last night, but he's not the kind of sleepy where you can't wake him."
       },
       "keywords": {
         "zh-CN": [
@@ -1048,7 +1050,9 @@
           "吸入激素",
           "长期用药",
           "平时用什么药",
-          "长期用啥药"
+          "长期用啥药",
+          "每天用什么药",
+          "每天都用什么药"
         ],
         "en": [
           "preventer",
@@ -1061,18 +1065,25 @@
           "regular medicine",
           "ics",
           "regular medicines",
-          "what medicines"
+          "what medicines",
+          "take every day",
+          "every day medicines"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
-          "停",
           "止咳",
           "药店",
           "中药",
-          "每天都",
           "实际上",
-          "真的每天"
+          "真的每天",
+          "停了",
+          "停用",
+          "停药",
+          "坚持",
+          "每天都在用",
+          "每天都用预防",
+          "按时"
         ],
         "en": [
           "regularly",
@@ -1099,7 +1110,6 @@
       },
       "keywords": {
         "zh-CN": [
-          "每天都用吗",
           "坚持用",
           "按时用",
           "依从性",
@@ -1107,13 +1117,14 @@
           "停药",
           "用完了",
           "实际上用",
-          "每天用",
           "停了多久",
           "什么时候停的",
-          "停用"
+          "停用",
+          "每天坚持",
+          "每天都在用",
+          "每天都用了吗"
         ],
         "en": [
-          "every day",
           "adherence",
           "compliance",
           "missed doses",
@@ -1124,7 +1135,10 @@
           "taking it regularly",
           "use it regularly",
           "when did he stop",
-          "how long since he stopped"
+          "how long since he stopped",
+          "actually every day",
+          "use it every day",
+          "every single day"
         ]
       },
       "disclosure": "specific"
