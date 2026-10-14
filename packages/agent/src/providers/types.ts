@@ -55,6 +55,8 @@ export interface ModelCapabilities {
   rejectsSampling: boolean;
   /** Multiply temperature by this factor (Kimi Anthropic endpoint: 0.6). */
   temperatureScale?: number;
+  /** Native structured-output support used for `ChatRequest.responseFormat`. */
+  structuredOutput?: "json_schema" | "json_object" | "none";
 }
 
 export interface ModelRule {
@@ -162,6 +164,8 @@ export interface ProviderErrorInfo {
   status?: number;
   code?: string | number;
   retryable: boolean;
+  /** Server-suggested delay (Retry-After / retry-after-ms) in milliseconds. */
+  retryAfterMs?: number;
 }
 
 export interface LLMProvider {

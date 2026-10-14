@@ -90,7 +90,7 @@ NPC-only tools: `reveal_facts {fact_ids: string[]}` (patient/companion; validate
 ## 4. Agent loop (`runAgentTurn`)
 
 ```
-runAgentTurn({ session, agent: AgentProfile, provider, system: SystemSection[], history: ChatMessage[],
+runAgentTurn({ host: LoopHost /* toolContext, authorize (approval gate), runHooks */, agent: AgentProfile, provider, system: SystemSection[], history: ChatMessage[],
                userParts: ChatPart[], tools: ToolDefinition[], maxToolRounds, signal, emit }) → { text, messages, grounded, usage, stopReason }
 ```
 1. Append the user message; `emit(turn_phase awaiting_model)`.

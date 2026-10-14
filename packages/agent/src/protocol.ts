@@ -142,7 +142,18 @@ export type EventMsg =
   /** Streaming text from an agent (patient speech, nurse reply, clinician reasoning summary). */
   | { type: "agent_message_delta"; turnId: string; agent: AgentRole; delta: string }
   /** Final text of one agent message. `grounded` = case fact ids revealed in it (patient). */
-  | { type: "agent_message"; turnId: string; agent: AgentRole; speaker: string; text: string; grounded: string[] }
+  | {
+      type: "agent_message";
+      turnId: string;
+      agent: AgentRole;
+      speaker: string;
+      text: string;
+      grounded: string[];
+      /** How the text was produced: model output that passed the verifier, the authored answer, offline responder, in-character deflection, opening line, greeting or a clarifying question. */
+      grounding?: "llm" | "template" | "offline" | "deflected" | "opening" | "greeting" | "clarify";
+      /** Non-verbal cue for the world/UI (e.g. "winces, holding the left flank"). */
+      nonverbal?: string | null;
+    }
   | { type: "agent_reasoning"; turnId: string; agent: AgentRole; text: string }
   | { type: "tool_call_begin"; turnId: string; agent: AgentRole; callId: string; tool: string; args: unknown }
   | {

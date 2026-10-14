@@ -9,8 +9,8 @@
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition, ReduceResult, SessionState } from "@clinicalcraft/core";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { CommandHookExecutor, HookHandler } from "../hooks/types.js";
-import type { AgentEvent, AgentRole, Op } from "../protocol.js";
-import type { LLMProvider, ProviderConfig } from "../providers/types.js";
+import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
+import type { ChatMessage, LLMProvider, ProviderConfig } from "../providers/types.js";
 import type { HookEventName, ResolvedSettings } from "../settings/schema.js";
 import type { ToolDefinition } from "../tools/types.js";
 
@@ -49,6 +49,12 @@ export interface SessionOptions {
   resolveProvider?: (providerId: string, model: string | null) => ProviderConfig;
   commandHooks?: CommandHookExecutor;
   transcript?: TranscriptSink;
+  /** Project directory (passed to command hooks as `cwd`). */
+  cwd?: string | null;
+  /** Client-executed dynamic tools the front-end supports, e.g. ["walk_to"]. */
+  dynamicTools?: readonly string[];
+  /** First transcript ordinal (a resumed transcript continues after the previous file's last ordinal). */
+  transcriptOrdinal?: number;
   /** Restore from a previous session (resume). */
   resume?: { sessionId: string; actions: ClinicalAction[]; messages?: Partial<Record<AgentRole, unknown[]>> };
   sessionId?: string;
@@ -82,6 +88,14 @@ export interface ClinicalSessionApi {
   /** Registered slash commands. */
   commands(): SlashCommand[];
   agents(): AgentProfile[];
+  /** Advance a simulated-clock case by real elapsed time (uses `clock.realtimeScale`); null when nothing advanced. */
+  advanceRealTime(ms: number): ReduceResult | null;
+  /** Agent names that can be addressed in this session (built-in + custom, filtered by case). */
+  availableAgents(): string[];
+  /** Provider-neutral conversation history of one agent (read-only copy). */
+  conversationOf(agent: AgentRole): ChatMessage[];
+  /** Current workup/differential plan published via `update_workup`. */
+  workupPlan(): { items: PlanItem[]; explanation: string | null };
   /** Serializable snapshot for save/export/resume. */
   snapshot(): SessionSnapshot;
   close(): Promise<void>;
