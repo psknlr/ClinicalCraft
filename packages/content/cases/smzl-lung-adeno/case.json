@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "smzl-lung-adeno",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "左上腹痛与脾大 · 74岁男性",
     "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"
@@ -95,7 +95,7 @@
       "affect": "calm",
       "openingLine": {
         "zh-CN": "医生您好。我这次主要是左上腹疼，来复查一下。",
-        "en": "Hello, doctor. I've come in for a check — it's mainly a pain in the upper left side of my belly."
+        "en": "Hello, doctor. I've come back for a check-up — it's mainly a pain in the upper left side of my belly."
       },
       "fallbackUnknown": {
         "zh-CN": "这个我的病例里没有记录，我说不上来。",
@@ -172,7 +172,6 @@
           "肚子痛",
           "左上腹",
           "哪里不舒服",
-          "什么时候开始疼",
           "疼了多久",
           "痛了多久",
           "主诉",
@@ -354,7 +353,10 @@
           "慢性病",
           "基础病",
           "其他疾病",
-          "其他病"
+          "其他病",
+          "既往病史",
+          "过去有什么病",
+          "还有什么病"
         ],
         "en": [
           "blood pressure",
@@ -362,7 +364,10 @@
           "other conditions",
           "long-term conditions",
           "chronic illness",
-          "medical problems"
+          "medical problems",
+          "past medical history",
+          "medical history",
+          "other illnesses"
         ]
       },
       "disclosure": "on-ask",
@@ -380,12 +385,13 @@
         "en": "What medicines are you taking at the moment?"
       },
       "answer": {
-        "zh-CN": "降压药吃的是苯磺酸左氨氯地平。肺癌吃阿美替尼：原来单号日55 mg、双号日110 mg，每天1次；2025年6月发现肺部病灶比以前大了，改成标准剂量110 mg，每天1次。",
-        "en": "For my blood pressure I take levamlodipine besylate. For the lung cancer I take aumolertinib: it used to be 55 mg on odd-numbered days and 110 mg on even-numbered days, once a day; in June 2025, when the lung lesion was found to have grown, it was changed to the standard dose of 110 mg once a day."
+        "zh-CN": "降压药吃的是苯磺酸左氨氯地平。肺癌吃阿美替尼：单号日55 mg、双号日110 mg，每天1次。",
+        "en": "For my blood pressure I take levamlodipine besylate. For the lung cancer I take aumolertinib: 55 mg on odd-numbered days and 110 mg on even-numbered days, once a day."
       },
       "keywords": {
         "zh-CN": [
-          "吃什么药",
+          "现在吃什么药",
+          "平时吃什么药",
           "在吃的药",
           "用药",
           "服药",
@@ -410,8 +416,57 @@
       "disclosure": "on-ask",
       "required": false,
       "source": {
-        "zh-CN": "正文·既往史；依据原文整理的模拟回答",
-        "en": "Main text · Past history; simulated answer compiled from the source"
+        "zh-CN": "正文·既往史（诊断期用药；2025年6月剂量调整见复评期）；依据原文整理的模拟回答",
+        "en": "Main text · Past history (diagnostic-phase medication; the June 2025 dose change belongs to the re-evaluation phase); simulated answer compiled from the source"
+      },
+      "phases": [
+        "pre"
+      ]
+    },
+    {
+      "id": "meds-post",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "现在在吃哪些药？",
+        "en": "What medicines are you taking at the moment?"
+      },
+      "answer": {
+        "zh-CN": "降压药还是苯磺酸左氨氯地平。阿美替尼原来是单号日55 mg、双号日110 mg，每天1次；2025年6月发现肺部病灶比以前大了，改成标准剂量110 mg，每天1次，一直在吃。",
+        "en": "For my blood pressure I still take levamlodipine besylate. Aumolertinib used to be 55 mg on odd-numbered days and 110 mg on even-numbered days, once a day; in June 2025, when the lung lesion was found to have grown, it was changed to the standard dose of 110 mg once a day, and I've stayed on that."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在吃什么药",
+          "平时吃什么药",
+          "在吃的药",
+          "用药",
+          "服药",
+          "降压药",
+          "吃药",
+          "阿美替尼吃多少",
+          "阿美替尼剂量",
+          "剂量"
+        ],
+        "en": [
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "what do you take",
+          "drugs you take",
+          "what dose",
+          "aumolertinib dose",
+          "levamlodipine"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·既往史（阿美替尼于2025-06调整为110 mg每日1次持续治疗）；依据原文整理的模拟回答",
+        "en": "Main text · Past history (aumolertinib changed to 110 mg once daily in 2025-06 and continued); simulated answer compiled from the source"
       }
     },
     {
@@ -1062,7 +1117,13 @@
           "ct with contrast",
           "spleen ct",
           "splenic ct",
-          "abdominopelvic ct"
+          "abdominopelvic ct",
+          "non-contrast ct",
+          "noncontrast ct",
+          "unenhanced ct",
+          "plain ct",
+          "ct without contrast",
+          "ct scan of the abdomen"
         ]
       },
       "requires": [
@@ -1078,7 +1139,7 @@
           },
           "text": {
             "zh-CN": "脾大伴低密度灶，原报告提出“梗死？”；副脾，脾周少量积液，肝门部及腹膜后部分淋巴结增大。原包仅提供增强CT代表层面，不含完整DICOM序列；平扫申请不能视为与增强CT完全等价。",
-            "en": "Splenomegaly with low-density lesions — the original report queries “infarction?”; accessory spleen, a small perisplenic effusion, and enlargement of some hepatic-hilar and retroperitoneal lymph nodes. The source package only provides representative contrast-enhanced CT slices, not the full DICOM series; a request for a non-contrast scan cannot be treated as fully equivalent to contrast-enhanced CT."
+            "en": "Splenomegaly with low-density lesions — the original report queries “infarction?”; accessory spleen, a small perisplenic effusion, and enlargement of some lymph nodes at the porta hepatis and in the retroperitoneum. The source package only provides representative contrast-enhanced CT slices, not the full DICOM series; a request for a non-contrast scan cannot be treated as fully equivalent to contrast-enhanced CT."
           },
           "figures": [
             "fig3"
@@ -1095,7 +1156,7 @@
           },
           "text": {
             "zh-CN": "增大脾脏较前缩小，脾脏多发低密度灶伴边缘强化；肝门部及腹膜后部分淋巴结缩小；副脾及脾周积液较前减少。",
-            "en": "The enlarged spleen is smaller than before, with multiple low-density splenic lesions showing rim enhancement; some hepatic-hilar and retroperitoneal lymph nodes are smaller; the accessory spleen and the perisplenic effusion are reduced compared with before."
+            "en": "The enlarged spleen is smaller than before, with multiple low-density splenic lesions showing rim enhancement; some lymph nodes at the porta hepatis and in the retroperitoneum are smaller; the accessory spleen and the perisplenic effusion are reduced compared with before."
           },
           "figures": [
             "fig6"
@@ -1129,7 +1190,8 @@
           "ct of the chest",
           "lung ct",
           "thoracic ct",
-          "ct thorax"
+          "ct thorax",
+          "ct scan of the chest"
         ]
       },
       "requires": [
@@ -1218,7 +1280,7 @@
           },
           "text": {
             "zh-CN": "脾大，脾静脉增宽；脾门等回声，考虑副脾。图2标注脾纵向距离9.90 cm、横向距离17.45 cm。保留原图测量名称，不用二维数字推算体积。",
-            "en": "Splenomegaly with a widened splenic vein; an isoechoic structure at the splenic hilum, considered an accessory spleen. Fig. 2 labels the splenic longitudinal distance 9.90 cm and transverse distance 17.45 cm. The original measurement names are kept, and volume is not estimated from two-dimensional figures."
+            "en": "Splenomegaly with a widened splenic vein; an isoechoic structure at the splenic hilum, considered an accessory spleen. Fig. 2 labels the splenic longitudinal distance 9.90 cm and transverse distance 17.45 cm. The original measurement names are kept, and volume is not estimated from two-dimensional measurements."
           },
           "figures": [
             "fig2"
@@ -1408,7 +1470,8 @@
           "marrow aspirate",
           "bone marrow smear",
           "bone marrow cytology",
-          "marrow cytology"
+          "marrow cytology",
+          "bone marrow exam"
         ]
       },
       "requires": [
@@ -1484,7 +1547,7 @@
           },
           "text": {
             "zh-CN": "骨髓活检：低级别小B细胞淋巴瘤，肿瘤细胞约15%，MF-1级，倾向边缘区淋巴瘤。CD19、CD20、PAX5及IgD阳性；CD5、CD10、Cyclin-D1、SOX11、LEF1、CD103、Annexin-A1阴性；Ki-67＜5%。图5未逐一标明A/B切片抗体名称，不擅自补注。",
-            "en": "Bone marrow biopsy: low-grade small B-cell lymphoma, tumour cells about 15%, MF-1, favouring marginal zone lymphoma. CD19, CD20, PAX5 and IgD positive; CD5, CD10, Cyclin-D1, SOX11, LEF1, CD103 and Annexin-A1 negative; Ki-67 <5%. Fig. 5 does not label the antibody for each of panels A/B, and no labels are added here."
+            "en": "Bone marrow biopsy: low-grade small B-cell lymphoma, tumour cells about 15%, marrow fibrosis grade MF-1, favouring marginal zone lymphoma. CD19, CD20, PAX5 and IgD positive; CD5, CD10, Cyclin-D1, SOX11, LEF1, CD103 and Annexin-A1 negative; Ki-67 <5%. Fig. 5 does not label the antibody for each of panels A/B, and no labels are added here."
           },
           "figures": [
             "fig5"
@@ -1501,7 +1564,7 @@
           },
           "text": {
             "zh-CN": "骨髓活检：低级别小B细胞淋巴瘤，肿瘤细胞约15%，MF-1级，倾向边缘区淋巴瘤。CD19、CD20、PAX5及IgD阳性；CD5、CD10、Cyclin-D1、SOX11、LEF1、CD103、Annexin-A1阴性；Ki-67＜5%。图5未逐一标明A/B切片抗体名称，不擅自补注。",
-            "en": "Bone marrow biopsy: low-grade small B-cell lymphoma, tumour cells about 15%, MF-1, favouring marginal zone lymphoma. CD19, CD20, PAX5 and IgD positive; CD5, CD10, Cyclin-D1, SOX11, LEF1, CD103 and Annexin-A1 negative; Ki-67 <5%. Fig. 5 does not label the antibody for each of panels A/B, and no labels are added here."
+            "en": "Bone marrow biopsy: low-grade small B-cell lymphoma, tumour cells about 15%, marrow fibrosis grade MF-1, favouring marginal zone lymphoma. CD19, CD20, PAX5 and IgD positive; CD5, CD10, Cyclin-D1, SOX11, LEF1, CD103 and Annexin-A1 negative; Ki-67 <5%. Fig. 5 does not label the antibody for each of panels A/B, and no labels are added here."
           },
           "figures": [
             "fig5"
@@ -1826,30 +1889,38 @@
     "rules": [
       {
         "ifHas": "pet",
-        "unlessMatches": "腹部|全腹|脾脏|胸腹",
+        "unlessMatches": "腹部|全腹|脾脏|胸腹|abdom|sple",
         "remove": [
           "abdct"
         ]
       },
       {
         "ifHas": "pet",
-        "unlessMatches": "胸部|肺部",
+        "unlessMatches": "胸部|肺部|chest|lung|thora",
         "remove": [
           "chestct"
         ]
       },
       {
         "ifHas": "chestct",
-        "unlessMatches": "腹部|全腹|脾脏|胸腹",
+        "unlessMatches": "腹部|全腹|脾脏|胸腹|abdom|sple",
         "remove": [
           "abdct"
         ]
       },
       {
-        "ifMatches": "^(?=.*胸腹)(?=.*ct)",
+        "ifMatches": "^(?=.*(胸腹|thoracoabdom|(chest|thora).*abdom|abdom.*(chest|thora)))(?=.*ct)",
         "unlessHas": "chestct",
         "add": [
           "chestct"
+        ]
+      },
+      {
+        "ifMatches": "^(?=.*(chest|thora))(?=.*abdom)(?=.*ct)",
+        "unlessMatches": "pet",
+        "unlessHas": "abdct",
+        "add": [
+          "abdct"
         ]
       },
       {
@@ -1859,13 +1930,20 @@
         ]
       },
       {
-        "ifMatches": "^(?=.*(心脏|甲状腺|颈动脉|下肢|肾脏|乳腺))(?=.*(超声|彩超|b超))",
+        "ifMatches": "^(?=.*(心脏|甲状腺|颈动脉|下肢|肾脏|乳腺|heart|cardiac|echocardio|thyroid|carotid|leg|lowerlimb|renal|kidney|breast))(?=.*(超声|彩超|b超|ultrasound|sonograph|doppler))",
         "remove": [
           "us"
         ]
       },
       {
         "ifMatches": "^(?=.*骨髓穿刺)(?=.*活检)",
+        "unlessHas": "biopsy",
+        "add": [
+          "biopsy"
+        ]
+      },
+      {
+        "ifMatches": "^(?=.*aspirat)(?=.*(biops|trephine))",
         "unlessHas": "biopsy",
         "add": [
           "biopsy"
@@ -1896,12 +1974,36 @@
       "做ct": [
         "abdct",
         "chestct"
+      ],
+      "ultrasound": [
+        "us",
+        "nodeus"
+      ],
+      "ultrasound scan": [
+        "us",
+        "nodeus"
+      ],
+      "sonography": [
+        "us",
+        "nodeus"
+      ],
+      "ct scan": [
+        "abdct",
+        "chestct"
+      ],
+      "cat scan": [
+        "abdct",
+        "chestct"
+      ],
+      "computed tomography": [
+        "abdct",
+        "chestct"
       ]
     },
     "warnings": [
       {
         "investigation": "abdct",
-        "ifMatches": "平扫",
+        "ifMatches": "平扫|non-?contrast|un-?enhanced|withoutcontrast|nocontrast|plain",
         "message": {
           "zh-CN": "原包仅提供腹部增强CT代表图，平扫与增强CT不能视为等价。",
           "en": "The source package only contains representative contrast-enhanced abdominal CT images; a non-contrast scan is not equivalent."
@@ -2410,7 +2512,14 @@
       "met": {
         "all": [
           {
-            "asked": "meds"
+            "any": [
+              {
+                "asked": "meds"
+              },
+              {
+                "asked": "meds-post"
+              }
+            ]
           },
           {
             "asked": "allergies"
@@ -2672,6 +2781,14 @@
       {
         "zh-CN": "脾脏主导表现与低级别B细胞证据结合判断；不能把所有异常归因于肺癌，也不能以CD5/CD10阴性单独定性。",
         "en": "Judge the spleen-dominant presentation together with the low-grade B-cell evidence; do not attribute every abnormality to the lung cancer, and do not characterise the disease on CD5/CD10 negativity alone."
+      },
+      {
+        "zh-CN": "原文鉴别诊断：套细胞淋巴瘤表达CD5、Cyclin D1，滤泡性淋巴瘤表达CD10、Bcl-6。本例CD5、CD10、Cyclin-D1、SOX11阴性，结合形态与完整免疫表型，不支持这两种诊断。",
+        "en": "Differential diagnosis in the source: mantle cell lymphoma expresses CD5 and cyclin D1, and follicular lymphoma expresses CD10 and BCL6. Here CD5, CD10, cyclin D1 and SOX11 are negative; taken together with the morphology and the full immunophenotype, this does not support either diagnosis."
+      },
+      {
+        "zh-CN": "原文讨论指出：脾脏组织病理是SMZL诊断的金标准，但受手术及穿刺风险限制；SMZL常伴骨髓侵犯，骨髓活检证实特征性窦内淋巴细胞浸润且免疫表型相符时可支持诊断，仍需与脾弥漫性红髓小B细胞淋巴瘤等鉴别。",
+        "en": "The source's discussion notes that splenic histology is the gold standard for diagnosing SMZL but is limited by the risks of surgery and needle biopsy; SMZL often involves the bone marrow, and a marrow biopsy showing the characteristic intrasinusoidal lymphocytic infiltration with a matching immunophenotype can support the diagnosis, although splenic diffuse red pulp small B-cell lymphoma and similar entities still have to be distinguished."
       }
     ],
     "boundaries": {
@@ -2723,7 +2840,11 @@
       }
     ],
     "references": [
-      "丁凤丽，秦彩霞，汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例. 中国临床案例成果数据库, 2026. DOI: 10.3760/cma.cmcr20260128-00421"
+      "丁凤丽，秦彩霞，汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例. 中国临床案例成果数据库, 2026. DOI: 10.3760/cma.cmcr20260128-00421",
+      "Walewska R, Eyre TA, Barrington S, et al. Guideline for the diagnosis and management of marginal zone lymphomas: A British Society of Haematology Guideline. Br J Haematol, 2024, 204(1): 86-107.",
+      "Yoshida I. JSH Practical Guidelines for Hematological Malignancies, 2023: II. Lymphoma-2. Marginal zone lymphoma. Int J Hematol, 2025, 121(6): 725-739.",
+      "中国抗癌协会多原发和不明原发肿瘤专业委员会，上海市抗癌协会多原发和不明原发肿瘤专业委员会，中华医学会血液学分会淋巴细胞疾病学组，等. 血液肿瘤合并实体肿瘤诊疗专家共识（2025年版）. 中国癌症杂志, 2025, 35(10): 968-986.",
+      "European Association for the Study of the Liver. EASL 2017 Clinical Practice Guidelines on the management of hepatitis B virus infection. J Hepatol, 2017, 67(2): 370-398."
     ],
     "notice": {
       "zh-CN": "完成度与判断记录来自教学脚本，未经临床能力量表验证。场景时间、方块和声音只是游戏呈现。",
@@ -2750,6 +2871,22 @@
     {
       "zh-CN": "HBsAg结果",
       "en": "HBsAg result"
+    },
+    {
+      "zh-CN": "吸烟史与肿瘤家族史",
+      "en": "Smoking history and family history of cancer"
+    },
+    {
+      "zh-CN": "职业与饮酒史",
+      "en": "Occupation and alcohol history"
+    },
+    {
+      "zh-CN": "每次疼痛持续时间与疼痛评分",
+      "en": "How long each episode of pain lasts, and a pain score"
+    },
+    {
+      "zh-CN": "诊断期体格检查",
+      "en": "Physical examination during the diagnostic phase"
     }
   ],
   "assets": [
@@ -2891,6 +3028,18 @@
       "itemId": "lung"
     },
     {
+      "type": "ask",
+      "itemId": "other"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
       "type": "order",
       "investigationId": "cbc"
     },
@@ -2995,6 +3144,15 @@
       ]
     },
     {
+      "type": "order",
+      "investigationId": "chestct"
+    },
+    {
+      "type": "read",
+      "investigationId": "chestct",
+      "phase": "post"
+    },
+    {
       "type": "finish"
     }
   ],
@@ -3038,6 +3196,10 @@
         "copy": {
           "zh-CN": "两种肿瘤，两条证据链。检查尚未解决的未知，导出学习记录。",
           "en": "Two tumours, two evidence chains. Check the unknowns that remain unresolved and export your learning record."
+        },
+        "hint": {
+          "zh-CN": "前往会诊板，生成病例复盘。",
+          "en": "Go to the case-conference board to generate the case review."
         }
       },
       "phaseBadges": {
@@ -3083,7 +3245,283 @@
       "atlasSpleenNote": {
         "zh-CN": "脾脏参考形态；本例脾大请结合原图。",
         "en": "Reference spleen shape; for this patient's splenomegaly, see the original images."
+      },
+      "phaseSwitchToast": {
+        "title": {
+          "zh-CN": "已切换档案时期",
+          "en": "Case phase switched"
+        },
+        "pre": {
+          "zh-CN": "继续调阅诊断期资料。",
+          "en": "Continue retrieving diagnostic-phase records."
+        },
+        "post": {
+          "zh-CN": "前往影像室与检验室，获取复评资料。",
+          "en": "Go to imaging and the laboratory to retrieve the re-evaluation records."
+        }
+      },
+      "destinations": {
+        "note": "V4 gh() destinations → V5 waypoint targets (clinic-v4 station groupings): patient → patient; lab → lab-hematology | flow-cytometry | lab-serology; imaging → ct; path → histopathology | cytogenetics; board → board. When every objective is done V5 returns no waypoint; V4 pointed at the board."
       }
-    }
+    },
+    "testUtterances": [
+      {
+        "text": "哪里疼，什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "您哪里不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "肚子哪里痛？痛了多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "以前是否发现过脾大？",
+        "locale": "zh-CN",
+        "expect": [
+          "spleen"
+        ]
+      },
+      {
+        "text": "脾脏大是什么时候发现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "spleen"
+        ]
+      },
+      {
+        "text": "既往有哪些肿瘤及治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "lung"
+        ]
+      },
+      {
+        "text": "以前得过肿瘤吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "lung"
+        ]
+      },
+      {
+        "text": "有什么既往病史？",
+        "locale": "zh-CN",
+        "expect": [
+          "lung",
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "吸烟史、家族史能否补充？",
+        "locale": "zh-CN",
+        "expect": [
+          "other"
+        ]
+      },
+      {
+        "text": "你抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other"
+        ]
+      },
+      {
+        "text": "有高血压吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "现在吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "meds",
+          "meds-post"
+        ]
+      },
+      {
+        "text": "对什么药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "做过手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "psh"
+        ]
+      },
+      {
+        "text": "最近发烧吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "确诊后做过哪些治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment-course"
+        ]
+      },
+      {
+        "text": "治疗后有没有手脚发麻？",
+        "locale": "zh-CN",
+        "expect": [
+          "numbness"
+        ]
+      },
+      {
+        "text": "体重有没有下降？",
+        "locale": "zh-CN",
+        "expect": [
+          "general-since-onset"
+        ]
+      },
+      {
+        "text": "Where does it hurt, and when did it start?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "What brings you in today?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Has an enlarged spleen ever been found before?",
+        "locale": "en",
+        "expect": [
+          "spleen"
+        ]
+      },
+      {
+        "text": "How long have you known about your spleen?",
+        "locale": "en",
+        "expect": [
+          "spleen"
+        ]
+      },
+      {
+        "text": "Have you ever had cancer?",
+        "locale": "en",
+        "expect": [
+          "lung"
+        ]
+      },
+      {
+        "text": "Do you smoke?",
+        "locale": "en",
+        "expect": [
+          "other"
+        ]
+      },
+      {
+        "text": "Does anything run in your family?",
+        "locale": "en",
+        "expect": [
+          "other"
+        ]
+      },
+      {
+        "text": "Do you have high blood pressure?",
+        "locale": "en",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "What is your past medical history?",
+        "locale": "en",
+        "expect": [
+          "lung",
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "What medicines are you taking?",
+        "locale": "en",
+        "expect": [
+          "meds",
+          "meds-post"
+        ]
+      },
+      {
+        "text": "Any allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Have you had any operations?",
+        "locale": "en",
+        "expect": [
+          "psh"
+        ]
+      },
+      {
+        "text": "Have you had a fever?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Have you lost weight?",
+        "locale": "en",
+        "expect": [
+          "general-since-onset"
+        ]
+      },
+      {
+        "text": "What treatment have you had since the diagnosis?",
+        "locale": "en",
+        "expect": [
+          "treatment-course"
+        ]
+      },
+      {
+        "text": "Any numbness or tingling?",
+        "locale": "en",
+        "expect": [
+          "numbness"
+        ]
+      },
+      {
+        "text": "有糖尿病吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "Do you drink alcohol?",
+        "locale": "en",
+        "expect": []
+      },
+      {
+        "text": "What do you do for work?",
+        "locale": "en",
+        "expect": []
+      }
+    ]
   }
 }

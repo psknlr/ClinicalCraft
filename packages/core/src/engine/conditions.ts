@@ -115,7 +115,7 @@ export type ConditionRef =
   | { kind: "exam"; id: string; path: (string | number)[] }
   | { kind: "investigation"; id: string; phase?: string; requiresRecord: boolean; path: (string | number)[] }
   | { kind: "decision"; id: string; path: (string | number)[] }
-  | { kind: "intervention"; id: string; path: (string | number)[] }
+  | { kind: "intervention"; id: string; minCount?: number; path: (string | number)[] }
   | { kind: "phase"; id: string; path: (string | number)[] }
   | { kind: "flag"; id: string; path: (string | number)[] }
   | { kind: "objective"; id: string; path: (string | number)[] }
@@ -136,7 +136,8 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
       out.push({ kind: "investigation", id: node.resultReady, phase: node.phase, requiresRecord: true, path: [...path, "resultReady"] });
     else if ("decided" in node) out.push({ kind: "decision", id: node.decided, path: [...path, "decided"] });
     else if ("attempted" in node) out.push({ kind: "decision", id: node.attempted, path: [...path, "attempted"] });
-    else if ("intervened" in node) out.push({ kind: "intervention", id: node.intervened, path: [...path, "intervened"] });
+    else if ("intervened" in node)
+      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });

@@ -136,7 +136,7 @@
     },
     {
       "id": "pathology",
-      "name": { "zh-CN": "病理室", "en": "Pathology & Genetics Room" },
+      "name": { "zh-CN": "病理室", "en": "Pathology Room" },
       "kind": "pathology",
       "building": "clinic",
       "rect": { "x": 8, "z": -7.5, "w": 10, "d": 13 },
@@ -156,7 +156,7 @@
     },
     {
       "id": "conference",
-      "name": { "zh-CN": "会诊区", "en": "Case Conference Area" },
+      "name": { "zh-CN": "会诊区", "en": "Conference Area" },
       "kind": "conference",
       "building": "clinic",
       "rect": { "x": 0, "z": -11.5, "w": 6, "d": 5 },
