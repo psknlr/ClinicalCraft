@@ -318,6 +318,17 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
     expect(checkCaseIntegrity(c)).toEqual([]);
   });
 
+  it("treats results restricted to an unreachable phase as unreachable, but not results of reachable phases", () => {
+    const c = structuredClone(SIM);
+    c.phases[1].enterWhen = { always: false }; // observation can never be entered
+    c.objectives.push({ id: "review", title: "review", hint: "review", completeWhen: { read: "repeat-obs", phase: "observation" }, waypoints: [] });
+    c.objectives.push({ id: "gas", title: "gas", hint: "gas", completeWhen: { read: "abg", phase: "arrival" }, waypoints: [] });
+    const paths = checkCaseIntegrity(c).map((i) => i.path);
+    expect(paths).toContain(`objectives.${SIM.objectives.length}.completeWhen`);
+    expect(paths).not.toContain(`objectives.${SIM.objectives.length + 1}.completeWhen`);
+    expect(paths).toContain("phases.1");
+  });
+
   it("reports unreachable phases and single-answer solution steps with several options", () => {
     const c = structuredClone(V4);
     c.phases.push({ id: "archive", label: "Archive", learnerSwitchable: false });

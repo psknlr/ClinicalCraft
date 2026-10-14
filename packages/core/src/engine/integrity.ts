@@ -1,7 +1,9 @@
 /**
  * Referential integrity of a parsed case: every id referenced from
  * conditions, waypoints, results, figures, order matching and the reference
- * solution must exist; decisions must be answerable.
+ * solution must exist; condition leaves must be able to become true;
+ * objectives must be completable, decisions unlockable and answerable, and
+ * phases enterable.
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
@@ -40,6 +42,10 @@ function collectIds(c: CaseDefinition): Ids {
   const vitals = new Set<string>();
   if (c.physiology) {
     for (const [key, value] of Object.entries(c.physiology.baseline)) if (typeof value === "number") vitals.add(key);
+    // a scenario event may start monitoring a vital the baseline lacks (e.g. capnography attached)
+    for (const event of c.physiology.events) {
+      for (const [key, value] of Object.entries(event.setVitals ?? {})) if (typeof value === "number") vitals.add(key);
+    }
   }
   return {
     phases: new Set(c.phases.map((p) => p.id)),
@@ -95,7 +101,7 @@ function checkCollections(c: CaseDefinition): Issue[] {
 /* Conditions                                                          */
 /* ------------------------------------------------------------------ */
 
-function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef, owner: { objectiveId?: string }): Issue[] {
+function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
   const missing = (label: string) => [err(ref.path, `unknown ${label} "${ref.id}"`)];
   switch (ref.kind) {
     case "history":
@@ -104,17 +110,23 @@ function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef, owner: { objec
       return ids.exam.has(ref.id) ? [] : missing("exam finding");
     case "decision":
       return ids.decisions.has(ref.id) ? [] : missing("decision");
-    case "intervention":
-      return ids.interventions.has(ref.id) ? [] : missing("intervention");
+    case "intervention": {
+      if (!ids.interventions.has(ref.id)) return missing("intervention");
+      const max = c.interventions.find((i) => i.id === ref.id)?.maxDoses;
+      if (ref.minCount != null && max != null && ref.minCount > max) {
+        return [err([...ref.path.slice(0, -1), "minCount"], `needs ${ref.minCount} doses but "${ref.id}" may be given at most ${max} time(s), so this can never become true`)];
+      }
+      return [];
+    }
     case "phase":
       return ids.phases.has(ref.id) ? [] : missing("phase");
     case "objective":
-      if (!ids.objectives.has(ref.id)) return missing("objective");
-      return ref.id === owner.objectiveId ? [err(ref.path, `objective "${ref.id}" depends on itself and can never complete`)] : [];
+      // self-references and cycles are judged by checkReachability (they are fine inside `any`/`not`)
+      return ids.objectives.has(ref.id) ? [] : missing("objective");
     case "flag":
       return ids.flags.has(ref.id) ? [] : [warn(ref.path, `flag "${ref.id}" is never set by an intervention, scenario event or the solution`)];
     case "vital":
-      if (!c.physiology) return [warn(ref.path, `vital condition on "${ref.id}" but the case has no physiology (baseline-only vitals)`)];
+      if (!c.physiology) return [warn(ref.path, `vital condition on "${ref.id}" but the case has no physiology (baseline-only vitals), so it is always false`)];
       return ids.vitals.has(ref.id) ? [] : [warn(ref.path, `vital "${ref.id}" is not part of the physiology baseline`)];
     case "investigation":
       return checkInvestigationRef(c, ids, ref);
@@ -123,26 +135,53 @@ function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef, owner: { objec
 
 function checkInvestigationRef(c: CaseDefinition, ids: Ids, ref: ConditionRef & { kind: "investigation" }): Issue[] {
   if (!ids.investigations.has(ref.id)) return [err(ref.path, `unknown investigation "${ref.id}"`)];
-  if (ref.phase == null) return [];
+  const investigation = c.investigations.find((i) => i.id === ref.id);
+  if (ref.phase == null) {
+    if (ref.requiresRecord && investigation && Object.keys(investigation.results).length === 0) {
+      return [err(ref.path, `"${ref.id}" has no result in any phase, so this can never become true`)];
+    }
+    return [];
+  }
   const phasePath = [...ref.path.slice(0, -1), "phase"];
   if (!ids.phases.has(ref.phase)) return [err(phasePath, `unknown phase "${ref.phase}"`)];
-  const investigation = c.investigations.find((i) => i.id === ref.id);
   if (ref.requiresRecord && investigation && !Object.prototype.hasOwnProperty.call(investigation.results, ref.phase)) {
     return [err(phasePath, `"${ref.id}" has no result for phase "${ref.phase}", so this can never become true`)];
   }
   return [];
 }
 
-function checkCondition(c: CaseDefinition, ids: Ids, cond: Condition | undefined, path: PathPart[], owner: { objectiveId?: string } = {}): Issue[] {
+/** Every leaf of a condition with its path (document order). */
+function leaves(cond: Condition, path: PathPart[], visit: (leaf: Condition, path: PathPart[]) => void): void {
+  if ("all" in cond) cond.all.forEach((x, i) => leaves(x, [...path, "all", i], visit));
+  else if ("any" in cond) cond.any.forEach((x, i) => leaves(x, [...path, "any", i], visit));
+  else if ("not" in cond) leaves(cond.not, [...path, "not"], visit);
+  else visit(cond, path);
+}
+
+/** `elapsed` / `hints` ranges with `gte > lte` can never hold. */
+function checkRanges(cond: Condition, path: PathPart[]): Issue[] {
+  const issues: Issue[] = [];
+  leaves(cond, path, (leaf, at) => {
+    const key = "elapsed" in leaf ? "elapsed" : "hints" in leaf ? "hints" : null;
+    if (!key) return;
+    const range = (leaf as { [k: string]: { gte?: number; lte?: number } })[key];
+    if (range.gte != null && range.lte != null && range.gte > range.lte) {
+      issues.push(err([...at, key], `empty range (gte ${range.gte} > lte ${range.lte}), so this can never become true`));
+    }
+  });
+  return issues;
+}
+
+function checkCondition(c: CaseDefinition, ids: Ids, cond: Condition | undefined, path: PathPart[]): Issue[] {
   if (!cond) return [];
-  return conditionRefs(cond, path).flatMap((ref) => checkRef(c, ids, ref, owner));
+  return [...conditionRefs(cond, path).flatMap((ref) => checkRef(c, ids, ref)), ...checkRanges(cond, path)];
 }
 
 function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
   const issues: Issue[] = [];
   c.phases.forEach((p, i) => issues.push(...checkCondition(c, ids, p.enterWhen, ["phases", i, "enterWhen"])));
   c.objectives.forEach((o, i) => {
-    issues.push(...checkCondition(c, ids, o.completeWhen, ["objectives", i, "completeWhen"], { objectiveId: o.id }));
+    issues.push(...checkCondition(c, ids, o.completeWhen, ["objectives", i, "completeWhen"]));
     o.waypoints.forEach((w, j) => issues.push(...checkCondition(c, ids, w.unless, ["objectives", i, "waypoints", j, "unless"])));
   });
   c.decisions.forEach((d, i) => issues.push(...checkCondition(c, ids, d.requires, ["decisions", i, "requires"])));
@@ -173,6 +212,9 @@ function checkPhaseLists(ids: Ids, lists: { phases?: string[] }[], collection: s
 function checkInvestigations(c: CaseDefinition, ids: Ids): Issue[] {
   const issues: Issue[] = [];
   c.investigations.forEach((inv, i) => {
+    if (Object.keys(inv.results).length === 0) {
+      issues.push(warn(["investigations", i, "results"], `investigation "${inv.id}" has no result in any phase, so its orders can never be read`));
+    }
     for (const [phase, result] of Object.entries(inv.results)) {
       if (!ids.phases.has(phase)) issues.push(err(["investigations", i, "results", phase], `result phase "${phase}" is not a declared phase`));
       result.figures.forEach((fig, j) => {
@@ -272,9 +314,14 @@ function checkSolutionAction(c: CaseDefinition, ids: Ids, a: ClinicalAction, pat
     case "answer": {
       const decision = c.decisions.find((d) => d.id === a.decisionId);
       if (!decision) return unknown("decisionId", "decision", a.decisionId);
-      return a.optionIds.flatMap((id, j) =>
+      const unknownOptions = a.optionIds.flatMap((id, j) =>
         decision.options.some((o) => o.id === id) ? [] : [err([...path, "optionIds", j], `unknown option "${id}" of decision "${decision.id}"`)],
       );
+      if (unknownOptions.length) return unknownOptions;
+      if (decision.kind === "single" && new Set(a.optionIds).size !== 1) {
+        return [err([...path, "optionIds"], `single-answer decision "${decision.id}" takes exactly one option`)];
+      }
+      return [];
     }
     default:
       return [];
@@ -289,6 +336,113 @@ function checkSolution(c: CaseDefinition, ids: Ids): Issue[] {
     }
     return checkSolutionAction(c, ids, parsed.data, ["solution", i]);
   });
+}
+
+/* ------------------------------------------------------------------ */
+/* Reachability                                                        */
+/* ------------------------------------------------------------------ */
+
+/** Three-valued truth: `null` = could be either, depending on play. */
+type Tri = boolean | null;
+
+/** Kleene evaluation of a condition; `leaf` decides what is known about each leaf. */
+function tri(cond: Condition, leaf: (node: Condition) => Tri): Tri {
+  if ("all" in cond) {
+    let out: Tri = true;
+    for (const x of cond.all) {
+      const v = tri(x, leaf);
+      if (v === false) return false;
+      if (v === null) out = null;
+    }
+    return out;
+  }
+  if ("any" in cond) {
+    let out: Tri = false;
+    for (const x of cond.any) {
+      const v = tri(x, leaf);
+      if (v === true) return true;
+      if (v === null) out = null;
+    }
+    return out;
+  }
+  if ("not" in cond) {
+    const v = tri(cond.not, leaf);
+    return v === null ? null : !v;
+  }
+  if ("always" in cond) return cond.always;
+  return leaf(cond);
+}
+
+/**
+ * Which objectives can ever complete, which decisions can ever be unlocked
+ * and which phases can ever be entered — the least fixed point of: a phase
+ * is enterable when it is the initial phase, learner-switchable, or its
+ * `enterWhen` can become true; a decision is unlockable / an objective
+ * completable when its condition can become true, where `objective`,
+ * `decided`/`attempted` and `phase` leaves naming items not (yet) shown
+ * reachable are false and every other leaf could go either way. This
+ * catches self-locks (`requires: {decided: self}`) and cycles (A needs B,
+ * B needs A) without flagging reachable patterns such as
+ * `any: [{objective: self}, …]` or `not: {objective: self}`. Unknown ids
+ * are left undecided (they are reported elsewhere).
+ */
+function checkReachability(c: CaseDefinition, ids: Ids): Issue[] {
+  const initial = c.initialPhase ?? c.phases[0]?.id;
+  const phases = new Set(c.phases.filter((p) => p.id === initial || p.learnerSwitchable).map((p) => p.id));
+  const objectives = new Set<string>();
+  const decisions = new Set<string>();
+  const leaf = (node: Condition): Tri => {
+    if ("objective" in node) return ids.objectives.has(node.objective) && !objectives.has(node.objective) ? false : null;
+    if ("decided" in node) return ids.decisions.has(node.decided) && !decisions.has(node.decided) ? false : null;
+    if ("attempted" in node) return ids.decisions.has(node.attempted) && !decisions.has(node.attempted) ? false : null;
+    const unreachablePhase = (phase: string | undefined) => phase != null && ids.phases.has(phase) && !phases.has(phase);
+    // orders are keyed by the phase they were placed in, so a phase-restricted leaf needs that phase to be enterable
+    if ("ordered" in node || "read" in node || "resultReady" in node) return unreachablePhase(node.phase) ? false : null;
+    if ("phase" in node) return unreachablePhase(node.phase) ? false : null;
+    return null;
+  };
+  const grow = <T extends { id: string }>(items: T[], reached: Set<string>, cond: (item: T) => Condition | undefined): boolean => {
+    let changed = false;
+    for (const item of items) {
+      const condition = cond(item);
+      if (reached.has(item.id) || !condition || tri(condition, leaf) === false) continue;
+      reached.add(item.id);
+      changed = true;
+    }
+    return changed;
+  };
+  for (let changed = true; changed; ) {
+    changed = grow(c.phases, phases, (p) => p.enterWhen);
+    changed = grow(c.decisions, decisions, (d) => d.requires) || changed;
+    changed = grow(c.objectives, objectives, (o) => o.completeWhen) || changed;
+  }
+
+  const issues: Issue[] = [];
+  c.objectives.forEach((o, i) => {
+    if (objectives.has(o.id)) return;
+    const self = conditionRefs(o.completeWhen, ["objectives", i, "completeWhen"]).find((r) => r.kind === "objective" && r.id === o.id);
+    issues.push(
+      self
+        ? err(self.path, `objective "${o.id}" depends on itself and can never complete`)
+        : err(["objectives", i, "completeWhen"], `objective "${o.id}" can never complete: it depends on objectives, decisions or phases that can never be reached`),
+    );
+  });
+  c.decisions.forEach((d, i) => {
+    if (decisions.has(d.id)) return;
+    issues.push(err(["decisions", i, "requires"], `decision "${d.id}" can never be unlocked: its requirements depend on itself or on objectives, decisions or phases that can never be reached`));
+  });
+  c.phases.forEach((p, i) => {
+    if (phases.has(p.id)) return;
+    issues.push(
+      warn(
+        ["phases", i],
+        p.enterWhen
+          ? `phase "${p.id}" can never be entered: it is not learner-switchable and its enterWhen can never become true`
+          : `phase "${p.id}" can never be entered: it is neither the initial phase, learner-switchable, nor has an enterWhen`,
+      ),
+    );
+  });
+  return issues;
 }
 
 /**
@@ -308,5 +462,6 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkDecisions(c),
     ...checkPhysiology(c, ids),
     ...checkSolution(c, ids),
+    ...checkReachability(c, ids),
   ];
 }

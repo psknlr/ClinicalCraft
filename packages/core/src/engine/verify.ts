@@ -7,7 +7,7 @@ import { ClinicalActionSchema, type ClinicalAction } from "../schema/session.js"
 import { assess } from "./assessment.js";
 import { formatPath, issuesFromZodError } from "./parse.js";
 import { progress } from "./queries.js";
-import { replay } from "./reducer.js";
+import { createSession, reduce } from "./reducer.js";
 import type { Issue, VerifyResult } from "./types.js";
 
 function parseSolution(c: CaseDefinition): { actions: ClinicalAction[]; sourceIndex: number[]; issues: Issue[] } {
@@ -25,7 +25,8 @@ function parseSolution(c: CaseDefinition): { actions: ClinicalAction[]; sourceIn
       }
     }
   });
-  if (actions[0]?.type !== "start") {
+  // a solution may begin with pre-start actions (set-phase, note, flag) before its own `start`
+  if (!actions.some((a) => a.type === "start")) {
     actions.unshift({ type: "start" });
     sourceIndex.unshift(-1);
   }
@@ -34,21 +35,24 @@ function parseSolution(c: CaseDefinition): { actions: ClinicalAction[]; sourceIn
 
 /**
  * Replay `c.solution` from a fresh session (a leading `start` is added when
- * missing). `ok` iff every action parses and is accepted, every objective is
- * done and every decision is decided. The assessment of the final state is
- * included.
+ * the solution has none). `ok` iff every action parses and is accepted,
+ * every objective is done, every decision is decided and the session did
+ * not run into `clock.limitMinutes` (a timeout debrief is not a win). The
+ * assessment of the final state is included.
  */
 export function verifyCase(c: CaseDefinition): VerifyResult {
   const { actions, sourceIndex, issues } = parseSolution(c);
-  const { state, rejections } = replay(c, actions);
-  for (const r of rejections) {
-    const index = sourceIndex[r.index];
-    issues.push({
-      path: index >= 0 ? formatPath(["solution", index]) : "solution",
-      message: `${r.action.type} rejected (${r.code}): ${r.message}`,
-      severity: "error",
-    });
-  }
+  const where = (i: number) => (sourceIndex[i] >= 0 ? formatPath(["solution", sourceIndex[i]]) : "solution");
+  let state = createSession(c);
+  actions.forEach((action, i) => {
+    const r = reduce(c, state, action);
+    state = r.state;
+    if (r.rejected) {
+      issues.push({ path: where(i), message: `${action.type} rejected (${r.rejected.code}): ${r.rejected.message}`, severity: "error" });
+    } else if (r.events.some((e) => e.type === "case.finished" && e.timedOut)) {
+      issues.push({ path: where(i), message: `the case reached its time limit (${c.clock.limitMinutes} min) here and ended with a timeout`, severity: "error" });
+    }
+  });
   for (const objective of progress(c, state).objectives) {
     if (!objective.done) issues.push({ path: "solution", message: `objective "${objective.id}" is not completed by the solution`, severity: "error" });
   }
