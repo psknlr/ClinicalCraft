@@ -116,8 +116,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "孩子：喘得厉害，前倾坐在妈妈腿上，每次只说两三个字；开始害怕面罩，妈妈抱着时会安静下来；病情好转后说话越来越流利、开始要水喝、要玩平板。妈妈：焦虑、语速快，对停药感到内疚，担心激素副作用，听到解释后逐渐平静，愿意学习。病史主要由妈妈回答；孩子只回答直接问他的简单问题。",
-        "en": "Child: very breathless, leaning forward on mum's lap, two or three words at a time; scared of the mask at first but settles when mum holds him; as he improves he talks more freely, asks for a drink and his tablet. Mother: anxious and fast-talking, guilty about stopping the preventer, worried about steroid side-effects; calms as things are explained and is keen to learn. The mother gives most of the history; the child answers only simple questions put directly to him."
+        "zh-CN": "孩子：喘得厉害，前倾坐在妈妈腿上，每次只说两三个字；开始害怕面罩，妈妈抱着时会安静下来；病情好转后说话越来越流利、开始要水喝、要玩平板。妈妈：焦虑、语速快，对停药感到内疚，担心激素副作用，听到解释后逐渐平静，愿意学习。病史主要由妈妈回答；孩子只回答直接问他的简单问题。若病情恶化（护士说他精疲力竭、开始犯困）：孩子不再说话、不再哭闹，只是靠在妈妈身上、眼睛时开时闭，无法回答问题；妈妈变得非常害怕。",
+        "en": "Child: very breathless, leaning forward on mum's lap, two or three words at a time; scared of the mask at first but settles when mum holds him; as he improves he talks more freely, asks for a drink and his tablet. Mother: anxious and fast-talking, guilty about stopping the preventer, worried about steroid side-effects; calms as things are explained and is keen to learn. The mother gives most of the history; the child answers only simple questions put directly to him. If he deteriorates (the nurse says he is exhausted and getting drowsy): the child stops talking and crying, just slumps against his mother with his eyes closing and can no longer answer; his mother becomes very frightened."
       },
       "companion": {
         "role": "parent",
@@ -317,7 +317,8 @@
           "这次怎么了",
           "啥时候开始",
           "什么时候喘起来",
-          "喘多久了"
+          "喘多久了",
+          "开始喘"
         ],
         "en": [
           "when did it start",
@@ -339,7 +340,8 @@
         "zh-CN": [
           "哮喘多久",
           "停了多久",
-          "用了多久"
+          "用了多久",
+          "几岁"
         ],
         "en": [
           "stopped",
@@ -886,7 +888,8 @@
           "哮喘病史",
           "以前喘过吗",
           "既往史",
-          "得哮喘多久"
+          "得哮喘多久",
+          "几岁开始"
         ],
         "en": [
           "asthma diagnosed",
@@ -1939,6 +1942,41 @@
           "dose counter"
         ]
       }
+    },
+    {
+      "id": "hx-unknown-last-review",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "他上一次去哮喘专科（或医生那里）做常规复查是什么时候？",
+        "en": "When did he last have a routine asthma check-up with his doctor or the asthma clinic?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）具体什么时候我记不清了，挺久了……最近都是喘厉害了才来急诊。",
+        "en": "(Mother) I honestly can't remember when — it's been a while… lately we've only come to the emergency department when he's bad."
+      },
+      "keywords": {
+        "zh-CN": [
+          "复查",
+          "随访",
+          "复诊",
+          "专科门诊",
+          "上次看医生",
+          "哮喘门诊",
+          "定期看"
+        ],
+        "en": [
+          "check-up",
+          "review",
+          "follow-up",
+          "asthma clinic",
+          "last saw a doctor",
+          "asthma review",
+          "last appointment"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false
     }
   ],
   "exam": [
@@ -8652,6 +8690,10 @@
       {
         "zh-CN": "过敏原致敏情况（从未检测，急诊不提供）。",
         "en": "Allergen sensitisation (never tested; not available in the ED)."
+      },
+      {
+        "zh-CN": "他上一次常规哮喘复查的时间（妈妈记不清，无记录）。",
+        "en": "When he last had a routine asthma review (mother cannot remember; not recorded)."
       }
     ],
     "teachingPoints": [
@@ -8705,6 +8747,10 @@
     {
       "zh-CN": "过敏原致敏情况（从未检测，急诊不提供）。",
       "en": "Allergen sensitisation (never tested; not available in the ED)."
+    },
+    {
+      "zh-CN": "他上一次常规哮喘复查的时间（妈妈记不清，无记录）。",
+      "en": "When he last had a routine asthma review (mother cannot remember; not recorded)."
     }
   ],
   "assets": [],
@@ -9331,6 +9377,147 @@
         "locale": "en",
         "expect": [
           "hx-unknown-spirometry"
+        ]
+      },
+      {
+        "text": "娃啥时候开始喘的？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-onset"
+        ]
+      },
+      {
+        "text": "什么时侯开始喘的",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-onset"
+        ]
+      },
+      {
+        "text": "最近有木有上感？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-viral-prodrome"
+        ]
+      },
+      {
+        "text": "来之前在家喷了几下万托林",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-reliever-use-today"
+        ]
+      },
+      {
+        "text": "辅舒酮停了多久了",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-adherence"
+        ]
+      },
+      {
+        "text": "进过icu没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-picu-intubation"
+        ]
+      },
+      {
+        "text": "有木有药物过敏",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "爸妈有哮喘或者过敏吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "要不要给他打吊瓶",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-ice-expectations"
+        ]
+      },
+      {
+        "text": "他爸抽烟不",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-smoke"
+        ]
+      },
+      {
+        "text": "NKDA?",
+        "locale": "en",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "any URTI sx?",
+        "locale": "en",
+        "expect": [
+          "hx-viral-prodrome"
+        ]
+      },
+      {
+        "text": "hx of PICU admits or intubation?",
+        "locale": "en",
+        "expect": [
+          "hx-picu-intubation",
+          "hx-prior-admissions"
+        ]
+      },
+      {
+        "text": "is he on an ICS",
+        "locale": "en",
+        "expect": [
+          "hx-controller"
+        ]
+      },
+      {
+        "text": "has he had pred this yr",
+        "locale": "en",
+        "expect": [
+          "hx-oral-steroid-courses"
+        ]
+      },
+      {
+        "text": "any family hx of asthma",
+        "locale": "en",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "whens the wheezng start",
+        "locale": "en",
+        "expect": [
+          "hx-onset"
+        ]
+      },
+      {
+        "text": "how many puffs of ventolin since midnite",
+        "locale": "en",
+        "expect": [
+          "hx-reliever-use-today"
+        ]
+      },
+      {
+        "text": "does he take his preventer regularly",
+        "locale": "en",
+        "expect": [
+          "hx-adherence"
+        ]
+      },
+      {
+        "text": "any other medical probs or ops",
+        "locale": "en",
+        "expect": [
+          "hx-pmh-other"
         ]
       }
     ],

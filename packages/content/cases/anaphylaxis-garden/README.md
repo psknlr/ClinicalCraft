@@ -16,9 +16,9 @@
 | setting / facility | `community` / `general-hospital` (garden-bench patient slot in the healing garden) |
 | locales | `zh-CN` (source language), `en` |
 | clock | `simulated`, starts 15:40, `realtimeScale` 1, no time limit; costs: ask 0.5 · examine 0.5 · order 0.5 · read 0.5 · intervene 1 · answer 0 min (a fast-paced resuscitation) |
-| phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed` (after transfer to the ED) |
+| phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed-resus` (transferred after only one dose; resuscitation ongoing) → `ed` (transferred and two doses given; stabilising) |
 | difficulty / time | 3 / 5 · about 25 min |
-| content | 34 history items (3 `unknown`, 3 `specific`, 9 required) · 21 exam findings (phase-specific reassessment) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 7 scenario events · 5 objectives · 3 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 5 NPCs · 40 test utterances |
+| content | 39 history items (3 `unknown`, 3 `specific`, 9 required, 3 phase-specific "how are you now?" answers) · 22 exam findings (phase-specific reassessment) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 13 scenario events (4 of them silent scoring markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 58 test utterances |
 
 ## Clinical story
 
@@ -60,7 +60,7 @@ features are present but are not required for the diagnosis.
 1. Ask what happened, then call the hospital emergency team.
 2. Rapid A–B–C assessment: airway, chest and circulation.
 3. **IM adrenaline 0.5 mg (0.5 mL of 1 mg/mL) into the anterolateral thigh at
-   minute 3.5.**
+   minute 4.5.**
 4. Lie her flat with legs raised. She is breathless when completely flat, so
    the nurse raises her head and shoulders slightly and keeps her legs up.
 5. High-flow O₂ 15 L/min, monitoring, an 18G cannula with bloods, and a
@@ -104,24 +104,35 @@ Replay of the reference solution (displayed values, including the deterministic 
 | minute | HR | BP (MAP) | RR | SpO₂ | context |
 |---:|---:|---|---:|---:|---|
 | 0 | 128 | 78/44 (55) | 26 | 92 | first contact |
-| 3.5 | ≈135 | ≈71/40 (50) | ≈28 | ≈90 | 1st IM adrenaline |
-| 8.5–10 | ≈129 | ≈87/50 (62) | ≈26 | ≈96 | 5-min reassessment: partial response on O₂ + legs up → 2nd dose at 10 |
-| 13.5 | ≈126 | ≈101/56 (71) | ≈25 | ≈98 | IV access + crystalloid bolus |
-| 20 | ≈115 | ≈113/63 (80) | ≈21 | 100 | stabilising; transfer at 21.5 |
+| 4.5 | ≈135 | ≈72/43 (53) | ≈29 | ≈90 | 1st IM adrenaline |
+| 9–10 | ≈128 | ≈87/51 (63) | ≈26 | ≈96 | reassessment (airway, chest, circulation): partial response on O₂ + legs up → 2nd dose at 11 |
+| 12.5–14 | ≈128 | ≈92–103/53–57 | ≈25 | ≈98 | IV access + crystalloid bolus |
+| 20 | ≈115 | ≈113/63 (80) | ≈21 | 100 | stabilising; transfer at 22.5 |
 | 60–110 | ≈98 | ≈111/60 (77) | ≈18 | 100 | ED observation; sinus rhythm |
 
 Without adrenaline, SBP falls to about 56 by minute 10. At that point the
-`peri-arrest` event fires (GCS 12, "we're losing her"). GCS recovers only
-after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
+`peri-arrest` event fires (GCS 12, "we're losing her"). At minute 16 the
+`near-arrest` event follows (GCS 9, gasping, thready carotid pulse; SBP has
+bottomed out at about 50, MAP about 37). GCS recovers only after IM adrenaline
+brings SBP to ≥ 90. The other scripted events are:
 
 * `adrenaline-prompt`: the nurse offers the drawn-up adrenaline at 5 min. It
   sets `adrenaline-delayed`, which fails the weighted rubric item.
 * `upright-while-hypotensive`: she greys out when sat up with SBP < 90.
 * `iv-bolus-arrhythmia`: broad-complex runs and a hypertensive spike after an
   IV bolus. This does **not** stop the anaphylaxis trends.
+  `iv-bolus-ischaemia` then puts ST depression on the monitor while SBP is
+  above 145, and `iv-bolus-wears-off` clears it once SBP falls back below 135
+  ("the IV push has not controlled the reaction").
 * `sinus-in-ed`: the rhythm label changes to sinus once HR < 100 in the ED.
 * `asks-to-leave`: at 90 min she asks to go home. This is the disposition
   teaching prompt.
+* Silent scoring markers (no message): `reassessed-before-repeat` (a
+  treated-phase reassessment between the first and second IM dose),
+  `adjunct-before-adrenaline` (antihistamine, steroid or salbutamol before any
+  adrenaline) and `moved-before-adrenaline` (transfer or walking before any
+  adrenaline). The condition DSL cannot ask "was X before Y", so these events
+  record it when it happens.
 
 ## Tempting wrong choices (all playable)
 
@@ -132,7 +143,7 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
 | **Antihistamine** (oral cetirizine or IV chlorphenamine) or **hydrocortisone** before adrenaline | contraindicated | Adjuncts that treat none of A/B/C. Delaying adrenaline is the avoidable factor. IV chlorphenamine is also flagged if SBP < 90. |
 | **Sit her upright / stand her** with SBP < 90 | contraindicated | "Empty ventricle": SBP −14 and GCS −3 for 5 min. |
 | **Walk her (or wheelchair) to the ED** | contraindicated | Same mechanism. Transfer lying flat on a trolley after adrenaline. |
-| **Transfer before IM adrenaline** | contraindicated | Delays treatment. The phase stays `scene` until adrenaline is given. |
+| **Transfer before IM adrenaline** | contraindicated | Delays treatment. The phase stays `scene` until adrenaline is given, then goes to `ed-resus`. Sets `moved-before-adrenaline`, which fails `r-adr-first`. |
 | **Discharge now** | contraindicated | Two doses and severe respiratory compromise (≥ 12 h), no auto-injector, biphasic risk. |
 | **Salbutamol** before adrenaline | contraindicated | "Treating it as asthma": bronchospasm only, not laryngeal oedema or shock, and it delays adrenaline (same logic as antihistamine/steroid first). After adrenaline it is indicated. |
 | CTPA | `harmful` investigation | Contrast and leaving resus during an anaphylaxis observation period, with no indication. |
@@ -218,10 +229,36 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
   * In the garden (`scene` / `treated`): POC glucose and sample-based lab
     tests drawn from the cannula. Tryptase, FBC and U&E are available from
     first contact; venom sIgE, troponin and CRP from `treated`.
-  * ED only: 12-lead ECG, VBG (blood-gas analyser), CXR, CTPA, POCUS and
-    urine hCG.
+  * ED only (`ed-resus` and `ed`): 12-lead ECG, VBG (blood-gas analyser),
+    CXR, CTPA, POCUS and urine hCG. The `ed-resus` results reflect an
+    incomplete response to one dose: VBG lactate 4.4 mmol/L with pH 7.30,
+    ECG sinus tachycardia 122/min, an under-filled hyperdynamic heart on POCUS
+    and an initial tryptase of 18.4 µg/L.
 * Ordering one of these in the garden gives "no record in this phase". The
   nurse brief and the ECG note explain why.
+
+## Scoring and wrong-path behaviour (engine replay)
+
+Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
+17/17):
+
+| path | outcome |
+|---|---|
+| reference solution | 5/5 objectives, 17/17, no contraindicated actions |
+| never gives adrenaline | SBP ≈ 50, GCS 12 → 9, 3 critical alarms; cannot finish; 1/17 (only the ABC examination) |
+| salbutamol, antihistamines and steroid first, sits her up, one late dose, transfer | 5 contraindicated actions; stuck in `ed-resus` with SBP ≈ 66–74; 2/17 |
+| IV bolus, SC adrenaline, walks her, discharge | ST depression then collapse to SBP ≈ 40; 0/17 |
+| transfer before adrenaline, otherwise correct | completes, 16/17 (`r-adr-first` fails) |
+| one dose only, then transfer | stays in `ed-resus`, SBP ≈ 82–92; cannot finish (needs the second dose) |
+| brute-forcing the evidence board, second dose without reassessment | cannot finish; `r-dx`, `r-dispo` and `r-adr-repeat` fail |
+
+* Decisions unlock only once their evidence exists: `dx-criteria` needs the
+  airway, chest, circulation and skin examinations; `disposition` needs a
+  reassessment in the stabilised `ed` phase with SBP ≥ 90.
+* `r-dx` and `r-dispo` use `decidedFirstTry`, so cycling through options earns
+  the objective but not the rubric point.
+* The safety items require the safe action itself (IM route given; transfer
+  lying flat), so doing nothing no longer earns them.
 
 ## Guideline references
 
@@ -244,24 +281,35 @@ after IM adrenaline brings SBP to ≥ 90. The other scripted events are:
 ## Authoring notes and known limitations
 
 * **Phase-specific exam findings share vocabulary.** The airway, chest,
-  circulation and general-appearance findings have `scene`, `treated` and
-  `ed` variants. `matchExam` has no notion of phase, so "listen to the chest"
-  scores all variants equally. Front-ends and agents should filter hits to
-  items available in the current phase. Otherwise the top hit may be rejected
-  as `phase-locked`.
+  circulation and general-appearance findings have `scene`, `treated` (also
+  used in `ed-resus`) and `ed` variants. `matchExam(…, { phase })` filters
+  them correctly, but callers must pass the phase. The agent's `examine` tool
+  (`resolveFinding`) currently calls `matchExam` without it, so "listen to
+  the chest" is reported as ambiguous between the variants.
 * **History keywords avoid single-token collisions.** History items are
   ordered so that specific items win ties. For example, `prev-reaction`
   precedes `allergy-drug`, `family` precedes `allergy-drug`, and `pmh-*`
-  precedes `meds`. All 40 `extensions.testUtterances` return the expected
-  item as the top hit.
+  precedes `meds`. `excludeKeywords` stop generic words stealing matches
+  ("before" on `pc-sting`, "allergy"/"family" on `meds`/`pmh-asthma`, "a
+  bit" on `hpi-insect`). All 58 `extensions.testUtterances` return the
+  expected item as the top hit, with no extra facts selected by the patient
+  pipeline (≥ 0.55, within 0.25 of the best).
 * **Static text with dynamic vitals.** Exam text cannot react to individual
   interventions within a phase. For example, `ex-chest-treated` still
   describes wheeze after salbutamol. The salbutamol `response` narrates the
   improvement instead.
 * **The 5-minute repeat interval is not encoded.** The condition DSL has no
-  "minutes since the last dose", so `adrenaline-im` is `indicated` whenever
-  SBP < 90, SpO₂ < 94 or RR > 24, even if the previous dose was given a minute
-  earlier. The reference solution repeats at about 6–7 minutes.
+  "minutes since the last dose". A repeat dose is `indicated` only after a
+  reassessment (`reassessed-before-repeat`) while SBP < 90, SpO₂ < 94 or
+  RR > 24, and `r-adr-repeat` requires that marker. A learner can still
+  reassess and repeat within a minute. The reference solution repeats at
+  6.5 minutes.
+* **Phase entry is immediate.** `ed` starts when the second dose is given in
+  the ED, so its "so much better" findings can be read a minute or two before
+  SBP reaches 90. The disposition decision is additionally gated on SBP ≥ 90.
+* **Untreated plateau.** Without adrenaline she reaches `near-arrest`
+  (GCS 9, SBP ≈ 50) and stays there; cardiac arrest is outside this case's
+  scope.
 * **Effect offset is instant.** By engine design, effects end abruptly, so
   SBP steps down about 8 mmHg when each dose's transient component ends,
   15 min after its ramp.

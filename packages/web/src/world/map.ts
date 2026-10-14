@@ -220,7 +220,7 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
       const [x, y] = P(sl.x, sl.z);
       place(sl.label, x, y - 13, 160, "bold 11px system-ui, sans-serif", "#1d4f3d");
     }
-    if (data.buildZone) {
+    if (data.buildZone && !data.rooms.some((r) => r.kind === "build-zone")) {
       const [x, y] = P(data.buildZone.x, data.buildZone.z);
       place(data.buildZone.w * s > 30 ? data.buildZoneLabel : "", x, y, data.buildZone.w * s, "11px system-ui, sans-serif", "#678058", false);
     }

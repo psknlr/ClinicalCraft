@@ -3665,12 +3665,13 @@
               { "examined": "ex-circ-ed" },
               { "examined": "ex-skin-ed" }
             ]
-          }
+          },
+          { "vital": "sbp", "op": "gte", "value": 90 }
         ]
       },
       "need": {
-        "zh-CN": "先给予肾上腺素、将她转运至急诊，并在她稳定后于急诊再评估一次。",
-        "en": "First give adrenaline, transfer her to the ED and reassess her there once she has stabilised."
+        "zh-CN": "先给予肾上腺素、将她转运至急诊，并在她稳定（收缩压≥90 mmHg）后于急诊再评估一次。",
+        "en": "First give adrenaline, transfer her to the ED and reassess her there once she has stabilised (systolic BP ≥ 90 mmHg)."
       },
       "options": [
         {

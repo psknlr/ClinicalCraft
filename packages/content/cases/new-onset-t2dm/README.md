@@ -17,7 +17,7 @@
 | locales | `zh-CN` (source language), `en` |
 | clock | `static`. Two phases, both learner-switchable: `initial` (初诊 / First visit, Tuesday 08:40, fasting) and `review` (3个月复诊 / Three-month review, week 13) |
 | difficulty / time | 3 / 5, about 40 min |
-| content | 40 history items (3 `unknown`, 2 `specific`, 1 `volunteer`, 10 required, 6 review-only) · 20 exam findings (6 required) · 18 investigations (7 essential, 2 low-value) · 17 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 40 test utterances |
+| content | 40 history items (3 `unknown`, 2 `specific`, 1 `volunteer`, 10 required, 6 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 17 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 40 test utterances |
 
 ## Clinical story
 
@@ -142,15 +142,16 @@ atorvastatin.
   `contraindicated`.
 * A sulfonylurea is `contraindicated` unless metformin has been started; as
   an add-on it is `neutral` but still fails `r-safety`.
-* Metformin and the ACE inhibitor are `contraindicated` until renal function
-  has been read, which teaches "check the eGFR and baseline K/creatinine
+* Metformin, the ACE inhibitor and the SGLT2 inhibitor are `contraindicated`
+  until renal function has been read, which teaches "check the eGFR and baseline K/creatinine
   first". Up-titrating perindopril is `contraindicated` until review renal
   function has been read.
 * Full-dose metformin from day 1, GLP-1 RA, aspirin and fenofibrate are
   `neutral`. Their response text explains why they are second-best or not
   indicated.
-* An SGLT2 inhibitor is `neutral` at the first visit (reasonable but not yet
-  indicated) and `indicated` at review once the repeat UACR has been read.
+* An SGLT2 inhibitor is `neutral` at the first visit once renal function has
+  been read (reasonable but not yet indicated; he also has active candidal
+  balanitis) and `indicated` at review once the repeat UACR has been read.
 
 **Rubric.** There are 21 deterministic points.
 * `r-dx` uses `decidedFirstTry`.
@@ -167,16 +168,21 @@ There are also three examiner-judged communication items:
 
 1. **Diagnosis.** Two abnormal results confirm diabetes. They may come from the
    same sample (FPG + HbA1c). A repeat of the *same* test is needed only when
-   just one result is abnormal. Capillary meters are never diagnostic. Check
+   just one result is abnormal (ADA; the Chinese guideline accepts a single
+   diagnostic value when typical symptoms are present, so he qualifies either
+   way). Capillary meters are never diagnostic. Check
    that nothing invalidates the HbA1c, such as anaemia, a haemoglobin variant,
    recent transfusion or pregnancy. Here the CBC is normal and the method shows
    no variant.
 2. **Exclude a crisis before anything else.** Check ketones (urine or blood),
    the anion gap and calculated osmolality. Insulin at diagnosis needs an
-   indication. ADA: HbA1c > 10 % or glucose ≥ 16.7 mmol/L, ketosis,
-   catabolism, or suspected type 1. Chinese guideline: short-term intensive
-   insulin when HbA1c ≥ 9.0 % or FPG ≥ 11.1 mmol/L with marked symptoms. He
-   meets none of these. Starting insulin anyway would confirm his worst fear,
+   indication. ADA: consider early insulin with ongoing catabolism (weight
+   loss), marked symptomatic hyperglycaemia, HbA1c > 10 % or glucose ≥ 16.7
+   mmol/L, ketosis, or suspected type 1. Chinese guideline: short-term
+   intensive insulin when HbA1c ≥ 9.0 % or FPG ≥ 11.1 mmol/L with marked
+   symptoms. He has osmotic symptoms, but his ~3 % weight loss (obese, good
+   appetite) is explained by glycosuria, there is no ketosis and his levels
+   are well below these thresholds, so oral therapy is enough. Starting insulin anyway would confirm his worst fear,
    add hypoglycaemia risk to his driving job, and add weight.
 3. **Metformin.** Start at 500 mg with a meal and step up weekly to 2000
    mg/day. Dose by eGFR (≥ 45 full dose; 30–44 maximum 1000 mg/day;
@@ -246,6 +252,7 @@ There are also three examiner-judged communication items:
   * `hx-meds` vs allergy and side-effect questions
   * `hx-smoking` vs the review-phase `hx-rv-smoking`
   * `hx-living` vs family-history questions
+  * `hx-family` and `hx-living` vs pet questions ("宠物", "pets")
   * `hx-polydipsia` vs alcohol questions
   * `ex-bp` vs foot pulses
   * `iv-acei` vs `iv-acei-uptitrate`

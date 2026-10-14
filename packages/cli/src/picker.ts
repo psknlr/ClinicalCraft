@@ -45,12 +45,21 @@ export async function pickCase(ctx: CliContext, contentDirs: readonly string[]):
     ctx.print(`${p.dim(num)}. ${t(c.title, ctx.locale)} ${p.dim(`(${c.id}) ${stars(c.difficulty)} · ${c.setting}`)}`);
   });
   const rl = createInterface({ input: ctx.io.stdin, output: ctx.io.stdout, terminal: true });
+  let closed = false;
+  let waiting: ((answer: string | null) => void) | null = null;
+  rl.on("close", () => {
+    closed = true;
+    waiting?.(null);
+  });
   try {
     for (;;) {
-      const answer = await new Promise<string | null>((resolve) => {
-        rl.question(`${p.cyan("›")} ${ctx.t("picker.prompt", { n: cases.length })} `, resolve);
-        rl.once("close", () => resolve(null));
-      });
+      const answer = closed
+        ? null
+        : await new Promise<string | null>((resolve) => {
+            waiting = resolve;
+            rl.question(`${p.cyan("›")} ${ctx.t("picker.prompt", { n: cases.length })} `, (a) => resolve(a));
+          });
+      waiting = null;
       if (answer === null) throw new CliError(ctx.t("picker.cancelled"), EXIT.usage);
       const chosen = resolveChoice(answer, cases);
       if (chosen) return chosen.id;

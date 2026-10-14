@@ -284,9 +284,11 @@
         "en": [
           "medicine for",
           "tablets for",
+          "take anything",
           "taken anything",
           "took anything",
-          "taken for"
+          "taken for",
+          "otc"
         ]
       }
     },
@@ -638,8 +640,7 @@
           "amount of urine",
           "volume of urine",
           "passing urine",
-          "peeing",
-          "last ate"
+          "peeing"
         ]
       },
       "disclosure": "on-ask",
@@ -786,15 +787,16 @@
       "keywords": {
         "zh-CN": [
           "手脚没力",
+          "手脚没劲",
           "肢体无力",
           "半身不遂",
           "偏瘫",
           "口角歪斜",
           "嘴歪",
           "说话含糊",
+          "大舌头",
           "口齿不清",
           "抽搐",
-          "抽风",
           "中风症状"
         ],
         "en": [
@@ -874,6 +876,7 @@
           "全身酸痛",
           "肌肉酸痛",
           "没力气",
+          "浑身没劲",
           "感冒症状"
         ],
         "en": [
@@ -885,11 +888,19 @@
           "myalgia",
           "aching",
           "cold symptoms",
-          "flu-like",
+          "flu-like symptoms",
           "fatigue"
         ]
       },
-      "excludeKeywords": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "疫苗"
+        ],
+        "en": [
+          "vaccin",
+          "jab"
+        ]
+      },
       "disclosure": "on-ask",
       "required": false
     },
@@ -1071,7 +1082,8 @@
           "过敏"
         ],
         "en": [
-          "allerg"
+          "allerg",
+          "alerg"
         ]
       }
     },
@@ -1200,7 +1212,7 @@
         "zh-CN": [
           "心脏病",
           "心衰",
-          "心脏问题",
+          "心脏方面的问题",
           "心脏有毛病",
           "肾病",
           "肾功能",
@@ -1271,9 +1283,11 @@
         ],
         "en": [
           "allerg",
+          "alerg",
           "fever",
           "ibuprofen",
-          "over the counter"
+          "over the counter",
+          "otc"
         ]
       }
     },
@@ -1308,6 +1322,7 @@
           "medicine for the fever",
           "pain relief tablets",
           "painkillers",
+          "otc",
           "self-medicated"
         ]
       },
@@ -1318,7 +1333,8 @@
           "过敏"
         ],
         "en": [
-          "allerg"
+          "allerg",
+          "alerg"
         ]
       }
     },
@@ -1429,8 +1445,7 @@
           "职业",
           "工作",
           "退休",
-          "家庭情况",
-          "住在哪里"
+          "家庭情况"
         ],
         "en": [
           "live with",

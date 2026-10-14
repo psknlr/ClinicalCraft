@@ -1182,7 +1182,8 @@
           "家族",
           "遗传",
           "中风",
-          "心脏病"
+          "心脏病",
+          "宠物"
         ],
         "en": [
           "diabetes",
@@ -1190,7 +1191,8 @@
           "runs in",
           "blood pressure",
           "stroke",
-          "heart disease"
+          "heart disease",
+          "pets"
         ]
       }
     },
@@ -1230,7 +1232,15 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "宠物"
+        ],
+        "en": [
+          "pets"
+        ]
+      }
     },
     {
       "id": "hx-family-early-cvd",
