@@ -309,6 +309,24 @@ describe("AnthropicProvider (mock Messages API)", () => {
   });
 });
 
+describe("AnthropicProvider request plumbing", () => {
+  it("does not double the /v1 segment when the base URL already ends with it", async () => {
+    handlers.push(sse([messageStart(), blockStart(0, { type: "text", text: "" }), delta(0, { type: "text_delta", text: "ok" }), blockStop(0), messageDelta("end_turn"), messageStop]));
+    const events = await collect(new AnthropicProvider(config({ baseUrl: `${baseUrl}/v1/` })).stream(request()));
+    expect(events.at(-1)).toMatchObject({ type: "finish", stopReason: "end_turn" });
+    expect(requests[0]!.url).toBe("/v1/messages?beta=true");
+  });
+
+  it("attaches the retry-after hint of a 429/529 so withRetry can honour it", async () => {
+    handlers.push((_req, res) => {
+      res.writeHead(429, { "content-type": "application/json", "retry-after": "12" });
+      res.end(JSON.stringify({ type: "error", error: { type: "rate_limit_error", message: "slow down" } }));
+    });
+    const events = await collect(new AnthropicProvider(config()).stream(request()));
+    expect(events).toEqual([{ type: "error", error: expect.objectContaining({ kind: "rate_limit", retryable: true, retryAfterMs: 12_000 }) }]);
+  });
+});
+
 describe("mapAnthropicError", () => {
   it("maps client-side SDK errors without retrying configuration problems", () => {
     expect(mapAnthropicError(new Anthropic.AnthropicError("Could not resolve authentication method. Expected either apiKey or authToken to be set."))).toMatchObject({
@@ -377,6 +395,127 @@ describe("buildAnthropicRequest", () => {
     const third = buildAnthropicRequest({ id: "zhipu-anthropic", baseUrl: "https://open.bigmodel.cn/api/anthropic", model: "glm-4.6" }, request({ responseFormat: { name: "voice", schema } }));
     expect(third).not.toHaveProperty("output_config");
     expect(JSON.stringify(third.system)).toMatch(/JSON Schema/);
+  });
+});
+
+describe("buildAnthropicRequest model rules", () => {
+  const firstParty = (model: string) => ({ id: "anthropic", baseUrl: "https://api.anthropic.com", model });
+  const schema = { type: "object", properties: { say: { type: "string" } }, required: ["say"], additionalProperties: false };
+
+  it("clamps effort to the levels each Claude model accepts", () => {
+    const effortOf = (model: string, effort: NonNullable<ChatRequest["effort"]>) => buildAnthropicRequest(firstParty(model), request({ effort })).output_config?.effort;
+    expect(effortOf("claude-opus-5-5", "xhigh")).toBe("xhigh");
+    expect(effortOf("claude-opus-5-5", "max")).toBe("max");
+    expect(effortOf("claude-opus-4-7", "xhigh")).toBe("xhigh");
+    expect(effortOf("claude-opus-4-6", "xhigh")).toBe("high"); // xhigh arrived with Opus 4.7
+    expect(effortOf("claude-opus-4-6", "max")).toBe("max");
+    expect(effortOf("claude-sonnet-4-6", "xhigh")).toBe("high");
+    expect(effortOf("claude-opus-4-5", "max")).toBe("high"); // Opus 4.5: low/medium/high only
+    expect(effortOf("claude-opus-4-5", "low")).toBe("low");
+  });
+
+  it("sends neither effort nor output_config.format to models that reject them (dated Claude 4 ids)", () => {
+    for (const model of ["claude-sonnet-4-20250514", "claude-opus-4-20250514", "claude-haiku-4-5", "claude-3-7-sonnet-latest"]) {
+      const params = buildAnthropicRequest(firstParty(model), request({ effort: "high", responseFormat: { name: "voice", schema } }));
+      expect(params.output_config?.effort, model).toBeUndefined();
+      if (model !== "claude-haiku-4-5") expect(params.output_config?.format, model).toBeUndefined();
+    }
+    expect(buildAnthropicRequest(firstParty("claude-opus-4-1"), request({ responseFormat: { name: "voice", schema } })).output_config?.format).toEqual({ type: "json_schema", schema });
+  });
+
+  it("only sends temperature to Claude models known to accept sampling (unknown future ids are treated as 4.7+)", () => {
+    expect(buildAnthropicRequest(firstParty("claude-sonnet-4-6"), request({ temperature: 0.3 })).temperature).toBe(0.3);
+    expect(buildAnthropicRequest(firstParty("claude-opus-4-20250514"), request({ temperature: 0.3 })).temperature).toBe(0.3);
+    for (const model of ["claude-opus-4-7", "claude-haiku-5-5", "claude-sonnet-5-5", "claude-opus-6", "claude-sonnet-6-1"]) {
+      expect(buildAnthropicRequest(firstParty(model), request({ temperature: 0.3 })), model).not.toHaveProperty("temperature");
+    }
+  });
+
+  it("never sends fallback audit blocks to third-party Anthropic-compatible endpoints", () => {
+    const history: ChatMessage[] = [
+      { role: "user", content: [{ type: "text", text: "Hi" }] },
+      {
+        role: "assistant",
+        content: [{ type: "provider_raw", provider: "anthropic-messages", data: [{ type: "fallback", from: { model: "a" }, to: { model: "b" } }, { type: "text", text: "Hello." }] }],
+      },
+      { role: "user", content: [{ type: "text", text: "Next" }] },
+    ];
+    const third = buildAnthropicRequest({ id: "zhipu-anthropic", baseUrl: "https://open.bigmodel.cn/api/anthropic", model: "glm-4.6" }, request({ messages: history }));
+    expect(third.messages[1]).toEqual({ role: "assistant", content: [{ type: "text", text: "Hello." }] });
+    const first = buildAnthropicRequest(firstParty("claude-opus-5-5"), request({ messages: history }));
+    expect((first.messages[1]!.content as { type: string }[]).map((b) => b.type)).toEqual(["fallback", "text"]);
+  });
+});
+
+describe("sanitizeEchoBlocks", () => {
+  it("keeps paired server-tool blocks before the fallback boundary, drops unpaired/model-internal ones and empty text", () => {
+    const raw = [
+      { type: "server_tool_use", id: "srv_1", name: "web_search", input: { query: "x" } },
+      { type: "web_search_tool_result", tool_use_id: "srv_1", content: [] },
+      { type: "server_tool_use", id: "srv_2", name: "web_search", input: { query: "y" } },
+      { type: "thinking", thinking: "", signature: "s" },
+      { type: "redacted_thinking", data: "zz" },
+      { type: "text", text: "" },
+      { type: "text", text: "Partial" },
+      { type: "tool_use", id: "toolu_pre", name: "order_test", input: {} },
+      { type: "fallback", from: { model: "claude-opus-5-5" }, to: { model: "claude-opus-5" } },
+      { type: "thinking", thinking: "", signature: "t" },
+      { type: "text", text: "After" },
+    ];
+    expect(sanitizeEchoBlocks(raw).map((b) => `${b.type}${"id" in b ? `:${(b as { id: string }).id}` : ""}`)).toEqual([
+      "server_tool_use:srv_1",
+      "web_search_tool_result",
+      "text",
+      "fallback",
+      "thinking",
+      "text",
+    ]);
+  });
+});
+
+describe("toAnthropicMessages tool pairing", () => {
+  it("synthesises missing tool_results, drops orphan and duplicate ones, and answers a trailing tool_use", () => {
+    const out = toAnthropicMessages([
+      { role: "user", content: [{ type: "tool_result", callId: "ghost", content: "orphan" }, { type: "text", text: "Start" }] },
+      {
+        role: "assistant",
+        content: [
+          { type: "tool_call", id: "t1", name: "order_test", args: { query: "cbc" } },
+          { type: "provider_raw", provider: "anthropic-messages", data: [{ type: "text", text: "Ordering." }, { type: "tool_use", id: "t1", name: "order_test", input: { query: "cbc" } }, { type: "tool_use", id: "t2", name: "order_test", input: { query: "bm" } }] },
+        ],
+      },
+      {
+        role: "user",
+        content: [
+          { type: "tool_result", callId: "t1", content: "ordered" },
+          { type: "tool_result", callId: "t1", content: "again" },
+          { type: "tool_result", callId: "zzz", content: "orphan" },
+          { type: "text", text: "What next?" },
+        ],
+      },
+      { role: "assistant", content: [{ type: "tool_call", id: "t3", name: "check_vitals", args: {} }] },
+    ]);
+    expect(out).toEqual([
+      { role: "user", content: [{ type: "text", text: "Start" }] },
+      {
+        role: "assistant",
+        content: [
+          { type: "text", text: "Ordering." },
+          { type: "tool_use", id: "t1", name: "order_test", input: { query: "cbc" } },
+          { type: "tool_use", id: "t2", name: "order_test", input: { query: "bm" } },
+        ],
+      },
+      {
+        role: "user",
+        content: [
+          { type: "tool_result", tool_use_id: "t1", content: "ordered" },
+          { type: "tool_result", tool_use_id: "t2", content: expect.stringMatching(/not executed/), is_error: true },
+          { type: "text", text: "What next?" },
+        ],
+      },
+      { role: "assistant", content: [{ type: "tool_use", id: "t3", name: "check_vitals", input: {} }] },
+      { role: "user", content: [{ type: "tool_result", tool_use_id: "t3", content: expect.stringMatching(/not executed/), is_error: true }] },
+    ]);
   });
 });
 

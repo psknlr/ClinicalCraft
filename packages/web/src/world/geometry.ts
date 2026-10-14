@@ -255,3 +255,69 @@ export function textUnits(text: string): number {
 export function signWidth(text: string, min = 2.4, max = 4.2): number {
   return Math.max(min, Math.min(max, 0.55 * textUnits(text) + 0.8));
 }
+
+/** A merged rectangle of grid cells [ix0..ix1] × [iz0..iz1] (inclusive) sharing one value. */
+export interface GridRect<T> {
+  ix0: number;
+  ix1: number;
+  iz0: number;
+  iz1: number;
+  value: T;
+}
+
+/**
+ * Greedy rectangle merge of a cols×rows grid (row runs, then identical runs
+ * stacked across consecutive rows). `get` returns null for empty cells.
+ * Used to turn per-block V4 voxels (ground, roofs) into few tiled boxes.
+ */
+export function greedyRects<T extends string>(cols: number, rows: number, get: (ix: number, iz: number) => T | null): GridRect<T>[] {
+  const out: GridRect<T>[] = [];
+  let open = new Map<string, GridRect<T>>();
+  for (let iz = 0; iz < rows; iz++) {
+    const next = new Map<string, GridRect<T>>();
+    let ix = 0;
+    while (ix < cols) {
+      const v = get(ix, iz);
+      if (v == null) {
+        ix++;
+        continue;
+      }
+      let ix1 = ix;
+      while (ix1 + 1 < cols && get(ix1 + 1, iz) === v) ix1++;
+      const key = `${ix}|${ix1}|${v}`;
+      const prev = open.get(key);
+      if (prev) {
+        prev.iz1 = iz;
+        open.delete(key);
+        next.set(key, prev);
+      } else {
+        const r: GridRect<T> = { ix0: ix, ix1, iz0: iz, iz1: iz, value: v };
+        out.push(r);
+        next.set(key, r);
+      }
+      ix = ix1 + 1;
+    }
+    open = next;
+  }
+  return out;
+}
+
+/** Merge wall pieces: contiguous pieces of one row and course join, then equal spans stack across rows. */
+export function mergeWallPieces(pieces: WallPiece[], courseOf: (p: WallPiece) => string = (p) => p.course): (WallPiece & { key: string })[] {
+  const rows: (WallPiece & { key: string })[] = [];
+  const sorted = [...pieces].sort((p, q) => p.y0 - q.y0 || p.a - q.a);
+  for (const p of sorted) {
+    const key = courseOf(p);
+    const last = rows[rows.length - 1];
+    if (last && last.key === key && Math.abs(last.y0 - p.y0) < 1e-6 && Math.abs(last.y1 - p.y1) < 1e-6 && Math.abs(last.b - p.a) < 1e-6) last.b = p.b;
+    else rows.push({ ...p, key });
+  }
+  // vertical stacking of identical spans
+  const out: (WallPiece & { key: string })[] = [];
+  for (const r of rows) {
+    const below = out.find((o) => o.key === r.key && Math.abs(o.a - r.a) < 1e-6 && Math.abs(o.b - r.b) < 1e-6 && Math.abs(o.y1 - r.y0) < 1e-6);
+    if (below) below.y1 = r.y1;
+    else out.push({ ...r });
+  }
+  return out;
+}

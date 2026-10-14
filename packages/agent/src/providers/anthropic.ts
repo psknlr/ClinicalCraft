@@ -16,7 +16,10 @@
  *     `server-side-fallback-2026-07-01`) for the models that support them on
  *     the first-party API only;
  *   - history is append-only: assistant turns are echoed verbatim from
- *     `provider_raw` (minus pre-fallback-boundary model-internal blocks).
+ *     `provider_raw` (minus pre-fallback-boundary model-internal blocks);
+ *     tool pairing is repaired deterministically (synthetic error results for
+ *     unanswered tool_use, orphan results dropped);
+ *   - effort is clamped per model; `retry-after` hints ride on errors.
  */
 import Anthropic from "@anthropic-ai/sdk";
 import type {
@@ -30,7 +33,7 @@ import type {
   BetaToolResultBlockParam,
 } from "@anthropic-ai/sdk/resources/beta/messages/messages";
 import { ANTHROPIC_BASE_URL, capabilitiesFor } from "./catalog.js";
-import { abortedError, classifyHttpError, networkError } from "./errors.js";
+import { abortedError, classifyHttpError, networkError, withRetryAfter } from "./errors.js";
 import { anthropicSupportsStructuredOutput, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, ProviderErrorInfo, StreamEvent } from "./types.js";
 
@@ -43,37 +46,89 @@ export const ANTHROPIC_DEFAULT_MAX_TOKENS = 16_000;
 /** Upper bound for `max_tokens` on a streaming request. */
 export const ANTHROPIC_MAX_TOKENS_CAP = 64_000;
 
+/**
+ * Base URL handed to the SDK. The SDK appends `/v1/messages` itself, so a
+ * configured `…/v1` suffix (and trailing slashes) is dropped; unset → first party.
+ */
+export function anthropicSdkBaseUrl(baseUrl: string | undefined | null): string {
+  const trimmed = (baseUrl ?? "").trim().replace(/\/+$/, "").replace(/\/v1$/, "");
+  return trimmed || ANTHROPIC_BASE_URL;
+}
+
 /** True when `baseUrl` is unset or the first-party Claude API. */
 export function isFirstPartyAnthropic(baseUrl: string | undefined | null): boolean {
   if (!baseUrl) return true;
-  const normalised = baseUrl.trim().replace(/\/+$/, "").replace(/\/v1$/, "");
-  return normalised === ANTHROPIC_BASE_URL;
+  return anthropicSdkBaseUrl(baseUrl).toLowerCase() === ANTHROPIC_BASE_URL;
+}
+
+type Effort = NonNullable<ChatRequest["effort"]>;
+
+/**
+ * Clamp a normalised effort to the levels a Claude model accepts: `xhigh`
+ * arrived with Opus 4.7 (Opus/Sonnet 4.6 take low…high + max), Opus 4.5 takes
+ * low/medium/high only. Newer and unknown models get the value unchanged.
+ */
+export function anthropicEffort(model: string, effort: Effort): Effort {
+  const id = model.trim().toLowerCase();
+  const bare = id.includes("/") ? id.slice(id.lastIndexOf("/") + 1) : id;
+  if (/^claude-opus-4-5(?!\d)/.test(bare)) return effort === "xhigh" || effort === "max" ? "high" : effort;
+  if (/^claude-(opus|sonnet)-4-6(?!\d)/.test(bare)) return effort === "xhigh" ? "high" : effort;
+  return effort;
 }
 
 type ImageMediaType = "image/jpeg" | "image/png" | "image/gif" | "image/webp";
 
-/** Block types that are model-internal and must not be echoed from before a fallback boundary. */
-const PRE_BOUNDARY_KEEP = new Set(["text", "fallback"]);
+/** Server-tool invocation block types (paired with a `*_tool_result` block by `tool_use_id`). */
+const SERVER_TOOL_USE_TYPES = new Set(["server_tool_use", "mcp_tool_use"]);
+
+export interface EchoOptions {
+  /** Target is the first-party Claude API (default true). Third-party endpoints never get `fallback` audit blocks. */
+  firstParty?: boolean;
+}
 
 /**
- * Prepare a provider-native assistant `content` array for echoing back:
- * after a mid-output fallback, drop every non-text block that precedes the
- * last `fallback` block (thinking, redacted_thinking, tool_use, unpaired
- * server tool blocks…). Everything after the boundary is kept verbatim.
+ * Prepare a provider-native assistant `content` array for echoing back.
+ * After a mid-output fallback, every block before the LAST `fallback` block is
+ * dropped except text, `fallback` markers and PAIRED server-tool blocks
+ * (`server_tool_use` + its `*_tool_result`); thinking, redacted_thinking,
+ * tool_use, unpaired server-tool blocks and unknown model-internal blocks go.
+ * Everything after the boundary is kept verbatim. Empty text blocks (rejected
+ * by the API) are always dropped.
  */
-export function sanitizeEchoBlocks(blocks: readonly unknown[]): BetaContentBlockParam[] {
+export function sanitizeEchoBlocks(blocks: readonly unknown[], options: EchoOptions = {}): BetaContentBlockParam[] {
+  const firstParty = options.firstParty ?? true;
   let boundary = -1;
   blocks.forEach((b, i) => {
     if (isRecord(b) && b.type === "fallback") boundary = i;
   });
+  const uses = new Set<string>();
+  const results = new Set<string>();
+  blocks.forEach((b, i) => {
+    if (i >= boundary || !isRecord(b) || typeof b.type !== "string") return;
+    if (SERVER_TOOL_USE_TYPES.has(b.type) && typeof b.id === "string") uses.add(b.id);
+    else if (b.type.endsWith("_tool_result") && typeof b.tool_use_id === "string") results.add(b.tool_use_id);
+  });
+  const paired = (id: unknown) => typeof id === "string" && uses.has(id) && results.has(id);
   const out: BetaContentBlockParam[] = [];
   blocks.forEach((b, i) => {
     if (!isRecord(b) || typeof b.type !== "string") return;
-    if (i < boundary && !PRE_BOUNDARY_KEEP.has(b.type)) return;
+    if (b.type === "text" && (typeof b.text !== "string" || b.text === "")) return;
+    if (b.type === "fallback" && !firstParty) return;
+    if (i < boundary) {
+      const keep =
+        b.type === "text" ||
+        b.type === "fallback" ||
+        (SERVER_TOOL_USE_TYPES.has(b.type) && paired(b.id)) ||
+        (b.type.endsWith("_tool_result") && !SERVER_TOOL_USE_TYPES.has(b.type) && paired(b.tool_use_id));
+      if (!keep) return;
+    }
     out.push(b as unknown as BetaContentBlockParam);
   });
   return out;
 }
+
+/** `tool_result` text for a tool_use whose result never made it into history (max_tokens, abort…). */
+export const MISSING_TOOL_RESULT = "Tool call was not executed (the turn ended before a result was returned).";
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
@@ -83,10 +138,10 @@ function isPlainObject(v: unknown): v is Record<string, unknown> {
   return isRecord(v) && Object.getPrototypeOf(v) === Object.prototype;
 }
 
-function assistantBlocks(message: ChatMessage): BetaContentBlockParam[] {
+function assistantBlocks(message: ChatMessage, options: EchoOptions): BetaContentBlockParam[] {
   const raw = message.content.find((p) => p.type === "provider_raw" && p.provider === "anthropic-messages");
   if (raw && raw.type === "provider_raw" && Array.isArray(raw.data)) {
-    return sanitizeEchoBlocks(raw.data);
+    return sanitizeEchoBlocks(raw.data, options);
   }
   const blocks: BetaContentBlockParam[] = [];
   for (const part of message.content) {
@@ -129,13 +184,14 @@ function userBlocks(message: ChatMessage): { results: BetaToolResultBlockParam[]
  * Convert provider-neutral history to Messages API params. Consecutive user
  * messages are merged so that every tool_result of a turn travels in ONE user
  * message (tool_results first, as the API requires). Empty messages are
- * dropped; a leading assistant message gets a minimal user turn before it.
+ * dropped; tool pairing is repaired (see `repairToolPairing`); a leading
+ * assistant message gets a minimal user turn before it.
  */
-export function toAnthropicMessages(messages: readonly ChatMessage[]): BetaMessageParam[] {
+export function toAnthropicMessages(messages: readonly ChatMessage[], options: EchoOptions = {}): BetaMessageParam[] {
   const out: BetaMessageParam[] = [];
   for (const message of messages) {
     if (message.role === "assistant") {
-      const blocks = assistantBlocks(message);
+      const blocks = assistantBlocks(message, options);
       if (blocks.length === 0) continue;
       const prev = out[out.length - 1];
       if (prev && prev.role === "assistant" && Array.isArray(prev.content)) {
@@ -156,7 +212,54 @@ export function toAnthropicMessages(messages: readonly ChatMessage[]): BetaMessa
       out.push({ role: "user", content: [...results, ...other] });
     }
   }
-  if (out[0]?.role === "assistant") out.unshift({ role: "user", content: [{ type: "text", text: "(conversation start)" }] });
+  const repaired = repairToolPairing(out);
+  if (repaired[0]?.role === "assistant") repaired.unshift({ role: "user", content: [{ type: "text", text: "(conversation start)" }] });
+  return repaired;
+}
+
+function blocksOf(message: BetaMessageParam): BetaContentBlockParam[] {
+  return Array.isArray(message.content) ? message.content : message.content ? [{ type: "text", text: message.content }] : [];
+}
+
+/**
+ * Make tool pairing valid (the API rejects both a `tool_use` without a
+ * `tool_result` in the very next user message and a `tool_result` without its
+ * `tool_use`): unanswered tool_use blocks (a turn cut by max_tokens, an abort,
+ * a failed tool loop) get a synthetic error result — also after a trailing
+ * assistant turn — while orphan and duplicate tool_results are dropped.
+ * Deterministic, so a conversation's prefix stays byte-stable across requests.
+ */
+export function repairToolPairing(messages: readonly BetaMessageParam[]): BetaMessageParam[] {
+  const out: BetaMessageParam[] = [];
+  let pending: string[] = [];
+  const synthetic = (ids: string[]): BetaToolResultBlockParam[] => ids.map((id) => ({ type: "tool_result", tool_use_id: id, content: MISSING_TOOL_RESULT, is_error: true }));
+  const append = (role: BetaMessageParam["role"], content: BetaContentBlockParam[]) => {
+    if (content.length === 0) return;
+    const prev = out[out.length - 1];
+    if (prev && prev.role === role) prev.content = [...blocksOf(prev), ...content];
+    else out.push({ role, content });
+  };
+  for (const message of messages) {
+    const content = blocksOf(message);
+    if (message.role === "assistant") {
+      if (pending.length > 0) append("user", synthetic(pending));
+      append("assistant", content);
+      pending = content.filter((b): b is Extract<BetaContentBlockParam, { type: "tool_use" }> => b.type === "tool_use").map((b) => b.id);
+      continue;
+    }
+    const answered = new Set<string>();
+    const results: BetaContentBlockParam[] = [];
+    for (const block of content) {
+      if (block.type !== "tool_result") continue;
+      if (!pending.includes(block.tool_use_id) || answered.has(block.tool_use_id)) continue; // orphan / duplicate
+      answered.add(block.tool_use_id);
+      results.push(block);
+    }
+    results.push(...synthetic(pending.filter((id) => !answered.has(id))));
+    pending = [];
+    append("user", [...results, ...content.filter((b) => b.type !== "tool_result")]);
+  }
+  if (pending.length > 0) append("user", synthetic(pending));
   return out;
 }
 
@@ -180,7 +283,7 @@ export function buildAnthropicRequest(config: Pick<ProviderConfig, "id" | "baseU
   const params: BetaMessageStreamParams = {
     model,
     max_tokens: maxTokens,
-    messages: toAnthropicMessages(request.messages),
+    messages: toAnthropicMessages(request.messages, { firstParty }),
   };
   const outputConfig: BetaOutputConfig = {};
   let systemSections = request.system;
@@ -203,7 +306,7 @@ export function buildAnthropicRequest(config: Pick<ProviderConfig, "id" | "baseU
   if (request.temperature != null && !capabilities.rejectsSampling) {
     params.temperature = Math.min(1, Math.max(0, request.temperature * (capabilities.temperatureScale ?? 1)));
   }
-  if (request.effort && capabilities.reasoning === "anthropic-effort") outputConfig.effort = request.effort;
+  if (request.effort && capabilities.reasoning === "anthropic-effort") outputConfig.effort = anthropicEffort(model, request.effort);
   if (Object.keys(outputConfig).length > 0) params.output_config = outputConfig;
   if (firstParty) {
     // Automatic caching of the conversation prefix (second breakpoint after the system one).
@@ -221,37 +324,7 @@ export function mapAnthropicError(err: unknown, signal?: AbortSignal): ProviderE
   if (signal?.aborted || err instanceof Anthropic.APIUserAbortError) return abortedError();
   if (err instanceof Anthropic.APIConnectionTimeoutError) return { message: "Request to Claude API timed out", kind: "timeout", retryable: true };
   if (err instanceof Anthropic.APIConnectionError) return networkError(err.cause ?? err);
-  if (err instanceof Anthropic.APIError) {
-    const status = typeof err.status === "number" ? err.status : undefined;
-    const type = typeof err.type === "string" ? err.type : errorTypeOf(err.error);
-    const message = cleanMessage(err) || `Claude API error${status ? ` ${status}` : ""}`;
-    const base = (kind: ProviderErrorInfo["kind"], retryable: boolean): ProviderErrorInfo => ({
-      message,
-      kind,
-      retryable,
-      ...(status ? { status } : {}),
-      ...(type ? { code: type } : {}),
-    });
-    if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.PermissionDeniedError) return base("auth", false);
-    if (err instanceof Anthropic.NotFoundError) return base("bad_request", false);
-    if (err instanceof Anthropic.RateLimitError) return base("rate_limit", true);
-    if (err instanceof Anthropic.BadRequestError) {
-      if (type === "billing_error" || /credit balance|billing/i.test(message)) return base("quota", false);
-      const classified = classifyHttpError(400, JSON.stringify({ error: { type, message } }));
-      return base(classified.kind === "context_exceeded" ? "context_exceeded" : "bad_request", false);
-    }
-    if (status === 529 || type === "overloaded_error") return base("overloaded", true);
-    if (err instanceof Anthropic.InternalServerError) return base("overloaded", true);
-    if (status === undefined) {
-      // Error event received mid-stream (`event: error`).
-      if (type === "overloaded_error" || type === "api_error") return base("overloaded", true);
-      if (type === "rate_limit_error") return base("rate_limit", true);
-      if (type === "invalid_request_error") return base("bad_request", false);
-      return base("unknown", false);
-    }
-    const classified = classifyHttpError(status, JSON.stringify(err.error ?? { error: { type, message } }));
-    return { ...classified, message };
-  }
+  if (err instanceof Anthropic.APIError) return withRetryAfter(mapApiError(err), err.headers);
   if (err instanceof SyntaxError || (err instanceof Anthropic.AnthropicError && /parse tool parameter JSON|JSON/i.test(err.message))) {
     // A tool input that could not be parsed at all (eager input streaming): re-issuing the turn may succeed.
     return { message: `Invalid tool input JSON from model: ${err.message.slice(0, 300)}`, kind: "bad_request", code: "invalid_tool_json", retryable: true };
@@ -263,6 +336,38 @@ export function mapAnthropicError(err: unknown, signal?: AbortSignal): ProviderE
   }
   if (err instanceof Error) return { message: err.message, kind: "unknown", retryable: false };
   return { message: String(err), kind: "unknown", retryable: false };
+}
+
+function mapApiError(err: InstanceType<typeof Anthropic.APIError>): ProviderErrorInfo {
+  const status = typeof err.status === "number" ? err.status : undefined;
+  const type = typeof err.type === "string" ? err.type : errorTypeOf(err.error);
+  const message = cleanMessage(err) || `Claude API error${status ? ` ${status}` : ""}`;
+  const base = (kind: ProviderErrorInfo["kind"], retryable: boolean): ProviderErrorInfo => ({
+    message,
+    kind,
+    retryable,
+    ...(status ? { status } : {}),
+    ...(type ? { code: type } : {}),
+  });
+  if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.PermissionDeniedError) return base("auth", false);
+  if (err instanceof Anthropic.NotFoundError) return base("bad_request", false);
+  if (err instanceof Anthropic.RateLimitError) return base("rate_limit", true);
+  if (err instanceof Anthropic.BadRequestError) {
+    if (type === "billing_error" || /credit balance|billing/i.test(message)) return base("quota", false);
+    const classified = classifyHttpError(400, JSON.stringify({ error: { type, message } }));
+    return base(classified.kind === "context_exceeded" ? "context_exceeded" : "bad_request", false);
+  }
+  if (status === 529 || type === "overloaded_error") return base("overloaded", true);
+  if (err instanceof Anthropic.InternalServerError) return base("overloaded", true);
+  if (status === undefined) {
+    // Error event received mid-stream (`event: error`).
+    if (type === "overloaded_error" || type === "api_error") return base("overloaded", true);
+    if (type === "rate_limit_error") return base("rate_limit", true);
+    if (type === "invalid_request_error") return base("bad_request", false);
+    return base("unknown", false);
+  }
+  const classified = classifyHttpError(status, JSON.stringify(err.error ?? { error: { type, message } }));
+  return { ...classified, message };
 }
 
 function errorTypeOf(body: unknown): string | undefined {
@@ -335,7 +440,7 @@ export class AnthropicProvider implements LLMProvider {
       const headers = this.config.headers;
       this.client = new Anthropic({
         apiKey: this.config.apiKey ?? null,
-        baseURL: this.config.baseUrl ?? ANTHROPIC_BASE_URL,
+        baseURL: anthropicSdkBaseUrl(this.config.baseUrl),
         ...(headers && Object.keys(headers).length > 0 ? { defaultHeaders: headers } : {}),
         maxRetries: 0, // retries are owned by withRetry()
         timeout: this.config.timeoutMs ?? 10 * 60 * 1000,

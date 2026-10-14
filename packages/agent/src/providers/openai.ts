@@ -17,7 +17,7 @@ import { capabilitiesFor } from "./catalog.js";
 import { abortedError, classifyHttpError, networkError } from "./errors.js";
 import { parseSSE } from "./sse.js";
 import { sanitizeSchemaName, structuredOutputMode, withJsonInstruction } from "./structured.js";
-import type { ChatMessage, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, StreamEvent, SystemSection } from "./types.js";
+import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, StreamEvent, SystemSection } from "./types.js";
 
 /** Chat Completions message (the subset we send). */
 export type OpenAIMessage =
@@ -54,17 +54,41 @@ function argsToString(args: unknown): string {
   }
 }
 
+/** Content of the tool message synthesised for a call whose result never made it into history. */
+export const MISSING_TOOL_RESULT = "Tool call was not executed (the turn ended before a result was returned).";
+
 /**
- * Convert provider-neutral history to Chat Completions messages. Tool results
- * become `role:"tool"` messages placed directly after the assistant turn;
- * remaining user text/images follow as one user message.
+ * Convert provider-neutral history to Chat Completions messages.
+ *
+ * Consecutive user messages form one group: its tool results become
+ * `role:"tool"` messages placed directly after the assistant turn that made
+ * the calls (in result order), followed by ONE user message with the
+ * remaining text/images. Tool pairing is repaired so the request is always
+ * valid: calls without a result get a synthetic error result, results without
+ * a matching call of the preceding assistant turn (orphans, duplicates) are
+ * dropped.
  */
 export function toOpenAIMessages(system: readonly SystemSection[], messages: readonly ChatMessage[]): OpenAIMessage[] {
   const out: OpenAIMessage[] = [];
   const sys = joinSystem(system);
   if (sys) out.push({ role: "system", content: sys });
-  for (const message of messages) {
+  /** Tool call ids of the latest assistant turn that still await a result. */
+  let pending: string[] = [];
+  const answerPending = (results: Extract<ChatPart, { type: "tool_result" }>[]) => {
+    const answered = new Set<string>();
+    for (const r of results) {
+      if (!pending.includes(r.callId) || answered.has(r.callId)) continue; // orphan or duplicate
+      answered.add(r.callId);
+      out.push({ role: "tool", tool_call_id: r.callId, content: r.isError ? `[error] ${r.content}` : r.content });
+    }
+    for (const id of pending) if (!answered.has(id)) out.push({ role: "tool", tool_call_id: id, content: `[error] ${MISSING_TOOL_RESULT}` });
+    pending = [];
+  };
+
+  for (let i = 0; i < messages.length; ) {
+    const message = messages[i]!;
     if (message.role === "assistant") {
+      i++;
       const text = message.content
         .filter((p): p is Extract<typeof p, { type: "text" }> => p.type === "text")
         .map((p) => p.text)
@@ -73,21 +97,27 @@ export function toOpenAIMessages(system: readonly SystemSection[], messages: rea
         .filter((p): p is Extract<typeof p, { type: "tool_call" }> => p.type === "tool_call")
         .map((p) => ({ id: p.id, type: "function", function: { name: p.name, arguments: argsToString(p.args) } }));
       if (!text && calls.length === 0) continue;
+      answerPending([]);
       const msg: OpenAIMessage = { role: "assistant", content: text || null };
       if (calls.length > 0) msg.tool_calls = calls;
       out.push(msg);
+      pending = calls.map((c) => c.id);
       continue;
     }
+    // A group of consecutive user messages.
+    const results: Extract<ChatPart, { type: "tool_result" }>[] = [];
     const parts: OpenAIContentPart[] = [];
-    for (const part of message.content) {
-      if (part.type === "tool_result") {
-        out.push({ role: "tool", tool_call_id: part.callId, content: part.isError ? `[error] ${part.content}` : part.content });
-      } else if (part.type === "text") {
-        if (part.text) parts.push({ type: "text", text: part.text });
-      } else if (part.type === "image") {
-        parts.push({ type: "image_url", image_url: { url: `data:${part.mediaType};base64,${part.data}` } });
+    for (; i < messages.length && messages[i]!.role === "user"; i++) {
+      for (const part of messages[i]!.content) {
+        if (part.type === "tool_result") results.push(part);
+        else if (part.type === "text") {
+          if (part.text) parts.push({ type: "text", text: part.text });
+        } else if (part.type === "image") {
+          parts.push({ type: "image_url", image_url: { url: `data:${part.mediaType};base64,${part.data}` } });
+        }
       }
     }
+    answerPending(results);
     if (parts.length === 0) continue;
     if (parts.every((p) => p.type === "text")) {
       out.push({ role: "user", content: parts.map((p) => (p as { text: string }).text).join("\n\n") });
@@ -95,6 +125,7 @@ export function toOpenAIMessages(system: readonly SystemSection[], messages: rea
       out.push({ role: "user", content: parts });
     }
   }
+  answerPending([]);
   return out;
 }
 
@@ -177,6 +208,7 @@ function mapFinishReason(reason: string | null | undefined, hasToolCalls: boolea
 }
 
 interface PendingCall {
+  /** Emitted index: order of first appearance in the stream. */
   index: number;
   id: string;
   name: string;
@@ -261,12 +293,18 @@ export class OpenAICompatibleProvider implements LLMProvider {
     try {
       if (!response.ok) {
         const text = await response.text().catch(() => "");
-        yield { type: "error", error: classifyHttpError(response.status, text) };
+        yield { type: "error", error: classifyHttpError(response.status, text, response.headers) };
         return;
       }
       if ((response.headers.get("content-type") ?? "").includes("application/json")) {
-        // Some compatible servers ignore `stream: true` and answer with one JSON completion.
-        yield* fromCompletionJson(await response.text(), model);
+        // Some compatible servers ignore `stream: true` and answer with one JSON completion;
+        // others stream SSE but mislabel it as JSON.
+        const text = await response.text();
+        if (/^\s*(data|event|id|retry)?:/.test(text)) {
+          yield* this.consume(new Response(text).body!, model, controller.signal, signal);
+        } else {
+          yield* fromCompletionJson(text, model);
+        }
         return;
       }
       if (!response.body) {
@@ -281,14 +319,22 @@ export class OpenAICompatibleProvider implements LLMProvider {
 
   private async *consume(body: ReadableStream<Uint8Array>, model: string, innerSignal: AbortSignal, outerSignal?: AbortSignal): AsyncGenerator<StreamEvent> {
     yield { type: "start", model };
-    const calls = new Map<number, PendingCall>();
+    /** Every call in order of first appearance; `slots` maps the wire index to its current call. */
+    const calls: PendingCall[] = [];
+    const slots = new Map<number, PendingCall>();
+    const newCall = (wireIndex: number): PendingCall => {
+      const call: PendingCall = { index: calls.length, id: "", name: "", args: "", started: false, emitted: false, bufferedDeltas: [] };
+      calls.push(call);
+      slots.set(wireIndex, call);
+      return call;
+    };
     let finishReason: string | null | undefined;
     let sawDone = false;
     let sawFinish = false;
     let usage = { inputTokens: 0, outputTokens: 0 } as Extract<StreamEvent, { type: "finish" }>["usage"];
 
     const flush = function* (): Generator<StreamEvent> {
-      for (const call of [...calls.values()].sort((a, b) => a.index - b.index)) {
+      for (const call of calls) {
         if (call.emitted) continue;
         call.emitted = true;
         if (!call.id) call.id = `call_${call.index}`;
@@ -327,13 +373,13 @@ export class OpenAICompatibleProvider implements LLMProvider {
           if (typeof delta.content === "string" && delta.content) yield { type: "text_delta", text: delta.content };
           if (Array.isArray(delta.tool_calls)) {
             for (const [position, raw] of (delta.tool_calls as Record<string, unknown>[]).entries()) {
-              const index = typeof raw.index === "number" ? raw.index : position;
-              let call = calls.get(index);
-              if (!call) {
-                call = { index, id: "", name: "", args: "", started: false, emitted: false, bufferedDeltas: [] };
-                calls.set(index, call);
-              }
-              if (typeof raw.id === "string" && raw.id && !call.id) call.id = raw.id;
+              const wireIndex = typeof raw.index === "number" ? raw.index : position;
+              const rawId = typeof raw.id === "string" ? raw.id : "";
+              let call = slots.get(wireIndex);
+              // A different id at an occupied index is a new call (servers that put every call at index 0).
+              if (!call || (rawId && call.id && rawId !== call.id)) call = newCall(wireIndex);
+              const index = call.index;
+              if (rawId && !call.id) call.id = rawId;
               const fn = (raw.function ?? {}) as Record<string, unknown>;
               if (typeof fn.name === "string" && fn.name && !call.name) call.name = fn.name;
               const fragment = typeof fn.arguments === "string" ? fn.arguments : "";
@@ -374,7 +420,7 @@ export class OpenAICompatibleProvider implements LLMProvider {
       return;
     }
     yield* flush();
-    yield { type: "finish", stopReason: mapFinishReason(finishReason, calls.size > 0), usage };
+    yield { type: "finish", stopReason: mapFinishReason(finishReason, calls.length > 0), usage };
   }
 }
 

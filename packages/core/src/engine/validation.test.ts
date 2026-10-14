@@ -329,6 +329,21 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
     expect(paths).toContain("phases.1");
   });
 
+  it("warns about rubric items that can never be met and scenario events that can never fire", () => {
+    const c = structuredClone(SIM);
+    c.decisions[0].requires = { decided: "dx" }; // self-locked → dx can never be decided
+    c.rubric.push({ id: "never", domain: "diagnosis", text: "x", weight: 1, met: { decided: "dx" } });
+    c.physiology!.events.push({ id: "ghost-event", when: { attempted: "dx" }, setFlags: [], severity: "info" });
+    c.physiology!.events.push({ id: "timed", atMinute: 5, when: { attempted: "dx" }, setFlags: [], severity: "info" });
+    const issues = checkCaseIntegrity(c).filter((i) => i.path.startsWith("rubric") || i.path.startsWith("physiology"));
+    expect(issues.map((i) => [i.path, i.severity])).toEqual([
+      [`rubric.${SIM.rubric.length}.met`, "warning"],
+      [`physiology.events.${SIM.physiology!.events.length}.when`, "warning"],
+    ]);
+    expect(issues[0].message).toMatch(/"never" can never be met/);
+    expect(issues[1].message).toMatch(/"ghost-event" can never fire/);
+  });
+
   it("reports unreachable phases and single-answer solution steps with several options", () => {
     const c = structuredClone(V4);
     c.phases.push({ id: "archive", label: "Archive", learnerSwitchable: false });

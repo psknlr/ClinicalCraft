@@ -209,13 +209,15 @@ export const DEFAULT_CAPABILITIES: Readonly<ModelCapabilities> = Object.freeze({
  */
 export const MODEL_RULES: readonly ModelRule[] = [
   /* ---------------- Anthropic Claude ---------------- */
-  { match: "^claude-", capabilities: { contextWindow: 200_000, maxOutputTokens: 64_000, supportsImages: true, reasoning: "anthropic-effort" } },
+  // Claude 4.7+ reject sampling parameters (temperature/top_p/top_k); unknown (future) Claude ids are
+  // treated the same way because omitting sampling is always accepted while sending it may be a 400.
+  { match: "^claude-", capabilities: { contextWindow: 200_000, maxOutputTokens: 64_000, supportsImages: true, reasoning: "anthropic-effort", rejectsSampling: true } },
   {
     match: "^claude-(opus-4-[678]|sonnet-4-6|opus-5|sonnet-5|haiku-5-5|fable-5|mythos-5)",
     capabilities: { contextWindow: 1_000_000, maxOutputTokens: 128_000 },
   },
-  // Claude 4.7+ reject sampling parameters (temperature/top_p/top_k).
-  { match: "^claude-(opus-4-[78]|opus-5|sonnet-5|haiku-5-5|fable-5|mythos-5)", capabilities: { rejectsSampling: true } },
+  // Claude 4.6 and older accept sampling (incl. dated ids such as claude-opus-4-20250514).
+  { match: "^claude-(3|2|instant|haiku-4|sonnet-4|opus-4-[0-6]|opus-4$)", capabilities: { rejectsSampling: false } },
   // Forced tool_choice is rejected (we never force; recorded for clients that might).
   { match: "^claude-(opus-5|opus-5-5|fable-5|mythos-5|sonnet-5-5)", capabilities: { forbidsForcedToolChoice: true, rejectsSampling: true } },
   // Mid-conversation `{role:"system"}` messages.
@@ -223,8 +225,11 @@ export const MODEL_RULES: readonly ModelRule[] = [
     match: "^claude-(opus-4-8|opus-5|opus-5-5|fable-5|mythos-5|sonnet-5-5|haiku-5-5)",
     capabilities: { supportsMidConversationSystem: true },
   },
-  // Haiku 4.5 and older models reject `effort`.
-  { match: "^claude-(haiku-4|sonnet-4-5|opus-4-1|opus-4-0|sonnet-4-0|3)", capabilities: { reasoning: "none" } },
+  // Haiku 4.5, Sonnet 4.5, Claude 4.0/4.1 (incl. dated ids) and Claude 3 reject `effort`.
+  {
+    match: "^claude-(haiku-4|sonnet-4-5|sonnet-4-0|sonnet-4-\\d{8}|sonnet-4$|opus-4-1|opus-4-0|opus-4-\\d{8}|opus-4$|3|2|instant)",
+    capabilities: { reasoning: "none" },
+  },
 
   /* ---------------- OpenAI ---------------- */
   { match: "^gpt-4o", capabilities: { contextWindow: 128_000, maxOutputTokens: 16_384, supportsImages: true } },

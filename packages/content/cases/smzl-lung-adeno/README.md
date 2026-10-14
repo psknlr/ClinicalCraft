@@ -17,7 +17,7 @@ left upper lung**. The case teaches:
 
 | | |
 |---|---|
-| id / version | `smzl-lung-adeno` / `1.0.0` |
+| id / version | `smzl-lung-adeno` / `1.1.0` |
 | setting / facility | `outpatient` / `clinic-v4` (the V4 world) |
 | locales | `zh-CN` (source language; V4 text verbatim), `en` (translation) |
 | phases | `pre` 诊断期 Diagnostic phase · `post` 治疗后复评期 Post-treatment re-evaluation (learner-switchable; static clock) |
@@ -70,17 +70,36 @@ clinicalcraft import-v4 ./Virtual_Patient_V4_Part1.zip ./Virtual_Patient_V4_Part
 | `gh()` destinations `patient/lab/imaging/path/board` | waypoints `patient` → `lab-hematology` → `ct` → `histopathology` → `flow-cytometry` → `board` → `lab-serology` → `cytogenetics` → `board` |
 | `Ka` (4 decisions) | `decisions` `diagnosis`, `safety`, `genetics` and `response` (`requires`, `need`, options and feedback verbatim) |
 | `is` (13 investigations) | `investigations` in the **same order**, because match order follows declaration order |
-| `Xd` matcher | `orderMatching` (7 rules + `exact` overrides). The 平扫 notice is in `orderMatching.warnings` |
+| `Xd` matcher | `orderMatching` (V4's 7 rules + `exact` overrides, plus 2 English-only rules). The 平扫 notice is in `orderMatching.warnings` |
 | `dh(id, phase)` | `results.pre` and `results.post` for every investigation (date, text, figures, note, source) |
 | V4 station groups (`os`) | `requires` capabilities that match the `clinic-v4` workstation groupings |
-| finish screen | `debrief` (conclusion, key reasoning, boundaries, unknowns, notice) |
+| finish screen | `debrief` (title, conclusion, first key-reasoning point, boundaries, unknowns, notice) |
 | source / scope screen | `provenance.notes` |
-| other V4 UI copy (compare view, case label, save format) | `extensions.v4` |
+| other V4 UI copy (compare view, case label, save format, phase-switch toast, destination mapping) | `extensions.v4` |
 
-Parity with V4 was checked by running V4's own `Xd`, `zn`, `Ka` and `dh` against
-this file. All zh-CN texts match exactly. 87 order queries return identical
-results in the engine's `matchOrders`, in both locales. The V4 state machine
-replays `solution` to completion with 4/4 decisions correct on the first try.
+Parity with V4 is a test:
+[`packages/core/src/engine/smzl-parity.test.ts`](../../../core/src/engine/smzl-parity.test.ts)
+embeds V4's decoded case logic (`Vd`, `Za`, `zn`, `mn`, `Ka`, `Wd`, `is`, `Xd`,
+`dh`, `gh`) verbatim and asserts, against this file:
+
+- every zh-CN string carried over from V4 is identical (questions, chapters and
+  quest copy, decisions, investigation names and aliases, all 13 × 2 results,
+  finish screen, patient tags, 平扫 notice);
+- `matchOrders` equals `Xd` for 100+ queries in V4's vocabulary, in both
+  locales, and the 平扫 notice fires exactly when V4's does;
+- objective completion, the current objective and the waypoint equal V4
+  `zn`/`mn`/`gh` on the scripted V4 path, exhaustively over every combination
+  of the 17 facts V4's gates read, and on 300 seeded random walks through
+  `reduce()` in lock-step with V4's `Wd`;
+- decision `requires` equals V4 `Ka[...].requires` (same exhaustive and random
+  checks);
+- the reference `solution` verifies, scores every deterministic rubric item,
+  and also completes V4's own state machine.
+
+V4 `gh()` destinations map to V5 waypoint targets through the clinic-v4
+workstation groupings: `lab` → `lab-hematology` | `flow-cytometry` |
+`lab-serology`, `imaging` → `ct`, `path` → `histopathology` | `cytogenetics`.
+Once every objective is done V5 has no waypoint, where V4 pointed at the board.
 
 ## What V5 adds beyond V4 (all sourced; nothing invented)
 
@@ -88,7 +107,8 @@ replays `solution` to completion with 4/4 decisions correct on the first try.
 |---|---|
 | English translation of every text | the V4 text |
 | History `pmh-htn`: hypertension for years, levamlodipine besylate, controlled | 正文·既往史 |
-| History `meds`: aumolertinib dosing (55/110 mg alternate days, then 110 mg daily from June 2025) and levamlodipine | 正文·既往史 |
+| History `meds` (**pre only**): levamlodipine; aumolertinib 55 mg on odd-numbered and 110 mg on even-numbered days | 正文·既往史 (lung cancer diagnosed 6 months before the July 2025 admission) |
+| History `meds-post` (**post only**): the same, plus the June 2025 change to 110 mg daily after the lung lesion grew | 正文·既往史 (2025-06) |
 | History `allergies`: no drug or food allergies | 正文·既往史 |
 | History `psh`: gallbladder removed (date and reason not recorded) | 正文·检查 (ultrasound and CT: post-cholecystectomy) |
 | History `fever`: abdominal pain with fever in April 2025, improved with anti-infective treatment | 正文·一般资料 |
@@ -100,11 +120,21 @@ replays `solution` to completion with 4/4 decisions correct on the first try.
 | NPC briefs: radiologist, pathologist, Socratic attending (`revealsDiagnosis: false`) | caveats restated from V4 report notes |
 | Rubric: 11 deterministic items + 2 communication items judged from the transcript | design |
 | Spoiler-free library title and summary (V4's label `CASE 01 · SMZL 与肺腺癌并存` is kept in `extensions.v4.caseLabel`) | design |
+| Debrief key reasoning 2: MCL (CD5, cyclin D1) and FL (CD10, BCL6) differential against this immunophenotype | 正文·诊断与鉴别诊断 |
+| Debrief key reasoning 3: splenic histology is the gold standard; marrow biopsy with a matching immunophenotype can support SMZL; SDRPL still to be distinguished | 正文·讨论 |
+| Debrief teaching point on sampling methods and denominators | V4 `marrow` and `flow` result caveats |
+| Debrief references: BSH 2024 MZL guideline, JSH 2023 MZL guideline, the 2025 Chinese consensus on haematological plus solid tumours (all cited by the source), EASL 2017 HBV guideline (for the anti-CD20 / HBcAb safety decision) | source reference list [1], [4], [14]; EASL |
+| Case-level `unknowns` for agents: smoking and family history, occupation and alcohol, pain duration and score, diagnostic-phase examination | V4 `other` and `pain` answers; absence in the source |
+| English order entry: aliases (non-contrast/plain CT, CT scan, bone marrow exam…), English alternatives in V4's rules (abdominal, splenic, chest, non-abdominal ultrasound, aspirate + biopsy), `exact` "ultrasound"/"CT scan", and the 平扫 notice for "non-contrast / unenhanced / plain" | V4 `Xd` semantics |
+| `extensions.testUtterances`: 37 bilingual matcher regression utterances (3 must fall through to "not recorded") | design |
+| Reference `solution` also asks smoking/family, medications and allergies, and reads the post-treatment chest CT, so it meets every deterministic rubric item | design |
 
 All added history items are `required: false` and none contradicts V4. The
 added keywords are tuned for the offline matcher: for example, "糖尿病" and
 "diabetes" deliberately have no keyword, so those questions get the
 "not recorded" fallback instead of being matched to the hypertension answer.
+"既往病史" / "past medical history" selects both the lung cancer and the
+hypertension items.
 
 ## Evidence boundaries kept from V4
 
@@ -118,7 +148,24 @@ added keywords are tuned for the offline matcher: for example, "糖尿病" and
 - PR is the authors' assessment. The source contradicts itself on whether the
   lung cancer progressed.
 - `unknowns`: the EGFR variant, lung cancer TNM stage, lung nodule size, the
-  mechanism of any common origin, and HBsAg.
+  mechanism of any common origin, and HBsAg (V4's list, also in `debrief`),
+  plus smoking and family history, occupation and alcohol, pain duration and
+  score, and the diagnostic-phase examination.
+
+## Known limitations
+
+- The offline matcher has no negative keywords, so "家里有人得过肿瘤吗" /
+  "any family history of cancer?" selects the patient's own `lung` item as well
+  as `other` (both score 1.0), and "past medical history" also selects the
+  medication items ("medical" and "medication" share a 5-letter prefix).
+- `matchHistory` is not phase-aware. The phase-restricted items (`meds` /
+  `meds-post`, the post-only history) rely on the patient pipeline dropping
+  candidates the reducer would reject as `phase-locked`.
+- `abdct` is rated `essential` and `us` `useful`, although V4's chapter 2
+  accepts either. A learner who reads only the ultrasound completes the chapter
+  but sees `abdct` under "essential investigations missed".
+- Results are narrative text only (no `values` tables), as in V4; no
+  `sha256` on the local-only assets yet.
 
 ## Checking the case
 

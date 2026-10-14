@@ -70,7 +70,7 @@ export class ProxyProvider implements LLMProvider {
     }
     if (!response.ok) {
       const text = await response.text().catch(() => "");
-      yield { type: "error", error: classifyHttpError(response.status, text) };
+      yield { type: "error", error: classifyHttpError(response.status, text, response.headers) };
       return;
     }
     if (!response.body) {

@@ -1741,7 +1741,7 @@
       "id": "ex-rovsing",
       "system": "abdomen",
       "maneuver": {
-        "zh-CN": "Rovsing征：深压左下腹",
+        "zh-CN": "结肠充气试验（Rovsing征）：深压左下腹",
         "en": "Rovsing's sign: deep pressure in the left iliac fossa"
       },
       "keywords": {
@@ -1758,7 +1758,7 @@
         ]
       },
       "finding": {
-        "zh-CN": "Rovsing征阳性：深压左下腹时右下腹疼痛加剧。",
+        "zh-CN": "结肠充气试验（Rovsing征）阳性：深压左下腹时右下腹疼痛加剧。",
         "en": "Rovsing's sign positive: deep pressure in the left iliac fossa causes pain in the right iliac fossa."
       },
       "abnormal": true
@@ -1924,7 +1924,7 @@
       },
       "finding": {
         "zh-CN": "（征得同意，男护士陪检）双侧睾丸位置正常，无横位，无肿胀及触痛；附睾无压痛；双侧提睾反射存在；阴囊皮肤正常。",
-        "en": "(With consent, male nurse chaperoning) Both testes normal lie, no horizontal lie, not swollen or tender; epididymides non-tender; cremasteric reflexes present bilaterally; scrotal skin normal."
+        "en": "(With consent, male nurse chaperoning) Both testes lie normally (no horizontal lie) and are neither swollen nor tender; epididymides non-tender; cremasteric reflexes present bilaterally; scrotal skin normal."
       },
       "abnormal": false,
       "required": true
@@ -2199,7 +2199,7 @@
             },
             {
               "analyte": {
-                "zh-CN": "红细胞压积",
+                "zh-CN": "血细胞比容",
                 "en": "Haematocrit"
               },
               "value": 0.45,
@@ -2513,7 +2513,7 @@
             },
             {
               "analyte": {
-                "zh-CN": "天门冬氨酸氨基转移酶（AST）",
+                "zh-CN": "天冬氨酸氨基转移酶（AST）",
                 "en": "AST"
               },
               "value": 20,
@@ -3241,7 +3241,7 @@
       ],
       "turnaroundMinutes": 40,
       "risk": "low",
-      "value": "low-value",
+      "value": "neutral",
       "results": {
         "ed": {
           "date": {
@@ -3545,7 +3545,7 @@
     {
       "id": "iv-fluids",
       "name": {
-        "zh-CN": "静脉补液：复方乳酸钠林格液",
+        "zh-CN": "静脉补液：乳酸钠林格注射液",
         "en": "IV fluids: Hartmann's solution (compound sodium lactate)"
       },
       "kind": "fluid",
@@ -3559,7 +3559,8 @@
           "生理盐水",
           "晶体液",
           "静脉补液",
-          "平衡液"
+          "平衡液",
+          "乳酸钠林格注射液"
         ],
         "en": [
           "iv fluids",
@@ -3574,7 +3575,7 @@
         ]
       },
       "dose": {
-        "zh-CN": "留置18G静脉套管针并同时抽血；复方乳酸钠林格液 500 mL 30分钟内静滴，再 500 mL 2小时内滴完；之后按 25–30 mL/kg/天（约 80 mL/h）维持",
+        "zh-CN": "留置18G静脉套管针并同时抽血；乳酸钠林格注射液 500 mL 30分钟内静滴，再 500 mL 2小时内滴完；之后按 25–30 mL/kg/天（约 80 mL/h）维持",
         "en": "18G cannula (bloods drawn at the same time); Hartmann's 500 mL over 30 min, then 500 mL over 2 h; thereafter maintenance 25–30 mL/kg/day (≈80 mL/h)"
       },
       "requires": [
@@ -3907,8 +3908,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "头孢呋辛 1.5 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；切皮前 60 分钟内给药；术中如证实为非复杂性阑尾炎，术后无需继续",
-        "en": "Cefuroxime 1.5 g IV + metronidazole 500 mg IV, within 60 min before incision; no post-operative course if uncomplicated at operation"
+        "zh-CN": "头孢呋辛 1.5 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；确诊后即给药（理想为切皮前 60 分钟内；若至切皮已超过 4 小时，麻醉诱导时追加头孢呋辛 1.5 g）；术中如证实为非复杂性阑尾炎，术后无需继续",
+        "en": "Cefuroxime 1.5 g IV + metronidazole 500 mg IV, given once the diagnosis is confirmed (ideally ≤ 60 min before incision; re-dose cefuroxime 1.5 g at induction if > 4 h have elapsed); no post-operative course if uncomplicated at operation"
       },
       "requires": [
         "iv-access"
@@ -3971,8 +3972,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "头孢曲松 2 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；切皮前 60 分钟内给药",
-        "en": "Ceftriaxone 2 g IV + metronidazole 500 mg IV, within 60 min before incision"
+        "zh-CN": "头孢曲松 2 g 静脉滴注 + 甲硝唑 500 mg 静脉滴注；确诊后即给药（理想为切皮前 60 分钟内；头孢曲松半衰期长，术中一般无需追加）；术中如证实为非复杂性阑尾炎，术后无需继续",
+        "en": "Ceftriaxone 2 g IV + metronidazole 500 mg IV, given once the diagnosis is confirmed (ideally ≤ 60 min before incision; long half-life, so no intra-operative re-dose is usually needed); no post-operative course if uncomplicated at operation"
       },
       "requires": [
         "iv-access"
@@ -4297,8 +4298,8 @@
         }
       },
       "harm": {
-        "zh-CN": "非手术治疗的证据（APPAC、CODA）建立在 CT 确认非复杂性阑尾炎的基础上；超声不能可靠排除阑尾粪石，而有粪石者非手术治疗失败率和并发症更高。",
-        "en": "The evidence for non-operative treatment (APPAC, CODA) rests on CT-confirmed uncomplicated appendicitis; ultrasound cannot reliably exclude an appendicolith, and appendicoliths carry higher failure and complication rates."
+        "zh-CN": "非手术治疗的证据（APPAC、CODA）主要建立在 CT 确认的非复杂性阑尾炎基础上；超声不能可靠排除阑尾粪石，而有粪石者非手术治疗失败率和并发症更高。",
+        "en": "The evidence for non-operative treatment (APPAC, CODA) rests mainly on CT-confirmed uncomplicated appendicitis; ultrasound cannot reliably exclude an appendicolith, and appendicoliths carry higher failure and complication rates."
       },
       "response": {
         "zh-CN": "开始“抗生素优先”方案；外科团队将定期复查，如 24–48 小时内无改善或病情加重则改行阑尾切除术。",
@@ -4340,8 +4341,8 @@
         "value": 4
       },
       "harm": {
-        "zh-CN": "延迟镇痛并不能提高诊断准确性——Cochrane 系统评价显示，阿片类镇痛不会掩盖腹膜体征或增加处理错误；只会延长痛苦并让查体更难配合。",
-        "en": "Withholding analgesia does not improve diagnostic accuracy — a Cochrane review found opioid analgesia does not mask peritoneal signs or increase management errors. It only prolongs suffering and makes examination harder."
+        "zh-CN": "延迟镇痛并不能提高诊断准确性——Cochrane 系统评价显示，阿片类镇痛不会增加诊断错误或治疗决策错误；只会延长痛苦并让查体更难配合。",
+        "en": "Withholding analgesia does not improve diagnostic accuracy — a Cochrane review found opioid analgesia does not increase diagnostic errors or errors in treatment decisions. It only prolongs suffering and makes examination harder."
       },
       "response": {
         "zh-CN": "患者仍蜷缩着、满头大汗，护士再次询问能否给予镇痛。",
@@ -4669,8 +4670,8 @@
         ],
         "severity": "warning",
         "message": {
-          "zh-CN": "护士：“已经三个小时了，还没用抗生素，也没有明确的处理方案。他说比刚才更疼、更热了。要不要请上级或者外科来看看？”",
-          "en": "Nurse: \"It's been three hours — no antibiotics and no plan yet. He says the pain is worse and he feels hotter. Should we get your senior or the surgeons?\""
+          "zh-CN": "护士：“已经三个小时了，还没用抗生素，也没有明确的处理方案。他说身上更烫了，人也更难受。要不要请上级或者外科来看看？”",
+          "en": "Nurse: \"It's been three hours — no antibiotics and no plan yet. He says he feels hotter and more unwell. Should we get your senior or the surgeons?\""
         }
       },
       {
@@ -4809,8 +4810,8 @@
         "en": "Supportive care"
       },
       "hint": {
-        "zh-CN": "疼痛评分 ≥ 4 分就应及时滴定镇痛——阿片类不会掩盖体征。同时禁食、建立静脉通路补液、止吐。",
-        "en": "Pain ≥ 4/10 deserves prompt titrated analgesia — opioids do not mask the signs. Keep him nil by mouth, start IV fluids and an antiemetic."
+        "zh-CN": "疼痛评分 ≥ 4 分就应及时滴定镇痛——阿片类镇痛不会增加误诊。同时禁食、建立静脉通路补液、止吐。",
+        "en": "Pain ≥ 4/10 deserves prompt titrated analgesia — opioids do not increase diagnostic errors. Keep him nil by mouth, start IV fluids and an antiemetic."
       },
       "guidance": {
         "zh-CN": "在等待检查结果时先处理疼痛、恶心和脱水。",
@@ -5055,7 +5056,7 @@
         {
           "id": "s-fluids",
           "text": {
-            "zh-CN": "静脉晶体液补液（复方乳酸钠林格液）",
+            "zh-CN": "静脉晶体液补液（乳酸钠林格注射液）",
             "en": "IV crystalloid (Hartmann's)"
           },
           "correct": true,
@@ -5072,8 +5073,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确：Cochrane 系统评价显示，急腹症早期阿片类镇痛不降低诊断准确性。",
-            "en": "Correct — a Cochrane review shows early opioid analgesia in acute abdominal pain does not reduce diagnostic accuracy."
+            "zh-CN": "正确：Cochrane 系统评价显示，急腹症早期阿片类镇痛不增加诊断错误或治疗决策错误。",
+            "en": "Correct — a Cochrane review shows early opioid analgesia in acute abdominal pain does not increase diagnostic or treatment-decision errors."
           }
         },
         {
@@ -5096,8 +5097,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误：这是过时的做法；镇痛不会掩盖腹膜刺激征，延迟镇痛只会增加痛苦。",
-            "en": "Incorrect — an outdated practice; analgesia does not mask peritonism, and delay only adds suffering."
+            "zh-CN": "错误：这是过时的做法；镇痛不会增加误诊或治疗决策错误，延迟镇痛只会增加痛苦。",
+            "en": "Incorrect — an outdated practice; analgesia does not increase missed diagnoses or wrong treatment decisions, and delay only adds suffering."
           }
         },
         {
@@ -5259,8 +5260,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误：腹膜刺激征局限于右下腹，无全腹强直；超声无积液或脓肿；体温低于 38.5 ℃。",
-            "en": "Incorrect — peritonism is confined to the right iliac fossa without generalised rigidity; no fluid or abscess on ultrasound; temperature below 38.5 °C."
+            "zh-CN": "错误：腹膜刺激征局限于右下腹，无全腹强直；超声无积液或脓肿；仅低热，CRP 中度升高（48 mg/L）。",
+            "en": "Incorrect — peritonism is confined to the right iliac fossa without generalised rigidity; no fluid or abscess on ultrasound; only a low-grade fever and a moderately raised CRP (48 mg/L)."
           }
         },
         {
@@ -5348,8 +5349,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确：腹腔镜阑尾切除术仍是非复杂性阑尾炎的标准治疗（WSES 2020）：术后疼痛轻、切口感染少、住院时间短。非复杂性者术后无需继续抗生素。",
-            "en": "Correct — laparoscopic appendectomy remains the standard treatment for uncomplicated appendicitis (WSES 2020): less pain, fewer wound infections, shorter stay. No post-operative antibiotics are needed if it is uncomplicated at operation."
+            "zh-CN": "正确：腹腔镜阑尾切除术仍是非复杂性阑尾炎的标准治疗（WSES 2020；SAGES 2024）：术后疼痛轻、切口感染少、住院时间短。非复杂性者术后无需继续抗生素。",
+            "en": "Correct — laparoscopic appendectomy remains the standard treatment for uncomplicated appendicitis (WSES 2020; SAGES 2024): less pain, fewer wound infections, shorter stay. No post-operative antibiotics are needed if it is uncomplicated at operation."
           }
         },
         {
@@ -5807,8 +5808,8 @@
         "en": "Pharmacist Chen Jie"
       },
       "knowledge": {
-        "zh-CN": "患者体重 68 kg，肾功能正常，无已知药物过敏。剂量：吗啡静脉滴定每次 2–3 mg，总量约 0.1 mg/kg；对乙酰氨基酚 1 g 静脉每 6 小时，24 小时 ≤ 4 g；昂丹司琼 4 mg 静脉；头孢呋辛 1.5 g + 甲硝唑 500 mg 静脉（或头孢曲松 2 g + 甲硝唑 500 mg），切皮前 60 分钟内；帕瑞昔布 40 mg 静脉仅在容量纠正后使用。抗菌药物管理：非复杂性社区获得性阑尾炎不使用碳青霉烯类。",
-        "en": "Patient 68 kg, normal renal function, no known drug allergies. Doses: morphine IV titrated 2–3 mg at a time up to ~0.1 mg/kg; paracetamol 1 g IV 6-hourly, ≤ 4 g/24 h; ondansetron 4 mg IV; cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg) within 60 min before incision; parecoxib 40 mg IV only once volume-replete. Stewardship: no carbapenems for community-acquired uncomplicated appendicitis."
+        "zh-CN": "患者体重 68 kg，肾功能正常，无已知药物过敏。剂量：吗啡静脉滴定每次 2–3 mg，总量约 0.1 mg/kg；对乙酰氨基酚 1 g 静脉每 6 小时，24 小时 ≤ 4 g；昂丹司琼 4 mg 静脉；头孢呋辛 1.5 g + 甲硝唑 500 mg 静脉（或头孢曲松 2 g + 甲硝唑 500 mg），确诊后给药（理想为切皮前 60 分钟内；头孢呋辛若至切皮超过 4 小时需在诱导时追加）；帕瑞昔布 40 mg 静脉仅在容量纠正后使用。抗菌药物管理：非复杂性社区获得性阑尾炎不使用碳青霉烯类。",
+        "en": "Patient 68 kg, normal renal function, no known drug allergies. Doses: morphine IV titrated 2–3 mg at a time up to ~0.1 mg/kg; paracetamol 1 g IV 6-hourly, ≤ 4 g/24 h; ondansetron 4 mg IV; cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg) given at diagnosis (ideally ≤ 60 min before incision; re-dose cefuroxime at induction if > 4 h have elapsed); parecoxib 40 mg IV only once volume-replete. Stewardship: no carbapenems for community-acquired uncomplicated appendicitis."
       }
     }
   ],
@@ -5898,7 +5899,8 @@
     "references": [
       "Di Saverio S, Podda M, De Simone B, et al. Diagnosis and treatment of acute appendicitis: 2020 update of the WSES Jerusalem guidelines. World J Emerg Surg. 2020;15:27.",
       "Gorter RR, Eker HH, Gorter-Stam MAW, et al. Diagnosis and management of acute appendicitis. EAES consensus development conference 2015. Surg Endosc. 2016;30:4668–4690.",
-      "American College of Radiology. ACR Appropriateness Criteria: Right Lower Quadrant Pain (current revision).",
+      "Expert Panel on Gastrointestinal Imaging. ACR Appropriateness Criteria® Right Lower Quadrant Pain: 2022 Update. J Am Coll Radiol. 2022;19(11S):S445–S461.",
+      "Kumar SS, Collings AT, Lamm R, et al. SAGES guideline for the diagnosis and treatment of appendicitis. Surg Endosc. 2024.",
       "Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557–564.",
       "Andersson M, Andersson RE. The appendicitis inflammatory response score: a tool for the diagnosis of acute appendicitis that outperforms the Alvarado score. World J Surg. 2008;32(8):1843–1849.",
       "Manterola C, Vial M, Moraga J, Astudillo P. Analgesia in patients with acute abdominal pain. Cochrane Database Syst Rev. 2011;(1):CD005660.",

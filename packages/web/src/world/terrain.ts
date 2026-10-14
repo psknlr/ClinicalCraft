@@ -5,7 +5,7 @@
 import { Group, Mesh } from "three";
 import type { BuildContext } from "./context.js";
 import { checkerMaterial, zoneCells } from "./buildzone.js";
-import { rectContains, type Rect } from "./geometry.js";
+import { greedyRects, rectContains, type Rect } from "./geometry.js";
 import { boxCollider } from "./physics.js";
 import { createLcg } from "./textures.js";
 import { UNIT_BOX } from "./voxels.js";
@@ -61,12 +61,22 @@ export function buildTerrain(ctx: BuildContext): { clouds: Group } {
   const paths = terrain.paths ?? [];
   const zone = f.buildZone?.rect ?? null;
   const r = groundRange(f.bounds);
-  for (let cx = r.x0; cx <= r.x1; cx++)
-    for (let cz = r.z0; cz <= r.z1; cz++) {
-      const m = groundMaterial(cx, cz, ground, paths, zone);
-      ctx.batch.add(m, cx + 0.5, -0.5, cz + 0.5);
-      if (cx === r.x0 || cx === r.x1 || cz === r.z0 || cz === r.z1) ctx.batch.add(ctx.lib.has("dirt") ? "dirt" : ground, cx + 0.5, -1.5, cz + 0.5);
-    }
+  // V4 placed one 1×1×1 block per ground cell; equal neighbouring cells are
+  // merged into tiled boxes (pixel-identical, ~50× fewer instances).
+  const cols = r.x1 - r.x0 + 1, rows = r.z1 - r.z0 + 1;
+  const mats: string[] = new Array(cols * rows);
+  for (let iz = 0; iz < rows; iz++)
+    for (let ix = 0; ix < cols; ix++) mats[iz * cols + ix] = groundMaterial(r.x0 + ix, r.z0 + iz, ground, paths, zone);
+  for (const g of greedyRects(cols, rows, (ix, iz) => mats[iz * cols + ix])) {
+    const w = g.ix1 - g.ix0 + 1, d = g.iz1 - g.iz0 + 1;
+    ctx.batch.addTiled(g.value, r.x0 + g.ix0 + w / 2, -0.5, r.z0 + g.iz0 + d / 2, w, 1, d);
+  }
+  // dirt skirt under the outermost ring (V4)
+  const dirt = ctx.lib.has("dirt") ? "dirt" : ground;
+  ctx.batch.addTiled(dirt, (r.x0 + r.x1 + 1) / 2, -1.5, r.z0 + 0.5, cols, 1, 1);
+  ctx.batch.addTiled(dirt, (r.x0 + r.x1 + 1) / 2, -1.5, r.z1 + 0.5, cols, 1, 1);
+  ctx.batch.addTiled(dirt, r.x0 + 0.5, -1.5, (r.z0 + r.z1 + 1) / 2, 1, 1, rows - 2 > 0 ? rows - 2 : 1);
+  ctx.batch.addTiled(dirt, r.x1 + 0.5, -1.5, (r.z0 + r.z1 + 1) / 2, 1, 1, rows - 2 > 0 ? rows - 2 : 1);
 
   // horizon ring (V4: 50 boulders, r 43 + rnd·9, h 3 + ⌊rnd·7⌋, 7×7)
   const cxw = (f.bounds.minX + f.bounds.maxX) / 2;

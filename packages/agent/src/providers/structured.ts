@@ -25,7 +25,7 @@ export function structuredOutputMode(providerId: string, model: string): Structu
 
 /** Whether a Claude model accepts `output_config.format` (first-party API, Claude 4.1+). */
 export function anthropicSupportsStructuredOutput(model: string, firstParty: boolean): boolean {
-  return firstParty && /^claude-(?!3|instant|2|opus-4-0|sonnet-4-0)/i.test(model);
+  return firstParty && /^claude-(?!3|instant|2|opus-4-0|sonnet-4-0|opus-4-\d{8}|sonnet-4-\d{8}|opus-4$|sonnet-4$)/i.test(model);
 }
 
 /** OpenAI requires `^[a-zA-Z0-9_-]{1,64}$` for json_schema names. */

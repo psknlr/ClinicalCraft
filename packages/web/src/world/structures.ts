@@ -6,6 +6,8 @@
 import { Group, Mesh, type Material, type Object3D } from "three";
 import type { BuildContext, DoorLeaf, DoorRecord } from "./context.js";
 import {
+  greedyRects,
+  mergeWallPieces,
   rectContains,
   resolveOpenings,
   rotateXZ,
@@ -60,13 +62,14 @@ interface WallBuildOptions {
   /** Openings outside this interval were built by another wall (dedupe). */
 }
 
-function addBox(ctx: BuildContext, mat: string, wall: WallLine, a: number, b: number, y0: number, y1: number, thickness: number, offset = 0) {
+function addBox(ctx: BuildContext, mat: string, wall: WallLine, a: number, b: number, y0: number, y1: number, thickness: number, offset = 0, tiled = false) {
   const c = (a + b) / 2;
   const p = wallPoint(wall, c);
   const len = b - a;
   const h = y1 - y0;
-  if (wall.axis === "x") ctx.batch.add(mat, p.x, (y0 + y1) / 2, p.z + offset, len, h, thickness);
-  else ctx.batch.add(mat, p.x + offset, (y0 + y1) / 2, p.z, thickness, h, len);
+  const add = tiled ? ctx.batch.addTiled.bind(ctx.batch) : ctx.batch.add.bind(ctx.batch);
+  if (wall.axis === "x") add(mat, p.x, (y0 + y1) / 2, p.z + offset, len, h, thickness);
+  else add(mat, p.x + offset, (y0 + y1) / 2, p.z, thickness, h, len);
 }
 
 function wallAabb(wall: WallLine, a: number, b: number, y0: number, y1: number, thickness: number): Aabb {
@@ -88,11 +91,9 @@ export function buildWall(
 ): WallRecord {
   const resolved = resolveOpenings(wall, height, openings);
   const pieces = segmentWall(wall, height, resolved);
-  // visual pieces
-  for (const p of pieces) {
-    const mat = p.course === "base" ? mats.base : p.course === "top" ? mats.top : mats.body;
-    addBox(ctx, mat, wall, p.a, p.b, p.y0, p.y1, thickness);
-  }
+  // visual pieces: V4 1×1 blocks merged per course into tiled boxes (same pixels, far fewer instances)
+  const matOf = (p: { course: string }) => (p.course === "base" ? mats.base : p.course === "top" ? mats.top : mats.body);
+  for (const p of mergeWallPieces(pieces, matOf)) addBox(ctx, p.key, wall, p.a, p.b, p.y0, p.y1, thickness, 0, true);
   // colliders: merge each column's contiguous solid spans, then merge equal neighbouring columns
   const cols = new Map<string, { a: number; b: number; spans: [number, number][] }>();
   for (const p of pieces) {
@@ -288,12 +289,13 @@ export function buildStructures(ctx: BuildContext): WallRecord[] {
     const skylights: Rect[] = roof.skylights ?? [];
     const minX = b.rect.x - b.rect.w / 2 - 1.5, maxX = b.rect.x + b.rect.w / 2 + 1.5;
     const minZ = b.rect.z - b.rect.d / 2 - 1.5, maxZ = b.rect.z + b.rect.d / 2 + 1.5;
-    for (const [x0, x1] of splitInterval(minX, maxX, [], 1))
-      for (const [z0, z1] of splitInterval(minZ, maxZ, [], 1)) {
-        const cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
-        if (skylights.some((s) => rectContains(s, cx, cz))) continue;
-        ctx.batch.add(roofMat, cx, H + 0.15, cz, x1 - x0, 0.3, z1 - z0);
-      }
+    const xs = splitInterval(minX, maxX, [], 1);
+    const zs = splitInterval(minZ, maxZ, [], 1);
+    const roofCell = (ix: number, iz: number) => (skylights.some((s) => rectContains(s, (xs[ix][0] + xs[ix][1]) / 2, (zs[iz][0] + zs[iz][1]) / 2)) ? null : roofMat);
+    for (const g of greedyRects(xs.length, zs.length, roofCell)) {
+      const x0 = xs[g.ix0][0], x1 = xs[g.ix1][1], z0 = zs[g.iz0][0], z1 = zs[g.iz1][1];
+      ctx.batch.addTiled(g.value, (x0 + x1) / 2, H + 0.15, (z0 + z1) / 2, x1 - x0, 0.3, z1 - z0);
+    }
     for (const s of skylights) {
       const longZ = s.d >= s.w;
       if (ctx.lib.has("glass")) {

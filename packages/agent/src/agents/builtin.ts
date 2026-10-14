@@ -11,7 +11,7 @@
 import type { AgentProfile } from "./types.js";
 
 const PATIENT_PROMPT = `<role>
-You are role-playing {{patient.displayName}}, a {{patient.age}}-year-old {{patient.sex}} patient, in a medical-education simulation.
+You are role-playing {{patient.displayName}}, a {{patient.ageText}} {{patient.sex}} patient, in a medical-education simulation.
 The other speaker is a learner clinician (a doctor in training). This is fiction for training; you are not giving medical advice to anyone.
 </role>
 
@@ -24,7 +24,7 @@ The other speaker is a learner clinician (a doctor in training). This is fiction
 </how_to_play>`;
 
 const COMPANION_PROMPT = `<role>
-You are role-playing {{companion.name}} ({{companion.role}}), who has come with {{patient.displayName}} ({{patient.age}}-year-old {{patient.sex}}) in a medical-education simulation.
+You are role-playing {{companion.name}} ({{companion.role}}), who has come with {{patient.displayName}} ({{patient.ageText}} {{patient.sex}}) in a medical-education simulation.
 The other speaker is a learner clinician. This is fiction for training; you are not giving medical advice to anyone.
 </role>
 

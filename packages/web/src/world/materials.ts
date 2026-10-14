@@ -8,6 +8,7 @@ import {
   MeshStandardMaterial,
   NearestFilter,
   NearestMipmapNearestFilter,
+  RepeatWrapping,
   SRGBColorSpace,
   type Texture,
 } from "three";
@@ -64,6 +65,7 @@ export class MaterialLibrary {
   private readonly textures: Texture[] = [];
   private readonly missing = new Set<string>();
   private readonly tints = new Map<string, MeshStandardMaterial>();
+  private readonly tiledMats = new Map<string, MeshStandardMaterial>();
 
   constructor(merged: MergedCatalogs) {
     // One V4 LCG stream across all catalog materials in first-seen order.
@@ -122,6 +124,43 @@ export class MaterialLibrary {
     return this.defs.get(id)?.castShadow ?? true;
   }
 
+  /**
+   * Tiled variant for merged boxes: the texture repeats once per world unit
+   * on every face (UV × instance scale in the vertex shader), so one long
+   * box looks exactly like a row of V4 1×1 blocks.
+   */
+  tiled(id: string): MeshStandardMaterial {
+    let m = this.tiledMats.get(id);
+    if (m) return m;
+    const base = this.get(id);
+    m = base.clone();
+    if (base.map) {
+      const tex = base.map.clone();
+      tex.wrapS = tex.wrapT = RepeatWrapping;
+      tex.needsUpdate = true;
+      this.textures.push(tex);
+      m.map = tex;
+    }
+    m.name = base.name;
+    m.onBeforeCompile = (shader) => {
+      shader.vertexShader = shader.vertexShader.replace(
+        "#include <uv_vertex>",
+        `#include <uv_vertex>
+#if defined( USE_MAP ) && defined( USE_INSTANCING )
+{
+  vec3 sc = vec3( length( instanceMatrix[0].xyz ), length( instanceMatrix[1].xyz ), length( instanceMatrix[2].xyz ) );
+  vec3 an = abs( normal );
+  vec2 rep = an.x > 0.5 ? sc.zy : ( an.y > 0.5 ? sc.xz : sc.xy );
+  vMapUv *= rep;
+}
+#endif`,
+      );
+    };
+    m.customProgramCacheKey = () => "cc-tiled";
+    this.tiledMats.set(id, m);
+    return m;
+  }
+
   /** A V4-textured material for an arbitrary colour (NPC skin/hair/clothes). Deterministic per colour. */
   color(hex: string, pattern: TexturePattern = "noise", variance = 0.11): MeshStandardMaterial {
     const key = `${hex}|${pattern}|${variance}`;
@@ -151,6 +190,8 @@ export class MaterialLibrary {
   dispose(): void {
     for (const m of this.mats.values()) m.dispose();
     for (const m of this.tints.values()) m.dispose();
+    for (const m of this.tiledMats.values()) m.dispose();
+    this.tiledMats.clear();
     for (const t of this.textures) t.dispose();
     this.mats.clear();
     this.tints.clear();

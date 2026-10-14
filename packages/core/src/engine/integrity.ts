@@ -430,6 +430,14 @@ function checkReachability(c: CaseDefinition, ids: Ids): Issue[] {
     if (decisions.has(d.id)) return;
     issues.push(err(["decisions", i, "requires"], `decision "${d.id}" can never be unlocked: its requirements depend on itself or on objectives, decisions or phases that can never be reached`));
   });
+  c.rubric.forEach((r, i) => {
+    if (r.met && tri(r.met, leaf) === false) issues.push(warn(["rubric", i, "met"], `rubric item "${r.id}" can never be met, so it lowers every learner's score`));
+  });
+  c.physiology?.events.forEach((e, i) => {
+    if (e.atMinute == null && e.when && tri(e.when, leaf) === false) {
+      issues.push(warn(["physiology", "events", i, "when"], `scenario event "${e.id}" can never fire: its condition depends on objectives, decisions or phases that can never be reached`));
+    }
+  });
   c.phases.forEach((p, i) => {
     if (phases.has(p.id)) return;
     issues.push(

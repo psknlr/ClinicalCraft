@@ -50,15 +50,16 @@ concentrated urine with trace ketones and no infection or blood.
 Graded-compression ultrasound shows a non-compressible, blind-ending 9 mm
 appendix (wall 4 mm, target sign, mural hyperaemia) with echogenic inflamed
 fat. There is no appendicolith, fluid or abscess, and no hydronephrosis.
-CT (low value here) agrees: uncomplicated appendicitis, DLP ≈ 500 mGy·cm,
-≈ 7.5 mSv.
+CT (`neutral` here; redundant once the ultrasound is diagnostic) agrees:
+uncomplicated appendicitis, DLP ≈ 500 mGy·cm, ≈ 7.5 mSv.
 
 **Diagnosis:** acute uncomplicated appendicitis.
 
 **Management:** nil by mouth; Hartmann's; titrated IV morphine (≈0.1 mg/kg,
 ≈7 mg for 68 kg) plus IV paracetamol 1 g; ondansetron 4 mg; one
 pre-operative IV dose of cefuroxime 1.5 g + metronidazole 500 mg (or
-ceftriaxone 2 g + metronidazole 500 mg); surgical referral; shared decision
+ceftriaxone 2 g + metronidazole 500 mg), given at diagnosis (re-dose
+cefuroxime at induction if more than 4 h pass before incision); surgical referral; shared decision
 after the antibiotics-first option has been discussed; laparoscopic
 appendectomy. The case ends when he goes to theatre.
 
@@ -95,16 +96,19 @@ Other consistency checks the generator asserts:
    symptoms), right lower lobe pneumonia (chest) and shingles (skin) are all
    recorded so the learner can exclude them. DRE is available but adds little.
    The rubric does not require it.
-3. **Analgesia does not mask the diagnosis** (Cochrane, Manterola 2011).
+3. **Analgesia does not mask the diagnosis** (Cochrane, Manterola 2011: opioids
+   do not increase diagnostic or treatment-decision errors).
    - The scenario event `evt-analgesia-delay` fires at simulated minute 40 if
      no analgesia has been given. It sets `analgesia-delayed`, so rubric item
      `r-mx-analgesia` cannot be met afterwards.
    - "Withhold analgesia" is an orderable wrong choice. It is contraindicated
      while pain ≥ 4.
 4. **Imaging.** Ultrasound comes first in a young, slim patient. CT is
-   modelled as `low-value`: it is accurate and ACR rates it "usually
-   appropriate" in adults, but here it adds radiation and contrast and rarely
-   changes management. It earns its place when ultrasound is inconclusive, a
+   modelled as `neutral`, not `low-value`: ACR (2022 update) rates
+   contrast-enhanced CT the primary test for most adults, but here it adds
+   radiation and contrast and rarely changes management once the ultrasound
+   is diagnostic (WSES 2020 recommends ultrasound first when imaging is
+   indicated). It earns its place when ultrasound is inconclusive, a
    complication is suspected, or antibiotics-first is being considered.
    `r-inv-us-first` rewards reading the US without ordering CT.
 5. **Antibiotics.**
@@ -196,7 +200,8 @@ matcher:
 
 - Di Saverio S, et al. Diagnosis and treatment of acute appendicitis: 2020 update of the WSES Jerusalem guidelines. *World J Emerg Surg.* 2020;15:27.
 - Gorter RR, et al. Diagnosis and management of acute appendicitis. EAES consensus development conference 2015. *Surg Endosc.* 2016;30:4668–4690.
-- American College of Radiology. ACR Appropriateness Criteria: Right Lower Quadrant Pain (current revision).
+- Expert Panel on Gastrointestinal Imaging. ACR Appropriateness Criteria® Right Lower Quadrant Pain: 2022 Update. *J Am Coll Radiol.* 2022;19(11S):S445–S461.
+- Kumar SS, Collings AT, Lamm R, et al. SAGES guideline for the diagnosis and treatment of appendicitis. *Surg Endosc.* 2024.
 - Alvarado A. A practical score for the early diagnosis of acute appendicitis. *Ann Emerg Med.* 1986;15(5):557–564.
 - Andersson M, Andersson RE. The appendicitis inflammatory response score. *World J Surg.* 2008;32(8):1843–1849.
 - Manterola C, et al. Analgesia in patients with acute abdominal pain. *Cochrane Database Syst Rev.* 2011;(1):CD005660.
