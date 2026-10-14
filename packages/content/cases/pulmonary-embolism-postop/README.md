@@ -27,7 +27,9 @@ Diagnosis (hidden from learners): acute bilateral PE with right popliteal–calf
 2. **Estimate pre-test probability and choose a diagnostic strategy.** Wells 10 / revised Geneva 16,
    so go straight to CTPA. A D-dimer has no role.
 3. **Weigh bleeding risk and start treatment.** Send baseline FBC/coagulation, check the bleeding
-   history and the wound, and start anticoagulation *before* the CTPA result. IV UFH is preferred.
+   history and the wound, and inform the surgeons — all *before* anticoagulating — then start
+   anticoagulation *before* the CTPA result. IV UFH is preferred. Treat the pleuritic pain with
+   small titrated opioid doses (not an NSAID).
 4. **Confirm the diagnosis and stratify risk.** CTPA (RV/LV 1.3) and troponin give ESC
    intermediate-high.
 5. **Plan monitoring and escalation.** HDU/ICU for 48–72 h, PERT aware, no systemic lysis, and
@@ -72,8 +74,22 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   After reperfusion she recovers over about 60 minutes.
 * **Systemic alteplase** is always contraindicated here (major surgery 3 days ago; while she is
   normotensive there is no indication either, and if she shocks, surgical or catheter-directed
-  reperfusion is preferred because of that contraindication). If it is given, wound haemorrhage follows. The `haemorrhage` flag then makes UFH contraindicated and
-  an IVC filter *indicated*. This is the only path where a filter is appropriate.
+  reperfusion is preferred because of that contraindication). If it is given, wound haemorrhage
+  follows (SBP ≈ 90, HR ≈ 130). The lytic does lyse clot, so the PE drift trends stop (`lysed` is
+  part of every trend's `until`); the harm is the bleeding. The `haemorrhage` flag then makes UFH
+  contraindicated, an IVC filter *indicated* (the only path where a filter is appropriate) and the
+  major-haemorrhage protocol (`transfusion`: stop the lytic, 2 units of red cells, call the
+  surgeons) *indicated*; SBP recovers to ≈ 103 over 30 min. Transfusion without bleeding is a
+  safety event.
+* **Nudges and bookkeeping events.**
+  * `ev-anticoag-unchecked` (info, nurse): anticoagulation started before the bleeding history,
+    wound examination *and* surgical call are all done (not in the haemorrhage branch). Sets
+    `anticoag-before-bleed-check`, which fails `r-safety-bleeding`.
+  * `ev-anticoag-no-baseline` (silent): anticoagulation started before FBC and coagulation were
+    ordered. Sets `anticoag-before-baseline`, which fails `r-ix-baseline`.
+  * `ev-filter-unindicated` (silent): IVC filter placed without haemorrhage. Sets
+    `filter-unindicated`, which fails `r-safety-no-harm` (a filter in the bleeding branch is not
+    penalised).
 * **Tempting wrong choices** are scored as safety events (contraindicated):
   * a 1 L rapid fluid bolus
   * IV furosemide
@@ -84,8 +100,31 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   * stacking anticoagulants (LMWH + UFH, or either after a DOAC)
   * a vasopressor while normotensive
   * reperfusion while stable
+  * red-cell transfusion without bleeding
 
-  A prophylactic-dose enoxaparin is allowed but marked *neutral*: it does not treat VTE.
+  A prophylactic-dose enoxaparin is allowed but marked *neutral*: it does not treat VTE, so the
+  deterioration continues. IV paracetamol is *neutral* (modest effect; the 18:00 regular dose is
+  omitted). The NSAID option's aliases are class words only ("NSAID", "非甾体抗炎药", "toradol"):
+  typing a different NSAID (ibuprofen, flurbiprofen) no longer records ketorolac.
+
+## Scoring design (replayed with the engine)
+
+Negative ("avoided X") rubric items are gated on reaching the relevant stage, so inaction scores
+nothing: `r-safety-no-lysis` needs anticoagulation, `r-safety-no-harm` needs `obj-treat`, and
+`r-eff-low-value` needs `obj-confirm`. `r-dx-risk` uses `decidedFirstTry`, because the decision
+must be answered correctly to finish anyway. `r-mx-ufh` is not met when UFH is stacked on LMWH or
+a DOAC.
+
+| Path | Score |
+|---|---|
+| Reference solution | 19/19 (100 %) |
+| Treatment-dose LMWH instead of UFH, otherwise reference | 18/19 (95 %) |
+| UFH started before the bleeding check, surgical call and baseline bloods | 17/19 (89 %) |
+| Bare minimum to complete, board answered by trial and error | 8/19 (42 %) |
+| Slow work-up, waits for the CTPA, decompensates at 60 min, rescued | 5/19 (26 %) |
+| Empirical thrombolysis, then wound haemorrhage | 4/19 (21 %) |
+| Every tempting harmful choice | 3/19 (16 %) |
+| No action for 180 min (timeout) | 0/19 (0 %) |
 
 ## Teaching notes
 
@@ -152,16 +191,46 @@ The following are explicitly *unknown* (history items with `disclosure: "unknown
 * the post-heparin APTT/anti-Xa and the later course
 
 The arterial blood gas was drawn by the ward nurse at 16:15 on room air, before the learner
-arrived, so its values are consistent whenever it is ordered. The assessment score is a formative
-teaching-script measure, not a validated competency score.
+arrived, so its values are consistent whenever it is ordered. Ordering a "VBG"/"静脉血气" maps to
+that arterial sample and shows a notice. The assessment score is a formative teaching-script
+measure, not a validated competency score.
+
+Questions learners routinely ask that would otherwise have hit the patient's "I'm not sure" line
+now have authored answers consistent with the rest of the case:
+
+* wound/abdominal pain (`h-abdo-pain`)
+* urine since the catheter was removed (`h-urine`, matching the nurse's 08:00 handover)
+* other operations (`h-psh-other`)
+* recreational drugs (`h-recreational`)
+* whether the chest pain is constant and what eases it (in `h-pain-character`)
+
+NPC briefs only use what the learner has obtained:
+
+* The attending keeps questions generic until the learner raises VTE.
+* The radiologist judges contrast risk from the creatinine result once the learner has it.
+* The nurse points to the MAR on the records terminal; reading it is what credits the
+  prophylaxis question.
+
+In the current agent runtime `consult` reaches the nurse, radiologist, pathologist and attending
+only, so the `consultant` (cardiology, surgery) and `pharmacist` briefs are kept for front-ends
+that add those roles. The surgical view is also given by the `consult-surgeon` intervention's
+response.
 
 ## Validation
 
 ```bash
 clinicalcraft cases validate packages/content/cases/pulmonary-embolism-postop/case.json
-clinicalcraft cases verify pulmonary-embolism-postop      # reference solution: all 5 objectives, 4 decisions, 18/18 rubric points
+clinicalcraft cases verify pulmonary-embolism-postop      # reference solution: all 5 objectives, 4 decisions, 19/19 rubric points
 clinicalcraft play pulmonary-embolism-postop --provider offline
 ```
 
-`extensions.testUtterances` has 40 bilingual paraphrases and serves as the history-matcher
-regression corpus.
+`extensions.testUtterances` has 54 bilingual paraphrases and serves as the history-matcher
+regression corpus. That is above the 15–40 in CASE_AUTHORING §7 because 14 tricky ones were
+added on review: colloquial Chinese, text-speak, typos and abbreviations such as "有木有咳血",
+"did u get ur clexane last nite", "any PMH?" and "previous PE or DVT?".
+
+Matcher results:
+
+* Every utterance passes the patient pipeline's selection rule (score ≥ 0.55, top hit expected),
+  with no ties and no extra facts revealed.
+* Each history item's own canonical question selects that item (82/82).

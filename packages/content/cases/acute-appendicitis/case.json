@@ -205,7 +205,9 @@
           "哪里难受",
           "哪儿不舒服",
           "咋了",
-          "咋啦"
+          "咋啦",
+          "不得劲",
+          "哪儿不对劲"
         ],
         "en": [
           "brought you in",
@@ -307,13 +309,18 @@
           "几个小时",
           "几个钟头",
           "突然痛",
-          "突然疼"
+          "突然疼",
+          "几天了",
+          "疼了几天",
+          "痛了几天",
+          "慢慢来的",
+          "一下子"
         ],
         "en": [
           "when did it start",
           "when did the pain start",
           "how long",
-          "since when",
+          "sincewhen",
           "onset",
           "what time did it start",
           "sudden or gradual",
@@ -441,7 +448,9 @@
           "wheresthepain",
           "whereisthepain",
           "point to the pain",
-          "showmewhere"
+          "showmewhere",
+          "hasitmoved",
+          "hasthepainmoved"
         ]
       },
       "disclosure": "on-ask",
@@ -478,7 +487,7 @@
           "刀割"
         ],
         "en": [
-          "feel like",
+          "feellike",
           "describe the pain",
           "sharp",
           "dull",
@@ -519,7 +528,10 @@
           "背上",
           "背部",
           "别的地方痛",
-          "别的地方疼"
+          "别的地方疼",
+          "腰上",
+          "往腰",
+          "往背"
         ],
         "en": [
           "radiate",
@@ -727,8 +739,8 @@
           "appetite",
           "hungry",
           "feel like eating",
-          "off your food",
-          "off food"
+          "offyourfood",
+          "offfood"
         ]
       },
       "disclosure": "on-ask",
@@ -867,12 +879,15 @@
           "别人",
           "其他人",
           "室友",
-          "同学"
+          "同学",
+          "家族",
+          "家里人"
         ],
         "en": [
           "anyoneelse",
           "roommate",
-          "contacts"
+          "contacts",
+          "family"
         ]
       }
     },
@@ -1238,7 +1253,10 @@
           "午饭",
           "早饭",
           "上次吃饭",
-          "上一次吃"
+          "上一次吃",
+          "没吃东西",
+          "多久没吃",
+          "多久没喝"
         ],
         "en": [
           "last eat",
@@ -1364,7 +1382,7 @@
           "宿舍",
           "专业",
           "住在哪里",
-          "住哪儿"
+          "住在哪儿"
         ],
         "en": [
           "work",
@@ -1374,10 +1392,19 @@
           "study",
           "live with",
           "living situation",
-          "dorm"
+          "dorm",
+          "uni",
+          "university",
+          "college"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "en": [
+          "unwell",
+          "sick"
+        ]
+      }
     },
     {
       "id": "hx-exposures",
@@ -1663,7 +1690,8 @@
           "your dad",
           "your mum",
           "your father",
-          "your mother"
+          "your mother",
+          "in the family"
         ]
       },
       "disclosure": "on-ask",
@@ -1672,14 +1700,17 @@
           "通知",
           "联系",
           "打电话",
-          "告诉"
+          "告诉",
+          "麻醉"
         ],
         "en": [
           "call",
           "ring",
           "tell",
           "contact",
-          "letyour"
+          "letyour",
+          "anaesthe",
+          "anesthe"
         ]
       }
     },

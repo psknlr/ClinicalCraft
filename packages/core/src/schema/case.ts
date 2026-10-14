@@ -312,8 +312,9 @@ export const InvestigationSchema = z
      * Investigation ids this one can stand in for (the link is mutual). An
      * `essential` investigation is not reported in
      * `assess().investigations.essentialMissing` when it was ordered or when
-     * any investigation linked to it by `alternativeTo` (either direction)
-     * was read in any phase — e.g. CT pulmonary angiogram ⇄ V/Q scan.
+     * an `available: true` result of any investigation linked to it by
+     * `alternativeTo` (either direction) was read in any phase — e.g. CT
+     * pulmonary angiogram ⇄ V/Q scan.
      */
     alternativeTo: z.array(IdSchema).default([]),
     /** Results keyed by phase id. A phase without a key is "no record in this phase". */

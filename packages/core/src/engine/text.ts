@@ -134,6 +134,8 @@ function commonPrefixLength(a: string, b: string): number {
 
 /** Longest tail either token may have after their shared prefix for the shared-prefix rule. */
 const MAX_DIVERGENT_TAIL = 3;
+/** Shared-prefix length from which one more letter of tail is allowed. */
+const LONG_SHARED_PREFIX = 8;
 
 /**
  * Token equivalence (on canonical tokens):
@@ -142,16 +144,20 @@ const MAX_DIVERGENT_TAIL = 3;
  * * one token (≥ 4 letters) is a prefix of the other — breath ~ breathless,
  *   pain ~ painful, diabet ~ diabetic;
  * * a shared prefix of ≥ 5 letters after which **both** tokens end within
- *   3 letters — allergy ~ allergic, nausea ~ nauseous, pregnant ~ pregnancy —
- *   but not medical ~ medication, history ~ historical, hypertension ~
- *   hyperthermia, thrombosis ~ thrombolysis or pneumonia ~ pneumothorax.
+ *   3 letters (4 letters when the shared prefix has ≥ 8) — allergy ~
+ *   allergic, nausea ~ nauseous, pregnant ~ pregnancy, anticoagulant ~
+ *   anticoagulation, prophylaxis ~ prophylactic — but not medical ~
+ *   medication, history ~ historical, hypertension ~ hyperthermia,
+ *   thrombosis ~ thrombolysis, pneumonia ~ pneumothorax or cholecystitis ~
+ *   cholecystectomy.
  */
 export function tokensMatch(a: string, b: string): boolean {
   if (a === b) return true;
   const shorter = Math.min(a.length, b.length);
   const prefix = commonPrefixLength(a, b);
   if (shorter >= 4 && prefix === shorter) return true;
-  return prefix >= 5 && Math.max(a.length, b.length) - prefix <= MAX_DIVERGENT_TAIL;
+  const maxTail = prefix >= LONG_SHARED_PREFIX ? MAX_DIVERGENT_TAIL + 1 : MAX_DIVERGENT_TAIL;
+  return prefix >= 5 && Math.max(a.length, b.length) - prefix <= maxTail;
 }
 
 /** Length of the longest common substring (dynamic programming, O(n·m) time, O(m) space). */
