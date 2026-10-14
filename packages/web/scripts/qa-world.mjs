@@ -73,7 +73,28 @@ try {
   summary.issues = await page.evaluate(() => window.__HARNESS__.issues);
   await page.evaluate(() => window.__WORLD__.debug.freeze(true));
   const tag = summary.facilityLoaded;
-  for (const [name, x, z, y, yaw, pitch] of SHOTS) {
+  // V4 reference positions for V4-layout facilities; otherwise derive shots from the facility data
+  const v4Layout = ["clinic-v4", "test-clinic"].includes(tag) && arg("shots", "v4") === "v4";
+  const shots = v4Layout
+    ? SHOTS
+    : await page.evaluate(() => {
+        const f = window.__HARNESS__.facility;
+        const out = [];
+        const sp = f.spawn;
+        out.push(["01-spawn", sp.x, sp.z, 0, sp.yaw ?? 0, 0.05]);
+        const cx = (f.bounds.minX + f.bounds.maxX) / 2;
+        const back = Math.min(f.bounds.maxZ - 1, sp.z + 14);
+        out.push(["02-overview", cx, back, 14, 0, -0.42]);
+        const rooms = f.rooms.filter((r) => !["corridor", "garden", "build-zone"].includes(r.kind));
+        let i = 3;
+        for (const r of rooms.slice(0, 12)) {
+          // stand inside the room near its south edge, looking north (−Z)
+          const z = r.rect.z + r.rect.d / 2 - Math.min(1.2, r.rect.d / 4);
+          out.push([`${String(i++).padStart(2, "0")}-room-${r.id}`, r.rect.x, z, 0, 0, -0.18]);
+        }
+        return out;
+      });
+  for (const [name, x, z, y, yaw, pitch] of shots) {
     if (only.length && !only.some((o) => name.includes(o))) continue;
     await page.evaluate(([x, z, y, yaw, pitch]) => window.__WORLD__.debug.teleport(x, z, y, yaw, pitch), [x, z, y, yaw, pitch]);
     await page.waitForTimeout(900);

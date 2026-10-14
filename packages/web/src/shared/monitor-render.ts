@@ -6,7 +6,15 @@
  * (cases without a physiology model) are shown greyed as "not recorded".
  */
 import type { MonitorRenderer } from "../contracts.js";
-import { ecgValue, plethValue, respValue, type MorphologyName, type RhythmName } from "./ecg.js";
+import { drawRate, ecgValue, isPulseless, plethValue, respValue, type MorphologyName, type RhythmName } from "./ecg.js";
+
+/** Lethal-arrhythmia alarms raised by the monitor itself (on top of the engine's vital-sign alarms). */
+const ARRHYTHMIA_ALARMS: Partial<Record<string, string>> = {
+  "ventricular-fibrillation": "VF",
+  "ventricular-tachycardia": "VT",
+  asystole: "ASYSTOLE",
+  pea: "PEA · NO PULSE",
+};
 
 type Snapshot = Parameters<MonitorRenderer["draw"]>[3];
 
@@ -134,8 +142,9 @@ export const monitorRenderer: MonitorRenderer = {
     const headH = Math.round(H * 0.1);
     const critical = (s?.alarms ?? []).filter((a) => a.level === "critical");
     const warnings = (s?.alarms ?? []).filter((a) => a.level === "warning");
-    const alarmActive = live && (critical.length > 0 || warnings.length > 0);
-    ctx.fillStyle = alarmActive && flashOn ? (critical.length ? "#5a0d0a" : "#4a3708") : MONITOR_COLORS.header;
+    const arrhythmia = live ? ARRHYTHMIA_ALARMS[s?.vitals.rhythm ?? ""] ?? null : null;
+    const alarmActive = live && (!!arrhythmia || critical.length > 0 || warnings.length > 0);
+    ctx.fillStyle = alarmActive && flashOn ? (critical.length || arrhythmia ? "#5a0d0a" : "#4a3708") : MONITOR_COLORS.header;
     ctx.fillRect(0, 0, W, headH);
     ctx.textBaseline = "middle";
     const headFont = Math.max(8, Math.round(headH * 0.55));
@@ -147,7 +156,10 @@ export const monitorRenderer: MonitorRenderer = {
     const leftText = !s ? L.noPatient : baseline ? L.baseline : `II · ${rhythm.toUpperCase()}${morph !== "normal" ? " · " + morph.toUpperCase() : ""}`;
     ctx.fillText(leftText, 6 * u, headH / 2, W * 0.62);
     ctx.textAlign = "right";
-    if (alarmActive) {
+    if (alarmActive && arrhythmia) {
+      ctx.fillStyle = MONITOR_COLORS.critical;
+      if (flashOn) ctx.fillText(`!!! ${arrhythmia}`, W - 6 * u, headH / 2);
+    } else if (alarmActive) {
       const a = critical[0] ?? warnings[0];
       ctx.fillStyle = critical.length ? MONITOR_COLORS.critical : MONITOR_COLORS.warning;
       if (flashOn || !critical.length) ctx.fillText(`${critical.length ? "!!!" : "!!"} ${a.vital.toUpperCase()} ${fmt(a.value, a.vital === "temp" ? 1 : 0)}`, W - 6 * u, headH / 2);
@@ -229,8 +241,8 @@ export const monitorRenderer: MonitorRenderer = {
     ctx.fillStyle = "#0a0a0a";
     ctx.fillRect(waveW, headH, W - waveW, H - headH);
     const boxes: { key: string; label: string; value: string; unit: string; color: string; weight: number; sub?: string }[] = [
-      { key: "hr", label: L.hr, value: live ? fmt(v?.hr) : "--", unit: L.bpm, color: MONITOR_COLORS.ecg, weight: 1.3 },
-      { key: "spo2", label: L.spo2, value: live ? fmt(v?.spo2) : "--", unit: "%", color: MONITOR_COLORS.spo2, weight: 1.1 },
+      { key: "hr", label: L.hr, value: live && drawRate(rhythm, hr) > 0 ? fmt(v?.hr) : live ? "---" : "--", unit: L.bpm, color: MONITOR_COLORS.ecg, weight: 1.3 },
+      { key: "spo2", label: L.spo2, value: live && !isPulseless(rhythm) ? fmt(v?.spo2) : live ? "---" : "--", unit: "%", color: MONITOR_COLORS.spo2, weight: 1.1 },
       {
         key: "sbp",
         label: L.nibp,
@@ -280,12 +292,12 @@ export const monitorRenderer: MonitorRenderer = {
       y += bh;
     }
 
-    if (!live) {
+    if (!s) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#9a9a9a";
       ctx.font = `bold ${Math.max(8, Math.round(12 * u))}px ui-monospace, Menlo, monospace`;
-      ctx.fillText(s ? L.baseline : L.noPatient, waveW / 2, top + avail / 2, waveW - 8);
+      ctx.fillText(L.noPatient, waveW / 2, top + avail / 2, waveW - 8);
     }
     ctx.restore();
   },

@@ -78,7 +78,8 @@ export function nurseOffline(ctx: OfflineContext, utterance: string): string {
   const wantsVitals = NURSE_VITALS.test(utterance);
   const wantsResults = NURSE_RESULTS.test(utterance);
   const wantsHandover = NURSE_HANDOVER.test(utterance);
-  const all = !wantsVitals && !wantsResults && !wantsHandover;
+  // A handover (or an unspecific question) covers everything: story, monitor, results.
+  const all = wantsHandover || (!wantsVitals && !wantsResults);
   const parts: string[] = [];
   if (wantsHandover || all) {
     const note = c.patient.triageNote ? t(c.patient.triageNote, L) : t(c.patient.chiefComplaint, L);
@@ -120,20 +121,20 @@ export function consultantOffline(role: "radiologist" | "pathologist" | string, 
   const readKeys = new Set(s.seen);
   const obtained = s.orders.filter((o) => remit.has(o.investigationId) && readKeys.has(o.key));
   const parts: string[] = [];
-  if (asked.length > 0) {
+  if (obtained.length === 0) {
+    const kind = role === "radiologist" || role === "pathologist" ? rt(L, `consultant.kind.${role}`) : role;
+    parts.push(rt(L, "consultant.offline.nothing", { kind }));
+  } else if (asked.length > 0) {
     for (const id of asked) {
       const mine = obtained.filter((o) => o.investigationId === id);
       if (mine.length === 0) parts.push(rt(L, "consultant.offline.notObtained", { name: investigationName(c, id, L) }));
       for (const o of mine) parts.push(resultLine(c, o.investigationId, o.phase, L));
     }
-  } else if (obtained.length > 0) {
-    for (const o of obtained) parts.push(resultLine(c, o.investigationId, o.phase, L));
   } else {
-    const kind = role === "radiologist" || role === "pathologist" ? rt(L, `consultant.kind.${role}`) : role;
-    parts.push(rt(L, "consultant.offline.nothing", { kind }));
+    for (const o of obtained) parts.push(resultLine(c, o.investigationId, o.phase, L));
   }
   const knowledge = c.npcs.filter((n) => n.role === role).map((n) => t(n.knowledge, L));
-  if (knowledge.length > 0 && (asked.length > 0 || obtained.length > 0)) parts.push(rt(L, "consultant.offline.boundary", { knowledge: knowledge.join(" ") }));
+  if (knowledge.length > 0 && obtained.length > 0) parts.push(rt(L, "consultant.offline.boundary", { knowledge: knowledge.join(" ") }));
   return parts.join("\n");
 }
 

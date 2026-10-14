@@ -108,6 +108,30 @@ export function sanitizeOp(op: Op): Op {
   return scrub(op) as Op;
 }
 
+/** Only the known `RuntimeConfigPatch` fields (never echo unknown keys such as credentials). */
+export function cleanConfigPatch(patch: RuntimeConfigPatch): RuntimeConfigPatch {
+  const out: RuntimeConfigPatch = {};
+  if (typeof patch.provider === "string") out.provider = patch.provider;
+  if (typeof patch.model === "string") out.model = patch.model;
+  if (typeof patch.approvalMode === "string") out.approvalMode = patch.approvalMode;
+  if (typeof patch.practiceScope === "string") out.practiceScope = patch.practiceScope;
+  if (typeof patch.locale === "string") out.locale = patch.locale;
+  if (typeof patch.interlocutor === "string") out.interlocutor = patch.interlocutor;
+  if (patch.agents && typeof patch.agents === "object") {
+    out.agents = {};
+    for (const [name, o] of Object.entries(patch.agents)) {
+      if (!o || typeof o !== "object") continue;
+      out.agents[name] = {
+        ...(typeof o.provider === "string" ? { provider: o.provider } : {}),
+        ...(typeof o.model === "string" ? { model: o.model } : {}),
+        ...(typeof o.effort === "string" ? { effort: o.effort } : {}),
+        ...(typeof o.temperature === "number" ? { temperature: o.temperature } : {}),
+      };
+    }
+  }
+  return out;
+}
+
 /** Tool arguments equivalent to a learner clinical action (for the approval gate). */
 export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale: string): Record<string, unknown> {
   switch (action.type) {
@@ -268,6 +292,10 @@ export class ClinicalSession implements ClinicalSessionApi {
 
   async run(op: Op): Promise<AgentEvent[]> {
     const id = this.newId();
+    if (this.closed) {
+      // The event stream has ended: answer directly instead of emitting.
+      return [{ id, seq: this.hub.lastSeq, msg: { type: "error", message: rt(this.locale, "error.closed"), code: "closed" } }];
+    }
     const events: AgentEvent[] = [];
     const off = this.hub.subscribe((e) => {
       if (e.id === id) events.push(e);
@@ -1201,7 +1229,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     this.emit(id, { type: "compacted", agent, beforeTokens: before, afterTokens: estimateTokens(history) });
   }
 
-  private configure(id: string, patch: RuntimeConfigPatch): void {
+  private configure(id: string, rawPatch: RuntimeConfigPatch): void {
+    const patch = cleanConfigPatch(rawPatch);
     const next = structuredClone(this._settings);
     const issues: string[] = [];
     const modes: ApprovalMode[] = ["default", "strict", "auto", "plan", "bypass"];
@@ -1234,7 +1263,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     this.models.clear();
     this.warnedOffline.clear();
     if (issues.length > 0) this.emit(id, { type: "error", message: rt(this.locale, "error.config", { issues: issues.join(", ") }), code: "invalid_config" });
-    this.emit(id, { type: "config_changed", patch });
+    this.emit(id, { type: "config_changed", patch: cleanConfigPatch(patch) });
   }
 
   private async shutdownSequence(id: string): Promise<void> {
@@ -1282,10 +1311,16 @@ export class ClinicalSession implements ClinicalSessionApi {
   /* ---------------------------------------------------------------- */
 
   private commandHost(id: string, name: string, signal: AbortSignal): CommandHost {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const session = this;
     return {
       caseDef: this.caseDef,
-      settings: this._settings,
-      locale: this.locale,
+      get settings() {
+        return session._settings;
+      },
+      get locale() {
+        return session.locale;
+      },
       state: () => this._state,
       plan: () => this.workupPlan(),
       interlocutor: () => this.interlocutor,

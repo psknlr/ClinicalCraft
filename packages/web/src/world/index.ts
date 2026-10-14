@@ -189,7 +189,6 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     animated: [],
     placements: new Map(),
     npcs: new Map(),
-    rng: createLcg(7103),
     // meshes always carry castShadow flags; the renderer's shadow map (quality) decides whether they are used
     shadows: true,
     warnings: [],

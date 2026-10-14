@@ -130,7 +130,7 @@ export interface BuildContext {
   animated: AnimatedPart[];
   placements: Map<string, PlacementInfo>;
   npcs: Map<string, NpcRecord>;
-  rng: () => number;
+  /** Meshes carry castShadow flags (the renderer's shadow map decides whether they are used). */
   shadows: boolean;
   warnings: string[];
 }

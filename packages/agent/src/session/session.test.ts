@@ -145,6 +145,7 @@ describe("NPC agents offline", () => {
 
   it("radiologist: only results the learner has read, within remit", async () => {
     const t = await makeSession();
+    answerApprovals(t, "approved"); // a CT chest is moderate risk → the learner is asked in default mode
     const none = msgsOf(await t.session.run({ type: "user_message", text: "@radiologist anything on the CT?" }), "agent_message")[0]!.text;
     expect(none).toMatch(/haven't retrieved any imaging/);
     await t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ct-chest" } });
@@ -211,7 +212,9 @@ describe("autopilot", () => {
   const smzl = loadSmzl();
   it.skipIf(!smzl)("offline autopilot completes the SMZL case (all objectives and decisions)", async () => {
     const t = await makeSession({ caseDef: smzl!, settingsPatch: { locale: "zh-CN" } });
+    answerApprovals(t, "approved"); // e.g. the marrow biopsy is moderate risk → asks in default mode
     await t.session.run({ type: "autopilot", maxTurns: 10 });
+    expect(t.msgs("approval_request").length).toBeGreaterThan(0);
     const s = t.session.state;
     expect(s.finished).toBe(true);
     for (const d of smzl!.decisions) expect(s.decisions).toHaveProperty(d.id);

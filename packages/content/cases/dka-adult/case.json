@@ -680,8 +680,8 @@
         "en": "Have you checked your blood sugar at home? What were the readings?"
       },
       "answer": {
-        "zh-CN": "昨天下午测过一次，血糖仪上就显示“HI”。我以为是仪器坏了……之后就没再测。",
-        "en": "I checked once yesterday afternoon and the meter just said 'HI'. I thought the meter was broken... I didn't check again after that."
+        "zh-CN": "昨天下午测过一次，二十多，好像是24点几。泵提示要补一针校正，我想着生病时血糖高一点正常、又吃不下东西，就取消了……之后就没再测。",
+        "en": "I checked once yesterday afternoon — it was in the twenties, 24-something I think. The pump suggested a correction but I thought sugars run high when you're ill, and I wasn't eating, so I cancelled it... I didn't check again after that."
       },
       "keywords": {
         "zh-CN": [
@@ -4242,8 +4242,8 @@
       "results": {
         "resus": {
           "text": {
-            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40“HI”（> 33.3 mmol/L）。",
-            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 'HI' (> 33.3 mmol/L)."
+            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40 24.6 mmol/L——大剂量向导建议校正7.4 U（[24.6 − 6.0] ÷ 2.5），被用户取消；之后无血糖记录。",
+            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 24.6 mmol/L — the bolus wizard suggested a 7.4 U correction ([24.6 − 6.0] ÷ 2.5), which was cancelled; no glucose entries after that."
           },
           "note": {
             "zh-CN": "泵内记录不包含家中血糖仪未上传的读数。",
@@ -4252,8 +4252,8 @@
         },
         "k-replete": {
           "text": {
-            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40“HI”（> 33.3 mmol/L）。",
-            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 'HI' (> 33.3 mmol/L)."
+            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40 24.6 mmol/L——大剂量向导建议校正7.4 U（[24.6 − 6.0] ÷ 2.5），被用户取消；之后无血糖记录。",
+            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 24.6 mmol/L — the bolus wizard suggested a 7.4 U correction ([24.6 − 6.0] ÷ 2.5), which was cancelled; no glucose entries after that."
           },
           "note": {
             "zh-CN": "泵内记录不包含家中血糖仪未上传的读数。",
@@ -4262,8 +4262,8 @@
         },
         "glucose-lt14": {
           "text": {
-            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40“HI”（> 33.3 mmol/L）。",
-            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 'HI' (> 33.3 mmol/L)."
+            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40 24.6 mmol/L——大剂量向导建议校正7.4 U（[24.6 − 6.0] ÷ 2.5），被用户取消；之后无血糖记录。",
+            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 24.6 mmol/L — the bolus wizard suggested a 7.4 U correction ([24.6 − 6.0] ÷ 2.5), which was cancelled; no glucose entries after that."
           },
           "note": {
             "zh-CN": "泵内记录不包含家中血糖仪未上传的读数。",
@@ -4272,8 +4272,8 @@
         },
         "resolution": {
           "text": {
-            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40“HI”（> 33.3 mmol/L）。",
-            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 'HI' (> 33.3 mmol/L)."
+            "zh-CN": "胰岛素泵数据下载（经患者同意）：门冬胰岛素。前天23:06首次“堵塞——停止输注”报警，此后昨天01:40、05:12、09:30、14:55、21:20多次重复报警，均被手动清除；前天23:06以后无确认的基础率或大剂量输注。最后一次餐前大剂量为前天12:30（4.5 U）；之后无校正大剂量。最后一次管路充注/更换记录为4天前20:10。基础率程序0.60–0.90 U/h，合计18.0 U/天；碳水系数1 U:10 g；胰岛素敏感系数1 U降低2.5 mmol/L；目标血糖6.0 mmol/L；活性胰岛素时间4小时。近14天平均每日总量35.6 U（基础18.0 U，大剂量17.6 U）。储药器剩余92 U。关联血糖仪记录：昨天15:40 24.6 mmol/L——大剂量向导建议校正7.4 U（[24.6 − 6.0] ÷ 2.5），被用户取消；之后无血糖记录。",
+            "en": "Insulin-pump download (with the patient's consent): insulin aspart. First 'occlusion — delivery stopped' alarm the day before yesterday at 23:06, repeated yesterday at 01:40, 05:12, 09:30, 14:55 and 21:20, each cleared manually; no confirmed basal or bolus delivery after 23:06 the day before yesterday. Last meal bolus the day before yesterday at 12:30 (4.5 U); no correction boluses since. Last set fill/prime 4 days ago at 20:10. Basal programme 0.60–0.90 U/h, total 18.0 U/day; carbohydrate ratio 1 U:10 g; insulin sensitivity factor 1 U per 2.5 mmol/L; target 6.0 mmol/L; active-insulin time 4 h. 14-day mean total daily dose 35.6 U (basal 18.0 U, bolus 17.6 U). Reservoir 92 U remaining. Linked meter: yesterday 15:40 24.6 mmol/L — the bolus wizard suggested a 7.4 U correction ([24.6 − 6.0] ÷ 2.5), which was cancelled; no glucose entries after that."
           },
           "note": {
             "zh-CN": "泵内记录不包含家中血糖仪未上传的读数。",
@@ -7602,8 +7602,8 @@
     },
     "unknowns": [
       {
-        "zh-CN": "家中血糖仪存储的具体读数与时间无法获得（未下载、未记录）。",
-        "en": "The exact readings and times stored in her home glucose meter are not available (not downloaded or logged)."
+        "zh-CN": "除已同步到胰岛素泵的那一次读数外，家中血糖仪的其他读数无法获得（未下载、未记录）。",
+        "en": "Apart from the one reading synced to the pump, her home glucose-meter readings are not available (not downloaded or logged)."
       },
       {
         "zh-CN": "室友此前的胃肠炎未经检查，病原不明；本病例未做粪便病原学检测。",
@@ -7664,8 +7664,8 @@
   },
   "unknowns": [
     {
-      "zh-CN": "家中血糖仪存储的具体读数与时间。",
-      "en": "The exact readings and times stored in her home glucose meter."
+      "zh-CN": "除同步到泵的一次读数外，家中血糖仪的其他读数与时间。",
+      "en": "Home glucose-meter readings and times other than the one synced to the pump."
     },
     {
       "zh-CN": "室友胃肠炎的病原（未经检查）；本病例未做粪便病原学检测。",

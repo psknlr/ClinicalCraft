@@ -7,7 +7,8 @@ import { Box3, Color, Mesh, MeshBasicMaterial, MeshStandardMaterial, Vector3 } f
 import type { EquipmentType } from "@clinicalcraft/core";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
-import { DEG, partBox, placementBox, rectContains, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
+import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
+import { roomAt } from "./region.js";
 import { createScreenTexture, type ScreenKind } from "./screens.js";
 import { strings, tx } from "./strings.js";
 import { UNIT_BOX } from "./voxels.js";
@@ -31,13 +32,7 @@ export function labelColor(kind: string, caps: string[]): string {
 
 /** Room id whose rect contains (x, z) — smallest room wins. */
 export function roomIdAt(ctx: Pick<BuildContext, "facility">, x: number, z: number): string | null {
-  let best: { id: string; area: number } | null = null;
-  for (const r of ctx.facility.rooms) {
-    if (!rectContains(r.rect, x, z)) continue;
-    const area = r.rect.w * r.rect.d;
-    if (!best || area < best.area) best = { id: r.id, area };
-  }
-  return best?.id ?? null;
+  return roomAt(ctx.facility, x, z)?.id ?? null;
 }
 
 /**
