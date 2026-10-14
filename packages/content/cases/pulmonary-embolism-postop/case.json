@@ -494,8 +494,8 @@
         "en": "Any pain or swelling in your legs?"
       },
       "answer": {
-        "zh-CN": "您这么一问……右边小腿从昨天就有点胀痛、发紧，我以为是躺久了。左腿没事。",
-        "en": "Now you mention it... my right calf has ached and felt tight since yesterday. I thought it was from lying in bed. The left one's fine."
+        "zh-CN": "您这么一问……右边小腿从昨天白天就有点胀痛、发紧，我以为是躺久了。左腿没事。",
+        "en": "Now you mention it... my right calf has ached and felt tight since yesterday, during the day. I thought it was from lying in bed. The left one's fine."
       },
       "keywords": {
         "zh-CN": [
@@ -527,8 +527,8 @@
         "en": "Before today, had you noticed any breathlessness or chest pain since the operation?"
       },
       "answer": {
-        "zh-CN": "昨天傍晚走去厕所时有点喘，歇一会就好了，我以为是手术后没力气。胸口以前没痛过。",
-        "en": "Yesterday evening I got a bit puffed walking to the toilet; it settled after a rest and I put it down to the operation. No chest pain before today."
+        "zh-CN": "昨天傍晚下床坐到椅子上、走了几步，就有点喘，歇一会就好了，我以为是手术后没力气。胸口以前没痛过。",
+        "en": "Yesterday evening, getting out to the chair and taking a few steps, I got a bit puffed; it settled after a rest and I put it down to the operation. No chest pain before today."
       },
       "keywords": {
         "zh-CN": [
@@ -1369,7 +1369,7 @@
         ]
       },
       "finding": {
-        "zh-CN": "焦虑，半卧位坐直，呼吸浅快，只能说短句；面色苍白，额头微汗；未见明显发绀。左前臂留置针在位、通畅。",
+        "zh-CN": "焦虑，在床上挺直坐着，呼吸浅快，只能说短句；面色苍白，额头微汗；未见明显发绀。左前臂留置针在位、通畅。",
         "en": "Anxious, sitting bolt upright, breathing fast and shallow, speaking in short phrases; pale with a slightly clammy forehead; no obvious cyanosis. Peripheral cannula in the left forearm, patent."
       },
       "abnormal": true,
@@ -1840,8 +1840,8 @@
       "results": {
         "ward": {
           "text": {
-            "zh-CN": "窦性心动过速，118次/分；电轴+95°（轻度右偏）；PR 150 ms，QRS 108 ms（V1呈rSR′，不完全性右束支传导阻滞），QTc 446 ms；I导联深S波，III导联Q波伴T波倒置（S1Q3T3）；V1–V3 T波倒置；无ST段抬高。与4周前术前心电图（窦性心律72次/分，正常心电图）比较，S1Q3T3、不完全性右束支传导阻滞及V1–V3 T波倒置均为新出现。",
-            "en": "Sinus tachycardia 118/min; axis +95° (mild right axis deviation); PR 150 ms, QRS 108 ms (rSR′ in V1, incomplete right bundle branch block), QTc 446 ms; deep S wave in lead I, Q wave with T-wave inversion in lead III (S1Q3T3); T-wave inversion V1–V3; no ST elevation. Compared with the pre-operative ECG 4 weeks ago (sinus rhythm 72/min, normal ECG), the S1Q3T3 pattern, incomplete RBBB and V1–V3 T-wave inversion are new."
+            "zh-CN": "窦性心动过速，118次/分；电轴+95°（轻度右偏）；PR 150 ms，QRS 112 ms（V1呈rSR′，不完全性右束支传导阻滞），QTc 446 ms；I导联深S波，III导联Q波伴T波倒置（S1Q3T3）；V1–V3 T波倒置；无ST段抬高。与4周前术前心电图（窦性心律72次/分，正常心电图）比较，S1Q3T3、不完全性右束支传导阻滞及V1–V3 T波倒置均为新出现。",
+            "en": "Sinus tachycardia 118/min; axis +95° (mild right axis deviation); PR 150 ms, QRS 112 ms (rSR′ in V1, incomplete right bundle branch block), QTc 446 ms; deep S wave in lead I, Q wave with T-wave inversion in lead III (S1Q3T3); T-wave inversion V1–V3; no ST elevation. Compared with the pre-operative ECG 4 weeks ago (sinus rhythm 72/min, normal ECG), the S1Q3T3 pattern, incomplete RBBB and V1–V3 T-wave inversion are new."
           },
           "values": [
             {
@@ -1871,7 +1871,7 @@
                 "zh-CN": "QRS时限",
                 "en": "QRS duration"
               },
-              "value": 108,
+              "value": 112,
               "unit": "ms",
               "refHigh": 120,
               "flag": "N"
@@ -3551,8 +3551,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "在已行治疗性抗凝时再加预防剂量属于重复抗凝，会增加出血风险。",
-        "en": "On top of therapeutic anticoagulation this is duplicate anticoagulation and increases bleeding risk."
+        "zh-CN": "在已行治疗性抗凝时再加预防剂量属于重复抗凝；活动性大出血时也不能使用。两者都会增加出血风险。",
+        "en": "On top of therapeutic anticoagulation this is duplicate anticoagulation, and it must not be given during active major bleeding; both increase the bleeding risk."
       },
       "response": {
         "zh-CN": "护士执行了注射，但小声提醒：“这是预防量，对已经出现的问题够吗？”——预防剂量不能治疗已经形成的静脉血栓栓塞。",
@@ -3631,8 +3631,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "阿替普酶100 mg静脉输注2小时",
-        "en": "Alteplase 100 mg IV over 2 hours"
+        "zh-CN": "阿替普酶100 mg静脉输注2小时（ESC 2019方案；中国2018指南推荐50 mg持续静脉滴注2小时）",
+        "en": "Alteplase 100 mg IV over 2 hours (ESC 2019 regimen; the 2018 Chinese guideline recommends 50 mg over 2 hours)"
       },
       "requires": [
         "medications",
@@ -3661,8 +3661,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "禁忌：开腹结肠切除术后第3天——3周内大手术是溶栓禁忌（ESC 2019列为绝对禁忌，部分指南列为相对禁忌），可致切口、吻合口及颅内大出血。而且她血压正常：对血流动力学稳定的患者，全身溶栓虽能减少失代偿，却增加大出血和卒中且不降低死亡率（PEITHO）。若病情恶化，应首选经PERT的导管介入或外科取栓。",
-        "en": "Contraindicated: day 3 after open colectomy — major surgery within 3 weeks is a contraindication to fibrinolysis (absolute in ESC 2019, relative in some other guidance) and risks wound, anastomotic and intracranial haemorrhage. She is also normotensive: in haemodynamically stable patients systemic lysis reduces decompensation but increases major bleeding and stroke without reducing mortality (PEITHO). If she deteriorates, catheter-directed therapy or surgical embolectomy via the PE response team is preferred."
+        "zh-CN": "禁忌：开腹结肠切除术后第3天——3周内大手术是溶栓禁忌（ESC 2019列为绝对禁忌，中国2018指南等列为相对禁忌），可致切口、吻合口及颅内大出血。血压正常（中高危）时，全身溶栓虽能减少血流动力学失代偿，却增加大出血和出血性卒中且不降低死亡率（PEITHO），不应常规使用；即使进展为高危（休克型）肺栓塞，由于存在这一禁忌，也应首选经PERT的外科取栓或导管介入治疗。",
+        "en": "Contraindicated: day 3 after open colectomy — major surgery within 3 weeks is a contraindication to fibrinolysis (absolute in ESC 2019; relative in some other guidance, including the 2018 Chinese guideline) and risks wound, anastomotic and intracranial haemorrhage. While she is normotensive (intermediate-high risk), systemic lysis reduces haemodynamic decompensation but increases major bleeding and haemorrhagic stroke without reducing mortality (PEITHO), so it is not used routinely; even if she progresses to high-risk (shocked) PE, this contraindication makes surgical embolectomy or catheter-directed therapy via the PE response team the preferred reperfusion."
       },
       "response": {
         "zh-CN": "阿替普酶开始静脉输注。",
@@ -3728,8 +3728,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "她血压正常、外周灌注好，不需要扩容。若存在急性右心室压力负荷过重，大量快速补液会进一步扩张右心室、使室间隔左移压迫左心室，降低心排量，可诱发失代偿；即使出现低血压，也只在充盈压低时谨慎给予≤500 mL。",
-        "en": "She is normotensive and well perfused and does not need volume. With an acutely pressure-loaded right ventricle, a large rapid bolus further dilates the RV, shifts the septum into the LV and lowers cardiac output — it can precipitate decompensation. Even if hypotensive, give only cautious boluses (≤ 500 mL) when filling pressures are low."
+        "zh-CN": "15分钟内快速输入1000 mL晶体液对急性右心室压力负荷过重有害：会进一步扩张右心室、使室间隔左移压迫左心室、降低心排量，可诱发或加重失代偿。她颈静脉压已升高，右心充盈压并不低。即使出现低血压，也只在充盈压低时谨慎给予≤500 mL（15–30分钟）；若低血压由出血引起，应输注血液制品，而不是大量晶体液。",
+        "en": "A rapid 1,000 mL crystalloid bolus is harmful with an acutely pressure-loaded right ventricle: it further dilates the RV, shifts the septum into the LV and lowers cardiac output, which can precipitate or worsen decompensation. Her JVP is already raised, so right-sided filling pressure is not low. Even if she becomes hypotensive, give only cautious boluses (≤ 500 mL over 15–30 min) when filling pressures are low; if hypotension is due to bleeding, give blood products rather than large volumes of crystalloid."
       },
       "response": {
         "zh-CN": "液体快速输入。",
@@ -4142,8 +4142,8 @@
         }
       },
       "harm": {
-        "zh-CN": "她可以接受抗凝，滤器没有适应证：滤器不降低死亡率，还增加日后深静脉血栓（PREPIC2）；仅用于存在抗凝绝对禁忌或充分抗凝下仍复发的患者。",
-        "en": "She can be anticoagulated, so a filter is not indicated: filters do not reduce mortality and increase later DVT (PREPIC2); reserve them for an absolute contraindication to anticoagulation or recurrence despite adequate anticoagulation."
+        "zh-CN": "她可以接受抗凝，滤器没有适应证：在抗凝基础上加用可回收滤器并不减少肺栓塞复发或死亡（PREPIC2），永久滤器远期还增加深静脉血栓（PREPIC 8年随访）；滤器仅用于存在抗凝绝对禁忌或充分抗凝下仍复发的患者。",
+        "en": "She can be anticoagulated, so a filter is not indicated: adding a retrievable filter to anticoagulation does not reduce recurrent PE or mortality (PREPIC2), and permanent filters increase late DVT (PREPIC 8-year follow-up); reserve filters for an absolute contraindication to anticoagulation or recurrence despite adequate anticoagulation."
       },
       "response": {
         "zh-CN": "介入科完成了下腔静脉滤器置入。",
@@ -5046,8 +5046,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "可以接受，但不是本例最佳。对血流动力学稳定的肺栓塞，低分子肝素是指南默认选择（ESC 2019 I类A级：大出血和HIT较少，无需监测），如果外科认为出血风险可接受也可以使用。但她术后第3天、右心受累风险较高，低分子肝素作用持续约12小时，鱼精蛋白只能中和约60%，最初24–72小时的可控性不如普通肝素。",
-            "en": "Acceptable, but not the best choice here. For haemodynamically stable PE, LMWH is the guideline default (ESC 2019 class I, level A: less major bleeding and HIT, no monitoring) and can be used if the surgeons judge the bleeding risk acceptable. But on post-op day 3 with a higher risk of RV involvement, its ~12-hour effect and only ~60% reversal by protamine make it less controllable than UFH for the first 24–72 hours."
+            "zh-CN": "可以接受，但不是本例最佳。对血流动力学稳定的肺栓塞，低分子肝素是指南默认选择（ESC 2019 I类A级：大出血和HIT较少，无需监测），如果外科认为出血风险可接受也可以使用。但她术后仅第3天，心动过速、低氧，存在早期失代偿而需补救再灌注（或因出血再次手术）的现实可能；低分子肝素作用持续约12小时，鱼精蛋白只能中和约60%，最初24–72小时的可控性不如普通肝素。",
+            "en": "Acceptable, but not the best choice here. For haemodynamically stable PE, LMWH is the guideline default (ESC 2019 class I, level A: less major bleeding and HIT, no monitoring) and can be used if the surgeons judge the bleeding risk acceptable. But she is only 3 days post-op and tachycardic and hypoxaemic, so early decompensation needing rescue reperfusion (or re-operation for bleeding) is a real possibility; LMWH's ~12-hour effect and only ~60% reversal by protamine make it less controllable than UFH over the first 24–72 hours."
           }
         },
         {
@@ -5092,8 +5092,8 @@
       "id": "risk-strat",
       "kind": "single",
       "prompt": {
-        "zh-CN": "CTPA已证实双侧肺栓塞。按ESC 2019标准，她的早期死亡风险分层是？",
-        "en": "CTPA confirms bilateral pulmonary emboli. Using ESC 2019 criteria, what is her early mortality risk class?"
+        "zh-CN": "CTPA已证实双侧肺栓塞。按ESC 2019标准，结合她就诊时的血流动力学状态和这些检查结果，她的早期死亡风险分层是？",
+        "en": "CTPA confirms bilateral pulmonary emboli. Using ESC 2019 criteria, her haemodynamic status at presentation and these results, what is her early mortality risk class?"
       },
       "requires": {
         "all": [
@@ -5118,8 +5118,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。高危要求血流动力学不稳定：心搏骤停、梗阻性休克（收缩压<90 mmHg或需血管活性药，伴终末器官低灌注），或持续低血压（收缩压<90 mmHg或下降≥40 mmHg超过15分钟）。她血压112/70 mmHg（平均动脉压84 mmHg），外周温暖，乳酸1.9 mmol/L。",
-            "en": "Incorrect. High risk requires haemodynamic instability: cardiac arrest, obstructive shock (SBP < 90 mmHg or vasopressors needed, with end-organ hypoperfusion) or persistent hypotension (SBP < 90 mmHg or a drop ≥ 40 mmHg for > 15 minutes). Her BP is 112/70 mmHg (MAP 84 mmHg), peripheries are warm and lactate is 1.9 mmol/L."
+            "zh-CN": "不正确。高危要求血流动力学不稳定：心搏骤停、梗阻性休克（收缩压<90 mmHg或需血管活性药，伴终末器官低灌注），或持续低血压（收缩压<90 mmHg或下降≥40 mmHg超过15分钟，且非新发心律失常、低血容量或脓毒症所致）。就诊时她血压112/70 mmHg（平均动脉压84 mmHg），外周温暖，乳酸1.9 mmol/L。若之后出现上述任何一项，应重新归为高危并考虑再灌注。",
+            "en": "Incorrect. High risk requires haemodynamic instability: cardiac arrest, obstructive shock (SBP < 90 mmHg or vasopressors needed, with end-organ hypoperfusion) or persistent hypotension (SBP < 90 mmHg or a drop ≥ 40 mmHg for > 15 minutes, not caused by new arrhythmia, hypovolaemia or sepsis). At presentation her BP was 112/70 mmHg (MAP 84 mmHg), her peripheries were warm and lactate was 1.9 mmol/L. If any of these develops later, she is reclassified as high risk and reperfusion must be considered."
           }
         },
         {
@@ -5130,8 +5130,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。血流动力学稳定，但PESI = 年龄52 + 肿瘤30 + 心率≥110次/分 20 + SaO2<90% 20 = 122分（IV级），sPESI = 3分（肿瘤、心率≥110次/分、SaO2<90%）；同时存在右心室功能不全（CTPA RV/LV 1.3，超声心动图右心扩大、TAPSE 14 mm）和肌钙蛋白升高（hs-cTnT 68 ng/L）——两者都阳性即为中高危。处理：抗凝，监护48–72小时，不行初始溶栓，恶化时补救再灌注。",
-            "en": "Correct. She is haemodynamically stable, but PESI = age 52 + cancer 30 + HR ≥ 110 20 + SaO2 < 90% 20 = 122 (class IV) and sPESI = 3 (cancer, HR ≥ 110, SaO2 < 90%); she has both RV dysfunction (CTPA RV/LV 1.3; echo RV dilatation, TAPSE 14 mm) and a raised troponin (hs-cTnT 68 ng/L) — both positive means intermediate-high. Management: anticoagulate, monitor for 48–72 hours, no primary lysis, rescue reperfusion if she deteriorates."
+            "zh-CN": "正确。就诊时血流动力学稳定，但PESI = 年龄52 + 肿瘤30 + 心率≥110次/分 20 + SaO2<90% 20 = 122分（IV级），sPESI = 3分（肿瘤、心率≥110次/分、SaO2<90%）；同时存在右心室功能不全（CTPA RV/LV 1.3，超声心动图右心扩大、TAPSE 14 mm）和肌钙蛋白升高（hs-cTnT 68 ng/L）——两者都阳性即为中高危。处理：抗凝，监护48–72小时，不行初始溶栓，恶化时补救再灌注。",
+            "en": "Correct. At presentation she was haemodynamically stable, but PESI = age 52 + cancer 30 + HR ≥ 110 20 + SaO2 < 90% 20 = 122 (class IV) and sPESI = 3 (cancer, HR ≥ 110, SaO2 < 90%); she has both RV dysfunction (CTPA RV/LV 1.3; echo RV dilatation, TAPSE 14 mm) and a raised troponin (hs-cTnT 68 ng/L) — both positive means intermediate-high. Management: anticoagulate, monitor for 48–72 hours, no primary lysis, rescue reperfusion if she deteriorates."
           }
         },
         {
@@ -5142,8 +5142,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。中低危是PESI III–IV级或sPESI ≥1分，但右心室功能不全和肌钙蛋白升高最多只有一项阳性。她两项都阳性。",
-            "en": "Incorrect. Intermediate-low means PESI class III–IV or sPESI ≥ 1 with at most one of RV dysfunction or raised troponin. She has both."
+            "zh-CN": "不正确。中低危是PESI III–V级或sPESI ≥1分，但右心室功能不全和肌钙蛋白升高最多只有一项阳性。她两项都阳性。",
+            "en": "Incorrect. Intermediate-low means PESI class III–V or sPESI ≥ 1 with at most one of RV dysfunction or raised troponin. She has both."
           }
         },
         {
@@ -5154,8 +5154,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。低危要求PESI I–II级或sPESI 0分且无右心室功能不全（低危患者可考虑早期出院）。她的PESI为122分（IV级）、sPESI为3分。",
-            "en": "Incorrect. Low risk requires PESI class I–II or sPESI 0 with no RV dysfunction (such patients may be considered for early discharge). Her PESI is 122 (class IV) and sPESI is 3."
+            "zh-CN": "不正确。低危要求PESI I–II级或sPESI 0分，且（如已评估）无右心室功能不全、肌钙蛋白不升高（低危患者可考虑早期出院）。她的PESI为122分（IV级）、sPESI为3分。",
+            "en": "Incorrect. Low risk requires PESI class I–II or sPESI 0, with no RV dysfunction or raised troponin if these were assessed (such patients may be considered for early discharge). Her PESI is 122 (class IV) and sPESI is 3."
           }
         }
       ]
@@ -5164,8 +5164,8 @@
       "id": "escalation-plan",
       "kind": "multiple",
       "prompt": {
-        "zh-CN": "关于她接下来的处理，以下哪些是正确的？（多选）",
-        "en": "Which of the following statements about her ongoing management are correct? (Select all that apply)"
+        "zh-CN": "按中高危肺栓塞处理时，关于她接下来的处理，以下哪些是正确的？（多选）",
+        "en": "Managing her as intermediate-high-risk PE, which of the following statements about her ongoing management are correct? (Select all that apply)"
       },
       "requires": {
         "decided": "risk-strat"
@@ -5219,8 +5219,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。滤器不降低死亡率，并增加远期深静脉血栓（PREPIC2）；仅用于抗凝绝对禁忌或充分抗凝下仍复发的患者。",
-            "en": "Wrong. Filters do not reduce mortality and increase late DVT (PREPIC2); they are only for absolute contraindications to anticoagulation or recurrence despite adequate anticoagulation."
+            "zh-CN": "错误。在抗凝基础上加用可回收滤器并不减少肺栓塞复发或死亡（PREPIC2），永久滤器远期还增加深静脉血栓（PREPIC）；滤器仅用于抗凝绝对禁忌或充分抗凝下仍复发的患者。",
+            "en": "Wrong. Adding a retrievable filter to anticoagulation does not reduce recurrent PE or mortality (PREPIC2), and permanent filters increase late DVT (PREPIC); filters are only for absolute contraindications to anticoagulation or recurrence despite adequate anticoagulation."
           }
         },
         {
@@ -5423,7 +5423,7 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "在护士提醒前、等待影像期间即开始治疗性抗凝",
+        "zh-CN": "在护士提醒前及时开始治疗性抗凝",
         "en": "Started therapeutic anticoagulation promptly, without needing the nurse's prompt"
       },
       "met": {
@@ -5665,8 +5665,8 @@
       "en": "Debrief: post-operative acute pulmonary embolism (intermediate-high risk)"
     },
     "conclusion": {
-      "zh-CN": "诊断：结肠癌开腹右半结肠切除术后第3天发生急性双侧肺动脉栓塞，伴右侧腘静脉及小腿深静脉血栓；ESC 2019早期死亡风险为中高危（血流动力学稳定；PESI 122分IV级/sPESI 3分；CTPA及超声心动图示右心室功能不全；hs-cTnT升高）。诱因：腹部大手术、恶性肿瘤、术后制动，以及错过一次预防性低分子肝素并停用机械预防。处理要点：吸氧至SpO2 94–98%；临床可能性高，跳过D-二聚体直接CTPA，并在等待影像期间开始治疗性抗凝；术后早期首选可快速停用、可完全中和的普通肝素静脉泵入（低分子肝素可接受）；转入监护床位观察48–72小时并通知PERT；不行全身溶栓（无失代偿，且3周内大手术）；一旦恶化，经PERT行导管介入或外科取栓补救再灌注。",
-      "en": "Diagnosis: acute bilateral pulmonary embolism with right popliteal and calf deep-vein thrombosis on day 3 after an open right hemicolectomy for colon cancer; ESC 2019 early mortality risk intermediate-high (haemodynamically stable; PESI 122, class IV / sPESI 3; RV dysfunction on CTPA and echo; raised hs-cTnT). Provoking factors: major abdominal surgery, cancer, post-operative immobility, a missed prophylactic LMWH dose and abandoned mechanical prophylaxis. Key management: oxygen to SpO2 94–98%; high clinical probability, so skip the D-dimer, go straight to CTPA and start therapeutic anticoagulation while awaiting imaging; early after surgery prefer an IV UFH infusion that can be stopped quickly and fully reversed (LMWH acceptable); monitored bed for 48–72 hours with the PERT alerted; no systemic lysis (no decompensation, and major surgery within 3 weeks); if she deteriorates, rescue reperfusion by catheter-directed therapy or surgical embolectomy via the PERT."
+      "zh-CN": "诊断：结肠癌开腹右半结肠切除术后第3天发生急性双侧肺动脉栓塞，伴右侧腘静脉及小腿深静脉血栓；ESC 2019早期死亡风险为中高危（血流动力学稳定；PESI 122分IV级/sPESI 3分；CTPA及超声心动图示右心室功能不全；hs-cTnT升高）。危险因素：腹部肿瘤大手术、恶性肿瘤、术后制动；预防措施也有中断（停用一次预防性低分子肝素，弹力袜脱掉后未用其他机械预防）——但她的小腿症状在昨晚停药前已经出现，规范预防只能降低、不能消除风险。处理要点：吸氧至SpO2 94–98%；临床可能性高，跳过D-二聚体直接CTPA，并在等待影像期间开始治疗性抗凝；术后早期首选可快速停用、可完全中和的普通肝素静脉泵入（低分子肝素可接受）；转入监护床位观察48–72小时并通知PERT；不行全身溶栓（无失代偿，且3周内大手术）；一旦恶化，经PERT行导管介入或外科取栓补救再灌注。",
+      "en": "Diagnosis: acute bilateral pulmonary embolism with right popliteal and calf deep-vein thrombosis on day 3 after an open right hemicolectomy for colon cancer; ESC 2019 early mortality risk intermediate-high (haemodynamically stable; PESI 122, class IV / sPESI 3; RV dysfunction on CTPA and echo; raised hs-cTnT). Risk factors: major abdominal cancer surgery, cancer and post-operative immobility, with gaps in prophylaxis (one held LMWH dose; stockings removed and no other mechanical prophylaxis) — although her calf symptoms began before last night's held dose: prophylaxis reduces but does not abolish the risk. Key management: oxygen to SpO2 94–98%; high clinical probability, so skip the D-dimer, go straight to CTPA and start therapeutic anticoagulation while awaiting imaging; early after surgery prefer an IV UFH infusion that can be stopped quickly and fully reversed (LMWH acceptable); monitored bed for 48–72 hours with the PERT alerted; no systemic lysis (no decompensation, and major surgery within 3 weeks); if she deteriorates, rescue reperfusion by catheter-directed therapy or surgical embolectomy via the PERT."
     },
     "keyReasoning": [
       {
@@ -5682,8 +5682,8 @@
         "en": "Risk stratification in order: haemodynamics first (normotensive → not high risk), then PESI/sPESI (122, class IV / 3), then RV imaging and troponin (both positive) → intermediate-high."
       },
       {
-        "zh-CN": "为什么首选普通肝素：半衰期短、可完全被鱼精蛋白中和、可随时调整，适合术后早期出血风险高且可能需要补救再灌注的患者；低分子肝素是稳定肺栓塞的默认选择，出血风险可接受时同样可用。",
-        "en": "Why UFH first: short half-life, full protamine reversal and easy titration suit an early post-operative patient with high bleeding risk who may need rescue reperfusion; LMWH is the default for stable PE and is equally reasonable if the bleeding risk is acceptable."
+        "zh-CN": "为什么首选普通肝素：半衰期短、可完全被鱼精蛋白中和、可随时调整，适合术后早期出血风险高且可能需要补救再灌注的患者（ESC 2019也把普通肝素主要留给可能需要再灌注、严重肾功能不全或严重肥胖的患者）；对一般血流动力学稳定的肺栓塞，低分子肝素是默认选择，本例若评估出血风险可接受，也是合理的替代方案。",
+        "en": "Why UFH first: short half-life, full protamine reversal and easy titration suit an early post-operative patient with high bleeding risk who may need rescue reperfusion (ESC 2019 likewise reserves UFH mainly for patients who may need reperfusion, or with severe renal impairment or severe obesity); for stable PE in general LMWH is the default, and it is a reasonable alternative here if the bleeding risk is judged acceptable."
       },
       {
         "zh-CN": "为什么不溶栓：PEITHO显示中危肺栓塞全身溶栓虽减少失代偿，但增加大出血和卒中且不降低死亡率；3周内大手术是禁忌（ESC 2019为绝对禁忌）。补救首选导管介入或外科取栓。",
@@ -5722,8 +5722,8 @@
         "en": "VTE risk after major abdominal/pelvic cancer surgery is high: combine pharmacological and mechanical prophylaxis, make every held dose an explicit review-and-represcribe decision, and extend pharmacological prophylaxis to about 4 weeks after surgery as guidelines advise."
       },
       {
-        "zh-CN": "肺栓塞的典型组合：突发胸膜性胸痛、气促、心动过速、低氧伴低碳酸血症/呼吸性碱中毒和A–a梯度增大；S1Q3T3特异但不敏感，正常心电图不能排除。",
-        "en": "The classic PE picture: sudden pleuritic pain, breathlessness, tachycardia, hypoxaemia with hypocapnia/respiratory alkalosis and a widened A–a gradient; S1Q3T3 is specific but insensitive, and a normal ECG does not exclude PE."
+        "zh-CN": "肺栓塞的典型组合：突发胸膜性胸痛、气促、心动过速、低氧伴低碳酸血症/呼吸性碱中毒和A–a梯度增大；S1Q3T3特异性较高但敏感性很低，正常心电图不能排除。",
+        "en": "The classic PE picture: sudden pleuritic pain, breathlessness, tachycardia, hypoxaemia with hypocapnia/respiratory alkalosis and a widened A–a gradient; S1Q3T3 is fairly specific but insensitive, and a normal ECG does not exclude PE."
       },
       {
         "zh-CN": "给氧目标SpO2 94–98%（BTS 2017；ESC 2019：SaO2<90%时给氧）；右心衰竭时避免积极补液。",
@@ -5738,8 +5738,8 @@
         "en": "Keep early post-operative anticoagulation reversible: know how protamine reverses UFH versus LMWH, and monitor platelets for HIT."
       },
       {
-        "zh-CN": "长期计划：由手术诱发且合并肿瘤的静脉血栓栓塞至少抗凝3个月，若肿瘤被认为仍处于活动期（取决于病理和辅助治疗）则至少6个月，与肿瘤科共同决定药物和疗程。",
-        "en": "Long-term plan: VTE provoked by surgery in a patient with cancer needs at least 3 months of anticoagulation, and at least 6 months if the cancer is considered active (depending on pathology and adjuvant therapy) — decide drug and duration with oncology."
+        "zh-CN": "长期计划：她的肿瘤在6个月内确诊、仍在治疗中，属于活动性肿瘤，应按肿瘤相关静脉血栓栓塞处理——至少抗凝6个月（低分子肝素，或评估消化道出血风险后选用部分DOAC），此后只要肿瘤仍处于活动期（如需辅助化疗）就继续抗凝；药物和疗程与肿瘤科共同决定。",
+        "en": "Long-term plan: her cancer was diagnosed within the last 6 months and is still being treated, so it counts as active and this is cancer-associated VTE — anticoagulate for at least 6 months (LMWH, or a DOAC after weighing the GI bleeding risk) and continue beyond that while the cancer remains active (e.g. during adjuvant chemotherapy); agree drug and duration with oncology."
       }
     ],
     "references": [
@@ -5751,6 +5751,7 @@
       "O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax. 2017;72(Suppl 1):ii1–ii90.",
       "Meyer G, Vicaut E, Danays T, et al. Fibrinolysis for patients with intermediate-risk pulmonary embolism (PEITHO). N Engl J Med. 2014;370(15):1402–1411.",
       "Mismetti P, Laporte S, Pellerin O, et al. Effect of a retrievable inferior vena cava filter plus anticoagulation vs anticoagulation alone on risk of recurrent pulmonary embolism: a randomized clinical trial (PREPIC2). JAMA. 2015;313(16):1627–1635.",
+      "PREPIC Study Group. Eight-year follow-up of patients with permanent vena cava filters in the prevention of pulmonary embolism: the PREPIC (Prévention du Risque d'Embolie Pulmonaire par Interruption Cave) randomized study. Circulation. 2005;112(3):416–422.",
       "Wells PS, Anderson DR, Rodger M, et al. Derivation of a simple clinical model to categorize patients' probability of pulmonary embolism. Thromb Haemost. 2000;83(3):416–420.",
       "Jiménez D, Aujesky D, Moores L, et al. Simplification of the pulmonary embolism severity index for prognostication in patients with acute symptomatic pulmonary embolism. Arch Intern Med. 2010;170(15):1383–1389.",
       "Gould MK, Garcia DA, Wren SM, et al. Prevention of VTE in nonorthopedic surgical patients: Antithrombotic Therapy and Prevention of Thrombosis, 9th ed: American College of Chest Physicians Evidence-Based Clinical Practice Guidelines. Chest. 2012;141(2 Suppl):e227S–e277S.",

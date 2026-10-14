@@ -105,10 +105,53 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 }
 
 /**
+ * `ProviderErrorInfo` plus the server's retry hint. The contract type has no
+ * field for it yet (CONTRACT CHANGE REQUEST: `retryAfterMs?: number`), so it
+ * travels as an extra own property — structurally still a `ProviderErrorInfo`
+ * and preserved through JSON (the server proxy).
+ */
+export type ProviderErrorInfoWithRetry = ProviderErrorInfo & { retryAfterMs?: number };
+
+/** The retry hint carried by an error info, if any. */
+export function retryAfterMsOf(info: ProviderErrorInfo): number | undefined {
+  const v = (info as ProviderErrorInfoWithRetry).retryAfterMs;
+  return typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : undefined;
+}
+
+/** Minimal header accessor (fetch `Headers`, SDK error headers). */
+export interface HeaderLike {
+  get(name: string): string | null;
+}
+
+/**
+ * Parse `retry-after-ms` (OpenAI) or `retry-after` (seconds or an HTTP date)
+ * into milliseconds. Undefined when absent or malformed.
+ */
+export function parseRetryAfter(headers: HeaderLike | null | undefined, now: () => number = Date.now): number | undefined {
+  if (!headers || typeof headers.get !== "function") return undefined;
+  const ms = headers.get("retry-after-ms")?.trim();
+  if (ms && /^\d+(\.\d+)?$/.test(ms)) return Math.round(Number(ms));
+  const value = headers.get("retry-after")?.trim();
+  if (!value) return undefined;
+  if (/^\d+(\.\d+)?$/.test(value)) return Math.round(Number(value) * 1000);
+  if (!/[a-z]/i.test(value)) return undefined;
+  const at = Date.parse(value);
+  return Number.isFinite(at) ? Math.max(0, at - now()) : undefined;
+}
+
+/** Attach a parsed retry hint to a retryable error (no-op otherwise). */
+export function withRetryAfter(info: ProviderErrorInfo, headers: HeaderLike | null | undefined): ProviderErrorInfo {
+  if (!info.retryable) return info;
+  const hint = parseRetryAfter(headers);
+  return hint === undefined ? info : ({ ...info, retryAfterMs: hint } as ProviderErrorInfoWithRetry);
+}
+
+/**
  * Classify an HTTP error response. `bodyText` may be JSON or plain text.
  * Precedence: Zhipu business code → string type/code → message heuristics → status.
+ * With `headers`, a `retry-after` hint is attached to retryable errors.
  */
-export function classifyHttpError(status: number, bodyText: string): ProviderErrorInfo {
+export function classifyHttpError(status: number, bodyText: string, headers?: HeaderLike | null): ProviderErrorInfo {
   const parsed = parseErrorBody(bodyText);
   const message = parsed.message?.trim() || (status ? `HTTP ${status}` : "Provider error");
   const info = (kind: Kind, retryable: boolean): ProviderErrorInfo => {
@@ -116,7 +159,7 @@ export function classifyHttpError(status: number, bodyText: string): ProviderErr
     if (status) result.status = status;
     if (parsed.code !== undefined) result.code = parsed.code;
     else if (parsed.type) result.code = parsed.type;
-    return result;
+    return headers ? withRetryAfter(result, headers) : result;
   };
 
   // 1. Zhipu business codes ("1302" or 1302).

@@ -57,15 +57,15 @@ import { BoxBatch, UNIT_BOX } from "./voxels.js";
 
 export { monitorRenderer } from "../shared/monitor-render.js";
 
-const MAX_POINT_LIGHTS = 12;
 const AIM_FAR = 5.5;
 const TARGET_RANGE = 3.5;
 const BUILD_RANGE = 5.3;
 
+/** Render quality: pixel-ratio cap, shadow map size (0 = off) and real PointLight budget (rest stay emissive-only). */
 const QUALITY = {
-  high: { ratio: 1.6, shadow: 2048 },
-  medium: { ratio: 1.25, shadow: 1024 },
-  low: { ratio: 1, shadow: 0 },
+  high: { ratio: 1.6, shadow: 2048, lights: 12 },
+  medium: { ratio: 1.25, shadow: 1024, lights: 8 },
+  low: { ratio: 1, shadow: 0, lights: 4 },
 } as const;
 
 function safeSettings(get: () => WorldSettings): WorldSettings {
@@ -207,7 +207,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   // point lights: the N nearest to spawn are real lights, the rest stay emissive-only
   const spawn = facility.spawn ?? { x: 0, z: 0, yaw: 0 };
   const sortedLights = [...ctx.lights].sort((p, q) => Math.hypot(p.x - spawn.x, p.z - spawn.z) - Math.hypot(q.x - spawn.x, q.z - spawn.z));
-  for (const l of sortedLights.slice(0, MAX_POINT_LIGHTS)) {
+  for (const l of sortedLights.slice(0, q0.lights)) {
     const pl = new PointLight(l.color, l.intensity, l.distance, l.decay);
     pl.position.set(l.x, l.y, l.z);
     root.add(pl);

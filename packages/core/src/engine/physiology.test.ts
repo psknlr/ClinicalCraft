@@ -245,6 +245,12 @@ describe("hardening: physiology edge cases", () => {
     expect(evaluate(V4, s, { not: { vital: "hr", op: "gt", value: 0 } })).toBe(true);
   });
 
+  it("treats a non-finite minute as the session clock instead of producing NaN vitals", () => {
+    const s = play(SIM, [{ type: "start" }, { type: "advance-time", minutes: 5 }]);
+    expect(vitalsAt(SIM, s, Number.NaN)).toEqual(vitalsAt(SIM, s));
+    expect(vitalValue(SIM, s, "sbp", Number.NaN)).toBe(vitalValue(SIM, s, "sbp"));
+  });
+
   it("reconstructs past baselines in the order scenario events actually fired", () => {
     // b-spike (declared second) fires at minute 2 and immediately triggers a-reset (declared first) in the same minute
     const c = withPhysiology((j) => {

@@ -89,6 +89,16 @@ describe("withRetry", () => {
     expect(events).toEqual([{ type: "error", error: { message: "Request aborted", kind: "network", code: "aborted", retryable: false } }]);
   });
 
+  it("honours a server retry-after hint (never shorter than the backoff, capped at maxDelayMs)", async () => {
+    const hinted = (ms: number): StreamEvent => ({ type: "error", error: { message: "slow down", kind: "rate_limit", retryable: true, retryAfterMs: ms } as ProviderErrorInfo });
+    const inner = new ScriptedProvider([[hinted(7_000)], [hinted(500)], [hinted(600_000)], textScript("ok")]);
+    const delays: number[] = [];
+    const p = withRetry(inner, { ...noSleep, jitter: false, onRetry: (_a, d) => delays.push(d) });
+    const events = await collect(p.stream(req));
+    expect(delays).toEqual([7_000, 4_000, 60_000]);
+    expect(events.map((e) => e.type)).toEqual(["start", "text_delta", "finish"]);
+  });
+
   it("abortableSleep resolves false on abort and true on timeout", async () => {
     expect(await abortableSleep(1)).toBe(true);
     const c = new AbortController();

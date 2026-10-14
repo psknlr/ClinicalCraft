@@ -81,6 +81,29 @@ describe("parseSSE", () => {
     expect(seen).toEqual(["first"]);
   });
 
+  it("keeps a CRLF split across chunks intact even with an empty chunk in between", async () => {
+    // "data: a\r" | "" | "\ndata: b\r\n\r\n" is ONE event with two data lines.
+    const msgs = await collect(["data: a\r", new Uint8Array(0), "\ndata: b\r\n\r\n"]);
+    expect(msgs.map((m) => m.data)).toEqual(["a\nb"]);
+  });
+
+  it("yields nothing more after an abort (neither buffered events nor a trailing partial one)", async () => {
+    const controller = new AbortController();
+    const enc = new TextEncoder();
+    const stream = new ReadableStream<Uint8Array>({
+      start(c) {
+        c.enqueue(enc.encode("data: first\n\ndata: second\n\ndata: partial"));
+        // never closes
+      },
+    });
+    const seen: string[] = [];
+    for await (const m of parseSSE(stream, { signal: controller.signal })) {
+      seen.push(m.data);
+      controller.abort();
+    }
+    expect(seen).toEqual(["first"]);
+  });
+
   it("formatSSE round-trips multi-line payloads", async () => {
     const msgs = await collect([formatSSE("a\nb", "done"), formatSSE('{"x":1}')]);
     expect(msgs).toEqual([{ event: "done", data: "a\nb" }, { data: '{"x":1}' }]);

@@ -101,6 +101,7 @@ export async function* parseSSE(stream: ReadableStream<Uint8Array>, options: Par
         if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
         first = false;
       }
+      if (text.length === 0) continue; // e.g. an empty chunk or a lone partial UTF-8 sequence
       if (pendingCR && text.startsWith("\n")) text = text.slice(1);
       pendingCR = false;
       buffer += text;
@@ -122,10 +123,13 @@ export async function* parseSSE(stream: ReadableStream<Uint8Array>, options: Par
         if (msg) {
           yield msg;
           if (stopOnDone && msg.data === "[DONE]") return;
+          if (signal?.aborted) return;
         }
       }
       buffer = buffer.slice(start);
     }
+    // An abort cancels the reader (read() then reports done): never dispatch the partial tail.
+    if (signal?.aborted) return;
     buffer += decoder.decode();
     if (buffer.length > 0) processLine(buffer);
     const last = dispatch();

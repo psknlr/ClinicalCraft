@@ -162,9 +162,8 @@ function leaves(cond: Condition, path: PathPart[], visit: (leaf: Condition, path
 function checkRanges(cond: Condition, path: PathPart[]): Issue[] {
   const issues: Issue[] = [];
   leaves(cond, path, (leaf, at) => {
-    const key = "elapsed" in leaf ? "elapsed" : "hints" in leaf ? "hints" : null;
+    const [key, range] = "elapsed" in leaf ? (["elapsed", leaf.elapsed] as const) : "hints" in leaf ? (["hints", leaf.hints] as const) : [null, null];
     if (!key) return;
-    const range = (leaf as { [k: string]: { gte?: number; lte?: number } })[key];
     if (range.gte != null && range.lte != null && range.gte > range.lte) {
       issues.push(err([...at, key], `empty range (gte ${range.gte} > lte ${range.lte}), so this can never become true`));
     }

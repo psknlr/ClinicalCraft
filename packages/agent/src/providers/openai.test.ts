@@ -259,6 +259,63 @@ describe("OpenAICompatibleProvider (mock server)", () => {
     expect(events.at(-1)).toEqual({ type: "finish", stopReason: "tool_use", usage: { inputTokens: 9, outputTokens: 4 } });
   });
 
+  it("splits parallel calls that reuse the same index (distinct ids) instead of merging their arguments", async () => {
+    // Some OpenAI-compatible servers send every complete call at index 0 (or with no index at all).
+    handlers.push(
+      sse([
+        chunk({ tool_calls: [{ index: 0, id: "call_a", type: "function", function: { name: "check_vitals", arguments: "{}" } }] }),
+        chunk({ tool_calls: [{ index: 0, id: "call_b", type: "function", function: { name: "order_test", arguments: '{"query":"cbc"}' } }] }),
+        chunk({ tool_calls: [{ id: "call_c", type: "function", function: { name: "examine", arguments: '{"query":"abdomen"}' } }] }),
+        chunk({}, "tool_calls"),
+      ]),
+    );
+    const events = await collect(new OpenAICompatibleProvider(config()).stream(baseRequest()));
+    expect(events.filter((e) => e.type === "tool_call")).toEqual([
+      { type: "tool_call", id: "call_a", name: "check_vitals", args: {}, index: 0 },
+      { type: "tool_call", id: "call_b", name: "order_test", args: { query: "cbc" }, index: 1 },
+      { type: "tool_call", id: "call_c", name: "examine", args: { query: "abdomen" }, index: 2 },
+    ]);
+    const starts = events.filter((e) => e.type === "tool_call_start").map((e) => (e as { index: number }).index);
+    expect(starts).toEqual([0, 1, 2]);
+  });
+
+  it("buffers argument fragments that arrive before the name/id and keeps ids stable when later fragments repeat them", async () => {
+    handlers.push(
+      sse([
+        chunk({ tool_calls: [{ index: 0, function: { arguments: '{"query"' } }] }),
+        chunk({ tool_calls: [{ index: 0, id: "call_x", function: { arguments: ':"ecg"' } }] }),
+        chunk({ tool_calls: [{ index: 0, id: "call_x", type: "function", function: { name: "order_test", arguments: "}" } }] }),
+        chunk({}, "tool_calls"),
+      ]),
+    );
+    const events = await collect(new OpenAICompatibleProvider(config()).stream(baseRequest()));
+    expect(events.filter((e) => e.type.startsWith("tool_call"))).toEqual([
+      { type: "tool_call_start", id: "call_x", name: "order_test", index: 0 },
+      { type: "tool_call_delta", id: "call_x", index: 0, argsDelta: '{"query"' },
+      { type: "tool_call_delta", id: "call_x", index: 0, argsDelta: ':"ecg"' },
+      { type: "tool_call_delta", id: "call_x", index: 0, argsDelta: "}" },
+      { type: "tool_call", id: "call_x", name: "order_test", args: { query: "ecg" }, index: 0 },
+    ]);
+  });
+
+  it("parses an SSE body even when the server mislabels it as application/json", async () => {
+    handlers.push((_req, res) => {
+      res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
+      res.end(`data: ${JSON.stringify(chunk({ content: "hi" }))}\n\ndata: ${JSON.stringify(chunk({}, "stop"))}\n\ndata: [DONE]\n\n`);
+    });
+    const events = await collect(new OpenAICompatibleProvider(config()).stream(baseRequest()));
+    expect(events.map((e) => e.type)).toEqual(["start", "text_delta", "finish"]);
+  });
+
+  it("attaches the retry-after hint to rate-limit errors", async () => {
+    handlers.push((_req, res) => {
+      res.writeHead(429, { "content-type": "application/json", "retry-after": "7" });
+      res.end(JSON.stringify({ error: { message: "Rate limit reached", type: "requests", code: "rate_limit_exceeded" } }));
+    });
+    const events = await collect(new OpenAICompatibleProvider(config()).stream(baseRequest()));
+    expect(events).toEqual([{ type: "error", error: expect.objectContaining({ kind: "rate_limit", retryable: true, retryAfterMs: 7000 }) }]);
+  });
+
   it("omits Authorization for no-key local servers", async () => {
     handlers.push(sse([chunk({ content: "hi" }, "stop")]));
     await collect(new OpenAICompatibleProvider(config({ id: "ollama", apiKey: undefined, model: "qwen3" })).stream(baseRequest()));
@@ -340,6 +397,64 @@ describe("buildOpenAIRequest", () => {
           { type: "image_url", image_url: { url: "data:image/png;base64,AAAA" } },
         ],
       },
+    ]);
+  });
+});
+
+describe("toOpenAIMessages tool pairing", () => {
+  const sys = [{ id: "s", text: "sys", cache: "stable" as const }];
+
+  it("keeps every tool message directly after its assistant turn when results are split across user messages", () => {
+    const msgs = toOpenAIMessages(sys, [
+      { role: "user", content: [{ type: "text", text: "Labs please" }] },
+      {
+        role: "assistant",
+        content: [
+          { type: "tool_call", id: "c1", name: "order_test", args: { query: "cbc" } },
+          { type: "tool_call", id: "c2", name: "order_test", args: { query: "bmp" } },
+        ],
+      },
+      { role: "user", content: [{ type: "tool_result", callId: "c1", content: "ok 1" }, { type: "text", text: "(hook context)" }] },
+      { role: "user", content: [{ type: "tool_result", callId: "c2", content: "ok 2" }] },
+    ]);
+    expect(msgs.map((m) => m.role)).toEqual(["system", "user", "assistant", "tool", "tool", "user"]);
+    expect(msgs.slice(3, 5)).toEqual([
+      { role: "tool", tool_call_id: "c1", content: "ok 1" },
+      { role: "tool", tool_call_id: "c2", content: "ok 2" },
+    ]);
+  });
+
+  it("answers unanswered tool calls and drops orphan / duplicate tool results", () => {
+    const msgs = toOpenAIMessages(sys, [
+      { role: "user", content: [{ type: "tool_result", callId: "ghost", content: "orphan" }, { type: "text", text: "Hi" }] },
+      { role: "assistant", content: [{ type: "text", text: "Ordering" }, { type: "tool_call", id: "c1", name: "order_test", args: {} }, { type: "tool_call", id: "c2", name: "order_test", args: {} }] },
+      {
+        role: "user",
+        content: [
+          { type: "tool_result", callId: "c1", content: "first" },
+          { type: "tool_result", callId: "c1", content: "duplicate" },
+          { type: "tool_result", callId: "zzz", content: "orphan" },
+          { type: "text", text: "next question" },
+        ],
+      },
+      { role: "assistant", content: [{ type: "tool_call", id: "c3", name: "check_vitals", args: {} }] },
+    ]);
+    expect(msgs).toEqual([
+      { role: "system", content: "sys" },
+      { role: "user", content: "Hi" },
+      {
+        role: "assistant",
+        content: "Ordering",
+        tool_calls: [
+          { id: "c1", type: "function", function: { name: "order_test", arguments: "{}" } },
+          { id: "c2", type: "function", function: { name: "order_test", arguments: "{}" } },
+        ],
+      },
+      { role: "tool", tool_call_id: "c1", content: "first" },
+      { role: "tool", tool_call_id: "c2", content: expect.stringMatching(/not executed/) },
+      { role: "user", content: "next question" },
+      { role: "assistant", content: null, tool_calls: [{ id: "c3", type: "function", function: { name: "check_vitals", arguments: "{}" } }] },
+      { role: "tool", tool_call_id: "c3", content: expect.stringMatching(/not executed/) },
     ]);
   });
 });

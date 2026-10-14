@@ -98,6 +98,11 @@ export const NORMAL_ADULT_VITALS: Readonly<Vitals> = {
 /* Small numeric helpers                                               */
 /* ------------------------------------------------------------------ */
 
+/** The minute to evaluate: `minute` when finite (clamped at 0), else the session clock. */
+function minuteOf(s: SessionState, minute: number | undefined): number {
+  return Math.max(0, minute != null && Number.isFinite(minute) ? minute : s.clock);
+}
+
 function clamp(value: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, value));
 }
@@ -268,7 +273,7 @@ export function alarmLevel(value: number, limit: AlarmLimit | undefined): AlarmL
  */
 export function alarmsAt(c: CaseDefinition, s: SessionState, t: number = s.clock): VitalAlarm[] {
   if (!c.physiology) return [];
-  return alarmsFor(c, signalAt(c, s, Math.max(0, t)).values);
+  return alarmsFor(c, signalAt(c, s, minuteOf(s, t)).values);
 }
 
 function alarmsFor(c: CaseDefinition, values: NumericVitals): VitalAlarm[] {
@@ -293,7 +298,7 @@ function alarmsFor(c: CaseDefinition, values: NumericVitals): VitalAlarm[] {
  */
 export function vitalValue(c: CaseDefinition, s: SessionState, vital: VitalKey, t: number = s.clock): number | undefined {
   if (!c.physiology) return undefined;
-  const raw = signalAt(c, s, Math.max(0, t)).values[vital];
+  const raw = signalAt(c, s, minuteOf(s, t)).values[vital];
   return raw == null ? undefined : roundVital(vital, raw);
 }
 
@@ -343,11 +348,12 @@ function displayVitals(c: CaseDefinition, t: number, values: NumericVitals, base
 }
 
 /**
- * Bedside-monitor snapshot at `minute` (default: the session clock).
+ * Bedside-monitor snapshot at `minute` (default — and for a non-finite
+ * minute — the session clock; negative minutes clamp to 0).
  * Pure function of (case, state, minute) — see module docs for semantics.
  */
 export function vitalsAt(c: CaseDefinition, s: SessionState, minute?: number): VitalsSnapshot {
-  const t = Math.max(0, minute ?? s.clock);
+  const t = minuteOf(s, minute);
   const { values, base } = signalAt(c, s, t);
   if (!c.physiology) {
     return { minute: t, vitals: displayVitals(c, t, values, base), alarms: [], trend: {}, baselineOnly: true };

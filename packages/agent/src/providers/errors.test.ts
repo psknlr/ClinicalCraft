@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { abortedError, classifyHttpError, isAbortInfo, networkError, parseErrorBody } from "./errors.js";
+import { abortedError, classifyHttpError, isAbortInfo, networkError, parseErrorBody, parseRetryAfter, retryAfterMsOf } from "./errors.js";
 
 const zhipu = (code: string, message = "msg") => JSON.stringify({ error: { code, message } });
 
@@ -81,5 +81,27 @@ describe("network/abort helpers", () => {
     expect(isAbortInfo(abortedError())).toBe(true);
     expect(networkError(Object.assign(new Error("x"), { name: "TimeoutError" }))).toMatchObject({ kind: "timeout", retryable: true });
     expect(networkError(new TypeError("fetch failed"))).toMatchObject({ kind: "network", retryable: true });
+  });
+});
+
+describe("parseRetryAfter", () => {
+  it("reads retry-after-ms, retry-after seconds and HTTP dates", () => {
+    expect(parseRetryAfter(new Headers({ "retry-after-ms": "1500" }))).toBe(1500);
+    expect(parseRetryAfter(new Headers({ "retry-after": "3" }))).toBe(3000);
+    expect(parseRetryAfter(new Headers({ "retry-after": "0.5" }))).toBe(500);
+    const at = Date.UTC(2030, 0, 1, 0, 0, 10);
+    expect(parseRetryAfter(new Headers({ "retry-after": new Date(at).toUTCString() }), () => at - 10_000)).toBe(10_000);
+    expect(parseRetryAfter(new Headers({ "retry-after": "soon" }))).toBeUndefined();
+    expect(parseRetryAfter(new Headers({ "retry-after": "-4" }))).toBeUndefined();
+    expect(parseRetryAfter(new Headers())).toBeUndefined();
+    expect(parseRetryAfter(undefined)).toBeUndefined();
+  });
+
+  it("classifyHttpError attaches the hint for retryable errors only", () => {
+    const limited = classifyHttpError(429, JSON.stringify({ error: { type: "rate_limit_error", message: "x" } }), new Headers({ "retry-after": "2" }));
+    expect(retryAfterMsOf(limited)).toBe(2000);
+    const auth = classifyHttpError(401, "", new Headers({ "retry-after": "2" }));
+    expect(retryAfterMsOf(auth)).toBeUndefined();
+    expect(retryAfterMsOf({ message: "x", kind: "unknown", retryable: true })).toBeUndefined();
   });
 });

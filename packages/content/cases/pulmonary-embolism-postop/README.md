@@ -70,8 +70,9 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   * rescue reperfusion
 
   After reperfusion she recovers over about 60 minutes.
-* **Systemic alteplase** is always contraindicated here (POD3 major surgery; normotensive). If it
-  is given, wound haemorrhage follows. The `haemorrhage` flag then makes UFH contraindicated and
+* **Systemic alteplase** is always contraindicated here (major surgery 3 days ago; while she is
+  normotensive there is no indication either, and if she shocks, surgical or catheter-directed
+  reperfusion is preferred because of that contraindication). If it is given, wound haemorrhage follows. The `haemorrhage` flag then makes UFH contraindicated and
   an IVC filter *indicated*. This is the only path where a filter is appropriate.
 * **Tempting wrong choices** are scored as safety events (contraindicated):
   * a 1 L rapid fluid bolus
@@ -116,9 +117,10 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 * **Prevention lesson.** A held prophylactic dose needs an explicit review and re-prescription.
   Mechanical prophylaxis should be re-offered. Extended (≈ 4-week) pharmacological prophylaxis is
   advised after major abdominal/pelvic cancer surgery.
-* **Long term (not simulated).** Anticoagulate for at least 3 months. If the cancer is judged
-  active (pending pathology and adjuvant therapy), continue for at least 6 months, with drug
-  choice agreed with oncology. Some DOACs carry a higher bleeding risk in luminal GI cancer.
+* **Long term (not simulated).** Her cancer was diagnosed within the last 6 months and is still
+  being treated, so it counts as active and this is cancer-associated VTE: anticoagulate for at
+  least 6 months, and continue while the cancer remains active (e.g. adjuvant chemotherapy), with
+  drug and duration agreed with oncology. Some DOACs carry a higher bleeding risk in luminal GI cancer.
   Thrombophilia testing is not indicated after a surgery-provoked first VTE, and its results are
   distorted during acute thrombosis and on heparin.
 
@@ -132,6 +134,7 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 * O'Driscoll BR, et al. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax. 2017;72(Suppl 1):ii1–ii90.
 * Meyer G, et al. Fibrinolysis for patients with intermediate-risk pulmonary embolism (PEITHO). N Engl J Med. 2014;370(15):1402–1411.
 * Mismetti P, et al. Retrievable IVC filter plus anticoagulation vs anticoagulation alone (PREPIC2). JAMA. 2015;313(16):1627–1635.
+* PREPIC Study Group. Eight-year follow-up of patients with permanent vena cava filters in the prevention of pulmonary embolism (PREPIC). Circulation. 2005;112(3):416–422.
 * Wells PS, et al. Derivation of a simple clinical model to categorize patients' probability of pulmonary embolism. Thromb Haemost. 2000;83(3):416–420.
 * Jiménez D, et al. Simplification of the pulmonary embolism severity index. Arch Intern Med. 2010;170(15):1383–1389.
 * Gould MK, et al. Prevention of VTE in nonorthopedic surgical patients (ACCP 9th ed). Chest. 2012;141(2 Suppl):e227S–e277S.

@@ -4,10 +4,11 @@
  * `withRetry` implements the agent-loop retry policy (docs/PROTOCOL.md §4.6):
  * exponential backoff 2 s × 2 capped at 60 s with jitter, up to 4 retries,
  * only for retryable errors that arrive BEFORE any content was streamed (a
- * partially streamed answer is never silently replayed). Sleeps are abortable.
+ * partially streamed answer is never silently replayed). A server
+ * `retry-after` hint lengthens the wait (within the cap). Sleeps are abortable.
  */
 import { AnthropicProvider } from "./anthropic.js";
-import { abortedError, isAbortInfo } from "./errors.js";
+import { abortedError, isAbortInfo, retryAfterMsOf } from "./errors.js";
 import { OfflineProvider } from "./offline.js";
 import { OpenAICompatibleProvider } from "./openai.js";
 import { ProxyProvider } from "./proxy.js";
@@ -128,7 +129,10 @@ class RetryingProvider implements LLMProvider {
         if (!streamed && heldStart) yield heldStart;
         return;
       }
-      const delay = retryDelay(attempt + 1, this.policy);
+      // A server hint (retry-after) is honoured when longer than the backoff, within the cap.
+      const hint = retryAfterMsOf(retryError);
+      const backoff = retryDelay(attempt + 1, this.policy);
+      const delay = hint === undefined ? backoff : Math.min(Math.max(backoff, hint), this.policy.maxDelayMs ?? 60_000);
       this.policy.onRetry?.(attempt + 1, delay, retryError);
       const completed = this.policy.sleep
         ? await this.policy.sleep(delay, signal).then(
