@@ -271,7 +271,7 @@ export function buildStructures(ctx: BuildContext): WallRecord[] {
   const S = strings(ctx.locale);
   void S;
   for (const b of f.buildings) {
-    const ws = { height: 5, base: "teal", body: "cream", top: "wood", thickness: 1, ...(b.walls ?? {}) };
+    const ws = Object.assign({ height: 5, base: "teal", body: "cream", top: "wood", thickness: 1 }, b.walls ?? {});
     const H = ws.height;
     const t = ws.thickness;
     const name = tx(b.name, ctx.locale);
