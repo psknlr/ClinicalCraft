@@ -1435,8 +1435,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "老年女性，半卧位，面色潮红、出汗，呼吸急促，只能说短句；嗜睡但呼之能应，用手按住右侧下胸部护痛。口唇无发绀。",
-        "en": "Older woman propped up, flushed and sweaty, breathing fast and speaking in short phrases; drowsy but rousable, splinting the right lower chest with her hand. No central cyanosis."
+        "zh-CN": "老年女性，半卧位，面色潮红、出汗，呼吸急促，只能说短句；精神萎靡、反应迟钝，睁着眼但注意力不集中，用手按住右侧下胸部护痛。口唇无发绀。",
+        "en": "Older woman propped up, flushed and sweaty, breathing fast and speaking in short phrases; listless and slow to respond, eyes open but inattentive, splinting the right lower chest with her hand. No central cyanosis."
       },
       "abnormal": true,
       "required": true,
@@ -1870,8 +1870,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "警觉性：嗜睡，呼之能醒并保持清醒（0分）；AMT4：说不出当前年份和所在地点（2分）；倒数月份：只说出“十二月、十一月”便停住（1分）；急性改变或波动病程：有（4分）。4AT总分7分（≥4分提示可能谵妄）。",
-        "en": "Alertness: drowsy but wakes and stays awake to voice (0); AMT4: cannot give the current year or where she is (2); months backwards: manages only 'December, November' (1); acute change or fluctuating course: present (4). 4AT total 7 (≥ 4 suggests possible delirium)."
+        "zh-CN": "警觉性：睁眼，略显困倦，但与之交谈时能保持清醒（0分）；AMT4：说不出当前年份和所在地点（2分）；倒数月份：只说出“十二月、十一月”便停住（1分）；急性改变或波动病程：有（4分）。4AT总分7分（≥4分提示可能谵妄）。",
+        "en": "Alertness: eyes open, mildly drowsy but stays awake when spoken to (0); AMT4: cannot give the current year or where she is (2); months backwards: manages only 'December, November' (1); acute change or fluctuating course: present (4). 4AT total 7 (≥ 4 suggests possible delirium)."
       },
       "abnormal": true,
       "required": false,
@@ -2173,7 +2173,7 @@
               "unit": "kPa",
               "refLow": 5.3,
               "refHigh": 6.7,
-              "refText": "5.3–6.7 kPa (40–50 mmHg); measured 29 mmHg",
+              "refText": "5.3–6.7 kPa (40–50 mmHg)",
               "flag": "L"
             },
             {
@@ -2243,7 +2243,7 @@
               "unit": "kPa",
               "refLow": 5.3,
               "refHigh": 6.7,
-              "refText": "5.3–6.7 kPa (40–50 mmHg); measured 32 mmHg",
+              "refText": "5.3–6.7 kPa (40–50 mmHg)",
               "flag": "L"
             },
             {
@@ -2346,7 +2346,7 @@
               "unit": "kPa",
               "refLow": 5.3,
               "refHigh": 6.7,
-              "refText": "5.3–6.7 kPa (40–50 mmHg); measured 28 mmHg",
+              "refText": "5.3–6.7 kPa (40–50 mmHg)",
               "flag": "L"
             },
             {
@@ -2416,7 +2416,7 @@
               "unit": "kPa",
               "refLow": 5.3,
               "refHigh": 6.7,
-              "refText": "5.3–6.7 kPa (40–50 mmHg); measured 32 mmHg",
+              "refText": "5.3–6.7 kPa (40–50 mmHg)",
               "flag": "L"
             },
             {
@@ -2801,7 +2801,6 @@
               "unit": "mmol/L",
               "refLow": 2.6,
               "refHigh": 7.5,
-              "refText": "2.6–7.5 mmol/L (BUN ≈ 33 mg/dL)",
               "flag": "H"
             },
             {
@@ -2813,7 +2812,6 @@
               "unit": "µmol/L",
               "refLow": 45,
               "refHigh": 84,
-              "refText": "45–84 µmol/L (1.76 mg/dL)",
               "flag": "H"
             },
             {
@@ -3028,7 +3026,6 @@
               "unit": "µmol/L",
               "refLow": 3.4,
               "refHigh": 20.5,
-              "refText": "3.4–20.5 µmol/L (24 µmol/L ≈ 1.4 mg/dL)",
               "flag": "H"
             },
             {
@@ -3043,7 +3040,11 @@
               "flag": "L"
             }
           ],
-          "critical": false
+          "critical": false,
+          "note": {
+            "zh-CN": "总胆红素24 µmol/L约合1.4 mg/dL。",
+            "en": "Total bilirubin 24 µmol/L ≈ 1.4 mg/dL."
+          }
         },
         "reassess": {
           "available": true,
@@ -3170,8 +3171,8 @@
               },
               "value": 236,
               "unit": "mg/L",
-              "refLow": 0,
               "refHigh": 10,
+              "refText": "< 10 mg/L",
               "flag": "H"
             },
             {
@@ -3181,7 +3182,6 @@
               },
               "value": 18.6,
               "unit": "µg/L",
-              "refLow": 0,
               "refHigh": 0.05,
               "refText": "< 0.05 µg/L",
               "flag": "H"
@@ -3203,8 +3203,8 @@
               },
               "value": 241,
               "unit": "mg/L",
-              "refLow": 0,
               "refHigh": 10,
+              "refText": "< 10 mg/L",
               "flag": "H"
             },
             {
@@ -3214,7 +3214,6 @@
               },
               "value": 19.2,
               "unit": "µg/L",
-              "refLow": 0,
               "refHigh": 0.05,
               "refText": "< 0.05 µg/L",
               "flag": "H"
@@ -3412,9 +3411,8 @@
               },
               "value": 3.4,
               "unit": "mg/L FEU",
-              "refLow": 0,
               "refHigh": 0.5,
-              "refText": "< 0.5 mg/L FEU (age-adjusted cut-off for 72 y: 0.72)",
+              "refText": "< 0.5 mg/L FEU (72 y: < 0.72)",
               "flag": "H"
             }
           ],
@@ -3438,9 +3436,8 @@
               },
               "value": 3.2,
               "unit": "mg/L FEU",
-              "refLow": 0,
               "refHigh": 0.5,
-              "refText": "< 0.5 mg/L FEU (age-adjusted cut-off for 72 y: 0.72)",
+              "refText": "< 0.5 mg/L FEU (72 y: < 0.72)",
               "flag": "H"
             }
           ],
@@ -3494,9 +3491,8 @@
               },
               "value": 38,
               "unit": "ng/L",
-              "refLow": 0,
               "refHigh": 14,
-              "refText": "< 14 ng/L (99th percentile)",
+              "refText": "< 14 ng/L (P99)",
               "flag": "H"
             }
           ],
@@ -3516,9 +3512,8 @@
               },
               "value": 41,
               "unit": "ng/L",
-              "refLow": 0,
               "refHigh": 14,
-              "refText": "< 14 ng/L (99th percentile)",
+              "refText": "< 14 ng/L (P99)",
               "flag": "H"
             }
           ],
@@ -3793,7 +3788,7 @@
               },
               "value": "1+ (0.3 g/L)",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "A"
             },
             {
@@ -3801,9 +3796,9 @@
                 "zh-CN": "尿糖",
                 "en": "Glucose"
               },
-              "value": "trace",
+              "value": "±",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "A"
             },
             {
@@ -3813,7 +3808,7 @@
               },
               "value": "1+",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "A"
             },
             {
@@ -3821,9 +3816,9 @@
                 "zh-CN": "亚硝酸盐",
                 "en": "Nitrite"
               },
-              "value": "negative",
+              "value": "−",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "N"
             },
             {
@@ -3831,9 +3826,9 @@
                 "zh-CN": "白细胞酯酶",
                 "en": "Leucocyte esterase"
               },
-              "value": "negative",
+              "value": "−",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "N"
             },
             {
@@ -3885,7 +3880,7 @@
               },
               "value": "1+ (0.3 g/L)",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "A"
             },
             {
@@ -3893,9 +3888,9 @@
                 "zh-CN": "尿糖",
                 "en": "Glucose"
               },
-              "value": "trace",
+              "value": "±",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "A"
             },
             {
@@ -3905,7 +3900,7 @@
               },
               "value": "1+",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "A"
             },
             {
@@ -3913,9 +3908,9 @@
                 "zh-CN": "亚硝酸盐",
                 "en": "Nitrite"
               },
-              "value": "negative",
+              "value": "−",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "N"
             },
             {
@@ -3923,9 +3918,9 @@
                 "zh-CN": "白细胞酯酶",
                 "en": "Leucocyte esterase"
               },
-              "value": "negative",
+              "value": "−",
               "unit": "",
-              "refText": "negative",
+              "refText": "−",
               "flag": "N"
             },
             {
@@ -4223,7 +4218,7 @@
               "unit": "mmol/mol",
               "refLow": 20,
               "refHigh": 42,
-              "refText": "20–42 mmol/mol (6.9%)",
+              "refText": "20–42 mmol/mol (4.0–6.0%)",
               "flag": "H"
             }
           ],
@@ -4269,7 +4264,7 @@
               "unit": "mmol/mol",
               "refLow": 20,
               "refHigh": 42,
-              "refText": "20–42 mmol/mol (6.9%)",
+              "refText": "20–42 mmol/mol (4.0–6.0%)",
               "flag": "H"
             }
           ],
@@ -5818,8 +5813,8 @@
         },
         "severity": "info",
         "message": {
-          "zh-CN": "陈护士：三袋500 mL已经推进去了，抗生素也在滴。要再评估一下她吗？最新血压在监护仪上。",
-          "en": "Nurse Chen: Three 500 mL bags are in and the antibiotics are running. Do you want to reassess her? The latest BP is on the monitor."
+          "zh-CN": "陈护士：最初的几袋液体已经推进去了，抗生素也在滴。要再评估一下她吗？最新血压在监护仪上。",
+          "en": "Nurse Chen: The first bags of fluid are in and the antibiotics are running. Do you want to reassess her? The latest BP is on the monitor."
         }
       },
       {
@@ -5967,8 +5962,8 @@
     {
       "id": "obj-workup",
       "title": {
-        "zh-CN": "脓毒症相关检查",
-        "en": "Sepsis work-up"
+        "zh-CN": "初步检查：病因与器官功能",
+        "en": "Initial investigations: cause and organ function"
       },
       "short": {
         "zh-CN": "检查",
@@ -6040,12 +6035,12 @@
     {
       "id": "obj-hour1",
       "title": {
-        "zh-CN": "1小时集束化治疗",
-        "en": "The hour-1 bundle"
+        "zh-CN": "早期治疗",
+        "en": "Early treatment"
       },
       "short": {
-        "zh-CN": "1小时集束",
-        "en": "Hour-1 bundle"
+        "zh-CN": "早期治疗",
+        "en": "Early treatment"
       },
       "hint": {
         "zh-CN": "低血压+乳酸升高：1小时内静脉经验性抗菌药物（β-内酰胺+大环内酯），并开始分次推注平衡晶体液，每次后复评。",

@@ -4,8 +4,8 @@
  *
  * After an accepted action the reducer calls `settle` at the current clock
  * and, when the action consumed simulated time, `advanceClock`, which walks
- * every integer minute up to the target (plus the target itself) and at each
- * step:
+ * every integer minute up to the target (plus the target itself and any
+ * fractional `atMinute`/`readyAt` in between) and at each step:
  *
  * 1. emits `result.ready` for orders whose `readyAt` was crossed;
  * 2. settles: fires due scenario events (`atMinute` reached or `when` true),
@@ -57,15 +57,17 @@ function phaseTruthOf(c: CaseDefinition, s: SessionState): Map<string, boolean> 
 
 /**
  * Open a timeline for a draft produced from `before`. Edge detection
- * (phase transitions, alarms) compares against `before`; a session that had
- * not started yet has no alarm history, so abnormal vitals alarm at start.
+ * (phase transitions, alarms) compares against `before`. A session that had
+ * not started yet has no history: abnormal vitals alarm at start, and an
+ * `enterWhen` that is already true at start (e.g. made true by a pre-start
+ * `flag`) counts as a false→true edge.
  */
 export function openTimeline(c: CaseDefinition, before: SessionState, draft: SessionState, events: DomainEvent[]): Timeline {
   return {
     c,
     s: draft,
     events,
-    phaseTruth: phaseTruthOf(c, before),
+    phaseTruth: before.started ? phaseTruthOf(c, before) : new Map(),
     alarmLevels: before.started ? levelsAt(c, before) : {},
   };
 }
@@ -187,17 +189,28 @@ function settleBound(c: CaseDefinition): number {
   return (c.physiology?.events.length ?? 0) + (c.physiology?.trends.length ?? 0) + c.phases.length + c.objectives.length;
 }
 
-/** Integer minutes strictly between `from` and `to`, then `to` itself. */
-function steps(from: number, to: number): number[] {
-  const out: number[] = [];
-  for (let m = Math.floor(from) + 1; m < to; m++) out.push(m);
-  out.push(to);
-  return out;
+/**
+ * Clock values to settle at when moving from `from` to `to`: every integer
+ * minute strictly between them, plus the exact (possibly fractional) times
+ * at which something is scheduled — scenario events' `atMinute` and orders'
+ * `readyAt` — so they happen at their own minute, then `to` itself.
+ */
+function steps(tl: Timeline, from: number, to: number): number[] {
+  const points = new Set<number>();
+  for (let m = Math.floor(from) + 1; m < to; m++) points.add(m);
+  const scheduled = [
+    ...(tl.c.physiology?.events ?? []).map((e) => e.atMinute),
+    ...(tl.c.clock.mode === "simulated" ? tl.s.orders.map((o) => o.readyAt) : []),
+  ];
+  for (const at of scheduled) if (at != null && at > from && at < to) points.add(at);
+  points.add(to);
+  return [...points].sort((a, b) => a - b);
 }
 
 /**
  * Move the draft clock to `to` (capped at `clock.limitMinutes`), processing
- * every intermediate minute. Emits `time.advanced` once.
+ * every intermediate minute (and scheduled fractional time). Emits
+ * `time.advanced` once.
  */
 export function advanceClock(tl: Timeline, to: number): void {
   const { c, s } = tl;
@@ -208,7 +221,7 @@ export function advanceClock(tl: Timeline, to: number): void {
     return;
   }
   tl.events.push({ type: "time.advanced", from: s.clock, to: target });
-  for (const minute of steps(s.clock, target)) {
+  for (const minute of steps(tl, s.clock, target)) {
     const previous = s.clock;
     s.clock = minute;
     emitReadyResults(tl, previous, minute);

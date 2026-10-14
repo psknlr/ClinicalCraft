@@ -5816,8 +5816,8 @@
     {
       "id": "obj-reassess",
       "title": {
-        "zh-CN": "1小时后再评估治疗反应",
-        "en": "Reassess the response after the first hour"
+        "zh-CN": "1小时再评估：反应良好，还是需要升级？",
+        "en": "Reassess at 1 hour: responding, or escalate?"
       },
       "short": {
         "zh-CN": "再评估",
@@ -5887,8 +5887,8 @@
     {
       "id": "obj-discharge",
       "title": {
-        "zh-CN": "安全出院计划",
-        "en": "Plan a safe discharge"
+        "zh-CN": "安全处置与出院计划",
+        "en": "Safe disposition and discharge planning"
       },
       "short": {
         "zh-CN": "出院计划",

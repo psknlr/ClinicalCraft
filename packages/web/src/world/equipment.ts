@@ -40,15 +40,20 @@ export function roomIdAt(ctx: Pick<BuildContext, "facility">, x: number, z: numb
   return best?.id ?? null;
 }
 
-/** Top of the sleeping surface of a bed/couch type (part named "mattress", else highest broad part below 1.3). */
-export function surfaceTop(type: EquipmentType | undefined): number {
+/**
+ * Top of the sleeping / sitting surface of a bed, couch or chair type: a part
+ * named "mattress" or "seat", else the highest broad horizontal part
+ * (≥ 0.15 m², flatter than it is wide) below 1.3 m.
+ */
+export function surfaceTop(type: Pick<EquipmentType, "parts"> | undefined): number {
   if (!type) return 0.9;
   const named = type.parts.find((p) => p.name === "mattress" || p.name === "seat");
   if (named) return named.p[1] + named.s[1] / 2;
   let top = 0;
   for (const p of type.parts) {
     const t = p.p[1] + p.s[1] / 2;
-    if (p.s[0] * p.s[2] >= 0.5 && t <= 1.3) top = Math.max(top, t);
+    const flat = p.s[1] < Math.min(p.s[0], p.s[2]);
+    if (p.s[0] * p.s[2] >= 0.15 && flat && t <= 1.3) top = Math.max(top, t);
   }
   return top || 0.9;
 }

@@ -232,6 +232,34 @@ describe("vital conditions", () => {
     expect(evaluate(SIM, s, { vital: "sbp", op: "lt", value: 90 })).toBe(false);
     expect(evaluate(SIM, s, { vital: "sbp", op: "eq", value: 90 })).toBe(true);
     expect(evaluate(SIM, s, { vital: "etco2", op: "gt", value: 0 })).toBe(false);
-    expect(evaluate(V4, createSession(V4), { vital: "spo2", op: "gte", value: 98 })).toBe(true);
+  });
+});
+
+describe("hardening: physiology edge cases", () => {
+  it("never evaluates vital conditions against the baseline-only placeholder (missing data stays missing)", () => {
+    const s = play(V4, [{ type: "start" }]);
+    expect(vitalsAt(V4, s).baselineOnly).toBe(true);
+    expect(vitalValue(V4, s, "spo2")).toBeUndefined();
+    expect(evaluate(V4, s, { vital: "spo2", op: "gte", value: 98 })).toBe(false);
+    expect(evaluate(V4, s, { vital: "hr", op: "gt", value: 0 })).toBe(false);
+    expect(evaluate(V4, s, { not: { vital: "hr", op: "gt", value: 0 } })).toBe(true);
+  });
+
+  it("reconstructs past baselines in the order scenario events actually fired", () => {
+    // b-spike (declared second) fires at minute 2 and immediately triggers a-reset (declared first) in the same minute
+    const c = withPhysiology((j) => {
+      j.physiology.trends = [];
+      j.physiology.events = [
+        { id: "a-reset", when: { vital: "hr", op: "gte", value: 150 }, setVitals: { hr: 60 } },
+        { id: "b-spike", atMinute: 2, setVitals: { hr: 160 } },
+      ];
+    });
+    const s = play(c, [{ type: "start" }, { type: "advance-time", minutes: 5 }]);
+    expect(s.firedEvents).toEqual({ "b-spike": 2, "a-reset": 2 });
+    expect(s.baselineOverrides.hr).toBe(60);
+    expect(vitalsAt(c, s, 5).vitals.hr).toBe(60);
+    expect(vitalsAt(c, s, 3).vitals.hr).toBe(60);
+    expect(vitalsAt(c, s, 2).vitals.hr).toBe(60);
+    expect(vitalsAt(c, s, 1).vitals.hr).toBe(118);
   });
 });

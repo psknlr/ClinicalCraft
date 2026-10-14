@@ -108,6 +108,8 @@ export default defineConfig(({ mode }) => ({
   plugins: [localAssets()],
   server: {
     fs: { allow: [repoRoot] },
+    // CLINICALCRAFT_QA=1: no HMR/reloads (content files may change while QA scripts run)
+    ...(process.env.CLINICALCRAFT_QA ? { hmr: false, watch: { ignored: ["**/*"] } } : {}),
   },
   build: {
     target: "es2022",
