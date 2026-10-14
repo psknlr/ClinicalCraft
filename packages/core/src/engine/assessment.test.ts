@@ -99,3 +99,48 @@ describe("assess", () => {
     expect(assess(SIM, s).score).toEqual({ earned: 2, possible: 6, percent: 33 });
   });
 });
+
+describe("hardening: assessment edge cases", () => {
+  const raw = (name: string) => structuredClone(fixture(name)) as Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  const loadJson = (json: unknown): CaseDefinition => {
+    const parsed = parseCase(json);
+    if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues, null, 2));
+    return parsed.value;
+  };
+
+  it("sums fractional rubric weights without floating-point noise", () => {
+    const json = raw("v4-smzl-mini.case.json");
+    json.rubric = [
+      { id: "a", domain: "history", text: "a", weight: 0.1, met: { always: true } },
+      { id: "b", domain: "history", text: "b", weight: 0.2, met: { always: true } },
+      { id: "c", domain: "history", text: "c", weight: 0.7, met: { always: false } },
+    ];
+    const c = loadJson(json);
+    const s = reduce(c, createSession(c), { type: "start" }).state;
+    expect(assess(c, s).score).toEqual({ earned: 0.3, possible: 1, percent: 30 });
+  });
+
+  it("does not list 'no record' (available: false) results as unread", () => {
+    const { state } = replay(V4, [
+      { type: "start" },
+      { type: "set-phase", phase: "post" },
+      { type: "order", investigationId: "marrow" }, // post: available false
+      { type: "order", investigationId: "flow" }, // post: has a result
+    ]);
+    expect(assess(V4, state).investigations.unread).toEqual(["flow@post"]);
+  });
+
+  it("counts critical alarms at the fractional minutes the reducer settles at", () => {
+    const json = raw("mini-anaphylaxis.case.json");
+    json.physiology.trends = [];
+    json.physiology.events = [
+      { id: "spike", atMinute: 2.5, setVitals: { hr: 160 } },
+      { id: "settle", atMinute: 2.75, setVitals: { hr: 100 } },
+    ];
+    const c = loadJson(json);
+    const { state, events } = replay(c, [{ type: "start" }, { type: "advance-time", minutes: 5 }]);
+    const critical = events.filter((e) => e.type === "vitals.alarm" && e.level === "critical");
+    expect(critical).toEqual([{ type: "vitals.alarm", vital: "hr", level: "critical", value: 160 }]);
+    expect(countCriticalAlarms(c, state)).toBe(1);
+  });
+});

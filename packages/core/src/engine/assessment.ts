@@ -30,7 +30,8 @@ function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentRep
     essentialMissing: c.investigations.filter((i) => i.value === "essential" && !orderedIds.includes(i.id)).map((i) => i.id),
     lowValue: byValue("low-value"),
     harmful: byValue("harmful"),
-    unread: s.orders.filter((o) => !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase) != null).map((o) => o.key),
+    // ordered results that carry information but were never read ("no record" / available:false results are not counted)
+    unread: s.orders.filter((o) => !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
   };
 }
 
@@ -46,29 +47,52 @@ function decisionSummary(c: CaseDefinition, s: SessionState): AssessmentReport["
   });
 }
 
-/** Minutes at which vitals are sampled for alarm counting: every integer minute up to the clock, plus the clock. */
-function sampleMinutes(clock: number): number[] {
-  const out: number[] = [];
-  for (let m = 0; m < clock; m++) out.push(m);
-  out.push(clock);
-  return out;
+/**
+ * Minutes at which vitals are sampled for alarm counting: every integer
+ * minute up to the clock, the clock, and every recorded moment at which the
+ * reducer settled (action start times of orders, results, interventions,
+ * attempts, notes; fired events, trend stops and objective completions) —
+ * so fractional settle points are seen as the reducer saw them.
+ */
+function sampleMinutes(c: CaseDefinition, s: SessionState): number[] {
+  const points = new Set<number>();
+  for (let m = 0; m < s.clock; m++) points.add(m);
+  const recorded = [
+    ...s.orders.flatMap((o) => (c.clock.mode === "simulated" ? [o.orderedAt, o.readyAt] : [o.orderedAt])),
+    ...s.interventions.map((r) => r.at),
+    ...s.attempts.map((a) => a.at),
+    ...s.notes.map((n) => n.at),
+    ...Object.values(s.firedEvents),
+    ...Object.values(s.trendStops),
+    ...Object.values(s.objectivesDone),
+  ];
+  for (const at of recorded) if (at >= 0 && at < s.clock) points.add(at);
+  points.add(s.clock);
+  return [...points].sort((a, b) => a - b);
 }
 
 /**
  * Number of critical-alarm onsets (a vital entering the critical band) over
- * the session, sampled each simulated minute from 0 to the clock — the same
- * grid the reducer uses, so it matches the `vitals.alarm` events.
+ * the session, sampled at every simulated minute from 0 to the clock plus
+ * the recorded fractional moments — the grid the reducer settles on, so it
+ * matches the `vitals.alarm` events (an alarm that starts and ends between
+ * two unrecorded fractional action boundaries can still be missed).
  */
 export function countCriticalAlarms(c: CaseDefinition, s: SessionState): number {
   if (!c.physiology || !s.started) return 0;
   let count = 0;
   let critical = new Set<string>();
-  for (const minute of sampleMinutes(s.clock)) {
+  for (const minute of sampleMinutes(c, s)) {
     const now = new Set(alarmsAt(c, s, minute).filter((a) => a.level === "critical").map((a) => a.vital));
     for (const vital of now) if (!critical.has(vital)) count++;
     critical = now;
   }
   return count;
+}
+
+/** Remove binary floating-point noise from weight sums (0.1 + 0.2 → 0.3). */
+function tidy(value: number): number {
+  return Math.round(value * 1e6) / 1e6;
 }
 
 function rubricSummary(c: CaseDefinition, s: SessionState) {
@@ -82,7 +106,7 @@ function rubricSummary(c: CaseDefinition, s: SessionState) {
   const possible = scored.reduce((sum, r) => sum + r.weight, 0);
   const earned = scored.filter((r) => r.met).reduce((sum, r) => sum + r.weight, 0);
   const percent = possible > 0 ? Math.round((earned / possible) * 100) : 0;
-  return { rubric, score: { earned, possible, percent } };
+  return { rubric, score: { earned: tidy(earned), possible: tidy(possible), percent } };
 }
 
 /** Assess a session against its case (pure). */

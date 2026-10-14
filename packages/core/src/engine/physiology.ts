@@ -127,19 +127,21 @@ function numericOf(vitals: Partial<Vitals>): NumericVitals {
 
 /**
  * Baseline vitals in force at minute `t`: the case baseline plus scenario
- * `setVitals` of events that had fired by `t`. For the present (and future)
- * the state's `baselineOverrides` are authoritative.
+ * `setVitals` of events that had fired by `t`, applied in firing order
+ * (`firedEvents` insertion order, stable-sorted by minute — events fired in
+ * the same minute keep the order in which the reducer fired them). For the
+ * present (and future) the state's `baselineOverrides` are authoritative.
  */
 function baselineAt(c: CaseDefinition, s: SessionState, t: number): Partial<Vitals> {
   const physiology = c.physiology;
   if (!physiology) return { ...NORMAL_ADULT_VITALS };
   if (t >= s.clock) return { ...physiology.baseline, ...s.baselineOverrides };
-  const fired = physiology.events
-    .map((event, index) => ({ event, index, at: s.firedEvents[event.id] }))
-    .filter((e): e is typeof e & { at: number } => e.at != null && e.at <= t)
-    .sort((a, b) => a.at - b.at || a.index - b.index);
+  const byId = new Map(physiology.events.map((event) => [event.id, event]));
+  const fired = Object.entries(s.firedEvents)
+    .filter(([, at]) => at <= t)
+    .sort((a, b) => a[1] - b[1]);
   let base: Partial<Vitals> = { ...physiology.baseline };
-  for (const { event } of fired) base = { ...base, ...(event.setVitals ?? {}) };
+  for (const [id] of fired) base = { ...base, ...(byId.get(id)?.setVitals ?? {}) };
   return base;
 }
 
@@ -284,10 +286,13 @@ function alarmsFor(c: CaseDefinition, values: NumericVitals): VitalAlarm[] {
 
 /**
  * Noise-free, display-rounded value of one vital at minute `t` (default: the
- * session clock); `undefined` when the case does not model that vital. Used
- * by `vital` conditions.
+ * session clock); `undefined` when the case does not model that vital —
+ * including every vital of a case without `physiology`, whose monitor shows
+ * only a baseline-only placeholder (grounding rule 2: missing data stays
+ * missing, so `vital` conditions on it are false). Used by `vital` conditions.
  */
 export function vitalValue(c: CaseDefinition, s: SessionState, vital: VitalKey, t: number = s.clock): number | undefined {
+  if (!c.physiology) return undefined;
   const raw = signalAt(c, s, Math.max(0, t)).values[vital];
   return raw == null ? undefined : roundVital(vital, raw);
 }

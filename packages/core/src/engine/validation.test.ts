@@ -241,3 +241,91 @@ describe("verifyCase", () => {
     expect(r.finalState.finished).toBe(false);
   });
 });
+
+describe("hardening: verifyCase", () => {
+  it("accepts solutions that begin with pre-start actions before an explicit start", () => {
+    const c = structuredClone(V4);
+    c.solution = [{ type: "note", text: "plan" }, { type: "set-phase", phase: "pre" }, ...c.solution];
+    const r = verifyCase(c);
+    expect(r.issues).toEqual([]);
+    expect(r.ok).toBe(true);
+  });
+
+  it("fails a solution that ends in a timeout, even with every objective and decision done", () => {
+    const c = structuredClone(SIM);
+    c.solution = [...c.solution.filter((a) => a.type !== "finish"), { type: "advance-time", minutes: 120 }];
+    const r = verifyCase(c);
+    expect(r.finalState.finished).toBe(true);
+    expect(r.issues).toEqual([{ path: "solution.8", message: expect.stringMatching(/time limit \(60 min\)/), severity: "error" }]);
+    expect(r.ok).toBe(false);
+  });
+});
+
+describe("hardening: checkCaseIntegrity blind spots", () => {
+  it("reports leaves that can never become true", () => {
+    const c = structuredClone(SIM);
+    c.investigations.push({ ...c.investigations[0], id: "ghost-lab", aliases: [], results: {} });
+    c.rubric.push(
+      { id: "x1", domain: "investigations", text: "x", weight: 1, met: { read: "ghost-lab" } },
+      { id: "x2", domain: "investigations", text: "x", weight: 1, met: { any: [{ resultReady: "ghost-lab" }] } },
+      { id: "x3", domain: "management", text: "x", weight: 1, met: { intervened: "epi", minCount: 3 } },
+      { id: "x4", domain: "efficiency", text: "x", weight: 1, met: { elapsed: { gte: 10, lte: 5 } } },
+      { id: "x5", domain: "efficiency", text: "x", weight: 1, met: { hints: { gte: 2, lte: 1 } } },
+    );
+    const issues = checkCaseIntegrity(c);
+    const n = SIM.rubric.length;
+    expect(issues.map((i) => [i.path, i.severity])).toEqual([
+      [`rubric.${n}.met.read`, "error"],
+      [`rubric.${n + 1}.met.any.0.resultReady`, "error"],
+      [`rubric.${n + 2}.met.minCount`, "error"],
+      [`rubric.${n + 3}.met.elapsed`, "error"],
+      [`rubric.${n + 4}.met.hints`, "error"],
+      [`investigations.${SIM.investigations.length}.results`, "warning"],
+    ]);
+    expect(at(issues, `rubric.${n}.met.read`)[0].message).toMatch(/no result in any phase/);
+    expect(at(issues, `rubric.${n + 2}.met.minCount`)[0].message).toMatch(/at most 2/);
+    expect(at(issues, `rubric.${n + 3}.met.elapsed`)[0].message).toMatch(/empty range/);
+  });
+
+  it("finds objectives that can never complete and decisions that can never unlock (cycles, self-locks)", () => {
+    const c = structuredClone(SIM);
+    // treat ⇄ stabilise: a cycle (stabilise already requires treat)
+    c.objectives[1].completeWhen = { all: [{ intervened: "epi" }, { objective: "stabilise" }] };
+    // dx requires having answered dx; disposition requires an attempt at itself
+    c.decisions[0].requires = { decided: "dx" };
+    c.decisions[1].requires = { all: [{ phase: "observation" }, { attempted: "disposition" }] };
+    const issues = checkCaseIntegrity(c);
+    expect(issues.map((i) => [i.path, i.severity])).toEqual([
+      ["objectives.1.completeWhen", "error"],
+      ["objectives.2.completeWhen", "error"],
+      ["objectives.3.completeWhen", "error"],
+      ["objectives.4.completeWhen", "error"],
+      ["decisions.0.requires", "error"],
+      ["decisions.1.requires", "error"],
+      ["phases.1", "warning"],
+    ]);
+    expect(at(issues, "objectives.1.completeWhen")[0].message).toMatch(/"treat" can never complete/);
+    expect(at(issues, "decisions.0.requires")[0].message).toMatch(/"dx" can never be unlocked/);
+    expect(at(issues, "phases.1")[0].message).toMatch(/"observation" can never be entered/);
+  });
+
+  it("does not flag reachable self-references or vitals introduced by scenario events", () => {
+    const c = structuredClone(SIM);
+    c.objectives[0].completeWhen = { any: [{ objective: "assess" }, { all: [{ examined: "airway" }, { asked: "allergies" }] }] };
+    c.objectives[1].completeWhen = { all: [{ intervened: "epi" }, { not: { objective: "treat" } }] };
+    c.physiology!.events[0].setVitals = { rr: 30, etco2: 28 };
+    c.rubric.push({ id: "capno", domain: "safety", text: "x", weight: 1, met: { vital: "etco2", op: "lt", value: 30 } });
+    expect(checkCaseIntegrity(c)).toEqual([]);
+  });
+
+  it("reports unreachable phases and single-answer solution steps with several options", () => {
+    const c = structuredClone(V4);
+    c.phases.push({ id: "archive", label: "Archive", learnerSwitchable: false });
+    c.solution.push({ type: "answer", decisionId: "diagnosis", optionIds: ["dual", "infection"] });
+    const issues = checkCaseIntegrity(c);
+    expect(issues.map((i) => [i.path, i.severity])).toEqual([
+      ["solution.26.optionIds", "error"],
+      ["phases.2", "warning"],
+    ]);
+  });
+});

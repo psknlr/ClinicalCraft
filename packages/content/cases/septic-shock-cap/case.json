@@ -6531,8 +6531,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。她的SOFA（不含呼吸项）至少5分：GCS 14（1）、MAP<65（1，开始去甲肾上腺素后≤0.1 µg/kg/min计3分）、肌酐156 µmol/L（1）、血小板132×10⁹/L（1）、胆红素24 µmol/L（1）；补液后仍需去甲肾上腺素，乳酸4.6 mmol/L——符合脓毒性休克。",
-            "en": "Correct. Her SOFA without the respiratory component is at least 5: GCS 14 (1), MAP < 65 (1; 3 once on norepinephrine ≤ 0.1 µg/kg/min), creatinine 156 µmol/L (1), platelets 132 ×10⁹/L (1), bilirubin 24 µmol/L (1). She needs norepinephrine after fluids and her lactate was 4.6 mmol/L — septic shock."
+            "zh-CN": "正确。她的SOFA（不含呼吸项）至少5分：GCS 14（1分）、MAP < 70 mmHg（1分；去甲肾上腺素≤0.1 µg/kg/min时计3分）、肌酐156 µmol/L（1分）、血小板132×10⁹/L（1分）、胆红素24 µmol/L（1分）；补液后仍需去甲肾上腺素，乳酸4.6 mmol/L——符合脓毒性休克。",
+            "en": "Correct. Her SOFA without the respiratory component is at least 5: GCS 14 (1), MAP < 70 mmHg (1; 3 on norepinephrine ≤ 0.1 µg/kg/min), creatinine 156 µmol/L (1), platelets 132 ×10⁹/L (1), bilirubin 24 µmol/L (1). She needs norepinephrine after fluids and her lactate was 4.6 mmol/L — septic shock."
           }
         },
         {
