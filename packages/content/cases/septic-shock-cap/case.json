@@ -637,9 +637,9 @@
           "urine output",
           "amount of urine",
           "volume of urine",
-          "how often urinating",
           "passing urine",
-          "peeing"
+          "peeing",
+          "last ate"
         ]
       },
       "disclosure": "on-ask",
@@ -944,7 +944,7 @@
         "zh-CN": [
           "身边有人生病",
           "接触过病人",
-          "家里人生病",
+          "家里有人生病",
           "有人感冒",
           "传染",
           "接触史"
@@ -1201,11 +1201,11 @@
           "心脏病",
           "心衰",
           "心脏问题",
-          "心脏不好",
+          "心脏有毛病",
           "肾病",
           "肾功能",
           "肾脏",
-          "肾不好"
+          "肾有毛病"
         ],
         "en": [
           "heart problems",

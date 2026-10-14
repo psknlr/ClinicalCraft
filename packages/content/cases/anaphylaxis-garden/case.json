@@ -67,8 +67,8 @@
         { "zh-CN": "打完针我今天能回家吗？", "en": "Can I go home today after the injection?" }
       ],
       "actingNotes": {
-        "zh-CN": "嘶哑、气促，每次2–4个词；不停抓挠手臂和脖子，一手捂喉；很害怕。平躺时说更喘一点。用药后说心跳得厉害、手抖，但呼吸逐渐轻松、说话越来越成句。不说出任何诊断名词；只有在被问到以前是否被蜇过/有无类似反应时才提去年的大局部反应；只有被问到接触蜜蜂的情况时才提公婆养蜂。",
-        "en": "Hoarse and breathless, 2–4 words at a time; keeps scratching her arms and neck, one hand at her throat; frightened. When laid completely flat says breathing is a bit harder. After the injections says her heart is pounding and her hands are shaky, but breathing gets easier and her sentences get longer. Never names a diagnosis; mentions last year's large local reaction only when asked about previous stings/reactions, and her in-laws' bees only when asked about bee exposure."
+        "zh-CN": "嘶哑、气促，每次2–4个词；不停抓挠手臂和脖子，一手捂喉；很害怕。平躺时说更喘一点。用药后说心跳得厉害、手抖，但呼吸逐渐轻松、说话越来越成句。不说出任何诊断名词；只有在被问到以前是否被蜇过/有无类似反应时才提去年的大局部反应；只有被问到接触蜜蜂的情况时才提公婆养蜂。若病情恶化到意识模糊（护士/监护提示‘她快不行了’之后、尚未用肾上腺素），只能含糊呻吟，无法回答问题。",
+        "en": "Hoarse and breathless, 2–4 words at a time; keeps scratching her arms and neck, one hand at her throat; frightened. When laid completely flat says breathing is a bit harder. After the injections says her heart is pounding and her hands are shaky, but breathing gets easier and her sentences get longer. Never names a diagnosis; mentions last year's large local reaction only when asked about previous stings/reactions, and her in-laws' bees only when asked about bee exposure. If she deteriorates to the point of confusion (after the nurse says 'we're losing her' and before any adrenaline), she can only mumble or groan and cannot answer questions."
       }
     },
     "appearance": {
@@ -139,7 +139,7 @@
         "en": "I was sitting here… a bee… stung my right arm… ten minutes ago, maybe…"
       },
       "keywords": {
-        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过", "咋回事", "怎么回事", "咋了", "出啥事"],
+        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过", "咋回事", "怎么回事", "咋了", "出啥事", "发生什么", "什么事了"],
         "en": [
           "what happened",
           "what's wrong",
@@ -153,7 +153,7 @@
         ]
       },
       "excludeKeywords": {
-        "zh-CN": ["以前", "之前", "上次", "以往", "哪里", "哪个部位", "哪只"],
+        "zh-CN": ["以前", "之前", "上次", "以往", "蜇在哪", "哪里被蜇", "蜇哪", "哪个部位", "哪只"],
         "en": ["before", "b4", "previously", "last time", "where", "which arm", "site", "what stung", "wasp", "insect"]
       },
       "disclosure": "volunteer",
@@ -301,9 +301,12 @@
       },
       "keywords": {
         "zh-CN": ["蜇在哪", "哪个部位", "刺", "毒刺", "拔", "伤口", "叮的地方", "蜇的位置", "刺还在", "蜇哪了"],
-        "en": ["sting site", "stinger", "sting still in", "pull it out", "which arm", "wound", "stung arm", "stinger still in", "where is the stinger"]
+        "en": ["sting site", "stinger", "sting still in", "pull it out", "which arm", "wound", "stung arm", "stinger still in", "where is the stinger", "where were you stung"]
       },
-      "excludeKeywords": { "zh-CN": ["以前", "之前", "上次", "过敏", "反应"], "en": ["before", "previous", "last time", "allerg", "reaction"] }
+      "excludeKeywords": {
+        "zh-CN": ["以前", "之前", "上次", "过敏", "反应", "什么虫", "马蜂"],
+        "en": ["before", "previous", "last time", "allerg", "reaction", "what stung", "wasp", "insect", "when"]
+      }
     },
     {
       "id": "hpi-insect",
@@ -315,9 +318,12 @@
       },
       "keywords": {
         "zh-CN": ["蜜蜂还是马蜂", "黄蜂", "马蜂", "胡蜂", "看清", "昆虫", "哪种虫", "被啥咬", "被什么咬", "啥虫子", "被啥蜇", "什么虫子"],
-        "en": ["what insect", "bee or wasp", "wasp", "hornet", "insect", "what kind of insect", "see the insect", "bit you", "bitten", "what got you", "what was it"]
+        "en": ["what insect", "bee or wasp", "wasp", "hornet", "insect", "what kind of insect", "see the insect", "bit you", "bitten", "what got you", "what was it", "what stung you"]
       },
-      "excludeKeywords": { "zh-CN": [], "en": ["a bit", "little bit"] }
+      "excludeKeywords": {
+        "zh-CN": ["以前", "之前", "上次", "哪只", "胳膊"],
+        "en": ["a bit", "little bit", "before", "b4", "where", "when", "previous", "last time", "which arm", "your arm"]
+      }
     },
     {
       "id": "hpi-other-triggers",

@@ -58,7 +58,7 @@
     "weightKg": 89,
     "heightCm": 172,
     "chiefComplaint": {
-      "zh-CN": "乏力、口干、喝水多3个月",
+      "zh-CN": "乏力、口干、多饮3个月",
       "en": "Tiredness, dry mouth and drinking more for 3 months"
     },
     "triageNote": {
@@ -1749,8 +1749,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "身高172 cm，体重89.0 kg，BMI 30.1 kg/m²；腰围104 cm（脐水平、呼气末测量）。颈围未测量。",
-        "en": "Height 172 cm, weight 89.0 kg, BMI 30.1 kg/m²; waist circumference 104 cm (at the umbilicus, end-expiration). Neck circumference not measured."
+        "zh-CN": "身高172 cm，体重89.0 kg，BMI 30.1 kg/m²；腰围104 cm（腋中线肋弓下缘与髂嵴连线中点水平、呼气末测量）。颈围未测量。",
+        "en": "Height 172 cm, weight 89.0 kg, BMI 30.1 kg/m²; waist circumference 104 cm (midway between the lowest rib and the iliac crest in the mid-axillary line, end-expiration). Neck circumference not measured."
       },
       "abnormal": true,
       "requires": [
@@ -3341,7 +3341,7 @@
       ],
       "turnaroundMinutes": 90,
       "risk": "none",
-      "value": "useful",
+      "value": "essential",
       "results": {
         "initial": {
           "available": true,
@@ -3791,8 +3791,8 @@
             "en": "First visit (day 0), 08:40, fasting"
           },
           "note": {
-            "zh-CN": "本例临床特征典型，自身抗体和C肽并非常规必需；在体型偏瘦、起病急、酮症或治疗反应差时才更有价值。",
-            "en": "With typical clinical features, autoantibodies and C-peptide are not routinely required; they are more useful in lean patients, abrupt onset, ketosis or a poor response to treatment."
+            "zh-CN": "本例临床特征典型，自身抗体和C肽并非诊断所必需（ADA建议在体型偏瘦、起病急、酮症或治疗反应差等与1型糖尿病重叠的情况下检测）；中国LADA诊疗专家共识（2021版）主张在新诊断的成人表型2型糖尿病中更广泛地筛查GADA。",
+            "en": "With typical clinical features, autoantibodies and C-peptide are not needed for the diagnosis (ADA advises testing when features overlap with type 1 — a lean build, abrupt onset, ketosis or a poor response to treatment); the Chinese LADA expert consensus (2021) favours wider GADA screening of newly diagnosed adults with a type 2 phenotype."
           }
         }
       }
@@ -4232,8 +4232,8 @@
     {
       "id": "iv-lifestyle",
       "name": {
-        "zh-CN": "医学营养治疗与糖尿病自我管理教育（DSMES）转介",
-        "en": "Medical nutrition therapy and diabetes self-management education (DSMES) referral"
+        "zh-CN": "医学营养治疗与糖尿病自我管理教育与支持（DSMES）转介",
+        "en": "Medical nutrition therapy and diabetes self-management education and support (DSMES) referral"
       },
       "kind": "consult",
       "aliases": {
@@ -4722,6 +4722,15 @@
           }
         ]
       },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "inv-renal"
+        }
+      },
+      "harm": {
+        "zh-CN": "尚未查看肾功能就开始SGLT2抑制剂：起始前需要知道eGFR（KDIGO：eGFR≥20才可起始），并作为日后解读起始后eGFR一过性下降的基线。",
+        "en": "SGLT2 inhibitor started before the renal function was seen: the eGFR must be known first (KDIGO: start only at eGFR ≥ 20), and it is the baseline for interpreting the expected initial eGFR dip."
+      },
       "response": {
         "zh-CN": "药师讲解了病日规则卡片。患者问：“这个药会低血糖吗？影响开车吗？”——单用或与二甲双胍合用很少引起低血糖。",
         "en": "The pharmacist goes through a sick-day rules card. He asks: \"Will this one make my sugar go low? Will it affect my driving?\" — on its own or with metformin it rarely causes hypoglycaemia."
@@ -4802,8 +4811,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有胰岛素指征：无酮症，HbA1c 8.6%（<10%，也低于中国指南短期强化治疗的9.0%）、FPG 9.8 mmol/L（<11.1 mmol/L），无明显分解代谢。贸然起始胰岛素增加低血糖风险（危及他的驾驶工作）和体重，并加重他对治疗的恐惧、损害信任。",
-        "en": "No indication for insulin: no ketosis, HbA1c 8.6% (below 10%, and below the 9.0% Chinese threshold for short-term intensive insulin), FPG 9.8 mmol/L (below 11.1 mmol/L), no marked catabolism. Starting insulin adds hypoglycaemia risk (dangerous for his driving job) and weight gain, deepens his fear of treatment and damages trust."
+        "zh-CN": "目前无需胰岛素：无酮症，HbA1c 8.6%（<10%，也低于中国指南短期强化治疗的9.0%）、FPG 9.8 mmol/L（<11.1 mmol/L）；虽有多尿、多饮等症状，但体重仅下降约3%（肥胖、食欲好，可由尿糖丢失解释），无明显分解代谢，口服药足以控制。贸然起始胰岛素增加低血糖风险（危及他的驾驶工作）和体重，并加重他对治疗的恐惧、损害信任。",
+        "en": "Insulin is not needed now: no ketosis, HbA1c 8.6% (below 10%, and below the 9.0% Chinese threshold for short-term intensive insulin), FPG 9.8 mmol/L (below 11.1 mmol/L); although he has osmotic symptoms, the ~3% weight loss in an obese man with a good appetite is explained by glycosuria — no marked catabolism — so oral therapy is enough. Starting insulin adds hypoglycaemia risk (dangerous for his driving job) and weight gain, deepens his fear of treatment and damages trust."
       },
       "response": {
         "zh-CN": "护士拿来胰岛素笔准备教学，患者脸色一沉：“医生，真的非打针不可吗？我爸就是打这个晕倒的。”",
@@ -5606,8 +5615,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ADA与中国指南：没有明确的高血糖危象时，需要两项异常结果确诊，可以来自同一份血样（如FPG+HbA1c）或两次不同时间的检测。本例两项均达标，且有多尿、多饮、体重下降。年龄、肥胖、黑棘皮征、2型糖尿病家族史、既往空腹血糖偏高以及无酮症，都支持2型。",
-            "en": "Correct. ADA and Chinese guidelines: without unequivocal hyperglycaemia (e.g. a crisis), diagnosis needs two abnormal results, which may come from the same sample (e.g. FPG + HbA1c) or from two separate samples. Both are diagnostic here, and he has polyuria, polydipsia and weight loss. His age, obesity, acanthosis nigricans, family history of type 2 diabetes, previously raised fasting glucose and absence of ketosis all point to type 2."
+            "zh-CN": "正确。ADA：没有明确的高血糖（高血糖危象，或典型症状伴随机血糖≥11.1 mmol/L）时，需要两项异常结果确诊，可以来自同一份血样（如FPG+HbA1c）或两次不同时间的检测；中国指南：有典型“三多一少”症状者一项达标即可确诊，无典型症状者需改日复查确认。本例两项均达标，且有多尿、多饮、体重下降——两种标准都满足。年龄、肥胖、黑棘皮征、2型糖尿病家族史、既往空腹血糖偏高以及无酮症，都支持2型。",
+            "en": "Correct. ADA: without unequivocal hyperglycaemia (a hyperglycaemic crisis, or classic symptoms with a random glucose ≥ 11.1 mmol/L), diagnosis needs two abnormal results, which may come from the same sample (e.g. FPG + HbA1c) or from two separate samples; Chinese guideline: with typical symptoms one diagnostic value is enough, and without them the test is repeated on another day. Both are diagnostic here and he has polyuria, polydipsia and weight loss — he meets either standard. His age, obesity, acanthosis nigricans, family history of type 2 diabetes, previously raised fasting glucose and absence of ketosis all point to type 2."
           }
         },
         {
@@ -5642,8 +5651,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。糖尿病前期指FPG 6.1–6.9 mmol/L（WHO/中国标准；ADA为5.6–6.9）或HbA1c 5.7–6.4%；本例数值明显超过糖尿病诊断切点。去年体检“6点几”很可能就是糖尿病前期阶段。",
-            "en": "Incorrect. Prediabetes is FPG 6.1–6.9 mmol/L (WHO/Chinese criteria; ADA 5.6–6.9) or HbA1c 5.7–6.4%; his values are well above the diabetes thresholds. Last year's 'six-point-something' was probably his prediabetes stage."
+            "zh-CN": "不正确。糖尿病前期指FPG 6.1–6.9 mmol/L（WHO/中国标准；ADA为5.6–6.9）或（按ADA标准）HbA1c 5.7–6.4%；本例数值明显超过糖尿病诊断切点。去年体检“6点几”很可能就是糖尿病前期阶段。",
+            "en": "Incorrect. Prediabetes is FPG 6.1–6.9 mmol/L (WHO/Chinese criteria; ADA 5.6–6.9) or (by ADA criteria) HbA1c 5.7–6.4%; his values are well above the diabetes thresholds. Last year's 'six-point-something' was probably his prediabetes stage."
           }
         },
         {
@@ -5712,8 +5721,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。新诊断时考虑胰岛素的情形：ADA为HbA1c>10%或血糖≥16.7 mmol/L，或有酮症、明显分解代谢、疑似1型；中国指南为HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显高血糖症状时可考虑短期强化。本例都不符合；胰岛素还会带来低血糖（影响驾驶）和体重增加，也正是他最怕的。",
-            "en": "Incorrect. Insulin at diagnosis is considered when (ADA) HbA1c > 10% or glucose ≥ 16.7 mmol/L (300 mg/dL), or with ketosis, marked catabolism or suspected type 1; (Chinese guideline) short-term intensive insulin may be considered with HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L plus marked symptoms. He meets none of these; insulin would also bring hypoglycaemia (a driving risk) and weight gain — exactly what he fears."
+            "zh-CN": "不正确。新诊断时考虑早期胰岛素的情形：ADA为存在持续分解代谢（体重下降）、明显高血糖症状，或血糖很高（HbA1c>10%或血糖≥16.7 mmol/L），以及酮症或疑似1型；中国指南为HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显高血糖症状时可考虑短期强化。本例虽有多尿、多饮，但体重仅下降约3%（肥胖、食欲好，可由尿糖丢失解释）、无酮症，HbA1c和血糖远低于上述阈值，口服药足以控制；胰岛素还会带来低血糖（影响驾驶）和体重增加，也正是他最怕的。",
+            "en": "Incorrect. Early insulin at diagnosis is considered when (ADA) there is ongoing catabolism (weight loss), marked symptomatic hyperglycaemia or very high levels (HbA1c > 10% or glucose ≥ 16.7 mmol/L [300 mg/dL]), or with ketosis or suspected type 1; (Chinese guideline) short-term intensive insulin may be considered with HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L plus marked symptoms. Although he has osmotic symptoms, the ~3% weight loss in an obese man with a good appetite is explained by glycosuria, there is no ketosis and his levels are well below these thresholds — oral therapy is enough; insulin would also bring hypoglycaemia (a driving risk) and weight gain — exactly what he fears."
           }
         },
         {
@@ -5853,8 +5862,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。没有ASCVD的糖尿病患者不常规使用阿司匹林一级预防；出血风险可能抵消获益，仅在充分讨论后对风险很高者个体化考虑。",
-            "en": "Incorrect. Aspirin is not routine for primary prevention in diabetes without ASCVD; bleeding risk can cancel the benefit, so it is only individualised for very high-risk people after a full discussion."
+            "zh-CN": "不正确。没有ASCVD的糖尿病患者不常规使用阿司匹林一级预防；出血风险可能抵消获益，仅在心血管风险增高、出血风险低者中充分讨论获益与风险后个体化考虑；他还在自行服用布洛芬。",
+            "en": "Incorrect. Aspirin is not routine for primary prevention in diabetes without ASCVD; bleeding risk can cancel the benefit, so it is only considered individually for people at increased cardiovascular risk and low bleeding risk after a full discussion of benefits and harms — and he is buying ibuprofen."
           }
         },
         {
@@ -6435,8 +6444,8 @@
         "en": "Dr Wu Hao, ophthalmology"
       },
       "knowledge": {
-        "zh-CN": "可解释学员已调阅的眼底照相结果：糖尿病视网膜病变的分级和随访间隔（无病变且血糖控制良好者1–2年复查，中国指南建议每年），未散瞳直接检眼镜的局限，以及高血糖引起的一过性屈光变化可导致视物模糊、血糖稳定后通常恢复（不宜在此期间配镜）。只解读已完成且学员已查看的检查。",
-        "en": "Can explain the retinal photographs once the learner has read them: retinopathy grading and screening intervals (every 1–2 years with no retinopathy and good control; annually per Chinese guidance), the limits of undilated direct ophthalmoscopy, and that hyperglycaemia causes temporary refractive changes and blurred vision that usually settle once glucose stabilises (so new glasses should wait). Interprets only studies that are complete and that the learner has read."
+        "zh-CN": "可解释学员已调阅的眼底照相结果：糖尿病视网膜病变的分级和随访间隔（无病变且血糖控制良好者每1–2年复查，ADA与中国糖尿病指南一致；不少眼科中心习惯每年复查），未散瞳直接检眼镜的局限，以及高血糖引起的一过性屈光变化可导致视物模糊、血糖稳定后通常恢复（不宜在此期间配镜）。只解读已完成且学员已查看的检查。",
+        "en": "Can explain the retinal photographs once the learner has read them: retinopathy grading and screening intervals (every 1–2 years with no retinopathy and good control, per both ADA and the Chinese diabetes guideline; many eye services rescreen annually), the limits of undilated direct ophthalmoscopy, and that hyperglycaemia causes temporary refractive changes and blurred vision that usually settle once glucose stabilises (so new glasses should wait). Interprets only studies that are complete and that the learner has read."
       },
       "interprets": [
         "inv-retinal"
@@ -6459,12 +6468,12 @@
         "en": "Diagnosis: symptomatic hyperglycaemia with two abnormal results on the same fasting sample — FPG 9.8 mmol/L (≥ 7.0) and HbA1c 8.6% (≥ 6.5%) — meets the criteria; no OGTT or repeat test is needed. The capillary meter reading (10.4 mmol/L) is for monitoring, not diagnosis; the HbA1c is from a standardised method with no anaemia or haemoglobin variant, so it is reliable."
       },
       {
-        "zh-CN": "分型与急性风险：年龄、肥胖（BMI 30.1，腰围104 cm）、黑棘皮征、2型糖尿病家族史、既往空腹血糖偏高、C肽保留、GADA阴性均支持2型。尿酮阴性、β-羟丁酸0.2 mmol/L、HCO₃⁻ 25 mmol/L、阴离子间隙139−(102+25)=12 mmol/L、计算渗透压2×139+9.8+5.6≈293 mOsm/kg——排除糖尿病酮症酸中毒和高渗高血糖状态，可门诊管理。",
+        "zh-CN": "分型与急性风险：年龄、肥胖（BMI 30.1，腰围104 cm）、黑棘皮征、2型糖尿病家族史、既往空腹血糖偏高、C肽保留、GADA阴性均支持2型。尿酮阴性、β-羟丁酸0.2 mmol/L、HCO₃⁻ 25 mmol/L、阴离子间隙139−(102+25)=12 mmol/L、计算渗透压2×139+9.8+5.6≈293 mOsm/kg——排除糖尿病酮症酸中毒和高血糖高渗状态，可门诊管理。",
         "en": "Type and acute risk: age, obesity (BMI 30.1, waist 104 cm), acanthosis nigricans, a family history of type 2 diabetes, previously raised fasting glucose, preserved C-peptide and negative GADA all support type 2. Negative urine ketones, β-hydroxybutyrate 0.2 mmol/L, HCO₃⁻ 25 mmol/L, anion gap 139 − (102 + 25) = 12 mmol/L and calculated osmolality 2 × 139 + 9.8 + 5.6 ≈ 293 mOsm/kg exclude DKA and the hyperosmolar hyperglycaemic state — he can be managed as an outpatient."
       },
       {
-        "zh-CN": "初始降糖：生活方式+DSMES+二甲双胍（eGFR 102，可全量，逐步加量）。HbA1c 8.6%、FPG 9.8 mmol/L、无酮症、无明显分解代谢，均未达到胰岛素起始阈值（ADA：HbA1c>10%或血糖≥16.7 mmol/L；中国指南短期强化：HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显症状）。磺脲类在肥胖且需驾驶的患者中不宜一线使用。",
-        "en": "Initial glucose lowering: lifestyle + DSMES + metformin (eGFR 102, full dose allowed, titrated slowly). HbA1c 8.6%, FPG 9.8 mmol/L, no ketosis and no marked catabolism are all below the thresholds for starting insulin (ADA: HbA1c > 10% or glucose ≥ 16.7 mmol/L; Chinese short-term intensive therapy: HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L with marked symptoms). A sulfonylurea is a poor first-line choice in an obese man who drives for work."
+        "zh-CN": "初始降糖：生活方式+DSMES+二甲双胍（eGFR 102，可全量，逐步加量）。HbA1c 8.6%、FPG 9.8 mmol/L、无酮症、无明显分解代谢，均未达到胰岛素起始阈值（ADA：持续分解代谢、明显高血糖症状，或HbA1c>10%、血糖≥16.7 mmol/L；中国指南短期强化：HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显症状）。磺脲类在肥胖且需驾驶的患者中不宜一线使用。",
+        "en": "Initial glucose lowering: lifestyle + DSMES + metformin (eGFR 102, full dose allowed, titrated slowly). HbA1c 8.6%, FPG 9.8 mmol/L, no ketosis and no marked catabolism are all below the thresholds for starting insulin (ADA: ongoing catabolism, marked symptoms, or HbA1c > 10% or glucose ≥ 16.7 mmol/L; Chinese short-term intensive therapy: HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L with marked symptoms). A sulfonylurea is a poor first-line choice in an obese man who drives for work."
       },
       {
         "zh-CN": "心血管风险：两次不同时间血压≥130/80 mmHg即为高血压，合并UACR升高首选ACEI/ARB（目标<130/80 mmHg）；LDL-C 3.9 mmol/L、多重危险因素→高强度他汀（目标<1.8 mmol/L且降幅≥50%）；吸烟25包年需要药物加行为支持戒烟；无ASCVD时阿司匹林不常规用于一级预防，无症状者不做冠脉筛查。",
@@ -6507,8 +6516,8 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "“两项异常结果”规则：同一份血样的FPG+HbA1c，或不同时间的两次检测，均可确诊；只有一项异常时才需复查同一检测。指尖血糖仪不用于诊断。",
-        "en": "The two-results rule: FPG + HbA1c on the same sample, or two tests on different occasions, confirm diabetes; a repeat of the same test is needed only when one result is abnormal. Meters are not for diagnosis."
+        "zh-CN": "“两项异常结果”规则：同一份血样的FPG+HbA1c，或不同时间的两次检测，均可确诊；只有一项异常时才需复查同一检测（ADA；中国指南在有典型症状时一项达标即可）。指尖血糖仪不用于诊断。",
+        "en": "The two-results rule: FPG + HbA1c on the same sample, or two tests on different occasions, confirm diabetes; a repeat of the same test is needed only when one result is abnormal (ADA; the Chinese guideline accepts one diagnostic value when typical symptoms are present). Meters are not for diagnosis."
       },
       {
         "zh-CN": "新诊断时先排除高血糖危象（酮体、阴离子间隙、渗透压），再判断是否真的需要胰岛素；没有指征时，胰岛素带来的是低血糖、体重增加和不必要的恐惧。",
@@ -6519,8 +6528,8 @@
         "en": "Metformin: start after checking the eGFR, low dose with food, step up weekly; sick-day rules; check vitamin B12 with long-term use."
       },
       {
-        "zh-CN": "心肾保护与降糖同样重要：血压<130/80 mmHg（白蛋白尿首选ACEI/ARB）、他汀、戒烟；确认持续白蛋白尿或出现ASCVD/心衰时，无论HbA1c如何都加用有证据的SGLT2i或GLP-1RA。",
-        "en": "Cardiorenal protection matters as much as glucose: BP < 130/80 mmHg (ACE inhibitor/ARB with albuminuria), a statin and smoking cessation; once albuminuria is confirmed, or ASCVD/heart failure appears, add an SGLT2 inhibitor or GLP-1 RA with proven benefit regardless of HbA1c."
+        "zh-CN": "心肾保护与降糖同样重要：血压<130/80 mmHg（白蛋白尿首选ACEI/ARB）、他汀、戒烟；无论HbA1c如何：确认CKD（持续白蛋白尿或eGFR下降）或心衰时加用有证据的SGLT2i；合并ASCVD时加用有心血管获益证据的SGLT2i或GLP-1RA。",
+        "en": "Cardiorenal protection matters as much as glucose: BP < 130/80 mmHg (ACE inhibitor/ARB with albuminuria), a statin and smoking cessation; regardless of HbA1c, add an SGLT2 inhibitor with proven benefit once CKD (persistent albuminuria or reduced eGFR) or heart failure is present, and an SGLT2 inhibitor or GLP-1 RA with proven cardiovascular benefit when ASCVD is present."
       },
       {
         "zh-CN": "诊断时即开始并发症筛查：视网膜（规范照相，不靠床旁检眼镜）、足部（单丝+振动觉/踝反射+动脉搏动）、UACR+eGFR、血脂和肝脏（FIB-4）；并评估疫苗接种、睡眠呼吸暂停和心理状态。",

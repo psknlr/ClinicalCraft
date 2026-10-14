@@ -2196,9 +2196,6 @@
     {
       "id": "ex-hydration",
       "system": "general",
-      "phases": [
-        "arrival"
-      ],
       "maneuver": {
         "zh-CN": "评估脱水情况",
         "en": "Assess hydration"
@@ -2481,7 +2478,9 @@
           "精神",
           "手抖",
           "震颤",
-          "面色"
+          "面色",
+          "完整句子",
+          "能说完整句子"
         ],
         "en": [
           "reassess",
@@ -2490,7 +2489,8 @@
           "speech",
           "talking",
           "tremor",
-          "colour"
+          "colour",
+          "full sentences"
         ]
       },
       "finding": {
@@ -2554,7 +2554,8 @@
           "呼吸音",
           "哮鸣音",
           "进气",
-          "肺部听诊"
+          "肺部听诊",
+          "听一下"
         ],
         "en": [
           "auscultate",
@@ -2626,7 +2627,11 @@
           "说话",
           "三凹征",
           "再评估",
-          "能玩吗"
+          "能玩吗",
+          "完整句子",
+          "能说完整句子",
+          "呼吸做功",
+          "看呼吸"
         ],
         "en": [
           "general appearance",
@@ -2635,7 +2640,10 @@
           "talking",
           "recession",
           "reassess",
-          "well"
+          "well",
+          "full sentences",
+          "work of breathing",
+          "look at breathing"
         ]
       },
       "finding": {
@@ -2662,7 +2670,8 @@
           "哮鸣音",
           "进气",
           "再听",
-          "肺部听诊"
+          "肺部听诊",
+          "听一下"
         ],
         "en": [
           "auscultate",
