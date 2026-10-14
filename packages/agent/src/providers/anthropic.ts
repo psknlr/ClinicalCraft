@@ -34,7 +34,7 @@ import type {
   BetaToolResultBlockParam,
 } from "@anthropic-ai/sdk/resources/beta/messages/messages";
 import { ANTHROPIC_BASE_URL, capabilitiesFor } from "./catalog.js";
-import { abortedError, classifyHttpError, networkError, withRetryAfter } from "./errors.js";
+import { abortedError, classifyHttpError, MISSING_TOOL_RESULT, networkError, withRetryAfter } from "./errors.js";
 import { anthropicSupportsStructuredOutput, toAnthropicOutputSchema, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, ProviderErrorInfo, StreamEvent } from "./types.js";
 
@@ -128,8 +128,7 @@ export function sanitizeEchoBlocks(blocks: readonly unknown[], options: EchoOpti
   return out;
 }
 
-/** `tool_result` text for a tool_use whose result never made it into history (max_tokens, abort…). */
-export const MISSING_TOOL_RESULT = "Tool call was not executed (the turn ended before a result was returned).";
+export { MISSING_TOOL_RESULT };
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);

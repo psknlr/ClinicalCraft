@@ -72,14 +72,28 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 
 * **Case** — `schema/case.ts` (`clinicalcraft/case@1`): patient & persona, phases,
   clock, history items (with disclosure policy), exam findings, investigations
-  (results per phase, aliases, turnaround, risk, value), order-matching rules,
-  interventions (vital effects, flags, indicated/contraindicated conditions),
-  physiology (baseline, trends, scenario events, alarm limits), objectives
-  (with waypoints), decisions, rubric, NPC briefs, debrief, unknowns, assets,
-  reference `solution`.
+  (results per phase, aliases, turnaround, risk, value, `alternativeTo`),
+  order-matching rules, interventions (vital effects, flags,
+  indicated/contraindicated conditions), physiology (baseline, trends,
+  scenario events, alarm limits), objectives (with waypoints), decisions,
+  rubric, NPC briefs, debrief, unknowns, assets, reference `solution`.
+  Optional authoring fields (all defaulted, so older case files stay valid):
+  * `history[].excludeKeywords`, `exam[].excludeKeywords`,
+    `interventions[].excludeKeywords` — `LocalizedList`, default `[]`;
+    phrases that argue *against* the item in the offline matcher (§3.3).
+  * `investigations[].alternativeTo` — investigation ids, default `[]`; a
+    mutual "can stand in for" link used by `assess()` (§3.4).
+  * `solution` — `ClinicalAction[]` (validated with `ClinicalActionSchema`
+    from `schema/session.ts`, so a malformed step fails `parseCase` with a
+    path such as `solution.7.itemId`); unknown ids inside steps are reported
+    per step by `checkCaseIntegrity`.
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
-  `intervened`, `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`.
+  `decidedFirstTry`, `intervened`, `phase`, `flag`, `objective`, `vital`,
+  `elapsed`, `hints`. `decidedFirstTry: decisionId` is true iff the first
+  recorded (i.e. accepted) attempt at that decision was correct — once the
+  first answer is wrong it stays false, so it belongs in rubric items rather
+  than objectives or `requires`.
 * **Facility** — `schema/facility.ts` (`clinicalcraft/facility@1`): bounds,
   spawn, environment, terrain (paths, ponds, trees, flowers, horizon,
   clouds), buildings (walls with V4 course materials, openings, roof &
@@ -112,8 +126,8 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 parseCase(json: unknown): { ok: true; value: CaseDefinition; warnings: Issue[] } | { ok: false; issues: Issue[] }
 parseFacility(json: unknown): same shape with FacilityDefinition
 parseCatalog(json: unknown): same shape with EquipmentCatalog
-interface Issue { path: string; message: string; severity: "error" | "warning" }
-checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity of every id in conditions, waypoints, results, figures, solution…
+interface Issue { path: string; message: string; severity: "error" | "warning" }   // path dot-joined: "objectives.0.completeWhen.all.1.asked" ("" = root)
+checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity of every id in conditions, waypoints, results, figures, alternativeTo, solution steps…
 verifyCase(c: CaseDefinition): { ok: boolean; issues: Issue[]; finalState: SessionState; assessment: AssessmentReport }
                                                         // replays c.solution; ok iff all objectives done, all decisions decided, no rejections
 checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms…
@@ -132,15 +146,18 @@ resultFor(c, investigationId, phase): Result | null     // null = no record in t
 resultKey(investigationId, phase): string               // `${id}@${phase}`
 orderStatus(c, s): { order: OrderRecord; ready: boolean; read: boolean }[]
 vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute)
-interface VitalsSnapshot { minute: number; vitals: Vitals & { map: number }; alarms: { vital: VitalKey; level: "warning" | "critical"; value: number }[]; trend: Partial<Record<VitalKey, -1 | 0 | 1>> }
+interface VitalsSnapshot { minute: number; vitals: Vitals & { map: number }; alarms: { vital: VitalKey; level: "warning" | "critical"; value: number }[]; trend: Partial<Record<VitalKey, -1 | 0 | 1>>;
+                           baselineOnly?: boolean }      // true only for cases without `physiology` (placeholder values; no alarms/trend)
 
 // matching (offline NLU used by UI, CLI, scripted agents and as RAG hints for LLM agents)
 normalizeQuery(text: string): string                    // lower-case, strip whitespace, full-width → ASCII punctuation (V4 rules)
-matchOrders(c, query, locale): string[]                 // aliases → orderMatching.rules → exact (V4 semantics, generalised)
+matchOrders(c, query, locale): string[]                 // aliases + names of every locale → orderMatching.rules → exact (V4 semantics, generalised)
 orderWarnings(c, query, investigationId, locale): string[]  // orderMatching.warnings whose ifMatches matches the normalised query
-matchHistory(c, utterance, locale): { id: string; score: number }[]   // sorted desc, score 0..1
-matchExam(c, utterance, locale): { id: string; score: number }[]
+matchHistory(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]   // sorted desc, score 0..1
+matchExam(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]
 matchInterventions(c, utterance, locale): { id: string; score: number }[]
+interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
+MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2
 
 // assessment
 assess(c, s): AssessmentReport
@@ -149,7 +166,7 @@ interface AssessmentReport {
   objectives: { id: string; done: boolean; at?: number }[];
   history: { asked: number; required: number; requiredAsked: number; missingRequired: string[] };
   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
-  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
+  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };   // unread = result keys, §3.4
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
   safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number };
   rubric: { id: string; domain: string; weight: number; met: boolean | null }[];   // null = needs examiner agent
@@ -159,10 +176,11 @@ interface AssessmentReport {
 // facility helpers
 mergeCatalogs(catalogs: EquipmentCatalog[]): { materials: Map<string, MaterialDef>; equipment: Map<string, EquipmentType> }
 placementCapabilities(f, catalogs, placementId): string[]
-facilityCapabilities(f, catalogs): Set<string>
-regionAt(f, x, z, locale): string                       // room name or outdoorRegion
+facilityCapabilities(f, catalogs): Set<string>          // every placement's capabilities ∪ PERSONAL_KIT
+regionAt(f, x, z, locale): string                       // smallest room containing the point → building name → outdoorRegion
 assignPatientSlot(f, c): PatientSlot | null             // first slot accepting c.setting
-resolveWaypoint(f, catalogs, target): { x: number; z: number; label: string } | null   // capability | room id | room kind | "patient" | "board" | "atlas"
+resolveWaypoint(f, catalogs, target, options?: { from?: { x: number; z: number }; locale?: string; slotId?: string }): { x: number; z: number; label: string } | null
+                                                        // "patient" | "board" | "atlas" | capability | room id | room kind | placement id (order in §3.4)
 
 // utilities
 createRng(seed: number): () => number                   // V4 LCG: k = k * 1664525 + 1013904223 >>> 0
@@ -242,12 +260,98 @@ CAPABILITIES, VITAL_KEYS, RHYTHMS, …                    // constants
 `normalizeQuery`: `toLowerCase()`, remove all whitespace, `（）` → `()`, full-width
 letters/digits → ASCII. `matchOrders` reproduces V4 `Xd` exactly when the case
 supplies the equivalent `orderMatching` (the SMZL port does) — unit tests
-assert V4 parity on V4's examples. History/exam/intervention matching is a
-scored keyword matcher: candidate phrases = question/maneuver/name + keywords
-(+ aliases) for the locale and for every locale (cross-lingual), score =
-max over phrases of (normalised longest-common-substring length / phrase
-length) with bonuses for exact containment; return items with score ≥ 0.34.
-Deterministic and dependency-free; used offline and as RAG hints.
+assert V4 parity on V4's examples. Its candidates come from the aliases
+**and names** of every locale (`locale` does not narrow them).
+
+History/exam/intervention matching is a scored keyword matcher: candidate
+phrases = question/maneuver/name + keywords (+ aliases) for the locale and
+for every locale (cross-lingual); score = max over phrases of:
+
+* CJK phrase — longest-common-substring length / phrase length (1 when
+  contained, +0.15 when the utterance is a fragment of the phrase);
+* Latin phrase — share of phrase tokens present in the utterance, or 0.9
+  when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
+  Tokens: lower-case words minus English stop-words, then British → American
+  fold (`ae`/`oe` → `e` in words ≥ 5 letters; `-ise/-isation…` → `-ize…`),
+  a light suffix stemmer and a small lemma table (`ENGLISH_LEMMAS`: meds /
+  medicine(s) / medicated → medication, abdominal → abdomen, …). Two tokens
+  match when equal, when one (≥ 4 letters) prefixes the other (breath ~
+  breathless), or when they share a ≥ 5-letter prefix after which **both**
+  end within 3 letters (allergy ~ allergic, nausea ~ nauseous). So
+  medical ≁ medication, history ≁ historical, hypertension ≁ hyperthermia.
+
+`excludeKeywords`: if the utterance, normalised with `compactText`
+(`normalizeQuery` minus punctuation — case, spacing and punctuation are
+ignored), contains any exclude phrase of an item (any locale, same
+normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
+= 0.2 before the threshold, which in practice removes it (1 × 0.2 < 0.34).
+Containment is on whitespace-free text, so prefer distinctive phrases
+("past medical", "过敏") over short fragments.
+
+`MatchOptions` (`matchHistory`/`matchExam` only): `phase` drops items whose
+`phases` list exists and excludes it; `includeUnknown: false` drops history
+items with `disclosure: "unknown"` (default `true`; ignored by `matchExam`).
+The 3-argument form is unchanged.
+
+Items with score ≥ `MATCH_THRESHOLD` (0.34) are returned, by score, then
+declaration order. Deterministic and dependency-free; used offline and as
+RAG hints.
+
+### 3.4 Semantics notes
+
+Behaviour the implementation fixes where the summaries above are silent:
+
+* **Clock & records** — an accepted action is applied at the clock value
+  *before* its cost: order `orderedAt`/`readyAt`, intervention `at`, attempt
+  `at`, `decisions[id]`, notes and objectives completed by the action are
+  stamped at the action's start. The reducer then settles at that minute and,
+  for a time-consuming action, advances the clock by its cost (one
+  `time.advanced {from, to}` per such action; `advance-time` likewise), firing
+  results/events/alarms at their own minutes on the way. Rejected actions
+  return the input state with a single `action.rejected` and cost nothing.
+* **Phases** — automatic transitions fire on `enterWhen` **false → true
+  edges** only (truth compared with the state before the action; at session
+  start an already-true `enterWhen` counts as an edge), so a learner who
+  switches back is not pulled forward again while the condition stays true.
+* **Answers** — checks in order: unknown decision → unknown option ids
+  (`unknown-id`) → a `single` decision given ≠ 1 distinct option (`invalid`)
+  → `already-decided` → `requirements-unmet` (`requires` on the pre-action
+  state). Rejected answers are not attempts (`attempted`/`decidedFirstTry`
+  ignore them); duplicate option ids are de-duplicated.
+* **Orders** — a duplicate order (same `${id}@${phase}`) emits
+  `order.duplicate` and returns the input state untouched (no `seq`, no time
+  cost). A phase with no result key is "no record": no `result.ready`, and
+  `read` is rejected `no-record`. An `available: false` result *is* a record:
+  it is readable (key added to `seen`), satisfies `read`/`resultReady`, gets a
+  `result.ready` like any other result, but is never listed in
+  `assess().investigations.unread`.
+* **Assessment** — `unread` lists result keys (`cbc@pre`) ordered but never
+  read whose result is `available: true`. `essentialMissing` lists essential
+  investigations neither ordered (any phase) nor covered by an alternative
+  that was **read** in any phase; `alternativeTo` links are mutual (A lists B
+  or B lists A).
+* **Alarms** — computed on the noise-free, display-rounded signal (jitter
+  never chatters): warning when `< low` or `> high` (strict), critical when
+  `≤ criticalLow` or `≥ criticalHigh` (inclusive). A case's
+  `physiology.alarms[vital]` **replaces** that vital's default limits
+  wholesale (unspecified bounds are off). `vitals.alarm` is emitted when a
+  vital's level rises; at `start` every abnormal vital alarms (no history).
+  `vital` conditions use the same noise-free rounded value.
+* **Baseline-only vitals** — a case without `physiology` gets a fixed normal
+  adult snapshot with `baselineOnly: true`, no alarms and no trend arrows;
+  `vital` conditions on it are always false (missing data stays missing).
+* **Facility** — `facilityCapabilities` includes `PERSONAL_KIT` (stethoscope,
+  thermometer, reflex hammer, otoscope). `regionAt` returns the smallest room
+  containing the point, else the smallest building's name, else
+  `outdoorRegion`. `resolveWaypoint(f, catalogs, target, {from, locale,
+  slotId})`: `"patient"` → slot `slotId` (default the first slot);
+  `"board"`/`"atlas"` → nearest placement with that interaction kind; any
+  other target tries, in order, capability (nearest placement providing it) →
+  room id (room centre) → room kind (nearest room) → placement id. No match →
+  `null`. "Nearest" is measured from `from` (default the facility spawn);
+  labels use `locale` (default zh-CN).
+* **Issues** — every `Issue.path` is dot-joined with numeric array indices
+  (`solution.3.itemId`, `investigations.2.alternativeTo.0`).
 
 ## 4. Agent runtime (`@clinicalcraft/agent`)
 

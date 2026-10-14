@@ -14,7 +14,7 @@
  *   - `responseFormat` → `response_format` json_schema / json_object (+ instruction).
  */
 import { capabilitiesFor } from "./catalog.js";
-import { abortedError, classifyHttpError, networkError } from "./errors.js";
+import { abortedError, classifyHttpError, MISSING_TOOL_RESULT, networkError } from "./errors.js";
 import { parseSSE } from "./sse.js";
 import { isStrictCompatibleSchema, sanitizeSchemaName, structuredOutputMode, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, StreamEvent, SystemSection } from "./types.js";
@@ -53,9 +53,6 @@ function argsToString(args: unknown): string {
     return "{}";
   }
 }
-
-/** Content of the tool message synthesised for a call whose result never made it into history. */
-export const MISSING_TOOL_RESULT = "Tool call was not executed (the turn ended before a result was returned).";
 
 /**
  * Convert provider-neutral history to Chat Completions messages.

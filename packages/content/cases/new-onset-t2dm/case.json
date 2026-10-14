@@ -185,7 +185,6 @@
       "keywords": {
         "zh-CN": [
           "哪里不舒服",
-          "怎么了",
           "什么问题",
           "主要症状",
           "来看什么",
@@ -285,6 +284,19 @@
       },
       "disclosure": "on-ask",
       "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "酒",
+          "应酬"
+        ],
+        "en": [
+          "alcohol",
+          "beer",
+          "spirits",
+          "wine",
+          "booze"
+        ]
+      },
       "phases": [
         "initial"
       ]
@@ -880,7 +892,7 @@
           "herbal",
           "supplements",
           "steroids",
-          "painkillers"
+          "pain relief medicine"
         ]
       },
       "disclosure": "on-ask",
@@ -1199,6 +1211,8 @@
           "家里人有",
           "家里有人",
           "父母",
+          "父亲",
+          "母亲",
           "爸爸",
           "妈妈",
           "遗传",
@@ -1378,7 +1392,7 @@
           "mood",
           "depressed",
           "depression",
-          "feeling down",
+          "feeling low",
           "stress",
           "interest",
           "anxiety",
@@ -1466,11 +1480,12 @@
         "zh-CN": [
           "现在症状",
           "现在怎么样",
+          "最近怎么样",
+          "这段时间怎么样",
           "好些了吗",
           "还渴吗",
           "还起夜吗",
-          "感觉怎么样",
-          "症状改善"
+          "感觉怎么样"
         ],
         "en": [
           "symptoms now",
@@ -1506,16 +1521,18 @@
           "药吃得怎么样",
           "药怎么吃的",
           "忘记吃药",
-          "这三个月的药"
+          "二甲双胍吃得",
+          "现在吃什么药"
         ],
         "en": [
           "missed doses",
           "adherence",
           "taking your medicines",
-          "how are you taking",
+          "getting on with the tablets",
+          "getting on with the metformin",
           "forget tablets",
           "compliance",
-          "doses"
+          "current medicines"
         ]
       },
       "disclosure": "on-ask",
@@ -1613,8 +1630,8 @@
       },
       "keywords": {
         "zh-CN": [
+          "戒烟情况",
           "戒烟",
-          "戒得怎么样",
           "还抽烟吗",
           "复吸",
           "伐尼克兰",
@@ -1681,7 +1698,7 @@
       "keywords": {
         "zh-CN": [
           "一般情况",
-          "视诊",
+          "一般视诊",
           "外观",
           "精神状态",
           "体型",
@@ -1690,8 +1707,8 @@
         "en": [
           "general inspection",
           "general appearance",
-          "look at the patient",
-          "hydration",
+          "overall appearance",
+          "hydration status",
           "end of the bed"
         ]
       },
@@ -1810,6 +1827,21 @@
       "abnormal": true,
       "requires": [],
       "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "足背",
+          "胫后",
+          "足部",
+          "脚"
+        ],
+        "en": [
+          "foot",
+          "feet",
+          "pedal",
+          "dorsalis",
+          "tibial"
+        ]
+      },
       "phases": [
         "initial"
       ]
@@ -1844,6 +1876,21 @@
       "abnormal": false,
       "requires": [],
       "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "足背",
+          "胫后",
+          "足部",
+          "脚"
+        ],
+        "en": [
+          "foot",
+          "feet",
+          "pedal",
+          "dorsalis",
+          "tibial"
+        ]
+      },
       "phases": [
         "review"
       ]
@@ -1944,7 +1991,19 @@
       },
       "abnormal": false,
       "requires": [],
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "皮肤",
+          "色素",
+          "黑棘皮"
+        ],
+        "en": [
+          "skin",
+          "pigment",
+          "acanthosis"
+        ]
+      }
     },
     {
       "id": "ex-cvs",
@@ -2099,7 +2158,6 @@
           "toenails",
           "callus",
           "athlete's foot",
-          "footwear",
           "shoes"
         ]
       },
@@ -2109,7 +2167,23 @@
       },
       "abnormal": true,
       "requires": [],
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "动脉",
+          "脉搏",
+          "单丝",
+          "音叉",
+          "反射"
+        ],
+        "en": [
+          "pulse",
+          "monofilament",
+          "tuning fork",
+          "vibration",
+          "reflex"
+        ]
+      }
     },
     {
       "id": "ex-monofilament",
@@ -3148,7 +3222,8 @@
           "albumin-to-creatinine",
           "microalbumin",
           "urine albumin",
-          "albuminuria"
+          "albuminuria",
+          "urine protein"
         ]
       },
       "requires": [
@@ -4164,6 +4239,8 @@
       "aliases": {
         "zh-CN": [
           "生活方式",
+          "饮食运动",
+          "饮食和运动",
           "饮食控制",
           "营养师",
           "糖尿病教育",
@@ -4386,6 +4463,23 @@
       "setFlags": [
         "acei-started"
       ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "加量",
+          "加到",
+          "增加剂量",
+          "8mg",
+          "8 mg"
+        ],
+        "en": [
+          "increase",
+          "uptitrat",
+          "up-titrat",
+          "maximis",
+          "maximiz",
+          "8 mg"
+        ]
+      },
       "maxDoses": 1,
       "indicatedWhen": {
         "all": [
@@ -4728,8 +4822,8 @@
           "磺脲",
           "格列齐特",
           "格列美脲",
-          "达美康",
-          "格列"
+          "格列吡嗪",
+          "达美康"
         ],
         "en": [
           "sulfonylurea",
@@ -4958,7 +5052,7 @@
     "trends": [],
     "events": [
       {
-        "id": "ev-review-vitals",
+        "id": "ev-vitals-review-1",
         "when": {
           "phase": "review"
         },
@@ -4967,11 +5061,143 @@
           "sbp": 128,
           "dbp": 79
         },
-        "setFlags": [],
+        "setFlags": [
+          "vitals-review-1"
+        ],
         "severity": "info",
         "message": {
-          "zh-CN": "复诊护士测量生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
-          "en": "Review visit vital signs recorded by the nurse: BP 128/79 mmHg (mean of two), heart rate 74/min."
+          "zh-CN": "复诊护士测量的生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
+          "en": "Review-visit vital signs recorded by the nurse: BP 128/79 mmHg (mean of two), heart rate 74/min."
+        }
+      },
+      {
+        "id": "ev-vitals-initial-1",
+        "when": {
+          "all": [
+            {
+              "phase": "initial"
+            },
+            {
+              "flag": "vitals-review-1"
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 78,
+          "sbp": 142,
+          "dbp": 88
+        },
+        "setFlags": [
+          "vitals-initial-1"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "显示初诊时记录的生命体征：血压142/88 mmHg（两次平均），心率78次/分。",
+          "en": "Showing the first-visit vital signs: BP 142/88 mmHg (mean of two), heart rate 78/min."
+        }
+      },
+      {
+        "id": "ev-vitals-review-2",
+        "when": {
+          "all": [
+            {
+              "phase": "review"
+            },
+            {
+              "flag": "vitals-initial-1"
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 74,
+          "sbp": 128,
+          "dbp": 79
+        },
+        "setFlags": [
+          "vitals-review-2"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "复诊护士测量的生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
+          "en": "Review-visit vital signs recorded by the nurse: BP 128/79 mmHg (mean of two), heart rate 74/min."
+        }
+      },
+      {
+        "id": "ev-vitals-initial-2",
+        "when": {
+          "all": [
+            {
+              "phase": "initial"
+            },
+            {
+              "flag": "vitals-review-2"
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 78,
+          "sbp": 142,
+          "dbp": 88
+        },
+        "setFlags": [
+          "vitals-initial-2"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "显示初诊时记录的生命体征：血压142/88 mmHg（两次平均），心率78次/分。",
+          "en": "Showing the first-visit vital signs: BP 142/88 mmHg (mean of two), heart rate 78/min."
+        }
+      },
+      {
+        "id": "ev-vitals-review-3",
+        "when": {
+          "all": [
+            {
+              "phase": "review"
+            },
+            {
+              "flag": "vitals-initial-2"
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 74,
+          "sbp": 128,
+          "dbp": 79
+        },
+        "setFlags": [
+          "vitals-review-3"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "复诊护士测量的生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
+          "en": "Review-visit vital signs recorded by the nurse: BP 128/79 mmHg (mean of two), heart rate 74/min."
+        }
+      },
+      {
+        "id": "ev-vitals-initial-3",
+        "when": {
+          "all": [
+            {
+              "phase": "initial"
+            },
+            {
+              "flag": "vitals-review-3"
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 78,
+          "sbp": 142,
+          "dbp": 88
+        },
+        "setFlags": [
+          "vitals-initial-3"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "显示初诊时记录的生命体征：血压142/88 mmHg（两次平均），心率78次/分。",
+          "en": "Showing the first-visit vital signs: BP 142/88 mmHg (mean of two), heart rate 78/min."
         }
       }
     ],
@@ -5474,8 +5700,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。eGFR 102可以全量使用；逐步加量、随餐服可明显减少胃肠反应。二甲双胍单用不引起低血糖、不增加体重，也不影响他开车。若白蛋白尿得到确认（CKD）、出现ASCVD或心衰、或需要更多减重，再加用有心肾获益的SGLT2i或GLP-1RA。",
-            "en": "Correct. With an eGFR of 102 the full dose is allowed; slow titration with food greatly reduces GI side effects. Metformin alone does not cause hypoglycaemia or weight gain and does not affect his driving. If albuminuria is confirmed (CKD), ASCVD or heart failure appears, or more weight loss is needed, add an SGLT2 inhibitor or GLP-1 RA with proven cardiorenal benefit."
+            "zh-CN": "正确。eGFR 102可以全量使用；逐步加量、随餐服可明显减少胃肠反应。二甲双胍单用不引起低血糖、不增加体重，也不影响他开车。若白蛋白尿得到确认（CKD）、出现ASCVD或心衰、或需要更多减重，再加用有心肾获益的SGLT2i或GLP-1RA。ADA也允许在HbA1c高于目标1.5–2.0个百分点时起始联合治疗（本例8.6%），但结合他偏好少用药、费用以及先观察二甲双胍反应，单药起始并在3个月复评是合理的。",
+            "en": "Correct. With an eGFR of 102 the full dose is allowed; slow titration with food greatly reduces GI side effects. Metformin alone does not cause hypoglycaemia or weight gain and does not affect his driving. If albuminuria is confirmed (CKD), ASCVD or heart failure appears, or more weight loss is needed, add an SGLT2 inhibitor or GLP-1 RA with proven cardiorenal benefit. ADA also allows initial combination therapy when HbA1c is 1.5–2.0 percentage points above target (8.6% here), but given his wish to keep tablets to a minimum, cost, and the value of seeing how he responds to metformin, monotherapy with a 3-month review is reasonable."
           }
         },
         {

@@ -203,6 +203,9 @@ export function classifyHttpError(status: number, bodyText: string, headers?: He
   return info("unknown", false);
 }
 
+/** `tool_result` text synthesised for a tool call whose result never made it into history (max_tokens, abort…). */
+export const MISSING_TOOL_RESULT = "Tool call was not executed (the turn ended before a result was returned).";
+
 /** Error info for an aborted request (never retried). */
 export function abortedError(message = "Request aborted"): ProviderErrorInfo {
   return { message, kind: "network", code: "aborted", retryable: false };

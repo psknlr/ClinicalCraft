@@ -145,6 +145,75 @@ try {
     await page.waitForTimeout(600);
     await page.screenshot({ path: path.join(out, `world-${tag}-bigmap.png`) });
     await page.evaluate(() => window.__HARNESS__.closeMap());
+    // functional checks: door (E), build zone (place / mine / serialize), NPC state, beacon
+    const fx = {};
+    const door = await page.evaluate(() => {
+      const w = window.__WORLD__;
+      const d = w.debug.doors[0];
+      if (!d) return null;
+      return { id: d.id, x: d.centre.x, z: d.centre.z, minX: d.area.minX, maxX: d.area.maxX, minZ: d.area.minZ, maxZ: d.area.maxZ };
+    });
+    if (door) {
+      // stand 2 m outside the doorway (outward = away from the building centre) facing it
+      const horiz = door.maxX - door.minX > door.maxZ - door.minZ;
+      const sx = horiz ? door.x : door.x + Math.sign(door.x || 1) * 2.2;
+      const sz = horiz ? door.z + Math.sign(door.z || 1) * 2.2 : door.z;
+      const yaw = Math.atan2(sx - door.x, sz - door.z);
+      await page.evaluate(([x, z, yaw]) => window.__WORLD__.debug.teleport(x, z, 0, yaw, -0.05), [sx, sz, yaw]);
+      await page.waitForTimeout(700);
+      fx.door = await page.evaluate(async (id) => {
+        const w = window.__WORLD__;
+        w.debug.updateAim();
+        const aimed = w.debug.target;
+        w.interact();
+        const d = w.debug.doors.find((x) => x.id === id);
+        return { aimed: aimed?.kind ?? null, open: d.open, collidersDisabled: d.leaves.every((l) => l.collider.enabled === false) };
+      }, door.id);
+      await page.waitForTimeout(1500);
+      await page.screenshot({ path: path.join(out, `world-${tag}-door-open.png`) });
+    }
+    fx.build = await page.evaluate(() => {
+      const w = window.__WORLD__;
+      const f = window.__HARNESS__.facility;
+      if (!f.buildZone) return null;
+      const r = f.buildZone.rect;
+      const before = w.serialize().blocks.length;
+      // stand at the zone's south edge looking down-forward at the sand
+      w.debug.teleport(r.x, r.z + r.d / 2 - 1.5, 0, 0, -0.9);
+      w.debug.camera.position.set(r.x, 1.62, r.z + r.d / 2 - 1.5);
+      w.debug.camera.rotation.set(-0.9, 0, 0);
+      w.select(3);
+      w.debug.updateAim();
+      w.build(true);
+      const placed = w.serialize().blocks.length;
+      w.debug.updateAim();
+      w.build(false);
+      const mined = w.serialize().blocks.length;
+      return { before, placed, mined };
+    });
+    await page.waitForTimeout(600);
+    fx.npc = await page.evaluate(() => {
+      const w = window.__WORLD__;
+      const f = window.__HARNESS__.facility;
+      const slot = f.patientSlots[0];
+      if (!slot) return null;
+      w.setPatientState(slot.id, { speaking: true, distressed: true, accessory: "oxygen-mask" });
+      const n = w.debug.npcs.get(`patient:${slot.id}`);
+      const p = w.locate(slot.id);
+      w.setWaypoint({ x: p.x, z: p.z, label: p.label });
+      return { speaking: n?.speaking, distressed: n?.distressed, locate: p };
+    });
+    if (fx.npc?.locate) {
+      const p = fx.npc.locate;
+      await page.evaluate(([x, z]) => window.__WORLD__.debug.teleport(x + 1.4, z + 2.2, 0, Math.atan2(1.4, 2.2), -0.12), [p.x, p.z]);
+      await page.waitForTimeout(1500);
+      await page.screenshot({ path: path.join(out, `world-${tag}-npc-state.png`) });
+      await page.evaluate(([x, z]) => window.__WORLD__.debug.teleport(x + 6, z + 14, 3, Math.atan2(6, 14), -0.1), [p.x, p.z]);
+      await page.waitForTimeout(1200);
+      await page.screenshot({ path: path.join(out, `world-${tag}-beacon.png`) });
+      await page.evaluate(() => window.__WORLD__.setWaypoint(null));
+    }
+    summary.functional = fx;
     // walkTo smoke test: spawn → evidence board / first placement
     const walk = await page.evaluate(async () => {
       const w = window.__WORLD__;
