@@ -9,8 +9,9 @@
  *     objects before they are emitted as `tool_call`;
  *   - never a forced `tool_choice`, never a `thinking` param (adaptive is the
  *     default on current models); depth via `output_config.effort`;
- *   - `responseFormat` → `output_config.format` (json_schema) on first-party
- *     Claude, else a JSON instruction appended to the system prompt;
+ *   - `responseFormat` → `output_config.format` (json_schema, adapted to the
+ *     supported subset) on first-party Claude, else a JSON instruction
+ *     appended to the system prompt;
  *   - sampling params only when the model accepts them;
  *   - server-side refusal fallbacks (`fallbacks: "default"` + beta
  *     `server-side-fallback-2026-07-01`) for the models that support them on
@@ -34,7 +35,7 @@ import type {
 } from "@anthropic-ai/sdk/resources/beta/messages/messages";
 import { ANTHROPIC_BASE_URL, capabilitiesFor } from "./catalog.js";
 import { abortedError, classifyHttpError, networkError, withRetryAfter } from "./errors.js";
-import { anthropicSupportsStructuredOutput, withJsonInstruction } from "./structured.js";
+import { anthropicSupportsStructuredOutput, toAnthropicOutputSchema, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, ProviderErrorInfo, StreamEvent } from "./types.js";
 
 /** Beta header that gates `fallbacks: "default"`. */
@@ -288,7 +289,8 @@ export function buildAnthropicRequest(config: Pick<ProviderConfig, "id" | "baseU
   const outputConfig: BetaOutputConfig = {};
   let systemSections = request.system;
   if (request.responseFormat) {
-    if (anthropicSupportsStructuredOutput(model, firstParty)) outputConfig.format = { type: "json_schema", schema: request.responseFormat.schema };
+    const schema = anthropicSupportsStructuredOutput(model, firstParty) ? toAnthropicOutputSchema(request.responseFormat.schema) : null;
+    if (schema) outputConfig.format = { type: "json_schema", schema };
     else systemSections = withJsonInstruction(request.system, request.responseFormat);
   }
   const system = toAnthropicSystem(systemSections);

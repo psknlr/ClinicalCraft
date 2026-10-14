@@ -170,6 +170,11 @@ describe("glob hardening", () => {
     expect(denied).toMatchObject({ decision: "deny", ruleId: "rule.deny" });
   });
 
+  it("ignores surrounding whitespace in specifiers (deny rules cannot be dodged with padding)", () => {
+    expect(matchRule("intervene(alteplase)", "intervene", " alteplase\n")).toBe(true);
+    expect(check(tool({ riskLevel: "low" }), "bypass", "full", { deny: ["intervene(alteplase)"] }, [], "\talteplase  ")).toMatchObject({ decision: "deny", ruleId: "rule.deny" });
+  });
+
   it("matches in linear time (no catastrophic backtracking on many stars)", () => {
     const rule = `intervene(${"*a".repeat(14)}*b)`;
     const started = Date.now();

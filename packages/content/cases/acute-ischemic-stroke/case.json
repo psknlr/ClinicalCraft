@@ -1354,10 +1354,7 @@
         "zh-CN": "气道通畅，能自行处理口腔分泌物（仅右口角少量流涎），无喘鸣或痰鸣音；呼吸平稳，双侧胸廓起伏对称。",
         "en": "Airway patent; he manages his own secretions apart from slight drooling from the right corner of the mouth; no stridor or gurgling. Breathing comfortably with equal chest expansion."
       },
-      "abnormal": false,
-      "phases": [
-        "ed"
-      ]
+      "abnormal": false
     },
     {
       "id": "gcs",
@@ -1560,8 +1557,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "右侧鼻唇沟变浅，示齿时口角明显偏向左侧；皱额和闭眼两侧对称有力——右侧中枢性（上运动神经元型）面瘫，额肌不受累。",
-        "en": "Flattened right nasolabial fold; on smiling the mouth is pulled clearly to the left. Forehead wrinkling and eye closure are symmetrical and strong — a right upper-motor-neurone (central) facial palsy with forehead sparing."
+        "zh-CN": "右侧下面部接近完全瘫痪：右侧鼻唇沟消失，示齿和微笑时右侧口角几乎不动、嘴被拉向左侧，右口角流涎；皱额和闭眼两侧对称有力——右侧中枢性（上运动神经元型）面瘫，额肌不受累（NIHSS第4项2分）。",
+        "en": "Near-total paralysis of the right lower face: the right nasolabial fold is effaced, the right corner of the mouth barely moves when he smiles or shows his teeth so the mouth is pulled to the left, and he drools from the right. Forehead wrinkling and eye closure are symmetrical and strong — a right upper-motor-neurone (central) facial palsy with forehead sparing (NIHSS item 4 = 2)."
       },
       "abnormal": true,
       "phases": [
@@ -1798,10 +1795,7 @@
         "zh-CN": "头皮无血肿、裂伤或压痛；无舌咬伤；无尿失禁；皮肤黏膜无瘀点、紫癜或瘀斑，无近期穿刺痕迹。",
         "en": "No scalp haematoma, laceration or tenderness; no tongue bite; not incontinent; no petechiae, purpura or bruising, and no recent puncture marks."
       },
-      "abnormal": false,
-      "phases": [
-        "ed"
-      ]
+      "abnormal": false
     },
     {
       "id": "neck-carotid",
@@ -1830,10 +1824,7 @@
         "zh-CN": "颈软，无脑膜刺激征；双侧颈动脉未闻及血管杂音。",
         "en": "Neck supple, no meningism; no carotid bruits on either side."
       },
-      "abnormal": false,
-      "phases": [
-        "ed"
-      ]
+      "abnormal": false
     },
     {
       "id": "cardiovascular",
@@ -1932,10 +1923,7 @@
         "zh-CN": "双肺呼吸音清，未闻及干湿啰音。",
         "en": "Clear breath sounds throughout both lungs; no crackles or wheeze."
       },
-      "abnormal": false,
-      "phases": [
-        "ed"
-      ]
+      "abnormal": false
     },
     {
       "id": "fundoscopy",
@@ -1963,10 +1951,7 @@
         "zh-CN": "双侧视盘边界清楚，无视乳头水肿；视网膜动脉变细，可见动静脉交叉压迹（高血压视网膜病变II级）；未见出血或渗出。",
         "en": "Both optic discs sharp with no papilloedema; arteriolar narrowing and arteriovenous nicking (grade II hypertensive retinopathy); no haemorrhages or exudates."
       },
-      "abnormal": true,
-      "phases": [
-        "ed"
-      ]
+      "abnormal": true
     }
   ],
   "examNotRecorded": {
@@ -4177,7 +4162,7 @@
     {
       "id": "swallow-screen",
       "name": {
-        "zh-CN": "床旁吞咽筛查（洼田饮水试验），未通过前禁食禁水",
+        "zh-CN": "床旁吞咽筛查（饮水试验），未通过前禁食禁水",
         "en": "Bedside swallow screen (water-swallow test); nil by mouth until passed"
       },
       "kind": "procedure",
@@ -4209,8 +4194,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "吞咽筛查：先以小勺饮水，第2勺即出现呛咳、声音湿浊——未通过。维持禁食禁水（含口服药），必要时静脉补液，请言语/吞咽治疗师进一步评估，暂不留置胃管（溶栓后24小时内尽量避免）。",
-        "en": "Swallow screen: teaspoons of water first — he coughs and his voice turns wet on the second spoonful: failed. Keep nil by mouth (tablets included), IV fluids as needed, refer to speech and language therapy; avoid a nasogastric tube for now (best avoided in the first 24 h after lysis)."
+        "zh-CN": "吞咽筛查：先以小勺（每次5 mL）饮水，第2勺即出现呛咳、声音湿浊——未通过，未继续进行30 mL洼田饮水试验。维持禁食禁水（含口服药），必要时静脉补液，请言语/吞咽治疗师进一步评估，暂不留置胃管（溶栓后24小时内尽量避免）。",
+        "en": "Swallow screen: 5 mL teaspoons of water first — he coughs and his voice turns wet on the second spoonful: failed, so the 30 mL (Kubota) water-swallow test is not attempted. Keep nil by mouth (tablets included), IV fluids as needed, refer to speech and language therapy; avoid a nasogastric tube for now (best avoided in the first 24 h after lysis)."
       }
     },
     {

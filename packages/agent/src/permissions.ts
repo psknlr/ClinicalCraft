@@ -133,7 +133,7 @@ export function matchRule(rule: string, toolName: string, specifier?: string | n
   if (!parsed) return false;
   if (!globMatch(parsed.tool, toolName)) return false;
   if (parsed.specifier === null) return true;
-  return globMatch(parsed.specifier, specifier ?? "");
+  return globMatch(parsed.specifier, (specifier ?? "").trim());
 }
 
 /** First matching rule in `rules`, if any. */

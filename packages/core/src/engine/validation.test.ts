@@ -156,7 +156,7 @@ describe("checkCaseIntegrity", () => {
     c.decisions[0].options.push({ ...c.decisions[0].options[0] });
     c.solution.push(
       { type: "ask", itemId: "ghost" },
-      { type: "teleport" },
+      { type: "teleport" } as never, // malformed step in a case built in code (parseCase would reject it)
       { type: "answer", decisionId: "diagnosis", optionIds: ["dual", "nope"] },
       { type: "read", investigationId: "cbc", phase: "later" },
     );
@@ -227,7 +227,7 @@ describe("verifyCase", () => {
   it("fails with located issues when the solution falls short", () => {
     const c = structuredClone(V4);
     c.solution = c.solution.filter((a) => !(a.type === "answer" && a.decisionId === "response"));
-    c.solution.splice(3, 0, { type: "ask", itemId: "ghost" }, { type: "warp" });
+    c.solution.splice(3, 0, { type: "ask", itemId: "ghost" }, { type: "warp" } as never);
     const r = verifyCase(c);
     expect(r.ok).toBe(false);
     expect(r.issues).toEqual([
