@@ -196,7 +196,9 @@
       "keywords": {
         "zh-CN": [
           "哪里不舒服",
-          "怎么了",
+          "你怎么了",
+          "怎么了啊",
+          "是怎么了",
           "什么问题",
           "主要症状",
           "来看什么病",
@@ -207,7 +209,9 @@
           "咋了",
           "咋啦",
           "不得劲",
-          "哪儿不对劲"
+          "哪儿不对劲",
+          "因为什么",
+          "来是因为"
         ],
         "en": [
           "brought you in",
@@ -216,7 +220,9 @@
           "what is wrong",
           "main problem",
           "what's going on",
-          "howcanihelp"
+          "howcanihelp",
+          "what happened",
+          "what's happened"
         ]
       },
       "disclosure": "volunteer",
@@ -296,7 +302,9 @@
       "keywords": {
         "zh-CN": [
           "什么时候开始",
-          "多久了",
+          "疼多久了",
+          "痛多久了",
+          "有多久了",
           "几点开始",
           "疼了多长时间",
           "哪天开始",
@@ -314,20 +322,22 @@
           "疼了几天",
           "痛了几天",
           "慢慢来的",
-          "一下子"
+          "一下子来",
+          "一下子疼",
+          "一下子痛"
         ],
         "en": [
           "when did it start",
           "when did the pain start",
-          "how long",
-          "sincewhen",
+          "howlong",
           "onset",
           "what time did it start",
           "sudden or gradual",
           "suddenly",
-          "how long have you had",
           "when did it begin",
-          "started suddenly"
+          "started suddenly",
+          "howmanyhours",
+          "howmanydays"
         ]
       },
       "disclosure": "on-ask",
@@ -348,7 +358,8 @@
           "whichpart",
           "bellybutton",
           "navel",
-          "umbilic"
+          "umbilic",
+          "middle"
         ]
       }
     },
@@ -380,7 +391,11 @@
           "从哪儿开始",
           "哪里开始痛",
           "哪里开始疼",
-          "哪儿开始痛"
+          "哪儿开始痛",
+          "最早",
+          "最早是哪块",
+          "一开始哪块",
+          "最早是哪"
         ],
         "en": [
           "where was the pain at first",
@@ -395,10 +410,32 @@
           "wheredidthepainstart",
           "wheredidyourpainstart",
           "wheredidthepainbegin",
-          "whereitstarted"
+          "whereitstarted",
+          "first start",
+          "which part first",
+          "tummy did it begin",
+          "stomach did it begin",
+          "belly did it begin",
+          "start in the middle"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "en": [
+          "whendid",
+          "whendoes",
+          "whattime",
+          "howlong",
+          "sudden",
+          "gradual"
+        ],
+        "zh-CN": [
+          "什么时候",
+          "多久",
+          "几点",
+          "突然"
+        ]
+      }
     },
     {
       "id": "hx-migration",
@@ -433,7 +470,8 @@
           "哪边",
           "哪一边",
           "左边还是右边",
-          "指一下"
+          "指给我看",
+          "指一下哪里"
         ],
         "en": [
           "pain moved",
@@ -448,9 +486,11 @@
           "wheresthepain",
           "whereisthepain",
           "point to the pain",
-          "showmewhere",
           "hasitmoved",
-          "hasthepainmoved"
+          "hasthepainmoved",
+          "same place",
+          "somewhere else",
+          "still in the middle"
         ]
       },
       "disclosure": "on-ask",
@@ -478,16 +518,21 @@
           "刺痛",
           "钝痛",
           "隐痛",
-          "啥感觉",
+          "是啥感觉",
+          "啥样的痛",
+          "啥样的疼",
           "什么感觉",
           "怎么个痛法",
           "痛法",
           "疼法",
           "什么样的痛",
-          "刀割"
+          "刀割",
+          "针扎",
+          "像什么样",
+          "绞着",
+          "胀着"
         ],
         "en": [
-          "feellike",
           "describe the pain",
           "sharp",
           "dull",
@@ -496,7 +541,10 @@
           "burning pain",
           "character",
           "type of pain",
-          "what kind of pain"
+          "what kind of pain",
+          "whatdoesitfeellike",
+          "whatsitlike",
+          "whatisitlike"
         ]
       },
       "disclosure": "on-ask"
@@ -558,7 +606,8 @@
       },
       "keywords": {
         "zh-CN": [
-          "多厉害",
+          "有多厉害",
+          "疼得多厉害",
           "几分",
           "打分",
           "疼痛评分",
@@ -572,7 +621,7 @@
           "有多痛"
         ],
         "en": [
-          "how bad",
+          "howbad",
           "scale",
           "out of 10",
           "out of ten",
@@ -606,7 +655,8 @@
           "走路",
           "颠簸",
           "活动时",
-          "动一下",
+          "动一下就",
+          "动一下疼",
           "深呼吸",
           "更痛",
           "咳嗽的时候",
@@ -645,16 +695,17 @@
         "zh-CN": [
           "减轻",
           "缓解",
-          "好一点",
+          "会好一点",
+          "能好一点",
           "舒服一点",
           "躺着",
           "不动",
-          "舒服点",
-          "好受点",
-          "好受些",
-          "舒服些",
+          "舒服一些",
+          "好受一点",
+          "好受一些",
           "怎么样会好",
-          "什么姿势"
+          "什么姿势",
+          "缓解一点"
         ],
         "en": [
           "better",
@@ -687,9 +738,11 @@
           "一阵一阵",
           "阵发",
           "间歇",
-          "一直疼",
+          "一直在疼",
+          "一直都疼",
           "时好时坏",
-          "一直痛",
+          "一直在痛",
+          "一直都痛",
           "一阵阵",
           "持续痛",
           "越来越重",
@@ -702,7 +755,7 @@
           "comesandgoes",
           "intermittent",
           "waves",
-          "all the time",
+          "allthetime",
           "steady",
           "on and off",
           "constant",
@@ -733,7 +786,10 @@
           "吃得下饭",
           "吃不下",
           "想不想吃",
-          "饿吗"
+          "饿吗",
+          "饭量",
+          "食量",
+          "吃饭怎么样"
         ],
         "en": [
           "appetite",
@@ -807,12 +863,15 @@
           "发冷",
           "寒战",
           "打冷颤",
-          "身上烫",
+          "身上发烫",
           "发烧过",
           "体温高",
           "烧不烧",
           "量过体温",
-          "发烫"
+          "发烫",
+          "怕冷",
+          "发抖",
+          "打哆嗦"
         ],
         "en": [
           "fever",
@@ -821,7 +880,8 @@
           "shivers",
           "rigors",
           "hot and cold",
-          "feverish"
+          "feverish",
+          "feel cold"
         ]
       },
       "disclosure": "on-ask",
@@ -841,7 +901,9 @@
       "keywords": {
         "zh-CN": [
           "大便",
-          "拉肚子",
+          "拉肚子吗",
+          "拉过肚子",
+          "拉不拉肚子",
           "腹泻",
           "便秘",
           "便血",
@@ -852,7 +914,8 @@
           "稀便",
           "解大便",
           "拉屎",
-          "肚子胀",
+          "肚子胀吗",
+          "肚子发胀",
           "腹胀",
           "胀气"
         ],
@@ -936,7 +999,12 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "en": [
+          "burningpain"
+        ]
+      }
     },
     {
       "id": "hx-testicular",
@@ -955,17 +1023,23 @@
           "阴囊",
           "蛋蛋",
           "下体疼",
-          "下面疼",
-          "下身"
+          "下面疼吗",
+          "下面痛吗",
+          "下身",
+          "外生殖器",
+          "生殖器疼",
+          "生殖器痛",
+          "下体"
         ],
         "en": [
           "testicle",
-          "testes",
           "testis",
           "scrotum",
           "scrotal",
           "balls",
-          "testicular"
+          "testicular",
+          "genital pain",
+          "genitals"
         ]
       },
       "disclosure": "on-ask",
@@ -1030,7 +1104,9 @@
           "磕碰",
           "碰到",
           "撞伤",
-          "撞过"
+          "撞过",
+          "摔跤",
+          "摔过"
         ],
         "en": [
           "injury",
@@ -1039,7 +1115,8 @@
           "knock",
           "fall",
           "fell",
-          "sport"
+          "sport",
+          "youhurtyourself"
         ]
       },
       "disclosure": "on-ask"
@@ -1068,8 +1145,7 @@
           "吃啥药",
           "平时吃药",
           "常吃的药",
-          "长期吃药",
-          "在吃药"
+          "长期吃药"
         ],
         "en": [
           "meds",
@@ -1157,7 +1233,17 @@
           "medical conditions"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "en": [
+          "family",
+          "relatives"
+        ],
+        "zh-CN": [
+          "家族",
+          "家里人"
+        ]
+      }
     },
     {
       "id": "hx-psh",
@@ -1195,10 +1281,12 @@
           "anesthetic before",
           "put to sleep",
           "previous surgery",
-          "had surgery",
           "psh",
-          "appendix out",
-          "had your appendix"
+          "hadsurgery",
+          "anysurgery",
+          "hadyourappendixout",
+          "hadyourappendix",
+          "yourappendixremoved"
         ]
       },
       "disclosure": "on-ask",
@@ -1256,7 +1344,11 @@
           "上一次吃",
           "没吃东西",
           "多久没吃",
-          "多久没喝"
+          "多久没喝",
+          "吃过东西",
+          "吃东西了吗",
+          "今天吃东西",
+          "今天吃过"
         ],
         "en": [
           "last eat",
@@ -1315,13 +1407,26 @@
           "girlfriend",
           "partner",
           "condom",
-          "discharge",
           "genital sores",
           "std",
-          "sexually transmitted"
+          "sexually transmitted",
+          "penile discharge",
+          "genital discharge",
+          "anydischarge"
         ]
       },
-      "disclosure": "specific"
+      "disclosure": "specific",
+      "excludeKeywords": {
+        "zh-CN": [
+          "疼",
+          "痛",
+          "肿"
+        ],
+        "en": [
+          "pain",
+          "swell"
+        ]
+      }
     },
     {
       "id": "hx-substances",
@@ -1357,7 +1462,17 @@
           "drinking alcohol"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "en": [
+          "allerg",
+          "prescri",
+          "medic"
+        ],
+        "zh-CN": [
+          "过敏"
+        ]
+      }
     },
     {
       "id": "hx-occupation",
@@ -1382,7 +1497,11 @@
           "宿舍",
           "专业",
           "住在哪里",
-          "住在哪儿"
+          "住在哪儿",
+          "大几",
+          "读大",
+          "几年级",
+          "上大学"
         ],
         "en": [
           "work",
@@ -1403,6 +1522,12 @@
         "en": [
           "unwell",
           "sick"
+        ],
+        "zh-CN": [
+          "拉肚子",
+          "生病",
+          "不舒服",
+          "也有"
         ]
       }
     },
@@ -1434,7 +1559,9 @@
           "其他人也",
           "有人也",
           "也拉肚子",
-          "也吐"
+          "也吐",
+          "宿舍的人",
+          "同宿舍"
         ],
         "en": [
           "travel",
@@ -1500,7 +1627,16 @@
           "sob"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "en": [
+          "hotandcold",
+          "feelcold",
+          "feelingcold",
+          "shiver",
+          "chill"
+        ]
+      }
     },
     {
       "id": "hx-chronic",
@@ -1580,12 +1716,12 @@
           "dizziness",
           "lightheaded",
           "faint",
-          "passedout",
           "palpitations",
           "rash",
           "joint pain",
           "heartburn",
-          "indigestion"
+          "indigestion",
+          "collapse"
         ]
       },
       "disclosure": "on-ask",
@@ -1734,7 +1870,12 @@
           "怎么回事",
           "啥毛病",
           "什么毛病",
-          "你觉得是啥"
+          "你觉得是啥",
+          "是什么病",
+          "得了什么病",
+          "会是什么",
+          "你觉得是",
+          "觉得是啥"
         ],
         "en": [
           "what do you think is",
@@ -1744,7 +1885,15 @@
           "your thoughts"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "以前",
+          "得过",
+          "过去",
+          "既往"
+        ]
+      }
     },
     {
       "id": "hx-ice-concerns",
@@ -1897,7 +2046,12 @@
           "check up"
         ]
       },
-      "disclosure": "unknown"
+      "disclosure": "unknown",
+      "excludeKeywords": {
+        "en": [
+          "checkyour"
+        ]
+      }
     }
   ],
   "exam": [
@@ -2038,7 +2192,9 @@
           "腹部外形",
           "腹胀",
           "瘢痕",
-          "疤"
+          "疤",
+          "看看肚子",
+          "看一下肚子"
         ],
         "en": [
           "inspect the abdomen",
@@ -2069,7 +2225,11 @@
           "压痛",
           "麦氏点",
           "腹部触诊",
-          "按压腹部"
+          "按压腹部",
+          "摸摸肚子",
+          "摸一下肚子",
+          "按按肚子",
+          "按一下肚子"
         ],
         "en": [
           "palpate",
@@ -2266,7 +2426,9 @@
         "zh-CN": [
           "肠鸣音",
           "听肚子",
-          "腹部听诊"
+          "腹部听诊",
+          "听听肚子",
+          "听一下肚子"
         ],
         "en": [
           "bowel sounds",
@@ -2326,7 +2488,6 @@
           "生殖器检查"
         ],
         "en": [
-          "testes",
           "testicular",
           "scrotum",
           "scrotal",

@@ -65,6 +65,12 @@ clinicalcraft play <id> --provider offline                           # play it i
   elicits (e.g. recent cocaine use, a specific family history), `unknown` for
   explicitly unrecorded/unknown facts.
 * `required: true` for the 4–10 items a competent clinician must elicit.
+* `excludeKeywords` per locale stop look-alike questions from selecting an item
+  (its match score is multiplied by 0.2): e.g. on a medications item add
+  `["allerg", "过敏"]` so "any drug allergies?" reaches the allergy item instead;
+  on the patient's own cancer history add `["family", "家里", "家族"]`.
+* `phases` restricts an item to phases (e.g. a medication changed after treatment);
+  the patient pipeline only selects items available in the current phase.
 
 ## 4. Examination
 
@@ -88,6 +94,8 @@ clinicalcraft play <id> --provider offline                           # play it i
 * `aliases` per locale (common abbreviations both languages: "血气", "abg", "vbg").
 * Multi-phase cases give results per phase; tests not done in a phase are simply
   absent (the UI says "no record").
+* `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
+  ultrasound): reading either satisfies "essential investigations" in the assessment.
 
 ## 6. Interventions & physiology (acute cases)
 
@@ -114,6 +122,10 @@ clinicalcraft play <id> --provider offline                           # play it i
   `waypoints` (capability / role targets).
 * 2–5 `decisions` (single best answer or select-all) with educational feedback
   on **every** option, unlocked by `requires` once the evidence exists.
+* Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
+  `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
+  attempt correct), `attempted`, `intervened`, `phase`, `flag`, `objective`, `vital`,
+  `elapsed`, `hints`.
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).
@@ -121,7 +133,7 @@ clinicalcraft play <id> --provider offline                           # play it i
   the learner already has, attending (Socratic). Knowledge must not exceed the case.
 * `debrief`: conclusion, 3–6 key reasoning points, boundaries, unknowns, 3–6
   teaching points, guideline references, and the formative-assessment notice.
-* `solution`: the reference action path (start → … → finish) that completes all
+* `solution`: an array of typed `ClinicalAction`s — the reference action path (start → … → finish) that completes all
   objectives and answers all decisions correctly. `clinicalcraft cases verify`
   must pass.
 * `extensions.testUtterances`: 15–40 `{ "text", "locale", "expect": [historyIds] }`

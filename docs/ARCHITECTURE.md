@@ -81,6 +81,8 @@ JSON Schema exported to `packages/content/schemas/` for editors).
   * `history[].excludeKeywords`, `exam[].excludeKeywords`,
     `interventions[].excludeKeywords` — `LocalizedList`, default `[]`;
     phrases that argue *against* the item in the offline matcher (§3.3).
+    Every locale's phrases apply to every utterance, so `parseCase` does not
+    warn about a locale missing from them.
   * `investigations[].alternativeTo` — investigation ids, default `[]`; a
     mutual "can stand in for" link used by `assess()` (§3.4).
   * `solution` — `ClinicalAction[]` (validated with `ClinicalActionSchema`
@@ -158,6 +160,8 @@ matchExam(c, utterance, locale, options?: MatchOptions): { id: string; score: nu
 matchInterventions(c, utterance, locale): { id: string; score: number }[]
 interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
 MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2
+compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, longestCommonSubstring,
+ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
 // assessment
 assess(c, s): AssessmentReport
@@ -268,17 +272,23 @@ phrases = question/maneuver/name + keywords (+ aliases) for the locale and
 for every locale (cross-lingual); score = max over phrases of:
 
 * CJK phrase — longest-common-substring length / phrase length (1 when
-  contained, +0.15 when the utterance is a fragment of the phrase);
+  contained, 0 when fewer than 2 characters are shared, +0.15 when the
+  utterance is a fragment of the phrase);
 * Latin phrase — share of phrase tokens present in the utterance, or 0.9
   when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
-  Tokens: lower-case words minus English stop-words, then British → American
-  fold (`ae`/`oe` → `e` in words ≥ 5 letters; `-ise/-isation…` → `-ize…`),
-  a light suffix stemmer and a small lemma table (`ENGLISH_LEMMAS`: meds /
-  medicine(s) / medicated → medication, abdominal → abdomen, …). Two tokens
-  match when equal, when one (≥ 4 letters) prefixes the other (breath ~
+  Tokens (`canonicalToken`): lower-case words minus English stop-words, then
+  British → American fold (`ae`/`oe` → `e` in words ≥ 5 letters;
+  `-ise/-isation…` → `-ize…`), a light suffix stemmer, `-ological` →
+  `-ology` (pathological ~ pathology, oncological ~ oncology) and a small
+  lemma table (`ENGLISH_LEMMAS`: meds / medicine(s) / medicated →
+  medication, abdominal → abdomen, …). Two tokens (`tokensMatch`) match
+  when equal, when one (≥ 4 letters) prefixes the other (breath ~
   breathless), or when they share a ≥ 5-letter prefix after which **both**
-  end within 3 letters (allergy ~ allergic, nausea ~ nauseous). So
-  medical ≁ medication, history ≁ historical, hypertension ≁ hyperthermia.
+  end within 3 letters — 4 letters when the shared prefix has ≥ 8 — (allergy
+  ~ allergic, nausea ~ nauseous, anticoagulant ~ anticoagulation,
+  prophylaxis ~ prophylactic). So medical ≁ medication, history ≁
+  historical, hypertension ≁ hyperthermia, thrombosis ≁ thrombolysis,
+  cholecystitis ≁ cholecystectomy.
 
 `excludeKeywords`: if the utterance, normalised with `compactText`
 (`normalizeQuery` minus punctuation — case, spacing and punctuation are
@@ -328,8 +338,9 @@ Behaviour the implementation fixes where the summaries above are silent:
 * **Assessment** — `unread` lists result keys (`cbc@pre`) ordered but never
   read whose result is `available: true`. `essentialMissing` lists essential
   investigations neither ordered (any phase) nor covered by an alternative
-  that was **read** in any phase; `alternativeTo` links are mutual (A lists B
-  or B lists A).
+  whose `available: true` result was **read** in some phase (ordering an
+  alternative, or reading its `available: false` record, does not count);
+  `alternativeTo` links are mutual (A lists B or B lists A).
 * **Alarms** — computed on the noise-free, display-rounded signal (jitter
   never chatters): warning when `< low` or `> high` (strict), critical when
   `≤ criticalLow` or `≥ criticalHigh` (inclusive). A case's

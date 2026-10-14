@@ -145,14 +145,23 @@ function usedLocales(schema: ZodTypeAny, value: unknown): string[] {
 }
 
 /**
- * Content warnings: per-locale texts/lists missing one of `locales`, and
- * capability strings outside the canonical `CAPABILITIES` vocabulary.
+ * Localized lists that are applied in every locale at once, so a missing
+ * locale is not a gap (`excludeKeywords`: an exclusion needed in one language
+ * rarely has a counterpart in another).
+ */
+const LOCALE_AGNOSTIC_LISTS: ReadonlySet<string> = new Set(["excludeKeywords"]);
+
+/**
+ * Content warnings: per-locale texts/lists missing one of `locales` (except
+ * `LOCALE_AGNOSTIC_LISTS`), and capability strings outside the canonical
+ * `CAPABILITIES` vocabulary.
  */
 export function contentWarnings(schema: ZodTypeAny, value: unknown, locales: readonly string[]): Issue[] {
   const issues: Issue[] = [];
   const checkLocales = (kind: string) => (v: unknown, path: PathPart[]) => {
     const record = localeRecord(v);
     if (!record) return;
+    if (kind === "list" && LOCALE_AGNOSTIC_LISTS.has(String(path[path.length - 1]))) return;
     for (const locale of locales) {
       if (record[locale] == null || record[locale] === "") {
         issues.push({ path: formatPath(path), message: `${kind} is missing the "${locale}" translation`, severity: "warning" });

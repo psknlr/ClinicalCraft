@@ -68,6 +68,14 @@ describe("parseCase", () => {
       { path: "investigations.0.requires.1", message: 'non-canonical capability "x-ray-vision" (see CAPABILITIES)', severity: "warning" },
     ]);
   });
+
+  it("does not ask for translations of excludeKeywords (they apply in every locale)", () => {
+    const json = fixture("v4-smzl-mini.case.json");
+    json.history[1].excludeKeywords = { en: ["burning pain"] };
+    json.exam[0].excludeKeywords = { "zh-CN": ["胸片"] };
+    const r = parseCase(json);
+    expect(r.ok && r.warnings).toEqual([]);
+  });
 });
 
 describe("parseFacility / parseCatalog", () => {
