@@ -596,6 +596,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   }
 
   function updateAim(): void {
+    camera.updateMatrixWorld();
     raycaster.setFromCamera(centre, camera);
     raycaster.far = AIM_FAR;
     const hits = raycaster.intersectObjects(ctx.pickables, true);

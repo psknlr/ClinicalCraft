@@ -52,7 +52,10 @@ beforeAll(() => {
   write(join(proj, "docs", "rubric.md"), "Rubric: SOCRATES.");
   write(join(proj, "week1", "AGENTS.md"), "Week 1 agents fallback.");
   write(join(proj, "week1", "day2", "CLINICALCRAFT.md"), "Day 2 focus: chest pain.");
-  write(join(proj, ".clinicalcraft", "CLINICALCRAFT.md"), "Hidden project memory.");
+  write(join(proj, ".clinicalcraft", "CLINICALCRAFT.md"), "Hidden project memory.\n@~/secret.md\n@../../../outside.md\n@~/.clinicalcraft/shared.md");
+  write(join(root, "home", "secret.md"), "TOP SECRET KEY");
+  write(join(root, "outside.md"), "OUTSIDE FILE");
+  write(join(home, "shared.md"), "Shared user snippet.");
 
   // agents & commands
   write(join(home, "agents", "tutor.md"), "---\nname: tutor\nrole: assistant\n---\nUser tutor.");
@@ -138,8 +141,13 @@ describe("loadMemory", () => {
       join(proj, "CLINICALCRAFT.md"),
       join(proj, "week1", "AGENTS.md"),
       join(cwd, "CLINICALCRAFT.md"),
+      join(home, "shared.md"),
       join(proj, "docs", "rubric.md"),
     ]);
+    // imports may not escape the project root / ClinicalCraft home
+    expect(m.text).not.toContain("TOP SECRET KEY");
+    expect(m.text).not.toContain("OUTSIDE FILE");
+    expect(m.text).toContain("Shared user snippet.");
     const order = ["User memory.", "Hidden project memory.", "Course rules.", "Rubric: SOCRATES.", "Week 1 agents fallback.", "Day 2 focus: chest pain."].map((t) => m.text.indexOf(t));
     expect(order.every((i) => i >= 0)).toBe(true);
     expect([...order].sort((a, b) => a - b)).toEqual(order);

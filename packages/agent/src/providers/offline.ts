@@ -23,7 +23,6 @@ export class OfflineProvider implements LLMProvider {
     return capabilitiesFor("offline", this.model);
   }
 
-  // eslint-disable-next-line require-yield
   async *stream(_request: ChatRequest, _signal?: AbortSignal): AsyncGenerator<StreamEvent> {
     yield { type: "error", error: { message: OFFLINE_ERROR_MESSAGE, kind: "bad_request", code: "offline", retryable: false } };
   }

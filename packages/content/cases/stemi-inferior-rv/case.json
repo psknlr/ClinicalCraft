@@ -209,11 +209,10 @@
           "指一下"
         ],
         "en": [
-          "where is the pain",
-          "where does it hurt",
           "location of the pain",
           "which part of your chest",
-          "point to"
+          "point to the pain",
+          "where exactly"
         ]
       },
       "disclosure": "volunteer"
@@ -242,8 +241,8 @@
         "en": [
           "when did the pain start",
           "when did it start",
-          "what time did",
-          "how long have you had",
+          "what time did it start",
+          "how long have you had the pain",
           "what were you doing",
           "how did it start",
           "onset"
@@ -274,8 +273,8 @@
           "刺痛还是"
         ],
         "en": [
-          "what does it feel like",
           "describe the pain",
+          "what kind of pain",
           "character of the pain",
           "crushing",
           "sharp or dull",
@@ -378,11 +377,9 @@
         ],
         "en": [
           "constant",
-          "come and go",
           "comes and goes",
           "on and off",
           "continuous",
-          "all the time",
           "let up"
         ]
       },
@@ -405,7 +402,7 @@
           "减轻",
           "缓解",
           "好一点",
-          "更疼",
+          "什么能让",
           "休息后"
         ],
         "en": [
@@ -434,6 +431,7 @@
         "zh-CN": [
           "深呼吸",
           "吸气时",
+          "咳嗽的时候",
           "咳嗽时疼",
           "体位",
           "躺平",
@@ -443,8 +441,8 @@
         ],
         "en": [
           "deep breath",
-          "breathe in",
-          "when you cough",
+          "hurt when you cough",
+          "pain on breathing",
           "change position",
           "lying flat",
           "lean forward",
@@ -574,10 +572,39 @@
           "lightheaded",
           "faint",
           "pass out",
-          "black out",
-          "blackout",
           "collapse",
           "lose consciousness"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "gi-screen",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "平时有没有反酸、烧心或胃病？这次跟吃饭有关系吗？",
+        "en": "Do you get heartburn or indigestion? Is this related to eating?"
+      },
+      "answer": {
+        "zh-CN": "偶尔吃多了会烧心，吃点胃药就好。这次跟那个完全不一样，也不是吃完饭疼的。",
+        "en": "I get a bit of heartburn now and then after a big meal, and an antacid sorts it out. This is completely different, and it didn't come on after eating."
+      },
+      "keywords": {
+        "zh-CN": [
+          "反酸",
+          "烧心",
+          "胃病",
+          "胃疼",
+          "消化不良",
+          "跟吃饭有关"
+        ],
+        "en": [
+          "heartburn or indigestion",
+          "acid reflux",
+          "indigestion",
+          "stomach trouble",
+          "related to food",
+          "worse after eating"
         ]
       },
       "disclosure": "on-ask"
@@ -635,11 +662,11 @@
           "爬楼梯时"
         ],
         "en": [
-          "like this before",
+          "chest pain before",
           "happened before",
           "previous episodes",
           "last few weeks",
-          "first time",
+          "first time this",
           "climbing stairs"
         ]
       },
@@ -725,7 +752,7 @@
         "zh-CN": [
           "发烧",
           "发热",
-          "咳嗽吗",
+          "咳嗽",
           "感冒",
           "流感"
         ],
@@ -741,35 +768,220 @@
       "disclosure": "on-ask"
     },
     {
-      "id": "gi-screen",
-      "topic": "ros",
+      "id": "allergies",
+      "topic": "allergies",
       "question": {
-        "zh-CN": "平时有没有反酸、烧心或胃病？这次跟吃饭有关系吗？",
-        "en": "Do you get heartburn or indigestion? Is this related to eating?"
+        "zh-CN": "有没有药物或其他过敏？",
+        "en": "Are you allergic to any medicines or anything else?"
       },
       "answer": {
-        "zh-CN": "偶尔吃多了会烧心，吃点胃药就好。这次跟那个完全不一样，也不是吃完饭疼的。",
-        "en": "I get a bit of heartburn now and then after a big meal, and an antacid sorts it out. This is completely different, and it didn't come on after eating."
+        "zh-CN": "没有，没听说对什么过敏。",
+        "en": "No, no allergies that I know of."
       },
       "keywords": {
         "zh-CN": [
-          "反酸",
-          "烧心",
-          "胃病",
-          "胃疼",
-          "消化不良",
-          "跟吃饭有关"
+          "过敏",
+          "过敏史",
+          "药物过敏"
         ],
         "en": [
-          "heartburn",
-          "indigestion",
-          "reflux",
-          "stomach trouble",
-          "related to food",
-          "after eating"
+          "allergic",
+          "allergies",
+          "allergy",
+          "reaction to"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "pde5",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "最近48小时内有没有用过西地那非（伟哥）、他达拉非这类药？",
+        "en": "Have you taken sildenafil (Viagra), tadalafil or similar in the last 48 hours?"
+      },
+      "answer": {
+        "zh-CN": "没有，从来没用过那种药。",
+        "en": "No, never taken anything like that."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伟哥",
+          "西地那非",
+          "他达拉非",
+          "万艾可",
+          "壮阳药",
+          "pde5"
+        ],
+        "en": [
+          "viagra",
+          "sildenafil",
+          "tadalafil",
+          "cialis",
+          "erectile",
+          "pde5"
+        ]
+      },
+      "disclosure": "specific"
+    },
+    {
+      "id": "recreational",
+      "topic": "social",
+      "question": {
+        "zh-CN": "有没有用过可卡因、冰毒等毒品？",
+        "en": "Have you ever used cocaine, amphetamines or other recreational drugs?"
+      },
+      "answer": {
+        "zh-CN": "没有，从来不碰那些东西。",
+        "en": "No, never. I don't touch that stuff."
+      },
+      "keywords": {
+        "zh-CN": [
+          "毒品",
+          "可卡因",
+          "冰毒",
+          "吸毒",
+          "大麻",
+          "兴奋剂"
+        ],
+        "en": [
+          "cocaine",
+          "recreational drugs",
+          "street drugs",
+          "amphetamine",
+          "cannabis",
+          "illicit"
+        ]
+      },
+      "disclosure": "specific"
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时吃什么药？今天吃了吗？",
+        "en": "What medications do you take? Did you take them today?"
+      },
+      "answer": {
+        "zh-CN": "就吃氨氯地平，一天一片5毫克，今天早上七点吃了。他汀早停了。偶尔胃不舒服吃点胃药，名字记不清了。没吃阿司匹林，也没吃什么抗凝的药。",
+        "en": "Just amlodipine 5 mg, one a day — I took it at seven this morning. I stopped the statin a long time ago. Now and then an antacid for my stomach, can't remember the name. No aspirin, no blood thinners."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "用药",
+          "药物",
+          "服药",
+          "长期吃药",
+          "抗凝药",
+          "阿司匹林"
+        ],
+        "en": [
+          "medications",
+          "medicines",
+          "tablets",
+          "pills",
+          "prescribed drugs",
+          "blood thinners",
+          "aspirin"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true
+    },
+    {
+      "id": "social-living",
+      "topic": "social",
+      "question": {
+        "zh-CN": "做什么工作？和谁一起住？",
+        "en": "What do you do for work, and who do you live with?"
+      },
+      "answer": {
+        "zh-CN": "在物流公司当仓库主管，坐办公室多，有时也搬东西。和老伴住，儿子在外地工作。今天是老伴开车送我来的。",
+        "en": "I'm a warehouse supervisor at a logistics company — mostly desk work, some lifting. I live with my wife; our son works in another city. My wife drove me here today."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做什么工作",
+          "职业",
+          "做什么的",
+          "和谁住",
+          "一起住",
+          "家里几口人",
+          "住在哪"
+        ],
+        "en": [
+          "what do you do for work",
+          "your job",
+          "occupation",
+          "live with",
+          "who is at home",
+          "retired"
         ]
       },
       "disclosure": "on-ask"
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有心脏病或突然去世的吗？",
+        "en": "Does anyone in your family have heart disease, or did anyone die suddenly?"
+      },
+      "answer": {
+        "zh-CN": "我爸六十二岁那年突然走了，说是心脏的问题。我弟弟前年放了个支架，那年他五十二。",
+        "en": "My father died suddenly at sixty-two — they said it was his heart. My younger brother had a stent put in the year before last; he was fifty-two."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族史",
+          "家里人",
+          "父亲",
+          "母亲",
+          "兄弟",
+          "遗传",
+          "突然去世"
+        ],
+        "en": [
+          "family history",
+          "in your family",
+          "your father",
+          "your mother",
+          "brothers or sisters",
+          "runs in the family",
+          "relatives",
+          "parents"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "brother-details",
+      "topic": "family",
+      "question": {
+        "zh-CN": "你弟弟是哪根血管堵了？当时是心梗吗？",
+        "en": "Do you know which artery your brother had stented, or whether it was a heart attack?"
+      },
+      "answer": {
+        "zh-CN": "这个我真不清楚，他没细说。",
+        "en": "I honestly don't know — he never went into the details."
+      },
+      "keywords": {
+        "zh-CN": [
+          "弟弟哪根血管",
+          "弟弟是心梗",
+          "弟弟具体",
+          "弟弟的情况"
+        ],
+        "en": [
+          "brother's artery",
+          "which artery",
+          "brother have a heart attack",
+          "brother's details"
+        ]
+      },
+      "disclosure": "unknown"
     },
     {
       "id": "pmh-htn",
@@ -828,6 +1040,33 @@
       "disclosure": "on-ask"
     },
     {
+      "id": "cholesterol-values",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "你知道血脂具体是多少吗？",
+        "en": "Do you know what your cholesterol numbers were?"
+      },
+      "answer": {
+        "zh-CN": "具体数我记不住了。",
+        "en": "I can't remember the numbers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血脂多少",
+          "胆固醇多少",
+          "具体数值",
+          "化验数值"
+        ],
+        "en": [
+          "cholesterol level",
+          "cholesterol numbers",
+          "what were the numbers",
+          "ldl"
+        ]
+      },
+      "disclosure": "unknown"
+    },
+    {
       "id": "pmh-diabetes",
       "topic": "pmh",
       "question": {
@@ -877,6 +1116,8 @@
           "heart attack",
           "stents",
           "heart disease",
+          "heart condition",
+          "heart trouble",
           "heart failure",
           "angina"
         ]
@@ -946,98 +1187,6 @@
       "disclosure": "on-ask"
     },
     {
-      "id": "medications",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "平时吃什么药？今天吃了吗？",
-        "en": "What medications do you take? Did you take them today?"
-      },
-      "answer": {
-        "zh-CN": "就吃氨氯地平，一天一片5毫克，今天早上七点吃了。他汀早停了。偶尔胃不舒服吃点胃药，名字记不清了。没吃阿司匹林，也没吃什么抗凝的药。",
-        "en": "Just amlodipine 5 mg, one a day — I took it at seven this morning. I stopped the statin a long time ago. Now and then an antacid for my stomach, can't remember the name. No aspirin, no blood thinners."
-      },
-      "keywords": {
-        "zh-CN": [
-          "吃什么药",
-          "用药",
-          "药物",
-          "服药",
-          "长期吃药",
-          "抗凝药",
-          "阿司匹林"
-        ],
-        "en": [
-          "medications",
-          "medicines",
-          "tablets",
-          "pills",
-          "drugs do you take",
-          "blood thinners",
-          "aspirin"
-        ]
-      },
-      "disclosure": "on-ask",
-      "required": true
-    },
-    {
-      "id": "pde5",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "最近48小时内有没有用过西地那非（伟哥）、他达拉非这类药？",
-        "en": "Have you taken sildenafil (Viagra), tadalafil or similar in the last 48 hours?"
-      },
-      "answer": {
-        "zh-CN": "没有，从来没用过那种药。",
-        "en": "No, never taken anything like that."
-      },
-      "keywords": {
-        "zh-CN": [
-          "伟哥",
-          "西地那非",
-          "他达拉非",
-          "万艾可",
-          "壮阳药",
-          "pde5"
-        ],
-        "en": [
-          "viagra",
-          "sildenafil",
-          "tadalafil",
-          "cialis",
-          "erectile",
-          "pde5"
-        ]
-      },
-      "disclosure": "specific"
-    },
-    {
-      "id": "allergies",
-      "topic": "allergies",
-      "question": {
-        "zh-CN": "有没有药物或其他过敏？",
-        "en": "Are you allergic to any medicines or anything else?"
-      },
-      "answer": {
-        "zh-CN": "没有，没听说对什么过敏。",
-        "en": "No, no allergies that I know of."
-      },
-      "keywords": {
-        "zh-CN": [
-          "过敏",
-          "过敏史",
-          "药物过敏"
-        ],
-        "en": [
-          "allergic",
-          "allergies",
-          "allergy",
-          "reaction to"
-        ]
-      },
-      "disclosure": "on-ask",
-      "required": true
-    },
-    {
       "id": "smoking",
       "topic": "social",
       "question": {
@@ -1090,72 +1239,10 @@
         ],
         "en": [
           "alcohol",
-          "drink",
+          "drinking habits",
           "beer",
           "wine",
-          "units"
-        ]
-      },
-      "disclosure": "on-ask"
-    },
-    {
-      "id": "recreational",
-      "topic": "social",
-      "question": {
-        "zh-CN": "有没有用过可卡因、冰毒等毒品？",
-        "en": "Have you ever used cocaine, amphetamines or other recreational drugs?"
-      },
-      "answer": {
-        "zh-CN": "没有，从来不碰那些东西。",
-        "en": "No, never. I don't touch that stuff."
-      },
-      "keywords": {
-        "zh-CN": [
-          "毒品",
-          "可卡因",
-          "冰毒",
-          "吸毒",
-          "大麻",
-          "兴奋剂"
-        ],
-        "en": [
-          "cocaine",
-          "recreational drugs",
-          "street drugs",
-          "amphetamine",
-          "cannabis",
-          "illicit"
-        ]
-      },
-      "disclosure": "specific"
-    },
-    {
-      "id": "social-living",
-      "topic": "social",
-      "question": {
-        "zh-CN": "做什么工作？和谁一起住？",
-        "en": "What do you do for work, and who do you live with?"
-      },
-      "answer": {
-        "zh-CN": "在物流公司当仓库主管，坐办公室多，有时也搬东西。和老伴住，儿子在外地工作。今天是老伴开车送我来的。",
-        "en": "I'm a warehouse supervisor at a logistics company — mostly desk work, some lifting. I live with my wife; our son works in another city. My wife drove me here today."
-      },
-      "keywords": {
-        "zh-CN": [
-          "做什么工作",
-          "职业",
-          "做什么的",
-          "和谁住",
-          "家里几口人",
-          "住在哪"
-        ],
-        "en": [
-          "what do you do for work",
-          "your job",
-          "occupation",
-          "live with",
-          "who is at home",
-          "retired"
+          "units of alcohol"
         ]
       },
       "disclosure": "on-ask"
@@ -1183,7 +1270,7 @@
           "exercise",
           "diet",
           "physical activity",
-          "what do you eat",
+          "eating habits",
           "sport",
           "gym"
         ]
@@ -1222,67 +1309,6 @@
       "disclosure": "on-ask"
     },
     {
-      "id": "family",
-      "topic": "family",
-      "question": {
-        "zh-CN": "家里人有心脏病或突然去世的吗？",
-        "en": "Does anyone in your family have heart disease, or did anyone die suddenly?"
-      },
-      "answer": {
-        "zh-CN": "我爸六十二岁那年突然走了，说是心脏的问题。我弟弟前年放了个支架，那年他五十二。",
-        "en": "My father died suddenly at sixty-two — they said it was his heart. My younger brother had a stent put in the year before last; he was fifty-two."
-      },
-      "keywords": {
-        "zh-CN": [
-          "家族史",
-          "家里人",
-          "父亲",
-          "母亲",
-          "兄弟",
-          "遗传",
-          "突然去世"
-        ],
-        "en": [
-          "family history",
-          "in your family",
-          "your father",
-          "your mother",
-          "brother",
-          "runs in the family",
-          "relatives",
-          "parents"
-        ]
-      },
-      "disclosure": "on-ask"
-    },
-    {
-      "id": "brother-details",
-      "topic": "family",
-      "question": {
-        "zh-CN": "你弟弟是哪根血管堵了？当时是心梗吗？",
-        "en": "Do you know which artery your brother had stented, or whether it was a heart attack?"
-      },
-      "answer": {
-        "zh-CN": "这个我真不清楚，他没细说。",
-        "en": "I honestly don't know — he never went into the details."
-      },
-      "keywords": {
-        "zh-CN": [
-          "弟弟哪根血管",
-          "弟弟是心梗",
-          "弟弟具体",
-          "弟弟的情况"
-        ],
-        "en": [
-          "brother's artery",
-          "which artery",
-          "brother have a heart attack",
-          "brother's details"
-        ]
-      },
-      "disclosure": "unknown"
-    },
-    {
       "id": "prior-ecg",
       "topic": "other",
       "question": {
@@ -1307,33 +1333,6 @@
           "ecg before",
           "compare with",
           "prior ecg"
-        ]
-      },
-      "disclosure": "unknown"
-    },
-    {
-      "id": "cholesterol-values",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "你知道血脂具体是多少吗？",
-        "en": "Do you know what your cholesterol numbers were?"
-      },
-      "answer": {
-        "zh-CN": "具体数我记不住了。",
-        "en": "I can't remember the numbers."
-      },
-      "keywords": {
-        "zh-CN": [
-          "血脂多少",
-          "胆固醇多少",
-          "具体数值",
-          "化验数值"
-        ],
-        "en": [
-          "cholesterol level",
-          "cholesterol numbers",
-          "what were the numbers",
-          "ldl"
         ]
       },
       "disclosure": "unknown"
@@ -1834,8 +1833,8 @@
       "results": {
         "ed": {
           "text": {
-            "zh-CN": "窦性心动过缓，心率54次/分，节律规整。PR间期0.20 s，QRS 0.09 s，QTc 430 ms，电轴正常。II、III、aVF导联ST段弓背向上抬高（III 3.0 mm，aVF 2.5 mm，II 1.5 mm；III > II），下壁导联T波高耸；I、aVL导联ST段压低（aVL 2.0 mm，I 1.0 mm）。V1导联ST段抬高0.5 mm；V2–V3无ST段压低。III导联可见小q波。未见房室传导阻滞。",
-            "en": "Sinus bradycardia, 54 bpm, regular. PR 0.20 s, QRS 0.09 s, QTc 430 ms, normal axis. Convex ST elevation in II, III and aVF (III 3.0 mm, aVF 2.5 mm, II 1.5 mm; III > II) with hyperacute inferior T waves; reciprocal ST depression in I and aVL (aVL 2.0 mm, I 1.0 mm). V1 ST elevation 0.5 mm; no ST depression in V2–V3. Small q wave in III. No AV block."
+            "zh-CN": "首份急诊心电图：窦性心动过缓，心率54次/分，节律规整。PR间期0.20 s，QRS 0.09 s，QTc 430 ms，电轴正常。II、III、aVF导联ST段弓背向上抬高（III 3.0 mm，aVF 2.5 mm，II 1.5 mm；III > II），下壁导联T波高耸；I、aVL导联ST段压低（aVL 2.0 mm，I 1.0 mm）。V1导联ST段抬高0.5 mm；V2–V3无ST段压低。III导联可见小q波。未见房室传导阻滞。",
+            "en": "First ED ECG: sinus bradycardia, 54 bpm, regular. PR 0.20 s, QRS 0.09 s, QTc 430 ms, normal axis. Convex ST elevation in II, III and aVF (III 3.0 mm, aVF 2.5 mm, II 1.5 mm; III > II) with hyperacute inferior T waves; reciprocal ST depression in I and aVL (aVL 2.0 mm, I 1.0 mm). V1 ST elevation 0.5 mm; no ST depression in V2–V3. Small q wave in III. No AV block."
           },
           "note": {
             "zh-CN": "无既往心电图可供对比。",
@@ -3482,17 +3481,45 @@
       "effects": [
         {
           "vital": "sbp",
-          "delta": -28,
+          "delta": -12,
           "onsetMinutes": 1,
           "rampMinutes": 3,
-          "durationMinutes": 20
+          "durationMinutes": 12
+        },
+        {
+          "vital": "sbp",
+          "delta": -10,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 18
+        },
+        {
+          "vital": "sbp",
+          "delta": -6,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 25
         },
         {
           "vital": "dbp",
-          "delta": -16,
+          "delta": -7,
           "onsetMinutes": 1,
           "rampMinutes": 3,
-          "durationMinutes": 20
+          "durationMinutes": 12
+        },
+        {
+          "vital": "dbp",
+          "delta": -6,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 18
+        },
+        {
+          "vital": "dbp",
+          "delta": -3,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 25
         },
         {
           "vital": "hr",
@@ -3753,17 +3780,31 @@
       "effects": [
         {
           "vital": "hr",
-          "delta": 14,
+          "delta": 8,
           "onsetMinutes": 1,
           "rampMinutes": 2,
-          "durationMinutes": 30
+          "durationMinutes": 25
+        },
+        {
+          "vital": "hr",
+          "delta": 6,
+          "onsetMinutes": 1,
+          "rampMinutes": 2,
+          "durationMinutes": 35
         },
         {
           "vital": "sbp",
-          "delta": 6,
+          "delta": 3,
           "onsetMinutes": 2,
           "rampMinutes": 3,
-          "durationMinutes": 30
+          "durationMinutes": 25
+        },
+        {
+          "vital": "sbp",
+          "delta": 3,
+          "onsetMinutes": 2,
+          "rampMinutes": 3,
+          "durationMinutes": 35
         },
         {
           "vital": "dbp",
@@ -4602,6 +4643,29 @@
         "severity": "info"
       },
       {
+        "id": "early-shock",
+        "when": {
+          "all": [
+            {
+              "intervened": "defibrillation"
+            },
+            {
+              "not": {
+                "flag": "vf-arrest"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "early-shock"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "护士：“他刚才清醒、有脉搏——这一下电击让他非常痛苦！”",
+          "en": "Nurse: \"He was awake with a pulse — that shock really hurt him!\""
+        }
+      },
+      {
         "id": "vf-arrest",
         "when": {
           "all": [
@@ -4650,7 +4714,24 @@
               "flag": "vf-arrest"
             },
             {
-              "flag": "shock-delivered"
+              "any": [
+                {
+                  "all": [
+                    {
+                      "not": {
+                        "flag": "early-shock"
+                      }
+                    },
+                    {
+                      "intervened": "defibrillation"
+                    }
+                  ]
+                },
+                {
+                  "intervened": "defibrillation",
+                  "minCount": 2
+                }
+              ]
             }
           ]
         },
@@ -4722,9 +4803,10 @@
           ]
         },
         "setVitals": {
-          "hr": 66,
+          "hr": 68,
           "sbp": 106,
           "dbp": 66,
+          "gcs": 15,
           "pain": 2,
           "rhythm": "sinus",
           "ecg": "normal"
@@ -5927,6 +6009,22 @@
       "interventionId": "activate-cath-lab"
     },
     {
+      "type": "order",
+      "investigationId": "hs-troponin"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal-electrolytes"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
       "type": "intervene",
       "interventionId": "aspirin"
     },
@@ -6014,22 +6112,6 @@
       ]
     },
     {
-      "type": "order",
-      "investigationId": "hs-troponin"
-    },
-    {
-      "type": "order",
-      "investigationId": "cbc"
-    },
-    {
-      "type": "order",
-      "investigationId": "renal-electrolytes"
-    },
-    {
-      "type": "order",
-      "investigationId": "coagulation"
-    },
-    {
       "type": "ask",
       "itemId": "smoking"
     },
@@ -6074,6 +6156,30 @@
       "type": "read",
       "investigationId": "ecg-12lead",
       "phase": "cath"
+    },
+    {
+      "type": "advance-time",
+      "minutes": 3
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "ed"
+    },
+    {
+      "type": "read",
+      "investigationId": "renal-electrolytes",
+      "phase": "ed"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "ed"
+    },
+    {
+      "type": "read",
+      "investigationId": "hs-troponin",
+      "phase": "ed"
     },
     {
       "type": "finish"
@@ -6250,7 +6356,7 @@
         ]
       },
       {
-        "text": "What does it feel like?",
+        "text": "Can you describe the pain?",
         "locale": "en",
         "expect": [
           "pain-character"

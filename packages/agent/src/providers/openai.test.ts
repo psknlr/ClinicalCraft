@@ -237,6 +237,28 @@ describe("OpenAICompatibleProvider (mock server)", () => {
     expect(events.at(-1)).toMatchObject({ type: "error", error: { code: "aborted", retryable: false } });
   });
 
+  it("accepts a non-streaming JSON completion from servers that ignore stream:true", async () => {
+    handlers.push(
+      json(200, {
+        id: "c",
+        object: "chat.completion",
+        model: "local-model",
+        choices: [
+          {
+            index: 0,
+            finish_reason: "tool_calls",
+            message: { role: "assistant", content: "Checking.", tool_calls: [{ id: "t1", type: "function", function: { name: "check_vitals", arguments: "{}" } }] },
+          },
+        ],
+        usage: { prompt_tokens: 9, completion_tokens: 4 },
+      }),
+    );
+    const events = await collect(new OpenAICompatibleProvider(config({ id: "lmstudio", model: "local-model" })).stream(baseRequest()));
+    expect(events.map((e) => e.type)).toEqual(["start", "text_delta", "tool_call_start", "tool_call_delta", "tool_call", "finish"]);
+    expect(events.find((e) => e.type === "tool_call")).toEqual({ type: "tool_call", id: "t1", name: "check_vitals", args: {}, index: 0 });
+    expect(events.at(-1)).toEqual({ type: "finish", stopReason: "tool_use", usage: { inputTokens: 9, outputTokens: 4 } });
+  });
+
   it("omits Authorization for no-key local servers", async () => {
     handlers.push(sse([chunk({ content: "hi" }, "stop")]));
     await collect(new OpenAICompatibleProvider(config({ id: "ollama", apiKey: undefined, model: "qwen3" })).stream(baseRequest()));

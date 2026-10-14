@@ -8,8 +8,11 @@
  * (deduplicated); everything else (scalars, other arrays): last wins.
  *
  * Every layer is validated key-by-key with the zod schemas; invalid keys are
- * skipped and reported as issues instead of crashing. API keys found in
- * project settings are dropped (they must come from env or user/local files).
+ * skipped and reported as issues instead of crashing.
+ *
+ * Project settings (a cloned repository) are untrusted for secrets: provider
+ * `apiKey` / `apiKeyEnv` / non-loopback `baseUrl` and `server.host` /
+ * `server.token` are dropped from that layer with a warning.
  */
 import type { z } from "zod";
 import type { ApprovalMode, PracticeScope } from "../protocol.js";
@@ -232,12 +235,8 @@ export function validateSettingsLayer(
           for (const i of zodIssues(result.error, `${key}.${name}`)) push(i.path, i.message);
           continue;
         }
-        let ok = clone(entry) as Record<string, unknown>;
-        if (key === "providers" && source === "project" && "apiKey" in ok) {
-          const { apiKey: _drop, ...rest } = ok;
-          ok = rest;
-          push(`providers.${name}.apiKey`, "API keys are never read from project settings; use an environment variable (apiKeyEnv) or user/local settings", "warning");
-        }
+        const ok = clone(entry) as Record<string, unknown>;
+        if (key === "providers" && source === "project") restrictProjectProvider(name, ok, push);
         entries[name] = ok;
       }
       data[key] = entries as never;
@@ -253,9 +252,49 @@ export function validateSettingsLayer(
       for (const i of zodIssues(result.error, key)) push(i.path, i.message);
       continue;
     }
-    data[key] = clone(value);
+    const copy = clone(value);
+    if (key === "server" && source === "project" && isPlainObject(copy)) {
+      for (const field of ["host", "token"] as const) {
+        if (field in copy) {
+          delete copy[field];
+          push(`server.${field}`, `server.${field} is ignored in project settings (it could expose the local LLM proxy); set it in user/local settings or with a CLI flag`, "warning");
+        }
+      }
+    }
+    data[key] = copy;
   }
   return { data, issues };
+}
+
+/** True for http(s) URLs on the local machine. */
+export function isLoopbackUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.replace(/^\[|\]$/g, "").toLowerCase();
+    return host === "localhost" || host === "::1" || /^127(\.\d{1,3}){3}$/.test(host);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Project settings come from a repository the user may not control: they must
+ * not be able to route the user's API keys elsewhere. Drop `apiKey`,
+ * `apiKeyEnv` and non-loopback `baseUrl` overrides (configure those in
+ * user/local settings instead).
+ */
+function restrictProjectProvider(name: string, override: Record<string, unknown>, push: (path: string, message: string, severity?: SettingsIssue["severity"]) => void): void {
+  if ("apiKey" in override) {
+    delete override.apiKey;
+    push(`providers.${name}.apiKey`, "API keys are never read from project settings; use an environment variable or user/local settings", "warning");
+  }
+  if ("apiKeyEnv" in override) {
+    delete override.apiKeyEnv;
+    push(`providers.${name}.apiKeyEnv`, "apiKeyEnv is ignored in project settings (it could expose other secrets); set it in user/local settings", "warning");
+  }
+  if (typeof override.baseUrl === "string" && !isLoopbackUrl(override.baseUrl)) {
+    delete override.baseUrl;
+    push(`providers.${name}.baseUrl`, "non-local baseUrl overrides are ignored in project settings (they could send your API key elsewhere); set it in user/local settings", "warning");
+  }
 }
 
 /* ------------------------------------------------------------------ */

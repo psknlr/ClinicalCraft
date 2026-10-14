@@ -123,8 +123,8 @@
         "en": "I was sitting here… a bee… stung my right arm… ten minutes ago, maybe…"
       },
       "keywords": {
-        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "被蜇", "蜇伤", "叮咬", "经过"],
-        "en": ["what happened", "what's wrong", "what's going on", "stung", "sting", "bitten", "how did this start", "tell me what happened"]
+        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过"],
+        "en": ["what happened", "what's wrong", "what's going on", "what brought this on", "how did this start", "tell me what happened"]
       },
       "disclosure": "volunteer",
       "required": true
@@ -172,7 +172,7 @@
         "en": "Can't… get a full breath… chest's tight… I can hear myself… whistling…"
       },
       "keywords": {
-        "zh-CN": ["呼吸", "气短", "喘", "胸闷", "憋气", "喘不上气", "哮鸣", "呼吸困难"],
+        "zh-CN": ["呼吸", "气短", "喘不喘", "胸闷", "憋气", "喘不上气", "气喘", "呼吸困难"],
         "en": ["breath", "breathing", "short of breath", "wheeze", "wheezing", "chest tight", "breathless", "sob"]
       },
       "required": true
@@ -211,7 +211,7 @@
       },
       "keywords": {
         "zh-CN": ["痒", "疹子", "风团", "皮疹", "起包", "发红", "荨麻疹", "皮肤"],
-        "en": ["itch", "itchy", "rash", "hives", "lumps", "welts", "skin", "red"]
+        "en": ["itch", "itchy", "rash", "hives", "lumps", "welts", "skin rash", "red patches"]
       },
       "disclosure": "volunteer"
     },
@@ -258,7 +258,7 @@
       },
       "keywords": {
         "zh-CN": ["蜇在哪", "哪个部位", "刺", "毒刺", "拔", "伤口", "叮的地方", "蜇的位置"],
-        "en": ["where were you stung", "sting site", "stinger", "sting still in", "pull it out", "which arm", "wound"]
+        "en": ["sting site", "stinger", "sting still in", "pull it out", "which arm", "wound", "stung arm"]
       }
     },
     {
@@ -271,7 +271,7 @@
       },
       "keywords": {
         "zh-CN": ["什么虫", "蜜蜂还是马蜂", "黄蜂", "马蜂", "胡蜂", "看清", "昆虫", "哪种虫"],
-        "en": ["what insect", "bee or wasp", "wasp", "hornet", "insect", "what kind", "what stung you"]
+        "en": ["what insect", "bee or wasp", "wasp", "hornet", "insect", "what kind of insect", "see the insect"]
       }
     },
     {
@@ -286,7 +286,7 @@
         "en": "Lunch at noon… rice and veg… nothing new… no tablets today, no alcohol… just walked up from the car park…"
       },
       "keywords": {
-        "zh-CN": ["吃了什么", "吃东西", "饮食", "食物", "今天吃药", "运动", "喝酒", "接触了什么"],
+        "zh-CN": ["吃了什么", "吃过什么", "之前吃", "饮食", "食物", "今天吃药", "运动", "接触了什么"],
         "en": ["eat", "food", "ate", "meal", "medicine today", "exercise", "alcohol", "anything new"]
       }
     },
@@ -300,10 +300,20 @@
       },
       "keywords": {
         "zh-CN": ["以前被蜇", "蜇过", "上次", "既往反应", "以前过敏", "之前有没有", "类似情况", "发生过"],
-        "en": ["stung before", "previous sting", "been stung", "last time", "previous reaction", "ever happened", "similar", "prior reaction"]
+        "en": ["stung before", "previous sting", "sting before", "last time", "previous reaction", "happened before", "similar reaction", "prior reaction"]
       },
       "disclosure": "specific",
       "required": true
+    },
+    {
+      "id": "prior-testing",
+      "topic": "allergies",
+      "question": { "zh-CN": "以前做过过敏原检测吗？", "en": "Have you ever had allergy testing?" },
+      "answer": { "zh-CN": "没做过……", "en": "Never…" },
+      "keywords": {
+        "zh-CN": ["过敏原检测", "过敏测试", "皮试", "查过敏", "IgE"],
+        "en": ["allergy test", "allergy testing", "skin prick", "skin test", "ige", "rast"]
+      }
     },
     {
       "id": "allergy-drug",
@@ -311,7 +321,7 @@
       "question": { "zh-CN": "对药物或者其他东西过敏吗？", "en": "Are you allergic to any medicines or anything else?" },
       "answer": { "zh-CN": "药……没有过敏……就是春天有花粉症……", "en": "No… no drug allergies… just hay fever in spring…" },
       "keywords": {
-        "zh-CN": ["过敏", "药物过敏", "对什么过敏", "青霉素", "过敏史", "药过敏"],
+        "zh-CN": ["过敏吗", "药物过敏", "对什么过敏", "青霉素", "过敏史", "药过敏"],
         "en": ["allergic", "allergies", "drug allergy", "penicillin", "allergic to anything", "nkda"]
       },
       "required": true
@@ -441,7 +451,7 @@
         "en": "I live with my husband… he's at work… he'd come if I call him…"
       },
       "keywords": {
-        "zh-CN": ["和谁住", "家里", "一个人", "陪", "家属", "爱人", "丈夫", "联系人"],
+        "zh-CN": ["和谁住", "家里有谁", "一个人住", "陪你", "家属", "爱人", "丈夫", "联系人"],
         "en": ["live with", "who's at home", "alone", "husband", "partner", "someone with you", "next of kin", "stay with you"]
       }
     },
@@ -458,16 +468,6 @@
         "en": ["beekeeping", "beehive", "keep bees", "around bees", "gardening", "outdoors", "exposure", "bee farm"]
       },
       "disclosure": "specific"
-    },
-    {
-      "id": "prior-testing",
-      "topic": "allergies",
-      "question": { "zh-CN": "以前做过过敏原检测吗？", "en": "Have you ever had allergy testing?" },
-      "answer": { "zh-CN": "没做过……", "en": "Never…" },
-      "keywords": {
-        "zh-CN": ["过敏原检测", "过敏测试", "皮试", "查过敏", "IgE"],
-        "en": ["allergy test", "allergy testing", "skin prick", "skin test", "ige", "rast"]
-      }
     },
     {
       "id": "ros-other",
@@ -542,8 +542,8 @@
       "system": "general",
       "maneuver": { "zh-CN": "一般情况（远观）", "en": "General appearance (end-of-bench look)" },
       "keywords": {
-        "zh-CN": ["一般情况", "看一下", "整体", "外观", "神志", "面色"],
-        "en": ["general appearance", "look at her", "inspect", "overall", "end of the bed", "how does she look"]
+        "zh-CN": ["一般情况", "整体情况", "外观", "面色", "远观"],
+        "en": ["general appearance", "overall appearance", "end of the bed", "general inspection", "first impression"]
       },
       "finding": {
         "zh-CN": "年轻女性前倾瘫坐在长椅上，面部潮红、神情惊恐，不停抓挠手臂和颈部，一只手捂着喉咙；声音嘶哑，每次只能说2–4个词。",
@@ -736,8 +736,8 @@
       "system": "general",
       "maneuver": { "zh-CN": "再评估一般情况", "en": "Reassess general appearance" },
       "keywords": {
-        "zh-CN": ["再评估", "复查", "现在怎么样", "一般情况", "再看看"],
-        "en": ["reassess", "re-assess", "how is she now", "general appearance", "look again"]
+        "zh-CN": ["再评估一般情况", "复查一般情况", "现在怎么样", "一般情况", "整体情况"],
+        "en": ["reassess general", "general appearance", "overall appearance", "general reassessment"]
       },
       "finding": {
         "zh-CN": "仍平卧抬腿，较前安静，能说短句；面色好转，诉心跳‘咚咚’得厉害、手有点抖。",
@@ -796,8 +796,8 @@
       "system": "general",
       "maneuver": { "zh-CN": "急诊再评估一般情况", "en": "Reassess general appearance in the ED" },
       "keywords": {
-        "zh-CN": ["一般情况", "再评估", "现在怎么样", "整体"],
-        "en": ["general appearance", "reassess", "how is she now", "overall"]
+        "zh-CN": ["一般情况", "再评估一般情况", "现在怎么样", "整体情况"],
+        "en": ["general appearance", "overall appearance", "reassess general", "general reassessment"]
       },
       "finding": {
         "zh-CN": "平卧于抢救床，交谈自如，轻度手抖；自述‘舒服多了’。",
@@ -1840,7 +1840,7 @@
         "remove": ["tryptase-2"]
       }
     ],
-    "exact": { "ct": ["ctpa"], "血": ["fbc"], "bloods": ["fbc", "ue", "tryptase-1"] },
+    "exact": { "ct": ["ctpa"], "bloods": ["fbc", "ue", "tryptase-1"] },
     "warnings": []
   },
   "interventions": [
@@ -1866,8 +1866,8 @@
       "name": { "zh-CN": "肾上腺素肌内注射", "en": "Intramuscular adrenaline" },
       "kind": "medication",
       "aliases": {
-        "zh-CN": ["肾上腺素", "肌注肾上腺素", "肾上腺素肌注", "大腿肌注", "肾上腺素0.5mg", "肾上腺素im"],
-        "en": ["adrenaline", "epinephrine", "im adrenaline", "adrenaline im", "im epinephrine", "epinephrine im", "adrenaline thigh"]
+        "zh-CN": ["肌注肾上腺素", "肾上腺素肌注", "大腿肌注", "肌内注射肾上腺素", "肾上腺素im"],
+        "en": ["im adrenaline", "adrenaline im", "im epinephrine", "epinephrine im", "adrenaline thigh", "intramuscular adrenaline", "intramuscular epinephrine"]
       },
       "dose": {
         "zh-CN": "肾上腺素0.5 mg肌注（1 mg/mL [1:1000] 溶液0.5 mL），大腿中段前外侧；若无改善，5分钟后重复",
@@ -2269,7 +2269,7 @@
       "name": { "zh-CN": "开具2支肾上腺素自动注射笔并培训", "en": "Prescribe two adrenaline auto-injectors with training" },
       "kind": "medication",
       "aliases": {
-        "zh-CN": ["开肾上腺素笔", "自动注射笔", "肾上腺素笔", "急救笔", "注射笔培训", "EpiPen"],
+        "zh-CN": ["开肾上腺素笔", "自动注射笔", "开急救笔", "注射笔培训", "EpiPen"],
         "en": ["prescribe auto-injector", "auto-injector", "autoinjector", "epipen", "adrenaline pen", "aai", "jext"]
       },
       "dose": {
@@ -2452,7 +2452,9 @@
       },
       {
         "id": "peri-arrest-recovered",
-        "when": { "all": [{ "flag": "peri-arrest" }, { "vital": "sbp", "op": "gte", "value": 90 }] },
+        "when": {
+          "all": [{ "flag": "peri-arrest" }, { "intervened": "adrenaline-im" }, { "vital": "sbp", "op": "gte", "value": 90 }]
+        },
         "setVitals": { "gcs": 15 },
         "severity": "info",
         "message": { "zh-CN": "她重新睁开眼睛，能切题对答。", "en": "She opens her eyes and answers appropriately again." }
@@ -3187,13 +3189,16 @@
   "solution": [
     { "type": "start" },
     { "type": "ask", "itemId": "pc-sting", "via": "button" },
+    { "type": "ask", "itemId": "hpi-throat", "via": "button" },
     { "type": "intervene", "interventionId": "call-help" },
     { "type": "examine", "findingId": "ex-airway-scene" },
     { "type": "examine", "findingId": "ex-chest-scene" },
     { "type": "examine", "findingId": "ex-circ-scene" },
     { "type": "intervene", "interventionId": "adrenaline-im" },
     { "type": "intervene", "interventionId": "position-supine-legs" },
+    { "type": "ask", "itemId": "hpi-dizzy", "via": "button" },
     { "type": "intervene", "interventionId": "oxygen-high-flow" },
+    { "type": "ask", "itemId": "hpi-breathing", "via": "button" },
     { "type": "intervene", "interventionId": "monitoring" },
     { "type": "examine", "findingId": "ex-skin" },
     {

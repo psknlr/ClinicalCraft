@@ -3,9 +3,11 @@
  * `~/.clinicalcraft/CLINICALCRAFT.md`, then for every directory from the
  * project root down to cwd its `CLINICALCRAFT.md` (or `AGENTS.md` when absent),
  * plus `<root>/.clinicalcraft/CLINICALCRAFT.md`. Root-first order; `@path`
- * imports are resolved relative to the importing file.
+ * imports are resolved relative to the importing file and must stay inside
+ * the project root or the ClinicalCraft home (memory is sent to model
+ * providers, so a repository must not be able to pull in e.g. `~/.ssh` files).
  */
-import { closeSync, openSync, readSync, statSync } from "node:fs";
+import { closeSync, openSync, readSync, realpathSync, statSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { assembleMemory, type MemoryFile } from "../memory.js";
@@ -40,6 +42,19 @@ async function readOptional(path: string): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+function canonical(path: string): string {
+  try {
+    return realpathSync(path);
+  } catch {
+    return resolve(path);
+  }
+}
+
+function isInside(path: string, root: string): boolean {
+  const rel = relative(root, path);
+  return rel === "" || (!rel.startsWith("..") && !isAbsolute(rel));
 }
 
 /** Directories from `root` down to `cwd` (inclusive); just `[cwd]` when cwd is outside root. */
@@ -77,9 +92,13 @@ export async function loadMemory(cwd: string = process.cwd(), env: Env = process
     }
   }
   const imported: string[] = [];
+  const absCwd = resolve(cwd);
+  const allowedRoots = [findProjectRoot(absCwd, env) ?? absCwd, clinicalcraftHome(env)].map(canonical);
   const text = assembleMemory(files, (importPath, fromPath) => {
     const expanded = expandHome(importPath, env);
     const path = isAbsolute(expanded) ? expanded : resolve(dirname(fromPath), expanded);
+    const real = canonical(path);
+    if (!allowedRoots.some((root) => isInside(real, root))) return null;
     const content = readSyncCapped(path);
     if (content === null) return null;
     imported.push(path);

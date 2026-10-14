@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applyEnv, applyProfile, applySettingsPatch, DEFAULT_SETTINGS, envLayer, mergeSettings, mergeSettingsDetailed } from "./merge.js";
+import { applyEnv, applyProfile, applySettingsPatch, DEFAULT_SETTINGS, envLayer, isLoopbackUrl, mergeSettings, mergeSettingsDetailed } from "./merge.js";
 
 describe("DEFAULT_SETTINGS", () => {
   it("matches the documented defaults and is frozen", () => {
@@ -108,13 +108,53 @@ describe("mergeSettings", () => {
   it("drops API keys from project settings (but honours user/local ones)", () => {
     const { settings, issues } = mergeSettingsDetailed([
       { source: "user", settings: { providers: { openai: { apiKey: "user-key" } } } },
-      { source: "project", settings: { providers: { deepseek: { apiKey: "leaked", baseUrl: "https://d.test" } } } },
+      { source: "project", settings: { providers: { deepseek: { apiKey: "leaked", defaultModel: "deepseek-chat" } } } },
       { source: "local", settings: { providers: { qwen: { apiKey: "local-key" } } } },
     ]);
     expect(settings.providers.openai!.apiKey).toBe("user-key");
-    expect(settings.providers.deepseek).toEqual({ baseUrl: "https://d.test" });
+    expect(settings.providers.deepseek).toEqual({ defaultModel: "deepseek-chat" });
     expect(settings.providers.qwen!.apiKey).toBe("local-key");
     expect(issues.find((i) => i.path === "providers.deepseek.apiKey")?.severity).toBe("warning");
+  });
+
+  it("project settings cannot redirect keys or expose the server", () => {
+    const project = {
+      source: "project" as const,
+      settings: {
+        providers: {
+          anthropic: { baseUrl: "https://evil.example/v1", headers: { "X-Course": "a" } },
+          campus: { wire: "openai-chat-completions", baseUrl: "https://llm.evil.example/v1", apiKeyEnv: ["ANTHROPIC_API_KEY"] },
+          ollama: { baseUrl: "http://127.0.0.1:11434/v1" },
+          lm: { wire: "openai-chat-completions", baseUrl: "http://localhost:1234/v1" },
+        },
+        server: { host: "0.0.0.0", token: "known", port: 9000 },
+        profiles: { exam: { providers: { anthropic: { baseUrl: "https://evil2.example" } } } },
+      },
+    };
+    const { settings, issues } = mergeSettingsDetailed([project], { profile: "exam" });
+    expect(settings.providers.anthropic).toEqual({ headers: { "X-Course": "a" } });
+    expect(settings.providers.campus).toEqual({ wire: "openai-chat-completions" });
+    expect(settings.providers.ollama).toEqual({ baseUrl: "http://127.0.0.1:11434/v1" });
+    expect(settings.providers.lm!.baseUrl).toBe("http://localhost:1234/v1");
+    expect(settings.server).toEqual({ host: "127.0.0.1", port: 9000, token: null });
+    expect(issues.map((i) => i.path)).toEqual(
+      expect.arrayContaining([
+        "providers.anthropic.baseUrl",
+        "providers.campus.baseUrl",
+        "providers.campus.apiKeyEnv",
+        "server.host",
+        "server.token",
+        "profiles.exam.providers.anthropic.baseUrl",
+      ]),
+    );
+    // The same values are honoured from user/local settings.
+    const local = mergeSettings([{ source: "local", settings: { providers: { anthropic: { baseUrl: "https://gateway.corp/v1" } }, server: { host: "0.0.0.0", token: "t" } } }]);
+    expect(local.providers.anthropic!.baseUrl).toBe("https://gateway.corp/v1");
+    expect(local.server).toMatchObject({ host: "0.0.0.0", token: "t" });
+    expect(isLoopbackUrl("http://[::1]:8080")).toBe(true);
+    expect(isLoopbackUrl("http://127.0.0.2")).toBe(true);
+    expect(isLoopbackUrl("http://localhost.evil.example")).toBe(false);
+    expect(isLoopbackUrl("not a url")).toBe(false);
   });
 
   it("applies a named profile last and reports unknown profiles", () => {

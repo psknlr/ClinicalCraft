@@ -264,6 +264,11 @@ export class OpenAICompatibleProvider implements LLMProvider {
         yield { type: "error", error: classifyHttpError(response.status, text) };
         return;
       }
+      if ((response.headers.get("content-type") ?? "").includes("application/json")) {
+        // Some compatible servers ignore `stream: true` and answer with one JSON completion.
+        yield* fromCompletionJson(await response.text(), model);
+        return;
+      }
       if (!response.body) {
         yield { type: "error", error: { message: "Empty response body", kind: "network", retryable: true } };
         return;
@@ -371,6 +376,39 @@ export class OpenAICompatibleProvider implements LLMProvider {
     yield* flush();
     yield { type: "finish", stopReason: mapFinishReason(finishReason, calls.size > 0), usage };
   }
+}
+
+/** Map a non-streaming `chat.completion` JSON body to stream events. */
+function* fromCompletionJson(text: string, model: string): Generator<StreamEvent> {
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    yield { type: "error", error: { message: "Invalid JSON response", kind: "bad_request", retryable: false } };
+    return;
+  }
+  if (body.error) {
+    yield { type: "error", error: classifyHttpError(0, JSON.stringify({ error: body.error })) };
+    return;
+  }
+  const choice = (Array.isArray(body.choices) ? body.choices[0] : undefined) as Record<string, unknown> | undefined;
+  const message = (choice?.message ?? {}) as Record<string, unknown>;
+  yield { type: "start", model: typeof body.model === "string" ? body.model : model };
+  const reasoning = typeof message.reasoning_content === "string" ? message.reasoning_content : typeof message.reasoning === "string" ? message.reasoning : "";
+  if (reasoning) yield { type: "reasoning_delta", text: reasoning };
+  if (typeof message.content === "string" && message.content) yield { type: "text_delta", text: message.content };
+  const calls = Array.isArray(message.tool_calls) ? (message.tool_calls as Record<string, unknown>[]) : [];
+  for (const [index, call] of calls.entries()) {
+    const fn = (call.function ?? {}) as Record<string, unknown>;
+    const id = typeof call.id === "string" && call.id ? call.id : `call_${index}`;
+    const name = typeof fn.name === "string" ? fn.name : "";
+    const args = typeof fn.arguments === "string" ? fn.arguments : JSON.stringify(fn.arguments ?? {});
+    yield { type: "tool_call_start", id, name, index };
+    if (args) yield { type: "tool_call_delta", id, index, argsDelta: args };
+    yield { type: "tool_call", id, name, args: parseArgs(args), index };
+  }
+  const usage = body.usage && typeof body.usage === "object" ? parseUsage(body.usage as Record<string, unknown>) : { inputTokens: 0, outputTokens: 0 };
+  yield { type: "finish", stopReason: mapFinishReason(choice?.finish_reason as string | undefined, calls.length > 0), usage };
 }
 
 function parseArgs(raw: string): unknown {

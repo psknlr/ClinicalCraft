@@ -233,7 +233,7 @@
           "几点开始",
           "疼了多长时间",
           "哪天开始",
-          "突然开始",
+          "突然",
           "慢慢开始",
           "起病"
         ],
@@ -243,7 +243,7 @@
           "how long",
           "since when",
           "onset",
-          "what time did",
+          "what time did it start",
           "sudden or gradual",
           "suddenly"
         ]
@@ -255,7 +255,7 @@
       "topic": "pain",
       "question": {
         "zh-CN": "最开始是肚子哪个部位疼？",
-        "en": "Where did the pain start?"
+        "en": "Where was the pain when it first started?"
       },
       "answer": {
         "zh-CN": "一开始是肚脐周围那一圈疼，说不清具体哪个点，就是肚子中间一片闷闷的。",
@@ -272,13 +272,14 @@
           "原来在哪"
         ],
         "en": [
-          "where did the pain start",
-          "where did it start",
+          "where was the pain at first",
+          "pain at first",
           "where did it begin",
           "first felt",
-          "did it start around",
+          "start around",
           "started somewhere else",
-          "first location"
+          "first location",
+          "originally"
         ]
       },
       "disclosure": "on-ask"
@@ -308,14 +309,14 @@
           "现在主要"
         ],
         "en": [
-          "moved",
+          "pain moved",
+          "moved anywhere",
           "shifted",
           "migrate",
           "changed location",
-          "where is it now",
           "where does it hurt now",
-          "where is the pain now",
-          "changed position"
+          "where is the pain located now",
+          "which side"
         ]
       },
       "disclosure": "on-ask",
@@ -337,12 +338,12 @@
           "什么样的疼",
           "怎么个疼法",
           "疼痛性质",
+          "什么性质",
           "绞痛",
           "胀痛",
           "刺痛",
           "钝痛",
-          "隐痛",
-          "像什么"
+          "隐痛"
         ],
         "en": [
           "feel like",
@@ -453,12 +454,15 @@
         "en": [
           "worse",
           "aggravate",
-          "moving",
+          "movement",
           "walking",
-          "coughing",
+          "worse when you cough",
+          "hurt when you cough",
           "bumps",
           "jolt",
-          "deep breath"
+          "deep breath",
+          "hurt when you move",
+          "hurt to move"
         ]
       },
       "disclosure": "on-ask"
@@ -517,13 +521,14 @@
           "时好时坏"
         ],
         "en": [
-          "constant",
-          "come and go",
-          "comes and goes",
+          "constant pain",
+          "comeandgo",
+          "comesandgoes",
           "intermittent",
           "waves",
           "all the time",
-          "steady"
+          "steady",
+          "on and off"
         ]
       },
       "disclosure": "on-ask"
@@ -551,9 +556,9 @@
         "en": [
           "appetite",
           "hungry",
-          "eating",
           "feel like eating",
-          "off your food"
+          "off your food",
+          "off food"
         ]
       },
       "disclosure": "on-ask",
@@ -654,11 +659,12 @@
           "poo",
           "diarrhoea",
           "diarrhea",
-          "constipat",
+          "constipated",
           "blood in your stool",
           "rectal bleeding",
           "passing wind",
-          "flatus"
+          "flatus",
+          "opened your bowels"
         ]
       },
       "disclosure": "on-ask"
@@ -682,7 +688,9 @@
           "尿频",
           "尿急",
           "尿血",
-          "尿的颜色"
+          "尿的颜色",
+          "尿黄",
+          "尿色"
         ],
         "en": [
           "urine",
@@ -742,6 +750,9 @@
       "keywords": {
         "zh-CN": [
           "类似的疼",
+          "这样的疼",
+          "这样疼过",
+          "以前有过这样",
           "以前也这样",
           "以前也疼过",
           "第一次这样",
@@ -749,12 +760,12 @@
           "老毛病"
         ],
         "en": [
-          "like this before",
-          "had this before",
+          "likethisbefore",
+          "hadthisbefore",
           "previous episodes",
           "first time",
           "happened before",
-          "ever had this"
+          "everhadthis"
         ]
       },
       "disclosure": "on-ask"
@@ -773,6 +784,7 @@
       "keywords": {
         "zh-CN": [
           "受伤",
+          "受过伤",
           "外伤",
           "撞到",
           "摔倒",
@@ -806,6 +818,7 @@
         "zh-CN": [
           "吃药",
           "用药",
+          "吃什么药",
           "止疼药",
           "止痛药",
           "退烧药",
@@ -813,14 +826,15 @@
           "布洛芬"
         ],
         "en": [
-          "medication",
-          "medicine",
+          "meds",
+          "take medication",
+          "take medicine",
           "tablets",
           "pills",
-          "painkiller",
           "taken anything",
           "ibuprofen",
-          "paracetamol"
+          "paracetamol",
+          "prescription"
         ]
       },
       "disclosure": "on-ask"
@@ -904,6 +918,8 @@
       "keywords": {
         "zh-CN": [
           "做过手术",
+          "什么手术",
+          "手术过",
           "开过刀",
           "手术史",
           "做过麻醉",
@@ -915,8 +931,9 @@
           "surgery before",
           "surgical history",
           "operated",
-          "had an anaesthetic",
-          "had an anesthetic",
+          "general anaesthetic",
+          "anaesthetic before",
+          "anesthetic before",
           "put to sleep"
         ]
       },
@@ -986,7 +1003,7 @@
           "partner",
           "condom",
           "discharge",
-          "sores",
+          "genital sores",
           "std",
           "sexually transmitted"
         ]
@@ -1041,6 +1058,8 @@
       "keywords": {
         "zh-CN": [
           "做什么工作",
+          "做什么的",
+          "干什么的",
           "职业",
           "学生",
           "上学",
@@ -1145,7 +1164,9 @@
       },
       "keywords": {
         "zh-CN": [
-          "有没有咳嗽",
+          "有咳嗽",
+          "咳嗽吗",
+          "咳不咳嗽",
           "咳痰",
           "气短",
           "气促",
@@ -1213,6 +1234,7 @@
           "容易出血",
           "出血不止",
           "出血问题",
+          "出血倾向",
           "淤青",
           "凝血",
           "拔牙"
@@ -1227,6 +1249,36 @@
         ]
       },
       "disclosure": "on-ask"
+    },
+    {
+      "id": "hx-family-anaesthesia",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人做麻醉或手术时出过问题吗？",
+        "en": "Has anyone in your family had problems with an anaesthetic?"
+      },
+      "answer": {
+        "zh-CN": "这个我真不知道，得问问我爸妈。",
+        "en": "I honestly don't know — I'd have to ask my parents."
+      },
+      "keywords": {
+        "zh-CN": [
+          "麻醉出过问题",
+          "麻醉出问题",
+          "麻醉反应",
+          "麻醉有问题",
+          "恶性高热"
+        ],
+        "en": [
+          "family anaesthetic",
+          "family anesthetic",
+          "anaesthetic problems",
+          "anesthetic problems",
+          "anaesthesia problems",
+          "malignant hyperthermia"
+        ]
+      },
+      "disclosure": "unknown"
     },
     {
       "id": "hx-family",
@@ -1336,11 +1388,15 @@
           "期望",
           "想要我们",
           "需要我们",
-          "通知家人",
+          "通知",
           "告诉父母",
+          "告诉你父母",
           "联系父母",
+          "联系你父母",
           "告诉爸妈",
-          "联系家人"
+          "联系家人",
+          "给父母打电话",
+          "给你爸妈打电话"
         ],
         "en": [
           "hoping",
@@ -1607,7 +1663,7 @@
           "palpate",
           "palpation",
           "feel the abdomen",
-          "tenderness",
+          "abdominal tenderness",
           "mcburney",
           "press on the abdomen",
           "abdominal exam"
@@ -2691,6 +2747,7 @@
       "category": "bedside",
       "aliases": {
         "zh-CN": [
+          "血糖",
           "指尖血糖",
           "末梢血糖",
           "快速血糖",
@@ -2698,6 +2755,7 @@
           "测血糖"
         ],
         "en": [
+          "glucose",
           "capillaryglucose",
           "bloodsugar",
           "bsl",
@@ -6299,7 +6357,7 @@
         ]
       },
       {
-        "text": "Where did the pain start?",
+        "text": "Where was the pain at first?",
         "locale": "en",
         "expect": [
           "hx-site-initial"
@@ -6327,7 +6385,7 @@
         ]
       },
       {
-        "text": "Is the pain constant or does it come and go?",
+        "text": "Does the pain come and go?",
         "locale": "en",
         "expect": [
           "hx-timing"

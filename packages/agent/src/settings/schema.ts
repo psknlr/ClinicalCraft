@@ -82,8 +82,7 @@ export const HooksSchema = z.object(Object.fromEntries(HOOK_EVENTS.map((e) => [e
   z.ZodOptional<z.ZodArray<typeof HookMatcherSchema>>
 >).strict();
 
-export const SettingsSchema = z
-  .object({
+const SettingsShape = {
     $schema: z.string().optional(),
     /** Active provider id (see `clinicalcraft providers`). "offline" works with no key. */
     provider: z.string().optional(),
@@ -92,8 +91,6 @@ export const SettingsSchema = z
     /** Per-agent model settings, keyed by agent name (patient, nurse, clinician, examiner…). */
     agents: z.record(z.string(), AgentModelSettingsSchema).optional(),
     providers: z.record(z.string(), ProviderOverrideSchema).optional(),
-    /** Named presets selectable with --profile (Codex profiles), e.g. "osce", "self-study". */
-    profiles: z.record(z.string(), z.lazy(() => SettingsSchema)).optional(),
     locale: z.string().optional(),
     approvalMode: ApprovalModeSchema.optional(),
     practiceScope: PracticeScopeSchema.optional(),
@@ -141,10 +138,21 @@ export const SettingsSchema = z
       })
       .strict()
       .optional(),
+};
+
+/** A settings layer without profiles (profiles cannot nest). */
+export const SettingsLayerSchema = z.object(SettingsShape).strict();
+
+export const SettingsSchema = z
+  .object({
+    ...SettingsShape,
+    /** Named presets selectable with --profile (Codex profiles), e.g. "osce", "self-study". */
+    profiles: z.record(z.string(), SettingsLayerSchema).optional(),
   })
   .strict();
 
 export type Settings = z.infer<typeof SettingsSchema>;
+export type SettingsLayer = z.infer<typeof SettingsLayerSchema>;
 export type HooksConfig = z.infer<typeof HooksSchema>;
 export type ProviderOverride = z.infer<typeof ProviderOverrideSchema>;
 

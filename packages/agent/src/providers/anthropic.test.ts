@@ -1,7 +1,8 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { AnthropicProvider, buildAnthropicRequest, isFirstPartyAnthropic, sanitizeEchoBlocks, SERVER_SIDE_FALLBACK_BETA, toAnthropicMessages } from "./anthropic.js";
+import Anthropic from "@anthropic-ai/sdk";
+import { AnthropicProvider, buildAnthropicRequest, isFirstPartyAnthropic, mapAnthropicError, sanitizeEchoBlocks, SERVER_SIDE_FALLBACK_BETA, toAnthropicMessages } from "./anthropic.js";
 import { withRetry } from "./factory.js";
 import type { ChatMessage, ChatRequest, ProviderConfig, StreamEvent } from "./types.js";
 
@@ -305,6 +306,38 @@ describe("AnthropicProvider (mock Messages API)", () => {
       if (e.type === "text_delta") controller.abort();
     }
     expect(events.at(-1)).toMatchObject({ type: "error", error: { code: "aborted", retryable: false } });
+  });
+});
+
+describe("mapAnthropicError", () => {
+  it("maps client-side SDK errors without retrying configuration problems", () => {
+    expect(mapAnthropicError(new Anthropic.AnthropicError("Could not resolve authentication method. Expected either apiKey or authToken to be set."))).toMatchObject({
+      kind: "auth",
+      retryable: false,
+    });
+    expect(mapAnthropicError(new Anthropic.AnthropicError("Unable to parse tool parameter JSON from model."))).toMatchObject({ code: "invalid_tool_json", retryable: true });
+    expect(mapAnthropicError(new Anthropic.APIConnectionTimeoutError())).toMatchObject({ kind: "timeout", retryable: true });
+    expect(mapAnthropicError(new Anthropic.APIConnectionError({ message: "Connection error.", cause: new Error("ECONNREFUSED") }))).toMatchObject({ kind: "network", retryable: true });
+    expect(mapAnthropicError(new Error("boom"))).toMatchObject({ kind: "unknown", retryable: false });
+    const aborted = new AbortController();
+    aborted.abort();
+    expect(mapAnthropicError(new Error("x"), aborted.signal)).toMatchObject({ code: "aborted" });
+  });
+
+  it("yields an auth error (never throws) when no credentials can be resolved", async () => {
+    const p = new AnthropicProvider({ id: "anthropic", wire: "anthropic-messages", baseUrl, model: "claude-opus-5-5" }, {});
+    const saved = { key: process.env.ANTHROPIC_API_KEY, token: process.env.ANTHROPIC_AUTH_TOKEN };
+    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env.ANTHROPIC_AUTH_TOKEN;
+    try {
+      handlers.push(errorResponse(401, "authentication_error", "x-api-key header is required"));
+      const events = await collect(p.stream(request()));
+      expect(events).toHaveLength(1);
+      expect(events[0]).toMatchObject({ type: "error", error: { kind: "auth", retryable: false } });
+    } finally {
+      if (saved.key !== undefined) process.env.ANTHROPIC_API_KEY = saved.key;
+      if (saved.token !== undefined) process.env.ANTHROPIC_AUTH_TOKEN = saved.token;
+    }
   });
 });
 

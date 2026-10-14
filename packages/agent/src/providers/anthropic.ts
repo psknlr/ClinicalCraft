@@ -252,9 +252,14 @@ export function mapAnthropicError(err: unknown, signal?: AbortSignal): ProviderE
     const classified = classifyHttpError(status, JSON.stringify(err.error ?? { error: { type, message } }));
     return { ...classified, message };
   }
-  if (err instanceof Anthropic.AnthropicError || err instanceof SyntaxError) {
-    // e.g. a tool input that could not be parsed at all (eager input streaming).
-    return { message: `Invalid response from Claude API: ${(err as Error).message}`, kind: "bad_request", code: "invalid_response", retryable: true };
+  if (err instanceof SyntaxError || (err instanceof Anthropic.AnthropicError && /parse tool parameter JSON|JSON/i.test(err.message))) {
+    // A tool input that could not be parsed at all (eager input streaming): re-issuing the turn may succeed.
+    return { message: `Invalid tool input JSON from model: ${err.message.slice(0, 300)}`, kind: "bad_request", code: "invalid_tool_json", retryable: true };
+  }
+  if (err instanceof Anthropic.AnthropicError) {
+    // Client-side configuration problems (no credentials, browser without opt-in…).
+    if (/authenticat|api ?key|authToken|credential/i.test(err.message)) return { message: err.message, kind: "auth", retryable: false };
+    return { message: err.message, kind: "bad_request", retryable: false };
   }
   if (err instanceof Error) return { message: err.message, kind: "unknown", retryable: false };
   return { message: String(err), kind: "unknown", retryable: false };

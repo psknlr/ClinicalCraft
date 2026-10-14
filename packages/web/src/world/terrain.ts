@@ -10,6 +10,20 @@ import { boxCollider } from "./physics.js";
 import { createLcg } from "./textures.js";
 import { UNIT_BOX } from "./voxels.js";
 
+/**
+ * V4 drew horizon, flowers and clouds from the same LCG stream as its 24
+ * textures (24 × 256 draws), the horizon (100) and three workstation screens
+ * (12). Starting from those stream offsets reproduces V4's exact layout when
+ * the facility uses the default seed 7103.
+ */
+export const V4_STREAM_OFFSETS = { horizon: 6144, flowers: 6256, clouds: 6426 } as const;
+
+export function v4Stream(seed: number, skip: number): () => number {
+  const rnd = createLcg(seed);
+  if (seed === 7103) for (let i = 0; i < skip; i++) rnd();
+  return rnd;
+}
+
 /** Ground grid cell range: bounds + 3.5 (V4: bounds ±35.5 → cells −39…39). */
 export function groundRange(b: { minX: number; maxX: number; minZ: number; maxZ: number }) {
   return {
@@ -58,7 +72,7 @@ export function buildTerrain(ctx: BuildContext): { clouds: Group } {
   const cxw = (f.bounds.minX + f.bounds.maxX) / 2;
   const czw = (f.bounds.minZ + f.bounds.maxZ) / 2;
   if (terrain.horizon && terrain.horizon.count > 0) {
-    const rnd = createLcg(7103 ^ 0x5bd1e995);
+    const rnd = v4Stream(7103, V4_STREAM_OFFSETS.horizon);
     const n = terrain.horizon.count;
     for (let i = 0; i < n; i++) {
       const a = (i / n) * Math.PI * 2;
@@ -95,7 +109,7 @@ export function buildTerrain(ctx: BuildContext): { clouds: Group } {
   // flowers (V4: stem + head; lamp/pink heads; deterministic; exclusions)
   const fl = terrain.flowers;
   if (fl && fl.count > 0) {
-    const rnd = createLcg(fl.seed ?? 7103);
+    const rnd = v4Stream(fl.seed ?? 7103, V4_STREAM_OFFSETS.flowers);
     const ex: { r: Rect; m: number }[] = [
       ...(fl.exclude ?? []).map((r) => ({ r, m: 0 })),
       ...paths.map((r) => ({ r, m: 0.4 })),
@@ -119,8 +133,8 @@ export function buildTerrain(ctx: BuildContext): { clouds: Group } {
   // clouds (V4: 14 slabs at y 20–26 over ±60, drifting)
   const clouds = new Group();
   clouds.name = "clouds";
-  const span = Math.max(f.bounds.maxX - f.bounds.minX, f.bounds.maxZ - f.bounds.minZ) * 0.85 + 30;
-  const rnd = createLcg(7103 ^ 0x27d4eb2d);
+  const span = Math.max(60, Math.max(f.bounds.maxX - f.bounds.minX, f.bounds.maxZ - f.bounds.minZ) * 0.845);
+  const rnd = v4Stream(7103, V4_STREAM_OFFSETS.clouds);
   const cloudMat = ctx.lib.get("white");
   for (let i = 0; i < (terrain.clouds ?? 14); i++) {
     const x = cxw - span + rnd() * span * 2;
