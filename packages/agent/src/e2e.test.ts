@@ -830,6 +830,34 @@ describe("(c) races between the submission queue, interrupt and approvals", () =
     assertInvariants(loadMiniCase(), d, d.session.state, "en");
   });
 
+  it("parallel consults of the same agent keep its conversation consistent (live = transcript = resume)", async () => {
+    const c = loadMiniCase();
+    const router: Script = (req) => {
+      const kind = requestKind(req);
+      if (kind === "nurse") {
+        const q = req.messages.at(-1)!.content.map((p) => (p.type === "text" ? p.text : "")).join(" ");
+        return textScript(`Re: ${q}`);
+      }
+      const rounds = req.messages.filter((m) => m.role === "assistant").length;
+      return rounds === 0
+        ? toolCallScript([
+            { id: "q1", name: "consult", args: { role: "nurse", question: "What are the obs?" } },
+            { id: "q2", name: "consult", args: { role: "nurse", question: "Is the troponin back?" } },
+          ])
+        : textScript("Thanks.");
+    };
+    const b = await build({ caseDef: c, provider: new ScriptedProvider(Array.from({ length: 10 }, () => router), { delayMs: 2 }) });
+    const d = b.driver;
+    await d.run({ type: "user_message", text: "check with the nurse", to: "clinician" });
+    const nurse = b.session.conversationOf("nurse");
+    expect(nurse.map((m) => m.role)).toEqual(["user", "assistant", "user", "assistant"]);
+    expect(JSON.stringify(nurse)).toContain("Re: What are the obs?");
+    expect(JSON.stringify(nurse)).toContain("Re: Is the troponin back?");
+    await d.shutdown();
+    assertInvariants(c, d, d.session.state, "en");
+    await assertResume(b, c, ["nurse", "clinician"]);
+  });
+
   it("approved_for_session is downgraded when not offered (high risk) and never leaks into session rules", async () => {
     const b = await build({ caseDef: loadMiniCase((ci) => void ((ci.interventions as { maxDoses?: number }[])[1]!.maxDoses = 3)) });
     const d = b.driver;
@@ -871,6 +899,22 @@ describe("(c) hooks ordering and coverage", () => {
     expect(blocked.map((e) => e.msg.type)).toEqual(["error"]);
     expect(d.session.state.interventions.map((i) => i.interventionId)).toEqual(["lysis"]);
     await d.shutdown();
+    assertInvariants(loadMiniCase(), d, d.session.state, "en");
+  });
+
+  it("SessionEnd is the last hook: queued ClinicalEvent/Notification hooks finish first", async () => {
+    const b = await build({ caseDef: loadMiniCase() });
+    const d = b.driver;
+    const order: string[] = [];
+    b.session.hooks.on("ClinicalEvent", async (input) => {
+      if (input.hook_event_name !== "ClinicalEvent") return;
+      await new Promise((r) => setTimeout(r, 20));
+      order.push(`clinical:${input.event.type}`);
+    });
+    b.session.hooks.on("SessionEnd", () => void order.push("end"));
+    d.submit({ type: "clinical_action", action: { type: "start" } });
+    await d.shutdown();
+    expect(order).toEqual(["clinical:session.started", "end"]);
     assertInvariants(loadMiniCase(), d, d.session.state, "en");
   });
 

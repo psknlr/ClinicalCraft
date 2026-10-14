@@ -455,7 +455,7 @@ function chatBubble(m: ChatItem, c: CaseDefinition): HTMLElement {
   );
 }
 
-function treatRow(app: App, game: Game, iv: Intervention, caps: Set<string>, scopeLocked: boolean): HTMLElement {
+export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<string>, scopeLocked: boolean): HTMLElement {
   const store = game.session.store;
   const outcome = store.interventions.get(iv.id);
   const missing = missingCaps(iv.requires, caps);

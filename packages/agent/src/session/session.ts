@@ -75,6 +75,8 @@ export interface CreateSessionOptions extends SessionOptions {
   transcriptOrdinal?: number;
   /** Write a `session_meta` item (default true). */
   writeSessionMeta?: boolean;
+  /** Resume: runtime state beyond actions/messages (interlocutor, workup plan) — see `resumedRuntimeConfig`. */
+  restore?: { interlocutor?: string; plan?: { items: PlanItem[]; explanation: string | null } };
 }
 
 const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
@@ -273,6 +275,15 @@ export class ClinicalSession implements ClinicalSessionApi {
   async start(): Promise<void> {
     const resume = this.opts.resume;
     if (resume) this.restore(resume);
+    const extra = this.opts.restore;
+    if (extra?.plan) {
+      this.plan = extra.plan.items.map((p) => ({ text: p.text, status: p.status }));
+      this.planExplanation = extra.plan.explanation;
+    }
+    if (extra?.interlocutor) {
+      const target = extra.interlocutor.replace(/^@/, "").toLowerCase();
+      if (this.availableAgents().includes(target)) this.interlocutor = target;
+    }
     if (this.opts.writeSessionMeta !== false) {
       this.recorder?.record("session_meta", {
         sessionId: this.id,

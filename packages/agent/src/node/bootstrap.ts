@@ -15,7 +15,8 @@ import { createSession, type ClinicalSession } from "../session/session.js";
 import type { TranscriptSink } from "../session/types.js";
 import type { SettingsLayerData } from "../settings/merge.js";
 import type { ToolDefinition } from "../tools/types.js";
-import { replayTranscript } from "../transcript.js";
+import { replayTranscript, resumedRuntimeConfig, type ResumedRuntimeConfig } from "../transcript.js";
+import type { ResolvedSettings } from "../settings/schema.js";
 import { loadContent, type LoadedContent } from "./content.js";
 import { loadProjectAgents, loadProjectCommands } from "./definitions.js";
 import { createCommandHookExecutor } from "./hooks.js";
@@ -106,18 +107,40 @@ export function catalogsFor(content: Pick<LoadedContent, "catalogs">, facility: 
   });
 }
 
+/**
+ * Settings for a resumed session: the transcript's runtime configuration
+ * (locale, provider/model, approval mode, practice scope — PROTOCOL §10)
+ * replaces the loaded value unless that key was given explicitly as a flag.
+ */
+export function applyResumedConfig<S extends ResolvedSettings>(settings: S, config: ResumedRuntimeConfig): S {
+  const next = { ...settings };
+  const explicit = (key: string) => settings.sources[key] === "flag";
+  if (config.locale && !explicit("locale")) next.locale = config.locale;
+  if (config.provider && !explicit("provider") && !explicit("model")) {
+    next.provider = config.provider;
+    next.model = config.model ?? null;
+  }
+  if (config.approvalMode && !explicit("approvalMode")) next.approvalMode = config.approvalMode;
+  if (config.practiceScope && !explicit("practiceScope")) next.practiceScope = config.practiceScope;
+  return next;
+}
+
 /** Bootstrap a fully configured `ClinicalSession` for node front-ends. */
 export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Promise<ClinicalSession> {
   const env = opts.env ?? process.env;
   const cwd = resolve(opts.cwd ?? process.cwd());
-  const settings = await loadSettings({ cwd, env, ...(opts.flags ? { flags: opts.flags } : {}), ...(opts.profile !== undefined ? { profile: opts.profile } : {}) });
+  let settings = await loadSettings({ cwd, env, ...(opts.flags ? { flags: opts.flags } : {}), ...(opts.profile !== undefined ? { profile: opts.profile } : {}) });
   const content = opts.content ?? (await loadContent({ dirs: settings.contentDirs }));
 
   let resumePath: string | null = null;
   let resumed: ReturnType<typeof replayTranscript> | null = null;
+  let resumedConfig: ResumedRuntimeConfig | null = null;
   if (opts.resume !== undefined) {
     resumePath = await findSessionTranscript(opts.resume, env, settings.transcripts.dir);
-    resumed = replayTranscript(await readTranscript(resumePath));
+    const items = await readTranscript(resumePath);
+    resumed = replayTranscript(items);
+    resumedConfig = resumedRuntimeConfig(items);
+    settings = applyResumedConfig(settings, resumedConfig);
   }
 
   if (resumed?.sessionMeta && opts.caseId && opts.caseId !== resumed.sessionMeta.caseId) {
@@ -153,6 +176,9 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
     commandHooks: createCommandHookExecutor(settings.projectRoot),
     ...(transcript ? { transcript } : {}),
     ...(resumed ? { resume: { sessionId, actions: resumed.actions, messages: resumed.messages }, transcriptOrdinal: resumed.lastOrdinal + 1 } : {}),
+    ...(resumedConfig && (resumedConfig.interlocutor || resumedConfig.plan)
+      ? { restore: { ...(resumedConfig.interlocutor ? { interlocutor: resumedConfig.interlocutor } : {}), ...(resumedConfig.plan ? { plan: resumedConfig.plan } : {}) } }
+      : {}),
     sessionId,
     cwd: settings.projectRoot,
     ...(opts.dynamicTools ? { dynamicTools: opts.dynamicTools } : {}),
