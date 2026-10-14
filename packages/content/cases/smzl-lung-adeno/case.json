@@ -1,0 +1,3089 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "smzl-lung-adeno",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "左上腹痛与脾大 · 74岁男性",
+    "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"
+  },
+  "summary": {
+    "zh-CN": "74岁男性因左上腹痛就诊，既往发现脾大，并有肺部肿瘤病史。通过问诊、检验、影像与骨髓证据完成诊断推理，在治疗前核查安全事项，并在治疗后分期复评。基于已发表病例的历史资料回看；缺失资料保持未知。",
+    "en": "A 74-year-old man presents with left upper abdominal pain; an enlarged spleen has been noted before and he has a history of lung cancer. Work through the history, laboratory, imaging and bone marrow evidence to a diagnosis, check safety before treatment, and re-evaluate after treatment phase by phase. A review of historical records from a published case; missing data stay unknown."
+  },
+  "specialty": [
+    "hematology",
+    "oncology",
+    "pulmonology"
+  ],
+  "difficulty": 4,
+  "setting": "outpatient",
+  "facility": "clinic-v4",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "tags": [
+    "published-case",
+    "v4-port",
+    "splenomegaly",
+    "cytopenias",
+    "bone-marrow",
+    "hbv-safety",
+    "evidence-boundaries",
+    "phase-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "丁凤丽，秦彩霞，汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例. 中国临床案例成果数据库, 2026.",
+    "doi": "10.3760/cma.cmcr20260128-00421",
+    "authors": [
+      "丁凤丽 (Ding Fengli)",
+      "秦彩霞 (Qin Caixia)",
+      "汪家吉 (Wang Jiaji)"
+    ],
+    "license": "Teaching adaptation of a published case report; original text, figures and PDF © original rights holders (figures and PDF are local-only).",
+    "notes": {
+      "zh-CN": "病例：丁凤丽、秦彩霞、汪家吉，2026。DOI：10.3760/cma.cmcr20260128-00421。由 Virtual Patient V4（临床方块世界 CASE 01）移植。7张PNG原图与原病例PDF来自用户提供的V4压缩包，原图版权归原权利人；仅在本机安装（clinicalcraft import-v4），不随仓库分发。问诊回答依原文整理。缺失数据保持未知；报告按原始时间呈现。肺癌进展在正文既往史与讨论中的叙述不一致，复盘保留此限制。原CT配图为腹部，没有肺结节局部原图；没有原始流式散点图，也没有完整DICOM序列。人体图谱为标准人体模型，未重建本例病灶大小、肺结节或骨髓浸润范围。患者是使用化名的通用教学NPC，不还原真实患者容貌。V5在V4基础上补充的病史条目与复评期体格检查均摘自原文并逐条注明来源；原文体格检查记录于第3周期治疗入院时，诊断期体格检查未记录。完成度不是已验证的临床能力评分。",
+      "en": "Case: Ding Fengli, Qin Caixia, Wang Jiaji, 2026. DOI: 10.3760/cma.cmcr20260128-00421. Ported from Virtual Patient V4 (Clinical Craft CASE 01). The seven original PNG figures and the source PDF come from the V4 package supplied by the user; figure copyright remains with the original rights holders. They are installed locally only (clinicalcraft import-v4) and are not distributed with the repository. Interview answers are compiled from the source text. Missing data stay unknown; reports are presented with their original dates. The main text's past history and discussion are inconsistent about lung cancer progression, and the review keeps this limitation. The original CT figures show the abdomen only — there is no local image of the lung nodule, no raw flow cytometry plot and no complete DICOM series. The anatomy atlas is a standard human model and does not reconstruct this patient's lesion size, lung nodule or extent of marrow infiltration. The patient is a generic teaching NPC with a pseudonym and does not reproduce a real patient's appearance. History items and the re-evaluation-phase physical examination that V5 adds to V4 are taken from the source text, each with its source noted; the source's physical examination was recorded on admission for treatment cycle 3, and no diagnostic-phase examination is recorded. Completion is not a validated clinical competency score."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "教学模拟：依据已发表病例报告整理，仅供医学教育使用，不构成诊疗建议。",
+    "en": "Teaching simulation compiled from a published case report, for medical education only; it is not medical advice."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "王先生（化名）",
+      "en": "Mr. Wang (pseudonym)"
+    },
+    "age": 74,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "左上腹痛",
+      "en": "Left upper abdominal pain"
+    },
+    "triageNote": {
+      "zh-CN": "74岁男性，左上腹痛；脾脏增大。病史待询问。",
+      "en": "74-year-old man with left upper abdominal pain; enlarged spleen. History still to be taken."
+    },
+    "tags": [
+      {
+        "zh-CN": "左上腹痛",
+        "en": "Left upper abdominal pain"
+      },
+      {
+        "zh-CN": "脾脏增大",
+        "en": "Enlarged spleen"
+      },
+      {
+        "zh-CN": "病史待询问",
+        "en": "History to be taken"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "性格平和、配合的老年男性，耐心回答问题，按病历如实陈述；不清楚或病历没有记录的事情会直接说明，不猜测。",
+        "en": "A calm, cooperative older man who answers patiently and sticks to what his records say; when something is unclear or not recorded he says so plainly rather than guessing."
+      },
+      "speechStyle": {
+        "zh-CN": "用朴实的普通话口语，句子简短；常转述病历上的记录（如“病例记录……”）；不使用专业推理，不解释检查结果。",
+        "en": "Plain, everyday speech in short sentences; often relays what his records say (\"my notes say…\"); does not reason like a clinician or interpret test results."
+      },
+      "healthLiteracy": "medium",
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "医生您好。我这次主要是左上腹疼，来复查一下。",
+        "en": "Hello, doctor. I've come in for a check — it's mainly a pain in the upper left side of my belly."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "只讲已揭示的病史事实，用自己的话转述，不增减数字、日期或药名。不谈检查结果、体格检查发现或诊断结论。职业、吸烟、饮酒、家族史、疼痛评分和每次疼痛持续时间原病例均未记录，被问到时直接说明没有记录。",
+        "en": "Only state history facts that have been revealed, in your own words, without adding or changing numbers, dates or drug names. Do not discuss test results, examination findings or diagnostic conclusions. Occupation, smoking, alcohol, family history, pain score and the duration of each bout of pain are not recorded in the source; if asked, say plainly that they are not recorded."
+      }
+    },
+    "appearance": {
+      "skin": "#cba88a",
+      "hair": "#c6c6ba",
+      "hairStyle": "short",
+      "shirt": "#6d9fba",
+      "pants": "#354442",
+      "build": "average",
+      "stature": "adult",
+      "gown": false,
+      "accessory": "none"
+    },
+    "posture": "standing"
+  },
+  "phases": [
+    {
+      "id": "pre",
+      "label": {
+        "zh-CN": "诊断期",
+        "en": "Diagnostic phase"
+      },
+      "description": {
+        "zh-CN": "诊断期资料：以2025年3—4月的初诊检查为主，另含此前的PET/CT与既往肺癌记录。原病例未记录这一时期的体格检查。",
+        "en": "Diagnostic-phase records: mainly the March–April 2025 work-up, plus the earlier PET/CT and the previous lung cancer record. The source does not record a physical examination for this period."
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "post",
+      "label": {
+        "zh-CN": "治疗后复评期",
+        "en": "Post-treatment re-evaluation"
+      },
+      "description": {
+        "zh-CN": "2025年7月前后的治疗后复评资料。这是历史资料回看，不推进患者实时病情。",
+        "en": "Post-treatment re-evaluation records from around July 2025. This is a review of historical records; it does not advance the patient's live condition."
+      },
+      "learnerSwitchable": true
+    }
+  ],
+  "initialPhase": "pre",
+  "clock": {
+    "mode": "static"
+  },
+  "history": [
+    {
+      "id": "pain",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "哪里疼，什么时候开始？",
+        "en": "Where does it hurt, and when did it start?"
+      },
+      "answer": {
+        "zh-CN": "这次是左上腹痛。病例记录在2025年3—4月就诊检查；没有记下每次疼痛持续多久或疼痛评分。",
+        "en": "This time it's pain in the upper left part of my abdomen. My records show I was seen and investigated in March–April 2025; they don't note how long each bout of pain lasted or a pain score."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里疼",
+          "哪里痛",
+          "疼痛",
+          "腹痛",
+          "肚子疼",
+          "肚子痛",
+          "左上腹",
+          "哪里不舒服",
+          "什么时候开始疼",
+          "疼了多久",
+          "痛了多久",
+          "主诉",
+          "这次来看什么"
+        ],
+        "en": [
+          "pain",
+          "where does it hurt",
+          "abdominal pain",
+          "tummy pain",
+          "belly pain",
+          "stomach ache",
+          "left upper",
+          "when did it start",
+          "how long have you had the pain",
+          "what brings you",
+          "chief complaint"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·一般资料；依据原文整理的模拟回答",
+        "en": "Main text · General information; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "spleen",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "以前是否发现过脾大？",
+        "en": "Has an enlarged spleen ever been found before?"
+      },
+      "answer": {
+        "zh-CN": "大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。不能据这段病史认定淋巴瘤已经持续30年。",
+        "en": "An enlarged spleen was first found about 30 years ago. A PET/CT in November 2024 again showed a markedly enlarged spleen. This history alone does not establish that a lymphoma has been present for 30 years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "脾大",
+          "脾肿大",
+          "脾脏大",
+          "脾脏增大",
+          "脾脏肿大",
+          "脾脏",
+          "脾的问题",
+          "脾大多久",
+          "以前发现过"
+        ],
+        "en": [
+          "spleen",
+          "splenomegaly",
+          "enlarged spleen",
+          "big spleen",
+          "spleen been found",
+          "how long has the spleen"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·讨论与检查；依据原文整理的模拟回答",
+        "en": "Main text · Discussion and investigations; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "lung",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "既往有哪些肿瘤及治疗？",
+        "en": "What tumours have you had before, and how were they treated?"
+      },
+      "answer": {
+        "zh-CN": "之前诊断过左上肺浸润性腺癌，记录为EGFR突变阳性，服用阿美替尼。具体突变位点及肺癌TNM没有提供。",
+        "en": "I was previously diagnosed with invasive adenocarcinoma of the left upper lung, recorded as EGFR-mutation positive, and I take aumolertinib. The specific mutation site and the lung cancer TNM stage are not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肺癌",
+          "肺腺癌",
+          "肺部肿瘤",
+          "既往肿瘤",
+          "得过肿瘤",
+          "肿瘤史",
+          "肿瘤病史",
+          "以前得过什么病",
+          "既往史",
+          "既往病史",
+          "靶向药",
+          "阿美替尼",
+          "egfr"
+        ],
+        "en": [
+          "lung cancer",
+          "adenocarcinoma",
+          "tumour",
+          "tumor",
+          "history of cancer",
+          "had cancer",
+          "cancer before",
+          "previous cancer",
+          "cancer diagnosis",
+          "past medical history",
+          "previous illnesses",
+          "oncology history",
+          "targeted drug",
+          "aumolertinib",
+          "egfr"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史；依据原文整理的模拟回答",
+        "en": "Main text · Past history; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "other",
+      "topic": "social",
+      "question": {
+        "zh-CN": "吸烟史、家族史能否补充？",
+        "en": "Can you tell me about smoking and your family history?"
+      },
+      "answer": {
+        "zh-CN": "这份病例没有记录吸烟史及肿瘤家族史，我无法从材料中提供。",
+        "en": "This case record doesn't document a smoking history or a family history of cancer, so I can't provide that from the material."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吸烟",
+          "抽烟",
+          "烟史",
+          "吸烟史",
+          "家族史",
+          "家族",
+          "家里人",
+          "家人",
+          "家里有人",
+          "家族里有人",
+          "家里有没有人",
+          "直系亲属",
+          "遗传"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "smoker",
+          "cigarettes",
+          "family",
+          "relatives",
+          "anyone in your family",
+          "runs in the family",
+          "hereditary"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：明确保留未知，不补造患者回答",
+        "en": "Missing information: explicitly kept unknown; no patient answer is invented"
+      }
+    },
+    {
+      "id": "pmh-htn",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "还有其他慢性病吗，比如高血压？",
+        "en": "Do you have any other long-term conditions, such as high blood pressure?"
+      },
+      "answer": {
+        "zh-CN": "有高血压好多年了，一直吃苯磺酸左氨氯地平，血压控制得还可以。",
+        "en": "I've had high blood pressure for many years. I take levamlodipine besylate and my blood pressure is reasonably well controlled."
+      },
+      "keywords": {
+        "zh-CN": [
+          "高血压",
+          "血压高",
+          "慢性病",
+          "基础病",
+          "其他疾病",
+          "其他病"
+        ],
+        "en": [
+          "blood pressure",
+          "hypertension",
+          "other conditions",
+          "long-term conditions",
+          "chronic illness",
+          "medical problems"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史；依据原文整理的模拟回答",
+        "en": "Main text · Past history; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "meds",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "现在在吃哪些药？",
+        "en": "What medicines are you taking at the moment?"
+      },
+      "answer": {
+        "zh-CN": "降压药吃的是苯磺酸左氨氯地平。肺癌吃阿美替尼：原来单号日55 mg、双号日110 mg，每天1次；2025年6月发现肺部病灶比以前大了，改成标准剂量110 mg，每天1次。",
+        "en": "For my blood pressure I take levamlodipine besylate. For the lung cancer I take aumolertinib: it used to be 55 mg on odd-numbered days and 110 mg on even-numbered days, once a day; in June 2025, when the lung lesion was found to have grown, it was changed to the standard dose of 110 mg once a day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "在吃的药",
+          "用药",
+          "服药",
+          "降压药",
+          "吃药",
+          "阿美替尼吃多少",
+          "阿美替尼剂量",
+          "剂量"
+        ],
+        "en": [
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "what do you take",
+          "drugs you take",
+          "what dose",
+          "aumolertinib dose",
+          "levamlodipine"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史；依据原文整理的模拟回答",
+        "en": "Main text · Past history; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "没有药物过敏，也没有食物过敏。",
+        "en": "No drug allergies and no food allergies."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "过敏史",
+          "药物过敏",
+          "食物过敏"
+        ],
+        "en": [
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "food allergy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史（否认药物及食物过敏史）",
+        "en": "Main text · Past history (denies drug and food allergies)"
+      }
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过手术吗？",
+        "en": "Have you had any operations?"
+      },
+      "answer": {
+        "zh-CN": "胆囊以前切除了。什么时候、因为什么做的手术，病例里没有记录。",
+        "en": "My gallbladder was removed at some point. When and why the operation was done isn't recorded in my notes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术",
+          "做过手术",
+          "开过刀",
+          "开刀",
+          "胆囊",
+          "手术史"
+        ],
+        "en": [
+          "surgery",
+          "surgical history",
+          "any operations",
+          "had an operation",
+          "been operated on",
+          "gallbladder",
+          "cholecystectomy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·检查（超声“胆囊已切除”、CT“胆囊切除术后”）；手术时间与原因未记录",
+        "en": "Main text · Investigations (ultrasound “gallbladder removed”, CT “post-cholecystectomy”); date and reason not recorded"
+      }
+    },
+    {
+      "id": "fever",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "发过烧吗？",
+        "en": "Have you had any fevers?"
+      },
+      "answer": {
+        "zh-CN": "2025年4月出现过腹痛伴发热，经过抗感染和支持治疗后好转了。",
+        "en": "In April 2025 I had abdominal pain with a fever; it got better with anti-infective and supportive treatment."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发烧",
+          "发过烧",
+          "发热",
+          "高烧",
+          "体温高"
+        ],
+        "en": [
+          "fever",
+          "fevers",
+          "temperature",
+          "high temperature",
+          "feverish"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·一般资料；依据原文整理的模拟回答",
+        "en": "Main text · General information; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "general-since-onset",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "起病以来精神、食欲、睡眠和体重怎么样？",
+        "en": "Since this all started, how have your energy, appetite, sleep and weight been?"
+      },
+      "answer": {
+        "zh-CN": "精神、胃口都还可以，睡眠一般，体重比以前增加了，大小便正常。",
+        "en": "My energy and appetite are all right, my sleep is so-so, I've put on weight, and my bowels and bladder are normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "精神",
+          "食欲",
+          "胃口",
+          "睡眠",
+          "睡得怎么样",
+          "体重",
+          "体重下降",
+          "消瘦",
+          "大小便",
+          "吃饭怎么样"
+        ],
+        "en": [
+          "appetite",
+          "how are you eating",
+          "sleeping",
+          "how do you sleep",
+          "weight",
+          "weight loss",
+          "energy levels",
+          "bowels",
+          "bowel movements",
+          "passing urine"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·一般资料（第3周期治疗入院时记录“自起病以来”）；依据原文整理的模拟回答",
+        "en": "Main text · General information (recorded “since onset” on admission for treatment cycle 3); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "treatment-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "确诊后做过哪些治疗？",
+        "en": "What treatment have you had since the diagnosis?"
+      },
+      "answer": {
+        "zh-CN": "刚确诊时我没同意治疗，签字出院了。后来从2025年4月26日开始先用VP方案（长春新碱加泼尼松）预处理，5月和6月又各做了1个周期利妥昔单抗，过程还算顺利，脾大和血象都比以前好一些。",
+        "en": "When I was first diagnosed I declined treatment and signed myself out. Then from 26 April 2025 I had pre-treatment with the VP regimen (vincristine plus prednisone), followed by one cycle of rituximab in May and another in June. It went fairly smoothly, and my enlarged spleen and blood counts improved."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做过哪些治疗",
+          "确诊后的治疗",
+          "治疗过程",
+          "最近的治疗",
+          "化疗",
+          "利妥昔单抗",
+          "vp方案",
+          "疗程",
+          "打了几次",
+          "用了什么方案"
+        ],
+        "en": [
+          "what treatment",
+          "treatment since",
+          "treatment so far",
+          "chemotherapy",
+          "chemo",
+          "rituximab",
+          "vp regimen",
+          "cycles",
+          "how many cycles",
+          "regimen"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·一般资料／治疗；依据原文整理的模拟回答",
+        "en": "Main text · General information / Treatment; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "numbness",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "治疗后有没有新的不舒服？",
+        "en": "Have you had any new problems since the treatment?"
+      },
+      "answer": {
+        "zh-CN": "治疗后四肢末端发麻，医生考虑是VP方案引起的神经毒性反应，用了营养神经的药以后稍微缓解了一些。",
+        "en": "Since the treatment the tips of my hands and feet have felt numb. The doctors think it's a nerve-toxicity reaction to the VP regimen; it eased slightly with nerve-supporting treatment."
+      },
+      "keywords": {
+        "zh-CN": [
+          "麻木",
+          "发麻",
+          "手脚麻",
+          "手麻",
+          "脚麻",
+          "副作用",
+          "不良反应",
+          "治疗后不舒服",
+          "治疗后有什么不适",
+          "新出现的不适"
+        ],
+        "en": [
+          "numbness",
+          "feel numb",
+          "tingling",
+          "pins and needles",
+          "side effects",
+          "side-effects",
+          "neuropathy",
+          "new problems since"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·一般资料；依据原文整理的模拟回答",
+        "en": "Main text · General information; simulated answer compiled from the source"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "exam-vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "测量生命体征",
+        "en": "Measure vital signs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "生命体征",
+          "体温",
+          "脉搏",
+          "心率",
+          "呼吸频率",
+          "血压",
+          "测血压",
+          "量体温"
+        ],
+        "en": [
+          "vital signs",
+          "vitals",
+          "temperature",
+          "pulse",
+          "check heart rate",
+          "respiratory rate",
+          "blood pressure",
+          "bp"
+        ]
+      },
+      "finding": {
+        "zh-CN": "体温36.5℃，脉搏78次/min，呼吸20次/min，血压111/70 mmHg。",
+        "en": "Temperature 36.5 °C, pulse 78/min, respiratory rate 20/min, blood pressure 111/70 mmHg."
+      },
+      "abnormal": false,
+      "requires": [
+        "thermometer"
+      ],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    },
+    {
+      "id": "exam-general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况与神志",
+        "en": "Assess general appearance and level of consciousness"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "神志",
+          "意识",
+          "精神状态"
+        ],
+        "en": [
+          "general appearance",
+          "level of consciousness",
+          "is he alert",
+          "general inspection"
+        ]
+      },
+      "finding": {
+        "zh-CN": "神清。",
+        "en": "Conscious and alert."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    },
+    {
+      "id": "exam-nodes",
+      "system": "lymphatic",
+      "maneuver": {
+        "zh-CN": "触诊全身浅表淋巴结",
+        "en": "Palpate the superficial lymph nodes"
+      },
+      "keywords": {
+        "zh-CN": [
+          "淋巴结",
+          "浅表淋巴结",
+          "摸淋巴结",
+          "颈部淋巴结",
+          "腋窝",
+          "腹股沟",
+          "锁骨上"
+        ],
+        "en": [
+          "lymph nodes",
+          "lymphadenopathy",
+          "nodes",
+          "cervical nodes",
+          "axillary",
+          "inguinal",
+          "supraclavicular"
+        ]
+      },
+      "finding": {
+        "zh-CN": "全身浅表淋巴结未触及明显肿大。",
+        "en": "No obviously enlarged superficial lymph nodes are palpable."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    },
+    {
+      "id": "exam-heart",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊",
+        "en": "Auscultate the heart"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏听诊",
+          "听心脏",
+          "心脏",
+          "心音",
+          "杂音"
+        ],
+        "en": [
+          "heart sounds",
+          "auscultate the heart",
+          "listen to the heart",
+          "murmur",
+          "cardiac exam"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心肺听诊无异常。",
+        "en": "Heart and lung auscultation unremarkable."
+      },
+      "abnormal": false,
+      "requires": [
+        "stethoscope"
+      ],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    },
+    {
+      "id": "exam-lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "肺部听诊",
+        "en": "Auscultate the lungs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肺部听诊",
+          "听肺",
+          "听一下肺",
+          "肺",
+          "呼吸音",
+          "啰音"
+        ],
+        "en": [
+          "lungs",
+          "lung sounds",
+          "breath sounds",
+          "auscultate the lungs",
+          "listen to the lungs",
+          "listen to the chest",
+          "crackles",
+          "chest exam"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心肺听诊无异常。",
+        "en": "Heart and lung auscultation unremarkable."
+      },
+      "abnormal": false,
+      "requires": [
+        "stethoscope"
+      ],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    },
+    {
+      "id": "exam-abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "腹部触诊（含肝脾触诊）",
+        "en": "Palpate the abdomen, including liver and spleen"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部查体",
+          "腹部检查",
+          "腹部触诊",
+          "摸肚子",
+          "按压腹部",
+          "压痛",
+          "反跳痛",
+          "触诊脾脏",
+          "脾脏触诊",
+          "肝脏触诊",
+          "肝脾",
+          "脾脏",
+          "脾",
+          "肝脏"
+        ],
+        "en": [
+          "abdominal exam",
+          "palpate the abdomen",
+          "abdomen",
+          "tenderness",
+          "rebound",
+          "palpate the spleen",
+          "palpate the liver",
+          "liver and spleen",
+          "spleen",
+          "liver"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹平软，无压痛及反跳痛，肝脾肋下未触及。",
+        "en": "Abdomen flat and soft, no tenderness or rebound tenderness; liver and spleen not palpable below the costal margin."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    },
+    {
+      "id": "exam-neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "神经系统检查",
+        "en": "Neurological examination"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神经系统",
+          "神经查体",
+          "肌力",
+          "肌张力",
+          "感觉",
+          "轻触觉",
+          "病理反射",
+          "反射"
+        ],
+        "en": [
+          "neurological exam",
+          "neuro exam",
+          "power",
+          "tone",
+          "sensation",
+          "light touch",
+          "reflexes",
+          "babinski"
+        ]
+      },
+      "finding": {
+        "zh-CN": "四肢肌力、肌张力正常，肢端轻触觉减退，病理反射未引出。",
+        "en": "Normal power and tone in all four limbs; reduced light-touch sensation at the extremities; no pathological reflexes elicited."
+      },
+      "abnormal": true,
+      "requires": [
+        "reflex-hammer"
+      ],
+      "required": false,
+      "phases": [
+        "post"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查（第3周期治疗入院时）",
+        "en": "Main text · Physical examination (on admission for treatment cycle 3)"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原病例未记录这一项体格检查结果。",
+    "en": "The source case does not record this examination finding."
+  },
+  "investigations": [
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Complete blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血细胞分析",
+          "全血细胞计数",
+          "cbc"
+        ],
+        "en": [
+          "cbc",
+          "complete blood count",
+          "full blood count",
+          "fbc",
+          "blood count",
+          "haemogram",
+          "hemogram"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "初诊及2025-04-28",
+            "en": "At first presentation and 2025-04-28"
+          },
+          "text": {
+            "zh-CN": "初诊：白细胞3.2×10⁹/L，中性粒细胞1.3×10⁹/L，Hb 97 g/L，血小板71×10⁹/L。2025-04-28：白细胞1.98×10⁹/L，中性粒细胞1.05×10⁹/L，Hb 79.10 g/L，血小板27×10⁹/L。",
+            "en": "First presentation: WBC 3.2×10⁹/L, neutrophils 1.3×10⁹/L, Hb 97 g/L, platelets 71×10⁹/L. 2025-04-28: WBC 1.98×10⁹/L, neutrophils 1.05×10⁹/L, Hb 79.10 g/L, platelets 27×10⁹/L."
+          },
+          "source": {
+            "zh-CN": "正文·临床资料／检查",
+            "en": "Main text · Clinical data / Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025年7月（原文概述）",
+            "en": "July 2025 (summary in the source)"
+          },
+          "text": {
+            "zh-CN": "原文记录“血常规基本恢复”，未提供完整复查数值；不生成数值。",
+            "en": "The source records only that the “blood count largely recovered”; complete repeat values are not provided, and no values are generated."
+          },
+          "source": {
+            "zh-CN": "正文·临床资料／检查",
+            "en": "Main text · Clinical data / Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "abdct",
+      "name": {
+        "zh-CN": "腹部增强CT",
+        "en": "Contrast-enhanced abdominal CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "腹部增强ct",
+          "全腹增强ct",
+          "腹部ct",
+          "脾脏ct",
+          "胸腹部增强ct",
+          "胸腹增强ct",
+          "增强ct",
+          "ct增强",
+          "ct平扫",
+          "全腹部ct",
+          "全腹ct"
+        ],
+        "en": [
+          "abdominal ct",
+          "abdomen ct",
+          "ct abdomen",
+          "ct of the abdomen",
+          "contrast ct",
+          "contrast-enhanced ct",
+          "ct with contrast",
+          "spleen ct",
+          "splenic ct",
+          "abdominopelvic ct"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-03-28",
+            "en": "2025-03-28"
+          },
+          "text": {
+            "zh-CN": "脾大伴低密度灶，原报告提出“梗死？”；副脾，脾周少量积液，肝门部及腹膜后部分淋巴结增大。原包仅提供增强CT代表层面，不含完整DICOM序列；平扫申请不能视为与增强CT完全等价。",
+            "en": "Splenomegaly with low-density lesions — the original report queries “infarction?”; accessory spleen, a small perisplenic effusion, and enlargement of some hepatic-hilar and retroperitoneal lymph nodes. The source package only provides representative contrast-enhanced CT slices, not the full DICOM series; a request for a non-contrast scan cannot be treated as fully equivalent to contrast-enhanced CT."
+          },
+          "figures": [
+            "fig3"
+          ],
+          "source": {
+            "zh-CN": "正文·检查，图3",
+            "en": "Main text · Investigations, Fig. 3"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-07-04",
+            "en": "2025-07-04"
+          },
+          "text": {
+            "zh-CN": "增大脾脏较前缩小，脾脏多发低密度灶伴边缘强化；肝门部及腹膜后部分淋巴结缩小；副脾及脾周积液较前减少。",
+            "en": "The enlarged spleen is smaller than before, with multiple low-density splenic lesions showing rim enhancement; some hepatic-hilar and retroperitoneal lymph nodes are smaller; the accessory spleen and the perisplenic effusion are reduced compared with before."
+          },
+          "figures": [
+            "fig6"
+          ],
+          "source": {
+            "zh-CN": "正文·检查，图6",
+            "en": "Main text · Investigations, Fig. 6"
+          }
+        }
+      }
+    },
+    {
+      "id": "chestct",
+      "name": {
+        "zh-CN": "胸部CT",
+        "en": "Chest CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部ct",
+          "肺部ct",
+          "肺ct",
+          "胸部增强ct",
+          "肺部增强ct",
+          "胸ct"
+        ],
+        "en": [
+          "chest ct",
+          "ct chest",
+          "ct of the chest",
+          "lung ct",
+          "thoracic ct",
+          "ct thorax"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-03-28／2025年6月",
+            "en": "2025-03-28 / June 2025"
+          },
+          "text": {
+            "zh-CN": "正文记录左肺上叶结节；2025年6月肺腺癌病灶较前增大，随后调整阿美替尼剂量。原报告讨论部分另称“未见进展”，存在叙述不一致。",
+            "en": "The main text records a nodule in the left upper lobe; in June 2025 the lung adenocarcinoma lesion had grown, after which the aumolertinib dose was adjusted. The discussion section of the original report separately states “no progression” — the narrative is inconsistent."
+          },
+          "note": {
+            "zh-CN": "原包CT配图为腹部代表层面，没有可用于肺结节局部评价的胸部原图。",
+            "en": "The CT figures in the source package are representative abdominal slices; there is no chest image usable for local evaluation of the lung nodule."
+          },
+          "source": {
+            "zh-CN": "正文·既往史／检查",
+            "en": "Main text · Past history / Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-07-04",
+            "en": "2025-07-04"
+          },
+          "text": {
+            "zh-CN": "正文记录左肺上叶结节；双侧肺门及纵隔部分淋巴结较前略缩小。未提供肺结节直径。",
+            "en": "The main text records a nodule in the left upper lobe; some bilateral hilar and mediastinal lymph nodes are slightly smaller than before. The lung nodule diameter is not provided."
+          },
+          "note": {
+            "zh-CN": "原包CT配图为腹部代表层面，没有可用于肺结节局部评价的胸部原图。",
+            "en": "The CT figures in the source package are representative abdominal slices; there is no chest image usable for local evaluation of the lung nodule."
+          },
+          "source": {
+            "zh-CN": "正文·既往史／检查",
+            "en": "Main text · Past history / Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "us",
+      "name": {
+        "zh-CN": "肝胆脾胰超声",
+        "en": "Liver, biliary, spleen & pancreas ultrasound"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "超声",
+          "彩超",
+          "b超",
+          "腹部b超",
+          "脾脏超声",
+          "脾脏彩超",
+          "肝胆脾胰",
+          "门静脉超声"
+        ],
+        "en": [
+          "ultrasound",
+          "sonography",
+          "abdominal us",
+          "spleen ultrasound",
+          "splenic ultrasound",
+          "liver ultrasound",
+          "hepatobiliary",
+          "portal vein doppler"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-03-30",
+            "en": "2025-03-30"
+          },
+          "text": {
+            "zh-CN": "脾大，脾静脉增宽；脾门等回声，考虑副脾。图2标注脾纵向距离9.90 cm、横向距离17.45 cm。保留原图测量名称，不用二维数字推算体积。",
+            "en": "Splenomegaly with a widened splenic vein; an isoechoic structure at the splenic hilum, considered an accessory spleen. Fig. 2 labels the splenic longitudinal distance 9.90 cm and transverse distance 17.45 cm. The original measurement names are kept, and volume is not estimated from two-dimensional figures."
+          },
+          "figures": [
+            "fig2"
+          ],
+          "source": {
+            "zh-CN": "正文·检查，图2",
+            "en": "Main text · Investigations, Fig. 2"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-07-07",
+            "en": "2025-07-07"
+          },
+          "text": {
+            "zh-CN": "脾大，脾静脉增宽，脾脏片状低回声。图7标注脾纵向距离5.53 cm、横向距离13.40 cm。",
+            "en": "Splenomegaly with a widened splenic vein and patchy hypoechoic areas in the spleen. Fig. 7 labels the splenic longitudinal distance 5.53 cm and transverse distance 13.40 cm."
+          },
+          "figures": [
+            "fig7"
+          ],
+          "source": {
+            "zh-CN": "正文·检查，图7",
+            "en": "Main text · Investigations, Fig. 7"
+          }
+        }
+      }
+    },
+    {
+      "id": "nodeus",
+      "name": {
+        "zh-CN": "浅表淋巴结超声",
+        "en": "Superficial lymph node ultrasound"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "淋巴结超声",
+          "淋巴结彩超",
+          "淋巴结b超"
+        ],
+        "en": [
+          "lymph node ultrasound",
+          "node ultrasound",
+          "nodal ultrasound",
+          "lymph node us",
+          "superficial lymph node"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-04-07",
+            "en": "2025-04-07"
+          },
+          "text": {
+            "zh-CN": "双侧锁骨上淋巴结：左9×7 mm、右7×8 mm；颈部最大12×5 mm，腋窝最大13×6 mm，腹股沟最大17×6 mm。",
+            "en": "Bilateral supraclavicular lymph nodes: left 9×7 mm, right 7×8 mm; largest cervical 12×5 mm, largest axillary 13×6 mm, largest inguinal 17×6 mm."
+          },
+          "note": {
+            "zh-CN": "没有浅表淋巴结超声原图；脾脏超声图不能替代。",
+            "en": "There are no original images of the superficial lymph node ultrasound; the splenic ultrasound images cannot substitute for them."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-07-02",
+            "en": "2025-07-02"
+          },
+          "text": {
+            "zh-CN": "双侧锁骨上淋巴结：左6×4 mm、右7×4 mm；颈部最大12×6 mm，腋窝最大11×6 mm，腹股沟最大15×7 mm。",
+            "en": "Bilateral supraclavicular lymph nodes: left 6×4 mm, right 7×4 mm; largest cervical 12×6 mm, largest axillary 11×6 mm, largest inguinal 15×7 mm."
+          },
+          "note": {
+            "zh-CN": "没有浅表淋巴结超声原图；脾脏超声图不能替代。",
+            "en": "There are no original images of the superficial lymph node ultrasound; the splenic ultrasound images cannot substitute for them."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "pet",
+      "name": {
+        "zh-CN": "全身PET/CT",
+        "en": "Whole-body PET/CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "petct",
+          "pet/ct",
+          "pet-ct",
+          "pet",
+          "派特"
+        ],
+        "en": [
+          "pet",
+          "pet ct",
+          "pet/ct",
+          "pet-ct",
+          "petct",
+          "fdg pet",
+          "positron emission"
+        ]
+      },
+      "requires": [
+        "pet-ct"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2024-11-27",
+            "en": "2024-11-27"
+          },
+          "text": {
+            "zh-CN": "全身PET/CT：脾脏明显肿大、代谢异常增高；建议进一步排除淋巴瘤。代谢增高本身不等于病理确诊。",
+            "en": "Whole-body PET/CT: markedly enlarged spleen with abnormally increased metabolism; further work-up to exclude lymphoma was recommended. Increased metabolism by itself is not a pathological diagnosis."
+          },
+          "figures": [
+            "fig1"
+          ],
+          "note": {
+            "zh-CN": "原始图中保留了来源标记；仅在本地教学材料中使用。",
+            "en": "The original figure retains its source markings; for use in local teaching material only."
+          },
+          "source": {
+            "zh-CN": "正文·检查，图1",
+            "en": "Main text · Investigations, Fig. 1"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2024-11-27",
+            "en": "2024-11-27"
+          },
+          "text": {
+            "zh-CN": "全身PET/CT：脾脏明显肿大、代谢异常增高；建议进一步排除淋巴瘤。代谢增高本身不等于病理确诊。",
+            "en": "Whole-body PET/CT: markedly enlarged spleen with abnormally increased metabolism; further work-up to exclude lymphoma was recommended. Increased metabolism by itself is not a pathological diagnosis."
+          },
+          "figures": [
+            "fig1"
+          ],
+          "note": {
+            "zh-CN": "仅有治疗前PET/CT，未提供治疗后PET复查。",
+            "en": "Only the pre-treatment PET/CT exists; no post-treatment PET was provided."
+          },
+          "source": {
+            "zh-CN": "正文·检查，图1",
+            "en": "Main text · Investigations, Fig. 1"
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow",
+      "name": {
+        "zh-CN": "骨髓穿刺／细胞学",
+        "en": "Bone marrow aspirate / cytology"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "骨髓穿刺",
+          "骨穿",
+          "骨髓细胞学",
+          "骨髓涂片",
+          "骨髓检查"
+        ],
+        "en": [
+          "bone marrow aspirate",
+          "bone marrow aspiration",
+          "marrow aspirate",
+          "bone marrow smear",
+          "bone marrow cytology",
+          "marrow cytology"
+        ]
+      },
+      "requires": [
+        "cytology"
+      ],
+      "risk": "moderate",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-04-02",
+            "en": "2025-04-02"
+          },
+          "text": {
+            "zh-CN": "三系增生活跃，淋巴瘤样细胞占2%。骨髓穿刺细胞学与骨髓组织活检是不同取材方法；需要活检与免疫组化时另行申请相应检查。",
+            "en": "All three lineages are actively proliferating; lymphoma-like cells 2%. Bone marrow aspirate cytology and bone marrow tissue biopsy are different sampling methods; when a biopsy and immunohistochemistry are needed, order those investigations separately."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-07-02",
+            "en": "2025-07-02"
+          },
+          "text": {
+            "zh-CN": "三系增生活跃。原文转归概述骨髓细胞学及流式结果转阴，但没有复查骨髓细胞图片。",
+            "en": "All three lineages are actively proliferating. The source's outcome summary states that bone marrow cytology and flow cytometry turned negative, but no repeat marrow cytology images are provided."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "骨髓活检／免疫组化",
+        "en": "Bone marrow biopsy / immunohistochemistry"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "骨髓活检",
+          "骨髓病理",
+          "免疫组化",
+          "ihc"
+        ],
+        "en": [
+          "bone marrow biopsy",
+          "marrow biopsy",
+          "trephine",
+          "bone marrow trephine",
+          "immunohistochemistry",
+          "ihc",
+          "marrow histology"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "moderate",
+      "value": "essential",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025年4月诊断期",
+            "en": "April 2025 (diagnostic phase)"
+          },
+          "text": {
+            "zh-CN": "骨髓活检：低级别小B细胞淋巴瘤，肿瘤细胞约15%，MF-1级，倾向边缘区淋巴瘤。CD19、CD20、PAX5及IgD阳性；CD5、CD10、Cyclin-D1、SOX11、LEF1、CD103、Annexin-A1阴性；Ki-67＜5%。图5未逐一标明A/B切片抗体名称，不擅自补注。",
+            "en": "Bone marrow biopsy: low-grade small B-cell lymphoma, tumour cells about 15%, MF-1, favouring marginal zone lymphoma. CD19, CD20, PAX5 and IgD positive; CD5, CD10, Cyclin-D1, SOX11, LEF1, CD103 and Annexin-A1 negative; Ki-67 <5%. Fig. 5 does not label the antibody for each of panels A/B, and no labels are added here."
+          },
+          "figures": [
+            "fig5"
+          ],
+          "source": {
+            "zh-CN": "正文·检查，图5",
+            "en": "Main text · Investigations, Fig. 5"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025年4月诊断期",
+            "en": "April 2025 (diagnostic phase)"
+          },
+          "text": {
+            "zh-CN": "骨髓活检：低级别小B细胞淋巴瘤，肿瘤细胞约15%，MF-1级，倾向边缘区淋巴瘤。CD19、CD20、PAX5及IgD阳性；CD5、CD10、Cyclin-D1、SOX11、LEF1、CD103、Annexin-A1阴性；Ki-67＜5%。图5未逐一标明A/B切片抗体名称，不擅自补注。",
+            "en": "Bone marrow biopsy: low-grade small B-cell lymphoma, tumour cells about 15%, MF-1, favouring marginal zone lymphoma. CD19, CD20, PAX5 and IgD positive; CD5, CD10, Cyclin-D1, SOX11, LEF1, CD103 and Annexin-A1 negative; Ki-67 <5%. Fig. 5 does not label the antibody for each of panels A/B, and no labels are added here."
+          },
+          "figures": [
+            "fig5"
+          ],
+          "note": {
+            "zh-CN": "此为诊断期活检原图，未提供治疗后组织活检图。",
+            "en": "This is the diagnostic-phase biopsy image; no post-treatment tissue biopsy images were provided."
+          },
+          "source": {
+            "zh-CN": "正文·检查，图5",
+            "en": "Main text · Investigations, Fig. 5"
+          }
+        }
+      }
+    },
+    {
+      "id": "flow",
+      "name": {
+        "zh-CN": "流式细胞术",
+        "en": "Flow cytometry"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "流式",
+          "免疫分型",
+          "免疫表型",
+          "flow"
+        ],
+        "en": [
+          "flow",
+          "flow cytometry",
+          "immunophenotyping",
+          "immunophenotype",
+          "facs"
+        ]
+      },
+      "requires": [
+        "flow-cytometry"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-04-02",
+            "en": "2025-04-02"
+          },
+          "text": {
+            "zh-CN": "检出约1.58%的CD5阴性、CD10阴性成熟单克隆B淋巴细胞；未见明显急性白血病及高危MDS相关免疫表型异常证据。与活检15%并非同一分母，不能直接比较。",
+            "en": "About 1.58% CD5-negative, CD10-negative mature monoclonal B lymphocytes detected; no clear immunophenotypic evidence of acute leukaemia or high-risk MDS. This is not the same denominator as the 15% on biopsy, so the two cannot be compared directly."
+          },
+          "note": {
+            "zh-CN": "未附原始流式散点图。",
+            "en": "The original flow cytometry scatter plots are not attached."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-07-05",
+            "en": "2025-07-05"
+          },
+          "text": {
+            "zh-CN": "未检测到明显免疫表型异常的淋巴细胞。",
+            "en": "No lymphocytes with an obviously abnormal immunophenotype were detected."
+          },
+          "note": {
+            "zh-CN": "未附原始流式散点图。",
+            "en": "The original flow cytometry scatter plots are not attached."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "karyo",
+      "name": {
+        "zh-CN": "染色体核型分析",
+        "en": "Chromosome karyotype analysis"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "核型",
+          "染色体",
+          "细胞遗传",
+          "karyotype"
+        ],
+        "en": [
+          "karyotype",
+          "karyotyping",
+          "cytogenetics",
+          "chromosome analysis",
+          "chromosomes"
+        ]
+      },
+      "requires": [
+        "cytogenetics"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025年4月诊断期",
+            "en": "April 2025 (diagnostic phase)"
+          },
+          "text": {
+            "zh-CN": "46,XY,t(4;12)(q23;q13)。分析20个中期分裂相，均见一条4号与一条12号染色体长臂相互易位。核型不能确定融合基因，也不能证明与肺癌同源。",
+            "en": "46,XY,t(4;12)(q23;q13). Twenty metaphases analysed; all showed a reciprocal translocation between the long arms of one chromosome 4 and one chromosome 12. A karyotype cannot identify a fusion gene, nor can it prove a common origin with the lung cancer."
+          },
+          "figures": [
+            "fig4"
+          ],
+          "source": {
+            "zh-CN": "正文·检查，图4",
+            "en": "Main text · Investigations, Fig. 4"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025年4月诊断期",
+            "en": "April 2025 (diagnostic phase)"
+          },
+          "text": {
+            "zh-CN": "46,XY,t(4;12)(q23;q13)。分析20个中期分裂相，均见一条4号与一条12号染色体长臂相互易位。核型不能确定融合基因，也不能证明与肺癌同源。",
+            "en": "46,XY,t(4;12)(q23;q13). Twenty metaphases analysed; all showed a reciprocal translocation between the long arms of one chromosome 4 and one chromosome 12. A karyotype cannot identify a fusion gene, nor can it prove a common origin with the lung cancer."
+          },
+          "figures": [
+            "fig4"
+          ],
+          "note": {
+            "zh-CN": "仅提供诊断期核型结果，没有复查核型。",
+            "en": "Only the diagnostic-phase karyotype is provided; there is no repeat karyotype."
+          },
+          "source": {
+            "zh-CN": "正文·检查，图4",
+            "en": "Main text · Investigations, Fig. 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "hbv",
+      "name": {
+        "zh-CN": "乙肝筛查／HBV DNA",
+        "en": "Hepatitis B screen / HBV DNA"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "乙肝",
+          "hbv",
+          "肝炎筛查"
+        ],
+        "en": [
+          "hbv",
+          "hepatitis b",
+          "hep b",
+          "hepatitis screen",
+          "hbsag",
+          "anti-hbc",
+          "hbcab"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-03-29／04-08",
+            "en": "2025-03-29 / 04-08"
+          },
+          "text": {
+            "zh-CN": "乙肝表面抗体412.53 mIU/ml；乙肝核心抗体阳性；HBV DNA＜1.00×10² IU/ml。材料未给出HBsAg结果，不能推断为阴性。接受抗CD20治疗前需完整评估再激活风险。",
+            "en": "Hepatitis B surface antibody 412.53 mIU/ml; hepatitis B core antibody positive; HBV DNA <1.00×10² IU/ml. The material does not give an HBsAg result, and it cannot be inferred to be negative. The risk of reactivation must be fully assessed before anti-CD20 therapy."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-03-29／04-08",
+            "en": "2025-03-29 / 04-08"
+          },
+          "text": {
+            "zh-CN": "乙肝表面抗体412.53 mIU/ml；乙肝核心抗体阳性；HBV DNA＜1.00×10² IU/ml。材料未给出HBsAg结果，不能推断为阴性。接受抗CD20治疗前需完整评估再激活风险。",
+            "en": "Hepatitis B surface antibody 412.53 mIU/ml; hepatitis B core antibody positive; HBV DNA <1.00×10² IU/ml. The material does not give an HBsAg result, and it cannot be inferred to be negative. The risk of reactivation must be fully assessed before anti-CD20 therapy."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "ldh",
+      "name": {
+        "zh-CN": "乳酸脱氢酶",
+        "en": "Lactate dehydrogenase (LDH)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "乳酸脱氢酶",
+          "ldh"
+        ],
+        "en": [
+          "ldh",
+          "lactate dehydrogenase"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "2025-04-28",
+            "en": "2025-04-28"
+          },
+          "text": {
+            "zh-CN": "乳酸脱氢酶498 U/L（原文标为升高）。未提供治疗后LDH值。",
+            "en": "Lactate dehydrogenase 498 U/L (flagged as elevated in the source). No post-treatment LDH value is provided."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "2025-04-28",
+            "en": "2025-04-28"
+          },
+          "text": {
+            "zh-CN": "乳酸脱氢酶498 U/L（原文标为升高）。未提供治疗后LDH值。",
+            "en": "Lactate dehydrogenase 498 U/L (flagged as elevated in the source). No post-treatment LDH value is provided."
+          },
+          "source": {
+            "zh-CN": "正文·检查",
+            "en": "Main text · Investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "egfr",
+      "name": {
+        "zh-CN": "EGFR基因检测记录",
+        "en": "EGFR mutation testing record"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "egfr",
+          "基因检测",
+          "驱动基因"
+        ],
+        "en": [
+          "egfr",
+          "egfr mutation",
+          "driver gene",
+          "driver mutation",
+          "genetic testing",
+          "molecular testing"
+        ]
+      },
+      "requires": [
+        "molecular"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "pre": {
+          "date": {
+            "zh-CN": "既往肺癌诊断期",
+            "en": "At the earlier lung cancer diagnosis"
+          },
+          "text": {
+            "zh-CN": "正文记载左上肺浸润性腺癌、EGFR突变阳性；具体位点、检测平台与原始基因报告未提供。不能据此补写19del或L858R。",
+            "en": "The main text records invasive adenocarcinoma of the left upper lung, EGFR-mutation positive; the specific variant, testing platform and original genetic report are not provided. 19del or L858R must not be filled in on this basis."
+          },
+          "source": {
+            "zh-CN": "正文·既往史",
+            "en": "Main text · Past history"
+          }
+        },
+        "post": {
+          "date": {
+            "zh-CN": "既往肺癌诊断期",
+            "en": "At the earlier lung cancer diagnosis"
+          },
+          "text": {
+            "zh-CN": "正文记载左上肺浸润性腺癌、EGFR突变阳性；具体位点、检测平台与原始基因报告未提供。不能据此补写19del或L858R。",
+            "en": "The main text records invasive adenocarcinoma of the left upper lung, EGFR-mutation positive; the specific variant, testing platform and original genetic report are not provided. 19del or L858R must not be filled in on this basis."
+          },
+          "source": {
+            "zh-CN": "正文·既往史",
+            "en": "Main text · Past history"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "pet",
+        "unlessMatches": "腹部|全腹|脾脏|胸腹",
+        "remove": [
+          "abdct"
+        ]
+      },
+      {
+        "ifHas": "pet",
+        "unlessMatches": "胸部|肺部",
+        "remove": [
+          "chestct"
+        ]
+      },
+      {
+        "ifHas": "chestct",
+        "unlessMatches": "腹部|全腹|脾脏|胸腹",
+        "remove": [
+          "abdct"
+        ]
+      },
+      {
+        "ifMatches": "^(?=.*胸腹)(?=.*ct)",
+        "unlessHas": "chestct",
+        "add": [
+          "chestct"
+        ]
+      },
+      {
+        "ifHas": "nodeus",
+        "remove": [
+          "us"
+        ]
+      },
+      {
+        "ifMatches": "^(?=.*(心脏|甲状腺|颈动脉|下肢|肾脏|乳腺))(?=.*(超声|彩超|b超))",
+        "remove": [
+          "us"
+        ]
+      },
+      {
+        "ifMatches": "^(?=.*骨髓穿刺)(?=.*活检)",
+        "unlessHas": "biopsy",
+        "add": [
+          "biopsy"
+        ]
+      }
+    ],
+    "exact": {
+      "超声": [
+        "us",
+        "nodeus"
+      ],
+      "彩超": [
+        "us",
+        "nodeus"
+      ],
+      "b超": [
+        "us",
+        "nodeus"
+      ],
+      "ct": [
+        "abdct",
+        "chestct"
+      ],
+      "ct检查": [
+        "abdct",
+        "chestct"
+      ],
+      "做ct": [
+        "abdct",
+        "chestct"
+      ]
+    },
+    "warnings": [
+      {
+        "investigation": "abdct",
+        "ifMatches": "平扫",
+        "message": {
+          "zh-CN": "原包仅提供腹部增强CT代表图，平扫与增强CT不能视为等价。",
+          "en": "The source package only contains representative contrast-enhanced abdominal CT images; a non-contrast scan is not equivalent."
+        }
+      }
+    ]
+  },
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "ch1-history",
+      "title": {
+        "zh-CN": "建立病史",
+        "en": "Build the history"
+      },
+      "short": {
+        "zh-CN": "问诊",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "询问疼痛、脾大病程及既往肿瘤史。",
+        "en": "Ask about the pain, how long the spleen has been enlarged, and any previous tumours."
+      },
+      "guidance": {
+        "zh-CN": "进入诊所，向左走。询问疼痛、脾大病程和既往肿瘤。",
+        "en": "Enter the clinic and turn left. Ask about the pain, the course of the enlarged spleen and any previous tumours."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "spleen"
+          },
+          {
+            "asked": "lung"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "ch2-pattern",
+      "title": {
+        "zh-CN": "发现异常模式",
+        "en": "Find the abnormal pattern"
+      },
+      "short": {
+        "zh-CN": "初查",
+        "en": "First look"
+      },
+      "hint": {
+        "zh-CN": "调阅血常规，以及腹部增强CT或脾脏超声。",
+        "en": "Retrieve the blood count, plus the contrast-enhanced abdominal CT or the splenic ultrasound."
+      },
+      "guidance": {
+        "zh-CN": "在检验室调阅血常规，再到影像室查看腹部CT或脾脏超声。",
+        "en": "Retrieve the blood count in the laboratory, then go to imaging to view the abdominal CT or the splenic ultrasound."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "cbc",
+            "phase": "pre"
+          },
+          {
+            "any": [
+              {
+                "read": "abdct",
+                "phase": "pre"
+              },
+              {
+                "read": "us",
+                "phase": "pre"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "cbc",
+            "phase": "pre"
+          },
+          "target": "lab-hematology"
+        },
+        {
+          "target": "ct"
+        }
+      ]
+    },
+    {
+      "id": "ch3-evidence",
+      "title": {
+        "zh-CN": "获取血液学证据",
+        "en": "Obtain the haematological evidence"
+      },
+      "short": {
+        "zh-CN": "取证",
+        "en": "Evidence"
+      },
+      "hint": {
+        "zh-CN": "阅读骨髓活检／免疫组化和流式细胞术，结合形态判断。",
+        "en": "Read the bone marrow biopsy / immunohistochemistry and the flow cytometry, and interpret them together with the morphology."
+      },
+      "guidance": {
+        "zh-CN": "去病理室调阅骨髓活检，再到检验室查看流式细胞术。",
+        "en": "Go to pathology to retrieve the bone marrow biopsy, then to the laboratory to view the flow cytometry."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "pre"
+          },
+          {
+            "read": "flow",
+            "phase": "pre"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "biopsy",
+            "phase": "pre"
+          },
+          "target": "histopathology"
+        },
+        {
+          "target": "flow-cytometry"
+        }
+      ]
+    },
+    {
+      "id": "ch4-diagnosis",
+      "title": {
+        "zh-CN": "提交诊断推理",
+        "en": "Submit your diagnostic reasoning"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
+      },
+      "hint": {
+        "zh-CN": "依据病史、影像及骨髓证据判断，避免把所有异常归为肺癌。",
+        "en": "Base your judgement on the history, imaging and marrow evidence; avoid attributing every abnormality to the lung cancer."
+      },
+      "guidance": {
+        "zh-CN": "带着已读证据，走到走廊尽头的会诊板。",
+        "en": "Take the evidence you have read to the case-conference board at the end of the corridor."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "ch5-review",
+      "title": {
+        "zh-CN": "完成安全与复评",
+        "en": "Complete the safety check and re-evaluation"
+      },
+      "short": {
+        "zh-CN": "复盘",
+        "en": "Review"
+      },
+      "hint": {
+        "zh-CN": "核对乙肝、核型、治疗后影像／流式，并完成三项判断。",
+        "en": "Check hepatitis B, the karyotype and the post-treatment imaging / flow cytometry, and complete the three judgements."
+      },
+      "guidance": {
+        "zh-CN": "调阅乙肝与核型；在会诊板切换复评期，核对影像和流式。",
+        "en": "Retrieve the hepatitis B results and the karyotype; at the board, switch to the re-evaluation phase and check the imaging and flow cytometry."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "safety"
+          },
+          {
+            "decided": "genetics"
+          },
+          {
+            "decided": "response"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "hbv",
+            "phase": "pre"
+          },
+          "target": "lab-serology"
+        },
+        {
+          "unless": {
+            "read": "karyo",
+            "phase": "pre"
+          },
+          "target": "cytogenetics"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "最能解释当前证据的诊断组合是？",
+        "en": "Which diagnostic combination best explains the current evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "all": [
+              {
+                "asked": "pain"
+              },
+              {
+                "asked": "spleen"
+              },
+              {
+                "asked": "lung"
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "read": "cbc",
+                "phase": "pre"
+              },
+              {
+                "any": [
+                  {
+                    "read": "abdct",
+                    "phase": "pre"
+                  },
+                  {
+                    "read": "us",
+                    "phase": "pre"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "read": "biopsy",
+                "phase": "pre"
+              },
+              {
+                "read": "flow",
+                "phase": "pre"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成病史、血常规／腹部影像、骨髓活检及流式证据。",
+        "en": "First complete the history, the blood count / abdominal imaging, and the bone marrow biopsy and flow cytometry evidence."
+      },
+      "options": [
+        {
+          "id": "metastasis",
+          "text": {
+            "zh-CN": "肺腺癌转移可以解释全部异常",
+            "en": "Metastatic lung adenocarcinoma explains all the abnormalities"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "骨髓有独立的成熟B细胞肿瘤证据，不能把脾大和三系减少直接归因于肺癌转移。",
+            "en": "The marrow shows independent evidence of a mature B-cell neoplasm; the splenomegaly and trilineage cytopenia cannot simply be attributed to metastatic lung cancer."
+          }
+        },
+        {
+          "id": "dual",
+          "text": {
+            "zh-CN": "SMZL伴骨髓侵犯，与肺腺癌并存",
+            "en": "SMZL with bone marrow involvement, coexisting with lung adenocarcinoma"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "符合原病例诊断。脾脏主导表现与低级别B细胞证据共同支持SMZL；肺癌需建立独立病理及分子证据链。",
+            "en": "Consistent with the source case diagnosis. The spleen-dominant presentation together with the low-grade B-cell evidence supports SMZL; the lung cancer needs its own, separate pathological and molecular evidence chain."
+          }
+        },
+        {
+          "id": "infection",
+          "text": {
+            "zh-CN": "单纯感染性脾大，无需考虑肿瘤",
+            "en": "Purely infection-related splenomegaly; no need to consider a neoplasm"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "感染可能影响病程，但不能解释本例骨髓单克隆B细胞及组织病理证据。",
+            "en": "Infection may affect the course, but it cannot explain this patient's monoclonal B cells in the marrow or the histopathological evidence."
+          }
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "prompt": {
+        "zh-CN": "开始抗CD20治疗前，哪项认识更合适？",
+        "en": "Before starting anti-CD20 therapy, which understanding is more appropriate?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "hbv",
+        "phase": "pre"
+      },
+      "need": {
+        "zh-CN": "先开具并阅读乙肝筛查／HBV DNA记录。",
+        "en": "First order and read the hepatitis B screen / HBV DNA record."
+      },
+      "options": [
+        {
+          "id": "negative",
+          "text": {
+            "zh-CN": "HBV DNA未检出，可以排除再激活风险",
+            "en": "HBV DNA is undetectable, so the risk of reactivation can be ruled out"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "HBcAb阳性且将接受抗CD20治疗时，不能仅凭HBV DNA低于检测限排除再激活风险。",
+            "en": "When HBcAb is positive and anti-CD20 therapy is planned, an HBV DNA below the detection limit cannot by itself rule out the risk of reactivation."
+          }
+        },
+        {
+          "id": "assess",
+          "text": {
+            "zh-CN": "补全HBsAg等信息，制定再激活预防与监测方案",
+            "en": "Complete the missing information such as HBsAg, and set up a reactivation prophylaxis and monitoring plan"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "材料未提供HBsAg。应完整评估HBV状态，并结合抗CD20治疗制定预防与监测方案。",
+            "en": "The material does not provide HBsAg. HBV status should be fully assessed, and a prophylaxis and monitoring plan made in light of the anti-CD20 therapy."
+          }
+        }
+      ]
+    },
+    {
+      "id": "genetics",
+      "prompt": {
+        "zh-CN": "t(4;12)(q23;q13)支持哪种结论？",
+        "en": "What conclusion does t(4;12)(q23;q13) support?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "karyo",
+        "phase": "pre"
+      },
+      "need": {
+        "zh-CN": "先阅读染色体核型原图及报告。",
+        "en": "First read the original karyotype image and report."
+      },
+      "options": [
+        {
+          "id": "same",
+          "text": {
+            "zh-CN": "足以证明两种肿瘤具有共同起源",
+            "en": "It is sufficient to prove that the two tumours share a common origin"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "仅有骨髓核型不足以证明肺癌与淋巴瘤同源，也不能据断点直接确定融合基因。",
+            "en": "A bone marrow karyotype alone is not enough to prove that the lung cancer and the lymphoma share a common origin, nor can a fusion gene be determined directly from the breakpoints."
+          }
+        },
+        {
+          "id": "limited",
+          "text": {
+            "zh-CN": "是本例核型发现，共同机制仍需配对组织验证",
+            "en": "It is this patient's karyotype finding; any shared mechanism still needs verification in paired tissue"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确保留证据边界：同源性及驱动机制需要两种肿瘤的配对分子证据。",
+            "en": "This correctly keeps the evidence boundary: common origin and driver mechanisms require paired molecular evidence from both tumours."
+          }
+        }
+      ]
+    },
+    {
+      "id": "response",
+      "prompt": {
+        "zh-CN": "治疗后的资料最合理支持什么结论？",
+        "en": "What conclusion do the post-treatment data most reasonably support?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "any": [
+              {
+                "read": "abdct",
+                "phase": "post"
+              },
+              {
+                "read": "us",
+                "phase": "post"
+              }
+            ]
+          },
+          {
+            "read": "flow",
+            "phase": "post"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "切换到复评期，阅读腹部CT或超声，以及复查流式。",
+        "en": "Switch to the re-evaluation phase and read the abdominal CT or ultrasound, plus the repeat flow cytometry."
+      },
+      "options": [
+        {
+          "id": "complete",
+          "text": {
+            "zh-CN": "流式转阴，证明两种肿瘤都已完全缓解",
+            "en": "Flow cytometry has turned negative, proving that both tumours are in complete remission"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "流式改善只覆盖相应血液学证据，不能替代肺癌复评，也不能单独判定淋巴瘤完全缓解。",
+            "en": "Improvement on flow cytometry only covers the corresponding haematological evidence; it cannot replace re-evaluation of the lung cancer, nor can it on its own establish complete remission of the lymphoma."
+          }
+        },
+        {
+          "id": "separate",
+          "text": {
+            "zh-CN": "淋巴瘤有治疗反应，两种肿瘤仍需分别复评",
+            "en": "The lymphoma has responded to treatment; the two tumours still need to be re-evaluated separately"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "脾脏及流式改善支持治疗反应。PR为原作者报告；现有数据不足以独立完成标准化复核，肺癌应另行评价。",
+            "en": "Improvement in the spleen and on flow cytometry supports a treatment response. PR is as reported by the original authors; the available data are insufficient for an independent standardised re-assessment, and the lung cancer should be evaluated separately."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-hx-core",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问左上腹痛、脾大病程及既往肿瘤史",
+        "en": "Asks about the left upper abdominal pain, the course of the splenomegaly and previous tumours"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "spleen"
+          },
+          {
+            "asked": "lung"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-hx-gaps",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问吸烟史与家族史，并接受原病例未记录这一事实",
+        "en": "Asks about smoking and family history, and accepts that the source does not record them"
+      },
+      "weight": 0.5,
+      "met": {
+        "asked": "other"
+      }
+    },
+    {
+      "id": "rb-hx-meds",
+      "domain": "history",
+      "text": {
+        "zh-CN": "核对当前用药与过敏史",
+        "en": "Checks current medications and allergies"
+      },
+      "weight": 0.5,
+      "met": {
+        "all": [
+          {
+            "asked": "meds"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-ix-pattern",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅诊断期血常规，以及腹部增强CT或脾脏超声",
+        "en": "Reviews the diagnostic-phase blood count and the contrast-enhanced abdominal CT or splenic ultrasound"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "read": "cbc",
+            "phase": "pre"
+          },
+          {
+            "any": [
+              {
+                "read": "abdct",
+                "phase": "pre"
+              },
+              {
+                "read": "us",
+                "phase": "pre"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-ix-marrow",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅诊断期骨髓活检／免疫组化与流式细胞术",
+        "en": "Reviews the diagnostic-phase bone marrow biopsy / immunohistochemistry and flow cytometry"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "pre"
+          },
+          {
+            "read": "flow",
+            "phase": "pre"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-dx-combination",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "提交能解释全部证据的诊断组合，不把所有异常归于单一疾病",
+        "en": "Submits a diagnostic combination that explains all the evidence, without attributing every abnormality to a single disease"
+      },
+      "weight": 2,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-safety-hbv",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "抗CD20治疗前核查HBV状态，不以HBV DNA低于检测限排除再激活风险",
+        "en": "Checks HBV status before anti-CD20 therapy and does not rule out reactivation on an HBV DNA below the detection limit"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "hbv",
+            "phase": "pre"
+          },
+          {
+            "decided": "safety"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-dx-genetics",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "正确界定t(4;12)(q23;q13)核型发现的证据边界",
+        "en": "Correctly bounds what the t(4;12)(q23;q13) karyotype finding can support"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "read": "karyo",
+            "phase": "pre"
+          },
+          {
+            "decided": "genetics"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-phase-review",
+      "domain": "management",
+      "text": {
+        "zh-CN": "在复评期分别调阅治疗后影像与流式，并对两种肿瘤分别复评",
+        "en": "In the re-evaluation phase, reviews post-treatment imaging and flow cytometry and re-evaluates the two tumours separately"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "any": [
+              {
+                "read": "abdct",
+                "phase": "post"
+              },
+              {
+                "read": "us",
+                "phase": "post"
+              }
+            ]
+          },
+          {
+            "read": "flow",
+            "phase": "post"
+          },
+          {
+            "decided": "response"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-lung-review",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复评期另行核对肺部（胸部CT）记录",
+        "en": "Separately checks the lung (chest CT) record in the re-evaluation phase"
+      },
+      "weight": 0.5,
+      "met": {
+        "read": "chestct",
+        "phase": "post"
+      }
+    },
+    {
+      "id": "rb-eff-hints",
+      "domain": "efficiency",
+      "text": {
+        "zh-CN": "带教提示不超过2次",
+        "en": "Uses no more than two preceptor hints"
+      },
+      "weight": 0.5,
+      "met": {
+        "hints": {
+          "lte": 2
+        }
+      }
+    },
+    {
+      "id": "rb-comm-plain-language",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "用通俗语言向患者说明检查目的，并确认患者理解",
+        "en": "Explains the purpose of the tests to the patient in plain language and checks understanding"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "学习者用患者能理解的话解释为何需要血常规、影像及骨髓检查；避免堆砌术语；确认患者理解并留出提问机会；在证据充分前不向患者下诊断结论。",
+        "en": "The learner explains in words the patient can follow why blood tests, imaging and bone marrow tests are needed; avoids piling up jargon; checks understanding and invites questions; and does not give the patient a diagnosis before the evidence supports it."
+      }
+    },
+    {
+      "id": "rb-comm-uncertainty",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "坦诚说明病例中缺失或未知的信息，不臆测、不诱导",
+        "en": "Is open about information that is missing or unknown in the record, without guessing or leading the patient"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "当患者无法回答（如吸烟史、家族史、EGFR位点、肺癌TNM、HBsAg）时，学习者承认信息缺失，不施压、不替患者补造事实，并说明将如何获取这些信息。",
+        "en": "When the patient cannot answer (e.g. smoking, family history, EGFR variant, lung cancer TNM stage, HBsAg), the learner acknowledges the gap, neither pressures the patient nor supplies invented facts, and says how the information would be obtained."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "radiologist",
+      "name": {
+        "zh-CN": "影像科医生",
+        "en": "Radiologist"
+      },
+      "knowledge": {
+        "zh-CN": "只依据学习者已调阅的报告文字与原包代表图解读，不补充报告以外的发现。原包只有代表层面截图，没有完整DICOM序列：不能重建图像或测量体积，不用二维测量值推算脾脏体积；不同时间点的代表图未经配准。原包仅有增强CT代表图，平扫与增强CT不能视为等价。胸部CT和浅表淋巴结超声只有文字记录，没有原图；肺结节直径未提供；原文关于肺癌是否进展的叙述前后不一致。PET/CT代谢增高本身不等于病理确诊，且只有治疗前PET/CT。不对病理、分期或最终诊断下结论。",
+        "en": "Interprets only the report text and the representative images in the source package that the learner has already retrieved, and adds no findings beyond the reports. The package contains only representative slices, not full DICOM series: no reconstruction or volume measurement is possible, and spleen volume must not be estimated from two-dimensional measurements; images from different time points are not co-registered. Only contrast-enhanced CT images exist, so a non-contrast CT is not equivalent. The chest CT and the superficial lymph node ultrasound exist only as text, with no images; the lung nodule diameter is not given; the source is internally inconsistent about whether the lung cancer progressed. Increased metabolism on PET/CT is not by itself a pathological diagnosis, and only a pre-treatment PET/CT exists. Does not draw conclusions about pathology, staging or the final diagnosis."
+      },
+      "interprets": [
+        "abdct",
+        "us",
+        "pet",
+        "chestct",
+        "nodeus"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "病理科医生",
+        "en": "Pathologist"
+      },
+      "knowledge": {
+        "zh-CN": "只依据学习者已调阅的骨髓细胞学、骨髓活检／免疫组化、流式细胞术、染色体核型及EGFR检测记录解读，不补充报告以外的抗体或结果。骨髓穿刺细胞学与骨髓活检是不同取材方法；细胞学、流式与活检的比例分母不同，不能直接比较；不能仅凭CD5、CD10阴性单独定性，需结合形态与完整免疫表型。图5未逐一标明A/B切片的抗体名称，不擅自补注。核型不能确定融合基因，也不能证明与肺癌同源；同源性及驱动机制需要两种肿瘤的配对分子证据。没有原始流式散点图、治疗后活检图或复查核型。EGFR具体位点、检测平台和原始报告未提供，不补写19del或L858R。",
+        "en": "Interprets only the bone marrow cytology, bone marrow biopsy / immunohistochemistry, flow cytometry, karyotype and EGFR testing record that the learner has already retrieved, and adds no antibodies or results beyond the reports. Marrow aspirate cytology and marrow biopsy are different sampling methods; the percentages from cytology, flow cytometry and biopsy have different denominators and cannot be compared directly; CD5/CD10 negativity alone cannot characterise the disease — morphology and the full immunophenotype must be considered. Fig. 5 does not label the antibody for each of panels A/B, and none should be added. A karyotype cannot identify a fusion gene or prove a common origin with the lung cancer; common origin and driver mechanisms require paired molecular evidence from both tumours. There are no raw flow cytometry plots, no post-treatment biopsy images and no repeat karyotype. The specific EGFR variant, testing platform and original report are not provided; 19del or L858R must not be filled in."
+      },
+      "interprets": [
+        "biopsy",
+        "karyo",
+        "marrow",
+        "flow",
+        "egfr"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "带教主治医生",
+        "en": "Attending preceptor"
+      },
+      "knowledge": {
+        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学习者把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
+        "en": "Teaches by Socratic questioning and never gives the diagnosis or the answers to the decisions directly. Suggested path: history (pain, course of the splenomegaly, previous tumours) → blood count and abdominal imaging → bone marrow biopsy and flow cytometry → submit the diagnostic reasoning at the board → hepatitis B screen, karyotype and post-treatment re-evaluation. When the learner attributes every abnormality to a single disease, ask which evidence supports that and which does not. Reminders: missing data stay unknown and are never invented; results keep their original dates; switching case phase is a review of historical records, not live progression; percentages from different sampling methods cannot be compared directly; completion and decision records are teaching-script measures, not a validated competency score."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例完成 · 两种肿瘤，两条证据链",
+      "en": "Case complete · Two tumours, two evidence chains"
+    },
+    "conclusion": {
+      "zh-CN": "SMZL伴骨髓侵犯，与EGFR突变阳性左上肺浸润性腺癌并存。",
+      "en": "SMZL with bone marrow involvement, coexisting with EGFR-mutation-positive invasive adenocarcinoma of the left upper lung."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "脾脏主导表现与低级别B细胞证据结合判断；不能把所有异常归因于肺癌，也不能以CD5/CD10阴性单独定性。",
+        "en": "Judge the spleen-dominant presentation together with the low-grade B-cell evidence; do not attribute every abnormality to the lung cancer, and do not characterise the disease on CD5/CD10 negativity alone."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "脾脏与流式改善支持治疗反应。PR为原作者报告；现有数据不足以独立完成标准化复核。两种肿瘤分别评价。",
+      "en": "Improvement in the spleen and on flow cytometry supports a treatment response. PR is as reported by the original authors; the available data are insufficient for an independent standardised re-assessment. The two tumours are evaluated separately."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "EGFR位点",
+        "en": "EGFR mutation site (variant)"
+      },
+      {
+        "zh-CN": "肺癌TNM",
+        "en": "Lung cancer TNM stage"
+      },
+      {
+        "zh-CN": "肺结节尺寸",
+        "en": "Lung nodule size"
+      },
+      {
+        "zh-CN": "共同起源机制",
+        "en": "Mechanism of any common origin of the two tumours"
+      },
+      {
+        "zh-CN": "HBsAg结果",
+        "en": "HBsAg result"
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "HBcAb阳性且将接受抗CD20治疗时，不能仅凭HBV DNA低于检测限排除再激活风险。",
+        "en": "When HBcAb is positive and anti-CD20 therapy is planned, an HBV DNA below the detection limit cannot by itself rule out the risk of reactivation."
+      },
+      {
+        "zh-CN": "仅有骨髓核型不足以证明肺癌与淋巴瘤同源，也不能据断点直接确定融合基因。",
+        "en": "A bone marrow karyotype alone is not enough to prove that the lung cancer and the lymphoma share a common origin, nor can a fusion gene be determined directly from the breakpoints."
+      },
+      {
+        "zh-CN": "流式改善只覆盖相应血液学证据，不能替代肺癌复评，也不能单独判定淋巴瘤完全缓解。",
+        "en": "Improvement on flow cytometry only covers the corresponding haematological evidence; it cannot replace re-evaluation of the lung cancer, nor can it on its own establish complete remission of the lymphoma."
+      },
+      {
+        "zh-CN": "骨髓穿刺细胞学与骨髓组织活检是不同取材方法；流式比例与活检比例并非同一分母，不能直接比较。",
+        "en": "Bone marrow aspirate cytology and bone marrow tissue biopsy are different sampling methods; flow cytometry and biopsy percentages do not share a denominator and cannot be compared directly."
+      },
+      {
+        "zh-CN": "肺癌进展在正文既往史与讨论中的叙述不一致，复盘保留此限制。",
+        "en": "The main text's past history and its discussion are inconsistent about lung cancer progression; the review keeps this limitation."
+      }
+    ],
+    "references": [
+      "丁凤丽，秦彩霞，汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例. 中国临床案例成果数据库, 2026. DOI: 10.3760/cma.cmcr20260128-00421"
+    ],
+    "notice": {
+      "zh-CN": "完成度与判断记录来自教学脚本，未经临床能力量表验证。场景时间、方块和声音只是游戏呈现。",
+      "en": "Completion and decision records come from a teaching script and have not been validated against a clinical competency scale. Scene time, blocks and sounds are only game presentation."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "EGFR位点",
+      "en": "EGFR mutation site (variant)"
+    },
+    {
+      "zh-CN": "肺癌TNM",
+      "en": "Lung cancer TNM stage"
+    },
+    {
+      "zh-CN": "肺结节尺寸",
+      "en": "Lung nodule size"
+    },
+    {
+      "zh-CN": "共同起源机制",
+      "en": "Mechanism of any common origin of the two tumours"
+    },
+    {
+      "zh-CN": "HBsAg结果",
+      "en": "HBsAg result"
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig1",
+      "kind": "image",
+      "path": "assets/fig1.png",
+      "title": {
+        "zh-CN": "图1 全身PET/CT（2024-11-27，治疗前）",
+        "en": "Fig. 1 Whole-body PET/CT (2024-11-27, before treatment)"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "fig2",
+      "kind": "image",
+      "path": "assets/fig2.png",
+      "title": {
+        "zh-CN": "图2 肝胆脾胰+门静脉超声（2025-03-30，治疗前）",
+        "en": "Fig. 2 Liver, biliary, spleen, pancreas and portal vein ultrasound (2025-03-30, before treatment)"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "fig3",
+      "kind": "image",
+      "path": "assets/fig3.png",
+      "title": {
+        "zh-CN": "图3 胸部+全腹部增强CT·腹部代表层面（2025-03-28，治疗前）",
+        "en": "Fig. 3 Contrast-enhanced chest + abdominal CT, representative abdominal slices (2025-03-28, before treatment)"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "fig4",
+      "kind": "image",
+      "path": "assets/fig4.png",
+      "title": {
+        "zh-CN": "图4 骨髓染色体核型分析",
+        "en": "Fig. 4 Bone marrow karyotype"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "fig5",
+      "kind": "image",
+      "path": "assets/fig5.png",
+      "title": {
+        "zh-CN": "图5 骨髓病理免疫组化",
+        "en": "Fig. 5 Bone marrow pathology, immunohistochemistry"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "fig6",
+      "kind": "image",
+      "path": "assets/fig6.png",
+      "title": {
+        "zh-CN": "图6 胸部+全腹部+盆腔增强CT·腹部代表层面（2025-07-04，治疗后）",
+        "en": "Fig. 6 Contrast-enhanced chest + abdominal + pelvic CT, representative abdominal slices (2025-07-04, after treatment)"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "fig7",
+      "kind": "image",
+      "path": "assets/fig7.png",
+      "title": {
+        "zh-CN": "图7 肝胆脾胰超声（2025-07-07，治疗后）",
+        "en": "Fig. 7 Liver, biliary, spleen and pancreas ultrasound (2025-07-07, after treatment)"
+      },
+      "credit": {
+        "zh-CN": "原病例图（丁凤丽等，2026）",
+        "en": "Original case figure (Ding et al., 2026)"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    },
+    {
+      "id": "paper",
+      "kind": "pdf",
+      "path": "assets/source_case_report.pdf",
+      "title": {
+        "zh-CN": "原病例PDF",
+        "en": "Source case report (PDF)"
+      },
+      "credit": {
+        "zh-CN": "丁凤丽，秦彩霞，汪家吉，2026",
+        "en": "Ding Fengli, Qin Caixia, Wang Jiaji, 2026"
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "spleen"
+    },
+    {
+      "type": "ask",
+      "itemId": "lung"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "pre"
+    },
+    {
+      "type": "order",
+      "investigationId": "abdct"
+    },
+    {
+      "type": "read",
+      "investigationId": "abdct",
+      "phase": "pre"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "pre"
+    },
+    {
+      "type": "order",
+      "investigationId": "flow"
+    },
+    {
+      "type": "read",
+      "investigationId": "flow",
+      "phase": "pre"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "dual"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "hbv"
+    },
+    {
+      "type": "read",
+      "investigationId": "hbv",
+      "phase": "pre"
+    },
+    {
+      "type": "order",
+      "investigationId": "karyo"
+    },
+    {
+      "type": "read",
+      "investigationId": "karyo",
+      "phase": "pre"
+    },
+    {
+      "type": "answer",
+      "decisionId": "safety",
+      "optionIds": [
+        "assess"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "genetics",
+      "optionIds": [
+        "limited"
+      ]
+    },
+    {
+      "type": "set-phase",
+      "phase": "post"
+    },
+    {
+      "type": "order",
+      "investigationId": "abdct"
+    },
+    {
+      "type": "read",
+      "investigationId": "abdct",
+      "phase": "post"
+    },
+    {
+      "type": "order",
+      "investigationId": "flow"
+    },
+    {
+      "type": "read",
+      "investigationId": "flow",
+      "phase": "post"
+    },
+    {
+      "type": "answer",
+      "decisionId": "response",
+      "optionIds": [
+        "separate"
+      ]
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "v4": {
+      "caseLabel": {
+        "zh-CN": "CASE 01 · SMZL 与肺腺癌并存",
+        "en": "CASE 01 · SMZL coexisting with lung adenocarcinoma"
+      },
+      "saveFormat": {
+        "localStorageKey": "clinical-craft-v4",
+        "stateVersion": 4,
+        "resultKeyMapping": "V4 `${id}_${phase}` → V5 `${id}@${phase}`; history, decision and option ids are unchanged"
+      },
+      "stations": {
+        "lab": [
+          "cbc",
+          "flow",
+          "marrow",
+          "hbv",
+          "ldh"
+        ],
+        "imaging": [
+          "abdct",
+          "chestct",
+          "us",
+          "nodeus",
+          "pet"
+        ],
+        "path": [
+          "biopsy",
+          "karyo",
+          "egfr"
+        ]
+      },
+      "completeQuest": {
+        "title": {
+          "zh-CN": "回到会诊板，完成复盘",
+          "en": "Return to the board and complete the review"
+        },
+        "copy": {
+          "zh-CN": "两种肿瘤，两条证据链。检查尚未解决的未知，导出学习记录。",
+          "en": "Two tumours, two evidence chains. Check the unknowns that remain unresolved and export your learning record."
+        }
+      },
+      "phaseBadges": {
+        "pre": "DIAGNOSIS / 诊断期",
+        "post": "FOLLOW-UP / 复评期"
+      },
+      "compare": {
+        "pairs": [
+          {
+            "investigation": "abdct",
+            "pre": "fig3",
+            "post": "fig6"
+          },
+          {
+            "investigation": "us",
+            "pre": "fig2",
+            "post": "fig7"
+          }
+        ],
+        "requires": {
+          "zh-CN": "先收集两个时期的影像：到影像工作站调阅诊断期与复评期的同类检查。",
+          "en": "Collect imaging from both phases first: retrieve the same study for the diagnostic and re-evaluation phases at the imaging workstation."
+        },
+        "notice": {
+          "zh-CN": "只显示已获取的资料。不同时间点代表图未经配准，不用二维截图推算三维体积。",
+          "en": "Only evidence you have retrieved is shown. Representative images from different time points are not co-registered; do not estimate 3D volume from 2D screenshots."
+        }
+      },
+      "patientPanel": {
+        "portraitCaption": {
+          "zh-CN": "男性 · 74岁 · 病例外观示意",
+          "en": "Male · 74 years · illustrative appearance"
+        },
+        "note": {
+          "zh-CN": "以下回答按原病例整理。未记载的信息保留未知。",
+          "en": "The answers below are compiled from the source case. Anything not documented remains unknown."
+        }
+      },
+      "imageViewerNote": {
+        "zh-CN": "代表图不等于完整DICOM序列。",
+        "en": "Representative images are not a complete DICOM series."
+      },
+      "atlasSpleenNote": {
+        "zh-CN": "脾脏参考形态；本例脾大请结合原图。",
+        "en": "Reference spleen shape; for this patient's splenomegaly, see the original images."
+      }
+    }
+  }
+}
