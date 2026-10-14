@@ -82,10 +82,10 @@ export function foldSpelling(word: string): string {
 }
 
 /**
- * Stems (after `foldSpelling` + `stem`) mapped to a shared lemma because the
- * shared-prefix rule of `tokensMatch` cannot relate them: the medicine
- * family (so "medical" never matches it) and clinical adjective/noun pairs
- * whose stems diverge by more than 3 letters.
+ * Stems (after `foldSpelling` + `stem` + the `-ological` → `-ology` fold)
+ * mapped to a shared lemma because the shared-prefix rule of `tokensMatch`
+ * cannot relate them: the medicine family (so "medical" never matches it)
+ * and clinical adjective/noun pairs whose stems diverge too much.
  */
 export const ENGLISH_LEMMAS: ReadonlyMap<string, string> = new Map([
   ["med", "medication"], // meds
@@ -94,12 +94,15 @@ export const ENGLISH_LEMMAS: ReadonlyMap<string, string> = new Map([
   ["prescription", "prescrib"], // prescription(s) ~ prescribe(d)
   ["abdominal", "abdomen"],
   ["cardiovascular", "cardiac"],
-  ["neurological", "neurology"],
 ]);
 
-/** Canonical token for a (lower-case, stop-word-free) word: spelling fold → stem → lemma. */
+/**
+ * Canonical token for a (lower-case, stop-word-free) word: spelling fold →
+ * stem → `-ological` → `-ology` (pathological, oncological, serological) →
+ * lemma.
+ */
 export function canonicalToken(word: string): string {
-  const stemmed = stem(foldSpelling(word));
+  const stemmed = stem(foldSpelling(word)).replace(/^([a-z]+olog)ical$/, "$1y");
   return ENGLISH_LEMMAS.get(stemmed) ?? stemmed;
 }
 

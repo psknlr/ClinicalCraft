@@ -35,10 +35,16 @@ function alternativesOf(c: CaseDefinition, id: string): string[] {
 
 function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentReport["investigations"] {
   const orderedIds = unique(s.orders.map((o) => o.investigationId));
-  const readIds = new Set(s.seen.map((key) => parseResultKey(key).investigationId));
+  // investigations with an informative result read in some phase (an `available: false` record yields no information)
+  const informativeReads = new Set(
+    s.seen.flatMap((key) => {
+      const { investigationId, phase } = parseResultKey(key);
+      return resultFor(c, investigationId, phase)?.available === true ? [investigationId] : [];
+    }),
+  );
   const byValue = (value: string) => c.investigations.filter((i) => i.value === value && orderedIds.includes(i.id)).map((i) => i.id);
-  // an essential investigation is satisfied by ordering it, or by reading (any phase) one of its alternatives
-  const satisfied = (id: string) => orderedIds.includes(id) || alternativesOf(c, id).some((alt) => readIds.has(alt));
+  // an essential investigation is satisfied by ordering it, or by reading (any phase) an available result of one of its alternatives
+  const satisfied = (id: string) => orderedIds.includes(id) || alternativesOf(c, id).some((alt) => informativeReads.has(alt));
   return {
     ordered: s.orders.length,
     essentialMissing: c.investigations.filter((i) => i.value === "essential" && !satisfied(i.id)).map((i) => i.id),

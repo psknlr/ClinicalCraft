@@ -188,34 +188,41 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
     ctx.fill();
     ctx.stroke();
   }
-  // labels (big map)
+  // labels (big map): rooms first, then occupied slots; labels that would overlap are skipped
   if (opts.big) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    const taken: [number, number, number, number][] = [];
+    const place = (text: string, x: number, y: number, maxW: number, font: string, fill: string, halo = true) => {
+      ctx.font = font;
+      const w = Math.min(maxW, ctx.measureText(text).width) + 4;
+      const h = parseFloat(font.replace(/^\D*?(\d+(?:\.\d+)?)px.*$/, "$1")) + 2 || 12;
+      const r: [number, number, number, number] = [x - w / 2, y - h / 2, x + w / 2, y + h / 2];
+      if (taken.some((t) => r[0] < t[2] && r[2] > t[0] && r[1] < t[3] && r[3] > t[1])) return;
+      taken.push(r);
+      if (halo) {
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#f3eed8";
+        ctx.strokeText(text, x, y, maxW);
+      }
+      ctx.fillStyle = fill;
+      ctx.fillText(text, x, y, maxW);
+    };
     const fontPx = Math.max(10, Math.min(13, s * 0.9));
-    ctx.font = `bold ${fontPx}px system-ui, "Microsoft YaHei", sans-serif`;
-    for (const r of data.rooms) {
-      if (r.kind === "corridor") continue;
-      const [x, y] = P(r.x, r.z);
+    const rooms = [...data.rooms].filter((r) => r.kind !== "corridor").sort((a, b) => b.w * b.d - a.w * a.d);
+    for (const r of rooms) {
       if (r.w * s < 24) continue;
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = "#f3eed8";
-      ctx.strokeText(r.name, x, y, r.w * s - 4);
-      ctx.fillStyle = PALETTE.label;
-      ctx.fillText(r.name, x, y, r.w * s - 4);
+      const [x, y] = P(r.x, r.z);
+      place(r.name, x, y, r.w * s - 4, `bold ${fontPx}px system-ui, "Microsoft YaHei", sans-serif`, PALETTE.label);
     }
     for (const sl of data.slots) {
       if (!sl.occupied) continue;
       const [x, y] = P(sl.x, sl.z);
-      ctx.font = `bold 11px system-ui, sans-serif`;
-      ctx.fillStyle = "#1d4f3d";
-      ctx.fillText(sl.label, x, y - 13);
+      place(sl.label, x, y - 13, 160, "bold 11px system-ui, sans-serif", "#1d4f3d");
     }
     if (data.buildZone) {
       const [x, y] = P(data.buildZone.x, data.buildZone.z);
-      ctx.fillStyle = "#678058";
-      ctx.font = "11px system-ui, sans-serif";
-      ctx.fillText(data.buildZoneLabel, x, y);
+      place(data.buildZone.w * s > 30 ? data.buildZoneLabel : "", x, y, data.buildZone.w * s, "11px system-ui, sans-serif", "#678058", false);
     }
     ctx.fillStyle = "#678058";
     ctx.font = "11px system-ui, sans-serif";
