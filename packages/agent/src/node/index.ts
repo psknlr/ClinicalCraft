@@ -12,3 +12,4 @@ export { createCommandHookExecutor, HOOK_ABORT_EXIT_CODE, HOOK_TIMEOUT_EXIT_CODE
 export { JsonlTranscript, listSessions, readTranscript, sessionsDir, transcriptPath, type JsonlTranscriptOptions, type SessionSummary } from "./transcript.js";
 export { builtinContentDir, loadContent, type ContentIssue, type LoadContentOptions, type LoadedContent } from "./content.js";
 export { resolveNodeProviderConfig } from "./providers.js";
+export { BootstrapError, catalogsFor, chooseFacility, createNodeSession, findSessionTranscript, type CreateNodeSessionOptions } from "./bootstrap.js";

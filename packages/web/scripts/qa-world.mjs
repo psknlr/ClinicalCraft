@@ -150,7 +150,9 @@ try {
       const w = window.__WORLD__;
       w.debug.freeze(false);
       w.reset();
-      const dest = w.locate("board") ?? w.locate(window.__HARNESS__.facility.placements[0].id);
+      const f = window.__HARNESS__.facility;
+      const board = f.placements.find((p) => p.type === "evidence-board") ?? f.placements[0];
+      const dest = w.locate(board.id);
       const t0 = performance.now();
       try {
         await Promise.race([w.walkTo(dest), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout 240s")), 240000))]);

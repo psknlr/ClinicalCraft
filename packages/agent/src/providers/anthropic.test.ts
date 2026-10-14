@@ -317,6 +317,29 @@ describe("AnthropicProvider request plumbing", () => {
     expect(requests[0]!.url).toBe("/v1/messages?beta=true");
   });
 
+  it("never sends ambient Anthropic credentials (ANTHROPIC_AUTH_TOKEN, profiles) to a third-party endpoint", async () => {
+    const ok = () => sse([messageStart("glm-4.6"), blockStart(0, { type: "text", text: "" }), delta(0, { type: "text_delta", text: "ok" }), blockStop(0), messageDelta("end_turn"), messageStop]);
+    const saved = { token: process.env.ANTHROPIC_AUTH_TOKEN, key: process.env.ANTHROPIC_API_KEY };
+    process.env.ANTHROPIC_AUTH_TOKEN = "sk-ant-oat01-must-not-leak";
+    process.env.ANTHROPIC_API_KEY = "sk-ant-api03-must-not-leak";
+    try {
+      handlers.push(ok(), ok());
+      const keyless = await collect(new AnthropicProvider({ id: "zhipu-anthropic", wire: "anthropic-messages", baseUrl, model: "glm-4.6" }).stream(request({ tools: undefined })));
+      expect(keyless.at(-1)).toMatchObject({ type: "finish", stopReason: "end_turn" });
+      expect(requests[0]!.headers.authorization).toBeUndefined();
+      expect(requests[0]!.headers["x-api-key"]).toBeUndefined();
+      // With its own key, a third-party endpoint gets that key (as x-api-key and Bearer, as vendors document).
+      await collect(new AnthropicProvider({ id: "zhipu-anthropic", wire: "anthropic-messages", baseUrl, apiKey: "zp-key.123", model: "glm-4.6" }).stream(request({ tools: undefined })));
+      expect(requests[1]!.headers["x-api-key"]).toBe("zp-key.123");
+      expect(requests[1]!.headers.authorization).toBe("Bearer zp-key.123");
+    } finally {
+      if (saved.token === undefined) delete process.env.ANTHROPIC_AUTH_TOKEN;
+      else process.env.ANTHROPIC_AUTH_TOKEN = saved.token;
+      if (saved.key === undefined) delete process.env.ANTHROPIC_API_KEY;
+      else process.env.ANTHROPIC_API_KEY = saved.key;
+    }
+  });
+
   it("attaches the retry-after hint of a 429/529 so withRetry can honour it", async () => {
     handlers.push((_req, res) => {
       res.writeHead(429, { "content-type": "application/json", "retry-after": "12" });
@@ -429,6 +452,37 @@ describe("buildAnthropicRequest model rules", () => {
     for (const model of ["claude-opus-4-7", "claude-haiku-5-5", "claude-sonnet-5-5", "claude-opus-6", "claude-sonnet-6-1"]) {
       expect(buildAnthropicRequest(firstParty(model), request({ temperature: 0.3 })), model).not.toHaveProperty("temperature");
     }
+  });
+
+  it("adapts responseFormat schemas to Claude's structured-output subset (or falls back to an instruction)", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        say: { type: "string", maxLength: 400, minLength: 1 },
+        n: { type: "integer", minimum: 0, maximum: 9, multipleOf: 1 },
+        tags: { type: "array", items: { type: "object", properties: { id: { type: "string" } } }, maxItems: 3, minItems: 2 },
+      },
+      required: ["say"],
+    };
+    const params = buildAnthropicRequest(firstParty("claude-opus-5-5"), request({ responseFormat: { name: "voice", schema } }));
+    expect(params.output_config?.format).toEqual({
+      type: "json_schema",
+      schema: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          say: { type: "string" },
+          n: { type: "integer" },
+          tags: { type: "array", items: { type: "object", additionalProperties: false, properties: { id: { type: "string" } } } },
+        },
+        required: ["say"],
+      },
+    });
+    expect(schema.properties.say).toEqual({ type: "string", maxLength: 400, minLength: 1 }); // caller's schema untouched
+    const mapLike = { type: "object", additionalProperties: { type: "string" } };
+    const fallback = buildAnthropicRequest(firstParty("claude-opus-5-5"), request({ responseFormat: { name: "map", schema: mapLike } }));
+    expect(fallback.output_config?.format).toBeUndefined();
+    expect(JSON.stringify(fallback.system)).toMatch(/JSON Schema/);
   });
 
   it("never sends fallback audit blocks to third-party Anthropic-compatible endpoints", () => {

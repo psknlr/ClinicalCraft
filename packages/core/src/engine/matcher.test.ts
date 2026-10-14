@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
-import { matchExam, matchHistory, matchInterventions, matchOrders, normalizeQuery, orderWarnings, parseCase } from "./index.js";
-import { longestCommonSubstring, phraseScore, prepare, stem, tokenize } from "./text.js";
+import { EXCLUDE_KEYWORD_FACTOR, matchExam, matchHistory, matchInterventions, matchOrders, normalizeQuery, orderWarnings, parseCase } from "./index.js";
+import { longestCommonSubstring, phraseScore, prepare, stem, tokenize, tokensMatch } from "./text.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
 
@@ -266,5 +266,171 @@ describe("matchInterventions", () => {
     expect(matchInterventions(SIM, "give a beta blocker", "en")).toEqual([{ id: "beta-blocker", score: 1 }]);
     expect(matchInterventions(SIM, "fluid bolus", "en")).toEqual([{ id: "fluids", score: 1 }]);
     expect(matchInterventions(SIM, "something unrelated", "en")).toEqual([]);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Stemming regression: "medical" ≠ "medication"                       */
+/* ------------------------------------------------------------------ */
+
+/** SIM plus a past-medical-history item next to its medications item (the collision the tighter stemmer fixes). */
+function withPmh(): CaseDefinition {
+  const json = fixture("mini-anaphylaxis.case.json") as { history: unknown[] };
+  json.history.push({
+    id: "pmh",
+    topic: "pmh",
+    question: { en: "Any past medical history?", "zh-CN": "既往有什么病？" },
+    answer: { en: "Only mild asthma as a child.", "zh-CN": "小时候有轻度哮喘。" },
+    keywords: { en: ["medical history", "medical problems", "illnesses"], "zh-CN": ["既往史", "以前得过什么病"] },
+  });
+  return load(json);
+}
+
+describe("token matching (tightened shared-prefix rule)", () => {
+  it("keeps inflections and close derivations together", () => {
+    const same = (a: string, b: string) => tokensMatch(tokenize(a)[0], tokenize(b)[0]);
+    expect(same("allergy", "allergic")).toBe(true);
+    expect(same("breath", "breathless")).toBe(true);
+    expect(same("nausea", "nauseous")).toBe(true);
+    expect(same("pregnant", "pregnancy")).toBe(true);
+    expect(same("diabetes", "diabetic")).toBe(true);
+    expect(same("smoking", "smoker")).toBe(true);
+    expect(same("palpate", "palpation")).toBe(true);
+  });
+
+  it("separates words that merely share a long prefix", () => {
+    const same = (a: string, b: string) => tokensMatch(tokenize(a)[0], tokenize(b)[0]);
+    expect(same("medical", "medication")).toBe(false);
+    expect(same("medical", "medicines")).toBe(false);
+    expect(same("history", "historical")).toBe(false);
+    expect(same("history", "histology")).toBe(false);
+    expect(same("hypertension", "hyperthermia")).toBe(false);
+    expect(same("pneumonia", "pneumothorax")).toBe(false);
+    expect(same("thrombosis", "thrombolysis")).toBe(false);
+    expect(same("aspirin", "aspiration")).toBe(false);
+    expect(same("constant", "constipation")).toBe(false);
+  });
+
+  it("folds British spellings and maps a few lemmas", () => {
+    expect(tokenize("haemoglobin oedema anaemia")).toEqual(tokenize("hemoglobin edema anemia"));
+    expect(tokenize("immunisation nebuliser")).toEqual(tokenize("immunization nebulizer"));
+    expect(tokenize("medicines meds medications medicated")).toEqual(["medication", "medication", "medication", "medication"]);
+    expect(tokenize("abdominal exam")).toEqual(["abdomen", "exam"]);
+    expect(tokenize("medical")).toEqual(["medical"]);
+  });
+
+  it('"past medical history" selects the PMH item, never the medications item', () => {
+    const c = withPmh();
+    for (const q of ["past medical history", "Any medical history?", "medical problems?"]) {
+      const ids = matchHistory(c, q, "en").map((h) => h.id);
+      expect(ids[0], q).toBe("pmh");
+      expect(ids, q).not.toContain("meds");
+    }
+    // also without a PMH item to fall back on
+    expect(matchHistory(SIM, "past medical history", "en").map((h) => h.id)).not.toContain("meds");
+  });
+
+  it('"medications" / "medicines" / "drugs" / "meds" still find the medications item', () => {
+    const c = withPmh();
+    for (const q of ["medications", "medicines", "drugs", "any meds?", "What medicines do you take?", "Are you on any medication?"]) {
+      const hits = matchHistory(c, q, "en");
+      expect(hits[0], q).toEqual({ id: "meds", score: 1 });
+      expect(hits.map((h) => h.id), q).not.toContain("pmh");
+    }
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* excludeKeywords                                                     */
+/* ------------------------------------------------------------------ */
+
+describe("excludeKeywords", () => {
+  it("defaults to [] on history items, exam findings and interventions", () => {
+    expect(SIM.history[0].excludeKeywords).toEqual([]);
+    expect(SIM.exam[0].excludeKeywords).toEqual([]);
+    expect(SIM.interventions[0].excludeKeywords).toEqual([]);
+  });
+
+  it("multiplies the score of a history item by 0.2 when the normalised utterance contains one (any locale)", () => {
+    expect(EXCLUDE_KEYWORD_FACTOR).toBe(0.2);
+    const json = fixture("mini-anaphylaxis.case.json") as { history: { id: string; excludeKeywords?: unknown }[] };
+    json.history.find((h) => h.id === "meds")!.excludeKeywords = { en: ["drug allergy", "allergic to"], "zh-CN": ["药物过敏"] };
+    const c = load(json);
+    // without the exclusion "drug allergy" hits both items with score 1
+    expect(matchHistory(SIM, "Any drug allergy?", "en").map((h) => h.id)).toEqual(["allergies", "meds"]);
+    // 1 × 0.2 < MATCH_THRESHOLD: the medications item drops out; other items are untouched
+    expect(matchHistory(c, "Any drug allergy?", "en")).toEqual([{ id: "allergies", score: 1 }]);
+    expect(matchHistory(c, "Any DRUG-allergy?", "en")).toEqual([{ id: "allergies", score: 1 }]); // case, spacing, punctuation ignored
+    expect(matchHistory(c, "Are you allergic to any drugs?", "en").map((h) => h.id)).toEqual(["allergies"]);
+    expect(matchHistory(c, "有药物过敏吗", "en").map((h) => h.id)).not.toContain("meds"); // zh keyword applies to an en-locale query
+    expect(matchHistory(c, "what drugs do you take", "zh-CN")).toEqual([{ id: "meds", score: 1 }]); // no exclude phrase present
+  });
+
+  it("applies to matchExam and matchInterventions with the same semantics", () => {
+    const json = fixture("mini-anaphylaxis.case.json") as { exam: { id: string; excludeKeywords?: unknown }[]; interventions: { id: string; excludeKeywords?: unknown }[] };
+    json.exam.find((e) => e.id === "chest")!.excludeKeywords = ["chest x-ray", "胸片"];
+    json.interventions.find((i) => i.id === "oxygen")!.excludeKeywords = { en: ["oxygen saturation"] };
+    const c = load(json);
+    expect(matchExam(SIM, "chest x-ray", "en")).toEqual([{ id: "chest", score: 1 }]);
+    expect(matchExam(c, "chest x-ray", "en")).toEqual([]);
+    expect(matchExam(c, "Chest X ray", "en")).toEqual([]);
+    expect(matchExam(c, "胸片", "en")).toEqual([]);
+    expect(matchExam(c, "listen to the chest", "en")).toEqual([{ id: "chest", score: 1 }]);
+    expect(matchInterventions(SIM, "what is the oxygen saturation", "en")).toEqual([{ id: "oxygen", score: 1 }]);
+    expect(matchInterventions(c, "what is the oxygen saturation", "en")).toEqual([]);
+    expect(matchInterventions(c, "start oxygen", "en")).toEqual([{ id: "oxygen", score: 1 }]);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* match options                                                       */
+/* ------------------------------------------------------------------ */
+
+describe("matchHistory / matchExam options", () => {
+  function phased(): CaseDefinition {
+    const json = fixture("mini-anaphylaxis.case.json") as { history: Record<string, unknown>[]; exam: Record<string, unknown>[] };
+    json.history.push({
+      id: "meds-later",
+      topic: "medications",
+      question: { en: "Which medicines were you sent home with?", "zh-CN": "出院带了什么药？" },
+      answer: { en: "Two adrenaline pens.", "zh-CN": "两支肾上腺素笔。" },
+      keywords: { en: ["discharge medicines"], "zh-CN": ["出院带药"] },
+      phases: ["observation"],
+    });
+    json.history.push({
+      id: "unknown-family",
+      topic: "family",
+      question: { en: "Does anyone in your family have allergies?", "zh-CN": "家里人有过敏的吗？" },
+      answer: { en: "I don't know.", "zh-CN": "不清楚。" },
+      keywords: { en: ["family allergies"], "zh-CN": ["家族过敏"] },
+      disclosure: "unknown",
+    });
+    (json.history.find((h) => h.id === "meds") as Record<string, unknown>).phases = ["arrival"];
+    json.exam.find((e) => e.id === "skin")!.phases = ["observation"];
+    return load(json);
+  }
+
+  it("keeps the 3-argument form (all phases, unknown items included)", () => {
+    const c = phased();
+    expect(matchHistory(c, "what medicines", "en").map((h) => h.id)).toEqual(["meds", "meds-later"]);
+    expect(matchHistory(c, "family allergies", "en").map((h) => h.id)).toContain("unknown-family");
+    expect(matchHistory(c, "what medicines", "en", {})).toEqual(matchHistory(c, "what medicines", "en"));
+  });
+
+  it("drops items whose phases exclude options.phase (unrestricted items stay)", () => {
+    const c = phased();
+    expect(matchHistory(c, "what medicines", "en", { phase: "arrival" }).map((h) => h.id)).toEqual(["meds"]);
+    expect(matchHistory(c, "what medicines", "en", { phase: "observation" }).map((h) => h.id)).toEqual(["meds-later"]);
+    expect(matchHistory(c, "any allergies?", "en", { phase: "observation" }).map((h) => h.id)).toContain("allergies");
+    expect(matchExam(c, "check for hives", "en", { phase: "arrival" })).toEqual([]);
+    expect(matchExam(c, "check for hives", "en", { phase: "observation" })).toEqual([{ id: "skin", score: 1 }]);
+    expect(matchExam(c, "check for hives", "en")).toEqual([{ id: "skin", score: 1 }]);
+  });
+
+  it("includeUnknown: false drops unknown-disclosure history items", () => {
+    const c = phased();
+    expect(matchHistory(c, "family allergies", "en", { includeUnknown: false }).map((h) => h.id)).not.toContain("unknown-family");
+    expect(matchHistory(c, "family allergies", "en", { includeUnknown: true }).map((h) => h.id)).toContain("unknown-family");
+    expect(matchExam(c, "listen to the chest", "en", { includeUnknown: false })).toEqual([{ id: "chest", score: 1 }]);
   });
 });

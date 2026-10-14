@@ -406,6 +406,17 @@ function mapStopReason(reason: string | null | undefined): FinishReason {
   }
 }
 
+/**
+ * SDK client for Anthropic-compatible THIRD-PARTY endpoints: it never resolves
+ * the default credential chain (`ant auth login` profiles, workload identity),
+ * so Anthropic credentials cannot be sent to another vendor's host.
+ */
+class ThirdPartyAnthropic extends Anthropic {
+  protected override _shouldResolveDefaultCredentials(): boolean {
+    return false;
+  }
+}
+
 export interface AnthropicProviderOptions {
   /** Inject a pre-built client (tests). */
   client?: Anthropic;
@@ -438,14 +449,28 @@ export class AnthropicProvider implements LLMProvider {
   private getClient(): Anthropic {
     if (!this.client) {
       const headers = this.config.headers;
-      this.client = new Anthropic({
-        apiKey: this.config.apiKey ?? null,
+      const key = this.config.apiKey ?? null;
+      const common = {
         baseURL: anthropicSdkBaseUrl(this.config.baseUrl),
         ...(headers && Object.keys(headers).length > 0 ? { defaultHeaders: headers } : {}),
         maxRetries: 0, // retries are owned by withRetry()
         timeout: this.config.timeoutMs ?? 10 * 60 * 1000,
         dangerouslyAllowBrowser: this.config.browser === true,
-      });
+      };
+      if (isFirstPartyAnthropic(this.config.baseUrl)) {
+        // First party: the resolved key, else the SDK's own chain (ANTHROPIC_AUTH_TOKEN, `ant auth login`).
+        this.client = new Anthropic({ ...common, apiKey: key });
+      } else {
+        // Third party: only the key configured for THIS provider — never ambient Anthropic credentials.
+        // Vendors document Bearer auth (ANTHROPIC_AUTH_TOKEN) for their Anthropic-compatible endpoints;
+        // the same key is also sent as x-api-key. Keyless local servers get no auth header at all.
+        this.client = new ThirdPartyAnthropic({
+          ...common,
+          apiKey: key,
+          authToken: key,
+          ...(key ? {} : { defaultHeaders: { ...(common.defaultHeaders ?? {}), "x-api-key": null } }),
+        });
+      }
     }
     return this.client;
   }

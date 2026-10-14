@@ -209,6 +209,18 @@
         {
           "type": "object",
           "properties": {
+            "decidedFirstTry": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decidedFirstTry"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "intervened": {
               "$ref": "#/definitions/Id"
             },
@@ -336,6 +348,365 @@
           },
           "required": [
             "hints"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ClinicalAction": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "start"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ask"
+            },
+            "itemId": {
+              "$ref": "#/definitions/Id"
+            },
+            "via": {
+              "type": "string",
+              "enum": [
+                "button",
+                "free-text",
+                "agent"
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "itemId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "examine"
+            },
+            "findingId": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "findingId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "order"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "at": {
+              "type": "string"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "read"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "set-phase"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "phase"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "hint"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "answer"
+            },
+            "decisionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "optionIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 1
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "decisionId",
+            "optionIds"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "intervene"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "advance-time"
+            },
+            "minutes": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1440
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "minutes"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "flag"
+            },
+            "flag": {
+              "$ref": "#/definitions/Id"
+            },
+            "value": {
+              "type": "boolean",
+              "default": true
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "flag"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "note"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 4000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "finish"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
           ],
           "additionalProperties": false
         }
@@ -1025,6 +1396,10 @@
                 "$ref": "#/definitions/LocalizedList",
                 "default": []
               },
+              "excludeKeywords": {
+                "$ref": "#/definitions/LocalizedList",
+                "default": []
+              },
               "disclosure": {
                 "type": "string",
                 "enum": [
@@ -1091,6 +1466,10 @@
                 "$ref": "#/definitions/LocalizedText"
               },
               "keywords": {
+                "$ref": "#/definitions/LocalizedList",
+                "default": []
+              },
+              "excludeKeywords": {
                 "$ref": "#/definitions/LocalizedList",
                 "default": []
               },
@@ -1198,6 +1577,13 @@
                   "harmful"
                 ],
                 "default": "useful"
+              },
+              "alternativeTo": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "default": []
               },
               "results": {
                 "type": "object",
@@ -1405,6 +1791,10 @@
                 ]
               },
               "aliases": {
+                "$ref": "#/definitions/LocalizedList",
+                "default": []
+              },
+              "excludeKeywords": {
                 "$ref": "#/definitions/LocalizedList",
                 "default": []
               },
@@ -2019,8 +2409,7 @@
         "solution": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": {}
+            "$ref": "#/definitions/ClinicalAction"
           },
           "default": []
         },

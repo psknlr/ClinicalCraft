@@ -9,7 +9,7 @@ type Kind = ProviderErrorInfo["kind"];
 
 const CONTEXT_RE =
   /context[_ ]?length|context window|maximum context|too many tokens|prompt is too long|input is too long|input too long|exceeds? the (?:model'?s )?(?:maximum|context)|reduce the length|token limit|max_prompt_tokens|string_above_max_length/i;
-const QUOTA_RE = /insufficient[_ ]quota|exceeded your current quota|billing|credit balance|余额不足|欠费|arrears|quota exceeded|payment required/i;
+const QUOTA_RE = /insufficient[_ ]quota|insufficient balance|exceeded your current quota|billing|credit balance|余额不足|欠费|arrear|quota exceeded|payment required/i;
 
 /** Zhipu (open.bigmodel.cn / api.z.ai) business error codes. */
 const ZHIPU_CODES: Record<number, { kind: Kind; retryable: boolean }> = {
@@ -69,6 +69,13 @@ const STRING_CODES: Record<string, { kind: Kind; retryable: boolean }> = {
   not_found_error: { kind: "bad_request", retryable: false },
   model_not_found: { kind: "bad_request", retryable: false },
   content_filter: { kind: "refusal", retryable: false },
+  // Alibaba DashScope (Qwen) — compatible-mode and native code spellings.
+  Arrearage: { kind: "quota", retryable: false },
+  data_inspection_failed: { kind: "refusal", retryable: false },
+  DataInspectionFailed: { kind: "refusal", retryable: false },
+  // Moonshot (Kimi).
+  exceeded_current_quota_error: { kind: "quota", retryable: false },
+  engine_overloaded_error: { kind: "overloaded", retryable: true },
 };
 
 interface ParsedErrorBody {
@@ -164,14 +171,14 @@ export function classifyHttpError(status: number, bodyText: string, headers?: He
 
   // 1. Zhipu business codes ("1302" or 1302).
   const numeric = typeof parsed.code === "number" ? parsed.code : typeof parsed.code === "string" && /^\d{4}$/.test(parsed.code) ? Number(parsed.code) : NaN;
-  if (Number.isFinite(numeric) && ZHIPU_CODES[numeric]) {
+  if (Number.isFinite(numeric) && Object.hasOwn(ZHIPU_CODES, numeric)) {
     const z = ZHIPU_CODES[numeric]!;
     return info(z.kind, z.retryable);
   }
 
   // 2. String codes / types.
   for (const key of [parsed.code, parsed.type]) {
-    if (typeof key === "string" && STRING_CODES[key]) {
+    if (typeof key === "string" && Object.hasOwn(STRING_CODES, key)) {
       const s = STRING_CODES[key]!;
       // A 429 "rate_limit" that is really a quota exhaustion.
       if (s.kind === "rate_limit" && QUOTA_RE.test(message)) return info("quota", false);

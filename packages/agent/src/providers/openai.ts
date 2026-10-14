@@ -16,7 +16,7 @@
 import { capabilitiesFor } from "./catalog.js";
 import { abortedError, classifyHttpError, networkError } from "./errors.js";
 import { parseSSE } from "./sse.js";
-import { sanitizeSchemaName, structuredOutputMode, withJsonInstruction } from "./structured.js";
+import { isStrictCompatibleSchema, sanitizeSchemaName, structuredOutputMode, withJsonInstruction } from "./structured.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ModelCapabilities, ProviderConfig, StreamEvent, SystemSection } from "./types.js";
 
 /** Chat Completions message (the subset we send). */
@@ -129,7 +129,9 @@ export function toOpenAIMessages(system: readonly SystemSection[], messages: rea
   return out;
 }
 
-function openAIEffort(effort: NonNullable<ChatRequest["effort"]>): string {
+function openAIEffort(effort: NonNullable<ChatRequest["effort"]>, providerId: string, model: string): string {
+  // xAI documents only low|high for reasoning_effort (grok-3-mini).
+  if (providerId === "xai" || /^(x-ai\/)?grok-/i.test(model)) return effort === "low" ? "low" : "high";
   switch (effort) {
     case "low":
       return "low";
@@ -154,7 +156,10 @@ export function buildOpenAIRequest(config: Pick<ProviderConfig, "id" | "model">,
     stream_options: { include_usage: true },
   };
   if (format && formatMode === "json_schema") {
-    body.response_format = { type: "json_schema", json_schema: { name: sanitizeSchemaName(format.name), schema: format.schema, strict: true } };
+    body.response_format = {
+      type: "json_schema",
+      json_schema: { name: sanitizeSchemaName(format.name), schema: format.schema, strict: isStrictCompatibleSchema(format.schema) },
+    };
   } else if (format && formatMode === "json_object") {
     body.response_format = { type: "json_object" };
   }
@@ -168,7 +173,7 @@ export function buildOpenAIRequest(config: Pick<ProviderConfig, "id" | "model">,
 
   switch (capabilities.reasoning) {
     case "openai-reasoning-effort":
-      if (request.effort) body.reasoning_effort = openAIEffort(request.effort);
+      if (request.effort) body.reasoning_effort = openAIEffort(request.effort, config.id, model);
       if (maxTokens != null) body.max_completion_tokens = maxTokens;
       break;
     case "glm-thinking":

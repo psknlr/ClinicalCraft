@@ -61,7 +61,7 @@
       "en": "Cough and wheeze, worse overnight"
     },
     "triageNote": {
-      "zh-CN": "06:05 分诊：6岁男孩，20 kg（已称重），妈妈陪同。感冒2天，昨夜咳嗽、呼吸费力加重。RR 38次/分，HR 140次/分，吸空气SpO₂ 90%，T 37.6 ℃。只能说短语。分诊2级（非常紧急），已安置在抢救区并接监护。",
+      "zh-CN": "06:05 分诊：6岁男孩，20 kg（已称重），妈妈陪同。感冒2天，昨夜咳嗽、呼吸费力加重。RR 38次/分，HR 140次/分，吸空气SpO₂ 90%，T 37.6 ℃。只能说短语。分诊2级（急重），已安置在抢救区并接监护。",
       "en": "06:05 triage: 6-year-old boy, 20 kg (weighed), with his mother. 2-day cold; cough and laboured breathing worse overnight. RR 38/min, HR 140/min, SpO₂ 90% in room air, T 37.6 °C. Speaking in phrases. Triage category 2 (very urgent); placed in a resus cubicle on the monitor."
     },
     "tags": [
@@ -1392,7 +1392,7 @@
       },
       "answer": {
         "zh-CN": "（孩子）“我不喘了！我能回家看动画片吗？”",
-        "en": "(The boy) “I'm not puffy any more! Can I go home and watch cartoons?”"
+        "en": "(The boy) “I'm not wheezy any more! Can I go home and watch cartoons?”"
       },
       "keywords": {
         "zh-CN": [
@@ -1979,8 +1979,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "清醒（AVPU：A），GCS 15分；认得妈妈，能回答简单问题；无嗜睡，无意识模糊。",
-        "en": "Alert (AVPU: A), GCS 15; recognises his mother and answers simple questions; not drowsy, not confused."
+        "zh-CN": "清醒（AVPU：A），GCS 15分；认得妈妈，能回答简单问题；虽然害怕，但妈妈抱着能安抚下来，无躁动；无嗜睡，无意识模糊。",
+        "en": "Alert (AVPU: A), GCS 15; recognises his mother and answers simple questions; frightened but settles in his mother's arms — not agitated; not drowsy, not confused."
       }
     },
     {
@@ -4381,8 +4381,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "沙丁胺醇雾化液 2.5–5 mg（本例：BTS 建议 >5 岁每次 5 mg；中国指南建议体重≤20 kg 每次 2.5 mg），氧气驱动 6–8 L/min；第1小时每20分钟1次，共3次，可与异丙托溴铵混合雾化。",
-        "en": "Salbutamol nebuliser solution 2.5–5 mg (here: BTS suggests 5 mg for age > 5 years; the Chinese guideline suggests 2.5 mg for weight ≤ 20 kg), driven by oxygen at 6–8 L/min; every 20 min ×3 in the first hour; may be mixed with ipratropium."
+        "zh-CN": "沙丁胺醇雾化液每次 2.5–5 mg（BTS：>5岁每次 2.5–5 mg；中国指南：体重≤20 kg 每次 2.5 mg、>20 kg 每次 5 mg——本例20 kg，2.5 mg 同时符合两者，5 mg 也在 BTS 范围内），氧气驱动 6–8 L/min；第1小时每20分钟1次，共3次，可与异丙托溴铵混合雾化。",
+        "en": "Salbutamol nebuliser solution 2.5–5 mg per dose (BTS: 2.5–5 mg for age > 5 years; Chinese guideline: 2.5 mg for weight ≤ 20 kg, 5 mg above 20 kg — at 20 kg, 2.5 mg satisfies both and 5 mg is within the BTS range), driven by oxygen at 6–8 L/min; every 20 min ×3 in the first hour; may be mixed with ipratropium."
       },
       "effects": [
         {
@@ -4609,19 +4609,19 @@
         {
           "vital": "spo2",
           "delta": 2.5,
-          "onsetMinutes": 60,
+          "onsetMinutes": 120,
           "rampMinutes": 120
         },
         {
           "vital": "rr",
           "delta": -5,
-          "onsetMinutes": 60,
+          "onsetMinutes": 120,
           "rampMinutes": 120
         },
         {
           "vital": "hr",
           "delta": -5,
-          "onsetMinutes": 60,
+          "onsetMinutes": 120,
           "rampMinutes": 120
         }
       ],
@@ -4669,26 +4669,26 @@
         ]
       },
       "dose": {
-        "zh-CN": "氢化可的松 4 mg/kg = 80 mg 静脉注射（仅用于呕吐或无法口服时）。",
-        "en": "Hydrocortisone 4 mg/kg = 80 mg IV (only if vomiting or unable to take oral medication)."
+        "zh-CN": "氢化可的松 4 mg/kg = 80 mg 静脉注射，必要时每4–6小时重复（中国指南：琥珀酸氢化可的松每次5–10 mg/kg，或甲泼尼龙每次1–2 mg/kg = 20–40 mg，间隔4–8小时可重复）；仅用于呕吐或无法口服时。",
+        "en": "Hydrocortisone 4 mg/kg = 80 mg IV, repeated every 4–6 h if needed (Chinese guideline: hydrocortisone sodium succinate 5–10 mg/kg or methylprednisolone 1–2 mg/kg = 20–40 mg per dose, repeated every 4–8 h); only if vomiting or unable to take oral medication."
       },
       "effects": [
         {
           "vital": "spo2",
           "delta": 2.5,
-          "onsetMinutes": 60,
+          "onsetMinutes": 120,
           "rampMinutes": 120
         },
         {
           "vital": "rr",
           "delta": -5,
-          "onsetMinutes": 60,
+          "onsetMinutes": 120,
           "rampMinutes": 120
         },
         {
           "vital": "hr",
           "delta": -5,
-          "onsetMinutes": 60,
+          "onsetMinutes": 120,
           "rampMinutes": 120
         }
       ],
@@ -4833,8 +4833,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "氨茶碱负荷量 5 mg/kg = 100 mg，静脉输注≥20分钟（此前未用茶碱类），随后持续输注并监测血药浓度——仅用于对最大剂量吸入治疗、激素和硫酸镁均无反应的危及生命发作，并在PICU/HDU条件下使用。",
-        "en": "Aminophylline loading dose 5 mg/kg = 100 mg IV over ≥ 20 min (no prior theophylline), then an infusion with level monitoring — reserved for life-threatening asthma unresponsive to maximal inhaled therapy, steroids and magnesium, in a PICU/HDU setting."
+        "zh-CN": "氨茶碱负荷量 5 mg/kg = 100 mg，静脉输注≥20分钟（此前未用茶碱类；心电监护下），随后以 1 mg/(kg·h) 持续输注并监测血药浓度——仅考虑用于对最大剂量吸入支气管舒张剂、全身激素和静脉硫酸镁均无反应的重度或危及生命发作，并在PICU/HDU条件下使用；GINA 不推荐在急性发作中使用。",
+        "en": "Aminophylline loading dose 5 mg/kg = 100 mg IV over ≥ 20 min (no prior theophylline; with ECG monitoring), then 1 mg/kg/h by infusion with level monitoring — only considered for severe or life-threatening asthma unresponsive to maximal inhaled bronchodilators, systemic steroids and IV magnesium, in a PICU/HDU setting; GINA advises against it in exacerbations."
       },
       "effects": [
         {
@@ -4857,8 +4857,8 @@
         }
       },
       "harm": {
-        "zh-CN": "他对吸入治疗有反应、没有危及生命的表现：氨茶碱不会增加疗效，却有恶心呕吐、心动过速、心律失常甚至抽搐的风险。",
-        "en": "He is responding to inhaled therapy and has no life-threatening features: aminophylline adds no benefit here but risks vomiting, tachycardia, arrhythmia and seizures."
+        "zh-CN": "他没有危及生命的表现，也不是对最大剂量吸入支气管舒张剂、全身激素和静脉硫酸镁均无反应的难治性发作：氨茶碱不会增加疗效，却有恶心呕吐、心动过速、心律失常甚至抽搐的风险。",
+        "en": "He has no life-threatening features and has not failed maximal therapy (inhaled bronchodilators, systemic steroid and IV magnesium): aminophylline adds no benefit here but risks vomiting, tachycardia, arrhythmia and seizures."
       },
       "response": {
         "zh-CN": "输注过程中他开始恶心，心率进一步上升。",
@@ -4975,8 +4975,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "急性哮喘发作时禁用镇静剂（已在ICU插管机械通气者除外）：会抑制呼吸驱动，导致通气不足、CO₂潴留甚至呼吸停止。他的烦躁来自缺氧和呼吸困难——应治疗病因。",
-        "en": "Sedatives are contraindicated in acute asthma (except in intubated, ventilated patients in ICU): they blunt respiratory drive and can cause hypoventilation, CO₂ retention and respiratory arrest. His agitation reflects hypoxia and air hunger — treat the cause."
+        "zh-CN": "急性哮喘发作时禁用镇静剂（已在ICU插管机械通气者除外）：会抑制呼吸驱动，导致通气不足、CO₂潴留甚至呼吸停止。他的紧张不安来自缺氧和呼吸困难——应治疗病因。",
+        "en": "Sedatives are contraindicated in acute asthma (except in intubated, ventilated patients in ICU): they blunt respiratory drive and can cause hypoventilation, CO₂ retention and respiratory arrest. His distress reflects hypoxia and air hunger — treat the cause."
       },
       "response": {
         "zh-CN": "几分钟后他变得昏昏欲睡，呼吸变浅变慢，监护仪上SpO₂下降、ETCO₂上升。",
@@ -5135,8 +5135,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "丙酸氟替卡松 50 µg/揿，经储雾罐每次1揿、每日2次（100 µg/日，低剂量），每天坚持；与刷牙等日常习惯绑定，开足量处方；1–2周内复诊，若依从性和技术良好仍控制不佳再考虑升级。",
-        "en": "Fluticasone propionate 50 µg/puff via spacer, 1 puff twice daily (100 µg/day, low dose) every day; link it to tooth-brushing and prescribe enough supply; review within 1–2 weeks and step up only if control stays poor despite good adherence and technique."
+        "zh-CN": "丙酸氟替卡松 50 µg/揿，经储雾罐每次1揿、每日2次（100 µg/日，低剂量），每天坚持；与刷牙等日常习惯绑定，开足量处方；出院后2个工作日内复诊、1–2个月内哮喘专科随访，若依从性和吸入技术良好仍控制不佳再考虑升级。",
+        "en": "Fluticasone propionate 50 µg/puff via spacer, 1 puff twice daily (100 µg/day, low dose) every day; link it to tooth-brushing and prescribe enough supply; review at the post-attack visit (within 2 working days) and in asthma clinic within 1–2 months; step up only if control stays poor despite good adherence and technique."
       },
       "indicatedWhen": {
         "not": {
@@ -5254,8 +5254,8 @@
         }
       },
       "harm": {
-        "zh-CN": "现在出院不安全：他刚完成第一小时的强化治疗，仍需要吸氧和密切观察，还没证明能在3–4小时一次的沙丁胺醇下保持稳定。护士暂停了出院流程，他继续留在急诊。",
-        "en": "Discharge now is unsafe: he has only just had first-hour intensive treatment, still needs oxygen and close observation, and hasn't shown he can stay stable on 3–4-hourly salbutamol. The nurse puts the discharge on hold and he stays in the ED."
+        "zh-CN": "现在出院不安全：强化治疗后的观察期还没结束——他还没证明能在吸空气、3–4小时一次沙丁胺醇的情况下保持稳定，离院前评估（吸空气SpO₂、PEF、宣教与随访安排）也未完成。护士暂停了出院流程，他继续留在急诊。",
+        "en": "Discharge now is unsafe: the observation period after his intensive treatment isn't over — he hasn't shown he can stay stable in room air on 3–4-hourly salbutamol, and the pre-discharge checks (room-air SpO₂, PEF, education, follow-up) aren't done. The nurse puts the discharge on hold and he stays in the ED."
       },
       "response": {
         "zh-CN": "出院小结已完成：泼尼松龙再服2天；沙丁胺醇按行动计划使用；每日吸入激素；2个工作日内基层/全科医生复诊，1–2个月内哮喘专科随访；建议接种流感疫苗；若沙丁胺醇需间隔<4小时使用或10揿无效，立即就医。",
@@ -5591,8 +5591,8 @@
         ],
         "severity": "warning",
         "message": {
-          "zh-CN": "护士：“他还在吸氧，刚做完强化治疗，我觉得现在让他回家不安全。”",
-          "en": "Nurse: “He's still on oxygen and has only just finished the intensive treatment — I'm not comfortable sending him home yet.”"
+          "zh-CN": "护士：“他强化治疗后的观察还没结束，还没证明停氧、3–4小时一次沙丁胺醇也能保持稳定——我觉得现在让他回家不安全。”",
+          "en": "Nurse: “He hasn't finished his observation after the intensive treatment and hasn't shown he can stay well off oxygen on 3–4-hourly salbutamol — I'm not comfortable sending him home yet.”"
         }
       }
     ]
@@ -6033,8 +6033,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "低估了。按BTS/SIGN，>5岁儿童出现SpO₂<92%、HR>125、RR>30或不能一口气说完句子中任一项即属重度；PRAM 8分也在重度区间。重度需加用异丙托溴铵并尽早给激素。",
-            "en": "An underestimate. By BTS/SIGN, in children > 5 years any of SpO₂ < 92%, HR > 125, RR > 30 or inability to complete sentences in one breath means severe; PRAM 8 is also in the severe band. Severe attacks need ipratropium and early steroids."
+            "zh-CN": "低估了。按BTS/SIGN，>5岁儿童出现SpO₂<92%、HR>125、RR>30或不能一口气说完句子中任一项即属重度；PRAM 8分也在重度区间。重度发作需加用异丙托溴铵并尽早给全身激素（中度发作也应考虑；家中急救药已无效的患儿更应使用）——不能单用沙丁胺醇。",
+            "en": "An underestimate. By BTS/SIGN, in children > 5 years any of SpO₂ < 92%, HR > 125, RR > 30 or inability to complete sentences in one breath means severe; PRAM 8 is also in the severe band. Severe attacks need ipratropium and an early systemic steroid (considered even in moderate attacks, and clearly indicated when the home reliever has failed) — salbutamol alone is not enough."
           }
         },
         {
@@ -6045,8 +6045,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SpO₂ 90%（<92%）、HR 140（>125）、RR 38（>30）、只能说短语、三凹征、PEF约为预计值的42%、PRAM 8/12 → 重度。神志清楚、无发绀、不是沉默肺、血压正常、呼吸努力尚可——暂无危及生命征象，但需每15–20分钟复评。",
-            "en": "Correct. SpO₂ 90% (< 92%), HR 140 (> 125), RR 38 (> 30), phrases only, recession, PEF ≈ 42% predicted and PRAM 8/12 → severe. He is alert, not cyanosed, has no silent chest, normal BP and adequate effort — no life-threatening features yet, but reassess every 15–20 min."
+            "zh-CN": "正确。SpO₂ 90%（<92%）、HR 140（>125）、RR 38（>30）、只能说短语、三凹征、PEF约为预计值的42%、PRAM 8/12 → 重度。神志清楚、无躁动、无发绀、不是沉默肺、血压正常、呼吸努力尚可——暂无危及生命征象，但需每15–20分钟复评。",
+            "en": "Correct. SpO₂ 90% (< 92%), HR 140 (> 125), RR 38 (> 30), phrases only, recession, PEF ≈ 42% predicted and PRAM 8/12 → severe. He is alert, not agitated, not cyanosed, has no silent chest, normal BP and adequate effort — no life-threatening features yet, but reassess every 15–20 min."
           }
         },
         {
@@ -6057,8 +6057,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "判断过重。危及生命是指SpO₂<92%同时伴有PEF<33%、沉默肺、发绀、呼吸努力差、低血压、精疲力竭或意识改变中的任一项。他神志清楚、进气虽减低但不是沉默肺、无发绀、血压正常。若治疗无反应须立即重评并升级。",
-            "en": "Over-called. Life-threatening means SpO₂ < 92% plus any of PEF < 33%, silent chest, cyanosis, poor respiratory effort, hypotension, exhaustion or altered consciousness. He is alert, has reduced air entry but no silent chest, is pink and normotensive. If he fails to respond, reassess and escalate at once."
+            "zh-CN": "判断过重。危及生命是指SpO₂<92%同时伴有PEF<33%、沉默肺、发绀、呼吸努力差、躁动、低血压、精疲力竭或意识改变中的任一项。他神志清楚、虽害怕但无躁动，进气虽减低但不是沉默肺、无发绀、血压正常。若治疗无反应须立即重评并升级。",
+            "en": "Over-called. Life-threatening means SpO₂ < 92% plus any of PEF < 33%, silent chest, cyanosis, poor respiratory effort, agitation, hypotension, exhaustion or altered consciousness. He is alert and frightened but not agitated, has reduced air entry but no silent chest, is pink and normotensive. If he fails to respond, reassess and escalate at once."
           }
         },
         {
@@ -6177,13 +6177,13 @@
         {
           "id": "fl-sedation",
           "text": {
-            "zh-CN": "给小剂量镇静剂缓解烦躁",
-            "en": "A small dose of sedative for his agitation"
+            "zh-CN": "给小剂量镇静剂让他安静下来",
+            "en": "A small dose of sedative to settle him"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "危险。急性哮喘禁用镇静剂（ICU机械通气除外），会抑制呼吸、加重CO₂潴留。烦躁是缺氧和呼吸困难的表现。",
-            "en": "Dangerous. Sedation is contraindicated in acute asthma (except in ventilated ICU patients): it suppresses breathing and worsens CO₂ retention. Agitation is a sign of hypoxia and air hunger."
+            "zh-CN": "危险。急性哮喘禁用镇静剂（ICU机械通气除外），会抑制呼吸、加重CO₂潴留。他的紧张不安是缺氧和呼吸困难的表现，应治疗病因；若出现躁动或意识改变，提示病情恶化、需要立即升级处理。",
+            "en": "Dangerous. Sedation is contraindicated in acute asthma (except in ventilated ICU patients): it suppresses breathing and worsens CO₂ retention. His distress reflects hypoxia and air hunger — treat the cause; new agitation or altered consciousness signals deterioration and needs immediate escalation."
           }
         }
       ]
@@ -6851,8 +6851,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "本病例聚焦学龄儿童已知哮喘的一次急诊发作处理。不涵盖<5岁学龄前喘息、首次喘息的鉴别诊断、危及生命/濒死哮喘的高级处理（静脉沙丁胺醇持续输注、无创通气、插管）——只要求识别升级指征；长期阶梯治疗的调整应在随访时完成。若延误支气管舒张剂，模拟中患儿会进展为危及生命的发作，此时病例以升级治疗并收入PICU/HDU结束，而不是出院。",
-      "en": "This case covers ED management of one exacerbation in a school-age child with established asthma. It does not cover preschool wheeze (< 5 years), work-up of a first wheeze, or advanced management of life-threatening/near-fatal asthma (IV salbutamol infusion, NIV, intubation) beyond recognising escalation triggers; long-term step changes belong to follow-up. If bronchodilators are delayed the simulated child progresses to life-threatening asthma, and the case then ends with escalation and PICU/HDU admission instead of discharge."
+      "zh-CN": "本病例聚焦学龄儿童已知哮喘的一次急诊发作处理。不涵盖≤5岁学龄前儿童喘息、首次喘息的鉴别诊断、危及生命/濒死哮喘的高级处理（静脉沙丁胺醇持续输注、无创通气、插管）——只要求识别升级指征；长期阶梯治疗的调整应在随访时完成。若延误支气管舒张剂，模拟中患儿会进展为危及生命的发作，此时病例以升级治疗并收入PICU/HDU结束，而不是出院。",
+      "en": "This case covers ED management of one exacerbation in a school-age child with established asthma. It does not cover preschool wheeze (≤ 5 years), work-up of a first wheeze, or advanced management of life-threatening/near-fatal asthma (IV salbutamol infusion, NIV, intubation) beyond recognising escalation triggers; long-term step changes belong to follow-up. If bronchodilators are delayed the simulated child progresses to life-threatening asthma, and the case then ends with escalation and PICU/HDU admission instead of discharge."
     },
     "unknowns": [
       {
@@ -6882,8 +6882,8 @@
         "en": "pMDI + spacer is as effective as a nebuliser; most 6-year-olds can use a mouthpiece spacer: one puff at a time with 5–6 tidal breaths, never several puffs at once."
       },
       {
-        "zh-CN": "儿童急性哮喘禁用镇静剂；氨茶碱仅用于危及生命且对最大治疗无反应者，并在重症监护条件下使用。",
-        "en": "Sedatives are contraindicated in acute asthma; aminophylline is only for life-threatening asthma unresponsive to maximal therapy, in a critical-care setting."
+        "zh-CN": "儿童急性哮喘禁用镇静剂（已插管机械通气者除外）；氨茶碱仅考虑用于对最大剂量吸入治疗、全身激素和静脉硫酸镁均无反应的重度或危及生命发作，需心电监护并在重症监护条件下使用（GINA 不推荐）。",
+        "en": "Sedatives are contraindicated in acute asthma (outside intubated, ventilated care); aminophylline is only considered for severe or life-threatening asthma unresponsive to maximal inhaled therapy, systemic steroids and IV magnesium, with ECG monitoring in a critical-care setting (GINA advises against it)."
       },
       {
         "zh-CN": "出院标准：吸空气SpO₂>94%、稳定于3–4小时一次的沙丁胺醇、PEF>75%预计值/个人最佳（能测时）；残余轻微哮鸣音和沙丁胺醇相关心动过速不是留院理由。",

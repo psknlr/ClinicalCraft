@@ -105,3 +105,19 @@ describe("parseRetryAfter", () => {
     expect(retryAfterMsOf({ message: "x", kind: "unknown", retryable: true })).toBeUndefined();
   });
 });
+
+describe("vendor error codes (DashScope, Moonshot, DeepSeek)", () => {
+  const body = (error: Record<string, unknown>) => JSON.stringify({ error });
+  it("classifies arrears/quota and content moderation codes", () => {
+    expect(classifyHttpError(400, body({ code: "Arrearage", type: "Arrearage", message: "Access denied, please make sure your account is in good standing." }))).toMatchObject({ kind: "quota", retryable: false });
+    expect(classifyHttpError(400, body({ code: "data_inspection_failed", type: "data_inspection_failed", message: "Input data may contain inappropriate content." }))).toMatchObject({
+      kind: "refusal",
+      retryable: false,
+    });
+    expect(classifyHttpError(400, body({ code: "DataInspectionFailed", message: "Output data may contain inappropriate content." }))).toMatchObject({ kind: "refusal" });
+    expect(classifyHttpError(429, body({ type: "exceeded_current_quota_error", message: "Your account org-1 is suspended, please check your plan" }))).toMatchObject({ kind: "quota", retryable: false });
+    expect(classifyHttpError(429, body({ type: "engine_overloaded_error", message: "The engine is currently overloaded, please try again later" }))).toMatchObject({ kind: "overloaded", retryable: true });
+    expect(classifyHttpError(402, body({ message: "Insufficient Balance", type: "unknown_error" }))).toMatchObject({ kind: "quota", retryable: false });
+    expect(classifyHttpError(429, body({ code: "Throttling.RateQuota", message: "Requests rate limit exceeded" }))).toMatchObject({ kind: "rate_limit", retryable: true });
+  });
+});

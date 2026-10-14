@@ -64,8 +64,8 @@
       "en": "Fever and cough for 2 days; confused since this afternoon"
     },
     "triageNote": {
-      "zh-CN": "72岁女性，女儿陪同打车来院（21:15到达）。发热、咳嗽2天，今天下午起说话糊涂。分诊生命体征（未吸氧）：T 39.1 ℃，HR 118 次/分，BP 84/48 mmHg，RR 28 次/分，SpO₂ 89%，GCS 14。NEWS2 16分，已直接转入抢救室1床。尚未建立静脉通路，尚未用药。女儿估计体重约60 kg。",
-      "en": "72-year-old woman brought in by her daughter by taxi (arrived 21:15). Fever and cough for 2 days; talking nonsense since this afternoon. Triage vitals on room air: T 39.1 °C, HR 118/min, BP 84/48 mmHg, RR 28/min, SpO₂ 89%, GCS 14. NEWS2 16 — moved straight to resus bay 1. No IV access yet, no medication given. Daughter estimates her weight at about 60 kg."
+      "zh-CN": "72岁女性，女儿陪同打车来院（21:25到达）。发热、咳嗽2天，今天下午起说话糊涂。分诊生命体征（未吸氧）：T 39.1 ℃，HR 118 次/分，BP 84/48 mmHg，RR 28 次/分，SpO₂ 89%，GCS 14。NEWS2 16分，已直接转入抢救室1床。尚未建立静脉通路，尚未用药。女儿估计体重约60 kg。",
+      "en": "72-year-old woman brought in by her daughter by taxi (arrived 21:25). Fever and cough for 2 days; talking nonsense since this afternoon. Triage vitals on room air: T 39.1 °C, HR 118/min, BP 84/48 mmHg, RR 28/min, SpO₂ 89%, GCS 14. NEWS2 16 — moved straight to resus bay 1. No IV access yet, no medication given. Daughter estimates her weight at about 60 kg."
     },
     "tags": [
       {
@@ -445,8 +445,8 @@
         "en": "How has the illness progressed from the start?"
       },
       "answer": {
-        "zh-CN": "女儿：前天下午先是发冷发烧，晚上开始咳嗽；昨天痰变成铁锈色，右边胸口刺痛，走路就喘；今天基本躺着，吃不下东西，下午三四点开始说胡话，我就赶紧打车把她送来了，九点一刻左右到的。",
-        "en": "Daughter: It began the day before yesterday in the afternoon with chills and fever, then a cough that night. Yesterday the phlegm turned rust-coloured, she got a stabbing pain on the right and was breathless walking. Today she's mostly been in bed, couldn't eat, and from about 3 or 4 this afternoon she started talking nonsense, so I brought her straight here by taxi — we got here around quarter past nine."
+        "zh-CN": "女儿：前天下午先是发冷发烧，晚上开始咳嗽；昨天痰变成铁锈色，右边胸口刺痛，走路就喘；今天基本躺着，吃不下东西，下午三四点开始说胡话，我就赶紧打车把她送来了，九点二十五左右到的。",
+        "en": "Daughter: It began the day before yesterday in the afternoon with chills and fever, then a cough that night. Yesterday the phlegm turned rust-coloured, she got a stabbing pain on the right and was breathless walking. Today she's mostly been in bed, couldn't eat, and from about 3 or 4 this afternoon she started talking nonsense, so I brought her straight here by taxi — we got here at about twenty-five past nine."
       },
       "keywords": {
         "zh-CN": [
@@ -1795,7 +1795,8 @@
           "肌力",
           "局灶体征",
           "gcs评分",
-          "病理征"
+          "病理征",
+          "巴宾斯基征"
         ],
         "en": [
           "neuro exam",
@@ -1809,7 +1810,7 @@
         ]
       },
       "finding": {
-        "zh-CN": "GCS 14（E4 V4 M6）：对人物定向正常，对时间和地点定向错误。双侧瞳孔等大等圆，约3 mm，对光反射灵敏。四肢能按指令活动，肌力对称；无面瘫，言语不含糊；双侧巴氏征阴性。",
+        "zh-CN": "GCS 14（E4 V4 M6）：对人物定向正常，对时间和地点定向错误。双侧瞳孔等大等圆，约3 mm，对光反射灵敏。四肢能按指令活动，肌力对称；无面瘫，言语不含糊；双侧巴宾斯基征阴性。",
         "en": "GCS 14 (E4 V4 M6): oriented to person, not to time or place. Pupils equal and round, about 3 mm, briskly reactive. Moves all four limbs to command with symmetrical power; no facial droop; speech not slurred; plantars flexor bilaterally."
       },
       "abnormal": true,
@@ -1820,7 +1821,7 @@
       "id": "ex-meningism",
       "system": "neurological",
       "maneuver": {
-        "zh-CN": "脑膜刺激征（颈强直、克氏征）",
+        "zh-CN": "脑膜刺激征（颈强直、克尼格征）",
         "en": "Meningism (neck stiffness, Kernig's sign)"
       },
       "keywords": {
@@ -1828,6 +1829,7 @@
           "脑膜刺激征",
           "颈强直",
           "克氏征",
+          "克尼格征",
           "颈抵抗"
         ],
         "en": [
@@ -1838,7 +1840,7 @@
         ]
       },
       "finding": {
-        "zh-CN": "颈软，无抵抗；克氏征阴性。",
+        "zh-CN": "颈软，无抵抗；克尼格征阴性。",
         "en": "Neck supple; Kernig's sign negative."
       },
       "abnormal": false,
@@ -2028,7 +2030,7 @@
         "zh-CN": "右下肺支气管呼吸音和湿啰音同前；左肺底及其他肺野未出现新的湿啰音；颈静脉压不高；吸氧下仍呼吸偏快。",
         "en": "Right lower zone bronchial breathing and crackles unchanged; no new crackles at the left base or elsewhere; JVP not raised; still breathing fast on oxygen."
       },
-      "abnormal": false,
+      "abnormal": true,
       "required": false,
       "requires": [],
       "phases": [
@@ -2149,8 +2151,8 @@
         "resus": {
           "available": true,
           "text": {
-            "zh-CN": "静脉血气（未吸氧时采血）：pH 7.35，pCO₂ 3.9 kPa（29 mmHg），HCO₃⁻ 15.8 mmol/L，碱剩余 −8.7 mmol/L，乳酸 4.6 mmol/L（危急值，检验科已电话通知）。",
-            "en": "Venous blood gas (drawn before oxygen): pH 7.35, pCO₂ 3.9 kPa (29 mmHg), HCO₃⁻ 15.8 mmol/L, base excess −8.7 mmol/L, lactate 4.6 mmol/L (critical value — phoned through by the lab)."
+            "zh-CN": "静脉血气：pH 7.35，pCO₂ 3.9 kPa（29 mmHg），HCO₃⁻ 15.8 mmol/L，碱剩余 −8.7 mmol/L，乳酸 4.6 mmol/L（危急值，检验科已电话通知）。",
+            "en": "Venous blood gas: pH 7.35, pCO₂ 3.9 kPa (29 mmHg), HCO₃⁻ 15.8 mmol/L, base excess −8.7 mmol/L, lactate 4.6 mmol/L (critical value — phoned through by the lab)."
           },
           "values": [
             {
@@ -2219,8 +2221,8 @@
         "reassess": {
           "available": true,
           "text": {
-            "zh-CN": "静脉血气（初始复苏后）：pH 7.37，pCO₂ 4.3 kPa（32 mmHg），HCO₃⁻ 18.3 mmol/L，碱剩余 −6.1 mmol/L，乳酸 2.7 mmol/L。",
-            "en": "Venous blood gas (after initial resuscitation): pH 7.37, pCO₂ 4.3 kPa (32 mmHg), HCO₃⁻ 18.3 mmol/L, base excess −6.1 mmol/L, lactate 2.7 mmol/L."
+            "zh-CN": "静脉血气（初始复苏后）：pH 7.36，pCO₂ 4.0 kPa（30 mmHg），HCO₃⁻ 16.8 mmol/L，碱剩余 −7.6 mmol/L，乳酸 3.6 mmol/L（较首次4.6 mmol/L下降约22%，仍>2 mmol/L）。",
+            "en": "Venous blood gas (after initial resuscitation): pH 7.36, pCO₂ 4.0 kPa (30 mmHg), HCO₃⁻ 16.8 mmol/L, base excess −7.6 mmol/L, lactate 3.6 mmol/L (down about 22% from the first 4.6 mmol/L, still > 2 mmol/L)."
           },
           "values": [
             {
@@ -2228,7 +2230,7 @@
                 "zh-CN": "pH（静脉）",
                 "en": "pH (venous)"
               },
-              "value": 7.37,
+              "value": 7.36,
               "unit": "",
               "refLow": 7.31,
               "refHigh": 7.41,
@@ -2239,7 +2241,7 @@
                 "zh-CN": "pCO₂（静脉）",
                 "en": "pCO₂ (venous)"
               },
-              "value": 4.3,
+              "value": 4.0,
               "unit": "kPa",
               "refLow": 5.3,
               "refHigh": 6.7,
@@ -2251,7 +2253,7 @@
                 "zh-CN": "HCO₃⁻（计算）",
                 "en": "HCO₃⁻ (calculated)"
               },
-              "value": 18.3,
+              "value": 16.8,
               "unit": "mmol/L",
               "refLow": 22,
               "refHigh": 29,
@@ -2262,7 +2264,7 @@
                 "zh-CN": "碱剩余",
                 "en": "Base excess"
               },
-              "value": -6.1,
+              "value": -7.6,
               "unit": "mmol/L",
               "refLow": -2,
               "refHigh": 3,
@@ -2273,7 +2275,7 @@
                 "zh-CN": "乳酸",
                 "en": "Lactate"
               },
-              "value": 2.7,
+              "value": 3.6,
               "unit": "mmol/L",
               "refLow": 0.5,
               "refHigh": 2.2,
@@ -2392,8 +2394,8 @@
         "reassess": {
           "available": true,
           "text": {
-            "zh-CN": "静脉血气（初始复苏后）：pH 7.37，pCO₂ 4.3 kPa（32 mmHg），HCO₃⁻ 18.3 mmol/L，碱剩余 −6.1 mmol/L，乳酸 2.7 mmol/L。",
-            "en": "Venous blood gas (after initial resuscitation): pH 7.37, pCO₂ 4.3 kPa (32 mmHg), HCO₃⁻ 18.3 mmol/L, base excess −6.1 mmol/L, lactate 2.7 mmol/L."
+            "zh-CN": "静脉血气（初始复苏后）：pH 7.36，pCO₂ 4.0 kPa（30 mmHg），HCO₃⁻ 16.8 mmol/L，碱剩余 −7.6 mmol/L，乳酸 3.6 mmol/L（较首次4.6 mmol/L下降约22%，仍>2 mmol/L）。",
+            "en": "Venous blood gas (after initial resuscitation): pH 7.36, pCO₂ 4.0 kPa (30 mmHg), HCO₃⁻ 16.8 mmol/L, base excess −7.6 mmol/L, lactate 3.6 mmol/L (down about 22% from the first 4.6 mmol/L, still > 2 mmol/L)."
           },
           "values": [
             {
@@ -2401,7 +2403,7 @@
                 "zh-CN": "pH（静脉）",
                 "en": "pH (venous)"
               },
-              "value": 7.37,
+              "value": 7.36,
               "unit": "",
               "refLow": 7.31,
               "refHigh": 7.41,
@@ -2412,7 +2414,7 @@
                 "zh-CN": "pCO₂（静脉）",
                 "en": "pCO₂ (venous)"
               },
-              "value": 4.3,
+              "value": 4.0,
               "unit": "kPa",
               "refLow": 5.3,
               "refHigh": 6.7,
@@ -2424,7 +2426,7 @@
                 "zh-CN": "HCO₃⁻（计算）",
                 "en": "HCO₃⁻ (calculated)"
               },
-              "value": 18.3,
+              "value": 16.8,
               "unit": "mmol/L",
               "refLow": 22,
               "refHigh": 29,
@@ -2435,7 +2437,7 @@
                 "zh-CN": "碱剩余",
                 "en": "Base excess"
               },
-              "value": -6.1,
+              "value": -7.6,
               "unit": "mmol/L",
               "refLow": -2,
               "refHigh": 3,
@@ -2446,7 +2448,7 @@
                 "zh-CN": "乳酸",
                 "en": "Lactate"
               },
-              "value": 2.7,
+              "value": 3.6,
               "unit": "mmol/L",
               "refLow": 0.5,
               "refHigh": 2.2,
@@ -2494,7 +2496,7 @@
         "resus": {
           "available": true,
           "text": {
-            "zh-CN": "白细胞 18.4×10⁹/L，中性粒细胞 16.3×10⁹/L（88.6%），淋巴细胞 1.1×10⁹/L；血红蛋白 128 g/L，红细胞压积 0.39，MCV 88 fL；血小板 132×10⁹/L。",
+            "zh-CN": "白细胞 18.4×10⁹/L，中性粒细胞 16.3×10⁹/L（88.6%），淋巴细胞 1.1×10⁹/L；血红蛋白 128 g/L，血细胞比容 0.39，MCV 88 fL；血小板 132×10⁹/L。",
             "en": "WBC 18.4 ×10⁹/L, neutrophils 16.3 ×10⁹/L (88.6%), lymphocytes 1.1 ×10⁹/L; haemoglobin 128 g/L, haematocrit 0.39, MCV 88 fL; platelets 132 ×10⁹/L."
           },
           "values": [
@@ -2555,7 +2557,7 @@
             },
             {
               "analyte": {
-                "zh-CN": "红细胞压积",
+                "zh-CN": "血细胞比容",
                 "en": "Haematocrit"
               },
               "value": 0.39,
@@ -2592,7 +2594,7 @@
         "reassess": {
           "available": true,
           "text": {
-            "zh-CN": "白细胞 17.9×10⁹/L，中性粒细胞 15.9×10⁹/L（88.8%），淋巴细胞 1.0×10⁹/L；血红蛋白 118 g/L，红细胞压积 0.36，MCV 88 fL；血小板 124×10⁹/L（较前轻度下降，考虑与稀释有关）。",
+            "zh-CN": "白细胞 17.9×10⁹/L，中性粒细胞 15.9×10⁹/L（88.8%），淋巴细胞 1.0×10⁹/L；血红蛋白 118 g/L，血细胞比容 0.36，MCV 88 fL；血小板 124×10⁹/L（较前轻度下降，考虑与稀释有关）。",
             "en": "WBC 17.9 ×10⁹/L, neutrophils 15.9 ×10⁹/L (88.8%), lymphocytes 1.0 ×10⁹/L; haemoglobin 118 g/L, haematocrit 0.36, MCV 88 fL; platelets 124 ×10⁹/L (slightly lower, likely dilutional)."
           },
           "values": [
@@ -2653,7 +2655,7 @@
             },
             {
               "analyte": {
-                "zh-CN": "红细胞压积",
+                "zh-CN": "血细胞比容",
                 "en": "Haematocrit"
               },
               "value": 0.36,
@@ -2835,8 +2837,8 @@
         "reassess": {
           "available": true,
           "text": {
-            "zh-CN": "钠 134、钾 3.9、氯 101、碳酸氢根 18 mmol/L；阴离子间隙 15 mmol/L；尿素 11.2 mmol/L；肌酐 151 µmol/L；葡萄糖 9.4 mmol/L。",
-            "en": "Sodium 134, potassium 3.9, chloride 101, bicarbonate 18 mmol/L; anion gap 15 mmol/L; urea 11.2 mmol/L; creatinine 151 µmol/L; glucose 9.4 mmol/L."
+            "zh-CN": "钠 134、钾 3.9、氯 100、碳酸氢根 17 mmol/L；阴离子间隙 17 mmol/L；尿素 11.2 mmol/L；肌酐 151 µmol/L；葡萄糖 9.4 mmol/L。",
+            "en": "Sodium 134, potassium 3.9, chloride 100, bicarbonate 17 mmol/L; anion gap 17 mmol/L; urea 11.2 mmol/L; creatinine 151 µmol/L; glucose 9.4 mmol/L."
           },
           "values": [
             {
@@ -2866,7 +2868,7 @@
                 "zh-CN": "氯",
                 "en": "Chloride"
               },
-              "value": 101,
+              "value": 100,
               "unit": "mmol/L",
               "refLow": 98,
               "refHigh": 107,
@@ -2877,7 +2879,7 @@
                 "zh-CN": "碳酸氢根",
                 "en": "Bicarbonate"
               },
-              "value": 18,
+              "value": 17,
               "unit": "mmol/L",
               "refLow": 22,
               "refHigh": 29,
@@ -2888,11 +2890,11 @@
                 "zh-CN": "阴离子间隙（计算）",
                 "en": "Anion gap (calculated)"
               },
-              "value": 15,
+              "value": 17,
               "unit": "mmol/L",
               "refLow": 8,
               "refHigh": 16,
-              "flag": "N"
+              "flag": "H"
             },
             {
               "analyte": {
@@ -4685,8 +4687,8 @@
         "minCount": 4
       },
       "harm": {
-        "zh-CN": "已超过约2 L（>30 mL/kg），仍未开始升压药。对于低氧的肺炎患者，继续盲目补液会加重肺水肿和低氧，而血管麻痹不会因此纠正——应改用去甲肾上腺素，并以动态指标指导是否再补液。",
-        "en": "She has now had more than about 2 L (> 30 mL/kg). In a hypoxaemic patient with pneumonia, further empirical fluid worsens lung water and oxygenation without fixing vasoplegia — start norepinephrine and use dynamic measures before giving more."
+        "zh-CN": "她已输入约2 L（>30 mL/kg）。初始复苏后，是否继续补液应以液体反应性的动态指标（如被动抬腿试验）指导；对于低氧的肺炎患者，继续经验性快速补液会加重肺水肿和低氧，却不能纠正血管麻痹——低血压持续时应开始或上调去甲肾上腺素。",
+        "en": "She has already had about 2 L (> 30 mL/kg). After initial resuscitation, further fluid should be guided by dynamic measures of fluid responsiveness (e.g. a passive leg raise); in a hypoxaemic patient with pneumonia, more empirical boluses worsen lung water and oxygenation without fixing vasoplegia — start or up-titrate norepinephrine for persistent hypotension."
       },
       "response": {
         "zh-CN": "500 mL平衡晶体液快速输入。注意血压是否只是短暂上升；每次推注后复评再充盈时间、意识、尿量和肺部。",
@@ -4950,8 +4952,8 @@
         }
       },
       "harm": {
-        "zh-CN": "疑似脓毒性休克每延迟一小时使用抗菌药物，死亡率都会上升。体征和床旁胸片已足以支持肺部感染灶；不稳定患者外出CT既有转运风险，又推迟了抗菌药物。",
-        "en": "Every hour of antibiotic delay in suspected septic shock increases mortality. Her signs and the portable chest film already localise the source; sending an unstable patient to CT adds transfer risk and postpones antibiotics."
+        "zh-CN": "观察性研究显示，疑似脓毒性休克患者抗菌药物每延迟一小时，死亡率随之升高。体征和床旁胸片已足以支持肺部感染灶；不稳定患者外出CT既有转运风险，又推迟了抗菌药物。",
+        "en": "In suspected septic shock, observational data link each hour of antibiotic delay with higher mortality. Her signs and the portable chest film already localise the source; sending an unstable patient to CT adds transfer risk and postpones antibiotics."
       },
       "response": {
         "zh-CN": "陈护士：好的，那抗生素先不配……（她看了一眼监护仪，面露担忧）",
@@ -5119,18 +5121,9 @@
         "steroid-given"
       ],
       "maxDoses": 1,
-      "contraindicatedWhen": {
-        "not": {
-          "intervened": "norepinephrine"
-        }
-      },
-      "harm": {
-        "zh-CN": "糖皮质激素不能替代升压药，也不能及时纠正MAP。SSC 2021建议仅在持续需要升压药（如去甲肾上腺素≥0.25 µg/kg/min且≥4小时）时加用氢化可的松200 mg/d。此刻应先补液并开始去甲肾上腺素。",
-        "en": "Steroids do not replace a vasopressor and will not restore MAP in time. SSC 2021 suggests adding hydrocortisone 200 mg/day only for an ongoing vasopressor requirement (e.g. norepinephrine ≥ 0.25 µg/kg/min for ≥ 4 h). Fluids and norepinephrine come first."
-      },
       "response": {
-        "zh-CN": "氢化可的松已给予，对血压没有即刻作用。若去甲肾上腺素需求持续升高，ICU会再评估激素指征（重症CAP的激素证据也在ICU阶段综合考虑）。",
-        "en": "Hydrocortisone given; it has no immediate effect on blood pressure. If the norepinephrine requirement keeps rising, ICU will reassess steroids (the severe-CAP steroid evidence is weighed there too)."
+        "zh-CN": "氢化可的松50 mg已静脉注射，对血压没有即刻作用，不能替代升压药——补液后MAP仍<65 mmHg时应开始去甲肾上腺素。SSC 2021建议对持续需要升压药的脓毒性休克加用氢化可的松（200 mg/d）；重症CAP的糖皮质激素治疗（SCCM 2024重点更新）由ICU决定剂量和疗程。",
+        "en": "Hydrocortisone 50 mg given IV. It has no immediate effect on blood pressure and does not replace a vasopressor — if MAP stays < 65 mmHg after fluids, start norepinephrine. SSC 2021 suggests adding hydrocortisone (200 mg/day) in septic shock with an ongoing vasopressor requirement; corticosteroids for severe CAP (SCCM 2024 focused update) are part of the ICU plan for dose and duration."
       }
     },
     {
@@ -5155,8 +5148,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "对乙酰氨基酚 1 g 静脉滴注（15分钟），必要时每6小时一次，24小时不超过4 g",
-        "en": "Paracetamol 1 g IV over 15 min, every 6 h if needed, max 4 g/24 h"
+        "zh-CN": "对乙酰氨基酚 1 g 静脉滴注（15分钟），必要时重复，间隔至少6小时（肌酐清除率≤30 mL/min）；存在脱水、进食差等肝毒性危险因素，24小时不超过3 g",
+        "en": "Paracetamol 1 g IV over 15 min, repeated if needed at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity"
       },
       "requires": [
         "medications",
@@ -5352,8 +5345,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "她能保护气道（GCS 14），吸氧后氧合可达标，没有插管指征；在未纠正的休克中诱导插管极易引起严重低血压甚至心搏骤停。若病情进展需要插管，应先复苏并准备好升压药。",
-        "en": "She is protecting her airway (GCS 14) and oxygenates on supplemental oxygen — there is no indication to intubate, and induction in uncorrected shock risks profound hypotension or arrest. If she later needs intubation, resuscitate first with a vasopressor running."
+        "zh-CN": "只要她还能保护气道、吸氧后氧合可达标，就没有插管指征；在未用升压药纠正的休克中诱导插管极易引起严重低血压甚至心搏骤停。若病情进展需要插管，应先复苏，并在升压药运行下进行。",
+        "en": "While she can protect her airway and oxygenates on supplemental oxygen there is no indication to intubate, and inducing anaesthesia in shock without a vasopressor running risks profound hypotension or arrest. If she later needs intubation, resuscitate first and intubate with a vasopressor running."
       },
       "response": {
         "zh-CN": "诱导后血压骤降，插管完成，开始机械通气。",
@@ -5475,8 +5468,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "需要升压药维持血压的脓毒性休克、CURB-65 4分，已符合重症CAP（主要标准：需血管活性药物），应收入ICU；普通病房无法提供升压药滴定和密切监测。",
-        "en": "Septic shock needing a vasopressor and a CURB-65 of 4 meet severe-CAP criteria (major criterion: vasopressor requirement) — she needs ICU; a general ward cannot titrate vasopressors or monitor her closely enough."
+        "zh-CN": "需要升压药的脓毒性休克本身就符合ATS/IDSA重症CAP的主要标准（她还满足3项次要标准，CURB-65为4分），应收入ICU；普通病房无法提供升压药滴定和密切监测。",
+        "en": "Septic shock needing a vasopressor is itself an ATS/IDSA major criterion for severe CAP (she also meets 3 minor criteria, and CURB-65 is 4) — she needs ICU; a general ward cannot titrate vasopressors or monitor her closely enough."
       },
       "response": {
         "zh-CN": "病房护士长来电：病房没有升压药泵入和有创监测条件，要求重新评估去向。",
@@ -5687,8 +5680,8 @@
         },
         "severity": "info",
         "message": {
-          "zh-CN": "陈护士：医生，到院已经半小时了，抗生素要不要先配上？药房可以马上送来。",
-          "en": "Nurse Chen: Doctor, it's been half an hour since she arrived — shall I draw up the antibiotics? Pharmacy can send them straight away."
+          "zh-CN": "陈护士：医生，她进抢救室已经半小时了，抗生素要不要先配上？药房可以马上送来。",
+          "en": "Nurse Chen: Doctor, she's been in resus for half an hour — shall I draw up the antibiotics? Pharmacy can send them straight away."
         }
       },
       {
@@ -5717,8 +5710,8 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "陈护士：已经一个小时了还没用上抗生素！她越来越叫不醒，花斑已经蔓延到大腿，血压还在往下掉。",
-          "en": "Nurse Chen: It's been an hour and she still hasn't had antibiotics! She's getting harder to rouse, the mottling has spread up her thighs and her pressure keeps falling."
+          "zh-CN": "陈护士：进抢救室已经一个小时了，还没用上抗生素！她越来越叫不醒，花斑已经蔓延到大腿，血压还在往下掉。",
+          "en": "Nurse Chen: She's been in resus for an hour and still hasn't had antibiotics! She's getting harder to rouse, the mottling has spread up her thighs and her pressure keeps falling."
         }
       },
       {
@@ -6248,8 +6241,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SSC 2021：对可能的脓毒性休克或高度可能的脓毒症，建议识别后1小时内给予抗菌药物；在不明显延误的前提下先留取血培养。休克患者抗菌药物每延迟一小时，死亡率都会上升。",
-            "en": "Correct. SSC 2021 recommends antimicrobials within 1 hour of recognising possible septic shock or probable sepsis, with blood cultures first provided this causes no substantial delay. In shock, each hour of delay increases mortality."
+            "zh-CN": "正确。SSC 2021：对可能的脓毒性休克或高度可能的脓毒症，建议识别后1小时内给予抗菌药物；在不明显延误的前提下先留取血培养。观察性研究显示，休克患者抗菌药物每延迟一小时，死亡率随之升高。",
+            "en": "Correct. SSC 2021 recommends antimicrobials within 1 hour of recognising possible septic shock or probable sepsis, with blood cultures first provided this causes no substantial delay. In shock, observational data link each hour of delay with higher mortality."
           }
         },
         {
@@ -6468,8 +6461,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。激素不能替代升压药；仅在持续需要升压药（如去甲肾上腺素≥0.25 µg/kg/min且≥4小时）时加用氢化可的松。",
-            "en": "No. Steroids do not replace a vasopressor; hydrocortisone is added only for an ongoing vasopressor requirement (e.g. norepinephrine ≥ 0.25 µg/kg/min for ≥ 4 h)."
+            "zh-CN": "不妥。激素起效慢，不能替代升压药，也不能及时纠正MAP——应先开始去甲肾上腺素。SSC 2021建议在持续需要升压药（如去甲肾上腺素≥0.25 µg/kg/min且≥4小时）时加用氢化可的松；重症CAP的激素治疗是ICU的后续决策，而不是升压药的替代。",
+            "en": "No. Steroids act slowly and neither replace a vasopressor nor restore MAP in time — start norepinephrine. SSC 2021 suggests adding hydrocortisone for an ongoing vasopressor requirement (e.g. norepinephrine ≥ 0.25 µg/kg/min for ≥ 4 h); steroids for severe CAP are a later ICU decision, never a substitute for a vasopressor."
           }
         },
         {
@@ -6531,8 +6524,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。她的SOFA（不含呼吸项）至少5分：GCS 14（1分）、MAP < 70 mmHg（1分；去甲肾上腺素≤0.1 µg/kg/min时计3分）、肌酐156 µmol/L（1分）、血小板132×10⁹/L（1分）、胆红素24 µmol/L（1分）；补液后仍需去甲肾上腺素，乳酸4.6 mmol/L——符合脓毒性休克。",
-            "en": "Correct. Her SOFA without the respiratory component is at least 5: GCS 14 (1), MAP < 70 mmHg (1; 3 on norepinephrine ≤ 0.1 µg/kg/min), creatinine 156 µmol/L (1), platelets 132 ×10⁹/L (1), bilirubin 24 µmol/L (1). She needs norepinephrine after fluids and her lactate was 4.6 mmol/L — septic shock."
+            "zh-CN": "正确。她的SOFA（不含呼吸项）至少5分：GCS 14（1分）、MAP < 70 mmHg（1分；去甲肾上腺素≤0.1 µg/kg/min时计3分）、肌酐156 µmol/L（1分）、血小板132×10⁹/L（1分）、胆红素24 µmol/L（1分）；补液后仍需去甲肾上腺素，乳酸到院时4.6 mmol/L、初始补液后仍为3.6 mmol/L（>2 mmol/L）——符合脓毒性休克。",
+            "en": "Correct. Her SOFA without the respiratory component is at least 5: GCS 14 (1), MAP < 70 mmHg (1; 3 on norepinephrine ≤ 0.1 µg/kg/min), creatinine 156 µmol/L (1), platelets 132 ×10⁹/L (1), bilirubin 24 µmol/L (1). She needs norepinephrine after fluids, and her lactate was 4.6 mmol/L on arrival and still 3.6 mmol/L (> 2 mmol/L) after the initial fluids — septic shock."
           }
         },
         {
@@ -6811,8 +6804,8 @@
       "id": "r-abx-1h",
       "domain": "management",
       "text": {
-        "zh-CN": "到院60分钟内给予有效的静脉经验性抗菌药物",
-        "en": "Gave effective IV empirical antibiotics within 60 minutes of arrival"
+        "zh-CN": "到达抢救室60分钟内给予有效的静脉经验性抗菌药物",
+        "en": "Gave effective IV empirical antibiotics within 60 minutes of reaching resus"
       },
       "weight": 2,
       "met": {
@@ -6892,8 +6885,8 @@
       "id": "r-safety",
       "domain": "safety",
       "text": {
-        "zh-CN": "避免有害选择：限制补液、为CT延误抗生素、升压药前用激素、无指征插管、收普通病房",
-        "en": "Avoided harmful choices: fluid restriction, delaying antibiotics for CT, steroids before a vasopressor, unindicated intubation, ward admission"
+        "zh-CN": "避免有害选择：限制补液、为CT延误抗生素、无指征插管、收普通病房",
+        "en": "Avoided harmful choices: fluid restriction, delaying antibiotics for CT, unindicated intubation, ward admission"
       },
       "weight": 2,
       "met": {
@@ -6915,11 +6908,6 @@
           },
           {
             "not": {
-              "flag": "steroid-before-pressor"
-            }
-          },
-          {
-            "not": {
               "intervened": "intubation"
             }
           },
@@ -6935,8 +6923,8 @@
       "id": "r-icu",
       "domain": "efficiency",
       "text": {
-        "zh-CN": "到院90分钟内联系ICU",
-        "en": "Referred to ICU within 90 minutes of arrival"
+        "zh-CN": "到达抢救室90分钟内联系ICU",
+        "en": "Referred to ICU within 90 minutes of reaching resus"
       },
       "weight": 1,
       "met": {
@@ -6987,8 +6975,8 @@
         "en": "Chen Jing (resus nurse)"
       },
       "knowledge": {
-        "zh-CN": "分诊交班：72岁女性，女儿打车送来，21:15到院；发热咳嗽2天、今天下午起说胡话；分诊（未吸氧）T 39.1 ℃、HR 118、BP 84/48、RR 28、SpO₂ 89%、GCS 14，NEWS2 16分，直接入抢救室1床；尚未建立静脉通路、未用药；女儿估计体重约60 kg，手机里有药单。抢救室1床有监护仪、墙壁氧气和负压吸引、两台输液泵；血培养瓶在抢救室柜子里；急诊药房备有头孢曲松、阿奇霉素、莫西沙星、哌拉西林他唑巴坦、万古霉素和去甲肾上腺素，约5分钟送到。医院规定去甲肾上腺素可经近端粗外周静脉短期输注，需每小时检查穿刺点。床旁胸片约20分钟出报告；CT需等约30分钟并需监护转运；ICU住院总可电话联系。会复述医嘱（闭环沟通），只报告结果数值，不解读、不给出诊断。",
-        "en": "Triage handover: 72-year-old woman brought by her daughter by taxi, arrived 21:15; fever and cough for 2 days, talking nonsense since this afternoon; triage on room air T 39.1 °C, HR 118, BP 84/48, RR 28, SpO₂ 89%, GCS 14, NEWS2 16, straight to resus bay 1; no IV access or medication yet; daughter estimates her weight at about 60 kg and has the medication list on her phone. Resus bay 1 has a monitor, wall oxygen and suction, and two infusion pumps; blood culture bottles are in the resus cupboard; the ED pharmacy stocks ceftriaxone, azithromycin, moxifloxacin, piperacillin–tazobactam, vancomycin and norepinephrine and can deliver in about 5 minutes. Hospital policy allows short-term norepinephrine through a proximal large-bore peripheral cannula with hourly site checks. A portable chest film is reported in about 20 minutes; CT has a ~30-minute wait and needs a monitored transfer; the ICU registrar can be phoned. She reads back orders (closed loop), reports result values only, and does not interpret or diagnose."
+        "zh-CN": "分诊交班：72岁女性，女儿打车送来，21:25到院；发热咳嗽2天、今天下午起说胡话；分诊（未吸氧）T 39.1 ℃、HR 118、BP 84/48、RR 28、SpO₂ 89%、GCS 14，NEWS2 16分，直接入抢救室1床；尚未建立静脉通路、未用药；女儿估计体重约60 kg，手机里有药单。抢救室1床有监护仪、墙壁氧气和负压吸引、两台输液泵；血培养瓶在抢救室柜子里；急诊药房备有头孢曲松、阿奇霉素、莫西沙星、哌拉西林他唑巴坦、万古霉素和去甲肾上腺素，约5分钟送到。医院规定去甲肾上腺素可经近端粗外周静脉短期输注，需每小时检查穿刺点。床旁胸片约20分钟出报告；CT需等约30分钟并需监护转运；ICU住院总可电话联系。会复述医嘱（闭环沟通），只报告结果数值，不解读、不给出诊断。",
+        "en": "Triage handover: 72-year-old woman brought by her daughter by taxi, arrived 21:25; fever and cough for 2 days, talking nonsense since this afternoon; triage on room air T 39.1 °C, HR 118, BP 84/48, RR 28, SpO₂ 89%, GCS 14, NEWS2 16, straight to resus bay 1; no IV access or medication yet; daughter estimates her weight at about 60 kg and has the medication list on her phone. Resus bay 1 has a monitor, wall oxygen and suction, and two infusion pumps; blood culture bottles are in the resus cupboard; the ED pharmacy stocks ceftriaxone, azithromycin, moxifloxacin, piperacillin–tazobactam, vancomycin and norepinephrine and can deliver in about 5 minutes. Hospital policy allows short-term norepinephrine through a proximal large-bore peripheral cannula with hourly site checks. A portable chest film is reported in about 20 minutes; CT has a ~30-minute wait and needs a monitored transfer; the ICU registrar can be phoned. She reads back orders (closed loop), reports result values only, and does not interpret or diagnose."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -7055,8 +7043,8 @@
         "en": "Pharmacist Zhao (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h仅用于持续升压药需求。对乙酰氨基酚1 g IV q6h，24小时不超过4 g。",
-        "en": "Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h only for an ongoing vasopressor requirement. Paracetamol 1 g IV q6h, max 4 g/24 h."
+        "zh-CN": "剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，间隔至少6小时（肌酐清除率≤30 mL/min）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。",
+        "en": "Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -7068,8 +7056,8 @@
         "en": "Dr Sun (ICU registrar)"
       },
       "knowledge": {
-        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路；若去甲肾上腺素需求升至≥0.25 µg/kg/min并持续，将评估氢化可的松。不评论学习者尚未获得的结果。",
-        "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider hydrocortisone if norepinephrine needs rise to ≥ 0.25 µg/kg/min and persist. Does not comment on results the learner does not have."
+        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路；若去甲肾上腺素需求升至≥0.25 µg/kg/min并持续，将评估氢化可的松，并综合考虑重症CAP的糖皮质激素治疗。不评论学习者尚未获得的结果。",
+        "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider hydrocortisone if norepinephrine needs rise to ≥ 0.25 µg/kg/min and persist, and will weigh corticosteroids for severe CAP. Does not comment on results the learner does not have."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -7081,8 +7069,8 @@
       "en": "Severe right lower lobe community-acquired pneumonia with septic shock"
     },
     "conclusion": {
-      "zh-CN": "72岁女性，右下叶社区获得性肺炎导致脓毒性休克（Sepsis-3：初始液体复苏后仍需去甲肾上腺素维持MAP ≥ 65 mmHg，初始乳酸4.6 mmol/L）。痰涂片见大量革兰阳性矛头状双球菌、肺炎链球菌尿抗原阳性，提示肺炎链球菌可能性大（血培养待回报）。合并急性肾损伤（KDIGO 2期：肌酐156 µmol/L，为8个月前基线78 µmol/L的2.0倍，伴少尿）、脓毒症相关谵妄（4AT 7分）和低氧血症。CURB-65 4分；符合ATS/IDSA重症CAP（1项主要标准：需升压药；3项次要标准：意识障碍、尿素升高、需积极补液的低血压）。正确处理：吸氧并滴定至94–98%、抗菌药物前留取两套血培养、1小时内头孢曲松+阿奇霉素、平衡晶体液分次推注并复评、外周起始去甲肾上腺素至MAP ≥ 65 mmHg、复查乳酸（4.6→2.7 mmol/L，清除约41%）、停用二甲双胍/降压药/NSAIDs、收入ICU。",
-      "en": "A 72-year-old woman with right lower lobe community-acquired pneumonia causing septic shock (Sepsis-3: norepinephrine needed to keep MAP ≥ 65 mmHg after initial fluid resuscitation, initial lactate 4.6 mmol/L). Numerous Gram-positive lancet-shaped diplococci on sputum and a positive pneumococcal urinary antigen make Streptococcus pneumoniae likely (blood cultures pending). Complications: acute kidney injury (KDIGO stage 2: creatinine 156 µmol/L, 2.0 × the baseline of 78 µmol/L from 8 months ago, with oliguria), sepsis-associated delirium (4AT 7) and hypoxaemia. CURB-65 4; ATS/IDSA severe CAP (1 major criterion — vasopressor; 3 minor — confusion, uraemia, hypotension needing aggressive fluids). Correct management: oxygen titrated to 94–98%, two blood-culture sets before antibiotics, ceftriaxone + azithromycin within the hour, balanced crystalloid boluses with reassessment, peripheral norepinephrine to MAP ≥ 65 mmHg, repeat lactate (4.6 → 2.7 mmol/L, about 41% clearance), metformin/antihypertensives/NSAIDs held, ICU admission."
+      "zh-CN": "72岁女性，右下叶社区获得性肺炎导致脓毒性休克（Sepsis-3：初始液体复苏后仍需去甲肾上腺素维持MAP ≥ 65 mmHg，乳酸到院时4.6 mmol/L、初始补液后3.6 mmol/L）。痰涂片见大量革兰阳性矛头状双球菌、肺炎链球菌尿抗原阳性，提示肺炎链球菌可能性大（血培养待回报）。合并急性肾损伤（KDIGO 2期：肌酐156 µmol/L，为8个月前基线78 µmol/L的2.0倍，伴少尿）、脓毒症相关谵妄（4AT 7分）和低氧血症。CURB-65 4分；符合ATS/IDSA重症CAP（1项主要标准：需升压药；3项次要标准：意识障碍、尿素升高、需积极补液的低血压）。正确处理：吸氧并滴定至94–98%、抗菌药物前留取两套血培养、1小时内头孢曲松+阿奇霉素、平衡晶体液分次推注并复评、外周起始去甲肾上腺素至MAP ≥ 65 mmHg、复查乳酸（4.6→3.6 mmol/L，下降约22%）、停用二甲双胍/降压药/NSAIDs、收入ICU。",
+      "en": "A 72-year-old woman with right lower lobe community-acquired pneumonia causing septic shock (Sepsis-3: norepinephrine needed to keep MAP ≥ 65 mmHg after initial fluid resuscitation; lactate 4.6 mmol/L on arrival and 3.6 mmol/L after initial fluids). Numerous Gram-positive lancet-shaped diplococci on sputum and a positive pneumococcal urinary antigen make Streptococcus pneumoniae likely (blood cultures pending). Complications: acute kidney injury (KDIGO stage 2: creatinine 156 µmol/L, 2.0 × the baseline of 78 µmol/L from 8 months ago, with oliguria), sepsis-associated delirium (4AT 7) and hypoxaemia. CURB-65 4; ATS/IDSA severe CAP (1 major criterion — vasopressor; 3 minor — confusion, uraemia, hypotension needing aggressive fluids). Correct management: oxygen titrated to 94–98%, two blood-culture sets before antibiotics, ceftriaxone + azithromycin within the hour, balanced crystalloid boluses with reassessment, peripheral norepinephrine to MAP ≥ 65 mmHg, repeat lactate (4.6 → 3.6 mmol/L, down about 22%), metformin/antihypertensives/NSAIDs held, ICU admission."
     },
     "keyReasoning": [
       {
@@ -7142,12 +7130,12 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "SSC 2021“1小时”要点：测乳酸；不延误前提下先留血培养；疑似休克1小时内给予广谱抗菌药物；低灌注（低血压或乳酸≥4 mmol/L）时3小时内至少30 mL/kg晶体液（首选平衡液）；补液中/后MAP<65 mmHg开始升压药；乳酸升高者复查乳酸。",
-        "en": "SSC 2021 hour-1 essentials: measure lactate; take blood cultures first if this causes no delay; broad-spectrum antimicrobials within 1 hour for possible shock; at least 30 mL/kg crystalloid (balanced preferred) within 3 hours for hypoperfusion (hypotension or lactate ≥ 4 mmol/L); vasopressors if MAP < 65 mmHg during or after fluids; repeat a raised lactate."
+        "zh-CN": "早期集束化处理（SSC 2018“1小时集束化”，与SSC 2021推荐一致）：测乳酸，升高者复查；不明显延误的前提下先留血培养；疑似休克1小时内给予广谱抗菌药物；低灌注（低血压或乳酸≥4 mmol/L）时3小时内给予至少30 mL/kg晶体液（首选平衡液；属弱推荐，需反复复评并个体化）；补液中/后MAP<65 mmHg开始升压药。",
+        "en": "Early bundle (the SSC 2018 'Hour-1 bundle', consistent with SSC 2021): measure lactate and repeat it if raised; take blood cultures first if this causes no substantial delay; broad-spectrum antimicrobials within 1 hour for possible shock; at least 30 mL/kg crystalloid within 3 hours for hypoperfusion (hypotension or lactate ≥ 4 mmol/L) — balanced preferred, a weak recommendation, so reassess and individualise; vasopressors if MAP < 65 mmHg during or after fluids."
       },
       {
-        "zh-CN": "去甲肾上腺素是一线升压药，可经近端粗外周静脉起始；血管加压素为二线；不推荐多巴胺作为一线。氢化可的松（200 mg/d）用于持续需要升压药者，不能替代升压药；重症CAP的激素证据（如CAPE COD试验，排除了休克患者）在ICU阶段综合考虑。",
-        "en": "Norepinephrine is first line and can start through a proximal large-bore peripheral cannula; vasopressin is second line; dopamine is not recommended first line. Hydrocortisone (200 mg/day) is for an ongoing vasopressor requirement and never replaces a vasopressor; severe-CAP steroid evidence (e.g. the CAPE COD trial, which excluded patients in shock) is weighed in ICU."
+        "zh-CN": "去甲肾上腺素是一线升压药，可经近端粗外周静脉起始；血管加压素为二线；不推荐多巴胺作为一线。激素不能替代升压药：SSC 2021建议持续需要升压药时加用氢化可的松（200 mg/d）；SCCM 2024重点更新推荐重症细菌性CAP使用糖皮质激素（CAPE COD试验排除了脓毒性休克患者），具体方案由ICU决定。",
+        "en": "Norepinephrine is first line and can start through a proximal large-bore peripheral cannula; vasopressin is second line; dopamine is not recommended first line. Steroids never replace a vasopressor: SSC 2021 suggests hydrocortisone (200 mg/day) for an ongoing vasopressor requirement, and the SCCM 2024 focused update recommends corticosteroids in severe bacterial CAP (the CAPE COD trial excluded patients in septic shock); the regimen is decided in ICU."
       },
       {
         "zh-CN": "氧疗：无高碳酸血症风险者目标SpO₂ 94–98%；危重初始可用储氧面罩，但稳定后应下调，避免高氧。",
@@ -7178,6 +7166,7 @@
       "O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax 2017.",
       "Kidney Disease: Improving Global Outcomes (KDIGO) Acute Kidney Injury Work Group. KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney Int Suppl 2012.",
       "Dequin PF, Meziani F, Quenot JP, et al. Hydrocortisone in Severe Community-Acquired Pneumonia. N Engl J Med 2023.",
+      "Chaudhuri D, Nei AM, Rochwerg B, et al. 2024 Focused Update: Guidelines on Use of Corticosteroids in Sepsis, Acute Respiratory Distress Syndrome, and Community-Acquired Pneumonia. Crit Care Med 2024.",
       "Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. London: RCP, 2017.",
       "Bellelli G, Morandi A, Davis DH, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing 2014."
     ],
@@ -7807,11 +7796,11 @@
       "winters": "expected arterial pCO2 = 1.5 × 16 + 8 = 32 ± 2 mmHg; venous 29 mmHg (arterial ≈ 23–25) → concurrent respiratory alkalosis",
       "vbg_hh_initial": "pH 7.35, pCO2 29 mmHg → HCO3 = 0.0307 × 29 × 10^(7.35 − 6.1) = 15.8; BE ≈ 0.93 × (15.8 − 24.4 + 14.8 × (−0.05)) = −8.7",
       "vbg_hh_repeat_early": "pH 7.33, pCO2 28 mmHg → HCO3 14.6; BE −10.1",
-      "vbg_hh_post": "pH 7.37, pCO2 32 mmHg → HCO3 18.3; BE −6.1",
-      "kpa_conversions": "28 mmHg = 3.7 kPa; 29 = 3.9; 32 = 4.3",
+      "vbg_hh_post": "pH 7.36, pCO2 30 mmHg → HCO3 = 0.0307 × 30 × 10^(7.36 − 6.1) = 16.8; BE ≈ 0.93 × (16.8 − 24.4 + 14.8 × (−0.04)) = −7.6",
+      "kpa_conversions": "28 mmHg = 3.7 kPa; 29 = 3.9; 30 = 4.0",
       "corrected_sodium": "133 + 0.288 × (10.8 − 5.6) ≈ 134.5 (Katz) / ≈ 135.3 (Hillier) → ≈ 135 mmol/L",
-      "anion_gap_post": "134 − (101 + 18) = 15; albumin-corrected 15 + 0.25 × (40 − 29) ≈ 17.8",
-      "lactate_clearance": "(4.6 − 2.7)/4.6 = 41%",
+      "anion_gap_post": "134 − (100 + 17) = 17; albumin-corrected 17 + 0.25 × (40 − 29) ≈ 19.8 (fall of ~1 matches the lactate fall of 1.0)",
+      "lactate_clearance": "(4.6 − 3.6)/4.6 = 22% over ~30–60 simulated min (realistic; ≥ 10% target met, still > 2 mmol/L so the Sepsis-3 shock criterion holds after fluids)",
       "kdigo": "156/78 = 2.0 → stage 2",
       "bun": "urea 11.8 mmol/L × 2.8 = BUN 33 mg/dL",
       "creatinine_mgdl": "156/88.4 = 1.76 mg/dL",

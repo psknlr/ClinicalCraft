@@ -95,6 +95,9 @@ interface AutoWalk {
   path: { x: number; z: number }[];
   index: number;
   goal: { x: number; z: number };
+  /** Arrival radius: 1 m, or the reachable distance to a goal inside furniture (+ .35). */
+  arrive: number;
+  replans: number;
   resolve: () => void;
   reject: (e: Error) => void;
   lastProgress: number;
@@ -798,13 +801,15 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     const w = autoWalk;
     if (!w) return null;
     const dGoal = Math.hypot(w.goal.x - player.x, w.goal.z - player.z);
-    if (dGoal <= 1 || (w.index >= w.path.length && dGoal < 1.6)) {
+    if (dGoal <= w.arrive) {
       cancelWalk(null);
       return null;
     }
     if (w.index >= w.path.length) {
-      cancelWalk(new Error("unreachable"));
-      return null;
+      if (!replan(w)) {
+        cancelWalk(new Error(S.unreachable));
+        return null;
+      }
     }
     let wp = w.path[w.index];
     while (Math.hypot(wp.x - player.x, wp.z - player.z) < 0.35 && w.index < w.path.length - 1) wp = w.path[++w.index];
@@ -822,9 +827,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     if (dGoal < w.bestDist - 0.05) {
       w.bestDist = dGoal;
       w.lastProgress = now;
-    } else if (now - w.lastProgress > 4000) {
-      cancelWalk(new Error("stuck"));
-      return null;
+    } else if (now - w.lastProgress > 3000) {
+      // blocked (an NPC stepped in, a door swung): re-plan from here, give up after 3 tries
+      if (!replan(w)) {
+        cancelWalk(new Error("stuck"));
+        return null;
+      }
+      w.lastProgress = now;
     }
     const want = Math.atan2(-(wp.x - player.x), -(wp.z - player.z));
     let dy = want - yaw;
@@ -832,6 +841,27 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     yaw += dy * Math.min(1, 0.18);
     pitch += (0 - pitch) * 0.1;
     return { forward: Math.abs(dy) < 1.2 ? 1 : 0.15, side: 0, sprint: Math.hypot(wp.x - player.x, wp.z - player.z) > 6 };
+  }
+
+  const NAV_RADIUS = PHYSICS.radius + 0.08;
+
+  function planPath(goal: { x: number; z: number }): { path: { x: number; z: number }[]; arrive: number } | null {
+    navGrid = buildNavGrid(walkBounds, ctx.colliders.values(), { cell: 0.5, radius: NAV_RADIUS });
+    const path = findPath(navGrid, { x: player.x, z: player.z }, goal);
+    if (!path || !path.length) return null;
+    const end = path[path.length - 1];
+    return { path, arrive: Math.max(1, Math.hypot(end.x - goal.x, end.z - goal.z) + 0.35) };
+  }
+
+  function replan(w: AutoWalk): boolean {
+    if (w.replans >= 3) return false;
+    w.replans++;
+    const p = planPath(w.goal);
+    if (!p) return false;
+    w.path = p.path;
+    w.index = 0;
+    w.arrive = Math.max(w.arrive, p.arrive);
+    return true;
   }
 
   function walkTo(target: { x: number; z: number }, signal?: AbortSignal): Promise<void> {
@@ -845,14 +875,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         resolve();
         return;
       }
-      navGrid = buildNavGrid(walkBounds, ctx.colliders.values(), { cell: 0.5 });
-      const path = findPath(navGrid, { x: player.x, z: player.z }, target);
-      if (!path || !path.length) {
+      const plan = planPath(target);
+      if (!plan) {
         reject(new Error(S.unreachable));
         return;
       }
       const now = performance.now();
-      const w: AutoWalk = { path, index: 0, goal: { x: target.x, z: target.z }, resolve, reject, lastProgress: now, bestDist: Infinity, signal };
+      const w: AutoWalk = { path: plan.path, index: 0, goal: { x: target.x, z: target.z }, arrive: plan.arrive, replans: 0, resolve, reject, lastProgress: now, bestDist: Infinity, signal };
       if (signal) {
         w.onAbort = () => {
           if (autoWalk === w) cancelWalk(new DOMException("Aborted", "AbortError") as unknown as Error);

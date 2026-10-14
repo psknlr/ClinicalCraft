@@ -30,7 +30,7 @@
 * **Fluids:** each 500 mL bolus gives a small persistent effect (+1.5/+0.5 mmHg, HR −2) and a transient one (+4/+2 mmHg for ~15 min) — the learner sees a pressure that rises and then falls back, which is the cue to start norepinephrine. In the reference path MAP is ~62 mmHg at reassessment and ~70–73 mmHg once norepinephrine (+14/+8 mmHg) is running.
 * **Oxygen:** target effects — nasal cannula 95 %, Venturi 0.40 97 %, reservoir mask 100 % (rubric expects 94–98 % at the end, so step down after a reservoir mask).
 * **Scenario events:** cultures-before-antibiotics flag; CT-before-antibiotics warning; nurse prompt at 30 min without antibiotics; at 60 min without antibiotics a critical deterioration (`abx-late`, baseline BP 78/44, GCS 13); peri-arrest at 120 min with neither antibiotics nor norepinephrine; dopamine → atrial fibrillation; hydrocortisone before a vasopressor → pharmacist warning; a 5th bolus → bilateral crackles (RR 32); ICU not called by 90 min → warning.
-* **Phase-dependent results:** `lactate-repeat` gives 5.1 mmol/L (rising) in `resus` and 2.7 mmol/L (41 % clearance) in `reassess`; every other test also has a `reassess` result reflecting post-fluid dilution (e.g. Hb 118 g/L, albumin 29 g/L) so late orders never show "no record".
+* **Phase-dependent results:** `lactate-repeat` gives 5.1 mmol/L (rising) in `resus` and 3.6 mmol/L (≈ 22 % fall, still > 2 mmol/L) in `reassess` — a realistic fall for the ~30–60 simulated minutes the reassess phase represents; every other test also has a `reassess` result reflecting post-fluid dilution (e.g. Hb 118 g/L, albumin 29 g/L) so late orders never show "no record".
 
 ## Wrong choices and how they score
 
@@ -39,7 +39,7 @@
 | Fluid restriction | `contraindicated` (always) |
 | "Hold antibiotics until CT" | `contraindicated` while no antibiotic given; CT ordered first sets `ct-before-abx` |
 | Dopamine | `contraindicated` (always); AF event |
-| Hydrocortisone before norepinephrine | `contraindicated`; sets `steroid-before-pressor` (neutral after norepinephrine) |
+| Hydrocortisone before norepinephrine | `neutral` (not a contraindication — SCCM 2024 recommends corticosteroids in severe bacterial CAP); sets `steroid-before-pressor` and the pharmacist asks whether a vasopressor is starting. The trap "steroids *instead of* a vasopressor" is tested by the `vasopressor` decision |
 | 5th bolus (> 2 L) | `contraindicated`; overload event on the 5th |
 | Intubation (GCS ≥ 9 or no vasopressor) | `contraindicated`, BP drops on induction |
 | Azithromycin + moxifloxacin together | the second one is `contraindicated` (QT stacking) |
@@ -55,8 +55,8 @@
 * MAP = (84 + 2×48)/3 = 60 mmHg; shock index 1.4; qSOFA 3; NEWS2 16.
 * CURB-65 = 4: confusion, urea 11.8 mmol/L (> 7), SBP 84 (< 90), age 72; **RR 28 does not score**.
 * SOFA without respiratory ≥ 5 (GCS 14, MAP < 70, creatinine 156 µmol/L, platelets 132 ×10⁹/L, bilirubin 24 µmol/L); CV becomes 3 on norepinephrine ≤ 0.1 µg/kg/min. No ABG, so P/F and respiratory SOFA are explicitly unknown.
-* Anion gap = 133 − (98 + 16) = 19 mmol/L; albumin-corrected (32 g/L) ≈ 21; Δ/Δ = 9/8 ≈ 1.1. Post-resuscitation 134 − (101 + 18) = 15 (≈ 18 corrected for albumin 29 g/L).
-* VBG pH 7.35 / pCO₂ 3.9 kPa (29 mmHg) → HCO₃⁻ 15.8, BE −8.7 (Henderson–Hasselbalch, Van Slyke); Winter's expected arterial pCO₂ 32 ± 2 mmHg → concurrent respiratory alkalosis. Repeat gases 7.33/3.7 kPa → 14.6/−10.1 and 7.37/4.3 kPa → 18.3/−6.1.
+* Anion gap = 133 − (98 + 16) = 19 mmol/L; albumin-corrected (32 g/L) ≈ 21; Δ/Δ = 9/8 ≈ 1.1. Post-resuscitation 134 − (100 + 17) = 17 (≈ 20 corrected for albumin 29 g/L; the fall of ~1 matches the lactate fall of 1.0).
+* VBG pH 7.35 / pCO₂ 3.9 kPa (29 mmHg) → HCO₃⁻ 15.8, BE −8.7 (Henderson–Hasselbalch, Van Slyke); Winter's expected arterial pCO₂ 32 ± 2 mmHg → concurrent respiratory alkalosis. Repeat gases 7.33/3.7 kPa → 14.6/−10.1 and 7.36/4.0 kPa (30 mmHg) → 16.8/−7.6 (lactate 4.6 → 3.6 mmol/L, 22 %).
 * Glucose-corrected Na ≈ 135 mmol/L; urea 11.8 mmol/L ≈ BUN 33 mg/dL; creatinine 156 µmol/L ≈ 1.76 mg/dL; KDIGO 156/78 = 2.0 → stage 2; Cockcroft–Gault ≈ 27 mL/min (unreliable in AKI); baseline eGFR (CKD-EPI 2021) ≈ 70.
 * 30 mL/kg × 60 kg = 1800 mL; norepinephrine 0.05 µg/kg/min = 3 µg/min ≈ 11 mL/h at 16 µg/mL; urine target 0.5 mL/kg/h = 30 mL/h; 4AT = 0 + 2 + 1 + 4 = 7.
 * Units: SI throughout (kPa for gases with mmHg in parentheses; µmol/L, mmol/L, g/L, µg/L, ng/L); blood pressure in mmHg.
@@ -70,7 +70,7 @@
 * The daughter is the main historian (`persona.companion.answersHistory: true`); answers prefixed "女儿：" / "Daughter:" are hers. The patient can name her symptoms but is disoriented (4AT 7).
 * A near-normal venous pH hides a significant metabolic acidosis — use it to teach Winter's formula and the delta ratio.
 * The transient bolus response is deliberate: ask "what does a pressure that rises and falls back tell you?" before the vasopressor decision.
-* Steroids: SSC 2021 suggests hydrocortisone 200 mg/day for an ongoing vasopressor requirement; severe-CAP steroid data (CAPE COD excluded patients in shock) are an ICU discussion — the trap here is steroids *instead of* a vasopressor.
+* Steroids: SSC 2021 suggests hydrocortisone 200 mg/day for an ongoing vasopressor requirement; the SCCM 2024 focused update recommends corticosteroids in severe bacterial CAP (CAPE COD excluded patients in septic shock). Giving hydrocortisone early is therefore not scored as unsafe — the trap is steroids *instead of* a vasopressor.
 * Macrolide resistance in *S. pneumoniae* is high in China: a macrolide is the partner to a β-lactam, never monotherapy.
 * Communication items (`r-comm-family`, `r-comm-team`) are judged by the examiner agent from the transcript.
 
@@ -87,6 +87,7 @@
 * O'Driscoll BR, et al. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax 2017.
 * KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney Int Suppl 2012.
 * Dequin PF, et al. Hydrocortisone in Severe Community-Acquired Pneumonia. N Engl J Med 2023.
+* Chaudhuri D, et al. 2024 Focused Update: Guidelines on Use of Corticosteroids in Sepsis, Acute Respiratory Distress Syndrome, and Community-Acquired Pneumonia. Crit Care Med 2024.
 * Royal College of Physicians. National Early Warning Score (NEWS) 2. 2017.
 * Bellelli G, et al. Validation of the 4AT, a new instrument for rapid delirium screening. Age Ageing 2014.
 
@@ -101,4 +102,4 @@ The reference `solution` completes all 6 objectives and all 5 decisions with no 
 
 ## 中文摘要
 
-72岁女性，发热、咳嗽2天，今日下午出现意识模糊，夜间急诊抢救室就诊。考核要点：ABCDE评估、依赖家属采集病史、Sepsis-3定义、抗菌药物前留取血培养且不延误、1小时内β-内酰胺+大环内酯、平衡晶体液分次推注并复评、外周起始去甲肾上腺素、复查乳酸、CURB-65（4分，RR 28不计分）、收入ICU；常见错误（先做CT、多巴胺一线、升压药前用激素、限制补液、无指征插管、收普通病房）均可被选择并有后果。所有数值均为虚构，并已核对阴离子间隙、校正钠、MAP、血气代偿和各项评分的一致性。
+72岁女性，发热、咳嗽2天，今日下午出现意识模糊，夜间急诊抢救室就诊。考核要点：ABCDE评估、依赖家属采集病史、Sepsis-3定义、抗菌药物前留取血培养且不延误、1小时内β-内酰胺+大环内酯、平衡晶体液分次推注并复评、外周起始去甲肾上腺素、复查乳酸、CURB-65（4分，RR 28不计分）、收入ICU；常见错误（先做CT、多巴胺一线、以激素代替升压药、限制补液、无指征插管、收普通病房）均可被选择并有后果。所有数值均为虚构，并已核对阴离子间隙、校正钠、MAP、血气代偿和各项评分的一致性。

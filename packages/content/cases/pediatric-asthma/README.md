@@ -64,11 +64,11 @@ about steroids and growth, and she expects antibiotics and "a drip".
 |---|---|---|
 | 0 (06:10) | Arrival. HR, RR and SpO₂ warning alarms | HR 140 · RR 38 · SpO₂ 90 · EtCO₂ 31 · BP 104/64 |
 | ~5–13 | O₂, salbutamol neb #1, ipratropium #1, sit upright | SpO₂ → 94–95 on O₂ |
-| ~15 | Oral prednisolone 40 mg (2 mg/kg) | Steroid effect starts ~60 min later and ramps over 120 min |
+| ~15 | Oral prednisolone 40 mg (2 mg/kg) | Steroid effect starts ~120 min later and is complete by ~4 h |
 | 26 / 46 | Salbutamol + ipratropium #2 and #3 → `burst-complete` flag | HR rises to ~150–155 from transient β₂ effects |
 | ≥ 60 | Automatic phase → **reassess** | On O₂: HR ~153 · RR ~27 · SpO₂ ~98; room-air trial 93 % |
-| ~127 | O₂ effect ends (weaned) | SpO₂ ~95 in room air |
-| ≥ 240 | Automatic phase → **discharge** | HR ~120 · RR ~22 · SpO₂ ~96 (room air) · EtCO₂ ~35 |
+| ~127 | O₂ effect ends (weaned) | SpO₂ ~94–95 in room air |
+| ≥ 240 | Automatic phase → **discharge** | HR ~120 · RR ~22–24 · SpO₂ ~95–96 (room air) · EtCO₂ ~35 |
 
 Untreated or delayed course (scenario events and trends):
 
@@ -99,7 +99,7 @@ Intervention effects and their appropriateness (the engine evaluates
 * **Ipratropium:** RR −0.5. It is *indicated* only in the first-hour phase, and
   `maxDoses` is 3.
 * **Prednisolone or IV hydrocortisone:** SpO₂ +2.5, RR −5 and HR −5, with onset at
-  60 min and a 120-min ramp. Giving both is *contraindicated* (duplicate systemic
+  120 min and a 120-min ramp (full effect ~4 h after the dose). Giving both is *contraindicated* (duplicate systemic
   steroid).
 * **Sedation:** always *contraindicated*. SpO₂ −5, RR −10, EtCO₂ +8, GCS −3.
 * **Aminophylline:** *contraindicated* unless life-threatening. HR +15.
@@ -135,9 +135,12 @@ Paediatric alarm limits (6 years):
 * **Severity.** By BTS/SIGN, a child over 5 years with any of SpO₂ < 92 %,
   HR > 125, RR > 30, inability to complete sentences or PEF 33–50 % has acute
   severe asthma. None of the life-threatening features is present: PEF < 33 %,
-  silent chest, cyanosis, poor effort, hypotension, exhaustion or altered
-  consciousness. The Chinese 2016 guideline grades him 中度–重度 (moderate to
-  severe).
+  silent chest, cyanosis, poor effort, agitation, hypotension, exhaustion or
+  altered consciousness (the exam states he is frightened but not agitated).
+  The Chinese 2016 guideline (≥ 6 years) also grades him 重度 (severe): any one
+  severe feature is enough, and he has SpO₂ 0.90 in room air, PEF ≈ 42 % of
+  predicted (重度 threshold ≤ 50 % before / ≤ 60 % after SABA) and a tripod
+  (前弓位) posture.
 * **PEF.** Predicted ≈ 180 L/min (height-based estimate; reference charts vary).
 
   | Phase | PEF (L/min) | % predicted |
@@ -164,12 +167,12 @@ Paediatric alarm limits (6 years):
   | Drug | Dose |
   |---|---|
   | Salbutamol pMDI | 10 × 100 µg = 1 mg |
-  | Salbutamol nebulised | 2.5–5 mg (BTS > 5 y: 5 mg; Chinese guideline ≤ 20 kg: 2.5 mg) |
+  | Salbutamol nebulised | 2.5–5 mg (BTS > 5 y: 2.5–5 mg; Chinese guideline ≤ 20 kg: 2.5 mg, so 2.5 mg satisfies both) |
   | Ipratropium | 250 µg |
   | Prednisolone | 40 mg (2 mg/kg, max 40 mg), 3 days |
-  | Hydrocortisone | 80 mg (4 mg/kg) |
+  | Hydrocortisone | 80 mg (4 mg/kg), 4–6-hourly; Chinese guideline alternative methylprednisolone 1–2 mg/kg (20–40 mg) |
   | MgSO₄ | 800 mg (40 mg/kg, max 2 g) over ≥ 20 min |
-  | Aminophylline load | 100 mg (5 mg/kg) |
+  | Aminophylline | load 100 mg (5 mg/kg) over ≥ 20 min with ECG monitoring, then 1 mg/kg/h |
   | Midazolam | 2 mg (0.1 mg/kg) |
   | Amoxicillin | 500 mg q12h (50 mg/kg/day) |
 * **Adherence.** EHR: one 120-dose fluticasone inhaler (≈ 60 days as prescribed)
@@ -202,11 +205,14 @@ Paediatric alarm limits (6 years):
   uncontrolled asthma, but oral courses should be minimised. Explain why
   antibiotics are not indicated, and use teach-back for the red-zone return
   advice.
-* **Guideline variation.** Neb salbutamol dosing at exactly 20 kg (BTS 5 mg vs
-  Chinese 2.5 mg) and post-discharge ICS step-up are good discussion points.
-  This case restarts the prescribed low-dose ICS with adherence support and
-  plans review in 1–2 weeks, per GINA's "check adherence and technique before
-  stepping up".
+* **Guideline variation.** Neb salbutamol dosing at exactly 20 kg (BTS
+  2.5–5 mg vs Chinese 2.5 mg for ≤ 20 kg), aminophylline (BTS: consider for
+  severe or life-threatening asthma unresponsive to maximal therapy; GINA:
+  advises against) and post-discharge ICS step-up are good discussion points.
+  This case restarts the prescribed low-dose ICS with adherence support, with
+  review at the post-attack visit (within 2 working days) and in asthma clinic
+  within 1–2 months, per GINA's "check adherence and technique before stepping
+  up".
 
 ## Fidelity limits (known)
 

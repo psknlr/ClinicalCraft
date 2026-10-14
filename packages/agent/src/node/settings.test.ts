@@ -202,6 +202,23 @@ describe("loadMemory confinement", () => {
   });
 });
 
+describe("loadMemory home inside the project", () => {
+  it("reads the user memory once, with home confinement, when the project root contains the ClinicalCraft home", async () => {
+    const dot = mkdtempSync(join(tmpdir(), "cc-dot-"));
+    try {
+      mkdirSync(join(dot, ".git"));
+      const h = join(dot, ".clinicalcraft");
+      write(join(h, "CLINICALCRAFT.md"), "Dotfiles memory.\n@snippet.md");
+      write(join(h, "snippet.md"), "Home snippet.");
+      const m = await loadMemory(dot, { CLINICALCRAFT_HOME: h, HOME: dot });
+      expect(m.files).toEqual([join(h, "CLINICALCRAFT.md"), join(h, "snippet.md")]);
+      expect(m.text).toContain("Home snippet.");
+    } finally {
+      rmSync(dot, { recursive: true, force: true });
+    }
+  });
+});
+
 describe("agents & commands", () => {
   it("loads user + project agents, project overriding by name, reporting invalid files", async () => {
     const issues: string[] = [];

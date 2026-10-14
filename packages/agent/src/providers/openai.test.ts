@@ -331,6 +331,15 @@ describe("buildOpenAIRequest", () => {
     expect(body).not.toHaveProperty("max_tokens");
   });
 
+  it("xAI grok-3-mini only accepts reasoning_effort low|high", () => {
+    const effortOf = (effort: NonNullable<ChatRequest["effort"]>) => buildOpenAIRequest({ id: "xai", model: "grok-3-mini" }, baseRequest({ effort })).reasoning_effort;
+    expect(effortOf("low")).toBe("low");
+    expect(effortOf("medium")).toBe("high");
+    expect(effortOf("max")).toBe("high");
+    expect(buildOpenAIRequest({ id: "openai", model: "gpt-5" }, baseRequest({ effort: "medium" })).reasoning_effort).toBe("medium");
+    expect(buildOpenAIRequest({ id: "xai", model: "grok-4.6" }, baseRequest({ effort: "high" }))).not.toHaveProperty("reasoning_effort");
+  });
+
   it("GLM: thinking by effort, tool_stream for glm-4.6+/glm-5 with tools", () => {
     const tools = [{ name: "t", description: "d", inputSchema: { type: "object" } }];
     expect(buildOpenAIRequest({ id: "zhipu", model: "glm-4.6" }, baseRequest({ effort: "high", tools }))).toMatchObject({ thinking: { type: "enabled" }, tool_stream: true });
@@ -350,6 +359,23 @@ describe("buildOpenAIRequest", () => {
     const other = buildOpenAIRequest({ id: "openrouter", model: "z-ai/glm-5.3" }, baseRequest({ responseFormat }));
     expect(other).not.toHaveProperty("response_format");
     expect((other.messages as { content: string }[])[0]!.content).toMatch(/only one JSON object/i);
+  });
+
+  it("only asks for strict json_schema when the schema satisfies strict-mode rules", () => {
+    const loose = {
+      type: "object",
+      properties: { say: { type: "string" }, nonverbal: { type: "string" }, facts: { type: "array", items: { type: "object", properties: { id: { type: "string" } } } } },
+      required: ["say"],
+    };
+    const body = buildOpenAIRequest({ id: "openai", model: "gpt-5" }, baseRequest({ responseFormat: { name: "voice", schema: loose } }));
+    expect(body.response_format).toEqual({ type: "json_schema", json_schema: { name: "voice", schema: loose, strict: false } });
+    const nestedLoose = {
+      type: "object",
+      additionalProperties: false,
+      required: ["items"],
+      properties: { items: { type: "array", items: { type: "object", properties: { id: { type: "string" } }, required: ["id"] } } },
+    };
+    expect((buildOpenAIRequest({ id: "openai", model: "gpt-5" }, baseRequest({ responseFormat: { name: "v", schema: nestedLoose } })).response_format as { json_schema: { strict: boolean } }).json_schema.strict).toBe(false);
   });
 
   it("converts history: tool calls as JSON strings, results as role tool, images as data URLs", () => {

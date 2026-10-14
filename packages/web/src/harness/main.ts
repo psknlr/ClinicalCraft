@@ -243,7 +243,8 @@ $("btn-monitor").onclick = () => toggle("monitor-wrap");
 $("monitor-wrap").onclick = () => toggle("monitor-wrap", false);
 
 $("btn-walk").onclick = async () => {
-  const dest = world.locate("board") ?? world.locate(facility.placements[0]?.id ?? "");
+  const board = facility.placements.find((p) => p.type === "evidence-board") ?? facility.placements[0];
+  const dest = board ? world.locate(board.id) : null;
   if (!dest) return;
   world.setWaypoint(dest);
   try {

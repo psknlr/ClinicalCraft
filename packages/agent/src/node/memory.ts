@@ -103,6 +103,7 @@ export async function loadMemory(cwd: string = process.cwd(), env: Env = process
   for (const [i, group] of memoryCandidates(cwd, env).entries()) {
     const isHomeFile = i === 0;
     for (const path of group) {
+      if (rootOf.has(path)) break; // same file as an earlier group (home inside the project): keep the first (home) root
       const text = await readOptional(path);
       if (text === null) continue;
       if (!isHomeFile && !isInside(canonical(path), projectRoot)) continue; // a symlink out of the project
