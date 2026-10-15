@@ -99,7 +99,7 @@ test("STEMI (en): vitals, monitor, approval, settings, save/continue", async ({ 
     return { asked: s.asked.length, examined: s.examined.length, interventions: s.interventions.length, clock: s.clock };
   });
   expect(before.asked).toBeGreaterThan(0);
-  await page.reload();
+  await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.locator("#enter")).toBeEnabled({ timeout: 180_000 });
   await expect(page.locator(`.case-card[data-case="${CASE}"] .saved`)).toBeVisible();
   await expect(page.locator("#enter")).toContainText("Continue");

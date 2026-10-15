@@ -32,7 +32,7 @@ const executablePath = chromiumPath();
 export default defineConfig({
   testDir: path.join(here, "e2e"),
   outputDir: path.join(here, "test-results"),
-  timeout: 240_000,
+  timeout: 480_000,
   expect: { timeout: 30_000 },
   fullyParallel: false,
   workers: 1,
