@@ -11,7 +11,7 @@ import { loadContent, localAssetDirs, type Env, type LoadedContent } from "@clin
 import { contentIndex, publicCase } from "./content.js";
 import { HttpError, MAX_BODY_BYTES, mediaType, readBody, sendError, sendJson } from "./http.js";
 import { localeFromAcceptLanguage, sm } from "./i18n.js";
-import { parseProxyCall, providerList, resolveProxyConfig, streamProxy } from "./llm.js";
+import { parseProxyCall, providerList, proxySecrets, resolveProxyConfig, streamProxy } from "./llm.js";
 import {
   checkToken,
   classifyOrigin,
@@ -93,7 +93,10 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const maxBody = opts.maxBodyBytes ?? MAX_BODY_BYTES;
   const log = opts.log ?? ((m: string) => void process.stderr.write(`[clinicalcraft serve] ${m}\n`));
   const assetDirs = opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env);
-  const csp = contentSecurityPolicy(providerOrigins(settings));
+  // Origins the page may call directly (direct mode); published in /api/health so the web settings
+  // panel can tell a custom base URL needs server configuration instead of failing on the CSP.
+  const connectOrigins = providerOrigins(settings);
+  const csp = contentSecurityPolicy(connectOrigins);
   const baseHeaders = securityHeaders(csp);
   const transcripts = new WebTranscriptStore(env, settings.transcripts.dir, opts.transcriptQuota);
   const shutdown = new AbortController();
@@ -136,6 +139,13 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     if (token) {
       const check = checkToken(req, url, token);
       if (check.ok && check.viaQuery) res.setHeader("set-cookie", tokenCookie(token));
+      // A page visit (the app shell, not an API call or asset) with ?token=: keep the cookie, drop the
+      // token from the address bar and history.
+      if (check.ok && check.viaQuery && !isApi && !isAsset && (method === "GET" || method === "HEAD")) {
+        url.searchParams.delete("token");
+        res.writeHead(302, { location: `${path}${url.search}`, "cache-control": "no-store", "content-length": "0" });
+        return void res.end();
+      }
       if (!check.ok && (isApi || isAsset)) {
         return sendError(res, 401, "unauthorized", sm(L, "error.unauthorized"), { "www-authenticate": 'Bearer realm="clinicalcraft"' });
       }
@@ -173,7 +183,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
 
     if (area === "health" && !kind) {
       if (!get) return notAllowed("GET, HEAD");
-      return sendJson(res, 200, { status: "ok", name: "clinicalcraft", version: CLINICALCRAFT_VERSION, provider: settings.provider, locale: settings.locale, auth: token !== null });
+      return sendJson(res, 200, { status: "ok", name: "clinicalcraft", version: CLINICALCRAFT_VERSION, provider: settings.provider, locale: settings.locale, auth: token !== null, connectOrigins });
     }
     if (area === "providers" && !kind) {
       if (!get) return notAllowed("GET, HEAD");
@@ -252,6 +262,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       config: resolved.config,
       request: call.request,
       shutdown: shutdown.signal,
+      secrets: proxySecrets(resolved.config, env),
       ...(opts.providerFactory ? { providerFactory: opts.providerFactory } : {}),
     });
     streams.add(done);
@@ -270,7 +281,8 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
         if (err.status === 413) res.once("finish", () => req.socket.destroy());
         return;
       }
-      log(`${req.method} ${req.url}: ${err instanceof Error ? (err.stack ?? err.message) : String(err)}`);
+      // The path only: a query string can carry the access token (`?token=`).
+      log(`${req.method} ${pathOnly(req.url)}: ${err instanceof Error ? (err.stack ?? err.message) : String(err)}`);
       if (res.headersSent) res.destroy();
       else sendError(res, 500, "internal", sm(L, "error.internal"));
     });
@@ -281,6 +293,15 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     await transcripts.flush();
   };
   return listener;
+}
+
+/** The path of a request URL, without query string or fragment (for logs). */
+function pathOnly(raw: string | undefined): string {
+  try {
+    return new URL(raw ?? "/", "http://localhost").pathname;
+  } catch {
+    return (raw ?? "/").replace(/[?#].*$/s, "");
+  }
 }
 
 function formatHost(host: string): string {

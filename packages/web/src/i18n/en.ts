@@ -45,6 +45,8 @@ const en: Messages = {
   "library.prov.published-case": "Published case",
   "library.prov.synthetic": "Synthetic",
   "library.prov.adapted": "Adapted",
+  "library.serverCase": "Server",
+  "library.serverCase.title": "From the content directories of clinicalcraft serve (not bundled with the app)",
   "library.saved": "Saved {done}/{total}",
   "library.finished": "Completed",
   "library.facility": "Facility",
@@ -130,6 +132,7 @@ const en: Messages = {
 
   "toast.welcome.title": "Welcome to {place}",
   "toast.welcome.body": "Click the view to look around; follow the path and aim at the door, then press E.",
+  "toast.welcome.bodyTouch": "Drag the view to look around; follow the path and aim at the door, then tap Use.",
   "toast.resume.title": "Welcome back",
   "toast.resume.body": "Your progress was restored from this device.",
   "toast.chapter": "Chapter complete · {title}",
@@ -358,6 +361,7 @@ const en: Messages = {
   "device.investigations": "Tests",
   "device.interventions": "Treatments",
   "device.nothing": "Nothing in this case needs this device.",
+  "device.none": "Nothing gathered here yet. Pick a test above to order it.",
   "device.caps": "Capabilities: {caps}",
 
   /* ---------------- report ---------------- */
@@ -813,6 +817,8 @@ const en: Messages = {
   "hud.finishedShort": "CASE CLOSED",
   "intro.continueLast": "Continue your last case",
   "intro.selected": "Selected case",
+  "case.disclaimerFallback": "Fictional teaching case — not medical advice; simulation for education only.",
+  "hud.disclaimerLabel": "Teaching case notice",
   "pause.back": "Back",
   "settings.kicker": "SETTINGS",
   "settings.title": "Settings · language model & permissions",

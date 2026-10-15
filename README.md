@@ -95,20 +95,20 @@ Requires Node.js ≥ 22. No API key is needed.
 
 ```bash
 npm install
-npm run build                                   # libraries (packages/*/dist) + web world (packages/web/dist)
 
 npm run cc -- cases list --lang en              # the case library
 npm run cc -- play stemi-inferior-rv --lang en  # terminal REPL (offline)
 npm run cc                                      # pick a case interactively (zh-CN by default)
 npm run dev                                     # 3D world → http://localhost:5173
+npm run build                                   # libraries (packages/*/dist) + web world (packages/web/dist)
 npm run cc -- serve                             # built web world + API + LLM proxy → http://127.0.0.1:5178
 ```
 
-`npm run cc -- …` runs the CLI from source but loads the other packages from
-their `dist/`, so build once after `npm install` (`npm run build:lib` is
-enough for the CLI; `npm run dev` needs no build). The built binary is
+`npm run cc -- …` and `npm run dev` run every workspace package from its
+TypeScript source (the `source` export condition / Vite aliases), so a fresh
+clone needs no build; only `serve` (the built web world) and the built binary
 `node packages/cli/dist/bin.js` (bin names `clinicalcraft` and `cc5` when the
-package is installed). Every command has `--help`; the CLI and sessions
+package is installed) need `npm run build`. Every command has `--help`; the CLI and sessions
 follow `--lang zh-CN|en` (default `zh-CN`).
 
 ## Use a language model
@@ -185,8 +185,12 @@ infusion pumps, anaesthesia machine…), `core-diagnostics` (26: CT, MRI,
 X-ray, C-arm, PET-CT, ultrasound, analysers, microscope, flow cytometer,
 endoscopy tower…) — and `materials` holds the procedural pixel textures. Each
 equipment type declares voxel parts, footprint, capabilities and an
-interaction (workstation, device, monitor, board, atlas…); investigations and
-interventions require capabilities present in the facility. See
+interaction (workstation, device, monitor, board, atlas…); examinations,
+investigations and interventions require capabilities present in the
+facility — the CLI, MCP and agent tools refuse an item the whole facility
+lacks, the web also checks the station the learner uses, and a facility is
+offered for a case only if every objective can be completed there
+(`facilities validate --all` warns about the pairs that cannot). See
 [docs/FACILITIES.md](docs/FACILITIES.md); `npm run cc -- facilities list`.
 
 ## In the REPL
@@ -200,13 +204,14 @@ interventions require capabilities present in the facility. See
 | `/vitals` `/status` `/case` `/plan` `/note …` | monitor, session status, case summary, workup plan, notes |
 | `/board` · `/answer <decision> <option…>` · `/phase` · `/wait 10` | decisions (e.g. `/answer diagnosis dual` in SMZL), phases, simulated time |
 | `/hint` `/consult attending …` | Socratic help (hints count against the score) |
-| `/autopilot [goal]` `/assess` `/debrief` | clinician agent, assessment (examiner), debrief after finishing |
+| `/autopilot [goal]` `/finish` `/assess` `/debrief` | clinician agent, finish the case once every objective is complete, assessment (examiner), debrief |
 | `/model` `/provider` `/approval auto` `/scope workup` `/permissions` `/lang en` | runtime control |
 | `/compact` `/export [path]` `/clear` `/quit` | conversation housekeeping |
 | `/sbar` `/differential …` `/osce-checklist` | project commands from `.clinicalcraft/commands/*.md` |
 
 Approvals are asked inline (`[y]es / [s]ession / [n]o (reason) / [a]bort`);
-with piped stdin the next lines answer them. Tab completes commands,
+with piped stdin the next lines answer them (a next line that is a `/command`
+or `@message` denies the request and runs as the next step). Tab completes commands,
 arguments and `@roles`; Ctrl-C interrupts a turn, twice exits. Sessions are
 recorded and resumable: `npm run cc -- --continue` or `--resume <id>`.
 
@@ -230,10 +235,14 @@ npm run cc -- eval --cases all --provider offline --out eval-report.md
 Headless runs never approve silently: in `default`, `strict` and `plan`
 modes every approval request is denied (`headless: approval required`), the
 agent is told and adapts, and the denial is listed in `permission_denials`.
-That is why the autopilot example passes `--approval bypass` — without it the
-clinician cannot give moderate- or high-risk treatments and the case may not
-finish. `eval` runs with `bypass` by default. Exit codes: 0 success, 1 error,
-2 usage error, 3 `--max-turns` reached. Full flag reference:
+`--approval auto` approves low- and moderate-risk requests but still denies
+always-ask, high-risk and ask-rule ones (thrombolysis…) unless you also pass
+`--approve-high-risk`. That is why the autopilot example passes `--approval
+bypass` (unsafe outside benchmarks) — otherwise the clinician cannot give
+every treatment, and an autopilot that ends with the case incomplete exits
+with subtype `error_incomplete`. `eval` runs with `bypass` by default. Exit
+codes: 0 success, 1 error, 2 usage error, 3 `--max-turns` reached, 4
+autopilot ended with the case incomplete. Full flag reference:
 [packages/cli/README.md](packages/cli/README.md).
 
 ## MCP: let Claude Code, Codex or Grok CLI play the clinician
@@ -247,13 +256,13 @@ run these from the repository root:
 
 ```bash
 # Claude Code
-claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD" --approval bypass
+claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
 
 # Codex CLI
-codex mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD" --approval bypass
+codex mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
 
 # Grok CLI (stdio transport; see `grok mcp add --help` for your version's flags)
-grok mcp add clinicalcraft --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD" --approval bypass
+grok mcp add clinicalcraft --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
 ```
 
 Or in Codex's `~/.codex/config.toml` (any MCP client that launches a stdio
@@ -262,14 +271,15 @@ server takes the same command and arguments):
 ```toml
 [mcp_servers.clinicalcraft]
 command = "node"
-args = ["/path/to/ClinicalCraft/packages/cli/dist/bin.js", "mcp", "--cwd", "/path/to/ClinicalCraft", "--approval", "bypass"]
+args = ["/path/to/ClinicalCraft/packages/cli/dist/bin.js", "mcp", "--cwd", "/path/to/ClinicalCraft"]
 ```
 
-MCP sessions default to approval mode `bypass` because the MCP client owns
-approvals — but any settings layer that sets `approvalMode` wins, and this
-repository's `.clinicalcraft/settings.json` sets `"default"`. Inside this
-checkout, pass `--approval bypass` (or `auto`) as above, or moderate- and
-high-risk actions are refused with an explanation. `--provider`/`--model`
+MCP sessions default to approval mode `auto` (any settings layer that sets
+`approvalMode` wins): low- and moderate-risk actions run, while high-risk and
+always-ask ones (thrombolysis…) and ask rules need a two-step confirmation —
+the first call returns an error explaining the risk, and the client calls
+again with `"confirm": true` once its user agreed. `--approval bypass` drops
+that step (unsafe; for unattended benchmarks only). `--provider`/`--model`
 choose the models behind the patient and staff (offline by default).
 
 ## Configuration
@@ -307,13 +317,13 @@ values and `config set <key> <value> [--user|--project|--local]` writes one
 |---|---|---|
 | `provider`, `model`, `effort` | `offline`, template default, — | active provider/model; `effort` low…max where the model supports it |
 | `agents.<name>` | — | per-agent `provider`, `model`, `effort`, `temperature`, `maxTokens`, `maxToolRounds` |
-| `providers.<id>` | — | override a template or add one (`wire`, `baseUrl`, `apiKeyEnv`, `headers`, `defaultModel`, `timeoutMs`, `maxRetries`); a literal `apiKey` is honoured only from user/local settings |
+| `providers.<id>` | — | override a template or add one (`wire`, `baseUrl`, `apiKeyEnv`, `headers`, `defaultModel`, `timeoutMs`, `maxRetries` — retries of every model call of a session); a literal `apiKey` is honoured only from user settings, or from the local settings of a trusted project (`clinicalcraft trust`) — never from a project file |
 | `locale` | `zh-CN` | `zh-CN` or `en` |
 | `approvalMode`, `practiceScope` | `default`, `full` | see below |
 | `permissions.allow/ask/deny` | `[]` | rules such as `order_test(*)`, `examine`, `intervene(alteplase*)` (arrays concatenate across layers) |
 | `hooks` | `{}` | see [Hooks](#hooks) |
 | `maxToolRounds`, `autoCompact` | `12`, on at 120 000 tokens | agent loop limits |
-| `contentDirs` | `[]` | extra directories holding `cases/<id>/case.json`, `facilities/`, `catalogs/` |
+| `contentDirs` | `[]` | extra directories holding `cases/<id>/case.json`, `facilities/`, `catalogs/`; a relative entry resolves against the directory of the settings file that lists it (from `.clinicalcraft/settings.json`, write `"../content"` for `<project>/content`); `clinicalcraft serve` also offers them to the web library |
 | `defaultCase`, `defaultFacility` | — | |
 | `transcripts` | `{enabled: true}` | JSONL rollouts in `~/.clinicalcraft/sessions/YYYY/MM/DD/` |
 | `patient.pipeline`, `.strictGrounding`, `.offlineFallback` | `select-voice`, `true`, `true` | `tool` lets the patient model call `reveal_facts` itself |
@@ -356,7 +366,11 @@ Hooks run on `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`,
 `ClinicalEvent`, `Notification`, `PreCompact`, `Stop` and `SessionEnd` — as
 in-process functions (`session.hooks.on(…)`, browser and Node) or as shell
 commands from settings (Node). They are loaded only from settings, never from
-case content.
+case content. Command hooks in a project's `.clinicalcraft/settings.json` or
+`settings.local.json` (like those below) run only after you trust the project
+with `clinicalcraft trust`; trust is pinned to the files' contents, so any
+change to either file needs a fresh `clinicalcraft trust` (until then the
+hooks are dropped and stderr says so).
 
 ```json
 {
@@ -387,7 +401,9 @@ patient: [docs/PROTOCOL.md §6.1](docs/PROTOCOL.md). Examples:
 `npm run cc -- serve` hosts the **built** world (`npm run build` first) with
 the content API and the LLM proxy at http://127.0.0.1:5178, so the browser
 can use your server-side keys (`proxy` mode). It binds to loopback; binding
-another host requires `--token` (open `/?token=…` once in the browser).
+another host requires an access token of at least 16 characters
+(`CLINICALCRAFT_SERVER_TOKEN`, `--token-file` or `--token`; open `/?token=…`
+once in the browser — it sets a cookie and drops the token from the URL).
 Controls: `WASD` move, mouse look, `E` interact, `T` talk, `V` monitor,
 `J` journal, `M` map, `Esc` pause. Details: [packages/web/README.md](packages/web/README.md),
 [packages/server/README.md](packages/server/README.md).
@@ -395,16 +411,14 @@ Controls: `WASD` move, mouse look, `E` interact, `T` talk, `V` monitor,
 ### Standalone single file
 
 ```bash
-npm run build:standalone                                          # → packages/web/dist-standalone/ClinicalCraft.html
-npm run build:standalone -w @clinicalcraft/web -- --no-local-assets   # redistributable: without local-only assets
+npm run build:standalone                          # → packages/web/dist-standalone/ClinicalCraft.html
+npm run build:standalone -- --no-local-assets     # redistributable: without local-only assets
 ```
 
 One offline HTML file (no server, no network, offline responders only). If
 `assets/local/` exists at build time the copyrighted V4 figures, PDF and
 anatomy model are embedded and the file is for **your own local teaching use
-only**; the build directory is git-ignored. (`npm run build:standalone --
---no-local-assets` from the root does **not** pass the flag on — use the
-workspace form above.)
+only**; the build directory is git-ignored.
 
 ## Local assets (`import-v4`)
 

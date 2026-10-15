@@ -5,7 +5,12 @@
  * - **Auth** — when a token is configured, `/api/*` and `/local-assets/*`
  *   require it as `Authorization: Bearer <token>`, `?token=<token>` or the
  *   `cc_token` cookie (set, HttpOnly + SameSite=Strict, when a valid `?token=`
- *   is presented so the web app keeps working after the first visit).
+ *   is presented so the web app keeps working after the first visit; a page
+ *   visit with `?token=` is then redirected to the same URL without it, so the
+ *   token leaves the address bar and history). Logs carry paths, never query
+ *   strings.
+ * - **Secrets in responses** — `/api/providers` shows base URLs without
+ *   credentials; proxied upstream error text is redacted (`llm.ts`).
  * - **DNS rebinding** — a loopback-only server accepts only loopback `Host`
  *   headers.
  * - **CORS** — same origin only; the Vite dev origins

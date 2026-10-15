@@ -6,7 +6,7 @@
 import { assetContentType, assetExists, caseAssetUrl } from "../../app/assets.js";
 import { progress } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
-import { ct, tr } from "../../i18n/index.js";
+import { caseDisclaimer, ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { evidenceGrid } from "./common.js";
@@ -143,7 +143,7 @@ export function sourcePanel(app: App): () => PanelView {
         rows.length ? h("dl", { class: "source-dl" }, rows.map(([k, v]) => [h("dt", null, k), h("dd", null, v)])) : null,
         p.kind === "synthetic" ? h("p", { class: "notice" }, tr("source.synthetic")) : null,
         p.notes ? h("p", null, h("b", null, tr("source.notes")), " ", ct(p.notes)) : null,
-        c.disclaimer ? h("p", { class: "notice" }, h("b", null, tr("source.disclaimer")), " ", ct(c.disclaimer)) : null,
+        h("p", { class: "notice", id: "source-disclaimer" }, h("b", null, tr("source.disclaimer")), " ", caseDisclaimer(c.disclaimer)),
         c.assets.length ? [h("h3", null, tr("source.assets")), assets] : null,
         h("p", null, tr("source.agents")),
         h("p", null, tr("source.engine")),

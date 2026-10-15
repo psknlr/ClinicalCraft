@@ -2593,7 +2593,11 @@
           "局灶体征",
           "gcs评分",
           "病理征",
-          "巴宾斯基征"
+          "巴宾斯基征",
+          "神志",
+          "意识",
+          "清醒",
+          "意识清楚"
         ],
         "en": [
           "neuro exam",
@@ -2603,7 +2607,22 @@
           "orientation",
           "power",
           "gcs",
-          "plantars"
+          "plantars",
+          "conscious level",
+          "consciousness",
+          "level of consciousness"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "补液后",
+          "复评",
+          "再评估"
+        ],
+        "en": [
+          "reassess",
+          "afterfluids",
+          "afterboluses"
         ]
       },
       "finding": {

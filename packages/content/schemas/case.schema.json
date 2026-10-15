@@ -1420,6 +1420,13 @@
                   "$ref": "#/definitions/Id"
                 }
               },
+              "speaker": {
+                "type": "string",
+                "enum": [
+                  "patient",
+                  "companion"
+                ]
+              },
               "source": {
                 "$ref": "#/definitions/LocalizedText"
               }
@@ -1609,9 +1616,13 @@
                             "$ref": "#/definitions/LocalizedText"
                           },
                           "value": {
-                            "type": [
-                              "number",
-                              "string"
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "$ref": "#/definitions/LocalizedText"
+                              }
                             ]
                           },
                           "unit": {
@@ -1625,7 +1636,7 @@
                             "type": "number"
                           },
                           "refText": {
-                            "type": "string"
+                            "$ref": "#/definitions/LocalizedText"
                           },
                           "flag": {
                             "type": "string",
@@ -2069,6 +2080,16 @@
                   },
                   "message": {
                     "$ref": "#/definitions/LocalizedText"
+                  },
+                  "speaker": {
+                    "type": "string",
+                    "enum": [
+                      "nurse",
+                      "monitor",
+                      "patient",
+                      "companion",
+                      "narrator"
+                    ]
                   },
                   "severity": {
                     "type": "string",

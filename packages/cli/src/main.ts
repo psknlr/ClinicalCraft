@@ -79,9 +79,10 @@ async function preliminaryLocale(argv: readonly string[], env: Env, cwd: string)
   try {
     const profile = argvValue(argv, "profile");
     const settings = await loadSettings({ cwd, env, ...(profile ? { profile } : {}) });
-    return settings.locale;
+    // An unsupported configured language falls back to the default (sessions warn about it).
+    return normalizeLang(settings.locale) ?? "zh-CN";
   } catch {
-    return env.CLINICALCRAFT_LOCALE?.trim() || "zh-CN";
+    return normalizeLang(env.CLINICALCRAFT_LOCALE ?? "") ?? "zh-CN";
   }
 }
 

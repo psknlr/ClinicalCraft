@@ -142,7 +142,8 @@ export type EventMsg =
    * call, scenario announcement, a button answer) in its own one-line turn (§4
    * Turn bracketing) — not the addressed agent's reply.
    */
-  | { type: "turn_started"; turnId: string; agent: AgentRole; synthetic?: true }
+  /** `speaker`: the display name the turn's messages will carry (staff with a case/facility name), so a front-end can label the first streamed text. */
+  | { type: "turn_started"; turnId: string; agent: AgentRole; synthetic?: true; speaker?: string }
   | { type: "turn_phase"; turnId: string; agent: AgentRole; phase: TurnPhase }
   /** Streaming text from an agent (patient speech, nurse reply, clinician reasoning summary). */
   | { type: "agent_message_delta"; turnId: string; agent: AgentRole; delta: string }

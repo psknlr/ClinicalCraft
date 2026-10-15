@@ -51,12 +51,12 @@ function texts(text: LocalizedText): string[] {
 }
 
 /** `ask_patient {question}` → one history item: its id, its canonical question (any locale), else the history matcher. */
-function resolveQuestion(c: CaseDefinition, question: string, locale: string): Resolution {
+function resolveQuestion(c: CaseDefinition, question: string, locale: string, phase?: string): Resolution {
   const q = question.trim().toLowerCase();
   if (!q) return { kind: "missing" };
   const exact = c.history.find((h) => h.id.toLowerCase() === q || texts(h.question).some((x) => x.trim().toLowerCase() === q));
   if (exact) return { kind: "id", id: exact.id };
-  return resolveHits(matchHistory(c, question, locale), question);
+  return resolveHits(matchHistory(c, question, locale, phase ? { phase } : {}), question);
 }
 
 /**
@@ -64,18 +64,20 @@ function resolveQuestion(c: CaseDefinition, question: string, locale: string): R
  * tool input — the inverse of `actionToolArgs`. The action keeps its other
  * fields (`by`, `via`); ids and queries resolve as the tool resolves them, and
  * input that does not name exactly one case item is refused with `detail`.
+ * `phase` (the session's current phase) narrows free-text history/exam
+ * queries to items of that phase, as the tools do.
  */
-export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, input: Record<string, unknown>, locale: string): ActionFromInput {
+export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, input: Record<string, unknown>, locale: string, phase?: string): ActionFromInput {
   const L = locale;
   const refuse = (r: Exclude<Resolution, { kind: "id" }>, label: (id: string) => string, keys: [string, string]): ActionFromInput => ({ ok: false, detail: unresolvedOutput(L, r, label, keys).output });
   switch (action.type) {
     case "ask": {
-      const r = resolveQuestion(c, strArg(input, "question"), L);
+      const r = resolveQuestion(c, strArg(input, "question"), L, phase);
       if (r.kind !== "id") return refuse(r, (id) => t(c.history.find((h) => h.id === id)?.question ?? id, L), ["question", "question"]);
       return { ok: true, action: { ...action, itemId: r.id } };
     }
     case "examine": {
-      const r = resolveFinding(c, input, L);
+      const r = resolveFinding(c, input, L, phase);
       if (r.kind !== "id") return refuse(r, (id) => t(c.exam.find((e) => e.id === id)?.maneuver ?? id, L), ["finding_id", "query"]);
       return { ok: true, action: { ...action, findingId: r.id } };
     }

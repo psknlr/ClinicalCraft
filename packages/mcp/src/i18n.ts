@@ -19,9 +19,13 @@ const EN = {
   "session.unknown": "Unknown session_id \"{id}\". Start one with start_case (open sessions: {open}).",
   "session.none": "none",
   "approval.needed":
-    "{tool} needs approval ({reason} — rule {ruleId}) and this MCP server cannot ask a person. " +
-    "Allow it in the ClinicalCraft settings (approvalMode \"bypass\" or \"auto\", or a permissions.allow rule such as \"{rule}\").",
+    "{rule} needs confirmation and was NOT carried out: {reason} (risk: {risk}; rule {ruleId}). " +
+    "Tell the person you act for what this action is and its risk; only if they agree, call {tool} again with the same arguments plus \"confirm\": true.",
+  "approval.confirmFirst":
+    "{rule} needs confirmation and was NOT carried out: \"confirm\": true only counts when it repeats a call that was refused as needing confirmation. {reason} (risk: {risk}; rule {ruleId}). " +
+    "Tell the person you act for what this action is and its risk; only if they agree, call {tool} again with the same arguments plus \"confirm\": true.",
   "approval.denied": "{tool} is not permitted: {reason} (rule {ruleId}).",
+  "notice.line": "Notice: {text}",
   "hook.blocked": "{tool} was blocked by a PreToolUse hook: {reason}",
   "tool.failed": "{tool} failed: {message}",
   "tool.aborted": "{tool} was cancelled.",
@@ -30,6 +34,7 @@ const EN = {
   "debrief.score": "Score {percent}% ({earned}/{possible}); objectives {done}/{total}; decisions right first time {firstTry}/{decisions}.",
   "debrief.coverage": "Required history asked {asked}/{required}; required examination {examined}/{examRequired}; hints used {hints}.",
   "debrief.missing": "Essential investigations not obtained: {list}",
+  "debrief.missingCount": "Essential investigations not obtained yet: {count} (named once the case is complete).",
   "debrief.lowValue": "Low-value investigations: {list}",
   "debrief.harmful": "Potentially harmful investigations: {list}",
   "debrief.unread": "Results ordered but never read: {list}",
@@ -54,9 +59,13 @@ const ZH: Record<McpMessageKey, string> = {
   "session.unknown": "未知的 session_id “{id}”。请先用 start_case 开始会话（当前会话：{open}）。",
   "session.none": "无",
   "approval.needed":
-    "{tool} 需要批准（{reason}——规则 {ruleId}），而此 MCP 服务器无法询问用户。" +
-    "请在 ClinicalCraft 设置中允许它（approvalMode 设为 \"bypass\" 或 \"auto\"，或添加 permissions.allow 规则，如 \"{rule}\"）。",
+    "{rule} 需要确认，尚未执行：{reason}（风险：{risk}；规则 {ruleId}）。" +
+    "请先向你所代表的用户说明该操作及其风险；只有在对方同意后，才以相同参数并加上 \"confirm\": true 再次调用 {tool}。",
+  "approval.confirmFirst":
+    "{rule} 需要确认，尚未执行：\"confirm\": true 只对先前因需要确认而被拒绝的同一调用有效。{reason}（风险：{risk}；规则 {ruleId}）。" +
+    "请先向你所代表的用户说明该操作及其风险；只有在对方同意后，才以相同参数并加上 \"confirm\": true 再次调用 {tool}。",
   "approval.denied": "不允许执行 {tool}：{reason}（规则 {ruleId}）。",
+  "notice.line": "提示：{text}",
   "hook.blocked": "{tool} 被 PreToolUse 钩子阻止：{reason}",
   "tool.failed": "{tool} 执行失败：{message}",
   "tool.aborted": "{tool} 已取消。",
@@ -65,6 +74,7 @@ const ZH: Record<McpMessageKey, string> = {
   "debrief.score": "得分 {percent}%（{earned}/{possible}）；目标 {done}/{total}；决策首次答对 {firstTry}/{decisions}。",
   "debrief.coverage": "必问病史 {asked}/{required}；必做查体 {examined}/{examRequired}；使用提示 {hints} 次。",
   "debrief.missing": "未获得的关键检查：{list}",
+  "debrief.missingCount": "尚未获得的关键检查：{count} 项（病例完成后列出名称）。",
   "debrief.lowValue": "低价值检查：{list}",
   "debrief.harmful": "可能有害的检查：{list}",
   "debrief.unread": "已开具但未查看的结果：{list}",

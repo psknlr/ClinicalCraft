@@ -10,14 +10,14 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
-import { currentWaypoint, progress, t, vitalsAt, type CaseDefinition } from "@clinicalcraft/core";
-import { PROVIDER_TEMPLATES, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { createSession as createEngineState, currentWaypoint, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { availableInPhase, PROVIDER_TEMPLATES, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
-import { EXIT, loadCliSettings, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
+import { EXIT, loadCliSettings, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { HistoryFile } from "./history.js";
 import { m } from "./i18n.js";
 import { pickCase } from "./picker.js";
-import { EventRenderer, modelLabel } from "./render.js";
+import { EventRenderer, resolvedModelLabel } from "./render.js";
 import { openSession } from "./session.js";
 
 type ApprovalRequest = Extract<EventMsg, { type: "approval_request" }>;
@@ -36,8 +36,13 @@ export function parseApprovalAnswer(line: string, allowSession: boolean): { deci
   return null;
 }
 
-/** Candidate values for the argument of a slash command (Tab completion). */
-export function argumentCandidates(command: string, c: CaseDefinition, agents: readonly string[]): string[] {
+/**
+ * Candidate values for the argument of a slash command (Tab completion).
+ * Phase and exam ids follow what the learner may know (`state`, default the
+ * case's starting state): visible phases only (future automatic phases stay
+ * unannounced) and the examinations of the current phase.
+ */
+export function argumentCandidates(command: string, c: CaseDefinition, agents: readonly string[], state: SessionState = createEngineState(c)): string[] {
   switch (command) {
     case "talk":
     case "consult":
@@ -54,11 +59,13 @@ export function argumentCandidates(command: string, c: CaseDefinition, agents: r
     case "give":
       return c.interventions.map((i) => i.id);
     case "exam":
-      return c.exam.map((e) => e.id);
+      return c.exam.filter((e) => availableInPhase(e, state)).map((e) => e.id);
     case "answer":
       return c.decisions.map((d) => d.id);
-    case "phase":
-      return c.phases.map((p) => p.id);
+    case "phase": {
+      const shown = visiblePhases(c, state);
+      return c.phases.filter((p) => shown.has(p.id)).map((p) => p.id);
+    }
     case "provider":
       return PROVIDER_TEMPLATES.map((p) => p.id);
     default:
@@ -67,7 +74,7 @@ export function argumentCandidates(command: string, c: CaseDefinition, agents: r
 }
 
 /** readline completer: `/comm…`, `/talk n…`, `@nu…`. */
-export function completeLine(line: string, commands: readonly string[], c: CaseDefinition, agents: readonly string[]): [string[], string] {
+export function completeLine(line: string, commands: readonly string[], c: CaseDefinition, agents: readonly string[], state?: SessionState): [string[], string] {
   if (/^[/／][^\s]*$/.test(line)) {
     const all = commands.map((name) => `/${name}`);
     const typed = line.replace(/^／/, "/");
@@ -76,7 +83,7 @@ export function completeLine(line: string, commands: readonly string[], c: CaseD
   }
   const arg = /^[/／](\S+)\s+(\S*)$/.exec(line);
   if (arg) {
-    const values = argumentCandidates(arg[1]!.toLowerCase(), c, agents);
+    const values = argumentCandidates(arg[1]!.toLowerCase(), c, agents, state);
     const word = arg[2]!;
     return [values.filter((v) => v.startsWith(word)), word];
   }
@@ -129,13 +136,15 @@ export class Repl {
       locale: () => session.settings.locale,
       interactive: Boolean(ctx.io.stdout.isTTY),
       verbose: ctx.verbose,
+      // The model the session calls (custom providers and provider overrides included), not just the templates'.
+      resolveModel: (provider, model) => resolvedModelLabel(session.settings, ctx.env, provider, model),
     });
     const settings = session.settings;
     const offline = settings.provider === "offline";
     this.renderer.configured = {
       sessionId: session.id,
       provider: settings.provider,
-      model: modelLabel(settings.provider, settings.model),
+      model: resolvedModelLabel(settings, ctx.env),
       approvalMode: settings.approvalMode,
       practiceScope: settings.practiceScope,
       interlocutor: "patient",
@@ -192,7 +201,7 @@ export class Repl {
       terminal: this.tty,
       ...(this.tty
         ? {
-            completer: (line: string) => completeLine(line, this.session.commands().map((cmd) => cmd.name), this.session.caseDef, this.session.availableAgents()),
+            completer: (line: string) => completeLine(line, this.session.commands().map((cmd) => cmd.name), this.session.caseDef, this.session.availableAgents(), this.session.state),
             history: this.history.load(),
             historySize: 1000,
             removeHistoryDuplicates: true,
@@ -372,10 +381,17 @@ export class Repl {
   /**
    * Take the answer from input already received (piped lines in order; on a
    * TTY only typed-ahead lines that are approval answers), else prompt. With
-   * no more input the request is denied.
+   * no more input — or, piped, when the next line is a /command or @message —
+   * the request is denied.
    */
   private awaitApprovalInput(req: ApprovalRequest): void {
     const queued = this.queue[0];
+    // Piped input: a command or an @message is the script's next step, never an answer — deny the
+    // request and leave the line queued (it runs next), instead of swallowing the rest of the script.
+    if (queued !== undefined && !this.tty && /^[/@]/.test(queued.trim()) && !parseApprovalAnswer(queued, req.allowSession)) {
+      this.answerApproval(`n ${m(this.L, "repl.notAnAnswer")}`);
+      return;
+    }
     if (queued !== undefined && (!this.tty || parseApprovalAnswer(queued, req.allowSession))) {
       this.queue.shift();
       this.answerApproval(queued);
@@ -436,6 +452,7 @@ export async function runPlay(ctx: CliContext, args: ParsedArgs): Promise<number
   if (args.positionals.length > 1) throw new UsageError(ctx.t("play.tooMany", { extra: args.positionals.slice(1).join(" ") }));
   const resume = resumeRef(args);
   const flags = await sessionFlagsLayer(ctx, args);
+  await requireProviderKey(ctx, args, flags);
   let caseId = args.positionals[0];
   const settings = await loadCliSettings(ctx, flags);
   if (!caseId && !resume) caseId = settings.defaultCase ?? (await pickCase(ctx, settings.contentDirs));

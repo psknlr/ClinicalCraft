@@ -68,3 +68,25 @@ test("proxy mode streams model replies through /api/llm/stream", async ({ page }
   }
   await expect.poll(() => transcriptPosts, { timeout: 15_000 }).toBeGreaterThan(0);
 });
+
+test("cases from clinicalcraft serve's contentDirs join the library and start (C5)", async ({ page }) => {
+  const { readFileSync } = await import("node:fs");
+  const { fileURLToPath } = await import("node:url");
+  const raw = JSON.parse(readFileSync(fileURLToPath(new URL("../../content/cases/stemi-inferior-rv/case.json", import.meta.url)), "utf8"));
+  delete raw.solution; // the server strips the reference walkthrough
+  const served = { ...raw, id: "review-demo-case", title: { "zh-CN": "服务器演示病例", en: "Server demo case" } };
+  await page.route("**/api/health", (r) => r.fulfill({ json: { status: "ok", name: "clinicalcraft", version: "5.0.0" } }));
+  await page.route("**/api/providers", (r) => r.fulfill({ json: { providers: [] } }));
+  await page.route("**/api/transcripts/**", (r) => r.fulfill({ status: 204, body: "" }));
+  await page.route("**/api/content/index", (r) => r.fulfill({ json: { cases: [{ id: "review-demo-case" }, { id: "stemi-inferior-rv" }], facilities: [], catalogs: [] } }));
+  await page.route("**/api/content/cases/review-demo-case", (r) => r.fulfill({ json: served }));
+
+  await freshStart(page);
+  const card = page.locator('.case-card[data-case="review-demo-case"]');
+  await expect(card).toBeVisible({ timeout: 20_000 });
+  await expect(card).toContainText("服务器演示病例");
+  await expect(card.locator(".server-tag")).toHaveText("服务器");
+  await expect(page.locator('.case-card[data-case="stemi-inferior-rv"] .server-tag')).toHaveCount(0);
+  await enterCase(page, "review-demo-case");
+  expect(await page.evaluate(() => (window as any).__QA__.game.caseDef.id)).toBe("review-demo-case");
+});

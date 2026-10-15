@@ -1,14 +1,15 @@
-import { createSession as createEngineState, reduce, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { createSession as createEngineState, presentedOptions, reduce, RHYTHMS, type CaseInput, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
 import { loadMiniCase } from "../__fixtures__/harness.js";
 import type { PlanItem } from "../protocol.js";
+import { clockTime, rhythmLabel } from "./format.js";
 import { ToolRegistry, isHiddenByDeny } from "./index.js";
 import type { ToolContext } from "./types.js";
 import { validateArgs } from "./validate.js";
 
-/** A tool context over the real engine (no session). */
-function harness(locale = "en", agent: string = "clinician", utterance: string | null = null) {
-  const caseDef = loadMiniCase();
+/** A tool context over the real engine (no session); `mutate` edits the mini case first. */
+function harness(locale = "en", agent: string = "clinician", utterance: string | null = null, mutate?: (input: CaseInput) => void) {
+  const caseDef = loadMiniCase(mutate);
   let state: SessionState = reduce(caseDef, createEngineState(caseDef), { type: "start" }).state;
   const plans: PlanItem[][] = [];
   const asked: string[] = [];
@@ -55,11 +56,11 @@ describe("clinical tools", () => {
     expect(ambiguous.data).toMatchObject({ candidates: [{ id: "ct-head" }, { id: "ct-chest" }] });
     expect(h.state.orders).toEqual([]);
     const ok = await h.run("order_test", { query: "troponin" });
-    expect(ok.output).toBe("Ordered Troponin (Emergency). Result expected at minute 45 (now 0).");
+    expect(ok.output).toBe("Ordered Troponin (Emergency). Result expected at 09:45 (now 09:00).");
     expect((await h.run("order_test", { investigation_id: "troponin" })).output).toMatch(/already ordered/);
     const early = await h.run("read_result", { investigation_id: "troponin" });
     expect(early.ok).toBe(false);
-    expect(early.output).toMatch(/not ready yet\. Result expected at minute 45/);
+    expect(early.output).toMatch(/not ready yet\. Result expected at 09:45/);
     expect((await h.run("order_test", {})).output).toMatch(/Provide either investigation_id or query/);
   });
 
@@ -67,7 +68,7 @@ describe("clinical tools", () => {
     const h = harness();
     await h.run("order_test", { investigation_id: "troponin" });
     const waited = await h.run("wait", { minutes: 45 });
-    expect(waited.output).toMatch(/Waited 45 min \(clock 0 → 45 min\)/);
+    expect(waited.output).toMatch(/Waited 45 min \(09:00 → 09:45\)/);
     expect(waited.output).toContain("Troponin (Emergency) is back");
     const read = await h.run("read_result", { investigation_id: "troponin" });
     expect(read.output).toContain("hs-troponin T 85 ng/L (raised).");
@@ -96,8 +97,36 @@ describe("clinical tools", () => {
 
   it("answer_decision validates options and reports requirements", async () => {
     const h = harness();
-    expect((await h.run("answer_decision", { decision_id: "dx", option_ids: ["zzz"] })).output).toMatch(/Unknown option id/);
     expect((await h.run("answer_decision", { decision_id: "dx", option_ids: ["stemi"] })).output).toBe("Not yet answerable: Review the ECG first.");
+    // Once unlocked, an unknown option id lists the options in presentation order.
+    h.ctx.dispatch({ type: "order", investigationId: "ecg" });
+    h.ctx.dispatch({ type: "advance-time", minutes: 10 });
+    h.ctx.dispatch({ type: "read", investigationId: "ecg" });
+    const bad = await h.run("answer_decision", { decision_id: "dx", option_ids: ["zzz"] });
+    expect(bad.output).toMatch(/Unknown option id/);
+    const presented = presentedOptions(h.caseDef, h.caseDef.decisions[0]!).map((o) => o.id);
+    expect(bad.output.indexOf(`${presented[0]} (`)).toBeLessThan(bad.output.indexOf(`${presented[1]} (`));
+  });
+
+  it("answer_decision on a locked decision never names its prompt or options (F0/F1)", async () => {
+    for (const locale of ["en", "zh-CN"]) {
+      const h = harness(locale);
+      const tool = h.registry.get("answer_decision")!;
+      const out = await h.run("answer_decision", { decision_id: "dx", option_ids: ["zzz"] });
+      expect(out.ok).toBe(false);
+      for (const secret of ["Inferior STEMI", "Pulmonary embolism", "下壁STEMI", "肺栓塞", "stemi", "pe (", "Most likely", "最可能"]) expect(out.output).not.toContain(secret);
+      expect(out.output).toContain(locale === "en" ? "Review the ECG first." : "先查看心电图。");
+      // The pre-gate refusal and the approval summary say no more.
+      expect(tool.precheck!({ decision_id: "dx", option_ids: ["stemi"] }, h.ctx)?.ok).toBe(false);
+      const summary = tool.summarize({ decision_id: "dx", option_ids: ["pe"] }, h.ctx);
+      for (const secret of ["Pulmonary", "肺栓塞", "Most likely", "最可能", "pe"]) expect(summary).not.toContain(secret);
+      expect(summary).toContain(locale === "en" ? "Decision 1" : "判断 1");
+    }
+    const h = harness();
+    h.ctx.dispatch({ type: "order", investigationId: "ecg" });
+    h.ctx.dispatch({ type: "advance-time", minutes: 10 });
+    h.ctx.dispatch({ type: "read", investigationId: "ecg" });
+    expect(h.registry.get("answer_decision")!.precheck!({ decision_id: "dx", option_ids: ["stemi"] }, h.ctx)).toBeNull();
   });
 
   it("wait refuses on static clocks; update_workup publishes a plan; consult asks the role", async () => {
@@ -182,5 +211,134 @@ describe("registry & validation", () => {
     expect(bad.ok).toBe(false);
     expect(bad.errors).toEqual(["kind: must be one of \"a\", \"b\"", "n: must be ≤ 5", "extra: unknown property", "ids: must have at least 1 item(s)"]);
     expect(validateArgs(schema, {}).errors).toEqual(["kind: is required"]);
+  });
+});
+
+const LT = (zh: string, en: string) => ({ "zh-CN": zh, en });
+
+describe("learner-facing wording (zh-CN + en)", () => {
+  /** Two automatic phases: "ed" (initial) and "ward" (entered at minute 10). */
+  const autoPhases = (x: CaseInput) => {
+    x.phases = [
+      { id: "ed", label: LT("急诊", "Emergency"), learnerSwitchable: false },
+      { id: "ward", label: LT("病房", "Ward"), learnerSwitchable: false, enterWhen: { elapsed: { gte: 10 } } },
+    ] as CaseInput["phases"];
+  };
+
+  it("phases: the current phase is only 'current'; other automatic phases advance automatically; switching one says why (L14)", async () => {
+    const en = harness("en", "learner", null, autoPhases);
+    const start = (await en.run("list_options", { kind: "phases" })).output;
+    expect(start).toContain("- [ed] Emergency (current)\n");
+    expect(start).not.toMatch(/locked/);
+    const refused = await en.run("set_phase", { phase: "ward" });
+    expect(refused.ok).toBe(false);
+    expect(refused.output).toContain("This phase follows the case clock and cannot be switched manually.");
+    expect(refused.output).not.toContain("Not available in the current phase");
+    await en.run("wait", { minutes: 10 });
+    expect(en.state.phase).toBe("ward");
+    const later = (await en.run("list_options", { kind: "phases" })).output;
+    expect(later).toContain("- [ed] Emergency (advances automatically)");
+    expect(later).toContain("- [ward] Ward (current)");
+    expect(later).not.toMatch(/locked|current\) \(/);
+
+    const zh = harness("zh-CN", "learner", null, autoPhases);
+    const zhStart = (await zh.run("list_options", { kind: "phases" })).output;
+    expect(zhStart).toContain("- [ed] 急诊 (当前)");
+    expect(zhStart).not.toContain("未解锁");
+    const zhRefused = await zh.run("set_phase", { phase: "ward" });
+    expect(zhRefused.output).toContain("该阶段随病例时钟推进，不能手动切换。");
+    expect(zhRefused.output).not.toContain("当前阶段不可用");
+    await zh.run("wait", { minutes: 10 });
+    expect((await zh.run("list_options", { kind: "phases" })).output).toContain("- [ed] 急诊 (随病情自动推进)");
+  });
+
+  it("vitals name the rhythm in words, never the enum id (L15)", async () => {
+    const tachy = (x: CaseInput) => {
+      x.physiology!.baseline.rhythm = "sinus-tachycardia";
+    };
+    const zh = (await harness("zh-CN", "learner", null, tachy).run("check_vitals")).output;
+    expect(zh).toContain("心律 窦性心动过速");
+    expect(zh).not.toContain("sinus");
+    const en = (await harness("en", "learner", null, tachy).run("check_vitals")).output;
+    expect(en).toContain("rhythm sinus tachycardia");
+    expect(en).not.toContain("sinus-tachycardia");
+    for (const rhythm of RHYTHMS) {
+      expect(rhythmLabel(rhythm, "zh-CN")).toMatch(/^[一-鿿]+$/);
+      expect(rhythmLabel(rhythm, "en")).not.toContain("-");
+    }
+    expect(rhythmLabel("junctional", "zh-CN")).toBe("junctional"); // unknown values are shown as recorded
+  });
+
+  it("clock times are whole minutes (case clock time when the case has a start time), never fractional action costs (L17)", async () => {
+    const halfMinutes = (x: CaseInput) => {
+      x.clock = { ...x.clock, actionCosts: { ask: 0.5, examine: 0.5, order: 0.5, read: 0.5, intervene: 1, answer: 0 } };
+    };
+    const en = harness("en", "learner", null, halfMinutes);
+    await en.run("examine", { finding_id: "heart" }); // 0 → 0.5
+    const ordered = await en.run("order_test", { investigation_id: "troponin" }); // ordered at 0.5, ready at 45.5; clock → 1
+    expect(ordered.output).toBe("Ordered Troponin (Emergency). Result expected at 09:46 (now 09:01).");
+    const status = await en.run("case_status");
+    expect(status.output).toContain("Phase Emergency · 09:01");
+    expect(status.output).toContain("pending (expected 09:46)");
+    const waited = await en.run("wait", { minutes: 30 });
+    expect(waited.output).toMatch(/^Waited 30 min \(09:01 → 09:31\)\./);
+    expect((await en.run("check_vitals")).output).toMatch(/^\[09:31\] /);
+    const early = await en.run("read_result", { investigation_id: "troponin" });
+    expect(early.output).toContain("Result expected at 09:46 (now 09:31).");
+    for (const out of [ordered, status, waited, early]) expect(out.output).not.toMatch(/\d\.5\b/);
+
+    const zh = harness("zh-CN", "learner", null, (x) => {
+      halfMinutes(x);
+      delete x.clock.startTime;
+    });
+    await zh.run("examine", { finding_id: "heart" });
+    expect((await zh.run("order_test", { investigation_id: "troponin" })).output).toBe("已开具肌钙蛋白（急诊）。预计第 46 分钟出结果（现在第 1 分钟）。");
+    expect((await zh.run("wait", { minutes: 30 })).output).toMatch(/^已等待 30 分钟（第 1 分钟 → 第 31 分钟）。/);
+    expect((await zh.run("case_status")).output).toContain("待出（预计第 46 分钟）");
+    expect(clockTime(loadMiniCase(), 59.9, "en")).toBe("09:59");
+    expect(clockTime(loadMiniCase(), 45.5, "en", "ceil")).toBe("09:46");
+  });
+
+  it("the wait summary addresses whoever waited and never doubles punctuation (L21)", async () => {
+    const en = harness("en", "learner");
+    await en.run("order_test", { investigation_id: "troponin" });
+    const waited = await en.run("wait", { minutes: 45 });
+    const meanwhile = (waited.data as { meanwhile: string }).meanwhile;
+    expect(meanwhile).toMatch(/^Meanwhile: /);
+    expect(meanwhile).toContain("The patient says the pain is getting worse; ");
+    expect(meanwhile).toContain("Troponin (Emergency) is back — review it");
+    expect(meanwhile).toMatch(/\.$/);
+    expect(meanwhile).not.toMatch(/learner|[.;]{2}|\.;/);
+    const zh = harness("zh-CN", "learner");
+    await zh.run("order_test", { investigation_id: "troponin" });
+    const zhMeanwhile = ((await zh.run("wait", { minutes: 45 })).data as { meanwhile: string }).meanwhile;
+    expect(zhMeanwhile).toMatch(/^期间：/);
+    expect(zhMeanwhile).toContain("患者诉胸痛加重；");
+    expect(zhMeanwhile).toContain("肌钙蛋白（急诊）结果已出，请查看");
+    expect(zhMeanwhile).toMatch(/。$/);
+    expect(zhMeanwhile).not.toMatch(/学习者|[。；]{2}/);
+  });
+});
+
+describe("per-locale result values and reference texts (J3)", () => {
+  it("read_result shows each locale's own value and reference text", async () => {
+    const mutate = (x: CaseInput) => {
+      const ua = x.investigations.find((i) => i.id === "troponin")!;
+      ua.results = { ed: { text: { "zh-CN": "尿常规。", en: "Urinalysis." }, values: [{ analyte: { "zh-CN": "白细胞酯酶", en: "Leukocyte esterase" }, value: { "zh-CN": "阴性", en: "negative" }, unit: "", refText: { "zh-CN": "阴性", en: "negative" } }, { analyte: { "zh-CN": "血酮", en: "Ketones" }, value: 0.4, unit: "mmol/L", refText: { "zh-CN": "< 0.6 正常", en: "< 0.6 normal" } }] } } as never;
+    };
+    for (const locale of ["en", "zh-CN"]) {
+      const h = harness(locale, "clinician", null, mutate);
+      h.ctx.dispatch({ type: "order", investigationId: "troponin" });
+      h.ctx.dispatch({ type: "advance-time", minutes: 60 });
+      const out = (await h.run("read_result", { investigation_id: "troponin" })).output;
+      if (locale === "en") {
+        expect(out).toContain("Leukocyte esterase: negative (ref negative)");
+        expect(out).toContain("(ref < 0.6 normal)");
+        expect(out).not.toMatch(/[一-鿿]/);
+      } else {
+        expect(out).toContain("白细胞酯酶: 阴性 (参考 阴性)");
+        expect(out).not.toContain("normal");
+      }
+    }
   });
 });

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { parseCase, type CaseDefinition } from "@clinicalcraft/core";
@@ -10,7 +10,7 @@ import { EXEC_FLAGS, GLOBAL_FLAGS, RESUME_FLAGS, SESSION_FLAGS } from "./flags.j
 import { renderHelp } from "./help.js";
 import { m, normalizeLang } from "./i18n.js";
 import { resolveCommand } from "./main.js";
-import { completeLine, parseApprovalAnswer } from "./repl.js";
+import { argumentCandidates, completeLine, parseApprovalAnswer } from "./repl.js";
 import { summarizeArgs, truncate } from "./render.js";
 
 const SPECS: FlagSpec[] = [
@@ -222,6 +222,19 @@ describe("REPL helpers", () => {
     expect(hits).toContain("biopsy");
     expect(completeLine("@nu", commands, c, agents)).toEqual([["@nurse"], "@nu"]);
     expect(completeLine("hello", commands, c, agents)).toEqual([[], "hello"]);
+  });
+
+  it("never completes future automatic phases or other phases' examinations (F9)", () => {
+    const anaFile = fileURLToPath(new URL("../../content/cases/anaphylaxis-garden/case.json", import.meta.url));
+    if (!existsSync(anaFile)) return;
+    const ana = parseCase(JSON.parse(readFileSync(anaFile, "utf8")));
+    if (!ana.ok) throw new Error("anaphylaxis-garden does not parse");
+    const phases = argumentCandidates("phase", ana.value, agents);
+    expect(phases).toEqual(["scene"]);
+    expect(completeLine("/phase ", commands, ana.value, agents)[0]).toEqual(["scene"]);
+    const exams = argumentCandidates("exam", ana.value, agents);
+    expect(exams).toContain("ex-chest-scene");
+    expect(exams).not.toContain("ex-chest-ed");
   });
 
   it("parses approval answers", () => {

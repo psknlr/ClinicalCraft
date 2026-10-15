@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { resolveProviderConfig } from "../providers/catalog.js";
 import { applyEnv, applyProfile, applySettingsPatch, DEFAULT_SETTINGS, envLayer, isLoopbackUrl, mergeSettings, mergeSettingsDetailed, UNTRUSTED_PROJECT, validateSettingsLayer } from "./merge.js";
 
 describe("DEFAULT_SETTINGS", () => {
@@ -212,6 +213,64 @@ describe("mergeSettings", () => {
     expect(isLoopbackUrl("http://127.0.0.2")).toBe(true);
     expect(isLoopbackUrl("http://localhost.evil.example")).toBe(false);
     expect(isLoopbackUrl("not a url")).toBe(false);
+  });
+
+  it("a repository loopback baseUrl never receives an API key (keyed templates, or a key from another layer)", () => {
+    const env = { ANTHROPIC_API_KEY: "sk-ant-real-key-123456", OLLAMA_KEY: "ollama-secret-123456" };
+    const user = {
+      source: "user" as const,
+      settings: {
+        providers: {
+          gw: { wire: "openai-chat-completions", baseUrl: "https://gw.example/v1", apiKey: "sk-user-gateway-123456" },
+          ollama: { apiKeyEnv: ["OLLAMA_KEY"] },
+          // A user key for a provider the project then points at its own port.
+          lm: { apiKey: "lm-user-key-123456" },
+        },
+      },
+    };
+    const project = {
+      source: "project" as const,
+      settings: {
+        providers: {
+          anthropic: { baseUrl: "http://127.0.0.1:8080" },
+          gw: { baseUrl: "http://localhost:7000/v1" },
+          ollama: { baseUrl: "http://127.0.0.1:9999/v1" },
+          lm: { wire: "openai-chat-completions", baseUrl: "http://localhost:1234/v1" },
+          campus: { wire: "openai-chat-completions", baseUrl: "http://127.0.0.1:4000/v1" },
+          lmstudio: { baseUrl: "http://127.0.0.1:1235/v1" },
+        },
+        profiles: { lab: { providers: { gw: { baseUrl: "http://127.0.0.1:7001/v1" }, openai: { baseUrl: "http://127.0.0.1:8081/v1" } } } },
+      },
+    };
+    for (const trustedProject of [true, false]) {
+      const { settings, issues } = mergeSettingsDetailed([user, project], { trustedProject, profile: "lab" });
+      // Keyed template: dropped at the layer (the env key would follow the URL).
+      expect(settings.providers.anthropic).toEqual({});
+      expect(resolveProviderConfig(settings, "anthropic", null, env)).toMatchObject({ baseUrl: "https://api.anthropic.com", apiKey: env.ANTHROPIC_API_KEY });
+      // A key from the user layer: the user's own URL comes back (layer and profile alike).
+      expect(settings.providers.gw!.baseUrl).toBe("https://gw.example/v1");
+      expect(settings.providers.ollama!.baseUrl).toBeUndefined();
+      expect(resolveProviderConfig(settings, "ollama", null, env)).toMatchObject({ baseUrl: "http://localhost:11434/v1", apiKey: env.OLLAMA_KEY });
+      expect(settings.providers.lm!.baseUrl).toBeUndefined();
+      expect(settings.providers.openai?.baseUrl).toBeUndefined();
+      // Keyless: local servers the project defines (or keyless templates) keep their port.
+      expect(settings.providers.campus!.baseUrl).toBe("http://127.0.0.1:4000/v1");
+      expect(settings.providers.lmstudio!.baseUrl).toBe("http://127.0.0.1:1235/v1");
+      expect(resolveProviderConfig(settings, "campus", null, env).apiKey).toBeUndefined();
+      expect(issues.map((i) => i.path)).toEqual(
+        expect.arrayContaining(["providers.anthropic.baseUrl", "profiles.lab.providers.gw.baseUrl", "providers.ollama.baseUrl", "providers.lm.baseUrl", "profiles.lab.providers.openai.baseUrl"]),
+      );
+      for (const [name, cfg] of Object.entries(settings.providers)) {
+        if (!cfg.baseUrl || !isLoopbackUrl(cfg.baseUrl)) continue;
+        expect([name, resolveProviderConfig(settings, name, null, env).apiKey]).toEqual([name, undefined]);
+      }
+    }
+    const plain = mergeSettingsDetailed([user, project]);
+    expect(plain.settings.providers.gw!.baseUrl).toBe("https://gw.example/v1");
+    expect(plain.issues.find((i) => i.path === "providers.gw.baseUrl")).toMatchObject({ source: "project", severity: "warning" });
+    // User settings and a trusted project's local file may still point a keyed provider at a local gateway.
+    expect(mergeSettings([{ source: "user", settings: { providers: { anthropic: { baseUrl: "http://127.0.0.1:8080" } } } }]).providers.anthropic!.baseUrl).toBe("http://127.0.0.1:8080");
+    expect(mergeSettings([{ source: "local", settings: { providers: { anthropic: { baseUrl: "http://127.0.0.1:8080" } } } }], { trustedProject: true }).providers.anthropic!.baseUrl).toBe("http://127.0.0.1:8080");
   });
 
   it("never throws on keys that shadow Object.prototype members and never pollutes prototypes", () => {

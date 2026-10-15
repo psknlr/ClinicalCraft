@@ -150,6 +150,12 @@ export class SessionStore {
     }
   }
 
+  /** Resume: the workup plan saved with the snapshot (the journal and autopilot panels show it). */
+  restorePlan(items: readonly PlanItem[]): void {
+    this.plan = items.length ? { agent: "", items: items.map((p) => ({ text: p.text, status: p.status })) } : null;
+    this.version++;
+  }
+
   onEntry(fn: (entry: LogEntry) => void): () => void {
     this.entryListeners.add(fn);
     return () => this.entryListeners.delete(fn);

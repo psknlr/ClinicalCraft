@@ -172,6 +172,15 @@ describe("patient agent — select → voice with a model", () => {
     expect(msgsOf(events, "warning").some((w) => /grounding/.test(w.message) && /850/.test(w.message))).toBe(true);
   });
 
+  it("replaces a reply that invents history, diagnoses or digit-free dates by the authored answer (C2)", async () => {
+    const t = await makeSession({ scripts: [voice("Yes doctor, I had a stroke last year, and my father died of a heart attack.", [])] });
+    const events = await t.session.run({ type: "user_message", text: "When did the chest pain start?" });
+    const reply = msgsOf(events, "agent_message")[0]!;
+    expect(reply.text).toBe("About two hours ago, while I was lifting boxes.");
+    expect((reply as unknown as { grounding: string }).grounding).toBe("template");
+    expect(msgsOf(events, "warning").some((w) => /stroke/.test(w.message))).toBe(true);
+  });
+
   it("checks the nonverbal cue too: no numbers, signs or unexamined findings (else it is dropped)", async () => {
     const medsAnswer = "I take metformin 500 mg twice a day.";
     const t = await makeSession({

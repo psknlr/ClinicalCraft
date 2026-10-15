@@ -26,8 +26,8 @@ npm run test:e2e                 # Playwright (Chromium + SwiftShader WebGL)
 The standalone build is offline only. It embeds the local-only V4 assets
 when `assets/local/` exists at build time — such a file must never be
 published; build a redistributable one with
-`npm run build:standalone -w @clinicalcraft/web -- --no-local-assets`
-(docs/ASSETS.md).
+`npm run build:standalone -- --no-local-assets` (from the repository root or
+this package; docs/ASSETS.md).
 
 **Controls:** `WASD` move · mouse look · `Space` jump · `Shift` sprint · `E`
 interact · `T`/`Enter` talk · `V` monitor · `J` journal · `M` map ·
@@ -43,5 +43,6 @@ touch screens.
 | `harness/` | `world-harness.html`, a QA page that renders facilities without a case |
 
 E2E tests start Vite on port 5197 (`CC_E2E_PORT`) and use the Chromium at
-`PW_CHROMIUM` or `/opt/pw-browsers/chromium` when present, else Playwright's
-own (`npx playwright install chromium`).
+`CLINICALCRAFT_E2E_CHROMIUM` (or `PW_CHROMIUM`), else `/opt/pw-browsers/chromium`
+when present, else Playwright's own (`npx playwright install chromium`;
+`CLINICALCRAFT_E2E_CHROMIUM=playwright` forces it, as CI does).

@@ -2,10 +2,9 @@
   "$schema": "../packages/content/schemas/settings.schema.json",
   "provider": "offline",
   "locale": "zh-CN",
-  "approvalMode": "default",
   "practiceScope": "full",
   "permissions": {
-    "ask": ["intervene(*thromb*)", "intervene(*lysis*)", "intervene(alteplase*)", "intervene(tenecteplase*)"],
+    "ask": ["intervene(*thrombolysis*)", "intervene(alteplase*)", "intervene(tenecteplase*)"],
     "deny": []
   },
   "agents": {

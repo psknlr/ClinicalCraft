@@ -24,7 +24,7 @@ import type { Env } from "./home.js";
 import { loadMemory } from "./memory.js";
 import { resolveNodeProviderConfig } from "./providers.js";
 import { loadSettings } from "./settings.js";
-import { isWebTranscriptPath, JsonlTranscript, listSessions, readTranscript, sessionsDir } from "./transcript.js";
+import { isLocalTranscriptPath, isWebTranscriptPath, JsonlTranscript, listSessions, readTranscript, sessionsDir } from "./transcript.js";
 
 export interface CreateNodeSessionOptions {
   /** Case id (default: the resumed session's case, then `settings.defaultCase`). */
@@ -157,11 +157,14 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
   let webOrigin = false;
   if (opts.resume !== undefined) {
     resumePath = await findSessionTranscript(opts.resume, env, settings.transcripts.dir);
-    webOrigin = isWebTranscriptPath(resumePath, settings.transcripts.dir || sessionsDir(env));
+    const bases = [...new Set([settings.transcripts.dir, sessionsDir(env)].filter((d): d is string => !!d))];
+    webOrigin = bases.some((base) => isWebTranscriptPath(resumePath!, base));
     const items = await readTranscript(resumePath);
     resumed = replayTranscript(items);
     resumedConfig = resumedRuntimeConfig(items);
-    if (webOrigin) resumedConfig = untrustedResumeConfig(resumedConfig);
+    // Only this machine's own recordings (real path under a local sessions tree, outside web/) restore
+    // their provider/model and approval mode; uploads, symlinked aliases and files elsewhere do not.
+    if (webOrigin || !isLocalTranscriptPath(resumePath, bases)) resumedConfig = untrustedResumeConfig(resumedConfig);
     settings = applyResumedConfig(settings, resumedConfig);
   }
 

@@ -7,7 +7,11 @@ import { UNTRUSTED_PROJECT } from "@clinicalcraft/agent";
 import { loadSettings, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { createPalette, colorEnabled, type Env, type Palette } from "./ansi.js";
 import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
-import { m, type MsgKey } from "./i18n.js";
+import { m, normalizeLang, SUPPORTED_LANGS, type MsgKey } from "./i18n.js";
+import { sanitizeTerminal } from "./render.js";
+
+/** The session language when none (or an unsupported one) is configured. */
+const DEFAULT_LANG = "zh-CN";
 import { isKnownProvider, missingKeyEnv, providerIds } from "./provider-check.js";
 
 /** Process exit codes (docs/PROTOCOL.md §11). */
@@ -109,6 +113,27 @@ export function createContext(o: ContextOptions): CliContext {
   return ctx;
 }
 
+/**
+ * "Searched: <dir>, <dir> (missing)" — appended to unknown case/facility
+ * errors, so a contentDirs entry resolved against the wrong directory (they
+ * resolve against the settings file's own directory) is visible.
+ */
+export function contentDirsHint(ctx: CliContext, content: { dirs: readonly string[]; issues: readonly { file: string; issues: readonly { message: string }[] }[] }): string {
+  const missing = content.issues.filter((f) => f.issues.some((i) => i.message === "content directory does not exist")).map((f) => f.file);
+  const dirs = [...content.dirs.map((d) => ctx.show(d)), ...missing.map((d) => `${ctx.show(d)} ${ctx.t("content.missingDir")}`)];
+  return ctx.t("content.searched", { dirs: terminalText(dirs.join(", ")) });
+}
+
+/** Join hint lines (skipping empty ones). */
+export function hints(...lines: (string | undefined | null | false)[]): string {
+  return lines.filter(Boolean).join("\n");
+}
+
+/** One line of text from a settings file, safe for a terminal (`sanitizeTerminal`, line breaks folded). */
+function terminalText(text: string): string {
+  return sanitizeTerminal(text).replace(/\s+/g, " ");
+}
+
 /** Contexts that already printed the untrusted-project warning (once per invocation). */
 const warnedUntrusted = new WeakSet<CliContext>();
 
@@ -121,8 +146,9 @@ export function warnUntrustedProject(ctx: CliContext, settings: Pick<LoadedSetti
   const dropped = settings.issues.filter((i) => i.code === UNTRUSTED_PROJECT);
   if (dropped.length === 0 || warnedUntrusted.has(ctx)) return;
   warnedUntrusted.add(ctx);
-  const keys = [...new Set(dropped.map((i) => i.path))].join(", ");
-  const files = [...new Set(dropped.map((i) => (i.file ? ctx.show(i.file) : i.source)))].join(", ");
+  // Keys embed provider/profile names from the untrusted file: never raw escape sequences on the terminal.
+  const keys = [...new Set(dropped.map((i) => terminalText(i.path)))].join(", ");
+  const files = [...new Set(dropped.map((i) => terminalText(i.file ? ctx.show(i.file) : i.source)))].join(", ");
   ctx.printErr(ctx.err.yellow(ctx.t("trust.untrusted", { keys, files })));
 }
 
@@ -130,7 +156,7 @@ export function warnUntrustedProject(ctx: CliContext, settings: Pick<LoadedSetti
 export async function loadCliSettings(ctx: CliContext, flags?: Record<string, unknown>): Promise<LoadedSettings> {
   try {
     const settings = await loadSettings({ cwd: ctx.cwd, env: ctx.env, ...(flags ? { flags } : {}), ...(ctx.profile ? { profile: ctx.profile } : {}) });
-    for (const issue of settings.issues) ctx.debug(`settings ${issue.severity}: ${issue.file ?? issue.source} ${issue.path || "(root)"}: ${issue.message}`);
+    for (const issue of settings.issues) ctx.debug(terminalText(`settings ${issue.severity}: ${issue.file ?? issue.source} ${issue.path || "(root)"}: ${issue.message}`));
     warnUntrustedProject(ctx, settings);
     return settings;
   } catch (err) {
@@ -175,6 +201,14 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
     layer.practiceScope = scope;
   }
   if (ctx.lang) layer.locale = ctx.lang;
+  else {
+    // A configured language the runtime does not ship ("fr" from a settings file or CLINICALCRAFT_LOCALE) would
+    // run the session in it half-translated: use its canonical form, or the default with a warning.
+    const configured = (await loadCliSettings(ctx)).locale;
+    const lang = normalizeLang(configured);
+    if (lang !== configured) layer.locale = lang ?? DEFAULT_LANG;
+    if (!lang) ctx.printErr(ctx.err.yellow(ctx.t("settings.badLocale", { value: configured, supported: SUPPORTED_LANGS.join(", "), fallback: DEFAULT_LANG })));
+  }
   const rounds = args.flags["max-tool-rounds"] !== undefined ? flagPositiveInt(args, "max-tool-rounds", 100, ctx.locale) : undefined;
   if (rounds !== undefined) layer.maxToolRounds = rounds;
   const baseUrl = flagString(args, "base-url");

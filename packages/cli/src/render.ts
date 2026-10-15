@@ -16,10 +16,12 @@ import {
   type AgentEvent,
   type EventMsg,
   type PlanItem,
+  type ResolvedSettings,
   type RuntimeKey,
   type TokenUsage,
 } from "@clinicalcraft/agent";
-import { CLEAR_LINE, type Palette } from "./ansi.js";
+import { resolveNodeProviderConfig } from "@clinicalcraft/agent/node";
+import { CLEAR_LINE, type Env, type Palette } from "./ansi.js";
 import type { OutStream } from "./context.js";
 import { m } from "./i18n.js";
 
@@ -33,6 +35,12 @@ export interface RendererOptions {
   verbose?: boolean;
   /** Show successful tool output previews (default true). */
   toolPreview?: boolean;
+  /**
+   * The model a provider/model choice resolves to (provider overrides from
+   * settings included), for the banner and status line; default `modelLabel`
+   * (built-in templates only).
+   */
+  resolveModel?: (provider: string, model: string | null) => string;
 }
 
 interface Configured {
@@ -52,6 +60,21 @@ interface Configured {
 export function modelLabel(provider: string, model: string | null | undefined): string {
   if (model) return model;
   return provider === "offline" ? "deterministic" : (findProviderTemplate(provider)?.defaultModel ?? "");
+}
+
+/**
+ * The model a session with these settings actually calls: settings provider
+ * overrides (`providers.<id>.defaultModel`, custom providers) included —
+ * `modelLabel` only knows the built-in templates.
+ */
+export function resolvedModelLabel(settings: Pick<ResolvedSettings, "provider" | "model" | "providers">, env: Env, provider: string = settings.provider, model: string | null = provider === settings.provider ? (settings.model ?? null) : null): string {
+  if (model) return model;
+  if (provider === "offline") return "deterministic";
+  try {
+    return resolveNodeProviderConfig(settings, provider, null, env).model || modelLabel(provider, null);
+  } catch {
+    return modelLabel(provider, null);
+  }
 }
 
 const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
@@ -88,6 +111,63 @@ export function truncate(text: string, max: number): string {
   return single.length > max ? `${single.slice(0, Math.max(1, max - 1))}…` : single;
 }
 
+/**
+ * Escape sequences and control characters a terminal would act on: CSI (7-bit
+ * and 8-bit), OSC/DCS/SOS/PM/APC strings up to BEL or ST (or the end of the
+ * text — a stream chunk may cut one), other ESC sequences (`ESC c`, `ESC 7`,
+ * `ESC ( B`…), then any lone C0 control except newline and tab, DEL and C1.
+ * Group 1 captures a 7-bit CSI (so SGR colour codes can be told apart).
+ */
+const TERMINAL_UNSAFE_RE =
+  /(\u001b\[[0-?]*[ -/]*[@-~])|\u009b[0-?]*[ -/]*[@-~]|\u001b[\]PX^_][\s\S]*?(?:\u0007|\u001b\\|\u009c|$)|[\u0090\u0098\u009d\u009e\u009f][\s\S]*?(?:\u0007|\u001b\\|\u009c|$)|\u001b[ -/]*[0-~]|[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g;
+const HAS_UNSAFE_RE = /[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/;
+const SGR_RE = /^\u001b\[[0-9;]*m$/;
+
+/**
+ * Make untrusted text (model output, case content, provider errors, file
+ * names) safe to write to a terminal: removes C0/C1 control characters and
+ * whole ANSI escape sequences (clipboard writes, cursor movement, hyperlinks,
+ * title changes…), keeping `\n` and `\t` (`\r\n` becomes `\n`). Apply it before
+ * the palette adds the CLI's own colour codes. `keepColors` keeps SGR colour
+ * sequences (`ESC [ … m`) and strips the rest — for text that already
+ * carries the palette's codes.
+ */
+export function sanitizeTerminal(text: string, options: { keepColors?: boolean } = {}): string {
+  if (!HAS_UNSAFE_RE.test(text)) return text;
+  return text.replace(/\r\n/g, "\n").replace(TERMINAL_UNSAFE_RE, (match: string, csi: string | undefined) => (options.keepColors && csi && SGR_RE.test(match) ? match : ""));
+}
+
+/** `sanitizeTerminal` over every string of a JSON-like value (case definitions). */
+function sanitizeDeep<T>(value: T): T {
+  const walk = (v: unknown): unknown => {
+    if (typeof v === "string") return sanitizeTerminal(v);
+    if (Array.isArray(v)) return v.map(walk);
+    if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
+    return v;
+  };
+  return walk(value) as T;
+}
+
+/**
+ * The event as the renderer may print it: top-level strings (deltas, texts,
+ * summaries, reasons, errors, names) and the nested texts it shows (plan
+ * items, judged evidence) sanitised. `data` payloads stay untouched (the REPL
+ * exports them verbatim); tool arguments are sanitised once summarised.
+ */
+function sanitizeMsg(msg: EventMsg): EventMsg {
+  if (msg.type === "state_snapshot" || msg.type === "clinical_event" || msg.type === "token_usage") return msg;
+  const out: Record<string, unknown> = { ...msg };
+  for (const [key, value] of Object.entries(out)) if (typeof value === "string") out[key] = sanitizeTerminal(value);
+  if (msg.type === "plan_updated") out.plan = msg.plan.map((item) => ({ ...item, text: sanitizeTerminal(item.text) }));
+  if (msg.type === "assessment") out.judged = msg.judged.map((j) => ({ ...j, id: sanitizeTerminal(j.id), evidence: sanitizeTerminal(j.evidence) }));
+  if (msg.type === "config_changed") {
+    const patch: Record<string, unknown> = { ...msg.patch };
+    for (const [key, value] of Object.entries(patch)) if (typeof value === "string") patch[key] = sanitizeTerminal(value);
+    out.patch = patch;
+  }
+  return out as EventMsg;
+}
+
 /** `08:30` + minutes → `08:42`. */
 export function clockLabel(c: CaseDefinition, minute: number): string {
   const start = c.clock.startTime;
@@ -101,6 +181,8 @@ export function clockLabel(c: CaseDefinition, minute: number): string {
 export class EventRenderer {
   private readonly o: RendererOptions;
   private readonly p: Palette;
+  /** The case with every text field passed through `sanitizeTerminal` (third-party content). */
+  private readonly c: CaseDefinition;
   private atLineStart = true;
   private openStream: { turnId: string; agent: string } | null = null;
   /** Text streamed per `turnId:agent` since that agent's last full message (avoids reprinting it). */
@@ -122,6 +204,7 @@ export class EventRenderer {
   constructor(options: RendererOptions) {
     this.o = options;
     this.p = options.palette;
+    this.c = sanitizeDeep(options.caseDef);
   }
 
   private get L(): string {
@@ -133,6 +216,10 @@ export class EventRenderer {
   /* ---------------------------------------------------------------- */
 
   private raw(text: string): void {
+    if (!text) return;
+    // Event text and case text are sanitised at the source; this also covers lines callers build
+    // themselves (REPL banner…): nothing but the palette's colour codes reaches the terminal.
+    text = sanitizeTerminal(text, { keepColors: true });
     if (!text) return;
     this.o.out.write(text);
     this.atLineStart = text.endsWith("\n");
@@ -181,16 +268,20 @@ export class EventRenderer {
   /* Speakers                                                          */
   /* ---------------------------------------------------------------- */
 
+  private modelFor(provider: string, model: string | null): string {
+    return this.o.resolveModel ? this.o.resolveModel(provider, model) : modelLabel(provider, model);
+  }
+
   /** Display name for an agent (patient name, "Nurse", …). */
   speakerName(agent: string): string {
     const cached = this.speakers.get(`${this.L}\u0000${agent}`);
     if (cached) return cached;
-    const c = this.o.caseDef;
+    const c = this.c;
     if (agent === "patient") return t(c.patient.displayName, this.L);
     if (agent === "companion" && c.patient.persona.companion) return t(c.patient.persona.companion.name, this.L);
     const key = `speaker.${agent}` as RuntimeKey;
     const label = rt(this.L, key);
-    return label === key ? agent : label;
+    return label === key ? sanitizeTerminal(agent) : label;
   }
 
   private colorFor(agent: string): (s: string) => string {
@@ -224,7 +315,7 @@ export class EventRenderer {
   /* ---------------------------------------------------------------- */
 
   handle(event: AgentEvent): void {
-    this.render(event.msg);
+    this.render(sanitizeMsg(event.msg));
   }
 
   private render(msg: EventMsg): void {
@@ -249,9 +340,9 @@ export class EventRenderer {
           if (patch.provider !== undefined) {
             this.configured.provider = patch.provider;
             this.configured.offline = patch.provider === "offline";
-            if (patch.model === undefined) this.configured.model = modelLabel(patch.provider, null);
+            if (patch.model === undefined) this.configured.model = this.modelFor(patch.provider, null);
           }
-          if (patch.model !== undefined) this.configured.model = modelLabel(this.configured.provider, patch.model);
+          if (patch.model !== undefined) this.configured.model = this.modelFor(this.configured.provider, patch.model);
           if (patch.approvalMode !== undefined) this.configured.approvalMode = patch.approvalMode;
           if (patch.practiceScope !== undefined) this.configured.practiceScope = patch.practiceScope;
           if (patch.interlocutor !== undefined) this.configured.interlocutor = patch.interlocutor;
@@ -259,6 +350,8 @@ export class EventRenderer {
         return;
       }
       case "turn_started":
+        // The staff member's display name, so the first streamed line is already labelled with it.
+        if (msg.speaker && msg.speaker !== String(msg.agent)) this.speakers.set(`${this.L}\u0000${String(msg.agent)}`, sanitizeTerminal(msg.speaker));
         return;
       case "turn_phase":
         if (msg.phase === "awaiting_model") this.startSpinner(m(L, "render.thinking", { agent: this.speakerName(String(msg.agent)) }));
@@ -298,7 +391,7 @@ export class EventRenderer {
         return;
       case "tool_call_begin": {
         this.ensureLineStart();
-        const args = summarizeArgs(msg.args);
+        const args = sanitizeTerminal(summarizeArgs(msg.args));
         this.raw(`${p.dim("⏺")} ${p.bold(msg.tool)}${p.dim(`(${args})`)} ${p.dim("…")}`);
         this.pendingTool = msg.callId;
         return;
@@ -397,7 +490,7 @@ export class EventRenderer {
   private clinicalEvent(event: DomainEvent): void {
     const L = this.L;
     const p = this.p;
-    const c = this.o.caseDef;
+    const c = this.c;
     switch (event.type) {
       case "objective.completed":
         this.line(p.green(`✓ ${m(L, "render.objective", { title: objectiveTitle(c, event.objectiveId, L) })}`));
@@ -447,7 +540,7 @@ export class EventRenderer {
   renderAssessment(report: AssessmentReport, narrative: string | null, judged: { id: string; met: boolean; evidence: string }[]): void {
     const L = this.L;
     const p = this.p;
-    const c = this.o.caseDef;
+    const c = this.c;
     const done = report.objectives.filter((o) => o.done).length;
     const firstTry = report.decisions.filter((d) => d.firstTryCorrect).length;
     this.line(p.bold(`── ${m(L, "assess.title")} ──`));
@@ -471,7 +564,12 @@ export class EventRenderer {
         hints: report.hints,
       }),
     );
-    if (report.investigations.essentialMissing.length) this.line(p.yellow(m(L, "assess.missing", { list: report.investigations.essentialMissing.map((id) => investigationName(c, id, L)).join(", ") })));
+    // Mid-case the names would be an answer key (the web and MCP rule): a count until the case is complete or finished.
+    const missing = report.investigations.essentialMissing;
+    const final = report.completed || this.snapshot?.state.finished === true;
+    if (missing.length) {
+      this.line(p.yellow(final ? m(L, "assess.missing", { list: missing.map((id) => investigationName(c, id, L)).join(", ") }) : m(L, "assess.missingCount", { count: missing.length })));
+    }
     if (report.investigations.lowValue.length) this.line(p.dim(m(L, "assess.lowValue", { list: report.investigations.lowValue.map((id) => investigationName(c, id, L)).join(", ") })));
     if (report.safety.contraindicated.length) this.line(p.red(m(L, "assess.unsafe", { count: report.safety.contraindicated.length })));
     for (const j of judged) this.line(`  ${j.met ? p.green("✓") : p.yellow("·")} ${j.id}${j.evidence ? p.dim(` — ${truncate(j.evidence, 100)}`) : ""}`);
@@ -486,7 +584,7 @@ export class EventRenderer {
   /** "chapter · progress n/total · phase · clock · vitals · provider/model". */
   statusLine(state?: SessionState): string {
     const L = this.L;
-    const c = this.o.caseDef;
+    const c = this.c;
     const snap = this.snapshot;
     const parts: string[] = [];
     const s = state ?? snap?.state;

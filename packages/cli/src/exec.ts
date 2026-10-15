@@ -7,30 +7,70 @@
  *   json         one final `{"type":"result", …}` object
  *   stream-json  every AgentEvent as one JSON line, then the result line
  *
- * Approvals: nobody can answer a prompt in a headless run. With
- * `--approval default|strict|plan` every `approval_request` is denied with the
- * reason "headless: approval required" (the agent is told and adapts); with
- * `--approval auto|bypass` the requests that still arise are approved.
- * Exception: with `--input-format stream-json --output-format stream-json`
- * the client answers with `approval_response` ops while its stdin is open
- * (requests still open when stdin closes are then answered as above).
+ * Approvals: nobody can answer a prompt in a headless run, so requests are
+ * answered by `headlessDecision`:
+ *   bypass   every request that still arises (ask rules) is approved;
+ *   auto     low/moderate-risk requests are approved, but requests from
+ *            `tool.always-ask`, ask rules (`rule.ask`) or with high risk are
+ *            DENIED with a reason naming `--approve-high-risk` — unless that
+ *            flag was passed (then they are approved too);
+ *   default|strict|plan  every request is denied ("headless: approval required").
+ * The agent is told and adapts. Exception: with `--input-format stream-json
+ * --output-format stream-json` the client answers with `approval_response` ops
+ * while its stdin is open (requests still open when stdin closes are then
+ * answered as above).
  *
- * Exit codes: 0 success · 1 error during execution · 2 usage error · 3 max turns.
+ * An `--autopilot` run that ends with objectives still open (steps denied or
+ * blocked, a model that stopped) is reported as `error_incomplete`.
+ *
+ * Exit codes: 0 success · 1 error during execution · 2 usage error · 3 max
+ * turns · 4 autopilot ended with the case incomplete.
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { createInterface } from "node:readline";
 import { assess as coreAssess, progress as caseProgress, type AssessmentReport } from "@clinicalcraft/core";
-import { DEFAULT_AUTOPILOT_TURNS, type AgentEvent, type ClinicalSession, type Op, type TokenUsage } from "@clinicalcraft/agent";
+import { DEFAULT_AUTOPILOT_TURNS, PERMISSION_RULE_IDS, type AgentEvent, type ApprovalMode, type ClinicalSession, type Op, type RiskLevel, type TokenUsage } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
-import { EventRenderer } from "./render.js";
+import { m } from "./i18n.js";
+import { EventRenderer, sanitizeTerminal } from "./render.js";
 import { openSession } from "./session.js";
 
 /** Reason given to the agent when a headless run cannot ask the learner. */
 export const HEADLESS_DENY_REASON = "headless: approval required";
 
-export type ResultSubtype = "success" | "error_max_turns" | "error_during_execution";
+/** Exit code of an `--autopilot` run that ended with the case incomplete. */
+export const EXIT_INCOMPLETE = 4;
+
+export type ResultSubtype = "success" | "error_max_turns" | "error_during_execution" | "error_incomplete";
+
+/** Rules whose requests an unattended `auto` run never approves on its own: they exist to make a person confirm. */
+const PERSON_REQUIRED_RULES: ReadonlySet<string> = new Set([PERMISSION_RULE_IDS.alwaysAsk, PERMISSION_RULE_IDS.ask]);
+
+export interface HeadlessApprovalOptions {
+  /** `--approve-high-risk`: in `auto`, also approve always-ask / ask-rule / high-risk requests. */
+  approveHighRisk?: boolean;
+}
+
+/**
+ * How a headless run answers one approval request (see the header): only
+ * `bypass` approves everything; `auto` approves low/moderate-risk requests
+ * and denies — never silently approves — always-ask, ask-rule and high-risk
+ * ones unless `approveHighRisk`; every other mode denies.
+ */
+export function headlessDecision(
+  mode: ApprovalMode,
+  request: { risk: RiskLevel; ruleId: string },
+  locale: string,
+  options: HeadlessApprovalOptions = {},
+): { approve: true } | { approve: false; reason: string } {
+  if (mode === "bypass") return { approve: true };
+  if (mode !== "auto") return { approve: false, reason: HEADLESS_DENY_REASON };
+  const needsPerson = request.risk === "high" || PERSON_REQUIRED_RULES.has(request.ruleId);
+  if (!needsPerson || options.approveHighRisk) return { approve: true };
+  return { approve: false, reason: m(locale, "exec.denyHighRisk") };
+}
 
 /** The final `result` object of `--output-format json|stream-json`. */
 export interface ExecResult {
@@ -144,18 +184,24 @@ export function autoAnswerApprovals(
   onDecision?: (summary: string, approved: boolean) => void,
   /** When it returns false the request is left to someone else (a stream-json client). */
   enabled: () => boolean = () => true,
+  options: HeadlessApprovalOptions = {},
 ): () => void {
   return session.subscribe((e) => {
     if (e.msg.type !== "approval_request") return;
     const { requestId, summary } = e.msg;
-    const mode = session.settings.approvalMode;
-    const approve = mode === "bypass" || mode === "auto";
+    const request = { risk: e.msg.risk, ruleId: e.msg.ruleId };
     queueMicrotask(() => {
       if (!enabled()) return;
-      onDecision?.(summary, approve);
-      session.submit(approve ? { type: "approval_response", requestId, decision: "approved" } : { type: "approval_response", requestId, decision: "denied", reason: HEADLESS_DENY_REASON });
+      answerHeadless(session, requestId, request, options, (approved) => onDecision?.(summary, approved));
     });
   });
+}
+
+/** Submit the headless answer to one request. */
+function answerHeadless(session: ClinicalSession, requestId: string, request: { risk: RiskLevel; ruleId: string }, options: HeadlessApprovalOptions, onDecision?: (approved: boolean) => void): void {
+  const decision = headlessDecision(session.settings.approvalMode, request, session.settings.locale, options);
+  onDecision?.(decision.approve);
+  session.submit(decision.approve ? { type: "approval_response", requestId, decision: "approved" } : { type: "approval_response", requestId, decision: "denied", reason: decision.reason });
 }
 
 async function readAllStdin(stream: NodeJS.ReadableStream): Promise<string> {
@@ -179,6 +225,7 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   const inputFormat = flagString(args, "input-format") ?? "text";
   const autopilot = flagBool(args, "autopilot");
   const quiet = flagBool(args, "quiet");
+  const approvals: HeadlessApprovalOptions = { approveHighRisk: flagBool(args, "approve-high-risk") };
   const maxTurns = args.flags["max-turns"] !== undefined ? flagPositiveInt(args, "max-turns", 500, ctx.locale) : undefined;
   const to = flagString(args, "to");
 
@@ -216,17 +263,18 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   // `approval_response` ops while its stdin is open; afterwards (and in every
   // other mode) they are answered automatically.
   let clientAnswers = inputFormat === "stream-json" && format === "stream-json";
-  const unanswered = new Set<string>();
+  const unanswered = new Map<string, { risk: RiskLevel; ruleId: string }>();
   session.subscribe((e) => {
-    if (e.msg.type === "approval_request") unanswered.add(e.msg.requestId);
+    if (e.msg.type === "approval_request") unanswered.set(e.msg.requestId, { risk: e.msg.risk, ruleId: e.msg.ruleId });
     else if (e.msg.type === "approval_resolved") unanswered.delete(e.msg.requestId);
   });
   autoAnswerApprovals(
     session,
     (summary, approved) => {
-      if (approved && format === "text" && !quiet) ctx.printErr(ctx.err.yellow(ctx.t("exec.autoApproved", { summary })));
+      if (approved && format === "text" && !quiet) ctx.printErr(ctx.err.yellow(ctx.t("exec.autoApproved", { summary: sanitizeTerminal(summary) })));
     },
     () => !clientAnswers,
+    approvals,
   );
 
   const pending: Promise<unknown>[] = [];
@@ -256,10 +304,7 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
       }
       if (clientAnswers) {
         clientAnswers = false;
-        const approve = session.settings.approvalMode === "bypass" || session.settings.approvalMode === "auto";
-        for (const requestId of unanswered) {
-          session.submit(approve ? { type: "approval_response", requestId, decision: "approved" } : { type: "approval_response", requestId, decision: "denied", reason: HEADLESS_DENY_REASON });
-        }
+        for (const [requestId, request] of [...unanswered]) answerHeadless(session, requestId, request, approvals);
       }
     }
     await Promise.all(pending);
@@ -275,7 +320,9 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   const clinicianTurns = tracker.turnsByAgent.clinician ?? 0;
   const budget = maxTurns ?? DEFAULT_AUTOPILOT_TURNS;
   const maxTurnsHit = (autopilot && clinicianTurns >= budget && !state.finished) || tracker.maxToolRoundsHit;
-  const subtype: ResultSubtype = tracker.errors.length > 0 ? "error_during_execution" : maxTurnsHit ? "error_max_turns" : "success";
+  // An autopilot is asked to work the case: ending with objectives open (denied/blocked steps, a model that stopped) is not a success.
+  const incomplete = autopilot && !prog.complete && !state.finished;
+  const subtype: ResultSubtype = tracker.errors.length > 0 ? "error_during_execution" : maxTurnsHit ? "error_max_turns" : incomplete ? "error_incomplete" : "success";
   const result: ExecResult = {
     type: "result",
     subtype,
@@ -311,7 +358,7 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   } else {
     // stdout carries the final message for pipes/files; on a terminal the progress renderer already showed it.
     const alreadyShown = renderer !== null && Boolean(ctx.io.stdout.isTTY) && Boolean(ctx.io.stderr.isTTY);
-    if (result.result && !alreadyShown) ctx.print(result.result);
+    if (result.result && !alreadyShown) ctx.print(sanitizeTerminal(result.result));
     if (autopilot || result.finished) {
       const r = result.assessment.report;
       ctx.print(
@@ -325,9 +372,11 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
       ctx.print(ctx.t("assess.notice"));
     }
     if (subtype === "error_max_turns") ctx.printErr(ctx.err.yellow(ctx.t("exec.maxTurns", { turns: budget })));
-    for (const e of tracker.errors) ctx.printErr(ctx.err.red(`✗ ${e}`));
+    if (subtype === "error_incomplete") ctx.printErr(ctx.err.yellow(ctx.t("exec.incomplete", { done: result.progress.done, total: result.progress.total, denied: result.permission_denials.length })));
+    for (const e of tracker.errors) ctx.printErr(ctx.err.red(`✗ ${sanitizeTerminal(e)}`));
   }
   if (subtype === "error_during_execution") return EXIT.error;
   if (subtype === "error_max_turns") return EXIT.maxTurns;
+  if (subtype === "error_incomplete") return EXIT_INCOMPLETE;
   return EXIT.ok;
 }

@@ -21,7 +21,7 @@ import {
 } from "@clinicalcraft/core";
 import { isZh, joinList, rt } from "../session/i18n.js";
 import { actorFor, lockedDecisionLabel, strArg, type ToolArgs } from "./clinical.js";
-import { formatResult, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
+import { clockTime, formatResult, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
 import type { ToolContext, ToolDefinition } from "./types.js";
 
 /** Matcher score a `specific` fact needs from the learner's question (ARCHITECTURE §4.2). */
@@ -108,7 +108,7 @@ const getVitals: ToolDefinition<ToolArgs> = {
   summarize: (_args, ctx) => rt(ctx.locale, "sum.vitals"),
   async run(_args, ctx) {
     const snapshot = vitalsAt(ctx.caseDef, ctx.state());
-    return { ok: true, output: vitalsText(snapshot, ctx.locale, `${ctx.state().clock} ${rt(ctx.locale, "label.minute")}`), data: snapshot };
+    return { ok: true, output: vitalsText(snapshot, ctx.locale, clockTime(ctx.caseDef, ctx.state().clock, ctx.locale)), data: snapshot };
   },
 };
 
@@ -141,7 +141,7 @@ export function obtainedResultsText(ctx: Pick<ToolContext, "caseDef" | "locale" 
     } else if (isNurse) {
       const name = investigationName(c, id, L);
       const phase = phaseLabel(c, o.order.phase, L);
-      lines.push(o.ready ? rt(L, "tool.results.ready", { name, phase }) : rt(L, "tool.results.pending", { name, phase, minute: o.order.readyAt }));
+      lines.push(o.ready ? rt(L, "tool.results.ready", { name, phase }) : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt, L, "ceil") }));
       data.push({ investigationId: id, phase: o.order.phase, ready: o.ready, read: false });
     }
   }

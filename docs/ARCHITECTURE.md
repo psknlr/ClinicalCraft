@@ -168,9 +168,10 @@ orderWarnings(c, query, investigationId, locale): string[]  // orderMatching.war
 matchHistory(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]   // sorted desc, score 0..1
 matchExam(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]
 matchInterventions(c, utterance, locale): { id: string; score: number }[]
+matchSpecificity(c, kind: "history"|"exam"|"interventions", utterance, locale, id): number   // coverage (chars) of the item's best phrase; tie-break only (§3.3)
 interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
 MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2
-compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, longestCommonSubstring,
+compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
 // assessment
@@ -191,6 +192,7 @@ interface AssessmentReport {
 mergeCatalogs(catalogs: EquipmentCatalog[]): { materials: Map<string, MaterialDef>; equipment: Map<string, EquipmentType> }
 placementCapabilities(f, catalogs, placementId): string[]
 facilityCapabilities(f, catalogs): Set<string>          // every placement's capabilities ∪ PERSONAL_KIT
+caseCapabilityGaps(c, f, catalogs): CapabilityGap[]     // items an objective/decision/solution uses that f cannot provide; `blocking` = an objective or decision has no alternative (FACILITIES.md)
 regionAt(f, x, z, locale): string                       // smallest room containing the point → building name → outdoorRegion
 assignPatientSlot(f, c): PatientSlot | null             // first slot accepting c.setting
 resolveWaypoint(f, catalogs, target, options?: { from?: { x: number; z: number }; locale?: string; slotId?: string; preferPatientSlot?: boolean }): { x: number; z: number; label: string } | null
@@ -329,7 +331,11 @@ for every locale (cross-lingual); score = max over phrases of:
 
 * CJK phrase — longest-common-substring length / phrase length (1 when
   contained, 0 when fewer than 2 characters are shared, +0.15 when the
-  utterance is a fragment of the phrase);
+  utterance is a fragment of the phrase); a shared run of only 2 characters
+  is capped at 0.5 (below the patient pipeline's 0.55 select band) unless
+  it is the phrase's own start and not a question bigram (怎么, 什么, 有没…),
+  or the whole phrase occurs in order within a few extra characters
+  ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血" never credits a fact;
 * Latin phrase — share of phrase tokens present in the utterance, or 0.9
   when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
   Tokens (`canonicalToken`): lower-case words minus English stop-words, then
@@ -363,7 +369,9 @@ items with `disclosure: "unknown"` (default `true`; ignored by `matchExam`).
 The 3-argument form is unchanged.
 
 Items with score ≥ `MATCH_THRESHOLD` (0.34) are returned, by score, then
-declaration order. Deterministic and dependency-free; used offline and as
+declaration order. `matchSpecificity` tells resolvers which of two items tied
+at the same score matched the longer, more specific phrase (scores and order
+are unchanged). Deterministic and dependency-free; used offline and as
 RAG hints.
 
 ### 3.4 Semantics notes
@@ -461,7 +469,10 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   < env < CLI flags < profile. Memory: `CLINICALCRAFT.md` (user, project, nested; `@path` imports).
   The project and local files live in a directory the user may have cloned:
   project settings never carry secrets (provider `apiKey`/`apiKeyEnv`,
-  non-loopback `baseUrl`, `server.host`/`server.token` are dropped), and
+  non-loopback `baseUrl`, `server.host`/`server.token` are dropped; a
+  loopback `baseUrl` survives only for a provider that sends no key — the
+  keyless ollama/lmstudio templates or a provider the project defines without
+  one — since any local user can listen on a loopback port), and
   until the user trusts the project (`clinicalcraft trust`; a user-only store
   in `<home>/trusted-projects.json` keyed by the root's realpath and pinned to
   a digest of both files) both layers also lose `hooks` and provider
@@ -480,6 +491,14 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
 | `auto`    | allow         | allow    | ask  | allow | Claude Code acceptEdits |
 | `plan`    | deny state-changing (agent must propose) | | | allow | Claude Code plan mode |
 | `bypass`  | allow         | allow    | allow| allow | bypassPermissions / Codex never (headless, benchmarks) |
+
+Unattended front-ends never answer "ask" silently: headless `exec`
+approves only in `bypass`; in `auto` it approves low/moderate-risk requests
+and denies always-ask, ask-rule and high-risk ones unless
+`--approve-high-risk` is passed. MCP sessions default to `auto` and turn an
+"ask" into a two-step confirmation (`confirm: true` on a second call that
+repeats the refused one; on a first call it is refused like any other).
+`bypass` is for benchmarks only (PROTOCOL §11).
 
 Rules (`permissions.allow|ask|deny`, Claude Code syntax `tool(pattern)` with
 `*` glob over tool names from PROTOCOL §3, e.g. `intervene(thrombolysis*)`,
@@ -511,8 +530,11 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
    queue, fallback line, locale. Output JSON `{say, nonverbal, usedFactIds,
    affectHint}` via `responseFormat`.
 4. **Verify** — numbers, units, drug names and dates in `say` must appear in
-   the answers of `usedFactIds` (or persona text); otherwise the reply is
-   replaced by the authored answer(s) and `grounding: "template"` is logged.
+   the answers of `usedFactIds` (or persona text) — so must named conditions
+   (stroke, heart attack, 糖尿病…, the case's decision options) and relative
+   dates without digits ("last year", "去年"), and no distinctive phrase of a
+   fact not yet revealed may appear; otherwise the reply is replaced by the
+   authored answer(s) and `grounding: "template"` is logged.
    The `nonverbal` cue passes the same check and is dropped (with a warning)
    when it is long, has a number, names a sign or measurement, or shares
    words with an exam finding not yet examined (`checkNonverbal`).
@@ -545,4 +567,7 @@ spoken by the patient — those come from engine actions.
   `/local-assets/*`; bound to 127.0.0.1 by default (any other host needs a
   token). Routes: PROTOCOL §11.
 * **mcp** — stdio JSON-RPC 2.0 MCP server exposing clinical tools so Claude
-  Code / Codex / Grok CLI can play the clinician.
+  Code / Codex / Grok CLI can play the clinician (approval mode `auto`;
+  high-risk actions need a second call with `confirm: true` that repeats the
+  refused one; session warnings such as an offline fallback come back with
+  each result).

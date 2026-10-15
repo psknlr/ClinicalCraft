@@ -9,6 +9,7 @@ import {
   type CaseDefinition,
   type Investigation,
   type LabValue,
+  type Rhythm,
   type SessionState,
   type VitalKey,
   type VitalsSnapshot,
@@ -65,6 +66,43 @@ export function vitalLabel(key: VitalKey, locale: string): string {
   return l ? (isZh(locale) ? l.zh : l.en) : key;
 }
 
+const RHYTHM_LABELS: Record<Rhythm, { en: string; zh: string }> = {
+  sinus: { en: "sinus rhythm", zh: "窦性心律" },
+  "sinus-tachycardia": { en: "sinus tachycardia", zh: "窦性心动过速" },
+  "sinus-bradycardia": { en: "sinus bradycardia", zh: "窦性心动过缓" },
+  "atrial-fibrillation": { en: "atrial fibrillation", zh: "心房颤动" },
+  "atrial-flutter": { en: "atrial flutter", zh: "心房扑动" },
+  svt: { en: "SVT", zh: "室上性心动过速" },
+  "ventricular-tachycardia": { en: "ventricular tachycardia", zh: "室性心动过速" },
+  "ventricular-fibrillation": { en: "ventricular fibrillation", zh: "心室颤动" },
+  asystole: { en: "asystole", zh: "心脏停搏" },
+  pea: { en: "PEA", zh: "无脉性电活动" },
+  paced: { en: "paced rhythm", zh: "起搏心律" },
+};
+
+/** Localised monitor rhythm ("sinus-tachycardia" → "窦性心动过速" / "sinus tachycardia"); unknown values are shown as recorded. */
+export function rhythmLabel(rhythm: string, locale: string): string {
+  const l = (RHYTHM_LABELS as Record<string, { en: string; zh: string } | undefined>)[rhythm];
+  return l ? (isZh(locale) ? l.zh : l.en) : rhythm;
+}
+
+/**
+ * A case-clock minute as the learner reads it, in whole minutes like the
+ * front-ends' status line: the wall-clock time ("09:46") when the case has
+ * `clock.startTime`, else "minute 46" / "第 46 分钟". Fractional action costs
+ * never show. `floor` (default) is for "now"; `ceil` is for a due time — a
+ * result due at minute 45.5 is announced for 09:46, the first whole minute at
+ * which it is ready.
+ */
+export function clockTime(c: CaseDefinition, minute: number, locale: string, round: "floor" | "ceil" = "floor"): string {
+  const whole = Math.max(0, round === "ceil" ? Math.ceil(minute - 1e-9) : Math.floor(minute + 1e-9));
+  const start = c.clock.startTime;
+  if (!start) return rt(locale, "clock.minute", { n: whole });
+  const [h, m] = start.split(":").map(Number);
+  const total = ((((h ?? 0) * 60 + (m ?? 0) + whole) % 1440) + 1440) % 1440;
+  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+}
+
 /** A vital value with its unit ("98%", "120 mmHg"). */
 export function vitalWithUnit(key: VitalKey, value: number): string {
   const unit = VITAL_LABELS[key]?.unit ?? "";
@@ -101,7 +139,7 @@ export function formatVitals(snapshot: VitalsSnapshot, locale: string): string {
     const value = v[k];
     if (typeof value === "number") parts.push(`${vitalLabel(k, locale)} ${vitalWithUnit(k, value)}${arrow(k)}`);
   }
-  if (v.rhythm) parts.push(`${isZh(locale) ? "心律" : "rhythm"} ${v.rhythm}`);
+  if (v.rhythm) parts.push(`${isZh(locale) ? "心律" : "rhythm"} ${rhythmLabel(v.rhythm, locale)}`);
   return parts.join(" · ");
 }
 
@@ -125,12 +163,22 @@ export function vitalsText(snapshot: VitalsSnapshot, locale: string, clockLabel?
 /* Results                                                             */
 /* ------------------------------------------------------------------ */
 
+/** A result value in the reader's language (numbers as authored; text values may be per-locale). */
+export function labValueText(v: Pick<LabValue, "value">, locale: string): string {
+  return typeof v.value === "number" ? String(v.value) : t(v.value, locale);
+}
+
+/** A result's reference range in the reader's language: `refText` (per locale) or `refLow–refHigh`. */
+export function labRefText(v: Pick<LabValue, "refText" | "refLow" | "refHigh">, locale: string): string {
+  if (v.refText !== undefined) return t(v.refText, locale);
+  return v.refLow != null || v.refHigh != null ? `${v.refLow ?? ""}–${v.refHigh ?? ""}` : "";
+}
+
 function formatValue(v: LabValue, locale: string): string {
-  const ref =
-    v.refText ?? (v.refLow != null || v.refHigh != null ? `${v.refLow ?? ""}–${v.refHigh ?? ""}` : "");
+  const ref = labRefText(v, locale);
   const flag = v.flag && v.flag !== "N" ? ` [${v.flag}]` : "";
   const unit = v.unit ? ` ${v.unit}` : "";
-  return `- ${t(v.analyte, locale)}: ${v.value}${unit}${flag}${ref ? ` (${isZh(locale) ? "参考" : "ref"} ${ref})` : ""}`;
+  return `- ${t(v.analyte, locale)}: ${labValueText(v, locale)}${unit}${flag}${ref ? ` (${isZh(locale) ? "参考" : "ref"} ${ref})` : ""}`;
 }
 
 export interface FormattedResult {

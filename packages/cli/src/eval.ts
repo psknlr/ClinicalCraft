@@ -12,9 +12,10 @@ import { assess as coreAssess, progress as caseProgress, t } from "@clinicalcraf
 import { DEFAULT_AUTOPILOT_TURNS, type TokenUsage } from "@clinicalcraft/agent";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
-import { CliError, EXIT, loadCliSettings, requireProviderKey, sessionFlagsLayer, type CliContext } from "./context.js";
+import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, requireProviderKey, sessionFlagsLayer, type CliContext } from "./context.js";
 import { autoAnswerApprovals, RunTracker } from "./exec.js";
 import { m } from "./i18n.js";
+import { resolvedModelLabel } from "./render.js";
 import { openSession } from "./session.js";
 
 export interface EvalRun {
@@ -98,7 +99,7 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
   for (const id of ids) {
     if (!content.cases.has(id)) {
       const hint = suggest(id, [...content.cases.keys()]);
-      throw new CliError(ctx.t("cases.unknown", { id }), EXIT.usage, hint ? ctx.t("argv.didYouMean", { value: hint }) : undefined);
+      throw new CliError(ctx.t("cases.unknown", { id }), EXIT.usage, hints(hint ? ctx.t("argv.didYouMean", { value: hint }) : undefined, contentDirsHint(ctx, content)));
     }
   }
   const transcripts = flagBool(args, "transcripts");
@@ -108,7 +109,8 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
     version: 1,
     startedAt: new Date().toISOString(),
     provider: settings.provider,
-    model: settings.model ?? (settings.provider === "offline" ? "deterministic" : "default"),
+    // The model the runs call (provider default or override), never a placeholder.
+    model: resolvedModelLabel(settings, ctx.env) || "default",
     runsPerCase: runs,
     maxTurns,
     runs: [],

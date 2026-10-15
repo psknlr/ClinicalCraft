@@ -49,7 +49,7 @@ export function localAssetRoots(): string[] {
   return [path.join(repoRoot, "assets", "local"), path.join(home, "assets")];
 }
 
-/** Resolve `/local-assets/<rel>` to an existing file under one of the roots (no traversal). */
+/** Resolve `/local-assets/<rel>` to an existing file under one of the roots (no traversal, also through symlinks). */
 export function resolveLocalAsset(urlPath: string, roots = localAssetRoots()): string | null {
   const prefix = "/local-assets/";
   if (!urlPath.startsWith(prefix)) return null;
@@ -64,9 +64,13 @@ export function resolveLocalAsset(urlPath: string, roots = localAssetRoots()): s
     const abs = path.resolve(root, rel);
     if (abs !== root && !abs.startsWith(root + path.sep)) continue;
     try {
-      // Allow-listed types only, for the requested name and the resolved file (symlinks).
-      if (!MIME[path.extname(abs).toLowerCase()] || !MIME[path.extname(fs.realpathSync(abs)).toLowerCase()]) continue;
-      if (fs.statSync(abs).isFile()) return abs;
+      // As `clinicalcraft serve` does: the resolved file (symlinks followed) must stay under the root's
+      // real path, and both the requested name and the resolved file must be allow-listed types.
+      const real = fs.realpathSync(abs);
+      const realRoot = fs.realpathSync(root);
+      if (real === realRoot || !real.startsWith(realRoot + path.sep)) continue;
+      if (!MIME[path.extname(abs).toLowerCase()] || !MIME[path.extname(real).toLowerCase()]) continue;
+      if (fs.statSync(real).isFile()) return real;
     } catch {
       /* try next root */
     }

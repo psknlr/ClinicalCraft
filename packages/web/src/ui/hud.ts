@@ -4,14 +4,16 @@
  * target tooltip, turn-phase bubble, compact vitals strip, V4 hotbar with
  * block counts, controls legend, status bar (phase, save state, simulated
  * clock, provider pill), autopilot dock and V4 touch controls. Everything
- * renders from the app store; nothing here keeps its own history.
+ * renders from the app store; nothing here keeps its own history. On
+ * entering the world the quest card also carries the case's teaching-case
+ * disclaimer for a few seconds (inside the card, so it never covers a control).
  */
 import { progress as coreProgress, type CaseDefinition, type VitalKey } from "@clinicalcraft/core";
 import type { App } from "../app/context.js";
 import { statusLabel } from "../app/llm.js";
 import type { BlockType } from "../app/persistence.js";
 import type { BlockInfo, InteractionTarget, MoveInfo } from "../contracts.js";
-import { ct, getLocale, tr, trMaybe } from "../i18n/index.js";
+import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 import { append, clear, clockLabel, h } from "./dom.js";
 import { phaseBadge } from "./panels/common.js";
 
@@ -34,6 +36,9 @@ export const HOTBAR: SlotDef[] = [
   { key: "help", icon: "?" },
 ];
 
+/** How long the case disclaimer stays in the quest card after entering the world. */
+export const DISCLAIMER_MS = 15_000;
+
 const STRIP: { key: VitalKey | "bp"; unit: string }[] = [
   { key: "hr", unit: "" },
   { key: "bp", unit: "" },
@@ -50,6 +55,9 @@ export class Hud {
   private lastMinimap = 0;
   private savedState: "saved" | "failed" | "idle" = "idle";
   private miniTimer: ReturnType<typeof setInterval> | null = null;
+  /** `performance.now()` until which the quest card shows the case disclaimer. */
+  private disclaimerUntil = 0;
+  private disclaimerTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     root: HTMLElement,
@@ -66,6 +74,30 @@ export class Hud {
       clearInterval(this.miniTimer);
       this.miniTimer = null;
     }
+    if (!visible) {
+      this.disclaimerUntil = 0;
+      if (this.disclaimerTimer) clearTimeout(this.disclaimerTimer);
+      this.disclaimerTimer = null;
+    }
+  }
+
+  /** Show the case disclaimer in the quest card once (on entering the world); it leaves by itself after `ms`. */
+  showDisclaimer(ms = DISCLAIMER_MS): void {
+    this.disclaimerUntil = performance.now() + ms;
+    if (this.disclaimerTimer) clearTimeout(this.disclaimerTimer);
+    this.disclaimerTimer = setTimeout(() => {
+      this.disclaimerTimer = null;
+      this.disclaimerUntil = 0;
+      this.renderDisclaimer();
+    }, ms);
+    this.renderDisclaimer();
+  }
+
+  private renderDisclaimer(): void {
+    const game = this.app.game;
+    const on = !!game && performance.now() < this.disclaimerUntil;
+    this.el.disclaimer.hidden = !on;
+    this.el.disclaimer.textContent = on && game ? caseDisclaimer(game.caseDef.disclaimer) : "";
   }
 
   /** Re-create the markup (language change / new game). */
@@ -80,6 +112,7 @@ export class Hud {
     e.questCopy = h("p", { id: "quest-copy" });
     e.questProgress = h("div", { id: "quest-progress", class: "quest-progress", "aria-hidden": "true" });
     e.questDest = h("span", { id: "quest-destination" });
+    e.disclaimer = h("div", { id: "quest-disclaimer", class: "quest-disclaimer", role: "note", "aria-label": tr("hud.disclaimerLabel"), hidden: true });
     e.region = h("strong", { id: "region" });
     e.coords = h("small", { id: "coordinates" });
     e.targetName = h("strong", { id: "target-name" });
@@ -121,6 +154,7 @@ export class Hud {
         e.questCopy,
         e.questProgress,
         h("div", { class: "quest-footer" }, e.questDest, h("button", { type: "button", id: "hint-btn", title: tr("hud.hintTitle"), "aria-label": tr("hud.hintTitle"), onclick: () => this.hint() }, tr("hud.hint"))),
+        e.disclaimer,
       ),
       h("div", { class: "place" }, e.region, e.coords),
       h("button", { type: "button", id: "minimap-btn", class: "minimap", "aria-label": tr("hud.openMap"), onclick: () => this.app.open("map") }, this.mini),
@@ -303,6 +337,7 @@ export class Hud {
     for (const o of p.objectives) e.questProgress.append(h("span", { class: [o.done ? "done" : "", o.current ? "current" : ""] }));
     const dest = game.link.destination();
     e.questDest.textContent = dest ? tr("hud.destination", { place: dest.label }) : tr("hud.noDestination");
+    this.renderDisclaimer();
 
     /* status bar */
     e.phase.textContent = phaseBadge(c, s.phase, L);

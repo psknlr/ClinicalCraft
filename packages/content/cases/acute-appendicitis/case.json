@@ -1758,7 +1758,13 @@
           "读书还是工作"
         ],
         "en": [
-          "work",
+          "yourwork",
+          "doyouwork",
+          "forwork",
+          "foraliving",
+          "whatwork",
+          "whereyouwork",
+          "areyouworking",
           "job",
           "occupation",
           "student",
@@ -1791,7 +1797,9 @@
           "waterwork",
           "bloodwork",
           "withill",
-          "withbeenill"
+          "withbeenill",
+          "bowel",
+          "workingnormally"
         ],
         "zh-CN": [
           "拉肚子",
@@ -1851,6 +1859,19 @@
           "anyone ill",
           "dodgy",
           "dodgy food"
+        ]
+      },
+      "excludeKeywords": {
+        "en": [
+          "hasittravelled",
+          "hasittraveled",
+          "ittravelled",
+          "ittraveled",
+          "paintravelled",
+          "paintraveled",
+          "travelleddown",
+          "traveleddown",
+          "sameplace"
         ]
       },
       "disclosure": "on-ask"
@@ -1913,7 +1934,14 @@
           "worsewhen",
           "hurtwhen",
           "whenyoucough",
-          "coughtest"
+          "coughtest",
+          "moveorcough",
+          "movingorcough",
+          "walkorcough",
+          "ifyoucough",
+          "coughinghurt",
+          "coughhurt",
+          "hurtmore"
         ],
         "zh-CN": [
           "咳嗽的时候",
@@ -2887,14 +2915,23 @@
           "阴囊",
           "外生殖器",
           "提睾反射",
-          "生殖器检查"
+          "生殖器检查",
+          "生殖器"
         ],
         "en": [
           "testicular",
           "scrotum",
           "scrotal",
           "genital exam",
-          "cremasteric"
+          "cremasteric",
+          "testicles",
+          "testicle",
+          "thetestes",
+          "histestes",
+          "testesexam",
+          "checktestes",
+          "genitalia",
+          "genitals"
         ]
       },
       "finding": {
@@ -4765,8 +4802,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "吗啡静脉滴定：每次 2–3 mg，每 5 分钟评估一次，按效果追加，总量约 0.1 mg/kg（68 kg ≈ 7 mg）；监测呼吸频率、SpO₂ 及镇静程度，备纳洛酮",
-        "en": "Morphine IV titrated: 2–3 mg every 5 min to effect, up to ~0.1 mg/kg (≈7 mg for 68 kg); monitor RR, SpO₂ and sedation; naloxone available"
+        "zh-CN": "吗啡静脉滴定：每次 2–3 mg，每 5 分钟评估一次，按效果追加，总量约 0.1 mg/kg；监测呼吸频率、SpO₂ 及镇静程度，备纳洛酮",
+        "en": "Morphine IV titrated: 2–3 mg every 5 min to effect, up to ~0.1 mg/kg; monitor RR, SpO₂ and sedation; naloxone available"
       },
       "requires": [
         "iv-access"
@@ -4829,8 +4866,8 @@
         "en": "Further opioid with a low respiratory rate, hypotension or reduced consciousness risks respiratory depression — reassess and treat the cause first."
       },
       "response": {
-        "zh-CN": "约 10 分钟后疼痛降至 3 分左右，患者明显放松、能配合查体；右下腹压痛和反跳痛的定位依旧清楚。",
-        "en": "Within about 10 minutes his pain is down to around 3/10; he relaxes and cooperates with examination — the right iliac fossa tenderness and rebound remain clearly localised."
+        "zh-CN": "吗啡按每次 2–3 mg 静脉滴定（按他约 68 kg，总量不超过约 7 mg）。约 10 分钟后疼痛降至 3 分左右，患者明显放松、能配合查体；右下腹压痛和反跳痛的定位依旧清楚。",
+        "en": "Morphine titrated IV in 2–3 mg steps (up to about 7 mg in total for his ~68 kg). Within about 10 minutes his pain is down to around 3/10; he relaxes and cooperates with examination — the right iliac fossa tenderness and rebound remain clearly localised."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -8423,6 +8460,41 @@
         "locale": "zh-CN",
         "expect": [
           "hx-ice-expectations"
+        ]
+      },
+      {
+        "text": "Is it in the same place now or has it travelled?",
+        "locale": "en",
+        "expect": [
+          "hx-migration"
+        ]
+      },
+      {
+        "text": "Does it hurt more when you move or cough?",
+        "locale": "en",
+        "expect": [
+          "hx-aggravating"
+        ]
+      },
+      {
+        "text": "Have your bowels been working normally?",
+        "locale": "en",
+        "expect": [
+          "hx-bowels"
+        ]
+      },
+      {
+        "text": "What do you do for work?",
+        "locale": "en",
+        "expect": [
+          "hx-occupation"
+        ]
+      },
+      {
+        "text": "Any cold or cough recently?",
+        "locale": "en",
+        "expect": [
+          "hx-resp"
         ]
       }
     ],

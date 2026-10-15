@@ -79,6 +79,14 @@ export function ct(text: LocalizedText | undefined | null): string {
   return coreT(text, current);
 }
 
+/**
+ * A case's disclaimer ("fictional teaching case — not medical advice") in the
+ * current locale, or a generic one when the case has none.
+ */
+export function caseDisclaimer(text: LocalizedText | undefined | null): string {
+  return (text != null && ct(text).trim()) || tr("case.disclaimerFallback");
+}
+
 /** Locale-aware list join. */
 export function joinList(items: string[]): string {
   return items.join(current === "zh-CN" ? "、" : ", ");

@@ -274,6 +274,9 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
     args = validated.value;
   }
   if (p.signal?.aborted) return fail("interrupted", rt(L, "tool.aborted"));
+  // A call that cannot run is refused before the gate: its approval prompt could reveal what it names.
+  const early = tool.precheck?.(args as never, p.ctx);
+  if (early) return finish("error", early);
 
   const gate = await p.host.authorize({
     agent: p.agent,
@@ -592,6 +595,24 @@ export async function completeText(p: CompleteTextParams): Promise<CompleteTextR
   const step = await streamStep(provider, p.request, p.signal ? { signal: p.signal } : {});
   if (step.usage.inputTokens > 0 || step.usage.outputTokens > 0) p.onUsage?.(step.usage);
   return { text: step.text, usage: step.usage, stopReason: step.stopReason, error: step.error, aborted: step.aborted };
+}
+
+/**
+ * Output-token budget for a structured side call (examiner verdict, patient
+ * voice, fact re-rank). Reasoning models count their thinking against the
+ * same limit (Anthropic `max_tokens` with adaptive thinking, OpenAI
+ * `max_completion_tokens` with reasoning tokens), so a small cap sized for
+ * the visible JSON alone can cut the reply off: for them the budget is at
+ * least `reasoningMin`.
+ */
+export function replyBudget(provider: LLMProvider, small: number, reasoningMin: number): number {
+  let reasoning = "none";
+  try {
+    reasoning = provider.capabilities().reasoning;
+  } catch {
+    reasoning = "none";
+  }
+  return reasoning === "none" ? small : Math.max(small, reasoningMin);
 }
 
 /**

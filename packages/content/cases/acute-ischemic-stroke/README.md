@@ -183,6 +183,10 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   the bedside glucose, NIHSS, plain CT and CTA have been read **and** there is no suspected sICH.
   A premature (contraindicated) transfer therefore waits until those are done instead of
   stranding the learner in `angio`, where the ED exam items and ED tests have no record.
+* **Order notice.** The DSA/thrombectomy notice in `orderMatching.warnings` is printed on every
+  matching order, including in `angio`, so it states a condition ("results exist only once the
+  neurointervention team has been called and the patient is there") instead of telling the
+  learner to do something first that may already be done.
 * **Reperfusion.** When the DSA result is ready in the `angio` phase (and there was no sICH), event
   `reperfusion` fires: GCS 14, BP 168/94 baseline (shown as about 148/84 with the persisting
   antihypertensive effect), and the patient starts producing short phrases. If no lytic had been

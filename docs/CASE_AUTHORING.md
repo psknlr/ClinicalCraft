@@ -14,7 +14,13 @@ clinicalcraft play <id> --provider offline                           # play it i
 
 (From a checkout, `clinicalcraft` is `npm run cc --`; see the root README.)
 A case outside `packages/content/cases` is found through the `contentDirs`
-setting: each listed directory holds `cases/<id>/case.json`.
+setting: each listed directory holds `cases/<id>/case.json`. A relative entry
+resolves against the directory of the settings file that lists it — from
+`<project>/.clinicalcraft/settings.json`, `"../content"` means
+`<project>/content` (`"content"` would be `<project>/.clinicalcraft/content`);
+an unknown-case error lists the directories searched. `clinicalcraft serve`
+offers these cases to the web library too (marked "Server"; no reference
+solution is sent to the browser).
 
 ## 1. Non-negotiables
 
@@ -49,6 +55,9 @@ setting: each listed directory holds `cases/<id>/case.json`.
 * `actingNotes` — how to behave (in pain, breathless short sentences, anxious
   parent…). Never put facts here.
 * Children, aphasia, delirium: add `persona.companion` with `answersHistory: true`.
+  A history item whose `answer` is the patient's own words (a child saying how
+  they feel) sets `speaker: "patient"`: it is then spoken by the patient, not
+  the companion (default `companion` when it answers history).
 * `appearance` matches age/sex/build (stature `child` for 2–12 y, `infant` < 2 y);
   `posture` matches the setting (lying in resus, sitting in clinic).
 
@@ -64,7 +73,11 @@ setting: each listed directory holds `cases/<id>/case.json`.
   own words (lay language, may be imprecise the way real patients are).
 * `keywords` per locale: 4–12 paraphrases/colloquialisms/key nouns a learner
   might type (e.g. zh-CN 胸口, 胸闷, 心口; en "chest", "tightness", "pressure").
-  Never put answer content in keywords.
+  Never put answer content in keywords. An English phrase made mostly of
+  stop-words ("where is the pain" → `pain`) matches any utterance with that
+  one token; write it run together instead (`whereisthepain`,
+  `wheredoesithurt`): it then matches only by containment (score 0.9), not
+  token by token.
 * `disclosure`: `volunteer` for what any patient says unprompted (chief complaint
   gist), `on-ask` (default), `specific` for things only a targeted question
   elicits (e.g. recent cocaine use, a specific family history), `unknown` for
@@ -76,6 +89,19 @@ setting: each listed directory holds `cases/<id>/case.json`.
   on the patient's own cancer history add `["family", "家里", "家族"]`.
 * `phases` restricts an item to phases (e.g. a medication changed after treatment);
   the patient pipeline only selects items available in the current phase.
+  An answer in the present tense of the presenting state ("现在喘不上气",
+  "my throat's closing") is wrong once treatment changes that state: give it
+  only the phases where it holds, and give each later phase its own status
+  item ("现在感觉怎么样？" / "How are you feeling now?") that agrees with that
+  phase's scenario messages and exam findings (`dka-adult` `hx-status-*`,
+  `anaphylaxis-garden` `status-*`). Two items with overlapping `phases` that
+  answer the same question for different times are both selected and read as
+  a contradiction.
+* A single English keyword that stems to an everyday token matches far too
+  much ("testes" → `test`, so "psoas test" and "blood tests" hit it); use
+  other forms ("testicles") or a run-together phrase ("thetestes"). A
+  run-together keyword must not begin with a content word of 6+ letters:
+  "examinetestes" is prefix-matched by "examine" in every exam request.
 
 ## 4. Examination
 
@@ -91,7 +117,13 @@ setting: each listed directory holds `cases/<id>/case.json`.
 * Realistic panel: essential, useful, neutral, low-value and (if instructive)
   harmful tests (`value`). Results with `values` (analyte, value, unit, refLow,
   refHigh, flag) for labs; narrative `text` for imaging/ECG; `critical: true`
-  where the lab would phone it through.
+  where the result is called through (the nurse says the lab phoned for
+  lab/microbiology/pathology/genetics, radiology for imaging, and a critical
+  finding at the bedside for bedside/procedure/record tests).
+* A text `value` or `refText` that differs by language is a `LocalizedText`
+  (`{"zh-CN": "阴性", "en": "negative"}`, `{"zh-CN": "< 0.6 正常", "en": "< 0.6
+  normal"}`) — never both languages in one string ("阴性 / negative"), which
+  every locale would then show.
 * `requires` capabilities (FACILITIES.md vocabulary), `turnaroundMinutes`
   (simulated cases: POC glucose 1, VBG 5, ECG 5, CBC 30–60, troponin 45–60,
   CT 20–40 incl. report, cultures → "pending"), `risk` (contrast CT `low`,
@@ -101,6 +133,10 @@ setting: each listed directory holds `cases/<id>/case.json`.
   absent (the UI says "no record").
 * `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
   ultrasound): reading either satisfies "essential investigations" in the assessment.
+* `orderMatching.warnings` are shown whenever the order query matches, in every
+  phase. Word them as a condition that stays true once it is met ("a result
+  exists only once the lab has been activated and the patient is there"), not
+  as an instruction ("activate the lab first") that reads wrong in the cath lab.
 
 ## 6. Interventions & physiology (acute cases)
 
@@ -116,15 +152,38 @@ setting: each listed directory holds `cases/<id>/case.json`.
   until a glucose test is read: list it in `physiology.revealedBy`
   (`{"glucose": ["poc-glucose"]}`). Arrest events need not set `pain` (an
   unresponsive patient has no pain score; the monitor shows no reading).
+* Scenario `setVitals` re-base the model: trends and intervention effects keep
+  adding to the new values. Set `absolute: true` when the authored numbers
+  must be exact from that minute — a ROSC or post-reperfusion state — so
+  that, for the vitals the event sets, trends and drug effects that started
+  earlier stop contributing (later ones still add). Without it a ROSC
+  authored as BP 88/56 reads ~100 after a pre-arrest fluid bolus.
+* Cardiac arrest is a rhythm: an event that sets `rhythm` to
+  `ventricular-fibrillation` or `asystole` (or `pea`, or
+  `ventricular-tachycardia` with `sbp: 0` for pulseless VT) makes the monitor
+  read hr (VF/asystole only), BP and SpO₂ as unmeasurable whatever the
+  baseline, trends and earlier drugs add, and caps a modelled EtCO₂ at 10
+  (ARCHITECTURE §3.2). The arrest event need not set those vitals (they are
+  overridden; only pulseless VT needs `sbp: 0` to mark it pulseless) — set
+  what still applies (`rr: 0`, `gcs: 3`). `vital` conditions see the arrest
+  readings, so guard other events with `{"not": {"flag": …}}` /
+  `{"flag": "rosc"}` as needed. The ROSC event restores the additive model:
+  give it every vital it changes and `absolute: true` (see the STEMI case).
 * Scenario `message`s are spoken by staff: one that fires on time alone must
   not name the diagnosis or its treatment before the learner has established
   it (split it, e.g. `{"any": [{"read": "ctpa"}, {"decided": "risk-strat"}]}`
-  vs. its negation — see the PE case).
+  vs. its negation — see the PE case). Who says it is inferred from the text
+  — "Nurse:"/"护士：" → the nurse, "Monitor:"/monitor alarms → the monitor,
+  "<patient name>:" (e.g. "Ms Lin:", "林女士说：") → the patient (or
+  companion), anything else is narration ("Scene") — or set the event's
+  `speaker` (`nurse`, `monitor`, `patient`, `companion`, `narrator`).
 * Interventions: correct name, `dose` text (drug, dose, route, frequency — the
   learner sees it before giving anything, so write formulas such as
   "0.9 mg/kg, max 90 mg" or "adjust if creatinine clearance < 30 mL/min",
   never patient values the learner must elicit or measure: weight, creatinine
-  clearance, pump settings; put the concrete numbers in `response`), `risk`
+  clearance, pump settings, or a number derived from them — "urine ≥ 0.5
+  mL/kg/h ≈ 28 mL/h" gives the weight away; put the concrete numbers in
+  `response`), `risk`
   (high = irreversible/dangerous: thrombolysis, intubation, defibrillation,
   high-dose insulin bolus), `effects` with realistic magnitude/onset/ramp
   (e.g. salbutamol neb: spo2 +3 over 5–10 min; IM adrenaline: sbp +25 within 5 min,
@@ -132,7 +191,14 @@ setting: each listed directory holds `cases/<id>/case.json`.
   safety logic (nitrates in RV infarct/hypotension; insulin before K⁺ replacement
   when K⁺ < 3.5 mmol/L; thrombolysis with BP > 185/110), `harm` explaining the
   consequence, `response` describing what happens. Include common wrong choices
-  so the learner can make them.
+  so the learner can make them. One `harm` text serves every branch of
+  `contraindicatedWhen`: lead with the commonest branch and make the others
+  conditional ("If he is in VF, …"). A step that only makes sense after
+  another (transfer after activating the cath lab) should not quietly succeed
+  without it: gate the next phase on both, and flag the out-of-order step for
+  the rubric (see `transfer-before-activation` in the STEMI case). Aliases
+  must say what the learner means *now*: "/give epipen" during anaphylaxis is
+  IM adrenaline, not a take-home prescription.
 
 ## 7. Learning design
 
@@ -153,6 +219,8 @@ setting: each listed directory holds `cases/<id>/case.json`.
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).
+  Score decisions with `decidedFirstTry`: with a few options and feedback on
+  each, `decided` gives full marks to guess-and-retry.
 * `npcs`: nurse (triage handover, logistics), consultants who interpret results
   the learner already has, attending (Socratic). Knowledge must not exceed the case,
   and must not contain result findings or derived values (another study's
@@ -169,11 +237,21 @@ setting: each listed directory holds `cases/<id>/case.json`.
   matcher regression corpus. `cases verify` applies the patient pipeline's
   selection rule to each: the history items scoring ≥ 0.55 must include every
   expected id and be led by one of them; `expect: []` must select nothing.
-  A missing corpus is a warning.
+  A missing corpus is a warning. So is an utterance whose selection would also
+  credit a fact it does not ask about (the pipeline's full rule: ≥ 0.55,
+  within 0.25 of the best, at most 3, in a phase of the first expected item):
+  fix the keywords, or list a deliberate extra in the entry's `alsoOk: [ids]`.
+  Chinese keywords: a phrase sharing only two characters with a question
+  (not its first two, or a question bigram such as 怎么/什么) stays below the
+  select band (0.5), so give each item the distinctive 3–4-character phrases
+  learners use ("量过血压", "以前有什么病").
 
 ## 8. Facilities
 
 Set `facility` to `general-hospital` (or `clinic-v4` for V4-style outpatient
-cases) and `setting` so a patient slot accepts it: outpatient → consult rooms,
+cases) — `cases validate` fails when an objective or decision of the case
+needs a capability its facility lacks (`caseCapabilityGaps`), and the web
+offers another facility only if the case can be completed there — and
+`setting` so a patient slot accepts it: outpatient → consult rooms,
 emergency → resus bays/cubicles, inpatient/ward → ward beds, icu → ICU,
 operating-room → theatre, community → garden bench.

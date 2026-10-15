@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
-import { EXCLUDE_KEYWORD_FACTOR, matchExam, matchHistory, matchInterventions, matchOrders, normalizeQuery, orderWarnings, parseCase } from "./index.js";
+import { EXCLUDE_KEYWORD_FACTOR, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, normalizeQuery, orderWarnings, parseCase } from "./index.js";
 import { longestCommonSubstring, phraseScore, prepare, stem, tokenize, tokensMatch } from "./text.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
@@ -501,5 +501,47 @@ describe("short-stem false matches on real cases (hearing ≁ heart)", () => {
     // "problems" alone still half-matches "medical problems" — below the 0.55 selection bar, so not answered.
     const pmh = matchHistory(appendicitis!, "Do you have any hearing problems?", "en").find((h) => h.id === "hx-pmh");
     expect(pmh?.score ?? 0).toBeLessThan(0.55);
+  });
+});
+
+describe("CJK partial overlaps (J1: 2-character runs never select on their own)", () => {
+  const score = (u: string, p: string) => phraseScore(prepare(u), prepare(p));
+  it("a 2-character run in the middle or end of a 3-character phrase stays below the select band (0.55)", () => {
+    expect(score("他今天早上量过血压吗？", "出过血")).toBe(0.5); // 过血
+    expect(score("他看东西清楚吗？", "吃东西")).toBe(0.5); // 东西
+    expect(score("平时每天用什么预防的药？", "担心什么")).toBe(0.5); // 什么
+  });
+  it("a question bigram at the start of a phrase does not count as its start", () => {
+    expect(score("你平时胰岛素是怎么用的？", "怎么疼")).toBe(0.5);
+    expect(score("你平时胰岛素是怎么用的？", "什么药")).toBeLessThan(0.55);
+  });
+  it("keeps a shared start (typos) and a phrase spelled out with a few characters between", () => {
+    expect(score("她有糖尿并吗？", "糖尿病")).toBeCloseTo(2 / 3, 4);
+    expect(score("摸一下肚子", "摸肚子")).toBeCloseTo(2 / 3, 4);
+    expect(score("喝水会不会呛", "喝水呛")).toBeCloseTo(2 / 3, 4);
+    // containment and longer runs are unchanged
+    expect(score("有没有高血压", "高血压")).toBe(1);
+    expect(score("血压高不高", "高血压病史")).toBe(0.4);
+  });
+});
+
+describe("matchSpecificity (tie-break for resolvers)", () => {
+  it("prefers the item whose matched phrase covers more of the utterance", () => {
+    const c = load({
+      ...(fixture("mini-anaphylaxis.case.json") as Record<string, unknown>),
+    });
+    const ivs = c.interventions;
+    expect(ivs.length).toBeGreaterThan(0);
+    const fake = {
+      ...c,
+      interventions: [
+        { ...ivs[0]!, id: "transfer", name: { en: "Transfer to the cath lab", "zh-CN": "转导管室" }, aliases: { en: ["go to cath lab"], "zh-CN": [] }, excludeKeywords: [] },
+        { ...ivs[0]!, id: "activate", name: { en: "Activate the cath lab", "zh-CN": "启动导管室" }, aliases: { en: ["activate the cath lab"], "zh-CN": [] }, excludeKeywords: [] },
+      ],
+    } as CaseDefinition;
+    const hits = matchInterventions(fake, "activate the cath lab", "en");
+    expect(hits.map((h) => h.score)).toEqual([1, 1]);
+    expect(matchSpecificity(fake, "interventions", "activate the cath lab", "en", "activate")).toBeGreaterThan(matchSpecificity(fake, "interventions", "activate the cath lab", "en", "transfer"));
+    expect(matchSpecificity(fake, "interventions", "activate the cath lab", "en", "nope")).toBe(0);
   });
 });

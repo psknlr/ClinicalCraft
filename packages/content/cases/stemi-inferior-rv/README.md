@@ -22,10 +22,10 @@ JVP with Kussmaul's sign, and clear lungs.
 | id / version | `stemi-inferior-rv` / `1.0.0` |
 | setting / facility | `emergency` / `general-hospital` (resus bay) |
 | locales | `zh-CN` (source), `en` |
-| phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic on transfer; not learner-switchable) |
+| phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic once he has been transferred **and** the lab activated; not learner-switchable) |
 | clock | simulated, starts 09:10, `realtimeScale` 1, limit 120 min; costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1.5 min |
 | difficulty | 3 / 5 |
-| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 81 matcher test utterances |
+| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 91 matcher test utterances |
 
 ## Learning objectives
 
@@ -58,10 +58,10 @@ shows ST elevation. Alarms use the adult limits, set explicitly.
 | `fluid-bolus` (500 mL) | SBP +12 / DBP +6 over 10 min, persistent. Indicated while SBP < 100 (not during VF). A 3rd or later bolus with SBP ≥ 110 is flagged as unsafe (RV over-distension). |
 | `dobutamine` / `noradrenaline` | Inotrope or vasopressor for hypotension that persists after fluid (dobutamine after 2 boluses, noradrenaline after 1, SBP < 90, not in VF). Typing 去甲肾上腺素 / noradrenaline never selects the adrenaline arrest bolus, and 多巴胺 / dopamine never selects dobutamine. |
 | `atropine` 0.5 mg | HR +14 (offset staged at 25/35 min). Indicated if HR < 50, or HR < 60 with SBP < 90, outside cardiac arrest (never in VF). The monitor rhythm label changes to sinus. |
-| `vf-arrest` event | At ≥ 35 min, **if the cath lab has not been activated** (or the patient transferred), he goes into VF: HR/BP/RR 0, SpO₂ 45, GCS 3. |
-| `defibrillation` (high risk, defibrillator) | During VF it triggers the `rosc` event: sinus 92, BP 88/56 (then falls with the untreated trend), GCS 12, ST elevation persists. A shock given *before* VF (contraindicated, `early-shock` flag) does not count, so a second shock is needed during VF. |
-| `transfer-cath-lab` | Sets `transferred-cath-lab` and moves the case to the `cath` phase. Contraindicated while in VF without ROSC, and before the cath lab has been activated. |
-| `reperfusion` event | Fires when the angiography result is ready in `cath`. HR 68 sinus, BP 106/66, GCS 15, pain 2, overlay normal; the trends recover. |
+| `vf-arrest` event | At ≥ 35 min, **if the cath lab has not been activated** (or the patient transferred), he goes into VF (`rhythm: ventricular-fibrillation`), RR 0, GCS 3. The engine's arrest rule makes HR, BP and SpO₂ unmeasurable (shown as "---", critical alarms) whatever the trends and earlier drugs add, so the event sets none of them. |
+| `defibrillation` (high risk, defibrillator) | During VF it triggers the `rosc` event (`absolute`): exactly sinus 92, BP 88/56 (a warning alarm: post-ROSC hypotension), RR 20, SpO₂ 93, GCS 12, pain 5, ST elevation persists. Pre-arrest fluid, atropine, nitrate or morphine effects and the RV trends no longer add to these; treatment given after ROSC does (a 500 mL bolus brings SBP to about 100). A shock given *before* VF (contraindicated, `early-shock` flag) does not count, so a second shock is needed during VF. |
+| `transfer-cath-lab` | Sets `transferred-cath-lab`; with the lab activated this moves the case to the `cath` phase. Contraindicated while in VF without ROSC, and before the cath lab has been activated. A transfer before activation fires `transfer-before-activation` (cath-lab nurse: no activation call, no team, he waits at the door), which fails `r-door-to-lab`; the case stays in `ed` (no angiography result) until the lab is activated. The single `harm` text leads with the missing activation and gives the VF rule as a conditional. |
+| `reperfusion` event | Fires when the angiography result is ready in `cath` (`absolute`). Exactly HR 68 sinus, BP 106/66, GCS 15, pain 2, overlay normal: earlier fluid, atropine and analgesic effects and the RV trends stop contributing to these vitals, so the post-PCI values do not depend on what was given in the ED. |
 | Bookkeeping events | `ecg-delay` (no ECG read by 10 min → `ecg-late` and a nurse prompt), `troponin-wait` (troponin ready before activation), `activation-before-ecg` (lab activated before any ECG was read), `late-activation` (not activated by 20 min → nurse prompt), all three → `r-no-troponin-wait` unmet, `routine-oxygen` (oxygen given with SpO₂ ≥ 90% before any arrest → `r-no-routine-o2` unmet; oxygen after ROSC is indicated and not flagged), `late-transfer` (still in ED at 60 min). |
 
 Tempting wrong choices you can make: sublingual or IV nitrate, morphine while
@@ -136,13 +136,16 @@ ERC/AHA resuscitation updates before high-stakes use.
 
 ## Modelling notes and limitations
 
+- The coronary-angiography notice in `orderMatching.warnings` is printed on every matching
+  order, also in the cath lab, so it states a condition ("a result exists only once the lab has
+  been activated and the patient is there") rather than an instruction to do it first.
 - Results are static per phase. The `ed` 12-lead ECG reads "First ED ECG" (sinus
   bradycardia, 54/min) whenever it is ordered, including after a VF/ROSC branch.
   The post-PCI ECG is the `cath`-phase result of the same investigation.
-- The engine adds intervention effects and trends on top of scenario `setVitals`, and
-  display jitter on top of zero. So during VF the monitor can show a small residual HR
-  or BP (from earlier atropine or fluid, or 1–2 from jitter). The rhythm label (VF) and
-  the critical alarms are what matter there.
+- The engine adds intervention effects and trends on top of scenario `setVitals` unless
+  the event is `absolute` (`rosc`, `reperfusion`). During VF the arrest rule shows HR,
+  BP and SpO₂ as unmeasurable; RR keeps display jitter on top of zero (0–1/min). The
+  rhythm label (VF) and the critical alarms are what matter there.
 - After atropine the rhythm label stays "sinus" even when the effect has worn off and
   the rate drifts back towards the low 50s.
 - Effects end instantly when their duration lapses. Nitrate and atropine offsets
@@ -172,6 +175,13 @@ ERC/AHA resuscitation updates before high-stakes use.
   These items carry excludes for everyday speech ("come with you", "I'll be back"),
   and the matcher-hazard phrases "meth" (found inside "something") and "quit" (which
   stems to match "quite") are not used.
+- Plain site questions ("Where is the pain?", "Where does it hurt?") reduce to `pain` or
+  `hurt`, which half-match every pain item. `pain-site` therefore carries run-together
+  keywords matched by containment (`whereisthepain`, `wheresthepain`, `wheredoesithurt`,
+  `whereithurts`, `wheredoyoufeelthepain`; `whereexactly` instead of "where exactly",
+  whose single token `exact` also matched "what exactly happened?"). `pain-character`
+  excludes `wheredoyoufeel` ("what does the pain feel like" shares both its tokens),
+  and `pain-radiation` takes "where does the pain go".
 - Statements that give a drug ("这是阿司匹林，请嚼碎", "we're giving you a blood thinner")
   do not select the required `medications` item. Selected items credit the learner
   with asking.

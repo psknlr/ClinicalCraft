@@ -7,7 +7,7 @@
  */
 import type { SessionSnapshot } from "@clinicalcraft/agent";
 import type { WorldSave } from "../contracts.js";
-import { cleanActions } from "./session.js";
+import { cleanActions, restoredPlan } from "./session.js";
 import { sanitizeSettings, type UiPrefs } from "./settings.js";
 
 export const SAVE_KEY = "clinicalcraft-v5";
@@ -95,7 +95,8 @@ function validSnapshot(v: unknown): SessionSnapshot | null {
     locale: typeof s.locale === "string" ? s.locale : "zh-CN",
     actions: cleanActions(s.actions),
     messages,
-    plan: Array.isArray(s.plan) ? s.plan.filter((p) => p && typeof p.text === "string").map((p) => ({ text: p.text, status: String(p.status) })) : [],
+    // Workup plan items: string text and a known status (pending | in_progress | completed).
+    plan: restoredPlan(s.plan).slice(0, 200),
     createdAt: typeof s.createdAt === "string" ? s.createdAt : new Date().toISOString(),
     // A resume continues the transcript's ordinals from here (agent SessionSnapshot.nextOrdinal).
     ...(typeof s.nextOrdinal === "number" && Number.isSafeInteger(s.nextOrdinal) && s.nextOrdinal >= 0 ? { nextOrdinal: s.nextOrdinal } : {}),
@@ -104,8 +105,9 @@ function validSnapshot(v: unknown): SessionSnapshot | null {
       ? {
           dialogue: s.dialogue
             .slice(-5000)
-            .filter((d) => d && typeof d.who === "string" && typeof d.speaker === "string" && typeof d.text === "string")
-            .map((d) => ({ who: d.who.slice(0, 40), speaker: d.speaker.slice(0, 80), text: d.text.slice(0, 8000) })),
+            // `who` is a role or actor name (the session also drops unknown ones and ACTION lines no replayed action produced).
+            .filter((d) => d && typeof d.who === "string" && /^[\w-]{1,40}$/.test(d.who) && typeof d.speaker === "string" && typeof d.text === "string")
+            .map((d) => ({ who: d.who, speaker: d.speaker.slice(0, 80), text: d.text.slice(0, 8000) })),
         }
       : {}),
   };

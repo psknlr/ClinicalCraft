@@ -242,7 +242,7 @@
       "excludeKeywords": { "zh-CN": ["胸口", "胸闷"], "en": ["chest tight"] },
       "disclosure": "volunteer",
       "required": true,
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-breathing",
@@ -258,7 +258,7 @@
       },
       "required": true,
       "excludeKeywords": { "zh-CN": ["哮喘"], "en": [] },
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-dizzy",
@@ -273,7 +273,7 @@
         "en": ["dizzy", "faint", "lightheaded", "light-headed", "grey", "going to faint", "woozy", "collapse", "did you fall", "fell over", "fainting"]
       },
       "required": true,
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-loc",
@@ -324,7 +324,7 @@
       },
       "excludeKeywords": { "zh-CN": ["眼睛痒", "鼻"], "en": ["itchy eyes", "eyes itch", "runny nose", "blocked nose"] },
       "disclosure": "volunteer",
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-lips-tongue",
@@ -335,7 +335,7 @@
         "zh-CN": ["嘴唇", "舌头", "肿", "脸肿", "嘴肿", "胀", "眼皮", "面部", "嘴巴肿", "舌头肿"],
         "en": ["lips", "tongue", "swelling", "swollen", "face", "puffy", "mouth", "face swelling", "lip swelling", "tongue swelling"]
       },
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-gi",
@@ -349,7 +349,7 @@
         "zh-CN": ["恶心", "呕吐", "吐", "肚子痛", "腹痛", "想吐", "拉肚子", "腹泻", "反胃", "肚子疼", "拉稀", "稀便"],
         "en": ["nausea", "sick", "vomit", "vomiting", "stomach", "tummy", "abdominal pain", "cramps", "diarrhoea", "tummy ache", "stomach ache", "throw up", "n/v"]
       },
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-chest-palp",
@@ -360,7 +360,7 @@
         "zh-CN": ["胸痛", "心慌", "心悸", "心跳", "胸口痛", "心跳快", "跳得快", "心慌不慌"],
         "en": ["chest pain", "palpitations", "heart racing", "heart pounding", "pounding", "heart beating fast", "palps"]
       },
-      "phases": ["scene", "treated", "ed-resus", "ed"]
+      "phases": ["scene", "treated", "ed-resus"]
     },
     {
       "id": "hpi-sting-site",
@@ -3110,7 +3110,7 @@
       "name": { "zh-CN": "肾上腺素肌内注射", "en": "Intramuscular adrenaline" },
       "kind": "medication",
       "aliases": {
-        "zh-CN": ["肌注肾上腺素", "肾上腺素肌注", "大腿肌注", "肌内注射肾上腺素", "肾上腺素im", "肌注", "肌内注射", "大腿外侧", "再打一针", "再来一针", "第二针", "重复肌注", "再给一针", "再给一剂", "追加一剂", "重复给药", "再给肾上腺素"],
+        "zh-CN": ["肌注肾上腺素", "肾上腺素肌注", "大腿肌注", "肌内注射肾上腺素", "肾上腺素im", "肌注", "肌内注射", "大腿外侧", "再打一针", "再来一针", "第二针", "重复肌注", "再给一针", "再给一剂", "追加一剂", "重复给药", "再给肾上腺素", "肾上腺素笔", "打肾上腺素笔", "用肾上腺素笔", "自动注射笔", "EpiPen"],
         "en": [
           "im adrenaline",
           "adrenaline im",
@@ -3126,11 +3126,20 @@
           "another dose of adrenaline",
           "repeat epi",
           "give adrenaline again",
-          "another adrenaline"
+          "another adrenaline",
+          "epipen",
+          "epi pen",
+          "epi-pen",
+          "give an epipen",
+          "use the auto-injector",
+          "auto-injector",
+          "autoinjector",
+          "adrenaline pen",
+          "jext"
         ]
       },
       "excludeKeywords": {
-        "zh-CN": ["扑尔敏", "氯苯那敏", "苯海拉明", "激素", "氢化可的松", "地塞米松", "甲强龙", "甲泼尼龙", "西替利嗪", "沙丁胺醇", "补液", "盐水", "静推", "静注", "静脉推注", "静脉注射", "皮下"],
+        "zh-CN": ["扑尔敏", "氯苯那敏", "苯海拉明", "激素", "氢化可的松", "地塞米松", "甲强龙", "甲泼尼龙", "西替利嗪", "沙丁胺醇", "补液", "盐水", "静推", "静注", "静脉推注", "静脉注射", "皮下", "开肾上腺素笔", "开两支", "开急救笔", "开具", "处方", "带回家", "随身携带", "培训", "教她用"],
         "en": [
           "chlorphen",
           "piriton",
@@ -3146,7 +3155,14 @@
           "iv push",
           "iv bolus",
           "intravenous",
-          "subcut"
+          "subcut",
+          "prescri",
+          "twoauto",
+          "takehome",
+          "tocarry",
+          "training",
+          "teachher",
+          "teachback"
         ]
       },
       "dose": {
@@ -3588,8 +3604,8 @@
       "name": { "zh-CN": "开具2支肾上腺素自动注射笔并培训", "en": "Prescribe two adrenaline auto-injectors with training" },
       "kind": "medication",
       "aliases": {
-        "zh-CN": ["开肾上腺素笔", "自动注射笔", "开急救笔", "注射笔培训", "EpiPen", "开两支肾上腺素笔", "肾上腺素笔"],
-        "en": ["prescribe auto-injector", "auto-injector", "autoinjector", "epipen", "adrenaline pen", "aai", "jext", "prescribe epipen", "epi pen", "two auto-injectors"]
+        "zh-CN": ["开肾上腺素笔", "开急救笔", "注射笔培训", "开两支肾上腺素笔", "开具肾上腺素笔", "开自动注射笔", "处方肾上腺素笔", "带回家的肾上腺素笔", "随身携带肾上腺素笔", "教她用肾上腺素笔"],
+        "en": ["prescribe auto-injector", "prescribe auto-injectors", "prescribe epipen", "prescribe an epipen", "prescribe adrenaline pens", "prescribe aai", "prescribe jext", "two auto-injectors", "auto-injectors to take home", "pens to take home", "auto-injector training", "teach the auto-injector"]
       },
       "dose": {
         "zh-CN": "2支成人肾上腺素自动注射笔（0.3 mg或0.5 mg，依当地处方集），随身携带；现场演示与回示；书面严重过敏反应应急计划",
@@ -3628,6 +3644,10 @@
       "aliases": {
         "zh-CN": ["出院", "回家", "现在出院", "让她回家", "离院", "放她走", "可以走了"],
         "en": ["discharge", "send home", "go home", "discharge now", "let her go", "discharge home", "she can go"]
+      },
+      "excludeKeywords": {
+        "zh-CN": ["肾上腺素笔", "注射笔"],
+        "en": ["autoinjector", "epipen", "penstotake", "pentotake"]
       },
       "requires": [],
       "risk": "moderate",
@@ -3761,7 +3781,7 @@
       {
         "id": "peri-arrest",
         "when": { "all": [{ "elapsed": { "gte": 10 } }, { "not": { "intervened": "adrenaline-im" } }] },
-        "setVitals": { "gcs": 12 },
+        "setVitals": { "gcs": 10 },
         "setFlags": ["peri-arrest"],
         "severity": "critical",
         "message": {

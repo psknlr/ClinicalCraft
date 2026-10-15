@@ -6,6 +6,7 @@
  * the footprint centre on the floor, `rot` in degrees about +Y.
  */
 import type { CaseDefinition } from "../schema/case.js";
+import type { Condition } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
 import type { EquipmentCatalog, EquipmentType, FacilityDefinition, MaterialDef, Placement, Rect, VoxelPart } from "../schema/facility.js";
 import { DEFAULT_LOCALE, t } from "../i18n.js";
@@ -67,6 +68,91 @@ export function facilityCapabilities(f: FacilityDefinition, catalogs: EquipmentC
     for (const cap of placement.capabilities ?? []) caps.add(cap);
   }
   return caps;
+}
+
+/** A case item a facility cannot provide (its `requires` capabilities are missing there). */
+export interface CapabilityGap {
+  kind: "exam" | "investigation" | "intervention";
+  id: string;
+  /** The item's `requires` capabilities the facility lacks. */
+  missing: string[];
+  /** Objectives / decisions (ids) and "solution" that use the item. */
+  neededBy: string[];
+  /** True when an objective or a decision cannot be completed without it (no alternative in the condition). */
+  blocking: boolean;
+}
+
+type ItemKey = `${CapabilityGap["kind"]}:${string}`;
+
+/** Can `cond` become true when the items in `unavailable` can never be examined/ordered/read/given? (`not` is assumed satisfiable.) */
+function satisfiableWithout(cond: Condition, unavailable: ReadonlySet<ItemKey>): boolean {
+  if ("all" in cond) return cond.all.every((x) => satisfiableWithout(x, unavailable));
+  if ("any" in cond) return cond.any.some((x) => satisfiableWithout(x, unavailable));
+  if ("not" in cond) return true;
+  if ("examined" in cond) return !unavailable.has(`exam:${cond.examined}`);
+  if ("ordered" in cond) return !unavailable.has(`investigation:${cond.ordered}`);
+  if ("read" in cond) return !unavailable.has(`investigation:${cond.read}`);
+  if ("resultReady" in cond) return !unavailable.has(`investigation:${cond.resultReady}`);
+  if ("intervened" in cond) return !unavailable.has(`intervention:${cond.intervened}`);
+  return true;
+}
+
+/** Item keys a condition refers to positively (outside `not`). */
+function positiveItems(cond: Condition, out = new Set<ItemKey>()): Set<ItemKey> {
+  if ("all" in cond) for (const x of cond.all) positiveItems(x, out);
+  else if ("any" in cond) for (const x of cond.any) positiveItems(x, out);
+  else if ("examined" in cond) out.add(`exam:${cond.examined}`);
+  else if ("ordered" in cond) out.add(`investigation:${cond.ordered}`);
+  else if ("read" in cond) out.add(`investigation:${cond.read}`);
+  else if ("resultReady" in cond) out.add(`investigation:${cond.resultReady}`);
+  else if ("intervened" in cond) out.add(`intervention:${cond.intervened}`);
+  return out;
+}
+
+/**
+ * What a facility cannot provide for a case: every exam finding,
+ * investigation or intervention whose `requires` capabilities are missing
+ * from `facilityCapabilities(f, catalogs)` and that an objective, a decision
+ * or the reference `solution` uses. `blocking` gaps make an objective or a
+ * decision impossible there (the case cannot be completed in that facility).
+ */
+export function caseCapabilityGaps(c: CaseDefinition, f: FacilityDefinition, catalogs: EquipmentCatalog[]): CapabilityGap[] {
+  const caps = facilityCapabilities(f, catalogs);
+  const missingOf = new Map<ItemKey, string[]>();
+  const consider = (kind: CapabilityGap["kind"], items: readonly { id: string; requires: readonly string[] }[]) => {
+    for (const item of items) {
+      const missing = item.requires.filter((r) => !caps.has(r));
+      if (missing.length > 0) missingOf.set(`${kind}:${item.id}`, missing);
+    }
+  };
+  consider("exam", c.exam);
+  consider("investigation", c.investigations);
+  consider("intervention", c.interventions);
+  if (missingOf.size === 0) return [];
+  const unavailable = new Set(missingOf.keys());
+  const neededBy = new Map<ItemKey, Set<string>>();
+  const blocking = new Set<ItemKey>();
+  const use = (key: ItemKey, by: string) => {
+    if (!missingOf.has(key)) return;
+    if (!neededBy.has(key)) neededBy.set(key, new Set());
+    neededBy.get(key)!.add(by);
+  };
+  const check = (by: string, cond: Condition) => {
+    const items = positiveItems(cond);
+    for (const key of items) use(key, by);
+    if (!satisfiableWithout(cond, unavailable)) for (const key of items) if (missingOf.has(key)) blocking.add(key);
+  };
+  for (const o of c.objectives) check(o.id, o.completeWhen);
+  for (const d of c.decisions) check(d.id, d.requires);
+  for (const step of c.solution) {
+    if (step.type === "examine") use(`exam:${step.findingId}`, "solution");
+    else if (step.type === "order" || step.type === "read") use(`investigation:${step.investigationId}`, "solution");
+    else if (step.type === "intervene") use(`intervention:${step.interventionId}`, "solution");
+  }
+  return [...neededBy.entries()].map(([key, by]) => {
+    const [kind, ...rest] = key.split(":");
+    return { kind: kind as CapabilityGap["kind"], id: rest.join(":"), missing: missingOf.get(key)!, neededBy: [...by], blocking: blocking.has(key) };
+  });
 }
 
 /* ------------------------------------------------------------------ */

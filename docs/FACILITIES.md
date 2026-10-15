@@ -31,6 +31,9 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
 * Visual QA (required for content authors):
   `node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/<file>.json --out <png>` and
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
+  Files may lie outside the checkout (a `contentDirs` folder): only the files
+  named on the command line are served. A file that fails to load or parse
+  ends the run at once with `{"ok": false, …}` and exit code 1.
 
 ## Personal kit
 
@@ -54,7 +57,20 @@ capabilities via `placement.capabilities`).
 
 Interventions at the bedside require their capabilities within the patient's
 room (or within 6 m of the slot). The CLI and MCP have no spatial rules:
-capability checks there use the whole facility.
+capability checks there use the whole facility — the agent tools
+(`examine`, `order_test`, `intervene`; learner commands, model tool calls
+and MCP alike) refuse, before any approval prompt, an item whose `requires`
+are missing from `facilityCapabilities` ("Not available here: … needs …").
+
+A facility can host a case only if the case can be completed there:
+`caseCapabilityGaps(case, facility, catalogs)` lists the exam findings,
+investigations and interventions an objective, a decision or the reference
+`solution` uses that the facility cannot provide, `blocking` when an
+objective or decision has no alternative. The web offers a facility for a
+case only without blocking gaps (the case's own facility always);
+`cases validate` fails on blocking gaps in the case's own facility; and
+`facilities validate --all` warns for every case a slot accepts but the
+facility cannot complete.
 
 ## Equipment catalogs (ids are a contract — facilities reference them)
 

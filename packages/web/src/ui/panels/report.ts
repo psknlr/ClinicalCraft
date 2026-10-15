@@ -25,7 +25,8 @@ export interface ReportArgs {
 }
 
 function refRange(v: LabValue): string {
-  if (v.refText) return v.refText;
+  // Per-locale reference and value texts: never "阴性 / negative" in one language's table.
+  if (v.refText !== undefined) return ct(v.refText);
   if (v.refLow !== undefined && v.refHigh !== undefined) return `${v.refLow}–${v.refHigh}`;
   if (v.refLow !== undefined) return `≥ ${v.refLow}`;
   if (v.refHigh !== undefined) return `≤ ${v.refHigh}`;
@@ -49,7 +50,7 @@ function labTable(values: LabValue[]): HTMLElement {
             "tr",
             { class: flag ? `flag-${flag.toLowerCase()}` : "" },
             h("td", null, ct(v.analyte)),
-            h("td", { class: "num" }, String(v.value)),
+            h("td", { class: "num" }, typeof v.value === "number" ? String(v.value) : ct(v.value)),
             h("td", null, v.unit),
             h("td", { class: "num" }, refRange(v)),
             h("td", { class: "flag" }, flag ? h("span", { class: `flag-badge f-${flag.toLowerCase()}` }, flag) : ""),

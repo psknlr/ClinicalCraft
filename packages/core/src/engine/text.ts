@@ -207,8 +207,38 @@ export function prepare(text: string): Prepared {
 
 /** Bonus when the whole utterance is a fragment of the phrase. */
 const FRAGMENT_BONUS = 0.15;
+/**
+ * Cap (before the fragment bonus) for a CJK phrase that shares only a
+ * 2-character run with the utterance — not its first two characters, or a
+ * generic question bigram — and is not contained in it: below the patient
+ * pipeline's select band (0.55), so "量过血压" ∩ "出过血" = "过血", "看东西" ∩
+ * "吃东西" or "怎么用" ∩ "怎么疼" never selects (and credits) a fact on its
+ * own; it can still be a re-rank candidate.
+ */
+const SHORT_OVERLAP_CAP = 0.5;
+/**
+ * Question/function bigrams that carry no topic: a phrase starting with one
+ * ("怎么疼", "什么时候") is capped like any other 2-character overlap.
+ */
+const GENERIC_CJK_BIGRAMS = new Set(["怎么", "什么", "有没", "没有", "是不", "不是", "会不", "能不", "要不", "哪里", "哪儿", "多少", "为什", "时候", "这个", "那个", "一下"]);
 /** Score of a Latin phrase found verbatim (spacing/punctuation aside) inside the utterance. */
 const LATIN_COMPACT_CONTAINMENT = 0.9;
+
+/** Extra characters a phrase may be spread over in the utterance and still count as spelled out. */
+const SUBSEQUENCE_SLACK = 4;
+
+/** True when every character of `p` occurs in `u` in order, within a span of `p.length + slack`. */
+function gappedSubsequence(u: string, p: string, slack: number): boolean {
+  if (!p) return false;
+  for (let start = u.indexOf(p[0]!); start >= 0; start = u.indexOf(p[0]!, start + 1)) {
+    let j = 1;
+    let i = start + 1;
+    const end = Math.min(u.length, start + p.length + slack);
+    for (; i < end && j < p.length; i++) if (u[i] === p[j]) j++;
+    if (j === p.length) return true;
+  }
+  return false;
+}
 
 function characterScore(u: string, p: string): number {
   if (!u || !p) return 0;
@@ -216,6 +246,13 @@ function characterScore(u: string, p: string): number {
   const common = longestCommonSubstring(u, p);
   if (common < 2) return 0;
   let score = common / p.length;
+  if (common < 3) {
+    // Kept: a shared start of the phrase ("糖尿" of 糖尿病) unless it is a question bigram, or the whole
+    // phrase spelled out with a few characters between ("摸一下肚子" ⊇ 摸…肚子, "喝水会不会呛" ⊇ 喝水…呛).
+    const lead = p.slice(0, common);
+    const leading = u.includes(lead) && !GENERIC_CJK_BIGRAMS.has(lead);
+    if (!leading && !gappedSubsequence(u, p, SUBSEQUENCE_SLACK)) score = Math.min(score, SHORT_OVERLAP_CAP);
+  }
   if (u.length >= 2 && p.includes(u)) score += FRAGMENT_BONUS;
   return Math.min(1, score);
 }
@@ -237,6 +274,19 @@ export function phraseScore(utterance: Prepared, phrase: Prepared): number {
   const tokens = tokenScore(utterance.tokens, phrase.tokens);
   const compact = phrase.compact.length >= 4 && utterance.compact.includes(phrase.compact) ? LATIN_COMPACT_CONTAINMENT : 0;
   return Math.max(tokens, compact);
+}
+
+/**
+ * How much of a phrase an utterance accounts for, in characters: the whole
+ * compact phrase when the utterance contains it, else the shared run (CJK) or
+ * the summed length of the phrase tokens found (Latin). Used only to break
+ * ties between equally scored items (a longer, more specific alias wins).
+ */
+export function phraseCoverage(utterance: Prepared, phrase: Prepared): number {
+  if (!phrase.compact || !utterance.compact) return 0;
+  if (utterance.compact.includes(phrase.compact)) return phrase.compact.length;
+  if (phrase.cjk) return longestCommonSubstring(utterance.compact, phrase.compact);
+  return phrase.tokens.filter((pt) => utterance.tokens.some((ut) => tokensMatch(ut, pt))).reduce((n, pt) => n + pt.length, 0);
 }
 
 /** Every rendering of a localized text: the requested locale first, then every locale. */

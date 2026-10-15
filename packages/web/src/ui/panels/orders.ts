@@ -1,7 +1,8 @@
 /**
  * Workstation order entry (V4 `Jd`/`Zd`): free-text matching with the case's
  * order rules (core `matchOrders`), chips for this station, candidates
- * "调阅 X →" or "X · 请前往 Y" (sets the destination, V4 behaviour), order
+ * "开具 X →" (not yet ordered in this phase: a click places the order),
+ * "调阅 X →" (ordered) or "X · 请前往 Y" (sets the destination, V4 behaviour), order
  * warnings, turnaround countdown in simulated cases, and the station's
  * evidence grid. Also the device panel (tests + bedside treatments).
  */
@@ -67,7 +68,9 @@ function candidateButton(app: App, game: Game, inv: Investigation, placementId: 
   const order = s.orders.find((o) => o.key === `${inv.id}@${s.phase}`);
   const left = order ? minutesLeft(c, s, order) : 0;
   const hasRecord = resultFor(c, inv.id, s.phase) !== null;
-  const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : tr("orders.open", { name });
+  // Say what a click does: without an order for this phase it places one (time, approval, assessment) —
+  // "Open" only once the test has been ordered.
+  const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : order ? tr("orders.open", { name }) : tr("orders.order", { name });
   return h(
     "button",
     {
@@ -219,8 +222,11 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
         if (placement && !game.stations.atBedside(placement, game.slotId)) content.append(h("p", { class: "notice" }, tr("treat.notBedside")));
         content.append(h("div", { class: "treat-list" }, interventions.map((iv) => treatRow(app, game, iv, bedside, scope !== "full"))));
       }
-      const ids = new Set(investigations.map((i) => i.id));
-      content.append(evidenceGrid(game, (o) => ids.has(o.investigationId), (o) => app.open("report", { investigationId: o.investigationId, phase: o.phase, back: { panel: "device", placementId: args.placementId } })));
+      if (investigations.length) {
+        const ids = new Set(investigations.map((i) => i.id));
+        // No search box here: the empty state points at the tests listed above.
+        content.append(evidenceGrid(game, (o) => ids.has(o.investigationId), (o) => app.open("report", { investigationId: o.investigationId, phase: o.phase, back: { panel: "device", placementId: args.placementId } }), tr("device.none")));
+      }
       void s;
     };
     render();

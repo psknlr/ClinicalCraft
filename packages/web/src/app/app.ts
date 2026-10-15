@@ -28,13 +28,13 @@ import { confirmResetPanel, pausePanel, type PauseArgs } from "../ui/panels/paus
 import { imagePanel, reportPanel, type ImageArgs, type ReportArgs } from "../ui/panels/report.js";
 import { Toaster, type ToastLevel } from "../ui/toast.js";
 import { playSound } from "./audio.js";
-import { loadContent, type ContentIndex } from "./content.js";
+import { loadContent, loadServerContent, type ContentIndex } from "./content.js";
 import type { App, Game, PanelName } from "./context.js";
-import { detectServer, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
+import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
 import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
-import { Prefs } from "./settings.js";
+import { coarse, Prefs } from "./settings.js";
 import type { LogEntry } from "./store.js";
 import { GameWorldLink, patientFor, routeInteraction, slotFor, WorldHost, type Route, type WorldSpec } from "./world-bridge.js";
 
@@ -134,8 +134,10 @@ export class ClinicalCraftApp implements App {
     }
     this.intro.show();
     this.hud.show(false);
-    const detected = detectServer().then((info) => {
+    const detected = detectServer().then(async (info) => {
       this.server = info;
+      // Served by `clinicalcraft serve`: its contentDirs cases, facilities and catalogs join the library.
+      if (info.served) await loadServerContent(this.content, (url) => fetchJson(url, 6000)).catch(() => 0);
       this.intro.render();
       this.hud.update();
     });
@@ -684,13 +686,16 @@ export class ClinicalCraftApp implements App {
     });
     game.link.syncWaypoint();
     this.hud.update();
+    // "Fictional teaching case — not medical advice", once per entry (quest card: never over a control).
+    this.hud.showDisclaimer();
     if (resumed) this.toast(tr("toast.resume.title"), tr("toast.resume.body"));
     else
       this.toast(
         tr("toast.welcome.title", {
           place: t(game.facility.name, getLocale()),
         }),
-        tr("toast.welcome.body"),
+        // Touch devices have an on-screen "Interact" button, not an E key.
+        tr(coarse() ? "toast.welcome.bodyTouch" : "toast.welcome.body"),
       );
     if (!api) this.open("journal");
     this.save();

@@ -102,3 +102,16 @@ describe("offline clinician plan", () => {
     expect(narrateAction(caseDef, { type: "answer", decisionId: "dx", optionIds: ["stemi"] }, "en")).toBe("Deciding: Most likely diagnosis? → Inferior STEMI");
   });
 });
+
+describe("future phases stay unannounced to the clinician model (F9)", () => {
+  it("the clinician brief does not list the case's phases", () => {
+    const c = loadMiniCase((x) => {
+      x.phases = [{ id: "ed", label: { "zh-CN": "急诊", en: "Emergency" } }, { id: "cath-secret", label: { "zh-CN": "导管室秘密", en: "Secret cath lab" }, learnerSwitchable: false } as never];
+    });
+    const clinician = BUILTIN_AGENTS.find((a) => a.name === "clinician")!;
+    const brief = buildSystemSections(clinician, { caseDef: c, state: createEngineState(c), locale: "en", memory: null }).map((s) => s.text).join("\n");
+    expect(brief).not.toContain("cath-secret");
+    expect(brief).not.toContain("Secret cath lab");
+    expect(brief).toContain("list_options");
+  });
+});

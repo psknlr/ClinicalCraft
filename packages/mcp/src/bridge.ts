@@ -9,8 +9,14 @@
  *   `tool.run()` with a `ToolContext` whose `dispatch` is `session.dispatch`
  *   and whose `ask` sends a `user_message` op to the NPC → PostToolUse hooks.
  *
- * The MCP client owns approvals: a call the gate would `ask` about is refused
- * with an explanation instead of waiting for a person who is not there.
+ * Approvals are a two-step confirmation: a call the gate would `ask` about
+ * (high-risk / always-ask actions such as thrombolysis, ask rules, strict
+ * mode…) is refused with an explanation of the risk and asks the client to
+ * call again with `confirm: true` once its user agreed; the confirmed repeat
+ * of that same call (same tool, input and gate rule, within
+ * `CONFIRM_TTL_MS`, once) runs. `confirm: true` on a first attempt is
+ * refused like an unconfirmed call. Deny rules, plan mode and the practice
+ * scope are never overridden.
  *
  * Gap (CONTRACT CHANGE REQUEST): `ClinicalSessionApi` has no public
  * `runTool()`, so this mirrors the session's private learner-tool path, and
@@ -23,7 +29,9 @@ import {
   formatRule,
   HookRunner,
   PermissionState,
+  rt,
   validateArgs,
+  type RuntimeKey,
   type AgentEvent,
   type AgentRole,
   type ClinicalSession,
@@ -32,6 +40,7 @@ import {
   type HookInput,
   type HookResult,
   type PlanItem,
+  type RiskLevel,
   type ToolContext,
   type ToolDefinition,
   type ToolOutput,
@@ -45,8 +54,29 @@ export type ToolRunOutcome =
       output: ToolOutput;
       /** Learner-visible notifications raised while the tool ran (alarms, nurse calls…). */
       notices: string[];
+      /**
+       * Session warnings raised while the tool ran — e.g. an agent answering
+       * with the deterministic offline responder (no API key, model error,
+       * refusal) or a reply replaced by the authored answer. Never silent.
+       */
+      warnings?: string[];
     }
-  | { status: "refused"; reason: "deny" | "ask" | "hook"; message: string; ruleId: string | null };
+  | {
+      status: "refused";
+      reason: "deny" | "ask" | "hook";
+      message: string;
+      ruleId: string | null;
+      /** For `ask`: the risk the gate saw (the client must re-call with `confirm: true`). */
+      risk?: RiskLevel;
+      /** For `ask`: `confirm: true` was sent without an earlier refusal of this exact call. */
+      unconfirmed?: boolean;
+    };
+
+/** Per-call options of `SessionToolRunner.run`. */
+export interface ToolRunOptions {
+  /** The client confirmed this exact call with its user (`confirm: true`): an `ask` from the gate runs. */
+  confirmed?: boolean;
+}
 
 export interface SessionToolRunnerOptions {
   /** Executor for settings command hooks (node). Without it only in-process hooks run (none here). */
@@ -55,6 +85,29 @@ export interface SessionToolRunnerOptions {
   cwd?: string | null;
   /** Diagnostics (stderr). */
   log?: (message: string) => void;
+  /** Clock for confirmation expiry (default `Date.now`). */
+  now?: () => number;
+}
+
+/** How long a refused call waits for its `confirm: true` repeat. */
+export const CONFIRM_TTL_MS = 10 * 60_000;
+const MAX_PENDING_CONFIRMATIONS = 32;
+
+/** Canonical JSON (sorted keys) of a value. */
+function canonicalJson(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value as Record<string, unknown>)
+      .sort()
+      .map((k) => `${JSON.stringify(k)}:${canonicalJson((value as Record<string, unknown>)[k])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value) ?? "null";
+}
+
+/** Identity of a call for the two-step confirmation: tool + validated input + the gate rule that asked. */
+function confirmationKey(tool: string, input: unknown, ruleId: string): string {
+  return `${tool}\u0000${ruleId}\u0000${canonicalJson(input)}`;
 }
 
 type HookSpec =
@@ -72,11 +125,31 @@ export class SessionToolRunner {
   private readonly hookRunner = new HookRunner();
   private readonly permissions = new PermissionState();
   private plan: { items: PlanItem[]; explanation: string | null } = { items: [], explanation: null };
+  /** Calls refused as needing confirmation: key → expiry (ms since epoch). */
+  private readonly pending = new Map<string, number>();
 
   constructor(
     readonly session: ClinicalSession,
     private readonly opts: SessionToolRunnerOptions = {},
   ) {}
+
+  private addPending(key: string): void {
+    const now = this.now();
+    for (const [k, until] of this.pending) if (until <= now) this.pending.delete(k);
+    this.pending.delete(key);
+    this.pending.set(key, now + CONFIRM_TTL_MS);
+    while (this.pending.size > MAX_PENDING_CONFIRMATIONS) this.pending.delete(this.pending.keys().next().value!);
+  }
+
+  private takePending(key: string): boolean {
+    const until = this.pending.get(key);
+    this.pending.delete(key);
+    return until !== undefined && until > this.now();
+  }
+
+  private now(): number {
+    return this.opts.now?.() ?? Date.now();
+  }
 
   /** The latest plan published with `update_workup`. */
   workupPlan(): { items: PlanItem[]; explanation: string | null } {
@@ -102,8 +175,12 @@ export class SessionToolRunner {
     };
   }
 
-  /** Validate, gate and run `name` with `rawArgs`. Throws only for an unknown tool name. */
-  async run(name: string, rawArgs: unknown, signal?: AbortSignal): Promise<ToolRunOutcome> {
+  /**
+   * Validate, gate and run `name` with `rawArgs`. A gate `ask` runs only with
+   * `options.confirmed` (else it is refused with the reason, for a second,
+   * confirmed call). Throws only for an unknown tool name.
+   */
+  async run(name: string, rawArgs: unknown, signal?: AbortSignal, options: ToolRunOptions = {}): Promise<ToolRunOutcome> {
     const tool = this.tools.get(name);
     if (!tool) throw new Error(`unknown tool ${name}`);
     const L = this.session.locale;
@@ -123,24 +200,42 @@ export class SessionToolRunner {
       input = again.value as Record<string, unknown>;
     }
 
+    // A call that cannot run is refused before the gate (e.g. a locked decision: no confirmation round-trip).
+    const early = tool.precheck?.(input, ctx);
+    if (early) return { status: "done", output: early, notices: [] };
+
     const settings = this.session.settings;
     const check = checkPermission(tool, input, ctx, settings.approvalMode, settings.practiceScope, settings.permissions, this.permissions);
     if (check.decision === "deny") {
       return { status: "refused", reason: "deny", message: mm(L, "approval.denied", { tool: name, reason: check.reason, ruleId: check.ruleId }), ruleId: check.ruleId };
     }
     if (check.decision === "ask" && !pre.approved) {
-      let specifier: string | null = null;
-      try {
-        specifier = tool.specifier?.(input, ctx) ?? null;
-      } catch {
-        specifier = null;
+      // Two-step confirmation: `confirm: true` counts only for the same call refused before (and only once).
+      const key = confirmationKey(name, input, check.ruleId);
+      const confirmed = options.confirmed === true && this.takePending(key);
+      if (!confirmed) {
+        this.addPending(key);
+        let specifier: string | null = null;
+        try {
+          specifier = tool.specifier?.(input, ctx) ?? null;
+        } catch {
+          specifier = null;
+        }
+          return {
+          status: "refused",
+          reason: "ask",
+          message: mm(L, options.confirmed === true ? "approval.confirmFirst" : "approval.needed", {
+            tool: name,
+            reason: check.reason,
+            ruleId: check.ruleId,
+            rule: formatRule(name, specifier),
+            risk: rt(L, `perm.risk.${check.risk}` as RuntimeKey),
+          }),
+          ruleId: check.ruleId,
+          risk: check.risk,
+          ...(options.confirmed === true ? { unconfirmed: true } : {}),
+        };
       }
-      return {
-        status: "refused",
-        reason: "ask",
-        message: mm(L, "approval.needed", { tool: name, reason: check.reason, ruleId: check.ruleId, rule: formatRule(name, specifier) }),
-        ruleId: check.ruleId,
-      };
     }
 
     if (signal?.aborted) return aborted(); // cancelled while hooks ran
@@ -148,9 +243,11 @@ export class SessionToolRunner {
     if (!tool.readOnly && !s.started && !s.finished) this.session.dispatch({ type: "start", by: "system" });
 
     const notices: string[] = [];
+    const warnings: string[] = [];
     const off = this.session.subscribe((event: AgentEvent) => {
       const msg: EventMsg = event.msg;
       if (msg.type === "notification") notices.push(msg.body ? `${msg.title}: ${msg.body}` : msg.title);
+      if (msg.type === "warning" && !warnings.includes(msg.message)) warnings.push(msg.message);
     });
     let output: ToolOutput;
     try {
@@ -161,7 +258,8 @@ export class SessionToolRunner {
       off();
     }
     await this.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: name, tool_input: input, tool_response: { ok: output.ok, output: output.output } }, signal);
-    return { status: "done", output, notices };
+    for (const w of warnings) this.opts.log?.(w);
+    return { status: "done", output, notices, ...(warnings.length > 0 ? { warnings } : {}) };
   }
 
   /** Talk to an NPC through the session (UserPromptSubmit hooks, patient pipeline, transcript). */

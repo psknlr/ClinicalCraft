@@ -35,7 +35,8 @@ export const STANDALONE: boolean = typeof __STANDALONE__ !== "undefined" && __ST
 
 let serverPromise: Promise<ServerInfo> | null = null;
 
-async function fetchJson(url: string, timeoutMs: number): Promise<unknown | null> {
+/** GET JSON from the serving origin (null on failure, timeout or a non-JSON answer). */
+export async function fetchJson(url: string, timeoutMs: number): Promise<unknown | null> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {

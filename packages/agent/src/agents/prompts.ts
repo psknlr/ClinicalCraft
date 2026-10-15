@@ -344,7 +344,9 @@ function caseBrief(kind: AgentKind, profile: Pick<AgentProfile, "name">, ctx: Pr
         `Patient: ${demographics}${c.patient.weightKg ? `, ${c.patient.weightKg} kg` : ""}.`,
         `Presenting complaint: ${t(c.patient.chiefComplaint, L)}`,
         triage ? `Triage note: ${triage}` : "",
-        `Phases: ${c.phases.map((p) => `${p.id} (${t(p.label, L)})`).join(", ")}.`,
+        // No phase list: future automatic phases stay unannounced (their ids/labels name what will happen);
+        // list_options(phases) shows the ones the clinician may know about (visiblePhases).
+        "Phases: call list_options with kind \"phases\" for the phases you can work in (later phases are not announced).",
         c.clock.mode === "simulated"
           ? "Clock: simulated — every action takes time, results have turnaround times, and the patient's physiology evolves. Watch the monitor."
           : "Clock: static — time does not pass; results are available as soon as they are ordered.",

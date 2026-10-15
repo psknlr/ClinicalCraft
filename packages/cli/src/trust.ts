@@ -58,7 +58,8 @@ export async function runTrust(ctx: CliContext, args: ParsedArgs): Promise<numbe
   const root = trustRootFor(ctx.cwd, ctx.env);
   const texts = await readProjectSettingsTexts(root);
   const commands = [...hookCommandsIn(texts.project), ...hookCommandsIn(texts.local)];
-  const trusted = await trustProject(ctx.cwd, ctx.env);
+  // Pinned to the texts whose hook commands are listed below — not to a second read of the files.
+  const trusted = await trustProject(ctx.cwd, ctx.env, undefined, texts);
   ctx.print(ctx.t("trust.trusted", { root: trusted.root }));
   if (commands.length > 0) {
     ctx.print(ctx.t("trust.hooks"));

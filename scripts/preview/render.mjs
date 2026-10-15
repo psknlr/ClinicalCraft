@@ -21,9 +21,29 @@ for (let i = 0; i < rest.length; i += 2) args[rest[i].replace(/^--/, "")] = rest
 if (!mode || !args.out) { console.error("usage: render.mjs equipment|facility --out file.png [...]"); process.exit(2); }
 
 const types = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json" };
+/**
+ * Catalog/facility files named on the command line, served to the page: a file inside the repo by its
+ * repo path; one elsewhere (a contentDirs folder outside the checkout) under an alias `__file/<n>/<name>`
+ * mapped to exactly that file — nothing else outside the repo is served.
+ */
+const aliases = new Map();
+function servedPath(file) {
+  const abs = path.resolve(process.cwd(), file);
+  const inRepo = path.resolve(root, file);
+  if (fs.existsSync(inRepo) && (inRepo + path.sep).startsWith(root + path.sep)) return path.relative(root, inRepo).split(path.sep).join("/");
+  if (!fs.existsSync(abs)) { console.error(`no such file: ${file}`); process.exit(2); }
+  if ((abs + path.sep).startsWith(root + path.sep)) return path.relative(root, abs).split(path.sep).join("/");
+  const alias = `__file/${aliases.size}/${path.basename(abs)}`;
+  aliases.set(alias, abs);
+  return alias;
+}
+const list = (value) => (value || "").split(",").filter(Boolean).map(servedPath).join(",");
+if (args.catalogs) args.catalogs = list(args.catalogs);
+if (args.facility) args.facility = servedPath(args.facility);
 const server = http.createServer((req, res) => {
-  const p = path.join(root, decodeURIComponent(new URL(req.url, "http://x").pathname));
-  if (!p.startsWith(root) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
+  const rel = decodeURIComponent(new URL(req.url, "http://x").pathname).replace(/^\/+/, "");
+  const p = aliases.get(rel) ?? path.join(root, rel);
+  if ((!aliases.has(rel) && !p.startsWith(root)) || !fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end(); }
   res.writeHead(200, { "content-type": types[path.extname(p)] || "application/octet-stream" }); fs.createReadStream(p).pipe(res);
 });
 await new Promise((r) => server.listen(0, "127.0.0.1", r));
@@ -34,11 +54,19 @@ const page = await browser.newPage({ viewport: { width: 1600, height: 1200 } });
 const errors = [];
 page.on("pageerror", (e) => errors.push(String(e)));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+// Fail fast (not after the 60 s render wait) when a content file cannot be loaded or the page throws.
+let failLoad;
+const loadFailed = new Promise((_, reject) => (failLoad = reject));
+loadFailed.catch(() => undefined);
+page.on("response", (r) => { if (r.status() >= 400 && !r.url().endsWith("/favicon.ico")) failLoad(new Error(`HTTP ${r.status()} for ${new URL(r.url()).pathname}`)); });
+page.on("requestfailed", (r) => failLoad(new Error(`request failed: ${new URL(r.url()).pathname} (${r.failure()?.errorText ?? "error"})`)));
+page.on("pageerror", (e) => failLoad(e));
+const rendered = () => Promise.race([page.waitForFunction(() => window.__done, null, { timeout: 60000 }), loadFailed]);
 try {
   if (mode === "equipment") {
     const q = new URLSearchParams({ catalogs: args.catalogs || "", only: args.only || "", view: args.view || "iso" });
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/equipment.html?${q}`);
-    await page.waitForFunction(() => window.__done, null, { timeout: 60000 });
+    await rendered();
     const info = await page.evaluate(() => window.__done);
     await page.setViewportSize({ width: info.width, height: info.height });
     await page.waitForTimeout(150);
@@ -46,7 +74,7 @@ try {
     console.log(JSON.stringify({ ok: true, ...info, errors }));
   } else if (mode === "facility") {
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/facility.html?facility=${encodeURIComponent(args.facility)}&catalogs=${encodeURIComponent(args.catalogs || "packages/content/catalogs/materials.json")}`);
-    await page.waitForFunction(() => window.__done, null, { timeout: 60000 });
+    await rendered();
     const info = await page.evaluate(() => window.__done);
     await page.setViewportSize({ width: info.width, height: info.height });
     await page.screenshot({ path: args.out });

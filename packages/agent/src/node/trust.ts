@@ -111,10 +111,16 @@ export function trustRootFor(cwd: string, env: Env = process.env): string {
   return findProjectRoot(cwd, env) ?? resolve(cwd);
 }
 
-/** Trust the project containing `cwd` with its current settings files. */
-export async function trustProject(cwd: string, env: Env = process.env, now: () => Date = () => new Date()): Promise<TrustedProject & { file: string }> {
+/**
+ * Trust the project containing `cwd`, pinned to `texts` — the settings the
+ * caller showed the user or just wrote — or, without them, to the files as
+ * they are now. Pinning what was reviewed closes the gap between reading the
+ * files and trusting them: a change landing in between leaves the project
+ * untrusted (its digest no longer matches).
+ */
+export async function trustProject(cwd: string, env: Env = process.env, now: () => Date = () => new Date(), texts?: ProjectSettingsTexts): Promise<TrustedProject & { file: string }> {
   const root = await trustKey(trustRootFor(cwd, env));
-  const digest = projectTrustDigest(await readProjectSettingsTexts(root));
+  const digest = projectTrustDigest(texts ?? (await readProjectSettingsTexts(root)));
   const store = await readStore(env);
   const trustedAt = now().toISOString();
   store.projects[root] = { digest, trustedAt };

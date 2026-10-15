@@ -16,7 +16,11 @@
  *
  * * project settings are never trusted for secrets: provider `apiKey` /
  *   `apiKeyEnv` / non-loopback `baseUrl` and `server.host` / `server.token`
- *   are dropped from that layer with a warning;
+ *   are dropped from that layer with a warning; so is a loopback `baseUrl`
+ *   for a provider that would send a key there (a keyed template such as
+ *   anthropic, or a provider another layer gives `apiKey`/`apiKeyEnv` — any
+ *   local user can listen on a loopback port); only keyless local servers
+ *   (ollama, lmstudio, providers the project defines without a key) keep it;
  * * until the user trusts the project (`MergeOptions.trustedProject`, from the
  *   user-only trust store in `node/trust.ts`), both repository layers also
  *   lose `hooks` (shell commands) and provider `headers`, and the local layer
@@ -25,6 +29,7 @@
  */
 import type { z } from "zod";
 import type { ApprovalMode, PracticeScope } from "../protocol.js";
+import { findProviderTemplate } from "../providers/catalog.js";
 import {
   AgentModelSettingsSchema,
   ApprovalModeSchema,
@@ -330,12 +335,21 @@ export function isLoopbackUrl(url: string): boolean {
 
 type IssuePush = (path: string, message: string, severity?: SettingsIssue["severity"], code?: SettingsIssue["code"]) => void;
 
+/** A built-in template that attaches an environment key (everything but `noKey` templates such as ollama, lmstudio). */
+function sendsTemplateKey(name: string): boolean {
+  const template = findProviderTemplate(name);
+  return template !== undefined && template.noKey !== true;
+}
+
 /**
  * Repository settings come from a directory the user may not control: they
  * must not be able to route the user's API keys elsewhere. Drop `apiKey`,
- * `apiKeyEnv` and non-loopback `baseUrl` overrides (configure those in user
+ * `apiKeyEnv`, non-loopback `baseUrl` overrides and any `baseUrl` override of
+ * a template that sends an environment key (configure those in user
  * settings, or in local settings of a trusted project), and — while the
- * project is untrusted — `headers`.
+ * project is untrusted — `headers`. A loopback `baseUrl` that survives is
+ * dropped again after the merge if another layer gives that provider a key
+ * (`guardRepositoryBaseUrls`).
  */
 function restrictProjectProvider(name: string, override: Record<string, unknown>, push: IssuePush, source: SettingsSource, untrusted: boolean): void {
   const where = source === "project" ? "project settings" : "local settings until you trust this project";
@@ -352,6 +366,10 @@ function restrictProjectProvider(name: string, override: Record<string, unknown>
   if (typeof override.baseUrl === "string" && !isLoopbackUrl(override.baseUrl)) {
     delete override.baseUrl;
     push(`providers.${name}.baseUrl`, `non-local baseUrl overrides are ignored in ${where} (they could send your API key elsewhere); ${fix}`, "warning", code);
+  } else if (typeof override.baseUrl === "string" && sendsTemplateKey(name)) {
+    // A local port is no safer: on a shared machine any user can listen on it.
+    delete override.baseUrl;
+    push(`providers.${name}.baseUrl`, `baseUrl overrides of "${name}" are ignored in ${where}, even on this machine (the provider sends your API key there); ${fix}`, "warning", code);
   }
   if (untrusted && "headers" in override) {
     delete override.headers;
@@ -392,28 +410,84 @@ export interface MergeResult {
   profiles: Record<string, SettingsLayerData>;
 }
 
+/**
+ * Who set each provider's `baseUrl` last: a repository layer whose secrets are
+ * restricted (`from` = that layer, with the value the trusted layers had set),
+ * or a trusted layer (`from` = null).
+ */
+type BaseUrlOrigins = Map<string, { from: { source: SettingsSource; file?: string; path: string } | null; trusted: string | undefined }>;
+
+function noteBaseUrls(origins: BaseUrlOrigins, providers: SettingsLayerData["providers"], from: { source: SettingsSource; file?: string; prefix: string } | null): void {
+  for (const [name, override] of Object.entries(providers ?? {})) {
+    if (typeof override?.baseUrl !== "string") continue;
+    const before = origins.get(name);
+    if (from) origins.set(name, { from: { source: from.source, ...(from.file ? { file: from.file } : {}), path: `${from.prefix}providers.${name}.baseUrl` }, trusted: before?.trusted });
+    else origins.set(name, { from: null, trusted: override.baseUrl });
+  }
+}
+
+/**
+ * A (loopback) `baseUrl` from a restricted repository layer must not receive a
+ * key: when the merged provider carries `apiKey`/`apiKeyEnv` from another
+ * layer (or is a keyed template), restore the trusted layers' URL.
+ */
+function guardRepositoryBaseUrls(settings: ResolvedSettings, origins: BaseUrlOrigins, issues: SettingsIssue[]): void {
+  for (const [name, origin] of origins) {
+    if (!origin.from) continue;
+    const override = Object.hasOwn(settings.providers, name) ? settings.providers[name] : undefined;
+    if (!override || typeof override.baseUrl !== "string") continue;
+    const keyed = Boolean(override.apiKey) || (override.apiKeyEnv?.length ?? 0) > 0 || sendsTemplateKey(name);
+    if (!keyed) continue;
+    if (origin.trusted !== undefined) override.baseUrl = origin.trusted;
+    else delete override.baseUrl;
+    issues.push({
+      source: origin.from.source,
+      ...(origin.from.file ? { file: origin.from.file } : {}),
+      path: origin.from.path,
+      message: `baseUrl of "${name}" from ${origin.from.source} settings is ignored: another settings layer gives "${name}" an API key, which must not follow a URL the repository chose`,
+      severity: "warning",
+    });
+  }
+}
+
 /** Merge layers (in order) over the defaults, reporting issues. Never throws. */
 export function mergeSettingsDetailed(layers: readonly SettingsLayer[], options: MergeOptions = {}): MergeResult {
   const settings = freshDefaults();
   const issues: SettingsIssue[] = [];
   const profiles: Record<string, SettingsLayerData> = {};
+  const trusted = options.trustedProject === true;
+  const origins: BaseUrlOrigins = new Map();
+  /** Per profile and provider: the restricted layer that last set its `baseUrl` (null = a trusted layer). */
+  const profileOrigins = new Map<string, Map<string, { source: SettingsSource; file?: string } | null>>();
   for (const layer of layers) {
-    const { data, issues: layerIssues } = validateSettingsLayer(layer.settings, layer.source, layer.file, true, { trusted: options.trustedProject === true });
+    const { data, issues: layerIssues } = validateSettingsLayer(layer.settings, layer.source, layer.file, true, { trusted });
     issues.push(...layerIssues);
+    const restricted = layer.source === "project" || (isRepositorySource(layer.source) && !trusted) ? { source: layer.source, ...(layer.file ? { file: layer.file } : {}) } : null;
     if (data.profiles) {
       for (const [name, profile] of Object.entries(data.profiles)) {
         const existing = (Object.hasOwn(profiles, name) ? profiles[name] : undefined) ?? {};
         mergeInto(existing as Record<string, unknown>, profile as Record<string, unknown>);
         profiles[name] = existing;
+        const marks = profileOrigins.get(name) ?? new Map<string, { source: SettingsSource; file?: string } | null>();
+        for (const [provider, override] of Object.entries(profile.providers ?? {})) if (typeof override?.baseUrl === "string") marks.set(provider, restricted);
+        profileOrigins.set(name, marks);
       }
     }
     applyLayerData(settings, data, layer.source);
+    noteBaseUrls(origins, data.providers, restricted ? { ...restricted, prefix: "" } : null);
   }
   if (options.profile) {
-    const profile = Object.hasOwn(profiles, options.profile) ? profiles[options.profile] : undefined;
-    if (profile) applyLayerData(settings, profile, "profile");
-    else issues.push({ source: "profile", path: `profiles.${options.profile}`, message: `unknown profile "${options.profile}"`, severity: "error" });
+    const name = options.profile;
+    const profile = Object.hasOwn(profiles, name) ? profiles[name] : undefined;
+    if (profile) {
+      applyLayerData(settings, profile, "profile");
+      for (const [provider, override] of Object.entries(profile.providers ?? {})) {
+        const from = profileOrigins.get(name)?.get(provider) ?? null;
+        noteBaseUrls(origins, { [provider]: override }, from ? { ...from, prefix: `profiles.${name}.` } : null);
+      }
+    } else issues.push({ source: "profile", path: `profiles.${name}`, message: `unknown profile "${name}"`, severity: "error" });
   }
+  guardRepositoryBaseUrls(settings, origins, issues);
   return { settings, issues, profiles };
 }
 

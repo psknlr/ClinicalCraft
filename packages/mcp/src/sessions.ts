@@ -3,8 +3,10 @@
  * `createNodeSession` (settings layers, memory, project agents/commands,
  * command hooks, JSONL transcript). The resolved settings the server was
  * started with are re-applied as the session's flag layer, with the MCP
- * approval default (`bypass` — the MCP client owns approvals) unless the
- * settings chose a mode explicitly.
+ * approval default (`auto`: low/moderate-risk actions run, high-risk and
+ * always-ask ones need a second call with `confirm: true`) unless the
+ * settings chose a mode explicitly (`bypass` — no confirmation at all — only
+ * when asked for, e.g. `clinicalcraft mcp --approval bypass` for benchmarks).
  *
  * Calls on one session are serialised; sessions beyond `maxSessions` evict
  * the least recently used one (closed cleanly, transcript flushed).
@@ -44,13 +46,18 @@ export interface SessionManagerOptions {
 const LOG_LIMIT = 2000;
 const LOGGED_TYPES = new Set(["agent_message", "clinical_event", "plan_updated", "assessment", "notification", "warning", "error", "command_output"]);
 
+/** Approval mode of MCP sessions when no settings layer chose one. */
+export const MCP_DEFAULT_APPROVAL_MODE: ApprovalMode = "auto";
+
 /**
- * Approval mode for MCP sessions: `bypass` unless a settings layer (user,
- * project, local, env, flag or profile) chose a mode.
+ * Approval mode for MCP sessions: `auto` unless a settings layer (user,
+ * project, local, env, flag or profile) chose a mode. Never `bypass` by
+ * default: that would run thrombolysis and other always-ask actions with no
+ * confirmation step.
  */
 export function mcpApprovalMode(settings: Pick<ResolvedSettings, "approvalMode" | "sources">): ApprovalMode {
   const source = settings.sources?.approvalMode;
-  return !source || source === "default" ? "bypass" : settings.approvalMode;
+  return !source || source === "default" ? MCP_DEFAULT_APPROVAL_MODE : settings.approvalMode;
 }
 
 /** Top-level settings re-applied to MCP sessions (content, case and server keys are handled by the server itself). */

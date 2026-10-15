@@ -26,7 +26,7 @@ import { isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
 import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText } from "./tools/clinical.js";
-import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
+import { clockTime, investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
 import type { ToolOutput } from "./tools/types.js";
 
 /** What commands need from the session. */
@@ -43,11 +43,19 @@ export interface CommandHost {
   /** Emit `command_output` for this command. */
   output(text: string, data?: unknown): void;
   warn(message: string): void;
+  /** The model the session's agents call (provider defaults and overrides resolved); optional. */
+  resolvedModel?(): string | null;
   /** Run a tool as the learner (approval gate + PreToolUse hooks apply). */
   runTool(name: string, args: Record<string, unknown>): Promise<ToolOutput>;
   /** Dispatch a clinical action as the learner (gated). Null when denied/cancelled. */
   learnerAction(action: ClinicalAction): Promise<ReduceResult | null>;
   sendMessage(to: string | null, text: string): Promise<void>;
+  /**
+   * True when `agent` has no model and its offline responder does not read
+   * the message (examiner, attending): custom prompt commands then explain
+   * that they need a language model. Optional (absent = never).
+   */
+  ignoresPromptsOffline?(agent: string): boolean;
   autopilot(goal?: string): Promise<void>;
   assess(): Promise<void>;
   compact(agent?: string): Promise<void>;
@@ -78,6 +86,7 @@ const BUILTIN_NAMES = [
   ["talk", "<role>"],
   ["consult", "<role> <question>"],
   ["autopilot", "[goal]"],
+  ["finish", ""],
   ["assess", ""],
   ["debrief", ""],
   ["model", "[id]"],
@@ -114,8 +123,79 @@ function usage(host: CommandHost, name: string, hint: string): void {
   host.output(rt(host.locale, "cmd.usage", { name, hint }), { error: "usage" });
 }
 
-function toolOut(host: CommandHost, out: ToolOutput): void {
-  host.output(out.output, { ok: out.ok, data: out.data ?? null });
+/**
+ * Print a tool result for the learner. A rejected engine action is shown
+ * by its reason only ("Not possible: …"); the rejection code stays in the
+ * data (and in the model-facing tool output).
+ */
+function toolOut(host: CommandHost, out: ToolOutput, command?: string): void {
+  const data = out.data as { rejected?: unknown; message?: unknown; unresolved?: unknown } | undefined;
+  const text =
+    !out.ok && data?.rejected && typeof data.message === "string"
+      ? rt(host.locale, "action.rejected", { message: data.message })
+      : !out.ok && command && typeof data?.unresolved === "string"
+        ? unresolvedText(host.locale, command, data as UnresolvedData)
+        : out.output;
+  host.output(text, { ok: out.ok, data: out.data ?? null });
+}
+
+interface UnresolvedData {
+  unresolved: string;
+  candidates?: { id: string; label: string }[];
+  query?: string;
+  id?: string;
+}
+
+/**
+ * Learner wording for a query that named no single item (the tool's own text
+ * speaks to a model: "call again with an exact id", "use list_options"): one
+ * candidate → "Did you mean …? Type /exam <id>"; several → numbered choices
+ * with the command for each; none → try other words.
+ */
+function unresolvedText(locale: string, command: string, data: UnresolvedData): string {
+  const candidates = data.candidates ?? [];
+  if (data.unresolved === "ambiguous" && candidates.length === 1) {
+    const only = candidates[0]!;
+    return rt(locale, "cmd.unresolved.didYouMean", { label: only.label, command: `/${command} ${only.id}` });
+  }
+  if (data.unresolved === "ambiguous" && candidates.length > 1) {
+    return [rt(locale, "cmd.unresolved.choose"), ...candidates.map((c, i) => rt(locale, "cmd.unresolved.option", { n: i + 1, label: c.label, command: `/${command} ${c.id}` }))].join("\n");
+  }
+  if (data.unresolved === "unknown-id") return rt(locale, "cmd.unresolved.unknownId", { id: data.id ?? "" });
+  return rt(locale, "cmd.unresolved.none", { query: data.query ?? "" });
+}
+
+/** Levenshtein distance (short ids only). */
+function editDistance(a: string, b: string): number {
+  const row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0]!;
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const cur = row[j]!;
+      row[j] = Math.min(row[j]! + 1, row[j - 1]! + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = cur;
+    }
+  }
+  return row[b.length]!;
+}
+
+/** The closest candidate within a small edit distance (or a unique prefix), for "did you mean". */
+export function closestMatch(input: string, candidates: readonly string[]): string | null {
+  const needle = input.toLowerCase();
+  if (!needle) return null;
+  const prefixed = candidates.filter((c) => needle.length >= 2 && c.toLowerCase().startsWith(needle));
+  if (prefixed.length === 1) return prefixed[0]!;
+  let best: string | null = null;
+  let bestDistance = Infinity;
+  for (const c of candidates) {
+    const d = editDistance(needle, c.toLowerCase());
+    if (d <= Math.max(1, Math.min(3, Math.floor(Math.max(needle.length, c.length) / 3))) && d < bestDistance) {
+      best = c;
+      bestDistance = d;
+    }
+  }
+  return best;
 }
 
 /** Resolve "3" (1-based) or an id against a list. */
@@ -165,8 +245,8 @@ function caseCommand(host: CommandHost): void {
   lines.push(`${rt(L, "label.objectives")} (${p.done}/${p.total}):`);
   for (const o of p.objectives) lines.push(`  ${o.done ? "✓" : o.current ? "▶" : "·"} ${objectiveTitle(c, o.id, L)}`);
   if (c.disclaimer) lines.push(rt(L, "cmd.case.disclaimer", { text: t(c.disclaimer, L) }));
+  // No case id in the data either: ids name the diagnosis.
   host.output(lines.join("\n"), {
-    id: c.id,
     title: t(c.title, L),
     summary: t(c.summary, L),
     patient: { name: t(c.patient.displayName, L), age: c.patient.age, ageUnit: c.patient.ageUnit, sex: c.patient.sex, chiefComplaint: t(c.patient.chiefComplaint, L) },
@@ -205,7 +285,7 @@ async function examCommand(host: CommandHost, args: string): Promise<void> {
     return;
   }
   const isId = host.caseDef.exam.some((e) => e.id === args);
-  toolOut(host, await host.runTool("examine", isId ? { finding_id: args } : { query: args }));
+  toolOut(host, await host.runTool("examine", isId ? { finding_id: args } : { query: args }), "exam");
 }
 
 function resultsCommand(host: CommandHost): void {
@@ -218,7 +298,7 @@ function resultsCommand(host: CommandHost): void {
   }
   const rows = [[isZh(L) ? "检查" : "Test", "id", rt(L, "label.phase"), isZh(L) ? "状态" : "Status"]];
   for (const o of orders) {
-    const status = o.read ? rt(L, "label.read") : o.ready ? rt(L, "label.ready") : `${rt(L, "label.pending")} (${o.order.readyAt} ${rt(L, "label.minute")})`;
+    const status = o.read ? rt(L, "label.read") : o.ready ? rt(L, "label.ready") : rt(L, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, L, "ceil") });
     rows.push([investigationName(c, o.order.investigationId, L), o.order.investigationId, phaseLabel(c, o.order.phase, L), status]);
   }
   host.output(table(rows, { header: true }), {
@@ -245,9 +325,10 @@ function statusCommand(host: CommandHost): void {
   const s = host.settings;
   const status = caseStatusText({ caseDef: host.caseDef, locale: L, state: () => host.state() });
   const rows = [
-    [rt(L, "label.case"), `${t(host.caseDef.title, L)} (${host.caseDef.id})`],
+    // Title only: case ids name the diagnosis (the picker, MCP and the web library never show them).
+    [rt(L, "label.case"), t(host.caseDef.title, L)],
     [rt(L, "label.provider"), s.provider],
-    [rt(L, "label.model"), s.model ?? "-"],
+    [rt(L, "label.model"), host.resolvedModel?.() ?? s.model ?? "-"],
     [rt(L, "label.approval"), s.approvalMode],
     [rt(L, "label.scope"), s.practiceScope],
     [rt(L, "label.locale"), L],
@@ -336,6 +417,14 @@ async function providerCommand(host: CommandHost, args: string): Promise<void> {
     });
     return;
   }
+  // Catalogue templates, providers defined in settings, and `proxy:<upstream>` (as `providers test` accepts).
+  const known = [...new Set([...PROVIDER_TEMPLATES.map((p) => p.id), ...Object.keys(host.settings.providers ?? {})])];
+  if (!known.includes(args) && !/^proxy:\S+$/.test(args)) {
+    const hint = closestMatch(args, known);
+    const text = [rt(L, "cmd.invalidValue", { value: args, allowed: known.join(", ") }), ...(hint ? [rt(L, "cmd.didYouMean", { value: hint })] : [])].join("\n");
+    host.output(text, { error: "invalid-value", allowed: known, suggestion: hint });
+    return;
+  }
   await host.configure({ provider: args });
   host.output(rt(host.locale, "cmd.set", { label: rt(host.locale, "label.provider"), value: args }), { provider: args });
 }
@@ -344,15 +433,17 @@ function permissionsCommand(host: CommandHost): void {
   const L = host.locale;
   const p = host.settings.permissions;
   const session = host.sessionRules();
+  // One rule per line, never truncated: a cut-off rule list hides what still needs approval.
+  const ruleRows = (label: string, rules: readonly string[]): string[][] => (rules.length === 0 ? [[label, "-"]] : rules.map((rule, i) => [i === 0 ? label : "", rule]));
   const rows: string[][] = [
-    ["allow", p.allow.join(", ") || "-"],
-    ["ask", p.ask.join(", ") || "-"],
-    ["deny", p.deny.join(", ") || "-"],
-    [rt(L, "cmd.permissions.session"), session.join(", ") || "-"],
+    ...ruleRows(rt(L, "perm.label.allow"), p.allow),
+    ...ruleRows(rt(L, "perm.label.ask"), p.ask),
+    ...ruleRows(rt(L, "perm.label.deny"), p.deny),
+    ...ruleRows(rt(L, "cmd.permissions.session"), session),
     [rt(L, "label.approval"), host.settings.approvalMode],
     [rt(L, "label.scope"), host.settings.practiceScope],
   ];
-  host.output(table(rows), { ...p, session, approvalMode: host.settings.approvalMode, practiceScope: host.settings.practiceScope });
+  host.output(table(rows, { maxCell: 400 }), { ...p, session, approvalMode: host.settings.approvalMode, practiceScope: host.settings.practiceScope });
 }
 
 async function hintCommand(host: CommandHost): Promise<void> {
@@ -394,17 +485,17 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
       return examCommand(host, a);
     case "order":
       if (!a) return usage(host, name, "<query>");
-      return toolOut(host, await host.runTool("order_test", c.investigations.some((i) => i.id === a) ? { investigation_id: a } : { query: a }));
+      return toolOut(host, await host.runTool("order_test", c.investigations.some((i) => i.id === a) ? { investigation_id: a } : { query: a }), "order");
     case "results":
       return resultsCommand(host);
     case "read": {
       const [id, phase] = splitArgs(a);
       if (!id) return usage(host, name, "<id> [phase]");
-      return toolOut(host, await host.runTool("read_result", { investigation_id: id, ...(phase ? { phase } : {}) }));
+      return toolOut(host, await host.runTool("read_result", { investigation_id: id, ...(phase ? { phase } : {}) }), "read");
     }
     case "give":
       if (!a) return usage(host, name, "<query>");
-      return toolOut(host, await host.runTool("intervene", c.interventions.some((i) => i.id === a) ? { intervention_id: a } : { query: a }));
+      return toolOut(host, await host.runTool("intervene", c.interventions.some((i) => i.id === a) ? { intervention_id: a } : { query: a }), "give");
     case "vitals":
       return toolOut(host, await host.runTool("check_vitals", {}));
     case "board": {
@@ -420,9 +511,13 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
       }
       return toolOut(host, await host.runTool("set_phase", { phase: a }));
     }
-    case "wait":
+    case "wait": {
       if (!a || !Number.isFinite(Number(a))) return usage(host, name, "<minutes>");
-      return toolOut(host, await host.runTool("wait", { minutes: Number(a) }));
+      const out = await host.runTool("wait", { minutes: Number(a) });
+      // The alarms, staff lines and announcements of the wait were already shown live: do not repeat them.
+      const meanwhile = (out.data as { meanwhile?: unknown } | undefined)?.meanwhile;
+      return toolOut(host, typeof meanwhile === "string" && meanwhile ? { ...out, output: out.output.split("\n").filter((line) => line !== meanwhile).join("\n") } : out);
+    }
     case "hint":
       return hintCommand(host);
     case "status":
@@ -450,6 +545,8 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     }
     case "autopilot":
       return host.autopilot(a || undefined);
+    case "finish":
+      return toolOut(host, await host.runTool("finish_case", {}));
     case "assess":
       return host.assess();
     case "debrief":
@@ -482,6 +579,12 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     default: {
       const custom = host.commands().find((cmd) => cmd.name === name && cmd.template !== undefined);
       if (!custom) return host.output(rt(L, "cmd.unknown", { name }), { error: "unknown-command" });
+      const target = (custom.agent ?? host.interlocutor()).replace(/^@/, "").toLowerCase();
+      // A template is a free-text prompt: an offline responder that ignores prompts (the examiner runs a
+      // full assessment, the attending gives its generic nudge) would answer something else — say so.
+      if (host.ignoresPromptsOffline?.(target)) {
+        return host.output(rt(L, "cmd.custom.needsModel", { name, agent: target }), { error: "needs-model", agent: target });
+      }
       const text = expandCommandTemplate(custom.template ?? "", a);
       return host.sendMessage(custom.agent ?? null, text);
     }

@@ -3758,8 +3758,8 @@
         "investigation": "dsa-evt",
         "ifMatches": "dsa|造影|取栓|thrombectomy|angiograph|evt|endovascular|血管内",
         "message": {
-          "zh-CN": "脑血管造影/机械取栓在神经介入导管室进行：需先联系神经介入团队并将患者转入导管室，结果才会出现。",
-          "en": "Cerebral angiography / thrombectomy happens in the neuro-angiography suite: call the neurointervention team and transfer the patient first — results exist only once he is there."
+          "zh-CN": "脑血管造影/机械取栓在神经介入导管室进行：联系神经介入团队并将患者转入导管室后才会有结果。",
+          "en": "Cerebral angiography / thrombectomy happens in the neuro-angiography suite: results exist only once the neurointervention team has been called and the patient is there."
         }
       },
       {

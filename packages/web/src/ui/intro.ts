@@ -3,13 +3,14 @@
  * cards (title, specialty, difficulty dots, setting, minutes, provenance,
  * locales, saved progress), specialty/setting filters and search, the
  * facility selector (case default preselected; clinic-v4 only for
- * outpatient cases), Continue / Start new, language toggle, LLM status pill
+ * outpatient cases) and the case's teaching-case disclaimer, Continue /
+ * Start new, language toggle, LLM status pill
  * (opens settings) and help.
  */
 import type { ClinicalCraftApp } from "../app/app.js";
 import type { CaseCard } from "../app/content.js";
 import { statusLabel } from "../app/llm.js";
-import { ct, getLocale, tr, trMaybe } from "../i18n/index.js";
+import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
 
 type Status = "loading" | "ready" | "failed";
@@ -188,6 +189,7 @@ export class Intro {
       h("b", { id: "selected-case" }, ct(card.title)),
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
+      h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
     );
   }
 
@@ -305,6 +307,7 @@ export class Intro {
           "div",
           { class: "case-top" },
           h("span", { class: `prov prov-${c.provenance}` }, trMaybe(`library.prov.${c.provenance}`, c.provenance)),
+          c.source === "server" ? h("span", { class: "setting-tag server-tag", title: tr("library.serverCase.title") }, tr("library.serverCase")) : null,
           h("span", { class: "setting-tag" }, trMaybe(`setting.${c.setting}`, c.setting)),
           c.physiology ? h("span", { class: "phys-tag", title: tr("library.physiology") }, "♥ ", tr("library.physiology")) : null,
         ),

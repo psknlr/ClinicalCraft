@@ -200,6 +200,13 @@ export const HistoryItemSchema = z
     required: z.boolean().default(false),
     /** Restrict availability to phases (default: all). */
     phases: z.array(IdSchema).optional(),
+    /**
+     * Who says `answer` when the case has a companion who answers history
+     * (`persona.companion.answersHistory`): default the companion; `patient`
+     * for the patient's own words (e.g. a child describing how they feel).
+     * Ignored without such a companion (the patient answers everything).
+     */
+    speaker: z.enum(["patient", "companion"]).optional(),
     /** Provenance note (e.g. "正文·既往史；依据原文整理的模拟回答"). */
     source: LocalizedTextSchema.optional(),
   })
@@ -258,11 +265,13 @@ export type ExamFinding = z.infer<typeof ExamFindingSchema>;
 export const LabValueSchema = z
   .object({
     analyte: LocalizedTextSchema,
-    value: z.union([z.number(), z.string()]),
+    /** A number, or text — plain ("positive") or per locale ({"zh-CN": "阴性", "en": "negative"}), never both languages in one string. */
+    value: z.union([z.number(), LocalizedTextSchema]),
     unit: z.string().default(""),
     refLow: z.number().optional(),
     refHigh: z.number().optional(),
-    refText: z.string().optional(),
+    /** Reference text: plain, or per locale ({"zh-CN": "< 0.6 正常", "en": "< 0.6 normal"}). */
+    refText: LocalizedTextSchema.optional(),
     flag: z.enum(["H", "L", "HH", "LL", "A", "N"]).optional(),
   })
   .strict();
@@ -449,6 +458,13 @@ export const ScenarioEventSchema = z
     setFlags: z.array(IdSchema).default([]),
     /** Message announced by the nurse/monitor. */
     message: LocalizedTextSchema.optional(),
+    /**
+     * Who speaks `message` (optional). Without it the runtime infers it from
+     * the text: a "Nurse:"/"护士：" prefix → nurse, "Monitor:"/monitor-alarm
+     * lines → monitor, a "<patient or companion name>:" prefix → that person,
+     * anything else (narration, other staff) → narrator.
+     */
+    speaker: z.enum(["nurse", "monitor", "patient", "companion", "narrator"]).optional(),
     severity: z.enum(["info", "warning", "critical"]).default("info"),
   })
   .strict();

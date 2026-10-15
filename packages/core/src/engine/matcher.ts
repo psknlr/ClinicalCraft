@@ -15,7 +15,7 @@
  */
 import type { CaseDefinition } from "../schema/case.js";
 import { t } from "../i18n.js";
-import { allListEntries, allTexts, compactText, normalizeQuery, phraseScore, prepare, unique, type Prepared } from "./text.js";
+import { allListEntries, allTexts, compactText, normalizeQuery, phraseCoverage, phraseScore, prepare, unique, type Prepared } from "./text.js";
 import type { MatchHit, MatchOptions } from "./types.js";
 
 export { normalizeQuery } from "./text.js";
@@ -202,7 +202,11 @@ function excludePhrases(list: Parameters<typeof allListEntries>[0]): string[] {
  * (default: included, so the patient can say "not recorded").
  */
 export function matchHistory(c: CaseDefinition, utterance: string, locale: string, options: MatchOptions = {}): MatchHit[] {
-  const index = cachedIndex(c.history, `history:${locale}`, () =>
+  return scoreItems(historyIndex(c, locale), utterance, options);
+}
+
+function historyIndex(c: CaseDefinition, locale: string): IndexedItem[] {
+  return cachedIndex(c.history, `history:${locale}`, () =>
     c.history.map((h) => ({
       id: h.id,
       phrases: preparePhrases([...allTexts(h.question, locale), ...allListEntries(h.keywords, locale)]),
@@ -211,7 +215,6 @@ export function matchHistory(c: CaseDefinition, utterance: string, locale: strin
       unknown: h.disclosure === "unknown",
     })),
   );
-  return scoreItems(index, utterance, options);
 }
 
 /**
@@ -220,7 +223,11 @@ export function matchHistory(c: CaseDefinition, utterance: string, locale: strin
  * (`includeUnknown` does not apply: findings have no disclosure policy).
  */
 export function matchExam(c: CaseDefinition, utterance: string, locale: string, options: MatchOptions = {}): MatchHit[] {
-  const index = cachedIndex(c.exam, `exam:${locale}`, () =>
+  return scoreItems(examIndex(c, locale), utterance, options);
+}
+
+function examIndex(c: CaseDefinition, locale: string): IndexedItem[] {
+  return cachedIndex(c.exam, `exam:${locale}`, () =>
     c.exam.map((e) => ({
       id: e.id,
       phrases: preparePhrases([...allTexts(e.maneuver, locale), ...allListEntries(e.keywords, locale)]),
@@ -228,17 +235,49 @@ export function matchExam(c: CaseDefinition, utterance: string, locale: string, 
       phases: e.phases,
     })),
   );
-  return scoreItems(index, utterance, options);
 }
 
 /** Interventions matching a learner utterance (name + aliases, all locales). */
 export function matchInterventions(c: CaseDefinition, utterance: string, locale: string): MatchHit[] {
-  const index = cachedIndex(c.interventions, `interventions:${locale}`, () =>
+  return scoreItems(interventionIndex(c, locale), utterance);
+}
+
+function interventionIndex(c: CaseDefinition, locale: string): IndexedItem[] {
+  return cachedIndex(c.interventions, `interventions:${locale}`, () =>
     c.interventions.map((i) => ({
       id: i.id,
       phrases: preparePhrases([...allTexts(i.name, locale), ...allListEntries(i.aliases, locale)]),
       exclude: excludePhrases(i.excludeKeywords),
     })),
   );
-  return scoreItems(index, utterance);
+}
+
+/** Which scored matcher `matchSpecificity` consults. */
+export type MatchKind = "history" | "exam" | "interventions";
+
+/**
+ * Specificity of an item's match (tie-break only; scores are unchanged): the
+ * coverage (`phraseCoverage`, in characters) of the item's best-scoring
+ * phrase(s) for the utterance — so of two items tied at the same score the
+ * one whose matched alias is longer and more specific ("activate the cath
+ * lab" over "go to cath lab", "defib pads" over "defib") can be preferred.
+ * 0 for an unknown id or no matching phrase.
+ */
+export function matchSpecificity(c: CaseDefinition, kind: MatchKind, utterance: string, locale: string, id: string): number {
+  const index = kind === "history" ? historyIndex(c, locale) : kind === "exam" ? examIndex(c, locale) : interventionIndex(c, locale);
+  const item = index.find((x) => x.id === id);
+  const u = prepare(utterance);
+  if (!item || !u.compact) return 0;
+  let best = 0;
+  let coverage = 0;
+  for (const phrase of item.phrases) {
+    const score = phraseScore(u, phrase);
+    if (score <= 0) continue;
+    const cover = phraseCoverage(u, phrase);
+    if (score > best + 1e-9) {
+      best = score;
+      coverage = cover;
+    } else if (Math.abs(score - best) <= 1e-9) coverage = Math.max(coverage, cover);
+  }
+  return coverage;
 }

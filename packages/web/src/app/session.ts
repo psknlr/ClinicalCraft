@@ -4,14 +4,14 @@
  *
  *   settings   localStorage "clinicalcraft-v5-settings" merged with the agent's merge helpers
  *   providers  offline (default) | proxy (served by `clinicalcraft serve`) | direct (user key)
- *   transcript POST /api/transcripts/:id when served, else in memory
+ *   transcript POST /api/transcripts/:id when served, else not kept (nothing in the browser reads it)
  *   dynamic    `walk_to` (executed by the 3D world, see world-bridge.ts)
  */
 import {
   createSession,
-  MemoryTranscript,
   type ClinicalSession,
   type Op,
+  type PlanItem,
   type ResolvedSettings,
   type SessionSnapshot,
   type TranscriptItem,
@@ -53,8 +53,27 @@ export function ndjsonChunks(items: readonly TranscriptItem[], maxBytes = TRANSC
 }
 
 /**
- * Transcript sink that appends JSONL items to `clinicalcraft serve` (and
- * keeps a memory copy). Uploads are batched (1 s), sent in order as NDJSON
+ * Transcript sink for a page not served by `clinicalcraft serve`: there is
+ * nowhere to upload to and nothing in the browser reads a transcript (saves
+ * use `ClinicalSession.snapshot()`), so items are dropped instead of piling
+ * up in memory for the life of the game. The session's recorder still numbers
+ * them, so `snapshot().nextOrdinal` keeps its meaning.
+ */
+export class NullTranscriptSink implements TranscriptSink {
+  readonly path = null;
+
+  write(_item: TranscriptItem): void {
+    /* not kept */
+  }
+
+  async flush(): Promise<void> {
+    /* nothing buffered */
+  }
+}
+
+/**
+ * Transcript sink that appends JSONL items to `clinicalcraft serve` (it keeps
+ * only what is waiting to be sent). Uploads are batched (1 s), sent in order as NDJSON
  * chunks of ≤ 60 KB; after 3 consecutive network failures — or a refusal
  * that retrying cannot fix (413 quota, 4xx) — it stops and reports it once
  * through `onStopped`. `flushOnExit()` (page hide) sends what still fits in
@@ -67,7 +86,6 @@ export class HttpTranscriptSink implements TranscriptSink {
   private failures = 0;
   private stopped = false;
   private sending: Promise<void> = Promise.resolve();
-  readonly memory = new MemoryTranscript();
 
   constructor(
     private readonly sessionId: string,
@@ -81,7 +99,6 @@ export class HttpTranscriptSink implements TranscriptSink {
   }
 
   write(item: TranscriptItem): void {
-    this.memory.write(item);
     if (this.stopped) return;
     this.buffer.push(item);
     if (!this.timer) this.timer = setTimeout(() => void this.flush(), 1000);
@@ -202,6 +219,16 @@ export function cleanActions(actions: unknown): ClinicalAction[] {
   return out;
 }
 
+const PLAN_STATUSES: ReadonlySet<string> = new Set<PlanItem["status"]>(["pending", "in_progress", "completed"]);
+
+/** The workup plan of a saved snapshot as `PlanItem`s (items with a non-string text or an unknown status are dropped). */
+export function restoredPlan(plan: readonly { text: unknown; status: unknown }[] | null | undefined): PlanItem[] {
+  if (!Array.isArray(plan)) return [];
+  return plan
+    .filter((p): p is PlanItem => !!p && typeof p.text === "string" && typeof p.status === "string" && PLAN_STATUSES.has(p.status))
+    .map((p) => ({ text: p.text, status: p.status }));
+}
+
 export function newId(): string {
   try {
     if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") return crypto.randomUUID();
@@ -216,10 +243,13 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
   let mode = o.choice.mode;
   const store = new SessionStore(o.caseDef);
   const sessionId = o.resume?.sessionId ?? newId();
-  const transcript: TranscriptSink & { flushOnExit?: () => void } = o.served ? new HttpTranscriptSink(sessionId, o.onTranscriptStopped) : new MemoryTranscript();
+  const transcript: TranscriptSink & { flushOnExit?: () => void } = o.served ? new HttpTranscriptSink(sessionId, o.onTranscriptStopped) : new NullTranscriptSink();
 
   const resume = o.resume && o.resume.caseId === o.caseDef.id ? o.resume : null;
   if (resume) store.restore(resume.messages ?? {});
+  // The published workup plan (`/plan`, the journal, the clinician's prompt) survives a save/load.
+  const plan = resume ? restoredPlan(resume.plan) : [];
+  if (plan.length) store.restorePlan(plan);
 
   const session = await createSession({
     caseDef: o.caseDef,
@@ -233,6 +263,8 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     disabledCommands: WEB_HANDLED_COMMANDS,
     resolveProvider: browserResolveProvider(() => settings, () => mode),
     ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {}, ...(resume.dialogue?.length ? { dialogue: resume.dialogue } : {}) } } : {}),
+    // A snapshot keeps no plan explanation (SessionSnapshot.plan is items only).
+    ...(plan.length ? { restore: { plan: { items: plan, explanation: null } } } : {}),
     // Same transcript file (served: sessions/web/<id>.jsonl): continue its ordinal sequence.
     ...(resume && typeof resume.nextOrdinal === "number" && Number.isInteger(resume.nextOrdinal) && resume.nextOrdinal >= 0 ? { transcriptOrdinal: resume.nextOrdinal } : {}),
   });

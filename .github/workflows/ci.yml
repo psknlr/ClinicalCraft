@@ -23,12 +23,13 @@ jobs:
         run: npm run typecheck
       - name: Unit & integration tests
         run: npm test
+      # `npm run cc` runs every workspace package from source (the "source" export condition): no build needed.
       - name: Validate and verify built-in content
-        run: npx tsx packages/cli/src/bin.ts cases validate --all && npx tsx packages/cli/src/bin.ts cases verify --all
+        run: npm run -s cc -- cases validate --all && npm run -s cc -- cases verify --all
       - name: Build
         run: npm run build
-      - name: Offline autopilot smoke (every case)
-        run: npx tsx packages/cli/src/bin.ts eval --cases all --provider offline --out eval-report.md
+      - name: Offline autopilot smoke (every case, built binary)
+        run: node packages/cli/dist/bin.js eval --cases all --provider offline --out eval-report.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -49,4 +50,5 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
         env:
+          # Read by packages/web/playwright.config.ts: use the browser `playwright install` just fetched.
           CLINICALCRAFT_E2E_CHROMIUM: playwright

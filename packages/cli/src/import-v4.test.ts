@@ -4,8 +4,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { buildV4Html, splitParts, writeZip } from "./__fixtures__/v4.js";
-import { classifyName, collectInputs, decodeBase64, extractCaseDataJson, importV4, joinParts, V4_CASE_ID, V4_SHA256 } from "./import-v4.js";
-import { crc32, listZip, readZipEntry, ZipError } from "./zip.js";
+import { classifyName, collectInputs, decodeBase64, extractCaseDataJson, importV4, joinParts, MAX_ARCHIVE_BYTES, MAX_ZIP_PIECES, V4_CASE_ID, V4_SHA256 } from "./import-v4.js";
+import { crc32, listZip, MAX_ENTRY_BYTES, readZipEntry, ZipError } from "./zip.js";
 
 const tmp = mkdtempSync(join(tmpdir(), "cc-import-unit-"));
 afterAll(() => rmSync(tmp, { recursive: true, force: true }));
@@ -50,8 +50,62 @@ describe("zip reader", () => {
     expect(() => readZipEntry(zip, { ...entry, size: 16 })).toThrow(/cannot inflate/);
     expect(() => readZipEntry(zip, { ...entry, size: 4 * 1024 * 1024 * 1024 })).toThrow(/too large/);
     expect(readZipEntry(zip, entry).length).toBe(8 * 1024 * 1024);
+    // Per-entry cap: 128 MiB (the real V4 html is ~43.5 MB) and any smaller budget the caller passes.
+    expect(MAX_ENTRY_BYTES).toBe(128 * 1024 * 1024);
+    expect(() => readZipEntry(zip, { ...entry, size: MAX_ENTRY_BYTES + 1 })).toThrow(/too large/);
+    expect(() => readZipEntry(zip, entry, 1024 * 1024)).toThrow(/too large/);
+  });
+
+  it("rejects central-directory entries that share or overlap local data (one deflated bomb listed many times)", () => {
+    const one = writeZip([{ name: "V4.html.part01", data: Buffer.alloc(1024 * 1024, 0x41), method: 8 }]);
+    const forged = duplicateEntries(one, ["V4.html.part01", "V4.html.part02", "V4.html.part03", "V4.html.part04"]);
+    expect(() => listZip(forged)).toThrow(ZipError);
+    expect(() => listZip(forged)).toThrow(/overlap/);
+    const stored = writeZip([
+      { name: "a.html.part01", data: Buffer.alloc(64, 1), method: 0 },
+      { name: "a.html.part02", data: Buffer.alloc(64, 2), method: 0 },
+    ]);
+    expect(listZip(stored)).toHaveLength(2); // ordinary archives are fine
+  });
+
+  it("collectInputs keeps a cumulative inflated-byte budget and limits html/part entries", async () => {
+    const part = Buffer.alloc(512 * 1024, 0x42);
+    const three = join(tmp, "three-parts.zip");
+    writeFileSync(three, writeZip([1, 2, 3].map((i) => ({ name: `big.html.part0${i}`, data: part }))));
+    // Each part fits the per-entry cap; together they exceed a 1 MiB archive budget.
+    await expect(collectInputs([three], { maxTotalBytes: 1024 * 1024 })).rejects.toThrow(/budget/);
+    expect((await collectInputs([three], { maxTotalBytes: 2 * 1024 * 1024 })).parts.get("big.html")!.size).toBe(3);
+    expect(MAX_ARCHIVE_BYTES).toBe(256 * 1024 * 1024);
+    // The budget spans every input archive.
+    const again = join(tmp, "three-parts-copy.zip");
+    writeFileSync(again, readFileSync(three));
+    await expect(collectInputs([three, again], { maxTotalBytes: 2 * 1024 * 1024 })).rejects.toThrow(/budget/);
+    // At most MAX_ZIP_PIECES html/part entries are inflated.
+    const many = join(tmp, "many-parts.zip");
+    writeFileSync(many, writeZip(Array.from({ length: MAX_ZIP_PIECES + 1 }, (_, i) => ({ name: `m.html.part${String(i + 1).padStart(2, "0")}`, data: Buffer.from("x") }))));
+    await expect(collectInputs([many])).rejects.toThrow(/too many/);
   });
 });
+
+/** Re-point a one-entry archive's central-directory record under several names at the same local header. */
+function duplicateEntries(zip: Buffer, names: readonly string[]): Buffer {
+  const cdSize = zip.readUInt32LE(zip.length - 22 + 12);
+  const cdOffset = zip.readUInt32LE(zip.length - 22 + 16);
+  const record = zip.subarray(cdOffset, cdOffset + cdSize);
+  const fixed = record.subarray(0, 46);
+  const centrals = names.map((name) => {
+    const n = Buffer.from(name, "utf8");
+    const head = Buffer.from(fixed);
+    head.writeUInt16LE(n.length, 28);
+    return Buffer.concat([head, n]);
+  });
+  const cd = Buffer.concat(centrals);
+  const eocd = Buffer.from(zip.subarray(zip.length - 22));
+  eocd.writeUInt16LE(names.length, 8);
+  eocd.writeUInt16LE(names.length, 10);
+  eocd.writeUInt32LE(cd.length, 12);
+  return Buffer.concat([zip.subarray(0, cdOffset), cd, eocd]);
+}
 
 describe("import-v4 helpers", () => {
   it("classifies inputs by name", () => {

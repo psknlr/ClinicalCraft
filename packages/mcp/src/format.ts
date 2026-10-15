@@ -57,7 +57,7 @@ export function assessmentText(
   narrative: string | null,
   judged: readonly { id: string; met: boolean; evidence: string }[],
   locale: string,
-  options: { notice?: boolean } = {},
+  options: { notice?: boolean; final?: boolean } = {},
 ): string {
   const L = locale;
   const name = (id: string) => investigationName(c, id, L);
@@ -82,7 +82,11 @@ export function assessmentText(
     }),
   );
   const inv = report.investigations;
-  if (inv.essentialMissing.length) lines.push(mm(L, "debrief.missing", { list: joinList(L, inv.essentialMissing.map(name)) }));
+  // Mid-case the names of essential tests not yet ordered would be an answer key: a count only (the web rule).
+  const final = options.final ?? report.completed;
+  if (inv.essentialMissing.length) {
+    lines.push(final ? mm(L, "debrief.missing", { list: joinList(L, inv.essentialMissing.map(name)) }) : mm(L, "debrief.missingCount", { count: inv.essentialMissing.length }));
+  }
   if (inv.lowValue.length) lines.push(mm(L, "debrief.lowValue", { list: joinList(L, inv.lowValue.map(name)) }));
   if (inv.harmful.length) lines.push(mm(L, "debrief.harmful", { list: joinList(L, inv.harmful.map(name)) }));
   if (inv.unread.length) lines.push(mm(L, "debrief.unread", { list: joinList(L, inv.unread) }));

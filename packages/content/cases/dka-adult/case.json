@@ -521,7 +521,9 @@
           "来看什么",
           "来看病",
           "不得劲",
-          "哪里不得劲"
+          "哪里不得劲",
+          "感觉怎么样",
+          "现在感觉怎么样"
         ],
         "en": [
           "what brought you in",
@@ -532,7 +534,8 @@
           "what happened",
           "how can I help you today",
           "what seems to be the problem",
-          "what brings you in"
+          "what brings you in",
+          "howareyoufeeling"
         ]
       },
       "disclosure": "volunteer",
@@ -556,7 +559,11 @@
           "medical",
           "past"
         ]
-      }
+      },
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-onset-course",
@@ -668,7 +675,11 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-vomiting",
@@ -860,7 +871,11 @@
           "painkiller",
           "ibuprofen"
         ]
-      }
+      },
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-pain-modifiers",
@@ -900,7 +915,11 @@
           "pain worse"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-polyuria-thirst",
@@ -963,7 +982,11 @@
           "smok",
           "alcohol"
         ]
-      }
+      },
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-breathing",
@@ -1016,7 +1039,11 @@
           "sorethroat",
           "flu"
         ]
-      }
+      },
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-drowsy",
@@ -1047,7 +1074,11 @@
           "slow"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "phases": [
+        "resus",
+        "k-replete"
+      ]
     },
     {
       "id": "hx-ros-other",
@@ -2348,6 +2379,138 @@
         ]
       },
       "disclosure": "unknown"
+    },
+    {
+      "id": "hx-status-midway",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在感觉怎么样？比刚来的时候好点了吗？",
+        "en": "How are you feeling now — any better than when you came in?"
+      },
+      "answer": {
+        "zh-CN": "比刚来的时候好些了……气没那么急了，嘴里也没那么干了。肚子还是有点疼，主要在上面，比刚来时轻一点；恶心也轻了一些，不过还不太想吃东西。",
+        "en": "Better than when I came in... I'm not gasping for air so much, and my mouth isn't as dry. My tummy still hurts a bit, mostly at the top, but less than before; I feel less sick too — though I don't really feel like eating yet."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在感觉怎么样",
+          "感觉怎么样",
+          "感觉好点",
+          "好点了吗",
+          "好些了吗",
+          "好一点了吗",
+          "现在怎么样",
+          "舒服点了吗",
+          "还难受吗",
+          "能吃东西了吗",
+          "想吃东西吗",
+          "饿不饿",
+          "肚子饿吗",
+          "肚子还疼吗",
+          "还疼吗",
+          "还恶心吗",
+          "还想吐吗",
+          "还喘吗",
+          "呼吸怎么样了",
+          "还渴吗",
+          "还困吗"
+        ],
+        "en": [
+          "howareyoufeeling",
+          "howdoyoufeel",
+          "howareyoudoing",
+          "feelingbetter",
+          "feelbetter",
+          "anybetter",
+          "areyouhungry",
+          "hungry",
+          "canyoueat",
+          "eatsomething",
+          "anythingtoeat",
+          "stillinpain",
+          "stillhurt",
+          "stillsore",
+          "tummystill",
+          "stillsick",
+          "stillfeelsick",
+          "stillnauseous",
+          "breathingnow",
+          "stillthirsty",
+          "stillbreathless",
+          "stilldrowsy",
+          "stillsleepy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "glucose-lt14"
+      ]
+    },
+    {
+      "id": "hx-status-resolution",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在感觉怎么样？能吃东西了吗？",
+        "en": "How are you feeling now — could you eat something?"
+      },
+      "answer": {
+        "zh-CN": "好多了！呼吸顺了，人也精神了，肚子基本不疼了，也不恶心了。现在倒是饿了，挺想吃点东西、喝点水的。",
+        "en": "So much better! My breathing's back to normal, I feel much more awake, my tummy hardly hurts now and I don't feel sick any more. I'm actually hungry — I'd love something to eat and drink."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在感觉怎么样",
+          "感觉怎么样",
+          "感觉好点",
+          "好点了吗",
+          "好些了吗",
+          "好一点了吗",
+          "现在怎么样",
+          "舒服点了吗",
+          "还难受吗",
+          "能吃东西了吗",
+          "想吃东西吗",
+          "饿不饿",
+          "肚子饿吗",
+          "肚子还疼吗",
+          "还疼吗",
+          "还恶心吗",
+          "还想吐吗",
+          "还喘吗",
+          "呼吸怎么样了",
+          "还渴吗",
+          "还困吗"
+        ],
+        "en": [
+          "howareyoufeeling",
+          "howdoyoufeel",
+          "howareyoudoing",
+          "feelingbetter",
+          "feelbetter",
+          "anybetter",
+          "areyouhungry",
+          "hungry",
+          "canyoueat",
+          "eatsomething",
+          "anythingtoeat",
+          "stillinpain",
+          "stillhurt",
+          "stillsore",
+          "tummystill",
+          "stillsick",
+          "stillfeelsick",
+          "stillnauseous",
+          "breathingnow",
+          "stillthirsty",
+          "stillbreathless",
+          "stilldrowsy",
+          "stillsleepy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "resolution"
+      ]
     }
   ],
   "exam": [
@@ -5797,8 +5960,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通（可溶性）人胰岛素50 U加0.9%氯化钠至50 mL（1 U/mL），以5.5 mL/h泵入 = 5.5 U/h（0.1 U/kg/h × 55 kg）",
-        "en": "Soluble (regular) human insulin 50 U made up to 50 mL with 0.9% NaCl (1 U/mL) at 5.5 mL/h = 5.5 U/h (0.1 U/kg/h × 55 kg)"
+        "zh-CN": "普通（可溶性）人胰岛素50 U加0.9%氯化钠至50 mL（1 U/mL），按0.1 U/kg/h固定速率静脉泵入，不需负荷量",
+        "en": "Soluble (regular) human insulin 50 U made up to 50 mL with 0.9% NaCl (1 U/mL); fixed rate 0.1 U/kg/h IV, no bolus"
       },
       "requires": [
         "infusion-pump"
@@ -5866,8 +6029,8 @@
         }
       ],
       "response": {
-        "zh-CN": "胰岛素输注泵以5.5 mL/h（5.5 U/h）开始。护士：“我会每小时测指尖血糖和血酮。”",
-        "en": "Insulin infusion started at 5.5 mL/h (5.5 U/h). Nurse: \"I'll check capillary glucose and ketones every hour.\""
+        "zh-CN": "胰岛素输注泵以5.5 mL/h（5.5 U/h，按她的体重55 kg × 0.1 U/kg/h）开始。护士：“我会每小时测指尖血糖和血酮。”",
+        "en": "Insulin infusion started at 5.5 mL/h (5.5 U/h: 0.1 U/kg/h for her 55 kg). Nurse: \"I'll check capillary glucose and ketones every hour.\""
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -6374,8 +6537,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "每小时指尖血糖与血酮；第1小时、第2小时及之后每2小时静脉血气（pH、HCO₃⁻、钾）——钾 < 3.5 mmol/L或以20 mmol/h补钾期间每小时复查钾；每小时生命体征及GCS（18–25岁需警惕脑水肿）；严格记录出入量（尿量 ≥ 0.5 mL/kg/h ≈ 28 mL/h）。目标：血酮每小时下降 ≥ 0.5 mmol/L（无法测血酮时：HCO₃⁻每小时上升 ≥ 3 mmol/L），血糖每小时下降约3 mmol/L，钾维持在4.0–5.5 mmol/L。",
-        "en": "Hourly capillary glucose and ketones; venous gas (pH, HCO₃⁻, K⁺) at 1 h, 2 h and then 2-hourly — potassium hourly while it is < 3.5 mmol/L or KCl is running at 20 mmol/h; hourly observations including GCS (age 18–25: watch for cerebral oedema); strict fluid balance (urine ≥ 0.5 mL/kg/h ≈ 28 mL/h). Targets: ketones falling ≥ 0.5 mmol/L/h (if ketones cannot be measured, HCO₃⁻ rising ≥ 3 mmol/L/h), glucose falling about 3 mmol/L/h, potassium kept at 4.0–5.5 mmol/L."
+        "zh-CN": "每小时指尖血糖与血酮；第1小时、第2小时及之后每2小时静脉血气（pH、HCO₃⁻、钾）——钾 < 3.5 mmol/L或以20 mmol/h补钾期间每小时复查钾；每小时生命体征及GCS（18–25岁需警惕脑水肿）；严格记录出入量（尿量 ≥ 0.5 mL/kg/h）。目标：血酮每小时下降 ≥ 0.5 mmol/L（无法测血酮时：HCO₃⁻每小时上升 ≥ 3 mmol/L），血糖每小时下降约3 mmol/L，钾维持在4.0–5.5 mmol/L。",
+        "en": "Hourly capillary glucose and ketones; venous gas (pH, HCO₃⁻, K⁺) at 1 h, 2 h and then 2-hourly — potassium hourly while it is < 3.5 mmol/L or KCl is running at 20 mmol/h; hourly observations including GCS (age 18–25: watch for cerebral oedema); strict fluid balance (urine ≥ 0.5 mL/kg/h). Targets: ketones falling ≥ 0.5 mmol/L/h (if ketones cannot be measured, HCO₃⁻ rising ≥ 3 mmol/L/h), glucose falling about 3 mmol/L/h, potassium kept at 4.0–5.5 mmol/L."
       },
       "requires": [],
       "risk": "none",
@@ -9910,6 +10073,47 @@
         "locale": "en",
         "expect": [
           "hx-breathing"
+        ]
+      },
+      {
+        "text": "现在感觉怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-main-complaint",
+          "hx-status-midway",
+          "hx-status-resolution"
+        ]
+      },
+      {
+        "text": "肚子还疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-status-midway",
+          "hx-status-resolution"
+        ]
+      },
+      {
+        "text": "还恶心吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-status-midway",
+          "hx-status-resolution"
+        ]
+      },
+      {
+        "text": "Are you hungry?",
+        "locale": "en",
+        "expect": [
+          "hx-status-midway",
+          "hx-status-resolution"
+        ]
+      },
+      {
+        "text": "Is your tummy still sore?",
+        "locale": "en",
+        "expect": [
+          "hx-status-midway",
+          "hx-status-resolution"
         ]
       }
     ]

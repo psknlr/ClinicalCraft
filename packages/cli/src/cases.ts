@@ -5,6 +5,7 @@ import { existsSync, statSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import {
+  caseCapabilityGaps,
   checkCaseIntegrity,
   IdSchema,
   matchHistory,
@@ -17,18 +18,24 @@ import {
 import { builtinContentDir, findProjectRoot, loadContent, type LoadedContent } from "@clinicalcraft/agent/node";
 import { table } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
-import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
-import type { MsgKey } from "./i18n.js";
-import { sortedCases, stars } from "./picker.js";
+import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
+import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, settingLabel, specialtiesLabel, stars } from "./labels.js";
+import { sortedCases } from "./picker.js";
 import { caseTemplate, readmeTemplate } from "./scaffold.js";
 
 /** The patient pipeline selects facts scoring ≥ 0.55 (docs/ARCHITECTURE.md §4.2). */
 export const UTTERANCE_SELECT_THRESHOLD = 0.55;
+/** …within this much of the best score… */
+export const UTTERANCE_SELECT_RELATIVE = 0.25;
+/** …and at most this many. */
+export const UTTERANCE_MAX_SELECTED = 3;
 
 interface TestUtterance {
   text: string;
   locale: string;
   expect: string[];
+  /** Further ids the pipeline may select with the expected ones without a warning. */
+  alsoOk?: string[];
 }
 
 /** Read `extensions.testUtterances` defensively. */
@@ -41,17 +48,27 @@ export function testUtterances(c: CaseDefinition): TestUtterance[] | null {
   );
 }
 
+/** True when two items' phase restrictions overlap (no `phases` = every phase). */
+function sharePhase(a: readonly string[] | undefined, b: readonly string[] | undefined): boolean {
+  return !a || !b || a.some((p) => b.includes(p));
+}
+
 /**
  * Run the matcher regression corpus: hits ≥ 0.55 must contain every expected
  * id with an expected id ranked first; `expect: []` must select nothing.
+ * `extras` (warnings) lists facts the patient pipeline would also select and
+ * credit with the expected ones — ≥ 0.55, within 0.25 of the best, at most 3,
+ * available in a phase of the first expected item — that are neither
+ * expected nor in the utterance's `alsoOk`.
  */
-export function checkUtterances(c: CaseDefinition): { total: number; failures: Issue[] } {
+export function checkUtterances(c: CaseDefinition): { total: number; failures: Issue[]; extras: Issue[] } {
   const corpus = testUtterances(c) ?? [];
   const failures: Issue[] = [];
-  const ids = new Set(c.history.map((h) => h.id));
+  const extras: Issue[] = [];
+  const byId = new Map(c.history.map((h) => [h.id, h]));
   corpus.forEach((u, i) => {
     const path = `extensions.testUtterances.${i}`;
-    for (const id of u.expect) if (!ids.has(id)) failures.push({ path, message: `unknown history id "${id}"`, severity: "error" });
+    for (const id of u.expect) if (!byId.has(id)) failures.push({ path, message: `unknown history id "${id}"`, severity: "error" });
     const selected = matchHistory(c, u.text, u.locale).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD);
     const got = selected.map((h) => h.id);
     if (u.expect.length === 0) {
@@ -61,9 +78,19 @@ export function checkUtterances(c: CaseDefinition): { total: number; failures: I
     const missing = u.expect.filter((id) => !got.includes(id));
     if (missing.length > 0 || !u.expect.includes(got[0]!)) {
       failures.push({ path, message: `"${u.text}" (${u.locale}) expected ${u.expect.join(", ")}, selected ${got.length ? got.join(", ") : "nothing"}`, severity: "error" });
+      return;
+    }
+    const phases = byId.get(u.expect[0]!)?.phases;
+    const inPhase = selected.filter((h) => sharePhase(phases, byId.get(h.id)?.phases));
+    const best = inPhase[0]?.score ?? 0;
+    const pipeline = inPhase.filter((h) => h.score >= best - UTTERANCE_SELECT_RELATIVE).slice(0, UTTERANCE_MAX_SELECTED);
+    const allowed = new Set([...u.expect, ...(Array.isArray(u.alsoOk) ? u.alsoOk : [])]);
+    const extra = pipeline.filter((h) => !allowed.has(h.id));
+    if (extra.length > 0) {
+      extras.push({ path, message: `"${u.text}" (${u.locale}) also selects ${extra.map((h) => `${h.id} (${h.score.toFixed(2)})`).join(", ")} (list it in alsoOk if intended)`, severity: "warning" });
     }
   });
-  return { total: corpus.length, failures };
+  return { total: corpus.length, failures, extras };
 }
 
 function printIssues(ctx: CliContext, issues: readonly Issue[], showWarnings: boolean, limit = 50): void {
@@ -80,13 +107,6 @@ function printIssues(ctx: CliContext, issues: readonly Issue[], showWarnings: bo
   }
 }
 
-/** Localised care setting ("emergency" → 急诊); unknown values are shown as is. */
-function settingLabel(ctx: CliContext, setting: string): string {
-  const key = `setting.${setting}` as MsgKey;
-  const label = ctx.t(key);
-  return label === key ? setting : label;
-}
-
 async function loadAll(ctx: CliContext): Promise<LoadedContent> {
   const settings = await loadCliSettings(ctx);
   return loadContent({ dirs: settings.contentDirs });
@@ -96,7 +116,7 @@ function findCase(ctx: CliContext, content: LoadedContent, id: string): { def: C
   const entry = content.cases.get(id);
   if (entry) return entry;
   const hint = suggest(id, [...content.cases.keys()]);
-  throw new CliError(ctx.t("cases.unknown", { id }), EXIT.usage, hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("cases.available", { list: [...content.cases.keys()].join(", ") }));
+  throw new CliError(ctx.t("cases.unknown", { id }), EXIT.usage, hints(hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("cases.available", { list: [...content.cases.keys()].join(", ") }), contentDirsHint(ctx, content)));
 }
 
 /* ------------------------------------------------------------------ */
@@ -154,10 +174,15 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
   const pt = c.patient;
   ctx.print(`${p.bold(ctx.t("show.patient"))} ${t(pt.displayName, L)} · ${ctx.t(`age.${pt.ageUnit}` as "age.years", { n: pt.age })} · ${ctx.t(`sex.${pt.sex}` as "sex.male")}`);
   ctx.print(`${p.bold(ctx.t("show.complaint"))} ${t(pt.chiefComplaint, L)}`);
-  ctx.print(`${p.bold(ctx.t("show.setting"))} ${c.setting}${c.facility ? ` · ${c.facility}` : ""} · ${stars(c.difficulty)} · ${c.specialty.join(", ")}${c.estimatedMinutes ? ` · ~${c.estimatedMinutes} min` : ""}`);
-  ctx.print(`${p.bold(ctx.t("show.locales"))} ${c.locales.join(", ")} · ${ctx.t("show.clock")} ${c.clock.mode}`);
+  // The facility by its name in the UI language (its id when it is not installed).
+  const facility = c.facility ? content.facilities.get(c.facility)?.def : undefined;
+  const facilityName = c.facility ? (facility ? t(facility.name, L) || c.facility : c.facility) : "";
+  ctx.print(
+    `${p.bold(ctx.t("show.setting"))} ${settingLabel(ctx, c.setting)}${facilityName ? ` · ${facilityName}` : ""} · ${stars(c.difficulty)} · ${specialtiesLabel(ctx, c.specialty)}${c.estimatedMinutes ? ` · ${minutesLabel(ctx, c.estimatedMinutes)}` : ""}`,
+  );
+  ctx.print(`${p.bold(ctx.t("show.locales"))} ${languagesLabel(ctx, c.locales)} · ${clockModeLabel(ctx, c.clock.mode)}`);
   const prov = c.provenance;
-  ctx.print(`${p.bold(ctx.t("show.provenance"))} ${prov.kind}${prov.citation ? ` — ${prov.citation}` : ""}${prov.doi ? ` (doi:${prov.doi})` : ""}`);
+  ctx.print(`${p.bold(ctx.t("show.provenance"))} ${provenanceLabel(ctx, prov.kind)}${prov.citation ? ` — ${prov.citation}` : ""}${prov.doi ? ` (doi:${prov.doi})` : ""}`);
   if (c.disclaimer) ctx.print(p.dim(t(c.disclaimer, L)));
   ctx.print();
   ctx.print(p.bold(ctx.t("show.objectives")));
@@ -215,7 +240,25 @@ export interface FileValidation {
 }
 
 /** Schema + referential-integrity validation of one case file. */
-export async function validateCaseFile(file: string): Promise<FileValidation> {
+/**
+ * Capability issues of a case in its own facility (`caseCapabilityGaps`): an
+ * error when an objective or decision cannot be completed there, a warning
+ * when only the reference solution uses an item the facility lacks.
+ */
+export function facilityIssues(c: CaseDefinition, content: Pick<LoadedContent, "facilities" | "catalogs"> | undefined): Issue[] {
+  if (!c.facility || !content) return [];
+  const f = content.facilities.get(c.facility)?.def;
+  if (!f) return [];
+  const listed = (f.catalogs ?? []).map((id) => content.catalogs.get(id)?.def).filter((x): x is NonNullable<typeof x> => !!x);
+  const catalogs = listed.length > 0 ? listed : [...content.catalogs.values()].map((e) => e.def);
+  return caseCapabilityGaps(c, f, catalogs).map((g) => ({
+    path: "facility",
+    message: `facility "${f.id}" lacks ${g.missing.join(", ")} for ${g.kind} "${g.id}" (needed by ${g.neededBy.join(", ")})${g.blocking ? ": the case cannot be completed there" : ""}`,
+    severity: g.blocking ? ("error" as const) : ("warning" as const),
+  }));
+}
+
+export async function validateCaseFile(file: string, content?: Pick<LoadedContent, "facilities" | "catalogs">): Promise<FileValidation> {
   let json: unknown;
   try {
     json = JSON.parse((await readFile(file, "utf8")).replace(/^﻿/, ""));
@@ -228,7 +271,7 @@ export async function validateCaseFile(file: string): Promise<FileValidation> {
     const id = json && typeof json === "object" && typeof (json as { id?: unknown }).id === "string" ? (json as { id: string }).id : null;
     return { file, id, ok: false, errors: parsed.issues.filter((i) => i.severity === "error"), warnings: parsed.issues.filter((i) => i.severity === "warning"), def: null };
   }
-  const issues = [...parsed.warnings, ...checkCaseIntegrity(parsed.value)];
+  const issues = [...parsed.warnings, ...checkCaseIntegrity(parsed.value), ...facilityIssues(parsed.value, content)];
   const dirName = basename(dirname(file));
   if (basename(file) === "case.json" && dirName !== parsed.value.id) issues.push({ path: "id", message: `case id "${parsed.value.id}" differs from its directory name "${dirName}"`, severity: "warning" });
   const errors = issues.filter((i) => i.severity === "error");
@@ -253,7 +296,9 @@ export async function casesValidate(ctx: CliContext, args: ParsedArgs): Promise<
   const files = all ? await caseFiles(settings.contentDirs) : resolveTargets(ctx, args.positionals);
   if (all && args.positionals.length > 0) files.push(...resolveTargets(ctx, args.positionals));
   if (files.length === 0) throw new CliError(ctx.t("cases.noFiles"), EXIT.error);
-  const results = await Promise.all([...new Set(files)].map((f) => validateCaseFile(f)));
+  // Facilities and catalogs of the same content directories: a case must be completable in its own facility.
+  const content = await loadContent({ dirs: settings.contentDirs });
+  const results = await Promise.all([...new Set(files)].map((f) => validateCaseFile(f, content)));
   const failed = results.filter((r) => !r.ok).length;
   if (flagBool(args, "json")) {
     ctx.print(JSON.stringify(results.map(({ def, ...r }) => (void def, r)), null, 2));
@@ -278,7 +323,8 @@ export interface CaseVerification {
   steps: number;
   objectives: { done: number; total: number };
   decisions: { decided: number; total: number };
-  utterances: { total: number; failed: number };
+  /** `extra`: utterances that also select (and credit) unexpected facts (warnings). */
+  utterances: { total: number; failed: number; extra: number };
   issues: Issue[];
 }
 
@@ -287,7 +333,7 @@ export function verifyCaseDefinition(c: CaseDefinition): CaseVerification {
   const integrity = checkCaseIntegrity(c);
   const result = verifyCase(c);
   const corpus = checkUtterances(c);
-  const issues: Issue[] = [...integrity.filter((i) => i.severity === "error"), ...result.issues, ...corpus.failures];
+  const issues: Issue[] = [...integrity.filter((i) => i.severity === "error"), ...result.issues, ...corpus.failures, ...corpus.extras];
   if (testUtterances(c) === null) issues.push({ path: "extensions.testUtterances", message: "missing matcher regression corpus (15–40 bilingual utterances)", severity: "warning" });
   if (c.solution.length === 0) issues.push({ path: "solution", message: "no reference solution", severity: "error" });
   const a = result.assessment;
@@ -297,7 +343,7 @@ export function verifyCaseDefinition(c: CaseDefinition): CaseVerification {
     steps: c.solution.length,
     objectives: { done: a.objectives.filter((o) => o.done).length, total: a.objectives.length },
     decisions: { decided: a.decisions.filter((d) => d.decided).length, total: a.decisions.length },
-    utterances: { total: corpus.total, failed: corpus.failures.length },
+    utterances: { total: corpus.total, failed: corpus.failures.length, extra: corpus.extras.length },
     issues,
   };
 }

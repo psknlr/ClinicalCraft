@@ -219,6 +219,7 @@ export class McpServer {
       practiceScope: this.settings.practiceScope,
       deny: this.settings.permissions.deny,
       content: () => this.content(),
+      log: this.log,
     };
   }
 }

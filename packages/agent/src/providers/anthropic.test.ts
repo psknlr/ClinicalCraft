@@ -171,7 +171,8 @@ describe("AnthropicProvider (mock Messages API)", () => {
     expect(body).not.toHaveProperty("betas");
     expect(body).not.toHaveProperty("cache_control");
     expect(body.output_config).toEqual({ effort: "low" });
-    expect(body.tools).toEqual([{ name: "order_test", description: "Order an investigation", input_schema: tools[0]!.inputSchema, eager_input_streaming: true }]);
+    // A non-first-party base URL (this mock): no eager_input_streaming, which proxies may reject (C8).
+    expect(body.tools).toEqual([{ name: "order_test", description: "Order an investigation", input_schema: tools[0]!.inputSchema }]);
     expect(body.system).toEqual([
       { type: "text", text: "You are the attending." },
       { type: "text", text: "Case summary.", cache_control: { type: "ephemeral" } },
@@ -402,6 +403,11 @@ describe("buildAnthropicRequest", () => {
   it("omits fallbacks for other models and third-party endpoints", () => {
     expect(buildAnthropicRequest({ ...firstParty, model: "claude-haiku-5-5" }, request())).not.toHaveProperty("fallbacks");
     const third = buildAnthropicRequest({ id: "zhipu-anthropic", baseUrl: "https://open.bigmodel.cn/api/anthropic", model: "claude-opus-5-5" }, request());
+    // Fine-grained tool streaming only where it is known to be accepted (C8).
+    const withTools = { ...request(), tools: [{ name: "t", description: "d", inputSchema: { type: "object", properties: {} } }] };
+    expect(buildAnthropicRequest(firstParty, withTools).tools?.[0]).toMatchObject({ eager_input_streaming: true });
+    expect(buildAnthropicRequest({ id: "zhipu-anthropic", baseUrl: "https://open.bigmodel.cn/api/anthropic", model: "glm-4.6" }, withTools).tools?.[0]).not.toHaveProperty("eager_input_streaming");
+    expect(buildAnthropicRequest({ id: "my-claude", baseUrl: "http://127.0.0.1:19802", model: "claude-sonnet-5-5" }, withTools).tools?.[0]).not.toHaveProperty("eager_input_streaming");
     expect(third).not.toHaveProperty("fallbacks");
     expect(third).not.toHaveProperty("betas");
     expect(isFirstPartyAnthropic("https://api.anthropic.com/")).toBe(true);

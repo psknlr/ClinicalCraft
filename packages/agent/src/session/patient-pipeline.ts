@@ -32,7 +32,7 @@ import {
 } from "@clinicalcraft/core";
 import type { AgentProfile } from "../agents/types.js";
 import { ageText, buildSystemSections, type PatientContext } from "../agents/prompts.js";
-import { addUsage, completeText, emptyUsage, parseJsonObject, type TurnResult } from "../loop.js";
+import { addUsage, completeText, emptyUsage, parseJsonObject, replyBudget, type TurnResult } from "../loop.js";
 import type { EventMsg, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ProviderErrorInfo, SystemSection } from "../providers/types.js";
@@ -109,6 +109,8 @@ export const OFFLINE_RERANK_MIN = 0.45;
 export const OFFLINE_RERANK_MARGIN = 0.1;
 /** Maximum facts selected per turn. */
 export const MAX_SELECTED = 3;
+/** Re-rank and voice budget for reasoning models (their thinking counts against the limit; `replyBudget`). */
+export const REASONING_SIDE_CALL_MAX_TOKENS = 4_000;
 
 export interface FactSelection {
   /** Selected fact ids (≤ 3). */
@@ -274,6 +276,18 @@ export function caseDrugLexicon(c: CaseDefinition): string[] {
   return out.filter((n) => n.trim().length >= 3);
 }
 
+/** Case-specific condition phrases the voice may not add on its own: decision option texts (every locale). */
+export function caseConditionTerms(c: CaseDefinition): string[] {
+  const out: string[] = [];
+  for (const d of c.decisions) for (const o of d.options) out.push(...(typeof o.text === "string" ? [o.text] : Object.values(o.text)));
+  return out.filter((x) => x.trim().length >= 4 && x.length <= 60);
+}
+
+/** Answers (session locale) of facts available now that were neither asked nor are being spoken this turn. */
+function unrevealedAnswers(c: CaseDefinition, state: SessionState, allowed: ReadonlySet<string>, locale: string): string[] {
+  return c.history.filter((h) => availableInPhase(h, state) && !state.asked.includes(h.id) && !allowed.has(h.id)).map((h) => t(h.answer, locale));
+}
+
 /** Persona-level texts the voice may draw numbers from (age, persona, opening line, fallback). */
 function personaSources(c: CaseDefinition, locale: string): string[] {
   const p = c.patient.persona;
@@ -408,7 +422,7 @@ async function llmRerank(input: PatientTurnInput, llm: PatientLlm, selection: Fa
     model: llm.model ?? llm.provider.model,
     system: [{ id: "rerank", text: RERANK_PROMPT(L), cache: "stable" }],
     messages: [{ role: "user", content: [{ type: "text", text: `<question>${input.utterance}</question>\n<candidates>\n${index.join("\n")}\n</candidates>` }] }],
-    maxTokens: 300,
+    maxTokens: replyBudget(llm.provider, 300, REASONING_SIDE_CALL_MAX_TOKENS),
     effort: "low",
     responseFormat: {
       name: "fact_selection",
@@ -435,7 +449,8 @@ async function llmRerank(input: PatientTurnInput, llm: PatientLlm, selection: Fa
   const obj = res.error ? null : parseJsonObject(res.text);
   if (!obj) {
     // Never a silent fallback: say that the deterministic re-rank answered instead.
-    warnings.push(rt(input.locale, "warning.rerankFallback", { agent: input.speaker, error: res.error?.message ?? "unparseable reply" }));
+    const error = res.error?.message ?? (res.stopReason === "max_tokens" ? rt(input.locale, "reason.truncated", { agent: input.speaker, maxTokens: request.maxTokens ?? "?" }) : "unparseable reply");
+    warnings.push(rt(input.locale, "warning.rerankFallback", { agent: input.speaker, error }));
     return null;
   }
   const chosen = Array.isArray(obj.factIds) ? obj.factIds.filter((x): x is string => typeof x === "string" && ids.includes(x)).slice(0, MAX_SELECTED) : [];
@@ -568,7 +583,7 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
     model: llm.model ?? llm.provider.model,
     system,
     messages: [...input.history.slice(-VOICE_HISTORY_MESSAGES), { role: "user", content: [{ type: "text", text: utterance.slice(0, 2000) }] }],
-    maxTokens: llm.maxTokens ?? 600,
+    maxTokens: llm.maxTokens ?? replyBudget(llm.provider, 600, REASONING_SIDE_CALL_MAX_TOKENS),
     ...(llm.temperature !== undefined ? { temperature: llm.temperature } : {}),
     ...(llm.effort ? { effort: llm.effort } : {}),
     responseFormat: { name: "patient_reply", schema: voiceResponseSchema([...allowedIds]) },
@@ -596,7 +611,9 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   const reply = parseVoiceReply(voiced.text, allowedIds);
   const used = [...new Set([...reply.usedFactIds, ...spokenIds.filter((id) => allowedIds.has(id))])];
   const sources = [...used.map((id) => answerOf(c, id, L)), ...personaSources(c, L), utterance, clarify ?? ""];
-  const check = reply.say ? verifyGrounding(reply.say, sources, { drugLexicon: caseDrugLexicon(c) }) : { ok: false, violations: ["empty reply"] };
+  const empty = voiced.stopReason === "max_tokens" ? rt(L, "reason.truncated", { agent: input.speaker, maxTokens: request.maxTokens ?? "?" }) : "empty reply";
+  const grounding = { drugLexicon: caseDrugLexicon(c), conditionTerms: caseConditionTerms(c), unrevealed: unrevealedAnswers(c, input.state(), new Set([...allowedIds, ...used]), L) };
+  const check = reply.say ? verifyGrounding(reply.say, sources, grounding) : { ok: false, violations: [empty] };
   if (reply.affectHint === "calmer") input.memory.affectIntensity = Math.max(0, input.memory.affectIntensity - 1) as PatientMemory["affectIntensity"];
   if (reply.affectHint === "worse") input.memory.affectIntensity = Math.min(3, input.memory.affectIntensity + 1) as PatientMemory["affectIntensity"];
   if (!check.ok && (input.strictGrounding || !reply.say)) {

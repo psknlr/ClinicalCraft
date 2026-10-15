@@ -68,7 +68,8 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   await page.locator("#exam-input").fill("血常规");
   await page.locator("#exam-input").press("Enter");
   const candidate = page.locator('.candidate[data-investigation="cbc"]');
-  await expect(candidate).toContainText("调阅");
+  // Not ordered yet: the button says it places an order (开具), not that it opens a record (调阅).
+  await expect(candidate).toContainText("开具");
   await shot(page, "orders");
   await candidate.click();
   await expect(page.locator('#panel .window[data-panel="report"]')).toBeVisible();

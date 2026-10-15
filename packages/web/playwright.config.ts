@@ -4,8 +4,10 @@
  * SwiftShader so the three.js world renders headless.
  *
  *   npx playwright test -c packages/web/playwright.config.ts
- *   PW_CHROMIUM=/path/to/chrome  (override the executable)
- *   CC_SHOTS=/dir                (screenshot directory, default test-results/shots)
+ *   CLINICALCRAFT_E2E_CHROMIUM=/path/to/chrome  (override the executable; PW_CHROMIUM is read too)
+ *   CLINICALCRAFT_E2E_CHROMIUM=playwright       (use Playwright's own browser, as CI does after
+ *                                               `npx playwright install chromium`)
+ *   CC_SHOTS=/dir                               (screenshot directory, default test-results/shots)
  */
 import { defineConfig, devices } from "@playwright/test";
 import fs from "node:fs";
@@ -15,8 +17,15 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.CC_E2E_PORT || 5197);
 
+/**
+ * The Chromium executable: `CLINICALCRAFT_E2E_CHROMIUM` (what CI sets) or
+ * `PW_CHROMIUM` — a path, or "playwright"/"bundled" for Playwright's own
+ * browser — else a preinstalled sandbox browser when present.
+ */
 function chromiumPath(): string | undefined {
-  if (process.env.PW_CHROMIUM) return process.env.PW_CHROMIUM;
+  const requested = (process.env.CLINICALCRAFT_E2E_CHROMIUM || process.env.PW_CHROMIUM || "").trim();
+  if (/^(playwright|bundled)$/i.test(requested)) return undefined;
+  if (requested) return requested;
   const candidates = ["/opt/pw-browsers/chromium", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"];
   return candidates.find((p) => {
     try {

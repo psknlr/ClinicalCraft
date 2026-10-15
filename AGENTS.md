@@ -13,13 +13,12 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 
 ## Commands
 ```bash
-npm install
-npm run build:lib          # libraries → packages/*/dist (`npm run cc` loads workspace packages from dist)
+npm install               # no build needed: `npm run cc`, `npm run dev` and vitest run workspace packages from source
 npm run typecheck          # tsc -b for libraries (also emits dist) + web tsc --noEmit
 npm test                   # vitest (all packages)
 npm run cc -- cases validate --all && npm run cc -- cases verify --all
 npm run dev                # web world at http://localhost:5173
-npm run build              # libraries + web
+npm run build              # libraries (packages/*/dist: built binary, `serve`) + web
 npm run test:e2e           # Playwright (web)
 ```
 

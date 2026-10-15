@@ -5,8 +5,10 @@
  * Request rules (docs/PROTOCOL.md §5):
  *   - `system` = text blocks, `cache_control: {type:"ephemeral"}` on the last
  *     stable section (prompt-caching friendly prefix);
- *   - tools carry `eager_input_streaming: true`; inputs are re-validated as
- *     objects before they are emitted as `tool_call`;
+ *   - tools carry `eager_input_streaming: true` on the first-party API (not
+ *     for Anthropic-compatible third-party endpoints or proxies, which may
+ *     reject it); inputs are re-validated as objects before they are emitted
+ *     as `tool_call`;
  *   - never a forced `tool_choice`, never a `thinking` param (adaptive is the
  *     default on current models); depth via `output_config.effort`;
  *   - `responseFormat` → `output_config.format` (json_schema, adapted to the
@@ -300,7 +302,9 @@ export function buildAnthropicRequest(config: Pick<ProviderConfig, "id" | "baseU
         name: t.name,
         description: t.description,
         input_schema: t.inputSchema as unknown as BetaTool.InputSchema,
-        eager_input_streaming: true,
+        // Fine-grained tool streaming on the first-party API only: proxies and Anthropic-compatible
+        // endpoints may reject the field (inputs are re-validated either way).
+        ...(firstParty ? { eager_input_streaming: true } : {}),
       }),
     );
   }

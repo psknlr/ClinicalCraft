@@ -112,12 +112,14 @@ Replay of the reference solution (displayed values, including the deterministic 
 | 60–110 | ≈98 | ≈111/60 (77) | ≈18 | 100 | ED observation; sinus rhythm |
 
 Without adrenaline, SBP falls to about 56 by minute 10. At that point the
-`peri-arrest` event fires (GCS 12, "we're losing her") and the case enters the
+`peri-arrest` event fires (GCS 10, "we're losing her") and the case enters the
 `collapsed` phase: she can no longer give history (every history item except
 the groan-only `status-collapsed` is phase-locked) and the general-appearance,
 circulation and neurological findings switch to peri-arrest variants. At
 minute 16 the `near-arrest` event follows (GCS 9, gasping, thready carotid
-pulse; SBP has bottomed out at about 50, MAP about 37). The first IM dose
+pulse; SBP has bottomed out at about 50, MAP about 37). GCS 10 is what the only
+neurological exam available in `collapsed` scores: eyes to a loud voice or
+pain (E3), mumbling without answering questions (V2), localising to pain (M5). The first IM dose
 leaves `collapsed` (for `treated`, or `ed-resus` after a deferred transfer);
 `peri-arrest-partial` raises GCS to 14 once SBP reaches 65, and
 `peri-arrest-recovered` restores GCS 15 at SBP ≥ 90, which takes the second
@@ -261,7 +263,7 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
 | path | outcome |
 |---|---|
 | reference solution | 5/5 objectives, 17/17, no contraindicated actions; SBP ≥ 100 from minute 15, ≈ 111/60 in the ED |
-| never gives adrenaline, late doses at 22 and 30 min | `collapsed` from minute 10 (history locked, peri-arrest findings), SBP ≈ 50, GCS 12 → 9; first dose → `treated`, GCS 14 at SBP ≥ 65; GCS 15 only after the second dose; `r-adr-early` fails |
+| never gives adrenaline, late doses at 22 and 30 min | `collapsed` from minute 10 (history locked, peri-arrest findings), SBP ≈ 50, GCS 10 → 9; first dose → `treated`, GCS 14 at SBP ≥ 65; GCS 15 only after the second dose; `r-adr-early` fails |
 | salbutamol, antihistamines and steroid first, sits her up, one late dose, transfer | 5 contraindicated actions; GCS 13 after sitting up (SBP ≈ 40), then `collapsed`; stuck in `ed-resus` with SBP ≈ 66–74; 2/17 |
 | IV bolus, SC adrenaline, walks her, discharge | ST depression then collapse to SBP ≈ 40; 0/17 |
 | transfer before adrenaline, otherwise correct | completes, 16/17 (`r-adr-first` fails) |
@@ -326,9 +328,21 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
   phase-aware pipeline selection; the last untuned round scored 0.94 before
   its four misses were fixed.
 * **Re-asked symptoms in the ED.** `hpi-*` answers describe the acute
-  reaction. In `ed` the matching `now-*-ed` item (same keywords, declared
-  later) is selected with it, so the patient says how it was and how it is
-  now instead of describing a swollen throat after recovery.
+  reaction in the present tense. The seven that have an `ed` twin
+  (`hpi-breathing`, `hpi-throat`, `hpi-lips-tongue`, `hpi-dizzy`,
+  `hpi-chest-palp`, `hpi-itch-rash`, `hpi-gi`) are limited to `scene`,
+  `treated` and `ed-resus`, so in `ed` only the matching `now-*-ed` item
+  (same keywords) answers. Selecting both read as a contradiction ("Can't…
+  get a full breath… whistling… Now? Much easier…"), and the volunteered
+  "big raised lumps everywhere" followed the nurse's report that the rash had
+  nearly gone. A learner who first asks these in `ed` hears the current state;
+  the acute-phase items are no longer creditable there.
+* **An EpiPen now is IM adrenaline.** "epipen", "epi pen", "jext",
+  "auto-injector" and 肾上腺素笔 resolve to `adrenaline-im`; `prescribe-aai`
+  answers only prescription phrasing ("prescribe an epipen", "two
+  auto-injectors", "pens to take home", 开两支肾上腺素笔), and `adrenaline-im`
+  excludes those. Before, `/give epipen` in the garden prescribed take-home pens
+  while her BP kept falling.
 * **Required examination.** Only `ex-skin` is `required`. The scene-only
   airway, chest and circulation findings are no longer required: giving
   adrenaline before a formal look locks them, and the debrief would list

@@ -140,7 +140,8 @@ describe("MCP stdio server", () => {
     expect(names).not.toContain("reveal_facts");
     const ask = tools.find((tool) => tool.name === "ask_patient")!;
     expect(ask.inputSchema.required).toEqual(["session_id", "question"]);
-    expect(Object.keys(ask.inputSchema.properties)).toEqual(["session_id", "question"]);
+    // `confirm` (optional) is the second step of a confirmation, on every state-changing tool.
+    expect(Object.keys(ask.inputSchema.properties)).toEqual(["session_id", "question", "confirm"]);
     expect(tools.find((tool) => tool.name === "case_status")!.annotations.readOnlyHint).toBe(true);
 
     // Case ids name the diagnoses: the clinician (the MCP client) sees opaque handles, in title order.
@@ -162,7 +163,7 @@ describe("MCP stdio server", () => {
     const sessionId = started.structuredContent!.session_id as string;
     expect(sessionId).toMatch(/\S/);
     expect(started.structuredContent!.opening).toBe(t(smzl!.patient.persona.openingLine, "en"));
-    expect(started.structuredContent!.approvalMode).toBe("bypass");
+    expect(started.structuredContent!.approvalMode).toBe("auto");
     expect(started.content[0]!.text).toContain(sessionId);
     expect(started.content[0]!.text).toContain(t(smzl!.patient.chiefComplaint, "en"));
 
@@ -300,7 +301,7 @@ describe("MCP stdio server", () => {
     const p = project();
     const strict = settings({ approvalMode: "strict" });
     expect(mcpApprovalMode(strict)).toBe("strict");
-    expect(mcpApprovalMode(settings())).toBe("bypass");
+    expect(mcpApprovalMode(settings())).toBe("auto");
     const client = new TestClient({ settings: strict, env: p.env, cwd: p.cwd });
     await client.result("initialize", { protocolVersion: "2025-06-18", capabilities: {} });
     const started = await client.call("start_case", { case_id: SMZL, locale: "zh-CN" });
@@ -311,7 +312,11 @@ describe("MCP stdio server", () => {
     const order = await client.call("order_test", { session_id: sessionId, investigation_id: "cbc" });
     expect(order.isError).toBe(true);
     expect(order.content[0]!.text).toContain("order_test(cbc)");
-    expect(order.structuredContent).toMatchObject({ ok: false, refused: { reason: "ask", ruleId: "mode.strict" } });
+    expect(order.content[0]!.text).toContain('"confirm": true');
+    expect(order.structuredContent).toMatchObject({ ok: false, refused: { reason: "ask", ruleId: "mode.strict", confirm: "required" } });
+    // The second step: the client confirmed with its user.
+    const confirmed = await client.call("order_test", { session_id: sessionId, investigation_id: "cbc", confirm: true });
+    expect(confirmed.isError).toBeUndefined();
     // Read-only tools never need approval.
     const status = await client.call("case_status", { session_id: sessionId });
     expect(status.isError).toBeUndefined();
@@ -319,6 +324,141 @@ describe("MCP stdio server", () => {
     expect(nurse.isError).toBeUndefined();
     expect(nurse.content[0]!.text.length).toBeGreaterThan(0);
     await client.end();
+  });
+
+  const stroke = content.cases.get("acute-ischemic-stroke")?.def;
+  it.skipIf(!stroke)("default mode is auto: thrombolysis needs a second call with confirm: true; deny rules and explicit bypass behave as configured", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings({ permissions: { deny: ["intervene(alteplase)"] } }), env: p.env, cwd: p.cwd });
+    const { tools } = await client.result<{ tools: { name: string; inputSchema: { properties: Record<string, { type?: string }> } }[] }>("tools/list");
+    const schema = (name: string) => tools.find((tool) => tool.name === name)!.inputSchema.properties;
+    expect(schema("intervene").confirm).toMatchObject({ type: "boolean" });
+    expect(schema("order_test").confirm).toMatchObject({ type: "boolean" });
+    expect(schema("case_status").confirm).toBeUndefined(); // read-only tools never ask
+    const started = await client.call("start_case", { case_id: "acute-ischemic-stroke", locale: "en" });
+    expect(started.structuredContent!.approvalMode).toBe("auto");
+    const sessionId = started.structuredContent!.session_id as string;
+    const given = () => client.call("case_status", { session_id: sessionId }).then(() => undefined);
+
+    // Moderate risk runs in auto.
+    const labetalol = await client.call("intervene", { session_id: sessionId, intervention_id: "labetalol" });
+    expect(labetalol.isError).toBeUndefined();
+    // High risk (always-ask): the first call explains and refuses; nothing happens.
+    const first = await client.call("intervene", { session_id: sessionId, intervention_id: "tenecteplase" });
+    expect(first.isError).toBe(true);
+    expect(first.content[0]!.text).toMatch(/confirm/i);
+    expect(first.content[0]!.text).toContain('"confirm": true');
+    expect(first.content[0]!.text).toMatch(/high/i);
+    expect(first.structuredContent).toMatchObject({ ok: false, refused: { reason: "ask", ruleId: "tool.always-ask", risk: "high", confirm: "required" } });
+    await given();
+    const interventions = async () => {
+      const state = await client.result<{ contents: { text: string }[] }>("resources/read", { uri: `clinicalcraft://session/${sessionId}/state` });
+      return (JSON.parse(state.contents[0]!.text) as { state: { interventions: { interventionId: string }[] } }).state.interventions.map((i) => i.interventionId);
+    };
+    expect(await interventions()).not.toContain("tenecteplase");
+    // confirm: false is no confirmation.
+    expect((await client.call("intervene", { session_id: sessionId, intervention_id: "tenecteplase", confirm: false })).isError).toBe(true);
+    // The second call with confirm: true runs it.
+    const second = await client.call("intervene", { session_id: sessionId, intervention_id: "tenecteplase", confirm: true });
+    expect(second.isError, second.content[0]!.text).toBeUndefined();
+    expect(await interventions()).toContain("tenecteplase");
+    // A deny rule is not something a confirmation overrides.
+    const denied = await client.call("intervene", { session_id: sessionId, intervention_id: "alteplase", confirm: true });
+    expect(denied.isError).toBe(true);
+    expect(denied.structuredContent).toMatchObject({ refused: { reason: "deny", ruleId: "rule.deny" } });
+    expect(await interventions()).not.toContain("alteplase");
+    await client.end();
+
+    // bypass stays available when chosen explicitly (benchmarks; unsafe): no confirmation step.
+    const q = project();
+    const bypass = new TestClient({ settings: settings({ approvalMode: "bypass" }), env: q.env, cwd: q.cwd });
+    const s2 = (await bypass.call("start_case", { case_id: "acute-ischemic-stroke", locale: "en" })).structuredContent!.session_id as string;
+    expect((await bypass.call("intervene", { session_id: s2, intervention_id: "tenecteplase" })).isError).toBeUndefined();
+    await bypass.end();
+  });
+
+  it.skipIf(!stroke)("confirm: true on a first attempt is not a confirmation (F2): it is refused like an unconfirmed call", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
+    const sessionId = (await client.call("start_case", { case_id: "acute-ischemic-stroke", locale: "en" })).structuredContent!.session_id as string;
+    const interventions = async () => {
+      const state = await client.result<{ contents: { text: string }[] }>("resources/read", { uri: `clinicalcraft://session/${sessionId}/state` });
+      return (JSON.parse(state.contents[0]!.text) as { state: { interventions: { interventionId: string }[] } }).state.interventions.map((i) => i.interventionId);
+    };
+    const first = await client.call("intervene", { session_id: sessionId, intervention_id: "tenecteplase", confirm: true });
+    expect(first.isError).toBe(true);
+    expect(first.structuredContent).toMatchObject({ ok: false, refused: { reason: "ask", ruleId: "tool.always-ask", confirm: "required" } });
+    expect(first.content[0]!.text).toMatch(/only counts when it repeats/);
+    expect(await interventions()).not.toContain("tenecteplase");
+    // The confirmed repeat of that refused call runs — once.
+    const second = await client.call("intervene", { session_id: sessionId, intervention_id: "tenecteplase", confirm: true });
+    expect(second.isError, second.content[0]!.text).toBeUndefined();
+    expect(await interventions()).toContain("tenecteplase");
+    // A different call is not covered by that confirmation.
+    const other = await client.call("intervene", { session_id: sessionId, intervention_id: "alteplase", confirm: true });
+    expect(other.isError).toBe(true);
+    await client.end();
+  });
+
+  it("answer_decision on a locked decision names neither the prompt nor any option (F0)", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
+    const caseRef = stroke ? "acute-ischemic-stroke" : SMZL;
+    const def = content.cases.get(caseRef)!.def;
+    const sessionId = (await client.call("start_case", { case_id: caseRef, locale: "en" })).structuredContent!.session_id as string;
+    const listed = await client.call("list_options", { session_id: sessionId, kind: "decisions" });
+    const locked = (listed.structuredContent!.data as { items: { id: string; unlocked: boolean; decided: boolean }[] }).items.find((d) => !d.unlocked && !d.decided);
+    expect(locked).toBeDefined();
+    const decision = def.decisions.find((d) => d.id === locked!.id)!;
+    const out = await client.call("answer_decision", { session_id: sessionId, decision_id: decision.id, option_ids: ["zzz"] });
+    expect(out.isError).toBe(true);
+    const text = out.content[0]!.text + JSON.stringify(out.structuredContent);
+    for (const o of decision.options) {
+      expect(text).not.toContain(t(o.text, "en"));
+      expect(text).not.toContain(`${o.id} (`);
+    }
+    expect(text).not.toContain(t(decision.prompt, "en"));
+    // Even with an ask rule there is no confirmation round-trip for it.
+    await client.end();
+  });
+
+  it.skipIf(!stroke)("mid-case get_debrief gives a count of missing essential tests, not their names (F8)", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
+    const def = content.cases.get("acute-ischemic-stroke")!.def;
+    const sessionId = (await client.call("start_case", { case_id: "acute-ischemic-stroke", locale: "en" })).structuredContent!.session_id as string;
+    const debrief = await client.call("get_debrief", { session_id: sessionId });
+    expect(debrief.structuredContent!.complete).toBe(false);
+    const report = debrief.structuredContent!.report as { investigations: Record<string, unknown> };
+    expect(report.investigations.essentialMissing).toBeUndefined();
+    expect(report.investigations.essentialMissingCount).toBeGreaterThan(0);
+    const text = debrief.content[0]!.text;
+    for (const inv of def.investigations.filter((i) => i.value === "essential")) expect(text).not.toContain(t(inv.name, "en"));
+    expect(text).toMatch(/not obtained yet: \d+/);
+    await client.end();
+  });
+
+  it.skipIf(!smzl)("a provider without its key is not a silent offline patient (C0): start_case and later calls carry a notice", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings({ provider: "anthropic" }), env: p.env, cwd: p.cwd });
+    const started = await client.call("start_case", { case_id: SMZL, locale: "en" });
+    const warnings = (started.structuredContent!.warnings ?? []) as string[];
+    expect(warnings.join("\n")).toMatch(/offline responder/);
+    expect(started.content[0]!.text).toMatch(/Notice: .*offline responder/);
+    expect(client.stderr.join("\n")).toMatch(/offline responder/);
+    const sessionId = started.structuredContent!.session_id as string;
+    const nurse = await client.call("consult", { session_id: sessionId, role: "nurse", question: "How is he?" });
+    expect(((nurse.structuredContent!.warnings ?? []) as string[]).join("\n")).toMatch(/nurse.*offline responder/);
+    await client.end();
+  });
+
+  it("the shipped project settings leave the approval mode to each front-end (MCP: auto)", async () => {
+    const { loadSettings } = await import("@clinicalcraft/agent/node");
+    const p = project();
+    const repo = new URL("../../../", import.meta.url).pathname;
+    const loaded = await loadSettings({ cwd: repo, env: p.env });
+    expect(loaded.sources.approvalMode).toBe("default");
+    expect(mcpApprovalMode(loaded)).toBe("auto");
   });
 
   it.skipIf(!smzl)("runs settings PreToolUse command hooks: exit 2 blocks the call", async () => {

@@ -43,8 +43,10 @@ export {
   matchHistory,
   matchExam,
   matchInterventions,
+  matchSpecificity,
   MATCH_THRESHOLD,
   EXCLUDE_KEYWORD_FACTOR,
+  type MatchKind,
 } from "./matcher.js";
 export {
   compactText,
@@ -53,6 +55,7 @@ export {
   canonicalToken,
   foldSpelling,
   phraseScore,
+  phraseCoverage,
   longestCommonSubstring,
   ENGLISH_STOP_WORDS,
   ENGLISH_LEMMAS,
@@ -66,6 +69,8 @@ export {
   mergeCatalogs,
   placementCapabilities,
   facilityCapabilities,
+  caseCapabilityGaps,
+  type CapabilityGap,
   regionAt,
   assignPatientSlot,
   resolveWaypoint,

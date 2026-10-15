@@ -52,12 +52,12 @@ export function minutesLeft(c: CaseDefinition, s: SessionState, order: OrderReco
   return Math.max(1, Math.ceil(order.readyAt - s.clock));
 }
 
-/** V4 evidence grid of orders (newest first) with read/unread/pending state. */
-export function evidenceGrid(game: Game, filter: (o: OrderRecord) => boolean, onOpen: (o: OrderRecord) => void): HTMLElement {
+/** V4 evidence grid of orders (newest first) with read/unread/pending state; `empty` replaces the default empty-state line. */
+export function evidenceGrid(game: Game, filter: (o: OrderRecord) => boolean, onOpen: (o: OrderRecord) => void, empty?: string): HTMLElement {
   const c = game.caseDef;
   const s = game.session.store.snapshot?.state ?? game.session.session.state;
   const orders = s.orders.filter(filter).slice().reverse();
-  if (!orders.length) return h("div", { class: "empty", style: "margin-top:22px" }, tr("orders.none"));
+  if (!orders.length) return h("div", { class: "empty", id: "evidence-empty", style: "margin-top:22px" }, empty ?? tr("orders.none"));
   return h(
     "div",
     null,

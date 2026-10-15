@@ -13,6 +13,8 @@ import {
   isProviderConfigured,
   PROVIDER_TEMPLATES,
   ProviderConfigError,
+  redactSecrets,
+  secretsFromEnv,
   withRetry,
   type ChatMessage,
   type ChatPart,
@@ -180,7 +182,40 @@ export function resolveProxyConfig(settings: ResolvedSettings, call: ProxyCall, 
   return { config };
 }
 
-/** Provider list for `GET /api/providers`: templates and settings-defined providers, never keys. */
+/**
+ * A base URL as it may be shown to API clients: no userinfo, query string or
+ * fragment (gateways sometimes carry credentials there). Null when unparsable.
+ */
+export function publicBaseUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  if (url.startsWith("/")) return url.replace(/[?#].*$/s, "");
+  try {
+    const u = new URL(url);
+    return `${u.protocol}//${u.host}${u.pathname === "/" && !url.replace(/[?#].*$/s, "").endsWith("/") ? "" : u.pathname}`;
+  } catch {
+    return null;
+  }
+}
+
+/** Credentials that may appear in an upstream's error text for `config` (key, header values, URL userinfo/query values) and in `env`. */
+export function proxySecrets(config: ProviderConfig, env: Env): string[] {
+  const out = new Set<string>(secretsFromEnv(env));
+  if (config.apiKey) out.add(config.apiKey);
+  for (const value of Object.values(config.headers ?? {})) if (value) out.add(value);
+  for (const url of [config.baseUrl, config.proxyUrl]) {
+    if (!url) continue;
+    try {
+      const u = new URL(url);
+      for (const part of [decodeURIComponent(u.username), decodeURIComponent(u.password), u.username, u.password]) if (part) out.add(part);
+      for (const value of u.searchParams.values()) if (value) out.add(value);
+    } catch {
+      /* relative or invalid: nothing embedded */
+    }
+  }
+  return [...out];
+}
+
+/** Provider list for `GET /api/providers`: templates and settings-defined providers, never keys (base URLs without credentials). */
 export function providerList(settings: ResolvedSettings, env: Env) {
   const ids = new Set<string>(PROVIDER_TEMPLATES.map((t) => t.id));
   for (const [id, o] of Object.entries(settings.providers)) if (o.wire) ids.add(id);
@@ -192,7 +227,7 @@ export function providerList(settings: ResolvedSettings, env: Env) {
       id,
       name: override?.name ?? template?.name ?? id,
       wire: override?.wire ?? template?.wire ?? null,
-      baseUrl: override?.baseUrl ?? template?.baseUrl ?? null,
+      baseUrl: publicBaseUrl(override?.baseUrl ?? template?.baseUrl),
       defaultModel: override?.defaultModel ?? template?.defaultModel ?? null,
       models: override?.models ?? template?.models ?? [],
       keyUrl: template?.keyUrl ?? null,
@@ -213,6 +248,8 @@ export interface StreamProxyOptions {
   shutdown?: AbortSignal;
   /** Keep-alive comment interval (ms). */
   heartbeatMs?: number;
+  /** Values masked in error text sent to the client (default: `proxySecrets(config, {})`; the server adds its environment's). */
+  secrets?: readonly string[];
 }
 
 function defaultProvider(config: ProviderConfig, res: ServerResponse): LLMProvider {
@@ -252,16 +289,20 @@ export async function streamProxy(res: ServerResponse, opts: StreamProxyOptions)
   heartbeat.unref?.();
 
   const request: ChatRequest = { ...opts.request, model: opts.config.model };
+  // Upstream error text can echo keys, gateway credentials or other secrets: mask them (as the CLI does).
+  const secrets = opts.secrets ?? proxySecrets(opts.config, {});
+  const clean = (message: string) => redactSecrets(message, secrets);
   try {
     const provider = opts.providerFactory ? opts.providerFactory(opts.config) : defaultProvider(opts.config, res);
     for await (const event of provider.stream(request, controller.signal)) {
       if (controller.signal.aborted) break;
-      writeSse(res, `data: ${JSON.stringify(event satisfies StreamEvent)}\n\n`);
+      const safe: StreamEvent = event.type === "error" ? { ...event, error: { ...event.error, message: clean(event.error.message) } } : event;
+      writeSse(res, `data: ${JSON.stringify(safe)}\n\n`);
       if (event.type === "error") break;
     }
   } catch (err) {
     if (!controller.signal.aborted) {
-      const error: ProviderErrorInfo = { message: err instanceof Error ? err.message : String(err), kind: "unknown", retryable: false };
+      const error: ProviderErrorInfo = { message: clean(err instanceof Error ? err.message : String(err)), kind: "unknown", retryable: false };
       writeSse(res, `data: ${JSON.stringify({ type: "error", error } satisfies StreamEvent)}\n\n`);
     }
   } finally {

@@ -136,11 +136,12 @@ describe.concurrent("exec (headless, offline)", () => {
 
   it("stream-json emits parseable events then the result; default approvals are denied headlessly", { timeout: T }, async ({ expect }) => {
     const r = await cli(["-p", "Work up this patient", "--case", "smzl-lung-adeno", "--autopilot", "--output-format", "stream-json", "--provider", "offline", "--lang", "en"]);
-    expect(r.code, r.stderr).toBe(0);
+    // The denied biopsy leaves objectives open: an incomplete autopilot is not a success (exit 4).
+    expect(r.code, r.stderr).toBe(4);
     const lines = jsonLines(r.stdout) as Record<string, any>[];
     const result = lines[lines.length - 1]!;
     expect(result.type).toBe("result");
-    expect(result.subtype).toBe("success");
+    expect(result).toMatchObject({ subtype: "error_incomplete", is_error: true, completed: false });
     const events = lines.slice(0, -1) as unknown as AgentEvent[];
     expect(events[0]!.msg.type).toBe("session_configured");
     const seqs = events.map((e) => e.seq);
@@ -412,7 +413,7 @@ describe.concurrent("import-v4", () => {
     writeFileSync(f, p1!);
     const r = await cli(["import-v4", f, "--dest", join(root, "assets-bad"), "--lang", "en"]);
     expect(r.code).toBe(1);
-    expect(r.stderr).toContain("CASE_DATA");
+    expect(r.stderr).toContain("the V4 case data was not found");
   });
 });
 
@@ -442,10 +443,16 @@ describe.concurrent("serve & mcp", () => {
     expect(health).toMatchObject({ status: "ok" });
   });
 
-  it("serve --token explains the ?token= URL; --lang sets the server's default language", { timeout: T }, async ({ expect }) => {
+  for (const source of ["flag", "env", "file"] as const) {
+  it(`serve takes the token from --token, CLINICALCRAFT_SERVER_TOKEN or --token-file (${source}); --lang sets the server's default language`, { timeout: T }, async ({ expect }) => {
     let health: { status?: number; body?: Record<string, unknown> } = {};
     let lines = "";
-    const r = await cli(["serve", "--port", "0", "--lang", "en", "--token", "tok-123"], {
+    const token = "tok-0123456789abcdef";
+    const tokenFile = join(work, `serve-token-${source}.txt`);
+    writeFileSync(tokenFile, `${token}\n`);
+    const args = source === "flag" ? ["--token", token] : source === "file" ? ["--token-file", tokenFile] : [];
+    const r = await cli(["serve", "--port", "0", "--lang", "en", ...args], {
+      ...(source === "env" ? { env: { CLINICALCRAFT_SERVER_TOKEN: token } } : {}),
       onLine: (line, stdin, child) => {
         lines += `${line}\n`;
         const url = /(http:\/\/127\.0\.0\.1:\d+\/)/.exec(line)?.[1];
@@ -453,7 +460,7 @@ describe.concurrent("serve & mcp", () => {
         health.status = 0;
         void (async () => {
           const denied = await fetch(`${url}api/health`);
-          const ok = await fetch(`${url}api/health`, { headers: { authorization: "Bearer tok-123" } });
+          const ok = await fetch(`${url}api/health`, { headers: { authorization: `Bearer ${token}` } });
           health = { status: denied.status, body: (await ok.json()) as Record<string, unknown> };
         })()
           .catch(() => undefined)
@@ -473,8 +480,13 @@ describe.concurrent("serve & mcp", () => {
     expect(health.status).toBe(401);
     expect(health.body).toMatchObject({ status: "ok", locale: "en", auth: true });
     expect(lines).toMatch(/http:\/\/127\.0\.0\.1:\d+\/\?token=<token>/);
-    expect(r.stdout).not.toContain("tok-123");
+    expect(r.stdout).not.toContain(token);
+    expect(r.stderr).not.toContain(token);
+    // A token on the command line is visible to every user in the process list: say so.
+    if (source === "flag") expect(r.stderr).toMatch(/process list/);
+    else expect(r.stderr).not.toMatch(/process list/);
   });
+  }
 
   it("serve refuses a non-loopback host without a token", { timeout: T }, async ({ expect }) => {
     const r = await cli(["serve", "--host", "0.0.0.0", "--lang", "en"]);

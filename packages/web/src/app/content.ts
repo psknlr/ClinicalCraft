@@ -5,6 +5,7 @@
  * card fields) and cached.
  */
 import {
+  caseCapabilityGaps,
   parseCase,
   parseCatalog,
   parseFacility,
@@ -34,6 +35,17 @@ export interface CaseCard {
   physiology: boolean;
   objectives: number;
   label: LocalizedText | null;
+  /** "Fictional teaching case — not medical advice" (shown before play; null when the case has none). */
+  disclaimer: LocalizedText | null;
+  /** "server": from `clinicalcraft serve`'s contentDirs (`/api/content/*`), not bundled; no reference solution. */
+  source?: "bundled" | "server";
+}
+
+/** Content `clinicalcraft serve` offers (`/api/content/*` payloads), to add to the bundle. */
+export interface ServerContent {
+  cases: unknown[];
+  facilities: unknown[];
+  catalogs: unknown[];
 }
 
 export interface ContentIndex {
@@ -44,9 +56,17 @@ export interface ContentIndex {
   getCase(id: string): CaseDefinition | null;
   caseIssues(id: string): string[];
   catalogsFor(facility: FacilityDefinition): EquipmentCatalog[];
-  /** Facilities that can host a case (clinic-v4 only for outpatient cases; a facility needs a slot accepting the setting). */
+  /**
+   * Facilities that can host a case: a slot accepting its setting (clinic-v4 only for outpatient cases)
+   * and every objective and decision completable with the facility's equipment (`caseCapabilityGaps`).
+   */
   facilitiesFor(card: CaseCard): FacilityDefinition[];
   defaultFacility(card: CaseCard): FacilityDefinition | null;
+  /**
+   * Add server content (validated with the core parsers; bundled ids are
+   * never replaced). Returns the number of cases, facilities and catalogs added.
+   */
+  addServerContent(payload: ServerContent): number;
 }
 
 function obj(v: unknown): Record<string, unknown> {
@@ -72,6 +92,7 @@ function card(raw: unknown): CaseCard | null {
     physiology: r.physiology != null,
     objectives: Array.isArray(r.objectives) ? r.objectives.length : 0,
     label: (ext.caseLabel as LocalizedText) ?? null,
+    disclaimer: typeof r.disclaimer === "string" || (r.disclaimer && typeof r.disclaimer === "object") ? (r.disclaimer as LocalizedText) : null,
   };
 }
 
@@ -93,7 +114,7 @@ export function loadContent(): ContentIndex {
       continue;
     }
     raws.set(c.id, json);
-    cards.push(c);
+    cards.push({ ...c, source: "bundled" });
   }
   // Published cases first (V4 CASE 01), then by difficulty and id.
   cards.sort((a, b) => Number(b.provenance === "published-case") - Number(a.provenance === "published-case") || a.difficulty - b.difficulty || a.id.localeCompare(b.id));
@@ -133,10 +154,25 @@ export function loadContent(): ContentIndex {
     return listed.length ? listed : [...catalogs.values()];
   };
 
+  // A facility hosts a case only if the case can be completed there: no objective or decision needs
+  // equipment (capabilities) the facility lacks (core `caseCapabilityGaps`).
+  const completable = new Map<string, boolean>();
+  const canComplete = (c: CaseCard, f: FacilityDefinition): boolean => {
+    const key = `${c.id}\u0000${f.id}`;
+    let ok = completable.get(key);
+    if (ok === undefined) {
+      const def = getCase(c.id);
+      ok = !def || !caseCapabilityGaps(def, f, catalogsFor(f)).some((g) => g.blocking);
+      completable.set(key, ok);
+    }
+    return ok;
+  };
+
   const facilitiesFor = (c: CaseCard): FacilityDefinition[] =>
     [...facilities.values()].filter((f) => {
       if (f.id === "clinic-v4" && c.setting !== "outpatient") return false;
-      return f.patientSlots.some((s) => s.accepts.includes(c.setting as never)) || f.id === c.facility;
+      if (!(f.patientSlots.some((s) => s.accepts.includes(c.setting as never)) || f.id === c.facility)) return false;
+      return f.id === c.facility || canComplete(c, f);
     });
 
   const defaultFacility = (c: CaseCard): FacilityDefinition | null => {
@@ -144,6 +180,59 @@ export function loadContent(): ContentIndex {
     return (c.facility ? options.find((f) => f.id === c.facility) : undefined) ?? options.find((f) => f.id === "general-hospital") ?? options[0] ?? null;
   };
 
-  cached = { cards, facilities, catalogs, issues, getCase, caseIssues: (id) => caseIssueMap.get(id) ?? [], catalogsFor, facilitiesFor, defaultFacility };
+  const addServerContent = (payload: ServerContent): number => {
+    let added = 0;
+    for (const json of payload.catalogs) {
+      const r = parseCatalog(json);
+      if (r.ok && !catalogs.has(r.value.id)) {
+        catalogs.set(r.value.id, r.value);
+        added++;
+      } else if (!r.ok) issues.push(...fmt("server catalog", r.issues));
+    }
+    for (const json of payload.facilities) {
+      const r = parseFacility(json);
+      if (r.ok && !facilities.has(r.value.id)) {
+        facilities.set(r.value.id, r.value);
+        added++;
+      } else if (!r.ok) issues.push(...fmt("server facility", r.issues));
+    }
+    for (const json of payload.cases) {
+      const c = card(json);
+      if (!c || raws.has(c.id)) continue;
+      const r = parseCase(json);
+      if (!r.ok) {
+        issues.push(...fmt(`server case ${c.id}`, r.issues));
+        continue;
+      }
+      raws.set(c.id, json);
+      parsedCases.set(c.id, r.value);
+      cards.push({ ...c, source: "server" });
+      added++;
+    }
+    completable.clear();
+    return added;
+  };
+
+  cached = { cards, facilities, catalogs, issues, getCase, caseIssues: (id) => caseIssueMap.get(id) ?? [], catalogsFor, facilitiesFor, defaultFacility, addServerContent };
   return cached;
+}
+
+/** `GET` a JSON document (null on any failure). */
+export type JsonGetter = (url: string) => Promise<unknown>;
+
+/**
+ * Fetch what `clinicalcraft serve` offers beyond the bundle — cases,
+ * facilities and catalogs from its contentDirs (`GET /api/content/index`,
+ * then each new item) — and add it to `index`. Returns the number added.
+ */
+export async function loadServerContent(index: ContentIndex, get: JsonGetter): Promise<number> {
+  const listing = (await get("/api/content/index")) as { cases?: { id?: unknown }[]; facilities?: { id?: unknown }[]; catalogs?: { id?: unknown }[] } | null;
+  if (!listing || typeof listing !== "object") return 0;
+  const ids = (list: { id?: unknown }[] | undefined) => (Array.isArray(list) ? list.map((x) => x?.id).filter((id): id is string => typeof id === "string" && /^[a-z0-9][a-z0-9-]{0,79}$/.test(id)) : []);
+  const known = new Set(index.cards.map((c) => c.id));
+  const fetchAll = async (kind: string, wanted: string[]) => (await Promise.all(wanted.map((id) => get(`/api/content/${kind}/${encodeURIComponent(id)}`)))).filter((x) => x !== null && typeof x === "object");
+  const catalogs = await fetchAll("catalogs", ids(listing.catalogs).filter((id) => !index.catalogs.has(id)));
+  const facilities = await fetchAll("facilities", ids(listing.facilities).filter((id) => !index.facilities.has(id)));
+  const cases = await fetchAll("cases", ids(listing.cases).filter((id) => !known.has(id)));
+  return index.addServerContent({ cases, facilities, catalogs });
 }

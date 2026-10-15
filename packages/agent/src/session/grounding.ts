@@ -7,10 +7,13 @@
  * weeks") — must appear in the allowed source texts (the answers of the facts
  * used, persona text, the learner's own words). A number that carries a unit
  * must appear with the same unit, or bare. Drug names (by common suffixes,
- * a small lexicon and the case's own medication names) and upper-case
- * clinical acronyms (diagnoses/tests such as "STEMI", "CT") must appear in
- * the sources. Anything else is a violation → the caller falls back to the
- * authored answer.
+ * a small lexicon and the case's own medication names), upper-case
+ * clinical acronyms (diagnoses/tests such as "STEMI", "CT"), named
+ * conditions ("stroke", "heart attack", "糖尿病", the case's own decision
+ * options) and relative dates without digits ("last year", "去年") must
+ * appear in the sources; a distinctive phrase of a fact not yet revealed
+ * must not appear at all. Anything else is a violation → the caller falls
+ * back to the authored answer.
  */
 
 export interface NumericToken {
@@ -204,9 +207,81 @@ export function extractAcronyms(text: string): string[] {
 /* Verification                                                        */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/* Diagnoses, history and relative dates                               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Conditions a patient might claim (history, family history, diagnoses).
+ * Each must appear in the sources when the reply names it: a model may not
+ * add "I had a stroke" or "my father died of a heart attack".
+ */
+const CONDITIONS_EN = [
+  "stroke", "mini-stroke", "heart attack", "myocardial infarction", "heart failure", "heart disease", "angina", "diabetes", "diabetic", "cancer", "tumour", "tumor",
+  "leukaemia", "leukemia", "lymphoma", "asthma", "copd", "emphysema", "bronchitis", "hypertension", "high blood pressure", "epilepsy", "tuberculosis",
+  "hepatitis", "cirrhosis", "kidney failure", "kidney disease", "dialysis", "pneumonia", "sepsis", "embolism", "blood clot", "thrombosis", "dvt",
+  "appendicitis", "pancreatitis", "ulcer", "dementia", "alzheimer", "parkinson", "hiv", "lupus", "arthritis", "thyroid", "anaemia", "anemia",
+  "gallstones", "kidney stones", "aneurysm", "brain bleed", "haemorrhage", "hemorrhage", "anaphylaxis",
+];
+const CONDITIONS_ZH = [
+  "中风", "脑梗", "脑卒中", "脑出血", "心梗", "心肌梗死", "心肌梗塞", "心脏病", "心衰", "心力衰竭", "冠心病", "心绞痛", "糖尿病", "癌", "肿瘤", "白血病", "淋巴瘤", "哮喘",
+  "慢阻肺", "肺气肿", "支气管炎", "高血压", "癫痫", "结核", "肝炎", "肝硬化", "肾衰", "尿毒症", "透析", "肺炎", "败血症", "脓毒症", "栓塞", "血栓", "阑尾炎", "胰腺炎",
+  "溃疡", "痴呆", "帕金森", "艾滋", "红斑狼疮", "关节炎", "甲亢", "甲减", "贫血", "胆结石", "肾结石", "动脉瘤", "过敏性休克",
+];
+/** Relative dates without digits ("last year", "去年"): a date claim like any other (ARCHITECTURE §4.2 step 4). */
+const RELATIVE_DATES_EN = [
+  "the day before yesterday", "yesterday", "last night", "last week", "last month", "last year", "last summer", "last winter", "a year ago", "years ago",
+  "months ago", "weeks ago", "a few days ago", "since childhood", "as a child",
+];
+const RELATIVE_DATES_ZH = ["大前天", "前天", "昨天", "昨晚", "上周", "上星期", "上礼拜", "上个月", "去年", "前年", "几年前", "多年前", "几个月前", "小时候"];
+
+function termPattern(term: string): RegExp {
+  return new RegExp(`(?<![a-z])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+")}`, "iu");
+}
+
+/** Conditions and relative dates named in `text` (lexicon terms, then `extraTerms` of the case), lower-cased / compact. */
+export function extractClaimTerms(text: string, extraTerms: readonly string[] = []): string[] {
+  const out = new Set<string>();
+  const lower = text.toLowerCase();
+  for (const term of [...CONDITIONS_EN, ...RELATIVE_DATES_EN]) if (termPattern(term).test(lower)) out.add(term);
+  const flat = compact(text);
+  for (const term of [...CONDITIONS_ZH, ...RELATIVE_DATES_ZH]) if (flat.includes(term)) out.add(term);
+  for (const term of extraTerms) {
+    const n = compact(term);
+    if (n.length >= 4 && flat.includes(n)) out.add(n);
+  }
+  return [...out];
+}
+
+/** True when `term` (a lexicon entry or compact case term) is present in the source text. */
+function termInSources(term: string, sourcesLower: string, sourcesFlat: string): boolean {
+  if (/[一-龥]/u.test(term)) return sourcesFlat.includes(compact(term));
+  return termPattern(term).test(sourcesLower) || sourcesFlat.includes(compact(term));
+}
+
+const CONTENT_STOP = new Set(["about", "after", "again", "always", "around", "because", "before", "could", "doctor", "every", "never", "really", "should", "since", "still", "there", "these", "thing", "think", "those", "would", "maybe", "much", "just", "very", "that", "this", "with", "what", "when", "have", "been", "were", "they", "them", "then", "than", "from", "your", "yours", "will", "some", "only", "like", "know", "feel", "felt"]);
+
+/** Distinctive phrases of a text: consecutive pairs of ≥ 4-letter content words, and 4-character CJK runs. */
+function distinctivePhrases(text: string): string[] {
+  const words = text.toLowerCase().split(/[^a-z]+/).filter((w) => w.length >= 4 && !CONTENT_STOP.has(w));
+  const out: string[] = [];
+  for (let i = 0; i + 1 < words.length; i++) out.push(`${words[i]} ${words[i + 1]}`);
+  const cjk = text.replace(/[^一-龥]/gu, "");
+  for (let i = 0; i + 4 <= cjk.length; i++) out.push(cjk.slice(i, i + 4));
+  return out;
+}
+
 export interface VerifyOptions {
   /** Case-specific drug names (medication interventions, aliases). */
   drugLexicon?: readonly string[];
+  /** Case-specific condition/diagnosis phrases (e.g. decision option texts) that must come from the sources. */
+  conditionTerms?: readonly string[];
+  /**
+   * Answers of history facts the speaker has not revealed (nor been asked):
+   * a reply sharing a distinctive phrase with one of them — absent from the
+   * sources — tells an unasked fact.
+   */
+  unrevealed?: readonly string[];
 }
 
 /**
@@ -233,6 +308,22 @@ export function verifyGrounding(say: string, sources: readonly string[], options
   const allowedAcronyms = new Set(extractAcronyms(allowedText));
   for (const term of extractAcronyms(say)) {
     if (!allowedAcronyms.has(term) && !flatAllowed.includes(term.toLowerCase())) violations.push(`term "${term}"`);
+  }
+  const lowerAllowed = allowedText.toLowerCase();
+  for (const term of extractClaimTerms(say, options.conditionTerms)) {
+    if (!termInSources(term, lowerAllowed, flatAllowed)) violations.push(`claim "${term}"`);
+  }
+  if (options.unrevealed && options.unrevealed.length > 0) {
+    const sayPhrases = new Set(distinctivePhrases(say));
+    const allowedPhrases = new Set(distinctivePhrases(allowedText));
+    outer: for (const answer of options.unrevealed) {
+      for (const phrase of distinctivePhrases(answer)) {
+        if (sayPhrases.has(phrase) && !allowedPhrases.has(phrase)) {
+          violations.push(`unasked fact "${phrase}"`);
+          break outer;
+        }
+      }
+    }
   }
   return { ok: violations.length === 0, violations: [...new Set(violations)] };
 }

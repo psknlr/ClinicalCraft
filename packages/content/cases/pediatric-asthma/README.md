@@ -335,3 +335,8 @@ fragments (家里, 孩子, 多少, 多久, 东西, 了吗, 过吗, 一下…) th
 score ≥ 0.55 on unrelated questions, and English keywords avoid phrases that
 collapse to a single generic token after stop-word removal ("family doctor",
 "what do you think …", "in date").
+
+Exam and treatment phrasing is checked too (`packages/content/src/review-fixes.test.ts`):
+让他说句话看看 reaches the speech assessment, 听听两边肺 / 听一下肺 the auscultation of the
+current phase, 看看他清不清醒 the conscious-level check, and 先给他吸上氧 / 吸点氧 oxygen —
+CJK phrases must be contiguous, so 说句话 does not match 说话 and 听一下肺 does not match 听肺.

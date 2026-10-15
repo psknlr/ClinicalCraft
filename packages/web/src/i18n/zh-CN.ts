@@ -47,6 +47,8 @@ const zh = {
   "library.prov.published-case": "已发表病例",
   "library.prov.synthetic": "合成病例",
   "library.prov.adapted": "改编病例",
+  "library.serverCase": "服务器",
+  "library.serverCase.title": "来自 clinicalcraft serve 的内容目录（未随应用打包）",
   "library.saved": "存档 {done}/{total}",
   "library.finished": "已完成",
   "library.facility": "场景",
@@ -132,6 +134,7 @@ const zh = {
 
   "toast.welcome.title": "欢迎来到{place}",
   "toast.welcome.body": "点击画面转动视角；沿小路前进，瞄准大门按 E。",
+  "toast.welcome.bodyTouch": "拖动画面转动视角；沿小路前进，瞄准大门点“交互”。",
   "toast.resume.title": "继续你的探索",
   "toast.resume.body": "进度已从本机存档恢复。",
   "toast.chapter": "章节完成 · {title}",
@@ -360,6 +363,7 @@ const zh = {
   "device.investigations": "检查",
   "device.interventions": "处置",
   "device.nothing": "本病例没有需要这台设备的项目。",
+  "device.none": "尚未在此获取资料。选择上方的检查即可开具。",
   "device.caps": "设备能力：{caps}",
 
   /* ---------------- report ---------------- */
@@ -815,6 +819,8 @@ const zh = {
   "hud.finishedShort": "CASE CLOSED",
   "intro.continueLast": "继续上次的病例",
   "intro.selected": "当前病例",
+  "case.disclaimerFallback": "虚构教学病例，不构成医疗建议；仅供教学模拟。",
+  "hud.disclaimerLabel": "教学病例声明",
   "pause.back": "返回",
   "settings.kicker": "SETTINGS / 设置",
   "settings.title": "设置 · 语言模型与权限",

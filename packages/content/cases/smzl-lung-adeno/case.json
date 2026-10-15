@@ -2597,20 +2597,20 @@
       "id": "rb-dx-combination",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "提交能解释全部证据的诊断组合，不把所有异常归于单一疾病",
-        "en": "Submits a diagnostic combination that explains all the evidence, without attributing every abnormality to a single disease"
+        "zh-CN": "首次作答即提交能解释全部证据的诊断组合，不把所有异常归于单一疾病",
+        "en": "Submits, at the first attempt, a diagnostic combination that explains all the evidence, without attributing every abnormality to a single disease"
       },
       "weight": 2,
       "met": {
-        "decided": "diagnosis"
+        "decidedFirstTry": "diagnosis"
       }
     },
     {
       "id": "rb-safety-hbv",
       "domain": "safety",
       "text": {
-        "zh-CN": "抗CD20治疗前核查HBV状态，不以HBV DNA低于检测限排除再激活风险",
-        "en": "Checks HBV status before anti-CD20 therapy and does not rule out reactivation on an HBV DNA below the detection limit"
+        "zh-CN": "抗CD20治疗前核查HBV状态，首次作答即不以HBV DNA低于检测限排除再激活风险",
+        "en": "Checks HBV status before anti-CD20 therapy and, at the first attempt, does not rule out reactivation on an HBV DNA below the detection limit"
       },
       "weight": 2,
       "met": {
@@ -2620,7 +2620,7 @@
             "phase": "pre"
           },
           {
-            "decided": "safety"
+            "decidedFirstTry": "safety"
           }
         ]
       }
@@ -2629,8 +2629,8 @@
       "id": "rb-dx-genetics",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "正确界定t(4;12)(q23;q13)核型发现的证据边界",
-        "en": "Correctly bounds what the t(4;12)(q23;q13) karyotype finding can support"
+        "zh-CN": "首次作答即正确界定t(4;12)(q23;q13)核型发现的证据边界",
+        "en": "Correctly bounds, at the first attempt, what the t(4;12)(q23;q13) karyotype finding can support"
       },
       "weight": 1,
       "met": {
@@ -2640,7 +2640,7 @@
             "phase": "pre"
           },
           {
-            "decided": "genetics"
+            "decidedFirstTry": "genetics"
           }
         ]
       }
@@ -2649,8 +2649,8 @@
       "id": "rb-mgmt-phase-review",
       "domain": "management",
       "text": {
-        "zh-CN": "在复评期分别调阅治疗后影像与流式，并对两种肿瘤分别复评",
-        "en": "In the re-evaluation phase, reviews post-treatment imaging and flow cytometry and re-evaluates the two tumours separately"
+        "zh-CN": "在复评期分别调阅治疗后影像与流式，并在首次作答时即对两种肿瘤分别复评",
+        "en": "In the re-evaluation phase, reviews post-treatment imaging and flow cytometry and, at the first attempt, re-evaluates the two tumours separately"
       },
       "weight": 2,
       "met": {
@@ -2672,7 +2672,7 @@
             "phase": "post"
           },
           {
-            "decided": "response"
+            "decidedFirstTry": "response"
           }
         ]
       }
@@ -2860,7 +2860,7 @@
       "Walewska R, Eyre TA, Barrington S, et al. Guideline for the diagnosis and management of marginal zone lymphomas: A British Society of Haematology Guideline. Br J Haematol, 2024, 204(1): 86-107.",
       "Yoshida I. JSH Practical Guidelines for Hematological Malignancies, 2023: II. Lymphoma-2. Marginal zone lymphoma. Int J Hematol, 2025, 121(6): 725-739.",
       "中国抗癌协会多原发和不明原发肿瘤专业委员会，上海市抗癌协会多原发和不明原发肿瘤专业委员会，中华医学会血液学分会淋巴细胞疾病学组，等. 血液肿瘤合并实体肿瘤诊疗专家共识（2025年版）. 中国癌症杂志, 2025, 35(10): 968-986.",
-      "European Association for the Study of the Liver. EASL 2017 Clinical Practice Guidelines on the management of hepatitis B virus infection. J Hepatol, 2017, 67(2): 370-398."
+      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines on the management of hepatitis B virus infection. J Hepatol, 2025, 83(2): 502-583."
     ],
     "notice": {
       "zh-CN": "完成度与判断记录来自教学脚本，未经临床能力量表验证。场景时间、方块和声音只是游戏呈现。",

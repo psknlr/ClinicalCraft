@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { request as httpRequest, createServer, type IncomingHttpHeaders, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
@@ -489,6 +489,32 @@ describe("POST /api/transcripts/:sessionId", () => {
       const res = await fetch(new URL("api/transcripts/c", small.url), { method: "POST", headers: { "content-type": "application/x-ndjson", "accept-language": "en" }, body: `${JSON.stringify(item(0))}\n` });
       expect(res.status).toBe(413);
       expect(await res.json()).toMatchObject({ error: { code: "transcript_quota" } });
+    } finally {
+      await small.close();
+    }
+  });
+
+  it("empty uploads reserve nothing: the file-count cap holds when items follow (F7)", async () => {
+    const dir = mkdtempSync(join(root, "quota-empty-"));
+    const store = new WebTranscriptStore({ CLINICALCRAFT_HOME: dir }, null, { maxFileBytes: 400, maxSessions: 2 });
+    const item = (ordinal: number) => ({ type: "action", ordinal, ts: "2026-01-01T00:00:00.000Z", payload: { action: { type: "note", text: "x" }, accepted: true } }) as never;
+    for (const id of ["a", "b", "c", "d"]) expect(await store.append(id, [])).toMatchObject({ written: 0 });
+    await store.append("a", [item(0)]);
+    await store.append("b", [item(0)]);
+    await expect(store.append("c", [item(0)])).rejects.toMatchObject({ kind: "session-count" });
+    await expect(store.append("d", [item(0)])).rejects.toMatchObject({ kind: "session-count" });
+    expect(readdirSync(join(dir, "sessions", "web")).filter((f) => f.endsWith(".jsonl"))).toHaveLength(2);
+
+    // Over HTTP: empty POSTs for new ids, then real items.
+    const http = mkdtempSync(join(root, "quota-http-"));
+    const small = await startServer({ ...baseOptions(), env: { ...baseOptions().env, CLINICALCRAFT_HOME: http }, transcriptQuota: { maxFileBytes: 4000, maxSessions: 2 } });
+    try {
+      const post = (id: string, body: string) => fetch(new URL(`api/transcripts/${id}`, small.url), { method: "POST", headers: { "content-type": "application/x-ndjson" }, body });
+      for (const id of ["u1", "u2", "u3", "u4"]) expect((await post(id, "")).status).toBe(200);
+      const codes = [];
+      for (const id of ["u1", "u2", "u3", "u4"]) codes.push((await post(id, `${JSON.stringify(item(0))}\n`)).status);
+      expect(codes).toEqual([200, 200, 413, 413]);
+      expect(readdirSync(join(http, "sessions", "web")).filter((f) => f.endsWith(".jsonl"))).toHaveLength(2);
     } finally {
       await small.close();
     }

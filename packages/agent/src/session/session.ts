@@ -53,7 +53,7 @@ import { runExaminer, type DialogueEntry, type ExaminerVerdict } from "./examine
 import { rt } from "./i18n.js";
 import { resolveAgentModel, type AgentModel } from "./models.js";
 import { reactToDomainEvent, type EventReaction } from "./notifications.js";
-import { initialAffectIntensity, runPatientTurn, type PatientMemory } from "./patient-pipeline.js";
+import { initialAffectIntensity, runPatientTurn, selectFacts, type PatientMemory } from "./patient-pipeline.js";
 import { parseLearnerInput, resolveAgentAlias } from "./router.js";
 import type { ClinicalSessionApi, SessionOptions, SessionSnapshot, TranscriptItem } from "./types.js";
 
@@ -182,7 +182,7 @@ export class ClinicalSession implements ClinicalSessionApi {
   private interruptEpoch = 0;
   /** Credentials known to the session (resolved provider keys), masked in every transcript item. */
   private readonly secrets = new Set<string>();
-  private readonly offlineCursor = { value: 0 };
+  private readonly offlineCursor: AutopilotHost["cursor"] = { value: 0, missed: [] };
   /** Started-but-not-ended turns per agent (a synthetic line turn never idles a running turn of its agent). */
   private readonly openTurns = new Map<string, number>();
   private closing = false;
@@ -628,11 +628,15 @@ export class ClinicalSession implements ClinicalSessionApi {
     }
   }
 
+  /**
+   * Persist a finished model turn: append only the messages the turn added.
+   * `turn.messages` is the history snapshot taken when the turn started plus
+   * those messages, so replacing the list with it would drop staff lines
+   * (alarms, scenario announcements) appended to this agent's conversation
+   * while the turn ran; appending keeps them, in the transcript's order.
+   */
   private commitTurn(agent: AgentRole, turn: TurnResult): void {
-    const list = this.conversation(agent);
-    list.length = 0;
-    list.push(...turn.messages);
-    for (const m of turn.appended) this.recordMessage(agent, m);
+    this.appendMessages(agent, turn.appended);
   }
 
   private trackUsage(id: string, agent: AgentRole, usage: TokenUsage): void {
@@ -684,7 +688,17 @@ export class ClinicalSession implements ClinicalSessionApi {
     }
     if (reaction.staffLine) {
       const line = reaction.staffLine;
-      const speaker = line.speaker === "monitor" ? rt(this.locale, "speaker.monitor") : npcDisplayName(this.caseDef, this.facility, "nurse", this.locale);
+      const companion = this.caseDef.patient.persona.companion;
+      const speaker =
+        line.speaker === "monitor"
+          ? rt(this.locale, "speaker.monitor")
+          : line.speaker === "narrator"
+            ? rt(this.locale, "speaker.narrator")
+            : line.speaker === "patient"
+              ? t(this.caseDef.patient.displayName, this.locale)
+              : line.speaker === "companion" && companion
+                ? t(companion.name, this.locale)
+                : npcDisplayName(this.caseDef, this.facility, "nurse", this.locale);
       this.speakLine(id, { agent: line.agent, speaker, text: line.text, grounded: [] });
       this.appendMessages(line.agent, [{ role: "assistant", content: [{ type: "text", text: line.text }] }]);
       this.addDialogue({ who: line.agent, speaker, text: line.text });
@@ -716,6 +730,18 @@ export class ClinicalSession implements ClinicalSessionApi {
       this.emit(this.currentSubmission, { type: "warning", message: rt(this.locale, "warning.offline", { agent, reason }) });
     }
     return m;
+  }
+
+  /**
+   * The retry policy for an agent's model calls: the session's policy, with
+   * `providers.<id>.maxRetries` (resolved into the provider config) taking
+   * precedence over its `maxRetries`. `false` (no retries) stays false.
+   */
+  private retryFor(m: AgentModel): RetryPolicy | false | undefined {
+    if (this.retry === false) return false;
+    const max = m.config?.maxRetries;
+    if (max === undefined || max === null) return this.retry;
+    return { ...(this.retry ?? {}), maxRetries: max };
   }
 
   /** Remember credentials of a resolved provider config so transcripts mask them. */
@@ -949,13 +975,18 @@ export class ClinicalSession implements ClinicalSessionApi {
       const pre = await this.learnerPreToolUse(id, tool, args, signal);
       if (!pre.ok) return null;
       if (pre.updated) {
-        const mapped = actionFromToolInput(this.caseDef, action, pre.input, L);
+        const mapped = actionFromToolInput(this.caseDef, action, pre.input, L, this._state.phase);
         if (!mapped.ok) {
           this.emit(id, { type: "error", message: rt(L, "action.hookInputUnresolved", { tool: tool.name, detail: mapped.detail }), code: "invalid_action" });
           return null;
         }
         action = mapped.action;
         args = pre.input;
+      }
+      const early = tool.precheck?.(args, this.toolContext("learner", id, signal));
+      if (early) {
+        this.emit(id, { type: "warning", message: early.output });
+        return null;
       }
       if (await this.authorizeLearnerTool(id, tool, args, pre.approved, signal)) return null;
     }
@@ -1036,7 +1067,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     const item = c.history.find((h) => h.id === itemId);
     if (!item) return;
     const companion = c.patient.persona.companion;
-    const agent = companion?.answersHistory ? "companion" : "patient";
+    const agent = companion?.answersHistory && item.speaker !== "patient" ? "companion" : "patient";
     const speaker = agent === "companion" && companion ? t(companion.name, this.locale) : t(c.patient.displayName, this.locale);
     const question = t(item.question, this.locale);
     const text = t(item.answer, this.locale);
@@ -1057,7 +1088,9 @@ export class ClinicalSession implements ClinicalSessionApi {
   private async runAgent(id: string, name: string, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = []): Promise<{ text: string; grounded: string[] }> {
     const turnId = this.newId();
     const started = this.now();
-    this.emit(id, { type: "turn_started", turnId, agent: name });
+    // Staff speak under their case/facility name: say it now, before the first streamed text.
+    const speaker = TOP_AGENT_ROLES.has(name) ? null : npcDisplayName(this.caseDef, this.facility, name, this.locale);
+    this.emit(id, { type: "turn_started", turnId, agent: name, ...(speaker && speaker !== name ? { speaker } : {}) });
     let outcome: AgentOutcome;
     try {
       const profile = this.profiles.get(name);
@@ -1124,7 +1157,12 @@ export class ClinicalSession implements ClinicalSessionApi {
       return { status: "end_turn", text: "", grounded: [] };
     }
     let speaker: "patient" | "companion" = target;
-    if (speaker === "patient" && utterance.trim() && companion?.answersHistory) speaker = "companion";
+    if (speaker === "patient" && utterance.trim() && companion?.answersHistory) {
+      // The companion answers history — except items authored as the patient's own words (`speaker: "patient"`).
+      const selected = selectFacts(c, this._state, utterance, this.locale).selected;
+      const own = selected.length > 0 && selected.every((id) => c.history.find((h) => h.id === id)?.speaker === "patient");
+      if (!own) speaker = "companion";
+    }
     const profile = this.profiles.get(speaker)!;
     const m = this.model(profile.name);
     const settings = this._settings.patient;
@@ -1135,7 +1173,7 @@ export class ClinicalSession implements ClinicalSessionApi {
           ...(m.temperature !== undefined ? { temperature: m.temperature } : {}),
           ...(m.effort ? { effort: m.effort } : {}),
           ...(m.maxTokens !== undefined ? { maxTokens: m.maxTokens } : {}),
-          ...(this.retry !== undefined ? { retry: this.retry } : {}),
+          ...retryOption(this.retryFor(m)),
         }
       : null;
     this.currentUtterance = utterance;
@@ -1175,7 +1213,7 @@ export class ClinicalSession implements ClinicalSessionApi {
                   ...(signal ? { signal } : {}),
                   streamText: false,
                   request: this.requestOptions(m),
-                  ...(this.retry !== undefined ? { retry: this.retry } : {}),
+                  ...retryOption(this.retryFor(m)),
                   onUsage: (u) => this.trackUsage(id, profile.name, u),
                   now: this.now,
                 }),
@@ -1216,14 +1254,20 @@ export class ClinicalSession implements ClinicalSessionApi {
       emit: (msg) => this.emit(id, msg),
       ...(signal ? { signal } : {}),
       request: this.requestOptions(m),
-      ...(this.retry !== undefined ? { retry: this.retry } : {}),
+      ...retryOption(this.retryFor(m)),
       onAssistantText: (text) => this.emitAgentMessage(id, turnId, profile.name, text, []),
       onUsage: (u) => this.trackUsage(id, profile.name, u),
       now: this.now,
     });
     this.commitTurn(profile.name, turn);
-    if (turn.stopReason === "error" && this._settings.patient.offlineFallback && agentKind(profile) !== "clinician" && !signal?.aborted) {
+    const fallback = this._settings.patient.offlineFallback && agentKind(profile) !== "clinician" && !signal?.aborted;
+    if (turn.stopReason === "error" && fallback) {
       this.emit(id, { type: "warning", message: rt(this.locale, "warning.offlineFallback", { agent: profile.name, error: turn.error?.message ?? "error" }) });
+      return this.offlineReply(id, turnId, profile, utterance, true);
+    }
+    // A refusal with nothing said (the loop already warned): the deterministic responder answers, as for an error.
+    if (turn.stopReason === "refusal" && !turn.text.trim() && fallback) {
+      this.emit(id, { type: "warning", message: rt(this.locale, "warning.refusalFallback", { agent: profile.name }) });
       return this.offlineReply(id, turnId, profile, utterance, true);
     }
     return { status: turn.stopReason, text: turn.text, grounded: turn.grounded, ...(turn.error ? { error: turn.error } : {}), toolCalls: turn.toolCalls };
@@ -1243,7 +1287,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         text = consultantOffline(kind, ctx, utterance);
         break;
       case "attending":
-        text = attendingOffline(ctx, (action) => this.dispatchInternal(action, id)).text;
+        text = attendingOffline(ctx, (action) => this.dispatchInternal(action, id), utterance).text;
         break;
       case "examiner":
         text = examinerOffline(this.caseDef, assess(this.caseDef, this._state), this.locale).narrative;
@@ -1338,7 +1382,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       memory: this.opts.memory ?? null,
       signal,
       emit: (msg) => this.emit(id, msg),
-      ...(this.retry !== undefined ? { retry: this.retry } : {}),
+      ...retryOption(this.retryFor(m)),
       onUsage: (u) => this.trackUsage(id, "examiner", u),
     });
     this.emit(id, { type: "assessment", report, narrative: verdict.narrative, judged: verdict.judged });
@@ -1445,6 +1489,34 @@ export class ClinicalSession implements ClinicalSessionApi {
   /* ---------------------------------------------------------------- */
 
   /**
+   * Recorded dialogue entries a resume may keep (a transcript file or a web
+   * snapshot is not trusted to say what the engine did): `who` must be the
+   * learner, an engine actor or one of this session's agents; an `ACTION`
+   * line must be the narration (in either locale) of the next accepted
+   * replayed action — anything else, such as an "ACTION: Explained the
+   * diagnosis…" line no action produced, is dropped.
+   */
+  private trustedDialogue(entries: readonly unknown[]): DialogueEntry[] {
+    const people = new Set<string>(["learner", "agent", "system", "replay", ...this.profiles.keys()]);
+    const narrations = this.acceptedActions
+      .filter((a) => a.type !== "ask" && a.type !== "start" && a.type !== "note")
+      .map((a) => new Set((["en", "zh-CN"] as const).map((l) => narrateAction(this.caseDef, a, l)).filter((x): x is string => !!x)));
+    let next = 0;
+    const kept: DialogueEntry[] = [];
+    for (const raw of entries) {
+      const d = raw as Partial<DialogueEntry> | null;
+      if (!d || typeof d.who !== "string" || typeof d.speaker !== "string" || typeof d.text !== "string") continue;
+      if (d.who === "action") {
+        const at = narrations.findIndex((set, i) => i >= next && set.has(d.text!));
+        if (at < 0) continue;
+        next = at + 1;
+      } else if (!people.has(d.who)) continue;
+      kept.push({ who: d.who, speaker: d.speaker, text: d.text });
+    }
+    return kept;
+  }
+
+  /**
    * Restore a resumed session. Returns dialogue lines rebuilt for a transcript
    * that predates `dialogue` items (recorded by `start` after `session_meta`).
    */
@@ -1453,9 +1525,9 @@ export class ClinicalSession implements ClinicalSessionApi {
     const rejected = new Set(replayed.rejections.map((r) => r.index));
     this._state = replayed.state;
     this.acceptedActions = resume.actions.filter((_, i) => !rejected.has(i));
-    const recorded = (resume.dialogue ?? []).filter((d) => d && typeof d.who === "string" && typeof d.speaker === "string" && typeof d.text === "string");
+    const recorded = this.trustedDialogue(resume.dialogue ?? []);
     // Already in the transcript (or the snapshot): restored, not re-recorded.
-    this.dialogue.push(...recorded.map((d) => ({ who: d.who, speaker: d.speaker, text: d.text })));
+    this.dialogue.push(...recorded);
     const derived: DialogueEntry[] = [];
     for (const [agent, raw] of Object.entries(resume.messages ?? {})) {
       const list: ChatMessage[] = [];
@@ -1513,9 +1585,20 @@ export class ClinicalSession implements ClinicalSessionApi {
       commands: () => this.commands(),
       output: (text, data) => this.emit(id, { type: "command_output", name, text, ...(data !== undefined ? { data } : {}) }),
       warn: (message) => this.emit(id, { type: "warning", message }),
+      resolvedModel: () => {
+        if (this._settings.provider === "offline") return "deterministic";
+        const m = this.model("patient", false);
+        return m.model ?? m.config?.model ?? this._settings.model ?? null;
+      },
       runTool: (toolName, args) => this.runLearnerTool(id, toolName, args, signal),
       learnerAction: (action) => this.learnerAction(id, { ...action, by: action.by ?? "learner" } as ClinicalAction, signal),
       sendMessage: (to, text) => this.sendLearnerMessage(id, (to ?? this.interlocutor).replace(/^@/, "").toLowerCase(), text, signal),
+      ignoresPromptsOffline: (agent) => {
+        const profile = this.profiles.get(resolveAgentAlias(agent));
+        if (!profile || this.model(profile.name).provider) return false;
+        const kind = agentKind(profile);
+        return kind === "examiner" || kind === "attending";
+      },
       autopilot: (goal) => this.runAutopilot(id, goal, undefined, signal),
       assess: async () => void (await this.runAssessment(id, signal)),
       compact: (agent) => this.compact(id, agent ?? null, "manual", signal),
@@ -1545,6 +1628,9 @@ export class ClinicalSession implements ClinicalSessionApi {
     const pre = await this.learnerPreToolUse(id, tool, validated.value as Record<string, unknown>, signal);
     if (!pre.ok) return pre.refusal;
     const input = pre.input;
+    // Refused before the gate (no approval prompt for a call that cannot run, e.g. a locked decision).
+    const early = tool.precheck?.(input, this.toolContext("learner", id, signal));
+    if (early) return early;
     const refused = await this.authorizeLearnerTool(id, tool, input, pre.approved, signal);
     if (refused) return refused;
     if (!tool.readOnly) this.ensureStarted(id);
@@ -1558,6 +1644,11 @@ export class ClinicalSession implements ClinicalSessionApi {
     for (const w of post.warnings) this.emit(id, { type: "warning", message: w });
     return out;
   }
+}
+
+/** `{retry}` for a request when a policy is set (spread into the call's options). */
+function retryOption(policy: RetryPolicy | false | undefined): { retry?: RetryPolicy | false } {
+  return policy !== undefined ? { retry: policy } : {};
 }
 
 /** Create and start a session (SessionStart hooks, `session_configured`). */

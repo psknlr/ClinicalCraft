@@ -58,6 +58,14 @@ export const EXEC_FLAGS: FlagSpec[] = [
   { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Autopilot turns (or tool rounds for a single prompt); exceeding it exits 3", zh: "自动驾驶回合数（单条提示时为工具轮数）；超出时退出码 3" } },
   { name: "to", type: "string", valueName: "<agent>", description: { en: "Address the prompt to an agent (patient, nurse, attending…)", zh: "提示发送对象（patient、nurse、attending…）" } },
   { name: "assess", type: "boolean", description: { en: "Run the examiner at the end (default: on with --autopilot)", zh: "结束时运行考官评估（--autopilot 时默认开启）" } },
+  {
+    name: "approve-high-risk",
+    type: "boolean",
+    description: {
+      en: "With --approval auto, also approve always-ask, high-risk and ask-rule actions unattended (default: denied)",
+      zh: "配合 --approval auto，无人值守时也批准必须确认、高风险和 ask 规则的操作（默认拒绝）",
+    },
+  },
   { name: "quiet", short: "q", type: "boolean", description: { en: "No progress on stderr (text format)", zh: "不在 stderr 输出进度（text 格式）" } },
   { name: "output-last-message", short: "o", type: "string", valueName: "<file>", description: { en: "Also write the final message to this file", zh: "同时把最终消息写入该文件" } },
 ];

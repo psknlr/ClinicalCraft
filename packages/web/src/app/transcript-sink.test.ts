@@ -69,7 +69,18 @@ describe("HttpTranscriptSink", () => {
     sink.write(item(3));
     await sink.flush();
     expect(f.calls.length).toBe(before);
-    expect(sink.memory.items).toHaveLength(4); // the memory copy keeps everything
+    // Once stopped it keeps nothing (no unbounded in-memory copy of the transcript).
+    expect(Object.values(sink).some((v) => Array.isArray(v) && v.length > 0)).toBe(false);
+  });
+
+  it("keeps only what is waiting to be sent", async () => {
+    const f = fakeFetch();
+    const sink = new HttpTranscriptSink("s1", undefined, f.fn);
+    for (let i = 0; i < 50; i++) sink.write(item(i));
+    await sink.flush();
+    expect(ordinalsOf(f.calls)).toEqual([...Array(50).keys()]);
+    expect("memory" in sink).toBe(false);
+    expect(Object.values(sink).some((v) => Array.isArray(v) && v.length > 0)).toBe(false);
   });
 
   it("stops at once when the server refuses (quota)", async () => {

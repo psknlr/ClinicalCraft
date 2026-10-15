@@ -4,9 +4,9 @@
  * A single writer appends through a promise chain so lines never interleave.
  * Credentials are masked before they reach the disk (see `redactSecrets`).
  */
-import { closeSync, openSync, readSync } from "node:fs";
+import { closeSync, openSync, readSync, realpathSync } from "node:fs";
 import { appendFile, mkdir, open, readdir, readFile, stat } from "node:fs/promises";
-import { basename, dirname, isAbsolute, join, relative } from "node:path";
+import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
 import type { TranscriptItem, TranscriptSink } from "../session/types.js";
 import { redactValue, secretsFromEnv } from "../transcript.js";
 import { clinicalcraftHome, type Env } from "./home.js";
@@ -172,10 +172,39 @@ export interface SessionSummary {
 /** Sub-directory of the sessions directory holding web uploads (see @clinicalcraft/server). */
 export const WEB_TRANSCRIPTS_DIR = "web";
 
-/** Whether a transcript path lies in the web-upload directory of `base` (the sessions directory). */
-export function isWebTranscriptPath(path: string, base: string): boolean {
-  const rel = relative(join(base, WEB_TRANSCRIPTS_DIR), path);
+function inside(dir: string, path: string): boolean {
+  const rel = relative(dir, path);
   return rel !== "" && !rel.startsWith("..") && !isAbsolute(rel);
+}
+
+/** `realpathSync`, or the resolved path when it does not exist. */
+function realOr(path: string): string {
+  try {
+    return realpathSync(resolve(path));
+  } catch {
+    return resolve(path);
+  }
+}
+
+/**
+ * Whether a transcript path lies in the web-upload directory of `base` (the
+ * sessions directory) — lexically or after resolving symlinks, so a
+ * symlinked alias of an upload (or of a symlinked home) still counts as one.
+ */
+export function isWebTranscriptPath(path: string, base: string): boolean {
+  if (inside(join(base, WEB_TRANSCRIPTS_DIR), path)) return true;
+  return inside(realOr(join(base, WEB_TRANSCRIPTS_DIR)), realOr(path));
+}
+
+/**
+ * Whether a transcript is this machine's own recording: its real path lies
+ * under the real path of one of `bases` (sessions directories) and outside
+ * their web-upload directory. Anything else — an upload, a copy reached
+ * through a symlink, a file elsewhere — is resumed as untrusted input.
+ */
+export function isLocalTranscriptPath(path: string, bases: readonly string[]): boolean {
+  const real = realOr(path);
+  return bases.some((base) => base && !isWebTranscriptPath(path, base) && inside(realOr(base), real) && !inside(realOr(join(base, WEB_TRANSCRIPTS_DIR)), real));
 }
 
 function readHead(path: string, bytes = 64 * 1024): string {

@@ -15,7 +15,10 @@ clinicalcraft import-v4 "Virtual_Patient_V4(1).html"
 clinicalcraft import-v4 Virtual_Patient_V4_Part1.zip Virtual_Patient_V4_Part2.zip
 ```
 
-(From a repository checkout, `clinicalcraft` is `npm run cc --`.) The
+(From a repository checkout, `clinicalcraft` is `npm run cc --`.) Zip
+archives are read defensively: at most 16 html/`.partNN` entries, 128 MiB per
+entry and 256 MiB inflated across all archives, and entries whose data overlap
+(one compressed stream listed several times) are rejected. The
 importer checks the V4 SHA-256 when the full file can be reconstructed (a
 mismatch is only a warning), then writes (default destination
 `${CLINICALCRAFT_HOME:-~/.clinicalcraft}/assets`, or `--dest assets/local` inside a repo checkout):

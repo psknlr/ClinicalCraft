@@ -19,7 +19,7 @@ import {
 } from "@clinicalcraft/agent/node";
 import type { ClinicalSession } from "@clinicalcraft/agent";
 import { suggest } from "./argv.js";
-import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
+import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
 
 export interface OpenSessionOptions {
   caseId?: string;
@@ -78,12 +78,12 @@ async function preflight(ctx: CliContext, o: OpenSessionOptions): Promise<{ cont
   if (!caseId) throw new CliError(ctx.t("cases.noneSelected"), EXIT.usage, ctx.t("cases.available", { list: caseIds.join(", ") }));
   if (!content.cases.has(caseId)) {
     const hint = suggest(caseId, caseIds);
-    throw new CliError(ctx.t("cases.unknown", { id: caseId }), EXIT.usage, hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("cases.available", { list: caseIds.join(", ") }));
+    throw new CliError(ctx.t("cases.unknown", { id: caseId }), EXIT.usage, hints(hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("cases.available", { list: caseIds.join(", ") }), contentDirsHint(ctx, content)));
   }
   if (o.facilityId && !content.facilities.has(o.facilityId)) {
     const ids = [...content.facilities.keys()].sort();
     const hint = suggest(o.facilityId, ids);
-    throw new CliError(ctx.t("facilities.unknown", { id: o.facilityId }), EXIT.usage, hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("facilities.available", { list: ids.join(", ") }));
+    throw new CliError(ctx.t("facilities.unknown", { id: o.facilityId }), EXIT.usage, hints(hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("facilities.available", { list: ids.join(", ") }), contentDirsHint(ctx, content)));
   }
   return { content, ...(resume !== undefined ? { resume } : {}) };
 }

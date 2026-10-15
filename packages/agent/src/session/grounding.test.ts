@@ -56,3 +56,27 @@ describe("verifyGrounding", () => {
     expect(verifyGrounding("I had aspirin earlier", ["nothing about drugs"], { drugLexicon: ["aspirin"] }).ok).toBe(false);
   });
 });
+
+describe("diagnoses, history and relative dates must be grounded (C2)", () => {
+  const sources = ["Right in the middle of my chest, like a heavy weight.", "Nothing else really — just the blood pressure and the cholesterol."];
+  it("rejects made-up conditions, family history and digit-free dates", () => {
+    const made = verifyGrounding("Yes doctor, I had a stroke last year, and my father died of a heart attack.", sources);
+    expect(made.ok).toBe(false);
+    expect(made.violations).toEqual(expect.arrayContaining(['claim "stroke"', 'claim "last year"', 'claim "heart attack"']));
+    const zh = verifyGrounding("是的医生，我去年中风过，我父亲死于心梗。", ["就在胸口正中间。"]);
+    expect(zh.ok).toBe(false);
+    expect(zh.violations).toEqual(expect.arrayContaining(['claim "中风"', 'claim "去年"', 'claim "心梗"']));
+  });
+  it("accepts the same words when the facts say them", () => {
+    expect(verifyGrounding("My dad had a heart attack years ago.", ["My father had a heart attack years ago."]).ok).toBe(true);
+    expect(verifyGrounding("我有高血压。", ["有高血压，一直在吃药。"]).ok).toBe(true);
+    expect(verifyGrounding("It's right in the middle of my chest.", sources).ok).toBe(true);
+  });
+  it("case decision options and unrevealed facts", () => {
+    expect(verifyGrounding("Maybe it's a pulmonary embolism?", sources, { conditionTerms: ["Pulmonary embolism"] }).ok).toBe(false);
+    const unasked = verifyGrounding("It also goes down my left arm.", sources, { unrevealed: ["It goes down my left arm and into my jaw."] });
+    expect(unasked.ok).toBe(false);
+    expect(unasked.violations[0]).toMatch(/unasked fact/);
+    expect(verifyGrounding("It's right in the middle of my chest.", sources, { unrevealed: ["It goes down my left arm and into my jaw."] }).ok).toBe(true);
+  });
+});

@@ -5,13 +5,14 @@
  * stops acting. Offline it replays `case.solution` one step at a time through
  * the SAME tool path (approval gate, hooks, events) as an LLM clinician.
  */
-import type { CaseDefinition, ClinicalAction, SessionState } from "@clinicalcraft/core";
+import { progress, type CaseDefinition, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallOutcome, TurnStopReason } from "../loop.js";
 import type { EventMsg } from "../protocol.js";
+import { actionSpecifier, formatRule } from "../permissions.js";
 import type { ProviderErrorInfo } from "../providers/types.js";
 import { caseStatusText } from "../tools/clinical.js";
-import { rt } from "./i18n.js";
+import { joinList, rt } from "./i18n.js";
 
 /** Outcome of one agent turn as the session reports it. */
 export interface AgentOutcome {
@@ -53,14 +54,35 @@ export interface AutopilotHost {
   dispatch(action: ClinicalAction): void;
   /** Run one tool call through the full tool path. */
   executeTool(turnId: string, name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<ToolCallOutcome>;
-  /** Position in the offline walkthrough (persists across autopilot runs). */
-  cursor: { value: number };
+  /**
+   * Position in the offline walkthrough (persists across autopilot runs) and
+   * the tool steps that did not go through (denied, blocked, rejected).
+   */
+  cursor: { value: number; missed: OfflineClinicianStep[] };
+}
+
+/**
+ * What the offline clinician says when the walkthrough is exhausted: "complete"
+ * only when every objective is; otherwise that the case is not complete, with
+ * the steps that were denied or blocked and still are not done.
+ */
+export function walkthroughEndText(c: CaseDefinition, state: SessionState, missed: readonly OfflineClinicianStep[], locale: string): string {
+  const prog = progress(c, state);
+  if (prog.complete || state.finished) return rt(locale, "clinician.narrate.done");
+  const labels = [
+    ...new Set(
+      missed.flatMap((step) => (step.kind === "tool" && step.tool !== "finish_case" && !stepAlreadySatisfied(step, state) ? [formatRule(step.tool, actionSpecifier(step.action))] : [])),
+    ),
+  ];
+  const list = labels.length > 0 ? rt(locale, "clinician.narrate.missed", { steps: joinList(locale, labels) }) : "";
+  return rt(locale, "clinician.narrate.incomplete", { done: prog.done, total: prog.total, missed: list });
 }
 
 /**
  * Offline clinician: execute up to `maxSteps` reference-walkthrough steps.
- * Steps already satisfied are skipped; denied steps are skipped; an "abort"
- * approval answer stops the turn.
+ * Steps already satisfied are skipped; denied steps are skipped (and listed
+ * when the walkthrough ends with the case incomplete); an "abort" approval
+ * answer stops the turn.
  */
 export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
@@ -71,7 +93,7 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
     if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
     if (host.state().finished) return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
     if (host.cursor.value >= steps.length) {
-      last = rt(host.locale, "clinician.narrate.done");
+      last = walkthroughEndText(host.caseDef, host.state(), host.cursor.missed, host.locale);
       host.narrate(turnId, last);
       return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
     }
@@ -110,6 +132,7 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
     executed++;
     if (outcome.status === "interrupted" || signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
     if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
+    if (run === step && (outcome.status !== "ok" || !outcome.output.ok)) host.cursor.missed.push(step);
     // An inserted wait leaves the step in place (re-checked next round) unless time could not pass.
     if (run === step || host.state().clock === clockBefore) host.cursor.value++;
   }

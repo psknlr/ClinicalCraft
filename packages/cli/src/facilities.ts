@@ -3,7 +3,7 @@
  */
 import { readFile } from "node:fs/promises";
 import { isAbsolute } from "node:path";
-import { checkCatalogs, checkFacility, parseCatalog, parseFacility, t, type EquipmentCatalog, type Issue } from "@clinicalcraft/core";
+import { caseCapabilityGaps, checkCatalogs, checkFacility, parseCatalog, parseFacility, t, type EquipmentCatalog, type Issue } from "@clinicalcraft/core";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { table } from "@clinicalcraft/agent";
 import { flagBool, type ParsedArgs } from "./argv.js";
@@ -67,6 +67,15 @@ export async function facilitiesValidate(ctx: CliContext, args: ParsedArgs): Pro
     for (const { def, file } of content.facilities.values()) {
       const used = catalogs.filter((c) => def.catalogs.includes(c.id));
       const issues = checkFacility(def, used);
+      // Cases this facility could host (a slot accepts their setting) but not complete: a warning per pair
+      // (the web does not offer the facility for them; the CLI/MCP refuse the missing items there).
+      for (const { def: c } of content.cases.values()) {
+        if (!def.patientSlots.some((slot) => slot.accepts.includes(c.setting))) continue;
+        const blocking = caseCapabilityGaps(c, def, used.length > 0 ? used : catalogs).filter((g) => g.blocking);
+        if (blocking.length > 0) {
+          issues.push({ path: "patientSlots", message: `cannot complete case "${c.id}": ${blocking.map((g) => `${g.id} needs ${g.missing.join("+")}`).join(", ")}`, severity: "warning" });
+        }
+      }
       checked.push({ file, id: def.id, errors: issues.filter((i) => i.severity === "error"), warnings: issues.filter((i) => i.severity === "warning") });
     }
     for (const f of content.issues) {

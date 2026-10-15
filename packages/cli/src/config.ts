@@ -9,6 +9,7 @@ import { SettingsLayerSchema, validateSettingsLayer } from "@clinicalcraft/agent
 import { findProjectRoot, isProjectTrusted, projectSettingsPaths, readProjectSettingsTexts, saveUserSettings, trustProject, userSettingsPath } from "@clinicalcraft/agent/node";
 import { flagBool, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
+import { normalizeLang, SUPPORTED_LANGS } from "./i18n.js";
 
 const SECRET_KEY = /^(apiKey|token|password|secret)$/i;
 
@@ -89,11 +90,17 @@ export async function configGet(ctx: CliContext, args: ParsedArgs): Promise<numb
   return EXIT.ok;
 }
 
-async function writeLayerFile(file: string, patch: Record<string, unknown>, source: "project" | "local"): Promise<void> {
+/**
+ * Merge `patch` into a settings layer file and write it atomically. `base` is
+ * the file's text as the caller read it (null = absent; undefined = read it
+ * now). Returns the text written.
+ */
+async function writeLayerFile(file: string, patch: Record<string, unknown>, source: "project" | "local", base?: string | null): Promise<string> {
   let current: Record<string, unknown> = {};
-  if (existsSync(file)) {
+  const text = base !== undefined ? base : existsSync(file) ? await readFile(file, "utf8") : null;
+  if (text !== null) {
     try {
-      const parsed = JSON.parse((await readFile(file, "utf8")).replace(/^﻿/, "")) as unknown;
+      const parsed = JSON.parse(text.replace(/^﻿/, "")) as unknown;
       if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) current = parsed as Record<string, unknown>;
     } catch (err) {
       throw new CliError(`${file}: ${(err as Error).message}`, EXIT.error);
@@ -104,15 +111,29 @@ async function writeLayerFile(file: string, patch: Record<string, unknown>, sour
   if (errors.length > 0) throw new CliError(`Invalid settings: ${errors.map((e) => `${e.path || "(root)"}: ${e.message}`).join("; ")}`, EXIT.error);
   await mkdir(dirname(file), { recursive: true });
   const tmp = `${file}.${process.pid}.tmp`;
-  await writeFile(tmp, `${JSON.stringify(next, null, 2)}\n`, { encoding: "utf8", mode: source === "local" ? 0o600 : 0o644 });
+  const written = `${JSON.stringify(next, null, 2)}\n`;
+  await writeFile(tmp, written, { encoding: "utf8", mode: source === "local" ? 0o600 : 0o644 });
   await rename(tmp, file);
   if (source === "local") await chmod(file, 0o600).catch(() => undefined);
+  return written;
+}
+
+/** `locale` and `profiles.<name>.locale`: the settings keys that pick the session language. */
+function isLocaleKey(key: string): boolean {
+  const parts = key.split(".").filter(Boolean);
+  return (parts.length === 1 && parts[0] === "locale") || (parts.length === 3 && parts[0] === "profiles" && parts[2] === "locale");
 }
 
 export async function configSet(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const [key, ...rest] = args.positionals;
   if (!key || rest.length === 0) throw new UsageError(ctx.t("config.setUsage"));
-  const value = parseConfigValue(rest.join(" "));
+  let value = parseConfigValue(rest.join(" "));
+  // The language must be one the runtime ships (as `--lang` requires); aliases (zh, english…) are stored canonically.
+  if (isLocaleKey(key) && value !== null) {
+    const lang = typeof value === "string" ? normalizeLang(value) : null;
+    if (!lang) throw new UsageError(ctx.t("config.invalidValue", { key, issues: ctx.t("config.localeChoices", { list: SUPPORTED_LANGS.join(" | ") }) }));
+    value = lang;
+  }
   let patch: Record<string, unknown>;
   try {
     patch = patchFor(key, value);
@@ -148,8 +169,10 @@ export async function configSet(ctx: CliContext, args: ParsedArgs): Promise<numb
     // so does creating the first settings file (it then holds only what the user wrote).
     const before = await readProjectSettingsTexts(root);
     const keepTrust = (before.project === null && before.local === null) || (await isProjectTrusted(root, ctx.env, before));
-    await writeLayerFile(file, patch, target);
-    if (keepTrust) await trustProject(root, ctx.env);
+    // Written from the text just checked (not a second read), and the trust pinned to exactly what this
+    // command produced: a change by someone else in between is never trusted on the user's behalf.
+    const written = await writeLayerFile(file, patch, target, target === "project" ? before.project : before.local);
+    if (keepTrust) await trustProject(root, ctx.env, undefined, target === "project" ? { ...before, project: written } : { ...before, local: written });
   }
   ctx.print(ctx.t("config.saved", { key, value: secret ? "[redacted]" : JSON.stringify(value), file }));
   await warnIfShadowed(ctx, key, value, target, secret);

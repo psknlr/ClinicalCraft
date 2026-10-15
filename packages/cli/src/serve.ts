@@ -4,10 +4,10 @@
  * lazily so the rest of the CLI works without them.
  */
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import type { ResolvedSettings } from "@clinicalcraft/agent";
 import { flagBool, flagNumber, flagString, UsageError, type ParsedArgs } from "./argv.js";
-import { CliError, EXIT, loadCliSettings, sessionFlagsLayer, type CliContext } from "./context.js";
+import { CliError, EXIT, loadCliSettings, requireProviderKey, sessionFlagsLayer, type CliContext } from "./context.js";
 import { webDistDir } from "./paths.js";
 
 interface StartServerOptions {
@@ -56,6 +56,36 @@ function openBrowser(url: string): void {
   }
 }
 
+/** Environment variable read for the server token (keeps it out of the process list). */
+export const SERVER_TOKEN_ENV = "CLINICALCRAFT_SERVER_TOKEN";
+/** Shortest access token `serve` accepts. */
+export const MIN_TOKEN_LENGTH = 16;
+
+/**
+ * The access token, by precedence: `--token` (visible in the process list —
+ * warned about), `--token-file <path>`, `CLINICALCRAFT_SERVER_TOKEN`, then
+ * `server.token` from settings. Tokens shorter than `MIN_TOKEN_LENGTH` are a
+ * usage error.
+ */
+export function resolveServeToken(ctx: CliContext, args: ParsedArgs, fromSettings: string | null | undefined): string | undefined {
+  const flag = flagString(args, "token");
+  const file = flagString(args, "token-file");
+  let token: string | undefined;
+  if (flag !== undefined) {
+    token = flag;
+    ctx.printErr(ctx.err.yellow(ctx.t("serve.tokenOnCommandLine", { env: SERVER_TOKEN_ENV })));
+  } else if (file !== undefined) {
+    const path = ctx.path(file);
+    try {
+      token = readFileSync(path, "utf8").trim();
+    } catch (err) {
+      throw new UsageError(ctx.t("serve.tokenFile", { file: path, message: (err as Error).message }));
+    }
+  } else token = ctx.env[SERVER_TOKEN_ENV]?.trim() || fromSettings || undefined;
+  if (token !== undefined && token.length < MIN_TOKEN_LENGTH) throw new UsageError(ctx.t("serve.shortToken", { min: MIN_TOKEN_LENGTH }));
+  return token;
+}
+
 export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<number> {
   // `--lang` is the default language of the server's error messages (Accept-Language wins).
   const settings = await loadCliSettings(ctx, ctx.lang ? { locale: ctx.lang } : undefined);
@@ -63,7 +93,7 @@ export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<numbe
   const portFlag = flagNumber(args, "port");
   if (portFlag !== undefined && (!Number.isInteger(portFlag) || portFlag < 0 || portFlag > 65535)) throw new UsageError(ctx.t("serve.badPort", { port: portFlag }));
   const port = portFlag ?? settings.server.port;
-  const token = flagString(args, "token") ?? settings.server.token ?? undefined;
+  const token = resolveServeToken(ctx, args, settings.server.token);
   if (!isLoopback(host) && !token) throw new CliError(ctx.t("serve.needToken", { host }), EXIT.usage);
 
   const loaded = await importExport<StartServer>(ctx, "@clinicalcraft/server", "startServer");
@@ -105,6 +135,8 @@ export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<numbe
 
 export async function runMcp(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const flags = await sessionFlagsLayer(ctx, args);
+  // A `--provider` without its key is an error, never a silent offline patient behind the client's back.
+  await requireProviderKey(ctx, args, flags);
   const settings = await loadCliSettings(ctx, flags);
   const loaded = await importExport<RunMcpServer>(ctx, "@clinicalcraft/mcp", "runMcpServer");
   if (!("fn" in loaded)) throw new CliError(ctx.t("mcp.unavailable", { reason: loaded.reason }), EXIT.error, ctx.t("serve.buildHint"));

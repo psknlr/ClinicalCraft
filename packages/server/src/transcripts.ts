@@ -125,10 +125,28 @@ export class WebTranscriptStore {
 
   private async appendNow(sessionId: string, items: readonly TranscriptItem[]): Promise<{ path: string; written: number }> {
     if (!isValidSessionId(sessionId)) throw new Error("invalid session id");
+    // Nothing to write: no writer, no file — an empty upload must not reserve a slot past the quota.
+    if (items.length === 0) return { path: this.pathFor(sessionId), written: 0 };
     const incoming = items.reduce((n, item) => n + Buffer.byteLength(JSON.stringify(item)) + 1, 0);
     const writer = await this.writer(sessionId);
+    // The file-count quota is checked whenever the file is about to be created — not only when its
+    // writer was (a cached writer whose file does not exist yet would otherwise skip the check).
+    const onDisk = await stat(writer.path).then(
+      () => true,
+      () => false,
+    );
+    if (!onDisk) {
+      const files = (await readdir(this.dir).catch(() => [] as string[])).filter((f) => f.endsWith(".jsonl"));
+      if (files.length >= this.maxSessions) {
+        this.drop(sessionId);
+        throw new TranscriptQuotaError(`at most ${this.maxSessions} web transcripts are kept`, "session-count");
+      }
+    }
     const size = this.sizes.get(sessionId) ?? 0;
-    if (size + incoming > this.maxFileBytes) throw new TranscriptQuotaError(`transcript ${sessionId} would exceed ${this.maxFileBytes} bytes`, "file-size");
+    if (size + incoming > this.maxFileBytes) {
+      if (!onDisk) this.drop(sessionId);
+      throw new TranscriptQuotaError(`transcript ${sessionId} would exceed ${this.maxFileBytes} bytes`, "file-size");
+    }
     this.sizes.set(sessionId, size + incoming);
     let failures = writer.failures;
     for (const item of items) void writer.write(item);
@@ -136,6 +154,12 @@ export class WebTranscriptStore {
     failures = writer.failures - failures;
     if (failures > 0) throw new Error(`${failures} transcript line(s) could not be written`);
     return { path: writer.path, written: items.length };
+  }
+
+  /** Forget a cached writer (its file was never written). */
+  private drop(sessionId: string): void {
+    this.writers.delete(sessionId);
+    this.sizes.delete(sessionId);
   }
 
   /** Wait for every pending write. */
@@ -156,10 +180,7 @@ export class WebTranscriptStore {
       (info) => info.size,
       () => null,
     );
-    if (existingSize === null) {
-      const files = (await readdir(this.dir).catch(() => [] as string[])).filter((f) => f.endsWith(".jsonl"));
-      if (files.length >= this.maxSessions) throw new TranscriptQuotaError(`at most ${this.maxSessions} web transcripts are kept`, "session-count");
-    }
+    // The file-count quota is checked by `appendNow` before the file is first written.
     const writer = JsonlTranscript.at(path, undefined, { env: this.env });
     this.writers.set(sessionId, writer);
     this.sizes.set(sessionId, existingSize ?? 0);

@@ -24,6 +24,8 @@ interface ProviderRow {
   baseUrl: string | null;
   defaultModel: string | null;
   configured: boolean;
+  /** False for keyless providers (local servers, offline, proxy): "configured" then says nothing about a key. */
+  keyRequired: boolean;
   keyEnv: string[];
   source: "builtin" | "settings";
   active: boolean;
@@ -35,13 +37,17 @@ function providerRows(ctx: CliContext, settings: LoadedSettings): ProviderRow[] 
     const template = findProviderTemplate(id);
     const override = settings.providers[id];
     const name = override?.name ?? template?.name;
+    const wire = override?.wire ?? template?.wire ?? "?";
+    // Same rule as resolveProviderConfig: a noKey template stays keyless unless the user configured a key.
+    const keyless = wire === "offline" || wire === "proxy" || (template?.noKey === true && !override?.apiKey && !override?.apiKeyEnv);
     return {
       id,
       name: localizedName(name, ctx.locale) || id,
-      wire: override?.wire ?? template?.wire ?? "?",
+      wire,
       baseUrl: override?.baseUrl ?? template?.baseUrl ?? null,
       defaultModel: override?.defaultModel ?? template?.defaultModel ?? null,
       configured: isProviderConfigured(settings, id, ctx.env),
+      keyRequired: !keyless,
       keyEnv: override?.apiKeyEnv ?? template?.apiKeyEnv ?? [],
       source: template ? "builtin" : "settings",
       active: settings.provider === id,
@@ -59,9 +65,10 @@ export async function providersList(ctx: CliContext, args: ParsedArgs): Promise<
   const p = ctx.out;
   const yes = ctx.t("word.yes");
   const no = ctx.t("word.no");
+  const notNeeded = ctx.t("word.notNeeded");
   const data = [[ctx.t("col.id"), ctx.t("col.name"), ctx.t("col.wire"), ctx.t("col.baseUrl"), ctx.t("col.defaultModel"), ctx.t("col.key")]];
   for (const r of rows) {
-    const key = r.wire === "offline" || r.wire === "proxy" ? "-" : r.configured ? yes : `${no}${r.keyEnv.length ? ` (${r.keyEnv.join("/")})` : ""}`;
+    const key = r.wire === "offline" || r.wire === "proxy" ? "-" : !r.keyRequired ? notNeeded : r.configured ? yes : `${no}${r.keyEnv.length ? ` (${r.keyEnv.join("/")})` : ""}`;
     data.push([`${r.active ? "*" : " "}${r.id}`, r.name, r.wire, r.baseUrl ?? "-", r.defaultModel ?? "-", key]);
   }
   ctx.print(table(data, { header: true, maxCell: 48 }));

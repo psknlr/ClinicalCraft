@@ -195,7 +195,13 @@ export const ROOT: CommandSpec = {
       flags: [
         { name: "port", type: "number", valueName: "<n>", description: { en: "Port (default 5178)", zh: "端口（默认 5178）" } },
         { name: "host", type: "string", valueName: "<host>", description: { en: "Bind address (default 127.0.0.1; others need --token)", zh: "监听地址（默认 127.0.0.1；其他地址需要 --token）" } },
-        { name: "token", type: "string", valueName: "<token>", description: { en: "Bearer token required by the API", zh: "API 所需的 Bearer 令牌" } },
+        {
+          name: "token",
+          type: "string",
+          valueName: "<token>",
+          description: { en: "Bearer token required by the API (≥ 16 chars; visible in the process list — prefer CLINICALCRAFT_SERVER_TOKEN or --token-file)", zh: "API 所需的 Bearer 令牌（至少 16 个字符；会出现在进程列表中——建议改用 CLINICALCRAFT_SERVER_TOKEN 或 --token-file）" },
+        },
+        { name: "token-file", type: "string", valueName: "<path>", description: { en: "Read the access token from this file", zh: "从该文件读取访问令牌" } },
         { name: "open", type: "boolean", description: { en: "Open the browser", zh: "打开浏览器" } },
         { name: "static", type: "string", valueName: "<dir>", description: { en: "Static web directory (default packages/web/dist)", zh: "静态网页目录（默认 packages/web/dist）" } },
       ],

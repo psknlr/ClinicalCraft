@@ -23,6 +23,7 @@ export { commandNameFor, loadProjectAgents, loadProjectCommands, type Definition
 export { createCommandHookExecutor, HOOK_ABORT_EXIT_CODE, HOOK_TIMEOUT_EXIT_CODE, type CommandHookExecutorOptions } from "./hooks.js";
 export {
   isWebTranscriptPath,
+  isLocalTranscriptPath,
   JsonlTranscript,
   listSessions,
   readTranscript,

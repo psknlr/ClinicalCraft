@@ -54,7 +54,8 @@ function reducedMotion(): boolean {
   }
 }
 
-function coarse(): boolean {
+/** True on a touch-first device (`pointer: coarse`): on-screen buttons instead of keys. */
+export function coarse(): boolean {
   try {
     return matchMedia("(pointer: coarse)").matches;
   } catch {

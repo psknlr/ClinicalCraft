@@ -45,7 +45,9 @@ was copied. Licences of the inspirations: Grok CLI (MIT), Codex CLI
 * diagnosis leakage through prompts → type-level `PatientContext`, grounding tests
 * hallucinated specifics → verifier + template fallback
 * silent auto-approval → approval gate on every state change, including learner
-  button presses; headless denies by default unless `--approval auto|bypass`
+  button presses; headless denies by default, `--approval auto` still denies
+  always-ask/high-risk/ask-rule requests unless `--approve-high-risk`, only
+  `bypass` approves everything; MCP turns "ask" into a `confirm: true` second call
 * untrusted content executing code → hooks only from settings; case/hook text
   treated as data and capped
 * credential hazards → keys only in env / user settings (0600) / server-side

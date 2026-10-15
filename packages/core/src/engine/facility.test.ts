@@ -3,10 +3,12 @@ import { describe, expect, it } from "vitest";
 import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
 import {
   assignPatientSlot,
+  caseCapabilityGaps,
   checkCatalogs,
   checkFacility,
   facilityCapabilities,
   mergeCatalogs,
+  parseCase,
   parseCatalog,
   parseFacility,
   placementBox,
@@ -271,5 +273,28 @@ describe("resolveWaypoint: the patient's own bedside kit", () => {
     expect(nearest).not.toEqual(own); // the old behaviour: nearest to wherever the learner stands
     // A capability the patient's room lacks still falls back to the nearest provider.
     expect(resolveWaypoint(f, catalogs, "lab-hematology", { from: spawn, locale: "en", slotId: "resus-1", preferPatientSlot: true })).toEqual(resolveWaypoint(f, catalogs, "lab-hematology", { from: spawn, locale: "en" }));
+  });
+});
+
+describe("caseCapabilityGaps (C3/C4)", () => {
+  const parsed = parseCase(fixture("mini-anaphylaxis.case.json"));
+  if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues));
+  const c = parsed.value;
+
+  it("names the items a facility cannot provide, and which objectives they block", () => {
+    const gaps = caseCapabilityGaps(c, F, CATALOGS);
+    const epi = gaps.find((g) => g.id === "epi");
+    // The mini facility has no "medications" capability: adrenaline (objective "treat") cannot be given there.
+    expect(epi).toMatchObject({ kind: "intervention", missing: ["medications"], blocking: true });
+    expect(epi!.neededBy).toContain("treat");
+    // stethoscope is personal kit: the airway exam is never a gap.
+    expect(gaps.find((g) => g.id === "airway")).toBeUndefined();
+  });
+
+  it("an alternative in the condition keeps an item non-blocking; a facility with everything has no gaps", () => {
+    const withAlternative = { ...c, objectives: c.objectives.map((o) => (o.id === "treat" ? { ...o, completeWhen: { any: [{ intervened: "epi" }, { intervened: "chlorphenamine" }] } } : o)) } as typeof c;
+    expect(caseCapabilityGaps(withAlternative, F, CATALOGS).find((g) => g.id === "epi")?.blocking).toBe(false);
+    const everything = { ...F, placements: [...F.placements, { ...F.placements[0]!, id: "all-caps", capabilities: ["medications", "oxygen", "iv-access", "lab-blood-gas", "lab-chemistry", "xray", "ct"] }] } as typeof F;
+    expect(caseCapabilityGaps(c, everything, CATALOGS)).toEqual([]);
   });
 });

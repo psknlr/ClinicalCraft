@@ -112,6 +112,7 @@ The reference `solution` completes all 6 objectives and all 5 decisions with no 
 ## Matcher notes
 
 * Short Chinese questions are scored by longest common substring, so generic frames ("有没有…", "…有没有问题", "什么时候…的", "…多少") used to select unrelated items ("有没有心慌？" answered with the haemoptysis fact). Questions and keywords were rephrased so no content-free frame selects an item, except where the frame itself carries the topic ("哪里…" → the only pain is chest pain; "家里人有没有…" → family history).
+* The required `ex-neuro` takes 神志 / 意识 / 清醒 and "conscious level" ("查一下神志" found nothing before); it excludes 补液后 / 复评 / reassess so the post-fluid reassessment still reaches `ex-reassess-perfusion`.
 * `excludeKeywords` separate look-alike items: cough vs haemoptysis/pain, intake vs urinary symptoms ("小便疼") and diabetes ("糖尿"), regular vs fever medicines, the patient's own vs family history.
 * History now also covers focal neurological symptoms (`hx-neuro-sx`), palpitations/dizziness/syncope (`hx-cvs-sx`) and flu-like symptoms (`hx-flu-sx`); `hx-pmh` states no stroke, cancer or immunosuppression and her home glucose monitoring; `hx-rigors` mentions the sweats.
 

@@ -1,7 +1,8 @@
 /**
  * Minimal ZIP reader for `import-v4`: end-of-central-directory → central
  * directory → local headers; entries stored (0) or deflated (8, via
- * `zlib.inflateRawSync`); CRC-32 checked. No zip64, no encryption, no
+ * `zlib.inflateRawSync`); CRC-32 checked; entries whose local data overlap
+ * are rejected and inflation is capped per entry. No zip64, no encryption, no
  * multi-disk archives.
  */
 import * as zlib from "node:zlib";
@@ -17,9 +18,21 @@ export interface ZipEntry {
   isDirectory: boolean;
 }
 
-/** Thrown for archives this reader cannot handle. */
+/** Why an archive could not be read: damaged, a feature this reader lacks, or a size limit. */
+export type ZipErrorKind = "invalid" | "unsupported" | "limit";
+
+/**
+ * Thrown for archives this reader cannot handle. `message` is technical
+ * English detail; front-ends show a localised text chosen by `kind` (and
+ * `file`, which `collectInputs` fills in).
+ */
 export class ZipError extends Error {
-  constructor(message: string) {
+  /** The archive the error is about, when known. */
+  file?: string;
+  constructor(
+    message: string,
+    readonly kind: ZipErrorKind = "invalid",
+  ) {
     super(message);
     this.name = "ZipError";
   }
@@ -63,8 +76,8 @@ export function listZip(buf: Buffer): ZipEntry[] {
   const total = buf.readUInt16LE(eocd + 10);
   const cdSize = buf.readUInt32LE(eocd + 12);
   const cdOffset = buf.readUInt32LE(eocd + 16);
-  if (disk !== 0) throw new ZipError("multi-disk ZIP archives are not supported");
-  if (total === 0xffff || cdSize === 0xffffffff || cdOffset === 0xffffffff) throw new ZipError("zip64 archives are not supported");
+  if (disk !== 0) throw new ZipError("multi-disk ZIP archives are not supported", "unsupported");
+  if (total === 0xffff || cdSize === 0xffffffff || cdOffset === 0xffffffff) throw new ZipError("zip64 archives are not supported", "unsupported");
   if (cdOffset + cdSize > buf.length) throw new ZipError("truncated ZIP archive");
   const entries: ZipEntry[] = [];
   let p = cdOffset;
@@ -79,24 +92,48 @@ export function listZip(buf: Buffer): ZipEntry[] {
     const extraLen = buf.readUInt16LE(p + 30);
     const commentLen = buf.readUInt16LE(p + 32);
     const offset = buf.readUInt32LE(p + 42);
-    if (compressedSize === 0xffffffff || size === 0xffffffff || offset === 0xffffffff) throw new ZipError("zip64 entries are not supported");
-    if (flags & 0x1) throw new ZipError("encrypted ZIP entries are not supported");
+    if (compressedSize === 0xffffffff || size === 0xffffffff || offset === 0xffffffff) throw new ZipError("zip64 entries are not supported", "unsupported");
+    if (flags & 0x1) throw new ZipError("encrypted ZIP entries are not supported", "unsupported");
     const name = buf.subarray(p + 46, p + 46 + nameLen).toString("utf8");
     entries.push({ name, method, compressedSize, size, crc32: crc, offset, isDirectory: name.endsWith("/") });
     p += 46 + nameLen + extraLen + commentLen;
   }
+  assertDisjoint(buf, entries, cdOffset);
   return entries;
 }
 
-/** Largest entry `readZipEntry` inflates (the V4 html is ~50 MB). */
-export const MAX_ENTRY_BYTES = 1024 * 1024 * 1024;
+/**
+ * Every entry must own its local header and data: several central-directory
+ * records pointing at the same (or overlapping) bytes would let one small
+ * deflated stream be inflated many times (a decompression bomb), and no entry
+ * may run into the central directory.
+ */
+function assertDisjoint(buf: Buffer, entries: readonly ZipEntry[], cdOffset: number): void {
+  const spans = entries.map((e) => {
+    const p = e.offset;
+    if (p + 30 > buf.length || buf.readUInt32LE(p) !== LOC_SIG) throw new ZipError(`corrupt local header for ${e.name}`);
+    return { name: e.name, start: p, end: p + 30 + buf.readUInt16LE(p + 26) + buf.readUInt16LE(p + 28) + e.compressedSize };
+  });
+  spans.sort((a, b) => a.start - b.start);
+  for (let i = 0; i < spans.length; i++) {
+    const span = spans[i]!;
+    if (span.end > cdOffset) throw new ZipError(`entry ${span.name} overlaps the central directory`);
+    const next = spans[i + 1];
+    if (next && next.start < span.end) throw new ZipError(`entries ${span.name} and ${next.name} overlap (the same data listed twice)`);
+  }
+}
+
+/** Largest entry `readZipEntry` inflates (the V4 html is ~43.5 MB; its zips carry one ~22 MB part each). */
+export const MAX_ENTRY_BYTES = 128 * 1024 * 1024;
 
 /**
  * Extract one entry (verifies size and CRC-32). Inflation is capped at the
- * declared size, so a crafted archive cannot expand without bound.
+ * declared size, which may not exceed `maxBytes` (default `MAX_ENTRY_BYTES`;
+ * callers pass what is left of an archive-wide budget), so a crafted archive
+ * cannot expand without bound.
  */
-export function readZipEntry(buf: Buffer, entry: ZipEntry): Buffer {
-  if (entry.size > MAX_ENTRY_BYTES) throw new ZipError(`${entry.name} is too large (${entry.size} bytes)`);
+export function readZipEntry(buf: Buffer, entry: ZipEntry, maxBytes: number = MAX_ENTRY_BYTES): Buffer {
+  if (entry.size > Math.min(maxBytes, MAX_ENTRY_BYTES)) throw new ZipError(`${entry.name} is too large (${entry.size} bytes)`, "limit");
   const p = entry.offset;
   if (p + 30 > buf.length || buf.readUInt32LE(p) !== LOC_SIG) throw new ZipError(`corrupt local header for ${entry.name}`);
   const nameLen = buf.readUInt16LE(p + 26);
@@ -113,7 +150,7 @@ export function readZipEntry(buf: Buffer, entry: ZipEntry): Buffer {
     } catch (err) {
       throw new ZipError(`cannot inflate ${entry.name}: ${(err as Error).message}`);
     }
-  } else throw new ZipError(`unsupported compression method ${entry.method} for ${entry.name}`);
+  } else throw new ZipError(`unsupported compression method ${entry.method} for ${entry.name}`, "unsupported");
   if (data.length !== entry.size) throw new ZipError(`size mismatch for ${entry.name}`);
   if (crc32(data) !== entry.crc32) throw new ZipError(`CRC mismatch for ${entry.name}`);
   return data;

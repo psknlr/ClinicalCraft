@@ -162,12 +162,19 @@
         "en": "Cath lab"
       },
       "description": {
-        "zh-CN": "转入导管室后的直接PCI。",
-        "en": "Primary PCI after transfer to the cath lab."
+        "zh-CN": "导管室已启动、患者转入导管室后的直接PCI。",
+        "en": "Primary PCI once the cath lab has been activated and the patient transferred there."
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "flag": "transferred-cath-lab"
+        "all": [
+          {
+            "flag": "transferred-cath-lab"
+          },
+          {
+            "flag": "cath-lab-activated"
+          }
+        ]
       }
     }
   ],
@@ -209,13 +216,25 @@
           "疼的部位",
           "疼的地方",
           "具体位置",
-          "指一下哪里"
+          "指一下哪里",
+          "疼在哪",
+          "痛在哪",
+          "哪个部位",
+          "哪个位置"
         ],
         "en": [
           "location of the pain",
           "which part of your chest",
           "point to the pain",
-          "where exactly"
+          "whereexactly",
+          "whereisthepain",
+          "wheresthepain",
+          "whereisyourpain",
+          "wheresyourpain",
+          "wheredoesithurt",
+          "whereithurts",
+          "wheredoyoufeelthepain",
+          "wheredoyoufeelit"
         ]
       },
       "disclosure": "volunteer"
@@ -342,6 +361,12 @@
           "chest pressure"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": [
+          "wheredoyoufeel"
+        ]
+      },
       "disclosure": "on-ask",
       "required": true
     },
@@ -377,7 +402,9 @@
           "your arm",
           "left arm",
           "shoulder",
-          "neck"
+          "neck",
+          "wheredoesthepaingo",
+          "wheredoesitgo"
         ]
       },
       "disclosure": "on-ask",
@@ -3571,8 +3598,8 @@
         "investigation": "coronary-angiography",
         "ifMatches": "造影|angio|cag|pci|cath",
         "message": {
-          "zh-CN": "冠脉造影/直接PCI只在导管室进行，急诊抢救室没有该结果：需先启动导管室并将患者转入导管室。",
-          "en": "Coronary angiography / primary PCI is done only in the cath lab — there is no ED result: activate the lab and transfer the patient there first."
+          "zh-CN": "冠脉造影/直接PCI只在导管室进行：导管室已启动、患者已转入导管室后才会有结果，急诊抢救室没有该结果。",
+          "en": "Coronary angiography / primary PCI is done only in the cath lab: a result exists only once the lab has been activated and the patient is there (there is no ED result)."
         }
       }
     ]
@@ -4026,7 +4053,7 @@
         ]
       },
       "dose": {
-        "zh-CN": "硝酸甘油 0.5 mg 舌下含服",
+        "zh-CN": "硝酸甘油 0.4–0.5 mg 舌下含服",
         "en": "Nitroglycerin 0.4–0.5 mg sublingual"
       },
       "requires": [
@@ -4953,8 +4980,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "心搏骤停（室颤）时必须先在原地除颤、复苏，恢复自主循环后再转运；导管室未启动、团队未就位时转运，患者会在无人接收的导管室里耽搁，途中缺乏抢救保障。",
-        "en": "In cardiac arrest (VF), defibrillate and resuscitate where he is and transfer only after ROSC. Transferring before the lab has been activated sends an unstable patient to a lab with no team ready to receive him."
+        "zh-CN": "转运前须先启动导管室：未启动时团队不在，不稳定的患者会在无人接收的导管室门口耽搁。若患者正处于心搏骤停（室颤），应先在原地除颤、复苏，恢复自主循环后再转运。",
+        "en": "Activate the cath lab before transferring: without an activation call there is no team in the lab, and an unstable patient waits at the door with nobody to receive him. If he is in cardiac arrest (VF), defibrillate and resuscitate where he is and transfer only after ROSC."
       },
       "response": {
         "zh-CN": "患者已在医护陪同下转入导管室，并完成SBAR交接。",
@@ -5427,11 +5454,7 @@
           ]
         },
         "setVitals": {
-          "hr": 0,
-          "sbp": 0,
-          "dbp": 0,
           "rr": 0,
-          "spo2": 45,
           "gcs": 3,
           "rhythm": "ventricular-fibrillation",
           "ecg": "normal"
@@ -5485,6 +5508,7 @@
           "rhythm": "sinus",
           "ecg": "st-elevation"
         },
+        "absolute": true,
         "setFlags": [
           "rosc"
         ],
@@ -5639,6 +5663,29 @@
         }
       },
       {
+        "id": "transfer-before-activation",
+        "when": {
+          "all": [
+            {
+              "flag": "transferred-cath-lab"
+            },
+            {
+              "not": {
+                "flag": "cath-lab-activated"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "transfer-before-activation"
+        ],
+        "severity": "warning",
+        "message": {
+          "zh-CN": "导管室护士：“我们没有接到启动电话，介入医生和技师都不在——导管室还没准备，病人只能先在门口等着。”",
+          "en": "Cath-lab nurse: \"We haven't had an activation call — the interventionalist and radiographer aren't here and the lab isn't set up. He'll have to wait at the door.\""
+        }
+      },
+      {
         "id": "reperfusion",
         "when": {
           "all": [
@@ -5669,6 +5716,7 @@
           "rhythm": "sinus",
           "ecg": "normal"
         },
+        "absolute": true,
         "setFlags": [
           "reperfused"
         ],
@@ -6627,14 +6675,19 @@
       "id": "r-door-to-lab",
       "domain": "efficiency",
       "text": {
-        "zh-CN": "到院60分钟内转入导管室且未发生室颤",
-        "en": "In the cath lab within 60 minutes of arrival, with no VF arrest"
+        "zh-CN": "先启动导管室，到院60分钟内转入导管室且未发生室颤",
+        "en": "Cath lab activated first and the patient in the lab within 60 minutes of arrival, with no VF arrest"
       },
       "weight": 2,
       "met": {
         "all": [
           {
             "flag": "transferred-cath-lab"
+          },
+          {
+            "not": {
+              "flag": "transfer-before-activation"
+            }
           },
           {
             "not": {
@@ -7653,6 +7706,76 @@
         "locale": "en",
         "expect": [
           "allergies"
+        ]
+      },
+      {
+        "text": "Where is the pain?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "Where's the pain?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "Where does it hurt?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "Where do you feel the pain?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "Can you show me where it hurts?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "Where is the pain worst?",
+        "locale": "en",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "Where does the pain go?",
+        "locale": "en",
+        "expect": [
+          "pain-radiation"
+        ]
+      },
+      {
+        "text": "What exactly were you doing when it started?",
+        "locale": "en",
+        "expect": [
+          "hpi-onset"
+        ]
+      },
+      {
+        "text": "疼在哪里？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-site"
+        ]
+      },
+      {
+        "text": "哪个部位疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-site"
         ]
       }
     ]

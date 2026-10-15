@@ -6,7 +6,8 @@
  *   patient/companion → the select → voice pipeline without a model
  *   nurse             → handover + monitor + pending/ready results
  *   radiologist/path. → text of results the learner has read + case knowledge
- *   attending         → the current objective's hint, Socratically (dispatches `hint`)
+ *   attending         → a Socratic nudge naming the current objective; its hint (dispatches
+ *                       `hint`, scored) only when the learner asks for one
  *   examiner          → deterministic report only (judged items stay null)
  *   clinician         → replays `case.solution` one tool call per step, narrated
  */
@@ -51,7 +52,7 @@ export function patientOffline(input: Omit<PatientTurnInput, "llm">): Promise<Pa
 /* Nurse                                                               */
 /* ------------------------------------------------------------------ */
 
-const NURSE_VITALS = /vital|obs\b|observation|\bbp\b|blood pressure|pressure|heart rate|pulse|\bsats?\b|spo2|oxygen|temp|monitor|resp|生命体征|血压|心率|脉搏|血氧|氧饱和|体温|呼吸|监护|指标/iu;
+const NURSE_VITALS = /vital|obs\b|observation|\bbp\b|blood pressure|pressure|heart rate|pulse|\bsats?\b|spo2|oxygen|temp|monitor|resp|pain|生命体征|血压|心率|脉搏|血氧|氧饱和|体温|呼吸|监护|指标|疼痛评分|痛/iu;
 const NURSE_RESULTS = /result|\blab|test|back|pending|report|ready|order|结果|化验|检查|报告|出来|回来|送检/iu;
 const NURSE_HANDOVER = /handover|hand over|triage|story|background|who is|what('s| is) (going on|the story|happening)|交班|分诊|情况|病史|怎么回事|什么病人/iu;
 
@@ -80,14 +81,16 @@ export function nurseOffline(ctx: OfflineContext, utterance: string): string {
   const L = ctx.locale;
   const wantsVitals = NURSE_VITALS.test(utterance);
   const wantsResults = NURSE_RESULTS.test(utterance);
-  const wantsHandover = NURSE_HANDOVER.test(utterance);
-  // A handover (or an unspecific question) covers everything: story, monitor, results.
+  // Approaching the nurse (no words yet) is asking for the handover.
+  const wantsHandover = NURSE_HANDOVER.test(utterance) || !utterance.trim();
+  // A handover covers everything: story, monitor, results. An unspecific question gets the monitor and
+  // results only — the triage note describes arrival ("no IV access yet") and is stale once the case moves.
   const all = wantsHandover || (!wantsVitals && !wantsResults);
   const parts: string[] = [];
-  if (wantsHandover || all) {
+  if (wantsHandover) {
     const note = c.patient.triageNote ? t(c.patient.triageNote, L) : t(c.patient.chiefComplaint, L);
     parts.push(rt(L, "nurse.offline.handover", { note }));
-    if (wantsHandover) for (const n of c.npcs.filter((x) => x.role === "nurse")) parts.push(t(n.knowledge, L));
+    for (const n of c.npcs.filter((x) => x.role === "nurse")) parts.push(t(n.knowledge, L));
   }
   if (wantsVitals || all) {
     const snapshot = vitalsAt(c, ctx.state());
@@ -153,12 +156,25 @@ function resultLine(c: CaseDefinition, id: string, phase: string, locale: string
 /* Attending                                                           */
 /* ------------------------------------------------------------------ */
 
-/** Deterministic preceptor: paraphrases the current objective's hint as a question and records the hint. */
-export function attendingOffline(ctx: OfflineContext, dispatch: (action: ClinicalAction) => ReduceResult): { text: string; hinted: boolean } {
+/** The learner asks the preceptor for a hint (en/zh phrasing: "hint", "stuck", "clue", "提示", "卡住"…). */
+export function asksForHint(utterance: string): boolean {
+  return /\b(?:hints?|clues?|stuck|help me|nudge|pointer)\b|提示|卡住|没思路|没有思路|帮帮我|点拨|指点/i.test(utterance);
+}
+
+/**
+ * Deterministic preceptor. Consulting the attending is Socratic guidance and
+ * costs nothing: it names the current objective (already on the status line)
+ * and asks what the learner knows and still needs. Only when the learner asks
+ * for a hint (`asksForHint`) does it give the objective's authored hint — and
+ * that is recorded as a scored hint, like `/hint` and the LLM attending's
+ * `give_hint`.
+ */
+export function attendingOffline(ctx: OfflineContext, dispatch: (action: ClinicalAction) => ReduceResult, utterance = ""): { text: string; hinted: boolean } {
   const c = ctx.caseDef;
   const L = ctx.locale;
   const objective = currentObjective(c, ctx.state());
   if (!objective) return { text: rt(L, "attending.offline.done"), hinted: false };
+  if (!asksForHint(utterance)) return { text: rt(L, "attending.offline.nudge", { objective: t(objective.title, L) }), hinted: false };
   const r = dispatch({ type: "hint", by: "agent" });
   return { text: rt(L, "attending.offline.hint", { hint: t(objective.hint, L) }), hinted: !r.rejected };
 }
@@ -174,6 +190,10 @@ export function examinerOffline(c: CaseDefinition, report: AssessmentReport, loc
     const h = c.history.find((x) => x.id === id);
     return h ? t(h.question, L) : id;
   });
+  const missingExam = report.exam.missingRequired.map((id) => {
+    const e = c.exam.find((x) => x.id === id);
+    return e ? t(e.maneuver, L) : id;
+  });
   const judged = report.rubric.filter((r) => r.met === null).length;
   const narrative = rt(L, "examiner.offline.narrative", {
     percent: report.score.percent,
@@ -185,7 +205,9 @@ export function examinerOffline(c: CaseDefinition, report: AssessmentReport, loc
     hRequired: report.history.required,
     eDone: report.exam.requiredPerformed,
     eRequired: report.exam.required,
-    missing: missing.length > 0 ? rt(L, "examiner.offline.missing", { list: joinList(L, missing) }) : "",
+    missing:
+      (missing.length > 0 ? rt(L, "examiner.offline.missing", { list: joinList(L, missing) }) : "") +
+      (missingExam.length > 0 ? rt(L, "examiner.offline.missingExam", { list: joinList(L, missingExam) }) : ""),
     judged: judged > 0 ? rt(L, "examiner.offline.judged", { count: judged }) : "",
   });
   return { items: [], narrative: narrative.trim() };

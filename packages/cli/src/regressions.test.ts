@@ -14,7 +14,9 @@ import { loadContent } from "@clinicalcraft/agent/node";
 import { isLoopbackHost } from "@clinicalcraft/server";
 import { createPalette } from "./ansi.js";
 import type { CliIO } from "./context.js";
+import { m, type MsgKey } from "./i18n.js";
 import { main } from "./main.js";
+import { caseChoiceMeta, sortedCases } from "./picker.js";
 import { EventRenderer } from "./render.js";
 import { isLoopback } from "./serve.js";
 
@@ -130,6 +132,22 @@ describe("serve", () => {
     const r = await run(["serve", "--host", "127.evil.com", "--lang", "en"], box);
     expect(r.code).toBe(2);
     expect(r.stderr).toContain("--token");
+  });
+
+  it("refuses short tokens and unreadable token files (usage errors, localised)", { timeout: T }, async () => {
+    const box = sandbox();
+    const short = await run(["serve", "--host", "0.0.0.0", "--token", "tok-123", "--lang", "en"], box);
+    expect(short.code).toBe(2);
+    expect(short.stderr).toContain("at least 16");
+    expect(short.stderr).not.toContain("tok-123");
+    const zh = await run(["serve", "--token", "short"], { ...box, env: { ...box.env } });
+    expect(zh.code).toBe(2);
+    expect(zh.stderr).toContain("16");
+    const fromEnv = await run(["serve", "--host", "0.0.0.0", "--lang", "en"], { ...box, env: { ...box.env, CLINICALCRAFT_SERVER_TOKEN: "short" } });
+    expect(fromEnv.code).toBe(2);
+    const missing = await run(["serve", "--token-file", join(box.cwd, "nope.txt"), "--lang", "en"], box);
+    expect(missing.code).toBe(2);
+    expect(missing.stderr).toContain("nope.txt");
   });
 });
 
@@ -308,5 +326,116 @@ describe("project trust", () => {
     expect(revoke.stdout).toContain("No longer trusting");
     const zh = await run(["exec", "hi", "--case", SMZL, "--ephemeral"], box);
     expect(zh.stderr).toContain("此项目尚未被信任");
+  });
+});
+
+describe("learner-facing CLI text is fully localised (backlog L16–L20, L24, D2)", () => {
+  const DKA = "dka-adult";
+  const dka = content.cases.get(DKA)?.def;
+
+  it.skipIf(!dka)("`cases show` (zh-CN) translates the setting, specialties, minutes and clock mode (L16)", { timeout: T }, async () => {
+    const box = sandbox();
+    const zh = await run(["cases", "show", DKA], box);
+    expect(zh.code).toBe(0);
+    const setting = zh.stdout.split("\n").find((l) => l.startsWith("场景："))!;
+    expect(setting).toContain("急诊");
+    expect(setting).toContain("急诊医学");
+    expect(setting).toContain("约 45 分钟");
+    expect(setting).toContain("临床方块综合医院"); // the facility's name, not its id
+    expect(setting).not.toMatch(/emergency|medicine|general-hospital|min\b|~/);
+    const languages = zh.stdout.split("\n").find((l) => l.startsWith("语言："))!;
+    expect(languages).toContain("模拟时钟");
+    expect(languages).toContain("简体中文（zh-CN）、英语（en）");
+    expect(languages).not.toContain("simulated");
+    expect(zh.stdout).toContain("来源： 虚构教学病例");
+    const en = await run(["cases", "show", DKA, "--lang", "en"], box);
+    expect(en.stdout).toMatch(/Setting: emergency · .*Emergency medicine.* · ~45 min/);
+    expect(en.stdout).toContain("simulated clock");
+  });
+
+  it.skipIf(!dka)("the case picker shows the setting in the UI language (L16)", async () => {
+    const zhT = (key: MsgKey, params?: Record<string, string | number>) => m("zh-CN", key, params);
+    expect(caseChoiceMeta({ t: zhT }, dka!)).toBe("★★★☆☆ · 急诊");
+    const enT = (key: MsgKey, params?: Record<string, string | number>) => m("en", key, params);
+    expect(caseChoiceMeta({ t: enT }, dka!)).toBe("★★★☆☆ · emergency");
+  });
+
+  it("`cases list` (and the picker) use one deterministic order in every language: published first, then difficulty, then id (D2)", { timeout: T }, async () => {
+    const box = sandbox();
+    const ids = (out: string) => (JSON.parse(out) as { id: string }[]).map((c) => c.id);
+    const zh = ids((await run(["cases", "list", "--json"], box)).stdout);
+    const en = ids((await run(["cases", "list", "--json", "--lang", "en"], box)).stdout);
+    expect(en).toEqual(zh);
+    const defs = [...content.cases.values()].map((e) => e.def);
+    const expected = [...defs]
+      .sort((a, b) => Number(b.provenance.kind === "published-case") - Number(a.provenance.kind === "published-case") || a.difficulty - b.difficulty || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+      .map((c) => c.id);
+    expect(zh).toEqual(expected);
+    expect(sortedCases(content, "zh-CN").map((c) => c.id)).toEqual(expected);
+    expect(sortedCases(content, "en").map((c) => c.id)).toEqual(expected);
+  });
+
+  it("`config set locale` accepts only supported languages; an unsupported configured language falls back with a warning (L18)", { timeout: T }, async () => {
+    const box = sandbox();
+    const bad = await run(["config", "set", "locale", "fr"], box);
+    expect(bad.code).toBe(2);
+    expect(bad.stderr).toContain("locale 的值无效");
+    expect(bad.stderr).toContain("zh-CN");
+    expect((await run(["config", "get", "locale"], box)).stdout.trim()).toBe("zh-CN");
+    const alias = await run(["config", "set", "locale", "english", "--lang", "en"], box);
+    expect(alias.code).toBe(0);
+    expect(alias.stdout).toContain('locale = "en"');
+
+    const project = sandbox({ locale: "fr" });
+    const r = await run(["exec", "hi", "--case", SMZL, "--output-format", "json", "--ephemeral"], project);
+    expect(r.code, r.stderr).toBe(0);
+    expect(r.stderr).toContain("“fr”");
+    expect(r.stderr).toContain("zh-CN");
+    const lines = r.stdout.trim().split("\n");
+    expect(JSON.parse(lines[lines.length - 1]!)).toMatchObject({ type: "result" });
+    expect(r.stdout).not.toContain('"locale":"fr"');
+  });
+
+  it("`providers list` says a keyless local provider needs no key instead of 'yes' (L19)", { timeout: T }, async () => {
+    const box = sandbox();
+    const zh = await run(["providers", "list"], box);
+    const ollama = zh.stdout.split("\n").find((l) => /^\s?\*?ollama\s/.test(l))!;
+    expect(ollama).toContain("无需密钥");
+    expect(ollama).not.toMatch(/\s是$/);
+    const en = await run(["providers", "list", "--lang", "en"], box);
+    expect(en.stdout.split("\n").find((l) => /^\s?\*?lmstudio\s/.test(l))).toMatch(/not needed$/);
+    const json = JSON.parse((await run(["providers", "list", "--json"], box)).stdout) as { id: string; keyRequired: boolean }[];
+    expect(json.find((p) => p.id === "ollama")?.keyRequired).toBe(false);
+    expect(json.find((p) => p.id === "anthropic")?.keyRequired).toBe(true);
+  });
+
+  it.skipIf(!smzl)("`sessions show` names completed objectives by their titles (L20)", { timeout: 120_000 }, async () => {
+    const box = sandbox();
+    const exec = await run(["exec", "--case", SMZL, "--autopilot", "--approval", "bypass", "--output-format", "json", "--lang", "en"], box);
+    expect(exec.code, exec.stderr).toBe(0);
+    const show = await run(["sessions", "show", "latest", "--lang", "en"], box);
+    expect(show.code).toBe(0);
+    const done = show.stdout.split("\n").filter((l) => l.trim().startsWith("✓"));
+    expect(done.length).toBe(smzl!.objectives.length);
+    expect(done.map((l) => l.trim().slice(2))).toEqual(smzl!.objectives.map((o) => o.title.en));
+    expect(show.stdout).not.toMatch(/✓ ch\d-/);
+  });
+
+  it("import-v4 failures are localised; raw errno text appears only with --verbose (L24)", { timeout: T }, async () => {
+    const box = sandbox();
+    writeFileSync(join(box.cwd, "package.json"), "{}");
+    const noInput = await run(["import-v4", "package.json", "--dest", join(box.cwd, "assets")], box);
+    expect(noInput.code).toBe(1);
+    expect(noInput.stderr).toContain("导入失败");
+    expect(noInput.stderr).not.toMatch(/no V4 html|[A-Za-z]{4,} [a-z]{4,}/);
+    const missing = await run(["import-v4", join(box.cwd, "nonexistent.html")], box);
+    expect(missing.code).toBe(1);
+    expect(missing.stderr).toContain("找不到文件");
+    expect(missing.stderr).toContain("nonexistent.html");
+    expect(missing.stderr).not.toContain("ENOENT");
+    const verbose = await run(["import-v4", join(box.cwd, "nonexistent.html"), "--verbose"], box);
+    expect(verbose.stderr).toContain("ENOENT");
+    const en = await run(["import-v4", "package.json", "--lang", "en"], box);
+    expect(en.stderr).toContain("none of the inputs is the V4 html");
   });
 });

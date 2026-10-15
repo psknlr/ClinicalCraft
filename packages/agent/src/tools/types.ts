@@ -56,6 +56,15 @@ export interface ToolDefinition<A = Record<string, unknown>> {
   summarize(args: A, ctx: ToolContext): string;
   /** Rule specifier used by permission rules: `tool(specifier)`, e.g. intervention id. */
   specifier?(args: A, ctx: ToolContext): string;
+  /**
+   * A refusal decided before the approval gate, for a call that cannot run
+   * and whose approval prompt would reveal something the caller has not
+   * earned (e.g. `answer_decision` on a locked decision: no prompt, no
+   * options). Returns the refusal output, or null to go on. Every tool path
+   * (model tool calls, learner commands and actions, MCP) calls it after
+   * PreToolUse hooks and before the gate. Never changes state.
+   */
+  precheck?(args: A, ctx: ToolContext): ToolOutput | null;
   run(args: A, ctx: ToolContext): Promise<ToolOutput>;
 }
 

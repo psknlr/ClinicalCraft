@@ -121,12 +121,12 @@ Once every objective is done V5 has no waypoint, where V4 pointed at the board.
 | Physical examination (7 findings, **post only**) | 正文·体格检查, recorded **on admission for cycle 3**, after 2 cycles of rituximab |
 | `examNotRecorded`; the pre-phase examination is explicitly not recorded | (absence in the source) |
 | NPC briefs: radiologist, pathologist, Socratic attending (`revealsDiagnosis: false`) | caveats restated from V4 report notes |
-| Rubric: 11 deterministic items + 2 communication items judged from the transcript | design |
+| Rubric: 11 deterministic items + 2 communication items judged from the transcript. The four decision items (`rb-dx-combination`, `rb-safety-hbv`, `rb-dx-genetics`, `rb-mgmt-phase-review`) use `decidedFirstTry`: with 2–3 options and feedback on each, a wrong first answer followed by the right one must not score full marks | design |
 | Spoiler-free library title and summary (V4's label `CASE 01 · SMZL 与肺腺癌并存` is kept in `extensions.v4.caseLabel`) | design |
 | Debrief key reasoning 2: MCL (CD5, cyclin D1) and FL (CD10, BCL6) differential against this immunophenotype | 正文·诊断与鉴别诊断 |
 | Debrief key reasoning 3: splenic histology is the gold standard; marrow biopsy with a matching immunophenotype can support SMZL; SDRPL still to be distinguished | 正文·讨论 |
 | Debrief teaching point on sampling methods and denominators | V4 `marrow` and `flow` result caveats |
-| Debrief references: BSH 2024 MZL guideline, JSH 2023 MZL guideline, the 2025 Chinese consensus on haematological plus solid tumours (all cited by the source), EASL 2017 HBV guideline (for the anti-CD20 / HBcAb safety decision) | source reference list [1], [4], [14]; EASL |
+| Debrief references: BSH 2024 MZL guideline, JSH 2023 MZL guideline, the 2025 Chinese consensus on haematological plus solid tumours (all cited by the source), EASL 2025 HBV guideline (for the anti-CD20 / HBcAb safety decision; supersedes the 2017 guideline) | source reference list [1], [4], [14]; EASL |
 | Case-level `unknowns` for agents: smoking and family history, occupation and alcohol, pain duration and score, diagnostic-phase examination | V4 `other` and `pain` answers; absence in the source |
 | English order entry: aliases (non-contrast/plain CT, CT scan, bone marrow exam…), English alternatives in V4's rules (abdominal, splenic, chest, non-abdominal ultrasound, aspirate + biopsy), `exact` "ultrasound"/"CT scan", and the 平扫 notice for "non-contrast / unenhanced / plain" | V4 `Xd` semantics |
 | `extensions.testUtterances`: 37 bilingual matcher regression utterances (3 must fall through to "not recorded") | design |
