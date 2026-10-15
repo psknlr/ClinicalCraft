@@ -174,7 +174,28 @@
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "flag": "transferred-angio"
+        "all": [
+          {
+            "flag": "transferred-angio"
+          },
+          {
+            "read": "poc-glucose"
+          },
+          {
+            "examined": "nihss"
+          },
+          {
+            "read": "ct-head"
+          },
+          {
+            "read": "cta-head-neck"
+          },
+          {
+            "not": {
+              "flag": "sich"
+            }
+          }
+        ]
       }
     }
   ],
@@ -214,7 +235,10 @@
           "哪里不舒服",
           "什么情况",
           "今天怎么了",
-          "主要问题"
+          "主要问题",
+          "咋了",
+          "咋回事",
+          "怎么啦"
         ],
         "en": [
           "what happened today",
@@ -224,7 +248,8 @@
           "what's going on",
           "what brings him in",
           "main problem",
-          "the problem today"
+          "the problem today",
+          "been going on"
         ]
       },
       "disclosure": "volunteer",
@@ -277,11 +302,27 @@
           "when did it start",
           "what time did it start",
           "onset time",
-          "time of onset"
+          "time of onset",
+          "lkw",
+          "last well"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "en": [
+          "were you with",
+          "anyone with him",
+          "who was with"
+        ],
+        "zh-CN": [
+          "在旁边",
+          "在身边",
+          "在场",
+          "到的",
+          "到医院"
+        ]
+      }
     },
     {
       "id": "onset-witness",
@@ -302,7 +343,13 @@
           "谁发现的",
           "怎么发现的",
           "当时谁在场",
-          "看见发病"
+          "看见发病",
+          "在旁边",
+          "在身边",
+          "你在场",
+          "当时在场",
+          "谁看见",
+          "发现他的"
         ],
         "en": [
           "anyone see",
@@ -311,10 +358,24 @@
           "see it happen",
           "saw it happen",
           "who was with him",
-          "witness"
+          "witness",
+          "were you with him",
+          "was anyone with him",
+          "with him when",
+          "who found"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "发现以后",
+          "发现后"
+        ],
+        "en": [
+          "since we found",
+          "since you found"
+        ]
+      }
     },
     {
       "id": "course-since",
@@ -331,12 +392,15 @@
         "zh-CN": [
           "好转",
           "加重",
-          "有没有好点",
           "一直这样",
           "时好时坏",
           "越来越重",
           "有变化吗",
-          "波动"
+          "波动",
+          "好点了",
+          "好一点",
+          "比刚才",
+          "比刚发现"
         ],
         "en": [
           "better or worse",
@@ -345,8 +409,11 @@
           "getting worse",
           "changed since",
           "fluctuating",
-          "same since",
-          "any improvement"
+          "any improvement",
+          "since we found him",
+          "worse since",
+          "better since",
+          "stayed the same"
         ]
       },
       "disclosure": "on-ask"
@@ -371,7 +438,15 @@
           "磕到头",
           "头部外伤",
           "受伤",
-          "外伤"
+          "外伤",
+          "磕着",
+          "磕碰",
+          "碰到头",
+          "撞头",
+          "磕到脑袋",
+          "撞到脑袋",
+          "摔过",
+          "跌过"
         ],
         "en": [
           "fall",
@@ -404,7 +479,11 @@
           "恶心",
           "呕吐",
           "吐了",
-          "想吐"
+          "想吐",
+          "有吐",
+          "吐过",
+          "头疼不疼",
+          "脑袋疼"
         ],
         "en": [
           "headache",
@@ -422,14 +501,19 @@
         "zh-CN": [
           "撞",
           "摔",
-          "磕"
+          "磕",
+          "吐血",
+          "吐过血"
         ],
         "en": [
           "hit his head",
           "bang",
           "injur",
           "fall",
-          "fell"
+          "fell",
+          "vomit blood",
+          "vomiting blood",
+          "vomited blood"
         ]
       }
     },
@@ -454,7 +538,12 @@
           "晕过去",
           "意识丧失",
           "咬舌头",
-          "尿裤子"
+          "尿裤子",
+          "抽风",
+          "失去意识",
+          "不省人事",
+          "人事不省",
+          "晕倒"
         ],
         "en": [
           "seizure",
@@ -553,7 +642,13 @@
           "小中风",
           "以前也这样",
           "之前发生过",
-          "手发麻过"
+          "手发麻过",
+          "有tia",
+          "过tia",
+          "短暂性脑缺血",
+          "一过性脑缺血",
+          "以前发麻",
+          "之前手麻"
         ],
         "en": [
           "happened before",
@@ -564,7 +659,11 @@
           "mini stroke",
           "tia",
           "transient",
-          "brief episode"
+          "brief episode",
+          "previous tia",
+          "numb before",
+          "numbness before",
+          "weakness before"
         ]
       },
       "disclosure": "specific"
@@ -585,14 +684,21 @@
           "脑梗还是脑出血",
           "什么类型的中风",
           "哪种中风",
-          "父亲中风类型"
+          "父亲中风类型",
+          "脑出血还是脑梗",
+          "脑梗还是出血",
+          "出血还是梗死",
+          "爸是脑",
+          "父亲是脑"
         ],
         "en": [
           "clot or bleed",
           "clot or a bleed",
           "type of stroke",
           "kind of stroke",
-          "father's stroke type"
+          "father's stroke type",
+          "ischaemic or haemorrhagic",
+          "ischemic or hemorrhagic"
         ]
       },
       "disclosure": "unknown"
@@ -615,7 +721,9 @@
           "得过中风",
           "脑梗过",
           "卒中史",
-          "脑血栓"
+          "脑血栓",
+          "脑梗病史",
+          "中风史"
         ],
         "en": [
           "stroke before",
@@ -631,7 +739,12 @@
           "父亲",
           "爸爸",
           "家里人",
-          "家族"
+          "家族",
+          "他爸",
+          "他妈",
+          "母亲",
+          "还是脑梗",
+          "还是脑出血"
         ],
         "en": [
           "father",
@@ -663,10 +776,21 @@
           "high blood pressure",
           "hypertension",
           "blood pressure control",
-          "usual blood pressure"
+          "usual blood pressure",
+          "high bp",
+          "htn",
+          "hypertensive"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "吃了没",
+          "吃了吗",
+          "吃没吃",
+          "今天吃"
+        ]
+      }
     },
     {
       "id": "pmh-af",
@@ -686,7 +810,9 @@
           "心律不齐",
           "心律失常",
           "心跳不规律",
-          "早搏"
+          "早搏",
+          "心脏毛病",
+          "心脏有问题"
         ],
         "en": [
           "atrial fibrillation",
@@ -724,7 +850,8 @@
           "肝病",
           "肿瘤",
           "癌症",
-          "既往史"
+          "既往史",
+          "心脏病"
         ],
         "en": [
           "other illnesses",
@@ -737,7 +864,13 @@
           "past medical history"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "想说",
+          "补充"
+        ]
+      }
     },
     {
       "id": "medications",
@@ -757,7 +890,10 @@
           "用药",
           "长期服药",
           "吃哪些药",
-          "服药情况"
+          "服药情况",
+          "啥药",
+          "药物",
+          "药吃了"
         ],
         "en": [
           "medications",
@@ -766,19 +902,47 @@
           "pills",
           "regular medication",
           "what does he take",
-          "drugs he takes"
+          "drugs he takes",
+          "drugs"
         ]
       },
       "disclosure": "on-ask",
       "excludeKeywords": {
         "zh-CN": [
           "过敏",
-          "抗凝"
+          "抗凝",
+          "阿司匹林",
+          "氯吡格雷",
+          "华法",
+          "利伐沙班",
+          "阿哌沙班",
+          "达比加群",
+          "抗血小板",
+          "稀释血液",
+          "防血栓",
+          "毒品",
+          "吸毒"
         ],
         "en": [
           "allerg",
           "blood thinner",
-          "anticoag"
+          "anticoag",
+          "aspirin",
+          "clopidogrel",
+          "warfarin",
+          "doac",
+          "noac",
+          "antiplatelet",
+          "xarelto",
+          "eliquis",
+          "rivaroxaban",
+          "apixaban",
+          "dabigatran",
+          "blood thin",
+          "recreational",
+          "illicit",
+          "street drug",
+          "cocaine"
         ]
       },
       "required": true
@@ -807,7 +971,13 @@
           "氯吡格雷",
           "抗血小板",
           "稀释血液的药",
-          "防血栓的药"
+          "防血栓的药",
+          "noac",
+          "doac",
+          "新型口服抗凝药",
+          "华法令",
+          "波立维",
+          "拜瑞妥"
         ],
         "en": [
           "blood thinner",
@@ -822,7 +992,13 @@
           "eliquis",
           "aspirin",
           "clopidogrel",
-          "antiplatelet"
+          "antiplatelet",
+          "doac",
+          "noac",
+          "anticoagulation",
+          "blood thinning",
+          "plavix",
+          "pradaxa"
         ]
       },
       "disclosure": "specific",
@@ -879,7 +1055,12 @@
           "便血",
           "尿血",
           "出血不止",
-          "凝血问题"
+          "凝血问题",
+          "吐血",
+          "吐过血",
+          "大便发黑",
+          "大便黑",
+          "柏油样便"
         ],
         "en": [
           "bleeding",
@@ -891,17 +1072,29 @@
           "blood in stool",
           "bleeding disorder",
           "haemorrhage",
-          "hemorrhage"
+          "hemorrhage",
+          "vomiting blood",
+          "vomited blood",
+          "gi bleed"
         ]
       },
       "disclosure": "on-ask",
       "excludeKeywords": {
         "zh-CN": [
           "父亲",
-          "爸爸"
+          "爸爸",
+          "他爸",
+          "他妈",
+          "母亲",
+          "出血风险",
+          "会不会出血",
+          "还是脑梗"
         ],
         "en": [
-          "father"
+          "father",
+          "mother",
+          "risk of bleed",
+          "bleeding risk"
         ]
       },
       "required": true
@@ -925,7 +1118,9 @@
           "拔牙",
           "穿刺",
           "住过院",
-          "最近住院"
+          "最近住院",
+          "开过刀",
+          "动过手术"
         ],
         "en": [
           "surgery",
@@ -940,7 +1135,21 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "需要住院",
+          "要住院",
+          "收入院",
+          "住院观察",
+          "办住院"
+        ],
+        "en": [
+          "admit him",
+          "admitting him",
+          "needs admission"
+        ]
+      }
     },
     {
       "id": "functional-baseline",
@@ -963,7 +1172,10 @@
           "自己走路",
           "日常生活",
           "发病前状况",
-          "照顾自己"
+          "照顾自己",
+          "买菜",
+          "自己走",
+          "能不能自理"
         ],
         "en": [
           "independent",
@@ -973,11 +1185,29 @@
           "look after himself",
           "baseline function",
           "mobility",
-          "self-care"
+          "self-care",
+          "functioning",
+          "walk on his own",
+          "manage on his own",
+          "rankin",
+          "modified rankin"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "别担心",
+          "不要担心",
+          "会照顾好"
+        ],
+        "en": [
+          "going to look after",
+          "we'll look after",
+          "we will look after",
+          "don't worry"
+        ]
+      }
     },
     {
       "id": "weight",
@@ -1027,7 +1257,9 @@
           "吸烟",
           "烟瘾",
           "戒烟",
-          "香烟"
+          "香烟",
+          "烟抽",
+          "抽多少烟"
         ],
         "en": [
           "smoke",
@@ -1088,7 +1320,11 @@
           "和谁住",
           "住在哪",
           "子女",
-          "儿子"
+          "儿子",
+          "家里还有谁",
+          "跟谁住",
+          "一起住",
+          "家里几口人"
         ],
         "en": [
           "work",
@@ -1123,7 +1359,9 @@
           "爸爸",
           "妈妈",
           "遗传",
-          "家族"
+          "家族",
+          "爸妈",
+          "父母亲"
         ],
         "en": [
           "family history",
@@ -1168,7 +1406,24 @@
           "nil by mouth"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "呛",
+          "吞咽",
+          "咽东西",
+          "发病后",
+          "发病以后",
+          "出事后",
+          "出事以后"
+        ],
+        "en": [
+          "swallow",
+          "chok",
+          "since it",
+          "since this"
+        ]
+      }
     },
     {
       "id": "ice-concerns",
@@ -1188,7 +1443,7 @@
           "最担心",
           "顾虑",
           "期望",
-          "希望怎么样"
+          "最怕"
         ],
         "en": [
           "worried",
@@ -1200,7 +1455,21 @@
           "hoping"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "别担心",
+          "不要担心",
+          "别着急",
+          "不用担心"
+        ],
+        "en": [
+          "don't worry",
+          "do not worry",
+          "not to worry",
+          "no need to worry"
+        ]
+      }
     },
     {
       "id": "wishes-consent",
@@ -1290,6 +1559,230 @@
         ]
       },
       "disclosure": "unknown"
+    },
+    {
+      "id": "handedness",
+      "topic": "other",
+      "question": {
+        "zh-CN": "他是右撇子还是左撇子？",
+        "en": "Is he right- or left-handed?"
+      },
+      "answer": {
+        "zh-CN": "（妻子）右撇子，写字、拿筷子、干电工活都用右手。",
+        "en": "(Wife) Right-handed — he writes, uses chopsticks and did all his electrical work with his right hand."
+      },
+      "keywords": {
+        "zh-CN": [
+          "左撇子",
+          "右撇子",
+          "惯用手",
+          "利手",
+          "用哪只手",
+          "哪只手写字",
+          "哪只手拿筷子",
+          "左利手",
+          "右利手",
+          "左手还是右手",
+          "右手还是左手",
+          "写字用"
+        ],
+        "en": [
+          "right handed",
+          "left handed",
+          "handedness",
+          "dominant hand",
+          "hand does he write"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "没力",
+          "无力",
+          "没劲",
+          "麻"
+        ],
+        "en": [
+          "weak",
+          "numb"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "recent-illness",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近有没有发烧、咳嗽、感冒或者其他感染？",
+        "en": "Has he had any fever, cough, cold or other infection recently?"
+      },
+      "answer": {
+        "zh-CN": "（妻子）没有，最近没发过烧，也没咳嗽感冒，身体一直挺好的。",
+        "en": "(Wife) No — no fever, no cough or cold lately. He's been perfectly well."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发烧",
+          "发热",
+          "感冒",
+          "咳嗽",
+          "感染",
+          "最近生病",
+          "体温高",
+          "着凉"
+        ],
+        "en": [
+          "fever",
+          "temperature",
+          "infection",
+          "cold",
+          "flu",
+          "cough",
+          "been ill",
+          "been unwell",
+          "feverish"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "呛"
+        ],
+        "en": [
+          "coughing on",
+          "cough when",
+          "choking"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "unknown-vision-dizziness",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "他有没有说过看东西模糊、看重影、头晕，或者哪里发麻？",
+        "en": "Has he mentioned blurred or double vision, dizziness, or numbness anywhere?"
+      },
+      "answer": {
+        "zh-CN": "（妻子）他说不出话，这些我都不知道——看东西清不清楚、头晕不晕、哪里麻，他没法告诉我。",
+        "en": "(Wife) He can't get the words out, so I don't know — whether his sight is blurred, whether he's dizzy or numb anywhere, he hasn't been able to tell me."
+      },
+      "keywords": {
+        "zh-CN": [
+          "视物模糊",
+          "看东西模糊",
+          "看不清",
+          "重影",
+          "复视",
+          "头晕",
+          "眩晕",
+          "天旋地转",
+          "发麻",
+          "麻木",
+          "视力"
+        ],
+        "en": [
+          "blurred vision",
+          "double vision",
+          "vision",
+          "eyesight",
+          "dizzy",
+          "dizziness",
+          "vertigo",
+          "spinning",
+          "numbness",
+          "numb",
+          "tingling",
+          "pins and needles"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "以前",
+          "之前",
+          "上次",
+          "那次",
+          "以往"
+        ],
+        "en": [
+          "before",
+          "previous",
+          "weeks ago",
+          "in the past"
+        ]
+      },
+      "disclosure": "unknown"
+    },
+    {
+      "id": "recreational-drugs",
+      "topic": "social",
+      "question": {
+        "zh-CN": "他有没有用过毒品或者其他违禁药物？",
+        "en": "Does he use any recreational or illicit drugs?"
+      },
+      "answer": {
+        "zh-CN": "（妻子）没有，从来不碰那些东西。",
+        "en": "(Wife) No, never — he's never touched anything like that."
+      },
+      "keywords": {
+        "zh-CN": [
+          "毒品",
+          "吸毒",
+          "冰毒",
+          "大麻",
+          "违禁药",
+          "可卡因",
+          "海洛因",
+          "摇头丸"
+        ],
+        "en": [
+          "recreational drugs",
+          "illicit drugs",
+          "street drugs",
+          "cocaine",
+          "amphetamine",
+          "cannabis",
+          "marijuana",
+          "heroin"
+        ]
+      },
+      "disclosure": "on-ask"
+    },
+    {
+      "id": "swallowing",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "发病以后他吃过、喝过东西吗？咽东西有没有呛？",
+        "en": "Has he had anything to eat or drink since this started — any choking or coughing when swallowing?"
+      },
+      "answer": {
+        "zh-CN": "（妻子）出事以后什么都没吃没喝，我没敢给他喝水，救护车上也没给。就是右边嘴角一直有点流口水。",
+        "en": "(Wife) Nothing at all since it happened — I didn't dare give him anything to drink, and the ambulance crew didn't either. He's been dribbling a bit from the right corner of his mouth."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吞咽",
+          "吞咽困难",
+          "咽东西",
+          "咽不下",
+          "呛咳",
+          "喝水呛",
+          "呛着",
+          "流口水",
+          "发病后吃东西",
+          "发病后喝水"
+        ],
+        "en": [
+          "swallow",
+          "swallowing",
+          "trouble swallowing",
+          "choking",
+          "choke",
+          "coughing on drinks",
+          "dysphagia",
+          "drooling",
+          "eaten since"
+        ]
+      },
+      "disclosure": "on-ask"
     }
   ],
   "exam": [
@@ -1599,7 +2092,16 @@
       "abnormal": true,
       "phases": [
         "ed"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "血压"
+        ],
+        "en": [
+          "bp",
+          "blood pressure"
+        ]
+      }
     },
     {
       "id": "leg-motor",
@@ -1982,7 +2484,8 @@
           "finger-prick",
           "cbg",
           "bsl",
-          "poc glucose"
+          "poc glucose",
+          "bm"
         ]
       },
       "requires": [
@@ -2260,7 +2763,8 @@
           "12导联",
           "十二导联",
           "ecg",
-          "ekg"
+          "ekg",
+          "心电"
         ],
         "en": [
           "ecg",
@@ -2413,7 +2917,9 @@
           "凝血四项",
           "inr",
           "aptt",
-          "纤维蛋白原"
+          "纤维蛋白原",
+          "凝血酶原",
+          "pt"
         ],
         "en": [
           "coag",
@@ -2422,7 +2928,10 @@
           "inr",
           "pt/inr",
           "aptt",
-          "fibrinogen"
+          "fibrinogen",
+          "pt",
+          "ptt",
+          "clotting screen"
         ]
       },
       "requires": [
@@ -2504,7 +3013,9 @@
           "生化",
           "肌酐",
           "尿素",
-          "肝肾功能"
+          "肝肾功能",
+          "肝功",
+          "肾功"
         ],
         "en": [
           "renal function",
@@ -2514,7 +3025,14 @@
           "u&e",
           "urea",
           "biochemistry",
-          "bmp"
+          "bmp",
+          "ues",
+          "u&es",
+          "u+e",
+          "lfts",
+          "lft",
+          "liver function",
+          "liver enzymes"
         ]
       },
       "requires": [
@@ -2815,7 +3333,10 @@
           "group & save",
           "type and screen",
           "crossmatch",
-          "blood group"
+          "blood group",
+          "group and save",
+          "type and cross",
+          "g&s"
         ]
       },
       "requires": [
@@ -3156,6 +3677,39 @@
         "remove": [
           "poc-glucose"
         ]
+      },
+      {
+        "ifMatches": "ct(平扫)?(\\+|和|及|加|and|&|/|、|plus)+(cta|ct血管|ctangi)",
+        "add": [
+          "ct-head"
+        ]
+      },
+      {
+        "ifMatches": "bmp",
+        "remove": [
+          "poc-glucose"
+        ]
+      },
+      {
+        "ifHas": "dsa-evt",
+        "unlessMatches": "(^|[^a-z])dsa|dsa($|[^a-z])|造影|取栓|thrombectomy|angiograph|evt|endovascular|血管内|减影|介入",
+        "remove": [
+          "dsa-evt"
+        ]
+      },
+      {
+        "ifHas": "cta-head-neck",
+        "unlessMatches": "(^|[^a-z])cta|cta($|[^a-z])|ctangi|angiogra|血管",
+        "remove": [
+          "cta-head-neck"
+        ]
+      },
+      {
+        "ifHas": "coag",
+        "unlessMatches": "(^|[^a-z])pt|凝血|coag|clott|inr|aptt|fibrin|纤维蛋白|ptt",
+        "remove": [
+          "coag"
+        ]
       }
     ],
     "exact": {
@@ -3223,6 +3777,18 @@
       "response": {
         "zh-CN": "监护仪已连接：持续心电（心房颤动律）、无创血压每5分钟一次及血氧监测。",
         "en": "Monitor attached: continuous ECG (atrial fibrillation), NIBP every 5 minutes and SpO₂."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "溶栓",
+          "神经功能"
+        ],
+        "en": [
+          "post-lysis",
+          "post lysis",
+          "thromboly",
+          "neuro"
+        ]
       }
     },
     {
@@ -3306,6 +3872,18 @@
       "response": {
         "zh-CN": "卒中小组已启动：神经内科值班医生5分钟内到床旁，CT室已预留，药房备好溶栓药。",
         "en": "Stroke code activated: the on-call neurologist will be at the bedside within 5 minutes, the CT scanner is held and pharmacy has thrombolytics ready."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "介入",
+          "取栓"
+        ],
+        "en": [
+          "neuroir",
+          "interventional",
+          "thrombectomy",
+          "angio"
+        ]
       }
     },
     {
@@ -3367,12 +3945,20 @@
         "zh-CN": [
           "拉贝洛尔",
           "柳胺苄心定",
-          "静脉降压药"
+          "静脉降压药",
+          "降压",
+          "控制血压",
+          "降血压"
         ],
         "en": [
           "labetalol",
           "trandate",
-          "iv antihypertensive"
+          "iv antihypertensive",
+          "lower the bp",
+          "lower blood pressure",
+          "bring the bp down",
+          "treat the bp",
+          "bp control"
         ]
       },
       "dose": {
@@ -3456,12 +4042,20 @@
         "zh-CN": [
           "尼卡地平",
           "佩尔地平",
-          "静脉降压药"
+          "静脉降压药",
+          "降压",
+          "控制血压",
+          "降血压"
         ],
         "en": [
           "nicardipine",
           "cardene",
-          "iv antihypertensive"
+          "iv antihypertensive",
+          "lower the bp",
+          "lower blood pressure",
+          "bring the bp down",
+          "treat the bp",
+          "bp control"
         ]
       },
       "dose": {
@@ -3537,12 +4131,20 @@
           "乌拉地尔",
           "亚宁定",
           "压宁定",
-          "静脉降压药"
+          "静脉降压药",
+          "降压",
+          "控制血压",
+          "降血压"
         ],
         "en": [
           "urapidil",
           "ebrantil",
-          "iv antihypertensive"
+          "iv antihypertensive",
+          "lower the bp",
+          "lower blood pressure",
+          "bring the bp down",
+          "treat the bp",
+          "bp control"
         ]
       },
       "dose": {
@@ -3714,7 +4316,9 @@
           "rt-pa",
           "rtpa",
           "爱通立",
-          "溶栓"
+          "溶栓",
+          "静脉溶栓",
+          "阿替普酶溶栓"
         ],
         "en": [
           "alteplase",
@@ -3849,6 +4453,27 @@
       "response": {
         "zh-CN": "阿替普酶7.2 mg已静推，64.8 mg开始60分钟泵入。溶栓开始：神经功能与血压每15分钟评估一次。",
         "en": "Alteplase 7.2 mg bolus given; 64.8 mg infusion started over 60 minutes. Thrombolysis under way — neuro checks and BP every 15 minutes."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "替奈",
+          "tnk",
+          "溶栓后",
+          "停止",
+          "停用",
+          "停掉",
+          "停溶栓"
+        ],
+        "en": [
+          "tenecteplase",
+          "metalyse",
+          "post-lysis",
+          "post lysis",
+          "after lysis",
+          "post-thrombolysis",
+          "stop",
+          "bleed"
+        ]
       }
     },
     {
@@ -3863,13 +4488,18 @@
           "替奈普酶",
           "tnk",
           "rhtnk-tpa",
-          "铭复乐"
+          "铭复乐",
+          "溶栓",
+          "静脉溶栓",
+          "tnk溶栓",
+          "替奈普酶溶栓"
         ],
         "en": [
           "tenecteplase",
           "tnk",
           "tnk-tpa",
-          "metalyse"
+          "metalyse",
+          "thrombolysis"
         ]
       },
       "dose": {
@@ -3996,6 +4626,29 @@
       "response": {
         "zh-CN": "替奈普酶20 mg已单次静推。溶栓开始：神经功能与血压每15分钟评估一次。",
         "en": "Tenecteplase 20 mg given as a single IV bolus. Thrombolysis under way — neuro checks and BP every 15 minutes."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "阿替普酶",
+          "rtpa",
+          "rt-pa",
+          "爱通立",
+          "溶栓后",
+          "停止",
+          "停用",
+          "停掉",
+          "停溶栓"
+        ],
+        "en": [
+          "alteplase",
+          "actilyse",
+          "post-lysis",
+          "post lysis",
+          "after lysis",
+          "post-thrombolysis",
+          "stop",
+          "bleed"
+        ]
       }
     },
     {
@@ -4148,7 +4801,12 @@
           "吃药",
           "喂水",
           "进食",
-          "口服氨氯地平"
+          "口服氨氯地平",
+          "喂点水",
+          "喝点水",
+          "喂饭",
+          "吃点东西",
+          "口服降压药"
         ],
         "en": [
           "sips of water",
@@ -4156,7 +4814,10 @@
           "give him a drink",
           "oral medication",
           "let him eat",
-          "usual tablets by mouth"
+          "usual tablets by mouth",
+          "drink of water",
+          "something to eat",
+          "oral amlodipine"
         ]
       },
       "requires": [],
@@ -4275,14 +4936,22 @@
           "启动取栓",
           "联系介入",
           "取栓团队",
-          "介入科"
+          "介入科",
+          "叫介入",
+          "呼叫介入",
+          "介入团队"
         ],
         "en": [
           "neurointervention",
           "thrombectomy alert",
           "call interventional neuroradiology",
           "evt team",
-          "activate thrombectomy"
+          "activate thrombectomy",
+          "neuro ir",
+          "interventional radiology",
+          "call ir",
+          "ir team",
+          "neurointerventional"
         ]
       },
       "requires": [],
@@ -4360,8 +5029,8 @@
         "en": "He should not go for thrombectomy before CT has excluded haemorrhage and CTA has shown a treatable large-vessel occlusion — or while a symptomatic haemorrhage is suspected: endovascular treatment depends on imaging that proves both."
       },
       "response": {
-        "zh-CN": "患者在监护下由医生、护士陪同转入神经介入导管室。",
-        "en": "He is transferred on the monitor, escorted by a doctor and nurse, to the neuro-angiography suite."
+        "zh-CN": "已安排转运：床旁血糖、NIHSS、头颅CT平扫与CTA均已判读后，患者即在监护下由医生、护士陪同转入神经介入导管室；疑似颅内出血时介入团队不接收。",
+        "en": "Transfer arranged: once the bedside glucose, NIHSS, plain CT and CTA have all been read, he goes on the monitor, escorted by a doctor and nurse, to the neuro-angiography suite. The angio team will not take him while a haemorrhage is suspected."
       }
     },
     {
@@ -4730,7 +5399,7 @@
           ]
         },
         "setVitals": {
-          "gcs": 11
+          "gcs": 12
         },
         "setFlags": [
           "infarct-progression"
@@ -4770,6 +5439,94 @@
           "zh-CN": "导管室：第1次取栓后左侧大脑中动脉再通（eTICI 2c）。患者能说出简短的词句，右手可以稍微抬起来了。",
           "en": "Angio suite: left MCA recanalised after the first pass (eTICI 2c). He is getting short phrases out and can lift his right hand a little."
         }
+      },
+      {
+        "id": "bp-overshoot",
+        "when": {
+          "all": [
+            {
+              "vital": "sbp",
+              "op": "lt",
+              "value": 130
+            },
+            {
+              "not": {
+                "flag": "recanalised"
+              }
+            },
+            {
+              "not": {
+                "flag": "precipitous-bp-drop"
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "gcs": 11
+        },
+        "setFlags": [
+          "bp-overshoot"
+        ],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "护士：“医生，用了这么多降压药，他血压掉得太多了——人更迷糊了，右边完全不动了！”（再灌注前血压降得过低：依赖侧支供血的缺血半暗带灌注不足。）",
+          "en": "Nurse: \"Doctor, after all those antihypertensives his pressure has dropped a long way — he's drowsier and his right side has stopped moving altogether!\" (BP over-lowered before reperfusion: the collateral-dependent penumbra is losing perfusion.)"
+        }
+      },
+      {
+        "id": "evt-without-ivt",
+        "when": {
+          "all": [
+            {
+              "flag": "recanalised"
+            },
+            {
+              "not": {
+                "intervened": "alteplase"
+              }
+            },
+            {
+              "not": {
+                "intervened": "tenecteplase"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "evt-without-ivt"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "lysis-no-glucose",
+        "when": {
+          "all": [
+            {
+              "any": [
+                {
+                  "intervened": "alteplase"
+                },
+                {
+                  "intervened": "tenecteplase"
+                }
+              ]
+            },
+            {
+              "not": {
+                "read": "poc-glucose"
+              }
+            },
+            {
+              "not": {
+                "read": "chem"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "lysis-no-glucose"
+        ],
+        "severity": "info"
       }
     ],
     "noise": 1
@@ -4956,6 +5713,9 @@
           },
           {
             "intervened": "tenecteplase"
+          },
+          {
+            "flag": "recanalised"
           }
         ]
       },
@@ -4992,30 +5752,44 @@
         "en": "EVT"
       },
       "hint": {
-        "zh-CN": "CTA证实前循环大血管闭塞，溶栓后应立即桥接取栓，不要等着看溶栓效果。溶栓后24小时内血压 < 180/105 mmHg、不用抗栓药；任何经口摄入前先做吞咽筛查。",
-        "en": "With a proven anterior-circulation LVO, go straight on to thrombectomy after lysis — don't wait to see whether lysis works. After lysis keep BP < 180/105 mmHg and avoid antithrombotics for 24 h; screen swallowing before anything by mouth."
+        "zh-CN": "如果CTA证实前循环大血管闭塞，溶栓后应立即桥接取栓，不要等着看溶栓效果。溶栓后24小时内血压 < 180/105 mmHg、不用抗栓药；任何经口摄入前先做吞咽筛查。",
+        "en": "If the CTA shows an anterior-circulation LVO, go straight on to thrombectomy after lysis — don't wait to see whether lysis works. After lysis keep BP < 180/105 mmHg and avoid antithrombotics for 24 h; screen swallowing before anything by mouth."
       },
       "guidance": {
-        "zh-CN": "判读CTA，在会诊板确认取栓指征，联系神经介入并转运；下达溶栓后监护医嘱和吞咽筛查。",
-        "en": "Read the CTA, confirm thrombectomy eligibility at the board, call neurointervention and transfer; order post-lysis monitoring and a swallow screen."
+        "zh-CN": "判读CTA，在会诊板判断是否符合取栓指征，符合则联系神经介入并转运；下达溶栓后监护医嘱并做吞咽筛查。",
+        "en": "Read the CTA and decide at the board whether he meets thrombectomy criteria — if he does, call neurointervention and transfer. Order post-lysis monitoring and a swallow screen."
       },
       "completeWhen": {
-        "all": [
+        "any": [
           {
-            "decided": "d-evt"
+            "all": [
+              {
+                "decided": "d-evt"
+              },
+              {
+                "intervened": "transfer-angio"
+              },
+              {
+                "read": "dsa-evt",
+                "phase": "angio"
+              },
+              {
+                "intervened": "swallow-screen"
+              },
+              {
+                "intervened": "post-lysis-monitoring"
+              }
+            ]
           },
           {
-            "intervened": "transfer-angio"
-          },
-          {
-            "read": "dsa-evt",
-            "phase": "angio"
-          },
-          {
-            "intervened": "swallow-screen"
-          },
-          {
-            "intervened": "post-lysis-monitoring"
+            "all": [
+              {
+                "flag": "sich-managed"
+              },
+              {
+                "intervened": "swallow-screen"
+              }
+            ]
           }
         ]
       },
@@ -5559,7 +6333,16 @@
       },
       "weight": 1,
       "met": {
-        "read": "poc-glucose"
+        "all": [
+          {
+            "read": "poc-glucose"
+          },
+          {
+            "not": {
+              "flag": "lysis-no-glucose"
+            }
+          }
+        ]
       }
     },
     {
@@ -5602,8 +6385,8 @@
       "id": "r-bp-before-lysis",
       "domain": "safety",
       "text": {
-        "zh-CN": "溶栓前用可滴定的静脉药物将血压降至 < 185/110 mmHg，未使用舌下硝苯地平",
-        "en": "Lowered BP to < 185/110 mmHg with a titratable IV agent before lysis, without sublingual nifedipine"
+        "zh-CN": "溶栓前用可滴定的静脉药物将血压降至 < 185/110 mmHg，未使用舌下硝苯地平，也未降压过度",
+        "en": "Lowered BP to < 185/110 mmHg with a titratable IV agent before lysis, without sublingual nifedipine or over-lowering"
       },
       "weight": 2,
       "met": {
@@ -5639,6 +6422,16 @@
           {
             "not": {
               "intervened": "nifedipine-sl"
+            }
+          },
+          {
+            "not": {
+              "flag": "bp-overshoot"
+            }
+          },
+          {
+            "not": {
+              "flag": "evt-without-ivt"
             }
           }
         ]
@@ -5678,6 +6471,11 @@
             "not": {
               "flag": "lysis-bp-uncontrolled"
             }
+          },
+          {
+            "not": {
+              "flag": "evt-without-ivt"
+            }
           }
         ]
       }
@@ -5710,6 +6508,11 @@
           {
             "not": {
               "flag": "lysis-unsafe"
+            }
+          },
+          {
+            "not": {
+              "flag": "evt-without-ivt"
             }
           }
         ]
@@ -5816,8 +6619,8 @@
         "en": "Nurse Lin (ED stroke nurse, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "交班：67岁男性，10:05由120送入抢救室1床，妻子陪同。分诊生命体征：BP 192/104 mmHg、HR 96次/分不齐、RR 18次/分、SpO₂ 96%（未吸氧）、T 36.8 ℃。院前血糖仪故障未测血糖，未建静脉通路，未用药。体重未称量（妻子知道）。物流：床旁有监护仪、壁式氧气、吸引器、输液泵和指尖血糖仪；CT室在走廊尽头约30米，已因120预警预留；神经介入导管室在二楼，团队工作日白天在院内。急诊备药：阿替普酶、替奈普酶、拉贝洛尔、尼卡地平、乌拉地尔、硝苯地平片、阿司匹林、普通肝素、甘露醇、生理盐水、冷沉淀与氨甲环酸（需血库）。会在到院8分钟仍未测血糖、20分钟仍未开CT、60分钟仍未溶栓时提醒。可协助：测血糖、抽血、给药、复测血压、吞咽筛查、转运。不解读影像，不做诊断。",
-        "en": "Handover: 67-year-old man brought by 120 ambulance at 10:05 to resus bay 1 with his wife. Triage vitals: BP 192/104 mmHg, HR 96/min irregular, RR 18/min, SpO₂ 96% on air, T 36.8 °C. No pre-hospital glucose (glucometer failed), no IV access, no medicines. Not weighed (his wife knows his weight). Logistics: the bay has a monitor, wall oxygen, suction, infusion pumps and a glucometer; the CT scanner is about 30 m down the corridor and has been held since the ambulance pre-alert; the neuro-angiography suite is on the second floor and the team is in-house on weekday days. ED stock: alteplase, tenecteplase, labetalol, nicardipine, urapidil, nifedipine tablets, aspirin, unfractionated heparin, mannitol, saline, plus cryoprecipitate and tranexamic acid via the blood bank. Prompts if there is no glucose at 8 minutes, no CT ordered at 20 minutes or no lysis at 60 minutes. Can help with glucose checks, bloods, drugs, repeat BP, the swallow screen and transfer. Does not interpret imaging or offer diagnoses."
+        "zh-CN": "交班：67岁男性，10:05由120送入抢救室1床，妻子陪同。分诊生命体征：BP 192/104 mmHg、HR 96次/分不齐、RR 18次/分、SpO₂ 96%（未吸氧）、T 36.8 ℃。院前血糖仪故障未测血糖，未建静脉通路，未用药。体重未称量（妻子知道）。物流：床旁有监护仪、壁式氧气、吸引器、输液泵和指尖血糖仪；CT室在走廊尽头约30米，已因120预警预留；神经介入导管室在二楼，团队工作日白天在院内。急诊备药：阿替普酶、替奈普酶、拉贝洛尔、尼卡地平、乌拉地尔、硝苯地平片、阿司匹林、普通肝素、甘露醇、生理盐水、冷沉淀与氨甲环酸（需血库）。可协助：测血糖、抽血、给药、复测血压、吞咽筛查、转运。不解读影像，不做诊断。",
+        "en": "Handover: 67-year-old man brought by 120 ambulance at 10:05 to resus bay 1 with his wife. Triage vitals: BP 192/104 mmHg, HR 96/min irregular, RR 18/min, SpO₂ 96% on air, T 36.8 °C. No pre-hospital glucose (glucometer failed), no IV access, no medicines. Not weighed (his wife knows his weight). Logistics: the bay has a monitor, wall oxygen, suction, infusion pumps and a glucometer; the CT scanner is about 30 m down the corridor and has been held since the ambulance pre-alert; the neuro-angiography suite is on the second floor and the team is in-house on weekday days. ED stock: alteplase, tenecteplase, labetalol, nicardipine, urapidil, nifedipine tablets, aspirin, unfractionated heparin, mannitol, saline, plus cryoprecipitate and tranexamic acid via the blood bank. Can help with glucose checks, bloods, drugs, repeat BP, the swallow screen and transfer. Does not interpret imaging or offer diagnoses."
       },
       "interprets": [
         "poc-glucose"
@@ -5841,8 +6644,8 @@
         "en": "On-call neuroradiologist"
       },
       "knowledge": {
-        "zh-CN": "只在学习者已看过相应结果后解读：CT平扫无出血，左侧MCA高密度征，岛带征——ASPECTS 9分（仅岛叶），无占位效应；CTA左侧M1近端闭塞、侧支中等偏好、无串联病变；CT灌注（若已做）核心12 mL、Tmax > 6 s 128 mL；胸片无急性异常。可解释ASPECTS计分方法，会提醒溶栓不必等CTA报告，CTA也不必等肌酐。",
-        "en": "Interprets only results the learner has already seen: plain CT without haemorrhage, hyperdense left MCA, insular ribbon sign — ASPECTS 9 (insula only), no mass effect; CTA proximal left M1 occlusion with moderate-to-good collaterals and no tandem lesion; CT perfusion (if done) core 12 mL, Tmax > 6 s 128 mL; chest X-ray without acute findings. Can explain how ASPECTS is scored and will point out that lysis need not wait for the CTA report, nor CTA for the creatinine."
+        "zh-CN": "只解读学员已经看过的影像报告，以报告原文为准，不补充报告以外的发现或数字；职责范围：头颅CT平扫、头颈CTA、CT灌注、胸片。可解释ASPECTS的计分方法（从10分起，每个受累区域减1分）和CTA侧支评分的含义；会提醒：溶栓不必等CTA报告，无已知肾病时CTA也不必等肌酐结果。不给出最终诊断或治疗决定。",
+        "en": "Interprets only reports the learner has already reviewed, sticking to the report wording and adding no findings or numbers beyond it; remit: plain CT head, CTA head and neck, CT perfusion, chest X-ray. Can explain how ASPECTS is scored (start at 10, subtract 1 per affected region) and what the CTA collateral grade means; will point out that lysis need not wait for the CTA report and, without known renal disease, CTA need not wait for the creatinine. Does not give the final diagnosis or a treatment decision."
       },
       "interprets": [
         "ct-head",
@@ -5874,8 +6677,8 @@
         "en": "Dr Xu (stroke centre attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，不直接给答案，只讨论学员已获得的信息。引导问题：起病时间应从什么时候算（最后正常 vs 被发现）？溶栓前哪些检查是“必须”的、哪些可以并行？为什么房颤患者一定要问抗凝药？血压超过185/110时该怎么办、哪些降压方式是危险的？失语患者如何做NIHSS第1b项？为什么溶栓后还要取栓、取栓不能等什么？阿替普酶与替奈普酶的剂量差别（按80 kg）？溶栓后24小时的注意事项？长期房颤抗凝的时机为何要在复查影像后决定？",
-        "en": "Socratic preceptor: never gives answers outright and discusses only information the learner already has. Guiding questions: from when does the clock start — last known well or when he was found? Which tests must precede lysis and which can run in parallel? Why must you ask an AF patient about anticoagulants? What do you do when BP exceeds 185/110, and which ways of lowering it are dangerous? How do you score NIHSS item 1b in an aphasic patient? Why does he still need thrombectomy after lysis, and what must thrombectomy not wait for? How do the alteplase and tenecteplase doses differ for 80 kg? What are the rules for the 24 hours after lysis? Why is the timing of long-term AF anticoagulation decided only after follow-up imaging?"
+        "zh-CN": "苏格拉底式带教，不直接给答案，只讨论学员已获得的信息。引导问题（每个都等学员已掌握相关信息后才提出）：起病时间应从什么时候算——最后正常还是被发现？做溶栓决策前哪些检查是“必须”的、哪些可以并行？病史提示房颤后：为什么一定要问抗凝药？血压超过185/110 mmHg时该怎么办、哪些降压方式是危险的？失语患者如何做NIHSS第1b项？判读CTA之后：它改变了什么？若有取栓指征，取栓不能等什么？选定溶栓后：阿替普酶与替奈普酶按80 kg的剂量有何不同？溶栓后24小时要注意什么？病例结束时：长期抗凝的启动时机为何要在复查影像后决定？",
+        "en": "Socratic preceptor: never gives answers outright and discusses only information the learner already has. Guiding questions, each asked only once the learner has the relevant information: from when does the clock start — last known well or when he was found? Which tests must precede a thrombolysis decision and which can run in parallel? Once the history shows AF: why must you ask about anticoagulants? What do you do when BP exceeds 185/110 mmHg, and which ways of lowering it are dangerous? How do you score NIHSS item 1b in an aphasic patient? After the CTA has been read: what does it change, and, if thrombectomy is indicated, what must it not wait for? Once lysis has been chosen: how do the alteplase and tenecteplase doses differ for 80 kg, and what are the rules for the 24 hours afterwards? At the end: why is the timing of long-term anticoagulation decided only after follow-up imaging?"
       },
       "interprets": [
         "poc-glucose",
@@ -5932,8 +6735,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "本病例止于取栓再通及台上NIHSS复评。24小时复查影像、卒中单元管理、出血转化监测、病因学检查（心超、动态心电图）、二级预防（房颤口服抗凝的启动时机、降脂）与康复均不在本病例范围内。溶栓时血压未控制所触发的颅内出血分支为教学演示，时间进程经过压缩。",
-      "en": "The case ends with thrombectomy recanalisation and the on-table NIHSS. Follow-up imaging at 24 h, stroke-unit care, surveillance for haemorrhagic transformation, the aetiological work-up (echo, Holter), secondary prevention (timing of oral anticoagulation for AF, lipid lowering) and rehabilitation are outside its scope. The haemorrhage branch triggered by lysing with uncontrolled BP is a teaching device with a compressed timeline."
+      "zh-CN": "本病例止于取栓再通及台上NIHSS复评。24小时复查影像、卒中单元管理、出血转化监测、病因学检查（心超、动态心电图）、二级预防（房颤口服抗凝的启动时机、降脂）与康复均不在本病例范围内。溶栓时血压未控制所触发的颅内出血分支为教学演示，时间进程经过压缩：一旦疑似颅内出血，介入团队不再接收取栓，完成出血处理和吞咽筛查后病例结束；若未静脉溶栓而直接取栓，再通后病例结束，评分中与溶栓相关的条目不得分。",
+      "en": "The case ends with thrombectomy recanalisation and the on-table NIHSS. Follow-up imaging at 24 h, stroke-unit care, surveillance for haemorrhagic transformation, the aetiological work-up (echo, Holter), secondary prevention (timing of oral anticoagulation for AF, lipid lowering) and rehabilitation are outside its scope. The haemorrhage branch triggered by lysing with uncontrolled BP is a teaching device with a compressed timeline: once a haemorrhage is suspected the angio team does not take him, and the case closes after the haemorrhage protocol and a swallow screen. If thrombectomy is done without IV lysis, the case closes after reperfusion and the lysis items of the rubric are not met."
     },
     "unknowns": [
       {
@@ -6030,6 +6833,10 @@
     {
       "zh-CN": "超声心动图、动态心电图、24小时复查影像及90天结局未记录。",
       "en": "Echocardiography, Holter monitoring, 24-hour follow-up imaging and the 90-day outcome are not recorded."
+    },
+    {
+      "zh-CN": "患者因失语无法自述的主观症状（视物模糊、头晕、麻木等）不详。",
+      "en": "Subjective symptoms he cannot report because of the aphasia (blurred vision, dizziness, numbness) are unknown."
     }
   ],
   "assets": [],
@@ -6533,6 +7340,181 @@
         "locale": "en",
         "expect": [
           "unknown-father-stroke-type"
+        ]
+      },
+      {
+        "text": "叔叔几点还好好的？",
+        "locale": "zh-CN",
+        "expect": [
+          "lkw"
+        ]
+      },
+      {
+        "text": "有木有吃华法令之类的？",
+        "locale": "zh-CN",
+        "expect": [
+          "anticoagulants"
+        ]
+      },
+      {
+        "text": "平常吃啥药",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "有没有抽风过",
+        "locale": "zh-CN",
+        "expect": [
+          "loc-seizure"
+        ]
+      },
+      {
+        "text": "近期开过刀没",
+        "locale": "zh-CN",
+        "expect": [
+          "recent-surgery"
+        ]
+      },
+      {
+        "text": "以前有没有TIA",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-tia"
+        ]
+      },
+      {
+        "text": "他爸是脑出血还是脑梗啊",
+        "locale": "zh-CN",
+        "expect": [
+          "unknown-father-stroke-type"
+        ]
+      },
+      {
+        "text": "大便发黑过吗",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding-history"
+        ]
+      },
+      {
+        "text": "发病的时候你在旁边吗",
+        "locale": "zh-CN",
+        "expect": [
+          "onset-witness"
+        ]
+      },
+      {
+        "text": "今早降压药吃了没",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "他是左撇子吗",
+        "locale": "zh-CN",
+        "expect": [
+          "handedness"
+        ]
+      },
+      {
+        "text": "最近有没有发烧感冒",
+        "locale": "zh-CN",
+        "expect": [
+          "recent-illness"
+        ]
+      },
+      {
+        "text": "喝水会不会呛",
+        "locale": "zh-CN",
+        "expect": [
+          "swallowing"
+        ]
+      },
+      {
+        "text": "有没有吸毒",
+        "locale": "zh-CN",
+        "expect": [
+          "recreational-drugs"
+        ]
+      },
+      {
+        "text": "他说过看东西模糊或者头晕吗",
+        "locale": "zh-CN",
+        "expect": [
+          "unknown-vision-dizziness"
+        ]
+      },
+      {
+        "text": "whats the LKW",
+        "locale": "en",
+        "expect": [
+          "lkw"
+        ]
+      },
+      {
+        "text": "is he on a DOAC or warfrin",
+        "locale": "en",
+        "expect": [
+          "anticoagulants"
+        ]
+      },
+      {
+        "text": "any hx of GI bleed?",
+        "locale": "en",
+        "expect": [
+          "bleeding-history"
+        ]
+      },
+      {
+        "text": "Does he have high BP?",
+        "locale": "en",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "how was he functioning b4 this",
+        "locale": "en",
+        "expect": [
+          "functional-baseline"
+        ]
+      },
+      {
+        "text": "were you with him when it started?",
+        "locale": "en",
+        "expect": [
+          "onset-witness"
+        ]
+      },
+      {
+        "text": "Is he right or left handed?",
+        "locale": "en",
+        "expect": [
+          "handedness"
+        ]
+      },
+      {
+        "text": "Any fever or infection lately?",
+        "locale": "en",
+        "expect": [
+          "recent-illness"
+        ]
+      },
+      {
+        "text": "Any trouble swallowing?",
+        "locale": "en",
+        "expect": [
+          "swallowing"
+        ]
+      },
+      {
+        "text": "Does he use recreational drugs?",
+        "locale": "en",
+        "expect": [
+          "recreational-drugs"
         ]
       }
     ],

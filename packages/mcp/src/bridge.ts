@@ -107,6 +107,9 @@ export class SessionToolRunner {
     const tool = this.tools.get(name);
     if (!tool) throw new Error(`unknown tool ${name}`);
     const L = this.session.locale;
+    // A call cancelled while it waited behind another call on this session must not act.
+    const aborted = (): ToolRunOutcome => ({ status: "done", output: { ok: false, output: mm(L, "tool.aborted", { tool: name }) }, notices: [] });
+    if (signal?.aborted) return aborted();
     const validated = validateArgs(tool.inputSchema, rawArgs);
     if (!validated.ok) return { status: "done", output: { ok: false, output: validated.errors.join("; ") }, notices: [] };
     let input = validated.value as Record<string, unknown>;
@@ -140,6 +143,7 @@ export class SessionToolRunner {
       };
     }
 
+    if (signal?.aborted) return aborted(); // cancelled while hooks ran
     const s = this.session.state;
     if (!tool.readOnly && !s.started && !s.finished) this.session.dispatch({ type: "start", by: "system" });
 

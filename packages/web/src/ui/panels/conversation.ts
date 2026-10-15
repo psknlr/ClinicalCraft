@@ -16,7 +16,10 @@ import { ct, getLocale, tr, trList, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { portrait, STAFF_COLOURS } from "../portrait.js";
+import { parseAddress } from "../address.js";
 import { capList, riskBadge } from "./common.js";
+
+export { parseAddress };
 
 export interface ConversationArgs {
   agent: string;
@@ -25,34 +28,6 @@ export interface ConversationArgs {
   name?: string;
   tab?: "talk" | "exam" | "treat" | "notes";
   focusInput?: boolean;
-}
-
-/** Chinese / English aliases for `@role` addressing (the session router only knows ids). */
-const ADDRESS_ALIASES: Record<string, string> = {
-  护士: "nurse",
-  护士长: "nurse",
-  上级: "attending",
-  上级医师: "attending",
-  老师: "attending",
-  带教: "attending",
-  放射科: "radiologist",
-  放射科医生: "radiologist",
-  病理科: "pathologist",
-  病理科医生: "pathologist",
-  家属: "companion",
-  陪同: "companion",
-  患者: "patient",
-  病人: "patient",
-};
-
-/** Resolve `@role text` (incl. Chinese aliases) → {to, text}. */
-export function parseAddress(raw: string, available: string[]): { to: string | null; text: string } {
-  const m = /^[@＠](\S+?)[\s,:，：]+([\s\S]*)$/.exec(raw.trim()) ?? /^[@＠](\S+)$/.exec(raw.trim());
-  if (!m) return { to: null, text: raw.trim() };
-  const key = m[1];
-  const role = ADDRESS_ALIASES[key] ?? key.toLowerCase();
-  if (!available.includes(role)) return { to: null, text: raw.trim() };
-  return { to: role, text: (m[2] ?? "").trim() };
 }
 
 function roleLabel(agent: string): string {
@@ -101,6 +76,11 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const addressed = parseAddress(raw, game.session.session.availableAgents());
       const to = addressed.to ?? (isPatient ? "patient" : args.agent);
       if (!addressed.text && !addressed.to) return;
+      // Someone addressed from this window (`@nurse …`) answers here too.
+      if (!agents.has(to)) {
+        agents.add(to);
+        renderedVersion = -1;
+      }
       app.submit({ type: "user_message", text: addressed.text, to });
     };
     input.addEventListener("keydown", (e) => {

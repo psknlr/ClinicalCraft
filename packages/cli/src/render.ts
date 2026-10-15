@@ -99,6 +99,7 @@ export class EventRenderer {
   private spinnerTimer: ReturnType<typeof setInterval> | null = null;
   private spinnerFrame = 0;
   private spinnerShown = false;
+  /** Speaker names seen in `agent_message` events, keyed by `locale\u0000agent` (names are localised). */
   private readonly speakers = new Map<string, string>();
   configured: Configured | null = null;
   snapshot: { state: SessionState; progress: ObjectiveProgress; vitals: VitalsSnapshot; waypoint: string | null } | null = null;
@@ -170,7 +171,7 @@ export class EventRenderer {
 
   /** Display name for an agent (patient name, "Nurse", …). */
   speakerName(agent: string): string {
-    const cached = this.speakers.get(agent);
+    const cached = this.speakers.get(`${this.L}\u0000${agent}`);
     if (cached) return cached;
     const c = this.o.caseDef;
     if (agent === "patient") return t(c.patient.displayName, this.L);
@@ -261,7 +262,7 @@ export class EventRenderer {
       }
       case "agent_message": {
         const agent = String(msg.agent);
-        if (msg.speaker && msg.speaker !== agent) this.speakers.set(agent, msg.speaker);
+        if (msg.speaker && msg.speaker !== agent) this.speakers.set(`${this.L}\u0000${agent}`, msg.speaker);
         const key = `${msg.turnId}:${agent}`;
         if (this.streamed.has(key)) {
           this.streamed.delete(key);

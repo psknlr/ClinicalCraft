@@ -38,6 +38,12 @@ The case hinges on a few things the learner must actively find out:
   health record confirms it.
 * **Weight.** It is 80 kg, needed for the thrombolytic dose.
 
+History coverage: 36 items. Besides the stroke-specific questions they answer handedness (right),
+recent fever or infection (none), recreational drugs (none) and swallowing since onset (nothing by
+mouth, drooling). Four `unknown` items keep missing data missing: home BP that morning, his
+cholesterol, the type of his father's stroke, and symptoms he cannot report because of the aphasia
+(blurred vision, dizziness, numbness).
+
 Diagnosis (hidden from learners): acute ischaemic stroke from a **proximal left MCA M1 occlusion**,
 cardioembolic (AF). NIHSS 14, ASPECTS 9.
 
@@ -61,12 +67,17 @@ cardioembolic (AF). NIHSS 14, ASPECTS 9.
    * Use IV labetalol, nicardipine or urapidil.
    * Then give alteplase 0.9 mg/kg or tenecteplase 0.25 mg/kg.
    * Door-to-needle target ≤ 60 min.
+   * The chapter also closes if thrombectomy reperfuses him without IV lysis, so a learner who
+     skipped lysis can finish without giving a (then contraindicated) lytic; the lysis rubric
+     items stay unmet.
 5. **Definitive treatment and ongoing care** (thrombectomy and post-thrombolysis care).
    * Read the CTA and confirm thrombectomy eligibility (select-all decision).
    * Call neurointervention and transfer him (bridging).
    * Order the post-lysis monitoring bundle.
    * Do a bedside swallow screen before anything by mouth. He fails it.
    * In the angio suite: DSA and thrombectomy, eTICI 2c after one pass, on-table NIHSS 6.
+   * After a suspected sICH thrombectomy is off; the chapter closes once the sICH protocol and a
+     swallow screen are done, so the debrief is still reachable.
 
 ## Decisions
 
@@ -129,6 +140,9 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   * Effect: SBP −48 over about 10 min.
   * Once SBP falls below 160, event `nifedipine-drop` fires: GCS 11 and flag `precipitous-bp-drop`
     (penumbral hypoperfusion).
+* **Over-lowering with IV agents.** If SBP falls below 130 mmHg before reperfusion (e.g. labetalol
+  twice + nicardipine + urapidil), event `bp-overshoot` fires: GCS 11 and flag `bp-overshoot`, which
+  fails the BP rubric item. It does not fire again after `nifedipine-drop`.
 * **Thrombolysis safety logic** applies to both alteplase and tenecteplase.
   * *Contraindicated* if any of these holds:
     * the CT has not been read;
@@ -138,14 +152,17 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
     * the other lytic has already been given;
     * flag `sich` is set;
     * flag `recanalised` is set (thrombectomy has already reperfused him — no IV lysis afterwards).
-  * If a prerequisite was missing, event `lysis-checklist-incomplete` sets `lysis-unsafe`.
+  * If a prerequisite was missing, event `lysis-checklist-incomplete` sets `lysis-unsafe`; if
+    no glucose at all had been read, silent event `lysis-no-glucose` also fails the glucose
+    rubric item.
   * If BP was still > 185/110 at the moment of lysis, event `sich` fires: **suspected symptomatic
     ICH**.
     * GCS 9, BP 212/116, headache, vomiting.
     * Flags `sich` and `lysis-bp-uncontrolled`.
     * The `sich-protocol` intervention is indicated only then: stop any running lytic, then
       cryoprecipitate and/or TXA, haematology and neurosurgical review.
-    * Transfer for thrombectomy becomes contraindicated.
+    * Transfer for thrombectomy becomes contraindicated and the `angio` phase is never entered,
+      so the DSA result (which describes a successful thrombectomy) cannot be read.
     * This branch is a deterministic teaching device with a compressed timeline.
 * **Time pressure.**
 
@@ -155,16 +172,22 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   | 20 min, no CT ordered | `ct-delayed` (fails the imaging rubric item) |
   | 60 min, no lysis | `dtn-over-60` |
   | From minute 45 without reperfusion | a GCS trend drifts down (−0.015/min, max −2) |
-  | 90 min, no lysis or transfer | event `penumbra-loss`: GCS 11, forced gaze, plegic right side |
+  | 90 min, no lysis or transfer | event `penumbra-loss`: baseline GCS 12, shown as 11 with the running trend (10 by 150 min); forced gaze, plegic right side |
 
   The GCS trend stops when lysis is given or he is transferred.
 * **Waiting for labs.** If, at 45 min or later, the coagulation or blood-count result is ready and no
   lysis has been given, flag `waited-for-labs` is set. A learner who sent bloods early and lysed
   within 45 min (the high-performing DTN target) is therefore not penalised just because a result
   happened to come back first.
+* **Transfer.** The `angio` phase is entered only when flag `transferred-angio` is set **and**
+  the bedside glucose, NIHSS, plain CT and CTA have been read **and** there is no suspected sICH.
+  A premature (contraindicated) transfer therefore waits until those are done instead of
+  stranding the learner in `angio`, where the ED exam items and ED tests have no record.
 * **Reperfusion.** When the DSA result is ready in the `angio` phase (and there was no sICH), event
   `reperfusion` fires: GCS 14, BP 168/94 baseline (shown as about 148/84 with the persisting
-  antihypertensive effect), and the patient starts producing short phrases.
+  antihypertensive effect), and the patient starts producing short phrases. If no lytic had been
+  given by then, silent event `evt-without-ivt` sets a flag that fails the lysis rubric items, so
+  a (contraindicated) lytic given after reperfusion cannot earn them back.
 * **Tempting wrong choices** are scored as safety events:
   * aspirin at any point in this case — before CT, in place of or just before reperfusion, or
     within 24 h of lysis (ARTIS);
@@ -194,7 +217,7 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 
 **Investigations**
 
-* Glucose.
+* Glucose read before any thrombolytic.
 * NCCT + CTA read, with the CT ordered within 20 min.
 
 **Diagnosis**
@@ -203,13 +226,14 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 
 **Safety**
 
-* BP < 185/110 with an IV agent before lysis, and no nifedipine (weight 2).
+* BP < 185/110 with an IV agent before lysis, no nifedipine and no over-lowering (weight 2).
 * No aspirin or heparin.
 * Swallow screen and no oral intake.
 
 **Management**
 
-* DTN ≤ 60 min with a safe checklist (weight 2).
+* DTN ≤ 60 min with a safe checklist (weight 2). The lysis items (BP, DTN, no lab wait) are unmet
+  when thrombectomy reperfused him before any lytic.
 * Bridging EVT (weight 2).
 
 **Efficiency**
@@ -221,8 +245,9 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 * Consent conversation with the wife and the aphasic patient.
 * SBAR handover to neurointervention.
 
-The reference `solution` reaches DTN 26.5 min (tenecteplase), scores 17/17 on the deterministic
-items, has no contraindicated actions and no critical alarms, and reads every result it orders.
+The reference `solution` gives tenecteplase at minute 25 (DTN 25 min), scores 17/17 on the
+deterministic items, has no contraindicated actions and no critical alarms, and reads every result
+it orders.
 
 ## Teaching notes
 
@@ -274,18 +299,29 @@ items, has no contraindicated actions and no critical alarms, and reads every re
 
 ## Matcher regression corpus
 
-`extensions.testUtterances` holds 39 bilingual paraphrases (22 zh-CN, 17 en). Each expected id is
-the **top** `matchHistory` hit, ties being broken by declaration order. Two declaration-order
-choices keep the corpus stable:
+`extensions.testUtterances` holds 64 bilingual paraphrases (37 zh-CN, 27 en), including colloquial
+Chinese (有木有, 咋了, 啥药), typos (华法令, warfrin) and abbreviations (LKW, TIA, DOAC, BP, hx, b4).
+Each expected id is the **top** `matchHistory` hit with a score ≥ 0.55 (the `cases verify` rule),
+ties being broken by declaration order. Two declaration-order choices keep the corpus stable:
 
 * `head-trauma` is placed before `headache-vomiting`, because "head" prefix-matches "headache".
 * `unknown-father-stroke-type` is placed before `prior-stroke`.
 
-A few items also carry `excludeKeywords` for when the matcher applies them.
+`excludeKeywords` steer look-alike questions: medications vs anticoagulants / recreational drugs,
+last known well vs "were you with him", bleeding history vs "risk of bleeding" or a parent's stroke,
+last meal vs swallowing, hypertension vs "did he take his BP pill today", and "don't worry" away
+from the concerns item. Avoid generic Chinese bigrams such as 什么, 有没有, 怎么, 吃了 in keywords:
+the character matcher scores them against every question.
+
+Recall@3 on 106 learner-style probes rose from 0.755 to 1.000. A second set of 60, written after
+the first keyword pass, scored 0.800 on the original case and 0.917 after that pass (1.000 after a
+second pass that also used it).
 
 ## Validation
 
 ```bash
 npx tsx -e "…CaseSchema.safeParse…" packages/content/cases/acute-ischemic-stroke/case.json   # VALID
 # parseCase: ok, 0 warnings · checkCaseIntegrity: [] · verifyCase: ok, 0 issues, rubric 17/17
+npm run cc -- cases validate packages/content/cases/acute-ischemic-stroke/case.json
+npm run cc -- cases verify acute-ischemic-stroke   # objectives 5/5, decisions 4/4, utterances 64/64
 ```

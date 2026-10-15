@@ -94,6 +94,8 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
     `filter-unindicated`, which fails `r-safety-no-harm` (a filter in the bleeding branch is not
     penalised).
 * **Tempting wrong choices** are scored as safety events (contraindicated):
+  * the chest-pain reflex: aspirin 300 mg, or sublingual GTN (SBP −15, HR +6 for about 20 min;
+    the pain is pleuritic and the RV may be preload-dependent)
   * a 1 L rapid fluid bolus
   * IV furosemide
   * ketorolac
@@ -105,8 +107,9 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   * reperfusion while stable
   * red-cell transfusion without bleeding
 
-  A prophylactic-dose enoxaparin is allowed but marked *neutral*: it does not treat VTE, so the
-  deterioration continues. IV paracetamol is *neutral* (modest effect; the 18:00 regular dose is
+  Morphine is contraindicated while SBP < 90 mmHg, and treatment-dose LMWH once she is high
+  risk (UFH with a bolus is then recommended). A prophylactic-dose enoxaparin is allowed but
+  marked *neutral*: it does not treat VTE, so the deterioration continues. IV paracetamol is *neutral* (modest effect; the 18:00 regular dose is
   omitted). The NSAID option's aliases are class words only ("NSAID", "非甾体抗炎药", "toradol"):
   typing a different NSAID (ibuprofen, flurbiprofen) no longer records ketorolac.
 
@@ -122,15 +125,39 @@ branch, where it is contraindicated.
 | Path | Score |
 |---|---|
 | Reference solution | 19/19 (100 %) |
+| Reference, plus aspirin and sublingual GTN at minute 4 (anticoagulation then slips past the 35-min prompt) | 16/19 (84 %) |
 | Treatment-dose LMWH instead of UFH, otherwise reference | 18/19 (95 %) |
 | UFH started before the bleeding check, surgical call and baseline bloods | 17/19 (89 %) |
 | Bare minimum to complete, board answered by trial and error | 8/19 (42 %) |
 | Slow work-up, waits for the CTPA, decompensates at 60 min, rescued | 5/19 (26 %) |
+| Decompensates at 60 min, then UFH only (no vasopressor, no PERT/reperfusion): stays at SBP ≈ 79–88, GCS 14 | 4/19 (21 %), not completed |
 | Lysis right after the board strategy, haemorrhage managed correctly (transfusion + filter, no anticoagulant), otherwise complete | 13/19 (68 %) |
 | Same, but UFH given into the bleed instead of a filter | 12/19 (63 %) |
 | Empirical thrombolysis, then wound haemorrhage | 1/19 (5 %) |
-| Every tempting harmful choice | 1/19 (5 %) |
+| Every tempting harmful choice (including aspirin and GTN) | 1/19 (5 %) |
 | No action for 180 min (timeout) | 0/19 (0 %) |
+
+## Learner guidance and board gating
+
+* **Waypoints point at the ward bedside.** `resolveWaypoint` picks the placement nearest to the
+  learner. From the spawn, the lab or the evidence board, "oxygen", "cardiac-monitor" or
+  "infusion-pump" resolve to ED, ICU or theatre equipment, where bedside interventions for
+  ward bed 1 cannot be given. So every bedside step targets `patient` (the outlet, monitor and pump
+  are within 2 m of bed 1). Off-ward steps keep their capability targets (`lab-hematology`, `ct`,
+  `lab-chemistry`, `records` for the MAR, `board`). While the CTPA and troponin are pending, the
+  learner is sent back to the patient. Results are read from the journal anywhere.
+* **The anticoagulant decision unlocks only when the evidence exists**: strategy decided, bleeding
+  history asked, wound examined, *and* the prophylaxis history known (`h-lmwh` asked or the MAR
+  read). Its options and feedback refer to the held enoxaparin and LMWH exposure since POD0.
+* **The risk-class decision asks about her status at presentation.** In the decompensation branch
+  she is high risk by the time she is classified, so the prompt says "at presentation (not any
+  later change)", and the "high" feedback says that a later shock reclassifies her and needs
+  reperfusion via the PERT. The "no systemic lysis" statement in the escalation plan rests on the
+  surgical contraindication, so it stays true in both branches.
+* **Feedback does not quote unobtained results.** Decision feedback and intervention harm texts no
+  longer cite the echo, lactate, perfusion, JVP or chest-film findings, nor the risk class, before
+  the learner has obtained them. The transfusion intervention's visible name no longer announces
+  a lytic scenario.
 
 ## Teaching notes
 
@@ -210,13 +237,22 @@ now have authored answers consistent with the rest of the case:
 * other operations (`h-psh-other`)
 * recreational drugs (`h-recreational`)
 * whether the chest pain is constant and what eases it (in `h-pain-character`)
+* kidney or liver disease (contrast, LMWH dosing; in `h-pmh`)
+* chemotherapy or radiotherapy (in `h-cancer`: none yet)
+* children, pregnancies and miscarriages (in `h-hormones`: one daughter, no miscarriages)
+* shoulder-tip radiation (in `h-pain-site`)
+* weight loss and night sweats (`h-weight-loss`: neither)
 
 NPC briefs only use what the learner has obtained:
 
 * The attending keeps questions generic until the learner raises VTE.
 * The radiologist judges contrast risk from the creatinine result once the learner has it.
 * The nurse points to the MAR on the records terminal; reading it is what credits the
-  prophylaxis question.
+  prophylaxis question. Her stock list is neutral (analgesics, IV fluids, diuretics, heparins), so
+  it does not single out anticoagulants.
+* The cardiology registrar mentions the PERT only once the learner has raised PE.
+* The `consult-surgeon` response is conditional ("if she needs therapeutic anticoagulation…"), so
+  calling the surgeons first does not announce the treatment.
 
 In the current agent runtime `consult` reaches the nurse, radiologist, pathologist and attending
 only, so the `consultant` (cardiology, surgery) and `pharmacist` briefs are kept for front-ends
@@ -231,13 +267,20 @@ clinicalcraft cases verify pulmonary-embolism-postop      # reference solution: 
 clinicalcraft play pulmonary-embolism-postop --provider offline
 ```
 
-`extensions.testUtterances` has 54 bilingual paraphrases and serves as the history-matcher
-regression corpus. That is above the 15–40 in CASE_AUTHORING §7 because 14 tricky ones were
-added on review: colloquial Chinese, text-speak, typos and abbreviations such as "有木有咳血",
-"did u get ur clexane last nite", "any PMH?" and "previous PE or DVT?".
+`extensions.testUtterances` has 64 bilingual paraphrases and serves as the history-matcher
+regression corpus. That is above the 15–40 in CASE_AUTHORING §7 because 24 tricky ones were
+added over two reviews: colloquial Chinese, text-speak, typos and abbreviations such as "有木有咳血",
+"疼几分钟了", "腿肚子疼不疼", "did u get ur clexane last nite", "any LOC?", "NKDA?" and "any wt loss?".
 
 Matcher results:
 
 * Every utterance passes the patient pipeline's selection rule (score ≥ 0.55, top hit expected),
   with no ties and no extra facts revealed.
-* Each history item's own canonical question selects that item (82/82).
+* Each history item's own canonical question selects that item (84/84).
+* recall@3 is 1.00 in both locales for the corpus (64/64). On two held-out learner probe sets it
+  was 0.70 (113 utterances) and 0.85 (60 utterances) before the pass-3 keyword review, and is 1.00
+  on both now. Fresh negative probes (blood group, vaccines, headache, pacemaker, name) select
+  no fact.
+* Known limitation: an English utterance containing "painkillers" cannot reach `h-meds` without
+  hijacking every pain question. The matcher treats "pain" as a prefix match of "painkiller", so
+  "any painkillers today?" gets a clarifying question instead.

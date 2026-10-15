@@ -12,6 +12,9 @@ import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
 const SECRET_KEY = /^(apiKey|token|password|secret)$/i;
 
+/** Settings layers by precedence (docs/ARCHITECTURE.md §4: later layers win). */
+const LAYER_RANK: Readonly<Record<string, number>> = { default: 0, user: 1, project: 2, local: 3, env: 4, flag: 5, profile: 6 };
+
 /** Deep copy with secret-looking keys masked. */
 export function redactSettings(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(redactSettings);
@@ -125,6 +128,11 @@ export async function configSet(ctx: CliContext, args: ParsedArgs): Promise<numb
   const target = flagBool(args, "project") ? "project" : flagBool(args, "local") ? "local" : "user";
   const secret = key.split(".").some((part) => SECRET_KEY.test(part));
   if (target === "project" && secret) throw new CliError(ctx.t("config.noSecretsInProject"), EXIT.usage);
+  // A bad value is a usage error (exit 2), reported before any file is touched.
+  if (value !== null) {
+    const invalid = validateSettingsLayer(patch, target).issues.filter((i) => i.severity === "error");
+    if (invalid.length > 0) throw new UsageError(ctx.t("config.invalidValue", { key, issues: invalid.map((i) => `${i.path || "(root)"}: ${i.message}`).join("; ") }));
+  }
   let file: string;
   if (target === "user") {
     try {
@@ -139,7 +147,29 @@ export async function configSet(ctx: CliContext, args: ParsedArgs): Promise<numb
     await writeLayerFile(file, patch, target);
   }
   ctx.print(ctx.t("config.saved", { key, value: secret ? "[redacted]" : JSON.stringify(value), file }));
+  await warnIfShadowed(ctx, key, value, target, secret);
   return EXIT.ok;
+}
+
+/**
+ * After `config set`: when a higher-precedence layer (e.g. the project file
+ * over the user file) still decides a scalar value, say so — otherwise
+ * `config get` would seem to ignore the change.
+ */
+async function warnIfShadowed(ctx: CliContext, key: string, value: unknown, target: string, secret: boolean): Promise<void> {
+  if (value === null || typeof value === "object") return; // deletions, arrays (concatenated) and objects (merged)
+  let effective;
+  try {
+    effective = await loadCliSettings(ctx);
+  } catch {
+    return;
+  }
+  const { files: _files, issues: _issues, projectRoot: _root, sources, ...resolved } = effective;
+  const source = sources[key.split(".")[0]!];
+  if (!source || (LAYER_RANK[source] ?? 0) <= (LAYER_RANK[target] ?? 0)) return;
+  const now = getPath(resolved, key);
+  if (JSON.stringify(now) === JSON.stringify(value)) return;
+  ctx.printErr(ctx.err.yellow(ctx.t("config.shadowed", { key, value: secret ? "[redacted]" : JSON.stringify(now), source, target })));
 }
 
 export async function configPath(ctx: CliContext): Promise<number> {

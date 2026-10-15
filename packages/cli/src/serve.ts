@@ -54,7 +54,8 @@ function openBrowser(url: string): void {
 }
 
 export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<number> {
-  const settings = await loadCliSettings(ctx);
+  // `--lang` is the default language of the server's error messages (Accept-Language wins).
+  const settings = await loadCliSettings(ctx, ctx.lang ? { locale: ctx.lang } : undefined);
   const host = flagString(args, "host") ?? settings.server.host;
   const portFlag = flagNumber(args, "port");
   if (portFlag !== undefined && (!Number.isInteger(portFlag) || portFlag < 0 || portFlag > 65535)) throw new UsageError(ctx.t("serve.badPort", { port: portFlag }));
@@ -82,7 +83,7 @@ export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<numbe
     env: ctx.env,
   });
   ctx.print(ctx.t("serve.listening", { url: server.url }));
-  if (token) ctx.print(ctx.out.dim(ctx.t("serve.tokenNote")));
+  if (token) ctx.print(ctx.out.dim(ctx.t("serve.tokenNote", { url: server.url })));
   if (flagBool(args, "open")) openBrowser(server.url);
 
   await new Promise<void>((resolve) => {

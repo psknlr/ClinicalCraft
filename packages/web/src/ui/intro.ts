@@ -318,8 +318,15 @@ export class Intro {
       );
       list.append(b);
     }
-    const act = list.querySelector(".case-card.active");
-    if (act && "scrollIntoView" in act) requestAnimationFrame(() => (act as HTMLElement).scrollIntoView({ block: "nearest" }));
+    // Keep the selected card visible inside the list only (scrollIntoView would also scroll the page).
+    const act = list.querySelector<HTMLElement>(".case-card.active");
+    if (act)
+      requestAnimationFrame(() => {
+        if (list.scrollHeight <= list.clientHeight + 2) return;
+        const lr = list.getBoundingClientRect();
+        const ar = act.getBoundingClientRect();
+        if (ar.top < lr.top || ar.bottom > lr.bottom) list.scrollTop += ar.top - lr.top - 8;
+      });
   }
 }
 

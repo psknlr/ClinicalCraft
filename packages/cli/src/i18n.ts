@@ -137,6 +137,9 @@ const EN = {
   // cases
   "cases.unknown": "Unknown case \"{id}\".",
   "cases.available": "Available: {list}",
+  "cases.noneSelected": "No case selected: pass a case id (`--case <id>`) or set defaultCase.",
+  "facilities.unknown": "Unknown facility \"{id}\".",
+  "facilities.available": "Available facilities: {list}",
   "cases.invalidFile": "✗ {file}: {n} error(s) — run `clinicalcraft cases validate` for details",
   "cases.needId": "Which case? `clinicalcraft cases show <id>`",
   "cases.moreIssues": "{n} more",
@@ -200,6 +203,8 @@ const EN = {
   "config.knownKeys": "Settings: {list}",
   "config.noSecretsInProject": "Secrets are never stored in project settings; use --user or --local (or an environment variable).",
   "config.saved": "{key} = {value} → {file}",
+  "config.invalidValue": "Invalid value for {key}: {issues}",
+  "config.shadowed": "Note: {key} is still {value} — the {source} settings take precedence over the {target} settings.",
 
   // sessions
   "sessions.none": "No recorded sessions yet.",
@@ -209,6 +214,10 @@ const EN = {
   "sessions.learner": "Learner",
   "sessions.score": "Assessment: {percent}%",
   "sessions.summary": "{actions} accepted actions · {items} transcript items",
+  "sessions.noneToResume": "No recorded sessions to resume.",
+  "sessions.unknown": "No session \"{id}\".",
+  "sessions.ambiguous": "Session id \"{id}\" is ambiguous (matches {list}).",
+  "sessions.caseMismatch": "Session {id} is for case \"{caseId}\", not \"{requested}\".",
 
   // serve / mcp
   "serve.badPort": "Invalid port {port}.",
@@ -220,7 +229,7 @@ const EN = {
   "serve.noStatic": "Static directory {dir} does not exist.",
   "serve.noWeb": "The web client is not built (packages/web/dist): run `npm run build:web` for the 3D world. Serving the API only.",
   "serve.listening": "ClinicalCraft server listening on {url}",
-  "serve.tokenNote": "API requests need `Authorization: Bearer <token>`.",
+  "serve.tokenNote": "Access token required: open {url}?token=<token> once in the browser (it sets a cookie); API clients send `Authorization: Bearer <token>`.",
   "serve.stopping": "Stopping server…",
 
   // import-v4
@@ -385,6 +394,9 @@ const ZH: Record<MsgKey, string> = {
 
   "cases.unknown": "未知病例“{id}”。",
   "cases.available": "可用病例：{list}",
+  "cases.noneSelected": "未选择病例：请传入病例 ID（`--case <id>`）或设置 defaultCase。",
+  "facilities.unknown": "未知场馆“{id}”。",
+  "facilities.available": "可用场馆：{list}",
   "cases.invalidFile": "✗ {file}：{n} 个错误 —— 运行 `clinicalcraft cases validate` 查看详情",
   "cases.needId": "哪个病例？`clinicalcraft cases show <id>`",
   "cases.moreIssues": "另有 {n} 条",
@@ -445,6 +457,8 @@ const ZH: Record<MsgKey, string> = {
   "config.knownKeys": "可用设置项：{list}",
   "config.noSecretsInProject": "项目设置中绝不保存密钥；请使用 --user 或 --local（或环境变量）。",
   "config.saved": "{key} = {value} → {file}",
+  "config.invalidValue": "{key} 的值无效：{issues}",
+  "config.shadowed": "注意：{key} 仍为 {value}——{source} 设置的优先级高于 {target} 设置。",
 
   "sessions.none": "还没有记录的会话。",
   "sessions.resumeHint": "使用 `clinicalcraft --resume <id>` 恢复会话。",
@@ -453,6 +467,10 @@ const ZH: Record<MsgKey, string> = {
   "sessions.learner": "学员",
   "sessions.score": "评估：{percent}%",
   "sessions.summary": "{actions} 个已接受的操作 · {items} 条记录",
+  "sessions.noneToResume": "没有可恢复的会话记录。",
+  "sessions.unknown": "没有会话“{id}”。",
+  "sessions.ambiguous": "会话 ID“{id}”不唯一（匹配 {list}）。",
+  "sessions.caseMismatch": "会话 {id} 属于病例“{caseId}”，不是“{requested}”。",
 
   "serve.badPort": "端口 {port} 无效。",
   "serve.needToken": "绑定到 {host} 会让服务对本机以外可见：请传入 --token（或设置 server.token）。",
@@ -463,7 +481,7 @@ const ZH: Record<MsgKey, string> = {
   "serve.noStatic": "静态目录 {dir} 不存在。",
   "serve.noWeb": "网页客户端尚未构建（packages/web/dist）：运行 `npm run build:web` 以启用 3D 世界。当前仅提供 API。",
   "serve.listening": "ClinicalCraft 服务已启动：{url}",
-  "serve.tokenNote": "API 请求需带 `Authorization: Bearer <token>`。",
+  "serve.tokenNote": "需要访问令牌：在浏览器中打开一次 {url}?token=<token>（会设置 Cookie）；API 客户端请带 `Authorization: Bearer <token>`。",
   "serve.stopping": "正在停止服务…",
 
   "import.needFiles": "请传入 V4 html、其 .part01/.part02 文件，或两个 zip 压缩包。",
