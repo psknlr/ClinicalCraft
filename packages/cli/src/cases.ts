@@ -18,6 +18,7 @@ import { builtinContentDir, findProjectRoot, loadContent, type LoadedContent } f
 import { table } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
+import type { MsgKey } from "./i18n.js";
 import { sortedCases, stars } from "./picker.js";
 import { caseTemplate, readmeTemplate } from "./scaffold.js";
 
@@ -79,6 +80,13 @@ function printIssues(ctx: CliContext, issues: readonly Issue[], showWarnings: bo
   }
 }
 
+/** Localised care setting ("emergency" → 急诊); unknown values are shown as is. */
+function settingLabel(ctx: CliContext, setting: string): string {
+  const key = `setting.${setting}` as MsgKey;
+  const label = ctx.t(key);
+  return label === key ? setting : label;
+}
+
 async function loadAll(ctx: CliContext): Promise<LoadedContent> {
   const settings = await loadCliSettings(ctx);
   return loadContent({ dirs: settings.contentDirs });
@@ -120,7 +128,7 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
     return EXIT.ok;
   }
   const rows = [[ctx.t("col.id"), ctx.t("col.title"), ctx.t("col.difficulty"), ctx.t("col.setting"), ctx.t("col.minutes")]];
-  for (const c of cases) rows.push([c.id, t(c.title, ctx.locale), stars(c.difficulty), c.setting, c.estimatedMinutes ? String(c.estimatedMinutes) : "-"]);
+  for (const c of cases) rows.push([c.id, t(c.title, ctx.locale), stars(c.difficulty), settingLabel(ctx, c.setting), c.estimatedMinutes ? String(c.estimatedMinutes) : "-"]);
   ctx.print(table(rows, { header: true, maxCell: 60 }));
   const broken = content.issues.filter((f) => f.file.endsWith("case.json") && f.issues.some((i) => i.severity === "error"));
   for (const f of broken) ctx.printErr(ctx.err.red(ctx.t("cases.invalidFile", { file: f.file, n: f.issues.filter((i) => i.severity === "error").length })));

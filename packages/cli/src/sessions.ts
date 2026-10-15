@@ -70,6 +70,7 @@ export async function sessionsShow(ctx: CliContext, args: ParsedArgs): Promise<n
         const msg = item.payload.msg;
         if (msg.type === "agent_message" && msg.text.trim()) ctx.print(`${p.cyan(`${msg.speaker || String(msg.agent)}:`)} ${msg.text}`);
         else if (msg.type === "tool_call_end") ctx.print(p.dim(`  ⏺ ${msg.tool} ${msg.ok ? "✓" : "✗"} ${truncate(msg.output.split("\n")[0] ?? "", 90)}`));
+        else if (msg.type === "command_output" && msg.text.trim()) ctx.print(p.dim(`  ${truncate(msg.text.trim().split("\n")[0] ?? "", 100)}`));
         else if (msg.type === "clinical_event" && msg.event.type === "objective.completed") ctx.print(p.green(`  ✓ ${msg.event.objectiveId}`));
         else if (msg.type === "assessment") ctx.print(p.bold(ctx.t("sessions.score", { percent: msg.report.score.percent })));
         break;

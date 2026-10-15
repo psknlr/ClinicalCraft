@@ -208,6 +208,18 @@ describe("config set", () => {
   });
 });
 
+describe("cases list", () => {
+  it.skipIf(!smzl)("localises the care setting column", { timeout: T }, async () => {
+    const box = sandbox();
+    const zh = await run(["cases", "list"], box);
+    const row = zh.stdout.split("\n").find((l) => l.startsWith(SMZL))!;
+    expect(row).toContain("门诊");
+    expect(row).not.toContain("outpatient");
+    const json = await run(["cases", "list", "--json"], box);
+    expect(json.stdout).toContain('"setting": "outpatient"');
+  });
+});
+
 describe("cases new", () => {
   it("gives a contentDirs hint that actually finds the case", { timeout: T }, async () => {
     const box = sandbox();
@@ -233,6 +245,7 @@ describe("sessions", () => {
     const ops = [
       JSON.stringify({ type: "user_message", text: "where does it hurt?" }),
       JSON.stringify({ type: "user_message", text: "any allergies?" }),
+      JSON.stringify({ type: "slash_command", name: "order", args: "cbc" }),
     ].join("\n");
     const exec = await run(["exec", "--case", SMZL, "--lang", "en", "--input-format", "stream-json", "--output-format", "json"], box, `${ops}\n`);
     expect(exec.code).toBe(0);
@@ -245,6 +258,10 @@ describe("sessions", () => {
     expect(firstQ).toBeGreaterThanOrEqual(0);
     expect(firstA).toBeGreaterThan(firstQ);
     expect(secondQ).toBeGreaterThan(firstA);
+    // Command output is shown under its command.
+    const order = lines.findIndex((l) => l.trim() === "/order cbc");
+    expect(order).toBeGreaterThan(secondQ);
+    expect(lines[order + 1]).toContain("Ordered Complete blood count");
   });
 
   it("list shows a file name, not a path, for a transcript without session_meta", { timeout: T }, async () => {

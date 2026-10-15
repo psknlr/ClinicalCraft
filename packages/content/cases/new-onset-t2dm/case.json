@@ -267,8 +267,6 @@
           "晚上起来",
           "老上厕所",
           "跑厕所",
-          "尿尿",
-          "撒尿",
           "三多一少"
         ],
         "en": [
@@ -282,7 +280,6 @@
           "toilet",
           "pee",
           "passing urine",
-          "up at night",
           "nite"
         ]
       },
@@ -431,7 +428,8 @@
           "发迷糊",
           "意识",
           "嗜睡",
-          "dka",
+          "有dka",
+          "dka症状",
           "酮症",
           "酸中毒",
           "肚子痛",
@@ -561,13 +559,11 @@
         "zh-CN": [
           "龟头",
           "生殖器",
-          "下体",
           "私处",
           "阴部",
           "念珠菌",
-          "下面痒",
-          "下边痒",
-          "那里痒",
+          "下面痒不痒",
+          "下边痒不痒",
           "龟头痒",
           "下体瘙痒",
           "阴部瘙痒",
@@ -582,8 +578,8 @@
           "private parts",
           "foreskin",
           "groin itch",
-          "itchy down there",
-          "down below",
+          "down there",
+          "itchy genitals",
           "itchy penis",
           "genital itch",
           "sore penis"
@@ -969,8 +965,8 @@
         "en": "Have you had your blood sugar checked before?"
       },
       "answer": {
-        "zh-CN": "去年单位体检说空腹血糖有点高，好像是6点几，让我注意饮食，半年后复查。一忙就没去。今年的体检还没做。",
-        "en": "At last year's work check-up they said my fasting sugar was a bit high — six-point-something, I think — and told me to watch my diet and recheck in six months. I got busy and never went. I haven't had this year's check-up yet."
+        "zh-CN": "去年单位体检说空腹血糖有点高，好像是6点几，让我注意饮食，半年后复查。一忙就没去。今年的体检还没做。家里没有血糖仪，我自己从来没测过。",
+        "en": "At last year's work check-up they said my fasting sugar was a bit high — six-point-something, I think — and told me to watch my diet and recheck in six months. I got busy and never went. I haven't had this year's check-up yet. We haven't got a sugar meter at home, and I've never tested it myself."
       },
       "keywords": {
         "zh-CN": [
@@ -980,7 +976,12 @@
           "体检血糖",
           "糖尿病前期",
           "空腹血糖",
-          "血糖以前"
+          "血糖以前",
+          "血糖仪",
+          "自测血糖",
+          "在家测血糖",
+          "自己测血糖",
+          "扎手指"
         ],
         "en": [
           "blood sugar before",
@@ -991,7 +992,12 @@
           "previous sugar",
           "prediabetic",
           "sugar before",
-          "glucose before"
+          "glucose before",
+          "glucose meter",
+          "glucometer",
+          "sugars at home",
+          "finger prick",
+          "smbg"
         ]
       },
       "disclosure": "on-ask",
@@ -1001,62 +1007,15 @@
           "家里",
           "家族",
           "爸爸",
-          "妈妈",
-          "在家测",
-          "自测",
-          "自己测",
-          "血糖仪"
+          "妈妈"
         ],
         "en": [
           "family",
           "father",
           "mother",
-          "relatives",
-          "at home",
-          "meter",
-          "finger prick"
+          "relatives"
         ]
       }
-    },
-    {
-      "id": "hx-smbg",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "家里有血糖仪吗？自己测过血糖吗？",
-        "en": "Do you have a glucose meter at home — have you checked your own sugar?"
-      },
-      "answer": {
-        "zh-CN": "没有，家里没有血糖仪，我自己从来没测过。",
-        "en": "No — we haven't got a sugar meter at home, and I've never tested it myself."
-      },
-      "keywords": {
-        "zh-CN": [
-          "血糖仪",
-          "自测血糖",
-          "在家测血糖",
-          "家里测血糖",
-          "自己测血糖",
-          "扎手指",
-          "测指尖血"
-        ],
-        "en": [
-          "glucose meter",
-          "glucometer",
-          "sugar meter",
-          "sugars at home",
-          "home glucose",
-          "test your sugar",
-          "finger prick",
-          "self-monitoring",
-          "smbg"
-        ]
-      },
-      "excludeKeywords": {
-        "zh-CN": [],
-        "en": []
-      },
-      "disclosure": "on-ask",
-      "required": false
     },
     {
       "id": "hx-prior-bp",
@@ -1128,7 +1087,9 @@
           "meds",
           "regular medicines",
           "otc",
-          "over the counter"
+          "over the counter",
+          "drugs",
+          "on any drugs"
         ]
       },
       "disclosure": "on-ask",
@@ -1143,7 +1104,8 @@
           "吃药以后",
           "吃药后",
           "毒品",
-          "吸毒"
+          "吸毒",
+          "低血糖"
         ],
         "en": [
           "allerg",
@@ -1152,7 +1114,8 @@
           "adherence",
           "recreational",
           "street drugs",
-          "illicit"
+          "illicit",
+          "hypo"
         ]
       },
       "phases": [
@@ -1269,7 +1232,6 @@
           "啤酒",
           "白酒",
           "喝不喝酒",
-          "喝不喝",
           "喝多少酒"
         ],
         "en": [
@@ -1280,12 +1242,22 @@
           "units",
           "booze",
           "alcohol units",
-          "drinker",
-          "drink much alcohol"
+          "drink much alcohol",
+          "do you drink"
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "喝多少水",
+          "喝水"
+        ],
+        "en": [
+          "water",
+          "fluid"
+        ]
+      }
     },
     {
       "id": "hx-drugs",
@@ -1348,8 +1320,7 @@
           "饮食习惯",
           "主食",
           "吃些啥",
-          "平时吃",
-          "饮食怎么样"
+          "平时吃"
         ],
         "en": [
           "diet",
@@ -1413,8 +1384,7 @@
           "gym",
           "sport",
           "sedentary",
-          "exercise much",
-          "workouts"
+          "exercise much"
         ]
       },
       "disclosure": "on-ask",
@@ -1540,7 +1510,11 @@
           "宠物",
           "血糖",
           "测",
-          "量"
+          "量",
+          "心梗",
+          "猝死",
+          "早发",
+          "年纪轻轻"
         ],
         "en": [
           "diabetes",
@@ -1627,13 +1601,13 @@
       "keywords": {
         "zh-CN": [
           "早发心血管病",
-          "年轻时心梗",
           "猝死",
           "早发冠心病",
           "年轻就心梗",
-          "年纪轻轻",
-          "年轻就",
-          "早发"
+          "早发",
+          "年纪轻轻就心梗",
+          "年轻时得心梗",
+          "亲戚心梗"
         ],
         "en": [
           "premature heart disease",
@@ -1641,9 +1615,9 @@
           "sudden death",
           "early heart attack",
           "died suddenly",
-          "died young",
           "premature",
-          "heart attacks young"
+          "heart attacks young",
+          "relative died young"
         ]
       },
       "disclosure": "unknown",
@@ -1662,7 +1636,6 @@
       },
       "keywords": {
         "zh-CN": [
-          "您觉得",
           "自己认为",
           "什么原因",
           "有什么想法",
@@ -1670,7 +1643,11 @@
           "怎么回事",
           "啥毛病",
           "什么毛病",
-          "你觉得"
+          "您觉得可能",
+          "觉得是什么",
+          "您觉得是什么",
+          "你觉得是什么",
+          "觉得是啥"
         ],
         "en": [
           "what do you think",
@@ -1881,7 +1858,16 @@
         ]
       },
       "disclosure": "unknown",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "血压"
+        ],
+        "en": [
+          "blood pressure",
+          "bp"
+        ]
+      }
     },
     {
       "id": "hx-rv-symptoms",
@@ -1907,7 +1893,8 @@
           "症状怎么样了",
           "好点没",
           "还口渴",
-          "现在还渴"
+          "现在还渴",
+          "觉得怎么样"
         ],
         "en": [
           "symptoms now",
@@ -1965,15 +1952,33 @@
           "current medicines",
           "taking the tablets",
           "taking your tablets",
-          "tablets ok",
-          "dose now"
+          "dose now",
+          "on any drugs",
+          "drugs"
         ]
       },
       "disclosure": "on-ask",
       "required": true,
       "phases": [
         "review"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "副作用",
+          "不良反应",
+          "拉肚子",
+          "不舒服",
+          "过敏"
+        ],
+        "en": [
+          "side effect",
+          "hypo",
+          "recreational",
+          "street drugs",
+          "illicit",
+          "allerg"
+        ]
+      }
     },
     {
       "id": "hx-rv-sideeffects",
@@ -1997,7 +2002,6 @@
           "肌肉疼",
           "低血糖",
           "胃难受",
-          "胃不舒服",
           "肠胃",
           "恶心",
           "低血糖反应"
@@ -2109,11 +2113,10 @@
           "exercise now",
           "walking",
           "education class",
-          "dietitian",
           "changes",
           "made any changes",
           "lifestyle",
-          "diet now"
+          "seen the dietitian"
         ]
       },
       "disclosure": "on-ask",
@@ -2206,7 +2209,6 @@
           "anything else worrying",
           "questions for me",
           "anything else",
-          "questions",
           "anything you want to ask"
         ]
       },
@@ -2269,8 +2271,8 @@
           "体重指数",
           "称体重",
           "量身高",
-          "量体重",
-          "称一下"
+          "称体重多少",
+          "身高体重"
         ],
         "en": [
           "height",
@@ -2309,8 +2311,8 @@
           "bmi",
           "称体重",
           "复测体重",
-          "量体重",
-          "称一下"
+          "称体重多少",
+          "体重现在"
         ],
         "en": [
           "weight",
@@ -2694,10 +2696,7 @@
           "趾甲",
           "胼胝",
           "足癣",
-          "鞋子",
-          "查查脚",
-          "查脚",
-          "看看脚"
+          "鞋子"
         ],
         "en": [
           "foot exam",
@@ -2955,10 +2954,7 @@
           "龟头",
           "阴茎",
           "下体检查",
-          "看看下面",
-          "下面检查",
-          "检查下体",
-          "下身"
+          "看看下面"
         ],
         "en": [
           "genital examination",
@@ -7965,6 +7961,120 @@
         "text": "Do you have any pets?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "一晚上起来几回？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-polyuria"
+        ]
+      },
+      {
+        "text": "三多一少有没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-polyuria",
+          "hx-polydipsia",
+          "hx-weightloss"
+        ]
+      },
+      {
+        "text": "饭量咋样，容易饿不？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-weightloss"
+        ]
+      },
+      {
+        "text": "糖尿并家族史有吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "那方面还行吗，有没有ED？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-erectile"
+        ]
+      },
+      {
+        "text": "下面痒不痒？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-genital"
+        ]
+      },
+      {
+        "text": "抽不抽烟，一天抽几根？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-smoking"
+        ]
+      },
+      {
+        "text": "有没有DKA的症状，比如呕吐肚子痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-ketosis-sx"
+        ]
+      },
+      {
+        "text": "Any sx of DKA - vomiting, tummy ache?",
+        "locale": "en",
+        "expect": [
+          "hx-ketosis-sx"
+        ]
+      },
+      {
+        "text": "FHx of DM?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "PMH? any ops?",
+        "locale": "en",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "how many cigs a day?",
+        "locale": "en",
+        "expect": [
+          "hx-smoking"
+        ]
+      },
+      {
+        "text": "any probs with peeing at nite?",
+        "locale": "en",
+        "expect": [
+          "hx-polyuria"
+        ]
+      },
+      {
+        "text": "r u hungry all the time?",
+        "locale": "en",
+        "expect": [
+          "hx-weightloss"
+        ]
+      },
+      {
+        "text": "any recreational drugs?",
+        "locale": "en",
+        "expect": [
+          "hx-drugs"
+        ]
+      },
+      {
+        "text": "any hypos since starting the tablets?",
+        "locale": "en",
+        "expect": [
+          "hx-rv-sideeffects"
+        ]
       }
     ],
     "clinicalScores": {
