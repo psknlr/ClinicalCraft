@@ -88,7 +88,7 @@ export class Hud {
     e.crosshair = h("div", { id: "crosshair", class: "crosshair" });
     e.bubble = h("div", { id: "turn-bubble", class: "turn-bubble", hidden: true, role: "status", "aria-live": "polite" });
     e.selected = h("div", { id: "selected-label", class: "selected-label" });
-    e.hotbar = h("div", { id: "hotbar", class: "hotbar", role: "toolbar", "aria-label": "hotbar" });
+    e.hotbar = h("div", { id: "hotbar", class: "hotbar", role: "toolbar", "aria-label": tr("hud.hotbar") });
     e.phase = h("b", { id: "phase-label" });
     e.saved = h("span", { id: "saved" });
     e.clock = h("span", { id: "sim-clock", class: "sim-clock" });
@@ -296,7 +296,7 @@ export class Hud {
     clear(e.questProgress);
     for (const o of p.objectives) e.questProgress.append(h("span", { class: [o.done ? "done" : "", o.current ? "current" : ""] }));
     const dest = game.link.destination();
-    e.questDest.textContent = dest ? tr("hud.destination", { place: dest.label }) : p.complete ? tr("hud.destination", { place: trMaybe("cap.evidence-board", "board") }) : tr("hud.noDestination");
+    e.questDest.textContent = dest ? tr("hud.destination", { place: dest.label }) : tr("hud.noDestination");
 
     /* status bar */
     e.phase.textContent = phaseBadge(c, s.phase, L);

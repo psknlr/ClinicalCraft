@@ -128,18 +128,21 @@ export class ClinicalCraftApp implements App {
     }
     this.intro.show();
     this.hud.show(false);
-    // Let the intro paint before the (synchronous, heavy) world build.
-    requestAnimationFrame(() =>
-      setTimeout(() => {
-        this.buildBackdrop();
-        this.intro.setStatus(this.worldFailed ? "failed" : "ready");
-      }, 30),
-    );
-    void detectServer().then((info) => {
+    const detected = detectServer().then((info) => {
       this.server = info;
       this.intro.render();
       this.hud.update();
     });
+    // The world build blocks the main thread for a while: let server detection (a couple of
+    // local requests) finish first so its timeout never races the build, and let the intro paint.
+    void Promise.race([detected, new Promise((r) => setTimeout(r, 1500))]).then(() =>
+      requestAnimationFrame(() =>
+        setTimeout(() => {
+          this.buildBackdrop();
+          this.intro.setStatus(this.worldFailed ? "failed" : "ready");
+        }, 30),
+      ),
+    );
     setInterval(() => {
       if (this.game?.entered) this.save();
     }, AUTOSAVE_MS);

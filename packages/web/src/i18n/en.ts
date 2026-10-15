@@ -838,6 +838,8 @@ const en: Messages = {
   "approval.fromLearner": "You are about to perform",
   "treat.find": "Find",
 
+  "hud.hotbar": "Hotbar",
+
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",

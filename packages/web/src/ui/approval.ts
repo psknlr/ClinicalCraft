@@ -137,6 +137,7 @@ export class ApprovalDialog {
     if (!req) return;
     this.app.submit({ type: "approval_response", requestId: req.requestId, decision, ...(reason?.trim() ? { reason: reason.trim() } : {}) });
     const label = tr(`approval.resolved.${decision}` as "approval.resolved.approved");
-    if (decision !== "approved" && decision !== "approved_for_session") this.app.toast(label, req.summary, "warning");
+    // Learner actions: the session itself reports the refusal (no duplicate toast).
+    if (decision !== "approved" && decision !== "approved_for_session" && req.agent !== "learner") this.app.toast(label, req.summary, "warning");
   }
 }

@@ -231,7 +231,10 @@ export class GameWorldLink {
     const snap = this.o.app.store.snapshot;
     if (this.manual && snap && snap.progress.currentIndex === this.manualObjective) return this.manual;
     this.manual = null;
-    return snap?.waypoint ? this.resolveTarget(snap.waypoint) : null;
+    if (snap?.waypoint) return this.resolveTarget(snap.waypoint);
+    // Every chapter done but not yet finished: back to the evidence board (V4 behaviour).
+    if (snap && snap.progress.complete && !snap.state.finished) return this.resolveTarget("board");
+    return null;
   }
 
   setManual(dest: { x: number; z: number; label: string } | null): void {

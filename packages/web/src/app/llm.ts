@@ -56,9 +56,9 @@ export function detectServer(): Promise<ServerInfo> {
   if (serverPromise) return serverPromise;
   serverPromise = (async (): Promise<ServerInfo> => {
     if (STANDALONE || location.protocol === "file:") return { served: false, health: null, providers: [] };
-    const health = await fetchJson("/api/health", 2500);
+    const health = await fetchJson("/api/health", 6000);
     if (!health || typeof health !== "object") return { served: false, health: null, providers: [] };
-    const raw = await fetchJson("/api/providers", 2500);
+    const raw = await fetchJson("/api/providers", 6000);
     const list = Array.isArray(raw) ? raw : Array.isArray((raw as { providers?: unknown })?.providers) ? (raw as { providers: unknown[] }).providers : [];
     const providers = list
       .filter((p): p is Record<string, unknown> => !!p && typeof p === "object" && typeof (p as { id?: unknown }).id === "string")

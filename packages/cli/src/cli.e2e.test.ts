@@ -442,6 +442,40 @@ describe.concurrent("serve & mcp", () => {
     expect(health).toMatchObject({ status: "ok" });
   });
 
+  it("serve --token explains the ?token= URL; --lang sets the server's default language", { timeout: T }, async ({ expect }) => {
+    let health: { status?: number; body?: Record<string, unknown> } = {};
+    let lines = "";
+    const r = await cli(["serve", "--port", "0", "--lang", "en", "--token", "tok-123"], {
+      onLine: (line, stdin, child) => {
+        lines += `${line}\n`;
+        const url = /(http:\/\/127\.0\.0\.1:\d+\/)/.exec(line)?.[1];
+        if (!url || health.status !== undefined) return;
+        health.status = 0;
+        void (async () => {
+          const denied = await fetch(`${url}api/health`);
+          const ok = await fetch(`${url}api/health`, { headers: { authorization: "Bearer tok-123" } });
+          health = { status: denied.status, body: (await ok.json()) as Record<string, unknown> };
+        })()
+          .catch(() => undefined)
+          .finally(() => {
+            setTimeout(() => {
+              stdin.end();
+              child.kill("SIGINT");
+            }, 200);
+          });
+      },
+    });
+    if (/not available/.test(r.stderr)) {
+      expect(r.code).toBe(1);
+      return;
+    }
+    expect(r.code, r.stderr).toBe(0);
+    expect(health.status).toBe(401);
+    expect(health.body).toMatchObject({ status: "ok", locale: "en", auth: true });
+    expect(lines).toMatch(/http:\/\/127\.0\.0\.1:\d+\/\?token=<token>/);
+    expect(r.stdout).not.toContain("tok-123");
+  });
+
   it("serve refuses a non-loopback host without a token", { timeout: T }, async ({ expect }) => {
     const r = await cli(["serve", "--host", "0.0.0.0", "--lang", "en"]);
     expect(r.code).toBe(2);

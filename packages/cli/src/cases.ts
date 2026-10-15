@@ -365,8 +365,9 @@ export async function casesNew(ctx: CliContext, args: ParsedArgs): Promise<numbe
   const ok = validation.ok && (verification?.ok ?? false);
   ctx.print(`${ok ? p.green("✓") : p.red("✗")} ${ctx.t("cases.templateChecked")}`);
   printIssues(ctx, [...validation.errors, ...(verification?.issues ?? [])], false);
-  const contentDir = dirname(casesDir);
-  ctx.print(p.dim(ctx.t("cases.nextSteps", { file, id, dir: contentDir })));
+  // Content directories hold cases as <dir>/cases/<id>/case.json: only a folder named "cases" can be found via its parent.
+  const next = basename(casesDir) === "cases" ? ctx.t("cases.nextSteps", { file, id, dir: dirname(casesDir) }) : ctx.t("cases.nextStepsLayout", { file, id });
+  ctx.print(p.dim(next));
   return ok ? EXIT.ok : EXIT.error;
 }
 

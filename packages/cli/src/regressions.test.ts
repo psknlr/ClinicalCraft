@@ -128,6 +128,19 @@ describe("EventRenderer", () => {
     expect(out).toContain("Mr. Wang (pseudonym): Hello.");
     expect(out).not.toContain("王先生（化名）: Hello.");
   });
+
+  it.skipIf(!smzl)("prints a denied command once (the ✗ line), not again as its output", () => {
+    let out = "";
+    const renderer = new EventRenderer({ out: { write: (s: string) => ((out += s), true) }, palette: createPalette(false), caseDef: smzl!, locale: () => "en", interactive: false, verbose: false });
+    let seq = 0;
+    const emit = (msg: EventMsg) => renderer.handle({ id: "s", seq: ++seq, msg } as AgentEvent);
+    emit({ type: "approval_resolved", requestId: "r", decision: "denied", reason: "no input available" });
+    emit({ type: "error", message: "Action not permitted: no input available", code: "permission_denied" });
+    emit({ type: "command_output", name: "order", text: "Action not permitted: no input available", data: { ok: false } });
+    expect(out.split("Action not permitted").length - 1).toBe(1);
+    emit({ type: "command_output", name: "status", text: "Status text" });
+    expect(out).toContain("Status text");
+  });
 });
 
 describe("config set", () => {
@@ -153,6 +166,25 @@ describe("config set", () => {
     const quiet = await run(["config", "set", "practiceScope", "workup", "--lang", "en"], box);
     expect(quiet.code).toBe(0);
     expect(quiet.stderr).not.toContain("is still");
+  });
+});
+
+describe("cases new", () => {
+  it("gives a contentDirs hint that actually finds the case", { timeout: T }, async () => {
+    const box = sandbox();
+    const contentRoot = join(box.cwd, "my-content");
+    const made = await run(["cases", "new", "demo-case", "--dir", join(contentRoot, "cases"), "--lang", "en"], box);
+    expect(made.code).toBe(0);
+    expect(made.stdout).toContain(`add "${contentRoot}" to \`contentDirs\``);
+    writeFileSync(join(box.cwd, ".clinicalcraft", "settings.json"), JSON.stringify({ contentDirs: [contentRoot] }));
+    const verified = await run(["cases", "verify", "demo-case", "--lang", "en"], box);
+    expect(verified.code, verified.stderr).toBe(0);
+
+    // A --dir not named "cases" cannot be found through its parent: say how to lay it out instead.
+    const odd = await run(["cases", "new", "odd-case", "--dir", join(box.cwd, "drafts"), "--lang", "en"], box);
+    expect(odd.code).toBe(0);
+    expect(odd.stdout).not.toContain("to `contentDirs` in your settings");
+    expect(odd.stdout).toContain("<dir>/cases/<id>/case.json");
   });
 });
 

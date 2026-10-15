@@ -840,6 +840,8 @@ const zh = {
   "approval.fromLearner": "你即将执行",
   "treat.find": "查找处置",
 
+  "hud.hotbar": "快捷栏",
+
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",

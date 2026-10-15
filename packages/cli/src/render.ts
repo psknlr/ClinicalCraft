@@ -104,6 +104,8 @@ export class EventRenderer {
   configured: Configured | null = null;
   snapshot: { state: SessionState; progress: ObjectiveProgress; vitals: VitalsSnapshot; waypoint: string | null } | null = null;
   usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
+  /** Text of the last `permission_denied` error (the command's own output repeats it). */
+  private lastDenied: string | null = null;
   /** Last `command_output` data (REPL reacts to /export, /quit). */
   lastCommand: { name: string; text: string; data?: unknown } | null = null;
 
@@ -341,6 +343,10 @@ export class EventRenderer {
         return; // rendered from the clinical events / staff lines instead
       case "command_output":
         this.lastCommand = { name: msg.name, text: msg.text, ...(msg.data !== undefined ? { data: msg.data } : {}) };
+        if (this.lastDenied !== null && msg.text.trim() === this.lastDenied) {
+          this.lastDenied = null; // already shown as the ✗ line
+          return;
+        }
         if (msg.text.trim()) this.line(msg.text.replace(/\n+$/, ""));
         return;
       case "compacted":
@@ -353,6 +359,7 @@ export class EventRenderer {
         this.line(p.yellow(`⚠ ${msg.message}`));
         return;
       case "error":
+        this.lastDenied = msg.code === "permission_denied" ? msg.message.trim() : null;
         this.line(p.red(`✗ ${msg.message}${msg.code ? p.dim(` [${msg.code}]`) : ""}`));
         return;
       case "shutdown_complete":
