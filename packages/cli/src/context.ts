@@ -5,8 +5,9 @@
 import { isAbsolute, relative, resolve } from "node:path";
 import { loadSettings, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { createPalette, colorEnabled, type Env, type Palette } from "./ansi.js";
-import { flagBool, flagPositiveInt, flagString, UsageError, type ParsedArgs } from "./argv.js";
+import { flagBool, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { m, type MsgKey } from "./i18n.js";
+import { isKnownProvider, missingKeyEnv, providerIds } from "./provider-check.js";
 
 /** Process exit codes (docs/PROTOCOL.md §11). */
 export const EXIT = { ok: 0, error: 1, usage: 2, maxTurns: 3 } as const;
@@ -132,7 +133,15 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
   const model = flagString(args, "model");
   const approval = flagString(args, "approval");
   const scope = flagString(args, "scope");
-  if (provider) layer.provider = provider;
+  if (provider) {
+    const settings = await loadCliSettings(ctx);
+    if (!isKnownProvider(settings, provider)) {
+      const known = providerIds(settings);
+      const hint = suggest(provider, known);
+      throw new UsageError(ctx.t("flags.unknownProvider", { value: provider }), hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("flags.knownProviders", { list: known.join(", ") }));
+    }
+    layer.provider = provider;
+  }
   if (model) layer.model = model;
   if (approval) {
     if (!(APPROVAL_MODES as readonly string[]).includes(approval)) throw new UsageError(ctx.t("flags.badApproval", { value: approval, choices: APPROVAL_MODES.join(" | ") }));
@@ -157,6 +166,19 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
   }
   if (flagBool(args, "ephemeral")) layer.transcripts = { enabled: false };
   return { ...layer, ...extra };
+}
+
+/**
+ * Headless runs fail fast when the provider chosen with `--provider` needs an
+ * API key that is not configured (the session would otherwise fall back to the
+ * offline responders with only a warning).
+ */
+export async function requireProviderKey(ctx: CliContext, args: ParsedArgs, flags: Record<string, unknown>): Promise<void> {
+  const provider = flagString(args, "provider");
+  if (!provider) return;
+  const settings = await loadCliSettings(ctx, flags);
+  const missing = missingKeyEnv(settings, provider, ctx.env);
+  if (missing) throw new CliError(ctx.t("flags.noKey", { id: provider, env: missing.join(" / ") }), EXIT.error);
 }
 
 /** `--resume <id>` / `--continue` → a resume reference for `createNodeSession` (or undefined). */

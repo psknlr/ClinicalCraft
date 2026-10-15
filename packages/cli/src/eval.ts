@@ -12,7 +12,7 @@ import { assess as coreAssess, progress as caseProgress, t } from "@clinicalcraf
 import { DEFAULT_AUTOPILOT_TURNS, type TokenUsage } from "@clinicalcraft/agent";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
-import { CliError, EXIT, loadCliSettings, sessionFlagsLayer, type CliContext } from "./context.js";
+import { CliError, EXIT, loadCliSettings, requireProviderKey, sessionFlagsLayer, type CliContext } from "./context.js";
 import { autoAnswerApprovals, RunTracker } from "./exec.js";
 import { m } from "./i18n.js";
 import { openSession } from "./session.js";
@@ -89,6 +89,7 @@ export async function runEval(ctx: CliContext, args: ParsedArgs): Promise<number
   const runs = flagPositiveInt(args, "runs", 100, ctx.locale) ?? 1;
   const maxTurns = flagPositiveInt(args, "max-turns", 500, ctx.locale) ?? DEFAULT_AUTOPILOT_TURNS;
   const flags = await sessionFlagsLayer(ctx, args, { approvalMode: "bypass" });
+  await requireProviderKey(ctx, args, flags);
   const settings = await loadCliSettings(ctx, flags);
   const content = await loadContent({ dirs: settings.contentDirs });
   const requested = flagList(args, "cases");

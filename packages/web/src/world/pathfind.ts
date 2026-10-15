@@ -202,14 +202,26 @@ export function findPathCells(g: NavGrid, start: { x: number; z: number }, goal:
   return cells.map((i) => cellCentre(g, i % g.cols, Math.floor(i / g.cols)));
 }
 
-/** Line of sight between two world points across free cells (samples every cell/3). */
-export function lineOfSight(g: NavGrid, a: { x: number; z: number }, b: { x: number; z: number }): boolean {
+/**
+ * Line of sight between two world points across free cells (samples every
+ * cell/3). `halfWidth` > 0 also tests two parallel lines that far to either
+ * side ("fat" corridor): a point inside a free cell can sit half a cell
+ * closer to an obstacle than the cell centre, so a thin line alone lets
+ * string-pulled segments clip wall corners.
+ */
+export function lineOfSight(g: NavGrid, a: { x: number; z: number }, b: { x: number; z: number }, halfWidth = 0): boolean {
   const len = Math.hypot(b.x - a.x, b.z - a.z);
   const steps = Math.max(1, Math.ceil(len / (g.cell / 3)));
+  const nx = len > 1e-9 ? -(b.z - a.z) / len : 0;
+  const nz = len > 1e-9 ? (b.x - a.x) / len : 0;
+  const offsets = halfWidth > 0 ? [0, -halfWidth, halfWidth] : [0];
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    const [ix, iz] = cellOf(g, a.x + (b.x - a.x) * t, a.z + (b.z - a.z) * t);
-    if (!isFree(g, ix, iz)) return false;
+    const px = a.x + (b.x - a.x) * t, pz = a.z + (b.z - a.z) * t;
+    for (const o of offsets) {
+      const [ix, iz] = cellOf(g, px + nx * o, pz + nz * o);
+      if (!isFree(g, ix, iz)) return false;
+    }
   }
   return true;
 }
@@ -222,7 +234,7 @@ export function smoothPath(g: NavGrid, start: { x: number; z: number }, cells: {
   let i = 0;
   while (i < cells.length) {
     let j = cells.length - 1;
-    while (j > i && !lineOfSight(g, from, cells[j])) j--;
+    while (j > i && !lineOfSight(g, from, cells[j], g.cell / 2)) j--;
     out.push(cells[j]);
     from = cells[j];
     i = j + 1;

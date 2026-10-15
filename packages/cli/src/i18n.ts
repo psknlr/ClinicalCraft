@@ -36,6 +36,10 @@ const EN = {
   "flags.badApproval": "Invalid approval mode \"{value}\" (expected {choices})",
   "flags.badScope": "Invalid practice scope \"{value}\" (expected {choices})",
   "flags.badUrl": "Invalid --base-url \"{value}\"",
+  "flags.badLang": "Unsupported language \"{value}\" (expected zh-CN | en)",
+  "flags.unknownProvider": "Unknown provider \"{value}\".",
+  "flags.knownProviders": "Known providers: {list} (see `clinicalcraft providers list`)",
+  "flags.noKey": "No API key for provider {id}: set {env} (or `clinicalcraft config set providers.{id}.apiKey …`), or use --provider offline.",
 
   // common words / columns
   "word.yes": "yes",
@@ -285,6 +289,10 @@ const ZH: Record<MsgKey, string> = {
   "flags.badApproval": "审批模式“{value}”无效（可选：{choices}）",
   "flags.badScope": "执业范围“{value}”无效（可选：{choices}）",
   "flags.badUrl": "--base-url“{value}”无效",
+  "flags.badLang": "不支持的语言“{value}”（可选 zh-CN | en）",
+  "flags.unknownProvider": "未知服务商“{value}”。",
+  "flags.knownProviders": "已知服务商：{list}（见 `clinicalcraft providers list`）",
+  "flags.noKey": "服务商 {id} 没有 API 密钥：请设置 {env}（或 `clinicalcraft config set providers.{id}.apiKey …`），或使用 --provider offline。",
 
   "word.yes": "是",
   "word.no": "否",
@@ -489,6 +497,20 @@ const ZH: Record<MsgKey, string> = {
   "eval.progress": "目标 {done}/{total} · 得分 {score}% · {seconds} 秒",
   "eval.written": "报告已写入：{md}（以及 {json}）",
 };
+
+/** Session/UI languages. */
+export const SUPPORTED_LANGS = ["zh-CN", "en"] as const;
+
+/**
+ * Normalise a `--lang` value: zh, zh-cn, zh-Hans, cn, chinese, 中文 → zh-CN;
+ * en, en-US, en-GB, english → en. Anything else → null.
+ */
+export function normalizeLang(value: string): (typeof SUPPORTED_LANGS)[number] | null {
+  const v = value.trim().toLowerCase().replace(/_/g, "-");
+  if (/^(zh(-cn|-hans(-cn)?|-sg)?|cn|chinese|中文|简体中文)$/.test(v)) return "zh-CN";
+  if (/^(en(-[a-z]{2})?|english|英文|英语)$/.test(v)) return "en";
+  return null;
+}
 
 /** Whether a locale tag is Chinese. */
 export function isZhLocale(locale: string | null | undefined): boolean {

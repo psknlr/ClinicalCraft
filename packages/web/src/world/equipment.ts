@@ -40,20 +40,26 @@ export function roomIdAt(ctx: Pick<BuildContext, "facility">, x: number, z: numb
 
 /**
  * Top of the sleeping / sitting surface of a bed, couch or chair type: a part
- * named "mattress" or "seat", else the highest broad horizontal part
- * (≥ 0.15 m², flatter than it is wide) below 1.3 m.
+ * named "mattress" or "seat", else the highest level (≤ 1.3 m) whose flat
+ * parts (flatter than they are wide) together cover ≥ 40 % of the largest
+ * flat part — so a pillow or a rail on top of the mattress does not lift the
+ * patient off the bed, while segmented pads (operating table) still count.
  */
 export function surfaceTop(type: Pick<EquipmentType, "parts"> | undefined): number {
   if (!type) return 0.9;
   const named = type.parts.find((p) => p.name === "mattress" || p.name === "seat");
   if (named) return named.p[1] + named.s[1] / 2;
-  let top = 0;
-  for (const p of type.parts) {
-    const t = p.p[1] + p.s[1] / 2;
-    const flat = p.s[1] < Math.min(p.s[0], p.s[2]);
-    if (p.s[0] * p.s[2] >= 0.15 && flat && t <= 1.3) top = Math.max(top, t);
+  const flats = type.parts
+    .filter((p) => p.s[1] < Math.min(p.s[0], p.s[2]) && p.p[1] + p.s[1] / 2 <= 1.3 && p.s[0] * p.s[2] >= 0.02)
+    .map((p) => ({ top: p.p[1] + p.s[1] / 2, area: p.s[0] * p.s[2] }));
+  if (!flats.length) return 0.9;
+  const largest = Math.max(...flats.map((f) => f.area));
+  let best = 0;
+  for (const f of flats) {
+    const level = flats.filter((g) => Math.abs(g.top - f.top) <= 0.02).reduce((a, g) => a + g.area, 0);
+    if (level >= largest * 0.4 && largest >= 0.15) best = Math.max(best, f.top);
   }
-  return top || 0.9;
+  return best || 0.9;
 }
 
 export function buildPlacements(ctx: BuildContext): void {

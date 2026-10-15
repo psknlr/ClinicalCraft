@@ -18,7 +18,7 @@ import { createInterface } from "node:readline";
 import { assess as coreAssess, progress as caseProgress, type AssessmentReport } from "@clinicalcraft/core";
 import { DEFAULT_AUTOPILOT_TURNS, type AgentEvent, type ClinicalSession, type Op, type TokenUsage } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, flagString, UsageError, type ParsedArgs } from "./argv.js";
-import { EXIT, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
+import { EXIT, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { EventRenderer } from "./render.js";
 import { openSession } from "./session.js";
 
@@ -146,6 +146,7 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   const extra: Record<string, unknown> = {};
   if (maxTurns !== undefined && !autopilot) extra.maxToolRounds = Math.min(maxTurns, 100);
   const flags = await sessionFlagsLayer(ctx, args, extra);
+  await requireProviderKey(ctx, args, flags);
   const caseId = flagString(args, "case");
   const resume = resumeRef(args);
   const facility = flagString(args, "facility");

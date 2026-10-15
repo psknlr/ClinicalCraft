@@ -6,7 +6,6 @@ import {
   findProviderTemplate,
   isProviderConfigured,
   localizedName,
-  PROVIDER_TEMPLATES,
   redactSecrets,
   table,
   type ChatRequest,
@@ -15,6 +14,7 @@ import {
 import { resolveNodeProviderConfig, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { flagBool, flagNumber, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
+import { isKnownProvider, missingKeyEnv, providerIds } from "./provider-check.js";
 import { truncate } from "./render.js";
 
 interface ProviderRow {
@@ -29,10 +29,6 @@ interface ProviderRow {
   active: boolean;
 }
 
-/** Provider ids known from the catalogue and settings. */
-export function providerIds(settings: Pick<LoadedSettings, "providers">): string[] {
-  return [...new Set([...PROVIDER_TEMPLATES.map((p) => p.id), ...Object.keys(settings.providers)])];
-}
 
 function providerRows(ctx: CliContext, settings: LoadedSettings): ProviderRow[] {
   return providerIds(settings).map((id) => {
@@ -77,26 +73,13 @@ function resolveConfig(ctx: CliContext, settings: LoadedSettings, args: ParsedAr
   const id = args.positionals[0];
   if (!id) throw new UsageError(ctx.t("providers.needId"));
   const known = providerIds(settings);
-  if (!known.includes(id) && !id.startsWith("proxy:")) {
+  if (!isKnownProvider(settings, id)) {
     const hint = suggest(id, known);
     throw new CliError(ctx.t("providers.unknown", { id }), EXIT.usage, hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("providers.knownList", { list: known.join(", ") }));
   }
   const baseUrl = flagString(args, "base-url");
   const effective = baseUrl ? { ...settings, providers: { ...settings.providers, [id]: { ...(settings.providers[id] ?? {}), baseUrl } } } : settings;
   return resolveNodeProviderConfig(effective, id, flagString(args, "model") ?? null, ctx.env);
-}
-
-/**
- * The env vars a key is expected in when the provider needs one and none is
- * configured; null when a key is present or not needed (local servers, custom
- * providers without `apiKeyEnv`).
- */
-function missingKeyEnv(settings: LoadedSettings, config: ProviderConfig): string[] | null {
-  if (config.apiKey) return null;
-  const template = findProviderTemplate(config.id);
-  if (template?.noKey) return null;
-  const env = settings.providers[config.id]?.apiKeyEnv ?? template?.apiKeyEnv ?? [];
-  return env.length > 0 ? env : null;
 }
 
 /** Secrets that must never be printed. */
@@ -118,7 +101,7 @@ export async function providersTest(ctx: CliContext, args: ParsedArgs): Promise<
     ctx.print(ctx.t("providers.proxy"));
     return EXIT.ok;
   }
-  const missingKey = missingKeyEnv(settings, config);
+  const missingKey = config.apiKey ? null : missingKeyEnv(settings, config.id, ctx.env);
   if (missingKey) throw new CliError(ctx.t("providers.noKey", { id: config.id, env: missingKey.join(" / ") }), EXIT.error);
   const timeoutSec = flagNumber(args, "timeout") ?? 60;
   const provider = createProvider(config);
@@ -186,7 +169,7 @@ export async function providersModels(ctx: CliContext, args: ParsedArgs): Promis
     if (suggested.length === 0) ctx.print(p.dim(ctx.t("providers.noModels")));
     return EXIT.ok;
   }
-  const missingKey = missingKeyEnv(settings, config);
+  const missingKey = config.apiKey ? null : missingKeyEnv(settings, config.id, ctx.env);
   if (missingKey) {
     ctx.printErr(ctx.err.yellow(ctx.t("providers.modelsNoKey", { id: config.id, env: missingKey.join(" / ") })));
     if (flagBool(args, "json")) ctx.print(JSON.stringify(suggested, null, 2));

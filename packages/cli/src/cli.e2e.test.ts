@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, it } from "vitest";
 import type { AgentEvent } from "@clinicalcraft/agent";
 import { buildV4Html, splitParts, writeZip } from "./__fixtures__/v4.js";
 
@@ -33,6 +33,13 @@ beforeAll(() => {
   mkdirSync(work, { recursive: true });
 });
 afterAll(() => rmSync(root, { recursive: true, force: true }));
+
+/** A separate ClinicalCraft home for tests that depend on recorded state. */
+function freshHome(name: string): string {
+  const dir = join(root, name);
+  mkdirSync(dir, { recursive: true });
+  return dir;
+}
 
 interface RunResult {
   code: number | null;
@@ -68,8 +75,8 @@ function jsonLines(text: string): unknown[] {
     .map((l) => JSON.parse(l) as unknown);
 }
 
-describe("global", () => {
-  it("prints the version and help", { timeout: T }, async () => {
+describe.concurrent("global", () => {
+  it("prints the version and help", { timeout: T }, async ({ expect }) => {
     const v = await cli(["--version"]);
     expect(v.code).toBe(0);
     expect(v.stdout.trim()).toBe(CLI_VERSION);
@@ -79,7 +86,7 @@ describe("global", () => {
     expect(h.stdout).toContain("headless: approval required");
   });
 
-  it("exits 2 with a suggestion for typos", { timeout: T }, async () => {
+  it("exits 2 with a suggestion for typos", { timeout: T }, async ({ expect }) => {
     const r = await cli(["cases", "lst", "--lang", "en"]);
     expect(r.code).toBe(2);
     expect(r.stderr).toContain("Did you mean list?");
@@ -91,8 +98,8 @@ describe("global", () => {
   });
 });
 
-describe("exec (headless, offline)", () => {
-  it("autopilot with --output-format json finishes the case", { timeout: T }, async () => {
+describe.concurrent("exec (headless, offline)", () => {
+  it("autopilot with --output-format json finishes the case", { timeout: T }, async ({ expect }) => {
     const r = await cli(["exec", "--case", "smzl-lung-adeno", "--autopilot", "--approval", "bypass", "--output-format", "json", "--provider", "offline", "--lang", "en"]);
     expect(r.code, r.stderr).toBe(0);
     const lines = jsonLines(r.stdout);
@@ -107,7 +114,7 @@ describe("exec (headless, offline)", () => {
     expect(result.duration_ms).toBeGreaterThanOrEqual(0);
   });
 
-  it("stream-json emits parseable events then the result; default approvals are denied headlessly", { timeout: T }, async () => {
+  it("stream-json emits parseable events then the result; default approvals are denied headlessly", { timeout: T }, async ({ expect }) => {
     const r = await cli(["-p", "Work up this patient", "--case", "smzl-lung-adeno", "--autopilot", "--output-format", "stream-json", "--provider", "offline", "--lang", "en"]);
     expect(r.code, r.stderr).toBe(0);
     const lines = jsonLines(r.stdout) as Record<string, any>[];
@@ -127,31 +134,32 @@ describe("exec (headless, offline)", () => {
     expect(result.finished).toBe(false);
   });
 
-  it("exits 3 when --max-turns is exhausted", { timeout: T }, async () => {
+  it("exits 3 when --max-turns is exhausted", { timeout: T }, async ({ expect }) => {
     const r = await cli(["exec", "--case", "dka-adult", "--autopilot", "--approval", "bypass", "--max-turns", "1", "--output-format", "json", "--provider", "offline"]);
     expect(r.code).toBe(3);
     expect((jsonLines(r.stdout)[0] as Record<string, unknown>).subtype).toBe("error_max_turns");
   });
 
-  it("answers a single prompt in text mode and records a resumable session", { timeout: T }, async () => {
-    const r = await cli(["-p", "Where does it hurt?", "--case", "smzl-lung-adeno", "--lang", "en", "--quiet"]);
+  it("answers a single prompt in text mode and records a resumable session", { timeout: T }, async ({ expect }) => {
+    const env = { CLINICALCRAFT_HOME: freshHome("home-sessions") };
+    const r = await cli(["-p", "Where does it hurt?", "--case", "smzl-lung-adeno", "--lang", "en", "--quiet"], { env });
     expect(r.code, r.stderr).toBe(0);
     expect(r.stdout.trim().length).toBeGreaterThan(0);
-    const list = await cli(["sessions", "list", "--json"]);
+    const list = await cli(["sessions", "list", "--json"], { env });
     expect(list.code).toBe(0);
     const sessions = JSON.parse(list.stdout) as { id: string; caseId: string }[];
     expect(sessions.some((s) => s.caseId === "smzl-lung-adeno")).toBe(true);
-    const cont = await cli(["-p", "Any fever?", "--continue", "--output-format", "json", "--lang", "en"]);
+    const cont = await cli(["-p", "Any fever?", "--continue", "--output-format", "json", "--lang", "en"], { env });
     expect(cont.code, cont.stderr).toBe(0);
     const result = jsonLines(cont.stdout)[0] as Record<string, unknown>;
     expect(result.session_id).toBe(sessions[0]!.id);
-    const show = await cli(["sessions", "show", sessions[0]!.id, "--lang", "en"]);
+    const show = await cli(["sessions", "show", sessions[0]!.id, "--lang", "en"], { env });
     expect(show.code).toBe(0);
     expect(show.stdout).toContain("Where does it hurt?");
     expect(show.stdout).toContain("Any fever?");
   });
 
-  it("reads Op JSON lines with --input-format stream-json", { timeout: T }, async () => {
+  it("reads Op JSON lines with --input-format stream-json", { timeout: T }, async ({ expect }) => {
     const input = [JSON.stringify({ type: "slash_command", name: "vitals", args: "" }), JSON.stringify({ type: "user_message", text: "Do you have a fever?" })].join("\n");
     const r = await cli(["exec", "--case", "smzl-lung-adeno", "--input-format", "stream-json", "--output-format", "stream-json", "--ephemeral", "--lang", "en"], { input });
     expect(r.code, r.stderr).toBe(0);
@@ -162,8 +170,8 @@ describe("exec (headless, offline)", () => {
   });
 });
 
-describe("play (REPL with piped stdin)", () => {
-  it("talks to the patient, runs commands and quits", { timeout: T }, async () => {
+describe.concurrent("play (REPL with piped stdin)", () => {
+  it("talks to the patient, runs commands and quits", { timeout: T }, async ({ expect }) => {
     const r = await cli(["play", "smzl-lung-adeno", "--lang", "en", "--ephemeral"], { input: "Do you have a fever?\n/talk nurse\nwhat are the vitals?\n/quit\n" });
     expect(r.code, r.stderr).toBe(0);
     expect(r.stdout).toContain("[patient] › Do you have a fever?");
@@ -173,15 +181,15 @@ describe("play (REPL with piped stdin)", () => {
     expect(r.stdout).not.toMatch(/\u001b\[/); // NO_COLOR + non-TTY
   });
 
-  it("without a case and without a TTY asks for one (usage error)", { timeout: T }, async () => {
+  it("without a case and without a TTY asks for one (usage error)", { timeout: T }, async ({ expect }) => {
     const r = await cli(["play", "--lang", "en"]);
     expect(r.code).toBe(2);
     expect(r.stderr).toContain("smzl-lung-adeno");
   });
 });
 
-describe("cases", () => {
-  it("validate --all reports every case file", { timeout: T }, async () => {
+describe.concurrent("cases", () => {
+  it("validate --all reports every case file", { timeout: T }, async ({ expect }) => {
     const r = await cli(["cases", "validate", "--all", "--lang", "en"]);
     const marks = r.stdout.split("\n").filter((l) => /^[✓✗] /.test(l));
     expect(marks.length).toBeGreaterThanOrEqual(1);
@@ -196,7 +204,7 @@ describe("cases", () => {
     }
   });
 
-  it("new scaffolds a template case that validates and verifies", { timeout: T }, async () => {
+  it("new scaffolds a template case that validates and verifies", { timeout: T }, async ({ expect }) => {
     const dir = join(root, "authoring");
     const r = await cli(["cases", "new", "my-test-case", "--dir", dir, "--lang", "en"]);
     expect(r.code, r.stdout + r.stderr).toBe(0);
@@ -213,7 +221,7 @@ describe("cases", () => {
     expect(bad.code).toBe(2);
   });
 
-  it("list and show use the requested language and hide the solution", { timeout: T }, async () => {
+  it("list and show use the requested language and hide the solution", { timeout: T }, async ({ expect }) => {
     const list = await cli(["cases", "list", "--json", "--lang", "en"]);
     expect(list.code).toBe(0);
     const cases = JSON.parse(list.stdout) as { id: string; title: string }[];
@@ -229,15 +237,15 @@ describe("cases", () => {
     expect(typo.stderr).toContain("smzl-lung-adeno");
   });
 
-  it("schema prints the JSON Schema path", { timeout: T }, async () => {
+  it("schema prints the JSON Schema path", { timeout: T }, async ({ expect }) => {
     const r = await cli(["cases", "schema", "case"]);
     expect(r.code).toBe(0);
     expect(existsSync(r.stdout.trim())).toBe(true);
   });
 });
 
-describe("providers & config", () => {
-  it("providers list never prints secrets", { timeout: T }, async () => {
+describe.concurrent("providers & config", () => {
+  it("providers list never prints secrets", { timeout: T }, async ({ expect }) => {
     const env = { OPENAI_API_KEY: SECRET, ANTHROPIC_API_KEY: SECRET, ZHIPU_API_KEY: SECRET };
     const r = await cli(["providers", "list", "--lang", "en"], { env });
     expect(r.code).toBe(0);
@@ -251,27 +259,33 @@ describe("providers & config", () => {
     expect(rows.find((p) => p.id === "xai")?.configured).toBe(false);
   });
 
-  it("config set/get round-trips, redacts secrets and rejects unknown keys", { timeout: T }, async () => {
-    const s = await cli(["config", "set", "providers.openai.apiKey", SECRET, "--lang", "en"]);
+  it("config set/get round-trips, redacts secrets and rejects unknown keys", { timeout: T }, async ({ expect }) => {
+    const cfgHome = freshHome("home-config");
+    const env = { CLINICALCRAFT_HOME: cfgHome };
+    const s = await cli(["config", "set", "providers.openai.apiKey", SECRET, "--lang", "en"], { env });
     expect(s.code, s.stderr).toBe(0);
     expect(s.stdout).not.toContain(SECRET);
-    const get = await cli(["config", "get", "providers"]);
+    const get = await cli(["config", "get", "providers"], { env });
     expect(get.stdout).toContain("[redacted]");
     expect(get.stdout).not.toContain(SECRET);
-    const list = await cli(["providers", "list", "--json"]);
+    const list = await cli(["providers", "list", "--json"], { env });
     expect(list.stdout).not.toContain(SECRET);
-    const typo = await cli(["config", "set", "lokale", "en", "--lang", "en"]);
+    expect((JSON.parse(list.stdout) as { id: string; configured: boolean }[]).find((p) => p.id === "openai")?.configured).toBe(true);
+    const lang = await cli(["config", "set", "locale", "en"], { env });
+    expect(lang.code).toBe(0);
+    expect((await cli(["config", "get", "locale"], { env })).stdout.trim()).toBe("en");
+    const typo = await cli(["config", "set", "lokale", "en", "--lang", "en"], { env });
     expect(typo.code).toBe(2);
     expect(typo.stderr).toContain("locale");
-    const path = await cli(["config", "path"]);
-    expect(path.stdout).toContain(join(home, "settings.json"));
+    const path = await cli(["config", "path"], { env });
+    expect(path.stdout).toContain(join(cfgHome, "settings.json"));
   });
 });
 
-describe("import-v4", () => {
+describe.concurrent("import-v4", () => {
   const fx = buildV4Html(2);
 
-  it("installs from a synthetic merged html (SHA mismatch is a warning)", { timeout: T }, async () => {
+  it("installs from a synthetic merged html (SHA mismatch is a warning)", { timeout: T }, async ({ expect }) => {
     const file = join(root, "Virtual_Patient_V4(1).html");
     writeFileSync(file, fx.html);
     const dest = join(root, "assets-html");
@@ -288,7 +302,7 @@ describe("import-v4", () => {
     expect(manifest.files.map((f) => f.path)).toContain("anatomy/catalog.json");
   });
 
-  it("installs from zip archives holding .part01/.part02 (default destination under CLINICALCRAFT_HOME)", { timeout: T }, async () => {
+  it("installs from zip archives holding .part01/.part02 (default destination under CLINICALCRAFT_HOME)", { timeout: T }, async ({ expect }) => {
     const [p1, p2] = splitParts(fx.html, 2);
     const z1 = join(root, "Virtual_Patient_V4_Part1.zip");
     const z2 = join(root, "Virtual_Patient_V4_Part2.zip");
@@ -300,7 +314,7 @@ describe("import-v4", () => {
     expect(existsSync(join(home, "assets", "manifest.json"))).toBe(true);
   });
 
-  it("fails with exit 1 on an incomplete input", { timeout: T }, async () => {
+  it("fails with exit 1 on an incomplete input", { timeout: T }, async ({ expect }) => {
     const [p1] = splitParts(fx.html, 2);
     const f = join(root, "lonely.html.part01");
     writeFileSync(f, p1!);
@@ -310,8 +324,8 @@ describe("import-v4", () => {
   });
 });
 
-describe("eval", () => {
-  it("runs an offline smoke benchmark and writes Markdown + JSON", { timeout: T }, async () => {
+describe.concurrent("eval", () => {
+  it("runs an offline smoke benchmark and writes Markdown + JSON", { timeout: T }, async ({ expect }) => {
     const out = join(root, "eval", "report.md");
     const r = await cli(["eval", "--cases", "smzl-lung-adeno", "--provider", "offline", "--out", out, "--lang", "en"]);
     expect(r.code, r.stderr).toBe(0);

@@ -11,7 +11,7 @@ import { EXEC, findChild, PLAY, ROOT, type CommandSpec } from "./commands.js";
 import { CliError, createContext, EXIT, type CliContext, type CliIO } from "./context.js";
 import { GLOBAL_FLAGS } from "./flags.js";
 import { renderHelp } from "./help.js";
-import { m } from "./i18n.js";
+import { m, normalizeLang } from "./i18n.js";
 import { cliVersion } from "./paths.js";
 
 export interface ResolvedCommand {
@@ -74,7 +74,7 @@ function argvValue(argv: readonly string[], name: string): string | null {
 /** UI locale before the full parse: --lang ?? settings (incl. CLINICALCRAFT_LOCALE) ?? zh-CN. */
 async function preliminaryLocale(argv: readonly string[], env: Env, cwd: string): Promise<string> {
   const lang = argvValue(argv, "lang");
-  if (lang) return lang;
+  if (lang) return normalizeLang(lang) ?? "en";
   try {
     const profile = argvValue(argv, "profile");
     const settings = await loadSettings({ cwd, env, ...(profile ? { profile } : {}) });
@@ -171,7 +171,9 @@ export async function main(argv: readonly string[], options: { io?: CliIO; env?:
       return EXIT.ok;
     }
     const verbose = flagBool(args, "verbose");
-    const lang = flagString(args, "lang") ?? null;
+    const langFlag = flagString(args, "lang");
+    const lang = langFlag === undefined ? null : normalizeLang(langFlag);
+    if (langFlag !== undefined && !lang) throw new UsageError(m(L, "flags.badLang", { value: langFlag }));
     const ctx: CliContext = createContext({ io, env, cwd, lang, profile: flagString(args, "profile") ?? null, verbose, locale: lang ?? L });
     if (resolved.help || flagBool(args, "help") || !node.run) {
       ctx.print(renderHelp(path, ctx.locale, ctx.out, cliVersion()));

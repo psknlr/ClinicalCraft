@@ -78,3 +78,21 @@ describe("A*", () => {
     expect(smoothPath(g, { x: 0.9, z: 1 }, cells)).toEqual([{ x: 3, z: 1 }]);
   });
 });
+
+describe("corner clearance", () => {
+  it("fat line of sight rejects segments that graze a wall corner the thin test accepts", () => {
+    // wall block x ∈ [−10, 0], z ∈ [−0.2, 0.2]; a segment that passes the corner diagonally
+    const g = buildNavGrid(bounds, [boxCollider(-5, 2, 0, 10, 4, 0.4)]);
+    const a = { x: -0.25, z: 1.25 }, b = { x: 1.25, z: -1.25 };
+    expect(isFree(g, ...cellOf(g, a.x, a.z))).toBe(true);
+    expect(lineOfSight(g, a, b, g.cell / 2)).toBe(false);
+  });
+  it("smoothed paths keep a fat corridor clear of corners", () => {
+    const g = buildNavGrid(bounds, wallWithDoor(false), { doorsPassable: false });
+    const start = { x: -6, z: 6 };
+    const path = findPath(g, start, { x: 9, z: 0.5 })!;
+    expect(path).not.toBeNull();
+    const pts = [start, ...path];
+    for (let i = 2; i < pts.length; i++) expect(lineOfSight(g, pts[i - 1], pts[i], g.cell / 2)).toBe(true);
+  });
+});

@@ -97,11 +97,16 @@ interface AutoWalk {
   goal: { x: number; z: number };
   /** Arrival radius: 1 m, or the reachable distance to a goal inside furniture (+ .35). */
   arrive: number;
+  /** Consecutive re-plans that did not lead to progress (give up after 3). */
   replans: number;
   resolve: () => void;
   reject: (e: Error) => void;
-  lastProgress: number;
-  bestDist: number;
+  /** Simulated seconds without progress along the path (frame-rate independent watchdog). */
+  stall: number;
+  /** Best remaining path length so far (progress = this shrinking, even on detours away from the goal). */
+  bestRemaining: number;
+  /** Remaining length right after the last re-plan (re-plan budget refills after 1 m of real progress). */
+  replanBase: number;
   signal?: AbortSignal;
   onAbort?: () => void;
 }
@@ -836,7 +841,19 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     else w.resolve();
   }
 
-  function autoWalkInput(now: number): { forward: number; side: number; sprint: boolean } | null {
+  /** Remaining length of the autopilot path from the player (current waypoint onwards). */
+  function remainingPath(w: AutoWalk): number {
+    let len = 0;
+    let fx = player.x, fz = player.z;
+    for (let i = w.index; i < w.path.length; i++) {
+      len += Math.hypot(w.path[i].x - fx, w.path[i].z - fz);
+      fx = w.path[i].x;
+      fz = w.path[i].z;
+    }
+    return len;
+  }
+
+  function autoWalkInput(dt: number): { forward: number; side: number; sprint: boolean } | null {
     const w = autoWalk;
     if (!w) return null;
     const dGoal = Math.hypot(w.goal.x - player.x, w.goal.z - player.z);
@@ -862,17 +879,19 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       const near = Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 2.6;
       if (near) toggleDoor(d, true);
     }
-    // progress watchdog
-    if (dGoal < w.bestDist - 0.05) {
-      w.bestDist = dGoal;
-      w.lastProgress = now;
-    } else if (now - w.lastProgress > 3000) {
-      // blocked (an NPC stepped in, a door swung): re-plan from here, give up after 3 tries
+    // progress watchdog: path length still to walk must shrink within 3 s of simulated walking
+    // (wall-clock time and straight-line goal distance both misfire: slow frames, detours)
+    const remaining = remainingPath(w);
+    if (remaining < w.bestRemaining - 0.05) {
+      w.bestRemaining = remaining;
+      w.stall = 0;
+      if (w.replanBase - remaining > 1) w.replans = 0;
+    } else if ((w.stall += dt) > 3) {
+      // blocked (an NPC stepped in, a door swung): re-plan from here, give up after 3 fruitless tries
       if (!replan(w)) {
         cancelWalk(new Error("stuck"));
         return null;
       }
-      w.lastProgress = now;
     }
     const want = Math.atan2(-(wp.x - player.x), -(wp.z - player.z));
     let dy = want - yaw;
@@ -900,6 +919,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     w.path = p.path;
     w.index = 0;
     w.arrive = Math.max(w.arrive, p.arrive);
+    w.stall = 0;
+    w.bestRemaining = w.replanBase = remainingPath(w);
     return true;
   }
 
@@ -923,8 +944,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         reject(new Error(S.unreachable));
         return;
       }
-      const now = performance.now();
-      const w: AutoWalk = { path: plan.path, index: 0, goal: { x: target.x, z: target.z }, arrive: plan.arrive, replans: 0, resolve, reject, lastProgress: now, bestDist: Infinity, signal };
+      const w: AutoWalk = { path: plan.path, index: 0, goal: { x: target.x, z: target.z }, arrive: plan.arrive, replans: 0, resolve, reject, stall: 0, bestRemaining: Infinity, replanBase: Infinity, signal };
       if (signal) {
         w.onAbort = () => {
           if (autoWalk === w) cancelWalk(new DOMException("Aborted", "AbortError") as unknown as Error);
@@ -997,7 +1017,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     // autopilot (walk_to) runs even while paused / before start(): a panel may be open
     // while the agent walks the learner somewhere; user input stays blocked (playing()).
-    const walking = autoWalk ? autoWalkInput(now) : null;
+    const walking = autoWalk ? autoWalkInput(frozen ? 0 : dt) : null;
     if (playing() || walking) {
       const px = player.x, pz = player.z;
       const sprint = walking ? walking.sprint : !!keys.ShiftLeft || !!keys.ShiftRight;
