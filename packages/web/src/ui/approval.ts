@@ -109,7 +109,7 @@ export class ApprovalDialog {
       h(
         "div",
         { class: "window-body" },
-        h("p", { class: "approval-from" }, tr("approval.from", { agent })),
+        h("p", { class: "approval-from" }, req.agent === "learner" ? tr("approval.fromLearner") : tr("approval.from", { agent })),
         h("p", { class: "approval-summary", id: "approval-summary" }, req.summary),
         high ? h("p", { class: "notice danger" }, tr("approval.highRisk")) : null,
         h(

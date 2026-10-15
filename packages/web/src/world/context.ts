@@ -134,5 +134,7 @@ export interface BuildContext {
   npcs: Map<string, NpcRecord>;
   /** Meshes carry castShadow flags (the renderer's shadow map decides whether they are used). */
   shadows: boolean;
+  /** Textures created while building that no material library owns (disposed with the world). */
+  ownedTextures: Texture[];
   warnings: string[];
 }

@@ -9,7 +9,7 @@
  * calling model can read and recover.
  */
 import { inScope, isHiddenByDeny, rt, validateArgs, type PracticeScope, type ToolDefinition } from "@clinicalcraft/agent";
-import { BootstrapError, type LoadedContent } from "@clinicalcraft/agent/node";
+import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { normalizeLocale, progress, t, type CaseDefinition } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
 import { assessmentText, caseListing, casesText } from "./format.js";
@@ -129,11 +129,12 @@ export function textResult(text: string, structured?: Record<string, unknown>, i
   return { content: [{ type: "text", text }], ...(structured ? { structuredContent: structured } : {}), ...(isError ? { isError: true } : {}) };
 }
 
-function sessionOrError(host: ToolHost, id: string): McpSession | McpToolResult {
+function findSession(host: ToolHost, id: string): { entry: McpSession } | { error: McpToolResult } {
   const entry = host.sessions.get(id);
-  if (entry) return entry;
+  if (entry) return { entry };
   const open = host.sessions.list().map((s) => s.id);
-  return textResult(mm(host.locale, "session.unknown", { id, open: open.length ? open.join(", ") : mm(host.locale, "session.none") }), { error: "unknown_session", session_id: id }, true);
+  const error = textResult(mm(host.locale, "session.unknown", { id, open: open.length ? open.join(", ") : mm(host.locale, "session.none") }), { error: "unknown_session", session_id: id }, true);
+  return { error };
 }
 
 /** Validate `args` against a listed tool's schema; throws `RpcError(-32602)`. */
@@ -161,13 +162,15 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
     case "start_case":
       return startCase(host, args);
     case "get_debrief": {
-      const entry = sessionOrError(host, String(args.session_id));
-      if (!("session" in entry)) return entry;
+      const found = findSession(host, String(args.session_id));
+      if ("error" in found) return found.error;
+      const entry = found.entry;
       return host.sessions.exclusive(entry, () => debrief(entry));
     }
     default: {
-      const entry = sessionOrError(host, String(args.session_id));
-      if (!("session" in entry)) return entry;
+      const found = findSession(host, String(args.session_id));
+      if ("error" in found) return found.error;
+      const entry = found.entry;
       const { session_id: _sid, ...toolArgs } = args;
       return host.sessions.exclusive(entry, async () => {
         const outcome = await entry.runner.run(name, toolArgs, signal);
@@ -190,8 +193,8 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
   try {
     entry = await host.sessions.start({ caseId, locale, facilityId: typeof args.facility_id === "string" ? args.facility_id : null });
   } catch (err) {
-    if (err instanceof BootstrapError || err instanceof Error) return textResult(mm(L, "start.failed", { message: err.message }), { error: "start_failed", case_id: caseId }, true);
-    throw err;
+    // Unknown case/facility (BootstrapError), unreadable settings…: the model can pick another case.
+    return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: caseId }, true);
   }
   return host.sessions.exclusive(entry, async () => {
     const session = entry.session;

@@ -225,6 +225,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     npcs: new Map(),
     // meshes always carry castShadow flags; the renderer's shadow map (quality) decides whether they are used
     shadows: true,
+    ownedTextures: [],
     warnings: [],
   };
 
@@ -662,6 +663,11 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     if (hit.object.userData.owner) {
       const rec = ctx.targets.get(hit.object.userData.owner as string);
+      return rec ? { target: rec.target, box: rec.box } : null;
+    }
+    const quads = hit.object.userData.quadOwners as string[] | undefined;
+    if (quads && hit.faceIndex != null) {
+      const rec = ctx.targets.get(quads[Math.floor(hit.faceIndex / 2)] ?? "");
       return rec ? { target: rec.target, box: rec.box } : null;
     }
     while (o && !o.userData.action) o = o.parent;
@@ -1356,6 +1362,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         if ((o as InstancedMesh).isInstancedMesh) (o as InstancedMesh).dispose();
       });
       for (const sc of ctx.screens) sc.texture.dispose();
+      for (const t of ctx.ownedTextures) t.dispose();
       // animated parts use per-part clones that keep the library name (skipped above)
       for (const a of ctx.animated) a.material.dispose();
       for (const p of particles) p.m.removeFromParent();
@@ -1413,14 +1420,27 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         frozen = v;
       },
       updateAim,
-      /** Draw calls of one frame from the current camera: steady state (shadow map reused) and a frame that re-renders the shadow map. */
+      /**
+       * Draw calls of one frame from the current camera. renderer.info resets after the shadow pass,
+       * so `steady` (= renderer.info.render.calls) never includes it; `shadowPass` is measured
+       * separately (it only runs when the shadow map is refreshed: doors, blocks, NPC rebuilds,
+       * shadow-box moves).
+       */
       drawCalls() {
         followSun(player.x, player.z);
+        assignLights(player.x, player.z, true);
+        const info = renderer.info;
+        info.autoReset = false;
+        info.reset();
         renderer.shadowMap.needsUpdate = true;
         renderer.render(scene, camera);
-        const withShadows = renderer.info.render.calls;
+        const withShadows = info.render.calls;
+        info.reset();
         renderer.render(scene, camera);
-        return { steady: renderer.info.render.calls, withShadows, triangles: renderer.info.render.triangles };
+        const steady = info.render.calls;
+        const triangles = info.render.triangles;
+        info.autoReset = true;
+        return { steady, shadowPass: withShadows - steady, withShadows, triangles };
       },
       stats() {
         return {

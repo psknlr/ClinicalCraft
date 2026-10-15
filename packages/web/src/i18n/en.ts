@@ -835,6 +835,9 @@ const en: Messages = {
   "room.garden": "Garden",
   "room.entrance": "Entrance",
 
+  "approval.fromLearner": "You are about to perform",
+  "treat.find": "Find",
+
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",

@@ -3768,7 +3768,9 @@
           "potassium",
           "ues",
           "u+e",
-          "cmp"
+          "cmp",
+          "u and e",
+          "u and es"
         ]
       },
       "requires": [
@@ -4812,7 +4814,8 @@
         "zh-CN": [
           "肌钙蛋白",
           "心肌标志物",
-          "心梗指标"
+          "心梗指标",
+          "心肌酶"
         ],
         "en": [
           "troponin",

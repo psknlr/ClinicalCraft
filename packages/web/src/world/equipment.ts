@@ -3,7 +3,8 @@
  * hits back to placements), rotated footprint colliders, live/static
  * screens, animated parts, equipment lights, labels and interaction targets.
  */
-import { Box3, Color, Mesh, MeshBasicMaterial, MeshStandardMaterial, Vector3 } from "three";
+import { Box3, CanvasTexture, Color, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute } from "three";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { EquipmentType } from "@clinicalcraft/core";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
@@ -62,10 +63,121 @@ export function surfaceTop(type: Pick<EquipmentType, "parts"> | undefined): numb
   return best || 0.9;
 }
 
+interface StaticScreen {
+  canvas: HTMLCanvasElement;
+  x: number;
+  y: number;
+  z: number;
+  ry: number;
+  w: number;
+  h: number;
+  owner: string;
+  /** V4 text panels glow less than imaging / lab screens. */
+  dim: boolean;
+}
+
+interface LedPart {
+  x: number;
+  y: number;
+  z: number;
+  ry: number;
+  s: [number, number, number];
+  cast: boolean;
+}
+
+/** Shelf-pack canvases into one atlas (pure layout; returns pixel rects and the atlas size). Exported for tests. */
+export function packShelves(sizes: { w: number; h: number }[], width = 512): { rects: { x: number; y: number }[]; width: number; height: number } {
+  const order = sizes.map((s, i) => i).sort((a, b) => sizes[b].h - sizes[a].h);
+  const rects: { x: number; y: number }[] = new Array(sizes.length);
+  let x = 0, y = 0, rowH = 0;
+  for (const i of order) {
+    const { w, h } = sizes[i];
+    if (x + w > width) {
+      x = 0;
+      y += rowH + 1;
+      rowH = 0;
+    }
+    rects[i] = { x, y };
+    x += w + 1;
+    rowH = Math.max(rowH, h);
+  }
+  return { rects, width, height: Math.max(1, y + rowH) };
+}
+
+function buildStaticScreens(ctx: BuildContext, screens: StaticScreen[]): void {
+  if (!screens.length) return;
+  const pack = packShelves(screens.map((s) => ({ w: s.canvas.width, h: s.canvas.height })));
+  const atlas = document.createElement("canvas");
+  atlas.width = pack.width;
+  atlas.height = pack.height;
+  const c2d = atlas.getContext("2d");
+  screens.forEach((s, i) => c2d?.drawImage(s.canvas, pack.rects[i].x, pack.rects[i].y));
+  const tex = new CanvasTexture(atlas);
+  tex.magFilter = NearestFilter;
+  tex.minFilter = NearestFilter;
+  tex.generateMipmaps = false;
+  tex.colorSpace = SRGBColorSpace;
+  ctx.ownedTextures.push(tex);
+  for (const dim of [false, true]) {
+    const list = screens.map((s, i) => ({ s, i })).filter((e) => e.s.dim === dim);
+    if (!list.length) continue;
+    const geoms = list.map(({ s, i }) => {
+      const g = UNIT_PLANE.clone();
+      const uv = g.getAttribute("uv") as BufferAttribute;
+      const r = pack.rects[i];
+      const u0 = (r.x + 0.5) / pack.width, u1 = (r.x + s.canvas.width - 0.5) / pack.width;
+      const v1 = 1 - (r.y + 0.5) / pack.height, v0 = 1 - (r.y + s.canvas.height - 0.5) / pack.height;
+      for (let k = 0; k < uv.count; k++) uv.setXY(k, u0 + uv.getX(k) * (u1 - u0), v0 + uv.getY(k) * (v1 - v0));
+      g.scale(s.w, s.h, 1).rotateY(s.ry).translate(s.x, s.y, s.z);
+      return g;
+    });
+    const merged = mergeGeometries(geoms, false);
+    for (const g of geoms) g.dispose();
+    if (!merged) continue;
+    const mat = new MeshStandardMaterial({
+      map: tex,
+      emissiveMap: tex,
+      emissive: new Color(0xffffff),
+      emissiveIntensity: dim ? 0.35 : 0.85,
+      roughness: 0.6,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -2,
+    });
+    const mesh = new Mesh(merged, mat);
+    mesh.name = dim ? "screens:text" : "screens:static";
+    // ray hits resolve per quad (2 triangles each) to the owning placement
+    mesh.userData.quadOwners = list.map(({ s }) => s.owner);
+    ctx.root.add(mesh);
+    ctx.pickables.push(mesh);
+  }
+}
+
+function buildLeds(ctx: BuildContext, leds: Map<string, LedPart[]>): void {
+  for (const [key, list] of leds) {
+    const [m, anim, bucket] = key.split("|");
+    const geoms = list.map((l) => UNIT_BOX.clone().scale(l.s[0], l.s[1], l.s[2]).rotateY(l.ry).translate(l.x, l.y, l.z));
+    const merged = mergeGeometries(geoms, false);
+    for (const g of geoms) g.dispose();
+    if (!merged) continue;
+    const material = ctx.lib.get(m).clone() as MeshStandardMaterial;
+    if (material.emissive.getHex() === 0) material.emissive = new Color(material.color);
+    if (!material.emissiveIntensity) material.emissiveIntensity = 0.8;
+    const mesh = new Mesh(merged, material);
+    mesh.name = `leds:${key}`;
+    mesh.castShadow = list.some((l) => l.cast);
+    mesh.receiveShadow = true;
+    ctx.root.add(mesh); // not ray-picked: the equipment behind the LED resolves the aim
+    ctx.animated.push({ mesh, anim: anim as "blink" | "pulse", base: { y: 0, ry: 0, sx: 1, sy: 1, sz: 1 }, material, phase: Number(bucket) * 0.5 });
+  }
+}
+
 export function buildPlacements(ctx: BuildContext): void {
   const f = ctx.facility;
   const S = strings(ctx.locale);
   const blackId = ctx.lib.has("black") ? "black" : "coal";
+  const staticScreens: StaticScreen[] = [];
+  const leds = new Map<string, LedPart[]>();
   for (const p of f.placements) {
     const type = ctx.catalogs.equipment.get(p.type);
     if (!type) {
@@ -109,19 +221,20 @@ export function buildPlacements(ctx: BuildContext): void {
       if (part.name === "screen" && screenKind !== "none") {
         const sc = createScreenTexture(screenKind, part.s[0], part.s[1], p.id, ctx.lib.def(part.m)?.color);
         const live = screenKind === "vitals" || screenKind === "ecg";
-        // live monitors are self-lit displays; static panels are lit like V4's emissive "screen" blocks
-        const screenMat = live
-          ? new MeshBasicMaterial({ map: sc.texture, toneMapped: false })
-          : new MeshStandardMaterial({ map: sc.texture, emissiveMap: sc.texture, emissive: new Color(0xffffff), emissiveIntensity: screenKind === "text" ? 0.35 : 0.85, roughness: 0.6 });
-        // housing: a batched black box (no extra draw call); display: one quad just proud of the
-        // +Z face (one draw call per screen instead of six for a multi-material box)
-        screenMat.polygonOffset = true;
-        screenMat.polygonOffsetFactor = -1;
-        screenMat.polygonOffsetUnits = -2;
+        // housing: a batched black box (no extra draw call); display: one quad just proud of the +Z face
         ctx.batch.add(blackId, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
-        const mesh = new Mesh(UNIT_PLANE, screenMat);
         const lift = part.s[2] / 2 + 0.003;
-        mesh.position.set(px + Math.sin(ry) * lift, py, pz + Math.cos(ry) * lift);
+        const qx = px + Math.sin(ry) * lift, qz = pz + Math.cos(ry) * lift;
+        if (!live) {
+          // static pixel art never changes: packed into one atlas, all panels drawn by two meshes
+          sc.texture.dispose();
+          staticScreens.push({ canvas: sc.canvas, x: qx, y: py, z: qz, ry, w: part.s[0], h: part.s[1], owner: p.id, dim: screenKind === "text" });
+          continue;
+        }
+        // live monitors are self-lit displays redrawn at ≤ 10 Hz (own texture, one draw call each)
+        const screenMat = new MeshBasicMaterial({ map: sc.texture, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 });
+        const mesh = new Mesh(UNIT_PLANE, screenMat);
+        mesh.position.set(qx, py, qz);
         mesh.rotation.y = ry;
         mesh.scale.set(part.s[0], part.s[1], 1);
         mesh.userData.owner = p.id;
@@ -146,13 +259,18 @@ export function buildPlacements(ctx: BuildContext): void {
         ctx.screens.push({ placementId: p.id, kind: screenKind, mesh, canvas: sc.canvas, ctx: sc.ctx, texture: sc.texture, x: px, z: pz, slotId, lastDraw: -1e9 });
         continue;
       }
-      if (anim !== "none") {
-        const base = ctx.lib.get(part.m);
-        const material = base.clone() as MeshStandardMaterial;
-        if (anim === "blink" || anim === "pulse") {
-          if (material.emissive.getHex() === 0) material.emissive = new Color(material.color);
-          if (!material.emissiveIntensity) material.emissiveIntensity = 0.8;
-        }
+      if (anim === "blink" || anim === "pulse") {
+        // indicator LEDs: merged per (material, animation, phase half) → a handful of draw calls
+        const bucket = (p.x * 0.37 + p.z * 0.71) % 1 < 0.5 ? 0 : 1;
+        const key = `${part.m}|${anim}|${bucket}`;
+        let list = leds.get(key);
+        if (!list) leds.set(key, (list = []));
+        list.push({ x: px, y: py, z: pz, ry, s: part.s, cast: ctx.shadows && ctx.lib.castShadow(part.m) });
+        continue;
+      }
+      if (anim === "spin") {
+        // spinning parts need their own transform; they keep the shared library material
+        const material = ctx.lib.get(part.m);
         const mesh = new Mesh(UNIT_BOX, material);
         mesh.position.set(px, py, pz);
         mesh.rotation.y = ry;
@@ -220,4 +338,6 @@ export function buildPlacements(ctx: BuildContext): void {
       ctx.targets.set(p.id, rec);
     }
   }
+  buildStaticScreens(ctx, staticScreens);
+  buildLeds(ctx, leds);
 }

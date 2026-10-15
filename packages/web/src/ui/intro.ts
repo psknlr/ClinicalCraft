@@ -133,7 +133,6 @@ export class Intro {
           h("h1", null, "CLINICAL", h("br"), "CRAFT"),
           h("h2", null, tr("intro.h2")),
           h("p", { html: tr("intro.lead.html") }),
-          card ? this.selectedSummary(card) : null,
           h("div", { class: "intro-actions" }, enter, startNew, help),
           lastCard && last
             ? h(
@@ -183,7 +182,7 @@ export class Intro {
       options.map((f) => h("option", { value: f.id, selected: f.id === sel?.facilityId }, `${ct(f.name)}${f.id === def?.id ? ` ${tr("library.facilityDefault")}` : ""}`)),
     );
     return h(
-      "div",
+      "footer",
       { class: "intro-selected" },
       h("div", { class: "eyebrow" }, tr("intro.selected")),
       h("b", { id: "selected-case" }, ct(card.title)),
@@ -244,6 +243,7 @@ export class Intro {
       h("header", { class: "library-head" }, h("div", null, h("div", { class: "eyebrow" }, tr("library.kicker")), h("h2", { id: "library-title" }, tr("library.title"))), this.countEl),
       h("div", { class: "library-filters" }, search, h("div", { class: "row" }, spec, sett)),
       this.listEl,
+      selected ? this.selectedSummary(selected) : null,
     );
     this.renderList(selected);
     return lib;

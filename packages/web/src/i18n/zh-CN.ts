@@ -837,6 +837,9 @@ const zh = {
   "room.garden": "花园",
   "room.entrance": "入口",
 
+  "approval.fromLearner": "你即将执行",
+  "treat.find": "查找处置",
+
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",

@@ -330,7 +330,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
           if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full"));
         }
       };
-      wrap.append(h("form", { class: "exam-search", onsubmit: search }, q, h("button", { class: "primary" }, tr("orders.match"))), result);
+      wrap.append(h("form", { class: "exam-search", onsubmit: search }, q, h("button", { class: "primary" }, tr("treat.find"))), result);
       const groups = new Map<string, Intervention[]>();
       for (const iv of c.interventions) groups.set(iv.kind, [...(groups.get(iv.kind) ?? []), iv]);
       for (const [kind, list] of groups) {

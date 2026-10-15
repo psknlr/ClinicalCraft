@@ -105,7 +105,8 @@ button.link {
 #intro {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .intro-top {
   position: absolute;
@@ -164,7 +165,11 @@ button.link {
   justify-content: space-between;
   align-items: center;
   gap: 4vw;
-  padding: 70px 4vw 92px 6vw;
+  padding: 64px 4vw 18px 6vw;
+}
+html[lang="en"] .intro-card h2 {
+  font-size: 19px;
+  letter-spacing: 4px;
 }
 .intro-card h1 {
   margin-top: 18px;
@@ -183,39 +188,34 @@ button.link {
   min-width: 120px;
 }
 .intro-selected {
-  margin-top: 18px;
-  padding: 12px 14px;
-  background: #10261ca8;
-  border-left: 3px solid var(--gold);
-  max-width: 520px;
+  padding: 12px 18px 14px;
+  background: #e8e6cb;
+  border-top: 2px solid var(--line);
 }
 .intro-selected .eyebrow {
-  color: #d3c99a;
+  color: #7d8c6a;
 }
 .intro-selected b {
   display: block;
-  font-size: 15px;
-  margin: 6px 0 10px;
-  color: #f9eed1;
+  font-size: 14px;
+  margin: 4px 0 8px;
 }
 .facility-row {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 12px;
-  color: #d9e3cb;
+  color: #5d6b52;
 }
 .facility-row select {
   flex: 1;
   min-width: 0;
-  background: #f3eed8;
-  border-color: #becdaa;
 }
 .facility-note {
   display: block;
   margin-top: 6px;
   font-size: 10px;
-  color: #c8d6b9;
+  color: var(--muted);
 }
 .continue-last {
   display: grid;
@@ -245,13 +245,15 @@ button.link {
 .continue-last:hover {
   background: #23473a;
 }
-.intro-foot {
-  bottom: 20px;
+#intro .intro-foot {
+  position: static;
+  padding: 0 6vw 20px;
+  max-width: none;
 }
 .library {
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 140px);
   min-height: 0;
   background: var(--cream);
   border: 3px solid #7f946c;
@@ -2004,8 +2006,7 @@ details.topic .question {
   .case-list {
     overflow: visible;
   }
-  .intro-foot {
-    position: static;
+  #intro .intro-foot {
     padding: 0 5vw 24px;
   }
   .vitals-strip {

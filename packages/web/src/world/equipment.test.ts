@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { labelColor, surfaceTop } from "./equipment.js";
+import { labelColor, packShelves, surfaceTop } from "./equipment.js";
 
 type Part = { m: string; p: [number, number, number]; s: [number, number, number]; name?: string };
 const t = (parts: Part[]) => ({ parts }) as never;
@@ -36,5 +36,28 @@ describe("station label colours", () => {
     expect(labelColor("workstation", ["lab-hematology"])).toBe("#f2c978");
     expect(labelColor("workstation", ["histopathology"])).toBe("#c7a1e5");
     expect(labelColor("workstation", ["ct"])).toBe("#79c9e6");
+  });
+});
+
+describe("static screen atlas packing", () => {
+  it("packs rectangles without overlap inside the atlas width", () => {
+    const sizes = [
+      { w: 64, h: 40 },
+      { w: 32, h: 8 },
+      { w: 64, h: 213 },
+      ...Array.from({ length: 20 }, (_, i) => ({ w: 64, h: 16 + i * 3 })),
+    ];
+    const { rects, width, height } = packShelves(sizes, 256);
+    expect(width).toBe(256);
+    const boxes = sizes.map((s, i) => ({ x0: rects[i].x, y0: rects[i].y, x1: rects[i].x + s.w, y1: rects[i].y + s.h }));
+    for (const b of boxes) {
+      expect(b.x1).toBeLessThanOrEqual(256);
+      expect(b.y1).toBeLessThanOrEqual(height);
+    }
+    for (let i = 0; i < boxes.length; i++)
+      for (let j = i + 1; j < boxes.length; j++) {
+        const a = boxes[i], b = boxes[j];
+        expect(a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1).toBe(false);
+      }
   });
 });
