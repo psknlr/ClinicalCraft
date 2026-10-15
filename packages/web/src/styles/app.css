@@ -158,8 +158,7 @@ button.link {
   border-color: #becdaa;
 }
 .intro-layout {
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 590px) minmax(380px, 470px);
   justify-content: space-between;
@@ -2056,7 +2055,25 @@ details.topic .question {
     flex-wrap: wrap;
   }
   .vitals-strip {
-    bottom: 98px;
+    bottom: 76px;
+  }
+  .vitals-strip:not([hidden]) ~ .bottom .selected-label {
+    visibility: hidden;
+  }
+  .toast {
+    top: auto;
+    bottom: 14px;
+    transform: translate(-50%, 160%);
+  }
+  .toast.show {
+    transform: translate(-50%, 0);
+  }
+  .convo .convo-main {
+    order: -1;
+  }
+  .convo-side .portrait {
+    min-height: 0;
+    padding: 10px;
   }
   .vitals-strip .vital {
     min-width: 0;
@@ -2099,6 +2116,15 @@ details.topic .question {
   }
   .quest {
     width: calc(100vw - 150px);
+  }
+  .quest p {
+    display: none;
+  }
+  .quest h3 {
+    margin: 6px 0 4px;
+  }
+  .quest-progress {
+    margin: 8px 0 6px;
   }
   .intro-card h1 {
     font-size: 46px;

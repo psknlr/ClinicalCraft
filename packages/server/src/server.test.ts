@@ -439,7 +439,7 @@ describe("POST /api/transcripts/:sessionId", () => {
     const url = new URL("api/transcripts/web-1", server.url);
     const res = await fetch(url, { method: "POST", headers: { "content-type": "application/x-ndjson" }, body: items.map((i) => JSON.stringify(i)).join("\n") + "\n" });
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true, written: 2 });
+    expect(await res.json()).toEqual({ ok: true, written: 2, stored: true });
     await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify([{ type: "action", ordinal: 2, ts: "t", payload: { action: { type: "start" }, accepted: true } }]) });
 
     const file = readFileSync(join(home, "sessions", "web", "web-1.jsonl"), "utf8");

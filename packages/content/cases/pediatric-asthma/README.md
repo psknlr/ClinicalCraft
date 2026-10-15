@@ -118,13 +118,26 @@ Intervention effects and their appropriateness (the engine evaluates
   * SpO₂ +1.2, RR −2.5 and EtCO₂ +1.5, all persistent
   * HR −5 persistent (the work of breathing falls)
   * HR +10 transient (β₂ chronotropy, lasts 90 min)
-  * `maxDoses` 6 per route (neb, pMDI). From the 9th dose (both routes
-    combined) each dose is *contraindicated* with a toxicity/escalation
-    message. Six nebs in total on the reference path give RR ~19, SpO₂ ~98,
-    HR ~121 at 4 h; only deliberate rapid-fire dosing of both routes drives
-    the additive effects to implausible values (HR ~200, RR < 10).
+  * `maxDoses` 6 per route (neb, pMDI). A dose is *contraindicated* (with a
+    toxicity/escalation message) from the 9th dose (both routes combined), and
+    also when three doses have already been given within the first 30 min in a
+    child who is neither `tiring` nor `life-threatening` (rapid-fire dosing
+    beyond the 20-minutely first-hour schedule). Back-to-back nebs on the
+    tiring or life-threatening branches stay acceptable. Six nebs in total on
+    the reference path give RR ~19, SpO₂ ~98, HR ~121 at 4 h; rapid-fire dosing
+    still drives the additive effects to implausible values (HR ~200,
+    RR ~15), but every dose after the third is now flagged.
+  * "IV salbutamol" does not resolve to either inhaled route (exclude
+    keywords); the case has no IV salbutamol option.
 * **Ipratropium:** RR −0.5. Each of its 3 doses (`maxDoses` 3) is *indicated*,
-  whatever the phase.
+  whatever the phase. (Declared before salbutamol so that "异丙托溴铵雾化" /
+  "ipratropium neb" resolves to ipratropium, not to the generic "雾化/neb".)
+* **Nebulised budesonide:** *neutral*, no vital effects (`maxDoses` 3). A
+  common choice in Chinese practice (the Chinese guideline allows early
+  high-dose nebulised ICS as an adjunct); its response text reminds the learner
+  that it does not replace the systemic steroid. Giving it *instead of*
+  prednisolone leaves `obj-first-line` open, fires the 60-min steroid prompt
+  and keeps the discharge phase locked (`ev-not-settling` at 250 min).
 * **Oxygen:** SpO₂ +4 for 120 min (auto-weaned); `maxDoses` 3 so it can be
   restarted if room-air SpO₂ falls (overlapping doses add).
 * **Prednisolone or IV hydrocortisone:** SpO₂ +2.5, RR −5 and HR −5, with onset at
@@ -247,10 +260,12 @@ Paediatric alarm limits (6 years):
   2.5–5 mg vs Chinese 2.5 mg for ≤ 20 kg), aminophylline (BTS: consider for
   severe or life-threatening asthma unresponsive to maximal therapy; GINA:
   advises against) and post-discharge ICS step-up are good discussion points.
-  This case restarts the prescribed low-dose ICS with adherence support, with
-  review at the post-attack visit (within 2 working days) and in asthma clinic
-  within 1–2 months, per GINA's "check adherence and technique before stepping
-  up".
+  Nebulised budesonide is offered as a neutral adjunct (Chinese guideline:
+  early high-dose nebulised ICS may be added; GINA/BTS: not routine once a
+  systemic steroid is given). This case restarts the prescribed low-dose ICS
+  with adherence support, with review at the post-attack visit (within 2
+  working days) and in asthma clinic within 1–2 months, per GINA's "check
+  adherence and technique before stepping up".
 
 ## Fidelity limits (known)
 
@@ -267,15 +282,33 @@ Paediatric alarm limits (6 years):
   low-value by `assess()`. The rubric item `r-no-routine-tests` does exempt
   those branches (`tiring` flag).
 * Vital effects are additive per dose (the engine has no saturation), so the
-  salbutamol limits above bound the effect; deliberate rapid-fire dosing of
-  both routes still produces implausible monitor values (flagged as unsafe).
+  salbutamol limits above bound the effect; deliberate rapid-fire dosing still
+  produces implausible monitor values (each excess dose is flagged as unsafe).
+  Overlapping oxygen doses also add, and the discharge-phase gate reads the
+  monitor SpO₂ without knowing whether oxygen is running: re-applying oxygen
+  late on the tiring + magnesium branch lets the discharge phase open while
+  the monitor still shows supplemental-oxygen saturations (the discharge
+  room-air result then describes the off-oxygen trial).
+* Web world (`general-hospital`, resus bay 1): orders need a workstation or
+  device whose capabilities cover the investigation's `requires`; bedside
+  monitors open the monitor panel only. PRAM therefore `requires: ["records"]`
+  (nurse-scored and charted; ordered at the ED records terminal / nurse
+  station, ~12 m), the off-oxygen trial `requires: ["oxygen"]` (bedside O₂
+  outlet, 2 m), PEF and the spirometry "not in the ED" note use the triage
+  peak-flow station, and the weight/height exam needs no scale at the bedside
+  (weighed at triage). Results can be read anywhere from the journal.
 * Exam items and child-voice history items that are restricted to a phase share
   keywords across phases on purpose. Consumers of `matchExam`/`matchHistory`
   should pass the current phase (`MatchOptions.phase`); the agent's patient
   pipeline already filters history by phase.
-* The 44 history items exceed the authoring guide's 15–40 because six are
+* The 46 history items exceed the authoring guide's 15–40 because six are
   phase variants of the same question ("how is he feeling / how alert is he"
-  for arrival, reassessment, discharge and deterioration).
+  for arrival, reassessment, discharge and deterioration). Two pertinent
+  negatives were added after matcher probing because learners (especially
+  Chinese learners) routinely ask them and the fallback "I'm not sure" would be
+  out of character for the mother: care elsewhere before arrival
+  (`hx-prior-care`: none — came straight from home) and a home nebuliser
+  (`hx-home-nebuliser`: none).
 
 ## References
 
@@ -294,6 +327,11 @@ clinicalcraft cases verify pediatric-asthma
 clinicalcraft play pediatric-asthma --provider offline
 ```
 
-All 56 `extensions.testUtterances` (28 per locale, including colloquial
-Chinese, typos and clinical abbreviations such as NKDA, URTI, ICS, PICU, pred)
-resolve to an expected history item as the top `matchHistory` hit.
+All 69 `extensions.testUtterances` (35 zh-CN, 34 en, including colloquial
+Chinese, typos such as 储物罐 / vomitting / wat, and clinical abbreviations
+such as NKDA, URTI, ICS, PICU, pred, GP, hx) resolve to an expected history
+item as the top `matchHistory` hit. CJK keywords avoid generic two-character
+fragments (家里, 孩子, 多少, 多久, 东西, 了吗, 过吗, 一下…) that would otherwise
+score ≥ 0.55 on unrelated questions, and English keywords avoid phrases that
+collapse to a single generic token after stop-word removal ("family doctor",
+"what do you think …", "in date").

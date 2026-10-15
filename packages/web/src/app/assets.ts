@@ -43,6 +43,17 @@ export function localAssetUrl(rel: string): string | null {
   return `/local-assets/${rel.split("/").map(encodeURIComponent).join("/")}`;
 }
 
+/** Parsed JSON of an embedded local asset (standalone build only; null elsewhere). */
+export function embeddedJson<T>(rel: string): T | null {
+  const hit = embeddedTable()?.[rel];
+  if (!hit) return null;
+  try {
+    return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(hit.data), (ch) => ch.charCodeAt(0)))) as T;
+  } catch {
+    return null;
+  }
+}
+
 /** The file name of a case asset (`assets/fig1.png` → `fig1.png`). */
 export function assetFile(asset: AssetRef): string {
   const parts = asset.path.split(/[\\/]/);

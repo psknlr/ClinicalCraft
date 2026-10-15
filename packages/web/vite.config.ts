@@ -10,7 +10,7 @@
  * - `--mode standalone` defines `__STANDALONE__ = true`; the single-file
  *   inlining step lives in scripts/inline-standalone.mjs (UI agent).
  */
-import { defineConfig, type Connect, type Plugin } from "vite";
+import { defineConfig, type BuildOptions, type Connect, type Plugin } from "vite";
 import { fileURLToPath } from "node:url";
 import fs from "node:fs";
 import os from "node:os";
@@ -91,7 +91,36 @@ function localAssets(): Plugin {
   };
 }
 
+/** Normal build: the app and the world QA harness. */
+const appBuild: BuildOptions = {
+  target: "es2022",
+  chunkSizeWarningLimit: 4096,
+  rollupOptions: {
+    input: {
+      main: path.resolve(here, "index.html"),
+      harness: path.resolve(here, "world-harness.html"),
+    },
+  },
+};
+
+/** `--mode standalone`: one bundle, no code splitting, every asset inlined. */
+const standaloneBuild: BuildOptions = {
+  target: "es2022",
+  outDir: path.resolve(here, "dist-standalone", "build"),
+  emptyOutDir: true,
+  assetsInlineLimit: 100_000_000,
+  cssCodeSplit: false,
+  modulePreload: false,
+  chunkSizeWarningLimit: 16384,
+  rollupOptions: {
+    input: { main: path.resolve(here, "index.html") },
+    output: { inlineDynamicImports: true },
+  },
+};
+
 export default defineConfig(({ mode }) => ({
+  // `--mode standalone`: one self-contained bundle (no code splitting, assets inlined) that
+  // scripts/inline-standalone.mjs folds into dist-standalone/ClinicalCraft.html (offline only).
   root: here,
   base: "./",
   define: {
@@ -111,14 +140,5 @@ export default defineConfig(({ mode }) => ({
     // CLINICALCRAFT_QA=1: no HMR/reloads (content files may change while QA scripts run)
     ...(process.env.CLINICALCRAFT_QA ? { hmr: false, watch: { ignored: ["**/*"] } } : {}),
   },
-  build: {
-    target: "es2022",
-    chunkSizeWarningLimit: 4096,
-    rollupOptions: {
-      input: {
-        main: path.resolve(here, "index.html"),
-        harness: path.resolve(here, "world-harness.html"),
-      },
-    },
-  },
+  build: mode === "standalone" ? standaloneBuild : appBuild,
 }));

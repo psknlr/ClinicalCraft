@@ -67,8 +67,8 @@
         { "zh-CN": "打完针我今天能回家吗？", "en": "Can I go home today after the injection?" }
       ],
       "actingNotes": {
-        "zh-CN": "嘶哑、气促，每次2–4个词；不停抓挠手臂和脖子，一手捂喉；很害怕。平躺时说更喘一点。用药后说心跳得厉害、手抖，但呼吸逐渐轻松、说话越来越成句。不说出任何诊断名词；只有在被问到以前是否被蜇过/有无类似反应时才提去年的大局部反应；只有被问到接触蜜蜂的情况时才提公婆养蜂。若病情恶化到意识模糊（护士/监护提示‘她快不行了’之后、尚未用肾上腺素），只能含糊呻吟，无法回答问题。",
-        "en": "Hoarse and breathless, 2–4 words at a time; keeps scratching her arms and neck, one hand at her throat; frightened. When laid completely flat says breathing is a bit harder. After the injections says her heart is pounding and her hands are shaky, but breathing gets easier and her sentences get longer. Never names a diagnosis; mentions last year's large local reaction only when asked about previous stings/reactions, and her in-laws' bees only when asked about bee exposure. If she deteriorates to the point of confusion (after the nurse says 'we're losing her' and before any adrenaline), she can only mumble or groan and cannot answer questions."
+        "zh-CN": "嘶哑、气促，每次只说2–4个词；不停抓挠手臂和脖子，一手捂着喉咙；很害怕。只回答被问到的内容，不主动提起以前的病史或经历；不说出任何诊断名词。被要求完全平躺时会说更喘一点。",
+        "en": "Hoarse and breathless, 2–4 words at a time; keeps scratching her arms and neck, one hand at her throat; frightened. Answers only what she is asked and does not bring up her past history unprompted; never names a diagnosis. If laid completely flat she says breathing is a bit harder."
       }
     },
     "appearance": {
@@ -90,6 +90,16 @@
       "label": { "zh-CN": "花园现场 · 初始评估", "en": "Garden · initial assessment" },
       "description": { "zh-CN": "急救包到场，尚未给药。", "en": "The emergency bag has arrived; no treatment given yet." },
       "learnerSwitchable": false
+    },
+    {
+      "id": "collapsed",
+      "label": { "zh-CN": "花园现场 · 病情急剧恶化", "en": "Garden · rapid deterioration" },
+      "description": {
+        "zh-CN": "仍未用肾上腺素，她已意识模糊、几乎摸不到桡动脉搏动，无法再回答问题。",
+        "en": "Still no adrenaline: she is confused, the radial pulse is barely palpable and she can no longer answer questions."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": { "all": [{ "flag": "peri-arrest" }, { "not": { "intervened": "adrenaline-im" } }] }
     },
     {
       "id": "treated",
@@ -139,7 +149,7 @@
         "en": "I was sitting here… a bee… stung my right arm… ten minutes ago, maybe…"
       },
       "keywords": {
-        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过", "咋回事", "怎么回事", "咋了", "出啥事", "发生什么", "什么事了"],
+        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过", "咋回事", "怎么回事", "咋了", "出啥事", "发生什么", "什么事了", "被蛰", "啥时候的事", "什么时候的事", "什么时候被蜇", "咋整的", "咋弄的", "怎么弄的", "怎么搞的"],
         "en": [
           "what happened",
           "what's wrong",
@@ -157,7 +167,8 @@
         "en": ["before", "b4", "previously", "last time", "where", "which arm", "site", "what stung", "wasp", "insect"]
       },
       "disclosure": "volunteer",
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-onset",
@@ -172,8 +183,23 @@
       },
       "keywords": {
         "zh-CN": ["多久", "什么时候开始", "几分钟", "先后", "顺序", "进展", "越来越重", "起病", "多长时间", "多久了", "多快"],
-        "en": ["how soon", "how long after", "when did it start", "order", "sequence", "getting worse", "progress", "timeline", "how quickly", "onset", "came on"]
-      }
+        "en": [
+          "how soon",
+          "how long after",
+          "when did it start",
+          "order",
+          "sequence",
+          "getting worse",
+          "progress",
+          "timeline",
+          "how quickly",
+          "onset",
+          "came on",
+          "symptoms come on",
+          "how fast did the symptoms"
+        ]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-throat",
@@ -192,7 +218,8 @@
       },
       "excludeKeywords": { "zh-CN": ["胸口", "胸闷"], "en": ["chest tight"] },
       "disclosure": "volunteer",
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-breathing",
@@ -203,10 +230,12 @@
         "en": "Can't… get a full breath… chest's tight… I can hear myself… whistling…"
       },
       "keywords": {
-        "zh-CN": ["呼吸", "气短", "喘不喘", "胸闷", "憋气", "喘不上气", "气喘", "呼吸困难", "气不够", "气够不够", "上不来气", "透不过气", "呼吸困难吗", "还喘吗", "喘气费劲", "呼吸费劲", "胸口发紧", "胸口紧"],
+        "zh-CN": ["呼吸", "气短", "喘不喘", "胸闷", "憋气", "喘不上气", "气喘", "呼吸困难", "气不够", "气够不够", "上不来气", "透不过气", "呼吸困难吗", "还喘吗", "喘气费劲", "呼吸费劲", "胸口发紧", "胸口紧", "喘得", "喘不", "喘气"],
         "en": ["breath", "breathing", "short of breath", "wheeze", "wheezing", "chest tight", "breathless", "sob", "breathe", "breathing ok", "struggling to breathe", "wheezy"]
       },
-      "required": true
+      "required": true,
+      "excludeKeywords": { "zh-CN": ["哮喘"], "en": [] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-dizzy",
@@ -217,10 +246,11 @@
         "en": "So dizzy… I tried to stand up… everything went grey… had to sit back down…"
       },
       "keywords": {
-        "zh-CN": ["头晕", "眼前发黑", "要晕倒", "站不稳", "发飘", "晕厥", "头昏", "晕乎乎", "摔倒", "跌倒", "站不住"],
+        "zh-CN": ["头晕", "眼前发黑", "要晕倒", "站不稳", "发飘", "晕厥", "头昏", "晕乎乎", "摔倒", "跌倒", "站不住", "天旋地转", "眩晕", "发黑"],
         "en": ["dizzy", "faint", "lightheaded", "light-headed", "grey", "going to faint", "woozy", "collapse", "did you fall", "fell over", "fainting"]
       },
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-loc",
@@ -229,8 +259,9 @@
       "answer": { "zh-CN": "没有……没晕过去……差一点……", "en": "No… didn't pass out… nearly did…" },
       "keywords": {
         "zh-CN": ["失去意识", "昏过去", "晕过去", "不省人事", "失去知觉", "昏迷", "昏倒", "晕倒过", "昏厥", "人事不省"],
-        "en": ["lose consciousness", "unconscious", "black out", "blacked out", "pass out", "passed out", "knocked out", "lost consciousness"]
-      }
+        "en": ["lose consciousness", "unconscious", "black out", "blacked out", "pass out", "passed out", "knocked out", "lost consciousness", "loc"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "ros-other",
@@ -239,9 +270,23 @@
       "answer": { "zh-CN": "眼睛痒，一直流眼泪……鼻子有点堵……头有点胀……", "en": "Eyes itchy and watering… nose a bit blocked… head feels full…" },
       "keywords": {
         "zh-CN": ["其他症状", "眼睛", "流泪", "鼻塞", "流鼻涕", "头痛", "打喷嚏", "眼睛痒", "鼻子堵", "打喷嚏吗"],
-        "en": ["other symptoms", "eyes", "watery", "runny nose", "blocked nose", "headache", "sneezing", "itchy eyes", "sneezy"]
+        "en": [
+          "other symptoms",
+          "eyes",
+          "watery",
+          "runny nose",
+          "blocked nose",
+          "headache",
+          "sneezing",
+          "itchy eyes",
+          "sneezy",
+          "anything else bothering",
+          "bothering you",
+          "anything else wrong"
+        ]
       },
-      "excludeKeywords": { "zh-CN": [], "en": ["lightheaded", "light headed"] }
+      "excludeKeywords": { "zh-CN": [], "en": ["lightheaded", "light headed"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-itch-rash",
@@ -256,7 +301,8 @@
         "en": ["itch", "itchy", "rash", "hives", "lumps", "welts", "skin rash", "red patches", "hive", "itching", "rash anywhere"]
       },
       "excludeKeywords": { "zh-CN": ["眼睛痒", "鼻"], "en": ["itchy eyes", "eyes itch", "runny nose", "blocked nose"] },
-      "disclosure": "volunteer"
+      "disclosure": "volunteer",
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-lips-tongue",
@@ -266,7 +312,8 @@
       "keywords": {
         "zh-CN": ["嘴唇", "舌头", "肿", "脸肿", "嘴肿", "胀", "眼皮", "面部", "嘴巴肿", "舌头肿"],
         "en": ["lips", "tongue", "swelling", "swollen", "face", "puffy", "mouth", "face swelling", "lip swelling", "tongue swelling"]
-      }
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-gi",
@@ -277,9 +324,10 @@
         "en": "A bit sick… stomach cramping on and off… haven't vomited… no diarrhoea…"
       },
       "keywords": {
-        "zh-CN": ["恶心", "呕吐", "吐", "肚子痛", "腹痛", "想吐", "拉肚子", "腹泻", "反胃", "肚子疼"],
-        "en": ["nausea", "sick", "vomit", "vomiting", "stomach", "tummy", "abdominal pain", "cramps", "diarrhoea", "tummy ache", "stomach ache", "throw up"]
-      }
+        "zh-CN": ["恶心", "呕吐", "吐", "肚子痛", "腹痛", "想吐", "拉肚子", "腹泻", "反胃", "肚子疼", "拉稀", "稀便"],
+        "en": ["nausea", "sick", "vomit", "vomiting", "stomach", "tummy", "abdominal pain", "cramps", "diarrhoea", "tummy ache", "stomach ache", "throw up", "n/v"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-chest-palp",
@@ -289,7 +337,8 @@
       "keywords": {
         "zh-CN": ["胸痛", "心慌", "心悸", "心跳", "胸口痛", "心跳快", "跳得快", "心慌不慌"],
         "en": ["chest pain", "palpitations", "heart racing", "heart pounding", "pounding", "heart beating fast", "palps"]
-      }
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-sting-site",
@@ -300,13 +349,14 @@
         "en": "Right forearm, here… I think the sting's still in… I didn't dare pull it out…"
       },
       "keywords": {
-        "zh-CN": ["蜇在哪", "哪个部位", "刺", "毒刺", "拔", "伤口", "叮的地方", "蜇的位置", "刺还在", "蜇哪了"],
+        "zh-CN": ["蜇在哪", "哪个部位", "刺", "毒刺", "拔", "伤口", "叮的地方", "蜇的位置", "刺还在", "蜇哪了", "蛰哪", "蛰在哪", "蜇哪儿", "刺还扎", "扎在肉里", "蜂刺"],
         "en": ["sting site", "stinger", "sting still in", "pull it out", "which arm", "wound", "stung arm", "stinger still in", "where is the stinger", "where were you stung"]
       },
       "excludeKeywords": {
         "zh-CN": ["以前", "之前", "上次", "过敏", "反应", "什么虫", "马蜂"],
-        "en": ["before", "previous", "last time", "allerg", "reaction", "what stung", "wasp", "insect", "when"]
-      }
+        "en": ["before", "previous", "last time", "allerg", "reaction", "what stung", "wasp", "insect", "when", "react", "in the past"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-insect",
@@ -317,13 +367,50 @@
         "en": "A bee… fuzzy, golden-brown… came from the lavender over there…"
       },
       "keywords": {
-        "zh-CN": ["蜜蜂还是马蜂", "黄蜂", "马蜂", "胡蜂", "看清", "昆虫", "哪种虫", "被啥咬", "被什么咬", "啥虫子", "被啥蜇", "什么虫子"],
-        "en": ["what insect", "bee or wasp", "wasp", "hornet", "insect", "what kind of insect", "see the insect", "bit you", "bitten", "what got you", "what was it", "what stung you"]
+        "zh-CN": ["蜜蜂还是马蜂", "黄蜂", "马蜂", "胡蜂", "看清", "昆虫", "哪种虫", "被啥咬", "被什么咬", "啥虫子", "被啥蜇", "什么虫子", "叮你的", "啥玩意", "什么东西叮", "被什么叮", "是蜜蜂", "是不是蜜蜂"],
+        "en": [
+          "what insect",
+          "bee or wasp",
+          "wasp",
+          "hornet",
+          "insect",
+          "what kind of insect",
+          "see the insect",
+          "bit you",
+          "bitten",
+          "what got you",
+          "what was it",
+          "what stung you",
+          "bee",
+          "what it was"
+        ]
       },
       "excludeKeywords": {
-        "zh-CN": ["以前", "之前", "上次", "哪只", "胳膊"],
-        "en": ["a bit", "little bit", "before", "b4", "where", "when", "previous", "last time", "which arm", "your arm"]
-      }
+        "zh-CN": ["以前", "之前", "上次", "哪只", "胳膊", "过敏", "养蜂", "养蜜蜂", "接触", "经常"],
+        "en": [
+          "a bit",
+          "little bit",
+          "before",
+          "b4",
+          "where",
+          "when",
+          "previous",
+          "last time",
+          "which arm",
+          "your arm",
+          "keep bee",
+          "keeps bee",
+          "around bee",
+          "beekeep",
+          "hive",
+          "bees at home",
+          "bee farm",
+          "allerg",
+          "still in",
+          "stinger"
+        ]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "hpi-other-triggers",
@@ -357,7 +444,11 @@
           "nsaid"
         ]
       },
-      "excludeKeywords": { "zh-CN": ["过敏", "平时", "长期", "自己用", "自己吃", "处理"], "en": ["allerg", "regular", "for it", "for this"] }
+      "excludeKeywords": {
+        "zh-CN": ["过敏", "平时", "长期", "自己用", "自己吃", "处理", "手术", "开刀"],
+        "en": ["allerg", "regular", "for it", "for this"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "self-treatment",
@@ -365,12 +456,13 @@
       "question": { "zh-CN": "出事后你自己用过什么药或做过什么处理吗？", "en": "Have you taken or used anything for this since it started?" },
       "answer": { "zh-CN": "没有……什么都没来得及……包里也没有药……", "en": "No… nothing… there wasn't time… I've no medicine in my bag…" },
       "keywords": {
-        "zh-CN": ["自己用过", "自己吃过", "处理过", "用过什么药", "吃过什么药", "已经吃了", "自行用药"],
-        "en": ["anything for it", "anything for this", "since it started"]
+        "zh-CN": ["自己用过", "自己吃过", "处理过", "用过什么药", "吃过什么药", "已经吃了", "自行用药", "抗过敏药", "自己吃了", "吃了抗过敏"],
+        "en": ["anything for it", "anything for this", "since it started", "antihistamine for this", "taken an antihistamine"]
       },
       "excludeKeywords": { "zh-CN": ["平时", "长期", "被蜇前", "蜇之前"], "en": ["regular", "usually", "normally", "before the sting"] },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "prev-reaction",
@@ -381,7 +473,30 @@
         "en": "Last summer… stung on the ankle… not sure if it was a bee or a wasp… my whole lower leg went red and swollen… took days to go down… no breathing trouble, no rash all over that time… the doctor called it a 'large local reaction'… nobody gave me any pen…"
       },
       "keywords": {
-        "zh-CN": ["以前被蜇", "蜇过", "上次", "既往反应", "以前过敏", "类似情况", "发生过", "之前有过", "之前被蜇", "以前有过类似", "以前被蜂蜇", "蜇后有什么反应", "被蜜蜂叮过", "被蜂叮过", "以前叮过"],
+        "zh-CN": [
+          "以前被蜇",
+          "蜇过",
+          "上次",
+          "既往反应",
+          "以前过敏",
+          "类似情况",
+          "发生过",
+          "之前有过",
+          "之前被蜇",
+          "以前有过类似",
+          "以前被蜂蜇",
+          "蜇后有什么反应",
+          "被蜜蜂叮过",
+          "被蜂叮过",
+          "以前叮过",
+          "蛰过",
+          "蜜蜂蜇过",
+          "蜜蜂蛰过",
+          "被蜂蛰过",
+          "去年那次",
+          "去年被蜇",
+          "去年蜇"
+        ],
         "en": [
           "stung before",
           "previous sting",
@@ -395,11 +510,18 @@
           "prev reaction",
           "stung in the past",
           "happened b4",
-          "reaction to a sting"
+          "reaction to a sting",
+          "anaphylaxis",
+          "reaction like this"
         ]
       },
       "disclosure": "specific",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": ["家里人", "家人", "家族", "药物", "食物", "青霉素"],
+        "en": ["family", "relatives", "fhx", "before the sting", "before you were stung", "penicillin", "drug", "medicine", "medication", "food", "antibiotic"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "prior-testing",
@@ -409,7 +531,9 @@
       "keywords": {
         "zh-CN": ["过敏原检测", "过敏测试", "皮试", "查过敏", "IgE", "测过过敏原", "做过过敏", "过敏原"],
         "en": ["allergy test", "allergy testing", "skin prick", "skin test", "ige", "rast", "allergy tested", "allergy tests"]
-      }
+      },
+      "excludeKeywords": { "zh-CN": ["抗过敏", "吃了"], "en": [] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "pmh-asthma",
@@ -420,7 +544,7 @@
         "en": "Mild asthma as a teenager… haven't used an inhaler for years… and hay fever…"
       },
       "keywords": {
-        "zh-CN": ["哮喘", "慢性病", "既往史", "以前得过什么病", "病史", "气管炎", "吸入剂", "身体好吗", "啥病", "基础病", "以前生过病", "生过什么病", "花粉症", "鼻炎", "湿疹"],
+        "zh-CN": ["哮喘", "慢性病", "既往史", "以前得过什么病", "病史", "气管炎", "吸入剂", "身体好吗", "啥病", "基础病", "以前生过病", "生过什么病", "花粉症", "鼻炎", "湿疹", "既往体健"],
         "en": [
           "asthma",
           "medical history",
@@ -436,11 +560,14 @@
           "health issues",
           "hay fever",
           "eczema",
-          "atopy"
+          "atopy",
+          "chronic conditions",
+          "long-term conditions"
         ]
       },
       "excludeKeywords": { "zh-CN": ["家里人", "家人", "家族", "父母", "妈妈"], "en": ["family", "relatives", "parents", "mum", "mother"] },
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "pmh-other",
@@ -448,9 +575,33 @@
       "question": { "zh-CN": "有没有心脏病、高血压、糖尿病之类的问题？", "en": "Any heart disease, high blood pressure or diabetes?" },
       "answer": { "zh-CN": "没有……一直挺健康的……", "en": "No… I've always been healthy…" },
       "keywords": {
-        "zh-CN": ["心脏病", "高血压", "糖尿病", "心脏问题", "血压高", "其他疾病", "心脏不好", "高血糖"],
-        "en": ["heart disease", "high blood pressure", "diabetes", "heart problems", "hypertension", "other illnesses", "heart trouble", "bp problems"]
-      }
+        "zh-CN": ["心脏病", "高血压", "糖尿病", "心脏问题", "血压高", "其他疾病", "心脏不好", "高血糖", "既往史", "以前得过什么病", "病史", "啥病", "基础病", "慢性病", "以前生过病", "生过什么病", "身体好吗", "既往体健"],
+        "en": [
+          "heart disease",
+          "high blood pressure",
+          "diabetes",
+          "heart problems",
+          "hypertension",
+          "other illnesses",
+          "heart trouble",
+          "bp problems",
+          "medical history",
+          "past medical",
+          "pmh",
+          "medical problems",
+          "medical conditions",
+          "any illnesses",
+          "health problems",
+          "health issues",
+          "chronic conditions",
+          "long-term conditions"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": ["降压", "降血压", "血压药", "家里人", "家人", "家族", "父母", "妈妈", "哮喘"],
+        "en": ["asthma", "family", "relatives", "parents", "mum", "mother", "bp tablets", "bp meds", "blood pressure tablets", "blood pressure medication"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "psh",
@@ -461,7 +612,8 @@
         "zh-CN": ["手术", "开刀", "动过刀", "住过院", "做过手术", "开过刀"],
         "en": ["surgery", "operation", "operations", "hospital admission", "surgical", "been in hospital", "stayed in hospital", "hospital stay", "admitted", "ops"]
       },
-      "excludeKeywords": { "zh-CN": ["来医院", "探视"], "en": ["why are you", "at the hospital", "visiting", "today"] }
+      "excludeKeywords": { "zh-CN": ["来医院", "探视"], "en": ["why are you", "at the hospital", "visiting", "today"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "family",
@@ -470,8 +622,10 @@
       "answer": { "zh-CN": "我妈有花粉症……没听说谁有过很严重的过敏……", "en": "Mum has hay fever… nobody with bad reactions that I know of…" },
       "keywords": {
         "zh-CN": ["家族史", "家里人", "父母", "遗传", "家人过敏", "亲属", "家族里", "家族中", "家里人有", "亲戚"],
-        "en": ["family history", "family", "parents", "runs in the family", "relatives", "mother", "father", "run in the family", "family members", "relatives allergic"]
-      }
+        "en": ["family history", "family", "parents", "runs in the family", "relatives", "mother", "father", "run in the family", "family members", "relatives allergic", "fhx"]
+      },
+      "excludeKeywords": { "zh-CN": ["肥大细胞"], "en": ["mast cell", "mastocytosis"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "allergy-drug",
@@ -497,10 +651,11 @@
         ]
       },
       "excludeKeywords": {
-        "zh-CN": ["家里人", "家人", "家族", "亲戚", "父母", "过敏原", "检测"],
-        "en": ["family", "relatives", "parents", "allergy test", "tested", "skin prick"]
+        "zh-CN": ["家里人", "家人", "家族", "亲戚", "父母", "过敏原", "检测", "抗过敏", "自己吃"],
+        "en": ["family", "relatives", "parents", "allergy test", "tested", "skin prick", "fhx"]
       },
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "meds",
@@ -512,10 +667,24 @@
       },
       "keywords": {
         "zh-CN": ["吃什么药", "用药", "药物", "长期用药", "服药", "平时吃药", "处方", "吃药吗", "吃啥药", "吃药", "常吃的药", "在吃药", "啥药"],
-        "en": ["medications", "medicines", "tablets", "regular", "pills", "prescription", "take any", "meds", "on any meds", "taking anything regularly", "the pill"]
+        "en": [
+          "medications",
+          "medicines",
+          "tablets",
+          "regular",
+          "pills",
+          "prescription",
+          "take any",
+          "meds",
+          "on any meds",
+          "taking anything regularly",
+          "the pill",
+          "dhx",
+          "drug history"
+        ]
       },
       "excludeKeywords": {
-        "zh-CN": ["降压", "阻滞剂", "普利", "心脏药", "倍他乐克", "美托洛尔", "比索洛尔", "处理", "自己用", "自己吃", "过敏"],
+        "zh-CN": ["降压", "阻滞剂", "普利", "心脏药", "倍他乐克", "美托洛尔", "比索洛尔", "处理", "自己用", "自己吃", "过敏", "心得安", "普萘洛尔", "降血压"],
         "en": [
           "bp",
           "blood pressure",
@@ -535,7 +704,8 @@
           "allerg"
         ]
       },
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "meds-bb",
@@ -546,7 +716,7 @@
       },
       "answer": { "zh-CN": "没有……从来没吃过降压药或者心脏的药……", "en": "No… never taken any blood pressure or heart tablets…" },
       "keywords": {
-        "zh-CN": ["降压药", "β受体阻滞剂", "倍他乐克", "美托洛尔", "ACEI", "普利", "心脏药", "阻滞剂", "降压药吗", "血压药", "心脏的药"],
+        "zh-CN": ["降压药", "β受体阻滞剂", "倍他乐克", "美托洛尔", "ACEI", "普利", "心脏药", "阻滞剂", "降压药吗", "血压药", "心脏的药", "降血压", "降血压的药", "心得安", "普萘洛尔", "比索洛尔", "阿替洛尔"],
         "en": [
           "beta blocker",
           "beta-blocker",
@@ -567,7 +737,8 @@
         ]
       },
       "disclosure": "specific",
-      "required": true
+      "required": true,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "aai-own",
@@ -576,8 +747,23 @@
       "answer": { "zh-CN": "没有……从来没人说我需要……", "en": "No… nobody ever said I needed one…" },
       "keywords": {
         "zh-CN": ["肾上腺素笔", "自动注射笔", "随身带", "急救笔", "注射笔", "EpiPen", "带笔", "肾上腺素注射笔"],
-        "en": ["epipen", "auto-injector", "autoinjector", "adrenaline pen", "epinephrine pen", "carry a pen", "jext", "epi pen", "epi-pen", "adrenaline auto-injector", "auto injector"]
-      }
+        "en": [
+          "epipen",
+          "auto-injector",
+          "autoinjector",
+          "adrenaline pen",
+          "epinephrine pen",
+          "carry a pen",
+          "jext",
+          "epi pen",
+          "epi-pen",
+          "adrenaline auto-injector",
+          "auto injector",
+          "carry adrenaline",
+          "carry epinephrine"
+        ]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "obstetric-lmp",
@@ -587,7 +773,8 @@
       "keywords": {
         "zh-CN": ["怀孕", "月经", "末次月经", "例假", "妊娠", "怀孕可能", "大姨妈", "有没有怀孕", "怀没怀孕"],
         "en": ["pregnant", "pregnancy", "period", "lmp", "last menstrual", "could you be pregnant", "preg"]
-      }
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "weight",
@@ -596,7 +783,8 @@
       "answer": { "zh-CN": "大概……62公斤……", "en": "About… 62 kilos…" },
       "keywords": { "zh-CN": ["体重", "多重", "几公斤", "多少斤", "多少公斤"], "en": ["weigh", "weight", "how heavy", "kilos", "kg"] },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "social-occupation",
@@ -611,9 +799,10 @@
         "en": ["work", "job", "occupation", "what do you do", "why are you here", "visiting", "visit", "your job", "for a living", "at the hospital", "what brings you to the hospital"]
       },
       "excludeKeywords": {
-        "zh-CN": ["住过院", "住院", "手术"],
-        "en": ["admitted", "admission", "been in hospital", "stayed in hospital", "hospital stay", "surgery", "operation", "live with", "who do you live"]
-      }
+        "zh-CN": ["住过院", "住院", "手术", "老公", "爱人", "丈夫"],
+        "en": ["admitted", "admission", "been in hospital", "stayed in hospital", "hospital stay", "surgery", "operation", "live with", "who do you live", "husband", "partner"]
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "social-habits",
@@ -624,7 +813,8 @@
         "zh-CN": ["抽烟", "吸烟", "喝酒", "饮酒", "烟酒", "毒品", "抽不抽烟", "喝不喝酒"],
         "en": ["smoke", "smoking", "alcohol", "drink", "drinking", "drugs", "cigarettes", "drink alcohol", "booze", "etoh"]
       },
-      "excludeKeywords": { "zh-CN": ["过敏"], "en": ["allerg"] }
+      "excludeKeywords": { "zh-CN": ["过敏"], "en": ["allerg", "before the sting", "eat or drink", "eaten or drunk"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "social-home",
@@ -638,7 +828,8 @@
         "zh-CN": ["和谁住", "家里有谁", "一个人住", "陪你", "家属", "爱人", "丈夫", "联系人", "谁陪你", "家里谁", "老公"],
         "en": ["live with", "who's at home", "alone", "husband", "partner", "someone with you", "next of kin", "stay with you", "anyone at home", "call someone"]
       },
-      "excludeKeywords": { "zh-CN": ["养蜂", "蜜蜂", "蜂箱"], "en": ["for a living", "bees"] }
+      "excludeKeywords": { "zh-CN": ["养蜂", "蜜蜂", "蜂箱"], "en": ["for a living", "bees"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "social-bees",
@@ -652,7 +843,8 @@
         "zh-CN": ["养蜂", "蜂箱", "接触蜜蜂", "园艺", "户外", "经常被蜇", "蜂场", "经常接触蜜蜂", "接触蜂", "家里有人养蜂", "养蜜蜂"],
         "en": ["beekeeping", "beehive", "keep bees", "around bees", "gardening", "outdoors", "exposure", "bee farm", "bees at home", "beekeeper"]
       },
-      "disclosure": "specific"
+      "disclosure": "specific",
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "ice-concern",
@@ -662,7 +854,8 @@
       "keywords": {
         "zh-CN": ["担心", "害怕", "顾虑", "最怕", "忧虑", "担心什么"],
         "en": ["worried", "worry", "concern", "scared", "afraid", "frightened", "worries you", "what worries"]
-      }
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "ice-expectation",
@@ -676,7 +869,8 @@
         "zh-CN": ["希望", "期望", "想要", "打算", "回家", "想让我们", "希望我们"],
         "en": ["expect", "expectation", "hoping", "want us to", "hope", "want us to do", "what would you like", "home today"]
       },
-      "excludeKeywords": { "zh-CN": ["感觉", "好点"], "en": ["feeling", "feel better", "with you", "live with", "at home with"] }
+      "excludeKeywords": { "zh-CN": ["感觉", "好点"], "en": ["feeling", "feel better", "with you", "live with", "at home with"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "status-scene",
@@ -684,7 +878,7 @@
       "question": { "zh-CN": "你现在感觉怎么样？", "en": "How are you feeling now?" },
       "answer": { "zh-CN": "越来越……难受……喘不上气……头好晕……", "en": "Worse… and worse… can't breathe… so dizzy…" },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉"],
         "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
@@ -701,7 +895,7 @@
         "en": "A little… better… breathing's… a bit easier… still dizzy… heart's pounding… my hands are shaking…"
       },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉"],
         "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
@@ -718,13 +912,42 @@
         "en": "So much better… I can breathe now… just a bit shaky… still a little itchy…"
       },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉"],
         "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
       "disclosure": "on-ask",
       "required": false,
       "phases": ["ed"]
+    },
+    {
+      "id": "status-collapsed",
+      "topic": "hpi",
+      "question": { "zh-CN": "你现在感觉怎么样？能听见我说话吗？", "en": "How are you feeling — can you hear me?" },
+      "answer": { "zh-CN": "……嗯……（只能含糊地呻吟，眼睛半闭，答不上话）", "en": "…mm… (only a groan — eyes half-closed; she cannot answer)" },
+      "keywords": {
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉", "能听见吗", "听得见吗", "听见我说话", "睁开眼", "睁眼", "醒醒", "叫什么名字", "你还好吗", "怎么样了"],
+        "en": [
+          "feeling now",
+          "feel now",
+          "any better",
+          "feeling better",
+          "feel better",
+          "improving",
+          "how are you doing",
+          "how are things",
+          "can you hear me",
+          "hear me",
+          "open your eyes",
+          "wake up",
+          "what's your name",
+          "are you ok",
+          "are you alright",
+          "stay with me"
+        ]
+      },
+      "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
+      "phases": ["collapsed"]
     },
     {
       "id": "unknown-tetanus",
@@ -735,7 +958,8 @@
         "zh-CN": ["破伤风", "疫苗", "预防针", "免疫接种", "破伤风针"],
         "en": ["tetanus", "vaccine", "jab", "immunisation", "booster", "tetanus shot", "td"]
       },
-      "disclosure": "unknown"
+      "disclosure": "unknown",
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "unknown-mastocytosis",
@@ -749,7 +973,8 @@
         "zh-CN": ["肥大细胞", "肥大细胞增多症", "色素性荨麻疹", "血液病"],
         "en": ["mastocytosis", "mast cell", "urticaria pigmentosa", "mast cell disorder"]
       },
-      "disclosure": "unknown"
+      "disclosure": "unknown",
+      "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
       "id": "unknown-usual-bp",
@@ -760,7 +985,119 @@
         "zh-CN": ["平时血压", "血压多少", "基础血压", "以前血压", "量过血压", "血压平时"],
         "en": ["usual blood pressure", "normal bp", "blood pressure usually", "baseline bp", "bp normally", "usual bp", "normal blood pressure"]
       },
-      "disclosure": "unknown"
+      "disclosure": "unknown",
+      "phases": ["scene", "treated", "ed-resus", "ed"]
+    },
+    {
+      "id": "now-breathing-ed",
+      "topic": "hpi",
+      "question": { "zh-CN": "现在呼吸怎么样？还气短、胸闷吗？", "en": "How is your breathing now — still short of breath or tight?" },
+      "answer": {
+        "zh-CN": "现在……好多了……能喘上气了……就是深吸气的时候……胸口还有一点点紧……",
+        "en": "Now? Much easier… I can get a breath in… just a little tight… when I breathe in deep…"
+      },
+      "keywords": {
+        "zh-CN": ["呼吸", "气短", "喘不喘", "胸闷", "憋气", "喘不上气", "气喘", "呼吸困难", "气不够", "气够不够", "上不来气", "透不过气", "呼吸困难吗", "还喘吗", "喘气费劲", "呼吸费劲", "胸口发紧", "胸口紧", "喘得", "喘不", "喘气"],
+        "en": ["breath", "breathing", "short of breath", "wheeze", "wheezing", "chest tight", "breathless", "sob", "breathe", "breathing ok", "struggling to breathe", "wheezy"]
+      },
+      "excludeKeywords": { "zh-CN": ["哮喘"], "en": [] },
+      "phases": ["ed"]
+    },
+    {
+      "id": "now-airway-ed",
+      "topic": "hpi",
+      "question": { "zh-CN": "现在喉咙、嘴唇和舌头怎么样？吞咽和声音呢？", "en": "How are your throat, lips and tongue now — swallowing and voice?" },
+      "answer": {
+        "zh-CN": "现在喉咙不紧了……咽口水没问题……声音也快恢复了……舌头不胀了，嘴唇还有一点点肿……",
+        "en": "Now my throat's not tight… I can swallow fine… my voice is nearly back… tongue feels normal, lips still a bit puffy…"
+      },
+      "keywords": {
+        "zh-CN": ["喉咙", "嗓子", "发紧", "吞咽", "咽东西", "声音", "嘶哑", "哑", "憋", "咽口水", "吞口水", "咽唾沫", "嗓子眼", "说话声音", "嘴唇", "舌头", "肿", "脸肿", "嘴肿", "胀", "眼皮", "面部", "嘴巴肿", "舌头肿"],
+        "en": [
+          "throat",
+          "tight",
+          "swallow",
+          "voice",
+          "hoarse",
+          "croaky",
+          "choking",
+          "closing",
+          "swallowing",
+          "voice changed",
+          "throat closing",
+          "lips",
+          "tongue",
+          "swelling",
+          "swollen",
+          "face",
+          "puffy",
+          "mouth",
+          "face swelling",
+          "lip swelling",
+          "tongue swelling"
+        ]
+      },
+      "excludeKeywords": { "zh-CN": ["胸口", "胸闷"], "en": ["chest tight"] },
+      "phases": ["ed"]
+    },
+    {
+      "id": "now-dizzy-ed",
+      "topic": "hpi",
+      "question": { "zh-CN": "现在还头晕、心慌吗？", "en": "Any dizziness or palpitations now?" },
+      "answer": {
+        "zh-CN": "现在躺着就不晕了……心跳还有点快……手还在抖……胸口不痛……",
+        "en": "Not dizzy now, lying here… heart's still a bit quick… hands still shaky… no chest pain…"
+      },
+      "keywords": {
+        "zh-CN": ["头晕", "眼前发黑", "要晕倒", "站不稳", "发飘", "晕厥", "头昏", "晕乎乎", "摔倒", "跌倒", "站不住", "天旋地转", "眩晕", "发黑", "胸痛", "心慌", "心悸", "心跳", "胸口痛", "心跳快", "跳得快", "心慌不慌"],
+        "en": [
+          "dizzy",
+          "faint",
+          "lightheaded",
+          "light-headed",
+          "grey",
+          "going to faint",
+          "woozy",
+          "collapse",
+          "did you fall",
+          "fell over",
+          "fainting",
+          "chest pain",
+          "palpitations",
+          "heart racing",
+          "heart pounding",
+          "pounding",
+          "heart beating fast",
+          "palps"
+        ]
+      },
+      "phases": ["ed"]
+    },
+    {
+      "id": "now-skin-ed",
+      "topic": "hpi",
+      "question": { "zh-CN": "现在皮肤还痒吗？疹子怎么样了？", "en": "Is your skin still itchy — how's the rash now?" },
+      "answer": {
+        "zh-CN": "现在没那么痒了……那些包基本都消了……就肚子上还有点痒……",
+        "en": "Much less itchy now… the lumps have mostly gone… just a bit itchy on my tummy…"
+      },
+      "keywords": {
+        "zh-CN": ["痒", "疹子", "风团", "皮疹", "起包", "发红", "荨麻疹", "皮肤", "身上起", "疙瘩", "痒不痒"],
+        "en": ["itch", "itchy", "rash", "hives", "lumps", "welts", "skin rash", "red patches", "hive", "itching", "rash anywhere"]
+      },
+      "excludeKeywords": { "zh-CN": ["眼睛痒", "鼻"], "en": ["itchy eyes", "eyes itch", "runny nose", "blocked nose"] },
+      "phases": ["ed"]
+    },
+    {
+      "id": "now-gi-ed",
+      "topic": "associated-symptoms",
+      "question": { "zh-CN": "现在还恶心、肚子痛吗？", "en": "Any nausea or tummy pain now?" },
+      "answer": { "zh-CN": "现在不恶心了……肚子也不绞着疼了……", "en": "Not sick now… the cramps have stopped…" },
+      "keywords": {
+        "zh-CN": ["恶心", "呕吐", "吐", "肚子痛", "腹痛", "想吐", "拉肚子", "腹泻", "反胃", "肚子疼", "拉稀", "稀便"],
+        "en": ["nausea", "sick", "vomit", "vomiting", "stomach", "tummy", "abdominal pain", "cramps", "diarrhoea", "tummy ache", "stomach ache", "throw up", "n/v"]
+      },
+      "phases": ["ed"]
     }
   ],
   "exam": [
@@ -780,6 +1117,21 @@
       "phases": ["scene"]
     },
     {
+      "id": "ex-general-collapsed",
+      "system": "general",
+      "maneuver": { "zh-CN": "一般情况（远观）", "en": "General appearance (end-of-bench look)" },
+      "keywords": {
+        "zh-CN": ["一般情况", "整体情况", "外观", "面色", "远观"],
+        "en": ["general appearance", "overall appearance", "end of the bed", "general inspection", "first impression"]
+      },
+      "finding": {
+        "zh-CN": "面色灰白、大汗，眼睛半闭，歪倒着；只能含糊呻吟，已不能回答问题；呼吸急促费力，口唇发暗。",
+        "en": "Grey and sweaty, eyes half-closed, slumped over; only mumbles or groans and can no longer answer questions; breathing fast and laboured, lips dusky."
+      },
+      "abnormal": true,
+      "phases": ["collapsed"]
+    },
+    {
       "id": "ex-airway-scene",
       "system": "heent",
       "maneuver": { "zh-CN": "检查气道（口唇、舌、口咽，听声音）", "en": "Assess the airway (lips, tongue, oropharynx, voice)" },
@@ -792,8 +1144,7 @@
         "en": "Marked swelling of both lips (upper > lower); tongue swollen but can protrude; uvula oedematous; no drooling; hoarse voice. No inspiratory stridor at rest."
       },
       "abnormal": true,
-      "required": true,
-      "phases": ["scene"]
+      "phases": ["scene", "collapsed"]
     },
     {
       "id": "ex-chest-scene",
@@ -809,8 +1160,7 @@
       },
       "abnormal": true,
       "requires": ["stethoscope"],
-      "required": true,
-      "phases": ["scene"]
+      "phases": ["scene", "collapsed"]
     },
     {
       "id": "ex-wob-scene",
@@ -843,8 +1193,25 @@
         "en": "Radial pulse rapid and thready; central capillary refill about 4 s; trunk flushed and warm but hands cool and clammy."
       },
       "abnormal": true,
-      "required": true,
       "phases": ["scene"]
+    },
+    {
+      "id": "ex-circ-collapsed",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查循环（桡动脉搏动、毛细血管再充盈、皮温）",
+        "en": "Assess circulation (radial pulse, capillary refill, peripheries)"
+      },
+      "keywords": {
+        "zh-CN": ["循环", "脉搏", "桡动脉", "毛细血管再充盈", "CRT", "皮温", "摸脉"],
+        "en": ["circulation", "pulse", "radial", "capillary refill", "crt", "peripheries", "feel pulse"]
+      },
+      "finding": {
+        "zh-CN": "桡动脉几乎摸不到；颈动脉搏动快而弱；毛细血管再充盈时间>5秒；双手冰冷、皮肤花斑。",
+        "en": "Radial pulse barely palpable; carotid pulse rapid and weak; capillary refill > 5 s; hands cold and mottled."
+      },
+      "abnormal": true,
+      "phases": ["collapsed"]
     },
     {
       "id": "ex-skin",
@@ -860,7 +1227,7 @@
       },
       "abnormal": true,
       "required": true,
-      "phases": ["scene", "treated", "ed-resus"]
+      "phases": ["scene", "collapsed", "treated", "ed-resus"]
     },
     {
       "id": "ex-sting-site",
@@ -875,7 +1242,7 @@
         "en": "Volar right forearm: a honeybee stinger with its venom sac embedded (unless already scraped out), surrounded by a 3 cm red wheal; no bleeding."
       },
       "abnormal": true,
-      "phases": ["scene", "treated", "ed-resus"]
+      "phases": ["scene", "collapsed", "treated", "ed-resus"]
     },
     {
       "id": "ex-eyes",
@@ -887,7 +1254,7 @@
         "en": "Bilateral conjunctival injection with tearing and mild eyelid swelling; pupils equal and reactive."
       },
       "abnormal": true,
-      "phases": ["scene", "treated", "ed-resus"]
+      "phases": ["scene", "collapsed", "treated", "ed-resus"]
     },
     {
       "id": "ex-neck",
@@ -898,7 +1265,7 @@
         "zh-CN": "颈部外观无肿胀，气管居中，未见颈静脉充盈。",
         "en": "No external neck swelling; trachea central; jugular venous pressure not visible."
       },
-      "phases": ["scene", "treated", "ed-resus"]
+      "phases": ["scene", "collapsed", "treated", "ed-resus"]
     },
     {
       "id": "ex-heart",
@@ -913,7 +1280,7 @@
         "en": "Regular tachycardia; heart sounds normal; no murmurs or rub."
       },
       "requires": ["stethoscope"],
-      "phases": ["scene", "treated", "ed-resus"]
+      "phases": ["scene", "collapsed", "treated", "ed-resus"]
     },
     {
       "id": "ex-abdomen",
@@ -927,7 +1294,7 @@
         "zh-CN": "腹软，无膨隆，轻度弥漫性压痛，无反跳痛及肌紧张；肠鸣音活跃。",
         "en": "Soft, not distended; mild diffuse tenderness without guarding or rebound; bowel sounds active."
       },
-      "phases": ["scene", "treated", "ed-resus"]
+      "phases": ["scene", "collapsed", "treated", "ed-resus"]
     },
     {
       "id": "ex-neuro",
@@ -938,9 +1305,25 @@
         "en": ["conscious", "consciousness", "gcs", "avpu", "neuro", "orientation"]
       },
       "finding": {
-        "zh-CN": "首次评估：神志清楚，焦虑，定向力完整（AVPU：A；GCS 15）；四肢活动自如；言语清晰但嘶哑。",
-        "en": "At first check: alert and anxious, fully oriented (AVPU: A; GCS 15); moves all limbs; speech coherent though hoarse."
-      }
+        "zh-CN": "神志清楚，焦虑，定向力完整（AVPU：A）；四肢活动自如；言语有条理。",
+        "en": "Alert and anxious, oriented (AVPU: A); moves all limbs; speech coherent."
+      },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
+    },
+    {
+      "id": "ex-neuro-collapsed",
+      "system": "neurological",
+      "maneuver": { "zh-CN": "神经系统 / 意识评估", "en": "Neurological check / conscious level" },
+      "keywords": {
+        "zh-CN": ["神志", "意识", "GCS", "AVPU", "神经系统", "定向力"],
+        "en": ["conscious", "consciousness", "gcs", "avpu", "neuro", "orientation"]
+      },
+      "finding": {
+        "zh-CN": "意识水平下降：大声呼唤或疼痛刺激才睁眼，只能含糊发声、不能回答问题，疼痛刺激能定位（GCS见监护）；双侧瞳孔等大、对光反射存在。",
+        "en": "Reduced conscious level: opens her eyes only to a loud voice or pain, mumbles but cannot answer questions, localises to pain (GCS on the monitor); pupils equal and reactive."
+      },
+      "abnormal": true,
+      "phases": ["collapsed"]
     },
     {
       "id": "ex-belongings",
@@ -1124,6 +1507,22 @@
             }
           ]
         },
+        "collapsed": {
+          "text": {
+            "zh-CN": "指尖血糖 6.4 mmol/L（急救包血糖仪，肾上腺素前）。",
+            "en": "Capillary glucose 6.4 mmol/L (kit glucometer, before adrenaline)."
+          },
+          "values": [
+            {
+              "analyte": { "zh-CN": "毛细血管血糖", "en": "Capillary glucose" },
+              "value": 6.4,
+              "unit": "mmol/L",
+              "refLow": 3.9,
+              "refHigh": 7.8,
+              "flag": "N"
+            }
+          ]
+        },
         "treated": {
           "text": {
             "zh-CN": "指尖血糖 7.3 mmol/L（急救包血糖仪，肾上腺素后）。",
@@ -1201,10 +1600,30 @@
             "en": "Sampling must never delay adrenaline. This sample was too early — a normal value does not exclude the diagnosis."
           }
         },
+        "collapsed": {
+          "text": {
+            "zh-CN": "初始样本（仍未用肾上腺素、病情恶化时采集，约症状出现后20分钟）：类胰蛋白酶 14.9 µg/L，升高。",
+            "en": "Initial sample (drawn during the collapse, still before any adrenaline, ~20 min after onset): tryptase 14.9 µg/L, raised."
+          },
+          "values": [
+            {
+              "analyte": { "zh-CN": "肥大细胞类胰蛋白酶", "en": "Mast cell tryptase" },
+              "value": 14.9,
+              "unit": "µg/L",
+              "refHigh": 11.4,
+              "refText": "<11.4",
+              "flag": "H"
+            }
+          ],
+          "note": {
+            "zh-CN": "采血绝不能延误肾上腺素——她此刻需要的是肌注肾上腺素。类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰。",
+            "en": "Sampling must never delay adrenaline — what she needs right now is IM adrenaline. Tryptase starts to rise ~15–30 min after onset and peaks at 1–2 h."
+          }
+        },
         "treated": {
           "text": {
-            "zh-CN": "初始样本（复苏开始后经留置针采集，约症状出现后20分钟）：类胰蛋白酶 13.8 µg/L，升高。",
-            "en": "Initial sample (taken from the cannula once resuscitation was under way, ~20 min after onset): tryptase 13.8 µg/L, raised."
+            "zh-CN": "初始样本（复苏开始后采集，约症状出现后20分钟）：类胰蛋白酶 13.8 µg/L，升高。",
+            "en": "Initial sample (taken once resuscitation was under way, ~20 min after onset): tryptase 13.8 µg/L, raised."
           },
           "values": [
             {
@@ -1243,8 +1662,8 @@
         },
         "ed": {
           "text": {
-            "zh-CN": "初始样本（到急诊后采集，约症状出现后40分钟）：类胰蛋白酶 21.6 µg/L，升高。",
-            "en": "Initial sample (taken on arrival in the ED, ~40 min after onset): tryptase 21.6 µg/L, raised."
+            "zh-CN": "初始样本（到急诊后采集，约症状出现后30–40分钟）：类胰蛋白酶 21.6 µg/L，升高。",
+            "en": "Initial sample (taken on arrival in the ED, roughly 30–40 min after onset): tryptase 21.6 µg/L, raised."
           },
           "values": [
             {
@@ -1659,6 +2078,91 @@
             }
           ]
         },
+        "collapsed": {
+          "text": { "zh-CN": "血常规基本正常，白细胞轻度升高（应激）。", "en": "Essentially normal; mild stress leucocytosis." },
+          "values": [
+            {
+              "analyte": { "zh-CN": "血红蛋白", "en": "Haemoglobin" },
+              "value": 141,
+              "unit": "g/L",
+              "refLow": 115,
+              "refHigh": 150,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "红细胞压积", "en": "Haematocrit" },
+              "value": 0.42,
+              "unit": "L/L",
+              "refLow": 0.36,
+              "refHigh": 0.46,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "平均红细胞体积", "en": "MCV" },
+              "value": 88,
+              "unit": "fL",
+              "refLow": 80,
+              "refHigh": 100,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "白细胞", "en": "White cells" },
+              "value": 11.9,
+              "unit": "×10⁹/L",
+              "refLow": 4,
+              "refHigh": 11,
+              "flag": "H"
+            },
+            {
+              "analyte": { "zh-CN": "中性粒细胞", "en": "Neutrophils" },
+              "value": 8.6,
+              "unit": "×10⁹/L",
+              "refLow": 2,
+              "refHigh": 7.5,
+              "flag": "H"
+            },
+            {
+              "analyte": { "zh-CN": "淋巴细胞", "en": "Lymphocytes" },
+              "value": 2.4,
+              "unit": "×10⁹/L",
+              "refLow": 1,
+              "refHigh": 4,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "单核细胞", "en": "Monocytes" },
+              "value": 0.6,
+              "unit": "×10⁹/L",
+              "refLow": 0.2,
+              "refHigh": 1,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "嗜酸性粒细胞", "en": "Eosinophils" },
+              "value": 0.2,
+              "unit": "×10⁹/L",
+              "refLow": 0,
+              "refHigh": 0.5,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "嗜碱性粒细胞", "en": "Basophils" },
+              "value": 0.1,
+              "unit": "×10⁹/L",
+              "refLow": 0,
+              "refHigh": 0.1,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "血小板", "en": "Platelets" },
+              "value": 262,
+              "unit": "×10⁹/L",
+              "refLow": 150,
+              "refHigh": 400,
+              "flag": "N"
+            }
+          ]
+        },
         "treated": {
           "text": { "zh-CN": "血常规基本正常，白细胞轻度升高（应激）。", "en": "Essentially normal; mild stress leucocytosis." },
           "values": [
@@ -1936,6 +2440,50 @@
       "value": "neutral",
       "results": {
         "scene": {
+          "text": { "zh-CN": "肾功能电解质正常。", "en": "Normal renal function and electrolytes." },
+          "values": [
+            {
+              "analyte": { "zh-CN": "钠", "en": "Sodium" },
+              "value": 139,
+              "unit": "mmol/L",
+              "refLow": 135,
+              "refHigh": 145,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "钾", "en": "Potassium" },
+              "value": 3.8,
+              "unit": "mmol/L",
+              "refLow": 3.5,
+              "refHigh": 5.3,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "尿素", "en": "Urea" },
+              "value": 4.6,
+              "unit": "mmol/L",
+              "refLow": 2.5,
+              "refHigh": 7.8,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "肌酐", "en": "Creatinine" },
+              "value": 68,
+              "unit": "µmol/L",
+              "refLow": 45,
+              "refHigh": 90,
+              "flag": "N"
+            },
+            {
+              "analyte": { "zh-CN": "eGFR", "en": "eGFR" },
+              "value": ">90",
+              "unit": "mL/min/1.73m²",
+              "refText": ">90",
+              "flag": "N"
+            }
+          ]
+        },
+        "collapsed": {
           "text": { "zh-CN": "肾功能电解质正常。", "en": "Normal renal function and electrolytes." },
           "values": [
             {
@@ -2480,7 +3028,7 @@
         "remove": ["poc-glucose"]
       }
     ],
-    "exact": { "ct": ["ctpa"], "bloods": ["fbc", "ue", "tryptase-1"] },
+    "exact": { "ct": ["ctpa"], "bloods": ["fbc", "ue"] },
     "warnings": []
   },
   "interventions": [
@@ -2506,7 +3054,7 @@
       "name": { "zh-CN": "肾上腺素肌内注射", "en": "Intramuscular adrenaline" },
       "kind": "medication",
       "aliases": {
-        "zh-CN": ["肌注肾上腺素", "肾上腺素肌注", "大腿肌注", "肌内注射肾上腺素", "肾上腺素im", "肌注", "肌内注射", "大腿外侧", "再打一针", "再来一针", "第二针", "重复肌注"],
+        "zh-CN": ["肌注肾上腺素", "肾上腺素肌注", "大腿肌注", "肌内注射肾上腺素", "肾上腺素im", "肌注", "肌内注射", "大腿外侧", "再打一针", "再来一针", "第二针", "重复肌注", "再给一针", "再给一剂", "追加一剂", "重复给药", "再给肾上腺素"],
         "en": [
           "im adrenaline",
           "adrenaline im",
@@ -2519,7 +3067,10 @@
           "im epi",
           "repeat adrenaline",
           "second dose",
-          "another dose of adrenaline"
+          "another dose of adrenaline",
+          "repeat epi",
+          "give adrenaline again",
+          "another adrenaline"
         ]
       },
       "excludeKeywords": {
@@ -2674,8 +3225,7 @@
       "effects": [
         { "vital": "sbp", "delta": -14, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 },
         { "vital": "dbp", "delta": -6, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 },
-        { "vital": "hr", "delta": 8, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 },
-        { "vital": "gcs", "delta": -3, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 }
+        { "vital": "hr", "delta": 8, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 5 }
       ],
       "maxDoses": 2,
       "contraindicatedWhen": { "vital": "sbp", "op": "lt", "value": 90 },
@@ -2752,14 +3302,15 @@
       "response": {
         "zh-CN": "便携脉氧夹上手指，自动血压计设为每3分钟测一次；急救小组到达后接上带除颤功能的监护仪（三导联心电）。",
         "en": "Portable pulse oximeter on, automated cuff cycling every 3 minutes; when the team arrives the monitor-defibrillator (3-lead ECG) is attached."
-      }
+      },
+      "excludeKeywords": { "zh-CN": ["留观", "过夜", "住院"], "en": ["admit", "overnight", "12h", "12 hour", "hours"] }
     },
     {
       "id": "remove-sting",
       "name": { "zh-CN": "去除螫针", "en": "Remove the sting" },
       "kind": "procedure",
       "aliases": {
-        "zh-CN": ["拔刺", "去除螫刺", "刮掉毒刺", "取出蜂刺", "除刺", "去除螫针", "拔螫针"],
+        "zh-CN": ["拔刺", "去除螫刺", "刮掉毒刺", "取出蜂刺", "除刺", "去除螫针", "拔螫针", "刮掉", "刮刺", "把刺弄出来", "拔掉刺"],
         "en": ["remove sting", "remove stinger", "scrape sting", "flick out", "take out the sting"]
       },
       "requires": [],
@@ -2937,8 +3488,8 @@
         "en": "Moving an unstable patient before IM adrenaline delays life-saving treatment — the nurse insists on giving it here first; transfer is deferred until after the injection."
       },
       "response": {
-        "zh-CN": "急救小组带推床赶到。她保持平卧、吸氧、持续监护，由你和护士护送约150米进入急诊抢救室。",
-        "en": "The team arrives with the trolley. Lying flat, on oxygen and monitored, she is escorted about 150 m into the ED resus bay."
+        "zh-CN": "急救小组带推床赶到。她在肌注肾上腺素之后，保持平卧、吸氧、持续监护，由你和护士护送约150米进入急诊抢救室。",
+        "en": "The team arrives with the trolley. Once she has had IM adrenaline she is moved — lying flat, on oxygen and monitored — and escorted about 150 m into the ED resus bay."
       }
     },
     {
@@ -2960,7 +3511,11 @@
           "overnight observation",
           "admit overnight",
           "obs overnight",
-          "keep overnight"
+          "keep overnight",
+          "admit for obs",
+          "12h obs",
+          "12 hour obs",
+          "obs for 12 hours"
         ]
       },
       "requires": [],
@@ -2968,8 +3523,8 @@
       "maxDoses": 1,
       "indicatedWhen": { "intervened": "transfer-ed" },
       "response": {
-        "zh-CN": "收入急诊观察病房过夜：持续心电、血压、脉氧监护，定时评估A-B-C及皮肤，床旁备好肾上腺素。她需要两剂肾上腺素（≥6小时），且此次反应有严重呼吸受累（声音嘶哑伴悬雍垂水肿、低氧、只能说短语），因此症状完全缓解后至少观察12小时（RCUK 2021）；任何复发立即再次肌注肾上腺素。",
-        "en": "Admitted overnight to the ED observation unit: continuous ECG, BP and SpO₂ monitoring, regular A–B–C and skin checks, adrenaline at the bedside. She needed two doses of adrenaline (≥ 6 h on its own), and this reaction involved severe respiratory compromise (hoarse voice with uvular oedema, hypoxaemia, speaking only in phrases), so she stays at least 12 h after full resolution (RCUK 2021); any recurrence gets IM adrenaline at once."
+        "zh-CN": "收入急诊观察病房过夜：持续心电、血压、脉氧监护，定时评估A-B-C及皮肤，床旁备好肾上腺素。需要两剂肾上腺素者症状缓解后至少观察6小时；此次反应还有严重呼吸受累（声音嘶哑伴悬雍垂水肿、低氧、只能说短语），因此症状完全缓解后至少观察12小时（RCUK 2021）；任何复发立即再次肌注肾上腺素。",
+        "en": "Admitted overnight to the ED observation unit: continuous ECG, BP and SpO₂ monitoring, regular A–B–C and skin checks, adrenaline at the bedside. Two doses of adrenaline alone would mean ≥ 6 h; this reaction also involved severe respiratory compromise (hoarse voice with uvular oedema, hypoxaemia, speaking only in phrases), so she stays at least 12 h after full resolution (RCUK 2021); any recurrence gets IM adrenaline at once."
       }
     },
     {
@@ -3006,8 +3561,8 @@
       "maxDoses": 1,
       "indicatedWhen": { "always": true },
       "response": {
-        "zh-CN": "转诊变态反应专科：基础类胰蛋白酶（≥24小时后），约4–6周后行蜂毒特异性IgE/皮肤试验（必要时组分检测），评估蜂毒免疫治疗（公婆养蜂，暴露风险高）。",
-        "en": "Referred to allergy: baseline tryptase (≥24 h after recovery), venom-specific IgE/skin tests at about 4–6 weeks (component testing if needed) and assessment for venom immunotherapy (in-laws keep bees — high exposure)."
+        "zh-CN": "转诊变态反应专科：基础类胰蛋白酶（≥24小时后），约4–6周后行蜂毒特异性IgE/皮肤试验（必要时组分检测），并评估蜂毒免疫治疗（蜂蜇后出现超出皮肤的全身反应即是指征；今后接触蜜蜂的机会也会影响决策）。",
+        "en": "Referred to allergy: baseline tryptase (≥24 h after recovery), venom-specific IgE/skin tests at about 4–6 weeks (component testing if needed) and assessment for venom immunotherapy (a systemic sting reaction beyond the skin is an indication; her future exposure to bees also informs the decision)."
       }
     },
     {
@@ -3023,12 +3578,12 @@
       "maxDoses": 1,
       "contraindicatedWhen": { "always": true },
       "harm": {
-        "zh-CN": "现在出院不安全：她需要两剂肾上腺素，且反应有严重呼吸受累，应在症状完全缓解后至少观察12小时；她没有肾上腺素笔、也未受培训；双相反应可在数小时后（偶尔长达72小时）出现。",
-        "en": "Discharge now is unsafe: she needed two doses of adrenaline and the reaction involved severe respiratory compromise, so she should be observed for at least 12 h after full resolution; she has no auto-injector and no training; a biphasic reaction can occur hours later (occasionally up to 72 h)."
+        "zh-CN": "现在出院不安全：此次反应有休克和严重呼吸受累，应在症状完全缓解后至少观察12小时；离院前还必须带上2支肾上腺素自动注射笔、完成培训并拿到书面应急计划；双相反应可在数小时后（偶尔长达72小时）出现。",
+        "en": "Discharge now is unsafe: this reaction involved shock and severe respiratory compromise, so she should be observed for at least 12 h after full resolution; before leaving she needs two adrenaline auto-injectors with training and a written action plan; a biphasic reaction can occur hours later (occasionally up to 72 h)."
       },
       "response": {
-        "zh-CN": "护士拦住了你：‘她还在观察期，而且身上没有肾上腺素笔。’",
-        "en": "The nurse stops you: 'She's still in her observation window — and she has no auto-injector.'"
+        "zh-CN": "护士拦住了你：‘现在还不能让她走——这么重的反应，必须先留观。’",
+        "en": "The nurse stops you: 'She can't go yet — not after a reaction like this. She has to be observed first.'"
       }
     }
   ],
@@ -3170,6 +3725,18 @@
         "severity": "critical"
       },
       {
+        "id": "peri-arrest-partial",
+        "when": {
+          "all": [{ "flag": "peri-arrest" }, { "intervened": "adrenaline-im" }, { "vital": "sbp", "op": "gte", "value": 65 }]
+        },
+        "setVitals": { "gcs": 14 },
+        "message": {
+          "zh-CN": "她睁开眼睛，能断断续续说几个词了，但反应仍有些迟钝。",
+          "en": "She opens her eyes and manages a few broken words — still slow to respond."
+        },
+        "severity": "info"
+      },
+      {
         "id": "peri-arrest-recovered",
         "when": {
           "all": [{ "flag": "peri-arrest" }, { "intervened": "adrenaline-im" }, { "vital": "sbp", "op": "gte", "value": 90 }]
@@ -3306,7 +3873,14 @@
           {
             "any": [{ "examined": "ex-chest-scene" }, { "examined": "ex-chest-treated" }, { "examined": "ex-chest-ed" }]
           },
-          { "any": [{ "examined": "ex-circ-scene" }, { "examined": "ex-circ-treated" }, { "examined": "ex-circ-ed" }] },
+          {
+            "any": [
+              { "examined": "ex-circ-scene" },
+              { "examined": "ex-circ-collapsed" },
+              { "examined": "ex-circ-treated" },
+              { "examined": "ex-circ-ed" }
+            ]
+          },
           { "any": [{ "examined": "ex-skin" }, { "examined": "ex-skin-ed" }] },
           { "decided": "dx-criteria" }
         ]
@@ -3322,7 +3896,14 @@
               {
                 "any": [{ "examined": "ex-chest-scene" }, { "examined": "ex-chest-treated" }, { "examined": "ex-chest-ed" }]
               },
-              { "any": [{ "examined": "ex-circ-scene" }, { "examined": "ex-circ-treated" }, { "examined": "ex-circ-ed" }] },
+              {
+                "any": [
+                  { "examined": "ex-circ-scene" },
+                  { "examined": "ex-circ-collapsed" },
+                  { "examined": "ex-circ-treated" },
+                  { "examined": "ex-circ-ed" }
+                ]
+              },
               { "any": [{ "examined": "ex-skin" }, { "examined": "ex-skin-ed" }] }
             ]
           },
@@ -3489,7 +4070,14 @@
           {
             "any": [{ "examined": "ex-chest-scene" }, { "examined": "ex-chest-treated" }, { "examined": "ex-chest-ed" }]
           },
-          { "any": [{ "examined": "ex-circ-scene" }, { "examined": "ex-circ-treated" }, { "examined": "ex-circ-ed" }] },
+          {
+            "any": [
+              { "examined": "ex-circ-scene" },
+              { "examined": "ex-circ-collapsed" },
+              { "examined": "ex-circ-treated" },
+              { "examined": "ex-circ-ed" }
+            ]
+          },
           { "any": [{ "examined": "ex-skin" }, { "examined": "ex-skin-ed" }] }
         ]
       },
@@ -3773,7 +4361,14 @@
           {
             "any": [{ "examined": "ex-chest-scene" }, { "examined": "ex-chest-treated" }, { "examined": "ex-chest-ed" }]
           },
-          { "any": [{ "examined": "ex-circ-scene" }, { "examined": "ex-circ-treated" }, { "examined": "ex-circ-ed" }] }
+          {
+            "any": [
+              { "examined": "ex-circ-scene" },
+              { "examined": "ex-circ-collapsed" },
+              { "examined": "ex-circ-treated" },
+              { "examined": "ex-circ-ed" }
+            ]
+          }
         ]
       }
     },
@@ -3959,13 +4554,13 @@
       }
     },
     {
-      "role": "consultant",
-      "name": { "zh-CN": "变态反应科会诊医师 沈医生（电话）", "en": "Dr Shen, allergy consultant (by phone)" },
+      "role": "pathologist",
+      "name": { "zh-CN": "检验科免疫室 沈医生（电话）", "en": "Dr Shen, immunology laboratory (by phone)" },
       "knowledge": {
-        "zh-CN": "可在学员已拿到结果后解读类胰蛋白酶与蜂毒特异性IgE：类胰蛋白酶在1–2小时达峰，早期样本可正常；需在完全恢复≥24小时后测基础值，急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化，基础值持续升高需排查肥大细胞疾病。特异性IgE反应后数天可假阴性，阴性者4–6周后复查；皮肤试验在专科进行。成人蜂毒所致超出皮肤症状的全身反应且致敏证实者，推荐蜂毒免疫治疗。专科门诊可在4–6周内安排。",
-        "en": "Interprets tryptase and venom-specific IgE once the learner has the results: tryptase peaks at 1–2 h and an early sample may be normal; a baseline ≥24 h after full recovery is needed — an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation, and a persistently raised baseline prompts work-up for a mast-cell disorder. Specific IgE can be falsely negative in the first days — repeat at 4–6 weeks if negative; skin testing is done in clinic. Adults with systemic sting reactions beyond the skin and confirmed sensitisation should be offered venom immunotherapy. Clinic can see her within 4–6 weeks."
+        "zh-CN": "只在学员已拿到结果后解读检验。类胰蛋白酶：症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时，早期样本可正常；需与完全恢复≥24小时后的基础值比较，急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化，基础值持续升高需排查肥大细胞疾病。蜂毒特异性IgE在反应后数天内可假阴性，阴性者4–6周后复查；皮肤试验在变态反应专科进行。成人蜂毒所致超出皮肤症状的全身反应且致敏证实者，推荐蜂毒免疫治疗；专科门诊可在4–6周内安排。血气：乳酸反映组织低灌注及肾上腺素的β2效应；用肾上腺素或沙丁胺醇后血钾轻度降低多为细胞内转移，通常自行恢复。年轻、无胸痛的患者，常规血常规、肾功能、CRP和肌钙蛋白很少改变急性期处理。",
+        "en": "Interprets laboratory results only once the learner has them. Tryptase: rises ~15–30 min after onset, peaks at 1–2 h, half-life ~2 h, so an early sample may be normal; compare with a baseline ≥ 24 h after full recovery — an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation, and a persistently raised baseline prompts work-up for a mast-cell disorder. Venom-specific IgE can be falsely negative in the first days — repeat at 4–6 weeks if negative; skin testing is done in the allergy clinic. Adults with systemic sting reactions beyond the skin and confirmed sensitisation should be offered venom immunotherapy; the allergy clinic can see her within 4–6 weeks. Blood gas: lactate reflects tissue hypoperfusion and the β2 effect of adrenaline; a mildly low potassium after adrenaline or salbutamol is an intracellular shift that usually self-corrects. In a young patient without chest pain, routine blood count, renal function, CRP and troponin rarely change acute management."
       },
-      "interprets": ["tryptase-1", "tryptase-2", "venom-sige"]
+      "interprets": ["tryptase-1", "tryptase-2", "venom-sige", "vbg", "fbc", "ue", "troponin", "crp"]
     },
     {
       "role": "radiologist",
@@ -3980,8 +4575,8 @@
       "role": "pharmacist",
       "name": { "zh-CN": "急诊药师", "en": "ED pharmacist" },
       "knowledge": {
-        "zh-CN": "负责肾上腺素自动注射笔的处方核对与使用培训：开2支、随身携带、注意有效期；用训练笔示范并要求回示；大腿外侧注射，可隔衣；用后平躺、呼叫急救，5分钟无改善用第二支；提供书面严重过敏反应应急计划。不讨论诊断。",
-        "en": "Checks the auto-injector prescription and trains her: two pens, carried at all times, watch the expiry date; trainer-pen demonstration with teach-back; inject into the outer thigh, through clothing if needed; then lie down and call emergency services, second pen after 5 min if no better; provides a written anaphylaxis action plan. Does not discuss the diagnosis."
+        "zh-CN": "负责肾上腺素自动注射笔的处方核对与使用培训：开2支、随身携带、注意有效期；用训练笔示范并要求回示；大腿外侧注射，可隔衣；用后平躺、呼叫急救，5分钟无改善用第二支；提供书面过敏应急行动计划。不讨论诊断。",
+        "en": "Checks the auto-injector prescription and trains her: two pens, carried at all times, watch the expiry date; trainer-pen demonstration with teach-back; inject into the outer thigh, through clothing if needed; then lie down and call emergency services, second pen after 5 min if no better; provides a written allergy action plan. Does not discuss the diagnosis."
       }
     }
   ],
@@ -4022,7 +4617,8 @@
       { "zh-CN": "蜂毒特异性IgE结果（送检中）", "en": "Venom-specific IgE results (pending)" },
       { "zh-CN": "去年蜇伤的昆虫种类", "en": "Which insect caused last year's sting" },
       { "zh-CN": "她平时的血压", "en": "Her usual blood pressure" },
-      { "zh-CN": "破伤风免疫史", "en": "Tetanus immunisation history" }
+      { "zh-CN": "破伤风免疫史", "en": "Tetanus immunisation history" },
+      { "zh-CN": "有无肥大细胞疾病家族史", "en": "Any family history of mast-cell disorders" }
     ],
     "teachingPoints": [
       {
@@ -4197,11 +4793,32 @@
       },
       { "text": "现在感觉怎么样，好点了吗", "locale": "zh-CN", "expect": ["status-scene", "status-treated", "status-ed"] },
       { "text": "how much do you weigh", "locale": "en", "expect": ["weight"] },
-      { "text": "自己吃过什么药处理没有", "locale": "zh-CN", "expect": ["self-treatment"] }
+      { "text": "自己吃过什么药处理没有", "locale": "zh-CN", "expect": ["self-treatment"] },
+      { "text": "被蛰了是吧？啥时候的事", "locale": "zh-CN", "expect": ["pc-sting"] },
+      { "text": "叮你的是啥玩意儿", "locale": "zh-CN", "expect": ["hpi-insect"] },
+      { "text": "喘得厉害不", "locale": "zh-CN", "expect": ["hpi-breathing"] },
+      { "text": "蛰哪儿了", "locale": "zh-CN", "expect": ["hpi-sting-site"] },
+      { "text": "有没有吃心得安", "locale": "zh-CN", "expect": ["meds-bb"] },
+      { "text": "吃不吃降血压的药", "locale": "zh-CN", "expect": ["meds-bb"] },
+      { "text": "自己吃了抗过敏药没", "locale": "zh-CN", "expect": ["self-treatment"] },
+      { "text": "既往体健吗", "locale": "zh-CN", "expect": ["pmh-asthma", "pmh-other"] },
+      { "text": "LOC?", "locale": "en", "expect": ["hpi-loc"] },
+      { "text": "N/V?", "locale": "en", "expect": ["hpi-gi"] },
+      { "text": "DHx?", "locale": "en", "expect": ["meds"] },
+      { "text": "FHx of allergies?", "locale": "en", "expect": ["family"] },
+      { "text": "any previous anaphylaxis?", "locale": "en", "expect": ["prev-reaction"] },
+      { "text": "was it a bee?", "locale": "en", "expect": ["hpi-insect"] },
+      { "text": "any dizzyness", "locale": "en", "expect": ["hpi-dizzy"] },
+      { "text": "can you breath ok", "locale": "en", "expect": ["hpi-breathing"] },
+      { "text": "眼前有没有发黑", "locale": "zh-CN", "expect": ["hpi-dizzy"] },
+      { "text": "去年那次蜇了以后咋样", "locale": "zh-CN", "expect": ["prev-reaction"] },
+      { "text": "你这是咋整的", "locale": "zh-CN", "expect": ["pc-sting"] },
+      { "text": "以前蜜蜂蛰过你吗", "locale": "zh-CN", "expect": ["prev-reaction"] },
+      { "text": "老公在哪上班", "locale": "zh-CN", "expect": ["social-home"] }
     ],
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",
-      "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline, still in the garden) → ed-resus (transferred after only one dose; partial-response findings reused from `treated`) → ed (transferred and two doses; stabilising). Phase-specific exam findings and history ('how are you now?') model reassessment; ECG/imaging/blood gas exist only in the ED phases.",
+      "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline, still in the garden) → ed-resus (transferred after only one dose; partial-response findings reused from `treated`) → ed (transferred and two doses; stabilising). `collapsed` is entered when the peri-arrest event fires before any adrenaline: history is phase-locked except `status-collapsed` (she can only groan), and general/circulation/neurological findings switch to peri-arrest variants; the first IM dose leaves it for `treated` (or `ed-resus` after a deferred transfer). Symptom questions re-asked in `ed` also select a `now-*-ed` answer, so the patient never describes resolved symptoms as current. ECG/imaging/blood gas exist only in the ED phases.",
       "scoring": "Safety rubric items require the safe action (IM route given, transfer lying flat), not mere inaction. r-dx and r-dispo use decidedFirstTry, so brute-forcing the board earns no credit. The silent event `reassessed-before-repeat` marks a treated-phase reassessment between the first and second IM dose; it gates r-adr-repeat and the 'indicated' label of a repeat dose. The 5-minute interval itself is not expressible in the condition DSL."
     }
   }

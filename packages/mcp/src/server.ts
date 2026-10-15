@@ -32,6 +32,11 @@ const INSTRUCTIONS =
   "Patients and staff only know what the case records; missing data stays missing. Use case_status to see objectives and open decisions, " +
   "finish_case when every objective is done, and get_debrief for the assessment (a teaching-script measure, not a validated competency score).";
 
+/** Diagnostics go to stderr: stdout belongs to the protocol. */
+function stderrLog(message: string): void {
+  process.stderr.write(`[clinicalcraft mcp] ${message}\n`);
+}
+
 export interface McpServerOptions {
   settings: ResolvedSettings;
   env?: Env;
@@ -64,13 +69,12 @@ export class McpServer {
   private readonly log: (message: string) => void;
   private contentPromise: Promise<LoadedContent> | null;
   private protocolVersion: string | null = null;
-  private clientInfo: unknown = null;
   private readonly inflight = new Map<JsonRpcId, AbortController>();
   private toolCache: { specs: McpToolSpec[]; byName: Map<string, McpToolSpec> } | null = null;
 
   constructor(private readonly opts: McpServerOptions) {
     this.settings = opts.settings;
-    this.log = opts.log ?? ((m) => void process.stderr.write(`[clinicalcraft mcp] ${m}\n`));
+    this.log = opts.log ?? stderrLog;
     this.contentPromise = opts.content ? Promise.resolve(opts.content) : null;
     this.sessions = new SessionManager({
       settings: opts.settings,
@@ -183,8 +187,7 @@ export class McpServer {
   private initialize(p: Record<string, unknown>) {
     const requested = typeof p.protocolVersion === "string" ? p.protocolVersion : null;
     this.protocolVersion = requested && SUPPORTED_PROTOCOL_VERSIONS.includes(requested) ? requested : LATEST_PROTOCOL_VERSION;
-    this.clientInfo = p.clientInfo ?? null;
-    const name = (this.clientInfo as { name?: unknown } | null)?.name;
+    const name = (p.clientInfo as { name?: unknown } | undefined)?.name;
     this.log(`initialize from ${typeof name === "string" ? name : "client"} (protocol ${this.protocolVersion})`);
     return {
       protocolVersion: this.protocolVersion,
@@ -229,7 +232,7 @@ export async function runMcpServer(opts: RunMcpServerOptions): Promise<{ session
   const input = (opts.input ?? opts.stdin ?? process.stdin) as NodeJS.ReadableStream;
   const output = (opts.output ?? opts.stdout ?? process.stdout) as NodeJS.WritableStream;
   const server = new McpServer(opts);
-  const log = opts.log ?? ((m: string) => void process.stderr.write(`[clinicalcraft mcp] ${m}\n`));
+  const log = opts.log ?? stderrLog;
   let outputBroken = false;
   output.on("error", (err: Error) => {
     outputBroken = true;
@@ -240,7 +243,7 @@ export async function runMcpServer(opts: RunMcpServerOptions): Promise<{ session
     output.write(`${JSON.stringify(message)}\n`);
   };
   const pending = new Set<Promise<void>>();
-  const process1 = (line: string) => {
+  const onLine = (line: string) => {
     let value: unknown;
     try {
       value = JSON.parse(line);
@@ -258,12 +261,12 @@ export async function runMcpServer(opts: RunMcpServerOptions): Promise<{ session
   const splitter = new LineSplitter();
   try {
     for await (const chunk of input as AsyncIterable<string | Uint8Array>) {
-      for (const line of splitter.push(chunk)) process1(line);
+      for (const line of splitter.push(chunk)) onLine(line);
     }
   } catch (err) {
     log(`input error: ${err instanceof Error ? err.message : String(err)}`);
   }
-  for (const line of splitter.end()) process1(line);
+  for (const line of splitter.end()) onLine(line);
   while (pending.size > 0) await Promise.allSettled([...pending]);
   const count = server.sessions.list().length;
   await server.close();

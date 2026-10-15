@@ -53,21 +53,25 @@ export function mcpApprovalMode(settings: Pick<ResolvedSettings, "approvalMode" 
   return !source || source === "default" ? "bypass" : settings.approvalMode;
 }
 
-/** The resolved settings as a flag layer for `createNodeSession` (never provider credentials). */
+/** Top-level settings re-applied to MCP sessions (content, case and server keys are handled by the server itself). */
+const FLAG_KEYS = ["provider", "model", "effort", "agents", "providers", "locale", "approvalMode", "practiceScope", "permissions", "hooks", "maxToolRounds", "autoCompact", "defaultFacility", "patient"] as const;
+
+/**
+ * The server's resolved settings as the session's top settings layer, so
+ * values that came from CLI flags (`--provider`, `--base-url`, `--approval`…)
+ * or from a programmatic caller survive `createNodeSession`'s own loading.
+ * Concatenated keys (permissions, hooks) de-duplicate on merge.
+ */
 export function sessionFlags(settings: ResolvedSettings, locale: string | null): SettingsLayerData {
-  return {
-    provider: settings.provider,
-    ...(settings.model ? { model: settings.model } : {}),
-    ...(settings.effort ? { effort: settings.effort } : {}),
-    locale: locale ?? settings.locale,
-    approvalMode: mcpApprovalMode(settings),
-    practiceScope: settings.practiceScope,
-    maxToolRounds: settings.maxToolRounds,
-    permissions: settings.permissions,
-    patient: settings.patient,
-    transcripts: { enabled: settings.transcripts.enabled, ...(settings.transcripts.dir ? { dir: settings.transcripts.dir } : {}) },
-    ...(Object.keys(settings.agents).length > 0 ? { agents: settings.agents } : {}),
-  };
+  const flags: Record<string, unknown> = {};
+  for (const key of FLAG_KEYS) {
+    const value = settings[key];
+    if (value !== null && value !== undefined) flags[key] = structuredClone(value);
+  }
+  flags.locale = locale ?? settings.locale;
+  flags.approvalMode = mcpApprovalMode(settings);
+  flags.transcripts = { enabled: settings.transcripts.enabled, ...(settings.transcripts.dir ? { dir: settings.transcripts.dir } : {}) };
+  return flags as SettingsLayerData;
 }
 
 function loggable(event: AgentEvent): LoggedEvent | null {

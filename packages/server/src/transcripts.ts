@@ -62,8 +62,12 @@ export class WebTranscriptStore {
   private readonly writers = new Map<string, JsonlTranscript>();
   private readonly dir: string;
 
-  constructor(private readonly env: Env) {
-    this.dir = join(sessionsDir(env), "web");
+  /** `baseDir` = the sessions directory (default `<CLINICALCRAFT_HOME>/sessions`). */
+  constructor(
+    private readonly env: Env,
+    baseDir?: string | null,
+  ) {
+    this.dir = join(baseDir || sessionsDir(env), "web");
   }
 
   /** Path of a session's file. */

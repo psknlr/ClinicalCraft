@@ -5,9 +5,9 @@
  * the status line explains `clinicalcraft import-v4`.
  */
 import { createAtlas } from "../../atlas/index.js";
-import { localAssetUrl } from "../../app/assets.js";
+import { embeddedJson, localAssetUrl } from "../../app/assets.js";
 import type { App } from "../../app/context.js";
-import type { AtlasApi } from "../../contracts.js";
+import type { AtlasApi, AtlasOptions } from "../../contracts.js";
 import { ct, tr } from "../../i18n/index.js";
 import { h, prefersReducedMotion } from "../dom.js";
 import type { PanelView } from "../panel.js";
@@ -45,7 +45,8 @@ export function atlasPanel(app: App): () => PanelView {
         const a = await createAtlas({
           canvas,
           modelUrl: localAssetUrl("anatomy/anatomy.glb.gz"),
-          catalog: null,
+          // Served builds fetch catalog.json next to the model; the standalone build embeds it.
+          catalog: embeddedJson<NonNullable<AtlasOptions["catalog"]>>("anatomy/catalog.json"),
           reducedMotion: () => !app.prefs.ui.bob || prefersReducedMotion(),
           onStatus: (text) => {
             status.textContent = text;

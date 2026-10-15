@@ -118,8 +118,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "呼吸深大而规则，每说几个字就停下深吸一口气；嘴唇干，偶尔干呕，手边放着呕吐袋；疲惫但定向力正常。谈到漏打胰岛素时难为情、语气低，容易自责。若监护提示频发早搏/低钾（例如过早使用胰岛素后），表现为心慌、双腿发软无力；若发生低血糖，表现为出冷汗、手抖、焦虑。随着治疗推进（后期阶段）呼吸逐渐平稳、恶心缓解，开始说饿、话也多起来。只回答被问到的病史，不主动补充细节，不说出任何诊断或化验数值。",
-        "en": "Deep, regular breathing; stops every few words to take a deep breath. Dry lips, occasional retching, a vomit bowl at hand; exhausted but fully oriented. Embarrassed and quiet when talking about missed insulin; tends to blame herself. If the monitor shows frequent ectopics/low potassium (e.g. after insulin started too early) she complains of palpitations and weak, heavy legs; if she becomes hypoglycaemic she is sweaty, shaky and anxious. As treatment progresses (later phases) her breathing settles, the nausea eases, she says she is hungry and becomes chattier. Only answers history she is asked about, adds no details of her own, never states a diagnosis or a lab value."
+        "zh-CN": "呼吸深大而规则，每说几个字就停下深吸一口气；嘴唇干，偶尔干呕，手边放着呕吐袋；疲惫但定向力正常。谈到漏打胰岛素时难为情、语气低，容易自责。若监护提示频发早搏/低钾（例如过早使用胰岛素后），表现为心慌、双腿发软无力；若发生低血糖，表现为出冷汗、手抖、焦虑；严重低血糖时嗜睡、要大声叫才应答、说话含糊，血糖纠正后恢复。随着治疗推进（后期阶段）呼吸逐渐平稳、恶心缓解，开始说饿、话也多起来。只回答被问到的病史，不主动补充细节，不说出任何诊断或化验数值。",
+        "en": "Deep, regular breathing; stops every few words to take a deep breath. Dry lips, occasional retching, a vomit bowl at hand; exhausted but fully oriented. Embarrassed and quiet when talking about missed insulin; tends to blame herself. If the monitor shows frequent ectopics/low potassium (e.g. after insulin started too early) she complains of palpitations and weak, heavy legs; if she becomes hypoglycaemic she is sweaty, shaky and anxious; if severely hypoglycaemic she is drowsy, answers only to a raised voice and slurs her words until the glucose is corrected. As treatment progresses (later phases) her breathing settles, the nausea eases, she says she is hungry and becomes chattier. Only answers history she is asked about, adds no details of her own, never states a diagnosis or a lab value."
       },
       "companion": {
         "role": "friend",
@@ -255,8 +255,161 @@
                     "flag": "k-late-120"
                   },
                   {
+                    "not": {
+                      "flag": "k-late-150"
+                    }
+                  },
+                  {
                     "elapsed": {
                       "gte": 195
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-150"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-180"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 225
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-180"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-240"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 285
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-240"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-300"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 345
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-300"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-360"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 405
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-360"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-420"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 465
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-420"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-480"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 525
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-480"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-540"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 585
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-540"
+                  },
+                  {
+                    "not": {
+                      "flag": "k-late-600"
+                    }
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 645
+                    }
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "flag": "k-late-600"
+                  },
+                  {
+                    "elapsed": {
+                      "gte": 675
                     }
                   }
                 ]
@@ -292,7 +445,14 @@
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "flag": "glucose-below-14"
+        "all": [
+          {
+            "flag": "glucose-below-14"
+          },
+          {
+            "phase": "k-replete"
+          }
+        ]
       }
     },
     {
@@ -307,7 +467,14 @@
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "flag": "dka-resolved"
+        "all": [
+          {
+            "flag": "dka-resolved"
+          },
+          {
+            "phase": "glucose-lt14"
+          }
+        ]
       }
     }
   ],
@@ -344,17 +511,52 @@
           "怎么了",
           "什么情况",
           "主要问题",
-          "为什么来"
+          "为什么来",
+          "哪儿难受",
+          "难受",
+          "哪儿不舒服",
+          "不舒服",
+          "怎么回事",
+          "咋了",
+          "来看什么",
+          "来看病",
+          "不得劲",
+          "哪里不得劲"
         ],
         "en": [
           "what brought you in",
           "what's wrong",
-          "what's the problem",
           "main problem",
-          "how can I help"
+          "what's going on",
+          "what's the matter",
+          "what happened",
+          "how can I help you today",
+          "what seems to be the problem",
+          "what brings you in"
         ]
       },
-      "disclosure": "volunteer"
+      "disclosure": "volunteer",
+      "excludeKeywords": {
+        "zh-CN": [
+          "几天",
+          "多久",
+          "什么时候",
+          "啥时候",
+          "开始",
+          "觉得",
+          "担心",
+          "既往",
+          "以前"
+        ],
+        "en": [
+          "howlong",
+          "whendid",
+          "worried",
+          "think",
+          "medical",
+          "past"
+        ]
+      }
     },
     {
       "id": "hx-onset-course",
@@ -375,7 +577,14 @@
           "怎么开始的",
           "怎么发展",
           "病程",
-          "起病"
+          "起病",
+          "不舒服几天",
+          "啥时候开始",
+          "哪天开始",
+          "持续多久",
+          "多长时间",
+          "病了多少天",
+          "多少天了"
         ],
         "en": [
           "when did it start",
@@ -383,11 +592,80 @@
           "how did it begin",
           "progressed",
           "timeline",
-          "onset"
+          "onset",
+          "how long have you been unwell",
+          "when did this start",
+          "how long has this been going on",
+          "been going on"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "糖尿病",
+          "几年",
+          "换"
+        ],
+        "en": [
+          "diabetes",
+          "change"
+        ]
+      }
+    },
+    {
+      "id": "hx-oral-intake",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这两天吃喝怎么样？最后一次正经吃饭是什么时候？",
+        "en": "How have you been eating and drinking? When did you last have a proper meal?"
+      },
+      "answer": {
+        "zh-CN": "前天中午吃了顿午饭，之后基本就没吃过东西了。昨天到现在只能小口抿点水，喝多了就吐出来。",
+        "en": "Lunch the day before yesterday was my last proper meal — I've hardly eaten anything since. Since yesterday I can only sip water; if I drink more it comes straight back up."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃东西",
+          "吃饭",
+          "进食",
+          "最后一次吃",
+          "吃喝",
+          "能吃",
+          "吃得下",
+          "喝得下",
+          "胃口",
+          "能喝水",
+          "吃得怎么样",
+          "吃得下吗"
+        ],
+        "en": [
+          "last eat",
+          "last meal",
+          "eating",
+          "eat and drink",
+          "appetite",
+          "keep fluids down",
+          "oral intake",
+          "keep anything down"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "胰岛素",
+          "大剂量",
+          "不干净",
+          "外卖"
+        ],
+        "en": [
+          "insulin",
+          "bolus",
+          "dodgy",
+          "unusual"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false
     },
     {
       "id": "hx-vomiting",
@@ -407,7 +685,13 @@
           "吐的什么",
           "吐血",
           "咖啡渣",
-          "呕吐物"
+          "呕吐物",
+          "吐出来",
+          "吐的东西",
+          "吐了几回",
+          "吐几次",
+          "吐多少次",
+          "吐了多少次"
         ],
         "en": [
           "how many times vomited",
@@ -416,7 +700,11 @@
           "been sick",
           "what came up",
           "blood in vomit",
-          "coffee grounds"
+          "coffee grounds",
+          "vomited",
+          "how often vomited",
+          "haematemesis",
+          "hematemesis"
         ]
       },
       "disclosure": "on-ask",
@@ -424,13 +712,20 @@
         "zh-CN": [
           "身边",
           "其他人",
-          "规则"
+          "规则",
+          "吃药",
+          "止吐药",
+          "胰岛素"
         ],
         "en": [
           "anyone",
           "sickday",
           "rules",
-          "contact"
+          "contact",
+          "taken",
+          "tablet",
+          "insulin",
+          "medicine"
         ]
       }
     },
@@ -452,7 +747,9 @@
           "大便",
           "拉稀",
           "便血",
-          "黏液"
+          "黏液",
+          "大便有血",
+          "大便怎么样"
         ],
         "en": [
           "diarrhoea",
@@ -460,10 +757,26 @@
           "loose stools",
           "bowels",
           "stool",
-          "blood in stool"
+          "blood in stool",
+          "diarhea",
+          "diarrea",
+          "diarrhoea or vomiting"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "室友",
+          "别人",
+          "身边",
+          "家里人"
+        ],
+        "en": [
+          "roommate",
+          "anyone",
+          "else"
+        ]
+      }
     },
     {
       "id": "hx-abd-pain",
@@ -485,21 +798,61 @@
           "疼得厉害吗",
           "几分",
           "放射",
-          "背"
+          "背",
+          "肚子痛",
+          "哪个位置",
+          "疼在哪",
+          "痛在哪",
+          "往后背",
+          "什么样的疼",
+          "绞痛还是",
+          "胀痛"
         ],
         "en": [
           "abdominal pain",
           "tummy pain",
           "stomach pain",
-          "where does it hurt",
-          "what is the pain like",
-          "score",
           "radiate",
-          "back"
+          "describe the pain",
+          "where does your tummy hurt",
+          "pain score",
+          "pain go to your back",
+          "pain out of 10",
+          "where is the tummy pain",
+          "stomach hurt",
+          "sharp or dull",
+          "crampy",
+          "colicky",
+          "kind of pain"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "胸",
+          "尿",
+          "小便",
+          "加重",
+          "减轻",
+          "缓解",
+          "舒服点",
+          "好一点",
+          "止痛药"
+        ],
+        "en": [
+          "chest",
+          "pee",
+          "urine",
+          "worse",
+          "better",
+          "help",
+          "eases",
+          "relieve",
+          "painkiller",
+          "ibuprofen"
+        ]
+      }
     },
     {
       "id": "hx-pain-modifiers",
@@ -519,7 +872,12 @@
           "缓解",
           "什么时候更疼",
           "活动",
-          "翻身"
+          "翻身",
+          "舒服点",
+          "好一点",
+          "姿势",
+          "更疼",
+          "怎么样会好点"
         ],
         "en": [
           "better or worse",
@@ -527,7 +885,11 @@
           "aggravate",
           "makes it worse",
           "moving",
-          "eases"
+          "eases",
+          "help the pain",
+          "anything help",
+          "pain better",
+          "pain worse"
         ]
       },
       "disclosure": "on-ask"
@@ -551,7 +913,14 @@
           "尿多",
           "尿量",
           "起夜",
-          "多饮多尿"
+          "多饮多尿",
+          "喝水多",
+          "夜尿",
+          "想喝水",
+          "尿得多",
+          "尿频",
+          "口干",
+          "老想喝"
         ],
         "en": [
           "thirsty",
@@ -560,7 +929,13 @@
           "passing urine",
           "peeing a lot",
           "urine",
-          "polyuria"
+          "polyuria",
+          "drinking a lot",
+          "passing lots of water",
+          "pee a lot",
+          "up at night",
+          "nocturia",
+          "polydipsia"
         ]
       },
       "disclosure": "on-ask",
@@ -601,7 +976,15 @@
           "胸痛",
           "咳嗽",
           "憋气",
-          "透不过气"
+          "透不过气",
+          "胸口疼",
+          "胸口痛",
+          "胸闷",
+          "喘气费劲",
+          "喘不上气",
+          "呼吸困难",
+          "憋得慌",
+          "憋得"
         ],
         "en": [
           "breathing",
@@ -609,10 +992,23 @@
           "short of breath",
           "chest pain",
           "cough",
-          "can't breathe"
+          "can't breathe",
+          "shortness of breath",
+          "SOB"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "感冒",
+          "嗓子"
+        ],
+        "en": [
+          "cold",
+          "sorethroat",
+          "flu"
+        ]
+      }
     },
     {
       "id": "hx-drowsy",
@@ -646,6 +1042,60 @@
       "disclosure": "on-ask"
     },
     {
+      "id": "hx-ros-other",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有头痛、看东西模糊、心慌，或者肌肉抽筋、没力气？",
+        "en": "Any headache, blurred vision, palpitations, muscle cramps or weakness?"
+      },
+      "answer": {
+        "zh-CN": "头不疼，看东西也还清楚。就是浑身没劲、特别累。心跳感觉有点快，但没有乱跳的感觉；腿也没抽筋。",
+        "en": "No headache, and my eyesight's fine. I just feel weak all over and exhausted. My heart feels a bit fast, but it isn't skipping or fluttering, and I've had no cramps."
+      },
+      "keywords": {
+        "zh-CN": [
+          "头痛",
+          "头疼",
+          "视物模糊",
+          "看东西模糊",
+          "看不清",
+          "心慌",
+          "心悸",
+          "心跳",
+          "抽筋",
+          "没力气",
+          "乏力",
+          "无力"
+        ],
+        "en": [
+          "headache",
+          "blurred vision",
+          "vision",
+          "palpitations",
+          "heart racing",
+          "cramps",
+          "weakness",
+          "weak"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "绞痛",
+          "阵痛",
+          "肚子"
+        ],
+        "en": [
+          "crampy",
+          "colicky",
+          "tummy",
+          "stomach",
+          "abdominal"
+        ]
+      }
+    },
+    {
       "id": "hx-weight-loss",
       "topic": "ros",
       "question": {
@@ -661,7 +1111,10 @@
           "体重下降",
           "瘦了",
           "掉秤",
-          "体重变化"
+          "体重变化",
+          "体重有变化",
+          "体重有没有变化",
+          "体重掉了多少"
         ],
         "en": [
           "weight loss",
@@ -676,12 +1129,12 @@
       "id": "hx-glucose-home",
       "topic": "hpi",
       "question": {
-        "zh-CN": "这两天在家测血糖了吗？多少？",
-        "en": "Have you checked your blood sugar at home? What were the readings?"
+        "zh-CN": "这两天在家测血糖了吗？多少？用的是指尖血糖仪还是动态血糖探头？",
+        "en": "Have you checked your blood sugar at home? What were the readings? Do you use a finger-prick meter or a sensor?"
       },
       "answer": {
-        "zh-CN": "昨天下午测过一次，二十多，好像是24点几。泵提示要补一针校正，我想着生病时血糖高一点正常、又吃不下东西，就取消了……之后就没再测。",
-        "en": "I checked once yesterday afternoon — it was in the twenties, 24-something I think. The pump suggested a correction but I thought sugars run high when you're ill, and I wasn't eating, so I cancelled it... I didn't check again after that."
+        "zh-CN": "昨天下午测过一次，二十多，好像是24点几。泵提示要补一针校正，我想着生病时血糖高一点正常、又吃不下东西，就取消了……之后就没再测。我没戴动态血糖探头，都是用指尖血糖仪测。",
+        "en": "I checked once yesterday afternoon — it was in the twenties, 24-something I think. The pump suggested a correction but I thought sugars run high when you're ill, and I wasn't eating, so I cancelled it... I didn't check again after that. I don't wear a sensor — I just use a finger-prick meter."
       },
       "keywords": {
         "zh-CN": [
@@ -689,7 +1142,10 @@
           "血糖多少",
           "血糖仪",
           "在家测",
-          "指尖血糖读数"
+          "指尖血糖读数",
+          "血糖最近",
+          "动态血糖",
+          "探头"
         ],
         "en": [
           "blood sugar at home",
@@ -697,16 +1153,27 @@
           "sugar levels",
           "meter",
           "home readings",
-          "checked your sugar"
+          "checked your sugar",
+          "BM",
+          "BMs",
+          "CGM",
+          "sensor",
+          "glucose monitor",
+          "sugars"
         ]
       },
       "disclosure": "on-ask",
       "excludeKeywords": {
         "zh-CN": [
-          "酮"
+          "酮",
+          "存的",
+          "几点测"
         ],
         "en": [
-          "keton"
+          "keton",
+          "stored",
+          "memory",
+          "log"
         ]
       }
     },
@@ -757,7 +1224,9 @@
           "报警",
           "泵有问题",
           "怎么打胰岛素",
-          "用什么胰岛素"
+          "用什么胰岛素",
+          "泵报警",
+          "泵叫"
         ],
         "en": [
           "insulin pump",
@@ -765,7 +1234,8 @@
           "alarm",
           "pump problems",
           "how do you take insulin",
-          "which insulin"
+          "which insulin",
+          "on a pump"
         ]
       },
       "disclosure": "on-ask",
@@ -776,7 +1246,17 @@
           "没打",
           "除了胰岛素",
           "其他药",
-          "过敏"
+          "过敏",
+          "部位",
+          "扎在",
+          "管路多久",
+          "基础率",
+          "按时打",
+          "打没打",
+          "打了吗",
+          "生病时",
+          "生病的时候",
+          "备用"
         ],
         "en": [
           "skip",
@@ -784,7 +1264,20 @@
           "omit",
           "apart from insulin",
           "other medic",
-          "allerg"
+          "allerg",
+          "site",
+          "cannula",
+          "infusionset",
+          "basal",
+          "whenyouresick",
+          "whenyoureill",
+          "whenill",
+          "backup",
+          "spare",
+          "settings",
+          "dailydose",
+          "mealtime",
+          "meal"
         ]
       }
     },
@@ -807,7 +1300,16 @@
           "餐前胰岛素",
           "校正",
           "减少胰岛素",
-          "停胰岛素"
+          "停胰岛素",
+          "按时打",
+          "打没打",
+          "不吃饭的时候",
+          "没吃东西的时候",
+          "少打",
+          "漏了",
+          "胰岛素打了吗",
+          "胰岛素打了没有",
+          "胰岛素打没打"
         ],
         "en": [
           "missed insulin",
@@ -816,7 +1318,14 @@
           "boluses",
           "correction dose",
           "less insulin",
-          "stopped insulin"
+          "stopped insulin",
+          "miss insulin",
+          "missed doses",
+          "taking your insulin",
+          "forgot insulin",
+          "skip insulin",
+          "miss any boluses",
+          "mealtime insulin"
         ]
       },
       "disclosure": "on-ask",
@@ -840,7 +1349,14 @@
           "针头",
           "多久换",
           "部位",
-          "留置针"
+          "留置针",
+          "扎在哪",
+          "针扎",
+          "扎针",
+          "换管子",
+          "管子多久",
+          "多少天换",
+          "输注管"
         ],
         "en": [
           "infusion set",
@@ -848,7 +1364,9 @@
           "set change",
           "when did you change",
           "site",
-          "how often change"
+          "how often change",
+          "pump site",
+          "change your cannula"
         ]
       },
       "disclosure": "specific"
@@ -871,7 +1389,11 @@
           "每天多少单位",
           "总量",
           "碳水系数",
-          "胰岛素剂量"
+          "胰岛素剂量",
+          "多少单位",
+          "一天打多少",
+          "总共打多少",
+          "基础率多少"
         ],
         "en": [
           "pump settings",
@@ -879,21 +1401,34 @@
           "total daily dose",
           "units a day",
           "carb ratio",
-          "insulin dose"
+          "insulin dose",
+          "TDD"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "基础病",
+          "漏",
+          "没打"
+        ],
+        "en": [
+          "miss",
+          "skip",
+          "forgot"
+        ]
+      }
     },
     {
       "id": "hx-sick-day-rules",
       "topic": "medications",
       "question": {
-        "zh-CN": "有没有人教过你生病时怎么调整胰岛素（生病日规则）？",
-        "en": "Has anyone taught you what to do with your insulin when you're ill — sick-day rules?"
+        "zh-CN": "有没有人教过你生病时怎么调整胰岛素（生病日规则）？泵出问题时有备用的胰岛素笔吗？",
+        "en": "Has anyone taught you what to do with your insulin when you're ill — sick-day rules? Do you have backup insulin pens for when the pump fails?"
       },
       "answer": {
-        "zh-CN": "小时候在儿科门诊好像讲过……说实话具体怎么做我已经不记得了。",
-        "en": "I think they went through it at the children's clinic years ago... honestly I don't remember what you're supposed to do."
+        "zh-CN": "小时候在儿科门诊好像讲过……说实话具体怎么做我已经不记得了。家里倒是有一支备用的门冬胰岛素笔，可当时根本没想起来用。",
+        "en": "I think they went through it at the children's clinic years ago... honestly I don't remember what you're supposed to do. I do have a spare aspart pen at home, but it never crossed my mind to use it."
       },
       "keywords": {
         "zh-CN": [
@@ -902,14 +1437,27 @@
           "生病时",
           "生病怎么办",
           "教过",
-          "糖尿病教育"
+          "糖尿病教育",
+          "生病的时候胰岛素",
+          "怎么调",
+          "胰岛素怎么调整",
+          "备用胰岛素",
+          "备用笔",
+          "胰岛素笔",
+          "生病日"
         ],
         "en": [
           "sick-day rules",
           "sick day",
           "when you're ill",
           "taught",
-          "diabetes education"
+          "diabetes education",
+          "insulin when sick",
+          "insulin when you're ill",
+          "sick day plan",
+          "backup pen",
+          "spare insulin",
+          "insulin pen"
         ]
       },
       "disclosure": "specific"
@@ -931,7 +1479,9 @@
           "发烧",
           "寒战",
           "体温",
-          "怕冷"
+          "怕冷",
+          "有没有烧",
+          "烧不烧"
         ],
         "en": [
           "fever",
@@ -941,7 +1491,18 @@
           "rigors"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "小便",
+          "尿"
+        ],
+        "en": [
+          "pee",
+          "urine",
+          "wee"
+        ]
+      }
     },
     {
       "id": "hx-urinary-symptoms",
@@ -963,14 +1524,23 @@
           "尿味道",
           "小便痛",
           "排尿痛",
-          "小便的时候"
+          "小便的时候",
+          "尿尿疼",
+          "尿尿痛",
+          "撒尿疼",
+          "小便疼"
         ],
         "en": [
           "burning",
           "pain passing urine",
           "dysuria",
           "urine infection",
-          "smelly urine"
+          "smelly urine",
+          "pain when peeing",
+          "hurt to pee",
+          "sting when you pee",
+          "stinging",
+          "sting when you wee"
         ]
       },
       "disclosure": "on-ask"
@@ -1008,12 +1578,12 @@
       "id": "hx-sick-contacts",
       "topic": "social",
       "question": {
-        "zh-CN": "身边有人最近也生病吗？",
-        "en": "Has anyone around you been unwell?"
+        "zh-CN": "身边有人最近也生病吗？最近吃过什么特别的东西、或者出过远门吗？",
+        "en": "Has anyone around you been unwell? Have you eaten anything unusual or travelled recently?"
       },
       "answer": {
-        "zh-CN": "室友上周也上吐下泻，两天就好了。",
-        "en": "My roommate had vomiting and diarrhoea last week — she was better in two days."
+        "zh-CN": "室友上周也上吐下泻，两天就好了。我们平时都在家自己做饭，最近没在外面乱吃东西，也没出过远门。",
+        "en": "My roommate had vomiting and diarrhoea last week — she was better in two days. We mostly cook at home — I haven't eaten anything unusual and haven't been away anywhere."
       },
       "keywords": {
         "zh-CN": [
@@ -1021,59 +1591,127 @@
           "接触",
           "传染",
           "室友生病",
-          "家里人生病"
+          "家里人生病",
+          "室友也",
+          "别人也",
+          "也拉肚子",
+          "也吐",
+          "吃了不干净",
+          "不干净的东西",
+          "外卖",
+          "旅游",
+          "旅行",
+          "出远门"
         ],
         "en": [
           "anyone else ill",
           "sick contacts",
           "roommate",
           "contacts",
-          "anyone around you"
+          "anyone around you",
+          "anyone else sick",
+          "eaten anything unusual",
+          "eaten anything dodgy",
+          "dodgy food",
+          "takeaway",
+          "travel",
+          "travelled"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "查出",
+          "什么病",
+          "诊断"
+        ],
+        "en": [
+          "whatdid",
+          "diagnos",
+          "cause",
+          "tested"
+        ]
+      }
     },
     {
       "id": "hx-pmh",
       "topic": "pmh",
       "question": {
-        "zh-CN": "以前有什么病？",
-        "en": "Do you have any medical conditions?"
+        "zh-CN": "以前有什么病？糖尿病平时在哪里随访？",
+        "en": "Do you have any medical conditions? Where is your diabetes followed up?"
       },
       "answer": {
-        "zh-CN": "我11岁得的1型糖尿病，当时就是因为酮症酸中毒住院查出来的。三年前查出甲状腺功能减退。别的没什么。",
-        "en": "I've had type 1 diabetes since I was eleven — I was found to have it when I was admitted with ketoacidosis. I was diagnosed with an underactive thyroid three years ago. Nothing else."
+        "zh-CN": "我11岁得的1型糖尿病，当时就是因为酮症酸中毒住院查出来的。三年前查出甲状腺功能减退。别的没什么。平时在医院内分泌科门诊随访，大概半年去一次。",
+        "en": "I've had type 1 diabetes since I was eleven — I was found to have it when I was admitted with ketoacidosis. I was diagnosed with an underactive thyroid three years ago. Nothing else. I'm followed up in the hospital diabetes clinic about every six months."
       },
       "keywords": {
         "zh-CN": [
-          "以前",
           "既往",
           "什么病",
           "慢性病",
           "病史",
-          "糖尿病"
+          "糖尿病",
+          "以前得过什么病",
+          "基础病",
+          "既往病史",
+          "随访",
+          "复诊"
         ],
         "en": [
           "medical conditions",
           "past medical history",
           "health problems",
           "illnesses",
-          "diabetes"
+          "diabetes",
+          "medical problems",
+          "follow-up",
+          "diabetes clinic",
+          "who looks after",
+          "health conditions",
+          "PMH",
+          "PMHx"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "父母",
+          "亲戚",
+          "妈妈",
+          "爸爸",
+          "室友",
+          "手术",
+          "并发症",
+          "眼底",
+          "肾脏"
+        ],
+        "en": [
+          "family",
+          "roommate",
+          "operation",
+          "surgery",
+          "mother",
+          "father",
+          "complication",
+          "eye",
+          "kidney",
+          "retinopathy"
+        ]
+      }
     },
     {
       "id": "hx-previous-dka",
       "topic": "pmh",
       "question": {
-        "zh-CN": "以前有没有发生过类似情况或因为糖尿病住院？",
-        "en": "Have you ever had anything like this before, or been in hospital because of your diabetes?"
+        "zh-CN": "以前有没有发生过类似情况或因为糖尿病住院？有没有低血糖？",
+        "en": "Have you ever had anything like this before, or been in hospital because of your diabetes? Any hypos?"
       },
       "answer": {
-        "zh-CN": "只有11岁刚发现糖尿病那次，在ICU住了两天。之后就没再因为糖尿病住过院。",
-        "en": "Only when I was diagnosed at eleven — I was in intensive care for two days. I haven't been in hospital for my diabetes since."
+        "zh-CN": "只有11岁刚发现糖尿病那次，在ICU住了两天。之后就没再因为糖尿病住过院。低血糖也就是偶尔有轻微的，自己能感觉出来，吃点糖就好了，从来没因为低血糖叫过救护车。",
+        "en": "Only when I was diagnosed at eleven — I was in intensive care for two days. I haven't been in hospital for my diabetes since. Hypos — just the odd mild one that I can feel coming and sort out with some sugar; I've never needed an ambulance for one."
       },
       "keywords": {
         "zh-CN": [
@@ -1081,14 +1719,27 @@
           "类似情况",
           "住过院",
           "以前住院",
-          "重症监护"
+          "重症监护",
+          "过dka",
+          "dka",
+          "酮症酸中毒",
+          "以前有过",
+          "以前也这样",
+          "低血糖",
+          "住过icu"
         ],
         "en": [
-          "before",
           "happened before",
           "previous admissions",
           "been in hospital",
-          "intensive care"
+          "intensive care",
+          "dka",
+          "DKA before",
+          "had DKA",
+          "ketoacidosis",
+          "hypos",
+          "hypoglycaemia",
+          "low sugars"
         ]
       },
       "disclosure": "on-ask"
@@ -1125,6 +1776,35 @@
       "disclosure": "on-ask"
     },
     {
+      "id": "hx-psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过手术吗？",
+        "en": "Have you ever had an operation?"
+      },
+      "answer": {
+        "zh-CN": "没做过手术。",
+        "en": "No, I've never had an operation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术",
+          "开过刀",
+          "动过手术",
+          "做过手术",
+          "外科"
+        ],
+        "en": [
+          "operation",
+          "surgery",
+          "surgical history",
+          "operated on"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false
+    },
+    {
       "id": "hx-meds",
       "topic": "medications",
       "question": {
@@ -1142,7 +1822,17 @@
           "用药",
           "药物",
           "甲状腺药",
-          "左甲状腺素"
+          "左甲状腺素",
+          "吃啥药",
+          "啥药",
+          "吃药",
+          "平时吃",
+          "甲状腺的药",
+          "止吐药",
+          "止泻药",
+          "止痛药",
+          "布洛芬",
+          "非处方"
         ],
         "en": [
           "other medicines",
@@ -1150,17 +1840,31 @@
           "tablets",
           "any drugs",
           "thyroid medicine",
-          "levothyroxine"
+          "levothyroxine",
+          "thyroxine",
+          "over the counter",
+          "OTC",
+          "ibuprofen",
+          "taken anything for the vomiting",
+          "meds",
+          "pain relief tablets"
         ]
       },
       "disclosure": "on-ask",
       "required": true,
       "excludeKeywords": {
         "zh-CN": [
-          "过敏"
+          "过敏",
+          "大麻",
+          "毒品"
         ],
         "en": [
-          "allerg"
+          "allerg",
+          "recreational",
+          "street",
+          "cannabis",
+          "sglt2",
+          "gliflozin"
         ]
       }
     },
@@ -1216,7 +1920,9 @@
           "allergic",
           "allergies",
           "allergy",
-          "drug allergy"
+          "drug allergy",
+          "NKDA",
+          "drug allergies"
         ]
       },
       "disclosure": "on-ask",
@@ -1240,7 +1946,9 @@
           "怀孕",
           "妊娠",
           "避孕",
-          "例假"
+          "例假",
+          "月经正常",
+          "大姨妈"
         ],
         "en": [
           "last period",
@@ -1248,7 +1956,9 @@
           "pregnant",
           "pregnancy",
           "contraception",
-          "periods"
+          "periods",
+          "LMP",
+          "menses"
         ]
       },
       "disclosure": "on-ask",
@@ -1328,7 +2038,16 @@
           "学生",
           "住在哪",
           "和谁住",
-          "生活情况"
+          "生活情况",
+          "一个人住",
+          "跟谁住",
+          "住一起",
+          "合租",
+          "做什么工作",
+          "干什么的",
+          "上学",
+          "跟谁一起住",
+          "住哪里"
         ],
         "en": [
           "work",
@@ -1336,7 +2055,7 @@
           "student",
           "live with",
           "living situation",
-          "home"
+          "home situation"
         ]
       },
       "disclosure": "on-ask"
@@ -1358,7 +2077,10 @@
           "家里人",
           "父母",
           "遗传",
-          "家人有什么病"
+          "家人有什么病",
+          "家里有人",
+          "家里人有",
+          "家族"
         ],
         "en": [
           "family history",
@@ -1366,10 +2088,24 @@
           "parents",
           "relatives",
           "mother",
-          "father"
+          "father",
+          "family",
+          "illnesses in your family"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "知道",
+          "通知",
+          "联系"
+        ],
+        "en": [
+          "knowyou",
+          "contact",
+          "informed"
+        ]
+      }
     },
     {
       "id": "hx-ice",
@@ -1389,7 +2125,12 @@
           "顾虑",
           "你觉得",
           "期望",
-          "怎么回事"
+          "觉得是怎么回事",
+          "你觉得怎么回事",
+          "自己觉得",
+          "觉得是什么",
+          "最怕",
+          "害怕什么"
         ],
         "en": [
           "worried",
@@ -1429,7 +2170,21 @@
           "how tall"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "变化",
+          "下降",
+          "掉",
+          "瘦"
+        ],
+        "en": [
+          "lost",
+          "loss",
+          "losing",
+          "change"
+        ]
+      }
     },
     {
       "id": "hx-unk-meter-readings",
@@ -1448,14 +2203,18 @@
           "血糖记录",
           "存的数据",
           "血糖仪记录",
-          "几点测的"
+          "几点测的",
+          "存的读数",
+          "血糖仪里存",
+          "血糖仪里"
         ],
         "en": [
           "exact readings",
           "meter memory",
           "stored readings",
           "glucose log",
-          "recorded values"
+          "recorded values",
+          "stored in your meter"
         ]
       },
       "disclosure": "unknown"
@@ -1476,13 +2235,18 @@
           "室友什么病",
           "查出来",
           "诊断",
-          "什么原因"
+          "什么原因",
+          "室友查出",
+          "室友得的",
+          "室友是什么病"
         ],
         "en": [
           "roommate's diagnosis",
           "what did she have",
           "cause",
-          "was she tested"
+          "was she tested",
+          "what did your roommate have",
+          "roommate's illness"
         ]
       },
       "disclosure": "unknown"
@@ -1690,14 +2454,18 @@
           "听肺",
           "呼吸音",
           "啰音",
-          "胸部检查"
+          "胸部检查",
+          "听诊双肺",
+          "双肺",
+          "肺部"
         ],
         "en": [
           "auscultate the chest",
           "listen to the lungs",
           "breath sounds",
           "crackles",
-          "chest exam"
+          "chest exam",
+          "listen to her chest"
         ]
       },
       "finding": {
@@ -1753,7 +2521,8 @@
           "输注部位",
           "管路",
           "针头部位",
-          "注射部位"
+          "注射部位",
+          "看看泵"
         ],
         "en": [
           "insulin pump",
@@ -1761,7 +2530,9 @@
           "infusion site",
           "cannula site",
           "tubing",
-          "injection sites"
+          "injection sites",
+          "pump site",
+          "look at the pump"
         ]
       },
       "finding": {
@@ -1969,8 +2740,8 @@
       "id": "ex-weight",
       "system": "general",
       "maneuver": {
-        "zh-CN": "床旁称重",
-        "en": "Weigh the patient (bed scale)"
+        "zh-CN": "称体重（抢救床自带称重）",
+        "en": "Weigh the patient (trolley bed scale)"
       },
       "keywords": {
         "zh-CN": [
@@ -1990,9 +2761,7 @@
         "zh-CN": "床旁秤称重：55.0 kg。",
         "en": "Bed-scale weight: 55.0 kg."
       },
-      "requires": [
-        "scale"
-      ]
+      "requires": []
     },
     {
       "id": "ex-reassess-midway",
@@ -2076,7 +2845,8 @@
           "末梢血糖",
           "床旁血糖",
           "快速血糖",
-          "血糖"
+          "血糖",
+          "床边血糖"
         ],
         "en": [
           "capillary glucose",
@@ -2085,7 +2855,10 @@
           "finger prick",
           "blood sugar",
           "poc glucose",
-          "glucose"
+          "glucose",
+          "bm",
+          "bms",
+          "bedside glucose"
         ]
       },
       "requires": [
@@ -2277,13 +3050,15 @@
           "静脉血气",
           "血气分析",
           "床旁血气",
-          "血气"
+          "血气",
+          "乳酸"
         ],
         "en": [
           "vbg",
           "venous blood gas",
           "venous gas",
-          "blood gas"
+          "blood gas",
+          "lactate"
         ]
       },
       "requires": [
@@ -2773,7 +3548,8 @@
           "尿素",
           "血磷",
           "血镁",
-          "渗透压"
+          "渗透压",
+          "肾功"
         ],
         "en": [
           "u&e",
@@ -2788,7 +3564,11 @@
           "magnesium",
           "biochemistry",
           "chemistry",
-          "osmolality"
+          "osmolality",
+          "bmp",
+          "cmp",
+          "u+e",
+          "renal panel"
         ]
       },
       "requires": [
@@ -3771,8 +4551,8 @@
             }
           ],
           "note": {
-            "zh-CN": "酮症酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需满足以下3项中的2项：典型腹痛、脂肪酶/淀粉酶 > 3倍正常上限、典型影像学表现）。",
-            "en": "Amylase is often non-specifically raised in ketoacidosis (partly salivary); a normal lipase argues against acute pancreatitis (diagnosis needs two of: typical pain, lipase/amylase > 3× the upper limit, typical imaging)."
+            "zh-CN": "呕吐、严重代谢性酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需满足以下3项中的2项：典型腹痛、脂肪酶/淀粉酶 > 3倍正常上限、典型影像学表现）。",
+            "en": "Amylase is often raised non-specifically with vomiting and a severe metabolic acidosis (partly salivary); a normal lipase argues against acute pancreatitis (diagnosis needs two of: typical pain, lipase/amylase > 3× the upper limit, typical imaging)."
           }
         },
         "k-replete": {
@@ -3805,8 +4585,8 @@
             }
           ],
           "note": {
-            "zh-CN": "酮症酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需满足以下3项中的2项：典型腹痛、脂肪酶/淀粉酶 > 3倍正常上限、典型影像学表现）。",
-            "en": "Amylase is often non-specifically raised in ketoacidosis (partly salivary); a normal lipase argues against acute pancreatitis (diagnosis needs two of: typical pain, lipase/amylase > 3× the upper limit, typical imaging)."
+            "zh-CN": "呕吐、严重代谢性酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需满足以下3项中的2项：典型腹痛、脂肪酶/淀粉酶 > 3倍正常上限、典型影像学表现）。",
+            "en": "Amylase is often raised non-specifically with vomiting and a severe metabolic acidosis (partly salivary); a normal lipase argues against acute pancreatitis (diagnosis needs two of: typical pain, lipase/amylase > 3× the upper limit, typical imaging)."
           }
         }
       }
@@ -3963,8 +4743,8 @@
             "en": "CT abdomen and pelvis with contrast: a few fluid-filled small-bowel loops without wall thickening or obstruction, compatible with enteritis; normal appendix; normal pancreas without peripancreatic stranding; no free gas or collection; kidneys, liver, gallbladder and spleen normal."
           },
           "note": {
-            "zh-CN": "DKA时的腹痛多随酸中毒纠正而缓解；脱水、肌酐升高时使用碘对比剂需权衡。通常仅在酸中毒纠正后腹痛仍持续或出现腹膜炎体征时才考虑影像学。",
-            "en": "Abdominal pain in DKA usually settles as the acidosis is corrected; iodinated contrast during dehydration with a raised creatinine needs weighing. Imaging is usually reserved for pain that persists after the acidosis is corrected or for peritonism."
+            "zh-CN": "严重代谢性酸中毒引起的腹痛多随酸中毒纠正而缓解；脱水、肌酐升高时使用碘对比剂需权衡。通常仅在酸中毒纠正后腹痛仍持续或出现腹膜炎体征时才考虑影像学。",
+            "en": "Abdominal pain caused by a severe metabolic acidosis usually settles as the acidosis is corrected; iodinated contrast during dehydration with a raised creatinine needs weighing. Imaging is usually reserved for pain that persists after the acidosis is corrected or for peritonism."
           }
         }
       }
@@ -4079,8 +4859,8 @@
             }
           ],
           "note": {
-            "zh-CN": "动脉穿刺疼痛且有并发症风险；在DKA的诊断与监测中静脉血气已足够（静脉pH通常比动脉低约0.02–0.05）。",
-            "en": "Arterial puncture is painful and carries some risk; a venous gas is sufficient to diagnose and monitor DKA (venous pH is usually about 0.02–0.05 lower than arterial)."
+            "zh-CN": "动脉穿刺疼痛且有并发症风险；评估和监测这类代谢性酸中毒，静脉血气已足够（静脉pH通常比动脉低约0.02–0.05）。",
+            "en": "Arterial puncture is painful and carries some risk; a venous gas is sufficient to assess and monitor a metabolic acidosis like this (venous pH is usually about 0.02–0.05 lower than arterial)."
           }
         }
       }
@@ -4311,6 +5091,12 @@
         "remove": [
           "urinalysis"
         ]
+      },
+      {
+        "ifMatches": "bmp|cmp",
+        "remove": [
+          "poc-glucose"
+        ]
       }
     ],
     "exact": {
@@ -4328,6 +5114,18 @@
       ],
       "血糖": [
         "poc-glucose"
+      ],
+      "ues": [
+        "chemistry"
+      ],
+      "ue": [
+        "chemistry"
+      ],
+      "uandes": [
+        "chemistry"
+      ],
+      "uande": [
+        "chemistry"
       ]
     },
     "warnings": [
@@ -4378,6 +5176,23 @@
       "response": {
         "zh-CN": "监护仪已连接：持续心电、无创血压（每15分钟）及血氧监测。",
         "en": "Monitor attached: continuous ECG, NIBP every 15 minutes and SpO₂."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "方案",
+          "每小时",
+          "血糖",
+          "血酮",
+          "出入量",
+          "计划"
+        ],
+        "en": [
+          "hourly",
+          "plan",
+          "glucose",
+          "ketone",
+          "fluidbalance"
+        ]
       }
     },
     {
@@ -4507,6 +5322,35 @@
       "response": {
         "zh-CN": "0.9%氯化钠1000 mL开始输注，计划60分钟输完。",
         "en": "0.9% NaCl 1000 mL running, to finish over 60 minutes."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "继续",
+          "后续",
+          "维持",
+          "下一袋",
+          "含钾",
+          "加钾",
+          "快速补液",
+          "冲击",
+          "500",
+          "林格",
+          "平衡液",
+          "复方电解质",
+          "勃脉力"
+        ],
+        "en": [
+          "nextbag",
+          "ongoing",
+          "maintenance",
+          "withpotassium",
+          "bolus",
+          "challenge",
+          "hartmann",
+          "ringer",
+          "plasmalyte",
+          "balanced"
+        ]
       }
     },
     {
@@ -4590,6 +5434,17 @@
       "response": {
         "zh-CN": "平衡晶体液1000 mL开始输注，计划60分钟输完。（2024年国际共识认为平衡晶体液与0.9%氯化钠均可作为初始液体。）",
         "en": "Balanced crystalloid 1000 mL running over 60 minutes. (The 2024 international consensus accepts either balanced crystalloid or 0.9% saline as the initial fluid.)"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "盐水",
+          "氯化钠"
+        ],
+        "en": [
+          "saline",
+          "sodiumchloride",
+          "nacl"
+        ]
       }
     },
     {
@@ -4724,6 +5579,23 @@
       "response": {
         "zh-CN": "护士双人核对后，经第二条静脉通路以500 mL/h泵入含钾40 mmol/L的0.9%氯化钠（氯化钾20 mmol/h），胰岛素暂缓。",
         "en": "After a two-nurse check, 0.9% NaCl with KCl 40 mmol/L is running through the second line at 500 mL/h (KCl 20 mmol/h); insulin is on hold."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "静推",
+          "推注",
+          "推钾",
+          "下一袋",
+          "后续",
+          "维持"
+        ],
+        "en": [
+          "push",
+          "bolus",
+          "nextbag",
+          "maintenance",
+          "ongoing"
+        ]
       }
     },
     {
@@ -5034,8 +5906,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "原管路已打折堵塞，泵立即再次“堵塞”报警，胰岛素根本输不进去；而且严重酮症酸中毒脱水时皮下吸收不可靠，血钾低时也不应先给胰岛素。应停用并取下泵，改用静脉胰岛素。",
-        "en": "The kinked set is occluded — the pump immediately alarms 'occlusion' again and no insulin is delivered. In severe ketoacidosis with dehydration subcutaneous absorption is unreliable, and insulin must not come before potassium. Suspend and remove the pump and use IV insulin."
+        "zh-CN": "原管路已打折堵塞，泵立即再次“堵塞”报警，胰岛素根本输不进去；而且严重脱水、酸中毒时皮下吸收不可靠，血钾低时也不应先给胰岛素。应停用并取下泵，改用静脉胰岛素。",
+        "en": "The kinked set is occluded — the pump immediately alarms 'occlusion' again and no insulin is delivered. With severe dehydration and acidosis subcutaneous absorption is unreliable, and insulin must not come before potassium. Suspend and remove the pump and use IV insulin."
       },
       "response": {
         "zh-CN": "泵屏幕再次显示“堵塞——停止输注”，未输入任何胰岛素。",
@@ -5055,14 +5927,19 @@
           "取下泵",
           "拔掉泵",
           "暂停胰岛素泵",
-          "拆泵"
+          "拆泵",
+          "取下胰岛素泵",
+          "拆掉胰岛素泵",
+          "移除胰岛素泵",
+          "断开胰岛素泵"
         ],
         "en": [
           "suspend the pump",
           "remove the pump",
           "disconnect the pump",
           "take off the pump",
-          "stop the pump"
+          "stop the pump",
+          "remove insulin pump"
         ]
       },
       "dose": {
@@ -5283,8 +6160,8 @@
       "risk": "low",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "头孢曲松已开始输注。说明：DKA时白细胞升高很常见，单凭白细胞增多不是使用抗生素的理由；只有当病史、查体或检查（尿、胸片、皮肤等）找到细菌感染灶，或出现脓毒症表现时，才需要经验性抗生素。",
-        "en": "Ceftriaxone is running. Note: leucocytosis is common in DKA and is not by itself a reason for antibiotics; empirical antibiotics are needed only when history, examination or tests (urine, chest film, skin) identify a bacterial focus, or she shows signs of sepsis."
+        "zh-CN": "头孢曲松已开始输注。说明：应激和脱水时白细胞升高很常见，单凭白细胞增多不是使用抗生素的理由；只有当病史、查体或检查（尿、胸片、皮肤等）找到细菌感染灶，或出现脓毒症表现时，才需要经验性抗生素。",
+        "en": "Ceftriaxone is running. Note: leucocytosis is common with stress and dehydration and is not by itself a reason for antibiotics; empirical antibiotics are needed only when history, examination or tests (urine, chest film, skin) identify a bacterial focus, or she shows signs of sepsis."
       }
     },
     {
@@ -5366,8 +6243,8 @@
         "read": "chemistry"
       },
       "response": {
-        "zh-CN": "依诺肝素40 mg已皮下注射。DKA伴脱水是高凝状态，卧床住院期间需评估血栓预防。",
-        "en": "Enoxaparin 40 mg given SC. DKA with dehydration is prothrombotic, so VTE prophylaxis should be considered during the admission."
+        "zh-CN": "依诺肝素40 mg已皮下注射。严重脱水和高血糖使血液处于高凝状态，卧床住院期间需评估血栓预防。",
+        "en": "Enoxaparin 40 mg given SC. Severe dehydration and hyperglycaemia are prothrombotic, so VTE prophylaxis should be considered during the admission."
       }
     },
     {
@@ -5398,15 +6275,15 @@
       "risk": "low",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "已留置导尿。说明：她意识清楚、能自行排尿，DKA并不常规需要导尿；只在无尿超过1小时、意识障碍或尿量难以监测时考虑，需权衡导管相关感染风险。",
-        "en": "Catheter inserted. Note: she is alert and passing urine; catheters are not routine in DKA — consider them only for no urine after an hour, reduced consciousness or when output cannot be measured, and weigh the infection risk."
+        "zh-CN": "已留置导尿。说明：她意识清楚、能自行排尿，这种情况并不常规需要导尿；只在无尿超过1小时、意识障碍或尿量难以监测时考虑，需权衡导管相关感染风险。",
+        "en": "Catheter inserted. Note: she is alert and passing urine; a catheter is not routine here — consider them only for no urine after an hour, reduced consciousness or when output cannot be measured, and weigh the infection risk."
       }
     },
     {
       "id": "monitoring-plan",
       "name": {
-        "zh-CN": "建立DKA监测方案",
-        "en": "Set up the DKA monitoring plan"
+        "zh-CN": "建立每小时监测方案",
+        "en": "Set up the hourly monitoring plan"
       },
       "kind": "monitoring",
       "aliases": {
@@ -5482,8 +6359,8 @@
         "read": "vbg"
       },
       "response": {
-        "zh-CN": "ICU值班医生接受会诊：同意按重度DKA进入2级（HDU）监护；HDU床位准备好之前在抢救室按HDU标准监护。",
-        "en": "The ICU registrar accepts: agrees to level-2 (HDU) care for severe DKA; until the HDU bed is ready she stays in resus with HDU-level monitoring."
+        "zh-CN": "ICU值班医生接受会诊：同意她需要2级（HDU）监护；HDU床位准备好之前在抢救室按HDU标准监护。",
+        "en": "The ICU registrar accepts: agrees that she needs level-2 (HDU) care; until the HDU bed is ready she stays in resus with HDU-level monitoring."
       }
     },
     {
@@ -5523,8 +6400,8 @@
         }
       },
       "harm": {
-        "zh-CN": "重度DKA（HCO₃⁻ < 10 mmol/L、入院时钾 < 3.5 mmol/L、心率 > 100、阴离子间隙 > 16）需要2级（HDU）监护和每小时监测，普通病房无法保证。",
-        "en": "Severe DKA (HCO₃⁻ < 10 mmol/L, admission K⁺ < 3.5 mmol/L, HR > 100, anion gap > 16) needs level-2 (HDU) care and hourly monitoring, which a general ward cannot provide."
+        "zh-CN": "她病情危重，需要2级（HDU）监护和每小时监测（血糖、血酮、血气、电解质、神志、出入量），普通病房无法保证。请根据血气、血钾和生命体征判断所需的监护级别。",
+        "en": "She is critically unwell and needs level-2 (HDU) care with hourly monitoring (glucose, ketones, gas, electrolytes, neurological observations, fluid balance), which a general ward cannot provide. Judge the level of care from her gas, potassium and observations."
       },
       "response": {
         "zh-CN": "已联系内科病房。",
@@ -5580,6 +6457,40 @@
       "response": {
         "zh-CN": "10%葡萄糖125 mL/h已开始。",
         "en": "10% glucose at 125 mL/h started."
+      },
+      "contraindicatedWhen": {
+        "all": [
+          {
+            "not": {
+              "flag": "glucose-below-14"
+            }
+          },
+          {
+            "vital": "glucose",
+            "op": "gte",
+            "value": 14
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "血糖仍 ≥ 14 mmol/L 时加葡萄糖只会加重高血糖和渗透性利尿。10%葡萄糖应在胰岛素治疗下血糖降到14 mmol/L以下时加用，以便继续全量胰岛素。",
+        "en": "Adding glucose while her glucose is still ≥ 14 mmol/L only worsens the hyperglycaemia and the osmotic diuresis. 10% glucose is added once glucose falls below 14 mmol/L on insulin, so that full-dose insulin can continue."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "推",
+          "50%葡萄糖",
+          "20%葡萄糖",
+          "低血糖"
+        ],
+        "en": [
+          "push",
+          "hypo",
+          "50%glucose",
+          "50%dextrose",
+          "20%glucose",
+          "20%dextrose"
+        ]
       }
     },
     {
@@ -5745,8 +6656,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "酮症酸中毒尚未缓解，或还没有皮下胰岛素接续就停静脉胰岛素：静脉胰岛素半衰期只有几分钟，她的泵也已取下，体内很快没有胰岛素，酮症会迅速反弹。",
-        "en": "Stopping IV insulin before the ketoacidosis has resolved, or before subcutaneous insulin is on board: IV insulin lasts only minutes and her pump is off, so she is soon without insulin and ketosis rebounds quickly."
+        "zh-CN": "在确认缓解之前、或还没有皮下胰岛素接续时就停静脉胰岛素：静脉胰岛素半衰期只有几分钟，她的泵也已取下，体内很快没有胰岛素，酮症会迅速反弹。",
+        "en": "Stopping IV insulin before resolution has been confirmed, or before subcutaneous insulin is on board: IV insulin lasts only minutes and her pump is off, so she is soon without insulin and ketosis rebounds quickly."
       },
       "response": {
         "zh-CN": "静脉胰岛素和10%葡萄糖已停止。护士继续按计划监测血糖和血酮。",
@@ -5928,6 +6839,34 @@
         "severity": "info"
       },
       {
+        "id": "ev-no-fluids-45",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 45
+              }
+            },
+            {
+              "not": {
+                "flag": "fluids-started"
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 122,
+          "sbp": 96,
+          "dbp": 57
+        },
+        "setFlags": [],
+        "message": {
+          "zh-CN": "护士：“医生，她到现在还没有输上液体——血压在往下掉，嘴唇干得起皮了。”",
+          "en": "Nurse: \"Doctor, she still has no IV fluids running — her blood pressure is drifting down and her lips are cracked dry.\""
+        },
+        "severity": "warning"
+      },
+      {
         "id": "ev-insulin-ready",
         "when": {
           "all": [
@@ -6046,6 +6985,195 @@
         "severity": "info"
       },
       {
+        "id": "ev-k-late-150",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 150
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-150"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-180",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 180
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-180"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-240",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 240
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-240"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-300",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 300
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-300"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-360",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 360
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-360"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-420",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 420
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-420"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-480",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 480
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-480"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-540",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 540
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-540"
+        ],
+        "severity": "info"
+      },
+      {
+        "id": "ev-k-late-600",
+        "when": {
+          "all": [
+            {
+              "elapsed": {
+                "gte": 600
+              }
+            },
+            {
+              "not": {
+                "flag": "k-replacing"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "k-late-600"
+        ],
+        "severity": "info"
+      },
+      {
         "id": "ev-insulin-before-k",
         "when": {
           "all": [
@@ -6098,6 +7226,30 @@
           "zh-CN": "监护报警：频发多源室性早搏，刚才一阵6跳短阵室速后自行终止！患者说心慌、两条腿发软没力气。护士急查床旁血气：K⁺ 2.6 mmol/L。",
           "en": "Monitor alarm: frequent multifocal ventricular ectopics, and a 6-beat run of ventricular tachycardia that stopped on its own! She says her heart is racing and her legs feel weak and heavy. The nurse runs an urgent bedside gas: K⁺ 2.6 mmol/L."
         }
+      },
+      {
+        "id": "ev-k-crash-settles",
+        "when": {
+          "all": [
+            {
+              "flag": "k-crash"
+            },
+            {
+              "not": {
+                "phase": "resus"
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 118
+        },
+        "setFlags": [],
+        "message": {
+          "zh-CN": "护士：“补钾一段时间后，监护上的室性早搏明显少了，心率也降下来一些。”",
+          "en": "Nurse: \"Since the potassium has been running, the ectopics have settled and her heart rate has come down a bit.\""
+        },
+        "severity": "info"
       },
       {
         "id": "ev-bicarbonate",
@@ -6194,6 +7346,49 @@
         }
       },
       {
+        "id": "ev-severe-hypo",
+        "when": {
+          "vital": "glucose",
+          "op": "lte",
+          "value": 2.5
+        },
+        "setVitals": {
+          "gcs": 12
+        },
+        "setFlags": [
+          "severe-hypoglycaemia"
+        ],
+        "message": {
+          "zh-CN": "护士：“她出了一身冷汗，要大声叫她才睁眼，说话也含糊了——指尖血糖还在往下掉！”",
+          "en": "Nurse: \"She's drenched in sweat, only opens her eyes when I raise my voice and her speech is slurred — her capillary glucose is still falling!\""
+        },
+        "severity": "critical"
+      },
+      {
+        "id": "ev-hypo-recovered",
+        "when": {
+          "all": [
+            {
+              "flag": "severe-hypoglycaemia"
+            },
+            {
+              "vital": "glucose",
+              "op": "gte",
+              "value": 5
+            }
+          ]
+        },
+        "setVitals": {
+          "gcs": 15
+        },
+        "setFlags": [],
+        "message": {
+          "zh-CN": "护士：“血糖上来以后她清醒多了，对答也切题了。”",
+          "en": "Nurse: \"Now her glucose is back up she's properly awake and making sense again.\""
+        },
+        "severity": "info"
+      },
+      {
         "id": "ev-dka-resolved",
         "when": {
           "all": [
@@ -6223,6 +7418,9 @@
         "id": "ev-friii-stopped-no-overlap",
         "when": {
           "all": [
+            {
+              "intervened": "friii"
+            },
             {
               "intervened": "stop-friii"
             },
@@ -7488,8 +8686,8 @@
         "en": "Chen Lan (resus/HDU nurse)"
       },
       "knowledge": {
-        "zh-CN": "交班：24岁女性，02:40由室友打车送来，诉呕吐、腹痛约2天，今夜呼吸加快；直接进抢救室3床。分诊生命体征与到院时监护一致。到院前未用任何药，尚无静脉通路，尚未测指尖血糖。患者腰间别着一个胰岛素泵（护士能看到，但不解读其意义）。室友在家属等候区，可以联系患者家人。物流：床旁有监护仪、血糖/血酮仪、心电图机、输液泵、氧气；急诊有血气分析仪（约5分钟出结果）。急诊备药：0.9%氯化钠、平衡晶体液、预混含钾0.9%氯化钠（40 mmol/L）、10%和20%葡萄糖、普通胰岛素、甘精胰岛素、门冬胰岛素、昂丹司琼、8.4%碳酸氢钠、磷酸钾、头孢曲松、依诺肝素。护理常规：氯化钾只能稀释后用输液泵输注，外周浓度 ≤ 40 mmol/L，> 10 mmol/h需持续心电监护，绝不静推；胰岛素输注按医嘱配制（50 U/50 mL）。会主动提醒：到院30分钟仍未补钾、血糖降到14以下、低血糖、需要复查时。不解读化验结果，不给出诊断。",
-        "en": "Handover: 24-year-old woman brought by her roommate by taxi at 02:40 with about 2 days of vomiting and abdominal pain and faster breathing tonight; taken straight to resus bay 3. Triage vital signs match the monitor at arrival. No medicines before arrival, no IV access yet, capillary glucose not yet checked. She has an insulin pump clipped to her waistband (the nurse can see it but does not interpret it). The roommate is in the relatives' room and can contact the family. Logistics: the bay has a monitor, glucose/ketone meter, ECG cart, infusion pumps and oxygen; the ED has a blood-gas analyser (results in about 5 minutes). ED stock: 0.9% NaCl, balanced crystalloid, pre-mixed 0.9% NaCl with KCl 40 mmol/L, 10% and 20% glucose, soluble insulin, glargine, aspart, ondansetron, 8.4% sodium bicarbonate, potassium phosphate, ceftriaxone, enoxaparin. Nursing rules: potassium only diluted by volumetric pump, peripheral concentration ≤ 40 mmol/L, > 10 mmol/h only on continuous ECG monitoring, never pushed; insulin infusions made up to order (50 U/50 mL). Speaks up when: no potassium order 30 minutes after arrival, glucose falls below 14, hypoglycaemia, or a recheck is due. Does not interpret results or suggest diagnoses."
+        "zh-CN": "交班：24岁女性，02:40由室友打车送来，诉呕吐、腹痛约2天，今夜呼吸加快；直接进抢救室3床。分诊生命体征与到院时监护一致。到院前未用任何药，尚无静脉通路，尚未测指尖血糖。患者腰间别着一个胰岛素泵（护士能看到，但不解读其意义）。室友在家属等候区，可以联系患者家人。物流：床旁有监护仪、血糖/血酮仪、心电图机、输液泵、氧气；血气约5分钟出结果。急诊备药：0.9%氯化钠、平衡晶体液、预混含钾0.9%氯化钠（40 mmol/L）、10%和20%葡萄糖、普通胰岛素、甘精胰岛素、门冬胰岛素、昂丹司琼、8.4%碳酸氢钠、磷酸钾、头孢曲松、依诺肝素。护理常规：氯化钾只能稀释后用输液泵输注，外周浓度 ≤ 40 mmol/L，> 10 mmol/h需持续心电监护，绝不静推；胰岛素输注按医嘱配制（50 U/50 mL）。会主动提醒：到院30分钟仍未补钾、血糖降到14以下、低血糖、需要复查时。不解读化验结果，不给出诊断。",
+        "en": "Handover: 24-year-old woman brought by her roommate by taxi at 02:40 with about 2 days of vomiting and abdominal pain and faster breathing tonight; taken straight to resus bay 3. Triage vital signs match the monitor at arrival. No medicines before arrival, no IV access yet, capillary glucose not yet checked. She has an insulin pump clipped to her waistband (the nurse can see it but does not interpret it). The roommate is in the relatives' room and can contact the family. Logistics: the bay has a monitor, glucose/ketone meter, ECG cart, infusion pumps and oxygen; blood-gas results come back in about 5 minutes. ED stock: 0.9% NaCl, balanced crystalloid, pre-mixed 0.9% NaCl with KCl 40 mmol/L, 10% and 20% glucose, soluble insulin, glargine, aspart, ondansetron, 8.4% sodium bicarbonate, potassium phosphate, ceftriaxone, enoxaparin. Nursing rules: potassium only diluted by volumetric pump, peripheral concentration ≤ 40 mmol/L, > 10 mmol/h only on continuous ECG monitoring, never pushed; insulin infusions made up to order (50 U/50 mL). Speaks up when: no potassium order 30 minutes after arrival, glucose falls below 14, hypoglycaemia, or a recheck is due. Does not interpret results or suggest diagnoses."
       }
     },
     {
@@ -7499,8 +8697,8 @@
         "en": "Dr Wu (ICU/HDU registrar)"
       },
       "knowledge": {
-        "zh-CN": "接受急诊会诊电话；HDU床位约1小时后可用，在此之前在抢救室按HDU标准监护。只解读学员已经看过的静脉血气、生化和心电图。熟悉JBDS提示需2级监护的指标（血酮 > 6 mmol/L、HCO₃⁻ < 5 mmol/L、静脉pH < 7.0、入院时钾 < 3.5 mmol/L、GCS < 12、吸空气SpO₂ < 92%、收缩压 < 90 mmHg、心率 > 100或 < 60次/分、阴离子间隙 > 16）。会追问补钾与胰岛素的顺序、液体速度，并提醒18–25岁年轻成人需监测神经系统体征（脑水肿）。",
-        "en": "Takes the ED referral call; an HDU bed will be free in about an hour, and until then she stays in resus with HDU-level monitoring. Interprets only the venous gas, chemistry and ECG the learner has already seen. Knows the JBDS markers for level-2 care (ketones > 6 mmol/L, HCO₃⁻ < 5 mmol/L, venous pH < 7.0, admission K⁺ < 3.5 mmol/L, GCS < 12, SpO₂ < 92% on air, systolic BP < 90 mmHg, HR > 100 or < 60/min, anion gap > 16). Probes the potassium-before-insulin sequence and fluid rates, and reminds that young adults aged 18–25 need neurological observations (cerebral oedema)."
+        "zh-CN": "只在学员打电话会诊时出现；先请学员汇报诊断、严重程度和已有结果，不替学员下诊断。接受急诊会诊电话；HDU床位约1小时后可用，在此之前在抢救室按HDU标准监护。只解读学员已经看过的静脉血气、生化和心电图。熟悉JBDS提示需2级监护的指标（血酮 > 6 mmol/L、HCO₃⁻ < 5 mmol/L、静脉pH < 7.0、入院时钾 < 3.5 mmol/L、GCS < 12、吸空气SpO₂ < 92%、收缩压 < 90 mmHg、心率 > 100或 < 60次/分、阴离子间隙 > 16）。会追问补钾与胰岛素的顺序、液体速度，并提醒18–25岁年轻成人需监测神经系统体征（脑水肿）。",
+        "en": "Comes in only when the learner phones the referral; first asks the learner to present their diagnosis, severity and results, and never makes the diagnosis for them. Takes the ED referral call; an HDU bed will be free in about an hour, and until then she stays in resus with HDU-level monitoring. Interprets only the venous gas, chemistry and ECG the learner has already seen. Knows the JBDS markers for level-2 care (ketones > 6 mmol/L, HCO₃⁻ < 5 mmol/L, venous pH < 7.0, admission K⁺ < 3.5 mmol/L, GCS < 12, SpO₂ < 92% on air, systolic BP < 90 mmHg, HR > 100 or < 60/min, anion gap > 16). Probes the potassium-before-insulin sequence and fluid rates, and reminds that young adults aged 18–25 need neurological observations (cerebral oedema)."
       },
       "interprets": [
         "vbg",
@@ -7516,8 +8714,8 @@
         "en": "Sister Sun (inpatient diabetes specialist nurse)"
       },
       "knowledge": {
-        "zh-CN": "白天接受会诊。只解读学员已经读过的泵下载数据和HbA1c。能讲解：胰岛素泵只用速效胰岛素、没有长效储备，输注中断数小时即可发生DKA；“不明原因高血糖 > 14 mmol/L先测血酮，血酮 ≥ 0.6时用笔式胰岛素校正并更换整套管路和部位”；生病日规则；建议从泵转为皮下基础—餐时方案时，甘精胰岛素剂量约等于泵的每日基础总量（她为18 U），餐时按碳水系数1 U:10 g；病愈且完成再教育后再换新管路重新上泵；出院前配发血酮仪和试纸并安排复诊。",
-        "en": "Available in the daytime. Interprets only the pump download and HbA1c that the learner has already read. Can explain that a pump delivers only rapid-acting insulin with no long-acting depot, so DKA can follow within hours of interrupted delivery; 'unexplained glucose > 14 mmol/L → check ketones; if ≥ 0.6, correct with a pen and change the whole set and site'; sick-day rules; that when moving from pump to SC basal–bolus the glargine dose is about the pump's total daily basal (18 U for her) with meal insulin by her 1 U:10 g ratio; that the pump is restarted with a new set once she is well and re-educated; and that she leaves with a blood-ketone meter, strips and follow-up."
+        "zh-CN": "只在学员提出会诊后出现，不先于学员说出诊断。白天接受会诊。只解读学员已经读过的泵下载数据和HbA1c。能讲解：胰岛素泵只用速效胰岛素、没有长效储备，输注中断数小时即可发生DKA；“不明原因高血糖 > 14 mmol/L先测血酮，血酮 ≥ 0.6时用笔式胰岛素校正并更换整套管路和部位”；生病日规则；建议从泵转为皮下基础—餐时方案时，甘精胰岛素剂量约等于泵的每日基础总量（她为18 U），餐时按碳水系数1 U:10 g；病愈且完成再教育后再换新管路重新上泵；出院前配发血酮仪和试纸并安排复诊。",
+        "en": "Comes in only once the learner refers her, and never names the diagnosis before the learner has. Available in the daytime. Interprets only the pump download and HbA1c that the learner has already read. Can explain that a pump delivers only rapid-acting insulin with no long-acting depot, so DKA can follow within hours of interrupted delivery; 'unexplained glucose > 14 mmol/L → check ketones; if ≥ 0.6, correct with a pen and change the whole set and site'; sick-day rules; that when moving from pump to SC basal–bolus the glargine dose is about the pump's total daily basal (18 U for her) with meal insulin by her 1 U:10 g ratio; that the pump is restarted with a new set once she is well and re-educated; and that she leaves with a blood-ketone meter, strips and follow-up."
       },
       "interprets": [
         "pump-download",
@@ -7531,8 +8729,8 @@
         "en": "Liu (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "核对剂量：固定速率胰岛素0.1 U/kg/h × 55 kg = 5.5 U/h（50 U/50 mL时5.5 mL/h），不需要负荷量；外周补钾浓度 ≤ 40 mmol/L、速度 ≤ 20 mmol/h需心电监护；氯化钾绝不静推；pH ≥ 7.0不推荐碳酸氢钠；磷 < 0.32 mmol/L才考虑补磷；依诺肝素40 mg每日一次适用于她的体重和肾功能；昂丹司琼在低钾、QT延长时需谨慎；左甲状腺素可在能口服后恢复。不做诊断。",
-        "en": "Checks doses: fixed-rate insulin 0.1 U/kg/h × 55 kg = 5.5 U/h (5.5 mL/h of 50 U/50 mL), no bolus; peripheral potassium ≤ 40 mmol/L and ≤ 20 mmol/h on ECG monitoring; potassium chloride is never pushed; bicarbonate is not recommended when pH ≥ 7.0; phosphate is replaced only below 0.32 mmol/L; enoxaparin 40 mg daily suits her weight and renal function; ondansetron needs care with hypokalaemia and a long QT; levothyroxine restarts once she can take oral medicines. Does not make diagnoses."
+        "zh-CN": "只核对学员提出或已下达的药物与剂量，不主动给出治疗方案。核对剂量：固定速率胰岛素0.1 U/kg/h × 55 kg = 5.5 U/h（50 U/50 mL时5.5 mL/h），不需要负荷量；外周补钾浓度 ≤ 40 mmol/L、速度 ≤ 20 mmol/h需心电监护；氯化钾绝不静推；pH ≥ 7.0不推荐碳酸氢钠；磷 < 0.32 mmol/L才考虑补磷；依诺肝素40 mg每日一次适用于她的体重和肾功能；昂丹司琼在低钾、QT延长时需谨慎；左甲状腺素可在能口服后恢复。不做诊断。",
+        "en": "Checks only drugs and doses the learner proposes or has ordered, and does not volunteer a treatment plan. Checks doses: fixed-rate insulin 0.1 U/kg/h × 55 kg = 5.5 U/h (5.5 mL/h of 50 U/50 mL), no bolus; peripheral potassium ≤ 40 mmol/L and ≤ 20 mmol/h on ECG monitoring; potassium chloride is never pushed; bicarbonate is not recommended when pH ≥ 7.0; phosphate is replaced only below 0.32 mmol/L; enoxaparin 40 mg daily suits her weight and renal function; ondansetron needs care with hypokalaemia and a long QT; levothyroxine restarts once she can take oral medicines. Does not make diagnoses."
       }
     },
     {
@@ -7542,8 +8740,8 @@
         "en": "Dr Yang (on-call radiologist)"
       },
       "knowledge": {
-        "zh-CN": "只解读学员已经看过的胸片和腹部CT。会提醒：DKA时腹痛常见且多随酸中毒纠正而缓解，脱水、肌酐升高时碘对比剂需权衡；纠正后腹痛仍持续或有腹膜炎体征时再考虑影像。",
-        "en": "Interprets only the chest X-ray and abdominal CT the learner has already seen. Points out that abdominal pain is common in DKA and usually settles as the acidosis is corrected, that iodinated contrast during dehydration with a raised creatinine needs weighing, and that imaging is for pain that persists after correction or for peritonism."
+        "zh-CN": "只解读学员已经看过的胸片和腹部CT。会提醒：伴呕吐的严重代谢性酸中毒常引起腹痛，多随酸中毒纠正而缓解，脱水、肌酐升高时碘对比剂需权衡；纠正后腹痛仍持续或有腹膜炎体征时再考虑影像。不说出潜在诊断。",
+        "en": "Interprets only the chest X-ray and abdominal CT the learner has already seen. Points out that abdominal pain is common with a severe metabolic acidosis and vomiting and usually settles as the acidosis is corrected, that iodinated contrast during dehydration with a raised creatinine needs weighing, and that imaging is for pain that persists after correction or for peritonism. Does not name the underlying diagnosis."
       },
       "interprets": [
         "cxr",
@@ -7557,8 +8755,8 @@
         "en": "Dr Ma (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，不直接给答案，只基于学员已获得的信息提问：她的阴离子间隙是多少？测得的钠为什么偏低、校正后是多少？严重程度按哪个指标判断？为什么不能先给胰岛素？什么时候才考虑碳酸氢钠？血糖降到14以下以后为什么不能停胰岛素？“缓解”的标准是什么？为什么18–25岁的患者补液要谨慎？",
-        "en": "Socratic; never gives the answer outright and asks only about information the learner already has: What is her anion gap? Why is the measured sodium low, and what is the corrected value? Which parameter grades the severity? Why not insulin first? When would bicarbonate even be considered? Why can't insulin stop once glucose is below 14? What defines resolution? Why be careful with fluids in an 18–25-year-old?"
+        "zh-CN": "苏格拉底式带教，不直接给答案，只基于学员已获得的信息提问。学员确立诊断之前：深大呼吸可能在代偿什么？床旁马上能查什么？静脉血气怎么解读、阴离子间隙是多少？学员确立诊断之后：测得的钠为什么偏低、校正后是多少？严重程度按哪个指标判断？为什么不能先给胰岛素？什么时候才考虑碳酸氢钠？血糖降到14以下以后为什么不能停胰岛素？“缓解”的标准是什么？为什么18–25岁的患者补液要谨慎？",
+        "en": "Socratic; never gives the answer outright and asks only about information the learner already has. Before the learner has committed to a diagnosis: what might the deep, fast breathing be compensating for? What can be checked at the bedside right now? How do you read the venous gas, and what is the anion gap? After the learner has committed: why is the measured sodium low, and what is the corrected value? Which parameter grades the severity? Why not insulin first? When would bicarbonate even be considered? Why can't insulin stop once glucose is below 14? What defines resolution? Why be careful with fluids in an 18–25-year-old?"
       }
     }
   ],
@@ -8345,6 +9543,160 @@
         "locale": "en",
         "expect": [
           "hx-smoking-alcohol"
+        ]
+      },
+      {
+        "text": "咋了这是，哪儿难受？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-main-complaint"
+        ]
+      },
+      {
+        "text": "吐了几回啊",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-vomiting"
+        ]
+      },
+      {
+        "text": "胰岛素这两天打没打？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-insulin-omitted"
+        ]
+      },
+      {
+        "text": "管子多久没换了",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-infusion-set"
+        ]
+      },
+      {
+        "text": "以前有过dka吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-previous-dka"
+        ]
+      },
+      {
+        "text": "平时吃啥药",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-meds"
+        ]
+      },
+      {
+        "text": "大姨妈啥时候来的",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-lmp-pregnancy"
+        ]
+      },
+      {
+        "text": "在家测血堂了吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-glucose-home"
+        ]
+      },
+      {
+        "text": "室友也拉肚子吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-sick-contacts"
+        ]
+      },
+      {
+        "text": "最后一次吃东西是啥时候",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-oral-intake"
+        ]
+      },
+      {
+        "text": "做过手术没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-psh"
+        ]
+      },
+      {
+        "text": "头疼不疼，心慌不",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-ros-other"
+        ]
+      },
+      {
+        "text": "wats ur LMP",
+        "locale": "en",
+        "expect": [
+          "hx-lmp-pregnancy"
+        ]
+      },
+      {
+        "text": "any probs w/ ur pump?",
+        "locale": "en",
+        "expect": [
+          "hx-insulin-pump"
+        ]
+      },
+      {
+        "text": "did u miss any boluses",
+        "locale": "en",
+        "expect": [
+          "hx-insulin-omitted"
+        ]
+      },
+      {
+        "text": "any vomitting?",
+        "locale": "en",
+        "expect": [
+          "hx-vomiting"
+        ]
+      },
+      {
+        "text": "any SOB or chest pain",
+        "locale": "en",
+        "expect": [
+          "hx-breathing"
+        ]
+      },
+      {
+        "text": "u had DKA b4?",
+        "locale": "en",
+        "expect": [
+          "hx-previous-dka"
+        ]
+      },
+      {
+        "text": "what's ur TDD",
+        "locale": "en",
+        "expect": [
+          "hx-pump-settings"
+        ]
+      },
+      {
+        "text": "Any operations?",
+        "locale": "en",
+        "expect": [
+          "hx-psh"
+        ]
+      },
+      {
+        "text": "When did you last eat?",
+        "locale": "en",
+        "expect": [
+          "hx-oral-intake"
+        ]
+      },
+      {
+        "text": "Any headache or blurred vision?",
+        "locale": "en",
+        "expect": [
+          "hx-ros-other"
         ]
       }
     ]

@@ -93,7 +93,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const assetDirs = opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env);
   const csp = contentSecurityPolicy(providerOrigins(settings));
   const baseHeaders = securityHeaders(csp);
-  const transcripts = new WebTranscriptStore(env);
+  const transcripts = new WebTranscriptStore(env, settings.transcripts.dir);
   const shutdown = new AbortController();
   const streams = new Set<Promise<void>>();
   let contentPromise: Promise<LoadedContent> | null = opts.content ? Promise.resolve(opts.content) : null;
@@ -210,8 +210,10 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       } catch (err) {
         return sendError(res, 400, "bad_request", sm(L, "error.badRequest", { message: (err as Error).message }));
       }
+      // Transcripts switched off in settings: accept and drop (the browser keeps its own copy).
+      if (!settings.transcripts.enabled) return sendJson(res, 200, { ok: true, written: 0, stored: false });
       const result = await transcripts.append(kind, items);
-      return sendJson(res, 200, { ok: true, written: result.written });
+      return sendJson(res, 200, { ok: true, written: result.written, stored: true });
     }
     return sendError(res, 404, "not_found", sm(L, "error.notFound"));
   };

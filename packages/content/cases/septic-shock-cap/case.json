@@ -583,7 +583,10 @@
           "就喘",
           "走几步",
           "走路就喘",
-          "喘气困难"
+          "喘气困难",
+          "平躺",
+          "躺平",
+          "夜里憋醒"
         ],
         "en": [
           "short of breath",
@@ -594,7 +597,12 @@
           "breathing difficulty",
           "trouble breathing",
           "out of breath",
-          "sob"
+          "sob",
+          "lie flat",
+          "orthopnoea",
+          "orthopnea",
+          "pnd",
+          "wake up breathless"
         ]
       },
       "disclosure": "on-ask",
@@ -634,7 +642,11 @@
           "咋回事",
           "怎么回事",
           "怎么病的",
-          "讲讲经过"
+          "讲讲经过",
+          "这么晚",
+          "怎么才来",
+          "为啥才来",
+          "为什么现在才来"
         ],
         "en": [
           "what happened",
@@ -648,7 +660,11 @@
           "story so far",
           "walk me through",
           "been unwell",
-          "how long unwell"
+          "how long unwell",
+          "so late",
+          "come in sooner",
+          "come in earlier",
+          "bring her in sooner"
         ]
       },
       "disclosure": "on-ask",
@@ -1323,7 +1339,9 @@
           "结核",
           "得过肺炎",
           "类似",
-          "吸入剂"
+          "吸入剂",
+          "家庭氧疗",
+          "家里吸氧"
         ],
         "en": [
           "copd",
@@ -1335,7 +1353,8 @@
           "tuberculosis",
           "tb",
           "bronchitis",
-          "inhaler"
+          "inhaler",
+          "home oxygen"
         ]
       },
       "disclosure": "on-ask",
@@ -8854,8 +8873,8 @@
         "en": "Dr Wang (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教：只追问学习者已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、SSC 2021的1小时集束化、去甲肾上腺素可经外周起始、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
-        "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does her lactate tell you?', 'Why does her pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the SSC 2021 hour-1 bundle, peripheral norepinephrine, and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
+        "zh-CN": "苏格拉底式带教：只追问学习者已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、1小时集束化（SSC 2018更新，与SSC 2021一致）、去甲肾上腺素可经外周起始、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
+        "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does her lactate tell you?', 'Why does her pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the Hour-1 bundle (SSC 2018 update, consistent with SSC 2021), peripheral norepinephrine, and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
       },
       "interprets": [
         "vbg-lactate",

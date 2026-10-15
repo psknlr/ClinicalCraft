@@ -287,6 +287,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
 
   /* ---------------- NPCs ---------------- */
   const patients = new Map<string, WorldPatient>();
+  /** Camera position of the last interior-culling pass (null = re-evaluate; see cullDetails). */
+  let detailAt: { x: number; z: number } | null = null;
   const tagSigns: Object3D[] = [];
 
   /** Name tags / labels never take the aim ray. */
@@ -354,6 +356,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     });
     patients.set(p.slotId, p);
     markShadows();
+    detailAt = null; // re-evaluate interior culling for the new rig
   }
 
   function removeNpc(n: NpcRecord): void {
@@ -994,6 +997,39 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     });
   }
 
+  /* ---------------- interior detail culling ---------------- */
+  // Signs, live screens, interior door leaves and NPCs inside a building are only drawn while the
+  // camera is inside that building or within DETAIL_RANGE of them: from outside, walls and the roof
+  // hide them anyway (frustum culling cannot know that), and they were most of the draw calls of
+  // outdoor views of a large hospital.
+  const DETAIL_RANGE = 25;
+  const buildingRects = facility.buildings.map((bb) => bb.rect);
+  const buildingAt = (x: number, z: number) => buildingRects.findIndex((r) => Math.abs(x - r.x) <= r.w / 2 && Math.abs(z - r.z) <= r.d / 2);
+  interface Detail {
+    obj: Object3D;
+    x: number;
+    z: number;
+    building: number;
+  }
+  const details: Detail[] = [];
+  const addDetail = (obj: Object3D, x: number, z: number) => {
+    const bi = buildingAt(x, z);
+    if (bi >= 0) details.push({ obj, x, z, building: bi });
+  };
+  for (const o of root.children) if (o.name === "sign") addDetail(o, o.position.x, o.position.z);
+  for (const sc of ctx.screens) addDetail(sc.mesh, sc.x, sc.z);
+  for (const d of ctx.doors) if (d.interior) for (const l of d.leaves) addDetail(l.pivot, d.centre.x, d.centre.z);
+  function cullDetails(force = false): void {
+    if (!details.length && !ctx.npcs.size) return;
+    const cx = camera.position.x, cz = camera.position.z;
+    if (!force && detailAt && Math.hypot(cx - detailAt.x, cz - detailAt.z) < 0.75) return;
+    detailAt = { x: cx, z: cz };
+    const inside = buildingAt(cx, cz);
+    const show = (bi: number, x: number, z: number) => bi < 0 || bi === inside || Math.hypot(x - cx, z - cz) < DETAIL_RANGE;
+    for (const d of details) d.obj.visible = show(d.building, d.x, d.z);
+    for (const n of ctx.npcs.values()) n.rig.root.visible = show(buildingAt(n.x, n.z), n.x, n.z);
+  }
+
   /* ---------------- frame loop ---------------- */
   const tmpV = new Vector3();
   const tmpCam = new Vector3();
@@ -1102,6 +1138,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     if (animateDoors(ctx.doors, dt)) markShadows();
     followSun(player.x, player.z);
     assignLights(player.x, player.z);
+    cullDetails();
     // NPCs: head tracking (V4: within 5 units, ±.55 rad, lerp dt·3), speaking, distress
     camera.getWorldPosition(tmpCam);
     for (const n of ctx.npcs.values()) {
@@ -1429,6 +1466,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       drawCalls() {
         followSun(player.x, player.z);
         assignLights(player.x, player.z, true);
+        camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
+        cullDetails(true);
         const info = renderer.info;
         info.autoReset = false;
         info.reset();

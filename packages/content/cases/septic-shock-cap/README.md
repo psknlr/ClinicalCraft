@@ -27,7 +27,8 @@
 
 * **Triage (minute 0):** T 39.1 °C, HR 118, BP 84/48 (MAP 60), RR 28, SpO₂ 89 % on air, GCS 14; NEWS2 16.
 * **Untreated course (physiology trends):** SBP −0.15/min (floor −12) and DBP −0.08/min (floor −6) until antibiotics + ≥ 2 boluses; an additional "vasoplegia" trend (SBP −0.06/min, DBP −0.04/min) continues until norepinephrine starts; HR, RR and GCS drift (recovering after the bundle); SpO₂ falls until oxygen is given.
-* **Fluids:** each 500 mL bolus gives a small persistent effect (+1.5/+0.5 mmHg, HR −2) and a transient one (+4/+2 mmHg for ~15 min) — the learner sees a pressure that rises and then falls back, which is the cue to start norepinephrine. In the reference path MAP is ~62 mmHg at reassessment and ~70–73 mmHg once norepinephrine (+14/+8 mmHg) is running.
+* **Fluids:** each 500 mL bolus gives a small persistent effect (+1.5/+0.5 mmHg, HR −2) and a transient one (+4/+2 mmHg, HR −2, fading in two halves ~11 and ~19 min after the bolus so the monitor does not drop in one 4 mmHg step) — the learner sees a pressure that rises and then falls back, which is the cue to start norepinephrine. In the reference path MAP is ~63–64 mmHg at reassessment and ~70–73 mmHg once norepinephrine (+14/+8 mmHg) is running.
+* **Norepinephrine titration:** `maxDoses: 3` — choosing norepinephrine again steps the rate up (+14/+8 mmHg each, as the dose text says "titrate every 5–10 min to MAP ≥ 65"). The reference path needs one step; after late antibiotics (`reassess-late`, baseline BP 78/44) MAP stays ~56 mmHg on one step and needs two to reach ≥ 65, so delay shows up as a higher vasopressor requirement instead of a dead end.
 * **Oxygen:** target effects — nasal cannula 95 %, Venturi 0.40 97 %, reservoir mask 100 % (rubric expects 94–98 % at the end, so step down after a reservoir mask).
 * **Scenario events:** cultures-before-antibiotics flag (`cultures-first` — only when no antibiotic of any kind, flag `any-abx`, has been given) or a nurse note when cultures follow an antibiotic (`cultures-after-abx`); CT-before-antibiotics warning; nurse prompt at 30 min without antibiotics; at 60 min without antibiotics a critical deterioration (`abx-late`, baseline BP 78/44, GCS 13); peri-arrest at 120 min with neither antibiotics nor norepinephrine; dopamine → atrial fibrillation; hydrocortisone before a vasopressor → pharmacist warning; a 5th bolus → bilateral crackles (RR 32); ICU not called by 90 min → warning; entering `reassess-late` → nurse warning that perfusion is still poor.
 * **Phase-dependent results:** `lactate-repeat` gives 5.1 mmol/L (rising) in `resus` and 3.6 mmol/L (≈ 22 % fall, still > 2 mmol/L) in `reassess` — a realistic fall for the ~30–60 simulated minutes the reassess phase represents; every other test also has a `reassess` result reflecting post-fluid dilution (e.g. Hb 118 g/L, albumin 29 g/L) so late orders never show "no record". `vbg-lactate@reassess` no longer quotes the arrival value (a learner whose first gas is taken after resuscitation never saw 4.6).
@@ -47,12 +48,13 @@
 | Ward admission | `contraindicated` |
 | Antibiotics after 60 min | `abx-late` (critical event, BP/GCS step down), `r-abx-1h` lost, case continues in `reassess-late` with a rising lactate |
 | Antibiotic before blood cultures | `cultures-first` never set (`r-cultures` lost); nurse notes the lower yield |
-| Moxifloxacin (or azithromycin) alone | treats physiologically but `obj-hour1` also needs a β-lactam (`beta-lactam-given`); `r-abx-regimen` lost |
+| Moxifloxacin alone | treats physiologically (`abx-given`) but `obj-hour1` also needs a β-lactam (`beta-lactam-given`); `r-abx-regimen` lost |
+| Azithromycin alone | not an effective regimen (sets only `atypical-cover`/`any-abx`): the hypotension trends continue and `abx-late` still fires at 60 min |
 | Piperacillin–tazobactam, vancomycin | `neutral` with stewardship feedback (vancomycin alone does not count as an effective CAP antibiotic) |
 
 ## Decisions
 
-`abx-timing` (single; unlocks once the chest is auscultated **and** the lactate result is read, because its stem cites the raised lactate), `abx-regimen` (select-all: ceftriaxone + azithromycin **and** ceftriaxone + moxifloxacin), `vasopressor` (single), `sepsis3` (single; unlocks after lactate, blood count, chemistry, norepinephrine **and** a post-resuscitation lactate, because its feedback cites the platelets and the repeat lactate), `curb65` (single). Every option has bilingual feedback. Answering is free and unlimited, so first-attempt accuracy is scored (`r-dx` uses `decidedFirstTry: sepsis3`; `r-reasoning` needs `abx-timing`, `vasopressor` and `curb65` right first time).
+`abx-timing` (single; unlocks once the chest is auscultated **and** the lactate result is read, because its stem cites the raised lactate), `abx-regimen` (select-all: ceftriaxone + azithromycin **and** ceftriaxone + moxifloxacin), `vasopressor` (single; unlocks after ≥ 3 boluses **and** the post-fluid perfusion re-examination, `ex-reassess-perfusion` or `-late`, because its stem is "reassessing after the initial fluid boluses"), `sepsis3` (single; unlocks after lactate, blood count, chemistry, norepinephrine **and** a post-resuscitation lactate, because its feedback cites the platelets and the repeat lactate), `curb65` (single). Every option has bilingual feedback. Answering is free and unlimited, so first-attempt accuracy is scored (`r-dx` uses `decidedFirstTry: sepsis3`; `r-reasoning` needs `abx-timing`, `vasopressor` and `curb65` right first time).
 
 ## Numbers check (also in `extensions.authorChecks`)
 
@@ -72,7 +74,9 @@
 
 ## Teaching notes for facilitators
 
-* The daughter is the main historian (`persona.companion.answersHistory: true`); answers prefixed "女儿：" / "Daughter:" are hers. The patient can name her symptoms but is disoriented (4AT 7).
+* The daughter is the main historian (`persona.companion.answersHistory: true`), so button-style asks are spoken by the companion. Every answer labels its speakers — "（病人）…（女儿）…" / "(Patient) … (Daughter) …", the same convention as `persona.concerns` — so an authored answer reads correctly whichever agent voices it. The patient can name her symptoms but is disoriented (4AT 7); `hx-identity` (name, age, who the daughter is) and `hx-orientation` (thinks it is morning at the community clinic) keep those common questions out of the "we don't know" fallback.
+* Timeline: confusion from ~15:00–16:00, another ibuprofen at ~17:00 because the daughter put it down to the fever, taxi in the evening, arrival 21:25 (`hx-course`); she had not seen a doctor for this illness (`hx-course`, `hx-recent-healthcare`).
+* A repeat gas ordered as another VBG in a reassessment phase counts as the repeat lactate for `obj-perfusion` and `r-lactate` (the learner did repeat it); `assess()` still lists `lactate-repeat` under `essentialMissing` in that path because alternatives are not phase-aware.
 * A near-normal venous pH hides a significant metabolic acidosis — use it to teach Winter's formula and the delta ratio.
 * The transient bolus response is deliberate: ask "what does a pressure that rises and falls back tell you?" before the vasopressor decision.
 * Steroids: SSC 2021 suggests hydrocortisone 200 mg/day for an ongoing vasopressor requirement; the SCCM 2024 focused update recommends corticosteroids in severe bacterial CAP (CAPE COD excluded patients in septic shock). Giving hydrocortisone early is therefore not scored as unsafe — the trap is steroids *instead of* a vasopressor.
@@ -103,7 +107,7 @@ clinicalcraft cases validate packages/content/cases/septic-shock-cap/case.json
 clinicalcraft cases verify septic-shock-cap
 ```
 
-The reference `solution` completes all 6 objectives and all 5 decisions with no rejections, no contraindicated interventions and no critical alarms (deterministic rubric 19/19). `extensions.testUtterances` (50 utterances, zh-CN + en, including colloquial Chinese, typos and abbreviations) all return the expected history item as the top `matchHistory` hit and are selected under the patient pipeline's ≥ 0.55 rule.
+The reference `solution` completes all 6 objectives and all 5 decisions with no rejections, no contraindicated interventions and no critical alarms (deterministic rubric 19/19). `extensions.testUtterances` (62 utterances, zh-CN + en, including colloquial Chinese, typos and abbreviations) all return the expected history item as the top `matchHistory` hit and are selected under the patient pipeline's ≥ 0.55 rule.
 
 ## Matcher notes
 
