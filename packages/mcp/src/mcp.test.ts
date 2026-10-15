@@ -319,4 +319,26 @@ describe("MCP stdio server", () => {
     expect(await pending).toBeNull();
     await server.close();
   });
+
+  it.skipIf(!smzl)("a call cancelled while queued behind another call on the session never acts", async () => {
+    const p = project();
+    // A slow PreToolUse hook on ask_patient keeps the session busy for a moment.
+    const slow = settings({ hooks: { PreToolUse: [{ matcher: "^ask_patient$", hooks: [{ type: "command", command: "sleep 1" }] }] } });
+    const server = new McpServer({ settings: slow, env: p.env, cwd: p.cwd, content, log: () => undefined });
+    const started = (await server.handle({ jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "start_case", arguments: { case_id: SMZL } } })) as { result: ToolResult };
+    const sessionId = started.result.structuredContent!.session_id as string;
+    const ask = server.handle({ jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "ask_patient", arguments: { session_id: sessionId, question: "Where does it hurt?" } } });
+    const order = server.handle({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "order_test", arguments: { session_id: sessionId, investigation_id: "cbc" } } });
+    await new Promise((r) => setTimeout(r, 100));
+    await server.handle({ jsonrpc: "2.0", method: "notifications/cancelled", params: { requestId: 3, reason: "changed my mind" } });
+    expect(((await ask) as { result: ToolResult }).result.isError).toBeUndefined();
+    expect(await order).toBeNull();
+    const state = server.sessions.get(sessionId)!.session.state;
+    expect(state.orders.map((o) => o.investigationId)).not.toContain("cbc");
+    // The session still works afterwards.
+    const again = (await server.handle({ jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "order_test", arguments: { session_id: sessionId, investigation_id: "cbc" } } })) as { result: ToolResult };
+    expect(again.result.isError).toBeUndefined();
+    expect(server.sessions.get(sessionId)!.session.state.orders.map((o) => o.investigationId)).toContain("cbc");
+    await server.close();
+  });
 });
