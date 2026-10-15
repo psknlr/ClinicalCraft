@@ -21,6 +21,7 @@ export class ApprovalDialog {
   private readonly listeners = new Set<(open: boolean) => void>();
   private lastFocus: HTMLElement | null = null;
   private initialFocus: HTMLElement | null = null;
+  private answered: string | null = null;
   private reasonEl: HTMLInputElement | null = null;
   /** Where focus goes when the dialog closes (default: the element focused before it opened). */
   restoreFocus: (previous: HTMLElement | null) => void = (previous) => previous?.focus?.({ preventScroll: true });
@@ -159,7 +160,13 @@ export class ApprovalDialog {
 
   private answer(decision: ApprovalDecision, reason?: string): void {
     const req = this.current;
-    if (!req) return;
+    // One answer per request: a double click / repeated Esc before approval_resolved arrives is
+    // ignored (a retry is possible again after a few seconds, should the answer have been lost).
+    if (!req || this.answered === req.requestId) return;
+    const id = (this.answered = req.requestId);
+    setTimeout(() => {
+      if (this.answered === id) this.answered = null;
+    }, 3000);
     this.app.submit({ type: "approval_response", requestId: req.requestId, decision, ...(reason?.trim() ? { reason: reason.trim() } : {}) });
     const label = tr(`approval.resolved.${decision}` as "approval.resolved.approved");
     // Learner actions: the session itself reports the refusal (no duplicate toast).

@@ -67,7 +67,8 @@ export interface App {
   server: ServerInfo | null;
   /** Provider choice in effect for new/running sessions. */
   choice(): RuntimeChoice;
-  toast(title: string, body?: string, level?: ToastLevel): void;
+  /** Show a toast; toasts with the same `key` supersede each other. */
+  toast(title: string, body?: string, level?: ToastLevel, key?: string): void;
   sound(kind: SoundKind): void;
   /** Open a panel by name (args depend on the panel). */
   open(name: PanelName, arg?: unknown): void;

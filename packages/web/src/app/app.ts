@@ -207,8 +207,8 @@ export class ClinicalCraftApp implements App {
     return runtimeChoice(this.prefs.llm, this.server);
   }
 
-  toast(title: string, body = "", level: ToastLevel = "info"): void {
-    this.toaster.show(title, body, level);
+  toast(title: string, body = "", level: ToastLevel = "info", key?: string): void {
+    this.toaster.show(title, body, level, key);
   }
 
   sound(kind: SoundKind): void {
@@ -740,7 +740,8 @@ export class ClinicalCraftApp implements App {
           this.suppressNotice = title;
           const next = c.objectives[e.index + 1];
           this.sound("success");
-          this.toast(tr("toast.chapter", { title }), next ? tr("toast.next", { hint: t(next.hint, L) }) : tr("toast.toBoard"), "success");
+          // Several chapters can complete at once (autopilot, a decisive result): show only the latest.
+          this.toast(tr("toast.chapter", { title }), next ? tr("toast.next", { hint: t(next.hint, L) }) : tr("toast.toBoard"), "success", "chapter");
         } else if (e.type === "case.completed") {
           this.sound("success");
         } else if (e.type === "vitals.alarm" && e.level === "critical") {

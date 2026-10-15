@@ -20,6 +20,8 @@ export function journalPanel(app: App): () => PanelView {
     const evidence = h("div", { id: "journal-evidence" });
     const plan = h("div", { class: "plan" });
     const notes = h("div");
+    // Appears as soon as the case is finished / assessed, also while the journal is open.
+    const debriefBtn = h("button", { type: "button", id: "journal-debrief", hidden: true, onclick: () => app.open("debrief") }, tr("journal.debrief"));
     const pdfAsset = c.assets.find((a) => a.kind === "pdf");
     const pdf = pdfAsset ? caseAssetUrl(c, pdfAsset.id) : null;
     const pdfBtn = h("button", { type: "button", id: "download-paper", disabled: true, title: tr("journal.pdfMissing") }, tr("journal.pdf"));
@@ -60,6 +62,7 @@ export function journalPanel(app: App): () => PanelView {
           ),
         );
       } else plan.append(h("p", { class: "small muted" }, tr("journal.planEmpty")));
+      debriefBtn.hidden = !(store.assessment || s.finished);
       clear(notes);
       if (s.notes.length) {
         notes.append(h("h3", null, tr("journal.notes")), h("div", { class: "note-list" }, [...s.notes].reverse().map((n) => h("div", { class: "note-item" }, h("small", null, tr("notes.at", { min: Math.round(n.at) })), h("p", null, n.text)))));
@@ -83,7 +86,7 @@ export function journalPanel(app: App): () => PanelView {
           h("button", { type: "button", id: "source-btn", onclick: () => app.open("source") }, tr("journal.source")),
           pdfAsset ? pdfBtn : null,
           h("button", { type: "button", id: "export-session", onclick: () => app.exportRecord() }, tr("journal.export")),
-          store.assessment || (store.snapshot?.state.finished ?? false) ? h("button", { type: "button", onclick: () => app.open("debrief") }, tr("journal.debrief")) : null,
+          debriefBtn,
         ),
       ],
       update() {

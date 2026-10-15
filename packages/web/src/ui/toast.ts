@@ -14,6 +14,8 @@ interface Item {
   title: string;
   body: string;
   level: ToastLevel;
+  /** Toasts sharing a key supersede each other (e.g. "chapter": only the latest chapter matters). */
+  key?: string;
 }
 
 export class Toaster {
@@ -31,11 +33,20 @@ export class Toaster {
     root.appendChild(this.el);
   }
 
-  show(title: string, body = "", level: ToastLevel = "info"): void {
-    const item = { title, body, level };
+  show(title: string, body = "", level: ToastLevel = "info", key?: string): void {
+    const item: Item = { title, body, level, ...(key ? { key } : {}) };
     // Identical toasts collapse (showing or already queued); critical messages jump the queue.
     const same = (x: Item | null) => !!x && x.title === title && x.body === body;
     if (same(this.showing) || this.queue.some(same)) return;
+    if (key) {
+      // A newer toast of the same kind replaces a queued one, and cuts a showing one short.
+      this.queue = this.queue.filter((x) => x.key !== key);
+      if (this.showing?.key === key) {
+        this.queue.unshift(item);
+        this.next();
+        return;
+      }
+    }
     if (level === "critical") this.queue.unshift(item);
     else this.queue.push(item);
     // A burst (autopilot, several chapters at once) keeps the NEWEST messages: older routine ones are

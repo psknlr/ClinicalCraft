@@ -8,7 +8,8 @@
  * placement over windows, top on phones), the finished-case HUD, phone
  * layout (no HUD overlaps, settings/rubric inside the viewport) and API-key
  * handling (session-only by default, never in exports, transcripts or the
- * event log). A clean console (no errors / WebGL warnings) throughout.
+ * event log). A clean console (no errors / WebGL warnings) throughout, and a
+ * strict CSP (no inline scripts / eval / handlers / style attributes).
  */
 import { expect, test, type ConsoleMessage, type Page } from "@playwright/test";
 import fs from "node:fs";
@@ -31,11 +32,32 @@ const active = (page: Page) =>
   });
 const qaPanel = (page: Page) => page.evaluate(() => (window as any).__QA__.panel as string | null);
 
+/**
+ * A strict CSP on the page: no inline scripts, eval or inline event handlers, no style=""
+ * attributes (styles go through CSSOM). Vite dev injects CSS as <style> elements, hence
+ * style-src-elem 'unsafe-inline' (the production build passes with plain style-src 'self').
+ */
+const CSP =
+  "default-src 'self'; script-src 'self'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'none'; img-src 'self' data: blob:; connect-src 'self' ws: https:; object-src 'none'; base-uri 'self'";
+
+async function withCsp(page: Page): Promise<void> {
+  await page.route("**/*", async (route) => {
+    if (route.request().resourceType() !== "document") return route.fallback();
+    const res = await route.fetch();
+    await route.fulfill({ response: res, headers: { ...res.headers(), "content-security-policy": CSP } });
+  });
+  await page.addInitScript(() => {
+    (window as any).__csp = [];
+    document.addEventListener("securitypolicyviolation", (e) => (window as any).__csp.push(`${e.violatedDirective} ${e.blockedURI} ${e.sourceFile}:${e.lineNumber}`));
+  });
+}
+
 test.describe("keyboard, focus and approvals", () => {
   test.use({ locale: "en-US" });
 
-  test("T/Esc/Tab/approval focus, slash commands, reset confirmation (STEMI, en)", async ({ page }) => {
+  test("T/Esc/Tab/approval focus, slash commands, reset confirmation (STEMI, en, strict CSP)", async ({ page }) => {
     const consoleLog = watchConsole(page);
+    await withCsp(page);
     await freshStart(page);
     // The intro backdrop is clinic-v4; STEMI rebuilds the world for general-hospital in the same WebGL context.
     await enterCase(page, "stemi-inferior-rv");
@@ -137,6 +159,7 @@ test.describe("keyboard, focus and approvals", () => {
     expect(await page.evaluate(() => (window as any).__QA__.session.state.examined.length)).toBeGreaterThan(0);
     await page.keyboard.press("Escape");
 
+    expect(await page.evaluate(() => (window as any).__csp)).toEqual([]);
     expect(consoleLog).toEqual([]);
   });
 });
@@ -212,11 +235,19 @@ test.describe("assets, toasts and the finished HUD", () => {
     await page.waitForTimeout(500);
     expect(await page.evaluate(() => (window as any).__QA__.world.debug.renderer.getContext().isContextLost())).toBe(false);
 
-    // Finished case: the quest card points at the review (not "go back to the board").
+    // Finished case: the quest card points at the review (not "go back to the board"), and of the
+    // five chapters completed at once only the latest chapter toast is shown (no stale "next: …").
+    const lastChapter = await page.evaluate(() => {
+      const qa = (window as any).__QA__;
+      const objectives = qa.game.caseDef.objectives;
+      const title = objectives[objectives.length - 1].title;
+      return typeof title === "string" ? title : title["zh-CN"];
+    });
     await page.evaluate(() => {
       const qa = (window as any).__QA__;
       for (const a of qa.game.caseDef.solution) qa.dispatch(a);
     });
+    await expect(page.locator(".toast.show .toast-title")).toContainText(lastChapter);
     await expect(page.locator("#chapter")).toHaveText("CASE CLOSED");
     await expect(page.locator("#quest-title")).toHaveText("病例已结束 · 查看复盘");
     await shot(page, "review-hud-finished");
