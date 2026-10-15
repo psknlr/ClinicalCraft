@@ -495,6 +495,8 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
 export function confirmResetPanel(app: App): () => PanelView {
   return () => {
     const confirm = h("button", { type: "button", id: "confirm-reset", class: "danger-solid", onclick: () => void app.resetCase() }, tr("save.resetConfirm"));
+    // Destructive confirmation: the initial focus is on "cancel" so a stray Enter never wipes progress.
+    const cancel = h("button", { type: "button", id: "cancel-reset", onclick: () => app.open("pause", { menu: true }) }, tr("save.cancel"));
     return {
       id: "confirm",
       kicker: tr("pause.kicker"),
@@ -502,9 +504,9 @@ export function confirmResetPanel(app: App): () => PanelView {
       variant: "narrow",
       body: [
         h("p", null, tr("save.resetBody")),
-        h("div", { class: "row wrap" }, confirm, h("button", { type: "button", id: "cancel-reset", onclick: () => app.open("pause") }, tr("save.cancel")), h("button", { type: "button", onclick: () => app.exportSave() }, tr("save.export"))),
+        h("div", { class: "row wrap" }, confirm, cancel, h("button", { type: "button", onclick: () => app.exportSave() }, tr("save.export"))),
       ],
-      focus: confirm,
+      focus: cancel,
     };
   };
 }

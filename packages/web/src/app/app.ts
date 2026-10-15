@@ -108,6 +108,12 @@ export class ClinicalCraftApp implements App {
     this.hud = new Hud(dom.hud, this);
     this.intro = new Intro(dom.intro, this);
 
+    this.panels.modalAbove = () => this.approval.isOpen;
+    this.approval.restoreFocus = (previous) => {
+      if (this.panels.isOpen) this.panels.refocus(previous);
+      else if (this.game?.entered && this.world.api) this.focusWorld();
+      else if (previous?.isConnected) previous.focus({ preventScroll: true });
+    };
     this.panels.onToggle((open) => this.onOverlay(open));
     this.approval.onToggle((open) => this.onOverlay(open));
     onLocaleChange(() => this.onLocaleChanged());
@@ -330,9 +336,9 @@ export class ClinicalCraftApp implements App {
     this.panels.close();
   }
 
-  submit(op: Op): string | null {
+  submit(op: Op, view?: string): string | null {
     if (!this.game) return null;
-    return this.game.session.submit(op);
+    return this.game.session.submit(op, view);
   }
 
   act(action: ClinicalAction, rationale?: string): string | null {
@@ -656,11 +662,7 @@ export class ClinicalCraftApp implements App {
     if (api) {
       api.start();
       api.select(this._slot);
-      try {
-        this.dom.canvas.focus({ preventScroll: true });
-      } catch {
-        /* ignore */
-      }
+      this.focusWorld();
     }
     const p = this.playerPos();
     this.hud.onMove({
@@ -723,6 +725,8 @@ export class ClinicalCraftApp implements App {
         if (msg.level === "critical") this.sound("alarm");
         return;
       case "warning":
+        // Shown in the open conversation it belongs to (store chat line): no duplicate toast.
+        if (this.panels.current === "conversation" && game.session.store.viewOf(entry.event.id)) return;
         this.toast(tr("toast.warning"), msg.message, "warning");
         return;
       case "error":
@@ -751,18 +755,32 @@ export class ClinicalCraftApp implements App {
 
   private onOverlay(open: boolean): void {
     const api = this.world.api;
+    this.syncInert();
     if (open) {
       api?.pause(true);
     } else if (!this.panels.isOpen && !this.approval.isOpen && this.game?.entered && api) {
       api.pause(false);
-      try {
-        this.dom.canvas.focus({ preventScroll: true });
-      } catch {
-        /* ignore */
-      }
+      this.focusWorld();
       if (this.game) this.save();
     }
     this.hud.update();
+  }
+
+  /** Everything under a modal is inert (no focus, no clicks, hidden from assistive tech). */
+  private syncInert(): void {
+    const modal = this.panels.isOpen || this.approval.isOpen;
+    this.dom.hud.inert = modal;
+    this.dom.intro.inert = modal;
+    this.dom.canvas.inert = modal;
+    this.dom.panel.inert = this.approval.isOpen;
+  }
+
+  private focusWorld(): void {
+    try {
+      this.dom.canvas.focus({ preventScroll: true });
+    } catch {
+      /* ignore */
+    }
   }
 
   private vitalsFor(slotId: string) {
@@ -848,7 +866,15 @@ export class ClinicalCraftApp implements App {
     addEventListener(
       "keydown",
       (e) => {
-        if (this.approval.isOpen) return;
+        if (this.approval.isOpen) {
+          // Esc always answers the approval dialog (deny), wherever the focus is.
+          if (e.key === "Escape") {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            this.approval.cancel();
+          }
+          return;
+        }
         if (e.key === "Escape") {
           if (this.panels.isOpen) {
             e.preventDefault();

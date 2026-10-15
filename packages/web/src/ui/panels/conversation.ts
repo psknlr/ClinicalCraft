@@ -70,12 +70,18 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       if (!raw) return;
       input.value = "";
       if (/^[/／]/.test(raw)) {
-        app.submit({ type: "user_message", text: raw });
+        // Slash commands (/help, /vitals, /results…): the output is shown in this conversation.
+        app.submit({ type: "user_message", text: raw }, isPatient ? "patient" : args.agent);
         return;
       }
       const addressed = parseAddress(raw, game.session.session.availableAgents());
       const to = addressed.to ?? (isPatient ? "patient" : args.agent);
       if (!addressed.text && !addressed.to) return;
+      if (addressed.to && !addressed.text) {
+        // "@nurse" alone: switch to that person's window instead of sending an empty line.
+        if (!agents.has(addressed.to)) app.open("conversation", { agent: addressed.to, focusInput: true });
+        return;
+      }
       // Someone addressed from this window (`@nurse …`) answers here too.
       if (!agents.has(to)) {
         agents.add(to);
@@ -418,7 +424,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
 
 function chatBubble(m: ChatItem, c: CaseDefinition): HTMLElement {
   if (m.role === "system") {
-    return h("div", { class: ["msg", "system", `tone-${m.tone}`] }, h("b", null, m.speaker), m.text ? h("span", null, m.text) : null);
+    return h("div", { class: ["msg", "system", `tone-${m.tone}`], role: m.tone === "error" ? "note" : null }, m.speaker ? h("b", null, m.speaker) : null, m.text ? h("span", null, m.text) : null);
   }
   const learner = m.role === "learner";
   const name = learner ? (m.agent !== "patient" && m.agent !== "companion" ? `${tr("role.learner")} → ${trMaybe(`role.${m.agent}`, m.agent)}` : tr("role.learner")) : m.speaker === "monitor" ? tr("role.monitor") : m.speaker;
@@ -428,7 +434,7 @@ function chatBubble(m: ChatItem, c: CaseDefinition): HTMLElement {
   const factIds = !learner ? m.grounded.filter((id) => c.history.some((x) => x.id === id)) : [];
   return h(
     "div",
-    { class: ["msg", learner ? "learner" : "agent", `agent-${m.agent}`, m.streaming ? "streaming" : ""], dataset: { agent: m.agent } },
+    { class: ["msg", learner ? "learner" : "agent", `agent-${m.agent}`, m.streaming ? "streaming" : "", m.tone === "command" ? "tone-command" : ""], dataset: { agent: m.agent } },
     h("div", { class: "who" }, name),
     h("div", { class: "bubble" }, m.text || (m.streaming ? "…" : ""), meta),
     factIds.length ? h("div", { class: "facts", title: tr("conv.grounded") }, "◆ ".repeat(Math.min(factIds.length, 5)).trim()) : null,

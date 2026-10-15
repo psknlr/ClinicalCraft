@@ -151,8 +151,14 @@ const DIRS: [number, number, number][] = [
  * A* from `start` to `goal` (world coordinates). Blocked start/goal snap to
  * the nearest free cell. Diagonals never cut corners. Returns world-space
  * cell centres (start excluded, goal cell included) or null if unreachable.
+ *
+ * When that snapped goal cell cannot be reached (the nearest free cell of a
+ * wall-mounted outlet or a bedside pump is often a sealed pocket between the
+ * furniture and the wall), the path ends at the reachable cell closest to the
+ * goal instead, if it lies within `fallbackRadius` metres (close enough to
+ * aim at the target and press E).
  */
-export function findPathCells(g: NavGrid, start: { x: number; z: number }, goal: { x: number; z: number }, maxExpanded = 200000): { x: number; z: number }[] | null {
+export function findPathCells(g: NavGrid, start: { x: number; z: number }, goal: { x: number; z: number }, maxExpanded = 200000, fallbackRadius = 3): { x: number; z: number }[] | null {
   const s0 = cellOf(g, start.x, start.z);
   const g0 = cellOf(g, goal.x, goal.z);
   const s = nearestFree(g, s0[0], s0[1], 4);
@@ -195,9 +201,26 @@ export function findPathCells(g: NavGrid, start: { x: number; z: number }, goal:
       }
     }
   }
-  if (came[goalI] === -1) return null;
+  let endI = goalI;
+  if (came[goalI] === -1) {
+    // The search exhausted the start's component: settle for its cell nearest to the goal.
+    let best = -1;
+    let bestD = fallbackRadius;
+    for (let i = 0; i < N; i++) {
+      if (!closed[i] && came[i] === -1 && i !== startI) continue;
+      const c = cellCentre(g, i % g.cols, Math.floor(i / g.cols));
+      const d = Math.hypot(c.x - goal.x, c.z - goal.z);
+      if (d <= bestD) {
+        bestD = d;
+        best = i;
+      }
+    }
+    if (best < 0) return null;
+    if (best === startI) return [cellCentre(g, s[0], s[1])];
+    endI = best;
+  }
   const cells: number[] = [];
-  for (let i = goalI; i !== startI && i !== -1; i = came[i]) cells.push(i);
+  for (let i = endI; i !== startI && i !== -1; i = came[i]) cells.push(i);
   cells.reverse();
   return cells.map((i) => cellCentre(g, i % g.cols, Math.floor(i / g.cols)));
 }
@@ -251,6 +274,11 @@ export function findPath(g: NavGrid, start: { x: number; z: number }, goal: { x:
   const cells = findPathCells(g, start, goal);
   if (!cells) return null;
   const [gx, gz] = cellOf(g, goal.x, goal.z);
-  if (isFree(g, gx, gz) && cells.length) cells[cells.length - 1] = { x: goal.x, z: goal.z };
+  const last = cells[cells.length - 1];
+  // Only when the path actually ends in the goal's own (free) cell — not after a fallback.
+  if (last && isFree(g, gx, gz)) {
+    const [lx, lz] = cellOf(g, last.x, last.z);
+    if (lx === gx && lz === gz) cells[cells.length - 1] = { x: goal.x, z: goal.z };
+  }
   return smoothPath(g, start, cells);
 }

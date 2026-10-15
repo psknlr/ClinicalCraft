@@ -7,6 +7,8 @@
  *   `${CLINICALCRAFT_HOME:-~/.clinicalcraft}/assets/` (docs/ASSETS.md). Files
  *   are streamed verbatim (no Content-Encoding) so `*.glb.gz` reaches the
  *   browser still gzip-compressed for DecompressionStream.
+ * - `GET /api/health` answers 204 (this is not `clinicalcraft serve`), so the
+ *   app's server detection does not log a 404 on every page load.
  * - `--mode standalone` defines `__STANDALONE__ = true`; the single-file
  *   inlining step lives in scripts/inline-standalone.mjs (UI agent).
  */
@@ -64,6 +66,14 @@ export function resolveLocalAsset(urlPath: string, roots = localAssetRoots()): s
 function localAssets(): Plugin {
   const handler: Connect.NextHandleFunction = (req, res, next) => {
     const url = (req.url || "").split("?")[0];
+    // The app probes GET /api/health to detect `clinicalcraft serve`. The Vite server is not it:
+    // answer "no content" (→ offline/direct modes) instead of a 404 that logs a console error.
+    if (url === "/api/health") {
+      res.statusCode = 204;
+      res.setHeader("cache-control", "no-store");
+      res.end();
+      return;
+    }
     if (!url.startsWith("/local-assets/")) return next();
     const file = resolveLocalAsset(url);
     if (!file) {

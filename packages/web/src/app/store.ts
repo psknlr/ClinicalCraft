@@ -11,10 +11,10 @@ import { t, type AssessmentReport, type CaseDefinition, type DomainEvent, type O
 
 export type LogEntry =
   | { kind: "event"; at: number; event: AgentEvent }
-  | { kind: "op"; at: number; id: string; op: Op }
+  | { kind: "op"; at: number; id: string; op: Op; view?: string }
   | { kind: "restored"; at: number; agent: string; role: "user" | "assistant"; text: string };
 
-export type ChatTone = "speech" | "exam" | "treat" | "harm" | "note" | "error";
+export type ChatTone = "speech" | "exam" | "treat" | "harm" | "note" | "error" | "command";
 
 export interface ChatItem {
   key: string;
@@ -94,6 +94,12 @@ export class SessionStore {
   /** An autopilot submission is being processed. */
   autopilotRunning = false;
   private readonly streams = new Map<string, ChatItem>();
+  /**
+   * Submission id → the conversation (agent) it belongs to: slash-command output, and warnings /
+   * errors of that turn (model failure answered by the deterministic fallback, out-of-fiction
+   * deflection, unverified reply) are shown in that conversation, not only as a passing toast.
+   */
+  private readonly views = new Map<string, string>();
   private readonly entryListeners = new Set<(entry: LogEntry) => void>();
   private readonly changeListeners = new Set<() => void>();
   private seq = 0;
@@ -121,8 +127,9 @@ export class SessionStore {
     this.append({ kind: "event", at: Date.now(), event });
   }
 
-  op(id: string, op: Op): void {
-    this.append({ kind: "op", at: Date.now(), id, op });
+  /** Log a submitted op; `view` = the conversation it was typed in (slash-command output is shown there). */
+  op(id: string, op: Op, view?: string): void {
+    this.append({ kind: "op", at: Date.now(), id, op, ...(view ? { view } : {}) });
   }
 
   /** Seed conversation lines restored from a saved session (before any event). */
@@ -154,7 +161,14 @@ export class SessionStore {
   /** Chat items visible in a conversation with `agents` (null = every chat agent). */
   chatFor(agents: ReadonlySet<string> | null): ChatItem[] {
     if (!agents) return this.chat;
-    return this.chat.filter((c) => agents.has(c.agent) || (c.role === "system" && agents.has("patient")));
+    // Exam/treatment lines carry agent "patient"; command output and turn warnings carry the
+    // conversation they belong to — each shows only in its own window.
+    return this.chat.filter((c) => agents.has(c.agent));
+  }
+
+  /** The conversation (agent) a submission belongs to, if it came from one. */
+  viewOf(submissionId: string): string | null {
+    return this.views.get(submissionId) ?? null;
   }
 
   /** The non-idle phase of an agent's current turn. */
@@ -214,21 +228,30 @@ export class SessionStore {
       });
       return;
     }
-    if (entry.kind === "op") return this.foldOp(entry.id, entry.op, entry.at);
+    if (entry.kind === "op") return this.foldOp(entry.id, entry.op, entry.at, entry.view);
     this.foldEvent(entry.event, entry.at);
   }
 
-  private foldOp(_id: string, op: Op, at: number): void {
+  private foldOp(id: string, op: Op, at: number, view?: string): void {
     const L = this.config?.locale ?? "zh-CN";
     if (op.type === "user_message") {
       let to = op.to ?? this.interlocutor;
       let text = op.text;
-      const m = /^@(\S+)\s+([\s\S]*)$/.exec(op.text.trim());
+      const trimmed = op.text.trim();
+      const m = /^@(\S+)\s+([\s\S]*)$/.exec(trimmed);
       if (!op.to && m) {
         to = m[1].toLowerCase();
         text = m[2];
       }
-      if (op.text.trim().startsWith("/")) return;
+      if (!op.to && /^[/／](?![/／])/.test(trimmed)) {
+        // A slash command: echo it in the conversation it was typed in; its output follows (command_output).
+        const where = view ?? this.interlocutor;
+        this.views.set(id, where);
+        this.chat.push({ key: this.key("u"), role: "learner", agent: where, speaker: "learner", text: trimmed, grounded: [], streaming: false, tone: "command", at });
+        return;
+      }
+      if (!op.to && /^[/／]{2}/.test(trimmed)) text = trimmed.slice(1);
+      this.views.set(id, to);
       this.chat.push({ key: this.key("u"), role: "learner", agent: to, speaker: "learner", text, grounded: [], streaming: false, tone: "speech", at });
     } else if (op.type === "clinical_action" && op.action.type === "ask") {
       const itemId = op.action.itemId;
@@ -236,6 +259,7 @@ export class SessionStore {
       if (!item) return;
       const companion = this.caseDef.patient.persona.companion;
       const agent = companion?.answersHistory ? "companion" : "patient";
+      this.views.set(id, agent);
       this.chat.push({ key: this.key("q"), role: "learner", agent, speaker: "learner", text: t(item.question, L), grounded: [], streaming: false, tone: "speech", at });
     } else if (op.type === "autopilot") {
       this.autopilotRunning = true;
@@ -344,6 +368,11 @@ export class SessionStore {
         if (call) Object.assign(call, { status: msg.ok ? "ok" : "failed", output: msg.output, durationMs: msg.durationMs });
         break;
       }
+      case "command_output": {
+        const where = this.views.get(ev.id) ?? this.interlocutor;
+        if (msg.text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text: msg.text, grounded: [], streaming: false, tone: "command", at });
+        break;
+      }
       case "plan_updated":
         this.plan = { agent: String(msg.agent), ...(msg.explanation ? { explanation: msg.explanation } : {}), items: msg.plan };
         break;
@@ -354,9 +383,14 @@ export class SessionStore {
       case "clinical_event":
         this.foldDomain(msg.event, at, L);
         break;
-      case "error":
-        this.assessing = false;
+      case "warning":
+      case "error": {
+        if (msg.type === "error") this.assessing = false;
+        const where = this.views.get(ev.id);
+        const text = msg.message.trim();
+        if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at });
         break;
+      }
       default:
         break;
     }

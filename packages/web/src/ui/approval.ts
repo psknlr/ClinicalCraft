@@ -2,7 +2,10 @@
  * Approval dialog bound to `approval_request` / `approval_response`
  * (Codex approved / approved_for_session / denied / abort; Grok CLI "don't
  * ask again this session"). Modal above every panel, role="alertdialog",
- * focus defaults to "deny" for high-risk requests, Esc denies.
+ * focus defaults to "deny" for high-risk requests (moved synchronously, so
+ * keys pressed right after the request never reach the panel underneath),
+ * Esc denies (the app routes Esc here whatever has focus) and keeps a typed
+ * reason, Enter in the reason field denies with it.
  */
 import type { ApprovalDecision } from "@clinicalcraft/agent";
 import type { App } from "../app/context.js";
@@ -17,6 +20,10 @@ export class ApprovalDialog {
   private readonly box: HTMLElement;
   private readonly listeners = new Set<(open: boolean) => void>();
   private lastFocus: HTMLElement | null = null;
+  private initialFocus: HTMLElement | null = null;
+  private reasonEl: HTMLInputElement | null = null;
+  /** Where focus goes when the dialog closes (default: the element focused before it opened). */
+  restoreFocus: (previous: HTMLElement | null) => void = (previous) => previous?.focus?.({ preventScroll: true });
 
   constructor(
     root: HTMLElement,
@@ -30,7 +37,10 @@ export class ApprovalDialog {
       if (e.key === "Escape") {
         e.preventDefault();
         e.stopPropagation();
-        this.answer("denied");
+        this.cancel();
+      } else if (e.key === "Enter" && e.target === this.reasonEl && !e.isComposing) {
+        e.preventDefault();
+        this.cancel();
       } else if (e.key === "Tab") {
         const list = focusables(this.box);
         if (!list.length) return;
@@ -48,6 +58,11 @@ export class ApprovalDialog {
 
   get isOpen(): boolean {
     return !!this.current;
+  }
+
+  /** Esc / Enter in the reason field: deny, keeping whatever reason was typed. */
+  cancel(): void {
+    this.answer("denied", this.reasonEl?.value);
   }
 
   onToggle(fn: (open: boolean) => void): () => void {
@@ -69,15 +84,24 @@ export class ApprovalDialog {
     if (!next) {
       this.root.hidden = true;
       clear(this.box);
+      this.reasonEl = null;
+      this.initialFocus = null;
       if (wasOpen) {
         for (const fn of this.listeners) fn(false);
-        this.lastFocus?.focus?.({ preventScroll: true });
+        const previous = this.lastFocus;
+        this.lastFocus = null;
+        this.restoreFocus(previous);
       }
       return;
     }
     if (!wasOpen) this.lastFocus = document.activeElement as HTMLElement | null;
     this.render(next, pending.length - 1);
     this.root.hidden = false;
+    try {
+      this.initialFocus?.focus({ preventScroll: true });
+    } catch {
+      /* ignore */
+    }
     if (!wasOpen) for (const fn of this.listeners) fn(true);
     this.app.sound("beep");
   }
@@ -92,7 +116,8 @@ export class ApprovalDialog {
     clear(this.box);
     const high = req.risk === "high";
     const agent = req.agent === "learner" ? tr("role.learner") : trMaybe(`role.${req.agent}`, String(req.agent));
-    const reason = h("input", { type: "text", id: "approval-reason", placeholder: tr("approval.denyReason"), "aria-label": tr("approval.denyReason"), maxlength: "300" });
+    const reason = h("input", { type: "text", id: "approval-reason", placeholder: tr("approval.denyReason"), "aria-label": tr("approval.denyReason"), maxlength: "300", autocomplete: "off" });
+    this.reasonEl = reason;
     const approve = h("button", { type: "button", class: high ? "" : "primary", id: "approval-approve", onclick: () => this.answer("approved") }, tr("approval.approve"));
     const session = req.allowSession ? h("button", { type: "button", id: "approval-session", onclick: () => this.answer("approved_for_session") }, tr("approval.session")) : null;
     const deny = h("button", { type: "button", class: high ? "primary danger-solid" : "", id: "approval-deny", onclick: () => this.answer("denied", reason.value) }, tr("approval.deny"));
@@ -129,7 +154,7 @@ export class ApprovalDialog {
       ),
     );
     this.renderQueue(more);
-    requestAnimationFrame(() => (high ? deny : approve).focus());
+    this.initialFocus = high ? deny : approve;
   }
 
   private answer(decision: ApprovalDecision, reason?: string): void {

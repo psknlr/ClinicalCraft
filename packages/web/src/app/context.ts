@@ -74,8 +74,8 @@ export interface App {
   /** Execute a world interaction route. */
   route(route: Route): void;
   close(): void;
-  /** Submit an op to the running session. */
-  submit(op: Op): string | null;
+  /** Submit an op to the running session (`view`: the conversation it was typed in). */
+  submit(op: Op, view?: string): string | null;
   act(action: ClinicalAction, rationale?: string): string | null;
   save(): boolean;
   /** Player position in the world (spawn when there is no world). */

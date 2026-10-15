@@ -77,8 +77,8 @@ export interface AppSession {
   readonly store: SessionStore;
   readonly settings: ResolvedSettings;
   readonly transcript: TranscriptSink;
-  /** Submit an op (logged into the store first, so the learner's own line renders immediately). */
-  submit(op: Op): string;
+  /** Submit an op (logged into the store first, so the learner's own line renders immediately); `view` = the conversation it came from. */
+  submit(op: Op, view?: string): string;
   /** Shorthand for a learner clinical action. */
   act(action: ClinicalAction, rationale?: string): string;
   /** Run the clinician autopilot; resolves when it stops. */
@@ -141,9 +141,9 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     }
   })();
 
-  const submit = (op: Op): string => {
+  const submit = (op: Op, view?: string): string => {
     const id = session.submit(op);
-    store.op(id, op);
+    store.op(id, op, view);
     return id;
   };
 

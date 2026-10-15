@@ -256,10 +256,11 @@ export class Hud {
     const c = game.caseDef;
     const s = game.session.session.state;
     const p = coreProgress(c, s);
-    this.app.act({ type: "hint" });
+    // A hint is a scored action (debrief "hints used"): none is recorded once the case is finished.
+    if (!s.finished) this.app.act({ type: "hint" });
     const obj = c.objectives[p.currentIndex];
     const v4 = (c.extensions?.v4 as { completeQuest?: { hint?: never } } | undefined)?.completeQuest;
-    this.app.toast(tr("toast.hint"), p.complete || !obj ? ct(v4?.hint) || tr("hud.completeHint") : ct(obj.hint), "info");
+    this.app.toast(tr("toast.hint"), s.finished ? tr("hud.finishedHint") : p.complete || !obj ? ct(v4?.hint) || tr("hud.completeHint") : ct(obj.hint), "info");
   }
 
   /** Re-render from the store (rAF-throttled by the app). */
@@ -282,8 +283,13 @@ export class Hud {
     /* quest card */
     const v4 = (c.extensions?.v4 as { completeQuest?: { title?: never; copy?: never } } | undefined)?.completeQuest;
     const n = c.objectives.length;
-    if (p.complete) {
-      e.chapter.textContent = s.finished ? tr("hud.finishedShort") : tr("hud.complete");
+    if (s.finished) {
+      // After "finish" the review exists: point at it instead of "go back to the board and finish".
+      e.chapter.textContent = tr("hud.finishedShort");
+      e.questTitle.textContent = tr("hud.finishedTitle");
+      e.questCopy.textContent = tr("hud.finishedCopy");
+    } else if (p.complete) {
+      e.chapter.textContent = tr("hud.complete");
       e.questTitle.textContent = ct(v4?.title) || tr("hud.completeTitle");
       e.questCopy.textContent = ct(v4?.copy) || tr("hud.completeCopy");
     } else {

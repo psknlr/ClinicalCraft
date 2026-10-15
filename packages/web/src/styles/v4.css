@@ -514,10 +514,17 @@ div#target {
   border: 3px solid #789465;
   box-shadow: 4px 4px #183b2855;
   pointer-events: none;
-  transition: transform 0.2s;
+  /* V5: a short (title-only) toast is < 50px tall, so -150% alone left its bottom edge and
+     shadow peeking out at the top of the screen; hide it once it has slid away. */
+  visibility: hidden;
+  transition:
+    transform 0.2s,
+    visibility 0s linear 0.2s;
 }
 .toast.show {
   transform: translate(-50%, 0);
+  visibility: visible;
+  transition: transform 0.2s;
 }
 .toast b {
   font-size: 14px;

@@ -60,6 +60,15 @@ export { monitorRenderer } from "../shared/monitor-render.js";
 const AIM_FAR = 5.5;
 const TARGET_RANGE = 3.5;
 const BUILD_RANGE = 5.3;
+/**
+ * While paused (intro, a window or the approval dialog covers the view behind a blurred
+ * backdrop) the scene is redrawn at ~8 fps instead of every frame: idle NPCs, clouds and
+ * monitor screens still move, but the GPU/CPU (and the compositor re-blurring the
+ * backdrop) are not busy at 60 fps behind a static panel. Autopilot walks run at full rate.
+ */
+const PAUSED_FRAME_MS = 125;
+/** Keys the world turns into actions (their default — typing a character — is suppressed). */
+const SHORTCUT_CODES = new Set(["KeyE", "KeyB", "Tab", "KeyM", "KeyJ", "KeyT", "Enter", "KeyQ", "KeyF", "Escape"]);
 
 /** Render quality: pixel-ratio cap, shadow map size (0 = off) and real PointLight budget (rest stay emissive-only). */
 const QUALITY = {
@@ -784,9 +793,15 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   });
   on(window, "keydown", (e: KeyboardEvent) => {
     if (!playing() || typing()) return;
+    // Enter/Space on a focused HUD button activate that button, not the world's chat/jump.
+    const control = e.target instanceof Element && e.target !== canvas ? e.target.closest("button, a[href], summary, [role='button']") : null;
+    if (control && (e.code === "Enter" || e.code === "NumpadEnter" || e.code === "Space")) return;
     keys[e.code] = true;
     if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(e.code)) e.preventDefault();
     if (autoWalk && ["KeyW", "KeyA", "KeyS", "KeyD"].includes(e.code)) cancelWalk(new Error("interrupted by player"));
+    // Shortcut keys may open a window that focuses a text field synchronously (T/Enter → chat input,
+    // E on a staff member): without preventDefault the key's own character would be typed into it.
+    if (SHORTCUT_CODES.has(e.code) || e.code.startsWith("Digit")) e.preventDefault();
     if (e.repeat) return;
     switch (e.code) {
       case "KeyE":
@@ -1091,9 +1106,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   function frame(now: number): void {
     if (disposed) return;
     raf = requestAnimationFrame(frame);
+    if (typeof document !== "undefined" && document.hidden) {
+      lastFrame = now;
+      return;
+    }
+    if (!playing() && !autoWalk && now - lastFrame < PAUSED_FRAME_MS) return;
     const dt = Math.min(PHYSICS.maxDt, Math.max(0, (now - lastFrame) / 1000));
     lastFrame = now;
-    if (typeof document !== "undefined" && document.hidden) return;
     const s = settings();
     if (now - qualityCheck > 1000) {
       qualityCheck = now;
@@ -1419,6 +1438,12 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       // drops its listeners (otherwise every disposed world stays reachable); the next world re-uploads them.
       releaseSharedGeometry();
       renderer.dispose();
+      // The next world reuses this canvas' WebGL context, which keeps its pixel-store state: a
+      // leftover UNPACK_FLIP_Y (from the last canvas-texture upload) made the new renderer's empty
+      // 3D/array textures log "texImage3D: FLIP_Y or PREMULTIPLY_ALPHA isn't allowed" warnings.
+      const gl = renderer.getContext();
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
     },
     get position() {
       return { x: player.x, y: player.y, z: player.z, yaw, pitch };

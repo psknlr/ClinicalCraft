@@ -1,10 +1,14 @@
 /**
- * V4 toast (top centre, slides down) with a small queue; critical
- * notifications are red and stay longer. Announced politely (aria-live).
+ * V4 toast (top centre, slides down; at the bottom while a window is open so
+ * it never hides the window title) with a small queue that keeps the newest
+ * messages; critical notifications are red, jump the queue and stay longer.
+ * Announced politely (aria-live).
  */
 import { h } from "./dom.js";
 
 export type ToastLevel = "info" | "success" | "warning" | "critical";
+
+const MAX_QUEUE = 3;
 
 interface Item {
   title: string;
@@ -29,11 +33,17 @@ export class Toaster {
 
   show(title: string, body = "", level: ToastLevel = "info"): void {
     const item = { title, body, level };
-    // Critical messages jump the queue; identical consecutive toasts collapse.
-    if (this.showing && this.showing.title === title && this.showing.body === body) return;
+    // Identical toasts collapse (showing or already queued); critical messages jump the queue.
+    const same = (x: Item | null) => !!x && x.title === title && x.body === body;
+    if (same(this.showing) || this.queue.some(same)) return;
     if (level === "critical") this.queue.unshift(item);
     else this.queue.push(item);
-    if (this.queue.length > 4) this.queue = this.queue.slice(0, 4);
+    // A burst (autopilot, several chapters at once) keeps the NEWEST messages: older routine ones are
+    // stale by the time they would show. Critical ones are never dropped for routine ones.
+    while (this.queue.length > MAX_QUEUE) {
+      const i = this.queue.findIndex((x) => x.level !== "critical");
+      this.queue.splice(i >= 0 ? i : 0, 1);
+    }
     if (!this.showing) this.next();
   }
 

@@ -56,6 +56,19 @@ describe("A*", () => {
     const g = buildNavGrid(bounds, sealed);
     expect(findPathCells(g, { x: 0, z: 5 }, { x: 0, z: -5 })).toBeNull();
   });
+  it("ends at the closest reachable cell when the goal's nearest free cell is sealed off (wall-mounted outlet)", () => {
+    // Sealing wall along z = 0; the goal sits just behind it (like an outlet whose nearest free
+    // cell is a pocket between the bed and the wall): stop on the reachable side, within 3 m.
+    const g = buildNavGrid(bounds, [boxCollider(0, 2, 0, 20, 4, 0.4)]);
+    const goal = { x: 0, z: -0.6 };
+    const path = findPath(g, { x: 0, z: 5 }, goal);
+    expect(path).not.toBeNull();
+    const end = path![path!.length - 1];
+    expect(end.z).toBeGreaterThan(0);
+    expect(Math.hypot(end.x - goal.x, end.z - goal.z)).toBeLessThanOrEqual(3);
+    const [ex, ez] = cellOf(g, end.x, end.z);
+    expect(isFree(g, ex, ez)).toBe(true);
+  });
   it("snaps a goal inside furniture to the nearest free cell", () => {
     const desk = boxCollider(0, 0.5, -5, 3, 1, 1.4);
     const g = buildNavGrid(bounds, [desk]);

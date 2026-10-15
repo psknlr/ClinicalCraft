@@ -361,6 +361,10 @@ export const createAtlas: CreateAtlas = async (opts: AtlasOptions): Promise<Atla
       grid.geometry.dispose();
       (grid.material as Material).dispose();
       renderer.dispose();
+      // Every atlas window gets a fresh canvas: release its WebGL context now instead of at GC time —
+      // otherwise reopening the atlas piles up contexts until Chrome's limit (~16) evicts the oldest
+      // one, which is the 3D world's.
+      renderer.forceContextLoss();
     },
   };
 
