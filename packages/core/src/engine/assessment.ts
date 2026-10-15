@@ -5,7 +5,7 @@
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
 import { evaluate, parseResultKey, resultFor } from "./conditions.js";
-import { alarmsAt } from "./physiology.js";
+import { patientAlarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
 import { creditedHistory } from "./twins.js";
 import { unique } from "./text.js";
@@ -97,15 +97,19 @@ function sampleMinutes(c: CaseDefinition, s: SessionState): number[] {
  * Number of critical-alarm onsets (a vital entering the critical band) over
  * the session, sampled at every simulated minute from 0 to the clock plus
  * the recorded fractional moments — the grid the reducer settles on, so it
- * matches the `vitals.alarm` events (an alarm that starts and ends between
- * two unrecorded fractional action boundaries can still be missed).
+ * matches the `vitals.alarm` events of a monitor on from the start (an alarm
+ * that starts and ends between two unrecorded fractional action boundaries
+ * can still be missed). It counts the patient's critical episodes
+ * (`patientAlarmsAt`), not the alarms a monitor raised: a case whose monitor
+ * the learner must attach (`physiology.monitor`) scores the same course the
+ * same whether the monitor went on early, late or never.
  */
 export function countCriticalAlarms(c: CaseDefinition, s: SessionState): number {
   if (!c.physiology || !s.started) return 0;
   let count = 0;
   let critical = new Set<string>();
   for (const minute of sampleMinutes(c, s)) {
-    const now = new Set(alarmsAt(c, s, minute).filter((a) => a.level === "critical").map((a) => a.vital));
+    const now = new Set(patientAlarmsAt(c, s, minute).filter((a) => a.level === "critical").map((a) => a.vital));
     for (const vital of now) if (!critical.has(vital)) count++;
     critical = now;
   }

@@ -95,6 +95,13 @@ export interface SessionState {
   objectivesDone: Record<string, number>;
   /** Baseline vitals after scenario events (physiology recomputes the live value from this). */
   baselineOverrides: Partial<Vitals>;
+  /**
+   * Minute the bedside monitor was attached: the first settle at which the
+   * case's `physiology.monitor.attachedWhen` held (latched — it stays on).
+   * Absent until then, and always for cases without `physiology.monitor`
+   * (on the monitor from the start). See `monitorAttached`.
+   */
+  monitorAttachedAt?: number;
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -114,7 +121,11 @@ export type DomainEvent =
   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
   | { type: "decision.answered"; decisionId: string; correct: boolean; firstTry: boolean; optionIds: string[] }
   | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated" }
-  | { type: "vitals.alarm"; vital: VitalKey; level: "warning" | "critical"; value: number }
+  /**
+   * A vital newly crossing an alarm limit on the bedside monitor. `unmeasurable`: the monitor has no
+   * reading — `value` is the cardiac-arrest placeholder 0 (`VitalsSnapshot.unmeasurable`), never a measurement.
+   */
+  | { type: "vitals.alarm"; vital: VitalKey; level: "warning" | "critical"; value: number; unmeasurable?: true }
   | { type: "scenario.event"; eventId: string; severity: "info" | "warning" | "critical" }
   | { type: "objective.completed"; objectiveId: string; index: number }
   | { type: "case.completed" }

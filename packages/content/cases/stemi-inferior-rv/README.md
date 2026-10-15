@@ -49,6 +49,18 @@ Baseline: HR 54 sinus bradycardia, BP 98/62 (MAP 74), RR 18, SpO₂ 96% on room 
 T 36.6 °C, GCS 15, capillary glucose 8.6 mmol/L, pain 8/10. The monitor overlay
 shows ST elevation. Alarms use the adult limits, set explicitly.
 
+**Bedside monitor (`physiology.monitor`).** He walks into resus off the monitor:
+until it is attached the bedside shows only the triage set taken by hand (HR 54,
+BP 98/62, RR 18, SpO₂ 96 %, T 36.6 °C — `spotChecks`, static, no alarm, no
+rhythm) plus GCS and pain. It is attached by `cardiac-monitoring`, by the
+escorted transfer to the cath lab (`transfer-cath-lab`: "with monitor,
+defibrillator…") or, in a VF arrest before either, by the team putting the
+defibrillator on (`flag: vf-arrest`) — the arrest line now reads "Cardiac
+arrest! … The nurse checks the rhythm on the defibrillator: ventricular
+fibrillation" in both cases. The atropine response is the nurse feeling the
+pulse pick up (the monitor shows the new rhythm when it is on). The defib pads
+alone do not attach the monitor (no NIBP or SpO₂ through them).
+
 | Element | Behaviour |
 |---|---|
 | Trend `rv-sbp-fall` / `rv-dbp-fall` | SBP −0.3/min (floor −15) and DBP −0.15/min (floor −8) until the first fluid bolus or reperfusion, then recovery. Untreated SBP is about 88 mmHg at 35 min. |

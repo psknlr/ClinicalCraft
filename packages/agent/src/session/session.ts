@@ -24,7 +24,6 @@ import {
   type FacilityDefinition,
   type ReduceResult,
   type SessionState,
-  type VitalKey,
 } from "@clinicalcraft/core";
 import { BUILTIN_AGENTS, mergeAgentProfiles } from "../agents/builtin.js";
 import { attendingOffline, consultantOffline, examinerOffline, narrateAction, nurseOffline } from "../agents/offline.js";
@@ -665,12 +664,11 @@ export class ClinicalSession implements ClinicalSessionApi {
       this.acceptedActions.push(action);
     }
     this.recorder?.record("action", { action, accepted });
-    let unmeasurable: readonly VitalKey[] | undefined;
     for (const event of result.events) {
       this.emit(id, { type: "clinical_event", event });
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
-      if (event.type === "vitals.alarm" && unmeasurable === undefined) unmeasurable = vitalsAt(this.caseDef, result.state).unmeasurable ?? [];
-      for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale, unmeasurable ? { unmeasurable } : {})) this.react(id, reaction);
+      // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).
+      for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
     }
     if (accepted) {
       this.emitSnapshot(id);

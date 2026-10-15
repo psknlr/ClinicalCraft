@@ -5,6 +5,7 @@
 import type { CaseDefinition } from "../schema/case.js";
 import { ClinicalActionSchema, type ClinicalAction } from "../schema/session.js";
 import { assess } from "./assessment.js";
+import { ecgAttached, monitorAttachedAt } from "./monitor.js";
 import { formatPath, issuesFromZodError } from "./parse.js";
 import { progress } from "./queries.js";
 import { createSession, reduce } from "./reducer.js";
@@ -37,8 +38,11 @@ function parseSolution(c: CaseDefinition): { actions: ClinicalAction[]; sourceIn
  * Replay `c.solution` from a fresh session (a leading `start` is added when
  * the solution has none). `ok` iff every action parses and is accepted,
  * every objective is done, every decision is decided and the session did
- * not run into `clock.limitMinutes` (a timeout debrief is not a win). The
- * assessment of the final state is included.
+ * not run into `clock.limitMinutes` (a timeout debrief is not a win). A
+ * solution that never attaches the case's bedside monitor
+ * (`physiology.monitor`), or never its ECG leads (`ecgWhen`), draws a
+ * warning. The assessment of the final state
+ * is included.
  */
 export function verifyCase(c: CaseDefinition): VerifyResult {
   const { actions, sourceIndex, issues } = parseSolution(c);
@@ -60,6 +64,11 @@ export function verifyCase(c: CaseDefinition): VerifyResult {
     if (!Object.prototype.hasOwnProperty.call(state.decisions, decision.id)) {
       issues.push({ path: "solution", message: `decision "${decision.id}" is not answered correctly by the solution`, severity: "error" });
     }
+  }
+  if (c.physiology?.monitor && monitorAttachedAt(c, state) == null) {
+    issues.push({ path: "physiology.monitor.attachedWhen", message: "the reference solution never attaches the bedside monitor", severity: "warning" });
+  } else if (c.physiology?.monitor?.ecgWhen && !ecgAttached(c, state)) {
+    issues.push({ path: "physiology.monitor.ecgWhen", message: "the reference solution never puts the ECG leads on (no rhythm on the monitor)", severity: "warning" });
   }
   return { ok: issues.every((i) => i.severity !== "error"), issues, finalState: state, assessment: assess(c, state) };
 }

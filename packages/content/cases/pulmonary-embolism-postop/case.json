@@ -112,8 +112,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "明显气促：每次只说三到六个字就停下来喘气；深吸气时皱眉并用手按住右下胸；焦虑，不时看向监护仪。医生解释清楚、给予安慰后情绪稍平复；吸氧和镇痛后说话可以稍长一些。绝不自行说出检查结果或诊断。",
-        "en": "Clearly breathless: three to six words, then a pause for breath; winces and presses the lower right chest on deep inspiration; anxious, keeps glancing at the monitor. Settles a little when things are explained and she is reassured; can manage slightly longer sentences after oxygen and analgesia. Never volunteers test results or a diagnosis."
+        "zh-CN": "明显气促：每次只说三到六个字就停下来喘气；深吸气时皱眉并用手按住右下胸；焦虑，不时看向身边的医护人员和仪器。医生解释清楚、给予安慰后情绪稍平复；吸氧和镇痛后说话可以稍长一些。绝不自行说出检查结果或诊断。",
+        "en": "Clearly breathless: three to six words, then a pause for breath; winces and presses the lower right chest on deep inspiration; anxious, keeps looking round at the staff and the equipment. Settles a little when things are explained and she is reassured; can manage slightly longer sentences after oxygen and analgesia. Never volunteers test results or a diagnosis."
       }
     },
     "appearance": {
@@ -4093,8 +4093,8 @@
         "value": 94
       },
       "response": {
-        "zh-CN": "护士为她接上鼻导管吸氧；几分钟内监护仪上的血氧饱和度逐渐上升。",
-        "en": "The nurse fits nasal cannulae; over the next few minutes the SpO2 on the monitor rises."
+        "zh-CN": "护士为她接上鼻导管吸氧，按SpO2 94–98%调节流量。",
+        "en": "The nurse fits nasal cannulae and titrates the flow to SpO2 94–98%."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -4166,8 +4166,8 @@
         "value": 88
       },
       "response": {
-        "zh-CN": "面罩吸氧后血氧明显上升。注意：达标（94–98%）后应及时降级，避免不必要的高浓度氧。",
-        "en": "SpO2 rises quickly on the mask. Remember to step down once she is on target (94–98%) to avoid unnecessary high-concentration oxygen."
+        "zh-CN": "已用储氧面罩高流量吸氧。注意：达标（94–98%）后应及时降级，避免不必要的高浓度氧。",
+        "en": "High-flow oxygen on the reservoir mask. Remember to step down once she is on target (94–98%) to avoid unnecessary high-concentration oxygen."
       }
     },
     {
@@ -5682,6 +5682,10 @@
     }
   ],
   "physiology": {
+    "monitor": {
+      "attachedWhen": { "any": [{ "intervened": "monitoring" }, { "intervened": "transfer-hdu" }] },
+      "spotChecks": ["hr", "sbp", "dbp", "rr", "spo2", "temp"]
+    },
     "revealedBy": { "glucose": ["poc-glucose"] },
     "baseline": {
       "hr": 118,
@@ -6075,8 +6079,8 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "监护仪报警！林女士突然更加气促、烦躁，皮肤湿冷，收缩压降到90 mmHg以下。护士：“医生，她血压掉下来了，人也有点迷糊！”",
-          "en": "Monitor alarm! Ms Lin suddenly becomes more breathless and restless, cold and clammy, and her systolic BP falls below 90 mmHg. Nurse: 'Doctor, her pressure's dropping and she's getting a bit muddled!'"
+          "zh-CN": "林女士突然更加气促、烦躁，皮肤湿冷，收缩压降到90 mmHg以下。护士：“医生，她血压掉下来了，人也有点迷糊！”",
+          "en": "Ms Lin suddenly becomes more breathless and restless, cold and clammy, and her systolic BP falls below 90 mmHg. Nurse: 'Doctor, her pressure's dropping and she's getting a bit muddled!'"
         }
       },
       {

@@ -26,11 +26,12 @@ import {
   type ClinicalAction,
   type ReduceResult,
   type SessionState,
+  type VitalsSnapshot,
 } from "@clinicalcraft/core";
 import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from "../session/patient-pipeline.js";
 import { isZh, joinList, joinSentences, rt } from "../session/i18n.js";
 import { obtainedResultsText } from "../tools/npc.js";
-import { formatVitals, interventionLabel, investigationName, phaseLabel } from "../tools/format.js";
+import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 
 /** What an offline responder may look at. */
 export interface OfflineContext {
@@ -75,6 +76,26 @@ export function nurseResultsLine(ctx: OfflineContext): string {
   return joinSentences(L, parts);
 }
 
+/**
+ * What the nurse says about the observations: the bedside readings, or —
+ * before the monitor is attached — that it is not on yet, the readings taken
+ * by hand at the start and her current observations (never a live number).
+ */
+function nurseVitalsLine(snapshot: VitalsSnapshot, L: string): string {
+  if (snapshot.baselineOnly) return rt(L, "nurse.offline.noVitals");
+  if (withoutEcg(snapshot)) {
+    // On the monitor without ECG leads (a pulse oximeter and cuff): the readings, but no rhythm yet.
+    const vitals = rt(L, "nurse.offline.vitals", { vitals: bedsideReadings(snapshot, L).live.join(" · ") });
+    return `${vitals}${isZh(L) ? "" : " "}${rt(L, "nurse.offline.noEcg")}`;
+  }
+  if (!offMonitor(snapshot)) return rt(L, "nurse.offline.vitals", { vitals: formatVitals(snapshot, L) });
+  const { live, manual } = bedsideReadings(snapshot, L);
+  const parts = [rt(L, "nurse.offline.noMonitor")];
+  if (manual.length > 0) parts.push(rt(L, "nurse.offline.spotChecks", { readings: manual.join(" · ") }));
+  if (live.length > 0) parts.push(rt(L, "nurse.offline.observations", { readings: live.join(" · ") }));
+  return parts.join(isZh(L) ? "" : " ");
+}
+
 /** Deterministic nurse reply. */
 export function nurseOffline(ctx: OfflineContext, utterance: string): string {
   const c = ctx.caseDef;
@@ -92,10 +113,7 @@ export function nurseOffline(ctx: OfflineContext, utterance: string): string {
     parts.push(rt(L, "nurse.offline.handover", { note }));
     for (const n of c.npcs.filter((x) => x.role === "nurse")) parts.push(t(n.knowledge, L));
   }
-  if (wantsVitals || all) {
-    const snapshot = vitalsAt(c, ctx.state());
-    parts.push(snapshot.baselineOnly ? rt(L, "nurse.offline.noVitals") : rt(L, "nurse.offline.vitals", { vitals: formatVitals(snapshot, L) }));
-  }
+  if (wantsVitals || all) parts.push(nurseVitalsLine(vitalsAt(c, ctx.state()), L));
   if (wantsResults || all) parts.push(nurseResultsLine(ctx));
   return parts.join(isZh(L) ? "" : " ");
 }

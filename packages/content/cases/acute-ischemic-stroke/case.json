@@ -5210,6 +5210,29 @@
     }
   ],
   "physiology": {
+    "monitor": {
+      "attachedWhen": {
+        "any": [
+          {
+            "intervened": "cardiac-monitoring"
+          },
+          {
+            "intervened": "post-lysis-monitoring"
+          },
+          {
+            "phase": "angio"
+          }
+        ]
+      },
+      "spotChecks": [
+        "hr",
+        "sbp",
+        "dbp",
+        "rr",
+        "spo2",
+        "temp"
+      ]
+    },
     "baseline": {
       "hr": 96,
       "sbp": 192,

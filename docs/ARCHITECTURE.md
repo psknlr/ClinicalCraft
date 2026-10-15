@@ -107,6 +107,25 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     a vital the monitor does not measure (glucose) is shown, charted and
     alarmed only once one of these investigations has been read (§3.2);
     unknown ids are integrity errors.
+  * `physiology.monitor` — `{attachedWhen: Condition, spotChecks?:
+    VitalKey[], measures?: VitalKey[], ecgWhen?: Condition}` (strict),
+    optional: a bedside monitor the learner must
+    attach (a monitoring intervention, arrival in a monitored area). Until
+    `attachedWhen` first holds (latched as `SessionState.monitorAttachedAt`)
+    the monitored vitals and the rhythm are not shown, charted, trended or
+    alarmed, except the `spotChecks`, shown as static manual readings of the
+    baseline (§3.2). Once attached it shows the monitored vitals it
+    `measures` (default all; e.g. no temperature from a monitor nobody took
+    one with), and the rhythm/ECG only while `ecgWhen` (when set — ECG
+    leads that come separately, e.g. a pulse oximeter and cuff first, the
+    team's monitor-defibrillator later; evaluated on the state, not
+    latched) also holds. Absent: monitored from minute 0 (unchanged behaviour).
+    `checkCaseIntegrity` checks `attachedWhen` and `ecgWhen` like any
+    condition (and warns when `attachedWhen` can never hold); a spot check
+    must be a monitored vital the baseline models, a measured vital a
+    monitored one (errors), each listed once, with sbp/dbp as a pair
+    (warnings). `verifyCase` warns when the reference solution never
+    attaches the monitor, or never its ECG leads.
   * `investigations[].alternativeTo` — investigation ids, default `[]`; a
     mutual "can stand in for" link used by `assess()` (§3.4).
   * `history[].supersedes` — history ids, optional; **phase twins**: in a
@@ -199,11 +218,18 @@ resultFor(c, investigationId, phase): Result | null     // null = no record in t
 resultKey(investigationId, phase): string               // `${id}@${phase}`
 orderStatus(c, s): { order: OrderRecord; ready: boolean; read: boolean }[]
 vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute); only `shownVitals` (§3.2)
-shownVitals(c, s): Set<VitalKey>; alarmingVitals(c, s): Set<VitalKey>   // what the bedside shows / may alarm on (§3.2)
+shownVitals(c, s, minute?): Set<VitalKey>; alarmingVitals(c, s, minute?): Set<VitalKey>   // what the bedside shows / may alarm on at that minute (§3.2)
+monitorAttached(c, s, minute?): boolean; monitorAttachedAt(c, s): number | null   // the bedside monitor (`physiology.monitor`, §3.2); 0 = from the start
+ecgAttached(c, s, minute?): boolean                     // attached and `monitor.ecgWhen` (if any) holds: the rhythm/ECG are shown
+spotCheckVitals(c): VitalKey[]; measuredVitals(c): VitalKey[]   // the spot checks shown by hand before the monitor / what it measures once attached
 MONITORED_VITALS, OBSERVED_VITALS                       // hr sbp dbp rr spo2 temp etco2 / gcs pain
-interface VitalsSnapshot { minute: number; vitals: Vitals & { map: number }; alarms: { vital: VitalKey; level: "warning" | "critical"; value: number }[]; trend: Partial<Record<VitalKey, -1 | 0 | 1>>;
+type DisplayedVitals = Partial<Vitals> & { map?: number } // only the shown vitals; map with a shown BP; rhythm/ecg need an attached monitor with its ECG leads
+interface VitalsSnapshot { minute: number; vitals: DisplayedVitals; alarms: { vital: VitalKey; level: "warning" | "critical"; value: number }[]; trend: Partial<Record<VitalKey, -1 | 0 | 1>>;
                            baselineOnly?: boolean;       // true only for cases without `physiology` (placeholder values; no alarms/trend)
-                           unmeasurable?: VitalKey[] }   // only during a cardiac-arrest rhythm (§3.2): vitals the monitor cannot read (value 0)
+                           monitorAttached?: boolean;    // cases with `physiology.monitor` only: false until it is attached
+                           ecgAttached?: boolean;        // cases with `monitor.ecgWhen` only: false until the rhythm/ECG are shown
+                           spotChecks?: VitalKey[];      // while not attached: the vitals in `vitals` that are static manual (triage) readings
+                           unmeasurable?: VitalKey[] }   // only during a cardiac-arrest rhythm on an attached monitor (§3.2): vitals it cannot read (value 0)
 
 // matching (offline NLU used by UI, CLI, scripted agents and as RAG hints for LLM agents)
 normalizeQuery(text: string): string                    // lower-case, strip whitespace, full-width → ASCII punctuation (V4 rules)
@@ -261,10 +287,12 @@ CAPABILITIES, VITAL_KEYS, RHYTHMS, …                    // constants
 // lower-level helpers, also exported (used by front-ends, tests and tooling)
 issuesFromZodError, contentWarnings, formatPath         // parse.ts
 conditionRefs, parseResultKey, isOrderReady, currentObjective
-vitalValue, alarmsAt, alarmLevel, alarmLimitsFor, roundVital, trendContribution, effectFraction,
-DEFAULT_ALARM_LIMITS, NOISE_AMPLITUDE, NORMAL_ADULT_VITALS, PHYSIOLOGICAL_RANGES          // physiology.ts
+vitalValue, alarmsAt, patientAlarmsAt, alarmLevel, alarmLimitsFor, roundVital, trendContribution, effectFraction,
+DEFAULT_ALARM_LIMITS, NOISE_AMPLITUDE, NORMAL_ADULT_VITALS, PHYSIOLOGICAL_RANGES          // physiology.ts (the bedside) over signal.ts (the patient's signal;
+                                                        // `vital` conditions read it) and monitor.ts (attachment, MONITORED/OBSERVED_VITALS)
 arrestKind(base): "vf-asystole" | "pea-pvt" | null; applyArrest; UNMEASURABLE_IN_ARREST; ARREST_MAX_ETCO2   // arrest.ts (§3.2)
-countCriticalAlarms(c, s): number                       // assessment.ts
+unmeasurableAt(c, s, minute?): VitalKey[]               // what an attached monitor cannot read then (arrest) — VitalsSnapshot.unmeasurable
+countCriticalAlarms(c, s): number                       // assessment.ts; the patient's critical-band onsets (patientAlarmsAt), monitor or not
 checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE           // facility.ts
 ```
 
@@ -279,9 +307,11 @@ checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE 
   are ready at `orderedAt + turnaroundMinutes`; `advance-time` moves the
   clock. After every clock change: fire due scenario events (by `atMinute` or
   `when`), record `trendStops` for trends whose `until` became true, emit
-  `result.ready` for results whose readiness crossed, emit `vitals.alarm` for
-  vitals newly crossing warning/critical limits, apply automatic phase
-  transitions (`enterWhen`), check `limitMinutes`.
+  `result.ready` for results whose readiness crossed, apply automatic phase
+  transitions (`enterWhen`), latch `monitorAttachedAt` the first time
+  `physiology.monitor.attachedWhen` holds, emit `vitals.alarm` for vitals
+  newly crossing warning/critical limits (a monitor just attached alarms on
+  every abnormal monitored vital, as at `start`), check `limitMinutes`.
 * `ask` — unknown id → `unknown-id`. Item restricted to other phases, or
   superseded in the current phase by an available phase twin
   (`history[].supersedes`) → `phase-locked`. Adds to `asked` (idempotent;
@@ -354,7 +384,10 @@ checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE 
     `["sbp","dbp","spo2"]`; spo2 0 bypasses its 40–100 clamp and means "no
     reading") whose trend arrows are 0; hr always alarms **critical**
     regardless of the case's hr limits (other vitals alarm on their limits,
-    e.g. sbp/spo2 0 are critical with the adult defaults); `vital`
+    e.g. sbp/spo2 0 are critical with the adult defaults) and the
+    `vitals.alarm` event of an unmeasurable vital carries `unmeasurable:
+    true` (its value is the placeholder 0 — front-ends print "no reading"
+    for hr and leave BP/SpO₂ to the hr alarm, never "SBP 0 mmHg"); `vital`
     conditions see the same overridden values.
   Returning to a perfusing rhythm (ROSC event) restores the additive model
   (set `absolute` on that event to drop pre-arrest drug effects/trends).
@@ -364,14 +397,48 @@ checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE 
   gcs low 13 critical 8; glucose 3.9/15 critical 3/25).
 * **What the bedside shows** (grounding rule 2 — nobody has measured the
   rest): `MONITORED_VITALS` (hr, sbp, dbp, rr, spo2, temp, etco2) are shown
-  and alarm; `OBSERVED_VITALS` (gcs, pain — nursing observations) are shown
-  but never raise a monitor alarm; any other vital (glucose) is engine-only
-  (`vital` conditions, trends) until one of its `physiology.revealedBy`
-  investigations has been read, and from then on is shown and alarms like a
-  monitored one. `vitalsAt` leaves hidden vitals out of `vitals`, `trend`
-  and `alarms`, and `alarmsAt` (hence `vitals.alarm` events and
-  `countCriticalAlarms`) only covers `alarmingVitals`. A self-reported pain
-  score is left out while the patient cannot give one (arrest, GCS ≤ 8).
+  and alarm while the bedside monitor is attached; `OBSERVED_VITALS` (gcs,
+  pain — nursing observations) are shown but never raise a monitor alarm;
+  any other vital (glucose) is engine-only (`vital` conditions, trends)
+  until one of its `physiology.revealedBy` investigations has been read, and
+  from then on is shown and — while the monitor is attached — alarms like a
+  monitored one. `vitalsAt` leaves
+  hidden vitals out of `vitals`, `trend` and `alarms`, and `alarmsAt` (hence
+  `vitals.alarm` events) only covers `alarmingVitals`. `countCriticalAlarms`
+  counts the patient's critical episodes instead (`patientAlarmsAt`: the
+  same vitals on a monitor attached from minute 0), so the safety metric
+  does not depend on when — or whether — the learner attached the monitor.
+  A self-reported pain score is left out while the
+  patient cannot give one (arrest, GCS ≤ 8).
+* **The bedside monitor** (`engine/monitor.ts`) — a case with
+  `physiology.monitor` starts off the monitor. The reducer latches
+  `monitorAttachedAt` = the minute `attachedWhen` first held (after a
+  settle; it stays attached when the condition later stops holding — a
+  phase left, a flag cleared); `monitorAttached(c, s, minute)` is
+  `minute ≥ monitorAttachedAt` (a state not yet settled whose condition
+  holds — before `start`, built by hand — counts as attached from 0).
+  Without `physiology.monitor` it is attached from minute 0. While not
+  attached: no monitored vital is shown or trended, nothing alarms (a read
+  glucose is shown but does not alarm — a critical result is called
+  through as such) and there is no
+  rhythm/ECG, except the `spotChecks` (monitored vitals the baseline models),
+  shown as static readings of the case **baseline** (what the triage note
+  records: no jitter, no trend arrow, no alarm, unaffected by an arrest) and
+  listed in the snapshot's `spotChecks`; the snapshot says `monitorAttached:
+  false`. A cardiac arrest before attachment is in the signal (`vital`
+  conditions, scenario events) but shows no reading and no `unmeasurable`.
+  Once attached, everything is as above for the vitals it `measures`
+  (`measuredVitals`: default all monitored ones; the others stay
+  engine-only — not shown, trended or alarmed, nor counted by
+  `countCriticalAlarms`); trend arrows of monitored vitals look back no
+  further than the attachment. With `ecgWhen` the snapshot carries
+  `ecgAttached`, and the rhythm/ECG are shown only while it is true
+  (`ecgAttached(c, s)`: attached and `ecgWhen` holds on the state): a
+  monitor without its leads shows the numbers, no rhythm (front-ends: "no
+  ECG leads", a flat lead II). Engine truth (`vitalValue`,
+  `vital` conditions, trends, events) and the safety metric
+  (`countCriticalAlarms`, which counts the patient's critical episodes
+  from minute 0) never depend on the monitor.
 * Cases without `physiology` return a fixed normal adult snapshot flagged
   as `baseline only` (UI shows "not recorded" style).
 
@@ -482,8 +549,10 @@ Behaviour the implementation fixes where the summaries above are silent:
   alternative, or reading its `available: false` record, does not count);
   `alternativeTo` links are mutual (A lists B or B lists A).
 * **Alarms** — computed on the noise-free, display-rounded signal (jitter
-  never chatters): warning when `< low` or `> high` (strict), critical when
-  `≤ criticalLow` or `≥ criticalHigh` (inclusive). A case's
+  never chatters), for `alarmingVitals` at that minute only (nothing — not a
+  read glucose either — before the monitor is attached): warning when `< low` or
+  `> high` (strict), critical when `≤ criticalLow` or `≥ criticalHigh`
+  (inclusive). A case's
   `physiology.alarms[vital]` **replaces** that vital's default limits
   wholesale (unspecified bounds are off). `vitals.alarm` is emitted when a
   vital's level rises; at `start` every abnormal vital alarms (no history).
@@ -639,6 +708,15 @@ spoken by the patient — those come from engine actions.
   monitor, debrief, case library, settings (provider/model/approval/locale),
   approval dialog, map, inventory, help, pause/save/export. The session runs
   in the browser; LLM calls go direct (user key) or via the server proxy.
+  Before a case's monitor is attached (`monitorAttached: false`) the HUD
+  vitals strip shows "NO MONITOR · TRIAGE" / "未接监护 · 分诊手测" and only the
+  spot checks (muted: no trend, no alarm colour), the monitor screens (panel
+  and in-world) are dark ("MONITOR NOT ATTACHED" / "未连接监护": no trace,
+  number or rhythm), and the monitor panel lists the triage readings,
+  disables NIBP and offers "Attach the monitor" (the case's monitoring
+  intervention named in `attachedWhen`, through the approval gate). The
+  voxel patient still looks distressed when a monitored vital is critical
+  (engine truth — the patient looks ill without a monitor).
 * **cli** — `clinicalcraft` REPL (plain text → current interlocutor,
   `@nurse …` addressing, `/commands`), `exec`/`-p` headless with
   `--output-format text|json|stream-json`, `--autopilot`, case tooling,

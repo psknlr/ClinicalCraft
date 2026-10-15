@@ -8,7 +8,19 @@
  *   GameWorldLink  per game: waypoint beacon from `state_snapshot.waypoint`, NPC speaking/distress,
  *                  oxygen accessories, real-time simulated clock ticks, the `walk_to` dynamic tool
  */
-import { resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+import {
+  alarmLevel,
+  alarmLimitsFor,
+  MONITORED_VITALS,
+  resolveWaypoint,
+  t,
+  vitalValue,
+  type CaseDefinition,
+  type EquipmentCatalog,
+  type FacilityDefinition,
+  type PatientSlot,
+  type SessionState,
+} from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
@@ -302,7 +314,7 @@ export class GameWorldLink {
         if (staff) this.speak(staff, "staff", msg.text);
       }
     } else if (msg.type === "state_snapshot" && world && this.o.slotId) {
-      const critical = msg.vitals.alarms.some((a) => a.level === "critical") && !msg.vitals.baselineOnly;
+      const critical = !msg.vitals.baselineOnly && (msg.vitals.alarms.some((a) => a.level === "critical") || (msg.vitals.monitorAttached === false && inExtremis(this.o.caseDef, msg.state)));
       if (critical !== this.distressed) {
         this.distressed = critical;
         world.setPatientState(this.o.slotId, { distressed: critical });
@@ -353,4 +365,19 @@ export class GameWorldLink {
       console.error(err);
     }
   }
+}
+
+/**
+ * Does the patient look critically ill — a monitored vital in its critical
+ * band (engine truth: a sick patient looks sick whether or not a monitor is
+ * attached)? Drives only the voxel patient's distressed look before the
+ * monitor is on; no number is shown.
+ */
+export function inExtremis(c: CaseDefinition, s: SessionState): boolean {
+  if (!c.physiology) return false;
+  const limits = alarmLimitsFor(c);
+  return MONITORED_VITALS.some((vital) => {
+    const value = vitalValue(c, s, vital);
+    return value != null && alarmLevel(value, limits[vital]) === "critical";
+  });
 }

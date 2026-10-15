@@ -3,12 +3,14 @@
  *
  * Conditions are pure predicates over (case, session state). `vital`
  * conditions read the noise-free, display-rounded value at the session clock
- * (see physiology.ts), so they never flicker with monitor jitter.
+ * (see signal.ts), so they never flicker with monitor jitter — and they read
+ * the patient, not the bedside: an unattached monitor or an unread glucose
+ * does not change them.
  */
 import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import type { OrderRecord, SessionState } from "../schema/session.js";
-import { vitalValue } from "./physiology.js";
+import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */

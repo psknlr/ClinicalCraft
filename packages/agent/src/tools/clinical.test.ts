@@ -299,6 +299,18 @@ describe("learner-facing wording (zh-CN + en)", () => {
     expect(clockTime(loadMiniCase(), 45.5, "en", "ceil")).toBe("09:46");
   });
 
+  it("the wait summary never reports an arrest's placeholder zeros as alarm readings", async () => {
+    const vf = (x: CaseInput) => {
+      x.physiology!.events.push({ id: "vf", atMinute: 10, setVitals: { rhythm: "ventricular-fibrillation", rr: 0 }, severity: "critical" } as never);
+    };
+    for (const [locale, noReading] of [["en", "HR no reading (critical)"], ["zh-CN", "心率 测不出 (危急)"]] as const) {
+      const h = harness(locale, "clinician", null, vf);
+      const meanwhile = ((await h.run("wait", { minutes: 12 })).data as { meanwhile: string }).meanwhile;
+      expect(meanwhile).toContain(noReading);
+      expect(meanwhile).not.toMatch(/ 0 mmHg|SpO₂ 0%|(HR|心率) 0\/min/); // RR 0 is a reading: apnoea
+    }
+  });
+
   it("the wait summary addresses whoever waited and never doubles punctuation (L21)", async () => {
     const en = harness("en", "learner");
     await en.run("order_test", { investigation_id: "troponin" });

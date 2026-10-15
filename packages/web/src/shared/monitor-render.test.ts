@@ -58,6 +58,32 @@ describe("monitorRenderer", () => {
     expect(texts).not.toContain("132");
     expect(texts).toContain("--");
   });
+  it("shows a dark 'not attached' screen before the monitor is on: no numbers, rhythm or alarm", () => {
+    for (const [locale, title, hint] of [
+      ["en", "MONITOR NOT ATTACHED", "attach the monitor for continuous readings"],
+      ["zh-CN", "未连接监护", "连接监护后显示持续读数"],
+    ] as const) {
+      const { ctx, texts } = mockCtx();
+      // even a snapshot carrying static triage readings: they are not a monitor's numbers
+      monitorRenderer.draw(ctx, 640, 400, snap({ monitorAttached: false, spotChecks: ["hr", "sbp", "dbp"], vitals: { hr: 132, sbp: 88, dbp: 52, map: 64, gcs: 14 }, alarms: [] }), 0, locale);
+      expect(texts).toContain(title);
+      expect(texts).toContain(hint);
+      for (const n of ["132", "88/52", "88"]) expect(texts).not.toContain(n);
+      expect(texts.some((t) => /sinus|窦性|!!/i.test(t))).toBe(false);
+      expect(texts).toContain("--");
+    }
+  });
+  it("attached without ECG leads: live numerics, but no rhythm named and a flat ECG lead", () => {
+    for (const [locale, title] of [["en", "ECG LEADS NOT ATTACHED"], ["zh-CN", "心电导联未连接"]] as const) {
+      const { ctx, texts } = mockCtx();
+      const { rhythm: _r, ecg: _e, ...noEcg } = VITALS;
+      monitorRenderer.draw(ctx, 640, 400, snap({ monitorAttached: true, ecgAttached: false, vitals: noEcg }), 0, locale);
+      expect(texts.some((t) => t.includes(title))).toBe(true);
+      expect(texts).toContain("132");
+      expect(texts).toContain("88/52");
+      expect(texts.some((t) => /sinus|窦性/i.test(t))).toBe(false);
+    }
+  });
   it("handles a missing patient and lethal rhythms", () => {
     const a = mockCtx();
     monitorRenderer.draw(a.ctx, 256, 160, null, 0, "en");

@@ -366,6 +366,13 @@ export class Hud {
     this.renderDock();
   }
 
+  /**
+   * The compact vitals strip. Before the bedside monitor is attached
+   * (`monitorAttached: false`) it says so — "NO MONITOR · TRIAGE" / "未接监护 ·
+   * 分诊手测" before the spot checks, which are muted (taken by hand: no trend
+   * arrows, no alarm colours), or "MONITOR · OFF" when there are none; once
+   * attached, the live values.
+   */
   private renderVitals(c: CaseDefinition): void {
     const e = this.el;
     const game = this.app.game;
@@ -376,14 +383,32 @@ export class Hud {
     }
     e.vitals.hidden = false;
     const v = snap.vitals;
+    const off = v.monitorAttached === false;
+    const manual = new Set<string>(v.spotChecks ?? []);
+    e.vitals.classList.toggle("off-monitor", off);
+    const title = off ? tr(manual.size ? "hud.monitorOffTitle" : "hud.monitorOffNone") : tr("hud.vitalsTitle");
+    e.vitals.title = title;
+    e.vitals.setAttribute("aria-label", title);
     // Cardiac arrest: the monitor has no reading for these (never show the placeholder 0).
     const unread = new Set<string>(v.unmeasurable ?? []);
     const levelOf = (k: VitalKey) => (unread.has(k) && k !== "hr" ? null : (v.alarms.find((a) => a.vital === k)?.level ?? null));
     clear(e.vitals);
+    if (off) {
+      // "NO MONITOR / TRIAGE": the values after it were taken by hand at triage, not live.
+      e.vitals.append(
+        h(
+          "span",
+          { class: "vital v-monitor", dataset: { vital: "monitor" } },
+          h("small", null, tr(manual.size ? "hud.monitorOff" : "hud.monitor")),
+          h("b", null, tr(manual.size ? "hud.triage" : "hud.off")),
+        ),
+      );
+    }
     for (const item of STRIP) {
       let value: string;
       let level: "warning" | "critical" | null;
       if (item.key === "bp") {
+        if (v.vitals.sbp == null || v.vitals.dbp == null) continue;
         value = unread.has("sbp") ? "---" : `${Math.round(v.vitals.sbp)}/${Math.round(v.vitals.dbp)}`;
         const a = levelOf("sbp");
         const b = levelOf("dbp");
@@ -394,12 +419,14 @@ export class Hud {
         value = unread.has(item.key) ? "---" : item.key === "temp" ? raw.toFixed(1) : String(Math.round(raw));
         level = levelOf(item.key as VitalKey);
       }
-      const trend = item.key !== "bp" ? v.trend[item.key as VitalKey] : v.trend.sbp;
+      const isManual = manual.has(item.key === "bp" ? "sbp" : item.key);
+      const trend = isManual ? 0 : item.key !== "bp" ? v.trend[item.key as VitalKey] : v.trend.sbp;
+      const label = item.key === "spo2" ? "SpO₂" : item.key.toUpperCase();
       e.vitals.append(
         h(
           "span",
-          { class: ["vital", `v-${item.key}`, level ? `alarm-${level}` : ""], dataset: { vital: item.key } },
-          h("small", null, item.key === "spo2" ? "SpO₂" : item.key.toUpperCase()),
+          { class: ["vital", `v-${item.key}`, isManual ? "manual" : "", level ? `alarm-${level}` : ""], dataset: { vital: item.key } },
+          h("small", null, label),
           h("b", null, value + item.unit),
           trend ? h("i", { class: "trend", "aria-hidden": "true" }, trend > 0 ? "↑" : "↓") : null,
         ),

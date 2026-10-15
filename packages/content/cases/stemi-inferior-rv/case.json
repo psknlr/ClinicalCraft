@@ -5354,6 +5354,10 @@
     }
   ],
   "physiology": {
+    "monitor": {
+      "attachedWhen": { "any": [{ "intervened": "cardiac-monitoring" }, { "intervened": "transfer-cath-lab" }, { "flag": "vf-arrest" }] },
+      "spotChecks": ["hr", "sbp", "dbp", "rr", "spo2", "temp"]
+    },
     "revealedBy": { "glucose": ["poc-glucose"] },
     "baseline": {
       "hr": 54,
@@ -5504,8 +5508,8 @@
         },
         "severity": "info",
         "message": {
-          "zh-CN": "监护：阿托品后心率上升。",
-          "en": "Monitor: heart rate rising after atropine."
+          "zh-CN": "护士：“用了阿托品，他的脉搏快起来了。”",
+          "en": "Nurse: \"His pulse is picking up since the atropine.\""
         }
       },
       {
@@ -5606,8 +5610,8 @@
         ],
         "severity": "critical",
         "message": {
-          "zh-CN": "监护仪报警！患者突然意识丧失、无脉搏、无正常呼吸——监护示心室颤动。",
-          "en": "Monitor alarm! The patient suddenly loses consciousness — no pulse, no normal breathing. The monitor shows ventricular fibrillation."
+          "zh-CN": "心搏骤停！患者突然意识丧失、无脉搏、无正常呼吸。护士立即在除颤仪上看心律：心室颤动。",
+          "en": "Cardiac arrest! The patient suddenly loses consciousness — no pulse, no normal breathing. The nurse checks the rhythm on the defibrillator: ventricular fibrillation."
         }
       },
       {
@@ -6883,8 +6887,8 @@
         "en": "He Jing (resus nurse)"
       },
       "knowledge": {
-        "zh-CN": "交班：58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛，直接送入抢救室。分诊生命体征与到院时监护显示一致。未经院前急救，到院前未用任何药物，静脉通路尚未建立。体重78 kg（患者自述）。物流：床旁有心电图机、除颤仪、监护仪、氧气和急救车；急诊有导管室“一键启动”专线；今天是工作日白天，介入团队在院内，启动后约15分钟可接收患者。急诊备药：阿司匹林、替格瑞洛、氯吡格雷、普通肝素、依诺肝素、磺达肝癸钠、替奈普酶、硝酸甘油、吗啡、昂丹司琼、阿托品、多巴酚丁胺、去甲肾上腺素、美托洛尔、呋塞米、生理盐水、阿托伐他汀、肾上腺素。到院10分钟仍未看心电图时会提醒。不解读心电图、不给出诊断。",
-        "en": "Handover: 58-year-old man who walked into the ED with his wife at 09:10 reporting chest pain since about 08:00; taken straight to resus. Triage vital signs match the monitor at arrival. No ambulance, no medicines before arrival, no IV access yet. Weight 78 kg (patient-reported). Logistics: the bay has an ECG cart, defibrillator, monitor, oxygen and crash cart; the ED has a single-call cath-lab activation line; it is a weekday daytime, the interventional team is in-house and the lab can take a patient about 15 minutes after activation. ED stock: aspirin, ticagrelor, clopidogrel, UFH, enoxaparin, fondaparinux, tenecteplase, nitroglycerin, morphine, ondansetron, atropine, dobutamine, noradrenaline, metoprolol, furosemide, saline, atorvastatin, adrenaline. Prompts if no ECG has been read 10 minutes after arrival. Does not interpret ECGs or suggest diagnoses."
+        "zh-CN": "交班：58岁男性，09:10由妻子陪同步入急诊，诉约08:00起胸痛，直接送入抢救室。分诊生命体征为到院时（接监护前）手测。未经院前急救，到院前未用任何药物，静脉通路尚未建立。体重78 kg（患者自述）。物流：床旁有心电图机、除颤仪、监护仪、氧气和急救车；急诊有导管室“一键启动”专线；今天是工作日白天，介入团队在院内，启动后约15分钟可接收患者。急诊备药：阿司匹林、替格瑞洛、氯吡格雷、普通肝素、依诺肝素、磺达肝癸钠、替奈普酶、硝酸甘油、吗啡、昂丹司琼、阿托品、多巴酚丁胺、去甲肾上腺素、美托洛尔、呋塞米、生理盐水、阿托伐他汀、肾上腺素。到院10分钟仍未看心电图时会提醒。不解读心电图、不给出诊断。",
+        "en": "Handover: 58-year-old man who walked into the ED with his wife at 09:10 reporting chest pain since about 08:00; taken straight to resus. The triage set was measured by hand on arrival, before any monitor. No ambulance, no medicines before arrival, no IV access yet. Weight 78 kg (patient-reported). Logistics: the bay has an ECG cart, defibrillator, monitor, oxygen and crash cart; the ED has a single-call cath-lab activation line; it is a weekday daytime, the interventional team is in-house and the lab can take a patient about 15 minutes after activation. ED stock: aspirin, ticagrelor, clopidogrel, UFH, enoxaparin, fondaparinux, tenecteplase, nitroglycerin, morphine, ondansetron, atropine, dobutamine, noradrenaline, metoprolol, furosemide, saline, atorvastatin, adrenaline. Prompts if no ECG has been read 10 minutes after arrival. Does not interpret ECGs or suggest diagnoses."
       }
     },
     {

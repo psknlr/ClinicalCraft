@@ -127,7 +127,14 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 * **Baseline.** BP 192/104, HR 96 (AF), RR 18, SpO₂ 96 %, T 36.8 °C, GCS 13, pain 0.
   * The baseline deliberately has **no glucose**, so the monitor does not reveal it; the learner
     must order the point-of-care test.
-  * The SBP warning alarm (> 180) is active on arrival.
+  * **Bedside monitor (`physiology.monitor`).** The triage note puts him in resus bay 1 "not yet on
+    the monitor", so until `cardiac-monitoring` is given (or the post-thrombolysis monitoring
+    orders, `post-lysis-monitoring` — BP every 15 min on the cardiac monitor —, or he reaches the
+    angio suite, phase `angio`, which is monitored) the bedside shows only the triage set taken by hand — BP 192/104,
+    HR 96, RR 18, SpO₂ 96 %, T 36.8 °C (`spotChecks`, static, no alarm) — plus GCS and pain. **No
+    rhythm**: atrial fibrillation is earned from the monitor, the irregular pulse on examination or
+    the 12-lead ECG, never given away on arrival.
+  * The SBP warning alarm (> 180) sounds as soon as the monitor is attached.
 * **BP agents** (effects persist; they are not titrated off in this case):
 
   | Agent | SBP | DBP | HR | Onset / ramp |

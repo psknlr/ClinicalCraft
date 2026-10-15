@@ -12,10 +12,11 @@
  * the least recently used one (closed cleanly, transcript flushed).
  */
 import type { AgentEvent, AgentProfile, ApprovalMode, ClinicalSession, LLMProvider, ProviderConfig, ResolvedSettings, SettingsLayerData } from "@clinicalcraft/agent";
+import type { DomainEvent } from "@clinicalcraft/core";
 import { createCommandHookExecutor, createNodeSession, findProjectRoot, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
 import { SessionToolRunner } from "./bridge.js";
 
-/** Kept per session for the `transcript` resource (bounded). */
+/** Kept per session for the `transcript` resource (bounded; clinical events redacted by `learnerClinicalEvent`). */
 export interface LoggedEvent {
   seq: number;
   type: string;
@@ -81,10 +82,33 @@ export function sessionFlags(settings: ResolvedSettings, locale: string | null):
   return flags as SettingsLayerData;
 }
 
+/**
+ * A clinical event as the learner may read it in the transcript resource:
+ * the authored ids of scenario events ("ev-dopamine-af") and flag changes
+ * ("high-risk-pe", scoring markers) name findings or the learner's mistakes
+ * before they are earned — the scenario line itself is logged as said (its
+ * `agent_message`), so the event keeps only its severity; flag changes are
+ * left out.
+ */
+export function learnerClinicalEvent(event: DomainEvent): Record<string, unknown> | null {
+  switch (event.type) {
+    case "flag.changed":
+      return null;
+    case "scenario.event":
+      return { type: event.type, severity: event.severity };
+    default:
+      return { ...event };
+  }
+}
+
 function loggable(event: AgentEvent): LoggedEvent | null {
   const msg = event.msg;
   if (!LOGGED_TYPES.has(msg.type)) return null;
   switch (msg.type) {
+    case "clinical_event": {
+      const visible = learnerClinicalEvent(msg.event);
+      return visible ? { seq: event.seq, type: msg.type, event: visible } : null;
+    }
     case "agent_message":
       return { seq: event.seq, type: msg.type, agent: msg.agent, speaker: msg.speaker, text: msg.text, grounded: msg.grounded, grounding: msg.grounding ?? null };
     case "assessment":

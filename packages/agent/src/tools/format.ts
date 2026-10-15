@@ -118,29 +118,66 @@ export function noReading(locale: string): string {
 }
 
 /**
- * One-line monitor summary: "HR 88/min · BP 120/80 mmHg (MAP 93) · …".
- * Vitals the monitor cannot read (cardiac arrest) show "no reading", never
- * their placeholder 0; vitals the snapshot leaves out (an unmeasured glucose,
- * a pain score the patient cannot give) are not mentioned.
+ * A snapshot's readings as text ("HR 88/min↑", "BP 120/80 mmHg (MAP 93)",
+ * "rhythm sinus rhythm"…), split into live ones and static manual ones (the
+ * spot checks shown before the monitor is attached).
  */
-export function formatVitals(snapshot: VitalsSnapshot, locale: string): string {
+export function bedsideReadings(snapshot: VitalsSnapshot, locale: string): { live: string[]; manual: string[] } {
   const v = snapshot.vitals;
   const unread = new Set(snapshot.unmeasurable ?? []);
+  const manualKeys = new Set(snapshot.spotChecks ?? []);
   const nr = noReading(locale);
-  const arrow = (k: VitalKey) => (unread.has(k) ? "" : (TREND_ARROW[String(snapshot.trend[k] ?? 0)] ?? ""));
-  const parts: string[] = [];
-  parts.push(`${vitalLabel("hr", locale)} ${unread.has("hr") ? nr : `${v.hr}/min`}${arrow("hr")}`);
-  parts.push(`${isZh(locale) ? "血压" : "BP"} ${unread.has("sbp") ? nr : `${v.sbp}/${v.dbp} mmHg${arrow("sbp")} (MAP ${v.map})`}`);
-  parts.push(`${vitalLabel("rr", locale)} ${v.rr}/min${arrow("rr")}`);
-  parts.push(`SpO₂ ${unread.has("spo2") ? nr : `${v.spo2}%`}${arrow("spo2")}`);
-  parts.push(`${vitalLabel("temp", locale)} ${v.temp} °C${arrow("temp")}`);
+  const arrow = (k: VitalKey) => (unread.has(k) || manualKeys.has(k) ? "" : (TREND_ARROW[String(snapshot.trend[k] ?? 0)] ?? ""));
+  const live: string[] = [];
+  const manual: string[] = [];
+  const add = (k: VitalKey, text: string) => (manualKeys.has(k) ? manual : live).push(text);
+  if (v.hr != null) add("hr", `${vitalLabel("hr", locale)} ${unread.has("hr") ? nr : `${v.hr}/min`}${arrow("hr")}`);
+  if (v.sbp != null && v.dbp != null) {
+    add("sbp", `${isZh(locale) ? "血压" : "BP"} ${unread.has("sbp") ? nr : `${v.sbp}/${v.dbp} mmHg${arrow("sbp")}${v.map != null ? ` (MAP ${v.map})` : ""}`}`);
+  } else if (v.sbp != null) add("sbp", `${vitalLabel("sbp", locale)} ${unread.has("sbp") ? nr : vitalWithUnit("sbp", v.sbp)}${arrow("sbp")}`);
+  if (v.rr != null) add("rr", `${vitalLabel("rr", locale)} ${v.rr}/min${arrow("rr")}`);
+  if (v.spo2 != null) add("spo2", `SpO₂ ${unread.has("spo2") ? nr : `${v.spo2}%`}${arrow("spo2")}`);
+  if (v.temp != null) add("temp", `${vitalLabel("temp", locale)} ${v.temp} °C${arrow("temp")}`);
   const optional: VitalKey[] = ["gcs", "glucose", "etco2", "pain"];
   for (const k of optional) {
     const value = v[k];
-    if (typeof value === "number") parts.push(`${vitalLabel(k, locale)} ${vitalWithUnit(k, value)}${arrow(k)}`);
+    if (typeof value === "number") add(k, `${vitalLabel(k, locale)} ${vitalWithUnit(k, value)}${arrow(k)}`);
   }
-  if (v.rhythm) parts.push(`${isZh(locale) ? "心律" : "rhythm"} ${rhythmLabel(v.rhythm, locale)}`);
-  return parts.join(" · ");
+  if (v.rhythm) live.push(`${isZh(locale) ? "心律" : "rhythm"} ${rhythmLabel(v.rhythm, locale)}`);
+  return { live, manual };
+}
+
+/** True while the case's bedside monitor is not attached (`VitalsSnapshot.monitorAttached === false`). */
+export function offMonitor(snapshot: VitalsSnapshot): boolean {
+  return snapshot.monitorAttached === false;
+}
+
+/** True while the monitor is attached without its ECG leads (`VitalsSnapshot.ecgAttached === false`): no rhythm to report. */
+export function withoutEcg(snapshot: VitalsSnapshot): boolean {
+  return !offMonitor(snapshot) && snapshot.ecgAttached === false;
+}
+
+/**
+ * One-line summary of the bedside: "HR 88/min · BP 120/80 mmHg (MAP 93) · …".
+ * Vitals the monitor cannot read (cardiac arrest) show "no reading", never
+ * their placeholder 0; vitals the snapshot leaves out (an unmeasured glucose,
+ * a pain score the patient cannot give, monitored vitals while the monitor
+ * is not attached) are not mentioned. Before the monitor is attached the line
+ * says so first and labels the spot checks as triage readings taken by hand
+ * (never live values); there is no rhythm then — nor while the monitor has no
+ * ECG leads yet (`ecgAttached: false`), which the line ends by saying.
+ */
+export function formatVitals(snapshot: VitalsSnapshot, locale: string): string {
+  const { live, manual } = bedsideReadings(snapshot, locale);
+  if (!offMonitor(snapshot)) {
+    const line = live.join(" · ");
+    if (!withoutEcg(snapshot)) return line;
+    return `${line}${isZh(locale) ? "。" : ". "}${rt(locale, "tool.vitals.noEcg")}`;
+  }
+  const parts = [rt(locale, "tool.vitals.noMonitor")];
+  if (manual.length > 0) parts.push(rt(locale, "tool.vitals.spotChecks", { readings: manual.join(" · ") }));
+  if (live.length > 0) parts.push(rt(locale, "tool.vitals.observations", { readings: live.join(" · ") }));
+  return parts.join(isZh(locale) ? "" : " ");
 }
 
 /** Alarm list ("SpO₂ 86% (critical)"); during an arrest only the hr/rhythm alarm, never "SpO₂ 0%". */
@@ -152,10 +189,23 @@ export function formatAlarms(snapshot: VitalsSnapshot, locale: string): string {
   return rt(locale, "tool.vitals.alarms", { alarms: list.join(isZh(locale) ? "；" : "; ") });
 }
 
-/** Full vitals text for tools (handles baseline-only cases without presenting placeholders as facts). */
+/**
+ * Full vitals text for tools (handles baseline-only cases without presenting
+ * placeholders as facts). Before the monitor is attached: that notice, the
+ * triage readings taken by hand and the bedside observations (a read glucose
+ * among them) on their own lines, and no alarm line — nothing alarms without
+ * a monitor, and "no active alarms" would wrongly suggest one is watching.
+ */
 export function vitalsText(snapshot: VitalsSnapshot, locale: string, clockLabel?: string): string {
   if (snapshot.baselineOnly) return rt(locale, "tool.vitals.notRecorded");
   const head = clockLabel ? `[${clockLabel}] ` : "";
+  if (offMonitor(snapshot)) {
+    const { live, manual } = bedsideReadings(snapshot, locale);
+    const lines = [`${head}${rt(locale, "tool.vitals.noMonitor")}`];
+    if (manual.length > 0) lines.push(rt(locale, "tool.vitals.spotChecks", { readings: manual.join(" · ") }));
+    if (live.length > 0) lines.push(rt(locale, "tool.vitals.observations", { readings: live.join(" · ") }));
+    return lines.join("\n");
+  }
   return `${head}${formatVitals(snapshot, locale)}\n${formatAlarms(snapshot, locale)}`;
 }
 

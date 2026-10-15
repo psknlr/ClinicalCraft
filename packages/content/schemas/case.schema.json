@@ -2181,6 +2181,57 @@
                 ]
               },
               "default": {}
+            },
+            "monitor": {
+              "type": "object",
+              "properties": {
+                "attachedWhen": {
+                  "$ref": "#/definitions/Condition"
+                },
+                "spotChecks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "hr",
+                      "sbp",
+                      "dbp",
+                      "rr",
+                      "spo2",
+                      "temp",
+                      "gcs",
+                      "glucose",
+                      "etco2",
+                      "pain"
+                    ]
+                  }
+                },
+                "measures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "hr",
+                      "sbp",
+                      "dbp",
+                      "rr",
+                      "spo2",
+                      "temp",
+                      "gcs",
+                      "glucose",
+                      "etco2",
+                      "pain"
+                    ]
+                  }
+                },
+                "ecgWhen": {
+                  "$ref": "#/definitions/Condition"
+                }
+              },
+              "required": [
+                "attachedWhen"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [

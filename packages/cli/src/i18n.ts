@@ -143,6 +143,8 @@ const EN = {
   "status.complete": "✓ all objectives",
   "status.progress": "{done}/{total}",
   "status.phase": "{phase}",
+  "status.noMonitor": "no monitor",
+  "status.triage": "triage {readings}",
 
   // repl / picker
   "repl.config": "{provider}/{model} · approval {approval} · scope {scope} · {locale}",
@@ -481,6 +483,8 @@ const ZH: Record<MsgKey, string> = {
   "status.complete": "✓ 目标全部完成",
   "status.progress": "{done}/{total}",
   "status.phase": "{phase}",
+  "status.noMonitor": "未接监护",
+  "status.triage": "分诊手测 {readings}",
 
   "repl.config": "{provider}/{model} · 审批 {approval} · 范围 {scope} · {locale}",
   "repl.hint": "直接输入与患者交谈 · @护士 …（或 @nurse …）呼叫护士等 · /help 查看命令 · Tab 补全 · Ctrl-C 中断，连按两次退出",

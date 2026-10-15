@@ -13,14 +13,17 @@
  *    (an `enterWhen` that turned from false to true) and completes
  *    objectives — repeated until nothing changes, because each of these can
  *    enable another;
- * 3. emits `vitals.alarm` for vitals whose alarm level rose;
- * 4. finishes the case with `timedOut: true` when `clock.limitMinutes` is reached.
+ * 3. latches the minute the bedside monitor is attached
+ *    (`physiology.monitor.attachedWhen` first true → `monitorAttachedAt`);
+ * 4. emits `vitals.alarm` for vitals whose alarm level rose (a monitor just
+ *    attached alarms on every abnormal monitored vital, like at `start`);
+ * 5. finishes the case with `timedOut: true` when `clock.limitMinutes` is reached.
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { VitalKey } from "../schema/common.js";
 import type { DomainEvent, SessionState } from "../schema/session.js";
 import { evaluate, resultFor } from "./conditions.js";
-import { alarmsAt } from "./physiology.js";
+import { alarmsAt, unmeasurableAt } from "./physiology.js";
 import type { AlarmLevel } from "./types.js";
 
 /** Mutable working context shared by the reducer and the timeline. */
@@ -143,10 +146,15 @@ function checkAlarms(tl: Timeline): void {
   const { c, s } = tl;
   if (!c.physiology) return;
   const next: Partial<Record<VitalKey, AlarmLevel>> = {};
+  let unread: VitalKey[] | null = null;
   for (const alarm of alarmsAt(c, s, s.clock)) {
     next[alarm.vital] = alarm.level;
     if (rank(alarm.level) > rank(tl.alarmLevels[alarm.vital])) {
-      tl.events.push({ type: "vitals.alarm", vital: alarm.vital, level: alarm.level, value: alarm.value });
+      // An arrest's placeholder 0 is no reading: say so on the event, so no front-end prints "SBP 0 mmHg".
+      unread ??= unmeasurableAt(c, s, s.clock);
+      const event: Extract<DomainEvent, { type: "vitals.alarm" }> = { type: "vitals.alarm", vital: alarm.vital, level: alarm.level, value: alarm.value };
+      if (unread.includes(alarm.vital)) event.unmeasurable = true;
+      tl.events.push(event);
     }
   }
   tl.alarmLevels = next;
@@ -171,7 +179,19 @@ function checkLimit(tl: Timeline): boolean {
   return true;
 }
 
-/** Settle the draft at its current clock (see module docs, step 2–3). */
+/**
+ * Latch the minute the bedside monitor is attached: the first settle at which
+ * `physiology.monitor.attachedWhen` holds. It stays attached afterwards, even
+ * when the condition stops holding (a phase left behind, a flag cleared).
+ */
+function attachMonitor(tl: Timeline): void {
+  const { c, s } = tl;
+  const monitor = c.physiology?.monitor;
+  if (!monitor || s.monitorAttachedAt != null) return;
+  if (evaluate(c, s, monitor.attachedWhen)) s.monitorAttachedAt = s.clock;
+}
+
+/** Settle the draft at its current clock (see module docs, step 2–4). */
 export function settle(tl: Timeline): void {
   const maxPasses = 2 + settleBound(tl.c);
   for (let pass = 0; pass < maxPasses; pass++) {
@@ -181,6 +201,7 @@ export function settle(tl: Timeline): void {
     changed = completeObjectives(tl) || changed;
     if (!changed) break;
   }
+  attachMonitor(tl);
   checkAlarms(tl);
 }
 

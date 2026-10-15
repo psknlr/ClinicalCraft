@@ -85,6 +85,25 @@ features are present but are not required for the diagnosis.
 
 ## Physiology model (what the monitor does)
 
+* **No monitor in the garden (`physiology.monitor`).** The nurse's emergency
+  bag has a portable pulse oximeter and BP cuff but nobody is monitoring her
+  continuously: until `monitoring` is given (or she is transferred, lying
+  flat and monitored, `transfer-ed`) the bedside shows only the nurse's
+  portable readings at arrival — BP 78/44, HR 128, RR 26, SpO₂ 92 %
+  (`spotChecks`: static, no alarm; **no temperature**, none was taken; no
+  rhythm) — plus GCS. The `monitoring` response attaches the pulse oximeter
+  and the automated cuff at once: from then on HR, BP, RR and SpO₂ are live
+  and alarm, but there is **no rhythm** ("ECG leads not attached", a flat
+  lead II) until the team's monitor-defibrillator (3-lead ECG) is there —
+  `ecgWhen`: `call-help` (or the transfer to the ED). Calling for help shows
+  the rhythm at once, although the team takes 3–4 minutes (the engine has no
+  "minutes since X" condition); in the reference path the team was called 7
+  minutes before `monitoring`, so it is there by then. **No temperature** at
+  any point (`measures` leaves out `temp`): neither the bag nor the
+  monitor-defibrillator takes one, and the case records none. The IV-bolus
+  scenario lines that read the ECG need the ECG, not just the oximeter (see
+  below).
+
 * **Two trend families per vital.**
   * The `*-early` trends stop at the **first** IM adrenaline dose.
   * The `*-persisting` trends stop only at the **second** dose (`minCount: 2`).
@@ -100,7 +119,7 @@ features are present but are not required for the diagnosis.
   (SpO₂ +5), each crystalloid bolus (SBP +10, HR −8 over 10 min) and
   salbutamol (SpO₂ +2, RR −3, HR +6 for 30 min).
 
-Replay of the reference solution (displayed values, including the deterministic monitor jitter):
+Replay of the reference solution (modelled values, including the deterministic monitor jitter; the bedside shows them live from the `monitoring` step at 7.5 min — before that, only the static portable readings at arrival):
 
 | minute | HR | BP (MAP) | RR | SpO₂ | context |
 |---:|---:|---|---:|---:|---|
@@ -128,7 +147,7 @@ dose. The other scripted events are:
 * `adrenaline-prompt`: the nurse offers the drawn-up adrenaline at 5 min. It
   sets `adrenaline-delayed`, which fails the weighted rubric item.
 * `upright-while-hypotensive`: she greys out when sat up with SBP < 90. The
-  silent `upright-faint` puts GCS 13 on the monitor (unless she is already
+  silent `upright-faint` puts GCS 13 on the bedside observations (unless she is already
   peri-arrest) and `upright-recovered` restores 15 once adrenaline has brought
   SBP to ≥ 90. Sitting up itself only lowers SBP by 14 for 5 min, so a
   stabilised patient sat up in the ED does not faint.
@@ -136,7 +155,13 @@ dose. The other scripted events are:
   IV bolus. This does **not** stop the anaphylaxis trends.
   `iv-bolus-ischaemia` then puts ST depression on the monitor while SBP is
   above 145, and `iv-bolus-wears-off` clears it once SBP falls back below 135
-  ("the IV push has not controlled the reaction").
+  ("the IV push has not controlled the reaction"). Each has an
+  `*-unmonitored` twin that fires instead when she has no ECG on yet —
+  `monitoring` with the team called, or the ED, gives one; the oximeter alone
+  does not — (her pounding head and chest, a racing chaotic pulse, then a weak radial
+  pulse again): same `setVitals`/`setFlags`, guarded on the flag they set
+  (`iv-adrenaline-harm`, `iv-bolus-st-change`, `iv-bolus-settled`), so
+  attaching the monitor later never replays the screen version.
 * `sinus-in-ed`: the rhythm label changes to sinus once HR < 100 in the ED.
 * `asks-to-leave`: at 90 min she asks to go home. This is the disposition
   teaching prompt. The event sets `speaker: "patient"`, so she says it herself.

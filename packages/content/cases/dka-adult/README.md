@@ -60,7 +60,21 @@ ketoacidosis with admission hypokalaemia**. Insulin must wait until potassium is
 Baseline: HR 118 sinus tachycardia, BP 100/60 (MAP 73), RR 28 (Kussmaul), SpO₂ 99%
 on air, T 37.4 °C, GCS 15, capillary glucose 28.0 mmol/L, pain 6/10. The ECG
 overlay shows ST depression (hypokalaemia). Default adult alarm limits apply.
-Glucose 28 is a critical alarm and RR 28 a warning from minute 0.
+
+**Bedside monitor (`physiology.monitor`).** She is not on the monitor at triage:
+until `cardiac-monitoring` is given the bedside shows only the triage set taken
+by hand (HR 118, BP 100/60, RR 28, SpO₂ 99 %, T 37.4 °C — `spotChecks`, static,
+no alarm, no rhythm) plus GCS and pain; the nurse handover says the triage set
+was measured by hand before any monitor. RR 28 alarms (warning) as soon as the
+monitor is attached; glucose 28 is shown with the bedside observations once the
+capillary glucose has been read (`revealedBy`) — called through by the nurse as a
+critical result — and alarms (critical) only on the monitor. The insulin-before-potassium crash is a "Monitor alarm"
+(ectopics, a 6-beat run of VT) only on the monitor (`ev-k-crash`); without one
+it is what she and the nurse feel — racing, skipping heart, weak legs, a fast
+irregular pulse — with the same K⁺ 2.6 gas (`ev-k-crash-unmonitored`). Both set
+`k-crash` and HR 130 and guard on it, so attaching the monitor later never
+fires the other. The bicarbonate and "potassium settles it" lines talk about
+the pulse and ectopics, not the screen.
 
 | Element | Behaviour |
 |---|---|
@@ -214,9 +228,12 @@ conflict, and names the JBDS alternative in feedback. The differences:
 ## Modelling notes and limitations
 
 - **Results are per-phase snapshots.** A test ordered in a phase returns that phase's
-  result whenever it is read. Glucose in later phases is read from the monitor
-  (`poc-glucose` later-phase results point there, and the repeat gases omit
-  glucose), so lab and monitor values cannot drift apart.
+  result whenever it is read. Glucose in later phases is read from the bedside
+  observations (`poc-glucose` later-phase results point there, and the repeat
+  gases omit glucose), so lab and bedside values cannot drift apart. Texts the
+  learner can meet before the monitor is attached do not claim one: the KCl
+  order says it *needs* continuous ECG monitoring (attach the monitor), and the
+  HDU referral that she needs HDU-level monitoring in resus.
 - **The potassium recheck is time-gated** by elapsed-minute tiers, because the
   engine has no "minutes since intervention X" condition. Potassium started
   before minute 600 always runs 45–105 min before the `k-replete` result;

@@ -85,17 +85,47 @@ export interface VitalAlarm {
 }
 
 /**
- * Bedside-monitor view of the patient at `minute` (pure function of case,
- * state and minute). `baselineOnly` is true for cases without a physiology
- * model: the values are a fixed normal adult placeholder the UI should
- * present as "not recorded".
+ * The vitals a bedside snapshot shows: only `shownVitals` are present (an
+ * unread glucose, a pain score the patient cannot give and — while the
+ * monitor is not attached — every monitored vital but the spot checks are
+ * absent). `map` accompanies a shown blood pressure; `rhythm`/`ecg` need an
+ * attached monitor with its ECG leads (`physiology.monitor.ecgWhen`).
+ */
+export type DisplayedVitals = Partial<Vitals> & { map?: number };
+
+/**
+ * Bedside view of the patient at `minute` (pure function of case, state and
+ * minute). `baselineOnly` is true for cases without a physiology model: the
+ * values are a fixed normal adult placeholder the UI should present as "not
+ * recorded".
  */
 export interface VitalsSnapshot {
   minute: number;
-  vitals: Vitals & { map: number };
+  vitals: DisplayedVitals;
   alarms: VitalAlarm[];
   trend: Partial<Record<VitalKey, -1 | 0 | 1>>;
   baselineOnly?: boolean;
+  /**
+   * Present for a case with `physiology.monitor` (a monitor the learner must
+   * attach): `false` until it is attached — no rhythm, no monitor alarms, no
+   * live monitored vitals; UIs label the bedside "monitor not attached".
+   * Absent otherwise (the patient is monitored from the start).
+   */
+  monitorAttached?: boolean;
+  /**
+   * Present for a case whose monitor gets its ECG leads separately
+   * (`physiology.monitor.ecgWhen`): whether the rhythm and ECG are shown —
+   * `false` while the monitor is not attached, or attached without leads
+   * (e.g. a pulse oximeter and cuff before the team's monitor-defibrillator);
+   * UIs then name no rhythm and draw no ECG. Absent otherwise.
+   */
+  ecgAttached?: boolean;
+  /**
+   * While the monitor is not attached: the vitals in `vitals` that are
+   * static manual readings (the case's spot checks — the triage set), in
+   * `VITAL_KEYS` order. UIs label them as triage/manual readings, not live.
+   */
+  spotChecks?: VitalKey[];
   /**
    * Vitals the monitor cannot read right now (`VITAL_KEYS` order), present
    * only during a cardiac-arrest rhythm: `["hr", "sbp", "dbp", "spo2"]` for

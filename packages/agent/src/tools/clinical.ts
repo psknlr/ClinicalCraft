@@ -39,7 +39,7 @@ import {
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
 import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
-import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
+import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
 
 export type ToolArgs = Record<string, unknown>;
@@ -878,7 +878,9 @@ function eventSummary(c: CaseDefinition, events: readonly DomainEvent[], locale:
         out.push(rt(locale, "tool.wait.resultReady", { name: investigationName(c, e.investigationId, locale), phase: phaseLabel(c, e.phase, locale) }));
         break;
       case "vitals.alarm":
-        out.push(`${vitalLabel(e.vital, locale)} ${vitalWithUnit(e.vital, e.value)} (${rt(locale, e.level === "critical" ? "level.critical" : "level.warning")})`);
+        // An arrest's placeholder 0 is no reading: hr says so; BP and SpO₂ are covered by the hr/rhythm alarm.
+        if (e.unmeasurable && e.vital !== "hr") break;
+        out.push(`${vitalLabel(e.vital, locale)} ${e.unmeasurable ? noReading(locale) : vitalWithUnit(e.vital, e.value)} (${rt(locale, e.level === "critical" ? "level.critical" : "level.warning")})`);
         break;
       case "scenario.event": {
         const ev = c.physiology?.events.find((x) => x.id === e.eventId);

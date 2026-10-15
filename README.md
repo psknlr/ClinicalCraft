@@ -35,7 +35,9 @@ HTTP server and an MCP server that all speak one protocol.
   decisions, phases, and a simulated clock. Vitals come from a pure
   physiology engine (baseline, deterioration trends, intervention effects,
   scripted events, alarms, cardiac-arrest rhythms), so every session replays
-  exactly.
+  exactly. A patient who arrives off the monitor shows only the triage
+  readings taken by hand — no live numbers, alarms or rhythm — until the
+  learner attaches it.
 - **Approvals and scope.** Approval modes (`default`, `strict`, `auto`,
   `plan`, `bypass`), practice scopes (`history-only`, `workup`, `full`) and
   Claude Code-style `tool(specifier)` allow/ask/deny rules gate every

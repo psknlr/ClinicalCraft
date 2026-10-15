@@ -236,6 +236,8 @@ describe("MCP stdio server", () => {
     const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
     const started = await client.call("start_case", { case_id: "anaphylaxis-garden" });
     const sessionId = started.structuredContent!.session_id as string;
+    // Monitor alarms need a monitor (physiology.monitor): attach it first; the alarms raised while asking follow.
+    expect((await client.call("intervene", { session_id: sessionId, intervention_id: "monitoring" })).isError).toBeFalsy();
     const replies: string[] = [];
     const notices: string[] = [];
     for (const step of ana!.solution) {
@@ -435,6 +437,37 @@ describe("MCP stdio server", () => {
     const text = debrief.content[0]!.text;
     for (const inv of def.investigations.filter((i) => i.value === "essential")) expect(text).not.toContain(t(inv.name, "en"));
     expect(text).toMatch(/not obtained yet: \d+/);
+    await client.end();
+  });
+
+  const septic = content.cases.get("septic-shock-cap")?.def;
+  it.skipIf(!septic)("resources carry only what the learner can see: no hidden rhythm, scenario/trend ids, flags or case id before the monitor is on", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
+    const sessionId = (await client.call("start_case", { case_id: "septic-shock-cap", locale: "en" })).structuredContent!.session_id as string;
+    for (const id of ["iv-access", "dopamine"]) expect((await client.call("intervene", { session_id: sessionId, intervention_id: id })).isError).toBeFalsy();
+    // check_vitals withholds the rhythm (no monitor yet): so must every resource.
+    expect((await client.call("check_vitals", { session_id: sessionId })).content[0]!.text).toContain("No monitor attached yet");
+    const read = async (kind: string) => (await client.result<{ contents: { text: string }[] }>("resources/read", { uri: `clinicalcraft://session/${sessionId}/${kind}` })).contents[0]!.text;
+    const state = await read("state");
+    const parsed = JSON.parse(state) as { state: Record<string, unknown>; vitals: { monitorAttached: boolean; vitals: Record<string, unknown> } };
+    expect(parsed.vitals.monitorAttached).toBe(false);
+    expect(parsed.vitals.vitals.rhythm).toBeUndefined();
+    for (const key of ["baselineOverrides", "firedEvents", "trendStops", "flags"]) expect(parsed.state).not.toHaveProperty(key);
+    // The learner's own record stays.
+    expect((parsed.state.interventions as { interventionId: string }[]).map((i) => i.interventionId)).toEqual(["iv-access", "dopamine"]);
+    const transcript = await read("transcript");
+    for (const text of [state, transcript]) {
+      expect(text).not.toContain("atrial-fibrillation");
+      expect(text).not.toContain("dopamine-af");
+      expect(text).not.toContain("septic-shock-cap");
+    }
+    // The transcript still records what happened: the scenario line (as said), the learner's interventions.
+    expect(transcript).toContain('"scenario.event"');
+    expect(transcript).toContain('"intervention.applied"');
+    const { resources } = await client.result<{ resources: { uri: string; title: string; description: string }[] }>("resources/list");
+    expect(resources.some((r) => r.uri.includes(sessionId))).toBe(true);
+    for (const r of resources) expect(`${r.title} ${r.description}`).not.toContain("septic-shock-cap");
     await client.end();
   });
 

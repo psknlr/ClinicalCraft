@@ -507,6 +507,44 @@ export const AlarmLimitsSchema = z.record(
     .strict(),
 );
 
+/**
+ * The bedside monitor of a case whose learner must attach it (a monitoring
+ * intervention). Until `attachedWhen` first holds — the engine latches the
+ * minute, so the monitor stays on — the monitored vitals (hr, BP, rr, SpO₂,
+ * T, EtCO₂) and the rhythm are not shown, charted, trended or alarmed,
+ * except the `spotChecks`, which are shown as static manual readings (the
+ * case baseline: what the triage note records). Without `monitor` the
+ * patient is on the monitor from minute 0 (docs/ARCHITECTURE.md §3.2).
+ */
+export const MonitorSchema = z
+  .object({
+    /** The monitor is attached once this holds (e.g. the monitoring intervention, or arrival in a monitored area). */
+    attachedWhen: ConditionSchema,
+    /**
+     * Monitored vitals measured by hand before the monitor (the triage set the
+     * triage note records): shown as static readings of the case baseline
+     * until the monitor is attached — never alarmed, trended or with a rhythm.
+     */
+    spotChecks: z.array(VitalKeySchema).optional(),
+    /**
+     * The monitored vitals this monitor measures once attached (default: all
+     * of hr, sbp, dbp, rr, spo2, temp, etco2 the baseline models) — e.g. no
+     * temperature from a monitor-defibrillator nobody took one with. The
+     * others stay engine-only: never shown, trended or alarmed.
+     */
+    measures: z.array(VitalKeySchema).optional(),
+    /**
+     * The ECG leads, when they come separately from the monitor (a pulse
+     * oximeter and cuff first, the team's monitor-defibrillator later): an
+     * attached monitor shows the rhythm and ECG only while this also holds.
+     * Evaluated on the session state, not latched — use steps that stay done
+     * (interventions). Omit it when the monitor brings its ECG.
+     */
+    ecgWhen: ConditionSchema.optional(),
+  })
+  .strict();
+export type Monitor = z.infer<typeof MonitorSchema>;
+
 export const PhysiologySchema = z
   .object({
     baseline: VitalsSchema,
@@ -524,6 +562,11 @@ export const PhysiologySchema = z
      * bedside like a monitored vital.
      */
     revealedBy: z.record(VitalKeySchema, z.array(IdSchema)).default({}),
+    /**
+     * A bedside monitor the learner must attach (see `MonitorSchema`). Omit
+     * it when the patient is on the monitor from the start (no monitoring step).
+     */
+    monitor: MonitorSchema.optional(),
   })
   .strict();
 export type Physiology = z.infer<typeof PhysiologySchema>;

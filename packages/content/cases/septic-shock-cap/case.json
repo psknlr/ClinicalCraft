@@ -2830,8 +2830,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "初始液体推注后：甲床再充盈时间约3秒，膝部花斑较前变淡，手足仍偏凉；仍嗜睡、定向力差。当前血压与平均动脉压以监护仪读数为准。",
-        "en": "After the initial boluses: capillary refill about 3 s, the knee mottling is fading, hands and feet still cool; still drowsy and disoriented. Read the current blood pressure and MAP from the monitor."
+        "zh-CN": "初始液体推注后：甲床再充盈时间约3秒，膝部花斑较前变淡，手足仍偏凉；仍嗜睡、定向力差。当前血压与平均动脉压需复测（连接监护后以监护读数为准）。",
+        "en": "After the initial boluses: capillary refill about 3 s, the knee mottling is fading, hands and feet still cool; still drowsy and disoriented. Recheck the current blood pressure and MAP (on the bedside monitor once it is attached)."
       },
       "abnormal": true,
       "required": true,
@@ -2865,8 +2865,8 @@
       },
       "excludeKeywords": [],
       "finding": {
-        "zh-CN": "抗菌药物延迟后、液体推注后：甲床再充盈时间约5秒，花斑已蔓延至大腿中段，手足湿冷；叫名字才睁眼，很快又迷糊，答非所问。当前血压与平均动脉压以监护仪读数为准。",
-        "en": "After the delayed antibiotics and the boluses: capillary refill about 5 s, mottling now reaches mid-thigh, hands and feet cold and clammy; she opens her eyes only when called by name, drifts off again and gives muddled answers. Read the current blood pressure and MAP from the monitor."
+        "zh-CN": "抗菌药物延迟后、液体推注后：甲床再充盈时间约5秒，花斑已蔓延至大腿中段，手足湿冷；叫名字才睁眼，很快又迷糊，答非所问。当前血压与平均动脉压需复测（连接监护后以监护读数为准）。",
+        "en": "After the delayed antibiotics and the boluses: capillary refill about 5 s, mottling now reaches mid-thigh, hands and feet cold and clammy; she opens her eyes only when called by name, drifts off again and gives muddled answers. Recheck the current blood pressure and MAP (on the bedside monitor once it is attached)."
       },
       "abnormal": true,
       "requires": [],
@@ -6067,8 +6067,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "监护已连接：窦性心动过速，血压和SpO₂持续显示在床旁监护仪上。",
-        "en": "Monitor on: sinus tachycardia; BP and SpO₂ are now displayed continuously at the bedside."
+        "zh-CN": "监护已连接：心电、血压和SpO₂持续显示在床旁监护仪上。",
+        "en": "Monitor on: ECG, BP and SpO₂ are now displayed continuously at the bedside."
       }
     },
     {
@@ -6164,8 +6164,8 @@
         "value": 94
       },
       "response": {
-        "zh-CN": "鼻导管吸氧4 L/min，数分钟内SpO₂升至目标范围（94–98%）。",
-        "en": "Nasal cannula at 4 L/min; within a few minutes SpO₂ rises into the 94–98% target range."
+        "zh-CN": "鼻导管吸氧4 L/min已接上，按SpO₂ 94–98%调节氧流量。",
+        "en": "Nasal cannula on at 4 L/min; titrate the flow to SpO₂ 94–98%."
       }
     },
     {
@@ -6214,8 +6214,8 @@
         "value": 94
       },
       "response": {
-        "zh-CN": "改为文丘里面罩FiO₂ 0.40，SpO₂升至目标范围上限附近。",
-        "en": "Switched to a Venturi mask at FiO₂ 0.40; SpO₂ rises towards the top of the target range."
+        "zh-CN": "改为文丘里面罩FiO₂ 0.40，按SpO₂ 94–98%调节。",
+        "en": "Switched to a Venturi mask at FiO₂ 0.40; titrate to SpO₂ 94–98%."
       }
     },
     {
@@ -6265,8 +6265,8 @@
         "value": 90
       },
       "response": {
-        "zh-CN": "储氧面罩15 L/min，SpO₂很快升至100%。她无高碳酸血症风险，但应尽快下调至鼻导管或文丘里面罩，维持94–98%，避免高氧。",
-        "en": "Reservoir mask at 15 L/min; SpO₂ quickly reaches 100%. She is not at risk of hypercapnia, but step down to nasal cannula or a Venturi mask as soon as possible to keep 94–98% and avoid hyperoxaemia."
+        "zh-CN": "储氧面罩15 L/min。她无高碳酸血症风险，但SpO₂达标后应尽快下调至鼻导管或文丘里面罩，维持94–98%，避免高氧。",
+        "en": "Reservoir mask at 15 L/min. She is not at risk of hypercapnia, but once her SpO₂ is on target step down to nasal cannula or a Venturi mask as soon as possible to keep 94–98% and avoid hyperoxaemia."
       }
     },
     {
@@ -6737,8 +6737,8 @@
         "en": "In suspected septic shock, observational data link each hour of antibiotic delay with higher mortality. Her signs plus a portable chest film are enough to localise the source; sending an unstable patient to CT adds transfer risk and postpones antibiotics."
       },
       "response": {
-        "zh-CN": "陈护士：好的，那抗生素先不配……（她看了一眼监护仪，面露担忧）",
-        "en": "Nurse Chen: OK, I'll hold off drawing up the antibiotics… (she glances at the monitor, looking worried)"
+        "zh-CN": "陈护士：好的，那抗生素先不配……（她看了一眼患者，面露担忧）",
+        "en": "Nurse Chen: OK, I'll hold off drawing up the antibiotics… (she glances at the patient, looking worried)"
       }
     },
     {
@@ -7277,6 +7277,26 @@
     }
   ],
   "physiology": {
+    "monitor": {
+      "attachedWhen": {
+        "any": [
+          {
+            "intervened": "monitor"
+          },
+          {
+            "intervened": "arterial-line"
+          }
+        ]
+      },
+      "spotChecks": [
+        "hr",
+        "sbp",
+        "dbp",
+        "rr",
+        "spo2",
+        "temp"
+      ]
+    },
     "baseline": {
       "hr": 118,
       "sbp": 84,
@@ -7606,8 +7626,8 @@
         },
         "severity": "warning",
         "message": {
-          "zh-CN": "监护仪报警：新出现绝对不规则的窄QRS心动过速——心房颤动伴快速心室率。",
-          "en": "Monitor alarm: a new irregularly irregular narrow-complex tachycardia — atrial fibrillation with a fast ventricular rate."
+          "zh-CN": "陈护士：多巴胺用上以后，她的脉搏突然变得又快又完全不规则。",
+          "en": "Nurse Chen: Since the dopamine started her pulse has suddenly gone fast and completely irregular."
         }
       },
       {
@@ -7632,8 +7652,8 @@
         },
         "severity": "info",
         "message": {
-          "zh-CN": "陈护士：最初的几袋液体已经推进去了，抗生素也在滴。要再评估一下她吗？最新血压在监护仪上。",
-          "en": "Nurse Chen: The first bags of fluid are in and the antibiotics are running. Do you want to reassess her? The latest BP is on the monitor."
+          "zh-CN": "陈护士：最初的几袋液体已经推进去了，抗生素也在滴。要再评估一下她吗？看看灌注和最新的血压。",
+          "en": "Nurse Chen: The first bags of fluid are in and the antibiotics are running. Do you want to reassess her — perfusion and her latest blood pressure?"
         }
       },
       {
@@ -7643,8 +7663,8 @@
         },
         "setFlags": [],
         "message": {
-          "zh-CN": "陈护士：抗生素终于用上了，几袋液体也推进去了，可她还是叫不太醒，花斑一直到大腿。要再评估一下吗？最新血压在监护仪上。",
-          "en": "Nurse Chen: The antibiotics are finally in and the boluses are through, but she's still hard to rouse and mottled up to her thighs. Do you want to reassess her? The latest BP is on the monitor."
+          "zh-CN": "陈护士：抗生素终于用上了，几袋液体也推进去了，可她还是叫不太醒，花斑一直到大腿。要再评估一下吗？看看灌注和最新的血压。",
+          "en": "Nurse Chen: The antibiotics are finally in and the boluses are through, but she's still hard to rouse and mottled up to her thighs. Do you want to reassess her — perfusion and her latest blood pressure?"
         },
         "severity": "warning"
       },
@@ -8324,8 +8344,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先完成至少三次500 mL液体推注，并在补液后复评灌注（再充盈、花斑、意识和监护仪上的血压）。",
-        "en": "Give at least three 500 mL boluses and reassess perfusion after them (refill, mottling, mental state and the monitor BP) first."
+        "zh-CN": "先完成至少三次500 mL液体推注，并在补液后复评灌注（再充盈、花斑、意识和当前血压）。",
+        "en": "Give at least three 500 mL boluses and reassess perfusion after them (refill, mottling, mental state and a current blood pressure) first."
       },
       "options": [
         {

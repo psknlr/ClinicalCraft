@@ -8,6 +8,7 @@ import { progress as caseProgress, t, type AssessmentReport, type CaseDefinition
 import {
   findProviderTemplate,
   investigationName,
+  noReading,
   objectiveTitle,
   phaseLabel,
   rt,
@@ -485,7 +486,10 @@ export class EventRenderer {
         this.line(p.bold(event.timedOut ? p.yellow(`⏱ ${m(L, "render.timedOut")}`) : `■ ${m(L, "render.finished")}`));
         return;
       case "vitals.alarm": {
-        const text = `⚠ ${m(L, "render.alarm", { vital: vitalLabel(event.vital, L), value: vitalWithUnit(event.vital, event.value), level: m(L, event.level === "critical" ? "level.critical" : "level.warning") })}`;
+        // An arrest's placeholder 0 is no reading (as the nurse says): hr says so, BP/SpO₂ are covered by the hr alarm.
+        if (event.unmeasurable && event.vital !== "hr") return;
+        const value = event.unmeasurable ? noReading(L) : vitalWithUnit(event.vital, event.value);
+        const text = `⚠ ${m(L, "render.alarm", { vital: vitalLabel(event.vital, L), value, level: m(L, event.level === "critical" ? "level.critical" : "level.warning") })}`;
         this.line(event.level === "critical" ? p.bold(p.red(text)) : p.red(text));
         return;
       }
@@ -564,6 +568,29 @@ export class EventRenderer {
   /* Status line                                                       */
   /* ---------------------------------------------------------------- */
 
+  /**
+   * The status line's vitals: "HR 96 BP 138/84 SpO₂ 96% RR 18 T 36.8" (alarming
+   * ones in red; "---" for what a monitor cannot read in an arrest). Before
+   * the monitor is attached: "no monitor", then only the spot checks, as
+   * "triage HR 96 BP 192/104 …" — never a live number.
+   */
+  private vitalsStatus(v: VitalsSnapshot): string {
+    const L = this.L;
+    const alarmed = new Set(v.alarms.map((a) => a.vital));
+    const unread = new Set(v.unmeasurable ?? []);
+    const fmt = (key: Parameters<typeof vitalLabel>[0], text: string) => (alarmed.has(key) ? this.p.red(text) : text);
+    const value = (key: Parameters<typeof vitalLabel>[0], n: number | undefined) => (unread.has(key) ? "---" : String(n));
+    const items: string[] = [];
+    if (v.vitals.hr != null) items.push(fmt("hr", `HR ${value("hr", v.vitals.hr)}`));
+    if (v.vitals.sbp != null && v.vitals.dbp != null) items.push(fmt("sbp", `BP ${unread.has("sbp") ? "---" : `${v.vitals.sbp}/${v.vitals.dbp}`}`));
+    if (v.vitals.spo2 != null) items.push(fmt("spo2", `SpO₂ ${unread.has("spo2") ? "---" : `${v.vitals.spo2}%`}`));
+    if (v.vitals.rr != null) items.push(fmt("rr", `RR ${v.vitals.rr}`));
+    if (v.vitals.temp != null) items.push(fmt("temp", `T ${v.vitals.temp}`));
+    if (v.monitorAttached !== false) return items.join(" ");
+    const manual = v.spotChecks ?? [];
+    return manual.length > 0 ? `${m(L, "status.noMonitor")} · ${m(L, "status.triage", { readings: items.join(" ") })}` : m(L, "status.noMonitor");
+  }
+
   /** "chapter · progress n/total · phase · clock · vitals · provider/model". */
   statusLine(state?: SessionState): string {
     const L = this.L;
@@ -583,19 +610,7 @@ export class EventRenderer {
       if (c.clock.mode === "simulated") parts.push(clockLabel(c, s.clock));
     }
     const v = snap?.vitals;
-    if (v && !v.baselineOnly) {
-      const alarmed = new Set(v.alarms.map((a) => a.vital));
-      const fmt = (key: Parameters<typeof vitalLabel>[0], text: string) => (alarmed.has(key) ? this.p.red(text) : text);
-      parts.push(
-        [
-          fmt("hr", `HR ${v.vitals.hr}`),
-          fmt("sbp", `BP ${v.vitals.sbp}/${v.vitals.dbp}`),
-          fmt("spo2", `SpO₂ ${v.vitals.spo2}%`),
-          fmt("rr", `RR ${v.vitals.rr}`),
-          fmt("temp", `T ${v.vitals.temp}`),
-        ].join(" "),
-      );
-    }
+    if (v && !v.baselineOnly) parts.push(this.vitalsStatus(v));
     if (this.configured) {
       const model = this.configured.model || (this.configured.offline ? "deterministic" : "-");
       parts.push(`${this.configured.provider}/${model}`);

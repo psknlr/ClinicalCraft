@@ -1,9 +1,12 @@
 /**
  * Bedside monitor panel: the shared `monitorRenderer` on a large canvas,
  * the alarm list, and NIBP "cycle now" (re-measures the cuff pressure from
- * the current physiology snapshot).
+ * the current physiology snapshot). Before the case's monitor is attached
+ * (`monitorAttached: false`) the screen is dark, the side says so, lists the
+ * triage readings taken by hand and offers to attach it (the case's
+ * monitoring intervention, through the approval gate like any treatment).
  */
-import { vitalsAt, type VitalsSnapshot } from "@clinicalcraft/core";
+import { conditionRefs, vitalsAt, type CaseDefinition, type Intervention, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import { monitorRenderer } from "../../shared/monitor-render.js";
 import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
@@ -15,6 +18,42 @@ export interface MonitorArgs {
 }
 
 const UNITS: Record<string, string> = { hr: "/min", sbp: "mmHg", dbp: "mmHg", rr: "/min", spo2: "%", temp: "°C", gcs: "", glucose: "mmol/L", etco2: "mmHg", pain: "/10" };
+
+/**
+ * The intervention that attaches the case's bedside monitor: the first
+ * `monitoring` intervention named by an `intervened` leaf of
+ * `physiology.monitor.attachedWhen`, in condition order (the case lists the
+ * plain monitoring step first, e.g. stroke's `cardiac-monitoring` before the
+ * post-thrombolysis monitoring order); null when there is none.
+ */
+export function monitorIntervention(c: CaseDefinition): Intervention | null {
+  const when = c.physiology?.monitor?.attachedWhen;
+  if (!when) return null;
+  for (const ref of conditionRefs(when)) {
+    if (ref.kind !== "intervention") continue;
+    const found = c.interventions.find((i) => i.id === ref.id && i.kind === "monitoring");
+    if (found) return found;
+  }
+  return null;
+}
+
+/** "HR 96/min · BP 192/104 mmHg · …" — the spot checks of a snapshot taken before the monitor (static readings). */
+export function spotCheckText(snap: VitalsSnapshot): string {
+  const v = snap.vitals;
+  const keys = new Set<VitalKey>(snap.spotChecks ?? []);
+  const parts: string[] = [];
+  for (const k of snap.spotChecks ?? []) {
+    if (k === "dbp" && keys.has("sbp")) continue;
+    if (k === "sbp" && v.sbp != null && v.dbp != null && keys.has("dbp")) {
+      parts.push(`${trMaybe("vital.bp", "BP")} ${v.sbp}/${v.dbp} mmHg`);
+      continue;
+    }
+    const value = v[k];
+    const unit = UNITS[k] ?? "";
+    if (typeof value === "number") parts.push(`${trMaybe(`vital.${k}`, k)} ${value}${unit === "%" || unit.startsWith("/") ? unit : unit ? ` ${unit}` : ""}`);
+  }
+  return parts.join(" · ");
+}
 
 export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
   return () => {
@@ -48,8 +87,13 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
           app.sound("beep");
           setTimeout(() => {
             const snap = vitalsAt(c, store.snapshot?.state ?? game.session.session.state);
-            nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute, ...(snap.unmeasurable?.includes("sbp") ? { none: true } : {}) };
             nibpBtn.disabled = false;
+            if (snap.monitorAttached === false || snap.vitals.sbp == null || snap.vitals.dbp == null) {
+              nibp = null;
+              renderInfo();
+              return;
+            }
+            nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute, ...(snap.unmeasurable?.includes("sbp") ? { none: true } : {}) };
             renderInfo();
           }, 1400);
         },
@@ -57,13 +101,28 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
       tr("monitor.nibp"),
     );
 
+    const attachWith = monitorIntervention(c);
     const renderInfo = (): void => {
       clear(alarms);
       const snap = snapshot();
-      alarms.append(h("h4", null, tr("monitor.alarms")));
+      const off = snap?.monitorAttached === false;
+      nibpBtn.disabled = !linked || off;
+      nibpBtn.title = off ? tr("monitor.nibpOff") : "";
+      if (off) {
+        alarms.append(h("h4", null, tr("monitor.notAttached")), h("p", { id: "monitor-off", class: "notice" }, tr("monitor.notAttachedBody")));
+        const manual = spotCheckText(snap);
+        if (manual) alarms.append(h("p", { id: "monitor-spot-checks", class: "small" }, h("b", null, `${tr("monitor.spotChecks")}: `), manual));
+        if (attachWith) {
+          alarms.append(h("button", { type: "button", id: "monitor-attach", dataset: { intervention: attachWith.id }, onclick: () => app.act({ type: "intervene", interventionId: attachWith.id }) }, tr("monitor.attach")));
+        }
+      }
+      // Without a monitor nothing alarms (the engine raises no alarm then): no "Alarms" section.
+      if (!off) alarms.append(h("h4", null, tr("monitor.alarms")));
       if (!linked) alarms.append(h("p", { class: "small muted" }, tr("monitor.notLinked")));
       else if (snap?.baselineOnly) alarms.append(h("p", { class: "notice" }, tr("monitor.baseline")));
-      else {
+      else if (off) {
+        /* nothing more to say: the notice above covers it */
+      } else {
         // Cardiac arrest: vitals the monitor cannot read do not alarm on their placeholder 0 (hr says "no reading").
         const unread = new Set<string>(snap?.unmeasurable ?? []);
         const list = (snap?.alarms ?? []).filter((a) => a.vital === "hr" || !unread.has(a.vital));
@@ -88,7 +147,7 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
           );
       }
       if (snap && c.clock.mode === "simulated") alarms.append(h("p", { class: "small muted" }, tr("monitor.minute", { n: Math.round(snap.minute) }), c.clock.startTime ? ` · ${clockLabel(c.clock.startTime, snap.minute)}` : ""));
-      nibpText.textContent = nibp ? tr("monitor.nibpDone", { bp: nibp.none ? tr("monitor.noReading") : `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
+      nibpText.textContent = off ? tr("monitor.nibpOff") : nibp ? tr("monitor.nibpDone", { bp: nibp.none ? tr("monitor.noReading") : `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
     };
     renderInfo();
 

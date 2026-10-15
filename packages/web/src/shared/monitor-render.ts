@@ -4,6 +4,11 @@
  * ECG sweep, yellow SpO₂ pleth, blue respiration, white NIBP, orange temp;
  * alarms flash red (critical) / amber (warning). `baselineOnly` snapshots
  * (cases without a physiology model) are shown greyed as "not recorded".
+ * Before the case's monitor is attached (`monitorAttached: false`) the
+ * screen is dark: "monitor not attached", flat dim traces, no numbers, no
+ * rhythm, no alarm — the triage readings taken by hand are not a monitor's.
+ * Attached without its ECG leads (`ecgAttached: false`): the numbers and
+ * the pleth, "ECG leads not attached" and a flat lead II — no rhythm.
  */
 import type { MonitorRenderer } from "../contracts.js";
 import { drawRate, ecgValue, isPulseless, plethValue, respValue, type MorphologyName, type RhythmName } from "./ecg.js";
@@ -41,6 +46,9 @@ const LABELS = {
     etco2: "EtCO₂",
     temp: "体温 T",
     noPatient: "无患者 · 未连接",
+    notAttached: "未连接监护",
+    noEcg: "心电导联未连接",
+    attachHint: "连接监护后显示持续读数",
     baseline: "仅基线 · 本病例未记录生命体征",
     minute: "分钟",
     bpm: "次/分",
@@ -54,6 +62,9 @@ const LABELS = {
     etco2: "EtCO₂",
     temp: "TEMP",
     noPatient: "NO PATIENT · not connected",
+    notAttached: "MONITOR NOT ATTACHED",
+    noEcg: "ECG LEADS NOT ATTACHED",
+    attachHint: "attach the monitor for continuous readings",
     baseline: "BASELINE ONLY · vitals not recorded in this case",
     minute: "min",
     bpm: "bpm",
@@ -206,7 +217,10 @@ export const monitorRenderer: MonitorRenderer = {
     const L = labelsFor(locale);
     const s = snapshot;
     const baseline = !!s?.baselineOnly;
-    const live = !!s && !baseline;
+    const detached = !!s && s.monitorAttached === false;
+    const live = !!s && !baseline && !detached;
+    // On the monitor without its ECG leads (a pulse oximeter and cuff): numbers, but no rhythm and a flat lead II.
+    const noEcg = live && s.ecgAttached === false;
     const t = timeMs / 1000;
     const W = width, H = height;
     const u = Math.max(1, Math.min(W / 320, H / 200));
@@ -234,7 +248,7 @@ export const monitorRenderer: MonitorRenderer = {
     ctx.fillStyle = "#9fd8b4";
     const rhythm = (s?.vitals.rhythm ?? "sinus") as RhythmName;
     const morph = (s?.vitals.ecg ?? "normal") as MorphologyName;
-    const leftText = !s ? L.noPatient : baseline ? L.baseline : `II · ${rhythmLabel(rhythm, locale)}`;
+    const leftText = !s ? L.noPatient : detached ? L.notAttached : baseline ? L.baseline : noEcg ? L.noEcg : `II · ${rhythmLabel(rhythm, locale)}`;
     ctx.fillText(leftText, 6 * u, headH / 2, W * 0.62);
     ctx.textAlign = "right";
     if (alarmActive && arrhythmia) {
@@ -285,7 +299,7 @@ export const monitorRenderer: MonitorRenderer = {
         min: -0.55,
         max: 1.25,
         resolution: 0.004,
-        sample: s ? (tt) => ecgValue(tt, rhythm, morph, hr) : () => 0,
+        sample: s && !detached && !noEcg ? (tt) => ecgValue(tt, rhythm, morph, hr) : () => 0,
       },
       {
         y: top + avail * 0.42,
@@ -294,7 +308,7 @@ export const monitorRenderer: MonitorRenderer = {
         window: 6,
         min: -0.05,
         max: 1.05,
-        sample: s ? (tt) => plethValue(tt, rhythm, hr) : () => 0,
+        sample: s && !detached ? (tt) => plethValue(tt, rhythm, hr) : () => 0,
       },
       {
         y: top + avail * 0.72,
@@ -303,7 +317,7 @@ export const monitorRenderer: MonitorRenderer = {
         window: 12,
         min: -0.05,
         max: 1.1,
-        sample: s ? (tt) => respValue(tt, rr, capno) : () => 0,
+        sample: s && !detached ? (tt) => respValue(tt, rr, capno) : () => 0,
       },
     ];
     const lw = Math.max(1, 1.4 * u);
@@ -374,12 +388,16 @@ export const monitorRenderer: MonitorRenderer = {
       y += bh;
     }
 
-    if (!s) {
+    if (!s || detached) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#9a9a9a";
       ctx.font = `bold ${Math.max(8, Math.round(12 * u))}px ui-monospace, Menlo, monospace`;
-      ctx.fillText(L.noPatient, waveW / 2, top + avail / 2, waveW - 8);
+      ctx.fillText(s ? L.notAttached : L.noPatient, waveW / 2, top + avail / 2, waveW - 8);
+      if (s) {
+        ctx.font = `${Math.max(7, Math.round(9 * u))}px ui-monospace, Menlo, monospace`;
+        ctx.fillText(L.attachHint, waveW / 2, top + avail / 2 + Math.max(10, 16 * u), waveW - 8);
+      }
     }
     ctx.restore();
   },

@@ -118,8 +118,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "呼吸深大而规则，每说几个字就停下深吸一口气；嘴唇干，偶尔干呕，手边放着呕吐袋；疲惫但定向力正常。谈到漏打胰岛素时难为情、语气低，容易自责。若监护提示频发早搏/低钾（例如过早使用胰岛素后），表现为心慌、双腿发软无力；若发生低血糖，表现为出冷汗、手抖、焦虑；严重低血糖时嗜睡、要大声叫才应答、说话含糊，血糖纠正后恢复。随着治疗推进（后期阶段）呼吸逐渐平稳、恶心缓解，开始说饿、话也多起来。只回答被问到的病史，不主动补充细节，不说出任何诊断或化验数值。",
-        "en": "Deep, regular breathing; stops every few words to take a deep breath. Dry lips, occasional retching, a vomit bowl at hand; exhausted but fully oriented. Embarrassed and quiet when talking about missed insulin; tends to blame herself. If the monitor shows frequent ectopics/low potassium (e.g. after insulin started too early) she complains of palpitations and weak, heavy legs; if she becomes hypoglycaemic she is sweaty, shaky and anxious; if severely hypoglycaemic she is drowsy, answers only to a raised voice and slurs her words until the glucose is corrected. As treatment progresses (later phases) her breathing settles, the nausea eases, she says she is hungry and becomes chattier. Only answers history she is asked about, adds no details of her own, never states a diagnosis or a lab value."
+        "zh-CN": "呼吸深大而规则，每说几个字就停下深吸一口气；嘴唇干，偶尔干呕，手边放着呕吐袋；疲惫但定向力正常。谈到漏打胰岛素时难为情、语气低，容易自责。若出现频发早搏/低钾（例如过早使用胰岛素后），表现为心慌、双腿发软无力；若发生低血糖，表现为出冷汗、手抖、焦虑；严重低血糖时嗜睡、要大声叫才应答、说话含糊，血糖纠正后恢复。随着治疗推进（后期阶段）呼吸逐渐平稳、恶心缓解，开始说饿、话也多起来。只回答被问到的病史，不主动补充细节，不说出任何诊断或化验数值。",
+        "en": "Deep, regular breathing; stops every few words to take a deep breath. Dry lips, occasional retching, a vomit bowl at hand; exhausted but fully oriented. Embarrassed and quiet when talking about missed insulin; tends to blame herself. If she develops frequent ectopics/low potassium (e.g. after insulin started too early) she complains of palpitations and weak, heavy legs; if she becomes hypoglycaemic she is sweaty, shaky and anxious; if severely hypoglycaemic she is drowsy, answers only to a raised voice and slurs her words until the glucose is corrected. As treatment progresses (later phases) her breathing settles, the nausea eases, she says she is hungry and becomes chattier. Only answers history she is asked about, adds no details of her own, never states a diagnosis or a lab value."
       },
       "companion": {
         "role": "friend",
@@ -3169,27 +3169,27 @@
             }
           ],
           "note": {
-            "zh-CN": "此后每小时指尖血糖记录在床旁监护仪（血糖一栏）上。",
-            "en": "From now on hourly capillary glucose is charted on the bedside monitor (glucose field)."
+            "zh-CN": "此后每小时指尖血糖记录在床旁观察记录（血糖一栏）上。",
+            "en": "From now on hourly capillary glucose is charted with the bedside observations (glucose field)."
           },
           "critical": true
         },
         "k-replete": {
           "text": {
-            "zh-CN": "每小时指尖血糖已记录在床旁监护仪上——请查看监护仪上的当前值。",
-            "en": "Hourly capillary glucose is charted on the bedside monitor — see the current value there."
+            "zh-CN": "每小时指尖血糖已记录在床旁观察记录上——请查看那里的当前值。",
+            "en": "Hourly capillary glucose is charted with the bedside observations — see the current value there."
           }
         },
         "glucose-lt14": {
           "text": {
-            "zh-CN": "每小时指尖血糖已记录在床旁监护仪上——请查看监护仪上的当前值。",
-            "en": "Hourly capillary glucose is charted on the bedside monitor — see the current value there."
+            "zh-CN": "每小时指尖血糖已记录在床旁观察记录上——请查看那里的当前值。",
+            "en": "Hourly capillary glucose is charted with the bedside observations — see the current value there."
           }
         },
         "resolution": {
           "text": {
-            "zh-CN": "每小时指尖血糖已记录在床旁监护仪上——请查看监护仪上的当前值。",
-            "en": "Hourly capillary glucose is charted on the bedside monitor — see the current value there."
+            "zh-CN": "每小时指尖血糖已记录在床旁观察记录上——请查看那里的当前值。",
+            "en": "Hourly capillary glucose is charted with the bedside observations — see the current value there."
           }
         }
       }
@@ -3594,8 +3594,8 @@
             }
           ],
           "note": {
-            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（监护仪上的当前值）。",
-            "en": "For glucose in this phase, see the hourly capillary glucose on the bedside monitor (current value)."
+            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（床旁观察记录上的当前值）。",
+            "en": "For glucose in this phase, see the hourly capillary glucose in the bedside observations (current value)."
           }
         },
         "glucose-lt14": {
@@ -3706,8 +3706,8 @@
             }
           ],
           "note": {
-            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（监护仪上的当前值）。",
-            "en": "For glucose in this phase, see the hourly capillary glucose on the bedside monitor (current value)."
+            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（床旁观察记录上的当前值）。",
+            "en": "For glucose in this phase, see the hourly capillary glucose in the bedside observations (current value)."
           }
         },
         "resolution": {
@@ -3818,8 +3818,8 @@
             }
           ],
           "note": {
-            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（监护仪上的当前值）。",
-            "en": "For glucose in this phase, see the hourly capillary glucose on the bedside monitor (current value)."
+            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（床旁观察记录上的当前值）。",
+            "en": "For glucose in this phase, see the hourly capillary glucose in the bedside observations (current value)."
           }
         }
       }
@@ -4145,8 +4145,8 @@
             }
           ],
           "note": {
-            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（监护仪上的当前值）。",
-            "en": "For glucose in this phase, see the hourly capillary glucose on the bedside monitor (current value)."
+            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（床旁观察记录上的当前值）。",
+            "en": "For glucose in this phase, see the hourly capillary glucose in the bedside observations (current value)."
           }
         },
         "glucose-lt14": {
@@ -4267,8 +4267,8 @@
             }
           ],
           "note": {
-            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（监护仪上的当前值）。",
-            "en": "For glucose in this phase, see the hourly capillary glucose on the bedside monitor (current value)."
+            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（床旁观察记录上的当前值）。",
+            "en": "For glucose in this phase, see the hourly capillary glucose in the bedside observations (current value)."
           }
         },
         "resolution": {
@@ -4389,8 +4389,8 @@
             }
           ],
           "note": {
-            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（监护仪上的当前值）。",
-            "en": "For glucose in this phase, see the hourly capillary glucose on the bedside monitor (current value)."
+            "zh-CN": "此阶段葡萄糖请看床旁每小时指尖血糖（床旁观察记录上的当前值）。",
+            "en": "For glucose in this phase, see the hourly capillary glucose in the bedside observations (current value)."
           }
         }
       }
@@ -5874,8 +5874,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（约3.0 g；预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h，约1.5 g/h）；持续心电监护；每小时复查钾",
-        "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; continuous ECG monitoring; recheck K⁺ hourly"
+        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（约3.0 g；预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h，约1.5 g/h）；需持续心电监护（请连接监护）；每小时复查钾",
+        "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; needs continuous ECG monitoring (attach the monitor); recheck K⁺ hourly"
       },
       "requires": [
         "infusion-pump"
@@ -6708,8 +6708,8 @@
         "read": "vbg"
       },
       "response": {
-        "zh-CN": "ICU值班医生接受会诊：同意她需要2级（HDU）监护；HDU床位准备好之前在抢救室按HDU标准监护。",
-        "en": "The ICU registrar accepts: agrees that she needs level-2 (HDU) care; until the HDU bed is ready she stays in resus with HDU-level monitoring."
+        "zh-CN": "ICU值班医生接受会诊：同意她需要2级（HDU）监护；HDU床位准备好之前留在抢救室，需按HDU标准监护（如尚未连接监护请先连接）。",
+        "en": "The ICU registrar accepts: agrees that she needs level-2 (HDU) care; until the HDU bed is ready she stays in resus, where she needs HDU-level monitoring (attach the monitor if it is not on yet)."
       }
     },
     {
@@ -7054,6 +7054,10 @@
     }
   ],
   "physiology": {
+    "monitor": {
+      "attachedWhen": { "intervened": "cardiac-monitoring" },
+      "spotChecks": ["hr", "sbp", "dbp", "rr", "spo2", "temp"]
+    },
     "revealedBy": { "glucose": ["poc-glucose"] },
     "baseline": {
       "hr": 118,
@@ -7562,6 +7566,14 @@
               "vital": "glucose",
               "op": "lte",
               "value": 23
+            },
+            {
+              "intervened": "cardiac-monitoring"
+            },
+            {
+              "not": {
+                "flag": "k-crash"
+              }
             }
           ]
         },
@@ -7575,6 +7587,42 @@
         "message": {
           "zh-CN": "监护报警：频发多源室性早搏，刚才一阵6跳短阵室速后自行终止！患者说心慌、两条腿发软没力气。护士急查床旁血气：K⁺ 2.6 mmol/L。",
           "en": "Monitor alarm: frequent multifocal ventricular ectopics, and a 6-beat run of ventricular tachycardia that stopped on its own! She says her heart is racing and her legs feel weak and heavy. The nurse runs an urgent bedside gas: K⁺ 2.6 mmol/L."
+        }
+      },
+      {
+        "id": "ev-k-crash-unmonitored",
+        "when": {
+          "all": [
+            {
+              "flag": "insulin-before-k"
+            },
+            {
+              "vital": "glucose",
+              "op": "lte",
+              "value": 23
+            },
+            {
+              "not": {
+                "intervened": "cardiac-monitoring"
+              }
+            },
+            {
+              "not": {
+                "flag": "k-crash"
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 130
+        },
+        "setFlags": [
+          "k-crash"
+        ],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "患者突然说心慌、心跳乱跳，两条腿发软没力气；脉搏快而极不规则。她还没接监护，护士急查床旁血气：K⁺ 2.6 mmol/L。",
+          "en": "She suddenly says her heart is racing and skipping, and her legs feel weak and heavy; her pulse is fast and very irregular. She is not on a monitor yet. The nurse runs an urgent bedside gas: K⁺ 2.6 mmol/L."
         }
       },
       {
@@ -7596,7 +7644,7 @@
         },
         "setFlags": [],
         "message": {
-          "zh-CN": "护士：“补钾一段时间后，监护上的室性早搏明显少了，心率也降下来一些。”",
+          "zh-CN": "护士：“补钾一段时间后，早搏明显少了，心率也降下来一些。”",
           "en": "Nurse: \"Since the potassium has been running, the ectopics have settled and her heart rate has come down a bit.\""
         },
         "severity": "info"
@@ -7608,8 +7656,8 @@
         },
         "severity": "warning",
         "message": {
-          "zh-CN": "护士：“碳酸氢钠输上以后，监护上的室性早搏多了不少……”",
-          "en": "Nurse: \"Since the bicarbonate went up there are a lot more ectopics on the monitor...\""
+          "zh-CN": "护士：“碳酸氢钠输上以后，她的脉搏乱了不少，早搏多了……”",
+          "en": "Nurse: \"Since the bicarbonate went up her pulse has become much more irregular — a lot more extra beats...\""
         }
       },
       {
@@ -9037,8 +9085,8 @@
         "en": "Chen Lan (resus/HDU nurse)"
       },
       "knowledge": {
-        "zh-CN": "交班：24岁女性，02:40由室友打车送来，诉呕吐、腹痛约2天，今夜呼吸加快；直接进抢救室3床。分诊生命体征与到院时监护一致。到院前未用任何药，尚无静脉通路，尚未测指尖血糖。患者腰间别着一个胰岛素泵（护士能看到，但不解读其意义）。室友在家属等候区，可以联系患者家人。物流：床旁有监护仪、血糖/血酮仪、心电图机、输液泵、氧气；血气约5分钟出结果。急诊备药：0.9%氯化钠、平衡晶体液、预混含钾0.9%氯化钠（40 mmol/L）、10%和20%葡萄糖、普通胰岛素、甘精胰岛素、门冬胰岛素、昂丹司琼、8.4%碳酸氢钠、磷酸钾、头孢曲松、依诺肝素。护理常规：氯化钾只能稀释后用输液泵输注，外周浓度 ≤ 40 mmol/L，> 10 mmol/h需持续心电监护，绝不静推；胰岛素输注按医嘱配制（50 U/50 mL）。会主动提醒：到院30分钟仍未补钾、血糖降到14以下、低血糖、需要复查时。不解读化验结果，不给出诊断。",
-        "en": "Handover: 24-year-old woman brought by her roommate by taxi at 02:40 with about 2 days of vomiting and abdominal pain and faster breathing tonight; taken straight to resus bay 3. Triage vital signs match the monitor at arrival. No medicines before arrival, no IV access yet, capillary glucose not yet checked. She has an insulin pump clipped to her waistband (the nurse can see it but does not interpret it). The roommate is in the relatives' room and can contact the family. Logistics: the bay has a monitor, glucose/ketone meter, ECG cart, infusion pumps and oxygen; blood-gas results come back in about 5 minutes. ED stock: 0.9% NaCl, balanced crystalloid, pre-mixed 0.9% NaCl with KCl 40 mmol/L, 10% and 20% glucose, soluble insulin, glargine, aspart, ondansetron, 8.4% sodium bicarbonate, potassium phosphate, ceftriaxone, enoxaparin. Nursing rules: potassium only diluted by volumetric pump, peripheral concentration ≤ 40 mmol/L, > 10 mmol/h only on continuous ECG monitoring, never pushed; insulin infusions made up to order (50 U/50 mL). Speaks up when: no potassium order 30 minutes after arrival, glucose falls below 14, hypoglycaemia, or a recheck is due. Does not interpret results or suggest diagnoses."
+        "zh-CN": "交班：24岁女性，02:40由室友打车送来，诉呕吐、腹痛约2天，今夜呼吸加快；直接进抢救室3床。分诊生命体征为到院时（接监护前）手测。到院前未用任何药，尚无静脉通路，尚未测指尖血糖。患者腰间别着一个胰岛素泵（护士能看到，但不解读其意义）。室友在家属等候区，可以联系患者家人。物流：床旁有监护仪、血糖/血酮仪、心电图机、输液泵、氧气；血气约5分钟出结果。急诊备药：0.9%氯化钠、平衡晶体液、预混含钾0.9%氯化钠（40 mmol/L）、10%和20%葡萄糖、普通胰岛素、甘精胰岛素、门冬胰岛素、昂丹司琼、8.4%碳酸氢钠、磷酸钾、头孢曲松、依诺肝素。护理常规：氯化钾只能稀释后用输液泵输注，外周浓度 ≤ 40 mmol/L，> 10 mmol/h需持续心电监护，绝不静推；胰岛素输注按医嘱配制（50 U/50 mL）。会主动提醒：到院30分钟仍未补钾、血糖降到14以下、低血糖、需要复查时。不解读化验结果，不给出诊断。",
+        "en": "Handover: 24-year-old woman brought by her roommate by taxi at 02:40 with about 2 days of vomiting and abdominal pain and faster breathing tonight; taken straight to resus bay 3. The triage set was measured by hand on arrival, before any monitor. No medicines before arrival, no IV access yet, capillary glucose not yet checked. She has an insulin pump clipped to her waistband (the nurse can see it but does not interpret it). The roommate is in the relatives' room and can contact the family. Logistics: the bay has a monitor, glucose/ketone meter, ECG cart, infusion pumps and oxygen; blood-gas results come back in about 5 minutes. ED stock: 0.9% NaCl, balanced crystalloid, pre-mixed 0.9% NaCl with KCl 40 mmol/L, 10% and 20% glucose, soluble insulin, glargine, aspart, ondansetron, 8.4% sodium bicarbonate, potassium phosphate, ceftriaxone, enoxaparin. Nursing rules: potassium only diluted by volumetric pump, peripheral concentration ≤ 40 mmol/L, > 10 mmol/h only on continuous ECG monitoring, never pushed; insulin infusions made up to order (50 U/50 mL). Speaks up when: no potassium order 30 minutes after arrival, glucose falls below 14, hypoglycaemia, or a recheck is due. Does not interpret results or suggest diagnoses."
       }
     },
     {

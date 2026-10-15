@@ -120,8 +120,10 @@ describe("alarm wording does not claim a monitor", () => {
   it.skipIf(!stroke)("the nurse reports the value without 'the monitor is alarming'", async () => {
     for (const locale of ["en", "zh-CN"] as const) {
       const t = await makeSession({ caseDef: stroke!, settingsPatch: { locale } });
-      const events = await t.session.run({ type: "clinical_action", action: { type: "start" } });
-      const lines = msgsOf(events, "agent_message").map((m) => m.text);
+      await t.session.run({ type: "clinical_action", action: { type: "start" } });
+      // The stroke patient is not on the monitor at triage: its alarms sound once it is attached.
+      const events = await t.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "cardiac-monitoring" } });
+      const lines = msgsOf(events, "agent_message").filter((m) => m.agent === "nurse").map((m) => m.text);
       expect(lines.length).toBeGreaterThan(0);
       for (const l of lines) expect(l).not.toMatch(/monitor is alarming|监护仪在报警/);
     }

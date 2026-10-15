@@ -13,7 +13,7 @@ import { ClinicalActionSchema, type ClinicalAction } from "../schema/session.js"
 import { conditionRefs, type ConditionRef } from "./conditions.js";
 import { compileCaseRegex } from "./matcher.js";
 import { formatPath, issuesFromZodError } from "./parse.js";
-import { MONITORED_VITALS, OBSERVED_VITALS } from "./physiology.js";
+import { MONITORED_VITALS, OBSERVED_VITALS } from "./monitor.js";
 import { compactText, tokenize } from "./text.js";
 import { supersededIn } from "./twins.js";
 import type { Issue } from "./types.js";
@@ -195,6 +195,8 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
   });
   c.physiology?.trends.forEach((tr, i) => issues.push(...checkCondition(c, ids, tr.until, ["physiology", "trends", i, "until"])));
   c.physiology?.events.forEach((ev, i) => issues.push(...checkCondition(c, ids, ev.when, ["physiology", "events", i, "when"])));
+  issues.push(...checkCondition(c, ids, c.physiology?.monitor?.attachedWhen, ["physiology", "monitor", "attachedWhen"]));
+  issues.push(...checkCondition(c, ids, c.physiology?.monitor?.ecgWhen, ["physiology", "monitor", "ecgWhen"]));
   c.rubric.forEach((r, i) => issues.push(...checkCondition(c, ids, r.met, ["rubric", i, "met"])));
   c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
   return issues;
@@ -335,9 +337,10 @@ function checkPhysiology(c: CaseDefinition, ids: Ids): Issue[] {
       if (!ids.investigations.has(id)) issues.push(err(["physiology", "revealedBy", vital, j], `unknown investigation "${id}"`));
     });
     if ((MONITORED_VITALS as readonly string[]).includes(vital) || (OBSERVED_VITALS as readonly string[]).includes(vital)) {
-      issues.push(warn(["physiology", "revealedBy", vital], `"${vital}" is always shown at the bedside; revealedBy has no effect`));
+      issues.push(warn(["physiology", "revealedBy", vital], `"${vital}" is shown by the bedside monitor or as a nursing observation, not revealed by a test; revealedBy has no effect`));
     }
   }
+  issues.push(...checkSpotChecks(c), ...checkMeasures(c));
   physiology.events.forEach((ev, i) => {
     if (ev.atMinute == null && ev.when == null) issues.push(warn(["physiology", "events", i], `scenario event "${ev.id}" has neither atMinute nor when and never fires`));
     if (ev.absolute && !Object.values(ev.setVitals ?? {}).some((v) => typeof v === "number")) {
@@ -352,6 +355,58 @@ function checkPhysiology(c: CaseDefinition, ids: Ids): Issue[] {
       if (!ids.vitals.has(e.vital)) issues.push(warn(["interventions", i, "effects", j, "vital"], `effect on "${e.vital}", which the baseline does not define (ignored)`));
     }),
   );
+  return issues;
+}
+
+/**
+ * `physiology.monitor.spotChecks`: monitored vitals the baseline models
+ * (errors otherwise — a nursing observation is always shown, glucose is
+ * `revealedBy`'s, and an unmodelled vital has no reading), listed once, with
+ * the blood pressure as a pair (warnings).
+ */
+function checkSpotChecks(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  const physiology = c.physiology;
+  const listed = physiology?.monitor?.spotChecks ?? [];
+  const seen = new Set<string>();
+  listed.forEach((vital, j) => {
+    const path = ["physiology", "monitor", "spotChecks", j];
+    if (seen.has(vital)) issues.push(warn(path, `spot check "${vital}" is listed twice`));
+    seen.add(vital);
+    if (!(MONITORED_VITALS as readonly string[]).includes(vital)) {
+      const why = (OBSERVED_VITALS as readonly string[]).includes(vital) ? "a nursing observation, always shown" : "not measured by a monitor (use physiology.revealedBy)";
+      issues.push(err(path, `spot check "${vital}" is ${why}; spot checks are monitored vitals (${MONITORED_VITALS.join(", ")})`));
+    } else if (typeof physiology?.baseline[vital] !== "number") {
+      issues.push(err(path, `spot check "${vital}" is not part of the physiology baseline, so there is no reading to show`));
+    }
+  });
+  if (seen.has("sbp") !== seen.has("dbp")) {
+    issues.push(warn(["physiology", "monitor", "spotChecks"], "spot checks list only one of sbp/dbp; a blood pressure is measured (and shown) as a pair"));
+  }
+  return issues;
+}
+
+/**
+ * `physiology.monitor.measures`: monitored vitals (errors otherwise — a
+ * nursing observation is always shown, glucose is `revealedBy`'s), listed
+ * once, with the blood pressure as a pair (warnings).
+ */
+function checkMeasures(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  const listed = c.physiology?.monitor?.measures;
+  if (!listed) return issues;
+  const seen = new Set<string>();
+  listed.forEach((vital, j) => {
+    const path = ["physiology", "monitor", "measures", j];
+    if (seen.has(vital)) issues.push(warn(path, `measured vital "${vital}" is listed twice`));
+    seen.add(vital);
+    if (!(MONITORED_VITALS as readonly string[]).includes(vital)) {
+      issues.push(err(path, `"${vital}" is not measured by a monitor; measures lists monitored vitals (${MONITORED_VITALS.join(", ")})`));
+    }
+  });
+  if (seen.has("sbp") !== seen.has("dbp")) {
+    issues.push(warn(["physiology", "monitor", "measures"], "measures lists only one of sbp/dbp; a blood pressure is measured (and shown) as a pair"));
+  }
   return issues;
 }
 
@@ -506,6 +561,10 @@ function checkReachability(c: CaseDefinition, ids: Ids): Issue[] {
   c.rubric.forEach((r, i) => {
     if (r.met && tri(r.met, leaf) === false) issues.push(warn(["rubric", i, "met"], `rubric item "${r.id}" can never be met, so it lowers every learner's score`));
   });
+  const monitor = c.physiology?.monitor;
+  if (monitor && tri(monitor.attachedWhen, leaf) === false) {
+    issues.push(warn(["physiology", "monitor", "attachedWhen"], "the monitor can never be attached: attachedWhen depends on objectives, decisions or phases that can never be reached"));
+  }
   c.physiology?.events.forEach((e, i) => {
     if (e.atMinute == null && e.when && tri(e.when, leaf) === false) {
       issues.push(warn(["physiology", "events", i, "when"], `scenario event "${e.id}" can never fire: its condition depends on objectives, decisions or phases that can never be reached`));

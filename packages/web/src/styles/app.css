@@ -475,6 +475,36 @@ html[lang="en"] .intro-card h2 {
 .vitals-strip.critical {
   border-color: #d23b26;
 }
+/* Monitor not attached: a "MONITOR OFF" chip, then the triage readings taken by hand — muted, never live colours. */
+.vitals-strip.off-monitor {
+  border-style: dashed;
+  border-color: #7d8a80;
+  background: #1a1f1ce6;
+}
+.vitals-strip .v-monitor {
+  color: #c9cfc8;
+  background: #2c332e;
+}
+/* One line each, and no taller than a reading (CJK fallback fonts have taller "normal" line boxes). */
+.vitals-strip .v-monitor small,
+.vitals-strip .v-monitor b {
+  white-space: nowrap;
+}
+.vitals-strip .v-monitor small {
+  line-height: 1.1;
+}
+.vitals-strip .v-monitor b {
+  font-size: 13px;
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+.vitals-strip .vital.manual {
+  color: #b9c2b8;
+  font-style: italic;
+}
+.vitals-strip .vital.manual small {
+  font-style: normal;
+}
 @keyframes alarm-blink {
   50% {
     background: #7a1d10;
@@ -1769,6 +1799,12 @@ details.topic .question {
   flex-direction: column;
   gap: 6px;
   margin-top: 16px;
+}
+#monitor-attach {
+  margin: 4px 0 14px;
+}
+#monitor-spot-checks b {
+  font-weight: 600;
 }
 
 /* ================================================================ */

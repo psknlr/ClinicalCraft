@@ -194,6 +194,62 @@ solution is sent to the browser).
   until a glucose test is read: list it in `physiology.revealedBy`
   (`{"glucose": ["poc-glucose"]}`). Arrest events need not set `pain` (an
   unresponsive patient has no pain score; the monitor shows no reading).
+* **A monitor the learner must attach.** When the triage note leaves the
+  patient off the monitor and the case has a monitoring intervention, set
+  `physiology.monitor`:
+
+  ```json
+  "monitor": {
+    "attachedWhen": { "any": [{ "intervened": "cardiac-monitoring" }, { "phase": "angio" }] },
+    "spotChecks": ["hr", "sbp", "dbp", "rr", "spo2", "temp"]
+  }
+  ```
+
+  Until `attachedWhen` holds (the engine latches the minute, so the monitor
+  stays on when a phase condition later stops holding) no monitored vital,
+  trend, alarm or rhythm is shown — the rhythm is a finding the learner
+  earns from the monitor, the pulse or the ECG. `spotChecks` are what the
+  triage/bedside staff measured by hand, exactly as the triage note records
+  them: they are shown as static readings of the **baseline**, labelled as
+  triage readings, never alarmed or trended (list only what the note gives —
+  the anaphylaxis nurse took no temperature). Cover every realistic path in
+  `attachedWhen`: the monitoring intervention, and arrival in a monitored
+  area or a step that brings a monitor (transfer to the cath lab or ED,
+  an arterial line, the team's defibrillator in an arrest). Omit
+  `monitor` when the patient is on the monitor from the start (the triage
+  note says so). The reference solution must attach it (`cases verify`
+  warns otherwise). Two optional refinements, for a monitor that is not one
+  device: `measures` lists what it measures once attached (default every
+  monitored vital the baseline models — list the others out when nothing
+  takes them: the anaphylaxis garden has no thermometer, so `measures`
+  leaves out `temp`), and `ecgWhen` holds back the rhythm/ECG until the leads
+  are on (a pulse oximeter and cuff go on with `monitoring`, the 3-lead ECG
+  with the team's monitor-defibrillator: `{"any": [{"intervened":
+  "call-help"}, {"intervened": "transfer-ed"}]}`) — then a scenario line that
+  reads the ECG ("salvos of ectopics on the monitor") needs the ECG, not just
+  the monitor, in its `when`. `vital` conditions are unaffected — they read the
+  patient — but a rubric item or decision that expects the learner to have
+  *seen* a value should only be reachable once the monitor (or a spot check)
+  shows it.
+* **Lines that read the monitor need one.** A scenario message that says
+  "Monitor alarm", "on the monitor" or names a rhythm only a monitor shows
+  must not fire before the monitor is attached: word it as what staff see
+  and feel (a racing, irregular pulse; a blood pressure the nurse measured),
+  or split it into a monitored and an unmonitored variant — the same
+  `setVitals`/`setFlags`, `when` + the attaching leaf vs. `when` + its
+  negation, each guarded by `{"not": {"flag": <the flag both set>}}` so that
+  attaching the monitor later does not fire the other one (`dka-adult`
+  `ev-k-crash` / `ev-k-crash-unmonitored`, `anaphylaxis-garden`
+  `iv-bolus-*`). The same goes for NPC knowledge ("triage vital signs match
+  the monitor"), persona acting notes ("keeps glancing at the monitor"),
+  intervention responses and doses ("the SpO₂ on the monitor rises", "SpO₂
+  quickly reaches 100 %", "KCl … ; continuous ECG monitoring" — say it
+  *needs* monitoring, attach the monitor), exam findings and decision `need`
+  texts ("read the BP from the monitor" — add "once it is attached") and
+  result notes ("glucose is charted on the bedside monitor" — the bedside
+  observations). The response of the step that attaches the monitor names
+  no rhythm: a scenario event may have changed it before (dopamine-induced
+  AF in `septic-shock-cap`) — the screen shows it.
 * Scenario `setVitals` re-base the model: trends and intervention effects keep
   adding to the new values. Set `absolute: true` when the authored numbers
   must be exact from that minute — a ROSC or post-reperfusion state — so

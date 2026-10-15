@@ -56,6 +56,14 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
 
 ## Scenario engine behaviour
 
+* **Bedside monitor (`physiology.monitor`).** The ward call gives the nurse's observations at 16:10;
+  the bedside monitor is there but not on her. Until `monitoring` is given (or she moves to the
+  monitored HDU/ICU bed, `transfer-hdu`) the bedside shows only those readings, taken by hand — HR 118,
+  BP 112/70, RR 26, SpO2 89 %, T 37.4 °C (`spotChecks`: static, no alarm, no rhythm) — plus GCS and
+  pain. The oxygen responses say what is fitted and the SpO2 target (no saturation reading the
+  learner may not have), she looks round at the staff (not "at the monitor"), and the decompensation at
+  60 min is narrated (she deteriorates; the nurse reports the falling pressure) instead of opening
+  with "Monitor alarm!" — the monitor alarms on its own when it is on.
 * **Untreated drift.** Until she is anticoagulated (or reperfused), HR rises (+0.2/min, max +10),
   SBP falls (−0.2/min, max −10), RR rises and SpO2 falls. These trends freeze and slowly recover
   once anticoagulation starts.

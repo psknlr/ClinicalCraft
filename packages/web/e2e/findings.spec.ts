@@ -125,6 +125,10 @@ test.describe("grounded web panels (zh-CN)", () => {
     // Waypoint: the patient's own monitor in the resus bay, not the cubicle monitor nearest the spawn.
     const dest = (await page.locator(".quest-footer").textContent()) ?? "";
     expect(dest).not.toContain("诊室 1");
+    // Not on the monitor at triage (zh): the strip says so; the triage readings were taken by hand.
+    await expect(page.locator("#vitals-strip")).toHaveClass(/off-monitor/);
+    await expect(page.locator('#vitals-strip [data-vital="monitor"]')).toHaveText(/未接监护\s*分诊手测/);
+    await expect(page.locator('#vitals-strip [data-vital="hr"] b')).toHaveText("118");
     // No glucose on the monitor or the HUD before a glucose test.
     const snap = await qa(page, (q) => q.store.snapshot.vitals);
     expect(snap.vitals.glucose).toBeUndefined();

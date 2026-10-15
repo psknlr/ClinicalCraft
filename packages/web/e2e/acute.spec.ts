@@ -1,6 +1,7 @@
 /**
  * English run of an acute simulated case (inferior STEMI with RV
- * involvement): vitals strip, bedside monitor (V), examination, an approval
+ * involvement): vitals strip and bedside monitor (V) before and after the
+ * monitor is attached, examination, an approval
  * dialog for a high-risk intervention (default focus "Deny"), settings
  * language switch, and save → reload → continue.
  */
@@ -25,23 +26,48 @@ test("STEMI (en): vitals, monitor, approval, settings, save/continue", async ({ 
   await shot(page, "en-intro");
 
   await enterCase(page, CASE);
+  // Not on the monitor at triage: the strip says so and shows the triage readings taken by hand.
   const strip = page.locator("#vitals-strip");
   await expect(strip).toBeVisible();
-  await expect(strip.locator('[data-vital="hr"] b')).not.toBeEmpty();
+  await expect(strip).toHaveClass(/off-monitor/);
+  await expect(strip.locator('[data-vital="monitor"]')).toHaveText(/NO MONITOR\s*TRIAGE/);
+  await expect(strip.locator('[data-vital="hr"]')).toHaveClass(/manual/);
+  await expect(strip.locator('[data-vital="hr"] b')).toHaveText("54");
+  await expect(strip.locator('[data-vital="bp"] b')).toHaveText("98/62");
+  await expect(strip.locator(".trend")).toHaveCount(0);
   await expect(page.locator("#sim-clock")).toBeVisible();
-  await shot(page, "en-hud");
+  await shot(page, "en-hud-monitor-off");
 
-  // V opens the bedside monitor
+  // V opens the bedside monitor: dark until attached; no rhythm, no NIBP, the triage readings listed.
   await page.locator("#world").focus();
   await page.keyboard.press("KeyV");
   await expect(page.locator('#panel .window[data-panel="monitor"]')).toBeVisible();
   await expect(page.locator(".monitor-canvas")).toBeVisible();
+  await expect(page.locator("#monitor-off")).toContainText("no ECG, rhythm, NIBP or SpO₂");
+  await expect(page.locator("#monitor-spot-checks")).toContainText("HR 54/min · BP 98/62 mmHg");
+  await expect(page.locator("#nibp-cycle")).toBeDisabled();
+  expect(await page.evaluate(() => (window as any).__QA__.store.snapshot.vitals.vitals.rhythm)).toBeUndefined();
+  await page.waitForTimeout(500);
+  await shot(page, "en-monitor-off");
+  // Attach it from the panel (the case's monitoring intervention, recorded like any treatment).
+  await page.locator("#monitor-attach").click();
+  await expect.poll(() => page.evaluate(() => typeof (window as any).__QA__.session.state.monitorAttachedAt)).toBe("number");
+  expect(await page.evaluate(() => (window as any).__QA__.session.state.interventions.map((i: any) => i.interventionId))).toEqual(["cardiac-monitoring"]);
+  await expect(page.locator("#monitor-off")).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => (window as any).__QA__.store.snapshot.vitals.vitals.rhythm)).toBe("sinus-bradycardia");
+  await expect(page.locator("#nibp-cycle")).toBeEnabled();
   await page.waitForTimeout(800);
   await shot(page, "en-monitor");
   await page.locator("#nibp-cycle").click();
   await expect(page.locator(".nibp .small")).toContainText("NIBP", { timeout: 10_000 });
   await page.keyboard.press("Escape");
   await expect(page.locator("#panel")).toBeHidden();
+  // Live values now: no "no monitor" chip, nothing marked as taken by hand.
+  await expect(strip).not.toHaveClass(/off-monitor/);
+  await expect(strip.locator('[data-vital="monitor"]')).toHaveCount(0);
+  await expect(strip.locator(".vital.manual")).toHaveCount(0);
+  await expect(strip.locator('[data-vital="hr"] b')).not.toBeEmpty();
+  await shot(page, "en-hud");
 
   // talk + examine
   await talkToPatient(page);
@@ -75,7 +101,7 @@ test("STEMI (en): vitals, monitor, approval, settings, save/continue", async ({ 
   await expect(page.locator("#approval-session")).toBeVisible();
   await page.locator("#approval-approve").click();
   await expect(dialog).toBeHidden();
-  await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.interventions.length)).toBeGreaterThan(0);
+  await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.interventions.some((i: any) => i.interventionId === "nitroglycerin"))).toBe(true);
   await page.keyboard.press("Escape");
 
   // settings: switch the language to Chinese and back

@@ -1381,8 +1381,8 @@
         "en": ["conscious", "consciousness", "gcs", "avpu", "neuro", "orientation"]
       },
       "finding": {
-        "zh-CN": "意识水平下降：大声呼唤或疼痛刺激才睁眼，只能含糊发声、不能回答问题，疼痛刺激能定位（GCS见监护）；双侧瞳孔等大、对光反射存在。",
-        "en": "Reduced conscious level: opens her eyes only to a loud voice or pain, mumbles but cannot answer questions, localises to pain (GCS on the monitor); pupils equal and reactive."
+        "zh-CN": "意识水平下降：大声呼唤或疼痛刺激才睁眼，只能含糊发声、不能回答问题，疼痛刺激能定位（GCS见床旁观察记录）；双侧瞳孔等大、对光反射存在。",
+        "en": "Reduced conscious level: opens her eyes only to a loud voice or pain, mumbles but cannot answer questions, localises to pain (GCS: see the bedside observations); pupils equal and reactive."
       },
       "abnormal": true,
       "phases": ["collapsed"]
@@ -3670,6 +3670,12 @@
     }
   ],
   "physiology": {
+    "monitor": {
+      "attachedWhen": { "any": [{ "intervened": "monitoring" }, { "intervened": "transfer-ed" }] },
+      "ecgWhen": { "any": [{ "intervened": "call-help" }, { "intervened": "transfer-ed" }] },
+      "measures": ["hr", "sbp", "dbp", "rr", "spo2"],
+      "spotChecks": ["hr", "sbp", "dbp", "rr", "spo2"]
+    },
     "baseline": {
       "hr": 128,
       "sbp": 78,
@@ -3902,7 +3908,7 @@
       },
       {
         "id": "iv-bolus-arrhythmia",
-        "when": { "intervened": "adrenaline-iv-bolus" },
+        "when": { "all": [{ "intervened": "adrenaline-iv-bolus" }, { "any": [{ "all": [{ "intervened": "monitoring" }, { "intervened": "call-help" }] }, { "intervened": "transfer-ed" }] }, { "not": { "flag": "iv-adrenaline-harm" } }] },
         "setFlags": ["iv-adrenaline-harm"],
         "severity": "critical",
         "message": {
@@ -3911,20 +3917,50 @@
         }
       },
       {
+        "id": "iv-bolus-arrhythmia-unmonitored",
+        "when": { "all": [{ "intervened": "adrenaline-iv-bolus" }, { "not": { "any": [{ "all": [{ "intervened": "monitoring" }, { "intervened": "call-help" }] }, { "intervened": "transfer-ed" }] } }, { "not": { "flag": "iv-adrenaline-harm" } }] },
+        "setFlags": ["iv-adrenaline-harm"],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "推注后数秒她喊‘头要炸了’、捂住胸口，面色苍白、大汗；脉搏又快又乱，颈动脉搏动强烈。她还没接心电监护。",
+          "en": "Seconds after the push she cries 'my head's exploding' and clutches her chest, pale and sweating; her pulse is racing and chaotic, the carotids pounding. There is no ECG on her yet."
+        }
+      },
+      {
         "id": "iv-bolus-ischaemia",
-        "when": { "all": [{ "flag": "iv-adrenaline-harm" }, { "vital": "sbp", "op": "gt", "value": 145 }] },
+        "when": { "all": [{ "flag": "iv-adrenaline-harm" }, { "vital": "sbp", "op": "gt", "value": 145 }, { "any": [{ "all": [{ "intervened": "monitoring" }, { "intervened": "call-help" }] }, { "intervened": "transfer-ed" }] }, { "not": { "flag": "iv-bolus-st-change" } }] },
         "setVitals": { "ecg": "st-depression" },
         "setFlags": ["iv-bolus-st-change"],
         "message": { "zh-CN": "监护：频发室性早搏，ST段压低。", "en": "Monitor: frequent ventricular ectopics and ST depression." },
         "severity": "warning"
       },
       {
+        "id": "iv-bolus-ischaemia-unmonitored",
+        "when": { "all": [{ "flag": "iv-adrenaline-harm" }, { "vital": "sbp", "op": "gt", "value": 145 }, { "not": { "any": [{ "all": [{ "intervened": "monitoring" }, { "intervened": "call-help" }] }, { "intervened": "transfer-ed" }] } }, { "not": { "flag": "iv-bolus-st-change" } }] },
+        "setVitals": { "ecg": "st-depression" },
+        "setFlags": ["iv-bolus-st-change"],
+        "message": { "zh-CN": "她说胸口发紧、心跳得厉害，脉搏仍然很乱。", "en": "She says her chest feels tight and her heart is pounding; her pulse is still irregular." },
+        "severity": "warning"
+      },
+      {
         "id": "iv-bolus-wears-off",
-        "when": { "all": [{ "flag": "iv-bolus-st-change" }, { "vital": "sbp", "op": "lt", "value": 135 }] },
+        "when": { "all": [{ "flag": "iv-bolus-st-change" }, { "vital": "sbp", "op": "lt", "value": 135 }, { "any": [{ "all": [{ "intervened": "monitoring" }, { "intervened": "call-help" }] }, { "intervened": "transfer-ed" }] }, { "not": { "flag": "iv-bolus-settled" } }] },
         "setVitals": { "ecg": "normal" },
+        "setFlags": ["iv-bolus-settled"],
         "message": {
           "zh-CN": "推注的药效消退：早搏减少、ST段恢复——但血压随即跌回原处。静推并没有控制住这次反应。",
           "en": "The bolus wears off: the ectopics settle and the ST segments recover — but her blood pressure drops straight back. The IV push has not controlled the reaction."
+        },
+        "severity": "warning"
+      },
+      {
+        "id": "iv-bolus-wears-off-unmonitored",
+        "when": { "all": [{ "flag": "iv-bolus-st-change" }, { "vital": "sbp", "op": "lt", "value": 135 }, { "not": { "any": [{ "all": [{ "intervened": "monitoring" }, { "intervened": "call-help" }] }, { "intervened": "transfer-ed" }] } }, { "not": { "flag": "iv-bolus-settled" } }] },
+        "setVitals": { "ecg": "normal" },
+        "setFlags": ["iv-bolus-settled"],
+        "message": {
+          "zh-CN": "推注的药效消退：胸闷心慌缓解、脉搏规整了——但她又头晕起来，桡动脉重新变弱。静推并没有控制住这次反应。",
+          "en": "The bolus wears off: the pounding and chest tightness ease and her pulse is regular again — but she is dizzy again and her radial pulse is weak. The IV push has not controlled the reaction."
         },
         "severity": "warning"
       },

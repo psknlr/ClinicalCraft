@@ -107,8 +107,11 @@ function vitals(slotId: string): Snapshot | null {
     trend: {},
   };
   if (hr > 120) snap.alarms.push({ vital: "hr", level: hr > 150 ? "critical" : "warning", value: hr });
-  if (snap.vitals.spo2 < 92) snap.alarms.push({ vital: "spo2", level: "warning", value: snap.vitals.spo2 });
+  const spo2 = snap.vitals.spo2 ?? 100;
+  if (spo2 < 92) snap.alarms.push({ vital: "spo2", level: "warning", value: spo2 });
   if (q.get("vitals") === "baseline") snap.baselineOnly = true;
+  // ?vitals=detached: a monitor not attached yet (dark screen, no numbers).
+  if (q.get("vitals") === "detached") return { minute: snap.minute, vitals: { gcs: 15 }, alarms: [], trend: {}, monitorAttached: false };
   return snap;
 }
 

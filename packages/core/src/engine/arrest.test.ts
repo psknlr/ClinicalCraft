@@ -122,7 +122,8 @@ describe("cardiac arrest rhythms (VF / asystole)", () => {
     expect(alarms).toContainEqual({ vital: "sbp", level: "critical", value: 0 });
     expect(alarms).toContainEqual({ vital: "spo2", level: "critical", value: 0 });
     const events = reduce(c, play(c, [start, advance(5)]), advance(2)).events;
-    expect(events).toContainEqual({ type: "vitals.alarm", vital: "hr", level: "critical", value: 0 });
+    // value 0 is the arrest placeholder: the event says the monitor has no reading
+    expect(events).toContainEqual({ type: "vitals.alarm", vital: "hr", level: "critical", value: 0, unmeasurable: true });
     expect(assess(c, s).safety.criticalAlarms).toBeGreaterThanOrEqual(3);
   });
 

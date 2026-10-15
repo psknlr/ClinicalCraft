@@ -22,7 +22,11 @@ export interface EventReaction {
 
 /** What the reactions may know about the bedside at the time. */
 export interface ReactionContext {
-  /** Vitals the monitor cannot read right now (cardiac arrest — `VitalsSnapshot.unmeasurable`). */
+  /**
+   * Vitals the monitor cannot read right now (cardiac arrest — `VitalsSnapshot.unmeasurable`).
+   * Optional: a `vitals.alarm` event carries its own `unmeasurable` flag (set by the engine at
+   * the minute it fired), which is what the session relies on.
+   */
   unmeasurable?: readonly VitalKey[];
 }
 
@@ -152,7 +156,7 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       ];
     }
     case "vitals.alarm": {
-      const unread = context.unmeasurable?.includes(event.vital) ?? false;
+      const unread = event.unmeasurable === true || (context.unmeasurable?.includes(event.vital) ?? false);
       if (unread && event.vital !== "hr") return [];
       const vital = vitalLabel(event.vital, L);
       const value = unread ? noReading(L) : vitalWithUnit(event.vital, event.value);
