@@ -15,3 +15,7 @@ packages/web/public/assets/local/
 .env
 .env.*
 .DS_Store
+# Standalone builds may embed local-only copyrighted assets — never commit them
+packages/web/dist-standalone/
+dist-standalone/
+*.standalone.html
