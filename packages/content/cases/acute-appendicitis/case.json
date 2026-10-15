@@ -215,16 +215,16 @@
           "说说怎么回事"
         ],
         "en": [
-          "brought you in",
-          "brings you in",
+          "broughtyouin",
+          "bringsyouin",
           "what's wrong",
-          "what is wrong",
+          "whatiswrong",
           "main problem",
           "what's going on",
           "howcanihelp",
           "what happened",
           "what's happened",
-          "what's the matter",
+          "whatsthematter",
           "theproblem",
           "beengoingon"
         ]
@@ -342,14 +342,14 @@
           "一下子痛"
         ],
         "en": [
-          "when did it start",
+          "whendiditstart",
           "when did the pain start",
           "howlong",
           "onset",
           "what time did it start",
           "sudden or gradual",
           "suddenly",
-          "when did it begin",
+          "whendiditbegin",
           "started suddenly",
           "howmanyhours",
           "howmanydays",
@@ -671,8 +671,8 @@
         "en": [
           "howbad",
           "scale",
-          "out of 10",
-          "out of ten",
+          "outof10",
+          "outoften",
           "score",
           "severity",
           "how severe",
@@ -882,7 +882,17 @@
       "required": true,
       "excludeKeywords": {
         "zh-CN": [
-          "药"
+          "药",
+          "最后一次",
+          "上一次吃",
+          "上一顿",
+          "最后吃"
+        ],
+        "en": [
+          "lastate",
+          "lasteat",
+          "lastmeal",
+          "lasttime"
         ]
       }
     },
@@ -1093,7 +1103,7 @@
           "urine",
           "urinary",
           "peeing",
-          "when you pee",
+          "whenyoupee",
           "burning",
           "frequency",
           "waterworks",
@@ -1410,7 +1420,7 @@
           "asthma",
           "diabetes",
           "kidney stones",
-          "been in hospital",
+          "beeninhospital",
           "pmh",
           "pmhx",
           "past history",
@@ -1495,8 +1505,8 @@
           "hadyourappendixout",
           "hadyourappendix",
           "yourappendixremoved",
-          "had an anaesthetic",
-          "had an anesthetic"
+          "hadananaesthetic",
+          "hadananesthetic"
         ]
       },
       "disclosure": "on-ask",
@@ -1906,7 +1916,7 @@
         ],
         "en": [
           "any cough",
-          "have a cough",
+          "haveacough",
           "phlegm",
           "short of breath",
           "breathless",
@@ -2170,7 +2180,7 @@
           "your mum",
           "your father",
           "your mother",
-          "in the family"
+          "inthefamily"
         ]
       },
       "disclosure": "on-ask",
@@ -2222,10 +2232,10 @@
           "猜一猜"
         ],
         "en": [
-          "what do you think is",
-          "what do you think it",
+          "whatdoyouthinkis",
+          "whatdoyouthinkit",
           "what's causing",
-          "any ideas what",
+          "anyideaswhat",
           "your thoughts"
         ]
       },
@@ -2307,8 +2317,8 @@
           "hoping",
           "expect",
           "what would you like",
-          "want us to",
-          "tell your parents",
+          "wantusto",
+          "tellyourparents",
           "contact your family",
           "call your parents",
           "call your mum",
@@ -2445,9 +2455,9 @@
         "en": [
           "general inspection",
           "general appearance",
-          "look at the patient",
+          "lookatthepatient",
           "end of the bed",
-          "inspect the patient"
+          "inspectthepatient"
         ]
       },
       "finding": {
@@ -3680,9 +3690,15 @@
                 "zh-CN": "白细胞酯酶",
                 "en": "Leukocyte esterase"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3690,9 +3706,15 @@
                 "zh-CN": "亚硝酸盐",
                 "en": "Nitrite"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3700,9 +3722,15 @@
                 "zh-CN": "隐血",
                 "en": "Blood"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3710,9 +3738,15 @@
                 "zh-CN": "蛋白",
                 "en": "Protein"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3720,9 +3754,15 @@
                 "zh-CN": "葡萄糖",
                 "en": "Glucose"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3730,9 +3770,15 @@
                 "zh-CN": "酮体",
                 "en": "Ketones"
               },
-              "value": "微量（±）/ trace",
+              "value": {
+                "zh-CN": "微量（±）",
+                "en": "trace (±)"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "A"
             },
             {
@@ -3760,9 +3806,15 @@
                 "zh-CN": "细菌",
                 "en": "Bacteria"
               },
-              "value": "未见 / none seen",
+              "value": {
+                "zh-CN": "未见",
+                "en": "none seen"
+              },
               "unit": "",
-              "refText": "未见 / none",
+              "refText": {
+                "zh-CN": "未见",
+                "en": "none"
+              },
               "flag": "N"
             }
           ]
@@ -4082,7 +4134,10 @@
                 "zh-CN": "RhD",
                 "en": "RhD"
               },
-              "value": "阳性 / positive",
+              "value": {
+                "zh-CN": "阳性",
+                "en": "positive"
+              },
               "unit": "",
               "refText": "—"
             },
@@ -4091,9 +4146,15 @@
                 "zh-CN": "抗体筛查",
                 "en": "Antibody screen"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ]
@@ -4218,9 +4279,15 @@
                 "zh-CN": "可压缩性",
                 "en": "Compressibility"
               },
-              "value": "不可压缩 / non-compressible",
+              "value": {
+                "zh-CN": "不可压缩",
+                "en": "non-compressible"
+              },
               "unit": "",
-              "refText": "可压缩 / compressible",
+              "refText": {
+                "zh-CN": "可压缩",
+                "en": "compressible"
+              },
               "flag": "A"
             },
             {
@@ -4228,7 +4295,10 @@
                 "zh-CN": "阑尾粪石",
                 "en": "Appendicolith"
               },
-              "value": "未见 / not seen",
+              "value": {
+                "zh-CN": "未见",
+                "en": "not seen"
+              },
               "unit": "",
               "refText": "—"
             },
@@ -4237,7 +4307,10 @@
                 "zh-CN": "积液/脓肿",
                 "en": "Fluid / abscess"
               },
-              "value": "无 / none",
+              "value": {
+                "zh-CN": "无",
+                "en": "none"
+              },
               "unit": "",
               "refText": "—",
               "flag": "N"
@@ -4310,7 +4383,10 @@
                 "zh-CN": "阑尾粪石",
                 "en": "Appendicolith"
               },
-              "value": "无 / none",
+              "value": {
+                "zh-CN": "无",
+                "en": "none"
+              },
               "unit": "",
               "refText": "—",
               "flag": "N"
@@ -4320,7 +4396,10 @@
                 "zh-CN": "腔外气体/脓肿",
                 "en": "Extraluminal gas / abscess"
               },
-              "value": "无 / none",
+              "value": {
+                "zh-CN": "无",
+                "en": "none"
+              },
               "unit": "",
               "refText": "—",
               "flag": "N"
@@ -4729,8 +4808,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "经外周静脉通路：乳酸钠林格注射液 500 mL 30分钟内静滴，再 500 mL 2小时内滴完；之后按 25–30 mL/kg/天（约 80 mL/h）维持",
-        "en": "Via the peripheral cannula: Hartmann's 500 mL over 30 min, then 500 mL over 2 h; thereafter maintenance 25–30 mL/kg/day (≈80 mL/h)"
+        "zh-CN": "经外周静脉通路：乳酸钠林格注射液 500 mL 30分钟内静滴，再 500 mL 2小时内滴完；之后按 25–30 mL/kg/天维持",
+        "en": "Via the peripheral cannula: Hartmann's 500 mL over 30 min, then 500 mL over 2 h; thereafter maintenance 25–30 mL/kg/day"
       },
       "requires": [
         "iv-access"
@@ -4767,8 +4846,8 @@
         ]
       },
       "response": {
-        "zh-CN": "补液开始。之后一小时内心率逐渐下降，患者口干稍缓解。",
-        "en": "Fluids running. Over the next hour his heart rate settles and his mouth feels less dry."
+        "zh-CN": "补液开始。之后一小时内心率逐渐下降，患者口干稍缓解。之后的维持速度约 80 mL/h（68 kg × 25–30 mL/kg/天）。",
+        "en": "Fluids running. Over the next hour his heart rate settles and his mouth feels less dry. Maintenance afterwards is about 80 mL/h (25–30 mL/kg/day for 68 kg)."
       }
     },
     {
@@ -4788,7 +4867,9 @@
           "镇痛",
           "止痛药",
           "镇痛药",
-          "打止痛针"
+          "打止痛针",
+          "吗啡止痛",
+          "吗啡镇痛"
         ],
         "en": [
           "morphine",
@@ -4983,7 +5064,8 @@
           "别止痛",
           "不镇痛",
           "不用止痛",
-          "不要止痛"
+          "不要止痛",
+          "吗啡"
         ],
         "en": [
           "withhold",
@@ -4993,7 +5075,8 @@
           "nopainrelief",
           "noanalgesia",
           "withoutanalgesia",
-          "delayanalgesia"
+          "delayanalgesia",
+          "morphine"
         ]
       }
     },
@@ -5079,7 +5162,8 @@
           "别止痛",
           "不镇痛",
           "不用止痛",
-          "不要止痛"
+          "不要止痛",
+          "吗啡"
         ],
         "en": [
           "withhold",
@@ -5089,7 +5173,8 @@
           "nopainrelief",
           "noanalgesia",
           "withoutanalgesia",
-          "delayanalgesia"
+          "delayanalgesia",
+          "morphine"
         ]
       }
     },
@@ -5509,7 +5594,7 @@
           "shared decision",
           "discuss options",
           "informed consent",
-          "talk to the patient"
+          "talktothepatient"
         ]
       },
       "requires": [],
@@ -5868,8 +5953,8 @@
           "oral intake",
           "light diet",
           "free fluids",
-          "let him eat",
-          "let him drink"
+          "lethimeat",
+          "lethimdrink"
         ]
       },
       "requires": [],

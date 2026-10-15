@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extractDrugMentions, extractNumericTokens, parseChineseNumber, verifyGrounding } from "./grounding.js";
+import { extractClaimTerms, extractDrugMentions, extractNumericTokens, parseChineseNumber, verifyGrounding } from "./grounding.js";
 
 describe("numeric token extraction", () => {
   it("handles decimals, ranges, dates, units and ×10⁹", () => {
@@ -78,5 +78,38 @@ describe("diagnoses, history and relative dates must be grounded (C2)", () => {
     expect(unasked.ok).toBe(false);
     expect(unasked.violations[0]).toMatch(/unasked fact/);
     expect(verifyGrounding("It's right in the middle of my chest.", sources, { unrevealed: ["It goes down my left arm and into my jaw."] }).ok).toBe(true);
+  });
+});
+
+describe("review round 3: claim-term boundaries, zh unasked-fact windows, violation kinds", () => {
+  it("a lexicon term needs a trailing word boundary (plural allowed)", () => {
+    expect(extractClaimTerms("I've got hives all over my arms.")).not.toContain("hiv");
+    expect(extractClaimTerms("he stroked his beard")).not.toContain("stroke");
+    expect(extractClaimTerms("he has had two strokes")).toContain("stroke");
+    expect(extractClaimTerms("she had HIV once")).toContain("hiv");
+    expect(verifyGrounding("I've got itchy hives all over my arms.", ["Itchy red welts came up all over my arms and chest."]).ok).toBe(true);
+    // a plural in the reply is grounded by the singular in the facts (and vice versa)
+    expect(verifyGrounding("He has had strokes before.", ["He had a stroke two years back."]).violations).not.toContain('claim "stroke"');
+  });
+
+  it("zh unasked-fact phrases stay inside punctuation-delimited runs and skip function-word windows", () => {
+    expect(verifyGrounding("没有，从来没有过敏。", ["没有过敏。", "你有过敏吗？"], { unrevealed: ["没有，从来没用过。"] }).ok).toBe(true);
+    expect(verifyGrounding("（女儿）没有，她没有已知的过敏。", ["（病人）过敏……没有。（女儿）没有已知过敏。"], { unrevealed: ["（女儿）没有，她一直很好。"] }).ok).toBe(true);
+    expect(verifyGrounding("没有，他从来没有对什么药或者吃的东西过敏。", ["（妻子）没有，他不过敏。"], { unrevealed: ["（妻子）没有。他从来没抽过筋，也没有咬舌头。"] }).ok).toBe(true);
+    // a distinctive content phrase of an unrevealed answer is still caught
+    const leak = verifyGrounding("胸口像压了块大石头。", ["两个小时前开始的。"], { unrevealed: ["像压了块大石头一样，闷得慌。"] });
+    expect(leak.ok).toBe(false);
+    expect(leak.kinds).toEqual(["unasked"]);
+  });
+
+  it("reports violation kinds alongside the detailed list", () => {
+    const check = verifyGrounding("Two hours ago, 40 of them. Feels like a heavy weight; I think it is an Inferior STEMI.", ["About two hours ago."], {
+      conditionTerms: ["Inferior STEMI"],
+      unrevealed: ["Like a heavy weight on my chest."],
+    });
+    expect(check.ok).toBe(false);
+    expect(check.kinds).toEqual(expect.arrayContaining(["number", "term", "claim", "unasked"]));
+    expect(check.violations.join(" ")).toMatch(/heavy weight/);
+    expect(verifyGrounding("Fine.", ["Fine."]).kinds).toEqual([]);
   });
 });

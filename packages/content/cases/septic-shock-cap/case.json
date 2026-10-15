@@ -600,7 +600,7 @@
           "dyspnea",
           "breathing difficulty",
           "trouble breathing",
-          "out of breath",
+          "outofbreath",
           "sob",
           "lie flat",
           "orthopnoea",
@@ -654,13 +654,13 @@
         ],
         "en": [
           "what happened",
-          "tell me what's been happening",
+          "tellmewhatsbeenhappening",
           "progression",
           "timeline",
-          "from the beginning",
+          "fromthebeginning",
           "course of the illness",
           "how did this illness start",
-          "what brings you in",
+          "whatbringsyouin",
           "story so far",
           "walk me through",
           "been unwell",
@@ -751,7 +751,7 @@
           "解了几次小便"
         ],
         "en": [
-          "is she eating",
+          "issheeating",
           "eating and drinking",
           "appetite",
           "fluid intake",
@@ -1256,10 +1256,10 @@
           "iv treatment",
           "drip",
           "last three months",
-          "seen a doctor",
+          "seenadoctor",
           "seen a gp",
           "seen the gp",
-          "saw a doctor",
+          "sawadoctor",
           "been to the doctor",
           "90 days"
         ]
@@ -1300,7 +1300,9 @@
           "癌症",
           "肿瘤",
           "血糖控制",
-          "测血糖"
+          "测血糖",
+          "以前有什么病",
+          "有什么病"
         ],
         "en": [
           "past medical history",
@@ -1331,7 +1333,9 @@
           "母亲",
           "父亲",
           "外婆",
-          "外公"
+          "外公",
+          "家里有人",
+          "家里其他人"
         ],
         "en": [
           "family",
@@ -1426,6 +1430,18 @@
           "kidney problems",
           "renal",
           "cardiac history"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "家人",
+          "家里有人"
+        ],
+        "en": [
+          "family",
+          "relatives"
         ]
       },
       "disclosure": "on-ask",
@@ -1533,7 +1549,7 @@
           "analgesics",
           "ibuprofen",
           "nsaid",
-          "over the counter",
+          "overthecounter",
           "otc",
           "medicine for the fever",
           "pain relief tablets",
@@ -1758,7 +1774,10 @@
           "relatives",
           "family illnesses",
           "fhx",
-          "family hx"
+          "family hx",
+          "inthefamily",
+          "inyourfamily",
+          "anyoneinthefamily"
         ]
       },
       "disclosure": "on-ask",
@@ -1990,7 +2009,7 @@
           "advance directive",
           "ceiling of care",
           "intubation wishes",
-          "what she would want",
+          "whatshewouldwant",
           "dnr",
           "resus status",
           "dnacpr",
@@ -2029,7 +2048,7 @@
           "worries",
           "afraid",
           "expectations",
-          "what are you thinking",
+          "whatareyouthinking",
           "scared"
         ]
       },
@@ -2108,7 +2127,7 @@
           "贵庚"
         ],
         "en": [
-          "what is your name",
+          "whatisyourname",
           "your name",
           "her name",
           "age",
@@ -2116,8 +2135,8 @@
           "date of birth",
           "who are you",
           "relationship",
-          "are you her daughter",
-          "related to her",
+          "areyouherdaughter",
+          "relatedtoher",
           "how old"
         ]
       },
@@ -4823,7 +4842,10 @@
               "value": 3.4,
               "unit": "mg/L FEU",
               "refHigh": 0.5,
-              "refText": "< 0.5 mg/L FEU (72 y: < 0.72)",
+              "refText": {
+                "zh-CN": "< 0.5 mg/L FEU（72岁：< 0.72）",
+                "en": "< 0.5 mg/L FEU (72 y: < 0.72)"
+              },
               "flag": "H"
             }
           ],
@@ -4848,7 +4870,10 @@
               "value": 3.2,
               "unit": "mg/L FEU",
               "refHigh": 0.5,
-              "refText": "< 0.5 mg/L FEU (72 y: < 0.72)",
+              "refText": {
+                "zh-CN": "< 0.5 mg/L FEU（72岁：< 0.72）",
+                "en": "< 0.5 mg/L FEU (72 y: < 0.72)"
+              },
               "flag": "H"
             }
           ],
@@ -4873,7 +4898,10 @@
               "value": 3.2,
               "unit": "mg/L FEU",
               "refHigh": 0.5,
-              "refText": "< 0.5 mg/L FEU (72 y: < 0.72)",
+              "refText": {
+                "zh-CN": "< 0.5 mg/L FEU（72岁：< 0.72）",
+                "en": "< 0.5 mg/L FEU (72 y: < 0.72)"
+              },
               "flag": "H"
             }
           ],
@@ -6307,7 +6335,18 @@
           "生理盐水",
           "扩容",
           "液体推注",
-          "静脉补液"
+          "静脉补液",
+          "500毫升",
+          "再补液",
+          "再补一次",
+          "再补500",
+          "补一次液",
+          "再推500",
+          "推500",
+          "再推一个500",
+          "再给一次液体",
+          "液体冲击",
+          "冲击补液"
         ],
         "en": [
           "fluid bolus",
@@ -6320,6 +6359,22 @@
           "500 ml",
           "fluid challenge",
           "iv fluids"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "停止",
+          "停补",
+          "不要再",
+          "别再",
+          "暂停",
+          "限制"
+        ],
+        "en": [
+          "stopfluid",
+          "nomorefluid",
+          "withhold",
+          "restrict"
         ]
       },
       "dose": {
@@ -6881,7 +6936,7 @@
           "paracetamol",
           "acetaminophen",
           "antipyretic",
-          "for the fever",
+          "forthefever",
           "tylenol"
         ]
       },
@@ -7096,8 +7151,8 @@
     {
       "id": "hold-home-meds",
       "name": {
-        "zh-CN": "暂停二甲双胍和降压药，避免NSAIDs",
-        "en": "Hold metformin and antihypertensives; avoid NSAIDs"
+        "zh-CN": "暂停休克/急性肾损伤时不宜使用的家庭用药，避免NSAIDs",
+        "en": "Hold home medicines that are unsafe in shock and AKI; avoid NSAIDs"
       },
       "kind": "other",
       "aliases": {
@@ -7114,12 +7169,16 @@
           "hold antihypertensives",
           "stop amlodipine",
           "avoid nsaids",
-          "nephrotoxins"
+          "nephrotoxins",
+          "holdherhomemed",
+          "holdhomemed",
+          "holdherregularmed",
+          "withholdhermed"
         ]
       },
       "dose": {
-        "zh-CN": "暂停二甲双胍和氨氯地平；避免布洛芬等NSAIDs及其他肾毒性药物；医嘱中注明原因",
-        "en": "Withhold metformin and amlodipine; avoid ibuprofen and other NSAIDs or nephrotoxins; document why"
+        "zh-CN": "暂停休克或急性肾损伤时不宜继续的常规用药（降压药、ACEI/ARB、利尿剂、双胍类）；避免NSAIDs及其他肾毒性药物；医嘱中注明原因",
+        "en": "Withhold regular medicines that are unsafe in shock or acute kidney injury (antihypertensives, ACE inhibitors/ARBs, diuretics, biguanides); avoid NSAIDs and other nephrotoxins; document why"
       },
       "requires": [],
       "risk": "none",
@@ -7534,7 +7593,8 @@
         "message": {
           "zh-CN": "赵药师（电话）：氢化可的松已经发出去了。不过她的平均动脉压还低，激素不会很快把血压升上来——升压药准备用吗？",
           "en": "Pharmacist Zhao (phone): The hydrocortisone has gone up. But her MAP is still low, and steroids won't bring the pressure up quickly — are you starting a vasopressor?"
-        }
+        },
+        "speaker": "narrator"
       },
       {
         "id": "ev-dopamine-af",
@@ -8135,8 +8195,8 @@
     {
       "id": "abx-regimen",
       "prompt": {
-        "zh-CN": "她无药物过敏，近3个月无住院、无静脉或口服抗生素使用，既往无MRSA或铜绿假单胞菌分离史。结合你根据她的就诊表现判断的社区获得性肺炎严重程度，以下哪些经验性方案合适？（选出所有合适项）",
-        "en": "She has no drug allergies, no admission and no IV or oral antibiotics in the last 3 months, and no previous MRSA or Pseudomonas isolate. Given the CAP severity you judge from her presentation, which empirical regimens are appropriate? (Select all that apply)"
+        "zh-CN": "她无药物过敏，近3个月无住院、无静脉或口服抗生素使用。结合你根据她的就诊表现判断的社区获得性肺炎严重程度，以下哪些经验性方案合适？（选出所有合适项）",
+        "en": "She has no drug allergies, and no admission and no IV or oral antibiotics in the last 3 months. Given the CAP severity you judge from her presentation, which empirical regimens are appropriate? (Select all that apply)"
       },
       "kind": "multiple",
       "requires": {
@@ -10040,6 +10100,34 @@
         "locale": "en",
         "expect": [
           "hx-travel"
+        ]
+      },
+      {
+        "text": "以前有什么病？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "她有什么病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "any diabetes in the family?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "is there any heart disease in your family?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
         ]
       }
     ],

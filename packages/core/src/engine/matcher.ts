@@ -14,7 +14,10 @@
  *   score multiplied by `EXCLUDE_KEYWORD_FACTOR` before the threshold.
  */
 import type { CaseDefinition } from "../schema/case.js";
+import type { SessionState } from "../schema/session.js";
 import { t } from "../i18n.js";
+import { evaluate } from "./conditions.js";
+import { hasHistoryTwins, historyTwin } from "./twins.js";
 import { allListEntries, allTexts, compactText, normalizeQuery, phraseCoverage, phraseScore, prepare, unique, type Prepared } from "./text.js";
 import type { MatchHit, MatchOptions } from "./types.js";
 
@@ -120,11 +123,17 @@ export function matchOrders(c: CaseDefinition, query: string, _locale: string): 
 
 /**
  * Notices for ordering `investigationId` with `query` (V4: "平扫CT" warns that
- * only contrast-enhanced CT images exist), localized.
+ * only contrast-enhanced CT images exist), localized. With `state` (the
+ * session as the order is placed, i.e. before it), a warning whose `unless`
+ * condition holds no longer applies and is left out; without `state`,
+ * `unless` is not evaluated (every matching warning is returned).
  */
-export function orderWarnings(c: CaseDefinition, query: string, investigationId: string, locale: string): string[] {
+export function orderWarnings(c: CaseDefinition, query: string, investigationId: string, locale: string, state?: SessionState): string[] {
   const q = normalizeQuery(query);
-  return c.orderMatching.warnings.filter((w) => w.investigation === investigationId && regexTest(w.ifMatches, q)).map((w) => t(w.message, locale));
+  return c.orderMatching.warnings
+    .filter((w) => w.investigation === investigationId && regexTest(w.ifMatches, q))
+    .filter((w) => !(state && w.unless && evaluate(c, state, w.unless)))
+    .map((w) => t(w.message, locale));
 }
 
 /* ------------------------------------------------------------------ */
@@ -197,12 +206,29 @@ function excludePhrases(list: Parameters<typeof allListEntries>[0]): string[] {
 
 /**
  * History items matching a learner utterance (question + keywords, all
- * locales). `options.phase` drops items restricted to other phases;
- * `options.includeUnknown: false` drops `disclosure: "unknown"` items
+ * locales). `options.phase` drops items restricted to other phases and
+ * applies phase twins (`history[].supersedes`): a hit on an item superseded
+ * in that phase counts for the item that supersedes it there (`historyTwin`;
+ * the twin keeps the best of the scores) — whether or not the superseded
+ * item is itself listed for the phase — so its answer is never selected
+ * there. `options.includeUnknown: false` drops `disclosure: "unknown"` items
  * (default: included, so the patient can say "not recorded").
  */
 export function matchHistory(c: CaseDefinition, utterance: string, locale: string, options: MatchOptions = {}): MatchHit[] {
-  return scoreItems(historyIndex(c, locale), utterance, options);
+  const index = historyIndex(c, locale);
+  const phase = options.phase;
+  if (phase == null || !hasHistoryTwins(c)) return scoreItems(index, utterance, options);
+  const unknown = new Set(index.filter((item) => item.unknown).map((item) => item.id));
+  const best = new Map<string, number>();
+  for (const hit of scoreItems(index, utterance, { ...options, phase: undefined })) {
+    const id = historyTwin(c, hit.id, phase);
+    if (id === null || (options.includeUnknown === false && unknown.has(id))) continue;
+    best.set(id, Math.max(best.get(id) ?? 0, hit.score));
+  }
+  const order = new Map(index.map((item, i) => [item.id, i]));
+  return [...best]
+    .map(([id, score]) => ({ id, score }))
+    .sort((a, b) => b.score - a.score || (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
 }
 
 function historyIndex(c: CaseDefinition, locale: string): IndexedItem[] {

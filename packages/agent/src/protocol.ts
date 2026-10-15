@@ -113,6 +113,7 @@ export interface RuntimeConfigPatch {
   agents?: Record<string, { provider?: string; model?: string; effort?: string; temperature?: number }>;
   approvalMode?: ApprovalMode;
   practiceScope?: PracticeScope;
+  /** A supported language ("zh-CN", "en"); aliases such as "zh" or "en-US" are normalised, anything else is refused (`invalid_config`). */
   locale?: string;
   interlocutor?: AddressTarget;
 }

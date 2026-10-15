@@ -6,7 +6,7 @@
  * warnings, turnaround countdown in simulated cases, and the station's
  * evidence grid. Also the device panel (tests + bedside treatments).
  */
-import { matchOrders, orderWarnings, resultFor, type Investigation } from "@clinicalcraft/core";
+import { matchOrders, orderWarnings, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
@@ -37,6 +37,15 @@ export function orderAndOpen(app: App, game: Game, inv: Investigation, placement
     if (inv.risk === "moderate" || inv.risk === "high") return;
   }
   app.open("report", { investigationId: inv.id, phase, back, ...(submission ? { orderSubmission: submission } : {}) });
+}
+
+/**
+ * The order notices to toast as `investigationId` is ordered from `query`:
+ * `orderMatching.warnings` matching the query whose `unless` does not hold on
+ * the session before the order — the same as the order_test tool.
+ */
+export function orderNotices(c: CaseDefinition, query: string, investigationId: string, locale: string, state: SessionState): string[] {
+  return orderWarnings(c, query, investigationId, locale, state);
 }
 
 function candidateButton(app: App, game: Game, inv: Investigation, placementId: string, query: string): HTMLElement {
@@ -78,7 +87,8 @@ function candidateButton(app: App, game: Game, inv: Investigation, placementId: 
       class: ["candidate", !hasRecord ? "no-record" : ""],
       dataset: { investigation: inv.id },
       onclick: () => {
-        for (const w of orderWarnings(c, query, inv.id, L)) app.toast(tr("orders.warning"), w, "warning");
+        const before = game.session.store.snapshot?.state ?? game.session.session.state;
+        for (const w of orderNotices(c, query, inv.id, L, before)) app.toast(tr("orders.warning"), w, "warning");
         orderAndOpen(app, game, inv, placementId, { panel: "orders", placementId });
       },
     },

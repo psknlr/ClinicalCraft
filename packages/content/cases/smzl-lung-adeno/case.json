@@ -179,15 +179,15 @@
         ],
         "en": [
           "pain",
-          "where does it hurt",
+          "wheredoesithurt",
           "abdominal pain",
           "tummy pain",
           "belly pain",
           "stomach ache",
           "left upper",
-          "when did it start",
+          "whendiditstart",
           "how long have you had the pain",
-          "what brings you",
+          "whatbringsyou",
           "chief complaint"
         ]
       },
@@ -206,8 +206,8 @@
         "en": "Has an enlarged spleen ever been found before?"
       },
       "answer": {
-        "zh-CN": "大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。不能据这段病史认定淋巴瘤已经持续30年。",
-        "en": "An enlarged spleen was first found about 30 years ago. A PET/CT in November 2024 again showed a markedly enlarged spleen. This history alone does not establish that a lymphoma has been present for 30 years."
+        "zh-CN": "大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。",
+        "en": "An enlarged spleen was first found about 30 years ago. A PET/CT in November 2024 again showed a markedly enlarged spleen."
       },
       "keywords": {
         "zh-CN": [
@@ -406,7 +406,7 @@
           "medicines",
           "tablets",
           "pills",
-          "what do you take",
+          "whatdoyoutake",
           "drugs you take",
           "what dose",
           "aumolertinib dose",
@@ -460,7 +460,7 @@
           "medicines",
           "tablets",
           "pills",
-          "what do you take",
+          "whatdoyoutake",
           "drugs you take",
           "what dose",
           "aumolertinib dose",
@@ -542,8 +542,8 @@
           "surgery",
           "surgical history",
           "any operations",
-          "had an operation",
-          "been operated on",
+          "hadanoperation",
+          "beenoperatedon",
           "gallbladder",
           "cholecystectomy"
         ]
@@ -615,9 +615,9 @@
         ],
         "en": [
           "appetite",
-          "how are you eating",
+          "howareyoueating",
           "sleeping",
-          "how do you sleep",
+          "howdoyousleep",
           "weight",
           "weight loss",
           "energy levels",
@@ -669,7 +669,7 @@
           "rituximab",
           "vp regimen",
           "cycles",
-          "how many cycles",
+          "howmanycycles",
           "regimen"
         ]
       },
@@ -793,7 +793,7 @@
         "en": [
           "general appearance",
           "level of consciousness",
-          "is he alert",
+          "ishealert",
           "general inspection"
         ]
       },
@@ -2777,8 +2777,8 @@
         "en": "Attending preceptor"
       },
       "knowledge": {
-        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学习者把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
-        "en": "Teaches by Socratic questioning and never gives the diagnosis or the answers to the decisions directly. Suggested path: history (pain, course of the splenomegaly, previous tumours) → blood count and abdominal imaging → bone marrow biopsy and flow cytometry → submit the diagnostic reasoning at the board → hepatitis B screen, karyotype and post-treatment re-evaluation. When the learner attributes every abnormality to a single disease, ask which evidence supports that and which does not. Reminders: missing data stay unknown and are never invented; results keep their original dates; switching case phase is a review of historical records, not live progression; percentages from different sampling methods cannot be compared directly; completion and decision records are teaching-script measures, not a validated competency score."
+        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学习者把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；约30年前就发现脾大，不能据此认定淋巴瘤已经持续30年；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
+        "en": "Teaches by Socratic questioning and never gives the diagnosis or the answers to the decisions directly. Suggested path: history (pain, course of the splenomegaly, previous tumours) → blood count and abdominal imaging → bone marrow biopsy and flow cytometry → submit the diagnostic reasoning at the board → hepatitis B screen, karyotype and post-treatment re-evaluation. When the learner attributes every abnormality to a single disease, ask which evidence supports that and which does not. Reminders: missing data stay unknown and are never invented; results keep their original dates; switching case phase is a review of historical records, not live progression; percentages from different sampling methods cannot be compared directly; a spleen known to be enlarged for about 30 years does not by itself establish that a lymphoma has been present for 30 years; completion and decision records are teaching-script measures, not a validated competency score."
       },
       "interprets": [],
       "revealsDiagnosis": false

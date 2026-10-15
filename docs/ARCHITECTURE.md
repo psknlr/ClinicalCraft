@@ -65,7 +65,25 @@ Conventions:
 * No `Date.now()`/`Math.random()` inside `@clinicalcraft/core` — determinism. Use the seeded PRNG in `core/src/engine/random.ts`.
 * Every package exports from `src/index.ts`; tests live next to code as `*.test.ts` (vitest).
 * Runtime dependencies are deliberately few: `zod` (core, agent), `@anthropic-ai/sdk` (agent), `three` (web). Everything else is node built-ins.
-* Workspace packages are consumed from source in tests/dev via aliases (vitest.config.ts, vite.config.ts) and from `dist/` when built.
+* Workspace packages are consumed from source in tests/dev and from `dist/` when built — see "Source vs dist" below.
+
+**Source vs dist.** Every workspace package but `web` (`core`, `content`, `agent` incl.
+`./node`, `server`, `mcp`, `cli`) maps each code entry point in its `package.json`
+`exports` to three conditions, in this order: `"source"` → `./src/….ts`,
+`"types"` → `./dist/….d.ts`, `"default"` → `./dist/….js`. Who picks what:
+
+| runner | how `@clinicalcraft/*` resolves | needs a build? |
+|---|---|---|
+| `npm run cc -- …` (dev CLI), `npm run validate:content` | `tsx --conditions=source packages/cli/src/bin.ts`: Node's resolver honours the custom `source` condition, so every workspace import, transitively, loads the TypeScript sources (CI validates and verifies content this way before building) | no |
+| `npx vitest` / `npm test` | not the condition: root `vitest.config.ts` `resolve.alias` maps each package (and `@clinicalcraft/agent/node`) to its `src/index.ts` | no |
+| web dev/build (Vite), web `tsc --noEmit` | Vite `resolve.alias` in `packages/web/vite.config.ts` (mirroring vitest's), `paths` in `packages/web/tsconfig.json` | no |
+| `tsc -b` (`npm run typecheck`, `build:lib`) | NodeNext resolution with the `types` condition → the referenced projects' `dist/*.d.ts` (project references build them first); emits `dist/` | — (it is the build) |
+| `node packages/cli/dist/bin.js`, installed packages, `npx tsx <script>` **without** `--conditions=source` | `default` → `dist/*.js` — only as fresh as the last `npm run build:lib` (or `typecheck`, which emits too) | yes |
+
+So a script that imports workspace packages by name must run after a build
+or with `tsx --conditions=source`. `scripts/gen-json-schemas.ts` imports the
+schema sources by relative path and needs neither — which is why the agent
+settings schema (`settings/schema.ts`) imports nothing but zod.
 
 ## 2. Content model (`@clinicalcraft/core/src/schema/*`)
 
@@ -91,6 +109,30 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     unknown ids are integrity errors.
   * `investigations[].alternativeTo` — investigation ids, default `[]`; a
     mutual "can stand in for" link used by `assess()` (§3.4).
+  * `history[].supersedes` — history ids, optional; **phase twins**: in a
+    phase where this item is available it answers for the items it
+    supersedes (selection routes to it, they cannot be asked there) and
+    asking it credits them for `asked` conditions and the history
+    assessment without revealing them (§3.1, §3.3, §3.4;
+    docs/CASE_AUTHORING.md §3). Unknown ids, self-references and cycles
+    are integrity errors.
+  * `orderMatching.warnings[].unless` — `Condition`, optional; the warning
+    no longer applies (is not returned by `orderWarnings`) while it holds on
+    the session as the order is placed.
+  * `history[].speaker` — `"patient" | "companion"`, optional; who speaks
+    the answer when the case has a history-answering companion (default
+    the companion; `"patient"` for the patient's own words, e.g. a child
+    saying how he feels — docs/CASE_AUTHORING.md §2).
+  * `physiology.events[].speaker` — `"nurse" | "monitor" | "patient" |
+    "companion" | "narrator"`, optional; who voices the scenario message
+    (default inferred from the text, PROTOCOL §4 "Turn bracketing").
+    `"companion"` on a case without `persona.companion` is an integrity
+    error.
+  * `investigations[].results.*.values[].value` — a number or a
+    `LocalizedText`, and `refText` — `LocalizedText`; a plain string stays
+    valid (the same text in every locale). A text value that differs by
+    language is written per locale, never "阴性 / negative"
+    (docs/CASE_AUTHORING.md §5).
   * `solution` — `ClinicalAction[]` (validated with `ClinicalActionSchema`
     from `schema/session.ts`, so a malformed step fails `parseCase` with a
     path such as `solution.7.itemId`); unknown ids inside steps are reported
@@ -98,7 +140,8 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
   `decidedFirstTry`, `intervened`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`. `decidedFirstTry: decisionId` is true iff the first
+  `elapsed`, `hints`. `asked: id` also holds when a history item that
+  supersedes `id` (phase twins, transitively) was asked. `decidedFirstTry: decisionId` is true iff the first
   recorded (i.e. accepted) attempt at that decision was correct — once the
   first answer is wrong it stays false, so it belongs in rubric items rather
   than objectives or `requires`.
@@ -135,7 +178,8 @@ parseCase(json: unknown): { ok: true; value: CaseDefinition; warnings: Issue[] }
 parseFacility(json: unknown): same shape with FacilityDefinition
 parseCatalog(json: unknown): same shape with EquipmentCatalog
 interface Issue { path: string; message: string; severity: "error" | "warning" }   // path dot-joined: "objectives.0.completeWhen.all.1.asked" ("" = root)
-checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity of every id in conditions, waypoints, results, figures, alternativeTo, solution steps…
+checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity of every id in conditions, waypoints, results, figures, alternativeTo, solution steps…;
+                                                        // warnings for keyword wildcards (an English keyword of ≥ 3 words that tokenizes to one token, §3.3)
 verifyCase(c: CaseDefinition): { ok: boolean; issues: Issue[]; finalState: SessionState; assessment: AssessmentReport }
                                                         // replays c.solution; ok iff all objectives done, all decisions decided, no rejections
 checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms…
@@ -164,12 +208,22 @@ interface VitalsSnapshot { minute: number; vitals: Vitals & { map: number }; ala
 // matching (offline NLU used by UI, CLI, scripted agents and as RAG hints for LLM agents)
 normalizeQuery(text: string): string                    // lower-case, strip whitespace, full-width → ASCII punctuation (V4 rules)
 matchOrders(c, query, locale): string[]                 // aliases + names of every locale → orderMatching.rules → exact (V4 semantics, generalised)
-orderWarnings(c, query, investigationId, locale): string[]  // orderMatching.warnings whose ifMatches matches the normalised query
-matchHistory(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]   // sorted desc, score 0..1
+orderWarnings(c, query, investigationId, locale, state?): string[]  // orderMatching.warnings whose ifMatches matches the normalised query
+                                                        // and (with `state`, the session before the order) whose `unless` does not hold
+matchHistory(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]   // sorted desc, score 0..1; with `phase`, phase twins applied (§3.3)
 matchExam(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]
 matchInterventions(c, utterance, locale): { id: string; score: number }[]
 matchSpecificity(c, kind: "history"|"exam"|"interventions", utterance, locale, id): number   // coverage (chars) of the item's best phrase; tie-break only (§3.3)
 interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
+
+// history phase twins (`history[].supersedes`, twins.ts)
+historyTwin(c, id, phase): string | null                // the item answering for `id` in `phase`: itself, its (transitive) superseding twin, or null
+historyAvailable(c, id, phase): boolean                 // listed for `phase` and not superseded there (askable)
+supersededIn(c, id, phase): string | null               // the item available in `phase` that supersedes `id` directly or transitively — also through
+                                                        // an intermediate twin not available there (C ⊃ B ⊃ A) —, the deepest such item, declaration order
+supersededItems(c, id): string[]; hasHistoryTwins(c): boolean
+historyCredited(c, s, id): boolean                      // asked, or an item superseding it (transitively) was asked — what `asked` conditions test
+creditedHistory(c, s): string[]                         // asked ids, then ids credited through twins (assessment)
 MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
@@ -228,8 +282,12 @@ checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE 
   `result.ready` for results whose readiness crossed, emit `vitals.alarm` for
   vitals newly crossing warning/critical limits, apply automatic phase
   transitions (`enterWhen`), check `limitMinutes`.
-* `ask` — unknown id → `unknown-id`. Item restricted to other phases →
-  `phase-locked`. Adds to `asked` (idempotent; `firstTime` flag).
+* `ask` — unknown id → `unknown-id`. Item restricted to other phases, or
+  superseded in the current phase by an available phase twin
+  (`history[].supersedes`) → `phase-locked`. Adds to `asked` (idempotent;
+  `firstTime` flag). Only the item asked is added: items it supersedes are
+  credited by `asked` conditions and `assess()` (`historyCredited`), never
+  revealed.
 * `examine` — same pattern for `examined`.
 * `order` — key `${id}@${phase}`; duplicates emit `order.duplicate` (no state
   change). Records `readyAt`.
@@ -363,10 +421,22 @@ normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
 Containment is on whitespace-free text, so prefer distinctive phrases
 ("past medical", "过敏") over short fragments.
 
+A keyword's stop-words carry no weight: "what does he take" tokenizes to
+`tak` alone and scores 1 against any utterance with "take". So
+`checkCaseIntegrity` warns on an English keyword/alias of three or more
+words that reduces to exactly one token (a one-word wildcard); write it run
+together ("whatdoeshetake" — containment only, 0.9) or as the word itself.
+
 `MatchOptions` (`matchHistory`/`matchExam` only): `phase` drops items whose
 `phases` list exists and excludes it; `includeUnknown: false` drops history
 items with `disclosure: "unknown"` (default `true`; ignored by `matchExam`).
-The 3-argument form is unchanged.
+The 3-argument form is unchanged. For `matchHistory`, `phase` also applies
+**phase twins**: a hit on an item superseded in that phase
+(`history[].supersedes` of an item available there, followed transitively)
+counts for the twin instead — whether or not the superseded item is listed
+for the phase — with the better of the two scores, so a stale answer is
+never selected (nor co-selected with its twin) in that phase. Without
+`phase` nothing is routed.
 
 Items with score ≥ `MATCH_THRESHOLD` (0.34) are returned, by score, then
 declaration order. `matchSpecificity` tells resolvers which of two items tied
@@ -402,7 +472,10 @@ Behaviour the implementation fixes where the summaries above are silent:
   it is readable (key added to `seen`), satisfies `read`/`resultReady`, gets a
   `result.ready` like any other result, but is never listed in
   `assess().investigations.unread`.
-* **Assessment** — `unread` lists result keys (`cbc@pre`) ordered but never
+* **Assessment** — `history.requiredAsked` / `missingRequired` count a
+  required item as asked when it, or an item that supersedes it (phase
+  twins), was asked (`creditedHistory`); `history.asked` counts the items
+  really asked. `unread` lists result keys (`cbc@pre`) ordered but never
   read whose result is `available: true`. `essentialMissing` lists essential
   investigations neither ordered (any phase) nor covered by an alternative
   whose `available: true` result was **read** in some phase (ordering an
@@ -516,8 +589,9 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 1. **Route** — out-of-fiction requests (asking the "patient" for real medical
    advice, prompt-injection, meta questions) get an in-character deflection and
    a `warning` event; they never reach the fact selector.
-2. **Select** — `matchHistory(utterance)`, keeping items available in the
-   current phase: hits ≥ 0.55 are selected (≤ 3, within 0.25 of the best);
+2. **Select** — `matchHistory(utterance, {phase})`: items available in the
+   current phase, a hit on an item superseded there by a phase twin counting
+   for the twin (§3.3); hits ≥ 0.55 are selected (≤ 3, within 0.25 of the best);
    0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
    canonical question — never answers), strict JSON `{factIds, clarify}`
    restricted to the candidate enum; nothing → `fallbackUnknown` (or the
@@ -531,10 +605,18 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
    affectHint}` via `responseFormat`.
 4. **Verify** — numbers, units, drug names and dates in `say` must appear in
    the answers of `usedFactIds` (or persona text) — so must named conditions
-   (stroke, heart attack, 糖尿病…, the case's decision options) and relative
-   dates without digits ("last year", "去年"), and no distinctive phrase of a
-   fact not yet revealed may appear; otherwise the reply is replaced by the
-   authored answer(s) and `grounding: "template"` is logged.
+   (stroke, heart attack, 糖尿病…, as whole words: "hives" is not "HIV";
+   the case's decision options) and relative dates without digits ("last
+   year", "去年"), and no distinctive phrase of a fact not yet revealed may
+   appear (a pair of English content words, or a 4-character Chinese window
+   inside one punctuation-delimited run with at least two content
+   characters; `disclosure: "unknown"` answers are not facts); otherwise the
+   reply is replaced by the authored answer(s) and `grounding: "template"`
+   is logged. The learner's `warning` (and an MCP client's notices) name
+   only the violation **categories** ("a number, a fact not yet asked
+   about"), never the quoted text — it may be the unasked fact or the
+   diagnosis the check hid; the detailed list goes to the transcript as a
+   `diagnostic` item only (PROTOCOL §10).
    The `nonverbal` cue passes the same check and is dropped (with a warning)
    when it is long, has a number, names a sign or measurement, or shares
    words with an exam finding not yet examined (`checkNonverbal`).

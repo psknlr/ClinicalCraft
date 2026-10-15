@@ -5,8 +5,18 @@
  * free text (Enter sends, `@nurse` addressing), the offline badge, the
  * grounding indicator and — for the patient — Examine / Treat / Notes tabs.
  */
-import { availableInPhase, RESOLVE_THRESHOLD, resolveHits } from "@clinicalcraft/agent";
-import { matchExam, matchInterventions, type CaseDefinition, type ExamFinding, type HistoryItem, type Intervention } from "@clinicalcraft/core";
+import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, type Resolution } from "@clinicalcraft/agent";
+import {
+  historyAvailable,
+  matchExam,
+  matchInterventions,
+  matchSpecificity,
+  type CaseDefinition,
+  type ExamFinding,
+  type HistoryItem,
+  type Intervention,
+  type SessionState,
+} from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
 import { missingCaps } from "../../app/stations.js";
@@ -28,6 +38,26 @@ export interface ConversationArgs {
   name?: string;
   tab?: "talk" | "exam" | "treat" | "notes";
   focusInput?: boolean;
+}
+
+/**
+ * The history questions the panel suggests in the session's phase: those that
+ * can be asked there (`historyAvailable` — an item superseded by a phase twin
+ * is left out even when it is listed for the phase, as in `/ask` and
+ * `list_options`).
+ */
+export function suggestedHistory(c: CaseDefinition, state: Pick<SessionState, "phase">): HistoryItem[] {
+  return c.history.filter((hi) => historyAvailable(c, hi.id, state.phase));
+}
+
+/**
+ * The exam search: findings of the phase matched against `text`, resolved as
+ * the examine tool does (`resolveFinding`): a clear winner, else a tie broken
+ * by the more specific phrase (`matchSpecificity`), else ambiguous.
+ */
+export function resolveExamSearch(c: CaseDefinition, text: string, locale: string, phase: string): { hits: ReturnType<typeof matchExam>; resolution: Resolution } {
+  const hits = matchExam(c, text, locale, { phase });
+  return { hits, resolution: resolveHits(hits, text, (id) => matchSpecificity(c, "exam", text, locale, id)) };
 }
 
 function roleLabel(agent: string): string {
@@ -146,7 +176,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         return;
       }
       const state = store.snapshot?.state ?? game.session.session.state;
-      const items = c.history.filter((hi) => availableInPhase(hi, state));
+      const items = suggestedHistory(c, state);
       const open = items.filter((hi) => !state.asked.includes(hi.id));
       suggestions.append(
         h("div", { class: "suggest-head" }, h("h3", null, tr("conv.suggested")), h("span", { class: "muted small" }, tr("conv.askedCount", { n: items.length - open.length, total: items.length }))),
@@ -243,8 +273,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         // Same resolution as the examine tool: perform only a clear winner (≥ 0.55 and ahead of the
         // runner-up). A weak or tied match ("examine the eyes" ~ "palpate the abdomen" at 0.5) is not
         // that manoeuvre: say it is not recorded and offer the closest recorded ones to choose from.
-        const hits = matchExam(c, text, getLocale(), { phase: state.phase });
-        const resolution = resolveHits(hits, text);
+        const { hits, resolution } = resolveExamSearch(c, text, getLocale(), state.phase);
         mount(result);
         if (resolution.kind === "id") {
           const f = c.exam.find((x) => x.id === resolution.id);

@@ -5,7 +5,7 @@
  * `updatedInput` comes back as an action (`actionFromToolInput`), resolved the
  * same way the tool itself resolves ids and free-text queries.
  */
-import { matchHistory, t, type CaseDefinition, type ClinicalAction, type LocalizedText } from "@clinicalcraft/core";
+import { historyTwin, matchHistory, t, type CaseDefinition, type ClinicalAction, type LocalizedText } from "@clinicalcraft/core";
 import { resolveFinding, resolveHits, resolveIntervention, resolveInvestigation, strArg, unresolvedOutput, type Resolution } from "../tools/clinical.js";
 import { interventionLabel, investigationName } from "../tools/format.js";
 
@@ -55,7 +55,8 @@ function resolveQuestion(c: CaseDefinition, question: string, locale: string, ph
   const q = question.trim().toLowerCase();
   if (!q) return { kind: "missing" };
   const exact = c.history.find((h) => h.id.toLowerCase() === q || texts(h.question).some((x) => x.trim().toLowerCase() === q));
-  if (exact) return { kind: "id", id: exact.id };
+  // A canonical question of an item superseded in this phase asks its phase twin (`supersedes`).
+  if (exact) return { kind: "id", id: (phase ? historyTwin(c, exact.id, phase) : null) ?? exact.id };
   return resolveHits(matchHistory(c, question, locale, phase ? { phase } : {}), question);
 }
 

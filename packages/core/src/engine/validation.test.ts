@@ -270,6 +270,32 @@ describe("hardening: verifyCase", () => {
 });
 
 describe("hardening: checkCaseIntegrity blind spots", () => {
+  it("warns on a multi-word English keyword that collapses to one token (a one-word wildcard) (review round 3)", () => {
+    const c = structuredClone(SIM);
+    c.history[0]!.keywords = { en: ["what does he take", "whatdoeshetake", "what's going on", "chest pain", "take"], "zh-CN": ["吃什么药"] };
+    c.exam[0]!.keywords = ["look at him"];
+    c.interventions[0]!.aliases = { en: ["let him eat", "adrenaline"], "zh-CN": [] };
+    const issues = checkCaseIntegrity(c).filter((i) => /one-word wildcard/.test(i.message));
+    expect(issues.map((i) => [i.path, i.severity])).toEqual([
+      ["history.0.keywords.en.0", "warning"],
+      ["exam.0.keywords.0", "warning"],
+      ["interventions.0.aliases.en.0", "warning"],
+    ]);
+    expect(issues[0]!.message).toMatch(/"tak"/);
+    expect(issues[0]!.message).toMatch(/whatdoeshetake/);
+  });
+
+  it("a scenario event voiced by a companion the case does not have is an error (review round 3)", () => {
+    const c = structuredClone(SIM);
+    c.physiology!.events[0]!.speaker = "companion";
+    expect(at(checkCaseIntegrity(c), "physiology.events.0.speaker").map((i) => i.severity)).toEqual(["error"]);
+    c.patient.persona.companion = { name: { en: "Mrs Wu", "zh-CN": "吴太太" }, relation: "spouse", persona: { en: "Calm.", "zh-CN": "冷静。" }, answersHistory: false } as never;
+    expect(at(checkCaseIntegrity(c), "physiology.events.0.speaker")).toEqual([]);
+    c.physiology!.events[0]!.speaker = "patient";
+    delete (c.patient.persona as { companion?: unknown }).companion;
+    expect(at(checkCaseIntegrity(c), "physiology.events.0.speaker")).toEqual([]);
+  });
+
   it("reports leaves that can never become true", () => {
     const c = structuredClone(SIM);
     c.investigations.push({ ...c.investigations[0], id: "ghost-lab", aliases: [], results: {} });

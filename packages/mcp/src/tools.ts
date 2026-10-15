@@ -10,7 +10,7 @@
  * (`refused.confirm: "required"`) runs when the client calls again with
  * `confirm: true` (every state-changing tool accepts it).
  */
-import { inScope, isHiddenByDeny, rt, validateArgs, type PracticeScope, type ToolDefinition } from "@clinicalcraft/agent";
+import { inScope, isHiddenByDeny, libraryOrder, rt, validateArgs, type PracticeScope, type ToolDefinition } from "@clinicalcraft/agent";
 import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { normalizeLocale, progress, t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
@@ -173,9 +173,9 @@ export function checkArguments(spec: McpToolSpec, args: unknown): Record<string,
   return result.value as Record<string, unknown>;
 }
 
-function sortedCases(content: LoadedContent, locale: string): CaseDefinition[] {
-  // By (spoiler-free) title: an id order would itself hint at the diagnoses.
-  return [...content.cases.values()].map((e) => e.def).sort((a, b) => t(a.title, locale).localeCompare(t(b.title, locale), locale) || caseHandle(a.id).localeCompare(caseHandle(b.id)));
+/** Library order (`libraryOrder`: published first, difficulty, id) — the CLI's order; listed by opaque handle, never by id. */
+function sortedCases(content: LoadedContent): CaseDefinition[] {
+  return libraryOrder([...content.cases.values()].map((e) => e.def));
 }
 
 /** Execute a validated tool call. */
@@ -183,7 +183,7 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
   switch (name) {
     case "list_cases": {
       const L = normalizeLocale(typeof args.locale === "string" ? args.locale : host.locale);
-      const cases = sortedCases(await host.content(), L);
+      const cases = sortedCases(await host.content());
       return textResult(casesText(cases, L), { cases: cases.map((c) => caseListing(c, L)) });
     }
     case "start_case":

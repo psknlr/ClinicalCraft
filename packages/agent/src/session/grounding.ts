@@ -24,9 +24,33 @@ export interface NumericToken {
   raw: string;
 }
 
+/**
+ * Category of a grounding violation. Front-ends and MCP clients see only
+ * these (`warning.notGrounded`): the detailed `violations` quote the reply
+ * and may name an unasked fact or a decision option, so they stay in the
+ * transcript's diagnostics (ARCHITECTURE §4.2 step 4).
+ */
+export type GroundingViolationKind = "number" | "unit" | "drug" | "term" | "claim" | "unasked" | "empty" | "length" | "sign" | "finding";
+
 export interface GroundingCheck {
   ok: boolean;
+  /** Detailed violations (quote the reply) — diagnostics only, never shown to the learner. */
   violations: string[];
+  /** Distinct violation categories, in first-seen order — safe to show. */
+  kinds: GroundingViolationKind[];
+}
+
+/** Collects violations with their categories. */
+class ViolationList {
+  readonly details: string[] = [];
+  readonly kinds: GroundingViolationKind[] = [];
+  add(kind: GroundingViolationKind, detail: string): void {
+    if (!this.details.includes(detail)) this.details.push(detail);
+    if (!this.kinds.includes(kind)) this.kinds.push(kind);
+  }
+  result(): GroundingCheck {
+    return { ok: this.details.length === 0, violations: [...this.details], kinds: [...this.kinds] };
+  }
 }
 
 const FULLWIDTH_DIGIT = /[０-９．]/g;
@@ -235,8 +259,9 @@ const RELATIVE_DATES_EN = [
 ];
 const RELATIVE_DATES_ZH = ["大前天", "前天", "昨天", "昨晚", "上周", "上星期", "上礼拜", "上个月", "去年", "前年", "几年前", "多年前", "几个月前", "小时候"];
 
+/** A lexicon term as a whole word: "hiv" ≁ "hives", "stroke" ≁ "stroked"; a plural "-s" is allowed ("strokes"). */
 function termPattern(term: string): RegExp {
-  return new RegExp(`(?<![a-z])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+")}`, "iu");
+  return new RegExp(`(?<![a-z])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+")}s?(?![a-z])`, "iu");
 }
 
 /** Conditions and relative dates named in `text` (lexicon terms, then `extraTerms` of the case), lower-cased / compact. */
@@ -261,13 +286,36 @@ function termInSources(term: string, sourcesLower: string, sourcesFlat: string):
 
 const CONTENT_STOP = new Set(["about", "after", "again", "always", "around", "because", "before", "could", "doctor", "every", "never", "really", "should", "since", "still", "there", "these", "thing", "think", "those", "would", "maybe", "much", "just", "very", "that", "this", "with", "what", "when", "have", "been", "were", "they", "them", "then", "than", "from", "your", "yours", "will", "some", "only", "like", "know", "feel", "felt"]);
 
-/** Distinctive phrases of a text: consecutive pairs of ≥ 4-letter content words, and 4-character CJK runs. */
+/**
+ * Chinese function characters (pronouns, negation, particles, generic verbs and
+ * adverbs): a 4-character window made mostly of these ("他从来没", "没有过敏")
+ * is everyday phrasing, not a distinctive fact.
+ */
+const CJK_FUNCTION_CHARS = new Set([..."我你他她它们的了着过很太也都就还又再才只是在和与或跟及把被给对让叫向从到于为以而且但却并没有不无别吗呢吧啊呀哦嘛么这那哪个些种样什怎谁每各一二两几多少点下上里外中前后时候来去说讲想要会能可以得地知道清楚觉感像好真挺最更比较已经直曾"]);
+
+/** Whether a 4-character CJK window carries content (at least 2 non-function characters). */
+function distinctiveCjkWindow(window: string): boolean {
+  let content = 0;
+  for (const ch of window) if (!CJK_FUNCTION_CHARS.has(ch)) content++;
+  return content >= 2;
+}
+
+/**
+ * Distinctive phrases of a text: consecutive pairs of ≥ 4-letter content
+ * words, and 4-character CJK windows taken inside each punctuation-delimited
+ * run (never across "，" or a speaker label "（妻子）") that are not mostly
+ * function characters.
+ */
 function distinctivePhrases(text: string): string[] {
   const words = text.toLowerCase().split(/[^a-z]+/).filter((w) => w.length >= 4 && !CONTENT_STOP.has(w));
   const out: string[] = [];
   for (let i = 0; i + 1 < words.length; i++) out.push(`${words[i]} ${words[i + 1]}`);
-  const cjk = text.replace(/[^一-龥]/gu, "");
-  for (let i = 0; i + 4 <= cjk.length; i++) out.push(cjk.slice(i, i + 4));
+  for (const run of text.split(/[^一-龥]+/u)) {
+    for (let i = 0; i + 4 <= run.length; i++) {
+      const window = run.slice(i, i + 4);
+      if (distinctiveCjkWindow(window)) out.push(window);
+    }
+  }
   return out;
 }
 
@@ -289,29 +337,34 @@ export interface VerifyOptions {
  * `sources`. Pure and deterministic.
  */
 export function verifyGrounding(say: string, sources: readonly string[], options: VerifyOptions = {}): GroundingCheck {
-  const violations: string[] = [];
+  const list = new ViolationList();
+  collectGroundingViolations(say, sources, options, list);
+  return list.result();
+}
+
+function collectGroundingViolations(say: string, sources: readonly string[], options: VerifyOptions, list: ViolationList): void {
   const allowedText = sources.join("\n");
   const allowed = extractNumericTokens(allowedText);
   const values = new Set(allowed.map((t) => t.value));
   const pairs = new Set(allowed.map((t) => `${t.value}|${t.unit ?? ""}`));
   for (const token of extractNumericTokens(say)) {
     if (!values.has(token.value)) {
-      violations.push(`number "${token.raw}"`);
+      list.add("number", `number "${token.raw}"`);
       continue;
     }
-    if (token.unit && !pairs.has(`${token.value}|${token.unit}`) && !pairs.has(`${token.value}|`)) violations.push(`unit "${token.raw}"`);
+    if (token.unit && !pairs.has(`${token.value}|${token.unit}`) && !pairs.has(`${token.value}|`)) list.add("unit", `unit "${token.raw}"`);
   }
   const flatAllowed = compact(allowedText);
   for (const drug of extractDrugMentions(say, options.drugLexicon)) {
-    if (!flatAllowed.includes(compact(drug))) violations.push(`drug "${drug}"`);
+    if (!flatAllowed.includes(compact(drug))) list.add("drug", `drug "${drug}"`);
   }
   const allowedAcronyms = new Set(extractAcronyms(allowedText));
   for (const term of extractAcronyms(say)) {
-    if (!allowedAcronyms.has(term) && !flatAllowed.includes(term.toLowerCase())) violations.push(`term "${term}"`);
+    if (!allowedAcronyms.has(term) && !flatAllowed.includes(term.toLowerCase())) list.add("term", `term "${term}"`);
   }
   const lowerAllowed = allowedText.toLowerCase();
   for (const term of extractClaimTerms(say, options.conditionTerms)) {
-    if (!termInSources(term, lowerAllowed, flatAllowed)) violations.push(`claim "${term}"`);
+    if (!termInSources(term, lowerAllowed, flatAllowed)) list.add("claim", `claim "${term}"`);
   }
   if (options.unrevealed && options.unrevealed.length > 0) {
     const sayPhrases = new Set(distinctivePhrases(say));
@@ -319,13 +372,12 @@ export function verifyGrounding(say: string, sources: readonly string[], options
     outer: for (const answer of options.unrevealed) {
       for (const phrase of distinctivePhrases(answer)) {
         if (sayPhrases.has(phrase) && !allowedPhrases.has(phrase)) {
-          violations.push(`unasked fact "${phrase}"`);
+          list.add("unasked", `unasked fact "${phrase}"`);
           break outer;
         }
       }
     }
   }
-  return { ok: violations.length === 0, violations: [...new Set(violations)] };
 }
 
 /* ------------------------------------------------------------------ */
@@ -373,21 +425,20 @@ function sharesCjkRun(a: string, b: string, run = 3): boolean {
  * learner has not examined yet (a ≥ 5-letter word, or a 3-character CJK run).
  */
 export function checkNonverbal(nonverbal: string, sources: readonly string[], options: NonverbalCheckOptions = {}): GroundingCheck {
-  const violations: string[] = [];
+  const list = new ViolationList();
   const text = nonverbal.trim();
-  if (text.length > MAX_NONVERBAL_CHARS) violations.push("nonverbal too long");
-  if (/[0-9０-９]/.test(text)) violations.push("number in nonverbal");
+  if (text.length > MAX_NONVERBAL_CHARS) list.add("length", "nonverbal too long");
+  if (/[0-9０-９]/.test(text)) list.add("number", "number in nonverbal");
   const sign = SIGN_WORDS_EN.exec(text)?.[0] ?? SIGN_WORDS_ZH.exec(text)?.[0];
-  if (sign) violations.push(`sign "${sign}" in nonverbal`);
-  const grounded = verifyGrounding(text, sources, options);
-  violations.push(...grounded.violations);
+  if (sign) list.add("sign", `sign "${sign}" in nonverbal`);
+  collectGroundingViolations(text, sources, options, list);
   const words = new Set(latinWords(text));
   for (const finding of options.unexaminedFindings ?? []) {
     const shared = latinWords(finding).find((w) => words.has(w));
     if (shared || sharesCjkRun(text, finding)) {
-      violations.push(`nonverbal describes an unexamined finding${shared ? ` ("${shared}")` : ""}`);
+      list.add("finding", `nonverbal describes an unexamined finding${shared ? ` ("${shared}")` : ""}`);
       break;
     }
   }
-  return { ok: violations.length === 0, violations };
+  return list.result();
 }

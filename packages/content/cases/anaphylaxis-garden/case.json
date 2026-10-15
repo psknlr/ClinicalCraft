@@ -177,12 +177,12 @@
           "what happened",
           "what's wrong",
           "what's going on",
-          "what brought this on",
+          "whatbroughtthison",
           "how long ago",
-          "tell me what happened",
+          "tellmewhathappened",
           "whats wrong",
           "wat happened",
-          "when were you stung"
+          "whenwereyoustung"
         ]
       },
       "excludeKeywords": {
@@ -209,7 +209,7 @@
         "en": [
           "how soon",
           "how long after",
-          "when did it start",
+          "whendiditstart",
           "order",
           "sequence",
           "getting worse",
@@ -270,7 +270,7 @@
       },
       "keywords": {
         "zh-CN": ["头晕", "眼前发黑", "要晕倒", "站不稳", "发飘", "晕厥", "头昏", "晕乎乎", "摔倒", "跌倒", "站不住", "天旋地转", "眩晕", "发黑"],
-        "en": ["dizzy", "faint", "lightheaded", "light-headed", "grey", "going to faint", "woozy", "collapse", "did you fall", "fell over", "fainting"]
+        "en": ["dizzy", "faint", "lightheaded", "light-headed", "grey", "goingtofaint", "woozy", "collapse", "didyoufall", "fell over", "fainting"]
       },
       "required": true,
       "phases": ["scene", "treated", "ed-resus"]
@@ -372,7 +372,7 @@
       },
       "keywords": {
         "zh-CN": ["蜇在哪", "哪个部位", "刺", "毒刺", "拔", "伤口", "叮的地方", "蜇的位置", "刺还在", "蜇哪了", "蛰哪", "蛰在哪", "蜇哪儿", "刺还扎", "扎在肉里", "蜂刺"],
-        "en": ["sting site", "stinger", "sting still in", "pull it out", "which arm", "wound", "stung arm", "stinger still in", "where is the stinger", "where were you stung"]
+        "en": ["sting site", "stinger", "sting still in", "pullitout", "which arm", "wound", "stung arm", "stinger still in", "whereisthestinger", "wherewereyoustung"]
       },
       "excludeKeywords": {
         "zh-CN": ["以前", "之前", "上次", "过敏", "反应", "什么虫", "马蜂", "住在", "住哪", "住院"],
@@ -402,7 +402,7 @@
           "bitten",
           "what got you",
           "what was it",
-          "what stung you",
+          "whatstungyou",
           "bee",
           "what it was"
         ]
@@ -491,7 +491,7 @@
       "answer": { "zh-CN": "没有……什么都没来得及……包里也没有药……", "en": "No… nothing… there wasn't time… I've no medicine in my bag…" },
       "keywords": {
         "zh-CN": ["自己用过", "自己吃过", "处理过", "用过什么药", "吃过什么药", "已经吃了", "自行用药", "抗过敏药", "自己吃了", "吃了抗过敏"],
-        "en": ["anything for it", "anything for this", "since it started", "antihistamine for this", "taken an antihistamine"]
+        "en": ["anything for it", "anything for this", "since it started", "antihistamineforthis", "taken an antihistamine"]
       },
       "excludeKeywords": { "zh-CN": ["平时", "长期", "被蜇前", "蜇之前"], "en": ["regular", "usually", "normally", "before the sting"] },
       "disclosure": "on-ask",
@@ -557,7 +557,7 @@
           "happened b4",
           "reaction to a sting",
           "anaphylaxis",
-          "reaction like this",
+          "reactionlikethis",
           "time you were stung",
           "time you got stung",
           "last sting"
@@ -658,7 +658,7 @@
       "answer": { "zh-CN": "十二岁……割过阑尾……", "en": "Appendix out… when I was twelve…" },
       "keywords": {
         "zh-CN": ["手术", "开刀", "动过刀", "住过院", "做过手术", "开过刀"],
-        "en": ["surgery", "operation", "operations", "hospital admission", "surgical", "been in hospital", "stayed in hospital", "hospital stay", "admitted", "ops"]
+        "en": ["surgery", "operation", "operations", "hospital admission", "surgical", "beeninhospital", "stayed in hospital", "hospital stay", "admitted", "ops"]
       },
       "excludeKeywords": { "zh-CN": ["来医院", "探视"], "en": ["why are you", "at the hospital", "visiting", "today"] },
       "phases": ["scene", "treated", "ed-resus", "ed"]
@@ -687,7 +687,7 @@
           "allergies",
           "drug allergy",
           "penicillin",
-          "allergic to anything",
+          "allergictoanything",
           "nkda",
           "allergy",
           "any allergies",
@@ -724,7 +724,7 @@
           "prescription",
           "take any",
           "meds",
-          "on any meds",
+          "onanymeds",
           "taking anything regularly",
           "the pill",
           "dhx",
@@ -821,7 +821,7 @@
       "answer": { "zh-CN": "不会……我在吃避孕药……两周前来的月经……", "en": "No… I'm on the pill… my period was two weeks ago…" },
       "keywords": {
         "zh-CN": ["怀孕", "月经", "末次月经", "例假", "妊娠", "怀孕可能", "大姨妈", "怀没怀孕"],
-        "en": ["pregnant", "pregnancy", "period", "lmp", "last menstrual", "could you be pregnant", "preg"]
+        "en": ["pregnant", "pregnancy", "period", "lmp", "last menstrual", "couldyoubepregnant", "preg"]
       },
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
@@ -845,7 +845,7 @@
       },
       "keywords": {
         "zh-CN": ["工作", "职业", "做什么的", "来医院", "探视", "看谁", "上班", "来医院干嘛", "来医院做什么", "干啥的", "做啥的", "干什么的"],
-        "en": ["work", "job", "occupation", "what do you do", "why are you here", "visiting", "visit", "your job", "at the hospital", "what brings you to the hospital"]
+        "en": ["work", "job", "occupation", "what do you do", "why are you here", "visiting", "visit", "your job", "atthehospital", "what brings you to the hospital"]
       },
       "excludeKeywords": {
         "zh-CN": ["住过院", "住院", "手术", "老公", "爱人", "丈夫"],
@@ -875,7 +875,7 @@
       },
       "keywords": {
         "zh-CN": ["和谁住", "家里有谁", "一个人住", "陪你", "家属", "爱人", "丈夫", "联系人", "谁陪你", "家里谁", "老公"],
-        "en": ["live with", "who's at home", "alone", "husband", "partner", "someone with you", "next of kin", "stay with you", "anyone at home", "call someone"]
+        "en": ["live with", "whosathome", "alone", "husband", "partner", "someonewithyou", "next of kin", "staywithyou", "anyone at home", "call someone"]
       },
       "excludeKeywords": { "zh-CN": ["养蜂", "蜜蜂", "蜂箱"], "en": ["for a living", "bees"] },
       "phases": ["scene", "treated", "ed-resus", "ed"]
@@ -906,7 +906,7 @@
       "answer": { "zh-CN": "我……会不会憋死？……我爸还在楼上等我……", "en": "Am I… going to choke?… my dad's waiting for me upstairs…" },
       "keywords": {
         "zh-CN": ["担心", "害怕", "顾虑", "最怕", "忧虑", "担心什么", "濒死", "要死了", "快不行了", "会死吗", "憋死"],
-        "en": ["worried", "worry", "concern", "scared", "afraid", "frightened", "worries you", "what worries", "doom", "going to die", "am i dying"]
+        "en": ["worried", "worry", "concern", "scared", "afraid", "frightened", "worries you", "what worries", "doom", "goingtodie", "amidying"]
       },
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
@@ -920,7 +920,7 @@
       },
       "keywords": {
         "zh-CN": ["希望", "期望", "想要", "打算", "回家", "想让我们", "希望我们"],
-        "en": ["expect", "expectation", "hoping", "want us to", "hope", "want us to do", "what would you like", "home today"]
+        "en": ["expect", "expectation", "hoping", "wantusto", "hope", "wantustodo", "what would you like", "home today"]
       },
       "excludeKeywords": {
         "zh-CN": ["感觉", "好点", "喝水", "喝点"],
@@ -935,7 +935,7 @@
       "answer": { "zh-CN": "越来越……难受……喘不上气……头好晕……", "en": "Worse… and worse… can't breathe… so dizzy…" },
       "keywords": {
         "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉"],
-        "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
+        "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "howarethings"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
       "disclosure": "on-ask",
@@ -952,7 +952,7 @@
       },
       "keywords": {
         "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉"],
-        "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
+        "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "howarethings"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
       "disclosure": "on-ask",
@@ -969,7 +969,7 @@
       },
       "keywords": {
         "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉"],
-        "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
+        "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "howarethings"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
       "disclosure": "on-ask",
@@ -991,15 +991,15 @@
           "feel better",
           "improving",
           "how are you doing",
-          "how are things",
-          "can you hear me",
+          "howarethings",
+          "canyouhearme",
           "hear me",
           "open your eyes",
           "wake up",
-          "what's your name",
+          "whatsyourname",
           "are you ok",
-          "are you alright",
-          "stay with me"
+          "areyoualright",
+          "staywithme"
         ]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
@@ -1041,6 +1041,7 @@
         "zh-CN": ["平时血压", "血压多少", "基础血压", "以前血压", "量过血压", "血压平时"],
         "en": ["usual blood pressure", "normal bp", "blood pressure usually", "baseline bp", "bp normally", "usual bp", "normal blood pressure"]
       },
+      "excludeKeywords": { "zh-CN": ["降压药", "吃药", "药物"], "en": ["tablet", "pill", "medic", "meds"] },
       "disclosure": "unknown",
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
@@ -1057,7 +1058,8 @@
         "en": ["breath", "breathing", "short of breath", "wheeze", "wheezing", "chest tight", "breathless", "sob", "breathe", "breathing ok", "struggling to breathe", "wheezy"]
       },
       "excludeKeywords": { "zh-CN": ["哮喘"], "en": [] },
-      "phases": ["ed"]
+      "phases": ["ed"],
+      "supersedes": ["hpi-breathing"]
     },
     {
       "id": "now-airway-ed",
@@ -1094,7 +1096,8 @@
         ]
       },
       "excludeKeywords": { "zh-CN": ["胸口", "胸闷"], "en": ["chest tight"] },
-      "phases": ["ed"]
+      "phases": ["ed"],
+      "supersedes": ["hpi-throat", "hpi-lips-tongue"]
     },
     {
       "id": "now-dizzy-ed",
@@ -1112,10 +1115,10 @@
           "lightheaded",
           "light-headed",
           "grey",
-          "going to faint",
+          "goingtofaint",
           "woozy",
           "collapse",
-          "did you fall",
+          "didyoufall",
           "fell over",
           "fainting",
           "chest pain",
@@ -1127,7 +1130,8 @@
           "palps"
         ]
       },
-      "phases": ["ed"]
+      "phases": ["ed"],
+      "supersedes": ["hpi-dizzy", "hpi-chest-palp"]
     },
     {
       "id": "now-skin-ed",
@@ -1142,7 +1146,8 @@
         "en": ["itch", "itchy", "rash", "hives", "lumps", "welts", "skin rash", "red patches", "hive", "itching", "rash anywhere"]
       },
       "excludeKeywords": { "zh-CN": ["眼睛痒", "鼻"], "en": ["itchy eyes", "eyes itch", "runny nose", "blocked nose"] },
-      "phases": ["ed"]
+      "phases": ["ed"],
+      "supersedes": ["hpi-itch-rash"]
     },
     {
       "id": "now-gi-ed",
@@ -1153,7 +1158,8 @@
         "zh-CN": ["恶心", "呕吐", "吐", "肚子痛", "腹痛", "想吐", "拉肚子", "腹泻", "反胃", "肚子疼", "拉稀", "稀便"],
         "en": ["nausea", "sick", "vomit", "vomiting", "stomach", "tummy", "abdominal pain", "cramps", "diarrhoea", "tummy ache", "stomach ache", "throw up", "n/v"]
       },
-      "phases": ["ed"]
+      "phases": ["ed"],
+      "supersedes": ["hpi-gi"]
     }
   ],
   "exam": [
@@ -1291,7 +1297,7 @@
       "maneuver": { "zh-CN": "检查蜇伤部位", "en": "Inspect the sting site" },
       "keywords": {
         "zh-CN": ["蜇伤部位", "蜇的地方", "螫刺", "毒刺", "前臂", "伤口", "螫针"],
-        "en": ["sting site", "stinger", "forearm", "where she was stung", "wound", "bite site"]
+        "en": ["sting site", "stinger", "forearm", "whereshewasstung", "wound", "bite site"]
       },
       "finding": {
         "zh-CN": "右前臂掌侧蜇伤处：一枚连着毒囊的蜜蜂螫针嵌在皮肤内（如尚未刮除），周围约3 cm红色风团，无出血。",
@@ -2956,9 +2962,9 @@
           "values": [
             {
               "analyte": { "zh-CN": "尿hCG", "en": "Urine hCG" },
-              "value": "阴性 / negative",
+              "value": { "zh-CN": "阴性", "en": "negative" },
               "unit": "",
-              "refText": "negative",
+              "refText": { "zh-CN": "阴性", "en": "negative" },
               "flag": "N"
             }
           ]
@@ -2968,9 +2974,9 @@
           "values": [
             {
               "analyte": { "zh-CN": "尿hCG", "en": "Urine hCG" },
-              "value": "阴性 / negative",
+              "value": { "zh-CN": "阴性", "en": "negative" },
               "unit": "",
-              "refText": "negative",
+              "refText": { "zh-CN": "阴性", "en": "negative" },
               "flag": "N"
             }
           ]
@@ -3268,7 +3274,7 @@
       "kind": "positioning",
       "aliases": {
         "zh-CN": ["平卧", "抬腿", "平躺", "抬高下肢", "躺下", "休克体位", "平卧抬腿", "平躺抬腿", "腿抬高"],
-        "en": ["lie flat", "legs up", "raise legs", "supine", "lay her down", "elevate legs", "lie down", "lie her flat", "legs raised", "trendelenburg"]
+        "en": ["lie flat", "legs up", "raise legs", "supine", "layherdown", "elevate legs", "lie down", "lie her flat", "legs raised", "trendelenburg"]
       },
       "requires": [],
       "risk": "none",
@@ -3290,7 +3296,7 @@
       "kind": "positioning",
       "aliases": {
         "zh-CN": ["坐起来", "坐直", "扶她坐起", "站起来", "端坐", "坐着", "让她坐起来"],
-        "en": ["sit up", "sit upright", "stand up", "sit her up", "upright", "help her stand", "prop her up"]
+        "en": ["sit up", "sit upright", "stand up", "sitherup", "upright", "help her stand", "propherup"]
       },
       "requires": [],
       "risk": "low",
@@ -3578,7 +3584,7 @@
           "observation",
           "admit for observation",
           "cdu",
-          "keep her in",
+          "keepherin",
           "12 hours observation",
           "overnight observation",
           "admit overnight",
@@ -3937,7 +3943,8 @@
         "message": {
           "zh-CN": "林女士说：‘我现在完全好了，疹子也快退没了——我能先上楼看看我爸，然后回家吗？’",
           "en": "Ms Lin: 'I feel completely fine now and the rash has nearly gone — can I pop up to see my dad and then go home?'"
-        }
+        },
+        "speaker": "patient"
       }
     ],
     "noise": 1
@@ -4243,8 +4250,8 @@
         {
           "id": "llr-criterion",
           "text": {
-            "zh-CN": "去年的‘大局部反应’本身就是诊断标准之一",
-            "en": "Last year's large local reaction is itself one of the diagnostic criteria"
+            "zh-CN": "既往蜇伤后的‘大局部反应’本身就是诊断标准之一",
+            "en": "A previous large local reaction to a sting is itself one of the diagnostic criteria"
           },
           "correct": false,
           "feedback": {
@@ -4923,11 +4930,27 @@
       { "text": "Do you spend a lot of time outdoors?", "locale": "en", "expect": ["social-bees"] },
       { "text": "平时户外活动多吗？", "locale": "zh-CN", "expect": ["social-bees"] },
       { "text": "Were you outdoors when it happened?", "locale": "en", "expect": ["pc-sting"] },
-      { "text": "Were there any bees around?", "locale": "en", "expect": ["hpi-insect"] }
+      { "text": "Were there any bees around?", "locale": "en", "expect": ["hpi-insect"] },
+      { "text": "Is your throat still tight?", "locale": "en", "expect": ["now-airway-ed"] },
+      { "text": "Can you swallow OK now?", "locale": "en", "expect": ["now-airway-ed"] },
+      { "text": "Is the swelling in your lips going down?", "locale": "en", "expect": ["now-airway-ed"] },
+      { "text": "Are you still short of breath?", "locale": "en", "expect": ["now-breathing-ed"] },
+      { "text": "Still feeling dizzy?", "locale": "en", "expect": ["now-dizzy-ed"] },
+      { "text": "Is your heart still racing?", "locale": "en", "expect": ["now-dizzy-ed"] },
+      { "text": "Is your skin still itchy?", "locale": "en", "expect": ["now-skin-ed"] },
+      { "text": "Have the hives settled?", "locale": "en", "expect": ["now-skin-ed"] },
+      { "text": "Still feeling sick?", "locale": "en", "expect": ["now-gi-ed"] },
+      { "text": "现在喉咙还紧吗？", "locale": "zh-CN", "expect": ["now-airway-ed"] },
+      { "text": "现在嘴唇舌头还肿吗？", "locale": "zh-CN", "expect": ["now-airway-ed"] },
+      { "text": "现在还喘吗？", "locale": "zh-CN", "expect": ["now-breathing-ed"] },
+      { "text": "现在还头晕吗？", "locale": "zh-CN", "expect": ["now-dizzy-ed"] },
+      { "text": "现在还心慌吗？", "locale": "zh-CN", "expect": ["now-dizzy-ed"] },
+      { "text": "现在身上还痒吗？疹子退了没？", "locale": "zh-CN", "expect": ["now-skin-ed"] },
+      { "text": "现在还恶心吗？", "locale": "zh-CN", "expect": ["now-gi-ed"] }
     ],
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",
-      "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline, still in the garden) → ed-resus (transferred after only one dose; partial-response findings reused from `treated`) → ed (transferred and two doses; stabilising). `collapsed` is entered when the peri-arrest event fires before any adrenaline: history is phase-locked except `status-collapsed` (she can only groan), and general/circulation/neurological findings switch to peri-arrest variants; the first IM dose leaves it for `treated` (or `ed-resus` after a deferred transfer). Symptom questions re-asked in `ed` also select a `now-*-ed` answer, so the patient never describes resolved symptoms as current. ECG/imaging/blood gas exist only in the ED phases.",
+      "phases": "Live progression (simulated clock): scene → treated (first IM adrenaline, still in the garden) → ed-resus (transferred after only one dose; partial-response findings reused from `treated`) → ed (transferred and two doses; stabilising). `collapsed` is entered when the peri-arrest event fires before any adrenaline: history is phase-locked except `status-collapsed` (she can only groan), and general/circulation/neurological findings switch to peri-arrest variants; the first IM dose leaves it for `treated` (or `ed-resus` after a deferred transfer). Symptom questions re-asked in `ed` are answered by the `now-*-ed` phase twins (`supersedes` the garden-time `hpi-*` items, which keep only `scene`/`treated`/`ed-resus` because their present-tense answers no longer hold), so the patient never describes resolved symptoms as current; asking a twin credits the `hpi-*` items it supersedes (required history included) without revealing their stale answers. ECG/imaging/blood gas exist only in the ED phases.",
       "scoring": "Safety rubric items require the safe action (IM route given, transfer lying flat), not mere inaction. r-dx and r-dispo use decidedFirstTry, so brute-forcing the board earns no credit. The silent event `reassessed-before-repeat` marks a treated-phase reassessment between the first and second IM dose; it gates r-adr-repeat and the 'indicated' label of a repeat dose. The 5-minute interval itself is not expressible in the condition DSL."
     }
   }

@@ -18,7 +18,7 @@
 | clock | `simulated`, starts 15:40, `realtimeScale` 1, no time limit; costs: ask 0.5 · examine 0.5 · order 0.5 · read 0.5 · intervene 1 · answer 0 min (a fast-paced resuscitation) |
 | phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed-resus` (transferred after only one dose; resuscitation ongoing) → `ed` (transferred and two doses given; stabilising). Wrong path: `collapsed` (garden, peri-arrest before any adrenaline; left at the first IM dose) |
 | difficulty / time | 3 / 5 · about 25 min |
-| content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms; all other items unavailable while `collapsed`) · 25 exam findings (phase-specific reassessment and peri-arrest variants) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 16 scenario events (5 of them silent markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 97 test utterances (2 negative) |
+| content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms, phase twins (`supersedes`) of the 7 garden-time symptom items; all other items unavailable while `collapsed`) · 25 exam findings (phase-specific reassessment and peri-arrest variants) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 16 scenario events (5 of them silent markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 113 test utterances (2 negative; 16 ED-time re-asks) |
 
 ## Clinical story
 
@@ -139,7 +139,7 @@ dose. The other scripted events are:
   ("the IV push has not controlled the reaction").
 * `sinus-in-ed`: the rhythm label changes to sinus once HR < 100 in the ED.
 * `asks-to-leave`: at 90 min she asks to go home. This is the disposition
-  teaching prompt.
+  teaching prompt. The event sets `speaker: "patient"`, so she says it herself.
 * Silent scoring markers (no message): `reassessed-before-repeat` (a
   treated-phase reassessment between the first and second IM dose),
   `adjunct-before-adrenaline` (antihistamine, steroid or salbutamol before any
@@ -308,8 +308,8 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
   general appearance, circulation and conscious level (the scene airway and
   chest findings also cover `collapsed`). `matchExam(…, { phase })` filters
   them correctly, but callers must pass the phase. The agent's `examine` tool
-  (`resolveFinding`) currently calls `matchExam` without it, so "listen to
-  the chest" is reported as ambiguous between the variants.
+  (`resolveFinding`) passes the session phase, so "listen to the chest"
+  resolves to the current phase's variant.
 * **History keywords avoid single-token collisions.** History items are
   ordered so that specific items win ties. For example, `prev-reaction`
   precedes `allergy-drug`, `family` precedes `allergy-drug`, and `pmh-*`
@@ -321,22 +321,36 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
   matched "有没有发烧", "你的手机呢", "多少岁"). A generic past-history question
   ("以前有啥病", "PMH?") deliberately selects both `pmh-asthma` and
   `pmh-other`.
-* **Matcher regression.** All 97 `extensions.testUtterances` pass the CLI rule
+* **Matcher regression.** All 113 `extensions.testUtterances` pass the CLI rule
   (every expected id selected at ≥ 0.55, an expected id first; the two
   `expect: []` entries select nothing). 356 further paraphrases, three
   rounds of them written after the previous tuning, reach recall@3 = 1.0 with
   phase-aware pipeline selection; the last untuned round scored 0.94 before
   its four misses were fixed.
-* **Re-asked symptoms in the ED.** `hpi-*` answers describe the acute
-  reaction in the present tense. The seven that have an `ed` twin
-  (`hpi-breathing`, `hpi-throat`, `hpi-lips-tongue`, `hpi-dizzy`,
-  `hpi-chest-palp`, `hpi-itch-rash`, `hpi-gi`) are limited to `scene`,
-  `treated` and `ed-resus`, so in `ed` only the matching `now-*-ed` item
-  (same keywords) answers. Selecting both read as a contradiction ("Can't…
-  get a full breath… whistling… Now? Much easier…"), and the volunteered
-  "big raised lumps everywhere" followed the nurse's report that the rash had
-  nearly gone. A learner who first asks these in `ed` hears the current state;
-  the acute-phase items are no longer creditable there.
+* **Re-asked symptoms in the ED are phase twins.** `hpi-*` answers describe
+  the acute reaction in the present tense. Each `now-*-ed` item is the `ed`
+  phase twin of the garden-time items it re-asks (`supersedes`):
+  `now-breathing-ed` → `hpi-breathing`; `now-airway-ed` → `hpi-throat`,
+  `hpi-lips-tongue`; `now-dizzy-ed` → `hpi-dizzy`, `hpi-chest-palp`;
+  `now-skin-ed` → `hpi-itch-rash`; `now-gi-ed` → `hpi-gi`.
+  * Those seven `hpi-*` items keep only `scene`, `treated` and `ed-resus`,
+    where their answers hold. `ed` is deliberately not listed for them:
+    twins route and credit whether or not it is (CASE_AUTHORING §3), and a
+    listing would offer the stale question in front-ends that filter by
+    `phases` alone (the web's suggested questions) and count its answer as
+    unrevealed for the grounding check.
+  * In `ed`, any question that would select one of them selects its twin, so
+    the patient never says both ("Can't… get a full breath… whistling… Now?
+    Much easier…") or volunteers "big raised lumps everywhere" after the
+    nurse's report that the rash has nearly gone; a direct `ask` of one is
+    rejected as `phase-locked`.
+  * Asking a twin credits what it supersedes: a learner who first asks about
+    throat, breathing and dizziness in `ed` has the required `hpi-throat`,
+    `hpi-breathing` and `hpi-dizzy` counted in the history assessment,
+    without the stale answers entering the transcript or the revealed-fact
+    ledger. Credit is one-way: the garden-time questions never credit the ED
+    re-assessment. The 16 ED-time utterances in the corpus (judged in `ed`)
+    fail without the links.
 * **An EpiPen now is IM adrenaline.** "epipen", "epi pen", "jext",
   "auto-injector" and 肾上腺素笔 resolve to `adrenaline-im`; `prescribe-aai`
   answers only prescription phrasing ("prescribe an epipen", "two
@@ -375,6 +389,13 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
 * **Effect offset is instant.** By engine design, effects end abruptly, so
   SBP steps down about 8 mmHg when each dose's transient component ends,
   15 min after its ramp.
+* **Option and result texts reveal nothing early.** The `llr-criterion`
+  distractor reads "A previous large local reaction to a sting…", so it no
+  longer discloses last summer's reaction (a `specific` item) before she is
+  asked. The urine hCG value and reference are per-locale `LocalizedText`
+  (阴性 / negative), never both languages in one string. `unknown-usual-bp`
+  excludes medication phrasing, so "Are you on any blood pressure tablets?"
+  selects only `meds-bb`.
 * **Tryptase turnaround is 90 simulated minutes.** In real practice the assay
   is often batched (1–2 days). The result note says so.
 

@@ -9,6 +9,7 @@ import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import type { OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./physiology.js";
+import { historyCredited } from "./twins.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */
 export function resultKey(investigationId: string, phase: string): string {
@@ -75,7 +76,8 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
  * Evaluate a condition against a session.
  *
  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
- * without `phase` match any phase. `decidedFirstTry` looks only at the first
+ * without `phase` match any phase. `asked` also holds when an item that
+ * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
  * recorded attempt (rejected answers are not attempts).
  */
 export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean {
@@ -83,7 +85,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("any" in cond) return cond.any.some((x) => evaluate(c, s, x));
   if ("not" in cond) return !evaluate(c, s, cond.not);
   if ("always" in cond) return cond.always;
-  if ("asked" in cond) return s.asked.includes(cond.asked);
+  if ("asked" in cond) return historyCredited(c, s, cond.asked);
   if ("examined" in cond) return s.examined.includes(cond.examined);
   if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase));
   if ("read" in cond) return wasRead(s, cond.read, cond.phase);

@@ -176,6 +176,22 @@
           }
         ]
       }
+    },
+    {
+      "id": "post-pci",
+      "label": {
+        "zh-CN": "导管室 · PCI术后",
+        "en": "Cath lab — after PCI"
+      },
+      "description": {
+        "zh-CN": "冠脉造影/直接PCI结果出来之后（导管室内）。",
+        "en": "After the angiography / primary PCI result is in (still in the cath lab)."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "resultReady": "coronary-angiography",
+        "phase": "cath"
+      }
     }
   ],
   "initialPhase": "ed",
@@ -237,6 +253,21 @@
           "wheredoyoufeelit"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "放射",
+          "传到",
+          "窜到",
+          "别的地方",
+          "其他地方"
+        ],
+        "en": [
+          "radiat",
+          "spread",
+          "anywhereelse",
+          "travel"
+        ]
+      },
       "disclosure": "volunteer"
     },
     {
@@ -265,16 +296,16 @@
         ],
         "en": [
           "when did the pain start",
-          "when did it start",
+          "whendiditstart",
           "what time did it start",
           "how long have you had the pain",
           "how long has the pain",
           "since when",
           "what were you doing",
           "doing when",
-          "did it come on",
+          "diditcomeon",
           "come on suddenly",
-          "how did it start",
+          "howdiditstart",
           "onset"
         ]
       },
@@ -434,8 +465,8 @@
         ],
         "en": [
           "how bad",
-          "out of 10",
-          "out of ten",
+          "outof10",
+          "outoften",
           "scale of",
           "severity",
           "how severe",
@@ -474,7 +505,7 @@
         "en": [
           "constant",
           "comes and goes",
-          "come and go",
+          "comeandgo",
           "on and off",
           "continuous",
           "let up",
@@ -654,6 +685,24 @@
           "difficulty breathing",
           "can't breathe",
           "winded"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "吸气时疼",
+          "吸气疼",
+          "呼吸时疼",
+          "呼吸疼",
+          "喘气疼",
+          "深吸气"
+        ],
+        "en": [
+          "hurttobreathe",
+          "hurtwhenyoubreathe",
+          "hurtwhenibreathe",
+          "painonbreathing",
+          "painfulto",
+          "deepbreath"
         ]
       },
       "disclosure": "on-ask"
@@ -840,7 +889,7 @@
           "tearing",
           "ripping",
           "back pain",
-          "into your back",
+          "intoyourback",
           "shoulder blades"
         ]
       },
@@ -1090,7 +1139,7 @@
           "gtn",
           "herbal",
           "supplements",
-          "over the counter"
+          "overthecounter"
         ]
       },
       "disclosure": "on-ask",
@@ -1102,7 +1151,12 @@
           "给你吃",
           "给你打",
           "给你挂",
-          "过敏"
+          "过敏",
+          "伟哥",
+          "西地那非",
+          "他达拉非",
+          "万艾可",
+          "壮阳"
         ],
         "en": [
           "giving you",
@@ -1114,7 +1168,12 @@
           "take a breath",
           "come with",
           "come and get",
-          "allerg"
+          "allerg",
+          "viagra",
+          "sildenafil",
+          "tadalafil",
+          "cialis",
+          "erectile"
         ]
       }
     },
@@ -1147,12 +1206,12 @@
           "紧急联系人"
         ],
         "en": [
-          "what do you do for work",
+          "whatdoyoudoforwork",
           "your job",
           "occupation",
-          "for a living",
+          "foraliving",
           "live with",
-          "who is at home",
+          "whoisathome",
           "retired",
           "children",
           "kids",
@@ -1190,7 +1249,7 @@
         "en": [
           "family",
           "family history",
-          "in your family",
+          "inyourfamily",
           "your father",
           "your dad",
           "your mother",
@@ -1311,7 +1370,7 @@
         "en": [
           "cholesterol level",
           "cholesterol numbers",
-          "what were the numbers",
+          "whatwerethenumbers",
           "ldl"
         ]
       },
@@ -1339,6 +1398,18 @@
           "diabetic",
           "blood sugar",
           "dm"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "家人",
+          "家里有人"
+        ],
+        "en": [
+          "family",
+          "relatives"
         ]
       },
       "disclosure": "on-ask"
@@ -1730,7 +1801,7 @@
         ],
         "en": [
           "alcohol",
-          "do you drink",
+          "doyoudrink",
           "drinking habits",
           "beer",
           "wine",
@@ -1828,7 +1899,7 @@
           "worry",
           "concern",
           "scared",
-          "what do you think",
+          "whatdoyouthink",
           "expect"
         ]
       },
@@ -1909,7 +1980,7 @@
         ],
         "en": [
           "your name",
-          "how old",
+          "howold",
           "your age",
           "date of birth",
           "dob"
@@ -2368,7 +2439,7 @@
           },
           "critical": true
         },
-        "cath": {
+        "post-pci": {
           "text": {
             "zh-CN": "PCI术后心电图：窦性心律，66次/分。II、III、aVF导联ST段较术前回落 > 70%（III导联残余抬高0.5 mm），I、aVL导联对应性压低消失；III、aVF导联出现Q波，下壁T波开始倒置。PR 0.18 s，无房室传导阻滞。",
             "en": "Post-PCI ECG: sinus rhythm, 66 bpm. ST elevation in II, III and aVF has resolved by > 70% (residual 0.5 mm in III); reciprocal depression in I and aVL has resolved. Q waves in III and aVF with early inferior T-wave inversion. PR 0.18 s, no AV block."
@@ -3096,7 +3167,10 @@
               "unit": "mmol/L",
               "refLow": 3.9,
               "refHigh": 7.8,
-              "refText": "随机 3.9–7.8 / random 3.9–7.8",
+              "refText": {
+                "zh-CN": "随机 3.9–7.8",
+                "en": "random 3.9–7.8"
+              },
               "flag": "H"
             }
           ]
@@ -3600,6 +3674,16 @@
         "message": {
           "zh-CN": "冠脉造影/直接PCI只在导管室进行：导管室已启动、患者已转入导管室后才会有结果，急诊抢救室没有该结果。",
           "en": "Coronary angiography / primary PCI is done only in the cath lab: a result exists only once the lab has been activated and the patient is there (there is no ED result)."
+        },
+        "unless": {
+          "any": [
+            {
+              "phase": "cath"
+            },
+            {
+              "phase": "post-pci"
+            }
+          ]
         }
       }
     ]
@@ -3698,13 +3782,19 @@
           "除颤电极",
           "电极片",
           "贴片",
-          "起搏电极"
+          "起搏电极",
+          "准备除颤仪",
+          "除颤仪备用",
+          "除颤仪放床边"
         ],
         "en": [
           "defib pads",
           "pads on",
           "pacing pads",
-          "defibrillator pads"
+          "defibrillator pads",
+          "attach the defibrillator",
+          "defibrillator ready",
+          "defib on standby"
         ]
       },
       "requires": [
@@ -3879,8 +3969,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通肝素 70–100 U/kg 静脉推注（78 kg：约5500–7800 U，如6000 U），导管室内按ACT追加",
-        "en": "UFH 70–100 U/kg IV bolus (78 kg: ≈5,500–7,800 U, e.g. 6,000 U); further doses by ACT in the cath lab"
+        "zh-CN": "普通肝素 70–100 U/kg 静脉推注，导管室内按ACT追加",
+        "en": "UFH 70–100 U/kg IV bolus; further doses by ACT in the cath lab"
       },
       "requires": [
         "medications",
@@ -3903,8 +3993,8 @@
         "en": "Enoxaparin has already been given — adding UFH is duplicate anticoagulation (crossover increases bleeding)."
       },
       "response": {
-        "zh-CN": "普通肝素6000 U已静脉推注。",
-        "en": "UFH 6,000 U given IV."
+        "zh-CN": "普通肝素6000 U已静脉推注（78 kg约77 U/kg）。",
+        "en": "UFH 6,000 U given IV (about 77 U/kg for 78 kg)."
       }
     },
     {
@@ -3928,8 +4018,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "依诺肝素 0.5 mg/kg 静脉推注（78 kg：约40 mg）",
-        "en": "Enoxaparin 0.5 mg/kg IV bolus (78 kg: ≈40 mg)"
+        "zh-CN": "依诺肝素 0.5 mg/kg 静脉推注",
+        "en": "Enoxaparin 0.5 mg/kg IV bolus"
       },
       "requires": [
         "medications",
@@ -3952,8 +4042,8 @@
         "en": "UFH has already been given — adding enoxaparin is duplicate anticoagulation and increases bleeding risk."
       },
       "response": {
-        "zh-CN": "依诺肝素40 mg已静脉推注（直接PCI的可选替代抗凝方案）。",
-        "en": "Enoxaparin 40 mg given IV (an accepted alternative anticoagulant for primary PCI)."
+        "zh-CN": "依诺肝素40 mg已静脉推注（78 kg × 0.5 mg/kg；直接PCI的可选替代抗凝方案）。",
+        "en": "Enoxaparin 40 mg given IV (0.5 mg/kg for 78 kg; an accepted alternative anticoagulant for primary PCI)."
       }
     },
     {
@@ -4497,8 +4587,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "多巴酚丁胺 2.5–5 µg/kg/min 静脉泵入（78 kg：约0.2–0.4 mg/min）",
-        "en": "Dobutamine 2.5–5 µg/kg/min IV infusion (78 kg: ≈0.2–0.4 mg/min)"
+        "zh-CN": "多巴酚丁胺 2.5–5 µg/kg/min 静脉泵入",
+        "en": "Dobutamine 2.5–5 µg/kg/min IV infusion"
       },
       "requires": [
         "infusion-pump",
@@ -4552,8 +4642,8 @@
         ]
       },
       "response": {
-        "zh-CN": "多巴酚丁胺开始泵入，需持续监测心律失常。",
-        "en": "Dobutamine infusion started; watch for arrhythmias."
+        "zh-CN": "多巴酚丁胺开始泵入（78 kg约0.2–0.4 mg/min），需持续监测心律失常。",
+        "en": "Dobutamine infusion started (2.5–5 µg/kg/min ≈ 0.2–0.4 mg/min for 78 kg); watch for arrhythmias."
       }
     },
     {
@@ -4581,8 +4671,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "去甲肾上腺素 0.05–0.1 µg/kg/min 起始静脉泵入，按平均动脉压 ≥ 65 mmHg滴定（78 kg：约4–8 µg/min）",
-        "en": "Noradrenaline 0.05–0.1 µg/kg/min IV infusion to start, titrated to MAP ≥ 65 mmHg (78 kg: ≈4–8 µg/min)"
+        "zh-CN": "去甲肾上腺素 0.05–0.1 µg/kg/min 起始静脉泵入，按平均动脉压 ≥ 65 mmHg滴定",
+        "en": "Noradrenaline 0.05–0.1 µg/kg/min IV infusion to start, titrated to MAP ≥ 65 mmHg"
       },
       "requires": [
         "infusion-pump",
@@ -4635,8 +4725,8 @@
         ]
       },
       "response": {
-        "zh-CN": "去甲肾上腺素已开始静脉泵入，按平均动脉压滴定；经外周静脉输注需注意渗漏。右室梗死的低血压应先保证前负荷。",
-        "en": "Noradrenaline infusion started and titrated to MAP; watch the peripheral line for extravasation. In RV infarction, preload comes first."
+        "zh-CN": "去甲肾上腺素已开始静脉泵入（78 kg约4–8 µg/min），按平均动脉压滴定；经外周静脉输注需注意渗漏。右室梗死的低血压应先保证前负荷。",
+        "en": "Noradrenaline infusion started (≈ 4–8 µg/min for 78 kg) and titrated to MAP; watch the peripheral line for extravasation. In RV infarction, preload comes first."
       }
     },
     {
@@ -4862,8 +4952,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "替奈普酶 40 mg（8000 U，体重70–<80 kg档）单次静脉推注",
-        "en": "Tenecteplase 40 mg (8,000 U, 70–<80 kg weight band) single IV bolus"
+        "zh-CN": "替奈普酶按体重分档单次静脉推注：< 60 kg 30 mg；60–<70 kg 35 mg；70–<80 kg 40 mg；80–<90 kg 45 mg；≥ 90 kg 50 mg（10 mg = 2000 U）",
+        "en": "Tenecteplase single IV bolus by weight band: < 60 kg 30 mg; 60–<70 kg 35 mg; 70–<80 kg 40 mg; 80–<90 kg 45 mg; ≥ 90 kg 50 mg (10 mg = 2,000 U)"
       },
       "requires": [
         "medications",
@@ -4882,8 +4972,8 @@
         "en": "Primary PCI is available well within 120 min here (lab ready in about 15 min), so fibrinolysis adds bleeding risk — including intracranial haemorrhage — without benefit; fibrinolysis followed by immediate PCI (facilitated PCI) increased adverse events in ASSENT-4 PCI."
       },
       "response": {
-        "zh-CN": "替奈普酶已静推。",
-        "en": "Tenecteplase given IV."
+        "zh-CN": "替奈普酶40 mg（8000 U，70–<80 kg档）已静推。",
+        "en": "Tenecteplase 40 mg (8,000 U; 70–<80 kg band) given IV."
       }
     },
     {
@@ -4900,7 +4990,11 @@
           "一键启动",
           "直接pci",
           "叫介入",
-          "胸痛中心"
+          "胸痛中心",
+          "通知导管室",
+          "联系导管室",
+          "呼叫导管室",
+          "导管室激活"
         ],
         "en": [
           "activate cath lab",
@@ -4908,7 +5002,10 @@
           "primary pci",
           "stemi activation",
           "call the cath lab",
-          "call interventional cardiology"
+          "call interventional cardiology",
+          "cath lab activation",
+          "page the cath lab",
+          "alert the cath lab"
         ]
       },
       "risk": "low",
@@ -4944,6 +5041,21 @@
           "go to cath lab",
           "send to cath lab",
           "move to cath lab"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "启动",
+          "激活",
+          "通知",
+          "联系",
+          "呼叫"
+        ],
+        "en": [
+          "activat",
+          "page",
+          "alert",
+          "callthecathlab"
         ]
       },
       "dose": {
@@ -5103,6 +5215,36 @@
           "shock",
           "defib",
           "unsynchronised"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "准备除颤仪",
+          "除颤仪准备",
+          "备好除颤",
+          "除颤仪备用",
+          "放床边",
+          "床边",
+          "电极片",
+          "检查除颤",
+          "休克"
+        ],
+        "en": [
+          "getthedefib",
+          "defibready",
+          "defibrillatorready",
+          "standby",
+          "nearby",
+          "bedside",
+          "pads",
+          "attach",
+          "checkthedefib",
+          "cardiogenic",
+          "inshock",
+          "shockindex",
+          "treattheshock",
+          "septic",
+          "hypovol"
         ]
       },
       "dose": {
@@ -6006,22 +6148,26 @@
       "completeWhen": {
         "all": [
           {
-            "phase": "cath"
-          },
-          {
             "read": "coronary-angiography",
             "phase": "cath"
           },
           {
             "read": "ecg-12lead",
-            "phase": "cath"
+            "phase": "post-pci"
           }
         ]
       },
       "waypoints": [
         {
           "unless": {
-            "phase": "cath"
+            "any": [
+              {
+                "phase": "cath"
+              },
+              {
+                "phase": "post-pci"
+              }
+            ]
           },
           "target": "patient"
         },
@@ -6224,8 +6370,8 @@
         {
           "id": "nitro-furosemide",
           "text": {
-            "zh-CN": "颈静脉怒张提示容量过多，改用呋塞米",
-            "en": "The raised JVP means fluid overload — give furosemide instead"
+            "zh-CN": "若颈静脉怒张，提示容量过多，应改用呋塞米",
+            "en": "If the JVP is raised, that means fluid overload — give furosemide instead"
           },
           "correct": false,
           "feedback": {
@@ -6411,8 +6557,8 @@
         {
           "id": "at-tnk",
           "text": {
-            "zh-CN": "替奈普酶40 mg",
-            "en": "Tenecteplase 40 mg"
+            "zh-CN": "替奈普酶（按体重分档静推）",
+            "en": "Tenecteplase (weight-banded bolus)"
           },
           "correct": false,
           "feedback": {
@@ -7109,7 +7255,7 @@
     {
       "type": "read",
       "investigationId": "ecg-12lead",
-      "phase": "cath"
+      "phase": "post-pci"
     },
     {
       "type": "advance-time",
@@ -7776,6 +7922,13 @@
         "locale": "zh-CN",
         "expect": [
           "pain-site"
+        ]
+      },
+      {
+        "text": "any diabetes in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
         ]
       }
     ]

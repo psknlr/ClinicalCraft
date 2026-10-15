@@ -5,7 +5,7 @@
 import { existsSync } from "node:fs";
 import { chmod, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { SettingsLayerSchema, validateSettingsLayer } from "@clinicalcraft/agent";
+import { saveBlockingIssues, SettingsLayerSchema, validateSettingsLayer } from "@clinicalcraft/agent";
 import { findProjectRoot, isProjectTrusted, projectSettingsPaths, readProjectSettingsTexts, saveUserSettings, trustProject, userSettingsPath } from "@clinicalcraft/agent/node";
 import { flagBool, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
@@ -107,7 +107,7 @@ async function writeLayerFile(file: string, patch: Record<string, unknown>, sour
     }
   }
   const next = deepMerge(structuredClone(current), patch);
-  const errors = validateSettingsLayer(next, source, file).issues.filter((i) => i.severity === "error");
+  const errors = saveBlockingIssues(validateSettingsLayer(next, source, file).issues, patch);
   if (errors.length > 0) throw new CliError(`Invalid settings: ${errors.map((e) => `${e.path || "(root)"}: ${e.message}`).join("; ")}`, EXIT.error);
   await mkdir(dirname(file), { recursive: true });
   const tmp = `${file}.${process.pid}.tmp`;

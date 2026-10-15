@@ -327,19 +327,19 @@
           "几个小时了"
         ],
         "en": [
-          "when did it start",
+          "whendiditstart",
           "how long",
           "started",
           "onset",
           "last night",
           "getting worse",
-          "how did this begin",
+          "howdidthisbegin",
           "timeline",
           "what happened",
           "kick off",
           "kicked off",
-          "when did this start",
-          "how long has he been like this",
+          "whendidthisstart",
+          "howlonghashebeenlikethis",
           "brings you in today",
           "brings you here today"
         ]
@@ -450,7 +450,7 @@
           "salbutamol",
           "albuterol",
           "reliever",
-          "how many puffs",
+          "howmanypuffs",
           "puffs",
           "inhaler help",
           "rescue inhaler",
@@ -662,7 +662,15 @@
       "excludeKeywords": {
         "en": [
           "run out",
-          "ran out"
+          "ran out",
+          "family",
+          "relatives"
+        ],
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "家人",
+          "家里有人"
         ]
       }
     },
@@ -696,18 +704,22 @@
           "coughing blood",
           "dry cough",
           "coughing fits",
-          "what is the cough like"
+          "whatisthecoughlike"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "止咳",
-          "犬吠"
+          "犬吠",
+          "平时",
+          "咳醒"
         ],
         "en": [
           "coughmedicine",
           "coughsyrup",
-          "coughmixture"
+          "coughmixture",
+          "howoften",
+          "betweenattacks"
         ]
       }
     },
@@ -785,7 +797,7 @@
           "tight chest",
           "pain",
           "sharp pain",
-          "where does it hurt",
+          "wheredoesithurt",
           "sore"
         ]
       },
@@ -890,6 +902,9 @@
       "required": false,
       "phases": [
         "critical"
+      ],
+      "supersedes": [
+        "hx-alertness"
       ]
     },
     {
@@ -1081,7 +1096,7 @@
           "ED visits",
           "previous attacks",
           "hospital admission",
-          "been in hospital",
+          "beeninhospital",
           "previous episodes",
           "happened before",
           "number of attacks",
@@ -1462,7 +1477,7 @@
         "en": [
           "other medicines",
           "cough syrup",
-          "over the counter",
+          "overthecounter",
           "herbal",
           "pharmacy",
           "cough medicine",
@@ -1509,7 +1524,7 @@
           "drug allergy",
           "food allergy",
           "penicillin",
-          "allergic to anything",
+          "allergictoanything",
           "nkda"
         ]
       },
@@ -1523,14 +1538,16 @@
           "爸爸",
           "妹妹",
           "鼻炎",
-          "湿疹"
+          "湿疹",
+          "家里有人"
         ],
         "en": [
           "family",
           "parents",
           "father",
           "sister",
-          "dad"
+          "dad",
+          "relatives"
         ]
       }
     },
@@ -1760,7 +1777,10 @@
           "fhx",
           "family hx of asthma",
           "dad",
-          "daddy"
+          "daddy",
+          "inthefamily",
+          "inyourfamily",
+          "anyoneinthefamily"
         ]
       },
       "excludeKeywords": {
@@ -1961,7 +1981,7 @@
           "asthma plan",
           "written plan",
           "management plan",
-          "when to come in",
+          "whentocomein",
           "peak flow meter",
           "personal best"
         ]
@@ -1998,7 +2018,7 @@
           "concerns",
           "scared",
           "afraid",
-          "what's on your mind",
+          "whatsonyourmind",
           "anxious about",
           "what do you think caused",
           "ideas"
@@ -2040,7 +2060,7 @@
           "antibiotics",
           "drip",
           "what would you like",
-          "hope we can do",
+          "hopewecando",
           "what should we do",
           "we should do",
           "what would you like us to do"
@@ -2103,8 +2123,8 @@
           "他现在怎么样"
         ],
         "en": [
-          "how are you feeling",
-          "how do you feel",
+          "howareyoufeeling",
+          "howdoyoufeel",
           "buddy",
           "ask the child",
           "are you ok",
@@ -2112,7 +2132,8 @@
           "howishenow",
           "how is he doing"
         ]
-      }
+      },
+      "speaker": "patient"
     },
     {
       "id": "hx-child-feeling-critical",
@@ -2136,8 +2157,8 @@
           "他现在怎么样"
         ],
         "en": [
-          "how are you feeling",
-          "how do you feel",
+          "howareyoufeeling",
+          "howdoyoufeel",
           "buddy",
           "ask the child",
           "are you ok",
@@ -2151,13 +2172,20 @@
       "required": false,
       "phases": [
         "critical"
-      ]
+      ],
+      "supersedes": [
+        "hx-child-feeling"
+      ],
+      "speaker": "patient"
     },
     {
       "id": "hx-child-feeling-later",
       "topic": "presenting-complaint",
       "phases": [
         "reassess"
+      ],
+      "supersedes": [
+        "hx-child-feeling"
       ],
       "question": {
         "zh-CN": "（问孩子）现在感觉好点了吗？",
@@ -2187,13 +2215,18 @@
           "howishenow",
           "how is he doing"
         ]
-      }
+      },
+      "speaker": "patient"
     },
     {
       "id": "hx-child-discharge",
       "topic": "presenting-complaint",
       "phases": [
         "discharge"
+      ],
+      "supersedes": [
+        "hx-child-feeling-later",
+        "hx-child-feeling"
       ],
       "question": {
         "zh-CN": "（问孩子）现在感觉怎么样？",
@@ -2221,7 +2254,8 @@
           "howishenow",
           "how is he doing"
         ]
-      }
+      },
+      "speaker": "patient"
     },
     {
       "id": "hx-unknown-spirometry",
@@ -2312,7 +2346,7 @@
           "还有药吗"
         ],
         "en": [
-          "how much is left",
+          "howmuchisleft",
           "empty",
           "expired",
           "expiry date",
@@ -2431,7 +2465,7 @@
           "full sentences",
           "phrases",
           "words",
-          "can he talk",
+          "canhetalk",
           "speak"
         ]
       },
@@ -2839,7 +2873,7 @@
           "conscious level",
           "GCS",
           "AVPU",
-          "is he alert",
+          "ishealert",
           "drowsy",
           "mental status",
           "responsive",
@@ -3195,7 +3229,7 @@
           "full sentences",
           "phrases",
           "words",
-          "can he talk",
+          "canhetalk",
           "speak"
         ]
       },
@@ -3323,7 +3357,7 @@
           "conscious level",
           "GCS",
           "AVPU",
-          "is he alert",
+          "ishealert",
           "drowsy",
           "mental status",
           "responsive",
@@ -3393,7 +3427,10 @@
               },
               "value": 2,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3402,7 +3439,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3411,7 +3451,10 @@
               },
               "value": 2,
               "unit": "",
-              "refText": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              "refText": {
+                "zh-CN": "0 正常 / 1 肺底↓ / 2 广泛↓ / 3 消失或极微弱",
+                "en": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              }
             },
             {
               "analyte": {
@@ -3420,7 +3463,10 @@
               },
               "value": 2,
               "unit": "",
-              "refText": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              "refText": {
+                "zh-CN": "0 无 / 1 仅呼气相 / 2 吸气相+呼气相 / 3 不用听诊器即可闻及或沉默肺",
+                "en": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              }
             },
             {
               "analyte": {
@@ -3440,7 +3486,10 @@
               "unit": "/12",
               "refLow": 0,
               "refHigh": 3,
-              "refText": "0–3 mild 轻度; 4–7 moderate 中度; 8–12 severe 重度",
+              "refText": {
+                "zh-CN": "0–3 轻度；4–7 中度；8–12 重度",
+                "en": "0–3 mild; 4–7 moderate; 8–12 severe"
+              },
               "flag": "H"
             }
           ],
@@ -3462,7 +3511,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3471,7 +3523,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3480,7 +3535,10 @@
               },
               "value": 1,
               "unit": "",
-              "refText": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              "refText": {
+                "zh-CN": "0 正常 / 1 肺底↓ / 2 广泛↓ / 3 消失或极微弱",
+                "en": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              }
             },
             {
               "analyte": {
@@ -3489,7 +3547,10 @@
               },
               "value": 1,
               "unit": "",
-              "refText": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              "refText": {
+                "zh-CN": "0 无 / 1 仅呼气相 / 2 吸气相+呼气相 / 3 不用听诊器即可闻及或沉默肺",
+                "en": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              }
             },
             {
               "analyte": {
@@ -3509,7 +3570,10 @@
               "unit": "/12",
               "refLow": 0,
               "refHigh": 3,
-              "refText": "0–3 mild 轻度; 4–7 moderate 中度; 8–12 severe 重度",
+              "refText": {
+                "zh-CN": "0–3 轻度；4–7 中度；8–12 重度",
+                "en": "0–3 mild; 4–7 moderate; 8–12 severe"
+              },
               "flag": "N"
             }
           ]
@@ -3527,7 +3591,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3536,7 +3603,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3545,7 +3615,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              "refText": {
+                "zh-CN": "0 正常 / 1 肺底↓ / 2 广泛↓ / 3 消失或极微弱",
+                "en": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              }
             },
             {
               "analyte": {
@@ -3554,7 +3627,10 @@
               },
               "value": 0,
               "unit": "",
-              "refText": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              "refText": {
+                "zh-CN": "0 无 / 1 仅呼气相 / 2 吸气相+呼气相 / 3 不用听诊器即可闻及或沉默肺",
+                "en": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              }
             },
             {
               "analyte": {
@@ -3574,7 +3650,10 @@
               "unit": "/12",
               "refLow": 0,
               "refHigh": 3,
-              "refText": "0–3 mild 轻度; 4–7 moderate 中度; 8–12 severe 重度",
+              "refText": {
+                "zh-CN": "0–3 轻度；4–7 中度；8–12 重度",
+                "en": "0–3 mild; 4–7 moderate; 8–12 severe"
+              },
               "flag": "N"
             }
           ]
@@ -3593,7 +3672,10 @@
               },
               "value": 2,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3602,7 +3684,10 @@
               },
               "value": 2,
               "unit": "",
-              "refText": "0 absent / 2 present"
+              "refText": {
+                "zh-CN": "0 无 / 2 有",
+                "en": "0 absent / 2 present"
+              }
             },
             {
               "analyte": {
@@ -3611,7 +3696,10 @@
               },
               "value": 3,
               "unit": "",
-              "refText": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              "refText": {
+                "zh-CN": "0 正常 / 1 肺底↓ / 2 广泛↓ / 3 消失或极微弱",
+                "en": "0 normal / 1 ↓bases / 2 widespread ↓ / 3 absent-minimal"
+              }
             },
             {
               "analyte": {
@@ -3620,7 +3708,10 @@
               },
               "value": 3,
               "unit": "",
-              "refText": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              "refText": {
+                "zh-CN": "0 无 / 1 仅呼气相 / 2 吸气相+呼气相 / 3 不用听诊器即可闻及或沉默肺",
+                "en": "0 absent / 1 expiratory / 2 insp+exp / 3 audible without stethoscope or silent chest"
+              }
             },
             {
               "analyte": {
@@ -3640,7 +3731,10 @@
               "unit": "/12",
               "refLow": 0,
               "refHigh": 3,
-              "refText": "0–3 mild 轻度; 4–7 moderate 中度; 8–12 severe 重度",
+              "refText": {
+                "zh-CN": "0–3 轻度；4–7 中度；8–12 重度",
+                "en": "0–3 mild; 4–7 moderate; 8–12 severe"
+              },
               "flag": "H"
             }
           ],
@@ -3806,7 +3900,10 @@
               "analyte": "PEF",
               "value": 75,
               "unit": "L/min",
-              "refText": "predicted ≈180 L/min"
+              "refText": {
+                "zh-CN": "预计值 ≈180 L/min",
+                "en": "predicted ≈180 L/min"
+              }
             },
             {
               "analyte": {
@@ -3816,7 +3913,10 @@
               "value": 42,
               "unit": "%",
               "refLow": 80,
-              "refText": "BTS severe 33–50%; life-threatening <33%",
+              "refText": {
+                "zh-CN": "BTS：重度 33–50%；危及生命 <33%",
+                "en": "BTS severe 33–50%; life-threatening <33%"
+              },
               "flag": "L"
             }
           ],
@@ -3835,7 +3935,10 @@
               "analyte": "PEF",
               "value": 125,
               "unit": "L/min",
-              "refText": "predicted ≈180 L/min"
+              "refText": {
+                "zh-CN": "预计值 ≈180 L/min",
+                "en": "predicted ≈180 L/min"
+              }
             },
             {
               "analyte": {
@@ -3859,7 +3962,10 @@
               "analyte": "PEF",
               "value": 145,
               "unit": "L/min",
-              "refText": "predicted ≈180 L/min"
+              "refText": {
+                "zh-CN": "预计值 ≈180 L/min",
+                "en": "predicted ≈180 L/min"
+              }
             },
             {
               "analyte": {
@@ -3869,7 +3975,10 @@
               "value": 81,
               "unit": "%",
               "refLow": 75,
-              "refText": "discharge >75%",
+              "refText": {
+                "zh-CN": "出院标准 >75%",
+                "en": "discharge >75%"
+              },
               "flag": "N"
             }
           ]
@@ -5481,9 +5590,15 @@
                 "zh-CN": "鼻病毒/肠道病毒",
                 "en": "Rhinovirus/enterovirus"
               },
-              "value": "Detected",
+              "value": {
+                "zh-CN": "检出",
+                "en": "Detected"
+              },
               "unit": "",
-              "refText": "Not detected",
+              "refText": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "flag": "A"
             },
             {
@@ -5491,7 +5606,10 @@
                 "zh-CN": "甲型/乙型流感病毒",
                 "en": "Influenza A/B"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5500,13 +5618,19 @@
                 "zh-CN": "呼吸道合胞病毒",
                 "en": "RSV"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
             {
               "analyte": "SARS-CoV-2",
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5515,7 +5639,10 @@
                 "zh-CN": "肺炎支原体",
                 "en": "Mycoplasma pneumoniae"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -5536,9 +5663,15 @@
                 "zh-CN": "鼻病毒/肠道病毒",
                 "en": "Rhinovirus/enterovirus"
               },
-              "value": "Detected",
+              "value": {
+                "zh-CN": "检出",
+                "en": "Detected"
+              },
               "unit": "",
-              "refText": "Not detected",
+              "refText": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "flag": "A"
             },
             {
@@ -5546,7 +5679,10 @@
                 "zh-CN": "甲型/乙型流感病毒",
                 "en": "Influenza A/B"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5555,13 +5691,19 @@
                 "zh-CN": "呼吸道合胞病毒",
                 "en": "RSV"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
             {
               "analyte": "SARS-CoV-2",
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5570,7 +5712,10 @@
                 "zh-CN": "肺炎支原体",
                 "en": "Mycoplasma pneumoniae"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -5591,9 +5736,15 @@
                 "zh-CN": "鼻病毒/肠道病毒",
                 "en": "Rhinovirus/enterovirus"
               },
-              "value": "Detected",
+              "value": {
+                "zh-CN": "检出",
+                "en": "Detected"
+              },
               "unit": "",
-              "refText": "Not detected",
+              "refText": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "flag": "A"
             },
             {
@@ -5601,7 +5752,10 @@
                 "zh-CN": "甲型/乙型流感病毒",
                 "en": "Influenza A/B"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5610,13 +5764,19 @@
                 "zh-CN": "呼吸道合胞病毒",
                 "en": "RSV"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
             {
               "analyte": "SARS-CoV-2",
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5625,7 +5785,10 @@
                 "zh-CN": "肺炎支原体",
                 "en": "Mycoplasma pneumoniae"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -5646,9 +5809,15 @@
                 "zh-CN": "鼻病毒/肠道病毒",
                 "en": "Rhinovirus/enterovirus"
               },
-              "value": "Detected",
+              "value": {
+                "zh-CN": "检出",
+                "en": "Detected"
+              },
               "unit": "",
-              "refText": "Not detected",
+              "refText": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "flag": "A"
             },
             {
@@ -5656,7 +5825,10 @@
                 "zh-CN": "甲型/乙型流感病毒",
                 "en": "Influenza A/B"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5665,13 +5837,19 @@
                 "zh-CN": "呼吸道合胞病毒",
                 "en": "RSV"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
             {
               "analyte": "SARS-CoV-2",
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -5680,7 +5858,10 @@
                 "zh-CN": "肺炎支原体",
                 "en": "Mycoplasma pneumoniae"
               },
-              "value": "Not detected",
+              "value": {
+                "zh-CN": "未检出",
+                "en": "Not detected"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -6016,8 +6197,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "沙丁胺醇 100 µg/揿，经带阀储雾罐（口含嘴）给药 6–10 揿（本例重度发作给10揿 = 1 mg），每揿1下后平静呼吸5–6次；第1小时每20分钟1次，共3次，之后按反应延长间隔（1–4小时一次）。",
-        "en": "Salbutamol 100 µg/puff via valved spacer (mouthpiece), 6–10 puffs (here 10 puffs = 1 mg for a severe attack), one puff at a time followed by 5–6 tidal breaths; every 20 min ×3 in the first hour, then spaced (1–4-hourly) according to response."
+        "zh-CN": "沙丁胺醇 100 µg/揿，经带阀储雾罐（口含嘴）给药 6–10 揿（10揿 = 1 mg；重度发作给10揿），每揿1下后平静呼吸5–6次；第1小时每20分钟1次，共3次，之后按反应延长间隔（1–4小时一次）。",
+        "en": "Salbutamol 100 µg/puff via valved spacer (mouthpiece), 6–10 puffs (10 puffs = 1 mg; 10 puffs in a severe attack), one puff at a time followed by 5–6 tidal breaths; every 20 min ×3 in the first hour, then spaced (1–4-hourly) according to response."
       },
       "effects": [
         {
@@ -6343,7 +6524,8 @@
           "揿",
           "静脉",
           "静推",
-          "静滴"
+          "静滴",
+          "教"
         ],
         "en": [
           "spacer",
@@ -6354,7 +6536,8 @@
           "intravenous",
           "ivsalbutamol",
           "salbutamoliv",
-          "ivalbuterol"
+          "ivalbuterol",
+          "teach"
         ]
       },
       "contraindicatedWhen": {
@@ -6520,14 +6703,34 @@
           "抱着",
           "体位",
           "安抚",
-          "保持安静"
+          "保持安静",
+          "让他安静下来",
+          "别哭"
         ],
         "en": [
           "sit up",
           "upright",
           "position",
           "on mum's lap",
-          "comfort"
+          "comfort",
+          "keep him calm",
+          "calmhimdown",
+          "settle him"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "镇静",
+          "药",
+          "安定",
+          "咪达唑仑",
+          "水合氯醛"
+        ],
+        "en": [
+          "sedat",
+          "midazolam",
+          "medication",
+          "drug"
         ]
       },
       "effects": [
@@ -6956,8 +7159,10 @@
           "咪达唑仑",
           "水合氯醛",
           "安定",
-          "让他安静",
-          "镇静剂"
+          "镇静剂",
+          "镇静药",
+          "镇定剂",
+          "安眠药"
         ],
         "en": [
           "sedation",
@@ -6965,7 +7170,23 @@
           "midazolam",
           "chloral hydrate",
           "diazepam",
-          "calm him down with medication"
+          "calm him down with medication",
+          "somethingtocalmhimdown",
+          "somethingtosettlehim"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "安抚",
+          "怀里",
+          "别哭",
+          "抱着"
+        ],
+        "en": [
+          "keephimcalm",
+          "lap",
+          "reassur",
+          "comfort"
         ]
       },
       "dose": {
@@ -7074,7 +7295,12 @@
           "教用储雾罐",
           "教他用储雾罐",
           "储雾罐使用",
-          "吸入方法指导"
+          "吸入方法指导",
+          "吸入装置",
+          "吸入装置用法",
+          "吸入器用法",
+          "怎么用吸入器",
+          "教一下吸入"
         ],
         "en": [
           "inhaler technique",
@@ -7150,8 +7376,8 @@
         "controller-restarted"
       ],
       "name": {
-        "zh-CN": "恢复每日吸入激素（控制药）并处理依从性",
-        "en": "Restart the daily inhaled corticosteroid controller with adherence support"
+        "zh-CN": "每日吸入激素（控制药）并给予依从性支持",
+        "en": "Daily inhaled corticosteroid controller with adherence support"
       },
       "aliases": {
         "zh-CN": [
@@ -7170,6 +7396,14 @@
           "flixotide",
           "ics",
           "restart preventer"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "教"
+        ],
+        "en": [
+          "teach"
         ]
       },
       "dose": {
@@ -7191,15 +7425,20 @@
       "kind": "other",
       "risk": "none",
       "name": {
-        "zh-CN": "无烟家庭建议，并为父亲提供戒烟支持",
-        "en": "Smoke-free home advice and smoking-cessation support for father"
+        "zh-CN": "无烟家庭建议，并为家中吸烟者提供戒烟支持",
+        "en": "Smoke-free home advice and smoking-cessation support for smokers in the household"
       },
       "aliases": {
         "zh-CN": [
           "戒烟",
           "二手烟",
           "无烟家庭",
-          "戒烟建议"
+          "戒烟建议",
+          "不要抽烟",
+          "别抽烟",
+          "家里别抽烟",
+          "家里不抽烟",
+          "禁烟"
         ],
         "en": [
           "smoking cessation",
@@ -7213,8 +7452,8 @@
         "asked": "hx-smoke"
       },
       "response": {
-        "zh-CN": "你解释了二手烟（包括衣物上的残留烟雾）会加重哮喘，并提供了戒烟门诊信息。妈妈说会转告爸爸。",
-        "en": "You explain that second-hand smoke (including smoke on clothes) worsens asthma and give stop-smoking service details. Mum says she'll pass it on to his dad."
+        "zh-CN": "你解释了二手烟（包括衣物上的残留烟雾）会加重哮喘，并提供了戒烟门诊信息。妈妈说会转告家里人。",
+        "en": "You explain that second-hand smoke (including smoke on clothes) worsens asthma and give stop-smoking service details. Mum says she'll pass it on at home."
       }
     },
     {
@@ -8334,8 +8573,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SpO₂ 90%（<92%）、HR 140（>125）、RR 38（>30）、只能说短语、三凹征、PEF约为预计值的42%、PRAM 8/12 → 重度。神志清楚、无躁动、无发绀、不是沉默肺、血压正常、呼吸努力尚可——暂无危及生命征象，但需每15–20分钟复评。",
-            "en": "Correct. SpO₂ 90% (< 92%), HR 140 (> 125), RR 38 (> 30), phrases only, recession, PEF ≈ 42% predicted and PRAM 8/12 → severe. He is alert, not agitated, not cyanosed, has no silent chest, normal BP and adequate effort — no life-threatening features yet, but reassess every 15–20 min."
+            "zh-CN": "正确。SpO₂ 90%（<92%）、HR 140（>125）、RR 38（>30）、只能说短语、三凹征、PRAM 8/12 → 重度。神志清楚、无躁动、无发绀、不是沉默肺、血压正常、呼吸努力尚可——暂无危及生命征象，但需每15–20分钟复评。",
+            "en": "Correct. SpO₂ 90% (< 92%), HR 140 (> 125), RR 38 (> 30), phrases only, recession and PRAM 8/12 → severe. He is alert, not agitated, not cyanosed, has no silent chest, normal BP and adequate effort — no life-threatening features yet, but reassess every 15–20 min."
           }
         },
         {
@@ -8627,15 +8866,15 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确（本例145 L/min，约为预计值的81%）。",
-            "en": "Correct (here 145 L/min ≈ 81% of predicted)."
+            "zh-CN": "正确：PEF达到预计值或个人最佳值的75%以上，是可以离院的客观指标之一。",
+            "en": "Correct: a PEF above 75% of predicted or personal best is one of the objective criteria for discharge."
           }
         },
         {
           "id": "dc-education",
           "text": {
-            "zh-CN": "已给书面哮喘行动计划、吸入技术回示正确、恢复每日控制药并安排好泼尼松龙疗程",
-            "en": "Written action plan given, inhaler technique taught back correctly, daily controller restarted and prednisolone course arranged"
+            "zh-CN": "已给书面哮喘行动计划、吸入技术回示正确、开具每日控制药并安排好泼尼松龙疗程",
+            "en": "Written action plan given, inhaler technique taught back correctly, daily controller prescribed and prednisolone course arranged"
           },
           "correct": true,
           "feedback": {
@@ -10199,6 +10438,27 @@
         "locale": "en",
         "expect": [
           "hx-feeding"
+        ]
+      },
+      {
+        "text": "does anything run in the family?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "家里有人有哮喘或者过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "is there any heart disease in your family?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
         ]
       }
     ],

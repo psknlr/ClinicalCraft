@@ -5,6 +5,7 @@
  */
 import { createInterface } from "node:readline";
 import { t, type CaseDefinition } from "@clinicalcraft/core";
+import { libraryOrder, sanitizeTerminal } from "@clinicalcraft/agent";
 import { loadContent, type LoadedContent } from "@clinicalcraft/agent/node";
 import { CliError, EXIT, type CliContext } from "./context.js";
 import { caseChoiceMeta } from "./labels.js";
@@ -15,13 +16,11 @@ export { caseChoiceMeta, stars } from "./labels.js";
  * Cases in library order — published cases first, then by difficulty, then
  * by id (code-unit order) — the same order as the web library, independent
  * of the UI language and of load order, so `cases list` and the picker's
- * numbers are stable. `locale` is accepted for API compatibility only.
+ * numbers are stable (`libraryOrder`, shared with MCP `list_cases`). `locale`
+ * is accepted for API compatibility only.
  */
 export function sortedCases(content: LoadedContent, _locale?: string): CaseDefinition[] {
-  const published = (c: CaseDefinition) => Number(c.provenance.kind === "published-case");
-  return [...content.cases.values()]
-    .map((e) => e.def)
-    .sort((a, b) => published(b) - published(a) || a.difficulty - b.difficulty || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  return libraryOrder([...content.cases.values()].map((e) => e.def));
 }
 
 /** Resolve a picker answer (1-based number, id or unique prefix) against a list. */
@@ -49,7 +48,7 @@ export async function pickCase(ctx: CliContext, contentDirs: readonly string[]):
     const num = String(i + 1).padStart(2, " ");
     // Titles are spoiler-free; ids name the diagnosis (stemi-inferior-rv…), so the list never shows them
     // (typing an id still works, for those who know it).
-    ctx.print(`${p.dim(num)}. ${t(c.title, ctx.locale)} ${p.dim(caseChoiceMeta(ctx, c))}`);
+    ctx.print(`${p.dim(num)}. ${sanitizeTerminal(t(c.title, ctx.locale))} ${p.dim(caseChoiceMeta(ctx, c))}`);
   });
   const rl = createInterface({ input: ctx.io.stdin, output: ctx.io.stdout, terminal: true });
   let closed = false;

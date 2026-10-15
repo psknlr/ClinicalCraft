@@ -102,6 +102,15 @@ function fmt(file: string, issues: { path: string; message: string }[]): string[
 
 let cached: ContentIndex | null = null;
 
+/**
+ * Library order, shared with the CLI picker, `cases list` and MCP
+ * `list_cases` (`libraryOrder` in @clinicalcraft/agent): published cases
+ * first (V4 CASE 01), then by difficulty, then by id (code-unit order).
+ */
+function compareCards(a: CaseCard, b: CaseCard): number {
+  return Number(b.provenance === "published-case") - Number(a.provenance === "published-case") || a.difficulty - b.difficulty || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+}
+
 export function loadContent(): ContentIndex {
   if (cached) return cached;
   const issues: string[] = [];
@@ -116,8 +125,7 @@ export function loadContent(): ContentIndex {
     raws.set(c.id, json);
     cards.push({ ...c, source: "bundled" });
   }
-  // Published cases first (V4 CASE 01), then by difficulty and id.
-  cards.sort((a, b) => Number(b.provenance === "published-case") - Number(a.provenance === "published-case") || a.difficulty - b.difficulty || a.id.localeCompare(b.id));
+  cards.sort(compareCards);
 
   const catalogs = new Map<string, EquipmentCatalog>();
   const catalogEntries = Object.entries(catalogFiles).sort(([a], [b]) => (a.endsWith("/materials.json") ? -1 : b.endsWith("/materials.json") ? 1 : a.localeCompare(b)));
@@ -209,6 +217,8 @@ export function loadContent(): ContentIndex {
       cards.push({ ...c, source: "server" });
       added++;
     }
+    // Server cases take their place in the library order (not appended at the end).
+    cards.sort(compareCards);
     completable.clear();
     return added;
   };

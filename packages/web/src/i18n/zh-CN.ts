@@ -825,6 +825,9 @@ const zh = {
   "settings.kicker": "SETTINGS / 设置",
   "settings.title": "设置 · 语言模型与权限",
   "llm.corsWarn": "{provider} 通常不允许浏览器跨域直连，建议使用 clinicalcraft serve 代理。",
+  "llm.baseUrlServer":
+    "浏览器会拦截 {origin}：该服务器的安全策略（CSP connect-src）只允许页面直接访问服务器上已配置的供应商地址。请在服务器上配置此 Base URL（`clinicalcraft serve` 设置中的 providers.{provider}.baseUrl，然后重启服务），或改用代理模式。",
+  "llm.baseUrlCsp": "浏览器会拦截 {origin}：本页面的安全策略（CSP connect-src）不允许访问该地址。请用 `clinicalcraft serve` 提供本应用并在那里配置该 Base URL，或改用代理模式。",
   "help.agentsTitle": "智能体如何工作",
   "help.agents.grounding": "患者先由病例数据选出可以说的事实，再由语言模型（或离线模板）表达；病例未记录的内容保持未知。",
   "help.agents.offline": "未连接语言模型时为离线模式：回答直接取自病例原文，完全可玩、无需联网。",

@@ -31,6 +31,7 @@ export function languageName(locale: string): string {
 
 const EN = {
   // speakers
+  "speaker.patient": "Patient",
   "speaker.nurse": "Nurse",
   "speaker.radiologist": "Radiologist",
   "speaker.pathologist": "Pathologist",
@@ -59,6 +60,16 @@ const EN = {
   "warning.unknownAgent": "Unknown agent \"{agent}\".",
   "warning.notGrounded": "Patient reply failed the grounding check ({reason}); the authored answer was used.",
   "warning.nonverbalDropped": "The patient's nonverbal cue was not shown ({reason}).",
+  "grounding.kind.number": "a number",
+  "grounding.kind.unit": "a unit",
+  "grounding.kind.drug": "a drug name",
+  "grounding.kind.term": "a clinical term",
+  "grounding.kind.claim": "a named condition or date",
+  "grounding.kind.unasked": "a fact not yet asked about",
+  "grounding.kind.empty": "an empty reply",
+  "grounding.kind.length": "too long",
+  "grounding.kind.sign": "a sign or measurement",
+  "grounding.kind.finding": "an unexamined finding",
   "reason.noKey": "no API key for provider \"{provider}\"",
   "reason.offline": "provider is offline",
   "reason.unknownProvider": "{message}",
@@ -109,6 +120,9 @@ const EN = {
   "tool.orderWarning": "Notice: {text}",
   "tool.result.header": "{name} — {phase}{date}",
   "tool.result.unavailable": "No record of this test is available for this phase.",
+  "tool.result.notAvailable": "No result in this phase.",
+  "tool.read.orderedIn": "It was ordered in {phase} — type {command}",
+  "tool.rejected.item": "({name})",
   "tool.result.note": "Note: {text}",
   "tool.result.figures": "Figures: {list}",
   "tool.result.values": "Values:",
@@ -264,6 +278,7 @@ const EN = {
   "warning.promptBlocked": "Your message was blocked by a hook: {reason}",
   "warning.compactBlocked": "Compaction of {agent} was blocked by a hook: {reason}",
   "agent.offline.generic": "(The {agent} agent needs a language model and is offline. Configure a provider with /provider.)",
+  "agent.examiner.promptNeedsModel": "(The {agent} answers free-text requests only with a language model, and it is offline. Configure a provider with /provider; /assess gives the deterministic assessment.)",
   // labels
   "label.objectives": "Objectives",
   "label.orders": "Orders",
@@ -274,6 +289,7 @@ const EN = {
   "label.interventions": "Interventions",
   "label.phases": "Phases",
   "label.ready": "ready",
+  "label.noRecord": "no record",
   "label.pending": "pending",
   "label.pendingUntil": "pending (expected {time})",
   "label.read": "read",
@@ -306,9 +322,9 @@ const EN = {
   "notify.criticalResult.title": "Critical result",
   "notify.criticalResult.body": "The lab phoned through a critical result: {name} ({phase}). Review it now.",
   "nurse.criticalResult": "Doctor, the lab just called with a critical result on the {name}. Please look at it now.",
-  "notify.alarm.title": "Monitor alarm",
+  "notify.alarm.title": "Vital-sign alert",
   "notify.alarm.body": "{vital} {value} ({level})",
-  "nurse.alarm": "Doctor, the monitor is alarming — {vital} is {value}.",
+  "nurse.alarm": "Doctor, {vital} is {value}.",
   "notify.scenario.title": "Event",
   "notify.objective.title": "Objective completed",
   "notify.caseCompleted.title": "All objectives complete",
@@ -360,7 +376,7 @@ const EN = {
 
   // offline responders
   "nurse.offline.handover": "Handover — at triage: {note}",
-  "nurse.offline.vitals": "Latest observations: {vitals}",
+  "nurse.offline.vitals": "Latest observations: {vitals}.",
   "nurse.offline.noVitals": "We don't have monitor readings recorded for this patient.",
   "nurse.offline.pending": "Pending: {list}.",
   "nurse.offline.ready": "Back and waiting for you: {list}.",
@@ -418,6 +434,7 @@ const EN = {
 export type RuntimeKey = keyof typeof EN;
 
 const ZH: Record<RuntimeKey, string> = {
+  "speaker.patient": "患者",
   "speaker.nurse": "护士",
   "speaker.radiologist": "影像科医生",
   "speaker.pathologist": "病理科医生",
@@ -445,6 +462,16 @@ const ZH: Record<RuntimeKey, string> = {
   "warning.unknownAgent": "未知代理“{agent}”。",
   "warning.notGrounded": "患者回复未通过事实核验（{reason}），已改用病例原文回答。",
   "warning.nonverbalDropped": "患者的非语言表现未予显示（{reason}）。",
+  "grounding.kind.number": "数字",
+  "grounding.kind.unit": "单位",
+  "grounding.kind.drug": "药名",
+  "grounding.kind.term": "医学术语",
+  "grounding.kind.claim": "病名或时间",
+  "grounding.kind.unasked": "尚未问及的事实",
+  "grounding.kind.empty": "空回复",
+  "grounding.kind.length": "过长",
+  "grounding.kind.sign": "体征或测量值",
+  "grounding.kind.finding": "尚未检查的体征",
   "reason.noKey": "提供商“{provider}”没有可用的 API 密钥",
   "reason.offline": "提供商为离线模式",
   "reason.unknownProvider": "{message}",
@@ -493,6 +520,9 @@ const ZH: Record<RuntimeKey, string> = {
   "tool.orderWarning": "提示：{text}",
   "tool.result.header": "{name}——{phase}{date}",
   "tool.result.unavailable": "该阶段没有这项检查的记录。",
+  "tool.result.notAvailable": "本阶段无结果。",
+  "tool.read.orderedIn": "该检查开具于{phase}——请输入 {command}",
+  "tool.rejected.item": "（{name}）",
   "tool.result.note": "注：{text}",
   "tool.result.figures": "图像：{list}",
   "tool.result.values": "数值：",
@@ -644,6 +674,7 @@ const ZH: Record<RuntimeKey, string> = {
   "warning.promptBlocked": "你的消息被钩子拦截：{reason}",
   "warning.compactBlocked": "{agent} 的对话压缩被钩子拦截：{reason}",
   "agent.offline.generic": "（{agent} 代理需要语言模型，目前处于离线状态。请用 /provider 配置提供商。）",
+  "agent.examiner.promptNeedsModel": "（{agent} 只有在配置了语言模型时才能回答自由文本请求，目前处于离线状态。请用 /provider 配置提供商；/assess 可查看确定性评估。）",
   "label.objectives": "目标",
   "label.orders": "检查单",
   "label.decisions": "决策",
@@ -653,6 +684,7 @@ const ZH: Record<RuntimeKey, string> = {
   "label.interventions": "处置",
   "label.phases": "阶段",
   "label.ready": "已出",
+  "label.noRecord": "无记录",
   "label.pending": "待出",
   "label.pendingUntil": "待出（预计{time}）",
   "label.read": "已阅",
@@ -684,9 +716,9 @@ const ZH: Record<RuntimeKey, string> = {
   "notify.criticalResult.title": "危急值",
   "notify.criticalResult.body": "检验科电话通报危急值：{name}（{phase}）。请立即查看。",
   "nurse.criticalResult": "医生，检验科刚打电话报了{name}的危急值，请马上看一下。",
-  "notify.alarm.title": "监护报警",
+  "notify.alarm.title": "生命体征警报",
   "notify.alarm.body": "{vital} {value}（{level}）",
-  "nurse.alarm": "医生，监护仪在报警——{vital} 现在是 {value}。",
+  "nurse.alarm": "医生，{vital} 现在是 {value}。",
   "notify.scenario.title": "事件",
   "notify.objective.title": "目标完成",
   "notify.caseCompleted.title": "全部目标已完成",
@@ -735,7 +767,7 @@ const ZH: Record<RuntimeKey, string> = {
   "perm.label.deny": "拒绝",
 
   "nurse.offline.handover": "交班——分诊时：{note}",
-  "nurse.offline.vitals": "最新生命体征：{vitals}",
+  "nurse.offline.vitals": "最新生命体征：{vitals}。",
   "nurse.offline.noVitals": "这位患者没有记录监护数据。",
   "nurse.offline.pending": "待出结果：{list}。",
   "nurse.offline.ready": "已出结果待查看：{list}。",
@@ -797,6 +829,18 @@ export function rt(locale: string | null | undefined, key: RuntimeKey, params: R
 }
 
 /** Join a list with the locale's list separator. */
+/**
+ * How a front-end names an agent the learner talks to (REPL prompt, `/status`,
+ * `/talk`): in Chinese the localised role ("患者", "护士"), in English the id,
+ * which is already the English word; a custom agent keeps its id. `@` and
+ * `/talk` still take the id.
+ */
+export function agentLabel(locale: string, agent: string): string {
+  if (!isZh(locale)) return agent;
+  const key = `speaker.${agent}` as RuntimeKey;
+  return Object.hasOwn(ZH, key) ? ZH[key] : agent;
+}
+
 export function joinList(locale: string, items: readonly string[]): string {
   return items.join(isZh(locale) ? "、" : ", ");
 }

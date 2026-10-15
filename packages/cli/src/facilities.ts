@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 import { isAbsolute } from "node:path";
 import { caseCapabilityGaps, checkCatalogs, checkFacility, parseCatalog, parseFacility, t, type EquipmentCatalog, type Issue } from "@clinicalcraft/core";
 import { loadContent } from "@clinicalcraft/agent/node";
-import { table } from "@clinicalcraft/agent";
+import { sanitizeTerminal, table } from "@clinicalcraft/agent";
 import { flagBool, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, type CliContext } from "./context.js";
 
@@ -32,7 +32,7 @@ export async function facilitiesList(ctx: CliContext, args: ParsedArgs): Promise
     return EXIT.ok;
   }
   const rows = [[ctx.t("col.id"), ctx.t("col.name"), ctx.t("col.catalogs"), ctx.t("col.rooms"), ctx.t("col.slots"), ctx.t("col.placements")]];
-  for (const { def } of facilities) rows.push([def.id, t(def.name, ctx.locale), def.catalogs.join(", "), String(def.rooms.length), String(def.patientSlots.length), String(def.placements.length)]);
+  for (const { def } of facilities) rows.push([def.id, sanitizeTerminal(t(def.name, ctx.locale)), def.catalogs.join(", "), String(def.rooms.length), String(def.patientSlots.length), String(def.placements.length)]);
   ctx.print(table(rows, { header: true, maxCell: 50 }));
   ctx.print(ctx.out.dim(ctx.t("facilities.catalogs", { list: [...content.catalogs.keys()].join(", ") || "-" })));
   return EXIT.ok;
@@ -120,9 +120,9 @@ export async function facilitiesValidate(ctx: CliContext, args: ParsedArgs): Pro
   const p = ctx.out;
   for (const c of checked) {
     const label = c.errors.length === 0 ? p.green("✓") : p.red("✗");
-    ctx.print(`${label} ${isAbsolute(c.file) ? ctx.show(c.file) : c.file}${c.id ? p.dim(` (${c.id})`) : ""} ${p.dim(ctx.t("cases.counts", { errors: c.errors.length, warnings: c.warnings.length }))}`);
+    ctx.print(`${label} ${sanitizeTerminal(isAbsolute(c.file) ? ctx.show(c.file) : c.file)}${c.id ? p.dim(` (${sanitizeTerminal(c.id)})`) : ""} ${p.dim(ctx.t("cases.counts", { errors: c.errors.length, warnings: c.warnings.length }))}`);
     for (const i of [...c.errors, ...(flagBool(args, "quiet") ? [] : c.warnings)].slice(0, 50)) {
-      ctx.print(`    ${i.severity === "error" ? p.red("error  ") : p.yellow("warning")} ${p.dim(i.path || "(root)")} ${i.message}`);
+      ctx.print(`    ${i.severity === "error" ? p.red("error  ") : p.yellow("warning")} ${p.dim(sanitizeTerminal(i.path || "(root)"))} ${sanitizeTerminal(i.message)}`);
     }
   }
   ctx.print(failed > 0 ? p.red(ctx.t("facilities.failed", { failed, total: checked.length })) : p.green(ctx.t("facilities.ok", { total: checked.length })));

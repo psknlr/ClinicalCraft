@@ -11,6 +11,7 @@ import {
   objectiveTitle,
   phaseLabel,
   rt,
+  sanitizeTerminal,
   vitalLabel,
   vitalWithUnit,
   type AgentEvent,
@@ -111,31 +112,8 @@ export function truncate(text: string, max: number): string {
   return single.length > max ? `${single.slice(0, Math.max(1, max - 1))}…` : single;
 }
 
-/**
- * Escape sequences and control characters a terminal would act on: CSI (7-bit
- * and 8-bit), OSC/DCS/SOS/PM/APC strings up to BEL or ST (or the end of the
- * text — a stream chunk may cut one), other ESC sequences (`ESC c`, `ESC 7`,
- * `ESC ( B`…), then any lone C0 control except newline and tab, DEL and C1.
- * Group 1 captures a 7-bit CSI (so SGR colour codes can be told apart).
- */
-const TERMINAL_UNSAFE_RE =
-  /(\u001b\[[0-?]*[ -/]*[@-~])|\u009b[0-?]*[ -/]*[@-~]|\u001b[\]PX^_][\s\S]*?(?:\u0007|\u001b\\|\u009c|$)|[\u0090\u0098\u009d\u009e\u009f][\s\S]*?(?:\u0007|\u001b\\|\u009c|$)|\u001b[ -/]*[0-~]|[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/g;
-const HAS_UNSAFE_RE = /[\u0000-\u0008\u000b-\u001f\u007f-\u009f]/;
-const SGR_RE = /^\u001b\[[0-9;]*m$/;
-
-/**
- * Make untrusted text (model output, case content, provider errors, file
- * names) safe to write to a terminal: removes C0/C1 control characters and
- * whole ANSI escape sequences (clipboard writes, cursor movement, hyperlinks,
- * title changes…), keeping `\n` and `\t` (`\r\n` becomes `\n`). Apply it before
- * the palette adds the CLI's own colour codes. `keepColors` keeps SGR colour
- * sequences (`ESC [ … m`) and strips the rest — for text that already
- * carries the palette's codes.
- */
-export function sanitizeTerminal(text: string, options: { keepColors?: boolean } = {}): string {
-  if (!HAS_UNSAFE_RE.test(text)) return text;
-  return text.replace(/\r\n/g, "\n").replace(TERMINAL_UNSAFE_RE, (match: string, csi: string | undefined) => (options.keepColors && csi && SGR_RE.test(match) ? match : ""));
-}
+/** `sanitizeTerminal` lives in @clinicalcraft/agent (shared with the MCP server's stderr diagnostics). */
+export { sanitizeTerminal };
 
 /** `sanitizeTerminal` over every string of a JSON-like value (case definitions). */
 function sanitizeDeep<T>(value: T): T {
@@ -198,6 +176,8 @@ export class EventRenderer {
   usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
   /** Text of the last `permission_denied` error (the command's own output repeats it). */
   private lastDenied: string | null = null;
+  /** The "■ Case finished." line was printed (the /finish command's own "Case finished." is then not repeated). */
+  private finishedShown = false;
   /** Last `command_output` data (REPL reacts to /export, /quit). */
   lastCommand: { name: string; text: string; data?: unknown } | null = null;
 
@@ -455,6 +435,8 @@ export class EventRenderer {
           this.lastDenied = null; // already shown as the ✗ line
           return;
         }
+        if (msg.name === "finish" && this.finishedShown && (msg.data as { ok?: unknown } | undefined)?.ok === true) return; // the ■ line said it
+
         if (msg.text.trim()) this.line(msg.text.replace(/\n+$/, ""));
         return;
       case "compacted":
@@ -499,6 +481,7 @@ export class EventRenderer {
         this.line(p.bold(p.green(`★ ${m(L, "render.caseCompleted")}`)));
         return;
       case "case.finished":
+        this.finishedShown = true;
         this.line(p.bold(event.timedOut ? p.yellow(`⏱ ${m(L, "render.timedOut")}`) : `■ ${m(L, "render.finished")}`));
         return;
       case "vitals.alarm": {

@@ -29,7 +29,7 @@ ketoacidosis with admission hypokalaemia**. Insulin must wait until potassium is
 | phases | `resus` → `k-replete` → `glucose-lt14` → `resolution` (all automatic, not learner-switchable) |
 | clock | simulated, starts 02:40, `realtimeScale` 2, limit 1080 min (18 h). Costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1 min. Learners use **wait** (`advance-time`, ≤ 240 min per call) to let hours pass. |
 | difficulty | 3 / 5 |
-| content | 42 history items (3 `unknown`, 9 required; 7 arrival-state items limited to `resus`/`k-replete`, 2 later-phase status items), 18 exam findings (2 phase-restricted reassessments), 16 investigations, 27 interventions, 6 objectives, 5 decisions, 15 rubric items (14 deterministic + 1 examiner-judged), 6 NPC briefs, 87 matcher test utterances |
+| content | 42 history items (3 `unknown`, 9 required; 7 arrival-state items limited to `resus`/`k-replete`, 2 later-phase status items), 18 exam findings (2 phase-restricted reassessments), 16 investigations, 27 interventions, 6 objectives, 5 decisions, 15 rubric items (14 deterministic + 1 examiner-judged), 6 NPC briefs, 89 matcher test utterances |
 
 ## Learning objectives
 
@@ -74,7 +74,7 @@ Glucose 28 is a critical alarm and RR 28 a warning from minute 0.
 | `dextrose-10` | Glucose +11 over 180 min. With insulin running, this holds glucose at about 11–13 mmol/L. It is unsafe while glucose is still ≥ 14 before `glucose-below-14`. Without it, glucose falls below 4 mmol/L at about minute 470 (≈ 6.5 h after insulin starts) and keeps falling: `ev-hypoglycaemia` fires with a critical alarm, `ev-severe-hypo` (glucose ≤ 2.5) drops GCS to 12, and `ev-hypo-recovered` restores GCS 15 once glucose is back ≥ 5. |
 | `ev-dka-resolved` → `resolution` phase | Fires on insulin, after glucose < 14, once the noise-free RR is ≤ 18 (about minute 580, ≈ 9.6 h). This is the case's surrogate for the acidosis clearing. The phase is entered only from `glucose-lt14`. |
 | `stop-friii` | Indicated only in `resolution` after `sc-insulin-transition`. Otherwise it is contraindicated, and (if the infusion was actually running) `ev-friii-stopped-no-overlap` warns that she has no insulin on board. |
-| Nurse prompts | `ev-insulin-ready` at minute 12 (the insulin is made up; a tempting trap), `ev-k-late-30`, `ev-no-fluids-45`, `ev-k-recheck-due`, `ev-no-insulin-3h`, `ev-bicarbonate`. |
+| Staff prompts | Nurse: `ev-insulin-ready` at minute 12 (the insulin is made up; a tempting trap), `ev-k-late-30`, `ev-no-fluids-45`, `ev-k-recheck-due`, `ev-bicarbonate`. Attending: `ev-no-insulin-3h` (narrated, `speaker: "narrator"`, because the runtime has no attending voice for scenario lines). |
 | Rubric flags | `early-workup` (glucose, ketones and VBG read by minute 15) and `fluids-by-30`. |
 
 Tempting wrong choices you can make:
@@ -243,7 +243,10 @@ conflict, and names the JBDS alternative in feedback. The differences:
   dextrose vs hypo treatment, KCl infusion vs push, monitor vs monitoring plan).
   Short CJK keywords that share a generic 3-character run with many questions
   (有没有…, 胰岛素…, 家里有…) were removed, because the patient pipeline also
-  selects any secondary hit within 0.25 of the best. All 87
+  selects any secondary hit within 0.25 of the best. "你平时怎么用胰岛素？" /
+  "平时胰岛素怎么打" reach only `hx-insulin-pump` (`hx-meds`, `hx-insulin-omitted`
+  and `hx-sick-day-rules` exclude usual-insulin phrasing), and "一天总共用多少胰岛素"
+  reaches `hx-pump-settings`. All 88
   `extensions.testUtterances` (incl. colloquial Chinese, typos and
   abbreviations such as LMP, TDD, SOB, DKA) match their expected item as top
   hit with score ≥ 0.55. `VRIII` is deliberately not an alias of the
@@ -261,7 +264,16 @@ conflict, and names the JBDS alternative in feedback. The differences:
 - **Dose text is a formula.** The FRIII dose reads 0.1 U/kg/h with no bolus and
   the monitoring plan reads urine ≥ 0.5 mL/kg/h. Her weight is earned by asking
   (`hx-weight`) or weighing her (`ex-weight`); 5.5 mL/h = 5.5 U/h for 55 kg appears
-  only in the infusion's `response` and the pharmacist's dose check.
+  only in the infusion's `response` and the pharmacist's dose check. Likewise the
+  first-litre doses no longer say "about 18 mL/kg" and the (wrong) insulin bolus reads
+  0.1 U/kg; 18 mL/kg and 5.5 U for 55 kg are in their responses.
+- **Options do not pre-empt the history.** The `precipitant` options name the
+  categories ("an occluded pump set", "acute gastroenteritis, probably viral"),
+  not the details only targeted questions reveal (the 4-day-old set, the
+  roommate's illness).
+- **Per-locale result texts.** Ketone, urinalysis and hCG values and reference
+  texts are `LocalizedText` (阴性 / negative, 微量 / trace, the ketone bands), never
+  both languages in one string or English-only.
 - **Not modelled:** cerebral oedema, hypophosphataemia complications, and the
   individual pump-versus-injections decision.
 - **Facility:** in `general-hospital` the case takes slot `resus-1`. Bedside

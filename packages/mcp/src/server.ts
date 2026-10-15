@@ -13,7 +13,7 @@
  * and resolves.
  */
 import type { Readable, Writable } from "node:stream";
-import { CLINICALCRAFT_VERSION, type AgentProfile, type LLMProvider, type ProviderConfig, type ResolvedSettings } from "@clinicalcraft/agent";
+import { CLINICALCRAFT_VERSION, sanitizeTerminal, type AgentProfile, type LLMProvider, type ProviderConfig, type ResolvedSettings } from "@clinicalcraft/agent";
 import { loadContent, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
 import { normalizeLocale } from "@clinicalcraft/core";
 import { classifyMessage, LineSplitter, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcRequest, type JsonRpcResponse } from "./jsonrpc.js";
@@ -37,6 +37,17 @@ function stderrLog(message: string): void {
   process.stderr.write(`[clinicalcraft mcp] ${message}\n`);
 }
 
+/**
+ * A diagnostics sink that receives terminal-safe text only: messages carry
+ * untrusted text (client names, model and provider errors, session warnings
+ * quoting model or case text), so escape sequences and control characters
+ * are stripped (`sanitizeTerminal`; newlines and tabs kept) before any sink —
+ * stderr or a caller's `log` — sees them.
+ */
+export function safeLog(sink: (message: string) => void): (message: string) => void {
+  return (message) => sink(sanitizeTerminal(String(message)));
+}
+
 export interface McpServerOptions {
   settings: ResolvedSettings;
   env?: Env;
@@ -46,7 +57,7 @@ export interface McpServerOptions {
   content?: LoadedContent;
   /** Maximum open sessions before the least recently used is closed (default 32). */
   maxSessions?: number;
-  /** Diagnostics sink (default: stderr; never stdout). */
+  /** Diagnostics sink (default: stderr; never stdout). Receives terminal-sanitised text (`safeLog`). */
   log?: (message: string) => void;
   /** Model provider override for every agent (tests). */
   providerFactory?: (agent: AgentProfile, config: ProviderConfig) => LLMProvider;
@@ -74,7 +85,7 @@ export class McpServer {
 
   constructor(private readonly opts: McpServerOptions) {
     this.settings = opts.settings;
-    this.log = opts.log ?? stderrLog;
+    this.log = safeLog(opts.log ?? stderrLog);
     this.contentPromise = opts.content ? Promise.resolve(opts.content) : null;
     this.sessions = new SessionManager({
       settings: opts.settings,
@@ -232,7 +243,7 @@ export async function runMcpServer(opts: RunMcpServerOptions): Promise<{ session
   const input = (opts.input ?? opts.stdin ?? process.stdin) as NodeJS.ReadableStream;
   const output = (opts.output ?? opts.stdout ?? process.stdout) as NodeJS.WritableStream;
   const server = new McpServer(opts);
-  const log = opts.log ?? stderrLog;
+  const log = safeLog(opts.log ?? stderrLog);
   let outputBroken = false;
   output.on("error", (err: Error) => {
     outputBroken = true;

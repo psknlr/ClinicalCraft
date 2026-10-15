@@ -1,4 +1,5 @@
 /** Content from `clinicalcraft serve`'s contentDirs joins the bundled library (C5). */
+import { libraryOrder } from "@clinicalcraft/agent";
 import { describe, expect, it } from "vitest";
 import { loadContent, loadServerContent } from "./content.js";
 
@@ -33,5 +34,17 @@ describe("server content (C5)", () => {
     expect(index.facilitiesFor(card!).map((f) => f.id)).toContain("general-hospital");
     // Not served (offline / standalone): nothing changes.
     expect(await loadServerContent(index, async () => null)).toBe(0);
+  });
+
+  it("server cases join the library in library order, not at the end (review round 3)", () => {
+    const index = loadContent();
+    const bundled = index.getCase("stemi-inferior-rv");
+    if (!bundled) return;
+    const { solution: _solution, ...publicCase } = bundled;
+    index.addServerContent({ cases: [{ ...publicCase, id: "aaa-server-case", difficulty: 1, provenance: { ...publicCase.provenance, kind: "synthetic" } }], facilities: [], catalogs: [] });
+    const ids = index.cards.map((c) => c.id);
+    const expected = libraryOrder(ids.map((id) => index.getCase(id)!)).map((c) => c.id);
+    expect(ids).toEqual(expected);
+    expect(ids.at(-1)).not.toBe("aaa-server-case");
   });
 });

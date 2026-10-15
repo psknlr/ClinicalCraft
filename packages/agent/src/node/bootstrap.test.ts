@@ -178,9 +178,15 @@ describe("createNodeSession", () => {
     const s = await createNodeSession({ caseId: "new-onset-t2dm", facilityId: "clinic-v4", cwd: p.cwd, env: p.env, content, transcript: false, flags: { locale: "en", approvalMode: "bypass" } });
     const events = await s.run({ type: "user_message", text: "/order inv-hba1c" });
     const out = events.flatMap((e) => (e.msg.type === "command_output" ? [e.msg.text] : [])).join("\n");
-    expect(out).toMatch(/Not available here: .*lab-endocrine/);
+    expect(out).toMatch(/^Not available here: .*lab-endocrine/m);
+    expect(out).not.toMatch(/Not possible: Not available/); // review round 3: one prefix, not two
     expect(s.state.orders).toEqual([]);
     // In its own facility the same order is placed.
+    const zh = await createNodeSession({ caseId: "new-onset-t2dm", facilityId: "clinic-v4", cwd: p.cwd, env: p.env, content, transcript: false, flags: { locale: "zh-CN", approvalMode: "bypass" } });
+    const zhOut = (await zh.run({ type: "user_message", text: "/order inv-hba1c" })).flatMap((e) => (e.msg.type === "command_output" ? [e.msg.text] : [])).join("\n");
+    expect(zhOut).toMatch(/^此处无法进行：/m);
+    expect(zhOut).not.toContain("无法执行：此处无法进行");
+    await zh.close();
     const own = await createNodeSession({ caseId: "new-onset-t2dm", cwd: p.cwd, env: p.env, content, transcript: false, flags: { locale: "zh-CN", approvalMode: "bypass" } });
     await own.run({ type: "user_message", text: "/order inv-hba1c" });
     expect(own.state.orders.map((o) => o.investigationId)).toEqual(["inv-hba1c"]);

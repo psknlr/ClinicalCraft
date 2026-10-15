@@ -11,6 +11,7 @@ import {
   orderStatus,
   presentedOptions,
   progress,
+  resultFor,
   t,
   type CaseDefinition,
   type ClinicalAction,
@@ -22,11 +23,11 @@ import type { SlashCommand } from "./agents/types.js";
 import type { PlanItem, RuntimeConfigPatch } from "./protocol.js";
 import { PROVIDER_TEMPLATES, localizedName } from "./providers/catalog.js";
 import type { SessionSnapshot } from "./session/types.js";
-import { isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
+import { agentLabel, isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
 import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
-import { caseStatusText, listOptionsText } from "./tools/clinical.js";
-import { clockTime, investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
+import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
+import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
 import type { ToolOutput } from "./tools/types.js";
 
 /** What commands need from the session. */
@@ -50,6 +51,13 @@ export interface CommandHost {
   /** Dispatch a clinical action as the learner (gated). Null when denied/cancelled. */
   learnerAction(action: ClinicalAction): Promise<ReduceResult | null>;
   sendMessage(to: string | null, text: string): Promise<void>;
+  /**
+   * Send a custom command's expanded prompt to an agent (`to`: null = the
+   * current interlocutor). Unlike `sendMessage`, an agent whose own turn
+   * ignores the text — the examiner, which otherwise runs an assessment —
+   * answers the prompt. Optional (absent = `sendMessage`).
+   */
+  promptAgent?(to: string | null, text: string): Promise<void>;
   /**
    * True when `agent` has no model and its offline responder does not read
    * the message (examiner, attending): custom prompt commands then explain
@@ -119,6 +127,12 @@ const APPROVAL_MODES = ["default", "strict", "auto", "plan", "bypass"] as const;
 const SCOPES = ["history-only", "workup", "full"] as const;
 const LANGS = ["zh-CN", "en"] as const;
 
+/** "患者（patient）" in Chinese — the role, with the id `@`/`talk` take; the id alone in English. */
+function interlocutorText(locale: string, agent: string): string {
+  const label = agentLabel(locale, agent);
+  return label === agent ? agent : `${label}（${agent}）`;
+}
+
 function usage(host: CommandHost, name: string, hint: string): void {
   host.output(rt(host.locale, "cmd.usage", { name, hint }), { error: "usage" });
 }
@@ -126,12 +140,14 @@ function usage(host: CommandHost, name: string, hint: string): void {
 /**
  * Print a tool result for the learner. A rejected engine action is shown
  * by its reason only ("Not possible: …"); the rejection code stays in the
- * data (and in the model-facing tool output).
+ * data (and in the model-facing tool output). A facility refusal
+ * (`missing-capability`) already reads "Not available here: …" and is shown
+ * as is.
  */
 function toolOut(host: CommandHost, out: ToolOutput, command?: string): void {
-  const data = out.data as { rejected?: unknown; message?: unknown; unresolved?: unknown } | undefined;
+  const data = out.data as { rejected?: { code?: unknown }; message?: unknown; unresolved?: unknown } | undefined;
   const text =
-    !out.ok && data?.rejected && typeof data.message === "string"
+    !out.ok && data?.rejected && typeof data.message === "string" && data.rejected.code !== "missing-capability"
       ? rt(host.locale, "action.rejected", { message: data.message })
       : !out.ok && command && typeof data?.unresolved === "string"
         ? unresolvedText(host.locale, command, data as UnresolvedData)
@@ -298,11 +314,11 @@ function resultsCommand(host: CommandHost): void {
   }
   const rows = [[isZh(L) ? "检查" : "Test", "id", rt(L, "label.phase"), isZh(L) ? "状态" : "Status"]];
   for (const o of orders) {
-    const status = o.read ? rt(L, "label.read") : o.ready ? rt(L, "label.ready") : rt(L, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, L, "ceil") });
-    rows.push([investigationName(c, o.order.investigationId, L), o.order.investigationId, phaseLabel(c, o.order.phase, L), status]);
+    // The phase id too: `/read <id> <phase>` takes it.
+    rows.push([investigationName(c, o.order.investigationId, L), o.order.investigationId, `${phaseLabel(c, o.order.phase, L)} (${o.order.phase})`, orderStatusText(c, o, L)]);
   }
   host.output(table(rows, { header: true }), {
-    orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt })),
+    orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
   });
 }
 
@@ -332,7 +348,7 @@ function statusCommand(host: CommandHost): void {
     [rt(L, "label.approval"), s.approvalMode],
     [rt(L, "label.scope"), s.practiceScope],
     [rt(L, "label.locale"), L],
-    [rt(L, "label.interlocutor"), host.interlocutor()],
+    [rt(L, "label.interlocutor"), interlocutorText(L, host.interlocutor())],
     [rt(L, "label.hints"), String(host.state().hints)],
   ];
   host.output(`${table(rows)}\n\n${status.text}`, {
@@ -530,11 +546,11 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
       return host.output(rt(L, "cmd.note.added"), { accepted: result !== null && !result.rejected });
     }
     case "talk": {
-      if (!a) return host.output(rt(L, "cmd.talk.now", { agent: host.interlocutor() }), { interlocutor: host.interlocutor(), agents: host.agentNames() });
+      if (!a) return host.output(rt(L, "cmd.talk.now", { agent: interlocutorText(L, host.interlocutor()) }), { interlocutor: host.interlocutor(), agents: host.agentNames() });
       const agent = resolveAgentAlias(a);
       if (!host.agentNames().includes(agent)) return host.output(rt(L, "cmd.talk.unknown", { agent, agents: joinList(L, host.agentNames()) }), { error: "unknown-agent" });
       await host.configure({ interlocutor: agent });
-      return host.output(rt(L, "cmd.talk.now", { agent }), { interlocutor: agent });
+      return host.output(rt(L, "cmd.talk.now", { agent: interlocutorText(L, agent) }), { interlocutor: agent });
     }
     case "consult": {
       const [role, ...rest] = splitArgs(a);
@@ -586,7 +602,8 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
         return host.output(rt(L, "cmd.custom.needsModel", { name, agent: target }), { error: "needs-model", agent: target });
       }
       const text = expandCommandTemplate(custom.template ?? "", a);
-      return host.sendMessage(custom.agent ?? null, text);
+      // The template is a prompt for its agent: the examiner answers it instead of running a full assessment.
+      return host.promptAgent ? host.promptAgent(custom.agent ?? null, text) : host.sendMessage(custom.agent ?? null, text);
     }
   }
 }

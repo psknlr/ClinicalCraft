@@ -63,7 +63,7 @@ cardioembolic (AF). NIHSS 14, ASPECTS 9.
    * Ask about anticoagulants, bleeding history and recent surgery or trauma.
    * Decide that he is eligible once BP is < 185/110 mmHg, **without waiting for coagulation or
      platelet results**.
-4. **Deliver acute treatment safely** (BP control and thrombolysis).
+4. **Deliver acute reperfusion treatment** (BP control and thrombolysis; the objective is ticked by any lysis or recanalisation — an unsafe lysis is penalised by the rubric, not here).
    * Use IV labetalol, nicardipine or urapidil.
    * Then give alteplase 0.9 mg/kg or tenecteplase 0.25 mg/kg.
    * Door-to-needle target ≤ 60 min.
@@ -95,6 +95,9 @@ Every option carries educational feedback, including the distractors:
 * `d-lysis`: "AF → wait for INR", "BP is a contraindication", "skip IVT and go straight to EVT",
   "unwitnessed onset → no lysis".
 * `d-evt`: "needs a CTP mismatch", "wait 1 h after lysis", "age ≥ 65 is a contraindication".
+
+`d-evt` quotes NIHSS 14 and ASPECTS 9 in its options, so it unlocks only once the NIHSS has been
+scored and the CT head and the CTA have been read (plus the pre-stroke function question).
 
 ## Key numbers (all internally consistent)
 
@@ -183,10 +186,15 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   the bedside glucose, NIHSS, plain CT and CTA have been read **and** there is no suspected sICH.
   A premature (contraindicated) transfer therefore waits until those are done instead of
   stranding the learner in `angio`, where the ED exam items and ED tests have no record.
-* **Order notice.** The DSA/thrombectomy notice in `orderMatching.warnings` is printed on every
-  matching order, including in `angio`, so it states a condition ("results exist only once the
-  neurointervention team has been called and the patient is there") instead of telling the
-  learner to do something first that may already be done.
+* **Order notice.** The DSA/thrombectomy notice in `orderMatching.warnings` has
+  `"unless": {"phase": "angio"}`: in the angio suite the result exists, so the `order_test` tool
+  (`/order`, models, MCP) no longer prints it there. The condition is the phase alone because
+  `angio` can be entered without the neurointervention call (`transfer-angio` is then not
+  indicated, but allowed), and the result exists there either way. The text still states a
+  condition ("results exist only once the neurointervention team has been called and the
+  patient is there") instead of telling the learner to do something first that may already be
+  done, because callers that pass no session — the web order panel today — print it in every
+  phase, `angio` included.
 * **Reperfusion.** When the DSA result is ready in the `angio` phase (and there was no sICH), event
   `reperfusion` fires: GCS 14, BP 168/94 baseline (shown as about 148/84 with the persisting
   antihypertensive effect), and the patient starts producing short phrases. If no lytic had been
@@ -303,7 +311,7 @@ it orders.
 
 ## Matcher regression corpus
 
-`extensions.testUtterances` holds 72 bilingual paraphrases (41 zh-CN, 31 en), including colloquial
+`extensions.testUtterances` holds 78 bilingual paraphrases (43 zh-CN, 35 en), including colloquial
 Chinese (有木有, 咋了, 啥药), typos (华法令, warfrin) and abbreviations (LKW, TIA, DOAC, BP, hx, b4).
 Each expected id is the **top** `matchHistory` hit with a score ≥ 0.55 (the `cases verify` rule),
 ties being broken by declaration order. Two declaration-order choices keep the corpus stable:
@@ -313,8 +321,11 @@ ties being broken by declaration order. Two declaration-order choices keep the c
 
 `excludeKeywords` steer look-alike questions: medications vs anticoagulants / recreational drugs,
 last known well vs "were you with him", bleeding history vs "risk of bleeding" or a parent's stroke,
-last meal vs swallowing, hypertension vs "did he take his BP pill today", and "don't worry" away
-from the concerns item. Avoid generic Chinese bigrams such as 什么, 有没有, 怎么, 吃了 in keywords:
+last meal vs swallowing, hypertension vs "did he take his BP pill today", today's home BP reading
+(`unknown-bp-today`, which takes 量过血压 but excludes 平时 / "usually") vs his usual BP (`pmh-htn`),
+and "don't worry" away from the concerns item. "Was his father's stroke a clot or a bleed?" lists
+`family-history` in `alsoOk`: crediting the family history with the unknown stroke type is
+intended. Avoid generic Chinese bigrams such as 什么, 有没有, 怎么, 吃了 in keywords:
 the character matcher scores them against every question.
 
 Recall@3 on 106 learner-style probes rose from 0.755 to 1.000. A second set of 60, written after
@@ -327,5 +338,5 @@ second pass that also used it).
 npx tsx -e "…CaseSchema.safeParse…" packages/content/cases/acute-ischemic-stroke/case.json   # VALID
 # parseCase: ok, 0 warnings · checkCaseIntegrity: [] · verifyCase: ok, 0 issues, rubric 17/17
 npm run cc -- cases validate packages/content/cases/acute-ischemic-stroke/case.json
-npm run cc -- cases verify acute-ischemic-stroke   # objectives 5/5, decisions 4/4, utterances 72/72
+npm run cc -- cases verify acute-ischemic-stroke   # objectives 5/5, decisions 4/4, utterances 78/78
 ```

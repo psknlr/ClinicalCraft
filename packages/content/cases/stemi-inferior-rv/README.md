@@ -22,10 +22,10 @@ JVP with Kussmaul's sign, and clear lungs.
 | id / version | `stemi-inferior-rv` / `1.0.0` |
 | setting / facility | `emergency` / `general-hospital` (resus bay) |
 | locales | `zh-CN` (source), `en` |
-| phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic once he has been transferred **and** the lab activated; not learner-switchable) |
+| phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic once he has been transferred **and** the lab activated) → `post-pci` 导管室 · PCI术后 (automatic once the angiography/PCI result is ready); none learner-switchable |
 | clock | simulated, starts 09:10, `realtimeScale` 1, limit 120 min; costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1.5 min |
 | difficulty | 3 / 5 |
-| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 91 matcher test utterances |
+| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 92 matcher test utterances |
 
 ## Learning objectives
 
@@ -108,11 +108,15 @@ VF and in the lab within 60 min, `verifyCase` scores the deterministic rubric at
 - VBG pH 7.35 with pCO₂ 5.9 kPa (44 mmHg) and HCO₃ 24 mmol/L (Henderson–Hasselbalch);
   BE −1.1. ABG pH 7.41, PaCO₂ 5.1 kPa (38 mmHg), PaO₂ 10.8 kPa (81 mmHg) ↔ SaO₂ 96%.
 - LDL-C (Friedewald) = 6.2 − 0.9 − 2.4/2.2 ≈ 4.2 mmol/L. HbA1c 5.8% = 40 mmol/mol.
-- Weight-based doses for 78 kg:
-  - UFH 70–100 U/kg = 5,500–7,800 U
+- Weight-based doses for 78 kg (his weight is history to elicit, so the dose texts give
+  only the per-kg formula or, for tenecteplase, the whole weight-band table; these numbers
+  appear in the interventions' `response`s, and the antithrombotic option reads
+  "Tenecteplase (weight-banded bolus)"):
+  - UFH 70–100 U/kg = 5,500–7,800 U (6,000 U given ≈ 77 U/kg)
   - enoxaparin 0.5 mg/kg ≈ 40 mg
   - tenecteplase 40 mg (70–<80 kg band)
   - dobutamine 2.5–5 µg/kg/min ≈ 0.2–0.4 mg/min
+  - noradrenaline 0.05–0.1 µg/kg/min ≈ 4–8 µg/min
 - Smoking: 20/day × 38 years = 38 pack-years.
 - ECG ST elevation in III fell from 3.0 to 0.5 mm after PCI (> 70% resolution).
 
@@ -136,12 +140,18 @@ ERC/AHA resuscitation updates before high-stakes use.
 
 ## Modelling notes and limitations
 
-- The coronary-angiography notice in `orderMatching.warnings` is printed on every matching
-  order, also in the cath lab, so it states a condition ("a result exists only once the lab has
-  been activated and the patient is there") rather than an instruction to do it first.
+- The coronary-angiography notice in `orderMatching.warnings` has `"unless"` = phase `cath` or `post-pci`:
+  once he is in the cath lab (a phase entered only when the lab has been activated and he has
+  been transferred) the result exists and neither the `order_test` tool (`/order`, models, MCP)
+  nor the web order panel prints it. It still states a condition ("a result exists only once the
+  lab has been activated and the patient is there") rather than an instruction to do it first, as
+  CASE_AUTHORING §5 asks, so it reads right wherever it is shown.
 - Results are static per phase. The `ed` 12-lead ECG reads "First ED ECG" (sinus
   bradycardia, 54/min) whenever it is ordered, including after a VF/ROSC branch.
-  The post-PCI ECG is the `cath`-phase result of the same investigation.
+  The post-PCI ECG is the `post-pci`-phase result of the same investigation: that phase starts when
+  the angiography/PCI result is ready (with the `reperfusion` event), so an ECG ordered in the cath lab
+  before the PCI has no record and can never show the reperfusion while the monitor shows bradycardia.
+  `obj5-transfer` needs the angiogram read in `cath` and the ECG read in `post-pci`.
 - The engine adds intervention effects and trends on top of scenario `setVitals` unless
   the event is `absolute` (`rosc`, `reperfusion`). During VF the arrest rule shows HR,
   BP and SpO₂ as unmeasurable; RR keeps display jitter on top of zero (0–1/min). The
@@ -186,7 +196,12 @@ ERC/AHA resuscitation updates before high-stakes use.
   do not select the required `medications` item. Selected items credit the learner
   with asking.
 - `identity` answers name and age (pseudonym, 58), so offline mode does not answer
-  "how old are you?" with the fallback.
+  "how old are you?" with the fallback. Its keyword is run-together `howold`, so "is there
+  an old ECG?" reaches `prior-ecg` only.
+- Co-selections removed in the fifth review: `pain-site` excludes radiation words (放射,
+  别的地方, "spread"), `medications` excludes PDE5-inhibitor words (Viagra, 伟哥), and
+  `assoc-dyspnoea` excludes pleuritic phrasing ("hurt to breathe", 吸气时疼), so those
+  questions select only `pain-radiation`, `pde5` and `pain-pleuritic`.
 - `extensions.testUtterances` ends with a regression set for each collision above.
 - Questions about things the case does not record get `persona.fallbackUnknown` or, offline,
   a clarifying question. These are weight change, stress, sleep, urinary, bowel and other
@@ -194,6 +209,20 @@ ERC/AHA resuscitation updates before high-stakes use.
   a "normal" answer. `pmh-cardiac` excludes urine, bowel, sleep, eye, memory and similar
   words: its "heart problems" keyword would otherwise answer "any X problems?" with the
   cardiac history.
+
+## Intervention matcher notes
+
+- Activation phrasing ("activate the cath lab", "call / page / alert the cath lab", "cath lab
+  activation", 启动 / 激活 / 通知 / 联系 / 呼叫导管室) reaches only `activate-cath-lab`:
+  `transfer-cath-lab` excludes those verbs, so the transfer is never offered as a candidate.
+- `defibrillation` excludes benign defibrillator requests (getting it ready, on standby, nearby,
+  at the bedside, checking it, pads, attaching it; 准备除颤仪, 放床边, 电极片) and the word shock
+  used for circulation ("cardiogenic", "in shock", "treat the shock", 休克), so they never
+  offer a shock; the readiness phrasings reach `defib-pads` instead. "Shock him", "deliver a
+  shock", "defibrillate", 除颤 and 电击 still reach `defibrillation`.
+- The `nitrate-safety` distractor reads "If the JVP is raised, that means fluid overload…",
+  because the decision can unlock through the right-sided leads before the JVP is examined.
+- The capillary-glucose reference text is per-locale (随机 3.9–7.8 / random 3.9–7.8).
 
 ## Validation
 

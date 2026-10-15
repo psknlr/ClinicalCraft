@@ -7,16 +7,20 @@ import { basename, dirname, join, resolve } from "node:path";
 import {
   caseCapabilityGaps,
   checkCaseIntegrity,
+  hasHistoryTwins,
+  historyTwin,
   IdSchema,
   matchHistory,
   parseCase,
+  supersededIn,
   t,
   verifyCase,
   type CaseDefinition,
   type Issue,
+  type MatchHit,
 } from "@clinicalcraft/core";
 import { builtinContentDir, findProjectRoot, loadContent, type LoadedContent } from "@clinicalcraft/agent/node";
-import { table } from "@clinicalcraft/agent";
+import { sanitizeTerminal, table } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
 import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, settingLabel, specialtiesLabel, stars } from "./labels.js";
@@ -54,12 +58,31 @@ function sharePhase(a: readonly string[] | undefined, b: readonly string[] | und
 }
 
 /**
+ * Hits on items superseded by a phase twin in `phase` counted for the twin
+ * (`historyTwin`, best score kept), as the patient pipeline selects them;
+ * other hits are kept whatever their phases. Identity without `phase` or
+ * twins.
+ */
+function withPhaseTwins(c: CaseDefinition, hits: readonly MatchHit[], phase: string | undefined): MatchHit[] {
+  if (phase === undefined || !hasHistoryTwins(c)) return [...hits];
+  const best = new Map<string, number>();
+  for (const h of hits) {
+    const id = supersededIn(c, h.id, phase) !== null ? (historyTwin(c, h.id, phase) ?? h.id) : h.id;
+    best.set(id, Math.max(best.get(id) ?? 0, h.score));
+  }
+  const order = new Map(c.history.map((h, i) => [h.id, i]));
+  return [...best].map(([id, score]) => ({ id, score })).sort((a, b) => b.score - a.score || (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+}
+
+/**
  * Run the matcher regression corpus: hits ≥ 0.55 must contain every expected
  * id with an expected id ranked first; `expect: []` must select nothing.
  * `extras` (warnings) lists facts the patient pipeline would also select and
  * credit with the expected ones — ≥ 0.55, within 0.25 of the best, at most 3,
  * available in a phase of the first expected item — that are neither
- * expected nor in the utterance's `alsoOk`.
+ * expected nor in the utterance's `alsoOk`. Phase twins (`supersedes`) apply
+ * in the first phase of the first expected item: a hit on an item superseded
+ * there counts for its twin, as in the pipeline.
  */
 export function checkUtterances(c: CaseDefinition): { total: number; failures: Issue[]; extras: Issue[] } {
   const corpus = testUtterances(c) ?? [];
@@ -69,7 +92,8 @@ export function checkUtterances(c: CaseDefinition): { total: number; failures: I
   corpus.forEach((u, i) => {
     const path = `extensions.testUtterances.${i}`;
     for (const id of u.expect) if (!byId.has(id)) failures.push({ path, message: `unknown history id "${id}"`, severity: "error" });
-    const selected = matchHistory(c, u.text, u.locale).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD);
+    const phase = u.expect.length > 0 ? byId.get(u.expect[0]!)?.phases?.[0] : undefined;
+    const selected = withPhaseTwins(c, matchHistory(c, u.text, u.locale), phase).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD);
     const got = selected.map((h) => h.id);
     if (u.expect.length === 0) {
       if (got.length > 0) failures.push({ path, message: `"${u.text}" should select nothing, selected ${got.join(", ")}`, severity: "error" });
@@ -103,7 +127,8 @@ function printIssues(ctx: CliContext, issues: readonly Issue[], showWarnings: bo
       break;
     }
     const tag = issue.severity === "error" ? p.red("error  ") : p.yellow("warning");
-    ctx.print(`    ${tag} ${p.dim(issue.path || "(root)")} ${issue.message}`);
+    // Paths and messages quote case content (utterances, ids, regexes): terminal-sanitised.
+    ctx.print(`    ${tag} ${p.dim(sanitizeTerminal(issue.path || "(root)"))} ${sanitizeTerminal(issue.message)}`);
   }
 }
 
@@ -148,10 +173,10 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
     return EXIT.ok;
   }
   const rows = [[ctx.t("col.id"), ctx.t("col.title"), ctx.t("col.difficulty"), ctx.t("col.setting"), ctx.t("col.minutes")]];
-  for (const c of cases) rows.push([c.id, t(c.title, ctx.locale), stars(c.difficulty), settingLabel(ctx, c.setting), c.estimatedMinutes ? String(c.estimatedMinutes) : "-"]);
+  for (const c of cases) rows.push([c.id, sanitizeTerminal(t(c.title, ctx.locale)), stars(c.difficulty), settingLabel(ctx, c.setting), c.estimatedMinutes ? String(c.estimatedMinutes) : "-"]);
   ctx.print(table(rows, { header: true, maxCell: 60 }));
   const broken = content.issues.filter((f) => f.file.endsWith("case.json") && f.issues.some((i) => i.severity === "error"));
-  for (const f of broken) ctx.printErr(ctx.err.red(ctx.t("cases.invalidFile", { file: f.file, n: f.issues.filter((i) => i.severity === "error").length })));
+  for (const f of broken) ctx.printErr(ctx.err.red(ctx.t("cases.invalidFile", { file: sanitizeTerminal(f.file), n: f.issues.filter((i) => i.severity === "error").length })));
   return EXIT.ok;
 }
 
@@ -168,25 +193,29 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
     return EXIT.ok;
   }
   const p = ctx.out;
-  ctx.print(`${p.bold(t(c.title, L))} ${p.dim(`(${c.id} v${c.version})`)}`);
-  ctx.print(t(c.summary, L));
+  // Case files may come from any content directory: every text from them is terminal-sanitised
+  // (escape sequences — colours included — and control characters stripped) before the palette's codes.
+  const ct = (text: Parameters<typeof t>[0]) => sanitizeTerminal(t(text, L));
+  const raw = (text: string) => sanitizeTerminal(text);
+  ctx.print(`${p.bold(ct(c.title))} ${p.dim(`(${raw(c.id)} v${raw(c.version)})`)}`);
+  ctx.print(ct(c.summary));
   ctx.print();
   const pt = c.patient;
-  ctx.print(`${p.bold(ctx.t("show.patient"))} ${t(pt.displayName, L)} · ${ctx.t(`age.${pt.ageUnit}` as "age.years", { n: pt.age })} · ${ctx.t(`sex.${pt.sex}` as "sex.male")}`);
-  ctx.print(`${p.bold(ctx.t("show.complaint"))} ${t(pt.chiefComplaint, L)}`);
+  ctx.print(`${p.bold(ctx.t("show.patient"))} ${ct(pt.displayName)} · ${ctx.t(`age.${pt.ageUnit}` as "age.years", { n: pt.age })} · ${ctx.t(`sex.${pt.sex}` as "sex.male")}`);
+  ctx.print(`${p.bold(ctx.t("show.complaint"))} ${ct(pt.chiefComplaint)}`);
   // The facility by its name in the UI language (its id when it is not installed).
   const facility = c.facility ? content.facilities.get(c.facility)?.def : undefined;
-  const facilityName = c.facility ? (facility ? t(facility.name, L) || c.facility : c.facility) : "";
+  const facilityName = raw(c.facility ? (facility ? t(facility.name, L) || c.facility : c.facility) : "");
   ctx.print(
     `${p.bold(ctx.t("show.setting"))} ${settingLabel(ctx, c.setting)}${facilityName ? ` · ${facilityName}` : ""} · ${stars(c.difficulty)} · ${specialtiesLabel(ctx, c.specialty)}${c.estimatedMinutes ? ` · ${minutesLabel(ctx, c.estimatedMinutes)}` : ""}`,
   );
   ctx.print(`${p.bold(ctx.t("show.locales"))} ${languagesLabel(ctx, c.locales)} · ${clockModeLabel(ctx, c.clock.mode)}`);
   const prov = c.provenance;
-  ctx.print(`${p.bold(ctx.t("show.provenance"))} ${provenanceLabel(ctx, prov.kind)}${prov.citation ? ` — ${prov.citation}` : ""}${prov.doi ? ` (doi:${prov.doi})` : ""}`);
-  if (c.disclaimer) ctx.print(p.dim(t(c.disclaimer, L)));
+  ctx.print(`${p.bold(ctx.t("show.provenance"))} ${provenanceLabel(ctx, prov.kind)}${prov.citation ? ` — ${raw(prov.citation)}` : ""}${prov.doi ? ` (doi:${raw(prov.doi)})` : ""}`);
+  if (c.disclaimer) ctx.print(p.dim(ct(c.disclaimer)));
   ctx.print();
   ctx.print(p.bold(ctx.t("show.objectives")));
-  c.objectives.forEach((o, i) => ctx.print(`  ${i + 1}. ${t(o.title, L)}`));
+  c.objectives.forEach((o, i) => ctx.print(`  ${i + 1}. ${ct(o.title)}`));
   ctx.print();
   ctx.print(
     p.dim(
@@ -202,7 +231,7 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
   );
   const localOnly = c.assets.filter((a) => a.localOnly);
   if (localOnly.length) ctx.print(p.dim(ctx.t("show.localAssets", { n: localOnly.length })));
-  ctx.print(p.dim(file));
+  ctx.print(p.dim(raw(file)));
   return EXIT.ok;
 }
 
@@ -307,10 +336,11 @@ export async function casesValidate(ctx: CliContext, args: ParsedArgs): Promise<
   const p = ctx.out;
   const showWarnings = !flagBool(args, "quiet");
   for (const r of results) {
-    const rel = ctx.show(r.file);
+    const rel = sanitizeTerminal(ctx.show(r.file));
     const label = r.ok ? p.green("✓") : p.red("✗");
     const counts = ctx.t("cases.counts", { errors: r.errors.length, warnings: r.warnings.length });
-    ctx.print(`${label} ${rel}${r.id ? p.dim(` (${r.id})`) : ""} ${p.dim(counts)}`);
+    // The id of a file that failed to parse is whatever string it holds.
+    ctx.print(`${label} ${rel}${r.id ? p.dim(` (${sanitizeTerminal(r.id)})`) : ""} ${p.dim(counts)}`);
     printIssues(ctx, [...r.errors, ...r.warnings], showWarnings);
   }
   ctx.print(failed > 0 ? p.red(ctx.t("cases.validateFailed", { failed, total: results.length })) : p.green(ctx.t("cases.validateOk", { total: results.length })));

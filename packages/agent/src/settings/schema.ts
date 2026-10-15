@@ -16,6 +16,42 @@
  */
 import { z } from "zod";
 
+/**
+ * Session languages the runtime ships translations for (the same list as
+ * `SUPPORTED_LOCALES` in @clinicalcraft/core; this module stays zod-only so
+ * the JSON-schema generator runs without a build).
+ */
+export const SETTINGS_LOCALES = ["zh-CN", "en"] as const;
+export type SettingsLocale = (typeof SETTINGS_LOCALES)[number];
+
+/** A `zh…` or `en…` language tag ("zh", "zh-Hans", "zh_CN", "en-US", "en-GB"…). */
+const LOCALE_TAG_RE = /^([zZ][hH]|[eE][nN])(?:[-_][A-Za-z0-9]{1,8})*$/;
+
+/**
+ * The supported locale a language tag stands for, or null: any Chinese tag
+ * ("zh", "zh-Hans", "zh_CN", "zh-TW") → "zh-CN", any English tag ("en-US",
+ * "en_GB") → "en"; anything else ("fr", "english", "") is unsupported.
+ */
+export function canonicalLocale(tag: unknown): SettingsLocale | null {
+  if (typeof tag !== "string") return null;
+  const m = LOCALE_TAG_RE.exec(tag.trim());
+  if (!m) return null;
+  return m[1]!.toLowerCase() === "zh" ? "zh-CN" : "en";
+}
+
+/**
+ * `locale` in settings: a supported language, aliases normalised ("zh",
+ * "en-US" → "zh-CN", "en"); any other value is rejected, so no layer (file,
+ * env, flag, the web settings panel, MCP `start_case`) can run a session in a
+ * language the runtime does not ship.
+ */
+export const LocaleSettingSchema = z
+  .string()
+  .trim()
+  .regex(LOCALE_TAG_RE, `unsupported locale (supported: ${SETTINGS_LOCALES.join(", ")}; aliases such as "zh" or "en-US" are normalised)`)
+  .transform((tag) => canonicalLocale(tag) as SettingsLocale)
+  .describe(`Session language: ${SETTINGS_LOCALES.join(" or ")} (aliases such as "zh", "zh-Hans", "en-US" are normalised).`);
+
 export const ApprovalModeSchema = z.enum(["default", "strict", "auto", "plan", "bypass"]);
 export const PracticeScopeSchema = z.enum(["history-only", "workup", "full"]);
 export const EffortSchema = z.enum(["low", "medium", "high", "xhigh", "max"]);
@@ -91,7 +127,7 @@ const SettingsShape = {
     /** Per-agent model settings, keyed by agent name (patient, nurse, clinician, examiner…). */
     agents: z.record(z.string(), AgentModelSettingsSchema).optional(),
     providers: z.record(z.string(), ProviderOverrideSchema).optional(),
-    locale: z.string().optional(),
+    locale: LocaleSettingSchema.optional(),
     approvalMode: ApprovalModeSchema.optional(),
     practiceScope: PracticeScopeSchema.optional(),
     permissions: z
@@ -163,6 +199,7 @@ export interface ResolvedSettings {
   effort: z.infer<typeof EffortSchema> | null;
   agents: Record<string, z.infer<typeof AgentModelSettingsSchema>>;
   providers: Record<string, ProviderOverride>;
+  /** Always a supported locale (`SETTINGS_LOCALES`): unsupported values are rejected by every settings layer. */
   locale: string;
   approvalMode: z.infer<typeof ApprovalModeSchema>;
   practiceScope: z.infer<typeof PracticeScopeSchema>;

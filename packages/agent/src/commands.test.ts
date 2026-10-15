@@ -57,7 +57,7 @@ describe("built-in commands", () => {
     expect(t.session.state.orders.map((o) => o.key)).toEqual(["ecg@ed"]);
     expect(t.session.state.started).toBe(true);
     const results = await command(t, "/results");
-    expect(results.out.text).toMatch(/ECG\s+ecg\s+Emergency\s+pending \(expected 09:05\)/);
+    expect(results.out.text).toMatch(/ECG\s+ecg\s+Emergency.*\(ed\)\s+pending \(expected 09:05\)/);
   });
 
   it("/order of a moderate-risk test asks for approval (learner gate)", async () => {
@@ -80,7 +80,7 @@ describe("built-in commands", () => {
     const t = await makeSession();
     const board = await command(t, "/board");
     // A locked decision is listed by number with what it needs — never its prompt or options.
-    expect(board.out.text).toMatch(/\[dx\] Decision 1 \(not yet available\) \(locked\)/);
+    expect(board.out.text).toMatch(/\[dx\] Decision 1 \(not yet available\)$/m);
     expect(board.out.text).not.toContain("Most likely diagnosis?");
     expect(board.out.text).not.toContain("Inferior STEMI");
     expect(board.out.text).toContain("Review the ECG first.");

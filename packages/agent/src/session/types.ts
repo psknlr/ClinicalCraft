@@ -38,7 +38,14 @@ export type TranscriptItem =
   | { type: "action"; ordinal: number; ts: string; payload: { action: ClinicalAction; accepted: boolean } }
   | { type: "message"; ordinal: number; ts: string; payload: { agent: AgentRole; role: "user" | "assistant"; content: unknown } }
   | { type: "event"; ordinal: number; ts: string; payload: AgentEvent }
-  | { type: "compacted"; ordinal: number; ts: string; payload: { agent: AgentRole; summary: string } };
+  | { type: "compacted"; ordinal: number; ts: string; payload: { agent: AgentRole; summary: string } }
+  /**
+   * Transcript-only diagnostics, never emitted as an event: e.g. the detailed
+   * grounding violations of a rejected patient reply (they may quote an
+   * unasked fact or a diagnosis; the learner's `warning` names only their
+   * categories). Ignored by resume.
+   */
+  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding"; detail: string[] } };
 
 export interface SessionOptions {
   caseDef: CaseDefinition;

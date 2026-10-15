@@ -244,9 +244,9 @@
           "what happened today",
           "what happened this morning",
           "what's wrong",
-          "what is wrong",
+          "whatiswrong",
           "what's going on",
-          "what brings him in",
+          "whatbringshimin",
           "main problem",
           "the problem today",
           "been going on"
@@ -298,8 +298,8 @@
           "last seen well",
           "last normal",
           "when was he last well",
-          "when did this start",
-          "when did it start",
+          "whendidthisstart",
+          "whendiditstart",
           "what time did it start",
           "onset time",
           "time of onset",
@@ -354,13 +354,13 @@
         "en": [
           "anyone see",
           "witnessed",
-          "who found him",
+          "whofoundhim",
           "see it happen",
           "saw it happen",
           "who was with him",
           "witness",
           "were you with him",
-          "was anyone with him",
+          "wasanyonewithhim",
           "with him when",
           "who found"
         ]
@@ -413,7 +413,7 @@
           "since we found him",
           "worse since",
           "better since",
-          "stayed the same"
+          "stayedthesame"
         ]
       },
       "disclosure": "on-ask"
@@ -557,6 +557,18 @@
           "epilepsy",
           "tongue bite",
           "incontinence"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "黑便",
+          "出血"
+        ],
+        "en": [
+          "blackstool",
+          "blackpoo",
+          "stool",
+          "bleed"
         ]
       },
       "disclosure": "on-ask"
@@ -892,7 +904,15 @@
       "excludeKeywords": {
         "zh-CN": [
           "想说",
-          "补充"
+          "补充",
+          "家里人",
+          "家族",
+          "家人",
+          "家里有人"
+        ],
+        "en": [
+          "family",
+          "relatives"
         ]
       }
     },
@@ -925,7 +945,7 @@
           "tablets",
           "pills",
           "regular medication",
-          "what does he take",
+          "whatdoeshetake",
           "drugs he takes",
           "drugs"
         ]
@@ -966,7 +986,10 @@
           "recreational",
           "illicit",
           "street drug",
-          "cocaine"
+          "cocaine",
+          "thintheblood",
+          "thinhisblood",
+          "thinning"
         ]
       },
       "required": true
@@ -1022,7 +1045,10 @@
           "anticoagulation",
           "blood thinning",
           "plavix",
-          "pradaxa"
+          "pradaxa",
+          "thin the blood",
+          "thin his blood",
+          "thinning"
         ]
       },
       "excludeKeywords": {
@@ -1219,8 +1245,8 @@
           "mobility",
           "self-care",
           "functioning",
-          "walk on his own",
-          "manage on his own",
+          "walkonhisown",
+          "manageonhisown",
           "rankin",
           "modified rankin"
         ]
@@ -1402,7 +1428,9 @@
           "mother",
           "parents",
           "runs in the family",
-          "relatives"
+          "relatives",
+          "inthefamily",
+          "inyourfamily"
         ]
       },
       "disclosure": "on-ask"
@@ -1526,7 +1554,7 @@
           "愿不愿意"
         ],
         "en": [
-          "what would he want",
+          "whatwouldhewant",
           "his wishes",
           "consent",
           "risky treatment",
@@ -1554,13 +1582,26 @@
           "早上血压",
           "今天血压",
           "在家量血压",
-          "今早血压"
+          "今早血压",
+          "量过血压"
         ],
         "en": [
           "blood pressure this morning",
           "bp this morning",
           "checked at home today",
           "home reading today"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "平时",
+          "平常",
+          "一般"
+        ],
+        "en": [
+          "usually",
+          "normally",
+          "usual"
         ]
       },
       "disclosure": "unknown"
@@ -1838,7 +1879,7 @@
           "general appearance",
           "general inspection",
           "end of the bed",
-          "look at him",
+          "lookathim",
           "how unwell"
         ]
       },
@@ -2542,7 +2583,10 @@
               "unit": "mmol/L",
               "refLow": 3.9,
               "refHigh": 7.8,
-              "refText": "随机/random 3.9–7.8",
+              "refText": {
+                "zh-CN": "随机 3.9–7.8",
+                "en": "random 3.9–7.8"
+              },
               "flag": "N"
             }
           ]
@@ -2601,7 +2645,10 @@
                 "zh-CN": "颅内出血",
                 "en": "Intracranial haemorrhage"
               },
-              "value": "无 / none",
+              "value": {
+                "zh-CN": "无",
+                "en": "none"
+              },
               "unit": "",
               "flag": "N"
             },
@@ -2612,7 +2659,10 @@
               },
               "value": 9,
               "unit": "/10",
-              "refText": "10 = normal; ≥ 6 favourable for EVT",
+              "refText": {
+                "zh-CN": "10 = 正常；≥ 6 有利于血管内治疗",
+                "en": "10 = normal; ≥ 6 favourable for EVT"
+              },
               "flag": "A"
             },
             {
@@ -2620,7 +2670,10 @@
                 "zh-CN": "大脑中动脉高密度征",
                 "en": "Hyperdense MCA sign"
               },
-              "value": "左侧M1 / left M1",
+              "value": {
+                "zh-CN": "左侧M1",
+                "en": "left M1"
+              },
               "unit": "",
               "flag": "A"
             }
@@ -2674,7 +2727,10 @@
                 "zh-CN": "闭塞部位",
                 "en": "Occlusion"
               },
-              "value": "左侧MCA M1近端 / proximal left MCA M1",
+              "value": {
+                "zh-CN": "左侧MCA M1近端",
+                "en": "proximal left MCA M1"
+              },
               "unit": "",
               "flag": "A"
             },
@@ -2685,7 +2741,10 @@
               },
               "value": 2,
               "unit": "/3",
-              "refText": "0 none – 3 = 100%",
+              "refText": {
+                "zh-CN": "0 = 无侧支 – 3 = 100%",
+                "en": "0 none – 3 = 100%"
+              },
               "flag": "A"
             },
             {
@@ -2693,7 +2752,10 @@
                 "zh-CN": "颈动脉狭窄（NASCET）",
                 "en": "Carotid stenosis (NASCET)"
               },
-              "value": "< 50% 双侧 / bilateral",
+              "value": {
+                "zh-CN": "双侧 < 50%",
+                "en": "< 50% bilateral"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -2824,7 +2886,10 @@
                 "zh-CN": "节律",
                 "en": "Rhythm"
               },
-              "value": "心房颤动 / atrial fibrillation",
+              "value": {
+                "zh-CN": "心房颤动",
+                "en": "atrial fibrillation"
+              },
               "unit": "",
               "flag": "A"
             },
@@ -3176,7 +3241,10 @@
               "unit": "mmol/L",
               "refLow": 3.9,
               "refHigh": 7.8,
-              "refText": "随机/random 3.9–7.8",
+              "refText": {
+                "zh-CN": "随机 3.9–7.8",
+                "en": "random 3.9–7.8"
+              },
               "flag": "N"
             },
             {
@@ -3397,7 +3465,10 @@
                 "zh-CN": "抗体筛查",
                 "en": "Antibody screen"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -3449,7 +3520,10 @@
               "value": 0.52,
               "unit": "",
               "refHigh": 0.5,
-              "refText": "< 0.5 (PA); supine magnifies",
+              "refText": {
+                "zh-CN": "< 0.5（后前位）；仰卧位片会放大",
+                "en": "< 0.5 (PA); supine magnifies"
+              },
               "flag": "A"
             }
           ],
@@ -3581,7 +3655,10 @@
               },
               "value": 2,
               "unit": "",
-              "refText": "pre-stroke; now 4 (+2 stroke)",
+              "refText": {
+                "zh-CN": "卒中前评分；现为4分（卒中 +2）",
+                "en": "pre-stroke; now 4 (+2 stroke)"
+              },
               "flag": "A"
             },
             {
@@ -3589,7 +3666,10 @@
                 "zh-CN": "抗凝/抗血小板处方",
                 "en": "Anticoagulant/antiplatelet prescriptions"
               },
-              "value": "无 / none",
+              "value": {
+                "zh-CN": "无",
+                "en": "none"
+              },
               "unit": "",
               "flag": "N"
             }
@@ -3651,7 +3731,10 @@
               },
               "value": "2c",
               "unit": "",
-              "refText": "2b–3 = successful reperfusion",
+              "refText": {
+                "zh-CN": "2b–3 = 再灌注成功",
+                "en": "2b–3 = successful reperfusion"
+              },
               "flag": "N"
             },
             {
@@ -3742,6 +3825,13 @@
         "remove": [
           "coag"
         ]
+      },
+      {
+        "ifHas": "mri-brain",
+        "unlessMatches": "mri|磁共振|核磁|(^|[^a-z])dwi|diffusion|弥散",
+        "remove": [
+          "mri-brain"
+        ]
       }
     ],
     "exact": {
@@ -3760,6 +3850,9 @@
         "message": {
           "zh-CN": "脑血管造影/机械取栓在神经介入导管室进行：联系神经介入团队并将患者转入导管室后才会有结果。",
           "en": "Cerebral angiography / thrombectomy happens in the neuro-angiography suite: results exist only once the neurointervention team has been called and the patient is there."
+        },
+        "unless": {
+          "phase": "angio"
         }
       },
       {
@@ -4479,8 +4572,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "溶栓前的安全前提未全部满足。必须：①头颅CT排除出血；②血压 < 185/110 mmHg；③已测血糖；④明确未使用抗凝药（或凝血结果正常）；⑤未同时使用另一种溶栓药；⑥取栓已再通后不再静脉溶栓。任何一条不满足都会显著增加症状性颅内出血的风险——本例CT恰好没有出血，并不意味着跳过步骤是安全的。",
-        "en": "Thrombolysis was given before every safety prerequisite was met. You need (1) a CT that excludes haemorrhage, (2) BP < 185/110 mmHg, (3) a glucose result, (4) confirmation that no anticoagulant is being taken (or a normal coagulation screen), (5) no second thrombolytic and (6) no reperfusion already achieved by thrombectomy. Missing any of these sharply raises the risk of symptomatic intracranial haemorrhage — that this CT happened to show no bleed does not make skipping the step safe."
+        "zh-CN": "溶栓前的安全前提未全部满足。必须：①头颅CT排除出血；②血压 < 185/110 mmHg；③已测血糖；④明确未使用抗凝药（或凝血结果正常）；⑤未同时使用另一种溶栓药；⑥取栓已再通后不再静脉溶栓。任何一条不满足都会显著增加症状性颅内出血的风险——即使事后CT未见出血，跳过任何一步也不安全。",
+        "en": "Thrombolysis was given before every safety prerequisite was met. You need (1) a CT that excludes haemorrhage, (2) BP < 185/110 mmHg, (3) a glucose result, (4) confirmation that no anticoagulant is being taken (or a normal coagulation screen), (5) no second thrombolytic and (6) no reperfusion already achieved by thrombectomy. Missing any of these sharply raises the risk of symptomatic intracranial haemorrhage — even when a CT later shows no bleed, skipping a step is not safe."
       },
       "response": {
         "zh-CN": "阿替普酶7.2 mg已静推，64.8 mg开始60分钟泵入。溶栓开始：神经功能与血压每15分钟评估一次。",
@@ -4652,8 +4745,8 @@
         ]
       },
       "harm": {
-        "zh-CN": "溶栓前的安全前提未全部满足。必须：①头颅CT排除出血；②血压 < 185/110 mmHg；③已测血糖；④明确未使用抗凝药（或凝血结果正常）；⑤未同时使用另一种溶栓药；⑥取栓已再通后不再静脉溶栓。任何一条不满足都会显著增加症状性颅内出血的风险——本例CT恰好没有出血，并不意味着跳过步骤是安全的。",
-        "en": "Thrombolysis was given before every safety prerequisite was met. You need (1) a CT that excludes haemorrhage, (2) BP < 185/110 mmHg, (3) a glucose result, (4) confirmation that no anticoagulant is being taken (or a normal coagulation screen), (5) no second thrombolytic and (6) no reperfusion already achieved by thrombectomy. Missing any of these sharply raises the risk of symptomatic intracranial haemorrhage — that this CT happened to show no bleed does not make skipping the step safe."
+        "zh-CN": "溶栓前的安全前提未全部满足。必须：①头颅CT排除出血；②血压 < 185/110 mmHg；③已测血糖；④明确未使用抗凝药（或凝血结果正常）；⑤未同时使用另一种溶栓药；⑥取栓已再通后不再静脉溶栓。任何一条不满足都会显著增加症状性颅内出血的风险——即使事后CT未见出血，跳过任何一步也不安全。",
+        "en": "Thrombolysis was given before every safety prerequisite was met. You need (1) a CT that excludes haemorrhage, (2) BP < 185/110 mmHg, (3) a glucose result, (4) confirmation that no anticoagulant is being taken (or a normal coagulation screen), (5) no second thrombolytic and (6) no reperfusion already achieved by thrombectomy. Missing any of these sharply raises the risk of symptomatic intracranial haemorrhage — even when a CT later shows no bleed, skipping a step is not safe."
       },
       "response": {
         "zh-CN": "替奈普酶20 mg已单次静推。溶栓开始：神经功能与血压每15分钟评估一次。",
@@ -4845,10 +4938,10 @@
           "oral tablets",
           "give him a drink",
           "oral medication",
-          "let him eat",
+          "lethimeat",
           "usual tablets by mouth",
           "drink of water",
-          "something to eat",
+          "somethingtoeat",
           "oral amlodipine"
         ]
       },
@@ -4996,8 +5089,8 @@
         "read": "cta-head-neck"
       },
       "response": {
-        "zh-CN": "神经介入值班医生同意急诊取栓：团队在院内，导管室约15分钟后可接收；静脉溶栓照常进行、不必等介入团队（阿替普酶输注中则不中断），带监护转运，并在交接中说明用药与时间。",
-        "en": "The on-call neurointerventionist accepts for emergency thrombectomy: the team is in-house and the suite can take him in about 15 minutes; give IV thrombolysis without waiting for the team (and don't stop an alteplase infusion that is running), transfer on the monitor and hand over drugs and times."
+        "zh-CN": "已通知神经介入值班医生：团队在院内，导管室约15分钟后可准备就绪，CTA证实大血管闭塞后即可接收。如符合静脉溶栓条件，不必为等介入团队而延误溶栓（阿替普酶输注中则不中断）；带监护转运，并在交接中说明用药与时间。",
+        "en": "The on-call neurointerventionist is alerted: the team is in-house and the suite can be ready in about 15 minutes, to take him once CTA confirms a large-vessel occlusion. If he is eligible for IV thrombolysis, don't delay it waiting for the team (and don't stop an alteplase infusion that is running); transfer on the monitor and hand over drugs and times."
       }
     },
     {
@@ -5199,8 +5292,8 @@
         ],
         "severity": "warning",
         "message": {
-          "zh-CN": "护士：“CT室一直给我们留着呢，病人到院已经20分钟了，还没开CT。”",
-          "en": "Nurse: \"CT is still holding the scanner for us — he's been here 20 minutes and there's no scan ordered yet.\""
+          "zh-CN": "护士：“CT室一直给我们留着呢，病人到院已经20分钟了，还没开头颅CT平扫。”",
+          "en": "Nurse: \"CT is still holding the scanner for us — he's been here 20 minutes and there's no plain CT head ordered yet.\""
         }
       },
       {
@@ -5723,8 +5816,8 @@
     {
       "id": "obj4-lysis",
       "title": {
-        "zh-CN": "安全实施急性期治疗",
-        "en": "Deliver acute treatment safely"
+        "zh-CN": "实施急性再灌注治疗",
+        "en": "Deliver acute reperfusion treatment"
       },
       "short": {
         "zh-CN": "溶栓",
@@ -6169,6 +6262,12 @@
       "requires": {
         "all": [
           {
+            "examined": "nihss"
+          },
+          {
+            "read": "ct-head"
+          },
+          {
             "read": "cta-head-neck"
           },
           {
@@ -6177,8 +6276,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先判读CTA，并了解他发病前的生活自理情况。",
-        "en": "Read the CTA and find out how independent he was before this first."
+        "zh-CN": "先完成NIHSS评分，判读头颅CT和CTA，并了解他发病前的生活自理情况。",
+        "en": "Complete the NIHSS, read the CT head and the CTA, and find out how independent he was before this first."
       },
       "options": [
         {
@@ -7372,6 +7471,9 @@
         "locale": "en",
         "expect": [
           "unknown-father-stroke-type"
+        ],
+        "alsoOk": [
+          "family-history"
         ]
       },
       {
@@ -7603,6 +7705,48 @@
         "locale": "zh-CN",
         "expect": [
           "allergies"
+        ]
+      },
+      {
+        "text": "今天量过血压吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "unknown-bp-today"
+        ]
+      },
+      {
+        "text": "他平时量过血压吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "does he take anything to thin the blood?",
+        "locale": "en",
+        "expect": [
+          "anticoagulants"
+        ]
+      },
+      {
+        "text": "has he ever had a bleed anywhere, stomach bleeding, black poo?",
+        "locale": "en",
+        "expect": [
+          "bleeding-history"
+        ]
+      },
+      {
+        "text": "did somebody actually see it start?",
+        "locale": "en",
+        "expect": [
+          "onset-witness"
+        ]
+      },
+      {
+        "text": "any diabetes in the family?",
+        "locale": "en",
+        "expect": [
+          "family-history"
         ]
       }
     ],

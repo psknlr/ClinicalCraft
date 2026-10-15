@@ -221,10 +221,10 @@
           "来看病"
         ],
         "en": [
-          "what brings you",
-          "brought you in",
+          "whatbringsyou",
+          "broughtyouin",
           "come in today",
-          "how can i help",
+          "howcanihelp",
           "what's wrong",
           "reason for visit",
           "tired",
@@ -232,7 +232,7 @@
           "fatigue",
           "main problem",
           "the matter",
-          "what seems to be"
+          "whatseemstobe"
         ]
       },
       "disclosure": "volunteer",
@@ -319,14 +319,16 @@
           "thirst",
           "thirsty",
           "dry mouth",
-          "how much do you drink",
+          "howmuchdoyoudrink",
           "fluid intake",
           "beverages",
           "water intake",
           "drinking more",
           "drinking a lot",
           "drinking loads",
-          "polydipsia"
+          "polydipsia",
+          "fluid",
+          "howmuchfluid"
         ]
       },
       "disclosure": "on-ask",
@@ -958,7 +960,7 @@
           "past medical history",
           "medical conditions",
           "illnesses",
-          "been in hospital",
+          "beeninhospital",
           "operations",
           "surgery",
           "health problems",
@@ -1115,9 +1117,9 @@
           "meds",
           "regular medicines",
           "otc",
-          "over the counter",
+          "overthecounter",
           "drugs",
-          "on any drugs"
+          "onanydrugs"
         ]
       },
       "disclosure": "on-ask",
@@ -1271,7 +1273,7 @@
           "booze",
           "alcohol units",
           "drink much alcohol",
-          "do you drink"
+          "doyoudrink"
         ]
       },
       "disclosure": "on-ask",
@@ -1356,7 +1358,7 @@
           "meals",
           "food",
           "breakfast",
-          "what do you eat",
+          "whatdoyoueat",
           "takeaway",
           "typical day",
           "food intake",
@@ -1472,7 +1474,8 @@
           "license",
           "profession",
           "employment",
-          "what's your job"
+          "whatsyourjob",
+          "foraliving"
         ]
       },
       "disclosure": "on-ask",
@@ -1515,14 +1518,16 @@
           "一个人住"
         ],
         "en": [
-          "live with",
+          "livewith",
           "wife",
           "who cooks",
           "household",
           "insurance",
           "support at home",
-          "lives with you",
-          "married"
+          "liveswithyou",
+          "married",
+          "livingwith",
+          "livealone"
         ]
       },
       "disclosure": "on-ask",
@@ -1556,7 +1561,8 @@
           "glucose",
           "check",
           "monitor",
-          "measure"
+          "measure",
+          "foraliving"
         ]
       }
     },
@@ -1601,7 +1607,10 @@
           "fh",
           "family members",
           "mum",
-          "dad"
+          "dad",
+          "inthefamily",
+          "inyourfamily",
+          "anyoneinthefamily"
         ]
       },
       "disclosure": "on-ask",
@@ -1678,12 +1687,12 @@
           "觉得是啥"
         ],
         "en": [
-          "what do you think",
+          "whatdoyouthink",
           "your thoughts",
           "any ideas",
           "what's causing",
-          "think it is",
-          "your own idea",
+          "thinkitis",
+          "yourownidea",
           "causing this",
           "ideas about"
         ]
@@ -1769,7 +1778,7 @@
           "expect",
           "hoping for",
           "expecting",
-          "want me to do"
+          "wantmetodo"
         ]
       },
       "disclosure": "on-ask",
@@ -1922,18 +1931,25 @@
           "好点没",
           "还口渴",
           "现在还渴",
-          "觉得怎么样"
+          "觉得怎么样",
+          "这段时间",
+          "上次以后",
+          "上次复诊以后",
+          "上次看完以后"
         ],
         "en": [
           "symptoms now",
-          "how are you feeling",
+          "howareyoufeeling",
           "any better",
           "still thirsty",
           "still getting up at night",
           "improvement",
           "symptoms improved",
           "thirst now",
-          "feeling better"
+          "feeling better",
+          "since the last visit",
+          "since I last saw you",
+          "sincelastvisit"
         ]
       },
       "disclosure": "volunteer",
@@ -1981,7 +1997,7 @@
           "taking the tablets",
           "taking your tablets",
           "dose now",
-          "on any drugs",
+          "onanydrugs",
           "drugs"
         ]
       },
@@ -2107,6 +2123,9 @@
       "required": false,
       "phases": [
         "review"
+      ],
+      "supersedes": [
+        "hx-prior-bp"
       ]
     },
     {
@@ -2198,7 +2217,7 @@
           "relapse",
           "cigarettes now",
           "off cigarettes",
-          "how's the quitting"
+          "howsthequitting"
         ]
       },
       "disclosure": "on-ask",
@@ -2233,9 +2252,9 @@
         ],
         "en": [
           "any questions",
-          "anything to ask",
+          "anythingtoask",
           "anything else worrying",
-          "questions for me",
+          "questionsforme",
           "anything else",
           "anything you want to ask"
         ]
@@ -3344,7 +3363,10 @@
               },
               "value": "3+",
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "A"
             },
             {
@@ -3352,9 +3374,15 @@
                 "zh-CN": "尿酮",
                 "en": "Urine ketones"
               },
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3362,9 +3390,15 @@
                 "zh-CN": "尿蛋白",
                 "en": "Urine protein"
               },
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3398,9 +3432,15 @@
                 "zh-CN": "尿糖",
                 "en": "Urine glucose"
               },
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -3408,9 +3448,15 @@
                 "zh-CN": "尿酮",
                 "en": "Urine ketones"
               },
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ],
@@ -4489,9 +4535,15 @@
           "values": [
             {
               "analyte": "HBsAg",
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -4501,7 +4553,10 @@
               },
               "value": "<10",
               "unit": "mIU/mL",
-              "refText": "≥10 = immune",
+              "refText": {
+                "zh-CN": "≥10 = 有免疫力",
+                "en": "≥10 = immune"
+              },
               "flag": "L"
             },
             {
@@ -4509,9 +4564,15 @@
                 "zh-CN": "抗-HBc",
                 "en": "Anti-HBc"
               },
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -4519,9 +4580,15 @@
                 "zh-CN": "抗-HCV",
                 "en": "Anti-HCV"
               },
-              "value": "neg",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "neg",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ],
@@ -4636,8 +4703,8 @@
         "initial": {
           "available": false,
           "text": {
-            "zh-CN": "未进行。检验科审核：同一份空腹样本FPG 9.8 mmol/L和HbA1c 8.6%均已达诊断标准，OGTT不会改变诊断，只会让有明显症状的患者额外负荷75 g葡萄糖并多等2小时。",
-            "en": "Not performed. Laboratory review: the same fasting sample already shows FPG 9.8 mmol/L and HbA1c 8.6%, both diagnostic; an OGTT would not change the diagnosis and would only give a symptomatic patient a 75 g glucose load and a 2-hour wait."
+            "zh-CN": "未进行。检验科审核：有明显症状时，若同一份空腹样本的空腹血糖和HbA1c已达诊断标准，OGTT不会改变诊断，只会让患者额外负荷75 g葡萄糖并多等2小时——请先查看这两项结果。",
+            "en": "Not performed. Laboratory review: in a symptomatic patient whose fasting glucose and HbA1c from the same sample already meet the diagnostic thresholds, an OGTT would not change the diagnosis and would only add a 75 g glucose load and a 2-hour wait — check those results first."
           },
           "values": [],
           "figures": [],
@@ -4685,8 +4752,8 @@
         "initial": {
           "available": false,
           "text": {
-            "zh-CN": "未进行。影像科审核：无胸痛、气短等症状，静息心电图正常；无症状糖尿病患者不推荐常规冠心病影像或负荷试验筛查，应把精力放在危险因素控制上。",
-            "en": "Not performed. Imaging review: no chest pain or breathlessness and a normal resting ECG; routine coronary imaging or stress testing is not recommended to screen asymptomatic people with diabetes — the effort belongs in risk-factor control."
+            "zh-CN": "未进行。影像科审核：对没有胸痛、气短等心脏症状、静息心电图也无异常的糖尿病患者，不推荐常规冠心病影像或负荷试验筛查，应把精力放在危险因素控制上。",
+            "en": "Not performed. Imaging review: routine coronary imaging or stress testing is not recommended to screen people with diabetes who have no cardiac symptoms (chest pain, breathlessness) and no resting ECG abnormality — the effort belongs in risk-factor control."
           },
           "values": [],
           "figures": [],
@@ -4833,6 +4900,14 @@
           "inv-retinal"
         ],
         "remove": []
+      },
+      {
+        "ifMatches": "albumin|uacr|acr|白蛋白|微量白蛋白",
+        "unlessMatches": "renal|kidney|u&e|肾功能|电解质|egfr",
+        "remove": [
+          "inv-renal"
+        ],
+        "add": []
       }
     ],
     "exact": {
@@ -4941,8 +5016,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "转介营养门诊和糖尿病教育小组课程（4次）。目标：3–6个月减重≥5%（约4.5 kg），争取5–10%；每周≥150分钟中等强度有氧运动（如快走），每周2–3次抗阻训练，久坐每30分钟起身活动；停喝含糖饮料，主食定量，应酬点菜策略；限酒；足部自我护理。",
-        "en": "Refer to the dietitian and the diabetes education group course (4 sessions). Goals: lose ≥ 5% of body weight (about 4.5 kg) in 3–6 months, aiming for 5–10%; ≥ 150 min/week of moderate aerobic activity (e.g. brisk walking) plus resistance exercise 2–3 times a week, breaking up sitting every 30 minutes; stop sugary drinks, portion carbohydrates, a strategy for business dinners; limit alcohol; foot self-care."
+        "zh-CN": "转介营养门诊和糖尿病教育小组课程（4次）。目标：3–6个月减重≥5%，争取5–10%；每周≥150分钟中等强度有氧运动（如快走），每周2–3次抗阻训练，久坐每30分钟起身活动；停喝含糖饮料，主食定量，应酬点菜策略；限酒；足部自我护理。",
+        "en": "Refer to the dietitian and the diabetes education group course (4 sessions). Goals: lose ≥ 5% of body weight in 3–6 months, aiming for 5–10%; ≥ 150 min/week of moderate aerobic activity (e.g. brisk walking) plus resistance exercise 2–3 times a week, breaking up sitting every 30 minutes; stop sugary drinks, portion carbohydrates, a strategy for business dinners; limit alcohol; foot self-care."
       },
       "requires": [],
       "risk": "low",
@@ -4955,8 +5030,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "营养门诊约在本周三下午，教育课已报名。患者说：“含糖饮料我先戒掉。应酬的时候怎么点菜，您得教教我。”",
-        "en": "The dietitian appointment is this Wednesday afternoon and he is booked onto the education course. He says: \"I'll cut out the sugary drinks first. You'll have to teach me what to order at business dinners.\""
+        "zh-CN": "营养门诊约在本周三下午，教育课已报名。患者说：“含糖饮料我先戒掉。应酬的时候怎么点菜，您得教教我。”他减重5%的首个目标约为4.5 kg。",
+        "en": "The dietitian appointment is this Wednesday afternoon and he is booked onto the education course. He says: \"I'll cut out the sugary drinks first. You'll have to teach me what to order at business dinners.\" His first goal of 5% is about 4.5 kg."
       }
     },
     {
@@ -5345,8 +5420,8 @@
     {
       "id": "iv-antifungal",
       "name": {
-        "zh-CN": "外用克霉唑乳膏（龟头炎/足癣）",
-        "en": "Topical clotrimazole cream (balanitis / tinea pedis)"
+        "zh-CN": "外用抗真菌乳膏（1%克霉唑）",
+        "en": "Topical antifungal cream (clotrimazole 1%)"
       },
       "kind": "medication",
       "aliases": {
@@ -5370,8 +5445,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "1%克霉唑乳膏外用每日2次：龟头炎7–14天，趾间足癣约4周（皮损消退后再继续1–2周）；保持局部清洁干燥。血糖控制改善后念珠菌感染的风险会下降。",
-        "en": "Clotrimazole 1% cream twice daily: 7–14 days for balanitis, about 4 weeks for the interdigital tinea (continuing 1–2 weeks after the skin clears); keep the areas clean and dry. Better glucose control lowers the risk of candidal infection."
+        "zh-CN": "1%克霉唑乳膏外用于患处，每日2次，皮损消退后再继续1–2周；保持局部清洁干燥。血糖控制改善后真菌及念珠菌感染的风险会下降。",
+        "en": "Clotrimazole 1% cream to the affected skin twice daily, continuing for 1–2 weeks after the skin clears; keep the area clean and dry. Better glucose control lowers the risk of fungal and candidal infection."
       },
       "requires": [],
       "risk": "low",
@@ -5516,8 +5591,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "甘精胰岛素10 U（约0.1 U/kg）睡前皮下注射，按空腹血糖每3天调整。",
-        "en": "Insulin glargine 10 units (≈ 0.1 U/kg) subcutaneously at bedtime, titrated every 3 days to fasting glucose."
+        "zh-CN": "甘精胰岛素10 U（或0.1–0.2 U/kg/日）睡前皮下注射，按空腹血糖每3天调整。",
+        "en": "Insulin glargine 10 units (or 0.1–0.2 U/kg/day) subcutaneously at bedtime, titrated every 3 days to fasting glucose."
       },
       "requires": [],
       "risk": "moderate",
@@ -5745,7 +5820,7 @@
           "book review",
           "arrange review",
           "book a review",
-          "see him again",
+          "seehimagain",
           "recall"
         ]
       },
@@ -6685,8 +6760,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。LDL-C从3.9降至1.7 mmol/L（约−56%），已达到<1.8 mmol/L且降幅≥50%；ALT也随减重从68降至46 U/L。",
-            "en": "Correct. LDL-C fell from 3.9 to 1.7 mmol/L (about −56%), meeting both the < 1.8 mmol/L target and the ≥ 50% reduction; ALT has also fallen with weight loss from 68 to 46 U/L."
+            "zh-CN": "正确。LDL-C从3.9降至1.7 mmol/L（约−56%），已达到<1.8 mmol/L且降幅≥50%。脂肪肝伴ALT轻度升高并不妨碍继续使用他汀。",
+            "en": "Correct. LDL-C fell from 3.9 to 1.7 mmol/L (about −56%), meeting both the < 1.8 mmol/L target and the ≥ 50% reduction. Fatty liver with a mildly raised ALT is no reason to hold it."
           }
         },
         {
@@ -6728,13 +6803,13 @@
         {
           "id": "rv-stop-statin",
           "text": {
-            "zh-CN": "既往ALT升高（脂肪肝），停用他汀以免伤肝",
-            "en": "He had a raised ALT (fatty liver) — stop the statin to protect the liver"
+            "zh-CN": "停用他汀以免伤肝",
+            "en": "Stop the statin to protect his liver"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。ALT已恢复正常（46 U/L）；他汀在代谢相关脂肪性肝病患者中是安全的，并有心血管获益。",
-            "en": "Incorrect. ALT is now normal (46 U/L); statins are safe in metabolic dysfunction-associated steatotic liver disease and bring cardiovascular benefit."
+            "zh-CN": "不正确。脂肪肝伴ALT轻度升高（<3倍正常上限）不是停用他汀的理由；他汀在代谢相关脂肪性肝病患者中是安全的，并有心血管获益。",
+            "en": "Incorrect. A mildly raised ALT from fatty liver (< 3 × ULN) is no reason to stop a statin; statins are safe in metabolic dysfunction-associated steatotic liver disease and bring cardiovascular benefit."
           }
         }
       ]
@@ -8165,6 +8240,58 @@
         "locale": "zh-CN",
         "expect": [
           "hx-allergy"
+        ]
+      },
+      {
+        "text": "any diabetes in the family?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "is there any heart disease in your family?",
+        "locale": "en",
+        "expect": [
+          "hx-family"
+        ],
+        "alsoOk": [
+          "hx-family-early-cvd"
+        ]
+      },
+      {
+        "text": "what do you do for a living?",
+        "locale": "en",
+        "expect": [
+          "hx-occupation"
+        ]
+      },
+      {
+        "text": "how much fluid are you getting through each day?",
+        "locale": "en",
+        "expect": [
+          "hx-polydipsia"
+        ]
+      },
+      {
+        "text": "how have you been since the last visit?",
+        "locale": "en",
+        "expect": [
+          "hx-rv-symptoms"
+        ]
+      },
+      {
+        "text": "have you been checking your blood pressure at home?",
+        "locale": "en",
+        "expect": [
+          "hx-rv-home-bp"
+        ]
+      },
+      {
+        "text": "在家量血压了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-rv-home-bp"
         ]
       }
     ],

@@ -30,7 +30,8 @@ left upper lung**. The case teaches:
 - **Port:** V4's case data (`Za` questions, `zn` chapters, `Ka` decisions, `is`
   investigations, `Xd` order matcher, `dh` results, quest copy, destination
   logic `gh`, and the finish, journal and source screens) is reproduced
-  verbatim in `zh-CN`, with English translations that keep every
+  verbatim in `zh-CN` — with one documented divergence (see "Deliberate
+  divergences from V4") — and English translations that keep every
   evidence-boundary caveat.
 - The patient is a **pseudonymous** teaching NPC (王先生（化名）/ Mr. Wang). The
   avatar is generic and is not based on the real patient's appearance.
@@ -87,7 +88,8 @@ embeds V4's decoded case logic (`Vd`, `Za`, `zn`, `mn`, `Ka`, `Wd`, `is`, `Xd`,
 
 - every zh-CN string carried over from V4 is identical (questions, chapters and
   quest copy, decisions, investigation names and aliases, all 13 × 2 results,
-  finish screen, patient tags, 平扫 notice);
+  finish screen, patient tags, 平扫 notice), except the divergences pinned in
+  the test's `V5_TEXT_DIVERGENCES` (each with its exact V4 and V5 text);
 - `matchOrders` equals `Xd` for 100+ queries in V4's vocabulary, in both
   locales, and the 平扫 notice fires exactly when V4's does;
 - objective completion, the current objective and the waypoint equal V4
@@ -103,6 +105,16 @@ V4 `gh()` destinations map to V5 waypoint targets through the clinic-v4
 workstation groupings: `lab` → `lab-hematology` | `flow-cytometry` |
 `lab-serology`, `imaging` → `ct`, `path` → `histopathology` | `cytogenetics`.
 Once every objective is done V5 has no waypoint, where V4 pointed at the board.
+
+## Deliberate divergences from V4
+
+| item | V4 (`Za`) | V5 | why |
+|---|---|---|---|
+| `spleen.answer` | 大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。**不能据这段病史认定淋巴瘤已经持续30年。** | the same without the last sentence (both locales) | The last sentence is a clinician's diagnostic caveat spoken in the patient's voice, against `persona.actingNotes` ("do not discuss … diagnostic conclusions"). The caveat is kept as teaching knowledge of the Socratic attending instead. |
+
+The parity test (`V5_TEXT_DIVERGENCES` in `smzl-parity.test.ts`) pins this
+entry exactly — V4's text still equals `Za`, and V5's is V4's minus that one
+sentence — and keeps every other carried-over string strict.
 
 ## What V5 adds beyond V4 (all sourced; nothing invented)
 
@@ -120,7 +132,7 @@ Once every objective is done V5 has no waypoint, where V4 pointed at the board.
 | History `numbness` (**post only**): distal numbness attributed to VP neurotoxicity, slightly improved | 正文·一般资料 |
 | Physical examination (7 findings, **post only**) | 正文·体格检查, recorded **on admission for cycle 3**, after 2 cycles of rituximab |
 | `examNotRecorded`; the pre-phase examination is explicitly not recorded | (absence in the source) |
-| NPC briefs: radiologist, pathologist, Socratic attending (`revealsDiagnosis: false`) | caveats restated from V4 report notes |
+| NPC briefs: radiologist, pathologist, Socratic attending (`revealsDiagnosis: false`) | caveats restated from V4 report notes; the attending also carries V4's spleen-history caveat (see divergences) |
 | Rubric: 11 deterministic items + 2 communication items judged from the transcript. The four decision items (`rb-dx-combination`, `rb-safety-hbv`, `rb-dx-genetics`, `rb-mgmt-phase-review`) use `decidedFirstTry`: with 2–3 options and feedback on each, a wrong first answer followed by the right one must not score full marks | design |
 | Spoiler-free library title and summary (V4's label `CASE 01 · SMZL 与肺腺癌并存` is kept in `extensions.v4.caseLabel`) | design |
 | Debrief key reasoning 2: MCL (CD5, cyclin D1) and FL (CD10, BCL6) differential against this immunophenotype | 正文·诊断与鉴别诊断 |

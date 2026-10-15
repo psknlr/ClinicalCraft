@@ -77,7 +77,11 @@ solution is sent to the browser).
   stop-words ("where is the pain" → `pain`) matches any utterance with that
   one token; write it run together instead (`whereisthepain`,
   `wheredoesithurt`): it then matches only by containment (score 0.9), not
-  token by token.
+  token by token. `cases validate` warns on any keyword or alias of three or
+  more words that reduces to one token ("what does he take" → `tak`, "when
+  did it start" → `start`, "look at him" → `look`). Two-word phrases do it
+  too ("live with" → `liv`, so "what do you do for a living?" reaches the
+  household item): check them with the corpus.
 * `disclosure`: `volunteer` for what any patient says unprompted (chief complaint
   gist), `on-ask` (default), `specific` for things only a targeted question
   elicits (e.g. recent cocaine use, a specific family history), `unknown` for
@@ -96,7 +100,39 @@ solution is sent to the browser).
   phase's scenario messages and exam findings (`dka-adult` `hx-status-*`,
   `anaphylaxis-garden` `status-*`). Two items with overlapping `phases` that
   answer the same question for different times are both selected and read as
-  a contradiction.
+  a contradiction — link them as phase twins instead (below).
+* `supersedes: [ids]` makes an item the **phase twin** of earlier items: in
+  every phase where the twin is available it answers for them. Typical use:
+  the scene-time `hpi-throat` ("my throat's squeezing shut", phases `scene`,
+  `treated`, `ed-resus`) and the ED-time `now-airway-ed` ("my throat's not
+  tight now", phase `ed`) with `"supersedes": ["hpi-throat"]` on the ED item.
+  * **Selection** — in a phase where the twin is available, a question that
+    would select a superseded item selects the twin instead (the twin keeps
+    the better score), whether or not the superseded item is itself listed
+    for that phase; so the two are never co-selected and the stale answer is
+    never spoken. The superseded item cannot be asked there either (the
+    engine rejects a direct `ask` as `phase-locked`; `/ask` and
+    `list_options` leave it out). Chains are followed (C supersedes B
+    supersedes A).
+  * **Credit** — asking the twin credits every item it supersedes
+    (transitively) for `asked` conditions (objectives, decisions' `requires`,
+    rubric `met`, phase `enterWhen`, scenario `when`) and for the
+    assessment's required history (`requiredAsked`, `missingRequired`). So a
+    `required` scene-time item first asked about in the ED is not lost. The
+    superseded item is **not** added to `asked`: its answer was never heard,
+    so it stays out of the revealed-fact ledger, the journal and the
+    transcript, and `history.asked` still counts the questions really asked.
+  * Credit is one-way: asking the original never credits the twin — a
+    re-assessment question ("how is your breathing *now*?") must be asked in
+    its own phase. To score the re-assessment itself, put `asked: <twin id>`
+    in the rubric.
+  * Give the twin its own keywords for "now"-phrasings; the superseded
+    item's question and keywords already route to it in its phases. List the
+    twin in `testUtterances` with ED-time phrasings: `cases verify` judges an
+    utterance in the first phase of its first expected item, applying twins
+    there. `cases validate` reports unknown ids, self-references and cycles
+    (errors) and an item superseded in every phase it is listed for (a
+    warning: it could never be asked, only credited).
 * A single English keyword that stems to an everyday token matches far too
   much ("testes" → `test`, so "psoas test" and "blood tests" hit it); use
   other forms ("testicles") or a run-together phrase ("thetestes"). A
@@ -137,6 +173,12 @@ solution is sent to the browser).
   phase. Word them as a condition that stays true once it is met ("a result
   exists only once the lab has been activated and the patient is there"), not
   as an instruction ("activate the lab first") that reads wrong in the cath lab.
+  A warning that stops applying once something has happened takes an
+  optional `unless` condition (the full condition DSL): it is evaluated on
+  the session as the order is placed (before it), and the warning is not
+  shown while it holds — e.g. `"unless": {"all": [{"intervened":
+  "activate-cath-lab"}, {"phase": "cath-lab"}]}` on the "only in the cath
+  lab" notice. Its ids are checked by `cases validate` like any condition.
 
 ## 6. Interventions & physiology (acute cases)
 
@@ -176,7 +218,10 @@ solution is sent to the browser).
   — "Nurse:"/"护士：" → the nurse, "Monitor:"/monitor alarms → the monitor,
   "<patient name>:" (e.g. "Ms Lin:", "林女士说：") → the patient (or
   companion), anything else is narration ("Scene") — or set the event's
-  `speaker` (`nurse`, `monitor`, `patient`, `companion`, `narrator`).
+  `speaker` (`nurse`, `monitor`, `patient`, `companion`, `narrator`;
+  `companion` needs a `persona.companion` — `cases validate` reports it).
+  The monitor is not assumed: the nurse reports an abnormal value without
+  saying "the monitor is alarming" (the patient may not be on one yet).
 * Interventions: correct name, `dose` text (drug, dose, route, frequency — the
   learner sees it before giving anything, so write formulas such as
   "0.9 mg/kg, max 90 mg" or "adjust if creatinine clearance < 30 mL/min",

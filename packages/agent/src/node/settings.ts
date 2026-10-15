@@ -5,7 +5,7 @@
  */
 import { chmod, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, isAbsolute, join, resolve } from "node:path";
-import { envLayer, mergeSettingsDetailed, validateSettingsLayer, type SettingsIssue, type SettingsLayer, type SettingsLayerData } from "../settings/merge.js";
+import { envLayer, mergeSettingsDetailed, saveBlockingIssues, validateSettingsLayer, type SettingsIssue, type SettingsLayer, type SettingsLayerData } from "../settings/merge.js";
 import type { ResolvedSettings } from "../settings/schema.js";
 import { clinicalcraftHome, expandHome, findProjectRoot, type Env } from "./home.js";
 import { isProjectTrusted, type ProjectSettingsTexts } from "./trust.js";
@@ -157,7 +157,7 @@ export async function saveUserSettings(patch: SettingsLayerData | Record<string,
   const current = isPlainObject(existing.value) ? existing.value : {};
   const next = deepAssign(structuredClone(current), patch as Record<string, unknown>);
   const { issues } = validateSettingsLayer(next, "user", file);
-  const errors = issues.filter((i) => i.severity === "error");
+  const errors = saveBlockingIssues(issues, patch as Record<string, unknown>);
   if (errors.length > 0) throw new Error(`Invalid settings: ${errors.map((e) => `${e.path || "(root)"}: ${e.message}`).join("; ")}`);
 
   await mkdir(dirname(file), { recursive: true, mode: 0o700 });

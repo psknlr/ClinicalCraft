@@ -3,15 +3,13 @@
  * exit codes and the settings layer built from session flags.
  */
 import { isAbsolute, relative, resolve } from "node:path";
-import { UNTRUSTED_PROJECT } from "@clinicalcraft/agent";
+import { UNSUPPORTED_LOCALE, UNTRUSTED_PROJECT } from "@clinicalcraft/agent";
 import { loadSettings, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { createPalette, colorEnabled, type Env, type Palette } from "./ansi.js";
 import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
-import { m, normalizeLang, SUPPORTED_LANGS, type MsgKey } from "./i18n.js";
+import { m, SUPPORTED_LANGS, type MsgKey } from "./i18n.js";
 import { sanitizeTerminal } from "./render.js";
 
-/** The session language when none (or an unsupported one) is configured. */
-const DEFAULT_LANG = "zh-CN";
 import { isKnownProvider, missingKeyEnv, providerIds } from "./provider-check.js";
 
 /** Process exit codes (docs/PROTOCOL.md §11). */
@@ -202,12 +200,13 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
   }
   if (ctx.lang) layer.locale = ctx.lang;
   else {
-    // A configured language the runtime does not ship ("fr" from a settings file or CLINICALCRAFT_LOCALE) would
-    // run the session in it half-translated: use its canonical form, or the default with a warning.
-    const configured = (await loadCliSettings(ctx)).locale;
-    const lang = normalizeLang(configured);
-    if (lang !== configured) layer.locale = lang ?? DEFAULT_LANG;
-    if (!lang) ctx.printErr(ctx.err.yellow(ctx.t("settings.badLocale", { value: configured, supported: SUPPORTED_LANGS.join(", "), fallback: DEFAULT_LANG })));
+    // The settings schema ignores a language the runtime does not ship ("fr" in a settings file or
+    // CLINICALCRAFT_LOCALE; aliases such as "en-US" are normalised) and the layer below applies: say so.
+    const loaded = await loadCliSettings(ctx);
+    for (const issue of loaded.issues) {
+      if (issue.code !== UNSUPPORTED_LOCALE) continue;
+      ctx.printErr(ctx.err.yellow(ctx.t("settings.badLocale", { value: terminalText(String(issue.value)), supported: SUPPORTED_LANGS.join(", "), fallback: loaded.locale })));
+    }
   }
   const rounds = args.flags["max-tool-rounds"] !== undefined ? flagPositiveInt(args, "max-tool-rounds", 100, ctx.locale) : undefined;
   if (rounds !== undefined) layer.maxToolRounds = rounds;

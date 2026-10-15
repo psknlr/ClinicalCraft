@@ -20,6 +20,7 @@ import { t } from "../i18n.js";
 import { evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
+import { supersededIn } from "./twins.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
 type Action<T extends ClinicalActionType> = Extract<ClinicalAction, { type: T }>;
@@ -132,6 +133,8 @@ function onAsk(ctx: Ctx, a: Action<"ask">): Outcome {
   const item = c.history.find((h) => h.id === a.itemId);
   if (!item) return rejected("unknown-id", `unknown history item "${a.itemId}"`);
   if (item.phases && !item.phases.includes(s.phase)) return rejected("phase-locked", `history item "${item.id}" is not available in phase "${s.phase}"`);
+  const twin = supersededIn(c, item.id, s.phase);
+  if (twin) return rejected("phase-locked", `history item "${item.id}" is superseded by "${twin}" in phase "${s.phase}"`);
   const firstTime = !s.asked.includes(item.id);
   if (firstTime) s.asked.push(item.id);
   ctx.events.push({ type: "history.asked", itemId: item.id, firstTime, disclosure: item.disclosure });

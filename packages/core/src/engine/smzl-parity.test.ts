@@ -11,7 +11,9 @@
  *
  * What is asserted:
  * - the case parses, passes integrity and its reference `solution` verifies;
- * - every zh-CN string the case carries over from V4 is identical;
+ * - every zh-CN string the case carries over from V4 is identical, except the
+ *   deliberate V5 divergences listed in `V5_TEXT_DIVERGENCES` (each pinned to
+ *   its exact V4 and V5 text, and documented in the case README);
  * - `matchOrders`/`orderWarnings` reproduce V4 `Xd` (and the 平扫 notice) for
  *   queries in V4's vocabulary; English extensions behave as documented;
  * - objective completion, current objective and waypoint equal V4 `zn`/`mn`/`gh`
@@ -496,6 +498,20 @@ const V4_UI = {
   plainScanToast: "原包仅提供腹部增强CT代表图，平扫与增强CT不能视为等价。",
 };
 
+/**
+ * Deliberate V5 divergences from V4's zh-CN text, keyed `${historyId}.${field}`.
+ * Each entry pins both the V4 text (it must still equal V4's `Za`) and the
+ * V5 text exactly, and is listed in the case README's V4 differences table.
+ * Keep it minimal: every other carried-over string stays identical.
+ */
+const V5_TEXT_DIVERGENCES: Record<string, { v4: string; v5: string; why: string }> = {
+  "spleen.answer": {
+    v4: "大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。不能据这段病史认定淋巴瘤已经持续30年。",
+    v5: "大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。",
+    why: "V4's last sentence is a clinician's diagnostic caveat spoken in the patient's voice (against persona.actingNotes: no diagnostic conclusions); V5 keeps it in the attending's teaching knowledge instead",
+  },
+};
+
 /* ------------------------------------------------------------------ */
 /* V4 ⇄ V5 adapters                                                    */
 /* ------------------------------------------------------------------ */
@@ -673,14 +689,24 @@ describe("smzl-lung-adeno — case health", () => {
 /* ------------------------------------------------------------------ */
 
 describe("smzl-lung-adeno — V4 text fidelity (zh-CN)", () => {
-  it("questions Za: same ids first, in order, with identical question/answer/source", () => {
+  it("questions Za: same ids first, in order, with identical question/answer/source (except the documented divergences)", () => {
     expect(C.history.slice(0, Za.length).map((h) => h.id)).toEqual(Za.map((q) => q.id));
     for (const q of Za) {
       const h = C.history.find((x) => x.id === q.id)!;
-      expect([zh(h.question), zh(h.answer), zh(h.source)], q.id).toEqual([q.label, q.answer, q.source]);
+      const answer = V5_TEXT_DIVERGENCES[`${q.id}.answer`]?.v5 ?? q.answer;
+      expect([zh(h.question), zh(h.answer), zh(h.source)], q.id).toEqual([q.label, answer, q.source]);
     }
     expect(C.history.filter((h) => h.required).map((h) => h.id)).toEqual(["pain", "spleen", "lung"]);
     expect(C.history.find((h) => h.id === "other")!.disclosure).toBe("unknown");
+  });
+
+  it("divergences: only spleen.answer, which drops V4's last (caveat) sentence and changes nothing else", () => {
+    expect(Object.keys(V5_TEXT_DIVERGENCES)).toEqual(["spleen.answer"]);
+    const d = V5_TEXT_DIVERGENCES["spleen.answer"]!;
+    expect(Za.find((q) => q.id === "spleen")!.answer).toBe(d.v4);
+    expect(d.v4.startsWith(d.v5)).toBe(true);
+    expect(d.v4.slice(d.v5.length)).toBe("不能据这段病史认定淋巴瘤已经持续30年。");
+    expect(zh(C.history.find((h) => h.id === "spleen")!.answer)).toBe(d.v5);
   });
 
   it("chapters zn + quest copy: identical title/short/hint/guidance", () => {

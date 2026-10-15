@@ -148,7 +148,8 @@ export function consultantOffline(role: "radiologist" | "pathologist" | string, 
 function resultLine(c: CaseDefinition, id: string, phase: string, locale: string): string {
   const inv = c.investigations.find((i) => i.id === id);
   const result = inv?.results[phase];
-  const text = result ? (result.available ? t(result.text, locale) : rt(locale, "tool.result.unavailable")) : rt(locale, "tool.result.unavailable");
+  const why = result && !result.available ? t(result.text, locale) : "";
+  const text = result ? (result.available ? t(result.text, locale) : why ? joinSentences(locale, [why, rt(locale, "tool.result.notAvailable")]) : rt(locale, "tool.result.unavailable")) : rt(locale, "tool.result.unavailable");
   return rt(locale, "consultant.offline.result", { name: investigationName(c, id, locale), phase: phaseLabel(c, phase, locale), text });
 }
 

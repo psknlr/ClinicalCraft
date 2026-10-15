@@ -823,6 +823,9 @@ const en: Messages = {
   "settings.kicker": "SETTINGS",
   "settings.title": "Settings · language model & permissions",
   "llm.corsWarn": "{provider} usually blocks direct browser (CORS) calls; prefer the clinicalcraft serve proxy.",
+  "llm.baseUrlServer":
+    "The browser will block {origin}: this server's security policy (CSP connect-src) only lets the page call the provider addresses configured on the server. Add this base URL on the server (providers.{provider}.baseUrl in the settings of `clinicalcraft serve`, then restart it), or use proxy mode.",
+  "llm.baseUrlCsp": "The browser will block {origin}: this page's security policy (CSP connect-src) does not allow it. Serve the app with `clinicalcraft serve` and configure the base URL there, or use proxy mode.",
   "help.agentsTitle": "How the agents work",
   "help.agents.grounding": "The patient's facts are first selected from the case data, then phrased by a language model (or an offline template); anything the case does not record stays unknown.",
   "help.agents.offline": "Without a language model the game runs offline: replies come verbatim from the case file — fully playable, no network needed.",

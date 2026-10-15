@@ -117,7 +117,10 @@ export interface MatchHit {
 
 /** Optional filters for `matchHistory` / `matchExam`. */
 export interface MatchOptions {
-  /** Drop items whose `phases` do not include this phase (items without `phases` are always eligible). */
+  /**
+   * Drop items whose `phases` do not include this phase (items without `phases` are always eligible);
+   * for `matchHistory` also route hits on items superseded in this phase to their twin (`history[].supersedes`).
+   */
   phase?: string;
   /** `false` drops history items with `disclosure: "unknown"` (default true; ignored by `matchExam`). */
   includeUnknown?: boolean;

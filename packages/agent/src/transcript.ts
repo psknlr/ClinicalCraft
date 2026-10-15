@@ -10,6 +10,7 @@
 import type { ClinicalAction } from "@clinicalcraft/core";
 import type { AgentRole, ApprovalMode, Op, PlanItem, PracticeScope } from "./protocol.js";
 import type { ChatMessage, ChatPart } from "./providers/types.js";
+import { canonicalLocale } from "./settings/schema.js";
 import type { DialogueEntry, TranscriptItem, TranscriptSink } from "./session/types.js";
 
 /** In-memory transcript sink. */
@@ -172,7 +173,7 @@ export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedR
   const out: ResumedRuntimeConfig = {};
   for (const item of sorted) {
     if (item.type === "session_meta" && item.payload) {
-      if (item.payload.locale) out.locale = item.payload.locale;
+      if (canonicalLocale(item.payload.locale)) out.locale = canonicalLocale(item.payload.locale)!;
       if (item.payload.provider) out.provider = item.payload.provider;
       out.model = item.payload.model || null;
       continue;
@@ -190,7 +191,8 @@ export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedR
     if (msg.type !== "config_changed") continue;
     const p = msg.patch;
     if (!p || typeof p !== "object") continue; // malformed (e.g. hand-edited or uploaded) item
-    if (p.locale) out.locale = p.locale;
+    // A recording (an upload above all) cannot switch the session to a language the runtime does not ship.
+    if (canonicalLocale(p.locale)) out.locale = canonicalLocale(p.locale)!;
     if (p.provider) {
       out.provider = p.provider;
       if (p.model === undefined) out.model = null;

@@ -17,7 +17,7 @@ import { join } from "node:path";
 import type { TranscriptItem } from "@clinicalcraft/agent";
 import { JsonlTranscript, sessionsDir, type Env } from "@clinicalcraft/agent/node";
 
-const ITEM_TYPES = new Set(["session_meta", "op", "action", "message", "event", "compacted", "dialogue"]);
+const ITEM_TYPES = new Set(["session_meta", "op", "action", "message", "event", "compacted", "dialogue", "diagnostic"]);
 const SESSION_ID = /^[A-Za-z0-9_-]{1,128}$/;
 /** Open writers kept per server (least recently used beyond this are dropped). */
 const MAX_WRITERS = 64;

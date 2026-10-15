@@ -307,6 +307,11 @@ Authoring lessons for the offline matcher, all applied here:
   "genitalia" and run-together "thetestes"/"histestes" (not "testes", which stems
   to `test`, nor "examinetestes", which "examine" prefix-matches). The morphine
   dose text is the 0.1 mg/kg formula; ≈ 7 mg for his 68 kg is in its `response`.
+- **Fifth review.** The fluids dose text gives maintenance as 25–30 mL/kg/day;
+  ≈ 80 mL/h for his 68 kg is in its `response`. "最后一次吃东西是什么时候？" no
+  longer also credits `hx-anorexia` (it excludes 最后一次 / 上一顿 / "last ate").
+  Urinalysis, group-and-screen and imaging result values are per-locale
+  `LocalizedText` (阴性 / negative are no longer one string in both tables).
 - **Chinese generic cores** add to the list above: 怕什么 (什么), 吐了吗 (了吗)
   and 还有什么问题 (5/6 = 0.83 on any 有什么问题 sentence).
 

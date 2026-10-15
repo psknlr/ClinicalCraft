@@ -2,6 +2,7 @@ import { createSession as createEngineState, verifyCase } from "@clinicalcraft/c
 import { describe, expect, it } from "vitest";
 import { loadMiniCase, makeSession, msgsOf } from "../__fixtures__/harness.js";
 import { textScript, toolCallScript } from "../providers/scripted.js";
+import { MemoryTranscript } from "../transcript.js";
 import { classifyUtterance, clarifyText, isOpenQuestion, offlineRerank, parseVoiceReply, selectFacts } from "./patient-pipeline.js";
 
 const voice = (say: string, usedFactIds: string[], extra: Record<string, unknown> = {}) =>
@@ -169,7 +170,9 @@ describe("patient agent — select → voice with a model", () => {
     const reply = msgsOf(events, "agent_message")[0]!;
     expect(reply.text).toBe("I take metformin 500 mg twice a day.");
     expect((reply as unknown as { grounding: string }).grounding).toBe("template");
-    expect(msgsOf(events, "warning").some((w) => /grounding/.test(w.message) && /850/.test(w.message))).toBe(true);
+    // the warning names the category, never the quoted text
+    expect(msgsOf(events, "warning").some((w) => /grounding/.test(w.message) && /a number/.test(w.message))).toBe(true);
+    expect(msgsOf(events, "warning").some((w) => /850/.test(w.message))).toBe(false);
   });
 
   it("replaces a reply that invents history, diagnoses or digit-free dates by the authored answer (C2)", async () => {
@@ -178,7 +181,41 @@ describe("patient agent — select → voice with a model", () => {
     const reply = msgsOf(events, "agent_message")[0]!;
     expect(reply.text).toBe("About two hours ago, while I was lifting boxes.");
     expect((reply as unknown as { grounding: string }).grounding).toBe("template");
-    expect(msgsOf(events, "warning").some((w) => /stroke/.test(w.message))).toBe(true);
+    expect(msgsOf(events, "warning").some((w) => /a named condition or date/.test(w.message))).toBe(true);
+    expect(msgsOf(events, "warning").some((w) => /stroke|heart attack|last year/.test(w.message))).toBe(false);
+  });
+
+  it("a rejected reply's warning names only violation categories; the details go to the transcript diagnostics (review round 3)", async () => {
+    const c = loadMiniCase();
+    const leaky = {
+      en: "Two hours ago when lifting boxes. Feels like a heavy weight pressing, I think it is an Inferior STEMI.",
+      "zh-CN": "两个小时前搬箱子的时候。像有块大石头压着，我觉得是下壁STEMI。",
+    };
+    for (const locale of ["en", "zh-CN"] as const) {
+      const transcript = new MemoryTranscript();
+      const t = await makeSession({ scripts: [voice(leaky[locale], ["onset"], { nonverbal: "points at the 12-lead ECG, it's a STEMI" })], settingsPatch: { locale }, transcript });
+      await t.session.run({ type: "clinical_action", action: { type: "start" } });
+      await t.session.run({ type: "user_message", text: locale === "en" ? "When did the pain start?" : "什么时候开始痛的？", to: "patient" });
+      const reply = t.msgs("agent_message").find((m) => m.agent === "patient")!;
+      expect(reply.grounding).toBe("template");
+      const warnings = t.msgs("warning").map((w) => w.message);
+      expect(warnings.length).toBeGreaterThan(0);
+      // no emitted warning quotes an unrevealed answer or any decision option text
+      const hidden = [
+        ...c.history.filter((h) => !t.session.state.asked.includes(h.id)).flatMap((h) => Object.values(h.answer as Record<string, string>)),
+        ...c.decisions.flatMap((d) => d.options.flatMap((o) => Object.values(o.text as Record<string, string>))),
+      ];
+      for (const w of warnings) {
+        expect(w).not.toMatch(/heavy weight|大石头|STEMI|inferiorstemi|"/i);
+        for (const text of hidden) expect(w.toLowerCase()).not.toContain(text.toLowerCase());
+      }
+      expect(warnings.join(" ")).toMatch(locale === "en" ? /a fact not yet asked about/ : /尚未问及的事实/);
+      const diag = transcript.items.filter((i) => i.type === "diagnostic");
+      expect(diag).toHaveLength(1);
+      expect(JSON.stringify(diag[0]!.payload)).toMatch(/unasked fact/);
+      // diagnostics are transcript-only: never an event
+      expect(transcript.items.some((i) => i.type === "event" && JSON.stringify(i.payload).includes("unasked fact"))).toBe(false);
+    }
   });
 
   it("checks the nonverbal cue too: no numbers, signs or unexamined findings (else it is dropped)", async () => {

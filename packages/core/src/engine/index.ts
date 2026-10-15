@@ -14,6 +14,7 @@ export { createSession, reduce, replay } from "./reducer.js";
 // queries
 export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, type ConditionRef } from "./conditions.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
+export { historyTwin, historyAvailable, historyCredited, creditedHistory, supersededIn, supersededItems, hasHistoryTwins } from "./twins.js";
 export {
   vitalsAt,
   vitalValue,

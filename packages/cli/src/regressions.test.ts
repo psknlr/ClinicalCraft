@@ -4,7 +4,7 @@
  * speaker labels after a language switch, `config set` validation and
  * shadowing, and `sessions list|show` presentation.
  */
-import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PassThrough } from "node:stream";
@@ -186,6 +186,32 @@ describe("EventRenderer", () => {
     expect(r.stdout).toContain("offline/deterministic");
   });
 
+  it.skipIf(!smzl)("the zh REPL names the interlocutor by role, keeping the id for @/talk (review round 3)", { timeout: T }, async () => {
+    const box = sandbox();
+    const zh = await run(["play", SMZL, "--lang", "zh-CN"], box, "/status\n/talk nurse\n/quit\n");
+    expect(zh.code).toBe(0);
+    expect(zh.stdout).toContain("[患者] ›");
+    expect(zh.stdout).toContain("患者（patient）");
+    expect(zh.stdout).toContain("护士（nurse）");
+    expect(zh.stdout).not.toContain("[patient] ›");
+    const en = await run(["play", SMZL, "--lang", "en"], box, "/status\n/quit\n");
+    expect(en.stdout).toContain("[patient] ›");
+  });
+
+  it.skipIf(!smzl)("prints 'Case finished' once: the /finish output repeats the ■ line (review round 3)", () => {
+    for (const locale of ["en", "zh-CN"]) {
+      let out = "";
+      const renderer = new EventRenderer({ out: { write: (s: string) => ((out += s), true) }, palette: createPalette(false), caseDef: smzl!, locale: () => locale, interactive: false, verbose: false });
+      let seq = 0;
+      const emit = (msg: EventMsg) => renderer.handle({ id: "s", seq: ++seq, msg } as AgentEvent);
+      const done = m(locale, "render.finished");
+      emit({ type: "clinical_event", event: { type: "case.finished", timedOut: false } as never });
+      emit({ type: "command_output", name: "finish", text: done, data: { ok: true, data: { finished: true } } });
+      expect(out.split(done).length - 1).toBe(1);
+      expect(renderer.lastCommand?.name).toBe("finish");
+    }
+  });
+
   it.skipIf(!smzl)("prints a denied command once (the ✗ line), not again as its output", () => {
     let out = "";
     const renderer = new EventRenderer({ out: { write: (s: string) => ((out += s), true) }, palette: createPalette(false), caseDef: smzl!, locale: () => "en", interactive: false, verbose: false });
@@ -211,6 +237,19 @@ describe("config set", () => {
     expect(en.stderr).toContain("Invalid value for practiceScope");
     const get = await run(["config", "get", "approvalMode"], box);
     expect(get.stdout.trim()).toBe("default");
+  });
+
+  it("a previously valid, now unsupported locale in a settings file does not block setting other keys (review round 3)", { timeout: T }, async () => {
+    const box = sandbox({ locale: "english" });
+    writeFileSync(join(box.home, "settings.json"), JSON.stringify({ locale: "fr" }));
+    const user = await run(["config", "set", "model", "gpt-x", "--lang", "en"], box);
+    expect(user.code, user.stderr).toBe(0);
+    expect(JSON.parse(readFileSync(join(box.home, "settings.json"), "utf8"))).toEqual({ locale: "fr", model: "gpt-x" });
+    const project = await run(["config", "set", "--project", "approvalMode", "strict", "--lang", "en"], box);
+    expect(project.code, project.stderr).toBe(0);
+    expect(JSON.parse(readFileSync(join(box.cwd, ".clinicalcraft", "settings.json"), "utf8"))).toMatchObject({ locale: "english", approvalMode: "strict" });
+    // setting the locale itself still validates it
+    expect((await run(["config", "set", "locale", "fr"], box)).code).toBe(2);
   });
 
   it("warns when a higher-precedence layer still decides the value", { timeout: T }, async () => {

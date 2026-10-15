@@ -144,7 +144,7 @@ describe("MCP stdio server", () => {
     expect(Object.keys(ask.inputSchema.properties)).toEqual(["session_id", "question", "confirm"]);
     expect(tools.find((tool) => tool.name === "case_status")!.annotations.readOnlyHint).toBe(true);
 
-    // Case ids name the diagnoses: the clinician (the MCP client) sees opaque handles, in title order.
+    // Case ids name the diagnoses: the clinician (the MCP client) sees opaque handles, in library order.
     const startCase = tools.find((tool) => tool.name === "start_case")!;
     expect((startCase.inputSchema.properties.case_id as { enum?: unknown }).enum).toBeUndefined();
     expect(JSON.stringify(startCase.inputSchema)).not.toMatch(/smzl|stemi|embolism|dka/);
@@ -247,10 +247,10 @@ describe("MCP stdio server", () => {
     }
     expect(replies.length).toBeGreaterThan(3);
     for (const reply of replies) {
-      expect(reply).not.toMatch(/monitor is alarming|critical result|Doctor, the lab/i);
+      expect(reply).not.toMatch(/monitor is alarming|Doctor, \S+ is \d|critical result|Doctor, the lab/i);
       expect(reply.trim()).not.toBe("");
     }
-    expect(notices.some((n) => /alarm/i.test(n))).toBe(true); // the alarms still reach the client
+    expect(notices.some((n) => /Vital-sign alert/i.test(n))).toBe(true); // the alarms still reach the client
     await client.end();
   });
 

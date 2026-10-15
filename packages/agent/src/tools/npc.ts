@@ -12,6 +12,8 @@
 import {
   availableDecisions,
   currentObjective,
+  historyAvailable,
+  historyTwin,
   matchHistory,
   orderStatus,
   progress,
@@ -66,9 +68,10 @@ function revealFacts(options: NpcToolOptions): ToolDefinition<ToolArgs> {
       const c = ctx.caseDef;
       const L = ctx.locale;
       const s = ctx.state();
-      const ids = uniqueIds(args.fact_ids);
       const utterance = options.utterance?.() ?? null;
-      const scores = utterance ? new Map(matchHistory(c, utterance, L).map((h) => [h.id, h.score])) : null;
+      // Phase twins: a fact superseded in this phase is revealed as the item that supersedes it (`supersedes`).
+      const ids = uniqueIds(uniqueIds(args.fact_ids).map((id) => historyTwin(c, id, s.phase) ?? id));
+      const scores = utterance ? new Map(matchHistory(c, utterance, L, { phase: s.phase }).map((h) => [h.id, h.score])) : null;
       const unknown: string[] = [];
       const locked: string[] = [];
       const specific: string[] = [];
@@ -76,7 +79,7 @@ function revealFacts(options: NpcToolOptions): ToolDefinition<ToolArgs> {
       for (const id of ids) {
         const item = c.history.find((h) => h.id === id);
         if (!item) unknown.push(id);
-        else if (item.phases && !item.phases.includes(s.phase)) locked.push(id);
+        else if (!historyAvailable(c, id, s.phase)) locked.push(id);
         else if (item.disclosure === "specific" && scores && (scores.get(id) ?? 0) < SPECIFIC_DISCLOSURE_THRESHOLD) specific.push(id);
         else revealed.push(id);
       }

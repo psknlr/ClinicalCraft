@@ -526,15 +526,15 @@
           "现在感觉怎么样"
         ],
         "en": [
-          "what brought you in",
+          "whatbroughtyouin",
           "what's wrong",
           "main problem",
           "what's going on",
-          "what's the matter",
+          "whatsthematter",
           "what happened",
           "how can I help you today",
           "what seems to be the problem",
-          "what brings you in",
+          "whatbringsyouin",
           "howareyoufeeling"
         ]
       },
@@ -594,16 +594,18 @@
           "多少天了"
         ],
         "en": [
-          "when did it start",
+          "whendiditstart",
           "how long",
-          "how did it begin",
+          "howdiditbegin",
           "progressed",
           "timeline",
           "how long have you been unwell",
-          "when did this start",
-          "how long has this been going on",
+          "whendidthisstart",
+          "howlonghasthisbeengoingon",
           "been going on",
-          "symptom onset"
+          "symptom onset",
+          "whendidallthisstart",
+          "whendidthesymptomsstart"
         ]
       },
       "disclosure": "on-ask",
@@ -654,7 +656,7 @@
           "appetite",
           "keep fluids down",
           "oral intake",
-          "keep anything down"
+          "keepanythingdown"
         ]
       },
       "excludeKeywords": {
@@ -716,7 +718,7 @@
           "vomit",
           "throwing up",
           "been sick",
-          "what came up",
+          "whatcameup",
           "blood in vomit",
           "coffee grounds",
           "vomited",
@@ -960,7 +962,7 @@
           "drinking a lot",
           "passing lots of water",
           "pee a lot",
-          "up at night",
+          "upatnight",
           "nocturia",
           "polydipsia"
         ]
@@ -1269,7 +1271,9 @@
           "泵坏了",
           "泵故障",
           "用的什么胰岛素",
-          "什么胰岛素"
+          "什么胰岛素",
+          "怎么用胰岛素",
+          "平时胰岛素"
         ],
         "en": [
           "insulin pump",
@@ -1278,7 +1282,7 @@
           "pump problems",
           "how do you take insulin",
           "which insulin",
-          "on a pump"
+          "onapump"
         ]
       },
       "disclosure": "on-ask",
@@ -1306,7 +1310,9 @@
           "不吃饭",
           "没吃东西",
           "吃不下",
-          "打了没有"
+          "打了没有",
+          "生病这",
+          "生病期间"
         ],
         "en": [
           "skip",
@@ -1358,7 +1364,9 @@
           "漏了",
           "胰岛素打了吗",
           "胰岛素打了没有",
-          "胰岛素打没打"
+          "胰岛素打没打",
+          "胰岛素怎么打的",
+          "胰岛素是怎么打的"
         ],
         "en": [
           "missed insulin",
@@ -1375,6 +1383,23 @@
           "skip insulin",
           "miss any boluses",
           "mealtime insulin"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "平时怎么",
+          "平时用",
+          "平时打",
+          "总共",
+          "一天用多少",
+          "用多少胰岛素",
+          "平时胰岛素",
+          "别的药",
+          "其他药"
+        ],
+        "en": [
+          "usually",
+          "normally"
         ]
       },
       "disclosure": "on-ask",
@@ -1445,7 +1470,10 @@
           "多少单位",
           "一天打多少",
           "总共打多少",
-          "基础率多少"
+          "基础率多少",
+          "用多少胰岛素",
+          "一天用多少",
+          "总共用多少"
         ],
         "en": [
           "pump settings",
@@ -1462,7 +1490,9 @@
         "zh-CN": [
           "基础病",
           "漏",
-          "没打"
+          "没打",
+          "别的药",
+          "其他药"
         ],
         "en": [
           "miss",
@@ -1526,7 +1556,8 @@
           "打没打",
           "几天",
           "多久",
-          "多长时间"
+          "多长时间",
+          "平时胰岛素"
         ],
         "en": [
           "skip",
@@ -1816,7 +1847,7 @@
         "en": [
           "happened before",
           "previous admissions",
-          "been in hospital",
+          "beeninhospital",
           "intensive care",
           "dka",
           "DKA before",
@@ -1917,7 +1948,9 @@
           "止泻药",
           "止痛药",
           "布洛芬",
-          "非处方"
+          "非处方",
+          "别的药",
+          "还吃什么药"
         ],
         "en": [
           "other medicines",
@@ -1927,7 +1960,7 @@
           "thyroid medicine",
           "levothyroxine",
           "thyroxine",
-          "over the counter",
+          "overthecounter",
           "OTC",
           "ibuprofen",
           "taken anything for the vomiting",
@@ -1941,7 +1974,11 @@
         "zh-CN": [
           "过敏",
           "大麻",
-          "毒品"
+          "毒品",
+          "怎么用胰岛素",
+          "怎么打胰岛素",
+          "胰岛素怎么",
+          "什么胰岛素"
         ],
         "en": [
           "allerg",
@@ -1949,7 +1986,9 @@
           "street",
           "cannabis",
           "sglt2",
-          "gliflozin"
+          "gliflozin",
+          "howdoyoutake",
+          "whichinsulin"
         ]
       }
     },
@@ -2240,7 +2279,7 @@
           "worry",
           "concern",
           "scared",
-          "what do you think",
+          "whatdoyouthink",
           "expect"
         ]
       },
@@ -2346,7 +2385,7 @@
           "roommate's diagnosis",
           "what did she have",
           "cause",
-          "what did your roommate have",
+          "whatdidyourroommatehave",
           "roommate's illness",
           "was your roommate tested"
         ]
@@ -2557,7 +2596,11 @@
           "呼吸频率",
           "呼吸深度",
           "观察呼吸",
-          "数呼吸"
+          "数呼吸",
+          "呼吸深快",
+          "又深又快",
+          "呼吸深大",
+          "看看呼吸"
         ],
         "en": [
           "breathing pattern",
@@ -2565,7 +2608,8 @@
           "count breaths",
           "depth of breathing",
           "observe respiration",
-          "breathing"
+          "breathing",
+          "kussmaul"
         ]
       },
       "finding": {
@@ -2722,7 +2766,11 @@
           "压痛",
           "反跳痛",
           "肠鸣音",
-          "腹肌紧张"
+          "腹肌紧张",
+          "查肚子",
+          "查一下肚子",
+          "看看肚子",
+          "肚子"
         ],
         "en": [
           "abdominal exam",
@@ -3016,7 +3064,7 @@
           "reassess",
           "re-examine",
           "after treatment",
-          "how is she now",
+          "howisshenow",
           "review"
         ]
       },
@@ -3048,7 +3096,7 @@
           "reassess",
           "re-examine",
           "after treatment",
-          "how is she now",
+          "howisshenow",
           "review"
         ]
       },
@@ -3192,7 +3240,10 @@
               "unit": "mmol/L",
               "refLow": 0,
               "refHigh": 0.6,
-              "refText": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent",
+              "refText": {
+                "zh-CN": "< 0.6 正常；0.6–1.5 升高；1.5–3.0 高风险；> 3.0 需紧急处理",
+                "en": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent"
+              },
               "flag": "HH"
             }
           ],
@@ -3213,7 +3264,10 @@
               "unit": "mmol/L",
               "refLow": 0,
               "refHigh": 0.6,
-              "refText": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent",
+              "refText": {
+                "zh-CN": "< 0.6 正常；0.6–1.5 升高；1.5–3.0 高风险；> 3.0 需紧急处理",
+                "en": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent"
+              },
               "flag": "HH"
             }
           ],
@@ -3237,7 +3291,10 @@
               "unit": "mmol/L",
               "refLow": 0,
               "refHigh": 0.6,
-              "refText": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent",
+              "refText": {
+                "zh-CN": "< 0.6 正常；0.6–1.5 升高；1.5–3.0 高风险；> 3.0 需紧急处理",
+                "en": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent"
+              },
               "flag": "H"
             }
           ],
@@ -3261,7 +3318,10 @@
               "unit": "mmol/L",
               "refLow": 0,
               "refHigh": 0.6,
-              "refText": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent",
+              "refText": {
+                "zh-CN": "< 0.6 正常；0.6–1.5 升高；1.5–3.0 高风险；> 3.0 需紧急处理",
+                "en": "< 0.6 normal; 0.6–1.5 raised; 1.5–3.0 high risk; > 3.0 urgent"
+              },
               "flag": "N"
             }
           ],
@@ -4503,7 +4563,10 @@
               },
               "value": "4+",
               "unit": "",
-              "refText": "negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "A"
             },
             {
@@ -4513,7 +4576,10 @@
               },
               "value": "3+",
               "unit": "",
-              "refText": "negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "A"
             },
             {
@@ -4532,9 +4598,15 @@
                 "zh-CN": "白细胞酯酶",
                 "en": "Leucocyte esterase"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -4542,9 +4614,15 @@
                 "zh-CN": "亚硝酸盐",
                 "en": "Nitrite"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             },
             {
@@ -4552,9 +4630,15 @@
                 "zh-CN": "尿蛋白",
                 "en": "Protein"
               },
-              "value": "微量 / trace",
+              "value": {
+                "zh-CN": "微量",
+                "en": "trace"
+              },
               "unit": "",
-              "refText": "negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "A"
             }
           ],
@@ -4607,9 +4691,15 @@
                 "zh-CN": "尿hCG",
                 "en": "Urine hCG"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ]
@@ -4625,9 +4715,15 @@
                 "zh-CN": "尿hCG",
                 "en": "Urine hCG"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ]
@@ -4643,9 +4739,15 @@
                 "zh-CN": "尿hCG",
                 "en": "Urine hCG"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ]
@@ -4661,9 +4763,15 @@
                 "zh-CN": "尿hCG",
                 "en": "Urine hCG"
               },
-              "value": "阴性 / negative",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "unit": "",
-              "refText": "阴性 / negative",
+              "refText": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
               "flag": "N"
             }
           ]
@@ -5500,8 +5608,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠 1000 mL 静滴60分钟（约18 mL/kg）；不含钾（钾结果出来前）",
-        "en": "0.9% NaCl 1000 mL IV over 60 minutes (about 18 mL/kg); no potassium (before the potassium result)"
+        "zh-CN": "0.9%氯化钠 1000 mL 静滴60分钟；不含钾（钾结果出来前）",
+        "en": "0.9% NaCl 1000 mL IV over 60 minutes; no potassium (before the potassium result)"
       },
       "requires": [
         "iv-access"
@@ -5554,8 +5662,8 @@
         }
       ],
       "response": {
-        "zh-CN": "0.9%氯化钠1000 mL开始输注，计划60分钟输完。",
-        "en": "0.9% NaCl 1000 mL running, to finish over 60 minutes."
+        "zh-CN": "0.9%氯化钠1000 mL开始输注，计划60分钟输完（按她55 kg约18 mL/kg）。",
+        "en": "0.9% NaCl 1000 mL running, to finish over 60 minutes (about 18 mL/kg for her 55 kg)."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -5612,8 +5720,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "平衡晶体液 1000 mL 静滴60分钟（约18 mL/kg）",
-        "en": "Balanced crystalloid 1000 mL IV over 60 minutes (about 18 mL/kg)"
+        "zh-CN": "平衡晶体液 1000 mL 静滴60分钟",
+        "en": "Balanced crystalloid 1000 mL IV over 60 minutes"
       },
       "requires": [
         "iv-access"
@@ -5666,8 +5774,8 @@
         }
       ],
       "response": {
-        "zh-CN": "平衡晶体液1000 mL开始输注，计划60分钟输完。（2024年国际共识认为平衡晶体液与0.9%氯化钠均可作为初始液体。）",
-        "en": "Balanced crystalloid 1000 mL running over 60 minutes. (The 2024 international consensus accepts either balanced crystalloid or 0.9% saline as the initial fluid.)"
+        "zh-CN": "平衡晶体液1000 mL开始输注，计划60分钟输完（按她55 kg约18 mL/kg）。（2024年国际共识认为平衡晶体液与0.9%氯化钠均可作为初始液体。）",
+        "en": "Balanced crystalloid 1000 mL running over 60 minutes (about 18 mL/kg for her 55 kg). (The 2024 international consensus accepts either balanced crystalloid or 0.9% saline as the initial fluid.)"
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -6041,7 +6149,8 @@
           "推注",
           "静推",
           "皮下",
-          "甘精"
+          "甘精",
+          "摘"
         ],
         "en": [
           "remove",
@@ -6078,8 +6187,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通胰岛素5.5 U静脉推注（0.1 U/kg）",
-        "en": "Soluble insulin 5.5 U IV bolus (0.1 U/kg)"
+        "zh-CN": "普通胰岛素0.1 U/kg静脉推注",
+        "en": "Soluble insulin 0.1 U/kg IV bolus"
       },
       "requires": [
         "medications"
@@ -6103,8 +6212,8 @@
         }
       ],
       "response": {
-        "zh-CN": "已推注胰岛素5.5 U。药师提醒：固定速率0.1 U/kg/h输注方案不需要负荷剂量，负荷量只会让血糖和血钾短时间内下降更快。",
-        "en": "Insulin 5.5 U given IV. The pharmacist notes that a fixed-rate 0.1 U/kg/h regimen needs no bolus; a bolus only makes glucose and potassium fall faster for a short while."
+        "zh-CN": "已推注胰岛素5.5 U（0.1 U/kg）。药师提醒：固定速率0.1 U/kg/h输注方案不需要负荷剂量，负荷量只会让血糖和血钾短时间内下降更快。",
+        "en": "Insulin 5.5 U (0.1 U/kg) given IV. The pharmacist notes that a fixed-rate 0.1 U/kg/h regimen needs no bolus; a bolus only makes glucose and potassium fall faster for a short while."
       }
     },
     {
@@ -6165,7 +6274,13 @@
           "取下胰岛素泵",
           "拆掉胰岛素泵",
           "移除胰岛素泵",
-          "断开胰岛素泵"
+          "断开胰岛素泵",
+          "胰岛素泵摘掉",
+          "泵摘掉",
+          "摘泵",
+          "摘掉泵",
+          "摘掉胰岛素泵",
+          "把泵摘了"
         ],
         "en": [
           "suspend the pump",
@@ -7528,7 +7643,8 @@
         "message": {
           "zh-CN": "上级医生：“到院3小时了还没有开始胰岛素——现在卡在哪一步？”",
           "en": "Attending: \"Three hours in and still no insulin running — what's holding it up?\""
-        }
+        },
+        "speaker": "narrator"
       },
       {
         "id": "ev-glucose-14",
@@ -8132,8 +8248,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。有效渗透压 = 2 × 131 + 28 = 290 mOsm/kg，计算总渗透压299，均低于HHS阈值（2024年共识：有效渗透压 > 300或总渗透压 > 320；JBDS及中国2013指南：≥ 320）；血糖未达HHS的 ≥ 33.3 mmol/L；且有明显酮血症和重度酸中毒。",
-            "en": "No. Effective osmolality = 2 × 131 + 28 = 290 mOsm/kg and total calculated 299 — both below the HHS thresholds (2024 consensus: effective > 300 or total > 320; JBDS and the Chinese 2013 guideline: ≥ 320); glucose is below the ≥ 33.3 mmol/L of HHS; and she has marked ketonaemia with severe acidosis."
+            "zh-CN": "不对。有效渗透压 = 2 × 131 + 28 = 290 mOsm/kg，低于HHS阈值（2024年共识：有效渗透压 > 300或总渗透压 > 320；JBDS及中国2013指南：≥ 320）；血糖未达HHS的 ≥ 33.3 mmol/L；且有明显酮血症和重度酸中毒。",
+            "en": "No. Effective osmolality = 2 × 131 + 28 = 290 mOsm/kg — below the HHS thresholds (2024 consensus: effective > 300 or total > 320; JBDS and the Chinese 2013 guideline: ≥ 320); glucose is below the ≥ 33.3 mmol/L of HHS; and she has marked ketonaemia with severe acidosis."
           }
         },
         {
@@ -8322,8 +8438,8 @@
         {
           "id": "p-pump",
           "text": {
-            "zh-CN": "胰岛素输注中断：泵管路打折堵塞（反复“堵塞”报警被清除、管路超期使用4天）",
-            "en": "Interrupted insulin delivery: kinked, occluded pump set (repeated 'occlusion' alarms cleared; set 4 days old)"
+            "zh-CN": "胰岛素输注中断：泵管路堵塞（反复“堵塞”报警被清除）",
+            "en": "Interrupted insulin delivery from an occluded pump set (repeated 'occlusion' alarms cleared)"
           },
           "correct": true,
           "feedback": {
@@ -8346,8 +8462,8 @@
         {
           "id": "p-gastro",
           "text": {
-            "zh-CN": "并发急性胃肠炎（很可能为病毒性，室友有类似病史）",
-            "en": "Intercurrent acute gastroenteritis (probably viral; her roommate had a similar illness)"
+            "zh-CN": "并发急性胃肠炎（很可能为病毒性）",
+            "en": "Intercurrent acute gastroenteritis (probably viral)"
           },
           "correct": true,
           "feedback": {
@@ -10114,6 +10230,21 @@
         "expect": [
           "hx-status-midway",
           "hx-status-resolution"
+        ]
+      },
+      {
+        "text": "你平时怎么用胰岛素？一天总共用多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-insulin-pump",
+          "hx-pump-settings"
+        ]
+      },
+      {
+        "text": "除了胰岛素还吃别的药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-meds"
         ]
       }
     ]

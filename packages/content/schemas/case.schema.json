@@ -1420,6 +1420,12 @@
                   "$ref": "#/definitions/Id"
                 }
               },
+              "supersedes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                }
+              },
               "speaker": {
                 "type": "string",
                 "enum": [
@@ -1760,6 +1766,9 @@
                   },
                   "message": {
                     "$ref": "#/definitions/LocalizedText"
+                  },
+                  "unless": {
+                    "$ref": "#/definitions/Condition"
                   }
                 },
                 "required": [

@@ -4,7 +4,8 @@
  *   1. Route — out-of-fiction input (prompt injection, meta questions,
  *      requests for real medical advice) gets an in-character deflection and
  *      never reaches the fact selector.
- *   2. Select — `matchHistory`: hits ≥ 0.55 are selected (≤ 3, within 0.25 of
+ *   2. Select — `matchHistory` in the current phase (a hit on an item
+ *      superseded there counts for its phase twin): hits ≥ 0.55 are selected (≤ 3, within 0.25 of
  *      the best); 0.34–0.55 → re-rank (LLM over the fact INDEX restricted to the
  *      candidate ids, or a deterministic margin rule offline) or a clarifying
  *      question; nothing → `fallbackUnknown`. `specific` facts need a direct
@@ -22,6 +23,7 @@
  * the prompt); the verifier still runs.
  */
 import {
+  historyAvailable,
   matchHistory,
   t,
   type CaseDefinition,
@@ -37,8 +39,8 @@ import type { EventMsg, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ProviderErrorInfo, SystemSection } from "../providers/types.js";
 import { availableInPhase } from "../tools/format.js";
-import { checkNonverbal, verifyGrounding } from "./grounding.js";
-import { joinSentences, languageName, rt, type RuntimeKey } from "./i18n.js";
+import { checkNonverbal, verifyGrounding, type GroundingCheck } from "./grounding.js";
+import { isZh, joinSentences, languageName, rt, type RuntimeKey } from "./i18n.js";
 
 /* ------------------------------------------------------------------ */
 /* 1. Routing                                                          */
@@ -130,10 +132,8 @@ export interface FactSelection {
 /** Deterministic selection (step 2 without re-ranking). */
 export function selectFacts(c: CaseDefinition, state: SessionState, utterance: string, locale: string): FactSelection {
   const byId = new Map(c.history.map((h) => [h.id, h]));
-  const hits = matchHistory(c, utterance, locale).filter((h) => {
-    const item = byId.get(h.id);
-    return item !== undefined && availableInPhase(item, state);
-  });
+  // Items of the current phase only; a hit on an item superseded here counts for its twin (`supersedes`).
+  const hits = matchHistory(c, utterance, locale, { phase: state.phase }).filter((h) => byId.has(h.id));
   const strong = hits.filter((h) => h.score >= SELECT_THRESHOLD);
   const best = strong[0]?.score ?? 0;
   const selected = strong.filter((h) => h.score >= best - SELECT_RELATIVE).slice(0, MAX_SELECTED).map((h) => h.id);
@@ -141,7 +141,7 @@ export function selectFacts(c: CaseDefinition, state: SessionState, utterance: s
   const open = isOpenQuestion(utterance);
   let volunteer: string | null = null;
   if (open) {
-    const v = c.history.find((h) => h.disclosure === "volunteer" && availableInPhase(h, state) && !state.asked.includes(h.id) && !selected.includes(h.id));
+    const v = c.history.find((h) => h.disclosure === "volunteer" && historyAvailable(c, h.id, state.phase) && !state.asked.includes(h.id) && !selected.includes(h.id));
     volunteer = v?.id ?? null;
   }
   return { selected, volunteer, candidates, clarifyTopics: [], open, method: selected.length > 0 ? "match" : "none" };
@@ -238,6 +238,13 @@ export interface PatientTurnResult {
   nonverbal: string | null;
   affectHint: "calmer" | "same" | "worse" | null;
   warnings: string[];
+  /**
+   * Detailed grounding violations of a rejected reply or cue (they quote it,
+   * and may name an unasked fact or a decision option): for the transcript's
+   * diagnostics only, never emitted to the learner — `warnings` carry the
+   * violation categories alone.
+   */
+  diagnostics?: string[];
   /** Messages to append to this speaker's voice history. */
   messages: ChatMessage[];
   usage: TokenUsage;
@@ -283,9 +290,26 @@ export function caseConditionTerms(c: CaseDefinition): string[] {
   return out.filter((x) => x.trim().length >= 4 && x.length <= 60);
 }
 
-/** Answers (session locale) of facts available now that were neither asked nor are being spoken this turn. */
+/**
+ * Answers (session locale) of facts available now that were neither asked nor
+ * are being spoken this turn. `disclosure: "unknown"` items are left out: their
+ * answer ("I don't know…") tells no fact, and its everyday phrasing would only
+ * cause false alarms.
+ */
 function unrevealedAnswers(c: CaseDefinition, state: SessionState, allowed: ReadonlySet<string>, locale: string): string[] {
-  return c.history.filter((h) => availableInPhase(h, state) && !state.asked.includes(h.id) && !allowed.has(h.id)).map((h) => t(h.answer, locale));
+  return c.history
+    .filter((h) => h.disclosure !== "unknown" && availableInPhase(h, state) && !state.asked.includes(h.id) && !allowed.has(h.id))
+    .map((h) => t(h.answer, locale));
+}
+
+/**
+ * The learner-facing reason of a failed grounding check: violation
+ * categories only ("a number, a fact not yet asked about"), never the quoted
+ * text — that may name the unasked fact or the diagnosis the check hid.
+ */
+export function groundingReason(locale: string, check: Pick<GroundingCheck, "kinds">): string {
+  const kinds = check.kinds.length > 0 ? check.kinds : (["empty"] as const);
+  return kinds.map((k) => rt(locale, `grounding.kind.${k}` as RuntimeKey)).join(isZh(locale) ? "、" : ", ");
 }
 
 /** Persona-level texts the voice may draw numbers from (age, persona, opening line, fallback). */
@@ -336,7 +360,7 @@ export function buildPatientContext(input: Pick<PatientTurnInput, "caseDef" | "l
     ...(withIndex
       ? {
           factIndex: c.history
-            .filter((h) => availableInPhase(h, state))
+            .filter((h) => historyAvailable(c, h.id, state.phase))
             .map((h) => ({ id: h.id, topic: h.topic, question: t(h.question, L), specific: h.disclosure === "specific" })),
         }
       : {}),
@@ -613,30 +637,42 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   const sources = [...used.map((id) => answerOf(c, id, L)), ...personaSources(c, L), utterance, clarify ?? ""];
   const empty = voiced.stopReason === "max_tokens" ? rt(L, "reason.truncated", { agent: input.speaker, maxTokens: request.maxTokens ?? "?" }) : "empty reply";
   const grounding = { drugLexicon: caseDrugLexicon(c), conditionTerms: caseConditionTerms(c), unrevealed: unrevealedAnswers(c, input.state(), new Set([...allowedIds, ...used]), L) };
-  const check = reply.say ? verifyGrounding(reply.say, sources, grounding) : { ok: false, violations: [empty] };
+  const check: GroundingCheck = reply.say ? verifyGrounding(reply.say, sources, grounding) : { ok: false, violations: [empty], kinds: ["empty"] };
   if (reply.affectHint === "calmer") input.memory.affectIntensity = Math.max(0, input.memory.affectIntensity - 1) as PatientMemory["affectIntensity"];
   if (reply.affectHint === "worse") input.memory.affectIntensity = Math.min(3, input.memory.affectIntensity + 1) as PatientMemory["affectIntensity"];
   if (!check.ok && (input.strictGrounding || !reply.say)) {
-    return speakTemplate("template", { affectHint: reply.affectHint, warnings: [rt(L, "warning.notGrounded", { reason: check.violations.join(", ") })] });
+    return speakTemplate("template", { affectHint: reply.affectHint, warnings: [rt(L, "warning.notGrounded", { reason: groundingReason(L, check) })], diagnostics: check.violations });
   }
   // The nonverbal cue is shown too: same verifier, and it may not name a sign or describe a finding
   // the learner has not examined (the prompt rule alone is not enough) — else it is dropped.
   let nonverbal = reply.nonverbal;
   const extraWarnings: string[] = [];
+  const diagnostics: string[] = check.ok ? [] : [...check.violations];
   if (nonverbal) {
     const examined = new Set(input.state().examined);
     const unexaminedFindings = c.exam.filter((f) => !examined.has(f.id)).flatMap((f) => Object.values(f.finding ?? {}).filter((v): v is string => typeof v === "string"));
     const cue = checkNonverbal(nonverbal, sources, { drugLexicon: caseDrugLexicon(c), unexaminedFindings });
     if (!cue.ok) {
       nonverbal = null;
-      extraWarnings.push(rt(L, "warning.nonverbalDropped", { reason: cue.violations.join(", ") }));
+      extraWarnings.push(rt(L, "warning.nonverbalDropped", { reason: groundingReason(L, cue) }));
+      diagnostics.push(...cue.violations.map((v) => `nonverbal: ${v}`));
     }
   }
   // The voice answered what was asked (the selected facts); the volunteer fact counts only if it was used.
   const usedVolunteer = volunteerIds.filter((id) => reply.usedFactIds.includes(id));
   const newlyRevealed = credit(input, [...selection.selected, ...usedVolunteer]);
   const grounded = reply.usedFactIds.length > 0 ? reply.usedFactIds : selection.selected;
-  return done({ text: reply.say, grounding: "llm", route, grounded, newlyRevealed, nonverbal, affectHint: reply.affectHint, ...(extraWarnings.length ? { warnings: extraWarnings } : {}) });
+  return done({
+    text: reply.say,
+    grounding: "llm",
+    route,
+    grounded,
+    newlyRevealed,
+    nonverbal,
+    affectHint: reply.affectHint,
+    ...(extraWarnings.length ? { warnings: extraWarnings } : {}),
+    ...(diagnostics.length ? { diagnostics } : {}),
+  });
 }
 
 /** "tool" pipeline; returns null when the model failed and the select → voice path should answer instead. */
@@ -664,7 +700,7 @@ async function runToolPipeline(input: PatientTurnInput, usage: TokenUsage, warni
     const text = answers.length > 0 ? joinSentences(L, answers) : t(c.patient.persona.fallbackUnknown, L);
     return result(
       input,
-      { text, grounding: "template", route: "in-fiction", grounded: revealed, newlyRevealed, warnings: [rt(L, "warning.notGrounded", { reason: check.violations.join(", ") })] },
+      { text, grounding: "template", route: "in-fiction", grounded: revealed, newlyRevealed, warnings: [rt(L, "warning.notGrounded", { reason: groundingReason(L, check) })], diagnostics: check.violations },
       usage,
     );
   }

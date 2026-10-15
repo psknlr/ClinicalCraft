@@ -45,6 +45,8 @@ export * from "./agents/prompts.js";
 export * from "./agents/offline.js";
 
 // runtime
+export * from "./library.js";
+export * from "./terminal.js";
 export * from "./loop.js";
 export * from "./commands.js";
 export * from "./compaction.js";

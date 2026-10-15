@@ -11,7 +11,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
 import { createSession as createEngineState, currentWaypoint, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import { availableInPhase, PROVIDER_TEMPLATES, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { HistoryFile } from "./history.js";
@@ -178,10 +178,13 @@ export class Repl {
     const L = this.L;
     const p = this.ctx.out;
     const r = this.renderer;
-    r.line(`${p.bold(`ClinicalCraft`)} ${p.dim("·")} ${p.bold(t(c.title, L))}`);
-    r.line(`${t(c.patient.displayName, L)} · ${ageLabel(c, L)} · ${sexLabel(c.patient.sex, L)} · ${t(c.patient.chiefComplaint, L)}`);
-    if (c.patient.triageNote) r.line(p.dim(t(c.patient.triageNote, L)));
-    if (c.disclaimer) r.line(p.dim(t(c.disclaimer, L)));
+    // Case text is third-party content: strip every escape sequence (colours too) before the palette adds its own —
+    // the renderer's final pass keeps colour codes, so it cannot tell a case's from the palette's.
+    const ct = (text: Parameters<typeof t>[0]) => sanitizeTerminal(t(text, L));
+    r.line(`${p.bold(`ClinicalCraft`)} ${p.dim("·")} ${p.bold(ct(c.title))}`);
+    r.line(`${ct(c.patient.displayName)} · ${ageLabel(c, L)} · ${sexLabel(c.patient.sex, L)} · ${ct(c.patient.chiefComplaint)}`);
+    if (c.patient.triageNote) r.line(p.dim(ct(c.patient.triageNote)));
+    if (c.disclaimer) r.line(p.dim(ct(c.disclaimer)));
     const cfg = r.configured!;
     r.line(p.dim(m(L, "repl.config", { provider: cfg.provider, model: cfg.model || "-", approval: cfg.approvalMode, scope: cfg.practiceScope, locale: L })));
     if (this.options.resumed) r.line(p.cyan(m(L, "repl.resumed", { id: this.session.id, actions: this.session.snapshot().actions.length })));
@@ -190,7 +193,8 @@ export class Repl {
 
   private promptText(): string {
     const p = this.ctx.out;
-    return `${p.cyan(`[${this.interlocutor}]`)} ${p.bold("›")} `;
+    // Chinese shows the role ("[患者] ›"); `@`/`/talk` still take the id.
+    return `${p.cyan(`[${agentLabel(this.L, this.interlocutor)}]`)} ${p.bold("›")} `;
   }
 
   private openReadline(): void {

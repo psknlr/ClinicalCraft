@@ -1,17 +1,21 @@
 /**
  * Referential integrity of a parsed case: every id referenced from
- * conditions, waypoints, results, figures, order matching and the reference
+ * conditions, waypoints, results, figures, order matching (incl. warning
+ * `unless` conditions), history `supersedes` links and the reference
  * solution must exist; condition leaves must be able to become true;
  * objectives must be completable, decisions unlockable and answerable, and
  * phases enterable.
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
+import type { LocalizedList } from "../i18n.js";
 import { ClinicalActionSchema, type ClinicalAction } from "../schema/session.js";
 import { conditionRefs, type ConditionRef } from "./conditions.js";
 import { compileCaseRegex } from "./matcher.js";
 import { formatPath, issuesFromZodError } from "./parse.js";
 import { MONITORED_VITALS, OBSERVED_VITALS } from "./physiology.js";
+import { compactText, tokenize } from "./text.js";
+import { supersededIn } from "./twins.js";
 import type { Issue } from "./types.js";
 
 type PathPart = string | number;
@@ -192,6 +196,7 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
   c.physiology?.trends.forEach((tr, i) => issues.push(...checkCondition(c, ids, tr.until, ["physiology", "trends", i, "until"])));
   c.physiology?.events.forEach((ev, i) => issues.push(...checkCondition(c, ids, ev.when, ["physiology", "events", i, "when"])));
   c.rubric.forEach((r, i) => issues.push(...checkCondition(c, ids, r.met, ["rubric", i, "met"])));
+  c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
   return issues;
 }
 
@@ -206,6 +211,48 @@ function checkPhaseLists(ids: Ids, lists: { phases?: string[] }[], collection: s
       if (!ids.phases.has(p)) issues.push(err([collection, i, "phases", j], `unknown phase "${p}"`));
     }),
   );
+  return issues;
+}
+
+/**
+ * `history[].supersedes` (phase twins): ids must be other known history
+ * items, links must not form a cycle, and an item superseded in every phase
+ * it is listed for can never be asked (only credited) — a warning.
+ */
+function checkHistoryTwins(c: CaseDefinition, ids: Ids): Issue[] {
+  const issues: Issue[] = [];
+  const byId = new Map(c.history.map((h) => [h.id, h]));
+  c.history.forEach((h, i) =>
+    (h.supersedes ?? []).forEach((id, j) => {
+      const path = ["history", i, "supersedes", j];
+      if (id === h.id) issues.push(err(path, `history item "${h.id}" cannot supersede itself`));
+      else if (!ids.history.has(id)) issues.push(err(path, `unknown history item "${id}"`));
+    }),
+  );
+  // Cycles (A supersedes B supersedes A): which item answers would depend on declaration order.
+  c.history.forEach((h, i) => {
+    const stack = (h.supersedes ?? []).filter((id) => id !== h.id).map((id) => [id]);
+    const seen = new Set<string>();
+    while (stack.length > 0) {
+      const chain = stack.pop()!;
+      const id = chain[chain.length - 1]!;
+      if (id === h.id) {
+        issues.push(err(["history", i, "supersedes"], `supersedes cycle: ${[h.id, ...chain].join(" → ")}`));
+        return;
+      }
+      if (seen.has(id)) continue;
+      seen.add(id);
+      for (const next of byId.get(id)?.supersedes ?? []) stack.push([...chain, next]);
+    }
+  });
+  const allPhases = [...ids.phases];
+  c.history.forEach((h, i) => {
+    if (!c.history.some((x) => x.id !== h.id && (x.supersedes ?? []).includes(h.id))) return;
+    const phases = (h.phases ?? allPhases).filter((p) => ids.phases.has(p));
+    if (phases.length > 0 && phases.every((p) => supersededIn(c, h.id, p) !== null)) {
+      issues.push(warn(["history", i, "phases"], `history item "${h.id}" is superseded in every phase it is listed for, so it can never be asked (only credited through its twin)`));
+    }
+  });
   return issues;
 }
 
@@ -295,6 +342,9 @@ function checkPhysiology(c: CaseDefinition, ids: Ids): Issue[] {
     if (ev.atMinute == null && ev.when == null) issues.push(warn(["physiology", "events", i], `scenario event "${ev.id}" has neither atMinute nor when and never fires`));
     if (ev.absolute && !Object.values(ev.setVitals ?? {}).some((v) => typeof v === "number")) {
       issues.push(warn(["physiology", "events", i, "absolute"], `scenario event "${ev.id}" is absolute but sets no numeric vital, so absolute has no effect`));
+    }
+    if (ev.speaker === "companion" && !c.patient.persona.companion) {
+      issues.push(err(["physiology", "events", i, "speaker"], `scenario event "${ev.id}" is voiced by the companion, but the case has no persona.companion`));
     }
   });
   c.interventions.forEach((iv, i) =>
@@ -480,12 +530,42 @@ function checkReachability(c: CaseDefinition, ids: Ids): Issue[] {
  * unplayable or unwinnable; warnings flag likely authoring mistakes.
  * Paths are dot-joined (`objectives.2.completeWhen.all.0.read`).
  */
+/**
+ * An English keyword of three or more words made of stop-words plus one
+ * token ("what does he take" → `tak`, "when did it start" → `start`) matches
+ * any utterance containing that one word at full score — a one-word wildcard.
+ * Write it run together ("whatdoeshetake": containment only) or as that word
+ * (docs/CASE_AUTHORING.md §3). A phrase with no token at all already matches
+ * only by containment.
+ */
+function checkKeywordPhrases(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  const check = (list: LocalizedList | undefined, path: PathPart[]) => {
+    if (!list) return;
+    const entries: [PathPart[], string[]][] = Array.isArray(list) ? [[path, list]] : Object.entries(list).map(([locale, l]): [PathPart[], string[]] => [[...path, locale], l ?? []]);
+    for (const [base, phrases] of entries) {
+      phrases.forEach((phrase, j) => {
+        if (/[\u3400-\u9fff]/u.test(phrase) || phrase.trim().split(/\s+/).length < 3) return;
+        const tokens = tokenize(phrase);
+        if (tokens.length !== 1) return;
+        issues.push(warn([...base, j], `keyword "${phrase}" reduces to the single token "${tokens[0]}": a one-word wildcard that matches any utterance with that word; write it run together ("${compactText(phrase)}") or as the word itself`));
+      });
+    }
+  };
+  c.history.forEach((h, i) => check(h.keywords, ["history", i, "keywords"]));
+  c.exam.forEach((e, i) => check(e.keywords, ["exam", i, "keywords"]));
+  c.interventions.forEach((iv, i) => check(iv.aliases, ["interventions", i, "aliases"]));
+  return issues;
+}
+
 export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
   const ids = collectIds(c);
   return [
     ...checkCollections(c),
+    ...checkKeywordPhrases(c),
     ...checkAllConditions(c, ids),
     ...checkPhaseLists(ids, c.history, "history"),
+    ...checkHistoryTwins(c, ids),
     ...checkPhaseLists(ids, c.exam, "exam"),
     ...checkInvestigations(c, ids),
     ...checkOrderMatching(c, ids),

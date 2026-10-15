@@ -7,13 +7,15 @@ import type { SessionState } from "../schema/session.js";
 import { evaluate, parseResultKey, resultFor } from "./conditions.js";
 import { alarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
+import { creditedHistory } from "./twins.js";
 import { unique } from "./text.js";
 import type { AssessmentReport } from "./types.js";
 
-function coverage(items: { id: string; required: boolean }[], done: string[]) {
+/** `count` = distinct known ids in `done`; required items count as done when `credited` (default `done`) has them. */
+function coverage(items: { id: string; required: boolean }[], done: string[], credited: string[] = done) {
   const known = new Set(items.map((i) => i.id));
   const required = items.filter((i) => i.required);
-  const missingRequired = required.filter((i) => !done.includes(i.id)).map((i) => i.id);
+  const missingRequired = required.filter((i) => !credited.includes(i.id)).map((i) => i.id);
   return {
     count: unique(done).filter((id) => known.has(id)).length,
     required: required.length,
@@ -132,7 +134,8 @@ function rubricSummary(c: CaseDefinition, s: SessionState) {
 /** Assess a session against its case (pure). */
 export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const p = progress(c, s);
-  const history = coverage(c.history, s.asked);
+  // Required history asked through a phase twin (`supersedes`) is credited; `asked` counts the questions really asked.
+  const history = coverage(c.history, s.asked, creditedHistory(c, s));
   const exam = coverage(c.exam, s.examined);
   const { rubric, score } = rubricSummary(c, s);
   return {

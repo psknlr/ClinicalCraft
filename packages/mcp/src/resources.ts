@@ -5,6 +5,7 @@
  *   clinicalcraft://session/{id}/transcript     what was said and what happened (JSON)
  */
 import { currentWaypoint, progress, vitalsAt } from "@clinicalcraft/core";
+import { libraryOrder } from "@clinicalcraft/agent";
 import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { caseHandle, caseListing } from "./format.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
@@ -70,7 +71,8 @@ export async function readResource(host: ResourceHost, uri: string) {
   let value: unknown;
   if (uri === CASES_URI) {
     const content = await host.content();
-    value = { cases: [...content.cases.values()].map((e) => caseListing(e.def, host.locale)).sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id)) };
+    // Same order as `list_cases` and the CLI (`libraryOrder`); entries carry opaque handles only.
+    value = { cases: libraryOrder([...content.cases.values()].map((e) => e.def)).map((c) => caseListing(c, host.locale)) };
   } else {
     const m = SESSION_URI.exec(uri);
     const entry = m ? host.sessions.get(decodeURIComponent(m[1]!)) : undefined;

@@ -716,7 +716,9 @@ describe.skipIf(!SMZL)("(b) scripted patient + clinician autopilot with approval
     // the invented number was caught: authored answer + warning
     const spleenReply = d.msgs("agent_message").find((m) => m.agent === "patient" && m.grounded.includes("spleen"))!;
     expect(spleenReply).toMatchObject({ text: answerText(c, "spleen", L), grounding: "template" });
-    expect(d.msgs("warning").some((w) => /grounding check/.test(w.message) && /40/.test(w.message))).toBe(true);
+    // the warning names the violation category only, never the quoted reply (review round 3)
+    expect(d.msgs("warning").some((w) => /grounding check/.test(w.message) && /a number/.test(w.message))).toBe(true);
+    expect(d.msgs("warning").some((w) => /grounding check/.test(w.message) && /40/.test(w.message))).toBe(false);
 
     // approvals: the first biopsy order was denied (reason reaches the model, nothing ordered), the second approved
     const requests = d.msgs("approval_request");

@@ -137,6 +137,17 @@ describe("saveUserSettings", () => {
     if (process.platform !== "win32") expect(statSync(file).mode & 0o777).toBe(0o600);
     await expect(saveUserSettings({ approvalMode: "yolo" }, e)).rejects.toThrow(/approvalMode/);
   });
+
+  it("a pre-existing unsupported locale (ignored when loading) does not block saving other keys (review round 3)", async () => {
+    const e = { CLINICALCRAFT_HOME: join(root, "locale-home") };
+    mkdirSync(e.CLINICALCRAFT_HOME, { recursive: true });
+    writeFileSync(join(e.CLINICALCRAFT_HOME, "settings.json"), JSON.stringify({ locale: "fr", provider: "offline" }));
+    const file = await saveUserSettings({ model: "x" }, e);
+    expect(JSON.parse(readFileSync(file, "utf8"))).toEqual({ locale: "fr", provider: "offline", model: "x" });
+    await expect(saveUserSettings({ locale: "de" }, e)).rejects.toThrow(/locale/);
+    await saveUserSettings({ locale: "en" }, e);
+    expect(JSON.parse(readFileSync(file, "utf8")).locale).toBe("en");
+  });
 });
 
 describe("saveUserSettings hardening", () => {

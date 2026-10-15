@@ -442,7 +442,7 @@
         "en": [
           "scale",
           "score",
-          "out of 10",
+          "outof10",
           "how bad",
           "severity",
           "how severe",
@@ -905,7 +905,7 @@
           "mobile",
           "mobility",
           "walking",
-          "out of bed",
+          "outofbed",
           "bed rest",
           "moving around",
           "up and about"
@@ -1011,7 +1011,7 @@
         "en": [
           "surgery",
           "operated",
-          "operation did you have",
+          "operationdidyouhave",
           "procedure",
           "surgical history",
           "what op"
@@ -1856,7 +1856,7 @@
           "occupation",
           "live with",
           "living situation",
-          "who is at home"
+          "whoisathome"
         ]
       },
       "disclosure": "on-ask"
@@ -1932,7 +1932,7 @@
           "family",
           "parents",
           "relatives",
-          "runs in the",
+          "runsinthe",
           "inherited",
           "family hx",
           "fhx"
@@ -2089,7 +2089,7 @@
           "hoping",
           "expect",
           "expectations",
-          "want us to do",
+          "wantustodo",
           "like us to do",
           "you hope"
         ]
@@ -2850,7 +2850,10 @@
               "value": 7.3,
               "unit": "kPa",
               "refHigh": 2.3,
-              "refText": "≤ 2.3 kPa (17 mmHg) for age",
+              "refText": {
+                "zh-CN": "≤ 2.3 kPa（17 mmHg，按年龄）",
+                "en": "≤ 2.3 kPa (17 mmHg) for age"
+              },
               "flag": "H"
             }
           ],
@@ -4281,7 +4284,7 @@
         ],
         "en": [
           "sit up",
-          "sit her up",
+          "sitherup",
           "head up",
           "upright",
           "position"
@@ -4342,8 +4345,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通肝素80 U/kg静脉推注（70 kg：5600 U），随后18 U/kg/h持续泵入（1260 U/h）；6小时后查APTT（目标为对照值的1.5–2.5倍，或抗Xa 0.3–0.7 IU/mL），按院内列线图调整；每2–3天复查血小板计数",
-        "en": "UFH 80 U/kg IV bolus (70 kg: 5,600 U), then 18 U/kg/h infusion (1,260 U/h); APTT at 6 h (target 1.5–2.5 × control, or anti-Xa 0.3–0.7 IU/mL) and adjust per the hospital nomogram; platelet count every 2–3 days"
+        "zh-CN": "普通肝素80 U/kg静脉推注，随后18 U/kg/h持续泵入；6小时后查APTT（目标为对照值的1.5–2.5倍，或抗Xa 0.3–0.7 IU/mL），按院内列线图调整；每2–3天复查血小板计数",
+        "en": "UFH 80 U/kg IV bolus, then 18 U/kg/h infusion; APTT at 6 h (target 1.5–2.5 × control, or anti-Xa 0.3–0.7 IU/mL) and adjust per the hospital nomogram; platelet count every 2–3 days"
       },
       "requires": [
         "infusion-pump",
@@ -4401,8 +4404,8 @@
         "en": "Stacking anticoagulants, or giving heparin during active major bleeding, sharply increases the risk of life-threatening haemorrhage."
       },
       "response": {
-        "zh-CN": "推注完成，肝素泵按1260 U/h运行，护士设置6小时后复查APTT的提醒。普通肝素半衰期短（约60–90分钟），一旦出血可停泵并用鱼精蛋白完全中和。",
-        "en": "Bolus given; the pump runs at 1,260 U/h and the nurse sets a 6-hour APTT reminder. UFH has a short half-life (about 60–90 min) and is fully reversible with protamine if bleeding occurs."
+        "zh-CN": "已推注5600 U（70 kg × 80 U/kg），肝素泵按1260 U/h（18 U/kg/h）运行，护士设置6小时后复查APTT的提醒。普通肝素半衰期短（约60–90分钟），一旦出血可停泵并用鱼精蛋白完全中和。",
+        "en": "Bolus of 5,600 U given (80 U/kg for 70 kg); the pump runs at 1,260 U/h (18 U/kg/h) and the nurse sets a 6-hour APTT reminder. UFH has a short half-life (about 60–90 min) and is fully reversible with protamine if bleeding occurs."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -4458,8 +4461,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "依诺肝素1 mg/kg（70 mg，即7000 IU）皮下注射，每12小时一次；肌酐清除率<30 mL/min时需调整（先查肌酐）",
-        "en": "Enoxaparin 1 mg/kg (70 mg = 7,000 IU) SC every 12 hours; adjust if creatinine clearance is < 30 mL/min (check the creatinine first)"
+        "zh-CN": "依诺肝素1 mg/kg皮下注射，每12小时一次；肌酐清除率<30 mL/min时需调整（先查肌酐）",
+        "en": "Enoxaparin 1 mg/kg SC every 12 hours; adjust if creatinine clearance is < 30 mL/min (check the creatinine first)"
       },
       "requires": [
         "medications"
@@ -4525,8 +4528,8 @@
         "en": "Do not stack anticoagulants or give during active bleeding; once she is hypotensive (reperfusion likely), IV UFH with a bolus is recommended because it can be titrated and reversed quickly."
       },
       "response": {
-        "zh-CN": "已皮下注射依诺肝素70 mg。对血流动力学稳定的患者，这是指南的默认选择；但其作用持续约12小时，鱼精蛋白仅能部分（约60%）中和，术后早期一旦出血或需补救再灌注，可控性不如普通肝素。",
-        "en": "Enoxaparin 70 mg given SC. For a haemodynamically stable patient this is the guideline default, but its effect lasts about 12 hours and protamine reverses only about 60% of it — less controllable than UFH if she bleeds early after surgery or needs rescue reperfusion."
+        "zh-CN": "已皮下注射依诺肝素70 mg（7000 IU；70 kg × 1 mg/kg）。对血流动力学稳定的患者，这是指南的默认选择；但其作用持续约12小时，鱼精蛋白仅能部分（约60%）中和，术后早期一旦出血或需补救再灌注，可控性不如普通肝素。",
+        "en": "Enoxaparin 70 mg (7,000 IU; 1 mg/kg for 70 kg) given SC. For a haemodynamically stable patient this is the guideline default, but its effect lasts about 12 hours and protamine reverses only about 60% of it — less controllable than UFH if she bleeds early after surgery or needs rescue reperfusion."
       },
       "excludeKeywords": {
         "zh-CN": [
@@ -4545,8 +4548,8 @@
     {
       "id": "enox-prophylaxis",
       "name": {
-        "zh-CN": "补打预防剂量依诺肝素",
-        "en": "Give the missed prophylactic enoxaparin dose"
+        "zh-CN": "预防剂量依诺肝素皮下注射",
+        "en": "Prophylactic-dose enoxaparin SC"
       },
       "kind": "medication",
       "aliases": {
@@ -5124,8 +5127,8 @@
       },
       "excludeKeywords": [],
       "dose": {
-        "zh-CN": "对乙酰氨基酚1 g静脉滴注15分钟（上次12:00给药；24小时总量≤4 g，因此取消18:00那次常规剂量）",
-        "en": "Paracetamol 1 g IV over 15 min (last dose 12:00; max 4 g/24 h, so the 18:00 regular dose is omitted)"
+        "zh-CN": "对乙酰氨基酚1 g静脉滴注15分钟，距上次给药至少4小时；24小时总量（含常规剂量）≤4 g（先核对给药记录）",
+        "en": "Paracetamol 1 g IV over 15 min, at least 4 h after the previous dose; max 4 g in 24 h including regular doses (check the drug chart)"
       },
       "requires": [
         "medications"
@@ -5143,8 +5146,8 @@
       "setFlags": [],
       "maxDoses": 1,
       "response": {
-        "zh-CN": "护士给予对乙酰氨基酚静脉滴注，并把18:00那次常规剂量取消。镇痛作用温和——这种程度的胸膜性疼痛通常还需要小剂量阿片类药物滴定。",
-        "en": "The nurse gives IV paracetamol and cancels the 18:00 regular dose. The effect is modest — pleuritic pain this severe usually also needs a small titrated opioid dose."
+        "zh-CN": "护士核对给药记录（上次12:00给药），给予对乙酰氨基酚静脉滴注，并取消18:00那次常规剂量，使24小时总量不超过4 g。镇痛作用温和——这种程度的胸膜性疼痛通常还需要小剂量阿片类药物滴定。",
+        "en": "The nurse checks the chart (last dose at 12:00), gives IV paracetamol and cancels the 18:00 regular dose to keep the 24-hour total within 4 g. The effect is modest — pleuritic pain this severe usually also needs a small titrated opioid dose."
       }
     },
     {
@@ -5169,8 +5172,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "去甲肾上腺素起始0.05 µg/kg/min（70 kg约3.5 µg/min），经中心静脉或近端大静脉泵入，滴定至平均动脉压≥65 mmHg",
-        "en": "Noradrenaline starting at 0.05 µg/kg/min (≈ 3.5 µg/min for 70 kg) via a central or proximal large-bore line, titrated to MAP ≥ 65 mmHg"
+        "zh-CN": "去甲肾上腺素起始0.05 µg/kg/min，经中心静脉或近端大静脉泵入，滴定至平均动脉压≥65 mmHg",
+        "en": "Noradrenaline starting at 0.05 µg/kg/min via a central or proximal large-bore line, titrated to MAP ≥ 65 mmHg"
       },
       "requires": [
         "infusion-pump",
@@ -5235,8 +5238,8 @@
         "en": "She is normotensive and well perfused — not shocked — so a vasopressor is not indicated; a peripheral vasopressor on a general ward also risks extravasation injury."
       },
       "response": {
-        "zh-CN": "去甲肾上腺素开始泵入。",
-        "en": "Noradrenaline infusion started."
+        "zh-CN": "去甲肾上腺素开始泵入，起始0.05 µg/kg/min（70 kg约3.5 µg/min）。",
+        "en": "Noradrenaline infusion started at 0.05 µg/kg/min (≈ 3.5 µg/min for 70 kg)."
       }
     },
     {
@@ -5890,11 +5893,13 @@
                   },
                   {
                     "examined": "ex-abdomen"
-                  },
-                  {
-                    "flag": "surgeon-informed"
                   }
                 ]
+              }
+            },
+            {
+              "not": {
+                "flag": "surgeon-informed"
               }
             }
           ]
@@ -5906,6 +5911,82 @@
         "message": {
           "zh-CN": "护士：“抗凝药已经用上了——外科知道她要全量抗凝吗？刀口有人看过了吗？”",
           "en": "Nurse: 'The anticoagulant's in now — do the surgeons know she's being fully anticoagulated, and has anyone looked at her wound?'"
+        }
+      },
+      {
+        "id": "ev-anticoag-surgeons-unaware",
+        "when": {
+          "all": [
+            {
+              "flag": "anticoagulated"
+            },
+            {
+              "not": {
+                "flag": "haemorrhage"
+              }
+            },
+            {
+              "all": [
+                {
+                  "asked": "h-bleeding"
+                },
+                {
+                  "examined": "ex-abdomen"
+                }
+              ]
+            },
+            {
+              "not": {
+                "flag": "surgeon-informed"
+              }
+            }
+          ]
+        },
+        "setFlags": [
+          "anticoag-before-bleed-check"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "护士：“抗凝药已经用上了——外科知道她要全量抗凝吗？”",
+          "en": "Nurse: 'The anticoagulant's in now — do the surgeons know she's being fully anticoagulated?'"
+        }
+      },
+      {
+        "id": "ev-anticoag-wound-unchecked",
+        "when": {
+          "all": [
+            {
+              "flag": "anticoagulated"
+            },
+            {
+              "not": {
+                "flag": "haemorrhage"
+              }
+            },
+            {
+              "not": {
+                "all": [
+                  {
+                    "asked": "h-bleeding"
+                  },
+                  {
+                    "examined": "ex-abdomen"
+                  }
+                ]
+              }
+            },
+            {
+              "flag": "surgeon-informed"
+            }
+          ]
+        },
+        "setFlags": [
+          "anticoag-before-bleed-check"
+        ],
+        "severity": "info",
+        "message": {
+          "zh-CN": "护士：“抗凝药已经用上了——有人问过她出血的情况、看过刀口了吗？”",
+          "en": "Nurse: 'The anticoagulant's in now — has anyone asked her about bleeding and looked at her wound?'"
         }
       },
       {
@@ -6050,7 +6131,8 @@
         "message": {
           "zh-CN": "上级医师赶到：“她现在是休克型（高危）肺栓塞。术后第3天，全身溶栓出血风险极高——马上呼叫PERT准备导管介入或外科取栓；同时用去甲肾上腺素维持平均动脉压≥65 mmHg，普通肝素静脉推注后持续泵入，转ICU。”",
           "en": "The attending arrives: 'This is now shocked, high-risk PE. Three days after a laparotomy, systemic lysis carries a huge bleeding risk — call PERT now for catheter-directed therapy or surgical embolectomy, start noradrenaline to keep MAP ≥ 65 mmHg, give IV UFH as a bolus and infusion, and get her to ICU.'"
-        }
+        },
+        "speaker": "narrator"
       },
       {
         "id": "ev-shock-escalation-undiagnosed",
@@ -6106,7 +6188,8 @@
         "message": {
           "zh-CN": "上级医师赶到：“她已经休克了。你的工作诊断是什么？哪些床旁检查能最快帮你证实？马上呼叫上级和院内急救团队，先维持血压和氧合——同时告诉我你的依据。”",
           "en": "The attending arrives: 'She is in shock now. What is your working diagnosis, and which bedside tests will confirm it fastest? Call for senior help and the hospital emergency team, support her blood pressure and oxygenation — and talk me through your reasoning.'"
-        }
+        },
+        "speaker": "narrator"
       },
       {
         "id": "ev-lysis-bleed",
@@ -6464,8 +6547,8 @@
         {
           "id": "ctpa-direct",
           "text": {
-            "zh-CN": "临床可能性高（Wells 10分）→ 直接行CTPA；若无禁忌，在等待影像期间即开始胃肠外抗凝",
-            "en": "High clinical probability (Wells 10) → go straight to CTPA, and start parenteral anticoagulation while awaiting imaging if there is no contraindication"
+            "zh-CN": "临床可能性高（“PE可能”，Wells评分 > 4分）→ 直接行CTPA；若无禁忌，在等待影像期间即开始胃肠外抗凝",
+            "en": "High clinical probability ('PE likely', Wells score > 4) → go straight to CTPA, and start parenteral anticoagulation while awaiting imaging if there is no contraindication"
           },
           "correct": true,
           "feedback": {
@@ -6549,8 +6632,8 @@
         {
           "id": "ufh",
           "text": {
-            "zh-CN": "普通肝素静脉泵入：80 U/kg推注（5600 U）后18 U/kg/h（1260 U/h），6小时查APTT/抗Xa，并与外科沟通",
-            "en": "IV unfractionated heparin: 80 U/kg bolus (5,600 U) then 18 U/kg/h (1,260 U/h), APTT/anti-Xa at 6 h, and agree the plan with the surgeons"
+            "zh-CN": "普通肝素静脉泵入：80 U/kg推注后18 U/kg/h，6小时查APTT/抗Xa，并与外科沟通",
+            "en": "IV unfractionated heparin: 80 U/kg bolus then 18 U/kg/h, APTT/anti-Xa at 6 h, and agree the plan with the surgeons"
           },
           "correct": true,
           "feedback": {
@@ -6561,8 +6644,8 @@
         {
           "id": "lmwh",
           "text": {
-            "zh-CN": "依诺肝素1 mg/kg（70 mg）皮下注射，每12小时一次",
-            "en": "Enoxaparin 1 mg/kg (70 mg) SC every 12 hours"
+            "zh-CN": "依诺肝素1 mg/kg皮下注射，每12小时一次",
+            "en": "Enoxaparin 1 mg/kg SC every 12 hours"
           },
           "correct": false,
           "feedback": {

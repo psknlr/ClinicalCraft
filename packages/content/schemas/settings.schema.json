@@ -134,7 +134,9 @@
           }
         },
         "locale": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^([zZ][hH]|[eE][nN])(?:[-_][A-Za-z0-9]{1,8})*$",
+          "description": "Session language: zh-CN or en (aliases such as \"zh\", \"zh-Hans\", \"en-US\" are normalised)."
         },
         "approvalMode": {
           "type": "string",
@@ -790,7 +792,9 @@
           }
         },
         "locale": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^([zZ][hH]|[eE][nN])(?:[-_][A-Za-z0-9]{1,8})*$",
+          "description": "Session language: zh-CN or en (aliases such as \"zh\", \"zh-Hans\", \"en-US\" are normalised)."
         },
         "approvalMode": {
           "type": "string",

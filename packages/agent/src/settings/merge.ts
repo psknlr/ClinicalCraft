@@ -34,8 +34,10 @@ import {
   AgentModelSettingsSchema,
   ApprovalModeSchema,
   EffortSchema,
+  LocaleSettingSchema,
   PracticeScopeSchema,
   ProviderOverrideSchema,
+  SETTINGS_LOCALES,
   SettingsSchema,
   type HooksConfig,
   type ProviderOverride,
@@ -87,12 +89,31 @@ export interface SettingsIssue {
   path: string;
   message: string;
   severity: "error" | "warning";
-  /** `untrusted-project`: a key dropped because the project is not trusted (front-ends show these). */
-  code?: typeof UNTRUSTED_PROJECT;
+  /**
+   * `untrusted-project`: a key dropped because the project is not trusted (front-ends show these);
+   * `unsupported-locale`: a `locale` the runtime does not ship, ignored (`value` holds it).
+   */
+  code?: typeof UNTRUSTED_PROJECT | typeof UNSUPPORTED_LOCALE;
+  /** The rejected value (`unsupported-locale` issues). */
+  value?: unknown;
 }
 
 /** Issue code of keys dropped from an untrusted project's settings. */
 export const UNTRUSTED_PROJECT = "untrusted-project";
+/** Issue code of a `locale` that is not a supported language (the layer's `locale` is ignored). */
+export const UNSUPPORTED_LOCALE = "unsupported-locale";
+
+/**
+ * The issues that must stop a settings write: every error except an
+ * `unsupported-locale` the file already had and the patch leaves alone —
+ * loading ignores that value (and says so), so it must not block
+ * `config set` of unrelated keys. A patch that sets `locale` itself is still
+ * validated.
+ */
+export function saveBlockingIssues(issues: readonly SettingsIssue[], patch: Record<string, unknown>): SettingsIssue[] {
+  const setsLocale = Object.hasOwn(patch, "locale") && patch.locale !== null && patch.locale !== undefined;
+  return issues.filter((i) => i.severity === "error" && (i.code !== UNSUPPORTED_LOCALE || setsLocale));
+}
 
 /** Options of `validateSettingsLayer`. */
 export interface LayerOptions {
@@ -231,8 +252,8 @@ export function validateSettingsLayer(
   options: LayerOptions = {},
 ): { data: SettingsLayerData; issues: SettingsIssue[] } {
   const issues: SettingsIssue[] = [];
-  const push: IssuePush = (path, message, severity = "error", code) =>
-    issues.push({ source, ...(file ? { file } : {}), path, message, severity, ...(code ? { code } : {}) });
+  const push: IssuePush = (path, message, severity = "error", code, value) =>
+    issues.push({ source, ...(file ? { file } : {}), path, message, severity, ...(code ? { code } : {}), ...(value !== undefined ? { value } : {}) });
   /** Project or local settings of a project the user has not trusted. */
   const untrusted = isRepositorySource(source) && options.trusted !== true;
   /** Layers whose secret-bearing keys are dropped. */
@@ -293,6 +314,13 @@ export function validateSettingsLayer(
       data[key] = entries as never;
       continue;
     }
+    if (key === "locale") {
+      // Stored normalised ("zh" → "zh-CN", "en-US" → "en"); an unsupported language is ignored.
+      const result = LocaleSettingSchema.safeParse(value);
+      if (result.success) data.locale = result.data;
+      else push("locale", `unsupported locale ${JSON.stringify(value)} (supported: ${SETTINGS_LOCALES.join(", ")}); ignored`, "error", UNSUPPORTED_LOCALE, value);
+      continue;
+    }
     if (key === "hooks" && untrusted) {
       push("hooks", `command hooks in ${source} settings are ignored until you trust this project (they run shell commands); ${TRUST_HINT}`, "warning", UNTRUSTED_PROJECT);
       continue;
@@ -333,7 +361,7 @@ export function isLoopbackUrl(url: string): boolean {
   }
 }
 
-type IssuePush = (path: string, message: string, severity?: SettingsIssue["severity"], code?: SettingsIssue["code"]) => void;
+type IssuePush = (path: string, message: string, severity?: SettingsIssue["severity"], code?: SettingsIssue["code"], value?: unknown) => void;
 
 /** A built-in template that attaches an environment key (everything but `noKey` templates such as ollama, lmstudio). */
 function sendsTemplateKey(name: string): boolean {

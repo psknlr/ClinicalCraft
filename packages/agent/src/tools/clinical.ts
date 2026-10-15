@@ -14,6 +14,7 @@ import {
   availableDecisions,
   currentObjective,
   facilityCapabilities,
+  historyAvailable,
   matchExam,
   matchInterventions,
   matchOrders,
@@ -30,6 +31,7 @@ import {
   type ClinicalAction,
   type ClinicalActionType,
   type DomainEvent,
+  type Intervention,
   type MatchHit,
   type ReduceResult,
   type RejectionCode,
@@ -83,6 +85,30 @@ export function rejectedOutput(locale: string, result: ReduceResult, detail?: st
   const reason = rejectionText(locale, code, action);
   const message = detail ? `${reason} ${detail}` : reason;
   return { ok: false, output: rt(locale, "tool.rejected", { code, message }), data: { rejected: result.rejected, message } };
+}
+
+/**
+ * The phase `/read <id>` reads: the one given; else the current phase when
+ * the test was ordered there; else the phase of its most recent order — an
+ * automatic phase change (transfer, treatment) must not hide a result the
+ * learner ordered a moment ago.
+ */
+export function readPhase(s: SessionState, investigationId: string, phaseArg?: string): string {
+  if (phaseArg) return phaseArg;
+  if (s.orders.some((o) => o.investigationId === investigationId && o.phase === s.phase)) return s.phase;
+  const latest = s.orders.filter((o) => o.investigationId === investigationId).at(-1);
+  return latest?.phase ?? s.phase;
+}
+
+/**
+ * Learner-facing status of an order: read, "no record" (the case has no
+ * result for it in that phase — it will never come back), ready, or pending
+ * until its due time.
+ */
+export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderStatus>[number], locale: string): string {
+  if (o.read) return rt(locale, "label.read");
+  if (resultFor(c, o.order.investigationId, o.order.phase) === null) return rt(locale, "label.noRecord");
+  return o.ready ? rt(locale, "label.ready") : rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
 }
 
 /** "Result expected at 09:46 (now 09:01)." — due times round up, the current time down (`clockTime`). */
@@ -241,6 +267,20 @@ function capabilityRefusal(ctx: Pick<ToolContext, "facility" | "catalogs" | "loc
   return { ok: false, output: message, data: { rejected: { code: "missing-capability" }, message, missing } };
 }
 
+/**
+ * Refusal for an intervention whose `maxDoses` the session already reached
+ * (the reducer's `max-doses`, named), or null. Not checked once the case is
+ * finished (the engine then refuses with `finished`).
+ */
+function maxDosesRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, iv: Intervention): ToolOutput | null {
+  const s = ctx.state();
+  if (iv.maxDoses == null || s.finished) return null;
+  if (s.interventions.filter((r) => r.interventionId === iv.id).length < iv.maxDoses) return null;
+  const L = ctx.locale;
+  const message = `${rejectionText(L, "max-doses")} ${rt(L, "tool.rejected.item", { name: t(iv.name, L) })}`;
+  return { ok: false, output: rt(L, "tool.rejected", { code: "max-doses", message }), data: { rejected: { code: "max-doses", message: `"${iv.id}" may be given at most ${iv.maxDoses} time(s)` }, message } };
+}
+
 function findingLabel(c: CaseDefinition, id: string, locale: string): string {
   const f = c.exam.find((e) => e.id === id);
   return f ? t(f.maneuver, locale) || id : id;
@@ -322,7 +362,8 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
   const data: unknown[] = [];
   switch (kind) {
     case "history":
-      for (const h of c.history.filter((x) => availableInPhase(x, s))) {
+      // Items superseded in this phase by a phase twin (`supersedes`) cannot be asked here.
+      for (const h of c.history.filter((x) => historyAvailable(c, x.id, s.phase))) {
         const asked = s.asked.includes(h.id);
         lines.push(`- [${h.id}] ${t(h.question, L)}${mark(asked, "label.asked")}`);
         data.push({ id: h.id, question: t(h.question, L), topic: h.topic, asked });
@@ -355,7 +396,7 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
         // A locked decision's prompt and options can state results not yet obtained (or another
         // decision's answer): only a placeholder and what it still needs.
         if (!d.unlocked && !d.decided) {
-          lines.push(`- [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)} (${rt(L, status)})`);
+          lines.push(`- [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)}`);
           lines.push(`    ${t(d.decision.need, L)}`);
           data.push({ id: d.decision.id, prompt: null, kind: d.decision.kind, unlocked: false, decided: false, need: t(d.decision.need, L), options: [] });
           continue;
@@ -511,6 +552,8 @@ const orderTest: ToolDefinition<ToolArgs> = {
     if (r.kind !== "id") return unresolvedOutput(L, r, (id) => investigationName(c, id, L), ["investigation_id", "query"]);
     const unavailable = capabilityRefusal(ctx, investigationName(c, r.id, L), c.investigations.find((i) => i.id === r.id)?.requires ?? []);
     if (unavailable) return unavailable;
+    // Order warnings whose `unless` holds no longer apply: judged on the session as the order is placed.
+    const before = ctx.state();
     const result = dispatch(ctx, { type: "order", investigationId: r.id });
     if (result.rejected) return rejectedOutput(L, result);
     const name = investigationName(c, r.id, L);
@@ -528,7 +571,7 @@ const orderTest: ToolDefinition<ToolArgs> = {
         : readyAtText(c, readyAt, s.clock, L);
     const lines = [rt(L, "tool.ordered", { name, phase: phaseLabel(c, phase, L), ready })];
     const query = strArg(args, "query");
-    if (query) for (const w of orderWarnings(c, query, r.id, L)) lines.push(rt(L, "tool.orderWarning", { text: w }));
+    if (query) for (const w of orderWarnings(c, query, r.id, L, before)) lines.push(rt(L, "tool.orderWarning", { text: w }));
     return { ok: true, output: lines.join("\n"), data: { investigationId: r.id, phase, readyAt, ready: hasRecord && readyAt <= s.clock, hasRecord } };
   },
 };
@@ -553,7 +596,7 @@ const readResult: ToolDefinition<ToolArgs> = {
   risk: () => "none",
   summarize(args, ctx) {
     const r = resolveInvestigation(ctx.caseDef, args, ctx.locale);
-    const phase = strArg(args, "phase") || ctx.state().phase;
+    const phase = r.kind === "id" ? readPhase(ctx.state(), r.id, strArg(args, "phase")) : strArg(args, "phase") || ctx.state().phase;
     return rt(ctx.locale, "sum.read", { name: r.kind === "id" ? investigationName(ctx.caseDef, r.id, ctx.locale) : strArg(args, "investigation_id"), phase: phaseLabel(ctx.caseDef, phase, ctx.locale) });
   },
   specifier(args, ctx) {
@@ -566,12 +609,20 @@ const readResult: ToolDefinition<ToolArgs> = {
     const r = resolveInvestigation(c, args, L);
     if (r.kind !== "id") return unresolvedOutput(L, r, (id) => investigationName(c, id, L), ["investigation_id", "query"]);
     const phaseArg = strArg(args, "phase");
-    const phase = phaseArg || ctx.state().phase;
-    const result = dispatch(ctx, { type: "read", investigationId: r.id, ...(phaseArg ? { phase: phaseArg } : {}) });
+    const phase = readPhase(ctx.state(), r.id, phaseArg);
+    const result = dispatch(ctx, { type: "read", investigationId: r.id, ...(phaseArg || phase !== ctx.state().phase ? { phase } : {}) });
     if (result.rejected) {
       if (result.rejected.code === "not-ready") {
         const order = ctx.state().orders.find((o) => o.investigationId === r.id && o.phase === phase);
         return rejectedOutput(L, result, order ? readyAtText(c, order.readyAt, ctx.state().clock, L) : undefined);
+      }
+      if (result.rejected.code === "not-ordered") {
+        // Name the phase(s) it was ordered in, with the exact command (/results shows labels).
+        const ordered = [...new Set(ctx.state().orders.filter((o) => o.investigationId === r.id).map((o) => o.phase))];
+        if (ordered.length > 0) {
+          const where = ordered.map((p) => rt(L, "tool.read.orderedIn", { phase: phaseLabel(c, p, L), command: `/read ${r.id} ${p}` }));
+          return rejectedOutput(L, result, where.join(isZh(L) ? "；" : "; "));
+        }
       }
       return rejectedOutput(L, result);
     }
@@ -633,7 +684,9 @@ const intervene: ToolDefinition<ToolArgs> = {
   precheck(args, ctx) {
     const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
     const iv = r.kind === "id" ? ctx.caseDef.interventions.find((i) => i.id === r.id) : undefined;
-    return iv ? capabilityRefusal(ctx, interventionLabel(ctx.caseDef, iv.id, ctx.locale), iv.requires) : null;
+    if (!iv) return null;
+    // Refused before the approval gate: no high-risk confirmation for a dose that cannot be given.
+    return capabilityRefusal(ctx, interventionLabel(ctx.caseDef, iv.id, ctx.locale), iv.requires) ?? maxDosesRefusal(ctx, iv);
   },
   async run(args, ctx) {
     const c = ctx.caseDef;
@@ -643,7 +696,8 @@ const intervene: ToolDefinition<ToolArgs> = {
     const unavailable = capabilityRefusal(ctx, interventionLabel(c, r.id, L), c.interventions.find((i) => i.id === r.id)?.requires ?? []);
     if (unavailable) return unavailable;
     const result = dispatch(ctx, { type: "intervene", interventionId: r.id });
-    if (result.rejected) return rejectedOutput(L, result);
+    // Name what the query matched ("give the pump a rest" → the IV insulin infusion), so a refusal is not opaque.
+    if (result.rejected) return rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined);
     const iv = c.interventions.find((i) => i.id === r.id)!;
     const applied = eventsOf(result, "intervention.applied")[0];
     const appropriateness = applied?.appropriateness ?? "neutral";
@@ -927,17 +981,16 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
   if (orders.length > 0) {
     lines.push(`${rt(L, "label.orders")}:`);
     for (const o of orders) {
-      const status = o.read ? rt(L, "label.read") : o.ready ? rt(L, "label.ready") : rt(L, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, L, "ceil") });
-      lines.push(`  - ${investigationName(c, o.order.investigationId, L)} [${o.order.investigationId}@${o.order.phase}] ${status}`);
+      lines.push(`  - ${investigationName(c, o.order.investigationId, L)} [${o.order.investigationId}@${o.order.phase}] ${orderStatusText(c, o, L)}`);
     }
   }
   const decisions = availableDecisions(c, s);
   if (decisions.length > 0) {
     lines.push(`${rt(L, "label.decisions")}:`);
     for (const d of decisions) {
-      const status = d.decided ? "label.decided" : d.unlocked ? "label.unlocked" : "label.locked";
-      const prompt = d.unlocked || d.decided ? t(d.decision.prompt, L) : lockedDecisionLabel(c, d.decision.id, L);
-      lines.push(`  - [${d.decision.id}] ${prompt} (${rt(L, status)})`);
+      // A locked decision's label already says it is not yet available: no "(locked)" suffix.
+      if (!d.unlocked && !d.decided) lines.push(`  - [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)}`);
+      else lines.push(`  - [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, d.decided ? "label.decided" : "label.unlocked")})`);
     }
   }
   const objective = currentObjective(c, s);
@@ -950,7 +1003,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       finished: s.finished,
       progress: p,
       currentObjective: objective?.id ?? null,
-      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt })),
+      orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
       decisions: decisions.map((d) => ({ id: d.decision.id, unlocked: d.unlocked, decided: d.decided })),
       hints: s.hints,
     },

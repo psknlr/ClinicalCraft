@@ -39,7 +39,8 @@ import { actionToolName, checkPermission, PermissionState } from "../permissions
 import type { AgentEvent, AgentRole, ApprovalMode, EventMsg, Op, PlanItem, PracticeScope, RuntimeConfigPatch, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ProviderConfig } from "../providers/types.js";
-import type { HookEventName, ResolvedSettings } from "../settings/schema.js";
+import { DEFAULT_SETTINGS } from "../settings/merge.js";
+import { canonicalLocale, type HookEventName, type ResolvedSettings } from "../settings/schema.js";
 import { rejectionText } from "../tools/clinical.js";
 import { ToolRegistry } from "../tools/index.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
@@ -49,7 +50,7 @@ import { actionFromToolInput, actionToolArgs } from "./action-input.js";
 import { ApprovalBroker } from "./approvals.js";
 import { offlineClinicianTurn, runAutopilot, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { EventHub } from "./events.js";
-import { runExaminer, type DialogueEntry, type ExaminerVerdict } from "./examiner.js";
+import { RESERVED_DIALOGUE_LABEL, runExaminer, runExaminerPrompt, type DialogueEntry, type ExaminerVerdict } from "./examiner.js";
 import { rt } from "./i18n.js";
 import { resolveAgentModel, type AgentModel } from "./models.js";
 import { reactToDomainEvent, type EventReaction } from "./notifications.js";
@@ -59,6 +60,9 @@ import type { ClinicalSessionApi, SessionOptions, SessionSnapshot, TranscriptIte
 
 /** Runtime version stamped into transcripts. */
 export const CLINICALCRAFT_VERSION = "5.0.0";
+
+/** How learner text reaches an agent: a message, or a custom slash command's prompt (PROTOCOL §9). */
+type AgentTurnMode = "message" | "prompt";
 
 /** Smallest real-time clock step dispatched by `advanceRealTime` (simulated minutes). */
 export const REALTIME_MIN_STEP = 0.25;
@@ -194,6 +198,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     this.facility = opts.facility ?? null;
     this.catalogs = opts.catalogs ?? [];
     this._settings = structuredClone(opts.settings);
+    // Settings built in code (not through the settings schema) may carry an alias or an unsupported language.
+    this._settings.locale = canonicalLocale(this._settings.locale) ?? DEFAULT_SETTINGS.locale;
     this.now = opts.now ?? (() => Date.now());
     this.newId = opts.newId ?? defaultNewId;
     this.retry = opts.retry;
@@ -910,7 +916,7 @@ export class ClinicalSession implements ClinicalSessionApi {
    * command (`/ask …`, `/consult …`, custom templates): UserPromptSubmit hooks
    * (may block or add context) → start → transcript → the agent's turn.
    */
-  private async sendLearnerMessage(id: string, target: string, body: string, signal: AbortSignal): Promise<void> {
+  private async sendLearnerMessage(id: string, target: string, body: string, signal: AbortSignal, mode: AgentTurnMode = "message"): Promise<void> {
     if (!this.availableAgents().includes(target)) {
       this.emit(id, { type: "error", message: rt(this.locale, "warning.unknownAgent", { agent: target }), code: "unknown_agent" });
       return;
@@ -929,7 +935,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       this.ensureStarted(id);
       this.addDialogue({ who: "learner", speaker: "learner", text: target === "patient" ? body : `@${target} ${body}` });
     }
-    await this.runAgent(id, target, body, signal, hook.additionalContext);
+    await this.runAgent(id, target, body, signal, hook.additionalContext, mode);
   }
 
   private async handleCommand(id: string, name: string, args: string): Promise<void> {
@@ -992,7 +998,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     }
     if (!["start", "set-phase", "note", "flag"].includes(action.type)) this.ensureStarted(id);
     const result = this.dispatchInternal(action, id);
-    const rejection = result.rejected ? rt(L, "action.rejected", { code: result.rejected.code, message: rejectionText(L, result.rejected.code) }) : null;
+    // The action type picks the specific wording (a `set-phase` to an automatic phase is "not switchable", not "locked").
+    const rejection = result.rejected ? rt(L, "action.rejected", { code: result.rejected.code, message: rejectionText(L, result.rejected.code, action.type) }) : null;
     if (rejection) {
       this.emit(id, { type: "warning", message: rejection });
     } else if (action.type === "ask") {
@@ -1084,8 +1091,19 @@ export class ClinicalSession implements ClinicalSessionApi {
   /* Agents                                                            */
   /* ---------------------------------------------------------------- */
 
-  /** Run one agent turn (also used for nested asks from tools). */
-  private async runAgent(id: string, name: string, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = []): Promise<{ text: string; grounded: string[] }> {
+  /**
+   * Run one agent turn (also used for nested asks from tools). `mode`
+   * "prompt" (custom slash commands): the examiner answers the text instead
+   * of running an assessment; every other agent takes it as a message.
+   */
+  private async runAgent(
+    id: string,
+    name: string,
+    utterance: string,
+    signal?: AbortSignal,
+    extraContext: readonly string[] = [],
+    mode: AgentTurnMode = "message",
+  ): Promise<{ text: string; grounded: string[] }> {
     const turnId = this.newId();
     const started = this.now();
     // Staff speak under their case/facility name: say it now, before the first streamed text.
@@ -1099,7 +1117,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       } else {
         const kind = agentKind(profile);
         if (kind === "patient" || kind === "companion") outcome = await this.runPatientAgent(id, turnId, kind, utterance, signal);
-        else if (kind === "examiner") outcome = await this.examinerTurn(id, turnId, signal);
+        else if (kind === "examiner") outcome = mode === "prompt" ? await this.examinerPromptTurn(id, turnId, profile, utterance, signal) : await this.examinerTurn(id, turnId, signal);
         else if (kind === "clinician" && !this.model("clinician").provider) outcome = await this.offlineClinicianBlock(id, turnId, this.model("clinician").maxToolRounds, signal);
         else outcome = await this.runModelAgent(id, turnId, profile, utterance, signal, extraContext);
       }
@@ -1221,6 +1239,7 @@ export class ClinicalSession implements ClinicalSessionApi {
           : {}),
       });
       for (const w of res.warnings) this.emit(id, { type: "warning", message: w });
+      if (res.diagnostics?.length) this.recorder?.record("diagnostic", { agent: speaker, source: "grounding", detail: res.diagnostics });
       if (res.aborted) return { status: "interrupted", text: "", grounded: [] };
       if (res.error) return { status: "error", text: "", grounded: [], error: res.error };
       this.appendMessages(speaker, res.messages);
@@ -1364,6 +1383,43 @@ export class ClinicalSession implements ClinicalSessionApi {
     return { status: "end_turn", text, grounded: [] };
   }
 
+  /**
+   * A prompt addressed to the examiner (custom slash command): its model
+   * answers it from the transcript (`runExaminerPrompt`; the debrief only
+   * after `finish`). Without a model it says a language model is needed
+   * (front-ends normally refuse earlier: `ignoresPromptsOffline`).
+   */
+  private async examinerPromptTurn(id: string, turnId: string, profile: AgentProfile, prompt: string, signal?: AbortSignal): Promise<AgentOutcome> {
+    const m = this.model(profile.name);
+    if (!m.provider) {
+      const text = rt(this.locale, "agent.examiner.promptNeedsModel", { agent: profile.name });
+      this.emitAgentMessage(id, turnId, profile.name, text, []);
+      return { status: "end_turn", text, grounded: [] };
+    }
+    const res = await runExaminerPrompt({
+      caseDef: this.caseDef,
+      state: this._state,
+      locale: this.locale,
+      dialogue: this.dialogue,
+      profile,
+      provider: m.provider,
+      model: m.model,
+      prompt,
+      ...(m.effort ? { effort: m.effort } : {}),
+      ...(m.maxTokens !== undefined ? { maxTokens: m.maxTokens } : {}),
+      memory: this.opts.memory ?? null,
+      ...(signal ? { signal } : {}),
+      emit: (msg) => this.emit(id, msg),
+      ...retryOption(this.retryFor(m)),
+      onUsage: (u) => this.trackUsage(id, profile.name, u),
+    });
+    if (res.aborted || signal?.aborted) return { status: "interrupted", text: "", grounded: [] };
+    if (res.error) return { status: "error", text: "", grounded: [], error: res.error };
+    const text = res.text.trim();
+    if (text) this.emitAgentMessage(id, turnId, profile.name, text, []);
+    return { status: res.stopReason === "refusal" || res.stopReason === "max_tokens" ? res.stopReason : "end_turn", text, grounded: [] };
+  }
+
   private async runAssessment(id: string, signal: AbortSignal): Promise<ExaminerVerdict> {
     const report = assess(this.caseDef, this._state);
     const profile = this.profiles.get("examiner")!;
@@ -1451,7 +1507,15 @@ export class ClinicalSession implements ClinicalSessionApi {
       if (scopes.includes(patch.practiceScope)) next.practiceScope = patch.practiceScope;
       else issues.push(`practiceScope "${String(patch.practiceScope)}"`);
     }
-    if (patch.locale !== undefined && patch.locale.trim()) next.locale = patch.locale.trim();
+    if (patch.locale !== undefined && patch.locale.trim()) {
+      // Only a supported language ("zh", "en-US"… normalised); anything else is reported and ignored.
+      const locale = canonicalLocale(patch.locale);
+      if (locale) next.locale = patch.locale = locale;
+      else {
+        issues.push(`locale "${patch.locale}"`);
+        delete patch.locale;
+      }
+    }
     for (const [agent, override] of Object.entries(patch.agents ?? {})) {
       const merged = { ...(next.agents[agent] ?? {}) } as Record<string, unknown>;
       for (const [k, v] of Object.entries(override)) if (v !== undefined) merged[k] = v;
@@ -1497,7 +1561,9 @@ export class ClinicalSession implements ClinicalSessionApi {
    * diagnosis…" line no action produced, is dropped.
    */
   private trustedDialogue(entries: readonly unknown[]): DialogueEntry[] {
-    const people = new Set<string>(["learner", "agent", "system", "replay", ...this.profiles.keys()]);
+    // Engine actors are recorded with speaker === who; agents with their display name.
+    const actors = new Set<string>(["learner", "agent", "system", "replay"]);
+    const people = new Set<string>([...actors, ...this.profiles.keys()]);
     const narrations = this.acceptedActions
       .filter((a) => a.type !== "ask" && a.type !== "start" && a.type !== "note")
       .map((a) => new Set((["en", "zh-CN"] as const).map((l) => narrateAction(this.caseDef, a, l)).filter((x): x is string => !!x)));
@@ -1511,6 +1577,8 @@ export class ClinicalSession implements ClinicalSessionApi {
         if (at < 0) continue;
         next = at + 1;
       } else if (!people.has(d.who)) continue;
+      // A speaker label the examiner reads as another role ("ACTION (system): …") is not kept.
+      else if (actors.has(d.who) ? d.speaker !== d.who : RESERVED_DIALOGUE_LABEL.test(d.speaker)) continue;
       kept.push({ who: d.who, speaker: d.speaker, text: d.text });
     }
     return kept;
@@ -1593,6 +1661,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       runTool: (toolName, args) => this.runLearnerTool(id, toolName, args, signal),
       learnerAction: (action) => this.learnerAction(id, { ...action, by: action.by ?? "learner" } as ClinicalAction, signal),
       sendMessage: (to, text) => this.sendLearnerMessage(id, (to ?? this.interlocutor).replace(/^@/, "").toLowerCase(), text, signal),
+      promptAgent: (to, text) => this.sendLearnerMessage(id, resolveAgentAlias((to ?? this.interlocutor).replace(/^@/, "").toLowerCase()), text, signal, "prompt"),
       ignoresPromptsOffline: (agent) => {
         const profile = this.profiles.get(resolveAgentAlias(agent));
         if (!profile || this.model(profile.name).provider) return false;

@@ -201,6 +201,18 @@ export const HistoryItemSchema = z
     /** Restrict availability to phases (default: all). */
     phases: z.array(IdSchema).optional(),
     /**
+     * Phase twins: ids of history items whose answer this item replaces in
+     * the phases where this item is available (e.g. an ED-time "how is your
+     * breathing now?" superseding the scene-time "are you short of
+     * breath?"). There, a question that would select a superseded item
+     * selects this one instead and the superseded item cannot be asked; and
+     * asking this item credits every item it supersedes (transitively) for
+     * `asked` conditions and the history assessment — without revealing the
+     * superseded answer (it is not added to `asked`). Credit never flows the
+     * other way. See docs/CASE_AUTHORING.md §3.
+     */
+    supersedes: z.array(IdSchema).optional(),
+    /**
      * Who says `answer` when the case has a companion who answers history
      * (`persona.companion.answersHistory`): default the companion; `patient`
      * for the patient's own words (e.g. a child describing how they feel).
@@ -361,7 +373,21 @@ export const OrderMatchingSchema = z
      * (V4: ordering "平扫CT" warns that only contrast-enhanced CT images exist).
      */
     warnings: z
-      .array(z.object({ investigation: IdSchema, ifMatches: z.string(), message: LocalizedTextSchema }).strict())
+      .array(
+        z
+          .object({
+            investigation: IdSchema,
+            ifMatches: z.string(),
+            message: LocalizedTextSchema,
+            /**
+             * The notice no longer applies once this holds (evaluated on the
+             * session as the order is placed): e.g. "results exist only once the
+             * cath lab is activated" is hidden after activation in the cath lab.
+             */
+            unless: ConditionSchema.optional(),
+          })
+          .strict(),
+      )
       .default([]),
   })
   .strict();

@@ -205,7 +205,11 @@ export function formatResult(c: CaseDefinition, investigationId: string, phase: 
   const date = result.date ? t(result.date, locale) : "";
   const lines = [rt(locale, "tool.result.header", { name, phase: phaseLabel(c, phase, locale), date: date ? ` (${date})` : "" })];
   if (!result.available) {
-    lines.push(rt(locale, "tool.result.unavailable"));
+    // An `available: false` result is a record (ARCHITECTURE §3.4): its authored explanation (not
+    // performed, referred, why) is shown, followed by a short notice; the generic line only when empty.
+    const why = t(result.text, locale);
+    if (why) lines.push(why, rt(locale, "tool.result.notAvailable"));
+    else lines.push(rt(locale, "tool.result.unavailable"));
   } else {
     const body = t(result.text, locale);
     if (body) lines.push(body);

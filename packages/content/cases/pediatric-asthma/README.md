@@ -300,7 +300,23 @@ Paediatric alarm limits (6 years):
 * Exam items and child-voice history items that are restricted to a phase share
   keywords across phases on purpose. Consumers of `matchExam`/`matchHistory`
   should pass the current phase (`MatchOptions.phase`); the agent's patient
-  pipeline already filters history by phase.
+  pipeline already filters history by phase. The four child-voice items
+  (`hx-child-*`) set `speaker: "patient"`, so the boy answers them himself while
+  his mother answers the rest.
+* The later-phase variants are phase twins (`supersedes`) of the arrival items:
+  `hx-child-feeling-later` and `hx-child-feeling-critical` → `hx-child-feeling`;
+  `hx-child-discharge` → `hx-child-feeling-later`, `hx-child-feeling`;
+  `hx-alertness-critical` → `hx-alertness`. In reassessment and at discharge a
+  learner who asks the boy the arrival question ("How do you feel, buddy?",
+  "Are you OK?", 小朋友你感觉怎么样) now gets that phase's answer; before, those
+  phrasings matched only the arrival and deterioration items, so the mother's
+  fallback ("I'm not sure about that, doctor") answered a question put to the
+  boy. None of these items is required or named in a condition, so
+  the twins' credit changes no score. The utterance corpus has no entry for
+  them: `cases verify` ranks hits of every phase, and the arrival and
+  deterioration items share keywords on purpose, so a phrasing judged in
+  `reassess` is led by `hx-child-feeling-critical` there (the review tests pin
+  the phase-aware selection instead).
 * The 46 history items exceed the authoring guide's 15–40 because six are
   phase variants of the same question ("how is he feeling / how alert is he"
   for arrival, reassessment, discharge and deterioration). Two pertinent
@@ -327,7 +343,7 @@ clinicalcraft cases verify pediatric-asthma
 clinicalcraft play pediatric-asthma --provider offline
 ```
 
-All 77 `extensions.testUtterances` (39 zh-CN, 38 en, including colloquial
+All 80 `extensions.testUtterances` (40 zh-CN, 40 en, including colloquial
 Chinese, typos such as 储物罐 / vomitting / wat, and clinical abbreviations
 such as NKDA, URTI, ICS, PICU, pred, GP, hx) resolve to an expected history
 item as the top `matchHistory` hit. CJK keywords avoid generic two-character
@@ -340,3 +356,13 @@ Exam and treatment phrasing is checked too (`packages/content/src/review-fixes.t
 让他说句话看看 reaches the speech assessment, 听听两边肺 / 听一下肺 the auscultation of the
 current phase, 看看他清不清醒 the conscious-level check, and 先给他吸上氧 / 吸点氧 oxygen —
 CJK phrases must be contiguous, so 说句话 does not match 说话 and 听一下肺 does not match 听肺.
+Comforting him ("keep him calm", "calm him down", 让他安静下来, 安抚一下) reaches
+`position-upright`; only a request for a drug ("something to calm him down", 镇静药, 镇定剂,
+midazolam) reaches the contraindicated `sedation`, which excludes comfort phrasing.
+
+Dose, label and option texts do not pre-empt the learner: the pMDI dose reads "10 puffs in a
+severe attack" (not "here … for a severe attack", which graded the attack before
+`dec-severity`), the smoke-free advice is for "smokers in the household" (the father's smoking is
+history to elicit), and the controller label and the discharge option say "daily controller"
+rather than "restart" (the lapsed adherence is a `specific` item). PRAM, PEF and viral-PCR values
+and reference texts are per-locale `LocalizedText`.

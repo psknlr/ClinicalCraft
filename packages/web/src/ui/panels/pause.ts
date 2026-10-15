@@ -2,7 +2,8 @@
  * Pause menu / settings (V4 `tf` + new sections): resume / help / reset
  * position / library; world (sound, bob, pointer lock, sensitivity,
  * quality); language; language model (offline | proxy | direct with the
- * agent's provider catalogue, model suggestions, base-URL override, API key
+ * agent's provider catalogue, model suggestions, base-URL override — checked
+ * against the page's `connect-src` (`checkDirectBaseUrl`) —, API key
  * with show/hide, "remember on this device" opt-in with warning, test
  * connection); approval mode, practice scope, patient pipeline; save
  * export / import / new game.
@@ -37,6 +38,109 @@ function validUrl(v: string): boolean {
   } catch {
     return false;
   }
+}
+
+/* ---------------- direct-mode base URL vs the page's connect-src ---------------- */
+
+/** What the page knows about where it may connect (direct mode). */
+export interface ConnectPolicy {
+  /** Served by `clinicalcraft serve`: its `GET /api/health` lists `connectOrigins` (the CSP `connect-src`). */
+  served: boolean;
+  /** `connectOrigins` from `/api/health` (served; null/absent = an older server that does not say). */
+  connectOrigins?: readonly string[] | null;
+  /** The page's own Content-Security-Policy (`<meta http-equiv>`) when not served; null/absent = none. */
+  csp?: string | null;
+  /** The page origin (`'self'`). */
+  pageOrigin?: string | null;
+}
+
+/** Why a direct base URL will be blocked by the browser, or `ok`. */
+export type DirectUrlCheck = { ok: true } | { ok: false; origin: string; reason: "server" | "csp" };
+
+const DEFAULT_PORT: Record<string, string> = { "http:": "80", "https:": "443" };
+
+/** Source list of the directive governing `fetch` in a policy: `connect-src`, else `default-src`; null = unrestricted. */
+export function connectSources(csp: string): string[] | null {
+  const directives = new Map<string, string[]>();
+  for (const part of csp.split(";")) {
+    const [name, ...values] = part.trim().split(/\s+/);
+    if (name && !directives.has(name.toLowerCase())) directives.set(name.toLowerCase(), values);
+  }
+  return directives.get("connect-src") ?? directives.get("default-src") ?? null;
+}
+
+/** Whether one CSP source expression matches `url` (scheme, host with `*.` wildcard, port with `*`; paths ignored). */
+function sourceMatches(source: string, url: URL, pageOrigin: string | null): boolean {
+  const s = source.trim();
+  const lower = s.toLowerCase();
+  if (s === "*") return url.protocol === "http:" || url.protocol === "https:";
+  if (lower === "'self'") return pageOrigin !== null && url.origin === pageOrigin;
+  if (/^[a-z][a-z0-9+.-]*:$/i.test(s)) return url.protocol === lower;
+  const m = /^(?:([a-z][a-z0-9+.-]*):\/\/)?(\*|\*\.[^:/]+|[^:/*]+)(?::(\*|\d+))?(?:\/.*)?$/i.exec(s);
+  if (!m) return false;
+  const [, scheme, host, port] = m;
+  const pageScheme = pageOrigin ? `${pageOrigin.split(":")[0]}:` : "https:";
+  if (scheme) {
+    if (url.protocol !== `${scheme.toLowerCase()}:`) return false;
+  } else if (url.protocol !== pageScheme && !(pageScheme === "http:" && url.protocol === "https:")) return false;
+  const h = host!.toLowerCase();
+  const target = url.hostname.toLowerCase();
+  if (h === "*") {
+    /* any host */
+  } else if (h.startsWith("*.")) {
+    if (!target.endsWith(h.slice(1))) return false;
+  } else if (target !== h) return false;
+  if (port === "*") return true;
+  const actual = url.port || DEFAULT_PORT[url.protocol] || "";
+  const wanted = port ?? DEFAULT_PORT[url.protocol] ?? "";
+  return actual === wanted;
+}
+
+/**
+ * Will the browser let the page call `baseUrl` directly? Served by
+ * `clinicalcraft serve`: only origins its CSP `connect-src` lists (the
+ * health check's `connectOrigins`, plus the page itself) — a custom base URL
+ * must be configured on the server, or proxy mode used. Not served: the
+ * page's own CSP, if it has one. Unknown (no list, no policy, invalid URL)
+ * counts as allowed: provider CORS is warned about separately.
+ */
+export function checkDirectBaseUrl(baseUrl: string, policy: ConnectPolicy): DirectUrlCheck {
+  let url: URL;
+  try {
+    url = new URL(baseUrl);
+  } catch {
+    return { ok: true };
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") return { ok: true };
+  const page = policy.pageOrigin ?? null;
+  if (policy.served) {
+    if (!Array.isArray(policy.connectOrigins)) return { ok: true };
+    const allowed = url.origin === page || policy.connectOrigins.some((o) => o === url.origin);
+    return allowed ? { ok: true } : { ok: false, origin: url.origin, reason: "server" };
+  }
+  const sources = policy.csp ? connectSources(policy.csp) : null;
+  if (sources === null) return { ok: true };
+  if (sources.some((src) => src.toLowerCase() === "'none'")) return { ok: false, origin: url.origin, reason: "csp" };
+  return sources.some((src) => sourceMatches(src, url, page)) ? { ok: true } : { ok: false, origin: url.origin, reason: "csp" };
+}
+
+/** The connect policy of this page (served: the health check's list; otherwise its CSP meta tag). */
+function pageConnectPolicy(app: App): ConnectPolicy {
+  const served = !!app.server?.served;
+  const origins = app.server?.health?.connectOrigins;
+  const meta = typeof document !== "undefined" ? document.querySelector<HTMLMetaElement>('meta[http-equiv="Content-Security-Policy" i]') : null;
+  return {
+    served,
+    connectOrigins: Array.isArray(origins) ? origins.filter((o): o is string => typeof o === "string") : null,
+    csp: meta?.content ?? null,
+    pageOrigin: typeof location !== "undefined" ? location.origin : null,
+  };
+}
+
+/** Bilingual explanation for a blocked base URL (empty when allowed). */
+function directUrlNotice(check: DirectUrlCheck, provider: string): string {
+  if (check.ok) return "";
+  return check.reason === "server" ? tr("llm.baseUrlServer", { origin: check.origin, provider }) : tr("llm.baseUrlCsp", { origin: check.origin });
 }
 
 export function pausePanel(app: App, args: PauseArgs): () => PanelView {
@@ -310,6 +414,14 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
         templates.map((t) => h("option", { value: t.id, selected: t.id === tpl.id }, localizedName(t.name, L))),
       );
       const override = prefs.value.agent.providers?.[tpl.id]?.baseUrl ?? "";
+      // A custom base URL the page's connect-src does not allow fails in the browser: say why and what to do.
+      const baseNotice = h("p", { class: "notice bad-text", id: "direct-base-url-notice", role: "status" });
+      const showBaseNotice = (v: string) => {
+        const text = v ? directUrlNotice(checkDirectBaseUrl(v, pageConnectPolicy(app)), tpl.id) : "";
+        baseNotice.textContent = text;
+        baseNotice.hidden = !text;
+      };
+      showBaseNotice(override);
       const base = h("input", {
         type: "url",
         id: "direct-base-url",
@@ -324,6 +436,7 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
             return;
           }
           (e.target as HTMLInputElement).setCustomValidity("");
+          showBaseNotice(v);
           prefs.update((s) => {
             const providers = { ...(s.agent.providers ?? {}) };
             const entry = { ...(providers[tpl.id] ?? {}) };
@@ -388,7 +501,7 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
           });
           app.applySettings();
         }),
-        h("div", { class: "field" }, h("label", { for: "direct-base-url" }, tr("llm.baseUrl")), base),
+        h("div", { class: "field" }, h("label", { for: "direct-base-url" }, tr("llm.baseUrl")), base, baseNotice),
         h(
           "div",
           { class: "field" },

@@ -17,7 +17,7 @@
 | locales | `zh-CN` (source language), `en` |
 | clock | `static`. Two one-way phases, neither learner-switchable: `initial` (初诊 / First visit, Tuesday 08:40, fasting) → `review` (3个月复诊 / Three-month review, week 13), entered automatically once objectives 1–5 are complete and the review has been arranged (`iv-follow-up`) |
 | difficulty / time | 3 / 5, about 40 min |
-| content | 42 history items (3 `unknown`, 2 `specific`, 2 `volunteer` — one per phase, 10 required, 7 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 18 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 65 test utterances |
+| content | 42 history items (3 `unknown`, 2 `specific`, 2 `volunteer` — one per phase, 10 required, 7 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 18 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 72 test utterances |
 
 ## Clinical story
 
@@ -137,7 +137,9 @@ atorvastatin.
 * `dec-review` (select all): add an SGLT2 inhibitor, continue metformin,
   maximise the ACE inhibitor and continue the statin are correct. Insulin,
   switching to a sulfonylurea, stopping the ACE inhibitor for a 4 % creatinine
-  rise and stopping the statin because of the old ALT are wrong.
+  rise and stopping the statin "to protect his liver" are wrong (the option no
+  longer quotes his first-visit ALT or the fatty liver, which this decision
+  does not require the learner to have read).
 
 **Tempting wrong interventions and their engine appropriateness.**
 * Basal insulin and "lifestyle only, recheck in 6–12 months" are always
@@ -286,6 +288,13 @@ There are also three examiner-judged communication items:
   Many are deliberately hard (colloquial Chinese such as
   一晚上起来几回 / 三多一少 / 那方面, typos such as 糖尿并 and "nite", and
   abbreviations such as DKA, FHx, PMH, cigs, ED).
+* **Dose and label texts are formulas, not his findings.** The lifestyle
+  referral aims for ≥ 5 % weight loss (≈ 4.5 kg for him is in its `response`);
+  basal insulin reads "10 units (or 0.1–0.2 U/kg/day)"; the antifungal is
+  "Topical antifungal cream (clotrimazole 1%)", applied to the affected skin
+  until 1–2 weeks after it clears, so neither the label nor the dose names the
+  balanitis or tinea before he is examined. Urinalysis and hepatitis serology
+  values are per-locale `LocalizedText` (阴性 / negative).
 * **Prescribing needs no equipment.** Prescriptions and referrals use
   `requires: []` because they are written in the consulting room.
   Anthropometry also has `requires: []`: the nurse has already measured
@@ -328,5 +337,5 @@ At authoring time the schema was VALID, `checkCaseIntegrity` and
 `parseCase` warnings were both empty, and `verifyCase` returned ok with a
 rubric score of 21/21 (100 %), all four decisions correct at the first
 attempt and no contraindicated interventions. The matcher corpus passed
-56/56 (recall@3 1.00 in both locales); it has since grown to 65 utterances,
+56/56 (recall@3 1.00 in both locales); it has since grown to 72 utterances,
 all of which pass `cases verify`.

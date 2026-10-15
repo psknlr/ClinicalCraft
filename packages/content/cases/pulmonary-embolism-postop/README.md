@@ -67,7 +67,9 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   reperfusion has happened, the attending arrives (SBP ≈ 78): once the diagnosis is established (CTPA
   read or the risk-class decision answered) he models the rescue plan (`ev-high-risk-escalation`);
   before that he only calls the shock and asks for the learner's working diagnosis, without naming PE
-  or the treatment (`ev-shock-escalation-undiagnosed`). In that branch the following become *indicated*:
+  or the treatment (`ev-shock-escalation-undiagnosed`). Both attending lines set `speaker: "narrator"`
+  (the runtime voices scenario lines as nurse, monitor, patient, companion or narrator only). In that
+  branch the following become *indicated*:
   * noradrenaline
   * UFH (with bolus)
   * PERT
@@ -87,9 +89,11 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   anticoagulant on board during the bleed (given into it, or running when the lytic was started)
   fails `r-safety-no-harm`, and `r-mx-anticoag-timely` / `r-mx-ufh` are not met in this branch.
 * **Nudges and bookkeeping events.**
-  * `ev-anticoag-unchecked` (info, nurse): anticoagulation started before the bleeding history,
-    wound examination *and* surgical call are all done (not in the haemorrhage branch). Sets
-    `anticoag-before-bleed-check`, which fails `r-safety-bleeding`.
+  * `ev-anticoag-unchecked`, `ev-anticoag-surgeons-unaware`, `ev-anticoag-wound-unchecked` (info,
+    nurse; mutually exclusive, so exactly one fires): anticoagulation started before the bleeding
+    history, wound examination *and* surgical call are all done (not in the haemorrhage branch). The
+    nurse asks only about what is missing — the surgeons, the bleeding history and wound, or both.
+    Each sets `anticoag-before-bleed-check`, which fails `r-safety-bleeding`.
   * `ev-anticoag-no-baseline` (silent): anticoagulation started before FBC and coagulation were
     ordered. Sets `anticoag-before-baseline`, which fails `r-ix-baseline`.
   * `ev-filter-unindicated` (silent): IVC filter placed without haemorrhage. Sets
@@ -156,6 +160,15 @@ branch, where it is contraindicated.
   later change)", and the "high" feedback says that a later shock reclassifies her and needs
   reperfusion via the PERT. The "no systemic lysis" statement in the escalation plan rests on the
   surgical contraindication, so it stays true in both branches.
+* **Dose, label and option texts do not do the learner's work.** The UFH, treatment-dose
+  enoxaparin and noradrenaline doses are per-kg formulas; 5,600 U / 1,260 U/h, 70 mg and
+  ≈ 3.5 µg/min for her 70 kg (which she or the MAR gives) are in their `response`s, and the
+  anticoagulant decision's options no longer carry them. The paracetamol dose says "at least 4 h
+  after the previous dose; max 4 g in 24 h (check the drug chart)" — the 12:00 dose and the
+  cancelled 18:00 dose are in its response, since they are MAR facts. The prophylactic
+  enoxaparin option is labelled "Prophylactic-dose enoxaparin SC", not "the missed … dose", and
+  the strategy decision's CTPA option says "'PE likely', Wells score > 4" rather than quoting
+  the Wells total of 10 the learner should compute. The ABG A–a reference text is per-locale.
 * **Feedback does not quote unobtained results.** Decision feedback and intervention harm texts no
   longer cite the echo, lactate, perfusion, JVP or chest-film findings, nor the risk class, before
   the learner has obtained them. The transfusion intervention's visible name no longer announces
