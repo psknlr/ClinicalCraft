@@ -29,7 +29,7 @@ ketoacidosis with admission hypokalaemia**. Insulin must wait until potassium is
 | phases | `resus` → `k-replete` → `glucose-lt14` → `resolution` (all automatic, not learner-switchable) |
 | clock | simulated, starts 02:40, `realtimeScale` 2, limit 1080 min (18 h). Costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1 min. Learners use **wait** (`advance-time`, ≤ 240 min per call) to let hours pass. |
 | difficulty | 3 / 5 |
-| content | 37 history items (3 `unknown`, 9 required), 18 exam findings (2 phase-restricted reassessments), 16 investigations, 27 interventions, 6 objectives, 5 decisions, 15 rubric items (14 deterministic + 1 examiner-judged), 6 NPC briefs, 40 matcher test utterances |
+| content | 40 history items (3 `unknown`, 9 required), 18 exam findings (2 phase-restricted reassessments), 16 investigations, 27 interventions, 6 objectives, 5 decisions, 15 rubric items (14 deterministic + 1 examiner-judged), 6 NPC briefs, 62 matcher test utterances |
 
 ## Learning objectives
 
@@ -64,17 +64,17 @@ Glucose 28 is a critical alarm and RR 28 a warning from minute 0.
 
 | Element | Behaviour |
 |---|---|
-| Untreated trends | HR +0.05/min (to +8), SBP −0.08/min (to −8), DBP −0.04/min (to −4) until fluids start. RR +0.02/min (to +4) and GCS −0.01/min from minute 60 (to −2) until insulin runs. Glucose +0.01/min (to +2) until fluids or insulin. Untreated for 4 h: HR 124, BP 90/56, RR 32, GCS 13. |
+| Untreated trends | HR +0.05/min (to +8), SBP −0.08/min (to −8), DBP −0.04/min (to −4) until fluids start. RR +0.02/min (to +4) and GCS −0.01/min from minute 60 (to −2) until insulin runs. Glucose +0.01/min (to +2) until fluids or insulin. With no fluids by minute 45, `ev-no-fluids-45` warns and resets the baseline to HR 122, BP 96/57. Untreated for 4 h: HR 128, BP 86/53, RR 32, GCS 13. |
 | First litre (`nacl-1l-1h` or `balanced-1l-1h`) | HR −8, SBP +8, DBP +4, RR −1, glucose −2 over about 1 h. Giving both counts as unsafe (excess fluid, age 18–25). |
 | `kcl-replacement` | 0.9% NaCl + KCl 40 mmol/L at 500 mL/h (KCl 20 mmol/h). It is indicated once K⁺ is known and unsafe if no K⁺ result has been read. It sets `k-replacing`, which starts the `k-replete` phase clock. |
-| `k-replete` phase | Entered at minute 75 if potassium started within 30 min. If it started later, entry is 105/135/165/195 min (tiers set by the `k-late-*` events), so potassium always runs for at least about 45 min before the recheck. If insulin was given before potassium, entry waits until minute ≥ 180. |
+| `k-replete` phase | Entered at minute 75 if potassium started within 30 min. If it started later, the `k-late-*` events (every 30 min to minute 180, then every 60 min to minute 600) place entry 45 min after the end of the window in which potassium started, so it runs for 45–105 min before the K⁺ 3.7 snapshot. If insulin was given before potassium, entry waits until minute ≥ 180. |
 | `friii` 0.1 U/kg/h | Glucose −24 over about 410 min (≈ 3.5 mmol/L/h). RR −11 and HR −20 over 600 min, BP +4/+2, pain −4. It is **contraindicated in `resus`** (K⁺ 3.2) and indicated after the `k-replete` potassium is read. |
-| `ev-insulin-before-k` → `ev-k-crash` | Insulin in `resus` sets `insulin-before-k`. When glucose reaches ≤ 23 (about 1 h later), there are multifocal ectopics, a 6-beat run of VT, leg weakness and an urgent gas with K⁺ 2.6 mmol/L. HR is reset to 130. |
-| `ev-glucose-14` → `glucose-lt14` phase | Fires once on insulin when glucose is < 14 (about minute 290). It latches the `glucose-below-14` flag so the phase never re-triggers. At this point rhythm/ECG are set to sinus/normal. |
-| `dextrose-10` | Glucose +11 over 180 min. With insulin running, this holds glucose at about 11–13 mmol/L. Without it, glucose falls below 4 mmol/L at about minute 450 (≈ 6 h after insulin starts) and keeps falling. `ev-hypoglycaemia` fires and there is a critical alarm. |
-| `ev-dka-resolved` → `resolution` phase | Fires on insulin, after glucose < 14, once the noise-free RR is ≤ 18 (about minute 580, ≈ 9.6 h). This is the case's surrogate for the acidosis clearing. |
-| `stop-friii` | Indicated only in `resolution` after `sc-insulin-transition`. Otherwise it is contraindicated, and `ev-friii-stopped-no-overlap` warns that she has no insulin on board. |
-| Nurse prompts | `ev-insulin-ready` at minute 12 (the insulin is made up; a tempting trap), `ev-k-late-30`, `ev-k-recheck-due`, `ev-no-insulin-3h`, `ev-bicarbonate`. |
+| `ev-insulin-before-k` → `ev-k-crash` | Insulin in `resus` sets `insulin-before-k`. When glucose reaches ≤ 23 (about 1 h later), there are multifocal ectopics, a 6-beat run of VT, leg weakness and an urgent gas with K⁺ 2.6 mmol/L. HR is reset to 130; `ev-k-crash-settles` resets it to 118 once `k-replete` is reached. |
+| `ev-glucose-14` → `glucose-lt14` phase | Fires once on insulin when glucose is < 14 (about minute 290). It latches the `glucose-below-14` flag. The phase is entered only from `k-replete` (so insulin given without any potassium never shows the replaced-K⁺ snapshots); if glucose fell below 14 earlier, the phase follows immediately once `k-replete` is reached. Rhythm/ECG are then set to sinus/normal. |
+| `dextrose-10` | Glucose +11 over 180 min. With insulin running, this holds glucose at about 11–13 mmol/L. It is unsafe while glucose is still ≥ 14 before `glucose-below-14`. Without it, glucose falls below 4 mmol/L at about minute 470 (≈ 6.5 h after insulin starts) and keeps falling: `ev-hypoglycaemia` fires with a critical alarm, `ev-severe-hypo` (glucose ≤ 2.5) drops GCS to 12, and `ev-hypo-recovered` restores GCS 15 once glucose is back ≥ 5. |
+| `ev-dka-resolved` → `resolution` phase | Fires on insulin, after glucose < 14, once the noise-free RR is ≤ 18 (about minute 580, ≈ 9.6 h). This is the case's surrogate for the acidosis clearing. The phase is entered only from `glucose-lt14`. |
+| `stop-friii` | Indicated only in `resolution` after `sc-insulin-transition`. Otherwise it is contraindicated, and (if the infusion was actually running) `ev-friii-stopped-no-overlap` warns that she has no insulin on board. |
+| Nurse prompts | `ev-insulin-ready` at minute 12 (the insulin is made up; a tempting trap), `ev-k-late-30`, `ev-no-fluids-45`, `ev-k-recheck-due`, `ev-no-insulin-3h`, `ev-bicarbonate`. |
 | Rubric flags | `early-workup` (glucose, ketones and VBG read by minute 15) and `fluids-by-30`. |
 
 Tempting wrong choices you can make:
@@ -86,7 +86,7 @@ Tempting wrong choices you can make:
 - phosphate, ceftriaxone, oxygen, a urinary catheter or a 500 mL bolus while normotensive
 - general-ward admission
 - stopping FRIII without SC insulin
-- a 20% glucose bolus when glucose is not low
+- a 20% glucose bolus when glucose is not low, or 10% glucose before glucose has fallen below 14
 - ABG or CT abdomen
 
 ## Decisions
@@ -218,9 +218,13 @@ conflict, and names the JBDS alternative in feedback. The differences:
   (`poc-glucose` later-phase results point there, and the repeat gases omit
   glucose), so lab and monitor values cannot drift apart.
 - **The potassium recheck is time-gated** by elapsed-minute tiers, because the
-  engine has no "minutes since intervention X" condition. Very late or erratic
-  potassium paths can still give a shorter-than-ideal interval before the
-  `k-replete` result.
+  engine has no "minutes since intervention X" condition. Potassium started
+  before minute 600 always runs 45–105 min before the `k-replete` result;
+  only a start after minute 600 can get a shorter interval.
+- **Stopping IV insulin has no physiological rebound.** The engine cannot cancel
+  an intervention's effect or start a trend relative to an action, so an early
+  `stop-friii` is caught by its contraindication, the critical nurse message
+  and the rubric, not by the monitor.
 - **RR stands in for the acidosis.** Resolution is triggered by the respiratory
   rate falling (insulin effect), not by a modelled bicarbonate or ketone level.
   Ketone and gas values per phase are written to match that timeline.
@@ -231,17 +235,27 @@ conflict, and names the JBDS alternative in feedback. The differences:
   glucose last 60 min, bicarbonate tachycardia 60 min. Persistent effects
   (fluids, insulin, dextrose) are not reversed by `stop-friii`. After the switch,
   the SC insulin is assumed to take over.
-- **Matcher tuning:** `excludeKeywords` are set on a few history, exam and
-  intervention items (pump vs omitted insulin vs medications vs allergies,
-  polyuria vs dysuria/smoking, home glucose vs home ketones, breathing pattern vs
-  breath odour, and FRIII vs bolus/stop/remove-pump). All 40
-  `extensions.testUtterances` match their expected item as top hit with
-  score ≥ 0.55.
+- **Matcher tuning:** keywords and `excludeKeywords` separate look-alike
+  questions (pump vs omitted insulin vs pump settings vs sick-day rules,
+  medications vs allergies vs recreational drugs, polyuria vs dysuria vs
+  smoking/alcohol, PMH vs family history vs complications, roommate's illness
+  vs her own diarrhoea, first litre vs ongoing/potassium/balanced fluids,
+  dextrose vs hypo treatment, KCl infusion vs push, monitor vs monitoring plan).
+  Short CJK keywords that share a generic 3-character run with many questions
+  (有没有…, 胰岛素…, 家里有…) were removed, because the patient pipeline also
+  selects any secondary hit within 0.25 of the best. All 62
+  `extensions.testUtterances` (incl. colloquial Chinese, typos and
+  abbreviations such as LMP, TDD, SOB, DKA) match their expected item as top
+  hit with score ≥ 0.55. `VRIII` is deliberately not an alias of the
+  fixed-rate infusion.
 - **Not modelled:** cerebral oedema, hypophosphataemia complications, and the
   individual pump-versus-injections decision.
-- **Facility:** the web world needs `point-of-care`, `lab-blood-gas`,
-  `infusion-pump`, `cardiac-monitor`, `ecg-12lead`, `records` (pump download)
-  and `scale` capabilities in or near the resus bay of `general-hospital`.
+- **Facility:** in `general-hospital` the case takes slot `resus-1`. Bedside
+  interventions need `infusion-pump`, `iv-access`, `cardiac-monitor`,
+  `medications` and `oxygen`, all within 3 m of the slot. Orders need
+  `point-of-care` (11 m), `lab-blood-gas`/`lab-chemistry` (laboratory order
+  workstation, 23 m) and `records` (pump download). The bed weight
+  (`ex-weight`) needs no ward scale: the resus trolley weighs her.
 
 ## Validation
 

@@ -135,10 +135,13 @@ function buildWindow(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thic
   const frame = mats.base;
   const ft = 0.1;
   const fd = Math.min(thickness + 0.04, 0.4);
-  addBox(ctx, frame, wall, o.a, o.b, o.y0, o.y0 + ft, fd);
-  addBox(ctx, frame, wall, o.a, o.b, o.y1 - ft, o.y1, fd);
-  addBox(ctx, frame, wall, o.a, o.a + ft, o.y0, o.y1, fd);
-  addBox(ctx, frame, wall, o.b - ft, o.b, o.y0, o.y1, fd);
+  // The frame sits 2 mm inside the hole and the jambs stop at sill / head: faces that coincided with
+  // the wall's reveal faces (and with each other in the corners) z-fought in stripes.
+  const e = 0.002;
+  addBox(ctx, frame, wall, o.a + e, o.b - e, o.y0 + e, o.y0 + ft, fd);
+  addBox(ctx, frame, wall, o.a + e, o.b - e, o.y1 - ft, o.y1 - e, fd);
+  addBox(ctx, frame, wall, o.a + e, o.a + ft, o.y0 + ft, o.y1 - ft, fd);
+  addBox(ctx, frame, wall, o.b - ft, o.b - e, o.y0 + ft, o.y1 - ft, fd);
   const width = o.b - o.a;
   if (width >= 2.5) {
     const n = Math.floor(width / 1.5);

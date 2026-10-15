@@ -16,9 +16,9 @@
 | setting / facility | `community` / `general-hospital` (garden-bench patient slot in the healing garden) |
 | locales | `zh-CN` (source language), `en` |
 | clock | `simulated`, starts 15:40, `realtimeScale` 1, no time limit; costs: ask 0.5 · examine 0.5 · order 0.5 · read 0.5 · intervene 1 · answer 0 min (a fast-paced resuscitation) |
-| phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed-resus` (transferred after only one dose; resuscitation ongoing) → `ed` (transferred and two doses given; stabilising) |
+| phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed-resus` (transferred after only one dose; resuscitation ongoing) → `ed` (transferred and two doses given; stabilising). Wrong path: `collapsed` (garden, peri-arrest before any adrenaline; left at the first IM dose) |
 | difficulty / time | 3 / 5 · about 25 min |
-| content | 39 history items (3 `unknown`, 3 `specific`, 9 required, 3 phase-specific "how are you now?" answers) · 22 exam findings (phase-specific reassessment) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 13 scenario events (4 of them silent scoring markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 58 test utterances |
+| content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms; all other items unavailable while `collapsed`) · 25 exam findings (phase-specific reassessment and peri-arrest variants) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 16 scenario events (5 of them silent markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 83 test utterances (2 negative) |
 
 ## Clinical story
 
@@ -38,9 +38,10 @@ never taken beta-blockers or ACE inhibitors. Last summer an ankle sting (bee or
 wasp, she is not sure) caused a large local reaction. She was given no
 auto-injector and has never had allergy testing. Her in-laws keep two beehives
 in the countryside, and she helps there most summer weekends. Both of these
-facts are `specific` disclosures. Three items are explicitly unknown: tetanus
-status, any family history of mast-cell disorders, and her usual blood
-pressure.
+facts are `specific` disclosures. She has not been unwell recently (no cold,
+fever or infection — asked because infection is a cofactor). Three items are
+explicitly unknown: tetanus status, any family history of mast-cell disorders,
+and her usual blood pressure.
 
 **Examination at first contact (`scene`).** She has swollen lips (upper more
 than lower), a swollen tongue and an oedematous uvula. Her voice is hoarse but
@@ -111,14 +112,24 @@ Replay of the reference solution (displayed values, including the deterministic 
 | 60–110 | ≈98 | ≈111/60 (77) | ≈18 | 100 | ED observation; sinus rhythm |
 
 Without adrenaline, SBP falls to about 56 by minute 10. At that point the
-`peri-arrest` event fires (GCS 12, "we're losing her"). At minute 16 the
-`near-arrest` event follows (GCS 9, gasping, thready carotid pulse; SBP has
-bottomed out at about 50, MAP about 37). GCS recovers only after IM adrenaline
-brings SBP to ≥ 90. The other scripted events are:
+`peri-arrest` event fires (GCS 12, "we're losing her") and the case enters the
+`collapsed` phase: she can no longer give history (every history item except
+the groan-only `status-collapsed` is phase-locked) and the general-appearance,
+circulation and neurological findings switch to peri-arrest variants. At
+minute 16 the `near-arrest` event follows (GCS 9, gasping, thready carotid
+pulse; SBP has bottomed out at about 50, MAP about 37). The first IM dose
+leaves `collapsed` (for `treated`, or `ed-resus` after a deferred transfer);
+`peri-arrest-partial` raises GCS to 14 once SBP reaches 65, and
+`peri-arrest-recovered` restores GCS 15 at SBP ≥ 90, which takes the second
+dose. The other scripted events are:
 
 * `adrenaline-prompt`: the nurse offers the drawn-up adrenaline at 5 min. It
   sets `adrenaline-delayed`, which fails the weighted rubric item.
-* `upright-while-hypotensive`: she greys out when sat up with SBP < 90.
+* `upright-while-hypotensive`: she greys out when sat up with SBP < 90. The
+  silent `upright-faint` puts GCS 13 on the monitor (unless she is already
+  peri-arrest) and `upright-recovered` restores 15 once adrenaline has brought
+  SBP to ≥ 90. Sitting up itself only lowers SBP by 14 for 5 min, so a
+  stabilised patient sat up in the ED does not faint.
 * `iv-bolus-arrhythmia`: broad-complex runs and a hypertensive spike after an
   IV bolus. This does **not** stop the anaphylaxis trends.
   `iv-bolus-ischaemia` then puts ST depression on the monitor while SBP is
@@ -141,10 +152,10 @@ brings SBP to ≥ 90. The other scripted events are:
 | Adrenaline 0.5 mg **IV bolus** | contraindicated (high risk) | Undiluted IV bolus of the IM dose causes hypertension, VT, ischaemia and pulmonary oedema. IV adrenaline is for arrest or an expert-titrated infusion. |
 | Adrenaline **subcutaneous** | contraindicated | Slow, unreliable absorption in shock. Only a small, delayed effect, and the trends continue. |
 | **Antihistamine** (oral cetirizine or IV chlorphenamine) or **hydrocortisone** before adrenaline | contraindicated | Adjuncts that treat none of A/B/C. Delaying adrenaline is the avoidable factor. IV chlorphenamine is also flagged if SBP < 90. |
-| **Sit her upright / stand her** with SBP < 90 | contraindicated | "Empty ventricle": SBP −14 and GCS −3 for 5 min. |
+| **Sit her upright / stand her** with SBP < 90 | contraindicated | "Empty ventricle": SBP −14 for 5 min, faint event and GCS 13 until adrenaline restores SBP ≥ 90. |
 | **Walk her (or wheelchair) to the ED** | contraindicated | Same mechanism. Transfer lying flat on a trolley after adrenaline. |
 | **Transfer before IM adrenaline** | contraindicated | Delays treatment. The phase stays `scene` until adrenaline is given, then goes to `ed-resus`. Sets `moved-before-adrenaline`, which fails `r-adr-first`. |
-| **Discharge now** | contraindicated | Two doses and severe respiratory compromise (≥ 12 h), no auto-injector, biphasic risk. |
+| **Discharge now** | contraindicated | Shock and severe respiratory compromise (≥ 12 h), auto-injectors and training still needed, biphasic risk. The texts make no claim about how many doses were given, so they stay true on every path. |
 | **Salbutamol** before adrenaline | contraindicated | "Treating it as asthma": bronchospasm only, not laryngeal oedema or shock, and it delays adrenaline (same logic as antihistamine/steroid first). After adrenaline it is indicated. |
 | CTPA | `harmful` investigation | Contrast and leaving resus during an anaphylaxis observation period, with no indication. |
 | CXR, troponin, CRP, venom sIgE | `low-value` | None changes acute management. Venom sIgE may be falsely negative early; repeat at 4–6 weeks. |
@@ -229,9 +240,11 @@ brings SBP to ≥ 90. The other scripted events are:
 * The bag has **no** defibrillator, suction or ECG machine. Those arrive with
   the emergency team, or are available in the ED.
 * Investigations use their real capabilities. Phases encode location:
-  * In the garden (`scene` / `treated`): POC glucose and sample-based lab
-    tests drawn from the cannula. Tryptase, FBC and U&E are available from
-    first contact; venom sIgE, troponin and CRP from `treated`.
+  * In the garden (`scene` / `collapsed` / `treated`): POC glucose and
+    sample-based lab tests. Tryptase, FBC and U&E are available from first
+    contact (a sample drawn during the collapse gives an initial tryptase of
+    14.9 µg/L with a "never delay adrenaline" note); venom sIgE, troponin and
+    CRP from `treated`.
   * ED only (`ed-resus` and `ed`): 12-lead ECG, VBG (blood-gas analyser),
     CXR, CTPA, POCUS and urine hCG. The `ed-resus` results reflect an
     incomplete response to one dose: VBG lactate 4.4 mmol/L with pH 7.30,
@@ -247,12 +260,14 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
 
 | path | outcome |
 |---|---|
-| reference solution | 5/5 objectives, 17/17, no contraindicated actions |
-| never gives adrenaline | SBP ≈ 50, GCS 12 → 9, 3 critical alarms; cannot finish; 1/17 (only the ABC examination) |
-| salbutamol, antihistamines and steroid first, sits her up, one late dose, transfer | 5 contraindicated actions; stuck in `ed-resus` with SBP ≈ 66–74; 2/17 |
+| reference solution | 5/5 objectives, 17/17, no contraindicated actions; SBP ≥ 100 from minute 15, ≈ 111/60 in the ED |
+| never gives adrenaline, late doses at 22 and 30 min | `collapsed` from minute 10 (history locked, peri-arrest findings), SBP ≈ 50, GCS 12 → 9; first dose → `treated`, GCS 14 at SBP ≥ 65; GCS 15 only after the second dose; `r-adr-early` fails |
+| salbutamol, antihistamines and steroid first, sits her up, one late dose, transfer | 5 contraindicated actions; GCS 13 after sitting up (SBP ≈ 40), then `collapsed`; stuck in `ed-resus` with SBP ≈ 66–74; 2/17 |
 | IV bolus, SC adrenaline, walks her, discharge | ST depression then collapse to SBP ≈ 40; 0/17 |
 | transfer before adrenaline, otherwise correct | completes, 16/17 (`r-adr-first` fails) |
-| one dose only, then transfer | stays in `ed-resus`, SBP ≈ 82–92; cannot finish (needs the second dose) |
+| adrenaline first, A–B–C examination afterwards | no `adrenaline-delayed`; `dx-criteria` unlocks from the `treated` findings; no "missed examination" in the debrief |
+| one dose only, then transfer | stays in `ed-resus`, SBP ≈ 83–86; cannot finish (needs the second dose); disposition locked |
+| sits her up once stable in the ED | `neutral`, SBP ≈ 95, GCS 15, no faint |
 | brute-forcing the evidence board, second dose without reassessment | cannot finish; `r-dx`, `r-dispo` and `r-adr-repeat` fail |
 
 * Decisions unlock only once their evidence exists: `dx-criteria` needs the
@@ -287,7 +302,9 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
 
 * **Phase-specific exam findings share vocabulary.** The airway, chest,
   circulation and general-appearance findings have `scene`, `treated` (also
-  used in `ed-resus`) and `ed` variants. `matchExam(…, { phase })` filters
+  used in `ed-resus`) and `ed` variants, plus `collapsed` variants for
+  general appearance, circulation and conscious level (the scene airway and
+  chest findings also cover `collapsed`). `matchExam(…, { phase })` filters
   them correctly, but callers must pass the phase. The agent's `examine` tool
   (`resolveFinding`) currently calls `matchExam` without it, so "listen to
   the chest" is reported as ambiguous between the variants.
@@ -296,9 +313,35 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
   precedes `allergy-drug`, `family` precedes `allergy-drug`, and `pmh-*`
   precedes `meds`. `excludeKeywords` stop generic words stealing matches
   ("before" on `pc-sting`, "allergy"/"family" on `meds`/`pmh-asthma`, "a
-  bit" on `hpi-insect`). All 58 `extensions.testUtterances` return the
-  expected item as the top hit, with no extra facts selected by the patient
-  pipeline (≥ 0.55, within 0.25 of the best).
+  bit" on `hpi-insect`, 哮喘 on `hpi-breathing`). Chinese keywords are scored
+  as longest common substring ÷ keyword length, so no keyword may be ≥ 55 %
+  function words (有没有过敏, 叮你的, 多少斤 were removed or lengthened: they
+  matched "有没有发烧", "你的手机呢", "多少岁"). A generic past-history question
+  ("以前有啥病", "PMH?") deliberately selects both `pmh-asthma` and
+  `pmh-other`.
+* **Matcher regression.** All 83 `extensions.testUtterances` pass the CLI rule
+  (every expected id selected at ≥ 0.55, an expected id first; the two
+  `expect: []` entries select nothing). 356 further paraphrases, three
+  rounds of them written after the previous tuning, reach recall@3 = 1.0 with
+  phase-aware pipeline selection; the last untuned round scored 0.94 before
+  its four misses were fixed.
+* **Re-asked symptoms in the ED.** `hpi-*` answers describe the acute
+  reaction. In `ed` the matching `now-*-ed` item (same keywords, declared
+  later) is selected with it, so the patient says how it was and how it is
+  now instead of describing a swollen throat after recovery.
+* **Required examination.** Only `ex-skin` is `required`. The scene-only
+  airway, chest and circulation findings are no longer required: giving
+  adrenaline before a formal look locks them, and the debrief would list
+  "Assess the airway" as missed after the learner had reassessed it.
+  `r-ex-abc` (any phase variant) still scores the A–B–C assessment.
+* **Lab interpretation is reachable.** Dr Shen's brief uses the `pathologist`
+  role (immunology laboratory, by phone) with `interprets` limited to the lab
+  tests, because the runtime only provides nurse, radiologist, pathologist
+  and attending agents; the earlier `consultant` role was never consulted.
+* **The patient voice gets no phase, clock or vitals.** Phase effects on what
+  she says therefore live in data (phase-locked history, `status-*`,
+  `now-*-ed`), and `actingNotes` hold behaviour only: no facts and nothing
+  conditional on treatment or deterioration that the voice cannot observe.
 * **Static text with dynamic vitals.** Exam text cannot react to individual
   interventions within a phase. For example, `ex-chest-treated` still
   describes wheeze after salbutamol. The salbutamol `response` narrates the

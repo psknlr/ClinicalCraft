@@ -149,7 +149,30 @@
         "en": "I was sitting here… a bee… stung my right arm… ten minutes ago, maybe…"
       },
       "keywords": {
-        "zh-CN": ["怎么了", "发生了什么", "哪里不舒服", "什么情况", "出什么事", "经过", "咋回事", "怎么回事", "咋了", "出啥事", "发生什么", "什么事了", "被蛰", "啥时候的事", "什么时候的事", "什么时候被蜇", "咋整的", "咋弄的", "怎么弄的", "怎么搞的"],
+        "zh-CN": [
+          "你怎么了",
+          "发生了什么",
+          "哪里不舒服",
+          "什么情况",
+          "出什么事",
+          "经过",
+          "咋回事",
+          "怎么回事",
+          "咋了",
+          "出啥事",
+          "发生什么",
+          "什么事了",
+          "被蛰",
+          "啥时候的事",
+          "什么时候的事",
+          "什么时候被蜇",
+          "咋整的",
+          "咋弄的",
+          "怎么弄的",
+          "怎么搞的",
+          "这是怎么",
+          "你怎么啦"
+        ],
         "en": [
           "what happened",
           "what's wrong",
@@ -273,7 +296,6 @@
         "en": [
           "other symptoms",
           "eyes",
-          "watery",
           "runny nose",
           "blocked nose",
           "headache",
@@ -353,7 +375,7 @@
         "en": ["sting site", "stinger", "sting still in", "pull it out", "which arm", "wound", "stung arm", "stinger still in", "where is the stinger", "where were you stung"]
       },
       "excludeKeywords": {
-        "zh-CN": ["以前", "之前", "上次", "过敏", "反应", "什么虫", "马蜂"],
+        "zh-CN": ["以前", "之前", "上次", "过敏", "反应", "什么虫", "马蜂", "住在", "住哪", "住院"],
         "en": ["before", "previous", "last time", "allerg", "reaction", "what stung", "wasp", "insect", "when", "react", "in the past"]
       },
       "phases": ["scene", "treated", "ed-resus", "ed"]
@@ -367,7 +389,7 @@
         "en": "A bee… fuzzy, golden-brown… came from the lavender over there…"
       },
       "keywords": {
-        "zh-CN": ["蜜蜂还是马蜂", "黄蜂", "马蜂", "胡蜂", "看清", "昆虫", "哪种虫", "被啥咬", "被什么咬", "啥虫子", "被啥蜇", "什么虫子", "叮你的", "啥玩意", "什么东西叮", "被什么叮", "是蜜蜂", "是不是蜜蜂"],
+        "zh-CN": ["蜜蜂还是马蜂", "黄蜂", "马蜂", "胡蜂", "看清", "昆虫", "哪种虫", "被啥咬", "被什么咬", "啥虫子", "被啥蜇", "什么虫子", "叮你的是啥", "啥玩意", "什么东西叮", "被什么叮", "是蜜蜂"],
         "en": [
           "what insect",
           "bee or wasp",
@@ -451,6 +473,18 @@
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
+      "id": "recent-illness",
+      "topic": "ros",
+      "question": { "zh-CN": "最近有没有生病，比如感冒、发烧？", "en": "Have you been unwell recently — a cold, a fever, any infection?" },
+      "answer": { "zh-CN": "没有……最近都挺好的……", "en": "No… I've been fine lately…" },
+      "keywords": {
+        "zh-CN": ["感冒", "发烧", "发热", "最近生病", "最近不舒服", "感染", "新冠"],
+        "en": ["fever", "cold or flu", "flu", "unwell recently", "recent illness", "infection", "covid", "temperature", "been ill"]
+      },
+      "excludeKeywords": { "zh-CN": ["花粉"], "en": ["hay fever", "hayfever", "cold and clammy"] },
+      "phases": ["scene", "treated", "ed-resus", "ed"]
+    },
+    {
       "id": "self-treatment",
       "topic": "hpi",
       "question": { "zh-CN": "出事后你自己用过什么药或做过什么处理吗？", "en": "Have you taken or used anything for this since it started?" },
@@ -495,7 +529,8 @@
           "被蜂蛰过",
           "去年那次",
           "去年被蜇",
-          "去年蜇"
+          "去年蜇",
+          "过敏反应"
         ],
         "en": [
           "stung before",
@@ -532,7 +567,7 @@
         "zh-CN": ["过敏原检测", "过敏测试", "皮试", "查过敏", "IgE", "测过过敏原", "做过过敏", "过敏原"],
         "en": ["allergy test", "allergy testing", "skin prick", "skin test", "ige", "rast", "allergy tested", "allergy tests"]
       },
-      "excludeKeywords": { "zh-CN": ["抗过敏", "吃了"], "en": [] },
+      "excludeKeywords": { "zh-CN": ["抗过敏", "吃了", "反应"], "en": [] },
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
@@ -633,7 +668,7 @@
       "question": { "zh-CN": "对药物或者其他东西过敏吗？", "en": "Are you allergic to any medicines or anything else?" },
       "answer": { "zh-CN": "药……吃的……都没过敏过……就是春天有花粉症……", "en": "No… no drug or food allergies… just hay fever in spring…" },
       "keywords": {
-        "zh-CN": ["过敏吗", "药物过敏", "对什么过敏", "青霉素", "过敏史", "药过敏", "过敏的", "有没有过敏", "过敏不", "啥过敏", "食物过敏", "对吃的过敏", "青霉素过敏"],
+        "zh-CN": ["过敏吗", "药物过敏", "对什么过敏", "青霉素", "过敏史", "药过敏", "过敏的", "过敏不", "啥过敏", "食物过敏", "对吃的过敏", "青霉素过敏", "过敏反应"],
         "en": [
           "allergic",
           "allergies",
@@ -771,7 +806,7 @@
       "question": { "zh-CN": "有没有可能怀孕？末次月经是什么时候？", "en": "Could you be pregnant? When was your last period?" },
       "answer": { "zh-CN": "不会……我在吃避孕药……两周前来的月经……", "en": "No… I'm on the pill… my period was two weeks ago…" },
       "keywords": {
-        "zh-CN": ["怀孕", "月经", "末次月经", "例假", "妊娠", "怀孕可能", "大姨妈", "有没有怀孕", "怀没怀孕"],
+        "zh-CN": ["怀孕", "月经", "末次月经", "例假", "妊娠", "怀孕可能", "大姨妈", "怀没怀孕"],
         "en": ["pregnant", "pregnancy", "period", "lmp", "last menstrual", "could you be pregnant", "preg"]
       },
       "phases": ["scene", "treated", "ed-resus", "ed"]
@@ -781,7 +816,7 @@
       "topic": "other",
       "question": { "zh-CN": "你体重大概多少？", "en": "Roughly how much do you weigh?" },
       "answer": { "zh-CN": "大概……62公斤……", "en": "About… 62 kilos…" },
-      "keywords": { "zh-CN": ["体重", "多重", "几公斤", "多少斤", "多少公斤"], "en": ["weigh", "weight", "how heavy", "kilos", "kg"] },
+      "keywords": { "zh-CN": ["体重", "多重", "几公斤", "有多少斤", "多少公斤"], "en": ["weigh", "weight", "how heavy", "kilos", "kg"] },
       "disclosure": "on-ask",
       "required": false,
       "phases": ["scene", "treated", "ed-resus", "ed"]
@@ -796,7 +831,7 @@
       },
       "keywords": {
         "zh-CN": ["工作", "职业", "做什么的", "来医院", "探视", "看谁", "上班", "来医院干嘛", "来医院做什么", "干啥的", "做啥的", "干什么的"],
-        "en": ["work", "job", "occupation", "what do you do", "why are you here", "visiting", "visit", "your job", "for a living", "at the hospital", "what brings you to the hospital"]
+        "en": ["work", "job", "occupation", "what do you do", "why are you here", "visiting", "visit", "your job", "at the hospital", "what brings you to the hospital"]
       },
       "excludeKeywords": {
         "zh-CN": ["住过院", "住院", "手术", "老公", "爱人", "丈夫"],
@@ -852,8 +887,8 @@
       "question": { "zh-CN": "你现在最担心的是什么？", "en": "What are you most worried about right now?" },
       "answer": { "zh-CN": "我……会不会憋死？……我爸还在楼上等我……", "en": "Am I… going to choke?… my dad's waiting for me upstairs…" },
       "keywords": {
-        "zh-CN": ["担心", "害怕", "顾虑", "最怕", "忧虑", "担心什么"],
-        "en": ["worried", "worry", "concern", "scared", "afraid", "frightened", "worries you", "what worries"]
+        "zh-CN": ["担心", "害怕", "顾虑", "最怕", "忧虑", "担心什么", "濒死", "要死了", "快不行了", "会死吗", "憋死"],
+        "en": ["worried", "worry", "concern", "scared", "afraid", "frightened", "worries you", "what worries", "doom", "going to die", "am i dying"]
       },
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
@@ -869,7 +904,10 @@
         "zh-CN": ["希望", "期望", "想要", "打算", "回家", "想让我们", "希望我们"],
         "en": ["expect", "expectation", "hoping", "want us to", "hope", "want us to do", "what would you like", "home today"]
       },
-      "excludeKeywords": { "zh-CN": ["感觉", "好点"], "en": ["feeling", "feel better", "with you", "live with", "at home with"] },
+      "excludeKeywords": {
+        "zh-CN": ["感觉", "好点", "喝水", "喝点"],
+        "en": ["feeling", "feel better", "with you", "live with", "at home with", "water", "drink"]
+      },
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
     {
@@ -878,7 +916,7 @@
       "question": { "zh-CN": "你现在感觉怎么样？", "en": "How are you feeling now?" },
       "answer": { "zh-CN": "越来越……难受……喘不上气……头好晕……", "en": "Worse… and worse… can't breathe… so dizzy…" },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉"],
         "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
@@ -895,7 +933,7 @@
         "en": "A little… better… breathing's… a bit easier… still dizzy… heart's pounding… my hands are shaking…"
       },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉"],
         "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
@@ -912,7 +950,7 @@
         "en": "So much better… I can breathe now… just a bit shaky… still a little itchy…"
       },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉"],
         "en": ["feeling now", "feel now", "any better", "feeling better", "feel better", "improving", "how are you doing", "how are things"]
       },
       "excludeKeywords": { "zh-CN": ["担心", "希望", "怕"], "en": ["worried", "worry", "hoping"] },
@@ -926,7 +964,7 @@
       "question": { "zh-CN": "你现在感觉怎么样？能听见我说话吗？", "en": "How are you feeling — can you hear me?" },
       "answer": { "zh-CN": "……嗯……（只能含糊地呻吟，眼睛半闭，答不上话）", "en": "…mm… (only a groan — eyes half-closed; she cannot answer)" },
       "keywords": {
-        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "有没有好转", "感觉咋样", "这会儿感觉", "能听见吗", "听得见吗", "听见我说话", "睁开眼", "睁眼", "醒醒", "叫什么名字", "你还好吗", "怎么样了"],
+        "zh-CN": ["现在感觉怎么样", "感觉怎么样", "现在怎么样", "好点了吗", "好些了吗", "好点没", "舒服点了吗", "好转", "感觉咋样", "这会儿感觉", "能听见吗", "听得见吗", "听见我说话", "睁开眼", "睁眼", "醒醒", "叫什么名字", "你还好吗", "怎么样了"],
         "en": [
           "feeling now",
           "feel now",
@@ -4829,7 +4867,11 @@
       { "text": "去年那次蜇了以后咋样", "locale": "zh-CN", "expect": ["prev-reaction"] },
       { "text": "你这是咋整的", "locale": "zh-CN", "expect": ["pc-sting"] },
       { "text": "以前蜜蜂蛰过你吗", "locale": "zh-CN", "expect": ["prev-reaction"] },
-      { "text": "老公在哪上班", "locale": "zh-CN", "expect": ["social-home"] }
+      { "text": "老公在哪上班", "locale": "zh-CN", "expect": ["social-home"] },
+      { "text": "有没有发烧", "locale": "zh-CN", "expect": ["recent-illness"] },
+      { "text": "do you feel a sense of impending doom?", "locale": "en", "expect": ["ice-concern"] },
+      { "text": "你的手机呢", "locale": "zh-CN", "expect": [] },
+      { "text": "do you want some water?", "locale": "en", "expect": [] }
     ],
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",

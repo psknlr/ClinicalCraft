@@ -592,11 +592,11 @@
           "how did it begin",
           "progressed",
           "timeline",
-          "onset",
           "how long have you been unwell",
           "when did this start",
           "how long has this been going on",
-          "been going on"
+          "been going on",
+          "symptom onset"
         ]
       },
       "disclosure": "on-ask",
@@ -655,7 +655,10 @@
           "胰岛素",
           "大剂量",
           "不干净",
-          "外卖"
+          "外卖",
+          "吐出",
+          "呕的",
+          "吐的"
         ],
         "en": [
           "insulin",
@@ -687,11 +690,15 @@
           "咖啡渣",
           "呕吐物",
           "吐出来",
-          "吐的东西",
           "吐了几回",
           "吐几次",
           "吐多少次",
-          "吐了多少次"
+          "吐了多少次",
+          "吐出来的东西",
+          "咖啡色",
+          "吐出咖啡",
+          "呕的",
+          "呕出"
         ],
         "en": [
           "how many times vomited",
@@ -725,7 +732,8 @@
           "taken",
           "tablet",
           "insulin",
-          "medicine"
+          "medicine",
+          "howlong"
         ]
       }
     },
@@ -821,8 +829,8 @@
           "where is the tummy pain",
           "stomach hurt",
           "sharp or dull",
-          "crampy",
-          "colicky",
+          "crampy pain",
+          "colicky pain",
           "kind of pain"
         ]
       },
@@ -1222,11 +1230,15 @@
           "胰岛素泵",
           "泵",
           "报警",
-          "泵有问题",
           "怎么打胰岛素",
           "用什么胰岛素",
           "泵报警",
-          "泵叫"
+          "泵叫",
+          "泵出问题",
+          "泵坏了",
+          "泵故障",
+          "用的什么胰岛素",
+          "什么胰岛素"
         ],
         "en": [
           "insulin pump",
@@ -1256,7 +1268,14 @@
           "打了吗",
           "生病时",
           "生病的时候",
-          "备用"
+          "备用",
+          "多少单位",
+          "一天打多少",
+          "总共打",
+          "不吃饭",
+          "没吃东西",
+          "吃不下",
+          "打了没有"
         ],
         "en": [
           "skip",
@@ -1300,7 +1319,6 @@
           "餐前胰岛素",
           "校正",
           "减少胰岛素",
-          "停胰岛素",
           "按时打",
           "打没打",
           "不吃饭的时候",
@@ -1355,8 +1373,8 @@
           "扎针",
           "换管子",
           "管子多久",
-          "多少天换",
-          "输注管"
+          "输注管",
+          "多少天换一次"
         ],
         "en": [
           "infusion set",
@@ -1438,18 +1456,17 @@
           "生病怎么办",
           "教过",
           "糖尿病教育",
-          "生病的时候胰岛素",
           "怎么调",
           "胰岛素怎么调整",
           "备用胰岛素",
           "备用笔",
-          "胰岛素笔",
-          "生病日"
+          "生病日",
+          "备用的胰岛素笔",
+          "生病时胰岛素"
         ],
         "en": [
           "sick-day rules",
           "sick day",
-          "when you're ill",
           "taught",
           "diabetes education",
           "insulin when sick",
@@ -1457,10 +1474,22 @@
           "sick day plan",
           "backup pen",
           "spare insulin",
-          "insulin pen"
+          "insulin pen",
+          "insulin when ill"
         ]
       },
-      "disclosure": "specific"
+      "disclosure": "specific",
+      "excludeKeywords": {
+        "zh-CN": [
+          "漏打",
+          "没打"
+        ],
+        "en": [
+          "skip",
+          "miss",
+          "omit"
+        ]
+      }
     },
     {
       "id": "hx-fever",
@@ -1480,8 +1509,8 @@
           "寒战",
           "体温",
           "怕冷",
-          "有没有烧",
-          "烧不烧"
+          "烧不烧",
+          "发不发烧"
         ],
         "en": [
           "fever",
@@ -1594,14 +1623,13 @@
           "家里人生病",
           "室友也",
           "别人也",
-          "也拉肚子",
-          "也吐",
           "吃了不干净",
           "不干净的东西",
           "外卖",
           "旅游",
           "旅行",
-          "出远门"
+          "出远门",
+          "室友也拉肚子"
         ],
         "en": [
           "anyone else ill",
@@ -1723,10 +1751,10 @@
           "过dka",
           "dka",
           "酮症酸中毒",
-          "以前有过",
           "以前也这样",
           "低血糖",
-          "住过icu"
+          "住过icu",
+          "以前也有过"
         ],
         "en": [
           "happened before",
@@ -2058,7 +2086,15 @@
           "home situation"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "泵"
+        ],
+        "en": [
+          "pump"
+        ]
+      }
     },
     {
       "id": "hx-family",
@@ -2078,9 +2114,10 @@
           "父母",
           "遗传",
           "家人有什么病",
-          "家里有人",
           "家里人有",
-          "家族"
+          "家族",
+          "家里有人有",
+          "家里有谁"
         ],
         "en": [
           "family history",
@@ -2098,12 +2135,16 @@
         "zh-CN": [
           "知道",
           "通知",
-          "联系"
+          "联系",
+          "备用",
+          "胰岛素"
         ],
         "en": [
           "knowyou",
           "contact",
-          "informed"
+          "informed",
+          "backup",
+          "insulin"
         ]
       }
     },
@@ -2205,8 +2246,7 @@
           "血糖仪记录",
           "几点测的",
           "存的读数",
-          "血糖仪里存",
-          "血糖仪里"
+          "血糖仪里存"
         ],
         "en": [
           "exact readings",
@@ -2244,9 +2284,9 @@
           "roommate's diagnosis",
           "what did she have",
           "cause",
-          "was she tested",
           "what did your roommate have",
-          "roommate's illness"
+          "roommate's illness",
+          "was your roommate tested"
         ]
       },
       "disclosure": "unknown"

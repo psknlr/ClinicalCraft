@@ -1026,8 +1026,16 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     detailAt = { x: cx, z: cz };
     const inside = buildingAt(cx, cz);
     const show = (bi: number, x: number, z: number) => bi < 0 || bi === inside || Math.hypot(x - cx, z - cz) < DETAIL_RANGE;
-    for (const d of details) d.obj.visible = show(d.building, d.x, d.z);
-    for (const n of ctx.npcs.values()) n.rig.root.visible = show(buildingAt(n.x, n.z), n.x, n.z);
+    let changed = false;
+    const set = (o: Object3D, v: boolean) => {
+      if (o.visible === v) return;
+      o.visible = v;
+      changed = true;
+    };
+    for (const d of details) set(d.obj, show(d.building, d.x, d.z));
+    for (const n of ctx.npcs.values()) set(n.rig.root, show(buildingAt(n.x, n.z), n.x, n.z));
+    // hidden casters were left out of the cached shadow map
+    if (changed) markShadows();
   }
 
   /* ---------------- frame loop ---------------- */

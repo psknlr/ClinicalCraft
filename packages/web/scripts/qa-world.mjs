@@ -9,7 +9,13 @@
  * Teleports to the V4 reference camera positions (same yaw/pitch semantics:
  * camera.rotation.order "YXZ", rotation.set(pitch, yaw, 0)) and saves
  * world-<facility>-<name>.png, plus a monitor close-up, the big map, the
- * minimap and the anatomy atlas. Prints a JSON summary (errors, stats).
+ * minimap and the anatomy atlas. Prints a JSON summary (errors, stats,
+ * per-shot draw calls — `steady` is renderer.info.render.calls of a normal
+ * frame, `shadowPass` the extra calls of a frame that refreshes the shadow
+ * map — functional checks, walkTo smoke test).
+ *
+ * Start the dev server with CLINICALCRAFT_QA=1 (no reloads while content
+ * files change) and restart it after editing code: QA mode does not watch.
  */
 import fs from "node:fs";
 import path from "node:path";

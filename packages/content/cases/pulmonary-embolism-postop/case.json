@@ -177,7 +177,14 @@
           "发生了什么",
           "怎么回事",
           "主诉",
-          "什么问题"
+          "什么问题",
+          "咋啦",
+          "咋了",
+          "怎么啦",
+          "哪儿难受",
+          "哪里难受",
+          "哪不舒服",
+          "哪儿不舒服"
         ],
         "en": [
           "what happened",
@@ -185,10 +192,29 @@
           "whats wrong",
           "troubling you",
           "what brings",
-          "how are you"
+          "how are you",
+          "going on",
+          "the matter",
+          "how's it going"
         ]
       },
-      "disclosure": "volunteer"
+      "disclosure": "volunteer",
+      "excludeKeywords": {
+        "zh-CN": [
+          "癌",
+          "肿瘤",
+          "手术",
+          "刀口",
+          "血栓"
+        ],
+        "en": [
+          "cancer",
+          "tumour",
+          "tumor",
+          "operation",
+          "surgery"
+        ]
+      }
     },
     {
       "id": "h-onset",
@@ -213,7 +239,15 @@
           "多长时间",
           "啥时候",
           "痛了多久",
-          "疼了多久"
+          "疼了多久",
+          "几分钟",
+          "多少分钟",
+          "一下子",
+          "突然疼",
+          "突然痛",
+          "当时在干",
+          "在干嘛",
+          "干嘛呢"
         ],
         "en": [
           "when did",
@@ -235,14 +269,21 @@
           "坐飞机",
           "坐车",
           "什么手术",
-          "哪天做的"
+          "哪天做的",
+          "开刀",
+          "什么刀",
+          "开的刀"
         ],
         "en": [
           "flight",
           "flew",
           "journey",
           "travel",
-          "trip"
+          "trip",
+          "long term",
+          "longterm",
+          "long-term",
+          "chronic"
         ]
       }
     },
@@ -254,8 +295,8 @@
         "en": "Where exactly is the pain, and does it spread anywhere?"
       },
       "answer": {
-        "zh-CN": "这里……右边胸口下面，靠后背一点。不往胳膊、脖子或者下巴那边走。",
-        "en": "Here... lower right chest, a bit towards the back. It doesn't go into my arm, neck or jaw."
+        "zh-CN": "这里……右边胸口下面，靠后背一点。不往肩膀、胳膊、脖子或者下巴那边走。",
+        "en": "Here... lower right chest, a bit towards the back. It doesn't go into my shoulder, arm, neck or jaw."
       },
       "keywords": {
         "zh-CN": [
@@ -265,7 +306,15 @@
           "放射",
           "位置",
           "哪个地方",
-          "痛到哪"
+          "痛到哪",
+          "哪儿疼",
+          "哪儿痛",
+          "哪疼",
+          "哪痛",
+          "后背",
+          "背上",
+          "肩膀",
+          "胳膊"
         ],
         "en": [
           "point where it hurts",
@@ -273,10 +322,29 @@
           "location",
           "radiate",
           "spread",
-          "pain go anywhere"
+          "pain go anywhere",
+          "show where it hurts",
+          "shoulder",
+          "wheres the pain",
+          "pain located"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "肿瘤",
+          "癌",
+          "转移",
+          "家住",
+          "住哪"
+        ],
+        "en": [
+          "cancer",
+          "tumour",
+          "tumor",
+          "malignan"
+        ]
+      }
     },
     {
       "id": "h-pain-character",
@@ -304,7 +372,27 @@
           "持续痛",
           "什么姿势",
           "怎么会好",
-          "怎样能好些"
+          "怎样能好些",
+          "刺痛",
+          "闷痛",
+          "刀割",
+          "绞痛",
+          "钝痛",
+          "压榨",
+          "什么样的疼",
+          "怎么个疼法",
+          "喘气的时候疼",
+          "喘气时疼",
+          "喘气疼",
+          "吸气疼",
+          "吸气痛",
+          "呼吸疼",
+          "呼吸痛",
+          "咳嗽就疼",
+          "咳嗽疼",
+          "咳嗽痛",
+          "一咳嗽就",
+          "咳嗽时疼"
         ],
         "en": [
           "what kind of pain",
@@ -320,7 +408,8 @@
           "make it better",
           "make it worse",
           "hurt to breathe",
-          "sharp"
+          "sharp",
+          "stabbing"
         ]
       },
       "disclosure": "on-ask",
@@ -361,7 +450,15 @@
           "pain score"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "分钟"
+        ],
+        "en": [
+          "minutes"
+        ]
+      }
     },
     {
       "id": "h-abdo-pain",
@@ -393,10 +490,17 @@
           "wound pain",
           "tummy sore",
           "stomach ache",
-          "sore tummy"
+          "sore tummy",
+          "wound sore",
+          "sore wound"
         ]
       },
-      "excludeKeywords": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "腿肚"
+        ],
+        "en": []
+      },
       "disclosure": "on-ask",
       "required": false,
       "source": {
@@ -426,7 +530,15 @@
           "呼吸费力",
           "喘得厉害",
           "喘不喘",
-          "气喘"
+          "气喘",
+          "喘的厉害",
+          "憋得慌",
+          "憋不憋",
+          "憋闷",
+          "胸闷",
+          "喘吗",
+          "喘不上",
+          "透不过气"
         ],
         "en": [
           "breathless",
@@ -437,7 +549,8 @@
           "trouble breathing",
           "puffed",
           "sob",
-          "breathing difficulty"
+          "breathing difficulty",
+          "catch your breath"
         ]
       },
       "disclosure": "on-ask",
@@ -453,7 +566,8 @@
           "以前",
           "平躺",
           "活动能力",
-          "爬楼"
+          "爬楼",
+          "昨天"
         ],
         "en": [
           "pain",
@@ -462,7 +576,8 @@
           "previously",
           "before all this",
           "lying flat",
-          "exercise tolerance"
+          "exercise tolerance",
+          "yesterday"
         ]
       }
     },
@@ -485,7 +600,13 @@
           "眼前发黑",
           "头晕",
           "昏过去",
-          "摔倒"
+          "摔倒",
+          "发黑",
+          "眼前黑",
+          "晕过去",
+          "摔了",
+          "摔跤",
+          "晕没晕"
         ],
         "en": [
           "faint",
@@ -495,7 +616,12 @@
           "light-headed",
           "lightheaded",
           "dizzy",
-          "syncope"
+          "syncope",
+          "loc",
+          "loss of consciousness",
+          "collapse",
+          "fall",
+          "fell"
         ]
       },
       "disclosure": "on-ask",
@@ -535,14 +661,19 @@
           "心悸",
           "心跳快",
           "心跳",
-          "心率快"
+          "心率快",
+          "心里慌",
+          "慌不慌",
+          "心跳得快",
+          "心慌慌"
         ],
         "en": [
           "palpitations",
           "racing heart",
           "irregular heartbeat",
           "fluttering",
-          "heart beating fast"
+          "heart beating fast",
+          "heart pounding"
         ]
       },
       "disclosure": "on-ask"
@@ -566,7 +697,12 @@
           "痰里有血",
           "吐血",
           "血痰",
-          "咳嗽"
+          "咳嗽",
+          "血丝",
+          "痰带血",
+          "咳出血",
+          "带血丝",
+          "咳血没"
         ],
         "en": [
           "coughed up blood",
@@ -580,7 +716,18 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "疼",
+          "痛"
+        ],
+        "en": [
+          "pain",
+          "hurt",
+          "sore"
+        ]
+      }
     },
     {
       "id": "h-fever-sputum",
@@ -601,7 +748,13 @@
           "寒战",
           "怕冷",
           "黄痰",
-          "咳痰"
+          "咳痰",
+          "烧不烧",
+          "发不发烧",
+          "低烧",
+          "烧吗",
+          "高烧",
+          "发烧没"
         ],
         "en": [
           "fever",
@@ -634,7 +787,11 @@
           "腿痛",
           "腿疼",
           "腓肠肌",
-          "两条腿"
+          "两条腿",
+          "腿肚子",
+          "腿肚",
+          "一样粗",
+          "一边粗"
         ],
         "en": [
           "legs",
@@ -688,7 +845,10 @@
           "之前喘过",
           "昨天喘过",
           "喘过",
-          "这样过"
+          "这样过",
+          "昨天走路",
+          "昨天喘",
+          "昨天走路喘"
         ],
         "en": [
           "before today",
@@ -734,7 +894,12 @@
           "走动",
           "下地",
           "起床走",
-          "走动了吗"
+          "走动了吗",
+          "下过床",
+          "躺床上",
+          "一直躺",
+          "下床走",
+          "床上躺"
         ],
         "en": [
           "mobile",
@@ -784,7 +949,9 @@
           "预防血栓",
           "皮下注射",
           "肚皮上的针",
-          "打针"
+          "打针",
+          "克赛",
+          "打针没"
         ],
         "en": [
           "injection",
@@ -818,7 +985,9 @@
           "开刀",
           "哪天做的",
           "手术史",
-          "做的什么"
+          "做的什么",
+          "开的什么刀",
+          "开的刀"
         ],
         "en": [
           "surgery",
@@ -874,7 +1043,9 @@
           "previous surgery",
           "operations before",
           "past surgery",
-          "psh"
+          "psh",
+          "previous ops",
+          "other ops"
         ]
       },
       "excludeKeywords": [],
@@ -923,8 +1094,8 @@
         "en": "What have you been told about the tumour?"
       },
       "answer": {
-        "zh-CN": "上个月老觉得累、没力气，一查说是贫血，大便化验有隐血，做肠镜发现的，说是结肠癌。手术前给我输了补铁的针，还做过增强CT，医生说没看到转移到别的地方。切下来的东西化验结果还没出来。",
-        "en": "Last month I was tired all the time — they said I was anaemic and found hidden blood in my stool, and the colonoscopy found it — bowel cancer. Before the operation they gave me an iron drip and did a contrast CT, and said they couldn't see any spread. The lab results on what they removed aren't back yet."
+        "zh-CN": "上个月老觉得累、没力气，一查说是贫血，大便化验有隐血，做肠镜发现的，说是结肠癌。手术前给我输了补铁的针，还做过增强CT，医生说没看到转移到别的地方。切下来的东西化验结果还没出来。没做过化疗，也没做过放疗。",
+        "en": "Last month I was tired all the time — they said I was anaemic and found hidden blood in my stool, and the colonoscopy found it — bowel cancer. Before the operation they gave me an iron drip and did a contrast CT, and said they couldn't see any spread. The lab results on what they removed aren't back yet. I haven't had any chemo or radiotherapy."
       },
       "keywords": {
         "zh-CN": [
@@ -934,7 +1105,10 @@
           "诊断",
           "转移",
           "癌症",
-          "怎么跟您说"
+          "怎么跟您说",
+          "化疗",
+          "放疗",
+          "肠癌"
         ],
         "en": [
           "tumour",
@@ -943,7 +1117,10 @@
           "malignancy",
           "diagnosis",
           "spread",
-          "told about"
+          "told about",
+          "chemo",
+          "chemotherapy",
+          "radiotherapy"
         ]
       },
       "disclosure": "on-ask",
@@ -1018,7 +1195,10 @@
           "阿司匹林",
           "止痛药",
           "降压药",
-          "抗血小板"
+          "抗血小板",
+          "吃啥药",
+          "啥药",
+          "吃药"
         ],
         "en": [
           "medications",
@@ -1030,7 +1210,10 @@
           "aspirin",
           "analgesics",
           "blood pressure tablets",
-          "antiplatelet"
+          "antiplatelet",
+          "dhx",
+          "drug history",
+          "drug hx"
         ]
       },
       "disclosure": "on-ask",
@@ -1051,8 +1234,8 @@
         "en": "Any hormone replacement or the contraceptive pill? Are you still having periods?"
       },
       "answer": {
-        "zh-CN": "从来没用过激素，也没吃过避孕药。两年前就绝经了。",
-        "en": "I've never taken hormones or the pill. My periods stopped two years ago."
+        "zh-CN": "从来没用过激素，也没吃过避孕药。两年前就绝经了。只怀过一次孕，就是我女儿，顺产，没流过产。",
+        "en": "I've never taken hormones or the pill. My periods stopped two years ago. I've had one pregnancy — my daughter, a normal delivery — and no miscarriages."
       },
       "keywords": {
         "zh-CN": [
@@ -1066,7 +1249,13 @@
           "例假",
           "停经",
           "大姨妈",
-          "怀孕"
+          "怀孕",
+          "孩子",
+          "生过",
+          "流产",
+          "小产",
+          "怀过孕",
+          "生育"
         ],
         "en": [
           "hormone",
@@ -1079,7 +1268,12 @@
           "menopause",
           "postmenopausal",
           "menstrual",
-          "pregnant"
+          "pregnant",
+          "children",
+          "kids",
+          "pregnancies",
+          "miscarriage",
+          "miscarriages"
         ]
       },
       "disclosure": "on-ask"
@@ -1110,7 +1304,12 @@
           "allergic",
           "contrast dye",
           "iodine",
-          "reaction to"
+          "reaction to",
+          "nkda",
+          "nka",
+          "alergies",
+          "alergy",
+          "alergic"
         ]
       },
       "disclosure": "on-ask",
@@ -1135,8 +1334,8 @@
         "en": "Any other medical problems — heart, lungs, diabetes?"
       },
       "answer": {
-        "zh-CN": "就是高血压，大概五年了，吃一种药控制得挺好。没有心脏病、肺病、哮喘，也没有糖尿病。",
-        "en": "Only high blood pressure for about five years, well controlled on one tablet. No heart or lung disease, no asthma, no diabetes."
+        "zh-CN": "就是高血压，大概五年了，吃一种药控制得挺好。没有心脏病、肺病、哮喘，也没有糖尿病；肾和肝也没听说有什么问题。",
+        "en": "Only high blood pressure for about five years, well controlled on one tablet. No heart or lung disease, no asthma, no diabetes, and no kidney or liver trouble that I know of."
       },
       "keywords": {
         "zh-CN": [
@@ -1154,7 +1353,13 @@
           "哮喘",
           "慢阻肺",
           "心梗",
-          "冠心病"
+          "冠心病",
+          "肾病",
+          "肾脏",
+          "肾功能",
+          "肝病",
+          "肝脏",
+          "肝功能"
         ],
         "en": [
           "medical history",
@@ -1170,7 +1375,12 @@
           "asthma",
           "copd",
           "hypertension",
-          "heart attack"
+          "heart attack",
+          "kidney",
+          "liver",
+          "renal",
+          "long term conditions",
+          "chronic conditions"
         ]
       },
       "disclosure": "on-ask",
@@ -1272,7 +1482,13 @@
           "渗血",
           "刀口出血",
           "大便带血",
-          "便血"
+          "便血",
+          "容易出血",
+          "大便发黑",
+          "黑大便",
+          "牙龈出血",
+          "鼻出血",
+          "淤青"
         ],
         "en": [
           "bleeding",
@@ -1294,12 +1510,18 @@
       "excludeKeywords": {
         "zh-CN": [
           "脑出血",
-          "颅内"
+          "颅内",
+          "咳血",
+          "咳出",
+          "痰"
         ],
         "en": [
           "brain bleed",
           "intracranial",
-          "stroke"
+          "stroke",
+          "cough",
+          "sputum",
+          "phlegm"
         ]
       }
     },
@@ -1322,7 +1544,11 @@
           "头部外伤",
           "脑梗",
           "脑肿瘤",
-          "短暂性脑缺血"
+          "短暂性脑缺血",
+          "中过风",
+          "脑子",
+          "脑袋",
+          "脑血管"
         ],
         "en": [
           "stroke",
@@ -1358,7 +1584,11 @@
           "恶心",
           "呕吐",
           "想吐",
-          "反胃"
+          "反胃",
+          "吃饭",
+          "胃口",
+          "食欲",
+          "吃得下"
         ],
         "en": [
           "eating",
@@ -1372,7 +1602,9 @@
           "drinking fluids",
           "keeping fluids down",
           "feel sick",
-          "nauseous"
+          "nauseous",
+          "appetite",
+          "eating ok"
         ]
       },
       "disclosure": "on-ask",
@@ -1405,7 +1637,11 @@
           "导尿管",
           "解小便",
           "尿量",
-          "尿痛"
+          "尿痛",
+          "尿尿",
+          "撒尿",
+          "尿得",
+          "小便正常"
         ],
         "en": [
           "urine",
@@ -1448,7 +1684,10 @@
           "几层楼",
           "楼梯",
           "平时能走",
-          "走多远"
+          "走多远",
+          "活动量",
+          "活动耐力",
+          "平时活动"
         ],
         "en": [
           "exercise tolerance",
@@ -1507,7 +1746,11 @@
           "喝酒",
           "饮酒",
           "白酒",
-          "啤酒"
+          "啤酒",
+          "喝点酒",
+          "喝不喝酒",
+          "酒量",
+          "喝酒吗"
         ],
         "en": [
           "alcohol",
@@ -1516,7 +1759,8 @@
           "beer",
           "units",
           "drink",
-          "drinker"
+          "drinker",
+          "etoh"
         ]
       },
       "disclosure": "on-ask"
@@ -1575,7 +1819,13 @@
           "和谁住",
           "做什么工作",
           "住在什么地方",
-          "家庭情况"
+          "家庭情况",
+          "做啥的",
+          "干啥的",
+          "做什么的",
+          "上班",
+          "住哪",
+          "家住"
         ],
         "en": [
           "work",
@@ -1606,7 +1856,11 @@
           "坐飞机",
           "火车",
           "出差",
-          "长时间坐车"
+          "长时间坐车",
+          "出远门",
+          "远门",
+          "旅游",
+          "出去玩"
         ],
         "en": [
           "travel",
@@ -1618,7 +1872,16 @@
           "been anywhere recently"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "楼梯",
+          "爬楼"
+        ],
+        "en": [
+          "stairs"
+        ]
+      }
     },
     {
       "id": "h-family",
@@ -1671,7 +1934,10 @@
           "多重",
           "身高",
           "多高",
-          "称重"
+          "称重",
+          "多少斤",
+          "几斤",
+          "公斤"
         ],
         "en": [
           "weight",
@@ -1680,7 +1946,63 @@
           "how tall"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "瘦",
+          "下降",
+          "减轻",
+          "掉秤",
+          "变化"
+        ],
+        "en": [
+          "loss",
+          "lost",
+          "losing",
+          "lose"
+        ]
+      }
+    },
+    {
+      "id": "h-weight-loss",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近体重有没有下降？晚上会不会出虚汗？",
+        "en": "Have you lost any weight recently, or had night sweats?"
+      },
+      "answer": {
+        "zh-CN": "没怎么瘦……体重一直差不多。晚上也不出虚汗。",
+        "en": "Not really... my weight's stayed about the same. No night sweats."
+      },
+      "keywords": {
+        "zh-CN": [
+          "瘦",
+          "瘦了",
+          "消瘦",
+          "体重下降",
+          "体重减轻",
+          "体重变化",
+          "掉秤",
+          "盗汗",
+          "出虚汗",
+          "变瘦"
+        ],
+        "en": [
+          "weight loss",
+          "wt loss",
+          "lost weight",
+          "losing weight",
+          "lose weight",
+          "night sweats",
+          "sweats at night"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
+      },
+      "disclosure": "on-ask",
+      "required": false
     },
     {
       "id": "h-ice-concerns",
@@ -1700,7 +2022,10 @@
           "顾虑",
           "最怕",
           "忧虑",
-          "您怎么想"
+          "您怎么想",
+          "怕的",
+          "怕啥",
+          "担不担心"
         ],
         "en": [
           "worried",
@@ -1730,14 +2055,20 @@
           "期望",
           "想要我们",
           "期待",
-          "需要我们做"
+          "需要我们做",
+          "怎么帮你",
+          "怎么帮您",
+          "想让我们",
+          "帮你做",
+          "帮您做"
         ],
         "en": [
           "hoping",
           "expect",
           "expectations",
           "want us to do",
-          "hope"
+          "like us to do",
+          "you hope"
         ]
       },
       "disclosure": "on-ask"
@@ -2651,7 +2982,8 @@
           "clotting screen",
           "inr",
           "aptt",
-          "fibrinogen"
+          "fibrinogen",
+          "clotting"
         ]
       },
       "requires": [
@@ -2745,7 +3077,9 @@
           "u and e",
           "lytes",
           "renal panel",
-          "cmp"
+          "cmp",
+          "u+e",
+          "renal"
         ]
       },
       "requires": [
@@ -3139,14 +3473,18 @@
           "快速血糖",
           "末梢血糖",
           "床旁血糖",
-          "血糖"
+          "血糖",
+          "测血糖",
+          "查血糖"
         ],
         "en": [
           "capillary glucose",
           "finger prick",
           "blood sugar",
           "cbg",
-          "bedside glucose"
+          "bedside glucose",
+          "blood glucose",
+          "capillary"
         ]
       },
       "requires": [
@@ -3407,7 +3745,9 @@
           "duplex",
           "lower limb ultrasound",
           "dvt ultrasound",
-          "leg us"
+          "leg us",
+          "doppler",
+          "compression"
         ]
       },
       "requires": [
@@ -3565,6 +3905,20 @@
           "ctpa"
         ],
         "remove": []
+      },
+      {
+        "ifMatches": "肺.*ct|ct.*肺",
+        "add": [
+          "ctpa"
+        ],
+        "remove": []
+      },
+      {
+        "ifMatches": "凝血象",
+        "remove": [
+          "cbc"
+        ],
+        "add": []
       }
     ],
     "exact": {
@@ -3630,6 +3984,12 @@
       "床旁超声": [
         "echo",
         "cus-legs"
+      ],
+      "d-d": [
+        "d-dimer"
+      ],
+      "dd": [
+        "d-dimer"
       ]
     },
     "warnings": [
@@ -3708,6 +4068,20 @@
       "response": {
         "zh-CN": "护士为她接上鼻导管吸氧；几分钟内监护仪上的血氧饱和度逐渐上升。",
         "en": "The nurse fits nasal cannulae; over the next few minutes the SpO2 on the monitor rises."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "面罩",
+          "碎栓",
+          "取栓",
+          "介入"
+        ],
+        "en": [
+          "mask",
+          "non-rebreather",
+          "nrb",
+          "reservoir"
+        ]
       }
     },
     {
@@ -3722,14 +4096,18 @@
           "面罩吸氧",
           "储氧面罩",
           "非重复呼吸面罩",
-          "高流量面罩"
+          "高流量面罩",
+          "面罩给氧",
+          "面罩"
         ],
         "en": [
           "non-rebreather",
           "nrb",
           "reservoir mask",
           "high-flow mask",
-          "15 litres"
+          "15 litres",
+          "face mask",
+          "oxygen mask"
         ]
       },
       "dose": {
@@ -3927,14 +4305,16 @@
           "肝素泵",
           "肝素静脉",
           "肝素泵入",
-          "ufh"
+          "ufh",
+          "肝素"
         ],
         "en": [
           "unfractionated heparin",
           "ufh",
           "heparin infusion",
           "heparin drip",
-          "iv heparin"
+          "iv heparin",
+          "heparin"
         ]
       },
       "dose": {
@@ -3999,6 +4379,23 @@
       "response": {
         "zh-CN": "推注完成，肝素泵按1260 U/h运行，护士设置6小时后复查APTT的提醒。普通肝素半衰期短（约60–90分钟），一旦出血可停泵并用鱼精蛋白完全中和。",
         "en": "Bolus given; the pump runs at 1,260 U/h and the nurse sets a 6-hour APTT reminder. UFH has a short half-life (about 60–90 min) and is fully reversible with protamine if bleeding occurs."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "依诺",
+          "低分子",
+          "克赛",
+          "预防"
+        ],
+        "en": [
+          "enoxaparin",
+          "clexane",
+          "lmwh",
+          "low molecular",
+          "prophyla",
+          "dalteparin",
+          "fragmin"
+        ]
       }
     },
     {
@@ -4014,14 +4411,26 @@
           "治疗剂量低分子肝素",
           "低分子肝素治疗",
           "依诺肝素70",
-          "克赛治疗量"
+          "克赛治疗量",
+          "依诺肝素",
+          "克赛",
+          "低分子肝素",
+          "依诺肝素1mg/kg",
+          "每12小时",
+          "q12h"
         ],
         "en": [
           "treatment dose enoxaparin",
           "therapeutic enoxaparin",
           "therapeutic lmwh",
           "lmwh treatment",
-          "enoxaparin 70"
+          "enoxaparin 70",
+          "enoxaparin",
+          "clexane",
+          "lmwh",
+          "low molecular weight heparin",
+          "1mg/kg",
+          "q12h"
         ]
       },
       "dose": {
@@ -4094,6 +4503,19 @@
       "response": {
         "zh-CN": "已皮下注射依诺肝素70 mg。对血流动力学稳定的患者，这是指南的默认选择；但其作用持续约12小时，鱼精蛋白仅能部分（约60%）中和，术后早期一旦出血或需补救再灌注，可控性不如普通肝素。",
         "en": "Enoxaparin 70 mg given SC. For a haemodynamically stable patient this is the guideline default, but its effect lasts about 12 hours and protamine reverses only about 60% of it — less controllable than UFH if she bleeds early after surgery or needs rescue reperfusion."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "预防",
+          "40mg",
+          "补打"
+        ],
+        "en": [
+          "prophyla",
+          "40mg",
+          "40 mg",
+          "missed"
+        ]
       }
     },
     {
@@ -4149,6 +4571,25 @@
       "response": {
         "zh-CN": "护士执行了注射，但小声提醒：“这是预防量，对已经出现的问题够吗？”——预防剂量不能治疗已经形成的静脉血栓栓塞。",
         "en": "The nurse gives the injection but asks quietly, 'That's the prevention dose — is it enough for what's happening now?' A prophylactic dose does not treat established venous thromboembolism."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "治疗量",
+          "治疗剂量",
+          "1mg/kg",
+          "q12h",
+          "每12小时",
+          "70mg"
+        ],
+        "en": [
+          "therapeutic",
+          "treatment",
+          "1mg/kg",
+          "q12h",
+          "70mg",
+          "70 mg",
+          "twice"
+        ]
       }
     },
     {
@@ -4253,8 +4694,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "禁忌：开腹结肠切除术后第3天——3周内大手术是溶栓禁忌（ESC 2019列为绝对禁忌，中国2018指南等列为相对禁忌），可致切口、吻合口及颅内大出血。血压正常（中高危）时，全身溶栓虽能减少血流动力学失代偿，却增加大出血和出血性卒中且不降低死亡率（PEITHO），不应常规使用；即使进展为高危（休克型）肺栓塞，由于存在这一禁忌，也应首选经PERT的外科取栓或导管介入治疗。",
-        "en": "Contraindicated: day 3 after open colectomy — major surgery within 3 weeks is a contraindication to fibrinolysis (absolute in ESC 2019; relative in some other guidance, including the 2018 Chinese guideline) and risks wound, anastomotic and intracranial haemorrhage. While she is normotensive (intermediate-high risk), systemic lysis reduces haemodynamic decompensation but increases major bleeding and haemorrhagic stroke without reducing mortality (PEITHO), so it is not used routinely; even if she progresses to high-risk (shocked) PE, this contraindication makes surgical embolectomy or catheter-directed therapy via the PE response team the preferred reperfusion."
+        "zh-CN": "禁忌：开腹结肠切除术后第3天——3周内大手术是溶栓禁忌（ESC 2019列为绝对禁忌，中国2018指南等列为相对禁忌），可致切口、吻合口及颅内大出血。血压正常的患者，全身溶栓虽能减少血流动力学失代偿，却增加大出血和出血性卒中且不降低死亡率（PEITHO），不应常规使用；即使进展为高危（休克型）肺栓塞，由于存在这一禁忌，也应首选经PERT的外科取栓或导管介入治疗。",
+        "en": "Contraindicated: day 3 after open colectomy — major surgery within 3 weeks is a contraindication to fibrinolysis (absolute in ESC 2019; relative in some other guidance, including the 2018 Chinese guideline) and risks wound, anastomotic and intracranial haemorrhage. In a normotensive patient, systemic lysis reduces haemodynamic decompensation but increases major bleeding and haemorrhagic stroke without reducing mortality (PEITHO), so it is not used routinely; even if she progresses to high-risk (shocked) PE, this contraindication makes surgical embolectomy or catheter-directed therapy via the PE response team the preferred reperfusion."
       },
       "response": {
         "zh-CN": "阿替普酶开始静脉输注。",
@@ -4326,8 +4767,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "15分钟内快速输入1000 mL晶体液对急性右心室压力负荷过重有害：会进一步扩张右心室、使室间隔左移压迫左心室、降低心排量，可诱发或加重失代偿。她颈静脉压已升高，右心充盈压并不低。即使出现低血压，也只在充盈压低时谨慎给予≤500 mL（15–30分钟）；若低血压由出血引起，应输注血液制品，而不是大量晶体液。",
-        "en": "A rapid 1,000 mL crystalloid bolus is harmful with an acutely pressure-loaded right ventricle: it further dilates the RV, shifts the septum into the LV and lowers cardiac output, which can precipitate or worsen decompensation. Her JVP is already raised, so right-sided filling pressure is not low. Even if she becomes hypotensive, give only cautious boluses (≤ 500 mL over 15–30 min) when filling pressures are low; if hypotension is due to bleeding, give blood products rather than large volumes of crystalloid."
+        "zh-CN": "15分钟内快速输入1000 mL晶体液对急性右心室压力负荷过重有害：会进一步扩张右心室、使室间隔左移压迫左心室、降低心排量，可诱发或加重失代偿。先看颈静脉：颈静脉压升高说明右心充盈压并不低。即使出现低血压，也只在充盈压低时谨慎给予≤500 mL（15–30分钟）；若低血压由出血引起，应输注血液制品，而不是大量晶体液。",
+        "en": "A rapid 1,000 mL crystalloid bolus is harmful with an acutely pressure-loaded right ventricle: it further dilates the RV, shifts the septum into the LV and lowers cardiac output, which can precipitate or worsen decompensation. Check the JVP first: a raised JVP means right-sided filling pressure is not low. Even if she becomes hypotensive, give only cautious boluses (≤ 500 mL over 15–30 min) when filling pressures are low; if hypotension is due to bleeding, give blood products rather than large volumes of crystalloid."
       },
       "response": {
         "zh-CN": "液体快速输入。",
@@ -4388,8 +4829,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有肺水肿的证据（既往无端坐呼吸、胸片无肺水肿征象）。颈静脉压升高源于右心压力负荷，右心室依赖前负荷，利尿减少回心血量，可诱发低血压。",
-        "en": "There is no evidence of pulmonary oedema (no orthopnoea, no oedema on the chest film). The raised JVP reflects right-heart pressure loading; a pressure-loaded RV is preload-dependent and diuresis can precipitate hypotension."
+        "zh-CN": "没有任何提示左心衰或肺水肿的依据（无端坐呼吸，无心衰病史）。术后突发气促时，颈静脉压升高更可能反映右心室急性压力负荷过重；右心室依赖前负荷，利尿减少回心血量，可诱发低血压。",
+        "en": "Nothing points to left-heart failure or pulmonary oedema (no orthopnoea, no heart-failure history). In sudden post-operative breathlessness a raised JVP is more likely to reflect an acutely pressure-loaded right ventricle, which is preload-dependent, so diuresis can precipitate hypotension."
       },
       "response": {
         "zh-CN": "呋塞米已静脉推注。",
@@ -4444,6 +4885,124 @@
       "response": {
         "zh-CN": "酮咯酸已静脉注射。",
         "en": "Ketorolac given IV."
+      }
+    },
+    {
+      "id": "aspirin",
+      "name": {
+        "zh-CN": "阿司匹林嚼服",
+        "en": "Aspirin (chewed)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿司匹林",
+          "拜阿司匹灵",
+          "抗血小板",
+          "嚼服阿司匹林"
+        ],
+        "en": [
+          "aspirin",
+          "asa",
+          "acetylsalicylic",
+          "antiplatelet"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
+      },
+      "dose": {
+        "zh-CN": "阿司匹林300 mg嚼服",
+        "en": "Aspirin 300 mg PO, chewed"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "无指征：没有任何提示急性冠脉综合征的依据——她的胸痛是锐痛、随呼吸加重（胸膜性），阿司匹林并不能治疗这种情况的可能病因；开腹术后第3天加用抗血小板药只会增加出血风险，若需要抗凝则风险更高。",
+        "en": "Not indicated: nothing here points to an acute coronary syndrome — her pain is sharp and pleuritic — and aspirin does not treat the likely causes of this picture. Three days after a laparotomy an antiplatelet only adds bleeding risk, especially if she needs anticoagulation."
+      },
+      "response": {
+        "zh-CN": "护士给她嚼服了阿司匹林300 mg。",
+        "en": "The nurse gives her aspirin 300 mg to chew."
+      }
+    },
+    {
+      "id": "gtn",
+      "name": {
+        "zh-CN": "舌下含服硝酸甘油",
+        "en": "Sublingual glyceryl trinitrate (GTN)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "硝酸甘油",
+          "硝酸酯",
+          "舌下含服",
+          "硝酸异山梨酯"
+        ],
+        "en": [
+          "gtn",
+          "nitroglycerin",
+          "glyceryl trinitrate",
+          "nitrate",
+          "nitro",
+          "sublingual"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
+      },
+      "dose": {
+        "zh-CN": "硝酸甘油0.4–0.5 mg舌下含服（喷雾一揿或片剂一片）",
+        "en": "GTN 0.4–0.5 mg sublingual (one spray or one tablet)"
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "effects": [
+        {
+          "vital": "sbp",
+          "delta": -15,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        },
+        {
+          "vital": "dbp",
+          "delta": -8,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        },
+        {
+          "vital": "hr",
+          "delta": 6,
+          "onsetMinutes": 1,
+          "rampMinutes": 3,
+          "durationMinutes": 20
+        }
+      ],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "无指征：她的胸痛是锐痛、随呼吸加重，并非缺血性胸痛，硝酸酯不能缓解。术后突发气促伴低氧和心动过速时，在排除之前应假定右心室可能处于急性压力负荷过重状态——右心室依赖前负荷，扩张静脉会使血压骤降。",
+        "en": "Not indicated: her pain is sharp and pleuritic, not ischaemic-sounding, and nitrates will not relieve it. In sudden post-operative breathlessness with hypoxaemia and tachycardia, assume the right ventricle may be acutely pressure-loaded until shown otherwise — it is preload-dependent, and venodilatation can make the blood pressure fall abruptly."
+      },
+      "response": {
+        "zh-CN": "护士给她舌下含服了硝酸甘油；几分钟后血压下降，她说有点头晕，胸痛没有缓解。",
+        "en": "The nurse gives sublingual GTN; within a few minutes her blood pressure falls and she feels light-headed, and the chest pain is no better."
       }
     },
     {
@@ -4670,7 +5229,12 @@
           "导管溶栓",
           "外科取栓",
           "肺动脉取栓",
-          "补救再灌注"
+          "补救再灌注",
+          "碎栓",
+          "导管碎栓",
+          "导管取栓",
+          "导管治疗",
+          "取栓"
         ],
         "en": [
           "catheter-directed",
@@ -4795,8 +5359,8 @@
     {
       "id": "transfusion",
       "name": {
-        "zh-CN": "启动大出血预案：停止溶栓输注并输注红细胞",
-        "en": "Major haemorrhage protocol: stop the lytic infusion and transfuse red cells"
+        "zh-CN": "启动大出血预案：输注红细胞",
+        "en": "Major haemorrhage protocol: red-cell transfusion"
       },
       "kind": "fluid",
       "aliases": {
@@ -4820,8 +5384,8 @@
       },
       "excludeKeywords": [],
       "dose": {
-        "zh-CN": "立即停止阿替普酶输注；快速输注红细胞2单位（紧急O型或同型），复查血红蛋白、凝血功能和纤维蛋白原（纤维蛋白原低时补充冷沉淀）；通知外科评估切口",
-        "en": "Stop the alteplase infusion now; transfuse 2 units of red cells (emergency group O or group-specific); recheck Hb, clotting and fibrinogen (cryoprecipitate if fibrinogen is low); call the surgeons to assess the wound"
+        "zh-CN": "立即停止正在输注的溶栓药或抗凝药；快速输注红细胞2单位（紧急O型或同型），复查血红蛋白、凝血功能和纤维蛋白原（纤维蛋白原低时补充冷沉淀）；通知外科评估切口",
+        "en": "Stop any lytic or anticoagulant infusion now; transfuse 2 units of red cells (emergency group O or group-specific); recheck Hb, clotting and fibrinogen (cryoprecipitate if fibrinogen is low); call the surgeons to assess the wound"
       },
       "requires": [
         "iv-access"
@@ -4860,8 +5424,8 @@
         }
       },
       "harm": {
-        "zh-CN": "没有输血指征：她没有活动性出血。红细胞输注用于活动性大出血或血红蛋白低于约70–80 g/L；额外的容量还会加重已经压力超负荷的右心室，并带来输血反应风险。",
-        "en": "No indication: she is not bleeding. Red-cell transfusion is for active major bleeding or a haemoglobin below about 70–80 g/L; the extra volume also loads an already pressure-overloaded right ventricle and exposes her to transfusion reactions."
+        "zh-CN": "没有输血指征：她没有活动性出血。红细胞输注用于活动性大出血或血红蛋白低于约70–80 g/L；额外的容量并无必要，还带来输血反应风险。",
+        "en": "No indication: she is not bleeding. Red-cell transfusion is for active major bleeding or a haemoglobin below about 70–80 g/L; the extra volume is not needed and exposes her to transfusion reactions."
       },
       "response": {
         "zh-CN": "护士立即停止阿替普酶输注，快速输入2单位红细胞；外科被叫来处理切口血肿，复查血红蛋白和凝血的标本已送出。",
@@ -4927,7 +5491,11 @@
           "告知外科",
           "外科住院总",
           "外科医生",
-          "外科值班"
+          "外科值班",
+          "叫外科",
+          "外科来看",
+          "请外科",
+          "找外科"
         ],
         "en": [
           "call the surgeon",
@@ -4954,8 +5522,16 @@
         "always": true
       },
       "response": {
-        "zh-CN": "外科住院总：“手术过程顺利。从外科角度不反对治疗性抗凝；术后这么早，我们倾向用可以快速停用和中和的普通肝素静脉泵入。如果切口出血或者出现便血，请马上通知我们。”",
-        "en": "Surgical chief resident: 'The operation was straightforward. From our side we're happy for therapeutic anticoagulation; this early after surgery we'd prefer an IV UFH infusion that can be stopped and reversed quickly. Call us straight away if there's wound bleeding or blood per rectum.'"
+        "zh-CN": "外科住院总：“手术过程顺利。如果她需要治疗性抗凝，外科这边不反对——术后这么早，我们倾向用可以快速停用和中和的普通肝素静脉泵入。如果切口出血或者出现便血，请马上通知我们。”",
+        "en": "Surgical chief resident: 'The operation was straightforward. If she needs therapeutic anticoagulation we're happy from our side — this early after surgery we'd prefer an IV UFH infusion that can be stopped and reversed quickly. Call us straight away if there's wound bleeding or blood per rectum.'"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "取栓"
+        ],
+        "en": [
+          "embolectomy"
+        ]
       }
     },
     {
@@ -4971,14 +5547,23 @@
           "肺栓塞救治团队",
           "多学科团队",
           "重症会诊",
-          "icu会诊"
+          "icu会诊",
+          "叫icu",
+          "请icu",
+          "icu医生",
+          "重症医学科"
         ],
         "en": [
           "pert",
           "pe response team",
           "icu review",
           "critical care review",
-          "outreach team"
+          "outreach team",
+          "call icu",
+          "call the icu",
+          "icu outreach",
+          "critical care outreach",
+          "intensivist"
         ]
       },
       "dose": {
@@ -5052,6 +5637,20 @@
       "response": {
         "zh-CN": "HDU同意接收，护士携监护仪护送她转科。",
         "en": "HDU accepts her and she is transferred with a monitored nurse escort."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "会诊",
+          "叫icu",
+          "请icu",
+          "icu医生"
+        ],
+        "en": [
+          "call",
+          "review",
+          "consult",
+          "outreach"
+        ]
       }
     }
   ],
@@ -5448,8 +6047,8 @@
         "en": "Start with A–B–C: an SpO2 of 89% needs oxygen (target 94–98%) and continuous monitoring; then clarify how the pain and breathlessness began, auscultate the chest — and don't forget to examine both legs."
       },
       "guidance": {
-        "zh-CN": "外科病房呼叫你：术后患者突发胸痛和气促。到床旁做ABCDE评估并稳定病情。",
-        "en": "The surgical ward has called you: a post-operative patient with sudden chest pain and breathlessness. Go to the bedside, assess ABCDE and stabilise her."
+        "zh-CN": "外科病房呼叫你：术后患者突发胸痛和气促。到病房床旁（氧气接口、监护仪和输液泵都在床边）做ABCDE评估并稳定病情。",
+        "en": "The surgical ward has called you: a post-operative patient with sudden chest pain and breathlessness. Go to her ward bedside (oxygen outlet, monitor and infusion pump are at the bed), assess ABCDE and stabilise her."
       },
       "completeWhen": {
         "all": [
@@ -5478,25 +6077,6 @@
         ]
       },
       "waypoints": [
-        {
-          "unless": {
-            "any": [
-              {
-                "intervened": "o2-nasal"
-              },
-              {
-                "intervened": "o2-nrb"
-              }
-            ]
-          },
-          "target": "oxygen"
-        },
-        {
-          "unless": {
-            "intervened": "monitoring"
-          },
-          "target": "cardiac-monitor"
-        },
         {
           "target": "patient"
         }
@@ -5637,7 +6217,7 @@
           "target": "board"
         },
         {
-          "target": "infusion-pump"
+          "target": "patient"
         }
       ]
     },
@@ -5656,8 +6236,8 @@
         "en": "Once imaging confirms the diagnosis, stratify in order: (1) haemodynamic instability? (2) PESI/sPESI; (3) RV function on CTPA or echo; (4) troponin."
       },
       "guidance": {
-        "zh-CN": "完成确诊影像和心肌损伤标志物检查，阅读报告，在会诊板上给出风险分层。",
-        "en": "Get the confirmatory imaging and cardiac biomarker, read the reports, and give the risk class on the board."
+        "zh-CN": "开出确诊影像和心肌损伤标志物检查，等结果时守在患者身边，结果出来后阅读报告，再到会诊板上给出风险分层。",
+        "en": "Order the confirmatory imaging and cardiac biomarker, stay with the patient while the results come back, read the reports, then give the risk class on the board."
       },
       "completeWhen": {
         "all": [
@@ -5696,7 +6276,7 @@
               }
             ]
           },
-          "target": "records"
+          "target": "patient"
         },
         {
           "target": "board"
@@ -5849,12 +6429,22 @@
           },
           {
             "examined": "ex-abdomen"
+          },
+          {
+            "any": [
+              {
+                "asked": "h-lmwh"
+              },
+              {
+                "read": "mar"
+              }
+            ]
           }
         ]
       },
       "need": {
-        "zh-CN": "先评估出血风险：询问出血及相关病史，并检查腹部切口。",
-        "en": "First assess bleeding risk: ask about bleeding history and examine the abdominal wound."
+        "zh-CN": "先评估出血风险（询问出血相关病史、检查腹部切口），并弄清她术后已经用过哪些抗凝药（询问患者或查看用药执行记录）。",
+        "en": "First assess bleeding risk (bleeding history, abdominal wound) and find out which anticoagulant doses she has already had (ask her, or check the medication administration record)."
       },
       "options": [
         {
@@ -5923,8 +6513,8 @@
       "id": "risk-strat",
       "kind": "single",
       "prompt": {
-        "zh-CN": "CTPA已证实双侧肺栓塞。按ESC 2019标准，结合她就诊时的血流动力学状态和这些检查结果，她的早期死亡风险分层是？",
-        "en": "CTPA confirms bilateral pulmonary emboli. Using ESC 2019 criteria, her haemodynamic status at presentation and these results, what is her early mortality risk class?"
+        "zh-CN": "CTPA已证实双侧肺栓塞。按ESC 2019标准，根据她就诊时（而非之后的变化）的血流动力学状态和这些检查结果，她最初的早期死亡风险分层是？",
+        "en": "CTPA confirms bilateral pulmonary emboli. Using ESC 2019 criteria, her haemodynamic status at presentation (not any later change) and these results, what was her early mortality risk class at presentation?"
       },
       "requires": {
         "all": [
@@ -5949,8 +6539,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。高危要求血流动力学不稳定：心搏骤停、梗阻性休克（收缩压<90 mmHg或需血管活性药，伴终末器官低灌注），或持续低血压（收缩压<90 mmHg或下降≥40 mmHg超过15分钟，且非新发心律失常、低血容量或脓毒症所致）。就诊时她血压112/70 mmHg（平均动脉压84 mmHg），外周温暖，乳酸1.9 mmol/L。若之后出现上述任何一项，应重新归为高危并考虑再灌注。",
-            "en": "Incorrect. High risk requires haemodynamic instability: cardiac arrest, obstructive shock (SBP < 90 mmHg or vasopressors needed, with end-organ hypoperfusion) or persistent hypotension (SBP < 90 mmHg or a drop ≥ 40 mmHg for > 15 minutes, not caused by new arrhythmia, hypovolaemia or sepsis). At presentation her BP was 112/70 mmHg (MAP 84 mmHg), her peripheries were warm and lactate was 1.9 mmol/L. If any of these develops later, she is reclassified as high risk and reperfusion must be considered."
+            "zh-CN": "就她就诊时的状态而言不正确。高危要求血流动力学不稳定：心搏骤停、梗阻性休克（收缩压<90 mmHg或需血管活性药，伴终末器官低灌注），或持续低血压（收缩压<90 mmHg或下降≥40 mmHg超过15分钟，且非新发心律失常、低血容量或脓毒症所致）。就诊时她血压112/70 mmHg（平均动脉压84 mmHg），神志清楚，没有休克或持续低血压。若她之后出现（或已经出现）低血压或休克，应在那时重新归为高危并进行再灌注——对她而言是经PERT行导管介入治疗或外科取栓。",
+            "en": "Incorrect for her status at presentation. High risk requires haemodynamic instability: cardiac arrest, obstructive shock (SBP < 90 mmHg or vasopressors needed, with end-organ hypoperfusion) or persistent hypotension (SBP < 90 mmHg or a drop ≥ 40 mmHg for > 15 minutes, not caused by new arrhythmia, hypovolaemia or sepsis). At presentation her BP was 112/70 mmHg (MAP 84 mmHg) and she was alert, with no shock or persistent hypotension. If she becomes (or has since become) hypotensive or shocked, she is reclassified as high risk at that point and needs reperfusion — in her case catheter-directed therapy or surgical embolectomy via the PERT."
           }
         },
         {
@@ -5961,8 +6551,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。就诊时血流动力学稳定，但PESI = 年龄52 + 肿瘤30 + 心率≥110次/分 20 + SaO2<90% 20 = 122分（IV级），sPESI = 3分（肿瘤、心率≥110次/分、SaO2<90%）；同时存在右心室功能不全（CTPA RV/LV 1.3，超声心动图右心扩大、TAPSE 14 mm）和肌钙蛋白升高（hs-cTnT 68 ng/L）——两者都阳性即为中高危。处理：抗凝，监护48–72小时，不行初始溶栓，恶化时补救再灌注。",
-            "en": "Correct. At presentation she was haemodynamically stable, but PESI = age 52 + cancer 30 + HR ≥ 110 20 + SaO2 < 90% 20 = 122 (class IV) and sPESI = 3 (cancer, HR ≥ 110, SaO2 < 90%); she has both RV dysfunction (CTPA RV/LV 1.3; echo RV dilatation, TAPSE 14 mm) and a raised troponin (hs-cTnT 68 ng/L) — both positive means intermediate-high. Management: anticoagulate, monitor for 48–72 hours, no primary lysis, rescue reperfusion if she deteriorates."
+            "zh-CN": "正确。就诊时血流动力学稳定，但PESI = 年龄52 + 肿瘤30 + 心率≥110次/分 20 + SaO2<90% 20 = 122分（IV级），sPESI = 3分（肿瘤、心率≥110次/分、SaO2<90%）；同时存在右心室功能不全（CTPA RV/LV 1.3；如做了超声心动图，还可见右心扩大、TAPSE降低）和肌钙蛋白升高（hs-cTnT 68 ng/L）——两者都阳性即为中高危。处理：抗凝，监护48–72小时，不行初始溶栓，恶化时补救再灌注。",
+            "en": "Correct. At presentation she was haemodynamically stable, but PESI = age 52 + cancer 30 + HR ≥ 110 20 + SaO2 < 90% 20 = 122 (class IV) and sPESI = 3 (cancer, HR ≥ 110, SaO2 < 90%); she has both RV dysfunction (CTPA RV/LV ratio 1.3; an echo, if obtained, adds RV dilatation and a reduced TAPSE) and a raised troponin (hs-cTnT 68 ng/L) — both positive means intermediate-high. Management: anticoagulate, monitor for 48–72 hours, no primary lysis, rescue reperfusion if she deteriorates."
           }
         },
         {
@@ -6009,8 +6599,8 @@
         {
           "id": "no-lysis",
           "text": {
-            "zh-CN": "目前不行全身溶栓：血流动力学稳定，且3周内大手术是溶栓禁忌",
-            "en": "No systemic thrombolysis now: she is haemodynamically stable, and major surgery within 3 weeks is a contraindication"
+            "zh-CN": "不行全身溶栓：3周内大手术是溶栓禁忌，而且血流动力学稳定时本来也没有溶栓指征",
+            "en": "No systemic thrombolysis: major surgery within 3 weeks is a contraindication, and while she is haemodynamically stable there is no indication for it anyway"
           },
           "correct": true,
           "feedback": {
@@ -6062,8 +6652,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。扩张的右心室再加大量液体会加重室间隔左移、降低左心室充盈和心排量；她血压正常，不需要扩容。",
-            "en": "Wrong. Loading a dilated RV with a large volume worsens septal shift and reduces LV filling and cardiac output; she is normotensive and does not need volume."
+            "zh-CN": "错误。扩张的右心室再加大量液体会加重室间隔左移、降低左心室充盈和心排量；她的心动过速反映的是右心负荷而非血容量不足，即使之后出现低血压，也只在充盈压低时谨慎补液（≤500 mL）。",
+            "en": "Wrong. Loading a dilated RV with a large volume worsens septal shift and reduces LV filling and cardiac output; her tachycardia reflects RV strain, not hypovolaemia, and even if she becomes hypotensive only cautious boluses (≤ 500 mL) are given, and only when filling pressures are low."
           }
         },
         {
@@ -6403,8 +6993,8 @@
       "domain": "safety",
       "weight": 1,
       "text": {
-        "zh-CN": "避免有害措施（快速大量补液、利尿、NSAID、术后早期口服DOAC、患肢气压治疗、无指征的下腔静脉滤器、溶栓相关活动性大出血时仍在抗凝）",
-        "en": "Avoided harmful measures (large fluid bolus, diuretic, NSAID, early oral DOAC, IPC on the DVT limb, unindicated IVC filter, anticoagulant on board during a lytic major bleed)"
+        "zh-CN": "避免有害措施（快速大量补液、利尿、硝酸酯、NSAID或阿司匹林、术后早期口服DOAC、患肢气压治疗、无指征的下腔静脉滤器、溶栓相关活动性大出血时仍在抗凝）",
+        "en": "Avoided harmful measures (large fluid bolus, diuretic, nitrate, NSAID or aspirin, early oral DOAC, IPC on the DVT limb, unindicated IVC filter, anticoagulant on board during a lytic major bleed)"
       },
       "met": {
         "all": [
@@ -6419,6 +7009,16 @@
           {
             "not": {
               "intervened": "furosemide"
+            }
+          },
+          {
+            "not": {
+              "intervened": "gtn"
+            }
+          },
+          {
+            "not": {
+              "intervened": "aspirin"
             }
           },
           {
@@ -6491,8 +7091,8 @@
         "en": "Nurse Wang Jing"
       },
       "knowledge": {
-        "zh-CN": "交班：林雅琴，52岁，结肠癌开腹右半结肠切除术后第3天。16:00左右从厕所走回病床途中突发右侧胸痛、气促，扶住扶手未摔倒。16:10生命体征：心率118次/分，血压112/70 mmHg，呼吸26次/分，SpO2 89%（未吸氧），体温37.4 ℃。16:15按病区快速反应流程在未吸氧状态下采集了动脉血气，已立即在ICU血气分析仪上完成检测（血气标本须在采集后约30分钟内上机），开单后即可调阅结果。用药：依诺肝素40 mg每晚20:00——昨晚（术后第2天）因切口少量渗液被外科暂停，之后一直没有外科复评、也没有恢复医嘱，今晚20:00那次仍是暂停状态；弹力袜术后第2天她自己脱了，未用气压治疗；对乙酰氨基酚1 g每6小时（12:00已给），羟考酮5 mg 12:10给过一次；氨氯地平术后暂停。导尿管今早08:00拔除。术前体重70 kg。床旁有氧气接口、监护仪、输液泵；病区备有普通肝素和依诺肝素。外出做CT需要护士携带监护仪陪同。具体给药时间和剂量请学员到病历终端查看用药执行记录（MAR）。不推测诊断。",
-        "en": "Handover: Lin Yaqin, 52, day 3 after open right hemicolectomy for colon cancer. At about 16:00, walking back from the toilet, she developed sudden right-sided chest pain and breathlessness; grabbed the handrail, did not fall. Obs at 16:10: HR 118/min, BP 112/70 mmHg, RR 26/min, SpO2 89% on room air, T 37.4 °C. At 16:15, under the ward rapid-response protocol, I drew an arterial blood gas on room air — I ran it on the ICU blood-gas analyser straight away (gas samples must be analysed within about 30 minutes of sampling), and the result is released as soon as it is ordered. Medications: enoxaparin 40 mg at 20:00 nightly — last night's (POD2) dose was held by the surgeons for minor wound ooze and nobody has reviewed or restarted it since — tonight's 20:00 dose is still on hold. She took her stockings off on POD2; no IPC. Paracetamol 1 g 6-hourly (12:00 given), oxycodone 5 mg once at 12:10; amlodipine held since surgery. Urinary catheter removed at 08:00. Pre-op weight 70 kg. Oxygen outlet, monitor and infusion pumps are at the bedside; UFH and enoxaparin are stocked on the ward. CT transfer needs a nurse escort with a monitor. For exact doses and times she points the learner to the medication administration record (MAR) on the records terminal. Does not speculate about the diagnosis."
+        "zh-CN": "交班：林雅琴，52岁，结肠癌开腹右半结肠切除术后第3天。16:00左右从厕所走回病床途中突发右侧胸痛、气促，扶住扶手未摔倒。16:10生命体征：心率118次/分，血压112/70 mmHg，呼吸26次/分，SpO2 89%（未吸氧），体温37.4 ℃。16:15按病区快速反应流程在未吸氧状态下采集了动脉血气，已立即在ICU血气分析仪上完成检测（血气标本须在采集后约30分钟内上机），开单后即可调阅结果。用药：依诺肝素40 mg每晚20:00——昨晚（术后第2天）因切口少量渗液被外科暂停，之后一直没有外科复评、也没有恢复医嘱，今晚20:00那次仍是暂停状态；弹力袜术后第2天她自己脱了，未用气压治疗；对乙酰氨基酚1 g每6小时（12:00已给），羟考酮5 mg 12:10给过一次；氨氯地平术后暂停。导尿管今早08:00拔除。术前体重70 kg。床旁有氧气接口、监护仪、输液泵；病区备有常用药（镇痛药、静脉液体、利尿剂、肝素类），其他药需向药房申领。外出做CT需要护士携带监护仪陪同。具体给药时间和剂量请学员到病历终端查看用药执行记录（MAR）。不推测诊断。",
+        "en": "Handover: Lin Yaqin, 52, day 3 after open right hemicolectomy for colon cancer. At about 16:00, walking back from the toilet, she developed sudden right-sided chest pain and breathlessness; grabbed the handrail, did not fall. Obs at 16:10: HR 118/min, BP 112/70 mmHg, RR 26/min, SpO2 89% on room air, T 37.4 °C. At 16:15, under the ward rapid-response protocol, I drew an arterial blood gas on room air — I ran it on the ICU blood-gas analyser straight away (gas samples must be analysed within about 30 minutes of sampling), and the result is released as soon as it is ordered. Medications: enoxaparin 40 mg at 20:00 nightly — last night's (POD2) dose was held by the surgeons for minor wound ooze and nobody has reviewed or restarted it since — tonight's 20:00 dose is still on hold. She took her stockings off on POD2; no IPC. Paracetamol 1 g 6-hourly (12:00 given), oxycodone 5 mg once at 12:10; amlodipine held since surgery. Urinary catheter removed at 08:00. Pre-op weight 70 kg. Oxygen outlet, monitor and infusion pumps are at the bedside; The usual ward drugs (analgesics, IV fluids, diuretics, heparins) are stocked; anything else comes from pharmacy. CT transfer needs a nurse escort with a monitor. For exact doses and times she points the learner to the medication administration record (MAR) on the records terminal. Does not speculate about the diagnosis."
       },
       "interprets": []
     },
@@ -6519,8 +7119,8 @@
         "en": "Dr Chen (cardiology registrar)"
       },
       "knowledge": {
-        "zh-CN": "可应要求做床旁超声心动图；在学员获得结果后解释心电图、超声心动图、肌钙蛋白和NT-proBNP：右心室功能不全的超声指标（RV/LV>1.0、TAPSE<17 mm、McConnell征、室间隔变平）。是医院PERT成员。不预先透露未获得的结果。",
-        "en": "Performs a bedside echo on request; once the learner has the results, explains the ECG, echo, troponin and NT-proBNP and the echo markers of RV dysfunction (RV/LV > 1.0, TAPSE < 17 mm, McConnell sign, septal flattening). Member of the hospital PERT. Does not reveal results the learner has not obtained."
+        "zh-CN": "可应要求做床旁超声心动图；在学员获得结果后解释心电图、超声心动图、肌钙蛋白和NT-proBNP：右心室功能不全的超声指标（RV/LV>1.0、TAPSE<17 mm、McConnell征、室间隔变平）。也是医院PERT成员，但只有在学员自己提出肺栓塞之后才提及。不预先透露未获得的结果。",
+        "en": "Performs a bedside echo on request; once the learner has the results, explains the ECG, echo, troponin and NT-proBNP and the echo markers of RV dysfunction (RV/LV > 1.0, TAPSE < 17 mm, McConnell sign, septal flattening). Also sits on the hospital PERT, but mentions it only once the learner has raised PE. Does not reveal results the learner has not obtained."
       },
       "interprets": [
         "ecg",
@@ -7318,6 +7918,76 @@
         "locale": "en",
         "expect": [
           "h-pain-character"
+        ]
+      },
+      {
+        "text": "疼几分钟了",
+        "locale": "zh-CN",
+        "expect": [
+          "h-onset"
+        ]
+      },
+      {
+        "text": "腿肚子疼不疼",
+        "locale": "zh-CN",
+        "expect": [
+          "h-calf"
+        ]
+      },
+      {
+        "text": "憋不憋得慌",
+        "locale": "zh-CN",
+        "expect": [
+          "h-dyspnoea"
+        ]
+      },
+      {
+        "text": "咳出来的痰带血丝吗",
+        "locale": "zh-CN",
+        "expect": [
+          "h-haemoptysis"
+        ]
+      },
+      {
+        "text": "做过化疗吗",
+        "locale": "zh-CN",
+        "expect": [
+          "h-cancer"
+        ]
+      },
+      {
+        "text": "最近瘦了没有",
+        "locale": "zh-CN",
+        "expect": [
+          "h-weight-loss"
+        ]
+      },
+      {
+        "text": "any LOC?",
+        "locale": "en",
+        "expect": [
+          "h-syncope"
+        ]
+      },
+      {
+        "text": "NKDA?",
+        "locale": "en",
+        "expect": [
+          "h-allergies"
+        ]
+      },
+      {
+        "text": "has the cancer spread",
+        "locale": "en",
+        "expect": [
+          "h-cancer"
+        ]
+      },
+      {
+        "text": "any wt loss?",
+        "locale": "en",
+        "expect": [
+          "h-weight-loss"
         ]
       }
     ]
