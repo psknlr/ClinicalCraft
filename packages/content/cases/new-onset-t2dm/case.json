@@ -6184,8 +6184,8 @@
         "en": "Review"
       },
       "hint": {
-        "zh-CN": "初诊的任务全部完成后，在“处理”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：相隔≥3个月仍升高说明白蛋白尿持续存在。",
-        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the treatment options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: still raised ≥ 3 months apart means persistent albuminuria."
+        "zh-CN": "初诊的任务全部完成后，在“处置”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：相隔≥3个月仍升高说明白蛋白尿持续存在。",
+        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the Treat options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: still raised ≥ 3 months apart means persistent albuminuria."
       },
       "guidance": {
         "zh-CN": "安排3个月复诊；进入复诊后复评并调整治疗。",

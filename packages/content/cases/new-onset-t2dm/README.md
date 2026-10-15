@@ -15,9 +15,9 @@
 | id / version | `new-onset-t2dm` / `1.0.0` |
 | setting / facility | `outpatient` / `general-hospital` (outpatient consulting room) |
 | locales | `zh-CN` (source language), `en` |
-| clock | `static`. Two phases, both learner-switchable: `initial` (初诊 / First visit, Tuesday 08:40, fasting) and `review` (3个月复诊 / Three-month review, week 13) |
+| clock | `static`. Two one-way phases, neither learner-switchable: `initial` (初诊 / First visit, Tuesday 08:40, fasting) → `review` (3个月复诊 / Three-month review, week 13), entered automatically once objectives 1–5 are complete and the review has been arranged (`iv-follow-up`) |
 | difficulty / time | 3 / 5, about 40 min |
-| content | 40 history items (3 `unknown`, 2 `specific`, 1 `volunteer`, 10 required, 6 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 17 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 40 test utterances |
+| content | 42 history items (3 `unknown`, 2 `specific`, 2 `volunteer` — one per phase, 10 required, 7 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 18 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 56 test utterances |
 
 ## Clinical story
 
@@ -92,7 +92,9 @@ loss); metformin titrated from 500 mg/day to 1000 mg twice daily over 4 weeks
 (after checking the eGFR); atorvastatin 40 mg; perindopril 4 mg with potassium
 and creatinine checked at 2 weeks; varenicline plus the stop-smoking clinic;
 home BP monitoring; hepatitis B vaccination; topical clotrimazole; retinal
-screening; repeat UACR at the review.
+screening; and a three-month review with fasting bloods and a repeat UACR the
+week before, plus safety-netting (vomiting, abdominal pain, drowsiness, fast
+breathing or worsening thirst → come back sooner).
 
 **Three-month review (week 13).** He has lost 3.0 kg (86.0 kg, BMI 29.1, waist
 101 cm). BP is 128/79 mmHg (home average 124/77). The metformin GI upset
@@ -118,7 +120,7 @@ atorvastatin.
 | 3 | Interpret the key tests and make the diagnosis | FPG + HbA1c + (urinalysis or POC ketones) read, `dec-diagnosis` |
 | 4 | Assess complications and cardiovascular risk | lipids, renal, UACR, LFT read; retinal screening ordered |
 | 5 | Agree an initial plan with the patient | `dec-first-line`, `dec-cv-risk`; lifestyle/DSMES, metformin (titrated), statin, ACE inhibitor, smoking cessation |
-| 6 | Three-month review | review HbA1c, UACR, renal, lipids read; adherence asked; `dec-review`; SGLT2 inhibitor |
+| 6 | Three-month review | review arranged (`iv-follow-up`; the phase then opens automatically); review HbA1c, UACR, renal, lipids read; adherence asked; `dec-review`; SGLT2 inhibitor |
 
 **Decisions.**
 * `dec-diagnosis` (single): what the two-abnormal-results rule means when both
@@ -144,7 +146,8 @@ atorvastatin.
   an add-on it is `neutral` but still fails `r-safety`.
 * Metformin, the ACE inhibitor and the SGLT2 inhibitor are `contraindicated`
   until renal function has been read, which teaches "check the eGFR and baseline K/creatinine
-  first". Up-titrating perindopril is `contraindicated` until review renal
+  first". A silent scenario event (`ev-rx-before-egfr`) also sets the flag
+  `rx-before-egfr`, which fails `r-safety`. Up-titrating perindopril is `contraindicated` until review renal
   function has been read.
 * Full-dose metformin from day 1, GLP-1 RA, aspirin and fenofibrate are
   `neutral`. Their response text explains why they are second-best or not
@@ -154,8 +157,13 @@ atorvastatin.
   balanitis) and `indicated` at review once the repeat UACR has been read.
 
 **Rubric.** There are 21 deterministic points.
-* `r-dx` uses `decidedFirstTry`.
-* `r-safety` checks that no insulin, sulfonylurea or "lifestyle only" was given.
+* `r-dx` uses `decidedFirstTry` on `dec-diagnosis`; `r-mgmt-glycaemic` uses
+  `decidedFirstTry` on `dec-first-line` (so guessing through the options
+  costs marks) plus the lifestyle and titrated-metformin prescriptions.
+* `r-safety` checks that no insulin, sulfonylurea or "lifestyle only" was
+  given and that no renally dosed drug was started before the renal function
+  was read (`rx-before-egfr`).
+* Decision `requires` use first-visit (`phase: initial`) results only.
 * `r-efficiency` checks that no OGTT and no coronary CTA or stress test was ordered.
 
 There are also three examiner-judged communication items:
@@ -235,19 +243,24 @@ There are also three examiner-judged communication items:
 
 ## Implementation notes for authors
 
-* **Static clock, two phases.** Both phases are fixed records. The review
-  phase is what happened after the reference plan was followed and does not
-  change with the learner's first-visit actions. The phase description says
-  so. Time-specific history and exam items carry `phases`.
+* **Static clock, two one-way phases.** Both phases are fixed records. The
+  review phase is what happened after the reference plan was followed and
+  does not change with the learner's first-visit actions; the phase
+  descriptions say so. Neither phase is learner-switchable: `review` has
+  `enterWhen` = flag `review-booked` (set by `iv-follow-up`) **and**
+  objectives 1–5 complete. This stops a learner from opening the review
+  early, where the adherence answer and the repeat results would give away
+  the first-visit plan, and it guarantees every first-visit-only item
+  (`phases: ["initial"]`) is still reachable while it is needed. Arranging
+  the review early is harmless: the transition waits for the last first-visit
+  objective. First-visit results stay readable from the review (orders keep
+  their phase). Time-specific history and exam items carry `phases`.
 * **Vitals follow the phase.** `physiology.baseline` holds the first-visit
   vitals (BP 142/88, HR 78), and `noise` is 0 so the panel matches the exam
-  text exactly. The engine has no phase-scoped baseline, so six flag-gated,
-  one-shot scenario events (`ev-vitals-review-1..3`, `ev-vitals-initial-1..3`)
-  switch the vitals panel between the review values (128/79, HR 74) and the
-  first-visit values. This works for three round trips. On a fourth switch to
-  review, the panel keeps the first-visit values. The exam items `ex-bp` and
-  `ex-bp-review` are the authoritative per-phase readings. A phase-level
-  `vitals` override in the schema would remove this workaround.
+  text exactly. Because the phases are one-way, a single scenario event
+  (`ev-vitals-review`, `when: {phase: review}`) switches the panel to the
+  review values (128/79, HR 74). The exam items `ex-bp` and `ex-bp-review`
+  remain the authoritative per-phase readings.
 * **Interventions have no vital effects.** This is outpatient management. The
   BP improvement is part of the fixed review record.
 * **Matcher tuning.** `excludeKeywords` separate items that share keywords:
@@ -255,18 +268,34 @@ There are also three examiner-judged communication items:
   * `hx-smoking` vs the review-phase `hx-rv-smoking`
   * `hx-living` vs family-history questions
   * `hx-family` and `hx-living` vs pet questions ("宠物", "pets")
-  * `hx-polydipsia` vs alcohol questions
-  * `ex-bp` vs foot pulses
-  * `iv-acei` vs `iv-acei-uptitrate`
+  * `hx-polydipsia` vs alcohol and step-count questions; `hx-alcohol` vs water
+  * `hx-thyroid-sx` vs night-sweat questions; `hx-pmh` vs family history
+  * `hx-exercise` / `hx-rv-lifestyle` vs claudication and chest-pain questions
+  * `hx-occupation` vs "work out"; `hx-diet` vs medicine questions
+  * `hx-rv-adherence` vs side-effect, allergy and recreational-drug questions
+  * `ex-bp` vs foot pulses; `ex-monofilament` vs `ex-vibration` (both ways)
+  * `iv-acei` vs `iv-acei-uptitrate`; `iv-lifestyle-only` vs dietitian/DSMES referral
+
+  Generic words were removed from the `specific` genital item (瘙痒, 霉菌, 下体 —
+  "查一下体" contains 下体), so only a targeted question reveals it.
 
   `inv-urinalysis` has `alternativeTo: ["inv-poc"]`, because either test
   excludes ketosis. The corpus in `extensions.testUtterances` passes the
   same check as the SMZL parity test: every expected id scores ≥ 0.55 and
   the top hit is expected. Two utterances (pets) correctly select nothing.
+  Sixteen of the 56 are deliberately hard (colloquial Chinese such as
+  一晚上起来几回 / 三多一少 / 那方面, typos such as 糖尿并 and "nite", and
+  abbreviations such as DKA, FHx, PMH, cigs, ED).
 * **Prescribing needs no equipment.** Prescriptions and referrals use
   `requires: []` because they are written in the consulting room.
-  Anthropometry needs `scale`, ophthalmoscopy needs `otoscope` (personal kit),
-  and labs use the canonical laboratory capabilities.
+  Anthropometry also has `requires: []`: the nurse has already measured
+  height and weight (triage note), and in `general-hospital` the only scale is
+  in ED triage while the web client lets bedside examination use only
+  capabilities in the patient's room. Ophthalmoscopy needs `otoscope`
+  (personal kit). Retinal screening is a referral ordered at a records
+  terminal (`requires: ["records"]`; an investigation with no `requires` cannot
+  be ordered at any web workstation). Labs use the canonical laboratory
+  capabilities.
 * `extensions.clinicalScores` records every derived value with its formula:
   * BMI, MAP, anion gap, calculated osmolality and corrected Na
   * CKD-EPI 2021 eGFR (101.6 / 98.7 / 97.3)
@@ -299,4 +328,4 @@ At authoring time the schema was VALID, `checkCaseIntegrity` and
 `parseCase` warnings were both empty, and `verifyCase` returned ok with a
 rubric score of 21/21 (100 %), all four decisions correct at the first
 attempt and no contraindicated interventions. The matcher corpus passed
-40/40.
+56/56 (recall@3 1.00 in both locales).

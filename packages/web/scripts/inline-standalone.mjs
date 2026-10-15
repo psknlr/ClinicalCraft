@@ -118,6 +118,8 @@ if (localCount) {
 }
 
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
+// Never let this build reach git (it may embed copyrighted local assets): self-ignoring directory.
+fs.writeFileSync(path.join(path.dirname(outFile), ".gitignore"), "# build output — may contain local-only assets; never commit\n*\n");
 fs.writeFileSync(outFile, html);
 fs.rmSync(buildDir, { recursive: true, force: true });
 
