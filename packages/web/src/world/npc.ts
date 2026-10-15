@@ -155,6 +155,14 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
       continue;
     }
     const sitting = opts.posture === "sitting";
+    if (opts.posture === "lying") {
+      // in bed the arms rest along the trunk on top of it (rig +Z = up): beside the torso they
+      // stuck out over the edge of narrow stretchers / trolleys and hung in the air
+      const ax = sx * (torsoW / 2 - 0.08), az = torsoD / 2 + 0.06;
+      skinMeshes.push(box(body, skin, ax, torsoC - 0.12, az, 0.17, 0.6, 0.12));
+      box(body, opts.coat ? white : shirt, ax, torsoC + 0.16, az, 0.19, 0.2, 0.14);
+      continue;
+    }
     const arm = box(body, skin, sx * armX, torsoC - 0.1, sitting ? 0.08 : 0, 0.18, 0.65, 0.2, sitting ? -0.35 : 0);
     skinMeshes.push(arm);
     // sleeves

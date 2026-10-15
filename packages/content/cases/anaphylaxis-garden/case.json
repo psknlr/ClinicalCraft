@@ -3804,6 +3804,21 @@
         }
       },
       {
+        "id": "upright-faint",
+        "when": { "all": [{ "flag": "upright-while-hypotensive" }, { "not": { "flag": "peri-arrest" } }] },
+        "setVitals": { "gcs": 13 },
+        "setFlags": ["upright-faint"],
+        "severity": "info"
+      },
+      {
+        "id": "upright-recovered",
+        "when": {
+          "all": [{ "flag": "upright-faint" }, { "intervened": "adrenaline-im" }, { "vital": "sbp", "op": "gte", "value": 90 }]
+        },
+        "setVitals": { "gcs": 15 },
+        "severity": "info"
+      },
+      {
         "id": "iv-bolus-arrhythmia",
         "when": { "intervened": "adrenaline-iv-bolus" },
         "setFlags": ["iv-adrenaline-harm"],
