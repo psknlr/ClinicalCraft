@@ -26,7 +26,11 @@ export function phaseName(c: CaseDefinition, phaseId: string): string {
   return p ? ct(p.label) : phaseId;
 }
 
-/** HUD status-bar label: V4 "DIAGNOSIS / 诊断期" (case extension) or "LABEL / 本地化". */
+/**
+ * HUD status-bar label: V4's short "DIAGNOSIS / 诊断期" (case extension) in
+ * zh-CN, else the phase label — upper-case in English, the Chinese label
+ * alone in zh-CN (an "ENGLISH / 中文" pair of a long label ran under the hotbar).
+ */
 export function phaseBadge(c: CaseDefinition, phaseId: string, locale: string): string {
   const badges = (c.extensions?.v4 as { phaseBadges?: Record<string, string> } | undefined)?.phaseBadges;
   const v4 = badges?.[phaseId];
@@ -34,8 +38,7 @@ export function phaseBadge(c: CaseDefinition, phaseId: string, locale: string): 
   const p = c.phases.find((x) => x.id === phaseId);
   if (!p) return phaseId.toUpperCase();
   const en = typeof p.label === "string" ? p.label : p.label.en ?? Object.values(p.label)[0] ?? phaseId;
-  const local = ct(p.label);
-  return locale === "zh-CN" ? `${en.toUpperCase()} / ${local}` : en.toUpperCase();
+  return locale === "zh-CN" ? ct(p.label) : en.toUpperCase();
 }
 
 export function investigationName(c: CaseDefinition, id: string): string {

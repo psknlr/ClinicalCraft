@@ -172,6 +172,28 @@ describe("patient agent — select → voice with a model", () => {
     expect(msgsOf(events, "warning").some((w) => /grounding/.test(w.message) && /850/.test(w.message))).toBe(true);
   });
 
+  it("checks the nonverbal cue too: no numbers, signs or unexamined findings (else it is dropped)", async () => {
+    const medsAnswer = "I take metformin 500 mg twice a day.";
+    const t = await makeSession({
+      scripts: [
+        voice(medsAnswer, ["meds"], { nonverbal: "clutches his chest; the monitor shows BP 231/124 and SpO2 81%" }),
+        voice(medsAnswer, ["meds"], { nonverbal: "his lips look blue and he is wheezing" }),
+        voice(medsAnswer, ["meds"], { nonverbal: "the breath sounds are clear" }),
+        voice(medsAnswer, ["meds"], { nonverbal: "nods and looks at the floor" }),
+      ],
+    });
+    const cues: (string | null | undefined)[] = [];
+    for (let i = 0; i < 4; i++) {
+      const events = await t.session.run({ type: "user_message", text: "What medicines do you take?" });
+      const reply = msgsOf(events, "agent_message")[0]! as unknown as { text: string; grounding: string; nonverbal?: string | null };
+      expect(reply.text).toBe(medsAnswer); // the words themselves are fine
+      expect(reply.grounding).toBe("llm");
+      cues.push(reply.nonverbal ?? null);
+    }
+    expect(cues).toEqual([null, null, null, "nods and looks at the floor"]);
+    expect(t.msgs("warning").filter((w) => /nonverbal/.test(w.message))).toHaveLength(3);
+  });
+
   it("accepts a plain-text (non-JSON) reply when it is grounded", async () => {
     const t = await makeSession({ scripts: [textScript("It's like a heavy weight on my chest, doctor.")] });
     await t.session.run({ type: "user_message", text: "What does the pain feel like?" });

@@ -991,7 +991,6 @@
         ],
         "en": [
           "cocaine",
-          "coke",
           "crack",
           "recreational drugs",
           "street drugs",
@@ -1003,7 +1002,13 @@
           "cannabis",
           "weed",
           "heroin",
-          "illicit"
+          "illicit",
+          "coke use",
+          "used coke",
+          "using coke",
+          "snort coke",
+          "taken coke",
+          "tried coke"
         ]
       },
       "disclosure": "specific"
@@ -1069,7 +1074,8 @@
           "给你用",
           "给你吃",
           "给你打",
-          "给你挂"
+          "给你挂",
+          "过敏"
         ],
         "en": [
           "giving you",
@@ -1080,7 +1086,8 @@
           "take a deep",
           "take a breath",
           "come with",
-          "come and get"
+          "come and get",
+          "allerg"
         ]
       }
     },
@@ -5178,6 +5185,7 @@
     }
   ],
   "physiology": {
+    "revealedBy": { "glucose": ["poc-glucose"] },
     "baseline": {
       "hr": 54,
       "sbp": 98,
@@ -5425,7 +5433,6 @@
           "rr": 0,
           "spo2": 45,
           "gcs": 3,
-          "pain": 0,
           "rhythm": "ventricular-fibrillation",
           "ecg": "normal"
         },
@@ -7597,6 +7604,55 @@
         "locale": "en",
         "expect": [
           "identity"
+        ]
+      },
+      {
+        "text": "Have you ever used coke?",
+        "locale": "en",
+        "expect": [
+          "recreational"
+        ]
+      },
+      {
+        "text": "用过可卡因或者冰毒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "recreational"
+        ]
+      },
+      {
+        "text": "Do you drink coke?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "喝酒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Are you allergic to any medications?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Are you allergic to aspirin?",
+        "locale": "en",
+        "expect": [
+          "allergies"
         ]
       }
     ]

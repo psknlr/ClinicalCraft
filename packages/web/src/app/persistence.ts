@@ -97,6 +97,17 @@ function validSnapshot(v: unknown): SessionSnapshot | null {
     messages,
     plan: Array.isArray(s.plan) ? s.plan.filter((p) => p && typeof p.text === "string").map((p) => ({ text: p.text, status: String(p.status) })) : [],
     createdAt: typeof s.createdAt === "string" ? s.createdAt : new Date().toISOString(),
+    // A resume continues the transcript's ordinals from here (agent SessionSnapshot.nextOrdinal).
+    ...(typeof s.nextOrdinal === "number" && Number.isSafeInteger(s.nextOrdinal) && s.nextOrdinal >= 0 ? { nextOrdinal: s.nextOrdinal } : {}),
+    // The examiner's evidence lines (notes, rationales, ACTION narrations, conversation).
+    ...(Array.isArray(s.dialogue)
+      ? {
+          dialogue: s.dialogue
+            .slice(-5000)
+            .filter((d) => d && typeof d.who === "string" && typeof d.speaker === "string" && typeof d.text === "string")
+            .map((d) => ({ who: d.who.slice(0, 40), speaker: d.speaker.slice(0, 80), text: d.text.slice(0, 8000) })),
+        }
+      : {}),
   };
 }
 

@@ -138,11 +138,24 @@ const MAX_DIVERGENT_TAIL = 3;
 const LONG_SHARED_PREFIX = 8;
 
 /**
+ * Endings (as `canonicalToken` leaves them: -ness → -nes, -less → -les) a
+ * short (4–5 letter) token may gain and still be the same word —
+ * pain ~ painful, itch ~ itchy, numb ~ numbness, heart ~ hearts — so a short
+ * stem does not swallow an unrelated longer word: hear ≁ heart, hear ≁
+ * heartburn, back ≁ background, heart ≁ heartburn.
+ */
+const SHORT_STEM_ENDINGS: ReadonlySet<string> = new Set(["s", "es", "ed", "d", "ing", "er", "ers", "y", "ly", "ily", "ful", "fully", "ness", "nes", "less", "les", "ish", "ie", "ies", "ier", "iest", "e", "en"]);
+/** From this length a token that prefixes another is the same word whatever the ending (breath ~ breathless). */
+const FREE_PREFIX_LENGTH = 6;
+
+/**
  * Token equivalence (on canonical tokens):
  *
  * * identical;
- * * one token (≥ 4 letters) is a prefix of the other — breath ~ breathless,
- *   pain ~ painful, diabet ~ diabetic;
+ * * one token is a prefix of the other — any ending when the shorter has
+ *   ≥ 6 letters (breath ~ breathless, diabet ~ diabetic), only an
+ *   inflectional/derivational ending (`SHORT_STEM_ENDINGS`) when it has 4–5
+ *   (pain ~ painful, but hear ≁ heart, back ≁ background);
  * * a shared prefix of ≥ 5 letters after which **both** tokens end within
  *   3 letters (4 letters when the shared prefix has ≥ 8) — allergy ~
  *   allergic, nausea ~ nauseous, pregnant ~ pregnancy, anticoagulant ~
@@ -155,7 +168,11 @@ export function tokensMatch(a: string, b: string): boolean {
   if (a === b) return true;
   const shorter = Math.min(a.length, b.length);
   const prefix = commonPrefixLength(a, b);
-  if (shorter >= 4 && prefix === shorter) return true;
+  if (shorter >= 4 && prefix === shorter) {
+    if (shorter >= FREE_PREFIX_LENGTH) return true;
+    const ending = (a.length > b.length ? a : b).slice(shorter);
+    if (SHORT_STEM_ENDINGS.has(ending)) return true;
+  }
   const maxTail = prefix >= LONG_SHARED_PREFIX ? MAX_DIVERGENT_TAIL + 1 : MAX_DIVERGENT_TAIL;
   return prefix >= 5 && Math.max(a.length, b.length) - prefix <= maxTail;
 }

@@ -7,7 +7,7 @@
  */
 import type { CaseDefinition } from "../schema/case.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
-import type { EquipmentCatalog, EquipmentType, FacilityDefinition, MaterialDef, Placement, Rect } from "../schema/facility.js";
+import type { EquipmentCatalog, EquipmentType, FacilityDefinition, MaterialDef, Placement, Rect, VoxelPart } from "../schema/facility.js";
 import { DEFAULT_LOCALE, t } from "../i18n.js";
 import type { Issue, PatientSlot, WaypointLocation } from "./types.js";
 
@@ -155,6 +155,13 @@ export interface ResolveWaypointOptions {
   locale?: string;
   /** Patient slot used for the "patient" target (default: the first slot). */
   slotId?: string;
+  /**
+   * Capability targets prefer the patient's own equipment: the slot's linked
+   * monitor, then the nearest provider in the slot's room (measured from the
+   * slot); only when the room has none, the nearest provider from `from`.
+   * Without it, "nearest" is always measured from `from` (the player).
+   */
+  preferPatientSlot?: boolean;
 }
 
 function placementLabel(placement: Placement, type: EquipmentType | undefined, locale: string): string {
@@ -188,8 +195,10 @@ function resolvePatient(f: FacilityDefinition, slotId: string | undefined, local
  * Resolve a waypoint target to world coordinates. Resolution order:
  * `"patient"` (patient slot) → `"board"` / `"atlas"` (nearest placement whose
  * equipment interaction kind is board/atlas) → capability (nearest placement
- * providing it) → room id (room centre) → room kind (nearest room of that
- * kind) → placement id. Returns null when nothing matches.
+ * providing it; with `preferPatientSlot`, the slot's linked monitor or a
+ * provider in the slot's room first) → room id (room centre) → room kind
+ * (nearest room of that kind) → placement id. Returns null when nothing
+ * matches.
  */
 export function resolveWaypoint(
   f: FacilityDefinition,
@@ -208,7 +217,19 @@ export function resolveWaypoint(
 
   if (target === "board" || target === "atlas") return byPlacement((_, type) => type?.interaction.kind === target);
 
-  const byCapability = byPlacement((p, type) => (type?.capabilities ?? []).includes(target) || (p.capabilities ?? []).includes(target));
+  const provides = (p: Placement, type: EquipmentType | undefined) => (type?.capabilities ?? []).includes(target) || (p.capabilities ?? []).includes(target);
+  if (options.preferPatientSlot) {
+    // The patient's own bedside kit (e.g. its linked monitor), never the nearest one in another room.
+    const slot = options.slotId ? f.patientSlots.find((x) => x.id === options.slotId) : f.patientSlots[0];
+    const room = slot ? f.rooms.find((r) => r.id === slot.room) : undefined;
+    if (slot) {
+      const linked = slot.monitor ? f.placements.find((p) => p.id === slot.monitor) : undefined;
+      if (linked && provides(linked, equipmentOf(catalogs, linked.type))) return { x: linked.x, z: linked.z, label: placementLabel(linked, equipmentOf(catalogs, linked.type), locale) };
+      const inRoom = room ? nearestPlacement(f, catalogs, slot, (p, type) => provides(p, type) && rectContains(room.rect, p.x, p.z)) : null;
+      if (inRoom) return { x: inRoom.placement.x, z: inRoom.placement.z, label: placementLabel(inRoom.placement, inRoom.type, locale) };
+    }
+  }
+  const byCapability = byPlacement(provides);
   if (byCapability) return byCapability;
 
   const room = f.rooms.find((r) => r.id === target);
@@ -254,7 +275,17 @@ function materialRefs(f: FacilityDefinition): [string, string][] {
   });
   f.buildZone?.materials.forEach((m, i) => refs.push([`buildZone.materials.${i}`, m]));
   f.buildZone?.seedBlocks.forEach((b, i) => refs.push([`buildZone.seedBlocks.${i}.type`, b.type]));
+  f.placements.forEach((p, i) => p.extraParts?.forEach((part, j) => refs.push([`placements.${i}.extraParts.${j}.m`, part.m])));
   return refs;
+}
+
+/** True when a part's box (local frame, before rotation) leaves the footprint (tolerance `SPATIAL_TOLERANCE`). */
+function partOutsideFootprint(part: VoxelPart, footprint: EquipmentType["footprint"]): boolean {
+  const { w, d, h } = footprint;
+  const tol = SPATIAL_TOLERANCE;
+  const [px, py, pz] = part.p;
+  const [sx, sy, sz] = part.s;
+  return Math.abs(px) + sx / 2 > w / 2 + tol || Math.abs(pz) + sz / 2 > d / 2 + tol || py - sy / 2 < -tol || py + sy / 2 > h + tol;
 }
 
 function checkMaterials(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[] {
@@ -296,6 +327,16 @@ function checkPlacements(f: FacilityDefinition, catalogs: EquipmentCatalog[]): I
     if (room && !rectContains(room.rect, p.x, p.z, SPATIAL_TOLERANCE)) issues.push(warn(`placements.${i}`, `placement "${p.id}" is outside its room "${room.id}"`));
     (p.capabilities ?? []).forEach((cap, j) => {
       if (!(cap in CAPABILITIES)) issues.push(warn(`placements.${i}.capabilities.${j}`, `non-canonical capability "${cap}"`));
+    });
+    if (!type) return;
+    (p.hideParts ?? []).forEach((index, j) => {
+      if (index >= type.parts.length) issues.push(err(`placements.${i}.hideParts.${j}`, `"${type.id}" has no part ${index} (it has ${type.parts.length})`));
+    });
+    (p.extraParts ?? []).forEach((part, j) => {
+      if (partOutsideFootprint(part, type.footprint)) {
+        const { w, d, h } = type.footprint;
+        issues.push(warn(`placements.${i}.extraParts.${j}`, `extra part extends outside the ${w}×${d}×${h} footprint of "${type.id}"`));
+      }
     });
   });
   return issues;
@@ -364,9 +405,11 @@ function checkStaffAndSpawn(f: FacilityDefinition): Issue[] {
 /**
  * Validate a facility against the loaded catalogs: unknown catalogs,
  * equipment types and materials (terrain, walls, floors, roofs, partitions,
- * build zone), duplicate ids, positions outside bounds/rooms, patient-slot
- * references, non-90° rotations and overlapping solid footprints (warnings,
- * rotation-aware, tolerance `SPATIAL_TOLERANCE`).
+ * build zone, placement `extraParts`), duplicate ids, positions outside
+ * bounds/rooms, patient-slot references, out-of-range `hideParts` indices,
+ * non-90° rotations, extra parts outside the type's footprint and
+ * overlapping solid footprints (warnings, rotation-aware, tolerance
+ * `SPATIAL_TOLERANCE`).
  */
 export function checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[] {
   const loaded = new Set(catalogs.map((c) => c.id));
@@ -424,14 +467,9 @@ export function checkCatalogs(catalogs: EquipmentCatalog[]): Issue[] {
 function checkEquipmentType(e: EquipmentType, path: string, materials: Map<string, string>): Issue[] {
   const issues: Issue[] = [];
   const { w, d, h } = e.footprint;
-  const tol = SPATIAL_TOLERANCE;
   e.parts.forEach((part, j) => {
     if (!materials.has(part.m)) issues.push(err(`${path}.parts.${j}.m`, `unknown material "${part.m}"`));
-    const [px, py, pz] = part.p;
-    const [sx, sy, sz] = part.s;
-    const outside =
-      Math.abs(px) + sx / 2 > w / 2 + tol || Math.abs(pz) + sz / 2 > d / 2 + tol || py - sy / 2 < -tol || py + sy / 2 > h + tol;
-    if (outside) issues.push(warn(`${path}.parts.${j}`, `part extends outside the ${w}×${d}×${h} footprint of "${e.id}"`));
+    if (partOutsideFootprint(part, e.footprint)) issues.push(warn(`${path}.parts.${j}`, `part extends outside the ${w}×${d}×${h} footprint of "${e.id}"`));
   });
   if (e.screen !== "none" && !e.parts.some((p) => p.name === "screen")) {
     issues.push(warn(`${path}.screen`, `"${e.id}" declares screen "${e.screen}" but has no part named "screen"`));

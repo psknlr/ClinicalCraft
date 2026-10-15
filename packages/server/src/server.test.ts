@@ -18,6 +18,7 @@ import {
 } from "@clinicalcraft/agent";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { createRequestHandler, startServer, type RunningServer, type ServerOptions } from "./server.js";
+import { TranscriptQuotaError, WebTranscriptStore } from "./transcripts.js";
 
 const root = mkdtempSync(join(tmpdir(), "cc-server-"));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -149,6 +150,27 @@ describe("static files and local assets", () => {
     const missing = await fetch(new URL("local-assets/cases/x/fig9.png", server.url));
     expect(missing.status).toBe(404);
     expect(((await missing.json()) as { error: { code: string } }).error.code).toBe("asset_not_installed");
+  });
+
+  it("serves only passive asset types from /local-assets, sandboxed (an SVG/JS/HTML there would run same-origin)", async () => {
+    const dir = join(assetsA, "cases", "evil");
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, "paper.svg"), `<svg xmlns="http://www.w3.org/2000/svg"><script href="/local-assets/cases/evil/steal.js"/></svg>`);
+    writeFileSync(join(dir, "steal.js"), "document.title = JSON.stringify(localStorage)");
+    writeFileSync(join(dir, "page.html"), "<script>alert(1)</script>");
+    writeFileSync(join(dir, "feed.xml"), "<x/>");
+    writeFileSync(join(dir, "report.pdf"), "%PDF-1.4");
+    symlinkSync(join(dir, "steal.js"), join(dir, "alias.png"));
+    for (const name of ["paper.svg", "steal.js", "page.html", "feed.xml", "alias.png"]) {
+      const res = await fetch(new URL(`local-assets/cases/evil/${name}`, server.url));
+      expect([name, res.status]).toEqual([name, 404]);
+    }
+    const fig = await fetch(new URL(`local-assets/cases/${SMZL}/fig1.png`, server.url));
+    expect(fig.headers.get("content-security-policy")).toMatch(/default-src 'none'.*sandbox/);
+    const pdf = await fetch(new URL("local-assets/cases/evil/report.pdf", server.url));
+    expect(pdf.status).toBe(200);
+    expect(pdf.headers.get("content-type")).toBe("application/pdf");
+    expect(pdf.headers.get("content-security-policy")).toContain("script-src 'self'"); // the global policy (no sandbox: browsers block sandboxed PDFs)
   });
 
   it("answers without a web build with a JSON hint", async () => {
@@ -446,6 +468,30 @@ describe("POST /api/transcripts/:sessionId", () => {
     const lines = file.trim().split("\n").map((l) => JSON.parse(l) as { ordinal: number });
     expect(lines.map((l) => l.ordinal)).toEqual([0, 1, 2]);
     expect(file).not.toContain(env.OPENAI_API_KEY);
+  });
+
+  it("caps each uploaded file and the number of uploaded files", async () => {
+    const dir = mkdtempSync(join(root, "quota-"));
+    const store = new WebTranscriptStore({ CLINICALCRAFT_HOME: dir }, null, { maxFileBytes: 400, maxSessions: 2 });
+    const item = (ordinal: number) => ({ type: "action", ordinal, ts: "2026-01-01T00:00:00.000Z", payload: { action: { type: "note", text: "x".repeat(60) }, accepted: true } }) as never;
+    await store.append("a", [item(0), item(1)]);
+    await expect(store.append("a", [item(2), item(3), item(4)])).rejects.toBeInstanceOf(TranscriptQuotaError);
+    expect(readFileSync(store.pathFor("a"), "utf8").trim().split("\n")).toHaveLength(2); // nothing partial written
+    await store.append("b", [item(0)]);
+    await expect(store.append("c", [item(0)])).rejects.toMatchObject({ kind: "session-count" });
+    await store.append("b", [item(1)]); // existing files can still grow within their cap
+    // A fresh store (server restart) counts the bytes already on disk.
+    const again = new WebTranscriptStore({ CLINICALCRAFT_HOME: dir }, null, { maxFileBytes: 400, maxSessions: 2 });
+    await expect(again.append("a", [item(2), item(3), item(4)])).rejects.toMatchObject({ kind: "file-size" });
+
+    const small = await startServer({ ...baseOptions(), env: { ...baseOptions().env, CLINICALCRAFT_HOME: dir }, transcriptQuota: { maxFileBytes: 400, maxSessions: 2 } });
+    try {
+      const res = await fetch(new URL("api/transcripts/c", small.url), { method: "POST", headers: { "content-type": "application/x-ndjson", "accept-language": "en" }, body: `${JSON.stringify(item(0))}\n` });
+      expect(res.status).toBe(413);
+      expect(await res.json()).toMatchObject({ error: { code: "transcript_quota" } });
+    } finally {
+      await small.close();
+    }
   });
 
   it("rejects bad session ids and malformed items", async () => {

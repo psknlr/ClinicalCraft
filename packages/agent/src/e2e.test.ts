@@ -26,7 +26,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { matchHistory, parseCase, t, verifyCase, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { counterIds, loadMiniCase, steppingClock, testSettings } from "./__fixtures__/harness.js";
+import { counterIds, loadMiniCase, msgsOf, steppingClock, testSettings } from "./__fixtures__/harness.js";
 import { clinicianOfflineSteps } from "./agents/offline.js";
 import type { AgentEvent, ApprovalDecision, EventMsg, Op } from "./protocol.js";
 import { ScriptedProvider, textScript, toolCallScript, type Script } from "./providers/scripted.js";
@@ -286,6 +286,16 @@ function assertInvariants(c: CaseDefinition, d: Driver, finalState: SessionState
     }
   });
   for (const id of started.keys()) expect(ended.has(id), `turn ${id} never ended`).toBe(true);
+  // …and every agent message (staff lines, button answers included) belongs to a started turn of the same agent.
+  events.forEach((e, i) => {
+    const m = e.msg;
+    if (m.type !== "agent_message" && m.type !== "agent_message_delta") return;
+    expect(started.has(m.turnId), `${m.type} of ${m.agent} outside a turn: ${"text" in m ? m.text.slice(0, 40) : ""}`).toBe(true);
+    const start = events[started.get(m.turnId)!]!.msg as Msg<"turn_started">;
+    // a companion who answers history speaks in the patient's turn
+    expect(start.agent === m.agent || (start.agent === "patient" && m.agent === "companion"), `${m.agent} spoke in a ${start.agent} turn`).toBe(true);
+    expect(i).toBeGreaterThan(started.get(m.turnId)!);
+  });
   events.forEach((e, i) => {
     const m = e.msg as { turnId?: string; type: string; phase?: string };
     if (!m.turnId || !started.has(m.turnId) || m.type === "turn_started") return;
@@ -319,7 +329,9 @@ async function assertResume(b: Built, caseDef: CaseDefinition, agents: string[])
     caseDef,
     settings: b.session.settings,
     resume: { sessionId: "e2e-session", actions: replayed.actions, messages: replayed.messages },
-    ...(config.plan || config.interlocutor ? { restore: { ...(config.plan ? { plan: config.plan } : {}), ...(config.interlocutor ? { interlocutor: config.interlocutor } : {}) } } : {}),
+    ...(config.plan || config.interlocutor || config.affect
+      ? { restore: { ...(config.plan ? { plan: config.plan } : {}), ...(config.interlocutor ? { interlocutor: config.interlocutor } : {}), ...(config.affect ? { affect: config.affect } : {}) } }
+      : {}),
     newId: counterIds("r"),
     now: steppingClock(),
   });
@@ -369,9 +381,9 @@ describe.skipIf(!SMZL)("(a) offline learner works the SMZL case through Ops (zh-
     expect(painMsg).toMatchObject({ grounded: ["pain"], text: answerText(c, "pain", L) });
     expect(painMsg.speaker).toBe(t(c.patient.displayName, L));
 
-    // button ask
+    // button ask: the authored answer is spoken in its own patient turn
     const spleen = await d.run({ type: "clinical_action", action: { type: "ask", itemId: "spleen", via: "button" } });
-    expect(sigs(spleen)).toEqual(["clinical_event:history.asked", "state_snapshot", "agent_message:patient"]);
+    expect(sigs(spleen)).toEqual(["clinical_event:history.asked", "state_snapshot", "turn_started:patient", "agent_message:patient", "turn_complete:patient", "turn_phase:patient:idle"]);
 
     // `/ask <text>` routes free text to the patient
     const lung = await d.run({ type: "slash_command", name: "ask", args: t(c.history.find((h) => h.id === "lung")!.question, L) });
@@ -986,6 +998,82 @@ describe("(c) hooks ordering and coverage", () => {
     assertInvariants(loadMiniCase(), d, d.session.state, "en");
   });
 
+  it("PreToolUse updatedInput applies to learner clinical_action: the gate, the engine and PostToolUse see the rewritten input", async () => {
+    const b = await build({ caseDef: loadMiniCase(), settingsPatch: { permissions: { deny: ["intervene(lysis)"] } } });
+    const d = b.driver;
+    const post: unknown[] = [];
+    b.session.hooks.on("PreToolUse", (input) => {
+      if (input.hook_event_name !== "PreToolUse" || input.agent !== "learner") return;
+      const args = input.tool_input as Record<string, unknown>;
+      if (input.tool_name === "order_test" && args.investigation_id === "ct-head") return { updatedInput: { investigation_id: "ecg" } }; // low-value → essential
+      if (input.tool_name === "intervene" && args.intervention_id === "aspirin") return { updatedInput: { query: "thrombolysis" } };
+      if (input.tool_name === "ask_patient") return { updatedInput: { question: "When did the chest pain start?" } };
+      if (input.tool_name === "examine") return { updatedInput: { finding_id: 42 } }; // fails the tool's input schema
+      if (input.tool_name === "read_result") return { updatedInput: { investigation_id: "unicorn-scan" } }; // resolves to no case item
+    });
+    b.session.hooks.on("PostToolUse", (input) => {
+      if (input.hook_event_name === "PostToolUse") post.push({ tool: input.tool_name, input: input.tool_input });
+    });
+
+    await d.run({ type: "clinical_action", action: { type: "order", investigationId: "ct-head" } });
+    expect(d.session.state.orders.map((o) => o.investigationId)).toEqual(["ecg"]);
+    expect(post).toEqual([{ tool: "order_test", input: { investigation_id: "ecg" } }]);
+
+    // the deny rule matches the rewritten input: the hook cannot launder a denied action into an allowed one, nor the reverse
+    const denied = await d.run({ type: "clinical_action", action: { type: "intervene", interventionId: "aspirin" } });
+    expect(msgsOf(denied, "error")[0]).toMatchObject({ code: "permission_denied" });
+    expect(d.session.state.interventions).toEqual([]);
+
+    const asked = await d.run({ type: "clinical_action", action: { type: "ask", itemId: "smoking", via: "button" } });
+    expect(d.session.state.asked).toEqual(["onset"]);
+    expect(msgsOf(asked, "agent_message")[0]).toMatchObject({ agent: "patient", grounded: ["onset"], text: "About two hours ago, while I was lifting boxes." });
+
+    const invalid = await d.run({ type: "clinical_action", action: { type: "examine", findingId: "heart" } });
+    expect(msgsOf(invalid, "error")[0]).toMatchObject({ code: "invalid_action" });
+    expect(d.session.state.examined).toEqual([]);
+
+    await d.run({ type: "clinical_action", action: { type: "advance-time", minutes: 5 } });
+    const unresolved = await d.run({ type: "clinical_action", action: { type: "read", investigationId: "ecg" } });
+    expect(msgsOf(unresolved, "error")[0]).toMatchObject({ code: "invalid_action" });
+    expect(msgsOf(unresolved, "error")[0]!.message).toContain("unicorn-scan");
+    expect(d.session.state.seen).toEqual([]);
+    expect(msgsOf(unresolved, "approval_request")).toHaveLength(0);
+
+    await d.shutdown();
+    assertInvariants(loadMiniCase(), d, d.session.state, "en");
+  });
+
+  it("PreToolUse updatedInput applies to slash-command tools (/order, /give, /exam): re-validated, gated and passed to PostToolUse", async () => {
+    const b = await build({ caseDef: loadMiniCase(), settingsPatch: { permissions: { deny: ["intervene(lysis)"] } } });
+    const d = b.driver;
+    const post: unknown[] = [];
+    b.session.hooks.on("PreToolUse", (input) => {
+      if (input.hook_event_name !== "PreToolUse" || input.agent !== "learner") return;
+      if (input.tool_name === "order_test") return { updatedInput: { investigation_id: "troponin" } };
+      if (input.tool_name === "intervene") return { updatedInput: { intervention_id: "lysis" } };
+      if (input.tool_name === "examine") return { updatedInput: { finding_id: "heart", extra: true } }; // additionalProperties: false
+    });
+    b.session.hooks.on("PostToolUse", (input) => {
+      if (input.hook_event_name === "PostToolUse") post.push({ tool: input.tool_name, input: input.tool_input });
+    });
+    await d.run({ type: "slash_command", name: "order", args: "ecg" });
+    expect(d.session.state.orders.map((o) => o.investigationId)).toEqual(["troponin"]);
+    expect(post).toEqual([{ tool: "order_test", input: { investigation_id: "troponin" } }]);
+
+    const give = await d.run({ type: "slash_command", name: "give", args: "aspirin" });
+    expect(d.session.state.interventions).toEqual([]);
+    expect(msgsOf(give, "approval_request")).toHaveLength(0);
+    expect(msgsOf(give, "command_output")[0]!.text).toMatch(/deny|denied/i);
+
+    const exam = await d.run({ type: "slash_command", name: "exam", args: "heart" });
+    expect(d.session.state.examined).toEqual([]);
+    expect(msgsOf(exam, "command_output")[0]!.text).toMatch(/extra/);
+    expect(post).toHaveLength(1);
+
+    await d.shutdown();
+    assertInvariants(loadMiniCase(), d, d.session.state, "en");
+  });
+
   it("SessionEnd is the last hook: queued ClinicalEvent/Notification hooks finish first", async () => {
     const b = await build({ caseDef: loadMiniCase() });
     const d = b.driver;
@@ -1283,6 +1371,46 @@ describe("(c) examiner evidence integrity", () => {
     await d.shutdown();
     assertInvariants(c, d, d.session.state, "en");
   });
+});
+
+describe("(b) need-to-know sweep: the examiner mid-case vs after finish on every built-in case", () => {
+  for (const id of CASE_IDS) {
+    const c = loadCase(id);
+    it.skipIf(!c)(`${id}: rubric item texts only before finish; judgeGuidance and the full debrief after`, async () => {
+      const L = "en";
+      const pending = c!.rubric.filter((r) => r.met === undefined);
+      const verdict = () => textScript(JSON.stringify({ items: [], narrative: "Formative note." }));
+      // the reference walkthrough up to (not including) finish: every objective may be done, the case is not finished
+      const end = c!.solution.findIndex((a) => a.type === "finish");
+      const before = end >= 0 ? c!.solution.slice(0, end) : c!.solution;
+      const b = await build({
+        caseDef: c!,
+        scripts: [verdict(), verdict()],
+        resume: { sessionId: "e2e-session", actions: before },
+        settingsPatch: { agents: { patient: { provider: "offline" }, companion: { provider: "offline" } } },
+      });
+      const d = b.driver;
+      expect(d.session.state.finished).toBe(false);
+      await d.run({ type: "assess" });
+      await d.run({ type: "clinical_action", action: { type: "finish" } });
+      expect(d.session.state.finished).toBe(true);
+      await d.run({ type: "assess" });
+      const requests = b.provider!.requests;
+      expect(requests).toHaveLength(pending.length > 0 ? 2 : 0);
+      if (pending.length > 0) {
+        const [mid, after] = requests.map((r) => JSON.stringify({ system: r.system, messages: r.messages }));
+        const guidance = pending.flatMap((r) => (r.judgeGuidance ? [t(r.judgeGuidance, L)] : []));
+        const debrief = [t(c!.debrief.conclusion, L), ...c!.debrief.keyReasoning.map((x) => t(x, L)), ...c!.debrief.teachingPoints.map((x) => t(x, L)), ...(c!.debrief.boundaries ? [t(c!.debrief.boundaries, L)] : [])];
+        const inJson = (text: string) => JSON.stringify(text).slice(1, -1);
+        for (const r of pending) expect(mid).toContain(inJson(t(r.text, L)));
+        for (const text of [...guidance, ...debrief].filter((x) => x.trim().length >= 12)) {
+          expect(mid, `mid-case examiner saw: ${text.slice(0, 60)}`).not.toContain(inJson(text));
+          expect(after, `examiner after finish lacks: ${text.slice(0, 60)}`).toContain(inJson(text));
+        }
+      }
+      await d.shutdown(); // resumed mid-walkthrough: the start-up snapshot invariants do not apply
+    });
+  }
 });
 
 describe("(b) need-to-know sweep: the `tool` patient pipeline on every built-in case", () => {

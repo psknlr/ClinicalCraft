@@ -74,7 +74,10 @@ describe("built-in commands", () => {
   it("/board and /answer by index and letter", async () => {
     const t = await makeSession();
     const board = await command(t, "/board");
-    expect(board.out.text).toMatch(/\[dx\] Most likely diagnosis\? \(locked\)/);
+    // A locked decision is listed by number with what it needs — never its prompt or options.
+    expect(board.out.text).toMatch(/\[dx\] Decision 1 \(not yet available\) \(locked\)/);
+    expect(board.out.text).not.toContain("Most likely diagnosis?");
+    expect(board.out.text).not.toContain("Inferior STEMI");
     expect(board.out.text).toContain("Review the ECG first.");
     const early = await command(t, "/answer 1 A");
     expect(early.out.text).toMatch(/Not yet answerable/);
@@ -82,7 +85,12 @@ describe("built-in commands", () => {
     await command(t, "/wait 5");
     const read = await command(t, "/read ecg");
     expect(read.out.text).toContain("ST elevation in II, III and aVF");
-    const answer = await command(t, "/answer dx A");
+    const unlocked = await command(t, "/board");
+    expect(unlocked.out.text).toContain("Most likely diagnosis?");
+    // Letters follow the presented (shuffled) order shown by /board.
+    const shown = [...unlocked.out.text.matchAll(/^\s+\[([\w-]+)\] /gm)].map((m) => m[1]!);
+    const letter = String.fromCharCode(65 + shown.indexOf("stemi"));
+    const answer = await command(t, `/answer dx ${letter}`);
     expect(answer.out.text).toMatch(/^Correct\./);
     expect(t.session.state.decisions).toHaveProperty("dx");
   });

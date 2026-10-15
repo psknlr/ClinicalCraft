@@ -90,6 +90,13 @@ describe("SaveStore.parseImport", () => {
     const r = SaveStore.parseImport(JSON.stringify(file), known);
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.file.session.actions).toEqual([{ type: "start" }, { type: "ask", itemId: "pain" }]);
+    if (r.ok) expect(r.file.session.nextOrdinal).toBeUndefined();
+  });
+  it("keeps the transcript's next ordinal so a resume continues the same file's sequence", () => {
+    const ok = SaveStore.parseImport(JSON.stringify({ ...file, session: { ...session, nextOrdinal: 77 } }), known);
+    expect(ok.ok && ok.file.session.nextOrdinal).toBe(77);
+    const bad = SaveStore.parseImport(JSON.stringify({ ...file, session: { ...session, nextOrdinal: -3 } }), known);
+    expect(bad.ok && bad.file.session.nextOrdinal).toBeUndefined();
   });
   it("rejects invalid files like V4 did", () => {
     expect(SaveStore.parseImport("{", known)).toMatchObject({ ok: false, error: "save.invalid" });

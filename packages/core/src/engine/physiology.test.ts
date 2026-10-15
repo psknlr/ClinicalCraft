@@ -3,14 +3,17 @@ import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction, SessionState } from "../schema/session.js";
 import {
+  alarmingVitals,
   alarmLevel,
   alarmLimitsFor,
+  checkCaseIntegrity,
   createSession,
   DEFAULT_ALARM_LIMITS,
   effectFraction,
   evaluate,
   parseCase,
   reduce,
+  shownVitals,
   trendContribution,
   vitalsAt,
   vitalValue,
@@ -220,6 +223,53 @@ describe("alarm limits", () => {
     expect(vitalsAt(paeds, s).alarms).toEqual([{ vital: "hr", level: "warning", value: 118 }]);
     const started = reduce(paeds, createSession(paeds), { type: "start" });
     expect(started.events).toContainEqual({ type: "vitals.alarm", vital: "hr", level: "warning", value: 118 });
+  });
+});
+
+describe("what the bedside shows (monitored, observed, revealed vitals)", () => {
+  const glucoseCase = (revealedBy?: Record<string, string[]>) =>
+    withPhysiology((j) => {
+      (j.physiology.baseline as Record<string, unknown>).glucose = 28;
+      (j.physiology.baseline as Record<string, unknown>).pain = 6;
+      if (revealedBy) j.physiology.revealedBy = revealedBy;
+    });
+
+  it("never shows, charts or alarms an unmeasured glucose; vital conditions still see it", () => {
+    const c = glucoseCase();
+    const started = reduce(c, createSession(c), { type: "start" });
+    expect(started.events.filter((e) => e.type === "vitals.alarm").map((e) => (e as { vital: string }).vital)).not.toContain("glucose");
+    const snap = vitalsAt(c, started.state);
+    expect(snap.vitals.glucose).toBeUndefined();
+    expect(snap.trend.glucose).toBeUndefined();
+    expect(snap.alarms.map((a) => a.vital)).not.toContain("glucose");
+    expect(snap.vitals.pain).toBe(6); // a nursing observation is charted…
+    expect(snap.vitals.gcs).toBe(15);
+    expect(evaluate(c, started.state, { vital: "glucose", op: "gte", value: 25 })).toBe(true);
+    expect(shownVitals(c, started.state).has("glucose")).toBe(false);
+  });
+
+  it("reveals glucose (display and alarms) once a revealedBy investigation has been read", () => {
+    const c = glucoseCase({ glucose: ["abg"] });
+    const ordered = play(c, [{ type: "start" }, { type: "order", investigationId: "abg" }, { type: "advance-time", minutes: 30 }]);
+    expect(vitalsAt(c, ordered).vitals.glucose).toBeUndefined(); // ordered is not read
+    const read = reduce(c, ordered, { type: "read", investigationId: "abg" });
+    expect(read.rejected).toBeUndefined();
+    expect(vitalsAt(c, read.state).vitals.glucose).toBe(28);
+    expect(vitalsAt(c, read.state).alarms).toContainEqual({ vital: "glucose", level: "critical", value: 28 });
+    expect(alarmingVitals(c, read.state).has("glucose")).toBe(true);
+  });
+
+  it("nursing observations never raise a monitor alarm", () => {
+    const c = withPhysiology((j) => ((j.physiology.baseline as Record<string, unknown>).gcs = 7));
+    const started = reduce(c, createSession(c), { type: "start" });
+    expect(started.events.some((e) => e.type === "vitals.alarm" && e.vital === "gcs")).toBe(false);
+    expect(vitalsAt(c, started.state).vitals.gcs).toBe(7);
+    expect(alarmingVitals(c, started.state).has("gcs")).toBe(false);
+  });
+
+  it("flags a revealedBy entry naming an unknown investigation", () => {
+    const parsed = parseCase({ ...(fixture("mini-anaphylaxis.case.json") as Record<string, unknown>), physiology: { ...((fixture("mini-anaphylaxis.case.json") as { physiology: Record<string, unknown> }).physiology), revealedBy: { glucose: ["nope"] } } });
+    expect(parsed.ok && checkCaseIntegrity(parsed.value).some((i) => i.path === "physiology.revealedBy.glucose.0")).toBe(true);
   });
 });
 

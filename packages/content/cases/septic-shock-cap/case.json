@@ -535,9 +535,13 @@
           "痰里有血",
           "痰带血",
           "吐血",
-          "咳出血",
           "痰中有血丝",
-          "吐过血"
+          "吐过血吗",
+          "吐过血没",
+          "咳出血来",
+          "咳出过血",
+          "咳出血了",
+          "咳嗽出血"
         ],
         "en": [
           "coughing up blood",
@@ -1105,22 +1109,42 @@
       "keywords": {
         "zh-CN": [
           "身边有人生病",
-          "接触过病人",
           "家里有人生病",
           "有人感冒",
           "传染",
-          "接触史",
-          "跟她一样"
+          "跟她一样",
+          "病人接触史",
+          "有接触史",
+          "接触过病人吗",
+          "接触过生病的人",
+          "接触过感冒的人"
         ],
         "en": [
           "sick contacts",
           "anyone else unwell",
           "contact with illness",
           "anyone with a cold",
-          "exposure",
           "anyone sick",
           "sick at home",
-          "anyone ill"
+          "anyone ill",
+          "exposure to illness",
+          "exposed to illness",
+          "exposure to anyone sick",
+          "exposed to anyone"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "动物",
+          "鸟",
+          "禽",
+          "宠物"
+        ],
+        "en": [
+          "animal",
+          "bird",
+          "poultry",
+          "pet"
         ]
       },
       "disclosure": "specific",
@@ -1491,14 +1515,18 @@
           "退烧药",
           "布洛芬",
           "自己吃了什么药",
-          "吃过什么药",
           "止痛药",
           "非处方药",
           "自己买的药",
           "吃了啥药",
           "在家吃过啥药",
           "在家吃了什么药",
-          "自己在家吃"
+          "自己在家吃",
+          "吃过什么药吗",
+          "吃过什么药没",
+          "她吃过什么药",
+          "这两天吃过什么药",
+          "自己吃过什么药"
         ],
         "en": [
           "fever medicine",
@@ -1513,7 +1541,9 @@
           "self-medicated",
           "nurofen",
           "advil",
-          "brufen"
+          "brufen",
+          "taken herself",
+          "took herself"
         ]
       },
       "disclosure": "specific",
@@ -1818,8 +1848,6 @@
           "呛咳",
           "呛",
           "吞咽困难",
-          "喝水呛",
-          "吃饭呛",
           "误吸"
         ],
         "en": [
@@ -1859,7 +1887,23 @@
           "fell",
           "head injury",
           "hit her head",
-          "tripped"
+          "tripped and fell"
+        ]
+      },
+      "excludeKeywords": {
+        "en": [
+          "fall ill",
+          "fell ill",
+          "fallen ill",
+          "fall sick",
+          "fell sick",
+          "fallen sick",
+          "fell unwell",
+          "fallen unwell",
+          "asleep",
+          "temperature",
+          "pressure",
+          "output"
         ]
       },
       "disclosure": "specific",
@@ -6823,8 +6867,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "对乙酰氨基酚 1 g 静脉滴注（15分钟），必要时重复，间隔至少6小时（肌酐清除率≤30 mL/min）；存在脱水、进食差等肝毒性危险因素，24小时不超过3 g",
-        "en": "Paracetamol 1 g IV over 15 min, repeated if needed at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity"
+        "zh-CN": "对乙酰氨基酚 1 g 静脉滴注（15分钟），必要时重复——若肌酐清除率≤30 mL/min，间隔至少6小时；存在脱水、进食差等肝毒性危险因素，24小时不超过3 g",
+        "en": "Paracetamol 1 g IV over 15 min, repeated if needed — at least 6 h apart if creatinine clearance is ≤ 30 mL/min; max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity"
       },
       "requires": [
         "medications",
@@ -8072,8 +8116,8 @@
     {
       "id": "abx-regimen",
       "prompt": {
-        "zh-CN": "她无药物过敏，近3个月无住院、无静脉或口服抗生素使用，既往无MRSA或铜绿假单胞菌分离史。按需要ICU的重症社区获得性肺炎，以下哪些经验性方案合适？（选出所有合适项）",
-        "en": "She has no drug allergies, no admission and no IV or oral antibiotics in the last 3 months, and no previous MRSA or Pseudomonas isolate. For CAP severe enough to need ICU, which empirical regimens are appropriate? (Select all that apply)"
+        "zh-CN": "她无药物过敏，近3个月无住院、无静脉或口服抗生素使用，既往无MRSA或铜绿假单胞菌分离史。结合你根据她的就诊表现判断的社区获得性肺炎严重程度，以下哪些经验性方案合适？（选出所有合适项）",
+        "en": "She has no drug allergies, no admission and no IV or oral antibiotics in the last 3 months, and no previous MRSA or Pseudomonas isolate. Given the CAP severity you judge from her presentation, which empirical regimens are appropriate? (Select all that apply)"
       },
       "kind": "multiple",
       "requires": {
@@ -8893,8 +8937,8 @@
         "en": "Dr Liu (radiology)"
       },
       "knowledge": {
-        "zh-CN": "只解读学习者已调阅的影像报告：右下叶实变伴支气管充气征、右侧少量胸腔积液、无肺水肿征象、无气胸；右心缘清晰提示病变位于下叶而非中叶。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
-        "en": "Interprets only imaging the learner has retrieved: right lower lobe consolidation with air bronchograms, small right effusion, no oedema, no pneumothorax; a sharp right heart border places the process in the lower rather than the middle lobe. A non-contrast CT cannot assess for PE. POCUS is clinician-performed; can explain hepatisation, B-lines and the IVC and their limits. Adds no findings beyond the reports. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
+        "zh-CN": "只解读学习者已调阅的影像报告，以报告原文为准；可讲解支气管充气征、胸腔积液及右心缘轮廓征如何帮助判断实变的性质与部位（下叶还是中叶）。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "en": "Interprets only imaging the learner has retrieved, in the report's own words; can explain how air bronchograms, an effusion and the silhouette of the right heart border help characterise and localise consolidation (lower versus middle lobe). A non-contrast CT cannot assess for PE. POCUS is clinician-performed; can explain hepatisation, B-lines and the IVC and their limits. Adds no findings beyond the reports. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
         "cxr",
@@ -8910,8 +8954,8 @@
         "en": "Ms Wu (microbiology lab)"
       },
       "knowledge": {
-        "zh-CN": "只解释学习者已拿到的微生物结果：痰标本质量合格；革兰阳性矛头状双球菌的形态提示（但不能确定）肺炎链球菌；尿抗原阳性支持肺炎链球菌感染；血培养和痰培养在急诊期间仍在进行，没有鉴定或药敏结果。抗菌药物后采集的标本阳性率会下降。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
-        "en": "Explains only microbiology results the learner has: the sputum sample is of good quality; Gram-positive lancet-shaped diplococci suggest (but do not prove) pneumococcus; a positive urinary antigen supports pneumococcal infection; blood and sputum cultures are still incubating during the ED stay with no identification or susceptibilities. Samples taken after antibiotics have lower yield. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
+        "zh-CN": "只解释学习者已拿到的微生物结果，以报告原文为准：痰标本质量如何分级、革兰染色形态只能提示而不能确定病原、尿抗原检测的意义，以及培养需要数天才能给出鉴定和药敏。抗菌药物后采集的标本阳性率会下降。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "en": "Explains only microbiology results the learner has, in the report's own words: how sputum quality is graded, that Gram-stain morphology suggests but does not prove an organism, what a urinary antigen adds, and that cultures take days to give an identification and susceptibilities. Samples taken after antibiotics have lower yield. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
         "sputum",
@@ -8928,8 +8972,8 @@
         "en": "Pharmacist Zhao (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，间隔至少6小时（肌酐清除率≤30 mL/min）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学习者说出病人的诊断。",
-        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity. Gives general drug guidance only and does not state the patient's diagnosis for the learner."
+        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。学习者拿到肌酐结果后，可按Cockcroft-Gault估算肌酐清除率，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。学习者已阅读的心电图QTc低于500 ms时可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，若肌酐清除率≤30 mL/min则间隔至少6小时（先查肾功能）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学习者说出病人的诊断。",
+        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Once the learner has the creatinine, can estimate creatinine clearance (Cockcroft–Gault), which is unreliable in non-steady-state AKI — give full first doses. With a QTc below 500 ms on the ECG the learner has read, a macrolide or a fluoroquinolone may be used, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV, at least 6 h apart if creatinine clearance is ≤ 30 mL/min (check the chemistry first); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity. Gives general drug guidance only and does not state the patient's diagnosis for the learner."
       },
       "interprets": [
         "ecg",
@@ -9837,6 +9881,146 @@
         "locale": "en",
         "expect": [
           "hx-orientation"
+        ]
+      },
+      {
+        "text": "她咳出血了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-haemoptysis"
+        ]
+      },
+      {
+        "text": "Any blood in her sputum?",
+        "locale": "en",
+        "expect": [
+          "hx-haemoptysis"
+        ]
+      },
+      {
+        "text": "她吐过没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-gi"
+        ]
+      },
+      {
+        "text": "What colour is the phlegm?",
+        "locale": "en",
+        "expect": [
+          "hx-cough"
+        ]
+      },
+      {
+        "text": "她接触过病人吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-sick-contacts"
+        ]
+      },
+      {
+        "text": "Has she been exposed to anyone ill?",
+        "locale": "en",
+        "expect": [
+          "hx-sick-contacts"
+        ]
+      },
+      {
+        "text": "Any contact with birds or poultry?",
+        "locale": "en",
+        "expect": [
+          "hx-travel"
+        ]
+      },
+      {
+        "text": "最近有没有接触过鸟类或家禽？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-travel"
+        ]
+      },
+      {
+        "text": "Has she taken anything herself?",
+        "locale": "en",
+        "expect": [
+          "hx-otc-ibuprofen"
+        ]
+      },
+      {
+        "text": "她吃过什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-otc-ibuprofen"
+        ]
+      },
+      {
+        "text": "她平时吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-meds"
+        ]
+      },
+      {
+        "text": "What regular medicines does she take?",
+        "locale": "en",
+        "expect": [
+          "hx-meds"
+        ]
+      },
+      {
+        "text": "喝水会呛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-swallow"
+        ]
+      },
+      {
+        "text": "Any trouble swallowing?",
+        "locale": "en",
+        "expect": [
+          "hx-swallow"
+        ]
+      },
+      {
+        "text": "吃饭喝水怎么样",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-intake-urine"
+        ]
+      },
+      {
+        "text": "她喝水多吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-intake-urine"
+        ]
+      },
+      {
+        "text": "Has she had a fall recently?",
+        "locale": "en",
+        "expect": [
+          "hx-falls"
+        ]
+      },
+      {
+        "text": "摔过跤吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-falls"
+        ]
+      },
+      {
+        "text": "Has her temperature fallen?",
+        "locale": "en",
+        "expect": [
+          "hx-fever"
+        ]
+      },
+      {
+        "text": "Any recent trip?",
+        "locale": "en",
+        "expect": [
+          "hx-travel"
         ]
       }
     ],

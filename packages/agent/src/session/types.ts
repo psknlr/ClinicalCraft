@@ -22,8 +22,18 @@ export interface TranscriptSink {
 }
 
 /** One JSONL line. `ordinal` is monotonic. Durable types are enough to resume a session. */
+/** One line of the encounter as the examiner sees it (learner words, agent replies, ACTION narrations, notes, rationales). */
+export interface DialogueEntry {
+  /** "learner", an agent name, or "action" for clinical actions. */
+  who: string;
+  speaker: string;
+  text: string;
+}
+
 export type TranscriptItem =
   | { type: "session_meta"; ordinal: number; ts: string; payload: { sessionId: string; caseId: string; caseVersion: string; facilityId: string | null; locale: string; provider: string; model: string; clinicalcraftVersion: string } }
+  /** The examiner's evidence line (resume restores the dialogue from these). */
+  | { type: "dialogue"; ordinal: number; ts: string; payload: DialogueEntry }
   | { type: "op"; ordinal: number; ts: string; payload: { id: string; op: Op } }
   | { type: "action"; ordinal: number; ts: string; payload: { action: ClinicalAction; accepted: boolean } }
   | { type: "message"; ordinal: number; ts: string; payload: { agent: AgentRole; role: "user" | "assistant"; content: unknown } }
@@ -53,10 +63,25 @@ export interface SessionOptions {
   cwd?: string | null;
   /** Client-executed dynamic tools the front-end supports, e.g. ["walk_to"]. */
   dynamicTools?: readonly string[];
+  /**
+   * Built-in slash commands this front-end does not support (e.g. the web's
+   * ["quit", "export", "lang", …], which it handles through its own menus):
+   * left out of `/help` and `commands()`, and refused with a localised notice.
+   */
+  disabledCommands?: readonly string[];
   /** First transcript ordinal (a resumed transcript continues after the previous file's last ordinal). */
   transcriptOrdinal?: number;
   /** Restore from a previous session (resume). */
-  resume?: { sessionId: string; actions: ClinicalAction[]; messages?: Partial<Record<AgentRole, unknown[]>> };
+  resume?: {
+    sessionId: string;
+    actions: ClinicalAction[];
+    messages?: Partial<Record<AgentRole, unknown[]>>;
+    /**
+     * The examiner's dialogue (transcript `dialogue` items / `SessionSnapshot.dialogue`).
+     * Without it the dialogue is rebuilt from the messages and accepted actions.
+     */
+    dialogue?: DialogueEntry[];
+  };
   sessionId?: string;
   /** Clock for timestamps (ms since epoch); injectable for tests. */
   now?: () => number;
@@ -112,4 +137,12 @@ export interface SessionSnapshot {
   messages: Partial<Record<AgentRole, unknown[]>>;
   plan: { text: string; status: string }[];
   createdAt: string;
+  /**
+   * Ordinal the session's transcript recorder would stamp next (absent without
+   * a transcript). A front-end that resumes from this snapshot into the same
+   * transcript passes it as `transcriptOrdinal`, so the ordinals continue.
+   */
+  nextOrdinal?: number;
+  /** The examiner's dialogue so far (evidence for transcript-judged rubric items after a resume). */
+  dialogue?: DialogueEntry[];
 }

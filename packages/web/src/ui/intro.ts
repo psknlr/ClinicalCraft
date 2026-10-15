@@ -194,7 +194,10 @@ export class Intro {
   private library(selected: CaseCard | null): HTMLElement {
     const app = this.app;
     const cards = app.content.cards;
-    const specialties = [...new Set(cards.flatMap((c) => c.specialty))].sort((a, b) => specialtyLabel(a).localeCompare(specialtyLabel(b), getLocale()));
+    // One option per label: ids that share a label (e.g. older content's "pulmonology" and
+    // "respiratory-medicine", both 呼吸内科) are one filter.
+    const specialties = [...new Set(cards.flatMap((c) => c.specialty.map(specialtyLabel)))].sort((a, b) => a.localeCompare(b, getLocale()));
+    if (this.specialty && !specialties.includes(this.specialty)) this.specialty = ""; // a label from the previous language
     const settings = [...new Set(cards.map((c) => c.setting))];
     const search = h("input", {
       type: "search",
@@ -220,7 +223,7 @@ export class Intro {
         },
       },
       h("option", { value: "" }, tr("library.allSpecialties")),
-      specialties.map((s) => h("option", { value: s, selected: s === this.specialty }, specialtyLabel(s))),
+      specialties.map((label) => h("option", { value: label, selected: label === this.specialty }, label)),
     );
     const sett = h(
       "select",
@@ -250,7 +253,7 @@ export class Intro {
   }
 
   private matches(c: CaseCard): boolean {
-    if (this.specialty && !c.specialty.includes(this.specialty)) return false;
+    if (this.specialty && !c.specialty.some((id) => specialtyLabel(id) === this.specialty)) return false;
     if (this.setting && c.setting !== this.setting) return false;
     const q = this.query.trim().toLowerCase();
     if (!q) return true;
@@ -260,7 +263,7 @@ export class Intro {
       ...c.specialty,
       ...c.specialty.map(specialtyLabel),
       ...c.tags,
-      c.id,
+      // Not the id: ids name the diagnosis ("stemi" would find the chest-pain case).
       trMaybe(`setting.${c.setting}`, c.setting),
     ]
       .join(" ")

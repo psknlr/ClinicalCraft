@@ -585,6 +585,16 @@
           "sore penis"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "青霉素",
+          "过敏"
+        ],
+        "en": [
+          "penicillin",
+          "allerg"
+        ]
+      },
       "disclosure": "specific",
       "required": false,
       "phases": [
@@ -697,9 +707,10 @@
           "房事",
           "勃起功能",
           "那方面",
-          "有ed",
           "硬不起来",
-          "性生活"
+          "性生活",
+          "有ed吗",
+          "ed问题"
         ],
         "en": [
           "erectile",
@@ -711,6 +722,23 @@
           "ed",
           "impotent",
           "sex"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "高兴",
+          "兴趣",
+          "心情",
+          "情绪",
+          "工作",
+          "饮食",
+          "运动",
+          "睡眠"
+        ],
+        "en": [
+          "theed",
+          "emergency",
+          "casualty"
         ]
       },
       "disclosure": "specific",
@@ -6184,8 +6212,8 @@
         "en": "Review"
       },
       "hint": {
-        "zh-CN": "初诊的任务全部完成后，在“处置”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：相隔≥3个月仍升高说明白蛋白尿持续存在。",
-        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the Treat options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: still raised ≥ 3 months apart means persistent albuminuria."
+        "zh-CN": "初诊的任务全部完成后，在“处置”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：若相隔≥3个月两次均升高，说明白蛋白尿持续存在。",
+        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the Treat options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: if both are raised ≥ 3 months apart, the albuminuria is persistent."
       },
       "guidance": {
         "zh-CN": "安排3个月复诊；进入复诊后复评并调整治疗。",
@@ -8074,6 +8102,69 @@
         "locale": "en",
         "expect": [
           "hx-rv-sideeffects"
+        ]
+      },
+      {
+        "text": "你有ED吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-erectile"
+        ]
+      },
+      {
+        "text": "How is your sex life?",
+        "locale": "en",
+        "expect": [
+          "hx-erectile"
+        ]
+      },
+      {
+        "text": "有没有高兴不起来？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-mood"
+        ]
+      },
+      {
+        "text": "工作那方面怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-occupation"
+        ]
+      },
+      {
+        "text": "How's your mood?",
+        "locale": "en",
+        "expect": [
+          "hx-mood"
+        ]
+      },
+      {
+        "text": "外生殖器有没有瘙痒？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-genital"
+        ]
+      },
+      {
+        "text": "Any itching or redness of the penis?",
+        "locale": "en",
+        "expect": [
+          "hx-genital"
+        ]
+      },
+      {
+        "text": "Allergic to penicillin?",
+        "locale": "en",
+        "expect": [
+          "hx-allergy"
+        ]
+      },
+      {
+        "text": "对青霉素过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-allergy"
         ]
       }
     ],

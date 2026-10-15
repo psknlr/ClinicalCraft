@@ -8,6 +8,7 @@ import { dirname, isAbsolute, join, resolve } from "node:path";
 import { envLayer, mergeSettingsDetailed, validateSettingsLayer, type SettingsIssue, type SettingsLayer, type SettingsLayerData } from "../settings/merge.js";
 import type { ResolvedSettings } from "../settings/schema.js";
 import { clinicalcraftHome, expandHome, findProjectRoot, type Env } from "./home.js";
+import { isProjectTrusted, type ProjectSettingsTexts } from "./trust.js";
 
 export interface LoadSettingsOptions {
   cwd?: string;
@@ -25,6 +26,13 @@ export type LoadedSettings = ResolvedSettings & {
   issues: SettingsIssue[];
   /** Project root used for project/local settings. */
   projectRoot: string;
+  /**
+   * The user trusted this project (`clinicalcraft trust`) with its current
+   * settings files. Untrusted project/local layers lose hooks, provider
+   * headers and secret-bearing keys (issues with `code: "untrusted-project"`).
+   * True when the project has no settings files.
+   */
+  projectTrusted: boolean;
 };
 
 /** Path of the user settings file. */
@@ -37,7 +45,7 @@ export function projectSettingsPaths(root: string): { project: string; local: st
   return { project: join(root, ".clinicalcraft", "settings.json"), local: join(root, ".clinicalcraft", "settings.local.json") };
 }
 
-async function readJson(file: string): Promise<{ exists: boolean; value?: unknown; error?: string }> {
+async function readJson(file: string): Promise<{ exists: boolean; value?: unknown; error?: string; text?: string }> {
   let text: string;
   try {
     text = await readFile(file, "utf8");
@@ -46,9 +54,9 @@ async function readJson(file: string): Promise<{ exists: boolean; value?: unknow
     return { exists: true, error: `cannot read: ${(err as Error).message}` };
   }
   try {
-    return { exists: true, value: JSON.parse(text.replace(/^﻿/, "")) as unknown };
+    return { exists: true, text, value: JSON.parse(text.replace(/^﻿/, "")) as unknown };
   } catch (err) {
-    return { exists: true, error: `invalid JSON: ${(err as Error).message}` };
+    return { exists: true, text, error: `invalid JSON: ${(err as Error).message}` };
   }
 }
 
@@ -87,11 +95,14 @@ export async function loadSettings(options: LoadSettingsOptions = {}): Promise<L
   const files: string[] = [];
   const readIssues: SettingsIssue[] = [];
   const seen = new Set<string>();
+  // The bytes the repository layers were parsed from: trust is pinned to them.
+  const texts: ProjectSettingsTexts = { project: null, local: null };
   for (const c of candidates) {
     if (seen.has(c.file)) continue; // e.g. cwd = home: project file == user file
     seen.add(c.file);
     const result = await readJson(c.file);
     if (!result.exists) continue;
+    if ((c.source === "project" || c.source === "local") && result.text !== undefined) texts[c.source] = result.text;
     files.push(c.file);
     if (result.error) {
       readIssues.push({ source: c.source, file: c.file, path: "", message: result.error, severity: "error" });
@@ -102,13 +113,15 @@ export async function loadSettings(options: LoadSettingsOptions = {}): Promise<L
   layers.push(envLayer(env));
   if (options.flags && Object.keys(options.flags).length > 0) layers.push({ source: "flag", settings: resolvePathsIn(options.flags, cwd, env) });
 
+  const hasRepoLayer = layers.some((l) => l.source === "project" || l.source === "local");
+  const projectTrusted = hasRepoLayer ? await isProjectTrusted(root, env, texts) : true;
   const profile = options.profile ?? env.CLINICALCRAFT_PROFILE?.trim() ?? null;
-  const merged = mergeSettingsDetailed(layers, { profile: profile || null });
+  const merged = mergeSettingsDetailed(layers, { profile: profile || null, trustedProject: projectTrusted });
   if (profile && !Object.hasOwn(merged.profiles, profile)) {
     const known = Object.keys(merged.profiles);
     throw new Error(`Unknown settings profile "${profile}"${known.length ? ` (known: ${known.join(", ")})` : " (no profiles defined)"}`);
   }
-  return { ...merged.settings, files, issues: [...readIssues, ...merged.issues], projectRoot: root };
+  return { ...merged.settings, files, issues: [...readIssues, ...merged.issues], projectRoot: root, projectTrusted };
 }
 
 function isPlainObject(v: unknown): v is Record<string, unknown> {

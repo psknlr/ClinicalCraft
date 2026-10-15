@@ -31,7 +31,7 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
     const ctx = canvas.getContext("2d");
     const alarms = h("div", { class: "alarm-list", "aria-live": "polite" });
     const nibpText = h("span", { class: "small muted" });
-    let nibp: { sbp: number; dbp: number; at: number } | null = null;
+    let nibp: { sbp: number; dbp: number; at: number; none?: boolean } | null = null;
     const snapshot = (): VitalsSnapshot | null => {
       if (!linked) return null;
       return store.snapshot?.vitals ?? vitalsAt(c, game.session.session.state);
@@ -48,7 +48,7 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
           app.sound("beep");
           setTimeout(() => {
             const snap = vitalsAt(c, store.snapshot?.state ?? game.session.session.state);
-            nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute };
+            nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute, ...(snap.unmeasurable?.includes("sbp") ? { none: true } : {}) };
             nibpBtn.disabled = false;
             renderInfo();
           }, 1400);
@@ -63,19 +63,32 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
       alarms.append(h("h4", null, tr("monitor.alarms")));
       if (!linked) alarms.append(h("p", { class: "small muted" }, tr("monitor.notLinked")));
       else if (snap?.baselineOnly) alarms.append(h("p", { class: "notice" }, tr("monitor.baseline")));
-      else if (!snap?.alarms.length) alarms.append(h("p", { class: "small muted" }, tr("monitor.noAlarms")));
-      else
-        alarms.append(
-          h(
-            "ul",
-            { class: "alarms" },
-            snap.alarms.map((a) =>
-              h("li", { class: `alarm ${a.level}` }, h("b", null, tr(`monitor.level.${a.level}`)), " ", trMaybe(`vital.${a.vital}`, a.vital), " ", h("span", { class: "num" }, `${Math.round(a.value * 10) / 10} ${UNITS[a.vital] ?? ""}`)),
+      else {
+        // Cardiac arrest: vitals the monitor cannot read do not alarm on their placeholder 0 (hr says "no reading").
+        const unread = new Set<string>(snap?.unmeasurable ?? []);
+        const list = (snap?.alarms ?? []).filter((a) => a.vital === "hr" || !unread.has(a.vital));
+        if (!list.length) alarms.append(h("p", { class: "small muted" }, tr("monitor.noAlarms")));
+        else
+          alarms.append(
+            h(
+              "ul",
+              { class: "alarms" },
+              list.map((a) =>
+                h(
+                  "li",
+                  { class: `alarm ${a.level}` },
+                  h("b", null, tr(`monitor.level.${a.level}`)),
+                  " ",
+                  trMaybe(`vital.${a.vital}`, a.vital),
+                  " ",
+                  h("span", { class: "num" }, unread.has(a.vital) ? tr("monitor.noReading") : `${Math.round(a.value * 10) / 10} ${UNITS[a.vital] ?? ""}`),
+                ),
+              ),
             ),
-          ),
-        );
+          );
+      }
       if (snap && c.clock.mode === "simulated") alarms.append(h("p", { class: "small muted" }, tr("monitor.minute", { n: Math.round(snap.minute) }), c.clock.startTime ? ` · ${clockLabel(c.clock.startTime, snap.minute)}` : ""));
-      nibpText.textContent = nibp ? tr("monitor.nibpDone", { bp: `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
+      nibpText.textContent = nibp ? tr("monitor.nibpDone", { bp: nibp.none ? tr("monitor.noReading") : `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
     };
     renderInfo();
 

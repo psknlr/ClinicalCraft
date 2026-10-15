@@ -22,44 +22,143 @@ import { browserResolveProvider, type RuntimeChoice } from "./llm.js";
 import { resolveAgentSettings, type StoredSettings } from "./settings.js";
 import { SessionStore } from "./store.js";
 
-/** Transcript sink that appends JSONL items to `clinicalcraft serve` (falls back to memory on failure). */
+/**
+ * Largest NDJSON body per upload request. Browsers cap the bodies of
+ * `keepalive` requests (in flight together) at 64 KiB; staying below that
+ * lets the page-exit flush use `keepalive`, and keeps every request far below
+ * the server's body limit.
+ */
+export const TRANSCRIPT_CHUNK_BYTES = 60 * 1024;
+
+const encoder = new TextEncoder();
+
+/** Split transcript items into NDJSON bodies of at most `maxBytes` (an oversized single item gets a body of its own). */
+export function ndjsonChunks(items: readonly TranscriptItem[], maxBytes = TRANSCRIPT_CHUNK_BYTES): { body: string; count: number; bytes: number }[] {
+  const chunks: { body: string; count: number; bytes: number }[] = [];
+  let lines: string[] = [];
+  let bytes = 0;
+  for (const item of items) {
+    const line = `${JSON.stringify(item)}\n`;
+    const size = encoder.encode(line).length;
+    if (lines.length > 0 && bytes + size > maxBytes) {
+      chunks.push({ body: lines.join(""), count: lines.length, bytes });
+      lines = [];
+      bytes = 0;
+    }
+    lines.push(line);
+    bytes += size;
+  }
+  if (lines.length > 0) chunks.push({ body: lines.join(""), count: lines.length, bytes });
+  return chunks;
+}
+
+/**
+ * Transcript sink that appends JSONL items to `clinicalcraft serve` (and
+ * keeps a memory copy). Uploads are batched (1 s), sent in order as NDJSON
+ * chunks of ≤ 60 KB; after 3 consecutive network failures — or a refusal
+ * that retrying cannot fix (413 quota, 4xx) — it stops and reports it once
+ * through `onStopped`. `flushOnExit()` (page hide) sends what still fits in
+ * the browser's keepalive budget.
+ */
 export class HttpTranscriptSink implements TranscriptSink {
   readonly path = null;
   private buffer: TranscriptItem[] = [];
   private timer: ReturnType<typeof setTimeout> | null = null;
   private failures = 0;
+  private stopped = false;
+  private sending: Promise<void> = Promise.resolve();
   readonly memory = new MemoryTranscript();
 
-  constructor(private readonly sessionId: string) {}
+  constructor(
+    private readonly sessionId: string,
+    private readonly onStopped?: (reason: "network" | "refused") => void,
+    private readonly fetchImpl: typeof fetch = (...args) => fetch(...args),
+  ) {}
+
+  /** True once uploads stopped for good. */
+  get uploadsStopped(): boolean {
+    return this.stopped;
+  }
 
   write(item: TranscriptItem): void {
     this.memory.write(item);
-    if (this.failures >= 3) return;
+    if (this.stopped) return;
     this.buffer.push(item);
     if (!this.timer) this.timer = setTimeout(() => void this.flush(), 1000);
   }
 
-  async flush(): Promise<void> {
+  /** Upload everything buffered (in order, chunked); resolves when done. Never rejects. */
+  flush(): Promise<void> {
     if (this.timer) clearTimeout(this.timer);
     this.timer = null;
-    if (!this.buffer.length || this.failures >= 3) return;
-    const batch = this.buffer;
-    this.buffer = [];
-    try {
-      const res = await fetch(`/api/transcripts/${encodeURIComponent(this.sessionId)}`, {
-        method: "POST",
-        headers: { "content-type": "application/x-ndjson" },
-        body: batch.map((i) => JSON.stringify(i)).join("\n") + "\n",
-        keepalive: true,
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      this.failures = 0;
-    } catch {
-      this.failures++;
-      if (this.failures < 3) this.buffer.unshift(...batch);
+    this.sending = this.sending.then(() => this.drain(false));
+    return this.sending;
+  }
+
+  /**
+   * Page is going away (pagehide / hidden): send the buffer with `keepalive`
+   * — only what fits the browser's 64 KiB keepalive budget, the rest stays
+   * buffered (and is sent if the page comes back).
+   */
+  flushOnExit(): void {
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = null;
+    if (this.stopped || this.buffer.length === 0) return;
+    const chunk = ndjsonChunks(this.buffer)[0]!;
+    if (chunk.bytes > TRANSCRIPT_CHUNK_BYTES) return; // one huge item: not sendable with keepalive
+    const items = this.buffer.splice(0, chunk.count);
+    // Sent right away (the page may not get another task): it can overtake an upload in flight,
+    // which is harmless — replay orders items by ordinal.
+    void this.post(chunk.body, true).then((outcome) => {
+      if (outcome !== "ok") this.handleFailure(outcome, items);
+    });
+  }
+
+  private async drain(keepalive: boolean): Promise<void> {
+    while (!this.stopped && this.buffer.length > 0) {
+      const chunk = ndjsonChunks(this.buffer)[0]!;
+      const items = this.buffer.splice(0, chunk.count);
+      const outcome = await this.post(chunk.body, keepalive && chunk.bytes <= TRANSCRIPT_CHUNK_BYTES);
+      if (outcome !== "ok") {
+        this.handleFailure(outcome, items);
+        return;
+      }
     }
   }
+
+  private async post(body: string, keepalive: boolean): Promise<"ok" | "network" | "refused"> {
+    try {
+      const res = await this.fetchImpl(`/api/transcripts/${encodeURIComponent(this.sessionId)}`, {
+        method: "POST",
+        headers: { "content-type": "application/x-ndjson" },
+        body,
+        ...(keepalive ? { keepalive: true } : {}),
+      });
+      if (res.ok) {
+        this.failures = 0;
+        return "ok";
+      }
+      // Quota / bad request / auth: retrying the same body cannot succeed.
+      return res.status >= 400 && res.status < 500 && res.status !== 408 && res.status !== 429 ? "refused" : "network";
+    } catch {
+      return "network";
+    }
+  }
+
+  private handleFailure(outcome: "network" | "refused", items: TranscriptItem[]): void {
+    if (outcome === "network" && ++this.failures < 3) {
+      this.buffer.unshift(...items);
+      if (!this.timer) this.timer = setTimeout(() => void this.flush(), 1000 * 2 ** this.failures);
+      return;
+    }
+    this.stopped = true;
+    this.buffer = [];
+    this.onStopped?.(outcome);
+  }
 }
+
+/** Session commands the web front-end handles itself (`disabledCommands`: `/help` omits them, the session refuses them). */
+export const WEB_HANDLED_COMMANDS: readonly string[] = ["quit", "exit", "export", "clear", "lang", "provider", "model", "approval", "scope"];
 
 export interface AppSessionOptions {
   caseDef: CaseDefinition;
@@ -70,13 +169,15 @@ export interface AppSessionOptions {
   locale: string;
   served: boolean;
   resume?: SessionSnapshot | null;
+  /** Transcript uploads to the server stopped for good (served only). */
+  onTranscriptStopped?: (reason: "network" | "refused") => void;
 }
 
 export interface AppSession {
   readonly session: ClinicalSession;
   readonly store: SessionStore;
   readonly settings: ResolvedSettings;
-  readonly transcript: TranscriptSink;
+  readonly transcript: TranscriptSink & { flushOnExit?: () => void };
   /** Submit an op (logged into the store first, so the learner's own line renders immediately); `view` = the conversation it came from. */
   submit(op: Op, view?: string): string;
   /** Shorthand for a learner clinical action. */
@@ -115,7 +216,7 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
   let mode = o.choice.mode;
   const store = new SessionStore(o.caseDef);
   const sessionId = o.resume?.sessionId ?? newId();
-  const transcript: TranscriptSink = o.served ? new HttpTranscriptSink(sessionId) : new MemoryTranscript();
+  const transcript: TranscriptSink & { flushOnExit?: () => void } = o.served ? new HttpTranscriptSink(sessionId, o.onTranscriptStopped) : new MemoryTranscript();
 
   const resume = o.resume && o.resume.caseId === o.caseDef.id ? o.resume : null;
   if (resume) store.restore(resume.messages ?? {});
@@ -128,8 +229,12 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     sessionId,
     transcript,
     dynamicTools: ["walk_to"],
+    // Handled by the web UI itself (see ui/panels/conversation.ts webCommand): hidden from /help.
+    disabledCommands: WEB_HANDLED_COMMANDS,
     resolveProvider: browserResolveProvider(() => settings, () => mode),
-    ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {} } } : {}),
+    ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {}, ...(resume.dialogue?.length ? { dialogue: resume.dialogue } : {}) } } : {}),
+    // Same transcript file (served: sessions/web/<id>.jsonl): continue its ordinal sequence.
+    ...(resume && typeof resume.nextOrdinal === "number" && Number.isInteger(resume.nextOrdinal) && resume.nextOrdinal >= 0 ? { transcriptOrdinal: resume.nextOrdinal } : {}),
   });
 
   // The first events() iterator receives the startup backlog (session_configured, state_snapshot).

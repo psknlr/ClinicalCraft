@@ -431,8 +431,21 @@ export const ScenarioEventSchema = z
     atMinute: z.number().min(0).optional(),
     /** …or when this condition becomes true (both = whichever first). */
     when: ConditionSchema.optional(),
-    /** New baseline values from this point (e.g. arrest: hr 0, rhythm VF). */
+    /**
+     * New baseline values from this point (e.g. arrest: rhythm VF). Trend and
+     * effect contributions keep adding to them unless `absolute` is set. A
+     * cardiac-arrest rhythm (VF, asystole, PEA, VT with `sbp: 0`) forces the
+     * pulseless readings whatever the other values (docs/ARCHITECTURE.md §3.2).
+     */
     setVitals: VitalsSchema.partial().optional(),
+    /**
+     * Default false. When true, the numeric vitals in `setVitals` replace the
+     * model from the minute the event fires: for those vitals, trends that
+     * started (`startMinute`) and intervention effects whose onset
+     * (`at + onsetMinutes`) fell before that minute stop contributing.
+     * Later-starting trends and effects still add to the new value.
+     */
+    absolute: z.boolean().optional(),
     setFlags: z.array(IdSchema).default([]),
     /** Message announced by the nurse/monitor. */
     message: LocalizedTextSchema.optional(),
@@ -461,6 +474,14 @@ export const PhysiologySchema = z
     alarms: AlarmLimitsSchema.optional(),
     /** Deterministic jitter amplitude for monitor realism (0 = none). */
     noise: z.number().min(0).max(5).default(1),
+    /**
+     * Vitals a bedside monitor does not measure (glucose) are modelled for the
+     * engine (`vital` conditions, trends) but never shown, charted or alarmed
+     * until one of these investigations has been read (any phase): e.g.
+     * `{"glucose": ["poc-glucose"]}` — from then on it is charted at the
+     * bedside like a monitored vital.
+     */
+    revealedBy: z.record(VitalKeySchema, z.array(IdSchema)).default({}),
   })
   .strict();
 export type Physiology = z.infer<typeof PhysiologySchema>;

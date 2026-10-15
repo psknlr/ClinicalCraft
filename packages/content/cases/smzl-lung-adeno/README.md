@@ -39,7 +39,10 @@ left upper lung**. The case teaches:
 
 The seven original figures and the source PDF are copyrighted by their original
 rights holders. Each one is declared in `case.json` with `localOnly: true`, and
-`packages/content/cases/*/assets/` is git-ignored. Until they are installed, the
+`packages/content/cases/*/assets/` is git-ignored. `clinicalcraft import-v4`
+installs them as `cases/smzl-lung-adeno/<file>` under `assets/local/` or
+`~/.clinicalcraft/assets/`, and every front-end serves them at
+`/local-assets/cases/smzl-lung-adeno/<file>`. Until they are installed, the
 UI shows a placeholder.
 
 | asset id | file | used by |
@@ -154,13 +157,17 @@ hypertension items.
 
 ## Known limitations
 
-- The offline matcher has no negative keywords, so "家里有人得过肿瘤吗" /
-  "any family history of cancer?" selects the patient's own `lung` item as well
-  as `other` (both score 1.0), and "past medical history" also selects the
-  medication items ("medical" and "medication" share a 5-letter prefix).
-- `matchHistory` is not phase-aware. The phase-restricted items (`meds` /
-  `meds-post`, the post-only history) rely on the patient pipeline dropping
-  candidates the reducer would reject as `phase-locked`.
+- Only the medication items (`meds`, `meds-post`) carry `excludeKeywords`
+  (过敏 / allerg, so allergy questions reach `allergies`). "家里有人得过肿瘤吗" /
+  "any family history of cancer?" therefore still selects the patient's own
+  `lung` item as well as `other` (both score 1.0). "past medical history" /
+  "既往病史" selects `lung` and `pmh-htn` (in English `psh` also matches at 0.5,
+  below the 0.55 selection score), but no longer the medication items (the
+  matcher keeps "medical" ≁ "medication").
+- The phase-restricted items (`meds` / `meds-post`, the post-only history) rely
+  on the patient pipeline dropping candidates that are not available in the
+  current phase; `matchHistory` itself filters phases only when called with
+  `{ phase }`.
 - `abdct` is rated `essential` and `us` `useful`, although V4's chapter 2
   accepts either. A learner who reads only the ultrasound completes the chapter
   but sees `abdct` under "essential investigations missed".
@@ -173,7 +180,8 @@ hypertension items.
 npx tsx -e "import {CaseSchema} from './packages/core/src/schema/case.ts'; import fs from 'node:fs'; \
   const r = CaseSchema.safeParse(JSON.parse(fs.readFileSync('packages/content/cases/smzl-lung-adeno/case.json','utf8'))); \
   console.log(r.success ? 'VALID' : r.error.issues)"
-clinicalcraft case verify packages/content/cases/smzl-lung-adeno/case.json   # replays `solution` (verifyCase)
+clinicalcraft cases validate packages/content/cases/smzl-lung-adeno/case.json   # schema + integrity
+clinicalcraft cases verify smzl-lung-adeno   # replays `solution` (verifyCase) + the utterance corpus (takes an id, not a path)
 ```
 
 Completion and decision records are teaching-script measures. They are not a

@@ -1365,26 +1365,29 @@
           "换管路",
           "输注管路",
           "针头",
-          "多久换",
-          "部位",
           "留置针",
-          "扎在哪",
           "针扎",
           "扎针",
           "换管子",
           "管子多久",
           "输注管",
-          "多少天换一次"
+          "多少天换一次",
+          "扎的部位",
+          "输注部位",
+          "管路部位",
+          "多久换一次",
+          "针扎在哪"
         ],
         "en": [
           "infusion set",
           "cannula",
-          "set change",
-          "when did you change",
-          "site",
-          "how often change",
           "pump site",
-          "change your cannula"
+          "change your cannula",
+          "change your infusion set",
+          "change the set",
+          "changed the set",
+          "cannula site",
+          "insertion site"
         ]
       },
       "disclosure": "specific"
@@ -1452,42 +1455,65 @@
         "zh-CN": [
           "病假规则",
           "生病日规则",
-          "生病时",
           "生病怎么办",
-          "教过",
-          "糖尿病教育",
-          "怎么调",
           "胰岛素怎么调整",
-          "备用胰岛素",
           "备用笔",
-          "生病日",
           "备用的胰岛素笔",
-          "生病时胰岛素"
+          "生病时怎么调",
+          "生病时怎么处理",
+          "生病时该怎么",
+          "生病时胰岛素怎么",
+          "备用的胰岛素",
+          "胰岛素备用笔",
+          "有人教过",
+          "糖尿病教育课",
+          "接受过糖尿病教育"
         ],
         "en": [
           "sick-day rules",
           "sick day",
-          "taught",
           "diabetes education",
           "insulin when sick",
           "insulin when you're ill",
           "sick day plan",
           "backup pen",
           "spare insulin",
-          "insulin pen",
-          "insulin when ill"
+          "insulin when ill",
+          "adjust insulin",
+          "backup insulin",
+          "taught sick"
         ]
       },
       "disclosure": "specific",
       "excludeKeywords": {
         "zh-CN": [
           "漏打",
-          "没打"
+          "没打",
+          "打的",
+          "打了",
+          "还打",
+          "打没打",
+          "几天",
+          "多久",
+          "多长时间"
         ],
         "en": [
           "skip",
           "miss",
-          "omit"
+          "omit",
+          "doing your insulin",
+          "been doing",
+          "bolus",
+          "correction",
+          "howmanydays",
+          "howlong",
+          "dayshaveyou",
+          "haveyoutaken",
+          "didyoutake",
+          "haveyoubeentaking",
+          "haveyouhad",
+          "whileyouvebeen",
+          "whileyouwere"
         ]
       }
     },
@@ -1753,8 +1779,8 @@
           "酮症酸中毒",
           "以前也这样",
           "低血糖",
-          "住过icu",
-          "以前也有过"
+          "以前也有过",
+          "住过icu吗"
         ],
         "en": [
           "happened before",
@@ -1913,14 +1939,18 @@
           "达格列净",
           "恩格列净",
           "sglt2",
-          "减肥药"
+          "吃减肥药",
+          "过减肥药",
+          "用减肥药",
+          "减肥药物",
+          "减肥的药"
         ],
         "en": [
           "gliflozin",
           "sglt2",
           "dapagliflozin",
           "empagliflozin",
-          "weight-loss tablets"
+          "weight-loss tablets pills"
         ]
       },
       "disclosure": "specific"
@@ -2037,7 +2067,8 @@
           "大麻",
           "毒品",
           "娱乐性药物",
-          "吸毒"
+          "吸毒",
+          "吸过毒"
         ],
         "en": [
           "cannabis",
@@ -6620,8 +6651,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "与糖尿病专科商定：甘精胰岛素18 U皮下注射（≈ 泵每日基础总量18 U），随第一餐皮下注射门冬胰岛素（按她的碳水系数1 U:10 g）；暂不恢复胰岛素泵，待病愈并完成再教育后由专科安排换新管路重新上泵",
-        "en": "Agreed with the diabetes team: insulin glargine 18 U SC (≈ her pump's total daily basal of 18 U) and insulin aspart SC with her first meal by her ratio (1 U:10 g carbohydrate); the pump stays off until she is well and re-educated, then the team restarts it with a new set"
+        "zh-CN": "与糖尿病专科商定：甘精胰岛素皮下注射，剂量约等于泵的每日基础总量（以她本人或泵数据下载所示为准），随第一餐按她的碳水系数皮下注射门冬胰岛素；暂不恢复胰岛素泵，待病愈并完成再教育后由专科安排换新管路重新上泵",
+        "en": "Agreed with the diabetes team: insulin glargine SC at about her pump's total daily basal dose (as she or the pump download reports it) and insulin aspart SC with her first meal by her carbohydrate ratio; the pump stays off until she is well and re-educated, then the team restarts it with a new set"
       },
       "requires": [
         "medications"
@@ -6745,6 +6776,7 @@
     }
   ],
   "physiology": {
+    "revealedBy": { "glucose": ["poc-glucose"] },
     "baseline": {
       "hr": 118,
       "sbp": 100,
@@ -9737,6 +9769,147 @@
         "locale": "en",
         "expect": [
           "hx-ros-other"
+        ]
+      },
+      {
+        "text": "Do you have a spare insulin pen?",
+        "locale": "en",
+        "expect": [
+          "hx-sick-day-rules"
+        ]
+      },
+      {
+        "text": "生病时该怎么调胰岛素，有人教过你吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-sick-day-rules"
+        ]
+      },
+      {
+        "text": "While you've been ill, how have you been doing your insulin — meal boluses and corrections?",
+        "locale": "en",
+        "expect": [
+          "hx-insulin-omitted"
+        ]
+      },
+      {
+        "text": "Have you missed any insulin doses?",
+        "locale": "en",
+        "expect": [
+          "hx-insulin-omitted"
+        ]
+      },
+      {
+        "text": "你平时怎么用胰岛素？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-insulin-pump"
+        ]
+      },
+      {
+        "text": "泵怎么调的？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-insulin-pump"
+        ]
+      },
+      {
+        "text": "输注部位在哪里？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-infusion-set"
+        ]
+      },
+      {
+        "text": "How often do you change the set?",
+        "locale": "en",
+        "expect": [
+          "hx-infusion-set"
+        ]
+      },
+      {
+        "text": "Any change in your vision?",
+        "locale": "en",
+        "expect": [
+          "hx-ros-other"
+        ]
+      },
+      {
+        "text": "肚子哪里疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-abd-pain"
+        ]
+      },
+      {
+        "text": "Any weight change?",
+        "locale": "en",
+        "expect": [
+          "hx-weight-loss"
+        ]
+      },
+      {
+        "text": "吃过减肥药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-sglt2"
+        ]
+      },
+      {
+        "text": "Are you on dapagliflozin?",
+        "locale": "en",
+        "expect": [
+          "hx-sglt2"
+        ]
+      },
+      {
+        "text": "Are you trying to lose weight?",
+        "locale": "en",
+        "expect": [
+          "hx-weight-loss",
+          "hx-weight"
+        ]
+      },
+      {
+        "text": "最近体重有变化吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-weight-loss"
+        ]
+      },
+      {
+        "text": "吸过毒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-recreational-drugs"
+        ]
+      },
+      {
+        "text": "Do you use street drugs?",
+        "locale": "en",
+        "expect": [
+          "hx-recreational-drugs"
+        ]
+      },
+      {
+        "text": "你吸烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-smoking-alcohol"
+        ]
+      },
+      {
+        "text": "Do you drink alcohol?",
+        "locale": "en",
+        "expect": [
+          "hx-smoking-alcohol"
+        ]
+      },
+      {
+        "text": "Any difficulty breathing?",
+        "locale": "en",
+        "expect": [
+          "hx-breathing"
         ]
       }
     ]

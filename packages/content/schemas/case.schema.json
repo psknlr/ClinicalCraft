@@ -2057,6 +2057,9 @@
                     },
                     "additionalProperties": false
                   },
+                  "absolute": {
+                    "type": "boolean"
+                  },
                   "setFlags": {
                     "type": "array",
                     "items": {
@@ -2124,6 +2127,30 @@
               "minimum": 0,
               "maximum": 5,
               "default": 1
+            },
+            "revealedBy": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                }
+              },
+              "propertyNames": {
+                "enum": [
+                  "hr",
+                  "sbp",
+                  "dbp",
+                  "rr",
+                  "spo2",
+                  "temp",
+                  "gcs",
+                  "glucose",
+                  "etco2",
+                  "pain"
+                ]
+              },
+              "default": {}
             }
           },
           "required": [

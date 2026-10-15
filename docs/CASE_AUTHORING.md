@@ -6,10 +6,15 @@ A case is one JSON file, `packages/content/cases/<id>/case.json`, validated by
 explains provenance and teaching notes. Commands:
 
 ```bash
-clinicalcraft cases validate packages/content/cases/<id>/case.json   # schema + integrity
-clinicalcraft cases verify <id>                                      # replays `solution`
+clinicalcraft cases new <id>                                         # scaffold a schema-valid bilingual template + README
+clinicalcraft cases validate packages/content/cases/<id>/case.json   # schema + integrity (paths or --all)
+clinicalcraft cases verify <id>                                      # replays `solution` + the utterance corpus (ids or --all)
 clinicalcraft play <id> --provider offline                           # play it in the terminal
 ```
+
+(From a checkout, `clinicalcraft` is `npm run cc --`; see the root README.)
+A case outside `packages/content/cases` is found through the `contentDirs`
+setting: each listed directory holds `cases/<id>/case.json`.
 
 ## 1. Non-negotiables
 
@@ -106,7 +111,20 @@ clinicalcraft play <id> --provider offline                           # play it i
   `recoverPerMinute` for improvement); `events` for scripted turns (VF arrest if
   reperfusion is delayed, anaphylaxis biphasic warning…). Paediatric cases set
   `alarms` for age.
-* Interventions: correct name, `dose` text (drug, dose, route, frequency), `risk`
+* The bedside shows only what a monitor measures (hr, BP, rr, SpO₂, T, EtCO₂)
+  plus nursing observations (GCS, pain). A modelled glucose stays engine-only
+  until a glucose test is read: list it in `physiology.revealedBy`
+  (`{"glucose": ["poc-glucose"]}`). Arrest events need not set `pain` (an
+  unresponsive patient has no pain score; the monitor shows no reading).
+* Scenario `message`s are spoken by staff: one that fires on time alone must
+  not name the diagnosis or its treatment before the learner has established
+  it (split it, e.g. `{"any": [{"read": "ctpa"}, {"decided": "risk-strat"}]}`
+  vs. its negation — see the PE case).
+* Interventions: correct name, `dose` text (drug, dose, route, frequency — the
+  learner sees it before giving anything, so write formulas such as
+  "0.9 mg/kg, max 90 mg" or "adjust if creatinine clearance < 30 mL/min",
+  never patient values the learner must elicit or measure: weight, creatinine
+  clearance, pump settings; put the concrete numbers in `response`), `risk`
   (high = irreversible/dangerous: thrombolysis, intubation, defibrillation,
   high-dose insulin bolus), `effects` with realistic magnitude/onset/ramp
   (e.g. salbutamol neb: spo2 +3 over 5–10 min; IM adrenaline: sbp +25 within 5 min,
@@ -119,9 +137,15 @@ clinicalcraft play <id> --provider offline                           # play it i
 ## 7. Learning design
 
 * 4–6 `objectives` (chapters) in logical order with `hint`, `guidance` and
-  `waypoints` (capability / role targets).
+  `waypoints` (capability / role targets). The `hint` is the scored hint
+  (shown for done objectives and on request); `guidance` is the quest-card and
+  journal copy. Neither may state results the learner has not obtained.
 * 2–5 `decisions` (single best answer or select-all) with educational feedback
-  on **every** option, unlocked by `requires` once the evidence exists.
+  on **every** option, unlocked by `requires` once the evidence exists. A
+  locked decision is shown only by number and `need`; once unlocked its
+  prompt may use evidence its `requires` guarantees, but must not state
+  another decision's answer unless it `requires` that decision. Options are
+  presented in a seeded shuffle, so list them in any order.
 * Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
   attempt correct), `attempted`, `intervened`, `phase`, `flag`, `objective`, `vital`,
@@ -130,14 +154,22 @@ clinicalcraft play <id> --provider offline                           # play it i
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).
 * `npcs`: nurse (triage handover, logistics), consultants who interpret results
-  the learner already has, attending (Socratic). Knowledge must not exceed the case.
+  the learner already has, attending (Socratic). Knowledge must not exceed the case,
+  and must not contain result findings or derived values (another study's
+  report, a creatinine clearance, a score total): model-backed NPCs get it in
+  their prompt, and results reach them through `get_results` only once read.
+  Keep it to interpretive/teaching knowledge and boundaries.
 * `debrief`: conclusion, 3–6 key reasoning points, boundaries, unknowns, 3–6
   teaching points, guideline references, and the formative-assessment notice.
 * `solution`: an array of typed `ClinicalAction`s — the reference action path (start → … → finish) that completes all
   objectives and answers all decisions correctly. `clinicalcraft cases verify`
   must pass.
-* `extensions.testUtterances`: 15–40 `{ "text", "locale", "expect": [historyIds] }`
-  paraphrases (both locales) used as a matcher regression corpus.
+* `extensions.testUtterances`: at least 15–40 `{ "text", "locale", "expect": [historyIds] }`
+  paraphrases (both locales; the built-in cases carry several dozen) used as a
+  matcher regression corpus. `cases verify` applies the patient pipeline's
+  selection rule to each: the history items scoring ≥ 0.55 must include every
+  expected id and be led by one of them; `expect: []` must select nothing.
+  A missing corpus is a warning.
 
 ## 8. Facilities
 

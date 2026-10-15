@@ -6,7 +6,7 @@
  * the SAME tool path (approval gate, hooks, events) as an LLM clinician.
  */
 import type { CaseDefinition, ClinicalAction, SessionState } from "@clinicalcraft/core";
-import { clinicianOfflineSteps, stepAlreadySatisfied } from "../agents/offline.js";
+import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallOutcome, TurnStopReason } from "../loop.js";
 import type { EventMsg } from "../protocol.js";
 import type { ProviderErrorInfo } from "../providers/types.js";
@@ -23,6 +23,9 @@ export interface AgentOutcome {
   done?: boolean;
   toolCalls?: number;
 }
+
+/** Longest single `wait` tool call (its input schema's maximum). */
+const MAX_WAIT_MINUTES = 240;
 
 /** Default autopilot turn budget. */
 export const DEFAULT_AUTOPILOT_TURNS = 12;
@@ -72,18 +75,43 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
       host.narrate(turnId, last);
       return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
     }
-    const step = steps[host.cursor.value++]!;
-    if (stepAlreadySatisfied(step, host.state())) continue;
+    const step = steps[host.cursor.value]!;
+    if (stepAlreadySatisfied(step, host.state())) {
+      host.cursor.value++;
+      continue;
+    }
     if (step.kind === "action") {
+      host.cursor.value++;
       host.dispatch({ ...step.action, by: "agent" } as ClinicalAction);
       continue;
     }
-    last = step.narration;
-    host.narrate(turnId, step.narration);
-    const outcome = await host.executeTool(turnId, step.tool, step.args, signal);
+    // A wait the timeline needs before this step: the result of a read ordered later than in the
+    // reference run (learner actions, resume), or the rest of a reference wait (until its clock;
+    // skipped steps cost no time, so a session can be behind the reference timeline).
+    const pending =
+      step.action.type === "advance-time" && step.refClockAfter !== undefined
+        ? step.refClockAfter - host.state().clock
+        : step.action.type === "advance-time"
+          ? step.action.minutes
+          : minutesUntilReadable(host.caseDef, host.state(), step.action);
+    let run: OfflineClinicianStep = step;
+    if (pending > 0 && (step.action.type !== "advance-time" || pending !== step.action.minutes)) {
+      const minutes = Math.min(MAX_WAIT_MINUTES, Math.max(0.01, Math.round(pending * 100) / 100));
+      run = stepForAction(host.caseDef, { type: "advance-time", minutes }, host.locale);
+    }
+    if (run.kind !== "tool") {
+      host.cursor.value++;
+      continue;
+    }
+    const clockBefore = host.state().clock;
+    last = run.narration;
+    host.narrate(turnId, run.narration);
+    const outcome = await host.executeTool(turnId, run.tool, run.args, signal);
     executed++;
     if (outcome.status === "interrupted" || signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
     if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
+    // An inserted wait leaves the step in place (re-checked next round) unless time could not pass.
+    if (run === step || host.state().clock === clockBefore) host.cursor.value++;
   }
   return { status: "end_turn", text: last, grounded: [], done: host.state().finished, toolCalls: executed };
 }

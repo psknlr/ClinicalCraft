@@ -65,6 +65,55 @@ function labelsFor(locale: string) {
   return locale.toLowerCase().startsWith("zh") ? LABELS["zh-CN"] : LABELS.en;
 }
 
+/**
+ * Rhythm names for the header. A monitor names the rhythm it detects; it
+ * never prints an ECG interpretation (ST changes are the 12-lead's job — the
+ * waveform still shows them).
+ */
+const RHYTHM_LABELS: Record<string, { zh: string; en: string }> = {
+  sinus: { zh: "窦性心律", en: "Sinus rhythm" },
+  "sinus-tachycardia": { zh: "窦性心动过速", en: "Sinus tachycardia" },
+  "sinus-bradycardia": { zh: "窦性心动过缓", en: "Sinus bradycardia" },
+  "atrial-fibrillation": { zh: "心房颤动", en: "Atrial fibrillation" },
+  "atrial-flutter": { zh: "心房扑动", en: "Atrial flutter" },
+  svt: { zh: "室上性心动过速", en: "SVT" },
+  "ventricular-tachycardia": { zh: "室性心动过速", en: "Ventricular tachycardia" },
+  "ventricular-fibrillation": { zh: "心室颤动", en: "Ventricular fibrillation" },
+  asystole: { zh: "心搏停止", en: "Asystole" },
+  pea: { zh: "无脉电活动", en: "PEA" },
+  paced: { zh: "起搏心律", en: "Paced rhythm" },
+};
+
+/** Alarm names (the header's "!!! SpO₂ 86"). */
+const VITAL_NAMES: Record<string, { zh: string; en: string }> = {
+  hr: { zh: "心率", en: "HR" },
+  sbp: { zh: "收缩压", en: "SBP" },
+  dbp: { zh: "舒张压", en: "DBP" },
+  rr: { zh: "呼吸", en: "RR" },
+  spo2: { zh: "血氧", en: "SpO₂" },
+  temp: { zh: "体温", en: "TEMP" },
+  gcs: { zh: "GCS", en: "GCS" },
+  glucose: { zh: "血糖", en: "GLUCOSE" },
+  etco2: { zh: "EtCO₂", en: "EtCO₂" },
+  pain: { zh: "疼痛", en: "PAIN" },
+};
+
+const zhLocale = (locale: string) => locale.toLowerCase().startsWith("zh");
+
+/** Localised rhythm name (unknown ids are shown as they are). */
+export function rhythmLabel(rhythm: string, locale: string): string {
+  const l = RHYTHM_LABELS[rhythm];
+  return l ? (zhLocale(locale) ? l.zh : l.en) : rhythm;
+}
+
+/** Header alarm text, e.g. "!!! 血糖 3.4" — one decimal for temperature and glucose. */
+export function alarmText(alarm: { vital: string; value: number; level: "warning" | "critical" }, locale: string): string {
+  const name = VITAL_NAMES[alarm.vital];
+  const label = name ? (zhLocale(locale) ? name.zh : name.en) : alarm.vital;
+  const digits = alarm.vital === "temp" || alarm.vital === "glucose" ? 1 : 0;
+  return `${alarm.level === "critical" ? "!!!" : "!!"} ${label} ${Number.isFinite(alarm.value) ? alarm.value.toFixed(digits) : "--"}`;
+}
+
 function alarmLevel(s: Snapshot, vital: string): "warning" | "critical" | null {
   if (!s) return null;
   let lvl: "warning" | "critical" | null = null;
@@ -169,8 +218,11 @@ export const monitorRenderer: MonitorRenderer = {
 
     // header
     const headH = Math.round(H * 0.1);
-    const critical = (s?.alarms ?? []).filter((a) => a.level === "critical");
-    const warnings = (s?.alarms ?? []).filter((a) => a.level === "warning");
+    // A vital the monitor cannot read (arrest) has no value to alarm on: the arrhythmia alarm covers it.
+    const unread = new Set<string>(s?.unmeasurable ?? []);
+    const readable = (s?.alarms ?? []).filter((a) => !unread.has(a.vital));
+    const critical = readable.filter((a) => a.level === "critical");
+    const warnings = readable.filter((a) => a.level === "warning");
     const arrhythmia = live ? ARRHYTHMIA_ALARMS[s?.vitals.rhythm ?? ""] ?? null : null;
     const alarmActive = live && (!!arrhythmia || critical.length > 0 || warnings.length > 0);
     ctx.fillStyle = alarmActive && flashOn ? (critical.length || arrhythmia ? "#5a0d0a" : "#4a3708") : MONITOR_COLORS.header;
@@ -182,7 +234,7 @@ export const monitorRenderer: MonitorRenderer = {
     ctx.fillStyle = "#9fd8b4";
     const rhythm = (s?.vitals.rhythm ?? "sinus") as RhythmName;
     const morph = (s?.vitals.ecg ?? "normal") as MorphologyName;
-    const leftText = !s ? L.noPatient : baseline ? L.baseline : `II · ${rhythm.toUpperCase()}${morph !== "normal" ? " · " + morph.toUpperCase() : ""}`;
+    const leftText = !s ? L.noPatient : baseline ? L.baseline : `II · ${rhythmLabel(rhythm, locale)}`;
     ctx.fillText(leftText, 6 * u, headH / 2, W * 0.62);
     ctx.textAlign = "right";
     if (alarmActive && arrhythmia) {
@@ -191,7 +243,7 @@ export const monitorRenderer: MonitorRenderer = {
     } else if (alarmActive) {
       const a = critical[0] ?? warnings[0];
       ctx.fillStyle = critical.length ? MONITOR_COLORS.critical : MONITOR_COLORS.warning;
-      if (flashOn || !critical.length) ctx.fillText(`${critical.length ? "!!!" : "!!"} ${a.vital.toUpperCase()} ${fmt(a.value, a.vital === "temp" ? 1 : 0)}`, W - 6 * u, headH / 2);
+      if (flashOn || !critical.length) ctx.fillText(alarmText(a, locale), W - 6 * u, headH / 2);
     } else if (s) {
       ctx.fillStyle = "#6f8f7c";
       ctx.fillText(`T+${fmt(s.minute)} ${L.minute}`, W - 6 * u, headH / 2);
@@ -271,16 +323,16 @@ export const monitorRenderer: MonitorRenderer = {
     ctx.fillStyle = "#0a0a0a";
     ctx.fillRect(waveW, headH, W - waveW, H - headH);
     const boxes: { key: string; label: string; value: string; unit: string; color: string; weight: number; sub?: string }[] = [
-      { key: "hr", label: L.hr, value: live && drawRate(rhythm, hr) > 0 ? fmt(v?.hr) : live ? "---" : "--", unit: L.bpm, color: MONITOR_COLORS.ecg, weight: 1.3 },
-      { key: "spo2", label: L.spo2, value: live && !isPulseless(rhythm) ? fmt(v?.spo2) : live ? "---" : "--", unit: "%", color: MONITOR_COLORS.spo2, weight: 1.1 },
+      { key: "hr", label: L.hr, value: live && drawRate(rhythm, hr) > 0 && !unread.has("hr") ? fmt(v?.hr) : live ? "---" : "--", unit: L.bpm, color: MONITOR_COLORS.ecg, weight: 1.3 },
+      { key: "spo2", label: L.spo2, value: live && !isPulseless(rhythm) && !unread.has("spo2") ? fmt(v?.spo2) : live ? "---" : "--", unit: "%", color: MONITOR_COLORS.spo2, weight: 1.1 },
       {
         key: "sbp",
         label: L.nibp,
-        value: live ? `${fmt(v?.sbp)}/${fmt(v?.dbp)}` : "--/--",
+        value: live && !unread.has("sbp") ? `${fmt(v?.sbp)}/${fmt(v?.dbp)}` : live ? "---/---" : "--/--",
         unit: "mmHg",
         color: MONITOR_COLORS.nibp,
         weight: 1,
-        sub: live ? `(${fmt(v?.map)})` : "",
+        sub: live && !unread.has("sbp") ? `(${fmt(v?.map)})` : "",
       },
       {
         key: "rr",
@@ -297,7 +349,7 @@ export const monitorRenderer: MonitorRenderer = {
     const colH = H - headH - 4 * u;
     for (const [i, b] of boxes.entries()) {
       const bh = (colH * b.weight) / totalW;
-      const lvl = live ? alarmLevel(s, b.key) ?? (b.key === "sbp" ? alarmLevel(s, "dbp") : null) : null;
+      const lvl = live && !unread.has(b.key) ? alarmLevel(s, b.key) ?? (b.key === "sbp" ? alarmLevel(s, "dbp") : null) : null;
       if (lvl && (flashOn || lvl === "warning")) {
         ctx.fillStyle = lvl === "critical" ? "#7a1410" : "#5a4208";
         ctx.fillRect(colX - 2 * u, y, colW + 4 * u, bh - 2 * u);

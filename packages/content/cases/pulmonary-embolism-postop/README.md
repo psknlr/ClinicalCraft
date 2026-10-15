@@ -64,8 +64,10 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   * At 35 min without anticoagulation the nurse prompts and mentions the held dose (`anticoag-prompted`).
 * **Decompensation.** At 60 min without anticoagulation she becomes **high-risk PE**: SBP ≈ 84,
   HR ≈ 139, GCS 14, SpO2 ≈ 88 % on nasal O2 (flag `high-risk-pe`). At 75 min, if neither PERT nor
-  reperfusion has happened, the attending arrives and models the rescue plan (SBP ≈ 78). In that
-  branch the following become *indicated*:
+  reperfusion has happened, the attending arrives (SBP ≈ 78): once the diagnosis is established (CTPA
+  read or the risk-class decision answered) he models the rescue plan (`ev-high-risk-escalation`);
+  before that he only calls the shock and asks for the learner's working diagnosis, without naming PE
+  or the treatment (`ev-shock-escalation-undiagnosed`). In that branch the following become *indicated*:
   * noradrenaline
   * UFH (with bolus)
   * PERT
@@ -267,9 +269,9 @@ clinicalcraft cases verify pulmonary-embolism-postop      # reference solution: 
 clinicalcraft play pulmonary-embolism-postop --provider offline
 ```
 
-`extensions.testUtterances` has 64 bilingual paraphrases and serves as the history-matcher
-regression corpus. That is above the 15–40 in CASE_AUTHORING §7 because 24 tricky ones were
-added over two reviews: colloquial Chinese, text-speak, typos and abbreviations such as "有木有咳血",
+`extensions.testUtterances` has 72 bilingual paraphrases (41 zh-CN, 31 en) and serves as the
+history-matcher regression corpus. That is above the 15–40 in CASE_AUTHORING §7 because tricky
+ones were added over successive reviews: colloquial Chinese, text-speak, typos and abbreviations such as "有木有咳血",
 "疼几分钟了", "腿肚子疼不疼", "did u get ur clexane last nite", "any LOC?", "NKDA?" and "any wt loss?".
 
 Matcher results:
@@ -277,7 +279,7 @@ Matcher results:
 * Every utterance passes the patient pipeline's selection rule (score ≥ 0.55, top hit expected),
   with no ties and no extra facts revealed.
 * Each history item's own canonical question selects that item (84/84).
-* recall@3 is 1.00 in both locales for the corpus (64/64). On two held-out learner probe sets it
+* recall@3 is 1.00 in both locales for the corpus (72/72). On two held-out learner probe sets it
   was 0.70 (113 utterances) and 0.85 (60 utterances) before the pass-3 keyword review, and is 1.00
   on both now. Fresh negative probes (blood group, vaccines, headache, pacemaker, name) select
   no fact.

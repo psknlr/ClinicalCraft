@@ -20,7 +20,7 @@ import {
   type CaseDefinition,
 } from "@clinicalcraft/core";
 import { isZh, joinList, rt } from "../session/i18n.js";
-import { actorFor, strArg, type ToolArgs } from "./clinical.js";
+import { actorFor, lockedDecisionLabel, strArg, type ToolArgs } from "./clinical.js";
 import { formatResult, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
 import type { ToolContext, ToolDefinition } from "./types.js";
 
@@ -182,7 +182,8 @@ export function progressText(ctx: Pick<ToolContext, "caseDef" | "locale" | "stat
     if (objective.guidance) lines.push(`${isZh(L) ? "指引" : "Guidance"}: ${t(objective.guidance, L)}`);
   }
   const decisions = availableDecisions(c, s).filter((d) => !d.decided);
-  for (const d of decisions) lines.push(`- ${t(d.decision.prompt, L)}: ${d.unlocked ? rt(L, "label.unlocked") : t(d.decision.need, L)}`);
+  // A locked decision's prompt may state results not yet obtained: name it, show what it needs.
+  for (const d of decisions) lines.push(`- ${d.unlocked ? t(d.decision.prompt, L) : lockedDecisionLabel(c, d.decision.id, L)}: ${d.unlocked ? rt(L, "label.unlocked") : t(d.decision.need, L)}`);
   lines.push(
     `${rt(L, "label.history")}: ${s.asked.length}/${c.history.length} · ${rt(L, "label.exam")}: ${s.examined.length}/${c.exam.length} · ${rt(L, "label.orders")}: ${s.orders.length} · ${rt(L, "label.hints")}: ${s.hints}`,
   );

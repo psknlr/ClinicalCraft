@@ -18,6 +18,7 @@ import {
   matchOrders,
   orderStatus,
   orderWarnings,
+  presentedOptions,
   progress,
   resultFor,
   t,
@@ -29,6 +30,7 @@ import {
   type MatchHit,
   type ReduceResult,
   type RejectionCode,
+  type SessionState,
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
 import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
@@ -222,6 +224,24 @@ const LIST_LABEL: Record<ListKind, RuntimeKey> = {
 };
 
 /** Names/ids only — never findings, results or correct answers. */
+/** "Decision 3" — what a locked decision is called instead of its prompt. */
+export function lockedDecisionLabel(c: CaseDefinition, decisionId: string, locale: string): string {
+  return rt(locale, "label.decisionN", { n: c.decisions.findIndex((d) => d.id === decisionId) + 1 });
+}
+
+/**
+ * Phases a learner (or clinician model) may be told about: the current one,
+ * learner-switchable ones, the initial phase and phases the session has
+ * worked in (orders, reads). Future automatic phases stay unannounced.
+ */
+export function visiblePhases(c: CaseDefinition, s: SessionState): Set<string> {
+  const shown = new Set<string>([s.phase, c.initialPhase ?? c.phases[0]?.id ?? s.phase]);
+  for (const p of c.phases) if (p.learnerSwitchable) shown.add(p.id);
+  for (const o of s.orders) shown.add(o.phase);
+  for (const key of s.seen) shown.add(key.slice(key.lastIndexOf("@") + 1));
+  return new Set(c.phases.map((p) => p.id).filter((id) => shown.has(id)));
+}
+
 export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, kind: ListKind): { text: string; data: unknown[] } {
   const c = ctx.caseDef;
   const s = ctx.state();
@@ -261,26 +281,39 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
     case "decisions":
       for (const d of availableDecisions(c, s)) {
         const status = d.decided ? "label.decided" : d.unlocked ? "label.unlocked" : "label.locked";
+        // A locked decision's prompt and options can state results not yet obtained (or another
+        // decision's answer): only a placeholder and what it still needs.
+        if (!d.unlocked && !d.decided) {
+          lines.push(`- [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)} (${rt(L, status)})`);
+          lines.push(`    ${t(d.decision.need, L)}`);
+          data.push({ id: d.decision.id, prompt: null, kind: d.decision.kind, unlocked: false, decided: false, need: t(d.decision.need, L), options: [] });
+          continue;
+        }
+        const options = presentedOptions(c, d.decision);
         lines.push(`- [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, status)})`);
-        if (!d.unlocked && !d.decided) lines.push(`    ${t(d.decision.need, L)}`);
-        for (const o of d.decision.options) lines.push(`    [${o.id}] ${t(o.text, L)}`);
+        for (const o of options) lines.push(`    [${o.id}] ${t(o.text, L)}`);
         data.push({
           id: d.decision.id,
           prompt: t(d.decision.prompt, L),
           kind: d.decision.kind,
           unlocked: d.unlocked,
           decided: d.decided,
-          options: d.decision.options.map((o) => ({ id: o.id, text: t(o.text, L) })),
+          options: options.map((o) => ({ id: o.id, text: t(o.text, L) })),
         });
       }
       break;
-    case "phases":
-      for (const p of c.phases) {
+    case "phases": {
+      // Future automatic phases are not announced (their labels can name what will happen).
+      const shown = visiblePhases(c, s);
+      for (const p of c.phases.filter((x) => shown.has(x.id))) {
         const current = p.id === s.phase;
         lines.push(`- [${p.id}] ${t(p.label, L)}${mark(current, "label.current")}${p.learnerSwitchable ? "" : ` (${rt(L, "label.locked")})`}`);
         data.push({ id: p.id, label: t(p.label, L), current, switchable: p.learnerSwitchable });
       }
+      const hidden = c.phases.length - shown.size;
+      if (hidden > 0) lines.push(`  ${rt(L, "tool.list.laterPhases", { count: hidden })}`);
       break;
+    }
     default: {
       const never: never = kind;
       return never;
@@ -773,7 +806,8 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
     lines.push(`${rt(L, "label.decisions")}:`);
     for (const d of decisions) {
       const status = d.decided ? "label.decided" : d.unlocked ? "label.unlocked" : "label.locked";
-      lines.push(`  - [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, status)})`);
+      const prompt = d.unlocked || d.decided ? t(d.decision.prompt, L) : lockedDecisionLabel(c, d.decision.id, L);
+      lines.push(`  - [${d.decision.id}] ${prompt} (${rt(L, status)})`);
     }
   }
   const objective = currentObjective(c, s);

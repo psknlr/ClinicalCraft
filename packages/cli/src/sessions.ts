@@ -12,7 +12,9 @@ import { resolveSessionRef } from "./session.js";
 export async function sessionsList(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const settings = await loadCliSettings(ctx);
   const limit = flagPositiveInt(args, "limit", 10_000, ctx.locale) ?? 20;
-  const sessions = await listSessions(ctx.env, { dir: settings.transcripts.dir, limit });
+  // Web uploads (`serve`'s POST /api/transcripts) are untrusted input: listed only on request.
+  const web = flagBool(args, "web");
+  const sessions = await listSessions(ctx.env, { dir: settings.transcripts.dir, limit, web });
   if (flagBool(args, "json")) {
     ctx.print(JSON.stringify(sessions, null, 2));
     return EXIT.ok;
@@ -23,7 +25,7 @@ export async function sessionsList(ctx: CliContext, args: ParsedArgs): Promise<n
   }
   const rows = [[ctx.t("col.id"), ctx.t("col.case"), ctx.t("col.started"), ctx.t("col.file")]];
   // A transcript without session_meta (e.g. a partial web upload) has its path as id: show the file name instead.
-  for (const s of sessions) rows.push([s.id === s.path ? basename(s.path, ".jsonl") : s.id, s.caseId || "-", s.startedAt.replace("T", " ").replace(/\.\d+Z$/, "Z"), ctx.show(s.path)]);
+  for (const s of sessions) rows.push([`${s.id === s.path ? basename(s.path, ".jsonl") : s.id}${s.origin === "web" ? " (web)" : ""}`, s.caseId || "-", s.startedAt.replace("T", " ").replace(/\.\d+Z$/, "Z"), ctx.show(s.path)]);
   ctx.print(table(rows, { header: true, maxCell: 80 }));
   ctx.print(ctx.out.dim(ctx.t("sessions.resumeHint")));
   return EXIT.ok;

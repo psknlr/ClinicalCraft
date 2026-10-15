@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseLearnerInput } from "./router.js";
+import { parseLearnerInput, resolveAgentAlias } from "./router.js";
 
 describe("parseLearnerInput", () => {
   it("routes slash commands with arguments", () => {
@@ -14,6 +14,18 @@ describe("parseLearnerInput", () => {
     expect(parseLearnerInput("@Attending, any hint?")).toEqual({ kind: "message", to: "attending", text: "any hint?" });
     expect(parseLearnerInput("＠nurse：血压多少")).toEqual({ kind: "message", to: "nurse", text: "血压多少" });
     expect(parseLearnerInput("@radiologist")).toEqual({ kind: "message", to: "radiologist", text: "" });
+  });
+
+  it("resolves Chinese role names, with or without a space (the CLI, exec and MCP route like the web)", () => {
+    expect(parseLearnerInput("@护士 现在血压多少？")).toEqual({ kind: "message", to: "nurse", text: "现在血压多少？" });
+    expect(parseLearnerInput("＠护士，现在血压多少")).toEqual({ kind: "message", to: "nurse", text: "现在血压多少" });
+    expect(parseLearnerInput("@护士现在血压多少")).toEqual({ kind: "message", to: "nurse", text: "现在血压多少" });
+    expect(parseLearnerInput("@护士长 床位安排好了吗")).toEqual({ kind: "message", to: "nurse", text: "床位安排好了吗" });
+    expect(parseLearnerInput("@上级医师 我的思路对吗")).toEqual({ kind: "message", to: "attending", text: "我的思路对吗" });
+    // An alias for an agent the case does not have stays plain text.
+    expect(parseLearnerInput("@家属 你好", ["patient", "nurse"])).toEqual({ kind: "message", to: null, text: "@家属 你好" });
+    expect(resolveAgentAlias("护士")).toBe("nurse");
+    expect(resolveAgentAlias("@Nurse")).toBe("nurse");
   });
 
   it("sends plain text to the current interlocutor and escapes //", () => {

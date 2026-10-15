@@ -253,7 +253,8 @@ export class GameWorldLink {
       if (loc) return loc;
     }
     const from = world ? { x: world.position.x, z: world.position.z } : undefined;
-    const hit = resolveWaypoint(this.o.facility, this.o.catalogs, target, { ...(from ? { from } : {}), locale, ...(this.o.slotId ? { slotId: this.o.slotId } : {}) });
+    // Bedside kit (monitor, pumps, ECG cart…) means the patient's own, wherever the learner stands.
+    const hit = resolveWaypoint(this.o.facility, this.o.catalogs, target, { ...(from ? { from } : {}), locale, ...(this.o.slotId ? { slotId: this.o.slotId, preferPatientSlot: true } : {}) });
     if (hit) return hit;
     return world?.locate(target) ?? null;
   }

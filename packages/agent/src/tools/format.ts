@@ -74,15 +74,27 @@ export function vitalWithUnit(key: VitalKey, value: number): string {
 
 const TREND_ARROW: Record<string, string> = { "-1": "↓", "0": "", "1": "↑" };
 
-/** One-line monitor summary: "HR 88/min · BP 120/80 mmHg (MAP 93) · …". */
+/** What the monitor shows for a vital it cannot read (cardiac arrest: `VitalsSnapshot.unmeasurable`). */
+export function noReading(locale: string): string {
+  return isZh(locale) ? "测不出" : "no reading";
+}
+
+/**
+ * One-line monitor summary: "HR 88/min · BP 120/80 mmHg (MAP 93) · …".
+ * Vitals the monitor cannot read (cardiac arrest) show "no reading", never
+ * their placeholder 0; vitals the snapshot leaves out (an unmeasured glucose,
+ * a pain score the patient cannot give) are not mentioned.
+ */
 export function formatVitals(snapshot: VitalsSnapshot, locale: string): string {
   const v = snapshot.vitals;
-  const arrow = (k: VitalKey) => TREND_ARROW[String(snapshot.trend[k] ?? 0)] ?? "";
+  const unread = new Set(snapshot.unmeasurable ?? []);
+  const nr = noReading(locale);
+  const arrow = (k: VitalKey) => (unread.has(k) ? "" : (TREND_ARROW[String(snapshot.trend[k] ?? 0)] ?? ""));
   const parts: string[] = [];
-  parts.push(`${vitalLabel("hr", locale)} ${v.hr}/min${arrow("hr")}`);
-  parts.push(`${isZh(locale) ? "血压" : "BP"} ${v.sbp}/${v.dbp} mmHg${arrow("sbp")} (MAP ${v.map})`);
+  parts.push(`${vitalLabel("hr", locale)} ${unread.has("hr") ? nr : `${v.hr}/min`}${arrow("hr")}`);
+  parts.push(`${isZh(locale) ? "血压" : "BP"} ${unread.has("sbp") ? nr : `${v.sbp}/${v.dbp} mmHg${arrow("sbp")} (MAP ${v.map})`}`);
   parts.push(`${vitalLabel("rr", locale)} ${v.rr}/min${arrow("rr")}`);
-  parts.push(`SpO₂ ${v.spo2}%${arrow("spo2")}`);
+  parts.push(`SpO₂ ${unread.has("spo2") ? nr : `${v.spo2}%`}${arrow("spo2")}`);
   parts.push(`${vitalLabel("temp", locale)} ${v.temp} °C${arrow("temp")}`);
   const optional: VitalKey[] = ["gcs", "glucose", "etco2", "pain"];
   for (const k of optional) {
@@ -93,10 +105,12 @@ export function formatVitals(snapshot: VitalsSnapshot, locale: string): string {
   return parts.join(" · ");
 }
 
-/** Alarm list ("SpO₂ 86% (critical)"). */
+/** Alarm list ("SpO₂ 86% (critical)"); during an arrest only the hr/rhythm alarm, never "SpO₂ 0%". */
 export function formatAlarms(snapshot: VitalsSnapshot, locale: string): string {
-  if (snapshot.alarms.length === 0) return rt(locale, "tool.vitals.none");
-  const list = snapshot.alarms.map((a) => `${vitalLabel(a.vital, locale)} ${vitalWithUnit(a.vital, a.value)} (${rt(locale, a.level === "critical" ? "level.critical" : "level.warning")})`);
+  const unread = new Set(snapshot.unmeasurable ?? []);
+  const alarms = snapshot.alarms.filter((a) => a.vital === "hr" || !unread.has(a.vital));
+  if (alarms.length === 0) return rt(locale, "tool.vitals.none");
+  const list = alarms.map((a) => `${vitalLabel(a.vital, locale)} ${unread.has(a.vital) ? noReading(locale) : vitalWithUnit(a.vital, a.value)} (${rt(locale, a.level === "critical" ? "level.critical" : "level.warning")})`);
   return rt(locale, "tool.vitals.alarms", { alarms: list.join(isZh(locale) ? "；" : "; ") });
 }
 

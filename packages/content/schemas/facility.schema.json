@@ -775,6 +775,79 @@
                 "items": {
                   "$ref": "#/definitions/Capability"
                 }
+              },
+              "extraParts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "m": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "p": {
+                      "type": "array",
+                      "minItems": 3,
+                      "maxItems": 3,
+                      "items": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "s": {
+                      "type": "array",
+                      "minItems": 3,
+                      "maxItems": 3,
+                      "items": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "r": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "anim": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "blink",
+                        "spin",
+                        "pulse",
+                        "slide"
+                      ],
+                      "default": "none"
+                    }
+                  },
+                  "required": [
+                    "m",
+                    "p",
+                    "s"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "hideParts": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
               }
             },
             "required": [

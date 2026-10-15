@@ -43,10 +43,12 @@ server, MCP server) that all speak one protocol.
 package.json                npm workspaces, scripts
 tsconfig.base.json          NodeNext ESM, strict
 vitest.config.ts            one test runner for every package (src aliases)
-docs/                       ARCHITECTURE (this), CASE_AUTHORING, PROVIDERS, PROTOCOL,
-                            FACILITIES, ASSETS, DESIGN_PRINCIPLES
+docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, front-ends),
+                            CASE_AUTHORING, FACILITIES, ASSETS, DESIGN_PRINCIPLES
+scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA)
 packages/core               @clinicalcraft/core     zod schemas + pure engine
-packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs + node loader
+packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs, JSON Schemas (data only;
+                                                    loaded by `loadContent` in @clinicalcraft/agent/node)
 packages/agent              @clinicalcraft/agent    runtime ("." isomorphic, "./node" fs/child_process)
 packages/cli                @clinicalcraft/cli      `clinicalcraft` binary
 packages/server             @clinicalcraft/server   HTTP server (web host + LLM proxy + content API)
@@ -62,7 +64,7 @@ Conventions:
 * Node ≥ 22 (global `fetch`, `ReadableStream`, `DecompressionStream`).
 * No `Date.now()`/`Math.random()` inside `@clinicalcraft/core` — determinism. Use the seeded PRNG in `core/src/engine/random.ts`.
 * Every package exports from `src/index.ts`; tests live next to code as `*.test.ts` (vitest).
-* Runtime dependencies are deliberately few: `zod` (core), `@anthropic-ai/sdk` (agent), `three` (web). Everything else is node built-ins.
+* Runtime dependencies are deliberately few: `zod` (core, agent), `@anthropic-ai/sdk` (agent), `three` (web). Everything else is node built-ins.
 * Workspace packages are consumed from source in tests/dev via aliases (vitest.config.ts, vite.config.ts) and from `dist/` when built.
 
 ## 2. Content model (`@clinicalcraft/core/src/schema/*`)
@@ -83,6 +85,10 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     phrases that argue *against* the item in the offline matcher (§3.3).
     Every locale's phrases apply to every utterance, so `parseCase` does not
     warn about a locale missing from them.
+  * `physiology.revealedBy` — `{vital: investigationId[]}`, default `{}`;
+    a vital the monitor does not measure (glucose) is shown, charted and
+    alarmed only once one of these investigations has been read (§3.2);
+    unknown ids are integrity errors.
   * `investigations[].alternativeTo` — investigation ids, default `[]`; a
     mutual "can stand in for" link used by `assess()` (§3.4).
   * `solution` — `ClinicalAction[]` (validated with `ClinicalActionSchema`
@@ -144,12 +150,16 @@ evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean
 progress(c, s): { objectives: { id: string; done: boolean; doneAt?: number; current: boolean }[]; currentIndex: number; done: number; total: number; complete: boolean }
 currentWaypoint(c, s): string | null                    // first waypoint of current objective whose `unless` is false
 availableDecisions(c, s): { decision: Decision; unlocked: boolean; decided: boolean }[]
+presentedOptions(c, decision): Option[]                 // options in presentation order: a deterministic shuffle seeded by case + decision id (every front-end; ids unchanged)
 resultFor(c, investigationId, phase): Result | null     // null = no record in that phase
 resultKey(investigationId, phase): string               // `${id}@${phase}`
 orderStatus(c, s): { order: OrderRecord; ready: boolean; read: boolean }[]
-vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute)
+vitalsAt(c, s, minute?: number): VitalsSnapshot         // pure function of (case, state, minute); only `shownVitals` (§3.2)
+shownVitals(c, s): Set<VitalKey>; alarmingVitals(c, s): Set<VitalKey>   // what the bedside shows / may alarm on (§3.2)
+MONITORED_VITALS, OBSERVED_VITALS                       // hr sbp dbp rr spo2 temp etco2 / gcs pain
 interface VitalsSnapshot { minute: number; vitals: Vitals & { map: number }; alarms: { vital: VitalKey; level: "warning" | "critical"; value: number }[]; trend: Partial<Record<VitalKey, -1 | 0 | 1>>;
-                           baselineOnly?: boolean }      // true only for cases without `physiology` (placeholder values; no alarms/trend)
+                           baselineOnly?: boolean;       // true only for cases without `physiology` (placeholder values; no alarms/trend)
+                           unmeasurable?: VitalKey[] }   // only during a cardiac-arrest rhythm (§3.2): vitals the monitor cannot read (value 0)
 
 // matching (offline NLU used by UI, CLI, scripted agents and as RAG hints for LLM agents)
 normalizeQuery(text: string): string                    // lower-case, strip whitespace, full-width → ASCII punctuation (V4 rules)
@@ -183,13 +193,23 @@ placementCapabilities(f, catalogs, placementId): string[]
 facilityCapabilities(f, catalogs): Set<string>          // every placement's capabilities ∪ PERSONAL_KIT
 regionAt(f, x, z, locale): string                       // smallest room containing the point → building name → outdoorRegion
 assignPatientSlot(f, c): PatientSlot | null             // first slot accepting c.setting
-resolveWaypoint(f, catalogs, target, options?: { from?: { x: number; z: number }; locale?: string; slotId?: string }): { x: number; z: number; label: string } | null
+resolveWaypoint(f, catalogs, target, options?: { from?: { x: number; z: number }; locale?: string; slotId?: string; preferPatientSlot?: boolean }): { x: number; z: number; label: string } | null
                                                         // "patient" | "board" | "atlas" | capability | room id | room kind | placement id (order in §3.4)
 
 // utilities
 createRng(seed: number): () => number                   // V4 LCG: k = k * 1664525 + 1013904223 >>> 0
+hashString(text): number; seedFrom(...parts): number    // deterministic seeds (e.g. noise per case/minute/vital)
 t, tList, normalizeLocale, …                            // i18n.ts
 CAPABILITIES, VITAL_KEYS, RHYTHMS, …                    // constants
+
+// lower-level helpers, also exported (used by front-ends, tests and tooling)
+issuesFromZodError, contentWarnings, formatPath         // parse.ts
+conditionRefs, parseResultKey, isOrderReady, currentObjective
+vitalValue, alarmsAt, alarmLevel, alarmLimitsFor, roundVital, trendContribution, effectFraction,
+DEFAULT_ALARM_LIMITS, NOISE_AMPLITUDE, NORMAL_ADULT_VITALS, PHYSIOLOGICAL_RANGES          // physiology.ts
+arrestKind(base): "vf-asystole" | "pea-pvt" | null; applyArrest; UNMEASURABLE_IN_ARREST; ARREST_MAX_ETCO2   // arrest.ts (§3.2)
+countCriticalAlarms(c, s): number                       // assessment.ts
+checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE           // facility.ts
 ```
 
 ### 3.1 Reducer semantics
@@ -252,10 +272,46 @@ CAPABILITIES, VITAL_KEYS, RHYTHMS, …                    // constants
   where amplitudes are hr 2, sbp 2, dbp 1, rr 1, spo2 0.5, temp 0.05, etco2 1.
 * clamp to physiological ranges (hr 0–250, sbp 0–260, dbp 0–160, rr 0–60,
   spo2 40–100, temp 30–43, gcs 3–15 (rounded), glucose 0.5–60, etco2 0–100, pain 0–10).
+* **Absolute events** — a scenario event with `absolute: true` (default
+  false) *replaces* rather than re-bases: for each numeric vital in its
+  `setVitals`, from the minute it fired, trends whose `startMinute` and
+  intervention effects whose onset (`at + onsetMinutes`) fall **before**
+  that minute stop contributing; trends/effects starting at or after it
+  still add. The latest fired absolute event per vital wins; a later
+  non-absolute event only changes the baseline. An absolute event that sets
+  no numeric vital draws an integrity warning.
+* **Cardiac-arrest rhythms** (`arrestKind(base)`, `engine/arrest.ts`) — the
+  rhythm in force (baseline + fired `setVitals`) overrides the sum above,
+  whatever the trends/effects/noise:
+  * `ventricular-fibrillation`, `asystole` (`"vf-asystole"`): hr, sbp, dbp,
+    map and spo2 read 0;
+  * `pea`, and `ventricular-tachycardia` when that baseline has `sbp: 0`
+    (pulseless VT) (`"pea-pvt"`): sbp, dbp, map, spo2 read 0, hr keeps the
+    modelled electrical rate (trends/effects/noise still apply to it);
+    VT with any other sbp is perfusing and modelled normally;
+  * both: etco2, when the case models it, is capped at 10 (never invented);
+    the snapshot lists `unmeasurable` (`["hr","sbp","dbp","spo2"]` or
+    `["sbp","dbp","spo2"]`; spo2 0 bypasses its 40–100 clamp and means "no
+    reading") whose trend arrows are 0; hr always alarms **critical**
+    regardless of the case's hr limits (other vitals alarm on their limits,
+    e.g. sbp/spo2 0 are critical with the adult defaults); `vital`
+    conditions see the same overridden values.
+  Returning to a perfusing rhythm (ROSC event) restores the additive model
+  (set `absolute` on that event to drop pre-arrest drug effects/trends).
 * Alarm limits: case `physiology.alarms` overrides defaults
   (adult: hr 50/120 critical 40/150; sbp 90/180 critical 80/220; rr 10/24
   critical 8/30; spo2 low 92 critical 88; temp 36/38.3 critical 35/40;
   gcs low 13 critical 8; glucose 3.9/15 critical 3/25).
+* **What the bedside shows** (grounding rule 2 — nobody has measured the
+  rest): `MONITORED_VITALS` (hr, sbp, dbp, rr, spo2, temp, etco2) are shown
+  and alarm; `OBSERVED_VITALS` (gcs, pain — nursing observations) are shown
+  but never raise a monitor alarm; any other vital (glucose) is engine-only
+  (`vital` conditions, trends) until one of its `physiology.revealedBy`
+  investigations has been read, and from then on is shown and alarms like a
+  monitored one. `vitalsAt` leaves hidden vitals out of `vitals`, `trend`
+  and `alarms`, and `alarmsAt` (hence `vitals.alarm` events and
+  `countCriticalAlarms`) only covers `alarmingVitals`. A self-reported pain
+  score is left out while the patient cannot give one (arrest, GCS ≤ 8).
 * Cases without `physiology` return a fixed normal adult snapshot flagged
   as `baseline only` (UI shows "not recorded" style).
 
@@ -282,8 +338,11 @@ for every locale (cross-lingual); score = max over phrases of:
   `-ology` (pathological ~ pathology, oncological ~ oncology) and a small
   lemma table (`ENGLISH_LEMMAS`: meds / medicine(s) / medicated →
   medication, abdominal → abdomen, …). Two tokens (`tokensMatch`) match
-  when equal, when one (≥ 4 letters) prefixes the other (breath ~
-  breathless), or when they share a ≥ 5-letter prefix after which **both**
+  when equal, when one prefixes the other — with any ending when the shorter
+  has ≥ 6 letters (breath ~ breathless), only an inflectional ending
+  (`-s`, `-ed`, `-ing`, `-er`, `-y`, `-ful`, `-ness`, `-less`…) when it has
+  4–5 (pain ~ painful, but hear ≁ heart, back ≁ background, heart ≁
+  heartburn) —, or when they share a ≥ 5-letter prefix after which **both**
   end within 3 letters — 4 letters when the shared prefix has ≥ 8 — (allergy
   ~ allergic, nausea ~ nauseous, anticoagulant ~ anticoagulation,
   prophylaxis ~ prophylactic). So medical ≁ medication, history ≁
@@ -357,7 +416,10 @@ Behaviour the implementation fixes where the summaries above are silent:
   `outdoorRegion`. `resolveWaypoint(f, catalogs, target, {from, locale,
   slotId})`: `"patient"` → slot `slotId` (default the first slot);
   `"board"`/`"atlas"` → nearest placement with that interaction kind; any
-  other target tries, in order, capability (nearest placement providing it) →
+  other target tries, in order, capability (nearest placement providing it;
+  with `preferPatientSlot` the slot's linked `monitor`, then the nearest
+  provider in the slot's room, first — the web uses it so a waypoint names
+  the patient's own bedside kit wherever the learner stands) →
   room id (room centre) → room kind (nearest room) → placement id. No match →
   `null`. "Nearest" is measured from `from` (default the facility spawn);
   labels use `locale` (default zh-CN).
@@ -380,11 +442,13 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   (preceptor), `examiner`, `clinician` (autopilot). Custom agents in
   `.clinicalcraft/agents/*.md`. Each NPC has a tool allow-list and a
   grounding contract (§4.2).
-* **Providers** — one interface, two wire protocols: `anthropic` (official
-  `@anthropic-ai/sdk`, Messages API streaming) and `openai` (raw fetch,
-  Chat Completions SSE; OpenAI, xAI Grok, Zhipu GLM, DeepSeek, Moonshot, Qwen,
-  OpenRouter, Ollama, LM Studio). Plus `offline` (deterministic responders,
-  no network) and `proxy` (browser → `clinicalcraft serve`).
+* **Providers** — one interface, two wire protocols: `anthropic-messages`
+  (official `@anthropic-ai/sdk`, Messages API streaming; Anthropic and the
+  Anthropic-compatible Zhipu and Moonshot endpoints) and
+  `openai-chat-completions` (raw fetch, Chat Completions SSE; OpenAI, xAI
+  Grok, Zhipu GLM, Z.ai, DeepSeek, Moonshot, Qwen, OpenRouter, Ollama, LM
+  Studio). Plus `offline` (deterministic responders, no network) and `proxy`
+  (browser → `clinicalcraft serve`). Catalogue: PROTOCOL §5.
 * **Tools** — clinical action tools wrap `reduce`; each has a JSON schema,
   a `risk(args, ctx)` classifier and `readOnly`. The **approval gate**
   applies `approvalMode` + allow/ask/deny rules before execution.
@@ -395,9 +459,17 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
 * **Settings** — layered: defaults < user `~/.clinicalcraft/settings.json` <
   project `.clinicalcraft/settings.json` < local `.clinicalcraft/settings.local.json`
   < env < CLI flags < profile. Memory: `CLINICALCRAFT.md` (user, project, nested; `@path` imports).
+  The project and local files live in a directory the user may have cloned:
+  project settings never carry secrets (provider `apiKey`/`apiKeyEnv`,
+  non-loopback `baseUrl`, `server.host`/`server.token` are dropped), and
+  until the user trusts the project (`clinicalcraft trust`; a user-only store
+  in `<home>/trusted-projects.json` keyed by the root's realpath and pinned to
+  a digest of both files) both layers also lose `hooks` and provider
+  `headers`, and the local file gets the project restrictions. Dropped keys
+  are reported on stderr, not only with `--verbose` (PROTOCOL §7).
 * **Transcripts** — JSONL "rollouts" (every Op, Event, ClinicalAction) under
-  `~/.clinicalcraft/sessions/YYYY/MM/DD/<id>.jsonl`; resume = replay actions
-  + restore conversations.
+  `~/.clinicalcraft/sessions/YYYY/MM/DD/<YYYY-MM-DDTHH-MM-SSZ>-<id>.jsonl`
+  (UTC); resume = replay actions + restore conversations.
 
 ### 4.1 Approval modes
 
@@ -410,7 +482,8 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
 | `bypass`  | allow         | allow    | allow| allow | bypassPermissions / Codex never (headless, benchmarks) |
 
 Rules (`permissions.allow|ask|deny`, Claude Code syntax `tool(pattern)` with
-`*` glob, e.g. `intervene(thrombolysis*)`, `order(*)`, `examine`) are checked
+`*` glob over tool names from PROTOCOL §3, e.g. `intervene(thrombolysis*)`,
+`order_test(*)`, `examine`) are checked
 deny → ask → allow before the mode table. An "approve for session" answer
 adds an in-memory allow rule (Grok CLI "don't ask again this session").
 
@@ -424,7 +497,8 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 1. **Route** — out-of-fiction requests (asking the "patient" for real medical
    advice, prompt-injection, meta questions) get an in-character deflection and
    a `warning` event; they never reach the fact selector.
-2. **Select** — `matchHistory(utterance)`: hits ≥ 0.55 are selected (≤ 3);
+2. **Select** — `matchHistory(utterance)`, keeping items available in the
+   current phase: hits ≥ 0.55 are selected (≤ 3, within 0.25 of the best);
    0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
    canonical question — never answers), strict JSON `{factIds, clarify}`
    restricted to the candidate enum; nothing → `fallbackUnknown` (or the
@@ -439,6 +513,9 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 4. **Verify** — numbers, units, drug names and dates in `say` must appear in
    the answers of `usedFactIds` (or persona text); otherwise the reply is
    replaced by the authored answer(s) and `grounding: "template"` is logged.
+   The `nonverbal` cue passes the same check and is dropped (with a warning)
+   when it is long, has a number, names a sign or measurement, or shares
+   words with an exam finding not yet examined (`checkNonverbal`).
 5. **Offline** — steps 1-2 deterministic, step 3 = authored answer verbatim.
 
 Alternative pipeline **tool** (`"tool"`): the patient model receives the fact
@@ -462,8 +539,10 @@ spoken by the patient — those come from engine actions.
   `@nurse …` addressing, `/commands`), `exec`/`-p` headless with
   `--output-format text|json|stream-json`, `--autopilot`, case tooling,
   `serve`, `mcp`, `import-v4`, `eval`.
-* **server** — `node:http`: static web, `/api/content/*`, `/api/assets/*`,
+* **server** — `node:http`: static web, `GET /api/health`, `/api/content/*`,
   `/api/providers`, `POST /api/llm/stream` (provider-neutral SSE proxy; keys
-  stay server-side), bound to 127.0.0.1 by default.
+  stay server-side), `POST /api/transcripts/:id`, local-only assets at
+  `/local-assets/*`; bound to 127.0.0.1 by default (any other host needs a
+  token). Routes: PROTOCOL §11.
 * **mcp** — stdio JSON-RPC 2.0 MCP server exposing clinical tools so Claude
   Code / Codex / Grok CLI can play the clinician.

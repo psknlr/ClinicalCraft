@@ -91,6 +91,10 @@ export class SessionStore {
   readonly toolCalls: ToolCallView[] = [];
   readonly answers = new Map<string, AnswerRecord[]>();
   readonly interventions = new Map<string, InterventionOutcome>();
+  /** Objectives the learner took a (scored) hint for in this session — the journal shows their hint text. */
+  readonly hinted = new Set<string>();
+  /** First refusal/problem per submission id (error or warning event, engine rejection) — e.g. an order that was not placed. */
+  readonly failures = new Map<string, string>();
   /** An autopilot submission is being processed. */
   autopilotRunning = false;
   private readonly streams = new Map<string, ChatItem>();
@@ -381,6 +385,7 @@ export class SessionStore {
         this.assessing = false;
         break;
       case "clinical_event":
+        if (msg.event.type === "action.rejected" && ev.id && !this.failures.has(ev.id)) this.failures.set(ev.id, msg.event.message);
         this.foldDomain(msg.event, at, L);
         break;
       case "warning":
@@ -388,6 +393,7 @@ export class SessionStore {
         if (msg.type === "error") this.assessing = false;
         const where = this.views.get(ev.id);
         const text = msg.message.trim();
+        if (ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
         if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at });
         break;
       }
@@ -422,6 +428,9 @@ export class SessionStore {
         }
         break;
       }
+      case "hint.used":
+        if (event.objectiveId) this.hinted.add(event.objectiveId);
+        break;
       case "decision.answered": {
         const list = this.answers.get(event.decisionId) ?? [];
         list.push({ optionIds: event.optionIds, correct: event.correct, firstTry: event.firstTry });

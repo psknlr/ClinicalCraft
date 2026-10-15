@@ -3,8 +3,8 @@
  * spoken by the nurse/monitor (critical-result call-through, alarms, scenario
  * announcements). Results are never quoted — the learner must read them.
  */
-import { t, type CaseDefinition, type DomainEvent } from "@clinicalcraft/core";
-import { investigationName, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
+import { t, type CaseDefinition, type DomainEvent, type VitalKey } from "@clinicalcraft/core";
+import { investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
 import { rt } from "./i18n.js";
 
 export interface EventReaction {
@@ -13,8 +13,18 @@ export interface EventReaction {
   staffLine?: { agent: "nurse"; speaker: "nurse" | "monitor"; text: string };
 }
 
-/** Reactions to one domain event (empty for most events). */
-export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale: string): EventReaction[] {
+/** What the reactions may know about the bedside at the time. */
+export interface ReactionContext {
+  /** Vitals the monitor cannot read right now (cardiac arrest — `VitalsSnapshot.unmeasurable`). */
+  unmeasurable?: readonly VitalKey[];
+}
+
+/**
+ * Reactions to one domain event (empty for most events). An alarm on a
+ * vital the monitor cannot read (arrest: sbp/spo2 "0") is not announced as a
+ * reading; the hr alarm says there is no reading.
+ */
+export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale: string, context: ReactionContext = {}): EventReaction[] {
   const L = locale;
   switch (event.type) {
     case "result.ready": {
@@ -26,8 +36,10 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       ];
     }
     case "vitals.alarm": {
+      const unread = context.unmeasurable?.includes(event.vital) ?? false;
+      if (unread && event.vital !== "hr") return [];
       const vital = vitalLabel(event.vital, L);
-      const value = vitalWithUnit(event.vital, event.value);
+      const value = unread ? noReading(L) : vitalWithUnit(event.vital, event.value);
       const level = rt(L, event.level === "critical" ? "level.critical" : "level.warning");
       return [
         { notification: { level: event.level, title: rt(L, "notify.alarm.title"), body: rt(L, "notify.alarm.body", { vital, value, level }) } },

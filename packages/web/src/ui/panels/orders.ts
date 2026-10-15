@@ -24,8 +24,9 @@ export function orderAndOpen(app: App, game: Game, inv: Investigation, placement
   const phase = s.phase;
   const key = `${inv.id}@${phase}`;
   const existing = s.orders.find((o) => o.key === key);
+  let submission: string | null = null;
   if (!existing) {
-    app.act({ type: "order", investigationId: inv.id, ...(placementId ? { at: placementId } : {}) });
+    submission = app.act({ type: "order", investigationId: inv.id, ...(placementId ? { at: placementId } : {}) });
     const simulatedWait = game.caseDef.clock.mode === "simulated" && inv.turnaroundMinutes > 0;
     if (simulatedWait) {
       app.toast(ct(inv.name), tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }));
@@ -34,7 +35,7 @@ export function orderAndOpen(app: App, game: Game, inv: Investigation, placement
     // Risky orders wait for the approval dialog; the report opens from the evidence grid afterwards.
     if (inv.risk === "moderate" || inv.risk === "high") return;
   }
-  app.open("report", { investigationId: inv.id, phase, back, justOrdered: !existing });
+  app.open("report", { investigationId: inv.id, phase, back, ...(submission ? { orderSubmission: submission } : {}) });
 }
 
 function candidateButton(app: App, game: Game, inv: Investigation, placementId: string, query: string): HTMLElement {

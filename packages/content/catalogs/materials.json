@@ -361,6 +361,14 @@
       "color": "#f6f1e3",
       "pattern": "noise",
       "variance": 0.04
+    },
+    {
+      "id": "led-blue",
+      "color": "#4f9dff",
+      "pattern": "flat",
+      "variance": 0,
+      "emissive": "#4f9dff",
+      "emissiveIntensity": 1.2
     }
   ],
   "equipment": []

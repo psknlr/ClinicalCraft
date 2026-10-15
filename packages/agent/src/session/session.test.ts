@@ -1,13 +1,14 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { parseCase, type CaseDefinition, type DomainEvent } from "@clinicalcraft/core";
+import { parseCase, replay, type CaseDefinition, type DomainEvent } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
-import { loadMiniCase, makeSession, msgsOf, testSettings, counterIds, steppingClock } from "../__fixtures__/harness.js";
+import { loadMiniCase, makeSession, msgsOf, testSettings, counterIds, steppingClock, waitFor } from "../__fixtures__/harness.js";
 import type { AgentEvent, ApprovalDecision } from "../protocol.js";
-import { textScript, toolCallScript } from "../providers/scripted.js";
-import { MemoryTranscript, replayTranscript } from "../transcript.js";
+import { ScriptedProvider, textScript, toolCallScript } from "../providers/scripted.js";
+import { MemoryTranscript, replayTranscript, resumedRuntimeConfig } from "../transcript.js";
+import { listOptionsText } from "../tools/clinical.js";
 import { isDurableEvent } from "./events.js";
-import { createSession } from "./session.js";
+import { createSession, type CreateSessionOptions } from "./session.js";
 
 function loadSmzl(): CaseDefinition | null {
   const path = fileURLToPath(new URL("../../../content/cases/smzl-lung-adeno/case.json", import.meta.url));
@@ -117,6 +118,50 @@ describe("domain events → notifications, nurse lines, snapshots, hooks", () =>
     expect(seen).toEqual(expect.arrayContaining(["session.started", "order.placed", "result.ready", "objective.completed"]));
   });
 
+  it("staff lines and button answers are spoken in their own turn (turn_started → agent_message → turn_complete → idle)", async () => {
+    const t = await makeSession();
+    await t.session.run({ type: "clinical_action", action: { type: "ask", itemId: "smoking", via: "button" } });
+    await t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ecg" } });
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 40 } }); // critical ECG, alarm, scenario line
+    const spoken = t.events.map((e, i) => ({ e, i })).filter(({ e }) => e.msg.type === "agent_message");
+    // the authored answer, the critical-result call, two SpO₂ alarms and the scenario line
+    expect(spoken.map(({ e }) => (e.msg as { agent: string }).agent)).toEqual(["patient", "nurse", "nurse", "nurse", "nurse"]);
+    const turnIds = new Set<string>();
+    for (const { e, i } of spoken) {
+      const m = e.msg as Extract<typeof e.msg, { type: "agent_message" }>;
+      turnIds.add(m.turnId);
+      const sameTurn = t.events.map((x, j) => ({ x, j })).filter(({ x }) => (x.msg as { turnId?: string }).turnId === m.turnId);
+      expect(sameTurn.map(({ x }) => x.msg.type)).toEqual(["turn_started", "agent_message", "turn_complete", "turn_phase"]);
+      expect(sameTurn[0]!.x.msg).toMatchObject({ type: "turn_started", agent: m.agent });
+      expect(sameTurn[2]!.x.msg).toMatchObject({ type: "turn_complete", agent: m.agent, lastMessage: m.text });
+      expect(sameTurn[3]!.x.msg).toMatchObject({ type: "turn_phase", agent: m.agent, phase: "idle" });
+      expect(sameTurn[1]!.j).toBe(i);
+      expect(sameTurn.every(({ x }) => x.id === e.id)).toBe(true);
+    }
+    expect(turnIds.size).toBe(spoken.length); // a fresh turn per line
+  });
+
+  it("a staff line during a running turn of the same agent does not idle that turn", async () => {
+    const caseDef = loadMiniCase((c) => {
+      c.clock = { ...c.clock!, realtimeScale: 60 };
+    });
+    const t = await makeSession({ caseDef, scripts: [textScript("Monitoring him closely.")], delayMs: 25, settingsPatch: { agents: { patient: { provider: "offline" } } } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const pending = t.session.run({ type: "user_message", text: "@nurse how is he doing?" });
+    await waitFor(() => t.msgs("turn_started").some((m) => m.agent === "nurse"));
+    t.session.advanceRealTime(40_000); // 40 simulated minutes: alarm + scenario line from the ward (submission id "")
+    await pending;
+    const realTurn = t.msgs("turn_started").find((m) => m.agent === "nurse")!.turnId;
+    const start = t.events.findIndex((e) => e.msg.type === "turn_started" && e.msg.turnId === realTurn);
+    const end = t.events.findIndex((e) => e.msg.type === "turn_complete" && e.msg.turnId === realTurn);
+    const inside = t.events.slice(start + 1, end).map((e) => e.msg);
+    const staffTurns = inside.filter((m): m is Extract<typeof m, { type: "turn_started" }> => m.type === "turn_started" && m.agent === "nurse");
+    expect(staffTurns.length).toBeGreaterThanOrEqual(1);
+    for (const s of staffTurns) expect(inside.some((m) => m.type === "turn_complete" && m.turnId === s.turnId)).toBe(true);
+    expect(inside.some((m) => m.type === "turn_phase" && m.agent === "nurse" && m.phase === "idle")).toBe(false);
+    expect(t.events.slice(end).some((e) => e.msg.type === "turn_phase" && e.msg.agent === "nurse" && e.msg.phase === "idle")).toBe(true);
+  });
+
   it("advanceRealTime moves a simulated clock by realtimeScale", async () => {
     const caseDef = loadMiniCase((c) => {
       c.clock = { ...c.clock!, realtimeScale: 2 };
@@ -155,7 +200,9 @@ describe("NPC agents offline", () => {
     await t.session.run({ type: "clinical_action", action: { type: "read", investigationId: "ct-chest" } });
     const read = msgsOf(await t.session.run({ type: "user_message", text: "@radiologist ct chest?" }), "agent_message")[0]!.text;
     expect(read).toContain("No aortic dissection.");
-    expect(read).toContain("Interprets only reports already reviewed.");
+    // The evidence boundary is stated, but the authored knowledge brief is never recited (it may describe other studies).
+    expect(read).toMatch(/Boundaries: I interpret only results you have obtained/);
+    expect(read).not.toContain("Interprets only reports already reviewed.");
   });
 
   it("attending: Socratic hint for the current objective (records a hint)", async () => {
@@ -171,6 +218,35 @@ describe("NPC agents offline", () => {
     await t.session.run({ type: "user_message", text: "@nurse hi" });
     await t.session.run({ type: "user_message", text: "@nurse hi again" });
     expect(t.msgs("warning").filter((w) => /nurse/.test(w.message) && /API key/.test(w.message))).toHaveLength(1);
+  });
+});
+
+describe("Chinese role names", () => {
+  it("@护士 and /talk 护士 reach the nurse (not the patient)", async () => {
+    const t = await makeSession({ settingsPatch: { locale: "zh-CN" } });
+    const addressed = await t.session.run({ type: "user_message", text: "@护士 现在血压多少？" });
+    expect(msgsOf(addressed, "agent_message").map((m) => m.agent)).toEqual(["nurse"]);
+    const talk = msgsOf(await t.session.run({ type: "user_message", text: "/talk 护士" }), "command_output")[0]!;
+    expect(talk.data).toMatchObject({ interlocutor: "nurse" });
+    const consult = await t.session.run({ type: "user_message", text: "/consult 上级 我卡住了" });
+    expect(msgsOf(consult, "agent_message").map((m) => m.agent)).toContain("attending");
+  });
+});
+
+describe("front-end disabled commands", () => {
+  it("are left out of /help and refused without side effects (the web owns /quit, /lang…)", async () => {
+    const t = await makeSession({ disabledCommands: ["quit", "lang", "export"] });
+    const help = msgsOf(await t.session.run({ type: "user_message", text: "/help" }), "command_output")[0]!.text;
+    expect(help).not.toMatch(/\/quit|\/lang|\/export/);
+    expect(help).toMatch(/\/vitals/);
+    expect(t.session.commands().map((c) => c.name)).not.toContain("quit");
+    const quit = msgsOf(await t.session.run({ type: "user_message", text: "/quit" }), "command_output")[0]!;
+    expect(quit.text).toMatch(/not available here/);
+    expect(t.session.isClosed).toBe(false);
+    await t.session.run({ type: "user_message", text: "/lang zh-CN" });
+    expect(t.session.locale).toBe("en");
+    const reply = msgsOf(await t.session.run({ type: "user_message", text: "When did the chest pain start?" }), "agent_message");
+    expect(reply.length).toBeGreaterThan(0);
   });
 });
 
@@ -206,7 +282,9 @@ describe("autopilot", () => {
     const events = await t.session.run({ type: "autopilot", goal: "Get an ECG", maxTurns: 1 });
     expect(t.session.state.seen).toContain("ecg@ed");
     expect(JSON.stringify(t.provider!.requests[0]!.messages[0])).toContain("Get an ECG");
-    expect(msgsOf(events, "turn_complete")[0]).toMatchObject({ agent: "clinician", lastMessage: "ECG shows inferior STEMI." });
+    // the critical-ECG call from the nurse is its own (nested) turn
+    expect(msgsOf(events, "turn_complete").map((m) => m.agent)).toEqual(["nurse", "clinician"]);
+    expect(msgsOf(events, "turn_complete").find((m) => m.agent === "clinician")).toMatchObject({ lastMessage: "ECG shows inferior STEMI." });
   });
 
   const smzl = loadSmzl();
@@ -223,6 +301,190 @@ describe("autopilot", () => {
   });
 });
 
+function loadCase(id: string): CaseDefinition | null {
+  const path = fileURLToPath(new URL(`../../../content/cases/${id}/case.json`, import.meta.url));
+  if (!existsSync(path)) return null;
+  const parsed = parseCase(JSON.parse(readFileSync(path, "utf8")) as unknown);
+  return parsed.ok ? parsed.value : null;
+}
+
+describe("offline autopilot after learner actions or a resume", () => {
+  const ana = loadCase("anaphylaxis-garden");
+  const doses = (s: { interventions: { interventionId: string }[] }, id: string) => s.interventions.filter((r) => r.interventionId === id).length;
+  const reference = async () => {
+    const t = await makeSession({ caseDef: ana!, settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "autopilot", maxTurns: 50 });
+    return t.session.state;
+  };
+
+  it.skipIf(!ana)("does not repeat drugs the learner already gave, nor advance the clock past the reference run", async () => {
+    const ref = await reference();
+    expect(ref.finished).toBe(true);
+    expect(doses(ref, "adrenaline-im")).toBe(2);
+
+    const t = await makeSession({ caseDef: ana!, settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "adrenaline-im" } });
+    await t.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "adrenaline-im" } });
+    await t.session.run({ type: "autopilot", maxTurns: 50 });
+    const s = t.session.state;
+    expect(doses(s, "adrenaline-im")).toBe(2);
+    expect(s.finished).toBe(true);
+    expect(s.clock).toBeLessThanOrEqual(ref.clock);
+  });
+
+  it.skipIf(!ana)("a resumed autopilot continues where the transcript left off (no repeated doses, questions or exams)", async () => {
+    const ref = await reference();
+    const sink = new MemoryTranscript();
+    const t = await makeSession({ caseDef: ana!, transcript: sink, sessionId: "s-ap", settingsPatch: { approvalMode: "bypass", maxToolRounds: 20 } });
+    await t.session.run({ type: "autopilot", maxTurns: 1 });
+    const mid = t.session.state;
+    expect(mid.finished).toBe(false);
+    await t.session.close();
+
+    const replayed = replayTranscript(sink.items);
+    const resumed = await createSession({
+      caseDef: ana!,
+      settings: testSettings({ locale: "en", approvalMode: "bypass" }),
+      resume: { sessionId: "s-ap", actions: replayed.actions, messages: replayed.messages },
+      newId: counterIds("r"),
+      now: steppingClock(),
+    });
+    expect(resumed.state.clock).toBe(mid.clock);
+    const events = await resumed.run({ type: "autopilot", maxTurns: 50 });
+    const s = resumed.state;
+    expect(s.finished).toBe(true);
+    for (const id of ["adrenaline-im", "iv-cannula", "fluid-bolus", "call-help"]) expect([id, doses(s, id)]).toEqual([id, doses(ref, id)]);
+    const repeated = msgsOf(events, "clinical_event").filter((e) => (e.event.type === "history.asked" || e.event.type === "exam.performed") && !e.event.firstTime);
+    expect(repeated).toEqual([]);
+    expect(s.clock).toBe(ref.clock);
+  });
+});
+
+describe("bedside readings are grounded", () => {
+  const dka = loadCase("dka-adult");
+  const stemi = loadCase("stemi-inferior-rv");
+  const nurseLines = (events: readonly AgentEvent[]) => msgsOf(events, "agent_message").filter((m) => m.agent === "nurse").map((m) => m.text);
+  const commandText = (events: readonly AgentEvent[]) => msgsOf(events, "command_output").map((m) => m.text).join("\n");
+
+  it.skipIf(!dka)("DKA: no glucose on the monitor, in alarms or from the nurse until a glucose test is read", async () => {
+    const t = await makeSession({ caseDef: dka!, settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const vitals = commandText(await t.session.run({ type: "slash_command", name: "vitals", args: "" }));
+    expect(vitals).not.toMatch(/Glucose/);
+    expect(t.msgs("clinical_event").some((e) => e.event.type === "vitals.alarm" && e.event.vital === "glucose")).toBe(false);
+    expect(nurseLines(t.events).join(" ")).not.toMatch(/Glucose|glucose is/);
+    expect(t.msgs("notification").map((n) => n.body).join(" ")).not.toMatch(/Glucose/);
+    const nurse = await t.session.run({ type: "user_message", text: "What are the vitals?", to: "nurse" });
+    expect(nurseLines(nurse).join(" ")).not.toMatch(/Glucose 28/);
+
+    await t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "poc-glucose" } });
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 5 } });
+    await t.session.run({ type: "clinical_action", action: { type: "read", investigationId: "poc-glucose" } });
+    expect(commandText(await t.session.run({ type: "slash_command", name: "vitals", args: "" }))).toMatch(/Glucose 2\d(\.\d)? mmol\/L/);
+  });
+
+  it.skipIf(!stemi)("cardiac arrest: no-reading vitals are never reported as 0 (and an unresponsive patient has no pain score)", async () => {
+    const t = await makeSession({ caseDef: stemi!, settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 40 } });
+    expect(t.session.state.flags).toContain("vf-arrest");
+    const vitals = commandText(await t.session.run({ type: "slash_command", name: "vitals", args: "" }));
+    expect(vitals).toMatch(/HR no reading/);
+    expect(vitals).toMatch(/BP no reading/);
+    expect(vitals).toMatch(/SpO₂ no reading/);
+    expect(vitals).not.toMatch(/SpO₂ 0%|0\/0 mmHg|Pain/);
+    const said = nurseLines(t.events).join(" ");
+    expect(said).not.toMatch(/SpO₂ is 0%|SBP is 0|HR is 0\/min/);
+  });
+});
+
+describe("locked decisions and future phases stay unannounced", () => {
+  const cmd = async (t: Awaited<ReturnType<typeof makeSession>>, name: string) => msgsOf(await t.session.run({ type: "slash_command", name, args: "" }), "command_output").map((m) => m.text).join("\n");
+
+  it.skipIf(!loadCase("dka-adult") || !loadCase("pulmonary-embolism-postop"))("/board, /status and /phase at minute 0 show no locked prompt, option or later phase label", async () => {
+    const dka = await makeSession({ caseDef: loadCase("dka-adult")!, settingsPatch: { approvalMode: "bypass" } });
+    await dka.session.run({ type: "clinical_action", action: { type: "start" } });
+    const board = await cmd(dka, "board");
+    expect(board).not.toMatch(/28\.0|β-hydroxybutyrate 5\.8|pH 7\.08|dx-severe-dka|potassium is 3\.2|glucose has fallen below 14/);
+    expect(board).toMatch(/Decision 1 \(not yet available\)/);
+    expect(await cmd(dka, "status")).not.toMatch(/potassium is 3\.2|Has her DKA resolved/);
+    const phases = await cmd(dka, "phase");
+    expect(phases).not.toMatch(/Glucose below 14/);
+    expect(phases).toMatch(/later phase/);
+    const listed = listOptionsText({ caseDef: dka.session.caseDef, locale: "en", state: () => dka.session.state }, "decisions").data as { options: unknown[]; prompt: string | null; unlocked: boolean }[];
+    for (const d of listed) if (!d.unlocked) expect([d.prompt, d.options]).toEqual([null, []]);
+
+    const pe = await makeSession({ caseDef: loadCase("pulmonary-embolism-postop")!, settingsPatch: { approvalMode: "bypass" } });
+    await pe.session.run({ type: "clinical_action", action: { type: "start" } });
+    expect(await cmd(pe, "board")).not.toMatch(/CTPA confirms|intermediate-high-risk PE/);
+  });
+
+  it.skipIf(!loadCase("pulmonary-embolism-postop"))("PE shock escalation names the diagnosis only after CTPA or the risk stratification", async () => {
+    const spoken = (events: readonly AgentEvent[]) =>
+      [...msgsOf(events, "agent_message").map((m) => m.text), ...msgsOf(events, "notification").map((n) => `${n.title} ${n.body ?? ""}`)].join(" ");
+    const undiagnosed = await makeSession({ caseDef: loadCase("pulmonary-embolism-postop")!, settingsPatch: { approvalMode: "bypass" } });
+    await undiagnosed.session.run({ type: "clinical_action", action: { type: "start" } });
+    const shocked = spoken(await undiagnosed.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 80 } }));
+    expect(undiagnosed.session.state.flags).toContain("shock-escalated");
+    expect(shocked).toMatch(/working diagnosis/);
+    expect(shocked).not.toMatch(/\bPE\b|PERT|embol|noradrenaline|thromboly|lysis/i);
+
+    const diagnosed = await makeSession({ caseDef: loadCase("pulmonary-embolism-postop")!, settingsPatch: { approvalMode: "bypass" } });
+    await diagnosed.session.run({ type: "clinical_action", action: { type: "start" } });
+    await diagnosed.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ctpa" } });
+    await diagnosed.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 50 } });
+    await diagnosed.session.run({ type: "clinical_action", action: { type: "read", investigationId: "ctpa" } });
+    expect(diagnosed.session.state.seen.some((k) => k.startsWith("ctpa@"))).toBe(true);
+    const escalated = spoken(await diagnosed.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 30 } }));
+    expect(escalated).toMatch(/PERT/);
+  });
+});
+
+describe("consultants never recite their knowledge brief", () => {
+  const septic = loadCase("septic-shock-cap");
+  const ana = loadCase("anaphylaxis-garden");
+  const reply = (events: readonly AgentEvent[], agent: string) => msgsOf(events, "agent_message").filter((m) => m.agent === agent).map((m) => m.text).join(" ");
+
+  it.skipIf(!septic || !ana)("offline radiologist: only results the learner has read (no other studies' findings)", async () => {
+    const t = await makeSession({ caseDef: septic!, settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "order", investigationId: "pocus" } });
+    await t.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 15 } });
+    await t.session.run({ type: "clinical_action", action: { type: "read", investigationId: "pocus" } });
+    expect(t.session.state.seen.some((k) => k.startsWith("pocus@"))).toBe(true);
+    const said = reply(await t.session.run({ type: "user_message", text: "what does the pocus show?", to: "radiologist" }), "radiologist");
+    expect(said).not.toMatch(/consolidation with air bronchograms|right effusion|lower rather than the middle lobe/);
+    expect(said).toMatch(/Boundaries/);
+
+    const a = await makeSession({ caseDef: ana!, settingsPatch: { approvalMode: "bypass" } });
+    const cxr = ana!.investigations.find((i) => /cxr/.test(i.id))!;
+    await a.session.run({ type: "clinical_action", action: { type: "start" } });
+    await a.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "adrenaline-im" } });
+    await a.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "transfer-ed" } });
+    await a.session.run({ type: "clinical_action", action: { type: "order", investigationId: cxr.id } });
+    await a.session.run({ type: "clinical_action", action: { type: "advance-time", minutes: 60 } });
+    await a.session.run({ type: "clinical_action", action: { type: "read", investigationId: cxr.id } });
+    expect(a.session.state.seen.some((k) => k.startsWith(`${cxr.id}@`))).toBe(true);
+    const rad = reply(await a.session.run({ type: "user_message", text: "what does the chest film show?", to: "radiologist" }), "radiologist");
+    expect(rad).not.toMatch(/CTPA without embolism/);
+  });
+
+  it("no built-in NPC brief names another study's findings or the patient's derived values", () => {
+    const leaks: Record<string, RegExp> = {
+      "anaphylaxis-garden": /CTPA without embolism|normal chest film|CT肺动脉造影无栓塞/,
+      "septic-shock-cap": /air bronchograms, small right effusion|lancet-shaped|about 27 mL\/min|QTc of 452|约27 mL\/min|QTc 452/,
+      "pediatric-asthma": /no pneumothorax, pneumomediastinum or consolidation|未见气胸/,
+      "pulmonary-embolism-postop": /≈ 95 mL\/min|约95 mL\/min/,
+      "acute-appendicitis": /Alvarado 10\/10|AIR 7/,
+    };
+    for (const [id, re] of Object.entries(leaks)) {
+      const c = loadCase(id);
+      if (!c) continue;
+      for (const n of c.npcs) expect([id, n.role, re.test(JSON.stringify(n.knowledge))]).toEqual([id, n.role, false]);
+    }
+  });
+});
+
 describe("assessment", () => {
   it("offline examiner: deterministic report, judged items stay null", async () => {
     const t = await makeSession();
@@ -233,6 +495,50 @@ describe("assessment", () => {
     expect(a.report.rubric.find((r) => r.id === "rb-comm")!.met).toBeNull();
     expect(a.report.score.percent).toBe(100);
     expect(a.narrative).toMatch(/not a validated competency score/);
+  });
+
+  it("resume keeps the examiner's evidence: ACTION lines, notes and rationales (transcript, snapshot and legacy transcripts)", async () => {
+    const quote = "Told the nurse: aspirin now, read back confirmed";
+    const verdict = () => textScript(JSON.stringify({ items: [{ id: "rb-comm", met: true, evidence: quote }], narrative: "ok" }));
+    const sink = new MemoryTranscript();
+    const first = await makeSession({ transcript: sink, sessionId: "s-ex", scripts: [verdict()] });
+    await first.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ecg" }, rationale: "Uncertain: could be cardiac" });
+    await first.session.run({ type: "clinical_action", action: { type: "note", text: quote } });
+    const live = msgsOf(await first.session.run({ type: "assess" }), "assessment")[0]!;
+    expect(live.judged[0]).toMatchObject({ id: "rb-comm", met: true });
+    const liveTranscript = JSON.stringify(first.provider!.requests[0]!.messages);
+    expect(liveTranscript).toContain("ACTION: Ordering: ECG");
+    const snap = first.session.snapshot();
+    await first.session.close();
+
+    const resumeWith = async (resume: NonNullable<CreateSessionOptions["resume"]>) => {
+      const provider = new ScriptedProvider([verdict()]);
+      const resumed = await createSession({
+        caseDef: loadMiniCase(),
+        settings: testSettings({ locale: "en", provider: "openai" }),
+        resume,
+        resolveProvider: (id, model) => ({ id, wire: "openai-chat-completions", model: model ?? "scripted", apiKey: "k" }),
+        providerFactory: () => provider,
+        newId: counterIds("r"),
+        now: steppingClock(),
+        retry: false,
+      });
+      const a = msgsOf(await resumed.run({ type: "assess" }), "assessment")[0]!;
+      await resumed.close();
+      return { judged: a.judged[0], examinerSaw: JSON.stringify(provider.requests[0]!.messages) };
+    };
+    const replayed = replayTranscript(sink.items);
+    expect(replayed.dialogue.map((d) => d.text)).toEqual(expect.arrayContaining(["[order] Uncertain: could be cardiac", `[note] ${quote}`]));
+    for (const resume of [
+      { sessionId: "s-ex", actions: replayed.actions, messages: replayed.messages, dialogue: replayed.dialogue }, // --resume
+      { sessionId: "s-ex", actions: snap.actions, messages: snap.messages, ...(snap.dialogue ? { dialogue: snap.dialogue } : {}) }, // web save/load
+      { sessionId: "s-ex", actions: replayed.actions, messages: replayed.messages }, // a transcript without dialogue items
+    ]) {
+      const r = await resumeWith(resume);
+      expect(r.judged).toMatchObject({ id: "rb-comm", met: true });
+      expect(r.examinerSaw).toContain("ACTION: Ordering: ECG");
+      expect(r.examinerSaw).toContain(quote);
+    }
   });
 
   it("LLM examiner: verified quotes count, unverifiable ones are downgraded", async () => {
@@ -251,7 +557,40 @@ describe("assessment", () => {
     expect(examinerRequest.responseFormat?.name).toBe("examiner_verdict");
     expect(JSON.stringify(examinerRequest.messages)).toContain("LEARNER: Your heart is not getting enough blood");
   });
+
+  it("mid-case the examiner gets only the rubric item texts; judgeGuidance and the full debrief only after finish", async () => {
+    const c = loadMiniCase();
+    const verdict = textScript(JSON.stringify({ items: [{ id: "rb-comm", met: false, evidence: "Not explained yet." }], narrative: "A focused start." }));
+    const t = await makeSession({ scripts: [verdict, verdict, verdict], settingsPatch: { agents: { patient: { provider: "offline" } } } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const guidance = t_(c.rubric.find((r) => r.id === "rb-comm")!.judgeGuidance!);
+    const debrief = [t_(c.debrief.conclusion), ...c.debrief.keyReasoning.map(t_), ...c.debrief.teachingPoints.map(t_)];
+    const midAssess = await t.session.run({ type: "assess" });
+    const midTalk = await t.session.run({ type: "user_message", text: "@examiner how am I doing so far?" });
+    for (const request of t.provider!.requests.slice(0, 2)) {
+      const text = JSON.stringify(request);
+      expect(text).toContain("Explains the diagnosis in plain language"); // the item text
+      expect(text).not.toContain(guidance);
+      for (const d of debrief) expect(text).not.toContain(d);
+      expect(text).toMatch(/not finished|in progress/i);
+    }
+    expect(msgsOf(midAssess, "assessment")[0]!.narrative).toBe("A focused start.");
+    expect(msgsOf(midTalk, "agent_message")[0]).toMatchObject({ agent: "examiner", text: "A focused start." });
+
+    for (const action of c.solution.filter((a) => a.type !== "start")) await t.session.run({ type: "clinical_action", action });
+    expect(t.session.state.finished).toBe(true);
+    await t.session.run({ type: "assess" });
+    expect(t.provider!.requests).toHaveLength(3);
+    const after = JSON.stringify(t.provider!.requests[2]);
+    expect(after).toContain(guidance);
+    for (const d of debrief) expect(after).toContain(d);
+  });
 });
+
+/** English text of a localized case string. */
+function t_(text: string | Record<string, string>): string {
+  return typeof text === "string" ? text : (text.en ?? Object.values(text)[0] ?? "");
+}
 
 describe("transcript, snapshot and resume", () => {
   it("records ops, actions, messages and durable events, and resume reproduces state", async () => {
@@ -292,6 +631,97 @@ describe("transcript, snapshot and resume", () => {
     expect(msgsOf(again, "agent_message")[0]!.text).toBe("Yes, doctor?");
   });
 
+  it("a snapshot resume into the same transcript continues its ordinals (web save/load), and replay never interleaves runs", async () => {
+    const sink = new MemoryTranscript();
+    const first = await makeSession({ transcript: sink, sessionId: "s-web" });
+    await first.session.run({ type: "user_message", text: "When did the chest pain start?" });
+    await first.session.run({ type: "clinical_action", action: { type: "order", investigationId: "ecg" } });
+    const early = first.session.snapshot(); // e.g. an autosave: the session writes more items afterwards
+    await first.session.close();
+    const snap = first.session.snapshot();
+    expect(snap.nextOrdinal).toBe(sink.items.length);
+    expect(early.nextOrdinal).toBeLessThan(sink.items.length);
+
+    const resumeFrom = async (transcriptOrdinal: number | undefined) => {
+      const second = new MemoryTranscript();
+      const resumed = await createSession({
+        caseDef: loadMiniCase(),
+        settings: testSettings({ locale: "en" }),
+        sessionId: "s-web",
+        transcript: second,
+        resume: { sessionId: "s-web", actions: snap.actions, messages: snap.messages },
+        ...(transcriptOrdinal !== undefined ? { transcriptOrdinal } : {}),
+        newId: counterIds("r"),
+        now: steppingClock(),
+      });
+      await resumed.run({ type: "clinical_action", action: { type: "advance-time", minutes: 5 } });
+      await resumed.run({ type: "clinical_action", action: { type: "read", investigationId: "ecg" } });
+      await resumed.run({ type: "clinical_action", action: { type: "answer", decisionId: "dx", optionIds: ["stemi"] } });
+      const live = resumed.state;
+      await resumed.close();
+      return { live, items: second.items };
+    };
+
+    const continued = await resumeFrom(snap.nextOrdinal);
+    expect(continued.items[0]!.ordinal).toBe(snap.nextOrdinal);
+    const all = [...sink.items, ...continued.items];
+    expect(new Set(all.map((i) => i.ordinal)).size).toBe(all.length);
+    const replayed = replay(loadMiniCase(), replayTranscript(all).actions);
+    expect(replayed.rejections).toEqual([]);
+    expect(replayed.state.decisions).toEqual(continued.live.decisions);
+    expect(replayed.state.seen).toEqual(continued.live.seen);
+
+    // A save from before `nextOrdinal` existed restarts at 0: replay still keeps the runs apart.
+    const legacy = await resumeFrom(undefined);
+    expect(legacy.items[0]!.ordinal).toBe(0);
+    const mixed = replay(loadMiniCase(), replayTranscript([...sink.items, ...legacy.items]).actions);
+    expect(mixed.rejections).toEqual([]);
+    expect(mixed.state.seen).toEqual(legacy.live.seen);
+    expect(mixed.state.decisions).toEqual(legacy.live.decisions);
+    // So does a resume from an autosave older than the transcript's tail (overlapping ordinals).
+    const stale = await resumeFrom(early.nextOrdinal);
+    const overlapped = replay(loadMiniCase(), replayTranscript([...sink.items, ...stale.items]).actions);
+    expect(overlapped.rejections).toEqual([]);
+    expect(overlapped.state.decisions).toEqual(stale.live.decisions);
+  });
+
+  it("patient affect survives resume: persisted with the patient's transcript messages and restored", async () => {
+    const sink = new MemoryTranscript();
+    const voice = (affectHint: string) => textScript(JSON.stringify({ say: "Alright.", nonverbal: null, usedFactIds: [], affectHint }));
+    const t = await makeSession({ transcript: sink, sessionId: "s-affect", scripts: [voice("worse"), voice("worse")] });
+    await t.session.run({ type: "user_message", text: "Okay." });
+    await t.session.run({ type: "user_message", text: "Okay." });
+    expect(t.provider!.requests.map((r) => r.responseFormat?.name)).toEqual(["patient_reply", "patient_reply"]);
+    const intensity = (system: { id: string; text: string }[]) => /intensity="(\d)"/.exec(system.find((s) => s.id === "patient-state")!.text)![1];
+    expect(intensity(t.provider!.requests[1]!.system)).toBe("2"); // anxious (1) → worse
+    await t.session.close();
+    const last = sink.ofType("message").filter((i) => i.payload.agent === "patient").at(-1)!;
+    expect((last.payload as { affectIntensity?: number }).affectIntensity).toBe(3);
+
+    const config = resumedRuntimeConfig(sink.items);
+    expect(config.affect).toEqual({ patient: 3 });
+    const replayed = replayTranscript(sink.items);
+    const resumeWith = async (restore: CreateSessionOptions["restore"]) => {
+      const provider = new ScriptedProvider([voice("same")]);
+      const resumed = await createSession({
+        caseDef: loadMiniCase(),
+        settings: testSettings({ locale: "en", provider: "openai" }),
+        resume: { sessionId: "s-affect", actions: replayed.actions, messages: replayed.messages },
+        ...(restore ? { restore } : {}),
+        resolveProvider: (id: string, model: string | null) => ({ id, wire: "openai-chat-completions" as const, model: model ?? "scripted", apiKey: "test-key" }),
+        providerFactory: () => provider,
+        retry: false,
+        newId: counterIds("r"),
+        now: steppingClock(),
+      });
+      await resumed.run({ type: "user_message", text: "Okay." });
+      await resumed.close();
+      return intensity(provider.requests[0]!.system);
+    };
+    expect(await resumeWith({ ...(config.affect ? { affect: config.affect } : {}) })).toBe("3");
+    expect(await resumeWith(undefined)).toBe("1"); // without the persisted affect the persona's initial affect returns
+  });
+
   it("snapshot carries actions, conversations and the plan", async () => {
     const t = await makeSession({ scripts: [toolCallScript([{ id: "p", name: "update_workup", args: { plan: [{ text: "ECG now", status: "in_progress" }], explanation: "ACS likely" } }]), textScript("ok")] });
     const events = await t.session.run({ type: "user_message", text: "plan?", to: "clinician" });
@@ -318,6 +748,18 @@ describe("hooks on learner input", () => {
     const parts = t.provider!.requests[0]!.messages.at(-1)!.content;
     expect(parts[0]).toEqual({ type: "text", text: "handover please" });
     expect(JSON.stringify(parts[1])).toContain("Course rule: SBAR handovers.");
+  });
+
+  it("UserPromptSubmit additionalContext is withheld from patient turns by design (need-to-know)", async () => {
+    const voice = textScript(JSON.stringify({ say: "Alright.", nonverbal: null, usedFactIds: [], affectHint: "same" }));
+    const t = await makeSession({ scripts: [voice, textScript("Noted.")] });
+    t.session.hooks.on("UserPromptSubmit", () => ({ additionalContext: "COURSE-NOTE: the answer is inferior STEMI." }));
+    await t.session.run({ type: "user_message", text: "Okay." });
+    await t.session.run({ type: "user_message", text: "@nurse handover please" });
+    const [patient, nurse] = t.provider!.requests;
+    expect(patient!.responseFormat?.name).toBe("patient_reply");
+    expect(JSON.stringify(patient)).not.toContain("COURSE-NOTE");
+    expect(JSON.stringify(nurse!.messages)).toContain("COURSE-NOTE");
   });
 
   it("talking to the examiner runs an assessment", async () => {

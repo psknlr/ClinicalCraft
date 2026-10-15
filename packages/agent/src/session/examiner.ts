@@ -5,6 +5,12 @@
  * transcript line (labels and line numbers do not count) is downgraded to not
  * met. Offline: nothing is judged (items stay null) and
  * the narrative summarises the deterministic report.
+ *
+ * Need-to-know: before the case is finished (an assessment asked for
+ * mid-case) the examiner sees only the rubric item texts — never
+ * `judgeGuidance` ("what good looks like" often names the diagnosis or
+ * results) nor the debrief — and is told the encounter is still in progress.
+ * After `finish` it also gets the guidance and the full authored debrief.
  */
 import { t, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { examinerOffline } from "../agents/offline.js";
@@ -16,13 +22,10 @@ import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatRequest, LLMProvider } from "../providers/types.js";
 import { rt } from "./i18n.js";
 
-/** One line of the encounter transcript shown to the examiner. */
-export interface DialogueEntry {
-  /** "learner", an agent name, or "action" for clinical actions. */
-  who: string;
-  speaker: string;
-  text: string;
-}
+import type { DialogueEntry } from "./types.js";
+
+/** One line of the encounter transcript shown to the examiner (defined with the transcript types). */
+export type { DialogueEntry };
 
 export interface ExaminerVerdict {
   judged: { id: string; met: boolean; evidence: string }[];
@@ -93,6 +96,30 @@ export function quoteInDialogue(quote: string, dialogue: readonly DialogueEntry[
   return dialogue.some((d) => normaliseQuote(d.text).includes(q));
 }
 
+/** The authored debrief as an examiner context block (only ever given after the case is finished). */
+export function debriefBlock(c: CaseDefinition, locale: string): string {
+  const d = c.debrief;
+  const list = (label: string, items: readonly string[]) => (items.length > 0 ? [`${label}:`, ...items.map((x) => `- ${x}`)] : []);
+  return [
+    "<debrief>",
+    `Title: ${t(d.title, locale)}`,
+    `Conclusion: ${t(d.conclusion, locale)}`,
+    ...list("Key reasoning", d.keyReasoning.map((x) => t(x, locale))),
+    ...list("Teaching points", d.teachingPoints.map((x) => t(x, locale))),
+    ...(d.boundaries ? [`Evidence boundaries: ${t(d.boundaries, locale)}`] : []),
+    ...list("Unknowns", d.unknowns.map((x) => t(x, locale))),
+    ...list("References", d.references),
+    "</debrief>",
+  ].join("\n");
+}
+
+/** What the examiner is told about the encounter's status (mid-case vs finished). */
+function encounterStatus(finished: boolean): string {
+  return finished
+    ? "<encounter_status>finished</encounter_status>\nThe case is finished. The debrief below is the authored teaching summary: your narrative may refer to it (diagnosis, key reasoning, teaching points). It is not evidence — judge every item on the transcript only."
+    : "<encounter_status>in progress</encounter_status>\nThe case is not finished yet: the learner asked for feedback mid-case. Judge only what the transcript shows so far. Your narrative is formative feedback on the encounter so far; do not name or hint at a diagnosis, the correct answer to any decision or the steps that remain.";
+}
+
 /** Judge transcript-based rubric items (LLM) or fall back to the deterministic narrative (offline). Never throws. */
 export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
   const c = p.caseDef;
@@ -103,7 +130,10 @@ export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
     return { judged: offline.items, narrative: offline.narrative };
   }
   const transcript = renderDialogue(p.dialogue);
-  const items = pending.map((r) => `- id: ${r.id} | domain: ${r.domain} | item: ${t(r.text, L)}${r.judgeGuidance ? ` | what good looks like: ${t(r.judgeGuidance, L)}` : ""}`);
+  const finished = p.state.finished;
+  // Mid-case: the item texts only (judgeGuidance often spells out the diagnosis or results).
+  const items = pending.map((r) => `- id: ${r.id} | domain: ${r.domain} | item: ${t(r.text, L)}${finished && r.judgeGuidance ? ` | what good looks like: ${t(r.judgeGuidance, L)}` : ""}`);
+  const debrief = finished ? `${debriefBlock(c, L)}\n\n` : "";
   const summary = `Deterministic results (already scored, for context only): ${p.report.score.percent}% of deterministic points; objectives ${p.report.objectives.filter((o) => o.done).length}/${p.report.objectives.length}.`;
   const request: ChatRequest = {
     model: p.model ?? p.provider.model,
@@ -114,7 +144,7 @@ export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
         content: [
           {
             type: "text",
-            text: `<rubric_items>\n${items.join("\n")}\n</rubric_items>\n\n<transcript>\n${transcript}\n</transcript>\n\n${summary}\n\nJudge every rubric item above. Respond with the JSON object only.`,
+            text: `${encounterStatus(finished)}\n\n<rubric_items>\n${items.join("\n")}\n</rubric_items>\n\n${debrief}<transcript>\n${transcript}\n</transcript>\n\n${summary}\n\nJudge every rubric item above. Respond with the JSON object only.`,
           },
         ],
       },

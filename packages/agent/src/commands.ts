@@ -9,6 +9,7 @@
 import {
   currentObjective,
   orderStatus,
+  presentedOptions,
   progress,
   t,
   type CaseDefinition,
@@ -22,6 +23,7 @@ import type { PlanItem, RuntimeConfigPatch } from "./protocol.js";
 import { PROVIDER_TEMPLATES, localizedName } from "./providers/catalog.js";
 import type { SessionSnapshot } from "./session/types.js";
 import { isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
+import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
@@ -232,7 +234,9 @@ async function answerCommand(host: CommandHost, args: string): Promise<void> {
     host.output(rt(host.locale, "tool.noSuchId", { id: tokens[0]! }), { error: "unknown-decision" });
     return;
   }
-  const options = tokens.slice(1).flatMap((tok) => tok.split(/[,，]/)).filter(Boolean).map((tok) => pickOption(decision.options, tok)?.id ?? tok);
+  // Numbers/letters count in the order /board presents the options (presentedOptions), not the authored order.
+  const presented = presentedOptions(host.caseDef, decision);
+  const options = tokens.slice(1).flatMap((tok) => tok.split(/[,，]/)).filter(Boolean).map((tok) => pickOption(presented, tok)?.id ?? tok);
   toolOut(host, await host.runTool("answer_decision", { decision_id: decision.id, option_ids: options }));
 }
 
@@ -432,7 +436,7 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     }
     case "talk": {
       if (!a) return host.output(rt(L, "cmd.talk.now", { agent: host.interlocutor() }), { interlocutor: host.interlocutor(), agents: host.agentNames() });
-      const agent = a.replace(/^@/, "").toLowerCase();
+      const agent = resolveAgentAlias(a);
       if (!host.agentNames().includes(agent)) return host.output(rt(L, "cmd.talk.unknown", { agent, agents: joinList(L, host.agentNames()) }), { error: "unknown-agent" });
       await host.configure({ interlocutor: agent });
       return host.output(rt(L, "cmd.talk.now", { agent }), { interlocutor: agent });
@@ -440,7 +444,7 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     case "consult": {
       const [role, ...rest] = splitArgs(a);
       if (!role || rest.length === 0) return usage(host, name, "<role> <question>");
-      const agent = role.replace(/^@/, "").toLowerCase();
+      const agent = resolveAgentAlias(role);
       if (!host.agentNames().includes(agent)) return host.output(rt(L, "cmd.talk.unknown", { agent, agents: joinList(L, host.agentNames()) }), { error: "unknown-agent" });
       return host.sendMessage(agent, a.slice(a.indexOf(role) + role.length).trim());
     }

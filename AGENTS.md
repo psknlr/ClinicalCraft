@@ -5,7 +5,7 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 
 ## Layout
 - `packages/core` — zod schemas + pure deterministic engine. No I/O, no `Date.now()`/`Math.random()`.
-- `packages/content` — cases, facilities, equipment catalogs (JSON) + node loader.
+- `packages/content` — cases, facilities, equipment catalogs, JSON Schemas (data only; loaded by `loadContent` in `@clinicalcraft/agent/node`).
 - `packages/agent` — runtime: Op/Event protocol, ClinicalSession, providers, tools, approvals, hooks. `src/node/` is the only place allowed to import `node:*`.
 - `packages/cli`, `packages/server`, `packages/mcp` — front-ends (protocol clients).
 - `packages/web` — Vite + three.js voxel world and UI (vanilla TS DOM).
@@ -14,7 +14,8 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 ## Commands
 ```bash
 npm install
-npm run typecheck          # tsc -b for libraries + web tsc --noEmit
+npm run build:lib          # libraries → packages/*/dist (`npm run cc` loads workspace packages from dist)
+npm run typecheck          # tsc -b for libraries (also emits dist) + web tsc --noEmit
 npm test                   # vitest (all packages)
 npm run cc -- cases validate --all && npm run cc -- cases verify --all
 npm run dev                # web world at http://localhost:5173

@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import { EXCLUDE_KEYWORD_FACTOR, matchExam, matchHistory, matchInterventions, matchOrders, normalizeQuery, orderWarnings, parseCase } from "./index.js";
@@ -317,6 +318,22 @@ describe("token matching (tightened shared-prefix rule)", () => {
     expect(same("gastroscopy", "gastrostomy")).toBe(false);
   });
 
+  it("a short stem only absorbs inflectional endings (hearing ≁ heart, back ≁ background)", () => {
+    const same = (a: string, b: string) => tokensMatch(tokenize(a)[0], tokenize(b)[0]);
+    expect(same("hearing", "heart")).toBe(false);
+    expect(same("hear", "heartburn")).toBe(false);
+    expect(same("hearing", "heartburn")).toBe(false);
+    expect(same("back", "background")).toBe(false);
+    expect(same("heart", "heartburn")).toBe(false);
+    expect(same("pain", "painful")).toBe(true);
+    expect(same("pain", "painless")).toBe(true);
+    expect(same("itch", "itchy")).toBe(true);
+    expect(same("numb", "numbness")).toBe(true);
+    expect(same("heart", "hearts")).toBe(true);
+    expect(same("rash", "rashes")).toBe(true);
+    expect(same("chest", "chesty")).toBe(true);
+  });
+
   it("keeps long clinical derivations together (one more letter of tail after an 8-letter shared prefix)", () => {
     const same = (a: string, b: string) => tokensMatch(tokenize(a)[0], tokenize(b)[0]);
     expect(same("anticoagulants", "anticoagulation")).toBe(true);
@@ -467,5 +484,22 @@ describe("matchHistory / matchExam options", () => {
     expect(matchHistory(c, "family allergies", "en", { includeUnknown: false }).map((h) => h.id)).not.toContain("unknown-family");
     expect(matchHistory(c, "family allergies", "en", { includeUnknown: true }).map((h) => h.id)).toContain("unknown-family");
     expect(matchExam(c, "listen to the chest", "en", { includeUnknown: false })).toEqual([{ id: "chest", score: 1 }]);
+  });
+});
+
+describe("short-stem false matches on real cases (hearing ≁ heart)", () => {
+  const read = (id: string) => {
+    const path = fileURLToPath(new URL(`../../../content/cases/${id}/case.json`, import.meta.url));
+    if (!existsSync(path)) return null;
+    const parsed = parseCase(JSON.parse(readFileSync(path, "utf8")) as unknown);
+    return parsed.ok ? parsed.value : null;
+  };
+  const stroke = read("acute-ischemic-stroke");
+  const appendicitis = read("acute-appendicitis");
+  it.skipIf(!stroke || !appendicitis)("a hearing question selects no heart/AF history item", () => {
+    expect(matchHistory(stroke!, "Does he have any hearing problems?", "en").map((h) => h.id)).not.toContain("pmh-af");
+    // "problems" alone still half-matches "medical problems" — below the 0.55 selection bar, so not answered.
+    const pmh = matchHistory(appendicitis!, "Do you have any hearing problems?", "en").find((h) => h.id === "hx-pmh");
+    expect(pmh?.score ?? 0).toBeLessThan(0.55);
   });
 });

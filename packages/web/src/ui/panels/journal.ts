@@ -3,12 +3,14 @@
  * (`plan_updated`), notes, source & scope, source PDF (when installed) and
  * the learning-record export. Also the "Sources & scope" credits panel.
  */
-import { assetExists, caseAssetUrl } from "../../app/assets.js";
+import { assetContentType, assetExists, caseAssetUrl } from "../../app/assets.js";
+import { progress } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { evidenceGrid } from "./common.js";
+import { debriefUnlocked } from "./debrief.js";
 
 export function journalPanel(app: App): () => PanelView {
   return () => {
@@ -20,13 +22,17 @@ export function journalPanel(app: App): () => PanelView {
     const evidence = h("div", { id: "journal-evidence" });
     const plan = h("div", { class: "plan" });
     const notes = h("div");
-    // Appears as soon as the case is finished / assessed, also while the journal is open.
+    // The authored debrief unlocks like the CLI's /debrief (finished, or every objective complete);
+    // before that an assessment (e.g. /assess) only offers the formative "assessment so far" view.
     const debriefBtn = h("button", { type: "button", id: "journal-debrief", hidden: true, onclick: () => app.open("debrief") }, tr("journal.debrief"));
+    const progressBtn = h("button", { type: "button", id: "journal-progress", hidden: true, onclick: () => app.open("debrief") }, tr("journal.progress"));
     const pdfAsset = c.assets.find((a) => a.kind === "pdf");
     const pdf = pdfAsset ? caseAssetUrl(c, pdfAsset.id) : null;
     const pdfBtn = h("button", { type: "button", id: "download-paper", disabled: true, title: tr("journal.pdfMissing") }, tr("journal.pdf"));
     if (pdf?.url) {
-      void assetExists(pdf.url).then((ok) => {
+      // Opened in a same-origin tab: only a real PDF (never an SVG/HTML file with that name).
+      void assetContentType(pdf.url).then((type) => {
+        const ok = type === "application/pdf";
         pdfBtn.disabled = !ok;
         pdfBtn.title = ok ? "" : tr("journal.pdfMissing");
         if (ok) pdfBtn.onclick = () => window.open(pdf.url!, "_blank", "noopener");
@@ -38,16 +44,23 @@ export function journalPanel(app: App): () => PanelView {
       const s = snap?.state ?? game.session.session.state;
       const done = new Set(Object.keys(s.objectivesDone));
       clear(tasks);
-      c.objectives.forEach((o, i) =>
+      // The teaching hint is a scored action (HUD hint button): the journal shows it only for completed
+      // objectives and for the current one after a recorded hint; otherwise the current objective's
+      // guidance, and later objectives by title only.
+      const currentIndex = snap?.progress.currentIndex ?? progress(c, s).currentIndex;
+      c.objectives.forEach((o, i) => {
+        const isDone = done.has(o.id);
+        const isCurrent = !isDone && currentIndex === i;
+        const detail = isDone || (isCurrent && store.hinted.has(o.id)) ? ct(o.hint) : isCurrent ? ct(o.guidance) || ct(o.short) : "";
         tasks.append(
           h(
             "div",
-            { class: ["task-row", done.has(o.id) ? "done" : "", snap?.progress.currentIndex === i ? "current" : ""] },
-            h("span", { class: "badge" }, done.has(o.id) ? "✓" : String(i + 1)),
-            h("div", null, h("b", null, ct(o.title)), h("small", null, ct(o.hint))),
+            { class: ["task-row", isDone ? "done" : "", isCurrent ? "current" : "", !isDone && !isCurrent ? "upcoming" : ""] },
+            h("span", { class: "badge" }, isDone ? "✓" : String(i + 1)),
+            h("div", null, h("b", null, ct(o.title)), detail ? h("small", null, detail) : null),
           ),
-        ),
-      );
+        );
+      });
       clear(evidence);
       evidence.append(evidenceGrid(game, () => true, (o) => app.open("report", { investigationId: o.investigationId, phase: o.phase, back: { panel: "journal" } })));
       clear(plan);
@@ -62,7 +75,9 @@ export function journalPanel(app: App): () => PanelView {
           ),
         );
       } else plan.append(h("p", { class: "small muted" }, tr("journal.planEmpty")));
-      debriefBtn.hidden = !(store.assessment || s.finished);
+      const unlocked = debriefUnlocked(c, s);
+      debriefBtn.hidden = !(unlocked && (store.assessment || s.finished));
+      progressBtn.hidden = unlocked || !store.assessment;
       clear(notes);
       if (s.notes.length) {
         notes.append(h("h3", null, tr("journal.notes")), h("div", { class: "note-list" }, [...s.notes].reverse().map((n) => h("div", { class: "note-item" }, h("small", null, tr("notes.at", { min: Math.round(n.at) })), h("p", null, n.text)))));
@@ -87,6 +102,7 @@ export function journalPanel(app: App): () => PanelView {
           pdfAsset ? pdfBtn : null,
           h("button", { type: "button", id: "export-session", onclick: () => app.exportRecord() }, tr("journal.export")),
           debriefBtn,
+          progressBtn,
         ),
       ],
       update() {

@@ -207,8 +207,7 @@ export class McpServer {
 
   private async tools(): Promise<{ specs: McpToolSpec[]; byName: Map<string, McpToolSpec> }> {
     if (this.toolCache) return this.toolCache;
-    const caseIds = [...(await this.content()).cases.keys()].sort();
-    const specs = mcpTools({ practiceScope: this.settings.practiceScope, deny: this.settings.permissions.deny }, caseIds);
+    const specs = mcpTools({ practiceScope: this.settings.practiceScope, deny: this.settings.permissions.deny });
     this.toolCache = { specs, byName: new Map(specs.map((s) => [s.name, s])) };
     return this.toolCache;
   }

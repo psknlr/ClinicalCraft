@@ -17,6 +17,14 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   and are placed with their back against a wall.
 * Screens: name a part `"screen"` and set the equipment `screen` kind
   (`vitals`, `ecg`, `pacs`, …); the web client paints a live canvas texture on it.
+* Per-placement details: `placement.extraParts` adds voxel parts to one
+  placement (same frame as the type's `parts`, rotated with the placement,
+  rendered the same way, no collider) and `placement.hideParts` skips type
+  parts by index — together they move or replace parts for one station
+  (clinic-v4: the lab's test tubes; the pathology microscope and the monitor
+  moved 0.6 m right, V4 `Q(L, .6)`). `checkFacility` reports unknown
+  materials and out-of-range indices (errors) and extra parts outside the
+  type's footprint (warnings).
 * Use materials from `catalogs/materials.json` (V4 palette + clinical
   additions). A catalog may add its own materials; ids must be unique across
   loaded catalogs.

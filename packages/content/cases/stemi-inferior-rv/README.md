@@ -25,7 +25,7 @@ JVP with Kussmaul's sign, and clear lungs.
 | phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic on transfer; not learner-switchable) |
 | clock | simulated, starts 09:10, `realtimeScale` 1, limit 120 min; costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1.5 min |
 | difficulty | 3 / 5 |
-| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 74 matcher test utterances |
+| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 81 matcher test utterances |
 
 ## Learning objectives
 

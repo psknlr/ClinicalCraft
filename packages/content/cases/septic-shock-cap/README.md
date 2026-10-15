@@ -107,7 +107,7 @@ clinicalcraft cases validate packages/content/cases/septic-shock-cap/case.json
 clinicalcraft cases verify septic-shock-cap
 ```
 
-The reference `solution` completes all 6 objectives and all 5 decisions with no rejections, no contraindicated interventions and no critical alarms (deterministic rubric 19/19). `extensions.testUtterances` (62 utterances, zh-CN + en, including colloquial Chinese, typos and abbreviations) all return the expected history item as the top `matchHistory` hit and are selected under the patient pipeline's ≥ 0.55 rule.
+The reference `solution` completes all 6 objectives and all 5 decisions with no rejections, no contraindicated interventions and no critical alarms (deterministic rubric 19/19). `extensions.testUtterances` (82 utterances, zh-CN + en, including colloquial Chinese, typos and abbreviations) all return the expected history item as the top `matchHistory` hit and are selected under the patient pipeline's ≥ 0.55 rule.
 
 ## Matcher notes
 

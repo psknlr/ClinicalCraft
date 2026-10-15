@@ -4,13 +4,29 @@
  * assessment ends with the teaching-script notice.
  */
 import { investigationName, joinList, rt } from "@clinicalcraft/agent";
-import { t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
+import { hashString, t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 
-/** Library entry for a case in one locale (spoiler-free). */
+/**
+ * Opaque, stable handle for a case. Case ids name the diagnosis
+ * (`stemi-inferior-rv`, `pulmonary-embolism-postop`), and the MCP client is
+ * the clinician being assessed: it sees handles, never ids (`start_case`
+ * still accepts an id from a caller who knows it).
+ */
+export function caseHandle(caseId: string): string {
+  return `case-${hashString(`clinicalcraft-case:${caseId}`).toString(36).padStart(7, "0").slice(-7)}`;
+}
+
+/** The case a `start_case` reference names: a handle from `list_cases`, else an exact case id. */
+export function resolveCaseRef<T extends { id: string }>(cases: Iterable<T>, ref: string): T | null {
+  const list = [...cases];
+  return list.find((c) => caseHandle(c.id) === ref) ?? list.find((c) => c.id === ref) ?? null;
+}
+
+/** Library entry for a case in one locale (spoiler-free: an opaque handle, never the id). */
 export function caseListing(c: CaseDefinition, locale: string) {
   return {
-    id: c.id,
+    id: caseHandle(c.id),
     title: t(c.title, locale),
     summary: t(c.summary, locale),
     specialty: [...c.specialty],
@@ -27,7 +43,7 @@ export function casesText(cases: readonly CaseDefinition[], locale: string): str
   const lines = [mm(locale, "cases.header", { count: cases.length })];
   for (const c of cases) {
     const minutes = c.estimatedMinutes ? mm(locale, "cases.minutes", { minutes: c.estimatedMinutes }) : "";
-    lines.push(mm(locale, "cases.line", { id: c.id, title: t(c.title, locale), specialty: c.specialty.join(", "), difficulty: c.difficulty, minutes }));
+    lines.push(mm(locale, "cases.line", { id: caseHandle(c.id), title: t(c.title, locale), specialty: c.specialty.join(", "), difficulty: c.difficulty, minutes }));
     const summary = t(c.summary, locale);
     if (summary) lines.push(`  ${summary}`);
   }

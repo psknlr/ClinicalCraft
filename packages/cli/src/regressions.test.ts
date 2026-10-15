@@ -4,7 +4,7 @@
  * speaker labels after a language switch, `config set` validation and
  * shadowing, and `sessions list|show` presentation.
  */
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PassThrough } from "node:stream";
@@ -269,9 +269,44 @@ describe("sessions", () => {
     const dir = join(box.home, "sessions", "web");
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, "web-upload-1.jsonl"), `${JSON.stringify({ type: "op", ordinal: 1, ts: "2026-01-01T00:00:00Z", payload: { id: "a", op: { type: "interrupt" } } })}\n`);
-    const r = await run(["sessions", "list", "--lang", "en"], box);
+    const plain = await run(["sessions", "list", "--lang", "en"], box);
+    expect(plain.stdout).not.toContain("web-upload-1"); // web uploads are listed only with --web
+    const r = await run(["sessions", "list", "--web", "--lang", "en"], box);
     expect(r.code).toBe(0);
     const row = r.stdout.split("\n").find((l) => l.includes("web-upload-1"))!;
-    expect(row.trim().startsWith("web-upload-1 ")).toBe(true);
+    expect(row.trim().startsWith("web-upload-1 (web) ")).toBe(true);
+  });
+});
+
+describe("project trust", () => {
+  it.skipIf(!smzl || process.platform === "win32")("exec warns on stderr and skips an untrusted project's hooks; `trust` allows them", { timeout: T }, async () => {
+    const hook = { SessionStart: [{ hooks: [{ type: "command", command: "echo ran > hook-marker.txt" }] }] };
+    const box = sandbox({ hooks: hook });
+    writeFileSync(join(box.cwd, ".clinicalcraft", "settings.local.json"), JSON.stringify({ providers: { anthropic: { apiKeyEnv: ["UNRELATED_SECRET"] } } }));
+    const marker = join(box.cwd, "hook-marker.txt");
+
+    const first = await run(["exec", "hi", "--case", SMZL, "--lang", "en", "--ephemeral"], box);
+    expect(first.code).toBe(0);
+    expect(existsSync(marker)).toBe(false);
+    const warnings = first.stderr.split("\n").filter((l) => l.includes("not trusted"));
+    expect(warnings).toHaveLength(1); // once per invocation, without --verbose
+    expect(warnings[0]).toContain("hooks");
+    expect(warnings[0]).toContain("providers.anthropic.apiKeyEnv");
+    expect(warnings[0]).toContain("clinicalcraft trust");
+
+    const trust = await run(["trust", "--lang", "en"], box);
+    expect(trust.code).toBe(0);
+    expect(trust.stdout).toContain("SessionStart: echo ran > hook-marker.txt");
+    const second = await run(["exec", "hi", "--case", SMZL, "--lang", "en", "--ephemeral"], box);
+    expect(second.code).toBe(0);
+    expect(second.stderr).not.toContain("not trusted");
+    expect(existsSync(marker)).toBe(true);
+
+    const list = await run(["trust", "--list", "--json"], box);
+    expect(JSON.parse(list.stdout)).toHaveLength(1);
+    const revoke = await run(["trust", "--revoke", "--lang", "en"], box);
+    expect(revoke.stdout).toContain("No longer trusting");
+    const zh = await run(["exec", "hi", "--case", SMZL, "--ephemeral"], box);
+    expect(zh.stderr).toContain("此项目尚未被信任");
   });
 });

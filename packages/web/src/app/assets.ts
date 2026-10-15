@@ -68,18 +68,31 @@ export function caseAssetUrl(c: CaseDefinition, assetId: string): { asset: Asset
   return { asset, url: localAssetUrl(`cases/${c.id}/${assetFile(asset)}`) };
 }
 
-const existence = new Map<string, Promise<boolean>>();
+const contentTypes = new Map<string, Promise<string | null>>();
 
-/** Whether a local asset URL answers (HEAD; cached). */
-export function assetExists(url: string | null): Promise<boolean> {
-  if (!url) return Promise.resolve(false);
-  if (url.startsWith("blob:") || url.startsWith("data:")) return Promise.resolve(true);
-  let p = existence.get(url);
+/**
+ * Media type of a local asset URL (HEAD; cached), lower-case without
+ * parameters, or null when it does not answer. Embedded (standalone) assets
+ * report the type recorded at build time.
+ */
+export function assetContentType(url: string | null): Promise<string | null> {
+  if (!url) return Promise.resolve(null);
+  if (url.startsWith("blob:") || url.startsWith("data:")) {
+    const rel = [...blobs.entries()].find(([, u]) => u === url)?.[0];
+    const type = rel ? embeddedTable()?.[rel]?.type : undefined;
+    return Promise.resolve((type ?? "application/octet-stream").split(";")[0]!.trim().toLowerCase());
+  }
+  let p = contentTypes.get(url);
   if (!p) {
     p = fetch(url, { method: "HEAD" })
-      .then((r) => r.ok && !(r.headers.get("content-type") ?? "").includes("text/html"))
-      .catch(() => false);
-    existence.set(url, p);
+      .then((r) => (r.ok ? (r.headers.get("content-type") ?? "application/octet-stream").split(";")[0]!.trim().toLowerCase() : null))
+      .catch(() => null);
+    contentTypes.set(url, p);
   }
   return p;
+}
+
+/** Whether a local asset URL answers with something other than an HTML page (HEAD; cached). */
+export function assetExists(url: string | null): Promise<boolean> {
+  return assetContentType(url).then((type) => type !== null && type !== "text/html");
 }

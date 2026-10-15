@@ -6,7 +6,7 @@
  */
 import { closeSync, openSync, readSync } from "node:fs";
 import { appendFile, mkdir, open, readdir, readFile, stat } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { basename, dirname, isAbsolute, join, relative } from "node:path";
 import type { TranscriptItem, TranscriptSink } from "../session/types.js";
 import { redactValue, secretsFromEnv } from "../transcript.js";
 import { clinicalcraftHome, type Env } from "./home.js";
@@ -161,6 +161,21 @@ export interface SessionSummary {
   path: string;
   caseId: string;
   startedAt: string;
+  /**
+   * `local`: recorded by this machine's front-ends; `web`: uploaded through
+   * `POST /api/transcripts/:id` (`<sessions>/web/`) — untrusted input, listed
+   * only with `{web: true}`.
+   */
+  origin: "local" | "web";
+}
+
+/** Sub-directory of the sessions directory holding web uploads (see @clinicalcraft/server). */
+export const WEB_TRANSCRIPTS_DIR = "web";
+
+/** Whether a transcript path lies in the web-upload directory of `base` (the sessions directory). */
+export function isWebTranscriptPath(path: string, base: string): boolean {
+  const rel = relative(join(base, WEB_TRANSCRIPTS_DIR), path);
+  return rel !== "" && !rel.startsWith("..") && !isAbsolute(rel);
 }
 
 function readHead(path: string, bytes = 64 * 1024): string {
@@ -174,7 +189,7 @@ function readHead(path: string, bytes = 64 * 1024): string {
   }
 }
 
-async function walkJsonl(dir: string, depth: number): Promise<string[]> {
+async function walkJsonl(dir: string, depth: number, skip?: string): Promise<string[]> {
   let entries;
   try {
     entries = await readdir(dir, { withFileTypes: true });
@@ -184,22 +199,38 @@ async function walkJsonl(dir: string, depth: number): Promise<string[]> {
   const out: string[] = [];
   for (const entry of entries) {
     const path = join(dir, entry.name);
-    if (entry.isDirectory() && depth < 4) out.push(...(await walkJsonl(path, depth + 1)));
+    if (entry.isDirectory() && depth < 4 && path !== skip) out.push(...(await walkJsonl(path, depth + 1, skip)));
     else if (entry.isFile() && entry.name.endsWith(".jsonl")) out.push(path);
   }
   return out;
 }
 
+export interface ListSessionsOptions {
+  /** Base sessions directory (default `<home>/sessions`). */
+  dir?: string | null;
+  limit?: number;
+  /**
+   * Which recordings: `false` (default) = this machine's own (the web-upload
+   * directory is skipped), `true` = both, `"only"` = web uploads only.
+   */
+  web?: boolean | "only";
+}
+
 /**
  * List recorded sessions (newest first) from `<home>/sessions` (or `dir`).
  * Uses each file's `session_meta` line; files without one fall back to the
- * file name and modification time.
+ * file name and modification time. Web uploads are untrusted: their id is
+ * always the file name (a `session_meta` naming another session is ignored)
+ * and their start time is clamped to the file's modification time.
  */
-export async function listSessions(env: Env = process.env, options: { dir?: string | null; limit?: number } = {}): Promise<SessionSummary[]> {
+export async function listSessions(env: Env = process.env, options: ListSessionsOptions = {}): Promise<SessionSummary[]> {
   const base = options.dir || sessionsDir(env);
-  const files = await walkJsonl(base, 0);
+  const webDir = join(base, WEB_TRANSCRIPTS_DIR);
+  const web = options.web ?? false;
+  const files = web === "only" ? await walkJsonl(webDir, 1) : await walkJsonl(base, 0, web ? undefined : webDir);
   const sessions: SessionSummary[] = [];
   for (const path of files) {
+    const origin: SessionSummary["origin"] = isWebTranscriptPath(path, base) ? "web" : "local";
     let meta: Extract<TranscriptItem, { type: "session_meta" }> | undefined;
     try {
       for (const line of readHead(path).split("\n")) {
@@ -217,12 +248,18 @@ export async function listSessions(env: Env = process.env, options: { dir?: stri
     } catch {
       continue;
     }
-    if (meta) {
-      sessions.push({ id: meta.payload.sessionId, path, caseId: meta.payload.caseId, startedAt: meta.ts });
+    if (origin === "web") {
+      const id = basename(path, ".jsonl");
+      const info = await stat(path).catch(() => null);
+      const mtime = info ? info.mtime.toISOString() : "";
+      const claimed = meta && typeof meta.ts === "string" ? meta.ts : "";
+      sessions.push({ id, path, caseId: meta && typeof meta.payload?.caseId === "string" ? meta.payload.caseId : "", startedAt: claimed && claimed < mtime ? claimed : mtime, origin });
+    } else if (meta) {
+      sessions.push({ id: meta.payload.sessionId, path, caseId: meta.payload.caseId, startedAt: meta.ts, origin });
     } else {
       const m = /Z-([A-Za-z0-9_-]+)\.jsonl$/.exec(path);
       const info = await stat(path).catch(() => null);
-      sessions.push({ id: m?.[1] ?? path, path, caseId: "", startedAt: info ? info.mtime.toISOString() : "" });
+      sessions.push({ id: m?.[1] ?? path, path, caseId: "", startedAt: info ? info.mtime.toISOString() : "", origin });
     }
   }
   sessions.sort((a, b) => (a.startedAt < b.startedAt ? 1 : a.startedAt > b.startedAt ? -1 : 0));

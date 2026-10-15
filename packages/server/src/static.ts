@@ -141,13 +141,35 @@ export async function serveStatic(req: IncomingMessage, res: ServerResponse, roo
   return { served: true };
 }
 
-/** Serve `/local-assets/<rel>` from the first asset directory that has it. */
+/**
+ * Extensions `/local-assets/*` serves (docs/ASSETS.md: figures, the source
+ * PDF, the anatomy model and its catalog, media). Anything else — HTML, SVG,
+ * XML, scripts — is never served: the asset directories may come from an
+ * untrusted checkout (`<repo>/assets/local`), and such files would run
+ * same-origin with the app (and read keys the user saved in the browser).
+ */
+export const LOCAL_ASSET_EXTENSIONS: ReadonlySet<string> = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".pdf", ".json", ".gz", ".glb", ".mp3", ".mp4", ".webm"]);
+
+/**
+ * Per-response policy for a local asset: passive content only, in a sandbox
+ * (no script, no same-origin access) — except PDFs, which browsers refuse to
+ * render in a CSP sandbox; a PDF cannot run the page's scripts anyway.
+ */
+export function localAssetPolicy(file: string): string | null {
+  if (extname(file).toLowerCase() === ".pdf") return null;
+  return "default-src 'none'; img-src 'self' data: blob:; media-src 'self'; style-src 'unsafe-inline'; sandbox";
+}
+
+/** Serve `/local-assets/<rel>` from the first asset directory that has it (allow-listed types only). */
 export async function serveLocalAsset(req: IncomingMessage, res: ServerResponse, roots: readonly string[], rel: string): Promise<StaticResult> {
   for (const root of roots) {
     const abs = safeJoin(root, rel);
     if (!abs || abs === resolve(root)) continue;
     const file = await regularFileUnder(root, abs);
-    if (file) {
+    // Both the requested name and the resolved file (symlinks) must be allow-listed.
+    if (file && LOCAL_ASSET_EXTENSIONS.has(extname(abs).toLowerCase()) && LOCAL_ASSET_EXTENSIONS.has(extname(file.path).toLowerCase())) {
+      const policy = localAssetPolicy(file.path);
+      if (policy) res.setHeader("content-security-policy", policy);
       sendFile(req, res, file, "no-cache");
       return { served: true };
     }

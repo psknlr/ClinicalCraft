@@ -24,6 +24,7 @@ import {
   type FacilityDefinition,
   type ReduceResult,
   type SessionState,
+  type VitalKey,
 } from "@clinicalcraft/core";
 import { BUILTIN_AGENTS, mergeAgentProfiles } from "../agents/builtin.js";
 import { attendingOffline, consultantOffline, examinerOffline, narrateAction, nurseOffline } from "../agents/offline.js";
@@ -44,6 +45,7 @@ import { ToolRegistry } from "../tools/index.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
 import { validateArgs } from "../tools/validate.js";
 import { normaliseContent, redactValue, TranscriptRecorder } from "../transcript.js";
+import { actionFromToolInput, actionToolArgs } from "./action-input.js";
 import { ApprovalBroker } from "./approvals.js";
 import { offlineClinicianTurn, runAutopilot, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { EventHub } from "./events.js";
@@ -52,8 +54,8 @@ import { rt } from "./i18n.js";
 import { resolveAgentModel, type AgentModel } from "./models.js";
 import { reactToDomainEvent, type EventReaction } from "./notifications.js";
 import { initialAffectIntensity, runPatientTurn, type PatientMemory } from "./patient-pipeline.js";
-import { parseLearnerInput } from "./router.js";
-import type { ClinicalSessionApi, SessionOptions, SessionSnapshot } from "./types.js";
+import { parseLearnerInput, resolveAgentAlias } from "./router.js";
+import type { ClinicalSessionApi, SessionOptions, SessionSnapshot, TranscriptItem } from "./types.js";
 
 /** Runtime version stamped into transcripts. */
 export const CLINICALCRAFT_VERSION = "5.0.0";
@@ -69,8 +71,8 @@ export interface CreateSessionOptions extends SessionOptions {
   retry?: RetryPolicy | false;
   /** Write a `session_meta` item (default true). */
   writeSessionMeta?: boolean;
-  /** Resume: runtime state beyond actions/messages (interlocutor, workup plan) — see `resumedRuntimeConfig`. */
-  restore?: { interlocutor?: string; plan?: { items: PlanItem[]; explanation: string | null } };
+  /** Resume: runtime state beyond actions/messages (interlocutor, workup plan, patient/companion affect) — see `resumedRuntimeConfig`. */
+  restore?: { interlocutor?: string; plan?: { items: PlanItem[]; explanation: string | null }; affect?: Partial<Record<"patient" | "companion", number>> };
 }
 
 const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
@@ -80,6 +82,11 @@ const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_f
 
 /** Ops that start work and are cancelled while still queued by an interrupt or shutdown. */
 const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess"]);
+
+/** A valid patient affect intensity (0 calm … 3 most intense). */
+function isAffectIntensity(value: unknown): value is PatientMemory["affectIntensity"] {
+  return value === 0 || value === 1 || value === 2 || value === 3;
+}
 
 function defaultNewId(): string {
   const c = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
@@ -125,39 +132,7 @@ export function cleanConfigPatch(patch: RuntimeConfigPatch): RuntimeConfigPatch 
   return out;
 }
 
-/** Tool arguments equivalent to a learner clinical action (for the approval gate). */
-export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale: string): Record<string, unknown> {
-  switch (action.type) {
-    case "ask": {
-      const h = c.history.find((x) => x.id === action.itemId);
-      return { question: h ? t(h.question, locale) : action.itemId };
-    }
-    case "examine":
-      return { finding_id: action.findingId };
-    case "order":
-      return { investigation_id: action.investigationId };
-    case "read":
-      return { investigation_id: action.investigationId, ...(action.phase ? { phase: action.phase } : {}) };
-    case "intervene":
-      return { intervention_id: action.interventionId };
-    case "answer":
-      return { decision_id: action.decisionId, option_ids: action.optionIds };
-    case "set-phase":
-      return { phase: action.phase };
-    case "advance-time":
-      return { minutes: action.minutes };
-    case "finish":
-    case "start":
-    case "hint":
-    case "flag":
-    case "note":
-      return {};
-    default: {
-      const never: never = action;
-      return never;
-    }
-  }
-}
+export { actionFromToolInput, actionToolArgs } from "./action-input.js";
 
 export class ClinicalSession implements ClinicalSessionApi {
   readonly id: string;
@@ -208,6 +183,8 @@ export class ClinicalSession implements ClinicalSessionApi {
   /** Credentials known to the session (resolved provider keys), masked in every transcript item. */
   private readonly secrets = new Set<string>();
   private readonly offlineCursor = { value: 0 };
+  /** Started-but-not-ended turns per agent (a synthetic line turn never idles a running turn of its agent). */
+  private readonly openTurns = new Map<string, number>();
   private closing = false;
   private closed = false;
 
@@ -234,7 +211,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     });
     this.profiles = new Map(mergeAgentProfiles(BUILTIN_AGENTS, opts.agents).map((p) => [p.name, p]));
     const builtinNames = new Set(BUILTIN_COMMANDS.map((c) => c.name));
-    this.slash = [...BUILTIN_COMMANDS, ...(opts.commands ?? []).filter((c) => !builtinNames.has(c.name))];
+    const disabled = new Set((opts.disabledCommands ?? []).map((n) => n.toLowerCase()));
+    this.slash = [...BUILTIN_COMMANDS.filter((c) => !disabled.has(c.name)), ...(opts.commands ?? []).filter((c) => !builtinNames.has(c.name))];
     this.hooks = { on: (event, handler) => this.hookRunner.on(event, handler) };
     const affect = initialAffectIntensity(this.caseDef.patient.persona.affect);
     this.patientMemory = { patient: { approached: false, affectIntensity: affect }, companion: { approached: false, affectIntensity: Math.min(affect, 1) as 0 | 1 } };
@@ -268,7 +246,7 @@ export class ClinicalSession implements ClinicalSessionApi {
   /** Start-up: restore (resume), SessionStart hooks, session_meta, session_configured. Called by `createSession`. */
   async start(): Promise<void> {
     const resume = this.opts.resume;
-    if (resume) this.restore(resume);
+    const derivedDialogue = resume ? this.restore(resume) : [];
     const extra = this.opts.restore;
     if (extra?.plan) {
       this.plan = extra.plan.items.map((p) => ({ text: p.text, status: p.status }));
@@ -277,6 +255,10 @@ export class ClinicalSession implements ClinicalSessionApi {
     if (extra?.interlocutor) {
       const target = extra.interlocutor.replace(/^@/, "").toLowerCase();
       if (this.availableAgents().includes(target)) this.interlocutor = target;
+    }
+    for (const speaker of ["patient", "companion"] as const) {
+      const intensity = extra?.affect?.[speaker];
+      if (isAffectIntensity(intensity)) this.patientMemory[speaker].affectIntensity = intensity;
     }
     if (this.opts.writeSessionMeta !== false) {
       this.recorder?.record("session_meta", {
@@ -290,6 +272,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         clinicalcraftVersion: CLINICALCRAFT_VERSION,
       });
     }
+    for (const entry of derivedDialogue) this.recorder?.record("dialogue", { ...entry });
     const hook = await this.runHook({ hook_event_name: "SessionStart", source: resume ? "resume" : "startup" });
     for (const w of hook.warnings) this.emit("", { type: "warning", message: w });
     this.sessionContext.push(...hook.additionalContext);
@@ -362,6 +345,14 @@ export class ClinicalSession implements ClinicalSessionApi {
     return [...(this.conversations.get(agent) ?? [])];
   }
 
+  /** Add examiner evidence lines (and record them, so a resume can restore them). */
+  private addDialogue(...entries: DialogueEntry[]): void {
+    for (const entry of entries) {
+      this.dialogue.push(entry);
+      this.recorder?.record("dialogue", { ...entry });
+    }
+  }
+
   snapshot(): SessionSnapshot {
     return {
       format: "clinicalcraft-session@1",
@@ -374,6 +365,8 @@ export class ClinicalSession implements ClinicalSessionApi {
       messages: Object.fromEntries([...this.conversations].map(([agent, msgs]) => [agent, structuredClone(msgs)])),
       plan: this.plan.map((p) => ({ ...p })),
       createdAt: new Date(this.createdAt).toISOString(),
+      ...(this.recorder ? { nextOrdinal: this.recorder.nextOrdinal } : {}),
+      dialogue: this.dialogue.map((d) => ({ ...d })),
     };
   }
 
@@ -517,7 +510,31 @@ export class ClinicalSession implements ClinicalSessionApi {
 
   private emit(id: string, msg: EventMsg): void {
     if (this.hub.isClosed) return;
+    if (msg.type === "turn_started") this.openTurns.set(String(msg.agent), (this.openTurns.get(String(msg.agent)) ?? 0) + 1);
+    else if (msg.type === "turn_complete" || msg.type === "turn_aborted") {
+      const left = (this.openTurns.get(String(msg.agent)) ?? 0) - 1;
+      if (left > 0) this.openTurns.set(String(msg.agent), left);
+      else this.openTurns.delete(String(msg.agent));
+    }
     this.hub.emit(id, msg);
+  }
+
+  /**
+   * A line spoken outside any agent turn — ward staff (critical-result call,
+   * monitor alarm, scenario announcement) or a button-style authored answer —
+   * in its own synthetic turn with a fresh id: turn_started → agent_message →
+   * turn_complete → turn_phase idle, so every agent_message belongs to a
+   * started turn. The idle phase is skipped while another turn of the same
+   * agent is still running (that turn's own end idles it).
+   */
+  private speakLine(id: string, line: Omit<Extract<EventMsg, { type: "agent_message" }>, "type" | "turnId">): void {
+    const turnId = this.newId();
+    const started = this.now();
+    const agent = line.agent;
+    this.emit(id, { type: "turn_started", turnId, agent, synthetic: true });
+    this.emit(id, { type: "agent_message", turnId, ...line });
+    this.emit(id, { type: "turn_complete", turnId, agent, lastMessage: line.text || null, durationMs: Math.max(0, this.now() - started) });
+    if (!this.openTurns.has(String(agent))) this.emit(id, { type: "turn_phase", turnId, agent, phase: "idle" });
   }
 
   private emitConfigured(id: string): void {
@@ -586,11 +603,28 @@ export class ClinicalSession implements ClinicalSessionApi {
     return list;
   }
 
+  /**
+   * Transcript item for one conversation message. Patient/companion messages
+   * also carry the speaker's current affect intensity (`affectIntensity`,
+   * 0–3) so a resume restores the emotional state (`resumedRuntimeConfig`).
+   */
+  private recordMessage(agent: AgentRole, m: ChatMessage): void {
+    if (!this.recorder) return;
+    const payload: Extract<TranscriptItem, { type: "message" }>["payload"] = { agent, role: m.role, content: m.content };
+    const speaker = agent === "patient" ? "patient" : agent === "companion" ? "companion" : null;
+    if (speaker) {
+      const withAffect: typeof payload & { affectIntensity: number } = { ...payload, affectIntensity: this.patientMemory[speaker].affectIntensity };
+      this.recorder.record("message", withAffect);
+    } else {
+      this.recorder.record("message", payload);
+    }
+  }
+
   private appendMessages(agent: AgentRole, messages: readonly ChatMessage[]): void {
     const list = this.conversation(agent);
     for (const m of messages) {
       list.push(m);
-      this.recorder?.record("message", { agent, role: m.role, content: m.content });
+      this.recordMessage(agent, m);
     }
   }
 
@@ -598,7 +632,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     const list = this.conversation(agent);
     list.length = 0;
     list.push(...turn.messages);
-    for (const m of turn.appended) this.recorder?.record("message", { agent, role: m.role, content: m.content });
+    for (const m of turn.appended) this.recordMessage(agent, m);
   }
 
   private trackUsage(id: string, agent: AgentRole, usage: TokenUsage): void {
@@ -621,20 +655,22 @@ export class ClinicalSession implements ClinicalSessionApi {
       this.acceptedActions.push(action);
     }
     this.recorder?.record("action", { action, accepted });
+    let unmeasurable: readonly VitalKey[] | undefined;
     for (const event of result.events) {
       this.emit(id, { type: "clinical_event", event });
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
-      for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
+      if (event.type === "vitals.alarm" && unmeasurable === undefined) unmeasurable = vitalsAt(this.caseDef, result.state).unmeasurable ?? [];
+      for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale, unmeasurable ? { unmeasurable } : {})) this.react(id, reaction);
     }
     if (accepted) {
       this.emitSnapshot(id);
       if (action.type === "note") {
         // Free text is the author's words, never an engine-verified ACTION line for the examiner.
         const who = !action.by || action.by === "learner" ? "learner" : String(action.by);
-        if (action.text.trim()) this.dialogue.push({ who, speaker: who, text: `[note] ${action.text}` });
+        if (action.text.trim()) this.addDialogue({ who, speaker: who, text: `[note] ${action.text}` });
       } else if (action.type !== "ask" && action.type !== "start") {
         const narration = narrateAction(this.caseDef, action, this.locale);
-        if (narration) this.dialogue.push({ who: "action", speaker: String(action.by ?? "learner"), text: narration });
+        if (narration) this.addDialogue({ who: "action", speaker: String(action.by ?? "learner"), text: narration });
       }
     }
     return result;
@@ -649,9 +685,9 @@ export class ClinicalSession implements ClinicalSessionApi {
     if (reaction.staffLine) {
       const line = reaction.staffLine;
       const speaker = line.speaker === "monitor" ? rt(this.locale, "speaker.monitor") : npcDisplayName(this.caseDef, this.facility, "nurse", this.locale);
-      this.emit(id, { type: "agent_message", turnId: this.newId(), agent: line.agent, speaker, text: line.text, grounded: [] });
+      this.speakLine(id, { agent: line.agent, speaker, text: line.text, grounded: [] });
       this.appendMessages(line.agent, [{ role: "assistant", content: [{ type: "text", text: line.text }] }]);
-      this.dialogue.push({ who: line.agent, speaker, text: line.text });
+      this.addDialogue({ who: line.agent, speaker, text: line.text });
     }
   }
 
@@ -727,7 +763,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         if (utterance.trim()) {
           const who = agent === "learner" ? "learner" : String(agent);
           const speaker = agent === "learner" ? "learner" : npcDisplayName(this.caseDef, this.facility, String(agent), this.locale);
-          this.dialogue.push({ who, speaker, text: target === "patient" ? utterance : `@${target} ${utterance}` });
+          this.addDialogue({ who, speaker, text: target === "patient" ? utterance : `@${target} ${utterance}` });
         }
         this.askDepth++;
         try {
@@ -833,12 +869,12 @@ export class ClinicalSession implements ClinicalSessionApi {
     let target: string;
     let body = text;
     if (to === null) {
-      const parsed = parseLearnerInput(text);
+      const parsed = parseLearnerInput(text, this.availableAgents());
       if (parsed.kind === "command") return this.handleCommand(id, parsed.name, parsed.args);
       target = parsed.to ?? this.interlocutor;
       body = parsed.text;
     } else {
-      target = String(to).replace(/^@/, "").toLowerCase();
+      target = resolveAgentAlias(String(to));
     }
     await this.withTurn(id, (signal) => this.sendLearnerMessage(id, target, body, signal));
   }
@@ -865,13 +901,18 @@ export class ClinicalSession implements ClinicalSessionApi {
     }
     if (body.trim()) {
       this.ensureStarted(id);
-      this.dialogue.push({ who: "learner", speaker: "learner", text: target === "patient" ? body : `@${target} ${body}` });
+      this.addDialogue({ who: "learner", speaker: "learner", text: target === "patient" ? body : `@${target} ${body}` });
     }
     await this.runAgent(id, target, body, signal, hook.additionalContext);
   }
 
   private async handleCommand(id: string, name: string, args: string): Promise<void> {
-    await this.withTurn(id, (signal) => executeCommand(this.commandHost(id, name, signal), name.toLowerCase(), args));
+    const lower = name.toLowerCase();
+    if ((this.opts.disabledCommands ?? []).some((n) => n.toLowerCase() === lower)) {
+      this.emit(id, { type: "command_output", name: lower, text: rt(this.locale, "cmd.disabled", { name: lower }) });
+      return;
+    }
+    await this.withTurn(id, (signal) => executeCommand(this.commandHost(id, name, signal), lower, args));
   }
 
   private async handleClinicalAction(id: string, raw: ClinicalAction, rationale?: string): Promise<ReduceResult | null> {
@@ -881,26 +922,42 @@ export class ClinicalSession implements ClinicalSessionApi {
       return null;
     }
     const action = { ...parsed.data, by: parsed.data.by ?? "learner" } as ClinicalAction;
-    if (rationale?.trim()) this.dialogue.push({ who: "learner", speaker: "learner", text: `[${action.type}] ${rationale.trim()}` });
+    if (rationale?.trim()) this.addDialogue({ who: "learner", speaker: "learner", text: `[${action.type}] ${rationale.trim()}` });
     return this.withTurn(id, (signal) => this.learnerAction(id, action, signal));
   }
 
-  /** A learner action through PreToolUse hooks and the approval gate, then the engine. */
-  private async learnerAction(id: string, action: ClinicalAction, signal?: AbortSignal): Promise<ReduceResult | null> {
+  /**
+   * A learner action through PreToolUse hooks and the approval gate (as its
+   * equivalent tool), then the engine. A hook's `updatedInput` is re-validated
+   * and mapped back to the action, so the gate, the engine and PostToolUse all
+   * see the rewritten input.
+   */
+  private async learnerAction(id: string, requested: ClinicalAction, signal?: AbortSignal): Promise<ReduceResult | null> {
     const L = this.locale;
     // Flags owned by the simulation (set by interventions / scenario events) drive objectives,
     // rubric items and trend stops: setting or clearing them directly would bypass the
     // approval gate and the practice scope of the action that owns them.
-    if (action.type === "flag" && this.ownedFlags.has(action.flag)) {
-      this.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "action.flagOwned", { flag: action.flag }) }), code: "permission_denied" });
+    if (requested.type === "flag" && this.ownedFlags.has(requested.flag)) {
+      this.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "action.flagOwned", { flag: requested.flag }) }), code: "permission_denied" });
       return null;
     }
+    let action = requested;
     const toolName = actionToolName(action);
     const tool = toolName ? this.registry.get(toolName) : undefined;
-    const args = tool ? actionToolArgs(this.caseDef, action, L) : null;
+    let args = tool ? actionToolArgs(this.caseDef, action, L) : null;
     if (tool && args) {
-      const gate = await this.gateLearnerTool(id, tool, args, signal);
-      if (gate) return null;
+      const pre = await this.learnerPreToolUse(id, tool, args, signal);
+      if (!pre.ok) return null;
+      if (pre.updated) {
+        const mapped = actionFromToolInput(this.caseDef, action, pre.input, L);
+        if (!mapped.ok) {
+          this.emit(id, { type: "error", message: rt(L, "action.hookInputUnresolved", { tool: tool.name, detail: mapped.detail }), code: "invalid_action" });
+          return null;
+        }
+        action = mapped.action;
+        args = pre.input;
+      }
+      if (await this.authorizeLearnerTool(id, tool, args, pre.approved, signal)) return null;
     }
     if (!["start", "set-phase", "note", "flag"].includes(action.type)) this.ensureStarted(id);
     const result = this.dispatchInternal(action, id);
@@ -926,18 +983,40 @@ export class ClinicalSession implements ClinicalSessionApi {
     return result;
   }
 
-  /** Hooks + gate for a learner tool use; returns a refusal output or null when allowed. */
-  private async gateLearnerTool(id: string, tool: ToolDefinition<any>, args: Record<string, unknown>, signal?: AbortSignal): Promise<ToolOutput | null> {
+  /**
+   * PreToolUse hooks for a learner tool use (direct action or slash command):
+   * a block refuses; an `updatedInput` replaces the input after validation
+   * against the tool's schema (as for model tool calls in `executeToolCall`).
+   */
+  private async learnerPreToolUse(
+    id: string,
+    tool: ToolDefinition<any>,
+    args: Record<string, unknown>,
+    signal?: AbortSignal,
+  ): Promise<{ ok: true; input: Record<string, unknown>; updated: boolean; approved: boolean } | { ok: false; refusal: ToolOutput }> {
     const L = this.locale;
-    const ctx = this.toolContext("learner", id, signal);
     const pre = await this.runHook({ hook_event_name: "PreToolUse", agent: "learner", tool_name: tool.name, tool_input: args }, signal);
     for (const w of pre.warnings) this.emit(id, { type: "warning", message: w });
     if (pre.blocked) {
       const message = rt(L, "action.denied", { reason: pre.reason ?? "" });
       this.emit(id, { type: "error", message, code: "permission_denied" });
-      return { ok: false, output: message };
+      return { ok: false, refusal: { ok: false, output: message } };
     }
-    const gate = await this.authorize(id, { agent: "learner", tool, args, ctx, hookApproved: pre.approved, ...(signal ? { signal } : {}) });
+    if (pre.updatedInput === undefined) return { ok: true, input: args, updated: false, approved: pre.approved };
+    const validated = validateArgs(tool.inputSchema, pre.updatedInput);
+    if (!validated.ok) {
+      const message = rt(L, "action.hookInputInvalid", { tool: tool.name, errors: validated.errors.join("; ") });
+      this.emit(id, { type: "error", message, code: "invalid_action" });
+      return { ok: false, refusal: { ok: false, output: message } };
+    }
+    return { ok: true, input: validated.value as Record<string, unknown>, updated: true, approved: pre.approved };
+  }
+
+  /** The approval gate for a learner tool use; returns a refusal output or null when allowed. */
+  private async authorizeLearnerTool(id: string, tool: ToolDefinition<any>, args: Record<string, unknown>, hookApproved: boolean, signal?: AbortSignal): Promise<ToolOutput | null> {
+    const L = this.locale;
+    const ctx = this.toolContext("learner", id, signal);
+    const gate = await this.authorize(id, { agent: "learner", tool, args, ctx, hookApproved, ...(signal ? { signal } : {}) });
     if (gate.kind === "deny") {
       const message = rt(L, "action.denied", { reason: gate.reason || gate.ruleId });
       this.emit(id, { type: "error", message, code: "permission_denied" });
@@ -966,8 +1045,8 @@ export class ClinicalSession implements ClinicalSessionApi {
       { role: "user", content: [{ type: "text", text: question }] },
       { role: "assistant", content: [{ type: "text", text }] },
     ]);
-    this.dialogue.push({ who: "learner", speaker: "learner", text: question }, { who: agent, speaker, text });
-    this.emit(id, { type: "agent_message", turnId: this.newId(), agent, speaker, text, grounded: [itemId] });
+    this.addDialogue({ who: "learner", speaker: "learner", text: question }, { who: agent, speaker, text });
+    this.speakLine(id, { agent, speaker, text, grounded: [itemId] });
   }
 
   /* ---------------------------------------------------------------- */
@@ -1034,7 +1113,7 @@ export class ClinicalSession implements ClinicalSessionApi {
   private emitAgentMessage(id: string, turnId: string, agent: AgentRole, text: string, grounded: string[]): void {
     const speaker = TOP_AGENT_ROLES.has(agent) ? agent : npcDisplayName(this.caseDef, this.facility, agent, this.locale);
     this.emit(id, { type: "agent_message", turnId, agent, speaker, text, grounded });
-    this.dialogue.push({ who: agent, speaker, text });
+    this.addDialogue({ who: agent, speaker, text });
   }
 
   private async runPatientAgent(id: string, turnId: string, target: "patient" | "companion", utterance: string, signal?: AbortSignal): Promise<AgentOutcome> {
@@ -1110,7 +1189,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       if (res.text) {
         this.emit(id, { type: "agent_message_delta", turnId, agent: speaker, delta: res.text });
         this.emit(id, { type: "agent_message", turnId, agent: speaker, speaker: res.speakerName, text: res.text, grounded: res.grounded, grounding: res.grounding, nonverbal: res.nonverbal });
-        this.dialogue.push({ who: speaker, speaker: res.speakerName, text: res.text });
+        this.addDialogue({ who: speaker, speaker: res.speakerName, text: res.text });
       }
       return { status: "end_turn", text: res.text, grounded: res.grounded };
     } finally {
@@ -1305,7 +1384,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     const tail: ChatMessage[] = [];
     if (first && first.content.length > 1) tail.push({ role: first.role, content: first.content.slice(1) });
     tail.push(...rest);
-    for (const m of tail) this.recorder?.record("message", { agent, role: m.role, content: m.content });
+    for (const m of tail) this.recordMessage(agent, m);
     this.emit(id, { type: "compacted", agent, beforeTokens: before, afterTokens: estimateTokens(history) });
   }
 
@@ -1365,11 +1444,19 @@ export class ClinicalSession implements ClinicalSessionApi {
   /* Resume                                                            */
   /* ---------------------------------------------------------------- */
 
-  private restore(resume: NonNullable<SessionOptions["resume"]>): void {
+  /**
+   * Restore a resumed session. Returns dialogue lines rebuilt for a transcript
+   * that predates `dialogue` items (recorded by `start` after `session_meta`).
+   */
+  private restore(resume: NonNullable<SessionOptions["resume"]>): DialogueEntry[] {
     const replayed = replay(this.caseDef, resume.actions);
     const rejected = new Set(replayed.rejections.map((r) => r.index));
     this._state = replayed.state;
     this.acceptedActions = resume.actions.filter((_, i) => !rejected.has(i));
+    const recorded = (resume.dialogue ?? []).filter((d) => d && typeof d.who === "string" && typeof d.speaker === "string" && typeof d.text === "string");
+    // Already in the transcript (or the snapshot): restored, not re-recorded.
+    this.dialogue.push(...recorded.map((d) => ({ who: d.who, speaker: d.speaker, text: d.text })));
+    const derived: DialogueEntry[] = [];
     for (const [agent, raw] of Object.entries(resume.messages ?? {})) {
       const list: ChatMessage[] = [];
       for (const m of raw ?? []) {
@@ -1378,14 +1465,29 @@ export class ClinicalSession implements ClinicalSessionApi {
         if ((msg?.role === "user" || msg?.role === "assistant") && content) list.push({ role: msg.role, content });
       }
       this.conversations.set(agent, list);
+      if (recorded.length > 0) continue;
       for (const m of list) {
         const text = m.content.filter((p): p is Extract<ChatPart, { type: "text" }> => p.type === "text").map((p) => p.text).join(" ");
-        if (text.trim()) this.dialogue.push(m.role === "user" ? { who: "learner", speaker: "learner", text } : { who: agent, speaker: agent, text });
+        if (text.trim()) derived.push(m.role === "user" ? { who: "learner", speaker: "learner", text } : { who: agent, speaker: agent, text });
       }
     }
+    if (recorded.length === 0) {
+      // A transcript from before dialogue items: the accepted actions' ACTION lines and notes (order within them kept).
+      for (const action of this.acceptedActions) {
+        if (action.type === "note") {
+          const who = !action.by || action.by === "learner" ? "learner" : String(action.by);
+          if (action.text.trim()) derived.push({ who, speaker: who, text: `[note] ${action.text}` });
+        } else if (action.type !== "ask" && action.type !== "start") {
+          const narration = narrateAction(this.caseDef, action, this.locale);
+          if (narration) derived.push({ who: "action", speaker: String(action.by ?? "learner"), text: narration });
+        }
+      }
+    }
+    this.dialogue.push(...derived);
     for (const speaker of ["patient", "companion"] as const) {
       if ((this.conversations.get(speaker)?.length ?? 0) > 0) this.patientMemory[speaker].approached = true;
     }
+    return derived;
   }
 
   /* ---------------------------------------------------------------- */
@@ -1433,15 +1535,17 @@ export class ClinicalSession implements ClinicalSessionApi {
     };
   }
 
-  /** Run a tool as the learner: validation, PreToolUse hooks, the approval gate, then the tool. */
+  /** Run a tool as the learner (slash commands): validation, PreToolUse hooks (`updatedInput` re-validated), the approval gate, the tool, PostToolUse. */
   private async runLearnerTool(id: string, name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<ToolOutput> {
     const L = this.locale;
     const tool = this.registry.get(name);
     if (!tool) return { ok: false, output: rt(L, "tool.unknownTool", { tool: name, tools: "-" }) };
     const validated = validateArgs(tool.inputSchema, args);
     if (!validated.ok) return { ok: false, output: rt(L, "tool.invalidArgs", { tool: name, errors: validated.errors.join("; ") }) };
-    const input = validated.value as Record<string, unknown>;
-    const refused = await this.gateLearnerTool(id, tool, input, signal);
+    const pre = await this.learnerPreToolUse(id, tool, validated.value as Record<string, unknown>, signal);
+    if (!pre.ok) return pre.refusal;
+    const input = pre.input;
+    const refused = await this.authorizeLearnerTool(id, tool, input, pre.approved, signal);
     if (refused) return refused;
     if (!tool.readOnly) this.ensureStarted(id);
     let out: ToolOutput;

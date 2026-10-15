@@ -96,6 +96,13 @@ export interface VitalsSnapshot {
   alarms: VitalAlarm[];
   trend: Partial<Record<VitalKey, -1 | 0 | 1>>;
   baselineOnly?: boolean;
+  /**
+   * Vitals the monitor cannot read right now (`VITAL_KEYS` order), present
+   * only during a cardiac-arrest rhythm: `["hr", "sbp", "dbp", "spo2"]` for
+   * VF/asystole, `["sbp", "dbp", "spo2"]` for PEA/pulseless VT. Their value
+   * in `vitals` is 0 (so is `map`); UIs should show "no reading" (e.g. `---`).
+   */
+  unmeasurable?: VitalKey[];
 }
 
 /* ------------------------------------------------------------------ */

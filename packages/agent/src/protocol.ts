@@ -137,7 +137,12 @@ export type EventMsg =
       interlocutor: AddressTarget;
       offline: boolean;
     }
-  | { type: "turn_started"; turnId: string; agent: AgentRole }
+  /**
+   * `synthetic`: a line spoken outside any agent turn (staff alarm/critical-result
+   * call, scenario announcement, a button answer) in its own one-line turn (§4
+   * Turn bracketing) — not the addressed agent's reply.
+   */
+  | { type: "turn_started"; turnId: string; agent: AgentRole; synthetic?: true }
   | { type: "turn_phase"; turnId: string; agent: AgentRole; phase: TurnPhase }
   /** Streaming text from an agent (patient speech, nurse reply, clinician reasoning summary). */
   | { type: "agent_message_delta"; turnId: string; agent: AgentRole; delta: string }

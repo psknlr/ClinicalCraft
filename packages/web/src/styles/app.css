@@ -2275,6 +2275,26 @@ details.topic .question {
   }
 }
 
+/* HUD bottom layout. The status bar lives in the left gutter beside the centred hotbar block
+   (≈ 570 px wide): it wraps within that gutter and, when the gutter gets narrow, moves above the
+   hotbar instead of running under it. */
+.statusbar {
+  max-width: calc(50vw - 330px);
+}
+@media (max-width: 1000px) {
+  .statusbar {
+    bottom: 168px;
+    max-width: calc(50vw - 170px);
+  }
+}
+/* Narrow windows with a mouse/keyboard keep the key-hint row under the hotbar, so the vitals strip
+   sits higher than on touch screens (where that row is hidden). */
+@media (max-width: 750px) and (pointer: fine) {
+  .vitals-strip {
+    bottom: 106px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

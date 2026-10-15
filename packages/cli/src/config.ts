@@ -6,7 +6,7 @@ import { existsSync } from "node:fs";
 import { chmod, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { SettingsLayerSchema, validateSettingsLayer } from "@clinicalcraft/agent";
-import { findProjectRoot, projectSettingsPaths, saveUserSettings, userSettingsPath } from "@clinicalcraft/agent/node";
+import { findProjectRoot, isProjectTrusted, projectSettingsPaths, readProjectSettingsTexts, saveUserSettings, trustProject, userSettingsPath } from "@clinicalcraft/agent/node";
 import { flagBool, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
@@ -68,10 +68,10 @@ function deepMerge(target: Record<string, unknown>, patch: Record<string, unknow
 
 export async function configGet(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const settings = await loadCliSettings(ctx);
-  const { files, issues, projectRoot, sources, ...resolved } = settings;
+  const { files, issues, projectRoot, projectTrusted, sources, ...resolved } = settings;
   const key = args.positionals[0];
   if (!key) {
-    if (flagBool(args, "json")) ctx.print(JSON.stringify(redactSettings({ ...resolved, sources, files, projectRoot }), null, 2));
+    if (flagBool(args, "json")) ctx.print(JSON.stringify(redactSettings({ ...resolved, sources, files, projectRoot, projectTrusted }), null, 2));
     else {
       ctx.print(JSON.stringify(redactSettings(resolved), null, 2));
       ctx.print(ctx.out.dim(ctx.t("config.files", { files: files.join(", ") || "-" })));
@@ -144,7 +144,12 @@ export async function configSet(ctx: CliContext, args: ParsedArgs): Promise<numb
     const root = findProjectRoot(ctx.cwd, ctx.env) ?? ctx.cwd;
     const paths = projectSettingsPaths(root);
     file = target === "project" ? paths.project : paths.local;
+    // The user's own edit keeps a trusted project trusted (trust is pinned to the file contents);
+    // so does creating the first settings file (it then holds only what the user wrote).
+    const before = await readProjectSettingsTexts(root);
+    const keepTrust = (before.project === null && before.local === null) || (await isProjectTrusted(root, ctx.env, before));
     await writeLayerFile(file, patch, target);
+    if (keepTrust) await trustProject(root, ctx.env);
   }
   ctx.print(ctx.t("config.saved", { key, value: secret ? "[redacted]" : JSON.stringify(value), file }));
   await warnIfShadowed(ctx, key, value, target, secret);
@@ -164,7 +169,7 @@ async function warnIfShadowed(ctx: CliContext, key: string, value: unknown, targ
   } catch {
     return;
   }
-  const { files: _files, issues: _issues, projectRoot: _root, sources, ...resolved } = effective;
+  const { files: _files, issues: _issues, projectRoot: _root, projectTrusted: _trusted, sources, ...resolved } = effective;
   const source = sources[key.split(".")[0]!];
   if (!source || (LAYER_RANK[source] ?? 0) <= (LAYER_RANK[target] ?? 0)) return;
   const now = getPath(resolved, key);

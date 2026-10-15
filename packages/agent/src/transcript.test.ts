@@ -58,7 +58,7 @@ describe("replayTranscript", () => {
   });
 
   it("handles an empty transcript", () => {
-    expect(replayTranscript([])).toEqual({ sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1 });
+    expect(replayTranscript([])).toEqual({ sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1, dialogue: [] });
   });
 });
 

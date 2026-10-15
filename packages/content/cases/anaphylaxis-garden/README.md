@@ -18,7 +18,7 @@
 | clock | `simulated`, starts 15:40, `realtimeScale` 1, no time limit; costs: ask 0.5 · examine 0.5 · order 0.5 · read 0.5 · intervene 1 · answer 0 min (a fast-paced resuscitation) |
 | phases | live progression, none learner-switchable: `scene` (garden, before treatment) → `treated` (garden, after the first IM adrenaline) → `ed-resus` (transferred after only one dose; resuscitation ongoing) → `ed` (transferred and two doses given; stabilising). Wrong path: `collapsed` (garden, peri-arrest before any adrenaline; left at the first IM dose) |
 | difficulty / time | 3 / 5 · about 25 min |
-| content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms; all other items unavailable while `collapsed`) · 25 exam findings (phase-specific reassessment and peri-arrest variants) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 16 scenario events (5 of them silent markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 83 test utterances (2 negative) |
+| content | 46 history items (3 `unknown`, 3 `specific`, 9 required; 4 phase-specific "how are you now?" answers incl. the groan-only `status-collapsed`; 5 `ed`-only "now" answers for re-asked symptoms; all other items unavailable while `collapsed`) · 25 exam findings (phase-specific reassessment and peri-arrest variants) · 14 investigations (4 useful, 5 neutral, 4 low-value, 1 harmful; ED results for both `ed-resus` and `ed`) · 21 interventions (9 wrong or not-first-line choices) · 10 physiology trends · 16 scenario events (5 of them silent markers) · 5 objectives · 3 decisions · 16 rubric items (13 deterministic, 3 examiner-judged) · 5 NPCs · 97 test utterances (2 negative) |
 
 ## Clinical story
 
@@ -319,7 +319,7 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
   matched "有没有发烧", "你的手机呢", "多少岁"). A generic past-history question
   ("以前有啥病", "PMH?") deliberately selects both `pmh-asthma` and
   `pmh-other`.
-* **Matcher regression.** All 83 `extensions.testUtterances` pass the CLI rule
+* **Matcher regression.** All 97 `extensions.testUtterances` pass the CLI rule
   (every expected id selected at ≥ 0.55, an expected id first; the two
   `expect: []` entries select nothing). 356 further paraphrases, three
   rounds of them written after the previous tuning, reach recall@3 = 1.0 with

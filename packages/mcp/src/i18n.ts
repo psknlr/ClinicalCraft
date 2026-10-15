@@ -15,6 +15,7 @@ const EN = {
     "Pass session_id \"{session}\" to every clinical tool. Talk with ask_patient, find ids with list_options, then examine / order_test / read_result / answer_decision; " +
     "case_status shows objectives and open decisions; finish_case when every objective is complete; get_debrief for the assessment.",
   "start.failed": "Could not start the case: {message}",
+  "start.unknownCase": "No case \"{ref}\". Use a case handle (id) from list_cases.",
   "session.unknown": "Unknown session_id \"{id}\". Start one with start_case (open sessions: {open}).",
   "session.none": "none",
   "approval.needed":
@@ -49,6 +50,7 @@ const ZH: Record<McpMessageKey, string> = {
     "每个临床工具都要传入 session_id \"{session}\"。用 ask_patient 问诊，用 list_options 查找 id，然后 examine / order_test / read_result / answer_decision；" +
     "case_status 显示目标与待作答的决策；所有目标完成后调用 finish_case；get_debrief 获取评估。",
   "start.failed": "无法开始病例：{message}",
+  "start.unknownCase": "没有病例“{ref}”。请使用 list_cases 返回的病例编号（id）。",
   "session.unknown": "未知的 session_id “{id}”。请先用 start_case 开始会话（当前会话：{open}）。",
   "session.none": "无",
   "approval.needed":

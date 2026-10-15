@@ -5,7 +5,7 @@
  * free text (Enter sends, `@nurse` addressing), the offline badge, the
  * grounding indicator and — for the patient — Examine / Treat / Notes tabs.
  */
-import { availableInPhase } from "@clinicalcraft/agent";
+import { availableInPhase, RESOLVE_THRESHOLD, resolveHits } from "@clinicalcraft/agent";
 import { matchExam, matchInterventions, type CaseDefinition, type ExamFinding, type HistoryItem, type Intervention } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
@@ -70,7 +70,10 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       if (!raw) return;
       input.value = "";
       if (/^[/／]/.test(raw)) {
-        // Slash commands (/help, /vitals, /results…): the output is shown in this conversation.
+        // Commands the web handles through its own UI (language, settings, export, leaving the case)
+        // never reach the session: there they would change the session behind the UI's back.
+        if (webCommand(app, raw)) return;
+        // Other slash commands (/help, /vitals, /results…): the output is shown in this conversation.
         app.submit({ type: "user_message", text: raw }, isPatient ? "patient" : args.agent);
         return;
       }
@@ -237,14 +240,31 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         e?.preventDefault();
         const text = q.value.trim();
         if (!text) return;
+        // Same resolution as the examine tool: perform only a clear winner (≥ 0.55 and ahead of the
+        // runner-up). A weak or tied match ("examine the eyes" ~ "palpate the abdomen" at 0.5) is not
+        // that manoeuvre: say it is not recorded and offer the closest recorded ones to choose from.
         const hits = matchExam(c, text, getLocale(), { phase: state.phase });
+        const resolution = resolveHits(hits, text);
         mount(result);
-        if (!hits.length) {
-          result.append(h("div", { class: "notice" }, ct(c.examNotRecorded) || tr("exam.notRecorded")));
+        if (resolution.kind === "id") {
+          const f = c.exam.find((x) => x.id === resolution.id);
+          if (f) perform(f);
           return;
         }
-        const f = c.exam.find((x) => x.id === hits[0].id);
-        if (f) perform(f);
+        // Two strong, close matches: ask which; only weak matches: not recorded, closest offered.
+        const strong = resolution.kind === "ambiguous" && (hits[0]?.score ?? 0) >= RESOLVE_THRESHOLD;
+        if (!strong) result.append(h("div", { class: "notice", id: "exam-not-recorded" }, ct(c.examNotRecorded) || tr("exam.notRecorded")));
+        if (resolution.kind === "ambiguous") {
+          const options = resolution.ids.map((id) => c.exam.find((x) => x.id === id)).filter((f): f is ExamFinding => !!f);
+          result.append(
+            h("p", { class: "small muted" }, tr(strong ? "exam.which" : "exam.closest")),
+            h(
+              "div",
+              { class: "row wrap exam-candidates" },
+              options.map((f) => h("button", { type: "button", class: "candidate", dataset: { finding: f.id }, onclick: () => perform(f) }, ct(f.maneuver))),
+            ),
+          );
+        }
       };
       const perform = (f: ExamFinding) => {
         const missing = missingCaps(f.requires, caps);
@@ -481,3 +501,48 @@ export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<strin
     ),
   );
 }
+
+/**
+ * Handle a slash command the web owns: `/lang` switches the whole UI (and the
+ * session) like the settings panel; provider/model/approval/scope open the
+ * settings; `/export` downloads the learning record; `/quit` and `/clear`
+ * point to the pause menu; `/assess` runs and says where the result is.
+ * Returns false for every other command (the session runs it).
+ */
+export function webCommand(app: App, raw: string): boolean {
+  const m = /^[/／]\s*(\S+)\s*([\s\S]*)$/.exec(raw.trim());
+  if (!m) return false;
+  const name = m[1]!.toLowerCase();
+  const arg = m[2]!.trim();
+  switch (name) {
+    case "lang": {
+      const v = arg.toLowerCase();
+      const locale = /^(zh|zh-cn|cn|中文)$/.test(v) ? "zh-CN" : /^(en|english|英文)$/.test(v) ? "en" : null;
+      if (locale) app.setLocale(locale);
+      else app.toast(tr("conv.cmd.langUsage"), tr("conv.cmd.langCurrent", { locale: getLocale() }));
+      return true;
+    }
+    case "provider":
+    case "model":
+    case "approval":
+    case "scope":
+      app.toast(tr("conv.cmd.settings", { name }));
+      app.open("settings");
+      return true;
+    case "export":
+      app.exportRecord();
+      return true;
+    case "quit":
+    case "exit":
+    case "clear":
+      app.toast(tr("conv.cmd.menu", { name }));
+      return true;
+    case "assess":
+      app.submit({ type: "assess" });
+      app.toast(tr("conv.cmd.assess"));
+      return true;
+    default:
+      return false;
+  }
+}
+

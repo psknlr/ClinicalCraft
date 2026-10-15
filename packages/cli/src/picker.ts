@@ -1,11 +1,11 @@
 /**
  * Interactive case picker (play without a case): numbered list with
- * locale-aware titles; accepts a number, an id or a unique id prefix.
+ * locale-aware, spoiler-free titles (never the ids, which name the
+ * diagnosis); accepts a number, an id or a unique id prefix.
  */
 import { createInterface } from "node:readline";
 import { t, type CaseDefinition } from "@clinicalcraft/core";
 import { loadContent, type LoadedContent } from "@clinicalcraft/agent/node";
-import { suggest } from "./argv.js";
 import { CliError, EXIT, type CliContext } from "./context.js";
 
 /** Difficulty as stars (★★☆☆☆). */
@@ -42,7 +42,9 @@ export async function pickCase(ctx: CliContext, contentDirs: readonly string[]):
   ctx.print(p.bold(ctx.t("picker.title")));
   cases.forEach((c, i) => {
     const num = String(i + 1).padStart(2, " ");
-    ctx.print(`${p.dim(num)}. ${t(c.title, ctx.locale)} ${p.dim(`(${c.id}) ${stars(c.difficulty)} · ${c.setting}`)}`);
+    // Titles are spoiler-free; ids name the diagnosis (stemi-inferior-rv…), so the list never shows them
+    // (typing an id still works, for those who know it).
+    ctx.print(`${p.dim(num)}. ${t(c.title, ctx.locale)} ${p.dim(`${stars(c.difficulty)} · ${c.setting}`)}`);
   });
   const rl = createInterface({ input: ctx.io.stdin, output: ctx.io.stdout, terminal: true });
   let closed = false;
@@ -63,8 +65,8 @@ export async function pickCase(ctx: CliContext, contentDirs: readonly string[]):
       if (answer === null) throw new CliError(ctx.t("picker.cancelled"), EXIT.usage);
       const chosen = resolveChoice(answer, cases);
       if (chosen) return chosen.id;
-      const hint = suggest(answer.trim(), cases.map((c) => c.id));
-      ctx.print(p.yellow(ctx.t("picker.invalid", { answer: answer.trim() })) + (hint ? p.dim(` ${ctx.t("argv.didYouMean", { value: hint })}`) : ""));
+      // No "did you mean <id>": that would show a diagnosis-bearing id.
+      ctx.print(p.yellow(ctx.t("picker.invalid", { answer: answer.trim() })));
     }
   } finally {
     rl.close();

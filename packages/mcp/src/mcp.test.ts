@@ -8,6 +8,7 @@ import { listSessions, loadContent, readTranscript } from "@clinicalcraft/agent/
 import { t, type ClinicalAction } from "@clinicalcraft/core";
 import { LineSplitter, type JsonRpcResponse } from "./jsonrpc.js";
 import { McpServer, runMcpServer } from "./server.js";
+import { caseHandle } from "./format.js";
 import { mcpApprovalMode } from "./sessions.js";
 
 const root = mkdtempSync(join(tmpdir(), "cc-mcp-"));
@@ -142,14 +143,22 @@ describe("MCP stdio server", () => {
     expect(Object.keys(ask.inputSchema.properties)).toEqual(["session_id", "question"]);
     expect(tools.find((tool) => tool.name === "case_status")!.annotations.readOnlyHint).toBe(true);
 
+    // Case ids name the diagnoses: the clinician (the MCP client) sees opaque handles, in title order.
+    const startCase = tools.find((tool) => tool.name === "start_case")!;
+    expect((startCase.inputSchema.properties.case_id as { enum?: unknown }).enum).toBeUndefined();
+    expect(JSON.stringify(startCase.inputSchema)).not.toMatch(/smzl|stemi|embolism|dka/);
     const listed = await client.call("list_cases");
     expect(listed.isError).toBeUndefined();
-    expect(listed.content[0]!.text).toContain(SMZL);
-    expect(listed.structuredContent!.cases.map((c: { id: string }) => c.id)).toContain(SMZL);
+    const handle = caseHandle(SMZL);
+    expect(listed.content[0]!.text).toContain(handle);
+    expect(listed.structuredContent!.cases.map((c: { id: string }) => c.id)).toContain(handle);
+    for (const id of content.cases.keys()) expect(JSON.stringify(listed)).not.toContain(id);
     expect(JSON.stringify(listed)).not.toContain("solution");
 
-    const started = await client.call("start_case", { case_id: SMZL, locale: "en" });
+    const started = await client.call("start_case", { case_id: handle, locale: "en" });
     expect(started.isError).toBeUndefined();
+    expect(started.structuredContent!.case_id).toBe(handle);
+    expect(JSON.stringify(started)).not.toContain(SMZL);
     const sessionId = started.structuredContent!.session_id as string;
     expect(sessionId).toMatch(/\S/);
     expect(started.structuredContent!.opening).toBe(t(smzl!.patient.persona.openingLine, "en"));
@@ -220,6 +229,30 @@ describe("MCP stdio server", () => {
     expect(items.filter((i) => i.type === "action" && i.payload.accepted && i.payload.action.type === "finish")).toHaveLength(1);
   });
 
+  const ana = content.cases.get("anaphylaxis-garden")?.def;
+  it.skipIf(!ana)("ask_patient returns only the patient's words; staff/monitor lines its time cost triggers come back as notices", async () => {
+    const p = project();
+    const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
+    const started = await client.call("start_case", { case_id: "anaphylaxis-garden" });
+    const sessionId = started.structuredContent!.session_id as string;
+    const replies: string[] = [];
+    const notices: string[] = [];
+    for (const step of ana!.solution) {
+      if (step.type !== "ask") continue;
+      const question = t(ana!.history.find((h) => h.id === step.itemId)!.question, "en");
+      const r = await client.call("ask_patient", { session_id: sessionId, question });
+      replies.push(String(r.structuredContent!.data?.text ?? ""));
+      notices.push(...((r.structuredContent!.notices as string[] | undefined) ?? []));
+    }
+    expect(replies.length).toBeGreaterThan(3);
+    for (const reply of replies) {
+      expect(reply).not.toMatch(/monitor is alarming|critical result|Doctor, the lab/i);
+      expect(reply.trim()).not.toBe("");
+    }
+    expect(notices.some((n) => /alarm/i.test(n))).toBe(true); // the alarms still reach the client
+    await client.end();
+  });
+
   it("negotiates the protocol version and reports JSON-RPC errors", async () => {
     const p = project();
     const client = new TestClient({ settings: settings(), env: p.env, cwd: p.cwd });
@@ -241,8 +274,9 @@ describe("MCP stdio server", () => {
     expect("error" in unknownTool && unknownTool.error.code).toBe(-32602);
     const noName = await client.request("tools/call", {});
     expect("error" in noName && noName.error.code).toBe(-32602);
-    const badCase = await client.request("tools/call", { name: "start_case", arguments: { case_id: "no-such-case" } });
-    expect("error" in badCase && badCase.error.code).toBe(-32602); // not in the case_id enum
+    const badCase = await client.call("start_case", { case_id: "no-such-case" });
+    expect(badCase.isError).toBe(true);
+    expect(badCase.structuredContent).toMatchObject({ error: "unknown_case" });
 
     const unknownSession = await client.call("ask_patient", { session_id: "no-such-session", question: "Hello?" });
     expect(unknownSession.isError).toBe(true);

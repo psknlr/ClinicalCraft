@@ -14,6 +14,7 @@ import { providersList, providersModels, providersTest } from "./providers.js";
 import { runPlay } from "./repl.js";
 import { runMcp, runServe } from "./serve.js";
 import { sessionsList, sessionsShow } from "./sessions.js";
+import { runTrust } from "./trust.js";
 
 export type CommandRun = (ctx: CliContext, args: ParsedArgs) => Promise<number>;
 
@@ -155,6 +156,20 @@ export const ROOT: CommandSpec = {
       ],
     },
     {
+      name: "trust",
+      summary: {
+        en: "Trust this project's .clinicalcraft settings (allows its command hooks and provider/server settings)",
+        zh: "信任本项目的 .clinicalcraft 设置（允许其命令钩子与服务商/服务器设置）",
+      },
+      flags: [
+        { name: "revoke", type: "boolean", description: { en: "Stop trusting this project", zh: "取消信任本项目" } },
+        { name: "list", type: "boolean", description: { en: "List trusted projects", zh: "列出受信任的项目" } },
+        JSON_FLAG,
+      ],
+      run: runTrust,
+      examples: ["clinicalcraft trust", "clinicalcraft trust --revoke", "clinicalcraft trust --list"],
+    },
+    {
       name: "sessions",
       aliases: ["session"],
       summary: { en: "Recorded sessions (JSONL transcripts)", zh: "已记录的会话（JSONL 记录）" },
@@ -164,7 +179,11 @@ export const ROOT: CommandSpec = {
           name: "list",
           aliases: ["ls"],
           summary: { en: "List recorded sessions", zh: "列出已记录的会话" },
-          flags: [JSON_FLAG, { name: "limit", type: "number", valueName: "<n>", description: { en: "How many (default 20)", zh: "条数（默认 20）" } }],
+          flags: [
+            JSON_FLAG,
+            { name: "limit", type: "number", valueName: "<n>", description: { en: "How many (default 20)", zh: "条数（默认 20）" } },
+            { name: "web", type: "boolean", description: { en: "Also list transcripts uploaded by the web app (resume them by exact id)", zh: "同时列出网页端上传的会话记录（按完整 id 恢复）" } },
+          ],
           run: sessionsList,
         },
         { name: "show", usage: "<id|latest>", summary: { en: "Show a session transcript", zh: "查看会话记录" }, flags: [JSON_FLAG], run: sessionsShow },

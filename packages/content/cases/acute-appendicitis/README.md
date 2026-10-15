@@ -18,7 +18,7 @@
 | clock | `simulated`, starts 02:15, `realtimeScale` 0.5, limit 360 min; ask 1 · examine 2 · order 1 · read 1 · intervene 2 min |
 | phases | one phase, `ed` (急诊夜班 / ED night shift) |
 | difficulty / time | 2 / 5 · about 35 min |
-| content | 40 history items (4 `unknown`, 1 `specific`, 10 required) · 19 exam findings · 15 investigations · 20 interventions (8 wrong or low-value choices) · 6 objectives · 4 decisions · 18 rubric items (15 deterministic, 3 examiner-judged) · 5 NPCs · 72 test utterances (3 unrecorded-topic negatives) |
+| content | 40 history items (4 `unknown`, 1 `specific`, 10 required) · 19 exam findings · 15 investigations · 20 interventions (8 wrong or low-value choices) · 6 objectives · 4 decisions · 18 rubric items (15 deterministic, 3 examiner-judged) · 5 NPCs · 78 test utterances (3 unrecorded-topic negatives) |
 
 ## Clinical story
 
@@ -254,7 +254,7 @@ Replayed wrong paths:
 
 ## Matcher notes (`extensions.testUtterances`)
 
-All 69 positive utterances (35 zh-CN, 34 en) rank an expected history item first, at or above the 0.55 selection score. Three negatives with `expect: []` (最近压力大吗？, 你喜欢看什么电影？, "Which football team do you support?") select nothing, so the patient falls back to `fallbackUnknown`.
+All 75 positive utterances (38 zh-CN, 37 en) rank an expected history item first, at or above the 0.55 selection score. Three negatives with `expect: []` (最近压力大吗？, 你喜欢看什么电影？, "Which football team do you support?") select nothing, so the patient falls back to `fallbackUnknown`.
 They include 28 colloquial, typo and abbreviation paraphrases (拉稀没有,
 尿尿疼不疼, 恶新想吐不, 输过血没, "any n/v?", "NKDA?", "any alergies",
 "When did u last drink water", "Any pain in your penis?").

@@ -12,7 +12,7 @@ import { inScope, isHiddenByDeny, rt, validateArgs, type PracticeScope, type Too
 import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { normalizeLocale, progress, t, type CaseDefinition } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
-import { assessmentText, caseListing, casesText } from "./format.js";
+import { assessmentText, caseHandle, caseListing, casesText, resolveCaseRef } from "./format.js";
 import { mm } from "./i18n.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
 import type { McpSession, SessionManager } from "./sessions.js";
@@ -83,13 +83,13 @@ function clinicalSpec(tool: ToolDefinition<Record<string, unknown>>): McpToolSpe
 }
 
 /** The tools this server lists, honouring the practice scope and bare `deny` rules. */
-export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">, caseIds: readonly string[]): McpToolSpec[] {
+export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToolSpec[] {
   const clinical = [...bridgedTools().values()].filter((tool) => inScope(tool.scope, host.practiceScope) && !isHiddenByDeny(tool.name, host.deny)).map(clinicalSpec);
   return [
     {
       name: "list_cases",
       title: TITLES.list_cases!,
-      description: "List the available clinical cases (id, title, specialty, difficulty, spoiler-free summary).",
+      description: "List the available clinical cases (opaque id handle, spoiler-free title and summary, specialty, difficulty).",
       inputSchema: { type: "object", properties: { locale: LOCALE_SCHEMA }, additionalProperties: false },
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     },
@@ -102,7 +102,8 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">, caseIds
       inputSchema: {
         type: "object",
         properties: {
-          case_id: { type: "string", minLength: 1, ...(caseIds.length > 0 ? { enum: [...caseIds] } : {}), description: "Case id from list_cases." },
+          // No enum: the ids name the diagnoses. list_cases gives opaque handles.
+          case_id: { type: "string", minLength: 1, description: "Case handle (`id`) from list_cases." },
           locale: LOCALE_SCHEMA,
           facility_id: { type: "string", minLength: 1, description: "Facility override (default: the case's facility)." },
         },
@@ -147,8 +148,9 @@ export function checkArguments(spec: McpToolSpec, args: unknown): Record<string,
   return result.value as Record<string, unknown>;
 }
 
-function sortedCases(content: LoadedContent): CaseDefinition[] {
-  return [...content.cases.values()].map((e) => e.def).sort((a, b) => a.id.localeCompare(b.id));
+function sortedCases(content: LoadedContent, locale: string): CaseDefinition[] {
+  // By (spoiler-free) title: an id order would itself hint at the diagnoses.
+  return [...content.cases.values()].map((e) => e.def).sort((a, b) => t(a.title, locale).localeCompare(t(b.title, locale), locale) || caseHandle(a.id).localeCompare(caseHandle(b.id)));
 }
 
 /** Execute a validated tool call. */
@@ -156,7 +158,7 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
   switch (name) {
     case "list_cases": {
       const L = normalizeLocale(typeof args.locale === "string" ? args.locale : host.locale);
-      const cases = sortedCases(await host.content());
+      const cases = sortedCases(await host.content(), L);
       return textResult(casesText(cases, L), { cases: cases.map((c) => caseListing(c, L)) });
     }
     case "start_case":
@@ -186,15 +188,17 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
 }
 
 async function startCase(host: ToolHost, args: Record<string, unknown>): Promise<McpToolResult> {
-  const caseId = String(args.case_id);
+  const ref = String(args.case_id);
   const locale = typeof args.locale === "string" ? normalizeLocale(args.locale) : null;
   const L = locale ?? host.locale;
+  const known = resolveCaseRef([...(await host.content()).cases.values()].map((e) => e.def), ref);
+  if (!known) return textResult(mm(L, "start.unknownCase", { ref }), { error: "unknown_case", case_id: ref }, true);
   let entry: McpSession;
   try {
-    entry = await host.sessions.start({ caseId, locale, facilityId: typeof args.facility_id === "string" ? args.facility_id : null });
+    entry = await host.sessions.start({ caseId: known.id, locale, facilityId: typeof args.facility_id === "string" ? args.facility_id : null });
   } catch (err) {
-    // Unknown case/facility (BootstrapError), unreadable settings…: the model can pick another case.
-    return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: caseId }, true);
+    // Unknown facility (BootstrapError), unreadable settings…: the model can pick another case.
+    return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: ref }, true);
   }
   return host.sessions.exclusive(entry, async () => {
     const session = entry.session;
@@ -215,13 +219,14 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
     ]
       .filter(Boolean)
       .join("\n\n");
+    const cardData = card?.data && typeof card.data === "object" ? { ...(card.data as Record<string, unknown>), id: caseHandle(c.id) } : null;
     return textResult(text, {
       session_id: session.id,
-      case_id: c.id,
+      case_id: caseHandle(c.id),
       locale: SL,
       opening,
       speaker,
-      case: card?.data ?? null,
+      case: cardData,
       approvalMode: session.settings.approvalMode,
       practiceScope: session.settings.practiceScope,
     });
@@ -249,7 +254,8 @@ async function debrief(entry: McpSession): Promise<McpToolResult> {
   return textResult(text, {
     session_id: entry.id,
     complete,
-    report: assessment.report,
+    // The report's caseId would name the diagnosis mid-case: the handle instead (the debrief names it once complete).
+    report: complete ? assessment.report : { ...assessment.report, caseId: caseHandle(c.id) },
     narrative: assessment.narrative,
     judged: assessment.judged,
     debrief: caseDebrief?.data ?? null,

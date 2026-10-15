@@ -5,7 +5,7 @@
  */
 import { Box3, CanvasTexture, Color, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import type { EquipmentType } from "@clinicalcraft/core";
+import type { EquipmentType, Placement, VoxelPart } from "@clinicalcraft/core";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
 import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
@@ -61,6 +61,18 @@ export function surfaceTop(type: Pick<EquipmentType, "parts"> | undefined): numb
     if (level >= largest * 0.4 && largest >= 0.15) best = Math.max(best, f.top);
   }
   return best || 0.9;
+}
+
+/**
+ * Parts a placement renders, in its local frame (rotated with the placement):
+ * the equipment type's parts except the indices in `placement.hideParts`,
+ * then `placement.extraParts` (V4 per-station details such as the lab's test
+ * tubes). Exported for tests.
+ */
+export function placementParts(type: Pick<EquipmentType, "parts">, placement: Pick<Placement, "extraParts" | "hideParts">): VoxelPart[] {
+  const hidden = new Set(placement.hideParts ?? []);
+  const base = hidden.size ? type.parts.filter((_, i) => !hidden.has(i)) : type.parts;
+  return placement.extraParts?.length ? [...base, ...placement.extraParts] : base;
 }
 
 interface StaticScreen {
@@ -210,8 +222,9 @@ export function buildPlacements(ctx: BuildContext): void {
     };
     ctx.placements.set(p.id, info);
 
+    const parts = placementParts(type, p);
     const boxes = [];
-    for (const part of type.parts) {
+    for (const part of parts) {
       const [lx, ly, lz] = part.p;
       const [wx, wz] = rotateXZ(lx, lz, rot);
       const ry = (rot + (part.r ?? 0)) * DEG;
@@ -315,7 +328,7 @@ export function buildPlacements(ctx: BuildContext): void {
       const width = Math.min(3, Math.max(1.7, fp.w + 0.4));
       const sign = ctx.signs.make(label, width, color, true);
       const [lx, lz] = rotateXZ(0, 0, rot);
-      const top = Math.max(...type.parts.map((pp) => pp.p[1] + pp.s[1] / 2));
+      const top = parts.length ? Math.max(...parts.map((pp) => pp.p[1] + pp.s[1] / 2)) : type.footprint.h;
       sign.position.set(p.x + lx, y + top + 0.5, p.z + lz);
       sign.rotation.y = rot * DEG;
       ctx.root.add(sign);

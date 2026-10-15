@@ -3,6 +3,7 @@
  * exit codes and the settings layer built from session flags.
  */
 import { isAbsolute, relative, resolve } from "node:path";
+import { UNTRUSTED_PROJECT } from "@clinicalcraft/agent";
 import { loadSettings, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { createPalette, colorEnabled, type Env, type Palette } from "./ansi.js";
 import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
@@ -108,11 +109,29 @@ export function createContext(o: ContextOptions): CliContext {
   return ctx;
 }
 
+/** Contexts that already printed the untrusted-project warning (once per invocation). */
+const warnedUntrusted = new WeakSet<CliContext>();
+
+/**
+ * Settings an untrusted project tried to set (hooks, provider/server secrets)
+ * are dropped by `loadSettings`; say so on stderr — always, not only with
+ * `--verbose` — once per invocation (stdout stays clean for JSON/MCP output).
+ */
+export function warnUntrustedProject(ctx: CliContext, settings: Pick<LoadedSettings, "issues">): void {
+  const dropped = settings.issues.filter((i) => i.code === UNTRUSTED_PROJECT);
+  if (dropped.length === 0 || warnedUntrusted.has(ctx)) return;
+  warnedUntrusted.add(ctx);
+  const keys = [...new Set(dropped.map((i) => i.path))].join(", ");
+  const files = [...new Set(dropped.map((i) => (i.file ? ctx.show(i.file) : i.source)))].join(", ");
+  ctx.printErr(ctx.err.yellow(ctx.t("trust.untrusted", { keys, files })));
+}
+
 /** Load settings for this invocation (optionally with a flags layer). Unknown profiles are usage errors. */
 export async function loadCliSettings(ctx: CliContext, flags?: Record<string, unknown>): Promise<LoadedSettings> {
   try {
     const settings = await loadSettings({ cwd: ctx.cwd, env: ctx.env, ...(flags ? { flags } : {}), ...(ctx.profile ? { profile: ctx.profile } : {}) });
     for (const issue of settings.issues) ctx.debug(`settings ${issue.severity}: ${issue.file ?? issue.source} ${issue.path || "(root)"}: ${issue.message}`);
+    warnUntrustedProject(ctx, settings);
     return settings;
   } catch (err) {
     const message = (err as Error).message ?? String(err);

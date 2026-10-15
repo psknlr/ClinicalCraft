@@ -15,8 +15,10 @@ clinicalcraft import-v4 "Virtual_Patient_V4(1).html"
 clinicalcraft import-v4 Virtual_Patient_V4_Part1.zip Virtual_Patient_V4_Part2.zip
 ```
 
-The importer verifies the V4 SHA-256 when the full file is available, then
-writes (default destination `${CLINICALCRAFT_HOME:-~/.clinicalcraft}/assets`, or `--dest assets/local` inside a repo checkout):
+(From a repository checkout, `clinicalcraft` is `npm run cc --`.) The
+importer checks the V4 SHA-256 when the full file can be reconstructed (a
+mismatch is only a warning), then writes (default destination
+`${CLINICALCRAFT_HOME:-~/.clinicalcraft}/assets`, or `--dest assets/local` inside a repo checkout):
 
 ```
 <dest>/anatomy/anatomy.glb.gz
@@ -33,7 +35,15 @@ Every front-end resolves local assets through one URL scheme:
 
 * `clinicalcraft serve` and the Vite dev server (plugin in `packages/web/vite.config.ts`)
   search `assets/local/` (repo checkout) then `${CLINICALCRAFT_HOME:-~/.clinicalcraft}/assets/`.
-* The standalone single-file build embeds them only if present at build time
-  (never commit or publish such a build).
+  Only passive types are served (png, jpg/jpeg, webp, gif, pdf, json, gz, glb, mp3, mp4,
+  webm), every non-PDF one with a sandboxing `Content-Security-Policy`: an SVG, HTML or
+  script file in an asset directory (e.g. from an untrusted checkout) would otherwise run
+  with the app's origin. The standalone build embeds the same types only, and the journal
+  opens the source PDF only when it is served as `application/pdf`.
+* The standalone single-file build (`npm run build:standalone`) embeds them
+  only if they are present in the repository's `assets/local/` at build time
+  (`~/.clinicalcraft/assets` is not read). Never commit or publish such a
+  build; `npm run build:standalone -w @clinicalcraft/web -- --no-local-assets`
+  makes one without them.
 * Missing assets → the UI shows a placeholder explaining how to import them;
   the case remains fully playable (report text is always available).

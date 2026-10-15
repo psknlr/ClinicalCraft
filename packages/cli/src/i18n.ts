@@ -130,7 +130,7 @@ const EN = {
   "repl.byeEphemeral": "Session ended (not recorded).",
   "play.tooMany": "play takes one case id; unexpected: {extra}",
   "picker.title": "Choose a case:",
-  "picker.prompt": "Case [1-{n}] or id:",
+  "picker.prompt": "Case [1-{n}]:",
   "picker.invalid": "No case \"{answer}\".",
   "picker.none": "No cases found (check `contentDirs` in your settings).",
   "picker.needCase": "No case given and stdin is not a terminal: pass a case id (or set defaultCase).",
@@ -215,6 +215,16 @@ const EN = {
   "config.saved": "{key} = {value} → {file}",
   "config.invalidValue": "Invalid value for {key}: {issues}",
   "config.shadowed": "Note: {key} is still {value} — the {source} settings take precedence over the {target} settings.",
+
+  // trust
+  "trust.untrusted": "This project is not trusted, so {keys} in {files} were ignored. Review those settings, then run `clinicalcraft trust` to allow them.",
+  "trust.trusted": "Trusted {root}: hooks and provider/server settings in its .clinicalcraft/settings.json and settings.local.json now apply.",
+  "trust.hooks": "Command hooks this allows to run:",
+  "trust.pinned": "Trust is pinned to the current contents of both files; editing either one needs `clinicalcraft trust` again (`--revoke` to undo).",
+  "trust.revoked": "No longer trusting {root}.",
+  "trust.notTrusted": "{root} was not trusted.",
+  "trust.none": "No trusted projects.",
+  "trust.listLine": "{root}  (trusted {at})",
 
   // sessions
   "sessions.none": "No recorded sessions yet.",
@@ -387,7 +397,7 @@ const ZH: Record<MsgKey, string> = {
   "status.phase": "{phase}",
 
   "repl.config": "{provider}/{model} · 审批 {approval} · 范围 {scope} · {locale}",
-  "repl.hint": "直接输入与患者交谈 · @nurse … 呼叫护士等 · /help 查看命令 · Tab 补全 · Ctrl-C 中断，连按两次退出",
+  "repl.hint": "直接输入与患者交谈 · @护士 …（或 @nurse …）呼叫护士等 · /help 查看命令 · Tab 补全 · Ctrl-C 中断，连按两次退出",
   "repl.resumed": "已恢复会话 {id}（重放 {actions} 个操作）。",
   "repl.approvalChoices": "[y]是 / [s]本次会话 / [n]否（原因）/ [a]中止",
   "repl.approvalChoicesNoSession": "[y]是 / [n]否（原因）/ [a]中止",
@@ -399,7 +409,7 @@ const ZH: Record<MsgKey, string> = {
   "repl.byeEphemeral": "会话结束（未记录）。",
   "play.tooMany": "play 只接受一个病例 ID；多余参数：{extra}",
   "picker.title": "选择病例：",
-  "picker.prompt": "病例 [1-{n}] 或 ID：",
+  "picker.prompt": "病例 [1-{n}]：",
   "picker.invalid": "没有病例“{answer}”。",
   "picker.none": "未找到病例（请检查设置中的 `contentDirs`）。",
   "picker.needCase": "未指定病例且 stdin 不是终端：请传入病例 ID（或设置 defaultCase）。",
@@ -479,6 +489,15 @@ const ZH: Record<MsgKey, string> = {
   "config.saved": "{key} = {value} → {file}",
   "config.invalidValue": "{key} 的值无效：{issues}",
   "config.shadowed": "注意：{key} 仍为 {value}——{source} 设置的优先级高于 {target} 设置。",
+
+  "trust.untrusted": "此项目尚未被信任，已忽略 {files} 中的 {keys}。请先检查这些设置，再运行 `clinicalcraft trust` 允许它们。",
+  "trust.trusted": "已信任 {root}：其 .clinicalcraft/settings.json 与 settings.local.json 中的钩子及服务商/服务器设置现在生效。",
+  "trust.hooks": "将允许运行以下命令钩子：",
+  "trust.pinned": "信任绑定这两个文件的当前内容；修改任一文件后需重新运行 `clinicalcraft trust`（`--revoke` 可撤销）。",
+  "trust.revoked": "已取消信任 {root}。",
+  "trust.notTrusted": "{root} 未被信任。",
+  "trust.none": "没有受信任的项目。",
+  "trust.listLine": "{root}（信任于 {at}）",
 
   "sessions.none": "还没有记录的会话。",
   "sessions.resumeHint": "使用 `clinicalcraft --resume <id>` 恢复会话。",

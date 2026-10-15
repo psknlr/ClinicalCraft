@@ -1,6 +1,12 @@
+/**
+ * Monitor renderer: live numerics, alarms and sweep sampling; the header names
+ * the rhythm the monitor detects, localised — never an ECG interpretation
+ * ("ST-ELEVATION") or a raw enum id — alarm values keep their precision
+ * (glucose 3.4, not 3) and arrest readings are not shown as 0.
+ */
 import { describe, expect, it } from "vitest";
 import { ecgValue } from "./ecg.js";
-import { monitorRenderer, sweepColumn } from "./monitor-render.js";
+import { alarmText, monitorRenderer, rhythmLabel, sweepColumn } from "./monitor-render.js";
 
 type Snapshot = Parameters<typeof monitorRenderer.draw>[3];
 
@@ -92,5 +98,53 @@ describe("sweep sampling", () => {
     expect(up[0]).toBeLessThan(up[1]);
     const down = sweepColumn((t) => -t, 1, 1, 0.1);
     expect(down[0]).toBeGreaterThan(down[1]);
+  });
+});
+
+function recordingContext(): { ctx: CanvasRenderingContext2D; texts: string[] } {
+  const texts: string[] = [];
+  const handler: ProxyHandler<Record<string, unknown>> = {
+    get(target, prop) {
+      if (prop === "fillText") return (text: string) => void texts.push(String(text));
+      if (prop in target) return target[prop as string];
+      return () => undefined;
+    },
+    set(target, prop, value) {
+      target[prop as string] = value;
+      return true;
+    },
+  };
+  return { ctx: new Proxy({}, handler) as unknown as CanvasRenderingContext2D, texts };
+}
+
+const snapshot = (vitals: Record<string, unknown>, extra: Record<string, unknown> = {}) =>
+  ({ minute: 0, vitals: { hr: 50, sbp: 92, dbp: 58, map: 69, rr: 18, spo2: 95, temp: 36.6, ...vitals }, alarms: [], trend: {}, ...extra }) as never;
+
+describe("monitor renderer header", () => {
+  it("names the rhythm in the UI language and never prints the ST morphology", () => {
+    const { ctx, texts } = recordingContext();
+    monitorRenderer.draw(ctx, 960, 540, snapshot({ rhythm: "sinus-bradycardia", ecg: "st-elevation" }), 0, "zh-CN");
+    expect(texts).toContain("II · 窦性心动过缓");
+    expect(texts.join(" ")).not.toMatch(/ST-ELEVATION|SINUS-BRADYCARDIA/);
+    const en = recordingContext();
+    monitorRenderer.draw(en.ctx, 960, 540, snapshot({ rhythm: "sinus-tachycardia", ecg: "st-depression" }), 0, "en");
+    expect(en.texts).toContain("II · Sinus tachycardia");
+    expect(en.texts.join(" ")).not.toMatch(/ST-DEPRESSION/);
+  });
+
+  it("localises alarm names and keeps one decimal for glucose and temperature", () => {
+    expect(alarmText({ vital: "glucose", value: 3.4, level: "warning" }, "zh-CN")).toBe("!! 血糖 3.4");
+    expect(alarmText({ vital: "temp", value: 39.2, level: "critical" }, "en")).toBe("!!! TEMP 39.2");
+    expect(alarmText({ vital: "spo2", value: 86, level: "critical" }, "en")).toBe("!!! SpO₂ 86");
+    expect(rhythmLabel("ventricular-fibrillation", "zh-CN")).toBe("心室颤动");
+  });
+
+  it("shows no reading (not 0/0) for vitals the monitor cannot read in an arrest", () => {
+    const { ctx, texts } = recordingContext();
+    const snap = snapshot({ rhythm: "pea", hr: 70, sbp: 0, dbp: 0, map: 0, spo2: 0 }, { unmeasurable: ["sbp", "dbp", "spo2"], alarms: [{ vital: "sbp", level: "critical", value: 0 }] });
+    monitorRenderer.draw(ctx, 960, 540, snap, 0, "en");
+    expect(texts).toContain("---/---");
+    expect(texts).not.toContain("0/0");
+    expect(texts.join(" ")).not.toMatch(/SBP 0/);
   });
 });

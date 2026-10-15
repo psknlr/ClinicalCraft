@@ -242,6 +242,24 @@ export const PlacementSchema = z
     label: LocalizedTextSchema.optional(),
     /** Extra capabilities granted by this placement (e.g. a generic workstation configured as "lab"). */
     capabilities: z.array(CapabilitySchema).optional(),
+    /**
+     * Decorative voxel parts for this placement only — per-station details a
+     * shared equipment type cannot express (V4: the lab workstation's test
+     * tubes, the pathology station's microscope). Same frame as the type's
+     * `parts`: relative to the placement origin (footprint centre on the
+     * floor) and rotated with `rot`. Rendered after the type's parts and in
+     * the same way (a part named "screen" shows the type's screen); they add
+     * no collider (the type's footprint stays the collider) and should stay
+     * inside the footprint. Unknown materials are `checkFacility` errors.
+     */
+    extraParts: z.array(VoxelPartSchema).optional(),
+    /**
+     * Indices into the equipment type's `parts` that this placement does not
+     * render. With `extraParts` this moves or replaces type parts for one
+     * placement (V4's pathology station draws the shared monitor 0.6 m to the
+     * right). Out-of-range indices are `checkFacility` errors.
+     */
+    hideParts: z.array(z.number().int().min(0)).optional(),
   })
   .strict();
 export type Placement = z.infer<typeof PlacementSchema>;

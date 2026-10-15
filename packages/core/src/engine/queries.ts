@@ -5,6 +5,7 @@
 import type { CaseDefinition, Objective } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
 import { evaluate, isOrderReady } from "./conditions.js";
+import { createRng, seedFrom } from "./random.js";
 import type { DecisionAvailability, ObjectiveProgress, OrderStatus } from "./types.js";
 
 function isDone(s: SessionState, objectiveId: string): boolean {
@@ -53,4 +54,21 @@ export function availableDecisions(c: CaseDefinition, s: SessionState): Decision
 /** Orders in placement order with readiness (turnaround elapsed) and read status. */
 export function orderStatus(c: CaseDefinition, s: SessionState): OrderStatus[] {
   return s.orders.map((order) => ({ order, ready: isOrderReady(c, s, order), read: s.seen.includes(order.key) }));
+}
+
+/**
+ * A decision's options in presentation order: a deterministic shuffle of the
+ * authored order seeded by case and decision id (`createRng(seedFrom(…))`),
+ * the same in every front-end. Authors list the correct option(s) first more
+ * often than not; presenting them in that order would let "always pick the
+ * first" score. Option ids are unchanged, so answers are unaffected.
+ */
+export function presentedOptions<O>(c: Pick<CaseDefinition, "id">, decision: { id: string; options: readonly O[] }): O[] {
+  const out = [...decision.options];
+  const rng = createRng(seedFrom(c.id, decision.id, "options"));
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [out[i], out[j]] = [out[j]!, out[i]!];
+  }
+  return out;
 }

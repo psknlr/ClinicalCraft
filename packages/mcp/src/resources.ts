@@ -6,7 +6,7 @@
  */
 import { currentWaypoint, progress, vitalsAt } from "@clinicalcraft/core";
 import type { LoadedContent } from "@clinicalcraft/agent/node";
-import { caseListing } from "./format.js";
+import { caseHandle, caseListing } from "./format.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
 import type { McpSession, SessionManager } from "./sessions.js";
 
@@ -52,11 +52,12 @@ function stateOf(entry: McpSession) {
   const state = s.state;
   return {
     sessionId: s.id,
-    caseId: c.id,
+    caseId: caseHandle(c.id),
     locale: s.locale,
     approvalMode: s.settings.approvalMode,
     practiceScope: s.settings.practiceScope,
-    state,
+    // The engine state's caseId names the diagnosis: the opaque handle instead (as list_cases).
+    state: { ...state, caseId: caseHandle(c.id) },
     progress: progress(c, state),
     vitals: vitalsAt(c, state),
     waypoint: currentWaypoint(c, state),
@@ -69,12 +70,12 @@ export async function readResource(host: ResourceHost, uri: string) {
   let value: unknown;
   if (uri === CASES_URI) {
     const content = await host.content();
-    value = { cases: [...content.cases.values()].map((e) => caseListing(e.def, host.locale)).sort((a, b) => a.id.localeCompare(b.id)) };
+    value = { cases: [...content.cases.values()].map((e) => caseListing(e.def, host.locale)).sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id)) };
   } else {
     const m = SESSION_URI.exec(uri);
     const entry = m ? host.sessions.get(decodeURIComponent(m[1]!)) : undefined;
     if (!m || !entry) throw new RpcError(RPC_ERRORS.resourceNotFound, `Resource not found: ${uri}`, { uri });
-    value = m[2] === "state" ? stateOf(entry) : { sessionId: entry.id, caseId: entry.session.caseDef.id, events: entry.log };
+    value = m[2] === "state" ? stateOf(entry) : { sessionId: entry.id, caseId: caseHandle(entry.session.caseDef.id), events: entry.log };
   }
   return { contents: [{ uri, mimeType: JSON_TYPE, text: JSON.stringify(value, null, 2) }] };
 }

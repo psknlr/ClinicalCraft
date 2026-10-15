@@ -635,20 +635,23 @@
       },
       "keywords": {
         "zh-CN": [
-          "以前有过类似",
           "类似发作",
           "短暂发作",
           "一过性",
-          "小中风",
           "以前也这样",
           "之前发生过",
           "手发麻过",
-          "有tia",
-          "过tia",
           "短暂性脑缺血",
           "一过性脑缺血",
           "以前发麻",
-          "之前手麻"
+          "之前手麻",
+          "有没有tia",
+          "有过tia吗",
+          "得过tia吗",
+          "有过类似",
+          "类似的发作",
+          "过小中风",
+          "有小中风"
         ],
         "en": [
           "happened before",
@@ -664,6 +667,27 @@
           "numb before",
           "numbness before",
           "weakness before"
+        ]
+      },
+      "excludeKeywords": {
+        "en": [
+          "before this happened",
+          "before it happened",
+          "before that happened",
+          "before this started",
+          "before it started",
+          "normal before",
+          "well before",
+          "last well",
+          "last normal",
+          "last seen"
+        ],
+        "zh-CN": [
+          "家里",
+          "家人",
+          "父亲",
+          "母亲",
+          "亲戚"
         ]
       },
       "disclosure": "specific"
@@ -999,6 +1023,14 @@
           "blood thinning",
           "plavix",
           "pradaxa"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
         ]
       },
       "disclosure": "specific",
@@ -4330,8 +4362,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "阿替普酶 0.9 mg/kg（最大90 mg）：80 kg共72 mg——其中10%即7.2 mg于1分钟内静推，其余64.8 mg于60分钟内静脉泵入",
-        "en": "Alteplase 0.9 mg/kg (max 90 mg): 72 mg for 80 kg — 10% (7.2 mg) IV bolus over 1 minute, the remaining 64.8 mg infused over 60 minutes"
+        "zh-CN": "阿替普酶 0.9 mg/kg（最大90 mg），按他的体重计算——其中10%于1分钟内静推，其余于60分钟内静脉泵入",
+        "en": "Alteplase 0.9 mg/kg (max 90 mg) by his weight — 10% as an IV bolus over 1 minute, the rest infused over 60 minutes"
       },
       "requires": [
         "medications",
@@ -4503,8 +4535,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "替奈普酶 0.25 mg/kg（最大25 mg）：80 kg为20 mg，5–10秒内单次静推",
-        "en": "Tenecteplase 0.25 mg/kg (max 25 mg): 20 mg for 80 kg as a single IV bolus over 5–10 seconds"
+        "zh-CN": "替奈普酶 0.25 mg/kg（最大25 mg），按他的体重计算，5–10秒内单次静推",
+        "en": "Tenecteplase 0.25 mg/kg (max 25 mg) by his weight, as a single IV bolus over 5–10 seconds"
       },
       "requires": [
         "medications",
@@ -5699,8 +5731,8 @@
         "en": "Lysis"
       },
       "hint": {
-        "zh-CN": "溶栓前血压必须 < 185/110 mmHg：用可滴定的静脉降压药（拉贝洛尔、尼卡地平或乌拉地尔），不要舌下含服硝苯地平。按80 kg计算剂量。入院至溶栓时间（DNT）目标 ≤ 60分钟。",
-        "en": "BP must be < 185/110 mmHg before lysis: use a titratable IV agent (labetalol, nicardipine or urapidil), never sublingual nifedipine. Dose for 80 kg. Door-to-needle target ≤ 60 minutes."
+        "zh-CN": "溶栓前血压必须 < 185/110 mmHg：用可滴定的静脉降压药（拉贝洛尔、尼卡地平或乌拉地尔），不要舌下含服硝苯地平。按他的体重计算剂量（先问清体重）。入院至溶栓时间（DNT）目标 ≤ 60分钟。",
+        "en": "BP must be < 185/110 mmHg before lysis: use a titratable IV agent (labetalol, nicardipine or urapidil), never sublingual nifedipine. Dose by his weight (ask for it first). Door-to-needle target ≤ 60 minutes."
       },
       "guidance": {
         "zh-CN": "降压达标后给予阿替普酶或替奈普酶。",
@@ -6698,8 +6730,8 @@
         "en": "ED clinical pharmacist"
       },
       "knowledge": {
-        "zh-CN": "按体重80 kg核对剂量：阿替普酶0.9 mg/kg（最大90 mg）= 72 mg，其中7.2 mg于1分钟内静推，64.8 mg于60分钟内泵入；替奈普酶0.25 mg/kg（最大25 mg）= 20 mg，单次静推5–10秒。（部分替奈普酶说明书采用体重分档给药表，80–89 kg一档为22.5 mg；本院按0.25 mg/kg精确计算为20 mg，遵循本院方案。）两者只能选一种，不能叠加。降压：拉贝洛尔10–20 mg静注1–2分钟，可重复一次；尼卡地平5 mg/h起，每5–15分钟加2.5 mg/h，最大15 mg/h；乌拉地尔12.5–25 mg缓慢静注，可重复，维持约9 mg/h。提醒：禁用舌下短效硝苯地平；溶栓后24小时内不用抗血小板/抗凝药；甘露醇无指征。不讨论诊断。",
-        "en": "Checks doses for 80 kg: alteplase 0.9 mg/kg (max 90 mg) = 72 mg — 7.2 mg IV bolus over 1 minute and 64.8 mg infused over 60 minutes; tenecteplase 0.25 mg/kg (max 25 mg) = 20 mg as a single bolus over 5–10 seconds. (Some tenecteplase labels use a weight-band chart that puts 80–89 kg at 22.5 mg; this hospital's protocol calculates 0.25 mg/kg exactly, 20 mg.) Only one of the two, never both. BP: labetalol 10–20 mg IV over 1–2 min, may repeat once; nicardipine 5 mg/h, up by 2.5 mg/h every 5–15 min, max 15 mg/h; urapidil 12.5–25 mg slow IV, may repeat, maintenance about 9 mg/h. Warns: no sublingual short-acting nifedipine; no antiplatelets or anticoagulants within 24 h of lysis; mannitol has no indication. Does not discuss the diagnosis."
+        "zh-CN": "在学员问到体重后按体重核对剂量（他未称重，体重由妻子提供——学员若未问，提醒其先问）：阿替普酶0.9 mg/kg（最大90 mg），其中10%于1分钟内静推，其余于60分钟内泵入；替奈普酶0.25 mg/kg（最大25 mg），单次静推5–10秒。（部分替奈普酶说明书采用体重分档给药表；本院按0.25 mg/kg精确计算，遵循本院方案。）两者只能选一种，不能叠加。降压：拉贝洛尔10–20 mg静注1–2分钟，可重复一次；尼卡地平5 mg/h起，每5–15分钟加2.5 mg/h，最大15 mg/h；乌拉地尔12.5–25 mg缓慢静注，可重复，维持约9 mg/h。提醒：禁用舌下短效硝苯地平；溶栓后24小时内不用抗血小板/抗凝药；甘露醇无指征。不讨论诊断。",
+        "en": "Checks doses by weight once the learner has it (he has not been weighed; his wife knows his weight — if the learner has not asked, prompt them to): alteplase 0.9 mg/kg (max 90 mg) — 10% IV bolus over 1 minute, the rest infused over 60 minutes; tenecteplase 0.25 mg/kg (max 25 mg) as a single bolus over 5–10 seconds. (Some tenecteplase labels use weight-band charts; this hospital's protocol calculates 0.25 mg/kg exactly.) Only one of the two, never both. BP: labetalol 10–20 mg IV over 1–2 min, may repeat once; nicardipine 5 mg/h, up by 2.5 mg/h every 5–15 min, max 15 mg/h; urapidil 12.5–25 mg slow IV, may repeat, maintenance about 9 mg/h. Warns: no sublingual short-acting nifedipine; no antiplatelets or anticoagulants within 24 h of lysis; mannitol has no indication. Does not discuss the diagnosis."
       }
     }
   ],
@@ -7515,6 +7547,62 @@
         "locale": "en",
         "expect": [
           "recreational-drugs"
+        ]
+      },
+      {
+        "text": "他有TIA吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-tia"
+        ]
+      },
+      {
+        "text": "Has he ever had a mini-stroke?",
+        "locale": "en",
+        "expect": [
+          "prior-tia"
+        ]
+      },
+      {
+        "text": "When was he last seen well?",
+        "locale": "en",
+        "expect": [
+          "lkw"
+        ]
+      },
+      {
+        "text": "他以前中风过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-stroke"
+        ]
+      },
+      {
+        "text": "Is he on aspirin or clopidogrel?",
+        "locale": "en",
+        "expect": [
+          "anticoagulants"
+        ]
+      },
+      {
+        "text": "他有没有吃稀释血液的药？",
+        "locale": "zh-CN",
+        "expect": [
+          "anticoagulants"
+        ]
+      },
+      {
+        "text": "Is he allergic to aspirin?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "他对阿司匹林过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
         ]
       }
     ],

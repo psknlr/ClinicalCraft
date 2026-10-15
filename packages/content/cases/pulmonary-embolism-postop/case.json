@@ -12,7 +12,7 @@
   },
   "specialty": [
     "acute-medicine",
-    "respiratory",
+    "respiratory-medicine",
     "general-surgery"
   ],
   "difficulty": 4,
@@ -949,19 +949,38 @@
           "预防血栓",
           "皮下注射",
           "肚皮上的针",
-          "打针",
           "克赛",
-          "打针没"
+          "每天打针",
+          "每天打的针",
+          "昨天打针",
+          "今天打针",
+          "打抗凝针",
+          "肚子上打针",
+          "肚皮上打针",
+          "肚子上的针"
         ],
         "en": [
-          "injection",
           "blood thinner",
           "heparin",
           "enoxaparin",
           "clexane",
           "lmwh",
           "clot prevention",
-          "prophylaxis"
+          "blood thinning injection",
+          "tummy injection",
+          "daily injection",
+          "vte prophylaxis",
+          "dvt prophylaxis",
+          "clot prophylaxis",
+          "thromboprophylaxis"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
         ]
       },
       "disclosure": "specific",
@@ -1163,12 +1182,16 @@
         ],
         "en": [
           "stockings",
-          "compression",
           "teds",
           "leg pump",
           "pneumatic",
           "calf pump",
-          "flowtron"
+          "flowtron",
+          "compression stockings",
+          "compression socks",
+          "compression device",
+          "leg compression",
+          "calf compression"
         ]
       },
       "disclosure": "specific"
@@ -4435,8 +4458,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "依诺肝素1 mg/kg（70 mg，即7000 IU）皮下注射，每12小时一次；肌酐清除率约95 mL/min，无需调整",
-        "en": "Enoxaparin 1 mg/kg (70 mg = 7,000 IU) SC every 12 hours; creatinine clearance ≈ 95 mL/min, no adjustment needed"
+        "zh-CN": "依诺肝素1 mg/kg（70 mg，即7000 IU）皮下注射，每12小时一次；肌酐清除率<30 mL/min时需调整（先查肌酐）",
+        "en": "Enoxaparin 1 mg/kg (70 mg = 7,000 IU) SC every 12 hours; adjust if creatinine clearance is < 30 mL/min (check the creatinine first)"
       },
       "requires": [
         "medications"
@@ -5656,6 +5679,7 @@
     }
   ],
   "physiology": {
+    "revealedBy": { "glucose": ["poc-glucose"] },
     "baseline": {
       "hr": 118,
       "sbp": 112,
@@ -5995,6 +6019,21 @@
               "not": {
                 "flag": "pert-consulted"
               }
+            },
+            {
+              "not": {
+                "flag": "shock-escalated"
+              }
+            },
+            {
+              "any": [
+                {
+                  "read": "ctpa"
+                },
+                {
+                  "decided": "risk-strat"
+                }
+              ]
             }
           ]
         },
@@ -6004,10 +6043,69 @@
           "dbp": 56,
           "spo2": 82
         },
+        "setFlags": [
+          "shock-escalated"
+        ],
         "severity": "critical",
         "message": {
           "zh-CN": "上级医师赶到：“她现在是休克型（高危）肺栓塞。术后第3天，全身溶栓出血风险极高——马上呼叫PERT准备导管介入或外科取栓；同时用去甲肾上腺素维持平均动脉压≥65 mmHg，普通肝素静脉推注后持续泵入，转ICU。”",
           "en": "The attending arrives: 'This is now shocked, high-risk PE. Three days after a laparotomy, systemic lysis carries a huge bleeding risk — call PERT now for catheter-directed therapy or surgical embolectomy, start noradrenaline to keep MAP ≥ 65 mmHg, give IV UFH as a bolus and infusion, and get her to ICU.'"
+        }
+      },
+      {
+        "id": "ev-shock-escalation-undiagnosed",
+        "when": {
+          "all": [
+            {
+              "flag": "high-risk-pe"
+            },
+            {
+              "elapsed": {
+                "gte": 75
+              }
+            },
+            {
+              "not": {
+                "flag": "reperfused"
+              }
+            },
+            {
+              "not": {
+                "flag": "pert-consulted"
+              }
+            },
+            {
+              "not": {
+                "flag": "shock-escalated"
+              }
+            },
+            {
+              "not": {
+                "any": [
+                  {
+                    "read": "ctpa"
+                  },
+                  {
+                    "decided": "risk-strat"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "setVitals": {
+          "hr": 132,
+          "sbp": 88,
+          "dbp": 56,
+          "spo2": 82
+        },
+        "setFlags": [
+          "shock-escalated"
+        ],
+        "severity": "critical",
+        "message": {
+          "zh-CN": "上级医师赶到：“她已经休克了。你的工作诊断是什么？哪些床旁检查能最快帮你证实？马上呼叫上级和院内急救团队，先维持血压和氧合——同时告诉我你的依据。”",
+          "en": "The attending arrives: 'She is in shock now. What is your working diagnosis, and which bedside tests will confirm it fastest? Call for senior help and the hospital emergency team, support her blood pressure and oxygenation — and talk me through your reasoning.'"
         }
       },
       {
@@ -6295,8 +6393,8 @@
         "en": "Monitor & escalate"
       },
       "hint": {
-        "zh-CN": "血压正常、但右心受累且肌钙蛋白升高的患者早期仍可能失代偿：她应该在哪里监护？谁需要知道？如果血压下降，术后第3天哪些再灌注方式可行？",
-        "en": "A normotensive patient with RV involvement and a raised troponin can still decompensate early: where should she be monitored, who needs to know, and if her blood pressure falls, which reperfusion options are feasible on post-op day 3?"
+        "zh-CN": "目前血压正常的患者早期仍可能失代偿——结合她的右心评估和生物标志物结果：她应该在哪里监护？谁需要知道？如果血压下降，术后第3天哪些再灌注方式可行？",
+        "en": "A patient who is normotensive now can still decompensate early — weigh what her RV assessment and biomarkers show: where should she be monitored, who needs to know, and if her blood pressure falls, which reperfusion options are feasible on post-op day 3?"
       },
       "guidance": {
         "zh-CN": "在会诊板上确定后续处理方案，并安排合适的监护床位。",
@@ -7149,8 +7247,8 @@
         "en": "Zhao Min (clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "剂量：普通肝素80 U/kg推注（70 kg = 5600 U），随后18 U/kg/h（1260 U/h），6小时查APTT（目标为对照值的1.5–2.5倍）或抗Xa 0.3–0.7 IU/mL，按院内列线图调整。依诺肝素治疗量1 mg/kg每12小时（70 mg）；Cockcroft–Gault肌酐清除率约95 mL/min，无需调整。鱼精蛋白：1 mg约中和最近2–3小时内输入的100 U普通肝素（单次最大50 mg）；对依诺肝素只能中和约60%抗Xa活性。本院未备安德塞奈α，利伐沙班相关大出血使用凝血酶原复合物。自术后第0天起接触过低分子肝素，开始肝素后应每2–3天监测血小板（HIT通常在第5–10天出现）。",
-        "en": "Dosing: UFH 80 U/kg bolus (70 kg = 5,600 U) then 18 U/kg/h (1,260 U/h); APTT at 6 h (target 1.5–2.5 × control) or anti-Xa 0.3–0.7 IU/mL, adjusted per the hospital nomogram. Enoxaparin treatment dose 1 mg/kg every 12 h (70 mg); Cockcroft–Gault creatinine clearance ≈ 95 mL/min, no adjustment. Protamine: 1 mg neutralises about 100 U of UFH given in the previous 2–3 hours (max 50 mg per dose); it neutralises only about 60% of enoxaparin's anti-Xa activity. Andexanet alfa is not stocked; rivaroxaban-associated major bleeding is managed with prothrombin complex concentrate. She has had LMWH since POD0 — monitor platelets every 2–3 days once heparin starts (HIT typically appears on days 5–10)."
+        "zh-CN": "剂量：普通肝素80 U/kg推注（70 kg = 5600 U），随后18 U/kg/h（1260 U/h），6小时查APTT（目标为对照值的1.5–2.5倍）或抗Xa 0.3–0.7 IU/mL，按院内列线图调整。依诺肝素治疗量1 mg/kg每12小时（70 mg）；仅当肌酐清除率（Cockcroft–Gault，学员拿到肌酐结果后计算）<30 mL/min时需调整。鱼精蛋白：1 mg约中和最近2–3小时内输入的100 U普通肝素（单次最大50 mg）；对依诺肝素只能中和约60%抗Xa活性。本院未备安德塞奈α，利伐沙班相关大出血使用凝血酶原复合物。自术后第0天起接触过低分子肝素，开始肝素后应每2–3天监测血小板（HIT通常在第5–10天出现）。",
+        "en": "Dosing: UFH 80 U/kg bolus (70 kg = 5,600 U) then 18 U/kg/h (1,260 U/h); APTT at 6 h (target 1.5–2.5 × control) or anti-Xa 0.3–0.7 IU/mL, adjusted per the hospital nomogram. Enoxaparin treatment dose 1 mg/kg every 12 h (70 mg); adjust only if creatinine clearance (Cockcroft–Gault, from the creatinine result once the learner has it) is < 30 mL/min. Protamine: 1 mg neutralises about 100 U of UFH given in the previous 2–3 hours (max 50 mg per dose); it neutralises only about 60% of enoxaparin's anti-Xa activity. Andexanet alfa is not stocked; rivaroxaban-associated major bleeding is managed with prothrombin complex concentrate. She has had LMWH since POD0 — monitor platelets every 2–3 days once heparin starts (HIT typically appears on days 5–10)."
       },
       "interprets": []
     },
@@ -7989,6 +8087,62 @@
         "locale": "en",
         "expect": [
           "h-weight-loss"
+        ]
+      },
+      {
+        "text": "每天打针吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "h-lmwh"
+        ]
+      },
+      {
+        "text": "Have you been on DVT prophylaxis?",
+        "locale": "en",
+        "expect": [
+          "h-lmwh"
+        ]
+      },
+      {
+        "text": "Any allergies to heparin?",
+        "locale": "en",
+        "expect": [
+          "h-allergies"
+        ]
+      },
+      {
+        "text": "对肝素过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "h-allergies"
+        ]
+      },
+      {
+        "text": "Are you wearing compression socks?",
+        "locale": "en",
+        "expect": [
+          "h-stockings"
+        ]
+      },
+      {
+        "text": "穿弹力袜了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "h-stockings"
+        ]
+      },
+      {
+        "text": "Any swelling in your legs?",
+        "locale": "en",
+        "expect": [
+          "h-calf"
+        ]
+      },
+      {
+        "text": "腿肿吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "h-calf"
         ]
       }
     ]

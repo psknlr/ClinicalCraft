@@ -12,9 +12,12 @@
  */
 import {
   ClinicalActionSchema,
+  createSession as createEngineState,
   currentObjective,
   matchOrders,
   orderStatus,
+  reduce,
+  resultKey,
   t,
   vitalsAt,
   type AssessmentReport,
@@ -111,7 +114,7 @@ export function consultantRemit(c: CaseDefinition, role: string): string[] {
   return c.investigations.filter((i) => categories.includes(i.category)).map((i) => i.id);
 }
 
-/** Deterministic radiologist/pathologist reply: obtained results within remit + the case's evidence boundaries. */
+/** Deterministic radiologist/pathologist reply: obtained results within remit + the evidence boundary (never the authored knowledge brief). */
 export function consultantOffline(role: "radiologist" | "pathologist" | string, ctx: OfflineContext, utterance: string): string {
   const c = ctx.caseDef;
   const L = ctx.locale;
@@ -133,8 +136,9 @@ export function consultantOffline(role: "radiologist" | "pathologist" | string, 
   } else {
     for (const o of obtained) parts.push(resultLine(c, o.investigationId, o.phase, L));
   }
-  const knowledge = c.npcs.filter((n) => n.role === role).map((n) => t(n.knowledge, L));
-  if (knowledge.length > 0 && obtained.length > 0) parts.push(rt(L, "consultant.offline.boundary", { knowledge: knowledge.join(" ") }));
+  // The authored `npcs[].knowledge` is a brief for model-backed consultants (it may describe other
+  // studies): never recite it. Offline, state the evidence boundary itself.
+  if (obtained.length > 0) parts.push(rt(L, "consultant.offline.boundary"));
   return parts.join("\n");
 }
 
@@ -191,12 +195,25 @@ export function examinerOffline(c: CaseDefinition, report: AssessmentReport, loc
 /* Clinician (autopilot)                                               */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Where a step sits in the reference walkthrough, so a resumed or
+ * learner-advanced session can tell whether it is already done.
+ */
+export interface OfflineStepContext {
+  /** 1-based count of this step's repeatable action (same intervention, hint) in `solution[0..i]`. */
+  occurrence?: number;
+  /** Clock of the reference run (`solution` replayed from the start) after this step. */
+  refClockAfter?: number;
+}
+
 /** One step of the offline reference walkthrough. */
-export type OfflineClinicianStep =
+export type OfflineClinicianStep = (
   /** Run through the same tool path as an LLM clinician (approvals and hooks apply). */
   | { kind: "tool"; tool: string; args: Record<string, unknown>; action: ClinicalAction; narration: string }
   /** Ungated direct action (start, note, flag, hint). */
-  | { kind: "action"; action: ClinicalAction; narration: string | null };
+  | { kind: "action"; action: ClinicalAction; narration: string | null }
+) &
+  OfflineStepContext;
 
 /** Localised narration of a clinical action. */
 export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale: string): string | null {
@@ -279,17 +296,48 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
   }
 }
 
-/** The offline clinician's plan: `case.solution` as tool steps (invalid entries are skipped). */
+/**
+ * The offline clinician's plan: `case.solution` as tool steps (invalid entries
+ * are skipped), each with its `OfflineStepContext` (occurrence counts and the
+ * reference run's clock, from replaying the solution through the engine).
+ */
 export function clinicianOfflineSteps(c: CaseDefinition, locale: string): OfflineClinicianStep[] {
   const steps: OfflineClinicianStep[] = [];
+  const counts = new Map<string, number>();
+  let ref: SessionState | null = createEngineState(c);
   for (const raw of c.solution) {
     const parsed = ClinicalActionSchema.safeParse(raw);
-    if (parsed.success) steps.push(stepForAction(c, parsed.data, locale));
+    if (!parsed.success) continue;
+    const action = parsed.data;
+    const step: OfflineClinicianStep = stepForAction(c, action, locale);
+    const key = action.type === "intervene" ? `intervene:${action.interventionId}` : action.type === "hint" ? "hint" : null;
+    if (key) {
+      const n = (counts.get(key) ?? 0) + 1;
+      counts.set(key, n);
+      step.occurrence = n;
+    }
+    if (ref) {
+      try {
+        ref = reduce(c, ref, action).state;
+        step.refClockAfter = ref.clock;
+      } catch {
+        ref = null; // a broken solution: no reference clock for the rest
+      }
+    }
+    steps.push(step);
   }
   return steps;
 }
 
-/** True when a step no longer needs doing in the current state (resumed or learner already did it). */
+/**
+ * True when a step no longer needs doing in the current state — the learner
+ * already did it, or the session was resumed past it: start/finish/answers by
+ * state; asks, exams, orders (same phase), reads, phase switches, flags and
+ * notes when already recorded; an intervention or hint when the state holds at
+ * least as many as the reference walkthrough has given by then (so a repeated
+ * dose in the solution still happens, but never twice after a resume); a wait
+ * when the clock already reaches the reference run's clock after it.
+ */
 export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionState): boolean {
   const a = step.action;
   switch (a.type) {
@@ -299,9 +347,42 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return Object.prototype.hasOwnProperty.call(state.decisions, a.decisionId);
     case "finish":
       return state.finished;
-    default:
-      return false;
+    case "ask":
+      return state.asked.includes(a.itemId);
+    case "examine":
+      return state.examined.includes(a.findingId);
+    case "order":
+      return state.orders.some((o) => o.key === resultKey(a.investigationId, state.phase));
+    case "read":
+      return state.seen.includes(resultKey(a.investigationId, a.phase ?? state.phase));
+    case "set-phase":
+      return state.phase === a.phase;
+    case "intervene":
+      return state.interventions.filter((r) => r.interventionId === a.interventionId).length >= (step.occurrence ?? 1);
+    case "hint":
+      return state.hints >= (step.occurrence ?? 1);
+    case "advance-time":
+      return step.refClockAfter !== undefined && state.clock >= step.refClockAfter;
+    case "flag":
+      return state.flags.includes(a.flag) === (a.value !== false);
+    case "note":
+      return state.notes.some((n) => n.text === a.text);
+    default: {
+      const never: never = a;
+      return never;
+    }
   }
+}
+
+/**
+ * Minutes until the order behind a `read` step is ready (simulated clock;
+ * 0 when ready, not ordered, or the clock is static) — a learner who ordered
+ * later than the reference run did would otherwise read too early.
+ */
+export function minutesUntilReadable(c: CaseDefinition, state: SessionState, action: ClinicalAction): number {
+  if (action.type !== "read" || c.clock.mode === "static") return 0;
+  const order = state.orders.find((o) => o.key === resultKey(action.investigationId, action.phase ?? state.phase));
+  return order ? Math.max(0, order.readyAt - state.clock) : 0;
 }
 
 /** PROTOCOL §2 name for the offline clinician plan (see `offlineClinicianTurn` in session/autopilot.ts for execution). */

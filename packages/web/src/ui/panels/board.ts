@@ -4,7 +4,7 @@
  * comparison (generalised V4 "治疗前后原图对照": any investigation with figures
  * read in ≥ 2 phases) and "finish" → debrief.
  */
-import { availableDecisions, resultFor, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
+import { availableDecisions, presentedOptions, resultFor, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
@@ -39,15 +39,19 @@ function decisionCard(app: App, game: Game, d: Decision, unlocked: boolean, deci
   const answers = game.session.store.answers.get(d.id) ?? [];
   const last = answers[answers.length - 1];
   const status = decided ? tr("board.done") : unlocked ? tr("board.ready") : tr("board.waiting");
-  const card = h("article", { class: ["decision", decided ? "correct" : "", !unlocked ? "locked" : ""], dataset: { decision: d.id } }, h("div", { class: "eyebrow", style: "margin-bottom:9px" }, status), h("h3", null, ct(d.prompt)));
+  // A locked prompt can state results not yet obtained, or another decision's answer: only its number and need.
+  const title = unlocked || decided ? ct(d.prompt) : tr("board.lockedTitle", { n: game.caseDef.decisions.findIndex((x) => x.id === d.id) + 1 });
+  const card = h("article", { class: ["decision", decided ? "correct" : "", !unlocked ? "locked" : ""], dataset: { decision: d.id } }, h("div", { class: "eyebrow", style: "margin-bottom:9px" }, status), h("h3", null, title));
   if (!unlocked) {
     card.append(h("p", { class: "small muted" }, ct(d.need)));
     return card;
   }
+  // Presentation order (seeded per case and decision): never the authored order, where the answer tends to come first.
+  const options = presentedOptions(game.caseDef, d);
   if (d.kind === "multiple" && !decided) {
     const picked = new Set<string>();
     card.append(h("p", { class: "small muted" }, tr("board.multiple")));
-    for (const o of d.options) {
+    for (const o of options) {
       const cb = h("input", { type: "checkbox", value: o.id, onchange: (e: Event) => ((e.target as HTMLInputElement).checked ? picked.add(o.id) : picked.delete(o.id)) });
       card.append(h("label", { class: "decision-option check" }, cb, h("span", null, ct(o.text))));
     }
@@ -66,7 +70,7 @@ function decisionCard(app: App, game: Game, d: Decision, unlocked: boolean, deci
       ),
     );
   } else {
-    for (const o of d.options) {
+    for (const o of options) {
       const chosen = last?.optionIds.includes(o.id);
       card.append(
         h(
@@ -152,7 +156,8 @@ export function boardPanel(app: App): () => PanelView {
       const snap = store.snapshot;
       if (!snap?.progress.complete) {
         const current = c.objectives[snap?.progress.currentIndex ?? 0];
-        app.toast(tr("board.unfinished"), current ? ct(current.hint) : "", "warning");
+        // Guidance, not the teaching hint (that one is the scored HUD hint).
+        app.toast(tr("board.unfinished"), current ? ct(current.guidance) || ct(current.title) : "", "warning");
         return;
       }
       app.act({ type: "finish" });

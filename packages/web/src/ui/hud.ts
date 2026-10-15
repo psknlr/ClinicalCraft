@@ -120,7 +120,7 @@ export class Hud {
         e.questTitle,
         e.questCopy,
         e.questProgress,
-        h("div", { class: "quest-footer" }, e.questDest, h("button", { type: "button", id: "hint-btn", onclick: () => this.hint() }, tr("hud.hint"))),
+        h("div", { class: "quest-footer" }, e.questDest, h("button", { type: "button", id: "hint-btn", title: tr("hud.hintTitle"), "aria-label": tr("hud.hintTitle"), onclick: () => this.hint() }, tr("hud.hint"))),
       ),
       h("div", { class: "place" }, e.region, e.coords),
       h("button", { type: "button", id: "minimap-btn", class: "minimap", "aria-label": tr("hud.openMap"), onclick: () => this.app.open("map") }, this.mini),
@@ -341,20 +341,22 @@ export class Hud {
     }
     e.vitals.hidden = false;
     const v = snap.vitals;
-    const levelOf = (k: VitalKey) => v.alarms.find((a) => a.vital === k)?.level ?? null;
+    // Cardiac arrest: the monitor has no reading for these (never show the placeholder 0).
+    const unread = new Set<string>(v.unmeasurable ?? []);
+    const levelOf = (k: VitalKey) => (unread.has(k) && k !== "hr" ? null : (v.alarms.find((a) => a.vital === k)?.level ?? null));
     clear(e.vitals);
     for (const item of STRIP) {
       let value: string;
       let level: "warning" | "critical" | null;
       if (item.key === "bp") {
-        value = `${Math.round(v.vitals.sbp)}/${Math.round(v.vitals.dbp)}`;
+        value = unread.has("sbp") ? "---" : `${Math.round(v.vitals.sbp)}/${Math.round(v.vitals.dbp)}`;
         const a = levelOf("sbp");
         const b = levelOf("dbp");
         level = a === "critical" || b === "critical" ? "critical" : a ?? b;
       } else {
         const raw = v.vitals[item.key as keyof typeof v.vitals] as number | undefined;
         if (raw === undefined) continue;
-        value = item.key === "temp" ? raw.toFixed(1) : String(Math.round(raw));
+        value = unread.has(item.key) ? "---" : item.key === "temp" ? raw.toFixed(1) : String(Math.round(raw));
         level = levelOf(item.key as VitalKey);
       }
       const trend = item.key !== "bp" ? v.trend[item.key as VitalKey] : v.trend.sbp;

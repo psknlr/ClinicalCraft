@@ -20,7 +20,8 @@ export interface ReportArgs {
   investigationId: string;
   phase: string;
   back?: ReportBack;
-  justOrdered?: boolean;
+  /** Submission id of the order placed just before opening (its refusal is shown instead of the report). */
+  orderSubmission?: string;
 }
 
 function refRange(v: LabValue): string {
@@ -68,8 +69,9 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
     const name = investigationName(c, args.investigationId);
     const key = `${args.investigationId}@${args.phase}`;
     const content = h("div", { class: "report" });
-    let readRequested = false;
-    let assumeReady = !!args.justOrdered && (c.clock.mode !== "simulated" || (c.investigations.find((i) => i.id === args.investigationId)?.turnaroundMinutes ?? 0) === 0);
+    // The result is shown only once the engine accepted the order AND the read (approvals, deny rules,
+    // hooks and the practice scope can refuse either): until then a pending box, or the refusal.
+    let readSubmission: string | null = null;
 
     const back = (): HTMLElement | null => {
       const b = args.back;
@@ -96,12 +98,11 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
       const s = store.snapshot?.state ?? game.session.session.state;
       const order = s.orders.find((o) => o.key === key);
       const result = resultFor(c, args.investigationId, args.phase);
-      const ready = order ? isOrderReady(c, s, order) : assumeReady;
-      if (order && !ready) assumeReady = false;
+      const ready = order ? isOrderReady(c, s, order) : false;
+      const seen = s.seen.includes(key);
       // Read once it is ordered, ready and has a record (reading costs simulated time — never twice).
-      if (!readRequested && order && ready && result && !s.seen.includes(key)) {
-        readRequested = true;
-        app.act({ type: "read", investigationId: args.investigationId, phase: args.phase });
+      if (readSubmission === null && order && ready && result && !seen) {
+        readSubmission = app.act({ type: "read", investigationId: args.investigationId, phase: args.phase }) ?? "";
       }
       const meta = h("div", { class: "report-meta" }, h("span", null, result?.date ? ct(result.date) : "—"), h("span", null, tr("report.phaseRecord", { phase: phaseName(c, args.phase) })));
       content.append(meta);
@@ -110,9 +111,15 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
         content.append(h("p", { class: "notice" }, tr("report.unavailable")), buttons);
         return;
       }
-      if (!ready) {
-        const left = order ? minutesLeft(c, s, order) : 0;
-        content.append(h("div", { class: "pending-box" }, h("span", { class: "spinner", "aria-hidden": "true" }), left ? tr("report.pending", { min: left }) : tr("orders.pending", { name, min: "…" })), buttons);
+      const refusal = (!order && args.orderSubmission ? store.failures.get(args.orderSubmission) : undefined) ?? (!seen && readSubmission ? store.failures.get(readSubmission) : undefined);
+      if (refusal) {
+        content.append(h("p", { class: "notice refused", id: "report-refused" }, tr(order ? "report.readRefused" : "report.orderRefused", { reason: refusal })), buttons);
+        return;
+      }
+      if (!seen) {
+        const left = order && !ready ? minutesLeft(c, s, order) : 0;
+        const text = !order ? tr("report.placing", { name }) : !ready ? (left ? tr("report.pending", { min: left }) : tr("orders.pending", { name, min: "…" })) : tr("report.opening");
+        content.append(h("div", { class: "pending-box", id: "report-pending" }, h("span", { class: "spinner", "aria-hidden": "true" }), text), buttons);
         return;
       }
       if (result.critical) content.append(h("div", { class: "critical-banner" }, tr("report.critical")));

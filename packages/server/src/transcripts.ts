@@ -4,17 +4,45 @@
  * JSON array of items or `{items: [...]}`, validates the item envelope and
  * appends to `<CLINICALCRAFT_HOME>/sessions/web/<sessionId>.jsonl` (mode
  * 0600) through `JsonlTranscript`, which masks credentials before writing.
- * Such files are found by `clinicalcraft sessions list` / `--resume`.
+ *
+ * Anyone who can reach the API can upload, so these files are kept apart from
+ * the user's own recordings: `clinicalcraft sessions list --web` lists them,
+ * `--continue` / `--resume <prefix>` never pick them, `--resume <exact id>`
+ * resumes one without its recorded provider or approval mode
+ * (docs/PROTOCOL.md §10). Each file is capped at `maxFileBytes` and the
+ * directory at `maxSessions` files (`TranscriptQuotaError`, HTTP 413).
  */
-import { mkdir } from "node:fs/promises";
+import { mkdir, readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
 import type { TranscriptItem } from "@clinicalcraft/agent";
 import { JsonlTranscript, sessionsDir, type Env } from "@clinicalcraft/agent/node";
 
-const ITEM_TYPES = new Set(["session_meta", "op", "action", "message", "event", "compacted"]);
+const ITEM_TYPES = new Set(["session_meta", "op", "action", "message", "event", "compacted", "dialogue"]);
 const SESSION_ID = /^[A-Za-z0-9_-]{1,128}$/;
 /** Open writers kept per server (least recently used beyond this are dropped). */
 const MAX_WRITERS = 64;
+/** Default cap on one uploaded transcript file (bytes). */
+export const MAX_WEB_TRANSCRIPT_BYTES = 16 * 1024 * 1024;
+/** Default cap on the number of uploaded transcript files. */
+export const MAX_WEB_TRANSCRIPTS = 500;
+
+/** An upload that would exceed the per-file size or the file-count cap. */
+export class TranscriptQuotaError extends Error {
+  constructor(
+    message: string,
+    readonly kind: "file-size" | "session-count",
+  ) {
+    super(message);
+    this.name = "TranscriptQuotaError";
+  }
+}
+
+export interface WebTranscriptStoreOptions {
+  /** Cap on one session's file (default 16 MiB). */
+  maxFileBytes?: number;
+  /** Cap on the number of files under `sessions/web/` (default 500). */
+  maxSessions?: number;
+}
 
 /** Whether `id` is acceptable as a transcript file name. */
 export function isValidSessionId(id: string): boolean {
@@ -60,14 +88,23 @@ export function parseTranscriptUpload(text: string): TranscriptItem[] {
 /** Appends uploaded items to per-session JSONL files. */
 export class WebTranscriptStore {
   private readonly writers = new Map<string, JsonlTranscript>();
+  /** Bytes on disk (or queued) per open writer. */
+  private readonly sizes = new Map<string, number>();
   private readonly dir: string;
+  private readonly maxFileBytes: number;
+  private readonly maxSessions: number;
+  /** Serialises quota checks and writes (the checks read the directory). */
+  private queue: Promise<unknown> = Promise.resolve();
 
   /** `baseDir` = the sessions directory (default `<CLINICALCRAFT_HOME>/sessions`). */
   constructor(
     private readonly env: Env,
     baseDir?: string | null,
+    options: WebTranscriptStoreOptions = {},
   ) {
     this.dir = join(baseDir || sessionsDir(env), "web");
+    this.maxFileBytes = options.maxFileBytes ?? MAX_WEB_TRANSCRIPT_BYTES;
+    this.maxSessions = options.maxSessions ?? MAX_WEB_TRANSCRIPTS;
   }
 
   /** Path of a session's file. */
@@ -75,10 +112,24 @@ export class WebTranscriptStore {
     return join(this.dir, `${sessionId}.jsonl`);
   }
 
-  /** Append items (in order) and resolve once they are on disk. */
-  async append(sessionId: string, items: readonly TranscriptItem[]): Promise<{ path: string; written: number }> {
+  /**
+   * Append items (in order) and resolve once they are on disk. Throws
+   * `TranscriptQuotaError` (nothing written) when the file would exceed
+   * `maxFileBytes` or a new file would exceed `maxSessions`.
+   */
+  append(sessionId: string, items: readonly TranscriptItem[]): Promise<{ path: string; written: number }> {
+    const run = this.queue.then(() => this.appendNow(sessionId, items));
+    this.queue = run.catch(() => undefined);
+    return run;
+  }
+
+  private async appendNow(sessionId: string, items: readonly TranscriptItem[]): Promise<{ path: string; written: number }> {
     if (!isValidSessionId(sessionId)) throw new Error("invalid session id");
+    const incoming = items.reduce((n, item) => n + Buffer.byteLength(JSON.stringify(item)) + 1, 0);
     const writer = await this.writer(sessionId);
+    const size = this.sizes.get(sessionId) ?? 0;
+    if (size + incoming > this.maxFileBytes) throw new TranscriptQuotaError(`transcript ${sessionId} would exceed ${this.maxFileBytes} bytes`, "file-size");
+    this.sizes.set(sessionId, size + incoming);
     let failures = writer.failures;
     for (const item of items) void writer.write(item);
     await writer.flush();
@@ -100,11 +151,22 @@ export class WebTranscriptStore {
       return existing;
     }
     await mkdir(this.dir, { recursive: true, mode: 0o700 });
-    const writer = JsonlTranscript.at(this.pathFor(sessionId), undefined, { env: this.env });
+    const path = this.pathFor(sessionId);
+    const existingSize = await stat(path).then(
+      (info) => info.size,
+      () => null,
+    );
+    if (existingSize === null) {
+      const files = (await readdir(this.dir).catch(() => [] as string[])).filter((f) => f.endsWith(".jsonl"));
+      if (files.length >= this.maxSessions) throw new TranscriptQuotaError(`at most ${this.maxSessions} web transcripts are kept`, "session-count");
+    }
+    const writer = JsonlTranscript.at(path, undefined, { env: this.env });
     this.writers.set(sessionId, writer);
+    this.sizes.set(sessionId, existingSize ?? 0);
     while (this.writers.size > MAX_WRITERS) {
       const oldest = this.writers.keys().next().value as string;
       this.writers.delete(oldest);
+      this.sizes.delete(oldest);
     }
     return writer;
   }

@@ -170,7 +170,12 @@ export class SessionToolRunner {
     signal?.addEventListener("abort", onAbort, { once: true });
     try {
       const events = await this.session.run({ type: "user_message", text: utterance, to: agent });
-      const replies = events.flatMap((e) => (e.msg.type === "agent_message" ? [e.msg] : []));
+      // Only the addressed agent's own turn (a companion answers in the patient's turn). Staff lines
+      // its actions triggered (alarms, critical-result calls, announcements) are synthetic turns:
+      // the client gets those as notices from their `notification` events, never as the reply.
+      const speakers = new Set<string>(agent === "patient" ? ["patient", "companion"] : [agent]);
+      const turns = new Set(events.flatMap((e) => (e.msg.type === "turn_started" && !e.msg.synthetic && speakers.has(e.msg.agent) ? [e.msg.turnId] : [])));
+      const replies = events.flatMap((e) => (e.msg.type === "agent_message" && turns.has(e.msg.turnId) ? [e.msg] : []));
       if (replies.length > 0) {
         return { text: replies.map((r) => r.text).join("\n"), grounded: [...new Set(replies.flatMap((r) => r.grounded))] };
       }

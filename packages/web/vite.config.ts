@@ -22,18 +22,27 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
 const pkg = (name: string, entry = "src/index.ts") => path.resolve(here, "..", name, entry);
 
+/**
+ * The only types `/local-assets/*` serves (mirrors the server's
+ * LOCAL_ASSET_EXTENSIONS): passive figures, the source PDF, the anatomy model
+ * and its catalog, media. SVG/HTML/XML/scripts would run same-origin.
+ */
 const MIME: Record<string, string> = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
-  ".svg": "image/svg+xml",
+  ".gif": "image/gif",
   ".pdf": "application/pdf",
   ".json": "application/json",
   ".glb": "model/gltf-binary",
   ".gz": "application/octet-stream",
-  ".txt": "text/plain; charset=utf-8",
+  ".mp3": "audio/mpeg",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
 };
+/** Sandboxed, passive-only policy for every non-PDF local asset (browsers refuse sandboxed PDFs). */
+const LOCAL_ASSET_CSP = "default-src 'none'; img-src 'self' data: blob:; media-src 'self'; style-src 'unsafe-inline'; sandbox";
 
 export function localAssetRoots(): string[] {
   const home = process.env.CLINICALCRAFT_HOME || path.join(os.homedir(), ".clinicalcraft");
@@ -55,6 +64,8 @@ export function resolveLocalAsset(urlPath: string, roots = localAssetRoots()): s
     const abs = path.resolve(root, rel);
     if (abs !== root && !abs.startsWith(root + path.sep)) continue;
     try {
+      // Allow-listed types only, for the requested name and the resolved file (symlinks).
+      if (!MIME[path.extname(abs).toLowerCase()] || !MIME[path.extname(fs.realpathSync(abs)).toLowerCase()]) continue;
       if (fs.statSync(abs).isFile()) return abs;
     } catch {
       /* try next root */
@@ -84,9 +95,12 @@ function localAssets(): Plugin {
     }
     const stat = fs.statSync(file);
     res.statusCode = 200;
-    res.setHeader("content-type", MIME[path.extname(file).toLowerCase()] || "application/octet-stream");
+    const ext = path.extname(file).toLowerCase();
+    res.setHeader("content-type", MIME[ext] || "application/octet-stream");
     res.setHeader("content-length", String(stat.size));
     res.setHeader("cache-control", "no-cache");
+    res.setHeader("x-content-type-options", "nosniff");
+    if (ext !== ".pdf") res.setHeader("content-security-policy", LOCAL_ASSET_CSP);
     if (req.method === "HEAD") return res.end();
     fs.createReadStream(file).pipe(res);
   };

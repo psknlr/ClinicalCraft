@@ -327,7 +327,7 @@ clinicalcraft cases verify pediatric-asthma
 clinicalcraft play pediatric-asthma --provider offline
 ```
 
-All 69 `extensions.testUtterances` (35 zh-CN, 34 en, including colloquial
+All 77 `extensions.testUtterances` (39 zh-CN, 38 en, including colloquial
 Chinese, typos such as 储物罐 / vomitting / wat, and clinical abbreviations
 such as NKDA, URTI, ICS, PICU, pred, GP, hx) resolve to an expected history
 item as the top `matchHistory` hit. CJK keywords avoid generic two-character

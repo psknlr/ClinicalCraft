@@ -10,7 +10,7 @@
 import type { ClinicalAction } from "@clinicalcraft/core";
 import type { AgentRole, ApprovalMode, Op, PlanItem, PracticeScope } from "./protocol.js";
 import type { ChatMessage, ChatPart } from "./providers/types.js";
-import type { TranscriptItem, TranscriptSink } from "./session/types.js";
+import type { DialogueEntry, TranscriptItem, TranscriptSink } from "./session/types.js";
 
 /** In-memory transcript sink. */
 export class MemoryTranscript implements TranscriptSink {
@@ -53,6 +53,8 @@ export interface ReplayedTranscript {
   ops: { id: string; op: Op }[];
   /** Highest ordinal seen (resume continues from ordinal + 1). */
   lastOrdinal: number;
+  /** The examiner's dialogue lines (`dialogue` items) in order. */
+  dialogue: DialogueEntry[];
 }
 
 const PART_TYPES = new Set(["text", "image", "tool_call", "tool_result", "provider_raw"]);
@@ -66,17 +68,39 @@ export function normaliseContent(content: unknown): ChatPart[] | null {
 }
 
 /**
- * Rebuild resumable state from transcript items. Items are processed in
- * ordinal order (stable for equal ordinals); malformed items are skipped.
+ * Transcript items in replay order: by ordinal within a recording segment
+ * (stable for equal ordinals), segments in file order. A later `session_meta`
+ * (a resume) whose ordinal does not continue the sequence (≤ the highest
+ * ordinal so far) starts a new segment — e.g. a resume that restarted its
+ * ordinals at 0 (old web saves) — so two runs never interleave. Malformed
+ * items are dropped.
+ */
+export function orderTranscriptItems(items: readonly TranscriptItem[]): TranscriptItem[] {
+  let segment = 0;
+  let maxOrdinal = -Infinity;
+  let metas = 0;
+  const keyed: { item: TranscriptItem; i: number; segment: number }[] = [];
+  items.forEach((item, i) => {
+    if (!item || typeof item !== "object" || typeof item.type !== "string") return;
+    const ordinal = typeof item.ordinal === "number" ? item.ordinal : 0;
+    if (item.type === "session_meta" && metas++ > 0 && ordinal <= maxOrdinal) {
+      segment++;
+      maxOrdinal = -Infinity;
+    }
+    if (ordinal > maxOrdinal) maxOrdinal = ordinal;
+    keyed.push({ item, i, segment });
+  });
+  return keyed.sort((a, b) => a.segment - b.segment || (a.item.ordinal ?? 0) - (b.item.ordinal ?? 0) || a.i - b.i).map(({ item }) => item);
+}
+
+/**
+ * Rebuild resumable state from transcript items, in `orderTranscriptItems`
+ * order; malformed items are skipped.
  */
 export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTranscript {
-  const sorted = items
-    .map((item, i) => ({ item, i }))
-    .filter(({ item }) => item && typeof item === "object" && typeof item.type === "string")
-    .sort((a, b) => (a.item.ordinal ?? 0) - (b.item.ordinal ?? 0) || a.i - b.i)
-    .map(({ item }) => item);
+  const sorted = orderTranscriptItems(items);
 
-  const result: ReplayedTranscript = { sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1 };
+  const result: ReplayedTranscript = { sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1, dialogue: [] };
   for (const item of sorted) {
     if (typeof item.ordinal === "number" && item.ordinal > result.lastOrdinal) result.lastOrdinal = item.ordinal;
     switch (item.type) {
@@ -89,6 +113,11 @@ export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTran
       case "action":
         if (item.payload?.accepted && item.payload.action) result.actions.push(item.payload.action);
         break;
+      case "dialogue": {
+        const d = item.payload;
+        if (d && typeof d.who === "string" && typeof d.speaker === "string" && typeof d.text === "string") result.dialogue.push({ who: d.who, speaker: d.speaker, text: d.text });
+        break;
+      }
       case "message": {
         const agent = item.payload?.agent;
         const role = item.payload?.role;
@@ -128,16 +157,18 @@ export interface ResumedRuntimeConfig {
   interlocutor?: string;
   /** Last published workup plan. */
   plan?: { items: PlanItem[]; explanation: string | null };
+  /** Last persisted affect intensity (0–3) per speaker, from patient/companion `message` items (`affectIntensity`). */
+  affect?: Partial<Record<"patient" | "companion", 0 | 1 | 2 | 3>>;
 }
 
 /**
  * The configuration in effect at the end of a transcript: the last
  * `session_meta` (locale, provider, model), then every `config_changed`
  * patch in order (`/lang`, `/approval`, `/scope`, `/talk`, `/model`…), plus
- * the last `plan_updated`.
+ * the last `plan_updated` and the patient's/companion's last affect.
  */
 export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedRuntimeConfig {
-  const sorted = [...items].filter((i) => i && typeof i === "object").sort((a, b) => (a.ordinal ?? 0) - (b.ordinal ?? 0));
+  const sorted = orderTranscriptItems(items);
   const out: ResumedRuntimeConfig = {};
   for (const item of sorted) {
     if (item.type === "session_meta" && item.payload) {
@@ -146,11 +177,19 @@ export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedR
       out.model = item.payload.model || null;
       continue;
     }
+    if (item.type === "message") {
+      const agent = item.payload?.agent;
+      const speaker = agent === "patient" ? "patient" : agent === "companion" ? "companion" : null;
+      const intensity = (item.payload as { affectIntensity?: unknown } | undefined)?.affectIntensity;
+      if (speaker && (intensity === 0 || intensity === 1 || intensity === 2 || intensity === 3)) (out.affect ??= {})[speaker] = intensity;
+      continue;
+    }
     if (item.type !== "event" || !item.payload?.msg) continue;
     const msg = item.payload.msg;
     if (msg.type === "plan_updated") out.plan = { items: msg.plan.map((p) => ({ text: p.text, status: p.status })), explanation: msg.explanation ?? null };
     if (msg.type !== "config_changed") continue;
     const p = msg.patch;
+    if (!p || typeof p !== "object") continue; // malformed (e.g. hand-edited or uploaded) item
     if (p.locale) out.locale = p.locale;
     if (p.provider) {
       out.provider = p.provider;
@@ -233,6 +272,11 @@ export function redactValue<T>(value: T, secrets: readonly string[] = []): T {
  */
 export class TranscriptRecorder {
   private ordinal: number;
+
+  /** Ordinal the next item will get (a resume of this recording continues from it). */
+  get nextOrdinal(): number {
+    return this.ordinal;
+  }
 
   constructor(
     private readonly sink: TranscriptSink,

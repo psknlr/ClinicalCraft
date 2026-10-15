@@ -37,7 +37,7 @@ import type { EventMsg, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ProviderErrorInfo, SystemSection } from "../providers/types.js";
 import { availableInPhase } from "../tools/format.js";
-import { verifyGrounding } from "./grounding.js";
+import { checkNonverbal, verifyGrounding } from "./grounding.js";
 import { joinSentences, languageName, rt, type RuntimeKey } from "./i18n.js";
 
 /* ------------------------------------------------------------------ */
@@ -602,11 +602,24 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   if (!check.ok && (input.strictGrounding || !reply.say)) {
     return speakTemplate("template", { affectHint: reply.affectHint, warnings: [rt(L, "warning.notGrounded", { reason: check.violations.join(", ") })] });
   }
+  // The nonverbal cue is shown too: same verifier, and it may not name a sign or describe a finding
+  // the learner has not examined (the prompt rule alone is not enough) — else it is dropped.
+  let nonverbal = reply.nonverbal;
+  const extraWarnings: string[] = [];
+  if (nonverbal) {
+    const examined = new Set(input.state().examined);
+    const unexaminedFindings = c.exam.filter((f) => !examined.has(f.id)).flatMap((f) => Object.values(f.finding ?? {}).filter((v): v is string => typeof v === "string"));
+    const cue = checkNonverbal(nonverbal, sources, { drugLexicon: caseDrugLexicon(c), unexaminedFindings });
+    if (!cue.ok) {
+      nonverbal = null;
+      extraWarnings.push(rt(L, "warning.nonverbalDropped", { reason: cue.violations.join(", ") }));
+    }
+  }
   // The voice answered what was asked (the selected facts); the volunteer fact counts only if it was used.
   const usedVolunteer = volunteerIds.filter((id) => reply.usedFactIds.includes(id));
   const newlyRevealed = credit(input, [...selection.selected, ...usedVolunteer]);
   const grounded = reply.usedFactIds.length > 0 ? reply.usedFactIds : selection.selected;
-  return done({ text: reply.say, grounding: "llm", route, grounded, newlyRevealed, nonverbal: reply.nonverbal, affectHint: reply.affectHint });
+  return done({ text: reply.say, grounding: "llm", route, grounded, newlyRevealed, nonverbal, affectHint: reply.affectHint, ...(extraWarnings.length ? { warnings: extraWarnings } : {}) });
 }
 
 /** "tool" pipeline; returns null when the model failed and the select → voice path should answer instead. */

@@ -236,3 +236,67 @@ export function verifyGrounding(say: string, sources: readonly string[], options
   }
   return { ok: violations.length === 0, violations: [...new Set(violations)] };
 }
+
+/* ------------------------------------------------------------------ */
+/* Nonverbal cues                                                      */
+/* ------------------------------------------------------------------ */
+
+/** Longest nonverbal cue kept (a short stage direction, not a description of findings). */
+export const MAX_NONVERBAL_CHARS = 120;
+
+/**
+ * Words naming examinable signs or measurements. A nonverbal cue is a
+ * behaviour (winces, nods, looks at her husband); signs are found by
+ * examining the patient, so a cue that names one is dropped.
+ */
+const SIGN_WORDS_EN =
+  /\b(droop\w*|deviat\w*|asymmetr\w*|cyano\w*|blue\s+lips|wheez\w*|stridor|crackl\w*|jaundic\w*|icter\w*|yellow\w*|rash\w*|hives|urticari\w*|wheals?|pupil\w*|dilat\w*|constrict\w*|pallor|pale|mottl\w*|clammy|diaphore\w*|flush\w*|swell\w*|swollen|oedema\w*|edema\w*|bruis\w*|bleed\w*|haemorrh\w*|hemorrh\w*|vomit\w*|seiz\w*|convuls\w*|tremor\w*|twitch\w*|paraly\w*|weak(ness)?|slurr\w*|aphasi\w*|kussmaul|tachypn\w*|ketot\w*|ketone\w*|acetone|fruity|dehydrat\w*|dry\s+(lips|mouth|mucous)|sunken|guard\w*|rigid\w*|rebound|tender\w*|distend\w*|murmur\w*|gallop|bradycard\w*|tachycard\w*|arrhythm\w*|irregular\w*|monitor|saturation|sats|spo2|oxygen|blood\s+pressure|pulse|glucose|sugar|temperature|fever\w*|febrile)\b/i;
+const SIGN_WORDS_ZH = /(下垂|歪斜|偏斜|凝视|紫绀|发绀|口唇发紫|喘鸣|哮鸣|啰音|黄疸|皮疹|荨麻疹|风团|瞳孔|散大|缩小|苍白|花斑|湿冷|大汗|潮红|肿胀|水肿|淤青|瘀斑|出血|呕吐|抽搐|震颤|瘫|无力|口齿不清|失语|深大呼吸|酮味|烂苹果|脱水|口唇干|口干|凹陷|肌紧张|反跳痛|压痛|腹胀|杂音|心律不齐|心跳不规|监护|血氧|血压|脉搏|血糖|体温|发热|发烧)/;
+
+/** Nonverbal check context: the grounding sources plus the exam findings the learner has not elicited yet. */
+export interface NonverbalCheckOptions extends VerifyOptions {
+  /** Texts of exam findings not yet examined (any locale). */
+  unexaminedFindings?: readonly string[];
+}
+
+function latinWords(text: string): string[] {
+  return text
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .filter((w) => w.length >= 5);
+}
+
+function sharesCjkRun(a: string, b: string, run = 3): boolean {
+  const cjk = (s: string) => s.replace(/[^㐀-鿿]/g, "");
+  const x = cjk(a);
+  const y = cjk(b);
+  if (x.length < run || y.length < run) return false;
+  for (let i = 0; i + run <= x.length; i++) if (y.includes(x.slice(i, i + run))) return true;
+  return false;
+}
+
+/**
+ * Whether a voiced nonverbal cue may be shown (ARCHITECTURE §4.2 step 4):
+ * short, no numbers, drugs or acronyms outside the sources (`verifyGrounding`),
+ * no named sign or measurement, and nothing shared with a finding the
+ * learner has not examined yet (a ≥ 5-letter word, or a 3-character CJK run).
+ */
+export function checkNonverbal(nonverbal: string, sources: readonly string[], options: NonverbalCheckOptions = {}): GroundingCheck {
+  const violations: string[] = [];
+  const text = nonverbal.trim();
+  if (text.length > MAX_NONVERBAL_CHARS) violations.push("nonverbal too long");
+  if (/[0-9０-９]/.test(text)) violations.push("number in nonverbal");
+  const sign = SIGN_WORDS_EN.exec(text)?.[0] ?? SIGN_WORDS_ZH.exec(text)?.[0];
+  if (sign) violations.push(`sign "${sign}" in nonverbal`);
+  const grounded = verifyGrounding(text, sources, options);
+  violations.push(...grounded.violations);
+  const words = new Set(latinWords(text));
+  for (const finding of options.unexaminedFindings ?? []) {
+    const shared = latinWords(finding).find((w) => words.has(w));
+    if (shared || sharesCjkRun(text, finding)) {
+      violations.push(`nonverbal describes an unexamined finding${shared ? ` ("${shared}")` : ""}`);
+      break;
+    }
+  }
+  return { ok: violations.length === 0, violations };
+}

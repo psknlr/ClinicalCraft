@@ -24,7 +24,7 @@ import {
   tokenCookie,
 } from "./security.js";
 import { serveLocalAsset, serveStatic } from "./static.js";
-import { isValidSessionId, parseTranscriptUpload, WebTranscriptStore } from "./transcripts.js";
+import { isValidSessionId, parseTranscriptUpload, TranscriptQuotaError, WebTranscriptStore, type WebTranscriptStoreOptions } from "./transcripts.js";
 
 export interface ServerOptions {
   /** Port to listen on (0 = any free port). Default `settings.server.port`. */
@@ -50,6 +50,8 @@ export interface ServerOptions {
   providerFactory?: (config: ProviderConfig) => LLMProvider;
   /** Request body limit in bytes (default 2 MB). */
   maxBodyBytes?: number;
+  /** Caps on uploaded web transcripts (default 16 MiB per file, 500 files). */
+  transcriptQuota?: WebTranscriptStoreOptions;
   /** Diagnostics sink (default: stderr). */
   log?: (message: string) => void;
 }
@@ -93,7 +95,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const assetDirs = opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env);
   const csp = contentSecurityPolicy(providerOrigins(settings));
   const baseHeaders = securityHeaders(csp);
-  const transcripts = new WebTranscriptStore(env, settings.transcripts.dir);
+  const transcripts = new WebTranscriptStore(env, settings.transcripts.dir, opts.transcriptQuota);
   const shutdown = new AbortController();
   const streams = new Set<Promise<void>>();
   let contentPromise: Promise<LoadedContent> | null = opts.content ? Promise.resolve(opts.content) : null;
@@ -212,7 +214,13 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       }
       // Transcripts switched off in settings: accept and drop (the browser keeps its own copy).
       if (!settings.transcripts.enabled) return sendJson(res, 200, { ok: true, written: 0, stored: false });
-      const result = await transcripts.append(kind, items);
+      let result;
+      try {
+        result = await transcripts.append(kind, items);
+      } catch (err) {
+        if (err instanceof TranscriptQuotaError) return sendError(res, 413, "transcript_quota", sm(L, "error.transcriptQuota"));
+        throw err;
+      }
       return sendJson(res, 200, { ok: true, written: result.written, stored: true });
     }
     return sendError(res, 404, "not_found", sm(L, "error.notFound"));

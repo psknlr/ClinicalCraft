@@ -510,12 +510,9 @@
         "zh-CN": [
           "以前被蜇",
           "蜇过",
-          "上次",
           "既往反应",
           "以前过敏",
           "类似情况",
-          "发生过",
-          "之前有过",
           "之前被蜇",
           "以前有过类似",
           "以前被蜂蜇",
@@ -530,13 +527,26 @@
           "去年那次",
           "去年被蜇",
           "去年蜇",
-          "过敏反应"
+          "过敏反应",
+          "上次被蜇",
+          "上次被蜂",
+          "以前发生过这",
+          "之前发生过这",
+          "以前也发生过",
+          "以前发生过吗",
+          "之前发生过吗",
+          "以前发生过类似",
+          "之前有过这种",
+          "之前有过类似",
+          "之前有过这样",
+          "以前有过这种",
+          "上次蜇了",
+          "上次蜇的"
         ],
         "en": [
           "stung before",
           "previous sting",
           "sting before",
-          "last time",
           "previous reaction",
           "happened before",
           "similar reaction",
@@ -547,14 +557,17 @@
           "happened b4",
           "reaction to a sting",
           "anaphylaxis",
-          "reaction like this"
+          "reaction like this",
+          "time you were stung",
+          "time you got stung",
+          "last sting"
         ]
       },
       "disclosure": "specific",
       "required": true,
       "excludeKeywords": {
-        "zh-CN": ["家里人", "家人", "家族", "药物", "食物", "青霉素"],
-        "en": ["family", "relatives", "fhx", "before the sting", "before you were stung", "penicillin", "drug", "medicine", "medication", "food", "antibiotic"]
+        "zh-CN": ["家里人", "家人", "家族", "药物", "食物", "青霉素", "吃", "喝酒", "运动", "止痛药", "月经", "破伤风", "检测", "测试", "哮喘", "手术"],
+        "en": ["family", "relatives", "fhx", "before the sting", "before you were stung", "penicillin", "drug", "medicine", "medication", "food", "antibiotic", "before this happened", "before it happened", "before that happened", "before this started", "before it started", "beforehand", "to eat", "you eat", "eaten", "you ate", "exercis", "alcohol", "painkiller", "testing", "tested", "allergytest", "period", "tetanus"]
       },
       "phases": ["scene", "treated", "ed-resus", "ed"]
     },
@@ -751,11 +764,10 @@
       },
       "answer": { "zh-CN": "没有……从来没吃过降压药或者心脏的药……", "en": "No… never taken any blood pressure or heart tablets…" },
       "keywords": {
-        "zh-CN": ["降压药", "β受体阻滞剂", "倍他乐克", "美托洛尔", "ACEI", "普利", "心脏药", "阻滞剂", "降压药吗", "血压药", "心脏的药", "降血压", "降血压的药", "心得安", "普萘洛尔", "比索洛尔", "阿替洛尔"],
+        "zh-CN": ["降压药", "β受体阻滞剂", "倍他乐克", "美托洛尔", "ACEI", "普利", "阻滞剂", "降压药吗", "心脏的药", "降血压的药", "心得安", "普萘洛尔", "比索洛尔", "阿替洛尔", "吃心脏药", "吃血压药", "血压的药", "降血压药"],
         "en": [
           "beta blocker",
           "beta-blocker",
-          "blood pressure tablets",
           "ace inhibitor",
           "propranolol",
           "bisoprolol",
@@ -764,11 +776,13 @@
           "bp tablets",
           "bp meds",
           "bp pills",
-          "blood pressure medication",
           "heart medication",
           "heart tablets",
           "beta blockers",
-          "acei"
+          "acei",
+          "take blood pressure tablets",
+          "take blood pressure medication",
+          "blood pressure tablets pills medication"
         ]
       },
       "disclosure": "specific",
@@ -875,8 +889,12 @@
         "en": "My in-laws keep two beehives… out in the countryside… we go and help most summer weekends…"
       },
       "keywords": {
-        "zh-CN": ["养蜂", "蜂箱", "接触蜜蜂", "园艺", "户外", "经常被蜇", "蜂场", "经常接触蜜蜂", "接触蜂", "家里有人养蜂", "养蜜蜂"],
-        "en": ["beekeeping", "beehive", "keep bees", "around bees", "gardening", "outdoors", "exposure", "bee farm", "bees at home", "beekeeper"]
+        "zh-CN": ["养蜂", "蜂箱", "接触蜜蜂", "园艺", "经常被蜇", "蜂场", "经常接触蜜蜂", "家里有人养蜂", "户外活动多", "经常在户外", "养蜜蜂吗"],
+        "en": ["beekeeping", "beehive", "keep bees", "bee farm", "bees at home", "beekeeper", "outdoors a lot", "time outdoors", "often outdoors", "exposure to bees", "exposed to bees", "bee exposure", "gardening a lot", "garden a lot", "often around bees", "around bees a lot"]
+      },
+      "excludeKeywords": {
+        "zh-CN": ["附近", "刚才", "今天", "看到", "看清", "什么虫"],
+        "en": ["nearby", "just now", "today", "when it happened", "when you were stung", "did you see", "what stung", "beesaround", "thebee", "wasp"]
       },
       "disclosure": "specific",
       "phases": ["scene", "treated", "ed-resus", "ed"]
@@ -4619,8 +4637,8 @@
       "role": "radiologist",
       "name": { "zh-CN": "放射科医师", "en": "Radiologist" },
       "knowledge": {
-        "zh-CN": "只解读学员已获得的影像：胸片正常；CT肺动脉造影无栓塞。会指出本例没有提示肺栓塞的临床特征，而在刚稳定的患者身上做增强CT需要离开抢救区、增加对比剂风险，却不会改变处理。不讨论诊断。",
-        "en": "Interprets only imaging the learner already has: normal chest film; CTPA without embolism. Will point out that nothing clinical here suggested pulmonary embolism, and that a contrast CT in a just-stabilised patient means leaving resus and adds contrast risk without changing management. Does not discuss the diagnosis."
+        "zh-CN": "只解读学员已获得的影像，以报告原文为准；学员未调阅的检查不透露任何内容。会指出本例没有提示肺栓塞的临床特征，而在刚稳定的患者身上做增强CT需要离开抢救区、增加对比剂风险，却不会改变处理。不讨论诊断。",
+        "en": "Interprets only imaging the learner already has, in the report's own words, and reveals nothing of a study the learner has not read. Will point out that nothing clinical here suggested pulmonary embolism, and that a contrast CT in a just-stabilised patient means leaving resus and adds contrast risk without changing management. Does not discuss the diagnosis."
       },
       "interprets": ["cxr", "ctpa"]
     },
@@ -4871,7 +4889,21 @@
       { "text": "有没有发烧", "locale": "zh-CN", "expect": ["recent-illness"] },
       { "text": "do you feel a sense of impending doom?", "locale": "en", "expect": ["ice-concern"] },
       { "text": "你的手机呢", "locale": "zh-CN", "expect": [] },
-      { "text": "do you want some water?", "locale": "en", "expect": [] }
+      { "text": "do you want some water?", "locale": "en", "expect": [] },
+      { "text": "上次被蜇的时候怎么样？", "locale": "zh-CN", "expect": ["prev-reaction"] },
+      { "text": "What happened the last time you were stung?", "locale": "en", "expect": ["prev-reaction"] },
+      { "text": "Did you eat anything before this happened?", "locale": "en", "expect": ["hpi-other-triggers"] },
+      { "text": "上次月经是什么时候？", "locale": "zh-CN", "expect": ["obstetric-lmp"] },
+      { "text": "之前有过哮喘吗？", "locale": "zh-CN", "expect": ["pmh-asthma"] },
+      { "text": "When was the last time you had a tetanus jab?", "locale": "en", "expect": ["unknown-tetanus"] },
+      { "text": "Are you on any blood pressure tablets?", "locale": "en", "expect": ["meds-bb"] },
+      { "text": "有没有吃血压药？", "locale": "zh-CN", "expect": ["meds-bb"] },
+      { "text": "How's your blood pressure?", "locale": "en", "expect": ["pmh-other", "unknown-usual-bp"] },
+      { "text": "有心脏病吗？", "locale": "zh-CN", "expect": ["pmh-other"] },
+      { "text": "Do you spend a lot of time outdoors?", "locale": "en", "expect": ["social-bees"] },
+      { "text": "平时户外活动多吗？", "locale": "zh-CN", "expect": ["social-bees"] },
+      { "text": "Were you outdoors when it happened?", "locale": "en", "expect": ["pc-sting"] },
+      { "text": "Were there any bees around?", "locale": "en", "expect": ["hpi-insect"] }
     ],
     "authoringNotes": {
       "physiology": "Two trend families per vital: '*-early' stop at the first IM adrenaline dose, '*-persisting' only at the second, so a single dose gives a partial response (SBP ~85–88 at the 5-minute reassessment) and the second dose is genuinely indicated. Each IM dose adds a persistent component (resolution) and a 15-min transient component (peak effect). Untreated, SBP reaches ~56 at 10 min (peri-arrest event).",

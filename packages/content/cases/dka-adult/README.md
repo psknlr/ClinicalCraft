@@ -29,7 +29,7 @@ ketoacidosis with admission hypokalaemia**. Insulin must wait until potassium is
 | phases | `resus` → `k-replete` → `glucose-lt14` → `resolution` (all automatic, not learner-switchable) |
 | clock | simulated, starts 02:40, `realtimeScale` 2, limit 1080 min (18 h). Costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1 min. Learners use **wait** (`advance-time`, ≤ 240 min per call) to let hours pass. |
 | difficulty | 3 / 5 |
-| content | 40 history items (3 `unknown`, 9 required), 18 exam findings (2 phase-restricted reassessments), 16 investigations, 27 interventions, 6 objectives, 5 decisions, 15 rubric items (14 deterministic + 1 examiner-judged), 6 NPC briefs, 62 matcher test utterances |
+| content | 40 history items (3 `unknown`, 9 required), 18 exam findings (2 phase-restricted reassessments), 16 investigations, 27 interventions, 6 objectives, 5 decisions, 15 rubric items (14 deterministic + 1 examiner-judged), 6 NPC briefs, 82 matcher test utterances |
 
 ## Learning objectives
 
@@ -243,7 +243,7 @@ conflict, and names the JBDS alternative in feedback. The differences:
   dextrose vs hypo treatment, KCl infusion vs push, monitor vs monitoring plan).
   Short CJK keywords that share a generic 3-character run with many questions
   (有没有…, 胰岛素…, 家里有…) were removed, because the patient pipeline also
-  selects any secondary hit within 0.25 of the best. All 62
+  selects any secondary hit within 0.25 of the best. All 82
   `extensions.testUtterances` (incl. colloquial Chinese, typos and
   abbreviations such as LMP, TDD, SOB, DKA) match their expected item as top
   hit with score ≥ 0.55. `VRIII` is deliberately not an alias of the

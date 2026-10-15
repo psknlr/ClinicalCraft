@@ -6,7 +6,7 @@
  * examiner-judged items with evidence) and the examiner narrative. Scores are
  * formative only (DESIGN_PRINCIPLES §2.6).
  */
-import type { AssessmentReport, CaseDefinition } from "@clinicalcraft/core";
+import { availableDecisions, progress, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import type { AssessmentView } from "../../app/store.js";
 import { ct, joinList, tr, trMaybe } from "../../i18n/index.js";
@@ -27,8 +27,25 @@ function examLabels(c: CaseDefinition, ids: string[]): string {
   return joinList(ids.map((id) => ct(c.exam.find((x) => x.id === id)?.maneuver) || id));
 }
 
-function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boolean): HTMLElement {
+/**
+ * Whether the authored debrief (diagnosis, key reasoning, teaching points,
+ * rubric texts) may be shown — the CLI `/debrief` and MCP `get_debrief` rule:
+ * the case is finished or every objective is complete.
+ */
+export function debriefUnlocked(c: CaseDefinition, s: SessionState): boolean {
+  return s.finished || progress(c, s).complete;
+}
+
+/**
+ * The formative assessment. Mid-case (`final` false) it leaves out what
+ * would act as an answer key: the rubric item texts, the names of essential
+ * tests not yet ordered (a count instead) and locked decisions' prompts.
+ */
+function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boolean, final: boolean, state: SessionState): HTMLElement {
   const r: AssessmentReport = view.report;
+  const visibleDecision = new Set(final ? c.decisions.map((d) => d.id) : availableDecisions(c, state).filter((d) => d.unlocked || d.decided).map((d) => d.decision.id));
+  const shownDecisions = r.decisions.filter((d) => visibleDecision.has(d.id));
+  const hiddenDecisions = r.decisions.length - shownDecisions.length;
   const judged = new Map(view.judged.map((j) => [j.id, j]));
   const list = (items: string[]) => (items.length ? joinList(items) : tr("debrief.none"));
   const unread = r.investigations.unread.map((k) => {
@@ -74,7 +91,13 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
           "dl",
           { class: "mini-dl" },
           h("dt", null, tr("debrief.essentialMissing")),
-          h("dd", { class: r.investigations.essentialMissing.length ? "bad" : "" }, list(r.investigations.essentialMissing.map((id) => investigationName(c, id)))),
+          h(
+            "dd",
+            { class: r.investigations.essentialMissing.length ? "bad" : "" },
+            final || r.investigations.essentialMissing.length === 0
+              ? list(r.investigations.essentialMissing.map((id) => investigationName(c, id)))
+              : tr("debrief.essentialMissingCount", { n: r.investigations.essentialMissing.length }),
+          ),
           h("dt", null, tr("debrief.lowValue")),
           h("dd", { class: r.investigations.lowValue.length ? "warn" : "" }, list(r.investigations.lowValue.map((id) => investigationName(c, id)))),
           h("dt", null, tr("debrief.harmful")),
@@ -90,7 +113,7 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
         h(
           "ul",
           { class: "check-list" },
-          r.decisions.map((d) =>
+          shownDecisions.map((d) =>
             h(
               "li",
               { class: d.firstTryCorrect ? "ok" : d.decided ? "partial" : "no" },
@@ -99,6 +122,7 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
               h("small", null, d.firstTryCorrect ? tr("debrief.firstTryYes") : d.decided ? tr("debrief.firstTryNo", { n: d.attempts }) : tr("debrief.undecided")),
             ),
           ),
+          hiddenDecisions > 0 ? h("li", { class: "no" }, h("span", { class: "mark" }, "·"), tr("debrief.decisionsLocked", { n: hiddenDecisions })) : null,
         ),
         h("h4", { style: "margin-top:14px" }, tr("debrief.safety")),
         r.safety.contraindicated.length || r.safety.criticalAlarms
@@ -111,7 +135,7 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
           : h("p", { class: "small muted" }, tr("debrief.noSafety")),
       ),
     ),
-    r.rubric.length
+    r.rubric.length && final
       ? h(
           "div",
           { class: "rubric" },
@@ -164,6 +188,7 @@ export function debriefPanel(app: App): () => PanelView {
     const store = game.session.store;
     if (!store.assessment && !store.assessing) app.submit({ type: "assess" });
     const content = h("div", { class: "debrief" });
+    const openedUnlocked = debriefUnlocked(c, store.snapshot?.state ?? game.session.session.state);
     const render = (): void => {
       clear(content);
       const s = store.snapshot?.state ?? game.session.session.state;
@@ -171,10 +196,13 @@ export function debriefPanel(app: App): () => PanelView {
       const decisions = c.decisions.length;
       const firstTry = report ? report.decisions.filter((d) => d.firstTryCorrect).length : 0;
       const d = c.debrief;
+      // Mid-case (e.g. after /assess) only the formative assessment: the authored debrief is the answer.
+      const unlocked = debriefUnlocked(c, s);
       mount(
         content,
-        h("div", { style: "text-align:center" }, h("div", { class: "done-mark" }, "✓"), h("h3", null, tr("debrief.lead")), h("p", null, tr("debrief.leadSub"))),
+        unlocked ? h("div", { style: "text-align:center" }, h("div", { class: "done-mark" }, "✓"), h("h3", null, tr("debrief.lead")), h("p", null, tr("debrief.leadSub"))) : null,
         !s.finished ? h("p", { class: "notice" }, tr("debrief.notFinished")) : null,
+        !unlocked ? h("p", { class: "notice", id: "debrief-locked" }, tr("debrief.locked")) : null,
         h(
           "div",
           { class: "metric-grid" },
@@ -184,14 +212,18 @@ export function debriefPanel(app: App): () => PanelView {
           h("div", null, h("b", null, report ? `${report.score.percent}%` : "…"), h("small", null, tr("debrief.metric.score"))),
         ),
         c.clock.mode === "simulated" ? h("p", { class: "small muted", style: "text-align:center" }, tr("debrief.minutes", { n: Math.round(s.clock) })) : null,
-        h("p", null, h("b", null, tr("debrief.conclusion")), ct(d.conclusion)),
-        d.keyReasoning.length ? h("p", null, h("b", null, tr("debrief.keyReasoning")), d.keyReasoning.map((x) => ct(x)).join(" ")) : null,
-        d.boundaries ? h("p", null, h("b", null, tr("debrief.boundaries")), ct(d.boundaries)) : null,
-        d.unknowns.length ? h("p", null, h("b", null, tr("debrief.unknowns")), joinList(d.unknowns.map((x) => ct(x)))) : null,
-        d.teachingPoints.length ? [h("h4", null, tr("debrief.teaching")), h("ul", { class: "teaching" }, d.teachingPoints.map((x) => h("li", null, ct(x))))] : null,
-        d.references.length ? [h("h4", null, tr("debrief.references")), h("ul", { class: "refs small" }, d.references.map((x) => h("li", null, x)))] : null,
+        unlocked
+          ? [
+              h("p", { id: "debrief-conclusion" }, h("b", null, tr("debrief.conclusion")), ct(d.conclusion)),
+              d.keyReasoning.length ? h("p", null, h("b", null, tr("debrief.keyReasoning")), d.keyReasoning.map((x) => ct(x)).join(" ")) : null,
+              d.boundaries ? h("p", null, h("b", null, tr("debrief.boundaries")), ct(d.boundaries)) : null,
+              d.unknowns.length ? h("p", null, h("b", null, tr("debrief.unknowns")), joinList(d.unknowns.map((x) => ct(x)))) : null,
+              d.teachingPoints.length ? [h("h4", null, tr("debrief.teaching")), h("ul", { class: "teaching" }, d.teachingPoints.map((x) => h("li", null, ct(x))))] : null,
+              d.references.length ? [h("h4", null, tr("debrief.references")), h("ul", { class: "refs small" }, d.references.map((x) => h("li", null, x)))] : null,
+            ]
+          : null,
         h("div", { class: "notice" }, ct(d.notice) || tr("debrief.notice")),
-        store.assessment ? assessmentSection(c, store.assessment, store.offline) : h("div", { class: "pending-box" }, h("span", { class: "spinner", "aria-hidden": "true" }), tr("debrief.assessing")),
+        store.assessment ? assessmentSection(c, store.assessment, store.offline, unlocked, s) : h("div", { class: "pending-box" }, h("span", { class: "spinner", "aria-hidden": "true" }), tr("debrief.assessing")),
         h(
           "div",
           { class: "row wrap", style: "margin-top:20px" },
@@ -206,8 +238,9 @@ export function debriefPanel(app: App): () => PanelView {
     let last = store.version;
     return {
       id: "debrief",
-      kicker: tr("debrief.kicker"),
-      title: debriefTitle(ct(c.debrief.title)),
+      kicker: openedUnlocked ? tr("debrief.kicker") : tr("debrief.progressKicker"),
+      // The debrief title names the diagnosis: mid-case the panel is the progress view.
+      title: openedUnlocked ? debriefTitle(ct(c.debrief.title)) : tr("debrief.progressTitle"),
       variant: "wide",
       body: content,
       update() {

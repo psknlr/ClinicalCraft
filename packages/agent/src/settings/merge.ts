@@ -10,9 +10,18 @@
  * Every layer is validated key-by-key with the zod schemas; invalid keys are
  * skipped and reported as issues instead of crashing.
  *
- * Project settings (a cloned repository) are untrusted for secrets: provider
- * `apiKey` / `apiKeyEnv` / non-loopback `baseUrl` and `server.host` /
- * `server.token` are dropped from that layer with a warning.
+ * Repository layers (`project` = `.clinicalcraft/settings.json`, `local` =
+ * `.clinicalcraft/settings.local.json`; both live in a directory the user may
+ * have cloned) are gated:
+ *
+ * * project settings are never trusted for secrets: provider `apiKey` /
+ *   `apiKeyEnv` / non-loopback `baseUrl` and `server.host` / `server.token`
+ *   are dropped from that layer with a warning;
+ * * until the user trusts the project (`MergeOptions.trustedProject`, from the
+ *   user-only trust store in `node/trust.ts`), both repository layers also
+ *   lose `hooks` (shell commands) and provider `headers`, and the local layer
+ *   gets the same secret restrictions as the project layer. Those issues carry
+ *   `code: "untrusted-project"` so front-ends show them (not only in debug).
  */
 import type { z } from "zod";
 import type { ApprovalMode, PracticeScope } from "../protocol.js";
@@ -73,7 +82,28 @@ export interface SettingsIssue {
   path: string;
   message: string;
   severity: "error" | "warning";
+  /** `untrusted-project`: a key dropped because the project is not trusted (front-ends show these). */
+  code?: typeof UNTRUSTED_PROJECT;
 }
+
+/** Issue code of keys dropped from an untrusted project's settings. */
+export const UNTRUSTED_PROJECT = "untrusted-project";
+
+/** Options of `validateSettingsLayer`. */
+export interface LayerOptions {
+  /**
+   * The user trusts the project these settings come from (only meaningful for
+   * the `project` and `local` sources; default false).
+   */
+  trusted?: boolean;
+}
+
+/** True for the layers read from the project directory (a possibly cloned repository). */
+export function isRepositorySource(source: SettingsSource): boolean {
+  return source === "project" || source === "local";
+}
+
+const TRUST_HINT = "run `clinicalcraft trust` in the project to allow it";
 
 /** Built-in defaults (deep-frozen; `mergeSettings` returns fresh copies). */
 export const DEFAULT_SETTINGS: Readonly<ResolvedSettings> = deepFreeze({
@@ -193,10 +223,15 @@ export function validateSettingsLayer(
   source: SettingsSource,
   file?: string,
   allowProfiles = true,
+  options: LayerOptions = {},
 ): { data: SettingsLayerData; issues: SettingsIssue[] } {
   const issues: SettingsIssue[] = [];
-  const push = (path: string, message: string, severity: SettingsIssue["severity"] = "error") =>
-    issues.push({ source, ...(file ? { file } : {}), path, message, severity });
+  const push: IssuePush = (path, message, severity = "error", code) =>
+    issues.push({ source, ...(file ? { file } : {}), path, message, severity, ...(code ? { code } : {}) });
+  /** Project or local settings of a project the user has not trusted. */
+  const untrusted = isRepositorySource(source) && options.trusted !== true;
+  /** Layers whose secret-bearing keys are dropped. */
+  const restrictSecrets = source === "project" || untrusted;
   const data: SettingsLayerData = {};
   if (raw == null) return { data, issues };
   if (!isPlainObject(raw)) {
@@ -222,7 +257,7 @@ export function validateSettingsLayer(
           push(`profiles.${name}`, `invalid profile name "${name}"; ignored`, "warning");
           continue;
         }
-        const nested = validateSettingsLayer(profile, source, file, false);
+        const nested = validateSettingsLayer(profile, source, file, false, options);
         for (const issue of nested.issues) issues.push({ ...issue, path: `profiles.${name}${issue.path ? `.${issue.path}` : ""}` });
         profiles[name] = nested.data;
       }
@@ -247,10 +282,14 @@ export function validateSettingsLayer(
           continue;
         }
         const ok = clone(entry) as Record<string, unknown>;
-        if (key === "providers" && source === "project") restrictProjectProvider(name, ok, push);
+        if (key === "providers" && restrictSecrets) restrictProjectProvider(name, ok, push, source, untrusted);
         entries[name] = ok;
       }
       data[key] = entries as never;
+      continue;
+    }
+    if (key === "hooks" && untrusted) {
+      push("hooks", `command hooks in ${source} settings are ignored until you trust this project (they run shell commands); ${TRUST_HINT}`, "warning", UNTRUSTED_PROJECT);
       continue;
     }
     // Own keys only: `constructor`, `toString`… must not resolve to Object.prototype members.
@@ -265,11 +304,12 @@ export function validateSettingsLayer(
       continue;
     }
     const copy = clone(value);
-    if (key === "server" && source === "project" && isPlainObject(copy)) {
+    if (key === "server" && restrictSecrets && isPlainObject(copy)) {
       for (const field of ["host", "token"] as const) {
         if (field in copy) {
           delete copy[field];
-          push(`server.${field}`, `server.${field} is ignored in project settings (it could expose the local LLM proxy); set it in user/local settings or with a CLI flag`, "warning");
+          if (source === "project") push(`server.${field}`, `server.${field} is ignored in project settings (it could expose the local LLM proxy); set it in user settings or with a CLI flag`, "warning");
+          else push(`server.${field}`, `server.${field} is ignored in local settings until you trust this project (it could expose the local LLM proxy); ${TRUST_HINT}`, "warning", UNTRUSTED_PROJECT);
         }
       }
     }
@@ -288,24 +328,34 @@ export function isLoopbackUrl(url: string): boolean {
   }
 }
 
+type IssuePush = (path: string, message: string, severity?: SettingsIssue["severity"], code?: SettingsIssue["code"]) => void;
+
 /**
- * Project settings come from a repository the user may not control: they must
- * not be able to route the user's API keys elsewhere. Drop `apiKey`,
- * `apiKeyEnv` and non-loopback `baseUrl` overrides (configure those in
- * user/local settings instead).
+ * Repository settings come from a directory the user may not control: they
+ * must not be able to route the user's API keys elsewhere. Drop `apiKey`,
+ * `apiKeyEnv` and non-loopback `baseUrl` overrides (configure those in user
+ * settings, or in local settings of a trusted project), and — while the
+ * project is untrusted — `headers`.
  */
-function restrictProjectProvider(name: string, override: Record<string, unknown>, push: (path: string, message: string, severity?: SettingsIssue["severity"]) => void): void {
+function restrictProjectProvider(name: string, override: Record<string, unknown>, push: IssuePush, source: SettingsSource, untrusted: boolean): void {
+  const where = source === "project" ? "project settings" : "local settings until you trust this project";
+  const code = source === "project" ? undefined : UNTRUSTED_PROJECT;
+  const fix = source === "project" ? "set it in user settings (or local settings of a trusted project)" : TRUST_HINT;
   if ("apiKey" in override) {
     delete override.apiKey;
-    push(`providers.${name}.apiKey`, "API keys are never read from project settings; use an environment variable or user/local settings", "warning");
+    push(`providers.${name}.apiKey`, `API keys are ignored in ${where}; use an environment variable or ${source === "project" ? "user settings" : TRUST_HINT}`, "warning", code);
   }
   if ("apiKeyEnv" in override) {
     delete override.apiKeyEnv;
-    push(`providers.${name}.apiKeyEnv`, "apiKeyEnv is ignored in project settings (it could expose other secrets); set it in user/local settings", "warning");
+    push(`providers.${name}.apiKeyEnv`, `apiKeyEnv is ignored in ${where} (it could expose other secrets); ${fix}`, "warning", code);
   }
   if (typeof override.baseUrl === "string" && !isLoopbackUrl(override.baseUrl)) {
     delete override.baseUrl;
-    push(`providers.${name}.baseUrl`, "non-local baseUrl overrides are ignored in project settings (they could send your API key elsewhere); set it in user/local settings", "warning");
+    push(`providers.${name}.baseUrl`, `non-local baseUrl overrides are ignored in ${where} (they could send your API key elsewhere); ${fix}`, "warning", code);
+  }
+  if (untrusted && "headers" in override) {
+    delete override.headers;
+    push(`providers.${name}.headers`, `provider headers in ${source} settings are ignored until you trust this project; ${TRUST_HINT}`, "warning", UNTRUSTED_PROJECT);
   }
 }
 
@@ -328,6 +378,11 @@ function freshDefaults(): ResolvedSettings {
 export interface MergeOptions {
   /** Named profile (`profiles.<name>`) applied on top of every layer. */
   profile?: string | null;
+  /**
+   * The user trusts the project the `project`/`local` layers come from
+   * (default false: their hooks, headers and secret-bearing keys are dropped).
+   */
+  trustedProject?: boolean;
 }
 
 export interface MergeResult {
@@ -343,7 +398,7 @@ export function mergeSettingsDetailed(layers: readonly SettingsLayer[], options:
   const issues: SettingsIssue[] = [];
   const profiles: Record<string, SettingsLayerData> = {};
   for (const layer of layers) {
-    const { data, issues: layerIssues } = validateSettingsLayer(layer.settings, layer.source, layer.file);
+    const { data, issues: layerIssues } = validateSettingsLayer(layer.settings, layer.source, layer.file, true, { trusted: options.trustedProject === true });
     issues.push(...layerIssues);
     if (data.profiles) {
       for (const [name, profile] of Object.entries(data.profiles)) {

@@ -13,11 +13,15 @@ export { createSession, reduce, replay } from "./reducer.js";
 
 // queries
 export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, type ConditionRef } from "./conditions.js";
-export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus } from "./queries.js";
+export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
 export {
   vitalsAt,
   vitalValue,
   alarmsAt,
+  alarmingVitals,
+  shownVitals,
+  MONITORED_VITALS,
+  OBSERVED_VITALS,
   alarmLevel,
   alarmLimitsFor,
   roundVital,
@@ -29,6 +33,7 @@ export {
   PHYSIOLOGICAL_RANGES,
   type AlarmLimit,
 } from "./physiology.js";
+export { arrestKind, applyArrest, UNMEASURABLE_IN_ARREST, ARREST_MAX_ETCO2, type ArrestKind } from "./arrest.js";
 
 // matching
 export {

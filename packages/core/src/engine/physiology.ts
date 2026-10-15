@@ -6,7 +6,9 @@
  * Everything here is a pure function of (case, state, minute). Past minutes
  * are reconstructed faithfully: interventions given after `t` contribute
  * nothing at `t`, trend stops recorded after `t` are ignored and scenario
- * `setVitals` only apply from the minute their event fired.
+ * `setVitals` only apply from the minute their event fired. An `absolute`
+ * event's vitals drop the trends/effects that started before it fired, and
+ * a cardiac-arrest rhythm overrides the sum (see `./arrest.ts`).
  *
  * Alarms, trend arrows and `vital` conditions use the noise-free signal
  * (monitors alarm on averaged values), so deterministic jitter never makes
@@ -15,6 +17,7 @@
 import type { CaseDefinition, Intervention, Physiology } from "../schema/case.js";
 import { VITAL_KEYS, type VitalKey, type Vitals } from "../schema/common.js";
 import type { SessionState } from "../schema/session.js";
+import { applyArrest, arrestKind, UNMEASURABLE_IN_ARREST, type ArrestKind } from "./arrest.js";
 import { createRng, seedFrom } from "./random.js";
 import type { AlarmLevel, VitalAlarm, VitalsSnapshot } from "./types.js";
 
@@ -27,6 +30,8 @@ export interface AlarmLimit {
 }
 
 type NumericVitals = Partial<Record<VitalKey, number>>;
+/** Per vital: the minute of the latest fired `absolute` event that set it (contributions starting earlier are dropped). */
+type Cutoffs = Partial<Record<VitalKey, number>>;
 type TrendDef = Physiology["trends"][number];
 type EffectDef = Intervention["effects"][number];
 
@@ -178,10 +183,33 @@ export function effectFraction(effect: EffectDef, givenAt: number, t: number): n
   return ramp > 0 ? Math.min(1, (t - start) / ramp) : 1;
 }
 
-function applyTrends(c: CaseDefinition, s: SessionState, t: number, values: NumericVitals): void {
+/**
+ * For each vital, the firing minute of the latest `absolute` scenario event
+ * fired by `t` whose `setVitals` gives that vital a number.
+ */
+function absoluteCutoffs(c: CaseDefinition, s: SessionState, t: number): Cutoffs {
+  const cutoffs: Cutoffs = {};
+  for (const event of c.physiology?.events ?? []) {
+    if (!event.absolute || !event.setVitals || !Object.prototype.hasOwnProperty.call(s.firedEvents, event.id)) continue;
+    const firedAt = s.firedEvents[event.id];
+    if (firedAt > t) continue;
+    for (const vital of VITAL_KEYS) {
+      if (typeof event.setVitals[vital] === "number") cutoffs[vital] = Math.max(cutoffs[vital] ?? -Infinity, firedAt);
+    }
+  }
+  return cutoffs;
+}
+
+/** True when a contribution starting at `startedAt` predates the absolute reset of `vital`. */
+function superseded(cutoffs: Cutoffs, vital: VitalKey, startedAt: number): boolean {
+  const cutoff = cutoffs[vital];
+  return cutoff != null && startedAt < cutoff;
+}
+
+function applyTrends(c: CaseDefinition, s: SessionState, t: number, values: NumericVitals, cutoffs: Cutoffs): void {
   for (const trend of c.physiology?.trends ?? []) {
     const current = values[trend.vital];
-    if (current == null) continue;
+    if (current == null || superseded(cutoffs, trend.vital, trend.startMinute)) continue;
     const stopAt = s.trendStops[trend.id];
     const stop = stopAt != null && stopAt <= t ? stopAt : undefined;
     values[trend.vital] = current + trendContribution(trend, t, stop);
@@ -199,7 +227,7 @@ function interventionIndex(c: CaseDefinition): Map<string, Intervention> {
   return index;
 }
 
-function applyEffects(c: CaseDefinition, s: SessionState, t: number, values: NumericVitals): void {
+function applyEffects(c: CaseDefinition, s: SessionState, t: number, values: NumericVitals, cutoffs: Cutoffs): void {
   const byId = interventionIndex(c);
   for (const record of s.interventions) {
     if (record.at > t) continue;
@@ -207,7 +235,7 @@ function applyEffects(c: CaseDefinition, s: SessionState, t: number, values: Num
     if (!intervention) continue;
     for (const effect of intervention.effects) {
       const current = values[effect.vital];
-      if (current == null) continue;
+      if (current == null || superseded(cutoffs, effect.vital, record.at + effect.onsetMinutes)) continue;
       const fraction = effectFraction(effect, record.at, t);
       if (fraction === 0) continue;
       const full = effect.target != null ? effect.target - current : (effect.delta ?? 0);
@@ -227,15 +255,28 @@ function clampAll(values: NumericVitals): NumericVitals {
   return out;
 }
 
-/** Noise-free physiological values at minute `t` (clamped, unrounded) plus rhythm/ECG. */
-function signalAt(c: CaseDefinition, s: SessionState, t: number): { values: NumericVitals; base: Partial<Vitals> } {
+/** Noise-free physiological state at one minute. */
+interface Signal {
+  /** Clamped, unrounded values (arrest overrides applied). */
+  values: NumericVitals;
+  /** Scenario baseline in force (rhythm/ECG come from here). */
+  base: Partial<Vitals>;
+  /** Cardiac-arrest class of the rhythm in force, null when perfusing. */
+  arrest: ArrestKind | null;
+}
+
+/** Noise-free physiological values at minute `t` (clamped, unrounded) plus rhythm/ECG and arrest class. */
+function signalAt(c: CaseDefinition, s: SessionState, t: number): Signal {
   const base = baselineAt(c, s, t);
   const values = numericOf(base);
-  if (c.physiology) {
-    applyTrends(c, s, t, values);
-    applyEffects(c, s, t, values);
-  }
-  return { values: clampAll(values), base };
+  if (!c.physiology) return { values: clampAll(values), base, arrest: null };
+  const cutoffs = absoluteCutoffs(c, s, t);
+  applyTrends(c, s, t, values, cutoffs);
+  applyEffects(c, s, t, values, cutoffs);
+  const clamped = clampAll(values);
+  const arrest = arrestKind(base);
+  if (arrest) applyArrest(arrest, clamped);
+  return { values: clamped, base, arrest };
 }
 
 function noiseAt(c: CaseDefinition, vital: VitalKey, t: number): number {
@@ -243,6 +284,41 @@ function noiseAt(c: CaseDefinition, vital: VitalKey, t: number): number {
   if (amplitude === 0) return 0;
   const rng = createRng(seedFrom(c.id, roundTo(t, 3), vital));
   return (rng() * 2 - 1) * amplitude;
+}
+
+/* ------------------------------------------------------------------ */
+/* What the bedside shows                                              */
+/* ------------------------------------------------------------------ */
+
+/** Vitals a bedside monitor measures: always shown, and they alarm. */
+export const MONITORED_VITALS: readonly VitalKey[] = ["hr", "sbp", "dbp", "rr", "spo2", "temp", "etco2"];
+
+/** Nursing observations charted at the bedside (shown, but a monitor never alarms on them). */
+export const OBSERVED_VITALS: readonly VitalKey[] = ["gcs", "pain"];
+
+/** A vital listed in `physiology.revealedBy` whose investigation has been read (any phase). */
+function revealed(c: CaseDefinition, s: SessionState, vital: VitalKey): boolean {
+  const ids = c.physiology?.revealedBy?.[vital] ?? [];
+  return ids.length > 0 && s.seen.some((key) => ids.includes(key.slice(0, key.lastIndexOf("@"))));
+}
+
+/**
+ * Vitals the bedside shows at `s`: the monitored ones, nursing observations,
+ * and other vitals (glucose) once a `physiology.revealedBy` investigation
+ * was read. The rest are engine-only (conditions, trends): never displayed,
+ * charted or alarmed — grounding rule 2, nobody has measured them.
+ */
+export function shownVitals(c: CaseDefinition, s: SessionState): Set<VitalKey> {
+  const shown = new Set<VitalKey>([...MONITORED_VITALS, ...OBSERVED_VITALS]);
+  for (const vital of VITAL_KEYS) if (!shown.has(vital) && revealed(c, s, vital)) shown.add(vital);
+  return shown;
+}
+
+/** Vitals that can raise a monitor alarm at `s`: monitored ones plus revealed ones (not nursing observations). */
+export function alarmingVitals(c: CaseDefinition, s: SessionState): Set<VitalKey> {
+  const set = shownVitals(c, s);
+  for (const vital of OBSERVED_VITALS) set.delete(vital);
+  return set;
 }
 
 /* ------------------------------------------------------------------ */
@@ -269,21 +345,24 @@ export function alarmLevel(value: number, limit: AlarmLimit | undefined): AlarmL
 
 /**
  * Active alarms at minute `t` (noise-free signal, display-rounded values),
- * in `VITAL_KEYS` order. Cases without physiology never alarm.
+ * in `VITAL_KEYS` order, for `alarmingVitals` only (the monitor never alarms
+ * on a nursing observation or an unmeasured glucose). Cases without
+ * physiology never alarm. During a cardiac-arrest rhythm hr is always
+ * critical, whatever the case's limits.
  */
 export function alarmsAt(c: CaseDefinition, s: SessionState, t: number = s.clock): VitalAlarm[] {
   if (!c.physiology) return [];
-  return alarmsFor(c, signalAt(c, s, minuteOf(s, t)).values);
+  return alarmsFor(c, signalAt(c, s, minuteOf(s, t)), alarmingVitals(c, s));
 }
 
-function alarmsFor(c: CaseDefinition, values: NumericVitals): VitalAlarm[] {
+function alarmsFor(c: CaseDefinition, { values, arrest }: Signal, alarming: ReadonlySet<VitalKey>): VitalAlarm[] {
   const limits = alarmLimitsFor(c);
   const alarms: VitalAlarm[] = [];
   for (const vital of VITAL_KEYS) {
     const raw = values[vital];
-    if (raw == null) continue;
+    if (raw == null || !alarming.has(vital)) continue;
     const value = roundVital(vital, raw);
-    const level = alarmLevel(value, limits[vital]);
+    const level = arrest && vital === "hr" ? "critical" : alarmLevel(value, limits[vital]);
     if (level) alarms.push({ vital, level, value });
   }
   return alarms;
@@ -306,13 +385,19 @@ export function vitalValue(c: CaseDefinition, s: SessionState, vital: VitalKey, 
 /* Snapshot                                                            */
 /* ------------------------------------------------------------------ */
 
-function trendArrows(c: CaseDefinition, s: SessionState, t: number, now: NumericVitals): Partial<Record<VitalKey, -1 | 0 | 1>> {
+/** Trend arrows against `t − TREND_WINDOW`; an unmeasurable vital has no trend (0). */
+function trendArrows(c: CaseDefinition, s: SessionState, t: number, now: Signal): Partial<Record<VitalKey, -1 | 0 | 1>> {
   const before = signalAt(c, s, Math.max(0, t - TREND_WINDOW)).values;
+  const unmeasurable: readonly VitalKey[] = now.arrest ? UNMEASURABLE_IN_ARREST[now.arrest] : [];
   const arrows: Partial<Record<VitalKey, -1 | 0 | 1>> = {};
   for (const vital of VITAL_KEYS) {
-    const a = now[vital];
+    const a = now.values[vital];
     const b = before[vital];
     if (a == null || b == null) continue;
+    if (unmeasurable.includes(vital)) {
+      arrows[vital] = 0;
+      continue;
+    }
     const diff = a - b;
     const threshold = TREND_THRESHOLD[vital];
     arrows[vital] = diff >= threshold ? 1 : diff <= -threshold ? -1 : 0;
@@ -320,14 +405,22 @@ function trendArrows(c: CaseDefinition, s: SessionState, t: number, now: Numeric
   return arrows;
 }
 
-function displayVitals(c: CaseDefinition, t: number, values: NumericVitals, base: Partial<Vitals>): Vitals & { map: number } {
+/**
+ * Displayed values: the signal plus jitter, rounded; arrest readings (0, etco2
+ * cap) are re-applied after the jitter. Only `visible` vitals are included
+ * (all of them for a baseline-only case); a self-reported pain score is left
+ * out while the patient cannot report one (cardiac arrest, GCS ≤ 8).
+ */
+function displayVitals(c: CaseDefinition, t: number, { values, base, arrest }: Signal, visible: ReadonlySet<VitalKey> | null): Vitals & { map: number } {
   const shown: NumericVitals = {};
   for (const vital of VITAL_KEYS) {
     const v = values[vital];
-    if (v == null) continue;
+    if (v == null || (visible && !visible.has(vital))) continue;
     const [lo, hi] = PHYSIOLOGICAL_RANGES[vital];
     shown[vital] = roundVital(vital, clamp(v + noiseAt(c, vital, t), lo, hi));
   }
+  if (arrest) applyArrest(arrest, shown);
+  if (shown.pain != null && (arrest || (shown.gcs != null && shown.gcs <= 8))) delete shown.pain;
   const sbp = shown.sbp ?? 0;
   const dbp = shown.dbp ?? 0;
   const vitals: Vitals & { map: number } = {
@@ -351,17 +444,24 @@ function displayVitals(c: CaseDefinition, t: number, values: NumericVitals, base
  * Bedside-monitor snapshot at `minute` (default — and for a non-finite
  * minute — the session clock; negative minutes clamp to 0).
  * Pure function of (case, state, minute) — see module docs for semantics.
+ * During a cardiac-arrest rhythm the snapshot lists `unmeasurable` vitals
+ * (shown as 0, no jitter, no trend arrow).
  */
 export function vitalsAt(c: CaseDefinition, s: SessionState, minute?: number): VitalsSnapshot {
   const t = minuteOf(s, minute);
-  const { values, base } = signalAt(c, s, t);
+  const signal = signalAt(c, s, t);
   if (!c.physiology) {
-    return { minute: t, vitals: displayVitals(c, t, values, base), alarms: [], trend: {}, baselineOnly: true };
+    return { minute: t, vitals: displayVitals(c, t, signal, null), alarms: [], trend: {}, baselineOnly: true };
   }
-  return {
+  const visible = shownVitals(c, s);
+  const trend = trendArrows(c, s, t, signal);
+  for (const vital of VITAL_KEYS) if (!visible.has(vital)) delete trend[vital];
+  const snapshot: VitalsSnapshot = {
     minute: t,
-    vitals: displayVitals(c, t, values, base),
-    alarms: alarmsFor(c, values),
-    trend: trendArrows(c, s, t, values),
+    vitals: displayVitals(c, t, signal, visible),
+    alarms: alarmsFor(c, signal, alarmingVitals(c, s)),
+    trend,
   };
+  if (signal.arrest) snapshot.unmeasurable = [...UNMEASURABLE_IN_ARREST[signal.arrest]];
+  return snapshot;
 }

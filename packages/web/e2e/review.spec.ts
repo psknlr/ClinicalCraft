@@ -180,6 +180,8 @@ test.describe("assets, toasts and the finished HUD", () => {
 
     // A burst of toasts keeps the newest ones (burst-0 shows at once; burst-1…4 are dropped).
     await expect(page.locator(".toast.show")).toHaveCount(0, { timeout: 15_000 });
+    // The hidden toast still slides out for 220 ms before the toaster is idle again.
+    await page.waitForTimeout(400);
     await page.evaluate(() => {
       const app = (window as any).__QA__.app;
       for (let i = 0; i < 8; i++) app.toast(`burst-${i}`, "");

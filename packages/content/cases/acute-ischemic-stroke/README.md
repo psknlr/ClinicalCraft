@@ -299,7 +299,7 @@ it orders.
 
 ## Matcher regression corpus
 
-`extensions.testUtterances` holds 64 bilingual paraphrases (37 zh-CN, 27 en), including colloquial
+`extensions.testUtterances` holds 72 bilingual paraphrases (41 zh-CN, 31 en), including colloquial
 Chinese (有木有, 咋了, 啥药), typos (华法令, warfrin) and abbreviations (LKW, TIA, DOAC, BP, hx, b4).
 Each expected id is the **top** `matchHistory` hit with a score ≥ 0.55 (the `cases verify` rule),
 ties being broken by declaration order. Two declaration-order choices keep the corpus stable:
@@ -323,5 +323,5 @@ second pass that also used it).
 npx tsx -e "…CaseSchema.safeParse…" packages/content/cases/acute-ischemic-stroke/case.json   # VALID
 # parseCase: ok, 0 warnings · checkCaseIntegrity: [] · verifyCase: ok, 0 issues, rubric 17/17
 npm run cc -- cases validate packages/content/cases/acute-ischemic-stroke/case.json
-npm run cc -- cases verify acute-ischemic-stroke   # objectives 5/5, decisions 4/4, utterances 64/64
+npm run cc -- cases verify acute-ischemic-stroke   # objectives 5/5, decisions 4/4, utterances 72/72
 ```

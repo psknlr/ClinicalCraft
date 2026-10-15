@@ -16,6 +16,6 @@ export {
   securityHeaders,
   TOKEN_COOKIE,
 } from "./security.js";
-export { MIME_TYPES, mimeType, safeJoin } from "./static.js";
-export { isValidSessionId, parseTranscriptUpload, WebTranscriptStore } from "./transcripts.js";
+export { LOCAL_ASSET_EXTENSIONS, localAssetPolicy, MIME_TYPES, mimeType, safeJoin } from "./static.js";
+export { isValidSessionId, MAX_WEB_TRANSCRIPT_BYTES, MAX_WEB_TRANSCRIPTS, parseTranscriptUpload, TranscriptQuotaError, WebTranscriptStore, type WebTranscriptStoreOptions } from "./transcripts.js";
 export { MAX_BODY_BYTES } from "./http.js";

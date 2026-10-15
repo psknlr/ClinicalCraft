@@ -13,9 +13,12 @@ clinicalcraft exec --case dka-adult --autopilot --approval bypass --output-forma
 clinicalcraft cases verify --all
 ```
 
-From a repository checkout, run the sources with
+From a repository checkout, `npm run cc -- …` runs the CLI's TypeScript
+source, but it resolves the other workspace packages from their built
+`dist/`, so run `npm run build:lib` once after `npm install` (and again after
+changing another package). To run everything from source instead, use
 `TSX_TSCONFIG_PATH=packages/cli/tsconfig.source.json npx tsx packages/cli/src/bin.ts …`.
-The built binary is `packages/cli/dist/bin.js`.
+The built binary is `packages/cli/dist/bin.js` (`node packages/cli/dist/bin.js …`).
 
 ## Commands
 

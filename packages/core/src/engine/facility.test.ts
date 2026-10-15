@@ -169,6 +169,70 @@ describe("checkFacility", () => {
   });
 });
 
+describe("placement extraParts / hideParts", () => {
+  const withPlacement = (extra: Record<string, unknown>) => {
+    const raw = structuredClone(fixture("mini.facility.json")) as { placements: Record<string, unknown>[] };
+    Object.assign(raw.placements[0], extra);
+    return parseFacility(raw);
+  };
+
+  it("parses extra parts (defaulting anim) and hidden part indices", () => {
+    const r = withPlacement({
+      hideParts: [1],
+      extraParts: [
+        { m: "white", p: [-0.97, 1.17, 0.15], s: [0.11, 0.4, 0.11] },
+        { m: "screen", p: [0.6, 1.2, -0.2], s: [0.8, 0.6, 0.1], name: "screen", r: 15 },
+      ],
+    });
+    if (!r.ok) throw new Error(JSON.stringify(r.issues));
+    const ws = r.value.placements[0];
+    expect(ws.hideParts).toEqual([1]);
+    expect(ws.extraParts).toEqual([
+      { m: "white", p: [-0.97, 1.17, 0.15], s: [0.11, 0.4, 0.11], anim: "none" },
+      { m: "screen", p: [0.6, 1.2, -0.2], s: [0.8, 0.6, 0.1], name: "screen", r: 15, anim: "none" },
+    ]);
+    expect(checkFacility(r.value, CATALOGS)).toEqual([]);
+    // optional: placements without them stay without them
+    expect(r.value.placements[1].extraParts).toBeUndefined();
+    expect(r.value.placements[1].hideParts).toBeUndefined();
+  });
+
+  it("rejects malformed extra parts and hidden indices with precise paths", () => {
+    const bad = withPlacement({ extraParts: [{ m: "white", p: [0, 1], s: [1, 1, 1] }, { m: "white", p: [0, 1, 0], s: [1, 1, 1], colour: "red" }], hideParts: [-1, 0.5] });
+    expect(bad.ok).toBe(false);
+    const paths = bad.ok ? [] : bad.issues.map((i) => i.path);
+    expect(paths).toEqual(expect.arrayContaining(["placements.0.extraParts.0.p", "placements.0.extraParts.1", "placements.0.hideParts.0", "placements.0.hideParts.1"]));
+  });
+
+  it("reports unknown materials, out-of-range hidden parts and extra parts outside the footprint", () => {
+    const f = structuredClone(F);
+    // workstation footprint 2 × 1 × 1.6, two parts
+    f.placements[0].extraParts = [
+      { m: "white", p: [0.5, 1, 0], s: [0.2, 0.2, 0.2], anim: "none" },
+      { m: "kryptonite", p: [0, 1, 0], s: [0.2, 0.2, 0.2], anim: "none" },
+      { m: "white", p: [1, 1, 0], s: [0.2, 0.2, 0.2], anim: "none" }, // x up to 1.1 > 1 + tolerance
+      { m: "white", p: [0, 1.5, 0], s: [0.2, 0.2, 0.2], anim: "none" }, // top 1.6 = footprint height: inside
+      { m: "white", p: [0, 1, 0.6], s: [0.2, 0.2, 0.2], anim: "none" }, // z up to 0.7 > 0.5
+    ];
+    f.placements[0].hideParts = [0, 1, 2];
+    f.placements[0].rot = 90; // the footprint check is in the local frame: rotation changes nothing
+    const issues = checkFacility(f, CATALOGS);
+    expect(issues.filter((i) => i.path.startsWith("placements.0."))).toEqual([
+      { path: "placements.0.extraParts.1.m", severity: "error", message: 'unknown material "kryptonite"' },
+      { path: "placements.0.hideParts.2", severity: "error", message: '"workstation" has no part 2 (it has 2)' },
+      { path: "placements.0.extraParts.2", severity: "warning", message: 'extra part extends outside the 2×1×1.6 footprint of "workstation"' },
+      { path: "placements.0.extraParts.4", severity: "warning", message: 'extra part extends outside the 2×1×1.6 footprint of "workstation"' },
+    ]);
+  });
+
+  it("accepts facility-local materials in extra parts", () => {
+    const f = structuredClone(F);
+    f.materials = [{ id: "tube-glass", color: "#eeeeee", pattern: "flat", variance: 0, emissiveIntensity: 0.3, opacity: 0.6, roughness: 0.2, metalness: 0, castShadow: false }];
+    f.placements[0].extraParts = [{ m: "tube-glass", p: [0, 1, 0], s: [0.1, 0.4, 0.1], anim: "none" }];
+    expect(checkFacility(f, CATALOGS)).toEqual([]);
+  });
+});
+
 describe("checkCatalogs", () => {
   it("reports duplicates across catalogs, unknown part materials and parts outside the footprint", () => {
     const extra = structuredClone(CATALOGS[0]);
@@ -185,5 +249,27 @@ describe("checkCatalogs", () => {
       ["catalog(extra).equipment.0.parts.1", "warning"],
       ["catalog(extra).equipment.0.screen", "warning"],
     ]);
+  });
+});
+
+describe("resolveWaypoint: the patient's own bedside kit", () => {
+  const content = new URL("../../../content/", import.meta.url);
+  const read = (rel: string): unknown => JSON.parse(readFileSync(new URL(rel, content), "utf8"));
+  const hospital = parseFacility(read("facilities/general-hospital.json"));
+  const catalogIds = hospital.ok ? hospital.value.catalogs : [];
+  const catalogs = catalogIds.flatMap((id) => {
+    const r = parseCatalog(read(`catalogs/${id}.json`));
+    return r.ok ? [r.value] : [];
+  });
+  it.skipIf(!hospital.ok || catalogs.length === 0)("points to the slot's linked monitor, not the one nearest the player (DKA: resus bay, not cubicle 1)", () => {
+    const f = hospital.ok ? hospital.value : (null as never);
+    const spawn = { x: f.spawn.x, z: f.spawn.z };
+    const nearest = resolveWaypoint(f, catalogs, "cardiac-monitor", { from: spawn, locale: "en", slotId: "resus-1" });
+    const own = resolveWaypoint(f, catalogs, "cardiac-monitor", { from: spawn, locale: "en", slotId: "resus-1", preferPatientSlot: true });
+    const resusMonitor = f.placements.find((p) => p.id === "resus1-monitor")!;
+    expect(own).toMatchObject({ x: resusMonitor.x, z: resusMonitor.z });
+    expect(nearest).not.toEqual(own); // the old behaviour: nearest to wherever the learner stands
+    // A capability the patient's room lacks still falls back to the nearest provider.
+    expect(resolveWaypoint(f, catalogs, "lab-hematology", { from: spawn, locale: "en", slotId: "resus-1", preferPatientSlot: true })).toEqual(resolveWaypoint(f, catalogs, "lab-hematology", { from: spawn, locale: "en" }));
   });
 });

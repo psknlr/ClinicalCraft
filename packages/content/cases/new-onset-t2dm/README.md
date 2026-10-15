@@ -17,7 +17,7 @@
 | locales | `zh-CN` (source language), `en` |
 | clock | `static`. Two one-way phases, neither learner-switchable: `initial` (初诊 / First visit, Tuesday 08:40, fasting) → `review` (3个月复诊 / Three-month review, week 13), entered automatically once objectives 1–5 are complete and the review has been arranged (`iv-follow-up`) |
 | difficulty / time | 3 / 5, about 40 min |
-| content | 42 history items (3 `unknown`, 2 `specific`, 2 `volunteer` — one per phase, 10 required, 7 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 18 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 56 test utterances |
+| content | 42 history items (3 `unknown`, 2 `specific`, 2 `volunteer` — one per phase, 10 required, 7 review-only) · 20 exam findings (6 required) · 18 investigations (8 essential, 2 low-value) · 18 interventions (6 wrong or low-value choices) · 6 objectives · 4 decisions · 15 rubric items (12 deterministic, 3 examiner-judged) · 6 NPCs · 65 test utterances |
 
 ## Clinical story
 
@@ -283,7 +283,7 @@ There are also three examiner-judged communication items:
   excludes ketosis. The corpus in `extensions.testUtterances` passes the
   same check as the SMZL parity test: every expected id scores ≥ 0.55 and
   the top hit is expected. Two utterances (pets) correctly select nothing.
-  Sixteen of the 56 are deliberately hard (colloquial Chinese such as
+  Many are deliberately hard (colloquial Chinese such as
   一晚上起来几回 / 三多一少 / 那方面, typos such as 糖尿并 and "nite", and
   abbreviations such as DKA, FHx, PMH, cigs, ED).
 * **Prescribing needs no equipment.** Prescriptions and referrals use
@@ -328,4 +328,5 @@ At authoring time the schema was VALID, `checkCaseIntegrity` and
 `parseCase` warnings were both empty, and `verifyCase` returned ok with a
 rubric score of 21/21 (100 %), all four decisions correct at the first
 attempt and no contraindicated interventions. The matcher corpus passed
-56/56 (recall@3 1.00 in both locales).
+56/56 (recall@3 1.00 in both locales); it has since grown to 65 utterances,
+all of which pass `cases verify`.

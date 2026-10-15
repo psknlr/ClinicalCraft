@@ -152,8 +152,16 @@ export class ClinicalCraftApp implements App {
     setInterval(() => {
       if (this.game?.entered) this.save();
     }, AUTOSAVE_MS);
-    addEventListener("pagehide", () => this.save());
+    // Leaving (or hiding) the page: save, and push the last buffered transcript lines to the server.
+    const leaving = () => {
+      this.save();
+      this.game?.session.transcript.flushOnExit?.();
+    };
+    addEventListener("pagehide", leaving);
     addEventListener("beforeunload", () => this.save());
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") leaving();
+    });
     if (this.qa) this.installQa();
   }
 
@@ -594,6 +602,7 @@ export class ClinicalCraftApp implements App {
         locale,
         served: !!this.server?.served,
         resume: save?.snapshot ?? null,
+        onTranscriptStopped: () => this.toast(tr("toast.transcriptStopped"), tr("toast.transcriptStoppedBody"), "warning", "transcript-stopped"),
       });
       const slot = slotFor(caseDef, facility);
       const saved: WorldSave | null = this.saves.data.worlds[facility.id] ?? null;
@@ -741,7 +750,9 @@ export class ClinicalCraftApp implements App {
           const next = c.objectives[e.index + 1];
           this.sound("success");
           // Several chapters can complete at once (autopilot, a decisive result): show only the latest.
-          this.toast(tr("toast.chapter", { title }), next ? tr("toast.next", { hint: t(next.hint, L) }) : tr("toast.toBoard"), "success", "chapter");
+          // The next chapter's guidance (its teaching hint is the scored HUD hint).
+          const nextText = next ? t(next.guidance, L) || t(next.short, L) || t(next.title, L) : "";
+          this.toast(tr("toast.chapter", { title }), next ? tr("toast.next", { hint: nextText }) : tr("toast.toBoard"), "success", "chapter");
         } else if (e.type === "case.completed") {
           this.sound("success");
         } else if (e.type === "vitals.alarm" && e.level === "critical") {

@@ -11,6 +11,7 @@ import { ClinicalActionSchema, type ClinicalAction } from "../schema/session.js"
 import { conditionRefs, type ConditionRef } from "./conditions.js";
 import { compileCaseRegex } from "./matcher.js";
 import { formatPath, issuesFromZodError } from "./parse.js";
+import { MONITORED_VITALS, OBSERVED_VITALS } from "./physiology.js";
 import type { Issue } from "./types.js";
 
 type PathPart = string | number;
@@ -282,8 +283,19 @@ function checkPhysiology(c: CaseDefinition, ids: Ids): Issue[] {
   physiology.trends.forEach((tr, i) => {
     if (!ids.vitals.has(tr.vital)) issues.push(warn(["physiology", "trends", i, "vital"], `trend on "${tr.vital}", which the baseline does not define (ignored)`));
   });
+  for (const [vital, list] of Object.entries(physiology.revealedBy ?? {})) {
+    (list ?? []).forEach((id, j) => {
+      if (!ids.investigations.has(id)) issues.push(err(["physiology", "revealedBy", vital, j], `unknown investigation "${id}"`));
+    });
+    if ((MONITORED_VITALS as readonly string[]).includes(vital) || (OBSERVED_VITALS as readonly string[]).includes(vital)) {
+      issues.push(warn(["physiology", "revealedBy", vital], `"${vital}" is always shown at the bedside; revealedBy has no effect`));
+    }
+  }
   physiology.events.forEach((ev, i) => {
     if (ev.atMinute == null && ev.when == null) issues.push(warn(["physiology", "events", i], `scenario event "${ev.id}" has neither atMinute nor when and never fires`));
+    if (ev.absolute && !Object.values(ev.setVitals ?? {}).some((v) => typeof v === "number")) {
+      issues.push(warn(["physiology", "events", i, "absolute"], `scenario event "${ev.id}" is absolute but sets no numeric vital, so absolute has no effect`));
+    }
   });
   c.interventions.forEach((iv, i) =>
     iv.effects.forEach((e, j) => {

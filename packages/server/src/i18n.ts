@@ -25,6 +25,7 @@ const EN = {
   "error.assetMissing": "Local asset not installed — run `clinicalcraft import-v4` (see docs/ASSETS.md).",
   "error.noWebBuild": "The web build was not found. Run `npm run build` (or pass --static <dir>).",
   "error.badSessionId": "Invalid session id.",
+  "error.transcriptQuota": "Transcript storage limit reached on the server; this upload was not stored.",
 } as const;
 
 export type ServerMessageKey = keyof typeof EN;
@@ -49,6 +50,7 @@ const ZH: Record<ServerMessageKey, string> = {
   "error.assetMissing": "本地资源未安装——请运行 `clinicalcraft import-v4`（见 docs/ASSETS.md）。",
   "error.noWebBuild": "未找到网页构建产物。请运行 `npm run build`（或传入 --static <目录>）。",
   "error.badSessionId": "会话 id 无效。",
+  "error.transcriptQuota": "服务器上的会话记录已达存储上限，本次上传未保存。",
 };
 
 /** Localised server message with `{name}` placeholders filled in. */

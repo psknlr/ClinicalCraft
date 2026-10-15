@@ -6,7 +6,7 @@
  */
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { basename, resolve } from "node:path";
 import type { CaseDefinition, EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
 import type { AgentProfile } from "../agents/types.js";
 import type { RetryPolicy } from "../providers/factory.js";
@@ -24,7 +24,7 @@ import type { Env } from "./home.js";
 import { loadMemory } from "./memory.js";
 import { resolveNodeProviderConfig } from "./providers.js";
 import { loadSettings } from "./settings.js";
-import { JsonlTranscript, listSessions, readTranscript } from "./transcript.js";
+import { isWebTranscriptPath, JsonlTranscript, listSessions, readTranscript, sessionsDir } from "./transcript.js";
 
 export interface CreateNodeSessionOptions {
   /** Case id (default: the resumed session's case, then `settings.defaultCase`). */
@@ -62,17 +62,36 @@ export class BootstrapError extends Error {
   }
 }
 
-/** Locate a transcript: an existing path, "latest", or a session id / unique id prefix. */
+/**
+ * Locate a transcript: an existing path, "latest", or a session id / unique id
+ * prefix among this machine's own recordings. A web upload
+ * (`<sessions>/web/<id>.jsonl`, untrusted) is only found by its exact id or
+ * path — never by "latest" or a prefix.
+ */
 export async function findSessionTranscript(ref: string, env: Env, dir?: string | null): Promise<string> {
   if (ref.endsWith(".jsonl") && existsSync(ref)) return resolve(ref);
   const sessions = await listSessions(env, { dir: dir ?? null });
-  if (sessions.length === 0) throw new BootstrapError("No recorded sessions to resume.");
-  if (ref === "latest" || ref === "") return sessions[0]!.path;
-  const exact = sessions.find((s) => s.id === ref);
-  if (exact) return exact.path;
-  const prefixed = sessions.filter((s) => s.id.startsWith(ref));
-  if (prefixed.length === 1) return prefixed[0]!.path;
-  throw new BootstrapError(prefixed.length > 1 ? `Session id "${ref}" is ambiguous.` : `No session "${ref}".`);
+  if (sessions.length > 0) {
+    if (ref === "latest" || ref === "") return sessions[0]!.path;
+    const exact = sessions.find((s) => s.id === ref);
+    if (exact) return exact.path;
+    const prefixed = sessions.filter((s) => s.id.startsWith(ref));
+    if (prefixed.length === 1) return prefixed[0]!.path;
+    if (prefixed.length > 1) throw new BootstrapError(`Session id "${ref}" is ambiguous.`);
+  }
+  const web = ref && ref !== "latest" ? (await listSessions(env, { dir: dir ?? null, web: "only" })).find((s) => s.id === ref) : undefined;
+  if (web) return web.path;
+  throw new BootstrapError(sessions.length === 0 ? "No recorded sessions to resume." : `No session "${ref}".`);
+}
+
+/**
+ * Runtime configuration recorded in an uploaded web transcript is client
+ * input: a resume keeps the locale, scope, interlocutor, plan and affect but
+ * never takes its provider/model or approval mode.
+ */
+export function untrustedResumeConfig(config: ResumedRuntimeConfig): ResumedRuntimeConfig {
+  const { provider: _provider, model: _model, approvalMode: _approval, ...rest } = config;
+  return rest;
 }
 
 /**
@@ -135,11 +154,14 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
   let resumePath: string | null = null;
   let resumed: ReturnType<typeof replayTranscript> | null = null;
   let resumedConfig: ResumedRuntimeConfig | null = null;
+  let webOrigin = false;
   if (opts.resume !== undefined) {
     resumePath = await findSessionTranscript(opts.resume, env, settings.transcripts.dir);
+    webOrigin = isWebTranscriptPath(resumePath, settings.transcripts.dir || sessionsDir(env));
     const items = await readTranscript(resumePath);
     resumed = replayTranscript(items);
     resumedConfig = resumedRuntimeConfig(items);
+    if (webOrigin) resumedConfig = untrustedResumeConfig(resumedConfig);
     settings = applyResumedConfig(settings, resumedConfig);
   }
 
@@ -155,7 +177,9 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
   const catalogs = catalogsFor(content, facility);
 
   const [memory, agents, commands] = await Promise.all([loadMemory(cwd, env), loadProjectAgents(cwd, env), loadProjectCommands(cwd, env)]);
-  const sessionId = opts.sessionId ?? resumed?.sessionMeta?.sessionId ?? (opts.newId ? opts.newId() : randomUUID());
+  // A web upload's id is its file name (its session_meta could name another session).
+  const resumedId = resumePath && webOrigin ? basename(resumePath, ".jsonl") : resumed?.sessionMeta?.sessionId;
+  const sessionId = opts.sessionId ?? resumedId ?? (opts.newId ? opts.newId() : randomUUID());
 
   let transcript: TranscriptSink | undefined;
   if (opts.transcript ?? settings.transcripts.enabled) {
@@ -175,9 +199,17 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
     resolveProvider: (providerId, model) => resolveNodeProviderConfig(settings, providerId, model, env),
     commandHooks: createCommandHookExecutor(settings.projectRoot),
     ...(transcript ? { transcript } : {}),
-    ...(resumed ? { resume: { sessionId, actions: resumed.actions, messages: resumed.messages }, transcriptOrdinal: resumed.lastOrdinal + 1 } : {}),
-    ...(resumedConfig && (resumedConfig.interlocutor || resumedConfig.plan)
-      ? { restore: { ...(resumedConfig.interlocutor ? { interlocutor: resumedConfig.interlocutor } : {}), ...(resumedConfig.plan ? { plan: resumedConfig.plan } : {}) } }
+    ...(resumed
+      ? { resume: { sessionId, actions: resumed.actions, messages: resumed.messages, ...(resumed.dialogue.length ? { dialogue: resumed.dialogue } : {}) }, transcriptOrdinal: resumed.lastOrdinal + 1 }
+      : {}),
+    ...(resumedConfig && (resumedConfig.interlocutor || resumedConfig.plan || resumedConfig.affect)
+      ? {
+          restore: {
+            ...(resumedConfig.interlocutor ? { interlocutor: resumedConfig.interlocutor } : {}),
+            ...(resumedConfig.plan ? { plan: resumedConfig.plan } : {}),
+            ...(resumedConfig.affect ? { affect: resumedConfig.affect } : {}),
+          },
+        }
       : {}),
     sessionId,
     cwd: settings.projectRoot,

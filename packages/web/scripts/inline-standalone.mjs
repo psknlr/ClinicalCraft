@@ -41,6 +41,9 @@ const MIME = {
   ".txt": "text/plain",
 };
 
+/** Embeddable local-asset extensions (no SVG/HTML/XML/scripts: they would run with the page's origin). */
+const LOCAL_ASSET_TYPES = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".pdf", ".json", ".gz", ".glb", ".mp3", ".mp4", ".webm"]);
+
 function fail(msg) {
   console.error(`inline-standalone: ${msg}`);
   process.exit(1);
@@ -99,6 +102,11 @@ function walk(dir) {
     else if (entry.isFile()) {
       const rel = path.relative(localRoot, abs).split(path.sep).join("/");
       if (rel === "manifest.json") continue;
+      // Passive asset types only (same allow-list as `/local-assets/*` in the server and the Vite plugin).
+      if (!LOCAL_ASSET_TYPES.has(path.extname(abs).toLowerCase())) {
+        skipped.push(`${rel} (type not allowed)`);
+        continue;
+      }
       const size = fs.statSync(abs).size;
       if (size > maxBytes) {
         skipped.push(`${rel} (${(size / 1048576).toFixed(1)} MB)`);
@@ -132,4 +140,4 @@ if (localCount) {
   console.warn("⚠  This build is for YOUR local teaching use only — do NOT commit, publish or redistribute it.");
   console.warn("   Rebuild with `--no-local-assets` for a redistributable file.");
 }
-if (skipped.length) console.warn(`inline-standalone: skipped (larger than --max-asset-mb): ${skipped.join(", ")}`);
+if (skipped.length) console.warn(`inline-standalone: skipped local assets: ${skipped.join(", ")}`);
