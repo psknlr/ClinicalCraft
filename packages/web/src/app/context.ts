@@ -49,7 +49,8 @@ export type PanelName =
   | "craft"
   | "help"
   | "atlas"
-  | "autopilot";
+  | "autopilot"
+  | "confirm-reset";
 
 export interface App {
   readonly content: ContentIndex;
@@ -58,6 +59,10 @@ export interface App {
   readonly panels: PanelHost;
   readonly world: WorldHost;
   readonly inventory: Inventory;
+  /** `?qa` mode (window.__QA__, deterministic helpers). */
+  readonly qa: boolean;
+  /** Selected hotbar slot (V4: 0 talk … 8 help). */
+  readonly slot: number;
   game: Game | null;
   server: ServerInfo | null;
   /** Provider choice in effect for new/running sessions. */
@@ -86,4 +91,12 @@ export interface App {
   /** Mark a destination (map / "go to station"). */
   markDestination(dest: { x: number; z: number; label: string } | null, walk?: boolean): void;
   inventoryChanged(): void;
+  /** Start (or resume) a case in a facility and enter the world. */
+  startCase(caseId: string, facilityId: string, resume: boolean): Promise<void>;
+  /** Hotbar slot pressed (number key, click or touch). */
+  hotbar(slot: number): void;
+  /** T / Enter / touch "talk": open the conversation with the aimed NPC or the last interlocutor. */
+  chat(): void;
+  /** True while the learner is in the world with no panel or dialog open. */
+  isPlaying(): boolean;
 }

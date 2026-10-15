@@ -1,0 +1,328 @@
+/**
+ * Intro screen (V4 hero, now "V5 · AGENT EDITION") with the case library:
+ * cards (title, specialty, difficulty dots, setting, minutes, provenance,
+ * locales, saved progress), specialty/setting filters and search, the
+ * facility selector (case default preselected; clinic-v4 only for
+ * outpatient cases), Continue / Start new, language toggle, LLM status pill
+ * (opens settings) and help.
+ */
+import type { ClinicalCraftApp } from "../app/app.js";
+import type { CaseCard } from "../app/content.js";
+import { statusLabel } from "../app/llm.js";
+import { ct, getLocale, tr, trMaybe } from "../i18n/index.js";
+import { clear, h } from "./dom.js";
+
+type Status = "loading" | "ready" | "failed";
+
+function relativeTime(iso: string): string {
+  const then = Date.parse(iso);
+  if (!Number.isFinite(then)) return "";
+  try {
+    return new Date(then).toLocaleString(getLocale(), { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  } catch {
+    return iso.slice(0, 16).replace("T", " ");
+  }
+}
+
+export function specialtyLabel(id: string): string {
+  return trMaybe(`spec.${id}`, id.replace(/-/g, " "));
+}
+
+export class Intro {
+  private readonly root: HTMLElement;
+  private status: Status = "loading";
+  private query = "";
+  private specialty = "";
+  private setting = "";
+  private listEl: HTMLElement | null = null;
+  private countEl: HTMLElement | null = null;
+
+  constructor(
+    root: HTMLElement,
+    private readonly app: ClinicalCraftApp,
+  ) {
+    this.root = root;
+  }
+
+  show(): void {
+    this.root.hidden = false;
+    this.render();
+  }
+
+  hide(): void {
+    this.root.hidden = true;
+  }
+
+  setStatus(status: Status): void {
+    this.status = status;
+    this.render();
+  }
+
+  private selectedCard(): CaseCard | null {
+    const sel = this.app.selection;
+    return (sel && this.app.content.cards.find((c) => c.id === sel.caseId)) || this.app.content.cards[0] || null;
+  }
+
+  private select(card: CaseCard, facilityId?: string): void {
+    const f = facilityId ?? this.app.content.defaultFacility(card)?.id;
+    if (!f) return;
+    this.app.selectionChanged({ caseId: card.id, facilityId: f });
+    this.render();
+  }
+
+  render(): void {
+    if (this.root.hidden) return;
+    const app = this.app;
+    const card = this.selectedCard();
+    const saved = card ? app.saves.caseSave(card.id) : null;
+    const lastId = app.saves.data.lastCase;
+    const last = lastId && lastId !== card?.id ? app.saves.caseSave(lastId) : null;
+    const lastCard = last ? app.content.cards.find((c) => c.id === lastId) : null;
+    const ready = this.status !== "loading";
+    const sel = app.selection;
+
+    const enter = h(
+      "button",
+      {
+        type: "button",
+        id: "enter",
+        class: "primary",
+        disabled: !ready || !card || !sel,
+        onclick: () => card && sel && void this.start(card.id, sel.facilityId, !!saved),
+      },
+      !ready ? tr("intro.preparing") : this.status === "failed" ? tr("intro.readOnly") : saved ? tr("intro.continue") : tr("intro.enter"),
+    );
+    const startNew = saved && ready ? h("button", { type: "button", id: "start-new", onclick: () => card && sel && void this.start(card.id, sel.facilityId, false) }, tr("intro.startNew")) : null;
+    const help = h("button", { type: "button", id: "intro-help", onclick: () => app.open("help") }, tr("intro.help"));
+
+    const pill = statusLabel(app.choice());
+    const pillText = pill.mode === "offline" ? tr("llm.pill.offline") : pill.mode === "proxy" ? tr("llm.pill.proxy", { model: pill.model || pill.provider }) : tr("llm.pill.direct", { provider: pill.provider, model: pill.model });
+
+    clear(this.root);
+    this.root.append(
+      h(
+        "div",
+        { class: "intro-top" },
+        h("div", { class: "version" }, tr("app.version")),
+        h(
+          "button",
+          {
+            type: "button",
+            id: "intro-llm",
+            class: `llm-pill mode-${pill.mode}`,
+            title: tr("llm.pill.title"),
+            onclick: () => app.open("settings", { section: "llm" }),
+          },
+          h("span", { class: "dot", "aria-hidden": "true" }),
+          pillText,
+          app.choice().fellBack ? h("small", null, tr("llm.pill.fallback")) : null,
+        ),
+        h(
+          "button",
+          { type: "button", id: "lang-toggle", class: "lang-toggle", "aria-label": tr("intro.langLabel"), onclick: () => app.setLocale(getLocale() === "zh-CN" ? "en" : "zh-CN") },
+          tr("intro.langToggle"),
+        ),
+      ),
+      h(
+        "div",
+        { class: "intro-layout" },
+        h(
+          "div",
+          { class: "intro-card" },
+          h("div", { class: "eyebrow" }, tr("intro.eyebrow")),
+          h("h1", null, "CLINICAL", h("br"), "CRAFT"),
+          h("h2", null, tr("intro.h2")),
+          h("p", { html: tr("intro.lead.html") }),
+          card ? this.selectedSummary(card) : null,
+          h("div", { class: "intro-actions" }, enter, startNew, help),
+          lastCard && last
+            ? h(
+                "button",
+                {
+                  type: "button",
+                  id: "continue-last",
+                  class: "continue-last",
+                  disabled: !ready,
+                  onclick: () => void this.start(lastCard.id, last.facilityId, true),
+                },
+                h("span", null, tr("intro.continueLast")),
+                h("b", null, ct(lastCard.title)),
+                h("small", null, tr("intro.saveFound", { done: last.done, total: last.total, when: relativeTime(last.savedAt) })),
+              )
+            : null,
+          h("div", { id: "loading", class: "loading" }, this.status === "loading" ? tr("intro.loading") : this.status === "failed" ? tr("intro.failed") : tr("intro.ready", { cases: app.content.cards.length })),
+          h("div", { class: "intro-info" }, h("span", null, tr("intro.key.move")), h("span", null, tr("intro.key.use")), h("span", null, tr("intro.key.talk")), h("span", null, tr("intro.key.hotbar"))),
+        ),
+        this.library(card),
+      ),
+      h("div", { class: "intro-foot", html: tr("intro.foot.html", { caseLabel: card ? escapeHtml(ct(card.label) || ct(card.title)) : "" }) }),
+    );
+  }
+
+  private async start(caseId: string, facilityId: string, resume: boolean): Promise<void> {
+    const btns = [...this.root.querySelectorAll("button")] as HTMLButtonElement[];
+    for (const b of btns) b.disabled = true;
+    const enter = this.root.querySelector("#enter");
+    if (enter) enter.textContent = tr("intro.preparing");
+    await this.app.startCase(caseId, facilityId, resume);
+    if (!this.app.game) this.render();
+  }
+
+  private selectedSummary(card: CaseCard): HTMLElement {
+    const app = this.app;
+    const options = app.content.facilitiesFor(card);
+    const def = app.content.defaultFacility(card);
+    const sel = app.selection;
+    const facility = h(
+      "select",
+      {
+        id: "facility-select",
+        "aria-label": tr("library.facility"),
+        onchange: (e: Event) => this.select(card, (e.target as HTMLSelectElement).value),
+      },
+      options.map((f) => h("option", { value: f.id, selected: f.id === sel?.facilityId }, `${ct(f.name)}${f.id === def?.id ? ` ${tr("library.facilityDefault")}` : ""}`)),
+    );
+    return h(
+      "div",
+      { class: "intro-selected" },
+      h("div", { class: "eyebrow" }, tr("intro.selected")),
+      h("b", { id: "selected-case" }, ct(card.title)),
+      h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
+      card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
+    );
+  }
+
+  private library(selected: CaseCard | null): HTMLElement {
+    const app = this.app;
+    const cards = app.content.cards;
+    const specialties = [...new Set(cards.flatMap((c) => c.specialty))].sort((a, b) => specialtyLabel(a).localeCompare(specialtyLabel(b), getLocale()));
+    const settings = [...new Set(cards.map((c) => c.setting))];
+    const search = h("input", {
+      type: "search",
+      id: "library-search",
+      placeholder: tr("library.search"),
+      "aria-label": tr("library.search"),
+      value: this.query,
+      autocomplete: "off",
+      oninput: (e: Event) => {
+        this.query = (e.target as HTMLInputElement).value;
+        this.renderList(selected);
+      },
+    });
+    search.addEventListener("keydown", (e) => e.stopPropagation());
+    const spec = h(
+      "select",
+      {
+        id: "filter-specialty",
+        "aria-label": tr("library.allSpecialties"),
+        onchange: (e: Event) => {
+          this.specialty = (e.target as HTMLSelectElement).value;
+          this.renderList(selected);
+        },
+      },
+      h("option", { value: "" }, tr("library.allSpecialties")),
+      specialties.map((s) => h("option", { value: s, selected: s === this.specialty }, specialtyLabel(s))),
+    );
+    const sett = h(
+      "select",
+      {
+        id: "filter-setting",
+        "aria-label": tr("library.allSettings"),
+        onchange: (e: Event) => {
+          this.setting = (e.target as HTMLSelectElement).value;
+          this.renderList(selected);
+        },
+      },
+      h("option", { value: "" }, tr("library.allSettings")),
+      settings.map((s) => h("option", { value: s, selected: s === this.setting }, trMaybe(`setting.${s}`, s))),
+    );
+    this.countEl = h("span", { class: "count" });
+    this.listEl = h("div", { class: "case-list", id: "case-list", role: "listbox", "aria-label": tr("library.title") });
+    const lib = h(
+      "section",
+      { class: "library", "aria-labelledby": "library-title" },
+      h("header", { class: "library-head" }, h("div", null, h("div", { class: "eyebrow" }, tr("library.kicker")), h("h2", { id: "library-title" }, tr("library.title"))), this.countEl),
+      h("div", { class: "library-filters" }, search, h("div", { class: "row" }, spec, sett)),
+      this.listEl,
+    );
+    this.renderList(selected);
+    return lib;
+  }
+
+  private matches(c: CaseCard): boolean {
+    if (this.specialty && !c.specialty.includes(this.specialty)) return false;
+    if (this.setting && c.setting !== this.setting) return false;
+    const q = this.query.trim().toLowerCase();
+    if (!q) return true;
+    const hay = [
+      ...Object.values(typeof c.title === "string" ? { x: c.title } : c.title),
+      ...Object.values(typeof c.summary === "string" ? { x: c.summary } : c.summary),
+      ...c.specialty,
+      ...c.specialty.map(specialtyLabel),
+      ...c.tags,
+      c.id,
+      trMaybe(`setting.${c.setting}`, c.setting),
+    ]
+      .join(" ")
+      .toLowerCase();
+    return q.split(/\s+/).every((w) => hay.includes(w));
+  }
+
+  private renderList(selected: CaseCard | null): void {
+    const list = this.listEl;
+    if (!list) return;
+    clear(list);
+    const app = this.app;
+    const shown = app.content.cards.filter((c) => this.matches(c));
+    if (this.countEl) this.countEl.textContent = tr("library.count", { n: shown.length });
+    if (!shown.length) {
+      list.append(h("div", { class: "empty" }, tr("library.empty")));
+      return;
+    }
+    for (const c of shown) {
+      const save = app.saves.caseSave(c.id);
+      const active = c.id === selected?.id;
+      const dots = h("span", { class: "dots", title: tr("library.difficulty", { n: c.difficulty }), "aria-label": tr("library.difficulty", { n: c.difficulty }) });
+      for (let i = 1; i <= 5; i++) dots.append(h("i", { class: i <= c.difficulty ? "on" : "" }));
+      const b = h(
+        "button",
+        {
+          type: "button",
+          class: ["case-card", active ? "active" : "", `prov-${c.provenance}`],
+          role: "option",
+          "aria-selected": String(active),
+          dataset: { case: c.id },
+          onclick: () => this.select(c),
+          ondblclick: () => {
+            const f = app.content.defaultFacility(c);
+            if (f && this.status !== "loading") void this.start(c.id, app.selection?.caseId === c.id ? app.selection.facilityId : f.id, !!save);
+          },
+        },
+        h(
+          "div",
+          { class: "case-top" },
+          h("span", { class: `prov prov-${c.provenance}` }, trMaybe(`library.prov.${c.provenance}`, c.provenance)),
+          h("span", { class: "setting-tag" }, trMaybe(`setting.${c.setting}`, c.setting)),
+          c.physiology ? h("span", { class: "phys-tag", title: tr("library.physiology") }, "♥ ", tr("library.physiology")) : null,
+        ),
+        h("b", { class: "case-title" }, ct(c.title)),
+        h("small", { class: "case-spec" }, c.specialty.map(specialtyLabel).join(" · ")),
+        h(
+          "div",
+          { class: "case-meta" },
+          dots,
+          c.estimatedMinutes ? h("span", null, tr("library.minutes", { n: c.estimatedMinutes })) : null,
+          h("span", { class: "locales", title: tr("library.locales") }, c.locales.map((l) => (l.startsWith("zh") ? "中" : l.toUpperCase())).join(" · ")),
+          save ? h("span", { class: ["saved", save.finished ? "finished" : ""] }, save.finished ? tr("library.finished") : tr("library.saved", { done: save.done, total: save.total })) : null,
+        ),
+      );
+      list.append(b);
+    }
+    const act = list.querySelector(".case-card.active");
+    if (act && "scrollIntoView" in act) requestAnimationFrame(() => (act as HTMLElement).scrollIntoView({ block: "nearest" }));
+  }
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch] ?? ch);
+}

@@ -4,7 +4,7 @@
  * comparison (generalised V4 "治疗前后原图对照": any investigation with figures
  * read in ≥ 2 phases) and "finish" → debrief.
  */
-import { availableDecisions, resultFor, type CaseDefinition, type Decision, type SessionState } from "@clinicalcraft/core";
+import { availableDecisions, resultFor, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
@@ -115,7 +115,7 @@ export function boardPanel(app: App): () => PanelView {
             onchange: (e: Event) => {
               const phase = (e.target as HTMLSelectElement).value;
               app.act({ type: "set-phase", phase });
-              const ext = (c.extensions?.v4 as { phaseSwitchToast?: { title?: never; [k: string]: never } } | undefined)?.phaseSwitchToast;
+              const ext = (c.extensions?.v4 as { phaseSwitchToast?: Record<string, LocalizedText | undefined> } | undefined)?.phaseSwitchToast;
               app.toast(ext?.title ? ct(ext.title) : tr("board.phaseSwitched"), ext?.[phase] ? ct(ext[phase]) : tr("board.phaseSwitchedBody", { phase: phaseName(c, phase) }));
             },
           },

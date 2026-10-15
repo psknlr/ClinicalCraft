@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildRules, canPlace, cellKey, checkerMaterial, validBlocks, zoneCells } from "./buildzone.js";
-import { mapProjection } from "./map.js";
+import { fitLabel, mapProjection, MIN_LABEL_PX, splitLabel } from "./map.js";
 import { regionAt, roomAt } from "./region.js";
 import { groundMaterial, groundRange, V4_STREAM_OFFSETS, v4Stream } from "./terrain.js";
 
@@ -103,5 +103,32 @@ describe("regions", () => {
     expect(regionAt(f, -8, 3, "en")).toEqual({ name: "Clinic", roomId: null });
     expect(regionAt(f, 23, 2, "zh-CN").name).toBe("建造园地");
     expect(regionAt(f, 0, 25, "zh-CN").name).toBe("疗愈花园");
+  });
+});
+
+describe("big-map label fitting", () => {
+  // fake 2D context: every glyph is (font px) wide
+  const fake = () => {
+    const c = { font: "bold 12px sans-serif", measureText: (t: string) => ({ width: [...t].length * parseFloat(/(\d+(?:\.\d+)?)px/.exec(c.font)![1]) }) };
+    return c as unknown as Pick<CanvasRenderingContext2D, "font" | "measureText">;
+  };
+  it("keeps the requested font when the label fits", () => {
+    const f = fitLabel(fake(), "检验科", 60, "bold 12px sans-serif");
+    expect(f).toMatchObject({ lines: ["检验科"], font: "bold 12px sans-serif" });
+  });
+  it("shrinks, then wraps, then drops instead of squeezing CJK text", () => {
+    expect(fitLabel(fake(), "门诊诊室", 40, "bold 12px sans-serif")?.font).toBe("bold 10px sans-serif");
+    const wrapped = fitLabel(fake(), "急诊抢救 · 复苏区", 40, "bold 12px sans-serif");
+    expect(wrapped?.lines).toEqual(["急诊抢救", "复苏区"]);
+    expect(fitLabel(fake(), "影像科控制与阅片区", 20, "bold 12px sans-serif")).toBeNull();
+  });
+  it("never goes below the minimum font size", () => {
+    const f = fitLabel(fake(), "病例讨论室", 5 * MIN_LABEL_PX, "bold 13px sans-serif");
+    expect(f?.font).toBe(`bold ${MIN_LABEL_PX}px sans-serif`);
+  });
+  it("splits at the separator nearest the middle, else halves CJK", () => {
+    expect(splitLabel("门诊大厅 · 挂号咨询")).toEqual(["门诊大厅", "挂号咨询"]);
+    expect(splitLabel("Radiology Control Room")).toEqual(["Radiology", "Control Room"]);
+    expect(splitLabel("医生办公室")).toEqual(["医生办", "公室"]);
   });
 });

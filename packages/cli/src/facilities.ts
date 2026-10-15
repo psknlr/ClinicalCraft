@@ -2,7 +2,7 @@
  * `clinicalcraft facilities list|validate`.
  */
 import { readFile } from "node:fs/promises";
-import { relative } from "node:path";
+import { isAbsolute } from "node:path";
 import { checkCatalogs, checkFacility, parseCatalog, parseFacility, t, type EquipmentCatalog, type Issue } from "@clinicalcraft/core";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { table } from "@clinicalcraft/agent";
@@ -111,7 +111,7 @@ export async function facilitiesValidate(ctx: CliContext, args: ParsedArgs): Pro
   const p = ctx.out;
   for (const c of checked) {
     const label = c.errors.length === 0 ? p.green("✓") : p.red("✗");
-    ctx.print(`${label} ${relative(ctx.cwd, c.file) || c.file}${c.id ? p.dim(` (${c.id})`) : ""} ${p.dim(ctx.t("cases.counts", { errors: c.errors.length, warnings: c.warnings.length }))}`);
+    ctx.print(`${label} ${isAbsolute(c.file) ? ctx.show(c.file) : c.file}${c.id ? p.dim(` (${c.id})`) : ""} ${p.dim(ctx.t("cases.counts", { errors: c.errors.length, warnings: c.warnings.length }))}`);
     for (const i of [...c.errors, ...(flagBool(args, "quiet") ? [] : c.warnings)].slice(0, 50)) {
       ctx.print(`    ${i.severity === "error" ? p.red("error  ") : p.yellow("warning")} ${p.dim(i.path || "(root)")} ${i.message}`);
     }

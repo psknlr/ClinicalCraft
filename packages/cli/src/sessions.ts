@@ -1,7 +1,6 @@
 /**
  * `clinicalcraft sessions list|show <id>` — recorded JSONL transcripts.
  */
-import { relative } from "node:path";
 import { BootstrapError, findSessionTranscript, listSessions, readTranscript } from "@clinicalcraft/agent/node";
 import { replayTranscript, table, type TranscriptItem } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, UsageError, type ParsedArgs } from "./argv.js";
@@ -21,7 +20,7 @@ export async function sessionsList(ctx: CliContext, args: ParsedArgs): Promise<n
     return EXIT.ok;
   }
   const rows = [[ctx.t("col.id"), ctx.t("col.case"), ctx.t("col.started"), ctx.t("col.file")]];
-  for (const s of sessions) rows.push([s.id, s.caseId || "-", s.startedAt.replace("T", " ").replace(/\.\d+Z$/, "Z"), relative(ctx.cwd, s.path) || s.path]);
+  for (const s of sessions) rows.push([s.id, s.caseId || "-", s.startedAt.replace("T", " ").replace(/\.\d+Z$/, "Z"), ctx.show(s.path)]);
   ctx.print(table(rows, { header: true, maxCell: 80 }));
   ctx.print(ctx.out.dim(ctx.t("sessions.resumeHint")));
   return EXIT.ok;

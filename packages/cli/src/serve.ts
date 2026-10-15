@@ -30,13 +30,14 @@ export function isLoopback(host: string): boolean {
   return LOOPBACK.has(host.toLowerCase()) || host.startsWith("127.");
 }
 
-async function importExport<T>(specifier: string, name: string): Promise<T | null> {
+/** Lazily import `name` from a sibling package; `reason` explains why it is unavailable. */
+async function importExport<T>(ctx: CliContext, specifier: string, name: string): Promise<{ fn: T } | { reason: string }> {
   try {
     const mod = (await import(specifier)) as Record<string, unknown>;
     const fn = mod[name];
-    return typeof fn === "function" ? (fn as T) : null;
-  } catch {
-    return null;
+    return typeof fn === "function" ? { fn: fn as T } : { reason: ctx.t("pkg.noExport", { name }) };
+  } catch (err) {
+    return { reason: (err as Error).message ?? String(err) };
   }
 }
 
@@ -61,8 +62,9 @@ export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<numbe
   const token = flagString(args, "token") ?? settings.server.token ?? undefined;
   if (!isLoopback(host) && !token) throw new CliError(ctx.t("serve.needToken", { host }), EXIT.usage);
 
-  const startServer = await importExport<StartServer>("@clinicalcraft/server", "startServer");
-  if (!startServer) throw new CliError(ctx.t("serve.unavailable"), EXIT.error, ctx.t("serve.buildHint"));
+  const loaded = await importExport<StartServer>(ctx, "@clinicalcraft/server", "startServer");
+  if (!("fn" in loaded)) throw new CliError(ctx.t("serve.unavailable", { reason: loaded.reason }), EXIT.error, ctx.t("serve.buildHint"));
+  const startServer = loaded.fn;
 
   const staticFlag = flagString(args, "static");
   const staticDir = staticFlag ? ctx.path(staticFlag) : webDistDir();
@@ -100,8 +102,9 @@ export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<numbe
 export async function runMcp(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const flags = await sessionFlagsLayer(ctx, args);
   const settings = await loadCliSettings(ctx, flags);
-  const runMcpServer = await importExport<RunMcpServer>("@clinicalcraft/mcp", "runMcpServer");
-  if (!runMcpServer) throw new CliError(ctx.t("mcp.unavailable"), EXIT.error, ctx.t("serve.buildHint"));
+  const loaded = await importExport<RunMcpServer>(ctx, "@clinicalcraft/mcp", "runMcpServer");
+  if (!("fn" in loaded)) throw new CliError(ctx.t("mcp.unavailable", { reason: loaded.reason }), EXIT.error, ctx.t("serve.buildHint"));
+  const runMcpServer = loaded.fn;
   // stdout carries JSON-RPC only: diagnostics go to stderr.
   await runMcpServer({ stdin: ctx.io.stdin, stdout: ctx.io.stdout, settings, cwd: ctx.cwd, env: ctx.env });
   return EXIT.ok;

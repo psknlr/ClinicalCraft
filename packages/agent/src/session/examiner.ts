@@ -1,8 +1,9 @@
 /**
  * Examiner (ZCode goal verifier): judges rubric items without a deterministic
  * criterion from the encounter transcript. The model must quote evidence; a
- * `met: true` verdict whose quote cannot be found verbatim in the transcript
- * is downgraded to not met. Offline: nothing is judged (items stay null) and
+ * `met: true` verdict whose quote cannot be found verbatim in the words of a
+ * transcript line (labels and line numbers do not count) is downgraded to not
+ * met. Offline: nothing is judged (items stay null) and
  * the narrative summarises the deterministic report.
  */
 import { t, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
@@ -68,6 +69,28 @@ export function quoteInTranscript(quote: string, transcript: string): boolean {
   const q = normaliseQuote(quote);
   if (q.length < 2) return false;
   return normaliseQuote(transcript).includes(q);
+}
+
+/** Letters/digits in a quote, CJK characters counting double ("No" → 2, "吸烟" → 4). */
+function quoteWeight(normalised: string): number {
+  let n = 0;
+  for (const ch of normalised.replace(/[^\p{L}\p{N}]/gu, "")) n += /[\u3400-\u9fff\uf900-\ufaff]/u.test(ch) ? 2 : 1;
+  return n;
+}
+
+/** Smallest `quoteWeight` accepted as evidence. */
+export const MIN_EVIDENCE_WEIGHT = 4;
+
+/**
+ * True when `quote` is evidence from the encounter: it occurs (whitespace and
+ * quote-mark insensitive) inside the words of ONE dialogue entry — never in
+ * the rendered labels ("LEARNER", "ACTION", speaker names, line numbers) —
+ * and is more than a token ("No", "ok").
+ */
+export function quoteInDialogue(quote: string, dialogue: readonly DialogueEntry[]): boolean {
+  const q = normaliseQuote(quote);
+  if (quoteWeight(q) < MIN_EVIDENCE_WEIGHT) return false;
+  return dialogue.some((d) => normaliseQuote(d.text).includes(q));
 }
 
 /** Judge transcript-based rubric items (LLM) or fall back to the deterministic narrative (offline). Never throws. */
@@ -144,7 +167,7 @@ export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
     const id = typeof item.id === "string" ? item.id : "";
     if (!ids.has(id) || judged.some((j) => j.id === id) || typeof item.met !== "boolean") continue;
     const evidence = typeof item.evidence === "string" ? item.evidence.trim().slice(0, 400) : "";
-    if (item.met && !quoteInTranscript(evidence, transcript)) {
+    if (item.met && !quoteInDialogue(evidence, p.dialogue)) {
       judged.push({ id, met: false, evidence: `${rt(L, "examiner.unverifiedQuote")} ${evidence}`.trim() });
     } else {
       judged.push({ id, met: item.met, evidence });

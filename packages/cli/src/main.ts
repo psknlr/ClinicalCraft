@@ -40,7 +40,11 @@ export function resolveCommand(argv: readonly string[]): ResolvedCommand {
     const node = path[path.length - 1]!;
     const flag = lookupFlag(token, scanSpecs(path));
     if (flag) {
-      if (flag.spec.type !== "boolean" && flag.inlineValue === null) i++;
+      if (flag.spec.type !== "boolean" && flag.inlineValue === null) {
+        const next = argv[i + 1];
+        const omitted = flag.spec.optionalValue && (next === undefined || (next.startsWith("-") && next !== "-"));
+        if (!omitted) i++;
+      }
       continue;
     }
     if (token.startsWith("-") && token !== "-") continue; // unknown flag: reported by the full parse

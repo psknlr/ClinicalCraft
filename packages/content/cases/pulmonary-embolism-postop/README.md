@@ -14,7 +14,7 @@ A 52-year-old woman is on day 3 after an open right hemicolectomy for colon canc
 walking back from the toilet she gets sudden right-sided pleuritic chest pain and breathlessness.
 On arrival: HR 118, BP 112/70 (MAP 84), RR 26, SpO2 89 % on room air, T 37.4 °C. Her right calf
 is swollen. Her prophylactic enoxaparin dose was held the evening before because of minor wound
-ooze and was never re-prescribed. The patient discloses this only to a targeted question; it is
+ooze; nobody reviewed it afterwards and the order is still on hold. The patient discloses this only to a targeted question; it is
 also in the nurse's handover and the medication administration record (`mar`).
 
 Diagnosis (hidden from learners): acute bilateral PE with right popliteal–calf DVT, ESC 2019
@@ -80,7 +80,10 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   contraindicated, an IVC filter *indicated* (the only path where a filter is appropriate) and the
   major-haemorrhage protocol (`transfusion`: stop the lytic, 2 units of red cells, call the
   surgeons) *indicated*; SBP recovers to ≈ 103 over 30 min. Transfusion without bleeding is a
-  safety event.
+  safety event. In this branch the filter (with no anticoagulant) also completes the treatment
+  chapter (`obj-treat`), so the case can be finished without a contraindicated drug. An
+  anticoagulant on board during the bleed (given into it, or running when the lytic was started)
+  fails `r-safety-no-harm`, and `r-mx-anticoag-timely` / `r-mx-ufh` are not met in this branch.
 * **Nudges and bookkeeping events.**
   * `ev-anticoag-unchecked` (info, nurse): anticoagulation started before the bleeding history,
     wound examination *and* surgical call are all done (not in the haemorrhage branch). Sets
@@ -113,7 +116,8 @@ Negative ("avoided X") rubric items are gated on reaching the relevant stage, so
 nothing: `r-safety-no-lysis` needs anticoagulation, `r-safety-no-harm` needs `obj-treat`, and
 `r-eff-low-value` needs `obj-confirm`. `r-dx-risk` uses `decidedFirstTry`, because the decision
 must be answered correctly to finish anyway. `r-mx-ufh` is not met when UFH is stacked on LMWH or
-a DOAC.
+a DOAC. Neither `r-mx-ufh` nor `r-mx-anticoag-timely` credits anticoagulation in the lytic-haemorrhage
+branch, where it is contraindicated.
 
 | Path | Score |
 |---|---|
@@ -122,8 +126,10 @@ a DOAC.
 | UFH started before the bleeding check, surgical call and baseline bloods | 17/19 (89 %) |
 | Bare minimum to complete, board answered by trial and error | 8/19 (42 %) |
 | Slow work-up, waits for the CTPA, decompensates at 60 min, rescued | 5/19 (26 %) |
-| Empirical thrombolysis, then wound haemorrhage | 4/19 (21 %) |
-| Every tempting harmful choice | 3/19 (16 %) |
+| Lysis right after the board strategy, haemorrhage managed correctly (transfusion + filter, no anticoagulant), otherwise complete | 13/19 (68 %) |
+| Same, but UFH given into the bleed instead of a filter | 12/19 (63 %) |
+| Empirical thrombolysis, then wound haemorrhage | 1/19 (5 %) |
+| Every tempting harmful choice | 1/19 (5 %) |
 | No action for 180 min (timeout) | 0/19 (0 %) |
 
 ## Teaching notes
@@ -191,7 +197,8 @@ The following are explicitly *unknown* (history items with `disclosure: "unknown
 * the post-heparin APTT/anti-Xa and the later course
 
 The arterial blood gas was drawn by the ward nurse at 16:15 on room air, before the learner
-arrived, so its values are consistent whenever it is ordered. Ordering a "VBG"/"静脉血气" maps to
+arrived, and run on the analyser straight away (a gas sample left unanalysed would not stay valid).
+Its values are therefore consistent whenever the result is ordered. Ordering a "VBG"/"静脉血气" maps to
 that arterial sample and shows a notice. The assessment score is a formative teaching-script
 measure, not a validated competency score.
 

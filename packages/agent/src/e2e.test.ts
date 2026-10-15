@@ -24,7 +24,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { parseCase, t, verifyCase, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { matchHistory, parseCase, t, verifyCase, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { counterIds, loadMiniCase, steppingClock, testSettings } from "./__fixtures__/harness.js";
 import { clinicianOfflineSteps } from "./agents/offline.js";
@@ -33,6 +33,7 @@ import { ScriptedProvider, textScript, toolCallScript, type Script } from "./pro
 import type { ChatRequest, ProviderConfig, StreamEvent } from "./providers/types.js";
 import { verifyGrounding } from "./session/grounding.js";
 import { selectFacts } from "./session/patient-pipeline.js";
+import { SPECIFIC_DISCLOSURE_THRESHOLD } from "./tools/npc.js";
 import { createSession, type ClinicalSession, type CreateSessionOptions } from "./session/session.js";
 import { MemoryTranscript, replayTranscript, resumedRuntimeConfig } from "./transcript.js";
 
@@ -502,18 +503,31 @@ function auditRequest(c: CaseDefinition, cap: Captured, locale: string): string[
   const hay = JSON.stringify({ system: cap.req.system, messages: cap.req.messages });
   const s = cap.state;
   const out: string[] = [];
-  const forbid = (label: string, text: string | undefined | null) => {
-    if (text && text.trim().length >= 12 && hay.includes(JSON.stringify(text).slice(1, -1))) out.push(`${cap.kind}: ${label}: ${text.slice(0, 60)}`);
-  };
   const L = locale;
-  const isPatient = cap.kind === "patient" || cap.kind === "patient-tool";
-  // facts the speaker may know
+  // authored text the speaker may quote: the attending teaches from the objective hints
+  const quotable = cap.kind === "attending" ? c.objectives.map((o) => t(o.hint, L)) : [];
+  const forbid = (label: string, text: string | undefined | null) => {
+    if (!text || text.trim().length < 12 || quotable.some((q) => q.includes(text))) return;
+    if (hay.includes(JSON.stringify(text).slice(1, -1))) out.push(`${cap.kind}: ${label}: ${text.slice(0, 60)}`);
+  };
+  // the patient voice, the patient tool pipeline and the fact re-rank are all patient-side
+  const isPatient = cap.kind === "patient" || cap.kind === "patient-tool" || cap.kind === "rerank";
+  // facts the speaker may know: the revealed ledger…
   let allowed = new Set(s.asked);
   if (cap.kind === "patient") {
+    // …plus what the selector picked for THIS question: answer_now ⊆ selected ∪ re-rank candidates,
+    // may_volunteer ⊆ {the one volunteer fact}; nothing else (e.g. unchosen candidates).
     const last = cap.req.messages.at(-1)!;
     const utterance = last.content.map((p) => (p.type === "text" ? p.text : "")).join(" ");
     const sel = selectFacts(c, s, utterance, L);
-    allowed = new Set([...s.asked, ...sel.selected, ...(sel.volunteer ? [sel.volunteer] : []), ...sel.candidates.map((x) => x.id)]);
+    const state = cap.req.system.find((x) => x.id === "patient-state")?.text ?? "";
+    const answerNow = [...state.matchAll(/^\[([\w-]+)\] \(answer_now\)/gm)].map((m) => m[1]!);
+    const volunteerBlock = /<may_volunteer>([\s\S]*?)<\/may_volunteer>/.exec(state)?.[1] ?? "";
+    const volunteered = [...volunteerBlock.matchAll(/^\[([\w-]+)\]/gm)].map((m) => m[1]!);
+    const selectable = new Set([...sel.selected, ...sel.candidates.map((x) => x.id)]);
+    for (const id of answerNow) if (!s.asked.includes(id) && !selectable.has(id)) out.push(`patient: answer_now ${id} was not selected for "${utterance.slice(0, 40)}"`);
+    for (const id of volunteered) if (id !== sel.volunteer) out.push(`patient: may_volunteer ${id} is not the volunteer fact`);
+    allowed = new Set([...s.asked, ...answerNow.filter((id) => selectable.has(id)), ...volunteered.filter((id) => id === sel.volunteer)]);
   }
   const allowedAnswers = [...allowed].map((id) => answerText(c, id, L));
   for (const h of c.history) {
@@ -1030,7 +1044,7 @@ describe("(c) scope / plan / flag bypasses via clinical_action", () => {
     const c = flagged();
     const b = await build({ caseDef: c, settingsPatch: { practiceScope: "workup" } });
     const d = b.driver;
-    const set = await d.run({ type: "clinical_action", action: { type: "flag", flag: "reperfused" } });
+    const set = await d.run({ type: "clinical_action", action: { type: "flag", flag: "reperfused", value: true } });
     expect(set.some((e) => e.msg.type === "clinical_event")).toBe(false);
     expect(set.map((e) => e.msg)).toEqual([expect.objectContaining({ type: "error", code: "permission_denied" })]);
     expect(d.session.state.flags).toEqual([]);
@@ -1038,7 +1052,7 @@ describe("(c) scope / plan / flag bypasses via clinical_action", () => {
     const lyse = await d.run({ type: "clinical_action", action: { type: "intervene", interventionId: "lysis" } });
     expect(lyse.map((e) => e.msg)).toEqual([expect.objectContaining({ type: "error", code: "permission_denied" })]);
     // world flags the case does not own stay settable (front-end interactions)
-    const world = await d.run({ type: "clinical_action", action: { type: "flag", flag: "handover-board-read" } });
+    const world = await d.run({ type: "clinical_action", action: { type: "flag", flag: "handover-board-read", value: true } });
     expect(sigs(world)).toEqual(["clinical_event:flag.changed", "state_snapshot"]);
     await d.shutdown();
     assertInvariants(c, d, d.session.state, "en");
@@ -1170,4 +1184,189 @@ describe("(c) transcripts never carry API keys", () => {
     expect(dump).not.toContain(secret);
     expect(dump).not.toContain("sk-ant-api03-xxxxxxxx");
   });
+});
+
+/* ------------------------------------------------------------------ */
+/* (c) Review round 2                                                  */
+/* ------------------------------------------------------------------ */
+
+describe("(c) event stream re-entrancy", () => {
+  it("a subscribe() listener that answers an approval synchronously cannot reorder the stream", async () => {
+    const c = loadMiniCase();
+    const b = await build({ caseDef: c });
+    const d = b.driver;
+    const seenByLater: number[] = [];
+    // A front-end (exec/MCP auto-approver) answering inside its listener: the session emits
+    // approval_resolved while approval_request is still being delivered.
+    b.session.subscribe((e) => {
+      if (e.msg.type === "approval_request") d.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved" });
+    });
+    b.session.subscribe((e) => void seenByLater.push(e.seq));
+    await d.run({ type: "clinical_action", action: { type: "intervene", interventionId: "lysis" } });
+    expect(d.session.state.interventions.map((i) => i.interventionId)).toEqual(["lysis"]);
+    expect(seenByLater).toEqual([...seenByLater].sort((x, y) => x - y));
+    const types = d.events.map((e) => e.msg.type);
+    expect(types.indexOf("approval_request")).toBeLessThan(types.indexOf("approval_resolved"));
+    await d.shutdown();
+    assertInvariants(c, d, d.session.state, "en"); // iterator order = seq order, gap-free
+  });
+
+  it("shutdown while a learner approval is pending aborts it; nothing runs and events() ends", async () => {
+    const c = loadMiniCase();
+    const b = await build({ caseDef: c });
+    const d = b.driver;
+    d.policy = () => null; // never answered
+    const pending = d.run({ type: "clinical_action", action: { type: "intervene", interventionId: "lysis" } });
+    for (let i = 0; i < 50 && d.msgs("approval_request").length === 0; i++) await tick();
+    expect(d.msgs("approval_request")).toHaveLength(1);
+    await d.shutdown();
+    const own = await pending;
+    // the turn's abort signal settles the request under the action's own submission id
+    expect(own.map((e) => e.msg.type)).toEqual(["approval_request", "approval_resolved", "warning"]);
+    expect(d.msgs("approval_resolved")).toEqual([expect.objectContaining({ decision: "abort" })]);
+    expect(d.session.state.interventions).toEqual([]);
+    assertInvariants(c, d, d.session.state, "en");
+  });
+});
+
+describe("(c) resume after /clear", () => {
+  it("/clear is persisted: resuming the transcript does not resurrect cleared conversations", async () => {
+    const c = loadMiniCase();
+    const b = await build({ caseDef: c });
+    const d = b.driver;
+    await d.run({ type: "user_message", text: "Do you smoke?" });
+    await d.run({ type: "user_message", text: "@nurse handover please" });
+    await d.run({ type: "slash_command", name: "clear", args: "" });
+    expect(b.session.conversationOf("patient")).toEqual([]);
+    expect(b.session.conversationOf("nurse")).toEqual([]);
+    await d.run({ type: "user_message", text: "@nurse what are the obs?" });
+    expect(b.session.conversationOf("nurse")).toHaveLength(2);
+    await d.shutdown();
+    assertInvariants(c, d, d.session.state, "en");
+    await assertResume(b, c, ["patient", "nurse"]);
+  });
+});
+
+describe("(c) examiner evidence integrity", () => {
+  const verdict = (evidence: string) => textScript(JSON.stringify({ items: [{ id: "rb-comm", met: true, evidence }], narrative: "ok" }));
+
+  it("transcript labels (LEARNER, speaker names, line numbers) are not evidence; a real quote is", async () => {
+    const c = loadMiniCase();
+    const b = await build({
+      caseDef: c,
+      settingsPatch: { agents: { patient: { provider: "offline" }, nurse: { provider: "offline" } } },
+      scripts: [verdict("LEARNER"), verdict("1. LEARNER: Do you smoke"), verdict(`${t(c.patient.displayName, "en")} (patient)`), verdict("Do you smoke")],
+    });
+    const d = b.driver;
+    await d.run({ type: "user_message", text: "Do you smoke?" });
+    const judged: { met: boolean; evidence: string }[] = [];
+    for (let i = 0; i < 4; i++) {
+      const events = await d.run({ type: "assess" });
+      judged.push(events.map((e) => e.msg).find((m): m is Msg<"assessment"> => m.type === "assessment")!.judged[0]!);
+    }
+    expect(judged.map((j) => j.met)).toEqual([false, false, false, true]);
+    await d.shutdown();
+    assertInvariants(c, d, d.session.state, "en");
+  });
+
+  it("a learner note is shown to the examiner as learner text, never as an ACTION line", async () => {
+    const c = loadMiniCase();
+    const b = await build({ caseDef: c, scripts: [verdict("Gave aspirin and read the ECG")] });
+    const d = b.driver;
+    await d.run({ type: "clinical_action", action: { type: "note", text: "Gave aspirin and read the ECG" } });
+    const events = await d.run({ type: "assess" });
+    const transcript = JSON.stringify(b.provider!.requests.at(-1)!.messages);
+    expect(transcript).not.toMatch(/ACTION: Gave aspirin/);
+    expect(transcript).toMatch(/LEARNER: \[[^\]]+\] Gave aspirin and read the ECG/);
+    expect(events.some((e) => e.msg.type === "assessment")).toBe(true);
+    expect(d.session.state.interventions).toEqual([]);
+    await d.shutdown();
+    assertInvariants(c, d, d.session.state, "en");
+  });
+});
+
+describe("(b) need-to-know sweep: the `tool` patient pipeline on every built-in case", () => {
+  for (const id of CASE_IDS) {
+    const c = loadCase(id);
+    it.skipIf(!c)(`${id}: the patient sees no answer before reveal_facts returns it; specific facts need a direct question`, async () => {
+      const L = "en";
+      const phase = c!.phases[0]!.id;
+      const specific = c!.history.filter((h) => h.disclosure === "specific").map((h) => h.id);
+      const questions = c!.history.filter((h) => h.disclosure !== "specific" && (!h.phases || h.phases.includes(phase))).map((h) => t(h.question, L));
+      let sessionRef: ClinicalSession | null = null;
+      const captured: Captured[] = [];
+      const router: Script = (req): StreamEvent[] => {
+        const kind = requestKind(req);
+        captured.push({ req, state: structuredClone(sessionRef!.state), kind });
+        if (kind !== "patient-tool") return textScript("{}");
+        const last = req.messages.at(-1)!;
+        const results = last.content.filter((p): p is Extract<typeof p, { type: "tool_result" }> => p.type === "tool_result");
+        if (results.length > 0) {
+          // speak exactly what reveal_facts returned
+          const said = results.flatMap((r) => [...String(r.content).matchAll(/^\[[\w-]+\] (.*)$/gm)].map((m) => m[1]!));
+          return textScript(said.join(" ") || t(c!.patient.persona.fallbackUnknown, L));
+        }
+        const utterance = last.content.map((p) => (p.type === "text" ? p.text : "")).join(" ").trim();
+        const index = /<fact_index>([\s\S]*?)<\/fact_index>/.exec(req.system.map((s) => s.text).join("\n"))?.[1] ?? "";
+        const direct = [...index.matchAll(/^\[([\w-]+)\] .*$/gm)].filter((m) => m[0].replace(" (only if asked about directly)", "").endsWith(`: ${utterance}`)).map((m) => m[1]!);
+        // an over-eager model also asks for every `specific` fact
+        const ids = [...new Set([...direct, ...specific])].slice(0, 5);
+        if (ids.length === 0) return textScript(t(c!.patient.persona.fallbackUnknown, L));
+        return toolCallScript([{ id: `r${captured.length}`, name: "reveal_facts", args: { fact_ids: ids } }]);
+      };
+      const b = await build({ caseDef: c!, provider: new ScriptedProvider(Array.from({ length: 200 }, () => router)), settingsPatch: { patient: { pipeline: "tool" } } });
+      sessionRef = b.session;
+      const d = b.driver;
+      for (const q of questions) await d.run({ type: "user_message", text: q });
+      const s = d.session.state;
+      // a specific fact is credited only when some question matched it directly (ARCHITECTURE §4.2)
+      const direct = new Set(questions.flatMap((q) => matchHistory(c!, q, L).filter((h) => h.score >= SPECIFIC_DISCLOSURE_THRESHOLD).map((h) => h.id)));
+      for (const x of specific) if (!direct.has(x)) expect(s.asked, `specific fact ${x} credited without a direct question`).not.toContain(x);
+      expect(captured.some((x) => x.kind === "patient-tool")).toBe(true);
+      // the first request of every patient turn carries the fact index only — never an unrevealed answer
+      for (const cap of captured.filter((x) => x.kind === "patient-tool")) {
+        expect(cap.req.tools!.map((x) => x.name)).toEqual(["reveal_facts"]);
+        expect(cap.req.system.map((x) => x.id)).not.toContain("monitor");
+      }
+      const violations = captured.flatMap((cap) => auditRequest(c!, cap, L));
+      expect(violations).toEqual([]);
+      await d.shutdown();
+      assertInvariants(c!, d, s, L);
+      await assertResume(b, c!, ["patient", ...(c!.patient.persona.companion ? ["companion"] : [])]);
+    });
+  }
+});
+
+describe("(b) need-to-know sweep: offline NPC replies on every built-in case", () => {
+  for (const id of CASE_IDS) {
+    const c = loadCase(id);
+    it.skipIf(!c)(`${id}: offline nurse/consultants/attending never state unread results, unperformed findings or the diagnosis`, async () => {
+      const L = "en";
+      const b = await build({ caseDef: c!, settingsPatch: { approvalMode: "bypass" } });
+      const d = b.driver;
+      const roles = d.session.availableAgents().filter((r) => ["nurse", "radiologist", "pathologist", "attending"].includes(r));
+      const names = c!.investigations.map((i) => t(i.name, L));
+      const probes = ["handover please", "What are the results?", "What is the diagnosis?", "What did the scan show?", "Is anything back yet?", ...names.slice(0, 6).map((n) => `What does the ${n} show?`)];
+      const audit = async () => {
+        for (const role of roles) {
+          for (const q of probes) {
+            const events = await d.run({ type: "user_message", text: q, to: role });
+            const said = events.map((e) => e.msg).filter((m): m is Msg<"agent_message"> => m.type === "agent_message" && m.agent === role);
+            for (const m of said) {
+              const cap: Captured = { req: { model: "offline", system: [], messages: [{ role: "assistant", content: [{ type: "text", text: m.text }] }] }, state: structuredClone(d.session.state), kind: role === "nurse" ? "nurse" : role === "attending" ? "attending" : "consultant" };
+              expect(auditRequest(c!, cap, L), `${role} ← "${q}"`).toEqual([]);
+            }
+          }
+        }
+      };
+      await audit(); // before anything is ordered
+      for (const action of c!.solution ?? []) {
+        if (action.type === "start" || action.type === "order" || action.type === "set-phase") await d.run({ type: "clinical_action", action });
+      }
+      expect(d.session.state.orders.length).toBeGreaterThan(0);
+      await audit(); // ordered (and ready) but unread
+      await d.shutdown();
+      assertInvariants(c!, d, d.session.state, L);
+    });
+  }
 });

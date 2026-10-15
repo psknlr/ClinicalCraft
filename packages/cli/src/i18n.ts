@@ -184,6 +184,7 @@ const EN = {
   "providers.noModels": "No model list available.",
   "providers.modelsFailed": "GET /models failed (HTTP {status}, {url})",
   "providers.suggested": "Suggested models: {list}",
+  "providers.modelsNoKey": "No API key for {id} ({env}), so the live model list cannot be fetched; showing the catalogue's suggested models.",
 
   // config
   "config.files": "Settings files: {files}",
@@ -191,6 +192,8 @@ const EN = {
   "config.source": "(from {source})",
   "config.setUsage": "Usage: clinicalcraft config set <key> <value> [--user|--project|--local]",
   "config.badKey": "Invalid settings key \"{key}\".",
+  "config.unknownKey": "Unknown setting \"{key}\".",
+  "config.knownKeys": "Settings: {list}",
   "config.noSecretsInProject": "Secrets are never stored in project settings; use --user or --local (or an environment variable).",
   "config.saved": "{key} = {value} → {file}",
 
@@ -206,8 +209,9 @@ const EN = {
   // serve / mcp
   "serve.badPort": "Invalid port {port}.",
   "serve.needToken": "Binding to {host} exposes the server beyond this machine: pass --token (or set server.token).",
-  "serve.unavailable": "The HTTP server package (@clinicalcraft/server) is not available.",
-  "mcp.unavailable": "The MCP server package (@clinicalcraft/mcp) is not available.",
+  "serve.unavailable": "The HTTP server package (@clinicalcraft/server) is not available: {reason}.",
+  "mcp.unavailable": "The MCP server package (@clinicalcraft/mcp) is not available: {reason}.",
+  "pkg.noExport": "it does not export {name}() (not built, or not implemented in this checkout)",
   "serve.buildHint": "Build the libraries with `npm run build:lib` (or run from a full checkout).",
   "serve.noStatic": "Static directory {dir} does not exist.",
   "serve.noWeb": "The web client is not built (packages/web/dist): run `npm run build:web` for the 3D world. Serving the API only.",
@@ -422,12 +426,15 @@ const ZH: Record<MsgKey, string> = {
   "providers.noModels": "没有可用的模型列表。",
   "providers.modelsFailed": "GET /models 失败（HTTP {status}，{url}）",
   "providers.suggested": "推荐模型：{list}",
+  "providers.modelsNoKey": "{id} 没有 API 密钥（{env}），无法获取在线模型列表；以下为目录中的推荐模型。",
 
   "config.files": "设置文件：{files}",
   "config.noKey": "没有设置项“{key}”。",
   "config.source": "（来自 {source}）",
   "config.setUsage": "用法：clinicalcraft config set <key> <value> [--user|--project|--local]",
   "config.badKey": "设置项“{key}”无效。",
+  "config.unknownKey": "未知设置项“{key}”。",
+  "config.knownKeys": "可用设置项：{list}",
   "config.noSecretsInProject": "项目设置中绝不保存密钥；请使用 --user 或 --local（或环境变量）。",
   "config.saved": "{key} = {value} → {file}",
 
@@ -441,8 +448,9 @@ const ZH: Record<MsgKey, string> = {
 
   "serve.badPort": "端口 {port} 无效。",
   "serve.needToken": "绑定到 {host} 会让服务对本机以外可见：请传入 --token（或设置 server.token）。",
-  "serve.unavailable": "HTTP 服务包（@clinicalcraft/server）不可用。",
-  "mcp.unavailable": "MCP 服务包（@clinicalcraft/mcp）不可用。",
+  "serve.unavailable": "HTTP 服务包（@clinicalcraft/server）不可用：{reason}。",
+  "mcp.unavailable": "MCP 服务包（@clinicalcraft/mcp）不可用：{reason}。",
+  "pkg.noExport": "未导出 {name}()（尚未构建，或此版本未实现）",
   "serve.buildHint": "请用 `npm run build:lib` 构建（或在完整仓库中运行）。",
   "serve.noStatic": "静态目录 {dir} 不存在。",
   "serve.noWeb": "网页客户端尚未构建（packages/web/dist）：运行 `npm run build:web` 以启用 3D 世界。当前仅提供 API。",

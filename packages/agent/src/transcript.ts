@@ -42,7 +42,10 @@ export interface ReplayedTranscript {
   sessionMeta: SessionMeta | null;
   /** Accepted clinical actions in order (rejected ones are dropped). */
   actions: ClinicalAction[];
-  /** Conversation per agent; a `compacted` item restarts that agent's history with its summary. */
+  /**
+   * Conversation per agent; a `compacted` item restarts that agent's history
+   * with its summary (an empty summary — written by `/clear` — empties it).
+   */
   messages: Partial<Record<AgentRole, ChatMessage[]>>;
   /** Latest compaction summary per agent. */
   summaries: Partial<Record<AgentRole, string>>;
@@ -97,8 +100,15 @@ export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTran
       case "compacted": {
         const agent = item.payload?.agent;
         if (!agent) break;
-        result.summaries[agent] = item.payload.summary;
-        result.messages[agent] = [{ role: "user", content: [{ type: "text", text: item.payload.summary }] }];
+        const summary = typeof item.payload.summary === "string" ? item.payload.summary : "";
+        if (!summary.trim()) {
+          // `/clear`: the conversation was discarded.
+          delete result.summaries[agent];
+          result.messages[agent] = [];
+          break;
+        }
+        result.summaries[agent] = summary;
+        result.messages[agent] = [{ role: "user", content: [{ type: "text", text: summary }] }];
         break;
       }
       default:

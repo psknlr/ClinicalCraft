@@ -867,11 +867,11 @@
       "system": "skin",
       "maneuver": { "zh-CN": "检查蜇伤部位", "en": "Inspect the sting site" },
       "keywords": {
-        "zh-CN": ["蜇伤部位", "蜇的地方", "螫刺", "毒刺", "前臂", "伤口"],
+        "zh-CN": ["蜇伤部位", "蜇的地方", "螫刺", "毒刺", "前臂", "伤口", "螫针"],
         "en": ["sting site", "stinger", "forearm", "where she was stung", "wound", "bite site"]
       },
       "finding": {
-        "zh-CN": "右前臂掌侧蜇伤处：一枚连着毒囊的蜜蜂螫刺嵌在皮肤内（如尚未刮除），周围约3 cm红色风团，无出血。",
+        "zh-CN": "右前臂掌侧蜇伤处：一枚连着毒囊的蜜蜂螫针嵌在皮肤内（如尚未刮除），周围约3 cm红色风团，无出血。",
         "en": "Volar right forearm: a honeybee stinger with its venom sac embedded (unless already scraped out), surrounded by a 3 cm red wheal; no bleeding."
       },
       "abnormal": true,
@@ -1084,7 +1084,7 @@
       "maneuver": { "zh-CN": "急诊再检查皮肤", "en": "Re-examine the skin in the ED" },
       "keywords": { "zh-CN": ["皮肤", "皮疹", "风团", "荨麻疹", "蜇伤处"], "en": ["skin", "rash", "hives", "urticaria", "sting site"] },
       "finding": {
-        "zh-CN": "风团明显消退，躯干残留淡红斑，无新发风团；右前臂蜇伤处螫刺已除（如现场未刮除，已由急诊护士去除），局部约4 cm红肿。",
+        "zh-CN": "风团明显消退，躯干残留淡红斑，无新发风团；右前臂蜇伤处螫针已除（如现场未刮除，已由急诊护士去除），局部约4 cm红肿。",
         "en": "Wheals largely resolved with faint residual erythema on the trunk and no new wheals; right-forearm sting site — stinger out (removed by the ED nurse if it was not scraped out at the scene), 4 cm local swelling."
       },
       "phases": ["ed"]
@@ -1217,7 +1217,7 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除严重过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
             "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         },
@@ -1237,7 +1237,7 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除严重过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
             "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         },
@@ -1257,7 +1257,7 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除严重过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
             "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         }
@@ -1292,7 +1292,7 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除严重过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
             "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         },
@@ -1312,7 +1312,7 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除严重过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
             "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         },
@@ -1332,7 +1332,7 @@
             }
           ],
           "note": {
-            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
+            "zh-CN": "类胰蛋白酶在症状出现后约15–30分钟开始升高，1–2小时达峰，半衰期约2小时。早期样本正常不能排除严重过敏反应。需在完全恢复≥24小时后测基础值进行比较：急性值 >（1.2×基础值 + 2）µg/L 支持肥大细胞活化。本模拟中约90分钟回报；现实中常批量检测，报告可能需1–2天。",
             "en": "Tryptase starts to rise ~15–30 min after onset, peaks at 1–2 h and has a half-life of ~2 h. A normal early sample does not exclude anaphylaxis. Compare with a baseline taken ≥24 h after full recovery: an acute value > (1.2 × baseline + 2) µg/L supports mast-cell activation. Reported in about 90 min in this simulation; in real life the assay is often batched and the report may take 1–2 days."
           }
         }
@@ -1457,8 +1457,8 @@
         },
         "ed": {
           "text": {
-            "zh-CN": "静脉血气：轻度代谢性酸中毒伴乳酸升高（低灌注及肾上腺素β2效应），阴离子间隙 = Na −（Cl + HCO₃）= 139 −（106 + 19）= 14 mmol/L；血钾轻度降低（肾上腺素/沙丁胺醇致钾向细胞内转移）。静脉pO₂无解读意义。pCO₂ 5.0 kPa ≈ 37.5 mmHg（呼吸代偿）。",
-            "en": "Venous gas: mild metabolic acidosis with raised lactate (hypoperfusion plus β2 effect of adrenaline); anion gap = Na − (Cl + HCO₃) = 139 − (106 + 19) = 14 mmol/L; mildly low potassium (intracellular shift from adrenaline/salbutamol). Venous pO₂ is not interpretable. pCO₂ 5.0 kPa ≈ 37.5 mmHg (respiratory compensation)."
+            "zh-CN": "静脉血气：轻度代谢性酸中毒伴乳酸升高（低灌注及肾上腺素β2效应），阴离子间隙 = Na −（Cl + HCO₃）= 139 −（106 + 19）= 14 mmol/L；血钾轻度降低（肾上腺素β2效应致钾向细胞内转移，如用过沙丁胺醇则更明显）。静脉pO₂无解读意义。pCO₂ 5.0 kPa ≈ 37.5 mmHg（呼吸代偿）。",
+            "en": "Venous gas: mild metabolic acidosis with raised lactate (hypoperfusion plus β2 effect of adrenaline); anion gap = Na − (Cl + HCO₃) = 139 − (106 + 19) = 14 mmol/L; mildly low potassium (β2-mediated intracellular shift from adrenaline, more so if salbutamol was given). Venous pO₂ is not interpretable. pCO₂ 5.0 kPa ≈ 37.5 mmHg (respiratory compensation)."
           },
           "values": [
             {
@@ -2069,8 +2069,8 @@
         },
         "ed": {
           "text": {
-            "zh-CN": "血钾轻度降低（肾上腺素/沙丁胺醇致钾向细胞内转移，通常自行恢复）；肾功能正常。",
-            "en": "Mildly low potassium (intracellular shift from adrenaline/salbutamol, usually self-correcting); normal renal function."
+            "zh-CN": "血钾轻度降低（肾上腺素β2效应致钾向细胞内转移，用过沙丁胺醇者更明显，通常自行恢复）；肾功能正常。",
+            "en": "Mildly low potassium (β2-mediated intracellular shift from adrenaline, more so if salbutamol was given; usually self-correcting); normal renal function."
           },
           "values": [
             {
@@ -2173,7 +2173,7 @@
           },
           "values": [],
           "note": {
-            "zh-CN": "过敏反应是临床诊断，胸片正常不改变处理。",
+            "zh-CN": "严重过敏反应是临床诊断，胸片正常不改变处理。",
             "en": "Anaphylaxis is a clinical diagnosis; a normal chest film does not change management."
           }
         },
@@ -2184,7 +2184,7 @@
           },
           "values": [],
           "note": {
-            "zh-CN": "过敏反应是临床诊断，胸片正常不改变处理。",
+            "zh-CN": "严重过敏反应是临床诊断，胸片正常不改变处理。",
             "en": "Anaphylaxis is a clinical diagnosis; a normal chest film does not change management."
           }
         }
@@ -2207,7 +2207,7 @@
           "text": { "zh-CN": "未见肺动脉栓塞；双肺清晰；心脏大小正常。", "en": "No pulmonary embolism; clear lungs; normal heart size." },
           "values": [],
           "note": {
-            "zh-CN": "无指征：在过敏反应观察期内将患者移出抢救区并注射碘对比剂，增加风险且延误观察，不改变诊断。",
+            "zh-CN": "无指征：在严重过敏反应观察期内将患者移出抢救区并注射碘对比剂，增加风险且延误观察，不改变诊断。",
             "en": "Not indicated: moving a patient out of resus during an anaphylactic reaction and giving iodinated contrast adds risk and interrupts observation without changing the diagnosis."
           }
         },
@@ -2215,7 +2215,7 @@
           "text": { "zh-CN": "未见肺动脉栓塞；双肺清晰；心脏大小正常。", "en": "No pulmonary embolism; clear lungs; normal heart size." },
           "values": [],
           "note": {
-            "zh-CN": "无指征：在过敏反应观察期内将患者移出抢救区并注射碘对比剂，增加风险且延误观察，不改变诊断。",
+            "zh-CN": "无指征：在严重过敏反应观察期内将患者移出抢救区并注射碘对比剂，增加风险且延误观察，不改变诊断。",
             "en": "Not indicated: moving a patient out of resus during an anaphylactic reaction and giving iodinated contrast adds risk and interrupts observation without changing the diagnosis."
           }
         }
@@ -2608,7 +2608,7 @@
       "maxDoses": 1,
       "contraindicatedWhen": { "always": true },
       "harm": {
-        "zh-CN": "把肌注剂量（0.5 mg、1 mg/mL）直接静推可引起严重高血压、室性心律失常、心肌缺血、肺水肿甚至颅内出血。静脉肾上腺素只用于心脏骤停（1 mg），或由有经验的医生在持续监护下以稀释液滴定输注治疗难治性过敏反应。",
+        "zh-CN": "把肌注剂量（0.5 mg、1 mg/mL）直接静推可引起严重高血压、室性心律失常、心肌缺血、肺水肿甚至颅内出血。静脉肾上腺素只用于心脏骤停（1 mg），或由有经验的医生在持续监护下以稀释液滴定输注治疗难治性严重过敏反应。",
         "en": "Pushing the IM dose (0.5 mg of 1 mg/mL) intravenously can cause severe hypertension, ventricular arrhythmias, myocardial ischaemia, pulmonary oedema and even intracranial haemorrhage. IV adrenaline is for cardiac arrest (1 mg) or as a dilute, titrated infusion by experienced clinicians with continuous monitoring for refractory anaphylaxis."
       },
       "response": {
@@ -2666,7 +2666,7 @@
       "name": { "zh-CN": "扶她坐直或站起来", "en": "Sit her upright or help her stand" },
       "kind": "positioning",
       "aliases": {
-        "zh-CN": ["坐起来", "坐直", "扶她坐起", "站起来", "端坐", "坐着", "让她坐起来", "半卧位"],
+        "zh-CN": ["坐起来", "坐直", "扶她坐起", "站起来", "端坐", "坐着", "让她坐起来"],
         "en": ["sit up", "sit upright", "stand up", "sit her up", "upright", "help her stand", "prop her up"]
       },
       "requires": [],
@@ -2704,7 +2704,7 @@
       "maxDoses": 1,
       "contraindicatedWhen": { "always": true },
       "harm": {
-        "zh-CN": "过敏反应患者不能步行或坐轮椅转运——突然直立可引起心脏骤停。应在现场先给予肌注肾上腺素，待推床到达后平卧、吸氧、持续监护下转运。",
+        "zh-CN": "严重过敏反应患者不能步行或坐轮椅转运——突然直立可引起心脏骤停。应在现场先给予肌注肾上腺素，待推床到达后平卧、吸氧、持续监护下转运。",
         "en": "A patient in anaphylaxis must not walk or be sat in a wheelchair — sudden uprightness can cause cardiac arrest. Give IM adrenaline where she is, then transfer lying flat on a trolley with oxygen and monitoring."
       },
       "response": {
@@ -2756,10 +2756,10 @@
     },
     {
       "id": "remove-sting",
-      "name": { "zh-CN": "去除螫刺", "en": "Remove the sting" },
+      "name": { "zh-CN": "去除螫针", "en": "Remove the sting" },
       "kind": "procedure",
       "aliases": {
-        "zh-CN": ["拔刺", "去除螫刺", "刮掉毒刺", "取出蜂刺", "除刺"],
+        "zh-CN": ["拔刺", "去除螫刺", "刮掉毒刺", "取出蜂刺", "除刺", "去除螫针", "拔螫针"],
         "en": ["remove sting", "remove stinger", "scrape sting", "flick out", "take out the sting"]
       },
       "requires": [],
@@ -2767,7 +2767,7 @@
       "maxDoses": 1,
       "indicatedWhen": { "always": true },
       "response": {
-        "zh-CN": "你用卡片边缘把螫刺连同毒囊刮了出来，局部风团约3 cm。（蜇后约1分钟内毒液基本已注入——去除螫刺要快，但不能代替或延误全身治疗。）",
+        "zh-CN": "你用卡片边缘把螫针连同毒囊刮了出来，局部风团约3 cm。（蜇后约1分钟内毒液基本已注入——去除螫针要快，但不能代替或延误全身治疗。）",
         "en": "You scrape the stinger and venom sac out with the edge of a card; 3 cm local wheal. (Most venom is delivered within the first minute — remove it fast, but it never replaces or delays systemic treatment.)"
       }
     },
@@ -2797,12 +2797,12 @@
       "name": { "zh-CN": "晶体液快速静脉输注", "en": "IV crystalloid bolus" },
       "kind": "fluid",
       "aliases": {
-        "zh-CN": ["补液", "扩容", "晶体液", "生理盐水", "乳酸林格", "林格液", "快速补液", "液体复苏", "输液", "快速输液", "冲液体"],
+        "zh-CN": ["补液", "扩容", "晶体液", "生理盐水", "乳酸林格", "林格液", "快速补液", "液体复苏", "输液", "快速输液", "冲液体", "乳酸钠林格", "复方乳酸钠"],
         "en": ["fluid bolus", "fluids", "crystalloid", "saline", "hartmann", "ringer", "iv fluids", "fluid challenge", "bolus", "500ml", "nacl bolus", "plasmalyte"]
       },
       "excludeKeywords": { "zh-CN": ["肾上腺素"], "en": ["adrenaline", "epinephrine"] },
       "dose": {
-        "zh-CN": "晶体液（复方乳酸钠或0.9%氯化钠）500–1000 mL 加压快速静脉输注，每次后评估，按需重复",
+        "zh-CN": "晶体液（乳酸钠林格液或0.9%氯化钠）500–1000 mL 加压快速静脉输注，每次后评估，按需重复",
         "en": "Crystalloid (Hartmann's or 0.9% sodium chloride) 500–1000 mL as a rapid IV bolus (pressure bag); reassess after each bolus and repeat as needed"
       },
       "requires": [],
@@ -2859,7 +2859,9 @@
       "requires": [],
       "risk": "low",
       "maxDoses": 1,
-      "indicatedWhen": { "all": [{ "intervened": "adrenaline-im" }, { "vital": "sbp", "op": "gte", "value": 90 }] },
+      "indicatedWhen": {
+        "all": [{ "intervened": "adrenaline-im" }, { "phase": "ed" }, { "vital": "sbp", "op": "gte", "value": 90 }]
+      },
       "contraindicatedWhen": { "not": { "intervened": "adrenaline-im" } },
       "harm": {
         "zh-CN": "抗组胺药只缓解皮肤症状，不能治疗气道水肿、支气管痉挛或休克；在肾上腺素之前或代替肾上腺素使用会延误救命治疗。且舌肿、声音嘶哑时口服有误吸风险。",
@@ -2979,7 +2981,7 @@
         "en": ["prescribe auto-injector", "auto-injector", "autoinjector", "epipen", "adrenaline pen", "aai", "jext", "prescribe epipen", "epi pen", "two auto-injectors"]
       },
       "dose": {
-        "zh-CN": "2支成人肾上腺素自动注射笔（0.3 mg或0.5 mg，依当地处方集），随身携带；现场演示与回示；书面过敏反应应急计划",
+        "zh-CN": "2支成人肾上腺素自动注射笔（0.3 mg或0.5 mg，依当地处方集），随身携带；现场演示与回示；书面严重过敏反应应急计划",
         "en": "Two adult adrenaline auto-injectors (0.3 mg or 0.5 mg per local formulary) to carry at all times; hands-on training with teach-back; written anaphylaxis action plan"
       },
       "requires": [],
@@ -2987,7 +2989,7 @@
       "maxDoses": 1,
       "indicatedWhen": { "intervened": "adrenaline-im" },
       "response": {
-        "zh-CN": "护士/药师用训练笔逐步示范并让她回示：出现症状→立即在大腿外侧注射→平躺（呼吸困难时可坐起）→呼叫急救→5分钟无改善用第二支。给她一份书面过敏反应应急计划。",
+        "zh-CN": "护士/药师用训练笔逐步示范并让她回示：出现症状→立即在大腿外侧注射→平躺（呼吸困难时可坐起）→呼叫急救→5分钟无改善用第二支。给她一份书面严重过敏反应应急计划。",
         "en": "The nurse/pharmacist demonstrates with a trainer pen and she teaches it back: symptoms → inject into the outer thigh at once → lie down (sit up if breathing is the problem) → call emergency services → second pen after 5 min if no better. She receives a written anaphylaxis action plan."
       }
     },
@@ -3511,8 +3513,8 @@
         {
           "id": "airway",
           "text": {
-            "zh-CN": "气道受累：口唇和舌肿胀、声音嘶哑、喉部发紧",
-            "en": "Airway involvement: lip and tongue swelling, hoarse voice, throat tightness"
+            "zh-CN": "气道受累：声音嘶哑、喉部发紧、吞咽困难，伴舌及悬雍垂肿胀",
+            "en": "Airway involvement: hoarse voice, throat tightness and difficulty swallowing, with tongue and uvular swelling"
           },
           "correct": true,
           "feedback": {
@@ -3540,11 +3542,14 @@
         },
         {
           "id": "skin",
-          "text": { "zh-CN": "皮肤黏膜受累：全身荨麻疹和潮红", "en": "Skin/mucosal involvement: generalised urticaria and flushing" },
+          "text": {
+            "zh-CN": "皮肤黏膜受累：全身荨麻疹、潮红及口唇肿胀",
+            "en": "Skin/mucosal involvement: generalised urticaria, flushing and lip swelling"
+          },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确（支持性）。皮肤表现与气道/呼吸/循环问题同时出现即符合标准；但约10–20%的过敏反应没有皮疹，单纯荨麻疹也不等于过敏反应。",
-            "en": "Correct (supportive). Skin features plus an airway/breathing/circulation problem meet the criteria — but 10–20% of anaphylaxis has no rash, and urticaria alone is not anaphylaxis."
+            "zh-CN": "正确（支持性）。皮肤黏膜表现与气道/呼吸/循环问题同时出现即符合标准；但约10–20%的严重过敏反应没有皮疹，单纯荨麻疹也不等于严重过敏反应。",
+            "en": "Correct (supportive). Skin/mucosal features plus an airway/breathing/circulation problem meet the criteria — but 10–20% of anaphylaxis has no rash, and urticaria alone is not anaphylaxis."
           }
         },
         {
@@ -3552,7 +3557,7 @@
           "text": { "zh-CN": "必须先等到类胰蛋白酶升高才能确诊", "en": "A raised tryptase is needed before the diagnosis can be made" },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。过敏反应是临床诊断；类胰蛋白酶数小时后才回报、早期可正常，只用于事后佐证。",
+            "zh-CN": "错误。严重过敏反应是临床诊断；类胰蛋白酶数小时后才回报、早期可正常，只用于事后佐证。",
             "en": "Incorrect. Anaphylaxis is a clinical diagnosis; tryptase takes hours, may be normal early and only supports the diagnosis afterwards."
           }
         },
@@ -3613,7 +3618,7 @@
           "text": { "zh-CN": "氯苯那敏10 mg静注加氢化可的松200 mg静注", "en": "Chlorphenamine 10 mg IV plus hydrocortisone 200 mg IV" },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。二者都不能治疗气道水肿、支气管痉挛或休克；以它们代替肾上腺素是过敏反应死亡的常见可避免因素。",
+            "zh-CN": "错误。二者都不能治疗气道水肿、支气管痉挛或休克；以它们代替肾上腺素是严重过敏反应死亡的常见可避免因素。",
             "en": "Incorrect. Neither treats airway oedema, bronchospasm or shock; using them instead of adrenaline is a classic avoidable factor in anaphylaxis deaths."
           }
         },
@@ -3706,8 +3711,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。激素和抗组胺药都不能预防或治疗再次发生的过敏反应；她需要肾上腺素笔。",
-            "en": "Incorrect. Steroids and antihistamines neither prevent nor treat a further reaction; she needs auto-injectors."
+            "zh-CN": "错误。激素和抗组胺药都不能预防或治疗再次发生的严重过敏反应；她需要肾上腺素笔。",
+            "en": "Incorrect. Steroids and antihistamines neither prevent nor treat a further anaphylactic reaction; she needs auto-injectors."
           }
         },
         {
@@ -3777,7 +3782,7 @@
       "domain": "diagnosis",
       "weight": 1,
       "text": {
-        "zh-CN": "首次作答即识别过敏反应的临床诊断标准",
+        "zh-CN": "首次作答即识别严重过敏反应的临床诊断标准",
         "en": "Recognised the clinical criteria for anaphylaxis at the first attempt"
       },
       "met": { "decidedFirstTry": "dx-criteria" }
@@ -3940,7 +3945,7 @@
       "role": "nurse",
       "name": { "zh-CN": "护士 周敏", "en": "Nurse Zhou Min" },
       "knowledge": {
-        "zh-CN": "我是心内科病房护士周敏，刚好在花园边的楼门口，听见呼救就拿上最近的病区急救包跑过来了。到场时测得：血压78/44 mmHg，心率128次/分，呼吸26次/分，SpO₂ 92%（空气）。急救包里有：肾上腺素1 mg/mL（1:1000）安瓿×5，1 mL和2 mL注射器与针头；便携氧气瓶（最高15 L/min）、储氧面罩和雾化面罩；简易呼吸器；18G/20G留置针、采血管和止血带；晶体液（复方乳酸钠、0.9%氯化钠）500 mL×2袋及输液器、加压袋；沙丁胺醇雾化液5 mg；西替利嗪10 mg片；氯苯那敏10 mg注射液；氢化可的松100 mg×2；便携脉氧仪、自动血压计、血糖仪；手套、毯子。没有除颤仪、吸引器和心电图机——要等医院急救小组带推床过来（呼叫后约3–4分钟），或回急诊。急诊离花园约150米。心电图机、影像和血气分析仪都在急诊，抽的血可以送检验科。我会复述每条医嘱（药名、浓度、剂量、途径、部位）并记录给药时间；不确定的医嘱我会提出疑问。我不做诊断。",
+        "zh-CN": "我是心内科病房护士周敏，刚好在花园边的楼门口，听见呼救就拿上最近的病区急救包跑过来了。到场时测得：血压78/44 mmHg，心率128次/分，呼吸26次/分，SpO₂ 92%（空气）。急救包里有：肾上腺素1 mg/mL（1:1000）安瓿×5，1 mL和2 mL注射器与针头；便携氧气瓶（最高15 L/min）、储氧面罩和雾化面罩；简易呼吸器；18G/20G留置针、采血管和止血带；晶体液（乳酸钠林格液、0.9%氯化钠）500 mL×2袋及输液器、加压袋；沙丁胺醇雾化液5 mg；西替利嗪10 mg片；氯苯那敏10 mg注射液；氢化可的松100 mg×2；便携脉氧仪、自动血压计、血糖仪；手套、毯子。没有除颤仪、吸引器和心电图机——要等医院急救小组带推床过来（呼叫后约3–4分钟），或回急诊。急诊离花园约150米。心电图机、影像和血气分析仪都在急诊，抽的血可以送检验科。我会复述每条医嘱（药名、浓度、剂量、途径、部位）并记录给药时间；不确定的医嘱我会提出疑问。我不做诊断。",
         "en": "I'm Zhou Min, a cardiology ward nurse. I was at the building door by the garden, heard the shout, grabbed the nearest ward emergency bag and ran over. On arrival: BP 78/44 mmHg, HR 128/min, RR 26/min, SpO₂ 92% on air. The bag has: adrenaline 1 mg/mL (1:1000) ampoules ×5, 1 mL and 2 mL syringes and needles; a portable oxygen cylinder (up to 15 L/min) with non-rebreather and nebuliser masks; a bag-valve-mask; 18G/20G cannulas, blood tubes and tourniquet; crystalloid (Hartmann's, 0.9% sodium chloride) 500 mL ×2 with giving sets and a pressure bag; salbutamol nebules 5 mg; cetirizine 10 mg tablets; chlorphenamine 10 mg injection; hydrocortisone 100 mg ×2; portable pulse oximeter, automated BP cuff and glucometer; gloves and a blanket. No defibrillator, suction or ECG machine — those come with the hospital emergency team and trolley (about 3–4 min after the call) or in the ED, about 150 m away. The ECG machine, imaging and the blood-gas analyser are in the ED; blood samples can go to the lab. I read back every order (drug, concentration, dose, route, site) and note the time; I will question an order I'm unsure about. I don't make diagnoses."
       },
       "interprets": ["poc-glucose"]
@@ -3975,7 +3980,7 @@
       "role": "pharmacist",
       "name": { "zh-CN": "急诊药师", "en": "ED pharmacist" },
       "knowledge": {
-        "zh-CN": "负责肾上腺素自动注射笔的处方核对与使用培训：开2支、随身携带、注意有效期；用训练笔示范并要求回示；大腿外侧注射，可隔衣；用后平躺、呼叫急救，5分钟无改善用第二支；提供书面过敏反应应急计划。不讨论诊断。",
+        "zh-CN": "负责肾上腺素自动注射笔的处方核对与使用培训：开2支、随身携带、注意有效期；用训练笔示范并要求回示；大腿外侧注射，可隔衣；用后平躺、呼叫急救，5分钟无改善用第二支；提供书面严重过敏反应应急计划。不讨论诊断。",
         "en": "Checks the auto-injector prescription and trains her: two pens, carried at all times, watch the expiry date; trainer-pen demonstration with teach-back; inject into the outer thigh, through clothing if needed; then lie down and call emergency services, second pen after 5 min if no better; provides a written anaphylaxis action plan. Does not discuss the diagnosis."
       }
     }
@@ -3983,8 +3988,8 @@
   "debrief": {
     "title": { "zh-CN": "复盘：花园蜂蜇后的严重过敏反应", "en": "Debrief: anaphylaxis after a bee sting in the garden" },
     "conclusion": {
-      "zh-CN": "蜜蜂（膜翅目）毒液所致严重过敏反应（anaphylaxis），同时累及气道（口唇/舌血管性水肿、声音嘶哑）、呼吸（支气管痉挛，SpO₂ 92%）和循环（血压78/44 mmHg、头晕）——即过敏性休克（按Brown分级为重度：SpO₂ ≤92%、收缩压<90 mmHg）。在现场给予肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧并于5分钟再评估后重复、平卧抬腿、高流量吸氧、晶体液扩容及沙丁胺醇雾化后好转，平卧转运至急诊。1–2小时定时样本类胰蛋白酶27.4 µg/L，明显高于参考上限，支持肥大细胞活化（初始样本数值取决于采样时间，过早可正常；最终需与恢复≥24小时后的基础值比较）。处置：因严重呼吸受累，症状缓解后至少观察12小时（留院过夜），出院带2支肾上腺素自动注射笔并完成培训和书面应急计划，转诊变态反应专科评估蜂毒免疫治疗。",
-      "en": "Severe honeybee (Hymenoptera) venom anaphylaxis involving airway (lip/tongue angio-oedema, hoarseness), breathing (bronchospasm, SpO₂ 92%) and circulation (BP 78/44 mmHg with dizziness) — anaphylactic shock (severe on the Brown grading: SpO₂ ≤ 92% and systolic BP < 90 mmHg). She improved on scene with IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh, repeated after the 5-minute reassessment, lying flat with legs raised, high-flow oxygen, a crystalloid bolus and nebulised salbutamol, and was transferred lying flat to the ED. The timed 1–2 h tryptase of 27.4 µg/L, well above the upper reference limit, supports mast-cell activation (the initial value depends on when it was drawn and may be normal if very early; it is finally interpreted against a baseline taken ≥ 24 h after recovery). Disposition: because of severe respiratory compromise, observation for at least 12 h after resolution (overnight), discharge with two adrenaline auto-injectors, training and a written action plan, and referral to allergy for venom immunotherapy assessment."
+      "zh-CN": "蜜蜂（膜翅目）毒液所致严重过敏反应（anaphylaxis），同时累及皮肤黏膜（全身荨麻疹、口唇血管性水肿）、气道（舌及悬雍垂水肿、声音嘶哑）、呼吸（支气管痉挛，SpO₂ 92%）和循环（血压78/44 mmHg、头晕）——即过敏性休克（按Brown分级为重度：SpO₂ ≤92%、收缩压<90 mmHg）。在现场给予肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧并于5分钟再评估后重复、平卧抬腿、高流量吸氧、晶体液扩容及沙丁胺醇雾化后好转，平卧转运至急诊。1–2小时定时样本类胰蛋白酶27.4 µg/L，明显高于参考上限，支持肥大细胞活化（初始样本数值取决于采样时间，过早可正常；最终需与恢复≥24小时后的基础值比较）。处置：因严重呼吸受累，症状缓解后至少观察12小时（留院过夜），出院带2支肾上腺素自动注射笔并完成培训和书面应急计划，转诊变态反应专科评估蜂毒免疫治疗。",
+      "en": "Severe honeybee (Hymenoptera) venom anaphylaxis involving skin/mucosa (generalised urticaria, lip angio-oedema), airway (tongue and uvular swelling, hoarseness), breathing (bronchospasm, SpO₂ 92%) and circulation (BP 78/44 mmHg with dizziness) — anaphylactic shock (severe on the Brown grading: SpO₂ ≤ 92% and systolic BP < 90 mmHg). She improved on scene with IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh, repeated after the 5-minute reassessment, lying flat with legs raised, high-flow oxygen, a crystalloid bolus and nebulised salbutamol, and was transferred lying flat to the ED. The timed 1–2 h tryptase of 27.4 µg/L, well above the upper reference limit, supports mast-cell activation (the initial value depends on when it was drawn and may be normal if very early; it is finally interpreted against a baseline taken ≥ 24 h after recovery). Disposition: because of severe respiratory compromise, observation for at least 12 h after resolution (overnight), discharge with two adrenaline auto-injectors, training and a written action plan, and referral to allergy for venom immunotherapy assessment."
     },
     "keyReasoning": [
       {
@@ -3992,7 +3997,7 @@
         "en": "The diagnosis is clinical: sudden onset after a likely allergen with airway and/or breathing and/or circulation problems (usually with skin changes). Do not wait for a BP threshold or a tryptase."
       },
       {
-        "zh-CN": "肌注肾上腺素是唯一的一线药物：成人0.5 mg = 1 mg/mL溶液0.5 mL，大腿前外侧；5分钟无改善就重复。两剂后仍无改善即难治性过敏反应，需专家协助启动肾上腺素静脉输注。",
+        "zh-CN": "肌注肾上腺素是唯一的一线药物：成人0.5 mg = 1 mg/mL溶液0.5 mL，大腿前外侧；5分钟无改善就重复。两剂后仍无改善即难治性严重过敏反应，需专家协助启动肾上腺素静脉输注。",
         "en": "IM adrenaline is the only first-line drug: adults 0.5 mg = 0.5 mL of 1 mg/mL into the anterolateral thigh, repeated after 5 min if no better. No improvement after two doses = refractory anaphylaxis → expert help and an adrenaline infusion."
       },
       {
@@ -4048,7 +4053,8 @@
       "Golden DBK, Wang J, Waserman S, et al. Anaphylaxis: A 2023 practice parameter update. Ann Allergy Asthma Immunol. 2024;132(2):124-176.",
       "Shaker MS, Wallace DV, Golden DBK, et al. Anaphylaxis—a 2020 practice parameter update, systematic review, and GRADE analysis. J Allergy Clin Immunol. 2020;145(4):1082-1123.",
       "National Institute for Health and Care Excellence. Anaphylaxis: assessment and referral after emergency treatment (NG258). 2026 (replaces CG134, 2011).",
-      "Sturm GJ, Varga EM, Roberts G, et al. EAACI guidelines on allergen immunotherapy: Hymenoptera venom allergy. Allergy. 2018;73(4):744-764."
+      "Sturm GJ, Varga EM, Roberts G, et al. EAACI guidelines on allergen immunotherapy: Hymenoptera venom allergy. Allergy. 2018;73(4):744-764.",
+      "中国医学救援协会. 严重过敏反应诊断和早期治疗规范（团体标准 T/CADERM 3008—2019）. 2019."
     ],
     "notice": {
       "zh-CN": "本评分为教学脚本指标，并非经过验证的能力评估。",

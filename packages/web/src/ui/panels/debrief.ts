@@ -10,7 +10,7 @@ import type { AssessmentReport, CaseDefinition } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import type { AssessmentView } from "../../app/store.js";
 import { ct, joinList, tr, trMaybe } from "../../i18n/index.js";
-import { clear, h } from "../dom.js";
+import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { investigationName } from "./common.js";
 
@@ -165,7 +165,8 @@ export function debriefPanel(app: App): () => PanelView {
       const decisions = c.decisions.length;
       const firstTry = report ? report.decisions.filter((d) => d.firstTryCorrect).length : 0;
       const d = c.debrief;
-      content.append(
+      mount(
+        content,
         h("div", { style: "text-align:center" }, h("div", { class: "done-mark" }, "✓"), h("h3", null, tr("debrief.lead")), h("p", null, tr("debrief.leadSub"))),
         !s.finished ? h("p", { class: "notice" }, tr("debrief.notFinished")) : null,
         h(

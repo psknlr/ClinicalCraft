@@ -38,7 +38,7 @@ export const RESUME_FLAGS: FlagSpec[] = [
 
 /** Headless flags (exec / -p). */
 export const EXEC_FLAGS: FlagSpec[] = [
-  { name: "print", short: "p", type: "string", valueName: "<prompt>", description: { en: "Run headless with this prompt (same as `exec <prompt>`)", zh: "以无界面模式运行该提示（等同 `exec <prompt>`）" } },
+  { name: "print", short: "p", type: "string", optionalValue: true, valueName: "[prompt]", description: { en: "Run headless with this prompt (same as `exec <prompt>`)", zh: "以无界面模式运行该提示（等同 `exec <prompt>`）" } },
   { name: "case", type: "string", valueName: "<id>", description: { en: "Case id", zh: "病例 ID" } },
   { name: "autopilot", type: "boolean", description: { en: "Let the clinician agent drive; the prompt becomes its goal", zh: "由临床医生智能体自动接诊；提示作为其目标" } },
   { name: "output-format", type: "string", valueName: "<fmt>", choices: OUTPUT_FORMATS, description: { en: "text | json | stream-json", zh: "text | json | stream-json" } },

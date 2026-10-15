@@ -57,11 +57,11 @@ cardioembolic (AF). NIHSS 14, ASPECTS 9.
    * Ask about anticoagulants, bleeding history and recent surgery or trauma.
    * Decide that he is eligible once BP is < 185/110 mmHg, **without waiting for coagulation or
      platelet results**.
-4. **Control BP and start thrombolysis.**
+4. **Deliver acute treatment safely** (BP control and thrombolysis).
    * Use IV labetalol, nicardipine or urapidil.
    * Then give alteplase 0.9 mg/kg or tenecteplase 0.25 mg/kg.
    * Door-to-needle target ≤ 60 min.
-5. **Thrombectomy and post-thrombolysis care.**
+5. **Definitive treatment and ongoing care** (thrombectomy and post-thrombolysis care).
    * Read the CTA and confirm thrombectomy eligibility (select-all decision).
    * Call neurointervention and transfer him (bridging).
    * Order the post-lysis monitoring bundle.
@@ -136,14 +136,15 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
     * anticoagulant status is unknown (not asked **and** coagulation not read);
     * SBP > 185 or DBP > 110;
     * the other lytic has already been given;
-    * flag `sich` is set.
+    * flag `sich` is set;
+    * flag `recanalised` is set (thrombectomy has already reperfused him — no IV lysis afterwards).
   * If a prerequisite was missing, event `lysis-checklist-incomplete` sets `lysis-unsafe`.
   * If BP was still > 185/110 at the moment of lysis, event `sich` fires: **suspected symptomatic
     ICH**.
     * GCS 9, BP 212/116, headache, vomiting.
     * Flags `sich` and `lysis-bp-uncontrolled`.
-    * The `sich-protocol` intervention is indicated only then: stop the lytic, then cryoprecipitate
-      or TXA.
+    * The `sich-protocol` intervention is indicated only then: stop any running lytic, then
+      cryoprecipitate and/or TXA, haematology and neurosurgical review.
     * Transfer for thrombectomy becomes contraindicated.
     * This branch is a deterministic teaching device with a compressed timeline.
 * **Time pressure.**
@@ -157,8 +158,10 @@ The same numbers are machine-readable in `extensions.clinicalScores`.
   | 90 min, no lysis or transfer | event `penumbra-loss`: GCS 11, forced gaze, plegic right side |
 
   The GCS trend stops when lysis is given or he is transferred.
-* **Waiting for labs.** If the coagulation or blood-count result becomes ready before any lysis,
-  flag `waited-for-labs` is set.
+* **Waiting for labs.** If, at 45 min or later, the coagulation or blood-count result is ready and no
+  lysis has been given, flag `waited-for-labs` is set. A learner who sent bloods early and lysed
+  within 45 min (the high-performing DTN target) is therefore not penalised just because a result
+  happened to come back first.
 * **Reperfusion.** When the DSA result is ready in the `angio` phase (and there was no sICH), event
   `reperfusion` fires: GCS 14, BP 168/94 baseline (shown as about 148/84 with the persisting
   antihypertensive effect), and the patient starts producing short phrases.
@@ -236,13 +239,16 @@ items, has no contraindicated actions and no critical alarms, and reads every re
   * Do not wait for a lysis response.
   * Do not skip IVT in an eligible patient.
   * Within 6 h, perfusion imaging is unnecessary.
-  * ESO (2023) suggests tenecteplase over alteplase when thrombectomy is planned.
+  * The AHA/ASA 2026 guideline recommends either agent; ESO (2023) suggests tenecteplase over
+    alteplase when thrombectomy is planned.
 * **Missed prevention.** Long-standing AF went un-anticoagulated (CHA₂DS₂-VASc 2), and a probable
   TIA three weeks ago went unassessed. After the stroke his CHA₂DS₂-VASc is 4. The timing of oral
   anticoagulation is decided after 24-h imaging and is outside this case's scope.
 
 ## Guideline references
 
+* Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic
+  Stroke (AHA/ASA). *Stroke.* 2026;57.
 * Powers WJ, et al. 2019 Update to the 2018 Guidelines for the Early Management of Acute Ischemic
   Stroke (AHA/ASA). *Stroke.* 2019;50(12):e344–e418.
 * Berge E, et al. ESO guidelines on intravenous thrombolysis for acute ischaemic stroke.

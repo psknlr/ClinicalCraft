@@ -2,7 +2,7 @@
  * Per-invocation CLI context: streams, env, cwd, UI locale, colour palettes,
  * exit codes and the settings layer built from session flags.
  */
-import { resolve } from "node:path";
+import { isAbsolute, relative, resolve } from "node:path";
 import { loadSettings, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { createPalette, colorEnabled, type Env, type Palette } from "./ansi.js";
 import { flagBool, flagPositiveInt, flagString, UsageError, type ParsedArgs } from "./argv.js";
@@ -63,6 +63,15 @@ export interface CliContext {
   debug(text: string): void;
   /** Resolve a user-supplied path against `cwd`. */
   path(p: string): string;
+  /** A path for display: relative when inside `cwd`, else absolute. */
+  show(p: string): string;
+}
+
+/** `file` relative to `cwd` when it lies inside it, else the absolute path. */
+export function displayPath(cwd: string, file: string): string {
+  const abs = resolve(cwd, file);
+  const rel = relative(cwd, abs);
+  return rel && !rel.startsWith("..") && !isAbsolute(rel) ? rel : abs;
 }
 
 export interface ContextOptions {
@@ -93,6 +102,7 @@ export function createContext(o: ContextOptions): CliContext {
       if (o.verbose) o.io.stderr.write(`${ctx.err.dim(`[debug] ${text}`)}\n`);
     },
     path: (p) => resolve(o.cwd, p),
+    show: (p) => displayPath(o.cwd, p),
   };
   return ctx;
 }

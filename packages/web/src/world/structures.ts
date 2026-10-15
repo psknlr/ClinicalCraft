@@ -248,17 +248,24 @@ export function setDoorOpen(door: DoorRecord, open: boolean, locale: string): vo
   door.target.hint = open ? S.doorClose : S.doorOpen;
 }
 
-/** Per-frame door animation (V4 lerp, factor dt·9). */
-export function animateDoors(doors: DoorRecord[], dt: number): void {
+/** Per-frame door animation (V4 lerp, factor dt·9). Returns whether any leaf visibly moved (shadow refresh). */
+export function animateDoors(doors: DoorRecord[], dt: number): boolean {
   const k = Math.min(1, dt * 9);
+  let moved = false;
   for (const d of doors)
     for (const l of d.leaves) {
-      if (l.mode === "swing") l.pivot.rotation.y += ((d.open ? l.openValue : 0) - l.pivot.rotation.y) * k;
-      else {
+      if (l.mode === "swing") {
+        const delta = ((d.open ? l.openValue : 0) - l.pivot.rotation.y) * k;
+        if (Math.abs(delta) > 1e-4) moved = true;
+        l.pivot.rotation.y += delta;
+      } else {
         const goal = (l.baseX ?? 0) + (d.open ? l.openValue : 0);
-        l.pivot.position.x += (goal - l.pivot.position.x) * k;
+        const delta = (goal - l.pivot.position.x) * k;
+        if (Math.abs(delta) > 1e-4) moved = true;
+        l.pivot.position.x += delta;
       }
     }
+  return moved;
 }
 
 /** Building containing a point (for room heights / lamp y). */
@@ -370,9 +377,17 @@ export function buildStructures(ctx: BuildContext): WallRecord[] {
       done.push([wl.from, wl.to]);
       built.set(key, done);
     }
+    const rodMat = ctx.lib.has("steel") ? "steel" : "coal";
     for (const l of r.lights ?? []) {
       ctx.batch.add("lamp", l.x, bH - 0.27, l.z, 2.4, 0.08, 1.2);
       ctx.lights.push({ x: l.x, y: bH - 1.3, z: l.z, color: "#fff2d3", intensity: 13, distance: 11, decay: 2 });
+      if (building) {
+        // pendant rods up to the ceiling (or the skylight glazing) so fixtures do not float
+        const underSky = (building.roof?.skylights ?? []).some((s) => Math.abs(l.x - s.x) < s.w / 2 + 1.2 && Math.abs(l.z - s.z) < s.d / 2 + 0.6);
+        const top = underSky ? bH + 0.16 : bH;
+        const y0 = bH - 0.23;
+        if (top - y0 > 0.02) for (const dx of [-0.95, 0.95]) ctx.batch.add(rodMat, l.x + dx, (y0 + top) / 2, l.z, 0.04, top - y0, 0.04);
+      }
     }
     if (r.sign) {
       const side: Side = r.sign.side ?? "n";

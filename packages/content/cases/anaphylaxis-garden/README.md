@@ -169,7 +169,10 @@ brings SBP to ≥ 90. The other scripted events are:
   up and legs still raised. The `position-supine-legs` response models this.
 * **Adjuncts.**
   * Non-sedating oral antihistamine for skin symptoms only after
-    stabilisation, and only when she can swallow safely.
+    stabilisation, and only when she can swallow safely. `cetirizine-po` is
+    `indicated` only in the `ed` phase (tongue back to normal size, swallowing
+    easily); after adrenaline but while the tongue is still swollen
+    (`treated` / `ed-resus`) it is `neutral`.
   * Corticosteroids are not routine (RCUK 2021). Consider them only for
     refractory reactions or ongoing asthma or shock after initial
     resuscitation.
@@ -277,6 +280,8 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
   and referral after emergency treatment* (NG258). 2026 (replaces CG134, 2011).
 * Sturm GJ, Varga EM, Roberts G, et al. *EAACI guidelines on allergen
   immunotherapy: Hymenoptera venom allergy.* Allergy. 2018;73(4):744-764.
+* 中国医学救援协会. *严重过敏反应诊断和早期治疗规范*（团体标准
+  T/CADERM 3008—2019）. 2019.
 
 ## Authoring notes and known limitations
 

@@ -2,7 +2,7 @@
  * Terrain (V4 ground grid, paths, sand checker, pond, trees, flowers,
  * horizon ring and drifting clouds), generalised to facility data.
  */
-import { Group, Mesh } from "three";
+import { Group, InstancedMesh, Matrix4 } from "three";
 import type { BuildContext } from "./context.js";
 import { checkerMaterial, zoneCells } from "./buildzone.js";
 import { greedyRects, rectContains, type Rect } from "./geometry.js";
@@ -145,14 +145,22 @@ export function buildTerrain(ctx: BuildContext): { clouds: Group } {
   clouds.name = "clouds";
   const span = Math.max(60, Math.max(f.bounds.maxX - f.bounds.minX, f.bounds.maxZ - f.bounds.minZ) * 0.845);
   const rnd = v4Stream(7103, V4_STREAM_OFFSETS.clouds);
-  const cloudMat = ctx.lib.get("white");
-  for (let i = 0; i < (terrain.clouds ?? 14); i++) {
-    const x = cxw - span + rnd() * span * 2;
-    const z = czw - span + rnd() * span * 2;
-    const m = new Mesh(UNIT_BOX, cloudMat);
-    m.position.set(x, 20 + rnd() * 6, z);
-    m.scale.set(5 + rnd() * 8, 1.4, 3 + rnd() * 5);
-    clouds.add(m);
+  const n = terrain.clouds ?? 14;
+  if (n > 0) {
+    // one instanced draw call for all slabs (V4 drew one mesh each)
+    const mesh = new InstancedMesh(UNIT_BOX, ctx.lib.get("white"), n);
+    const m = new Matrix4();
+    for (let i = 0; i < n; i++) {
+      const x = cxw - span + rnd() * span * 2;
+      const z = czw - span + rnd() * span * 2;
+      const y = 20 + rnd() * 6;
+      m.makeScale(5 + rnd() * 8, 1.4, 3 + rnd() * 5).setPosition(x, y, z);
+      mesh.setMatrixAt(i, m);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.computeBoundingSphere();
+    mesh.name = "clouds";
+    clouds.add(mesh);
   }
   ctx.root.add(clouds);
   return { clouds };

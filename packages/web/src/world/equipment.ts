@@ -11,7 +11,7 @@ import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from
 import { roomAt } from "./region.js";
 import { createScreenTexture, type ScreenKind } from "./screens.js";
 import { strings, tx } from "./strings.js";
-import { UNIT_BOX } from "./voxels.js";
+import { UNIT_BOX, UNIT_PLANE } from "./voxels.js";
 
 type InteractionKind = Extract<InteractionTarget, { kind: "equipment" }>["interaction"];
 
@@ -59,7 +59,7 @@ export function surfaceTop(type: Pick<EquipmentType, "parts"> | undefined): numb
 export function buildPlacements(ctx: BuildContext): void {
   const f = ctx.facility;
   const S = strings(ctx.locale);
-  const black = ctx.lib.get(ctx.lib.has("black") ? "black" : "coal");
+  const blackId = ctx.lib.has("black") ? "black" : "coal";
   for (const p of f.placements) {
     const type = ctx.catalogs.equipment.get(p.type);
     if (!type) {
@@ -107,11 +107,17 @@ export function buildPlacements(ctx: BuildContext): void {
         const screenMat = live
           ? new MeshBasicMaterial({ map: sc.texture, toneMapped: false })
           : new MeshStandardMaterial({ map: sc.texture, emissiveMap: sc.texture, emissive: new Color(0xffffff), emissiveIntensity: screenKind === "text" ? 0.35 : 0.85, roughness: 0.6 });
-        const mats = [black, black, black, black, screenMat, black];
-        const mesh = new Mesh(UNIT_BOX, mats);
-        mesh.position.set(px, py, pz);
+        // housing: a batched black box (no extra draw call); display: one quad just proud of the
+        // +Z face (one draw call per screen instead of six for a multi-material box)
+        screenMat.polygonOffset = true;
+        screenMat.polygonOffsetFactor = -1;
+        screenMat.polygonOffsetUnits = -2;
+        ctx.batch.add(blackId, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
+        const mesh = new Mesh(UNIT_PLANE, screenMat);
+        const lift = part.s[2] / 2 + 0.003;
+        mesh.position.set(px + Math.sin(ry) * lift, py, pz + Math.cos(ry) * lift);
         mesh.rotation.y = ry;
-        mesh.scale.set(part.s[0], part.s[1], part.s[2]);
+        mesh.scale.set(part.s[0], part.s[1], 1);
         mesh.userData.owner = p.id;
         ctx.root.add(mesh);
         ctx.pickables.push(mesh);

@@ -888,7 +888,7 @@
       "id": "hx-sick-day-rules",
       "topic": "medications",
       "question": {
-        "zh-CN": "有没有人教过你生病时怎么调整胰岛素（病假规则）？",
+        "zh-CN": "有没有人教过你生病时怎么调整胰岛素（生病日规则）？",
         "en": "Has anyone taught you what to do with your insulin when you're ill — sick-day rules?"
       },
       "answer": {
@@ -898,6 +898,7 @@
       "keywords": {
         "zh-CN": [
           "病假规则",
+          "生病日规则",
           "生病时",
           "生病怎么办",
           "教过",
@@ -1409,8 +1410,8 @@
         "en": "Roughly how much do you weigh, and how tall are you?"
       },
       "answer": {
-        "zh-CN": "55公斤左右，这几天可能轻了点。身高一米六三。",
-        "en": "About 55 kilos — maybe a bit less these last few days. I'm one metre sixty-three."
+        "zh-CN": "平时57公斤左右，这几天估计掉了两公斤。身高一米六三。",
+        "en": "Usually about 57 kilos — probably a couple of kilos less these last few days. I'm one metre sixty-three."
       },
       "keywords": {
         "zh-CN": [
@@ -2049,8 +2050,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "呼吸平稳、深度正常，不再有深大呼吸；口唇湿润，末梢温暖；神志清楚，坐起来说想吃早饭；腹软，无压痛；呼气已无明显酮味。",
-        "en": "Breathing quiet and of normal depth — no longer Kussmaul; moist mucous membranes, warm peripheries; alert, sitting up and asking for breakfast; abdomen soft and non-tender; no obvious ketotic smell on the breath now."
+        "zh-CN": "呼吸平稳、深度正常，不再有深大呼吸；口唇湿润，末梢温暖；神志清楚，坐起来说想吃东西；腹软，无压痛；呼气已无明显酮味。",
+        "en": "Breathing quiet and of normal depth — no longer Kussmaul; moist mucous membranes, warm peripheries; alert, sitting up and asking for something to eat; abdomen soft and non-tender; no obvious ketotic smell on the breath now."
       },
       "phases": [
         "resolution"
@@ -2240,8 +2241,8 @@
         },
         "resolution": {
           "text": {
-            "zh-CN": "床旁毛细血管血β-羟丁酸：0.4 mmol/L。",
-            "en": "Point-of-care capillary β-hydroxybutyrate: 0.4 mmol/L."
+            "zh-CN": "床旁毛细血管血β-羟丁酸：0.2 mmol/L。",
+            "en": "Point-of-care capillary β-hydroxybutyrate: 0.2 mmol/L."
           },
           "values": [
             {
@@ -2249,7 +2250,7 @@
                 "zh-CN": "血β-羟丁酸（毛细血管）",
                 "en": "β-hydroxybutyrate (capillary)"
               },
-              "value": 0.4,
+              "value": 0.2,
               "unit": "mmol/L",
               "refLow": 0,
               "refHigh": 0.6,
@@ -3685,8 +3686,8 @@
       "results": {
         "resus": {
           "text": {
-            "zh-CN": "12导联心电图：窦性心动过速，118次/分，节律规整。PR间期0.16 s，QRS 0.08 s，电轴正常。广泛T波低平，V4–V6导联ST段压低0.5 mm；V2–V4导联可见明显U波（V2–V3中U波振幅大于T波），T–U融合致QT难以准确测量，QU间期约0.52 s。无T波高尖、无ST段抬高、无传导阻滞或心律失常。印象：窦性心动过速；T波低平、ST段轻度压低伴明显U波——符合低钾血症改变。",
-            "en": "12-lead ECG: sinus tachycardia, 118/min, regular. PR 0.16 s, QRS 0.08 s, normal axis. Widespread T-wave flattening with 0.5 mm ST depression in V4–V6; prominent U waves in V2–V4 (U taller than T in V2–V3); T–U fusion makes the QT hard to measure (QU interval about 0.52 s). No peaked T waves, no ST elevation, no conduction block or arrhythmia. Impression: sinus tachycardia; flat T waves, minor ST depression and prominent U waves — changes consistent with hypokalaemia."
+            "zh-CN": "12导联心电图：窦性心动过速，118次/分，节律规整。PR间期0.16 s，QRS 0.08 s，电轴正常。广泛T波低平，V4–V6导联ST段轻度压低（约0.5 mm）；V2–V3导联T波后可见U波，部分与其后的P波融合；QT约0.30 s（心率快时QTc难以准确评估）。无T波高尖、无ST段抬高、无传导阻滞或心律失常。印象：窦性心动过速；T波低平、ST段轻度压低伴U波——符合低钾血症改变。",
+            "en": "12-lead ECG: sinus tachycardia, 118/min, regular. PR 0.16 s, QRS 0.08 s, normal axis. Widespread T-wave flattening with about 0.5 mm ST depression in V4–V6; U waves after the T waves in V2–V3, partly merging with the following P waves; QT about 0.30 s (QTc unreliable at this rate). No peaked T waves, no ST elevation, no conduction block or arrhythmia. Impression: sinus tachycardia; flat T waves, minor ST depression and U waves — changes consistent with hypokalaemia."
           },
           "note": {
             "zh-CN": "无既往心电图可供对比。",
@@ -3770,8 +3771,8 @@
             }
           ],
           "note": {
-            "zh-CN": "酮症酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需脂肪酶/淀粉酶 > 3倍正常上限，或典型影像）。",
-            "en": "Amylase is often non-specifically raised in ketoacidosis (partly salivary); a normal lipase argues against acute pancreatitis (which needs lipase/amylase > 3× the upper limit or typical imaging)."
+            "zh-CN": "酮症酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需满足以下3项中的2项：典型腹痛、脂肪酶/淀粉酶 > 3倍正常上限、典型影像学表现）。",
+            "en": "Amylase is often non-specifically raised in ketoacidosis (partly salivary); a normal lipase argues against acute pancreatitis (diagnosis needs two of: typical pain, lipase/amylase > 3× the upper limit, typical imaging)."
           }
         },
         "k-replete": {
@@ -3804,8 +3805,8 @@
             }
           ],
           "note": {
-            "zh-CN": "酮症酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需脂肪酶/淀粉酶 > 3倍正常上限，或典型影像）。",
-            "en": "Amylase is often non-specifically raised in ketoacidosis (partly salivary); a normal lipase argues against acute pancreatitis (which needs lipase/amylase > 3× the upper limit or typical imaging)."
+            "zh-CN": "酮症酸中毒时淀粉酶常非特异性升高（部分为唾液型）；脂肪酶正常，不支持急性胰腺炎（诊断需满足以下3项中的2项：典型腹痛、脂肪酶/淀粉酶 > 3倍正常上限、典型影像学表现）。",
+            "en": "Amylase is often non-specifically raised in ketoacidosis (partly salivary); a normal lipase argues against acute pancreatitis (diagnosis needs two of: typical pain, lipase/amylase > 3× the upper limit, typical imaging)."
           }
         }
       }
@@ -3920,8 +3921,8 @@
       "results": {
         "resus": {
           "text": {
-            "zh-CN": "床旁胸片（AP位）：双肺野清晰，无实变、胸腔积液或气胸；心影大小正常；膈下未见游离气体。",
-            "en": "Portable chest X-ray (AP): clear lung fields, no consolidation, effusion or pneumothorax; normal heart size; no free gas under the diaphragm."
+            "zh-CN": "床旁胸片（半坐位，AP位）：双肺野清晰，无实变、胸腔积液或气胸；心影大小正常；膈下未见游离气体。",
+            "en": "Portable semi-erect chest X-ray (AP): clear lung fields, no consolidation, effusion or pneumothorax; normal heart size; no free gas under the diaphragm."
           }
         }
       }
@@ -3962,8 +3963,8 @@
             "en": "CT abdomen and pelvis with contrast: a few fluid-filled small-bowel loops without wall thickening or obstruction, compatible with enteritis; normal appendix; normal pancreas without peripancreatic stranding; no free gas or collection; kidneys, liver, gallbladder and spleen normal."
           },
           "note": {
-            "zh-CN": "本例腹痛随酸中毒纠正而缓解；急性肾损伤、脱水时使用碘对比剂需权衡。仅在纠正酸中毒后腹痛仍持续或有腹膜炎体征时才考虑影像学。",
-            "en": "Her pain settled as the acidosis was corrected; iodinated contrast during dehydration and AKI needs weighing. Imaging is reserved for pain that persists after the acidosis is corrected or for peritonism."
+            "zh-CN": "DKA时的腹痛多随酸中毒纠正而缓解；脱水、肌酐升高时使用碘对比剂需权衡。通常仅在酸中毒纠正后腹痛仍持续或出现腹膜炎体征时才考虑影像学。",
+            "en": "Abdominal pain in DKA usually settles as the acidosis is corrected; iodinated contrast during dehydration with a raised creatinine needs weighing. Imaging is usually reserved for pain that persists after the acidosis is corrected or for peritonism."
           }
         }
       }
@@ -4676,7 +4677,7 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h）；持续心电监护；每小时复查钾",
+        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（约3.0 g；预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h，约1.5 g/h）；持续心电监护；每小时复查钾",
         "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; continuous ECG monitoring; recheck K⁺ hourly"
       },
       "requires": [
@@ -4749,7 +4750,7 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol，按方案依次2小时、4小时、4小时、6小时输完一袋；钾3.5–5.5 mmol/L时每升加40 mmol，钾 > 5.5时不加钾；每2小时复查钾",
+        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（约3.0 g），按方案依次2小时、4小时、4小时、6小时输完一袋；钾3.5–5.5 mmol/L时每升加40 mmol，钾 > 5.5时不加钾；每2小时复查钾",
         "en": "0.9% NaCl 1000 mL with KCl 40 mmol, each bag over 2 h, 4 h, 4 h, then 6 h per protocol; add 40 mmol/L while K⁺ is 3.5–5.5 mmol/L, none if K⁺ > 5.5; recheck K⁺ every 2 hours"
       },
       "requires": [
@@ -5208,8 +5209,8 @@
       "risk": "moderate",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "已加入补液。说明：常规补磷未显示获益，且可致低钙血症；仅在磷 < 0.32 mmol/L（1.0 mg/dL）或伴心功能不全、呼吸抑制、溶血时考虑。她目前磷0.45–0.62 mmol/L，监测即可。",
-        "en": "Added to the fluids. Note: routine phosphate replacement has shown no benefit and can cause hypocalcaemia; it is considered only if phosphate is < 0.32 mmol/L (1.0 mg/dL) or with cardiac dysfunction, respiratory depression or haemolysis. Her phosphate (0.45–0.62 mmol/L) just needs monitoring."
+        "zh-CN": "已加入补液。说明：常规补磷未显示获益，且可致低钙血症；仅在磷 < 0.32 mmol/L（1.0 mg/dL）或伴心功能不全、贫血、呼吸抑制时考虑。除非血磷低于该阈值或出现上述情况，否则监测即可。",
+        "en": "Added to the fluids. Note: routine phosphate replacement has shown no benefit and can cause hypocalcaemia; it is considered only if phosphate is < 0.32 mmol/L (1.0 mg/dL) or with cardiac dysfunction, anaemia or respiratory depression. Unless her phosphate is below that threshold or one of those applies, monitoring is enough."
       }
     },
     {
@@ -5282,8 +5283,8 @@
       "risk": "low",
       "maxDoses": 1,
       "response": {
-        "zh-CN": "头孢曲松已开始输注。说明：本例没有细菌感染灶的证据（无发热、尿检阴性、胸片清晰、局部无感染）；DKA时白细胞升高很常见，诱因符合病毒性胃肠炎合并胰岛素输注中断，不需要经验性抗生素。",
-        "en": "Ceftriaxone is running. Note: there is no evidence of a bacterial focus (no fever, negative urinalysis, clear chest X-ray, no local infection); leucocytosis is common in DKA and the precipitant fits viral gastroenteritis with interrupted insulin delivery — empirical antibiotics are not needed."
+        "zh-CN": "头孢曲松已开始输注。说明：DKA时白细胞升高很常见，单凭白细胞增多不是使用抗生素的理由；只有当病史、查体或检查（尿、胸片、皮肤等）找到细菌感染灶，或出现脓毒症表现时，才需要经验性抗生素。",
+        "en": "Ceftriaxone is running. Note: leucocytosis is common in DKA and is not by itself a reason for antibiotics; empirical antibiotics are needed only when history, examination or tests (urine, chest film, skin) identify a bacterial focus, or she shows signs of sepsis."
       }
     },
     {
@@ -5425,8 +5426,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "每小时指尖血糖与血酮；第1小时、第2小时及之后每2小时静脉血气（pH、HCO₃⁻、钾），钾至少每2–4小时一次；每小时生命体征及GCS（18–25岁需警惕脑水肿）；严格记录出入量（尿量 ≥ 0.5 mL/kg/h ≈ 28 mL/h）。目标：血酮每小时下降 ≥ 0.5 mmol/L，HCO₃⁻每小时上升约3 mmol/L，血糖每小时下降约3 mmol/L。",
-        "en": "Hourly capillary glucose and ketones; venous gas (pH, HCO₃⁻, K⁺) at 1 h, 2 h and then 2-hourly, potassium at least every 2–4 hours; hourly observations including GCS (age 18–25: watch for cerebral oedema); strict fluid balance (urine ≥ 0.5 mL/kg/h ≈ 28 mL/h). Targets: ketones falling ≥ 0.5 mmol/L/h, HCO₃⁻ rising about 3 mmol/L/h, glucose falling about 3 mmol/L/h."
+        "zh-CN": "每小时指尖血糖与血酮；第1小时、第2小时及之后每2小时静脉血气（pH、HCO₃⁻、钾）——钾 < 3.5 mmol/L或以20 mmol/h补钾期间每小时复查钾；每小时生命体征及GCS（18–25岁需警惕脑水肿）；严格记录出入量（尿量 ≥ 0.5 mL/kg/h ≈ 28 mL/h）。目标：血酮每小时下降 ≥ 0.5 mmol/L（无法测血酮时：HCO₃⁻每小时上升 ≥ 3 mmol/L），血糖每小时下降约3 mmol/L，钾维持在4.0–5.5 mmol/L。",
+        "en": "Hourly capillary glucose and ketones; venous gas (pH, HCO₃⁻, K⁺) at 1 h, 2 h and then 2-hourly — potassium hourly while it is < 3.5 mmol/L or KCl is running at 20 mmol/h; hourly observations including GCS (age 18–25: watch for cerebral oedema); strict fluid balance (urine ≥ 0.5 mL/kg/h ≈ 28 mL/h). Targets: ketones falling ≥ 0.5 mmol/L/h (if ketones cannot be measured, HCO₃⁻ rising ≥ 3 mmol/L/h), glucose falling about 3 mmol/L/h, potassium kept at 4.0–5.5 mmol/L."
       },
       "requires": [],
       "risk": "none",
@@ -5668,8 +5669,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "与糖尿病专科商定：甘精胰岛素18 U皮下注射（≈ 泵每日基础总量18 U），随早餐皮下注射门冬胰岛素（按她的碳水系数1 U:10 g）；暂不恢复胰岛素泵，待病愈并完成再教育后由专科安排换新管路重新上泵",
-        "en": "Agreed with the diabetes team: insulin glargine 18 U SC (≈ her pump's total daily basal of 18 U) and insulin aspart SC with breakfast by her ratio (1 U:10 g carbohydrate); the pump stays off until she is well and re-educated, then the team restarts it with a new set"
+        "zh-CN": "与糖尿病专科商定：甘精胰岛素18 U皮下注射（≈ 泵每日基础总量18 U），随第一餐皮下注射门冬胰岛素（按她的碳水系数1 U:10 g）；暂不恢复胰岛素泵，待病愈并完成再教育后由专科安排换新管路重新上泵",
+        "en": "Agreed with the diabetes team: insulin glargine 18 U SC (≈ her pump's total daily basal of 18 U) and insulin aspart SC with her first meal by her ratio (1 U:10 g carbohydrate); the pump stays off until she is well and re-educated, then the team restarts it with a new set"
       },
       "requires": [
         "medications"
@@ -5683,8 +5684,8 @@
         "phase": "resolution"
       },
       "response": {
-        "zh-CN": "甘精胰岛素18 U已皮下注射；她吃早餐时注射了门冬胰岛素。静脉胰岛素继续输注，等待重叠时间。",
-        "en": "Insulin glargine 18 U given SC; she has had aspart with breakfast. The IV insulin keeps running for the overlap."
+        "zh-CN": "甘精胰岛素18 U已皮下注射；她进餐时注射了门冬胰岛素。静脉胰岛素继续输注，等待重叠时间。",
+        "en": "Insulin glargine 18 U given SC; she has had aspart with her meal. The IV insulin keeps running for the overlap."
       }
     },
     {
@@ -5774,7 +5775,7 @@
         ]
       },
       "dose": {
-        "zh-CN": "24小时内专科评估：胰岛素泵故障处理与重新上泵计划、病假规则（生病时不停基础胰岛素、每2–4小时测血糖和血酮、出现酮体用笔式胰岛素校正并更换管路）、配发血酮仪和试纸",
+        "zh-CN": "24小时内专科评估：胰岛素泵故障处理与重新上泵计划、生病日规则（生病时不停基础胰岛素、每2–4小时测血糖和血酮、出现酮体用笔式胰岛素校正并更换管路）、配发血酮仪和试纸",
         "en": "Specialist review within 24 hours: pump troubleshooting and restart plan, sick-day rules (never stop basal insulin when ill, check glucose and ketones every 2–4 hours, correct with a pen and change the set if ketones appear), and a blood-ketone meter with strips"
       },
       "requires": [],
@@ -6214,8 +6215,8 @@
         ],
         "severity": "info",
         "message": {
-          "zh-CN": "护士：“她呼吸平稳多了，人也精神了，说肚子饿、想吃早饭。”",
-          "en": "Nurse: \"Her breathing has settled and she's much brighter — she says she's hungry and wants breakfast.\""
+          "zh-CN": "护士：“她呼吸平稳多了，人也精神了，说肚子饿、想吃东西。”",
+          "en": "Nurse: \"Her breathing has settled and she's much brighter — she says she's hungry and wants something to eat.\""
         }
       },
       {
@@ -6583,8 +6584,8 @@
         "en": "Transition"
       },
       "hint": {
-        "zh-CN": "“缓解”用哪几个指标判断？血糖不是标准。停静脉治疗之前，必须先有什么接续上？谁需要参与她出院前的教育？",
-        "en": "Which measurements define resolution? Glucose is not one of them. What must be on board before IV treatment stops? Who should be involved in her education before discharge?"
+        "zh-CN": "“缓解”用哪几个指标判断？按现行共识和JBDS，血糖不是标准。停静脉治疗之前，必须先有什么接续上？谁需要参与她出院前的教育？",
+        "en": "Which measurements define resolution? Under the current consensus and JBDS, glucose is not one of them. What must be on board before IV treatment stops? Who should be involved in her education before discharge?"
       },
       "guidance": {
         "zh-CN": "复查血酮和静脉血气，在会诊板回答，然后按顺序过渡并请专科会诊。",
@@ -6698,8 +6699,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。有效渗透压 = 2 × 131 + 28 = 290 mOsm/kg（< 320），计算总渗透压299；血糖未达HHS常见的 ≥ 33.3 mmol/L；且有明显酮血症和重度酸中毒。",
-            "en": "No. Effective osmolality = 2 × 131 + 28 = 290 mOsm/kg (< 320; total calculated 299); glucose is below the ≥ 33.3 mmol/L typical of HHS; and she has marked ketonaemia with severe acidosis."
+            "zh-CN": "不对。有效渗透压 = 2 × 131 + 28 = 290 mOsm/kg，计算总渗透压299，均低于HHS阈值（2024年共识：有效渗透压 > 300或总渗透压 > 320；JBDS及中国2013指南：≥ 320）；血糖未达HHS的 ≥ 33.3 mmol/L；且有明显酮血症和重度酸中毒。",
+            "en": "No. Effective osmolality = 2 × 131 + 28 = 290 mOsm/kg and total calculated 299 — both below the HHS thresholds (2024 consensus: effective > 300 or total > 320; JBDS and the Chinese 2013 guideline: ≥ 320); glucose is below the ≥ 33.3 mmol/L of HHS; and she has marked ketonaemia with severe acidosis."
           }
         },
         {
@@ -6900,7 +6901,7 @@
         {
           "id": "p-omitted",
           "text": {
-            "zh-CN": "生病时自行停打餐时/校正胰岛素（对病假规则的误解）",
+            "zh-CN": "生病时自行停打餐时/校正胰岛素（对生病日规则的误解）",
             "en": "Omitting meal and correction insulin during illness (a misunderstanding of sick-day rules)"
           },
           "correct": true,
@@ -7010,8 +7011,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。胰岛素是用来清除酮体、纠正酸中毒的，血糖下降得比酮体快；加葡萄糖是为了能继续足量胰岛素而不发生低血糖。",
-            "en": "Correct. Insulin is there to switch off ketogenesis and clear the acidosis, and glucose falls faster than ketones; the glucose lets full-dose insulin continue without hypoglycaemia."
+            "zh-CN": "正确。胰岛素是用来清除酮体、纠正酸中毒的，血糖下降得比酮体快；加葡萄糖是为了能继续足量胰岛素而不发生低血糖。（ADA 2009及中国2013指南的做法是在血糖约11.1 mmol/L时把胰岛素减至0.02–0.05 U/kg/h，并同时补葡萄糖——同样是加糖、不停胰岛素。）",
+            "en": "Correct. Insulin is there to switch off ketogenesis and clear the acidosis, and glucose falls faster than ketones; the glucose lets full-dose insulin continue without hypoglycaemia. (Older ADA 2009 and Chinese 2013 protocols instead reduce insulin to 0.02–0.05 U/kg/h once glucose reaches about 11.1 mmol/L — always together with glucose, never instead of it.)"
           }
         },
         {
@@ -7046,8 +7047,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。这个剂量不足以抑制酮体生成，酸中毒纠正会明显延迟；正确做法是保留足量胰岛素并加葡萄糖。",
-            "en": "No. That dose cannot suppress ketogenesis and clearing the acidosis is badly delayed; keep adequate insulin and add glucose instead."
+            "zh-CN": "不对。只减胰岛素、不加葡萄糖，是拿酮体清除去换血糖：酮体生成抑制不足，酸中毒纠正明显延迟。JBDS维持0.1 U/kg/h并加10%葡萄糖；较早的ADA/中国方案把胰岛素减到0.02–0.05 U/kg/h时也必须同时补葡萄糖。",
+            "en": "No. Cutting insulin without adding glucose trades ketone clearance for glucose control: ketogenesis is suppressed less and clearing the acidosis is delayed. JBDS keeps 0.1 U/kg/h and adds 10% glucose; the older ADA/Chinese protocols that drop to 0.02–0.05 U/kg/h always add glucose at the same time."
           }
         },
         {
@@ -7091,13 +7092,13 @@
         {
           "id": "r-criteria",
           "text": {
-            "zh-CN": "已缓解：血β-羟丁酸0.4 mmol/L（< 0.6），静脉pH 7.35（> 7.3），HCO₃⁻ 19 mmol/L（≥ 18），阴离子间隙11",
-            "en": "Resolved: β-hydroxybutyrate 0.4 mmol/L (< 0.6), venous pH 7.35 (> 7.3), HCO₃⁻ 19 mmol/L (≥ 18), anion gap 11"
+            "zh-CN": "已缓解：血β-羟丁酸0.2 mmol/L（< 0.6），静脉pH 7.35（> 7.3），HCO₃⁻ 19 mmol/L（≥ 18），阴离子间隙11",
+            "en": "Resolved: β-hydroxybutyrate 0.2 mmol/L (< 0.6), venous pH 7.35 (> 7.3), HCO₃⁻ 19 mmol/L (≥ 18), anion gap 11"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。2024年国际共识：血酮 < 0.6 mmol/L且静脉pH ≥ 7.3或HCO₃⁻ ≥ 18 mmol/L；JBDS：血酮 < 0.6 mmol/L且静脉pH > 7.3。血糖不是缓解标准。",
-            "en": "Correct. 2024 consensus: ketones < 0.6 mmol/L and venous pH ≥ 7.3 or HCO₃⁻ ≥ 18 mmol/L; JBDS: ketones < 0.6 mmol/L and venous pH > 7.3. Glucose is not a resolution criterion."
+            "zh-CN": "正确。2024年国际共识：血酮 < 0.6 mmol/L且静脉pH ≥ 7.3或HCO₃⁻ ≥ 18 mmol/L；JBDS：血酮 < 0.6 mmol/L且静脉pH > 7.3。这两部指南都不用血糖判断缓解（输注葡萄糖期间，血糖反映的是补糖速度而不是酮症）。中国2013指南的参考标准更严（血酮 < 0.3 mmol/L、HCO₃⁻ ≥ 15 mmol/L、pH > 7.3、阴离子间隙 ≤ 12，另列血糖 < 11.1 mmol/L）；她的酮体和酸碱指标同样全部达标。",
+            "en": "Correct. 2024 consensus: ketones < 0.6 mmol/L and venous pH ≥ 7.3 or HCO₃⁻ ≥ 18 mmol/L; JBDS: ketones < 0.6 mmol/L and venous pH > 7.3. Neither uses glucose to define resolution (while dextrose is running, glucose reflects the infusion, not the ketosis). The Chinese 2013 guideline lists stricter reference criteria (ketones < 0.3 mmol/L, HCO₃⁻ ≥ 15 mmol/L, pH > 7.3, anion gap ≤ 12, plus glucose < 11.1 mmol/L); her ketone and acid–base values meet those as well."
           }
         },
         {
@@ -7127,7 +7128,7 @@
         {
           "id": "r-education",
           "text": {
-            "zh-CN": "出院前由糖尿病专科评估：泵故障处理、病假规则、配血酮仪和试纸",
+            "zh-CN": "出院前由糖尿病专科评估：泵故障处理、生病日规则、配血酮仪和试纸",
             "en": "Diabetes-team review before discharge: pump troubleshooting, sick-day rules, a blood-ketone meter and strips"
           },
           "correct": true,
@@ -7470,11 +7471,11 @@
       "domain": "communication",
       "weight": 1,
       "text": {
-        "zh-CN": "向患者解释病情且不责备，回应她的担忧，进行病假规则教育；向HDU/专科做结构化交接",
+        "zh-CN": "向患者解释病情且不责备，回应她的担忧，进行生病日规则教育；向HDU/专科做结构化交接",
         "en": "Explained the illness without blame, addressed her concerns, taught sick-day rules, and gave a structured handover to HDU/the specialist team"
       },
       "judgeGuidance": {
-        "zh-CN": "用通俗语言解释：胰岛素输注中断 + 生病时停打胰岛素 → 酮症酸中毒；明确“不是你的错，但我们可以一起防止再次发生”；回应论文答辩和胰岛素泵的担忧；病假规则要点（生病不停基础胰岛素、每2–4小时测血糖和血酮、血酮 ≥ 0.6且血糖高时用笔式胰岛素校正并更换管路、无法进食进水或呕吐不止时立即就医）。交接（SBAR）包括：诊断与严重程度、入院钾3.2和先补钾的顺序、胰岛素开始时间和速率、已输液体量、当前血糖/血酮/血气趋势、监测方案和下一步计划；用药医嘱采用复述确认。",
+        "zh-CN": "用通俗语言解释：胰岛素输注中断 + 生病时停打胰岛素 → 酮症酸中毒；明确“不是你的错，但我们可以一起防止再次发生”；回应论文答辩和胰岛素泵的担忧；生病日规则要点（生病不停基础胰岛素、每2–4小时测血糖和血酮、血酮 ≥ 0.6且血糖高时用笔式胰岛素校正并更换管路、无法进食进水或呕吐不止时立即就医）。交接（SBAR）包括：诊断与严重程度、入院钾3.2和先补钾的顺序、胰岛素开始时间和速率、已输液体量、当前血糖/血酮/血气趋势、监测方案和下一步计划；用药医嘱采用复述确认。",
         "en": "Plain-language explanation: interrupted pump delivery plus stopping insulin while ill → ketoacidosis; 'this is not your fault, but we can stop it happening again together'; addresses the thesis and pump worries; sick-day rules (never stop basal insulin when ill, check glucose and ketones every 2–4 hours, correct with a pen and change the set if ketones ≥ 0.6 with high glucose, seek help if unable to keep fluids down). SBAR handover covers diagnosis and severity, the admission K⁺ of 3.2 and potassium-first sequencing, insulin start time and rate, fluid given, current glucose/ketone/gas trends, the monitoring plan and next steps; drug orders are read back."
       }
     }
@@ -7515,7 +7516,7 @@
         "en": "Sister Sun (inpatient diabetes specialist nurse)"
       },
       "knowledge": {
-        "zh-CN": "白天接受会诊。只解读学员已经读过的泵下载数据和HbA1c。能讲解：胰岛素泵只用速效胰岛素、没有长效储备，输注中断数小时即可发生DKA；“不明原因高血糖 > 14 mmol/L先测血酮，血酮 ≥ 0.6时用笔式胰岛素校正并更换整套管路和部位”；病假规则；建议从泵转为皮下基础—餐时方案时，甘精胰岛素剂量约等于泵的每日基础总量（她为18 U），餐时按碳水系数1 U:10 g；病愈且完成再教育后再换新管路重新上泵；出院前配发血酮仪和试纸并安排复诊。",
+        "zh-CN": "白天接受会诊。只解读学员已经读过的泵下载数据和HbA1c。能讲解：胰岛素泵只用速效胰岛素、没有长效储备，输注中断数小时即可发生DKA；“不明原因高血糖 > 14 mmol/L先测血酮，血酮 ≥ 0.6时用笔式胰岛素校正并更换整套管路和部位”；生病日规则；建议从泵转为皮下基础—餐时方案时，甘精胰岛素剂量约等于泵的每日基础总量（她为18 U），餐时按碳水系数1 U:10 g；病愈且完成再教育后再换新管路重新上泵；出院前配发血酮仪和试纸并安排复诊。",
         "en": "Available in the daytime. Interprets only the pump download and HbA1c that the learner has already read. Can explain that a pump delivers only rapid-acting insulin with no long-acting depot, so DKA can follow within hours of interrupted delivery; 'unexplained glucose > 14 mmol/L → check ketones; if ≥ 0.6, correct with a pen and change the whole set and site'; sick-day rules; that when moving from pump to SC basal–bolus the glargine dose is about the pump's total daily basal (18 U for her) with meal insulin by her 1 U:10 g ratio; that the pump is restarted with a new set once she is well and re-educated; and that she leaves with a blood-ketone meter, strips and follow-up."
       },
       "interprets": [
@@ -7541,8 +7542,8 @@
         "en": "Dr Yang (on-call radiologist)"
       },
       "knowledge": {
-        "zh-CN": "只解读学员已经看过的胸片和腹部CT。会提醒：DKA时腹痛常见且多随酸中毒纠正而缓解，脱水和急性肾损伤时碘对比剂需权衡；纠正后腹痛仍持续或有腹膜炎体征时再考虑影像。",
-        "en": "Interprets only the chest X-ray and abdominal CT the learner has already seen. Points out that abdominal pain is common in DKA and usually settles as the acidosis is corrected, that iodinated contrast during dehydration and AKI needs weighing, and that imaging is for pain that persists after correction or for peritonism."
+        "zh-CN": "只解读学员已经看过的胸片和腹部CT。会提醒：DKA时腹痛常见且多随酸中毒纠正而缓解，脱水、肌酐升高时碘对比剂需权衡；纠正后腹痛仍持续或有腹膜炎体征时再考虑影像。",
+        "en": "Interprets only the chest X-ray and abdominal CT the learner has already seen. Points out that abdominal pain is common in DKA and usually settles as the acidosis is corrected, that iodinated contrast during dehydration with a raised creatinine needs weighing, and that imaging is for pain that persists after correction or for peritonism."
       },
       "interprets": [
         "cxr",
@@ -7557,7 +7558,7 @@
       },
       "knowledge": {
         "zh-CN": "苏格拉底式带教，不直接给答案，只基于学员已获得的信息提问：她的阴离子间隙是多少？测得的钠为什么偏低、校正后是多少？严重程度按哪个指标判断？为什么不能先给胰岛素？什么时候才考虑碳酸氢钠？血糖降到14以下以后为什么不能停胰岛素？“缓解”的标准是什么？为什么18–25岁的患者补液要谨慎？",
-        "en": "Socratic; never gives the answer outright and asks only about information the learner already has: What is her anion gap? Why is the measured sodium low, and what is it corrected? Which parameter grades the severity? Why not insulin first? When would bicarbonate even be considered? Why can't insulin stop once glucose is below 14? What defines resolution? Why be careful with fluids in an 18–25-year-old?"
+        "en": "Socratic; never gives the answer outright and asks only about information the learner already has: What is her anion gap? Why is the measured sodium low, and what is the corrected value? Which parameter grades the severity? Why not insulin first? When would bicarbonate even be considered? Why can't insulin stop once glucose is below 14? What defines resolution? Why be careful with fluids in an 18–25-year-old?"
       }
     }
   ],
@@ -7567,8 +7568,8 @@
       "en": "Severe diabetic ketoacidosis with admission hypokalaemia (pump delivery failure + insulin omitted during illness + acute gastroenteritis)"
     },
     "conclusion": {
-      "zh-CN": "24岁1型糖尿病女性，使用胰岛素泵。急性胃肠炎期间泵管路打折堵塞（反复报警被清除、管路超期4天），同时因“不吃饭就不用胰岛素”的误解停打餐时和校正胰岛素，约2天后出现多饮多尿、呕吐、腹痛、库斯莫尔呼吸和酮味呼气。床旁血糖28.0 mmol/L、血β-羟丁酸5.8 mmol/L；静脉血气pH 7.08、HCO₃⁻ 7.0 mmol/L、阴离子间隙26；Na⁺ 131 mmol/L（校正后约137.5–140.8，正常）、K⁺ 3.2 mmol/L；心电图U波。诊断为重度DKA伴入院低钾血症，需2级（HDU）监护。正确处理：先补液（第1小时1 L等渗晶体液）；因钾 < 3.5 mmol/L暂缓胰岛素，先以20 mmol/h静脉补钾并持续心电监护；复查钾3.7 mmol/L后开始固定速率静脉胰岛素0.1 U/kg/h（5.5 U/h，无负荷量）；血糖 < 14 mmol/L时加10%葡萄糖125 mL/h并继续足量胰岛素；每小时监测血糖和血酮、定期复查静脉血气和钾；不用碳酸氢钠、不常规补磷、不用经验性抗生素。约10小时后血酮0.4 mmol/L、pH 7.35、HCO₃⁻ 19 mmol/L——DKA缓解；进食后给予甘精胰岛素18 U和餐时门冬胰岛素，重叠后停用静脉胰岛素，并由糖尿病专科进行泵故障处理和病假规则教育。",
-      "en": "A 24-year-old woman with type 1 diabetes on an insulin pump. During acute gastroenteritis her pump set kinked and occluded (alarms repeatedly cleared, set 4 days old) and she stopped meal and correction insulin believing 'no food, no insulin'. About 2 days later she had thirst, polyuria, vomiting, abdominal pain, Kussmaul breathing and ketotic breath. Capillary glucose 28.0 mmol/L, β-hydroxybutyrate 5.8 mmol/L; venous pH 7.08, HCO₃⁻ 7.0 mmol/L, anion gap 26; Na⁺ 131 mmol/L (corrected about 137.5–140.8, normal), K⁺ 3.2 mmol/L; U waves on the ECG. Diagnosis: severe DKA with admission hypokalaemia, needing level-2 (HDU) care. Correct management: fluids first (1 L isotonic crystalloid in hour 1); because K⁺ was < 3.5 mmol/L, insulin was held and potassium given at 20 mmol/h on continuous ECG monitoring; once the repeat K⁺ was 3.7 mmol/L, fixed-rate IV insulin at 0.1 U/kg/h (5.5 U/h, no bolus); 10% glucose 125 mL/h added with full-dose insulin continued when glucose fell below 14 mmol/L; hourly glucose and ketones with regular venous gas and potassium checks; no bicarbonate, no routine phosphate, no empirical antibiotics. After about 10 hours ketones were 0.4 mmol/L, pH 7.35 and HCO₃⁻ 19 mmol/L — DKA resolved; once she was eating she had glargine 18 U and meal-time aspart, the IV insulin was stopped after an overlap, and the diabetes team addressed pump troubleshooting and sick-day rules."
+      "zh-CN": "24岁1型糖尿病女性，使用胰岛素泵。急性胃肠炎期间泵管路打折堵塞（反复报警被清除、管路超期4天），同时因“不吃饭就不用胰岛素”的误解停打餐时和校正胰岛素，约2天后出现多饮多尿、呕吐、腹痛、库斯莫尔呼吸和酮味呼气。床旁血糖28.0 mmol/L、血β-羟丁酸5.8 mmol/L；静脉血气pH 7.08、HCO₃⁻ 7.0 mmol/L、阴离子间隙26；Na⁺ 131 mmol/L（校正后约137.5–140.8，正常）、K⁺ 3.2 mmol/L；心电图U波。诊断为重度DKA伴入院低钾血症，需2级（HDU）监护。正确处理：先补液（第1小时1 L等渗晶体液）；因钾 < 3.5 mmol/L暂缓胰岛素，先以20 mmol/h静脉补钾并持续心电监护；复查钾3.7 mmol/L后开始固定速率静脉胰岛素0.1 U/kg/h（5.5 U/h，无负荷量）；血糖 < 14 mmol/L时加10%葡萄糖125 mL/h并继续足量胰岛素；每小时监测血糖和血酮、定期复查静脉血气和钾；不用碳酸氢钠、不常规补磷、不用经验性抗生素。约10小时后血酮0.2 mmol/L、pH 7.35、HCO₃⁻ 19 mmol/L——DKA缓解；进食后给予甘精胰岛素18 U和餐时门冬胰岛素，重叠后停用静脉胰岛素，并由糖尿病专科进行泵故障处理和病假规则教育。",
+      "en": "A 24-year-old woman with type 1 diabetes on an insulin pump. During acute gastroenteritis her pump set kinked and occluded (alarms repeatedly cleared, set 4 days old) and she stopped meal and correction insulin believing 'no food, no insulin'. About 2 days later she had thirst, polyuria, vomiting, abdominal pain, Kussmaul breathing and ketotic breath. Capillary glucose 28.0 mmol/L, β-hydroxybutyrate 5.8 mmol/L; venous pH 7.08, HCO₃⁻ 7.0 mmol/L, anion gap 26; Na⁺ 131 mmol/L (corrected about 137.5–140.8, normal), K⁺ 3.2 mmol/L; U waves on the ECG. Diagnosis: severe DKA with admission hypokalaemia, needing level-2 (HDU) care. Correct management: fluids first (1 L isotonic crystalloid in hour 1); because K⁺ was < 3.5 mmol/L, insulin was held and potassium given at 20 mmol/h on continuous ECG monitoring; once the repeat K⁺ was 3.7 mmol/L, fixed-rate IV insulin at 0.1 U/kg/h (5.5 U/h, no bolus); 10% glucose 125 mL/h added with full-dose insulin continued when glucose fell below 14 mmol/L; hourly glucose and ketones with regular venous gas and potassium checks; no bicarbonate, no routine phosphate, no empirical antibiotics. After about 10 hours ketones were 0.2 mmol/L, pH 7.35 and HCO₃⁻ 19 mmol/L — DKA resolved; once she was eating she had glargine 18 U and meal-time aspart, the IV insulin was stopped after an overlap, and the diabetes team addressed pump troubleshooting and sick-day rules."
     },
     "keyReasoning": [
       {
@@ -7580,8 +7581,8 @@
         "en": "Grade by the worst parameter: pH 7.08 alone looks 'moderate', but HCO₃⁻ 7.0 mmol/L (< 10) is severe; she also has the JBDS level-2 markers of admission K⁺ < 3.5, HR > 100 and anion gap > 16 (ketones 5.8, just below the > 6 threshold)."
       },
       {
-        "zh-CN": "测得的低钠是高血糖把水分从细胞内吸出所致（转移性低钠）。校正钠：Katz公式131 + 1.6 ×（28.0 − 5.5）/ 5.5 ≈ 137.5 mmol/L；Hillier公式131 + 2.4 ×（28.0 − 5.5）/ 5.5 ≈ 140.8 mmol/L——均正常。有效渗透压2 × 131 + 28 = 290 mOsm/kg（< 320），不是HHS；治疗中随血糖下降，测得的钠逐步升到138，符合预期。",
-        "en": "The low measured sodium reflects water drawn out of cells by hyperglycaemia (translocational hyponatraemia). Corrected Na⁺: Katz 131 + 1.6 × (28.0 − 5.5)/5.5 ≈ 137.5 mmol/L; Hillier 131 + 2.4 × (28.0 − 5.5)/5.5 ≈ 140.8 mmol/L — both normal. Effective osmolality 2 × 131 + 28 = 290 mOsm/kg (< 320), so not HHS; as glucose fell the measured sodium rose to 138, as expected."
+        "zh-CN": "测得的低钠是高血糖把水分从细胞内吸出所致（转移性低钠）。校正钠：Katz公式131 + 1.6 ×（28.0 − 5.5）/ 5.5 ≈ 137.5 mmol/L；Hillier公式131 + 2.4 ×（28.0 − 5.5）/ 5.5 ≈ 140.8 mmol/L——均正常。有效渗透压2 × 131 + 28 = 290 mOsm/kg，低于HHS阈值（2024年共识 > 300；JBDS及中国指南 ≥ 320），不是HHS；治疗中随血糖下降，测得的钠逐步升到138，符合预期。",
+        "en": "The low measured sodium reflects water drawn out of cells by hyperglycaemia (translocational hyponatraemia). Corrected Na⁺: Katz 131 + 1.6 × (28.0 − 5.5)/5.5 ≈ 137.5 mmol/L; Hillier 131 + 2.4 × (28.0 − 5.5)/5.5 ≈ 140.8 mmol/L — both normal. Effective osmolality 2 × 131 + 28 = 290 mOsm/kg, below the HHS thresholds (2024 consensus > 300; JBDS and Chinese guideline ≥ 320), so not HHS; as glucose fell the measured sodium rose to 138, as expected."
       },
       {
         "zh-CN": "DKA时机体总钾严重缺乏，但酸中毒和胰岛素缺乏使钾移出细胞，血钾常正常甚至偏高；入院钾已经3.2 mmol/L说明缺钾非常严重。胰岛素和碳酸氢钠都会把钾驱回细胞内，所以必须先补钾，钾 ≥ 3.5 mmol/L后才开始胰岛素——补液本身已能降低血糖，推迟胰岛素约1小时是安全的。",
@@ -7592,8 +7593,8 @@
         "en": "Precipitant: a pump delivers only rapid-acting insulin with no depot, so an occluded set can cause DKA within hours, made worse by stopping insulin while ill. A white count of 16.8 and a raised amylase are common and non-specific in DKA; normal lipase, negative hCG, a clean urine and a clear chest film give no indication for antibiotics."
       },
       {
-        "zh-CN": "血糖比酮体恢复得快：血糖 < 14 mmol/L时应加葡萄糖并继续足量胰岛素，而不是停胰岛素。缓解看血酮 < 0.6 mmol/L和静脉pH > 7.3（或HCO₃⁻ ≥ 18），不看血糖。缓解时HCO₃⁻ 19、Cl⁻ 108、阴离子间隙11——残余的轻度酸中毒是大量生理盐水造成的高氯性酸中毒，不是继续用胰岛素的理由。",
-        "en": "Glucose recovers before ketones: when glucose falls below 14 mmol/L add glucose and keep full-dose insulin rather than stopping it. Resolution means ketones < 0.6 mmol/L and venous pH > 7.3 (or HCO₃⁻ ≥ 18), not a glucose value. At resolution HCO₃⁻ 19, Cl⁻ 108 and anion gap 11 — the residual mild acidosis is hyperchloraemic from large volumes of saline and is no reason to continue insulin."
+        "zh-CN": "血糖比酮体恢复得快：血糖 < 14 mmol/L时应加葡萄糖并继续足量胰岛素，而不是停胰岛素。缓解看血酮 < 0.6 mmol/L和静脉pH > 7.3（或HCO₃⁻ ≥ 18）（2024年共识/JBDS），不看血糖。缓解时HCO₃⁻ 19、Cl⁻ 108、阴离子间隙11——残余的轻度酸中毒是大量生理盐水造成的高氯性酸中毒，不是继续用胰岛素的理由。",
+        "en": "Glucose recovers before ketones: when glucose falls below 14 mmol/L add glucose and keep full-dose insulin rather than stopping it. Resolution means ketones < 0.6 mmol/L and venous pH > 7.3 (or HCO₃⁻ ≥ 18) (2024 consensus/JBDS), not a glucose value. At resolution HCO₃⁻ 19, Cl⁻ 108 and anion gap 11 — the residual mild acidosis is hyperchloraemic from large volumes of saline and is no reason to continue insulin."
       }
     ],
     "boundaries": {
@@ -7628,12 +7629,12 @@
         "en": "Fluids first: without hypotension, 1 L of isotonic crystalloid (0.9% saline or balanced) in hour 1, then slower per protocol; be cautious and do neurological observations in young adults aged 18–25 and in heart or kidney failure."
       },
       {
-        "zh-CN": "钾决定胰岛素的时机：钾 < 3.5 mmol/L——暂缓胰岛素，静脉补钾10–20 mmol/h（心电监护）直至 ≥ 3.5；钾3.5–5.5——每升液体加钾40 mmol（ADA为20–30 mmol/L）；钾 > 5.5——不加钾、2小时内复查。氯化钾绝不静推。",
-        "en": "Potassium decides when insulin starts: K⁺ < 3.5 mmol/L — hold insulin and give IV potassium 10–20 mmol/h on ECG monitoring until ≥ 3.5; K⁺ 3.5–5.5 — add 40 mmol per litre (ADA 20–30 mmol/L); K⁺ > 5.5 — none, recheck within 2 hours. Never push potassium."
+        "zh-CN": "钾决定胰岛素的时机：钾 < 3.5 mmol/L——暂缓胰岛素，静脉补钾10–20 mmol/h（心电监护）直至 ≥ 3.5（中国2013指南以3.3 mmol/L为界）；钾3.5–5.5——每升液体加钾40 mmol（ADA为20–30 mmol/L）；钾 > 5.5——不加钾、2小时内复查。氯化钾绝不静推。",
+        "en": "Potassium decides when insulin starts: K⁺ < 3.5 mmol/L — hold insulin and give IV potassium 10–20 mmol/h on ECG monitoring until ≥ 3.5 (the Chinese 2013 guideline uses 3.3 mmol/L); K⁺ 3.5–5.5 — add 40 mmol per litre (ADA 20–30 mmol/L); K⁺ > 5.5 — none, recheck within 2 hours. Never push potassium."
       },
       {
-        "zh-CN": "固定速率静脉胰岛素0.1 U/kg/h（本例5.5 U/h），不需要负荷量；目标：血酮每小时下降 ≥ 0.5 mmol/L、HCO₃⁻每小时上升约3 mmol/L、血糖每小时下降约3 mmol/L，未达标时按方案上调。",
-        "en": "Fixed-rate IV insulin 0.1 U/kg/h (5.5 U/h here), no bolus; targets: ketones falling ≥ 0.5 mmol/L/h, HCO₃⁻ rising about 3 mmol/L/h, glucose falling about 3 mmol/L/h — increase per protocol if not met."
+        "zh-CN": "固定速率静脉胰岛素0.1 U/kg/h（本例5.5 U/h），不需要负荷量；目标：血酮每小时下降 ≥ 0.5 mmol/L（无法测血酮时：HCO₃⁻每小时上升 ≥ 3 mmol/L）、血糖每小时下降约3 mmol/L，未达标时按方案上调。",
+        "en": "Fixed-rate IV insulin 0.1 U/kg/h (5.5 U/h here), no bolus; targets: ketones falling ≥ 0.5 mmol/L/h (if ketones cannot be measured, HCO₃⁻ rising ≥ 3 mmol/L/h) and glucose falling about 3 mmol/L/h — increase per protocol if not met."
       },
       {
         "zh-CN": "血糖 < 14 mmol/L：加10%葡萄糖125 mL/h并继续胰岛素直到DKA缓解。碳酸氢钠仅在pH < 7.0时考虑；磷仅在 < 0.32 mmol/L或有并发症时补充。",
@@ -7644,7 +7645,7 @@
         "en": "Resolution and transition: once ketones are < 0.6 mmol/L and venous pH > 7.3 (or HCO₃⁻ ≥ 18) and she can eat, give subcutaneous insulin (basal + meal-time) first and stop the IV insulin after a 1–2 h overlap. Pump users may switch to injections until they are well and re-educated."
       },
       {
-        "zh-CN": "预防复发：病假规则（不停基础胰岛素、每2–4小时测血糖和血酮）、泵使用者“不明原因高血糖先测酮、有酮用笔式胰岛素校正并更换管路”、家中常备血酮试纸，以及糖尿病专科随访。",
+        "zh-CN": "预防复发：生病日规则（不停基础胰岛素、每2–4小时测血糖和血酮）、泵使用者“不明原因高血糖先测酮、有酮用笔式胰岛素校正并更换管路”、家中常备血酮试纸，以及糖尿病专科随访。",
         "en": "Preventing recurrence: sick-day rules (never stop basal insulin, check glucose and ketones every 2–4 hours), the pump-user rule 'unexplained high glucose → check ketones; if present, correct by pen and change the set', blood-ketone strips at home, and diabetes-team follow-up."
       }
     ],

@@ -86,6 +86,19 @@ function resolveConfig(ctx: CliContext, settings: LoadedSettings, args: ParsedAr
   return resolveNodeProviderConfig(effective, id, flagString(args, "model") ?? null, ctx.env);
 }
 
+/**
+ * The env vars a key is expected in when the provider needs one and none is
+ * configured; null when a key is present or not needed (local servers, custom
+ * providers without `apiKeyEnv`).
+ */
+function missingKeyEnv(settings: LoadedSettings, config: ProviderConfig): string[] | null {
+  if (config.apiKey) return null;
+  const template = findProviderTemplate(config.id);
+  if (template?.noKey) return null;
+  const env = settings.providers[config.id]?.apiKeyEnv ?? template?.apiKeyEnv ?? [];
+  return env.length > 0 ? env : null;
+}
+
 /** Secrets that must never be printed. */
 function secretsOf(config: ProviderConfig): string[] {
   return config.apiKey ? [config.apiKey] : [];
@@ -105,10 +118,8 @@ export async function providersTest(ctx: CliContext, args: ParsedArgs): Promise<
     ctx.print(ctx.t("providers.proxy"));
     return EXIT.ok;
   }
-  if (!config.apiKey && !findProviderTemplate(config.id)?.noKey) {
-    const env = settings.providers[config.id]?.apiKeyEnv ?? findProviderTemplate(config.id)?.apiKeyEnv ?? [];
-    throw new CliError(ctx.t("providers.noKey", { id: config.id, env: env.join(" / ") || "-" }), EXIT.error);
-  }
+  const missingKey = missingKeyEnv(settings, config);
+  if (missingKey) throw new CliError(ctx.t("providers.noKey", { id: config.id, env: missingKey.join(" / ") }), EXIT.error);
   const timeoutSec = flagNumber(args, "timeout") ?? 60;
   const provider = createProvider(config);
   const request: ChatRequest = {
@@ -173,6 +184,13 @@ export async function providersModels(ctx: CliContext, args: ParsedArgs): Promis
   if (config.wire === "offline" || config.wire === "proxy" || !config.baseUrl) {
     for (const mdl of suggested) ctx.print(mdl);
     if (suggested.length === 0) ctx.print(p.dim(ctx.t("providers.noModels")));
+    return EXIT.ok;
+  }
+  const missingKey = missingKeyEnv(settings, config);
+  if (missingKey) {
+    ctx.printErr(ctx.err.yellow(ctx.t("providers.modelsNoKey", { id: config.id, env: missingKey.join(" / ") })));
+    if (flagBool(args, "json")) ctx.print(JSON.stringify(suggested, null, 2));
+    else for (const mdl of suggested) ctx.print(mdl);
     return EXIT.ok;
   }
   const anthropic = config.wire === "anthropic-messages";

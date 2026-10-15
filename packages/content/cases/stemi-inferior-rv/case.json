@@ -249,15 +249,59 @@
           "when did it start",
           "what time did it start",
           "how long have you had the pain",
-          "how long has it been",
+          "how long has the pain",
           "since when",
           "what were you doing",
+          "doing when",
+          "did it come on",
+          "come on suddenly",
           "how did it start",
           "onset"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "血压",
+          "降压",
+          "他汀",
+          "血脂",
+          "胆固醇",
+          "糖尿病",
+          "吃药",
+          "吃饭",
+          "吃东西"
+        ],
+        "en": [
+          "smok",
+          "cigarette",
+          "blood pressure",
+          "hypertension",
+          "statin",
+          "cholesterol",
+          "diabetes",
+          "tablets",
+          "medication",
+          "last eat",
+          "meal",
+          "come and go",
+          "comes and goes",
+          "come up",
+          "came up",
+          "come with",
+          "come and get",
+          "come back",
+          "come to",
+          "come in",
+          "came in",
+          "coming in",
+          "before coming"
+        ]
+      }
     },
     {
       "id": "pain-character",
@@ -289,6 +333,10 @@
           "character of the pain",
           "crushing",
           "sharp or dull",
+          "sharp",
+          "stabbing",
+          "dull ache",
+          "burning pain",
           "squeezing",
           "tightness",
           "chest pressure"
@@ -408,16 +456,33 @@
           "makes it better",
           "relieve",
           "does rest help",
-          "eases"
+          "eases",
+          "the whole time"
         ]
       },
       "disclosure": "on-ask",
       "excludeKeywords": {
-        "zh-CN": [],
+        "zh-CN": [
+          "以前",
+          "前几周",
+          "最近两周",
+          "爬楼"
+        ],
         "en": [
           "coming in",
           "come in",
-          "came in"
+          "came in",
+          "come on",
+          "came on",
+          "come up",
+          "came up",
+          "come with",
+          "come and get",
+          "come back",
+          "come to",
+          "stairs",
+          "last few weeks",
+          "previous"
         ]
       }
     },
@@ -435,8 +500,11 @@
       "keywords": {
         "zh-CN": [
           "深呼吸",
+          "深吸气",
           "吸气时",
+          "吸气的时候",
           "吸气疼",
+          "喘气疼",
           "咳嗽的时候",
           "咳嗽时疼",
           "体位",
@@ -450,6 +518,9 @@
           "deep breath",
           "hurt when you cough",
           "pain on breathing",
+          "hurt to breathe",
+          "hurt when you breathe",
+          "worse when you breathe",
           "change position",
           "lying flat",
           "lean forward",
@@ -689,6 +760,8 @@
           "以前犯过",
           "犯过",
           "最近胸口发紧",
+          "以前胸口发紧",
+          "以前胸闷",
           "最近有没有胸闷",
           "第一次这样",
           "爬楼梯时"
@@ -700,7 +773,9 @@
           "last few weeks",
           "first time this",
           "climbing stairs",
-          "on exertion"
+          "on exertion",
+          "angina before",
+          "before today"
         ]
       },
       "disclosure": "on-ask",
@@ -743,7 +818,24 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": [
+          "be back",
+          "come back",
+          "lie back",
+          "lean back",
+          "sit back",
+          "back soon",
+          "back in a",
+          "back later",
+          "get back",
+          "call back",
+          "back to you",
+          "back with"
+        ]
+      }
     },
     {
       "id": "pe-screen",
@@ -772,6 +864,9 @@
           "calf",
           "long journey",
           "long flight",
+          "long-haul",
+          "flights",
+          "travelled",
           "bed rest",
           "blood clot"
         ]
@@ -833,7 +928,9 @@
           "allergic",
           "allergies",
           "allergy",
-          "reaction to"
+          "reaction to",
+          "nkda",
+          "nkfda"
         ]
       },
       "disclosure": "on-ask",
@@ -894,11 +991,18 @@
         ],
         "en": [
           "cocaine",
+          "coke",
+          "crack",
           "recreational drugs",
           "street drugs",
           "amphetamine",
-          "meth",
+          "methamphetamine",
+          "crystal meth",
+          "ecstasy",
+          "mdma",
           "cannabis",
+          "weed",
+          "heroin",
           "illicit"
         ]
       },
@@ -926,6 +1030,8 @@
           "长期吃药",
           "抗凝药",
           "阿司匹林",
+          "氨氯地平",
+          "络活喜",
           "来之前吃",
           "硝酸甘油",
           "速效救心丸",
@@ -943,6 +1049,10 @@
           "prescribed drugs",
           "blood thinners",
           "aspirin",
+          "amlodipine",
+          "norvasc",
+          "take for the pain",
+          "taken anything",
           "before coming in",
           "nitro",
           "gtn",
@@ -955,10 +1065,22 @@
       "required": true,
       "excludeKeywords": {
         "zh-CN": [
-          "过敏"
+          "嚼碎",
+          "给你用",
+          "给你吃",
+          "给你打",
+          "给你挂"
         ],
         "en": [
-          "allerg"
+          "giving you",
+          "chew this",
+          "take you",
+          "take some",
+          "take a look",
+          "take a deep",
+          "take a breath",
+          "come with",
+          "come and get"
         ]
       }
     },
@@ -1239,7 +1361,17 @@
           "弟弟",
           "兄弟",
           "亲戚",
-          "老人"
+          "老人",
+          "风险",
+          "小便",
+          "大便",
+          "睡眠",
+          "睡觉",
+          "眼睛",
+          "记忆",
+          "听力",
+          "皮肤",
+          "关节"
         ],
         "en": [
           "family",
@@ -1250,7 +1382,18 @@
           "your mother",
           "your brother",
           "relatives",
-          "parents"
+          "parents",
+          "risk",
+          "urine",
+          "passing water",
+          "waterworks",
+          "bowel",
+          "sleep",
+          "eyes",
+          "memory",
+          "hearing",
+          "skin",
+          "joint"
         ]
       }
     },
@@ -1502,6 +1645,8 @@
           "吸烟",
           "烟瘾",
           "香烟",
+          "烟龄",
+          "抽了多",
           "一天几支",
           "抽几根",
           "戒烟"
@@ -1514,11 +1659,19 @@
           "tobacco",
           "packs",
           "pack years",
-          "quit"
+          "quit smoking",
+          "tried to quit",
+          "stopped smoking"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": [
+          "quite"
+        ]
+      }
     },
     {
       "id": "alcohol",
@@ -1695,6 +1848,43 @@
           "chest",
           "lifting"
         ]
+      }
+    },
+    {
+      "id": "identity",
+      "topic": "other",
+      "question": {
+        "zh-CN": "先核对一下，你叫什么名字？今年多大？",
+        "en": "Can I check your name and age?"
+      },
+      "answer": {
+        "zh-CN": "刘振华……今年五十八。",
+        "en": "Liu Zhenhua... I'm fifty-eight."
+      },
+      "keywords": {
+        "zh-CN": [
+          "叫什么名字",
+          "名字",
+          "姓名",
+          "多大了",
+          "多大年纪",
+          "今年多大",
+          "几岁",
+          "年龄",
+          "出生日期"
+        ],
+        "en": [
+          "your name",
+          "how old",
+          "your age",
+          "date of birth",
+          "dob"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "依据 patient.displayName（化名）与 age 生成的模拟回答",
+        "en": "Simulated answer from patient.displayName (pseudonym) and age"
       }
     }
   ],
@@ -4934,7 +5124,9 @@
       "kind": "medication",
       "aliases": {
         "zh-CN": [
-          "肾上腺素"
+          "肾上腺素",
+          "副肾",
+          "副肾素"
         ],
         "en": [
           "adrenaline",
@@ -6539,8 +6731,8 @@
         "en": "Dr Chen (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "以苏格拉底式提问引导，不直接给出答案，也不替学员说出诊断：“胸痛病人到院后第一项检查是什么，多少分钟内完成？”“ST段改变在哪组导联？III和II哪个更明显，说明什么？”“这个导联分布还需要加做哪些导联？”“低血压、颈静脉怒张、双肺清晰这个组合提示什么？”“在这种血流动力学状态下，哪些常用胸痛药物会伤害他？”“本院再灌注的时间目标是多少？什么情况下才考虑溶栓？”“如果他突然恶化，床旁需要提前准备什么？”",
-        "en": "Socratic, never gives the answer outright and never names the diagnosis for the learner: \"What is the first test for chest pain on arrival, and within how many minutes?\" \"Which group of leads shows the ST change? Is III or II more marked, and what does that tell you?\" \"Which extra leads does that lead distribution call for?\" \"What does hypotension with a raised JVP and clear lungs suggest?\" \"In this haemodynamic state, which routine chest-pain drugs could hurt him?\" \"What are our reperfusion time targets, and when would you consider lysis?\" \"If he suddenly deteriorates, what do you want ready at the bedside?\""
+        "zh-CN": "以苏格拉底式提问引导，不直接给出答案，不替学员说出诊断，也不透露学员尚未亲自检查或判读的体征和结果：“胸痛病人到院后第一项检查是什么，多少分钟内完成？”“ST段改变在哪组导联？哪个导联最明显，这对罪犯血管提示什么？”“这个导联分布还需要加做哪些导联？”“血压偏低时，给药前要在床旁查哪些体征（颈静脉、双肺）？不同的组合分别提示什么？”“在这种血流动力学状态下，哪些常用胸痛药物会伤害他？”“本院再灌注的时间目标是多少？什么情况下才考虑溶栓？”“如果他突然恶化，床旁需要提前准备什么？”",
+        "en": "Socratic, never gives the answer outright, never names the diagnosis for the learner, and never reveals signs or results the learner has not yet examined or read: \"What is the first test for chest pain on arrival, and within how many minutes?\" \"Which group of leads shows the ST change, which lead is most marked, and what does that suggest about the culprit artery?\" \"Which extra leads does that lead distribution call for?\" \"With a low-ish blood pressure, which bedside signs (neck veins, lung bases) do you check before giving drugs, and what would each combination mean?\" \"In this haemodynamic state, which routine chest-pain drugs could hurt him?\" \"What are our reperfusion time targets, and when would you consider lysis?\" \"If he suddenly deteriorates, what do you want ready at the bedside?\""
       }
     }
   ],
@@ -7293,6 +7485,118 @@
         "locale": "en",
         "expect": [
           "pmh-htn"
+        ]
+      },
+      {
+        "text": "抽烟多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "抽了多长时间烟了",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "高血压多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "他汀停了多久了",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-lipids"
+        ]
+      },
+      {
+        "text": "深吸气的时候疼得更厉害吗",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-pleuritic"
+        ]
+      },
+      {
+        "text": "How long have you smoked for?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "How long have you had high blood pressure?",
+        "locale": "en",
+        "expect": [
+          "pmh-htn"
+        ]
+      },
+      {
+        "text": "When did it come on?",
+        "locale": "en",
+        "expect": [
+          "hpi-onset"
+        ]
+      },
+      {
+        "text": "what were u doing when it came on",
+        "locale": "en",
+        "expect": [
+          "hpi-onset"
+        ]
+      },
+      {
+        "text": "Does it hurt to breathe?",
+        "locale": "en",
+        "expect": [
+          "pain-pleuritic"
+        ]
+      },
+      {
+        "text": "Is it more of a pressure or a stabbing pain?",
+        "locale": "en",
+        "expect": [
+          "pain-character"
+        ]
+      },
+      {
+        "text": "Did you take anything for the pain?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "NKDA?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any coke or crack?",
+        "locale": "en",
+        "expect": [
+          "recreational"
+        ]
+      },
+      {
+        "text": "你多大年纪了？",
+        "locale": "zh-CN",
+        "expect": [
+          "identity"
+        ]
+      },
+      {
+        "text": "How old are you?",
+        "locale": "en",
+        "expect": [
+          "identity"
         ]
       }
     ]

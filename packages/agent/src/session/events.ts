@@ -7,6 +7,12 @@
  * `session_configured` during `createSession`) are kept in a bounded startup
  * backlog and replayed to the first iterator, so a front-end that creates a
  * session and then starts iterating misses nothing.
+ *
+ * Re-entrancy: a listener may cause another emit while an event is being
+ * delivered (an auto-approver answering `approval_request` inside its
+ * callback settles the request synchronously). Nested events are stamped and
+ * persisted at once but delivered only after the current event has reached
+ * every listener and iterator, so every consumer sees events in `seq` order.
  */
 import type { AgentEvent, EventMsg } from "../protocol.js";
 import type { TranscriptRecorder } from "../transcript.js";
@@ -69,6 +75,9 @@ export class EventHub {
   private readonly iterators = new Set<IteratorState>();
   private backlog: AgentEvent[] | null = [];
   private closed = false;
+  /** Stamped events waiting for delivery (FIFO; see re-entrancy above). */
+  private readonly outbox: AgentEvent[] = [];
+  private delivering = false;
 
   constructor(private readonly recorder: TranscriptRecorder | null) {}
 
@@ -81,10 +90,23 @@ export class EventHub {
     return this.closed;
   }
 
-  /** Stamp, persist (durable) and deliver an event. */
+  /** Stamp, persist (durable) and deliver an event (in `seq` order, even when called from a listener). */
   emit(id: string, msg: EventMsg): AgentEvent {
     const event: AgentEvent = { id, seq: ++this.seq, msg };
     if (this.recorder && isDurableEvent(msg)) this.recorder.record("event", event);
+    this.outbox.push(event);
+    if (this.delivering) return event; // a listener emitted: delivered after the current event
+    this.delivering = true;
+    try {
+      for (let next = this.outbox.shift(); next; next = this.outbox.shift()) this.deliver(next);
+    } finally {
+      this.delivering = false;
+    }
+    if (this.closed) this.endIterators();
+    return event;
+  }
+
+  private deliver(event: AgentEvent): void {
     if (this.backlog) {
       this.backlog.push(event);
       if (this.backlog.length > STARTUP_BACKLOG_LIMIT) this.backlog.shift();
@@ -100,7 +122,6 @@ export class EventHub {
       it.queue.push(event);
       it.wake?.();
     }
-    return event;
   }
 
   subscribe(listener: (event: AgentEvent) => void): () => void {
@@ -141,9 +162,14 @@ export class EventHub {
     };
   }
 
-  /** End every iterator (after delivering what is queued). */
+  /** End every iterator (after delivering what is queued — also when called from a listener). */
   close(): void {
     this.closed = true;
+    if (this.delivering) return; // the running delivery loop ends the iterators once the outbox is drained
+    this.endIterators();
+  }
+
+  private endIterators(): void {
     this.backlog = null;
     for (const it of this.iterators) {
       it.done = true;

@@ -194,19 +194,24 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
     ctx.textBaseline = "middle";
     const taken: [number, number, number, number][] = [];
     const place = (text: string, x: number, y: number, maxW: number, font: string, fill: string, halo = true) => {
-      ctx.font = font;
-      const w = Math.min(maxW, ctx.measureText(text).width) + 4;
-      const h = parseFloat(font.replace(/^\D*?(\d+(?:\.\d+)?)px.*$/, "$1")) + 2 || 12;
+      const fit = fitLabel(ctx, text, maxW, font);
+      if (!fit) return;
+      const w = Math.min(maxW, fit.width) + 4;
+      const h = fit.lines.length * fit.lineH + 2;
       const r: [number, number, number, number] = [x - w / 2, y - h / 2, x + w / 2, y + h / 2];
       if (taken.some((t) => r[0] < t[2] && r[2] > t[0] && r[1] < t[3] && r[3] > t[1])) return;
       taken.push(r);
-      if (halo) {
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "#f3eed8";
-        ctx.strokeText(text, x, y, maxW);
-      }
-      ctx.fillStyle = fill;
-      ctx.fillText(text, x, y, maxW);
+      ctx.font = fit.font;
+      fit.lines.forEach((line, i) => {
+        const ly = y + (i - (fit.lines.length - 1) / 2) * fit.lineH;
+        if (halo) {
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "#f3eed8";
+          ctx.strokeText(line, x, ly, maxW);
+        }
+        ctx.fillStyle = fill;
+        ctx.fillText(line, x, ly, maxW);
+      });
     };
     const fontPx = Math.max(10, Math.min(13, s * 0.9));
     const rooms = [...data.rooms].filter((r) => r.kind !== "corridor").sort((a, b) => b.w * b.d - a.w * a.d);
@@ -261,6 +266,70 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
   ctx.stroke();
   ctx.restore();
   return proj;
+}
+
+/** Smallest font size (px) a big-map label may shrink to before wrapping / being dropped. */
+export const MIN_LABEL_PX = 8;
+
+/** Split a label into two lines at " · ", a space, or the middle (CJK). */
+export function splitLabel(text: string): [string, string] | null {
+  const t = text.trim();
+  if (t.length < 3) return null;
+  const seps = [" · ", "·", " "];
+  for (const sep of seps) {
+    const hits: number[] = [];
+    for (let i = t.indexOf(sep); i > 0; i = t.indexOf(sep, i + 1)) hits.push(i);
+    if (!hits.length) continue;
+    const mid = t.length / 2;
+    const at = hits.reduce((best, i) => (Math.abs(i - mid) < Math.abs(best - mid) ? i : best), hits[0]);
+    const a = t.slice(0, at).trim(), b = t.slice(at + sep.length).trim();
+    if (a && b) return [a, b];
+  }
+  const chars = [...t];
+  const half = Math.ceil(chars.length / 2);
+  return [chars.slice(0, half).join(""), chars.slice(half).join("")];
+}
+
+/**
+ * Fit a label into `maxW` px: keep the requested font, else shrink (≥ MIN_LABEL_PX),
+ * else wrap onto two lines, else allow ≤ 15 % horizontal squeeze; null = drop the label
+ * (canvas `fillText(maxWidth)` squeezing beyond that makes CJK text unreadable).
+ */
+export function fitLabel(
+  ctx: Pick<CanvasRenderingContext2D, "font" | "measureText">,
+  text: string,
+  maxW: number,
+  font: string,
+): { lines: string[]; font: string; width: number; lineH: number } | null {
+  const m = /(\d+(?:\.\d+)?)px/.exec(font);
+  const px0 = m ? parseFloat(m[1]) : 12;
+  const withSize = (px: number) => (m ? font.replace(m[0], `${px}px`) : font);
+  const measure = (lines: string[], f: string) => {
+    ctx.font = f;
+    return Math.max(...lines.map((l) => ctx.measureText(l).width));
+  };
+  if (maxW <= 0 || !text) return null;
+  for (let px = px0; px >= Math.min(px0, MIN_LABEL_PX); px -= 1) {
+    const f = withSize(px);
+    const w = measure([text], f);
+    if (w <= maxW) return { lines: [text], font: f, width: w, lineH: px + 1 };
+  }
+  const parts = splitLabel(text);
+  if (parts) {
+    for (let px = px0; px >= Math.min(px0, MIN_LABEL_PX); px -= 1) {
+      const f = withSize(px);
+      const w = measure(parts, f);
+      if (w <= maxW) return { lines: parts, font: f, width: w, lineH: px + 1 };
+    }
+  }
+  const fMin = withSize(Math.min(px0, MIN_LABEL_PX));
+  const w1 = measure([text], fMin);
+  if (w1 <= maxW * 1.15) return { lines: [text], font: fMin, width: w1, lineH: Math.min(px0, MIN_LABEL_PX) + 1 };
+  if (parts) {
+    const w2 = measure(parts, fMin);
+    if (w2 <= maxW * 1.15) return { lines: parts, font: fMin, width: w2, lineH: Math.min(px0, MIN_LABEL_PX) + 1 };
+  }
+  return null;
 }
 
 /** Map-wall helper: wall line endpoints for a rect side. */

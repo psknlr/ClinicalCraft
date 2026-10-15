@@ -213,7 +213,8 @@ export class Repl {
   }
 
   private prompt(): void {
-    if (this.quitting || !this.rl || this.inputClosed) return;
+    // Piped input: no prompt (each consumed line is echoed with its prompt instead).
+    if (this.quitting || !this.rl || this.inputClosed || !this.tty) return;
     this.rl.setPrompt(this.promptText());
     this.rl.prompt();
   }
@@ -375,7 +376,7 @@ export class Repl {
       this.answerApproval(`n ${m(this.L, "repl.noInput")}`);
       return;
     }
-    if (this.rl) {
+    if (this.rl && this.tty) {
       this.rl.setPrompt(`${p.yellow("?")} ${p.bold("›")} `);
       this.rl.prompt();
     }
@@ -385,10 +386,12 @@ export class Repl {
     const req = this.approvals[0];
     if (!req) return;
     const parsed = parseApprovalAnswer(line, req.allowSession);
+    if (!this.tty) this.renderer.line(this.ctx.out.dim(`? › ${line.trim()}`));
     if (!parsed) {
       this.renderer.line(this.ctx.out.yellow(req.allowSession ? m(this.L, "repl.approvalChoices") : m(this.L, "repl.approvalChoicesNoSession")));
-      if (this.rl && !this.inputClosed) this.rl.prompt();
-      else this.session.submit({ type: "approval_response", requestId: req.requestId, decision: "denied", reason: m(this.L, "repl.noInput") });
+      if (!this.rl || this.inputClosed) {
+        this.session.submit({ type: "approval_response", requestId: req.requestId, decision: "denied", reason: m(this.L, "repl.noInput") });
+      } else if (this.tty) this.rl.prompt();
       return;
     }
     this.approvals.shift();

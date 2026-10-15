@@ -3,7 +3,7 @@
  */
 import { existsSync, statSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { basename, dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import {
   checkCaseIntegrity,
   IdSchema,
@@ -254,7 +254,7 @@ export async function casesValidate(ctx: CliContext, args: ParsedArgs): Promise<
   const p = ctx.out;
   const showWarnings = !flagBool(args, "quiet");
   for (const r of results) {
-    const rel = relative(ctx.cwd, r.file) || r.file;
+    const rel = ctx.show(r.file);
     const label = r.ok ? p.green("✓") : p.red("✗");
     const counts = ctx.t("cases.counts", { errors: r.errors.length, warnings: r.warnings.length });
     ctx.print(`${label} ${rel}${r.id ? p.dim(` (${r.id})`) : ""} ${p.dim(counts)}`);

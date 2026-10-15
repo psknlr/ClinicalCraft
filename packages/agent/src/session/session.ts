@@ -65,14 +65,8 @@ export const MAX_NESTED_ASKS = 3;
 
 /** Options beyond the contract `SessionOptions`. */
 export interface CreateSessionOptions extends SessionOptions {
-  /** Project directory (hook `cwd`). */
-  cwd?: string | null;
-  /** Client-executed dynamic tools the front-end supports (e.g. ["walk_to"]). */
-  dynamicTools?: readonly string[];
   /** Retry policy for model calls (`false` disables; tests inject fast sleeps). */
   retry?: RetryPolicy | false;
-  /** First transcript ordinal (resume continues after the previous file's last one). */
-  transcriptOrdinal?: number;
   /** Write a `session_meta` item (default true). */
   writeSessionMeta?: boolean;
   /** Resume: runtime state beyond actions/messages (interlocutor, workup plan) — see `resumedRuntimeConfig`. */
@@ -634,8 +628,12 @@ export class ClinicalSession implements ClinicalSessionApi {
     }
     if (accepted) {
       this.emitSnapshot(id);
-      if (action.type !== "ask" && action.type !== "start") {
-        const narration = action.type === "note" ? action.text : narrateAction(this.caseDef, action, this.locale);
+      if (action.type === "note") {
+        // Free text is the author's words, never an engine-verified ACTION line for the examiner.
+        const who = !action.by || action.by === "learner" ? "learner" : String(action.by);
+        if (action.text.trim()) this.dialogue.push({ who, speaker: who, text: `[note] ${action.text}` });
+      } else if (action.type !== "ask" && action.type !== "start") {
+        const narration = narrateAction(this.caseDef, action, this.locale);
         if (narration) this.dialogue.push({ who: "action", speaker: String(action.by ?? "learner"), text: narration });
       }
     }
@@ -1033,10 +1031,9 @@ export class ClinicalSession implements ClinicalSessionApi {
     this.emit(id, { type: "turn_phase", turnId, agent, phase: "idle" });
   }
 
-  private emitAgentMessage(id: string, turnId: string, agent: AgentRole, text: string, grounded: string[], extra: Record<string, unknown> = {}): void {
+  private emitAgentMessage(id: string, turnId: string, agent: AgentRole, text: string, grounded: string[]): void {
     const speaker = TOP_AGENT_ROLES.has(agent) ? agent : npcDisplayName(this.caseDef, this.facility, agent, this.locale);
-    const msg = { type: "agent_message" as const, turnId, agent, speaker, text, grounded, ...extra };
-    this.emit(id, msg as EventMsg);
+    this.emit(id, { type: "agent_message", turnId, agent, speaker, text, grounded });
     this.dialogue.push({ who: agent, speaker, text });
   }
 
@@ -1112,8 +1109,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       this.appendMessages(speaker, res.messages);
       if (res.text) {
         this.emit(id, { type: "agent_message_delta", turnId, agent: speaker, delta: res.text });
-        const msg = { type: "agent_message" as const, turnId, agent: speaker, speaker: res.speakerName, text: res.text, grounded: res.grounded, grounding: res.grounding, nonverbal: res.nonverbal };
-        this.emit(id, msg as EventMsg);
+        this.emit(id, { type: "agent_message", turnId, agent: speaker, speaker: res.speakerName, text: res.text, grounded: res.grounded, grounding: res.grounding, nonverbal: res.nonverbal });
         this.dialogue.push({ who: speaker, speaker: res.speakerName, text: res.text });
       }
       return { status: "end_turn", text: res.text, grounded: res.grounded };
@@ -1423,6 +1419,8 @@ export class ClinicalSession implements ClinicalSessionApi {
       compact: (agent) => this.compact(id, agent ?? null, "manual", signal),
       configure: async (patch) => this.configure(id, patch),
       clearConversations: () => {
+        // Persisted as an empty compaction per agent, so a resume does not resurrect them.
+        for (const agent of this.conversations.keys()) this.recorder?.record("compacted", { agent, summary: "" });
         this.conversations.clear();
         this.patientMemory.patient.approached = false;
         this.patientMemory.companion.approached = false;

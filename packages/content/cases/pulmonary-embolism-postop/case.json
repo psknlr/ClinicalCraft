@@ -7,8 +7,8 @@
     "en": "Chest pain and breathlessness · 52-year-old woman (post-op day 3)"
   },
   "summary": {
-    "zh-CN": "外科病房呼叫：一位因结肠癌行开腹右半结肠切除术后第3天的52岁女性，下床行走时突发右侧胸痛和气促。到床旁评估、稳定病情、明确诊断，并在术后出血风险与治疗需要之间做出安全的决策。",
-    "en": "Surgical ward call: a 52-year-old woman on day 3 after an open right hemicolectomy for colon cancer develops sudden right-sided chest pain and breathlessness while walking. Assess and stabilise her at the bedside, establish the diagnosis, and make safe decisions that balance post-operative bleeding risk against the need for treatment."
+    "zh-CN": "外科病房呼叫：一位因结肠癌行开腹右半结肠切除术后第3天的52岁女性，下床行走时突发右侧胸痛和气促。到床旁评估、稳定病情、明确诊断，并在术后早期做出安全的处理决策。",
+    "en": "Surgical ward call: a 52-year-old woman on day 3 after an open right hemicolectomy for colon cancer develops sudden right-sided chest pain and breathlessness while walking. Assess and stabilise her at the bedside, establish the diagnosis, and make safe management decisions in the early post-operative period."
   },
   "specialty": [
     "acute-medicine",
@@ -923,8 +923,8 @@
         "en": "What have you been told about the tumour?"
       },
       "answer": {
-        "zh-CN": "上个月大便带血、贫血，做肠镜发现的，说是结肠癌。手术前给我输了补铁的针，还做过增强CT，医生说没看到转移到别的地方。切下来的东西化验结果还没出来。",
-        "en": "Last month I had blood in my stool and was anaemic; the colonoscopy found it — bowel cancer. Before the operation they gave me an iron drip and did a contrast CT, and said they couldn't see any spread. The lab results on what they removed aren't back yet."
+        "zh-CN": "上个月老觉得累、没力气，一查说是贫血，大便化验有隐血，做肠镜发现的，说是结肠癌。手术前给我输了补铁的针，还做过增强CT，医生说没看到转移到别的地方。切下来的东西化验结果还没出来。",
+        "en": "Last month I was tired all the time — they said I was anaemic and found hidden blood in my stool, and the colonoscopy found it — bowel cancer. Before the operation they gave me an iron drip and did a contrast CT, and said they couldn't see any spread. The lab results on what they removed aren't back yet."
       },
       "keywords": {
         "zh-CN": [
@@ -2404,8 +2404,8 @@
             "en": "Sampled 16:15 (room air)"
           },
           "text": {
-            "zh-CN": "采样条件：未吸氧（空气，FiO2 0.21），16:15由责任护士按病区快速反应流程采集。pH 7.47，PaCO2 4.1 kPa（31 mmHg），PaO2 7.5 kPa（56 mmHg），HCO3⁻ 22 mmol/L，BE −1.0 mmol/L，SaO2 89%，乳酸1.9 mmol/L。计算值：肺泡-动脉氧分压差（A–a）约7.3 kPa（55 mmHg）；按年龄预计上限约2.3 kPa（17 mmHg）。",
-            "en": "Sampling conditions: room air (FiO2 0.21), drawn at 16:15 by the ward nurse under the ward rapid-response protocol. pH 7.47, PaCO2 4.1 kPa (31 mmHg), PaO2 7.5 kPa (56 mmHg), HCO3⁻ 22 mmol/L, BE −1.0 mmol/L, SaO2 89%, lactate 1.9 mmol/L. Calculated: alveolar–arterial (A–a) gradient ≈ 7.3 kPa (55 mmHg); age-predicted upper limit ≈ 2.3 kPa (17 mmHg)."
+            "zh-CN": "采样条件：未吸氧（空气，FiO2 0.21），16:15由责任护士按病区快速反应流程采集，并立即上机检测。pH 7.47，PaCO2 4.1 kPa（31 mmHg），PaO2 7.5 kPa（56 mmHg），HCO3⁻ 22 mmol/L，BE −1.0 mmol/L，SaO2 89%，乳酸1.9 mmol/L。计算值：肺泡-动脉氧分压差（A–a）约7.3 kPa（55 mmHg）；按年龄预计上限约2.3 kPa（17 mmHg）。",
+            "en": "Sampling conditions: room air (FiO2 0.21), drawn at 16:15 by the ward nurse under the ward rapid-response protocol and analysed straight away. pH 7.47, PaCO2 4.1 kPa (31 mmHg), PaO2 7.5 kPa (56 mmHg), HCO3⁻ 22 mmol/L, BE −1.0 mmol/L, SaO2 89%, lactate 1.9 mmol/L. Calculated: alveolar–arterial (A–a) gradient ≈ 7.3 kPa (55 mmHg); age-predicted upper limit ≈ 2.3 kPa (17 mmHg)."
           },
           "values": [
             {
@@ -3462,8 +3462,8 @@
       "results": {
         "ward": {
           "text": {
-            "zh-CN": "体重（术前）70 kg，身高162 cm。依诺肝素40 mg（4000 IU）皮下注射，每日20:00：术后第0天20:00已执行；术后第1天20:00已执行；术后第2天20:00“暂停——切口少量渗液，待外科复评”，未执行，之后无重新开具记录；今日（术后第3天）20:00待执行。抗血栓弹力袜：术后第2天患者自行脱下，拒绝重新穿戴；未使用间歇充气加压装置。对乙酰氨基酚1 g口服，每6小时（今日06:00、12:00已执行）；羟考酮5 mg口服，必要时（今日12:10执行1次）；氨氯地平5 mg口服每日1次——术后暂停（收缩压110–125 mmHg）。导尿管今日08:00拔除。",
-            "en": "Weight (pre-op) 70 kg, height 162 cm. Enoxaparin 40 mg (4,000 IU) SC daily at 20:00: POD0 20:00 given; POD1 20:00 given; POD2 20:00 'HELD — minor wound ooze, for surgical review', not given, and no re-prescription documented since; today (POD3) 20:00 due. Anti-embolism stockings: removed by the patient on POD2, declined refitting; no intermittent pneumatic compression in use. Paracetamol 1 g PO 6-hourly (given 06:00 and 12:00 today); oxycodone 5 mg PO as required (one dose at 12:10 today); amlodipine 5 mg PO daily — held since surgery (systolic BP 110–125 mmHg). Urinary catheter removed at 08:00 today."
+            "zh-CN": "体重（术前）70 kg，身高162 cm。依诺肝素40 mg（4000 IU）皮下注射，每日20:00：术后第0天20:00已执行；术后第1天20:00已执行；术后第2天20:00“暂停——切口少量渗液，待外科复评”，未执行；此后无外科复评记录，医嘱仍处于暂停状态，今日（术后第3天）20:00的剂量也不会执行。抗血栓弹力袜：术后第2天患者自行脱下，拒绝重新穿戴；未使用间歇充气加压装置。对乙酰氨基酚1 g口服，每6小时（今日06:00、12:00已执行）；羟考酮5 mg口服，必要时（今日12:10执行1次）；氨氯地平5 mg口服每日1次——术后暂停（收缩压110–125 mmHg）。导尿管今日08:00拔除。",
+            "en": "Weight (pre-op) 70 kg, height 162 cm. Enoxaparin 40 mg (4,000 IU) SC daily at 20:00: POD0 20:00 given; POD1 20:00 given; POD2 20:00 'HELD — minor wound ooze, for surgical review', not given; no surgical review documented since and the order is still on hold, so today's (POD3) 20:00 dose would not be given either. Anti-embolism stockings: removed by the patient on POD2, declined refitting; no intermittent pneumatic compression in use. Paracetamol 1 g PO 6-hourly (given 06:00 and 12:00 today); oxycodone 5 mg PO as required (one dose at 12:10 today); amlodipine 5 mg PO daily — held since surgery (systolic BP 110–125 mmHg). Urinary catheter removed at 08:00 today."
           }
         }
       }
@@ -4942,7 +4942,7 @@
       },
       "dose": {
         "zh-CN": "电话联系外科住院总/主刀医生，用SBAR交班",
-        "en": "Call the surgical registrar/operating surgeon with an SBAR handover"
+        "en": "Call the surgical chief resident/operating surgeon with an SBAR handover"
       },
       "requires": [],
       "risk": "none",
@@ -4955,7 +4955,7 @@
       },
       "response": {
         "zh-CN": "外科住院总：“手术过程顺利。从外科角度不反对治疗性抗凝；术后这么早，我们倾向用可以快速停用和中和的普通肝素静脉泵入。如果切口出血或者出现便血，请马上通知我们。”",
-        "en": "Surgical registrar: 'The operation was straightforward. From our side we're happy for therapeutic anticoagulation; this early after surgery we'd prefer an IV UFH infusion that can be stopped and reversed quickly. Call us straight away if there's wound bleeding or blood per rectum.'"
+        "en": "Surgical chief resident: 'The operation was straightforward. From our side we're happy for therapeutic anticoagulation; this early after surgery we'd prefer an IV UFH infusion that can be stopped and reversed quickly. Call us straight away if there's wound bleeding or blood per rectum.'"
       }
     },
     {
@@ -5601,6 +5601,16 @@
               },
               {
                 "intervened": "lmwh-treatment"
+              },
+              {
+                "all": [
+                  {
+                    "flag": "haemorrhage"
+                  },
+                  {
+                    "intervened": "ivc-filter"
+                  }
+                ]
               }
             ]
           }
@@ -5780,8 +5790,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。“很可能”（Wells >4；修订Geneva 16分为高度可能）时跳过D-二聚体，直接行CTPA；她肾功能正常、既往造影剂无过敏，可安全检查。ESC 2019（I类，C级）建议：对高或中等临床可能性的患者，在诊断过程中即开始抗凝，前提是快速排除抗凝禁忌。",
-            "en": "Correct. When PE is 'likely' (Wells > 4; revised Geneva 16 = high probability), skip the D-dimer and go straight to CTPA; renal function is normal and she has tolerated contrast before. ESC 2019 (class I, level C) recommends starting anticoagulation during the diagnostic work-up in patients with high or intermediate clinical probability, once contraindications have been quickly excluded."
+            "zh-CN": "正确。“很可能”（Wells >4；修订Geneva 16分为高度可能）时跳过D-二聚体，直接行CTPA；她上个月做增强CT未出现造影剂反应；CTPA不必等待肌酐结果，可同时送检肾功能。ESC 2019（I类，C级）建议：对高或中等临床可能性的患者，在诊断过程中即开始抗凝，前提是快速排除抗凝禁忌。",
+            "en": "Correct. When PE is 'likely' (Wells > 4; revised Geneva 16 = high probability), skip the D-dimer and go straight to CTPA; she had contrast last month without a reaction, and the CTPA need not wait for the creatinine — send renal function at the same time. ESC 2019 (class I, level C) recommends starting anticoagulation during the diagnostic work-up in patients with high or intermediate clinical probability, once contraindications have been quickly excluded."
           }
         },
         {
@@ -5891,8 +5901,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。她没有抗凝的绝对禁忌（切口干燥、血红蛋白稳定、无活动性出血、无颅内病变）。未经治疗的肺栓塞早期死亡率高；滤器不能替代抗凝，只在存在绝对禁忌时使用。",
-            "en": "Wrong. She has no absolute contraindication to anticoagulation (dry wound, stable haemoglobin, no active bleeding, no intracranial pathology). Untreated PE has a high early mortality; a filter is no substitute for anticoagulation and is only for absolute contraindications."
+            "zh-CN": "错误。她没有抗凝的绝对禁忌（切口已干燥、无活动性出血、无出血性疾病史、无颅内病变）。未经治疗的肺栓塞早期死亡率高；滤器不能替代抗凝，只在存在绝对禁忌时使用。",
+            "en": "Wrong. She has no absolute contraindication to anticoagulation (dry wound, no active bleeding, no bleeding disorder, no intracranial pathology). Untreated PE has a high early mortality; a filter is no substitute for anticoagulation and is only for absolute contraindications."
           }
         },
         {
@@ -6269,6 +6279,11 @@
             "not": {
               "flag": "anticoag-prompted"
             }
+          },
+          {
+            "not": {
+              "flag": "haemorrhage"
+            }
           }
         ]
       }
@@ -6294,6 +6309,11 @@
           {
             "not": {
               "flag": "doac-given"
+            }
+          },
+          {
+            "not": {
+              "flag": "haemorrhage"
             }
           }
         ]
@@ -6383,8 +6403,8 @@
       "domain": "safety",
       "weight": 1,
       "text": {
-        "zh-CN": "避免有害措施（快速大量补液、利尿、NSAID、术后早期口服DOAC、患肢气压治疗、无指征的下腔静脉滤器）",
-        "en": "Avoided harmful measures (large fluid bolus, diuretic, NSAID, early oral DOAC, IPC on the DVT limb, unindicated IVC filter)"
+        "zh-CN": "避免有害措施（快速大量补液、利尿、NSAID、术后早期口服DOAC、患肢气压治疗、无指征的下腔静脉滤器、溶栓相关活动性大出血时仍在抗凝）",
+        "en": "Avoided harmful measures (large fluid bolus, diuretic, NSAID, early oral DOAC, IPC on the DVT limb, unindicated IVC filter, anticoagulant on board during a lytic major bleed)"
       },
       "met": {
         "all": [
@@ -6419,6 +6439,18 @@
           {
             "not": {
               "flag": "filter-unindicated"
+            }
+          },
+          {
+            "not": {
+              "all": [
+                {
+                  "flag": "haemorrhage"
+                },
+                {
+                  "flag": "anticoagulated"
+                }
+              ]
             }
           }
         ]
@@ -6459,8 +6491,8 @@
         "en": "Nurse Wang Jing"
       },
       "knowledge": {
-        "zh-CN": "交班：林雅琴，52岁，结肠癌开腹右半结肠切除术后第3天。16:00左右从厕所走回病床途中突发右侧胸痛、气促，扶住扶手未摔倒。16:10生命体征：心率118次/分，血压112/70 mmHg，呼吸26次/分，SpO2 89%（未吸氧），体温37.4 ℃。16:15按病区快速反应流程在未吸氧状态下采集了动脉血气，标本已贴好标签，开单即可送ICU血气仪。用药：依诺肝素40 mg每晚20:00——昨晚（术后第2天）因切口少量渗液被外科暂停，之后没有重新开医嘱，今晚20:00那次尚未执行；弹力袜术后第2天她自己脱了，未用气压治疗；对乙酰氨基酚1 g每6小时（12:00已给），羟考酮5 mg 12:10给过一次；氨氯地平术后暂停。导尿管今早08:00拔除。术前体重70 kg。床旁有氧气接口、监护仪、输液泵；病区备有普通肝素和依诺肝素。外出做CT需要护士携带监护仪陪同。具体给药时间和剂量请学员到病历终端查看用药执行记录（MAR）。不推测诊断。",
-        "en": "Handover: Lin Yaqin, 52, day 3 after open right hemicolectomy for colon cancer. At about 16:00, walking back from the toilet, she developed sudden right-sided chest pain and breathlessness; grabbed the handrail, did not fall. Obs at 16:10: HR 118/min, BP 112/70 mmHg, RR 26/min, SpO2 89% on room air, T 37.4 °C. At 16:15, under the ward rapid-response protocol, I drew an arterial blood gas on room air — the sample is labelled and can go to the ICU analyser as soon as it is ordered. Medications: enoxaparin 40 mg at 20:00 nightly — last night's (POD2) dose was held by the surgeons for minor wound ooze and has not been re-prescribed; tonight's 20:00 dose is not yet given. She took her stockings off on POD2; no IPC. Paracetamol 1 g 6-hourly (12:00 given), oxycodone 5 mg once at 12:10; amlodipine held since surgery. Urinary catheter removed at 08:00. Pre-op weight 70 kg. Oxygen outlet, monitor and infusion pumps are at the bedside; UFH and enoxaparin are stocked on the ward. CT transfer needs a nurse escort with a monitor. For exact doses and times she points the learner to the medication administration record (MAR) on the records terminal. Does not speculate about the diagnosis."
+        "zh-CN": "交班：林雅琴，52岁，结肠癌开腹右半结肠切除术后第3天。16:00左右从厕所走回病床途中突发右侧胸痛、气促，扶住扶手未摔倒。16:10生命体征：心率118次/分，血压112/70 mmHg，呼吸26次/分，SpO2 89%（未吸氧），体温37.4 ℃。16:15按病区快速反应流程在未吸氧状态下采集了动脉血气，已立即在ICU血气分析仪上完成检测（血气标本须在采集后约30分钟内上机），开单后即可调阅结果。用药：依诺肝素40 mg每晚20:00——昨晚（术后第2天）因切口少量渗液被外科暂停，之后一直没有外科复评、也没有恢复医嘱，今晚20:00那次仍是暂停状态；弹力袜术后第2天她自己脱了，未用气压治疗；对乙酰氨基酚1 g每6小时（12:00已给），羟考酮5 mg 12:10给过一次；氨氯地平术后暂停。导尿管今早08:00拔除。术前体重70 kg。床旁有氧气接口、监护仪、输液泵；病区备有普通肝素和依诺肝素。外出做CT需要护士携带监护仪陪同。具体给药时间和剂量请学员到病历终端查看用药执行记录（MAR）。不推测诊断。",
+        "en": "Handover: Lin Yaqin, 52, day 3 after open right hemicolectomy for colon cancer. At about 16:00, walking back from the toilet, she developed sudden right-sided chest pain and breathlessness; grabbed the handrail, did not fall. Obs at 16:10: HR 118/min, BP 112/70 mmHg, RR 26/min, SpO2 89% on room air, T 37.4 °C. At 16:15, under the ward rapid-response protocol, I drew an arterial blood gas on room air — I ran it on the ICU blood-gas analyser straight away (gas samples must be analysed within about 30 minutes of sampling), and the result is released as soon as it is ordered. Medications: enoxaparin 40 mg at 20:00 nightly — last night's (POD2) dose was held by the surgeons for minor wound ooze and nobody has reviewed or restarted it since — tonight's 20:00 dose is still on hold. She took her stockings off on POD2; no IPC. Paracetamol 1 g 6-hourly (12:00 given), oxycodone 5 mg once at 12:10; amlodipine held since surgery. Urinary catheter removed at 08:00. Pre-op weight 70 kg. Oxygen outlet, monitor and infusion pumps are at the bedside; UFH and enoxaparin are stocked on the ward. CT transfer needs a nurse escort with a monitor. For exact doses and times she points the learner to the medication administration record (MAR) on the records terminal. Does not speculate about the diagnosis."
       },
       "interprets": []
     },

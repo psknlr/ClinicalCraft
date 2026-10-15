@@ -33,6 +33,11 @@ export interface FlagSpec {
   choices?: readonly string[];
   /** Omit from help. */
   hidden?: boolean;
+  /**
+   * String flag whose value may be omitted (`-p` alone, or followed by
+   * another option): it is then set to "" (e.g. `echo q | clinicalcraft -p --case x`).
+   */
+  optionalValue?: boolean;
 }
 
 export interface ParsedArgs {
@@ -206,6 +211,10 @@ export function parseArgs(argv: readonly string[], specs: readonly FlagSpec[], L
     if (raw === null) {
       const next = argv[i + 1];
       if (next === undefined || (isOptionToken(next) && next !== "-")) {
+        if (spec.optionalValue && spec.type === "string") {
+          flags[spec.name] = "";
+          continue;
+        }
         throw new UsageError(m(L, "argv.missing", { flag: display, value: spec.valueName ?? "" }));
       }
       raw = next;

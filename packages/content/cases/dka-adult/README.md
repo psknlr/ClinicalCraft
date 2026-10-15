@@ -129,7 +129,7 @@ Tempting wrong choices you can make:
 - **Minute 495:** next fluid bag.
 - **Minute 577:** resolution. Ketones and VBG rechecked, final reassessment,
   `resolution-transition` decision.
-- **Minute 594:** glargine + aspart with breakfast.
+- **Minute 594 (about 12:30 on the case clock):** glargine + aspart with her first meal.
 - **Minute 655:** FRIII stopped after a 60-min overlap.
 - **Minute 656:** finish.
 
@@ -158,20 +158,20 @@ Tempting wrong choices you can make:
   Both are normal. Measured Na rises 131 → 133 → 135 → 138 as glucose falls.
 - **Osmolality:**
   - calculated 2 × 131 + 28.0 + 9.2 = 299 mOsm/kg
-  - effective 2 × 131 + 28 = 290 mOsm/kg (< 320, not HHS)
+  - effective 2 × 131 + 28 = 290 mOsm/kg (below the 2024 consensus HHS threshold of > 300, and the JBDS/Chinese ≥ 320; not HHS)
 - **ABG (low-value option):** pH 7.12, PaCO₂ 2.45 kPa (18.4 mmHg), HCO₃⁻ 5.8 mmol/L.
   - Winter's expected PaCO₂ 1.5 × 5.8 + 8 = 16.7 ± 2 mmHg, so compensation is appropriate.
   - PaO₂ 14.6 kPa on air, against a PAO₂ of ≈ 16.9 kPa (A–a ≈ 2.3 kPa, normal).
   - Venous pH is 0.04 lower than arterial.
 - **Creatinine** 98 µmol/L = 1.11 mg/dL. eGFR (CKD-EPI 2021, female, 24 y) ≈ 71
-  mL/min/1.73 m². This is only a guide in AKI, and Jaffe creatinine can be
+  mL/min/1.73 m². This is only a guide in a non-steady state, and Jaffe creatinine can be
   falsely raised by acetoacetate. Recovery: 88 → 76 → 64 µmol/L.
 - **Potassium:** 3.2 → 3.7 after about an hour of KCl 20 mmol/h without insulin,
   then 4.1 → 4.2 on 40 mmol/L fluids with insulin.
 - **Phosphate:** 0.62 → 0.58 → 0.45 → 0.52 mmol/L. It always stays above
   0.32 mmol/L, so it is monitored, not replaced.
 - **Ketones** (β-hydroxybutyrate): 5.8 → 5.4 (no insulin yet) → 2.6 (≈ 3.5 h of
-  insulin, ≈ 0.8 mmol/L/h) → 0.4 mmol/L. HCO₃⁻ rises more slowly (7 → 12 in the
+  insulin, ≈ 0.8 mmol/L/h) → 0.2 mmol/L (below both the < 0.6 of JBDS/2024 and the < 0.3 of the Chinese 2013 guideline). HCO₃⁻ rises more slowly (7 → 12 in the
   same 3.5 h) because of hyperchloraemia from saline (Cl⁻ 98 → 106 → 108). This
   is why JBDS prefers ketone fall (≥ 0.5 mmol/L/h) over bicarbonate as the
   treatment target when a ketone meter is available.

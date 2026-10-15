@@ -4,10 +4,27 @@
  * carry an owner id (placement id) so ray hits resolve to interaction
  * targets without per-object meshes.
  */
-import { BoxGeometry, InstancedMesh, Matrix4, Quaternion, Vector3, type Object3D } from "three";
+import { BoxGeometry, InstancedMesh, Matrix4, PlaneGeometry, Quaternion, Vector3, type Object3D } from "three";
 import type { MaterialLibrary } from "./materials.js";
 
 export const UNIT_BOX = new BoxGeometry(1, 1, 1);
+/** Unit quad facing +Z (equipment screen faces). Module-shared like UNIT_BOX. */
+export const UNIT_PLANE = new PlaneGeometry(1, 1);
+
+/** Geometries shared by every world; never disposed with a mesh, only via `releaseSharedGeometry()`. */
+export function isSharedGeometry(g: unknown): boolean {
+  return g === UNIT_BOX || g === UNIT_PLANE;
+}
+
+/**
+ * Dispatch "dispose" on the shared geometries: frees the GPU buffers of the
+ * renderer being torn down and drops its listeners (otherwise a disposed
+ * world stays reachable through them). Live renderers re-upload lazily.
+ */
+export function releaseSharedGeometry(): void {
+  UNIT_BOX.dispose();
+  UNIT_PLANE.dispose();
+}
 const TILED = "#tiled";
 
 interface Inst {

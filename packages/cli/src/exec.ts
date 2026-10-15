@@ -139,7 +139,7 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   const maxTurns = args.flags["max-turns"] !== undefined ? flagPositiveInt(args, "max-turns", 500, ctx.locale) : undefined;
   const to = flagString(args, "to");
 
-  let prompt = flagString(args, "print") ?? args.positionals.join(" ");
+  let prompt = [flagString(args, "print") ?? "", ...args.positionals].filter((s) => s.length > 0).join(" ");
   if (prompt === "-" || (!prompt && inputFormat === "text" && !autopilot && !ctx.io.stdin.isTTY)) prompt = (await readAllStdin(ctx.io.stdin)).trim();
   if (!prompt && !autopilot && inputFormat !== "stream-json") throw new UsageError(ctx.t("exec.noPrompt"));
 
@@ -236,7 +236,9 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
   if (format === "json" || format === "stream-json") {
     write(JSON.stringify(result));
   } else {
-    if (result.result) ctx.print(result.result);
+    // stdout carries the final message for pipes/files; on a terminal the progress renderer already showed it.
+    const alreadyShown = renderer !== null && Boolean(ctx.io.stdout.isTTY) && Boolean(ctx.io.stderr.isTTY);
+    if (result.result && !alreadyShown) ctx.print(result.result);
     if (autopilot || result.finished) {
       const r = result.assessment.report;
       ctx.print(

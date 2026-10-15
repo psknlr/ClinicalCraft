@@ -2,19 +2,21 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ClinicalCraft</title>
-    <!-- Placeholder app shell: the UI layer (src/main.ts) replaces this file. -->
-    <style>
-      html, body { margin: 0; height: 100%; background: #b4d7da; color: #2e4839; font: 14px system-ui, "Microsoft YaHei", sans-serif; }
-      main { max-width: 560px; margin: 18vh auto; padding: 24px; background: #f3eed8; border: 3px solid #9aa98c; }
-      a { color: #487b54; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="ClinicalCraft V5 · 临床方块世界 — a voxel clinical world with agent-driven virtual patients grounded in case data." />
+    <title>ClinicalCraft · 临床方块世界</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <main>
-      <h1>ClinicalCraft</h1>
-      <p>The application shell is not built yet. Open the <a href="./world-harness.html">world harness</a> to explore the voxel world.</p>
-    </main>
+    <canvas id="world" tabindex="0" aria-label="第一人称体素诊所 · first-person voxel clinic"></canvas>
+    <div id="vignette" aria-hidden="true"></div>
+    <div id="intro"></div>
+    <div id="hud" hidden></div>
+    <div id="panel" hidden></div>
+    <div id="approval" hidden></div>
+    <div id="toast-root"></div>
+    <noscript><p style="padding:24px">ClinicalCraft needs JavaScript and WebGL.</p></noscript>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

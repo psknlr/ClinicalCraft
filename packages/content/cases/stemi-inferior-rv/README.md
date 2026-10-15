@@ -25,7 +25,7 @@ JVP with Kussmaul's sign, and clear lungs.
 | phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic on transfer; not learner-switchable) |
 | clock | simulated, starts 09:10, `realtimeScale` 1, limit 120 min; costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1.5 min |
 | difficulty | 3 / 5 |
-| content | 40 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 58 matcher test utterances |
+| content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 74 matcher test utterances |
 
 ## Learning objectives
 
@@ -151,10 +151,39 @@ ERC/AHA resuscitation updates before high-stakes use.
   take SBP to about 145 mmHg, which overstates the response of an infarcted RV.
   The 3rd and later boluses at SBP ≥ 110 are scored unsafe and carry the harm text.
 - In the `general-hospital` facility the patient is assigned to resus bay 1 (the
-  triage note names no bay number). The cath-lab phase uses the C-arm in the cath lab
-  (`fluoroscopy`). The cath lab has no 12-lead ECG cart, so the post-PCI ECG is
-  ordered from an ECG cart in resus. Lab tests are ordered at the laboratory
-  workstation.
+  triage note names no bay number). The angiogram needs `fluoroscopy`. The objective 5
+  waypoint points to the nearest placement with that capability: from resus that is the
+  radiology order and reading console, and from inside the cath lab it is the C-arm. The
+  cath lab has no 12-lead ECG cart, so the post-PCI ECG is ordered from an ECG cart in
+  resus. Lab tests are ordered at the laboratory workstation.
+
+## Patient matcher notes
+
+- The matcher breaks score ties by declaration order. Specific items therefore come
+  before the generic ones they overlap with: allergies, PDE5 inhibitors, recreational
+  drugs, family history and last meal come first.
+- `hpi-onset` carries generic onset and duration phrases (多久了, 多长时间了,
+  "when did it start"). It excludes smoking, blood pressure, statin, cholesterol,
+  diabetes, medication and meal words, so 抽烟多久了？ and "how long have you had high
+  blood pressure?" reach their own items.
+- Some English phrases reduce to one token after stop-words are removed:
+  - "come and go" → `come`
+  - "into your back" → `back`
+  These items carry excludes for everyday speech ("come with you", "I'll be back"),
+  and the matcher-hazard phrases "meth" (found inside "something") and "quit" (which
+  stems to match "quite") are not used.
+- Statements that give a drug ("这是阿司匹林，请嚼碎", "we're giving you a blood thinner")
+  do not select the required `medications` item. Selected items credit the learner
+  with asking.
+- `identity` answers name and age (pseudonym, 58), so offline mode does not answer
+  "how old are you?" with the fallback.
+- `extensions.testUtterances` ends with a regression set for each collision above.
+- Questions about things the case does not record get `persona.fallbackUnknown` or, offline,
+  a clarifying question. These are weight change, stress, sleep, urinary, bowel and other
+  systems, insurance, and the details listed under `unknowns`. The patient never invents
+  a "normal" answer. `pmh-cardiac` excludes urine, bowel, sleep, eye, memory and similar
+  words: its "heart problems" keyword would otherwise answer "any X problems?" with the
+  cardiac history.
 
 ## Validation
 

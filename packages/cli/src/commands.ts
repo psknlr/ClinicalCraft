@@ -190,11 +190,15 @@ export const ROOT: CommandSpec = {
     },
     {
       name: "import-v4",
-      usage: "<html | .part01 .part02 | Part1.zip Part2.zip>",
-      summary: { en: "Install the local-only V4 assets (figures, PDF, anatomy model)", zh: "安装 V4 本地资源（病例图片、PDF、解剖模型）" },
+      usage: "<files…>",
+      summary: { en: "Install the local-only V4 assets (figures, PDF, anatomy model) from the V4 html, its .part01/.part02 files or the two zips", zh: "从 V4 html、.part01/.part02 分卷或两个 zip 安装本地资源（病例图片、PDF、解剖模型）" },
       flags: [{ name: "dest", type: "string", valueName: "<dir>", description: { en: "Destination (default ~/.clinicalcraft/assets; assets/local in a repo checkout)", zh: "安装目录（默认 ~/.clinicalcraft/assets；仓库内可用 assets/local）" } }],
       run: runImportV4,
-      examples: ['clinicalcraft import-v4 "Virtual_Patient_V4(1).html"', "clinicalcraft import-v4 Virtual_Patient_V4_Part1.zip Virtual_Patient_V4_Part2.zip --dest assets/local"],
+      examples: [
+        'clinicalcraft import-v4 "Virtual_Patient_V4(1).html"',
+        'clinicalcraft import-v4 "Virtual_Patient_V4(1).html.part01" "Virtual_Patient_V4(1).html.part02"',
+        "clinicalcraft import-v4 Virtual_Patient_V4_Part1.zip Virtual_Patient_V4_Part2.zip --dest assets/local",
+      ],
     },
     {
       name: "eval",

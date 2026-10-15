@@ -53,7 +53,7 @@ import { animateDoors, buildStructures, setDoorOpen, type WallRecord } from "./s
 import { roleName, strings, tx } from "./strings.js";
 import { buildTerrain } from "./terrain.js";
 import { createLcg } from "./textures.js";
-import { BoxBatch, UNIT_BOX } from "./voxels.js";
+import { BoxBatch, isSharedGeometry, releaseSharedGeometry, UNIT_BOX } from "./voxels.js";
 
 export { monitorRenderer } from "../shared/monitor-render.js";
 
@@ -150,17 +150,46 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const cX = (b.minX + b.maxX) / 2;
   const cZ = (b.minZ + b.maxZ) / 2;
   const half = Math.max(b.maxX - b.minX, b.maxZ - b.minZ) / 2;
-  const sunScale = Math.max(1, half / 35.5);
+  // Shadow box: the whole facility when it is V4-sized (half ≤ 40, V4 ±37), else a ±SHADOW_HALF box
+  // that follows the player in SHADOW_STEP jumps (sharper texels, fewer shadow-pass draw calls).
+  const SHADOW_HALF = 40;
+  const SHADOW_STEP = 8;
+  const followShadow = half > SHADOW_HALF;
+  const boxHalf = followShadow ? SHADOW_HALF : half + 1.5;
+  const sunScale = Math.max(1, (followShadow ? SHADOW_HALF : half) / 35.5);
   const sun = new DirectionalLight("#fff4d4", env.sunIntensity ?? 3.4);
-  sun.position.set(cX - 23 * sunScale, 36 * sunScale, cZ + 19 * sunScale);
-  sun.target.position.set(cX, 0, cZ);
+  const aimSun = (x: number, z: number) => {
+    sun.position.set(x - 23 * sunScale, 36 * sunScale, z + 19 * sunScale);
+    sun.target.position.set(x, 0, z);
+    sun.target.updateMatrixWorld();
+  };
+  aimSun(cX, cZ);
   sun.castShadow = q0.shadow > 0;
   sun.shadow.mapSize.set(q0.shadow || 1024, q0.shadow || 1024);
-  Object.assign(sun.shadow.camera, { left: -(half + 1.5), right: half + 1.5, top: half + 1.5, bottom: -(half + 1.5), near: 1, far: 90 * sunScale });
+  Object.assign(sun.shadow.camera, { left: -boxHalf, right: boxHalf, top: boxHalf, bottom: -boxHalf, near: 1, far: 90 * sunScale });
   sun.shadow.normalBias = 0.05;
   sun.shadow.bias = -3e-4;
   scene.add(sun);
   scene.add(sun.target);
+  // The scene is static apart from doors, blocks and NPC rebuilds: render the shadow map on demand
+  // (halves the per-frame draw calls; NPC breathing / head turns do not need new shadows).
+  renderer.shadowMap.autoUpdate = false;
+  renderer.shadowMap.needsUpdate = true;
+  const markShadows = () => {
+    renderer.shadowMap.needsUpdate = true;
+  };
+  let shadowCentre = "";
+  /** Re-centre a following shadow box on the player (in SHADOW_STEP jumps). */
+  function followSun(px: number, pz: number): void {
+    if (!followShadow) return;
+    const sx = Math.round(px / SHADOW_STEP) * SHADOW_STEP;
+    const sz = Math.round(pz / SHADOW_STEP) * SHADOW_STEP;
+    const key = `${sx},${sz}`;
+    if (key === shadowCentre) return;
+    shadowCentre = key;
+    aimSun(sx, sz);
+    markShadows();
+  }
 
   const root = new Group();
   root.name = "facility";
@@ -285,6 +314,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       label: p.name,
     });
     patients.set(p.slotId, p);
+    markShadows();
   }
 
   function removeNpc(n: NpcRecord): void {
@@ -297,6 +327,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     });
     disposeRig(n.rig);
     ctx.npcs.delete(`${n.kind}:${n.id}`);
+    markShadows();
   }
 
   for (const p of opts.patients ?? []) placePatient(p);
@@ -342,6 +373,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     ctx.pickables.push(mesh);
     const collider = ctx.colliders.add(boxCollider(cell[0] + 0.5, cell[1] + 0.5, cell[2] + 0.5, 1, 1, 1));
     placed.set(k, { mesh, collider, type, cell: [...cell] as Cell });
+    markShadows();
     if (notify) callbacks.onBlock("place", type);
     return true;
   }
@@ -354,6 +386,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     if (i >= 0) ctx.pickables.splice(i, 1);
     ctx.colliders.remove(pb.collider);
     placed.delete(k);
+    markShadows();
     return pb;
   }
 
@@ -877,6 +910,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         reject(new DOMException("Aborted", "AbortError"));
         return;
       }
+      if (disposed) {
+        reject(new Error("disposed"));
+        return;
+      }
       if (Math.hypot(target.x - player.x, target.z - player.z) <= 1) {
         resolve();
         return;
@@ -933,6 +970,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     resize();
     renderer.shadowMap.enabled = q.shadow > 0;
     sun.castShadow = q.shadow > 0;
+    markShadows();
     if (q.shadow > 0 && sun.shadow.mapSize.x !== q.shadow) {
       sun.shadow.mapSize.set(q.shadow, q.shadow);
       sun.shadow.map?.dispose();
@@ -957,8 +995,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       qualityCheck = now;
       applyQuality();
     }
-    const walking = started && autoWalk ? autoWalkInput(now) : null;
-    if (playing() || (started && walking)) {
+    // autopilot (walk_to) runs even while paused / before start(): a panel may be open
+    // while the agent walks the learner somewhere; user input stays blocked (playing()).
+    const walking = autoWalk ? autoWalkInput(now) : null;
+    if (playing() || walking) {
       const px = player.x, pz = player.z;
       const sprint = walking ? walking.sprint : !!keys.ShiftLeft || !!keys.ShiftRight;
       const input = walking
@@ -999,7 +1039,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
       camera.rotation.set(pitch, yaw, 0);
     }
-    animateDoors(ctx.doors, dt);
+    if (animateDoors(ctx.doors, dt)) markShadows();
+    followSun(player.x, player.z);
     // NPCs: head tracking (V4: within 5 units, ±.55 rad, lerp dt·3), speaking, distress
     camera.getWorldPosition(tmpCam);
     for (const n of ctx.npcs.values()) {
@@ -1079,22 +1120,36 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     };
   });
   const matColor = (id: string, fb: string) => merged.materials.get(id)?.color ?? fb;
-  function mapData(): MapData {
+  /** Static map layers, cached per locale (drawMap may run every frame for the minimap). */
+  let mapCache: { locale: string; data: Omit<MapData, "slots"> } | null = null;
+  function mapData(loc: string): MapData {
+    if (!mapCache || mapCache.locale !== loc) {
+      const SL = strings(loc);
+      mapCache = {
+        locale: loc,
+        data: {
+          bounds: facility.bounds,
+          ground: facility.terrain?.ground ?? "grass",
+          paths: (facility.terrain?.paths ?? []).map((p) => ({ ...p, color: p.material && p.material !== "path" ? matColor(p.material, "#ded0a4") : "#ded0a4" })),
+          ponds: facility.terrain?.ponds ?? [],
+          trees: facility.terrain?.trees ?? [],
+          buildZone: facility.buildZone?.rect ?? null,
+          buildZoneLabel: SL.buildZone,
+          buildings: facility.buildings.map((bb) => ({ ...bb.rect, name: tx(bb.name, loc) })),
+          rooms: facility.rooms.map((r) => ({ ...r.rect, name: tx(r.name, loc), kind: r.kind })),
+          walls: mapWalls,
+          placements: [...ctx.placements.values()].map((p) => ({ x: p.x, z: p.z, w: p.w, d: p.d, kind: p.kind, solid: p.solid, label: p.label })),
+          staff: (facility.staff ?? []).map((st) => ({ x: st.x, z: st.z, label: tx(st.name, loc) })),
+          northLabel: SL.north,
+        },
+      };
+    }
     return {
-      bounds: facility.bounds,
-      ground: facility.terrain?.ground ?? "grass",
-      paths: (facility.terrain?.paths ?? []).map((p) => ({ ...p, color: p.material && p.material !== "path" ? matColor(p.material, "#ded0a4") : "#ded0a4" })),
-      ponds: facility.terrain?.ponds ?? [],
-      trees: facility.terrain?.trees ?? [],
-      buildZone: facility.buildZone?.rect ?? null,
-      buildZoneLabel: S.buildZone,
-      buildings: facility.buildings.map((bb) => ({ ...bb.rect, name: tx(bb.name, locale) })),
-      rooms: facility.rooms.map((r) => ({ ...r.rect, name: tx(r.name, locale), kind: r.kind })),
-      walls: mapWalls,
-      placements: [...ctx.placements.values()].map((p) => ({ x: p.x, z: p.z, w: p.w, d: p.d, kind: p.kind, solid: p.solid, label: p.label })),
-      slots: facility.patientSlots.map((sl) => ({ x: sl.x, z: sl.z, occupied: patients.has(sl.id), label: patients.get(sl.id)?.name ?? sl.id })),
-      staff: (facility.staff ?? []).map((st) => ({ x: st.x, z: st.z, label: tx(st.name, locale) })),
-      northLabel: S.north,
+      ...mapCache.data,
+      slots: facility.patientSlots.map((sl) => {
+        const npc = ctx.npcs.get(`patient:${sl.id}`);
+        return { x: npc?.x ?? sl.x, z: npc?.z ?? sl.z, occupied: patients.has(sl.id), label: patients.get(sl.id)?.name ?? sl.id };
+      }),
     };
   }
 
@@ -1165,8 +1220,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
           else l.pivot.position.x = l.baseX ?? 0;
         }
       }
+      markShadows();
     },
     teleport(x: number, z: number, newYaw?: number) {
+      cancelWalk(new Error("teleported"));
       teleportTo(x, z, 0, newYaw);
     },
     setPatientState(slotId, state) {
@@ -1186,10 +1243,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       const cur = ctx.npcs.get(`patient:${slotId}`);
       if (!cur) return;
       if (state.speaking != null) cur.speaking = state.speaking;
-      if (state.distressed != null && state.distressed !== cur.distressed) {
-        cur.distressed = state.distressed;
-        for (const m of cur.rig.skinMeshes) m.material = state.distressed ? cur.rig.flushMaterial : cur.rig.skinMaterial;
-      }
+      if (state.distressed != null) cur.distressed = state.distressed;
+      // (re)apply the skin tint: a rebuilt rig (posture/accessory change) starts with plain skin
+      const tint = cur.distressed ? cur.rig.flushMaterial : cur.rig.skinMaterial;
+      for (const m of cur.rig.skinMeshes) if (m.material !== tint) m.material = tint;
     },
     setStaffSpeaking(staffId, speaking) {
       const n = ctx.npcs.get(`staff:${staffId}`);
@@ -1216,7 +1273,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     drawMap(target, o) {
       const c2d = target.getContext("2d");
       if (!c2d) return;
-      paintMap(c2d, target.width, target.height, mapData(), {
+      paintMap(c2d, target.width, target.height, mapData(o.locale || locale), {
         big: o.big,
         waypoint: o.waypoint ?? (waypoint ? { x: waypoint.x, z: waypoint.z } : null),
         player: { x: player.x, z: player.z, yaw },
@@ -1229,6 +1286,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       return canvas.toDataURL("image/png");
     },
     dispose() {
+      if (disposed) return;
       disposed = true;
       cancelAnimationFrame(raf);
       cancelWalk(new Error("disposed"));
@@ -1237,15 +1295,23 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       if (document.pointerLockElement === canvas) document.exitPointerLock();
       scene.traverse((o) => {
         const mesh = o as Mesh;
-        if (mesh.geometry && mesh.geometry !== UNIT_BOX) mesh.geometry.dispose();
+        if (mesh.geometry && !isSharedGeometry(mesh.geometry)) mesh.geometry.dispose();
         const m = mesh.material as Material | Material[] | undefined;
         if (Array.isArray(m)) m.forEach((x) => x.dispose());
         else if (m && !lib.has(m.name)) m.dispose();
         if ((o as InstancedMesh).isInstancedMesh) (o as InstancedMesh).dispose();
       });
       for (const sc of ctx.screens) sc.texture.dispose();
+      // animated parts use per-part clones that keep the library name (skipped above)
+      for (const a of ctx.animated) a.material.dispose();
+      for (const p of particles) p.m.removeFromParent();
+      particles.length = 0;
+      sun.shadow.dispose(); // shadow-map render target (not released by renderer.dispose)
       lib.dispose();
       signs.dispose();
+      // UNIT_BOX / UNIT_PLANE are module-shared: dispatching "dispose" frees this renderer's buffers and
+      // drops its listeners (otherwise every disposed world stays reachable); the next world re-uploads them.
+      releaseSharedGeometry();
       renderer.dispose();
     },
     get position() {
@@ -1280,6 +1346,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       get nav() {
         return navGrid;
       },
+      /** Current autopilot state (QA): path, waypoint index, goal, re-plans. */
+      get walk() {
+        return autoWalk ? { path: autoWalk.path, index: autoWalk.index, goal: autoWalk.goal, arrive: autoWalk.arrive, replans: autoWalk.replans } : null;
+      },
       /** V4 signature: teleport(x, z, y = 0, yaw = 0, pitch = 0). */
       teleport(x: number, z: number, y = 0, newYaw = 0, newPitch = 0) {
         teleportTo(x, z, y, newYaw, newPitch);
@@ -1289,6 +1359,14 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         frozen = v;
       },
       updateAim,
+      /** Draw calls of one frame from the current camera: steady state (shadow map reused) and a frame that re-renders the shadow map. */
+      drawCalls() {
+        renderer.shadowMap.needsUpdate = true;
+        renderer.render(scene, camera);
+        const withShadows = renderer.info.render.calls;
+        renderer.render(scene, camera);
+        return { steady: renderer.info.render.calls, withShadows, triangles: renderer.info.render.triangles };
+      },
       stats() {
         return {
           draws: renderer.info.render.calls,

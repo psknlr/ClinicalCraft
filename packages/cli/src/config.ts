@@ -5,9 +5,9 @@
 import { existsSync } from "node:fs";
 import { chmod, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { validateSettingsLayer } from "@clinicalcraft/agent";
+import { SettingsLayerSchema, validateSettingsLayer } from "@clinicalcraft/agent";
 import { findProjectRoot, projectSettingsPaths, saveUserSettings, userSettingsPath } from "@clinicalcraft/agent/node";
-import { flagBool, UsageError, type ParsedArgs } from "./argv.js";
+import { flagBool, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
 const SECRET_KEY = /^(apiKey|token|password|secret)$/i;
@@ -115,6 +115,12 @@ export async function configSet(ctx: CliContext, args: ParsedArgs): Promise<numb
     patch = patchFor(key, value);
   } catch {
     throw new UsageError(ctx.t("config.badKey", { key }));
+  }
+  const top = key.split(".")[0]!;
+  const known = [...Object.keys(SettingsLayerSchema.shape), "profiles"];
+  if (!known.includes(top)) {
+    const hint = suggest(top, known);
+    throw new UsageError(ctx.t("config.unknownKey", { key: top }), hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("config.knownKeys", { list: known.join(", ") }));
   }
   const target = flagBool(args, "project") ? "project" : flagBool(args, "local") ? "local" : "user";
   const secret = key.split(".").some((part) => SECRET_KEY.test(part));
