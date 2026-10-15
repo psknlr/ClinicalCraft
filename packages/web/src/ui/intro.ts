@@ -154,7 +154,7 @@ export class Intro {
         ),
         this.library(card),
       ),
-      h("div", { class: "intro-foot", html: tr("intro.foot.html", { caseLabel: card ? escapeHtml(ct(card.label) || ct(card.title)) : "" }) }),
+      h("div", { class: "intro-foot", html: tr("intro.foot.html", { caseLabel: card ? escapeHtml(footLabel(card)) : "" }) }),
     );
   }
 
@@ -332,4 +332,15 @@ export class Intro {
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch] ?? ch);
+}
+
+/**
+ * Footer label for the selected case: the V4 "CASE 01" prefix (if any) plus the
+ * spoiler-free library title. V4's full label names the diagnosis, so only its
+ * prefix is shown before the case is played.
+ */
+export function footLabel(card: Pick<CaseCard, "label" | "title">): string {
+  const prefix = card.label ? ct(card.label).split("·")[0].trim() : "";
+  const title = ct(card.title);
+  return prefix ? `${prefix} · ${title}` : title;
 }
