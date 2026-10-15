@@ -11,13 +11,13 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
 import { currentWaypoint, progress, t, vitalsAt, type CaseDefinition } from "@clinicalcraft/core";
-import { findProviderTemplate, PROVIDER_TEMPLATES, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { PROVIDER_TEMPLATES, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { HistoryFile } from "./history.js";
 import { m } from "./i18n.js";
 import { pickCase } from "./picker.js";
-import { EventRenderer } from "./render.js";
+import { EventRenderer, modelLabel } from "./render.js";
 import { openSession } from "./session.js";
 
 type ApprovalRequest = Extract<EventMsg, { type: "approval_request" }>;
@@ -135,7 +135,7 @@ export class Repl {
     this.renderer.configured = {
       sessionId: session.id,
       provider: settings.provider,
-      model: settings.model ?? (offline ? "deterministic" : findProviderTemplate(settings.provider)?.defaultModel ?? ""),
+      model: modelLabel(settings.provider, settings.model),
       approvalMode: settings.approvalMode,
       practiceScope: settings.practiceScope,
       interlocutor: "patient",

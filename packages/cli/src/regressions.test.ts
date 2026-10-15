@@ -11,10 +11,12 @@ import { PassThrough } from "node:stream";
 import { afterAll, describe, expect, it } from "vitest";
 import type { AgentEvent, EventMsg } from "@clinicalcraft/agent";
 import { loadContent } from "@clinicalcraft/agent/node";
+import { isLoopbackHost } from "@clinicalcraft/server";
 import { createPalette } from "./ansi.js";
 import type { CliIO } from "./context.js";
 import { main } from "./main.js";
 import { EventRenderer } from "./render.js";
+import { isLoopback } from "./serve.js";
 
 const root = mkdtempSync(join(tmpdir(), "cc-cli-reg-"));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -103,6 +105,34 @@ describe("bootstrap errors are localised usage errors with a hint", () => {
   });
 });
 
+describe("global options", () => {
+  it.skipIf(!smzl)("an unknown --profile is a localised usage error listing the known profiles", { timeout: T }, async () => {
+    const box = sandbox({ profiles: { osce: { approvalMode: "strict" } } });
+    const r = await run(["exec", "hi", "--case", SMZL, "--profile", "nope"], box);
+    expect(r.code).toBe(2);
+    expect(r.stderr).toContain("未知的设置预设“nope”（已有：osce）");
+  });
+
+  it("a --cwd that is not a directory is a usage error", { timeout: T }, async () => {
+    const box = sandbox();
+    const r = await run(["cases", "list", "--cwd", join(box.cwd, "missing"), "--lang", "en"], box);
+    expect(r.code).toBe(2);
+    expect(r.stderr).toContain("is not a directory");
+  });
+});
+
+describe("serve", () => {
+  it("treats the same hosts as loopback as the server does", async () => {
+    for (const host of ["127.0.0.1", "127.1.2.3", "localhost", "app.localhost", "::1", "[::1]", "0:0:0:0:0:0:0:1", "127.evil.com", "0.0.0.0", "192.168.1.2", "localhost.evil.com"]) {
+      expect(isLoopback(host), host).toBe(isLoopbackHost(host));
+    }
+    const box = sandbox();
+    const r = await run(["serve", "--host", "127.evil.com", "--lang", "en"], box);
+    expect(r.code).toBe(2);
+    expect(r.stderr).toContain("--token");
+  });
+});
+
 describe("EventRenderer", () => {
   it.skipIf(!smzl)("labels streamed text with the speaker name of the current language", () => {
     let locale = "zh-CN";
@@ -127,6 +157,15 @@ describe("EventRenderer", () => {
     emit({ type: "turn_complete", turnId: "t2", agent: "patient", lastMessage: "Hello.", durationMs: 1 });
     expect(out).toContain("Mr. Wang (pseudonym): Hello.");
     expect(out).not.toContain("王先生（化名）: Hello.");
+  });
+
+  it.skipIf(!smzl)("/provider without a model shows that provider's default model in the status line", { timeout: T }, async () => {
+    const box = sandbox();
+    const r = await run(["play", SMZL, "--lang", "en"], box, "/provider anthropic\n/provider offline\n/model\n");
+    expect(r.code).toBe(0);
+    expect(r.stdout).toContain("anthropic/claude-opus-5-5");
+    expect(r.stdout).not.toContain("anthropic/deterministic");
+    expect(r.stdout).toContain("offline/deterministic");
   });
 
   it.skipIf(!smzl)("prints a denied command once (the ✗ line), not again as its output", () => {

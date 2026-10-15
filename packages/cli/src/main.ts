@@ -2,6 +2,7 @@
  * Entry point: resolve the command path, parse flags, build the context and
  * run the handler; map errors to exit codes (1 error, 2 usage).
  */
+import { statSync } from "node:fs";
 import { resolve } from "node:path";
 import { loadContent, loadSettings } from "@clinicalcraft/agent/node";
 import type { Env } from "./ansi.js";
@@ -124,6 +125,7 @@ export async function main(argv: readonly string[], options: { io?: CliIO; env?:
     const cwdFlag = argvValue(argv, "cwd");
     const cwd = cwdFlag ? resolve(startCwd, cwdFlag) : startCwd;
     L = await preliminaryLocale(argv, env, cwd);
+    if (cwdFlag && !isDirectory(cwd)) throw new UsageError(m(L, "main.badCwd", { dir: cwd }));
 
     const resolved = resolveCommand(argv);
     helpPath = resolved.path.slice(1).map((c) => c.name).join(" ");
@@ -183,6 +185,14 @@ export async function main(argv: readonly string[], options: { io?: CliIO; env?:
     return await node.run(ctx, args);
   } catch (err) {
     return reportError(err, io, errPalette, L, helpPath, env);
+  }
+}
+
+function isDirectory(path: string): boolean {
+  try {
+    return statSync(path).isDirectory();
+  } catch {
+    return false;
   }
 }
 

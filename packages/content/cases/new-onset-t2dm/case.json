@@ -138,10 +138,10 @@
         "en": "First visit"
       },
       "description": {
-        "zh-CN": "周二上午8:40，门诊诊室。患者按预约空腹来诊。",
-        "en": "Tuesday 08:40, outpatient consulting room. He attends fasting by appointment."
+        "zh-CN": "周二上午8:40，门诊诊室。患者按预约空腹来诊。完成初诊的全部任务并为他安排3个月复诊后，病例自动进入复诊阶段（不可返回初诊，初诊的检查结果仍可查阅）。",
+        "en": "Tuesday 08:40, outpatient consulting room. He attends fasting by appointment. Once every first-visit task is done and you have arranged his three-month review, the case moves on to the review automatically (there is no going back; first-visit results stay viewable)."
       },
-      "learnerSwitchable": true
+      "learnerSwitchable": false
     },
     {
       "id": "review",
@@ -150,10 +150,32 @@
         "en": "Three-month review"
       },
       "description": {
-        "zh-CN": "初诊后第13周，同一诊室，空腹复诊。本阶段为既定的复诊记录（静态时钟），不随初诊阶段的具体操作而变化。",
-        "en": "Week 13 after the first visit, same consulting room, fasting review. This phase is a fixed record of the review (static clock) and does not change with what was done at the first visit."
+        "zh-CN": "初诊后第13周，同一诊室，空腹复诊。本阶段为既定的复诊记录（静态时钟），不随初诊阶段的具体操作而变化；初诊的检查结果仍可在证据板和检查记录中查阅。",
+        "en": "Week 13 after the first visit, same consulting room, fasting review. This phase is a fixed record of the review (static clock) and does not change with what was done at the first visit; first-visit results remain viewable on the evidence board and in the results record."
       },
-      "learnerSwitchable": true
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "flag": "review-booked"
+          },
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-exam"
+          },
+          {
+            "objective": "obj-diagnosis"
+          },
+          {
+            "objective": "obj-workup"
+          },
+          {
+            "objective": "obj-plan"
+          }
+        ]
+      }
     }
   ],
   "initialPhase": "initial",
@@ -191,7 +213,12 @@
           "为什么来",
           "主诉",
           "乏力",
-          "累"
+          "累",
+          "不得劲",
+          "今天来",
+          "咋回事",
+          "怎么不舒服",
+          "来看病"
         ],
         "en": [
           "what brings you",
@@ -202,7 +229,10 @@
           "reason for visit",
           "tired",
           "tiredness",
-          "fatigue"
+          "fatigue",
+          "main problem",
+          "the matter",
+          "what seems to be"
         ]
       },
       "disclosure": "volunteer",
@@ -231,7 +261,15 @@
           "起夜",
           "尿量",
           "上厕所",
-          "排尿"
+          "排尿",
+          "起来几回",
+          "起来几次",
+          "晚上起来",
+          "老上厕所",
+          "跑厕所",
+          "尿尿",
+          "撒尿",
+          "三多一少"
         ],
         "en": [
           "urine",
@@ -241,7 +279,11 @@
           "peeing",
           "nocturia",
           "getting up at night",
-          "toilet"
+          "toilet",
+          "pee",
+          "passing urine",
+          "up at night",
+          "nite"
         ]
       },
       "disclosure": "on-ask",
@@ -269,8 +311,12 @@
           "多饮",
           "饮水量",
           "饮料",
-          "喝多少",
-          "渴"
+          "渴",
+          "三多一少",
+          "老想喝水",
+          "喝得多",
+          "喝多少水",
+          "一天喝多少"
         ],
         "en": [
           "thirst",
@@ -279,7 +325,11 @@
           "how much do you drink",
           "fluid intake",
           "beverages",
-          "water intake"
+          "water intake",
+          "drinking more",
+          "drinking a lot",
+          "drinking loads",
+          "polydipsia"
         ]
       },
       "disclosure": "on-ask",
@@ -287,14 +337,21 @@
       "excludeKeywords": {
         "zh-CN": [
           "酒",
-          "应酬"
+          "应酬",
+          "走多少步",
+          "步数",
+          "喝多少酒",
+          "啤酒",
+          "白酒"
         ],
         "en": [
           "alcohol",
           "beer",
           "spirits",
           "wine",
-          "booze"
+          "booze",
+          "drink alcohol",
+          "units"
         ]
       },
       "phases": [
@@ -321,7 +378,14 @@
           "减轻",
           "掉秤",
           "胃口",
-          "食欲"
+          "食欲",
+          "三多一少",
+          "饭量",
+          "容易饿",
+          "饿得快",
+          "吃得多",
+          "多食",
+          "胖瘦"
         ],
         "en": [
           "weight",
@@ -330,7 +394,12 @@
           "thinner",
           "appetite",
           "kilos",
-          "lighter"
+          "lighter",
+          "hungry",
+          "hunger",
+          "eating more",
+          "polyphagia",
+          "weight change"
         ]
       },
       "disclosure": "on-ask",
@@ -361,7 +430,12 @@
           "喘不上气",
           "发迷糊",
           "意识",
-          "嗜睡"
+          "嗜睡",
+          "dka",
+          "酮症",
+          "酸中毒",
+          "肚子痛",
+          "呕"
         ],
         "en": [
           "nausea",
@@ -373,7 +447,13 @@
           "short of breath",
           "confused",
           "confusion",
-          "drowsy"
+          "drowsy",
+          "dka",
+          "ketoacidosis",
+          "throwing up",
+          "sick",
+          "tummy ache",
+          "stomach pain"
         ]
       },
       "disclosure": "on-ask",
@@ -427,8 +507,8 @@
         "en": "Any recurrent infections lately — boils, or cuts slow to heal?"
       },
       "answer": {
-        "zh-CN": "上个月大腿上长了个疖子，自己挤了涂了点药膏，两个礼拜才好。别的倒没有，感冒都没得过。",
-        "en": "Last month I had a boil on my thigh — I squeezed it and put some ointment on, and it took two weeks to heal. Nothing else, not even a cold."
+        "zh-CN": "上个月大腿上长了个疖子，自己挤了涂了点药膏，两个礼拜才好。别的倒没有，没发过烧，感冒都没得过。",
+        "en": "Last month I had a boil on my thigh — I squeezed it and put some ointment on, and it took two weeks to heal. Nothing else — no fevers, not even a cold."
       },
       "keywords": {
         "zh-CN": [
@@ -438,7 +518,12 @@
           "愈合",
           "皮肤感染",
           "脓包",
-          "长包"
+          "长包",
+          "发烧",
+          "发热",
+          "体温",
+          "好得慢",
+          "长疖子"
         ],
         "en": [
           "infections",
@@ -447,7 +532,12 @@
           "wounds",
           "healing",
           "skin infection",
-          "recurrent"
+          "recurrent",
+          "fever",
+          "fevers",
+          "temperature",
+          "slow to heal",
+          "healing slowly"
         ]
       },
       "disclosure": "on-ask",
@@ -474,9 +564,14 @@
           "下体",
           "私处",
           "阴部",
-          "瘙痒",
-          "霉菌",
-          "念珠菌"
+          "念珠菌",
+          "下面痒",
+          "下边痒",
+          "那里痒",
+          "龟头痒",
+          "下体瘙痒",
+          "阴部瘙痒",
+          "生殖器霉菌"
         ],
         "en": [
           "genital",
@@ -486,7 +581,12 @@
           "balanitis",
           "private parts",
           "foreskin",
-          "groin itch"
+          "groin itch",
+          "itchy down there",
+          "down below",
+          "itchy penis",
+          "genital itch",
+          "sore penis"
         ]
       },
       "disclosure": "specific",
@@ -515,7 +615,9 @@
           "烧灼",
           "针扎",
           "感觉异常",
-          "脚麻"
+          "脚麻",
+          "手麻",
+          "麻不麻"
         ],
         "en": [
           "numbness",
@@ -524,7 +626,9 @@
           "pins and needles",
           "burning feet",
           "neuropathy",
-          "sensation"
+          "sensation",
+          "tingly",
+          "numb feet"
         ]
       },
       "disclosure": "on-ask",
@@ -551,7 +655,12 @@
           "运动耐量",
           "腿疼",
           "间歇性跛行",
-          "脚肿"
+          "脚肿",
+          "胸口",
+          "胸口闷",
+          "胸口疼",
+          "腿痛",
+          "走路腿"
         ],
         "en": [
           "chest pain",
@@ -562,7 +671,11 @@
           "claudication",
           "leg pain walking",
           "ankle swelling",
-          "exertion"
+          "exertion",
+          "calf pain",
+          "pain walking",
+          "chest discomfort",
+          "angina"
         ]
       },
       "disclosure": "on-ask",
@@ -586,7 +699,11 @@
           "阳痿",
           "夫妻生活",
           "房事",
-          "勃起功能"
+          "勃起功能",
+          "那方面",
+          "有ed",
+          "硬不起来",
+          "性生活"
         ],
         "en": [
           "erectile",
@@ -594,7 +711,10 @@
           "impotence",
           "sexual function",
           "sex life",
-          "erectile dysfunction"
+          "erectile dysfunction",
+          "ed",
+          "impotent",
+          "sex"
         ]
       },
       "disclosure": "specific",
@@ -620,7 +740,8 @@
           "呼吸暂停",
           "白天犯困",
           "开车犯困",
-          "睡眠"
+          "睡眠",
+          "打呼"
         ],
         "en": [
           "snore",
@@ -630,7 +751,9 @@
           "daytime sleepiness",
           "sleepy",
           "drowsy driving",
-          "sleep"
+          "sleep",
+          "osa",
+          "apnoea"
         ]
       },
       "disclosure": "on-ask",
@@ -654,7 +777,9 @@
           "出汗",
           "手抖",
           "甲状腺",
-          "甲亢"
+          "甲亢",
+          "怕不怕热",
+          "手抖不抖"
         ],
         "en": [
           "heat intolerance",
@@ -663,14 +788,27 @@
           "tremor",
           "shaky hands",
           "thyroid",
-          "overactive thyroid"
+          "overactive thyroid",
+          "shaky",
+          "heat"
         ]
       },
       "disclosure": "on-ask",
       "required": false,
       "phases": [
         "initial"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "晚上出汗",
+          "夜里出汗",
+          "夜间出汗",
+          "盗汗"
+        ],
+        "en": [
+          "night sweat"
+        ]
+      }
     },
     {
       "id": "hx-wl-redflags",
@@ -693,7 +831,11 @@
           "黄疸",
           "眼睛黄",
           "大便",
-          "便血"
+          "便血",
+          "晚上出汗",
+          "夜里出汗",
+          "夜间出汗",
+          "咳血"
         ],
         "en": [
           "night sweats",
@@ -704,7 +846,10 @@
           "yellow eyes",
           "bowels",
           "stools",
-          "blood in stool"
+          "blood in stool",
+          "haemoptysis",
+          "hemoptysis",
+          "jaundiced"
         ]
       },
       "disclosure": "on-ask",
@@ -732,7 +877,11 @@
           "尿里有泡",
           "尿颜色",
           "尿路感染",
-          "尿道"
+          "尿道",
+          "尿尿疼",
+          "尿的时候疼",
+          "撒尿疼",
+          "小便疼"
         ],
         "en": [
           "dysuria",
@@ -742,7 +891,11 @@
           "hematuria",
           "frothy urine",
           "foamy urine",
-          "burning"
+          "burning",
+          "burning when you pee",
+          "sting",
+          "pain when peeing",
+          "uti"
         ]
       },
       "disclosure": "on-ask",
@@ -771,7 +924,11 @@
           "住院",
           "手术",
           "开刀",
-          "以前身体"
+          "以前身体",
+          "有啥病",
+          "什么病",
+          "病史",
+          "做过手术"
         ],
         "en": [
           "past medical history",
@@ -780,11 +937,29 @@
           "been in hospital",
           "operations",
           "surgery",
-          "health problems"
+          "health problems",
+          "pmh",
+          "past history",
+          "medical history",
+          "ops",
+          "operation"
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "家族",
+          "家里人",
+          "爸妈",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "fhx",
+          "parents"
+        ]
+      }
     },
     {
       "id": "hx-prior-glucose",
@@ -804,7 +979,8 @@
           "血糖高",
           "体检血糖",
           "糖尿病前期",
-          "空腹血糖"
+          "空腹血糖",
+          "血糖以前"
         ],
         "en": [
           "blood sugar before",
@@ -812,7 +988,10 @@
           "glucose checked",
           "prediabetes",
           "borderline sugar",
-          "previous sugar"
+          "previous sugar",
+          "prediabetic",
+          "sugar before",
+          "glucose before"
         ]
       },
       "disclosure": "on-ask",
@@ -822,15 +1001,62 @@
           "家里",
           "家族",
           "爸爸",
-          "妈妈"
+          "妈妈",
+          "在家测",
+          "自测",
+          "自己测",
+          "血糖仪"
         ],
         "en": [
           "family",
           "father",
           "mother",
-          "relatives"
+          "relatives",
+          "at home",
+          "meter",
+          "finger prick"
         ]
       }
+    },
+    {
+      "id": "hx-smbg",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "家里有血糖仪吗？自己测过血糖吗？",
+        "en": "Do you have a glucose meter at home — have you checked your own sugar?"
+      },
+      "answer": {
+        "zh-CN": "没有，家里没有血糖仪，我自己从来没测过。",
+        "en": "No — we haven't got a sugar meter at home, and I've never tested it myself."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血糖仪",
+          "自测血糖",
+          "在家测血糖",
+          "家里测血糖",
+          "自己测血糖",
+          "扎手指",
+          "测指尖血"
+        ],
+        "en": [
+          "glucose meter",
+          "glucometer",
+          "sugar meter",
+          "sugars at home",
+          "home glucose",
+          "test your sugar",
+          "finger prick",
+          "self-monitoring",
+          "smbg"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
+      },
+      "disclosure": "on-ask",
+      "required": false
     },
     {
       "id": "hx-prior-bp",
@@ -840,8 +1066,8 @@
         "en": "Has your blood pressure been checked before — ever told it was high?"
       },
       "answer": {
-        "zh-CN": "去年体检是146/92，说偏高，让我复查。家里没有血压计，后来就没再量过。",
-        "en": "At last year's check-up it was 146 over 92 — they said it was on the high side and to get it rechecked. We haven't got a blood-pressure machine at home, so I never measured it again."
+        "zh-CN": "去年体检是146/92，说偏高，让我复查。那时候家里没有血压计，后来就一直没再量过。",
+        "en": "At last year's check-up it was 146 over 92 — they said it was on the high side and to get it rechecked. We didn't have a blood-pressure machine at home back then, so it never got measured again."
       },
       "keywords": {
         "zh-CN": [
@@ -849,14 +1075,17 @@
           "高血压",
           "量过血压",
           "血压高",
-          "以前血压"
+          "以前血压",
+          "血压以前"
         ],
         "en": [
           "blood pressure",
           "hypertension",
           "high blood pressure",
           "pressure checked",
-          "bp"
+          "bp",
+          "high bp",
+          "bp checked"
         ]
       },
       "disclosure": "on-ask",
@@ -882,7 +1111,10 @@
           "中药",
           "保健品",
           "激素",
-          "止痛药"
+          "止痛药",
+          "吃啥药",
+          "啥药",
+          "用什么药"
         ],
         "en": [
           "medications",
@@ -892,7 +1124,11 @@
           "herbal",
           "supplements",
           "steroids",
-          "pain relief medicine"
+          "pain relief medicine",
+          "meds",
+          "regular medicines",
+          "otc",
+          "over the counter"
         ]
       },
       "disclosure": "on-ask",
@@ -905,13 +1141,18 @@
           "拉肚子",
           "漏服",
           "吃药以后",
-          "吃药后"
+          "吃药后",
+          "毒品",
+          "吸毒"
         ],
         "en": [
           "allerg",
           "side effect",
           "missed dose",
-          "adherence"
+          "adherence",
+          "recreational",
+          "street drugs",
+          "illicit"
         ]
       },
       "phases": [
@@ -934,13 +1175,17 @@
           "过敏",
           "过敏史",
           "药物过敏",
-          "食物过敏"
+          "食物过敏",
+          "过敏的",
+          "过不过敏"
         ],
         "en": [
           "allergies",
           "allergic",
           "allergy",
-          "reaction to medicine"
+          "reaction to medicine",
+          "nkda",
+          "allergic reactions"
         ]
       },
       "disclosure": "on-ask",
@@ -966,7 +1211,10 @@
           "一天几根",
           "烟龄",
           "戒过烟",
-          "想戒烟"
+          "想戒烟",
+          "抽几根",
+          "抽多少",
+          "抽不抽"
         ],
         "en": [
           "smoke",
@@ -975,7 +1223,12 @@
           "tobacco",
           "pack a day",
           "smoker",
-          "tried to quit"
+          "tried to quit",
+          "cigs",
+          "fags",
+          "pack years",
+          "pack-years",
+          "cigarette"
         ]
       },
       "disclosure": "on-ask",
@@ -1015,7 +1268,9 @@
           "酒量",
           "啤酒",
           "白酒",
-          "喝不喝酒"
+          "喝不喝酒",
+          "喝不喝",
+          "喝多少酒"
         ],
         "en": [
           "alcohol",
@@ -1023,8 +1278,50 @@
           "beer",
           "spirits",
           "units",
-          "booze"
+          "booze",
+          "alcohol units",
+          "drinker",
+          "drink much alcohol"
         ]
+      },
+      "disclosure": "on-ask",
+      "required": false
+    },
+    {
+      "id": "hx-drugs",
+      "topic": "social",
+      "question": {
+        "zh-CN": "有没有用过毒品或者别的成瘾性药物？",
+        "en": "Have you ever used recreational or street drugs?"
+      },
+      "answer": {
+        "zh-CN": "没有，那些东西我从来不碰。",
+        "en": "No, never — I've never touched anything like that."
+      },
+      "keywords": {
+        "zh-CN": [
+          "毒品",
+          "吸毒",
+          "大麻",
+          "冰毒",
+          "违禁药",
+          "成瘾性药物",
+          "嗑药"
+        ],
+        "en": [
+          "recreational drugs",
+          "street drugs",
+          "illicit drugs",
+          "cannabis",
+          "marijuana",
+          "weed",
+          "cocaine",
+          "drug use"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
       },
       "disclosure": "on-ask",
       "required": false
@@ -1049,7 +1346,10 @@
           "外卖",
           "吃什么",
           "饮食习惯",
-          "主食"
+          "主食",
+          "吃些啥",
+          "平时吃",
+          "饮食怎么样"
         ],
         "en": [
           "diet",
@@ -1058,14 +1358,27 @@
           "food",
           "breakfast",
           "what do you eat",
-          "takeaway"
+          "takeaway",
+          "typical day",
+          "food intake",
+          "eat"
         ]
       },
       "disclosure": "on-ask",
       "required": false,
       "phases": [
         "initial"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "药"
+        ],
+        "en": [
+          "medic",
+          "tablet",
+          "pill"
+        ]
+      }
     },
     {
       "id": "hx-exercise",
@@ -1086,7 +1399,10 @@
           "走路",
           "步数",
           "健身",
-          "久坐"
+          "久坐",
+          "走多少步",
+          "多少步",
+          "走路多"
         ],
         "en": [
           "exercise",
@@ -1096,14 +1412,31 @@
           "steps",
           "gym",
           "sport",
-          "sedentary"
+          "sedentary",
+          "exercise much",
+          "workouts"
         ]
       },
       "disclosure": "on-ask",
       "required": false,
       "phases": [
         "initial"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "腿疼",
+          "腿痛",
+          "胸痛",
+          "胸闷",
+          "胸口"
+        ],
+        "en": [
+          "calf pain",
+          "leg pain",
+          "chest pain",
+          "claudication"
+        ]
+      }
     },
     {
       "id": "hx-occupation",
@@ -1125,7 +1458,10 @@
           "开车",
           "驾驶",
           "驾照",
-          "司机"
+          "司机",
+          "干啥",
+          "干什么工作",
+          "哪上班"
         ],
         "en": [
           "work",
@@ -1135,11 +1471,24 @@
           "driving",
           "drive",
           "licence",
-          "license"
+          "license",
+          "profession",
+          "employment",
+          "what's your job"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "锻炼",
+          "运动"
+        ],
+        "en": [
+          "work out",
+          "workout"
+        ]
+      }
     },
     {
       "id": "hx-living",
@@ -1161,16 +1510,21 @@
           "妻子",
           "谁做饭",
           "家庭情况",
-          "医保"
+          "医保",
+          "几口人",
+          "家里有谁",
+          "家里人口",
+          "一个人住"
         ],
         "en": [
           "live with",
-          "who's at home",
           "wife",
           "who cooks",
           "household",
           "insurance",
-          "support at home"
+          "support at home",
+          "lives with you",
+          "married"
         ]
       },
       "disclosure": "on-ask",
@@ -1183,7 +1537,10 @@
           "遗传",
           "中风",
           "心脏病",
-          "宠物"
+          "宠物",
+          "血糖",
+          "测",
+          "量"
         ],
         "en": [
           "diabetes",
@@ -1192,7 +1549,12 @@
           "blood pressure",
           "stroke",
           "heart disease",
-          "pets"
+          "pets",
+          "sugar",
+          "glucose",
+          "check",
+          "monitor",
+          "measure"
         ]
       }
     },
@@ -1218,7 +1580,11 @@
           "爸爸",
           "妈妈",
           "遗传",
-          "兄弟姐妹"
+          "兄弟姐妹",
+          "爸妈",
+          "父母身体",
+          "家里人身体",
+          "家族遗传"
         ],
         "en": [
           "family history",
@@ -1228,7 +1594,12 @@
           "runs in the family",
           "siblings",
           "relatives",
-          "genetic"
+          "genetic",
+          "fhx",
+          "fh",
+          "family members",
+          "mum",
+          "dad"
         ]
       },
       "disclosure": "on-ask",
@@ -1259,14 +1630,20 @@
           "年轻时心梗",
           "猝死",
           "早发冠心病",
-          "年轻就心梗"
+          "年轻就心梗",
+          "年纪轻轻",
+          "年轻就",
+          "早发"
         ],
         "en": [
           "premature heart disease",
           "heart attack young",
           "sudden death",
           "early heart attack",
-          "died suddenly"
+          "died suddenly",
+          "died young",
+          "premature",
+          "heart attacks young"
         ]
       },
       "disclosure": "unknown",
@@ -1290,7 +1667,10 @@
           "什么原因",
           "有什么想法",
           "自己怎么看",
-          "怎么回事"
+          "怎么回事",
+          "啥毛病",
+          "什么毛病",
+          "你觉得"
         ],
         "en": [
           "what do you think",
@@ -1298,7 +1678,9 @@
           "any ideas",
           "what's causing",
           "think it is",
-          "your own idea"
+          "your own idea",
+          "causing this",
+          "ideas about"
         ]
       },
       "disclosure": "on-ask",
@@ -1325,7 +1707,10 @@
           "顾虑",
           "最怕",
           "忧虑",
-          "担忧"
+          "担忧",
+          "怕啥",
+          "怕什么",
+          "担心啥"
         ],
         "en": [
           "worries",
@@ -1333,7 +1718,10 @@
           "concerns",
           "afraid",
           "scared",
-          "anxious about"
+          "anxious about",
+          "worrying",
+          "fear",
+          "fears"
         ]
       },
       "disclosure": "on-ask",
@@ -1360,7 +1748,12 @@
           "想要",
           "今天想",
           "期待",
-          "想达到"
+          "想达到",
+          "帮你做",
+          "帮你什么",
+          "做点啥",
+          "想让我",
+          "希望我"
         ],
         "en": [
           "hoping",
@@ -1368,7 +1761,10 @@
           "what would you like",
           "want from today",
           "hope",
-          "expect"
+          "expect",
+          "hoping for",
+          "expecting",
+          "want me to do"
         ]
       },
       "disclosure": "on-ask",
@@ -1396,7 +1792,9 @@
           "压力",
           "低落",
           "兴趣",
-          "焦虑"
+          "焦虑",
+          "心情咋样",
+          "高兴不起来"
         ],
         "en": [
           "mood",
@@ -1406,7 +1804,9 @@
           "stress",
           "interest",
           "anxiety",
-          "low mood"
+          "low mood",
+          "mood like",
+          "feeling depressed"
         ]
       },
       "disclosure": "on-ask",
@@ -1430,7 +1830,8 @@
           "乙肝疫苗",
           "流感疫苗",
           "肺炎疫苗",
-          "打疫苗"
+          "打疫苗",
+          "疫苗打过"
         ],
         "en": [
           "vaccines",
@@ -1439,7 +1840,10 @@
           "immunization",
           "hepatitis b vaccine",
           "flu jab",
-          "pneumococcal"
+          "pneumococcal",
+          "jabs",
+          "flu vaccine",
+          "vaccinated"
         ]
       },
       "disclosure": "unknown",
@@ -1462,14 +1866,18 @@
           "胆固醇",
           "甘油三酯",
           "以前血脂",
-          "血脂高"
+          "血脂高",
+          "以前胆固醇",
+          "胆固醇查过"
         ],
         "en": [
           "cholesterol",
           "lipids",
           "triglycerides",
           "previous cholesterol",
-          "high cholesterol"
+          "high cholesterol",
+          "lipids checked",
+          "cholesterol before"
         ]
       },
       "disclosure": "unknown",
@@ -1495,7 +1903,11 @@
           "好些了吗",
           "还渴吗",
           "还起夜吗",
-          "感觉怎么样"
+          "感觉怎么样",
+          "症状怎么样了",
+          "好点没",
+          "还口渴",
+          "现在还渴"
         ],
         "en": [
           "symptoms now",
@@ -1503,10 +1915,13 @@
           "any better",
           "still thirsty",
           "still getting up at night",
-          "improvement"
+          "improvement",
+          "symptoms improved",
+          "thirst now",
+          "feeling better"
         ]
       },
-      "disclosure": "on-ask",
+      "disclosure": "volunteer",
       "required": false,
       "phases": [
         "review"
@@ -1532,7 +1947,12 @@
           "药怎么吃的",
           "忘记吃药",
           "二甲双胍吃得",
-          "现在吃什么药"
+          "现在吃什么药",
+          "按时吃",
+          "药吃了吗",
+          "吃了多少",
+          "现在吃多少",
+          "现在剂量"
         ],
         "en": [
           "missed doses",
@@ -1542,7 +1962,11 @@
           "getting on with the metformin",
           "forget tablets",
           "compliance",
-          "current medicines"
+          "current medicines",
+          "taking the tablets",
+          "taking your tablets",
+          "tablets ok",
+          "dose now"
         ]
       },
       "disclosure": "on-ask",
@@ -1571,7 +1995,12 @@
           "腹泻",
           "干咳",
           "肌肉疼",
-          "低血糖"
+          "低血糖",
+          "胃难受",
+          "胃不舒服",
+          "肠胃",
+          "恶心",
+          "低血糖反应"
         ],
         "en": [
           "side effects",
@@ -1581,8 +2010,66 @@
           "bloating",
           "dry cough",
           "muscle pain",
-          "hypo"
+          "hypo",
+          "hypos",
+          "gi upset",
+          "tolerating",
+          "cough"
         ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "review"
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "在家测",
+          "血糖仪",
+          "自测"
+        ],
+        "en": [
+          "at home",
+          "meter"
+        ]
+      }
+    },
+    {
+      "id": "hx-rv-home-bp",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "在家量血压了吗？",
+        "en": "Have you been checking your blood pressure at home?"
+      },
+      "answer": {
+        "zh-CN": "量了。上次看完就买了个上臂式的电子血压计，配的大号袖带。早上、晚上各量两次，都记在本子上，本子刚才交给护士了。",
+        "en": "Yes. Right after the first visit we bought an upper-arm electronic monitor with a large cuff. I measure twice in the morning and twice in the evening and write it all down — I gave the notebook to the nurse just now."
+      },
+      "keywords": {
+        "zh-CN": [
+          "在家量血压",
+          "家里量血压",
+          "自测血压",
+          "家庭血压",
+          "血压计",
+          "血压记录",
+          "自己量血压"
+        ],
+        "en": [
+          "bp at home",
+          "blood pressure at home",
+          "home bp",
+          "home blood pressure",
+          "bp machine",
+          "bp monitor",
+          "bp readings",
+          "bp diary",
+          "home readings"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
       },
       "disclosure": "on-ask",
       "required": false,
@@ -1609,7 +2096,12 @@
           "饮食运动",
           "教育课",
           "营养师",
-          "改变了什么"
+          "改变了什么",
+          "改了啥",
+          "饮食上",
+          "改了什么",
+          "饮食改",
+          "运动怎么样"
         ],
         "en": [
           "lifestyle changes",
@@ -1618,14 +2110,31 @@
           "walking",
           "education class",
           "dietitian",
-          "changes"
+          "changes",
+          "made any changes",
+          "lifestyle",
+          "diet now"
         ]
       },
       "disclosure": "on-ask",
       "required": false,
       "phases": [
         "review"
-      ]
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "腿疼",
+          "腿痛",
+          "胸痛",
+          "胸闷"
+        ],
+        "en": [
+          "calf pain",
+          "leg pain",
+          "chest pain",
+          "claudication"
+        ]
+      }
     },
     {
       "id": "hx-rv-smoking",
@@ -1645,7 +2154,10 @@
           "还抽烟吗",
           "复吸",
           "伐尼克兰",
-          "烟戒了吗"
+          "烟戒了吗",
+          "烟戒了",
+          "还抽吗",
+          "还抽烟"
         ],
         "en": [
           "stopping smoking",
@@ -1653,7 +2165,9 @@
           "still smoking",
           "varenicline",
           "relapse",
-          "cigarettes now"
+          "cigarettes now",
+          "off cigarettes",
+          "how's the quitting"
         ]
       },
       "disclosure": "on-ask",
@@ -1680,14 +2194,20 @@
           "还担心什么",
           "有什么疑问",
           "今天还想",
-          "别的问题"
+          "别的问题",
+          "想问的",
+          "啥想问",
+          "有啥问题",
+          "还有问题"
         ],
         "en": [
           "any questions",
           "anything to ask",
           "anything else worrying",
           "questions for me",
-          "anything else"
+          "anything else",
+          "questions",
+          "anything you want to ask"
         ]
       },
       "disclosure": "on-ask",
@@ -1747,7 +2267,10 @@
           "腰围",
           "bmi",
           "体重指数",
-          "称体重"
+          "称体重",
+          "量身高",
+          "量体重",
+          "称一下"
         ],
         "en": [
           "height",
@@ -1755,7 +2278,10 @@
           "waist",
           "bmi",
           "body mass index",
-          "weigh"
+          "weigh",
+          "weigh him",
+          "measure waist",
+          "anthropometry"
         ]
       },
       "finding": {
@@ -1763,9 +2289,7 @@
         "en": "Height 172 cm, weight 89.0 kg, BMI 30.1 kg/m²; waist circumference 104 cm (midway between the lowest rib and the iliac crest in the mid-axillary line, end-expiration). Neck circumference not measured."
       },
       "abnormal": true,
-      "requires": [
-        "scale"
-      ],
+      "requires": [],
       "required": true,
       "phases": [
         "initial"
@@ -1784,14 +2308,18 @@
           "腰围",
           "bmi",
           "称体重",
-          "复测体重"
+          "复测体重",
+          "量体重",
+          "称一下"
         ],
         "en": [
           "weight",
           "waist",
           "bmi",
           "weigh",
-          "body mass index"
+          "body mass index",
+          "weigh him",
+          "weight now"
         ]
       },
       "finding": {
@@ -1799,9 +2327,7 @@
         "en": "Weight 86.0 kg (3.0 kg — about 3.4% — less than at the first visit), BMI 29.1 kg/m²; waist circumference 101 cm."
       },
       "abnormal": true,
-      "requires": [
-        "scale"
-      ],
+      "requires": [],
       "required": false,
       "phases": [
         "review"
@@ -1919,7 +2445,11 @@
           "皮肤",
           "黑棘皮",
           "色素沉着",
-          "皮赘"
+          "皮赘",
+          "脖子皮肤",
+          "脖子后面",
+          "颈后",
+          "脖子发黑"
         ],
         "en": [
           "neck skin",
@@ -1928,7 +2458,9 @@
           "skin",
           "acanthosis",
           "skin tags",
-          "pigmentation"
+          "pigmentation",
+          "back of the neck",
+          "velvety"
         ]
       },
       "finding": {
@@ -2006,12 +2538,15 @@
         "zh-CN": [
           "皮肤",
           "色素",
-          "黑棘皮"
+          "黑棘皮",
+          "脖子后面",
+          "颈后"
         ],
         "en": [
           "skin",
           "pigment",
-          "acanthosis"
+          "acanthosis",
+          "back of the neck"
         ]
       }
     },
@@ -2159,7 +2694,10 @@
           "趾甲",
           "胼胝",
           "足癣",
-          "鞋子"
+          "鞋子",
+          "查查脚",
+          "查脚",
+          "看看脚"
         ],
         "en": [
           "foot exam",
@@ -2168,7 +2706,9 @@
           "toenails",
           "callus",
           "athlete's foot",
-          "shoes"
+          "shoes",
+          "diabetic foot",
+          "look at the feet"
         ]
       },
       "finding": {
@@ -2224,7 +2764,19 @@
       },
       "abnormal": false,
       "requires": [],
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "音叉",
+          "振动",
+          "震动"
+        ],
+        "en": [
+          "vibration",
+          "tuning fork",
+          "128"
+        ]
+      }
     },
     {
       "id": "ex-vibration",
@@ -2253,7 +2805,18 @@
       },
       "abnormal": false,
       "requires": [],
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "单丝",
+          "尼龙丝"
+        ],
+        "en": [
+          "monofilament",
+          "10 g",
+          "10g"
+        ]
+      }
     },
     {
       "id": "ex-ankle-reflex",
@@ -2391,14 +2954,21 @@
           "生殖器检查",
           "龟头",
           "阴茎",
-          "下体检查"
+          "下体检查",
+          "看看下面",
+          "下面检查",
+          "检查下体",
+          "下身"
         ],
         "en": [
           "genital examination",
           "genitalia",
           "penis",
           "glans",
-          "examine down below"
+          "examine down below",
+          "genitals",
+          "genital exam",
+          "check down below"
         ]
       },
       "finding": {
@@ -2634,7 +3204,10 @@
           "快速血糖",
           "床旁血糖",
           "血糖仪",
-          "血酮"
+          "血酮",
+          "测个指尖",
+          "扎手指",
+          "快速血酮"
         ],
         "en": [
           "capillary glucose",
@@ -2645,7 +3218,11 @@
           "point of care",
           "poc",
           "blood ketone",
-          "capillary ketone"
+          "capillary ketone",
+          "cbg",
+          "fingerprick",
+          "capillary blood glucose",
+          "bm stix"
         ]
       },
       "requires": [
@@ -2706,7 +3283,9 @@
           "尿液分析",
           "尿酮",
           "尿糖",
-          "尿检"
+          "尿检",
+          "验尿",
+          "化验尿"
         ],
         "en": [
           "urinalysis",
@@ -2714,7 +3293,10 @@
           "urine test",
           "urine ketones",
           "dipstick",
-          "urine glucose"
+          "urine glucose",
+          "urine dip",
+          "ua dip",
+          "urine analysis"
         ]
       },
       "requires": [
@@ -2834,7 +3416,8 @@
           "胆固醇",
           "甘油三酯",
           "低密度脂蛋白",
-          "ldl"
+          "ldl",
+          "血脂全套"
         ],
         "en": [
           "lipids",
@@ -2843,7 +3426,9 @@
           "triglycerides",
           "ldl",
           "hdl",
-          "lipid panel"
+          "lipid panel",
+          "lipid",
+          "fasting lipids"
         ]
       },
       "requires": [
@@ -2989,7 +3574,9 @@
           "egfr",
           "尿素",
           "尿酸",
-          "血钾"
+          "血钾",
+          "肾功能检查",
+          "肾脏功能"
         ],
         "en": [
           "renal function",
@@ -2999,7 +3586,15 @@
           "electrolytes",
           "urea",
           "potassium",
-          "uric acid"
+          "uric acid",
+          "u&e",
+          "u&es",
+          "u+e",
+          "bmp",
+          "renal profile",
+          "renal panel",
+          "renal",
+          "kidney"
         ]
       },
       "requires": [
@@ -3335,7 +3930,8 @@
           "肝肾功",
           "转氨酶",
           "谷丙转氨酶",
-          "肝酶"
+          "肝酶",
+          "肝酶学"
         ],
         "en": [
           "liver function",
@@ -3343,7 +3939,9 @@
           "lfts",
           "alt",
           "transaminases",
-          "liver enzymes"
+          "liver enzymes",
+          "liver tests",
+          "liver panel"
         ]
       },
       "requires": [
@@ -3502,14 +4100,17 @@
         "zh-CN": [
           "血常规",
           "血细胞分析",
-          "全血细胞"
+          "全血细胞",
+          "血象"
         ],
         "en": [
           "cbc",
           "fbc",
           "full blood count",
           "complete blood count",
-          "blood count"
+          "blood count",
+          "haemogram",
+          "hemogram"
         ]
       },
       "requires": [
@@ -3587,14 +4188,16 @@
       "aliases": {
         "zh-CN": [
           "心电图",
-          "做个心电图"
+          "做个心电图",
+          "心电"
         ],
         "en": [
           "ecg",
           "ekg",
           "electrocardiogram",
           "12-lead",
-          "12 lead"
+          "12 lead",
+          "12 lead ecg"
         ]
       },
       "requires": [
@@ -3635,7 +4238,10 @@
           "腹部超声",
           "肝脏超声",
           "b超",
-          "弹性成像"
+          "弹性成像",
+          "彩超",
+          "腹部彩超",
+          "肝脏彩超"
         ],
         "en": [
           "abdominal ultrasound",
@@ -3643,7 +4249,13 @@
           "ultrasound",
           "liver scan",
           "fibroscan",
-          "elastography"
+          "elastography",
+          "abdous",
+          "usabdo",
+          "usabdomen",
+          "liverus",
+          "abdominal us",
+          "ruq ultrasound"
         ]
       },
       "requires": [
@@ -3821,7 +4433,9 @@
           "乙肝两对半",
           "肝炎病毒",
           "丙肝",
-          "hbsag"
+          "hbsag",
+          "乙肝表面抗原",
+          "丙肝抗体"
         ],
         "en": [
           "hepatitis b",
@@ -3829,7 +4443,10 @@
           "hbsag",
           "hepatitis serology",
           "hepatitis c",
-          "hcv"
+          "hcv",
+          "hepb",
+          "hepc",
+          "hepatitis"
         ]
       },
       "requires": [
@@ -4071,7 +4688,12 @@
           "视网膜筛查",
           "眼底检查",
           "眼科转诊",
-          "散瞳"
+          "散瞳",
+          "眼科",
+          "转眼科",
+          "眼底",
+          "糖网筛查",
+          "视网膜病变筛查"
         ],
         "en": [
           "retinal screening",
@@ -4080,10 +4702,16 @@
           "fundus photography",
           "eye screening",
           "diabetic eye",
-          "ophthalmology referral"
+          "ophthalmology referral",
+          "retinopathy",
+          "eye check",
+          "fundus photo",
+          "ophthalmology"
         ]
       },
-      "requires": [],
+      "requires": [
+        "records"
+      ],
       "turnaroundMinutes": 0,
       "risk": "none",
       "value": "essential",
@@ -4201,6 +4829,18 @@
       "ketone": [
         "inv-urinalysis",
         "inv-poc"
+      ],
+      "bm": [
+        "inv-poc"
+      ],
+      "bms": [
+        "inv-poc"
+      ],
+      "ue": [
+        "inv-renal"
+      ],
+      "ues": [
+        "inv-renal"
       ]
     },
     "warnings": [
@@ -4256,7 +4896,11 @@
           "糖尿病教育",
           "营养治疗",
           "运动处方",
-          "dsmes"
+          "dsmes",
+          "营养科",
+          "营养门诊",
+          "转营养科",
+          "糖尿病教育课"
         ],
         "en": [
           "lifestyle",
@@ -4266,7 +4910,10 @@
           "diabetes education",
           "dsmes",
           "exercise plan",
-          "mnt"
+          "mnt",
+          "refer to dietitian",
+          "diabetes education class",
+          "structured education"
         ]
       },
       "dose": {
@@ -4300,13 +4947,16 @@
           "二甲双胍",
           "格华止",
           "双胍",
-          "二甲双胍逐步加量"
+          "二甲双胍逐步加量",
+          "二甲双胍500"
         ],
         "en": [
           "metformin",
           "biguanide",
           "glucophage",
-          "metformin titration"
+          "metformin titration",
+          "metformin 500",
+          "start metformin"
         ]
       },
       "dose": {
@@ -4407,14 +5057,19 @@
           "阿托伐他汀",
           "立普妥",
           "降脂药",
-          "调脂"
+          "调脂",
+          "瑞舒伐他汀",
+          "可定"
         ],
         "en": [
           "statin",
           "atorvastatin",
           "lipitor",
           "cholesterol tablet",
-          "lipid lowering"
+          "lipid lowering",
+          "rosuvastatin",
+          "crestor",
+          "atorva"
         ]
       },
       "dose": {
@@ -4451,7 +5106,15 @@
           "降压药",
           "血管紧张素转换酶抑制剂",
           "arb",
-          "沙坦"
+          "沙坦",
+          "雷米普利",
+          "依那普利",
+          "贝那普利",
+          "赖诺普利",
+          "厄贝沙坦",
+          "缬沙坦",
+          "氯沙坦",
+          "替米沙坦"
         ],
         "en": [
           "ace inhibitor",
@@ -4460,7 +5123,15 @@
           "arb",
           "blood pressure tablet",
           "antihypertensive",
-          "sartan"
+          "sartan",
+          "ramipril",
+          "lisinopril",
+          "enalapril",
+          "benazepril",
+          "losartan",
+          "irbesartan",
+          "valsartan",
+          "telmisartan"
         ]
       },
       "dose": {
@@ -4528,7 +5199,9 @@
           "伐尼克兰",
           "戒烟门诊",
           "尼古丁替代",
-          "尼古丁贴片"
+          "尼古丁贴片",
+          "戒烟药",
+          "戒烟治疗"
         ],
         "en": [
           "smoking cessation",
@@ -4537,7 +5210,9 @@
           "champix",
           "nicotine replacement",
           "nrt",
-          "quit smoking"
+          "quit smoking",
+          "nicotine patch",
+          "smoking cessation clinic"
         ]
       },
       "dose": {
@@ -4571,14 +5246,18 @@
           "家庭血压",
           "自测血压",
           "在家量血压",
-          "血压计"
+          "血压计",
+          "家庭自测血压",
+          "买血压计"
         ],
         "en": [
           "home blood pressure",
           "home bp",
           "self-monitoring",
           "bp machine",
-          "home readings"
+          "home readings",
+          "home bp monitoring",
+          "self-measured bp"
         ]
       },
       "dose": {
@@ -4652,14 +5331,18 @@
           "抗真菌",
           "达克宁",
           "足癣药",
-          "龟头炎"
+          "龟头炎",
+          "抗真菌药膏",
+          "脚气膏"
         ],
         "en": [
           "clotrimazole",
           "antifungal cream",
           "canesten",
           "athlete's foot cream",
-          "balanitis treatment"
+          "balanitis treatment",
+          "clotrimazole cream",
+          "antifungal"
         ]
       },
       "dose": {
@@ -4990,6 +5673,91 @@
       "response": {
         "zh-CN": "患者有些意外：“就这样？那我这口渴怎么办？”",
         "en": "He looks surprised: \"That's it? What about the thirst?\""
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "营养科",
+          "营养师",
+          "营养门诊",
+          "转介",
+          "糖尿病教育"
+        ],
+        "en": [
+          "dietitian",
+          "dietician",
+          "referto",
+          "referral",
+          "dsmes",
+          "education"
+        ]
+      }
+    },
+    {
+      "id": "iv-follow-up",
+      "name": {
+        "zh-CN": "安排3个月复诊（复诊前1周空腹复查HbA1c、血脂、肝肾功能和UACR）",
+        "en": "Arrange the three-month review (fasting HbA1c, lipids, liver and renal tests and UACR the week before)"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "复诊",
+          "随访",
+          "预约复诊",
+          "安排复诊",
+          "3个月复诊",
+          "三个月复诊",
+          "下次复诊",
+          "约复诊",
+          "门诊随访"
+        ],
+        "en": [
+          "follow-up",
+          "follow up",
+          "followup",
+          "3 month review",
+          "three month review",
+          "review in 3 months",
+          "book review",
+          "arrange review",
+          "book a review",
+          "see him again",
+          "recall"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "半年",
+          "6个月",
+          "六个月",
+          "先不吃药",
+          "暂不用药"
+        ],
+        "en": [
+          "six months",
+          "6 months",
+          "6-12",
+          "no medication",
+          "lifestyle only"
+        ]
+      },
+      "dose": {
+        "zh-CN": "约第13周空腹复诊；复诊前1周空腹抽血（HbA1c、血脂、肝肾功能和电解质）并留随机尿复查UACR；带家庭血压记录和用药清单。另：开始ACEI后1–2周查血钾和肌酐（已另约）。安全提示：如出现呕吐、腹痛、嗜睡或呼吸急促，或口渴、多尿明显加重，及时就诊，不必等到复诊。",
+        "en": "Fasting review at about week 13; fasting bloods the week before (HbA1c, lipids, liver and renal tests with electrolytes) and a spot urine for a repeat UACR; bring the home BP log and medicines. Separately: potassium and creatinine 1–2 weeks after starting the ACE inhibitor (booked). Safety-netting: come back sooner — without waiting for the review — if he has vomiting, abdominal pain, drowsiness or fast breathing, or if the thirst and urination get markedly worse."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [
+        "review-booked"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "护士预约了第13周的复诊，并把复诊前1周的空腹抽血和留尿单一并开好：“今天要是还有别的事要办，先办完——下次就是三个月后见了。”患者把预约单折好放进钱包：“行，三个月后我空腹来。”",
+        "en": "The nurse books the week-13 review together with the fasting bloods and urine sample the week before: \"If there's anything else to sort out today, finish it first — after this we'll see him in three months.\" He folds the appointment card into his wallet: \"Right — fasting, three months from now.\""
       }
     },
     {
@@ -5071,7 +5839,7 @@
     "trends": [],
     "events": [
       {
-        "id": "ev-vitals-review-1",
+        "id": "ev-vitals-review",
         "when": {
           "phase": "review"
         },
@@ -5080,9 +5848,7 @@
           "sbp": 128,
           "dbp": 79
         },
-        "setFlags": [
-          "vitals-review-1"
-        ],
+        "setFlags": [],
         "severity": "info",
         "message": {
           "zh-CN": "复诊护士测量的生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
@@ -5090,134 +5856,36 @@
         }
       },
       {
-        "id": "ev-vitals-initial-1",
+        "id": "ev-rx-before-egfr",
         "when": {
           "all": [
             {
-              "phase": "initial"
+              "any": [
+                {
+                  "intervened": "iv-metformin"
+                },
+                {
+                  "intervened": "iv-metformin-full"
+                },
+                {
+                  "intervened": "iv-acei"
+                },
+                {
+                  "intervened": "iv-sglt2i"
+                }
+              ]
             },
             {
-              "flag": "vitals-review-1"
+              "not": {
+                "read": "inv-renal"
+              }
             }
           ]
         },
-        "setVitals": {
-          "hr": 78,
-          "sbp": 142,
-          "dbp": 88
-        },
         "setFlags": [
-          "vitals-initial-1"
+          "rx-before-egfr"
         ],
-        "severity": "info",
-        "message": {
-          "zh-CN": "显示初诊时记录的生命体征：血压142/88 mmHg（两次平均），心率78次/分。",
-          "en": "Showing the first-visit vital signs: BP 142/88 mmHg (mean of two), heart rate 78/min."
-        }
-      },
-      {
-        "id": "ev-vitals-review-2",
-        "when": {
-          "all": [
-            {
-              "phase": "review"
-            },
-            {
-              "flag": "vitals-initial-1"
-            }
-          ]
-        },
-        "setVitals": {
-          "hr": 74,
-          "sbp": 128,
-          "dbp": 79
-        },
-        "setFlags": [
-          "vitals-review-2"
-        ],
-        "severity": "info",
-        "message": {
-          "zh-CN": "复诊护士测量的生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
-          "en": "Review-visit vital signs recorded by the nurse: BP 128/79 mmHg (mean of two), heart rate 74/min."
-        }
-      },
-      {
-        "id": "ev-vitals-initial-2",
-        "when": {
-          "all": [
-            {
-              "phase": "initial"
-            },
-            {
-              "flag": "vitals-review-2"
-            }
-          ]
-        },
-        "setVitals": {
-          "hr": 78,
-          "sbp": 142,
-          "dbp": 88
-        },
-        "setFlags": [
-          "vitals-initial-2"
-        ],
-        "severity": "info",
-        "message": {
-          "zh-CN": "显示初诊时记录的生命体征：血压142/88 mmHg（两次平均），心率78次/分。",
-          "en": "Showing the first-visit vital signs: BP 142/88 mmHg (mean of two), heart rate 78/min."
-        }
-      },
-      {
-        "id": "ev-vitals-review-3",
-        "when": {
-          "all": [
-            {
-              "phase": "review"
-            },
-            {
-              "flag": "vitals-initial-2"
-            }
-          ]
-        },
-        "setVitals": {
-          "hr": 74,
-          "sbp": 128,
-          "dbp": 79
-        },
-        "setFlags": [
-          "vitals-review-3"
-        ],
-        "severity": "info",
-        "message": {
-          "zh-CN": "复诊护士测量的生命体征：血压128/79 mmHg（两次平均），心率74次/分。",
-          "en": "Review-visit vital signs recorded by the nurse: BP 128/79 mmHg (mean of two), heart rate 74/min."
-        }
-      },
-      {
-        "id": "ev-vitals-initial-3",
-        "when": {
-          "all": [
-            {
-              "phase": "initial"
-            },
-            {
-              "flag": "vitals-review-3"
-            }
-          ]
-        },
-        "setVitals": {
-          "hr": 78,
-          "sbp": 142,
-          "dbp": 88
-        },
-        "setFlags": [
-          "vitals-initial-3"
-        ],
-        "severity": "info",
-        "message": {
-          "zh-CN": "显示初诊时记录的生命体征：血压142/88 mmHg（两次平均），心率78次/分。",
-          "en": "Showing the first-visit vital signs: BP 142/88 mmHg (mean of two), heart rate 78/min."
-        }
+        "severity": "info"
       }
     ],
     "noise": 0
@@ -5313,12 +5981,6 @@
         ]
       },
       "waypoints": [
-        {
-          "unless": {
-            "examined": "ex-anthro"
-          },
-          "target": "scale"
-        },
         {
           "target": "patient"
         }
@@ -5526,12 +6188,12 @@
         "en": "Review"
       },
       "hint": {
-        "zh-CN": "在证据板上切换到复诊阶段。问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：相隔≥3个月仍升高说明白蛋白尿持续存在。",
-        "en": "Switch to the review phase on the evidence board. Ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: still raised ≥ 3 months apart means persistent albuminuria."
+        "zh-CN": "初诊的任务全部完成后，在“处理”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：相隔≥3个月仍升高说明白蛋白尿持续存在。",
+        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the treatment options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: still raised ≥ 3 months apart means persistent albuminuria."
       },
       "guidance": {
-        "zh-CN": "切换到“3个月复诊”，复评后调整治疗。",
-        "en": "Switch to the three-month review, reassess, and adjust treatment."
+        "zh-CN": "安排3个月复诊；进入复诊后复评并调整治疗。",
+        "en": "Arrange the three-month review; once there, reassess and adjust treatment."
       },
       "completeWhen": {
         "all": [
@@ -5567,7 +6229,7 @@
           "unless": {
             "phase": "review"
           },
-          "target": "board"
+          "target": "patient"
         },
         {
           "unless": {
@@ -5605,10 +6267,12 @@
       "requires": {
         "all": [
           {
-            "read": "inv-fpg"
+            "read": "inv-fpg",
+            "phase": "initial"
           },
           {
-            "read": "inv-hba1c"
+            "read": "inv-hba1c",
+            "phase": "initial"
           }
         ]
       },
@@ -5689,18 +6353,22 @@
       "requires": {
         "all": [
           {
-            "read": "inv-hba1c"
+            "read": "inv-hba1c",
+            "phase": "initial"
           },
           {
-            "read": "inv-renal"
+            "read": "inv-renal",
+            "phase": "initial"
           },
           {
             "any": [
               {
-                "read": "inv-urinalysis"
+                "read": "inv-urinalysis",
+                "phase": "initial"
               },
               {
-                "read": "inv-poc"
+                "read": "inv-poc",
+                "phase": "initial"
               }
             ]
           }
@@ -5795,13 +6463,16 @@
       "requires": {
         "all": [
           {
-            "read": "inv-lipids"
+            "read": "inv-lipids",
+            "phase": "initial"
           },
           {
-            "read": "inv-uacr"
+            "read": "inv-uacr",
+            "phase": "initial"
           },
           {
-            "read": "inv-renal"
+            "read": "inv-renal",
+            "phase": "initial"
           },
           {
             "examined": "ex-bp"
@@ -5942,8 +6613,8 @@
         ]
       },
       "need": {
-        "zh-CN": "切换到“3个月复诊”阶段，查看HbA1c、UACR、肾功能和血脂的复查结果。",
-        "en": "Switch to the three-month review phase and read the repeat HbA1c, UACR, renal function and lipids."
+        "zh-CN": "先进入3个月复诊阶段（完成初诊并安排复诊），查看HbA1c、UACR、肾功能和血脂的复查结果。",
+        "en": "Reach the three-month review (finish the first visit and arrange the review), then read the repeat HbA1c, UACR, renal function and lipids."
       },
       "options": [
         {
@@ -6238,12 +6909,15 @@
       "id": "r-mgmt-glycaemic",
       "domain": "management",
       "text": {
-        "zh-CN": "生活方式/DSMES转介并开始逐步加量的二甲双胍",
-        "en": "Referred for lifestyle/DSMES and started metformin with gradual titration"
+        "zh-CN": "首次即选对初始降糖方案，转介生活方式/DSMES并开始逐步加量的二甲双胍",
+        "en": "Chose the initial glucose-lowering plan correctly at the first attempt, referred for lifestyle/DSMES and started metformin with gradual titration"
       },
       "weight": 2,
       "met": {
         "all": [
+          {
+            "decidedFirstTry": "dec-first-line"
+          },
           {
             "intervened": "iv-lifestyle"
           },
@@ -6279,8 +6953,8 @@
       "id": "r-safety",
       "domain": "safety",
       "text": {
-        "zh-CN": "未在无指征时使用胰岛素、磺脲类或“只观察不用药”",
-        "en": "Avoided insulin, a sulfonylurea or 'lifestyle only' without an indication"
+        "zh-CN": "未在无指征时使用胰岛素、磺脲类或“只观察不用药”，且未在看到肾功能（eGFR）前开始二甲双胍、ACEI或SGLT2抑制剂",
+        "en": "Avoided insulin, a sulfonylurea or 'lifestyle only' without an indication, and started no metformin, ACE inhibitor or SGLT2 inhibitor before seeing the renal function (eGFR)"
       },
       "weight": 2,
       "met": {
@@ -6294,6 +6968,9 @@
             },
             {
               "intervened": "iv-lifestyle-only"
+            },
+            {
+              "flag": "rx-before-egfr"
             }
           ]
         }
@@ -6387,8 +7064,8 @@
         "en": "Clinic nurse Lin Yue"
       },
       "knowledge": {
-        "zh-CN": "交班：赵立新，48岁男性，物流公司区域销售协调员。按预约今晨8:40空腹来诊（昨晚10点后未进食，今早只喝了白水）。主诉乏力、口干、多饮约3个月。身高体重和血压已测，数值见体格检查和生命体征。后勤：门诊抽血室可做空腹静脉血（血糖、HbA1c、血脂、肝肾功能等）和随机尿（尿常规、UACR），本模拟中结果即时返回；床旁血糖仪和血酮仪在护士站；免散瞳眼底照相需另约（每周二、四），结果在复诊时可查；营养门诊和糖尿病教育小组课在周三下午；戒烟门诊在周四下午；可安排男护士作陪检者。复诊时：患者带来了家庭血压记录本。不知道诊断，不解读检查结果。",
-        "en": "Handover: Zhao Lixin, 48-year-old man, regional sales coordinator at a logistics company. Booked appointment, arrived 08:40 fasting (nothing to eat since 22:00, only water this morning). Presenting with about 3 months of tiredness, dry mouth and drinking a lot. Height, weight and blood pressure have been measured — see the examination and vital signs. Logistics: the clinic phlebotomy room takes fasting venous bloods (glucose, HbA1c, lipids, liver and renal tests, etc.) and spot urines (urinalysis, UACR) — results return immediately in this simulation; the glucose and ketone meters are at the nurses' station; non-mydriatic retinal photography is booked separately (Tuesdays and Thursdays) and the result is available at the review; the dietitian and diabetes education group run on Wednesday afternoons; the stop-smoking clinic is on Thursday afternoons; a male nurse can chaperone. At the review he has brought his home BP log. Does not know the diagnosis and does not interpret results."
+        "zh-CN": "交班：赵立新，48岁男性，物流公司区域销售协调员。按预约今晨8:40空腹来诊（昨晚10点后未进食，今早只喝了白水）。主诉乏力、口干、多饮约3个月。身高体重和血压已测，数值见体格检查和生命体征。后勤（医生问到检查、转介或预约时才说）：门诊抽血室可做空腹静脉血（血糖、HbA1c、血脂、肝肾功能等）和随机尿（尿常规、UACR），本模拟中结果即时返回；床旁血糖仪和血酮仪在护士站；免散瞳眼底照相需另约（每周二、四），结果在复诊时可查；营养门诊和糖尿病教育小组课在周三下午；戒烟门诊在周四下午；可安排男护士作陪检者。复诊时：患者带来了家庭血压记录本。不知道诊断，不解读检查结果。",
+        "en": "Handover: Zhao Lixin, 48-year-old man, regional sales coordinator at a logistics company. Booked appointment, arrived 08:40 fasting (nothing to eat since 22:00, only water this morning). Presenting with about 3 months of tiredness, dry mouth and drinking a lot. Height, weight and blood pressure have been measured — see the examination and vital signs. Logistics (share only when the doctor asks about tests, referrals or bookings): the clinic phlebotomy room takes fasting venous bloods (glucose, HbA1c, lipids, liver and renal tests, etc.) and spot urines (urinalysis, UACR) — results return immediately in this simulation; the glucose and ketone meters are at the nurses' station; non-mydriatic retinal photography is booked separately (Tuesdays and Thursdays) and the result is available at the review; the dietitian and diabetes education group run on Wednesday afternoons; the stop-smoking clinic is on Thursday afternoons; a male nurse can chaperone. At the review he has brought his home BP log. Does not know the diagnosis and does not interpret results."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -6894,8 +7571,8 @@
       "interventionId": "iv-antifungal"
     },
     {
-      "type": "set-phase",
-      "phase": "review"
+      "type": "intervene",
+      "interventionId": "iv-follow-up"
     },
     {
       "type": "ask",

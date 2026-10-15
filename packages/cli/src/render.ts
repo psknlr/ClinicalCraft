@@ -6,6 +6,7 @@
  */
 import { progress as caseProgress, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
+  findProviderTemplate,
   investigationName,
   objectiveTitle,
   phaseLabel,
@@ -42,6 +43,15 @@ interface Configured {
   practiceScope: string;
   interlocutor: string;
   offline: boolean;
+}
+
+/**
+ * Model shown for a provider when no model is set: the session uses the
+ * provider's default model (offline → its deterministic responders).
+ */
+export function modelLabel(provider: string, model: string | null | undefined): string {
+  if (model) return model;
+  return provider === "offline" ? "deterministic" : (findProviderTemplate(provider)?.defaultModel ?? "");
 }
 
 const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
@@ -235,8 +245,13 @@ export class EventRenderer {
       case "config_changed": {
         const patch = msg.patch;
         if (this.configured) {
-          if (patch.provider !== undefined) this.configured.provider = patch.provider;
-          if (patch.model !== undefined) this.configured.model = patch.model;
+          // Switching provider without a model resets the model to that provider's default (as the session does).
+          if (patch.provider !== undefined) {
+            this.configured.provider = patch.provider;
+            this.configured.offline = patch.provider === "offline";
+            if (patch.model === undefined) this.configured.model = modelLabel(patch.provider, null);
+          }
+          if (patch.model !== undefined) this.configured.model = modelLabel(this.configured.provider, patch.model);
           if (patch.approvalMode !== undefined) this.configured.approvalMode = patch.approvalMode;
           if (patch.practiceScope !== undefined) this.configured.practiceScope = patch.practiceScope;
           if (patch.interlocutor !== undefined) this.configured.interlocutor = patch.interlocutor;

@@ -41,6 +41,16 @@ describe("zip reader", () => {
     corrupt[30 + "x.bin".length + 10] = 2; // flip a data byte → CRC mismatch
     expect(() => readZipEntry(corrupt, entry)).toThrow(/CRC/);
   });
+
+  it("never inflates beyond the declared size (decompression bombs)", () => {
+    const zip = writeZip([{ name: "bomb.html", data: Buffer.alloc(8 * 1024 * 1024, 0), method: 8 }]);
+    const entry = listZip(zip)[0]!;
+    expect(zip.length).toBeLessThan(64 * 1024); // 8 MiB of zeros deflate to a few KiB
+    // A lying header: claims 16 bytes — inflation stops there instead of allocating 8 MiB.
+    expect(() => readZipEntry(zip, { ...entry, size: 16 })).toThrow(/cannot inflate/);
+    expect(() => readZipEntry(zip, { ...entry, size: 4 * 1024 * 1024 * 1024 })).toThrow(/too large/);
+    expect(readZipEntry(zip, entry).length).toBe(8 * 1024 * 1024);
+  });
 });
 
 describe("import-v4 helpers", () => {

@@ -115,7 +115,11 @@ export async function loadCliSettings(ctx: CliContext, flags?: Record<string, un
     for (const issue of settings.issues) ctx.debug(`settings ${issue.severity}: ${issue.file ?? issue.source} ${issue.path || "(root)"}: ${issue.message}`);
     return settings;
   } catch (err) {
-    throw new UsageError((err as Error).message);
+    const message = (err as Error).message ?? String(err);
+    // loadSettings' message is English-only; keep its list of known profiles.
+    const profile = /^Unknown settings profile "([^"]*)"(?: \(known: (.+)\))?/.exec(message);
+    if (profile) throw new UsageError(ctx.t("settings.unknownProfile", { name: profile[1]!, known: profile[2] ?? "-" }));
+    throw new UsageError(message);
   }
 }
 

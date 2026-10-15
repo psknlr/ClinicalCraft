@@ -23,11 +23,14 @@ interface StartServerOptions {
 type StartServer = (o: StartServerOptions) => Promise<{ url: string; close(): Promise<void> | void }>;
 type RunMcpServer = (o: { stdin: NodeJS.ReadableStream; stdout: NodeJS.WritableStream; settings: ResolvedSettings; cwd?: string; env?: Record<string, string | undefined> }) => Promise<unknown>;
 
-const LOOPBACK = new Set(["127.0.0.1", "localhost", "::1", "[::1]"]);
-
-/** Whether `host` only listens on the loopback interface. */
+/**
+ * Whether `host` only listens on the loopback interface — the same rule as
+ * the server's `isLoopbackHost` (a laxer check here would let "127.evil.com"
+ * through to an unlocalised refusal from `startServer`).
+ */
 export function isLoopback(host: string): boolean {
-  return LOOPBACK.has(host.toLowerCase()) || host.startsWith("127.");
+  const h = host.trim().toLowerCase().replace(/^\[|\]$/g, "");
+  return h === "localhost" || h.endsWith(".localhost") || h === "::1" || h === "0:0:0:0:0:0:0:1" || /^127(?:\.\d{1,3}){3}$/.test(h) || h === "::ffff:127.0.0.1";
 }
 
 /** Lazily import `name` from a sibling package; `reason` explains why it is unavailable. */

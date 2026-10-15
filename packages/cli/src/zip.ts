@@ -88,8 +88,15 @@ export function listZip(buf: Buffer): ZipEntry[] {
   return entries;
 }
 
-/** Extract one entry (verifies size and CRC-32). */
+/** Largest entry `readZipEntry` inflates (the V4 html is ~50 MB). */
+export const MAX_ENTRY_BYTES = 1024 * 1024 * 1024;
+
+/**
+ * Extract one entry (verifies size and CRC-32). Inflation is capped at the
+ * declared size, so a crafted archive cannot expand without bound.
+ */
 export function readZipEntry(buf: Buffer, entry: ZipEntry): Buffer {
+  if (entry.size > MAX_ENTRY_BYTES) throw new ZipError(`${entry.name} is too large (${entry.size} bytes)`);
   const p = entry.offset;
   if (p + 30 > buf.length || buf.readUInt32LE(p) !== LOC_SIG) throw new ZipError(`corrupt local header for ${entry.name}`);
   const nameLen = buf.readUInt16LE(p + 26);
@@ -102,7 +109,7 @@ export function readZipEntry(buf: Buffer, entry: ZipEntry): Buffer {
   if (entry.method === 0) data = Buffer.from(raw);
   else if (entry.method === 8) {
     try {
-      data = zlib.inflateRawSync(raw);
+      data = zlib.inflateRawSync(raw, { maxOutputLength: Math.max(1, entry.size) });
     } catch (err) {
       throw new ZipError(`cannot inflate ${entry.name}: ${(err as Error).message}`);
     }
