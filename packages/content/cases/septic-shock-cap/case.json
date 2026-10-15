@@ -91,8 +91,8 @@
         "en": "A proud retired primary-school teacher who hates being a bother; normally sharp, today muddled by fever and poor perfusion — cooperative but drifts off."
       },
       "speechStyle": {
-        "zh-CN": "气促，只能说三五个字的短句，断断续续；对时间和地点糊涂（以为是早上、以为在社区医院）；主要症状能说出来，细节和时间线由女儿补充。答案中以“女儿：”开头的部分由陪同的女儿说。",
-        "en": "Breathless, three-to-five-word fragments; muddled about time and place (thinks it is morning, thinks she is at the community clinic); can name her main symptoms, while her daughter fills in details and the timeline. Parts of an answer starting with 'Daughter:' are spoken by the daughter."
+        "zh-CN": "气促，只能说三五个字的短句，断断续续；对时间和地点糊涂（以为是早上、以为在社区医院）；主要症状能说出来，细节和时间线由女儿补充。答案中标注“（病人）”的部分是她本人说的，标注“（女儿）”的部分由陪同的女儿说。",
+        "en": "Breathless, three-to-five-word fragments; muddled about time and place (thinks it is morning, thinks she is at the community clinic); can name her main symptoms, while her daughter fills in details and the timeline. In the answers, parts marked '(Patient)' are her own words and parts marked '(Daughter)' are spoken by her daughter."
       },
       "healthLiteracy": "medium",
       "affect": "confused",
@@ -101,8 +101,8 @@
         "en": "(breathless, holding the right side of her chest) Doctor… I've got a fever… coughing… my chest hurts…"
       },
       "fallbackUnknown": {
-        "zh-CN": "我……记不清了……（女儿摇摇头：这个我们也不清楚，医生。）",
-        "en": "I… can't remember… (her daughter shakes her head: we don't know that either, doctor.)"
+        "zh-CN": "（病人）我……记不清了……（女儿摇摇头）这个我们也不清楚，医生。",
+        "en": "(Patient) I… can't remember… (Daughter, shaking her head) We don't know that either, doctor."
       },
       "concerns": [
         {
@@ -119,8 +119,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "病人：气促、按住右下胸护痛，深吸气或咳嗽时皱眉；偶尔答非所问、问“现在是早上吗”，但能听从简单指令。较长或涉及时间、数字、药名的问题由女儿回答（答案中“女儿：”部分）。女儿周敏焦虑但条理清楚，手机里存着母亲的药单。不说出任何答案中没有的数字、药名、日期、检查结果或诊断；被问到未记录的内容时用兜底回答。",
-        "en": "Patient: breathless, splinting the right lower chest, wincing on deep breaths or coughing; occasionally answers off-topic or asks 'is it morning?', but follows simple commands. Longer questions and anything about times, numbers or drug names are answered by the daughter (the 'Daughter:' parts of answers). The daughter, Zhou Min, is anxious but organised and has her mother's medication list on her phone. Never state numbers, drug names, dates, results or diagnoses that are not in the answers; use the fallback line for anything unrecorded."
+        "zh-CN": "病人：气促、按住右下胸护痛，深吸气或咳嗽时皱眉；偶尔答非所问、问“现在是早上吗”，但能听从简单指令。较长或涉及时间、数字、药名的问题由女儿回答（答案中标注“（女儿）”的部分）。女儿周敏焦虑但条理清楚，手机里存着母亲的药单。不说出任何答案中没有的数字、药名、日期、检查结果或诊断；被问到未记录的内容时用兜底回答。",
+        "en": "Patient: breathless, splinting the right lower chest, wincing on deep breaths or coughing; occasionally answers off-topic or asks 'is it morning?', but follows simple commands. Longer questions and anything about times, numbers or drug names are answered by the daughter (the parts of answers marked '(Daughter)'). The daughter, Zhou Min, is anxious but organised and has her mother's medication list on her phone. Never state numbers, drug names, dates, results or diagnoses that are not in the answers; use the fallback line for anything unrecorded."
       },
       "companion": {
         "role": "child",
@@ -129,8 +129,8 @@
           "en": "Zhou Min (daughter, pseudonym)"
         },
         "persona": {
-          "zh-CN": "45岁会计，焦虑但条理清楚；下午发现母亲说胡话后立刻打车送来。能补充病程时间线、用药（手机药单）、既往史和生活情况；不了解疫苗接种史和以前是否拍过胸片。",
-          "en": "45-year-old accountant, anxious but organised; brought her mother in by taxi as soon as she noticed her talking nonsense. Can give the timeline, medications (list on her phone), past history and social situation; does not know about vaccinations or previous chest imaging."
+          "zh-CN": "45岁会计，焦虑但条理清楚；下午发现母亲说胡话，起初以为是发烧烧的，到晚上仍不见好转才打车送来。能补充病程时间线、用药（手机药单）、既往史和生活情况；不了解疫苗接种史和以前是否拍过胸片。",
+          "en": "45-year-old accountant, anxious but organised; noticed her mother talking nonsense in the afternoon, put it down to the fever at first, and brought her in by taxi in the evening when she was no clearer. Can give the timeline, medications (list on her phone), past history and social situation; does not know about vaccinations or previous chest imaging."
         },
         "answersHistory": true,
         "appearance": {
@@ -248,8 +248,8 @@
         "en": "How long has she had a fever, and how high has it been?"
       },
       "answer": {
-        "zh-CN": "（喘气）烧了……两天了……一阵一阵冷。女儿：前天下午开始的，家里体温计最高量到39度多。吃了退烧药能退一点，过几个钟头又烧上来。",
-        "en": "(breathless) Two days… fever… cold on and off. Daughter: It started the day before yesterday in the afternoon. Our thermometer at home went over 39 °C. The fever tablets bring it down a bit, then it's back a few hours later."
+        "zh-CN": "（病人，喘气）烧了……两天了……一阵一阵冷。（女儿）前天下午开始的，家里体温计最高量到39度多。吃了退烧药能退一点，过几个钟头又烧上来。",
+        "en": "(Patient, breathless) Two days… fever… cold on and off. (Daughter) It started the day before yesterday in the afternoon. Our thermometer at home went over 39 °C. The fever tablets bring it down a bit, then it's back a few hours later."
       },
       "keywords": {
         "zh-CN": [
@@ -259,7 +259,10 @@
           "烧了",
           "高烧",
           "最高几度",
-          "最高烧到多少度"
+          "最高烧到多少度",
+          "烧到几度",
+          "烧到",
+          "烧得"
         ],
         "en": [
           "fever",
@@ -279,7 +282,10 @@
           "退烧药",
           "吃了什么药",
           "吃过什么药",
-          "吃了啥药"
+          "吃了啥药",
+          "寒战",
+          "发抖",
+          "跟她一样"
         ],
         "en": [
           "medicine for",
@@ -288,7 +294,8 @@
           "taken anything",
           "took anything",
           "taken for",
-          "otc"
+          "otc",
+          "fever medicine"
         ]
       }
     },
@@ -300,8 +307,8 @@
         "en": "Any shaking chills or rigors?"
       },
       "answer": {
-        "zh-CN": "冷……冷得直哆嗦……盖两床被子都不行。女儿：昨晚抖得床都在晃，抖了十几分钟，抖完又出了一身汗。",
-        "en": "Cold… shaking… even under two quilts. Daughter: Last night she shook so hard the bed rattled — for more than ten minutes, and afterwards she was drenched in sweat."
+        "zh-CN": "（病人）冷……冷得直哆嗦……盖两床被子都不行。（女儿）昨晚抖得床都在晃，抖了十几分钟，抖完又出了一身汗。",
+        "en": "(Patient) Cold… shaking… even under two quilts. (Daughter) Last night she shook so hard the bed rattled — for more than ten minutes, and afterwards she was drenched in sweat."
       },
       "keywords": {
         "zh-CN": [
@@ -313,7 +320,9 @@
           "畏寒",
           "打寒颤",
           "发冷",
-          "出汗"
+          "出汗",
+          "打摆子",
+          "冷得发抖"
         ],
         "en": [
           "rigors",
@@ -323,7 +332,8 @@
           "shivers",
           "the shakes",
           "sweating",
-          "sweats"
+          "sweats",
+          "rigours"
         ]
       },
       "disclosure": "on-ask",
@@ -337,8 +347,8 @@
         "en": "Where is the chest pain, when did it start and what is it like?"
       },
       "answer": {
-        "zh-CN": "右边……这里（按着右下胸）……像刀扎。女儿：她昨天开始说右边胸口下面刺痛。",
-        "en": "Right side… here (presses her right lower chest)… like a knife. Daughter: Since yesterday she's been saying there's a stabbing pain low on the right side of her chest."
+        "zh-CN": "（病人）右边……这里（按着右下胸）……像刀扎。（女儿）她昨天开始说右边胸口下面刺痛。",
+        "en": "(Patient) Right side… here (presses her right lower chest)… like a knife. (Daughter) Since yesterday she's been saying there's a stabbing pain low on the right side of her chest."
       },
       "keywords": {
         "zh-CN": [
@@ -351,7 +361,10 @@
           "哪里痛",
           "疼痛性质",
           "怎么个疼法",
-          "疼了"
+          "疼了",
+          "疼的地方",
+          "哪儿疼",
+          "哪疼"
         ],
         "en": [
           "chest pain",
@@ -391,8 +404,8 @@
         "en": "Is the pain worse with breathing or coughing? Does it spread anywhere? How bad is it out of 10?"
       },
       "answer": {
-        "zh-CN": "吸气……就疼……咳嗽更疼。不往别处跑。（皱眉）6分吧……不动好一点。",
-        "en": "Hurts… when I breathe in… worse when I cough. Doesn't go anywhere else. (winces) Six, maybe… better if I keep still."
+        "zh-CN": "（病人）吸气……就疼……咳嗽更疼。不往别处跑。（皱眉）6分吧……不动好一点。",
+        "en": "(Patient) Hurts… when I breathe in… worse when I cough. Doesn't go anywhere else. (winces) Six, maybe… better if I keep still."
       },
       "keywords": {
         "zh-CN": [
@@ -407,7 +420,9 @@
           "多疼",
           "疼痛加重",
           "怎样会更疼",
-          "疼痛评分"
+          "疼痛评分",
+          "一咳嗽就疼",
+          "咳嗽就疼"
         ],
         "en": [
           "worse with breathing",
@@ -420,11 +435,19 @@
           "what eases the pain",
           "worse when coughing",
           "how bad is the pain",
-          "hurt when coughing"
+          "hurt when coughing",
+          "worse on inspiration",
+          "inspiration"
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "带过血",
+          "痰里"
+        ]
+      }
     },
     {
       "id": "hx-cough",
@@ -434,8 +457,8 @@
         "en": "Is she coughing? Bringing anything up — what does it look like?"
       },
       "answer": {
-        "zh-CN": "咳……一咳胸口就疼。痰……黄的……有点发红，像铁锈。女儿：前天晚上开始咳，昨天痰多了，颜色像铁锈。",
-        "en": "Coughing… hurts my chest every time. Phlegm… yellow… a bit reddish, like rust. Daughter: The cough started the night before last; since yesterday there's more phlegm, rust-coloured."
+        "zh-CN": "（病人）咳……一咳胸口就疼。痰……黄的……有点发红，像铁锈。（女儿）前天晚上开始咳，昨天痰多了，颜色像铁锈。",
+        "en": "(Patient) Coughing… hurts my chest every time. Phlegm… yellow… a bit reddish, like rust. (Daughter) The cough started the night before last; since yesterday there's more phlegm, rust-coloured."
       },
       "keywords": {
         "zh-CN": [
@@ -454,7 +477,9 @@
           "sputum",
           "productive cough",
           "colour of the sputum",
-          "mucus"
+          "mucus",
+          "colour of the spit",
+          "spitting up"
         ]
       },
       "disclosure": "volunteer",
@@ -470,13 +495,24 @@
           "疼吗",
           "时疼",
           "更疼",
-          "尿"
+          "尿",
+          "有关系",
+          "带过血",
+          "长期咳嗽",
+          "慢性咳嗽",
+          "呛",
+          "跟她一样"
         ],
         "en": [
           "blood",
           "hurt",
           "worse when",
-          "hurt when"
+          "hurt when",
+          "long-standing cough",
+          "chronic cough",
+          "choking",
+          "when eating",
+          "worse with"
         ]
       }
     },
@@ -488,8 +524,8 @@
         "en": "Has she coughed up any blood?"
       },
       "answer": {
-        "zh-CN": "血……没有吧。女儿：没见过鲜血，就是痰有点铁锈色，没有整口的血。",
-        "en": "Blood… no, I don't think so. Daughter: No fresh blood — just the rusty phlegm, never mouthfuls of blood."
+        "zh-CN": "（病人）血……没有吧。（女儿）没见过鲜血，就是痰有点铁锈色，没有整口的血。",
+        "en": "(Patient) Blood… no, I don't think so. (Daughter) No fresh blood — just the rusty phlegm, never mouthfuls of blood."
       },
       "keywords": {
         "zh-CN": [
@@ -500,7 +536,8 @@
           "痰带血",
           "吐血",
           "咳出血",
-          "痰中有血丝"
+          "痰中有血丝",
+          "吐过血"
         ],
         "en": [
           "coughing up blood",
@@ -522,8 +559,8 @@
         "en": "Is she short of breath? Since when?"
       },
       "answer": {
-        "zh-CN": "喘……喘不上气。女儿：昨天开始走路就喘，今天上个厕所都要歇几次，说话也接不上气。",
-        "en": "Can't… catch my breath. Daughter: Since yesterday she gets breathless walking; today she had to stop several times just getting to the toilet, and she can't finish a sentence."
+        "zh-CN": "（病人）喘……喘不上气。（女儿）昨天开始走路就喘，今天上个厕所都要歇几次，说话也接不上气。",
+        "en": "(Patient) Can't… catch my breath. (Daughter) Since yesterday she gets breathless walking; today she had to stop several times just getting to the toilet, and she can't finish a sentence."
       },
       "keywords": {
         "zh-CN": [
@@ -537,7 +574,16 @@
           "憋气",
           "开始喘",
           "喘得",
-          "喘了"
+          "喘了",
+          "憋得慌",
+          "憋闷",
+          "喘气费劲",
+          "透不过气",
+          "喘不喘",
+          "就喘",
+          "走几步",
+          "走路就喘",
+          "喘气困难"
         ],
         "en": [
           "short of breath",
@@ -552,7 +598,16 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "en": [
+          "deep breath",
+          "breathe in",
+          "breathing in",
+          "worse with breathing",
+          "pain worse"
+        ]
+      }
     },
     {
       "id": "hx-course",
@@ -562,8 +617,8 @@
         "en": "How has the illness progressed from the start?"
       },
       "answer": {
-        "zh-CN": "女儿：前天下午先是发冷发烧，晚上开始咳嗽；昨天痰变成铁锈色，右边胸口刺痛，走路就喘；今天基本躺着，吃不下东西，下午三四点开始说胡话，我就赶紧打车把她送来了，九点二十五左右到的。",
-        "en": "Daughter: It began the day before yesterday in the afternoon with chills and fever, then a cough that night. Yesterday the phlegm turned rust-coloured, she got a stabbing pain on the right and was breathless walking. Today she's mostly been in bed, couldn't eat, and from about 3 or 4 this afternoon she started talking nonsense, so I brought her straight here by taxi — we got here at about twenty-five past nine."
+        "zh-CN": "（女儿）前天下午先是发冷发烧，晚上开始咳嗽；昨天痰变成铁锈色，右边胸口刺痛，走路就喘；今天基本躺着，吃不下东西。下午三四点开始说胡话，我以为是烧糊涂了，五点左右又给她吃了一粒布洛芬，到晚上还是不清楚，我就打车把她送来了，九点二十五左右到的。这次生病今晚之前没看过医生。",
+        "en": "(Daughter) It began the day before yesterday in the afternoon with chills and fever, then a cough that night. Yesterday the phlegm turned rust-coloured, she got a stabbing pain on the right and was breathless walking. Today she's mostly been in bed and couldn't eat. From about 3 or 4 this afternoon she started talking nonsense — I thought it was just the fever and gave her another ibuprofen at about 5, but by this evening she was no clearer, so I got a taxi and brought her here; we got here at about twenty-five past nine. She hadn't seen a doctor for this before tonight."
       },
       "keywords": {
         "zh-CN": [
@@ -575,7 +630,11 @@
           "病程",
           "这次怎么不舒服",
           "哪里不舒服",
-          "发生了什么"
+          "发生了什么",
+          "咋回事",
+          "怎么回事",
+          "怎么病的",
+          "讲讲经过"
         ],
         "en": [
           "what happened",
@@ -586,11 +645,22 @@
           "course of the illness",
           "how did this illness start",
           "what brings you in",
-          "story so far"
+          "story so far",
+          "walk me through",
+          "been unwell",
+          "how long unwell"
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "en": [
+          "bringing anything up",
+          "bringing up",
+          "bring up",
+          "bring anything up"
+        ]
+      }
     },
     {
       "id": "hx-confusion",
@@ -600,8 +670,8 @@
         "en": "Is she normally clear-headed? When did the confusion start?"
       },
       "answer": {
-        "zh-CN": "女儿：她平时脑子特别清楚，自己买菜做饭、管钱。今天下午三四点开始说胡话，问我是不是早上，还把我叫成她妹妹。叫她能醒，但老是迷迷糊糊的。",
-        "en": "Daughter: Normally she's completely sharp — does her own shopping, cooking and money. From about 3 or 4 this afternoon she started talking nonsense, asked me if it was morning and called me by her sister's name. She wakes when you call her, but she keeps drifting off."
+        "zh-CN": "（女儿）她平时脑子特别清楚，自己买菜做饭、管钱。今天下午三四点开始说胡话，问我是不是早上，还把我叫成她妹妹。叫她能醒，但老是迷迷糊糊的。",
+        "en": "(Daughter) Normally she's completely sharp — does her own shopping, cooking and money. From about 3 or 4 this afternoon she started talking nonsense, asked me if it was morning and called me by her sister's name. She wakes when you call her, but she keeps drifting off."
       },
       "keywords": {
         "zh-CN": [
@@ -614,19 +684,23 @@
           "迷糊",
           "认不认人",
           "不认人",
-          "反应慢"
+          "反应慢",
+          "脑子好使"
         ],
         "en": [
           "confused",
           "confusion",
           "muddled",
-          "not herself",
           "clear-headed",
           "normally sharp",
           "memory",
           "delirium",
           "disoriented",
-          "acting strangely"
+          "acting strangely",
+          "baseline cognition",
+          "cognition",
+          "cognitive",
+          "not her usual self"
         ]
       },
       "disclosure": "on-ask",
@@ -640,8 +714,8 @@
         "en": "How have her eating and fluid intake been, and how much urine has she passed?"
       },
       "answer": {
-        "zh-CN": "女儿：今天几乎没吃东西，水也只喝了几口。今天一整天就解了一次小便，是早上，量很少，颜色很深。",
-        "en": "Daughter: She's barely eaten today and only had a few sips of water. She's passed urine once all day, this morning — a small amount, very dark."
+        "zh-CN": "（女儿）今天几乎没吃东西，水也只喝了几口。今天一整天就解了一次小便，是早上，量很少，颜色很深。",
+        "en": "(Daughter) She's barely eaten today and only had a few sips of water. She's passed urine once all day, this morning — a small amount, very dark."
       },
       "keywords": {
         "zh-CN": [
@@ -667,7 +741,9 @@
           "volume of urine",
           "passing urine",
           "pass urine",
-          "peeing"
+          "peeing",
+          "drinking fluids",
+          "fluids"
         ]
       },
       "disclosure": "on-ask",
@@ -682,7 +758,11 @@
           "尿频",
           "尿路",
           "糖尿",
-          "呛"
+          "呛",
+          "尿尿疼",
+          "尿尿痛",
+          "撒尿疼",
+          "尿疼"
         ],
         "en": [
           "burning",
@@ -702,8 +782,8 @@
         "en": "Any nausea, vomiting, abdominal pain or diarrhoea?"
       },
       "answer": {
-        "zh-CN": "女儿：没吐，也没拉肚子，肚子不疼，就是不想吃东西。",
-        "en": "Daughter: No vomiting, no diarrhoea, no tummy pain — she just doesn't want to eat."
+        "zh-CN": "（女儿）没吐，也没拉肚子，肚子不疼，就是不想吃东西。",
+        "en": "(Daughter) No vomiting, no diarrhoea, no tummy pain — she just doesn't want to eat."
       },
       "keywords": {
         "zh-CN": [
@@ -715,7 +795,9 @@
           "拉稀",
           "肚子疼",
           "腹痛",
-          "大便"
+          "大便",
+          "吐过",
+          "吐没吐"
         ],
         "en": [
           "nausea",
@@ -726,7 +808,11 @@
           "tummy pain",
           "stomach ache",
           "bowels",
-          "loose stools"
+          "loose stools",
+          "d&v",
+          "d and v",
+          "vomited",
+          "throwing up"
         ]
       },
       "disclosure": "on-ask",
@@ -740,8 +826,8 @@
         "en": "Any burning, frequency or urgency when passing urine?"
       },
       "answer": {
-        "zh-CN": "没有……不疼。女儿：她没说过小便疼，也没老往厕所跑。",
-        "en": "No… doesn't hurt. Daughter: She hasn't complained of burning and she hasn't been running to the toilet."
+        "zh-CN": "（病人）没有……不疼。（女儿）她没说过小便疼，也没老往厕所跑。",
+        "en": "(Patient) No… doesn't hurt. (Daughter) She hasn't complained of burning and she hasn't been running to the toilet."
       },
       "keywords": {
         "zh-CN": [
@@ -752,7 +838,11 @@
           "小便痛",
           "小便烧",
           "泌尿症状",
-          "尿路感染"
+          "尿路感染",
+          "尿尿疼",
+          "尿尿痛",
+          "撒尿疼",
+          "解小便疼"
         ],
         "en": [
           "burning urine",
@@ -776,8 +866,8 @@
         "en": "Any headache, neck stiffness or rash?"
       },
       "answer": {
-        "zh-CN": "头……不疼。脖子……不硬。女儿：没看到她身上起疹子。",
-        "en": "Head… doesn't hurt. Neck… not stiff. Daughter: I haven't seen any rash on her."
+        "zh-CN": "（病人）头……不疼。脖子……不硬。（女儿）没看到她身上起疹子。",
+        "en": "(Patient) Head… doesn't hurt. Neck… not stiff. (Daughter) I haven't seen any rash on her."
       },
       "keywords": {
         "zh-CN": [
@@ -800,7 +890,14 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "en": [
+          "headed",
+          "hit her head",
+          "head injury"
+        ]
+      }
     },
     {
       "id": "hx-neuro-sx",
@@ -810,8 +907,8 @@
         "en": "Any weakness on one side, facial droop, slurred speech or fits?"
       },
       "answer": {
-        "zh-CN": "女儿：没有。手脚都能动，嘴也不歪，说话不含糊，就是说的话前言不搭后语。没抽过筋，也没翻过白眼。",
-        "en": "Daughter: No. She moves her arms and legs, her face isn't drooping and her speech isn't slurred — what she says just doesn't make sense. No fits, and her eyes have never rolled back."
+        "zh-CN": "（女儿）没有。手脚都能动，嘴也不歪，说话不含糊，就是说的话前言不搭后语。没抽过筋，也没翻过白眼。",
+        "en": "(Daughter) No. She moves her arms and legs, her face isn't drooping and her speech isn't slurred — what she says just doesn't make sense. No fits, and her eyes have never rolled back."
       },
       "keywords": {
         "zh-CN": [
@@ -852,8 +949,8 @@
         "en": "Any palpitations, dizziness or blackouts?"
       },
       "answer": {
-        "zh-CN": "头……有点晕……坐起来更晕。女儿：今天扶她上厕所时她说眼前发黑，但没晕倒。心慌她没说过。",
-        "en": "Head… a bit dizzy… worse sitting up. Daughter: When I helped her to the toilet today she said everything went dark, but she didn't pass out. She hasn't mentioned palpitations."
+        "zh-CN": "（病人）头……有点晕……坐起来更晕。（女儿）今天扶她上厕所时她说眼前发黑，但没晕倒。心慌她没说过。",
+        "en": "(Patient) Head… a bit dizzy… worse sitting up. (Daughter) When I helped her to the toilet today she said everything went dark, but she didn't pass out. She hasn't mentioned palpitations."
       },
       "keywords": {
         "zh-CN": [
@@ -891,8 +988,8 @@
         "en": "Any runny nose, sore throat or aching all over?"
       },
       "answer": {
-        "zh-CN": "浑身……酸……疼。女儿：前天发烧时就说全身酸痛、没力气；没流鼻涕，嗓子也没怎么疼。",
-        "en": "Aching… all over. Daughter: When the fever started she said she ached all over and had no energy; no runny nose, and her throat hasn't really been sore."
+        "zh-CN": "（病人）浑身……酸……疼。（女儿）前天发烧时就说全身酸痛、没力气；没流鼻涕，嗓子也没怎么疼。",
+        "en": "(Patient) Aching… all over. (Daughter) When the fever started she said she ached all over and had no energy; no runny nose, and her throat hasn't really been sore."
       },
       "keywords": {
         "zh-CN": [
@@ -918,7 +1015,9 @@
           "aching",
           "cold symptoms",
           "flu-like symptoms",
-          "fatigue"
+          "fatigue",
+          "coryzal",
+          "coryza"
         ]
       },
       "excludeKeywords": {
@@ -946,8 +1045,8 @@
         "en": "Any leg swelling or calf pain? Any recent bed rest, surgery or long journeys?"
       },
       "answer": {
-        "zh-CN": "女儿：腿不肿，也没说腿疼。最近没做过手术，也没出远门，前天之前一直正常走动。",
-        "en": "Daughter: Her legs aren't swollen and she hasn't mentioned calf pain. No recent surgery or long trips — she was up and about normally until two days ago."
+        "zh-CN": "（女儿）腿不肿，也没说腿疼。最近没做过手术，也没出远门，前天之前一直正常走动。",
+        "en": "(Daughter) Her legs aren't swollen and she hasn't mentioned calf pain. No recent surgery or long trips — she was up and about normally until two days ago."
       },
       "keywords": {
         "zh-CN": [
@@ -968,7 +1067,9 @@
           "long journey",
           "immobile",
           "blood clot",
-          "dvt"
+          "dvt",
+          "calf swelling",
+          "swelling"
         ]
       },
       "disclosure": "on-ask",
@@ -982,8 +1083,8 @@
         "en": "Has anyone around her been unwell recently?"
       },
       "answer": {
-        "zh-CN": "女儿：上周我儿子感冒，流鼻涕、咳了几天，她帮我带了他三四天。孩子现在已经好了。",
-        "en": "Daughter: My son had a cold last week — runny nose and a cough for a few days — and she looked after him for three or four days. He's fine now."
+        "zh-CN": "（女儿）上周我儿子感冒，流鼻涕、咳了几天，她帮我带了他三四天。孩子现在已经好了。",
+        "en": "(Daughter) My son had a cold last week — runny nose and a cough for a few days — and she looked after him for three or four days. He's fine now."
       },
       "keywords": {
         "zh-CN": [
@@ -992,14 +1093,18 @@
           "家里有人生病",
           "有人感冒",
           "传染",
-          "接触史"
+          "接触史",
+          "跟她一样"
         ],
         "en": [
           "sick contacts",
           "anyone else unwell",
           "contact with illness",
           "anyone with a cold",
-          "exposure"
+          "exposure",
+          "anyone sick",
+          "sick at home",
+          "anyone ill"
         ]
       },
       "disclosure": "specific",
@@ -1013,8 +1118,8 @@
         "en": "Any recent travel, or contact with birds, poultry or other animals?"
       },
       "answer": {
-        "zh-CN": "女儿：没出过远门，就在小区附近活动。家里没养宠物，也没养鸟，最近没去过活禽市场。",
-        "en": "Daughter: No travel — she stays around the neighbourhood. No pets or birds at home, and she hasn't been to a live-poultry market lately."
+        "zh-CN": "（女儿）没出过远门，就在小区附近活动。家里没养宠物，也没养鸟，最近没去过活禽市场。",
+        "en": "(Daughter) No travel — she stays around the neighbourhood. No pets or birds at home, and she hasn't been to a live-poultry market lately."
       },
       "keywords": {
         "zh-CN": [
@@ -1050,8 +1155,8 @@
         "en": "Any allergies to medicines or foods?"
       },
       "answer": {
-        "zh-CN": "过敏……没有。女儿：没有已知过敏。青霉素、头孢她以前都用过，没出过问题。",
-        "en": "Allergies… no. Daughter: No known allergies. She's had penicillin and cephalosporin antibiotics before without any problem."
+        "zh-CN": "（病人）过敏……没有。（女儿）没有已知过敏。青霉素、头孢她以前都用过，没出过问题。",
+        "en": "(Patient) Allergies… no. (Daughter) No known allergies. She's had penicillin and cephalosporin antibiotics before without any problem."
       },
       "keywords": {
         "zh-CN": [
@@ -1070,7 +1175,9 @@
           "penicillin",
           "drug reaction",
           "alergies",
-          "alergic"
+          "alergic",
+          "nkda",
+          "nka"
         ]
       },
       "disclosure": "on-ask",
@@ -1084,8 +1191,8 @@
         "en": "Has she been in hospital, had IV treatment or taken antibiotics in the last three months?"
       },
       "answer": {
-        "zh-CN": "女儿：没有。这一两年都没住过院，也没输过液。这次生病前三个月里没吃过消炎药（抗生素）。",
-        "en": "Daughter: No. She hasn't been in hospital for a year or two and hasn't had any drips. In the three months before this illness she hadn't taken any antibiotics."
+        "zh-CN": "（女儿）没有。这一两年都没住过院，也没输过液，这次生病也还没看过医生。这次生病前三个月里没吃过消炎药（抗生素）。",
+        "en": "(Daughter) No. She hasn't been in hospital for a year or two, hasn't had any drips, and hasn't seen a doctor for this illness. In the three months before this illness she hadn't taken any antibiotics."
       },
       "keywords": {
         "zh-CN": [
@@ -1096,7 +1203,9 @@
           "输液",
           "打点滴",
           "吊水",
-          "三个月内"
+          "三个月内",
+          "吊瓶",
+          "看过医生"
         ],
         "en": [
           "hospital",
@@ -1106,7 +1215,13 @@
           "recent admission",
           "iv treatment",
           "drip",
-          "last three months"
+          "last three months",
+          "seen a doctor",
+          "seen a gp",
+          "seen the gp",
+          "saw a doctor",
+          "been to the doctor",
+          "90 days"
         ]
       },
       "disclosure": "on-ask",
@@ -1129,8 +1244,8 @@
         "en": "What medical conditions does she have — high blood pressure, diabetes?"
       },
       "answer": {
-        "zh-CN": "血压高……还有糖尿病。女儿：高血压十来年了，糖尿病五六年，都在社区医院开药，控制得还行；她自己有血糖仪，隔几天测一次早上空腹的，一般六七点几，这两天没测。没中过风，没得过癌症，也没有别的影响免疫力的病。",
-        "en": "Blood pressure… and sugar. Daughter: High blood pressure for about ten years, diabetes for five or six — both managed at the community clinic, reasonably well controlled. She has her own meter and checks a fasting sugar every few days, usually around six or seven; she hasn't checked these last two days. She's never had a stroke or cancer, or anything else that weakens her immunity."
+        "zh-CN": "（病人）血压高……还有糖尿病。（女儿）高血压十来年了，糖尿病五六年，都在社区医院开药，控制得还行；她自己有血糖仪，隔几天测一次早上空腹的，一般六七点几，这两天没测。没中过风，没得过癌症，也没有别的影响免疫力的病。",
+        "en": "(Patient) Blood pressure… and sugar. (Daughter) High blood pressure for about ten years, diabetes for five or six — both managed at the community clinic, reasonably well controlled. She has her own meter and checks a fasting sugar every few days, usually around six or seven; she hasn't checked these last two days. She's never had a stroke or cancer, or anything else that weakens her immunity."
       },
       "keywords": {
         "zh-CN": [
@@ -1159,7 +1274,11 @@
           "check her sugars",
           "pmh",
           "htn",
-          "dm"
+          "dm",
+          "long term conditions",
+          "long-term conditions",
+          "chronic conditions",
+          "chronic illnesses"
         ]
       },
       "disclosure": "on-ask",
@@ -1190,8 +1309,8 @@
         "en": "Any chronic bronchitis, emphysema or asthma? Previous pneumonia or TB?"
       },
       "answer": {
-        "zh-CN": "女儿：没有，她肺一直挺好的，从来没得过肺炎，也没得过结核。",
-        "en": "Daughter: No — her lungs have always been fine. She's never had pneumonia or TB."
+        "zh-CN": "（女儿）没有，她肺一直挺好的，从来没得过肺炎，也没得过结核。",
+        "en": "(Daughter) No — her lungs have always been fine. She's never had pneumonia or TB."
       },
       "keywords": {
         "zh-CN": [
@@ -1224,11 +1343,13 @@
       "excludeKeywords": {
         "zh-CN": [
           "家里人",
-          "家族"
+          "家族",
+          "疫苗"
         ],
         "en": [
           "family",
-          "relatives"
+          "relatives",
+          "vaccin"
         ]
       }
     },
@@ -1240,8 +1361,8 @@
         "en": "Any heart or kidney problems?"
       },
       "answer": {
-        "zh-CN": "女儿：没听说心脏有问题，没有心衰。肾的话，大半年前社区体检说肾功能正常，具体数字我记不住。",
-        "en": "Daughter: No heart problems that I know of — no heart failure. Her kidneys: a community check-up about eight months ago said her kidney function was normal; I don't remember the numbers."
+        "zh-CN": "（女儿）没听说心脏有问题，没有心衰。肾的话，大半年前社区体检说肾功能正常，具体数字我记不住。",
+        "en": "(Daughter) No heart problems that I know of — no heart failure. Her kidneys: a community check-up about eight months ago said her kidney function was normal; I don't remember the numbers."
       },
       "keywords": {
         "zh-CN": [
@@ -1275,8 +1396,8 @@
         "en": "What regular medicines does she take, and at what doses?"
       },
       "answer": {
-        "zh-CN": "女儿：我手机里有药单——氨氯地平5毫克，每天早上一片；二甲双胍0.5克，每天两次，早晚饭后各一片。今天早上两种都吃了。没吃激素，也没用免疫抑制的药，不吃阿司匹林或抗凝药。",
-        "en": "Daughter: I've got her list on my phone — amlodipine 5 mg, one every morning; metformin 0.5 g (500 mg) twice a day after breakfast and dinner. She took both this morning. No steroids, no immune-suppressing drugs, no aspirin or blood thinners."
+        "zh-CN": "（女儿）我手机里有药单——氨氯地平5毫克，每天早上一片；二甲双胍0.5克，每天两次，早晚饭后各一片。今天早上两种都吃了。没吃激素，也没用免疫抑制的药，不吃阿司匹林或抗凝药。",
+        "en": "(Daughter) I've got her list on my phone — amlodipine 5 mg, one every morning; metformin 0.5 g (500 mg) twice a day after breakfast and dinner. She took both this morning. No steroids, no immune-suppressing drugs, no aspirin or blood thinners."
       },
       "keywords": {
         "zh-CN": [
@@ -1290,7 +1411,10 @@
           "激素",
           "抗凝药",
           "啥药",
-          "吃的药"
+          "吃的药",
+          "胰岛素",
+          "阿司匹林",
+          "几种药"
         ],
         "en": [
           "medications",
@@ -1303,7 +1427,10 @@
           "drug list",
           "steroids",
           "blood thinners",
-          "anticoagulants"
+          "anticoagulants",
+          "insulin",
+          "aspirin",
+          "drug chart"
         ]
       },
       "disclosure": "on-ask",
@@ -1314,7 +1441,10 @@
           "退烧药",
           "布洛芬",
           "自己吃",
-          "自己买"
+          "自己买",
+          "在家吃过",
+          "自己在家",
+          "这两天吃"
         ],
         "en": [
           "allerg",
@@ -1334,8 +1464,8 @@
         "en": "What has she taken herself over the last two days — which fever medicine?"
       },
       "answer": {
-        "zh-CN": "女儿：吃的是家里的布洛芬缓释胶囊，0.3克一粒。从前天到今天一共吃了五次左右，每次一粒，最后一次是今天下午五点。别的药没吃，也没吃抗生素。",
-        "en": "Daughter: Ibuprofen slow-release capsules from home, 0.3 g (300 mg) each — about five doses since the day before yesterday, one capsule each time, the last at about 5 pm today. Nothing else, no antibiotics."
+        "zh-CN": "（女儿）吃的是家里的布洛芬缓释胶囊，0.3克一粒。从前天到今天一共吃了五次左右，每次一粒，最后一次是今天下午五点。别的药没吃，也没吃抗生素。",
+        "en": "(Daughter) Ibuprofen slow-release capsules from home, 0.3 g (300 mg) each — about five doses since the day before yesterday, one capsule each time, the last at about 5 pm today. Nothing else, no antibiotics."
       },
       "keywords": {
         "zh-CN": [
@@ -1346,7 +1476,10 @@
           "止痛药",
           "非处方药",
           "自己买的药",
-          "吃了啥药"
+          "吃了啥药",
+          "在家吃过啥药",
+          "在家吃了什么药",
+          "自己在家吃"
         ],
         "en": [
           "fever medicine",
@@ -1358,7 +1491,10 @@
           "medicine for the fever",
           "pain relief tablets",
           "painkiller tablets",
-          "self-medicated"
+          "self-medicated",
+          "nurofen",
+          "advil",
+          "brufen"
         ]
       },
       "disclosure": "specific",
@@ -1381,8 +1517,8 @@
         "en": "Has she had any operations?"
       },
       "answer": {
-        "zh-CN": "女儿：2010年做过腹腔镜胆囊切除，别的手术没做过。",
-        "en": "Daughter: Keyhole gallbladder removal in 2010; no other operations."
+        "zh-CN": "（女儿）2010年做过腹腔镜胆囊切除，别的手术没做过。",
+        "en": "(Daughter) Keyhole gallbladder removal in 2010; no other operations."
       },
       "keywords": {
         "zh-CN": [
@@ -1395,7 +1531,10 @@
           "operations",
           "surgery",
           "surgical history",
-          "operated on"
+          "operated on",
+          "ops",
+          "previous ops",
+          "procedures"
         ]
       },
       "disclosure": "on-ask",
@@ -1409,8 +1548,8 @@
         "en": "Does she smoke?"
       },
       "answer": {
-        "zh-CN": "不抽……从来不抽。女儿：我爸以前抽，十几年前戒了。",
-        "en": "No… never. Daughter: My dad used to smoke but quit more than ten years ago."
+        "zh-CN": "（病人）不抽……从来不抽。（女儿）我爸以前抽，十几年前戒了。",
+        "en": "(Patient) No… never. (Daughter) My dad used to smoke but quit more than ten years ago."
       },
       "keywords": {
         "zh-CN": [
@@ -1437,8 +1576,8 @@
         "en": "Does she drink alcohol?"
       },
       "answer": {
-        "zh-CN": "不喝。女儿：她滴酒不沾。",
-        "en": "No. Daughter: She never touches alcohol."
+        "zh-CN": "（病人）不喝。（女儿）她滴酒不沾。",
+        "en": "(Patient) No. (Daughter) She never touches alcohol."
       },
       "keywords": {
         "zh-CN": [
@@ -1468,8 +1607,8 @@
         "en": "Who does she live with, and what did she do for work?"
       },
       "answer": {
-        "zh-CN": "女儿：她和我爸住，我爸78岁，心脏不太好。她退休前是小学老师。我住得不远，开车十分钟。",
-        "en": "Daughter: She lives with my dad — he's 78 and has heart trouble. She was a primary-school teacher before she retired. I live ten minutes' drive away."
+        "zh-CN": "（女儿）她和我爸住，我爸78岁，心脏不太好。她退休前是小学老师。我住得不远，开车十分钟。",
+        "en": "(Daughter) She lives with my dad — he's 78 and has heart trouble. She was a primary-school teacher before she retired. I live ten minutes' drive away."
       },
       "keywords": {
         "zh-CN": [
@@ -1479,7 +1618,9 @@
           "一个人住",
           "职业",
           "工作",
-          "退休"
+          "退休",
+          "老伴",
+          "谁照顾"
         ],
         "en": [
           "live with",
@@ -1503,8 +1644,8 @@
         "en": "Before this illness, was she independent? How active was she?"
       },
       "answer": {
-        "zh-CN": "女儿：完全能自理，每天自己去菜市场，还跳广场舞，家里饭都是她做。",
-        "en": "Daughter: Fully independent — she goes to the market every day, does square dancing and cooks for the household."
+        "zh-CN": "（女儿）完全能自理，每天自己去菜市场，还跳广场舞，家里饭都是她做。",
+        "en": "(Daughter) Fully independent — she goes to the market every day, does square dancing and cooks for the household."
       },
       "keywords": {
         "zh-CN": [
@@ -1513,7 +1654,11 @@
           "活动能力",
           "日常活动",
           "能走多远",
-          "自己走动"
+          "自己走动",
+          "买菜做饭",
+          "做家务",
+          "能走路",
+          "自己走路"
         ],
         "en": [
           "independent",
@@ -1527,7 +1672,13 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "en": [
+          "walk me through",
+          "walk through"
+        ]
+      }
     },
     {
       "id": "hx-family",
@@ -1537,8 +1688,8 @@
         "en": "Any illnesses that run in the family?"
       },
       "answer": {
-        "zh-CN": "女儿：外婆是中风去世的，外公有高血压。家里没人得过结核。",
-        "en": "Daughter: Her mother died of a stroke and her father had high blood pressure. Nobody in the family has had TB."
+        "zh-CN": "（女儿）外婆是中风去世的，外公有高血压。家里没人得过结核。",
+        "en": "(Daughter) Her mother died of a stroke and her father had high blood pressure. Nobody in the family has had TB."
       },
       "keywords": {
         "zh-CN": [
@@ -1548,14 +1699,17 @@
           "遗传病",
           "父母",
           "家族",
-          "遗传"
+          "遗传",
+          "家里老人"
         ],
         "en": [
           "family history",
           "runs in the family",
           "parents",
           "relatives",
-          "family illnesses"
+          "family illnesses",
+          "fhx",
+          "family hx"
         ]
       },
       "disclosure": "on-ask",
@@ -1569,8 +1723,8 @@
         "en": "Has she had the pneumococcal (pneumonia) vaccine or this year's flu vaccine?"
       },
       "answer": {
-        "zh-CN": "女儿：这个……我真不清楚。社区好像通知过，但她打没打我不知道。",
-        "en": "Daughter: I honestly don't know — the community clinic sent a notice once, but I don't know whether she had it."
+        "zh-CN": "（女儿）这个……我真不清楚。社区好像通知过，但她打没打我不知道。",
+        "en": "(Daughter) I honestly don't know — the community clinic sent a notice once, but I don't know whether she had it."
       },
       "keywords": {
         "zh-CN": [
@@ -1602,8 +1756,8 @@
         "en": "Before this illness, any weight loss, night sweats or long-standing cough?"
       },
       "answer": {
-        "zh-CN": "女儿：没有。这次之前她一点都不咳，体重也没变。",
-        "en": "Daughter: No. She had no cough at all before this and her weight hasn't changed."
+        "zh-CN": "（女儿）没有。这次之前她一点都不咳，体重也没变。",
+        "en": "(Daughter) No. She had no cough at all before this and her weight hasn't changed."
       },
       "keywords": {
         "zh-CN": [
@@ -1612,7 +1766,11 @@
           "瘦了",
           "盗汗",
           "夜间出汗",
-          "长期咳嗽"
+          "长期咳嗽",
+          "瘦没瘦",
+          "掉秤",
+          "体重减轻",
+          "瘦了没"
         ],
         "en": [
           "weight loss",
@@ -1633,8 +1791,8 @@
         "en": "Any choking or coughing when eating or drinking, or trouble swallowing?"
       },
       "answer": {
-        "zh-CN": "女儿：没有，吃饭喝水从来不呛。",
-        "en": "Daughter: No, she never chokes on food or drink."
+        "zh-CN": "（女儿）没有，吃饭喝水从来不呛。",
+        "en": "(Daughter) No, she never chokes on food or drink."
       },
       "keywords": {
         "zh-CN": [
@@ -1664,8 +1822,8 @@
         "en": "Has she fallen or hit her head recently?"
       },
       "answer": {
-        "zh-CN": "女儿：没有摔过，也没碰到头。",
-        "en": "Daughter: No falls and no head injury."
+        "zh-CN": "（女儿）没有摔过，也没碰到头。",
+        "en": "(Daughter) No falls and no head injury."
       },
       "keywords": {
         "zh-CN": [
@@ -1696,8 +1854,8 @@
         "en": "Roughly how much does she weigh, and how tall is she?"
       },
       "answer": {
-        "zh-CN": "女儿：大概一百二十斤，就是60公斤左右；身高一米五八。",
-        "en": "Daughter: About 60 kg — around 120 jin — and she's 1.58 m tall."
+        "zh-CN": "（女儿）大概一百二十斤，就是60公斤左右；身高一米五八。",
+        "en": "(Daughter) About 60 kg — around 120 jin — and she's 1.58 m tall."
       },
       "keywords": {
         "zh-CN": [
@@ -1726,7 +1884,10 @@
           "病",
           "严重",
           "危险",
-          "情况"
+          "情况",
+          "减轻",
+          "下降",
+          "瘦"
         ],
         "en": [
           "ill",
@@ -1745,8 +1906,8 @@
         "en": "Has the family ever discussed what treatment she would want if she became critically ill?"
       },
       "answer": {
-        "zh-CN": "女儿：从来没谈过这些……她身体一直挺好的。我们肯定希望全力治疗。我爸在家，他也会这么想的。",
-        "en": "Daughter: We've never talked about that… she's always been so healthy. We'd definitely want everything done. My dad's at home — he'd feel the same."
+        "zh-CN": "（女儿）从来没谈过这些……她身体一直挺好的。我们肯定希望全力治疗。我爸在家，他也会这么想的。",
+        "en": "(Daughter) We've never talked about that… she's always been so healthy. We'd definitely want everything done. My dad's at home — he'd feel the same."
       },
       "keywords": {
         "zh-CN": [
@@ -1756,7 +1917,9 @@
           "生前预嘱",
           "预先医疗指示",
           "全力抢救",
-          "放弃抢救"
+          "放弃抢救",
+          "上呼吸机",
+          "呼吸机"
         ],
         "en": [
           "goals of care",
@@ -1766,7 +1929,10 @@
           "intubation wishes",
           "what she would want",
           "dnr",
-          "resus status"
+          "resus status",
+          "dnacpr",
+          "dnar",
+          "cpr"
         ]
       },
       "disclosure": "on-ask",
@@ -1780,8 +1946,8 @@
         "en": "What are you most worried about right now?"
       },
       "answer": {
-        "zh-CN": "我老伴……一个人在家……女儿：我最怕她是不是很危险，要不要进ICU。她三天前还好好的，怎么一下子这么重？",
-        "en": "My husband… alone at home… Daughter: My biggest fear is whether she's in danger — will she need intensive care? Three days ago she was perfectly fine; how did she get so ill so fast?"
+        "zh-CN": "（病人）我老伴……一个人在家……（女儿）我最怕她是不是很危险，要不要进ICU。她三天前还好好的，怎么一下子这么重？",
+        "en": "(Patient) My husband… alone at home… (Daughter) My biggest fear is whether she's in danger — will she need intensive care? Three days ago she was perfectly fine; how did she get so ill so fast?"
       },
       "keywords": {
         "zh-CN": [
@@ -1790,7 +1956,9 @@
           "害怕",
           "最担心",
           "期望",
-          "想法和期望"
+          "想法和期望",
+          "最怕",
+          "最担忧"
         ],
         "en": [
           "worried",
@@ -1813,8 +1981,8 @@
         "en": "Has she had a chest X-ray or chest CT before?"
       },
       "answer": {
-        "zh-CN": "女儿：这个我不清楚，体检有没有拍过胸片我不知道。",
-        "en": "Daughter: I don't know whether her check-ups included a chest X-ray."
+        "zh-CN": "（女儿）这个我不清楚，体检有没有拍过胸片我不知道。",
+        "en": "(Daughter) I don't know whether her check-ups included a chest X-ray."
       },
       "keywords": {
         "zh-CN": [
@@ -1831,10 +1999,132 @@
           "old scans",
           "previous ct",
           "earlier chest film",
-          "old films"
+          "old films",
+          "old x-rays",
+          "old xrays",
+          "to compare",
+          "previous chest x-ray"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
+      "excludeKeywords": {
+        "en": [
+          "how old",
+          "years old"
+        ]
+      }
+    },
+    {
+      "id": "hx-identity",
+      "topic": "other",
+      "question": {
+        "zh-CN": "您叫什么名字？今年多大年纪？陪您来的是谁？",
+        "en": "What is her name and age, and who has come with her?"
+      },
+      "answer": {
+        "zh-CN": "（病人）林……林秀珍……七十二了。（女儿）我是她女儿，周敏。",
+        "en": "(Patient) Lin… Lin Xiuzhen… seventy-two. (Daughter) I'm her daughter, Zhou Min."
+      },
+      "keywords": {
+        "zh-CN": [
+          "叫什么名字",
+          "名字",
+          "姓名",
+          "贵姓",
+          "多大年纪",
+          "多大岁数",
+          "今年多大",
+          "几岁",
+          "年龄",
+          "你是她什么人",
+          "您是她什么人",
+          "多大了",
+          "高寿",
+          "年纪多大",
+          "贵庚"
+        ],
+        "en": [
+          "what is your name",
+          "your name",
+          "her name",
+          "age",
+          "years old",
+          "date of birth",
+          "who are you",
+          "relationship",
+          "are you her daughter",
+          "related to her",
+          "how old"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药",
+          "片子",
+          "检查",
+          "病名",
+          "得的"
+        ],
+        "en": [
+          "medicine",
+          "tablet",
+          "drug",
+          "antibiotic",
+          "xray",
+          "x-ray",
+          "film",
+          "scan",
+          "since what age",
+          "notes",
+          "record"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false
+    },
+    {
+      "id": "hx-orientation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "您知道这是哪里吗？现在是什么时候？",
+        "en": "Does she know where she is and what time of day it is?"
+      },
+      "answer": {
+        "zh-CN": "（病人）这是……社区医院吧？……现在……是早上吧？（女儿小声）妈，现在是晚上，这是大医院的急诊。",
+        "en": "(Patient) This is… the community clinic? …Is it morning? (Daughter, quietly) Mum, it's night-time — this is the hospital emergency department."
+      },
+      "keywords": {
+        "zh-CN": [
+          "知道这是哪",
+          "这是哪里",
+          "这是哪儿",
+          "知道自己在哪",
+          "现在几点",
+          "今天几号",
+          "今天星期几",
+          "白天还是晚上",
+          "早上还是晚上",
+          "今年是哪年",
+          "定向力"
+        ],
+        "en": [
+          "where you are",
+          "where she is",
+          "where are you",
+          "what day is it today",
+          "date today",
+          "what year is it now",
+          "what time is it now",
+          "day of the week",
+          "oriented",
+          "orientated",
+          "orientation",
+          "time and place",
+          "morning or evening"
+        ]
+      },
+      "disclosure": "on-ask",
       "required": false
     }
   ],
@@ -5978,22 +6268,43 @@
           "vital": "sbp",
           "onsetMinutes": 0,
           "rampMinutes": 5,
-          "delta": 4,
-          "durationMinutes": 10
+          "delta": 2,
+          "durationMinutes": 6
+        },
+        {
+          "vital": "sbp",
+          "onsetMinutes": 0,
+          "rampMinutes": 5,
+          "delta": 2,
+          "durationMinutes": 14
         },
         {
           "vital": "dbp",
           "onsetMinutes": 0,
           "rampMinutes": 5,
-          "delta": 2,
-          "durationMinutes": 10
+          "delta": 1,
+          "durationMinutes": 6
+        },
+        {
+          "vital": "dbp",
+          "onsetMinutes": 0,
+          "rampMinutes": 5,
+          "delta": 1,
+          "durationMinutes": 14
         },
         {
           "vital": "hr",
           "onsetMinutes": 0,
           "rampMinutes": 5,
-          "delta": -2,
-          "durationMinutes": 10
+          "delta": -1,
+          "durationMinutes": 6
+        },
+        {
+          "vital": "hr",
+          "onsetMinutes": 0,
+          "rampMinutes": 5,
+          "delta": -1,
+          "durationMinutes": 14
         }
       ],
       "setFlags": [],
@@ -6304,7 +6615,11 @@
           "升压药",
           "血管活性药",
           "noradrenaline",
-          "去甲"
+          "去甲",
+          "去甲加量",
+          "上调去甲",
+          "去甲肾上腺素加量",
+          "加大去甲"
         ],
         "en": [
           "norepinephrine",
@@ -6312,7 +6627,12 @@
           "norad",
           "vasopressor",
           "pressor",
-          "levophed"
+          "levophed",
+          "increase norepinephrine",
+          "titrate norepinephrine",
+          "up-titrate norad",
+          "increase the norad",
+          "increase noradrenaline"
         ]
       },
       "dose": {
@@ -6339,7 +6659,7 @@
         }
       ],
       "setFlags": [],
-      "maxDoses": 1,
+      "maxDoses": 3,
       "indicatedWhen": {
         "all": [
           {
@@ -6354,8 +6674,8 @@
         ]
       },
       "response": {
-        "zh-CN": "去甲肾上腺素经左肘前18G留置针泵入。接下来约10分钟内平均动脉压逐渐上升——按MAP ≥ 65 mmHg滴定，并每小时检查穿刺点。",
-        "en": "Norepinephrine running through the 18G cannula in the left antecubital fossa. Over the next 10 minutes or so the MAP climbs — titrate to MAP ≥ 65 mmHg and check the site hourly."
+        "zh-CN": "去甲肾上腺素经左肘前18G留置针泵入。接下来约10分钟内平均动脉压逐渐上升——按MAP ≥ 65 mmHg滴定，并每小时检查穿刺点。若MAP仍<65 mmHg，可再次选择去甲肾上腺素上调泵速（每次约+0.05 µg/kg/min）。",
+        "en": "Norepinephrine running through the 18G cannula in the left antecubital fossa. Over the next 10 minutes or so the MAP climbs — titrate to MAP ≥ 65 mmHg and check the site hourly. If the MAP stays < 65 mmHg, choose norepinephrine again to step up the rate (each step about +0.05 µg/kg/min)."
       }
     },
     {
@@ -7509,6 +7829,14 @@
               {
                 "read": "lactate-repeat",
                 "phase": "reassess-late"
+              },
+              {
+                "read": "vbg-lactate",
+                "phase": "reassess"
+              },
+              {
+                "read": "vbg-lactate",
+                "phase": "reassess-late"
               }
             ]
           },
@@ -7552,7 +7880,24 @@
         },
         {
           "unless": {
-            "ordered": "lactate-repeat"
+            "any": [
+              {
+                "ordered": "lactate-repeat",
+                "phase": "reassess"
+              },
+              {
+                "ordered": "lactate-repeat",
+                "phase": "reassess-late"
+              },
+              {
+                "ordered": "vbg-lactate",
+                "phase": "reassess"
+              },
+              {
+                "ordered": "vbg-lactate",
+                "phase": "reassess-late"
+              }
+            ]
           },
           "target": "lab-blood-gas"
         },
@@ -7816,12 +8161,26 @@
       },
       "kind": "single",
       "requires": {
-        "intervened": "fluid-bolus",
-        "minCount": 3
+        "all": [
+          {
+            "intervened": "fluid-bolus",
+            "minCount": 3
+          },
+          {
+            "any": [
+              {
+                "examined": "ex-reassess-perfusion"
+              },
+              {
+                "examined": "ex-reassess-perfusion-late"
+              }
+            ]
+          }
+        ]
       },
       "need": {
-        "zh-CN": "先完成至少三次500 mL液体推注。",
-        "en": "Give at least three 500 mL boluses first."
+        "zh-CN": "先完成至少三次500 mL液体推注，并在补液后复评灌注（再充盈、花斑、意识和监护仪上的血压）。",
+        "en": "Give at least three 500 mL boluses and reassess perfusion after them (refill, mottling, mental state and the monitor BP) first."
       },
       "options": [
         {
@@ -8232,7 +8591,16 @@
       "met": {
         "all": [
           {
-            "read": "vbg-lactate"
+            "any": [
+              {
+                "read": "vbg-lactate",
+                "phase": "resus"
+              },
+              {
+                "read": "lactate-repeat",
+                "phase": "resus"
+              }
+            ]
           },
           {
             "any": [
@@ -8242,6 +8610,14 @@
               },
               {
                 "read": "lactate-repeat",
+                "phase": "reassess-late"
+              },
+              {
+                "read": "vbg-lactate",
+                "phase": "reassess"
+              },
+              {
+                "read": "vbg-lactate",
                 "phase": "reassess-late"
               }
             ]
@@ -8462,8 +8838,8 @@
         "en": "Chen Jing (resus nurse)"
       },
       "knowledge": {
-        "zh-CN": "分诊交班：72岁女性，女儿打车送来，21:25到院；发热咳嗽2天、今天下午起说胡话；分诊（未吸氧）T 39.1 ℃、HR 118、BP 84/48、RR 28、SpO₂ 89%、GCS 14，NEWS2 16分，直接入抢救室1床；尚未建立静脉通路、未用药；女儿估计体重约60 kg，手机里有药单。抢救室1床有监护仪、墙壁氧气和负压吸引、两台输液泵；血培养瓶在抢救室柜子里；急诊药房备有头孢曲松、阿奇霉素、莫西沙星、哌拉西林他唑巴坦、万古霉素和去甲肾上腺素，约5分钟送到。医院规定去甲肾上腺素可经近端粗外周静脉短期输注，需每小时检查穿刺点。床旁胸片约20分钟出报告；CT需等约30分钟并需监护转运；ICU住院总可电话联系。会复述医嘱（闭环沟通），只报告结果数值，不解读、不给出诊断。",
-        "en": "Triage handover: 72-year-old woman brought by her daughter by taxi, arrived 21:25; fever and cough for 2 days, talking nonsense since this afternoon; triage on room air T 39.1 °C, HR 118, BP 84/48, RR 28, SpO₂ 89%, GCS 14, NEWS2 16, straight to resus bay 1; no IV access or medication yet; daughter estimates her weight at about 60 kg and has the medication list on her phone. Resus bay 1 has a monitor, wall oxygen and suction, and two infusion pumps; blood culture bottles are in the resus cupboard; the ED pharmacy stocks ceftriaxone, azithromycin, moxifloxacin, piperacillin–tazobactam, vancomycin and norepinephrine and can deliver in about 5 minutes. Hospital policy allows short-term norepinephrine through a proximal large-bore peripheral cannula with hourly site checks. A portable chest film is reported in about 20 minutes; CT has a ~30-minute wait and needs a monitored transfer; the ICU registrar can be phoned. She reads back orders (closed loop), reports result values only, and does not interpret or diagnose."
+        "zh-CN": "分诊交班：72岁女性，女儿打车送来，21:25到院；发热咳嗽2天、今天下午起说胡话；分诊（未吸氧）T 39.1 ℃、HR 118、BP 84/48、RR 28、SpO₂ 89%、GCS 14，NEWS2 16分，直接入抢救室1床；尚未建立静脉通路、未用药；女儿估计体重约60 kg，手机里有药单。抢救室1床有监护仪、墙壁氧气和负压吸引、两台输液泵；血培养瓶在抢救室柜子里；急诊药房备有头孢曲松、阿奇霉素、莫西沙星、哌拉西林他唑巴坦、万古霉素和去甲肾上腺素，约5分钟送到；抢救室备有平衡晶体液、对乙酰氨基酚、氢化可的松和多巴胺。医院规定去甲肾上腺素可经近端粗外周静脉短期输注，需每小时检查穿刺点。床旁胸片约20分钟出报告；CT需等约30分钟并需监护转运；ICU住院总可电话联系。会复述医嘱（闭环沟通），只报告结果数值，不解读、不给出诊断。",
+        "en": "Triage handover: 72-year-old woman brought by her daughter by taxi, arrived 21:25; fever and cough for 2 days, talking nonsense since this afternoon; triage on room air T 39.1 °C, HR 118, BP 84/48, RR 28, SpO₂ 89%, GCS 14, NEWS2 16, straight to resus bay 1; no IV access or medication yet; daughter estimates her weight at about 60 kg and has the medication list on her phone. Resus bay 1 has a monitor, wall oxygen and suction, and two infusion pumps; blood culture bottles are in the resus cupboard; the ED pharmacy stocks ceftriaxone, azithromycin, moxifloxacin, piperacillin–tazobactam, vancomycin and norepinephrine and can deliver in about 5 minutes; resus also stocks balanced crystalloids, paracetamol, hydrocortisone and dopamine. Hospital policy allows short-term norepinephrine through a proximal large-bore peripheral cannula with hourly site checks. A portable chest film is reported in about 20 minutes; CT has a ~30-minute wait and needs a monitored transfer; the ICU registrar can be phoned. She reads back orders (closed loop), reports result values only, and does not interpret or diagnose."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -8475,8 +8851,8 @@
         "en": "Dr Wang (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教：只追问学习者已获得的资料，例如“她的MAP是多少？”“乳酸4.6意味着什么？”“为什么这个pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、SSC 2021的1小时集束化、去甲肾上腺素可经外周起始、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
-        "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does a lactate of 4.6 mean?', 'Why does this pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the SSC 2021 hour-1 bundle, peripheral norepinephrine, and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
+        "zh-CN": "苏格拉底式带教：只追问学习者已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、SSC 2021的1小时集束化、去甲肾上腺素可经外周起始、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
+        "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does her lactate tell you?', 'Why does her pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the SSC 2021 hour-1 bundle, peripheral norepinephrine, and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
       },
       "interprets": [
         "vbg-lactate",
@@ -8530,8 +8906,8 @@
         "en": "Pharmacist Zhao (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，间隔至少6小时（肌酐清除率≤30 mL/min）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。",
-        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity."
+        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。按Cockcroft-Gault估算肌酐清除率约27 mL/min，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。QTc 452 ms可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，间隔至少6小时（肌酐清除率≤30 mL/min）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学习者说出病人的诊断。",
+        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Cockcroft–Gault estimates creatinine clearance at about 27 mL/min, but this is unreliable in non-steady-state AKI — give full first doses. A QTc of 452 ms allows a macrolide or a fluoroquinolone, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV at least 6 h apart (creatinine clearance ≤ 30 mL/min); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity. Gives general drug guidance only and does not state the patient's diagnosis for the learner."
       },
       "interprets": [
         "ecg",
@@ -8546,8 +8922,8 @@
         "en": "Dr Sun (ICU registrar)"
       },
       "knowledge": {
-        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路；若去甲肾上腺素需求升至≥0.25 µg/kg/min并持续，将评估氢化可的松，并综合考虑重症CAP的糖皮质激素治疗。不评论学习者尚未获得的结果。",
-        "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider hydrocortisone if norepinephrine needs rise to ≥ 0.25 µg/kg/min and persist, and will weigh corticosteroids for severe CAP. Does not comment on results the learner does not have."
+        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路；若去甲肾上腺素需求升至≥0.25 µg/kg/min并持续，将评估氢化可的松，并综合考虑重症CAP的糖皮质激素治疗。不评论学习者尚未获得的结果，不替学习者下诊断。",
+        "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider hydrocortisone if norepinephrine needs rise to ≥ 0.25 µg/kg/min and persist, and will weigh corticosteroids for severe CAP. Does not comment on results the learner does not have or state a diagnosis the learner has not made."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -9355,6 +9731,90 @@
         "locale": "en",
         "expect": [
           "hx-otc-ibuprofen"
+        ]
+      },
+      {
+        "text": "有没有打摆子",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-rigors"
+        ]
+      },
+      {
+        "text": "尿尿疼不",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-urinary"
+        ]
+      },
+      {
+        "text": "最近打过吊瓶没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-recent-healthcare"
+        ]
+      },
+      {
+        "text": "自己在家吃过啥药没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-otc-ibuprofen"
+        ]
+      },
+      {
+        "text": "您知道这是哪儿吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-orientation"
+        ]
+      },
+      {
+        "text": "阿姨您叫什么名字",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-identity"
+        ]
+      },
+      {
+        "text": "any rigours",
+        "locale": "en",
+        "expect": [
+          "hx-rigors"
+        ]
+      },
+      {
+        "text": "any D&V",
+        "locale": "en",
+        "expect": [
+          "hx-gi"
+        ]
+      },
+      {
+        "text": "NKDA?",
+        "locale": "en",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "any focal weakness or slurred speach",
+        "locale": "en",
+        "expect": [
+          "hx-neuro-sx"
+        ]
+      },
+      {
+        "text": "has she had any nurofen",
+        "locale": "en",
+        "expect": [
+          "hx-otc-ibuprofen"
+        ]
+      },
+      {
+        "text": "do you know where you are",
+        "locale": "en",
+        "expect": [
+          "hx-orientation"
         ]
       }
     ],

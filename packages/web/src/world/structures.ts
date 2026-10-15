@@ -23,6 +23,7 @@ import {
   type Side,
   type WallLine,
 } from "./geometry.js";
+import { mergeGroup } from "./merge.js";
 import { boxCollider, type Aabb } from "./physics.js";
 import { strings, tx } from "./strings.js";
 import { UNIT_BOX } from "./voxels.js";
@@ -122,7 +123,7 @@ export function buildWall(
   let doorIndex = 0;
   for (const o of resolved) {
     if (o.kind === "window") buildWindow(ctx, wall, o, thickness, mats);
-    else if (o.kind !== "opening") buildDoor(ctx, wall, o, thickness, mats, `${opts.ownerId}:${wall.side}:${doorIndex++}`, opts.ownerName);
+    else if (o.kind !== "opening") buildDoor(ctx, wall, o, thickness, mats, `${opts.ownerId}:${wall.side}:${doorIndex++}`, opts.ownerName, opts.partition);
   }
   return { wall, thickness, height, openings: resolved, partition: opts.partition };
 }
@@ -160,7 +161,7 @@ function leafMesh(mat: Material, x: number, y: number, z: number, sx: number, sy
   return m;
 }
 
-function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickness: number, mats: WallMaterials, id: string, ownerName: string) {
+function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickness: number, mats: WallMaterials, id: string, ownerName: string, interior = false) {
   const S = strings(ctx.locale);
   const width = o.b - o.a;
   const h = o.y1 - o.y0;
@@ -175,8 +176,8 @@ function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickn
   const handleMat = ctx.lib.get(ctx.lib.has("wood") ? "wood" : mats.top);
   const leaves: DoorLeaf[] = [];
   const objects: Object3D[] = [];
-  const name = `${ownerName}${ctx.locale.startsWith("zh") ? "" : " "}${S.door}`;
-  const target = { kind: "door" as const, id, name, hint: S.doorOpen };
+  const name = `${ownerName}${ctx.locale.startsWith("zh") ? "" : " "}${interior ? S.roomDoor : S.door}`;
+  const target = { kind: "door" as const, id, name, hint: interior ? S.roomDoorOpen : S.doorOpen };
   const rotDeg = (sideRotation(wall.side) * 180) / Math.PI;
   /** Closed-leaf collider: frame-local centre (lx, h/2, 0), size (lw, h, .2) → world AABB. */
   const worldBox = (lx: number, lw: number): Aabb => {
@@ -202,6 +203,7 @@ function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickn
       ];
       for (const p of parts) p.userData.action = target;
       leaf.userData.action = target;
+      mergeGroup(leaf, new Set(), ctx.lib); // leaf + handle → 1 atlas mesh, glass pane → 1 mesh
       ctx.pickables.push(leaf);
       objects.push(leaf);
       const collider = ctx.colliders.add(worldBox(side * (width / 2) - side * (lw / 2), lw));
@@ -222,6 +224,7 @@ function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickn
       ];
       for (const p of parts) p.userData.action = target;
       pivot.userData.action = target;
+      mergeGroup(pivot, new Set(), ctx.lib); // glass → 1 mesh, the three steel rails → 1 mesh
       ctx.pickables.push(pivot);
       objects.push(pivot);
       const collider = ctx.colliders.add(worldBox(side * (lw / 2), lw));
@@ -236,7 +239,7 @@ function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickn
     wall.axis === "x"
       ? { minX: Math.min(pa.x, pb.x), maxX: Math.max(pa.x, pb.x), minZ: wall.line - depth, maxZ: wall.line + depth }
       : { minX: wall.line - depth, maxX: wall.line + depth, minZ: Math.min(pa.z, pb.z), maxZ: Math.max(pa.z, pb.z) };
-  const rec: DoorRecord = { id, name, open: false, leaves, area, centre: { x: c.x, z: c.z }, target, objects };
+  const rec: DoorRecord = { id, name, open: false, leaves, area, centre: { x: c.x, z: c.z }, target, objects, interior };
   ctx.doors.push(rec);
 }
 
@@ -245,7 +248,7 @@ export function setDoorOpen(door: DoorRecord, open: boolean, locale: string): vo
   door.open = open;
   for (const l of door.leaves) l.collider.enabled = !open;
   const S = strings(locale);
-  door.target.hint = open ? S.doorClose : S.doorOpen;
+  door.target.hint = door.interior ? (open ? S.roomDoorClose : S.roomDoorOpen) : open ? S.doorClose : S.doorOpen;
 }
 
 /** Per-frame door animation (V4 lerp, factor dt·9). Returns whether any leaf visibly moved (shadow refresh). */

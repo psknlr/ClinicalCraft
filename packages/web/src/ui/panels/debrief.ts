@@ -150,6 +150,12 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
   );
 }
 
+/** "病例完成 · {title}" unless the case title already carries that prefix (V4 SMZL does). */
+function debriefTitle(title: string): string {
+  const prefix = tr("debrief.title", { title: "" }).replace(/[\s·:：-]+$/, "");
+  return prefix && title.toLowerCase().startsWith(prefix.toLowerCase()) ? title : tr("debrief.title", { title });
+}
+
 export function debriefPanel(app: App): () => PanelView {
   return () => {
     const game = app.game;
@@ -201,7 +207,7 @@ export function debriefPanel(app: App): () => PanelView {
     return {
       id: "debrief",
       kicker: tr("debrief.kicker"),
-      title: tr("debrief.title", { title: ct(c.debrief.title) }),
+      title: debriefTitle(ct(c.debrief.title)),
       variant: "wide",
       body: content,
       update() {

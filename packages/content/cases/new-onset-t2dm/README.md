@@ -41,7 +41,7 @@ walks about 3,000 steps a day. His father developed type 2 diabetes at 55, was
 on insulin for over ten years, once collapsed from hypoglycaemia, and had a
 stroke at 68. His mother has hypertension and his brother has type 2 diabetes.
 He lives with his supportive wife (a teacher) and their 16-year-old daughter,
-and has employee medical insurance. Two days a week he drives the company car
+and has employee medical insurance. Two or three days a week he drives the company car
 to see clients.
 
 **ICE.** *Ideas*: "internal heat", or maybe diabetes like his father.
@@ -68,7 +68,7 @@ examination (with consent and a chaperone) suggests candidal balanitis.
 | FPG (venous, same sample as HbA1c) | **9.8 mmol/L** (177 mg/dL) |
 | HbA1c | **8.6 % (70 mmol/mol)**, eAG 11.1 mmol/L; NGSP-certified HPLC, no variant |
 | capillary glucose / β-hydroxybutyrate | 10.4 / 0.2 mmol/L (meter, not diagnostic) |
-| urinalysis | glucose 3+, **ketones negative**, protein negative, SG 1.028 |
+| urinalysis | glucose 3+, **ketones negative**, protein negative, SG 1.020 |
 | electrolytes, renal | Na 139, K 4.3, Cl 102, HCO₃⁻ 25 → anion gap 12; urea 5.6; creatinine 82 µmol/L → eGFR 102 (CKD-EPI 2021); uric acid 452 µmol/L |
 | UACR | **5.2 mg/mmol** (46 mg/g), A2, one sample only |
 | lipids | TC 6.0, TG 2.6, HDL-C 0.92, **LDL-C 3.9** (Friedewald 6.0 − 0.92 − 2.6/2.2 = 3.90), non-HDL-C 5.1 mmol/L |
@@ -177,12 +177,14 @@ There are also three examiner-judged communication items:
 2. **Exclude a crisis before anything else.** Check ketones (urine or blood),
    the anion gap and calculated osmolality. Insulin at diagnosis needs an
    indication. ADA: consider early insulin with ongoing catabolism (weight
-   loss), marked symptomatic hyperglycaemia, HbA1c > 10 % or glucose ≥ 16.7
+   loss), symptoms of hyperglycaemia, HbA1c > 10 % or glucose ≥ 16.7
    mmol/L, ketosis, or suspected type 1. Chinese guideline: short-term
    intensive insulin when HbA1c ≥ 9.0 % or FPG ≥ 11.1 mmol/L with marked
-   symptoms. He has osmotic symptoms, but his ~3 % weight loss (obese, good
-   appetite) is explained by glycosuria, there is no ketosis and his levels
-   are well below these thresholds, so oral therapy is enough. Starting insulin anyway would confirm his worst fear,
+   symptoms. He has osmotic symptoms and slight weight loss, so insulin
+   deserves consideration, but the weight loss is only ~3 % (still obese,
+   good appetite), there is no ketosis and his levels are well below these
+   thresholds, so oral therapy comes first, with reassessment if he responds
+   poorly or becomes catabolic. Starting insulin anyway would confirm his worst fear,
    add hypoglycaemia risk to his driving job, and add weight.
 3. **Metformin.** Start at 500 mg with a meal and step up weekly to 2000
    mg/day. Dose by eGFR (≥ 45 full dose; 30–44 maximum 1000 mg/day;

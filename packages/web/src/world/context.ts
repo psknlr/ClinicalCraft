@@ -44,6 +44,8 @@ export interface DoorRecord {
   centre: { x: number; z: number };
   target: Extract<InteractionTarget, { kind: "door" }>;
   objects: Object3D[];
+  /** Interior (room partition) door — "门" rather than the building's "大门". */
+  interior?: boolean;
 }
 
 export interface ScreenRecord {

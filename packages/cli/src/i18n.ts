@@ -30,7 +30,7 @@ const EN = {
   "help.more": "Run `clinicalcraft <command> --help` for a command's options. Settings: ~/.clinicalcraft/settings.json, .clinicalcraft/settings.json (see `clinicalcraft config path`).",
   "help.exitCodes": "Exit codes: 0 success · 1 error · 2 usage error · 3 max turns reached.",
   "help.headlessApprovals":
-    "Headless approvals: nobody can answer an approval prompt, so with --approval default|strict|plan every request is denied (reason \"headless: approval required\") and the agent adapts; with --approval auto|bypass the requests that still arise are approved. Use --approval bypass for unattended benchmarks.",
+    "Headless approvals: nobody can answer an approval prompt, so with --approval default|strict|plan every request is denied (reason \"headless: approval required\") and the agent adapts; with --approval auto|bypass the requests that still arise are approved. Use --approval bypass for unattended benchmarks. With --input-format stream-json --output-format stream-json the client answers each approval_request with an approval_response op while stdin is open.",
 
   // flags
   "flags.badApproval": "Invalid approval mode \"{value}\" (expected {choices})",
@@ -284,7 +284,7 @@ const ZH: Record<MsgKey, string> = {
   "help.more": "运行 `clinicalcraft <命令> --help` 查看命令选项。设置文件：~/.clinicalcraft/settings.json、.clinicalcraft/settings.json（见 `clinicalcraft config path`）。",
   "help.exitCodes": "退出码：0 成功 · 1 出错 · 2 用法错误 · 3 达到最大回合数。",
   "help.headlessApprovals":
-    "无界面模式的审批：没有人能回答审批请求，因此 --approval default|strict|plan 时所有请求都会被拒绝（原因“headless: approval required”），智能体会据此调整；--approval auto|bypass 时仍出现的请求会被批准。无人值守的基准测试请使用 --approval bypass。",
+    "无界面模式的审批：没有人能回答审批请求，因此 --approval default|strict|plan 时所有请求都会被拒绝（原因“headless: approval required”），智能体会据此调整；--approval auto|bypass 时仍出现的请求会被批准。无人值守的基准测试请使用 --approval bypass。使用 --input-format stream-json --output-format stream-json 时，客户端可在 stdin 打开期间用 approval_response 操作自行回答每个 approval_request。",
 
   "flags.badApproval": "审批模式“{value}”无效（可选：{choices}）",
   "flags.badScope": "执业范围“{value}”无效（可选：{choices}）",

@@ -40,11 +40,11 @@ import {
 import type { BlockInfo, CreateWorld, InteractionTarget, WorldApi, WorldOptions, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { buildRules, canPlace, cellKey, validBlocks, type BuildRules, type Cell } from "./buildzone.js";
-import type { BuildContext, DoorRecord, NpcRecord } from "./context.js";
+import type { BuildContext, DoorRecord, LightCandidate, NpcRecord } from "./context.js";
 import { buildPlacements, surfaceTop } from "./equipment.js";
 import { drawMap as paintMap, type MapData, type MapWall } from "./map.js";
 import { MaterialLibrary, mergeCatalogs } from "./materials.js";
-import { buildPerson, disposeRig, ROLE_UNIFORMS, type AppearanceLike, type Posture } from "./npc.js";
+import { buildPerson, disposeRig, ROLE_UNIFORMS, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
 import { buildNavGrid, findPath, type NavGrid } from "./pathfind.js";
 import { boxCollider, clampPitch, ColliderGrid, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
 import { regionAt } from "./region.js";
@@ -241,15 +241,48 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const staticMeshes = sceneryBatch.build(root, lib, ctx.shadows);
   for (const m of staticMeshes) ctx.pickables.push(m);
 
-  // point lights: the N nearest to spawn are real lights, the rest stay emissive-only
+  // point lights: a fixed pool (quality budget) of real PointLights is moved to the candidates nearest
+  // the player (re-assigned as the player walks); the other fixtures stay emissive-only. A static
+  // "nearest to spawn" choice left every room far from the entrance without its ceiling light.
   const spawn = facility.spawn ?? { x: 0, z: 0, yaw: 0 };
-  const sortedLights = [...ctx.lights].sort((p, q) => Math.hypot(p.x - spawn.x, p.z - spawn.z) - Math.hypot(q.x - spawn.x, q.z - spawn.z));
-  for (const l of sortedLights.slice(0, q0.lights)) {
-    const pl = new PointLight(l.color, l.intensity, l.distance, l.decay);
-    pl.position.set(l.x, l.y, l.z);
-    root.add(pl);
-    ctx.realLights.push(pl);
+  let lightsAt: { x: number; z: number } | null = null;
+  function assignLights(px: number, pz: number, force = false): void {
+    if (!force && lightsAt && Math.hypot(px - lightsAt.x, pz - lightsAt.z) < 1.5) return;
+    lightsAt = { x: px, z: pz };
+    const budget = Math.min(ctx.lights.length, (QUALITY[quality] ?? QUALITY.high).lights);
+    // pool size only changes with the quality setting (a different light count recompiles shaders)
+    while (ctx.realLights.length < budget) {
+      const pl = new PointLight();
+      root.add(pl);
+      ctx.realLights.push(pl);
+    }
+    while (ctx.realLights.length > budget) ctx.realLights.pop()!.removeFromParent();
+    const nearest = ctx.lights
+      .map((l) => ({ l, d: Math.hypot(l.x - px, l.z - pz) }))
+      .sort((p, q) => p.d - q.d)
+      .slice(0, budget)
+      .map((e) => e.l);
+    // keep lights that stay selected where they are (no flicker), move the freed ones to the new candidates
+    const free: PointLight[] = [];
+    const taken = new Set<LightCandidate>();
+    for (const pl of ctx.realLights) {
+      const cur = pl.userData.candidate as LightCandidate | undefined;
+      if (cur && nearest.includes(cur) && !taken.has(cur)) taken.add(cur);
+      else free.push(pl);
+    }
+    for (const l of nearest) {
+      if (taken.has(l)) continue;
+      const pl = free.pop();
+      if (!pl) break;
+      pl.userData.candidate = l;
+      pl.color.set(l.color);
+      pl.intensity = l.intensity;
+      pl.distance = l.distance;
+      pl.decay = l.decay;
+      pl.position.set(l.x, l.y, l.z);
+    }
   }
+  assignLights(spawn.x, spawn.z, true);
 
   /* ---------------- NPCs ---------------- */
   const patients = new Map<string, WorldPatient>();
@@ -991,6 +1024,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     renderer.shadowMap.enabled = q.shadow > 0;
     sun.castShadow = q.shadow > 0;
     markShadows();
+    assignLights(player.x, player.z, true);
     if (q.shadow > 0 && sun.shadow.mapSize.x !== q.shadow) {
       sun.shadow.mapSize.set(q.shadow, q.shadow);
       sun.shadow.map?.dispose();
@@ -1061,6 +1095,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     if (animateDoors(ctx.doors, dt)) markShadows();
     followSun(player.x, player.z);
+    assignLights(player.x, player.z);
     // NPCs: head tracking (V4: within 5 units, ±.55 rad, lerp dt·3), speaking, distress
     camera.getWorldPosition(tmpCam);
     for (const n of ctx.npcs.values()) {
@@ -1265,8 +1300,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       if (state.speaking != null) cur.speaking = state.speaking;
       if (state.distressed != null) cur.distressed = state.distressed;
       // (re)apply the skin tint: a rebuilt rig (posture/accessory change) starts with plain skin
-      const tint = cur.distressed ? cur.rig.flushMaterial : cur.rig.skinMaterial;
-      for (const m of cur.rig.skinMeshes) if (m.material !== tint) m.material = tint;
+      setDistressed(cur.rig, cur.distressed);
     },
     setStaffSpeaking(staffId, speaking) {
       const n = ctx.npcs.get(`staff:${staffId}`);
@@ -1381,6 +1415,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       updateAim,
       /** Draw calls of one frame from the current camera: steady state (shadow map reused) and a frame that re-renders the shadow map. */
       drawCalls() {
+        followSun(player.x, player.z);
         renderer.shadowMap.needsUpdate = true;
         renderer.render(scene, camera);
         const withShadows = renderer.info.render.calls;

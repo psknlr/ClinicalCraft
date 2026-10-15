@@ -28,6 +28,18 @@ export const SESSION_FLAGS: FlagSpec[] = [
   { name: "facility", type: "string", valueName: "<id>", description: { en: "Facility (world) to place the case in", zh: "病例所在的场馆" } },
   { name: "max-tool-rounds", type: "number", valueName: "<n>", description: { en: "Tool rounds per agent turn", zh: "每个智能体回合的工具调用轮数上限" } },
   { name: "ephemeral", type: "boolean", description: { en: "Do not write a session transcript", zh: "不写入会话记录" } },
+  {
+    name: "allowed-tools",
+    type: "list",
+    valueName: "<rules>",
+    description: { en: 'Extra allow rules, e.g. "order_test(*),examine"', zh: '追加允许规则，如 "order_test(*),examine"' },
+  },
+  {
+    name: "disallowed-tools",
+    type: "list",
+    valueName: "<rules>",
+    description: { en: 'Extra deny rules, e.g. "intervene(alteplase*)"', zh: '追加拒绝规则，如 "intervene(alteplase*)"' },
+  },
 ];
 
 /** Resume flags (play, exec). */
@@ -47,6 +59,7 @@ export const EXEC_FLAGS: FlagSpec[] = [
   { name: "to", type: "string", valueName: "<agent>", description: { en: "Address the prompt to an agent (patient, nurse, attending…)", zh: "提示发送对象（patient、nurse、attending…）" } },
   { name: "assess", type: "boolean", description: { en: "Run the examiner at the end (default: on with --autopilot)", zh: "结束时运行考官评估（--autopilot 时默认开启）" } },
   { name: "quiet", short: "q", type: "boolean", description: { en: "No progress on stderr (text format)", zh: "不在 stderr 输出进度（text 格式）" } },
+  { name: "output-last-message", short: "o", type: "string", valueName: "<file>", description: { en: "Also write the final message to this file", zh: "同时把最终消息写入该文件" } },
 ];
 
 export const JSON_FLAG: FlagSpec = { name: "json", type: "boolean", description: { en: "Machine-readable JSON output", zh: "输出 JSON" } };

@@ -201,7 +201,7 @@
           "是怎么了",
           "什么问题",
           "主要症状",
-          "来看什么病",
+          "来看什么病的",
           "什么情况",
           "哪儿难受",
           "哪里难受",
@@ -211,7 +211,8 @@
           "不得劲",
           "哪儿不对劲",
           "因为什么",
-          "来是因为"
+          "来是因为",
+          "说说怎么回事"
         ],
         "en": [
           "brought you in",
@@ -224,11 +225,23 @@
           "what happened",
           "what's happened",
           "what's the matter",
-          "theproblem"
+          "theproblem",
+          "beengoingon"
         ]
       },
       "disclosure": "volunteer",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "以前",
+          "之前",
+          "性生活"
+        ],
+        "en": [
+          "before",
+          "previously"
+        ]
+      }
     },
     {
       "id": "hx-identity",
@@ -341,7 +354,8 @@
           "howmanyhours",
           "howmanydays",
           "gradual",
-          "gradually"
+          "gradually",
+          "whattime"
         ]
       },
       "disclosure": "on-ask",
@@ -399,7 +413,9 @@
           "最早",
           "最早是哪块",
           "一开始哪块",
-          "最早是哪"
+          "最早是哪",
+          "一开始疼在",
+          "最开始疼在"
         ],
         "en": [
           "where was the pain at first",
@@ -480,7 +496,10 @@
           "指给我看",
           "指一下哪里",
           "位置有变化",
-          "位置变了"
+          "位置变了",
+          "转到",
+          "右下边",
+          "右下腹"
         ],
         "en": [
           "pain moved",
@@ -490,7 +509,7 @@
           "changed location",
           "where does it hurt now",
           "where is the pain located now",
-          "which side",
+          "whichside",
           "wheredoesithurt",
           "wheresthepain",
           "whereisthepain",
@@ -500,11 +519,20 @@
           "same place",
           "somewhere else",
           "still in the middle",
-          "whereexactly"
+          "whereexactly",
+          "wherestheworst",
+          "whereistheworst",
+          "whereisitworst",
+          "wheresitworst"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "体重"
+        ]
+      }
     },
     {
       "id": "hx-character",
@@ -554,7 +582,8 @@
           "what kind of pain",
           "doesitfeellike",
           "isitlike",
-          "describe it"
+          "describe it",
+          "thepainlike"
         ]
       },
       "disclosure": "on-ask"
@@ -593,7 +622,11 @@
           "往别处",
           "腰疼",
           "腰痛",
-          "腰部"
+          "腰部",
+          "地方窜",
+          "窜着疼",
+          "往别的地方窜",
+          "到处窜"
         ],
         "en": [
           "radiate",
@@ -648,7 +681,16 @@
           "howmuchpain"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "走路",
+          "咳嗽",
+          "活动时",
+          "颠簸",
+          "翻身"
+        ]
+      }
     },
     {
       "id": "hx-aggravating",
@@ -691,10 +733,24 @@
           "jolt",
           "deep breath",
           "hurt when you move",
-          "hurt to move"
+          "hurt to move",
+          "taxi",
+          "car ride",
+          "journey"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "en": [
+          "wherestheworst",
+          "whereistheworst",
+          "whereisitworst",
+          "wheresitworst",
+          "gettingworse",
+          "gotworse",
+          "beengetting"
+        ]
+      }
     },
     {
       "id": "hx-relieving",
@@ -726,12 +782,13 @@
         "en": [
           "better",
           "relieve",
-          "ease",
-          "eases",
           "lying still",
           "position",
           "helps",
-          "what helps"
+          "what helps",
+          "ease it",
+          "eases it",
+          "anything ease"
         ]
       },
       "disclosure": "on-ask"
@@ -775,7 +832,9 @@
           "steady",
           "on and off",
           "constant",
-          "getting worse"
+          "getting worse",
+          "colicky",
+          "colic"
         ]
       },
       "disclosure": "on-ask"
@@ -805,7 +864,8 @@
           "饿吗",
           "饭量",
           "食量",
-          "饭吃得怎么样"
+          "饭吃得怎么样",
+          "没怎么吃"
         ],
         "en": [
           "appetite",
@@ -819,7 +879,12 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "药"
+        ]
+      }
     },
     {
       "id": "hx-vomiting",
@@ -845,7 +910,8 @@
           "吐的是",
           "吐血",
           "呕血",
-          "吐了几次"
+          "吐了几次",
+          "吐没吐"
         ],
         "en": [
           "nausea",
@@ -862,7 +928,21 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "别人",
+          "其他人",
+          "室友",
+          "同学"
+        ],
+        "en": [
+          "anyoneelse",
+          "anyone",
+          "others",
+          "roommate"
+        ]
+      }
     },
     {
       "id": "hx-fever",
@@ -906,7 +986,12 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "en": [
+          "hayfever"
+        ]
+      }
     },
     {
       "id": "hx-bowels",
@@ -950,7 +1035,7 @@
           "blood in your stool",
           "rectal bleeding",
           "passing wind",
-          "flatus",
+          "passing flatus",
           "opened your bowels",
           "bloated",
           "bloating"
@@ -1016,14 +1101,21 @@
           "dysuria",
           "haematuria",
           "hematuria",
-          "luts"
+          "luts",
+          "wee",
+          "weeing",
+          "sting when you wee"
         ]
       },
       "disclosure": "on-ask",
       "required": true,
       "excludeKeywords": {
         "en": [
-          "burningpain"
+          "burningpain",
+          "drink"
+        ],
+        "zh-CN": [
+          "喝水"
         ]
       }
     },
@@ -1050,7 +1142,8 @@
           "外生殖器",
           "生殖器疼",
           "生殖器痛",
-          "下体"
+          "下体",
+          "阴茎"
         ],
         "en": [
           "testicle",
@@ -1060,11 +1153,32 @@
           "balls",
           "testicular",
           "genital pain",
-          "genitals"
+          "genitals",
+          "penis pain",
+          "penile pain",
+          "downbelow",
+          "privates"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "分泌物",
+          "体检",
+          "化验"
+        ],
+        "en": [
+          "tests",
+          "tested",
+          "testing",
+          "bloodtest",
+          "urinetest",
+          "testresult",
+          "penicillin",
+          "discharge"
+        ]
+      }
     },
     {
       "id": "hx-previous",
@@ -1087,7 +1201,10 @@
           "以前也疼过",
           "第一次这样",
           "以前发作过",
-          "老毛病"
+          "老毛病",
+          "以前犯过",
+          "犯过这种",
+          "得过这种"
         ],
         "en": [
           "likethisbefore",
@@ -1137,10 +1254,21 @@
           "fall",
           "fell",
           "sport",
-          "youhurtyourself"
+          "youhurtyourself",
+          "hit your head",
+          "head injury",
+          "been hit"
         ]
       },
-      "disclosure": "on-ask"
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "容易青",
+          "青一块",
+          "淤青",
+          "出血"
+        ]
+      }
     },
     {
       "id": "hx-meds",
@@ -1177,9 +1305,10 @@
           "taken anything",
           "ibuprofen",
           "paracetamol",
-          "prescription",
+          "prescription medicines",
           "regular medication",
-          "take regularly"
+          "take regularly",
+          "prescribed medicines"
         ]
       },
       "disclosure": "on-ask",
@@ -1214,11 +1343,27 @@
           "allerg",
           "allergy",
           "allergic",
-          "penicillin"
+          "penicillin",
+          "nkda",
+          "nka",
+          "alergies",
+          "alergic",
+          "alergy",
+          "drug allergies",
+          "hay fever"
         ]
       },
       "disclosure": "on-ask",
-      "required": true
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "阴茎"
+        ],
+        "en": [
+          "penis",
+          "penile"
+        ]
+      }
     },
     {
       "id": "hx-pmh",
@@ -1228,8 +1373,8 @@
         "en": "Any medical problems in the past?"
       },
       "answer": {
-        "zh-CN": "身体一直挺好的，没有什么慢性病，没有哮喘、糖尿病，也没得过肾结石，没住过院。",
-        "en": "I've always been healthy. No long-term conditions — no asthma, no diabetes, never had kidney stones, never been in hospital."
+        "zh-CN": "身体一直挺好的，没有什么慢性病，没有哮喘、糖尿病、心脏病，也没得过肾结石，没住过院。肝炎、结核这些传染病也没得过——至少我不知道有，也从来没输过血。",
+        "en": "I've always been healthy. No long-term conditions — no asthma, no diabetes, no heart problems, never had kidney stones, never been in hospital. No hepatitis or TB or anything like that, as far as I know, and I've never had a blood transfusion."
       },
       "keywords": {
         "zh-CN": [
@@ -1245,7 +1390,16 @@
           "以前生过",
           "生过什么病",
           "以前有什么病",
-          "基础病"
+          "基础病",
+          "肝炎",
+          "乙肝",
+          "结核",
+          "传染病",
+          "输血",
+          "输过血",
+          "心脏病",
+          "大病",
+          "以前得过"
         ],
         "en": [
           "past medical",
@@ -1260,18 +1414,42 @@
           "pmh",
           "pmhx",
           "past history",
-          "medical conditions"
+          "medical conditions",
+          "hepatitis",
+          "hep",
+          "tuberculosis",
+          "tb",
+          "infectious disease",
+          "transfusion",
+          "heart problems",
+          "heart disease",
+          "fit and well",
+          "normally fit",
+          "generally healthy",
+          "fit and healthy"
         ]
       },
       "disclosure": "on-ask",
       "excludeKeywords": {
         "en": [
           "family",
-          "relatives"
+          "relatives",
+          "parent",
+          "father",
+          "mother"
         ],
         "zh-CN": [
           "家族",
-          "家里人"
+          "家里人",
+          "家里有人",
+          "家人",
+          "父母",
+          "爸妈",
+          "亲戚",
+          "这种",
+          "这样的",
+          "类似",
+          "猜"
         ]
       }
     },
@@ -1342,7 +1520,8 @@
           "mother",
           "brother",
           "sister",
-          "relatives"
+          "relatives",
+          "cooperat"
         ]
       }
     },
@@ -1393,7 +1572,8 @@
           "eat or drink",
           "dinner",
           "lunch",
-          "breakfast"
+          "breakfast",
+          "eaten"
         ]
       },
       "disclosure": "on-ask",
@@ -1408,7 +1588,8 @@
         "en": [
           "medic",
           "tablet",
-          "pill"
+          "pill",
+          "dodgy"
         ]
       }
     },
@@ -1447,7 +1628,9 @@
           "sexually transmitted",
           "penile discharge",
           "genital discharge",
-          "anydischarge"
+          "anydischarge",
+          "sti",
+          "stis"
         ]
       },
       "disclosure": "specific",
@@ -1461,7 +1644,11 @@
         ],
         "en": [
           "pain",
-          "swell"
+          "swell",
+          "whichpart",
+          "whatpart",
+          "partof",
+          "partsof"
         ]
       }
     },
@@ -1519,8 +1706,8 @@
         "en": "What do you do, and who do you live with?"
       },
       "answer": {
-        "zh-CN": "我是大二学生，学计算机的，住学校宿舍，四人间。爸妈在外地。",
-        "en": "I'm a second-year computer science student. I live in the university dorm — four of us to a room. My parents live in another city."
+        "zh-CN": "我是大二学生，学计算机的，住学校宿舍，四人间。爸妈在外地。还没结婚，也没有孩子。",
+        "en": "I'm a second-year computer science student. I live in the university dorm — four of us to a room. My parents live in another city. I'm not married and I don't have kids."
       },
       "keywords": {
         "zh-CN": [
@@ -1539,7 +1726,18 @@
           "上大学",
           "住哪",
           "住宿舍",
-          "住学校"
+          "住学校",
+          "结婚",
+          "婚姻",
+          "未婚",
+          "已婚",
+          "成家",
+          "孩子",
+          "小孩",
+          "婚育",
+          "读书",
+          "工作",
+          "读书还是工作"
         ],
         "en": [
           "work",
@@ -1552,20 +1750,38 @@
           "dorm",
           "uni",
           "university",
-          "college"
+          "college",
+          "married",
+          "marital",
+          "kids",
+          "children",
+          "athomewithyou",
+          "athomewith"
         ]
       },
       "disclosure": "on-ask",
       "excludeKeywords": {
         "en": [
           "unwell",
-          "sick"
+          "sick",
+          "beenill",
+          "anyoneill",
+          "anyoneelse",
+          "similarsymptoms",
+          "samesymptoms",
+          "sameproblem",
+          "waterwork",
+          "bloodwork",
+          "withill",
+          "withbeenill"
         ],
         "zh-CN": [
           "拉肚子",
           "生病",
           "不舒服",
-          "也有"
+          "也有",
+          "类似",
+          "同样的症状"
         ]
       }
     },
@@ -1614,7 +1830,9 @@
           "roommate",
           "anyone unwell",
           "anyone at home",
-          "anyone ill"
+          "anyone ill",
+          "dodgy",
+          "dodgy food"
         ]
       },
       "disclosure": "on-ask"
@@ -1708,7 +1926,11 @@
           "体重下降",
           "体重减轻",
           "体重变化",
-          "掉秤"
+          "掉秤",
+          "体重有变化",
+          "晚上出汗",
+          "夜里出汗",
+          "夜间出汗"
         ],
         "en": [
           "night sweats",
@@ -1754,7 +1976,10 @@
           "关节痛",
           "关节疼",
           "烧心",
-          "反酸"
+          "反酸",
+          "晕过去",
+          "昏倒",
+          "晕厥"
         ],
         "en": [
           "anythingelse",
@@ -1774,7 +1999,24 @@
         ]
       },
       "disclosure": "on-ask",
-      "required": false
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "心脏病",
+          "撞到头",
+          "磕到头",
+          "碰到头"
+        ],
+        "en": [
+          "heartproblem",
+          "heartdisease",
+          "heartcondition",
+          "heartattack",
+          "hearttrouble",
+          "hityour",
+          "headinjur"
+        ]
+      }
     },
     {
       "id": "hx-bleeding",
@@ -1795,7 +2037,11 @@
           "出血倾向",
           "淤青",
           "凝血",
-          "拔牙"
+          "拔牙",
+          "青一块紫一块",
+          "容易青",
+          "瘀斑",
+          "淤血"
         ],
         "en": [
           "bleeding problems",
@@ -1804,7 +2050,8 @@
           "bruising",
           "clotting",
           "haemophilia",
-          "bleed a lot"
+          "bleed a lot",
+          "bleeding disorder"
         ]
       },
       "disclosure": "on-ask"
@@ -1924,7 +2171,9 @@
           "得了什么病",
           "你觉得是",
           "觉得是啥",
-          "你觉得会是"
+          "你觉得会是",
+          "自己猜是",
+          "猜一猜"
         ],
         "en": [
           "what do you think is",
@@ -1940,7 +2189,8 @@
           "以前",
           "得过",
           "过去",
-          "既往"
+          "既往",
+          "说说"
         ]
       }
     },
@@ -1961,7 +2211,8 @@
           "顾虑",
           "害怕",
           "紧张",
-          "忧虑"
+          "忧虑",
+          "最怕"
         ],
         "en": [
           "worried",
@@ -1969,7 +2220,9 @@
           "concern",
           "afraid",
           "scared",
-          "anxious"
+          "anxious",
+          "anyquestions",
+          "onyourmind"
         ]
       },
       "disclosure": "on-ask"
@@ -2014,7 +2267,12 @@
           "call your parents",
           "call your mum",
           "ring your parents",
-          "let your parents know"
+          "let your parents know",
+          "youdlike",
+          "hopingfor",
+          "want from tonight",
+          "call anyone",
+          "contact anyone"
         ]
       },
       "disclosure": "on-ask"
@@ -2092,13 +2350,31 @@
           "checkup",
           "blood tests before",
           "medical exam",
-          "check up"
+          "check up",
+          "anytestsdone"
         ]
       },
       "disclosure": "unknown",
       "excludeKeywords": {
         "en": [
-          "checkyour"
+          "checkyour",
+          "testic",
+          "testis",
+          "testes",
+          "scrot",
+          "weneed",
+          "needto",
+          "goingto",
+          "wewill",
+          "testsshow",
+          "testresult"
+        ],
+        "zh-CN": [
+          "睾丸",
+          "阴囊",
+          "需要",
+          "我们要",
+          "要给你"
         ]
       }
     }
@@ -2132,7 +2408,29 @@
         "zh-CN": "神志清楚，急性痛苦面容，面色潮红；平卧不愿活动，右髋轻度屈曲，翻身或咳嗽时表情痛苦。分诊时可见其弯腰护着右下腹走进来。",
         "en": "Alert, in obvious pain and flushed. Lies still, avoids moving, with the right hip slightly flexed; winces when turning or coughing. At triage he walked in bent forward, guarding the right lower abdomen."
       },
-      "abnormal": true
+      "abnormal": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "腹",
+          "肚子",
+          "嗓子",
+          "喉咙",
+          "咽",
+          "皮肤",
+          "舌"
+        ],
+        "en": [
+          "abdo",
+          "tummy",
+          "belly",
+          "stomach",
+          "throat",
+          "tongue",
+          "mouth",
+          "skin",
+          "chest"
+        ]
+      }
     },
     {
       "id": "ex-hydration",
@@ -2284,7 +2582,10 @@
           "摸摸肚子",
           "摸一下肚子",
           "按按肚子",
-          "按一下肚子"
+          "按一下肚子",
+          "墨菲征",
+          "墨菲",
+          "murphy"
         ],
         "en": [
           "palpate",
@@ -2293,7 +2594,9 @@
           "abdominal tenderness",
           "mcburney",
           "press on the abdomen",
-          "abdominal exam"
+          "abdominal exam",
+          "murphy",
+          "murphy's sign"
         ]
       },
       "finding": {
@@ -2338,8 +2641,8 @@
       "id": "ex-rebound",
       "system": "abdomen",
       "maneuver": {
-        "zh-CN": "检查反跳痛/叩击痛",
-        "en": "Test for rebound and percussion tenderness"
+        "zh-CN": "检查反跳痛并行腹部叩诊",
+        "en": "Test for rebound tenderness and percuss the abdomen"
       },
       "keywords": {
         "zh-CN": [
@@ -2347,31 +2650,46 @@
           "反跳",
           "叩痛",
           "叩击痛",
-          "腹膜刺激征"
+          "腹膜刺激征",
+          "叩诊",
+          "腹部叩诊",
+          "移动性浊音",
+          "浊音",
+          "肝浊音界",
+          "鼓音"
         ],
         "en": [
           "rebound",
           "percussion tenderness",
           "peritonism",
           "peritoneal signs",
-          "blumberg"
+          "blumberg",
+          "percuss",
+          "percussion",
+          "percuss the abdomen",
+          "shifting dullness",
+          "dullness",
+          "tympanic"
         ]
       },
       "finding": {
-        "zh-CN": "右下腹反跳痛阳性，轻叩右下腹即诱发疼痛（叩击痛阳性）；其他区域无反跳痛。",
-        "en": "Rebound tenderness in the right iliac fossa; gentle percussion there is painful (percussion tenderness). No rebound elsewhere."
+        "zh-CN": "右下腹反跳痛阳性，轻叩右下腹即诱发疼痛（叩击痛阳性）；其他区域无反跳痛。其余腹部叩诊呈鼓音，肝浊音界存在，移动性浊音阴性。",
+        "en": "Rebound tenderness in the right iliac fossa; gentle percussion there is painful (percussion tenderness). No rebound elsewhere. Elsewhere the percussion note is tympanic, liver dullness is preserved and there is no shifting dullness."
       },
       "abnormal": true,
       "required": true,
       "excludeKeywords": {
         "zh-CN": [
           "肾区",
-          "肋脊角"
+          "肋脊角",
+          "肺"
         ],
         "en": [
           "renal",
           "loin",
-          "costovertebral"
+          "costovertebral",
+          "chest",
+          "lung"
         ]
       }
     },
@@ -2648,7 +2966,13 @@
         "zh-CN": "皮肤巩膜无黄染；右侧腰腹部无疱疹或皮疹。",
         "en": "No jaundice; no rash or vesicles over the right flank or abdomen."
       },
-      "abnormal": false
+      "abnormal": false,
+      "excludeKeywords": {
+        "en": [
+          "asking",
+          "foreskin"
+        ]
+      }
     },
     {
       "id": "ex-lymph",
@@ -2662,7 +2986,12 @@
           "淋巴结",
           "咽部",
           "扁桃体",
-          "颈部"
+          "颈部",
+          "嗓子",
+          "看嗓子",
+          "看看嗓子",
+          "喉咙",
+          "咽喉"
         ],
         "en": [
           "lymph nodes",
@@ -3947,7 +4276,10 @@
             "en": "In a young adult whose ultrasound is already diagnostic, CT rarely changes surgical management but adds radiation, contrast and delay; it earns its place when ultrasound is inconclusive, complications are suspected, or non-operative treatment is being considered."
           }
         }
-      }
+      },
+      "alternativeTo": [
+        "inv-us"
+      ]
     },
     {
       "id": "inv-cxr",
@@ -4089,7 +4421,8 @@
         "ifMatches": "(^|[^a-z])ct|ct([^a-z]|$)",
         "add": [
           "inv-ct"
-        ]
+        ],
+        "unlessMatches": "pct|procalcitonin|降钙素原"
       },
       {
         "ifMatches": "炎症指标|inflammatorymarkers",
@@ -4157,6 +4490,27 @@
       ],
       "bms": [
         "inv-poc-glucose"
+      ],
+      "urine": [
+        "inv-ua"
+      ],
+      "尿液": [
+        "inv-ua"
+      ],
+      "bloods": [
+        "inv-fbc",
+        "inv-crp",
+        "inv-ue"
+      ],
+      "抽血": [
+        "inv-fbc",
+        "inv-crp",
+        "inv-ue"
+      ],
+      "抽个血": [
+        "inv-fbc",
+        "inv-crp",
+        "inv-ue"
       ]
     },
     "warnings": [
@@ -4179,6 +4533,69 @@
     ]
   },
   "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立外周静脉通路并抽血送检",
+        "en": "Peripheral IV cannula and bloods"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "建立静脉通路",
+          "开放静脉",
+          "开通静脉",
+          "留置针",
+          "打留置针",
+          "静脉穿刺",
+          "静脉置管"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "cannulation",
+          "iv cannula",
+          "iv line",
+          "venous access",
+          "venflon",
+          "peripheral line",
+          "bloods"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "鼻导管",
+          "吸氧"
+        ],
+        "en": [
+          "nasal",
+          "oxygen",
+          "o2"
+        ]
+      },
+      "dose": {
+        "zh-CN": "前臂留置 18G 静脉套管针，同时抽血送检",
+        "en": "18G cannula in the forearm; bloods drawn at the same time"
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "iv-access"
+      ],
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "前臂 18G 留置针已置入，血标本已留取。",
+        "en": "18G cannula sited in the forearm; blood samples taken."
+      }
+    },
     {
       "id": "npo",
       "name": {
@@ -4257,8 +4674,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "留置18G静脉套管针并同时抽血；乳酸钠林格注射液 500 mL 30分钟内静滴，再 500 mL 2小时内滴完；之后按 25–30 mL/kg/天（约 80 mL/h）维持",
-        "en": "18G cannula (bloods drawn at the same time); Hartmann's 500 mL over 30 min, then 500 mL over 2 h; thereafter maintenance 25–30 mL/kg/day (≈80 mL/h)"
+        "zh-CN": "经外周静脉通路：乳酸钠林格注射液 500 mL 30分钟内静滴，再 500 mL 2小时内滴完；之后按 25–30 mL/kg/天（约 80 mL/h）维持",
+        "en": "Via the peripheral cannula: Hartmann's 500 mL over 30 min, then 500 mL over 2 h; thereafter maintenance 25–30 mL/kg/day (≈80 mL/h)"
       },
       "requires": [
         "iv-access"
@@ -4766,7 +5183,12 @@
           "nonop",
           "non-op",
           "conservative",
-          "alone"
+          "alone",
+          "nosurgery",
+          "nooperation",
+          "withoutsurgery",
+          "onlyantibiotics",
+          "antibioticsonly"
         ]
       }
     },
@@ -4869,7 +5291,12 @@
           "nonop",
           "non-op",
           "conservative",
-          "alone"
+          "alone",
+          "nosurgery",
+          "nooperation",
+          "withoutsurgery",
+          "onlyantibiotics",
+          "antibioticsonly"
         ]
       }
     },
@@ -4986,6 +5413,23 @@
       "response": {
         "zh-CN": "普外科住院总刘医生 15 分钟内到场，复核病史、查体及已有结果，同意外科接手，并与你一起和患者讨论治疗方案。",
         "en": "Dr Liu, the general surgery registrar, arrives within 15 minutes, reviews the history, examination and the results you have, accepts the patient, and joins you to discuss treatment options with him."
+      },
+      "excludeKeywords": {
+        "en": [
+          "withhold",
+          "holdoff",
+          "untilthesurgeon",
+          "waitforthesurgeon",
+          "beforethesurgeon",
+          "nosurgery",
+          "nooperation",
+          "withoutsurgery"
+        ],
+        "zh-CN": [
+          "等外科",
+          "外科看了再",
+          "外科看过再"
+        ]
       }
     },
     {
@@ -5132,8 +5576,18 @@
         "en": "Listing for theatre before surgical review, imaging confirmation and informed consent risks a negative appendectomy and bypasses the patient's consent."
       },
       "response": {
-        "zh-CN": "外科团队接手：患者签署手术同意书，麻醉科完成术前评估，送往手术室。病例在此结束。",
-        "en": "The surgical team takes over: consent is signed, the anaesthetist completes the pre-operative assessment, and he is transferred to theatre. The case ends here."
+        "zh-CN": "已排入今晚的急诊手术台：外科团队接手，麻醉科前来完成术前评估，随后送往手术室。",
+        "en": "He is placed on tonight's emergency theatre list: the surgical team takes over and the anaesthetist comes to complete the pre-operative assessment before transfer to theatre."
+      },
+      "excludeKeywords": {
+        "en": [
+          "nosurgery",
+          "nooperation",
+          "insteadofsurgery",
+          "antibioticsfirst",
+          "withoutsurgery",
+          "cooperat"
+        ]
       }
     },
     {
@@ -5161,7 +5615,11 @@
           "antibiotics instead of surgery",
           "ertapenem",
           "antibiotics alone",
-          "antibiotic therapy alone"
+          "antibiotic therapy alone",
+          "nosurgery",
+          "nooperation",
+          "withoutsurgery",
+          "onlyantibiotics"
         ]
       },
       "dose": {
@@ -5804,46 +6262,6 @@
       ]
     },
     {
-      "id": "obj-exam",
-      "title": {
-        "zh-CN": "腹部查体并排除类似疾病",
-        "en": "Examine the abdomen and exclude mimics"
-      },
-      "short": {
-        "zh-CN": "查体",
-        "en": "Examination"
-      },
-      "hint": {
-        "zh-CN": "从远离疼痛处开始触诊；评估腹膜刺激征（肌紧张、反跳痛）；年轻男性下腹痛必须检查睾丸；肾区叩痛有助于排除泌尿系疾病。",
-        "en": "Palpate away from the pain first; assess for peritonism (guarding, rebound); any young man with lower abdominal pain needs a testicular examination; renal-angle tenderness helps exclude urinary causes."
-      },
-      "guidance": {
-        "zh-CN": "为患者查体：腹部、睾丸及相关系统。记得解释并请陪检者在场。",
-        "en": "Examine the abdomen, testes and related systems. Explain each step and use a chaperone for intimate examination."
-      },
-      "completeWhen": {
-        "all": [
-          {
-            "examined": "ex-abd-palp"
-          },
-          {
-            "examined": "ex-guarding"
-          },
-          {
-            "examined": "ex-rebound"
-          },
-          {
-            "examined": "ex-testes"
-          }
-        ]
-      },
-      "waypoints": [
-        {
-          "target": "patient"
-        }
-      ]
-    },
-    {
       "id": "obj-stabilise",
       "title": {
         "zh-CN": "缓解症状，开始支持治疗",
@@ -5858,8 +6276,8 @@
         "en": "Pain ≥ 4/10 deserves prompt titrated analgesia — opioids do not increase diagnostic errors. Keep him nil by mouth, start IV fluids and an antiemetic."
       },
       "guidance": {
-        "zh-CN": "在等待检查结果时先处理疼痛、恶心和脱水。",
-        "en": "Treat pain, nausea and dehydration while the work-up is under way."
+        "zh-CN": "建立静脉通路，及时处理疼痛、恶心和脱水——先快速触诊一下腹部即可，完整查体和检查可随后进行。",
+        "en": "Get IV access and treat his pain, nausea and dehydration now — a quick abdominal palpation first; the full examination and work-up can follow."
       },
       "completeWhen": {
         "all": [
@@ -5896,10 +6314,63 @@
         },
         {
           "unless": {
+            "all": [
+              {
+                "examined": "ex-abd-palp"
+              },
+              {
+                "asked": "hx-vomiting"
+              }
+            ]
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
             "decided": "dec-supportive"
           },
           "target": "board"
         },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-exam",
+      "title": {
+        "zh-CN": "腹部查体并排除类似疾病",
+        "en": "Examine the abdomen and exclude mimics"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Examination"
+      },
+      "hint": {
+        "zh-CN": "从远离疼痛处开始触诊；评估腹膜刺激征（肌紧张、反跳痛）；年轻男性下腹痛必须检查睾丸；肾区叩痛有助于排除泌尿系疾病。",
+        "en": "Palpate away from the pain first; assess for peritonism (guarding, rebound); any young man with lower abdominal pain needs a testicular examination; renal-angle tenderness helps exclude urinary causes."
+      },
+      "guidance": {
+        "zh-CN": "为患者查体：腹部、睾丸及相关系统。记得解释并请陪检者在场。",
+        "en": "Examine the abdomen, testes and related systems. Explain each step and use a chaperone for intimate examination."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "ex-abd-palp"
+          },
+          {
+            "examined": "ex-guarding"
+          },
+          {
+            "examined": "ex-rebound"
+          },
+          {
+            "examined": "ex-testes"
+          }
+        ]
+      },
+      "waypoints": [
         {
           "target": "patient"
         }
@@ -6781,8 +7252,8 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "请外科会诊，并在外科评估、影像确认和知情同意之后安排腹腔镜阑尾切除术",
-        "en": "Referred to surgery and arranged laparoscopic appendectomy after surgical review, imaging and consent"
+        "zh-CN": "首次即选定腹腔镜阑尾切除术，请外科会诊，并在外科评估、影像确认和知情同意之后安排手术",
+        "en": "Chose laparoscopic appendectomy at the first attempt, referred to surgery and booked theatre only after surgical review, imaging and consent"
       },
       "met": {
         "all": [
@@ -6793,7 +7264,7 @@
             "intervened": "lap-appendectomy"
           },
           {
-            "decided": "dec-definitive"
+            "decidedFirstTry": "dec-definitive"
           },
           {
             "not": {
@@ -6867,8 +7338,8 @@
       "id": "r-eff-timely",
       "domain": "efficiency",
       "text": {
-        "zh-CN": "及时处置：在护士 3 小时升级提醒之前已给予抗生素或安排手术，并给予了术前抗生素",
-        "en": "Acted in time: antibiotics given or theatre booked before the nurse's 3-hour escalation, and pre-operative antibiotics given"
+        "zh-CN": "及时处置：在护士 3 小时升级提醒之前已开始抗生素治疗（抗生素方案是否恰当由抗菌药物条目评价）",
+        "en": "Acted in time: antibiotics started before the nurse's 3-hour escalation (the choice of regimen is scored by the antibiotic item)"
       },
       "weight": 2,
       "met": {
@@ -6880,6 +7351,12 @@
               },
               {
                 "intervened": "abx-ceftriaxone-metronidazole"
+              },
+              {
+                "intervened": "abx-meropenem"
+              },
+              {
+                "intervened": "abx-first-nom"
               }
             ]
           },
@@ -6975,7 +7452,8 @@
         "inv-ct",
         "inv-fbc",
         "inv-crp"
-      ]
+      ],
+      "revealsDiagnosis": true
     },
     {
       "role": "attending",
@@ -6995,8 +7473,8 @@
         "en": "Pharmacist Chen Jie"
       },
       "knowledge": {
-        "zh-CN": "患者体重 68 kg，无已知药物过敏；肾功能以学员已获得的电解质/肾功能结果为准（结果出来前不作推断）。剂量：吗啡静脉滴定每次 2–3 mg，总量约 0.1 mg/kg；对乙酰氨基酚 1 g 静脉每 6 小时，24 小时 ≤ 4 g；昂丹司琼 4 mg 静脉；头孢呋辛 1.5 g + 甲硝唑 500 mg 静脉（或头孢曲松 2 g + 甲硝唑 500 mg），确诊后给药（理想为切皮前 60 分钟内；头孢呋辛若至切皮超过 4 小时需在诱导时追加）；帕瑞昔布 40 mg 静脉仅在肾功能正常且容量纠正后使用。抗菌药物管理：社区获得性、非重症的腹腔感染不首选碳青霉烯类。不讨论诊断。",
-        "en": "Patient 68 kg, no known drug allergies; renal function as per the U&E result once the learner has it (no assumption before then). Doses: morphine IV titrated 2–3 mg at a time up to ~0.1 mg/kg; paracetamol 1 g IV 6-hourly, ≤ 4 g/24 h; ondansetron 4 mg IV; cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg) given at diagnosis (ideally ≤ 60 min before incision; re-dose cefuroxime at induction if > 4 h have elapsed); parecoxib 40 mg IV only with normal renal function and once volume-replete. Stewardship: carbapenems are not first-line for community-acquired, non-severe intra-abdominal infection. Does not discuss the diagnosis."
+        "zh-CN": "患者体重 68 kg；过敏史只以学员已向患者问到的为准——学员尚未询问时，提醒其在用抗生素前先确认过敏史；肾功能以学员已获得的电解质/肾功能结果为准（结果出来前不作推断）。剂量：吗啡静脉滴定每次 2–3 mg，总量约 0.1 mg/kg；对乙酰氨基酚 1 g 静脉每 6 小时，24 小时 ≤ 4 g；昂丹司琼 4 mg 静脉；头孢呋辛 1.5 g + 甲硝唑 500 mg 静脉（或头孢曲松 2 g + 甲硝唑 500 mg），确诊后给药（理想为切皮前 60 分钟内；头孢呋辛若至切皮超过 4 小时需在诱导时追加）；帕瑞昔布 40 mg 静脉仅在肾功能正常且容量纠正后使用。抗菌药物管理：社区获得性、非重症的腹腔感染不首选碳青霉烯类。不讨论诊断。",
+        "en": "Patient 68 kg; allergy status only as the learner has elicited it from the patient — if they have not asked, prompt them to check allergies before any antibiotic; renal function as per the U&E result once the learner has it (no assumption before then). Doses: morphine IV titrated 2–3 mg at a time up to ~0.1 mg/kg; paracetamol 1 g IV 6-hourly, ≤ 4 g/24 h; ondansetron 4 mg IV; cefuroxime 1.5 g + metronidazole 500 mg IV (or ceftriaxone 2 g + metronidazole 500 mg) given at diagnosis (ideally ≤ 60 min before incision; re-dose cefuroxime at induction if > 4 h have elapsed); parecoxib 40 mg IV only with normal renal function and once volume-replete. Stewardship: carbapenems are not first-line for community-acquired, non-severe intra-abdominal infection. Does not discuss the diagnosis."
       }
     }
   ],
@@ -7198,6 +7676,10 @@
     {
       "type": "examine",
       "findingId": "ex-rebound"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
     },
     {
       "type": "intervene",
@@ -7784,6 +8266,102 @@
       },
       {
         "text": "Do you have any kids?",
+        "locale": "en",
+        "expect": [
+          "hx-occupation"
+        ]
+      },
+      {
+        "text": "你现在最怕的是啥",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-ice-concerns"
+        ]
+      },
+      {
+        "text": "疼的时候往别的地方窜不",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-radiation"
+        ]
+      },
+      {
+        "text": "输过血没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "家里有人得过啥病没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-family"
+        ]
+      },
+      {
+        "text": "结婚了没，有小孩吗",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-occupation"
+        ]
+      },
+      {
+        "text": "恶新想吐不",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-vomiting"
+        ]
+      },
+      {
+        "text": "NKDA?",
+        "locale": "en",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "any alergies",
+        "locale": "en",
+        "expect": [
+          "hx-allergies"
+        ]
+      },
+      {
+        "text": "Had any blood tests done recently?",
+        "locale": "en",
+        "expect": [
+          "hx-checkup"
+        ]
+      },
+      {
+        "text": "Ever had a blood transfusion or hep?",
+        "locale": "en",
+        "expect": [
+          "hx-pmh"
+        ]
+      },
+      {
+        "text": "When did u last drink water",
+        "locale": "en",
+        "expect": [
+          "hx-last-intake"
+        ]
+      },
+      {
+        "text": "Any pain in your penis?",
+        "locale": "en",
+        "expect": [
+          "hx-testicular"
+        ]
+      },
+      {
+        "text": "你喜欢看什么电影？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "Which football team do you support?",
         "locale": "en",
         "expect": []
       }

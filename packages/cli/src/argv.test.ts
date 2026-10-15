@@ -6,9 +6,9 @@ import { colorEnabled, createPalette, stripAnsi } from "./ansi.js";
 import { editDistance, flagBool, flagList, flagNumber, flagPositiveInt, flagString, lookupFlag, parseArgs, suggest, UsageError, type FlagSpec } from "./argv.js";
 import { EXEC, ROOT } from "./commands.js";
 import { displayPath } from "./context.js";
-import { EXEC_FLAGS, GLOBAL_FLAGS, SESSION_FLAGS } from "./flags.js";
+import { EXEC_FLAGS, GLOBAL_FLAGS, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { renderHelp } from "./help.js";
-import { m } from "./i18n.js";
+import { m, normalizeLang } from "./i18n.js";
 import { resolveCommand } from "./main.js";
 import { completeLine, parseApprovalAnswer } from "./repl.js";
 import { summarizeArgs, truncate } from "./render.js";
@@ -145,6 +145,14 @@ describe("resolveCommand", () => {
   });
 });
 
+describe("normalizeLang", () => {
+  it("maps common spellings to zh-CN / en and rejects others", () => {
+    for (const v of ["zh", "zh-CN", "zh_cn", "zh-Hans", "cn", "中文"]) expect(normalizeLang(v)).toBe("zh-CN");
+    for (const v of ["en", "EN", "en-US", "en_GB", "english"]) expect(normalizeLang(v)).toBe("en");
+    expect(normalizeLang("fr")).toBeNull();
+  });
+});
+
 describe("help", () => {
   it("renders bilingual help from the command tree", () => {
     const p = createPalette(false);
@@ -158,7 +166,7 @@ describe("help", () => {
   });
 
   it("has no duplicate flag names within a command", () => {
-    for (const flags of [[...GLOBAL_FLAGS, ...EXEC_FLAGS, ...SESSION_FLAGS]]) {
+    for (const flags of [[...GLOBAL_FLAGS, ...EXEC_FLAGS, ...SESSION_FLAGS, ...RESUME_FLAGS]]) {
       const all = flags.flatMap((f) => [f.name, ...(f.aliases ?? [])]);
       expect(new Set(all).size).toBe(all.length);
       const shorts = flags.flatMap((f) => (f.short ? [f.short] : []));

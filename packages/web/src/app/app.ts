@@ -99,7 +99,12 @@ export class ClinicalCraftApp implements App {
     this.panels = new PanelHost(dom.panel);
     this.toaster = new Toaster(dom.toast);
     this.approval = new ApprovalDialog(dom.approval, this);
-    this.world = new WorldHost(dom.canvas, () => this.prefs.world(), this.callbacks(), (slotId) => this.vitalsFor(slotId));
+    this.world = new WorldHost(
+      dom.canvas,
+      () => this.prefs.world(),
+      this.callbacks(),
+      (slotId) => this.vitalsFor(slotId),
+    );
     this.hud = new Hud(dom.hud, this);
     this.intro = new Intro(dom.intro, this);
 
@@ -222,7 +227,10 @@ export class ClinicalCraftApp implements App {
     switch (name) {
       case "pause":
       case "settings":
-        return pausePanel(this, { ...((arg as PauseArgs | undefined) ?? {}), menu: name === "pause" && !!this.game });
+        return pausePanel(this, {
+          ...((arg as PauseArgs | undefined) ?? {}),
+          menu: name === "pause" && !!this.game,
+        });
       case "help":
         return helpPanel(this);
       case "confirm-reset":
@@ -235,7 +243,12 @@ export class ClinicalCraftApp implements App {
     switch (name) {
       case "conversation": {
         const a = (arg as ConversationArgs | undefined) ?? this.lastTalk;
-        this.lastTalk = { agent: a.agent, ...(a.staffId ? { staffId: a.staffId } : {}), ...(a.staffRole ? { staffRole: a.staffRole } : {}), ...(a.name ? { name: a.name } : {}) };
+        this.lastTalk = {
+          agent: a.agent,
+          ...(a.staffId ? { staffId: a.staffId } : {}),
+          ...(a.staffRole ? { staffRole: a.staffRole } : {}),
+          ...(a.name ? { name: a.name } : {}),
+        };
         return conversationPanel(this, a);
       }
       case "orders":
@@ -258,7 +271,12 @@ export class ClinicalCraftApp implements App {
         return debriefPanel(this);
       case "monitor": {
         const slot = game.facility.patientSlots.find((s) => s.id === game.slotId);
-        return monitorPanel(this, (arg as MonitorArgs | undefined) ?? { placementId: slot?.monitor ?? null });
+        return monitorPanel(
+          this,
+          (arg as MonitorArgs | undefined) ?? {
+            placementId: slot?.monitor ?? null,
+          },
+        );
       }
       case "map":
         return mapPanel(this);
@@ -281,7 +299,12 @@ export class ClinicalCraftApp implements App {
         this.toast(route.title, route.body ?? "");
         return;
       case "conversation":
-        this.open("conversation", { agent: route.agent, ...(route.staffId ? { staffId: route.staffId } : {}), ...(route.staffRole ? { staffRole: route.staffRole } : {}), ...(route.name ? { name: route.name } : {}) });
+        this.open("conversation", {
+          agent: route.agent,
+          ...(route.staffId ? { staffId: route.staffId } : {}),
+          ...(route.staffRole ? { staffRole: route.staffRole } : {}),
+          ...(route.name ? { name: route.name } : {}),
+        });
         return;
       case "orders":
         this.open("orders", { placementId: route.placementId });
@@ -363,7 +386,13 @@ export class ClinicalCraftApp implements App {
     const game = this.game;
     // World strings (signs, labels, NPC tags) are baked in at creation: rebuild it in place.
     const spec = game
-      ? { facility: game.facility, catalogs: game.catalogs, patient: patientFor(game.caseDef, game.facility, locale), saved: null, locale }
+      ? {
+          facility: game.facility,
+          catalogs: game.catalogs,
+          patient: patientFor(game.caseDef, game.facility, locale),
+          saved: null,
+          locale,
+        }
       : this.specFor(this.selection);
     if (spec) {
       const api = this.world.ensure(spec);
@@ -427,7 +456,10 @@ export class ClinicalCraftApp implements App {
       return;
     }
     const text = await file.text();
-    const parsed = SaveStore.parseImport(text, { cases: new Set(this.content.cards.map((c) => c.id)), facilities: new Set(this.content.facilities.keys()) });
+    const parsed = SaveStore.parseImport(text, {
+      cases: new Set(this.content.cards.map((c) => c.id)),
+      facilities: new Set(this.content.facilities.keys()),
+    });
     if (!parsed.ok) {
       this.toast(tr("save.importFail"), tr(parsed.error, { id: parsed.id ?? "" }), "warning");
       return;
@@ -493,9 +525,18 @@ export class ClinicalCraftApp implements App {
     if (!game) return;
     const a = this.aim;
     if (a?.kind === "staff" || a?.kind === "patient") {
-      const r = routeInteraction(a, { caseDef: game.caseDef, slotId: game.slotId });
+      const r = routeInteraction(a, {
+        caseDef: game.caseDef,
+        slotId: game.slotId,
+      });
       if (r.panel === "conversation") {
-        this.open("conversation", { agent: r.agent, ...(r.staffId ? { staffId: r.staffId } : {}), ...(r.staffRole ? { staffRole: r.staffRole } : {}), ...(r.name ? { name: r.name } : {}), focusInput: true });
+        this.open("conversation", {
+          agent: r.agent,
+          ...(r.staffId ? { staffId: r.staffId } : {}),
+          ...(r.staffRole ? { staffRole: r.staffRole } : {}),
+          ...(r.name ? { name: r.name } : {}),
+          focusInput: true,
+        });
         return;
       }
     }
@@ -523,7 +564,13 @@ export class ClinicalCraftApp implements App {
         delete this.saves.data.sessions[caseId];
         const ws = this.saves.data.worlds[facility.id];
         // A new attempt starts at the facility entrance; build-zone blocks are kept.
-        if (ws) this.saves.data.worlds[facility.id] = { ...ws, position: [facility.spawn.x, 0, facility.spawn.z], yaw: facility.spawn.yaw ?? 0, pitch: 0 };
+        if (ws)
+          this.saves.data.worlds[facility.id] = {
+            ...ws,
+            position: [facility.spawn.x, 0, facility.spawn.z],
+            yaw: facility.spawn.yaw ?? 0,
+            pitch: 0,
+          };
         this.saves.write();
       }
       const catalogs = this.content.catalogsFor(facility);
@@ -541,7 +588,13 @@ export class ClinicalCraftApp implements App {
       });
       const slot = slotFor(caseDef, facility);
       const saved: WorldSave | null = this.saves.data.worlds[facility.id] ?? null;
-      const spec: WorldSpec = { facility, catalogs, patient: patientFor(caseDef, facility, locale), saved, locale };
+      const spec: WorldSpec = {
+        facility,
+        catalogs,
+        patient: patientFor(caseDef, facility, locale),
+        saved,
+        locale,
+      };
       const reused = !!this.world.api && this.world.key === WorldHost.keyOf(spec);
       const api = this.world.ensure(spec);
       this.worldFailed = !api;
@@ -557,9 +610,21 @@ export class ClinicalCraftApp implements App {
         playing: () => this.isPlaying(),
         activeStaff: () => this.game?.activeStaff ?? null,
       });
-      const game: Game = { caseDef, facility, catalogs, slotId: slot?.id ?? null, session, link, stations: link.stations, entered: false, activeStaff: null };
+      const game: Game = {
+        caseDef,
+        facility,
+        catalogs,
+        slotId: slot?.id ?? null,
+        session,
+        link,
+        stations: link.stations,
+        entered: false,
+        activeStaff: null,
+      };
       this.game = game;
-      this.lastTalk = { agent: caseDef.patient.persona.companion?.answersHistory ? "companion" : "patient" };
+      this.lastTalk = {
+        agent: caseDef.patient.persona.companion?.answersHistory ? "companion" : "patient",
+      };
       this.storeOff.push(
         session.store.onEntry((e) => this.onEntry(e)),
         session.store.onChange(() => {
@@ -595,11 +660,24 @@ export class ClinicalCraftApp implements App {
       }
     }
     const p = this.playerPos();
-    this.hud.onMove({ x: p.x, z: p.z, yaw: api?.position.yaw ?? 0, region: regionAt(game.facility, p.x, p.z, getLocale()), roomId: null, moving: false });
+    this.hud.onMove({
+      x: p.x,
+      z: p.z,
+      yaw: api?.position.yaw ?? 0,
+      region: regionAt(game.facility, p.x, p.z, getLocale()),
+      roomId: null,
+      moving: false,
+    });
     game.link.syncWaypoint();
     this.hud.update();
     if (resumed) this.toast(tr("toast.resume.title"), tr("toast.resume.body"));
-    else this.toast(tr("toast.welcome.title", { place: t(game.facility.name, getLocale()) }), tr("toast.welcome.body"));
+    else
+      this.toast(
+        tr("toast.welcome.title", {
+          place: t(game.facility.name, getLocale()),
+        }),
+        tr("toast.welcome.body"),
+      );
     if (!api) this.open("journal");
     this.save();
   }
@@ -702,7 +780,12 @@ export class ClinicalCraftApp implements App {
         const game = this.game;
         if (!game) return;
         this.sound("tap");
-        this.route(routeInteraction(target, { caseDef: game.caseDef, slotId: game.slotId }));
+        this.route(
+          routeInteraction(target, {
+            caseDef: game.caseDef,
+            slotId: game.slotId,
+          }),
+        );
       },
       onTarget: (target: InteractionTarget | null, block: BlockInfo | null) => {
         this.aim = target;
@@ -757,23 +840,28 @@ export class ClinicalCraftApp implements App {
       const el = document.activeElement as HTMLElement | null;
       return !!el && (["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName) || el.isContentEditable);
     };
-    // Registered before any world exists, so it runs before the world's own key handler.
-    addEventListener("keydown", (e) => {
-      if (this.approval.isOpen) return;
-      if (e.key === "Escape") {
-        if (this.panels.isOpen) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          this.panels.close();
+    // Capture phase: runs before panel inputs (which stop propagation so the world ignores
+    // typing) and before the world's own key handler.
+    addEventListener(
+      "keydown",
+      (e) => {
+        if (this.approval.isOpen) return;
+        if (e.key === "Escape") {
+          if (this.panels.isOpen) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            this.panels.close();
+          }
+          return;
         }
-        return;
-      }
-      if (!this.isPlaying() || typing() || e.repeat) return;
-      if (e.code === "KeyV") {
-        e.preventDefault();
-        this.open("monitor");
-      }
-    });
+        if (!this.isPlaying() || typing() || e.repeat) return;
+        if (e.code === "KeyV") {
+          e.preventDefault();
+          this.open("monitor");
+        }
+      },
+      true,
+    );
   }
 
   /* ---------------------------------------------------------------- */

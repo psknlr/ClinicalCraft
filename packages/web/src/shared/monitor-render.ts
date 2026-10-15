@@ -85,12 +85,41 @@ interface Lane {
   /** value range mapped to the lane height */
   min: number;
   max: number;
+  /** Peak-preserving sub-sampling step (s) per column; 0 = one point per column (smooth waves). */
+  resolution?: number;
+}
+
+/**
+ * Sweep columns as (time-ordered) value extremes: each column covers
+ * `window / n` seconds and is sampled every ≤ `resolution` s, keeping its
+ * min and max. Point-sampling one value per column (≈ 30 ms on a 6 s sweep)
+ * misses narrow QRS peaks, so R waves of a regular rhythm come out with
+ * random heights — the min/max envelope keeps every peak. Pure (tested).
+ */
+export function sweepColumn(sample: (t: number) => number, tEnd: number, span: number, resolution: number): [number, number] {
+  const m = Math.max(1, Math.min(12, Math.ceil(span / Math.max(1e-4, resolution))));
+  let lo = Infinity, hi = -Infinity, loAt = 0, hiAt = 0;
+  for (let k = 1; k <= m; k++) {
+    const v = sample(tEnd - span + (span * k) / m);
+    if (v < lo) {
+      lo = v;
+      loAt = k;
+    }
+    if (v > hi) {
+      hi = v;
+      hiAt = k;
+    }
+  }
+  // earlier extreme first so the stroke runs forward in time
+  return hiAt <= loAt ? [hi, lo] : [lo, hi];
 }
 
 function drawSweep(ctx: CanvasRenderingContext2D, x0: number, w: number, lane: Lane, tNow: number, lineW: number): void {
   const n = Math.max(16, Math.floor(w / Math.max(1, lineW * 0.75)));
   const xNow = ((tNow % lane.window) / lane.window) * w;
   const gap = Math.max(6, w * 0.035);
+  const colDt = lane.window / n;
+  const toY = (v: number) => lane.y + lane.h - Math.max(-0.1, Math.min(1.1, (v - lane.min) / (lane.max - lane.min))) * lane.h;
   ctx.strokeStyle = lane.color;
   ctx.lineWidth = lineW;
   ctx.lineJoin = "round";
@@ -106,11 +135,11 @@ function drawSweep(ctx: CanvasRenderingContext2D, x0: number, w: number, lane: L
       continue;
     }
     const age = (ahead / w) * lane.window;
-    const v = lane.sample(tNow - age);
-    const norm = (v - lane.min) / (lane.max - lane.min);
-    const py = lane.y + lane.h - Math.max(-0.1, Math.min(1.1, norm)) * lane.h;
-    if (!pen) ctx.moveTo(x0 + px, py);
-    else ctx.lineTo(x0 + px, py);
+    const [a, b] = lane.resolution ? sweepColumn(lane.sample, tNow - age, colDt, lane.resolution) : [lane.sample(tNow - age), NaN];
+    const ya = toY(a);
+    if (!pen) ctx.moveTo(x0 + px, ya);
+    else ctx.lineTo(x0 + px, ya);
+    if (!Number.isNaN(b)) ctx.lineTo(x0 + px, toY(b));
     pen = true;
     // break the line at the write head
     if (ahead < (w / n) * 1.01 && ahead >= 0 && i < n) pen = false;
@@ -203,6 +232,7 @@ export const monitorRenderer: MonitorRenderer = {
         window: 6,
         min: -0.55,
         max: 1.25,
+        resolution: 0.004,
         sample: s ? (tt) => ecgValue(tt, rhythm, morph, hr) : () => 0,
       },
       {

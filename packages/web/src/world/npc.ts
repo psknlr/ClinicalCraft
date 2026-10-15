@@ -3,49 +3,10 @@
  * clothes, build, stature, gown, accessory), posture (standing / sitting /
  * lying on a bed), head tracking, speaking (jaw + head bob) and distress.
  */
-import { Group, Mesh, MeshStandardMaterial, Object3D, type BufferGeometry, type Material } from "three";
-import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { Color, Group, Mesh, MeshStandardMaterial, Object3D, type Material } from "three";
 import type { MaterialLibrary } from "./materials.js";
+import { mergeGroup, tintRanges } from "./merge.js";
 import { UNIT_BOX } from "./voxels.js";
-
-/**
- * Merge the static boxes directly under `group` into one mesh per material
- * (≈ 30 draw calls per person → ≈ 10). Meshes in `keep` stay separate
- * (animated parts). Returns the merged mesh for each material.
- */
-export function mergeStatic(group: Object3D, keep: Set<Object3D>): Map<Material, Mesh> {
-  const buckets = new Map<Material, Mesh[]>();
-  for (const child of [...group.children]) {
-    const m = child as Mesh;
-    if (!m.isMesh || keep.has(m) || Array.isArray(m.material) || m.geometry !== UNIT_BOX) continue;
-    const mat = m.material as Material;
-    let list = buckets.get(mat);
-    if (!list) buckets.set(mat, (list = []));
-    list.push(m);
-  }
-  const out = new Map<Material, Mesh>();
-  for (const [mat, list] of buckets) {
-    if (list.length < 2) {
-      out.set(mat, list[0]);
-      continue;
-    }
-    const geoms: BufferGeometry[] = list.map((m) => {
-      m.updateMatrix();
-      return UNIT_BOX.clone().applyMatrix4(m.matrix);
-    });
-    const merged = mergeGeometries(geoms, false);
-    for (const g of geoms) g.dispose();
-    if (!merged) continue;
-    for (const m of list) group.remove(m);
-    const mesh = new Mesh(merged, mat);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.userData.merged = true;
-    group.add(mesh);
-    out.set(mat, mesh);
-  }
-  return out;
-}
 
 export interface AppearanceLike {
   skin?: string;
@@ -83,9 +44,18 @@ export interface PersonRig {
   headBaseY: number;
   scale: number;
   posture: Posture;
-  skinMeshes: Mesh[];
-  skinMaterial: Material;
-  flushMaterial: Material;
+  /** Skin vertex ranges inside the merged atlas meshes (distress tint via vertex colours). */
+  skin: { mesh: Mesh; ranges: [number, number][] }[];
+  /** Vertex-colour multiplier that turns this rig's skin texels into the flushed tone. */
+  flushTint: [number, number, number];
+  distressed: boolean;
+}
+
+/** Flushed / sweaty skin (distress) on or off — one vertex-colour update, no extra draw calls. */
+export function setDistressed(rig: PersonRig, on: boolean): void {
+  if (rig.distressed === on) return;
+  rig.distressed = on;
+  for (const s of rig.skin) tintRanges(s.mesh, s.ranges, on ? rig.flushTint : [1, 1, 1]);
 }
 
 export const DEFAULT_APPEARANCE: Required<AppearanceLike> = {
@@ -128,7 +98,6 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
   const shoe = lib.get("darkwood");
   const white = lib.get("white");
   const pink = lib.get("pink");
-  const flush = lib.color("#d9907a");
 
   const root = new Group();
   root.name = "person";
@@ -279,13 +248,22 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
       break;
   }
 
-  // draw-call budget: merge static boxes per material (torso breathes, mouth talks → kept separate)
+  // draw-call budget: every static opaque box of the body and of the head merges into one atlas
+  // mesh each (≈ 30 boxes → 4 draw calls per person: body, torso, head, mouth); the torso breathes
+  // and the mouth talks, so they stay separate; glass / transparent masks keep their own material.
+  void skinMeshes;
   const keep = new Set<Object3D>([torso, mouth, head]);
-  const bodyMerged = mergeStatic(body, keep);
-  const headMerged = mergeStatic(head, keep);
-  const skinParts = [bodyMerged.get(skin), headMerged.get(skin)].filter((m): m is Mesh => !!m);
-  skinMeshes.length = 0;
-  skinMeshes.push(...skinParts);
+  const bodyMerged = mergeGroup(body, keep, lib);
+  const headMerged = mergeGroup(head, keep, lib);
+  const skinRanges: PersonRig["skin"] = [];
+  for (const mr of [bodyMerged, headMerged]) {
+    const r = mr.atlas ? mr.ranges.get(skin.name) : undefined;
+    if (mr.atlas && r) skinRanges.push({ mesh: mr.atlas, ranges: r });
+  }
+  // linear-space ratio flushed / normal skin, applied as a vertex colour
+  const a = new Color(ap.skin), f = new Color("#d9907a");
+  const ratio = (x: number, y: number) => Math.max(0.2, Math.min(3, y / Math.max(0.02, x)));
+  const flushTint: [number, number, number] = [ratio(a.r, f.r), ratio(a.g, f.g), ratio(a.b, f.b)];
 
   // posture transforms
   let tagY = 2.62;
@@ -310,9 +288,9 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
     headBaseY,
     scale,
     posture: opts.posture,
-    skinMeshes,
-    skinMaterial: skin,
-    flushMaterial: flush,
+    skin: skinRanges,
+    flushTint,
+    distressed: false,
   };
 }
 

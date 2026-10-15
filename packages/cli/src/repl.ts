@@ -17,7 +17,7 @@ import { EXIT, loadCliSettings, resumeRef, sessionFlagsLayer, type CliContext } 
 import { HistoryFile } from "./history.js";
 import { m } from "./i18n.js";
 import { pickCase } from "./picker.js";
-import { EventRenderer, truncate } from "./render.js";
+import { EventRenderer } from "./render.js";
 import { openSession } from "./session.js";
 
 type ApprovalRequest = Extract<EventMsg, { type: "approval_request" }>;
@@ -364,19 +364,29 @@ export class Repl {
   private askApproval(req: ApprovalRequest): void {
     const p = this.ctx.out;
     const choices = req.allowSession ? m(this.L, "repl.approvalChoices") : m(this.L, "repl.approvalChoicesNoSession");
-    this.renderer.line(`  ${p.yellow(truncate(req.summary || req.tool, 120))} ${p.bold(choices)}`);
-    // Typed-ahead (or piped) input that answers the question is used as the answer.
+    // The renderer already printed "? <summary> (risk · rule · reason)"; add the choices.
+    this.renderer.line(`  ${p.bold(choices)}`);
+    this.awaitApprovalInput(req);
+  }
+
+  /**
+   * Take the answer from input already received (piped lines in order; on a
+   * TTY only typed-ahead lines that are approval answers), else prompt. With
+   * no more input the request is denied.
+   */
+  private awaitApprovalInput(req: ApprovalRequest): void {
     const queued = this.queue[0];
-    if (queued !== undefined && parseApprovalAnswer(queued, req.allowSession)) {
+    if (queued !== undefined && (!this.tty || parseApprovalAnswer(queued, req.allowSession))) {
       this.queue.shift();
       this.answerApproval(queued);
       return;
     }
-    if (this.inputClosed) {
+    if (this.inputClosed || !this.rl) {
       this.answerApproval(`n ${m(this.L, "repl.noInput")}`);
       return;
     }
-    if (this.rl && this.tty) {
+    if (this.tty) {
+      const p = this.ctx.out;
       this.rl.setPrompt(`${p.yellow("?")} ${p.bold("›")} `);
       this.rl.prompt();
     }
@@ -389,9 +399,7 @@ export class Repl {
     if (!this.tty) this.renderer.line(this.ctx.out.dim(`? › ${line.trim()}`));
     if (!parsed) {
       this.renderer.line(this.ctx.out.yellow(req.allowSession ? m(this.L, "repl.approvalChoices") : m(this.L, "repl.approvalChoicesNoSession")));
-      if (!this.rl || this.inputClosed) {
-        this.session.submit({ type: "approval_response", requestId: req.requestId, decision: "denied", reason: m(this.L, "repl.noInput") });
-      } else if (this.tty) this.rl.prompt();
+      this.awaitApprovalInput(req);
       return;
     }
     this.approvals.shift();

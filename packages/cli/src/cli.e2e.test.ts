@@ -3,7 +3,9 @@
  * workspace packages resolved from source via tsconfig.source.json) with an
  * isolated CLINICALCRAFT_HOME / HOME and a scratch working directory.
  */
-import { spawn } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
+import { createServer } from "node:http";
+import type { AddressInfo } from "node:net";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -47,8 +49,16 @@ interface RunResult {
   stderr: string;
 }
 
-/** Run the CLI; `input` (if any) is written to stdin, which is then closed. */
-function cli(args: string[], opts: { input?: string; env?: Record<string, string>; cwd?: string } = {}): Promise<RunResult> {
+interface CliOptions {
+  input?: string;
+  env?: Record<string, string>;
+  cwd?: string;
+  /** Interactive: called for every stdout line; stdin stays open until the callback ends it. */
+  onLine?: (line: string, stdin: NodeJS.WritableStream, child: ChildProcess) => void;
+}
+
+/** Run the CLI; `input` (if any) is written to stdin, which is then closed (unless `onLine`). */
+function cli(args: string[], opts: CliOptions = {}): Promise<RunResult> {
   const env: Record<string, string> = {};
   for (const [k, v] of Object.entries(process.env)) {
     if (v === undefined || /_API_KEY$/.test(k) || k.startsWith("CLINICALCRAFT_") || k === "FORCE_COLOR") continue;
@@ -59,12 +69,22 @@ function cli(args: string[], opts: { input?: string; env?: Record<string, string
     const child = spawn(existsSync(TSX) ? TSX : "npx", existsSync(TSX) ? [BIN, ...args] : ["tsx", BIN, ...args], { cwd: opts.cwd ?? work, env, stdio: ["pipe", "pipe", "pipe"] });
     let stdout = "";
     let stderr = "";
-    child.stdout.setEncoding("utf8").on("data", (d: string) => (stdout += d));
+    let pendingLine = "";
+    child.stdout.setEncoding("utf8").on("data", (d: string) => {
+      stdout += d;
+      if (!opts.onLine) return;
+      pendingLine += d;
+      const lines = pendingLine.split("\n");
+      pendingLine = lines.pop() ?? "";
+      for (const line of lines) if (line.trim()) opts.onLine(line, child.stdin, child);
+    });
     child.stderr.setEncoding("utf8").on("data", (d: string) => (stderr += d));
     child.on("error", reject);
     child.on("close", (code) => resolve({ code, stdout, stderr }));
-    if (opts.input !== undefined) child.stdin.end(opts.input);
-    else child.stdin.end();
+    if (opts.input !== undefined) {
+      if (opts.onLine) child.stdin.write(opts.input);
+      else child.stdin.end(opts.input);
+    } else if (!opts.onLine) child.stdin.end();
   });
 }
 
@@ -132,6 +152,29 @@ describe.concurrent("exec (headless, offline)", () => {
     expect(resolved.every((m) => m.decision === "denied" && m.reason === "headless: approval required")).toBe(true);
     // The biopsy order was denied, so the case cannot be completed in default mode.
     expect(result.finished).toBe(false);
+    expect(result.permission_denials).toContainEqual({ tool: "order_test", reason: "headless: approval required" });
+    expect(result.errors).toEqual([]);
+  });
+
+  it("a stream-json client answers approval requests itself", { timeout: T }, async ({ expect }) => {
+    const answered: string[] = [];
+    const r = await cli(["exec", "--case", "smzl-lung-adeno", "--approval", "strict", "--input-format", "stream-json", "--output-format", "stream-json", "--ephemeral", "--lang", "en"], {
+      input: `${JSON.stringify({ type: "slash_command", name: "order", args: "cbc" })}\n`,
+      onLine: (line, stdin) => {
+        const event = JSON.parse(line) as AgentEvent;
+        if (event.msg?.type === "approval_request") {
+          answered.push(event.msg.requestId);
+          stdin.write(`${JSON.stringify({ type: "approval_response", requestId: event.msg.requestId, decision: "approved" })}\n`);
+        }
+        if (event.msg?.type === "command_output" && event.msg.name === "order") stdin.end();
+      },
+    });
+    expect(r.code, r.stderr).toBe(0);
+    expect(answered).toHaveLength(1);
+    const lines = jsonLines(r.stdout) as Record<string, any>[];
+    expect(lines.find((l) => l.msg?.type === "approval_resolved")?.msg.decision).toBe("approved");
+    const result = lines[lines.length - 1]!;
+    expect(result).toMatchObject({ type: "result", subtype: "success", permission_denials: [] });
   });
 
   it("exits 3 when --max-turns is exhausted", { timeout: T }, async ({ expect }) => {
@@ -179,6 +222,16 @@ describe.concurrent("play (REPL with piped stdin)", () => {
     expect(r.stdout).toMatch(/0\/5/); // status line: progress n/total
     expect(r.stdout).toContain("offline/deterministic");
     expect(r.stdout).not.toMatch(/\u001b\[/); // NO_COLOR + non-TTY
+  });
+
+  it("answers approval prompts from piped lines in order", { timeout: T }, async ({ expect }) => {
+    const input = "/order cbc\nmaybe\nn (not needed)\n/order cbc\ns\n/quit\n";
+    const r = await cli(["play", "smzl-lung-adeno", "--approval", "strict", "--lang", "en", "--ephemeral"], { input });
+    expect(r.code, r.stderr).toBe(0);
+    expect(r.stdout).toContain("[y]es / [s]ession / [n]o (reason) / [a]bort");
+    expect(r.stdout).toContain("→ denied (not needed)");
+    expect(r.stdout).toContain("→ approved for this session");
+    expect(r.stdout).toMatch(/Ordered .*blood count/i);
   });
 
   it("without a case and without a TTY asks for one (usage error)", { timeout: T }, async ({ expect }) => {
@@ -245,6 +298,45 @@ describe.concurrent("cases", () => {
 });
 
 describe.concurrent("providers & config", () => {
+  it("providers test / models talk to an OpenAI-compatible endpoint without printing the key", { timeout: T }, async ({ expect }) => {
+    const seen: { url: string; auth: string | undefined }[] = [];
+    const server = createServer((req, res) => {
+      let body = "";
+      req.on("data", (d: Buffer) => (body += d.toString()));
+      req.on("end", () => {
+        seen.push({ url: req.url ?? "", auth: req.headers.authorization });
+        if (req.url?.endsWith("/models")) {
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify({ data: [{ id: "fake-model-b" }, { id: "fake-model-a" }] }));
+          return;
+        }
+        res.writeHead(200, { "content-type": "text/event-stream" });
+        res.write(`data: ${JSON.stringify({ choices: [{ index: 0, delta: { content: "OK" } }] })}\n\n`);
+        res.write(`data: ${JSON.stringify({ choices: [{ index: 0, delta: {}, finish_reason: "stop" }], usage: { prompt_tokens: 11, completion_tokens: 1 } })}\n\n`);
+        res.end("data: [DONE]\n\n");
+      });
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    try {
+      const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/v1`;
+      const env = { OPENAI_API_KEY: SECRET };
+      const t = await cli(["providers", "test", "openai", "--base-url", base, "--model", "fake-model-a", "--lang", "en"], { env });
+      expect(t.code, t.stderr).toBe(0);
+      expect(t.stdout).toContain("replied: OK");
+      expect(t.stdout).toMatch(/tokens in 11 \/ out 1/);
+      expect(t.stdout + t.stderr).not.toContain(SECRET);
+      const models = await cli(["providers", "models", "openai", "--base-url", base, "--json"], { env });
+      expect(models.code, models.stderr).toBe(0);
+      expect(JSON.parse(models.stdout)).toEqual(["fake-model-a", "fake-model-b"]);
+      expect(seen.every((r) => r.auth === `Bearer ${SECRET}`)).toBe(true);
+      const nokey = await cli(["providers", "test", "openai", "--base-url", base, "--lang", "en"]);
+      expect(nokey.code).toBe(1);
+      expect(nokey.stderr).toContain("OPENAI_API_KEY");
+    } finally {
+      server.close();
+    }
+  });
+
   it("providers list never prints secrets", { timeout: T }, async ({ expect }) => {
     const env = { OPENAI_API_KEY: SECRET, ANTHROPIC_API_KEY: SECRET, ZHIPU_API_KEY: SECRET };
     const r = await cli(["providers", "list", "--lang", "en"], { env });
@@ -321,6 +413,57 @@ describe.concurrent("import-v4", () => {
     const r = await cli(["import-v4", f, "--dest", join(root, "assets-bad"), "--lang", "en"]);
     expect(r.code).toBe(1);
     expect(r.stderr).toContain("CASE_DATA");
+  });
+});
+
+describe.concurrent("serve & mcp", () => {
+  it("serve starts the HTTP server on loopback and stops on SIGINT", { timeout: T }, async ({ expect }) => {
+    let health: unknown = null;
+    const r = await cli(["serve", "--port", "0", "--lang", "en"], {
+      onLine: (line, stdin, child) => {
+        const url = /(http:\/\/127\.0\.0\.1:\d+\/)/.exec(line)?.[1];
+        if (!url) return;
+        void fetch(`${url}api/health`)
+          .then((res) => res.json())
+          .then((body) => (health = body))
+          .catch((err: Error) => (health = { error: err.message }))
+          .finally(() => {
+            stdin.end();
+            child.kill("SIGINT");
+          });
+      },
+    });
+    if (/not available/.test(r.stderr)) {
+      // @clinicalcraft/server not built/implemented in this checkout: reported clearly.
+      expect(r.code).toBe(1);
+      return;
+    }
+    expect(r.code, r.stderr).toBe(0);
+    expect(health).toMatchObject({ status: "ok" });
+  });
+
+  it("serve refuses a non-loopback host without a token", { timeout: T }, async ({ expect }) => {
+    const r = await cli(["serve", "--host", "0.0.0.0", "--lang", "en"]);
+    expect(r.code).toBe(2);
+    expect(r.stderr).toContain("--token");
+  });
+
+  it("mcp speaks JSON-RPC on stdio (or reports that the package is unavailable)", { timeout: T }, async ({ expect }) => {
+    const init = { jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "test", version: "0" } } };
+    const replies: unknown[] = [];
+    const r = await cli(["mcp", "--lang", "en"], {
+      input: `${JSON.stringify(init)}\n`,
+      onLine: (line, stdin) => {
+        replies.push(JSON.parse(line));
+        stdin.end();
+      },
+    });
+    if (/not available/.test(r.stderr)) {
+      expect(r.code).toBe(1);
+      expect(r.stdout).toBe(""); // stdout is reserved for JSON-RPC
+      return;
+    }
+    expect(replies[0]).toMatchObject({ jsonrpc: "2.0", id: 1 });
   });
 });
 

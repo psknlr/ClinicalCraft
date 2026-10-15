@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { monitorRenderer } from "./monitor-render.js";
+import { ecgValue } from "./ecg.js";
+import { monitorRenderer, sweepColumn } from "./monitor-render.js";
 
 type Snapshot = Parameters<typeof monitorRenderer.draw>[3];
 
@@ -59,5 +60,37 @@ describe("monitorRenderer", () => {
     monitorRenderer.draw(b.ctx, 256, 160, snap({ alarms: [], vitals: { ...VITALS, rhythm: "ventricular-fibrillation" } }), 0, "en");
     expect(b.texts).toContain("!!! VF");
     expect(b.texts).toContain("---");
+  });
+});
+
+describe("sweep sampling", () => {
+  it("keeps every R peak of a regular rhythm at full height (no aliasing)", () => {
+    // 6 s sweep drawn with ~200 columns (panel / in-world screens): ≈ 30 ms per column
+    const colDt = 6 / 200;
+    const sample = (t: number) => ecgValue(t, "sinus", "normal", 84);
+    const peaks: number[] = [];
+    const point: number[] = [];
+    for (let beat = 0; beat < 8; beat++) {
+      let best = -Infinity, bestPoint = -Infinity;
+      const r = beat * (60 / 84);
+      // a fixed column grid (not phase-locked to the beats), columns ending within ±0.1 s of the R wave
+      for (let k = Math.floor((r - 0.1) / colDt); k <= Math.ceil((r + 0.1) / colDt); k++) {
+        const tEnd = k * colDt + 0.0137;
+        best = Math.max(best, ...sweepColumn(sample, tEnd, colDt, 0.004));
+        bestPoint = Math.max(bestPoint, sample(tEnd));
+      }
+      peaks.push(best);
+      point.push(bestPoint);
+    }
+    expect(Math.min(...peaks)).toBeGreaterThan(0.93);
+    expect(Math.max(...peaks) - Math.min(...peaks)).toBeLessThan(0.08);
+    // one-point-per-column sampling (the old renderer) misses peaks by far more
+    expect(Math.max(...point) - Math.min(...point)).toBeGreaterThan(0.1);
+  });
+  it("returns the extremes in time order", () => {
+    const up = sweepColumn((t) => t, 1, 1, 0.1);
+    expect(up[0]).toBeLessThan(up[1]);
+    const down = sweepColumn((t) => -t, 1, 1, 0.1);
+    expect(down[0]).toBeGreaterThan(down[1]);
   });
 });

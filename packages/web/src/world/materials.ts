@@ -10,10 +10,14 @@ import {
   NearestMipmapNearestFilter,
   RepeatWrapping,
   SRGBColorSpace,
+  type Material,
   type Texture,
 } from "three";
 import type { EquipmentCatalog, EquipmentType, MaterialDef } from "@clinicalcraft/core";
 import { createLcg, hashString, pixelsToCanvas, texturePixels, V4_SEED, type TexturePattern } from "./textures.js";
+
+/** Atlas grid (tiles per side, 16 px each): 32 → 1024 materials in a 512² texture. */
+const ATLAS_TILES = 32;
 
 export interface MergedCatalogs {
   materials: Map<string, MaterialDef>;
@@ -187,10 +191,78 @@ export class MaterialLibrary {
     return [...this.missing];
   }
 
+  /* ---------------- texture atlas (merging movable multi-material groups) ---------------- */
+
+  private atlasCanvas: HTMLCanvasElement | null = null;
+  private atlasTex: CanvasTexture | null = null;
+  private atlasMat: MeshStandardMaterial | null = null;
+  private readonly atlasTiles = new Map<string, number>();
+
+  /**
+   * Whether a library material can be drawn through the shared atlas material
+   * (opaque, not emissive, default V4 shading) — its pixels are then sampled
+   * from an atlas tile, so boxes of many such materials merge into one mesh.
+   */
+  canAtlas(m: Material | null | undefined): boolean {
+    if (!m || !(m as MeshStandardMaterial).isMeshStandardMaterial || !this.mats.has(m.name) || this.mats.get(m.name) !== m) return false;
+    const d = this.defs.get(m.name);
+    return !!d && d.opacity >= 1 && !d.emissive && d.metalness === 0 && Math.abs(d.roughness - 0.93) < 0.05;
+  }
+
+  /** The shared atlas material (vertex colours multiply the texel: used for tints such as flushed skin). */
+  atlasMaterial(): MeshStandardMaterial {
+    this.ensureAtlas();
+    return this.atlasMat!;
+  }
+
+  /**
+   * UV rectangle [u0, v0, u1, v1] of a material's 16×16 texture in the atlas
+   * (added on first use), inset by half a texel so nearest sampling never
+   * reads a neighbouring tile.
+   */
+  atlasUv(id: string): [number, number, number, number] {
+    this.ensureAtlas();
+    let idx = this.atlasTiles.get(id);
+    if (idx == null) {
+      idx = this.atlasTiles.size;
+      if (idx >= ATLAS_TILES * ATLAS_TILES) idx = 0; // full: degrade (never reached by facility content)
+      else {
+        const src = (this.get(id).map?.image ?? null) as CanvasImageSource | null;
+        const ctx = this.atlasCanvas!.getContext("2d");
+        const tx = (idx % ATLAS_TILES) * 16, ty = Math.floor(idx / ATLAS_TILES) * 16;
+        if (ctx && src) ctx.drawImage(src, tx, ty, 16, 16);
+        this.atlasTiles.set(id, idx);
+        this.atlasTex!.needsUpdate = true;
+      }
+    }
+    const size = ATLAS_TILES * 16;
+    const tx = (idx % ATLAS_TILES) * 16, ty = Math.floor(idx / ATLAS_TILES) * 16;
+    // canvas y grows downwards; texture v grows upwards (flipY)
+    return [(tx + 0.5) / size, 1 - (ty + 15.5) / size, (tx + 15.5) / size, 1 - (ty + 0.5) / size];
+  }
+
+  private ensureAtlas(): void {
+    if (this.atlasMat) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = ATLAS_TILES * 16;
+    this.atlasCanvas = canvas;
+    const tex = new CanvasTexture(canvas);
+    tex.magFilter = NearestFilter;
+    tex.minFilter = NearestFilter; // no mipmaps: they would blend neighbouring tiles
+    tex.generateMipmaps = false;
+    tex.colorSpace = SRGBColorSpace;
+    this.atlasTex = tex;
+    this.textures.push(tex);
+    this.atlasMat = new MeshStandardMaterial({ map: tex, roughness: 0.93, metalness: 0, vertexColors: true });
+    this.atlasMat.name = "__atlas";
+  }
+
   dispose(): void {
     for (const m of this.mats.values()) m.dispose();
     for (const m of this.tints.values()) m.dispose();
     for (const m of this.tiledMats.values()) m.dispose();
+    this.atlasMat?.dispose();
+    this.atlasMat = null;
     this.tiledMats.clear();
     for (const t of this.textures) t.dispose();
     this.mats.clear();

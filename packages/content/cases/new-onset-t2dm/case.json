@@ -2727,8 +2727,8 @@
         "initial": {
           "available": true,
           "text": {
-            "zh-CN": "比重1.028，pH 5.5；尿糖3+，尿酮阴性，尿蛋白阴性，潜血阴性，白细胞酯酶阴性，亚硝酸盐阴性。镜检：未见红细胞、白细胞或管型。注：试纸尿蛋白对中度增加的白蛋白尿不敏感，需查UACR。",
-            "en": "SG 1.028, pH 5.5; glucose 3+, ketones negative, protein negative, blood negative, leucocyte esterase negative, nitrite negative. Microscopy: no red or white cells, no casts. Note: dipstick protein is insensitive to moderately increased albuminuria — a UACR is needed."
+            "zh-CN": "比重1.020，pH 5.5；尿糖3+，尿酮阴性，尿蛋白阴性，潜血阴性，白细胞酯酶阴性，亚硝酸盐阴性。镜检：未见红细胞、白细胞或管型。注：试纸尿蛋白对中度增加的白蛋白尿不敏感，需查UACR。",
+            "en": "SG 1.020, pH 5.5; glucose 3+, ketones negative, protein negative, blood negative, leucocyte esterase negative, nitrite negative. Microscopy: no red or white cells, no casts. Note: dipstick protein is insensitive to moderately increased albuminuria — a UACR is needed."
           },
           "values": [
             {
@@ -2766,7 +2766,7 @@
                 "zh-CN": "比重",
                 "en": "Specific gravity"
               },
-              "value": 1.028,
+              "value": 1.02,
               "unit": "",
               "refLow": 1.003,
               "refHigh": 1.03,
@@ -3958,8 +3958,8 @@
             "en": "First visit (day 0), 08:40, fasting"
           },
           "note": {
-            "zh-CN": "无跛行、足部脉搏正常的48岁患者，ABI不是常规必查项目。",
-            "en": "In a 48-year-old without claudication and with normal foot pulses, ABI is not a routine requirement."
+            "zh-CN": "无跛行、足部脉搏正常的48岁患者，ABI不是本次就诊的必查项目（ADA建议对≥50岁且合并微血管病变、足部并发症或其他靶器官损害的无症状者筛查）；但他吸烟并合并高血压和血脂异常，中国指南建议有下肢动脉病变危险因素者至少每年筛查一次，因此安排ABI也是合理的。",
+            "en": "In a 48-year-old without claudication and with normal foot pulses, ABI is not required at this visit (ADA screens asymptomatic people aged ≥ 50 who have microvascular disease, foot complications or other end-organ damage); but he smokes and has hypertension and dyslipidaemia, and the Chinese guideline advises at least annual screening for people with PAD risk factors, so ordering it is reasonable."
           }
         }
       }
@@ -4663,8 +4663,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "1%克霉唑乳膏外用每日2次：龟头炎7–14天，趾间足癣2–4周；保持局部清洁干燥。血糖控制改善后念珠菌感染的风险会下降。",
-        "en": "Clotrimazole 1% cream twice daily: 7–14 days for balanitis, 2–4 weeks for the interdigital tinea; keep the areas clean and dry. Better glucose control lowers the risk of candidal infection."
+        "zh-CN": "1%克霉唑乳膏外用每日2次：龟头炎7–14天，趾间足癣约4周（皮损消退后再继续1–2周）；保持局部清洁干燥。血糖控制改善后念珠菌感染的风险会下降。",
+        "en": "Clotrimazole 1% cream twice daily: 7–14 days for balanitis, about 4 weeks for the interdigital tinea (continuing 1–2 weeks after the skin clears); keep the areas clean and dry. Better glucose control lowers the risk of candidal infection."
       },
       "requires": [],
       "risk": "low",
@@ -4742,8 +4742,8 @@
         "en": "SGLT2 inhibitor started before the renal function was seen: the eGFR must be known first (KDIGO: start only at eGFR ≥ 20), and it is the baseline for interpreting the expected initial eGFR dip."
       },
       "response": {
-        "zh-CN": "药师讲解了病日规则卡片。患者问：“这个药会低血糖吗？影响开车吗？”——单用或与二甲双胍合用很少引起低血糖。",
-        "en": "The pharmacist goes through a sick-day rules card. He asks: \"Will this one make my sugar go low? Will it affect my driving?\" — on its own or with metformin it rarely causes hypoglycaemia."
+        "zh-CN": "药师讲解了病日规则卡片，并提醒：SGLT2抑制剂会增加生殖器真菌感染的风险，最好在现有的念珠菌感染痊愈后再开始，并注意局部清洁。患者问：“这个药会低血糖吗？影响开车吗？”——单用或与二甲双胍合用很少引起低血糖。",
+        "en": "The pharmacist goes through a sick-day rules card and adds that SGLT2 inhibitors make genital thrush more likely — best started once any current infection has cleared, with good genital hygiene. He asks: \"Will this one make my sugar go low? Will it affect my driving?\" — on its own or with metformin it rarely causes hypoglycaemia."
       }
     },
     {
@@ -4821,8 +4821,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "目前无需胰岛素：无酮症，HbA1c 8.6%（<10%，也低于中国指南短期强化治疗的9.0%）、FPG 9.8 mmol/L（<11.1 mmol/L）；虽有多尿、多饮等症状，但体重仅下降约3%（肥胖、食欲好，可由尿糖丢失解释），无明显分解代谢，口服药足以控制。贸然起始胰岛素增加低血糖风险（危及他的驾驶工作）和体重，并加重他对治疗的恐惧、损害信任。",
-        "en": "Insulin is not needed now: no ketosis, HbA1c 8.6% (below 10%, and below the 9.0% Chinese threshold for short-term intensive insulin), FPG 9.8 mmol/L (below 11.1 mmol/L); although he has osmotic symptoms, the ~3% weight loss in an obese man with a good appetite is explained by glycosuria — no marked catabolism — so oral therapy is enough. Starting insulin adds hypoglycaemia risk (dangerous for his driving job) and weight gain, deepens his fear of treatment and damages trust."
+        "zh-CN": "目前无需胰岛素：ADA建议在存在持续分解代谢（体重下降）、高血糖症状或血糖很高（HbA1c>10%或血糖≥16.7 mmol/L）时“考虑”早期胰岛素——他有多尿、多饮和轻度体重下降，值得考虑，但考虑后并无必要：体重仅下降约3%（仍肥胖、食欲好），无酮症，HbA1c 8.6%（<10%，也低于中国指南短期强化治疗的9.0%）、FPG 9.8 mmol/L（<11.1 mmol/L），二甲双胍加生活方式预计可使HbA1c下降约1–1.5个百分点；若症状或体重下降加重、出现酮症或治疗反应差，再重新评估。贸然起始胰岛素增加低血糖风险（危及他的驾驶工作）和体重，并加重他对治疗的恐惧、损害信任。",
+        "en": "Insulin is not needed now. ADA advises considering early insulin when there is ongoing catabolism (weight loss), symptoms of hyperglycaemia, or very high levels (HbA1c > 10% or glucose ≥ 16.7 mmol/L). His osmotic symptoms and slight weight loss make it worth considering, but not necessary: the weight loss is only ~3% (still obese, good appetite), there is no ketosis, HbA1c 8.6% is below 10% (and below the 9.0% Chinese threshold for short-term intensive insulin), FPG 9.8 mmol/L is below 11.1 mmol/L, and metformin plus lifestyle change can be expected to lower the HbA1c by about 1–1.5 points; reassess if symptoms or weight loss worsen, ketosis appears or the response is poor. Starting insulin adds hypoglycaemia risk (dangerous for his driving job) and weight gain, deepens his fear of treatment and damages trust."
       },
       "response": {
         "zh-CN": "护士拿来胰岛素笔准备教学，患者脸色一沉：“医生，真的非打针不可吗？我爸就是打这个晕倒的。”",
@@ -5731,8 +5731,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。新诊断时考虑早期胰岛素的情形：ADA为存在持续分解代谢（体重下降）、明显高血糖症状，或血糖很高（HbA1c>10%或血糖≥16.7 mmol/L），以及酮症或疑似1型；中国指南为HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显高血糖症状时可考虑短期强化。本例虽有多尿、多饮，但体重仅下降约3%（肥胖、食欲好，可由尿糖丢失解释）、无酮症，HbA1c和血糖远低于上述阈值，口服药足以控制；胰岛素还会带来低血糖（影响驾驶）和体重增加，也正是他最怕的。",
-            "en": "Incorrect. Early insulin at diagnosis is considered when (ADA) there is ongoing catabolism (weight loss), marked symptomatic hyperglycaemia or very high levels (HbA1c > 10% or glucose ≥ 16.7 mmol/L [300 mg/dL]), or with ketosis or suspected type 1; (Chinese guideline) short-term intensive insulin may be considered with HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L plus marked symptoms. Although he has osmotic symptoms, the ~3% weight loss in an obese man with a good appetite is explained by glycosuria, there is no ketosis and his levels are well below these thresholds — oral therapy is enough; insulin would also bring hypoglycaemia (a driving risk) and weight gain — exactly what he fears."
+            "zh-CN": "不正确。新诊断时考虑早期胰岛素的情形：ADA为存在持续分解代谢（体重下降）、高血糖症状，或血糖很高（HbA1c>10%或血糖≥16.7 mmol/L），以及酮症或疑似1型；中国指南为HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显高血糖症状时可考虑短期强化。本例虽有多尿、多饮，但体重仅下降约3%（仍肥胖、食欲好）、无酮症，HbA1c和血糖远低于上述阈值——考虑之后的结论是口服药足以控制，若治疗反应差或分解代谢加重再重新评估；胰岛素还会带来低血糖（影响驾驶）和体重增加，也正是他最怕的。",
+            "en": "Incorrect. Early insulin at diagnosis is considered when (ADA) there is ongoing catabolism (weight loss), symptoms of hyperglycaemia or very high levels (HbA1c > 10% or glucose ≥ 16.7 mmol/L [300 mg/dL]), or with ketosis or suspected type 1; (Chinese guideline) short-term intensive insulin may be considered with HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L plus marked symptoms. He has osmotic symptoms, but his weight loss is only ~3% (still obese, good appetite), there is no ketosis and his levels are well below these thresholds — having considered insulin, oral therapy is enough, with reassessment if he responds poorly or becomes catabolic; insulin would also bring hypoglycaemia (a driving risk) and weight gain — exactly what he fears."
           }
         },
         {
@@ -6469,8 +6469,8 @@
       "en": "New-onset type 2 diabetes with obesity, hypertension, albuminuria, dyslipidaemia and MASLD"
     },
     "conclusion": {
-      "zh-CN": "赵立新，48岁男性，办公室职员（需开车拜访客户），乏力、口干多饮、多尿（夜尿2–3次）3个月，体重非刻意下降约3 kg。去年体检空腹血糖“6点几”、血压146/92 mmHg，均未复查。父亲和哥哥有2型糖尿病；吸烟25包年；久坐，含糖饮料多。查体：BMI 30.1 kg/m²，腰围104 cm，血压142/88 mmHg（两次平均），颈后和腋窝黑棘皮征；足部单丝、振动觉、踝反射及足背/胫后动脉搏动正常；趾间足癣，龟头表现提示念珠菌性龟头炎。同一份空腹血样FPG 9.8 mmol/L、HbA1c 8.6%（70 mmol/mol）；尿酮阴性、血β-羟丁酸0.2 mmol/L，阴离子间隙12 mmol/L，计算血浆渗透压约293 mOsm/kg——诊断新发2型糖尿病，无高血糖危象。基线评估：LDL-C 3.9、甘油三酯2.6、HDL-C 0.92 mmol/L；eGFR 102 mL/min/1.73 m²，UACR 5.2 mg/mmol（单次，A2）；ALT 68 U/L，超声示中度脂肪肝，FIB-4 0.97（进展期纤维化风险低）；对乙肝无免疫力。初诊方案：医学营养治疗+DSMES，二甲双胍逐步加至2000 mg/日，阿托伐他汀40 mg，培哚普利4 mg，伐尼克兰戒烟，家庭血压监测，乙肝疫苗，外用抗真菌药，并转诊视网膜筛查。3个月复诊：体重−3.0 kg，HbA1c 7.1%（54 mmol/mol），LDL-C 1.7 mmol/L，血压128/79 mmHg，二甲双胍的胃肠反应已缓解，已戒烟9周；视网膜筛查未见糖尿病视网膜病变；UACR仍为3.9 mg/mmol——相隔13周两次升高，确认持续白蛋白尿（CKD G1A2）。调整：加用达格列净10 mg，培哚普利加至最大耐受剂量，继续二甲双胍和他汀。",
-      "en": "Zhao Lixin, a 48-year-old office worker who drives to visit clients, had 3 months of tiredness, thirst, drinking more and polyuria (nocturia 2–3 times) with about 3 kg of unintended weight loss. Last year's check-up showed a fasting glucose of 'six-point-something' and BP 146/92 mmHg, neither followed up. His father and brother have type 2 diabetes; he has smoked 25 pack-years, is sedentary and drinks a lot of sugary drinks. Examination: BMI 30.1 kg/m², waist 104 cm, BP 142/88 mmHg (mean of two), acanthosis nigricans of the neck and axillae; normal monofilament, vibration, ankle reflexes and foot pulses; interdigital tinea pedis and appearances of candidal balanitis. The same fasting sample showed FPG 9.8 mmol/L and HbA1c 8.6% (70 mmol/mol); urine ketones were negative, blood β-hydroxybutyrate 0.2 mmol/L, anion gap 12 mmol/L and calculated plasma osmolality about 293 mOsm/kg — new-onset type 2 diabetes without a hyperglycaemic emergency. Baseline work-up: LDL-C 3.9, triglycerides 2.6, HDL-C 0.92 mmol/L; eGFR 102 mL/min/1.73 m², UACR 5.2 mg/mmol (single sample, A2); ALT 68 U/L with moderate steatosis on ultrasound and FIB-4 0.97 (low risk of advanced fibrosis); not immune to hepatitis B. Initial plan: medical nutrition therapy + DSMES, metformin titrated to 2000 mg/day, atorvastatin 40 mg, perindopril 4 mg, varenicline, home BP monitoring, hepatitis B vaccination, topical antifungal, and referral for retinal screening. At three months: weight −3.0 kg, HbA1c 7.1% (54 mmol/mol), LDL-C 1.7 mmol/L, BP 128/79 mmHg, metformin GI effects settled, smoke-free for 9 weeks; retinal screening showed no diabetic retinopathy; UACR still 3.9 mg/mmol — raised on two samples 13 weeks apart, confirming persistent albuminuria (CKD G1A2). Changes: add dapagliflozin 10 mg, up-titrate perindopril to the maximum tolerated dose, continue metformin and the statin."
+      "zh-CN": "赵立新，48岁男性，办公室职员（需开车拜访客户），乏力、口干多饮、多尿（夜尿2–3次）3个月，体重非刻意下降约3 kg。去年体检空腹血糖“6点几”、血压146/92 mmHg，均未复查。父亲和哥哥有2型糖尿病；吸烟25包年；久坐，含糖饮料多。查体：BMI 30.1 kg/m²，腰围104 cm，血压142/88 mmHg（两次平均），颈后和腋窝黑棘皮征；足部单丝、振动觉、踝反射及足背/胫后动脉搏动正常；趾间足癣，龟头表现提示念珠菌性龟头炎。同一份空腹血样FPG 9.8 mmol/L、HbA1c 8.6%（70 mmol/mol）；尿酮阴性、血β-羟丁酸0.2 mmol/L，阴离子间隙12 mmol/L，计算血浆渗透压约293 mOsm/kg——诊断新发2型糖尿病，无高血糖危象。基线评估：LDL-C 3.9、甘油三酯2.6、HDL-C 0.92 mmol/L；eGFR 102 mL/min/1.73 m²，UACR 5.2 mg/mmol（单次，A2）；ALT 68 U/L，超声示中度脂肪肝，FIB-4 0.97（进展期纤维化风险低）；对乙肝无免疫力。初诊方案：医学营养治疗+DSMES，二甲双胍逐步加至2000 mg/日，阿托伐他汀40 mg，培哚普利4 mg，伐尼克兰戒烟，家庭血压监测，乙肝疫苗，外用抗真菌药，并转诊视网膜筛查。3个月复诊：体重−3.0 kg，HbA1c 7.1%（54 mmol/mol），LDL-C 1.7 mmol/L，血压128/79 mmHg，二甲双胍的胃肠反应已缓解，已戒烟9周（期间偶吸1次）；视网膜筛查未见糖尿病视网膜病变；UACR仍为3.9 mg/mmol——相隔13周两次升高，确认持续白蛋白尿（CKD G1A2）。调整：加用达格列净10 mg，培哚普利加至最大耐受剂量，继续二甲双胍和他汀。",
+      "en": "Zhao Lixin, a 48-year-old office worker who drives to visit clients, had 3 months of tiredness, thirst, drinking more and polyuria (nocturia 2–3 times) with about 3 kg of unintended weight loss. Last year's check-up showed a fasting glucose of 'six-point-something' and BP 146/92 mmHg, neither followed up. His father and brother have type 2 diabetes; he has smoked 25 pack-years, is sedentary and drinks a lot of sugary drinks. Examination: BMI 30.1 kg/m², waist 104 cm, BP 142/88 mmHg (mean of two), acanthosis nigricans of the neck and axillae; normal monofilament, vibration, ankle reflexes and foot pulses; interdigital tinea pedis and appearances of candidal balanitis. The same fasting sample showed FPG 9.8 mmol/L and HbA1c 8.6% (70 mmol/mol); urine ketones were negative, blood β-hydroxybutyrate 0.2 mmol/L, anion gap 12 mmol/L and calculated plasma osmolality about 293 mOsm/kg — new-onset type 2 diabetes without a hyperglycaemic emergency. Baseline work-up: LDL-C 3.9, triglycerides 2.6, HDL-C 0.92 mmol/L; eGFR 102 mL/min/1.73 m², UACR 5.2 mg/mmol (single sample, A2); ALT 68 U/L with moderate steatosis on ultrasound and FIB-4 0.97 (low risk of advanced fibrosis); not immune to hepatitis B. Initial plan: medical nutrition therapy + DSMES, metformin titrated to 2000 mg/day, atorvastatin 40 mg, perindopril 4 mg, varenicline, home BP monitoring, hepatitis B vaccination, topical antifungal, and referral for retinal screening. At three months: weight −3.0 kg, HbA1c 7.1% (54 mmol/mol), LDL-C 1.7 mmol/L, BP 128/79 mmHg, metformin GI effects settled, smoke-free for 9 weeks apart from one lapse; retinal screening showed no diabetic retinopathy; UACR still 3.9 mg/mmol — raised on two samples 13 weeks apart, confirming persistent albuminuria (CKD G1A2). Changes: add dapagliflozin 10 mg, up-titrate perindopril to the maximum tolerated dose, continue metformin and the statin."
     },
     "keyReasoning": [
       {
@@ -6482,8 +6482,8 @@
         "en": "Type and acute risk: age, obesity (BMI 30.1, waist 104 cm), acanthosis nigricans, a family history of type 2 diabetes, previously raised fasting glucose, preserved C-peptide and negative GADA all support type 2. Negative urine ketones, β-hydroxybutyrate 0.2 mmol/L, HCO₃⁻ 25 mmol/L, anion gap 139 − (102 + 25) = 12 mmol/L and calculated osmolality 2 × 139 + 9.8 + 5.6 ≈ 293 mOsm/kg exclude DKA and the hyperosmolar hyperglycaemic state — he can be managed as an outpatient."
       },
       {
-        "zh-CN": "初始降糖：生活方式+DSMES+二甲双胍（eGFR 102，可全量，逐步加量）。HbA1c 8.6%、FPG 9.8 mmol/L、无酮症、无明显分解代谢，均未达到胰岛素起始阈值（ADA：持续分解代谢、明显高血糖症状，或HbA1c>10%、血糖≥16.7 mmol/L；中国指南短期强化：HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显症状）。磺脲类在肥胖且需驾驶的患者中不宜一线使用。",
-        "en": "Initial glucose lowering: lifestyle + DSMES + metformin (eGFR 102, full dose allowed, titrated slowly). HbA1c 8.6%, FPG 9.8 mmol/L, no ketosis and no marked catabolism are all below the thresholds for starting insulin (ADA: ongoing catabolism, marked symptoms, or HbA1c > 10% or glucose ≥ 16.7 mmol/L; Chinese short-term intensive therapy: HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L with marked symptoms). A sulfonylurea is a poor first-line choice in an obese man who drives for work."
+        "zh-CN": "初始降糖：生活方式+DSMES+二甲双胍（eGFR 102，可全量，逐步加量）。HbA1c 8.6%、FPG 9.8 mmol/L、无酮症、体重仅下降约3%：ADA在有分解代谢（体重下降）、高血糖症状或HbA1c>10%、血糖≥16.7 mmol/L时建议“考虑”胰岛素，他的症状和轻度体重下降值得考虑，但血糖水平远未达到“很高”，也未达到中国指南短期强化阈值（HbA1c≥9.0%或FPG≥11.1 mmol/L伴明显症状），故先用口服药，反应差时再评估。磺脲类在肥胖且需驾驶的患者中不宜一线使用。",
+        "en": "Initial glucose lowering: lifestyle + DSMES + metformin (eGFR 102, full dose allowed, titrated slowly). HbA1c 8.6%, FPG 9.8 mmol/L, no ketosis and only ~3% weight loss: ADA advises considering insulin with catabolism (weight loss), symptoms of hyperglycaemia, or HbA1c > 10% or glucose ≥ 16.7 mmol/L — his symptoms and slight weight loss deserve that consideration, but his levels are far from 'very high' and below the Chinese short-term intensive therapy threshold (HbA1c ≥ 9.0% or FPG ≥ 11.1 mmol/L with marked symptoms), so tablets come first, with reassessment if the response is poor. A sulfonylurea is a poor first-line choice in an obese man who drives for work."
       },
       {
         "zh-CN": "心血管风险：两次不同时间血压≥130/80 mmHg即为高血压，合并UACR升高首选ACEI/ARB（目标<130/80 mmHg）；LDL-C 3.9 mmol/L、多重危险因素→高强度他汀（目标<1.8 mmol/L且降幅≥50%）；吸烟25包年需要药物加行为支持戒烟；无ASCVD时阿司匹林不常规用于一级预防，无症状者不做冠脉筛查。",

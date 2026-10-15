@@ -772,7 +772,7 @@ button.link {
   gap: 10px;
 }
 .convo-side .portrait {
-  min-height: 220px;
+  min-height: 200px;
 }
 .convo-side > p {
   margin: 0;
@@ -783,7 +783,8 @@ button.link {
   min-width: 0;
 }
 .chat-log {
-  height: clamp(220px, 36vh, 420px);
+  min-height: 150px;
+  max-height: clamp(220px, 38vh, 440px);
   overflow: auto;
   background: var(--paper);
   border: 2px solid #d3d9bf;
@@ -2037,7 +2038,7 @@ details.topic .question {
     padding: 8px 11px;
   }
   .chat-log {
-    height: clamp(200px, 42vh, 360px);
+    max-height: clamp(200px, 42vh, 360px);
   }
   .msg {
     max-width: 94%;

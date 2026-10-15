@@ -5,7 +5,7 @@
 import { isAbsolute, relative, resolve } from "node:path";
 import { loadSettings, type LoadedSettings } from "@clinicalcraft/agent/node";
 import { createPalette, colorEnabled, type Env, type Palette } from "./ansi.js";
-import { flagBool, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
+import { flagBool, flagList, flagPositiveInt, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { m, type MsgKey } from "./i18n.js";
 import { isKnownProvider, missingKeyEnv, providerIds } from "./provider-check.js";
 
@@ -165,6 +165,9 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
     layer.providers = { [target]: { baseUrl } };
   }
   if (flagBool(args, "ephemeral")) layer.transcripts = { enabled: false };
+  const allow = flagList(args, "allowed-tools");
+  const deny = flagList(args, "disallowed-tools");
+  if (allow.length > 0 || deny.length > 0) layer.permissions = { ...(allow.length ? { allow } : {}), ...(deny.length ? { deny } : {}) };
   return { ...layer, ...extra };
 }
 

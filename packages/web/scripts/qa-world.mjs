@@ -101,17 +101,24 @@ try {
     const file = path.join(out, `world-${tag}-${name}.png`);
     await page.screenshot({ path: file });
     const target = await page.evaluate(() => window.__WORLD__.debug.target?.name ?? null);
-    summary.shots.push({ name, file, target });
+    const draws = await page.evaluate(() => window.__WORLD__.debug.drawCalls?.() ?? null);
+    summary.shots.push({ name, file, target, draws });
   }
   // NPC shots: stand in front of every patient slot / staff member (max 6) and look at them
   const npcs = await page.evaluate(() => {
     const f = window.__HARNESS__.facility;
     const out = [];
-    for (const s of f.patientSlots.slice(0, 4)) {
+    // one slot per (posture, bed type) first, then the rest, max 6
+    const key = (s) => `${s.posture}:${f.placements.find((p) => p.id === s.bed)?.type ?? "-"}`;
+    const seen = new Set();
+    const first = f.patientSlots.filter((s) => !seen.has(key(s)) && seen.add(key(s)));
+    const picked = [...first, ...f.patientSlots.filter((s) => !first.includes(s))].slice(0, 6);
+    for (const s of picked) {
       const bed = s.bed ? f.placements.find((p) => p.id === s.bed) : null;
       const lying = s.posture === "lying" && bed;
       const rot = lying ? bed.rot ?? 0 : s.rot ?? 0;
-      out.push({ name: `slot-${s.id}`, x: lying ? bed.x : s.x, z: lying ? bed.z : s.z, rot, dist: lying ? 2.4 : 2.2, y: lying ? 0.9 : 1.1 });
+      // lying patients are shot from the bed side (local +X), others from the front
+      out.push({ name: `slot-${s.id}`, x: lying ? bed.x : s.x, z: lying ? bed.z : s.z, rot: lying ? rot + 90 : rot, dist: lying ? 2.4 : 2.2, y: lying ? 0.9 : 1.1 });
     }
     for (const st of (f.staff ?? []).slice(0, 2)) out.push({ name: `staff-${st.id}`, x: st.x, z: st.z, rot: st.rot ?? 0, dist: 2.2, y: 1.2 });
     return out;
@@ -127,9 +134,11 @@ try {
     await page.waitForTimeout(900);
     const file = path.join(out, `world-${tag}-${n.name}.png`);
     await page.screenshot({ path: file });
-    summary.shots.push({ name: n.name, file, target: await page.evaluate(() => window.__WORLD__.debug.target?.name ?? null) });
+    summary.shots.push({ name: n.name, file, target: await page.evaluate(() => window.__WORLD__.debug.target?.name ?? null), draws: await page.evaluate(() => window.__WORLD__.debug.drawCalls?.() ?? null) });
   }
   summary.stats = await page.evaluate(() => window.__WORLD__.debug.stats());
+  const dc = summary.shots.map((s) => s.draws).filter(Boolean);
+  if (dc.length) summary.drawCalls = { maxSteady: Math.max(...dc.map((d) => d.steady)), maxWithShadowRefresh: Math.max(...dc.map((d) => d.withShadows)) };
   if (extras) {
     // monitor close-up in the world (first linked monitor)
     const mon = await page.evaluate(() => {

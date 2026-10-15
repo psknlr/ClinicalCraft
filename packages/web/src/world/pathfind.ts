@@ -226,15 +226,19 @@ export function lineOfSight(g: NavGrid, a: { x: number; z: number }, b: { x: num
   return true;
 }
 
-/** String-pull a cell path into straight segments (greedy farthest-visible). */
-export function smoothPath(g: NavGrid, start: { x: number; z: number }, cells: { x: number; z: number }[]): { x: number; z: number }[] {
+/**
+ * String-pull a cell path into straight segments (greedy farthest-visible,
+ * fat line of sight of ±0.4 cell so shortcuts keep ≈ the player radius of
+ * clearance at wall corners when the grid is inflated by radius + 0.1).
+ */
+export function smoothPath(g: NavGrid, start: { x: number; z: number }, cells: { x: number; z: number }[], halfWidth = g.cell * 0.4): { x: number; z: number }[] {
   if (cells.length <= 1) return cells.slice();
   const out: { x: number; z: number }[] = [];
   let from = start;
   let i = 0;
   while (i < cells.length) {
     let j = cells.length - 1;
-    while (j > i && !lineOfSight(g, from, cells[j], g.cell / 2)) j--;
+    while (j > i && !lineOfSight(g, from, cells[j], halfWidth)) j--;
     out.push(cells[j]);
     from = cells[j];
     i = j + 1;

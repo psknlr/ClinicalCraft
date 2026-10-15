@@ -11,9 +11,14 @@
  * `--approval default|strict|plan` every `approval_request` is denied with the
  * reason "headless: approval required" (the agent is told and adapts); with
  * `--approval auto|bypass` the requests that still arise are approved.
+ * Exception: with `--input-format stream-json --output-format stream-json`
+ * the client answers with `approval_response` ops while its stdin is open
+ * (requests still open when stdin closes are then answered as above).
  *
  * Exit codes: 0 success · 1 error during execution · 2 usage error · 3 max turns.
  */
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
 import { createInterface } from "node:readline";
 import { assess as coreAssess, progress as caseProgress, type AssessmentReport } from "@clinicalcraft/core";
 import { DEFAULT_AUTOPILOT_TURNS, type AgentEvent, type ClinicalSession, type Op, type TokenUsage } from "@clinicalcraft/agent";
@@ -45,6 +50,15 @@ export interface ExecResult {
   num_turns: number;
   duration_ms: number;
   errors: string[];
+  /** Runtime warnings (provider fallbacks, refusals…). */
+  warnings: string[];
+  /** Actions refused by the approval gate (denied approvals, deny rules, hooks). Not execution errors. */
+  permission_denials: PermissionDenial[];
+}
+
+export interface PermissionDenial {
+  tool: string | null;
+  reason: string;
 }
 
 /** Everything a headless run observed (shared with `eval`). */
@@ -55,6 +69,10 @@ export class RunTracker {
   readonly usageByAgent: Record<string, TokenUsage> = {};
   assessment: ExecResult["assessment"] | null = null;
   readonly errors: string[] = [];
+  readonly warnings: string[] = [];
+  readonly denials: PermissionDenial[] = [];
+  private readonly requested = new Map<string, string>();
+  private lastApprovalDenial: PermissionDenial | null = null;
   turnsByAgent: Record<string, number> = {};
   totalTurns = 0;
   maxToolRoundsHit = false;
@@ -86,7 +104,26 @@ export class RunTracker {
         this.assessment = { report: msg.report, narrative: msg.narrative, judged: msg.judged };
         break;
       case "error":
-        this.errors.push(msg.code ? `${msg.message} [${msg.code}]` : msg.message);
+        if (msg.code === "permission_denied") {
+          // A denied approval for a learner action is reported again as an error: keep one entry.
+          const prior = this.lastApprovalDenial;
+          if (!(prior && msg.message.includes(prior.reason))) this.denials.push({ tool: null, reason: msg.message });
+        } else this.errors.push(msg.code ? `${msg.message} [${msg.code}]` : msg.message);
+        this.lastApprovalDenial = null;
+        break;
+      case "approval_request":
+        this.requested.set(msg.requestId, msg.tool);
+        break;
+      case "approval_resolved":
+        this.lastApprovalDenial = null;
+        if (msg.decision === "denied" || msg.decision === "abort") {
+          const denial = { tool: this.requested.get(msg.requestId) ?? null, reason: msg.reason ?? msg.decision };
+          this.denials.push(denial);
+          this.lastApprovalDenial = denial;
+        }
+        break;
+      case "warning":
+        this.warnings.push(msg.message);
         break;
       case "turn_aborted":
         if (msg.reason === "max_tool_rounds") this.maxToolRoundsHit = true;
@@ -102,13 +139,19 @@ export class RunTracker {
  * Answer approval requests in a headless run (deferred so the request event
  * is delivered to every listener before it is resolved).
  */
-export function autoAnswerApprovals(session: ClinicalSession, onDecision?: (summary: string, approved: boolean) => void): () => void {
+export function autoAnswerApprovals(
+  session: ClinicalSession,
+  onDecision?: (summary: string, approved: boolean) => void,
+  /** When it returns false the request is left to someone else (a stream-json client). */
+  enabled: () => boolean = () => true,
+): () => void {
   return session.subscribe((e) => {
     if (e.msg.type !== "approval_request") return;
     const { requestId, summary } = e.msg;
     const mode = session.settings.approvalMode;
     const approve = mode === "bypass" || mode === "auto";
     queueMicrotask(() => {
+      if (!enabled()) return;
       onDecision?.(summary, approve);
       session.submit(approve ? { type: "approval_response", requestId, decision: "approved" } : { type: "approval_response", requestId, decision: "denied", reason: HEADLESS_DENY_REASON });
     });
@@ -169,9 +212,22 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
       ? new EventRenderer({ out: ctx.io.stderr, palette: ctx.err, caseDef: session.caseDef, locale: () => session.settings.locale, interactive: false, verbose: ctx.verbose })
       : null;
   if (renderer) session.subscribe((e) => renderer.handle(e));
-  autoAnswerApprovals(session, (summary, approved) => {
-    if (approved && format === "text" && !quiet) ctx.printErr(ctx.err.yellow(ctx.t("exec.autoApproved", { summary })));
+  // A stream-json client (stream-json in and out) answers approvals itself with
+  // `approval_response` ops while its stdin is open; afterwards (and in every
+  // other mode) they are answered automatically.
+  let clientAnswers = inputFormat === "stream-json" && format === "stream-json";
+  const unanswered = new Set<string>();
+  session.subscribe((e) => {
+    if (e.msg.type === "approval_request") unanswered.add(e.msg.requestId);
+    else if (e.msg.type === "approval_resolved") unanswered.delete(e.msg.requestId);
   });
+  autoAnswerApprovals(
+    session,
+    (summary, approved) => {
+      if (approved && format === "text" && !quiet) ctx.printErr(ctx.err.yellow(ctx.t("exec.autoApproved", { summary })));
+    },
+    () => !clientAnswers,
+  );
 
   const pending: Promise<unknown>[] = [];
   try {
@@ -197,6 +253,13 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
         }
         if (OUT_OF_BAND.has(op.type)) session.submit(op);
         else pending.push(session.run(op));
+      }
+      if (clientAnswers) {
+        clientAnswers = false;
+        const approve = session.settings.approvalMode === "bypass" || session.settings.approvalMode === "auto";
+        for (const requestId of unanswered) {
+          session.submit(approve ? { type: "approval_response", requestId, decision: "approved" } : { type: "approval_response", requestId, decision: "denied", reason: HEADLESS_DENY_REASON });
+        }
       }
     }
     await Promise.all(pending);
@@ -229,10 +292,19 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
     num_turns: autopilot ? clinicianTurns : tracker.totalTurns,
     duration_ms: Date.now() - started,
     errors: tracker.errors,
+    warnings: tracker.warnings,
+    permission_denials: tracker.denials,
   };
 
   await session.close();
   await pump;
+
+  const lastMessageFile = flagString(args, "output-last-message");
+  if (lastMessageFile) {
+    const target = ctx.path(lastMessageFile);
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, result.result ?? "", "utf8");
+  }
 
   if (format === "json" || format === "stream-json") {
     write(JSON.stringify(result));

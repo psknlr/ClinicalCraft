@@ -70,29 +70,46 @@ describe("A*", () => {
     const [cx, cz] = cellOf(g, 0, 0);
     const nf = nearestFree(g, cx, cz)!;
     expect(isFree(g, nf[0], nf[1])).toBe(true);
+    // real cell paths run through cell centres (… .25 / .75)
     const cells = [
-      { x: 1, z: 1 },
-      { x: 2, z: 1 },
-      { x: 3, z: 1 },
+      { x: 1.25, z: 1.25 },
+      { x: 2.25, z: 1.25 },
+      { x: 3.25, z: 1.25 },
     ];
-    expect(smoothPath(g, { x: 0.9, z: 1 }, cells)).toEqual([{ x: 3, z: 1 }]);
+    expect(smoothPath(g, { x: 0.9, z: 1.25 }, cells)).toEqual([{ x: 3.25, z: 1.25 }]);
   });
 });
 
 describe("corner clearance", () => {
-  it("fat line of sight rejects segments that graze a wall corner the thin test accepts", () => {
-    // wall block x ∈ [−10, 0], z ∈ [−0.2, 0.2]; a segment that passes the corner diagonally
-    const g = buildNavGrid(bounds, [boxCollider(-5, 2, 0, 10, 4, 0.4)]);
-    const a = { x: -0.25, z: 1.25 }, b = { x: 1.25, z: -1.25 };
-    expect(isFree(g, ...cellOf(g, a.x, a.z))).toBe(true);
-    expect(lineOfSight(g, a, b, g.cell / 2)).toBe(false);
-  });
-  it("smoothed paths keep a fat corridor clear of corners", () => {
-    const g = buildNavGrid(bounds, wallWithDoor(false), { doorsPassable: false });
-    const start = { x: -6, z: 6 };
-    const path = findPath(g, start, { x: 9, z: 0.5 })!;
-    expect(path).not.toBeNull();
-    const pts = [start, ...path];
-    for (let i = 2; i < pts.length; i++) expect(lineOfSight(g, pts[i - 1], pts[i], g.cell / 2)).toBe(true);
+  // a long wall plus two cabinets; nav grid inflated like the world (player radius + .08)
+  const boxes = [boxCollider(-5, 2, 0, 10, 4, 0.4), boxCollider(3.1, 1, 3.3, 1.3, 2, 2.1), boxCollider(4.37, 1, -4.1, 2.2, 2, 0.9)];
+  /** Chebyshev clearance of a point from the nearest box (the player collider is a square). */
+  const clearance = (x: number, z: number) => Math.min(...boxes.map((w) => Math.max(w.minX - x, x - w.maxX, w.minZ - z, z - w.maxZ)));
+  const worstClearance = (pts: { x: number; z: number }[]) => {
+    let worst = Infinity;
+    for (let i = 1; i < pts.length; i++)
+      for (let k = 0; k <= 60; k++) {
+        const t = k / 60;
+        worst = Math.min(worst, clearance(pts[i - 1].x + (pts[i].x - pts[i - 1].x) * t, pts[i - 1].z + (pts[i].z - pts[i - 1].z) * t));
+      }
+    return worst;
+  };
+  it("fat smoothing keeps the player radius (.28) clear of corners; thin smoothing grazes them", () => {
+    const g = buildNavGrid(bounds, boxes, { radius: 0.36 });
+    let seed = 7;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    let thin = Infinity, fat = Infinity, n = 0;
+    for (let k = 0; k < 400; k++) {
+      const s = { x: -9 + rnd() * 18, z: -9 + rnd() * 18 }, e = { x: -9 + rnd() * 18, z: -9 + rnd() * 18 };
+      if (clearance(s.x, s.z) < 0.6 || clearance(e.x, e.z) < 0.6) continue;
+      const cells = findPathCells(g, s, e);
+      if (!cells) continue;
+      n++;
+      thin = Math.min(thin, worstClearance([cells[0], ...smoothPath(g, cells[0], cells, 0)]));
+      fat = Math.min(fat, worstClearance([cells[0], ...smoothPath(g, cells[0], cells)]));
+    }
+    expect(n).toBeGreaterThan(200);
+    expect(thin).toBeLessThan(0.28);
+    expect(fat).toBeGreaterThanOrEqual(0.28);
   });
 });

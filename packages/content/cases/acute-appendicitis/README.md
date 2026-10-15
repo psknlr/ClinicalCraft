@@ -18,7 +18,7 @@
 | clock | `simulated`, starts 02:15, `realtimeScale` 0.5, limit 360 min; ask 1 · examine 2 · order 1 · read 1 · intervene 2 min |
 | phases | one phase, `ed` (急诊夜班 / ED night shift) |
 | difficulty / time | 2 / 5 · about 35 min |
-| content | 40 history items (4 `unknown`, 1 `specific`, 10 required) · 19 exam findings · 15 investigations · 19 interventions (8 wrong or low-value choices) · 6 objectives · 4 decisions · 18 rubric items (15 deterministic, 3 examiner-judged) · 5 NPCs · 58 test utterances (2 unrecorded-topic negatives) |
+| content | 40 history items (4 `unknown`, 1 `specific`, 10 required) · 19 exam findings · 15 investigations · 20 interventions (8 wrong or low-value choices) · 6 objectives · 4 decisions · 18 rubric items (15 deterministic, 3 examiner-judged) · 5 NPCs · 72 test utterances (3 unrecorded-topic negatives) |
 
 ## Clinical story
 
@@ -30,15 +30,18 @@ since then (no lunch or dinner), nausea from midday, one vomit at about 22:00
 (after the pain began) and has felt feverish since the evening. He has no
 urinary or testicular symptoms, his bowels opened normally the previous
 morning, and his roommates (same canteen food) are well. He is otherwise
-healthy, takes no medicines, has no known allergies, and has never had an
-operation or an anaesthetic. His last food was at 07:30 the previous day and
-his last sip of water was at midnight.
+healthy (no hepatitis or TB that he knows of, never transfused), takes no
+medicines, has no known allergies, and has never had an operation or an
+anaesthetic. He is unmarried with no children. His last food was at 07:30 the
+previous day and his last sip of water was at midnight.
 
 **Examination:** T 37.9 °C, HR 102, BP 124/76 (MAP 92), RR 18, SpO₂ 99 % on
 air, pain 7/10. Tenderness is maximal at McBurney's point, with localised
 voluntary guarding and rebound/percussion tenderness in the RIF. Rovsing's and
 the psoas sign are positive; the obturator sign is equivocal. Cough and
-heel-drop tests are positive. He has dry mucosa and reduced bowel sounds.
+heel-drop tests are positive. He has dry mucosa and reduced bowel sounds;
+elsewhere the percussion note is tympanic, liver dullness is preserved and
+there is no shifting dullness (consistent with "no free fluid" on imaging).
 **Pertinent negatives:** normal testes with cremasteric reflexes present,
 clear hernial orifices, no renal-angle tenderness, clear chest, no rash, and a
 normal throat and cervical nodes.
@@ -106,6 +109,15 @@ Other consistency checks the generator asserts:
      nurse's prompt but does not meet the item.
    - The history objective's hint and guidance say he has had no analgesia
      and that treating pain need not wait for the history.
+   - The objectives run history → **supportive care** → examination → work-up
+     → diagnosis → definitive care, so the quest card asks for analgesia
+     straight after the history (the supportive-care decision still needs a
+     quick palpation; its waypoint points back to the patient until then). A
+     thorough learner following the old order (full examination before
+     supportive care) reached morphine at minute 48 and missed `r-mx-analgesia`;
+     in the new order the same learner gives it at minute 28.
+   - `iv-access` (cannula + bloods) is an orderable, always-indicated step,
+     as in the other acute cases; the triage note says he has no IV access.
    - "Withhold analgesia" is an orderable wrong choice. It is contraindicated
      while pain ≥ 4.
 4. **Imaging.** Ultrasound comes first in a young, slim patient. CT is
@@ -115,7 +127,10 @@ Other consistency checks the generator asserts:
    is diagnostic (WSES 2020 recommends ultrasound first when imaging is
    indicated). It earns its place when ultrasound is inconclusive, a
    complication is suspected, or antibiotics-first is being considered.
-   `r-inv-us-first` rewards reading the US without ordering CT.
+   `r-inv-us-first` rewards reading the US without ordering CT. CT is
+   `alternativeTo` the ultrasound, so a learner who goes straight to CT is
+   not told an essential investigation is missing; they lose only
+   `r-inv-us-first`.
 5. **Antibiotics.**
    - Give a single pre-operative dose with Gram-negative and anaerobic cover.
    - Give no post-operative course if the appendicitis is uncomplicated.
@@ -123,8 +138,10 @@ Other consistency checks the generator asserts:
      comments on stewardship and rubric item `r-mx-abx` is not met.
    - A second antibiotic regimen is contraindicated (duplication), and
      `r-mx-abx` requires exactly one of the two pre-operative regimens.
-   - `r-eff-timely` requires the pre-operative antibiotics and no 3-hour
-     escalation (`evt-delay-warning`).
+   - `r-eff-timely` requires any antibiotic before the 3-hour escalation
+     (`evt-delay-warning`). The choice of regimen is scored only by `r-mx-abx`,
+     so antibiotics-first without a CT costs `r-mx-abx` + `r-safety` (80 %)
+     rather than three items.
 6. **Antibiotics-first versus surgery** (APPAC, CODA). Antibiotics-first is a
    legitimate option for CT-confirmed uncomplicated appendicitis without an
    appendicolith, after an informed discussion. About a quarter to a third of
@@ -151,12 +168,24 @@ Other consistency checks the generator asserts:
 8. **Decisions unlock only with their evidence.** `dec-supportive` needs
    palpation and the nausea/vomiting question; `dec-diagnosis` needs FBC, CRP,
    urinalysis and imaging read and the testes examined, because its feedback
-   cites them. `r-dx` uses `decidedFirstTry`, so guessing through the options
-   costs the diagnosis item.
+   cites them. `r-dx` and `r-mx-definitive` use `decidedFirstTry`, so guessing
+   through the diagnosis or the definitive-management options costs that item.
 9. **Conditions use actions, not flags.** Objectives, rubric items, trends,
    events and contraindications test `intervened` rather than the flags the
    interventions set. A learner-sent `flag` action cannot complete an
-   objective or earn a positive rubric item.
+   objective or earn a positive rubric item. Every flag a condition reads
+   (including the penalty flags `analgesia-delayed`, `theatre-premature`,
+   `nom-without-ct`, `perforation-suspected` and `delayed-source-control`) is
+   set by an intervention or event, so `ClinicalSession` refuses learner
+   `flag` actions on it. A raw engine replay could still clear one.
+10. **NPC briefs stay within what the learner has elicited.**
+    - The pharmacist's brief no longer states "no known drug allergies"
+      (`hx-allergies` is a required history item). It prompts the learner to
+      ask before any antibiotic.
+    - The surgical registrar's brief describes the operative routine, so it
+      names the diagnosis. It is therefore marked `revealsDiagnosis: true`,
+      and its own text says to discuss the routine only after the learner
+      has committed to a diagnosis.
 
 ## Physiology model
 
@@ -196,7 +225,7 @@ Other consistency checks the generator asserts:
 Run with `clinicalcraft cases verify acute-appendicitis`. The solution path
 covers:
 - focused history, then the abdominal and peritonism examination;
-- nil by mouth, morphine, ondansetron and fluids by minute 27;
+- IV access, nil by mouth, morphine, ondansetron and fluids by minute 29;
 - the supportive-care decision, then orders for FBC, CRP, U&E and
   urinalysis;
 - the rest of the history (including pre-operative questions and ICE), then
@@ -206,7 +235,7 @@ covers:
 - the diagnosis, antibiotics, surgical consult, consent, the definitive
   decision, laparoscopic appendectomy and finish.
 
-The verify run finishes at simulated minute 118 (04:13). Every intervention
+The verify run finishes at simulated minute 120 (04:15). Every intervention
 is `indicated`, with no rejections and no alarms, and the deterministic
 rubric scores 25/25.
 
@@ -216,16 +245,19 @@ Replayed wrong paths:
 |---|---|
 | Dawdling 5 h, then finishing the standard pathway (perforation fired) | 72 % |
 | Theatre booked before surgical review and consent | 80 % |
-| Antibiotics-first without a CT | 72 % |
+| Antibiotics-first without a CT | 80 % (`r-mx-abx`, `r-safety`) |
+| Meropenem instead of a narrow pre-operative regimen | 92 % (`r-mx-abx` only) |
 | Guessing the diagnosis | 92 % (loses `r-dx` only) |
-| CT instead of ultrasound | 92 % (loses `r-inv-us-first` only) |
+| Guessing the definitive plan (antibiotics-first, then laparoscopy) | 92 % (loses `r-mx-definitive` only) |
+| CT instead of ultrasound | 92 % (loses `r-inv-us-first` only; nothing "essential missing") |
 | Skipping the urinalysis or the testicular history and examination | cannot finish; the diagnosis decision stays locked |
 
 ## Matcher notes (`extensions.testUtterances`)
 
-All 56 positive utterances (29 zh-CN, 27 en) rank an expected history item first, at or above the 0.55 selection score. Two negatives with `expect: []` (最近压力大吗？, "Do you have any kids?") select nothing, so the patient falls back to `fallbackUnknown`.
-They include 16 colloquial, typo and abbreviation paraphrases (拉稀没有,
-尿尿疼不疼, "any n/v?", "r u allergic to anything", "SOB or chest pain?").
+All 69 positive utterances (35 zh-CN, 34 en) rank an expected history item first, at or above the 0.55 selection score. Three negatives with `expect: []` (最近压力大吗？, 你喜欢看什么电影？, "Which football team do you support?") select nothing, so the patient falls back to `fallbackUnknown`.
+They include 28 colloquial, typo and abbreviation paraphrases (拉稀没有,
+尿尿疼不疼, 恶新想吐不, 输过血没, "any n/v?", "NKDA?", "any alergies",
+"When did u last drink water", "Any pain in your penis?").
 
 Authoring lessons for the offline matcher, all applied here:
 - **English stop words.** "how", "when", "where", "what", "it", "any",
@@ -247,10 +279,36 @@ Authoring lessons for the offline matcher, all applied here:
   4 or more characters. Note also 性病 ⊂ 慢性病.
 - **excludeKeywords.** These separate onset from site, contacts from bowels,
   family from personal history, and identity from weight loss.
+- **Prefix collisions found in the third review** (an utterance token of ≥ 4
+  letters prefixes a one-token keyword of another item and scores 1.0):
+  - test → testis/testicle (blood tests);
+  - part → partner (the `specific` sexual-history item, on "which part hurts?");
+  - peni(s) → penicillin;
+  - press → prescrib(ed);
+  - water → waterworks;
+  - heart → heartburn;
+  - head → headache;
+  - flat → flatus;
+  - side → "which side".
+
+  They are handled with `excludeKeywords` or by rewording the keyword.
+- **Substring containment.** A one-word keyword of ≥ 4 letters scores 0.9
+  whenever it appears *inside* another word: "ease" ⊂ please/disease, and
+  "operation" ⊂ cooperation.
+- **Stop words also hide inside phrases.** "done", "like" and "on" are stop
+  words, so "tests done" is the single token "test"; use unspaced forms
+  that start with a stop word ("anytestsdone", "thepainlike", "onyourmind").
+- **Chinese generic cores** add to the list above: 怕什么 (什么), 吐了吗 (了吗)
+  and 还有什么问题 (5/6 = 0.83 on any 有什么问题 sentence).
 
 On 313 paraphrases the patient pipeline's select step picks the expected
-fact 98 % of the time, with no extra fact 96 % of the time (before this
-work: 73 % and 66 %).
+fact 98 % of the time, with no extra fact 96 % of the time (before the
+second review: 73 % and 66 %). The third review measured recall@3 on four
+fresh held-out sets *before* tuning on each: 0.903, 0.912, 0.910 and 0.881
+for the committed case (0.88–0.92 on unseen paraphrases). After tuning, all
+313 + 313 probes reach 1.000. 36 bedside statements ("lie flat",
+"press here", "we need some blood tests", "which part of your tummy hurts")
+no longer select a `specific` or `unknown` fact.
 
 ## Guideline references
 

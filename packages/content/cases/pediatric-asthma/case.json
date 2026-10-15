@@ -308,7 +308,7 @@
       "keywords": {
         "zh-CN": [
           "什么时候开始",
-          "多久了",
+          "这样多久了",
           "怎么开始的",
           "起病",
           "喘了多久",
@@ -318,9 +318,13 @@
           "啥时候开始",
           "什么时候喘起来",
           "喘多久了",
-          "开始喘",
+          "开始喘的",
           "怎么来医院了",
-          "什么情况"
+          "什么情况",
+          "几点开始",
+          "不对劲",
+          "喘了几个小时",
+          "几个小时了"
         ],
         "en": [
           "when did it start",
@@ -345,11 +349,13 @@
           "哮喘多久",
           "停了多久",
           "用了多久",
-          "几岁"
+          "几岁",
+          "突然"
         ],
         "en": [
           "stopped",
-          "how long has he had asthma"
+          "how long has he had asthma",
+          "sudden"
         ]
       }
     },
@@ -399,7 +405,9 @@
           "anyone else ill",
           "what set this attack off",
           "triggered this attack",
-          "snotty"
+          "snotty",
+          "poorly",
+          "anyone at home ill"
         ]
       }
     },
@@ -431,7 +439,10 @@
           "在家喷过",
           "在家用了什么药",
           "最后一次喷",
-          "上次喷药"
+          "上次喷药",
+          "间隔",
+          "多久喷一次",
+          "用过什么药"
         ],
         "en": [
           "blue inhaler",
@@ -454,14 +465,88 @@
         "zh-CN": [
           "平时",
           "一周",
-          "每周"
+          "每周",
+          "快用完",
+          "还剩",
+          "过期",
+          "有效期"
         ],
         "en": [
           "normally",
           "usually",
           "per week",
           "a week",
-          "between attacks"
+          "between attacks",
+          "outofdate",
+          "expir",
+          "howmuchisleft"
+        ]
+      }
+    },
+    {
+      "id": "hx-prior-care",
+      "topic": "hpi",
+      "disclosure": "on-ask",
+      "required": false,
+      "question": {
+        "zh-CN": "这次来之前去过别的医院或诊所吗？用过什么治疗？",
+        "en": "Before coming here, has he been seen anywhere else for this attack, or had any other treatment?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）没有，这次没去过别的医院或诊所，是直接从家里过来的。除了在家喷的万托林和昨天在药店买的止咳糖浆，没打过针、没输过液，也没吃过别的药。",
+        "en": "(Mother) No — we haven't been anywhere else this time; we came straight here from home. Apart from the Ventolin at home and the cough syrup from the pharmacy yesterday, he hasn't had any injections, drips or other medicines."
+      },
+      "keywords": {
+        "zh-CN": [
+          "别的医院",
+          "其他医院",
+          "诊所",
+          "社区医院",
+          "看过医生",
+          "去过医院",
+          "打过针",
+          "输过液",
+          "打过点滴",
+          "打过吊针",
+          "挂过水",
+          "外院",
+          "诊治经过",
+          "之前看过"
+        ],
+        "en": [
+          "seen anywhere else",
+          "another hospital",
+          "other hospital",
+          "GP",
+          "clinic",
+          "seen by a doctor before coming",
+          "already been seen",
+          "treatment before coming",
+          "any injections",
+          "prior treatment",
+          "anyone else seen him"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "住院",
+          "住过院",
+          "哮喘门诊",
+          "复查",
+          "复诊",
+          "随访",
+          "上次",
+          "住过"
+        ],
+        "en": [
+          "admitted",
+          "admission",
+          "asthmaclinic",
+          "review",
+          "checkup",
+          "follow-up",
+          "followup",
+          "last"
         ]
       }
     },
@@ -482,17 +567,19 @@
           "喝水",
           "进食",
           "呕吐",
-          "吐了吗",
+          "吐了",
           "小便",
           "尿量",
           "胃口",
-          "吃东西",
-          "吐过吗",
-          "吐了没",
+          "吃东西了",
+          "吐过",
           "尿得",
           "尿了",
           "尿多",
-          "有吐"
+          "有吐",
+          "尿过",
+          "撒尿",
+          "尿尿"
         ],
         "en": [
           "eating",
@@ -505,15 +592,22 @@
           "appetite",
           "feeding",
           "vomit",
-          "peeing"
+          "peeing",
+          "been sick",
+          "being sick"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "吐痰",
-          "痰"
+          "痰",
+          "吃东西的时候"
         ],
-        "en": []
+        "en": [
+          "sickcontact",
+          "anyoneelse",
+          "whilehewaseating"
+        ]
       }
     },
     {
@@ -538,12 +632,15 @@
           "一周用几次",
           "控制情况",
           "跑步喘",
-          "平时怎么样",
+          "平时喘吗",
           "控制得怎么样",
           "平时控制",
           "运动完",
           "运动会喘",
-          "跑完步"
+          "跑完步",
+          "咳醒",
+          "睡觉咳",
+          "平常喘不喘"
         ],
         "en": [
           "cough at night",
@@ -595,6 +692,17 @@
           "coughing fits",
           "what is the cough like"
         ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "止咳",
+          "犬吠"
+        ],
+        "en": [
+          "coughmedicine",
+          "coughsyrup",
+          "coughmixture"
+        ]
       }
     },
     {
@@ -618,9 +726,10 @@
           "退烧药",
           "高烧",
           "烧到",
-          "多少度",
-          "烧了吗",
-          "有烧"
+          "烧到多少度",
+          "烧了",
+          "有烧",
+          "最高多少度"
         ],
         "en": [
           "fever",
@@ -660,7 +769,7 @@
           "胸口痛",
           "胸闷",
           "胸口紧",
-          "哪里痛",
+          "胸口疼",
           "刺痛",
           "疼不疼"
         ],
@@ -672,6 +781,18 @@
           "sharp pain",
           "where does it hurt",
           "sore"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "嗓子",
+          "喉咙",
+          "咽痛"
+        ],
+        "en": [
+          "throat",
+          "earache",
+          "earpain"
         ]
       }
     },
@@ -688,7 +809,7 @@
       },
       "keywords": {
         "zh-CN": [
-          "精神怎么样",
+          "他精神怎么样",
           "嗜睡",
           "犯困",
           "叫得醒",
@@ -697,7 +818,8 @@
           "没精神",
           "蔫",
           "意识清楚吗",
-          "反应怎么样"
+          "他反应怎么样",
+          "精神"
         ],
         "en": [
           "drowsy",
@@ -733,7 +855,7 @@
       },
       "keywords": {
         "zh-CN": [
-          "精神怎么样",
+          "他精神怎么样",
           "嗜睡",
           "犯困",
           "叫得醒",
@@ -742,7 +864,8 @@
           "没精神",
           "蔫",
           "意识清楚吗",
-          "反应怎么样"
+          "他反应怎么样",
+          "精神"
         ],
         "en": [
           "drowsy",
@@ -783,9 +906,11 @@
           "误吸",
           "卡住",
           "突然发作",
-          "吞东西",
+          "误吞",
           "小玩具",
-          "花生"
+          "花生",
+          "吞了东西",
+          "突然"
         ],
         "en": [
           "choking",
@@ -799,7 +924,9 @@
           "lego",
           "bead",
           "coin",
-          "inhaled a small object"
+          "inhaled a small object",
+          "suddenly",
+          "start suddenly"
         ]
       }
     },
@@ -895,7 +1022,9 @@
           "以前喘过吗",
           "既往史",
           "得哮喘多久",
-          "几岁开始"
+          "几岁开始",
+          "谁诊断的",
+          "哪里诊断"
         ],
         "en": [
           "asthma diagnosed",
@@ -933,7 +1062,11 @@
           "以前发作过",
           "类似发作",
           "这样的发作",
-          "住过几次院"
+          "住过几次院",
+          "这么厉害过",
+          "这么严重过",
+          "这么重过",
+          "住过医院"
         ],
         "en": [
           "admitted",
@@ -947,7 +1080,10 @@
           "happened before",
           "number of attacks",
           "hospitalised",
-          "attacks like this before"
+          "attacks like this before",
+          "this bad before",
+          "ed attendances",
+          "attendances"
         ]
       }
     },
@@ -1052,7 +1188,9 @@
           "平时用什么药",
           "长期用啥药",
           "每天用什么药",
-          "每天都用什么药"
+          "每天都用什么药",
+          "用什么喷雾",
+          "用啥喷雾"
         ],
         "en": [
           "preventer",
@@ -1084,7 +1222,10 @@
           "每天都在用",
           "每天都用预防",
           "按时",
-          "过敏"
+          "过敏",
+          "还在用",
+          "最近还用",
+          "最近在用"
         ],
         "en": [
           "regularly",
@@ -1094,7 +1235,14 @@
           "herbal",
           "stop",
           "actually",
-          "allerg"
+          "allerg",
+          "coughmedicine",
+          "whendidhelast",
+          "lasthave",
+          "lastuse",
+          "lasthad",
+          "miss",
+          "forget"
         ]
       }
     },
@@ -1124,7 +1272,11 @@
           "停用",
           "每天坚持",
           "每天都在用",
-          "每天都用了吗"
+          "每天都用了吗",
+          "还在用",
+          "最近还用",
+          "最近在用",
+          "还在喷"
         ],
         "en": [
           "adherence",
@@ -1140,10 +1292,27 @@
           "how long since he stopped",
           "actually every day",
           "use it every day",
-          "every single day"
+          "every single day",
+          "last have his preventer",
+          "last had his preventer",
+          "last used his preventer",
+          "last dose of his preventer",
+          "miss doses",
+          "miss his preventer",
+          "forget his preventer"
         ]
       },
-      "disclosure": "specific"
+      "disclosure": "specific",
+      "excludeKeywords": {
+        "zh-CN": [
+          "万托林",
+          "蓝色"
+        ],
+        "en": [
+          "ventolin",
+          "blueinhaler"
+        ]
+      }
     },
     {
       "id": "hx-technique",
@@ -1164,7 +1333,11 @@
           "面罩",
           "喷药方法",
           "怎么用喷雾",
-          "怎么吸药"
+          "怎么吸药",
+          "储物罐",
+          "怎么喷药",
+          "怎么喷的",
+          "罐子"
         ],
         "en": [
           "spacer",
@@ -1177,6 +1350,43 @@
           "take his inhaler",
           "how he takes his inhaler"
         ]
+      }
+    },
+    {
+      "id": "hx-home-nebuliser",
+      "topic": "medications",
+      "disclosure": "on-ask",
+      "required": false,
+      "question": {
+        "zh-CN": "家里有雾化机吗？在家做过雾化吗？",
+        "en": "Do you have a nebuliser machine at home? Has he had a neb at home?"
+      },
+      "answer": {
+        "zh-CN": "（妈妈）家里没有雾化机，只有那个蓝色的和橙色的喷雾，昨晚也没给他做过雾化。",
+        "en": "(Mother) We don't have a nebuliser at home — just the blue and the orange inhalers. He hasn't had a neb at home."
+      },
+      "keywords": {
+        "zh-CN": [
+          "雾化机",
+          "雾化器",
+          "家用雾化",
+          "在家雾化",
+          "家里雾化",
+          "雾化过"
+        ],
+        "en": [
+          "nebuliser at home",
+          "nebulizer at home",
+          "home nebuliser",
+          "home nebulizer",
+          "neb at home",
+          "nebuliser machine",
+          "nebulizer machine"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [],
+        "en": []
       }
     },
     {
@@ -1198,7 +1408,9 @@
           "中药",
           "糖浆",
           "还吃什么药",
-          "非处方药"
+          "非处方药",
+          "别的药",
+          "吃了别的"
         ],
         "en": [
           "other medicines",
@@ -1262,7 +1474,9 @@
           "家里人",
           "家人",
           "爸爸",
-          "妹妹"
+          "妹妹",
+          "鼻炎",
+          "湿疹"
         ],
         "en": [
           "family",
@@ -1336,7 +1550,7 @@
       },
       "keywords": {
         "zh-CN": [
-          "别的病",
+          "有别的病",
           "其他疾病",
           "其他病",
           "基础病",
@@ -1455,7 +1669,9 @@
           "flu jab",
           "flu vaccine",
           "shots",
-          "immunizations"
+          "immunizations",
+          "uptodate",
+          "jabs"
         ]
       }
     },
@@ -1473,7 +1689,6 @@
       "keywords": {
         "zh-CN": [
           "家族史",
-          "家里人",
           "爸爸",
           "遗传",
           "家人有哮喘",
@@ -1496,7 +1711,18 @@
           "anyone in the family",
           "family hx",
           "fhx",
-          "family hx of asthma"
+          "family hx of asthma",
+          "dad",
+          "daddy"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟"
+        ],
+        "en": [
+          "smok"
         ]
       }
     },
@@ -1519,7 +1745,9 @@
           "烟味",
           "香烟",
           "电子烟",
-          "有人抽烟"
+          "有人抽烟",
+          "烟民",
+          "抽不抽烟"
         ],
         "en": [
           "smoke",
@@ -1554,7 +1782,14 @@
           "家庭情况",
           "家里都有谁",
           "住在一起",
-          "家里几口人"
+          "家里几口人",
+          "小动物",
+          "动物",
+          "谁带孩子",
+          "谁带他",
+          "有猫",
+          "有狗",
+          "猫狗"
         ],
         "en": [
           "who lives at home",
@@ -1564,7 +1799,10 @@
           "dog",
           "living situation",
           "family at home",
-          "who looks after him"
+          "who looks after him",
+          "animals",
+          "animal",
+          "whosathome"
         ]
       }
     },
@@ -1620,8 +1858,12 @@
           "冷空气",
           "猫毛",
           "触发因素",
-          "接触猫",
-          "碰到猫"
+          "接触到猫",
+          "碰到猫",
+          "犯病",
+          "容易发作",
+          "猫会喘",
+          "见到猫"
         ],
         "en": [
           "trigger",
@@ -1697,7 +1939,11 @@
           "最怕什么",
           "忧虑",
           "有什么想法",
-          "放心不下"
+          "放心不下",
+          "你觉得是什么原因",
+          "你觉得为什么",
+          "最怕的",
+          "怕什么"
         ],
         "en": [
           "worried",
@@ -1706,7 +1952,9 @@
           "scared",
           "afraid",
           "what's on your mind",
-          "anxious about"
+          "anxious about",
+          "what do you think caused",
+          "ideas"
         ]
       }
     },
@@ -1733,7 +1981,10 @@
           "吊瓶",
           "输液",
           "打针",
-          "挂水"
+          "挂水",
+          "怎么处理",
+          "想让我们",
+          "希望怎么治"
         ],
         "en": [
           "expect",
@@ -1742,7 +1993,10 @@
           "antibiotics",
           "drip",
           "what would you like",
-          "hope we can do"
+          "hope we can do",
+          "what should we do",
+          "we should do",
+          "what would you like us to do"
         ]
       }
     },
@@ -1763,7 +2017,9 @@
           "多重",
           "多少公斤",
           "称重",
-          "几公斤"
+          "几公斤",
+          "多少斤",
+          "几斤"
         ],
         "en": [
           "weight",
@@ -1792,12 +2048,12 @@
       "keywords": {
         "zh-CN": [
           "哪里不舒服",
-          "感觉怎么样",
+          "你感觉怎么样",
           "小朋友",
-          "问孩子",
+          "问问孩子",
           "难受吗",
-          "怎么了",
-          "现在怎么样"
+          "宝宝怎么了",
+          "他现在怎么样"
         ],
         "en": [
           "how are you feeling",
@@ -1806,7 +2062,7 @@
           "ask the child",
           "are you ok",
           "what's wrong",
-          "how is he now",
+          "howishenow",
           "how is he doing"
         ]
       }
@@ -1825,12 +2081,12 @@
       "keywords": {
         "zh-CN": [
           "哪里不舒服",
-          "感觉怎么样",
+          "你感觉怎么样",
           "小朋友",
-          "问孩子",
+          "问问孩子",
           "难受吗",
-          "怎么了",
-          "现在怎么样"
+          "宝宝怎么了",
+          "他现在怎么样"
         ],
         "en": [
           "how are you feeling",
@@ -1839,7 +2095,7 @@
           "ask the child",
           "are you ok",
           "what's wrong",
-          "how is he now",
+          "howishenow",
           "how is he doing"
         ]
       },
@@ -1869,10 +2125,10 @@
           "好点了吗",
           "现在感觉",
           "好些了吗",
-          "问孩子",
+          "问问孩子",
           "手抖",
           "舒服点了吗",
-          "现在怎么样"
+          "他现在怎么样"
         ],
         "en": [
           "feeling better",
@@ -1881,7 +2137,7 @@
           "ask the child",
           "shaky",
           "improved",
-          "how is he now",
+          "howishenow",
           "how is he doing"
         ]
       }
@@ -1903,11 +2159,11 @@
       "keywords": {
         "zh-CN": [
           "现在感觉",
-          "好了吗",
-          "问孩子",
+          "都好了吗",
+          "问问孩子",
           "想回家",
           "现在还喘吗",
-          "现在怎么样"
+          "他现在怎么样"
         ],
         "en": [
           "how are you feeling now",
@@ -1915,7 +2171,7 @@
           "ask the child",
           "still wheezy",
           "want to go home",
-          "how is he now",
+          "howishenow",
           "how is he doing"
         ]
       }
@@ -1970,7 +2226,10 @@
           "霉菌",
           "霉斑",
           "尘螨",
-          "返潮"
+          "返潮",
+          "有霉",
+          "长霉",
+          "霉味"
         ],
         "en": [
           "damp",
@@ -2000,14 +2259,21 @@
           "过期",
           "有效期",
           "计数器",
-          "空了吗"
+          "空了",
+          "快用完",
+          "剩多少",
+          "还有药吗"
         ],
         "en": [
           "how much is left",
           "empty",
           "expired",
           "expiry date",
-          "dose counter"
+          "dose counter",
+          "outofdate",
+          "indate",
+          "nearly empty",
+          "run out of ventolin"
         ]
       }
     },
@@ -2067,7 +2333,10 @@
           "发绀",
           "体位",
           "整体观察",
-          "望诊"
+          "望诊",
+          "发紫",
+          "嘴唇紫",
+          "口唇发绀"
         ],
         "en": [
           "general appearance",
@@ -2182,7 +2451,7 @@
           "呼吸音",
           "哮鸣音",
           "啰音",
-          "听一下胸部",
+          "听胸部",
           "进气"
         ],
         "en": [
@@ -2534,9 +2803,7 @@
     {
       "id": "ex-anthropometry",
       "system": "general",
-      "requires": [
-        "scale"
-      ],
+      "requires": [],
       "maneuver": {
         "zh-CN": "测量体重和身高",
         "en": "Measure weight and height"
@@ -2560,8 +2827,8 @@
         ]
       },
       "finding": {
-        "zh-CN": "体重 20 kg，身高 116 cm（均约在同龄第50百分位附近）。",
-        "en": "Weight 20 kg, height 116 cm (both around the 50th centile for age)."
+        "zh-CN": "体重 20 kg（分诊时已称），身高 116 cm（均约在同龄第50百分位附近）。",
+        "en": "Weight 20 kg (weighed at triage), height 116 cm (both around the 50th centile for age)."
       }
     },
     {
@@ -2661,7 +2928,7 @@
           "哮鸣音",
           "进气",
           "肺部听诊",
-          "听一下"
+          "再听听"
         ],
         "en": [
           "auscultate",
@@ -2777,7 +3044,7 @@
           "进气",
           "再听",
           "肺部听诊",
-          "听一下"
+          "再听听"
         ],
         "en": [
           "auscultate",
@@ -2809,7 +3076,10 @@
           "发绀",
           "体位",
           "整体观察",
-          "望诊"
+          "望诊",
+          "发紫",
+          "嘴唇紫",
+          "口唇发绀"
         ],
         "en": [
           "general appearance",
@@ -2930,7 +3200,7 @@
           "呼吸音",
           "哮鸣音",
           "啰音",
-          "听一下胸部",
+          "听胸部",
           "进气"
         ],
         "en": [
@@ -3011,7 +3281,7 @@
       },
       "category": "bedside",
       "requires": [
-        "cardiac-monitor"
+        "records"
       ],
       "turnaroundMinutes": 3,
       "risk": "none",
@@ -3316,7 +3586,7 @@
       },
       "category": "bedside",
       "requires": [
-        "cardiac-monitor"
+        "oxygen"
       ],
       "turnaroundMinutes": 15,
       "risk": "none",
@@ -3342,7 +3612,9 @@
           "air trial",
           "oxygen wean trial",
           "pulse ox",
-          "oximetry"
+          "oximetry",
+          "off o2",
+          "o2 off"
         ]
       },
       "results": {
@@ -5562,7 +5834,9 @@
           "fev1"
         ]
       },
-      "requires": [],
+      "requires": [
+        "peak-flow"
+      ],
       "turnaroundMinutes": 0,
       "risk": "none",
       "value": "low-value",
@@ -5613,7 +5887,11 @@
   ],
   "orderMatching": {
     "rules": [],
-    "exact": {},
+    "exact": {
+      "bm": [
+        "poc-glucose"
+      ]
+    },
     "warnings": [
       {
         "investigation": "vbg",
@@ -5710,13 +5988,20 @@
         "zh-CN": [
           "雾化",
           "教",
-          "示范"
+          "示范",
+          "静脉",
+          "静推",
+          "静滴"
         ],
         "en": [
           "neb",
           "teach",
           "technique",
-          "demonstrat"
+          "demonstrat",
+          "intravenous",
+          "ivsalbutamol",
+          "salbutamoliv",
+          "ivalbuterol"
         ]
       },
       "contraindicatedWhen": {
@@ -5780,12 +6065,124 @@
                 "minCount": 2
               }
             ]
+          },
+          {
+            "all": [
+              {
+                "flag": "burst-complete"
+              },
+              {
+                "elapsed": {
+                  "lte": 30
+                }
+              },
+              {
+                "not": {
+                  "flag": "tiring"
+                }
+              },
+              {
+                "not": {
+                  "flag": "life-threatening"
+                }
+              }
+            ]
           }
         ]
       },
       "harm": {
-        "zh-CN": "这已是第9次以上的沙丁胺醇：反复大剂量会导致心动过速、震颤、低钾和乳酸升高。若仍需如此频繁地用药，应升级处理（呼叫上级/PICU，考虑静脉治疗），而不是继续重复同样的药。",
-        "en": "That is more than 8 salbutamol doses: repeated high doses cause tachycardia, tremor, hypokalaemia and raised lactate. If he still needs it this often, escalate (senior/PICU review, IV therapy) rather than keep repeating the same drug."
+        "zh-CN": "沙丁胺醇用得过多过快（累计超过8次，或在没有反应差/危及生命征象时前30分钟内超过3次）：反复大剂量会导致心动过速、震颤、低钾和乳酸升高，却不会带来额外获益。第1小时3次之后应先再评估，再按反应延长间隔；若确实仍需如此频繁地用药，应升级处理（呼叫上级/PICU，考虑静脉治疗），而不是继续重复同样的药。",
+        "en": "Too much salbutamol, too fast (more than 8 doses in total, or more than 3 in the first 30 minutes without a poor response or life-threatening features): repeated high doses cause tachycardia, tremor, hypokalaemia and raised lactate without extra benefit. After the three first-hour doses, reassess and space doses by response; if he genuinely still needs it this often, escalate (senior/PICU review, IV therapy) rather than keep repeating the same drug."
+      }
+    },
+    {
+      "id": "ipratropium-neb",
+      "kind": "medication",
+      "risk": "low",
+      "requires": [
+        "nebulizer"
+      ],
+      "maxDoses": 3,
+      "name": {
+        "zh-CN": "异丙托溴铵雾化吸入",
+        "en": "Nebulised ipratropium bromide"
+      },
+      "aliases": {
+        "zh-CN": [
+          "异丙托溴铵",
+          "爱全乐",
+          "抗胆碱",
+          "异丙托"
+        ],
+        "en": [
+          "ipratropium",
+          "atrovent",
+          "anticholinergic",
+          "ipratropium bromide",
+          "sama"
+        ]
+      },
+      "dose": {
+        "zh-CN": "异丙托溴铵 250 µg 雾化（体重≤20 kg），与沙丁胺醇混合，第1小时每20分钟1次，共3次（重度发作的附加治疗）。",
+        "en": "Ipratropium bromide 250 µg nebulised (weight ≤ 20 kg), mixed with salbutamol, every 20 min ×3 in the first hour (add-on for severe exacerbations)."
+      },
+      "effects": [
+        {
+          "vital": "rr",
+          "delta": -0.5,
+          "onsetMinutes": 5,
+          "rampMinutes": 10
+        }
+      ],
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "与沙丁胺醇混合雾化完毕。",
+        "en": "Given mixed with salbutamol through the nebuliser."
+      }
+    },
+    {
+      "id": "budesonide-neb",
+      "kind": "medication",
+      "risk": "low",
+      "requires": [
+        "nebulizer"
+      ],
+      "maxDoses": 3,
+      "name": {
+        "zh-CN": "布地奈德混悬液雾化吸入",
+        "en": "Nebulised budesonide"
+      },
+      "aliases": {
+        "zh-CN": [
+          "布地奈德",
+          "普米克令舒",
+          "普米克",
+          "布地奈德混悬液",
+          "吸入用布地奈德",
+          "雾化激素",
+          "激素雾化"
+        ],
+        "en": [
+          "budesonide",
+          "pulmicort",
+          "budesonide neb",
+          "nebulised budesonide",
+          "nebulized budesonide",
+          "nebulised steroid",
+          "nebulized steroid",
+          "respules"
+        ]
+      },
+      "dose": {
+        "zh-CN": "布地奈德混悬液每次1 mg雾化吸入（中国儿童哮喘指南：急性发作早期可加用大剂量雾化ICS，如每6～8小时1次）。仅为辅助治疗，不能替代全身糖皮质激素；已给全身激素时，GINA和BTS不推荐常规加用。",
+        "en": "Budesonide nebuliser suspension 1 mg per dose (Chinese paediatric guideline: high-dose nebulised ICS may be added early in an acute attack, e.g. every 6–8 h). An adjunct only — it does not replace the systemic corticosteroid; GINA and BTS do not recommend it routinely once a systemic steroid has been given."
+      },
+      "effects": [],
+      "response": {
+        "zh-CN": "护士按医嘱给他雾化了布地奈德。提醒：雾化吸入激素只是辅助，不能代替口服泼尼松龙（或静脉激素）——全身激素仍需在第1小时内给。",
+        "en": "The nurse gives the budesonide neb. Reminder: nebulised steroid is only an adjunct and does not replace oral prednisolone (or an IV steroid) — he still needs a systemic steroid within the first hour."
       }
     },
     {
@@ -5868,14 +6265,21 @@
         "zh-CN": [
           "气雾剂",
           "储雾罐",
-          "揿"
+          "揿",
+          "静脉",
+          "静推",
+          "静滴"
         ],
         "en": [
           "spacer",
           "puffs",
           "inhaler",
           "pmdi",
-          "mdi"
+          "mdi",
+          "intravenous",
+          "ivsalbutamol",
+          "salbutamoliv",
+          "ivalbuterol"
         ]
       },
       "contraindicatedWhen": {
@@ -5939,59 +6343,34 @@
                 "minCount": 2
               }
             ]
+          },
+          {
+            "all": [
+              {
+                "flag": "burst-complete"
+              },
+              {
+                "elapsed": {
+                  "lte": 30
+                }
+              },
+              {
+                "not": {
+                  "flag": "tiring"
+                }
+              },
+              {
+                "not": {
+                  "flag": "life-threatening"
+                }
+              }
+            ]
           }
         ]
       },
       "harm": {
-        "zh-CN": "这已是第9次以上的沙丁胺醇：反复大剂量会导致心动过速、震颤、低钾和乳酸升高。若仍需如此频繁地用药，应升级处理（呼叫上级/PICU，考虑静脉治疗），而不是继续重复同样的药。",
-        "en": "That is more than 8 salbutamol doses: repeated high doses cause tachycardia, tremor, hypokalaemia and raised lactate. If he still needs it this often, escalate (senior/PICU review, IV therapy) rather than keep repeating the same drug."
-      }
-    },
-    {
-      "id": "ipratropium-neb",
-      "kind": "medication",
-      "risk": "low",
-      "requires": [
-        "nebulizer"
-      ],
-      "maxDoses": 3,
-      "name": {
-        "zh-CN": "异丙托溴铵雾化吸入",
-        "en": "Nebulised ipratropium bromide"
-      },
-      "aliases": {
-        "zh-CN": [
-          "异丙托溴铵",
-          "爱全乐",
-          "抗胆碱",
-          "异丙托"
-        ],
-        "en": [
-          "ipratropium",
-          "atrovent",
-          "anticholinergic",
-          "ipratropium bromide",
-          "sama"
-        ]
-      },
-      "dose": {
-        "zh-CN": "异丙托溴铵 250 µg 雾化（体重≤20 kg），与沙丁胺醇混合，第1小时每20分钟1次，共3次（重度发作的附加治疗）。",
-        "en": "Ipratropium bromide 250 µg nebulised (weight ≤ 20 kg), mixed with salbutamol, every 20 min ×3 in the first hour (add-on for severe exacerbations)."
-      },
-      "effects": [
-        {
-          "vital": "rr",
-          "delta": -0.5,
-          "onsetMinutes": 5,
-          "rampMinutes": 10
-        }
-      ],
-      "indicatedWhen": {
-        "always": true
-      },
-      "response": {
-        "zh-CN": "与沙丁胺醇混合雾化完毕。",
-        "en": "Given mixed with salbutamol through the nebuliser."
+        "zh-CN": "沙丁胺醇用得过多过快（累计超过8次，或在没有反应差/危及生命征象时前30分钟内超过3次）：反复大剂量会导致心动过速、震颤、低钾和乳酸升高，却不会带来额外获益。第1小时3次之后应先再评估，再按反应延长间隔；若确实仍需如此频繁地用药，应升级处理（呼叫上级/PICU，考虑静脉治疗），而不是继续重复同样的药。",
+        "en": "Too much salbutamol, too fast (more than 8 doses in total, or more than 3 in the first 30 minutes without a poor response or life-threatening features): repeated high doses cause tachycardia, tremor, hypokalaemia and raised lactate without extra benefit. After the three first-hour doses, reassess and space doses by response; if he genuinely still needs it this often, escalate (senior/PICU review, IV therapy) rather than keep repeating the same drug."
       }
     },
     {
@@ -6166,7 +6545,11 @@
           "吸入",
           "静脉",
           "控制药",
-          "预防药"
+          "预防药",
+          "布地奈德",
+          "普米克",
+          "雾化激素",
+          "激素雾化"
         ],
         "en": [
           "inhaled",
@@ -6175,7 +6558,11 @@
           "controller",
           "ivsteroid",
           "ivhydrocortisone",
-          "intravenous"
+          "intravenous",
+          "budesonide",
+          "pulmicort",
+          "nebulisedsteroid",
+          "nebulizedsteroid"
         ]
       }
     },
@@ -6601,7 +6988,7 @@
         "zh-CN": [
           "吸入技术教育",
           "储雾罐教学",
-          "教用药",
+          "教他用药",
           "示范",
           "回示",
           "用药指导",
@@ -7417,7 +7804,7 @@
           "unless": {
             "read": "pram"
           },
-          "target": "cardiac-monitor"
+          "target": "records"
         },
         {
           "unless": {
@@ -7681,7 +8068,7 @@
             "read": "pram",
             "phase": "reassess"
           },
-          "target": "cardiac-monitor"
+          "target": "records"
         },
         {
           "target": "board"
@@ -7765,7 +8152,7 @@
             "read": "spo2-ra",
             "phase": "discharge"
           },
-          "target": "cardiac-monitor"
+          "target": "oxygen"
         },
         {
           "unless": {
@@ -8024,8 +8411,8 @@
       "id": "dec-response",
       "kind": "single",
       "prompt": {
-        "zh-CN": "治疗1小时后再评估：PRAM 3分，能说完整句子，吸空气SpO₂约93%，仅散在呼气相哮鸣音；心率约150次/分，双手细颤。下一步最合适的是？",
-        "en": "Reassessment after the first hour: PRAM 3, full sentences, room-air SpO₂ about 93%, scattered expiratory wheeze only; heart rate about 150/min with a fine tremor. What is the most appropriate next step?"
+        "zh-CN": "治疗1小时后再评估：结合你复查的体格检查、PRAM评分和吸空气SpO₂，下一步最合适的是？",
+        "en": "Reassessment after the first hour: based on your repeat examination, the PRAM score and the room-air SpO₂, what is the most appropriate next step?"
       },
       "need": {
         "zh-CN": "完成1小时后的再评估（再次听诊双肺并读取再评估时的PRAM评分）。",
@@ -9586,6 +9973,97 @@
         "locale": "en",
         "expect": [
           "hx-pmh-other"
+        ]
+      },
+      {
+        "text": "娃在外头打过吊针没",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-prior-care"
+        ]
+      },
+      {
+        "text": "家里有雾化机不",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-home-nebuliser"
+        ]
+      },
+      {
+        "text": "储物罐用不用",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-technique"
+        ]
+      },
+      {
+        "text": "万托林快用完了吧",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-unknown-inhaler-left"
+        ]
+      },
+      {
+        "text": "喷药间隔多长时间",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-reliever-use-today"
+        ]
+      },
+      {
+        "text": "娃多少斤",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-weight"
+        ]
+      },
+      {
+        "text": "吐了没得",
+        "locale": "zh-CN",
+        "expect": [
+          "hx-feeding"
+        ]
+      },
+      {
+        "text": "seen by a GP b4 coming in?",
+        "locale": "en",
+        "expect": [
+          "hx-prior-care"
+        ]
+      },
+      {
+        "text": "do u have a neb machine at home",
+        "locale": "en",
+        "expect": [
+          "hx-home-nebuliser"
+        ]
+      },
+      {
+        "text": "any hx of eczema or hayfever",
+        "locale": "en",
+        "expect": [
+          "hx-atopy"
+        ]
+      },
+      {
+        "text": "has he been vomitting",
+        "locale": "en",
+        "expect": [
+          "hx-feeding"
+        ]
+      },
+      {
+        "text": "wat usually triggers his asthma",
+        "locale": "en",
+        "expect": [
+          "hx-triggers"
+        ]
+      },
+      {
+        "text": "is his ventolin out of date",
+        "locale": "en",
+        "expect": [
+          "hx-unknown-inhaler-left"
         ]
       }
     ],
