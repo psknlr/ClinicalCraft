@@ -160,9 +160,10 @@ Instances (`facility.instances`, default `[]`):
 Compilation rules:
 
 * Ids are deterministic: the room is the instance id; every placement,
-  slot, staff member, partition-owned door and zone is `${instance}.${local}`
-  (`icu-1.bed`, `icu-1.slot`, `ward-a.bed-3`). Slot `bed`/`monitor` refs are
-  prefixed the same way.
+  slot, staff member and zone is `${instance}.${local}` (`icu-1.bed`,
+  `icu-1.slot`, `ward-a.bed-3`, `theatre.sterile`). Slot `bed`/`monitor`
+  refs are prefixed the same way; the room's doors follow the room id like
+  any partition door (`door:icu-1:s:0`).
 * Coordinates rotate about the room centre like three.js `rotation.y`
   (`rotateLocal(x, z, 90) = (z, −x)`; at `rot: 180` the front faces −Z),
   then translate to `(x, z)`; equipment and staff `rot` add the instance's;
