@@ -60,7 +60,7 @@ describe("observations are bounded, ordered and oriented", () => {
     expect(perceived).toEqual([...perceived].sort((a, b) => a - b));
     expect(full).toMatchObject({ actor: { id: A, role: "clinician", room: "ed-resus", roomName: "Resuscitation Room", holding: [] }, worldVersion: w.runtime.version });
     expect(full.recentEvents.length).toBeGreaterThan(0);
-    expect(full.recentEvents.at(-1)!.summary).toMatch(/Clinician/);
+    expect(full.recentEvents.at(-1)!.summary).toMatch(/^You: Approach/); // the observer's own action, in the second person (G13)
     // bearings: straight ahead ≈ 0, to the right > 0, to the left < 0
     const monitor = w.runtime.entity("eq:resus1-monitor")!;
     const me = w.runtime.actor(A)!.pose;

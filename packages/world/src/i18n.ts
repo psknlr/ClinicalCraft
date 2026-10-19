@@ -244,6 +244,16 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
   "task.changed": { "zh-CN": "{actor}：{label}", en: "{actor}: {label}" },
   "task.idle": { "zh-CN": "{actor}空闲", en: "{actor} is idle" },
   "action.completed": { "zh-CN": "{actor}：{operation}（{status}）", en: "{actor}: {operation} ({status})" },
+  // the observer's own events (second person; others' stay in the third, G13)
+  "self.moved": { "zh-CN": "你移动了 {distance} 米", en: "You moved {distance} m" },
+  "self.entered-room": { "zh-CN": "你进入{room}", en: "You entered {room}" },
+  "self.left": { "zh-CN": "你离开了房间", en: "You left the room" },
+  "self.discovered": { "zh-CN": "你注意到 {count} 个新对象", en: "You noticed {count} new thing(s)" },
+  "self.held": { "zh-CN": "你拿起了{target}", en: "You picked up {target}" },
+  "self.dropped": { "zh-CN": "你放下了{target}", en: "You put down {target}" },
+  "self.reserved": { "zh-CN": "{target}由你占用", en: "{target} reserved by you" },
+  "self.hygiene": { "zh-CN": "你完成了手卫生", en: "You cleaned your hands" },
+  "self.action": { "zh-CN": "你：{operation}（{status}）", en: "You: {operation} ({status})" },
 };
 
 /** Localised world message for a key ({placeholders} filled from vars; unknown keys are returned as is). */

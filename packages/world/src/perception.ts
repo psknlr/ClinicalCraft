@@ -35,7 +35,7 @@
  * `version`. `canSee` records nothing.
  */
 import { t, type LocalizedText } from "@clinicalcraft/core";
-import { RANGES, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
+import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
 import type { DeviceRules } from "./behaviors.js";
 import { metres, operationName, postureName, roleName, stateName, worldMessage } from "./i18n.js";
 import type { Placed, WorldLocator } from "./locate.js";
@@ -256,12 +256,63 @@ export class Perception {
       actor: { id: actor.id, role: actor.role, pose: { ...actor.pose }, room: actor.room, roomName: room ? t(room.name, this.d.locale) : null, level: actor.pose.level, task: actor.task ? { ...actor.task } : null, holding: [...actor.holding] },
       entities,
       truncated: sorted.length > kept.length,
-      recentEvents: this.d.store
-        .recentEvents(64)
-        .filter((e) => e.type !== "task.changed")
-        .slice(-RECENT_EVENTS)
-        .map((e) => this.summary(e)),
+      recentEvents: this.recent(actor, o),
     };
+  }
+
+  /**
+   * The recent events an actor knows of (G13): its own, its delegates'
+   * (done on its behalf), and those about an actor or entity it perceives
+   * now (visible or nearby) — never another actor's walk out of sight or a
+   * device changed behind a wall. Its own in the second person.
+   */
+  private recent(actor: ActorState, o: PerceptionOptions): WorldEventSummary[] {
+    const perceived = new Map<string, boolean>();
+    const sees = (id: string | null | undefined): boolean => {
+      if (!id) return false;
+      if (id === actor.id) return true;
+      let v = perceived.get(id);
+      if (v === undefined) {
+        const p = this.d.locator.place(id);
+        const a = p ? this.awareness(actor, p, o) : null;
+        v = a === "visible" || a === "nearby";
+        perceived.set(id, v);
+      }
+      return v;
+    };
+    const out: WorldEventSummary[] = [];
+    for (const e of this.d.store.recentEvents(64)) if (e.type !== "task.changed" && this.knows(actor, e, sees, o)) out.push(this.summary(e, actor.id));
+    return out.slice(-RECENT_EVENTS);
+  }
+
+  private knows(actor: ActorState, e: WorldEvent, sees: (id: string | null | undefined) => boolean, o: PerceptionOptions): boolean {
+    if (e.onBehalfOf === actor.id) return true;
+    switch (e.type) {
+      case "actor.discovered":
+        return e.actorId === actor.id; // what another actor noticed is in its head
+      case "actor.moved":
+      case "actor.entered-room":
+      case "hygiene":
+      case "action.completed":
+        return sees(e.actorId);
+      case "item.held":
+      case "entity.state":
+      case "entity.moved":
+        return sees(e.actorId) || sees(e.entityId);
+      case "door.changed":
+        return e.actorId === actor.id || sees(e.entityId);
+      case "reservation.changed":
+        return e.reservedBy === actor.id || sees(e.entityId);
+      case "entity.availability":
+        return sees(e.entityId);
+      case "obstacle.changed": {
+        const r = e.obstacle.rect;
+        const at = { x: r.x, z: r.z };
+        return e.obstacle.level === actor.pose.level && Math.hypot(at.x - actor.pose.x, at.z - actor.pose.z) <= o.visibilityRange && this.d.locator.visibility.visibleFrom(actor.pose.level, actor.pose, { level: e.obstacle.level, position: at, footprint: { w: r.w, d: r.d } });
+      }
+      default:
+        return false;
+    }
   }
 
   /** `find`: entities matching a query that the actor is aware of (default: any awareness). */
@@ -395,21 +446,23 @@ export class Perception {
   }
 
   /** Localised one-line summary of an event. */
-  summary(e: WorldEvent): WorldEventSummary {
+  summary(e: WorldEvent, observer?: ActorId): WorldEventSummary {
     const L = this.d.locale;
     const n = (id: string) => this.d.locator.name(id);
+    /** The observer's own event: the second-person key (`self.*`), else the third-person one. */
+    const key = (actorId: string | null | undefined, third: string, self: string) => (observer !== undefined && actorId === observer ? self : third);
     let summary: string;
     switch (e.type) {
       case "actor.moved":
-        summary = worldMessage("actor.moved", L, { actor: n(e.actorId), distance: metres(e.distance) });
+        summary = worldMessage(key(e.actorId, "actor.moved", "self.moved"), L, { actor: n(e.actorId), distance: metres(e.distance) });
         break;
       case "actor.entered-room": {
         const room = e.room ? this.d.locator.registry.entity(`room:${e.room}`) : null;
-        summary = room ? worldMessage("actor.entered-room", L, { actor: n(e.actorId), room: t(room.name, L) }) : worldMessage("actor.left", L, { actor: n(e.actorId) });
+        summary = room ? worldMessage(key(e.actorId, "actor.entered-room", "self.entered-room"), L, { actor: n(e.actorId), room: t(room.name, L) }) : worldMessage(key(e.actorId, "actor.left", "self.left"), L, { actor: n(e.actorId) });
         break;
       }
       case "actor.discovered":
-        summary = worldMessage("actor.discovered", L, { actor: n(e.actorId), count: e.entities.length });
+        summary = worldMessage(key(e.actorId, "actor.discovered", "self.discovered"), L, { actor: n(e.actorId), count: e.entities.length });
         break;
       case "entity.state":
         summary = worldMessage("entity.state", L, { target: n(e.entityId), from: e.from ? (this.d.rules.stateLabel(e.entityId, e.from) ?? e.from) : "—", to: e.to ? (this.d.rules.stateLabel(e.entityId, e.to) ?? e.to) : "—" });
@@ -418,13 +471,13 @@ export class Perception {
         summary = worldMessage("entity.moved", L, { target: n(e.entityId) });
         break;
       case "item.held":
-        summary = worldMessage(e.held ? "item.held" : "item.dropped", L, { actor: n(e.actorId), target: n(e.entityId) });
+        summary = worldMessage(e.held ? key(e.actorId, "item.held", "self.held") : key(e.actorId, "item.dropped", "self.dropped"), L, { actor: n(e.actorId), target: n(e.entityId) });
         break;
       case "door.changed":
         summary = worldMessage("door.changed", L, { target: n(e.entityId), state: stateName(e.locked ? "locked" : e.open ? "open" : "closed", L) });
         break;
       case "reservation.changed":
-        summary = e.reservedBy ? worldMessage("reservation.changed", L, { target: n(e.entityId), actor: n(e.reservedBy) }) : worldMessage("reservation.released", L, { target: n(e.entityId) });
+        summary = e.reservedBy ? worldMessage(key(e.reservedBy, "reservation.changed", "self.reserved"), L, { target: n(e.entityId), actor: n(e.reservedBy) }) : worldMessage("reservation.released", L, { target: n(e.entityId) });
         break;
       case "obstacle.changed":
         summary = worldMessage(e.present ? "obstacle.changed" : "obstacle.cleared", L, { label: t(e.obstacle.label, L) });
@@ -433,13 +486,13 @@ export class Perception {
         summary = worldMessage(e.available ? "entity.available" : "entity.availability", L, { target: n(e.entityId) });
         break;
       case "hygiene":
-        summary = worldMessage("hygiene", L, { actor: n(e.actorId) });
+        summary = worldMessage(key(e.actorId, "hygiene", "self.hygiene"), L, { actor: n(e.actorId) });
         break;
       case "task.changed":
         summary = e.task ? worldMessage("task.changed", L, { actor: n(e.actorId), label: e.task.label }) : worldMessage("task.idle", L, { actor: n(e.actorId) });
         break;
       case "action.completed":
-        summary = worldMessage("action.completed", L, { actor: n(e.actorId), operation: operationName(e.operation, L), status: e.errorCode ?? e.status });
+        summary = worldMessage(key(e.actorId, "action.completed", "self.action"), L, { actor: n(e.actorId), operation: operationName(e.operation, L), status: e.errorCode ?? e.status });
         break;
     }
     return { id: e.id, type: e.type, summary };
