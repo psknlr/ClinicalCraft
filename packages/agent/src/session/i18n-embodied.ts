@@ -135,6 +135,22 @@ export const EMBODIED_EN = {
   "cmd.embodiedOnly": "/{name} works in embodied mode only (start with --embodied).",
   "cmd.skills.list": "Skills:",
   "cmd.map.header": "Rooms (nearest first):",
+
+  // world bridge: an external agent attached to this live session (§12)
+  "bridge.invalidCall": "An external tool call needs a call id, a tool name and object arguments.",
+  "bridge.duplicateCall": "An external tool call with id {callId} is already queued or running.",
+  "bridge.cancelledBeforeStart": "The external agent's {tool} call was cancelled before it started.",
+  "bridge.notRun": "The call did not run (it was cancelled, or the session has ended).",
+  "bridge.toolNotAllowed": "{tool} is not available to the external agent in this session.",
+  "bridge.bypass": "External control is paused: this session's approval mode is bypass, so nothing would ask the learner. Choose another approval mode to let the external agent act.",
+  "bridge.closed": "The learner's session has ended.",
+  "bridge.disconnected": "The learner disconnected the external agent.",
+  "bridge.unauthorized": "The ClinicalCraft server needs its access token: open this page once with ?token=<token>.",
+  "bridge.unsupported": "This ClinicalCraft server does not support external control; update it.",
+  "bridge.refused": "The ClinicalCraft server refused the connection: {message}",
+  "bridge.network": "Cannot reach the ClinicalCraft server: {message}",
+  "bridge.streamEnded": "The command channel closed; reconnecting.",
+  "bridge.busy": "Too many external calls at once (at most {max}); this one was not run.",
 } as const;
 
 export type EmbodiedKey = keyof typeof EMBODIED_EN;
@@ -260,4 +276,19 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "cmd.embodiedOnly": "/{name} 仅在具身模式下可用（用 --embodied 启动）。",
   "cmd.skills.list": "技能：",
   "cmd.map.header": "房间（由近及远）：",
+
+  "bridge.invalidCall": "外部工具调用需要调用 ID、工具名称和对象形式的参数。",
+  "bridge.duplicateCall": "ID 为 {callId} 的外部工具调用已在排队或执行中。",
+  "bridge.cancelledBeforeStart": "外部代理的 {tool} 调用在开始前已被取消。",
+  "bridge.notRun": "该调用未执行（已被取消，或会话已结束）。",
+  "bridge.toolNotAllowed": "本会话不允许外部代理使用 {tool}。",
+  "bridge.bypass": "外部控制已暂停：本会话的审批模式为 bypass，任何操作都不会征求学员同意。请改用其他审批模式后再让外部代理操作。",
+  "bridge.closed": "学员的会话已结束。",
+  "bridge.disconnected": "学员已断开外部代理。",
+  "bridge.unauthorized": "ClinicalCraft 服务需要访问令牌：请先用 ?token=<令牌> 打开一次本页面。",
+  "bridge.unsupported": "此 ClinicalCraft 服务不支持外部控制，请更新。",
+  "bridge.refused": "ClinicalCraft 服务拒绝了连接：{message}",
+  "bridge.network": "无法连接 ClinicalCraft 服务：{message}",
+  "bridge.streamEnded": "命令通道已关闭，正在重新连接。",
+  "bridge.busy": "同时进行的外部调用过多（最多 {max} 个）；本次调用未执行。",
 };

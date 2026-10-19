@@ -292,8 +292,23 @@ export const ROOT: CommandSpec = {
     {
       name: "mcp",
       summary: { en: "MCP server on stdio (let Claude Code / Codex / Grok play the clinician)", zh: "stdio MCP 服务（让 Claude Code / Codex / Grok 扮演医生）" },
-      flags: [...SESSION_FLAGS],
+      flags: [
+        ...SESSION_FLAGS,
+        {
+          name: "attach",
+          type: "string",
+          valueName: "<url>",
+          description: {
+            en: "Act in a learner's live browser session through `clinicalcraft serve` at <url> (the learner enables external control in the web world; approvals stay with the learner)",
+            zh: "通过 <url> 上的 `clinicalcraft serve` 在学员的实时浏览器会话中操作（学员需在网页世界中开启外部控制；审批仍由学员决定）",
+          },
+        },
+        { name: "world-session", type: "string", valueName: "<id>", description: { en: "Attach: the live session to act in (default: the only one open)", zh: "连接模式：要操作的实时会话（默认：唯一打开的会话）" } },
+        { name: "token-file", type: "string", valueName: "<path>", description: { en: "Attach: read the server's access token from this file (or CLINICALCRAFT_SERVER_TOKEN)", zh: "连接模式：从该文件读取服务的访问令牌（或用 CLINICALCRAFT_SERVER_TOKEN）" } },
+        { name: "timeout", type: "number", valueName: "<sec>", description: { en: "Attach: how long a call waits for the live session, approvals included (default 120)", zh: "连接模式：每次调用等待实时会话的时长（含审批，默认 120 秒）" } },
+      ],
       run: runMcp,
+      examples: ["clinicalcraft mcp --provider offline", "clinicalcraft mcp --attach http://127.0.0.1:5178", "clinicalcraft mcp --attach http://127.0.0.1:5178 --token-file ~/.clinicalcraft/server-token --world-session ls_…"],
     },
     {
       name: "import-v4",

@@ -16,9 +16,10 @@ import type { Readable, Writable } from "node:stream";
 import { CLINICALCRAFT_VERSION, sanitizeTerminal, type AgentProfile, type LLMProvider, type ProviderConfig, type ResolvedSettings } from "@clinicalcraft/agent";
 import { CaseLibrary, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
 import { normalizeLocale } from "@clinicalcraft/core";
-import { classifyMessage, LineSplitter, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcRequest, type JsonRpcResponse } from "./jsonrpc.js";
+import { classifyMessage, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcRequest, type JsonRpcResponse } from "./jsonrpc.js";
 import { listResources, listResourceTemplates, readResource } from "./resources.js";
 import { SessionManager } from "./sessions.js";
+import { serveStdio } from "./stdio.js";
 import { callTool, checkArguments, mcpTools, type McpToolSpec, type ToolHost } from "./tools.js";
 
 /** Newest protocol revision this server speaks. */
@@ -250,42 +251,7 @@ export async function runMcpServer(opts: RunMcpServerOptions): Promise<{ session
   const input = (opts.input ?? opts.stdin ?? process.stdin) as NodeJS.ReadableStream;
   const output = (opts.output ?? opts.stdout ?? process.stdout) as NodeJS.WritableStream;
   const server = new McpServer(opts);
-  const log = safeLog(opts.log ?? stderrLog);
-  let outputBroken = false;
-  output.on("error", (err: Error) => {
-    outputBroken = true;
-    log(`output error: ${err.message}`);
-  });
-  const send = (message: JsonRpcResponse | JsonRpcResponse[] | null) => {
-    if (message === null || outputBroken) return;
-    output.write(`${JSON.stringify(message)}\n`);
-  };
-  const pending = new Set<Promise<void>>();
-  const onLine = (line: string) => {
-    let value: unknown;
-    try {
-      value = JSON.parse(line);
-    } catch (err) {
-      send(rpcError(null, RPC_ERRORS.parseError, `Parse error: ${(err as Error).message}`));
-      return;
-    }
-    const task = server
-      .handle(value)
-      .then(send, (err: unknown) => log(`unhandled: ${err instanceof Error ? err.message : String(err)}`))
-      .finally(() => pending.delete(task));
-    pending.add(task);
-  };
-
-  const splitter = new LineSplitter();
-  try {
-    for await (const chunk of input as AsyncIterable<string | Uint8Array>) {
-      for (const line of splitter.push(chunk)) onLine(line);
-    }
-  } catch (err) {
-    log(`input error: ${err instanceof Error ? err.message : String(err)}`);
-  }
-  for (const line of splitter.end()) onLine(line);
-  while (pending.size > 0) await Promise.allSettled([...pending]);
+  await serveStdio(server, { input, output, log: safeLog(opts.log ?? stderrLog) });
   const count = server.sessions.list().length;
   await server.close();
   return { sessions: count };

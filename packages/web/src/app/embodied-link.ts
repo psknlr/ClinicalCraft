@@ -21,7 +21,7 @@ import { tr, trMaybe } from "../i18n/index.js";
 import type { ActionFeedback } from "../ui/feedback.js";
 import { placementIdOf, staffIdOf, type BrowserMover } from "./embodied.js";
 import type { AppSession } from "./session.js";
-import { approachDecision, bedsideCapsNow, checkIsRange, entitySpot, resultIsRange } from "./spatial.js";
+import { approachDecision, bedsideCapsNow, checkIsRange, commandRefusal, entitySpot, refusalLead, resultIsRange } from "./spatial.js";
 import type { LogEntry } from "./store.js";
 
 /** World tools during which an agent may drive a body: real-time ticks pause (EMBODIED R8). */
@@ -338,21 +338,29 @@ export class EmbodiedLink {
         if (msg.type === "error" && (msg.code === "SPATIAL_REQUIREMENT_UNMET" || msg.code === "SPATIAL_PRECONDITION_CHANGED")) this.spatialError(id, msg.message);
         return;
       }
-      case "tool_call_end": {
-        if (msg.tool !== "delegate_task") return;
-        const d = (msg.data as { delegation?: { staffId: string | null; task: string; status: string } } | undefined)?.delegation;
-        if (!d?.staffId) return;
-        const world = this.world;
-        const L = this.o.locale();
-        const e = world?.entity(d.staffId);
-        const who = e ? t(e.name, L) : d.staffId;
-        const task = trTask(d.task);
-        this.o.toast(tr(d.status === "completed" ? "emb.toast.delegatedDone" : "emb.toast.delegatedFailed", { who, task }), "", d.status === "completed" ? "success" : "warning", `delegate-${d.staffId}`);
+      case "command_output": {
+        // a slash command (`/vitals`, `/order …`) refused for where the body stands: the reason, with "Go there"
+        const refused = commandRefusal(msg.data);
+        if (refused) this.o.feedback.show({ text: refused.message || refusalLead(msg.text), goal: refused.hint?.goal ?? null, label: refused.hint?.label ?? null, tone: "refused" });
+        // `/delegate` (the conversation's delegate chips): its outcome
+        if (msg.name === "delegate") this.delegated(delegationOf(msg.data));
         return;
       }
+      case "tool_call_end":
+        if (msg.tool === "delegate_task") this.delegated(delegationOf(msg.data));
+        return;
       default:
         return;
     }
+  }
+
+  /** A delegated task ended: who did (or could not do) what. */
+  private delegated(d: Delegation | null): void {
+    if (!d?.staffId) return;
+    const e = this.world?.entity(d.staffId);
+    const who = e ? t(e.name, this.o.locale()) : d.staffId;
+    const done = d.status === "completed";
+    this.o.toast(tr(done ? "emb.toast.delegatedDone" : "emb.toast.delegatedFailed", { who, task: trTask(d.task) }), "", done ? "success" : "warning", `delegate-${d.staffId}`);
   }
 
   private spatialError(submission: string, message: string): void {
@@ -363,7 +371,7 @@ export class EmbodiedLink {
     const check = world && intent ? world.checkSpatial(PRIMARY_ACTOR, intent) : null;
     const hint = check && !check.ok ? check.hint : null;
     // the session's text names the model-facing tool call ("navigate_to {…}"): the learner gets the reason only
-    const text = check && !check.ok ? check.message : (message.split("\n")[0] ?? message);
+    const text = check && !check.ok ? check.message : refusalLead(message);
     this.o.feedback.show({ text, goal: hint?.goal ?? null, label: hint?.label ?? null, tone: "refused" });
   }
 
@@ -421,6 +429,27 @@ export class EmbodiedLink {
   get walking(): boolean {
     return this.o.mover.isMoving(PRIMARY_ACTOR);
   }
+}
+
+/** What the UI shows of a delegation's outcome. */
+export interface Delegation {
+  staffId: string | null;
+  task: string;
+  status: string;
+}
+
+/**
+ * The delegation in a `delegate_task` result: a tool call's data (`{ delegation }`) or a `/delegate`
+ * command's output data (`{ ok, data: { delegation } }`); null otherwise.
+ */
+export function delegationOf(data: unknown): Delegation | null {
+  const pick = (v: unknown): Delegation | null => {
+    const d = v && typeof v === "object" ? (v as { delegation?: unknown }).delegation : undefined;
+    if (!d || typeof d !== "object") return null;
+    const { staffId, task, status } = d as Record<string, unknown>;
+    return typeof task === "string" && typeof status === "string" ? { staffId: typeof staffId === "string" ? staffId : null, task, status } : null;
+  };
+  return pick(data) ?? pick(data && typeof data === "object" ? (data as { data?: unknown }).data : undefined);
 }
 
 /** A delegation task's name ("Attach the monitor" / "连接监护仪"), else its id. */

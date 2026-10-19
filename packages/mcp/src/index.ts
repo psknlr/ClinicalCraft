@@ -8,3 +8,5 @@ export { bridgedTools, SessionToolRunner, type SessionToolRunnerOptions, type To
 export { mcpApprovalMode, SessionManager, sessionFlags, type LoggedEvent, type McpSession, type SessionManagerOptions } from "./sessions.js";
 export { CASES_URI, listResources, listResourceTemplates, readResource, type ResourceHost } from "./resources.js";
 export { classifyMessage, LineSplitter, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcResponse } from "./jsonrpc.js";
+export { serveStdio, type JsonRpcHandler, type StdioOptions } from "./stdio.js";
+export { AttachedMcpServer, attachTools, runAttachedMcpServer, type AttachMcpOptions, type RunAttachedMcpServerOptions } from "./attach.js";

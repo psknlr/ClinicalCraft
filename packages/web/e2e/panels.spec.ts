@@ -58,6 +58,8 @@ test("map, inventory, crafting, help, atlas, autopilot", async ({ page }) => {
   await page.evaluate(() => {
     const qa = (window as any).__QA__;
     qa.dispatch({ type: "order", investigationId: "abdct" });
+    // embodied mode: CT images are read at an imaging workstation — set-up reads it (this checks the figures)
+    qa.dispatch({ type: "read", investigationId: "abdct" });
     qa.route("report", { investigationId: "abdct", phase: "pre", back: { panel: "journal" } });
   });
   await expect(page.locator(".report-images .image-tile").first()).toBeVisible();
@@ -78,9 +80,13 @@ test("map, inventory, crafting, help, atlas, autopilot", async ({ page }) => {
     await page.waitForTimeout(400);
   }
   await shot(page, "autopilot");
+  // stop it; an approval it asks for meanwhile is answered first (the dialog holds the turn and the pointer)
   const stop = page.locator("#autopilot-stop");
-  if (await stop.isVisible()) await stop.click();
-  await expect(page.locator("#autopilot-start")).toBeVisible({ timeout: 60_000 });
+  await expect(async () => {
+    if (await page.locator("#approval").isVisible()) await page.locator("#approval-approve").click({ timeout: 2_000 });
+    if (await stop.isVisible()) await stop.click({ timeout: 2_000 });
+    await expect(page.locator("#autopilot-start")).toBeVisible({ timeout: 2_000 });
+  }).toPass({ timeout: 60_000 });
 
   expect(errors).toEqual([]);
 });

@@ -47,6 +47,23 @@ const EN = {
   "debrief.unsafe": "Contraindicated interventions given: {count}",
   "debrief.judged": "Examiner judgements:",
   "debrief.failed": "The assessment could not be produced: {message}",
+  // attach mode (`clinicalcraft mcp --attach`): a learner's live browser session
+  "attach.noSession":
+    "No live browser session — open the web world (served by `clinicalcraft serve` at {server}), start an encounter and enable “Allow an external agent to control this session”, then call again.",
+  "attach.choose": "{count} live sessions are open: pass session_id (see list_live_sessions) to choose one — {list}",
+  "attach.unknownSession": "No live session \"{id}\" on {server}: it ended, or the learner disconnected it. Open sessions: {open}",
+  "attach.notAvailable": "{tool} is not available in this live session (it accepts: {tools}).",
+  "attach.notEmbodied": "{tool} needs an embodied encounter: this live session is in clinical mode (the learner chose it; it is fixed for the encounter).",
+  "attach.timeout": "{tool} did not finish within {seconds} s in the live session and was cancelled there — the learner may not have answered an approval yet. {message}",
+  "attach.unreachable": "Cannot reach the ClinicalCraft server at {server}: {message}",
+  "attach.unauthorized": "The ClinicalCraft server at {server} refused the access token: give its token with --token-file or CLINICALCRAFT_SERVER_TOKEN.",
+  "attach.failed": "{tool} could not run in the live session: {message} ({code})",
+  "attach.sessionsHeader": "Live sessions on {server} ({count}):",
+  "attach.sessionLine": "- {id} — {title} · {embodiment} · {facility} · {state}",
+  "attach.connected": "connected",
+  "attach.disconnected": "browser not connected",
+  "attach.approvals": "Approvals answered by the learner: {list}",
+  "attach.none": "none",
 } as const;
 
 export type McpMessageKey = keyof typeof EN;
@@ -93,6 +110,22 @@ const ZH: Record<McpMessageKey, string> = {
   "debrief.unsafe": "给予了禁忌的处置：{count} 次",
   "debrief.judged": "考官判定：",
   "debrief.failed": "无法生成评估：{message}",
+  "attach.noSession":
+    "没有实时浏览器会话——请打开网页世界（由 `clinicalcraft serve` 在 {server} 提供），开始一次接诊并开启“允许外部代理控制本会话”，然后再调用。",
+  "attach.choose": "当前有 {count} 个实时会话：请传入 session_id（见 list_live_sessions）选择一个——{list}",
+  "attach.unknownSession": "{server} 上没有实时会话“{id}”：它已结束，或学员已断开。当前会话：{open}",
+  "attach.notAvailable": "该实时会话不提供 {tool}（可用：{tools}）。",
+  "attach.notEmbodied": "{tool} 需要具身模式的接诊：该实时会话为临床模式（由学员选择，在一次接诊中固定不变）。",
+  "attach.timeout": "{tool} 未在 {seconds} 秒内于实时会话中完成，已在那里取消——学员可能尚未回应审批。{message}",
+  "attach.unreachable": "无法连接 {server} 上的 ClinicalCraft 服务：{message}",
+  "attach.unauthorized": "{server} 上的 ClinicalCraft 服务拒绝了访问令牌：请用 --token-file 或 CLINICALCRAFT_SERVER_TOKEN 提供其令牌。",
+  "attach.failed": "{tool} 无法在实时会话中执行：{message}（{code}）",
+  "attach.sessionsHeader": "{server} 上的实时会话（{count}）：",
+  "attach.sessionLine": "- {id} — {title} · {embodiment} · {facility} · {state}",
+  "attach.connected": "已连接",
+  "attach.disconnected": "浏览器未连接",
+  "attach.approvals": "学员回应的审批：{list}",
+  "attach.none": "无",
 };
 
 /** Localised MCP message with `{name}` placeholders filled in. */

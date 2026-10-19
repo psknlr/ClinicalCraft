@@ -93,7 +93,11 @@ const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
 const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_for_session", "denied", "abort"]);
 
 /** Ops that start work and are cancelled while still queued by an interrupt or shutdown. */
-const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess", "world_action"]);
+const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess", "world_action", "external_tool_call"]);
+
+/** Longest `external_tool_call` call id / tool name accepted (world bridge). */
+const EXTERNAL_CALL_ID_MAX = 200;
+const EXTERNAL_TOOL_NAME_MAX = 64;
 
 /** A valid patient affect intensity (0 calm … 3 most intense). */
 function isAffectIntensity(value: unknown): value is PatientMemory["affectIntensity"] {
@@ -205,6 +209,8 @@ export class ClinicalSession implements ClinicalSessionApi {
   private readonly skillList: SkillDefinition[];
   /** `world_pose` refusals already reported (once per session in clinical mode). */
   private poseRefused = false;
+  /** External agents' tool calls (world bridge) queued or running, by call id: their own cancellation. */
+  private readonly externalCalls = new Map<string, { controller: AbortController }>();
 
   constructor(opts: CreateSessionOptions) {
     this.opts = opts;
@@ -502,6 +508,14 @@ export class ClinicalSession implements ClinicalSessionApi {
         } else this.emit(id, { type: "warning", message: rt(this.locale, "warning.unknownDynamicCall", { id: op.callId }) });
         return Promise.resolve();
       }
+      case "external_tool_cancel": {
+        // Out-of-band, like an interrupt — but only this call: queued, it never runs; running, it is aborted.
+        const entry = typeof op.callId === "string" ? this.externalCalls.get(op.callId) : undefined;
+        entry?.controller.abort();
+        return Promise.resolve();
+      }
+      case "external_tool_call":
+        return this.acceptExternalCall(id, op);
       case "shutdown":
         this.closing = true;
         this.interrupt(id);
@@ -509,6 +523,33 @@ export class ClinicalSession implements ClinicalSessionApi {
       default:
         return this.enqueue(id, op);
     }
+  }
+
+  /** Queue an external agent's tool call (world bridge): validated, one per call id, cancellable on its own. */
+  private acceptExternalCall(id: string, op: Extract<Op, { type: "external_tool_call" }>): Promise<void> {
+    const L = this.locale;
+    const callId = op?.callId;
+    const valid =
+      typeof callId === "string" &&
+      callId.length > 0 &&
+      callId.length <= EXTERNAL_CALL_ID_MAX &&
+      typeof op.tool === "string" &&
+      op.tool.length > 0 &&
+      op.tool.length <= EXTERNAL_TOOL_NAME_MAX &&
+      (op.args === undefined || (typeof op.args === "object" && op.args !== null && !Array.isArray(op.args)));
+    if (!valid) {
+      this.emit(id, { type: "error", message: rt(L, "bridge.invalidCall"), code: "invalid_op" });
+      return Promise.resolve();
+    }
+    if (this.externalCalls.has(callId)) {
+      this.emit(id, { type: "error", message: rt(L, "bridge.duplicateCall", { callId }), code: "duplicate_call" });
+      return Promise.resolve();
+    }
+    const entry = { controller: new AbortController() };
+    this.externalCalls.set(callId, entry);
+    return this.enqueue(id, op).finally(() => {
+      if (this.externalCalls.get(callId) === entry) this.externalCalls.delete(callId);
+    });
   }
 
   private enqueue(id: string, op: Op): Promise<void> {
@@ -545,6 +586,8 @@ export class ClinicalSession implements ClinicalSessionApi {
           return await this.withTurn(id, (signal) => this.runAutopilot(id, op.goal, op.maxTurns, signal));
         case "world_action":
           return void (await this.withTurn(id, (signal) => this.worldAction(id, op.request, signal)));
+        case "external_tool_call":
+          return await this.withTurn(id, (signal) => this.externalToolCall(id, op, signal));
         case "configure":
           return this.configure(id, op.patch);
         case "compact":
@@ -557,6 +600,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         case "approval_response":
         case "dynamic_tool_response":
         case "world_pose":
+        case "external_tool_cancel":
           return;
         default: {
           const never: never = op;
@@ -589,6 +633,60 @@ export class ClinicalSession implements ClinicalSessionApi {
       return;
     }
     await this.embodied.act({ agent: "learner", submission: id, signal }, request, signal);
+  }
+
+  /**
+   * An external agent's tool call (`external_tool_call`, world bridge — docs/EMBODIED.md §12): the clinician's
+   * tool path (`executeToolCall` with the clinician's tools: allow-list, scope, deny rules, hooks, precheck, the
+   * approval gate — an ask goes to the learner as an `approval_request`) in a clinician turn of its own. Its
+   * outcome ends the turn: `turn_complete` when the tool ran (ok or not), `turn_aborted` `denied` (a rule, a hook
+   * or the learner refused) or `interrupted` (cancelled by `external_tool_cancel` or an interrupt).
+   */
+  private async externalToolCall(id: string, op: Extract<Op, { type: "external_tool_call" }>, turnSignal: AbortSignal): Promise<void> {
+    const entry = this.externalCalls.get(op.callId);
+    if (!entry || entry.controller.signal.aborted || turnSignal.aborted) {
+      this.emit(id, { type: "warning", message: rt(this.locale, "bridge.cancelledBeforeStart", { tool: String(op.tool) }) });
+      return;
+    }
+    const signal = entry.controller.signal;
+    // An interrupt (the learner's Esc, shutdown) cancels the call too.
+    const onInterrupt = () => entry.controller.abort();
+    turnSignal.addEventListener("abort", onInterrupt, { once: true });
+    const turnId = this.newId();
+    const started = this.now();
+    this.emit(id, { type: "turn_started", turnId, agent: "clinician" });
+    // A state-changing tool starts the encounter once the gate let it through (as the learner's and MCP's paths do).
+    const tools = this.toolsFor("clinician").map((tool): ToolDefinition<any> =>
+      tool.readOnly
+        ? tool
+        : {
+            ...tool,
+            run: (args: Record<string, unknown>, ctx: ToolContext) => {
+              this.ensureStarted(id);
+              return tool.run(args, ctx);
+            },
+          },
+    );
+    let status: AgentOutcome["status"] = "end_turn";
+    try {
+      const outcome = await executeToolCall({
+        host: this.loopHost(id),
+        agent: "clinician",
+        tools,
+        call: { id: op.callId, name: op.tool, args: op.args ?? {} },
+        ctx: this.toolContext("clinician", id, signal),
+        emit: (msg) => this.emit(id, msg),
+        turnId,
+        signal,
+        now: this.now,
+      });
+      if (outcome.status === "denied" || outcome.status === "blocked") status = "denied";
+      // A tool that stopped short because the call was cancelled (a walk interrupted mid-way) was cancelled too.
+      else if (outcome.status === "cancelled" || outcome.status === "interrupted" || (signal.aborted && outcome.status !== "ok")) status = "interrupted";
+    } finally {
+      turnSignal.removeEventListener("abort", onInterrupt);
+    }
+    this.finishTurn(id, turnId, "clinician", { status, text: "", grounded: [] }, started);
   }
 
   /** A sensor pose (`world_pose` op). */

@@ -400,6 +400,8 @@ export class ClinicalCraftApp implements App {
 
   submit(op: Op, view?: string): string | null {
     if (!this.game) return null;
+    // embodied: the world judges what an op asks for from where the avatar stands — tell it first
+    if (op.type !== "world_pose") this.game.embodied?.syncPose();
     return this.game.session.submit(op, view);
   }
 

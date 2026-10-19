@@ -6,7 +6,7 @@
  * language switch, and save → reload → continue.
  */
 import { expect, test } from "@playwright/test";
-import { enterCase, freshStart, shot, talkToPatient } from "./helpers.js";
+import { enterCase, freshStart, placeAvatar, shot, talkToPatient } from "./helpers.js";
 
 test.use({ locale: "en-US" });
 
@@ -38,6 +38,9 @@ test("STEMI (en): vitals, monitor, approval, settings, save/continue", async ({ 
   await expect(page.locator("#sim-clock")).toBeVisible();
   await shot(page, "en-hud-monitor-off");
 
+  // Embodied mode (the default): the monitor's buttons are operations of the device in the world, so the
+  // learner stands at the bedside — between the bed and its monitor (cuff and screen within reach).
+  await placeAvatar(page, 30.1, -18.75, { x: 31, z: -17.3 });
   // V opens the bedside monitor: dark until attached; no rhythm, no NIBP, the triage readings listed.
   await page.locator("#world").focus();
   await page.keyboard.press("KeyV");

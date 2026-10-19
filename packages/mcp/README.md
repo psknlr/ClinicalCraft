@@ -59,5 +59,14 @@ clinical tool), and deny rules hold. On a clinical session the world tools
 return `isError` with `structuredContent.error = "not_embodied"`. The case
 list comes from the case index; only the started case is validated.
 
-Contract: [docs/PROTOCOL.md §11–§12](../../docs/PROTOCOL.md). Tests:
+**Attach mode.** `clinicalcraft mcp --attach <server> [--world-session <id>]
+[--token-file f] [--timeout <sec>]` (`runAttachedMcpServer`) acts in a
+learner's LIVE browser session through `clinicalcraft serve` instead:
+`list_live_sessions` plus the clinical and world tools with an optional
+`session_id` (the only open session is chosen automatically), no
+`start_case` and no `confirm` — approvals go to the learner in the browser
+and a denial comes back as `status: "denied"`. `notifications/cancelled`
+cancels a call in the browser too.
+
+Contract: [docs/PROTOCOL.md §11–§13](../../docs/PROTOCOL.md). Tests:
 `npx vitest run packages/mcp`.

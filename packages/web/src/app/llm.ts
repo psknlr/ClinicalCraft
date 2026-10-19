@@ -101,7 +101,9 @@ export function runtimeChoice(llm: LlmPrefs, server: ServerInfo | null): Runtime
   if (llm.mode === "proxy") {
     if (!server?.served) return { provider: "offline", model: null, mode: "offline", fellBack: true };
     const upstream = llm.proxyProvider.trim();
-    return { provider: upstream ? `proxy:${upstream}` : "proxy", model: llm.proxyModel.trim() || null, mode: "proxy", fellBack: false };
+    // no model chosen: the one the server will use for that upstream (its capabilities — tools, vision — follow it)
+    const serverDefault = upstream ? (server.providers.find((p) => p.id === upstream)?.defaultModel ?? "") : "";
+    return { provider: upstream ? `proxy:${upstream}` : "proxy", model: llm.proxyModel.trim() || serverDefault.trim() || null, mode: "proxy", fellBack: false };
   }
   const tpl = findProviderTemplate(llm.directProvider);
   if (!tpl || (tpl.wire !== "anthropic-messages" && tpl.wire !== "openai-chat-completions")) return { provider: "offline", model: null, mode: "offline", fellBack: true };

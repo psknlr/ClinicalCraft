@@ -75,7 +75,9 @@ export function traceGroups(spans: readonly TraceSpan[], hintOf: (actionId: stri
     // a lone action (no plan): the action itself is the first step
     const items = root && root.kind !== "plan" ? [root, ...g.members] : g.members;
     for (const s of items) {
-      const step: TraceStepView = { id: s.id, kind: s.kind, name: s.name, ok: s.ok, depth: s === root ? 0 : depthOf(s, root?.kind === "plan" ? root.id : (root?.id ?? key)) };
+      // under a plan its own spans start at depth 0; under a lone action they sit one level below it
+      const depth = s === root ? 0 : depthOf(s, root?.id ?? key) + (root && root.kind !== "plan" ? 1 : 0);
+      const step: TraceStepView = { id: s.id, kind: s.kind, name: s.name, ok: s.ok, depth };
       if (s.refs.errorCode) step.errorCode = s.refs.errorCode;
       if (!s.ok && s.refs.actionId) {
         const hint = hintOf(s.refs.actionId);

@@ -20,6 +20,10 @@
  *   preflight.
  * - **Headers** — nosniff, no-referrer, frame-ancestors none and a CSP that
  *   fits the Vite build.
+ * - **World bridge** (`/api/world/sessions…`, `world-sessions.ts`) — all of
+ *   the above applies; the browser's channel routes also need the live
+ *   session's secret in `x-clinicalcraft-channel`, a header deliberately not
+ *   offered to cross-origin callers (docs/PROTOCOL.md §13.5).
  */
 import { timingSafeEqual } from "node:crypto";
 import type { IncomingMessage } from "node:http";

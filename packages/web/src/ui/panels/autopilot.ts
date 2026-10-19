@@ -49,6 +49,8 @@ export function autopilotPanel(app: App): () => PanelView {
 
     const start = (watch: boolean) => {
       if (store.autopilotRunning) return;
+      // embodied: the agent takes the body over from where the learner left it
+      game.embodied?.syncPose();
       void game.session.autopilot(goal.value);
       if (watch) app.close();
       render();

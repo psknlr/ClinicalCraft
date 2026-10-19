@@ -1,8 +1,10 @@
 /**
  * `@clinicalcraft/server` — node:http server for `clinicalcraft serve`
  * (docs/PROTOCOL.md §11, docs/ASSETS.md): the web build, the content API,
- * local-only assets, the provider list, the provider-neutral LLM proxy and
- * transcript uploads. Security policy: see `security.ts`.
+ * local-only assets, the provider list, the provider-neutral LLM proxy,
+ * transcript uploads and the world bridge (`world-sessions.ts`: live browser
+ * sessions an external agent acts in through `clinicalcraft mcp --attach`).
+ * Security policy: see `security.ts`.
  */
 import { createServer, type IncomingMessage, type RequestListener, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -27,6 +29,7 @@ import {
 } from "./security.js";
 import { serveLocalAsset, serveStatic } from "./static.js";
 import { isValidSessionId, parseTranscriptUpload, TranscriptQuotaError, WebTranscriptStore, type WebTranscriptStoreOptions } from "./transcripts.js";
+import { WorldSessionRouter, type WorldSessionRouterOptions } from "./world-sessions.js";
 
 export interface ServerOptions {
   /** Port to listen on (0 = any free port). Default `settings.server.port`. */
@@ -64,6 +67,8 @@ export interface ServerOptions {
   maxBodyBytes?: number;
   /** Caps on uploaded web transcripts (default 16 MiB per file, 500 files). */
   transcriptQuota?: WebTranscriptStoreOptions;
+  /** World bridge timing and limits (live browser sessions for `clinicalcraft mcp --attach`; tests, embedding). */
+  worldSessions?: WorldSessionRouterOptions;
   /** Diagnostics sink (default: stderr). */
   log?: (message: string) => void;
 }
@@ -111,6 +116,8 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const csp = contentSecurityPolicy(connectOrigins);
   const baseHeaders = securityHeaders(csp);
   const transcripts = new WebTranscriptStore(env, settings.transcripts.dir, opts.transcriptQuota);
+  // Live browser sessions an external agent may act in (docs/EMBODIED.md §12): the routes run after auth, origin and host checks.
+  const world = new WorldSessionRouter({ maxBodyBytes: maxBody, log, ...(opts.worldSessions ?? {}) });
   const shutdown = new AbortController();
   const streams = new Set<Promise<void>>();
   const contentDirs = opts.contentDirs ?? settings.contentDirs;
@@ -215,7 +222,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
 
     if (area === "health" && !kind) {
       if (!get) return notAllowed("GET, HEAD");
-      return sendJson(res, 200, { status: "ok", name: "clinicalcraft", version: CLINICALCRAFT_VERSION, provider: settings.provider, locale: settings.locale, auth: token !== null, connectOrigins });
+      return sendJson(res, 200, { status: "ok", name: "clinicalcraft", version: CLINICALCRAFT_VERSION, provider: settings.provider, locale: settings.locale, auth: token !== null, connectOrigins, worldBridge: true });
     }
     if (area === "providers" && !kind) {
       if (!get) return notAllowed("GET, HEAD");
@@ -288,6 +295,10 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       }
       return sendJson(res, 200, { ok: true, written: result.written, stored: true });
     }
+    if (area === "world") {
+      if (kind !== "sessions") return sendError(res, 404, "not_found", sm(L, "error.notFound"));
+      return world.handle(req, res, method, [id, ...rest].filter((part): part is string => part !== undefined), L);
+    }
     return sendError(res, 404, "not_found", sm(L, "error.notFound"));
   };
 
@@ -343,6 +354,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     });
   }) as RequestHandler;
   listener.close = async () => {
+    world.close();
     shutdown.abort();
     await Promise.allSettled([...streams]);
     await transcripts.flush();

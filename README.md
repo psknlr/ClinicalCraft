@@ -311,6 +311,42 @@ again with `"confirm": true` once its user agreed. `--approval bypass` drops
 that step (unsafe; for unattended benchmarks only). `--provider`/`--model`
 choose the models behind the patient and staff (offline by default).
 
+### Act in a learner's live 3D world (`mcp --attach`)
+
+`clinicalcraft mcp --attach <server>` gives the agent the same clinical and
+world tools, but in an encounter a learner is playing in the browser — the
+learner watches the avatar walk and act, and answers every approval:
+
+```bash
+npm run build && npm run cc -- serve      # http://127.0.0.1:5178 (loopback; see "Web world and server" for tokens)
+
+# Claude Code
+claude mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --cwd "$PWD"
+# Codex CLI
+codex mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --cwd "$PWD"
+# Grok CLI
+grok mcp add clinicalcraft-live --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --cwd "$PWD"
+```
+
+Then, in the web world, start an encounter and switch on **Allow an external
+agent to control this session** (off by default, per encounter; a badge shows
+while an agent is connected and disconnects it with one click). *The toggle
+arrives with the web integration ([PROTOCOL §13.6](docs/PROTOCOL.md)); the
+runtime, the server routes and `mcp --attach` are in place — any front-end
+can expose a session with `connectWorldBridge` from `@clinicalcraft/agent`.*
+
+The agent calls `list_live_sessions`, then `navigate_to`, `interact_object`,
+`examine`, `intervene`… as the clinician, through the session's own approval
+gate: an action that needs approval appears in the learner's approval dialog
+— the agent cannot approve its own requests (attach mode has no `confirm`)
+and a denial comes back as `status: "denied"`. With one live session open it
+is chosen automatically; otherwise pass `session_id` (or `--world-session`).
+Calls time out after 120 s (`--timeout`) and are cancelled in the browser
+when the client cancels them. A server with an access token needs it here
+too: `--token-file <path>` or `CLINICALCRAFT_SERVER_TOKEN` in the MCP
+server's environment — never in the URL. Routes, message shapes and the
+security model: [docs/PROTOCOL.md §13](docs/PROTOCOL.md).
+
 ## Configuration
 
 Settings are layered like Claude Code / Codex (later wins):

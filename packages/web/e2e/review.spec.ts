@@ -200,7 +200,8 @@ test.describe("assets, toasts and the finished HUD", () => {
     expect(seen).toEqual(["burst-0", "burst-5", "burst-6", "burst-7"]);
 
     // Report figures: placeholders instead of broken images.
-    await dispatch(page, [{ type: "order", investigationId: "abdct" }]);
+    // embodied mode: CT images are read at an imaging workstation — set-up reads it (this checks the placeholders)
+    await dispatch(page, [{ type: "order", investigationId: "abdct" }, { type: "read", investigationId: "abdct" }]);
     await page.evaluate(() => (window as any).__QA__.route("report", { investigationId: "abdct", phase: "pre", back: { panel: "journal" } }));
     const tiles = page.locator(".report-images .image-tile");
     await expect(tiles.first()).toBeVisible();

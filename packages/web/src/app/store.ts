@@ -8,6 +8,7 @@
  */
 import type { AgentEvent, AgentRole, ApprovalDecision, EventMsg, Op, PlanItem, TurnPhase } from "@clinicalcraft/agent";
 import type { WorldActionResult } from "@clinicalcraft/world";
+import { commandRefusal, refusalLead, SPATIAL_CODES } from "./spatial.js";
 import { t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 
 export type LogEntry =
@@ -421,7 +422,11 @@ export class SessionStore {
       }
       case "command_output": {
         const where = this.views.get(ev.id) ?? this.interlocutor;
-        if (msg.text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text: msg.text, grounded: [], streaming: false, tone: "command", at });
+        // a command refused for where the body stands (embodied): the reason only — "Go there" does the rest
+        const refused = commandRefusal(msg.data);
+        const text = refused ? refusalLead(msg.text) : msg.text;
+        if (refused && ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
+        if (text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text, grounded: [], streaming: false, tone: refused ? "error" : "command", at });
         break;
       }
       case "plan_updated":
@@ -439,9 +444,10 @@ export class SessionStore {
       case "error": {
         if (msg.type === "error") this.assessing = false;
         // a spatial refusal of a learner action (embodied mode) is action feedback: the patient's conversation shows it
-        const spatial = msg.type === "error" && (msg.code === "SPATIAL_REQUIREMENT_UNMET" || msg.code === "SPATIAL_PRECONDITION_CHANGED");
+        const spatial = msg.type === "error" && !!msg.code && SPATIAL_CODES.has(msg.code);
         const where = this.views.get(ev.id) ?? (spatial ? "patient" : undefined);
-        const text = msg.message.trim();
+        // its second line tells a model which tool call fixes it: not for the learner
+        const text = spatial ? refusalLead(msg.message) : msg.message.trim();
         if (ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
         if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at });
         break;

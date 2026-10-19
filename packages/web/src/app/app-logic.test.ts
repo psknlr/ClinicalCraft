@@ -75,6 +75,13 @@ describe("runtimeChoice", () => {
     expect(runtimeChoice({ ...llm, mode: "proxy", proxyProvider: "zhipu", proxyModel: "glm-4.6" }, served)).toEqual({ provider: "proxy:zhipu", model: "glm-4.6", mode: "proxy", fellBack: false });
     expect(runtimeChoice({ ...llm, mode: "proxy" }, served).provider).toBe("proxy");
   });
+  it("takes the server's default model of the chosen upstream when none is set (vision, tools follow the model)", () => {
+    const withDefaults: ServerInfo = { served: true, health: { ok: true }, providers: [{ id: "anthropic", configured: true, name: "Anthropic", defaultModel: "claude-opus-5-5", models: ["claude-opus-5-5"] }] };
+    expect(runtimeChoice({ ...llm, mode: "proxy", proxyProvider: "anthropic" }, withDefaults).model).toBe("claude-opus-5-5");
+    expect(runtimeChoice({ ...llm, mode: "proxy", proxyProvider: "anthropic", proxyModel: "claude-sonnet-5-5" }, withDefaults).model).toBe("claude-sonnet-5-5");
+    expect(runtimeChoice({ ...llm, mode: "proxy" }, withDefaults).model).toBeNull();
+    expect(runtimeChoice({ ...llm, mode: "proxy", proxyProvider: "zhipu" }, withDefaults).model).toBeNull();
+  });
   it("falls back to offline in direct mode without a key, except for key-less local servers", () => {
     expect(runtimeChoice({ ...llm, mode: "direct", directProvider: "anthropic" }, null)).toMatchObject({ mode: "offline", fellBack: true });
     expect(runtimeChoice({ ...llm, mode: "direct", directProvider: "ollama" }, null)).toMatchObject({ mode: "direct", provider: "ollama" });

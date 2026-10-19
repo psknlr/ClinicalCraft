@@ -133,7 +133,82 @@ export async function runServe(ctx: CliContext, args: ParsedArgs): Promise<numbe
   return EXIT.ok;
 }
 
+type RunAttachedMcpServer = (o: {
+  stdin: NodeJS.ReadableStream;
+  stdout: NodeJS.WritableStream;
+  serverUrl: string;
+  token: string | null;
+  worldSession: string | null;
+  callTimeoutMs?: number;
+  locale?: string;
+}) => Promise<unknown>;
+
+/** Flags of `mcp` that only apply to attach mode, and session flags that never do (the live session has its own settings). */
+const ATTACH_ONLY_FLAGS = ["world-session", "token-file", "timeout"] as const;
+const SESSION_ONLY_FLAGS = ["provider", "model", "base-url", "approval", "scope", "facility", "max-tool-rounds", "ephemeral", "embodied", "allowed-tools", "disallowed-tools"] as const;
+
+/**
+ * `--attach <url>`: `clinicalcraft serve`'s base URL — http(s), without
+ * credentials, query or fragment (a token there would be visible in the
+ * process list; it comes from `--token-file` or the environment).
+ */
+export function attachServerUrl(ctx: CliContext, raw: string): string {
+  let u: URL;
+  try {
+    u = new URL(raw);
+  } catch {
+    throw new UsageError(ctx.t("mcp.attach.badUrl", { value: raw }));
+  }
+  if (u.protocol !== "http:" && u.protocol !== "https:") throw new UsageError(ctx.t("mcp.attach.badUrl", { value: raw }));
+  if (u.username || u.password || u.search || u.hash) throw new UsageError(ctx.t("mcp.attach.urlSecret"));
+  return `${u.origin}${u.pathname.replace(/\/+$/, "")}`;
+}
+
+/**
+ * `clinicalcraft mcp --attach <url> [--world-session <id>] [--token-file f] [--timeout <sec>]`:
+ * the MCP tools act in a learner's live browser session through the world
+ * bridge of `clinicalcraft serve` (docs/EMBODIED.md §12). The token comes from
+ * `--token-file`, `CLINICALCRAFT_SERVER_TOKEN` or `server.token`.
+ */
+async function runMcpAttach(ctx: CliContext, args: ParsedArgs, raw: string): Promise<number> {
+  const serverUrl = attachServerUrl(ctx, raw);
+  for (const flag of SESSION_ONLY_FLAGS) if (args.flags[flag] !== undefined) throw new UsageError(ctx.t("mcp.attach.sessionFlag", { flag: `--${flag}` }));
+  const settings = await loadCliSettings(ctx, ctx.lang ? { locale: ctx.lang } : undefined);
+  const file = flagString(args, "token-file");
+  let token: string | undefined;
+  if (file !== undefined) {
+    const path = ctx.path(file);
+    try {
+      token = readFileSync(path, "utf8").trim() || undefined;
+    } catch (err) {
+      throw new UsageError(ctx.t("serve.tokenFile", { file: path, message: (err as Error).message }));
+    }
+  } else token = ctx.env[SERVER_TOKEN_ENV]?.trim() || settings.server.token || undefined;
+  const worldSession = flagString(args, "world-session");
+  if (worldSession !== undefined && !/^[A-Za-z0-9_-]{8,64}$/.test(worldSession)) throw new UsageError(ctx.t("mcp.attach.badSession", { value: worldSession }));
+  const timeout = flagNumber(args, "timeout");
+  if (timeout !== undefined && !(timeout >= 1 && timeout <= 600)) throw new UsageError(ctx.t("mcp.attach.badTimeout"));
+  const url = new URL(serverUrl);
+  if (token && url.protocol === "http:" && !isLoopback(url.hostname)) ctx.printErr(ctx.err.yellow(ctx.t("mcp.attach.cleartext", { host: url.host })));
+  const loaded = await importExport<RunAttachedMcpServer>(ctx, "@clinicalcraft/mcp", "runAttachedMcpServer");
+  if (!("fn" in loaded)) throw new CliError(ctx.t("mcp.unavailable", { reason: loaded.reason }), EXIT.error, ctx.t("serve.buildHint"));
+  // stdout carries JSON-RPC only: diagnostics go to stderr.
+  await loaded.fn({
+    stdin: ctx.io.stdin,
+    stdout: ctx.io.stdout,
+    serverUrl,
+    token: token ?? null,
+    worldSession: worldSession ?? null,
+    ...(timeout !== undefined ? { callTimeoutMs: Math.round(timeout * 1000) } : {}),
+    locale: settings.locale,
+  });
+  return EXIT.ok;
+}
+
 export async function runMcp(ctx: CliContext, args: ParsedArgs): Promise<number> {
+  const attach = flagString(args, "attach");
+  if (attach !== undefined) return runMcpAttach(ctx, args, attach);
+  for (const flag of ATTACH_ONLY_FLAGS) if (args.flags[flag] !== undefined) throw new UsageError(ctx.t("mcp.attach.only", { flag: `--${flag}` }));
   const flags = await sessionFlagsLayer(ctx, args);
   // A `--provider` without its key is an error, never a silent offline patient behind the client's back.
   await requireProviderKey(ctx, args, flags);

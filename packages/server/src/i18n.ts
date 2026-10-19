@@ -28,6 +28,19 @@ const EN = {
   "error.noWebBuild": "The web build was not found. Run `npm run build` (or pass --static <dir>).",
   "error.badSessionId": "Invalid session id.",
   "error.transcriptQuota": "Transcript storage limit reached on the server; this upload was not stored.",
+  "error.world.unknownSession": "No live session \"{id}\": it was never registered, or it has ended. Open the web world and enable external control.",
+  "error.world.expired": "Live session \"{id}\" expired: its browser stopped sending heartbeats.",
+  "error.world.closed": "Live session \"{id}\" ended: the learner disconnected external control.",
+  "error.world.forbiddenChannel": "The channel secret of this live session is missing or wrong.",
+  "error.world.tooManySessions": "Too many live sessions are registered (at most {max}).",
+  "error.world.tooManyCalls": "Too many calls are waiting for live session \"{id}\" (at most {max}).",
+  "error.world.toolNotAvailable": "Live session \"{id}\" does not accept {tool} (it accepts: {tools}).",
+  "error.world.conflict": "Correlation id \"{correlationId}\" was already used for a different call.",
+  "error.world.timeout": "The live session did not finish {tool} within {seconds} s (an approval may still have been waiting for the learner); the call was cancelled.",
+  "error.world.timeoutUnacked": "The live session did not pick up {tool} within {seconds} s; the call was cancelled.",
+  "error.world.notConnected": "The browser of live session \"{id}\" is not connected (no command channel for {seconds} s).",
+  "error.world.cancelled": "{tool} was cancelled before the live session finished it.",
+  "error.world.serverClosing": "The server is shutting down.",
 } as const;
 
 export type ServerMessageKey = keyof typeof EN;
@@ -55,6 +68,19 @@ const ZH: Record<ServerMessageKey, string> = {
   "error.noWebBuild": "未找到网页构建产物。请运行 `npm run build`（或传入 --static <目录>）。",
   "error.badSessionId": "会话 id 无效。",
   "error.transcriptQuota": "服务器上的会话记录已达存储上限，本次上传未保存。",
+  "error.world.unknownSession": "没有实时会话“{id}”：它从未注册，或已经结束。请打开网页世界并开启外部控制。",
+  "error.world.expired": "实时会话“{id}”已过期：其浏览器已停止发送心跳。",
+  "error.world.closed": "实时会话“{id}”已结束：学员断开了外部控制。",
+  "error.world.forbiddenChannel": "缺少该实时会话的通道密钥，或密钥错误。",
+  "error.world.tooManySessions": "已注册的实时会话过多（最多 {max} 个）。",
+  "error.world.tooManyCalls": "等待实时会话“{id}”处理的调用过多（最多 {max} 个）。",
+  "error.world.toolNotAvailable": "实时会话“{id}”不接受 {tool}（可用：{tools}）。",
+  "error.world.conflict": "关联 ID“{correlationId}”已用于另一个不同的调用。",
+  "error.world.timeout": "实时会话未在 {seconds} 秒内完成 {tool}（可能仍在等待学员审批）；该调用已取消。",
+  "error.world.timeoutUnacked": "实时会话未在 {seconds} 秒内接收 {tool}；该调用已取消。",
+  "error.world.notConnected": "实时会话“{id}”的浏览器未连接（已 {seconds} 秒没有命令通道）。",
+  "error.world.cancelled": "{tool} 在实时会话完成之前已被取消。",
+  "error.world.serverClosing": "服务器正在关闭。",
 };
 
 /** Localised server message with `{name}` placeholders filled in. */

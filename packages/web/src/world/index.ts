@@ -45,7 +45,7 @@ import { buildRules, canPlace, cellKey, validBlocks, type BuildRules, type Cell 
 import type { BuildContext, DoorRecord, LightCandidate, NpcRecord } from "./context.js";
 import { captureJpeg } from "./capture.js";
 import { buildElevators, inCar, type Elevator, type ElevatorStop, type ElevatorTarget } from "./elevator.js";
-import { ROUTE_ARRIVE, worldRouteLegs, yawOfRig } from "./embodiment.js";
+import { polylineLength, ROUTE_ARRIVE, worldRouteLegs, yawOfRig } from "./embodiment.js";
 import { buildPlacements, surfaceTop } from "./equipment.js";
 import { ModelCache, modelUrl, placeModel, shortUrl } from "./models.js";
 import { WorldLevels } from "./levels.js";
@@ -64,6 +64,7 @@ import { roleName, strings, tx } from "./strings.js";
 import { buildTerrain } from "./terrain.js";
 import { createLcg } from "./textures.js";
 import { BoxBatch, isSharedGeometry, releaseSharedGeometry, UNIT_BOX } from "./voxels.js";
+import { nextWaypoint, steer, walkBudget } from "./steer.js";
 import { StaffWalkers } from "./walkers.js";
 
 export { monitorRenderer } from "../shared/monitor-render.js";
@@ -164,7 +165,16 @@ interface AutoWalk {
   route?: { opened: Set<DoorRecord>; detours: number };
   /** Current leg is a `path` leg of a world-model route. */
   pathLeg?: boolean;
+  /** Simulated seconds a world-model route may still take before the walk gives up (`walkBudget`). */
+  budget?: number;
 }
+
+/** Longest stretch of an agent's walk (s) simulated in one slow frame (in physics sub-steps). */
+const AGENT_FRAME_MAX = 0.5;
+/** A world-model route walk gives up after this many local detours (blocked repeatedly). */
+const MAX_ROUTE_DETOURS = 8;
+/** Stalled this close (m) to a route's last point, the walk ends there (the spot is occupied or out of reach). */
+const ROUTE_SETTLE = 0.8;
 
 export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const buildStart = performance.now();
@@ -1190,8 +1200,14 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         return null;
       }
     }
-    let wp = w.path[w.index];
-    while (Math.hypot(wp.x - player.x, wp.z - player.z) < 0.35 && w.index < w.path.length - 1) wp = w.path[++w.index];
+    if (w.budget !== undefined && (w.budget -= dt) <= 0) {
+      // a world-model route that cannot be finished (blocked again and again): stop where the body is
+      cancelWalk(new Error("stuck"));
+      return null;
+    }
+    // reached or already passed (a slow frame's long step): on to the next waypoint
+    w.index = nextWaypoint(w.path, w.index, player.x, player.z);
+    const wp = w.path[w.index];
     if (w.index === w.path.length - 1 && Math.hypot(wp.x - player.x, wp.z - player.z) < 0.35) {
       w.index++;
       return null;
@@ -1216,18 +1232,22 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       w.stall = 0;
       if (w.replanBase - remaining > 1) w.replans = 0;
     } else if ((w.stall += dt) > 3) {
+      // a route's last spot that cannot be reached (somebody stands there): the walk ends next to it
+      if (w.route && !w.legs.length && (!levels.multi || currentLevel() === w.level) && Math.hypot(w.goal.x - player.x, w.goal.z - player.z) <= ROUTE_SETTLE) {
+        cancelWalk(null);
+        return null;
+      }
       // blocked (an NPC stepped in, a door swung): re-plan from here, give up after 3 fruitless tries
       if (!replan(w)) {
         cancelWalk(new Error("stuck"));
         return null;
       }
     }
-    const want = Math.atan2(-(wp.x - player.x), -(wp.z - player.z));
-    let dy = want - yaw;
-    dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-    yaw += dy * Math.min(1, 0.18);
-    pitch += (0 - pitch) * 0.1;
-    return { forward: Math.abs(dy) < 1.2 ? 1 : 0.15, side: 0, sprint: Math.hypot(wp.x - player.x, wp.z - player.z) > 6 };
+    // frame-rate independent steering (steer.ts): turns in place before walking off towards a waypoint behind
+    const s = steer(yaw, player.x, player.z, wp, dt);
+    yaw = s.yaw;
+    pitch += (0 - pitch) * Math.min(1, dt * 6);
+    return { forward: s.forward, side: 0, sprint: s.sprint };
   }
 
   const NAV_RADIUS = PHYSICS.radius + 0.08;
@@ -1265,7 +1285,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     let path: { x: number; z: number }[];
     if (w.fixed) path = w.fixed.filter((p, i) => i === w.fixed!.length - 1 || Math.hypot(p.x - player.x, p.z - player.z) > 0.35);
     else if (w.pathLeg) {
-      // a world-model route: a local detour to its next point, then on along its points
+      // a world-model route: a local detour to its next point, then on along its points (a bounded number of times)
+      if (w.route && w.route.detours >= MAX_ROUTE_DETOURS) return false;
       const rest = w.path.slice(Math.min(w.index, Math.max(0, w.path.length - 1)));
       if (!rest.length) return false;
       const p = planPath(rest[0], w.level);
@@ -1465,6 +1486,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         level: here,
         legs,
         route: tracker,
+        budget: walkBudget(polylineLength(player.x, player.z, route)),
       };
       if (!nextLeg(w)) {
         finish(false);
@@ -1662,7 +1684,12 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     // autopilot (walk_to) runs even while paused / before start(): a panel may be open
     // while the agent walks the learner somewhere; user input stays blocked (playing()).
-    const walking = autoWalk ? autoWalkInput(frozen ? 0 : dt) : null;
+    // An agent's walk keeps (nearly) real time on slow frames: physics sub-steps of ≤ maxDt
+    // (a human's step stays clamped — a hitch must not throw the player forward).
+    const walkTime = autoWalk && !frozen ? Math.min(realDt, AGENT_FRAME_MAX) : dt;
+    const subSteps = Math.max(1, Math.ceil(walkTime / PHYSICS.maxDt - 1e-9));
+    const stepDt = walkTime / subSteps;
+    const walking = autoWalk ? autoWalkInput(frozen ? 0 : stepDt) : null;
     updateRide(Math.min(realDt, 1)); // an animation, not physics: real time (slow frames do not stretch the ride)
     if (playing() || walking) {
       const px = player.x, pz = player.z;
@@ -1670,7 +1697,14 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       const input = walking
         ? { forward: walking.forward, side: 0, yaw, sprint, jump: false }
         : { forward: (keys.KeyW ? 1 : 0) - (keys.KeyS ? 1 : 0), side: (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0), yaw, sprint, jump: !!keys.Space };
-      if (!frozen && !ride) stepPlayer(player, input, dt, nearbyColliders(), walkBounds);
+      if (!frozen && !ride) {
+        stepPlayer(player, input, walking ? stepDt : dt, nearbyColliders(), walkBounds);
+        for (let i = 1; i < subSteps && walking && autoWalk && !ride; i++) {
+          const more = autoWalkInput(stepDt);
+          if (!more) break;
+          stepPlayer(player, { forward: more.forward, side: 0, yaw, sprint: more.sprint, jump: false }, stepDt, nearbyColliders(), walkBounds);
+        }
+      }
       if (!walking) {
         if (keys.ArrowLeft) yaw += dt * PHYSICS.turnSpeed;
         if (keys.ArrowRight) yaw -= dt * PHYSICS.turnSpeed;
@@ -1711,7 +1745,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     // staff walking world-model routes (delegated tasks): an animation, real time
     if (walkers.update(Math.min(realDt, 0.25))) cullWalkers();
     dragPushed();
-    if (animateDoors(ctx.doors, dt)) markShadows();
+    if (animateDoors(ctx.doors, Math.max(dt, walkTime))) markShadows();
     followSun(player.x, player.z);
     assignLights(player.x, player.z, false, player.y);
     cullDetails();

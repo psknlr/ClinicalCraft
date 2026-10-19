@@ -43,6 +43,28 @@ export function resultIsRange(result: WorldActionResult): boolean {
   return result.status === "failed" && !!result.errorCode && RANGE_CODES.has(result.errorCode);
 }
 
+/** Spatial error codes of the session's gate (a learner's action refused for where the body stands). */
+export const SPATIAL_CODES: ReadonlySet<string> = new Set(["SPATIAL_REQUIREMENT_UNMET", "SPATIAL_PRECONDITION_CHANGED"]);
+
+/**
+ * The learner-facing part of the session's refusal text: its first line ("Not here: …"). The next line
+ * tells a model which tool call fixes it (`navigate_to {…}`); a human gets "Go there" instead.
+ */
+export function refusalLead(text: string): string {
+  return (text.split("\n")[0] ?? text).trim();
+}
+
+/**
+ * A spatial refusal carried by a command's output (`/vitals`, `/order` … run through the learner's
+ * gated tool path: `command_output.data = { ok, data: { code, message, hint } }`), else null.
+ */
+export function commandRefusal(data: unknown): { code: string; message: string; hint: { goal: NavGoal; label: string } | null } | null {
+  const inner = isObj(data) && isObj(data.data) ? data.data : null;
+  if (!inner || typeof inner.code !== "string" || !SPATIAL_CODES.has(inner.code)) return null;
+  const hint = isObj(inner.hint) && isObj(inner.hint.goal) ? { goal: inner.hint.goal as unknown as NavGoal, label: typeof inner.hint.label === "string" ? inner.hint.label : "" } : null;
+  return { code: inner.code, message: typeof inner.message === "string" ? inner.message : "", hint };
+}
+
 /** Results kept in a saved world (the transcript keeps 16 too); paths and events dropped — resume needs states, not telemetry. */
 export const SAVED_RESULTS = 16;
 

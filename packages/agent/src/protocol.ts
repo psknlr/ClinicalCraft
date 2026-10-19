@@ -105,6 +105,19 @@ export type Op =
    * at once, never queued behind a turn, never transcribed; bumps only that actor's own version (EMBODIED R4).
    */
   | { type: "world_pose"; actorId: ActorId; pose: Pose }
+  /**
+   * World bridge (docs/EMBODIED.md §12, PROTOCOL §13): a tool call by an EXTERNAL agent attached to this live
+   * session (`clinicalcraft mcp --attach` through `clinicalcraft serve`), run as the clinician agent through its
+   * normal tool path — the clinician's allow-list, practice scope and deny rules, validation, PreToolUse hooks,
+   * precheck (the spatial gate), the approval gate (an `ask` becomes an `approval_request` the learner answers;
+   * nothing on the bridge can answer it), the tool, PostToolUse — in a clinician turn of its own: `turn_started` →
+   * `tool_call_begin` / `tool_call_end` (with this `callId`) → `turn_complete` when the tool ran (ok or not), else
+   * `turn_aborted` with `denied` (a deny rule, plan mode, a hook or the learner refused) or `interrupted`
+   * (cancelled). Queued like other work; cancelled by `external_tool_cancel` or `interrupt`.
+   */
+  | { type: "external_tool_call"; callId: string; tool: string; args?: unknown }
+  /** Cancel an `external_tool_call` by `callId` (out-of-band): still queued → it never runs; running → aborted (a pending approval request is withdrawn). */
+  | { type: "external_tool_cancel"; callId: string }
   /** Cancel the running turn (AbortController). */
   | { type: "interrupt" }
   /** Change runtime configuration (provider, model, approval mode, locale…). */
