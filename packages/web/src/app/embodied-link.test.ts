@@ -4,7 +4,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { setLocale } from "../i18n/index.js";
-import { BODY_TOOLS, delegationOf, trTask } from "./embodied-link.js";
+import { BODY_TOOLS, delegationOf, staffLabel, trTask } from "./embodied-link.js";
 
 describe("delegations", () => {
   const d = { staffId: "staff:ed-nurse", role: "nurse", task: "attach_monitor", status: "completed", steps: [] };
@@ -24,6 +24,15 @@ describe("delegations", () => {
     setLocale("en");
     expect(trTask("attach_monitor")).toBe("Attach the monitor");
     expect(trTask("juggle")).toBe("juggle");
+  });
+
+  it("names staff by role and name in both languages", () => {
+    setLocale("zh-CN");
+    expect(staffLabel("nurse", "林晓")).toBe("护士林晓");
+    setLocale("en");
+    expect(staffLabel("nurse", "Lin Xiao")).toBe("Nurse Lin Xiao");
+    expect(staffLabel("porter", "Porter Wu")).toBe("Porter Wu");
+    expect(staffLabel("unknown-role", "Sam")).toBe("Sam");
   });
 
   it("pauses real time for the world tools that move a body", () => {

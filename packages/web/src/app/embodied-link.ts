@@ -215,10 +215,8 @@ export class EmbodiedLink {
     const world = this.world;
     if (!world || !staffIdOf(actorId)) return;
     const L = this.o.locale();
-    const e = world.entity(actorId);
-    const who = e ? t(e.name, L) : actorId;
     const place = regionAt(this.o.facility, plan.target.x, plan.target.z, L, plan.target.level);
-    this.o.toast(tr("emb.toast.walking", { who, place }), "", "info", `walk-${actorId}`);
+    this.o.toast(tr("emb.toast.walking", { who: this.staffName(actorId), place }), "", "info", `walk-${actorId}`);
   }
 
   /** A body stopped (Mover). */
@@ -368,10 +366,17 @@ export class EmbodiedLink {
   /** A delegated task ended: who did (or could not do) what. */
   private delegated(d: Delegation | null): void {
     if (!d?.staffId) return;
-    const e = this.world?.entity(d.staffId);
-    const who = e ? t(e.name, this.o.locale()) : d.staffId;
     const done = d.status === "completed";
-    this.o.toast(tr(done ? "emb.toast.delegatedDone" : "emb.toast.delegatedFailed", { who, task: trTask(d.task) }), "", done ? "success" : "warning", `delegate-${d.staffId}`);
+    this.o.toast(tr(done ? "emb.toast.delegatedDone" : "emb.toast.delegatedFailed", { who: this.staffName(d.staffId), task: trTask(d.task) }), "", done ? "success" : "warning", `delegate-${d.staffId}`);
+  }
+
+  /** A staff member as the HUD names them: role and name ("Nurse Lin Xiao" / "护士林晓"). */
+  private staffName(actorId: string): string {
+    const world = this.world;
+    const e = world?.entity(actorId);
+    const name = e ? t(e.name, this.o.locale()) : actorId.replace(/^staff:/, "");
+    const role = world?.actor(actorId)?.role;
+    return role ? staffLabel(role, name) : name;
   }
 
   private spatialError(submission: string, message: string): void {
@@ -461,6 +466,13 @@ export function delegationOf(data: unknown): Delegation | null {
     return typeof task === "string" && typeof status === "string" ? { staffId: typeof staffId === "string" ? staffId : null, task, status } : null;
   };
   return pick(data) ?? pick(data && typeof data === "object" ? (data as { data?: unknown }).data : undefined);
+}
+
+/** A staff member's role and name ("Nurse Lin Xiao" / "护士林晓"); the name alone when it already says the role. */
+export function staffLabel(role: string, name: string): string {
+  const label = trMaybe(`role.${role}`, "");
+  if (!label || name.toLowerCase().includes(label.toLowerCase())) return name;
+  return tr("emb.staff", { role: label, name });
 }
 
 /** A delegation task's name ("Attach the monitor" / "连接监护仪"), else its id. */
