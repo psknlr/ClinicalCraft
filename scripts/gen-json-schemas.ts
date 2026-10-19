@@ -3,7 +3,7 @@
  * `@clinicalcraft/core` (`packages/core/src/schema/*`) and the agent settings
  * schema (`packages/agent/src/settings/schema.ts`).
  *
- *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json
+ *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings)
  *   npx tsx scripts/gen-json-schemas.ts --check  # exit 1 if the files on disk are stale
  *
  * Shared building blocks (LocalizedText, Id, Condition, …) become named
@@ -33,6 +33,7 @@ import {
   MaterialSchema,
   OpeningSchema,
   RectSchema,
+  RoomTemplateSchema,
   VitalsSchema,
   VoxelPartSchema,
   WorldPredicateSchema,
@@ -91,6 +92,14 @@ const targets: Target[] = [
     description: "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction, embodiment: portable, reach, interaction points, behaviour, model).",
     schema: EquipmentCatalogSchema,
     definitions: { ...common, Material: MaterialSchema, VoxelPart: VoxelPartSchema, EquipmentType: EquipmentTypeSchema, WorldPredicate: WorldPredicateSchema },
+  },
+  {
+    file: "room-template.schema.json",
+    name: "RoomTemplate",
+    title: "ClinicalCraft room template (clinicalcraft/room-template@1)",
+    description: "A reusable room placed by facility `instances` and compiled into the flat facility format: size, kind, partitions, sign, lights, equipment, patient slots, staff and interaction zones in template-local coordinates.",
+    schema: RoomTemplateSchema,
+    definitions: { ...common, Rect: RectSchema, Opening: OpeningSchema, VoxelPart: VoxelPartSchema },
   },
   {
     file: "settings.schema.json",

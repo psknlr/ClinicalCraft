@@ -136,6 +136,17 @@ poses; `ActorRole`, `WorldPredicate`, `ClinicalEffect`, `BehaviorOperation`
 and `DeviceBehavior` are now the core zod-inferred types of the catalog
 schema.
 
+Contract refinements made while implementing the dynamic layer (additive):
+`WorldRuntimeOptions.port` (the session's `ClinicalPort`: the bus had no way
+to reach the tool path) and `trace` (a `TraceSink`, implemented by
+`TraceRecorder`); `checkSpatial(actor, intent, { recheck })` (the session's
+re-check before the engine commit reports `SPATIAL_PRECONDITION_CHANGED`);
+`SpatialCheck` failures carry `details` (distance, range, missing
+capabilities, providers); `SpatialRequirement` `at-provider` takes
+`fixedOnly` (§6); the event `entity.availability` (scenario availability
+changes); `SightTarget.id` (a door never hides itself, §4). Actors' versions
+live in `WorldStateSnapshot.entities[actorId].version` like any entity's.
+
 ## 4. Perception
 
 Read-only tools (embodied mode): `observe_world`, `get_agent_state`,
@@ -164,6 +175,55 @@ Read-only tools (embodied mode): `observe_world`, `get_agent_state`,
   and localised; they never contain case answers, unread results, debrief
   content, decision options or hidden engine fields.
 
+**Implemented (dynamic layer, `perception.ts`).** `observe`, `find`,
+`inspect`, `roomInfo`, `canSee` of `WorldRuntime`; every entity is labelled
+with what the actor knows of it:
+
+| awareness | rule |
+|---|---|
+| `visible` | same level, within `visibilityRange` (15 m) of the footprint, inside the field of view (120°) with line of sight (`VisibilityModel.canSee`); an item in hand; the room one stands in |
+| `nearby` | same level, within `nearbyRange` (8 m), line of sight in any direction — what one notices by turning round, never through a wall |
+| `remembered` | seen earlier by this actor (`ActorState.seen`) |
+| `mapped` | the public directory: rooms, doors, connectors, fixed interactive equipment (workstations, devices, monitors, boards, atlases, craft benches, sinks) and the encounter's patient (the clinician knows which bed). Never portable equipment, staff or other actors |
+
+* `observe` lists perceived entities (visible, nearby) nearest first, then
+  remembered ones nearest first — at most `maxEntities` (40), `truncated`
+  when more; mapped ones are for `find` (default: every awareness level;
+  filters by kind, type, capabilities, name in either language, room, level,
+  distance, `visibleOnly`, `reachableOnly`; sorted by walking distance) and
+  `roomInfo` (a room, its exits through doors, what the actor knows in it).
+  `recentEvents`: the last 8 events, task bookkeeping left out.
+* Each `ObservedEntity` carries distance to the footprint, bearing relative to
+  the facing (+ = right), `inReach` (within reach with line of sight),
+  `reachable` / `pathDistance` (a Dijkstra flood of the planner's grid per
+  actor cell, role and allowed zones, cached; an entity counts as reachable
+  when one of its interaction cells — the planner's rule — is flooded and has
+  line of sight to it; another level: `null`), the behaviour `state`
+  (`out-of-service` when a scenario took it out), `stateVersion` and
+  `availableActions`.
+* Cues: the patient's — `ClinicalView.cues(slot)` (posture, distressed,
+  accessory, speaking) — only while perceived; a monitor's `screen` /
+  `alarms` — `ClinicalView.bedside()`, the `check_vitals` snapshot in one
+  line (`screen.ts`) — only while the monitor is visible, within the 6 m
+  screen range, the patient's monitor and attached; a case without physiology
+  shows "no reading recorded", never the placeholder vitals. Tested for all
+  10 built-in cases in both languages: a JSON-stringified observation, search,
+  inspection or room report never contains a history answer, finding, result
+  text, diagnosis or decision option of the case.
+* Memory and versions: `observe` / `find` / `inspect` / `roomInfo` record the
+  entities they report as `visible` in the actor's memory; a navigation
+  records what is visible on arrival (`actor.discovered`). Memory changes no
+  version and emits no event, so read-only tools are idempotent with respect
+  to `version` (`canSee` records nothing).
+* Fix to the static layer found here: a closed door hid itself (its leaves
+  are rasterised thin-safe, ±0.25 m, wider than its 0.2 m footprint), so no
+  door had an interaction point and no door could be operated. `SightTarget`
+  takes the target's `id`; a door's own leaves never hide it (regression
+  tests in `visibility.test.ts` and `nav/backend.test.ts`).
+* Measured (general-hospital, same machine as §7): `observe` at the resus
+  bedside 1.5 ms median (the first call of a new actor cell builds the
+  flood: ≤ 70 ms), `find {}` 7 ms, `checkSpatial` 0.1 ms with a warm flood.
+
 ## 5. Actions
 
 State-changing world tools: `navigate_to` (goal), `approach_object` (entity →
@@ -190,6 +250,64 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
              APPROVAL_DENIED
 ```
 
+**Implemented (dynamic layer, `actions.ts`, `effects.ts`).**
+`execute(request, signal)` commits in this order:
+
+| step | refusal |
+|---|---|
+| 1. idempotency: a recorded action id returns its recorded result; an id still running returns the same promise | — |
+| 2. request and goal shape; the actor | `INVALID_REQUEST`, `UNKNOWN_ACTOR` |
+| 3. per-actor queue: one actor's actions run one at a time, in order; actors run concurrently | `CANCELLED` (aborted while queued) |
+| 4. `expectedWorldVersion` (strict), then `expectedTargetVersion` (per entity) | `STALE_STATE` |
+| 5. target (`resolveId`: prefixed ids, unprefixed aliases, `patient`, `clinician`) | `TARGET_NOT_FOUND` |
+| 6. operation offered by the target's behaviour | `OPERATION_NOT_SUPPORTED` |
+| 7. authority (§8), availability, reservation, state, preconditions | `NOT_AUTHORIZED`, `DEVICE_UNAVAILABLE`, `DEVICE_BUSY`, `PRECONDITION_FAILED`, `HANDS_FULL`, `NOT_HOLDING` |
+| 8. spatial: range from the current footprint, same level, line of sight | `NOT_IN_RANGE`, `NOT_VISIBLE` (+ `hint` when a route leads there) |
+| 9. clinical effect: item selection, the §6 policy, the device locked while `ClinicalPort.invoke` runs the tool (hooks, precheck, approval, engine) | `SPATIAL_REQUIREMENT_UNMET`, `APPROVAL_DENIED`, `CLINICAL_REJECTED`, `CANCELLED` — none commits a transition |
+| 10. commit: device transition and reservation, physical effects, events, time, the result (recorded; `action.completed` closes it) | — |
+
+* Navigation operations — `navigate {goal}`, `approach {target}` (its best
+  interaction point), `look_at {target}` (a vantage point facing it), and a
+  cart's `move_to {goal}` (accessible route; the cart is parked on a free
+  cell within 1.25 m — else 2 m, 3 m — of the actor, nearest the goal's
+  target, never in a doorway): plan with the backend, move with the `Mover`
+  (default: instant), commit the reported pose, emit `actor.moved`,
+  `actor.entered-room`, `actor.discovered`, charge `elapse(travelSeconds,
+  "travel")` once, return a `NavigationRecord` (goal, path, length walked,
+  replans, travel seconds, arrival error, failure code). Interrupted
+  (`cancel(actorId)`, the signal, a mover stopping short): `cancelled` with
+  `MOVEMENT_INTERRUPTED`; the partial pose is kept and the part walked is
+  charged.
+* Time: physical operations charge their `durationSeconds`
+  (`elapse(…, "procedure")`); an operation with a clinical effect charges
+  nothing itself — the engine's action cost (`clock.actionCosts`) is the time
+  of the clinical act. Failed actions change no version and charge nothing.
+* Results are recorded whatever their status (a window of 128): retry a
+  transient failure (`DEVICE_BUSY`) with a new action id. Refusals that can be
+  fixed by walking carry a `hint` verified by planning; when no route leads
+  there the hint is null and the message names the planner's code.
+* Versions (R4): the global `version` steps with every committed change by
+  the bus or a scenario control; every entity (actors included) has its own
+  counter, bumped only when that entity changes; a sensor `updatePose` bumps
+  only the actor's own counter — so another actor walking, or the human
+  turning, never stales a device action that pins `expectedTargetVersion`.
+  Memory, tasks, events, results and in-flight device locks bump nothing.
+* TOCTOU: the bus checks the §6 policy before invoking; the re-check
+  immediately before the engine commit belongs to the session's tool path
+  (`checkSpatial(actor, intent, { recheck: true })` →
+  `SPATIAL_PRECONDITION_CHANGED`). Once the engine committed, the device
+  transition is committed too (the clinical fact happened).
+* Scenario controls: `setObstacle` (grids re-stamped locally),
+  `setAvailability` (an out-of-service device offers nothing and provides no
+  capability to the policy; event `entity.availability`), `setDoor` (locking
+  implies closing; a lock change re-stamps the doorway).
+* Snapshots (`WorldStateSnapshot`, `state.ts`) are canonical JSON — keys
+  sorted at every level, actors by id — so the same history gives the same
+  bytes; `createWorldRuntime({ snapshot })` restores them (grids and occlusion
+  read the restored doors, obstacles, moved carts and carried items) and
+  `snapshot()` reproduces them exactly. The engine's state is not part of it
+  (derived device states are re-read from the restored session).
+
 ## 6. Spatially grounded clinical operations
 
 Default policy (data in `@clinicalcraft/world`, overridable per facility):
@@ -215,6 +333,62 @@ A failed embodied operation never falls back to the non-spatial path.
 In the browser the human avatar is held to the same policy; the web layer may
 auto-approach (a short animated step, ≤ the 5.5 m aim reach) before
 submitting an action the learner started from a panel.
+
+**Implemented (`policy.ts`: `DefaultSpatialPolicy`, `SpatialChecker`).** The
+table above, made concrete:
+
+| clinical action | requirement (implemented) |
+|---|---|
+| `ask_patient` | `near-patient` 3 m + line of sight |
+| `examine` | `at-patient` 1.5 m; a finding needing capabilities beyond the personal kit (`PERSONAL_KIT`): `bedside-provider` for them |
+| `check_vitals` | `any-of` `near-patient` 6 m + line of sight · `at-provider` `records` |
+| `order_test`, `read_result` | no capability: anywhere · personal kit only: `at-patient` · all in `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `at-provider` with `fixedOnly` · otherwise `at-provider` |
+| `intervene` `consult` / `disposition` | anywhere |
+| `intervene` other kinds | nothing beyond the personal kit: `at-patient` 1.5 m · otherwise `bedside-provider` |
+| `consult`, `delegate`, cognitive tools; unresolved items | anywhere (`examine` without a finding: `at-patient`) |
+
+* `BEDSIDE_CAPABILITIES` = `ecg-12lead`, `point-of-care`, `ultrasound`,
+  `echocardiography`, `peak-flow`, `scale`, `cardiac-monitor`, `capnography`,
+  `oxygen`, `suction`. Refinement: a bedside test may also be requested at a
+  **fixed** provider of it (`at-provider` + `fixedOnly`: the radiology
+  console for a formal ultrasound, the triage peak-flow station, the V4
+  clinic's imaging workstation) — as the web's order entry allows — but never
+  at a portable device standing elsewhere (that one must be wheeled to the
+  patient). Without it `pediatric-asthma` (peak flow at the triage station)
+  and `smzl-lung-adeno` (ultrasound only at the imaging workstation) could
+  not be completed embodied.
+* `at-provider`: equipment of interaction kind workstation / device /
+  monitor providing every capability (stations.ts `providersOf`), in service,
+  where it stands now, within its reach (≥ `MIN_RANGE`) with line of sight.
+* `bedside-provider`: each capability provided by an in-service placement of
+  any kind at the bedside — within `BEDSIDE_RADIUS` (6 m) of the slot point
+  or in the slot's room (stations.ts `atBedside` / `bedsideCaps`; a moved cart
+  counts where it stands, a carried item where its holder is) — and the actor
+  within 1.5 m of the patient with line of sight.
+* Reasons: `not-near-patient`, `patient-not-visible`, `not-at-patient`,
+  `no-provider-in-reach`, `provider-not-at-bedside`,
+  `no-provider-in-facility`, `no-patient`; `details` carry the distance, the
+  range, the missing capabilities and the providers. Hints are `interact`
+  goals: the patient, or the provider nearest by walking distance (another
+  level or unreachable: by straight-line distance; navigating then reports
+  why); a bedside capability elsewhere: the nearest portable provider to
+  fetch (`move_to` it to the patient), or null when none can be brought;
+  null when nothing in service provides it. `any-of` reports the option whose
+  hint is nearest, preferring hints one navigation fixes over a cart to fetch.
+* Property (tested over every investigation, intervention and finding of the
+  10 built-in cases in their own facility, from the entrance): following the
+  hint passes the check — one navigation for a patient or provider hint,
+  navigation + `move_to` for a cart. The only item without a way is
+  `acute-ischemic-stroke` `sich-protocol` (needs `blood-bank` at the bedside;
+  the blood bank fridge is fixed in the laboratory) — not part of its
+  reference solution.
+* A monitor without a reachable interaction point (tested with
+  `ward-monitor-1` at its position before content fix A4, wedged between the
+  wall, bed 1 and its pump): the patient's `monitoring` intervention needs a
+  monitor at the bedside (any in the ward room); the monitor's `attach`
+  declares `patientWithin` only, so it is attached from the patient's side;
+  `read` works from the 6 m screen range (a `look` hint); `cycle_nibp`
+  (1.5 m) is refused with no hint and the planner's reason.
 
 ## 7. Navigation
 
@@ -270,6 +444,14 @@ from the collision model (EMBODIED R2), one grid per level:
   entities, door locks); tests check that a local re-stamp equals a rebuild.
   The web autopilot (`walkTo`) still plans with its own grid over the
   renderer's colliders — which are now the model's.
+* Used by the dynamic layer (W2): the action bus plans every navigation
+  operation with the backend (carts with `accessibleOnly`), verifies refusal
+  hints by planning them, and invalidates the doorway after a lock change,
+  an obstacle's rect, and a moved cart's or item's old and new spots.
+  Perception and hint ranking use the grids directly (`Reachability`: one
+  flood per actor cell instead of an A* per entity). Every door of both
+  built-in facilities now has an interaction point (a closed door no longer
+  hides itself, §4).
 
 **Measurements** (2026-10-19, Intel Xeon @ 2.10 GHz, 4 cores, Node 22.22.0;
 `general-hospital`, 120 × 100 m, 614 colliders, 240 × 200 nav cells,
@@ -297,6 +479,61 @@ only generous bounds).
   the same device; a busy device returns `DEVICE_BUSY`.
 * Staff movement is deterministic path following (no LLM per frame).
 
+**Implemented (`behaviors.ts`, `clinical.ts`, `authority.ts`).** Built-in
+behaviours apply to equipment types without a catalog `behavior`; a catalog
+behaviour replaces them (`ecg-machine`, `patient-monitor`):
+
+| kind | states | operations |
+|---|---|---|
+| workstation | — | `order` / `read` — clinical `order_test` / `read_result` of parameter `investigation` (also `investigation_id`); the station must provide every capability the item requires (stations.ts `investigationsAt`); `read` takes an optional `phase` |
+| monitor | `attached` / `detached`, derived: the patient's monitor (the slot's linked one, else monitors at the bedside) is attached when `monitorAttached(case, state)`; other monitors are always detached and offer nothing | `attach` (detached; device at the bedside, actor within 1.5 m of the patient; `intervene` of the case's monitoring intervention — the first `intervened` id of `physiology.monitor.attachedWhen`, else the first monitoring intervention the device provides; 60 s), `read` (attached; within 6 m with line of sight: the screen), `cycle_nibp` (attached; within 1.5 m; physical, 45 s) |
+| device | — | `use` — parameter `investigation` → `order_test`, or `intervention` → `intervene`; the item's requires must intersect the device's capabilities (stations.ts `deviceActions`); the §6 policy decides where |
+| door | `open` / `closed` / `locked` (the door record) | `open` (closed), `close` (open; nobody in the doorway area), `lock` (closed → locked), `unlock` (locked → closed) |
+| sink | — | `wash_hands`: hand hygiene valid for 30 simulated minutes (`handsCleanUntil` = clock + 30), event `hygiene`, 30 s |
+| storage | `closed` / `open` (stored) | `open`, `close` |
+| bed, board, atlas, craft, none; people, rooms | — | none |
+| + `portable: "cart"` | — | `move_to {goal}` (§5) |
+| + `portable: "handheld"` | `held` / `equipped` while carried | `pick_up` (in reach, at most `MAX_HELD` = 2 → `HANDS_FULL`), `put_down` (on a free spot in front), `equip` (`NOT_HOLDING` unless carried) |
+
+Catalog operations: `select: "capability"` takes the first case item whose
+non-empty requires the device provides (the ECG cart's `record` → the case's
+12-lead ECG; a parameter may pick another such item). Built-in effects attach
+by name to catalog behaviours too (a monitor's `read` shows the screen).
+
+* Predicates: `actorWithin` / `patientWithin` are checked in the spatial
+  phase (`NOT_IN_RANGE` / `NOT_VISIBLE` + hint: the interaction point when the
+  reach is enough, else a `look` goal with that range); `state`, `role`,
+  `handsClean`, `actorHolding` and `deviceAtBedside` are preconditions
+  (`PRECONDITION_FAILED`; `deviceAtBedside` hints a portable device to
+  fetch). An operation that declares neither `actorWithin` nor
+  `patientWithin` must be done within the entity's reach.
+* `availableActions` lists the operations valid now for the actor — state,
+  role, availability, reservation, preconditions — not position (`inReach`
+  says that); `inspect` lists every operation with `available` and the reason
+  (spatial included).
+* Reservations: an operation with `reserve` holds the device for the actor
+  until one with `release` (`reservation.changed`); while an operation's
+  clinical tool runs, or a cart is pushed, the device is locked in memory
+  (not persisted). Anyone else gets `DEVICE_BUSY`.
+* Authority — each operation has a class; a role holds classes; an
+  operation's own `roles` narrow it further (`NOT_AUTHORIZED`):
+
+| class | operations |
+|---|---|
+| `move` | navigate, approach, look_at, cancel |
+| `physical` | open / close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, device operations without a clinical effect |
+| `secure` | lock, unlock |
+| `clinical` | every operation with a clinical effect |
+
+| role | move | physical | secure | clinical |
+|---|:-:|:-:|:-:|:-:|
+| clinician (the learner's avatar) | ✓ | ✓ | – | ✓ |
+| nurse, attending, paramedic, radiologist, pathologist, lab-tech, pharmacist | ✓ | ✓ | – | ✓ |
+| porter, receptionist (facilities / front desk: they hold the keys) | ✓ | ✓ | ✓ | – |
+
+  The clinical class only lets an actor ask for a clinical effect; the
+  session's tool path (hooks, approval, practice scope) still decides.
+
 ## 9. Skills
 
 Declarative workflows (`SkillDefinition`): parameters, required tools,
@@ -317,6 +554,20 @@ state_change → verification → assessment` — with action ids, world/target
 versions, clinical event ids and simulated/real time. Embodied sessions
 write world snapshots into their transcript so `--resume` restores the
 physical state.
+
+**Implemented (`trace.ts`).** `TraceRecorder` (injected `now`, simulated
+`clock` and `newId`; `start(kind, name, …).end({ ok, … })`, `add(span)`,
+`spans()`, `trace()`, `toJsonl()` — a header line `{format, episodeId,
+caseId, facilityId, embodiment}`, then one span per line in recording order;
+optional `maxSpans`). Given `WorldRuntimeOptions.trace` (a `TraceSink`), the
+runtime records every action — a root span (`navigation` for navigate /
+approach / look_at / move_to, else `interaction`; refs: action id, entities,
+error code; data: status, navigation telemetry, elapsed seconds) with
+children `clinical_action` (tool, ok, clinical event ids) and `state_change`
+(the committed event types and entities) — and an `observation` span for
+`observe`, `find` and `inspect` (`recordActionSpans` does the same for any
+sink). Plan, verification and assessment spans belong to the session and
+the benchmark. A deterministic run gives byte-identical JSONL (tested).
 
 ## 11. Content scale, facilities and assets
 
@@ -422,6 +673,10 @@ The status table is filled in as work lands (see the end of this file).
 | Facility schema: `levels`, `connectors`, `access`, per-entity `level`; equipment `portable`, `reach`, `interactionPoints`, `behavior`, `model`; `checkFacility` / `checkCatalogs` rules; JSON Schemas | yes (W1) | core unit tests | built-in content and catalogs validate with no new issue | — |
 | Collision model (`buildCollisionModel`, `facilityWalls`); the renderer takes every collider from it | yes (W1) | parity: the renderer's own collider set captured before and after the switch is identical to the model (every box, door leaf, doorway, NPC body, block) for `clinic-v4`, `general-hospital` and the harness test facility; pinned counts/digests | web e2e suite | — |
 | Semantic registry (`buildRegistry`) | yes (W1) | unit (ids, aliases, descriptors, levels) | — | — |
-| Visibility (`VisibilityModel`) | yes (W1) | unit (walls, windows, doors, FOV, partial occlusion, displaced carts) | — | — |
-| Navigation (`GridAStarBackend`, `NavGrids`) | yes (W1) | unit (real routes in both facilities, every interactive placement, failures, locks, zones, obstacles, moved carts, two-level fixture); measured (§7) | — | — |
-| State store, action bus, devices runtime, spatial policy, observations, traces | contracts only | — | — | — |
+| Visibility (`VisibilityModel`) | yes (W1; W2: a door never hides itself) | unit (walls, windows, doors, FOV, partial occlusion, displaced carts, closed doors seen from their interaction points) | — | — |
+| Navigation (`GridAStarBackend`, `NavGrids`) | yes (W1) | unit (real routes in both facilities, every interactive placement, every door, failures, locks, zones, obstacles, moved carts, two-level fixture); measured (§7) | — | — |
+| State store (`WorldStateStore`: actors, versions, events, idempotency window, canonical snapshots) | yes (W2) | unit (version rules incl. sensor updates, dynamics, bounded log, snapshot identity and refusal) | — | — |
+| Device behaviours, authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog (operations per kind, predicates, ECG state machine with reservation and durations, derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions) | — | — |
+| Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`) | yes (W2) | every §6 row (ok, each failure reason, the hint that fixes it); property over every item of the 10 built-in cases in their own facility | — | — |
+| Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`) | yes (W2) | unit (awareness levels, bounds, bearings, cues, monitor screen rules, memory without versions); no case fact in any observation (10 cases × 2 languages) | — | — |
+| Action bus, runtime (`createWorldRuntime`), traces | yes (W2) | unit (commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees) over a fake session on the real engine | not yet wired into the agent session, the web, the server or MCP | — |

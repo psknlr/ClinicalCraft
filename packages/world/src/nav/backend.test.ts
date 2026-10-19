@@ -231,17 +231,27 @@ describe("routes in general-hospital", () => {
     w.s.poses.clear();
   });
 
-  it("an unreachable interaction point → TARGET_NOT_REACHABLE (the ward monitor wedged behind bed 1)", () => {
-    expect(w.plan({ kind: "interact", id: "ward-monitor-1" })).toMatchObject({ ok: false, code: "TARGET_NOT_REACHABLE" });
+  it("every door has a reachable interaction point (a closed door does not hide itself)", () => {
+    const doors = w.registry.ofKind("door");
+    expect(doors.length).toBeGreaterThan(30);
+    for (const d of doors) expectAtEntity(w, ok(w.plan({ kind: "interact", id: d.id })), d);
   });
 
-  it("every other interactive placement is reachable from the spawn", () => {
+  it("an unreachable interaction point → TARGET_NOT_REACHABLE (a monitor wedged between the wall, bed 1 and its pump)", () => {
+    // the ward monitor's pre-fix position (content fix A4: it now stands at the bed head's other side)
+    const wedged = structuredClone(w.f);
+    Object.assign(wedged.placements.find((p) => p.id === "ward-monitor-1")!, { x: -44.7, z: -41.15 });
+    const ww = world(wedged, { caseId: "stemi-inferior-rv", slotId: "resus-1" });
+    expect(ww.plan({ kind: "interact", id: "ward-monitor-1" })).toMatchObject({ ok: false, code: "TARGET_NOT_REACHABLE" });
+  });
+
+  it("every interactive placement is reachable from the spawn", () => {
     const failures = w.registry
       .ofKind("equipment")
       .filter((e) => e.interaction !== "none")
       .filter((e) => !w.plan({ kind: "interact", id: e.id }).ok)
       .map((e) => e.id);
-    expect(failures).toEqual(["eq:ward-monitor-1"]);
+    expect(failures).toEqual([]);
   });
 
   it("locked laboratory doors → PATH_BLOCKED with the door ids", () => {

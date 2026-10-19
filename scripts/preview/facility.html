@@ -8,7 +8,20 @@ const cats = await Promise.all((q.get("catalogs") || "").split(",").filter(Boole
 const eq = new Map(); const mats = new Map();
 for (const c of cats) { for (const m of c.materials || []) mats.set(m.id, m); for (const e of c.equipment || []) eq.set(e.id, e); }
 for (const m of fac.materials || []) mats.set(m.id, m);
-const S = 14, pad = 40; const b = fac.bounds; const W = (b.maxX - b.minX) * S + pad * 2, H = (b.maxZ - b.minZ) * S + pad * 2;
+// one level (default: the level at elevation 0, else the first; facilities without levels have "L0")
+const levels = fac.levels?.length ? fac.levels : [{ id: "L0", name: "L0", elevation: 0 }];
+const ground = (levels.find((l) => (l.elevation ?? 0) === 0) ?? levels[0]).id;
+const level = q.get("level") || ground;
+const roomLevel = (r) => r?.level ?? ground;
+const everyRoom = fac.rooms || [];
+const levelOf = (e) => e.level ?? roomLevel(everyRoom.find((r) => r.id === e.room));
+const spans = (bl) => (bl.levels?.length ? bl.levels : [ground]).includes(level);
+fac.buildings = (fac.buildings || []).filter(spans).map((bl) => ({ ...bl, openings: (bl.openings || []).filter((o) => !o.levels || o.levels.includes(level)) }));
+fac.rooms = everyRoom.filter((r) => roomLevel(r) === level);
+fac.placements = (fac.placements || []).filter((p) => (p.level ?? (p.room ? levelOf(p) : ground)) === level);
+fac.patientSlots = (fac.patientSlots || []).filter((s) => levelOf(s) === level);
+fac.staff = (fac.staff || []).filter((s) => levelOf(s) === level);
+const S = Number(q.get("scale")) || 14, pad = 40; const b = fac.bounds; const W = (b.maxX - b.minX) * S + pad * 2, H = (b.maxZ - b.minZ) * S + pad * 2;
 const X = (x) => (x - b.minX) * S + pad, Z = (z) => (z - b.minZ) * S + pad;
 const col = (id, fb) => mats.get(id)?.color || fb;
 const out = []; const warn = [];
@@ -48,9 +61,25 @@ for (const p of fac.placements || []) {
 for (const s of fac.patientSlots || []) { out.push(`<circle cx="${X(s.x)}" cy="${Z(s.z)}" r="7" fill="#66cca8" stroke="#173a2d" stroke-width="2"/>`); text(s.x, s.z - 0.8, "slot:" + s.id + " " + (s.accepts || []).join("/"), 9, "#0d4f3a"); }
 for (const s of fac.staff || []) { out.push(`<circle cx="${X(s.x)}" cy="${Z(s.z)}" r="6" fill="#c7a1e5" stroke="#4a2b6b" stroke-width="2"/>`); text(s.x, s.z - 0.8, s.role, 9, "#4a2b6b"); }
 for (const s of fac.signs || []) text(s.x, s.z, "✎ " + tx(s.text), 9, "#716541", 500);
+// access zones (hatched), stairs/ramp flights and elevator stops on this level
+for (const z of fac.access || []) if ((z.level ?? ground) === level) { rect(z.rect, "#c0392b", "#c0392b", 1.5, 0.12); text(z.rect.x, z.rect.z + z.rect.d / 2 - 0.4, "⛔ " + tx(z.name) + " [" + z.roles.join(",") + "]", 9, "#7a1f16", 600); }
+for (const c of fac.connectors || []) {
+  c.stops.forEach((st, k) => {
+    if (c.kind !== "elevator" && k > 0) {
+      const a = c.stops[k - 1], bb = st, w = c.width ?? 2;
+      if ((a.level === level || bb.level === level) && Math.hypot(a.x - bb.x, a.z - bb.z) > 0.05) {
+        const r = { x: (a.x + bb.x) / 2, z: (a.z + bb.z) / 2, w: Math.abs(a.x - bb.x) || w, d: Math.abs(a.z - bb.z) || w };
+        rect(r, a.level === level ? "#8b694c" : "#ffffff", "#3c2a1a", 1.5, a.level === level ? 0.55 : 0.25);
+        text(r.x, r.z, (a.level === level ? "▲ " : "◇ ") + tx(c.name), 10, "#3c2a1a", 800);
+      }
+    }
+    if (st.level === level) { out.push(`<circle cx="${X(st.x)}" cy="${Z(st.z)}" r="6" fill="${c.kind === "elevator" ? "#4f9dff" : "#e7c36b"}" stroke="#1d2b2b" stroke-width="2"/>`); text(st.x, st.z - 0.7, c.kind + ":" + c.id, 9, "#1d2b2b", 700); }
+  });
+}
+out.push(`<text x="12" y="22" font-size="16" font-weight="800" fill="#173a2d">${String(tx(levels.find((l) => l.id === level)?.name ?? level)).replace(/[<&]/g, "")} (${level})</text>`);
 const sp = fac.spawn; out.push(`<circle cx="${X(sp.x)}" cy="${Z(sp.z)}" r="8" fill="#325c49" stroke="#fff4cf" stroke-width="2"/>`); text(sp.x, sp.z + 1.6, "SPAWN", 10, "#173a2d", 800);
 for (let x = Math.ceil(b.minX / 10) * 10; x <= b.maxX; x += 10) text(x, b.minZ - 1, "x" + x, 9, "#55634b", 400);
 for (let z = Math.ceil(b.minZ / 10) * 10; z <= b.maxZ; z += 10) out.push(`<text x="6" y="${Z(z)}" font-size="9" fill="#55634b">z${z}</text>`);
 document.body.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${out.join("")}</svg>`;
-window.__done = { width: Math.ceil(W), height: Math.ceil(H), placements: (fac.placements || []).length, rooms: (fac.rooms || []).length, warnings: warn };
+window.__done = { width: Math.ceil(W), height: Math.ceil(H), level, placements: (fac.placements || []).length, rooms: (fac.rooms || []).length, warnings: warn };
 </script></body></html>

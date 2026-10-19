@@ -82,6 +82,7 @@ export {
   regionAt,
   assignPatientSlot,
   resolveWaypoint,
+  LEVEL_CHANGE_PENALTY,
   checkFacility,
   checkCatalogs,
   placementBox,
@@ -95,6 +96,9 @@ export {
   type Box,
   type ResolveWaypointOptions,
 } from "./facility.js";
+
+// room templates (EMBODIED R10)
+export { compileFacility, checkRoomTemplate, parseRoomTemplate, rotateLocal, rotateSide, offsetSign, type CompileResult } from "./templates.js";
 
 // utilities
 export { createRng, hashString, seedFrom } from "./random.js";

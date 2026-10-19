@@ -5,11 +5,12 @@ One pure, deterministic, headless model of the 3D hospital, shared by the
 three.js renderer (`packages/web`), the CLI, the HTTP server, MCP and the
 benchmark. three.js is only a *view* of it.
 
-This package currently holds the **static layer** (immutable per encounter):
-collision model, wall layout, navigation grids and backend, occlusion /
-visibility, semantic registry — plus the contracts of the dynamic layer
-(state store, action bus, devices, spatial policy, observations, traces;
-`src/contracts.ts`).
+It holds the **static layer** (immutable per encounter: collision model,
+wall layout, navigation grids and backend, occlusion / visibility, semantic
+registry) and the **dynamic layer** (`createWorldRuntime`: the versioned
+physical state, device behaviours and authority, the spatial policy,
+perception, the action bus and traces). The contracts are in
+`src/contracts.ts`.
 
 ## Determinism rules
 
@@ -40,6 +41,14 @@ visibility, semantic registry — plus the contracts of the dynamic layer
 | `nav/` | `GridAStarBackend`, `NavGrids`, `astar`, `flood`, `nearestFreeCell`, `MIN_RANGE`, `NAV_CELL`, `NAV_RADIUS` | per-level 0.5 m grids, goals `point/entity/interact/room/follow/look/any`, portal graph over connectors, access zones, locked doors, dynamic obstacles, stable error codes |
 | `geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` | V4 geometry, player physics (`stepPlayer`, `ColliderGrid`, `PHYSICS`), grid A* for the web autopilot, build-zone rules | moved from `packages/web/src/world` (re-exported there) |
 | `raster.ts`, `i18n.ts` | grid frames and rasterisation; bilingual names and messages | |
+| `runtime.ts` | `createWorldRuntime(options)` → `WorldRuntime` | one world per encounter: builds the static layer (with the bound patient's body), the store (or restores `options.snapshot`), and wires the services below; default instant `Mover` |
+| `state.ts` | `WorldStateStore`, `canonical`, `spawnPose` | actors (the clinician at the spawn, staff at their posts), per-entity runtime state, obstacles, global + per-entity versions, bounded event log, idempotency window, canonical snapshots; implements `WorldDynamics` |
+| `locate.ts` | `WorldLocator` | where things are now (moved carts, carried items, walking actors), distance to the footprint, line of sight, effective reach, the bedside rule, the patient's monitor |
+| `behaviors.ts`, `clinical.ts`, `authority.ts` | `behaviorOf`, `BUILTIN_BEHAVIORS`, `DeviceRules`, `evaluatePredicate`; `selectClinical`, `monitoringIntervention`; `ROLE_AUTHORITY`, `permits` | built-in behaviours per interaction kind and catalog state machines, derived monitor state, predicates, prechecks, reach, available actions; the case item of a clinical effect; role → operation classes |
+| `policy.ts`, `reach.ts` | `DefaultSpatialPolicy`, `SpatialChecker`, `BEDSIDE_CAPABILITIES`; `Reachability` | the §6 policy as data and its evaluation with reasons and hints; flood-fill walking distances cached per actor cell |
+| `perception.ts`, `screen.ts` | `Perception`, `MAPPED_INTERACTIONS`; `formatScreen` | awareness levels, observe / find / inspect / roomInfo / canSee, cues, memory; the monitor screen line |
+| `actions.ts`, `effects.ts` | `ActionBus`, `instantMover`, `requestProblem`, `goalProblem` | the commit order, per-actor queue, idempotency, versions, navigation, clinical effects through the `ClinicalPort`, carts and items, scenario controls |
+| `trace.ts` | `TraceRecorder`, `recordActionSpans` | episode spans and JSONL |
 
 ```ts
 import { buildCollisionModel, buildRegistry, GridAStarBackend } from "@clinicalcraft/world";
@@ -52,22 +61,42 @@ const plan = nav.plan({ actorId: "actor:clinician", from: pose, goal: { kind: "i
 // !plan.ok → code (TARGET_NOT_FOUND | TARGET_NOT_REACHABLE | PATH_BLOCKED | ACCESS_DENIED | NO_INTERACTION_POINT | NAVIGATION_TIMEOUT), message, details
 ```
 
-## Building the dynamic layer on it
+## The dynamic layer
 
-* Build once per encounter: `buildCollisionModel` (with the bound patient's
-  slot and posture, `bindingPosture`), `buildRegistry`, then one
-  `VisibilityModel` and one `GridAStarBackend` sharing the same
-  `WorldDynamics` (pass the visibility model to the backend).
-* Implement `WorldDynamics` on the state store: `doorState` (read at
-  query time — but call `backend.invalidate(area)` after a lock change, the
-  planner caches its masks per invalidation), `obstacles`, `displaced`
-  (moved carts; invalidate their old and new areas), `removed` (carried
-  items), `actorPose` (follow goals; staff that walked away).
-* Distances for spatial checks should use the same rules as the planner:
-  ranges from the footprint (`footprintArea`, `distanceToArea`), line of
-  sight with `visibility.visibleFrom` / `canSee`, effective reach at least
-  `MIN_RANGE` (a planned interaction cell may lie up to one cell beyond the
-  collider inflation).
+```ts
+import { createWorldRuntime, PRIMARY_ACTOR } from "@clinicalcraft/world";
+
+const world = createWorldRuntime({
+  facility, catalogs,
+  binding: { caseDef, slotId: "resus-1", locale: "en" },
+  clinical,            // ClinicalView: caseDef, state(), bedside() (= vitalsAt), cues(slot), clock()
+  port,                // ClinicalPort: invoke(actor, tool, args, signal) through the session's tool path; elapse(seconds, reason)
+  now, newId,          // injected clock and ids (determinism)
+  mover,               // optional: the browser animates bodies; default instant
+  trace,               // optional TraceSink (TraceRecorder)
+  snapshot,            // optional: resume
+});
+const check = world.checkSpatial(PRIMARY_ACTOR, { tool: "order_test", kind: "order", investigationId: "ecg-12lead" });
+if (!check.ok && check.hint) await world.execute({ actionId: "a1", actorId: PRIMARY_ACTOR, operation: "navigate", goal: check.hint.goal });
+await world.execute({ actionId: "a2", actorId: PRIMARY_ACTOR, operation: "prepare", targetId: "resus1-ecg" });
+const seen = world.observe(PRIMARY_ACTOR); // bounded, localised, never case facts
+```
+
+* One writer: every physical change goes through `execute` (validate →
+  queue per actor → versions → target → operation → authority →
+  availability / reservation → preconditions → spatial → clinical effect via
+  the port → commit) or a scenario control (`setObstacle`,
+  `setAvailability`, `setDoor`). `updatePose` is a sensor update from a
+  human-driven body: it bumps only that actor's own version.
+* The store implements `WorldDynamics` for the grids and the occlusion
+  (doors, obstacles, moved carts, carried items, actor poses); the bus calls
+  `backend.invalidate(area)` (and the visibility model's) after a lock,
+  obstacle, cart or item change.
+* Integration (agent session): build a `ClinicalView` and a `ClinicalPort`
+  over the session; spatially gate the clinical tools with `checkSpatial`
+  before the approval gate and again with `{ recheck: true }` immediately
+  before dispatching to the engine; map a refusal to the tool result with its
+  `hint`. Write `snapshot()` into the transcript to resume.
 * A posture change of the patient changes its body collider
   (`patientBodyBox`): a patient who lies down on the slot's bed has none —
   list `patient:<slot>` in `removed` and invalidate the slot's area; any
@@ -81,3 +110,16 @@ const plan = nav.plan({ actorId: "actor:clinician", from: pose, goal: { kind: "i
 descriptors, occlusion (walls, windows, doors, field of view, partial
 occlusion, displaced carts), navigation on real routes, failures and the
 synthetic two-level facility (`src/__fixtures__/two-level.ts`), purity.
+
+The dynamic layer is tested over the real built-in content with a fake
+session on the real engine (`src/__fixtures__/world.ts`: `makeWorld`,
+`clinicalHarness` with a gate for approvals, `steppingMover`, a test catalog
+with handheld items): `state.test.ts` (versions, snapshots),
+`behaviors.test.ts` (operations per kind, predicates, the ECG machine, the
+derived monitor, doors, sinks, storage, items), `policy.test.ts` (every §6
+row with the hint that fixes it; a property over every item of the 10
+cases), `perception.test.ts` (awareness, bounds, cues, no case fact in any
+observation for 10 cases × 2 languages), `actions.test.ts` (idempotency,
+stale versions, reservations, cancellation, queueing, availability,
+authority, travel time, scenario controls), `runtime.test.ts` (resume,
+determinism, traces), `trace.test.ts`.

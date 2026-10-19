@@ -50,6 +50,18 @@ describe("occlusion in clinic-v4", () => {
     expect(vis.lineOfSight("L0", { x: 8, z: 12 }, { x: 8, z: 5 })).toBe(true);
   });
 
+  it("a closed door never hides itself (its leaves are rasterised wider than its 0.2 m footprint)", () => {
+    const door = registry.entity("door:clinic:s:0")!;
+    for (const dz of [-1, -0.6, 0.6, 1]) {
+      const eye = { x: door.position.x, z: door.position.z + dz };
+      expect(vis.visibleFrom("L0", eye, { ...door, id: door.id }), `dz ${dz}`).toBe(true);
+      // without the id, the closed leaves hide it (what the planner saw before: no door had an interaction point)
+      expect(vis.visibleFrom("L0", eye, { level: door.level, position: door.position, footprint: door.footprint })).toBe(false);
+    }
+    // for anything else the closed door stays opaque: the board behind it is hidden from the garden
+    expect(vis.canSee(facing(0, 13, board.position), { ...board, id: board.id }, { range: 30 })).toBe(false);
+  });
+
   it("closed doors block, open doors do not (read at query time)", () => {
     const from = facing(0, 13, board.position);
     expect(vis.canSee(from, board, { range: 30 })).toBe(false);

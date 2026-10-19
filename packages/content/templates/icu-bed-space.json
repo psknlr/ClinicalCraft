@@ -1,0 +1,35 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "icu-bed-space",
+  "name": {"zh-CN": "ICU 单间", "en": "ICU bed space"},
+  "description": {"zh-CN": "重症监护单间：电动病床、监护仪、呼吸机、输液泵、床旁透析、吸引和吸氧，床两侧留出护理通道，玻璃推拉门。", "en": "An intensive care bed space: electric bed, monitor, ventilator, infusion pump, bedside dialysis, suction and oxygen, with care lanes on both sides of the bed behind a glass sliding door."},
+  "kind": "icu",
+  "size": {"w": 5.5, "d": 8},
+  "floor": "tile-white",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "sliding-door", "width": 2.4, "height": 3}]}
+  ],
+  "sign": {"text": {"zh-CN": "ICU 单间", "en": "ICU bed"}, "side": "n"},
+  "lights": [
+    {"x": 0, "z": -1}
+  ],
+  "placements": [
+    {"id": "bed", "type": "hospital-bed", "x": 0, "z": -1.9, "label": {"zh-CN": "ICU 病床", "en": "ICU bed"}},
+    {"id": "monitor", "type": "patient-monitor", "x": -1.4, "z": -3.475, "label": {"zh-CN": "床旁监护仪", "en": "Bedside monitor"}},
+    {"id": "oxygen", "type": "oxygen-outlet", "x": -0.25, "z": -3.7},
+    {"id": "ventilator", "type": "ventilator", "x": 1.45, "z": -3.45, "label": {"zh-CN": "呼吸机", "en": "Ventilator"}},
+    {"id": "infusion-pump", "type": "infusion-pump", "x": -2.275, "z": 0.3, "label": {"zh-CN": "输液泵", "en": "Infusion pump"}},
+    {"id": "suction", "type": "suction-unit", "x": 2.35, "z": -0.6, "rot": 270},
+    {"id": "dialysis", "type": "dialysis-machine", "x": 2.225, "z": 1, "rot": 270, "label": {"zh-CN": "床旁透析", "en": "Bedside dialysis"}},
+    {"id": "sink", "type": "sink", "x": 2.3, "z": 2.7, "rot": 270},
+    {"id": "gloves", "type": "glove-dispenser", "x": -2.515, "z": 2.2, "rot": 90}
+  ],
+  "patientSlots": [
+    {"id": "slot", "x": 0, "z": -1.9, "posture": "lying", "bed": "bed", "monitor": "monitor", "accepts": ["icu"]}
+  ],
+  "capabilities": ["cardiac-monitor", "capnography", "ventilator", "oxygen", "suction", "infusion-pump", "iv-access", "dialysis"],
+  "tags": ["icu"]
+}

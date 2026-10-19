@@ -3,14 +3,20 @@
  * Visual QA for content authors.
  *
  *   node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json [--only id1,id2] [--view iso|top|front] --out /tmp/eq.png
- *   node scripts/preview/render.mjs facility --facility packages/content/facilities/clinic-v4.json [--catalogs a.json,b.json] --out /tmp/plan.png
+ *   node scripts/preview/render.mjs facility --facility packages/content/facilities/clinic-v4.json [--catalogs a.json,b.json] [--level L1] [--scale 14] --out /tmp/plan.png
  *
  * Equipment mode renders each equipment type's voxel parts (red outline = declared footprint).
- * Facility mode renders a labelled 2D floor plan (buildings, rooms, walls/openings, placements, slots, staff, spawn).
+ * Facility mode renders a labelled 2D floor plan of one level (default: the default level) —
+ * buildings, rooms, walls/openings, placements, slots, staff, spawn, stairs/ramp flights,
+ * elevators and access zones. A facility that places room templates (`instances`) is
+ * compiled first (`clinicalcraft facilities compile`, templates from packages/content and
+ * the contentDirs setting).
  */
 import http from "node:http";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 
@@ -39,7 +45,25 @@ function servedPath(file) {
 }
 const list = (value) => (value || "").split(",").filter(Boolean).map(servedPath).join(",");
 if (args.catalogs) args.catalogs = list(args.catalogs);
-if (args.facility) args.facility = servedPath(args.facility);
+/** A facility with room-template instances is previewed compiled (the flat facility every front-end loads). */
+function compiledIfNeeded(file) {
+  const abs = path.resolve(process.cwd(), fs.existsSync(path.resolve(root, file)) ? path.resolve(root, file) : file);
+  let json;
+  try {
+    json = JSON.parse(fs.readFileSync(abs, "utf8"));
+  } catch {
+    return file; // reported by the page
+  }
+  if (!Array.isArray(json.instances) || json.instances.length === 0) return file;
+  const out = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "cc-preview-")), path.basename(abs));
+  const r = spawnSync(process.execPath, [path.join(root, "node_modules/tsx/dist/cli.mjs"), "--conditions=source", path.join(root, "packages/cli/src/bin.ts"), "facilities", "compile", abs, "--out", out], { cwd: root, encoding: "utf8" });
+  if (r.status !== 0) {
+    console.log(JSON.stringify({ ok: false, error: `facility does not compile: ${(r.stderr || r.stdout || "").trim()}` }));
+    process.exit(1);
+  }
+  return out;
+}
+if (args.facility) args.facility = servedPath(compiledIfNeeded(args.facility));
 const server = http.createServer((req, res) => {
   const rel = decodeURIComponent(new URL(req.url, "http://x").pathname).replace(/^\/+/, "");
   const p = aliases.get(rel) ?? path.join(root, rel);
@@ -73,7 +97,7 @@ try {
     await page.screenshot({ path: args.out });
     console.log(JSON.stringify({ ok: true, ...info, errors }));
   } else if (mode === "facility") {
-    await page.goto(`http://127.0.0.1:${port}/scripts/preview/facility.html?facility=${encodeURIComponent(args.facility)}&catalogs=${encodeURIComponent(args.catalogs || "packages/content/catalogs/materials.json")}`);
+    await page.goto(`http://127.0.0.1:${port}/scripts/preview/facility.html?facility=${encodeURIComponent(args.facility)}&catalogs=${encodeURIComponent(args.catalogs || "packages/content/catalogs/materials.json")}&level=${encodeURIComponent(args.level || "")}&scale=${encodeURIComponent(args.scale || "")}`);
     await rendered();
     const info = await page.evaluate(() => window.__done);
     await page.setViewportSize({ width: info.width, height: info.height });

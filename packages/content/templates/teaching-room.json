@@ -1,0 +1,46 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "teaching-room",
+  "name": {"zh-CN": "示教室", "en": "Teaching room"},
+  "description": {"zh-CN": "示教室：病例讨论证据板、投影幕、解剖图谱、参考书架和六张课桌，主治医师在此带教。", "en": "A teaching room: case evidence board, projector screen, anatomy atlas, reference shelf and six desks; the attending teaches here."},
+  "kind": "teaching",
+  "size": {"w": 10, "d": 8},
+  "floor": "wood",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "door", "width": 1.8, "height": 2.6, "offset": 3.5}]}
+  ],
+  "sign": {"text": {"zh-CN": "示教室", "en": "Teaching room"}, "side": "n", "color": "#716541"},
+  "lights": [
+    {"x": -2.5, "z": -1.5},
+    {"x": 2.5, "z": -1.5},
+    {"x": -2.5, "z": 1.8},
+    {"x": 2.5, "z": 1.8}
+  ],
+  "placements": [
+    {"id": "board", "type": "evidence-board", "x": -1.5, "z": -3.525, "label": {"zh-CN": "病例讨论证据板", "en": "Evidence board"}},
+    {"id": "screen", "type": "projector-screen", "x": 2.5, "z": -3.425, "label": {"zh-CN": "投影幕", "en": "Projector screen"}},
+    {"id": "atlas", "type": "anatomy-atlas-kiosk", "x": 4.005, "z": -0.4, "rot": 270, "label": {"zh-CN": "解剖图谱", "en": "Anatomy atlas"}},
+    {"id": "bookshelf", "type": "bookshelf", "x": -4.345, "z": 2, "rot": 90, "label": {"zh-CN": "参考书架", "en": "Reference shelf"}},
+    {"id": "whiteboard", "type": "whiteboard", "x": 4.765, "z": -2.6, "rot": 270},
+    {"id": "desk-11", "type": "desk", "x": -2.9, "z": 0.2},
+    {"id": "chair-11", "type": "chair", "x": -2.9, "z": 0.85, "rot": 180},
+    {"id": "desk-12", "type": "desk", "x": -0.9, "z": 0.2},
+    {"id": "chair-12", "type": "chair", "x": -0.9, "z": 0.85, "rot": 180},
+    {"id": "desk-13", "type": "desk", "x": 1.1, "z": 0.2},
+    {"id": "chair-13", "type": "chair", "x": 1.1, "z": 0.85, "rot": 180},
+    {"id": "desk-21", "type": "desk", "x": -2.9, "z": 1.9},
+    {"id": "chair-21", "type": "chair", "x": -2.9, "z": 2.55, "rot": 180},
+    {"id": "desk-22", "type": "desk", "x": -0.9, "z": 1.9},
+    {"id": "chair-22", "type": "chair", "x": -0.9, "z": 2.55, "rot": 180},
+    {"id": "desk-23", "type": "desk", "x": 1.1, "z": 1.9},
+    {"id": "chair-23", "type": "chair", "x": 1.1, "z": 2.55, "rot": 180}
+  ],
+  "staff": [
+    {"id": "attending", "role": "attending", "name": {"zh-CN": "主治医师", "en": "Attending physician"}, "x": 0.4, "z": -2.3, "rot": 0, "greeting": {"zh-CN": "想讨论病例？把你的判断写到证据板上。", "en": "Want to discuss the case? Put your reasoning on the evidence board."}}
+  ],
+  "capabilities": ["evidence-board", "anatomy-atlas"],
+  "tags": ["teaching"]
+}

@@ -4,7 +4,8 @@
  * (colliders) are built from (EMBODIED R2).
  *
  * Building walls: four per building per level it spans (V4 corner mode:
- * north/south walls run past the corners). Room partitions: the listed sides
+ * north/south walls run past the corners), with the openings of that level
+ * (an opening's `levels`, default every level). Room partitions: the listed sides
  * of each room, deduplicated per wall line and level (a stretch already
  * built by an earlier room is not built twice), so one partition side may
  * become several sub-walls.
@@ -83,7 +84,8 @@ export function facilityWalls(f: FacilityDefinition): WallSpec[] {
       const elevation = levelElevation(f, level);
       for (const side of SIDES) {
         const wall = wallLine(b.rect, side, ws.thickness, "building");
-        const openings = (b.openings ?? []).filter((o) => o.side === side);
+        // an opening listing `levels` exists on those levels only (an entrance door on the ground floor)
+        const openings = (b.openings ?? []).filter((o) => o.side === side && (!o.levels || o.levels.includes(level)));
         push(
           {
             key: `wall:${ownerKey}:${side}`,

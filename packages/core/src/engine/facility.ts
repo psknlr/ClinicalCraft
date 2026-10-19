@@ -9,7 +9,7 @@ import type { CaseDefinition } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
 import { DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
-import type { DeviceBehavior, EquipmentCatalog, EquipmentType, FacilityDefinition, Level, MaterialDef, Placement, Rect, VoxelPart, WorldPredicate } from "../schema/facility.js";
+import type { DeviceBehavior, EquipmentCatalog, EquipmentType, FacilityDefinition, Level, MaterialDef, Placement, Rect, Room, VoxelPart, WorldPredicate } from "../schema/facility.js";
 import { DEFAULT_LOCALE, t } from "../i18n.js";
 import type { Issue, PatientSlot, WaypointLocation } from "./types.js";
 
@@ -280,6 +280,8 @@ export function assignPatientSlot(f: FacilityDefinition, c: Pick<CaseDefinition,
 export interface ResolveWaypointOptions {
   /** Reference point for "nearest" (default: the facility spawn). */
   from?: { x: number; z: number };
+  /** Level of `from` (multi-level facilities): targets on another level count as `LEVEL_CHANGE_PENALTY` m farther. */
+  level?: string;
   /** Label language (default zh-CN). */
   locale?: string;
   /** Patient slot used for the "patient" target (default: the first slot). */
@@ -297,27 +299,35 @@ function placementLabel(placement: Placement, type: EquipmentType | undefined, l
   return t(placement.label ?? type?.name ?? placement.id, locale);
 }
 
+/** Extra distance (m) "nearest" adds for a target on another level than the reference point (stairs or a ride). */
+export const LEVEL_CHANGE_PENALTY = 30;
+
 function nearestPlacement(
   f: FacilityDefinition,
   catalogs: EquipmentCatalog[],
-  from: { x: number; z: number },
+  from: { x: number; z: number; level?: string },
   accept: (placement: Placement, type: EquipmentType | undefined) => boolean,
 ): { placement: Placement; type: EquipmentType | undefined } | null {
   let best: { placement: Placement; type: EquipmentType | undefined; dist: number } | null = null;
   for (const placement of f.placements) {
     const type = equipmentOf(catalogs, placement.type);
     if (!accept(placement, type)) continue;
-    const dist = distance(placement, from);
+    const dist = distance(placement, from) + (from.level !== undefined && entityLevel(f, placement) !== from.level ? LEVEL_CHANGE_PENALTY : 0);
     if (!best || dist < best.dist) best = { placement, type, dist };
   }
   return best;
+}
+
+/** A waypoint, with the entity's level in a multi-level facility (single-level results stay `{ x, z, label }`). */
+function located(f: FacilityDefinition, x: number, z: number, label: string, entity: { level?: string; room?: string }): WaypointLocation {
+  return (f.levels ?? []).length > 1 ? { x, z, label, level: entityLevel(f, entity) } : { x, z, label };
 }
 
 function resolvePatient(f: FacilityDefinition, slotId: string | undefined, locale: string): WaypointLocation | null {
   const slot = slotId ? f.patientSlots.find((s) => s.id === slotId) : f.patientSlots[0];
   if (!slot) return null;
   const room = f.rooms.find((r) => r.id === slot.room);
-  return { x: slot.x, z: slot.z, label: room ? t(room.name, locale) : slot.id };
+  return located(f, slot.x, slot.z, room ? t(room.name, locale) : slot.id, slot);
 }
 
 /**
@@ -336,12 +346,12 @@ export function resolveWaypoint(
   options: ResolveWaypointOptions = {},
 ): WaypointLocation | null {
   const locale = options.locale ?? DEFAULT_LOCALE;
-  const from = options.from ?? f.spawn;
+  const from = { ...(options.from ?? f.spawn), ...(options.level !== undefined ? { level: options.level } : {}) };
   if (target === "patient") return resolvePatient(f, options.slotId, locale);
 
   const byPlacement = (accept: (p: Placement, type: EquipmentType | undefined) => boolean): WaypointLocation | null => {
     const hit = nearestPlacement(f, catalogs, from, accept);
-    return hit ? { x: hit.placement.x, z: hit.placement.z, label: placementLabel(hit.placement, hit.type, locale) } : null;
+    return hit ? located(f, hit.placement.x, hit.placement.z, placementLabel(hit.placement, hit.type, locale), hit.placement) : null;
   };
 
   if (target === "board" || target === "atlas") return byPlacement((_, type) => type?.interaction.kind === target);
@@ -353,22 +363,23 @@ export function resolveWaypoint(
     const room = slot ? f.rooms.find((r) => r.id === slot.room) : undefined;
     if (slot) {
       const linked = slot.monitor ? f.placements.find((p) => p.id === slot.monitor) : undefined;
-      if (linked && provides(linked, equipmentOf(catalogs, linked.type))) return { x: linked.x, z: linked.z, label: placementLabel(linked, equipmentOf(catalogs, linked.type), locale) };
-      const inRoom = room ? nearestPlacement(f, catalogs, slot, (p, type) => provides(p, type) && rectContains(room.rect, p.x, p.z)) : null;
-      if (inRoom) return { x: inRoom.placement.x, z: inRoom.placement.z, label: placementLabel(inRoom.placement, inRoom.type, locale) };
+      if (linked && provides(linked, equipmentOf(catalogs, linked.type))) return located(f, linked.x, linked.z, placementLabel(linked, equipmentOf(catalogs, linked.type), locale), linked);
+      const inRoom = room ? nearestPlacement(f, catalogs, slot, (p, type) => provides(p, type) && rectContains(room.rect, p.x, p.z) && entityLevel(f, p) === entityLevel(f, slot)) : null;
+      if (inRoom) return located(f, inRoom.placement.x, inRoom.placement.z, placementLabel(inRoom.placement, inRoom.type, locale), inRoom.placement);
     }
   }
   const byCapability = byPlacement(provides);
   if (byCapability) return byCapability;
 
   const room = f.rooms.find((r) => r.id === target);
-  if (room) return { x: room.rect.x, z: room.rect.z, label: t(room.name, locale) };
+  if (room) return located(f, room.rect.x, room.rect.z, t(room.name, locale), { level: roomLevel(f, room) });
 
-  const ofKind = f.rooms.filter((r) => r.kind === target).sort((a, b) => distance(a.rect, from) - distance(b.rect, from))[0];
-  if (ofKind) return { x: ofKind.rect.x, z: ofKind.rect.z, label: t(ofKind.name, locale) };
+  const roomDistance = (r: Room) => distance(r.rect, from) + (from.level !== undefined && roomLevel(f, r) !== from.level ? LEVEL_CHANGE_PENALTY : 0);
+  const ofKind = f.rooms.filter((r) => r.kind === target).sort((a, b) => roomDistance(a) - roomDistance(b))[0];
+  if (ofKind) return located(f, ofKind.rect.x, ofKind.rect.z, t(ofKind.name, locale), { level: roomLevel(f, ofKind) });
 
   const placement = f.placements.find((p) => p.id === target);
-  if (placement) return { x: placement.x, z: placement.z, label: placementLabel(placement, equipmentOf(catalogs, placement.type), locale) };
+  if (placement) return located(f, placement.x, placement.z, placementLabel(placement, equipmentOf(catalogs, placement.type), locale), placement);
   return null;
 }
 
@@ -546,7 +557,16 @@ function checkLevels(f: FacilityDefinition): Issue[] {
   const unknown = (path: string, id: string | undefined) => {
     if (id !== undefined && !known.has(id)) issues.push(err(path, `unknown level "${id}"`));
   };
-  f.buildings.forEach((b, i) => b.levels?.forEach((id, j) => unknown(`buildings.${i}.levels.${j}`, id)));
+  f.buildings.forEach((b, i) => {
+    b.levels?.forEach((id, j) => unknown(`buildings.${i}.levels.${j}`, id));
+    const spans = buildingLevels(f, b);
+    (b.openings ?? []).forEach((o, j) =>
+      o.levels?.forEach((id, k) => {
+        unknown(`buildings.${i}.openings.${j}.levels.${k}`, id);
+        if (known.has(id) && !spans.includes(id)) issues.push(warn(`buildings.${i}.openings.${j}.levels.${k}`, `opening on level "${id}", which building "${b.id}" does not span`));
+      }),
+    );
+  });
   f.rooms.forEach((r, i) => {
     unknown(`rooms.${i}.level`, r.level);
     const building = r.building ? f.buildings.find((b) => b.id === r.building) : undefined;
@@ -581,8 +601,28 @@ function checkConnectors(f: FacilityDefinition): Issue[] {
       }
     });
     if (new Set(c.stops.map((s) => s.level)).size < 2) issues.push(err(`connectors.${i}.stops`, `connector "${c.id}" must join at least two levels`));
+    if (c.kind === "elevator") return;
+    // stairs and ramps: consecutive stops are the foot and the head of a straight flight
+    for (let j = 1; j < c.stops.length; j++) {
+      const a = c.stops[j - 1], b = c.stops[j];
+      const dx = Math.abs(a.x - b.x), dz = Math.abs(a.z - b.z);
+      const run = Math.hypot(dx, dz);
+      if (run <= SPATIAL_TOLERANCE) continue; // navigation-only portal (no flight)
+      const path = `connectors.${i}.stops.${j}`;
+      if (dx > SPATIAL_TOLERANCE && dz > SPATIAL_TOLERANCE) {
+        issues.push(warn(path, `the flight of connector "${c.id}" from (${a.x}, ${a.z}) to (${b.x}, ${b.z}) is not axis-aligned: it is not built (navigation only)`));
+        continue;
+      }
+      const rise = Math.abs(levelElevationOf(f, b.level) - levelElevationOf(f, a.level));
+      const limit = c.kind === "stairs" ? 1 : 1 / 8;
+      if (rise / run > limit + 1e-9) issues.push(warn(path, `the flight of connector "${c.id}" rises ${rise} m over ${run.toFixed(2)} m (steeper than ${c.kind === "stairs" ? "45°" : "1:8"})`));
+    }
   });
   return issues;
+}
+
+function levelElevationOf(f: LevelSource, id: string): number {
+  return facilityLevels(f).find((l) => l.id === id)?.elevation ?? 0;
 }
 
 /** Access zones: known level, inside the bounds, unique ids. */

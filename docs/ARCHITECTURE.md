@@ -48,7 +48,9 @@ docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, f
 scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA)
 packages/core               @clinicalcraft/core     zod schemas + pure engine
 packages/world              @clinicalcraft/world    embodied world model (pure, headless): collision model, navigation,
-                                                    visibility, semantic registry + world contracts (docs/EMBODIED.md)
+                                                    visibility, semantic registry; `createWorldRuntime` — versioned
+                                                    physical state, device behaviours, spatial policy, perception,
+                                                    action bus, traces (docs/EMBODIED.md)
 packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs, JSON Schemas (data only;
                                                     loaded by `loadContent` in @clinicalcraft/agent/node)
 packages/agent              @clinicalcraft/agent    runtime ("." isomorphic, "./node" fs/child_process)

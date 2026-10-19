@@ -9,7 +9,15 @@
  * Collider ids: `wall:<ownerKey>:<side>:<k>`, `partition:<ownerKey>:<side>:<n>:<k>`,
  * `window:<ownerKey>:<side>:<n>`, `door:<ownerKey>:<side>:<n>:<leaf>`,
  * `eq:<placementId>`, `patient:<slotId>`, `staff:<staffId>`, `tree:<i>`,
- * `sign:<i>`, `block:<x>,<y>,<z>`.
+ * `sign:<i>`, `block:<x>,<y>,<z>`; multi-level facilities (EMBODIED R10) add
+ * `slab:<building>@<level>:<k>` (upper floors minus stairwells),
+ * `ramp:<connector>:<flight>` (a stairs/ramp flight: a solid wedge whose
+ * `ramp` surface physics walks on; on the lower level) and
+ * `rail:<connector>:<flight>:<w|e|n|s|end>` (balustrades along the flight
+ * and across the stairwell's foot end; on the upper level).
+ *
+ * Single-level facilities have no slab, ramp or rail: their model is exactly
+ * the pinned V4 one.
  *
  * `opaque` (line of sight at eye height): walls, partitions, closed door
  * leaves, trees, blocks and solid equipment spanning eye height (1.62 m above
@@ -23,7 +31,7 @@ import { buildRules, validBlocks, type Cell } from "./buildzone.js";
 import type { Aabb, Collider, ColliderKind, CollisionModel, DoorSpec } from "./contracts.js";
 import { placementBox, rotateXZ, rotatedFootprint, segmentWall, sideRotation, wallPoint, type ResolvedOpening, type WallLine } from "./geometry.js";
 import { doorName } from "./i18n.js";
-import { defaultLevelId, entityLevel, levelElevation } from "./levels.js";
+import { connectorFlights, defaultLevelId, entityLevel, levelElevation, levelSlabs, RAIL_HEIGHT, RAIL_THICKNESS, SLAB_THICKNESS } from "./levels.js";
 import { boxCollider, PHYSICS } from "./physics.js";
 import { facilityWalls, type WallSpec } from "./walls.js";
 
@@ -201,9 +209,10 @@ export function buildCollisionModel(f: FacilityDefinition, catalogs: readonly Eq
   const groundElevation = levelElevation(f, ground);
   const colliders: Collider[] = [];
   const doors: DoorSpec[] = [];
-  const add = (id: string, kind: ColliderKind, level: string, box: Aabb, extra: { entity?: string; opaque: boolean; passable?: boolean }) => {
+  const add = (id: string, kind: ColliderKind, level: string, box: Aabb, extra: { entity?: string; opaque: boolean; passable?: boolean; ramp?: Collider["ramp"] }) => {
     const c: Collider = { id, kind, level, ...plain(box), opaque: extra.opaque, passable: extra.passable ?? false };
     if (extra.entity) c.entity = extra.entity;
+    if (extra.ramp) c.ramp = { ...extra.ramp };
     colliders.push(c);
     return c;
   };
@@ -288,6 +297,40 @@ export function buildCollisionModel(f: FacilityDefinition, catalogs: readonly Eq
     for (const b of validBlocks(rules, source as { cell: unknown; type: unknown }[])) {
       add(`block:${b.cell.join(",")}`, "block", ground, lift(blockBox(b.cell as Cell), groundElevation), { opaque: true });
     }
+  }
+
+  // upper floors (slabs minus stairwells), stairs/ramp flights and their balustrades
+  for (const slab of levelSlabs(f)) {
+    slab.rects.forEach((r, k) =>
+      add(`slab:${slab.building}@${slab.level}:${k}`, "slab", slab.level, { ...r, minY: slab.elevation - SLAB_THICKNESS, maxY: slab.elevation }, { opaque: true }),
+    );
+  }
+  for (const fl of connectorFlights(f)) {
+    const id = `${fl.connectorId}:${fl.index}`;
+    const a = fl.area;
+    const y0 = fl.foot.elevation, y1 = fl.head.elevation;
+    add(`ramp:${id}`, "ramp", fl.foot.level, { ...a, minY: y0, maxY: y1 }, { opaque: false, ramp: fl.surface });
+    const t = RAIL_THICKNESS, top = y1 + RAIL_HEIGHT;
+    // along both long sides, from the lower floor to above the upper one (keeps walkers on the flight and out of the stairwell)
+    const sides: [string, Aabb][] =
+      fl.surface.axis === "z"
+        ? [
+            ["w", { minX: a.minX - t, maxX: a.minX, minY: y0, maxY: top, minZ: a.minZ, maxZ: a.maxZ }],
+            ["e", { minX: a.maxX, maxX: a.maxX + t, minY: y0, maxY: top, minZ: a.minZ, maxZ: a.maxZ }],
+          ]
+        : [
+            ["n", { minX: a.minX, maxX: a.maxX, minY: y0, maxY: top, minZ: a.minZ - t, maxZ: a.minZ }],
+            ["s", { minX: a.minX, maxX: a.maxX, minY: y0, maxY: top, minZ: a.maxZ, maxZ: a.maxZ + t }],
+          ];
+    for (const [side, box] of sides) add(`rail:${id}:${side}`, "rail", fl.head.level, box, { opaque: false });
+    // across the stairwell's foot end, on the upper floor
+    const footEnd = fl.surface.from;
+    const beyond = Math.sign(fl.surface.from - fl.surface.to) || 1;
+    const end: Aabb =
+      fl.surface.axis === "z"
+        ? { minX: a.minX - t, maxX: a.maxX + t, minY: y1, maxY: top, minZ: beyond > 0 ? footEnd : footEnd - t, maxZ: beyond > 0 ? footEnd + t : footEnd }
+        : { minX: beyond > 0 ? footEnd : footEnd - t, maxX: beyond > 0 ? footEnd + t : footEnd, minY: y1, maxY: top, minZ: a.minZ - t, maxZ: a.maxZ + t };
+    add(`rail:${id}:end`, "rail", fl.head.level, end, { opaque: false });
   }
 
   return { bounds: { ...f.bounds }, colliders, doors, walls };

@@ -99,7 +99,21 @@ export interface Aabb {
 }
 
 /** What a collider is made of (navigation and visibility treat them differently). `sign`: the post of a free-standing sign. */
-export type ColliderKind = "wall" | "partition" | "window" | "door" | "equipment" | "npc" | "tree" | "block" | "sign" | "obstacle";
+export type ColliderKind = "wall" | "partition" | "window" | "door" | "equipment" | "npc" | "tree" | "block" | "sign" | "obstacle" | "slab" | "ramp" | "rail";
+
+/**
+ * The walkable top of a ramp collider (a stairs or ramp flight, EMBODIED
+ * R10): the surface rises linearly along `axis` from `y0` at coordinate
+ * `from` (the foot) to `y1` at `to` (the head) and is level beyond them; the
+ * flight is solid from its box's `minY` up to the surface.
+ */
+export interface RampSurface {
+  axis: "x" | "z";
+  from: number;
+  to: number;
+  y0: number;
+  y1: number;
+}
 
 /** One collider of the collision model. Ids are stable so the renderer can toggle doors / move carts. */
 export interface Collider extends Aabb {
@@ -112,6 +126,8 @@ export interface Collider extends Aabb {
   opaque: boolean;
   /** Passable for path planning (doors open automatically unless locked). */
   passable: boolean;
+  /** `ramp` colliders: the walkable surface (physics follows it; navigation treats the flight as a connector portal). */
+  ramp?: RampSurface;
 }
 
 /**
@@ -332,6 +348,8 @@ export type WorldEvent =
   | { id: string; type: "door.changed"; entityId: EntityId; open: boolean; locked: boolean; actorId: ActorId | null }
   | { id: string; type: "reservation.changed"; entityId: EntityId; reservedBy: ActorId | null }
   | { id: string; type: "obstacle.changed"; obstacle: DynamicObstacle; present: boolean }
+  /** Scenario control: a device taken out of service (`available: false`) or back in service. */
+  | { id: string; type: "entity.availability"; entityId: EntityId; available: boolean }
   | { id: string; type: "hygiene"; actorId: ActorId; until: number }
   | { id: string; type: "task.changed"; actorId: ActorId; task: ActorState["task"] }
   | { id: string; type: "action.completed"; actionId: string; actorId: ActorId; operation: string; status: WorldActionResult["status"]; errorCode?: WorldErrorCode };
@@ -532,12 +550,16 @@ export interface NavigationRecord {
 /* Spatial policy                                                      */
 /* ------------------------------------------------------------------ */
 
-/** What a clinical tool call needs physically (EMBODIED §6). */
+/**
+ * What a clinical tool call needs physically (EMBODIED §6). `at-provider`
+ * with `fixedOnly`: only non-portable providers count (a station or request
+ * terminal — the alternative to bringing a bedside device to the patient).
+ */
 export type SpatialRequirement =
   | { kind: "anywhere" }
   | { kind: "near-patient"; range: number; lineOfSight: boolean }
   | { kind: "at-patient"; range: number }
-  | { kind: "at-provider"; capabilities: string[]; range?: number }
+  | { kind: "at-provider"; capabilities: string[]; range?: number; fixedOnly?: boolean }
   | { kind: "bedside-provider"; capabilities: string[]; patientRange: number }
   | { kind: "any-of"; options: SpatialRequirement[] };
 
@@ -561,12 +583,18 @@ export type SpatialCheck =
       ok: false;
       code: SpatialErrorCode;
       requirement: SpatialRequirement;
-      /** Which part failed: "not-near-patient", "not-at-patient", "no-provider-in-reach", "provider-not-at-bedside", "patient-not-visible", "no-provider-in-facility". */
+      /**
+       * Which part failed: "not-near-patient", "not-at-patient", "patient-not-visible", "no-provider-in-reach",
+       * "provider-not-at-bedside" (hint: fetch the cart and `move_to` it to the patient; null when none can be brought),
+       * "no-provider-in-facility", "no-patient" (no patient bound to the world).
+       */
       reason: string;
       /** Localised explanation. */
       message: string;
       /** Where to go: pass `hint.goal` to `navigate_to` (null when nothing in the facility satisfies it). */
       hint: { goal: NavGoal; label: string } | null;
+      /** Measurements behind the reason: `distance`, `range`, `missing` capabilities, `providers`… */
+      details?: Record<string, unknown>;
     };
 
 export interface SpatialPolicy {
@@ -735,6 +763,13 @@ export interface WorldRuntimeOptions {
   catalogs: EquipmentCatalog[];
   binding: EncounterBinding;
   clinical: ClinicalView;
+  /**
+   * The session's tool path (EMBODIED R3): operations with a clinical effect
+   * run their tool through it, and travel / procedure time is charged with
+   * `elapse`. Without a port, clinical operations fail (`CLINICAL_REJECTED`)
+   * and no time is charged.
+   */
+  port?: ClinicalPort;
   /** Injected clock (ms) and id generator (determinism). */
   now: () => number;
   newId: () => string;
@@ -747,6 +782,8 @@ export interface WorldRuntimeOptions {
   snapshot?: WorldStateSnapshot;
   /** Initial pose of the primary actor (default: facility spawn). */
   spawn?: Pose;
+  /** Receives one span per world action and observation (EMBODIED §10; `TraceRecorder` implements it). */
+  trace?: TraceSink;
 }
 
 /**
@@ -783,7 +820,12 @@ export interface WorldRuntime {
   plan(actorId: ActorId, goal: NavGoal): NavPlan;
 
   /* spatial policy */
-  checkSpatial(actorId: ActorId, intent: ClinicalIntent): SpatialCheck;
+  /**
+   * Is the actor where `intent` can be carried out (EMBODIED §6)? The session
+   * calls it before the approval gate and again (`recheck: true`, failures
+   * then carry `SPATIAL_PRECONDITION_CHANGED`) immediately before the engine commit.
+   */
+  checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck;
 
   /* actions */
   execute(request: WorldActionRequest, signal?: AbortSignal): Promise<WorldActionResult>;
@@ -834,6 +876,11 @@ export interface EpisodeTrace {
   facilityId: string;
   embodiment: "clinical" | "embodied";
   spans: TraceSpan[];
+}
+
+/** Where the runtime writes spans (`TraceRecorder` implements it): `add` assigns the span id. */
+export interface TraceSink {
+  add(span: Omit<TraceSpan, "id">): TraceSpan;
 }
 
 /* ------------------------------------------------------------------ */

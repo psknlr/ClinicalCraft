@@ -15,10 +15,14 @@ const firstSlot = (f: ReturnType<typeof loadFacility>) => f.patientSlots.slice(0
  * to this model; the model reproduced every box exactly (max |Δ| = 0), every
  * door leaf, doorway area, NPC body and block. Since then the renderer takes
  * its colliders from this model, so a change here is a change in the 3D world.
+ * general-hospital was re-pinned after a content fix (A4): `ward-monitor-1`
+ * moved from (−44.7, −41.15) — wedged between the wall, bed 1 and its pump,
+ * no reachable interaction point — to the other side of the bed head
+ * (−42.4, −41.15); counts and kinds unchanged, digest 3201877c → 427e1029.
  */
 const PARITY = {
   "clinic-v4": { total: 86, doors: 1, digest: "e23bbedf", kinds: { tree: 12, wall: 24, window: 6, door: 2, partition: 14, equipment: 20, npc: 1, block: 7 } },
-  "general-hospital": { total: 614, doors: 38, digest: "3201877c", kinds: { tree: 28, wall: 94, window: 35, door: 53, partition: 160, equipment: 224, npc: 11, block: 9 } },
+  "general-hospital": { total: 614, doors: 38, digest: "427e1029", kinds: { tree: 28, wall: 94, window: 35, door: 53, partition: 160, equipment: 224, npc: 11, block: 9 } },
 } as const;
 
 describe("collision model parity with the renderer (EMBODIED R2)", () => {

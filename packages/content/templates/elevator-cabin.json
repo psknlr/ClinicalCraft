@@ -1,0 +1,19 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "elevator-cabin",
+  "name": {"zh-CN": "电梯", "en": "Elevator"},
+  "description": {"zh-CN": "电梯轿厢（每层一个实例，位置相同）：不锈钢围壁和玻璃推拉门；门外与轿厢内设楼层按钮，由连接器 elevator 运行。", "en": "An elevator car (one instance per level at the same place): steel walls and a glass sliding door; call and car panels choose the level; the facility's elevator connector runs it."},
+  "kind": "elevator",
+  "size": {"w": 2.4, "d": 2.4},
+  "floor": "steel",
+  "partitions": [
+    {"side": "n", "material": "steel"},
+    {"side": "w", "material": "steel"},
+    {"side": "e", "material": "steel"},
+    {"side": "s", "material": "steel", "openings": [{"kind": "sliding-door", "width": 1.4, "height": 2.4}]}
+  ],
+  "lights": [
+    {"x": 0, "z": 0}
+  ],
+  "tags": ["elevator", "connector"]
+}

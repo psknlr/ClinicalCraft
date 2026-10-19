@@ -1378,6 +1378,203 @@
         {"m":"plastic","p":[0,1.835,-0.22],"s":[0.06,0.07,0.06]},
         {"m":"plastic","p":[0,1.835,-0.065],"s":[0.08,0.03,0.25]}
       ]
+    },
+    {
+      "id": "treatment-plinth",
+      "name": {"zh-CN":"治疗床","en":"Treatment plinth"},
+      "category": "furniture",
+      "description": {
+        "zh-CN": "钢架软垫治疗床：可调头枕、一次性床单卷、高约 0.7 米。",
+        "en": "A steel-framed padded treatment couch with an adjustable headrest and a paper roll, about 0.7 m high."
+      },
+      "usage": {
+        "zh-CN": "门诊、骨科和康复查体：患者坐于床边或平卧，便于检查关节活动度与神经功能。",
+        "en": "Outpatient, orthopaedic and rehabilitation examinations: the patient sits on its edge or lies flat for joint range-of-motion and neurological checks."
+      },
+      "capabilities": [],
+      "footprint": {"w":0.75,"d":1.95,"h":0.75},
+      "solid": true,
+      "interaction": {
+        "kind": "bed",
+        "prompt": {"zh-CN":"E · 治疗床","en":"E · Treatment plinth"}
+      },
+      "screen": "none",
+      "tags": ["bed","patient-support","consult","orthopaedics","rehab"],
+      "parts": [
+        {"m":"steel","p":[0.3,0.3,0.85],"s":[0.06,0.6,0.06]},
+        {"m":"steel","p":[-0.3,0.3,0.85],"s":[0.06,0.6,0.06]},
+        {"m":"steel","p":[0.3,0.3,-0.85],"s":[0.06,0.6,0.06]},
+        {"m":"steel","p":[-0.3,0.3,-0.85],"s":[0.06,0.6,0.06]},
+        {"m":"rubber","p":[0.3,0.02,0.85],"s":[0.08,0.04,0.08]},
+        {"m":"rubber","p":[-0.3,0.02,0.85],"s":[0.08,0.04,0.08]},
+        {"m":"rubber","p":[0.3,0.02,-0.85],"s":[0.08,0.04,0.08]},
+        {"m":"rubber","p":[-0.3,0.02,-0.85],"s":[0.08,0.04,0.08]},
+        {"m":"steel","p":[0,0.16,0],"s":[0.04,0.04,1.7]},
+        {"m":"steel","p":[0,0.16,0.85],"s":[0.6,0.04,0.04]},
+        {"m":"steel","p":[0,0.16,-0.85],"s":[0.6,0.04,0.04]},
+        {"m":"steel","p":[0,0.585,0],"s":[0.7,0.05,1.86]},
+        {"m":"navy","p":[0,0.655,0.12],"s":[0.72,0.09,1.58],"name":"mattress"},
+        {"m":"navy","p":[0,0.675,-0.79],"s":[0.6,0.13,0.32]},
+        {"m":"paper","p":[0,0.702,0.12],"s":[0.5,0.004,1.5]},
+        {"m":"coal","p":[0,0.675,-0.79],"s":[0.14,0.135,0.08]},
+        {"m":"chrome","p":[0.37,0.5,0.6],"s":[0.02,0.1,0.02]},
+        {"m":"plastic","p":[0.38,0.45,0.6],"s":[0.02,0.06,0.12]}
+      ]
+    },
+    {
+      "id": "parallel-bars",
+      "name": {"zh-CN":"平行杠","en":"Parallel bars"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "3 米长、可调高度的步态训练平行杠，木质底座铺防滑垫。",
+        "en": "Height-adjustable 3 m gait-training parallel bars on a wooden base with a non-slip mat."
+      },
+      "usage": {
+        "zh-CN": "康复训练：患者双手扶杠练习站立、负重和行走，治疗师在旁保护。",
+        "en": "Rehabilitation: the patient holds both rails to practise standing, weight bearing and walking while the therapist guards."
+      },
+      "capabilities": [],
+      "footprint": {"w":0.9,"d":3.0,"h":1.1},
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {"zh-CN":"E · 平行杠","en":"E · Parallel bars"}
+      },
+      "screen": "none",
+      "tags": ["rehab","gait","therapy"],
+      "parts": [
+        {"m":"wood","p":[0,0.04,0],"s":[0.9,0.08,3.0]},
+        {"m":"rubber","p":[0,0.085,0],"s":[0.62,0.01,2.84]},
+        {"m":"teal","p":[0,0.081,1.47],"s":[0.9,0.006,0.06]},
+        {"m":"teal","p":[0,0.081,-1.47],"s":[0.9,0.006,0.06]},
+        {"m":"chrome","p":[-0.4,0.54,-1.3],"s":[0.05,0.92,0.05]},
+        {"m":"coal","p":[-0.4,0.72,-1.3],"s":[0.07,0.06,0.07]},
+        {"m":"chrome","p":[-0.4,0.54,0.0],"s":[0.05,0.92,0.05]},
+        {"m":"coal","p":[-0.4,0.72,0.0],"s":[0.07,0.06,0.07]},
+        {"m":"chrome","p":[-0.4,0.54,1.3],"s":[0.05,0.92,0.05]},
+        {"m":"coal","p":[-0.4,0.72,1.3],"s":[0.07,0.06,0.07]},
+        {"m":"chrome","p":[-0.4,1.02,0],"s":[0.05,0.05,2.74]},
+        {"m":"coal","p":[-0.4,1.02,1.395],"s":[0.06,0.06,0.06]},
+        {"m":"coal","p":[-0.4,1.02,-1.395],"s":[0.06,0.06,0.06]},
+        {"m":"chrome","p":[0.4,0.54,-1.3],"s":[0.05,0.92,0.05]},
+        {"m":"coal","p":[0.4,0.72,-1.3],"s":[0.07,0.06,0.07]},
+        {"m":"chrome","p":[0.4,0.54,0.0],"s":[0.05,0.92,0.05]},
+        {"m":"coal","p":[0.4,0.72,0.0],"s":[0.07,0.06,0.07]},
+        {"m":"chrome","p":[0.4,0.54,1.3],"s":[0.05,0.92,0.05]},
+        {"m":"coal","p":[0.4,0.72,1.3],"s":[0.07,0.06,0.07]},
+        {"m":"chrome","p":[0.4,1.02,0],"s":[0.05,0.05,2.74]},
+        {"m":"coal","p":[0.4,1.02,1.395],"s":[0.06,0.06,0.06]},
+        {"m":"coal","p":[0.4,1.02,-1.395],"s":[0.06,0.06,0.06]}
+      ]
+    },
+    {
+      "id": "exercise-bike",
+      "name": {"zh-CN":"康复踏车","en":"Exercise bike"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "带阻力调节和心率显示屏的立式康复踏车。",
+        "en": "An upright rehabilitation exercise bike with adjustable resistance and a heart-rate console."
+      },
+      "usage": {
+        "zh-CN": "心肺康复与下肢肌力训练：从低阻力开始，监测心率和主观用力程度。",
+        "en": "Cardiopulmonary rehabilitation and leg strengthening: start at low resistance and watch heart rate and perceived exertion."
+      },
+      "capabilities": [],
+      "footprint": {"w":0.6,"d":1.2,"h":1.35},
+      "solid": true,
+      "interaction": {
+        "kind": "none",
+        "prompt": {"zh-CN":"E · 康复踏车","en":"E · Exercise bike"}
+      },
+      "screen": "none",
+      "tags": ["rehab","cardio","therapy"],
+      "parts": [
+        {"m":"coal","p":[0,0.04,-0.48],"s":[0.56,0.08,0.1]},
+        {"m":"coal","p":[0,0.04,0.48],"s":[0.56,0.08,0.1]},
+        {"m":"rubber","p":[0.25,0.02,-0.48],"s":[0.06,0.04,0.12]},
+        {"m":"rubber","p":[-0.25,0.02,-0.48],"s":[0.06,0.04,0.12]},
+        {"m":"rubber","p":[0.25,0.02,0.48],"s":[0.06,0.04,0.12]},
+        {"m":"rubber","p":[-0.25,0.02,0.48],"s":[0.06,0.04,0.12]},
+        {"m":"steel","p":[0,0.14,0],"s":[0.08,0.08,1.0]},
+        {"m":"plastic","p":[0,0.36,0.3],"s":[0.14,0.46,0.46]},
+        {"m":"teal","p":[0,0.36,0.3],"s":[0.15,0.3,0.3]},
+        {"m":"steel","p":[0,0.48,-0.28],"s":[0.06,0.62,0.06]},
+        {"m":"black","p":[0,0.82,-0.3],"s":[0.26,0.07,0.32],"name":"seat"},
+        {"m":"steel","p":[0,0.76,0.42],"s":[0.06,0.84,0.06]},
+        {"m":"chrome","p":[0,1.17,0.44],"s":[0.52,0.04,0.05]},
+        {"m":"rubber","p":[0.24,1.17,0.44],"s":[0.08,0.05,0.06]},
+        {"m":"rubber","p":[-0.24,1.17,0.44],"s":[0.08,0.05,0.06]},
+        {"m":"plastic","p":[0,1.25,0.47],"s":[0.26,0.14,0.05]},
+        {"m":"screen-dark","p":[0,1.26,0.497],"s":[0.18,0.08,0.004]},
+        {"m":"led-green","p":[0.06,1.24,0.5],"s":[0.03,0.02,0.003],"anim":"blink"},
+        {"m":"steel","p":[0,0.36,0.06],"s":[0.3,0.04,0.04]},
+        {"m":"coal","p":[0.17,0.36,0.06],"s":[0.08,0.03,0.1]},
+        {"m":"coal","p":[-0.17,0.36,0.06],"s":[0.08,0.03,0.1]}
+      ]
+    },
+    {
+      "id": "wall-bars",
+      "name": {"zh-CN":"肋木","en":"Wall bars"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "壁挂式木质肋木，横杆间距 25 厘米。",
+        "en": "Wall-mounted wooden stall bars with rungs every 25 cm."
+      },
+      "usage": {
+        "zh-CN": "牵伸、平衡和上肢力量训练时供患者扶握。",
+        "en": "A handhold for stretching, balance and upper-limb strengthening exercises."
+      },
+      "capabilities": [],
+      "footprint": {"w":1.0,"d":0.2,"h":2.5},
+      "solid": false,
+      "interaction": {
+        "kind": "none",
+        "prompt": {"zh-CN":"E · 肋木","en":"E · Wall bars"}
+      },
+      "screen": "none",
+      "tags": ["wall","rehab","therapy"],
+      "parts": [
+        {"m":"wood","p":[-0.46,1.25,-0.05],"s":[0.06,2.5,0.1]},
+        {"m":"wood","p":[0.46,1.25,-0.05],"s":[0.06,2.5,0.1]},
+        {"m":"darkwood","p":[-0.46,0.02,-0.05],"s":[0.08,0.04,0.12]},
+        {"m":"darkwood","p":[0.46,0.02,-0.05],"s":[0.08,0.04,0.12]},
+        {"m":"wood","p":[0,0.25,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,0.5,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,0.75,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,1.0,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,1.25,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,1.5,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,1.75,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,2.0,-0.04],"s":[0.86,0.035,0.035]},
+        {"m":"wood","p":[0,2.25,-0.04],"s":[0.86,0.035,0.035]}
+      ]
+    },
+    {
+      "id": "exercise-mat",
+      "name": {"zh-CN":"训练垫","en":"Exercise mat"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "1.2 × 2 米防滑运动康复垫。",
+        "en": "A 1.2 × 2 m non-slip rehabilitation exercise mat."
+      },
+      "usage": {
+        "zh-CN": "地面训练：翻身、桥式运动和核心稳定训练。",
+        "en": "Floor exercises: rolling, bridging and core stability work."
+      },
+      "capabilities": [],
+      "footprint": {"w":1.2,"d":2.0,"h":0.05},
+      "solid": false,
+      "interaction": {
+        "kind": "none",
+        "prompt": {"zh-CN":"E · 训练垫","en":"E · Exercise mat"}
+      },
+      "screen": "none",
+      "tags": ["rehab","floor","therapy"],
+      "parts": [
+        {"m":"tile-blue","p":[0,0.025,0],"s":[1.2,0.05,2.0]},
+        {"m":"navy","p":[0,0.051,-0.9],"s":[1.2,0.002,0.04]},
+        {"m":"navy","p":[0,0.051,0.9],"s":[1.2,0.002,0.04]}
+      ]
     }
   ]
 }

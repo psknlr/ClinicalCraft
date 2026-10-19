@@ -7,8 +7,9 @@
  * 1.78 m above the level's floor) — the web nav grid's rule. Layers:
  *
  * - `base`: static blockers — walls, partitions, windows, solid equipment,
- *   patient bodies and beds, trees, blocks, sign posts — and, off the
- *   default level, the void outside every building on that level.
+ *   patient bodies and beds, trees, blocks, sign posts, stairs flights and
+ *   balustrades — and, off the default level, the void outside its floor
+ *   slabs (stairwells included; the flights are connector portals).
  *   Staff bodies are NOT static (staff walk; the mover avoids them).
  * - `door`: door leaves (passable unless the door is locked).
  * - `dynamic`: temporary obstacles and displaced carts (re-stamped by
@@ -87,8 +88,17 @@ export class NavGrids {
       const frame = makeFrame(collision.bounds, level.id, level.elevation, cell);
       const n = frame.cols * frame.rows;
       this.levels.set(level.id, { ...frame, base: new Uint8Array(n), door: new Int32Array(n), dynamic: new Int32Array(n), zone: new Uint16Array(n) });
-      // the walkable floor: everywhere on the default level, inside the buildings spanning any other level
-      this.floors.set(level.id, level.id === ground ? null : facility.buildings.filter((b) => buildingLevelInfos(facility, b).some((l) => l.id === level.id)).map((b) => ({ minX: b.rect.x - b.rect.w / 2, maxX: b.rect.x + b.rect.w / 2, minZ: b.rect.z - b.rect.d / 2, maxZ: b.rect.z + b.rect.d / 2 })));
+      // the walkable floor: everywhere on the default level; on an upper level its floor slabs (the buildings
+      // spanning it minus their stairwells, collision model `slab` colliders), else inside those buildings
+      const slabs = collision.colliders.filter((c) => c.kind === "slab" && c.level === level.id);
+      this.floors.set(
+        level.id,
+        level.id === ground
+          ? null
+          : slabs.length
+            ? slabs.map((c) => ({ minX: c.minX - 1e-6, maxX: c.maxX + 1e-6, minZ: c.minZ - 1e-6, maxZ: c.maxZ + 1e-6 }))
+            : facility.buildings.filter((b) => buildingLevelInfos(facility, b).some((l) => l.id === level.id)).map((b) => ({ minX: b.rect.x - b.rect.w / 2, maxX: b.rect.x + b.rect.w / 2, minZ: b.rect.z - b.rect.d / 2, maxZ: b.rect.z + b.rect.d / 2 })),
+      );
       const relevant = collision.colliders.filter((c) => c.level === level.id && !(c.kind === "npc" && c.entity?.startsWith("staff:")) && c.maxY - level.elevation > 0.05 && c.minY - level.elevation < PHYSICS.height);
       this.blockers.set(level.id, new AreaIndex(relevant));
       for (const c of relevant) if (c.entity && c.kind !== "door") this.byEntity.set(c.entity, [...(this.byEntity.get(c.entity) ?? []), c]);

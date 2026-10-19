@@ -1,20 +1,24 @@
 /**
  * Content loader: scans content directories for
- *   <dir>/cases/<id>/case.json, <dir>/facilities/*.json, <dir>/catalogs/*.json
+ *   <dir>/cases/<id>/case.json, <dir>/facilities/*.json, <dir>/catalogs/*.json,
+ *   <dir>/templates/*.json (room templates)
  * and validates them with core's `parseCase` / `parseFacility` /
- * `parseCatalog` (falling back to the zod schemas when the engine helpers are
- * unavailable). The built-in content directory (`@clinicalcraft/content`) is
- * searched first; later directories override earlier ones by id. Within one
- * directory the first case folder (in name order) declaring an id wins and
- * the others are reported — the same winners as the case index
- * (`CaseIndexer`, ./case-index.ts).
+ * `parseCatalog` / `parseRoomTemplate` (falling back to the zod schemas when
+ * the engine helpers are unavailable). The built-in content directory
+ * (`@clinicalcraft/content`) is searched first; later directories override
+ * earlier ones by id. Within one directory the first case folder (in name
+ * order) declaring an id wins and the others are reported — the same
+ * winners as the case index (`CaseIndexer`, ./case-index.ts). Facilities
+ * that place room templates (`instances`) are compiled with every loaded
+ * template once all directories are read (`compileFacility`): front-ends see
+ * flat facilities only; one that does not compile is reported and left out.
  */
 import { existsSync, statSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as core from "@clinicalcraft/core";
-import { CaseSchema, EquipmentCatalogSchema, FacilitySchema, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
+import { CaseSchema, EquipmentCatalogSchema, FacilitySchema, RoomTemplateSchema, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type RoomTemplate } from "@clinicalcraft/core";
 
 /** Validation issue (same shape as core's `Issue`). */
 export interface ContentIssue {
@@ -27,6 +31,8 @@ export interface LoadedContent {
   cases: Map<string, { def: CaseDefinition; dir: string; file: string }>;
   facilities: Map<string, { def: FacilityDefinition; file: string }>;
   catalogs: Map<string, { def: EquipmentCatalog; file: string }>;
+  /** Room templates (`clinicalcraft/room-template@1`) by id; facilities above are already compiled with them. */
+  templates: Map<string, { def: RoomTemplate; file: string }>;
   issues: { file: string; issues: ContentIssue[] }[];
   /** Directories that were scanned (existing ones only). */
   dirs: string[];
@@ -50,7 +56,7 @@ type ZodLike = {
   safeParse(v: unknown): { success: true; data: unknown } | { success: false; error: { issues: { path: (string | number)[]; message: string }[] } };
 };
 
-function parserFor<T>(name: "parseCase" | "parseFacility" | "parseCatalog", schema: ZodLike): (json: unknown) => ParseResult<T> {
+function parserFor<T>(name: "parseCase" | "parseFacility" | "parseCatalog" | "parseRoomTemplate", schema: ZodLike): (json: unknown) => ParseResult<T> {
   const fn = (core as unknown as Record<string, unknown>)[name];
   if (typeof fn === "function") {
     return (json) => {
@@ -135,8 +141,9 @@ export async function loadContent(options: LoadContentOptions = {}): Promise<Loa
   const parseCase = parserFor<CaseDefinition>("parseCase", CaseSchema as unknown as ZodLike);
   const parseFacility = parserFor<FacilityDefinition>("parseFacility", FacilitySchema as unknown as ZodLike);
   const parseCatalog = parserFor<EquipmentCatalog>("parseCatalog", EquipmentCatalogSchema as unknown as ZodLike);
+  const parseTemplate = parserFor<RoomTemplate>("parseRoomTemplate", RoomTemplateSchema as unknown as ZodLike);
 
-  const result: LoadedContent = { cases: new Map(), facilities: new Map(), catalogs: new Map(), issues: [], dirs: [] };
+  const result: LoadedContent = { cases: new Map(), facilities: new Map(), catalogs: new Map(), templates: new Map(), issues: [], dirs: [] };
   const report = (file: string, issues: ContentIssue[]) => {
     if (issues.length > 0) result.issues.push({ file, issues });
   };
@@ -176,6 +183,26 @@ export async function loadContent(options: LoadContentOptions = {}): Promise<Loa
       if (result.catalogs.has(parsed.value.id)) warnings.push({ path: "id", message: `catalog "${parsed.value.id}" overrides ${result.catalogs.get(parsed.value.id)!.file}`, severity: "warning" });
       report(file, warnings);
       result.catalogs.set(parsed.value.id, { def: parsed.value, file });
+    }
+
+    // Room templates (facilities place them; compiled once every directory is read).
+    for (const entry of await listDir(join(dir, "templates"))) {
+      if (!entry.isFile || !entry.name.endsWith(".json")) continue;
+      const file = join(dir, "templates", entry.name);
+      const json = await readJson(file);
+      if (!json.ok) {
+        report(file, [{ path: "", message: json.message, severity: "error" }]);
+        continue;
+      }
+      const parsed = parseTemplate(json.value);
+      if (!parsed.ok) {
+        report(file, parsed.issues);
+        continue;
+      }
+      const warnings = [...parsed.warnings];
+      if (result.templates.has(parsed.value.id)) warnings.push({ path: "id", message: `room template "${parsed.value.id}" overrides ${result.templates.get(parsed.value.id)!.file}`, severity: "warning" });
+      report(file, warnings);
+      result.templates.set(parsed.value.id, { def: parsed.value, file });
     }
 
     for (const entry of await listDir(join(dir, "facilities"))) {
@@ -227,5 +254,28 @@ export async function loadContent(options: LoadContentOptions = {}): Promise<Loa
       result.cases.set(parsed.value.id, { def: parsed.value, dir: caseDir, file });
     }
   }
+  compileFacilities(result, report);
   return result;
+}
+
+/**
+ * Expand room-template instances (core `compileFacility`) with every loaded
+ * template: the compiled facility replaces the authored one; compile issues
+ * are reported against its file and a facility with errors is left out.
+ */
+function compileFacilities(result: LoadedContent, report: (file: string, issues: ContentIssue[]) => void): void {
+  const compile = (core as unknown as { compileFacility?: (f: FacilityDefinition, t: Iterable<RoomTemplate>) => { ok: boolean; facility: FacilityDefinition; issues: ContentIssue[] } }).compileFacility;
+  const templates = [...result.templates.values()].map((t) => t.def);
+  for (const [id, entry] of [...result.facilities]) {
+    if (!(entry.def.instances ?? []).length) continue;
+    if (typeof compile !== "function") {
+      report(entry.file, [{ path: "instances", message: "room templates cannot be compiled (engine unavailable)", severity: "error" }]);
+      result.facilities.delete(id);
+      continue;
+    }
+    const compiled = compile(entry.def, templates);
+    report(entry.file, compiled.issues);
+    if (compiled.ok) result.facilities.set(id, { def: compiled.facility, file: entry.file });
+    else result.facilities.delete(id);
+  }
 }

@@ -1,13 +1,29 @@
 /**
- * `clinicalcraft facilities list|validate`.
+ * `clinicalcraft facilities list|validate`. Facilities that place room
+ * templates are validated compiled (`compileFacility`); `--all` also checks
+ * every room template (`checkRoomTemplate`).
  */
-import { readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
 import { isAbsolute } from "node:path";
-import { caseCapabilityGaps, checkCatalogs, checkFacility, parseCatalog, parseFacility, t, type EquipmentCatalog, type Issue } from "@clinicalcraft/core";
+import {
+  caseCapabilityGaps,
+  checkCatalogs,
+  checkFacility,
+  checkRoomTemplate,
+  compileFacility,
+  parseCatalog,
+  parseFacility,
+  parseRoomTemplate,
+  ROOM_TEMPLATE_SCHEMA_ID,
+  t,
+  type EquipmentCatalog,
+  type Issue,
+} from "@clinicalcraft/core";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { sanitizeTerminal, table } from "@clinicalcraft/agent";
-import { flagBool, type ParsedArgs } from "./argv.js";
-import { EXIT, loadCliSettings, type CliContext } from "./context.js";
+import { flagBool, flagString, UsageError, type ParsedArgs } from "./argv.js";
+import { CliError, EXIT, loadCliSettings, type CliContext } from "./context.js";
 
 export async function facilitiesList(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const settings = await loadCliSettings(ctx);
@@ -64,6 +80,10 @@ export async function facilitiesValidate(ctx: CliContext, args: ParsedArgs): Pro
     for (const { def, file } of content.catalogs.values()) checked.push({ file, id: def.id, errors: [], warnings: [] });
     const crossCatalog = checkCatalogs(catalogs);
     if (crossCatalog.length > 0) checked.push({ file: ctx.t("facilities.allCatalogs"), id: null, errors: crossCatalog.filter((i) => i.severity === "error"), warnings: crossCatalog.filter((i) => i.severity === "warning") });
+    for (const { def, file } of content.templates.values()) {
+      const issues = checkRoomTemplate(def, catalogs);
+      checked.push({ file, id: def.id, errors: issues.filter((i) => i.severity === "error"), warnings: issues.filter((i) => i.severity === "warning") });
+    }
     for (const { def, file } of content.facilities.values()) {
       const used = catalogs.filter((c) => def.catalogs.includes(c.id));
       const issues = checkFacility(def, used);
@@ -102,12 +122,24 @@ export async function facilitiesValidate(ctx: CliContext, args: ParsedArgs): Pro
         checked.push(parsed.ok ? { file, id: parsed.value.id, errors: [], warnings: parsed.warnings } : { file, id: null, errors: parsed.issues.filter((i) => i.severity === "error"), warnings: [] });
         continue;
       }
+      if (schema === ROOM_TEMPLATE_SCHEMA_ID) {
+        const parsed = parseRoomTemplate(json.value);
+        if (!parsed.ok) {
+          checked.push({ file, id: null, errors: parsed.issues.filter((i) => i.severity === "error"), warnings: parsed.issues.filter((i) => i.severity === "warning") });
+          continue;
+        }
+        const issues = [...parsed.warnings, ...checkRoomTemplate(parsed.value, catalogs)];
+        checked.push({ file, id: parsed.value.id, errors: issues.filter((i) => i.severity === "error"), warnings: issues.filter((i) => i.severity === "warning") });
+        continue;
+      }
       const parsed = parseFacility(json.value);
       if (!parsed.ok) {
         checked.push({ file, id: null, errors: parsed.issues.filter((i) => i.severity === "error"), warnings: parsed.issues.filter((i) => i.severity === "warning") });
         continue;
       }
-      const issues = [...parsed.warnings, ...checkFacility(parsed.value, catalogs.filter((c) => parsed.value.catalogs.includes(c.id)))];
+      // room templates placed by the facility: compiled with the loaded ones (content directories)
+      const compiled = compileFacility(parsed.value, [...content.templates.values()].map((x) => x.def));
+      const issues = [...parsed.warnings, ...compiled.issues, ...checkFacility(compiled.facility, catalogs.filter((c) => compiled.facility.catalogs.includes(c.id)))];
       checked.push({ file, id: parsed.value.id, errors: issues.filter((i) => i.severity === "error"), warnings: issues.filter((i) => i.severity === "warning") });
     }
   }
@@ -127,4 +159,35 @@ export async function facilitiesValidate(ctx: CliContext, args: ParsedArgs): Pro
   }
   ctx.print(failed > 0 ? p.red(ctx.t("facilities.failed", { failed, total: checked.length })) : p.green(ctx.t("facilities.ok", { total: checked.length })));
   return failed > 0 ? EXIT.error : EXIT.ok;
+}
+
+/**
+ * `clinicalcraft facilities compile <id | file>`: the flat facility a
+ * front-end loads — room-template instances expanded (`compileFacility`)
+ * with the templates of the content directories. Prints JSON (or writes
+ * `--out`); fails when the facility does not compile.
+ */
+export async function facilitiesCompile(ctx: CliContext, args: ParsedArgs): Promise<number> {
+  const target = args.positionals[0];
+  if (!target) throw new UsageError(ctx.t("facilities.compileUsage"));
+  const settings = await loadCliSettings(ctx);
+  const content = await loadContent({ dirs: settings.contentDirs, cases: false });
+  let facility = content.facilities.get(target)?.def;
+  if (!facility) {
+    const file = ctx.path(target);
+    if (!existsSync(file)) throw new CliError(ctx.t("facilities.unknown", { id: target }), EXIT.usage, ctx.t("facilities.available", { list: [...content.facilities.keys()].join(", ") }));
+    const json = await readJson(file);
+    if (!json.ok) throw new CliError(`${file}: ${json.issue.message}`, EXIT.error);
+    const parsed = parseFacility(json.value);
+    if (!parsed.ok) throw new CliError(`${file}: ${parsed.issues.map((i) => `${i.path || "(root)"} ${i.message}`).slice(0, 5).join("; ")}`, EXIT.error);
+    const compiled = compileFacility(parsed.value, [...content.templates.values()].map((x) => x.def));
+    const errors = compiled.issues.filter((i) => i.severity === "error");
+    if (errors.length) throw new CliError(ctx.t("facilities.compileFailed", { file, errors: errors.length }), EXIT.error, errors.slice(0, 8).map((i) => `${i.path}: ${i.message}`).join("\n"));
+    facility = compiled.facility;
+  }
+  const text = JSON.stringify(facility, null, 2);
+  const out = flagString(args, "out");
+  if (out) await writeFile(ctx.path(out), `${text}\n`, "utf8");
+  else ctx.print(text);
+  return EXIT.ok;
 }

@@ -1,10 +1,11 @@
 /**
  * Test-only helpers (excluded from the build): load the built-in facilities
- * and catalogs from packages/content, a synthetic two-level facility, and a
- * canonical digest of a collider set (parity pins).
+ * (compiled when they place room templates), room templates and catalogs
+ * from packages/content, a synthetic two-level facility, and a canonical
+ * digest of a collider set (parity pins).
  */
-import { readFileSync } from "node:fs";
-import { parseCatalog, parseFacility, type EquipmentCatalog, type FacilityDefinition, type FacilityInput } from "@clinicalcraft/core";
+import { readdirSync, readFileSync } from "node:fs";
+import { compileFacility, parseCatalog, parseFacility, parseRoomTemplate, type EquipmentCatalog, type FacilityDefinition, type FacilityInput, type RoomTemplate } from "@clinicalcraft/core";
 
 const CONTENT = new URL("../../../content/", import.meta.url);
 const readJson = (rel: string): unknown => JSON.parse(readFileSync(new URL(rel, CONTENT), "utf8"));
@@ -18,11 +19,26 @@ export function loadCatalogs(): EquipmentCatalog[] {
   });
 }
 
-/** A built-in facility, parsed. */
-export function loadFacility(id: "clinic-v4" | "general-hospital"): FacilityDefinition {
+/** Every built-in room template (packages/content/templates). */
+export function loadTemplates(): RoomTemplate[] {
+  return readdirSync(new URL("templates/", CONTENT))
+    .filter((f) => f.endsWith(".json"))
+    .sort()
+    .map((file) => {
+      const r = parseRoomTemplate(readJson(`templates/${file}`));
+      if (!r.ok) throw new Error(`${file}: ${JSON.stringify(r.issues)}`);
+      return r.value;
+    });
+}
+
+/** A built-in facility, parsed — and compiled when it places room templates (as every front-end loads it). */
+export function loadFacility(id: "clinic-v4" | "general-hospital" | "teaching-hospital"): FacilityDefinition {
   const r = parseFacility(readJson(`facilities/${id}.json`));
   if (!r.ok) throw new Error(`${id}: ${JSON.stringify(r.issues)}`);
-  return r.value;
+  if (!r.value.instances.length) return r.value;
+  const compiled = compileFacility(r.value, loadTemplates());
+  if (!compiled.ok) throw new Error(`${id}: ${JSON.stringify(compiled.issues)}`);
+  return compiled.facility;
 }
 
 /** Parse an inline facility (fixtures). */

@@ -1,0 +1,43 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "ed-resus-bay",
+  "name": {"zh-CN": "抢救单元", "en": "Resuscitation bay"},
+  "description": {"zh-CN": "急诊抢救单元：一张抢救床及监护、除颤、气道、通气、输液、床旁超声与雾化全套设备，床两侧留出抢救通道。", "en": "An emergency resuscitation bay: one bed with monitoring, defibrillation, airway, ventilation, infusion, point-of-care ultrasound and nebulisation, with working lanes on both sides of the bed."},
+  "kind": "resus",
+  "size": {"w": 8, "d": 8},
+  "floor": "tile-white",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "double-door", "width": 2.4, "height": 3}]}
+  ],
+  "sign": {"text": {"zh-CN": "抢救单元", "en": "Resus bay"}, "side": "n", "color": "#c9473c"},
+  "lights": [
+    {"x": 0, "z": -1.5},
+    {"x": 0, "z": 2}
+  ],
+  "placements": [
+    {"id": "bed", "type": "hospital-bed", "x": 0, "z": -1.4, "label": {"zh-CN": "复苏床", "en": "Resus bed"}},
+    {"id": "monitor", "type": "patient-monitor", "x": -1.4, "z": -3.475, "label": {"zh-CN": "床旁监护仪", "en": "Bedside monitor"}},
+    {"id": "oxygen", "type": "oxygen-outlet", "x": 0.25, "z": -3.7},
+    {"id": "suction", "type": "suction-unit", "x": 1.3, "z": -3.575},
+    {"id": "iv-pole", "type": "iv-pole", "x": -1.1, "z": -2},
+    {"id": "infusion-pump", "type": "infusion-pump", "x": -1.1, "z": -1, "label": {"zh-CN": "输液泵", "en": "Infusion pump"}},
+    {"id": "ecg", "type": "ecg-machine", "x": -3.55, "z": -2.6, "rot": 90, "label": {"zh-CN": "心电图机", "en": "ECG cart"}},
+    {"id": "pocus", "type": "pocus-cart", "x": -3.575, "z": -1.4, "rot": 90, "label": {"zh-CN": "床旁超声", "en": "POCUS cart"}},
+    {"id": "nebulizer", "type": "nebulizer", "x": -3.575, "z": -0.3, "rot": 90, "label": {"zh-CN": "雾化器", "en": "Nebulizer"}},
+    {"id": "defibrillator", "type": "defibrillator", "x": 3.55, "z": -2.6, "rot": 270, "label": {"zh-CN": "除颤仪", "en": "Defibrillator"}},
+    {"id": "crash-cart", "type": "crash-cart", "x": 3.515, "z": -1.3, "rot": 270, "label": {"zh-CN": "抢救车", "en": "Crash cart"}},
+    {"id": "ventilator", "type": "ventilator", "x": 3.45, "z": 0.2, "rot": 270, "label": {"zh-CN": "呼吸机", "en": "Ventilator"}},
+    {"id": "sharps", "type": "sharps-bin", "x": 3.6, "z": -3.625},
+    {"id": "clock", "type": "wall-clock", "x": 2.4, "z": -3.775},
+    {"id": "sink", "type": "sink", "x": 3.55, "z": 2.6, "rot": 270},
+    {"id": "gloves", "type": "glove-dispenser", "x": -3.765, "z": 2.4, "rot": 90}
+  ],
+  "patientSlots": [
+    {"id": "slot", "x": 0, "z": -1.4, "posture": "lying", "bed": "bed", "monitor": "monitor", "accepts": ["emergency"]}
+  ],
+  "capabilities": ["cardiac-monitor", "capnography", "ecg-12lead", "defibrillator", "crash-cart", "medications", "airway", "suction", "oxygen", "iv-access", "infusion-pump", "ventilator", "ultrasound", "nebulizer"],
+  "tags": ["emergency", "resus"]
+}

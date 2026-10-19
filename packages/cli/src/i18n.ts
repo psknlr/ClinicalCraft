@@ -229,6 +229,8 @@ const EN = {
   "facilities.allCatalogs": "(all catalogs)",
   "facilities.ok": "All {total} item(s) are valid.",
   "facilities.failed": "{failed} of {total} item(s) have errors.",
+  "facilities.compileUsage": "Usage: clinicalcraft facilities compile <id | file> [--out <file>]",
+  "facilities.compileFailed": "{file}: the facility does not compile ({errors} error(s)).",
 
   // providers
   "providers.active": "* = active provider ({id}). Keys are read from the environment and never printed.",
@@ -572,6 +574,8 @@ const ZH: Record<MsgKey, string> = {
   "facilities.allCatalogs": "（全部设备目录）",
   "facilities.ok": "全部 {total} 项有效。",
   "facilities.failed": "{total} 项中有 {failed} 项存在错误。",
+  "facilities.compileUsage": "用法：clinicalcraft facilities compile <ID | 文件> [--out <文件>]",
+  "facilities.compileFailed": "{file}：场馆无法编译（{errors} 个错误）。",
 
   "providers.active": "* = 当前服务商（{id}）。密钥从环境变量读取，绝不显示。",
   "providers.needId": "哪个服务商？例如 `clinicalcraft providers test anthropic`",

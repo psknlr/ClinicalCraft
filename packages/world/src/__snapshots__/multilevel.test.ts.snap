@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`teaching hospital: content and collision model > pins the model (counts by kind and a digest of every box) 1`] = `
+{
+  "digest": "82ac2bf3",
+  "doors": 23,
+  "kinds": {
+    "door": 36,
+    "equipment": 235,
+    "npc": 11,
+    "partition": 104,
+    "rail": 3,
+    "ramp": 1,
+    "sign": 2,
+    "slab": 4,
+    "tree": 13,
+    "wall": 114,
+    "window": 34,
+  },
+  "total": 557,
+}
+`;

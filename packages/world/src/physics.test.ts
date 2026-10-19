@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boxCollider, clampPitch, ColliderGrid, collides, moveVector, overlapsXZ, PHYSICS, stepPlayer, targetFov, type PlayerState } from "./physics.js";
+import { boxCollider, clampPitch, ColliderGrid, collides, moveVector, overlapsXZ, PHYSICS, RAMP, rampGround, rampTop, stepPlayer, targetFov, type PhysicsCollider, type PlayerState } from "./physics.js";
 
 const bounds = { minX: -35.5, maxX: 35.5, minZ: -35.5, maxZ: 35.5 };
 const still = { forward: 0, side: 0, yaw: 0, sprint: false, jump: false };
@@ -104,5 +104,93 @@ describe("collision helpers", () => {
     g.remove(long);
     expect(g.query(5, 0, 1)).not.toContain(long);
     expect(g.size).toBe(1);
+  });
+});
+
+describe("ramps (stairs and ramp flights, EMBODIED R10)", () => {
+  // a flight rising 4 m towards −Z from z = 6 (foot, y 0) to z = 0 (head, y 4), 2 m wide; an upper floor slab beyond the head
+  const ramp: PhysicsCollider = { minX: -1, maxX: 1, minY: 0, maxY: 4, minZ: 0, maxZ: 6, ramp: { axis: "z", from: 6, to: 0, y0: 0, y1: 4 } };
+  const slab: PhysicsCollider = boxCollider(0, 3.9, -5, 10, 0.2, 10); // top at y 4, z −10 … 0
+  const colliders = [ramp, slab];
+  const go = (p: PlayerState, yaw: number, steps: number, input: Partial<{ jump: boolean; sprint: boolean }> = {}, each?: (p: PlayerState) => void) => {
+    for (let i = 0; i < steps; i++) {
+      stepPlayer(p, { ...still, forward: 1, yaw, ...input }, 0.05, colliders, bounds);
+      each?.(p);
+    }
+    return p;
+  };
+
+  it("rampTop is the surface under the disc's uphill edge (level beyond the flight, −∞ off it)", () => {
+    expect(rampTop(ramp, 0, 3)).toBeCloseTo(((6 - 3 + PHYSICS.radius) / 6) * 4, 9);
+    expect(rampTop(ramp, 0, 6 + PHYSICS.radius - 0.01)).toBeCloseTo(0, 1);
+    expect(rampTop(ramp, 0, 0.1)).toBe(4);
+    expect(rampTop(ramp, 0, 6.5)).toBe(-Infinity);
+    expect(rampTop(ramp, 5, 3)).toBe(-Infinity);
+    expect(rampGround({ x: 0, z: 3 }, colliders)).toBe(rampTop(ramp, 0, 3));
+    expect(rampGround({ x: 0, z: 3 }, [slab])).toBe(-Infinity);
+  });
+
+  it("walks up the flight onto the upper floor, feet on the surface", () => {
+    const p = player({ z: 7 });
+    let last = 0;
+    go(p, 0, 70, {}, (q) => {
+      expect(q.y).toBeGreaterThanOrEqual(last - 1e-9);
+      if (q.z > PHYSICS.radius && q.z < 6) expect(q.y).toBeCloseTo(rampTop(ramp, q.x, q.z), 6);
+      last = q.y;
+    });
+    expect(p.z).toBeLessThan(-1);
+    expect(p).toMatchObject({ y: 4, grounded: true });
+    // sprinting up works too
+    const fast = go(player({ z: 7 }), 0, 50, { sprint: true });
+    expect(fast).toMatchObject({ y: 4, grounded: true });
+  });
+
+  it("walks down without leaving the surface and steps off onto the floor", () => {
+    const p = player({ z: -1, y: 4 });
+    go(p, Math.PI, 70, { sprint: true }, (q) => expect(q.grounded).toBe(true));
+    expect(p.z).toBeGreaterThan(6);
+    expect(p.y).toBe(0);
+  });
+
+  it("the flight's sides and its underside are walls; a low part can be stepped onto", () => {
+    const side = player({ x: 3, z: 2 }); // beside the high part, walking west into it
+    go(side, Math.PI / 2, 30);
+    expect(side.x).toBeCloseTo(1 + PHYSICS.radius, 6);
+    expect(side.y).toBe(0);
+    const under = player({ z: -0.5 }); // on the lower floor beyond the head, walking under the flight
+    go(under, Math.PI, 30);
+    expect(under.z).toBeCloseTo(-PHYSICS.radius, 6);
+    expect(collides({ x: 0, y: 0, z: 3 }, [ramp])).toBe(true);
+    expect(collides({ x: 0, y: 2, z: 3 }, [ramp])).toBe(false);
+    // the first 0.5 m of rise (RAMP.stepUp) can be stepped onto from the side
+    const low = player({ x: 1.5, z: 5.7 });
+    go(low, Math.PI / 2, 10);
+    expect(low.x).toBeLessThan(1);
+    expect(low.y).toBeGreaterThan(0);
+    expect(low.y).toBeLessThanOrEqual(RAMP.stepUp);
+  });
+
+  it("a jump lands back on the surface", () => {
+    const p = player({ z: 3, y: rampTop(ramp, 0, 3) });
+    stepPlayer(p, { ...still, jump: true }, 0.05, colliders, bounds);
+    expect(p.grounded).toBe(false);
+    for (let i = 0; i < 40; i++) stepPlayer(p, still, 0.05, colliders, bounds);
+    expect(p.grounded).toBe(true);
+    expect(p.y).toBeCloseTo(rampTop(ramp, 0, 3), 6);
+  });
+
+  it("without ramps every step is unchanged (a ramp elsewhere does not alter a box trajectory)", () => {
+    const wall = boxCollider(20, 2.5, -1, 10, 5, 1);
+    const block = boxCollider(20.5, 0.5, 0.5, 1, 1, 1);
+    const run = (extra: PhysicsCollider[]) => {
+      const p = player({ x: 20, z: -0.2 });
+      const trace: number[] = [];
+      for (let i = 0; i < 40; i++) {
+        stepPlayer(p, { ...still, forward: 1, side: 1, jump: i === 3 }, 0.05, [wall, block, ...extra], bounds);
+        trace.push(p.x, p.y, p.z, p.vy, Number(p.grounded));
+      }
+      return trace;
+    };
+    expect(run([ramp])).toEqual(run([]));
   });
 });

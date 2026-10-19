@@ -499,7 +499,7 @@ export async function casesNew(ctx: CliContext, args: ParsedArgs): Promise<numbe
   return ok ? EXIT.ok : EXIT.error;
 }
 
-const SCHEMA_KINDS = { case: "case.schema.json", facility: "facility.schema.json", catalog: "equipment-catalog.schema.json" } as const;
+const SCHEMA_KINDS = { case: "case.schema.json", facility: "facility.schema.json", catalog: "equipment-catalog.schema.json", template: "room-template.schema.json" } as const;
 
 export async function casesSchema(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const kind = (args.positionals[0] ?? "case") as keyof typeof SCHEMA_KINDS;

@@ -102,6 +102,13 @@
           "type": "number",
           "minimum": 0,
           "default": 1
+        },
+        "levels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Id"
+          },
+          "minItems": 1
         }
       },
       "required": [
@@ -599,7 +606,11 @@
                   "storage",
                   "restroom",
                   "garden",
-                  "build-zone"
+                  "build-zone",
+                  "rehabilitation",
+                  "teaching",
+                  "elevator",
+                  "stairwell"
                 ]
               },
               "building": {
@@ -1261,6 +1272,11 @@
                 "type": "number",
                 "minimum": 0
               },
+              "width": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 10
+              },
               "accessible": {
                 "type": "boolean"
               },
@@ -1336,6 +1352,452 @@
               "name",
               "rect",
               "roles"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "instances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/Id"
+              },
+              "template": {
+                "$ref": "#/definitions/Id"
+              },
+              "x": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              },
+              "rot": {
+                "type": "number",
+                "enum": [
+                  0,
+                  90,
+                  180,
+                  270
+                ],
+                "default": 0
+              },
+              "level": {
+                "$ref": "#/definitions/Id"
+              },
+              "building": {
+                "$ref": "#/definitions/Id"
+              },
+              "overrides": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "floor": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "sign": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "$ref": "#/definitions/LocalizedText"
+                          },
+                          "color": {
+                            "$ref": "#/definitions/HexColor"
+                          },
+                          "side": {
+                            "type": "string",
+                            "enum": [
+                              "n",
+                              "s",
+                              "e",
+                              "w"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "text"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "partitions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "side": {
+                          "type": "string",
+                          "enum": [
+                            "n",
+                            "s",
+                            "e",
+                            "w"
+                          ]
+                        },
+                        "material": {
+                          "$ref": "#/definitions/Id",
+                          "default": "white"
+                        },
+                        "base": {
+                          "$ref": "#/definitions/Id",
+                          "default": "teal"
+                        },
+                        "height": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "default": 4
+                        },
+                        "thickness": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "default": 0.35
+                        },
+                        "openings": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "offset": {
+                                "type": "number",
+                                "default": 0
+                              },
+                              "width": {
+                                "type": "number",
+                                "exclusiveMinimum": 0,
+                                "default": 2
+                              },
+                              "height": {
+                                "type": "number",
+                                "exclusiveMinimum": 0,
+                                "default": 3
+                              },
+                              "kind": {
+                                "type": "string",
+                                "enum": [
+                                  "opening",
+                                  "door",
+                                  "double-door",
+                                  "sliding-door",
+                                  "window"
+                                ],
+                                "default": "opening"
+                              },
+                              "sill": {
+                                "type": "number",
+                                "minimum": 0,
+                                "default": 1
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          "default": []
+                        }
+                      },
+                      "required": [
+                        "side"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "lights": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "z": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "z"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "omit": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "placements": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "x": {
+                          "type": "number"
+                        },
+                        "z": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number",
+                          "default": 0
+                        },
+                        "rot": {
+                          "type": "number",
+                          "default": 0
+                        },
+                        "label": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "capabilities": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Capability"
+                          }
+                        },
+                        "extraParts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "m": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "p": {
+                                "type": "array",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "items": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "s": {
+                                "type": "array",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "items": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ]
+                              },
+                              "r": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "anim": {
+                                "type": "string",
+                                "enum": [
+                                  "none",
+                                  "blink",
+                                  "spin",
+                                  "pulse",
+                                  "slide"
+                                ],
+                                "default": "none"
+                              }
+                            },
+                            "required": [
+                              "m",
+                              "p",
+                              "s"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "hideParts": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "propertyNames": {
+                      "minLength": 1,
+                      "maxLength": 80,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                    }
+                  },
+                  "patientSlots": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "accepts": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "outpatient",
+                              "emergency",
+                              "inpatient",
+                              "icu",
+                              "ward",
+                              "operating-room",
+                              "community"
+                            ]
+                          },
+                          "minItems": 1
+                        },
+                        "posture": {
+                          "type": "string",
+                          "enum": [
+                            "standing",
+                            "sitting",
+                            "lying"
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "propertyNames": {
+                      "minLength": 1,
+                      "maxLength": 80,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                    }
+                  },
+                  "staff": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "nurse",
+                            "radiologist",
+                            "pathologist",
+                            "lab-tech",
+                            "attending",
+                            "pharmacist",
+                            "receptionist",
+                            "paramedic",
+                            "porter"
+                          ]
+                        },
+                        "greeting": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "appearance": {
+                          "type": "object",
+                          "properties": {
+                            "skin": {
+                              "$ref": "#/definitions/HexColor",
+                              "default": "#cba88a"
+                            },
+                            "hair": {
+                              "$ref": "#/definitions/HexColor",
+                              "default": "#3b3027"
+                            },
+                            "hairStyle": {
+                              "type": "string",
+                              "enum": [
+                                "short",
+                                "long",
+                                "bald",
+                                "bun",
+                                "ponytail",
+                                "curly"
+                              ],
+                              "default": "short"
+                            },
+                            "shirt": {
+                              "$ref": "#/definitions/HexColor",
+                              "default": "#6d9fba"
+                            },
+                            "pants": {
+                              "$ref": "#/definitions/HexColor",
+                              "default": "#354442"
+                            },
+                            "build": {
+                              "type": "string",
+                              "enum": [
+                                "slim",
+                                "average",
+                                "heavy"
+                              ],
+                              "default": "average"
+                            },
+                            "stature": {
+                              "type": "string",
+                              "enum": [
+                                "infant",
+                                "child",
+                                "teen",
+                                "adult"
+                              ],
+                              "default": "adult"
+                            },
+                            "gown": {
+                              "type": "boolean",
+                              "default": false
+                            },
+                            "accessory": {
+                              "type": "string",
+                              "enum": [
+                                "none",
+                                "glasses",
+                                "mask",
+                                "nasal-cannula",
+                                "oxygen-mask",
+                                "sling",
+                                "cap"
+                              ],
+                              "default": "none"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "propertyNames": {
+                      "minLength": 1,
+                      "maxLength": 80,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "template",
+              "x",
+              "z"
             ],
             "additionalProperties": false
           },

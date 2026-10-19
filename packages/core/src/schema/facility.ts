@@ -290,6 +290,12 @@ export const OpeningSchema = z
     kind: z.enum(["opening", "door", "double-door", "sliding-door", "window"]).default("opening"),
     /** Window sill height (windows only). */
     sill: z.number().min(0).default(1),
+    /**
+     * Building openings only: the levels this opening exists on (default:
+     * every level the building spans — e.g. an entrance door only on the
+     * ground floor, windows on every storey). Ignored on room partitions.
+     */
+    levels: z.array(IdSchema).min(1).optional(),
   })
   .strict();
 
@@ -341,6 +347,14 @@ export const ConnectorSchema = z
     stops: z.array(z.object({ level: IdSchema, x: z.number(), z: z.number() }).strict()).min(2),
     /** Seconds between adjacent stops (default by kind: stairs 15, ramp 10, elevator 20). */
     travelSeconds: z.number().min(0).optional(),
+    /**
+     * Stairs and ramps: width (m) of the walkable flight between consecutive
+     * stops (default 2). Consecutive stops are the foot and the head of a
+     * straight, axis-aligned flight whose surface rises from the lower stop's
+     * level to the upper stop's; stops at one x/z make a navigation-only
+     * connector (no flight). Elevators: ignored (the cabin is a room).
+     */
+    width: z.number().positive().max(10).optional(),
     /** Usable with a wheelchair, bed or cart (default: elevators and ramps yes, stairs no). */
     accessible: z.boolean().optional(),
     /** Roles allowed to use it (empty = everyone). */
@@ -407,8 +421,28 @@ export const ROOM_KINDS = [
   "restroom",
   "garden",
   "build-zone",
+  "rehabilitation",
+  "teaching",
+  "elevator",
+  "stairwell",
 ] as const;
 export const RoomKindSchema = z.enum(ROOM_KINDS);
+
+/** One interior partition wall of a room side (with its openings, offsets along the wall from its centre). */
+export const RoomPartitionSchema = z
+  .object({
+    side: SideSchema,
+    material: IdSchema.default("white"),
+    base: IdSchema.default("teal"),
+    height: z.number().positive().default(4),
+    thickness: z.number().positive().default(0.35),
+    openings: z.array(OpeningSchema.omit({ side: true, levels: true })).default([]),
+  })
+  .strict();
+export type RoomPartition = z.infer<typeof RoomPartitionSchema>;
+
+/** A room's wall sign (on the inside of `side`, default north). */
+export const RoomSignSchema = z.object({ text: LocalizedTextSchema, color: HexColorSchema.optional(), side: SideSchema.optional() }).strict();
 
 export const RoomSchema = z
   .object({
@@ -421,21 +455,8 @@ export const RoomSchema = z
     rect: RectSchema,
     floor: IdSchema.optional(),
     /** Interior partition walls generated around the rect (only listed sides). */
-    partitions: z
-      .array(
-        z
-          .object({
-            side: SideSchema,
-            material: IdSchema.default("white"),
-            base: IdSchema.default("teal"),
-            height: z.number().positive().default(4),
-            thickness: z.number().positive().default(0.35),
-            openings: z.array(OpeningSchema.omit({ side: true })).default([]),
-          })
-          .strict(),
-      )
-      .default([]),
-    sign: z.object({ text: LocalizedTextSchema, color: HexColorSchema.optional(), side: SideSchema.optional() }).strict().optional(),
+    partitions: z.array(RoomPartitionSchema).default([]),
+    sign: RoomSignSchema.optional(),
     /** Ceiling lights (world x,z). */
     lights: z.array(z.object({ x: z.number(), z: z.number() }).strict()).default([]),
   })
@@ -513,6 +534,124 @@ export const StaffSchema = z
     greeting: LocalizedTextSchema.optional(),
   })
   .strict();
+
+/* ------------------------------------------------------------------ */
+/* Room templates (EMBODIED R10: an authoring-time macro)              */
+/* ------------------------------------------------------------------ */
+
+export const ROOM_TEMPLATE_SCHEMA_ID = "clinicalcraft/room-template@1" as const;
+
+/** Rotations a template instance may have (degrees about +Y; colliders stay axis-aligned). */
+export const TEMPLATE_ROTATIONS = [0, 90, 180, 270] as const;
+
+const LocalPointSchema = z.object({ x: z.number(), z: z.number() }).strict();
+
+/** A placement in template-local coordinates (its `room` and `level` come from the instance). */
+export const TemplatePlacementSchema = PlacementSchema.omit({ room: true, level: true });
+/** A patient slot in template-local coordinates; `bed` / `monitor` name local placement ids. */
+export const TemplateSlotSchema = PatientSlotSchema.omit({ room: true, level: true });
+/** A staff member in template-local coordinates. */
+export const TemplateStaffSchema = StaffSchema.omit({ room: true, level: true });
+
+/**
+ * An interaction zone of a template (template-local rect): an area only
+ * the listed roles may enter — compiled into the facility's `access` zones
+ * (the pharmacy's dispensary, the theatre's sterile field).
+ */
+export const TemplateZoneSchema = z
+  .object({
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    rect: RectSchema,
+    roles: z.array(ActorRoleSchema).min(1),
+  })
+  .strict();
+
+/**
+ * A reusable room (`clinicalcraft/room-template@1`): a rect of `size`
+ * centred on the template origin with partitions, sign, ceiling lights,
+ * equipment, patient slots, staff and interaction zones in template-local
+ * coordinates (x along the width, z along the depth; by convention the
+ * door is on the local south side, +Z). `capabilities` documents what the
+ * room provides (checked against its equipment). A facility places
+ * templates with `instances`; `compileFacility` expands them into the flat
+ * facility format.
+ */
+export const RoomTemplateSchema = z
+  .object({
+    schema: z.literal(ROOM_TEMPLATE_SCHEMA_ID),
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    description: LocalizedTextSchema.optional(),
+    kind: RoomKindSchema,
+    /** Room size before rotation (w along local X, d along local Z). */
+    size: z.object({ w: z.number().positive(), d: z.number().positive() }).strict(),
+    floor: IdSchema.optional(),
+    partitions: z.array(RoomPartitionSchema).default([]),
+    sign: RoomSignSchema.optional(),
+    /** Ceiling lights (template-local x, z). */
+    lights: z.array(LocalPointSchema).default([]),
+    placements: z.array(TemplatePlacementSchema).default([]),
+    patientSlots: z.array(TemplateSlotSchema).default([]),
+    staff: z.array(TemplateStaffSchema).default([]),
+    zones: z.array(TemplateZoneSchema).default([]),
+    /** Capabilities this room guarantees (documentation; `checkRoomTemplate` checks its equipment provides them). */
+    capabilities: z.array(CapabilitySchema).default([]),
+    tags: z.array(z.string()).default([]),
+  })
+  .strict();
+export type RoomTemplate = z.infer<typeof RoomTemplateSchema>;
+export type RoomTemplateInput = z.input<typeof RoomTemplateSchema>;
+
+/** Per-instance changes to one template placement (template-local frame). */
+const PlacementPatchSchema = TemplatePlacementSchema.omit({ id: true }).partial().strict();
+/** Per-instance changes to one template patient slot. */
+const SlotPatchSchema = z.object({ accepts: z.array(CaseSettingSchema).min(1).optional(), posture: z.enum(["standing", "sitting", "lying"]).optional() }).strict();
+/** Per-instance changes to one template staff member. */
+const StaffPatchSchema = z
+  .object({ name: LocalizedTextSchema.optional(), role: StaffSchema.shape.role.optional(), greeting: LocalizedTextSchema.optional(), appearance: AppearanceSchema.partial().optional() })
+  .strict();
+
+/** What one instance changes in its template (local ids; template-local frame). */
+export const TemplateOverridesSchema = z
+  .object({
+    /** Room name (default: the template's). */
+    name: LocalizedTextSchema.optional(),
+    floor: IdSchema.optional(),
+    /** Replace the sign, or `null` for none. */
+    sign: z.union([RoomSignSchema, z.null()]).optional(),
+    /** Replace the template's partitions (local sides). */
+    partitions: z.array(RoomPartitionSchema).optional(),
+    /** Replace the template's ceiling lights (local x, z). */
+    lights: z.array(LocalPointSchema).optional(),
+    /** Local ids of placements, patient slots, staff or zones to leave out. */
+    omit: z.array(IdSchema).optional(),
+    placements: z.record(IdSchema, PlacementPatchSchema).optional(),
+    patientSlots: z.record(IdSchema, SlotPatchSchema).optional(),
+    staff: z.record(IdSchema, StaffPatchSchema).optional(),
+  })
+  .strict();
+export type TemplateOverrides = z.infer<typeof TemplateOverridesSchema>;
+
+/**
+ * A room template placed in a facility: its origin at (x, z), rotated by
+ * `rot` (0, 90, 180 or 270°, three.js `rotation.y`: local +Z → (sin, cos)),
+ * on `level`, in `building` (default: the building containing the origin on
+ * that level). Compiled ids are `${id}.${localId}`; the room's id is `id`.
+ */
+export const TemplateInstanceSchema = z
+  .object({
+    id: IdSchema,
+    template: IdSchema,
+    x: z.number(),
+    z: z.number(),
+    rot: z.union([z.literal(0), z.literal(90), z.literal(180), z.literal(270)]).default(0),
+    level: IdSchema.optional(),
+    building: IdSchema.optional(),
+    overrides: TemplateOverridesSchema.optional(),
+  })
+  .strict();
+export type TemplateInstance = z.infer<typeof TemplateInstanceSchema>;
 
 export const TerrainSchema = z
   .object({
@@ -594,6 +733,13 @@ export const FacilitySchema = z
     connectors: z.array(ConnectorSchema).default([]),
     /** Restricted areas (roles). */
     access: z.array(AccessZoneSchema).default([]),
+    /**
+     * Room templates placed in this facility (`clinicalcraft/room-template@1`).
+     * Front-ends compile them at load time (`compileFacility`) into rooms,
+     * placements, patient slots, staff and access zones; a compiled facility
+     * has none left and is indistinguishable from a hand-written one.
+     */
+    instances: z.array(TemplateInstanceSchema).default([]),
   })
   .strict();
 export type FacilityDefinition = z.infer<typeof FacilitySchema>;

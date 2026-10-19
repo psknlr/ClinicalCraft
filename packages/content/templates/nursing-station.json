@@ -1,0 +1,38 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "nursing-station",
+  "name": {"zh-CN": "护士站", "en": "Nursing station"},
+  "description": {"zh-CN": "护士站：临走廊的护理工作台与病历系统，后方为药品柜和冰箱、抢救车、除颤仪、心电图机、血糖仪和病例讨论证据板。", "en": "A nursing station: the nurses' counter with the records system facing the corridor; behind it the drug cabinet and fridge, crash cart, defibrillator, ECG cart, glucometer and the case evidence board."},
+  "kind": "nurse-station",
+  "size": {"w": 6, "d": 8},
+  "floor": "lino",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "opening", "width": 2.6, "height": 3, "offset": 1.4}]}
+  ],
+  "sign": {"text": {"zh-CN": "护士站", "en": "Nursing station"}, "side": "n", "color": "#66cca8"},
+  "lights": [
+    {"x": 0, "z": -1.5},
+    {"x": 0, "z": 1.5}
+  ],
+  "placements": [
+    {"id": "desk", "type": "nurse-station-desk", "x": -1.2, "z": 3.075, "label": {"zh-CN": "护士站工作台", "en": "Nurses' desk"}},
+    {"id": "chair", "type": "office-chair", "x": -1.2, "z": 1.3},
+    {"id": "board", "type": "evidence-board", "x": 0, "z": -3.525, "label": {"zh-CN": "病例讨论板", "en": "Case board"}},
+    {"id": "drug-cabinet", "type": "medication-cabinet", "x": 2.475, "z": -2.4, "rot": 270, "label": {"zh-CN": "药品柜", "en": "Drug cabinet"}},
+    {"id": "fridge", "type": "medication-fridge", "x": 2.475, "z": -1.2, "rot": 270},
+    {"id": "glucometer", "type": "glucometer-station", "x": 2.6, "z": -0.1, "rot": 270, "label": {"zh-CN": "血糖仪", "en": "Glucometer"}},
+    {"id": "ecg", "type": "ecg-machine", "x": 2.55, "z": 0.9, "rot": 270, "label": {"zh-CN": "心电图机", "en": "ECG cart"}},
+    {"id": "crash-cart", "type": "crash-cart", "x": -2.515, "z": -2.4, "rot": 90, "label": {"zh-CN": "抢救车", "en": "Crash cart"}},
+    {"id": "defibrillator", "type": "defibrillator", "x": -2.55, "z": -1.2, "rot": 90, "label": {"zh-CN": "除颤仪", "en": "Defibrillator"}},
+    {"id": "records", "type": "records-terminal", "x": -2.525, "z": -0.1, "rot": 90, "label": {"zh-CN": "病历终端", "en": "Records terminal"}},
+    {"id": "sink", "type": "sink", "x": 2.55, "z": 2, "rot": 270}
+  ],
+  "staff": [
+    {"id": "nurse", "role": "nurse", "name": {"zh-CN": "护士", "en": "Nurse"}, "x": 0.2, "z": 0.6, "rot": 180, "greeting": {"zh-CN": "需要帮忙吗？我可以执行医嘱、采血和监测生命体征。", "en": "Need a hand? I can carry out orders, draw bloods and check vital signs."}}
+  ],
+  "capabilities": ["records", "medications", "crash-cart", "defibrillator", "ecg-12lead", "point-of-care", "airway", "suction", "evidence-board"],
+  "tags": ["nursing"]
+}

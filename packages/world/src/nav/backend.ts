@@ -223,7 +223,7 @@ export class GridAStarBackend implements NavigationBackend {
         if (goal.kind === "look") {
           const range = Math.max(MIN_RANGE, goal.range ?? LOOK_RANGE);
           // lazy: line of sight is tested only on cells the search pops (memoised)
-          const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint };
+          const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint, id: target.id };
           const memo = new Map<number, boolean>();
           const test = (i: number) => {
             let ok = memo.get(i);
@@ -262,7 +262,7 @@ export class GridAStarBackend implements NavigationBackend {
    */
   private candidates(g: NavLevelGrid, area: Area, range: number, target: Located, points: boolean): Set<number> {
     const out = new Set<number>();
-    const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint };
+    const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint, id: target.id };
     const visible = (i: number) => this.visibility.visibleFrom(target.level, cellPoint(g, i), sight);
     if (points && target.interactionPoints?.length) {
       for (const p of target.interactionPoints) {

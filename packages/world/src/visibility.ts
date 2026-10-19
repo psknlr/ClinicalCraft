@@ -27,6 +27,11 @@ export interface SightTarget {
   level: string;
   position: { x: number; z: number };
   footprint?: { w: number; d: number };
+  /**
+   * Entity id of the target: a door's own leaves never hide it (closed
+   * leaves are rasterised thin-safe, wider than the 0.2 m door footprint).
+   */
+  id?: string;
 }
 
 /** Occlusion raster of one level. */
@@ -98,6 +103,7 @@ export class VisibilityModel {
   private readonly occluders = new Map<string, AreaIndex<Occluder>>();
   private readonly byEntity = new Map<string, Occluder[]>();
   private readonly doorIds: string[];
+  private readonly doorIndex: Map<string, number>;
   private readonly dynamics: WorldDynamics;
   private readonly rotOf: (id: string) => number;
   private readonly bounds: Area;
@@ -109,6 +115,7 @@ export class VisibilityModel {
     this.bounds = collision.bounds;
     this.doorIds = collision.doors.map((d) => d.id);
     const doorIndex = new Map(this.doorIds.map((id, i) => [id, i + 1]));
+    this.doorIndex = doorIndex;
     for (const level of levelInfos(facility)) {
       const frame = makeFrame(collision.bounds, level.id, level.elevation, cell);
       const n = frame.cols * frame.rows;
@@ -156,20 +163,21 @@ export class VisibilityModel {
     }
   }
 
-  /** Is the cell opaque right now (static, closed door, displaced cart)? */
-  private blocked(g: OcclusionGrid, i: number): boolean {
+  /** Is the cell opaque right now (static, closed door, displaced cart)? `ownDoor`: the target door's index (its leaves never hide it). */
+  private blocked(g: OcclusionGrid, i: number, ownDoor = 0): boolean {
     if (g.opaque[i] || g.dynamic[i]) return true;
     const d = g.door[i];
-    if (!d) return false;
+    if (!d || d === ownDoor) return false;
     return !this.dynamics.doorState?.(this.doorIds[d - 1])?.open;
   }
 
   /**
    * Line of sight at eye height on a level from `a` to `b`. The march starts
    * half a cell from `a` and stops when it reaches `b` or enters `stopIn`
-   * (the target's own footprint, so a tall target does not hide itself).
+   * (the target's own footprint, so a tall target does not hide itself);
+   * `ownDoor` (index + 1 of a door) makes that door's leaves transparent.
    */
-  lineOfSight(level: string, a: { x: number; z: number }, b: { x: number; z: number }, stopIn?: Area): boolean {
+  lineOfSight(level: string, a: { x: number; z: number }, b: { x: number; z: number }, stopIn?: Area, ownDoor = 0): boolean {
     const g = this.grids.get(level);
     if (!g) return false;
     const len = Math.hypot(b.x - a.x, b.z - a.z);
@@ -181,7 +189,7 @@ export class VisibilityModel {
       const x = a.x + (b.x - a.x) * t, z = a.z + (b.z - a.z) * t;
       if (stopIn && x >= stopIn.minX && x <= stopIn.maxX && z >= stopIn.minZ && z <= stopIn.maxZ) return true;
       if (!inFrame(g, x, z)) continue;
-      if (this.blocked(g, cellIndex(g, x, z))) return false;
+      if (this.blocked(g, cellIndex(g, x, z), ownDoor)) return false;
     }
     return true;
   }
@@ -191,7 +199,8 @@ export class VisibilityModel {
     if (target.level !== level) return false;
     const own = footprintArea(target);
     const stopIn = { minX: own.minX - 0.05, maxX: own.maxX + 0.05, minZ: own.minZ - 0.05, maxZ: own.maxZ + 0.05 };
-    return sightSamples(target).some((p) => this.lineOfSight(level, eye, p, stopIn));
+    const ownDoor = target.id ? (this.doorIndex.get(target.id) ?? 0) : 0;
+    return sightSamples(target).some((p) => this.lineOfSight(level, eye, p, stopIn, ownDoor));
   }
 
   /**
@@ -207,7 +216,8 @@ export class VisibilityModel {
     const stopIn = { minX: own.minX - 0.05, maxX: own.maxX + 0.05, minZ: own.minZ - 0.05, maxZ: own.maxZ + 0.05 };
     const inside = pose.x >= own.minX && pose.x <= own.maxX && pose.z >= own.minZ && pose.z <= own.maxZ;
     if (inside) return true;
-    return sightSamples(target).some((p) => inFieldOfView(pose, p, opts.fovDeg) && this.lineOfSight(pose.level, pose, p, stopIn));
+    const ownDoor = target.id ? (this.doorIndex.get(target.id) ?? 0) : 0;
+    return sightSamples(target).some((p) => inFieldOfView(pose, p, opts.fovDeg) && this.lineOfSight(pose.level, pose, p, stopIn, ownDoor));
   }
 }
 

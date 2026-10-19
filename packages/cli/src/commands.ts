@@ -7,7 +7,7 @@ import { configGet, configPath, configSet } from "./config.js";
 import type { CliContext } from "./context.js";
 import { runEval } from "./eval.js";
 import { runExec } from "./exec.js";
-import { facilitiesList, facilitiesValidate } from "./facilities.js";
+import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
 import { providersList, providersModels, providersTest } from "./providers.js";
@@ -113,7 +113,7 @@ export const ROOT: CommandSpec = {
         },
         {
           name: "schema",
-          usage: "[case|facility|catalog]",
+          usage: "[case|facility|catalog|template]",
           summary: { en: "Print the JSON Schema path (or --content)", zh: "输出 JSON Schema 路径（或 --content 输出内容）" },
           flags: [{ name: "content", type: "boolean", description: { en: "Print the schema itself", zh: "输出 Schema 内容" } }],
           run: casesSchema,
@@ -127,7 +127,14 @@ export const ROOT: CommandSpec = {
       defaultSubcommand: "list",
       subcommands: [
         { name: "list", aliases: ["ls"], summary: { en: "List facilities", zh: "列出场馆" }, flags: [JSON_FLAG], run: facilitiesList },
-        { name: "validate", usage: "[--all | path…]", summary: { en: "Validate facilities and catalogs", zh: "校验场馆与设备目录" }, flags: [ALL, JSON_FLAG, QUIET], run: facilitiesValidate },
+        { name: "validate", usage: "[--all | path…]", summary: { en: "Validate facilities, room templates and catalogs", zh: "校验场馆、房间模板与设备目录" }, flags: [ALL, JSON_FLAG, QUIET], run: facilitiesValidate },
+        {
+          name: "compile",
+          usage: "<id | file>",
+          summary: { en: "Print the flat facility (room templates expanded)", zh: "输出展开房间模板后的扁平场馆" },
+          flags: [{ name: "out", type: "string", valueName: "<file>", description: { en: "Write the JSON to a file", zh: "将 JSON 写入文件" } }],
+          run: facilitiesCompile,
+        },
       ],
     },
     {

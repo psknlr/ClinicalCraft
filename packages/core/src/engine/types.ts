@@ -194,6 +194,8 @@ export interface WaypointLocation {
   x: number;
   z: number;
   label: string;
+  /** Level of the target — set only in facilities with more than one level. */
+  level?: string;
 }
 
 /** Result of `verifyCase`. */
