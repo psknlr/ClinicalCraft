@@ -155,11 +155,14 @@ describe("ramps (stairs and ramp flights, EMBODIED R10)", () => {
   it("the flight's sides and its underside are walls; a low part can be stepped onto", () => {
     const side = player({ x: 3, z: 2 }); // beside the high part, walking west into it
     go(side, Math.PI / 2, 30);
-    expect(side.x).toBeCloseTo(1 + PHYSICS.radius, 6);
+    // V4 rejects a colliding move (no slide to contact): it stops within one step of the wall
+    expect(side.x).toBeGreaterThanOrEqual(1 + PHYSICS.radius);
+    expect(side.x).toBeLessThan(1 + PHYSICS.radius + PHYSICS.speed * 0.05);
     expect(side.y).toBe(0);
     const under = player({ z: -0.5 }); // on the lower floor beyond the head, walking under the flight
     go(under, Math.PI, 30);
-    expect(under.z).toBeCloseTo(-PHYSICS.radius, 6);
+    expect(under.z).toBeLessThanOrEqual(-PHYSICS.radius);
+    expect(under.z).toBeGreaterThan(-PHYSICS.radius - PHYSICS.speed * 0.05);
     expect(collides({ x: 0, y: 0, z: 3 }, [ramp])).toBe(true);
     expect(collides({ x: 0, y: 2, z: 3 }, [ramp])).toBe(false);
     // the first 0.5 m of rise (RAMP.stepUp) can be stepped onto from the side
