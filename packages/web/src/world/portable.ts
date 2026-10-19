@@ -1,20 +1,25 @@
 /**
- * Portable equipment (carts, handheld items — EMBODIED §5/§8): built as one
- * standalone, movable group per placement instead of joining the static
- * instanced batches, so the renderer can draw a cart where the world model
- * says it stands after a `move_to` (and hide an item while it is carried).
- * Draw-call budget: the boxes of one placement merge into one atlas mesh
- * (plus one mesh per non-atlas material), as people and door leaves do.
+ * Portable equipment (carts, handheld items — EMBODIED §5/§8): drawn where
+ * the world model says it stands after a `move_to` (hidden while carried).
+ * Draw-call budget: a portable placement is built into the static instanced
+ * batches like any other — no extra draw call — while its boxes are also
+ * recorded; the first time the world moves it, it is *promoted*: its
+ * instances in the static batch are hidden, its boxes merged into its own
+ * movable group (one atlas mesh plus one per non-atlas material, as people
+ * and door leaves), and its LEDs and static screens taken out of the
+ * level-wide merged meshes into that group (equipment.ts `detachShared`).
  */
-import { Box3, Group, Mesh, Vector3, type InstancedMesh, type Object3D } from "three";
+import { Group, Mesh, Vector3, type Object3D } from "three";
 import type { BuildContext, PortableRecord } from "./context.js";
 import { DEG, placementBox } from "./geometry.js";
 import type { MaterialLibrary } from "./materials.js";
 import { mergeGroup } from "./merge.js";
-import { BoxBatch, UNIT_BOX } from "./voxels.js";
+import { BoxBatch, UNIT_BOX, type InstanceRef } from "./voxels.js";
 
-interface Part {
+/** One box of a portable placement (world coordinates), as the builders emitted it. */
+export interface BoxPart {
   mat: string;
+  tiled: boolean;
   x: number;
   y: number;
   z: number;
@@ -26,57 +31,65 @@ interface Part {
 }
 
 /**
- * A `BoxBatch` for one movable placement: `build` merges its boxes into
- * atlas meshes (owner kept in `userData.owner` for the aim ray) instead of
- * one instanced mesh per material.
+ * A batch that forwards every box to the level's static batch (where it is drawn until the placement
+ * moves) and records it with its instance ref (to hide it there and rebuild it on its own later).
  */
-export class MergedBoxes extends BoxBatch {
-  private readonly parts: Part[] = [];
+export class RecordingBatch extends BoxBatch {
+  readonly parts: BoxPart[] = [];
+  readonly refs: InstanceRef[] = [];
 
-  override add(mat: string, x: number, y: number, z: number, sx = 1, sy = 1, sz = 1, ry = 0, owner?: string): void {
-    this.parts.push({ mat, x, y, z, sx, sy, sz, ry, owner });
+  constructor(readonly target: BoxBatch) {
+    super();
+  }
+
+  override add(mat: string, x: number, y: number, z: number, sx = 1, sy = 1, sz = 1, ry = 0, owner?: string): InstanceRef {
+    const ref = this.target.add(mat, x, y, z, sx, sy, sz, ry, owner);
+    this.record({ mat, tiled: false, x, y, z, sx, sy, sz, ry, owner }, ref);
+    return ref;
+  }
+
+  override addTiled(mat: string, x: number, y: number, z: number, sx: number, sy: number, sz: number, ry = 0, owner?: string): InstanceRef {
+    const ref = this.target.addTiled(mat, x, y, z, sx, sy, sz, ry, owner);
+    this.record({ mat, tiled: true, x, y, z, sx, sy, sz, ry, owner }, ref);
+    return ref;
+  }
+
+  private record(part: BoxPart, ref: InstanceRef): void {
+    this.parts.push(part);
+    this.refs.push(ref);
     this.count++;
-  }
-
-  override addTiled(mat: string, x: number, y: number, z: number, sx: number, sy: number, sz: number, ry = 0, owner?: string): void {
-    this.add(mat, x, y, z, sx, sy, sz, ry, owner);
-  }
-
-  /** Merged meshes into `parent` (returned; they carry the placement as `userData.owner`). */
-  override build(parent: Object3D, mats: MaterialLibrary, shadows: boolean): InstancedMesh[] {
-    return this.buildMerged(parent, mats, shadows) as unknown as InstancedMesh[];
-  }
-
-  buildMerged(parent: Object3D, mats: MaterialLibrary, shadows: boolean): Mesh[] {
-    if (!this.parts.length) return [];
-    const tmp = new Group();
-    for (const p of this.parts) {
-      const m = new Mesh(UNIT_BOX, mats.get(p.mat));
-      m.position.set(p.x, p.y, p.z);
-      m.rotation.y = p.ry;
-      m.scale.set(p.sx, p.sy, p.sz);
-      m.castShadow = shadows && mats.castShadow(p.mat);
-      tmp.add(m);
-    }
-    const owner = this.parts.find((p) => p.owner)?.owner;
-    mergeGroup(tmp, new Set(), mats, { castShadow: shadows && this.parts.some((p) => mats.castShadow(p.mat)) });
-    const out: Mesh[] = [];
-    for (const child of [...tmp.children]) {
-      const mesh = child as Mesh;
-      if (!mesh.isMesh) continue;
-      if (owner) mesh.userData.owner = owner;
-      parent.add(mesh);
-      out.push(mesh);
-    }
-    return out;
   }
 }
 
+/** Merge recorded boxes into atlas meshes in `parent` (they carry the placement as `userData.owner`). */
+export function buildMergedParts(parts: readonly BoxPart[], parent: Object3D, mats: MaterialLibrary, shadows: boolean): Mesh[] {
+  if (!parts.length) return [];
+  const tmp = new Group();
+  for (const p of parts) {
+    const m = new Mesh(UNIT_BOX, p.tiled ? mats.tiled(p.mat) : mats.get(p.mat));
+    m.position.set(p.x, p.y, p.z);
+    m.rotation.y = p.ry;
+    m.scale.set(p.sx, p.sy, p.sz);
+    m.castShadow = shadows && mats.castShadow(p.mat);
+    tmp.add(m);
+  }
+  const owner = parts.find((p) => p.owner)?.owner;
+  mergeGroup(tmp, new Set(), mats, { castShadow: shadows && parts.some((p) => mats.castShadow(p.mat)) });
+  const out: Mesh[] = [];
+  for (const child of [...tmp.children]) {
+    const mesh = child as Mesh;
+    if (!mesh.isMesh) continue;
+    if (owner) mesh.userData.owner = owner;
+    parent.add(mesh);
+    out.push(mesh);
+  }
+  return out;
+}
+
 /**
- * Start building a portable placement: its group goes into the level's
- * group, and what builders emit next (`ctx.root`, `ctx.batch`) goes into
- * it; `finish()` merges the boxes, restores the context and registers the
- * record in `ctx.portables`.
+ * Start building a portable placement: its (still empty) group goes into the level's group, what builders
+ * emit next goes to the static batch through a `RecordingBatch`, and direct meshes (live screens, signs)
+ * into the group; `finish()` restores the context and registers the record in `ctx.portables`.
  */
 export function beginPortable(
   ctx: BuildContext,
@@ -91,9 +104,9 @@ export function beginPortable(
   inner.position.set(-p.x, -y, -p.z);
   group.add(inner);
   ctx.root.add(group);
-  const record: PortableRecord = { id: p.id, group, inner, origin: { x: p.x, y, z: p.z, rot: p.rot, level }, x: p.x, z: p.z, level, hidden: false, meshes: [] };
-  const batch = new MergedBoxes();
   const prevRoot = ctx.root, prevBatch = ctx.batch;
+  const batch = new RecordingBatch(prevBatch);
+  const record: PortableRecord = { id: p.id, group, inner, origin: { x: p.x, y, z: p.z, rot: p.rot, level }, x: p.x, z: p.z, level, hidden: false, meshes: [], promoted: false, batch: prevBatch, refs: batch.refs, parts: batch.parts };
   ctx.root = inner;
   ctx.batch = batch;
   return {
@@ -101,12 +114,10 @@ export function beginPortable(
     finish() {
       ctx.root = prevRoot;
       ctx.batch = prevBatch;
-      const meshes = batch.buildMerged(inner, ctx.lib, ctx.shadows);
-      // screens, spinning parts… added to `inner` while the parts were emitted are aimable too
-      for (const o of inner.children) if (o.userData.owner && !meshes.includes(o as Mesh)) record.meshes.push(o);
-      record.meshes.push(...meshes);
+      // screens, spinning parts… added to `inner` while the parts were emitted are aimable (and hidden with it)
+      for (const o of inner.children) if (o.userData.owner) record.meshes.push(o);
       ctx.portables.set(p.id, record);
-      return meshes;
+      return [];
     },
   };
 }
@@ -121,6 +132,25 @@ export interface PortableHost {
   addCollider(box: import("./physics.js").Aabb, level: string): import("./physics.js").Aabb;
   removeCollider(box: import("./physics.js").Aabb): void;
   markShadows(): void;
+  /** Take the placement's LEDs and static screens out of the shared level meshes into `parent` (equipment.ts). */
+  detachShared(id: string, parent: Object3D): Object3D[];
+}
+
+/**
+ * Give a portable placement its own drawing the first time the world moves it: its static instances are
+ * hidden, its boxes merged into its group, its LEDs and static screens moved there too. Once.
+ */
+export function promotePortable(host: PortableHost, rec: PortableRecord): void {
+  if (rec.promoted) return;
+  rec.promoted = true;
+  const { ctx } = host;
+  rec.batch.hide(rec.refs);
+  const meshes: Object3D[] = [...buildMergedParts(rec.parts, rec.inner, ctx.lib, ctx.shadows), ...host.detachShared(rec.id, rec.inner)];
+  for (const m of meshes) {
+    rec.meshes.push(m);
+    if (!rec.hidden) ctx.pickables.push(m);
+  }
+  host.markShadows();
 }
 
 /** Remember where the aim box, live screens and lights of `rec` were built (moves are applied from there). */
@@ -151,6 +181,9 @@ function dropCollider(host: PortableHost, rec: PortableRecord): void {
  * aim target, map/locate position and live screens follow.
  */
 export function placePortable(host: PortableHost, rec: PortableRecord, at: { x: number; y: number; z: number; level: string; rot?: number } | "home" | null): void {
+  // never moved: it is drawn at home in the static batches already
+  if (!rec.promoted && at === "home") return;
+  promotePortable(host, rec);
   const { ctx } = host;
   const info = ctx.placements.get(rec.id);
   const home = homeOf(ctx, rec);
@@ -216,6 +249,7 @@ export const PUSH_AHEAD = 0.95;
 export function pushPortable(host: PortableHost, rec: PortableRecord, by: string | null): void {
   homeOf(host.ctx, rec);
   if (by) {
+    promotePortable(host, rec);
     rec.pushedBy = by;
     dropCollider(host, rec);
     return;
@@ -239,7 +273,3 @@ export function dragPortable(host: PortableHost, rec: PortableRecord, x: number,
   rec.z = az;
 }
 
-/** The world box of a portable placement as drawn (QA). */
-export function portableBox(rec: PortableRecord): Box3 {
-  return new Box3().setFromObject(rec.group);
-}

@@ -46,7 +46,7 @@ import type { BuildContext, DoorRecord, LightCandidate, NpcRecord } from "./cont
 import { captureJpeg } from "./capture.js";
 import { buildElevators, inCar, type Elevator, type ElevatorStop, type ElevatorTarget } from "./elevator.js";
 import { polylineLength, ROUTE_ARRIVE, worldRouteLegs, yawOfRig } from "./embodiment.js";
-import { buildPlacements, surfaceTop } from "./equipment.js";
+import { buildPlacements, detachShared, surfaceTop } from "./equipment.js";
 import { ModelCache, modelUrl, placeModel, shortUrl } from "./models.js";
 import { WorldLevels } from "./levels.js";
 import { drawMap as paintMap, type MapConnector, type MapData, type MapWall } from "./map.js";
@@ -1537,6 +1537,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     },
     removeCollider: (box) => ctx.colliders.remove(box),
     markShadows,
+    detachShared: (id, parent) => detachShared(ctx, id, parent),
   };
 
   /** Draw the carts being pushed in front of their walkers (each frame while any is pushed). */

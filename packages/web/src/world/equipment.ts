@@ -4,7 +4,7 @@
  * lights, labels and interaction targets. The rotated footprint colliders of
  * solid equipment are the collision model's (`eq:<placementId>`).
  */
-import { Box3, CanvasTexture, Color, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute } from "three";
+import { Box3, CanvasTexture, Color, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute, type Object3D } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { entityLevel, type EquipmentType, type Placement, type VoxelPart } from "@clinicalcraft/core";
 import type { InteractionTarget } from "../contracts.js";
@@ -518,11 +518,5 @@ export function detachShared(ctx: BuildContext, owner: string, parent: Object3D)
       pickables.push(mesh);
     }
   }
-  entryCleanup(sp);
   return pickables;
-}
-
-/** Nothing to keep for meshes left empty (their parts all moved out). */
-function entryCleanup(sp: SharedParts): void {
-  sp.leds = sp.leds.filter((e) => e.parts.some((l) => !l.owner || !sp.detached.has(l.owner)) || e.mesh.visible);
 }

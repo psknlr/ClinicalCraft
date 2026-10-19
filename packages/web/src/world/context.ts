@@ -57,15 +57,23 @@ export interface DoorRecord {
 }
 
 /**
- * A portable placement (`portable: "cart" | "handheld"`, EMBODIED §8): built
- * as its own group (not merged into the static batches) so it can be drawn
- * where the world model says it stands. `group` pivots about the placement's
- * own origin; its parts are in world coordinates under `inner`.
+ * A portable placement (`portable: "cart" | "handheld"`, EMBODIED §8): drawn
+ * in the static batches until the world model moves it, then *promoted* to
+ * its own group (portable.ts) drawn where the world says it stands. `group`
+ * pivots about the placement's own origin; its parts are in world
+ * coordinates under `inner`.
  */
 export interface PortableRecord {
   id: string;
   group: Group;
   inner: Group;
+  /** Drawn on its own (moved at least once); before, its boxes are instances of `batch`. */
+  promoted: boolean;
+  /** The level's static batch holding its boxes until promoted, and where they are in it. */
+  batch: import("./voxels.js").BoxBatch;
+  refs: import("./voxels.js").InstanceRef[];
+  /** Its boxes as built (merged into `inner` when promoted). */
+  parts: import("./portable.js").BoxPart[];
   /** Where the placement was authored (origin y = floor + placement y). */
   origin: { x: number; y: number; z: number; rot: number; level: string };
   /** Where it is drawn now (same frame as `origin`). */
