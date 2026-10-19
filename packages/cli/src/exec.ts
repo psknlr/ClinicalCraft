@@ -30,7 +30,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { createInterface } from "node:readline";
 import { assess as coreAssess, progress as caseProgress, type AssessmentReport } from "@clinicalcraft/core";
-import { DEFAULT_AUTOPILOT_TURNS, PERMISSION_RULE_IDS, type AgentEvent, type ApprovalMode, type ClinicalSession, type Op, type RiskLevel, type TokenUsage } from "@clinicalcraft/agent";
+import { DEFAULT_AUTOPILOT_TURNS, PERMISSION_RULE_IDS, traceJsonl, type AgentEvent, type ApprovalMode, type ClinicalSession, type Op, type RiskLevel, type TokenUsage } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { m } from "./i18n.js";
@@ -144,6 +144,12 @@ export class RunTracker {
         this.assessment = { report: msg.report, narrative: msg.narrative, judged: msg.judged };
         break;
       case "error":
+        // A learner action refused by the spatial policy (embodied mode) is not an execution error.
+        if (msg.code === "SPATIAL_REQUIREMENT_UNMET" || msg.code === "SPATIAL_PRECONDITION_CHANGED") {
+          this.denials.push({ tool: null, reason: msg.message });
+          this.lastApprovalDenial = null;
+          break;
+        }
         if (msg.code === "permission_denied") {
           // A denied approval for a learner action is reported again as an error: keep one entry.
           const prior = this.lastApprovalDenial;
@@ -345,6 +351,14 @@ export async function runExec(ctx: CliContext, args: ParsedArgs): Promise<number
 
   await session.close();
   await pump;
+
+  // `--trace <file>`: the episode trace as JSON Lines (a header line, then one span per line).
+  const traceFile = flagString(args, "trace");
+  if (traceFile) {
+    const target = ctx.path(traceFile);
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, traceJsonl(session.trace()), "utf8");
+  }
 
   const lastMessageFile = flagString(args, "output-last-message");
   if (lastMessageFile) {

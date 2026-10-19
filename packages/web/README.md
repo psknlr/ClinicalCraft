@@ -36,17 +36,18 @@ touch screens.
 
 | folder (`src/`) | |
 |---|---|
-| `world/` | voxel renderer, equipment meshes, live screens, NPCs, map, build zone; colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
+| `world/` | voxel renderer, equipment meshes (and optional GLB models, `models.ts`), live screens, NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
 | `app/` | app controller, session bridge, settings, LLM modes, persistence, local assets |
-| `ui/` | HUD, intro/case library, approval dialog, panels (conversation, orders, report, monitor, board, journal, debrief, map, atlas, autopilot, inventory, help, pause) |
+| `ui/` | HUD, intro/case library, approval dialog, panels (conversation, orders, report, monitor, board, journal, debrief, map with floor tabs, elevator, atlas, autopilot, inventory, help, pause) |
 | `atlas/` | anatomy viewer (needs the local-only anatomy model) |
-| `harness/` | `world-harness.html`, a QA page that renders facilities without a case |
+| `harness/` | `world-harness.html`, a QA page that renders facilities without a case (`?facility=teaching-hospital`; `?model=<equipment type>` draws that type with a generated GLB) |
 | `build/` | the Vite plugin that bundles the case index (`virtual:clinicalcraft/case-index`) |
 
 **Content:** the case library is an index built from `packages/content` at
 build (and dev) time — the card, filter and facility-choice fields only;
 every full case is its own lazy chunk, loaded (and validated) when the case
-is selected or started. Facilities and equipment catalogs are bundled.
+is selected or started. Facilities, room templates and equipment catalogs are
+bundled; facilities that place room templates are compiled when loaded.
 
 E2E tests start Vite on port 5197 (`CC_E2E_PORT`) and use the Chromium at
 `CLINICALCRAFT_E2E_CHROMIUM` (or `PW_CHROMIUM`), else `/opt/pw-browsers/chromium`

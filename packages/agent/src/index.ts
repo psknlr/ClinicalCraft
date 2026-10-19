@@ -38,6 +38,9 @@ export * from "./hooks/runner.js";
 // tools
 export * from "./tools/index.js";
 
+// embodied mode (docs/EMBODIED.md): skills
+export * from "./skills/index.js";
+
 // agents
 export * from "./agents/markdown.js";
 export * from "./agents/builtin.js";
@@ -65,4 +68,10 @@ export * from "./session/notifications.js";
 export * from "./session/models.js";
 export * from "./session/examiner.js";
 export * from "./session/autopilot.js";
+export * from "./session/trace.js";
+export * from "./session/embodied-types.js";
+export * from "./session/device-ops.js";
+export * from "./session/delegation.js";
+export * from "./session/embodied.js";
+export * from "./session/embodied-autopilot.js";
 export * from "./session/session.js";

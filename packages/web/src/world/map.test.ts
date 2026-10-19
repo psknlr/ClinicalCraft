@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildRules, canPlace, cellKey, checkerMaterial, validBlocks, zoneCells } from "./buildzone.js";
-import { fitLabel, mapProjection, MIN_LABEL_PX, splitLabel } from "./map.js";
+import { drawMap, fitLabel, mapProjection, MIN_LABEL_PX, splitLabel, type MapData } from "./map.js";
 import { regionAt, roomAt } from "./region.js";
 import { groundMaterial, groundRange, V4_STREAM_OFFSETS, v4Stream } from "./terrain.js";
 
@@ -130,5 +130,61 @@ describe("big-map label fitting", () => {
     expect(splitLabel("门诊大厅 · 挂号咨询")).toEqual(["门诊大厅", "挂号咨询"]);
     expect(splitLabel("Radiology Control Room")).toEqual(["Radiology", "Control Room"]);
     expect(splitLabel("医生办公室")).toEqual(["医生办", "公室"]);
+  });
+});
+
+describe("map floors (multi-level facilities)", () => {
+  /** A 2D context that records the calls and property writes drawMap makes. */
+  function recorder() {
+    const calls: string[] = [];
+    const ctx = new Proxy({} as Record<string, unknown>, {
+      get(_, k) {
+        if (k === "measureText") return (t: string) => ({ width: t.length * 6 });
+        return (...args: unknown[]) => calls.push(`${String(k)}(${args.length ? args.map((a) => (typeof a === "number" ? Math.round(a) : String(a))).join(",") : ""})`);
+      },
+      set(_, k, v) {
+        calls.push(`${String(k)}=${String(v)}`);
+        return true;
+      },
+    });
+    return { ctx: ctx as unknown as CanvasRenderingContext2D, calls };
+  }
+  const data: MapData = {
+    bounds: { minX: -10, maxX: 10, minZ: -10, maxZ: 10 },
+    ground: "grass",
+    paths: [],
+    ponds: [],
+    trees: [],
+    buildZone: null,
+    buildZoneLabel: "",
+    buildings: [{ x: 0, z: 0, w: 16, d: 12, name: "H" }],
+    rooms: [],
+    walls: [],
+    placements: [],
+    slots: [],
+    staff: [],
+    northLabel: "N",
+  };
+  const opts = { big: true, waypoint: { x: 2, z: 2 }, player: { x: 0, z: 0, yaw: 0 } };
+  it("a single-level map draws exactly as before (no symbols, badge or fading)", () => {
+    const a = recorder();
+    drawMap(a.ctx, 200, 200, data, opts);
+    expect(a.calls.some((c) => c.startsWith("strokeRect"))).toBe(false);
+    expect(a.calls.filter((c) => c.startsWith("globalAlpha="))).toEqual([]);
+  });
+  it("draws stairs and elevator symbols and the floor badge", () => {
+    const b = recorder();
+    const connectors: MapData["connectors"] = [
+      { kind: "elevator", x: 5, z: 3, w: 2.4, d: 2.4, label: "Elevator" },
+      { kind: "stairs", x: -5, z: 5, w: 2, d: 6.4, axis: "z", label: "Stairs" },
+    ];
+    drawMap(b.ctx, 200, 200, { ...data, connectors, levelLabel: "First floor" }, opts);
+    expect(b.calls.filter((c) => c.startsWith("strokeRect"))).toHaveLength(2);
+    expect(b.calls.some((c) => c.startsWith("fillText(First floor"))).toBe(true);
+  });
+  it("fades the avatar and the destination shown on another floor", () => {
+    const c = recorder();
+    drawMap(c.ctx, 200, 200, { ...data, levelLabel: "Ground floor" }, { ...opts, playerGhost: true, waypointGhost: true });
+    expect(c.calls.filter((x) => x.startsWith("globalAlpha="))).toEqual(["globalAlpha=0.4", "globalAlpha=1", "globalAlpha=0.35"]);
   });
 });

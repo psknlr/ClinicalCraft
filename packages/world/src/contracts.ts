@@ -554,13 +554,17 @@ export interface NavigationRecord {
  * What a clinical tool call needs physically (EMBODIED §6). `at-provider`
  * with `fixedOnly`: only non-portable providers count (a station or request
  * terminal — the alternative to bringing a bedside device to the patient).
+ * `bedside-provider` `delivered`: capabilities whose goods are delivered to
+ * the bedside (`DELIVERED_CAPABILITIES`: pharmacy-dispensed drugs, blood
+ * products) — they need an in-service provider somewhere in the facility,
+ * never one at the bedside.
  */
 export type SpatialRequirement =
   | { kind: "anywhere" }
   | { kind: "near-patient"; range: number; lineOfSight: boolean }
   | { kind: "at-patient"; range: number }
   | { kind: "at-provider"; capabilities: string[]; range?: number; fixedOnly?: boolean }
-  | { kind: "bedside-provider"; capabilities: string[]; patientRange: number }
+  | { kind: "bedside-provider"; capabilities: string[]; patientRange: number; delivered?: string[] }
   | { kind: "any-of"; options: SpatialRequirement[] };
 
 /** The clinical tool call being checked, in engine terms (no dependency on the agent package). */

@@ -3,16 +3,20 @@
  * `createNodeSession` and maps bootstrap problems to CLI exit codes.
  *
  * The common user errors (unknown case or facility, no case, unknown or
- * ambiguous session id, `--resume` of another case's session) are checked
- * here first so they get a localised message and a "did you mean" hint;
- * `BootstrapError`'s own messages are English-only.
+ * ambiguous session id, `--resume` of another case's session, an invalid
+ * case file) are checked here first so they get a localised message and a
+ * "did you mean" hint; `BootstrapError`'s own messages are English-only.
+ *
+ * Start-up cost does not grow with the library: the cases are indexed
+ * (`CaseLibrary`, no validation) and only the case being started is parsed
+ * and validated (`cases validate --all` checks every case).
  */
 import {
   BootstrapError,
+  CaseLibrary,
   createNodeSession,
   findSessionTranscript,
   listSessions,
-  loadContent,
   readTranscript,
   type CreateNodeSessionOptions,
   type LoadedContent,
@@ -27,7 +31,10 @@ export interface OpenSessionOptions {
   resume?: string;
   facilityId?: string;
   transcript?: boolean;
+  /** Pre-loaded (validated) content, e.g. `eval`'s. */
   content?: LoadedContent;
+  /** The case library (e.g. the one the picker listed); default: opened over the settings' content directories. */
+  library?: CaseLibrary;
 }
 
 /**
@@ -60,9 +67,10 @@ async function transcriptCaseId(path: string): Promise<{ sessionId: string; case
 }
 
 /** Localised checks of the case, facility and resume reference before bootstrapping. */
-async function preflight(ctx: CliContext, o: OpenSessionOptions): Promise<{ content: LoadedContent; resume?: string }> {
+async function preflight(ctx: CliContext, o: OpenSessionOptions): Promise<{ library: CaseLibrary; resume?: string }> {
   const settings = await loadCliSettings(ctx, o.flags);
-  const content = o.content ?? (await loadContent({ dirs: settings.contentDirs }));
+  const library = o.content ? CaseLibrary.fromContent(o.content) : (o.library ?? (await CaseLibrary.open({ dirs: settings.contentDirs })));
+  const content = library.content;
   let resume: string | undefined;
   let resumedCase: string | null = null;
   if (o.resume !== undefined) {
@@ -73,19 +81,26 @@ async function preflight(ctx: CliContext, o: OpenSessionOptions): Promise<{ cont
       throw new CliError(ctx.t("sessions.caseMismatch", { id: meta.sessionId, caseId: meta.caseId, requested: o.caseId }), EXIT.usage);
     }
   }
-  const caseIds = [...content.cases.keys()].sort();
   const caseId = o.caseId ?? resumedCase ?? settings.defaultCase ?? null;
-  if (!caseId) throw new CliError(ctx.t("cases.noneSelected"), EXIT.usage, ctx.t("cases.available", { list: caseIds.join(", ") }));
-  if (!content.cases.has(caseId)) {
+  if (!caseId) throw new CliError(ctx.t("cases.noneSelected"), EXIT.usage, ctx.t("cases.available", { list: (await library.ids()).join(", ") }));
+  if (!(await library.has(caseId))) {
+    const caseIds = await library.ids();
     const hint = suggest(caseId, caseIds);
     throw new CliError(ctx.t("cases.unknown", { id: caseId }), EXIT.usage, hints(hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("cases.available", { list: caseIds.join(", ") }), contentDirsHint(ctx, content)));
+  }
+  // Only the case being started is parsed and validated.
+  const loaded = await library.load(caseId);
+  if (loaded.status !== "ok") {
+    const errors = loaded.status === "invalid" ? loaded.issues.filter((i) => i.severity === "error") : [];
+    const first = errors.slice(0, 3).map((i) => `${i.path || "(root)"}: ${i.message}`);
+    throw new CliError(ctx.t("cases.invalidCase", { id: caseId, n: errors.length }), EXIT.usage, hints(...first, ctx.t("cases.validateHint", { id: caseId })));
   }
   if (o.facilityId && !content.facilities.has(o.facilityId)) {
     const ids = [...content.facilities.keys()].sort();
     const hint = suggest(o.facilityId, ids);
     throw new CliError(ctx.t("facilities.unknown", { id: o.facilityId }), EXIT.usage, hints(hint ? ctx.t("argv.didYouMean", { value: hint }) : ctx.t("facilities.available", { list: ids.join(", ") }), contentDirsHint(ctx, content)));
   }
-  return { content, ...(resume !== undefined ? { resume } : {}) };
+  return { library, ...(resume !== undefined ? { resume } : {}) };
 }
 
 /** Create a node session; unknown case/facility/session → usage error (exit 2). */
@@ -100,7 +115,7 @@ export async function openSession(ctx: CliContext, o: OpenSessionOptions): Promi
     ...(checked.resume !== undefined ? { resume: checked.resume } : {}),
     ...(o.facilityId ? { facilityId: o.facilityId } : {}),
     ...(o.transcript !== undefined ? { transcript: o.transcript } : {}),
-    content: checked.content,
+    ...(o.content ? { content: o.content } : { library: checked.library }),
   };
   try {
     const session = await createNodeSession(opts);

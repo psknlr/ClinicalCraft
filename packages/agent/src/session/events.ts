@@ -29,6 +29,8 @@ export function isDurableEvent(msg: EventMsg): boolean {
     case "agent_reasoning":
     case "turn_phase":
     case "state_snapshot":
+    // physical-world changes: high volume, and a resume restores the world from `world` snapshot items
+    case "world_event":
       return false;
     case "session_configured":
     case "turn_started":
@@ -52,6 +54,7 @@ export function isDurableEvent(msg: EventMsg): boolean {
     case "warning":
     case "error":
     case "shutdown_complete":
+    case "world_action_result":
       return true;
     default: {
       const never: never = msg;

@@ -8,9 +8,10 @@
  * credentials before anything is persisted.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
+import type { WorldStateSnapshot } from "@clinicalcraft/world";
 import type { AgentRole, ApprovalMode, Op, PlanItem, PracticeScope } from "./protocol.js";
 import type { ChatMessage, ChatPart } from "./providers/types.js";
-import { canonicalLocale } from "./settings/schema.js";
+import { canonicalLocale, type Embodiment } from "./settings/schema.js";
 import type { DialogueEntry, TranscriptItem, TranscriptSink } from "./session/types.js";
 
 /** In-memory transcript sink. */
@@ -56,6 +57,8 @@ export interface ReplayedTranscript {
   lastOrdinal: number;
   /** The examiner's dialogue lines (`dialogue` items) in order. */
   dialogue: DialogueEntry[];
+  /** Embodied mode: the last `world` snapshot (resume restores the physical state from it), or null. */
+  world: WorldStateSnapshot | null;
 }
 
 const PART_TYPES = new Set(["text", "image", "tool_call", "tool_result", "provider_raw"]);
@@ -101,7 +104,7 @@ export function orderTranscriptItems(items: readonly TranscriptItem[]): Transcri
 export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTranscript {
   const sorted = orderTranscriptItems(items);
 
-  const result: ReplayedTranscript = { sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1, dialogue: [] };
+  const result: ReplayedTranscript = { sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1, dialogue: [], world: null };
   for (const item of sorted) {
     if (typeof item.ordinal === "number" && item.ordinal > result.lastOrdinal) result.lastOrdinal = item.ordinal;
     switch (item.type) {
@@ -111,6 +114,11 @@ export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTran
       case "op":
         if (item.payload?.op) result.ops.push({ id: item.payload.id, op: item.payload.op });
         break;
+      case "world": {
+        const snapshot = item.payload?.snapshot;
+        if (snapshot && typeof snapshot === "object" && snapshot.format === "clinicalcraft-world@1") result.world = snapshot;
+        break;
+      }
       case "action":
         if (item.payload?.accepted && item.payload.action) result.actions.push(item.payload.action);
         break;
@@ -160,6 +168,8 @@ export interface ResumedRuntimeConfig {
   plan?: { items: PlanItem[]; explanation: string | null };
   /** Last persisted affect intensity (0–3) per speaker, from patient/companion `message` items (`affectIntensity`). */
   affect?: Partial<Record<"patient" | "companion", 0 | 1 | 2 | 3>>;
+  /** The encounter's mode (`session_meta.embodiment`; absent there = clinical) — fixed for the encounter. */
+  embodiment?: Embodiment;
 }
 
 /**
@@ -176,6 +186,7 @@ export function resumedRuntimeConfig(items: readonly TranscriptItem[]): ResumedR
       if (canonicalLocale(item.payload.locale)) out.locale = canonicalLocale(item.payload.locale)!;
       if (item.payload.provider) out.provider = item.payload.provider;
       out.model = item.payload.model || null;
+      out.embodiment = item.payload.embodiment === "embodied" ? "embodied" : "clinical";
       continue;
     }
     if (item.type === "message") {

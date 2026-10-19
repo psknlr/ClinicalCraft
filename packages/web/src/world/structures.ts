@@ -7,10 +7,16 @@
  * @clinicalcraft/world `facilityWalls`) and so do their colliders: this
  * module builds visuals only; door leaves keep a reference to their model
  * colliders so opening/closing a door toggles them.
+ *
+ * Levels (EMBODIED R10): every level a building spans gets its walls at
+ * that level's elevation (with the building's wall style); the ground slab
+ * is drawn on the default level and the roof on the building's top level
+ * only (upper floors are the model's slabs, see stairs.ts); rooms, their
+ * partitions, lamps and signs stand on their own level.
  */
 import { Group, Mesh, type Material, type Object3D } from "three";
 import { buildingLevels, roomLevel } from "@clinicalcraft/core";
-import type { WallMaterials, WallSpec } from "@clinicalcraft/world";
+import { subtractAreas, type WallMaterials, type WallSpec } from "@clinicalcraft/world";
 import type { BuildContext, DoorLeaf, DoorRecord } from "./context.js";
 import {
   greedyRects,
@@ -41,6 +47,8 @@ export interface WallRecord {
   height: number;
   openings: ResolvedOpening[];
   partition: boolean;
+  /** Level of the wall. */
+  level: string;
 }
 
 function addBox(ctx: BuildContext, mat: string, wall: WallLine, a: number, b: number, y0: number, y1: number, thickness: number, offset = 0, tiled = false) {
@@ -60,21 +68,23 @@ function addBox(ctx: BuildContext, mat: string, wall: WallLine, a: number, b: nu
  */
 export function buildWall(ctx: BuildContext, spec: WallSpec): WallRecord {
   const { wall, height, thickness, materials: mats, openings: resolved } = spec;
+  const e = spec.elevation;
   const pieces = segmentWall(wall, height, resolved);
   // visual pieces: V4 1×1 blocks merged per course into tiled boxes (same pixels, far fewer instances)
   const matOf = (p: { course: string }) => (p.course === "base" ? mats.base : p.course === "top" ? mats.top : mats.body);
-  for (const p of mergeWallPieces(pieces, matOf)) addBox(ctx, p.key, wall, p.a, p.b, p.y0, p.y1, thickness, 0, true);
+  for (const p of mergeWallPieces(pieces, matOf)) addBox(ctx, p.key, wall, p.a, p.b, p.y0 + e, p.y1 + e, thickness, 0, true);
   // openings
   const ownerName = tx(spec.ownerName, ctx.locale);
   resolved.forEach((o, i) => {
     const id = spec.openingIds[i];
-    if (o.kind === "window") buildWindow(ctx, wall, o, thickness, mats);
-    else if (o.kind !== "opening" && id) buildDoor(ctx, wall, o, thickness, mats, id.slice("door:".length), ownerName, spec.partition);
+    if (o.kind === "window") buildWindow(ctx, wall, o, thickness, mats, e);
+    else if (o.kind !== "opening" && id) buildDoor(ctx, wall, o, thickness, mats, id.slice("door:".length), ownerName, spec.partition, e, spec.level);
   });
-  return { wall, thickness, height, openings: resolved, partition: spec.partition };
+  return { wall, thickness, height, openings: resolved, partition: spec.partition, level: spec.level };
 }
 
-function buildWindow(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickness: number, mats: WallMaterials) {
+function buildWindow(ctx: BuildContext, wall: WallLine, o0: ResolvedOpening, thickness: number, mats: WallMaterials, elevation = 0) {
+  const o = elevation ? { ...o0, y0: o0.y0 + elevation, y1: o0.y1 + elevation } : o0;
   const glass = ctx.lib.has("glass") ? "glass" : mats.body;
   addBox(ctx, glass, wall, o.a, o.b, o.y0, o.y1, Math.min(0.1, thickness));
   const frame = mats.base;
@@ -109,14 +119,14 @@ function leafMesh(mat: Material, x: number, y: number, z: number, sx: number, sy
   return m;
 }
 
-function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickness: number, mats: WallMaterials, id: string, ownerName: string, interior = false) {
+function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickness: number, mats: WallMaterials, id: string, ownerName: string, interior = false, elevation = 0, level = ctx.level) {
   const S = strings(ctx.locale);
   const width = o.b - o.a;
   const h = o.y1 - o.y0;
   const centreU = (o.a + o.b) / 2;
   const c = wallPoint(wall, centreU);
   const frame = new Group();
-  frame.position.set(c.x, 0, c.z);
+  frame.position.set(c.x, elevation, c.z);
   frame.rotation.y = sideRotation(wall.side);
   ctx.root.add(frame);
   const leafMat = ctx.lib.get(ctx.lib.has(mats.base) ? mats.base : "teal");
@@ -190,7 +200,7 @@ function buildDoor(ctx: BuildContext, wall: WallLine, o: ResolvedOpening, thickn
     (wall.axis === "x"
       ? { minX: Math.min(pa.x, pb.x), maxX: Math.max(pa.x, pb.x), minZ: wall.line - depth, maxZ: wall.line + depth }
       : { minX: wall.line - depth, maxX: wall.line + depth, minZ: Math.min(pa.z, pb.z), maxZ: Math.max(pa.z, pb.z) });
-  const rec: DoorRecord = { id, name, open: false, leaves, area: { ...area }, centre: { x: c.x, z: c.z }, target, objects, interior };
+  const rec: DoorRecord = { id, name, open: false, leaves, area: { ...area }, centre: { x: c.x, z: c.z }, target, objects, interior, level };
   ctx.doors.push(rec);
 }
 
@@ -227,83 +237,104 @@ function buildingAt(ctx: BuildContext, x: number, z: number) {
   return ctx.facility.buildings.find((b) => rectContains(b.rect, x, z, 0.01)) ?? null;
 }
 
+/** Roof of a building at height `H` (top storey): rect + 1.5 overhang, 1-unit tiles, skylight glazing and beams. */
+function buildRoof(ctx: BuildContext, b: BuildingDef, H: number): void {
+  const roof = b.roof ?? { material: "roof", skylights: [] };
+  const roofMat = roof.material ?? "roof";
+  const skylights: Rect[] = roof.skylights ?? [];
+  const minX = b.rect.x - b.rect.w / 2 - 1.5, maxX = b.rect.x + b.rect.w / 2 + 1.5;
+  const minZ = b.rect.z - b.rect.d / 2 - 1.5, maxZ = b.rect.z + b.rect.d / 2 + 1.5;
+  const xs = splitInterval(minX, maxX, [], 1);
+  const zs = splitInterval(minZ, maxZ, [], 1);
+  const roofCell = (ix: number, iz: number) => (skylights.some((s) => rectContains(s, (xs[ix][0] + xs[ix][1]) / 2, (zs[iz][0] + zs[iz][1]) / 2)) ? null : roofMat);
+  for (const g of greedyRects(xs.length, zs.length, roofCell)) {
+    const x0 = xs[g.ix0][0], x1 = xs[g.ix1][1], z0 = zs[g.iz0][0], z1 = zs[g.iz1][1];
+    ctx.batch.addTiled(g.value, (x0 + x1) / 2, H + 0.15, (z0 + z1) / 2, x1 - x0, 0.3, z1 - z0);
+  }
+  for (const s of skylights) {
+    const longZ = s.d >= s.w;
+    if (ctx.lib.has("glass")) {
+      if (longZ) ctx.batch.add("glass", s.x, H + 0.2, s.z, s.w - 0.2, 0.08, s.d + 1);
+      else ctx.batch.add("glass", s.x, H + 0.2, s.z, s.w + 1, 0.08, s.d - 0.2);
+    }
+    if (roof.beams) {
+      const long = longZ ? s.d : s.w;
+      const short = longZ ? s.w : s.d;
+      for (const sgn of [-1, 1]) {
+        if (longZ) ctx.batch.add(roof.beams, s.x + (sgn * s.w) / 2, H + 0.05, s.z, 0.18, 0.35, s.d + 1);
+        else ctx.batch.add(roof.beams, s.x, H + 0.05, s.z + (sgn * s.d) / 2, s.w + 1, 0.35, 0.18);
+      }
+      const start = (longZ ? s.z - s.d / 2 : s.x - s.w / 2) + 0.5;
+      for (let u = start; u <= start + long - 0.5; u += 4) {
+        if (longZ) ctx.batch.add(roof.beams, s.x, H + 0.08, u, short + 0.2, 0.2, 0.18);
+        else ctx.batch.add(roof.beams, u, H + 0.08, s.z, 0.18, 0.2, short + 0.2);
+      }
+    }
+  }
+}
+
+type BuildingDef = BuildContext["facility"]["buildings"][number];
+
 export function buildStructures(ctx: BuildContext): WallRecord[] {
   const f = ctx.facility;
   const walls: WallRecord[] = [];
-  // the model's wall layout on the rendered level (buildings in order, then partitions, deduplicated)
-  const specs = ctx.collision.walls.filter((w) => w.level === ctx.level);
+  // the model's wall layout, every level (buildings in order, then partitions, deduplicated)
+  const specs = ctx.collision.walls;
   for (const b of f.buildings) {
-    if (!buildingLevels(f, b).includes(ctx.level)) continue;
+    const spans = buildingLevels(f, b);
+    const top = spans.reduce((hi, l) => (ctx.levels.elevation(l) > ctx.levels.elevation(hi) ? l : hi), spans[0]);
     const ws = Object.assign({ height: 5, base: "teal", body: "cream", top: "wood", thickness: 1 }, b.walls ?? {});
     const H = ws.height;
     const t = ws.thickness;
-    // floor slab (top at y = .01; avoids V4's grass z-fighting)
-    ctx.batch.add(b.floor ?? "floor", b.rect.x, -0.09, b.rect.z, b.rect.w + t, 0.2, b.rect.d + t);
-    for (const spec of specs) if (!spec.partition && spec.owner === b.id) walls.push(buildWall(ctx, spec));
-    // roof (rect + 1.5 overhang, 1-unit tiles, skylight holes) at H + .15
-    const roof = b.roof ?? { material: "roof", skylights: [] };
-    const roofMat = roof.material ?? "roof";
-    const skylights: Rect[] = roof.skylights ?? [];
-    const minX = b.rect.x - b.rect.w / 2 - 1.5, maxX = b.rect.x + b.rect.w / 2 + 1.5;
-    const minZ = b.rect.z - b.rect.d / 2 - 1.5, maxZ = b.rect.z + b.rect.d / 2 + 1.5;
-    const xs = splitInterval(minX, maxX, [], 1);
-    const zs = splitInterval(minZ, maxZ, [], 1);
-    const roofCell = (ix: number, iz: number) => (skylights.some((s) => rectContains(s, (xs[ix][0] + xs[ix][1]) / 2, (zs[iz][0] + zs[iz][1]) / 2)) ? null : roofMat);
-    for (const g of greedyRects(xs.length, zs.length, roofCell)) {
-      const x0 = xs[g.ix0][0], x1 = xs[g.ix1][1], z0 = zs[g.iz0][0], z1 = zs[g.iz1][1];
-      ctx.batch.addTiled(g.value, (x0 + x1) / 2, H + 0.15, (z0 + z1) / 2, x1 - x0, 0.3, z1 - z0);
-    }
-    for (const s of skylights) {
-      const longZ = s.d >= s.w;
-      if (ctx.lib.has("glass")) {
-        if (longZ) ctx.batch.add("glass", s.x, H + 0.2, s.z, s.w - 0.2, 0.08, s.d + 1);
-        else ctx.batch.add("glass", s.x, H + 0.2, s.z, s.w + 1, 0.08, s.d - 0.2);
+    for (const level of spans) {
+      ctx.onLevel(level);
+      const e = ctx.levels.elevation(level);
+      // floor slab (top at y = .01; avoids V4's grass z-fighting); upper floors are the model's slabs (stairs.ts)
+      if (level === ctx.level) ctx.batch.add(b.floor ?? "floor", b.rect.x, -0.09, b.rect.z, b.rect.w + t, 0.2, b.rect.d + t);
+      for (const spec of specs) if (!spec.partition && spec.owner === b.id && spec.level === level) walls.push(buildWall(ctx, spec));
+      // roof on the building's top level only (rect + 1.5 overhang, 1-unit tiles, skylight holes) at H + .15
+      if (level === top) buildRoof(ctx, b, e + H);
+      // building sign (V4: front wall, y H − .95, .11 proud of the wall face, width 7) — on the lowest storey
+      if (b.sign && level === spans[0]) {
+        const text = tx(b.sign.text, ctx.locale);
+        const wl = wallLine(b.rect, b.sign.side, t, "building");
+        const len = wl.to - wl.from;
+        const sign = ctx.signs.make(text, Math.min(7, len * 0.5), b.sign.color ?? undefined);
+        const p = wallPoint(wl, wl.centre);
+        const out = t / 2 + 0.11;
+        sign.position.set(p.x + (wl.axis === "z" ? wl.outward * out : 0), e + H - 0.95, p.z + (wl.axis === "x" ? wl.outward * out : 0));
+        sign.rotation.y = sideRotation(b.sign.side);
+        ctx.root.add(sign);
       }
-      if (roof.beams) {
-        const long = longZ ? s.d : s.w;
-        const short = longZ ? s.w : s.d;
-        for (const sgn of [-1, 1]) {
-          if (longZ) ctx.batch.add(roof.beams, s.x + (sgn * s.w) / 2, H + 0.05, s.z, 0.18, 0.35, s.d + 1);
-          else ctx.batch.add(roof.beams, s.x, H + 0.05, s.z + (sgn * s.d) / 2, s.w + 1, 0.35, 0.18);
-        }
-        const start = (longZ ? s.z - s.d / 2 : s.x - s.w / 2) + 0.5;
-        for (let u = start; u <= start + long - 0.5; u += 4) {
-          if (longZ) ctx.batch.add(roof.beams, s.x, H + 0.08, u, short + 0.2, 0.2, 0.18);
-          else ctx.batch.add(roof.beams, u, H + 0.08, s.z, 0.18, 0.2, short + 0.2);
-        }
-      }
-    }
-    // building sign (V4: front wall, y H − .95, .11 proud of the wall face, width 7)
-    if (b.sign) {
-      const text = tx(b.sign.text, ctx.locale);
-      const wl = wallLine(b.rect, b.sign.side, t, "building");
-      const len = wl.to - wl.from;
-      const sign = ctx.signs.make(text, Math.min(7, len * 0.5), b.sign.color ?? undefined);
-      const p = wallPoint(wl, wl.centre);
-      const out = t / 2 + 0.11;
-      sign.position.set(p.x + (wl.axis === "z" ? wl.outward * out : 0), H - 0.95, p.z + (wl.axis === "x" ? wl.outward * out : 0));
-      sign.rotation.y = sideRotation(b.sign.side);
-      ctx.root.add(sign);
     }
   }
 
-  // rooms: floors, partitions (the model's sub-walls, deduplicated per line), lamps, signs
+  // rooms: floors, partitions (the model's sub-walls, deduplicated per line), lamps, signs — on their level
   for (const r of f.rooms) {
-    if (roomLevel(f, r) !== ctx.level) continue;
-    if (r.floor) ctx.batch.add(r.floor, r.rect.x, -0.08, r.rect.z, r.rect.w, 0.2, r.rect.d);
+    const level = roomLevel(f, r);
+    ctx.onLevel(level);
+    const e = ctx.levels.elevation(level);
+    if (r.floor) {
+      // an upper level's room floor keeps the stairwells open (flights arriving on this level)
+      const holes = level === ctx.level ? [] : ctx.levels.flights.filter((fl) => fl.head.level === level).map((fl) => fl.area);
+      const rect = { minX: r.rect.x - r.rect.w / 2, maxX: r.rect.x + r.rect.w / 2, minZ: r.rect.z - r.rect.d / 2, maxZ: r.rect.z + r.rect.d / 2 };
+      const cut = holes.some((h) => h.minX < rect.maxX && h.maxX > rect.minX && h.minZ < rect.maxZ && h.maxZ > rect.minZ);
+      if (!cut) ctx.batch.add(r.floor, r.rect.x, e - 0.08, r.rect.z, r.rect.w, 0.2, r.rect.d);
+      else for (const a of subtractAreas(rect, holes)) ctx.batch.add(r.floor, (a.minX + a.maxX) / 2, e - 0.08, (a.minZ + a.maxZ) / 2, a.maxX - a.minX, 0.2, a.maxZ - a.minZ);
+    }
     const building = (r.building && f.buildings.find((b) => b.id === r.building)) || buildingAt(ctx, r.rect.x, r.rect.z);
     const bH = building?.walls?.height ?? 5;
     for (const spec of specs) if (spec.partition && spec.owner === r.id) walls.push(buildWall(ctx, spec));
     const rodMat = ctx.lib.has("steel") ? "steel" : "coal";
     for (const l of r.lights ?? []) {
-      ctx.batch.add("lamp", l.x, bH - 0.27, l.z, 2.4, 0.08, 1.2);
-      ctx.lights.push({ x: l.x, y: bH - 1.3, z: l.z, color: "#fff2d3", intensity: 13, distance: 11, decay: 2 });
+      ctx.batch.add("lamp", l.x, e + bH - 0.27, l.z, 2.4, 0.08, 1.2);
+      ctx.lights.push({ x: l.x, y: e + bH - 1.3, z: l.z, color: "#fff2d3", intensity: 13, distance: 11, decay: 2, level });
       if (building) {
         // pendant rods up to the ceiling (or the skylight glazing) so fixtures do not float
         const underSky = (building.roof?.skylights ?? []).some((s) => Math.abs(l.x - s.x) < s.w / 2 + 1.2 && Math.abs(l.z - s.z) < s.d / 2 + 0.6);
         const top = underSky ? bH + 0.16 : bH;
         const y0 = bH - 0.23;
-        if (top - y0 > 0.02) for (const dx of [-0.95, 0.95]) ctx.batch.add(rodMat, l.x + dx, (y0 + top) / 2, l.z, 0.04, top - y0, 0.04);
+        if (top - y0 > 0.02) for (const dx of [-0.95, 0.95]) ctx.batch.add(rodMat, l.x + dx, e + (y0 + top) / 2, l.z, 0.04, top - y0, 0.04);
       }
     }
     if (r.sign) {
@@ -321,7 +352,7 @@ export function buildStructures(ctx: BuildContext): WallRecord[] {
           wallH = building.walls?.height ?? 5;
         }
       }
-      const y = Math.min(wallH - 0.65, 3.7);
+      const y = e + Math.min(wallH - 0.65, 3.7);
       const sign = ctx.signs.make(text, Math.min(signWidth(text, 2.4, 3.8), (wlRoom.to - wlRoom.from) * 0.8), r.sign.color ?? undefined);
       const p = wallPoint(wlRoom, wlRoom.centre);
       const inset = -wlRoom.outward * (thick / 2 + 0.07);
@@ -330,6 +361,7 @@ export function buildStructures(ctx: BuildContext): WallRecord[] {
       ctx.root.add(sign);
     }
   }
+  ctx.onLevel(ctx.level);
 
   // free-standing signs (a post's collider is the model's `sign:<i>`)
   for (const s of f.signs ?? []) {

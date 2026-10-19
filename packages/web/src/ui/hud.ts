@@ -250,7 +250,7 @@ export class Hud {
   }
 
   onMove(info: MoveInfo): void {
-    this.el.region.textContent = info.region;
+    this.el.region.textContent = info.levelName ? `${info.region} · ${info.levelName}` : info.region;
     this.el.coords.textContent = `X ${Math.round(info.x)} · Z ${Math.round(info.z)}`;
     const now = performance.now();
     if (now - this.lastMinimap > 120) {
@@ -278,7 +278,7 @@ export class Hud {
     if (!api || this.root.hidden) return;
     const dest = this.app.game?.link.destination() ?? null;
     try {
-      api.drawMap(this.mini, { big: false, waypoint: dest ? { x: dest.x, z: dest.z } : null, locale: getLocale() });
+      api.drawMap(this.mini, { big: false, waypoint: dest ? { x: dest.x, z: dest.z, ...(dest.level ? { level: dest.level } : {}) } : null, locale: getLocale() });
     } catch (err) {
       console.error(err);
     }

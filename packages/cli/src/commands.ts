@@ -7,6 +7,7 @@ import { configGet, configPath, configSet } from "./config.js";
 import type { CliContext } from "./context.js";
 import { runEval } from "./eval.js";
 import { runExec } from "./exec.js";
+import { assetsInspect } from "./assets.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
@@ -113,7 +114,7 @@ export const ROOT: CommandSpec = {
         },
         {
           name: "schema",
-          usage: "[case|facility|catalog|template]",
+          usage: "[case|facility|catalog|template|skill]",
           summary: { en: "Print the JSON Schema path (or --content)", zh: "输出 JSON Schema 路径（或 --content 输出内容）" },
           flags: [{ name: "content", type: "boolean", description: { en: "Print the schema itself", zh: "输出 Schema 内容" } }],
           run: casesSchema,
@@ -134,6 +135,26 @@ export const ROOT: CommandSpec = {
           summary: { en: "Print the flat facility (room templates expanded)", zh: "输出展开房间模板后的扁平场馆" },
           flags: [{ name: "out", type: "string", valueName: "<file>", description: { en: "Write the JSON to a file", zh: "将 JSON 写入文件" } }],
           run: facilitiesCompile,
+        },
+      ],
+    },
+    {
+      name: "assets",
+      aliases: ["asset"],
+      summary: { en: "Inspect 3D model files (GLB/glTF) for equipment", zh: "检查设备的三维模型文件（GLB/glTF）" },
+      defaultSubcommand: "inspect",
+      subcommands: [
+        {
+          name: "inspect",
+          usage: "<file.glb>",
+          summary: { en: "Header, counts, bounding box, extensions, sha256; with --type, check the catalog model reference", zh: "文件头、数量统计、包围盒、扩展与 sha256；配合 --type 核对设备目录中的模型引用" },
+          flags: [
+            { name: "type", type: "string", valueName: "<equipment-type>", description: { en: "Check against this equipment type's `model` reference and footprint", zh: "按该设备类型的 `model` 引用与占地尺寸核对" } },
+            { name: "draco", type: "boolean", description: { en: "The renderer has a DRACO decoder configured", zh: "渲染器已配置 DRACO 解码器" } },
+            JSON_FLAG,
+          ],
+          run: assetsInspect,
+          examples: ["clinicalcraft assets inspect assets/local/models/icu-bed.glb --type icu-bed"],
         },
       ],
     },
@@ -248,7 +269,7 @@ export const ROOT: CommandSpec = {
         { name: "out", type: "string", valueName: "<report.md>", description: { en: "Write the Markdown report (+ .json beside it)", zh: "写入 Markdown 报告（并在旁边写 .json）" } },
         { name: "json", type: "string", valueName: "<file>", description: { en: "Write the JSON report here", zh: "JSON 报告路径" } },
         { name: "transcripts", type: "boolean", description: { en: "Record session transcripts (off by default)", zh: "记录会话（默认关闭）" } },
-        ...SESSION_FLAGS.filter((f) => ["provider", "model", "base-url", "scope", "max-tool-rounds"].includes(f.name)),
+        ...SESSION_FLAGS.filter((f) => ["provider", "model", "base-url", "scope", "max-tool-rounds", "embodied"].includes(f.name)),
       ],
       run: runEval,
       examples: ["clinicalcraft eval --cases all --provider offline --out report.md"],

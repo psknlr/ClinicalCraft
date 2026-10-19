@@ -44,6 +44,11 @@ export interface ModelCapabilities {
   maxOutputTokens: number;
   supportsTools: boolean;
   supportsImages: boolean;
+  /**
+   * Can look at camera frames (`get_camera_frame`, embodied mode): images in tool results. Defaults to
+   * `supportsImages` unless a rule sets it (`capabilitiesFor`).
+   */
+  vision: boolean;
   supportsStreaming: boolean;
   /** Supports `{role:"system"}` messages mid-conversation (Claude Opus 5.5 does; most don't). */
   supportsMidConversationSystem: boolean;
@@ -91,7 +96,8 @@ export type ChatPart =
   | { type: "text"; text: string }
   | { type: "image"; mediaType: string; data: string /* base64 */ }
   | { type: "tool_call"; id: string; name: string; args: unknown }
-  | { type: "tool_result"; callId: string; content: string; isError?: boolean }
+  /** `images`: pictures the tool returned (camera frames) — Anthropic sends them inside the tool_result, OpenAI-compatible wires as a follow-up user message. */
+  | { type: "tool_result"; callId: string; content: string; isError?: boolean; images?: { mediaType: string; data: string }[] }
   /**
    * Opaque provider-native blocks that must be echoed back verbatim on the
    * same provider (Anthropic thinking/redacted_thinking/compaction blocks —

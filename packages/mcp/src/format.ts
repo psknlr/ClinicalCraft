@@ -4,7 +4,7 @@
  * assessment ends with the teaching-script notice.
  */
 import { investigationName, joinList, rt } from "@clinicalcraft/agent";
-import { hashString, t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
+import { hashString, t, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 
 /**
@@ -23,8 +23,21 @@ export function resolveCaseRef<T extends { id: string }>(cases: Iterable<T>, ref
   return list.find((c) => caseHandle(c.id) === ref) ?? list.find((c) => c.id === ref) ?? null;
 }
 
+/** What the library shows of a case: a full case or a case index entry (`CaseIndexEntry`). */
+export interface ListedCase {
+  id: string;
+  title: LocalizedText;
+  summary: LocalizedText;
+  specialty: readonly string[];
+  difficulty: number;
+  setting: string;
+  estimatedMinutes?: number | null;
+  locales: readonly string[];
+  provenance: string | { kind: string };
+}
+
 /** Library entry for a case in one locale (spoiler-free: an opaque handle, never the id). */
-export function caseListing(c: CaseDefinition, locale: string) {
+export function caseListing(c: ListedCase, locale: string) {
   return {
     id: caseHandle(c.id),
     title: t(c.title, locale),
@@ -34,12 +47,12 @@ export function caseListing(c: CaseDefinition, locale: string) {
     setting: c.setting,
     estimatedMinutes: c.estimatedMinutes ?? null,
     locales: [...c.locales],
-    provenance: c.provenance.kind,
+    provenance: typeof c.provenance === "string" ? c.provenance : c.provenance.kind,
   };
 }
 
 /** `list_cases` text. */
-export function casesText(cases: readonly CaseDefinition[], locale: string): string {
+export function casesText(cases: readonly ListedCase[], locale: string): string {
   const lines = [mm(locale, "cases.header", { count: cases.length })];
   for (const c of cases) {
     const minutes = c.estimatedMinutes ? mm(locale, "cases.minutes", { minutes: c.estimatedMinutes }) : "";

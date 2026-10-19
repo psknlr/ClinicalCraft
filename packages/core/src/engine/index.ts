@@ -42,6 +42,7 @@ export {
   type AlarmLimit,
 } from "./physiology.js";
 export { arrestKind, applyArrest, UNMEASURABLE_IN_ARREST, ARREST_MAX_ETCO2, type ArrestKind } from "./arrest.js";
+export { inExtremis, oxygenAccessory, patientCues, type OxygenAccessory, type PatientBystanderCues } from "./cues.js";
 
 // matching
 export {
@@ -99,6 +100,22 @@ export {
 
 // room templates (EMBODIED R10)
 export { compileFacility, checkRoomTemplate, parseRoomTemplate, rotateLocal, rotateSide, offsetSign, type CompileResult } from "./templates.js";
+// GLB / glTF equipment models (EMBODIED §11, docs/ASSETS.md)
+export {
+  checkModelReference,
+  encodeGlb,
+  fitModel,
+  GLB_DECODER_EXTENSIONS,
+  GLB_RENDERER_EXTENSIONS,
+  GlbError,
+  modelScale,
+  parseGlb,
+  type AssetIssue,
+  type GlbBounds,
+  type GlbInfo,
+  type ModelCheckOptions,
+  type ModelFit,
+} from "./glb.js";
 
 // utilities
 export { createRng, hashString, seedFrom } from "./random.js";

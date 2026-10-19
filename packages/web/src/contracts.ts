@@ -49,7 +49,30 @@ export type InteractionTarget =
       hint: string;
       room: string | null;
     }
-  | { kind: "door"; id: string; name: string; hint: string };
+  | { kind: "door"; id: string; name: string; hint: string }
+  /**
+   * An elevator panel (EMBODIED R10): outside the car (`inside: false`) it
+   * calls the car (handled by the world: the car door opens); inside, the
+   * UI offers the levels to ride to (`WorldApi.rideElevator`). `stops`: the
+   * levels the car serves, lowest first; `level`: the panel's level.
+   */
+  | { kind: "elevator"; connectorId: string; level: string; inside: boolean; name: string; hint: string; stops: string[] };
+
+/** A point in the world: x/z and, in a multi-level facility, its level (default: the facility's default level). */
+export interface WorldPoint {
+  x: number;
+  z: number;
+  level?: string;
+}
+
+/** A level of the facility as the UI shows it. */
+export interface WorldLevel {
+  id: string;
+  /** Localised name. */
+  name: string;
+  /** Floor elevation (m). */
+  elevation: number;
+}
 
 export interface BlockInfo {
   cell: [number, number, number];
@@ -63,6 +86,9 @@ export interface MoveInfo {
   region: string;
   roomId: string | null;
   moving: boolean;
+  /** Level the avatar stands on and its localised name (multi-level facilities only). */
+  level?: string;
+  levelName?: string;
 }
 
 export type SoundKind = "tap" | "step" | "mine" | "place" | "success" | "door" | "alarm" | "beep";
@@ -94,6 +120,11 @@ export interface WorldOptions {
   callbacks: WorldCallbacks;
   /** Live vitals for a patient slot (drawn on monitor screens linked to the slot). */
   vitals?: (slotId: string) => VitalsSnapshot | null;
+  /**
+   * Equipment GLB/glTF models (EMBODIED §11, docs/ASSETS.md): `baseUrl` of relative model URIs
+   * (default "/local-assets/"), `dracoPath` to load DRACO-compressed models; `false` draws voxel parts only.
+   */
+  models?: { baseUrl?: string; dracoPath?: string } | false;
 }
 
 export interface WorldApi {
@@ -109,21 +140,33 @@ export interface WorldApi {
   look(dx: number, dy: number): void;
   /** Back to spawn (doors closed); progress kept. */
   reset(): void;
-  teleport(x: number, z: number, yaw?: number): void;
+  /** Teleport onto the floor of `level` (default: the facility's default level). */
+  teleport(x: number, z: number, yaw?: number, level?: string): void;
   /** Animate an NPC: speaking (head bob), posture, accessory (oxygen mask…), affect tint. */
   setPatientState(slotId: string, state: { speaking?: boolean; posture?: WorldPatient["posture"]; accessory?: Appearance["accessory"]; distressed?: boolean }): void;
   setStaffSpeaking(staffId: string, speaking: boolean): void;
-  /** Golden beacon over the current objective's destination (null hides it). */
-  setWaypoint(target: { x: number; z: number; label: string } | null): void;
-  /** Autopilot `walk_to`: smooth path to a point (straight segments via doorways); resolves on arrival or rejects if unreachable. */
-  walkTo(target: { x: number; z: number }, signal?: AbortSignal): Promise<void>;
-  /** Draw the minimap / big map (V4 style) into a 2D canvas. */
-  drawMap(canvas: HTMLCanvasElement, opts: { big: boolean; waypoint: { x: number; z: number } | null; locale: string }): void;
-  /** World position of a placement / slot / staff (for waypoints). */
-  locate(id: string): { x: number; z: number; label: string } | null;
+  /** Golden beacon over the current objective's destination (null hides it); stands on `level`'s floor. */
+  setWaypoint(target: (WorldPoint & { label: string }) | null): void;
+  /**
+   * Autopilot `walk_to`: smooth path to a point (straight segments via doorways); resolves on arrival or
+   * rejects if unreachable. A point on another level is reached via the stairs (or the elevator).
+   */
+  walkTo(target: WorldPoint, signal?: AbortSignal): Promise<void>;
+  /** Draw the minimap / big map (V4 style) into a 2D canvas; `level` (default: the avatar's) picks the floor plan. */
+  drawMap(canvas: HTMLCanvasElement, opts: { big: boolean; waypoint: WorldPoint | null; locale: string; level?: string }): void;
+  /** World position of a placement / slot / staff / room (for waypoints), with its level in a multi-level facility. */
+  locate(id: string): (WorldPoint & { label: string }) | null;
+  /** The facility's levels, lowest first (one entry for a single-level facility). */
+  levels(locale?: string): WorldLevel[];
+  /**
+   * Ride an elevator from the avatar's level to `level`: the avatar must be in the car (else it rejects);
+   * the doors close, a short ride, the avatar arrives at the same spot of the car on `level` and the doors open.
+   */
+  rideElevator(connectorId: string, level: string): Promise<void>;
   screenshot(): string;
   dispose(): void;
-  readonly position: { x: number; y: number; z: number; yaw: number; pitch: number };
+  /** Avatar pose; `level` is the level it stands on. */
+  readonly position: { x: number; y: number; z: number; yaw: number; pitch: number; level: string };
   /** Test/QA hooks (window.__QA__ in ?qa mode). */
   readonly debug: Record<string, unknown>;
 }

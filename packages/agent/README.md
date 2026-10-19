@@ -49,6 +49,20 @@ What is inside (contracts in [docs/PROTOCOL.md](../../docs/PROTOCOL.md)):
   Code-style hooks (`SessionStart` … `SessionEnd`), Markdown slash commands
   and agent profiles, `CLINICALCRAFT.md` with `@imports`, JSONL rollouts and
   resume.
+- **Embodied mode** (`embodiment: "embodied"`; `src/session/embodied.ts`,
+  `src/tools/spatial.ts`, `src/tools/world.ts`, `src/skills/`; PROTOCOL
+  §12): the session runs a headless `@clinicalcraft/world` runtime for the
+  case's facility — clinical tools are spatially gated (refusals carry
+  `hint.goal`), world tools look, walk, operate equipment, delegate to staff
+  and run skills, walking charges simulated time, and `session.world()` /
+  `session.trace()` expose the world and the episode trace.
+
+```ts
+const s = await createNodeSession({ caseId: "stemi-inferior-rv", flags: { provider: "offline", embodiment: "embodied" }, transcript: false });
+await s.run({ type: "slash_command", name: "go", args: "patient" }); // navigate_to, travel time charged
+await s.run({ type: "slash_command", name: "delegate", args: "nurse attach_monitor" });
+console.log(s.placeLabel(), s.trace().spans.length);
+```
 
 Every feature works with `provider: "offline"`, which is also what the tests
 use (`npx vitest run packages/agent`).

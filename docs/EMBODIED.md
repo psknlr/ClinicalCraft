@@ -344,7 +344,7 @@ table above, made concrete:
 | `check_vitals` | `any-of` `near-patient` 6 m + line of sight · `at-provider` `records` |
 | `order_test`, `read_result` | no capability: anywhere · personal kit only: `at-patient` · all in `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `at-provider` with `fixedOnly` · otherwise `at-provider` |
 | `intervene` `consult` / `disposition` | anywhere |
-| `intervene` other kinds | nothing beyond the personal kit: `at-patient` 1.5 m · otherwise `bedside-provider` |
+| `intervene` other kinds | nothing beyond the personal kit: `at-patient` 1.5 m · otherwise `bedside-provider` (delivered capabilities — `medications`, `blood-bank` — need only an in-service provider somewhere in the facility) |
 | `consult`, `delegate`, cognitive tools; unresolved items | anywhere (`examine` without a finding: `at-patient`) |
 
 * `BEDSIDE_CAPABILITIES` = `ecg-12lead`, `point-of-care`, `ultrasound`,
@@ -375,13 +375,19 @@ table above, made concrete:
   fetch (`move_to` it to the patient), or null when none can be brought;
   null when nothing in service provides it. `any-of` reports the option whose
   hint is nearest, preferring hints one navigation fixes over a cart to fetch.
+* Delivered capabilities (`DELIVERED_CAPABILITIES` = `medications`,
+  `blood-bank`; policy option `deliveredCapabilities`): pharmacy-dispensed
+  drugs and blood products are brought to the bedside, so they need no
+  provider there — only an in-service provider somewhere in the facility
+  (else `no-provider-in-facility`, `details.delivered`). The other
+  capabilities of the intervention keep their bedside rule (alteplase:
+  `infusion-pump` at the bedside, `medications` delivered).
 * Property (tested over every investigation, intervention and finding of the
   10 built-in cases in their own facility, from the entrance): following the
   hint passes the check — one navigation for a patient or provider hint,
-  navigation + `move_to` for a cart. The only item without a way is
-  `acute-ischemic-stroke` `sich-protocol` (needs `blood-bank` at the bedside;
-  the blood bank fridge is fixed in the laboratory) — not part of its
-  reference solution.
+  navigation + `move_to` for a cart — with no exception (`acute-ischemic-stroke`
+  `sich-protocol`, which needed the laboratory's fixed blood-bank fridge at the
+  bedside, is reachable since blood products are delivered).
 * A monitor without a reachable interaction point (tested with
   `ward-monitor-1` at its position before content fix A4, wedged between the
   wall, bed 1 and its pump): the patient's `monitoring` intervention needs a
@@ -546,6 +552,26 @@ cancellation. Built-in skills: `locate_patient`, `approach_patient`,
 `.clinicalcraft/skills/*.json`. A skill succeeds only when its
 postconditions hold in authoritative state.
 
+**Implemented (A5, `packages/agent/src/skills/`; contract in PROTOCOL §12.6).**
+`clinicalcraft/skill@1` (zod `SkillSchema`, JSON Schema
+`skill.schema.json`, `clinicalcraft cases schema skill`): typed parameters
+(entity / investigation / intervention / finding / string / number; defaults
+may be the macros `$patient`, `$patient-monitor`, `$monitoring`,
+`$capability:<caps>`), safety class, preconditions, steps (a tool with
+templated arguments — `${param}`, `${steps.<id>.data.<path>}`, every
+reference checked at validation —, `when`, `retry {attempts, on: codes}`,
+`onError`), postconditions (`{clinical: Condition}` through core
+`evaluate`, world predicates, `{actorNear, range}`, `{entityState, state}`)
+and recovery strategies (`replan`, `alternate-provider`, `fetch-equipment`).
+The interpreter runs every step through the calling agent's tool path (a
+refusal of the gate or a hook is final), verifies the postconditions against
+the engine and the world, and records a `plan` span with its
+`verification`. The 11 built-in skills validate at load; project skills
+(`~/.clinicalcraft/skills`, `.clinicalcraft/skills`) and inline skills
+(`execute_skill {skill}`) are validated identically — data, never code; an
+invalid project skill is reported, not loaded. `execute_skill` risk: a
+`high-risk` skill asks always, `clinical` is low, others none.
+
 ## 10. Traces
 
 `EpisodeTrace` (JSONL) links typed spans —
@@ -568,6 +594,20 @@ children `clinical_action` (tool, ok, clinical event ids) and `state_change`
 `observe`, `find` and `inspect` (`recordActionSpans` does the same for any
 sink). Plan, verification and assessment spans belong to the session and
 the benchmark. A deterministic run gives byte-identical JSONL (tested).
+
+**Session traces (A5, `packages/agent/src/session/trace.ts`).** The session
+records its `EpisodeTrace` (`ClinicalSessionApi.trace()`, `exec --trace
+<file>`): the world's spans plus `plan` spans (an autopilot step, a skill, a
+delegated task) whose scope re-parents the root spans recorded meanwhile,
+`clinical_action` + `state_change` (source `engine`) for direct clinical tool
+calls, an engine `state_change` under the world's `clinical_action` of a
+device operation, and `verification` spans. STEMI headless (embodied offline
+autopilot): the ECG reads plan → observation → navigation → interaction
+`record` → `clinical_action order_test` → `state_change` → `verification`,
+the monitor likewise with `attach` / `intervene` (tested). `world`
+transcript items (after each committed state-changing action, after world
+control calls, at shutdown when a sensor pose moved) restore the physical
+state on `--resume`.
 
 ## 11. Content scale, facilities and assets
 
@@ -622,6 +662,17 @@ compared with the same tree plus only the index and lazy loading):
 | 500 | 130.4 MiB | 1,453 ms | 17.9 ms | 725.9 KiB / 21.5 KiB | 1.86 ms | 169.2 / 25.4 MiB (134.3 / 23.3 MiB) |
 | 1 000 | 260.9 MiB | 2,491 ms | 31.4 ms | 1,451.9 KiB / 36.4 KiB | 5.69 ms | 179.4 / 28.8 MiB (139.4 / 23.4 MiB) |
 
+**CLI start-up** (A5; same machine, the built CLI `packages/cli/dist/bin.js`,
+offline provider, `--ephemeral`, a project whose `contentDirs` holds the
+1 000 synthetic cases, wall time of the whole process): `play`, `exec` and
+the MCP server used to validate every case up front (`loadContent`); they now
+list and pick from the case index (`CaseLibrary`) and parse + validate only
+the case being started. `exec --case <synthetic> "hello"`: 161.1 / 167.5 s
+before → 3.1 s median after (3 runs: 3.07–3.40 s); `play <synthetic>` with
+`/quit`: 168.9 / 177.4 s → 3.5 s median (3.33–3.57 s); `exec` of a built-in
+case with the same project: 3.5 s. The ~2.5 s that remain are the cold index
+build above; with only the 10 built-in cases `exec` takes 0.6 s.
+
 **Server** (`clinicalcraft serve` on a free local port, only the synthetic
 directory, keep-alive, sequential requests; p50 / p95 in ms). Listing =
 `GET /api/content/cases` over a fixed mix of pages (`limit` 20/50/200) and
@@ -647,7 +698,11 @@ large catalogue.
 ## 12. MCP and the browser bridge
 
 MCP tools carry annotations. `start_case { embodied: true }` creates a
-headless world for that MCP session. `clinicalcraft mcp --attach <server>`
+headless world for that MCP session (implemented, A5: the 16 world tools are
+listed with annotations — perception read-only, `interact_object` /
+`delegate_task` / `execute_skill` destructive —, refused with `not_embodied`
+on a clinical session; approvals asked inside a world operation follow the
+two-step `confirm` of the clinical tools). `clinicalcraft mcp --attach <server>`
 forwards world and clinical tools to a **registered live browser session**
 through the HTTP server (token-authenticated registration, SSE command
 channel, correlation ids, acknowledgements, timeouts, cancellation,
@@ -679,4 +734,15 @@ The status table is filled in as work lands (see the end of this file).
 | Device behaviours, authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog (operations per kind, predicates, ECG state machine with reservation and durations, derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions) | — | — |
 | Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`) | yes (W2) | every §6 row (ok, each failure reason, the hint that fixes it); property over every item of the 10 built-in cases in their own facility | — | — |
 | Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`) | yes (W2) | unit (awareness levels, bounds, bearings, cues, monitor screen rules, memory without versions); no case fact in any observation (10 cases × 2 languages) | — | — |
-| Action bus, runtime (`createWorldRuntime`), traces | yes (W2) | unit (commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees) over a fake session on the real engine | not yet wired into the agent session, the web, the server or MCP | — |
+| Action bus, runtime (`createWorldRuntime`), traces | yes (W2) | unit (commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees) over a fake session on the real engine | wired into the agent session, the CLI and MCP (A5); not yet the web or the HTTP server | — |
+| Room templates (`clinicalcraft/room-template@1`, `compileFacility`, `checkRoomTemplate`; 15 templates) | yes (A4) | core unit (rotations 0/90/180/270 incl. door offsets, ids, determinism, levels and buildings, overrides, every validation error, nested vs partial overlaps, the standalone template check); every template validates alone | compiled at load time by every loader (node `loadContent`, web app, harness, server); `facilities compile` | — |
+| Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate --all` with no issue; hosts 9 of the 10 built-in cases without capability gaps; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e (`teaching-hospital.spec.ts`: offered as an alternative facility, stairs up, elevator down, map floors) | — |
+| Multi-level collision model and physics (`slab`, `ramp`, `rail` colliders; `stepPlayer` on ramps) | yes (A4) | unit (ramp surface, step-up / snap-down limits, flight sides and underside, the real stairs up and down, guarded stairwell); single-level pins unchanged (general-hospital re-pinned for the moved ward monitor only) | browser QA: walking the real stairs with W up and down | — |
+| Multi-level web world (storeys, stairs, elevator ride, level culling, floor-aware lights/aim/region, map floor tabs, cross-level autopilot) | yes (A4) | unit (levels and culling rules, regions per level, elevator cars, routes across levels); e2e; the existing e2e suite unchanged for `clinic-v4` / `general-hospital` | visual QA of both levels, the stairs and the elevator (draw calls and build time in the A4 report) | — |
+| GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache`) | yes (A4) | unit with GLBs generated in code (container, counts, node transforms, bounds, extensions, licence, hash, scale, fit), CLI tests, renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy) | harness QA (`?model=<type>`: models drawn, aim through the footprint, a broken URL keeps the voxels); no built-in catalog ships a model | — |
+| Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 17 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5) | agent unit + integration on built-in cases (refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies) | CLI `--embodied` (play, exec, eval), MCP `start_case {embodied}`; the web: not yet | — |
+| Embodied offline autopilot (reference agent) | yes (A5) | every built-in case × zh-CN / en finishes in its own facility with the clinical-mode score (test); STEMI trace chain for the ECG and the monitor | `exec --embodied --autopilot` over the library in both languages | — |
+| Delegation (`delegate_task`: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention) | yes (A5) | nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller | — | — |
+| Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader | — | — |
+| Session traces, `world` transcript items, resume | yes (A5) | trace scopes, JSONL, the STEMI chain; resume from memory and from JSONL (`createNodeSession`), embodiment kept / an explicit other one refused | `exec --trace` | — |
+| MCP embodied (`start_case {embodied}`, 16 world tools with annotations, `not_embodied`, two-step confirmation of approvals inside world operations) | yes (A5) | in-process JSON-RPC tests; real stdio smoke (`clinicalcraft mcp`) | — | — |

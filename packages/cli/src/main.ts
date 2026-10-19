@@ -4,7 +4,7 @@
  */
 import { statSync } from "node:fs";
 import { resolve } from "node:path";
-import { loadContent, loadSettings } from "@clinicalcraft/agent/node";
+import { CaseLibrary, loadSettings } from "@clinicalcraft/agent/node";
 import type { Env } from "./ansi.js";
 import { createPalette, colorEnabled } from "./ansi.js";
 import { editDistance, flagBool, flagString, lookupFlag, parseArgs, suggest, UsageError, type FlagSpec, type ParsedArgs } from "./argv.js";
@@ -204,8 +204,8 @@ async function rejectCommandTypo(token: string, cwd: string, env: Env, L: string
   if (!hint || editDistance(token.toLowerCase(), hint.toLowerCase()) > 2) return;
   try {
     const settings = await loadSettings({ cwd, env });
-    const content = await loadContent({ dirs: settings.contentDirs });
-    if (content.cases.has(token)) return;
+    // The case index (no validation of 1000s of cases to tell a typo from a case id).
+    if (await (await CaseLibrary.open({ dirs: settings.contentDirs })).has(token)) return;
   } catch {
     /* fall through: report the typo */
   }

@@ -15,6 +15,12 @@ const EN = {
     "Pass session_id \"{session}\" to every clinical tool. Talk with ask_patient, find ids with list_options, then examine / order_test / read_result / answer_decision; " +
     "case_status shows objectives and open decisions; finish_case when every objective is complete; get_debrief for the assessment.",
   "start.failed": "Could not start the case: {message}",
+  "start.embodied":
+    "Embodied mode: you have a body in the hospital and are at {place}. Clinical tools need you in the right place (the patient's bedside, a workstation, a device): " +
+    "observe_world and find_entities show what is around, navigate_to walks there (it takes simulated time), interact_object operates equipment. " +
+    "A clinical tool refused as out of reach (SPATIAL_REQUIREMENT_UNMET) carries data.hint.goal — pass it to navigate_to as goal.",
+  "embodied.required":
+    "{tool} needs an embodied session: start the case with start_case and \"embodied\": true. This session is in clinical mode (the mode is fixed for an encounter).",
   "start.unknownCase": "No case \"{ref}\". Use a case handle (id) from list_cases.",
   "session.unknown": "Unknown session_id \"{id}\". Start one with start_case (open sessions: {open}).",
   "session.none": "none",
@@ -55,6 +61,12 @@ const ZH: Record<McpMessageKey, string> = {
     "每个临床工具都要传入 session_id \"{session}\"。用 ask_patient 问诊，用 list_options 查找 id，然后 examine / order_test / read_result / answer_decision；" +
     "case_status 显示目标与待作答的决策；所有目标完成后调用 finish_case；get_debrief 获取评估。",
   "start.failed": "无法开始病例：{message}",
+  "start.embodied":
+    "具身模式：你在医院里有一个身体，现在位于{place}。临床工具要求你身处正确的位置（患者床旁、工作站、设备旁）：" +
+    "observe_world 和 find_entities 显示周围情况，navigate_to 前往目的地（会消耗模拟时间），interact_object 操作设备。" +
+    "因距离不够而被拒绝的临床工具（SPATIAL_REQUIREMENT_UNMET）会返回 data.hint.goal——把它作为 goal 传给 navigate_to。",
+  "embodied.required":
+    "{tool} 需要具身模式的会话：请用 start_case 并加上 \"embodied\": true 开始病例。本会话为临床模式（模式在一次接诊中固定不变）。",
   "start.unknownCase": "没有病例“{ref}”。请使用 list_cases 返回的病例编号（id）。",
   "session.unknown": "未知的 session_id “{id}”。请先用 start_case 开始会话（当前会话：{open}）。",
   "session.none": "无",

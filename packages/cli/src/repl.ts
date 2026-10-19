@@ -12,6 +12,7 @@ import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
 import { createSession as createEngineState, currentWaypoint, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { CaseLibrary } from "@clinicalcraft/agent/node";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
 import { HistoryFile } from "./history.js";
@@ -138,6 +139,7 @@ export class Repl {
       verbose: ctx.verbose,
       // The model the session calls (custom providers and provider overrides included), not just the templates'.
       resolveModel: (provider, model) => resolvedModelLabel(session.settings, ctx.env, provider, model),
+      place: () => session.placeLabel(),
     });
     const settings = session.settings;
     const offline = settings.provider === "offline";
@@ -459,9 +461,11 @@ export async function runPlay(ctx: CliContext, args: ParsedArgs): Promise<number
   await requireProviderKey(ctx, args, flags);
   let caseId = args.positionals[0];
   const settings = await loadCliSettings(ctx, flags);
-  if (!caseId && !resume) caseId = settings.defaultCase ?? (await pickCase(ctx, settings.contentDirs));
+  // One case library for the picker and the session: indexed, only the chosen case is validated.
+  const library = await CaseLibrary.open({ dirs: settings.contentDirs });
+  if (!caseId && !resume) caseId = settings.defaultCase ?? (await pickCase(ctx, library));
   const facility = flagString(args, "facility");
-  const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}) });
+  const session = await openSession(ctx, { ...(caseId ? { caseId } : {}), flags, library, ...(resume ? { resume } : {}), ...(facility ? { facilityId: facility } : {}) });
   ctx.locale = session.settings.locale;
   const repl = new Repl(ctx, session, { resumed: resume !== undefined, transcripts: session.settings.transcripts.enabled });
   return repl.run();

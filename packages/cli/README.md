@@ -26,7 +26,7 @@ The built binary is `packages/cli/dist/bin.js` (`npm run build:lib`, then
 |---|---|
 | `play [case]` (default) | REPL. With no case, a picker lists the cases with titles in your language. |
 | `exec <prompt>`, `-p [prompt]` | Headless run: a single prompt, or `--autopilot` (the prompt becomes the clinician's goal). |
-| `cases list \| index \| show <id> \| validate [--all \| path…] \| verify <id… \| --all> \| new <id> \| schema [case\|facility\|catalog]` | Case tooling. `index [--json]` prints the library index (metadata only, the builder `serve` and the web bundle share; no validation). `new` writes a schema-valid bilingual template and a README, then validates and verifies it. |
+| `cases list \| index \| show <id> \| validate [--all \| path…] \| verify <id… \| --all> \| new <id> \| schema [case\|facility\|catalog\|template\|skill]` | Case tooling. `index [--json]` prints the library index (metadata only, the builder `serve` and the web bundle share; no validation). `new` writes a schema-valid bilingual template and a README, then validates and verifies it. |
 | `facilities list \| validate` | Facilities and equipment catalogs. |
 | `providers list \| test <id> \| models <id>` | Provider catalogue (shows whether a key is configured, never the key), a tiny "Reply with OK" request with latency and usage, and `GET /models`. |
 | `config get [key] \| set <key> <value> [--user\|--project\|--local] \| path` | Settings. Secrets are redacted and never written to project settings. |
@@ -34,7 +34,7 @@ The built binary is `packages/cli/dist/bin.js` (`npm run build:lib`, then
 | `serve [--port --host --token --token-file --open --static]` | HTTP server (`@clinicalcraft/server`): web world, content API, LLM proxy. Binding to a non-loopback host requires an access token of at least 16 characters, from `CLINICALCRAFT_SERVER_TOKEN`, `--token-file <path>`, `server.token` or `--token` (which other users can see in the process list — a warning says so). |
 | `mcp` | MCP server on stdio (`@clinicalcraft/mcp`). |
 | `import-v4 <files…> [--dest dir]` | Installs the local-only V4 assets from the merged html, its `.part01`/`.part02` files, or the two zips (docs/ASSETS.md). |
-| `eval --cases <ids\|all> [--provider --model --runs n --out report.md]` | Autopilot benchmark → Markdown + JSON. Offline, it replays each case's reference solution as a smoke test. |
+| `eval --cases <ids\|all> [--provider --model --runs n --out report.md --embodied]` | Autopilot benchmark → Markdown + JSON. Offline, it replays each case's reference solution as a smoke test. |
 
 The global options are `--cwd`, `--lang zh-CN|en`, `--profile`, `--verbose`,
 `--version` and `--help`. Every command takes `--help`. Unknown commands and
@@ -45,7 +45,8 @@ flags get a "did you mean" suggestion.
 - **Addressing:** the prompt shows the current interlocutor (`[patient] ›`). Use `@nurse …` to address someone else, `/talk <role>` to switch, and `/help` to list the commands.
 - **Live output:** replies stream with speaker labels. Tool calls show compactly (`⏺ order_test(cbc) … ✓`). Clinical events show inline: `✓` objectives, `⚠` alarms in red, `🔔` critical results.
 - **Approvals:** these are asked inline: `[y]es / [s]ession / [n]o (reason) / [a]bort`. With piped stdin, the next lines answer them; a next line that is a `/command` or an `@message` is not an answer — the request is denied and that line runs next.
-- **Status line:** after each turn it shows the chapter, progress, phase, simulated clock, key vitals and provider/model.
+- **Status line:** after each turn it shows the chapter, progress, phase, simulated clock, key vitals, the room you are in (embodied mode) and provider/model.
+- **Embodied mode (`--embodied`):** a headless 3D hospital (docs/EMBODIED.md). Clinical actions need you in the right place — a refusal says where to go. `/look`, `/where`, `/find <query>`, `/go <target>` (`patient`, an entity id or a room), `/inspect <target>`, `/use <target> <operation> [key=value…]` (e.g. `/use eq:resus1-ecg record investigation=ecg-12lead`), `/map`, `/skill [id] [key=value…]` and `/delegate <role> <task> [target]` act in it; walking takes simulated time. The mode is fixed for the encounter (a resume keeps it).
 - **Finishing:** once every objective is complete, `/finish` ends the case (then `/debrief` and an end-of-case `/assess`).
 - **Keys:** Tab completes `/commands`, their arguments (phases and examinations you can currently reach) and `@roles`. Input history is kept in `~/.clinicalcraft/history`. Ctrl-C once interrupts the running turn; twice exits, as does `/quit`.
 - **Colours:** used only on a TTY. `NO_COLOR` turns them off and `FORCE_COLOR` forces them on.
@@ -64,7 +65,8 @@ flags get a "did you mean" suggestion.
 | `--to <agent>` | Sends the prompt to an agent other than the patient. |
 | `--assess` | Runs the examiner at the end. This is the default with `--autopilot`. |
 | `--resume <id>`, `--continue` | Resumes a recorded session. |
-| `--provider --model --base-url --approval --scope --facility --ephemeral --profile --lang` | Session settings. |
+| `--provider --model --base-url --approval --scope --facility --ephemeral --embodied --profile --lang` | Session settings (`--embodied`: embodied mode, see REPL). |
+| `--trace <file>` | Writes the episode trace as JSON Lines (a header, then one span per line: observation, plan, navigation, interaction, clinical_action, state_change, verification; header only in clinical mode). |
 | `--approve-high-risk` | With `--approval auto`, also approve always-ask, high-risk and ask-rule requests unattended (see below). |
 
 **Approvals in headless runs.** Nobody is there to answer an approval prompt:

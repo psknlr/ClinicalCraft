@@ -3,7 +3,7 @@
  * `@clinicalcraft/core` (`packages/core/src/schema/*`) and the agent settings
  * schema (`packages/agent/src/settings/schema.ts`).
  *
- *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings)
+ *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings, skill)
  *   npx tsx scripts/gen-json-schemas.ts --check  # exit 1 if the files on disk are stale
  *
  * Shared building blocks (LocalizedText, Id, Condition, …) become named
@@ -39,6 +39,7 @@ import {
   WorldPredicateSchema,
 } from "../packages/core/src/schema/index.js";
 import { SettingsLayerSchema, SettingsSchema } from "../packages/agent/src/settings/schema.js";
+import { SkillJsonSchema, SkillPredicateSchema, SkillSchema } from "../packages/agent/src/skills/schema.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "packages/content/schemas");
@@ -108,6 +109,15 @@ const targets: Target[] = [
     description: "Layered runtime settings: provider/model per agent, approval mode, practice scope, permission rules, hooks, profiles, server and transcripts.",
     schema: SettingsSchema,
     definitions: { SettingsLayer: SettingsLayerSchema },
+  },
+  {
+    file: "skill.schema.json",
+    name: "Skill",
+    title: "ClinicalCraft skill (clinicalcraft/skill@1)",
+    description:
+      "An embodied-mode skill (.clinicalcraft/skills/*.json): typed parameters, safety class, preconditions, steps (tool calls with ${param} / ${steps.<id>.data.<path>} templates, when, retry, onError), postconditions and recovery strategies. Data, never code.",
+    schema: SkillSchema,
+    definitions: { Id: IdSchema, LocalizedText: LocalizedTextSchema, SkillPredicate: SkillPredicateSchema, JsonValue: SkillJsonSchema },
   },
 ];
 

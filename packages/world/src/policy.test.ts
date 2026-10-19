@@ -58,8 +58,9 @@ describe("DefaultSpatialPolicy: the requirement of each clinical action (EMBODIE
   });
 
   it("interventions: consult and disposition anywhere; others at the patient with their capabilities at the bedside", () => {
-    expect(req(intervene("aspirin"))).toEqual({ kind: "bedside-provider", capabilities: ["medications"], patientRange: 1.5 });
-    expect(req(intervene("dobutamine"))).toEqual({ kind: "bedside-provider", capabilities: ["infusion-pump", "medications"], patientRange: 1.5 });
+    // pharmacy-dispensed drugs are delivered to the bedside: only facility availability (`delivered`)
+    expect(req(intervene("aspirin"))).toEqual({ kind: "bedside-provider", capabilities: [], patientRange: 1.5, delivered: ["medications"] });
+    expect(req(intervene("dobutamine"))).toEqual({ kind: "bedside-provider", capabilities: ["infusion-pump"], patientRange: 1.5, delivered: ["medications"] });
     expect(req(intervene("cpr"))).toEqual({ kind: "at-patient", range: 1.5 });
     expect(req(intervene("activate-cath-lab"))).toEqual({ kind: "anywhere" }); // consult
     expect(req(intervene("transfer-cath-lab"))).toEqual({ kind: "anywhere" }); // disposition
@@ -180,18 +181,38 @@ describe("checkSpatial: every row, ok and each failure, with a hint that fixes i
     expect((await follow(w, us, cartElsewhere)).ok).toBe(true);
   });
 
-  it("intervene: medications at the bedside; consults from anywhere; a fixed provider elsewhere cannot be brought", async () => {
+  it("intervene: drugs at the patient (delivered); consults from anywhere; blood products delivered too", async () => {
     const w = makeWorld("stemi-inferior-rv");
     expect(w.runtime.checkSpatial(A, intervene("activate-cath-lab"))).toMatchObject({ ok: true, satisfiedBy: [] });
     expect(w.runtime.checkSpatial(A, { tool: "answer_decision", kind: "cognitive" })).toMatchObject({ ok: true });
     const aspirin = failure(w.runtime.checkSpatial(A, intervene("aspirin")));
     expect(aspirin.reason).toBe("not-at-patient");
-    expect(await follow(w, intervene("aspirin"), aspirin)).toMatchObject({ ok: true, satisfiedBy: [w.patientId, expect.stringMatching(/crash-cart/)] });
+    expect(await follow(w, intervene("aspirin"), aspirin)).toMatchObject({ ok: true, satisfiedBy: [w.patientId] });
     expect(w.runtime.checkSpatial(A, intervene("defib-pads")).ok).toBe(true);
     expect(w.runtime.checkSpatial(A, intervene("cpr")).ok).toBe(true);
+    // the stroke case's sICH protocol needs blood products: the blood bank (fixed in the laboratory) delivers them
     const stroke = makeWorld("acute-ischemic-stroke");
-    expect((await stroke.act({ actorId: A, operation: "approach", targetId: stroke.patientId })).status).toBe("completed");
-    expect(stroke.runtime.checkSpatial(A, intervene("sich-protocol"))).toMatchObject({ ok: false, reason: "provider-not-at-bedside", hint: null, details: { missing: ["blood-bank"] } });
+    const sich = failure(stroke.runtime.checkSpatial(A, intervene("sich-protocol")));
+    expect(sich).toMatchObject({ reason: "not-at-patient", hint: { goal: { kind: "interact", id: stroke.patientId } } });
+    expect(await follow(stroke, intervene("sich-protocol"), sich)).toMatchObject({ ok: true, satisfiedBy: [stroke.patientId] });
+  });
+
+  it("delivered capabilities need an in-service provider somewhere in the facility, never at the bedside", async () => {
+    const w = makeWorld("acute-ischemic-stroke");
+    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect(w.runtime.checkSpatial(A, intervene("sich-protocol")).ok).toBe(true);
+    const fridges = w.runtime.entities().filter((e) => e.capabilities.includes("blood-bank"));
+    expect(fridges.length).toBeGreaterThan(0);
+    for (const e of fridges) w.runtime.setAvailability(e.id, false);
+    expect(w.runtime.checkSpatial(A, intervene("sich-protocol"))).toMatchObject({ ok: false, reason: "no-provider-in-facility", hint: null, details: { missing: ["blood-bank"] } });
+    const stemi = makeWorld("stemi-inferior-rv");
+    expect((await stemi.act({ actorId: A, operation: "approach", targetId: stemi.patientId })).status).toBe("completed");
+    expect(stemi.runtime.checkSpatial(A, intervene("aspirin")).ok).toBe(true);
+    for (const e of stemi.runtime.entities().filter((x) => x.capabilities.includes("medications"))) stemi.runtime.setAvailability(e.id, false);
+    expect(stemi.runtime.checkSpatial(A, intervene("aspirin"))).toMatchObject({ ok: false, reason: "no-provider-in-facility", details: { missing: ["medications"] } });
+    // a custom policy may keep drugs at the bedside
+    const strict = new DefaultSpatialPolicy({ deliveredCapabilities: [] });
+    expect(strict.requirementFor(intervene("aspirin"), { caseDef: stemi.caseDef, slotId: stemi.slotId, locale: "en" })).toEqual({ kind: "bedside-provider", capabilities: ["medications"], patientRange: 1.5 });
   });
 
   it("a facility without the capability: no-provider-in-facility, no hint (STEMI placed in the V4 clinic)", () => {
@@ -256,8 +277,8 @@ describe("property: hints lead to a passing check for every item of every built-
         }
         stuck.push(`${item}:${check.reason}`);
       }
-      // the only item of the built-in content that cannot be done embodied: the stroke case's sICH protocol needs the blood bank at the bedside
-      expect(stuck).toEqual(caseId === "acute-ischemic-stroke" ? ["sich-protocol:provider-not-at-bedside"] : []);
+      // every item of the built-in content can be done embodied (blood products and drugs are delivered to the bedside)
+      expect(stuck).toEqual([]);
     }, 60000);
   }
 });

@@ -10,7 +10,7 @@
  * | `check_vitals` | `any-of`: `near-patient` 6 m + line of sight (monitor screen / bedside obs) · `at-provider` `records` (the chart) |
  * | `order_test`, `read_result` | no capability: anywhere · personal kit only: `at-patient` 1.5 m · only `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` (device at the bedside + actor at the patient) · `at-provider` with `fixedOnly` (a fixed station or request terminal providing them: the radiology console for an ultrasound, the triage peak-flow station) · otherwise `at-provider` (a workstation/device/monitor providing every required capability, within its reach, line of sight) |
  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
- * | `intervene` other kinds | no capability beyond the personal kit: `at-patient` 1.5 m · otherwise `bedside-provider` for them |
+ * | `intervene` other kinds | no capability beyond the personal kit: `at-patient` 1.5 m · otherwise `bedside-provider` for them; delivered capabilities (`DELIVERED_CAPABILITIES`: `medications`, `blood-bank`) only need an in-service provider in the facility (`delivered`) — the pharmacy and the blood bank deliver to the bedside |
  * | `consult`, `delegate_task`, cognitive tools (`answer_decision`, `update_workup`, `wait`, `set_phase`, `finish_case`, `list_options`, `case_status`) | anywhere |
  * | unresolved items (a free-text query the tool will resolve or refuse) | `ask` / `examine`: as above without capabilities; order/read/intervene: anywhere |
  *
@@ -24,7 +24,8 @@
  * each capability (personal kit excluded) provided by some in-service
  * placement of any kind at the bedside — within `BEDSIDE_RADIUS` (6 m) of
  * the slot point or in the slot's room (stations.ts `atBedside` /
- * `bedsideCaps`).
+ * `bedsideCaps`). A `delivered` capability counts when some in-service
+ * placement of the facility provides it, wherever it stands.
  *
  * Refusals (`SPATIAL_REQUIREMENT_UNMET`) carry a reason, a localised
  * message, details and a hint: an `interact` goal on the patient or the
@@ -49,6 +50,14 @@ import type { Reachability } from "./reach.js";
  */
 export const BEDSIDE_CAPABILITIES: readonly string[] = ["ecg-12lead", "point-of-care", "ultrasound", "echocardiography", "peak-flow", "scale", "cardiac-monitor", "capnography", "oxygen", "suction"];
 
+/**
+ * Capabilities whose goods are delivered to the bedside: pharmacy-dispensed
+ * drugs and blood products. An intervention that needs them needs an
+ * in-service provider somewhere in the facility (a pharmacy, a blood bank
+ * fridge), never one at the bedside — the actor stays at the patient.
+ */
+export const DELIVERED_CAPABILITIES: readonly string[] = ["medications", "blood-bank"];
+
 /** Intervention kinds done by phone or pager, from anywhere. */
 export const REMOTE_INTERVENTION_KINDS: readonly string[] = ["consult", "disposition"];
 
@@ -67,9 +76,11 @@ const ANYWHERE: SpatialRequirement = { kind: "anywhere" };
 /** The default policy (EMBODIED §6, module table). */
 export class DefaultSpatialPolicy implements SpatialPolicy {
   readonly bedside: ReadonlySet<string>;
+  readonly delivered: ReadonlySet<string>;
 
-  constructor(opts: { bedsideCapabilities?: readonly string[] } = {}) {
+  constructor(opts: { bedsideCapabilities?: readonly string[]; deliveredCapabilities?: readonly string[] } = {}) {
     this.bedside = new Set(opts.bedsideCapabilities ?? BEDSIDE_CAPABILITIES);
+    this.delivered = new Set(opts.deliveredCapabilities ?? DELIVERED_CAPABILITIES);
   }
 
   requirementFor(intent: ClinicalIntent, binding: EncounterBinding): SpatialRequirement {
@@ -100,7 +111,10 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
         const iv = intent.interventionId ? c.interventions.find((x) => x.id === intent.interventionId) : undefined;
         if (!iv || REMOTE_INTERVENTION_KINDS.includes(iv.kind)) return ANYWHERE;
         const caps = iv.requires.filter((r) => !kit.has(r));
-        return caps.length ? { kind: "bedside-provider", capabilities: caps, patientRange: POLICY_RANGES.contact } : atPatient;
+        const delivered = caps.filter((r) => this.delivered.has(r));
+        const bedside = caps.filter((r) => !this.delivered.has(r));
+        if (!caps.length) return atPatient;
+        return { kind: "bedside-provider", capabilities: bedside, patientRange: POLICY_RANGES.contact, ...(delivered.length ? { delivered } : {}) };
       }
       default:
         return ANYWHERE;
@@ -178,7 +192,7 @@ export class SpatialChecker {
       case "at-provider":
         return this.providerOutcome(actor, r.capabilities, r.range, !!r.fixedOnly);
       case "bedside-provider":
-        return this.bedsideOutcome(actor, r.capabilities, r.patientRange);
+        return this.bedsideOutcome(actor, r.capabilities, r.patientRange, r.delivered ?? []);
       case "any-of": {
         const failures: Failure[] = [];
         for (const option of r.options) {
@@ -245,13 +259,18 @@ export class SpatialChecker {
     };
   }
 
-  private bedsideOutcome(actor: ActorState, caps: readonly string[], patientRange: number): Outcome {
+  private bedsideOutcome(actor: ActorState, caps: readonly string[], patientRange: number, delivered: readonly string[] = []): Outcome {
     const loc = this.d.locator;
     const L = this.d.locale;
     const patient = loc.patient();
     if (!patient) return this.noPatient();
     const required = caps.filter((c) => !kit.has(c));
     const equipment = loc.registry.ofKind("equipment");
+    // Delivered to the bedside (drugs, blood products): an in-service provider anywhere in the facility.
+    const undeliverable = delivered.filter((cap) => !kit.has(cap) && !equipment.some((e) => loc.capabilities(e.id).includes(cap)));
+    if (undeliverable.length) {
+      return { ok: false, failures: [{ reason: "no-provider-in-facility", details: { capabilities: [...required, ...delivered], missing: undeliverable, delivered: [...delivered] }, candidates: [], message: () => worldMessage("spatial.no-provider-in-facility", L, { caps: listText(undeliverable, L) }) }] };
+    }
     const nowhere: string[] = [];
     const missing: string[] = [];
     const used = new Set<EntityId>();

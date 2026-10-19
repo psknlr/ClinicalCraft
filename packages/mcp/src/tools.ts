@@ -1,7 +1,9 @@
 /**
  * MCP tool catalog (docs/PROTOCOL.md §11): `list_cases`, `start_case`, every
  * clinical tool of §3 with a required `session_id` (schemas and behaviour
- * come from the agent package's tool definitions) and `get_debrief`.
+ * come from the agent package's tool definitions), the world tools of
+ * embodied mode (§12; refused with `not_embodied` on a clinical session) and
+ * `get_debrief`.
  *
  * Errors: malformed arguments are JSON-RPC `-32602` (thrown as `RpcError`);
  * failures while running a tool — unknown session, unknown case, engine
@@ -10,9 +12,9 @@
  * (`refused.confirm: "required"`) runs when the client calls again with
  * `confirm: true` (every state-changing tool accepts it).
  */
-import { inScope, isHiddenByDeny, libraryOrder, rt, validateArgs, type PracticeScope, type ToolDefinition } from "@clinicalcraft/agent";
-import type { LoadedContent } from "@clinicalcraft/agent/node";
-import { normalizeLocale, progress, t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
+import { inScope, isHiddenByDeny, rt, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
+import type { CaseLibrary } from "@clinicalcraft/agent/node";
+import { normalizeLocale, progress, t, type AssessmentReport } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
 import { assessmentText, caseHandle, caseListing, casesText, resolveCaseRef } from "./format.js";
 import { mm } from "./i18n.js";
@@ -62,7 +64,8 @@ export interface ToolHost {
   readonly locale: string;
   readonly practiceScope: PracticeScope;
   readonly deny: readonly string[];
-  content(): Promise<LoadedContent>;
+  /** The case library (index for listing; a case is validated when it is started). */
+  library(): Promise<CaseLibrary>;
 }
 
 const LOCALE_SCHEMA = { type: "string", enum: ["zh-CN", "en"], description: "Session language (default: the server settings' locale)." };
@@ -101,7 +104,29 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   update_workup: { title: "Update the workup plan", ...RECORDS, idempotentHint: true },
   case_status: { title: "Case status", ...READ_ONLY },
   finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
+  // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
+  // walking moves the body and spends simulated time; operations with a clinical effect (a device giving a
+  // drug, delegated or skill steps) act on the patient through the approval gate.
+  observe_world: { title: "Look around", ...READ_ONLY },
+  get_agent_state: { title: "Where am I", ...READ_ONLY },
+  find_entities: { title: "Find people, places and equipment", ...READ_ONLY },
+  find_objects: { title: "Find equipment", ...READ_ONLY },
+  inspect_object: { title: "Inspect", ...READ_ONLY },
+  get_nearby_objects: { title: "What is nearby", ...READ_ONLY },
+  get_visible_objects: { title: "What is in view", ...READ_ONLY },
+  get_room_info: { title: "Room information", ...READ_ONLY },
+  get_action_feedback: { title: "Action feedback", ...READ_ONLY },
+  navigate_to: { title: "Walk to", ...RECORDS },
+  approach_object: { title: "Approach", ...RECORDS },
+  look_at: { title: "Look at", ...RECORDS },
+  interact_object: { title: "Operate equipment", ...RECORDS, destructiveHint: true },
+  cancel_action: { title: "Cancel an action", ...RECORDS, idempotentHint: true },
+  delegate_task: { title: "Delegate a task", ...RECORDS, destructiveHint: true },
+  execute_skill: { title: "Run a skill", ...RECORDS, destructiveHint: true },
 };
+
+/** World tools this server lists (embodied sessions; camera frames need a browser, never headless). */
+export const MCP_WORLD_TOOLS: readonly string[] = WORLD_TOOL_SPECS.map((spec) => spec.name).filter((name) => name !== "get_camera_frame");
 
 /** A tool's annotations; one missing from the table gets the spec's cautious defaults (still a closed world). */
 export function toolAnnotations(name: string): McpToolAnnotations {
@@ -142,9 +167,25 @@ function clinicalSpec(tool: ToolDefinition<Record<string, unknown>>): McpToolSpe
   };
 }
 
+function worldSpec(spec: WorldToolSpec): McpToolSpec {
+  const readOnly = WORLD_READ_ONLY_TOOLS.includes(spec.name);
+  const schema = withSessionId(spec.inputSchema);
+  const annotations = toolAnnotations(spec.name);
+  return {
+    name: spec.name,
+    title: annotations.title,
+    description:
+      `${spec.description} Embodied sessions only (start_case with embodied: true); requires session_id.` +
+      (readOnly ? "" : " A step that needs approval (e.g. a device giving a high-risk drug) needs a second call with confirm: true after the user agreed."),
+    inputSchema: readOnly ? schema : withConfirm(schema),
+    annotations,
+  };
+}
+
 /** The tools this server lists, honouring the practice scope and bare `deny` rules. */
 export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToolSpec[] {
   const clinical = [...bridgedTools().values()].filter((tool) => inScope(tool.scope, host.practiceScope) && !isHiddenByDeny(tool.name, host.deny)).map(clinicalSpec);
+  const world = WORLD_TOOL_SPECS.filter((spec) => MCP_WORLD_TOOLS.includes(spec.name) && inScope(spec.scope ?? "history-only", host.practiceScope) && !isHiddenByDeny(spec.name, host.deny)).map(worldSpec);
   return [
     {
       name: "list_cases",
@@ -166,6 +207,12 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
           case_id: { type: "string", minLength: 1, description: "Case handle (`id`) from list_cases." },
           locale: LOCALE_SCHEMA,
           facility_id: { type: "string", minLength: 1, description: "Facility override (default: the case's facility)." },
+          embodied: {
+            type: "boolean",
+            description:
+              "Embodied mode: you get a body in the case's hospital (a headless world) — walk with navigate_to, look with observe_world, operate equipment with interact_object; " +
+              "clinical tools then need you in the right place. Fixed for the encounter. Default: the server settings (embodiment).",
+          },
         },
         required: ["case_id"],
         additionalProperties: false,
@@ -173,6 +220,7 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
       annotations: toolAnnotations("start_case"),
     },
     ...clinical,
+    ...world,
     {
       name: "get_debrief",
       title: toolAnnotations("get_debrief").title,
@@ -213,17 +261,13 @@ export function checkArguments(spec: McpToolSpec, args: unknown): Record<string,
   return result.value as Record<string, unknown>;
 }
 
-/** Library order (`libraryOrder`: published first, difficulty, id) — the CLI's order; listed by opaque handle, never by id. */
-function sortedCases(content: LoadedContent): CaseDefinition[] {
-  return libraryOrder([...content.cases.values()].map((e) => e.def));
-}
-
 /** Execute a validated tool call. */
 export async function callTool(host: ToolHost, name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<McpToolResult> {
   switch (name) {
     case "list_cases": {
       const L = normalizeLocale(typeof args.locale === "string" ? args.locale : host.locale);
-      const cases = sortedCases(await host.content());
+      // The case index in library order (published first, difficulty, id — the CLI's order); listed by opaque handle, never by id.
+      const cases = await (await host.library()).entries();
       return textResult(casesText(cases, L), { cases: cases.map((c) => caseListing(c, L)) });
     }
     case "start_case":
@@ -239,11 +283,22 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
       if ("error" in found) return found.error;
       const entry = found.entry;
       const { session_id: _sid, confirm, ...toolArgs } = args;
+      // World tools act in an embodied session's world: a clinical session has none (the mode is fixed per encounter).
+      if (MCP_WORLD_TOOLS.includes(name) && entry.session.embodiment !== "embodied") {
+        return textResult(mm(entry.session.locale, "embodied.required", { tool: name }), { session_id: entry.id, tool: name, ok: false, error: "not_embodied" }, true);
+      }
       return host.sessions.exclusive(entry, async () => {
         const outcome = await entry.runner.run(name, toolArgs, signal, { confirmed: confirm === true });
         if (outcome.status === "refused") {
-          const refused = { reason: outcome.reason, ruleId: outcome.ruleId, ...(outcome.reason === "ask" ? { risk: outcome.risk ?? null, confirm: "required" } : {}) };
-          return textResult(outcome.message, { session_id: entry.id, tool: name, ok: false, refused }, true);
+          const refused = {
+            reason: outcome.reason,
+            ruleId: outcome.ruleId,
+            ...(outcome.reason === "ask" ? { risk: outcome.risk ?? null, confirm: "required" } : {}),
+            // An approval asked inside the call (a world operation's clinical effect, a delegated or skill step).
+            ...(outcome.innerTool ? { tool: outcome.innerTool } : {}),
+          };
+          const text = outcome.detail ? `${outcome.message}\n\n${outcome.detail}` : outcome.message;
+          return textResult(text, { session_id: entry.id, tool: name, ok: false, refused }, true);
         }
         const { output, notices } = outcome;
         const warnings = outcome.warnings ?? [];
@@ -258,11 +313,16 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
   const ref = String(args.case_id);
   const locale = typeof args.locale === "string" ? normalizeLocale(args.locale) : null;
   const L = locale ?? host.locale;
-  const known = resolveCaseRef([...(await host.content()).cases.values()].map((e) => e.def), ref);
+  const known = resolveCaseRef(await (await host.library()).entries(), ref);
   if (!known) return textResult(mm(L, "start.unknownCase", { ref }), { error: "unknown_case", case_id: ref }, true);
   let entry: McpSession;
   try {
-    entry = await host.sessions.start({ caseId: known.id, locale, facilityId: typeof args.facility_id === "string" ? args.facility_id : null });
+    entry = await host.sessions.start({
+      caseId: known.id,
+      locale,
+      facilityId: typeof args.facility_id === "string" ? args.facility_id : null,
+      embodied: typeof args.embodied === "boolean" ? args.embodied : null,
+    });
   } catch (err) {
     // Unknown facility (BootstrapError), unreadable settings…: the model can pick another case.
     return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: ref }, true);
@@ -281,11 +341,14 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
     const c = session.caseDef;
     const opening = replies.map((r) => r.text).join("\n") || t(c.patient.persona.openingLine, SL);
     const speaker = replies[0]?.speaker ?? t(c.patient.displayName, SL);
+    const embodied = session.embodiment === "embodied";
+    const place = session.placeLabel();
     const text = [
       mm(SL, "start.header", { session: session.id }),
       card?.text ?? "",
       mm(SL, "start.says", { speaker, text: opening }),
       mm(SL, "start.next", { session: session.id }),
+      embodied ? mm(SL, "start.embodied", { place: place ?? "-" }) : "",
       noticeLines(SL, warnings),
     ]
       .filter(Boolean)
@@ -301,6 +364,8 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
       approvalMode: session.settings.approvalMode,
       practiceScope: session.settings.practiceScope,
       provider: session.settings.provider,
+      embodiment: session.embodiment,
+      ...(embodied ? { place } : {}),
       ...(warnings.length ? { warnings } : {}),
     });
   });

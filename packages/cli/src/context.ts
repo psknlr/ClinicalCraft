@@ -221,6 +221,7 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
     layer.providers = { [target]: { baseUrl } };
   }
   if (flagBool(args, "ephemeral")) layer.transcripts = { enabled: false };
+  if (flagBool(args, "embodied")) layer.embodiment = "embodied";
   const allow = flagList(args, "allowed-tools");
   const deny = flagList(args, "disallowed-tools");
   if (allow.length > 0 || deny.length > 0) layer.permissions = { ...(allow.length ? { allow } : {}), ...(deny.length ? { deny } : {}) };

@@ -8,6 +8,7 @@ import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { basename, resolve } from "node:path";
 import type { CaseDefinition, EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
+import type { CameraSensor, Mover, Pose } from "@clinicalcraft/world";
 import type { AgentProfile } from "../agents/types.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { LLMProvider, ProviderConfig } from "../providers/types.js";
@@ -17,11 +18,13 @@ import type { SettingsLayerData } from "../settings/merge.js";
 import type { ToolDefinition } from "../tools/types.js";
 import { replayTranscript, resumedRuntimeConfig, type ResumedRuntimeConfig } from "../transcript.js";
 import type { ResolvedSettings } from "../settings/schema.js";
-import { loadContent, type LoadedContent } from "./content.js";
+import { CaseLibrary } from "./case-library.js";
+import type { LoadedContent } from "./content.js";
 import { loadProjectAgents, loadProjectCommands } from "./definitions.js";
 import { createCommandHookExecutor } from "./hooks.js";
 import type { Env } from "./home.js";
 import { loadMemory } from "./memory.js";
+import { loadProjectSkills } from "./skills.js";
 import { resolveNodeProviderConfig } from "./providers.js";
 import { loadSettings } from "./settings.js";
 import { isLocalTranscriptPath, isWebTranscriptPath, JsonlTranscript, listSessions, readTranscript, sessionsDir } from "./transcript.js";
@@ -48,8 +51,18 @@ export interface CreateNodeSessionOptions {
   tools?: ToolDefinition<any>[];
   retry?: RetryPolicy | false;
   providerFactory?: (agent: AgentProfile, config: ProviderConfig) => LLMProvider;
-  /** Pre-loaded content (skips scanning). */
+  /** Pre-loaded content (skips scanning; its cases are already validated). */
   content?: LoadedContent;
+  /**
+   * The case library to start the case from (default: opened over `settings.contentDirs`): cases are
+   * indexed, and only the started one is parsed and validated. Ignored when `content` is given.
+   */
+  library?: CaseLibrary;
+  /**
+   * Embodied mode (settings `embodiment: "embodied"`, e.g. the flag layer): a front-end's `Mover` / `CameraSensor`
+   * and the learner's start pose. A resumed embodied session restores the world from its transcript.
+   */
+  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose };
   now?: () => number;
   newId?: () => string;
 }
@@ -141,6 +154,13 @@ export function applyResumedConfig<S extends ResolvedSettings>(settings: S, conf
   }
   if (config.approvalMode && !explicit("approvalMode")) next.approvalMode = config.approvalMode;
   if (config.practiceScope && !explicit("practiceScope")) next.practiceScope = config.practiceScope;
+  // The embodiment is fixed for an encounter: a resume keeps the recorded one (an explicit other one is refused).
+  if (config.embodiment) {
+    if (explicit("embodiment") && settings.embodiment !== config.embodiment) {
+      throw new BootstrapError(`This session was recorded in ${config.embodiment} mode; the embodiment is fixed for an encounter, so it resumes in ${config.embodiment} mode (drop --embodied / the embodiment flag).`);
+    }
+    next.embodiment = config.embodiment;
+  }
   return next;
 }
 
@@ -149,7 +169,9 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
   const env = opts.env ?? process.env;
   const cwd = resolve(opts.cwd ?? process.cwd());
   let settings = await loadSettings({ cwd, env, ...(opts.flags ? { flags: opts.flags } : {}), ...(opts.profile !== undefined ? { profile: opts.profile } : {}) });
-  const content = opts.content ?? (await loadContent({ dirs: settings.contentDirs }));
+  // Index the cases; parse and validate only the one being started (a pre-loaded `content` is already validated).
+  const library = opts.content ? CaseLibrary.fromContent(opts.content) : (opts.library ?? (await CaseLibrary.open({ dirs: settings.contentDirs })));
+  const content = library.content;
 
   let resumePath: string | null = null;
   let resumed: ReturnType<typeof replayTranscript> | null = null;
@@ -172,14 +194,23 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
     throw new BootstrapError(`Session ${resumed.sessionMeta.sessionId} is for case "${resumed.sessionMeta.caseId}", not "${opts.caseId}".`);
   }
   const caseId = opts.caseId ?? resumed?.sessionMeta?.caseId ?? settings.defaultCase ?? undefined;
-  if (!caseId) throw new BootstrapError(`No case selected. Available cases: ${[...content.cases.keys()].join(", ") || "(none)"}`);
-  const entry = content.cases.get(caseId);
-  if (!entry) throw new BootstrapError(`Unknown case "${caseId}". Available cases: ${[...content.cases.keys()].join(", ") || "(none)"}`);
-  const caseDef = entry.def;
+  if (!caseId) throw new BootstrapError(`No case selected. Available cases: ${(await library.ids()).join(", ") || "(none)"}`);
+  const loaded = await library.load(caseId);
+  if (loaded.status === "not-found") throw new BootstrapError(`Unknown case "${caseId}". Available cases: ${(await library.ids()).join(", ") || "(none)"}`);
+  if (loaded.status === "invalid") {
+    const errors = loaded.issues.filter((i) => i.severity === "error").slice(0, 5);
+    throw new BootstrapError(`Case "${caseId}" is invalid (${loaded.file}): ${errors.map((i) => `${i.path || "(root)"}: ${i.message}`).join("; ")}`);
+  }
+  const caseDef = loaded.entry.def;
   const facility = chooseFacility(content, caseDef, opts.facilityId ?? resumed?.sessionMeta?.facilityId ?? undefined, settings.defaultFacility);
   const catalogs = catalogsFor(content, facility);
 
-  const [memory, agents, commands] = await Promise.all([loadMemory(cwd, env), loadProjectAgents(cwd, env), loadProjectCommands(cwd, env)]);
+  const [memory, agents, commands, skills] = await Promise.all([
+    loadMemory(cwd, env),
+    loadProjectAgents(cwd, env),
+    loadProjectCommands(cwd, env),
+    settings.embodiment === "embodied" ? loadProjectSkills(cwd, env) : Promise.resolve({ skills: [], issues: [] }),
+  ]);
   // A web upload's id is its file name (its session_meta could name another session).
   const resumedId = resumePath && webOrigin ? basename(resumePath, ".jsonl") : resumed?.sessionMeta?.sessionId;
   const sessionId = opts.sessionId ?? resumedId ?? (opts.newId ? opts.newId() : randomUUID());
@@ -216,6 +247,13 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
       : {}),
     sessionId,
     cwd: settings.projectRoot,
+    ...(settings.embodiment === "embodied"
+      ? {
+          embodied: { ...(opts.embodied ?? {}), ...(resumed?.world ? { snapshot: resumed.world } : {}) },
+          skills: skills.skills,
+          ...(skills.issues.length ? { skillIssues: skills.issues } : {}),
+        }
+      : {}),
     ...(opts.dynamicTools ? { dynamicTools: opts.dynamicTools } : {}),
     ...(opts.tools ? { tools: opts.tools } : {}),
     ...(opts.retry !== undefined ? { retry: opts.retry } : {}),

@@ -106,8 +106,14 @@ export function toOpenAIMessages(system: readonly SystemSection[], messages: rea
     const parts: OpenAIContentPart[] = [];
     for (; i < messages.length && messages[i]!.role === "user"; i++) {
       for (const part of messages[i]!.content) {
-        if (part.type === "tool_result") results.push(part);
-        else if (part.type === "text") {
+        if (part.type === "tool_result") {
+          results.push(part);
+          // `role: "tool"` messages carry text only: a tool's images (camera frames) follow in the user message.
+          if (part.images?.length) {
+            parts.push({ type: "text", text: `Image(s) returned by tool call ${part.callId}:` });
+            for (const img of part.images) parts.push({ type: "image_url", image_url: { url: `data:${img.mediaType};base64,${img.data}` } });
+          }
+        } else if (part.type === "text") {
           if (part.text) parts.push({ type: "text", text: part.text });
         } else if (part.type === "image") {
           parts.push({ type: "image_url", image_url: { url: `data:${part.mediaType};base64,${part.data}` } });

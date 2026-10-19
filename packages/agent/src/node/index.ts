@@ -36,5 +36,7 @@ export {
 } from "./transcript.js";
 export { builtinContentDir, loadContent, type ContentIssue, type LoadContentOptions, type LoadedContent } from "./content.js";
 export { buildCaseIndex, CaseIndexer, contentHash, type CaseIndexerOptions, type CaseIndexIssue, type CaseIndexSnapshot, type IndexedCaseFile } from "./case-index.js";
+export { CaseLibrary, loadCaseFile, type CaseLibraryOptions, type CaseLoadResult, type LoadedCase } from "./case-library.js";
 export { resolveNodeProviderConfig } from "./providers.js";
+export { loadProjectSkills, type LoadedSkills } from "./skills.js";
 export { BootstrapError, catalogsFor, chooseFacility, createNodeSession, findSessionTranscript, untrustedResumeConfig, type CreateNodeSessionOptions } from "./bootstrap.js";

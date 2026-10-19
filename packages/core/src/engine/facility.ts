@@ -262,11 +262,12 @@ export function buildingLevels(f: LevelSource, building: { levels?: string[] }):
 /**
  * Name of the region at (x, z): the smallest room containing the point,
  * else the building containing it, else the facility's `outdoorRegion`.
+ * With `level`, only rooms on that level and buildings spanning it count.
  */
-export function regionAt(f: FacilityDefinition, x: number, z: number, locale: string = DEFAULT_LOCALE): string {
-  const room = f.rooms.filter((r) => rectContains(r.rect, x, z)).sort((a, b) => area(a.rect) - area(b.rect))[0];
+export function regionAt(f: FacilityDefinition, x: number, z: number, locale: string = DEFAULT_LOCALE, level?: string): string {
+  const room = f.rooms.filter((r) => rectContains(r.rect, x, z) && (level === undefined || roomLevel(f, r) === level)).sort((a, b) => area(a.rect) - area(b.rect))[0];
   if (room) return t(room.name, locale);
-  const building = f.buildings.filter((b) => rectContains(b.rect, x, z)).sort((a, b) => area(a.rect) - area(b.rect))[0];
+  const building = f.buildings.filter((b) => rectContains(b.rect, x, z) && (level === undefined || buildingLevels(f, b).includes(level))).sort((a, b) => area(a.rect) - area(b.rect))[0];
   if (building) return t(building.name, locale);
   return t(f.outdoorRegion, locale);
 }

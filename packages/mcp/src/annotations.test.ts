@@ -34,16 +34,21 @@ async function call(s: McpServer, method: string, params?: unknown): Promise<any
   return r.result;
 }
 
-const READ_ONLY = ["case_status", "check_vitals", "get_debrief", "list_cases", "list_options"];
-const DESTRUCTIVE = ["intervene", "order_test"];
-const IDEMPOTENT = [...READ_ONLY, "finish_case", "set_phase", "update_workup"].sort();
+// Embodied mode (PROTOCOL §12): perception only reads; walking and operating change the world.
+const WORLD_READ_ONLY = ["find_entities", "find_objects", "get_action_feedback", "get_agent_state", "get_nearby_objects", "get_room_info", "get_visible_objects", "inspect_object", "observe_world"];
+const READ_ONLY = ["case_status", "check_vitals", "get_debrief", "list_cases", "list_options", ...WORLD_READ_ONLY].sort();
+const DESTRUCTIVE = ["delegate_task", "execute_skill", "interact_object", "intervene", "order_test"];
+const IDEMPOTENT = [...READ_ONLY, "cancel_action", "finish_case", "set_phase", "update_workup"].sort();
 
 describe("tools/list annotations", () => {
   it("every tool has a title and all four hints; openWorldHint is false (a closed simulation)", async () => {
     const s = server();
     await call(s, "initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } });
     const { tools } = (await call(s, "tools/list")) as { tools: McpToolSpec[] };
-    expect(tools.length).toBe(17);
+    // 17 clinical-mode tools + 16 world tools (get_camera_frame needs a browser: never listed headless).
+    expect(tools.length).toBe(33);
+    expect(tools.map((t) => t.name)).not.toContain("get_camera_frame");
+    for (const name of ["navigate_to", "interact_object"]) expect(tools.find((t) => t.name === name)!.annotations.readOnlyHint, name).toBe(false);
     for (const tool of tools) {
       expect(Object.keys(tool.annotations).sort(), tool.name).toEqual(["destructiveHint", "idempotentHint", "openWorldHint", "readOnlyHint", "title"]);
       expect(tool.annotations.title, tool.name).toBe(tool.title);

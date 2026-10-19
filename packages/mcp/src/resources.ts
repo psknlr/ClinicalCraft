@@ -11,8 +11,7 @@
  * `LEARNER_STATE_KEYS`; the transcript is redacted in `sessions.ts`).
  */
 import { currentWaypoint, progress, vitalsAt, type SessionState } from "@clinicalcraft/core";
-import { libraryOrder } from "@clinicalcraft/agent";
-import type { LoadedContent } from "@clinicalcraft/agent/node";
+import type { CaseLibrary } from "@clinicalcraft/agent/node";
 import { caseHandle, caseListing } from "./format.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
 import type { McpSession, SessionManager } from "./sessions.js";
@@ -23,7 +22,8 @@ const SESSION_URI = /^clinicalcraft:\/\/session\/([^/]+)\/(state|transcript)$/;
 export interface ResourceHost {
   readonly sessions: SessionManager;
   readonly locale: string;
-  content(): Promise<LoadedContent>;
+  /** The case library (index; a case is validated when it is started). */
+  library(): Promise<CaseLibrary>;
 }
 
 const JSON_TYPE = "application/json";
@@ -102,6 +102,9 @@ function stateOf(entry: McpSession) {
     locale: s.locale,
     approvalMode: s.settings.approvalMode,
     practiceScope: s.settings.practiceScope,
+    // Embodied sessions: where the learner's body is (observe_world shows the rest).
+    embodiment: s.embodiment,
+    place: s.placeLabel(),
     // The engine state's caseId names the diagnosis: the opaque handle instead (as list_cases).
     state: learnerState(state, c.id),
     progress: progress(c, state),
@@ -115,9 +118,8 @@ function stateOf(entry: McpSession) {
 export async function readResource(host: ResourceHost, uri: string) {
   let value: unknown;
   if (uri === CASES_URI) {
-    const content = await host.content();
-    // Same order as `list_cases` and the CLI (`libraryOrder`); entries carry opaque handles only.
-    value = { cases: libraryOrder([...content.cases.values()].map((e) => e.def)).map((c) => caseListing(c, host.locale)) };
+    // The case index, in library order (as `list_cases` and the CLI); entries carry opaque handles only.
+    value = { cases: (await (await host.library()).entries()).map((c) => caseListing(c, host.locale)) };
   } else {
     const m = SESSION_URI.exec(uri);
     const entry = m ? host.sessions.get(decodeURIComponent(m[1]!)) : undefined;

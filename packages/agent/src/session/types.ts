@@ -7,11 +7,13 @@
  * `approval_response` are handled out-of-band so they stay responsive.
  */
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition, ReduceResult, SessionState } from "@clinicalcraft/core";
+import type { CameraSensor, EpisodeTrace, Mover, Pose, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { CommandHookExecutor, HookHandler } from "../hooks/types.js";
 import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
 import type { ChatMessage, LLMProvider, ProviderConfig } from "../providers/types.js";
-import type { HookEventName, ResolvedSettings } from "../settings/schema.js";
+import type { Embodiment, HookEventName, ResolvedSettings } from "../settings/schema.js";
+import type { SkillDefinition } from "../skills/schema.js";
 import type { ToolDefinition } from "../tools/types.js";
 
 /** Append-only transcript sink (JSONL rollouts in node; IndexedDB/localStorage or no-op in browsers). */
@@ -31,7 +33,13 @@ export interface DialogueEntry {
 }
 
 export type TranscriptItem =
-  | { type: "session_meta"; ordinal: number; ts: string; payload: { sessionId: string; caseId: string; caseVersion: string; facilityId: string | null; locale: string; provider: string; model: string; clinicalcraftVersion: string } }
+  | {
+      type: "session_meta";
+      ordinal: number;
+      ts: string;
+      /** `embodiment`: the encounter's mode (absent = clinical; a resume keeps it — docs/EMBODIED.md R3). */
+      payload: { sessionId: string; caseId: string; caseVersion: string; facilityId: string | null; locale: string; provider: string; model: string; clinicalcraftVersion: string; embodiment?: Embodiment };
+    }
   /** The examiner's evidence line (resume restores the dialogue from these). */
   | { type: "dialogue"; ordinal: number; ts: string; payload: DialogueEntry }
   | { type: "op"; ordinal: number; ts: string; payload: { id: string; op: Op } }
@@ -45,7 +53,14 @@ export type TranscriptItem =
    * unasked fact or a diagnosis; the learner's `warning` names only their
    * categories). Ignored by resume.
    */
-  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding"; detail: string[] } };
+  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding"; detail: string[] } }
+  /**
+   * Embodied mode: the physical world after a committed state-changing world action (and at shutdown when a
+   * sensor pose moved since) — a resume restores the last one (`SessionOptions.embodied.snapshot`); the engine
+   * state comes from the replayed actions (device states that mirror clinical facts are derived from it).
+   * The idempotency window is trimmed (`results` without paths and events).
+   */
+  | { type: "world"; ordinal: number; ts: string; payload: { snapshot: WorldStateSnapshot } };
 
 export interface SessionOptions {
   caseDef: CaseDefinition;
@@ -78,6 +93,18 @@ export interface SessionOptions {
   disabledCommands?: readonly string[];
   /** First transcript ordinal (a resumed transcript continues after the previous file's last ordinal). */
   transcriptOrdinal?: number;
+  /**
+   * Embodied mode (settings `embodiment: "embodied"`, docs/EMBODIED.md R3): the session builds the world itself
+   * (facility, catalogs, the case bound to its slot with core `assignPatientSlot`); a facility is required
+   * (`EmbodimentError`, code `embodiment_requires_facility`). `mover` animates bodies (browser; default instant),
+   * `camera` gives camera frames (`get_camera_frame`, vision models only), `spawn` the learner's start pose,
+   * `snapshot` the physical state to restore (resume: the last transcript `world` item).
+   */
+  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot };
+  /** Project skills (`.clinicalcraft/skills/*.json`, validated; embodied mode) — they extend the built-in skills. */
+  skills?: SkillDefinition[];
+  /** Problems found while loading project skills (each becomes a startup `warning`). */
+  skillIssues?: string[];
   /** Restore from a previous session (resume). */
   resume?: {
     sessionId: string;
@@ -130,6 +157,10 @@ export interface ClinicalSessionApi {
   workupPlan(): { items: PlanItem[]; explanation: string | null };
   /** Serializable snapshot for save/export/resume. */
   snapshot(): SessionSnapshot;
+  /** The encounter's world (embodied mode; a stable handle across language switches), or null in clinical mode. */
+  world(): WorldRuntime | null;
+  /** The episode trace (docs/EMBODIED.md §10): embodied tool calls, world actions and clinical actions as linked spans (empty in clinical mode). */
+  trace(): EpisodeTrace;
   close(): Promise<void>;
 }
 
@@ -152,4 +183,7 @@ export interface SessionSnapshot {
   nextOrdinal?: number;
   /** The examiner's dialogue so far (evidence for transcript-judged rubric items after a resume). */
   dialogue?: DialogueEntry[];
+  /** Embodied mode: the encounter's mode and its physical world (resume with `SessionOptions.embodied.snapshot`). */
+  embodiment?: Embodiment;
+  world?: WorldStateSnapshot;
 }

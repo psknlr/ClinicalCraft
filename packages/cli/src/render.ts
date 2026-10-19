@@ -43,6 +43,8 @@ export interface RendererOptions {
    * (built-in templates only).
    */
   resolveModel?: (provider: string, model: string | null) => string;
+  /** Embodied mode: where the learner's body is (the status line shows it). */
+  place?: () => string | null;
 }
 
 interface Configured {
@@ -173,6 +175,8 @@ export class EventRenderer {
   /** Speaker names seen in `agent_message` events, keyed by `locale\u0000agent` (names are localised). */
   private readonly speakers = new Map<string, string>();
   configured: Configured | null = null;
+  /** The last world action line shown (embodied commands print the same text). */
+  private lastWorldMessage: string | null = null;
   snapshot: { state: SessionState; progress: ObjectiveProgress; vitals: VitalsSnapshot; waypoint: string | null } | null = null;
   usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
   /** Text of the last `permission_denied` error (the command's own output repeats it). */
@@ -437,6 +441,13 @@ export class EventRenderer {
           return;
         }
         if (msg.name === "finish" && this.finishedShown && (msg.data as { ok?: unknown } | undefined)?.ok === true) return; // the ■ line said it
+        // An embodied command's result already shown as its world action line: print only the rest.
+        if (this.lastWorldMessage && msg.text.startsWith(this.lastWorldMessage)) {
+          const rest = msg.text.slice(this.lastWorldMessage.length).replace(/^\s*\[[A-Z_]+\]/, "").trim();
+          this.lastWorldMessage = null;
+          if (rest) this.line(rest);
+          return;
+        }
 
         if (msg.text.trim()) this.line(msg.text.replace(/\n+$/, ""));
         return;
@@ -456,6 +467,17 @@ export class EventRenderer {
       case "shutdown_complete":
         this.stopSpinner();
         return;
+      case "world_event":
+        return; // the world's own changes: the action results say what happened
+      case "world_action_result": {
+        // Embodied mode: walks and device operations (the autopilot's, delegated staff's, the learner's own).
+        const text = sanitizeTerminal(msg.result.message.split("\n")[0] ?? "");
+        if (!text) return;
+        this.lastWorldMessage = text;
+        const mark = msg.result.status === "completed" ? "⤷" : "✗";
+        this.line(this.p.dim(`  ${mark} ${truncate(text, 160)}${msg.result.errorCode ? ` [${msg.result.errorCode}]` : ""}`));
+        return;
+      }
       default: {
         const never: never = msg;
         void never;
@@ -611,6 +633,8 @@ export class EventRenderer {
     }
     const v = snap?.vitals;
     if (v && !v.baselineOnly) parts.push(this.vitalsStatus(v));
+    const place = this.o.place?.();
+    if (place) parts.push(m(L, "status.place", { place: sanitizeTerminal(place) }));
     if (this.configured) {
       const model = this.configured.model || (this.configured.offline ? "deterministic" : "-");
       parts.push(`${this.configured.provider}/${model}`);

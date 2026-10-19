@@ -2,9 +2,10 @@
  * Shared state while building and running a world.
  */
 import type { Box3, Group, Mesh, MeshStandardMaterial, Object3D, PointLight, Scene, Texture } from "three";
-import type { EquipmentType, FacilityDefinition } from "@clinicalcraft/core";
+import type { EquipmentModel, EquipmentType, FacilityDefinition } from "@clinicalcraft/core";
 import type { CollisionModel, DoorSpec } from "@clinicalcraft/world";
 import type { InteractionTarget } from "../contracts.js";
+import type { WorldLevels } from "./levels.js";
 import type { MaterialLibrary, MergedCatalogs } from "./materials.js";
 import type { Aabb, ColliderGrid } from "./physics.js";
 import type { SignFactory } from "./signs.js";
@@ -22,6 +23,8 @@ export interface LightCandidate {
   decay: number;
   /** Emissive lamp mesh (optional) — stays lit when the real light is culled. */
   source?: string;
+  /** Level of the fixture (default: the default level); multi-level facilities prefer the avatar's. */
+  level?: string;
 }
 
 export interface DoorLeaf {
@@ -47,6 +50,8 @@ export interface DoorRecord {
   objects: Object3D[];
   /** Interior (room partition) door — "门" rather than the building's "大门". */
   interior?: boolean;
+  /** Level the door is on. */
+  level: string;
 }
 
 export interface ScreenRecord {
@@ -61,6 +66,8 @@ export interface ScreenRecord {
   /** Patient slot whose vitals feed this screen (vitals/ecg). */
   slotId: string | null;
   lastDraw: number;
+  /** Level of the screen's placement. */
+  level: string;
 }
 
 export interface AnimatedPart {
@@ -81,6 +88,8 @@ export interface TargetRecord {
   label: string;
   /** For equipment: interaction kind (map dot colour). */
   kind: string;
+  /** Level of the target (default: the default level). */
+  level?: string;
 }
 
 export interface NpcRecord {
@@ -95,6 +104,8 @@ export interface NpcRecord {
   collider: Aabb | null;
   target: InteractionTarget;
   label: string;
+  /** Level the NPC stands on. */
+  level: string;
 }
 
 export interface PlacementInfo {
@@ -111,6 +122,21 @@ export interface PlacementInfo {
   kind: string;
   label: string;
   room: string | null;
+  /** Level of the placement and its floor elevation (`y` above is relative to it). */
+  level: string;
+  elevation: number;
+}
+
+/** A placement whose equipment type has a GLB/glTF model (EMBODIED §11): loaded after the build. */
+export interface ModelRequest {
+  placementId: string;
+  model: EquipmentModel;
+  footprint: { w: number; d: number; h: number };
+  /** Placement origin (world, floor of its level + its own y) and rotation (degrees). */
+  at: { x: number; y: number; z: number; rot: number };
+  level: string;
+  /** The placement's voxel parts, in their own group: shown until the model is in, and kept whenever it fails. */
+  fallback: Group;
 }
 
 export interface BuildContext {
@@ -128,8 +154,16 @@ export interface BuildContext {
    * source of every collider. Builders never compute colliders themselves.
    */
   collision: CollisionModel;
-  /** Level rendered (the facility's default level; other levels are headless-only for now). */
+  /** The facility's default level (terrain, outdoors, ground floor). */
   level: string;
+  /** Levels: elevations, the avatar's level, level-aware culling (EMBODIED R10). */
+  levels: WorldLevels;
+  /**
+   * Route what builders emit next (`batch`, `root`) to a level's static batch
+   * and group; the default level's are the scene's. Builders call it before
+   * emitting each level's content and switch back to `level` afterwards.
+   */
+  onLevel(level: string): void;
   /** Physics boxes registered in `colliders`, by model collider id (door leaves toggle theirs). */
   physics: Map<string, Aabb>;
   /** Door records of the model by renderer door id (`<owner>:<side>:<n>`). */
@@ -148,5 +182,7 @@ export interface BuildContext {
   shadows: boolean;
   /** Textures created while building that no material library owns (disposed with the world). */
   ownedTextures: Texture[];
+  /** Placements to draw with their GLB model (null: models disabled) — their voxel parts go to `fallback` groups. */
+  models: ModelRequest[] | null;
   warnings: string[];
 }

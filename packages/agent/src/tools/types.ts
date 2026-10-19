@@ -9,7 +9,8 @@ import type { CaseDefinition, ClinicalAction, FacilityDefinition, EquipmentCatal
 import type { AgentRole, PlanItem, PracticeScope, RiskLevel } from "../protocol.js";
 import type { ToolSpec } from "../providers/types.js";
 
-export type SideEffect = "none" | "conversation" | "record" | "patient" | "clock";
+/** What a tool changes; `world`: the embodied world (bodies, devices, doors, carts — docs/EMBODIED.md §5). */
+export type SideEffect = "none" | "conversation" | "record" | "patient" | "clock" | "world";
 
 export interface ToolContext {
   readonly caseDef: CaseDefinition;
@@ -28,6 +29,15 @@ export interface ToolContext {
   /** Ask the front-end to execute a world action (walk_to, use_equipment). Resolves with its output. */
   dynamicTool?(tool: string, args: unknown, signal?: AbortSignal): Promise<{ ok: boolean; output: string }>;
   readonly signal?: AbortSignal;
+  /**
+   * Embodied mode: the body acting for this call (`actor:clinician`, `staff:<id>`…). Absent: the learner's and the
+   * clinician's calls act with `actor:clinician`. Spatial gates measure from this body (docs/EMBODIED.md §6).
+   */
+  readonly actorId?: string;
+  /** The model turn this call belongs to (set by `executeToolCall`; nested tool calls reuse it). */
+  readonly turnId?: string;
+  /** Embodied mode: the world action whose clinical effect this call carries out (its spans are recorded by the world). */
+  readonly worldActionId?: string;
 }
 
 export interface ToolOutput {
@@ -36,6 +46,8 @@ export interface ToolOutput {
   output: string;
   /** Typed payload for UIs. */
   data?: unknown;
+  /** Images for the model (camera frames): tool_result image blocks (Anthropic) or a follow-up user message (OpenAI-compatible). */
+  images?: { mediaType: string; data: string }[];
 }
 
 export interface ToolDefinition<A = Record<string, unknown>> {

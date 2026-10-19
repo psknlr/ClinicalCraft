@@ -12,5 +12,5 @@
   },
   "files": ["dist"],
   "scripts": { "build": "tsc -b" },
-  "dependencies": { "@clinicalcraft/core": "5.0.0", "@anthropic-ai/sdk": "0.131.0", "zod": "3.25.76" }
+  "dependencies": { "@clinicalcraft/core": "5.0.0", "@clinicalcraft/world": "5.0.0", "@anthropic-ai/sdk": "0.131.0", "zod": "3.25.76" }
 }

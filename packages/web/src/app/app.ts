@@ -15,6 +15,7 @@ import { Intro } from "../ui/intro.js";
 import { PanelHost, type PanelBuilder } from "../ui/panel.js";
 import { atlasPanel } from "../ui/panels/atlas.js";
 import { autopilotPanel } from "../ui/panels/autopilot.js";
+import { elevatorPanel, type ElevatorArgs } from "../ui/panels/elevator.js";
 import { boardPanel, comparePanel } from "../ui/panels/board.js";
 import { conversationPanel, type ConversationArgs } from "../ui/panels/conversation.js";
 import { debriefPanel } from "../ui/panels/debrief.js";
@@ -318,6 +319,8 @@ export class ClinicalCraftApp implements App {
         return atlasPanel(this);
       case "autopilot":
         return autopilotPanel(this);
+      case "elevator":
+        return elevatorPanel(this, arg as ElevatorArgs);
       default:
         return null;
     }
@@ -349,6 +352,9 @@ export class ClinicalCraftApp implements App {
       case "atlas":
       case "craft":
         this.open(route.panel);
+        return;
+      case "elevator":
+        this.open("elevator", { connectorId: route.connectorId, level: route.level, name: route.name, stops: route.stops } satisfies ElevatorArgs);
         return;
     }
   }
@@ -515,7 +521,7 @@ export class ClinicalCraftApp implements App {
     this.toast(tr("toast.exported"), tr("record.file"));
   }
 
-  markDestination(dest: { x: number; z: number; label: string } | null, walk = false): void {
+  markDestination(dest: { x: number; z: number; label: string; level?: string } | null, walk = false): void {
     const game = this.game;
     if (!game) return;
     game.link.setManual(dest);
@@ -523,7 +529,7 @@ export class ClinicalCraftApp implements App {
     const api = this.world.api;
     if (!walk || !dest || !api) return;
     this.panels.close();
-    api.walkTo({ x: dest.x, z: dest.z }).then(
+    api.walkTo({ x: dest.x, z: dest.z, ...(dest.level ? { level: dest.level } : {}) }).then(
       () => this.toast(tr("toast.arrived"), dest.label),
       (err: unknown) => this.toast(tr("toast.walkFailed"), err instanceof Error ? err.message : String(err), "warning"),
     );
@@ -632,7 +638,11 @@ export class ClinicalCraftApp implements App {
       const reused = !!this.world.api && this.world.key === WorldHost.keyOf(spec);
       const api = this.world.ensure(spec);
       this.worldFailed = !api;
-      if (api && reused && saved) api.teleport(saved.position[0], saved.position[2], saved.yaw);
+      if (api && reused && saved) {
+        // back onto the floor of the saved height's level (multi-level facilities; the ground otherwise)
+        const level = api.levels().filter((l) => l.elevation <= saved.position[1] + 0.6).pop()?.id;
+        api.teleport(saved.position[0], saved.position[2], saved.yaw, level);
+      }
       const link = new GameWorldLink({
         world: () => this.world.api,
         app: session,
@@ -690,13 +700,16 @@ export class ClinicalCraftApp implements App {
       this.focusWorld();
     }
     const p = this.playerPos();
+    // multi-level facility: the region on the avatar's level (the world adds the level's name indoors)
+    const level = api && api.levels().length > 1 ? api.position.level : undefined;
     this.hud.onMove({
       x: p.x,
       z: p.z,
       yaw: api?.position.yaw ?? 0,
-      region: regionAt(game.facility, p.x, p.z, getLocale()),
+      region: regionAt(game.facility, p.x, p.z, getLocale(), level),
       roomId: null,
       moving: false,
+      ...(level ? { level } : {}),
     });
     game.link.syncWaypoint();
     this.hud.update();

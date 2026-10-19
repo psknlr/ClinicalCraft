@@ -137,6 +137,14 @@ export class WorldHost {
 /* Interaction routing                                                 */
 /* ------------------------------------------------------------------ */
 
+/** A destination (waypoint / walk target): `level` in a multi-level facility. */
+export interface Destination {
+  x: number;
+  z: number;
+  label: string;
+  level?: string;
+}
+
 export type Route =
   | { panel: "conversation"; agent: string; staffId?: string; staffRole?: string; name?: string }
   | { panel: "orders"; placementId: string }
@@ -145,6 +153,7 @@ export type Route =
   | { panel: "board" }
   | { panel: "atlas" }
   | { panel: "craft" }
+  | { panel: "elevator"; connectorId: string; level: string; name: string; stops: string[] }
   | { panel: "toast"; title: string; body?: string };
 
 /** Facility staff role → session agent profile. */
@@ -169,6 +178,9 @@ export function routeInteraction(target: InteractionTarget, ctx: { caseDef: Case
       return { panel: "conversation", agent: STAFF_AGENT[target.role] ?? "nurse", staffId: target.staffId, staffRole: target.role, name: target.name };
     case "door":
       return { panel: "toast", title: target.name };
+    case "elevator":
+      // the call panel outside the car is handled by the world (the car door opens); inside: choose a floor
+      return { panel: "elevator", connectorId: target.connectorId, level: target.level, name: target.name, stops: target.stops };
     case "equipment":
       switch (target.interaction) {
         case "workstation":
@@ -212,7 +224,7 @@ export interface GameWorldLinkOptions {
 export class GameWorldLink {
   readonly stations: Stations;
   /** A destination picked on the map or "go to <station>" (wins until the objective changes). */
-  manual: { x: number; z: number; label: string } | null = null;
+  manual: Destination | null = null;
   private manualObjective = -1;
   private lastWaypointKey = "";
   private speakTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -239,7 +251,7 @@ export class GameWorldLink {
   }
 
   /** Current objective destination (manual pick wins). */
-  destination(): { x: number; z: number; label: string } | null {
+  destination(): Destination | null {
     const snap = this.o.app.store.snapshot;
     if (this.manual && snap && snap.progress.currentIndex === this.manualObjective) return this.manual;
     this.manual = null;
@@ -249,7 +261,7 @@ export class GameWorldLink {
     return null;
   }
 
-  setManual(dest: { x: number; z: number; label: string } | null): void {
+  setManual(dest: Destination | null): void {
     this.manual = dest;
     this.manualObjective = this.o.app.store.snapshot?.progress.currentIndex ?? -1;
     this.lastWaypointKey = "";
@@ -257,7 +269,7 @@ export class GameWorldLink {
   }
 
   /** Resolve a waypoint/walk target string to world coordinates. */
-  resolveTarget(target: string): { x: number; z: number; label: string } | null {
+  resolveTarget(target: string): Destination | null {
     const world = this.o.world();
     const locale = this.o.locale();
     if (target === "patient" && this.o.slotId) {
@@ -265,8 +277,10 @@ export class GameWorldLink {
       if (loc) return loc;
     }
     const from = world ? { x: world.position.x, z: world.position.z } : undefined;
+    // multi-level facilities: "nearest" prefers the learner's own floor
+    const level = world && world.levels().length > 1 ? world.position.level : undefined;
     // Bedside kit (monitor, pumps, ECG cart…) means the patient's own, wherever the learner stands.
-    const hit = resolveWaypoint(this.o.facility, this.o.catalogs, target, { ...(from ? { from } : {}), locale, ...(this.o.slotId ? { slotId: this.o.slotId, preferPatientSlot: true } : {}) });
+    const hit = resolveWaypoint(this.o.facility, this.o.catalogs, target, { ...(from ? { from } : {}), ...(level ? { level } : {}), locale, ...(this.o.slotId ? { slotId: this.o.slotId, preferPatientSlot: true } : {}) });
     if (hit) return hit;
     return world?.locate(target) ?? null;
   }
@@ -275,7 +289,7 @@ export class GameWorldLink {
     const world = this.o.world();
     if (!world) return;
     const dest = this.destination();
-    const key = dest ? `${dest.x.toFixed(1)},${dest.z.toFixed(1)},${dest.label}` : "";
+    const key = dest ? `${dest.x.toFixed(1)},${dest.z.toFixed(1)},${dest.level ?? ""},${dest.label}` : "";
     if (key === this.lastWaypointKey) return;
     this.lastWaypointKey = key;
     world.setWaypoint(dest);
@@ -342,7 +356,7 @@ export class GameWorldLink {
     this.walkAbort = ctrl;
     try {
       world.setWaypoint(dest);
-      await world.walkTo({ x: dest.x, z: dest.z }, ctrl.signal);
+      await world.walkTo({ x: dest.x, z: dest.z, ...(dest.level ? { level: dest.level } : {}) }, ctrl.signal);
       respond(true, `arrived at ${dest.label}`);
     } catch (err) {
       respond(false, err instanceof Error ? err.message : String(err));

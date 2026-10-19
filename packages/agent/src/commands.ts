@@ -28,6 +28,7 @@ import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
+import { executeEmbodiedCommand } from "./commands-world.js";
 import type { ToolOutput } from "./tools/types.js";
 
 /** What commands need from the session. */
@@ -71,6 +72,10 @@ export interface CommandHost {
   clearConversations(): void;
   snapshot(): SessionSnapshot;
   shutdown(): Promise<void>;
+  /** Embodied mode (`/look`, `/go`, `/use`… — commands-world.ts)? Optional (absent = clinical). */
+  embodied?(): boolean;
+  /** The skills `/skill` lists (embodied mode). */
+  skills?(): { id: string; name: string }[];
 }
 
 const BUILTIN_NAMES = [
@@ -488,6 +493,7 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
   const c = host.caseDef;
   const a = args.trim();
   const ctx = { caseDef: c, locale: L, state: () => host.state() };
+  if (await executeEmbodiedCommand(host, name, a)) return;
   switch (name) {
     case "help":
     case "?":

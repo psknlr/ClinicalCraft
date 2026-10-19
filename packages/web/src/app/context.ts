@@ -50,6 +50,7 @@ export type PanelName =
   | "help"
   | "atlas"
   | "autopilot"
+  | "elevator"
   | "confirm-reset";
 
 export interface App {
@@ -90,7 +91,8 @@ export interface App {
   importSave(file: File): Promise<void>;
   exportRecord(): void;
   /** Mark a destination (map / "go to station"). */
-  markDestination(dest: { x: number; z: number; label: string } | null, walk?: boolean): void;
+  /** Mark (and with `walk`, auto-walk to) a destination; `level` in a multi-level facility. */
+  markDestination(dest: { x: number; z: number; label: string; level?: string } | null, walk?: boolean): void;
   inventoryChanged(): void;
   /** Start (or resume) a case in a facility and enter the world. */
   startCase(caseId: string, facilityId: string, resume: boolean): Promise<void>;

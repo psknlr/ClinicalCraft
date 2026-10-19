@@ -1,15 +1,18 @@
 /**
- * Harness content loading: every facility and catalog JSON in
+ * Harness content loading: every facility, room template and catalog JSON in
  * packages/content (eager import.meta.glob), validated with the core zod
- * schemas. Missing or invalid files fall back to the built-in test data.
+ * schemas; facilities placing templates are compiled. Missing or invalid
+ * files fall back to the built-in test data.
  */
-import type { EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
-// Schemas only (not the core barrel): the harness keeps working while the engine is under construction.
-import { EquipmentCatalogSchema, FacilitySchema } from "../../../core/src/schema/facility.js";
+import type { EquipmentCatalog, FacilityDefinition, RoomTemplate } from "@clinicalcraft/core";
+// Schemas and the template compiler only (not the core barrel): the harness keeps working while the engine is under construction.
+import { EquipmentCatalogSchema, FacilitySchema, RoomTemplateSchema } from "../../../core/src/schema/facility.js";
+import { compileFacility } from "../../../core/src/engine/templates.js";
 import { TEST_CATALOG, TEST_FACILITY } from "./test-facility.js";
 
 const facilityFiles = import.meta.glob("../../../content/facilities/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
 const catalogFiles = import.meta.glob("../../../content/catalogs/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
+const templateFiles = import.meta.glob("../../../content/templates/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
 
 export interface LoadedContent {
   facilities: Map<string, FacilityDefinition>;
@@ -34,14 +37,26 @@ export function loadContent(): LoadedContent {
     if (r.success) catalogs.push(r.data);
     else issues.push(...fmtIssues(file, r.error));
   }
+  const templates: RoomTemplate[] = [];
+  for (const [file, json] of Object.entries(templateFiles).sort(([a], [b]) => a.localeCompare(b))) {
+    const r = RoomTemplateSchema.safeParse(json);
+    if (r.success) templates.push(r.data);
+    else issues.push(...fmtIssues(file, r.error));
+  }
   const facilities = new Map<string, FacilityDefinition>();
   const tf = FacilitySchema.safeParse(TEST_FACILITY);
   if (tf.success) facilities.set(tf.data.id, tf.data);
   else issues.push(...fmtIssues("test-facility", tf.error));
   for (const [file, json] of Object.entries(facilityFiles)) {
     const r = FacilitySchema.safeParse(json);
-    if (r.success) facilities.set(r.data.id, r.data);
-    else issues.push(...fmtIssues(file, r.error));
+    if (!r.success) {
+      issues.push(...fmtIssues(file, r.error));
+      continue;
+    }
+    // room-template instances are expanded into the flat format the world renders
+    const compiled = compileFacility(r.data, templates);
+    if (compiled.ok) facilities.set(compiled.facility.id, compiled.facility);
+    else issues.push(...compiled.issues.filter((i) => i.severity === "error").map((i) => `${file}: ${i.path} — ${i.message}`));
   }
   return { facilities, catalogs, issues };
 }

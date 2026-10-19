@@ -3,5 +3,5 @@
   "compilerOptions": { "rootDir": "src", "outDir": "dist", "lib": ["ES2023", "DOM", "DOM.Iterable"], "types": ["node"] },
   "include": ["src"],
   "exclude": ["src/**/*.test.ts"],
-  "references": [{ "path": "../core" }]
+  "references": [{ "path": "../core" }, { "path": "../world" }]
 }

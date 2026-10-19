@@ -1,7 +1,8 @@
 # Facilities, rooms & equipment
 
 Schemas: `packages/core/src/schema/facility.ts`. Content lives in
-`packages/content/facilities/*.json` and `packages/content/catalogs/*.json`.
+`packages/content/facilities/*.json`, `packages/content/templates/*.json`
+(room templates) and `packages/content/catalogs/*.json`.
 
 ## Conventions
 
@@ -78,7 +79,7 @@ All additive: facilities and catalogs without them stay valid and unchanged
 (`clinicalcraft/facility@1`, `clinicalcraft/equipment-catalog@1`). The
 headless world model (`@clinicalcraft/world`) derives colliders, navigation
 grids, occlusion and the semantic registry from them; the web world renders
-the default level.
+every level (see "Levels in the web world" below).
 
 **Levels.** `floor` (buildings, rooms) is the floor *material*; storeys are
 levels.
@@ -88,7 +89,8 @@ levels.
 | `levels: [{ id, name, elevation = 0, height = 5 }]` | facility | storeys; default `[]` = one implicit level `L0` at elevation 0 |
 | `level` | rooms, placements, patient slots, staff | the level the entity stands on (default: the room's level, else the *default level* — the one at elevation 0, else the first) |
 | `levels: [levelId…]` | buildings | levels the building spans (default: the default level); its walls and openings repeat on each, lifted by the level's elevation; off the default level only the inside of these buildings is walkable |
-| `connectors: [{ id, kind: stairs \| elevator \| ramp, name, stops: [{ level, x, z }…] ≥ 2, travelSeconds?, accessible?, roles = [] }]` | facility | portals between levels, stops listed in travel order; `travelSeconds` between adjacent stops (default stairs 15, ramp 10, elevator 20); `accessible` (default: elevators and ramps yes, stairs no) — wheelchairs, beds and pushed carts use only accessible ones; `roles` restrict who may use it (empty = everyone) |
+| `levels: [levelId…]` | building openings | the levels an opening exists on (default: every level the building spans) — e.g. the entrance door on the ground floor only, windows on every storey |
+| `connectors: [{ id, kind: stairs \| elevator \| ramp, name, stops: [{ level, x, z }…] ≥ 2, travelSeconds?, accessible?, width?, roles = [] }]` | facility | portals between levels, stops listed in travel order; `travelSeconds` between adjacent stops (default stairs 15, ramp 10, elevator 20); `accessible` (default: elevators and ramps yes, stairs no) — wheelchairs, beds and pushed carts use only accessible ones; `width` of a stairs/ramp flight (m, default 2, ≤ 10); `roles` restrict who may use it (empty = everyone) |
 | `access: [{ id, name, level?, rect, roles ≥ 1 }]` | facility | restricted areas: only these roles may plan through them (`ACCESS_DENIED` otherwise); an actor standing inside may always leave |
 
 Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
@@ -126,7 +128,149 @@ tool other than `intervene`, a `release` without any `reserve`, interaction
 points inside a solid footprint or beyond reach, a wall-mounted portable cart
 (`solid: false` or tag `wall`), a handheld item over 1 × 1 × 1.5 m, a model
 that is not `.glb` / `.gltf` (warnings). Unknown predicate shapes fail
-parsing.
+parsing. Flights: a stairs/ramp flight that is not axis-aligned is not built
+(warning), stairs steeper than 45° or ramps steeper than 1:8 (warnings);
+an opening's `levels` naming a level the building does not span (error).
+
+## Room templates and instances (EMBODIED R10)
+
+A room template (`clinicalcraft/room-template@1`, `packages/content/templates/*.json`,
+JSON Schema `room-template.schema.json`) is one self-contained room —
+partitions, equipment, patient slots, staff, lights, sign and optional
+access zones — in **template-local coordinates**: origin at the room centre,
++Z is the room's front, and by convention its door is on the local south
+(`s`, +Z) side. A facility places it with an instance; `compileFacility`
+(core, pure and deterministic) expands every instance into the flat format
+before anything else sees the facility, so the renderer, the collision
+model, navigation, the agent tools and validation never know templates exist.
+
+| template field | meaning |
+|---|---|
+| `id`, `name` (bilingual), `description?`, `kind` | the room kind of the compiled room (`ROOM_KINDS`) |
+| `size: { w, d }` | the room rect (m) before rotation |
+| `floor?`, `sign?`, `lights: [{ x, z }]` | room floor material, wall sign, ceiling lamps |
+| `partitions: [{ side, material?, base?, top?, height?, thickness?, openings: [{ kind, offset, width?, height? }] }]` | interior walls of the room's sides (offsets along the wall from its centre) |
+| `placements`, `patientSlots`, `staff` | as in a facility, without `room`/`level` (the instance's); slot `bed`/`monitor` refer to template-local placement ids |
+| `zones: [{ id, name, rect, roles ≥ 1 }]` | optional access zones (compiled to the facility's `access`) |
+| `capabilities` | the capabilities the room is meant to provide (documentation; `facilities validate` warns when its equipment provides none of a declared one) |
+| `tags` | free-form |
+
+Instances (`facility.instances`, default `[]`):
+`{ id, template, x, z, rot: 0 | 90 | 180 | 270 = 0, level?, building?, overrides? }`.
+Compilation rules:
+
+* Ids are deterministic: the room is the instance id; every placement,
+  slot, staff member, partition-owned door and zone is `${instance}.${local}`
+  (`icu-1.bed`, `icu-1.slot`, `ward-a.bed-3`). Slot `bed`/`monitor` refs are
+  prefixed the same way.
+* Coordinates rotate about the room centre like three.js `rotation.y`
+  (`rotateLocal(x, z, 90) = (z, −x)`; at `rot: 180` the front faces −Z),
+  then translate to `(x, z)`; equipment and staff `rot` add the instance's;
+  partition sides rotate (`s` → `e` at 90°) and opening offsets keep their
+  orientation along the rotated wall. Coordinates are rounded to 1 µm.
+* A partition that lies on a wall of the instance's building is dropped (the
+  building wall is already there, with its windows).
+* `overrides` (local ids, template frame): `name`, `floor`, `sign` (`null`
+  removes it), `partitions`, `lights`, `omit: [local ids]` (placements,
+  slots, staff or zones), `placements: { localId: patch }` (any placement
+  field but the id), `patientSlots: { localId: { accepts?, posture? } }`,
+  `staff: { localId: { name?, role?, greeting?, appearance? } }`; an unknown
+  local id is a warning.
+* Errors: an unknown template, a rotation other than 0/90/180/270, an
+  instance id that collides with an authored id or another instance, a
+  compiled id that collides with an authored entity, instance rooms that
+  overlap, slot refs that do not resolve. A room fully inside an authored
+  room is allowed (an elevator car inside a lobby); a partial overlap with
+  an authored room is a warning.
+* A facility without instances is returned unchanged (`clinic-v4`,
+  `general-hospital`: byte-identical).
+
+Every loader compiles at load time: `loadContent` (node: CLI, server, MCP,
+`CaseIndexer`), the web app (`app/content.ts`, bundled and server content)
+and the world harness. A facility whose instances do not compile is
+reported and left out. `clinicalcraft facilities compile <id | file> [--out]`
+prints the flat facility; `facilities validate --all` also checks every
+template (`checkRoomTemplate`: the template compiled alone at the origin,
+with the facility rules); `cases schema template` prints the JSON Schema.
+
+**Template library** (all bilingual, equipment from the built-in catalogs;
+size w × d in m):
+
+| template | kind | size | contents |
+|---|---|---|---|
+| `ed-resus-bay` | resus | 8 × 8 | bed, monitor, O₂, suction, IV pole, infusion pump, ECG cart, POCUS cart, nebuliser, defibrillator, crash cart, ventilator, sink; double door; emergency slot |
+| `ed-cubicle` | emergency | 5 × 8 | stretcher, monitor, O₂, infusion pump, crash cart, peak-flow station, curtain; open front; emergency slot |
+| `outpatient-consult` | consult | 6 × 8 | treatment plinth, desk, chairs, diagnostic wall set, records terminal, glucometer, scale, sink; outpatient slot |
+| `ortho-exam` | consult | 6 × 8 | treatment plinth, X-ray lightbox, desk, records terminal, wheelchair, sink; outpatient slot |
+| `operating-theatre` | operating-room | 10 × 8 | operating table, surgical light, anaesthesia machine, monitor, instrument table, suction, infusion pump, O₂, C-arm, medication cabinet, scrub sink; sliding door; restricted zone `sterile` (clinician, attending, nurse, porter); operating-room slot |
+| `ct-room` | imaging | 7 × 8 | CT scanner, radiology console, O₂, sink; radiologist |
+| `xray-room` | imaging | 6 × 8 | X-ray machine, chest stand, C-arm, ultrasound/echo machine, lightbox |
+| `clinical-lab` | laboratory | 10 × 8 | chemistry, haematology, blood-gas and urinalysis analysers, flow cytometer, cytogenetics workstation, biosafety cabinet, centrifuge, microscope, blood-bank and lab fridges, workstation, tube station (13 laboratory/pathology capabilities); lab technician |
+| `ward-bay-4` | ward | 12 × 8 | 4 beds, 4 monitors, 4 O₂ outlets, 2 infusion pumps, curtains, overbed tables, sink; double door; 4 inpatient/ward slots |
+| `icu-bed-space` | icu | 5.5 × 8 | bed, monitor, O₂, ventilator, infusion pump, suction, dialysis machine, sink; sliding door; icu slot |
+| `rehab-gym` | rehabilitation | 10 × 8 | parallel bars, treatment plinths, exercise bikes, wall bars, exercise mat, scale, wheelchair |
+| `pharmacy` | pharmacy | 6 × 8 | counter, records terminal, medication cabinet and fridge, pharmacy shelves; restricted zone `dispensary` (pharmacist, nurse); pharmacist |
+| `nursing-station` | nurse-station | 6 × 8 | nurse-station desk, records terminal, board, medication cabinet and fridge, glucometer, ECG cart, crash cart, defibrillator, sink; open front; nurse |
+| `teaching-room` | teaching | 10 × 8 | evidence board, anatomy atlas kiosk, projector screen, whiteboard, bookshelf, 6 desks; attending |
+| `elevator-cabin` | elevator | 2.4 × 2.4 | steel walls, 1.4 m glass sliding door: an elevator car (one per level it serves) |
+
+Five catalog types were added for the rehabilitation gym (`core-clinical.json`):
+`treatment-plinth` (bed interaction), `parallel-bars`, `exercise-bike`,
+`wall-bars` (wall), `exercise-mat` (not solid).
+
+## Levels in the web world (EMBODIED R10)
+
+* **Storeys.** Every level a building spans gets its walls (the building's
+  wall style) at the level's elevation; a building's roof is drawn on its top
+  level only. Upper floors are the collision model's `slab` colliders
+  (building rect minus the stairwells, 0.2 m thick): drawn in the batch of
+  the storey below, so a slab is also that storey's ceiling. An upper room's
+  floor keeps the stairwell open.
+* **Flights.** Consecutive stops of a stairs/ramp connector are a flight's
+  foot (lower level) and head; the flight runs straight between them along
+  x or z, `width` wide. The collision model adds a `ramp` collider (a solid
+  wedge under a linear surface: the avatar walks up and down it, steps of at
+  most 0.5 m are climbed and the surface is followed 0.6 m down — physics
+  `RAMP`), `rail` colliders on both long sides (from the lower floor to 1 m
+  above the upper one) and across the stairwell's foot end upstairs. The
+  renderer draws stairs as one riser per 0.18 m with nosings, stepped glass
+  balustrades under sloped handrails, and a guard rail round the stairwell.
+* **Elevators.** An elevator connector's car is a room on every level it
+  serves (template `elevator-cabin`) containing its stop. The renderer adds
+  a call panel beside the car door outside and a car panel inside; E on the
+  call panel opens the car door, E on the car panel opens the floor choice
+  (web: the elevator window). The ride closes the door, dims the view for
+  a moment, moves the avatar to the same spot of the car on the chosen level
+  and opens the door there (`WorldApi.rideElevator`).
+* **Culling.** Each level above the default one is its own batch and group:
+  indoors only the camera's level is drawn, plus the levels a stairwell
+  within 9 m joins it to; outdoors every level (the upper storeys are the
+  facade). Signs, screens, door leaves and NPCs follow the same rule; the
+  aim ray ignores hidden levels; lights prefer fixtures on the avatar's level.
+* **Map.** The minimap shows the avatar's level; the big map opens on it and
+  has floor tabs (stairs and elevator cars drawn as symbols, a floor badge,
+  the avatar and the destination faded on other floors). Destinations carry
+  their level.
+* **Autopilot.** `walkTo({ x, z, level })` to another level walks to the
+  nearest flight's approach point, climbs or descends it, and walks on — or,
+  without stairs, rides an elevator (fewest level changes first).
+* Single-level facilities render, collide and navigate exactly as before.
+
+## Equipment models (GLB/glTF)
+
+An equipment type's optional `model` replaces its voxel parts in the web
+world (docs/ASSETS.md has the asset pipeline: licences, hashes, local-only
+files and `clinicalcraft assets inspect`). The renderer loads it with
+three's GLTFLoader (+ MeshoptDecoder, imported only for a model that uses
+it; DRACO only when a decoder path is configured), once per URL; relative
+`uri`s resolve under `/local-assets/`.
+It checks the pinned `sha256`, fits the model to the footprint (`fitModel`:
+the reference `scale` — else a uniform fit inside the footprint — then
+`rot`, the bounding box centred on the footprint on the floor, then
+`offset`), casts shadows and is disposed with the world. Any error or a
+missing file keeps the voxel parts. The collider is always the footprint and
+the interaction target always the placement's: the model's meshes never
+take the aim (an invisible footprint box does).
 
 ## Equipment catalogs (ids are a contract — facilities reference them)
 
@@ -188,6 +332,19 @@ cytogenetics + molecular), `slide-scanner`, `microtome`, `tissue-processor`,
   ambulance bay, outpatient clinic, radiology, laboratory, pathology,
   pharmacy, ward, ICU, operating room, nurse station, conference room,
   garden + build zone). Patient slots accept every case setting.
+* `teaching-hospital` — a two-level teaching hospital composed from room
+  templates (22 instances): **L0** entrance plaza, lobby with reception,
+  triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology
+  (CT, X-ray), laboratory, pharmacy (restricted dispensary: pharmacists and
+  nurses), outpatient consult and orthopaedic examination rooms, ambulance
+  bay; **L1** (elevation 4.5 m) medical wards A and B (4 beds each) with a
+  nursing station, ICU (2 bed spaces, nursing station, store), teaching room,
+  rehabilitation gym, operating theatre (restricted sterile zone), staff
+  room. Main stairs (2 m wide, lobby → first-floor landing) and an elevator
+  (cars on both levels). 17 patient slots (emergency, outpatient,
+  inpatient/ward, icu, operating-room), 11 staff on both levels. It is
+  nobody's own facility: the web offers it as an alternative for every case
+  it can host without blocking capability gaps (9 of the 10 built-in cases).
 
 ### V4 workstation capability groupings (clinic-v4)
 

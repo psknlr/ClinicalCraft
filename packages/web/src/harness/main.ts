@@ -7,14 +7,69 @@
  * window.__READY__ for scripts/qa-world.mjs.
  *
  * Query: facility, patients=all, quality=low|medium|high, locale=zh-CN|en,
- * rhythm=<rhythm>, vitals=baseline|none, autostart=0.
+ * rhythm=<rhythm>, vitals=baseline|none, autostart=0, model=<equipment type>
+ * (that type drawn with a generated GLB model: QA of the model path).
  */
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { createAtlas } from "../atlas/index.js";
 import type { AtlasApi, InteractionTarget, WorldApi, WorldPatient, WorldSettings } from "../contracts.js";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { createWorld } from "../world/index.js";
+import { encodeGlb } from "../../../core/src/engine/glb.js";
 import { loadContent } from "./content.js";
+
+/** A two-box GLB (a base and a smaller top in another colour) sized to a footprint, as a data: URL — QA of the model path. */
+function demoModelUrl(fp: { w: number; d: number; h: number }): string {
+  const boxes = [
+    { min: [-fp.w / 2, 0, -fp.d / 2], max: [fp.w / 2, fp.h * 0.6, fp.d / 2] },
+    { min: [-fp.w / 2 + 0.05, fp.h * 0.6, -fp.d / 2 + 0.05], max: [fp.w / 2 - 0.05, fp.h, fp.d / 2 - 0.05] },
+  ];
+  const idx = [0, 1, 3, 0, 3, 2, 4, 6, 7, 4, 7, 5, 0, 4, 5, 0, 5, 1, 2, 3, 7, 2, 7, 6, 0, 2, 6, 0, 6, 4, 1, 5, 7, 1, 7, 3];
+  const chunks: Uint8Array[] = [];
+  const views: object[] = [];
+  const accessors: object[] = [];
+  let offset = 0;
+  boxes.forEach((b) => {
+    const pos = new Float32Array(24);
+    for (let i = 0; i < 8; i++) pos.set([i & 1 ? b.max[0] : b.min[0], i & 2 ? b.max[1] : b.min[1], i & 4 ? b.max[2] : b.min[2]], i * 3);
+    const ind = new Uint16Array(idx);
+    for (const [arr, target, count, type, extra] of [
+      [pos, 34962, 8, "VEC3", { componentType: 5126, min: b.min, max: b.max }],
+      [ind, 34963, 36, "SCALAR", { componentType: 5123 }],
+    ] as const) {
+      const bytes = new Uint8Array(arr.buffer);
+      views.push({ buffer: 0, byteOffset: offset, byteLength: bytes.byteLength, target });
+      accessors.push({ bufferView: views.length - 1, count, type, ...extra });
+      chunks.push(bytes);
+      offset += bytes.byteLength;
+    }
+  });
+  const bin = new Uint8Array(offset);
+  let at = 0;
+  for (const c of chunks) {
+    bin.set(c, at);
+    at += c.byteLength;
+  }
+  const glb = encodeGlb(
+    {
+      asset: { version: "2.0", generator: "clinicalcraft harness" },
+      scenes: [{ nodes: [0] }],
+      nodes: [{ mesh: 0 }],
+      meshes: [{ primitives: [0, 1].map((k) => ({ attributes: { POSITION: k * 2 }, indices: k * 2 + 1, material: k })) }],
+      materials: [
+        { pbrMetallicRoughness: { baseColorFactor: [0.85, 0.42, 0.2, 1], metallicFactor: 0, roughnessFactor: 0.7 } },
+        { pbrMetallicRoughness: { baseColorFactor: [0.25, 0.55, 0.8, 1], metallicFactor: 0, roughnessFactor: 0.5 } },
+      ],
+      buffers: [{ byteLength: bin.byteLength }],
+      bufferViews: views,
+      accessors,
+    },
+    bin,
+  );
+  let b64 = "";
+  for (const byte of glb) b64 += String.fromCharCode(byte);
+  return `data:model/gltf-binary;base64,${btoa(b64)}`;
+}
 
 declare global {
   interface Window {
@@ -32,6 +87,14 @@ const locale = q.get("locale") || "zh-CN";
 document.documentElement.lang = locale;
 
 const content = loadContent();
+// ?model=<equipment type>: QA of the GLB path — that type gets a generated box model (a data: URL, CC0) sized to its footprint
+const modelType = q.get("model");
+if (modelType) {
+  for (const cat of content.catalogs) {
+    const type = cat.equipment.find((e) => e.id === modelType);
+    if (type) type.model = { uri: demoModelUrl(type.footprint), license: "CC0-1.0", scale: 1 };
+  }
+}
 const wanted = q.get("facility") || "clinic-v4";
 const facility = content.facilities.get(wanted) ?? content.facilities.get("clinic-v4") ?? content.facilities.get("test-clinic") ?? [...content.facilities.values()][0];
 const issues: string[] = [...content.issues];
@@ -159,6 +222,11 @@ const world = createWorld({
       if (t.kind === "equipment" && t.interaction === "atlas") openAtlas();
       if (t.kind === "equipment" && t.interaction === "monitor") openMonitor();
       if (t.kind === "patient") world.setPatientState(t.slotId, { speaking: true });
+      // elevator car panel: ride to the next floor the car serves (the app offers a floor list instead)
+      if (t.kind === "elevator" && t.inside && t.stops.length > 1) {
+        const next = t.stops[(t.stops.indexOf(t.level) + 1) % t.stops.length];
+        world.rideElevator(t.connectorId, next).catch((err: unknown) => toast(t.name, String(err)));
+      }
     },
     onTarget(t) {
       target = t;
@@ -166,7 +234,7 @@ const world = createWorld({
       renderHud();
     },
     onMove(info) {
-      lastMove = { x: info.x, z: info.z, region: info.region, room: info.roomId };
+      lastMove = { x: info.x, z: info.z, region: info.levelName ? `${info.region} · ${info.levelName}` : info.region, room: info.roomId };
       renderHud();
     },
     onBlock(kind, type) {

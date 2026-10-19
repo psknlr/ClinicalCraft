@@ -161,14 +161,18 @@ function userBlocks(message: ChatMessage): { results: BetaToolResultBlockParam[]
   const other: BetaContentBlockParam[] = [];
   for (const part of message.content) {
     switch (part.type) {
-      case "tool_result":
+      case "tool_result": {
+        const text = part.content === "" ? "(no output)" : part.content;
+        // Camera frames travel inside the tool_result (text first, then the image blocks).
+        const images = (part.images ?? []).map((img) => ({ type: "image" as const, source: { type: "base64" as const, media_type: img.mediaType as ImageMediaType, data: img.data } }));
         results.push({
           type: "tool_result",
           tool_use_id: part.callId,
-          content: part.content === "" ? "(no output)" : part.content,
+          content: images.length > 0 ? [{ type: "text", text }, ...images] : text,
           ...(part.isError ? { is_error: true } : {}),
         });
         break;
+      }
       case "text":
         if (part.text.trim()) other.push({ type: "text", text: part.text });
         break;

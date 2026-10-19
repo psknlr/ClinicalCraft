@@ -16,6 +16,8 @@ import type {
   SessionState,
   VitalsSnapshot,
 } from "@clinicalcraft/core";
+import type { ActorId, Pose, WorldActionRequest, WorldActionResult, WorldEvent } from "@clinicalcraft/world";
+import type { Embodiment } from "./settings/schema.js";
 
 /* ------------------------------------------------------------------ */
 /* Shared vocabulary                                                   */
@@ -91,6 +93,18 @@ export type Op =
   | { type: "autopilot"; goal?: string; maxTurns?: number }
   /** Result of a client-executed dynamic tool (e.g. `walk_to` performed in the 3D world). */
   | { type: "dynamic_tool_response"; callId: string; ok: boolean; output: string }
+  /**
+   * Embodied mode (docs/EMBODIED.md §5): a world action (navigate, approach, operate a device…) performed by the
+   * learner's body (or another actor): queued like other work; operations with a clinical effect run their
+   * clinical tool through the learner's tool path (hooks, approval gate). Answered by `world_action_result`.
+   * Refused (`error`, code `not_embodied`) in a clinical-mode session.
+   */
+  | { type: "world_action"; request: WorldActionRequest }
+  /**
+   * Embodied mode: a sensor pose update of a human-driven body (the browser avatar, ~10 Hz). Out-of-band: applied
+   * at once, never queued behind a turn, never transcribed; bumps only that actor's own version (EMBODIED R4).
+   */
+  | { type: "world_pose"; actorId: ActorId; pose: Pose }
   /** Cancel the running turn (AbortController). */
   | { type: "interrupt" }
   /** Change runtime configuration (provider, model, approval mode, locale…). */
@@ -116,6 +130,8 @@ export interface RuntimeConfigPatch {
   /** A supported language ("zh-CN", "en"); aliases such as "zh" or "en-US" are normalised, anything else is refused (`invalid_config`). */
   locale?: string;
   interlocutor?: AddressTarget;
+  /** Fixed for an encounter: a patch that would change it is refused (`invalid_config`, the session keeps its mode). */
+  embodiment?: Embodiment;
 }
 
 /* ------------------------------------------------------------------ */
@@ -137,6 +153,8 @@ export type EventMsg =
       agents: string[];
       interlocutor: AddressTarget;
       offline: boolean;
+      /** `clinical` or `embodied` (a world runs; clinical tools are spatially gated — docs/EMBODIED.md R3). */
+      embodiment: Embodiment;
     }
   /**
    * `synthetic`: a line spoken outside any agent turn (staff alarm/critical-result
@@ -204,6 +222,10 @@ export type EventMsg =
   | { type: "turn_aborted"; turnId: string; agent: AgentRole; reason: "interrupted" | "max_tool_rounds" | "error" | "denied" }
   | { type: "assessment"; report: AssessmentReport; narrative: string | null; judged: { id: string; met: boolean; evidence: string }[] }
   | { type: "notification"; level: "info" | "warning" | "critical"; title: string; body: string }
+  /** Embodied mode: a committed change of the physical world (`version` = the world version after it). Transient (not transcribed). */
+  | { type: "world_event"; event: WorldEvent; version: number }
+  /** Embodied mode: the outcome of a world action (any actor; world tools, `world_action` ops, skills, delegations, the embodied autopilot). */
+  | { type: "world_action_result"; result: WorldActionResult }
   | { type: "command_output"; name: string; text: string; data?: unknown }
   | { type: "config_changed"; patch: RuntimeConfigPatch }
   | { type: "compacted"; agent: AgentRole; beforeTokens: number; afterTokens: number }

@@ -615,6 +615,14 @@
               "exclusiveMinimum": 0,
               "maximum": 1440
             },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "wait",
+                "travel",
+                "procedure"
+              ]
+            },
             "by": {
               "type": "string",
               "enum": [

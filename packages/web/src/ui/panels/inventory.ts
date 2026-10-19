@@ -44,7 +44,7 @@ export function inventoryPanel(app: App): () => PanelView {
               type: "button",
               id: "go-craft",
               onclick: () => {
-                if (bench) app.markDestination({ x: bench.x, z: bench.z, label: app.game!.stations.label(bench, app.prefs.locale) });
+                if (bench) app.markDestination({ x: bench.x, z: bench.z, label: app.game!.stations.label(bench, app.prefs.locale), level: app.game!.stations.levelOf(bench) });
                 app.close();
                 app.toast(tr("inv.craftWhere"), tr("inv.craftWhereBody"));
               },

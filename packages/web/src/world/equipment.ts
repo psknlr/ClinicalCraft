@@ -4,7 +4,7 @@
  * lights, labels and interaction targets. The rotated footprint colliders of
  * solid equipment are the collision model's (`eq:<placementId>`).
  */
-import { Box3, CanvasTexture, Color, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute } from "three";
+import { Box3, CanvasTexture, Color, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { entityLevel, type EquipmentType, type Placement, type VoxelPart } from "@clinicalcraft/core";
 import type { InteractionTarget } from "../contracts.js";
@@ -13,7 +13,7 @@ import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from
 import { roomAt } from "./region.js";
 import { createScreenTexture, type ScreenKind } from "./screens.js";
 import { strings, tx } from "./strings.js";
-import { UNIT_BOX, UNIT_PLANE } from "./voxels.js";
+import { BoxBatch, UNIT_BOX, UNIT_PLANE } from "./voxels.js";
 
 type InteractionKind = Extract<InteractionTarget, { kind: "equipment" }>["interaction"];
 
@@ -35,9 +35,9 @@ export function labelColor(kind: string, caps: string[]): string {
   return "#2f574d";
 }
 
-/** Room id whose rect contains (x, z) — smallest room wins. */
-export function roomIdAt(ctx: Pick<BuildContext, "facility">, x: number, z: number): string | null {
-  return roomAt(ctx.facility, x, z)?.id ?? null;
+/** Room id whose rect contains (x, z) — smallest room wins; with `level`, only that level's rooms. */
+export function roomIdAt(ctx: Pick<BuildContext, "facility">, x: number, z: number, level?: string): string | null {
+  return roomAt(ctx.facility, x, z, level)?.id ?? null;
 }
 
 /**
@@ -77,6 +77,7 @@ export function placementParts(type: Pick<EquipmentType, "parts">, placement: Pi
 }
 
 interface StaticScreen {
+  level: string;
   canvas: HTMLCanvasElement;
   x: number;
   y: number;
@@ -117,8 +118,10 @@ export function packShelves(sizes: { w: number; h: number }[], width = 512): { r
   return { rects, width, height: Math.max(1, y + rowH) };
 }
 
-function buildStaticScreens(ctx: BuildContext, screens: StaticScreen[]): void {
-  if (!screens.length) return;
+function buildStaticScreens(ctx: BuildContext, all: StaticScreen[]): void {
+  if (!all.length) return;
+  // one atlas texture; per level two meshes (dim text panels, bright imaging/lab screens) so a level can be culled
+  const screens = all;
   const pack = packShelves(screens.map((s) => ({ w: s.canvas.width, h: s.canvas.height })));
   const atlas = document.createElement("canvas");
   atlas.width = pack.width;
@@ -131,9 +134,11 @@ function buildStaticScreens(ctx: BuildContext, screens: StaticScreen[]): void {
   tex.generateMipmaps = false;
   tex.colorSpace = SRGBColorSpace;
   ctx.ownedTextures.push(tex);
+  for (const level of [...new Set(screens.map((s) => s.level))])
   for (const dim of [false, true]) {
-    const list = screens.map((s, i) => ({ s, i })).filter((e) => e.s.dim === dim);
+    const list = screens.map((s, i) => ({ s, i })).filter((e) => e.s.dim === dim && e.s.level === level);
     if (!list.length) continue;
+    ctx.onLevel(level);
     const geoms = list.map(({ s, i }) => {
       const g = UNIT_PLANE.clone();
       const uv = g.getAttribute("uv") as BufferAttribute;
@@ -164,11 +169,16 @@ function buildStaticScreens(ctx: BuildContext, screens: StaticScreen[]): void {
     ctx.root.add(mesh);
     ctx.pickables.push(mesh);
   }
+  ctx.onLevel(ctx.level);
 }
 
 function buildLeds(ctx: BuildContext, leds: Map<string, LedPart[]>): void {
-  for (const [key, list] of leds) {
+  for (const [levelKey, list] of leds) {
+    // keys: "<level>|<material>|<anim>|<bucket>" (one merged mesh per level so a level can be culled)
+    const [level, ...rest] = levelKey.split("|");
+    const key = rest.join("|");
     const [m, anim, bucket] = key.split("|");
+    ctx.onLevel(level);
     const geoms = list.map((l) => UNIT_BOX.clone().scale(l.s[0], l.s[1], l.s[2]).rotateY(l.ry).translate(l.x, l.y, l.z));
     const merged = mergeGeometries(geoms, false);
     for (const g of geoms) g.dispose();
@@ -183,6 +193,7 @@ function buildLeds(ctx: BuildContext, leds: Map<string, LedPart[]>): void {
     ctx.root.add(mesh); // not ray-picked: the equipment behind the LED resolves the aim
     ctx.animated.push({ mesh, anim: anim as "blink" | "pulse", base: { y: 0, ry: 0, sx: 1, sy: 1, sz: 1 }, material, phase: Number(bucket) * 0.5 });
   }
+  ctx.onLevel(ctx.level);
 }
 
 export function buildPlacements(ctx: BuildContext): void {
@@ -192,19 +203,22 @@ export function buildPlacements(ctx: BuildContext): void {
   const staticScreens: StaticScreen[] = [];
   const leds = new Map<string, LedPart[]>();
   for (const p of f.placements) {
-    if (entityLevel(f, p) !== ctx.level) continue; // other levels are not rendered (yet)
+    const level = entityLevel(f, p);
+    const elevation = ctx.levels.elevation(level);
+    ctx.onLevel(level);
     const type = ctx.catalogs.equipment.get(p.type);
     if (!type) {
       ctx.warnings.push(`unknown equipment type "${p.type}" (placement ${p.id})`);
       continue;
     }
     const rot = p.rot ?? 0;
-    const y = p.y ?? 0;
+    // world height of the placement's origin: its level's floor + its own `y`
+    const y = elevation + (p.y ?? 0);
     const kind = (type.interaction?.kind ?? "none") as InteractionKind | "door";
     const screenKind = (type.screen ?? "none") as ScreenKind;
     const caps = [...new Set([...(type.capabilities ?? []), ...(p.capabilities ?? [])])];
     const label = tx(p.label ?? type.name, ctx.locale);
-    const room = p.room ?? roomIdAt(ctx, p.x, p.z);
+    const room = p.room ?? roomIdAt(ctx, p.x, p.z, ctx.levels.multi ? level : undefined);
     const interactive = kind !== "none";
     const fp = rotatedFootprint(type.footprint.w, type.footprint.d, rot);
     const info: PlacementInfo = {
@@ -212,7 +226,7 @@ export function buildPlacements(ctx: BuildContext): void {
       type,
       x: p.x,
       z: p.z,
-      y,
+      y: p.y ?? 0,
       rot,
       w: fp.w,
       d: fp.d,
@@ -221,8 +235,29 @@ export function buildPlacements(ctx: BuildContext): void {
       kind,
       label,
       room,
+      level,
+      elevation,
     };
     ctx.placements.set(p.id, info);
+
+    // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
+    let finishFallback: (() => void) | null = null;
+    const modelled = !!(ctx.models && type.model);
+    if (modelled) {
+      const fallback = new Group();
+      fallback.name = `voxels:${p.id}`;
+      ctx.root.add(fallback);
+      const batch = new BoxBatch();
+      const prevRoot = ctx.root, prevBatch = ctx.batch;
+      ctx.root = fallback;
+      ctx.batch = batch;
+      finishFallback = () => {
+        for (const m of batch.build(fallback, ctx.lib, ctx.shadows)) ctx.pickables.push(m);
+        ctx.root = prevRoot;
+        ctx.batch = prevBatch;
+        ctx.models!.push({ placementId: p.id, model: type.model!, footprint: { ...type.footprint }, at: { x: p.x, y, z: p.z, rot }, level, fallback });
+      };
+    }
 
     const parts = placementParts(type, p);
     const boxes = [];
@@ -240,10 +275,10 @@ export function buildPlacements(ctx: BuildContext): void {
         ctx.batch.add(blackId, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
         const lift = part.s[2] / 2 + 0.003;
         const qx = px + Math.sin(ry) * lift, qz = pz + Math.cos(ry) * lift;
-        if (!live) {
+        if (!live && !modelled) {
           // static pixel art never changes: packed into one atlas, all panels drawn by two meshes
           sc.texture.dispose();
-          staticScreens.push({ canvas: sc.canvas, x: qx, y: py, z: qz, ry, w: part.s[0], h: part.s[1], owner: p.id, dim: screenKind === "text" });
+          staticScreens.push({ level, canvas: sc.canvas, x: qx, y: py, z: qz, ry, w: part.s[0], h: part.s[1], owner: p.id, dim: screenKind === "text" });
           continue;
         }
         // live monitors are self-lit displays redrawn at ≤ 10 Hz (own texture, one draw call each)
@@ -255,6 +290,11 @@ export function buildPlacements(ctx: BuildContext): void {
         mesh.userData.owner = p.id;
         ctx.root.add(mesh);
         ctx.pickables.push(mesh);
+        if (!live) {
+          // a modelled placement's static screen: its own quad in the voxel fallback group
+          ctx.ownedTextures.push(sc.texture);
+          continue;
+        }
         // vitals source: slot whose monitor is this placement, else the nearest slot in the same room within 4 m
         let slotId: string | null = null;
         if (screenKind === "vitals" || screenKind === "ecg") {
@@ -271,13 +311,13 @@ export function buildPlacements(ctx: BuildContext): void {
             }
           }
         }
-        ctx.screens.push({ placementId: p.id, kind: screenKind, mesh, canvas: sc.canvas, ctx: sc.ctx, texture: sc.texture, x: px, z: pz, slotId, lastDraw: -1e9 });
+        ctx.screens.push({ placementId: p.id, kind: screenKind, mesh, canvas: sc.canvas, ctx: sc.ctx, texture: sc.texture, x: px, z: pz, slotId, lastDraw: -1e9, level });
         continue;
       }
-      if (anim === "blink" || anim === "pulse") {
+      if ((anim === "blink" || anim === "pulse") && !modelled) {
         // indicator LEDs: merged per (material, animation, phase half) → a handful of draw calls
         const bucket = (p.x * 0.37 + p.z * 0.71) % 1 < 0.5 ? 0 : 1;
-        const key = `${part.m}|${anim}|${bucket}`;
+        const key = `${level}|${part.m}|${anim}|${bucket}`;
         let list = leds.get(key);
         if (!list) leds.set(key, (list = []));
         list.push({ x: px, y: py, z: pz, ry, s: part.s, cast: ctx.shadows && ctx.lib.castShadow(part.m) });
@@ -306,6 +346,7 @@ export function buildPlacements(ctx: BuildContext): void {
       }
       ctx.batch.add(part.m, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
     }
+    finishFallback?.();
 
     if (type.light) {
       ctx.lights.push({
@@ -317,6 +358,7 @@ export function buildPlacements(ctx: BuildContext): void {
         distance: type.light.distance,
         decay: 2,
         source: p.id,
+        level,
       });
     }
     // floating label above labelled stations (V4: workstations, board, atlas kiosk, crafting bench);
@@ -345,10 +387,11 @@ export function buildPlacements(ctx: BuildContext): void {
         hint: prompt,
         room,
       };
-      const rec: TargetRecord = { id: p.id, target, box, x: p.x, z: p.z, label, kind };
+      const rec: TargetRecord = { id: p.id, target, box, x: p.x, z: p.z, label, kind, level };
       ctx.targets.set(p.id, rec);
     }
   }
+  ctx.onLevel(ctx.level);
   buildStaticScreens(ctx, staticScreens);
   buildLeds(ctx, leds);
 }

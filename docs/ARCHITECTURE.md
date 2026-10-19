@@ -633,6 +633,18 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
 * **Transcripts** — JSONL "rollouts" (every Op, Event, ClinicalAction) under
   `~/.clinicalcraft/sessions/YYYY/MM/DD/<YYYY-MM-DDTHH-MM-SSZ>-<id>.jsonl`
   (UTC); resume = replay actions + restore conversations.
+* **Embodied mode** (settings `embodiment: "embodied"`, fixed per
+  encounter; docs/EMBODIED.md, PROTOCOL §12) — the session runs a headless
+  `@clinicalcraft/world` runtime for the case's facility: the clinical tools
+  that need a place (`ask_patient`, `examine`, `check_vitals`,
+  `order_test`, `read_result`, `intervene`) are spatially gated before the
+  approval gate and re-checked right before the engine commit; world tools
+  (perception, navigation, device operations, delegation, skills, camera
+  frames for vision models) are added; a device operation's clinical effect
+  runs the clinical tool through the caller's own tool path (deny rules
+  included); walking and procedures charge simulated time; the session keeps
+  an `EpisodeTrace` and `world` transcript snapshots. Clinical mode is
+  unchanged.
 
 ### 4.1 Approval modes
 

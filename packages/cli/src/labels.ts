@@ -3,7 +3,6 @@
  * clock mode, provenance, content languages, estimated minutes). Unknown
  * values are shown as recorded — never invented.
  */
-import type { CaseDefinition } from "@clinicalcraft/core";
 import type { MsgKey } from "./i18n.js";
 
 /** The part of a CLI context the labels need. */
@@ -64,6 +63,6 @@ export function stars(difficulty: number): string {
 }
 
 /** What the case picker shows after a title: difficulty and the localised setting. */
-export function caseChoiceMeta(ctx: Translator, c: Pick<CaseDefinition, "difficulty" | "setting">): string {
+export function caseChoiceMeta(ctx: Translator, c: { difficulty: number; setting: string }): string {
   return `${stars(c.difficulty)} · ${settingLabel(ctx, c.setting)}`;
 }

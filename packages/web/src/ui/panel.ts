@@ -33,6 +33,7 @@ export type PanelId =
   | "help"
   | "atlas"
   | "autopilot"
+  | "elevator"
   | "confirm";
 
 export interface PanelView {

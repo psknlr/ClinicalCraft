@@ -66,7 +66,7 @@ function candidateButton(app: App, game: Game, inv: Investigation, placementId: 
         class: "candidate elsewhere",
         dataset: { investigation: inv.id },
         onclick: () => {
-          app.markDestination({ x: where.x, z: where.z, label: where.label });
+          app.markDestination({ x: where.x, z: where.z, label: where.label, ...(where.level ? { level: where.level } : {}) });
           app.close();
           app.toast(tr("toast.markDest"), where.label);
         },

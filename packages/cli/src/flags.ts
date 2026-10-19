@@ -29,6 +29,14 @@ export const SESSION_FLAGS: FlagSpec[] = [
   { name: "max-tool-rounds", type: "number", valueName: "<n>", description: { en: "Tool rounds per agent turn", zh: "每个智能体回合的工具调用轮数上限" } },
   { name: "ephemeral", type: "boolean", description: { en: "Do not write a session transcript", zh: "不写入会话记录" } },
   {
+    name: "embodied",
+    type: "boolean",
+    description: {
+      en: "Embodied mode: a headless 3D hospital — move, find and operate equipment; clinical actions need you in the right place",
+      zh: "具身模式：无界面三维医院——走动、寻找并操作设备；临床操作需要身处正确的位置",
+    },
+  },
+  {
     name: "allowed-tools",
     type: "list",
     valueName: "<rules>",
@@ -68,6 +76,7 @@ export const EXEC_FLAGS: FlagSpec[] = [
   },
   { name: "quiet", short: "q", type: "boolean", description: { en: "No progress on stderr (text format)", zh: "不在 stderr 输出进度（text 格式）" } },
   { name: "output-last-message", short: "o", type: "string", valueName: "<file>", description: { en: "Also write the final message to this file", zh: "同时把最终消息写入该文件" } },
+  { name: "trace", type: "string", valueName: "<file>", description: { en: "Write the episode trace (JSON Lines spans; embodied mode) to this file", zh: "把本次接诊的轨迹（JSON Lines，具身模式）写入该文件" } },
 ];
 
 export const JSON_FLAG: FlagSpec = { name: "json", type: "boolean", description: { en: "Machine-readable JSON output", zh: "输出 JSON" } };

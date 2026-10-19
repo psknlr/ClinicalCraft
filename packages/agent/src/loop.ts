@@ -229,7 +229,9 @@ function emitHookWarnings(emit: (msg: EventMsg) => void, result: HookResult | un
  * the tool itself and PostToolUse hooks. Emits `tool_call_begin/end`.
  * Never throws.
  */
-export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCallOutcome> {
+export async function executeToolCall(params: ExecuteToolCallParams): Promise<ToolCallOutcome> {
+  // The tool sees the turn it runs in (nested calls — a world operation's clinical tool, a skill step — reuse it).
+  const p: ExecuteToolCallParams = params.ctx.turnId === params.turnId ? params : { ...params, ctx: { ...params.ctx, turnId: params.turnId } };
   const now = p.now ?? (() => Date.now());
   const L = p.ctx.locale;
   const startedAt = now();
@@ -252,7 +254,7 @@ export async function executeToolCall(p: ExecuteToolCallParams): Promise<ToolCal
       tool: p.call.name,
       status,
       output,
-      result: { type: "tool_result", callId: p.call.id, content: output.output, ...(output.ok ? {} : { isError: true }) },
+      result: { type: "tool_result", callId: p.call.id, content: output.output, ...(output.ok ? {} : { isError: true }), ...(output.images?.length ? { images: output.images.map((img) => ({ ...img })) } : {}) },
       grounded: status === "ok" ? groundedOf(output.data) : [],
     };
   };

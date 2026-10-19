@@ -1,19 +1,22 @@
 /**
  * MCP session registry: one `ClinicalSession` per `start_case`, created with
  * `createNodeSession` (settings layers, memory, project agents/commands,
- * command hooks, JSONL transcript). The resolved settings the server was
+ * command hooks, JSONL transcript) from the server's case library (only the
+ * started case is parsed and validated). The resolved settings the server was
  * started with are re-applied as the session's flag layer, with the MCP
  * approval default (`auto`: low/moderate-risk actions run, high-risk and
  * always-ask ones need a second call with `confirm: true`) unless the
  * settings chose a mode explicitly (`bypass` — no confirmation at all — only
  * when asked for, e.g. `clinicalcraft mcp --approval bypass` for benchmarks).
+ * `start_case { embodied }` chooses the session's embodiment (default: the
+ * settings'): an embodied session builds its own headless world.
  *
  * Calls on one session are serialised; sessions beyond `maxSessions` evict
  * the least recently used one (closed cleanly, transcript flushed).
  */
 import type { AgentEvent, AgentProfile, ApprovalMode, ClinicalSession, LLMProvider, ProviderConfig, ResolvedSettings, SettingsLayerData } from "@clinicalcraft/agent";
 import type { DomainEvent } from "@clinicalcraft/core";
-import { createCommandHookExecutor, createNodeSession, findProjectRoot, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
+import { createCommandHookExecutor, createNodeSession, findProjectRoot, type CaseLibrary, type Env } from "@clinicalcraft/agent/node";
 import { SessionToolRunner } from "./bridge.js";
 
 /** Kept per session for the `transcript` resource (bounded; clinical events redacted by `learnerClinicalEvent`). */
@@ -36,7 +39,8 @@ export interface SessionManagerOptions {
   settings: ResolvedSettings;
   env: Env;
   cwd: string;
-  content: () => Promise<LoadedContent>;
+  /** The case library sessions start from (indexed; the started case is validated). */
+  library: () => Promise<CaseLibrary>;
   maxSessions?: number;
   log?: (message: string) => void;
   /** Model provider override for every agent (tests). */
@@ -45,7 +49,7 @@ export interface SessionManagerOptions {
 }
 
 const LOG_LIMIT = 2000;
-const LOGGED_TYPES = new Set(["agent_message", "clinical_event", "plan_updated", "assessment", "notification", "warning", "error", "command_output"]);
+const LOGGED_TYPES = new Set(["agent_message", "clinical_event", "plan_updated", "assessment", "notification", "warning", "error", "command_output", "world_action_result"]);
 
 /** Approval mode of MCP sessions when no settings layer chose one. */
 export const MCP_DEFAULT_APPROVAL_MODE: ApprovalMode = "auto";
@@ -62,7 +66,7 @@ export function mcpApprovalMode(settings: Pick<ResolvedSettings, "approvalMode" 
 }
 
 /** Top-level settings re-applied to MCP sessions (content, case and server keys are handled by the server itself). */
-const FLAG_KEYS = ["provider", "model", "effort", "agents", "providers", "locale", "approvalMode", "practiceScope", "permissions", "hooks", "maxToolRounds", "autoCompact", "defaultFacility", "patient"] as const;
+const FLAG_KEYS = ["provider", "model", "effort", "agents", "providers", "locale", "approvalMode", "practiceScope", "permissions", "hooks", "maxToolRounds", "autoCompact", "defaultFacility", "patient", "embodiment", "perception"] as const;
 
 /**
  * The server's resolved settings as the session's top settings layer, so
@@ -70,13 +74,15 @@ const FLAG_KEYS = ["provider", "model", "effort", "agents", "providers", "locale
  * or from a programmatic caller survive `createNodeSession`'s own loading.
  * Concatenated keys (permissions, hooks) de-duplicate on merge.
  */
-export function sessionFlags(settings: ResolvedSettings, locale: string | null): SettingsLayerData {
+export function sessionFlags(settings: ResolvedSettings, locale: string | null, embodied: boolean | null = null): SettingsLayerData {
   const flags: Record<string, unknown> = {};
   for (const key of FLAG_KEYS) {
     const value = settings[key];
     if (value !== null && value !== undefined) flags[key] = structuredClone(value);
   }
   flags.locale = locale ?? settings.locale;
+  // `start_case { embodied }` chooses the mode of this encounter (default: the settings').
+  if (embodied !== null) flags.embodiment = embodied ? "embodied" : "clinical";
   flags.approvalMode = mcpApprovalMode(settings);
   flags.transcripts = { enabled: settings.transcripts.enabled, ...(settings.transcripts.dir ? { dir: settings.transcripts.dir } : {}) };
   return flags as SettingsLayerData;
@@ -115,6 +121,11 @@ function loggable(event: AgentEvent): LoggedEvent | null {
       return { seq: event.seq, type: msg.type, score: msg.report.score, completed: msg.report.completed, narrative: msg.narrative };
     case "command_output":
       return { seq: event.seq, type: msg.type, name: msg.name, text: msg.text };
+    case "world_action_result": {
+      // What happened in the world, as the learner was told (no event payloads).
+      const r = msg.result;
+      return { seq: event.seq, type: msg.type, actionId: r.actionId, status: r.status, errorCode: r.errorCode ?? null, message: r.message, elapsedSeconds: r.elapsedSeconds ?? 0 };
+    }
     default:
       return { seq: event.seq, ...msg };
   }
@@ -142,17 +153,20 @@ export class SessionManager {
     return entry;
   }
 
-  /** Start a case. Throws `BootstrapError` (unknown case/facility) and settings errors. */
-  async start(params: { caseId: string; locale?: string | null; facilityId?: string | null }): Promise<McpSession> {
+  /**
+   * Start a case (`embodied`: true/false chooses the embodiment, null the settings'). Throws `BootstrapError`
+   * (unknown or invalid case, unknown facility), `EmbodimentError` (embodied without a facility) and settings errors.
+   */
+  async start(params: { caseId: string; locale?: string | null; facilityId?: string | null; embodied?: boolean | null }): Promise<McpSession> {
     const settings = this.opts.settings;
     const session = await createNodeSession({
       caseId: params.caseId,
       cwd: this.opts.cwd,
       env: this.opts.env,
-      flags: sessionFlags(settings, params.locale ?? null),
+      flags: sessionFlags(settings, params.locale ?? null, params.embodied ?? null),
       ...(params.facilityId ? { facilityId: params.facilityId } : {}),
       transcript: settings.transcripts.enabled,
-      content: await this.opts.content(),
+      library: await this.opts.library(),
       ...(this.opts.providerFactory ? { providerFactory: this.opts.providerFactory } : {}),
     });
     const projectRoot = findProjectRoot(this.opts.cwd, this.opts.env) ?? this.opts.cwd;

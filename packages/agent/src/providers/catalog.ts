@@ -194,6 +194,7 @@ export const DEFAULT_CAPABILITIES: Readonly<ModelCapabilities> = Object.freeze({
   maxOutputTokens: 8_192,
   supportsTools: true,
   supportsImages: false,
+  vision: false,
   supportsStreaming: true,
   supportsMidConversationSystem: false,
   reasoning: "none",
@@ -290,18 +291,24 @@ function ruleRegex(pattern: string): RegExp | null {
 /**
  * Capabilities for a model on a provider: the `.*` default with every
  * matching rule merged in order. OpenRouter-style ids (`vendor/model`) are
- * also tested without the vendor prefix.
+ * also tested without the vendor prefix. `vision` (camera frames in tool
+ * results) follows `supportsImages` unless a matching rule sets it.
  */
 export function capabilitiesFor(providerId: string, model: string, rules: readonly ModelRule[] = MODEL_RULES): ModelCapabilities {
   const caps: ModelCapabilities = { ...DEFAULT_CAPABILITIES };
   const id = (model ?? "").trim();
   const bare = id.includes("/") ? id.slice(id.lastIndexOf("/") + 1) : id;
+  let visionSet = false;
   for (const rule of rules) {
     if (rule.provider && rule.provider !== providerId) continue;
     const re = ruleRegex(rule.match);
     if (!re) continue;
-    if (re.test(id) || (bare !== id && re.test(bare))) Object.assign(caps, rule.capabilities);
+    if (re.test(id) || (bare !== id && re.test(bare))) {
+      Object.assign(caps, rule.capabilities);
+      if (rule.capabilities.vision !== undefined) visionSet = true;
+    }
   }
+  if (!visionSet) caps.vision = caps.supportsImages;
   return caps;
 }
 

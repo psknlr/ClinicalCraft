@@ -4,9 +4,9 @@
  * diagnosis); accepts a number, an id or a unique id prefix.
  */
 import { createInterface } from "node:readline";
-import { t, type CaseDefinition } from "@clinicalcraft/core";
+import { t, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
 import { libraryOrder, sanitizeTerminal } from "@clinicalcraft/agent";
-import { loadContent, type LoadedContent } from "@clinicalcraft/agent/node";
+import { CaseLibrary, type LoadedContent } from "@clinicalcraft/agent/node";
 import { CliError, EXIT, type CliContext } from "./context.js";
 import { caseChoiceMeta } from "./labels.js";
 
@@ -23,8 +23,11 @@ export function sortedCases(content: LoadedContent, _locale?: string): CaseDefin
   return libraryOrder([...content.cases.values()].map((e) => e.def));
 }
 
+/** What the picker shows of a case: a full case or a case index entry. */
+export type PickerCase = Pick<CaseDefinition, "id" | "difficulty"> & { title: LocalizedText; setting: string };
+
 /** Resolve a picker answer (1-based number, id or unique prefix) against a list. */
-export function resolveChoice(answer: string, cases: readonly CaseDefinition[]): CaseDefinition | null {
+export function resolveChoice<T extends { id: string }>(answer: string, cases: readonly T[]): T | null {
   const a = answer.trim();
   if (!a) return null;
   if (/^\d+$/.test(a)) return cases[Number(a) - 1] ?? null;
@@ -34,10 +37,13 @@ export function resolveChoice(answer: string, cases: readonly CaseDefinition[]):
   return prefixed.length === 1 ? prefixed[0]! : null;
 }
 
-/** Ask the learner to choose a case. Non-TTY stdin → usage error listing the ids. */
-export async function pickCase(ctx: CliContext, contentDirs: readonly string[]): Promise<string> {
-  const content = await loadContent({ dirs: contentDirs });
-  const cases = sortedCases(content, ctx.locale);
+/**
+ * Ask the learner to choose a case. Non-TTY stdin → usage error listing the ids.
+ * Lists the case index (library order, no validation): only the chosen case is validated when it starts.
+ */
+export async function pickCase(ctx: CliContext, source: readonly string[] | CaseLibrary): Promise<string> {
+  const library = source instanceof CaseLibrary ? source : await CaseLibrary.open({ dirs: source });
+  const cases: PickerCase[] = await library.entries();
   if (cases.length === 0) throw new CliError(ctx.t("picker.none"), EXIT.error);
   if (!ctx.io.stdin.isTTY) {
     throw new CliError(ctx.t("picker.needCase"), EXIT.usage, cases.map((c) => c.id).join(", "));

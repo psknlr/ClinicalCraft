@@ -5,6 +5,8 @@
  * for something that is not available here.
  */
 import {
+  entityLevel,
+  facilityLevels,
   mergeCatalogs,
   PERSONAL_KIT,
   placementCapabilities,
@@ -29,6 +31,8 @@ export interface StationRef {
   z: number;
   kind: string;
   capabilities: string[];
+  /** Level of the placement (multi-level facilities only). */
+  level?: string;
 }
 
 export class Stations {
@@ -61,8 +65,14 @@ export class Stations {
     return placementCapabilities(this.facility, this.catalogs, placementId);
   }
 
+  /** Level of a placement in a multi-level facility (undefined in a single-level one). */
+  levelOf(placement: Placement): string | undefined {
+    return facilityLevels(this.facility).length > 1 ? entityLevel(this.facility, placement) : undefined;
+  }
+
   ref(placement: Placement, locale: string): StationRef {
-    return { placementId: placement.id, label: this.label(placement, locale), x: placement.x, z: placement.z, kind: this.kindOf(placement), capabilities: this.caps(placement.id) };
+    const level = this.levelOf(placement);
+    return { placementId: placement.id, label: this.label(placement, locale), x: placement.x, z: placement.z, kind: this.kindOf(placement), capabilities: this.caps(placement.id), ...(level ? { level } : {}) };
   }
 
   /** Placements an investigation can be retrieved/performed at (workstations and devices providing every required capability). */

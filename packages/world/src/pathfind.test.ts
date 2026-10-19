@@ -126,3 +126,13 @@ describe("corner clearance", () => {
     expect(fat).toBeGreaterThanOrEqual(0.28);
   });
 });
+
+describe("buildNavGrid floors (an upper level's slabs)", () => {
+  it("blocks every cell outside the floor areas; without floors nothing changes", () => {
+    const b = { minX: 0, maxX: 4, minZ: 0, maxZ: 2 };
+    const open = buildNavGrid(b, [], { cell: 1 });
+    expect([...open.blocked]).toEqual(new Array(8).fill(0));
+    const g = buildNavGrid(b, [], { cell: 1, floors: [{ minX: 0, maxX: 2, minZ: 0, maxZ: 2 }] });
+    expect([...g.blocked]).toEqual([0, 0, 1, 1, 0, 0, 1, 1]);
+  });
+});

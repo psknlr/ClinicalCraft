@@ -14,7 +14,7 @@
  */
 import type { Readable, Writable } from "node:stream";
 import { CLINICALCRAFT_VERSION, sanitizeTerminal, type AgentProfile, type LLMProvider, type ProviderConfig, type ResolvedSettings } from "@clinicalcraft/agent";
-import { loadContent, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
+import { CaseLibrary, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
 import { normalizeLocale } from "@clinicalcraft/core";
 import { classifyMessage, LineSplitter, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcRequest, type JsonRpcResponse } from "./jsonrpc.js";
 import { listResources, listResourceTemplates, readResource } from "./resources.js";
@@ -30,7 +30,9 @@ const INSTRUCTIONS =
   "ClinicalCraft runs grounded virtual-patient encounters. Call list_cases, then start_case to get a session_id, and act as the clinician " +
   "with the clinical tools (ask_patient, examine, order_test, read_result, answer_decision, …), passing session_id each time. " +
   "Patients and staff only know what the case records; missing data stays missing. Use case_status to see objectives and open decisions, " +
-  "finish_case when every objective is done, and get_debrief for the assessment (a teaching-script measure, not a validated competency score).";
+  "finish_case when every objective is done, and get_debrief for the assessment (a teaching-script measure, not a validated competency score). " +
+  "start_case with embodied: true gives you a body in the case's hospital: observe_world, find_entities, navigate_to and interact_object move and act in it, " +
+  "and the clinical tools then need you in the right place — a refusal carries data.hint.goal to pass to navigate_to.";
 
 /** Diagnostics go to stderr: stdout belongs to the protocol. */
 function stderrLog(message: string): void {
@@ -53,7 +55,10 @@ export interface McpServerOptions {
   env?: Env;
   /** Project directory for settings, memory, agents, commands and hooks (default `process.cwd()`). */
   cwd?: string;
-  /** Pre-loaded content (default: loaded once from the built-in and `settings.contentDirs`). */
+  /**
+   * Pre-loaded content (default: the built-in and `settings.contentDirs`, cases indexed — only a started
+   * case is parsed and validated).
+   */
   content?: LoadedContent;
   /** Maximum open sessions before the least recently used is closed (default 32). */
   maxSessions?: number;
@@ -78,7 +83,7 @@ export class McpServer {
   readonly sessions: SessionManager;
   private readonly settings: ResolvedSettings;
   private readonly log: (message: string) => void;
-  private contentPromise: Promise<LoadedContent> | null;
+  private libraryPromise: Promise<CaseLibrary> | null;
   private protocolVersion: string | null = null;
   private readonly inflight = new Map<JsonRpcId, AbortController>();
   private toolCache: { specs: McpToolSpec[]; byName: Map<string, McpToolSpec> } | null = null;
@@ -86,12 +91,12 @@ export class McpServer {
   constructor(private readonly opts: McpServerOptions) {
     this.settings = opts.settings;
     this.log = safeLog(opts.log ?? stderrLog);
-    this.contentPromise = opts.content ? Promise.resolve(opts.content) : null;
+    this.libraryPromise = opts.content ? Promise.resolve(CaseLibrary.fromContent(opts.content)) : null;
     this.sessions = new SessionManager({
       settings: opts.settings,
       env: opts.env ?? process.env,
       cwd: opts.cwd ?? process.cwd(),
-      content: () => this.content(),
+      library: () => this.library(),
       log: this.log,
       ...(opts.maxSessions !== undefined ? { maxSessions: opts.maxSessions } : {}),
       ...(opts.providerFactory ? { providerFactory: opts.providerFactory } : {}),
@@ -208,12 +213,14 @@ export class McpServer {
     };
   }
 
-  private content(): Promise<LoadedContent> {
-    this.contentPromise ??= loadContent({ dirs: this.settings.contentDirs }).then((c) => {
-      for (const { file, issues } of c.issues) for (const i of issues) if (i.severity === "error") this.log(`content: ${file}: ${i.path || "(root)"}: ${i.message}`);
-      return c;
+  /** The case library: facilities and catalogs loaded, cases indexed (a case is validated when it is started). */
+  private library(): Promise<CaseLibrary> {
+    this.libraryPromise ??= CaseLibrary.open({ dirs: this.settings.contentDirs }).then(async (library) => {
+      for (const { file, issues } of library.content.issues) for (const i of issues) if (i.severity === "error") this.log(`content: ${file}: ${i.path || "(root)"}: ${i.message}`);
+      for (const i of (await library.index()).issues) if (i.severity === "error") this.log(`content: ${i.file}: ${i.message}`);
+      return library;
     });
-    return this.contentPromise;
+    return this.libraryPromise;
   }
 
   private async tools(): Promise<{ specs: McpToolSpec[]; byName: Map<string, McpToolSpec> }> {
@@ -229,7 +236,7 @@ export class McpServer {
       locale: normalizeLocale(this.settings.locale),
       practiceScope: this.settings.practiceScope,
       deny: this.settings.permissions.deny,
-      content: () => this.content(),
+      library: () => this.library(),
       log: this.log,
     };
   }

@@ -3,7 +3,7 @@
  */
 import { basename } from "node:path";
 import type { CaseDefinition } from "@clinicalcraft/core";
-import { listSessions, loadContent, readTranscript } from "@clinicalcraft/agent/node";
+import { CaseLibrary, listSessions, readTranscript } from "@clinicalcraft/agent/node";
 import { objectiveTitle, replayTranscript, table, type Op, type TranscriptItem } from "@clinicalcraft/agent";
 import { flagBool, flagPositiveInt, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, type CliContext } from "./context.js";
@@ -62,7 +62,9 @@ export async function sessionsShow(ctx: CliContext, args: ParsedArgs): Promise<n
   let caseDef: CaseDefinition | null = null;
   if (meta?.caseId) {
     try {
-      caseDef = (await loadContent({ dirs: settings.contentDirs })).cases.get(meta.caseId)?.def ?? null;
+      // Only the recorded case is parsed and validated (not the whole library).
+      const loaded = await (await CaseLibrary.open({ dirs: settings.contentDirs })).load(meta.caseId);
+      caseDef = loaded.status === "ok" ? loaded.entry.def : null;
     } catch {
       caseDef = null;
     }

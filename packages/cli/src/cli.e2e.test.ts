@@ -511,6 +511,49 @@ describe.concurrent("serve & mcp", () => {
     }
     expect(replies[0]).toMatchObject({ jsonrpc: "2.0", id: 1 });
   });
+
+  it("mcp embodied smoke over stdio: start_case {embodied}, a spatial refusal with hint.goal, navigate_to, the tool again", { timeout: T }, async ({ expect }) => {
+    // Each request is sent when the previous reply arrived (some depend on it).
+    const steps: ((last: Record<string, any> | null) => Record<string, unknown> | null)[] = [
+      () => ({ method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "e2e", version: "0" } } }),
+      () => ({ method: "tools/list" }),
+      () => ({ method: "tools/call", params: { name: "start_case", arguments: { case_id: "stemi-inferior-rv", embodied: true } } }),
+      () => ({ method: "tools/call", params: { name: "examine", arguments: { session_id: session, finding_id: "general" } } }),
+      (last) => ({ method: "tools/call", params: { name: "navigate_to", arguments: { session_id: session, goal: last?.result?.structuredContent?.data?.hint?.goal } } }),
+      () => ({ method: "tools/call", params: { name: "examine", arguments: { session_id: session, finding_id: "general" } } }),
+      () => ({ method: "tools/call", params: { name: "observe_world", arguments: { session_id: session } } }),
+      () => null,
+    ];
+    let session = "";
+    const replies: Record<string, any>[] = [];
+    const send = (stdin: NodeJS.WritableStream, last: Record<string, any> | null) => {
+      const next = steps[replies.length]!(last);
+      if (!next) return void stdin.end();
+      stdin.write(`${JSON.stringify({ jsonrpc: "2.0", id: replies.length + 1, ...next })}\n`);
+    };
+    const first = steps[0]!(null)!;
+    const r = await cli(["mcp", "--lang", "en", "--provider", "offline"], {
+      env: { CLINICALCRAFT_HOME: freshHome("mcp-embodied") },
+      input: `${JSON.stringify({ jsonrpc: "2.0", id: 1, ...first })}\n`,
+      onLine: (line, stdin) => {
+        const reply = JSON.parse(line) as Record<string, any>;
+        replies.push(reply);
+        if (replies.length === 3) session = reply.result?.structuredContent?.session_id ?? "";
+        send(stdin, reply);
+      },
+    });
+    if (/not available/.test(r.stderr)) return; // the MCP package is optional in a CLI install
+    expect(replies.map((x) => x.id)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    const names = (replies[1]!.result.tools as { name: string }[]).map((t) => t.name);
+    expect(names).toEqual(expect.arrayContaining(["start_case", "examine", "observe_world", "navigate_to", "interact_object", "delegate_task", "execute_skill"]));
+    expect(replies[2]!.result.structuredContent).toMatchObject({ embodiment: "embodied" });
+    expect(replies[3]!.result).toMatchObject({ isError: true, structuredContent: { data: { code: "SPATIAL_REQUIREMENT_UNMET", hint: { goal: { kind: "interact" } } } } });
+    expect(replies[4]!.result.isError).toBeUndefined();
+    expect(replies[5]!.result.isError).toBeUndefined();
+    expect(replies[6]!.result.content[0].text).toMatch(/You are in/);
+    // stdout carried JSON-RPC only.
+    for (const line of r.stdout.split("\n").filter(Boolean)) expect(() => JSON.parse(line)).not.toThrow();
+  });
 });
 
 describe.concurrent("eval", () => {

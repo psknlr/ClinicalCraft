@@ -8,6 +8,8 @@
  * and substitutes `{name}` placeholders.
  */
 
+import { EMBODIED_EN, EMBODIED_ZH } from "./i18n-embodied.js";
+
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
 
@@ -437,6 +439,8 @@ const EN = {
   "examiner.offline.missingExam": "Missed required examination: {list}. ",
   "reason.truncated": "reply cut off at the {maxTokens}-token limit — raise agents.{agent}.maxTokens",
   "tool.noCapability": "Not available here: {name} needs {capabilities}, which {facility} does not have.",
+  // embodied mode (./i18n-embodied.ts)
+  ...EMBODIED_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -834,6 +838,7 @@ const ZH: Record<RuntimeKey, string> = {
   "examiner.offline.missingExam": "遗漏的必查体征：{list}。",
   "reason.truncated": "回复在 {maxTokens} 个 token 的上限处被截断——请调高 agents.{agent}.maxTokens",
   "tool.noCapability": "此处无法进行：{name}需要{capabilities}，而{facility}没有这些条件。",
+  ...EMBODIED_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

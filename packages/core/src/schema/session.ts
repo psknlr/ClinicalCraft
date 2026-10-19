@@ -31,7 +31,12 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("hint"), ...base }).strict(),
   z.object({ type: z.literal("answer"), decisionId: IdSchema, optionIds: z.array(IdSchema).min(1), ...base }).strict(),
   z.object({ type: z.literal("intervene"), interventionId: IdSchema, ...base }).strict(),
-  z.object({ type: z.literal("advance-time"), minutes: z.number().positive().max(24 * 60), ...base }).strict(),
+  /**
+   * Let simulated time pass. `reason` (optional, informational — the engine treats every reason alike):
+   * `wait` (the learner or an agent waited), `travel` (an embodied walk, docs/EMBODIED.md R8),
+   * `procedure` (the duration of a physical device operation).
+   */
+  z.object({ type: z.literal("advance-time"), minutes: z.number().positive().max(24 * 60), reason: z.enum(["wait", "travel", "procedure"]).optional(), ...base }).strict(),
   z.object({ type: z.literal("flag"), flag: IdSchema, value: z.boolean().default(true), ...base }).strict(),
   z.object({ type: z.literal("note"), text: z.string().max(4000), ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),

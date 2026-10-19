@@ -59,6 +59,11 @@ export interface AutopilotHost {
    * the tool steps that did not go through (denied, blocked, rejected).
    */
   cursor: { value: number; missed: OfflineClinicianStep[] };
+  /**
+   * The offline clinician's turn, when it is not `offlineClinicianTurn` — embodied mode replays the
+   * walkthrough with the body (`embodiedOfflineTurn`).
+   */
+  offlineTurn?(turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome>;
 }
 
 /**
@@ -153,7 +158,7 @@ export async function runAutopilot(host: AutopilotHost, options: { goal?: string
     host.emit({ type: "turn_started", turnId, agent: "clinician" });
     let outcome: AgentOutcome;
     if (!online) {
-      outcome = await offlineClinicianTurn(host, turnId, host.clinicianMaxSteps(), signal);
+      outcome = host.offlineTurn ? await host.offlineTurn(turnId, host.clinicianMaxSteps(), signal) : await offlineClinicianTurn(host, turnId, host.clinicianMaxSteps(), signal);
     } else {
       const status = caseStatusText({ caseDef: host.caseDef, locale: host.locale, state: () => host.state() }).text;
       const text = i === 0 ? options.goal?.trim() || rt(host.locale, "clinician.goal") : rt(host.locale, "clinician.continue", { status });

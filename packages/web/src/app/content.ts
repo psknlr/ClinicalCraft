@@ -11,16 +11,18 @@
  * by `clinicalcraft serve` join the index from its paginated listing
  * (`GET /api/content/cases`) and load from `/api/content/cases/:id`; an
  * older server without the listing has its cases fetched in full.
- * Facilities and equipment catalogs stay bundled (small; the world needs
- * them at once).
+ * Facilities, room templates and equipment catalogs stay bundled (small;
+ * the world needs them at once); facilities that place room templates are
+ * compiled here (`compileFacility`), so the world only sees flat facilities.
  */
 import { canCompleteWith, caseIndexEntry, compareLibraryOrder, createLimiter, libraryOrder, mapLimit, normalizeIndexEntry, type CaseIndexEntry } from "@clinicalcraft/agent";
-import { facilityCapabilities, parseCase, parseCatalog, parseFacility, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
+import { compileFacility, facilityCapabilities, parseCase, parseCatalog, parseFacility, parseRoomTemplate, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type RoomTemplate } from "@clinicalcraft/core";
 import { CASE_FOLDERS, CASE_INDEX, CASE_INDEX_ISSUES } from "virtual:clinicalcraft/case-index";
 
 const caseModules = import.meta.glob("../../../content/cases/*/case.json", { import: "default" }) as Record<string, () => Promise<unknown>>;
 const facilityFiles = import.meta.glob("../../../content/facilities/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
 const catalogFiles = import.meta.glob("../../../content/catalogs/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
+const templateFiles = import.meta.glob("../../../content/templates/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
 
 /** What the case library shows: the case's index entry, and where the full case comes from. */
 export interface CaseCard extends CaseIndexEntry {
@@ -51,6 +53,8 @@ export interface ContentSources {
   facilities: Readonly<Record<string, unknown>>;
   /** Equipment catalog JSON documents by file name. */
   catalogs: Readonly<Record<string, unknown>>;
+  /** Room template JSON documents by file name (facilities' `instances` are compiled with them). */
+  templates?: Readonly<Record<string, unknown>>;
   /** Problems found while indexing. */
   issues?: readonly string[];
 }
@@ -131,11 +135,25 @@ export function createContentIndex(sources: ContentSources, options: ContentOpti
     if (r.ok) catalogs.set(r.value.id, r.value);
     else issues.push(...fmt(file, r.issues));
   }
+  const templates = new Map<string, RoomTemplate>();
+  for (const [file, json] of Object.entries(sources.templates ?? {}).sort(([a], [b]) => a.localeCompare(b))) {
+    const r = parseRoomTemplate(json);
+    if (r.ok) templates.set(r.value.id, r.value);
+    else issues.push(...fmt(file, r.issues));
+  }
+  /** A parsed facility, flat: room-template instances compiled (null and issues reported when it does not compile). */
+  const flat = (file: string, f: FacilityDefinition): FacilityDefinition | null => {
+    const compiled = compileFacility(f, templates);
+    if (compiled.ok) return compiled.facility;
+    issues.push(...fmt(file, compiled.issues.filter((i) => i.severity === "error")));
+    return null;
+  };
   const facilities = new Map<string, FacilityDefinition>();
   for (const [file, json] of Object.entries(sources.facilities)) {
     const r = parseFacility(json);
-    if (r.ok) facilities.set(r.value.id, r.value);
-    else issues.push(...fmt(file, r.issues));
+    const f = r.ok ? flat(file, r.value) : null;
+    if (f) facilities.set(f.id, f);
+    else if (!r.ok) issues.push(...fmt(file, r.issues));
   }
 
   /* ---- full cases ---------------------------------------------------- */
@@ -262,7 +280,10 @@ export function createContentIndex(sources: ContentSources, options: ContentOpti
     for (const json of payload.facilities) {
       const r = parseFacility(json);
       if (r.ok && !facilities.has(r.value.id)) {
-        facilities.set(r.value.id, r.value);
+        // the server sends compiled facilities; one that still places templates is compiled with the bundled ones
+        const f = flat("server facility", r.value);
+        if (!f) continue;
+        facilities.set(f.id, f);
         added++;
       } else if (!r.ok) issues.push(...fmt("server facility", r.issues));
     }
@@ -318,7 +339,7 @@ function bundledLoaders(): Map<string, () => Promise<unknown>> {
 
 /** What the bundle holds: the case index, the lazy case chunks, facilities and catalogs. */
 export function bundledSources(): ContentSources {
-  return { entries: CASE_INDEX, loaders: bundledLoaders(), facilities: facilityFiles, catalogs: catalogFiles, issues: CASE_INDEX_ISSUES };
+  return { entries: CASE_INDEX, loaders: bundledLoaders(), facilities: facilityFiles, catalogs: catalogFiles, templates: templateFiles, issues: CASE_INDEX_ISSUES };
 }
 
 let bundled: ContentIndex | null = null;

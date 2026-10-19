@@ -73,6 +73,8 @@ export interface PromptContext {
   patientToolPipeline?: boolean;
   /** Current workup plan (clinician). */
   plan?: readonly PlanItem[];
+  /** Embodied mode (docs/EMBODIED.md): where the clinician's body is and the skills it may run. */
+  embodied?: { place: string | null; skills: readonly string[] };
 }
 
 /* ------------------------------------------------------------------ */
@@ -425,6 +427,21 @@ function patientDynamic(p: PatientContext): string {
 /* ------------------------------------------------------------------ */
 
 /**
+ * Embodied mode (docs/EMBODIED.md): the clinician has a body in a 3D hospital. Appended to the clinician's
+ * stable sections only in embodied sessions (model-facing English, like the other prompt sections).
+ */
+export const EMBODIED_CLINICIAN = `<embodied_mode>
+You have a body in the hospital: you must be where an action can physically be done. Every clinical tool is spatially gated — talking needs you near the patient, examining needs you at the bedside, a 12-lead ECG needs an ECG machine at the bedside, a blood test is ordered at a workstation that provides it, drugs are delivered to the bedside but you must be with the patient.
+Method — observe → locate → navigate → act → verify:
+1. Observe — observe_world (what you see, with entity ids, distances and the operations each offers), get_agent_state, get_room_info.
+2. Locate — find_entities / find_objects (by name or capability, e.g. ["ecg-12lead"]); inspect_object to see an entity's state and operations.
+3. Navigate — navigate_to a target ("patient", an entity id, a room) or a goal. When a clinical tool is refused with SPATIAL_REQUIREMENT_UNMET, its data.hint.goal says where to go: pass it to navigate_to as is, then repeat the call. A hint to fetch a cart means: navigate_to it, then interact_object move_to {goal: {kind: "interact", id: "patient"}}.
+4. Act — the clinical tools, or interact_object for equipment (ECG machine prepare → connect → record → reset; the patient's monitor attach; workstation order/read {investigation}; a device's use {investigation|intervention}). Operations with a clinical effect pass the same approval gate as the clinical tool. delegate_task lets staff do a task with their own hands; execute_skill runs a validated multi-step workflow.
+5. Verify — check the tool result (and case_status / inspect_object) before you rely on it. Never claim an action happened without a successful tool result; a refused or failed action did not happen.
+Walking and device operations take simulated time.
+</embodied_mode>`;
+
+/**
  * System sections for an agent: stable first (identity, rules, language,
  * memory, brief/persona/fact index), dynamic last (scene, monitor, progress,
  * plan, patient ledger, session context).
@@ -461,6 +478,10 @@ export function buildSystemSections(profile: AgentProfile, ctx: PromptContext): 
     dynamic("monitor", `<monitor>\n${vitalsText(vitalsAt(ctx.caseDef, ctx.state), ctx.locale)}\n</monitor>`);
   }
   if (kind === "attending") dynamic("progress", `<progress>\n${progressText(statusCtx).text}\n</progress>`);
+  if (kind === "clinician" && ctx.embodied) {
+    stable("embodied", EMBODIED_CLINICIAN);
+    dynamic("body", `<body>\nYou are in: ${ctx.embodied.place ?? "a corridor / outdoors"}.\nSkills: ${ctx.embodied.skills.join(", ") || "-"}.\n</body>`);
+  }
   if (kind === "clinician") {
     dynamic("status", `<case_status>\n${caseStatusText(statusCtx).text}\n</case_status>`);
     if (ctx.plan && ctx.plan.length > 0) dynamic("plan", `<workup_plan>\n${ctx.plan.map((p) => `- [${p.status}] ${p.text}`).join("\n")}\n</workup_plan>`);

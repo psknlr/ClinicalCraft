@@ -886,6 +886,18 @@ const en: Messages = {
   "room.nurse-station": "Nurse station",
   "room.garden": "Garden",
   "room.entrance": "Entrance",
+  "room.rehabilitation": "Rehabilitation",
+  "room.teaching": "Teaching room",
+  "room.elevator": "Elevator",
+  "room.stairwell": "Stairwell",
+
+  "elevator.kicker": "ELEVATOR",
+  "elevator.lead": "Choose a floor. The doors close, the car moves and the doors open on arrival.",
+  "elevator.here": "You are here",
+  "elevator.go": "Go to {level}",
+  "elevator.failed": "The elevator cannot go",
+  "map.levels": "Floors",
+  "map.levelOf": "{level} · floor plan",
 
   "approval.fromLearner": "You are about to perform",
   "treat.find": "Find",

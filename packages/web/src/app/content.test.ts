@@ -97,6 +97,24 @@ describe("bundled case index (C1)", () => {
   });
 });
 
+describe("facilities built from room templates (A4)", () => {
+  it("compiles the two-level teaching hospital and offers it as an alternative, never as a case's own facility", () => {
+    const index = createContentIndex(bundledSources());
+    expect(index.issues).toEqual([]);
+    const th = index.facilities.get("teaching-hospital");
+    // template instances expanded into the flat format: `${instance}.${local}` ids on both levels
+    expect(th?.instances).toEqual([]);
+    expect(th?.rooms.find((r) => r.id === "icu-1")?.level).toBe("L1");
+    expect(th?.placements.some((p) => p.id.startsWith("icu-1."))).toBe(true);
+    const offered = index.cards.filter((c) => index.facilitiesFor(c).some((f) => f.id === "teaching-hospital")).map((c) => c.id);
+    expect(offered.length).toBeGreaterThanOrEqual(9);
+    for (const card of index.cards) {
+      expect(card.facility).not.toBe("teaching-hospital");
+      expect(index.defaultFacility(card)?.id, card.id).not.toBe("teaching-hospital");
+    }
+  });
+});
+
 describe("lazy loading: concurrency, cache, failures (C1)", () => {
   it("loads at most `concurrency` cases at once and each case once while it is in flight", async () => {
     const { src, calls, gates } = sources(6);

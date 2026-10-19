@@ -26,6 +26,11 @@ export interface NavOptions {
   doorsPassable?: boolean;
   /** Ignore colliders entirely above this height (jumpable/overhead). */
   bodyHeight?: number;
+  /**
+   * Walkable floor areas (an upper level's slabs): cells whose centre lies
+   * outside every one are blocked (void). Default: the whole bounds.
+   */
+  floors?: readonly { minX: number; maxX: number; minZ: number; maxZ: number }[];
 }
 
 export function buildNavGrid(bounds: Bounds, colliders: Iterable<PhysicsCollider>, opts: NavOptions = {}): NavGrid {
@@ -36,6 +41,16 @@ export function buildNavGrid(bounds: Bounds, colliders: Iterable<PhysicsCollider
   const cols = Math.max(1, Math.ceil((bounds.maxX - bounds.minX) / cell));
   const rows = Math.max(1, Math.ceil((bounds.maxZ - bounds.minZ) / cell));
   const blocked = new Uint8Array(cols * rows);
+  if (opts.floors) {
+    const floors = opts.floors;
+    for (let iz = 0; iz < rows; iz++) {
+      const cz = bounds.minZ + (iz + 0.5) * cell;
+      for (let ix = 0; ix < cols; ix++) {
+        const cx = bounds.minX + (ix + 0.5) * cell;
+        if (!floors.some((f) => cx >= f.minX && cx <= f.maxX && cz >= f.minZ && cz <= f.maxZ)) blocked[iz * cols + ix] = 1;
+      }
+    }
+  }
   for (const c of colliders) {
     if (c.door && doorsPassable) continue;
     if (c.enabled === false && !c.door) continue;

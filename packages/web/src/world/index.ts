@@ -37,21 +37,26 @@ import {
   type Material,
   type Object3D,
 } from "three";
-import { defaultLevelId, entityLevel } from "@clinicalcraft/core";
+import { buildingLevels, entityLevel, roomLevel } from "@clinicalcraft/core";
 import { blockBox, buildCollisionModel, patientBodyBox, type DoorSpec } from "@clinicalcraft/world";
-import type { BlockInfo, CreateWorld, InteractionTarget, WorldApi, WorldOptions, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
+import type { BlockInfo, CreateWorld, InteractionTarget, WorldApi, WorldOptions, WorldPatient, WorldPoint, WorldSave, WorldSettings } from "../contracts.js";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { buildRules, canPlace, cellKey, validBlocks, type BuildRules, type Cell } from "./buildzone.js";
 import type { BuildContext, DoorRecord, LightCandidate, NpcRecord } from "./context.js";
+import { buildElevators, inCar, type Elevator, type ElevatorStop, type ElevatorTarget } from "./elevator.js";
 import { buildPlacements, surfaceTop } from "./equipment.js";
-import { drawMap as paintMap, type MapData, type MapWall } from "./map.js";
+import { ModelCache, modelUrl, placeModel, shortUrl } from "./models.js";
+import { WorldLevels } from "./levels.js";
+import { drawMap as paintMap, type MapConnector, type MapData, type MapWall } from "./map.js";
 import { MaterialLibrary, mergeCatalogs } from "./materials.js";
 import { buildPerson, disposeRig, ROLE_UNIFORMS, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
 import { buildNavGrid, findPath, type NavGrid } from "./pathfind.js";
-import { clampPitch, ColliderGrid, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
+import { clampPitch, ColliderGrid, overlapsXZ, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
 import { regionAt } from "./region.js";
 import { SignFactory } from "./signs.js";
 import { animateDoors, buildStructures, setDoorOpen, type WallRecord } from "./structures.js";
+import { routeLegs, type Leg } from "./route.js";
+import { buildLevels } from "./stairs.js";
 import { roleName, strings, tx } from "./strings.js";
 import { buildTerrain } from "./terrain.js";
 import { createLcg } from "./textures.js";
@@ -102,6 +107,26 @@ interface Particle {
   t: number;
 }
 
+/** Elevator ride in progress: doors close, the car moves (view dimmed, the avatar moved half-way), doors open. */
+interface Ride {
+  elevator: Elevator;
+  from: ElevatorStop;
+  to: ElevatorStop;
+  phase: "closing" | "moving" | "opening";
+  /** Seconds in the current phase. */
+  t: number;
+  /** Seconds the car moves. */
+  duration: number;
+  moved: boolean;
+  resolve: () => void;
+  reject: (e: Error) => void;
+}
+
+/** Ride timing (s): doors closing, doors opening, and the move (base + per metre of rise). */
+const RIDE = { close: 0.7, open: 0.45, base: 1.1, perMetre: 0.12 } as const;
+/** Renderer exposure (V4); dimmed while an elevator car moves. */
+const EXPOSURE = 1.15;
+
 interface AutoWalk {
   path: { x: number; z: number }[];
   index: number;
@@ -120,9 +145,18 @@ interface AutoWalk {
   replanBase: number;
   signal?: AbortSignal;
   onAbort?: () => void;
+  /** Level of the current leg: walking legs plan on its nav grid and arrive only on it. */
+  level: string;
+  /** A straight leg (a flight): re-planning keeps this path. */
+  fixed?: { x: number; z: number }[];
+  /** Legs after the current one (a route to another level). */
+  legs: Leg[];
+  /** Waiting for an elevator ride (the walk resumes on arrival). */
+  riding?: boolean;
 }
 
 export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
+  const buildStart = performance.now();
   const { canvas, facility, callbacks } = opts;
   const settings = () => safeSettings(opts.settings);
   const initial = settings();
@@ -146,7 +180,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   }
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = EXPOSURE;
   renderer.shadowMap.enabled = q0.shadow > 0;
   renderer.shadowMap.type = PCFSoftShadowMap;
 
@@ -219,16 +253,42 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   // static ones are registered here; patients (posture changes) and build-zone blocks (mined/placed)
   // are added at runtime with the model's own box functions (patientBodyBox, blockBox).
   const collision = buildCollisionModel(facility, opts.catalogs ?? [], { blocks: [] });
-  const level = defaultLevelId(facility);
+  // Levels (EMBODIED R10): every level is built at its elevation. The default level (terrain, outdoors,
+  // ground floor, the slabs above it) goes to the scene's root and scenery batch; every other level to
+  // its own group and batch, hidden as a whole indoors when the camera is on another floor.
+  const levels = new WorldLevels(facility);
+  const level = levels.ground;
   const colliderGrid = new ColliderGrid(2);
   const physics = new Map<string, Aabb>();
+  /** Level of every registered collider (model colliders, patients, blocks); missing = the default level. */
+  const colliderLevels = new WeakMap<Aabb, string>();
   for (const c of collision.colliders) {
-    if (c.level !== level) continue; // only the default level is rendered
     const box: Aabb = { minX: c.minX, maxX: c.maxX, minY: c.minY, maxY: c.maxY, minZ: c.minZ, maxZ: c.maxZ };
     if (c.kind === "door") box.door = true;
+    if (c.ramp) box.ramp = { ...c.ramp }; // stairs / ramp flights: walkable wedges (physics follows the surface)
     physics.set(c.id, colliderGrid.add(box));
+    colliderLevels.set(box, c.level);
+  }
+  /** Walkable floor of each upper level (its slabs, stairwells excluded) for the autopilot's nav grids. */
+  const levelFloors = new Map<string, { minX: number; maxX: number; minZ: number; maxZ: number }[]>();
+  for (const c of collision.colliders) {
+    if (c.kind !== "slab") continue;
+    const list = levelFloors.get(c.level) ?? [];
+    list.push({ minX: c.minX, maxX: c.maxX, minZ: c.minZ, maxZ: c.maxZ });
+    levelFloors.set(c.level, list);
   }
   const doorSpecs = new Map<string, DoorSpec>(collision.doors.map((d) => [d.id.slice("door:".length), d]));
+  const sceneryBatch = new BoxBatch();
+  const levelRoots = new Map<string, Group>([[level, root]]);
+  const levelBatches = new Map<string, BoxBatch>([[level, sceneryBatch]]);
+  for (const l of levels.list) {
+    if (levelRoots.has(l.id)) continue;
+    const g = new Group();
+    g.name = `level:${l.id}`;
+    root.add(g);
+    levelRoots.set(l.id, g);
+    levelBatches.set(l.id, new BoxBatch());
+  }
   const ctx: BuildContext = {
     facility,
     catalogs: merged,
@@ -237,10 +297,15 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     root,
     lib,
     signs,
-    batch: new BoxBatch(),
+    batch: sceneryBatch,
     colliders: colliderGrid,
     collision,
     level,
+    levels,
+    onLevel: (id: string) => {
+      ctx.root = levelRoots.get(id) ?? root;
+      ctx.batch = levelBatches.get(id) ?? sceneryBatch;
+    },
     physics,
     doorSpecs,
     pickables: [],
@@ -255,31 +320,63 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     // meshes always carry castShadow flags; the renderer's shadow map (quality) decides whether they are used
     shadows: true,
     ownedTextures: [],
+    models: opts.models === false ? null : [],
     warnings: [],
   };
-  if ((facility.levels ?? []).length > 1) ctx.warnings.push(`only level "${level}" is rendered; the other levels exist in the headless world model`);
-
   // ground uses its own batch (not ray-picked: an analytic plane is used instead)
   const groundBatch = new BoxBatch();
-  const sceneryBatch = ctx.batch;
   ctx.batch = groundBatch;
   const { clouds } = buildTerrain(ctx);
   // trees/pond/horizon/flowers also went to groundBatch: they are scenery and not targets, which is fine.
   ctx.batch = sceneryBatch;
   const walls: WallRecord[] = buildStructures(ctx);
+  buildLevels(ctx); // upper floors (slabs) and stairs flights: multi-level facilities only
   buildPlacements(ctx);
+  const elevators: Elevator[] = buildElevators(ctx, (r) => roomLevel(facility, r));
   const groundMeshes = groundBatch.build(root, lib, ctx.shadows);
   const staticMeshes = sceneryBatch.build(root, lib, ctx.shadows);
+  for (const [id, batch] of levelBatches) if (id !== level) staticMeshes.push(...batch.build(levelRoots.get(id) ?? root, lib, ctx.shadows));
   for (const m of staticMeshes) ctx.pickables.push(m);
+
+  /* ---------------- equipment models (GLB/glTF, EMBODIED §11) ---------------- */
+  // Loaded after the build; until one is in (and whenever it fails) the placement's voxel parts stay.
+  const modelOpts = opts.models === false ? null : (opts.models ?? {});
+  const modelCache = modelOpts && ctx.models?.length ? new ModelCache({ ...(modelOpts.baseUrl ? { baseUrl: modelOpts.baseUrl } : {}), ...(modelOpts.dracoPath ? { dracoPath: modelOpts.dracoPath } : {}) }) : null;
+  const modelState = { requested: ctx.models?.length ?? 0, loaded: [] as string[], failed: [] as string[] };
+  for (const req of ctx.models ?? []) {
+    modelCache!
+      .load(req.model.uri, req.model.sha256)
+      .then((scene) => {
+        if (disposed) return;
+        const placed = placeModel(scene, req.model, req.footprint, { ...req.at, id: req.placementId }, ctx.shadows);
+        if (!placed) throw new Error("empty model");
+        (levelRoots.get(req.level) ?? root).add(placed.group);
+        req.fallback.visible = false;
+        const hidden = new Set<Object3D>();
+        req.fallback.traverse((o) => hidden.add(o));
+        for (let i = ctx.pickables.length - 1; i >= 0; i--) if (hidden.has(ctx.pickables[i])) ctx.pickables.splice(i, 1);
+        ctx.pickables.push(placed.proxy);
+        modelState.loaded.push(req.placementId);
+        markShadows();
+      })
+      .catch((err: unknown) => {
+        if (disposed) return;
+        modelState.failed.push(req.placementId);
+        ctx.warnings.push(`model of ${req.placementId} (${shortUrl(modelUrl(req.model.uri, modelCache!.baseUrl))}): ${err instanceof Error ? err.message : String(err)} — voxel parts kept`);
+      });
+  }
 
   // point lights: a fixed pool (quality budget) of real PointLights is moved to the candidates nearest
   // the player (re-assigned as the player walks); the other fixtures stay emissive-only. A static
   // "nearest to spawn" choice left every room far from the entrance without its ceiling light.
   const spawn = facility.spawn ?? { x: 0, z: 0, yaw: 0 };
-  let lightsAt: { x: number; z: number } | null = null;
-  function assignLights(px: number, pz: number, force = false): void {
-    if (!force && lightsAt && Math.hypot(px - lightsAt.x, pz - lightsAt.z) < 1.5) return;
-    lightsAt = { x: px, z: pz };
+  let lightsAt: { x: number; z: number; level: string } | null = null;
+  /** Lights of another level only fill the pool when nothing on the avatar's level is left (multi-level). */
+  const OTHER_LEVEL_LIGHT = 60;
+  function assignLights(px: number, pz: number, force = false, py = 0): void {
+    const here = levels.at(py);
+    if (!force && lightsAt && lightsAt.level === here && Math.hypot(px - lightsAt.x, pz - lightsAt.z) < 1.5) return;
+    lightsAt = { x: px, z: pz, level: here };
     const budget = Math.min(ctx.lights.length, (QUALITY[quality] ?? QUALITY.high).lights);
     // pool size only changes with the quality setting (a different light count recompiles shaders)
     while (ctx.realLights.length < budget) {
@@ -289,7 +386,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     while (ctx.realLights.length > budget) ctx.realLights.pop()!.removeFromParent();
     const nearest = ctx.lights
-      .map((l) => ({ l, d: Math.hypot(l.x - px, l.z - pz) }))
+      .map((l) => ({ l, d: Math.hypot(l.x - px, l.z - pz) + (levels.multi && (l.level ?? level) !== here ? OTHER_LEVEL_LIGHT : 0) }))
       .sort((p, q) => p.d - q.d)
       .slice(0, budget)
       .map((e) => e.l);
@@ -318,7 +415,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   /* ---------------- NPCs ---------------- */
   const patients = new Map<string, WorldPatient>();
   /** Camera position of the last interior-culling pass (null = re-evaluate; see cullDetails). */
-  let detailAt: { x: number; z: number } | null = null;
+  let detailAt: { x: number; z: number; level: string } | null = null;
   const tagSigns: Object3D[] = [];
 
   /** Name tags / labels never take the aim ray. */
@@ -332,10 +429,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       ctx.warnings.push(`unknown patient slot "${p.slotId}"`);
       return;
     }
-    if (entityLevel(facility, slot) !== level) {
-      ctx.warnings.push(`patient slot "${p.slotId}" is on level "${entityLevel(facility, slot)}", which is not rendered`);
-      return;
-    }
+    const slotLevel = entityLevel(facility, slot);
+    const elevation = levels.elevation(slotLevel);
     const old = ctx.npcs.get(`patient:${p.slotId}`);
     if (old) removeNpc(old);
     const posture: Posture = p.posture ?? slot.posture ?? "standing";
@@ -353,9 +448,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       surface = bed ? bed.y + surfaceTop(bed.type) : 0.5;
     }
     const rig = buildPerson(lib, p.appearance as AppearanceLike, { posture, surfaceY: surface, badge: true });
-    rig.root.position.set(x, 0, z);
+    rig.root.position.set(x, elevation, z);
     rig.root.rotation.y = MathUtils.degToRad(rot);
-    root.add(rig.root);
+    (levelRoots.get(slotLevel) ?? root).add(rig.root);
     rig.root.updateMatrixWorld(true);
     const tag = signs.make(p.tag || p.name, 2.2);
     tag.position.set(0, rig.tagY, 0);
@@ -368,7 +463,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     ctx.pickables.push(rig.root);
     // the collision model's body for this slot and posture (none on a bed or chair)
     const body = patientBodyBox(facility, merged.equipment, p.slotId, posture);
-    const collider = body ? ctx.colliders.add({ ...body }) : null;
+    const collider = body ? ctx.colliders.add({ ...body, minY: body.minY + elevation, maxY: body.maxY + elevation }) : null;
+    if (collider) colliderLevels.set(collider, slotLevel);
     ctx.npcs.set(`patient:${p.slotId}`, {
       kind: "patient",
       id: p.slotId,
@@ -381,6 +477,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       collider,
       target,
       label: p.name,
+      level: slotLevel,
     });
     patients.set(p.slotId, p);
     markShadows();
@@ -403,13 +500,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   for (const p of opts.patients ?? []) placePatient(p);
 
   for (const st of facility.staff ?? []) {
-    if (entityLevel(facility, st) !== level) continue; // other levels are not rendered (yet)
+    const staffLevel = entityLevel(facility, st);
     const uni = ROLE_UNIFORMS[st.role] ?? { shirt: "#f1ead5", pants: "#354442" };
     const ap: AppearanceLike = { shirt: uni.shirt, pants: uni.pants, hairStyle: uni.hairStyle, ...(st.appearance ?? {}) };
     const rig = buildPerson(lib, ap, { posture: "standing", coat: !!uni.coat, stripe: uni.stripe, badge: true });
-    rig.root.position.set(st.x, 0, st.z);
+    rig.root.position.set(st.x, levels.elevation(staffLevel), st.z);
     rig.root.rotation.y = MathUtils.degToRad(st.rot ?? 0);
-    root.add(rig.root);
+    (levelRoots.get(staffLevel) ?? root).add(rig.root);
     const name = tx(st.name, locale);
     const role = roleName(st.role, locale);
     const tag = signs.make(`${role} · ${name}`, 2.2, "#417868");
@@ -423,7 +520,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     rig.root.userData.highlight = rig.body;
     ctx.pickables.push(rig.root);
     const collider = physics.get(`staff:${st.id}`) ?? null; // the collision model's staff body
-    ctx.npcs.set(`staff:${st.id}`, { kind: "staff", id: st.id, rig, x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), speaking: false, distressed: false, collider, target, label: `${role} · ${name}` });
+    ctx.npcs.set(`staff:${st.id}`, { kind: "staff", id: st.id, rig, x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), speaking: false, distressed: false, collider, target, label: `${role} · ${name}`, level: staffLevel });
   }
 
   /* ---------------- build zone (V4) ---------------- */
@@ -524,7 +621,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const saved = opts.saved;
   if (saved && saved.facilityId === facility.id && Array.isArray(saved.position) && saved.position.every(Number.isFinite)) {
     const [x, y, z] = saved.position;
-    if (x >= b.minX && x <= b.maxX && z >= b.minZ && z <= b.maxZ && y >= 0 && y < 8) Object.assign(player, { x, y, z });
+    const top = levels.list.length ? levels.list[levels.list.length - 1].elevation : 0;
+    if (x >= b.minX && x <= b.maxX && z >= b.minZ && z <= b.maxZ && y >= 0 && y < top + 8) Object.assign(player, { x, y, z });
     if (Number.isFinite(saved.yaw)) yaw = saved.yaw;
     if (Number.isFinite(saved.pitch)) pitch = clampPitch(saved.pitch ?? 0);
   }
@@ -550,8 +648,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   let raf = 0;
   let autoWalk: AutoWalk | null = null;
   let navGrid: NavGrid | null = null;
-  let waypoint: { x: number; z: number; label: string } | null = null;
+  let waypoint: (WorldPoint & { label: string }) | null = null;
   let qualityCheck = 0;
+  let ride: Ride | null = null;
 
   camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
   camera.rotation.set(pitch, yaw, 0);
@@ -559,8 +658,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   /* ---------------- helpers ---------------- */
   const blockMaterials = rules?.materials ?? ["wood", "stone", "glass", "lamp"];
 
+  /** Level the avatar stands on (half-way up a flight is still the lower one). */
+  function currentLevel(): string {
+    return levels.at(player.y);
+  }
+
   function region() {
-    return regionAt(facility, player.x, player.z, locale);
+    return regionAt(facility, player.x, player.z, locale, levels.multi ? currentLevel() : undefined);
   }
 
   function nearbyColliders(): Aabb[] {
@@ -580,6 +684,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
 
   function playerInDoorway(door: DoorRecord): boolean {
     const a = door.area;
+    if (levels.multi && door.level !== currentLevel()) return false;
     return player.x + PHYSICS.radius > a.minX && player.x - PHYSICS.radius < a.maxX && player.z + PHYSICS.radius > a.minZ && player.z - PHYSICS.radius < a.maxZ;
   }
 
@@ -597,12 +702,109 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         toggleDoor(door); // both leaves of a double door share one record (V4 toggles them together)
         return;
       }
+      if (t.kind === "elevator") {
+        elevatorPanel(t);
+        return;
+      }
       callbacks.onInteract(t);
       return;
     }
     if (slot === 0) toast(S.approach);
     else if (slot === 1) callbacks.onShortcut("journal");
     else if (slot === 2) callbacks.onShortcut("map");
+  }
+
+  /* ---------------- elevators (EMBODIED R10) ---------------- */
+  const elevatorById = (id: string) => elevators.find((e) => e.id === id) ?? null;
+  const stopOn = (el: Elevator, lv: string) => el.stops.find((s) => s.level === lv) ?? null;
+
+  /** Would the (sliding) car door, closing, hit the avatar? (its leaves' closed boxes overlap the avatar's disc) */
+  function inDoorLeaves(door: DoorRecord): boolean {
+    return door.leaves.some((l) => overlapsXZ(player, l.collider, PHYSICS.radius + 0.05));
+  }
+
+  /** E on an elevator panel: outside, call the car (its door opens); inside, the UI offers the levels. */
+  function elevatorPanel(t: ElevatorTarget): void {
+    if (ride) {
+      callbacks.onToast(S.elevatorBusy);
+      return;
+    }
+    const el = elevatorById(t.connectorId);
+    const stop = el ? stopOn(el, t.level) : null;
+    if (!el || !stop) return;
+    if (!t.inside) {
+      if (stop.door && !stop.door.open) toggleDoor(stop.door, true);
+      callbacks.onSound("beep");
+      toast(S.elevatorArrived);
+      return;
+    }
+    if (!inCar(stop, player.x, player.z)) {
+      callbacks.onToast(S.elevatorOutside);
+      return;
+    }
+    callbacks.onInteract(t);
+  }
+
+  function rideElevator(connectorId: string, to: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (disposed) return reject(new Error("disposed"));
+      if (ride) return reject(new Error(S.elevatorBusy));
+      const el = elevatorById(connectorId);
+      const dest = el ? stopOn(el, to) : null;
+      if (!el || !dest) return reject(new Error(`unknown elevator stop "${connectorId}" → "${to}"`));
+      const from = stopOn(el, currentLevel());
+      if (!from || !inCar(from, player.x, player.z)) return reject(new Error(S.elevatorOutside));
+      if (from.door && inDoorLeaves(from.door)) return reject(new Error(S.leaveDoor[0]));
+      if (from === dest) {
+        if (dest.door && !dest.door.open) toggleDoor(dest.door, true);
+        return resolve();
+      }
+      keys = {};
+      if (from.door?.open) toggleDoor(from.door, false);
+      ride = { elevator: el, from, to: dest, phase: "closing", t: 0, duration: RIDE.base + Math.abs(dest.elevation - from.elevation) * RIDE.perMetre, moved: false, resolve, reject };
+    });
+  }
+
+  /** Advance a ride: doors close → the car moves (view dimmed; the avatar is moved half-way) → doors open → done. */
+  function updateRide(dt: number): void {
+    const r = ride;
+    if (!r) return;
+    r.t += dt;
+    if (r.phase === "closing") {
+      if (r.t < RIDE.close) return;
+      r.phase = "moving";
+      r.t = 0;
+    }
+    if (r.phase === "moving") {
+      const k = Math.min(1, r.t / r.duration);
+      renderer.toneMappingExposure = EXPOSURE * (1 - 0.6 * Math.sin(Math.PI * k));
+      if (!r.moved && k >= 0.5) {
+        r.moved = true;
+        // the same spot of the car on the destination level
+        teleportTo(player.x + (r.to.x - r.from.x), player.z + (r.to.z - r.from.z), player.y + (r.to.elevation - r.from.elevation));
+        cullDetails(true);
+        assignLights(player.x, player.z, true, player.y);
+      }
+      if (k < 1) return;
+      renderer.toneMappingExposure = EXPOSURE;
+      r.phase = "opening";
+      r.t = 0;
+      if (r.to.door && !r.to.door.open) toggleDoor(r.to.door, true);
+      callbacks.onSound("beep");
+      return;
+    }
+    if (r.t < RIDE.open) return;
+    ride = null;
+    callbacks.onToast(r.elevator.name, levels.name(r.to.level, locale));
+    r.resolve();
+  }
+
+  function cancelRide(err: Error): void {
+    const r = ride;
+    if (!r) return;
+    ride = null;
+    renderer.toneMappingExposure = EXPOSURE;
+    r.reject(err);
   }
 
   function build(place: boolean): void {
@@ -713,11 +915,36 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     return { target: o.userData.action as InteractionTarget, box };
   }
 
+  /** Pickables the aim ray may hit: in a multi-level facility, not those of a hidden level (or culled rig). */
+  function aimables(): Object3D[] {
+    if (!levels.multi) return ctx.pickables;
+    return ctx.pickables.filter((o) => {
+      for (let p: Object3D | null = o; p; p = p.parent) if (!p.visible) return false;
+      return true;
+    });
+  }
+
+  /** Identity of an aim target (re-announced to the UI only when it changes). */
+  function targetId(t: InteractionTarget): string {
+    switch (t.kind) {
+      case "equipment":
+        return t.placementId;
+      case "patient":
+        return t.slotId;
+      case "staff":
+        return t.staffId;
+      case "elevator":
+        return `${t.connectorId}@${t.level}:${t.inside ? "car" : "call"}`;
+      default:
+        return t.id;
+    }
+  }
+
   function updateAim(): void {
     camera.updateMatrixWorld();
     raycaster.setFromCamera(centre, camera);
     raycaster.far = AIM_FAR;
-    const hits = raycaster.intersectObjects(ctx.pickables, true);
+    const hits = raycaster.intersectObjects(aimables(), true);
     let hit: Intersection | null = hits.find((h) => h.object.visible !== false) ?? null;
     // analytic ground plane (y = 0) — the ground grid is not ray-tested
     const ray = raycaster.ray;
@@ -752,7 +979,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         aimBlock = { cell: [...blk.cell] as [number, number, number], type: blk.type };
       }
     }
-    const key = aimTarget ? `${aimTarget.kind}:${"placementId" in aimTarget ? aimTarget.placementId : "slotId" in aimTarget ? aimTarget.slotId : "staffId" in aimTarget ? aimTarget.staffId : aimTarget.id}:${aimTarget.hint}` : aimBlock ? `b:${aimBlock.cell.join(",")}` : "";
+    const key = aimTarget ? `${aimTarget.kind}:${targetId(aimTarget)}:${aimTarget.hint}` : aimBlock ? `b:${aimBlock.cell.join(",")}` : "";
     if (key !== lastTargetKey) {
       lastTargetKey = key;
       callbacks.onTarget(aimTarget, aimBlock);
@@ -932,10 +1159,11 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
 
   function autoWalkInput(dt: number): { forward: number; side: number; sprint: boolean } | null {
     const w = autoWalk;
-    if (!w) return null;
+    if (!w || w.riding) return null;
     const dGoal = Math.hypot(w.goal.x - player.x, w.goal.z - player.z);
-    if (dGoal <= w.arrive) {
-      cancelWalk(null);
+    if (dGoal <= w.arrive && (!levels.multi || currentLevel() === w.level)) {
+      if (!w.legs.length) cancelWalk(null);
+      else if (!nextLeg(w)) cancelWalk(new Error(S.unreachable));
       return null;
     }
     if (w.index >= w.path.length) {
@@ -950,9 +1178,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       w.index++;
       return null;
     }
-    // open closed doors ahead
+    // open closed doors ahead (on the avatar's level)
+    const here = levels.multi ? currentLevel() : level;
     for (const d of ctx.doors) {
-      if (d.open) continue;
+      if (d.open || d.level !== here) continue;
       const near = Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 2.6;
       if (near) toggleDoor(d, true);
     }
@@ -980,8 +1209,27 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
 
   const NAV_RADIUS = PHYSICS.radius + 0.08;
 
-  function planPath(goal: { x: number; z: number }): { path: { x: number; z: number }[]; arrive: number } | null {
-    navGrid = buildNavGrid(walkBounds, ctx.colliders.values(), { cell: 0.5, radius: NAV_RADIUS });
+  /**
+   * Nav grid of one level of a multi-level facility: what stands in that level's walking space (its walls,
+   * equipment and people, the flights and balustrades crossing it), heights relative to its floor; an
+   * upper level is walkable only on its slabs (stairwells and the outside are void).
+   */
+  function levelNavGrid(lv: string): NavGrid {
+    const e = levels.elevation(lv);
+    const list: Aabb[] = [];
+    for (const c of ctx.colliders.values()) {
+      if (c.maxY <= e + 0.01 || c.minY >= e + PHYSICS.height) continue;
+      const box: Aabb = { minX: c.minX, maxX: c.maxX, minY: c.minY - e, maxY: c.maxY - e, minZ: c.minZ, maxZ: c.maxZ };
+      if (c.door) box.door = true;
+      if (c.enabled === false) box.enabled = false;
+      list.push(box);
+    }
+    const floors = lv === level ? undefined : (levelFloors.get(lv) ?? []);
+    return buildNavGrid(walkBounds, list, { cell: 0.5, radius: NAV_RADIUS, ...(floors ? { floors } : {}) });
+  }
+
+  function planPath(goal: { x: number; z: number }, lv: string = level): { path: { x: number; z: number }[]; arrive: number } | null {
+    navGrid = levels.multi ? levelNavGrid(lv) : buildNavGrid(walkBounds, ctx.colliders.values(), { cell: 0.5, radius: NAV_RADIUS });
     const path = findPath(navGrid, { x: player.x, z: player.z }, goal);
     if (!path || !path.length) return null;
     const end = path[path.length - 1];
@@ -991,17 +1239,67 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   function replan(w: AutoWalk): boolean {
     if (w.replans >= 3) return false;
     w.replans++;
-    const p = planPath(w.goal);
-    if (!p) return false;
-    w.path = p.path;
+    let path: { x: number; z: number }[];
+    if (w.fixed) path = w.fixed.filter((p, i) => i === w.fixed!.length - 1 || Math.hypot(p.x - player.x, p.z - player.z) > 0.35);
+    else {
+      const p = planPath(w.goal, w.level);
+      if (!p) return false;
+      path = p.path;
+      w.arrive = Math.max(w.arrive, p.arrive);
+    }
+    w.path = path;
     w.index = 0;
-    w.arrive = Math.max(w.arrive, p.arrive);
     w.stall = 0;
     w.bestRemaining = w.replanBase = remainingPath(w);
     return true;
   }
 
-  function walkTo(target: { x: number; z: number }, signal?: AbortSignal): Promise<void> {
+  /** Arrival radius of an intermediate leg (a flight's approach point, an elevator car): above the 0.35 waypoint radius. */
+  const LEG_ARRIVE = 0.4;
+
+  /** Start the next leg of a route; false when it cannot be planned. */
+  function nextLeg(w: AutoWalk): boolean {
+    const leg = w.legs.shift();
+    if (!leg) return false;
+    w.index = 0;
+    w.replans = 0;
+    w.stall = 0;
+    w.bestRemaining = w.replanBase = Infinity;
+    w.fixed = undefined;
+    if (leg.kind === "ride") {
+      w.riding = true;
+      w.path = [];
+      rideElevator(leg.connectorId, leg.level).then(
+        () => {
+          w.riding = false;
+          if (autoWalk !== w) return;
+          if (!w.legs.length) cancelWalk(null);
+          else if (!nextLeg(w)) cancelWalk(new Error(S.unreachable));
+        },
+        (err: unknown) => {
+          w.riding = false;
+          if (autoWalk === w) cancelWalk(err instanceof Error ? err : new Error(String(err)));
+        },
+      );
+      return true;
+    }
+    w.level = leg.level;
+    if (leg.kind === "flight") {
+      w.fixed = leg.path;
+      w.path = [...leg.path];
+      w.goal = leg.path[leg.path.length - 1];
+      w.arrive = LEG_ARRIVE;
+      return true;
+    }
+    const plan = planPath(leg.goal, leg.level);
+    if (!plan) return false;
+    w.path = plan.path;
+    w.goal = { x: leg.goal.x, z: leg.goal.z };
+    w.arrive = leg.final ? plan.arrive : LEG_ARRIVE;
+    return true;
+  }
+
+  function walkTo(target: WorldPoint, signal?: AbortSignal): Promise<void> {
     cancelWalk(new Error("superseded"));
     return new Promise<void>((resolve, reject) => {
       if (signal?.aborted) {
@@ -1012,16 +1310,19 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         reject(new Error("disposed"));
         return;
       }
-      if (Math.hypot(target.x - player.x, target.z - player.z) <= 1) {
+      const here = levels.multi ? currentLevel() : level;
+      const to = levels.multi && target.level && levels.list.some((l) => l.id === target.level) ? target.level : levels.multi ? level : here;
+      if (to === here && Math.hypot(target.x - player.x, target.z - player.z) <= 1) {
         resolve();
         return;
       }
-      const plan = planPath(target);
-      if (!plan) {
+      const goal = { x: target.x, z: target.z };
+      const legs = routeLegs(levels.flights, elevators, here, to, { x: player.x, z: player.z }, goal);
+      const w: AutoWalk = { path: [], index: 0, goal, arrive: 1, replans: 0, resolve, reject, stall: 0, bestRemaining: Infinity, replanBase: Infinity, signal, level: here, legs: legs ?? [] };
+      if (!legs || !nextLeg(w)) {
         reject(new Error(S.unreachable));
         return;
       }
-      const w: AutoWalk = { path: plan.path, index: 0, goal: { x: target.x, z: target.z }, arrive: plan.arrive, replans: 0, resolve, reject, stall: 0, bestRemaining: Infinity, replanBase: Infinity, signal };
       if (signal) {
         w.onAbort = () => {
           if (autoWalk === w) cancelWalk(new DOMException("Aborted", "AbortError") as unknown as Error);
@@ -1040,35 +1341,42 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const DETAIL_RANGE = 25;
   const buildingRects = facility.buildings.map((bb) => bb.rect);
   const buildingAt = (x: number, z: number) => buildingRects.findIndex((r) => Math.abs(x - r.x) <= r.w / 2 && Math.abs(z - r.z) <= r.d / 2);
+  // Levels (multi-level facilities): indoors, only the camera's level is drawn (and the levels a nearby
+  // stairwell joins it to); outdoors every level is (the building's upper storeys are its facade). The
+  // default level's static batch is never hidden, its details and NPCs are.
   interface Detail {
     obj: Object3D;
     x: number;
     z: number;
     building: number;
+    level: string;
   }
   const details: Detail[] = [];
-  const addDetail = (obj: Object3D, x: number, z: number) => {
+  const addDetail = (obj: Object3D, x: number, z: number, lv: string) => {
     const bi = buildingAt(x, z);
-    if (bi >= 0) details.push({ obj, x, z, building: bi });
+    if (bi >= 0) details.push({ obj, x, z, building: bi, level: lv });
   };
-  for (const o of root.children) if (o.name === "sign") addDetail(o, o.position.x, o.position.z);
-  for (const sc of ctx.screens) addDetail(sc.mesh, sc.x, sc.z);
-  for (const d of ctx.doors) if (d.interior) for (const l of d.leaves) addDetail(l.pivot, d.centre.x, d.centre.z);
+  for (const [lv, g] of levelRoots) for (const o of g.children) if (o.name === "sign") addDetail(o, o.position.x, o.position.z, lv);
+  for (const sc of ctx.screens) addDetail(sc.mesh, sc.x, sc.z, sc.level);
+  for (const d of ctx.doors) if (d.interior) for (const l of d.leaves) addDetail(l.pivot, d.centre.x, d.centre.z, d.level);
   function cullDetails(force = false): void {
-    if (!details.length && !ctx.npcs.size) return;
+    if (!details.length && !ctx.npcs.size && !levels.multi) return;
     const cx = camera.position.x, cz = camera.position.z;
-    if (!force && detailAt && Math.hypot(cx - detailAt.x, cz - detailAt.z) < 0.75) return;
-    detailAt = { x: cx, z: cz };
+    const camLevel = levels.at(player.y);
+    if (!force && detailAt && detailAt.level === camLevel && Math.hypot(cx - detailAt.x, cz - detailAt.z) < 0.75) return;
+    detailAt = { x: cx, z: cz, level: camLevel };
     const inside = buildingAt(cx, cz);
-    const show = (bi: number, x: number, z: number) => bi < 0 || bi === inside || Math.hypot(x - cx, z - cz) < DETAIL_RANGE;
+    const levelShown = (lv: string) => levels.visibleFrom(lv, camLevel, cx, cz, inside >= 0);
+    const show = (bi: number, x: number, z: number, lv: string) => levelShown(lv) && (bi < 0 || bi === inside || Math.hypot(x - cx, z - cz) < DETAIL_RANGE);
     let changed = false;
     const set = (o: Object3D, v: boolean) => {
       if (o.visible === v) return;
       o.visible = v;
       changed = true;
     };
-    for (const d of details) set(d.obj, show(d.building, d.x, d.z));
-    for (const n of ctx.npcs.values()) set(n.rig.root, show(buildingAt(n.x, n.z), n.x, n.z));
+    for (const [lv, g] of levelRoots) if (g !== root) set(g, levelShown(lv));
+    for (const d of details) set(d.obj, show(d.building, d.x, d.z, d.level));
+    for (const n of ctx.npcs.values()) set(n.rig.root, show(buildingAt(n.x, n.z), n.x, n.z, n.level));
     // hidden casters were left out of the cached shadow map
     if (changed) markShadows();
   }
@@ -1109,7 +1417,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     renderer.shadowMap.enabled = q.shadow > 0;
     sun.castShadow = q.shadow > 0;
     markShadows();
-    assignLights(player.x, player.z, true);
+    assignLights(player.x, player.z, true, player.y);
     if (q.shadow > 0 && sun.shadow.mapSize.x !== q.shadow) {
       sun.shadow.mapSize.set(q.shadow, q.shadow);
       sun.shadow.map?.dispose();
@@ -1130,8 +1438,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       lastFrame = now;
       return;
     }
-    if (!playing() && !autoWalk && now - lastFrame < PAUSED_FRAME_MS) return;
-    const dt = Math.min(PHYSICS.maxDt, Math.max(0, (now - lastFrame) / 1000));
+    if (!playing() && !autoWalk && !ride && now - lastFrame < PAUSED_FRAME_MS) return;
+    const realDt = Math.max(0, (now - lastFrame) / 1000);
+    const dt = Math.min(PHYSICS.maxDt, realDt);
     lastFrame = now;
     const s = settings();
     if (now - qualityCheck > 1000) {
@@ -1141,13 +1450,14 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     // autopilot (walk_to) runs even while paused / before start(): a panel may be open
     // while the agent walks the learner somewhere; user input stays blocked (playing()).
     const walking = autoWalk ? autoWalkInput(frozen ? 0 : dt) : null;
+    updateRide(Math.min(realDt, 1)); // an animation, not physics: real time (slow frames do not stretch the ride)
     if (playing() || walking) {
       const px = player.x, pz = player.z;
       const sprint = walking ? walking.sprint : !!keys.ShiftLeft || !!keys.ShiftRight;
       const input = walking
         ? { forward: walking.forward, side: 0, yaw, sprint, jump: false }
         : { forward: (keys.KeyW ? 1 : 0) - (keys.KeyS ? 1 : 0), side: (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0), yaw, sprint, jump: !!keys.Space };
-      if (!frozen) stepPlayer(player, input, dt, nearbyColliders(), walkBounds);
+      if (!frozen && !ride) stepPlayer(player, input, dt, nearbyColliders(), walkBounds);
       if (!walking) {
         if (keys.ArrowLeft) yaw += dt * PHYSICS.turnSpeed;
         if (keys.ArrowRight) yaw -= dt * PHYSICS.turnSpeed;
@@ -1175,7 +1485,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         if (now - lastMove > 95) {
           lastMove = now;
           const r = region();
-          callbacks.onMove({ x: player.x, z: player.z, yaw, region: r.name, roomId: r.roomId, moving: moved > 0.001 });
+          const lv = levels.multi ? currentLevel() : null;
+          // the level's name is shown indoors (outdoors is the ground anyway)
+          const levelInfo = lv ? (buildingAt(player.x, player.z) >= 0 ? { level: lv, levelName: levels.name(lv, locale) } : { level: lv }) : {};
+          callbacks.onMove({ x: player.x, z: player.z, yaw, region: r.name, roomId: r.roomId, moving: moved > 0.001, ...levelInfo });
         }
       }
     } else {
@@ -1184,7 +1497,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     if (animateDoors(ctx.doors, dt)) markShadows();
     followSun(player.x, player.z);
-    assignLights(player.x, player.z);
+    assignLights(player.x, player.z, false, player.y);
     cullDetails();
     // NPCs: head tracking (V4: within 5 units, ±.55 rad, lerp dt·3), speaking, distress
     camera.getWorldPosition(tmpCam);
@@ -1251,7 +1564,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   raf = requestAnimationFrame(frame);
 
   /* ---------------- map data (static) ---------------- */
-  const mapWalls: MapWall[] = walls.map((w) => {
+  const toMapWall = (w: WallRecord): MapWall => {
     const seg =
       w.wall.axis === "x"
         ? { x0: w.wall.from, z0: w.wall.line, x1: w.wall.to, z1: w.wall.line }
@@ -1263,62 +1576,86 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       gaps: w.openings.filter((o) => o.kind !== "window").map((o) => [o.a, o.b] as [number, number]),
       windows: w.openings.filter((o) => o.kind === "window").map((o) => [o.a, o.b] as [number, number]),
     };
-  });
+  };
   const matColor = (id: string, fb: string) => merged.materials.get(id)?.color ?? fb;
-  /** Static map layers, cached per locale (drawMap may run every frame for the minimap). */
-  let mapCache: { locale: string; data: Omit<MapData, "slots"> } | null = null;
-  function mapData(loc: string): MapData {
-    if (!mapCache || mapCache.locale !== loc) {
+  /** Stairs/ramp flights and elevator cars on a level (map symbols of a multi-level facility). */
+  function mapConnectors(lv: string, loc: string): MapConnector[] {
+    const SL = strings(loc);
+    const out: MapConnector[] = [];
+    for (const fl of levels.flights) {
+      if (fl.foot.level !== lv && fl.head.level !== lv) continue;
+      const a = fl.area;
+      out.push({ kind: fl.kind === "ramp" ? "ramp" : "stairs", x: (a.minX + a.maxX) / 2, z: (a.minZ + a.maxZ) / 2, w: a.maxX - a.minX, d: a.maxZ - a.minZ, axis: fl.surface.axis, label: SL.stairs });
+    }
+    for (const el of elevators) {
+      const s = stopOn(el, lv);
+      if (!s) continue;
+      const r = s.room?.rect ?? { x: s.x, z: s.z, w: 2, d: 2 };
+      out.push({ kind: "elevator", x: r.x, z: r.z, w: r.w, d: r.d, label: el.name });
+    }
+    return out;
+  }
+  /** Static map layers per locale and level (drawMap may run every frame for the minimap). */
+  const mapCache = new Map<string, Omit<MapData, "slots">>();
+  function mapData(loc: string, lv: string): MapData {
+    const key = `${loc}|${lv}`;
+    let data = mapCache.get(key);
+    if (!data) {
       const SL = strings(loc);
-      mapCache = {
-        locale: loc,
-        data: {
-          bounds: facility.bounds,
-          ground: facility.terrain?.ground ?? "grass",
-          paths: (facility.terrain?.paths ?? []).map((p) => ({ ...p, color: p.material && p.material !== "path" ? matColor(p.material, "#ded0a4") : "#ded0a4" })),
-          ponds: facility.terrain?.ponds ?? [],
-          trees: facility.terrain?.trees ?? [],
-          buildZone: facility.buildZone?.rect ?? null,
-          buildZoneLabel: SL.buildZone,
-          buildings: facility.buildings.map((bb) => ({ ...bb.rect, name: tx(bb.name, loc) })),
-          rooms: facility.rooms.map((r) => ({ ...r.rect, name: tx(r.name, loc), kind: r.kind })),
-          walls: mapWalls,
-          placements: [...ctx.placements.values()].map((p) => ({ x: p.x, z: p.z, w: p.w, d: p.d, kind: p.kind, solid: p.solid, label: p.label })),
-          staff: (facility.staff ?? []).map((st) => ({ x: st.x, z: st.z, label: tx(st.name, loc) })),
-          northLabel: SL.north,
-        },
+      data = {
+        bounds: facility.bounds,
+        ground: facility.terrain?.ground ?? "grass",
+        paths: (facility.terrain?.paths ?? []).map((p) => ({ ...p, color: p.material && p.material !== "path" ? matColor(p.material, "#ded0a4") : "#ded0a4" })),
+        ponds: facility.terrain?.ponds ?? [],
+        trees: facility.terrain?.trees ?? [],
+        buildZone: facility.buildZone?.rect ?? null,
+        buildZoneLabel: SL.buildZone,
+        buildings: facility.buildings.filter((bb) => buildingLevels(facility, bb).includes(lv)).map((bb) => ({ ...bb.rect, name: tx(bb.name, loc) })),
+        rooms: facility.rooms.filter((r) => roomLevel(facility, r) === lv).map((r) => ({ ...r.rect, name: tx(r.name, loc), kind: r.kind })),
+        walls: walls.filter((w) => w.level === lv).map(toMapWall),
+        placements: [...ctx.placements.values()].filter((p) => p.level === lv).map((p) => ({ x: p.x, z: p.z, w: p.w, d: p.d, kind: p.kind, solid: p.solid, label: p.label })),
+        staff: (facility.staff ?? []).filter((st) => entityLevel(facility, st) === lv).map((st) => ({ x: st.x, z: st.z, label: tx(st.name, loc) })),
+        northLabel: SL.north,
+        ...(levels.multi ? { connectors: mapConnectors(lv, loc), levelLabel: levels.name(lv, loc) } : {}),
       };
+      mapCache.set(key, data);
     }
     return {
-      ...mapCache.data,
-      slots: facility.patientSlots.map((sl) => {
-        const npc = ctx.npcs.get(`patient:${sl.id}`);
-        return { x: npc?.x ?? sl.x, z: npc?.z ?? sl.z, occupied: patients.has(sl.id), label: patients.get(sl.id)?.name ?? sl.id };
-      }),
+      ...data,
+      slots: facility.patientSlots
+        .filter((sl) => entityLevel(facility, sl) === lv)
+        .map((sl) => {
+          const npc = ctx.npcs.get(`patient:${sl.id}`);
+          return { x: npc?.x ?? sl.x, z: npc?.z ?? sl.z, occupied: patients.has(sl.id), label: patients.get(sl.id)?.name ?? sl.id };
+        }),
     };
   }
 
   /* ---------------- API ---------------- */
-  function locate(id: string): { x: number; z: number; label: string } | null {
+  function locate(id: string): (WorldPoint & { label: string }) | null {
+    // the level is reported in a multi-level facility only (single-level results are unchanged)
+    const at = (x: number, z: number, label: string, lv: string) => (levels.multi ? { x, z, label, level: lv } : { x, z, label });
     const p = ctx.placements.get(id);
-    if (p) return { x: p.x, z: p.z, label: p.label };
+    if (p) return at(p.x, p.z, p.label, p.level);
     const sl = facility.patientSlots.find((s) => s.id === id);
     if (sl) {
       const npc = ctx.npcs.get(`patient:${id}`);
-      return { x: npc?.x ?? sl.x, z: npc?.z ?? sl.z, label: patients.get(id)?.name ?? S.patient };
+      return at(npc?.x ?? sl.x, npc?.z ?? sl.z, patients.get(id)?.name ?? S.patient, entityLevel(facility, sl));
     }
     const st = (facility.staff ?? []).find((s) => s.id === id);
-    if (st) return { x: st.x, z: st.z, label: `${roleName(st.role, locale)} · ${tx(st.name, locale)}` };
+    if (st) return at(st.x, st.z, `${roleName(st.role, locale)} · ${tx(st.name, locale)}`, entityLevel(facility, st));
     const room = facility.rooms.find((r) => r.id === id);
-    if (room) return { x: room.rect.x, z: room.rect.z, label: tx(room.name, locale) };
+    if (room) return at(room.rect.x, room.rect.z, tx(room.name, locale), roomLevel(facility, room));
     const bl = facility.buildings.find((r) => r.id === id);
-    if (bl) return { x: bl.rect.x, z: bl.rect.z, label: tx(bl.name, locale) };
-    if (id === "spawn") return { x: spawn.x, z: spawn.z, label: "spawn" };
+    if (bl) return at(bl.rect.x, bl.rect.z, tx(bl.name, locale), level);
+    if (id === "spawn") return at(spawn.x, spawn.z, "spawn", level);
     return null;
   }
 
   function teleportTo(x: number, z: number, y = 0, newYaw?: number, newPitch?: number): void {
-    Object.assign(player, { x, z, y, vy: 0, grounded: y <= 0 });
+    // standing on a floor (the ground or a level's slab) counts as grounded
+    const onFloor = y <= 0 || (levels.multi && Math.abs(y - levels.elevation(levels.at(y))) < 0.01);
+    Object.assign(player, { x, z, y, vy: 0, grounded: onFloor });
     if (newYaw != null && Number.isFinite(newYaw)) yaw = newYaw;
     if (newPitch != null && Number.isFinite(newPitch)) pitch = clampPitch(newPitch);
     camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
@@ -1357,6 +1694,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     look,
     reset() {
       cancelWalk(new Error("reset"));
+      cancelRide(new Error("reset"));
       teleportTo(spawn.x, spawn.z, 0, spawn.yaw ?? 0, 0);
       for (const d of ctx.doors) {
         setDoorOpen(d, false, locale);
@@ -1367,9 +1705,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       }
       markShadows();
     },
-    teleport(x: number, z: number, newYaw?: number) {
+    teleport(x: number, z: number, newYaw?: number, lv?: string) {
       cancelWalk(new Error("teleported"));
-      teleportTo(x, z, 0, newYaw);
+      cancelRide(new Error("teleported"));
+      teleportTo(x, z, levels.elevation(lv ?? level), newYaw);
     },
     setPatientState(slotId, state) {
       const n = ctx.npcs.get(`patient:${slotId}`);
@@ -1407,7 +1746,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         return;
       }
       beacon.visible = true;
-      beacon.position.set(target.x, 0, target.z);
+      beacon.position.set(target.x, levels.elevation(target.level ?? level), target.z);
       if (target.label) {
         beaconLabel = signs.make(target.label, Math.min(3.2, Math.max(1.8, target.label.length * 0.32)), "#c68836");
         beacon.add(beaconLabel);
@@ -1417,14 +1756,24 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     drawMap(target, o) {
       const c2d = target.getContext("2d");
       if (!c2d) return;
-      paintMap(c2d, target.width, target.height, mapData(o.locale || locale), {
+      const here = levels.multi ? currentLevel() : level;
+      const lv = o.level && levels.list.some((l) => l.id === o.level) ? o.level : here;
+      const wp = o.waypoint ?? (waypoint ? { x: waypoint.x, z: waypoint.z, level: waypoint.level } : null);
+      paintMap(c2d, target.width, target.height, mapData(o.locale || locale, lv), {
         big: o.big,
-        waypoint: o.waypoint ?? (waypoint ? { x: waypoint.x, z: waypoint.z } : null),
+        waypoint: wp ? { x: wp.x, z: wp.z } : null,
         player: { x: player.x, z: player.z, yaw },
         timeMs: performance.now(),
+        // the avatar / destination on another floor than the one shown: drawn faded
+        ...(lv !== here ? { playerGhost: true } : {}),
+        ...(wp && levels.multi && (wp.level ?? level) !== lv ? { waypointGhost: true } : {}),
       });
     },
     locate,
+    levels(loc?: string) {
+      return levels.list.map((l) => ({ id: l.id, name: levels.name(l.id, loc || locale), elevation: l.elevation }));
+    },
+    rideElevator,
     screenshot() {
       renderer.render(scene, camera);
       return canvas.toDataURL("image/png");
@@ -1434,6 +1783,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       disposed = true;
       cancelAnimationFrame(raf);
       cancelWalk(new Error("disposed"));
+      cancelRide(new Error("disposed"));
       for (const [t, type, fn, o] of listeners) t.removeEventListener(type, fn, o);
       ro?.disconnect();
       if (document.pointerLockElement === canvas) document.exitPointerLock();
@@ -1447,6 +1797,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       });
       for (const sc of ctx.screens) sc.texture.dispose();
       for (const t of ctx.ownedTextures) t.dispose();
+      modelCache?.dispose();
       // animated parts use per-part clones that keep the library name (skipped above)
       for (const a of ctx.animated) a.material.dispose();
       for (const p of particles) p.m.removeFromParent();
@@ -1466,7 +1817,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
     },
     get position() {
-      return { x: player.x, y: player.y, z: player.z, yaw, pitch };
+      return { x: player.x, y: player.y, z: player.z, yaw, pitch, level: levels.multi ? currentLevel() : level };
     },
     debug: {
       get player() {
@@ -1478,6 +1829,22 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       colliders: ctx.colliders,
       /** The facility's collision model (@clinicalcraft/world): the source of every collider above. */
       collision,
+      /** Levels (elevations, flights, culling rules) and the group each non-default level is built into. */
+      levels,
+      levelRoots,
+      /** Level the avatar stands on. */
+      get level() {
+        return levels.multi ? currentLevel() : level;
+      },
+      /** Elevators: cars (rooms), doors and stops per level. */
+      elevators,
+      /** Equipment models: placements requested, loaded and failed (voxel parts kept). */
+      models: modelState,
+      rideElevator,
+      /** Current elevator ride (QA): phase and destination level. */
+      get ride() {
+        return ride ? { phase: ride.phase, from: ride.from.level, to: ride.to.level } : null;
+      },
       placed,
       doors: ctx.doors,
       targets: ctx.targets,
@@ -1501,7 +1868,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       },
       /** Current autopilot state (QA): path, waypoint index, goal, re-plans. */
       get walk() {
-        return autoWalk ? { path: autoWalk.path, index: autoWalk.index, goal: autoWalk.goal, arrive: autoWalk.arrive, replans: autoWalk.replans } : null;
+        return autoWalk
+          ? { path: autoWalk.path, index: autoWalk.index, goal: autoWalk.goal, arrive: autoWalk.arrive, replans: autoWalk.replans, level: autoWalk.level, legs: autoWalk.legs.length, riding: !!autoWalk.riding }
+          : null;
       },
       /** V4 signature: teleport(x, z, y = 0, yaw = 0, pitch = 0). */
       teleport(x: number, z: number, y = 0, newYaw = 0, newPitch = 0) {
@@ -1520,7 +1889,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
        */
       drawCalls() {
         followSun(player.x, player.z);
-        assignLights(player.x, player.z, true);
+        assignLights(player.x, player.z, true, player.y);
         camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
         cullDetails(true);
         const info = renderer.info;
@@ -1545,10 +1914,14 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
           instanced: staticMeshes.reduce((a, m) => a + m.count, 0) + groundMeshes.reduce((a, m) => a + m.count, 0),
           pointLights: ctx.realLights.length,
           lightCandidates: ctx.lights.length,
+          /** Milliseconds createWorld took (scene, colliders, NPCs; excludes the first render). */
+          buildMs: Math.round(buildMs),
+          levels: levels.list.length,
         };
       },
     },
   };
+  const buildMs = performance.now() - buildStart;
   return api;
 };
 

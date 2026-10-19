@@ -62,6 +62,8 @@ export interface SettingsLayerData {
   locale?: string;
   approvalMode?: ApprovalMode;
   practiceScope?: PracticeScope;
+  embodiment?: "clinical" | "embodied";
+  perception?: { visibilityRange?: number; fovDeg?: number; nearbyRange?: number; maxEntities?: number; reachability?: boolean };
   permissions?: { allow?: string[]; ask?: string[]; deny?: string[] };
   hooks?: HooksConfig;
   maxToolRounds?: number;
@@ -141,6 +143,8 @@ export const DEFAULT_SETTINGS: Readonly<ResolvedSettings> = deepFreeze({
   locale: "zh-CN",
   approvalMode: "default",
   practiceScope: "full",
+  embodiment: "clinical",
+  perception: {},
   permissions: { allow: [], ask: [], deny: [] },
   hooks: {},
   maxToolRounds: 12,

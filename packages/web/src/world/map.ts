@@ -53,6 +53,14 @@ export interface MapWall {
   partition: boolean;
 }
 
+/** A stairs/ramp flight or an elevator car on the map (multi-level facilities). */
+export interface MapConnector extends MapRect {
+  kind: "stairs" | "ramp" | "elevator";
+  label: string;
+  /** Flights: the axis they climb along (treads are drawn across it). */
+  axis?: "x" | "z";
+}
+
 export interface MapData {
   bounds: MapBounds;
   ground: string;
@@ -68,6 +76,10 @@ export interface MapData {
   slots: { x: number; z: number; occupied: boolean; label: string }[];
   staff: { x: number; z: number; label: string }[];
   northLabel: string;
+  /** Stairs and elevators on the level shown (multi-level facilities only). */
+  connectors?: MapConnector[];
+  /** Name of the level shown (multi-level facilities only). */
+  levelLabel?: string;
 }
 
 /** Dot colours by interaction kind (V4 station colours). */
@@ -108,6 +120,47 @@ export interface DrawMapOptions {
   waypoint: { x: number; z: number } | null;
   player: { x: number; z: number; yaw: number };
   timeMs?: number;
+  /** The avatar is on another level than the one shown: its arrow is drawn faded. */
+  playerGhost?: boolean;
+  /** The destination is on another level than the one shown: drawn faded. */
+  waypointGhost?: boolean;
+}
+
+const CONNECTOR_FILL = { stairs: "#d9cfae", ramp: "#d9cfae", elevator: "#b9c8cc" } as const;
+
+/** Stairs (treads across the climbing axis) and elevator cars (a box with a cross). */
+function drawConnectors(ctx: CanvasRenderingContext2D, list: MapConnector[], P: MapProjection["toCanvas"], s: number, big: boolean): void {
+  for (const c of list) {
+    const [x0, y0] = P(c.x - c.w / 2, c.z - c.d / 2);
+    const w = c.w * s, h = c.d * s;
+    ctx.fillStyle = CONNECTOR_FILL[c.kind];
+    ctx.fillRect(x0, y0, w, h);
+    ctx.strokeStyle = PALETTE.stroke;
+    ctx.lineWidth = big ? 1.5 : 1;
+    ctx.strokeRect(x0, y0, w, h);
+    ctx.beginPath();
+    if (c.kind === "elevator") {
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x0 + w, y0 + h);
+      ctx.moveTo(x0 + w, y0);
+      ctx.lineTo(x0, y0 + h);
+    } else {
+      // one line per ~0.6 m of run, across the axis
+      const along = c.axis === "x" ? w : h;
+      const n = Math.max(2, Math.round(along / Math.max(2, s * 0.6)));
+      for (let i = 1; i < n; i++) {
+        const k = i / n;
+        if (c.axis === "x") {
+          ctx.moveTo(x0 + w * k, y0);
+          ctx.lineTo(x0 + w * k, y0 + h);
+        } else {
+          ctx.moveTo(x0, y0 + h * k);
+          ctx.lineTo(x0 + w, y0 + h * k);
+        }
+      }
+    }
+    ctx.stroke();
+  }
 }
 
 export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: number, data: MapData, opts: DrawMapOptions): MapProjection {
@@ -151,6 +204,7 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
     seg(cur, a1, w.partition ? PALETTE.partition : PALETTE.wall);
     for (const [g0, g1] of w.windows) seg(g0, g1, PALETTE.window);
   }
+  if (data.connectors?.length) drawConnectors(ctx, data.connectors, P, s, opts.big);
   // placements
   for (const p of data.placements) {
     if (p.kind === "none" || p.kind === "storage" || p.kind === "sink") {
@@ -234,9 +288,24 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
     ctx.textAlign = "right";
     ctx.fillText(data.northLabel, width - 10, 18);
   }
+  if (data.levelLabel) {
+    // the level shown (multi-level facilities): a badge in the top-left corner
+    const font = opts.big ? "bold 13px system-ui, sans-serif" : "bold 10px system-ui, sans-serif";
+    ctx.font = font;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    const pad = opts.big ? 6 : 3;
+    const tw = ctx.measureText(data.levelLabel).width;
+    const bh = opts.big ? 22 : 15;
+    ctx.fillStyle = "rgba(46, 78, 56, 0.82)";
+    ctx.fillRect(4, 4, tw + pad * 2, bh);
+    ctx.fillStyle = "#fff4cf";
+    ctx.fillText(data.levelLabel, 4 + pad, 4 + bh / 2);
+  }
   // waypoint
   if (opts.waypoint) {
     const [x, y] = P(opts.waypoint.x, opts.waypoint.z);
+    if (opts.waypointGhost) ctx.globalAlpha = 0.4;
     const pulse = opts.timeMs ? 1 + Math.sin(opts.timeMs / 260) * 0.18 : 1;
     ctx.strokeStyle = PALETTE.waypoint;
     ctx.fillStyle = "#e7c36b";
@@ -247,9 +316,11 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
     ctx.beginPath();
     ctx.arc(x, y, opts.big ? 3.5 : 2.2, 0, Math.PI * 2);
     ctx.fill();
+    if (opts.waypointGhost) ctx.globalAlpha = 1;
   }
   // player arrow (V4)
   const [px, py] = P(opts.player.x, opts.player.z);
+  if (opts.playerGhost) ctx.globalAlpha = 0.35;
   ctx.translate(px, py);
   ctx.rotate(-opts.player.yaw);
   if (opts.big) ctx.scale(1.4, 1.4);

@@ -888,6 +888,18 @@ const zh = {
   "room.nurse-station": "护士站",
   "room.garden": "花园",
   "room.entrance": "入口",
+  "room.rehabilitation": "康复治疗",
+  "room.teaching": "示教室",
+  "room.elevator": "电梯",
+  "room.stairwell": "楼梯间",
+
+  "elevator.kicker": "ELEVATOR / 电梯",
+  "elevator.lead": "选择要前往的楼层。电梯门关闭后轿厢运行，到达后门会自动打开。",
+  "elevator.here": "当前楼层",
+  "elevator.go": "前往 {level}",
+  "elevator.failed": "电梯无法运行",
+  "map.levels": "楼层",
+  "map.levelOf": "{level} · 楼层平面",
 
   "approval.fromLearner": "你即将执行",
   "treat.find": "查找处置",

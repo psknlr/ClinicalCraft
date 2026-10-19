@@ -53,6 +53,32 @@ export const LocaleSettingSchema = z
   .describe(`Session language: ${SETTINGS_LOCALES.join(" or ")} (aliases such as "zh", "zh-Hans", "en-US" are normalised).`);
 
 export const ApprovalModeSchema = z.enum(["default", "strict", "auto", "plan", "bypass"]);
+
+/**
+ * Embodiment of an encounter (docs/EMBODIED.md R3): `clinical` — the
+ * clinical tools act directly on the case; `embodied` — the session runs a
+ * headless world (`@clinicalcraft/world`): clinical tools are spatially
+ * gated and world tools (perception, navigation, device operations,
+ * delegation, skills) are added. Fixed for an encounter.
+ */
+export const EmbodimentSchema = z.enum(["clinical", "embodied"]);
+export type Embodiment = z.infer<typeof EmbodimentSchema>;
+
+/** Perception overrides of the embodied world (`@clinicalcraft/world` `PerceptionOptions`; unset keys keep the world's defaults). */
+export const PerceptionSettingsSchema = z
+  .object({
+    /** Max distance (m) for `visible` (world default 15). */
+    visibilityRange: z.number().positive().max(200).optional(),
+    /** Horizontal field of view in degrees (world default 120). */
+    fovDeg: z.number().positive().max(360).optional(),
+    /** Radius (m) for `nearby` (world default 8). */
+    nearbyRange: z.number().min(0).max(200).optional(),
+    /** Max entities per observation (world default 40). */
+    maxEntities: z.number().int().min(1).max(500).optional(),
+    /** Compute reachability per entity (world default true). */
+    reachability: z.boolean().optional(),
+  })
+  .strict();
 export const PracticeScopeSchema = z.enum(["history-only", "workup", "full"]);
 export const EffortSchema = z.enum(["low", "medium", "high", "xhigh", "max"]);
 
@@ -130,6 +156,10 @@ const SettingsShape = {
     locale: LocaleSettingSchema.optional(),
     approvalMode: ApprovalModeSchema.optional(),
     practiceScope: PracticeScopeSchema.optional(),
+    /** `clinical` (default) or `embodied` (a headless world; clinical tools spatially gated) — fixed for an encounter. */
+    embodiment: EmbodimentSchema.optional(),
+    /** Perception overrides of the embodied world. */
+    perception: PerceptionSettingsSchema.optional(),
     permissions: z
       .object({
         allow: z.array(z.string()).optional(),
@@ -203,6 +233,10 @@ export interface ResolvedSettings {
   locale: string;
   approvalMode: z.infer<typeof ApprovalModeSchema>;
   practiceScope: z.infer<typeof PracticeScopeSchema>;
+  /** `clinical` (default) or `embodied` (docs/EMBODIED.md R3); fixed for an encounter. */
+  embodiment: Embodiment;
+  /** Perception overrides of the embodied world (empty = the world's defaults). */
+  perception: z.infer<typeof PerceptionSettingsSchema>;
   permissions: { allow: string[]; ask: string[]; deny: string[] };
   hooks: HooksConfig;
   maxToolRounds: number;

@@ -169,6 +169,11 @@ export default defineConfig(({ mode }) => ({
   },
   // The bundled case index (`virtual:clinicalcraft/case-index`); full cases are lazy chunks.
   plugins: [localAssets(), caseIndexPlugin({ contentDir: path.resolve(here, "../content") })],
+  // three's loaders used by the world (equipment models) and the atlas: pre-bundled with three itself, so a
+  // dev server never discovers them mid-session (re-optimising would load a second copy of three).
+  optimizeDeps: {
+    include: ["three", "three/examples/jsm/loaders/GLTFLoader.js", "three/examples/jsm/loaders/DRACOLoader.js", "three/examples/jsm/libs/meshopt_decoder.module.js"],
+  },
   server: {
     fs: { allow: [repoRoot] },
     // CLINICALCRAFT_QA=1: no HMR/reloads (content files may change while QA scripts run)

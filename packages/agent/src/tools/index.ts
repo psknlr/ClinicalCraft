@@ -15,6 +15,9 @@ import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
 export * from "./npc.js";
+export * from "./spatial.js";
+export * from "./world.js";
+export * from "./world-format.js";
 export * from "./format.js";
 export * from "./validate.js";
 export { toToolSpec, type PermissionCheck, type SideEffect, type ToolContext, type ToolDefinition, type ToolOutput } from "./types.js";
@@ -60,6 +63,16 @@ export class ToolRegistry {
 
   has(name: string): boolean {
     return this.tools.has(name);
+  }
+
+  /** Register a tool, replacing one with the same name (embodied mode: spatially gated clinical tools, world tools). */
+  replace(tool: ToolDefinition<any>): void {
+    this.tools.set(tool.name, tool);
+  }
+
+  /** Unregister a tool (embodied mode: the front-end's `walk_to`, replaced by the world's `navigate_to`). */
+  remove(name: string): void {
+    this.tools.delete(name);
   }
 
   /** Tools an agent may see under the current scope and deny rules, in allow-list order. */

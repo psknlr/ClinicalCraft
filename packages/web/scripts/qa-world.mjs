@@ -91,12 +91,14 @@ try {
         const cx = (f.bounds.minX + f.bounds.maxX) / 2;
         const back = Math.min(f.bounds.maxZ - 1, sp.z + 14);
         out.push(["02-overview", cx, back, 14, 0, -0.42]);
-        const rooms = f.rooms.filter((r) => !["corridor", "garden", "build-zone"].includes(r.kind));
+        const rooms = f.rooms.filter((r) => !["corridor", "garden", "build-zone", "elevator", "stairwell"].includes(r.kind));
+        // multi-level facilities: stand on the room's own floor
+        const elevation = (id) => (f.levels ?? []).find((l) => l.id === id)?.elevation ?? 0;
         let i = 3;
         for (const r of rooms.slice(0, 12)) {
           // stand inside the room near its south edge, looking north (−Z)
           const z = r.rect.z + r.rect.d / 2 - Math.min(1.2, r.rect.d / 4);
-          out.push([`${String(i++).padStart(2, "0")}-room-${r.id}`, r.rect.x, z, 0, 0, -0.18]);
+          out.push([`${String(i++).padStart(2, "0")}-room-${r.id}`, r.rect.x, z, elevation(r.level), 0, -0.18]);
         }
         return out;
       });
@@ -119,14 +121,18 @@ try {
     const seen = new Set();
     const first = f.patientSlots.filter((s) => !seen.has(key(s)) && seen.add(key(s)));
     const picked = [...first, ...f.patientSlots.filter((s) => !first.includes(s))].slice(0, 6);
+    const elevation = (e) => {
+      const id = e.level ?? f.rooms.find((r) => r.id === e.room)?.level;
+      return (f.levels ?? []).find((l) => l.id === id)?.elevation ?? 0;
+    };
     for (const s of picked) {
       const bed = s.bed ? f.placements.find((p) => p.id === s.bed) : null;
       const lying = s.posture === "lying" && bed;
       const rot = lying ? bed.rot ?? 0 : s.rot ?? 0;
       // lying patients are shot from the bed side (local +X), others from the front
-      out.push({ name: `slot-${s.id}`, x: lying ? bed.x : s.x, z: lying ? bed.z : s.z, rot: lying ? rot + 90 : rot, dist: lying ? 2.4 : 2.2, y: lying ? 0.9 : 1.1 });
+      out.push({ name: `slot-${s.id}`, x: lying ? bed.x : s.x, z: lying ? bed.z : s.z, rot: lying ? rot + 90 : rot, dist: lying ? 2.4 : 2.2, y: lying ? 0.9 : 1.1, floor: elevation(s) });
     }
-    for (const st of (f.staff ?? []).slice(0, 2)) out.push({ name: `staff-${st.id}`, x: st.x, z: st.z, rot: st.rot ?? 0, dist: 2.2, y: 1.2 });
+    for (const st of (f.staff ?? []).slice(0, 2)) out.push({ name: `staff-${st.id}`, x: st.x, z: st.z, rot: st.rot ?? 0, dist: 2.2, y: 1.2, floor: elevation(st) });
     return out;
   });
   for (const n of npcs) {
@@ -136,7 +142,7 @@ try {
     const px = n.x + fx * n.dist + fz * 0.6, pz = n.z + fz * n.dist - fx * 0.6;
     const yaw = Math.atan2(px - n.x, pz - n.z);
     const pitch = -Math.atan2(1.62 - n.y, n.dist);
-    await page.evaluate(([x, z, yaw, pitch]) => window.__WORLD__.debug.teleport(x, z, 0, yaw, pitch), [px, pz, yaw, pitch]);
+    await page.evaluate(([x, z, y, yaw, pitch]) => window.__WORLD__.debug.teleport(x, z, y, yaw, pitch), [px, pz, n.floor ?? 0, yaw, pitch]);
     await page.waitForTimeout(900);
     const file = path.join(out, `world-${tag}-${n.name}.png`);
     await page.screenshot({ path: file });

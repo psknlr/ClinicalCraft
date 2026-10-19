@@ -25,11 +25,13 @@ import {
   type ReduceResult,
   type SessionState,
 } from "@clinicalcraft/core";
+import { PRIMARY_ACTOR, type ActorId, type EpisodeTrace, type Pose, type WorldActionRequest, type WorldRuntime } from "@clinicalcraft/world";
 import { BUILTIN_AGENTS, mergeAgentProfiles } from "../agents/builtin.js";
 import { attendingOffline, consultantOffline, examinerOffline, narrateAction, nurseOffline } from "../agents/offline.js";
-import { agentKind, buildSystemSections, npcDisplayName, patientLocation, type PromptContext } from "../agents/prompts.js";
+import { agentKind, buildSystemSections, clockLabel, npcDisplayName, patientLocation, type PromptContext } from "../agents/prompts.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import { BUILTIN_COMMANDS, executeCommand, type CommandHost } from "../commands.js";
+import { EMBODIED_COMMANDS } from "../commands-world.js";
 import { compactConversation, estimateTokens } from "../compaction.js";
 import { emptyHookResult, HookRunner } from "../hooks/runner.js";
 import type { HookInput, HookResult } from "../hooks/types.js";
@@ -40,7 +42,11 @@ import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ProviderConfig } from "../providers/types.js";
 import { DEFAULT_SETTINGS } from "../settings/merge.js";
 import { canonicalLocale, type HookEventName, type ResolvedSettings } from "../settings/schema.js";
+import { BUILTIN_SKILLS } from "../skills/builtin.js";
+import type { SkillToolCall } from "../skills/interpreter.js";
+import type { SkillDefinition } from "../skills/schema.js";
 import { rejectionText } from "../tools/clinical.js";
+import { actionIntent, spatialCodeOf, spatialRefusal } from "../tools/spatial.js";
 import { ToolRegistry } from "../tools/index.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
 import { validateArgs } from "../tools/validate.js";
@@ -48,6 +54,8 @@ import { normaliseContent, redactValue, TranscriptRecorder } from "../transcript
 import { actionFromToolInput, actionToolArgs } from "./action-input.js";
 import { ApprovalBroker } from "./approvals.js";
 import { offlineClinicianTurn, runAutopilot, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
+import { EmbodiedSession, mergeSkills, type ClinicalCaller, type EmbodiedHost } from "./embodied.js";
+import { embodiedOfflineTurn } from "./embodied-autopilot.js";
 import { EventHub } from "./events.js";
 import { RESERVED_DIALOGUE_LABEL, runExaminer, runExaminerPrompt, type DialogueEntry, type ExaminerVerdict } from "./examiner.js";
 import { rt } from "./i18n.js";
@@ -55,6 +63,7 @@ import { resolveAgentModel, type AgentModel } from "./models.js";
 import { reactToDomainEvent, type EventReaction } from "./notifications.js";
 import { initialAffectIntensity, runPatientTurn, selectFacts, type PatientMemory } from "./patient-pipeline.js";
 import { parseLearnerInput, resolveAgentAlias } from "./router.js";
+import { emptyTrace } from "./trace.js";
 import type { ClinicalSessionApi, SessionOptions, SessionSnapshot, TranscriptItem } from "./types.js";
 
 /** Runtime version stamped into transcripts. */
@@ -84,7 +93,7 @@ const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
 const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_for_session", "denied", "abort"]);
 
 /** Ops that start work and are cancelled while still queued by an interrupt or shutdown. */
-const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess"]);
+const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess", "world_action"]);
 
 /** A valid patient affect intensity (0 calm … 3 most intense). */
 function isAffectIntensity(value: unknown): value is PatientMemory["affectIntensity"] {
@@ -190,6 +199,12 @@ export class ClinicalSession implements ClinicalSessionApi {
   private readonly openTurns = new Map<string, number>();
   private closing = false;
   private closed = false;
+  /** Embodied mode (settings `embodiment: "embodied"`): the encounter's world and everything wired to it; null in clinical mode. */
+  private readonly embodied: EmbodiedSession | null;
+  /** Built-in + project skills (embodied mode). */
+  private readonly skillList: SkillDefinition[];
+  /** `world_pose` refusals already reported (once per session in clinical mode). */
+  private poseRefused = false;
 
   constructor(opts: CreateSessionOptions) {
     this.opts = opts;
@@ -224,6 +239,19 @@ export class ClinicalSession implements ClinicalSessionApi {
     this.ownedFlags = new Set([...this.caseDef.interventions.flatMap((i) => i.setFlags), ...(this.caseDef.physiology?.events ?? []).flatMap((e) => e.setFlags)]);
     for (const p of Object.values(this._settings.providers)) if (p.apiKey) this.secrets.add(p.apiKey);
     this._state = createEngineState(this.caseDef);
+    this.skillList = mergeSkills(BUILTIN_SKILLS, opts.skills ?? []);
+    // Embodied mode (EMBODIED R3): the session builds the world; the clinical tools are spatially gated, world tools are added.
+    this.embodied = this._settings.embodiment === "embodied" ? new EmbodiedSession(this.embodiedHost(), opts.embodied ?? {}) : null;
+    if (this.embodied) {
+      for (const tool of this.embodied.gatedTools((name) => this.registry.get(name))) this.registry.replace(tool);
+      for (const tool of this.embodied.worldTools()) this.registry.replace(tool);
+      // Bodies move through the world (its Mover animates them): a front-end's dynamic `walk_to` would bypass it.
+      this.registry.remove("walk_to");
+      // `/look`, `/go`, `/use`… after the built-in commands (custom commands keep their place after them).
+      const disabled = new Set((opts.disabledCommands ?? []).map((n) => n.toLowerCase()));
+      const at = this.slash.filter((cmd) => cmd.source === "builtin").length;
+      this.slash.splice(at, 0, ...EMBODIED_COMMANDS.filter((cmd) => !disabled.has(cmd.name) && !this.slash.some((x) => x.name === cmd.name)));
+    }
   }
 
   /* ---------------------------------------------------------------- */
@@ -246,6 +274,34 @@ export class ClinicalSession implements ClinicalSessionApi {
   /** True after `shutdown_complete`. */
   get isClosed(): boolean {
     return this.closed;
+  }
+
+  /** `clinical` or `embodied` (fixed for the encounter). */
+  get embodiment(): "clinical" | "embodied" {
+    return this.embodied ? "embodied" : "clinical";
+  }
+
+  /** The encounter's world (embodied mode), or null. */
+  world(): WorldRuntime | null {
+    return this.embodied?.world() ?? null;
+  }
+
+  /** The episode trace (empty in clinical mode). */
+  trace(): EpisodeTrace {
+    return this.embodied?.trace.trace() ?? emptyTrace(this.id, this.caseDef.id, this.facility?.id ?? null);
+  }
+
+  /**
+   * A registered tool by name — in embodied mode the spatially gated clinical tools and the world tools
+   * (front-ends that run tools themselves, e.g. the MCP bridge, use these definitions).
+   */
+  tool(name: string): ToolDefinition<any> | undefined {
+    return this.registry.get(name);
+  }
+
+  /** Where the learner's body is (embodied mode; the REPL status line), or null. */
+  placeLabel(): string | null {
+    return this.embodied?.roomName(PRIMARY_ACTOR, this.locale) ?? null;
   }
 
   /** Start-up: restore (resume), SessionStart hooks, session_meta, session_configured. Called by `createSession`. */
@@ -275,11 +331,13 @@ export class ClinicalSession implements ClinicalSessionApi {
         provider: this._settings.provider,
         model: this._settings.model ?? "",
         clinicalcraftVersion: CLINICALCRAFT_VERSION,
+        ...(this.embodied ? { embodiment: "embodied" as const } : {}),
       });
     }
     for (const entry of derivedDialogue) this.recorder?.record("dialogue", { ...entry });
     const hook = await this.runHook({ hook_event_name: "SessionStart", source: resume ? "resume" : "startup" });
     for (const w of hook.warnings) this.emit("", { type: "warning", message: w });
+    for (const issue of this.opts.skillIssues ?? []) this.emit("", { type: "warning", message: rt(this.locale, "embodied.skillIssue", { issue }) });
     this.sessionContext.push(...hook.additionalContext);
     this.emitConfigured("");
     this.emitSnapshot("");
@@ -324,7 +382,19 @@ export class ClinicalSession implements ClinicalSessionApi {
   toolsFor(agent: AgentRole): ToolDefinition<any>[] {
     const profile = this.profiles.get(agent);
     if (!profile) return [];
-    return this.registry.forAgent(profile, { scope: this._settings.practiceScope, deny: this._settings.permissions.deny, caseDef: this.caseDef });
+    const tools = this.registry.forAgent(profile, { scope: this._settings.practiceScope, deny: this._settings.permissions.deny, caseDef: this.caseDef });
+    // Camera frames only for a model that can look at images (embodied mode with a camera).
+    return tools.some((t) => t.name === "get_camera_frame") && !this.visionFor(agent) ? tools.filter((t) => t.name !== "get_camera_frame") : tools;
+  }
+
+  /** Can this agent's model look at images (capability `vision`)? */
+  private visionFor(agent: AgentRole): boolean {
+    const m = this.model(String(agent), false);
+    try {
+      return !!m.provider && m.provider.capabilities().vision === true;
+    } catch {
+      return false;
+    }
   }
 
   commands(): SlashCommand[] {
@@ -372,6 +442,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       createdAt: new Date(this.createdAt).toISOString(),
       ...(this.recorder ? { nextOrdinal: this.recorder.nextOrdinal } : {}),
       dialogue: this.dialogue.map((d) => ({ ...d })),
+      ...(this.embodied ? { embodiment: "embodied" as const, world: this.embodied.world().snapshot() } : {}),
     };
   }
 
@@ -401,6 +472,11 @@ export class ClinicalSession implements ClinicalSessionApi {
   /* ---------------------------------------------------------------- */
 
   private accept(id: string, op: Op): Promise<void> {
+    if (op?.type === "world_pose") {
+      // Sensor data (~10 Hz): applied at once, never queued behind a turn, never transcribed.
+      if (!this.closed && !this.closing) this.applyPose(id, op.actorId, op.pose);
+      return Promise.resolve();
+    }
     if (this.closed || (this.closing && op.type !== "shutdown")) {
       this.emit(id, { type: "error", message: rt(this.locale, "error.closed"), code: "closed" });
       return Promise.resolve();
@@ -467,6 +543,8 @@ export class ClinicalSession implements ClinicalSessionApi {
           return await this.handleCommand(id, op.name, op.args);
         case "autopilot":
           return await this.withTurn(id, (signal) => this.runAutopilot(id, op.goal, op.maxTurns, signal));
+        case "world_action":
+          return void (await this.withTurn(id, (signal) => this.worldAction(id, op.request, signal)));
         case "configure":
           return this.configure(id, op.patch);
         case "compact":
@@ -478,6 +556,7 @@ export class ClinicalSession implements ClinicalSessionApi {
         case "interrupt":
         case "approval_response":
         case "dynamic_tool_response":
+        case "world_pose":
           return;
         default: {
           const never: never = op;
@@ -497,6 +576,29 @@ export class ClinicalSession implements ClinicalSessionApi {
     } finally {
       if (this.active?.controller === controller) this.active = null;
     }
+  }
+
+  /** A learner world action (`world_action` op): the learner's tool path runs any clinical effect. */
+  private async worldAction(id: string, request: WorldActionRequest, signal: AbortSignal): Promise<void> {
+    if (!this.embodied) {
+      this.emit(id, { type: "error", message: rt(this.locale, "embodied.notEmbodied"), code: "not_embodied" });
+      return;
+    }
+    if (!request || typeof request !== "object" || Array.isArray(request)) {
+      this.emit(id, { type: "error", message: rt(this.locale, "error.internal", { message: "world_action.request must be an object" }), code: "invalid_op" });
+      return;
+    }
+    await this.embodied.act({ agent: "learner", submission: id, signal }, request, signal);
+  }
+
+  /** A sensor pose (`world_pose` op). */
+  private applyPose(id: string, actorId: ActorId, pose: Pose): void {
+    if (!this.embodied) {
+      if (!this.poseRefused) this.emit(id, { type: "error", message: rt(this.locale, "embodied.notEmbodied"), code: "not_embodied" });
+      this.poseRefused = true;
+      return;
+    }
+    this.embodied.updatePose(actorId, pose);
   }
 
   private interrupt(id: string): void {
@@ -558,6 +660,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       agents: this.availableAgents(),
       interlocutor: this.interlocutor,
       offline: this._settings.provider === "offline" || this.model("clinician", false).provider === null,
+      embodiment: this.embodiment,
     });
   }
 
@@ -666,6 +769,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     this.recorder?.record("action", { action, accepted });
     for (const event of result.events) {
       this.emit(id, { type: "clinical_event", event });
+      this.embodied?.noteClinicalEvent(this.hub.lastSeq, event);
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
       // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).
       for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
@@ -765,6 +869,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       memory: this.opts.memory ?? null,
       sessionContext: this.sessionContext,
       plan: this.plan,
+      ...(this.embodied ? { embodied: { place: this.embodied.roomName(PRIMARY_ACTOR, this.locale), skills: this.skillList.map((sk) => sk.id) } } : {}),
     };
   }
 
@@ -777,9 +882,12 @@ export class ClinicalSession implements ClinicalSessionApi {
     };
   }
 
-  private toolContext(agent: AgentRole | "learner", id: string, signal?: AbortSignal): ToolContext {
+  private toolContext(agent: AgentRole | "learner", id: string, signal?: AbortSignal, extra: { actorId?: string; worldActionId?: string; turnId?: string } = {}): ToolContext {
     const dynamic = this.registry.has("walk_to");
     return {
+      ...(extra.actorId ? { actorId: extra.actorId } : {}),
+      ...(extra.worldActionId ? { worldActionId: extra.worldActionId } : {}),
+      ...(extra.turnId ? { turnId: extra.turnId } : {}),
       caseDef: this.caseDef,
       facility: this.facility,
       catalogs: this.catalogs,
@@ -989,13 +1097,27 @@ export class ClinicalSession implements ClinicalSessionApi {
       }
       const early = tool.precheck?.(args, this.toolContext("learner", id, signal));
       if (early) {
-        this.emit(id, { type: "warning", message: early.output });
+        const code = spatialCodeOf(early);
+        this.emit(id, code ? { type: "error", message: early.output, code } : { type: "warning", message: early.output });
         return null;
       }
       if (await this.authorizeLearnerTool(id, tool, args, pre.approved, signal)) return null;
     }
     if (!["start", "set-phase", "note", "flag"].includes(action.type)) this.ensureStarted(id);
-    const result = this.dispatchInternal(action, id);
+    // Embodied: the body may have moved while the approval was pending — re-check right before the engine commit.
+    const intent = this.embodied && tool ? actionIntent(action) : null;
+    if (intent && this.embodied) {
+      const check = this.embodied.check(PRIMARY_ACTOR, intent, true);
+      if (!check.ok) {
+        this.emit(id, { type: "error", message: spatialRefusal(check, L).output, code: check.code });
+        return null;
+      }
+    }
+    let result!: ReduceResult;
+    const commit = () => (result = this.dispatchInternal(action, id));
+    if (intent && this.embodied && tool) {
+      await this.embodied.gate().traced!(PRIMARY_ACTOR, tool.name, args ?? {}, async () => (commit(), { ok: !result.rejected, output: "" }));
+    } else commit();
     // The action type picks the specific wording (a `set-phase` to an automatic phase is "not switchable", not "locked").
     const rejection = result.rejected ? rt(L, "action.rejected", { code: result.rejected.code, message: rejectionText(L, result.rejected.code, action.type) }) : null;
     if (rejection) {
@@ -1050,18 +1172,29 @@ export class ClinicalSession implements ClinicalSessionApi {
 
   /** The approval gate for a learner tool use; returns a refusal output or null when allowed. */
   private async authorizeLearnerTool(id: string, tool: ToolDefinition<any>, args: Record<string, unknown>, hookApproved: boolean, signal?: AbortSignal): Promise<ToolOutput | null> {
+    return (await this.authorizeLearnerToolDetailed(id, tool, args, hookApproved, signal))?.refusal ?? null;
+  }
+
+  /** `authorizeLearnerTool` with the kind of refusal (a denial, or an abort that cancels the call). */
+  private async authorizeLearnerToolDetailed(
+    id: string,
+    tool: ToolDefinition<any>,
+    args: Record<string, unknown>,
+    hookApproved: boolean,
+    signal?: AbortSignal,
+    ctx: ToolContext = this.toolContext("learner", id, signal),
+  ): Promise<{ refusal: ToolOutput; status: "denied" | "cancelled" } | null> {
     const L = this.locale;
-    const ctx = this.toolContext("learner", id, signal);
     const gate = await this.authorize(id, { agent: "learner", tool, args, ctx, hookApproved, ...(signal ? { signal } : {}) });
     if (gate.kind === "deny") {
       const message = rt(L, "action.denied", { reason: gate.reason || gate.ruleId });
       this.emit(id, { type: "error", message, code: "permission_denied" });
-      return { ok: false, output: message };
+      return { refusal: { ok: false, output: message }, status: "denied" };
     }
     if (gate.kind === "abort") {
       const message = rt(L, "action.cancelled");
       this.emit(id, { type: "warning", message });
-      return { ok: false, output: message };
+      return { refusal: { ok: false, output: message }, status: "cancelled" };
     }
     return null;
   }
@@ -1330,10 +1463,11 @@ export class ClinicalSession implements ClinicalSessionApi {
   }
 
   private offlineClinicianBlock(id: string, turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome> {
-    return offlineClinicianTurn(this.autopilotHost(id), turnId, maxSteps, signal);
+    const host = this.autopilotHost(id);
+    return host.offlineTurn ? host.offlineTurn(turnId, maxSteps, signal) : offlineClinicianTurn(host, turnId, maxSteps, signal);
   }
 
-  private autopilotHost(id: string): AutopilotHost {
+  private autopilotHost(id: string, embodied = true): AutopilotHost {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const session = this;
     return {
@@ -1365,6 +1499,20 @@ export class ClinicalSession implements ClinicalSessionApi {
           now: this.now,
         }),
       cursor: this.offlineCursor,
+      ...(this.embodied && embodied
+        ? {
+            offlineTurn: (turnId: string, maxSteps: number, signal?: AbortSignal) => {
+              const e = this.embodied!;
+              return embodiedOfflineTurn(this.autopilotHost(id, false), {
+                world: () => e.world(),
+                trace: e.trace,
+                act: (request, turn, sig) => e.act({ agent: "clinician", submission: id, turnId: turn, ...(sig ? { signal: sig } : {}) }, request, sig),
+                patientId: () => e.patientId(),
+                patientMonitorId: () => e.patientMonitorId(),
+              }, turnId, maxSteps, signal);
+            },
+          }
+        : {}),
     };
   }
 
@@ -1490,6 +1638,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     const patch = cleanConfigPatch(rawPatch);
     const next = structuredClone(this._settings);
     const issues: string[] = [];
+    // Fixed for an encounter (EMBODIED R3): a patch that would change it is refused.
+    if (rawPatch?.embodiment !== undefined && rawPatch.embodiment !== this.embodiment) issues.push(rt(this.locale, "embodied.fixed", { mode: this.embodiment }));
     const modes: ApprovalMode[] = ["default", "strict", "auto", "plan", "bypass"];
     const scopes: PracticeScope[] = ["history-only", "workup", "full"];
     if (patch.provider !== undefined) {
@@ -1527,6 +1677,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     this._settings = next;
     this.models.clear();
     this.warnedOffline.clear();
+    this.embodied?.setLocale(this._settings.locale);
     if (issues.length > 0) this.emit(id, { type: "error", message: rt(this.locale, "error.config", { issues: issues.join(", ") }), code: "invalid_config" });
     this.emit(id, { type: "config_changed", patch: cleanConfigPatch(patch) });
   }
@@ -1540,6 +1691,7 @@ export class ClinicalSession implements ClinicalSessionApi {
     const hook = await this.runHook({ hook_event_name: "SessionEnd", reason: this._state.finished ? "finished" : "shutdown" });
     for (const w of hook.warnings) this.emit(id, { type: "warning", message: w });
     await this.hookChain;
+    this.embodied?.flush();
     this.emit(id, { type: "shutdown_complete" });
     this.closed = true;
     await this.recorder?.flush();
@@ -1678,6 +1830,8 @@ export class ClinicalSession implements ClinicalSessionApi {
         this.patientMemory.companion.approached = false;
       },
       snapshot: () => this.snapshot(),
+      embodied: () => this.embodied !== null,
+      skills: () => this.skillList.map((sk) => ({ id: sk.id, name: t(sk.name, this.locale) })),
       shutdown: async () => {
         this.closing = true;
         this.enqueue(id, { type: "shutdown" }).catch(() => undefined);
@@ -1687,29 +1841,87 @@ export class ClinicalSession implements ClinicalSessionApi {
 
   /** Run a tool as the learner (slash commands): validation, PreToolUse hooks (`updatedInput` re-validated), the approval gate, the tool, PostToolUse. */
   private async runLearnerTool(id: string, name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<ToolOutput> {
+    return (await this.runLearnerToolDetailed(id, name, args, signal)).output;
+  }
+
+  /**
+   * `runLearnerTool` with the tool path's status (ok, error, invalid, blocked, denied, cancelled) — and, in
+   * embodied mode, the acting body and the world action carrying the call out (`extra`).
+   */
+  private async runLearnerToolDetailed(id: string, name: string, args: Record<string, unknown>, signal?: AbortSignal, extra: { actorId?: string; worldActionId?: string } = {}): Promise<{ output: ToolOutput; status: string }> {
     const L = this.locale;
     const tool = this.registry.get(name);
-    if (!tool) return { ok: false, output: rt(L, "tool.unknownTool", { tool: name, tools: "-" }) };
+    if (!tool) return { output: { ok: false, output: rt(L, "tool.unknownTool", { tool: name, tools: "-" }) }, status: "invalid" };
     const validated = validateArgs(tool.inputSchema, args);
-    if (!validated.ok) return { ok: false, output: rt(L, "tool.invalidArgs", { tool: name, errors: validated.errors.join("; ") }) };
+    if (!validated.ok) return { output: { ok: false, output: rt(L, "tool.invalidArgs", { tool: name, errors: validated.errors.join("; ") }) }, status: "invalid" };
     const pre = await this.learnerPreToolUse(id, tool, validated.value as Record<string, unknown>, signal);
-    if (!pre.ok) return pre.refusal;
+    if (!pre.ok) return { output: pre.refusal, status: "blocked" };
     const input = pre.input;
+    const ctx = () => this.toolContext("learner", id, signal, extra);
     // Refused before the gate (no approval prompt for a call that cannot run, e.g. a locked decision).
-    const early = tool.precheck?.(input, this.toolContext("learner", id, signal));
-    if (early) return early;
-    const refused = await this.authorizeLearnerTool(id, tool, input, pre.approved, signal);
-    if (refused) return refused;
+    const early = tool.precheck?.(input, ctx());
+    if (early) return { output: early, status: "error" };
+    const refused = await this.authorizeLearnerToolDetailed(id, tool, input, pre.approved, signal, ctx());
+    if (refused) return { output: refused.refusal, status: refused.status };
     if (!tool.readOnly) this.ensureStarted(id);
     let out: ToolOutput;
     try {
-      out = await tool.run(input, this.toolContext("learner", id, signal));
+      out = await tool.run(input, ctx());
     } catch (err) {
       out = { ok: false, output: rt(L, "tool.failed", { message: err instanceof Error ? err.message : String(err) }) };
     }
     const post = await this.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: name, tool_input: input, tool_response: { ok: out.ok, output: out.output } }, signal);
     for (const w of post.warnings) this.emit(id, { type: "warning", message: w });
-    return out;
+    return { output: out, status: out.ok ? "ok" : "error" };
+  }
+
+  /**
+   * Run a tool through a caller's tool path with an acting body (embodied mode: world operations' clinical
+   * effects, skill steps, delegated staff): the learner's (`runLearnerTool`) or a model agent's
+   * (`executeToolCall` with its allow-list, hooks and approval gate). Never a shortcut.
+   */
+  private async runToolAs(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; worldActionId?: string }): Promise<SkillToolCall> {
+    const id = caller.submission ?? this.currentSubmission;
+    const signal = caller.signal ?? this.active?.controller.signal;
+    if (caller.agent === "learner") {
+      const r = await this.runLearnerToolDetailed(id, tool, args, signal, extra);
+      return { ok: r.output.ok && r.status === "ok", output: r.output, status: r.status };
+    }
+    const agent = String(caller.agent);
+    const turnId = caller.turnId ?? this.newId();
+    const outcome = await executeToolCall({
+      host: this.loopHost(id),
+      agent,
+      tools: this.toolsFor(agent),
+      call: { id: this.newId(), name: tool, args },
+      ctx: this.toolContext(agent, id, signal, { ...extra, turnId }),
+      emit: (msg) => this.emit(id, msg),
+      turnId,
+      ...(signal ? { signal } : {}),
+      now: this.now,
+    });
+    return { ok: outcome.status === "ok" && outcome.output.ok, output: outcome.output, status: outcome.status };
+  }
+
+  /** What the embodied mode needs from this session. */
+  private embodiedHost(): EmbodiedHost {
+    return {
+      sessionId: this.id,
+      caseDef: this.caseDef,
+      facility: this.facility,
+      catalogs: this.catalogs,
+      locale: () => this.locale,
+      state: () => this._state,
+      settings: () => this._settings,
+      now: () => this.now(),
+      newId: () => this.newId(),
+      dispatch: (action) => this.dispatchInternal(action, this.currentSubmission),
+      runTool: (caller, tool, args, extra) => this.runToolAs(caller, tool, args, extra),
+      emit: (msg, submission) => this.emit(submission ?? this.currentSubmission, msg),
+      recordWorld: (snapshot) => void this.recorder?.record("world", { snapshot }),
+      clockText: () => clockLabel(this.caseDef, this._state.clock, this.locale),
+      skills: () => this.skillList,
+    };
   }
 }
 
