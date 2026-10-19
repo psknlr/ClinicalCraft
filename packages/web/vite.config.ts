@@ -157,6 +157,7 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: [
       { find: /^@clinicalcraft\/core$/, replacement: pkg("core") },
+      { find: /^@clinicalcraft\/world$/, replacement: pkg("world") },
       { find: /^@clinicalcraft\/agent$/, replacement: pkg("agent") },
       { find: /^@clinicalcraft\/content$/, replacement: pkg("content") },
       { find: /^@clinicalcraft\/content\//, replacement: path.resolve(here, "../content") + "/" },

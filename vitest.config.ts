@@ -9,6 +9,7 @@ export default defineConfig({
       { find: /^@clinicalcraft\/agent\/node$/, replacement: src("agent", "node/index.ts") },
       { find: /^@clinicalcraft\/agent$/, replacement: src("agent") },
       { find: /^@clinicalcraft\/core$/, replacement: src("core") },
+      { find: /^@clinicalcraft\/world$/, replacement: src("world") },
       { find: /^@clinicalcraft\/content$/, replacement: src("content") },
       { find: /^@clinicalcraft\/server$/, replacement: src("server") },
       { find: /^@clinicalcraft\/mcp$/, replacement: src("mcp") },

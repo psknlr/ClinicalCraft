@@ -16,6 +16,7 @@
     "types": ["vite/client", "node"],
     "paths": {
       "@clinicalcraft/core": ["../core/src/index.ts"],
+      "@clinicalcraft/world": ["../world/src/index.ts"],
       "@clinicalcraft/agent": ["../agent/src/index.ts"],
       "@clinicalcraft/content": ["../content/src/index.ts"],
       "@clinicalcraft/content/*": ["../content/*"]

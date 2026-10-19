@@ -1,0 +1,23 @@
+{
+  "name": "@clinicalcraft/world",
+  "version": "5.0.0",
+  "description": "ClinicalCraft embodied world model: semantic registry, collision, navigation, visibility, spatial policy, versioned physical state, action bus, device behaviours and traces (pure, deterministic, headless)",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@clinicalcraft/core": "5.0.0"
+  }
+}
