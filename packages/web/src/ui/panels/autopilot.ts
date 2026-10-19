@@ -4,12 +4,14 @@
  * store's event log). Approvals still apply to every state change. In an
  * embodied session also the live episode trace — observation → navigation
  * → interaction → clinical action → verification per step, with failures
- * and hints (`ClinicalSession.trace()`).
+ * and hints (`ClinicalSession.trace()`). While external control is on
+ * (PROTOCOL §13.6) it cannot be started: an external agent and the
+ * autopilot would both drive the clinician.
  */
 import type { App } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
 import { tr } from "../../i18n/index.js";
-import { clear, h } from "../dom.js";
+import { append, clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { traceGroups, traceList } from "./trace.js";
 
@@ -48,7 +50,7 @@ export function autopilotPanel(app: App): () => PanelView {
     };
 
     const start = (watch: boolean) => {
-      if (store.autopilotRunning) return;
+      if (store.autopilotRunning || app.external.on) return;
       // embodied: the agent takes the body over from where the learner left it
       game.embodied?.syncPose();
       void game.session.autopilot(goal.value);
@@ -61,12 +63,14 @@ export function autopilotPanel(app: App): () => PanelView {
       state.textContent = running ? tr("auto.running") : tr("auto.idle");
       state.className = `auto-state ${running ? "running" : ""}`;
       clear(controls);
+      const external = app.external.on;
       if (running) controls.append(h("button", { type: "button", id: "autopilot-stop", class: "danger", onclick: () => game.session.interrupt() }, tr("auto.stop")));
       else
-        controls.append(
-          h("button", { type: "button", id: "autopilot-start", class: "primary", onclick: () => start(false) }, tr("auto.start")),
-          h("button", { type: "button", id: "autopilot-watch", onclick: () => start(true) }, tr("auto.startWatch")),
-        );
+        append(controls, [
+          h("button", { type: "button", id: "autopilot-start", class: "primary", disabled: external, onclick: () => start(false) }, tr("auto.start")),
+          h("button", { type: "button", id: "autopilot-watch", disabled: external, onclick: () => start(true) }, tr("auto.startWatch")),
+          external ? h("small", { class: "muted", id: "autopilot-external" }, tr("ext.autopilotOff")) : null,
+        ]);
       const list = store.toolCalls.filter((c) => c.agent === "clinician");
       clear(calls);
       if (!list.length) calls.append(h("li", { class: "empty" }, tr("auto.noCalls")));
@@ -101,6 +105,7 @@ export function autopilotPanel(app: App): () => PanelView {
     render();
     const label = statusLabel(app.choice());
     let last = store.version;
+    let lastExternal = app.external.on;
     return {
       id: "autopilot",
       kicker: tr("auto.kicker"),
@@ -116,8 +121,9 @@ export function autopilotPanel(app: App): () => PanelView {
       ],
       focus: goal,
       update() {
-        if (store.version === last) return;
+        if (store.version === last && app.external.on === lastExternal) return;
         last = store.version;
+        lastExternal = app.external.on;
         render();
       },
     };

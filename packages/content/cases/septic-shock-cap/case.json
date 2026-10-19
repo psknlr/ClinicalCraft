@@ -6781,7 +6781,8 @@
       },
       "requires": [
         "infusion-pump",
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "effects": [
@@ -6840,7 +6841,8 @@
       },
       "requires": [
         "infusion-pump",
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "effects": [

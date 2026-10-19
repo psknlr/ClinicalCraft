@@ -4350,7 +4350,8 @@
       },
       "requires": [
         "infusion-pump",
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "effects": [
@@ -4828,7 +4829,8 @@
         "en": "Furosemide 40 mg IV"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "effects": [
@@ -4889,7 +4891,8 @@
         "en": "Ketorolac 30 mg IV"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "effects": [
@@ -5058,7 +5061,8 @@
         "en": "Morphine 2.5 mg slow IV, repeat every 5–10 minutes as needed, monitoring RR and BP"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "effects": [
@@ -5131,7 +5135,8 @@
         "en": "Paracetamol 1 g IV over 15 min, at least 4 h after the previous dose; max 4 g in 24 h including regular doses (check the drug chart)"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "low",
       "effects": [
@@ -5177,7 +5182,8 @@
       },
       "requires": [
         "infusion-pump",
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "high",
       "effects": [
@@ -7665,6 +7671,9 @@
     }
   ],
   "extensions": {
+    "embodied": {
+      "ivAccessInSitu": true
+    },
     "clinicalScores": {
       "wellsPE": {
         "total": 10,

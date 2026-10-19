@@ -5,7 +5,7 @@
  */
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
-import type { ResolvedSettings } from "@clinicalcraft/agent";
+import { isAttachKey, type ResolvedSettings } from "@clinicalcraft/agent";
 import { flagBool, flagNumber, flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, EXIT, loadCliSettings, requireProviderKey, sessionFlagsLayer, type CliContext } from "./context.js";
 import { webDistDir } from "./paths.js";
@@ -138,13 +138,19 @@ type RunAttachedMcpServer = (o: {
   stdout: NodeJS.WritableStream;
   serverUrl: string;
   token: string | null;
-  worldSession: string | null;
+  worldSession: string;
+  attachKey: string;
   callTimeoutMs?: number;
   locale?: string;
 }) => Promise<unknown>;
 
+/** Environment variable read for the live session's attach key (keeps it out of the process list). */
+export const ATTACH_KEY_ENV = "CLINICALCRAFT_ATTACH_KEY";
+/** Environment variable read for the live session id when `--world-session` is not given. */
+export const WORLD_SESSION_ENV = "CLINICALCRAFT_WORLD_SESSION";
+
 /** Flags of `mcp` that only apply to attach mode, and session flags that never do (the live session has its own settings). */
-const ATTACH_ONLY_FLAGS = ["world-session", "token-file", "timeout"] as const;
+const ATTACH_ONLY_FLAGS = ["world-session", "attach-key-file", "token-file", "timeout"] as const;
 const SESSION_ONLY_FLAGS = ["provider", "model", "base-url", "approval", "scope", "facility", "max-tool-rounds", "ephemeral", "embodied", "allowed-tools", "disallowed-tools"] as const;
 
 /**
@@ -165,10 +171,15 @@ export function attachServerUrl(ctx: CliContext, raw: string): string {
 }
 
 /**
- * `clinicalcraft mcp --attach <url> [--world-session <id>] [--token-file f] [--timeout <sec>]`:
+ * `clinicalcraft mcp --attach <url> --world-session <id> --attach-key-file <f> [--token-file f] [--timeout <sec>]`:
  * the MCP tools act in a learner's live browser session through the world
- * bridge of `clinicalcraft serve` (docs/EMBODIED.md §12). The token comes from
- * `--token-file`, `CLINICALCRAFT_SERVER_TOKEN` or `server.token`.
+ * bridge of `clinicalcraft serve` (docs/EMBODIED.md §12). The session and its
+ * attach key are both required — the learner's "External agent" badge shows
+ * them; a session is never picked automatically (review S5). The session id
+ * may come from `CLINICALCRAFT_WORLD_SESSION`, the key from
+ * `CLINICALCRAFT_ATTACH_KEY` (never from the command line: the process list);
+ * the server token from `--token-file`, `CLINICALCRAFT_SERVER_TOKEN` or
+ * `server.token`.
  */
 async function runMcpAttach(ctx: CliContext, args: ParsedArgs, raw: string): Promise<number> {
   const serverUrl = attachServerUrl(ctx, raw);
@@ -184,8 +195,21 @@ async function runMcpAttach(ctx: CliContext, args: ParsedArgs, raw: string): Pro
       throw new UsageError(ctx.t("serve.tokenFile", { file: path, message: (err as Error).message }));
     }
   } else token = ctx.env[SERVER_TOKEN_ENV]?.trim() || settings.server.token || undefined;
-  const worldSession = flagString(args, "world-session");
-  if (worldSession !== undefined && !/^[A-Za-z0-9_-]{8,64}$/.test(worldSession)) throw new UsageError(ctx.t("mcp.attach.badSession", { value: worldSession }));
+  const worldSession = flagString(args, "world-session") ?? (ctx.env[WORLD_SESSION_ENV]?.trim() || undefined);
+  if (worldSession === undefined) throw new UsageError(ctx.t("mcp.attach.needSession", { env: WORLD_SESSION_ENV }));
+  if (!/^[A-Za-z0-9_-]{8,64}$/.test(worldSession)) throw new UsageError(ctx.t("mcp.attach.badSession", { value: worldSession }));
+  const keyFile = flagString(args, "attach-key-file");
+  let attachKey: string | undefined;
+  if (keyFile !== undefined) {
+    const path = ctx.path(keyFile);
+    try {
+      attachKey = readFileSync(path, "utf8").trim();
+    } catch (err) {
+      throw new UsageError(ctx.t("mcp.attach.keyFile", { file: path, message: (err as Error).message }));
+    }
+  } else attachKey = ctx.env[ATTACH_KEY_ENV]?.trim() || undefined;
+  if (attachKey === undefined) throw new UsageError(ctx.t("mcp.attach.needKey", { env: ATTACH_KEY_ENV }));
+  if (!isAttachKey(attachKey)) throw new UsageError(ctx.t("mcp.attach.badKey"));
   const timeout = flagNumber(args, "timeout");
   if (timeout !== undefined && !(timeout >= 1 && timeout <= 600)) throw new UsageError(ctx.t("mcp.attach.badTimeout"));
   const url = new URL(serverUrl);
@@ -198,7 +222,8 @@ async function runMcpAttach(ctx: CliContext, args: ParsedArgs, raw: string): Pro
     stdout: ctx.io.stdout,
     serverUrl,
     token: token ?? null,
-    worldSession: worldSession ?? null,
+    worldSession,
+    attachKey,
     ...(timeout !== undefined ? { callTimeoutMs: Math.round(timeout * 1000) } : {}),
     locale: settings.locale,
   });

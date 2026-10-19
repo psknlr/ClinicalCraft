@@ -59,14 +59,18 @@ clinical tool), and deny rules hold. On a clinical session the world tools
 return `isError` with `structuredContent.error = "not_embodied"`. The case
 list comes from the case index; only the started case is validated.
 
-**Attach mode.** `clinicalcraft mcp --attach <server> [--world-session <id>]
-[--token-file f] [--timeout <sec>]` (`runAttachedMcpServer`) acts in a
-learner's LIVE browser session through `clinicalcraft serve` instead:
-`list_live_sessions` plus the clinical and world tools with an optional
-`session_id` (the only open session is chosen automatically), no
-`start_case` and no `confirm` — approvals go to the learner in the browser
-and a denial comes back as `status: "denied"`. `notifications/cancelled`
-cancels a call in the browser too.
+**Attach mode.** `clinicalcraft mcp --attach <server> --world-session <id>
+--attach-key-file <f> [--token-file f] [--timeout <sec>]`
+(`runAttachedMcpServer`) acts in a learner's LIVE browser session through
+`clinicalcraft serve` instead — the session the learner enabled external
+control for, paired by the id and attach key its HUD badge shows (or
+`CLINICALCRAFT_WORLD_SESSION` / `CLINICALCRAFT_ATTACH_KEY`); it never picks
+a session itself. `list_live_sessions` (the key's sessions) plus the
+clinical and world tools with an optional `session_id`, no `start_case` and
+no `confirm` — approvals go to the learner in the browser and a denial comes
+back as `status: "denied"`. What the live session returns is marked as data,
+not instructions (`structuredContent.untrusted: true`).
+`notifications/cancelled` cancels a call in the browser too.
 
 Contract: [docs/PROTOCOL.md §11–§13](../../docs/PROTOCOL.md). Tests:
 `npx vitest run packages/mcp`.

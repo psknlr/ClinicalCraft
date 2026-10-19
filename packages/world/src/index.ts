@@ -19,6 +19,7 @@ export * from "./state.js";
 export * from "./locate.js";
 export * from "./authority.js";
 export * from "./behaviors.js";
+export * from "./capabilities.js";
 export * from "./clinical.js";
 export * from "./reach.js";
 export * from "./policy.js";

@@ -3226,7 +3226,9 @@
         "zh-CN": "肾上腺素0.5 mg静脉推注（未稀释的1 mg/mL溶液0.5 mL）",
         "en": "Adrenaline 0.5 mg IV bolus (0.5 mL of undiluted 1 mg/mL)"
       },
-      "requires": [],
+      "requires": [
+        "iv-access"
+      ],
       "risk": "high",
       "effects": [
         { "vital": "sbp", "delta": 90, "onsetMinutes": 0, "rampMinutes": 1, "durationMinutes": 6 },
@@ -3352,7 +3354,9 @@
         "zh-CN": "15 L/min 储氧面罩（便携氧气瓶），稳定后按SpO₂ 94–98% 调整",
         "en": "15 L/min via non-rebreather mask (portable cylinder); titrate to SpO₂ 94–98% once stable"
       },
-      "requires": [],
+      "requires": [
+        "oxygen"
+      ],
       "risk": "none",
       "effects": [
         { "vital": "spo2", "delta": 5, "onsetMinutes": 0, "rampMinutes": 2 },
@@ -3373,7 +3377,9 @@
         "zh-CN": ["监护", "心电监护", "连接监护", "持续监测", "血氧监测", "测血压", "上监护", "接监护仪", "测血氧"],
         "en": ["monitor", "monitoring", "attach monitor", "continuous monitoring", "sats probe", "obs", "put her on the monitor", "pulse ox", "spo2 probe", "vitals monitoring"]
       },
-      "requires": [],
+      "requires": [
+        "cardiac-monitor"
+      ],
       "risk": "none",
       "maxDoses": 1,
       "indicatedWhen": { "always": true },
@@ -3412,7 +3418,9 @@
         "zh-CN": "18G外周留置针（肘前），可同时留取血标本",
         "en": "18G peripheral cannula (antecubital), taking blood samples at the same time"
       },
-      "requires": [],
+      "requires": [
+        "iv-access"
+      ],
       "risk": "low",
       "maxDoses": 2,
       "indicatedWhen": { "always": true },
@@ -3434,7 +3442,9 @@
         "zh-CN": "晶体液（乳酸钠林格液或0.9%氯化钠）500–1000 mL 加压快速静脉输注，每次后评估，按需重复",
         "en": "Crystalloid (Hartmann's or 0.9% sodium chloride) 500–1000 mL as a rapid IV bolus (pressure bag); reassess after each bolus and repeat as needed"
       },
-      "requires": [],
+      "requires": [
+        "iv-access"
+      ],
       "risk": "low",
       "effects": [
         { "vital": "sbp", "delta": 10, "onsetMinutes": 2, "rampMinutes": 10 },
@@ -3457,7 +3467,10 @@
         "zh-CN": "沙丁胺醇5 mg 氧气驱动雾化（6–8 L/min），必要时重复",
         "en": "Salbutamol 5 mg nebulised, oxygen-driven (6–8 L/min); repeat if needed"
       },
-      "requires": [],
+      "requires": [
+        "nebulizer",
+        "oxygen"
+      ],
       "risk": "low",
       "effects": [
         { "vital": "spo2", "delta": 2, "onsetMinutes": 2, "rampMinutes": 8 },
@@ -3510,7 +3523,9 @@
         "en": ["chlorphenamine", "chlorpheniramine", "piriton", "iv antihistamine", "diphenhydramine", "benadryl"]
       },
       "dose": { "zh-CN": "氯苯那敏10 mg 缓慢静注（≥1分钟）", "en": "Chlorphenamine 10 mg slow IV (over at least 1 min)" },
-      "requires": [],
+      "requires": [
+        "iv-access"
+      ],
       "risk": "low",
       "effects": [{ "vital": "sbp", "delta": -4, "onsetMinutes": 0, "rampMinutes": 2, "durationMinutes": 10 }],
       "maxDoses": 1,
@@ -3533,7 +3548,9 @@
         "en": ["hydrocortisone", "steroid", "steroids", "corticosteroid", "methylprednisolone", "dexamethasone", "prednisolone", "solu-medrol", "iv steroids"]
       },
       "dose": { "zh-CN": "氢化可的松200 mg 缓慢静注", "en": "Hydrocortisone 200 mg slow IV" },
-      "requires": [],
+      "requires": [
+        "iv-access"
+      ],
       "risk": "low",
       "maxDoses": 1,
       "contraindicatedWhen": { "not": { "intervened": "adrenaline-im" } },

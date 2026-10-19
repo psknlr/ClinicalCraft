@@ -147,7 +147,7 @@ describe("cues: bystander facts only, while perceived", () => {
 
   it("a case without a physiology model shows no values on a monitor", async () => {
     const f = structuredClone((await import("./__fixtures__/content.js")).loadFacility("clinic-v4"));
-    f.placements.push({ id: "test-monitor", type: "patient-monitor", x: -8, z: 5.5, y: 0, rot: 0, room: "consult-1" });
+    f.placements.push({ id: "test-monitor", type: "patient-monitor", x: -8, z: 5.5, y: 0, rot: 0, room: "consult" });
     const w = makeWorld("smzl-lung-adeno", { facility: f });
     w.runtime.updatePose(A, facing(w, { x: -6, z: 6.5 }, "eq:test-monitor"));
     expect(w.runtime.inspect(A, "eq:test-monitor")).toMatchObject({ state: "attached", cues: { screen: "no reading recorded" } });

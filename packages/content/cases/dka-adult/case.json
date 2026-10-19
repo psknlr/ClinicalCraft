@@ -5878,7 +5878,8 @@
         "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; needs continuous ECG monitoring (attach the monitor); recheck K⁺ hourly"
       },
       "requires": [
-        "infusion-pump"
+        "infusion-pump",
+        "iv-access"
       ],
       "risk": "moderate",
       "setFlags": [
@@ -6072,7 +6073,8 @@
         "en": "Soluble (regular) human insulin 50 U made up to 50 mL with 0.9% NaCl (1 U/mL); fixed rate 0.1 U/kg/h IV, no bolus"
       },
       "requires": [
-        "infusion-pump"
+        "infusion-pump",
+        "iv-access"
       ],
       "risk": "moderate",
       "setFlags": [
@@ -6191,7 +6193,8 @@
         "en": "Soluble insulin 0.1 U/kg IV bolus"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "high",
       "maxDoses": 1,
@@ -6430,7 +6433,8 @@
         "en": "Potassium phosphate (20 mmol phosphate) added to fluids over at least 6 hours"
       },
       "requires": [
-        "infusion-pump"
+        "infusion-pump",
+        "iv-access"
       ],
       "risk": "moderate",
       "maxDoses": 1,
@@ -6466,7 +6470,8 @@
         "en": "Ondansetron 4 mg slow IV"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "low",
       "maxDoses": 2,
@@ -6504,7 +6509,8 @@
         "en": "Ceftriaxone 2 g IV"
       },
       "requires": [
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "low",
       "maxDoses": 1,
@@ -6634,7 +6640,7 @@
         "zh-CN": "建立每小时监测方案",
         "en": "Set up the hourly monitoring plan"
       },
-      "kind": "monitoring",
+      "kind": "other",
       "aliases": {
         "zh-CN": [
           "监测方案",
@@ -6785,7 +6791,8 @@
         "en": "10% glucose 125 mL/h alongside the 0.9% NaCl (with potassium)"
       },
       "requires": [
-        "infusion-pump"
+        "infusion-pump",
+        "iv-access"
       ],
       "risk": "low",
       "setFlags": [

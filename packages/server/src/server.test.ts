@@ -520,6 +520,23 @@ describe("POST /api/transcripts/:sessionId", () => {
     }
   });
 
+  it("accepts every item a session records — embodied world snapshots and external agents' calls too", async () => {
+    // A rejected item fails the whole upload, and the browser then stops uploading for the rest of the encounter
+    // (an embodied encounter recorded a `world` item after its first world action — the audit trail of
+    // external calls, `external_tool_call` ops, was lost with it).
+    const items = [
+      { type: "op", ordinal: 0, ts: "2026-01-01T00:00:00.000Z", payload: { id: "e1", op: { type: "external_tool_call", callId: "mcp-1", tool: "navigate_to", args: { target: "patient" }, deadline: 1_760_000_000_000 } } },
+      { type: "world", ordinal: 1, ts: "2026-01-01T00:00:01.000Z", payload: { snapshot: { format: "clinicalcraft-world@1", version: 3, actors: [], entities: {} } } },
+      { type: "dialogue", ordinal: 2, ts: "2026-01-01T00:00:02.000Z", payload: { agent: "patient", text: "…" } },
+      { type: "diagnostic", ordinal: 3, ts: "2026-01-01T00:00:03.000Z", payload: { agent: "patient", source: "grounding", detail: [] } },
+    ];
+    const res = await fetch(new URL("api/transcripts/web-world", server.url), { method: "POST", headers: { "content-type": "application/x-ndjson" }, body: items.map((i) => JSON.stringify(i)).join("\n") + "\n" });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, written: 4, stored: true });
+    const file = readFileSync(join(home, "sessions", "web", "web-world.jsonl"), "utf8");
+    expect(file.trim().split("\n").map((l) => (JSON.parse(l) as { type: string }).type)).toEqual(["op", "world", "dialogue", "diagnostic"]);
+  });
+
   it("rejects bad session ids and malformed items", async () => {
     const post = (id: string, body: string) => fetch(new URL(`api/transcripts/${id}`, server.url), { method: "POST", headers: { "content-type": "application/x-ndjson" }, body });
     expect((await post("..%2f..%2fevil", "{}")).status).toBe(400);

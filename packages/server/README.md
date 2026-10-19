@@ -26,7 +26,7 @@ const server = await startServer({ port: 0, settings });   // → { url, port, h
 | `GET /api/providers` | provider templates + `configured: boolean` (never a key; base URLs without userinfo, query or fragment) |
 | `POST /api/llm/stream` | `{provider?, model?, request: ChatRequest}` → `text/event-stream` of `StreamEvent`s (upstream error text has keys and credentials masked) |
 | `POST /api/transcripts/:sessionId` | append JSONL transcript items from the browser |
-| `/api/world/sessions[/:id[/commands\|results\|heartbeat\|call\|cancel]]` | the world bridge: a learner's live browser session registers (opt-in), receives commands over SSE and posts results; `clinicalcraft mcp --attach` lists sessions and calls tools in them (the browser's channel needs a per-session secret; [PROTOCOL §13](../../docs/PROTOCOL.md)) |
+| `/api/world/sessions[/:id[/commands\|results\|heartbeat\|call\|cancel]]` | the world bridge: a learner's live browser session registers (opt-in), receives commands over SSE and posts results; `clinicalcraft mcp --attach` lists the sessions of its attach key and calls tools in them (same-origin only; the browser's channel needs a per-session secret, the attach routes `Authorization: Bearer` and the session's attach key; [PROTOCOL §13](../../docs/PROTOCOL.md)) |
 | `GET /local-assets/*` | local-only assets from `assets/local/` or `~/.clinicalcraft/assets/` (JSON 404 `asset_not_installed` when missing) |
 | anything else | the static web build (`--static <dir>`, default `packages/web/dist`) |
 

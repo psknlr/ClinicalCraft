@@ -4,7 +4,10 @@
  *   BrowserMover   `Mover` of the world model: the avatar follows the route the world planned with the
  *                  renderer's auto-walk (arrival tolerance, local detours, WASD / abort), staff NPC rigs
  *                  walk theirs, carts are drawn where they were parked, doors open and close; the world
- *                  commits the pose the mover reports and charges the travel time once.
+ *                  commits the pose the mover reports and charges the travel time once. A hidden tab
+ *                  draws no frames: there a body is treated as undrawn — put at its target at once (also
+ *                  a walk under way when the tab is hidden), so an external agent's `navigate_to` does
+ *                  not wait for the learner to come back to the tab. WASD still stops a visible walk.
  *   BrowserCamera  `CameraSensor`: the avatar's viewport (no HUD), ≤ 768 px JPEG, rate-limited.
  *
  * Both reach the three.js world only through the `WorldApi` contract, looked up at call time (the world
@@ -24,6 +27,10 @@ export interface MoverHooks {
   onEnd?(actorId: ActorId, move: BodyMove): void;
   /** The cart this move pushes (`move_to`), if any — drawn in front of the walker. */
   pushing?(actorId: ActorId): string | null;
+  /** The page is hidden (`document.hidden`): no frames are drawn, so nothing would animate a walk. */
+  hidden?(): boolean;
+  /** Subscribe to the page becoming hidden; returns the unsubscribe. */
+  onHidden?(listener: () => void): () => void;
 }
 
 /** The staff id of a `staff:<id>` actor, else null. */
@@ -59,23 +66,59 @@ export class BrowserMover implements Mover {
     if (!drawn) return signal?.aborted ? { arrived: false, pose: { ...plan.target }, replans: 0 } : { arrived: true, pose: { ...plan.target }, replans: 0 };
     this.active.set(actorId, plan);
     this.hooks.onStart?.(actorId, plan);
+    let result: BodyMove;
+    if (this.hooks.hidden?.()) {
+      // A hidden tab draws no frames: the body is put at its target at once, as an undrawn one would be.
+      result = this.place(api!, actorId, staff, plan, signal);
+      this.active.delete(actorId);
+      this.hooks.onEnd?.(actorId, result);
+      return { arrived: result.arrived, pose: { ...result.pose }, replans: result.replans };
+    }
     const cart = this.hooks.pushing?.(actorId) ?? null;
     if (cart) api!.pushEquipment(cart, staff ?? "avatar");
-    let result: BodyMove;
+    // The walk stops when the caller cancels — or when the tab is hidden, and then the move completes without frames.
+    const walk = new AbortController();
+    let hid = false;
+    const onAbort = () => walk.abort();
+    signal?.addEventListener("abort", onAbort, { once: true });
+    if (signal?.aborted) walk.abort();
+    const offHidden =
+      this.hooks.onHidden?.(() => {
+        hid = true;
+        walk.abort();
+      }) ?? (() => undefined);
     try {
       result =
         actorId === PRIMARY_ACTOR
-          ? await api!.followRoute(plan.path, { yaw: plan.target.yaw, ...(signal ? { signal } : {}) })
-          : await api!.walkStaff(staff!, plan.path, { yaw: plan.target.yaw, ...(signal ? { signal } : {}) });
+          ? await api!.followRoute(plan.path, { yaw: plan.target.yaw, signal: walk.signal })
+          : await api!.walkStaff(staff!, plan.path, { yaw: plan.target.yaw, signal: walk.signal });
     } catch {
       const p = actorId === PRIMARY_ACTOR ? api!.position : api!.staffPose(staff!);
       result = { arrived: false, pose: p ? { x: p.x, y: p.y, z: p.z, yaw: p.yaw, pitch: p.pitch, level: p.level } : { ...plan.target }, replans: 0 };
     } finally {
+      offHidden();
+      signal?.removeEventListener("abort", onAbort);
       if (cart) this.hooks.renderer()?.pushEquipment(cart, null);
-      this.active.delete(actorId);
     }
+    if (hid && !result.arrived && !signal?.aborted) {
+      const now = this.hooks.renderer();
+      if (now) result = this.place(now, actorId, staff, plan, signal);
+    }
+    this.active.delete(actorId);
     this.hooks.onEnd?.(actorId, result);
     return { arrived: result.arrived, pose: { ...result.pose }, replans: result.replans };
+  }
+
+  /** Put a body at its target without animating it (a hidden tab); a cancelled move does not arrive. */
+  private place(api: WorldApi, actorId: ActorId, staff: string | null, plan: Plan, signal?: AbortSignal): BodyMove {
+    const t = plan.target;
+    if (signal?.aborted) {
+      const p = actorId === PRIMARY_ACTOR ? api.position : api.staffPose(staff!);
+      return { arrived: false, pose: p ? { x: p.x, y: p.y, z: p.z, yaw: p.yaw, pitch: p.pitch, level: p.level } : { ...t }, replans: 0 };
+    }
+    if (actorId === PRIMARY_ACTOR) api.teleport(t.x, t.z, t.yaw, t.level);
+    else api.placeStaff(staff!, { x: t.x, y: t.y, z: t.z, yaw: t.yaw, pitch: t.pitch, level: t.level });
+    return { arrived: true, pose: { ...t }, replans: 0 };
   }
 
   placeEntity(entityId: EntityId, position: (Vec3 & { level: string; rot?: number }) | null): void {

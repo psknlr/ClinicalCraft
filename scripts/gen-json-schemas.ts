@@ -42,7 +42,7 @@ import {
 import { SettingsLayerSchema, SettingsSchema } from "../packages/agent/src/settings/schema.js";
 import { SkillJsonSchema, SkillPredicateSchema, SkillSchema } from "../packages/agent/src/skills/schema.js";
 import { BenchJsonSchema, BenchScenarioSchema, NavGoalSchema } from "../packages/bench/src/schema.js";
-// The bench schema imports the core contracts by package name: reference the same instances so they become `$ref`s.
+// The bench and skill schemas import the core contracts by package name: reference the same instances so they become `$ref`s.
 import * as benchCore from "@clinicalcraft/core";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -121,7 +121,9 @@ const targets: Target[] = [
     description:
       "An embodied-mode skill (.clinicalcraft/skills/*.json): typed parameters, safety class, preconditions, steps (tool calls with ${param} / ${steps.<id>.data.<path>} templates, when, retry, onError), postconditions and recovery strategies. Data, never code.",
     schema: SkillSchema,
-    definitions: { Id: IdSchema, LocalizedText: LocalizedTextSchema, SkillPredicate: SkillPredicateSchema, JsonValue: SkillJsonSchema },
+    // The skill schema imports the core contracts by package name (like the bench schema): the same instances, so
+    // generation gives the same `$ref`s whether `@clinicalcraft/core` resolves to its sources or to dist.
+    definitions: { Id: benchCore.IdSchema, LocalizedText: benchCore.LocalizedTextSchema, SkillPredicate: SkillPredicateSchema, JsonValue: SkillJsonSchema },
   },
   {
     file: "bench-scenario.schema.json",

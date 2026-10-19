@@ -2148,6 +2148,131 @@ details.topic .question {
   border-left-color: var(--gold);
   animation: pulse 1.2s ease-in-out infinite;
 }
+/* External agent (PROTOCOL §13.6): the learner's own agent acting in this session — persistent while on */
+.external-badge {
+  position: absolute;
+  right: 25px;
+  top: 350px;
+  width: 268px;
+  padding: 8px 10px;
+  background: #1d2f3df2;
+  border: 1px solid #9db7cf77;
+  border-left: 3px solid #78a9d6;
+  box-shadow: 3px 3px #1f3d2344;
+  color: #e7eef6;
+  font-size: 11px;
+  line-height: 1.45;
+  pointer-events: auto;
+}
+.external-badge[data-state="connecting"],
+.external-badge[data-state="reconnecting"] {
+  border-left-color: var(--gold);
+}
+.external-badge[data-state="failed"] {
+  border-left-color: #d97a5c;
+}
+.external-badge .ext-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.external-badge .ext-head b {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.external-badge .dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: #6be08a;
+}
+.external-badge[data-state="connecting"] .dot,
+.external-badge[data-state="reconnecting"] .dot {
+  background: var(--gold);
+}
+.external-badge[data-state="failed"] .dot {
+  background: #d97a5c;
+}
+.external-badge .dot.busy {
+  animation: pulse 1s ease-in-out infinite;
+}
+.external-badge .ext-calls,
+.external-badge .ext-last {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #b9cde0;
+  white-space: nowrap;
+}
+.external-badge .ext-ids {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 3px 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+.external-badge .ext-label {
+  color: #b9cde0;
+  font-size: 10px;
+}
+.external-badge code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 10px;
+  user-select: all;
+}
+.external-badge button {
+  padding: 2px 7px;
+  font-size: 10px;
+}
+.external-badge .ext-error {
+  margin: 6px 0 0;
+  color: #ffd2c2;
+  overflow-wrap: anywhere;
+}
+.external-badge .ext-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+}
+.external-badge .ext-last {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.external-badge button.danger {
+  flex: none;
+  background: #f6e3da;
+}
+.setting.external-setting small code {
+  font-size: 11px;
+}
+.external-howto code {
+  display: block;
+  margin-top: 4px;
+  padding: 6px 8px;
+  overflow-wrap: anywhere;
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--paper);
+  user-select: all;
+}
+.approval-window.external .approval-from {
+  border-left: 3px solid #78a9d6;
+  padding-left: 8px;
+}
+.approval-source {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 6px;
+  background: #1d2f3d;
+  color: #e7eef6;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  vertical-align: middle;
+}
 .hud-feedback {
   position: absolute;
   left: 50%;
@@ -2622,5 +2747,20 @@ details.topic .question {
 @media (max-height: 600px) {
   .embodiment-badge {
     top: 212px;
+  }
+}
+/* External-agent badge on narrow / short screens: under the embodiment badge, narrower. */
+@media (max-width: 750px) {
+  .external-badge {
+    right: 12px;
+    top: 268px;
+    width: min(240px, calc(100vw - 24px));
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+}
+@media (max-height: 600px) {
+  .external-badge {
+    top: 238px;
   }
 }

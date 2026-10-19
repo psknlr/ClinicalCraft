@@ -23,6 +23,14 @@ npm run test:e2e                 # Playwright (Chromium + SwiftShader WebGL)
 | `proxy` | the page is served by `clinicalcraft serve`; calls go through `POST /api/llm/stream` and keys stay on the server |
 | `direct` | your own key, kept in `sessionStorage` unless you opt in to remember it; Anthropic via the official SDK (`dangerouslyAllowBrowser` only in this mode), OpenAI-compatible providers via `fetch` |
 
+**External agent** (served by `clinicalcraft serve` only): in a running
+encounter, `Esc` → “Allow an external agent to control this session” lets
+your own MCP client (`clinicalcraft mcp --attach`) act as the clinician;
+off by default, per encounter, never saved. The HUD badge shows the
+live-session id and attach key to hand to the agent (copyable), the calls
+running and Disconnect; its approval requests are labelled as the external
+agent's (`app/external.ts`; docs/PROTOCOL.md §13.6).
+
 The standalone build is offline only. It embeds the local-only V4 assets
 when `assets/local/` exists at build time — such a file must never be
 published; build a redistributable one with
@@ -37,7 +45,7 @@ touch screens.
 | folder (`src/`) | |
 |---|---|
 | `world/` | voxel renderer, equipment meshes (and optional GLB models, `models.ts`), live screens, NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
-| `app/` | app controller, session bridge, settings, LLM modes, persistence, local assets |
+| `app/` | app controller, session bridge, settings, LLM modes, persistence, local assets, external control (`external.ts`: the world bridge for `clinicalcraft mcp --attach`) |
 | `ui/` | HUD, intro/case library, approval dialog, panels (conversation, orders, report, monitor, board, journal, debrief, map with floor tabs, elevator, atlas, autopilot, inventory, help, pause) |
 | `atlas/` | anatomy viewer (needs the local-only anatomy model) |
 | `harness/` | `world-harness.html`, a QA page that renders facilities without a case (`?facility=teaching-hospital`; `?model=<equipment type>` draws that type with a generated GLB) |
@@ -49,7 +57,9 @@ every full case is its own lazy chunk, loaded (and validated) when the case
 is selected or started. Facilities, room templates and equipment catalogs are
 bundled; facilities that place room templates are compiled when loaded.
 
-E2E tests start Vite on port 5197 (`CC_E2E_PORT`) and use the Chromium at
+E2E tests start Vite on port 5197 (`CC_E2E_PORT`; `external-agent.spec.ts`
+also builds the web into a temporary directory and runs `clinicalcraft serve`
+and `clinicalcraft mcp --attach` from source) and use the Chromium at
 `CLINICALCRAFT_E2E_CHROMIUM` (or `PW_CHROMIUM`), else `/opt/pw-browsers/chromium`
 when present, else Playwright's own (`npx playwright install chromium`;
 `CLINICALCRAFT_E2E_CHROMIUM=playwright` forces it, as CI does).

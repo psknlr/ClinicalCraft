@@ -11,17 +11,23 @@
  *   browser ── POST   /api/world/sessions/:id/results ──▶ ack / result, by correlation id
  *   browser ── POST   /api/world/sessions/:id/heartbeat ▶ liveness (+ current capabilities)
  *   browser ── DELETE /api/world/sessions/:id ──────────▶ unregister (the learner disconnects)
- *   attach  ── GET    /api/world/sessions ──────────────▶ live sessions (never a secret)
+ *   attach  ── GET    /api/world/sessions ──────────────▶ the live sessions of the presented attach key (never a secret)
  *   attach  ── GET    /api/world/sessions/:id ──────────▶ one live session
  *   attach  ── POST   /api/world/sessions/:id/call ─────▶ enqueue, wait for the result (timeout, dedupe)
  *   attach  ── POST   /api/world/sessions/:id/cancel ───▶ a `cancel` command
  *
- * Every route needs the server's auth (its token — Bearer, `?token=` or the
- * `cc_token` cookie — when one is configured; a token-less server is
- * loopback-only). The browser's channel routes (commands, results,
- * heartbeat, DELETE) also need the per-session channel secret in the
- * `x-clinicalcraft-channel` header; attach clients never see it, so they can
- * neither post results nor unregister a session.
+ * Every route needs the server's auth when it has a token (a token-less
+ * server is loopback-only): the browser's routes take it as the page's
+ * `cc_token` cookie (or Bearer), the attach routes ONLY as
+ * `Authorization: Bearer` (no ambient cookie). The browser's channel routes
+ * (commands, results, heartbeat, DELETE) also need the per-session channel
+ * secret in the `x-clinicalcraft-channel` header; attach clients never see
+ * it, so they can neither post results nor unregister a session. The attach
+ * routes need the session's ATTACH KEY in `x-clinicalcraft-attach-key`: the
+ * browser makes one when the learner opts in and shows it to the learner,
+ * who hands it (with the live-session id) to their own external agent — a
+ * holder of the server token alone cannot see, call or impersonate another
+ * learner's session.
  */
 import { hashString } from "@clinicalcraft/core";
 import type { ApprovalDecision, RiskLevel } from "../protocol.js";
@@ -34,6 +40,9 @@ export const WORLD_SESSIONS_PATH = "/api/world/sessions";
 
 /** Request header carrying a live session's channel secret (browser routes only; never in a URL). */
 export const CHANNEL_SECRET_HEADER = "x-clinicalcraft-channel";
+
+/** Request header carrying a live session's attach key (attach routes only; never in a URL). */
+export const ATTACH_KEY_HEADER = "x-clinicalcraft-attach-key";
 
 /** Timing defaults (ms). The server announces its own values at registration. */
 export const BRIDGE_DEFAULTS = {
@@ -65,6 +74,8 @@ export const BRIDGE_LIMITS = {
   lines: 32,
   lineChars: 2_000,
   approvals: 16,
+  /** Bytes of a call's `args` as UTF-8 JSON (tool arguments are ids and short texts; well below the 2 MB body limit). */
+  argsBytes: 64 * 1024,
 } as const;
 
 /**
@@ -96,6 +107,27 @@ const CORRELATION_ID = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$/;
 const LIVE_SESSION_ID = /^[A-Za-z0-9_-]{8,64}$/;
 const HANDLE = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$/;
 const FACILITY_ID = /^[A-Za-z0-9][A-Za-z0-9_.:@-]{0,127}$/;
+const ATTACH_KEY = /^ak_[A-Za-z0-9_-]{32,96}$/;
+
+/** An attach key (`newAttachKey`): `ak_` + 32–96 base64url characters. */
+export function isAttachKey(value: unknown): value is string {
+  return typeof value === "string" && ATTACH_KEY.test(value);
+}
+
+/**
+ * A fresh attach key: `ak_` + 32 random bytes as base64url (43 characters).
+ * The browser makes one when the learner opts in, keeps it in memory only and
+ * shows it to the learner; the server keeps its SHA-256 digest. Isomorphic
+ * (`crypto.getRandomValues`, available in browsers — secure context or not —
+ * and Node 22).
+ */
+export function newAttachKey(): string {
+  const bytes = new Uint8Array(32);
+  globalThis.crypto.getRandomValues(bytes);
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return `ak_${btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")}`;
+}
 
 /** A correlation id (chosen by the attach client; dedupe key of a call). */
 export function isCorrelationId(value: unknown): value is string {
@@ -142,6 +174,16 @@ export interface BridgeRegistration {
   locale: string;
   /** Tools the session accepts now (⊆ `BRIDGE_TOOLS`). */
   capabilities: string[];
+  /**
+   * The attach key the learner hands to their external agent (`newAttachKey`, made at opt-in, the same for
+   * every re-registration of that opt-in). The server keeps its digest; attach clients must present it.
+   */
+  attachKey: string;
+  /**
+   * Re-registration after the server forgot the session (expiry, restart): the id it had, kept when it is
+   * free and was not another key's — so the learner's external agent keeps its `--world-session`.
+   */
+  previousId?: string | null;
 }
 
 /** `POST /api/world/sessions` answer (201). `secret` is shown once: the browser keeps it in memory only. */
@@ -189,6 +231,8 @@ export interface BridgeHello {
   heartbeatMs: number;
   expireAfterMs: number;
   pingMs: number;
+  /** The server's clock (ms since epoch; null from an older server): call deadlines are in this clock. */
+  now: number | null;
 }
 
 /** Why the server ended a command stream (`event: closed`). */
@@ -257,6 +301,7 @@ export type BridgeErrorCode =
   | "forbidden_origin"
   | "forbidden_host"
   | "forbidden_channel"
+  | "forbidden_attach_key"
   | "unknown_session"
   | "session_expired"
   | "session_closed"
@@ -264,10 +309,12 @@ export type BridgeErrorCode =
   | "bad_json"
   | "unsupported_media_type"
   | "body_too_large"
+  | "args_too_large"
   | "method_not_allowed"
   | "not_found"
   | "too_many_sessions"
   | "too_many_calls"
+  | "too_many_streams"
   | "tool_not_available"
   | "correlation_conflict"
   | "call_timeout"
@@ -301,6 +348,15 @@ function lines(value: unknown): string[] | null {
     out.push(line);
   }
   return out;
+}
+
+/** Bytes of a call's arguments as UTF-8 JSON (`Infinity` when not serialisable): at most `BRIDGE_LIMITS.argsBytes`. */
+export function bridgeArgsBytes(args: unknown): number {
+  try {
+    return utf8Length(JSON.stringify(args) ?? "null");
+  } catch {
+    return Infinity;
+  }
 }
 
 /** Byte length of a string as UTF-8 (no `TextEncoder` allocation for ASCII-heavy text). */
@@ -416,6 +472,17 @@ export function parseBridgeCommand(value: unknown): BridgeCommand | null {
   if (!isRecord(args)) return null;
   const deadline = typeof value.deadline === "number" && Number.isFinite(value.deadline) ? value.deadline : 0;
   return { type: "call", correlationId: value.correlationId, tool: value.tool, args, deadline };
+}
+
+/** The `hello` event of a command stream (the browser reads it). Null when malformed. */
+export function parseBridgeHello(value: unknown): BridgeHello | null {
+  if (!isRecord(value) || !isLiveSessionId(value.id)) return null;
+  const ms = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v > 0 ? v : null);
+  const heartbeatMs = ms(value.heartbeatMs);
+  const expireAfterMs = ms(value.expireAfterMs);
+  const pingMs = ms(value.pingMs);
+  if (heartbeatMs === null || expireAfterMs === null || pingMs === null) return null;
+  return { id: value.id, heartbeatMs, expireAfterMs, pingMs, now: ms(value.now) };
 }
 
 /** A live session entry (the attach client reads the server's list). Null when malformed. */

@@ -12,9 +12,10 @@
     "./facilities/*": "./facilities/*",
     "./catalogs/*": "./catalogs/*",
     "./schemas/*": "./schemas/*",
-    "./bench/*": "./bench/*"
+    "./bench/*": "./bench/*",
+    "./templates/*": "./templates/*"
   },
-  "files": ["dist", "cases", "facilities", "catalogs", "schemas", "bench"],
+  "files": ["dist", "cases", "facilities", "catalogs", "schemas", "bench", "templates"],
   "scripts": { "build": "tsc -b" },
   "dependencies": { "@clinicalcraft/core": "5.0.0" }
 }

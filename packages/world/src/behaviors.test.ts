@@ -129,7 +129,8 @@ describe("the ECG machine (catalog state machine)", () => {
     for (const op of ["prepare", "connect"]) expect((await w.act({ actorId: A, operation: op, targetId: "eq:resus1-ecg" })).status).toBe("completed");
     const other = await w.act({ actorId: A, operation: "record", targetId: "eq:resus1-ecg", parameters: { investigation: "hs-troponin" } });
     expect(other).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
-    expect(other.hint?.goal).toMatchObject({ kind: "interact" }); // where troponin can be ordered
+    expect(other.message).toMatch(/cannot provide/);
+    expect(other.hint).toBeUndefined(); // troponin is a lab test whose sample is taken right here: no walk needed
     const right = await w.act({ actorId: A, operation: "record", targetId: "eq:resus1-ecg", parameters: { investigation: "ecg-right-sided" } });
     expect(right.status).toBe("completed");
     expect(w.harness.calls.at(-1)!.args).toEqual({ investigation_id: "ecg-right-sided" });
@@ -148,6 +149,33 @@ describe("the ECG machine (catalog state machine)", () => {
     w.runtime.updatePose(A, { x: 9.5, y: 0, z: -7.2, yaw: Math.PI, pitch: 0, level: "L0" });
     const read = await w.act({ actorId: A, operation: "read", targetId: "lab-workstation", parameters: { investigation: "hs-troponin" } });
     expect(read).toMatchObject({ status: "failed", errorCode: "CLINICAL_REJECTED" });
+  });
+});
+
+describe("workstations: a records terminal is order entry and the result viewer (EMBODIED §6)", () => {
+  it("lab orders once the sample is taken; lab and bedside results; never a bedside test's order", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "ed-records" })).status).toBe("completed");
+    expect(w.runtime.inspect(A, "ed-records")!.availableActions).toEqual(expect.arrayContaining(["order", "read"]));
+    // no sample yet: refused by the policy, back to the patient
+    const early = await w.act({ actorId: A, operation: "order", targetId: "ed-records", parameters: { investigation: "hs-troponin" } });
+    expect(early).toMatchObject({ status: "failed", errorCode: "SPATIAL_REQUIREMENT_UNMET", hint: { goal: { kind: "interact", id: w.patientId } } });
+    // the IV-access procedure drew the bloods: the order goes in from the terminal
+    w.harness.dispatch({ type: "intervene", interventionId: "iv-access", by: "agent" });
+    const ordered = await w.act({ actorId: A, operation: "order", targetId: "ed-records", parameters: { investigation: "hs-troponin" } });
+    expect(ordered.status, ordered.message).toBe("completed");
+    expect(w.harness.calls.at(-1)).toMatchObject({ tool: "order_test", args: { investigation_id: "hs-troponin" } });
+    // a bedside test is never ordered at a terminal (the cart, at the patient)
+    const ecg = await w.act({ actorId: A, operation: "order", targetId: "ed-records", parameters: { investigation: "ecg-12lead" } });
+    expect(ecg).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    // results: the troponin once ready, a recorded ECG — both from the terminal
+    w.harness.dispatch({ type: "advance-time", minutes: 60, by: "agent" });
+    expect((await w.act({ actorId: A, operation: "read", targetId: "ed-records", parameters: { investigation: "hs-troponin" } })).status).toBe("completed");
+    w.harness.dispatch({ type: "order", investigationId: "ecg-12lead", by: "agent" });
+    w.harness.dispatch({ type: "advance-time", minutes: 10, by: "agent" });
+    const readEcg = await w.act({ actorId: A, operation: "read", targetId: "ed-records", parameters: { investigation: "ecg-12lead" } });
+    expect(readEcg.status, readEcg.message).toBe("completed");
+    expect(w.harness.calls.at(-1)).toMatchObject({ tool: "read_result", args: { investigation_id: "ecg-12lead" } });
   });
 });
 

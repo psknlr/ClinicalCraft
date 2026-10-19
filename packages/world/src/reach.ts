@@ -8,11 +8,15 @@
  * points, with line of sight to it; inside a room for rooms).
  *
  * Distances are grid path lengths (8-connected, before string pulling): a
- * slight over-estimate of the planned route, good for ranking. Entities on
- * another level than the actor are not computed (null): the portal graph
- * belongs to the planner.
+ * slight over-estimate of the planned route, good for ranking. An entity on
+ * another level is reached through one connector ride (the stairs, a lift,
+ * a ramp usable by the actor's role): the walk to its stop, the ride at
+ * walking speed (its `travelSeconds` × stops × `WALK_SPEED`) and the walk
+ * from the arrival stop — walking-equivalent metres, so the same ranking
+ * holds across levels. Null only without a grid backend.
  */
-import type { ActorState } from "./contracts.js";
+import { WALK_SPEED, type ActorState, type ConnectorInfo } from "./contracts.js";
+import { connectorInfos } from "./levels.js";
 import type { Placed, WorldLocator } from "./locate.js";
 import { NAV_RADIUS, type NavGrids, type NavLevelGrid } from "./nav/grid.js";
 import { flood, nearestFreeCell } from "./nav/search.js";
@@ -22,12 +26,15 @@ export class Reachability {
   private masks = new Map<string, Uint8Array>();
   private floods = new Map<string, Float64Array>();
   private version = -1;
+  private readonly connectors: ConnectorInfo[];
 
   constructor(
     private readonly grids: NavGrids | null,
     private readonly locator: WorldLocator,
-    private readonly maxFloods = 8,
-  ) {}
+    private readonly maxFloods = 16,
+  ) {
+    this.connectors = connectorInfos(locator.facility);
+  }
 
   /**
    * Metres of walking from the actor to the nearest interaction spot of `p`
@@ -38,36 +45,95 @@ export class Reachability {
     if (p.heldBy === actor.id) return 0;
     const level = actor.pose.level;
     const g = this.grids?.grid(level);
-    if (!this.grids || !g || p.level !== level) return null;
+    if (!this.grids || !g) return null;
+    const walk = this.walkField(actor);
+    if (!walk) return Infinity;
+    if (p.level !== level) return this.acrossLevels(actor, walk.field, p);
+    return this.toEntity(g, walk.field, p);
+  }
+
+  /** Metres of the field to the nearest interaction cell of `p` with a line of sight to it (Infinity: none). */
+  private toEntity(g: NavLevelGrid, field: Float64Array, p: Placed): number {
+    const cells = this.cells(g, p).filter((i) => Number.isFinite(field[i]));
+    cells.sort((a, b) => field[a] - field[b] || a - b);
+    const sight = this.locator.sight(p);
+    for (const i of cells) {
+      if (p.kind === "room" || this.locator.visibility.visibleFrom(g.level, cellPoint(g, i), sight)) return field[i] * g.cell;
+    }
+    return Infinity;
+  }
+
+  /** One connector ride to the entity's level (see the module docs): the cheapest walk + ride + walk, Infinity when none leads there. */
+  private acrossLevels(actor: ActorState, field: Float64Array, p: Placed): number {
+    const grids = this.grids!;
+    const from = grids.grid(actor.pose.level)!;
+    const to = grids.grid(p.level);
+    if (!to) return Infinity;
+    let best = Infinity;
+    for (const c of this.connectors) {
+      if (c.roles.length && !c.roles.includes(actor.role)) continue;
+      const a = c.stops.findIndex((s) => s.level === actor.pose.level);
+      const b = c.stops.findIndex((s) => s.level === p.level);
+      if (a < 0 || b < 0) continue;
+      const stopA = c.stops[a]!, stopB = c.stops[b]!;
+      if (!inFrame(from, stopA.x, stopA.z) || !inFrame(to, stopB.x, stopB.z)) continue;
+      const startMask = this.mask(actor.pose.level, actor.role, grids.zonesAt(actor.pose.level, actor.pose.x, actor.pose.z));
+      const cellA = nearestFreeCell(from, startMask, cellIndex(from, stopA.x, stopA.z), 4);
+      if (cellA === null || !Number.isFinite(field[cellA])) continue;
+      const toStop = field[cellA] * from.cell;
+      const ride = c.travelSeconds * Math.abs(b - a) * WALK_SPEED;
+      if (toStop + ride >= best) continue;
+      const arrivalZones = grids.zonesAt(p.level, stopB.x, stopB.z);
+      const arrivalMask = this.mask(p.level, actor.role, arrivalZones);
+      const cellB = nearestFreeCell(to, arrivalMask, cellIndex(to, stopB.x, stopB.z), 4);
+      if (cellB === null) continue;
+      const fromStop = this.toEntity(to, this.floodFrom(p.level, actor.role, arrivalZones, cellB), p);
+      best = Math.min(best, toStop + ride + fromStop);
+    }
+    return best;
+  }
+
+  private mask(level: string, role: ActorState["role"], zones: readonly string[]): Uint8Array {
+    const key = `${level}|${role}|${zones.join(",")}`;
+    let mask = this.masks.get(key);
+    if (!mask) {
+      mask = this.grids!.compose(level, { role, allowZones: zones })!;
+      this.masks.set(key, mask);
+    }
+    return mask;
+  }
+
+  private floodFrom(level: string, role: ActorState["role"], zones: readonly string[], start: number): Float64Array {
+    const key = `${level}|${role}|${zones.join(",")}|${start}`;
+    let field = this.floods.get(key);
+    if (!field) {
+      field = flood(this.grids!.grid(level)!, this.mask(level, role, zones), start);
+      this.floods.set(key, field);
+      if (this.floods.size > this.maxFloods) this.floods.delete(this.floods.keys().next().value!);
+    }
+    return field;
+  }
+
+  /**
+   * The actor's walking flood on its level (cells of the planner's grid;
+   * Infinity where it cannot walk), cached per actor cell, role and zones;
+   * null without a grid backend or when the actor stands nowhere walkable.
+   */
+  walkField(actor: ActorState): { level: string; field: Float64Array } | null {
+    const level = actor.pose.level;
+    const g = this.grids?.grid(level);
+    if (!this.grids || !g) return null;
     if (this.version !== this.grids.version) {
       this.masks.clear();
       this.floods.clear();
       this.version = this.grids.version;
     }
     const zones = this.grids.zonesAt(level, actor.pose.x, actor.pose.z);
-    const maskKey = `${level}|${actor.role}|${zones.join(",")}`;
-    let mask = this.masks.get(maskKey);
-    if (!mask) {
-      mask = this.grids.compose(level, { role: actor.role, allowZones: zones })!;
-      this.masks.set(maskKey, mask);
-    }
-    if (!inFrame(g, actor.pose.x, actor.pose.z)) return Infinity;
+    const mask = this.mask(level, actor.role, zones);
+    if (!inFrame(g, actor.pose.x, actor.pose.z)) return null;
     const start = nearestFreeCell(g, mask, cellIndex(g, actor.pose.x, actor.pose.z), 4);
-    if (start === null) return Infinity;
-    const floodKey = `${maskKey}|${start}`;
-    let field = this.floods.get(floodKey);
-    if (!field) {
-      field = flood(g, mask, start);
-      this.floods.set(floodKey, field);
-      if (this.floods.size > this.maxFloods) this.floods.delete(this.floods.keys().next().value!);
-    }
-    const cells = this.cells(g, p).filter((i) => Number.isFinite(field![i]));
-    cells.sort((a, b) => field![a] - field![b] || a - b);
-    const sight = this.locator.sight(p);
-    for (const i of cells) {
-      if (p.kind === "room" || this.locator.visibility.visibleFrom(level, cellPoint(g, i), sight)) return field[i] * g.cell;
-    }
-    return Infinity;
+    if (start === null) return null;
+    return { level, field: this.floodFrom(level, actor.role, zones, start) };
   }
 
   /** Candidate interaction cells of an entity (statically free; see module docs). */

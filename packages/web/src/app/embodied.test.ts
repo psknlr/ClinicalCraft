@@ -80,6 +80,66 @@ describe("BrowserMover", () => {
     expect(r.pose).toMatchObject({ x: 0, z: 27, level: "L0" });
   });
 
+  it("in a hidden tab (no frames) a move completes at once: the avatar or staff rig is put at the target", async () => {
+    const teleports: string[] = [];
+    const { api, calls } = fakeRenderer({
+      teleport: (x: number, z: number, yaw?: number, level?: string) => teleports.push(`avatar:${x},${z},${yaw},${level}`),
+      placeStaff: (id: string, pose: { x: number; z: number; level: string } | null) => teleports.push(`staff:${id}:${pose ? `${pose.x},${pose.z},${pose.level}` : "post"}`),
+    } as Partial<WorldApi>);
+    const started: string[] = [];
+    const ended: boolean[] = [];
+    const mover = new BrowserMover({ renderer: () => api, hidden: () => true, onStart: (a) => started.push(a), onEnd: (_a, m) => ended.push(m.arrived), pushing: () => "ecg-cart" });
+    expect(await mover.move(PRIMARY_ACTOR, plan)).toEqual({ arrived: true, pose: target, replans: 0 });
+    expect(await mover.move("staff:ed-nurse", plan)).toEqual({ arrived: true, pose: target, replans: 0 });
+    expect(teleports).toEqual([`avatar:${target.x},${target.z},${target.yaw},${target.level}`, `staff:ed-nurse:${target.x},${target.z},${target.level}`]);
+    expect(calls).toEqual([]); // no walk animated, no cart pushed (the world parks it)
+    expect(started).toEqual([PRIMARY_ACTOR, "staff:ed-nurse"]);
+    expect(ended).toEqual([true, true]);
+    expect(mover.isMoving()).toBe(false);
+    // a cancelled move still does not arrive
+    const aborted = new AbortController();
+    aborted.abort();
+    expect((await mover.move(PRIMARY_ACTOR, plan, aborted.signal)).arrived).toBe(false);
+  });
+
+  it("a walk under way when the tab is hidden finishes without frames; WASD (the learner) still interrupts a visible one", async () => {
+    let hidden = false;
+    const hideListeners = new Set<() => void>();
+    const teleports: string[] = [];
+    let walkSignal: AbortSignal | undefined;
+    const { api } = fakeRenderer({
+      // a renderer walk that only ends when stopped (no frames come in a hidden tab)
+      followRoute: (_route: RoutePoint[], opts?: { signal?: AbortSignal }) =>
+        new Promise<BodyMove>((resolve) => {
+          walkSignal = opts?.signal;
+          opts?.signal?.addEventListener("abort", () => resolve({ arrived: false, pose: { x: 5, y: 0, z: 5, yaw: 0, pitch: 0, level: "L0" }, replans: 0 }), { once: true });
+        }),
+      teleport: (x: number, z: number) => teleports.push(`${x},${z}`),
+    } as Partial<WorldApi>);
+    const mover = new BrowserMover({
+      renderer: () => api,
+      hidden: () => hidden,
+      onHidden: (fn) => {
+        hideListeners.add(fn);
+        return () => hideListeners.delete(fn);
+      },
+    });
+    const move = mover.move(PRIMARY_ACTOR, plan);
+    await new Promise((r) => setTimeout(r, 5));
+    expect(walkSignal).toBeDefined();
+    hidden = true;
+    for (const fn of hideListeners) fn();
+    expect(await move).toEqual({ arrived: true, pose: target, replans: 0 });
+    expect(teleports).toEqual([`${target.x},${target.z}`]);
+    expect(hideListeners.size).toBe(0);
+
+    // Visible: the learner's WASD stops the walk — reported as not arrived, where the avatar stood.
+    hidden = false;
+    const { api: wasd } = fakeRenderer({ followRoute: async () => ({ arrived: false, pose: { x: 12, y: 0, z: 3, yaw: 0, pitch: 0, level: "L0" }, replans: 0 }) } as Partial<WorldApi>);
+    const r = await new BrowserMover({ renderer: () => wasd, hidden: () => false }).move(PRIMARY_ACTOR, plan);
+    expect(r).toMatchObject({ arrived: false, pose: { x: 12, z: 3 } });
+  });
+
   it("draws parked, carried and returned equipment, and doors", () => {
     const { api, calls } = fakeRenderer();
     const mover = new BrowserMover({ renderer: () => api });

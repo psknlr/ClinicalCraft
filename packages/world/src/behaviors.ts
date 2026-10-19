@@ -313,7 +313,11 @@ export class DeviceRules {
     if (!this.d.store.available(id) || (state !== null && spec.states[state]?.available === false)) return { code: "DEVICE_UNAVAILABLE", message: worldMessage("DEVICE_UNAVAILABLE", L, { target }) };
     const s = this.d.store.entity(id);
     const holder = (s?.reservedBy && s.reservedBy !== actor.id ? s.reservedBy : null) ?? this.otherBusy(id, actor.id);
-    if (holder) return { code: "DEVICE_BUSY", message: worldMessage("DEVICE_BUSY", L, { target, holder: loc.name(holder) }) };
+    if (holder) {
+      // a reserved device is nobody else's provider: point at the nearest free alternative (EMBODIED §6)
+      const alt = this.alternativeTo(id, actor);
+      return { code: "DEVICE_BUSY", message: worldMessage("DEVICE_BUSY", L, { target, holder: loc.name(holder) }), ...(alt ? { goal: { kind: "interact", id: alt }, label: worldMessage("hint.alternative", L, { target: loc.name(alt) }) } : {}) };
+    }
     if (o.from !== "*" && (state === null || !o.from.includes(state))) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id, state) ?? "—" }) };
     const builtin = this.builtinPrecheck(id, o, actor, target);
     if (builtin) return builtin;
@@ -324,6 +328,31 @@ export class DeviceRules {
       return this.predicateFailure(id, p, o, place);
     }
     return null;
+  }
+
+  /**
+   * The nearest in-service equipment providing every capability of `id` that
+   * nobody else holds (same type first), or null.
+   */
+  alternativeTo(id: EntityId, actor: ActorState): EntityId | null {
+    const loc = this.d.locator;
+    const caps = loc.capabilities(id);
+    const self = loc.registry.entity(id);
+    if (!caps.length || !self) return null;
+    let best: { id: EntityId; key: [number, number] } | null = null;
+    for (const e of loc.registry.ofKind("equipment")) {
+      if (e.id === id) continue;
+      const have = loc.capabilities(e.id);
+      if (!caps.every((c) => have.includes(c))) continue;
+      const s = this.d.store.entity(e.id);
+      if ((s?.reservedBy && s.reservedBy !== actor.id) || this.otherBusy(e.id, actor.id) || (s?.heldBy && s.heldBy !== actor.id)) continue;
+      const p = loc.place(e.id);
+      if (!p) continue;
+      const d = p.level === actor.pose.level ? Math.hypot(p.position.x - actor.pose.x, p.position.z - actor.pose.z) : 1e6;
+      const key: [number, number] = [e.type === self.type ? 0 : 1, d];
+      if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && key[1] < best.key[1])) best = { id: e.id, key };
+    }
+    return best?.id ?? null;
   }
 
   private otherBusy(id: EntityId, actorId: string): string | null {

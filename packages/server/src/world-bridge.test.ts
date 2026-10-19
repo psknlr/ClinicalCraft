@@ -6,7 +6,11 @@
  * for the learner's browser session: registration, calls as the clinician
  * through the session's tool path, approvals answered by the learner (never by
  * the caller), cancellation, a dropped stream (no call runs twice), expiry and
- * re-registration, dispose / session shutdown, the bypass guard, auth failures.
+ * re-registration (the same id back), dispose / session shutdown, the bypass
+ * guard, auth failures — and the review R1 regressions with real sessions:
+ * S5 (an attach client acts only in the session of its attach key) and S11
+ * (a call its caller was told timed out never runs later, even when the
+ * browser's stream was down when the cancel was sent).
  */
 import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { createServer, type Server } from "node:http";
@@ -14,7 +18,7 @@ import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
-import { caseHandle, connectWorldBridge, mergeSettings, WorldAttachClient, type ClinicalSession, type WorldBridgeOptions, type WorldBridgeStatus } from "@clinicalcraft/agent";
+import { caseHandle, connectWorldBridge, isAttachKey, mergeSettings, WorldAttachClient, type ClinicalSession, type WorldBridge, type WorldBridgeOptions, type WorldBridgeStatus } from "@clinicalcraft/agent";
 import { createNodeSession, loadContent } from "@clinicalcraft/agent/node";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { createRequestHandler, type ServerOptions } from "./server.js";
@@ -97,6 +101,11 @@ function connect(session: ClinicalSession, s: Served, extra: Partial<WorldBridge
   return { bridge, statuses };
 }
 
+/** The learner's external agent: the attach key their bridge shows them (and the server token, when there is one). */
+function attacher(s: Served, bridge: WorldBridge, token?: string): WorldAttachClient {
+  return new WorldAttachClient({ serverUrl: s.url, attachKey: bridge.status.attachKey, ...(token ? { token } : {}) });
+}
+
 describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () => {
   it("registers spoiler-free; runs calls as the clinician through the session's tool path; reports results", async () => {
     const s = await serve();
@@ -104,7 +113,11 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     const { bridge, statuses } = connect(session, s);
     try {
       expect((await bridge.ready).state).toBe("connected");
-      const attach = new WorldAttachClient({ serverUrl: s.url });
+      expect(isAttachKey(bridge.status.attachKey)).toBe(true);
+      // Without the learner's attach key there is nothing to see.
+      const stranger = await new WorldAttachClient({ serverUrl: s.url }).list();
+      expect(stranger.ok && stranger.value).toEqual([]);
+      const attach = attacher(s, bridge);
       const list = await attach.list();
       expect(list.ok).toBe(true);
       const live = list.ok ? list.value : [];
@@ -113,6 +126,7 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
       expect(live[0]!.capabilities).toEqual(expect.arrayContaining(["navigate_to", "interact_object", "intervene", "examine", "observe_world"]));
       expect(live[0]!.capabilities).not.toContain("get_camera_frame");
       expect(JSON.stringify(live)).not.toContain(STEMI); // the case id names the diagnosis: never sent
+      expect(JSON.stringify(live)).not.toContain(bridge.status.attachKey);
 
       const begins: { agent: string; callId: string; tool: string; id: string }[] = [];
       session.subscribe((e) => {
@@ -151,7 +165,7 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     const { bridge } = connect(session, s);
     try {
       await bridge.ready;
-      const attach = new WorldAttachClient({ serverUrl: s.url });
+      const attach = attacher(s, bridge);
       const id = bridge.status.liveSessionId!;
       await attach.call(id, { correlationId: "a-0", tool: "navigate_to", args: { target: "patient" } });
       const ok = await attach.call(id, { correlationId: "a-1", tool: "intervene", args: { intervention_id: "ticagrelor" } });
@@ -185,7 +199,7 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     const { bridge } = connect(session, s);
     try {
       await bridge.ready;
-      const attach = new WorldAttachClient({ serverUrl: s.url });
+      const attach = attacher(s, bridge);
       const id = bridge.status.liveSessionId!;
       await attach.call(id, { correlationId: "k-0", tool: "navigate_to", args: { target: "patient" } });
       const controller = new AbortController();
@@ -236,7 +250,7 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     try {
       await bridge.ready;
       const id = bridge.status.liveSessionId!;
-      const attach = new WorldAttachClient({ serverUrl: s.url });
+      const attach = attacher(s, bridge);
       await attach.call(id, { correlationId: "r-0", tool: "navigate_to", args: { target: "patient" } });
       const pending = attach.call(id, { correlationId: "r-1", tool: "intervene", args: { intervention_id: "ticagrelor" } });
       await until(() => asked.length === 1);
@@ -257,28 +271,32 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     }
   });
 
-  it("re-registers when the server forgot the session (missed heartbeats) and keeps serving", async () => {
+  it("re-registers when the server forgot the session (missed heartbeats) — with the same id and key — and keeps serving", async () => {
     const s = await serve({ world: { heartbeatMs: 60, pingMs: 60, expireAfterMs: 300, sweepMs: 20 } });
     const session = await liveSession();
     let frozen = false;
+    let registrations = 0;
     const fetchWrap: typeof fetch = (input, init) => {
       if (frozen && String(input).endsWith("/heartbeat")) return Promise.reject(new TypeError("fetch failed"));
+      if (String(input).endsWith("/api/world/sessions") && init?.method === "POST") registrations++;
       return fetch(input, init);
     };
-    const { bridge } = connect(session, s, { fetch: fetchWrap });
+    const { bridge, statuses } = connect(session, s, { fetch: fetchWrap });
     try {
       await bridge.ready;
       const first = bridge.status.liveSessionId!;
+      const key = bridge.status.attachKey;
       await new Promise((r) => setTimeout(r, 450)); // heartbeats keep it alive past expireAfterMs
       expect(bridge.status.liveSessionId).toBe(first);
+      expect(registrations).toBe(1);
       frozen = true; // a frozen tab: no heartbeats
-      await until(() => bridge.status.liveSessionId !== null && bridge.status.liveSessionId !== first && bridge.status.state === "connected", 3000);
+      await until(() => registrations === 2 && bridge.status.state === "connected", 3000);
       frozen = false;
-      const attach = new WorldAttachClient({ serverUrl: s.url });
-      const gone = await attach.call(first, { correlationId: "x-1", tool: "observe_world" });
-      expect(gone).toMatchObject({ ok: false, error: { code: "session_expired", status: 410 } });
+      expect(statuses.map((st) => st.state)).toContain("reconnecting");
+      // The external agent's --world-session and key keep working: the same id came back for the same key.
+      expect(bridge.status).toMatchObject({ liveSessionId: first, attachKey: key });
       await new Promise((r) => setTimeout(r, 400));
-      const look = await attach.call(bridge.status.liveSessionId!, { correlationId: "x-2", tool: "observe_world" });
+      const look = await attacher(s, bridge).call(first, { correlationId: "x-2", tool: "observe_world" });
       expect(look.ok && look.value.result.status).toBe("ok");
     } finally {
       await bridge.dispose();
@@ -296,7 +314,7 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
       if (e.msg.type === "approval_resolved") resolved.push(e.msg.decision);
     });
     const { bridge, statuses } = connect(session, s);
-    const attach = new WorldAttachClient({ serverUrl: s.url });
+    const attach = attacher(s, bridge);
     try {
       await bridge.ready;
       const id = bridge.status.liveSessionId!;
@@ -320,11 +338,12 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     const other = await liveSession();
     const second = connect(other, s);
     await second.bridge.ready;
-    expect((await attach.list()).ok).toBe(true);
+    const otherAttach = attacher(s, second.bridge);
+    expect((await otherAttach.list()).ok && (await otherAttach.list())).toMatchObject({ value: [{ id: second.bridge.status.liveSessionId }] });
     await other.close();
     await until(() => second.bridge.status.state === "closed");
     expect(second.bridge.status.error).toMatchObject({ code: "session_closed" });
-    const after = await attach.list();
+    const after = await otherAttach.list();
     expect(after.ok && after.value).toEqual([]);
     await s.close();
   });
@@ -335,14 +354,13 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
     const strict = connect(session, s);
     try {
       await strict.bridge.ready;
-      const attach = new WorldAttachClient({ serverUrl: s.url });
-      const refused = await attach.call(strict.bridge.status.liveSessionId!, { correlationId: "b-1", tool: "observe_world" });
+      const refused = await attacher(s, strict.bridge).call(strict.bridge.status.liveSessionId!, { correlationId: "b-1", tool: "observe_world" });
       expect(refused.ok && refused.value.result).toMatchObject({ ok: false, status: "denied" });
       expect(refused.ok && refused.value.result.output).toMatch(/bypass/);
       await strict.bridge.dispose();
       const lax = connect(session, s, { allowBypass: true });
       await lax.bridge.ready;
-      const look = await attach.call(lax.bridge.status.liveSessionId!, { correlationId: "b-2", tool: "observe_world" });
+      const look = await attacher(s, lax.bridge).call(lax.bridge.status.liveSessionId!, { correlationId: "b-2", tool: "observe_world" });
       expect(look.ok && look.value.result.status).toBe("ok");
       await lax.bridge.dispose();
     } finally {
@@ -360,9 +378,9 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
       expect(noToken.bridge.status.error!.message).toMatch(/token/);
       const withToken = connect(session, s, { auth: { token: TOKEN } });
       expect((await withToken.bridge.ready).state).toBe("connected");
-      const attach = new WorldAttachClient({ serverUrl: s.url });
+      const attach = attacher(s, withToken.bridge);
       expect(await attach.list()).toMatchObject({ ok: false, error: { code: "unauthorized", status: 401 } });
-      const authed = new WorldAttachClient({ serverUrl: s.url, token: TOKEN });
+      const authed = attacher(s, withToken.bridge, TOKEN);
       const look = await authed.call(withToken.bridge.status.liveSessionId!, { correlationId: "t-1", tool: "observe_world" });
       expect(look.ok && look.value.result.status).toBe("ok");
       await withToken.bridge.dispose();
@@ -373,6 +391,93 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
       const unreachable = await new WorldAttachClient({ serverUrl: "http://127.0.0.1:9" }).list();
       expect(unreachable).toMatchObject({ ok: false, error: { code: "network" } });
     } finally {
+      await session.close();
+      await s.close();
+    }
+  });
+});
+
+describe("review R1 regressions with real sessions (were reproductions)", () => {
+  it("S5: one learner's external agent cannot act in another learner's live session — the server token is not enough", async () => {
+    const s = await serve({ host: "0.0.0.0", token: TOKEN });
+    const a = await liveSession();
+    const b = await liveSession();
+    const askedB: string[] = [];
+    b.subscribe((e) => {
+      if (e.msg.type === "approval_request") askedB.push(e.msg.tool);
+    });
+    const bridgeA = connect(a, s, { auth: { token: TOKEN } }).bridge;
+    const bridgeB = connect(b, s, { auth: { token: TOKEN } }).bridge;
+    try {
+      await Promise.all([bridgeA.ready, bridgeB.ready]);
+      const agentOfA = attacher(s, bridgeA, TOKEN);
+      const list = await agentOfA.list();
+      expect(list.ok && list.value.map((x) => x.id)).toEqual([bridgeA.status.liveSessionId]);
+      const idB = bridgeB.status.liveSessionId!;
+      for (const [cid, tool, args] of [["x1", "navigate_to", { target: "patient" }], ["x2", "intervene", { intervention_id: "fluid-bolus" }], ["x3", "wait", { minutes: 240 }]] as const) {
+        const r = await agentOfA.call(idB, { correlationId: cid, tool, args });
+        expect(r).toMatchObject({ ok: false, error: { code: "forbidden_attach_key", status: 403 } });
+      }
+      expect(await agentOfA.get(idB)).toMatchObject({ ok: false, error: { code: "forbidden_attach_key" } });
+      expect(given(b)).toEqual([]);
+      expect(b.state.clock).toBe(0);
+      expect(askedB).toEqual([]);
+      // B's own agent (B's key) is served.
+      const own = await attacher(s, bridgeB, TOKEN).call(idB, { correlationId: "y1", tool: "observe_world" });
+      expect(own.ok && own.value.result.status).toBe("ok");
+    } finally {
+      await bridgeA.dispose();
+      await bridgeB.dispose();
+      await a.close();
+      await b.close();
+      await s.close();
+    }
+  });
+
+  it("S11: a call its caller was told timed out never runs later — the stream was down when the cancel was sent", async () => {
+    const s = await serve({ world: { cancelGraceMs: 200, expireAfterMs: 60_000 } });
+    const session = await liveSession();
+    const pending: string[] = [];
+    session.subscribe((e) => {
+      if (e.msg.type === "approval_request") pending.push(e.msg.requestId);
+    });
+    let offline = false;
+    let liveStream: AbortController | null = null;
+    const flakyFetch: typeof fetch = async (input, init) => {
+      if (offline) throw new TypeError("fetch failed (offline)");
+      if (String(input).endsWith("/commands")) {
+        const c = new AbortController();
+        liveStream = c;
+        init?.signal?.addEventListener("abort", () => c.abort());
+        return fetch(input, { ...init, signal: c.signal });
+      }
+      return fetch(input, init);
+    };
+    const { bridge } = connect(session, s, { fetch: flakyFetch, backoff: { initialMs: 50, maxMs: 100 } });
+    try {
+      await bridge.ready;
+      const attach = attacher(s, bridge);
+      const id = bridge.status.liveSessionId!;
+      expect((await attach.call(id, { correlationId: "walk", tool: "navigate_to", args: { target: "patient" } })).ok).toBe(true);
+      const a = attach.call(id, { correlationId: "A", tool: "intervene", args: { intervention_id: "ticagrelor" } }); // the learner leaves the dialog open
+      await until(() => pending.length === 1);
+      const b = attach.call(id, { correlationId: "B", tool: "intervene", args: { intervention_id: "aspirin" }, timeoutMs: 1000 });
+      await new Promise((r) => setTimeout(r, 150)); // B delivered + acknowledged, queued behind A
+      offline = true;
+      (liveStream as AbortController | null)?.abort(); // the tab loses its connection (sleep, network)
+      const rb = await b;
+      expect(rb).toMatchObject({ ok: false, error: { code: "call_timeout", acknowledged: true } });
+      if (!rb.ok) expect(rb.error.message).toMatch(/may still run/);
+      await new Promise((r) => setTimeout(r, 400)); // > cancelGrace: the server forgets B itself
+      offline = false;
+      await until(() => bridge.status.state === "connected", 5000);
+      session.submit({ type: "approval_response", requestId: pending[0]!, decision: "denied" });
+      await a;
+      await new Promise((r) => setTimeout(r, 500));
+      expect(given(session)).toEqual([]); // aspirin was never given after the caller was told B timed out
+      expect(bridge.status.activeCalls).toBe(0);
+    } finally {
+      await bridge.dispose();
       await session.close();
       await s.close();
     }

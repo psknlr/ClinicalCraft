@@ -6,15 +6,23 @@
  * it runs in browsers and in Node 22.
  *
  * `connectWorldBridge({ serverUrl, session, auth, onStatus })`:
+ * - makes an ATTACH KEY (`status.attachKey`) the front-end shows to the
+ *   learner, who hands it — with `status.liveSessionId` — to their own
+ *   external agent: attach clients need it for every call (the server token
+ *   alone is not enough). It lives in memory only, for this opt-in;
  * - registers the session (`POST /api/world/sessions` → live-session id +
  *   channel secret, kept in memory only) with a spoiler-free description
- *   (case handle, title, facility, embodiment, the tools it accepts);
+ *   (case handle, title, facility, embodiment, the tools it accepts) and the
+ *   attach key; a re-registration asks its previous id back;
  * - consumes the command channel (SSE): each `call` runs through the
  *   session's normal tool path AS THE CLINICIAN AGENT (op
  *   `external_tool_call`: the clinician's allow-list, scope and deny rules,
  *   hooks, the spatial gate, the approval gate — an approval prompt goes to
  *   the learner like any other, and nothing on the bridge can answer it); a
- *   `cancel` stops it (`external_tool_cancel`);
+ *   `cancel` stops it (`external_tool_cancel`). A call whose deadline (the
+ *   server's clock, from `hello`) has passed is never started, and one still
+ *   queued or running when it passes is cancelled — its caller was told it
+ *   timed out; the session gets the deadline too, in its own clock;
  * - acknowledges each call and posts its result by correlation id; a command
  *   delivered twice (a reconnect) never runs twice — the stored result is
  *   posted again;
@@ -30,13 +38,17 @@
  * explicit, per-encounter opt-in); only `BRIDGE_TOOLS` the clinician has are
  * run — never slash commands, configuration, approvals or other ops; calls are
  * refused while the session's approval mode is `bypass` (nothing would ask the
- * learner) unless `allowBypass`.
+ * learner) unless `allowBypass`. That refusal here is the early one, when a
+ * call arrives: the session enforces the same rule when the call RUNS (a call
+ * queued before the learner switched to bypass), and only an op carrying
+ * `allowBypass` — set here when the front-end opted in — is exempt.
  */
 import { t, type CaseDefinition } from "@clinicalcraft/core";
 import type { AgentEvent, AgentRole, EventMsg, Op } from "../protocol.js";
 import { parseSSE } from "../providers/sse.js";
 import { rt } from "../session/i18n.js";
 import type { ResolvedSettings } from "../settings/schema.js";
+import { bt } from "./i18n.js";
 import {
   BRIDGE_DEFAULTS,
   BRIDGE_LIMITS,
@@ -46,8 +58,11 @@ import {
   caseHandle,
   CHANNEL_SECRET_HEADER,
   cleanBridgeText,
+  isAttachKey,
   isLiveSessionId,
+  newAttachKey,
   parseBridgeCommand,
+  parseBridgeHello,
   WORLD_SESSIONS_PATH,
   type BridgeApproval,
   type BridgeCallStatus,
@@ -56,6 +71,13 @@ import {
   type BridgeRegistration,
   type BridgeToolResult,
 } from "./protocol.js";
+
+/**
+ * The op of an external call: `deadline` (ms since epoch, the browser's clock — when the caller stops waiting:
+ * a call still queued then is not run) and `allowBypass` (the front-end opted in to bypass mode) for the
+ * session, which enforces both when the call runs.
+ */
+type ExternalCallOp = Extract<Op, { type: "external_tool_call" }> & { deadline?: number; allowBypass?: true };
 
 /** What the bridge needs of a session (`ClinicalSession` fits). */
 export interface BridgeSession {
@@ -91,6 +113,11 @@ export interface WorldBridgeStatus {
   state: WorldBridgeState;
   /** The id attach clients name (`--world-session`, `session_id`), once registered. */
   liveSessionId: string | null;
+  /**
+   * The attach key of this opt-in (`ak_…`): show it to the learner — their external agent needs it with the
+   * live-session id (`--attach-key-file` / `CLINICALCRAFT_ATTACH_KEY`). Never persisted.
+   */
+  attachKey: string;
   /** External calls queued or running in the session. */
   activeCalls: number;
   /** Why the bridge is reconnecting, failed or closed: a stable code and a localised message. */
@@ -113,8 +140,10 @@ export interface WorldBridgeOptions {
   onStatus?: (status: WorldBridgeStatus) => void;
   /** Each external call as it starts, runs and finishes (activity indicator, labelling approval requests). */
   onActivity?: (activity: WorldBridgeActivity) => void;
-  /** Run calls even while the session's approval mode is `bypass` (default false: refused). */
+  /** Run calls even while the session's approval mode is `bypass` (default false: refused — here and by the session). */
   allowBypass?: boolean;
+  /** The attach key to register with (default: a fresh `newAttachKey()` — one per opt-in). */
+  attachKey?: string;
   /** Restrict the tools offered (default: every bridge tool the clinician has). */
   tools?: readonly string[];
   /** Spoiler-free title shown to attach clients (default: the case title in the session's language; null: none). */
@@ -256,6 +285,12 @@ const SUBMISSIONS_KEPT = 256;
 const RESULT_ATTEMPTS = 4;
 /** External calls queued or running at once (the server allows fewer per session: a misbehaving peer). */
 const MAX_RUNNING = 64;
+/**
+ * A call still queued or running this long after its deadline is cancelled here (the server cancels it at the
+ * deadline too, when its stream is up). The clock offset estimated from `hello` errs late by the network
+ * latency; this margin keeps rounding from cancelling a call before the server gave up on it.
+ */
+const DEADLINE_MARGIN_MS = 250;
 
 interface Running {
   correlationId: string;
@@ -289,6 +324,12 @@ class WorldBridgeClient implements WorldBridge {
   private readonly done = new Map<string, BridgeToolResult>();
   private readonly submissions = new Set<string>();
   private lastReported = "";
+  /** This opt-in's attach key (the same for every re-registration). */
+  private readonly attachKey: string;
+  /** The id of the last registration: a re-registration asks it back. */
+  private lastId: string | null = null;
+  /** The server's clock minus ours (from `hello`): call deadlines are in the server's clock. */
+  private skew = 0;
 
   constructor(private readonly options: WorldBridgeOptions) {
     this.session = options.session;
@@ -297,11 +338,12 @@ class WorldBridgeClient implements WorldBridge {
     this.initialBackoff = Math.max(10, options.backoff?.initialMs ?? 1_000);
     this.maxBackoff = Math.max(this.initialBackoff, options.backoff?.maxMs ?? 15_000);
     this.backoffMs = this.initialBackoff;
+    this.attachKey = isAttachKey(options.attachKey) ? options.attachKey : newAttachKey();
     this.ready = new Promise((resolve) => (this.resolveReady = resolve));
   }
 
   get status(): WorldBridgeStatus {
-    return { state: this.state, liveSessionId: this.reg?.id ?? null, activeCalls: this.running.size, error: this.error ? { ...this.error } : null };
+    return { state: this.state, liveSessionId: this.reg?.id ?? null, attachKey: this.attachKey, activeCalls: this.running.size, error: this.error ? { ...this.error } : null };
   }
 
   owns(submissionId: string): boolean {
@@ -479,6 +521,9 @@ class WorldBridgeClient implements WorldBridge {
       embodiment: s.embodiment,
       locale: s.locale.toLowerCase().startsWith("zh") ? "zh-CN" : "en",
       capabilities: this.capabilities(),
+      attachKey: this.attachKey,
+      // The server forgot us (expiry, restart): ask for the same id, so the external agent keeps its --world-session.
+      ...(this.lastId ? { previousId: this.lastId } : {}),
     };
     const value = (await this.http("POST", WORLD_SESSIONS_PATH, { body })) as Partial<BridgeRegistered> | null;
     const ms = (v: unknown, fallback: number) => (typeof v === "number" && Number.isFinite(v) && v >= 10 ? v : fallback);
@@ -495,6 +540,7 @@ class WorldBridgeClient implements WorldBridge {
       expireAfterMs: ms(value.expireAfterMs, BRIDGE_DEFAULTS.expireAfterMs),
       pingMs: ms(value.pingMs, BRIDGE_DEFAULTS.pingMs),
     };
+    this.lastId = value.id;
     this.startHeartbeats();
     this.report();
   }
@@ -519,7 +565,11 @@ class WorldBridgeClient implements WorldBridge {
       for await (const message of parseSSE(res.body, { signal: controller.signal, stopOnDone: false })) {
         if (this.disposed || this.reg !== reg) return;
         this.maybeHeartbeat();
-        if (message.event === "command") {
+        if (message.event === "hello") {
+          // The server's clock: call deadlines are in it (the estimate errs late by the latency — the safe side).
+          const now = parseBridgeHello(safeJson(message.data))?.now ?? null;
+          if (now !== null) this.skew = now - Date.now();
+        } else if (message.event === "command") {
           const command = parseBridgeCommand(safeJson(message.data));
           if (command) this.onCommand(command, reg);
         } else if (message.event === "closed") {
@@ -595,9 +645,14 @@ class WorldBridgeClient implements WorldBridge {
     const stored = this.done.get(command.correlationId);
     if (command.type === "cancel") {
       const running = this.running.get(command.correlationId);
-      if (running) this.cancelRunning(running);
-      // Unknown here: finished already (post it again), or the call never arrived (it did not run).
-      else void this.postResult(reg, command.correlationId, stored ?? { ok: false, status: "cancelled", output: rt(this.session.locale, "bridge.notRun") });
+      if (running) {
+        this.cancelRunning(running);
+        return;
+      }
+      // Unknown here: finished already (post it again), or the call never arrived — it did not run, and it never
+      // will: should it arrive after all (a re-delivery), it is answered from here.
+      const result = stored ?? this.remember(command.correlationId, { ok: false, status: "cancelled", output: rt(this.session.locale, "bridge.notRun") });
+      void this.postResult(reg, command.correlationId, result);
       return;
     }
     if (stored) {
@@ -605,14 +660,38 @@ class WorldBridgeClient implements WorldBridge {
       return;
     }
     if (this.running.has(command.correlationId)) return;
+    const deadline = this.localDeadline(command.deadline);
+    if (deadline !== null && Date.now() >= deadline) {
+      // The caller has stopped waiting (and was told the call timed out): never start it.
+      const result = this.remember(command.correlationId, { ok: false, status: "cancelled", output: bt(this.session.locale, "bridge.deadlinePassed", { tool: command.tool }) });
+      void this.postResult(reg, command.correlationId, result);
+      return;
+    }
     if (this.running.size >= MAX_RUNNING) {
       void this.postResult(reg, command.correlationId, { ok: false, status: "error", output: rt(this.session.locale, "bridge.busy", { max: MAX_RUNNING }) });
       return;
     }
-    void this.execute(command, reg);
+    void this.execute(command, reg, deadline);
   }
 
-  /** Why a call is refused without running (null: run it). */
+  /** A call's deadline in our clock (null: none given). */
+  private localDeadline(serverDeadline: number): number | null {
+    return serverDeadline > 0 ? serverDeadline - this.skew : null;
+  }
+
+  /** Keep a call's final result: a command delivered again is answered from it, never run. */
+  private remember(correlationId: string, result: BridgeToolResult): BridgeToolResult {
+    const bounded = boundBridgeResult(result);
+    this.done.delete(correlationId);
+    this.done.set(correlationId, bounded);
+    while (this.done.size > RESULTS_KEPT) this.done.delete(this.done.keys().next().value!);
+    return bounded;
+  }
+
+  /**
+   * Why a call is refused without running (null: run it). The bypass refusal is the early one (when a call
+   * arrives); the session enforces it again when the call runs (review S4).
+   */
   private refusal(tool: string): BridgeToolResult | null {
     const s = this.session;
     const L = s.locale;
@@ -622,7 +701,7 @@ class WorldBridgeClient implements WorldBridge {
     return null;
   }
 
-  private async execute(command: Extract<BridgeCommand, { type: "call" }>, reg: BridgeRegistered): Promise<void> {
+  private async execute(command: Extract<BridgeCommand, { type: "call" }>, reg: BridgeRegistered, deadline: number | null): Promise<void> {
     const { correlationId, tool, args } = command;
     // Registered synchronously, so a `cancel` that follows on the stream finds it.
     const running: Running = { correlationId, tool, cancelled: false, reg };
@@ -637,19 +716,30 @@ class WorldBridgeClient implements WorldBridge {
       const off = this.session.subscribe((event) => {
         if (event.msg.type === "approval_resolved") related.push(event);
       });
+      // Its caller stops waiting at the deadline (and is told it timed out): a call still queued or running then is
+      // cancelled here, even when the server's cancel cannot reach us (the stream is down).
+      const timer = deadline !== null ? setTimeout(() => this.cancelRunning(running), Math.max(0, deadline - Date.now()) + DEADLINE_MARGIN_MS) : null;
+      unref(timer);
+      const op: ExternalCallOp = {
+        type: "external_tool_call",
+        callId: correlationId,
+        tool,
+        args,
+        ...(deadline !== null ? { deadline } : {}),
+        ...(this.options.allowBypass ? { allowBypass: true as const } : {}),
+      };
       try {
-        const events = await this.session.run({ type: "external_tool_call", callId: correlationId, tool, args });
+        const events = await this.session.run(op);
         result = bridgeResultOf(events, correlationId, this.session.locale, { cancelRequested: running.cancelled, related });
       } catch (err) {
         result = { ok: false, status: "error", output: err instanceof Error ? err.message : String(err) };
       } finally {
+        if (timer) clearTimeout(timer);
         off();
       }
     }
-    result = boundBridgeResult(result);
     this.running.delete(correlationId);
-    this.done.set(correlationId, result);
-    while (this.done.size > RESULTS_KEPT) this.done.delete(this.done.keys().next().value!);
+    result = this.remember(correlationId, result);
     this.report();
     this.activity({ phase: "finished", correlationId, tool, result });
     await this.postResult(reg, correlationId, result);

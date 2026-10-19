@@ -4592,7 +4592,8 @@
       },
       "requires": [
         "infusion-pump",
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "maxDoses": 1,
@@ -4676,7 +4677,8 @@
       },
       "requires": [
         "infusion-pump",
-        "medications"
+        "medications",
+        "iv-access"
       ],
       "risk": "moderate",
       "maxDoses": 1,

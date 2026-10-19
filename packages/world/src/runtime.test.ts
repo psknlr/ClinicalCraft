@@ -88,6 +88,8 @@ describe("createWorldRuntime", () => {
     expect(runtime.checkSpatial(A, { tool: "ask_patient", kind: "ask" })).toMatchObject({ ok: false, reason: "no-patient", hint: null });
     const go = await runtime.execute({ actionId: "x", actorId: A, operation: "approach", targetId: "lab-workstation" });
     expect(go.status).toBe("completed");
+    // a lab order needs its sample: the IV-access procedure drew the bloods (in the engine), so the policy lets it through
+    h.dispatch({ type: "intervene", interventionId: "iv-access", by: "agent" });
     const order = await runtime.execute({ actionId: "y", actorId: A, operation: "order", targetId: "lab-workstation", parameters: { investigation: "hs-troponin" } });
     expect(order).toMatchObject({ status: "failed", errorCode: "CLINICAL_REJECTED" });
     expect(order.message).toMatch(/No clinical session/);

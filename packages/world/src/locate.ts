@@ -3,16 +3,19 @@
  * the physical state (moved carts, carried items, walking actors and staff),
  * and the spatial measures every dynamic module shares — distance from a
  * pose to an entity's current footprint, line of sight at eye height,
- * effective interaction reach, and the bedside rule of the web world
- * (`packages/web/src/app/stations.ts` `atBedside`: within `BEDSIDE_RADIUS`
- * of the patient slot, or in the slot's room).
+ * effective interaction reach, and THE bedside rule (`bedside.ts`: in the
+ * slot's room, or within `BEDSIDE_RADIUS` of the slot point and visible from
+ * it or a short walk away — across a room boundary only for an open slot or
+ * a cart just outside; never through a wall).
  */
 import { t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
-import { BEDSIDE_RADIUS, RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
+import { BedsideRule } from "./bedside.js";
+import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
 import { rotateXZ, rotatedFootprint } from "./geometry.js";
 import { roleName } from "./i18n.js";
 import { entityLevel } from "./levels.js";
 import { MIN_RANGE } from "./nav/backend.js";
+import type { NavGrids } from "./nav/grid.js";
 import { distanceToArea, footprintArea, type Area } from "./raster.js";
 import { BODY_FOOTPRINT, type SemanticRegistry } from "./registry.js";
 import type { SightTarget, VisibilityModel } from "./visibility.js";
@@ -48,6 +51,8 @@ export interface Placed {
 export class WorldLocator {
   readonly slot: PatientSlot | null;
   readonly patientId: EntityId | null;
+  /** The bedside rule of this encounter (`bedside.ts`). */
+  readonly bedside: BedsideRule;
   private readonly monitorIds: EntityId[];
 
   constructor(
@@ -57,10 +62,13 @@ export class WorldLocator {
     readonly visibility: VisibilityModel,
     readonly locale: string,
     slotId: string | null,
+    /** The navigation grids (walking distances of the bedside rule); null with a custom backend. */
+    grids: NavGrids | null = null,
   ) {
     this.monitorIds = registry.ofKind("equipment").filter((e) => e.interaction === "monitor").map((e) => e.id);
     this.slot = (slotId ? facility.patientSlots.find((s) => s.id === slotId) : undefined) ?? null;
     this.patientId = this.slot && registry.entity(`patient:${this.slot.id}`) ? `patient:${this.slot.id}` : null;
+    this.bedside = new BedsideRule({ facility, visibility, grids, slot: this.slot, slotLevel: this.slotLevel(), sight: (p) => this.sight(p) });
   }
 
   /** Localised display name of an entity or actor (patients: their display name). */
@@ -151,16 +159,12 @@ export class WorldLocator {
   }
 
   /**
-   * Is the entity at the patient's bedside now (stations.ts `atBedside`):
-   * on the slot's level and within `BEDSIDE_RADIUS` of the slot point, or in
-   * the slot's room (a moved cart: the room it stands in now). A carried
-   * item is at the bedside when its holder is.
+   * Is the entity at the patient's bedside now — THE bedside rule
+   * (`bedside.ts`), where it stands now (a moved cart where it was parked, a
+   * carried item with its holder).
    */
   atBedside(p: Placed): boolean {
-    const slot = this.slot;
-    if (!slot || p.level !== this.slotLevel()) return false;
-    if (Math.hypot(p.position.x - slot.x, p.position.z - slot.z) <= BEDSIDE_RADIUS) return true;
-    return p.room === slot.room;
+    return this.bedside.at(p);
   }
 
   /**

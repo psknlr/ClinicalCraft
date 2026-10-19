@@ -38,6 +38,7 @@ import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
 import { BrowserCamera, BrowserMover } from "./embodied.js";
 import { EmbodiedLink } from "./embodied-link.js";
+import { ExternalControl, externalOffered } from "./external.js";
 import { coarse, preferredEmbodiment, Prefs } from "./settings.js";
 import type { LogEntry } from "./store.js";
 import { GameWorldLink, patientFor, routeInteraction, slotFor, WorldHost, type Route, type WorldSpec } from "./world-bridge.js";
@@ -87,6 +88,8 @@ export class ClinicalCraftApp implements App {
   readonly camera: BrowserCamera;
   /** Refusals of the learner's actions with "Go there" (embodied mode). */
   readonly feedback: ActionFeedback;
+  /** External control of the running encounter (`clinicalcraft mcp --attach`): per encounter, never persisted. */
+  readonly external: ExternalControl;
   private _slot = 0;
   private lastTalk: ConversationArgs = { agent: "patient" };
   private aim: InteractionTarget | null = null;
@@ -95,6 +98,8 @@ export class ClinicalCraftApp implements App {
   private suppressNotice: string | null = null;
   private lastSave = 0;
   private backdropTimer: ReturnType<typeof setTimeout> | null = null;
+  /** The encounter finished: external control ends once no external call is running. */
+  private externalEnding: ReturnType<typeof setTimeout> | null = null;
   private readonly refresh = throttleFrame(() => {
     this.hud.update();
     this.panels.update();
@@ -127,6 +132,21 @@ export class ClinicalCraftApp implements App {
         this.refresh();
       },
       pushing: (actorId) => this.game?.embodied?.pushing(actorId) ?? null,
+      // a hidden tab draws no frames: bodies are put at their targets (an external agent's walk does not stall)
+      hidden: () => typeof document !== "undefined" && document.hidden,
+      onHidden: (listener) => {
+        const onChange = () => {
+          if (document.hidden) listener();
+        };
+        document.addEventListener("visibilitychange", onChange);
+        return () => document.removeEventListener("visibilitychange", onChange);
+      },
+    });
+    this.external = new ExternalControl({
+      onChange: () => {
+        this.refresh();
+        this.maybeEndExternal();
+      },
     });
     this.camera = new BrowserCamera({ renderer: () => this.world.api, clock: () => this.game?.session.session.state.clock ?? 0 });
     this.feedback = new ActionFeedback(
@@ -195,6 +215,8 @@ export class ClinicalCraftApp implements App {
       this.game?.session.transcript.flushOnExit?.();
     };
     addEventListener("pagehide", leaving);
+    // Leaving the page ends external control (the bridge's DELETE uses keepalive); hiding it does not.
+    addEventListener("pagehide", () => void this.external.disable());
     addEventListener("beforeunload", () => this.save());
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "hidden") leaving();
@@ -410,6 +432,46 @@ export class ClinicalCraftApp implements App {
     // embodied: checked against the world first (a short walk, or "Go there")
     if (this.game.embodied) return this.game.embodied.act(action, rationale);
     return this.game.session.act(action, rationale);
+  }
+
+  externalOffered(): boolean {
+    return externalOffered(this.server);
+  }
+
+  /**
+   * The learner's per-encounter opt-in (PROTOCOL §13.6): on — the running session is offered to their external
+   * agent (`connectWorldBridge`, same origin); off — running external calls are cancelled and the session
+   * unregistered. Never stored: every encounter starts off.
+   */
+  async setExternalControl(on: boolean): Promise<void> {
+    if (!on) {
+      const was = this.external.on;
+      await this.external.disable();
+      if (was) this.toast(tr("ext.toast.off"), "", "info", "external");
+      return;
+    }
+    const game = this.game;
+    if (!game || !this.externalOffered() || this.external.on) return;
+    this.external.enable(game.session.session);
+    this.toast(tr("ext.toast.on"), tr("ext.toast.onBody"), "info", "external");
+  }
+
+  /**
+   * The encounter has ended (finished or timed out): external control ends too — once no external call is running,
+   * after a short grace so the call that ended it still gets its result to the caller.
+   */
+  private maybeEndExternal(): void {
+    const busy = (this.external.status?.activeCalls ?? 0) > 0;
+    if (busy && this.externalEnding) {
+      // another call came in during the grace: wait for it too
+      clearTimeout(this.externalEnding);
+      this.externalEnding = null;
+    }
+    if (busy || this.externalEnding || !this.external.on || !this.game?.session.session.state.finished) return;
+    this.externalEnding = setTimeout(() => {
+      this.externalEnding = null;
+      if (this.game?.session.session.state.finished && (this.external.status?.activeCalls ?? 0) === 0) void this.setExternalControl(false);
+    }, 1500);
   }
 
   /** The mode a new encounter starts in: the "Embodied agents" preference, clinical without a 3D world. */
@@ -807,6 +869,8 @@ export class ClinicalCraftApp implements App {
   private async endGame(save: boolean): Promise<void> {
     const game = this.game;
     if (!game) return;
+    // The encounter ends (left, reset, another case): external control ends with it — before the session closes.
+    await this.external.disable();
     if (save) this.save();
     for (const off of this.storeOff) off();
     this.storeOff = [];
@@ -862,6 +926,9 @@ export class ClinicalCraftApp implements App {
           // The next chapter's guidance (its teaching hint is the scored HUD hint).
           const nextText = next ? t(next.guidance, L) || t(next.short, L) || t(next.title, L) : "";
           this.toast(tr("toast.chapter", { title }), next ? tr("toast.next", { hint: nextText }) : tr("toast.toBoard"), "success", "chapter");
+        } else if (e.type === "case.finished") {
+          // the encounter has ended: so does external control (once its running calls have answered)
+          this.maybeEndExternal();
         } else if (e.type === "case.completed") {
           this.sound("success");
         } else if (e.type === "vitals.alarm" && e.level === "critical") {
@@ -1104,6 +1171,11 @@ export class ClinicalCraftApp implements App {
       /** The real-time clock is paused because an agent drives a body. */
       get agentDriving() {
         return app.game?.embodied?.agentDriving() ?? false;
+      },
+      /* ---- external control (PROTOCOL §13.6) ---- */
+      /** The world bridge's status while external control is on (state, live-session id, attach key, calls), else null. */
+      get external() {
+        return app.external.status;
       },
     };
   }

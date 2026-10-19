@@ -5,6 +5,8 @@
  * routing of calls and results, acknowledgements, dedupe by correlation id,
  * timeouts, cancellation (explicit and by a caller that goes away), expiry
  * after missed heartbeats, DELETE, re-delivery on reconnect, body limits, CORS.
+ * Attach keys, the per-client cap, backpressure, the Authorization-only attach
+ * routes and re-sent cancels: world-bridge-security.test.ts.
  */
 import { mkdtempSync, rmSync } from "node:fs";
 import { createServer, type Server } from "node:http";
@@ -12,7 +14,7 @@ import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
-import { BRIDGE_TOOLS, mergeSettings, parseSSE, type BridgeToolResult, type ResolvedSettings } from "@clinicalcraft/agent";
+import { ATTACH_KEY_HEADER, BRIDGE_TOOLS, mergeSettings, newAttachKey, parseSSE, type BridgeToolResult, type ResolvedSettings } from "@clinicalcraft/agent";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { createRequestHandler, type ServerOptions } from "./server.js";
 import type { WorldSessionRouterOptions } from "./world-sessions.js";
@@ -48,7 +50,9 @@ async function serve(opts: Partial<ServerOptions> & { world?: WorldSessionRouter
   };
 }
 
-const REGISTRATION = { caseHandle: "case-0abc123", title: "Chest pain in the ED", facilityId: "general-hospital", embodiment: "embodied", locale: "en", capabilities: [...BRIDGE_TOOLS] };
+/** The attach key these sessions are registered with (attach routes present it; see world-bridge-security.test.ts for keys that differ). */
+const KEY = newAttachKey();
+const REGISTRATION = { caseHandle: "case-0abc123", title: "Chest pain in the ED", facilityId: "general-hospital", embodiment: "embodied", locale: "en", capabilities: [...BRIDGE_TOOLS], attachKey: KEY };
 
 async function json(res: Response): Promise<any> {
   return res.json();
@@ -57,7 +61,7 @@ async function json(res: Response): Promise<any> {
 function api(base: string, path: string, init: { method?: string; body?: unknown; headers?: Record<string, string>; signal?: AbortSignal } = {}): Promise<Response> {
   return fetch(new URL(`api/world/sessions${path}`, base), {
     method: init.method ?? (init.body !== undefined ? "POST" : "GET"),
-    headers: { ...(init.body !== undefined ? { "content-type": "application/json" } : {}), ...(init.headers ?? {}) },
+    headers: { [ATTACH_KEY_HEADER]: KEY, ...(init.body !== undefined ? { "content-type": "application/json" } : {}), ...(init.headers ?? {}) },
     ...(init.body !== undefined ? { body: typeof init.body === "string" ? init.body : JSON.stringify(init.body) } : {}),
     ...(init.signal ? { signal: init.signal } : {}),
   });
@@ -216,7 +220,7 @@ describe("world bridge: calls", () => {
       const reg = await register(s.url, { ...REGISTRATION, capabilities: ["observe_world", "navigate_to"] });
       const browser = new FakeBrowser(s.url, reg);
       await browser.open();
-      expect(browser.events[0]).toEqual({ event: "hello", data: { id: reg.id, heartbeatMs: 10_000, expireAfterMs: 45_000, pingMs: 10_000 } });
+      expect(browser.events[0]).toEqual({ event: "hello", data: { id: reg.id, heartbeatMs: 10_000, expireAfterMs: 45_000, pingMs: 10_000, now: expect.any(Number) } });
       expect((await json(await api(s.url, `/${reg.id}`))).connected).toBe(true);
 
       const first = api(s.url, `/${reg.id}/call`, { body: { correlationId: "c-1", tool: "observe_world", args: { max_entities: 5 } } });
@@ -341,8 +345,8 @@ describe("world bridge: calls", () => {
       await until(() => first.commands().length === 1);
       const second = new FakeBrowser(s.url, reg);
       await second.open();
+      // The old stream is destroyed at once (a client that stopped reading must not keep its buffer alive).
       await until(() => first.ended);
-      expect(first.events.at(-1)).toEqual({ event: "closed", data: { reason: "replaced" } });
       expect(second.commands()).toEqual([expect.objectContaining({ type: "call", correlationId: "r-1" })]);
       await second.post("results", { correlationId: "r-1", kind: "result", result: OK });
       expect((await json(await waiting)).result).toEqual(OK);

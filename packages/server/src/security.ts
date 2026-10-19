@@ -14,16 +14,19 @@
  * - **DNS rebinding** — a loopback-only server accepts only loopback `Host`
  *   headers.
  * - **CORS** — same origin only; the Vite dev origins
- *   `http://localhost:5173-5199` (and 127.0.0.1) are allowed for `/api/*`.
- *   Cross-origin API requests from anywhere else are refused (403), which also
- *   stops "simple" cross-site POSTs that a browser would send without a
- *   preflight.
+ *   `http://localhost:5173-5199` (and 127.0.0.1) are allowed for `/api/*` —
+ *   except the world bridge (`/api/world/*`): any local dev page could
+ *   otherwise use the learner's cookie there. Cross-origin API requests from
+ *   anywhere else are refused (403), which also stops "simple" cross-site
+ *   POSTs that a browser would send without a preflight.
  * - **Headers** — nosniff, no-referrer, frame-ancestors none and a CSP that
  *   fits the Vite build.
  * - **World bridge** (`/api/world/sessions…`, `world-sessions.ts`) — all of
- *   the above applies; the browser's channel routes also need the live
- *   session's secret in `x-clinicalcraft-channel`, a header deliberately not
- *   offered to cross-origin callers (docs/PROTOCOL.md §13.5).
+ *   the above applies, same-origin only; the browser's channel routes also
+ *   need the live session's secret in `x-clinicalcraft-channel`; the attach
+ *   routes take the token only as `Authorization: Bearer` (never the ambient
+ *   cookie) plus the session's attach key in `x-clinicalcraft-attach-key`
+ *   (docs/PROTOCOL.md §13.5).
  */
 import { timingSafeEqual } from "node:crypto";
 import type { IncomingMessage } from "node:http";
@@ -83,6 +86,8 @@ export interface TokenCheck {
   ok: boolean;
   /** The token arrived as `?token=` (the caller may set the cookie). */
   viaQuery: boolean;
+  /** Where the valid token came from (null when none was valid): the world bridge's attach routes accept only "header". */
+  via: "header" | "query" | "cookie" | null;
 }
 
 /** Check the request's token (Bearer header, `?token=` or cookie) against `token`. */
@@ -90,13 +95,13 @@ export function checkToken(req: IncomingMessage, url: URL, token: string): Token
   const auth = req.headers.authorization;
   if (typeof auth === "string") {
     const m = /^Bearer\s+(.+)$/i.exec(auth.trim());
-    if (m && safeEqual(m[1]!.trim(), token)) return { ok: true, viaQuery: false };
+    if (m && safeEqual(m[1]!.trim(), token)) return { ok: true, viaQuery: false, via: "header" };
   }
   const query = url.searchParams.get("token");
-  if (query !== null && safeEqual(query, token)) return { ok: true, viaQuery: true };
+  if (query !== null && safeEqual(query, token)) return { ok: true, viaQuery: true, via: "query" };
   const cookie = parseCookies(req.headers.cookie).get(TOKEN_COOKIE);
-  if (cookie !== undefined && safeEqual(cookie, token)) return { ok: true, viaQuery: false };
-  return { ok: false, viaQuery: false };
+  if (cookie !== undefined && safeEqual(cookie, token)) return { ok: true, viaQuery: false, via: "cookie" };
+  return { ok: false, viaQuery: false, via: null };
 }
 
 /** `Set-Cookie` value for the access token. */

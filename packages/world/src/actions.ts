@@ -31,7 +31,8 @@
  * with the backend, move the body with the `Mover` (default: instant),
  * commit the pose the mover reports, record what is visible on arrival,
  * charge the travel time once (`elapse(seconds, "travel")`; an interrupted
- * walk charges the part walked) and return a `NavigationRecord`.
+ * walk charges the flat distance walked at `WALK_SPEED` plus the connector
+ * rides completed, `progressAlong`) and return a `NavigationRecord`.
  * Interrupted movement (cancel, abort, a mover that stops short) is
  * `cancelled` with `MOVEMENT_INTERRUPTED`; the partial pose is kept.
  *
@@ -47,6 +48,7 @@ import type {
   ClinicalPort,
   ClinicalView,
   CollisionModel,
+  ConnectorInfo,
   DynamicObstacle,
   EntityId,
   Mover,
@@ -59,14 +61,17 @@ import type {
   WorldActionResult,
   WorldEvent,
 } from "./contracts.js";
+import { WALK_SPEED } from "./contracts.js";
 import { failed, runOperation, type EffectsHost, type Outcome, type Walk } from "./effects.js";
 import { metres, navMessage, operationName, roleName, worldMessage } from "./i18n.js";
-import { levelInfos } from "./levels.js";
+import { connectorInfos, levelElevation, levelInfos } from "./levels.js";
 import type { WorldLocator } from "./locate.js";
 import { GridAStarBackend } from "./nav/backend.js";
 import type { NavGrids } from "./nav/grid.js";
 import type { Perception } from "./perception.js";
+import { clinicalPlacement } from "./placement.js";
 import type { SpatialChecker } from "./policy.js";
+import type { Reachability } from "./reach.js";
 import type { Area } from "./raster.js";
 import type { SemanticRegistry } from "./registry.js";
 import type { WorldEventInput, WorldStateStore } from "./state.js";
@@ -82,6 +87,8 @@ export interface ActionBusDeps {
   rules: DeviceRules;
   checker: SpatialChecker;
   perception: Perception;
+  /** Walking distances (hint ranking, joint placement of clinical operations). */
+  reach: Reachability;
   backend: NavigationBackend;
   /** The grid backend's grids (cart parking); null with a custom backend. */
   grids: NavGrids | null;
@@ -108,30 +115,57 @@ export function instantMover(poseOf: (actorId: ActorId) => Pose | null): Mover {
 const MOVE_OPS = ["navigate", "approach", "look_at"];
 const MAX_ACTION_ID = 200;
 
-/** Why a goal is malformed (null when well-formed). */
-export function goalProblem(g: unknown, depth = 0): string | null {
+/** Most leaves a navigation goal may have in all (nested `any` goals included). */
+export const MAX_GOAL_LEAVES = 16;
+/** Largest range (m) of a goal leaf (`point`, `entity`, `follow`, `look`). */
+export const MAX_GOAL_RANGE = 30;
+
+/**
+ * Why a goal is malformed (null when well-formed): the shape of each leaf,
+ * `any` nesting (≤ 3 deep, 1–16 goals each), at most `MAX_GOAL_LEAVES`
+ * leaves in all, no duplicate leaf, ranges of at most `MAX_GOAL_RANGE` —
+ * the cost bound of every planning request (EMBODIED §7).
+ */
+export function goalProblem(g: unknown): string | null {
+  const leaves: string[] = [];
+  const problem = goalShape(g, 0, leaves);
+  if (problem) return problem;
+  if (leaves.length > MAX_GOAL_LEAVES) return `goals may have at most ${MAX_GOAL_LEAVES} leaves in all (this one has ${leaves.length})`;
+  if (new Set(leaves).size !== leaves.length) return "a goal lists the same leaf twice (duplicate)";
+  return null;
+}
+
+function goalShape(g: unknown, depth: number, leaves: string[]): string | null {
   if (!g || typeof g !== "object" || Array.isArray(g)) return "goal must be an object";
   const goal = g as Record<string, unknown>;
   const finite = (v: unknown) => typeof v === "number" && Number.isFinite(v);
   const range = goal.range === undefined || (finite(goal.range) && (goal.range as number) >= 0);
+  const capped = goal.range === undefined || (goal.range as number) <= MAX_GOAL_RANGE;
+  const leaf = (): string | null => {
+    if (!range) return "range must be a non-negative number";
+    if (!capped) return `range must be at most ${MAX_GOAL_RANGE} m`;
+    leaves.push(JSON.stringify(goal, Object.keys(goal).sort()));
+    return null;
+  };
   switch (goal.kind) {
     case "point":
       if (!finite(goal.x) || !finite(goal.z)) return "point goals need finite x and z";
       if (goal.level !== undefined && typeof goal.level !== "string") return "level must be a string";
-      return range ? null : "range must be a non-negative number";
+      return leaf();
     case "entity":
     case "interact":
     case "follow":
     case "look":
     case "room":
       if (typeof goal.id !== "string" || !goal.id.trim()) return `${goal.kind} goals need an id`;
-      return range ? null : "range must be a non-negative number";
+      return leaf();
     case "any":
       if (depth >= 3) return "goals nest too deep";
       if (!Array.isArray(goal.goals) || goal.goals.length === 0 || goal.goals.length > 16) return "any goals need 1–16 goals";
       for (const sub of goal.goals) {
-        const p = goalProblem(sub, depth + 1);
+        const p = goalShape(sub, depth + 1, leaves);
         if (p) return p;
+        if (leaves.length > MAX_GOAL_LEAVES) return `goals may have at most ${MAX_GOAL_LEAVES} leaves in all`;
       }
       return null;
     default:
@@ -156,14 +190,34 @@ export function requestProblem(r: unknown): string | null {
   return null;
 }
 
-/** Arc length along a plan's path (from `from`) up to the point closest to `pose`. */
-export function walkedAlong(from: Pose, plan: Extract<NavPlan, { ok: true }>, pose: Pose): number {
-  let best = { d: Infinity, s: 0 };
-  let s = 0;
+/**
+ * How far a body got along a plan's path (from `from`) when it stopped at
+ * `pose`: the flat metres walked on the levels up to the point of the path
+ * closest to the pose (on the pose's level), and the connector rides
+ * completed on the way — their seconds (`travelSeconds` × stops) and, for
+ * stairs and ramps, their climb (the 3D distance between the stops, as the
+ * planner's `length` counts it). A ride is complete once the body is past
+ * its arrival point (`via`).
+ */
+export function progressAlong(from: Pose, plan: Extract<NavPlan, { ok: true }>, pose: Pose, connectors: readonly ConnectorInfo[], elevation: (level: string) => number): { flat: number; climb: number; rideSeconds: number } {
+  type Mark = { flat: number; climb: number; rideSeconds: number };
+  let best: { d: number; mark: Mark } = { d: Infinity, mark: { flat: 0, climb: 0, rideSeconds: 0 } };
+  let flat = 0, climb = 0, rideSeconds = 0;
   let prev: { x: number; z: number; level: string } = from;
+  if (from.level === pose.level) best = { d: Math.hypot(from.x - pose.x, from.z - pose.z), mark: { flat, climb, rideSeconds } };
   for (const p of plan.path) {
     if (p.via || p.level !== prev.level) {
+      const c = p.via ? connectors.find((x) => x.id === p.via) : undefined;
+      if (c) {
+        const a = c.stops.findIndex((st) => st.level === prev.level), b = c.stops.findIndex((st) => st.level === p.level);
+        rideSeconds += c.travelSeconds * (a >= 0 && b >= 0 ? Math.abs(b - a) : 1);
+        if (c.kind !== "elevator") climb += Math.hypot(p.x - prev.x, p.z - prev.z, elevation(p.level) - elevation(prev.level));
+      }
       prev = p;
+      if (p.level === pose.level) {
+        const d = Math.hypot(p.x - pose.x, p.z - pose.z);
+        if (d < best.d) best = { d, mark: { flat, climb, rideSeconds } };
+      }
       continue;
     }
     const dx = p.x - prev.x, dz = p.z - prev.z;
@@ -171,12 +225,12 @@ export function walkedAlong(from: Pose, plan: Extract<NavPlan, { ok: true }>, po
     if (p.level === pose.level) {
       const u = len > 1e-9 ? Math.max(0, Math.min(1, ((pose.x - prev.x) * dx + (pose.z - prev.z) * dz) / (len * len))) : 0;
       const d = Math.hypot(prev.x + u * dx - pose.x, prev.z + u * dz - pose.z);
-      if (d < best.d) best = { d, s: s + u * len };
+      if (d < best.d) best = { d, mark: { flat: flat + u * len, climb, rideSeconds } };
     }
-    s += len;
+    flat += len;
     prev = p;
   }
-  return Math.min(best.s, plan.length);
+  return best.mark;
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
@@ -184,11 +238,14 @@ const samePose = (a: Pose, b: Pose) => a.x === b.x && a.y === b.y && a.z === b.z
 
 export class ActionBus implements EffectsHost {
   readonly busy = new Map<EntityId, ActorId>();
+  private readonly connectors: ConnectorInfo[];
   private readonly pending = new Map<string, Promise<WorldActionResult>>();
   private readonly tails = new Map<ActorId, Promise<void>>();
   private readonly controllers = new Map<ActorId, Set<AbortController>>();
 
-  constructor(readonly d: ActionBusDeps) {}
+  constructor(readonly d: ActionBusDeps) {
+    this.connectors = connectorInfos(d.facility);
+  }
 
   /* ---------------- helpers for effects ---------------- */
 
@@ -363,6 +420,11 @@ export class ActionBus implements EffectsHost {
     }
     const pre = rules.precheck(targetId, o, actor);
     if (pre) return failed(pre.code, pre.message, pre.goal ? { hint: this.verifyHint(actor, pre.goal, pre.label) ?? null } : {});
+    // an operation with a clinical effect: hint where both its own placement and the policy's hold (never alternating)
+    if (o.clinical || o.toolByParam) {
+      const placement = clinicalPlacement(this, request, actor, targetId, o);
+      if (placement) return placement;
+    }
     const spatial = rules.spatial(targetId, o, actor);
     if (spatial) {
       // the goal that fixes it, when a route leads there; otherwise say why not
@@ -409,8 +471,10 @@ export class ActionBus implements EffectsHost {
     }
     const interrupted = signal.aborted || !moved.arrived;
     const pose = this.validPose(moved.pose) ? { ...moved.pose } : from;
-    const walked = interrupted ? walkedAlong(from, plan, pose) : plan.length;
-    const travelSeconds = plan.length > 0 ? (interrupted ? plan.travelSeconds * Math.min(1, walked / plan.length) : plan.travelSeconds) : 0;
+    // an interrupted walk: the flat distance walked plus the rides completed (never a share of a ride not taken)
+    const got = interrupted ? progressAlong(from, plan, pose, this.connectors, (level) => levelElevation(this.d.facility, level)) : null;
+    const walked = got ? Math.min(got.flat + got.climb, plan.length) : plan.length;
+    const travelSeconds = plan.length > 0 ? (got ? Math.min(got.flat / WALK_SPEED + got.rideSeconds, plan.travelSeconds) : plan.travelSeconds) : 0;
     if (!samePose(from, pose)) {
       const { roomChanged, room } = store.setActorPose(actor.id, pose);
       events.push(this.emit({ type: "actor.moved", actorId: actor.id, from, to: { ...pose }, distance: r2(walked), travelSeconds: r2(travelSeconds) }));

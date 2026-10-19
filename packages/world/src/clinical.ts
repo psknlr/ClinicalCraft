@@ -8,9 +8,11 @@
  * - `param`: the operation parameter `investigation` / `intervention` /
  *   `finding` (also `investigation_id`, `intervention_id`, `finding_id`). At
  *   a workstation the station must provide every capability the
- *   investigation requires (stations.ts `investigationsAt`); a device's
- *   `use` needs the item's requires to intersect its capabilities
- *   (stations.ts `deviceActions`).
+ *   investigation requires (stations.ts `investigationsAt`) — or be a
+ *   records terminal: order entry for laboratory tests, the viewer of
+ *   laboratory and bedside results (`orderEntry`); a device's `use` needs
+ *   the item's requires to intersect its capabilities (stations.ts
+ *   `deviceActions`).
  * - `capability`: the first case item (in case order) with requirements
  *   that this device provides entirely — e.g. the ECG cart's `record` → the
  *   case's 12-lead ECG; a parameter may pick another such item.
@@ -24,6 +26,7 @@
  * `examine {finding_id}`, `check_vitals {}`.
  */
 import { t, type CaseDefinition, type ClinicalEffect, type Condition } from "@clinicalcraft/core";
+import { BEDSIDE_CAPABILITIES, CHART_CAPABILITY, LAB_CAPABILITIES } from "./capabilities.js";
 import type { ClinicalIntent, WorldErrorCode } from "./contracts.js";
 import { listText, worldMessage } from "./i18n.js";
 
@@ -87,6 +90,32 @@ export function monitoringIntervention(c: CaseDefinition, caps: readonly string[
   return monitoring.find((i) => i.requires.length > 0 && i.requires.every((r) => caps.includes(r)))?.id ?? monitoring[0]?.id ?? null;
 }
 
+/**
+ * The case's IV-access procedure (EMBODIED §6: IV access is patient state):
+ * the intervention with id `iv-access`, else a procedure requiring the
+ * `iv-access` capability, else a cannulation procedure (by id); null when
+ * the case has none.
+ */
+export function ivAccessIntervention(c: CaseDefinition): string | null {
+  return (
+    c.interventions.find((i) => i.id === "iv-access")?.id ??
+    c.interventions.find((i) => i.kind === "procedure" && i.requires.includes("iv-access"))?.id ??
+    c.interventions.find((i) => i.kind === "procedure" && /cannul|iv-access|venous-access/i.test(i.id))?.id ??
+    null
+  );
+}
+
+/**
+ * Does the patient already have IV access when the case starts — a cannula
+ * in situ (authored as `extensions.embodied.ivAccessInSitu: true`, e.g. a
+ * post-operative ward patient)? Then IV drugs need no IV-access procedure
+ * first (its intervention places a further line).
+ */
+export function ivAccessInSitu(c: CaseDefinition): boolean {
+  const embodied = (c.extensions as Record<string, unknown> | undefined)?.embodied;
+  return !!embodied && typeof embodied === "object" && (embodied as Record<string, unknown>).ivAccessInSitu === true;
+}
+
 /** The clinical intent of a tool call on a case item (what `checkSpatial` evaluates). */
 export function intentFor(tool: ClinicalEffect["tool"], itemId: string | null): ClinicalIntent {
   switch (tool) {
@@ -118,6 +147,20 @@ function argsFor(tool: ClinicalEffect["tool"], itemId: string | null, parameters
     default:
       return {};
   }
+}
+
+/**
+ * A records terminal (`CHART_CAPABILITY`) is order entry and the result
+ * viewer (EMBODIED §6): it orders laboratory investigations (the sample is
+ * taken at the patient; the policy checks it) and shows laboratory and
+ * bedside results — never a bedside test's order (that is done at the
+ * patient with the device).
+ */
+function orderEntry(tool: ClinicalEffect["tool"], requires: readonly string[], caps: readonly string[]): boolean {
+  if (!caps.includes(CHART_CAPABILITY) || !requires.length) return false;
+  if (tool === "order_test") return requires.every((r) => LAB_CAPABILITIES.includes(r));
+  if (tool === "read_result") return requires.every((r) => LAB_CAPABILITIES.includes(r) || BEDSIDE_CAPABILITIES.includes(r));
+  return false;
 }
 
 /**
@@ -175,7 +218,7 @@ export function selectClinical(opts: {
   if (!wanted) return { ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.missingParam", L, { param: kind }) }) };
   const item = all.find((i) => i.id === wanted);
   if (!item) return unknown(wanted);
-  const fits = opts.match === "subset" ? item.requires.every((r) => caps.includes(r)) : item.requires.some((r) => caps.includes(r));
+  const fits = opts.match === "subset" ? item.requires.every((r) => caps.includes(r)) || orderEntry(tool, item.requires, caps) : item.requires.some((r) => caps.includes(r));
   if (!fits) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(item.requires, L) || "—" }), intent: intentFor(tool, item.id) };
   return done(item);
 }

@@ -5,7 +5,9 @@
  * block counts, controls legend, status bar (phase, save state, simulated
  * clock, provider pill), autopilot dock and V4 touch controls; in embodied mode the embodiment badge
  * (where the world model has the learner's body, "walking…" while the world moves it) and the slot for
- * action feedback ("Go there"). Everything
+ * action feedback ("Go there"); while external control is on (PROTOCOL §13.6) the external-agent badge —
+ * its state, the live-session id and attach key the learner hands to their agent (copyable), the calls
+ * running, the bridge's error, one-click disconnect — and the autopilot button is disabled. Everything
  * renders from the app store; nothing here keeps its own history. On
  * entering the world the quest card also carries the case's teaching-case
  * disclaimer for a few seconds (inside the card, so it never covers a control).
@@ -59,6 +61,8 @@ export class Hud {
   private miniTimer: ReturnType<typeof setInterval> | null = null;
   /** `performance.now()` until which the quest card shows the case disclaimer. */
   private disclaimerUntil = 0;
+  /** What the external-agent badge shows now (re-rendered only when it changes: its buttons keep focus). */
+  private externalKey = "";
   private disclaimerTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
@@ -138,6 +142,8 @@ export class Hud {
     e.finished = h("div", { class: "finished-banner", hidden: true });
     e.embodiment = h("button", { type: "button", id: "embodiment-badge", class: "embodiment-badge", hidden: true, onclick: () => this.app.open("settings", { section: "agents" }) });
     e.feedback = h("div", { id: "hud-feedback", class: "hud-feedback", hidden: true });
+    e.external = h("section", { id: "external-badge", class: "external-badge", hidden: true, role: "status", "aria-label": tr("ext.badgeLabel") });
+    this.externalKey = "";
     this.mini = h("canvas", { id: "mini", width: "240", height: "240" });
 
     this.root.append(
@@ -150,7 +156,7 @@ export class Hud {
           { class: "hud-buttons" },
           btn("journal-btn", tr("hud.journal"), "J", () => this.app.open("journal")),
           btn("map-btn", tr("hud.map"), "M", () => this.app.open("map")),
-          h("button", { type: "button", id: "autopilot-btn", onclick: () => this.app.open("autopilot") }, tr("hud.autopilot")),
+          (e.autopilot = h("button", { type: "button", id: "autopilot-btn", onclick: () => this.app.open("autopilot") }, tr("hud.autopilot"))),
           btn("pause-btn", tr("hud.pause"), "Esc", () => this.app.open("pause")),
         ),
       ),
@@ -169,6 +175,7 @@ export class Hud {
       h("button", { type: "button", id: "minimap-btn", class: "minimap", "aria-label": tr("hud.openMap"), onclick: () => this.app.open("map") }, this.mini),
       h("div", { class: "map-label" }, tr("hud.mapLabel")),
       e.embodiment,
+      e.external,
       e.crosshair,
       e.bubble,
       e.target,
@@ -379,6 +386,93 @@ export class Hud {
 
     /* embodiment badge */
     this.renderEmbodiment();
+
+    /* external agent */
+    this.renderExternal();
+  }
+
+  /**
+   * The external-agent badge (PROTOCOL §13.6), while external control is on: "External agent connected" (or
+   * connecting / reconnecting / failed, with the bridge's localised error), the live-session id and the attach
+   * key — what the learner hands to their own agent (`--world-session`, `--attach-key-file`), copyable —, the
+   * calls running and the last one, and Disconnect (cancels running external calls, withdraws their approval
+   * prompts, unregisters). Off: hidden, and the autopilot button is enabled again.
+   */
+  private renderExternal(): void {
+    const e = this.el;
+    const ext = this.app.external;
+    const st = ext.status;
+    if (e.autopilot) {
+      const locked = ext.on;
+      if (e.autopilot.hasAttribute("disabled") !== locked) e.autopilot.toggleAttribute("disabled", locked);
+      e.autopilot.title = locked ? tr("ext.autopilotOff") : "";
+    }
+    const b = e.external;
+    if (!b) return;
+    const last = ext.lastCall;
+    const key = st ? JSON.stringify([st.state, st.liveSessionId, st.attachKey, st.activeCalls, st.error?.message ?? "", last?.tool ?? "", last?.phase ?? "", last?.ok ?? null]) : "";
+    if (key === this.externalKey) return;
+    this.externalKey = key;
+    b.hidden = !st;
+    clear(b);
+    if (!st) return;
+    b.dataset.state = st.state;
+    const busy = st.activeCalls > 0;
+    const copyButton = (id: string, label: string, value: () => string, code: HTMLElement) =>
+      h("button", { type: "button", id, class: "ext-copy", title: label, "aria-label": label, disabled: !value(), onclick: () => void this.copy(value(), code) }, tr("ext.copy"));
+    const session = h("code", { id: "external-session" }, st.liveSessionId ?? tr("ext.pending"));
+    const attachKey = h("code", { id: "external-key" }, st.attachKey);
+    const failed = st.state === "failed";
+    append(b, [
+      h(
+        "div",
+        { class: "ext-head" },
+        h("span", { class: ["dot", busy ? "busy" : ""], "aria-hidden": "true" }),
+        h("b", { id: "external-state" }, tr(`ext.state.${st.state === "closed" ? "failed" : st.state}` as "ext.state.connected")),
+        h("span", { class: "ext-calls", id: "external-calls" }, busy ? tr("ext.calls.busy", { n: st.activeCalls }) : tr("ext.calls.idle")),
+      ),
+      h(
+        "div",
+        { class: "ext-ids" },
+        h("span", { class: "ext-label" }, tr("ext.session")),
+        session,
+        copyButton("external-copy-session", tr("ext.copySession"), () => ext.status?.liveSessionId ?? "", session),
+        h("span", { class: "ext-label" }, tr("ext.key")),
+        attachKey,
+        copyButton("external-copy-key", tr("ext.copyKey"), () => ext.status?.attachKey ?? "", attachKey),
+      ),
+      st.error && (failed || st.state === "reconnecting") ? h("p", { class: "ext-error", id: "external-error" }, st.error.message) : null,
+      h(
+        "div",
+        { class: "ext-foot" },
+        h("small", { class: "ext-last", id: "external-last" }, last ? tr("ext.last", { tool: `${last.tool}${last.phase === "finished" ? (last.ok ? " ✓" : " ✕") : " …"}` }) : ""),
+        h("button", { type: "button", id: "external-disconnect", class: "danger", onclick: () => void this.app.setExternalControl(false) }, failed ? tr("ext.turnOff") : tr("ext.disconnect")),
+      ),
+    ]);
+  }
+
+  /** Copy an id or key for the learner (clipboard; where that is not allowed, the text is selected to copy by hand). */
+  private async copy(text: string, from: HTMLElement): Promise<void> {
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      this.app.toast(tr("ext.copied"), "", "success", "external-copy");
+      return;
+    } catch {
+      /* not a secure context, or refused */
+    }
+    const range = document.createRange();
+    range.selectNodeContents(from);
+    const selection = getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+    let copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } catch {
+      /* unsupported */
+    }
+    this.app.toast(copied ? tr("ext.copied") : tr("ext.copyManual"), "", copied ? "success" : "info", "external-copy");
   }
 
   /**

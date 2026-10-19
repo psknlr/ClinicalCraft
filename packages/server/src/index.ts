@@ -39,4 +39,4 @@ export {
 export { LOCAL_ASSET_EXTENSIONS, localAssetPolicy, MIME_TYPES, mimeType, safeJoin } from "./static.js";
 export { isValidSessionId, MAX_WEB_TRANSCRIPT_BYTES, MAX_WEB_TRANSCRIPTS, parseTranscriptUpload, TranscriptQuotaError, WebTranscriptStore, type WebTranscriptStoreOptions } from "./transcripts.js";
 export { CONTENT_CACHE_CONTROL, etagMatches, MAX_BODY_BYTES, strongEtag } from "./http.js";
-export { parseRegistration, WorldSessionRouter, type WorldSessionRouterOptions } from "./world-sessions.js";
+export { parseRegistration, WorldSessionRouter, type WorldRequestAuth, type WorldSessionRouterOptions, type WorldSessionStats } from "./world-sessions.js";

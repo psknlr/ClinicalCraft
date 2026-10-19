@@ -7,7 +7,10 @@
  * with show/hide, "remember on this device" opt-in with warning, test
  * connection); approval mode, practice scope, patient pipeline, "Embodied
  * agents" (the mode of the next encounter — a running one keeps its own);
- * save export / import / new game.
+ * "External agent (MCP)" — the per-encounter switch “Allow an external agent
+ * to control this session” (PROTOCOL §13.6: in a running encounter, only when
+ * served by `clinicalcraft serve` with the world bridge; off by default,
+ * never saved); save export / import / new game.
  */
 import { localizedName, type ApprovalMode, type PracticeScope, type ProviderTemplate } from "@clinicalcraft/agent";
 import type { App } from "../../app/context.js";
@@ -19,7 +22,7 @@ import type { PanelView } from "../panel.js";
 
 export interface PauseArgs {
   /** Scroll to a section ("llm"). */
-  section?: "llm" | "agents" | "world" | "save";
+  section?: "llm" | "agents" | "external" | "world" | "save";
   /** Show the in-game pause actions (resume, reset position, library, save). */
   menu?: boolean;
 }
@@ -155,6 +158,13 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
 
     /* ---------------- pause actions ---------------- */
     const resume = h("button", { type: "button", id: "resume", class: "primary", onclick: () => app.close() }, game ? tr("pause.resume") : tr("pause.back"));
+    // the autopilot and an external agent both drive the clinician: one at a time
+    const autopilotMenu = h("button", { type: "button", id: "autopilot-menu", onclick: () => app.open("autopilot") }, tr("hud.autopilot"));
+    const lockAutopilot = () => {
+      autopilotMenu.disabled = app.external.on;
+      autopilotMenu.title = app.external.on ? tr("ext.autopilotOff") : "";
+    };
+    lockAutopilot();
     if (menu) {
       sections.push(
         h(
@@ -175,7 +185,7 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
             },
             tr("pause.reset"),
           ),
-          h("button", { type: "button", id: "autopilot-menu", onclick: () => app.open("autopilot") }, tr("hud.autopilot")),
+          autopilotMenu,
           h("button", { type: "button", id: "back-library", onclick: () => void app.backToLibrary() }, tr("pause.library")),
         ),
       );
@@ -567,6 +577,39 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
       ),
     );
 
+    /* ---------------- external agent (PROTOCOL §13.6): per encounter, never saved ---------------- */
+    const externalBox = h("section", { class: "settings-section", id: "section-external" });
+    let externalKey = "";
+    const renderExternal = (): void => {
+      const offered = !!game && app.externalOffered();
+      const st = app.external.status;
+      // in bypass mode the bridge refuses every call (nothing would ask the learner): say so
+      const bypass = !!game && game.session.settings.approvalMode === "bypass";
+      const key = JSON.stringify([offered, app.external.on, st?.liveSessionId ?? null, bypass]);
+      if (key === externalKey) return;
+      externalKey = key;
+      clear(externalBox);
+      externalBox.hidden = !offered;
+      if (!offered) return;
+      const toggle = h("input", {
+        type: "checkbox",
+        id: "external-toggle",
+        role: "switch",
+        checked: app.external.on,
+        onchange: (e: Event) => void app.setExternalControl((e.target as HTMLInputElement).checked).then(renderExternal),
+      });
+      append(externalBox, [
+        h("h3", null, tr("ext.section")),
+        h("label", { class: "setting external-setting", for: "external-toggle" }, h("div", null, h("b", null, tr("ext.toggle")), h("small", null, tr("ext.toggleHint"))), toggle),
+        app.external.on
+          ? h("p", { class: "small muted external-howto", id: "external-howto" }, tr("ext.howTo"), h("code", null, tr("ext.command", { origin: location.origin, id: st?.liveSessionId ?? "ls_…" })))
+          : null,
+        bypass ? h("p", { class: "notice bad-text", id: "external-bypass" }, tr("ext.bypassNote")) : null,
+      ]);
+    };
+    renderExternal();
+    sections.push(externalBox);
+
     /* ---------------- save ---------------- */
     if (menu) {
       const file = h("input", {
@@ -609,6 +652,11 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
       title: menu ? tr("pause.title") : tr("settings.title"),
       body,
       focus: menu ? resume : null,
+      // external control can change under the open menu (the bridge connects, closes, the session ends)
+      update() {
+        renderExternal();
+        lockAutopilot();
+      },
     };
   };
 }

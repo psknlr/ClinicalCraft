@@ -52,8 +52,22 @@ export interface GridAStarOptions {
   dynamics?: WorldDynamics;
   /** Language of failure messages (default zh-CN). */
   locale?: string;
-  /** Default A* expansion budget per search (default 200 000). */
+  /** A* expansion budget of one `plan` call, shared by every target its goal resolves to (default 200 000). */
   maxExpanded?: number;
+  /** Injected wall clock (ms) for the wall-time budget of one `plan` call; without it only the expansion budget bounds it. */
+  clock?: () => number;
+  /** Wall-time budget of one `plan` call (ms, default 1 000), checked between targets. */
+  wallBudgetMs?: number;
+}
+
+/** Most distinct targets one goal may resolve to (the cap of `goalProblem`; a caller that skips it is cut here). */
+export const MAX_TARGETS = 16;
+/** Largest goal range honoured by the planner (m; larger ranges are clamped). */
+export const MAX_RANGE = 30;
+
+/** The expansion budget left in one `plan` call (shared by every search it runs). */
+interface Budget {
+  left: number;
 }
 
 /** A target to reach, resolved from a goal (one level). */
@@ -126,6 +140,8 @@ export class GridAStarBackend implements NavigationBackend {
   private readonly connectors: ConnectorInfo[];
   private readonly locale: string;
   private readonly budget: number;
+  private readonly clock: (() => number) | null;
+  private readonly wallBudgetMs: number;
   private masks = new Map<string, Uint8Array>();
   private comps = new Map<string, Int32Array>();
   private floods = new Map<string, Float64Array>();
@@ -137,6 +153,8 @@ export class GridAStarBackend implements NavigationBackend {
     this.dynamics = opts.dynamics ?? {};
     this.locale = opts.locale ?? "zh-CN";
     this.budget = opts.maxExpanded ?? 200000;
+    this.clock = opts.clock ?? null;
+    this.wallBudgetMs = opts.wallBudgetMs ?? 1000;
     this.connectors = connectorInfos(opts.facility);
     const rotOf = (id: string) => opts.registry.entity(id)?.rot ?? 0;
     this.grids = new NavGrids(opts.facility, opts.collision, { dynamics: this.dynamics, rotOf });
@@ -152,20 +170,43 @@ export class GridAStarBackend implements NavigationBackend {
     const from = request.from;
     const start = this.grids.grid(from.level);
     if (!start || !inFrame(start, from.x, from.z)) return this.fail(request.goal, "TARGET_NOT_REACHABLE", { target: this.goalLabel(request.goal) }, { reason: !start ? "unknown-level" : "start-out-of-bounds", level: from.level });
-    const resolved = this.resolve(request.goal, from);
-    if ("code" in resolved) return resolved;
+    // one cost bound for the whole goal (EMBODIED §7): identical leaves and targets once, at most MAX_TARGETS, one shared budget
+    const leaves = goalLeaves(request.goal);
+    if (!leaves.length) return this.fail(request.goal, "TARGET_NOT_FOUND", { target: "—" }, { reason: "no-goals" });
+    const resolved: Target[] = [];
+    let failure: Failure | null = null;
+    for (const leaf of leaves) {
+      const r = this.resolve(leaf, from);
+      if ("code" in r) failure ??= r;
+      else resolved.push(...r);
+    }
+    if (!resolved.length) return failure!;
+    const seen = new Set<string>();
+    const targets = resolved.filter((t) => {
+      const key = targetKey(t);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, MAX_TARGETS);
+    const budget: Budget = { left: request.maxExpanded ?? this.budget };
+    const started = this.clock?.() ?? 0;
+    const late = () => this.clock !== null && this.clock() - started > this.wallBudgetMs;
     const strict: MaskOptions = { role: request.role, allowZones: this.grids.zonesAt(from.level, from.x, from.z) };
     let best: { route: Extract<Route, { ok: true }> } | null = null;
-    let budget = false;
-    for (const target of resolved) {
-      const r = this.route(request, target, strict);
+    let exhausted = false;
+    for (const target of targets) {
+      if (budget.left <= 0 || late()) {
+        exhausted = true;
+        break;
+      }
+      const r = this.route(request, target, strict, budget);
       if (r.ok) {
         if (!best || r.seconds < best.route.seconds) best = { route: r };
-      } else if (r.budget) budget = true;
+      } else if (r.budget) exhausted = true;
     }
     if (best) return this.toPlan(request, best.route);
-    if (budget) return this.fail(request.goal, "NAVIGATION_TIMEOUT", { target: resolved[0].label }, { maxExpanded: request.maxExpanded ?? this.budget });
-    return this.diagnose(request, resolved, strict);
+    if (exhausted || budget.left <= 0 || late()) return this.fail(request.goal, "NAVIGATION_TIMEOUT", { target: targets[0].label }, { maxExpanded: request.maxExpanded ?? this.budget });
+    return this.diagnose(request, targets, strict, budget);
   }
 
   /* ---------------- goal resolution ---------------- */
@@ -189,7 +230,7 @@ export class GridAStarBackend implements NavigationBackend {
         const label = `(${goal.x.toFixed(1)}, ${goal.z.toFixed(1)})`;
         if (!g) return this.fail(goal, "TARGET_NOT_FOUND", { target: level }, { reason: "unknown-level", level });
         if (!inFrame(g, goal.x, goal.z)) return this.fail(goal, "TARGET_NOT_REACHABLE", { target: label }, { reason: "out-of-bounds" });
-        const range = Math.max(0, goal.range ?? 0);
+        const range = Math.min(MAX_RANGE, Math.max(0, goal.range ?? 0));
         const p = { x: goal.x, z: goal.z };
         if (range > 0) {
           const cells = cellsNear(g, pointArea(p), range, 0);
@@ -216,12 +257,12 @@ export class GridAStarBackend implements NavigationBackend {
         if (target.kind === "room") return [this.roomTarget(goal, target.id)];
         if (goal.kind === "entity" || goal.kind === "follow") {
           // a free cell centre is ≥ NAV_INFLATE from a collider: smaller ranges could have no cell at all
-          const range = Math.max(MIN_RANGE, goal.range ?? (goal.kind === "follow" ? DEFAULT_FOLLOW_RANGE : DEFAULT_ENTITY_RANGE));
+          const range = Math.min(MAX_RANGE, Math.max(MIN_RANGE, goal.range ?? (goal.kind === "follow" ? DEFAULT_FOLLOW_RANGE : DEFAULT_ENTITY_RANGE)));
           const cells = cellsNear(g, area, range, target.soft ? NAV_RADIUS : 0);
           return [{ goal, level: target.level, label: target.name, entity: target.id, cells, area, slack: range, face: target.position }];
         }
         if (goal.kind === "look") {
-          const range = Math.max(MIN_RANGE, goal.range ?? LOOK_RANGE);
+          const range = Math.min(MAX_RANGE, Math.max(MIN_RANGE, goal.range ?? LOOK_RANGE));
           // lazy: line of sight is tested only on cells the search pops (memoised)
           const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint, id: target.id };
           const memo = new Map<number, boolean>();
@@ -354,9 +395,8 @@ export class GridAStarBackend implements NavigationBackend {
   }
 
   /** Cheapest route from the request's start to a target under a mask (portal graph over connectors). */
-  private route(request: NavRequest, target: Target, opts: MaskOptions): Route {
+  private route(request: NavRequest, target: Target, opts: MaskOptions, budget: Budget): Route {
     const from = request.from;
-    const budget = request.maxExpanded ?? this.budget;
     const startGrid = this.grids.grid(from.level)!;
     const startMask = this.mask(from.level, opts)!;
     const startCell = nearestFreeCell(startGrid, startMask, cellIndex(startGrid, from.x, from.z), 4);
@@ -372,7 +412,9 @@ export class GridAStarBackend implements NavigationBackend {
         const dx = Math.max(minX - x, 0, x - maxX), dz = Math.max(minZ - z, 0, z - maxZ);
         return Math.max(0, Math.sqrt(dx * dx + dz * dz) - target.slack) / g.cell;
       };
-      return astar(g, m, cell, isGoal, h, budget);
+      const r = astar(g, m, cell, isGoal, h, Math.max(0, budget.left));
+      budget.left -= r.expanded;
+      return r;
     };
 
     // single level, no connectors: direct A*
@@ -488,7 +530,7 @@ export class GridAStarBackend implements NavigationBackend {
     chain: { level: string; cell: number; point: Vec2; connector: ConnectorInfo | null; stop: number }[],
     finalCells: number[],
     opts: MaskOptions,
-    budget: number,
+    budget: Budget,
   ): Leg[] | null {
     const legs: Leg[] = [];
     let cur = chain[0];
@@ -511,7 +553,7 @@ export class GridAStarBackend implements NavigationBackend {
   }
 
   /** Grid cells walking from node a to node b on one level (inclusive). */
-  private walk(a: { level: string; cell: number }, b: { level: string; cell: number }, opts: MaskOptions, budget: number): number[] | null {
+  private walk(a: { level: string; cell: number }, b: { level: string; cell: number }, opts: MaskOptions, budget: Budget): number[] | null {
     const g = this.grids.grid(a.level)!;
     const m = this.mask(a.level, opts)!;
     const goal = cellPoint(g, b.cell);
@@ -519,7 +561,8 @@ export class GridAStarBackend implements NavigationBackend {
       const c = cellPoint(g, i);
       const dx = Math.abs(c.x - goal.x) / g.cell, dz = Math.abs(c.z - goal.z) / g.cell;
       return Math.max(dx, dz) + (Math.SQRT2 - 1) * Math.min(dx, dz);
-    }, budget);
+    }, Math.max(0, budget.left));
+    budget.left -= r.expanded;
     return r.found ? r.cells : null;
   }
 
@@ -574,11 +617,12 @@ export class GridAStarBackend implements NavigationBackend {
   }
 
   /** Why no route: relax zones, then locks/obstacles, then both. */
-  private diagnose(request: NavRequest, targets: Target[], strict: MaskOptions): NavPlan {
+  private diagnose(request: NavRequest, targets: Target[], strict: MaskOptions, budget: Budget): NavPlan {
     const label = targets[0].label;
     const relaxed = (opts: MaskOptions, accessibleOnly = request.accessibleOnly) => {
       for (const target of targets) {
-        const r = this.route({ ...request, accessibleOnly }, target, opts);
+        if (budget.left <= 0) return null;
+        const r = this.route({ ...request, accessibleOnly }, target, opts, budget);
         if (r.ok) return r;
       }
       return null;
@@ -646,6 +690,39 @@ export class GridAStarBackend implements NavigationBackend {
   private goalLabel(goal: NavGoal): string {
     return "id" in goal ? goal.id : goal.kind === "point" ? `(${goal.x}, ${goal.z})` : goal.kind;
   }
+}
+
+/** Deepest `any` nesting the planner follows (deeper sub-goals are ignored; `goalProblem` refuses them first). */
+const MAX_GOAL_DEPTH = 8;
+
+/**
+ * The leaves of a goal (nested `any` flattened, in order), identical leaves
+ * once, at most MAX_TARGETS: whatever the shape, resolution stays bounded.
+ */
+function goalLeaves(goal: NavGoal): NavGoal[] {
+  const out: NavGoal[] = [];
+  const seen = new Set<string>();
+  const visit = (g: NavGoal, depth: number): void => {
+    if (g.kind === "any") {
+      if (depth >= MAX_GOAL_DEPTH) return;
+      for (const sub of g.goals) {
+        if (out.length >= MAX_TARGETS) return;
+        visit(sub, depth + 1);
+      }
+      return;
+    }
+    const key = JSON.stringify(g);
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(g);
+  };
+  visit(goal, 0);
+  return out;
+}
+
+/** Identity of a resolved target (the same leaf twice resolves to equal targets). */
+function targetKey(t: Target): string {
+  return `${t.level}|${t.entity ?? ""}|${JSON.stringify(t.goal)}`;
 }
 
 function maskKey(level: string, opts: MaskOptions): string {

@@ -29,7 +29,7 @@ import {
 } from "./security.js";
 import { serveLocalAsset, serveStatic } from "./static.js";
 import { isValidSessionId, parseTranscriptUpload, TranscriptQuotaError, WebTranscriptStore, type WebTranscriptStoreOptions } from "./transcripts.js";
-import { WorldSessionRouter, type WorldSessionRouterOptions } from "./world-sessions.js";
+import { WorldSessionRouter, type WorldRequestAuth, type WorldSessionRouterOptions } from "./world-sessions.js";
 
 export interface ServerOptions {
   /** Port to listen on (0 = any free port). Default `settings.server.port`. */
@@ -77,6 +77,8 @@ export interface ServerOptions {
 export interface RequestHandler extends RequestListener {
   /** Abort open LLM streams and flush transcript writes. */
   close(): Promise<void>;
+  /** The world bridge's live sessions (monitoring: `stats()`; embedding). */
+  readonly worldSessions: WorldSessionRouter;
 }
 
 export interface RunningServer {
@@ -163,10 +165,13 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
 
     const isApi = path.startsWith(API_PREFIX) || path === "/api";
     const isAsset = path.startsWith(ASSET_PREFIX);
+    // The world bridge is same-origin only: no dev-origin exception (a local dev page must not ride the learner's cookie).
+    const isWorld = path === "/api/world" || path.startsWith("/api/world/");
     let cors: Record<string, string> = {};
+    let tokenVia: WorldRequestAuth["via"] = null;
     if (isApi) {
       const origin = classifyOrigin(req);
-      if (origin.kind === "forbidden") return sendError(res, 403, "forbidden_origin", sm(L, "error.forbiddenOrigin", { origin: origin.origin }));
+      if (origin.kind === "forbidden" || (origin.kind === "allowed" && isWorld)) return sendError(res, 403, "forbidden_origin", sm(L, "error.forbiddenOrigin", { origin: origin.origin }));
       if (origin.kind === "allowed") cors = corsHeaders(origin.origin, method === "OPTIONS");
       for (const [k, v] of Object.entries(cors)) res.setHeader(k, v);
       if (method === "OPTIONS") {
@@ -177,6 +182,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
 
     if (token) {
       const check = checkToken(req, url, token);
+      tokenVia = check.via;
       if (check.ok && check.viaQuery) res.setHeader("set-cookie", tokenCookie(token));
       // A page visit (the app shell, not an API call or asset) with ?token=: keep the cookie, drop the
       // token from the address bar and history.
@@ -190,7 +196,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       }
     }
 
-    if (isApi) return routeApi(req, res, method, url, L);
+    if (isApi) return routeApi(req, res, method, url, L, { token: token !== null, via: tokenVia });
 
     if (method !== "GET" && method !== "HEAD") {
       return sendError(res, 405, "method_not_allowed", sm(L, "error.methodNotAllowed", { method }), { allow: "GET, HEAD" });
@@ -208,7 +214,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     return sendError(res, 404, "no_web_build", sm(L, "error.noWebBuild"));
   };
 
-  const routeApi = async (req: IncomingMessage, res: ServerResponse, method: string, url: URL, L: string): Promise<void> => {
+  const routeApi = async (req: IncomingMessage, res: ServerResponse, method: string, url: URL, L: string, auth: WorldRequestAuth): Promise<void> => {
     const segments = url.pathname.split("/").filter(Boolean).map((s) => {
       try {
         return decodeURIComponent(s);
@@ -297,7 +303,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     }
     if (area === "world") {
       if (kind !== "sessions") return sendError(res, 404, "not_found", sm(L, "error.notFound"));
-      return world.handle(req, res, method, [id, ...rest].filter((part): part is string => part !== undefined), L);
+      return world.handle(req, res, method, [id, ...rest].filter((part): part is string => part !== undefined), L, auth);
     }
     return sendError(res, 404, "not_found", sm(L, "error.notFound"));
   };
@@ -359,6 +365,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     await Promise.allSettled([...streams]);
     await transcripts.flush();
   };
+  (listener as { worldSessions: WorldSessionRouter }).worldSessions = world;
   return listener;
 }
 

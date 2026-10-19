@@ -787,17 +787,37 @@ dedupe, expiry). World actions are rejected when no matching session exists.
   (background tabs throttle timers, not network events), reconnects,
   re-registers when the server forgot it (cancelling the calls of the lost
   registration), refuses calls while the session is in `bypass` mode, and
-  unregisters on `dispose()` or session shutdown. The web wiring — an
-  explicit per-encounter opt-in (off by default), an indicator, one-click
-  disconnect — is specified in PROTOCOL §13.6 and not yet built.
+  unregisters on `dispose()` or session shutdown.
+* **Web wiring** (A8b, PROTOCOL §13.6): in a running encounter served by
+  `clinicalcraft serve`, the pause menu's switch “Allow an external agent to
+  control this session” (off by default, per encounter, never saved; absent
+  on the Vite dev server and in the standalone build); a HUD badge with the
+  bridge's state, the live-session id and the attach key (copyable), the
+  calls running and one-click Disconnect; approval requests of external
+  calls labelled as the external agent's; disconnect also on turning it off,
+  leaving or finishing the encounter, another case and `pagehide`; the
+  autopilot unavailable meanwhile; in a hidden tab bodies are put at their
+  targets at once (a walk never waits for the tab).
 * **MCP attach mode** (`runAttachedMcpServer`, `clinicalcraft mcp --attach
-  <url> [--world-session <id>] [--token-file f] [--timeout <sec>]`):
-  `list_live_sessions` plus every clinical and world tool (no `start_case`,
-  no `confirm` — the learner approves) with an optional `session_id`;
-  auto-selects the only open session; "no live browser session — open the
-  web world and enable external control" when there is none; per-call
-  correlation ids and timeouts; `notifications/cancelled` → a cancel in the
-  browser.
+  <url> --world-session <id> --attach-key-file <f> [--token-file f]
+  [--timeout <sec>]`): `list_live_sessions` plus every clinical and world
+  tool (no `start_case`, no `confirm` — the learner approves) with an
+  optional `session_id`; paired with the session the learner named (its id
+  and attach key) — it never picks one itself; per-call correlation ids and
+  timeouts; `notifications/cancelled` → a cancel in the browser; what the
+  live session returns is marked as data, not instructions.
+* **Hardening** (review R1 S5, S9, S10, S11; PROTOCOL §13.4–§13.5): an
+  attach key per opt-in pairs the learner's agent with the session — the
+  server token alone (a classmate's) can neither list nor drive another
+  learner's encounter, and a decoy session is never selected; registrations
+  capped per client; the world routes same-origin only and the attach routes
+  `Authorization`-only; command streams honour backpressure (a window of
+  unacknowledged bytes, buffer and stall caps, destroyed replaced streams,
+  rate-limited re-opens, 64 KiB of arguments per call); a call whose caller
+  stopped waiting never starts (deadlines in the server's clock, cancels
+  re-sent on every stream until answered, the browser cancelling at the
+  deadline by itself); the bypass guard is enforced when a call arrives and
+  again by the session when it runs.
 
 Refinements made while implementing (contract additions only): the browser
 side is a client library in `@clinicalcraft/agent` (any front-end, Node
@@ -1111,6 +1131,6 @@ The status table is filled in as work lands (see the end of this file).
 | Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader | — | — |
 | Session traces, `world` transcript items, resume | yes (A5) | trace scopes, JSONL, the STEMI chain; resume from memory and from JSONL (`createNodeSession`), embodiment kept / an explicit other one refused | `exec --trace` | — |
 | MCP embodied (`start_case {embodied}`, 16 world tools with annotations, `not_embodied`, two-step confirmation of approvals inside world operations) | yes (A5) | in-process JSON-RPC tests; real stdio smoke (`clinicalcraft mcp`) | — | — |
-| World bridge: MCP ⇄ live browser world (`WorldSessionRouter` routes of `serve`; ops `external_tool_call` / `external_tool_cancel`; browser client `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`) | yes (A8) — the web UI wiring (opt-in toggle, indicator, disconnect; PROTOCOL §13.6) not yet | router over HTTP (server token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation explicit and by a departed caller, expiry and heartbeats, DELETE, re-delivery on reconnect, body and call limits, CORS, server shutdown); session ops (clinician tool path, spatial gate, approvals to the learner approved / denied, deny rules, cancel queued / running, interrupt, malformed / duplicate); contract validators and isomorphism; the browser client against a real server in Node (calls, approvals, cancellation, dropped stream without a double run, expiry → re-registration, dispose and session shutdown, the bypass guard, auth failures); MCP attach over stdio with a stubbed server | end to end with real processes: `clinicalcraft serve` + a headless embodied STEMI session through the client + `clinicalcraft mcp --attach` over stdio — `navigate_to`, `interact_object` (ECG cart: prepare, connect, record → the order), an intervention the learner approves, one the learner denies, one cancelled while its approval was pending, verified from engine and world state; the Playwright e2e with the web UI comes with the web wiring | — |
+| World bridge: MCP ⇄ live browser world (`WorldSessionRouter` routes of `serve`; ops `external_tool_call` / `external_tool_cancel`; browser client `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`) | yes (A8); browser wiring: implemented (A8b — opt-in switch, badge with id and attach key, one-click disconnect, labelled approvals, hidden-tab moves; PROTOCOL §13.6); hardening (review R1 S5/S9/S10/S11): attach keys, per-client cap, same-origin + Authorization-only attach routes, backpressure, deadlines and re-sent cancels | router over HTTP (server token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation explicit and by a departed caller, expiry and heartbeats, DELETE, re-delivery on reconnect, body and call limits, CORS, server shutdown); session ops (clinician tool path, spatial gate, approvals to the learner approved / denied, deny rules, cancel queued / running, interrupt, malformed / duplicate); contract validators and isomorphism; the browser client against a real server in Node (calls, approvals, cancellation, dropped stream without a double run, expiry → re-registration with the same id and key, dispose and session shutdown, the bypass guard, auth failures) and against a fake server (attach key, server-clock deadlines, the deadline cancel, `allowBypass` pass-through, cancel before arrival); MCP attach over stdio with a stubbed server (pairing, no auto-selection, untrusted marking); the review R1 reproductions kept as regression tests (S5 tenancy and decoy, S9 a non-reading stream, S10 dev-origin CORS and cookie-only attach, S11 a timed-out call never running later); the web `ExternalControl` and `BrowserMover` in hidden tabs (unit) | end to end with real processes: `clinicalcraft serve` + a headless embodied STEMI session through the client + `clinicalcraft mcp --attach` over stdio — `navigate_to`, `interact_object` (ECG cart: prepare, connect, record → the order), an intervention the learner approves, one the learner denies, one cancelled while its approval was pending, verified from engine and world state, with a decoy session registered by another token holder never reached; browser wiring: implemented/tested — Playwright `external-agent.spec.ts` (en + zh-CN): a served build, the switch, `mcp --attach` paired by the id and key read from the badge walking to the patient, recording the ECG through the cart (the order) and an approval clicked in the labelled dialog, a hidden tab's walk completing without frames, a denial, disconnect → `session_closed`, a resumed encounter starting off | — |
 | Embodied benchmark (`@clinicalcraft/bench`: scenario schema `clinicalcraft/bench-scenario@1` + JSON Schema, suite `embodied-v1` with 36 scenarios over 8 categories, isolated deterministic runs, recorder, spatial / authorisation / safety audits, predicates on authoritative state, metrics with Wilson 95 % intervals, JSON + Markdown reports; agents `reference`, `scripted-llm`, `llm`; `clinicalcraft bench list\|run`) | yes (A7) | every scenario file validates (schema + references); every predicate kind true and false on a real run; Wilson against Newcombe 1998; 3 scenarios × each agent kind (the `llm` agent wired from settings with a fake provider); a broken agent that only claims success scores 0 over the suite; limits, budget, live-agent refusals (no `--live`, no cap, no key, CI, offline provider, `--max-usd` without a price); CLI | `reference` and `scripted-llm`: 108 / 108 runs each (36 scenarios × seeds 1–3), 0 accepted spatial or authorisation violations, every trace identical across seeds; CI gate (`build-test`, built binary) | — (no live-model run recorded) |
 | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | samples `docs/bench/demo.en.md`, `docs/bench/demo.zh-CN.md` (50 steps, 0 violations) | — |

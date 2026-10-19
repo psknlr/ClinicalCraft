@@ -311,41 +311,63 @@ again with `"confirm": true` once its user agreed. `--approval bypass` drops
 that step (unsafe; for unattended benchmarks only). `--provider`/`--model`
 choose the models behind the patient and staff (offline by default).
 
-### Act in a learner's live 3D world (`mcp --attach`)
+### Connect Claude Code / Codex / Grok CLI to a live world (`mcp --attach`)
 
-`clinicalcraft mcp --attach <server>` gives the agent the same clinical and
-world tools, but in an encounter a learner is playing in the browser — the
-learner watches the avatar walk and act, and answers every approval:
+`clinicalcraft mcp --attach <server>` gives your agent the same clinical and
+world tools, but in an encounter **you** are playing in the browser — you
+watch the avatar walk and act, and you answer every approval. It is paired
+with one encounter by the live-session id and the attach key that encounter
+shows you; it never picks a session by itself.
 
-```bash
-npm run build && npm run cc -- serve      # http://127.0.0.1:5178 (loopback; see "Web world and server" for tokens)
+1. Build and serve the world (once):
 
-# Claude Code
-claude mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --cwd "$PWD"
-# Codex CLI
-codex mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --cwd "$PWD"
-# Grok CLI
-grok mcp add clinicalcraft-live --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --cwd "$PWD"
-```
+   ```bash
+   npm run build
+   npm run cc -- serve        # http://127.0.0.1:5178 (loopback; see "Web world and server" for tokens)
+   ```
 
-Then, in the web world, start an encounter and switch on **Allow an external
-agent to control this session** (off by default, per encounter; a badge shows
-while an agent is connected and disconnects it with one click). *The toggle
-arrives with the web integration ([PROTOCOL §13.6](docs/PROTOCOL.md)); the
-runtime, the server routes and `mcp --attach` are in place — any front-end
-can expose a session with `connectWorldBridge` from `@clinicalcraft/agent`.*
+2. Open http://127.0.0.1:5178, start an encounter, press `Esc` and switch on
+   **Allow an external agent to control this session** (off by default, for
+   this encounter only, never saved). The **External agent** badge in the
+   HUD shows the live-session id (`ls_…`) and the attach key (`ak_…`), each
+   with a Copy button, the calls running and **Disconnect**.
 
-The agent calls `list_live_sessions`, then `navigate_to`, `interact_object`,
-`examine`, `intervene`… as the clinician, through the session's own approval
-gate: an action that needs approval appears in the learner's approval dialog
-— the agent cannot approve its own requests (attach mode has no `confirm`)
-and a denial comes back as `status: "denied"`. With one live session open it
-is chosen automatically; otherwise pass `session_id` (or `--world-session`).
-Calls time out after 120 s (`--timeout`) and are cancelled in the browser
-when the client cancels them. A server with an access token needs it here
-too: `--token-file <path>` or `CLINICALCRAFT_SERVER_TOKEN` in the MCP
-server's environment — never in the URL. Routes, message shapes and the
-security model: [docs/PROTOCOL.md §13](docs/PROTOCOL.md).
+3. Save the key where only you can read it, then register the MCP server for
+   this session — run from the repository root (replace `ls_…` with the id
+   from the badge):
+
+   ```bash
+   mkdir -p ~/.clinicalcraft && (umask 077; printf '%s\n' 'ak_…paste the key…' > ~/.clinicalcraft/attach-key)
+
+   # Claude Code
+   claude mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --world-session ls_… --attach-key-file ~/.clinicalcraft/attach-key --cwd "$PWD"
+   # Codex CLI
+   codex mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --world-session ls_… --attach-key-file ~/.clinicalcraft/attach-key --cwd "$PWD"
+   # Grok CLI
+   grok mcp add clinicalcraft-live --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --world-session ls_… --attach-key-file ~/.clinicalcraft/attach-key --cwd "$PWD"
+   ```
+
+   Instead of the flags, the MCP server's environment may carry
+   `CLINICALCRAFT_WORLD_SESSION` and `CLINICALCRAFT_ATTACH_KEY` (e.g.
+   `claude mcp add clinicalcraft-live -e CLINICALCRAFT_ATTACH_KEY=ak_… -e CLINICALCRAFT_WORLD_SESSION=ls_… -- node …/bin.js mcp --attach http://127.0.0.1:5178`).
+   Never put the key on the command line of a shared machine (the process
+   list). A new opt-in makes a new id and key: `claude mcp remove
+   clinicalcraft-live` and add it again.
+
+The agent calls `navigate_to`, `interact_object`, `examine`, `intervene`… as
+the clinician, through the session's own approval gate: an action that needs
+approval appears in your approval dialog, labelled **External agent** — the
+agent cannot approve its own requests (attach mode has no `confirm`) and a
+denial comes back as `status: "denied"`. Everything the live session returns
+reaches the agent marked as simulation data, not instructions. Calls time out
+after 120 s (`--timeout`) and are cancelled in the browser when the client
+cancels them. The autopilot is unavailable while external control is on.
+Disconnecting (the badge), turning the switch off, leaving or finishing the
+encounter, another case or closing the tab ends it — the agent's next call
+reports `session_closed`. A server with an access token needs it here too:
+`--token-file <path>` or `CLINICALCRAFT_SERVER_TOKEN` in the MCP server's
+environment — never in the URL. Routes, message shapes and the security
+model: [docs/PROTOCOL.md §13](docs/PROTOCOL.md).
 
 ## Configuration
 

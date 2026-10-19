@@ -12,6 +12,7 @@ import type { ContentIndex } from "./content.js";
 import type { RuntimeChoice, ServerInfo } from "./llm.js";
 import type { Inventory, SaveStore } from "./persistence.js";
 import type { EmbodiedLink } from "./embodied-link.js";
+import type { ExternalControl } from "./external.js";
 import type { AppSession } from "./session.js";
 import type { Prefs } from "./settings.js";
 import type { Stations } from "./stations.js";
@@ -69,6 +70,15 @@ export interface App {
   readonly slot: number;
   game: Game | null;
   server: ServerInfo | null;
+  /**
+   * External control of the running encounter (an MCP client through `clinicalcraft mcp --attach`,
+   * docs/PROTOCOL.md §13.6): off by default, never persisted, offered only when served with the world bridge.
+   */
+  readonly external: ExternalControl;
+  /** Whether this page offers external control (served by `clinicalcraft serve` with the world bridge). */
+  externalOffered(): boolean;
+  /** Turn external control of the running encounter on or off (off: running external calls are cancelled). */
+  setExternalControl(on: boolean): Promise<void>;
   /** Provider choice in effect for new/running sessions. */
   choice(): RuntimeChoice;
   /** Show a toast; toasts with the same `key` supersede each other. */

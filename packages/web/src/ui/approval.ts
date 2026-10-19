@@ -5,7 +5,10 @@
  * focus defaults to "deny" for high-risk requests (moved synchronously, so
  * keys pressed right after the request never reach the panel underneath),
  * Esc denies (the app routes Esc here whatever has focus) and keeps a typed
- * reason, Enter in the reason field denies with it.
+ * reason, Enter in the reason field denies with it. A request raised by an
+ * external agent's call (`app.external.owns(submissionId)`, PROTOCOL §13.6)
+ * is labelled as coming from the external agent — the learner decides it like
+ * any other; nothing on the bridge can answer it.
  */
 import type { ApprovalDecision } from "@clinicalcraft/agent";
 import type { App } from "../app/context.js";
@@ -116,6 +119,8 @@ export class ApprovalDialog {
   private render(req: ApprovalRequest, more: number): void {
     clear(this.box);
     const high = req.risk === "high";
+    // An external agent's call runs as the clinician: its requests carry `agent: "clinician"`, the submission tells them apart.
+    const external = this.app.external.owns(req.submissionId);
     const agent = req.agent === "learner" ? tr("role.learner") : trMaybe(`role.${req.agent}`, String(req.agent));
     const reason = h("input", { type: "text", id: "approval-reason", placeholder: tr("approval.denyReason"), "aria-label": tr("approval.denyReason"), maxlength: "300", autocomplete: "off" });
     this.reasonEl = reason;
@@ -124,18 +129,25 @@ export class ApprovalDialog {
     const deny = h("button", { type: "button", class: high ? "primary danger-solid" : "", id: "approval-deny", onclick: () => this.answer("denied", reason.value) }, tr("approval.deny"));
     const abort = h("button", { type: "button", class: "ghost", id: "approval-abort", onclick: () => this.answer("abort") }, tr("approval.abort"));
     this.queueEl = h("small", { class: "muted" });
-    this.box.className = `window approval-window${high ? " high" : ""}`;
+    this.box.className = `window approval-window${high ? " high" : ""}${external ? " external" : ""}`;
+    if (external) this.box.dataset.source = "external";
+    else delete this.box.dataset.source;
     this.box.append(
       h(
         "header",
         { class: "window-head" },
-        h("div", null, h("div", { class: "eyebrow" }, tr("approval.kicker")), h("h2", { id: "approval-title" }, tr("approval.title"))),
+        h(
+          "div",
+          null,
+          h("div", { class: "eyebrow" }, tr("approval.kicker")),
+          h("h2", { id: "approval-title" }, tr("approval.title"), external ? h("span", { class: "approval-source", id: "approval-source" }, tr("approval.externalTag")) : null),
+        ),
         riskBadge(req.risk),
       ),
       h(
         "div",
         { class: "window-body" },
-        h("p", { class: "approval-from" }, req.agent === "learner" ? tr("approval.fromLearner") : tr("approval.from", { agent })),
+        h("p", { class: "approval-from" }, req.agent === "learner" ? tr("approval.fromLearner") : external ? tr("approval.fromExternal") : tr("approval.from", { agent })),
         h("p", { class: "approval-summary", id: "approval-summary" }, req.summary),
         high ? h("p", { class: "notice danger" }, tr("approval.highRisk")) : null,
         h(

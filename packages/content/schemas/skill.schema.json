@@ -197,42 +197,13 @@
           "const": "clinicalcraft/skill@1"
         },
         "id": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 80,
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          "$ref": "#/definitions/Id"
         },
         "name": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              },
-              "propertyNames": {
-                "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
-              }
-            }
-          ]
+          "$ref": "#/definitions/LocalizedText"
         },
         "description": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
-              },
-              "propertyNames": {
-                "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
-              }
-            }
-          ]
+          "$ref": "#/definitions/LocalizedText"
         },
         "params": {
           "type": "object",
@@ -251,20 +222,7 @@
                 ]
               },
               "description": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "propertyNames": {
-                      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
-                    }
-                  }
-                ]
+                "$ref": "#/definitions/LocalizedText"
               },
               "required": {
                 "type": "boolean"
@@ -314,10 +272,7 @@
             "type": "object",
             "properties": {
               "id": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 80,
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                "$ref": "#/definitions/Id"
               },
               "tool": {
                 "type": "string",
@@ -368,20 +323,7 @@
                 ]
               },
               "description": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    },
-                    "propertyNames": {
-                      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
-                    }
-                  }
-                ]
+                "$ref": "#/definitions/LocalizedText"
               }
             },
             "required": [

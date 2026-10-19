@@ -12,10 +12,11 @@
  * `perception.ts`). `entity()` / `entities()` are the static registry
  * (positions at build time): use `observe` / `inspect` for where things are now.
  */
-import { ActionBus, instantMover } from "./actions.js";
+import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type ClinicalIntent, type NavGoal, type NavPlan, type Pose, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
 import { GridAStarBackend } from "./nav/backend.js";
@@ -39,18 +40,18 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
   const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
   // the grids and the occlusion read the store (doors, obstacles, moved carts, carried items) as they are built
   const visibility = new VisibilityModel(facility, collision, { dynamics: store, rotOf });
-  const backend = options.backend ?? new GridAStarBackend({ facility, collision, registry, visibility, dynamics: store, locale });
+  const backend = options.backend ?? new GridAStarBackend({ facility, collision, registry, visibility, dynamics: store, locale, clock: options.now });
   const grids = backend instanceof GridAStarBackend ? backend.grids : null;
-  const locator = new WorldLocator(facility, registry, store, visibility, locale, slot?.id ?? null);
+  const locator = new WorldLocator(facility, registry, store, visibility, locale, slot?.id ?? null, grids);
   const perceptionOptions = { ...DEFAULT_PERCEPTION, ...(options.perception ?? {}) };
   let bus: ActionBus | null = null;
   const rules = new DeviceRules({ store, locator, clinical, collision, locale, busy: (id) => bus?.busy.get(id) ?? null });
   const reach = new Reachability(grids, locator);
   const policy = options.policy ?? new DefaultSpatialPolicy();
-  const checker = new SpatialChecker({ locator, state: store, reach, policy, binding, locale });
+  const checker = new SpatialChecker({ locator, state: store, reach, policy, binding, locale, clinical, busy: (id) => bus?.busy.get(id) ?? null });
   const perception = new Perception({ store, locator, rules, reach, clinical, collision, locale, options: perceptionOptions, newId: options.newId });
   const mover = options.mover ?? instantMover((id) => store.actor(id)?.pose ?? null);
-  bus = new ActionBus({ facility, caseDef: binding.caseDef, store, registry, locator, rules, checker, perception, backend, grids, visibility, collision, clinical, port: options.port, mover, locale, now: options.now, trace: options.trace });
+  bus = new ActionBus({ facility, caseDef: binding.caseDef, store, registry, locator, rules, checker, perception, reach, backend, grids, visibility, collision, clinical, port: options.port, mover, locale, now: options.now, trace: options.trace });
   const actions = bus;
   const levels = levelInfos(facility);
   const traceRead = (name: string, actorId: ActorId, entities: string[], fn: () => void) => {
@@ -109,10 +110,23 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     plan(actorId: ActorId, goal: NavGoal): NavPlan {
       const a = store.actor(actorId);
       if (!a) return { ok: false, goal, code: "TARGET_NOT_FOUND", message: `unknown actor "${actorId}"` };
+      // the cost bound of every planning request (EMBODIED §7): a malformed or oversized goal is refused unplanned
+      const problem = goalProblem(goal);
+      if (problem) return { ok: false, goal, code: "TARGET_NOT_FOUND", message: worldMessage("INVALID_REQUEST", locale, { reason: problem }), details: { reason: "invalid-goal", problem } };
       return backend.plan({ actorId, from: a.pose, goal, role: a.role });
     },
 
     checkSpatial: (actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }) => checker.check(actorId, intent, opts),
+    atBedside(id: EntityId) {
+      const resolved = actions.resolve(id);
+      const p = resolved ? locator.place(resolved) : null;
+      return !!p && locator.atBedside(p);
+    },
+    bedsideProviders: (capability: string) =>
+      registry
+        .ofKind("equipment")
+        .filter((e) => locator.capabilities(e.id).includes(capability) && locator.atBedside(locator.place(e.id)!))
+        .map((e) => e.id),
 
     execute: (request, signal) => actions.execute(request, signal),
     feedback: (actionId) => actions.feedback(actionId),

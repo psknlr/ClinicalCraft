@@ -10,16 +10,22 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { clinicalTools } from "../tools/clinical.js";
 import {
+  ATTACH_KEY_HEADER,
   BRIDGE_LIMITS,
   BRIDGE_TOOLS,
   boundBridgeResult,
+  bridgeArgsBytes,
   bridgeErrorOf,
   caseHandle,
+  CHANNEL_SECRET_HEADER,
   cleanBridgeText,
+  isAttachKey,
   isBridgeTool,
   isCorrelationId,
   isLiveSessionId,
+  newAttachKey,
   parseBridgeCommand,
+  parseBridgeHello,
   parseBridgeResult,
   parseLiveSessionInfo,
 } from "./protocol.js";
@@ -76,12 +82,36 @@ describe("world bridge contract", () => {
     expect(parseLiveSessionInfo({ id: "x", caseHandle: "case-1", embodiment: "embodied" })).toBeNull();
     expect(bridgeErrorOf({ error: { code: "call_timeout", message: "late", acknowledged: true } })).toEqual({ code: "call_timeout", message: "late", acknowledged: true });
     expect(bridgeErrorOf({ nope: 1 })).toBeNull();
+    // `hello` carries the server's clock: the browser compares call deadlines (server time) with it (S11)
+    expect(parseBridgeHello({ id: "ls_AbCdEf0123456789", heartbeatMs: 10_000, expireAfterMs: 45_000, pingMs: 10_000, now: 1_760_000_000_000 })).toEqual({ id: "ls_AbCdEf0123456789", heartbeatMs: 10_000, expireAfterMs: 45_000, pingMs: 10_000, now: 1_760_000_000_000 });
+    expect(parseBridgeHello({ id: "ls_AbCdEf0123456789", heartbeatMs: 10_000, expireAfterMs: 45_000, pingMs: 10_000 })).toMatchObject({ now: null });
+    expect(parseBridgeHello({ id: "nope" })).toBeNull();
+  });
+
+  it("attach keys: random, unguessable, a recognisable shape, sent in their own header (S5)", () => {
+    const a = newAttachKey();
+    const b = newAttachKey();
+    expect(a).toMatch(/^ak_[A-Za-z0-9_-]{43}$/);
+    expect(a).not.toBe(b);
+    expect(isAttachKey(a)).toBe(true);
+    for (const bad of ["", "ak_short", `ak_${"x".repeat(43)}!`, `xx_${"x".repeat(43)}`, "ls_AbCdEf0123456789", 5, null, `ak_${"x".repeat(200)}`]) expect(isAttachKey(bad), String(bad)).toBe(false);
+    expect(ATTACH_KEY_HEADER).toBe("x-clinicalcraft-attach-key");
+    expect(ATTACH_KEY_HEADER).not.toBe(CHANNEL_SECRET_HEADER);
+  });
+
+  it("measures a call's arguments as UTF-8 JSON; the limit is well below the 2 MB body limit (S9)", () => {
+    expect(bridgeArgsBytes({ target: "patient" })).toBe(JSON.stringify({ target: "patient" }).length);
+    expect(bridgeArgsBytes({ t: "心电" })).toBe(JSON.stringify({ t: "" }).length + 6);
+    const cyclic: Record<string, unknown> = {};
+    cyclic.self = cyclic;
+    expect(bridgeArgsBytes(cyclic)).toBe(Infinity);
+    expect(BRIDGE_LIMITS.argsBytes).toBeLessThanOrEqual(64 * 1024);
   });
 
   it("bridge/ is isomorphic: no node:*, process or Buffer (it runs in the browser)", () => {
     const dir = fileURLToPath(new URL(".", import.meta.url));
     const files = readdirSync(dir).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts"));
-    expect(files.sort()).toEqual(["attach-client.ts", "index.ts", "protocol.ts", "world-client.ts"]);
+    expect(files.sort()).toEqual(["attach-client.ts", "i18n.ts", "index.ts", "protocol.ts", "world-client.ts"]);
     for (const f of files) {
       const code = readFileSync(join(dir, f), "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
       expect(code, f).not.toMatch(/from\s+["']node:|require\(|\bprocess\.|\bBuffer\b/);

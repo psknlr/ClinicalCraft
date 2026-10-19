@@ -551,21 +551,33 @@ export interface NavigationRecord {
 /* ------------------------------------------------------------------ */
 
 /**
- * What a clinical tool call needs physically (EMBODIED §6). `at-provider`
- * with `fixedOnly`: only non-portable providers count (a station or request
- * terminal — the alternative to bringing a bedside device to the patient).
- * `bedside-provider` `delivered`: capabilities whose goods are delivered to
- * the bedside (`DELIVERED_CAPABILITIES`: pharmacy-dispensed drugs, blood
- * products) — they need an in-service provider somewhere in the facility,
- * never one at the bedside.
+ * What a clinical tool call needs (EMBODIED §6). `at-provider` with
+ * `fixedOnly`: only non-portable providers count (a station or request
+ * terminal — the alternative to bringing a bedside device to the patient);
+ * `providerKinds` narrows the interaction kinds that count (default
+ * workstation, device, monitor). `bedside-provider` `delivered`:
+ * capabilities whose goods are delivered to the bedside
+ * (`DELIVERED_CAPABILITIES`: pharmacy-dispensed drugs, blood products) — they
+ * need an in-service provider somewhere in the facility, never one at the
+ * bedside. `at-patient` `why`: what is done there (`sample`: the specimen is
+ * taken at the patient; `observations`: vitals by hand), for the message.
+ * `monitor-screen`: the patient's attached monitor read from its screen —
+ * within `range` with line of sight from the monitor's own room.
+ * `clinical`: a fact of the patient's clinical state the engine must hold
+ * (`condition`, core Condition DSL) — e.g. IV access before an IV drug, a
+ * sample before a lab order; `need` names it, `interventionId` the
+ * intervention that establishes it. `all-of`: every option must hold.
  */
 export type SpatialRequirement =
   | { kind: "anywhere" }
   | { kind: "near-patient"; range: number; lineOfSight: boolean }
-  | { kind: "at-patient"; range: number }
-  | { kind: "at-provider"; capabilities: string[]; range?: number; fixedOnly?: boolean }
+  | { kind: "at-patient"; range: number; why?: "sample" | "observations" }
+  | { kind: "at-provider"; capabilities: string[]; range?: number; fixedOnly?: boolean; providerKinds?: InteractionKind[] }
   | { kind: "bedside-provider"; capabilities: string[]; patientRange: number; delivered?: string[] }
-  | { kind: "any-of"; options: SpatialRequirement[] };
+  | { kind: "monitor-screen"; range: number }
+  | { kind: "clinical"; condition: Condition; need: "iv-access" | "sample" | (string & {}); interventionId?: string }
+  | { kind: "any-of"; options: SpatialRequirement[] }
+  | { kind: "all-of"; options: SpatialRequirement[] };
 
 /** The clinical tool call being checked, in engine terms (no dependency on the agent package). */
 export interface ClinicalIntent {
@@ -590,7 +602,9 @@ export type SpatialCheck =
       /**
        * Which part failed: "not-near-patient", "not-at-patient", "patient-not-visible", "no-provider-in-reach",
        * "provider-not-at-bedside" (hint: fetch the cart and `move_to` it to the patient; null when none can be brought),
-       * "no-provider-in-facility", "no-patient" (no patient bound to the world).
+       * "provider-busy" (every provider at the bedside is reserved by someone else; hint: an alternative to fetch),
+       * "no-monitor-attached", "monitor-not-in-view", "clinical-prerequisite" (no hint: `details.prerequisite` names
+       * the tool call that establishes it), "no-provider-in-facility", "no-patient" (no patient bound to the world).
        */
       reason: string;
       /** Localised explanation. */
@@ -830,6 +844,19 @@ export interface WorldRuntime {
    * then carry `SPATIAL_PRECONDITION_CHANGED`) immediately before the engine commit.
    */
   checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck;
+  /**
+   * THE bedside rule (EMBODIED §6), where the entity stands now (a moved cart
+   * where it was parked, a carried item with its holder): on the patient
+   * slot's level, and in the slot's room — or within `BEDSIDE_RADIUS` of the
+   * slot point and visible from it or a short walk away, across a room
+   * boundary only for an open slot (outdoors) or a cart just outside the
+   * room. Never through a wall. The policy, device preconditions, the
+   * patient's monitor, delegation, skills and the benchmark all use it.
+   * False for unknown ids and without a patient slot.
+   */
+  atBedside(id: EntityId): boolean;
+  /** In-service equipment providing `capability` that is at the bedside now (`atBedside`), in registry order. */
+  bedsideProviders(capability: string): EntityId[];
 
   /* actions */
   execute(request: WorldActionRequest, signal?: AbortSignal): Promise<WorldActionResult>;
