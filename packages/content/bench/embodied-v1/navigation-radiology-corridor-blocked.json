@@ -1,0 +1,71 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "navigation-radiology-corridor-blocked",
+  "suite": "embodied-v1",
+  "category": "navigation",
+  "title": {
+    "zh-CN": "北走廊封闭时前往影像科",
+    "en": "Reach radiology with the north corridor closed"
+  },
+  "instruction": {
+    "zh-CN": "前往影像科控制与阅片室。北走廊有一段因地面湿滑而封闭，请另找路线。",
+    "en": "Go to the radiology control and reading room. Part of the north corridor is closed (wet floor): find another way."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "obstacles": [
+      {
+        "id": "north-corridor-wet-floor",
+        "rect": {
+          "x": 16,
+          "z": -22,
+          "w": 12,
+          "d": 4
+        },
+        "label": {
+          "zh-CN": "地面湿滑，走廊封闭",
+          "en": "Wet floor — corridor closed"
+        }
+      }
+    ]
+  },
+  "predicates": [
+    {
+      "world": {
+        "kind": "actorInRoom",
+        "room": "rad-control"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "room",
+          "id": "rad-control"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "target": "rad-control"
+        }
+      }
+    ]
+  }
+}

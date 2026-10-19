@@ -1,13 +1,17 @@
 /**
  * Autopilot control: start / stop the clinician agent with an optional goal,
  * and watch its tool calls, workup plan and narration (all derived from the
- * store's event log). Approvals still apply to every state change.
+ * store's event log). Approvals still apply to every state change. In an
+ * embodied session also the live episode trace — observation → navigation
+ * → interaction → clinical action → verification per step, with failures
+ * and hints (`ClinicalSession.trace()`).
  */
 import type { App } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
 import { tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
+import { traceGroups, traceList } from "./trace.js";
 
 function argsText(args: unknown): string {
   if (!args || typeof args !== "object") return "";
@@ -28,6 +32,20 @@ export function autopilotPanel(app: App): () => PanelView {
     const calls = h("ol", { class: "tool-calls", id: "autopilot-calls" });
     const plan = h("div", { class: "plan" });
     const narration = h("div", { class: "narration" });
+    const trace = h("div", { class: "trace-wrap" });
+    let traceKey = "";
+    const renderTrace = (): void => {
+      if (!game.embodied) return;
+      const spans = game.session.session.trace().spans;
+      const key = `${spans.length}:${spans.at(-1)?.id ?? ""}`;
+      if (key === traceKey) return;
+      traceKey = key;
+      const hintOf = (actionId: string) => store.worldResults.get(actionId)?.result.hint?.label ?? null;
+      clear(trace);
+      trace.append(traceList(traceGroups(spans, hintOf, 10)));
+      const list = trace.firstElementChild as HTMLElement | null;
+      if (list) list.scrollTop = list.scrollHeight;
+    };
 
     const start = (watch: boolean) => {
       if (store.autopilotRunning) return;
@@ -76,6 +94,7 @@ export function autopilotPanel(app: App): () => PanelView {
       }
       clear(narration);
       if (lines.length) narration.append(h("h3", null, tr("auto.narration")), ...lines.slice(-4).map((l) => h("p", { class: "small" }, l.length > 600 ? `${l.slice(0, 597)}…` : l)));
+      renderTrace();
     };
     render();
     const label = statusLabel(app.choice());
@@ -91,6 +110,7 @@ export function autopilotPanel(app: App): () => PanelView {
         h("div", { class: "exam-search" }, goal),
         controls,
         h("div", { class: "auto-grid" }, h("section", null, h("h3", null, tr("auto.calls")), calls), h("section", null, plan, narration)),
+        game.embodied ? h("section", { class: "auto-trace" }, h("h3", null, tr("auto.trace")), h("p", { class: "small muted" }, tr("auto.traceLead")), trace) : null,
       ],
       focus: goal,
       update() {

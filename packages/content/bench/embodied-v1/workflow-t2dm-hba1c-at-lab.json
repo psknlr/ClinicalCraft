@@ -1,0 +1,94 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-t2dm-hba1c-at-lab",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "在检验科工作站申请并阅读 HbA1c",
+    "en": "Order and read an HbA1c at the laboratory workstation"
+  },
+  "instruction": {
+    "zh-CN": "从门诊诊室走到检验科工作站，为这位患者申请糖化血红蛋白（HbA1c），然后阅读结果。",
+    "en": "Walk from the clinic room to the laboratory workstation, order an HbA1c for this patient, then read the result."
+  },
+  "caseId": "new-onset-t2dm",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "inv-hba1c"
+      }
+    },
+    {
+      "clinical": {
+        "read": "inv-hba1c"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "inv-hba1c"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "inv-hba1c"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:lab-workstation"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "order",
+          "parameters": {
+            "investigation": "inv-hba1c"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "read",
+          "parameters": {
+            "investigation": "inv-hba1c"
+          }
+        }
+      }
+    ]
+  }
+}

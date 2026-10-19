@@ -27,7 +27,7 @@ export interface TraceRecorderOptions {
   maxSpans?: number;
 }
 
-/** An open span: `end` it to record it. */
+/** An open span: `end` it to record it (the refs and data given at the end are merged over those it was started with). */
 export interface SpanHandle {
   readonly id: string;
   end(result: { ok: boolean; worldVersion?: number; refs?: TraceSpan["refs"]; data?: Record<string, unknown> }): TraceSpan;
@@ -69,8 +69,8 @@ export class TraceRecorder implements TraceSink {
           ok: r.ok,
           refs: { ...(opts.refs ?? {}), ...(r.refs ?? {}) },
         };
-        const data = r.data ?? opts.data;
-        if (data) span.data = data;
+        // Data given at the end is merged over the data the span was started with (like refs).
+        if (opts.data || r.data) span.data = { ...(opts.data ?? {}), ...(r.data ?? {}) };
         this.list.push(span);
         return span;
       },

@@ -11,6 +11,7 @@ export default defineConfig({
     alias: [
       { find: /^@clinicalcraft\/agent\/node$/, replacement: src("agent", "node/index.ts") },
       { find: /^@clinicalcraft\/agent$/, replacement: src("agent") },
+      { find: /^@clinicalcraft\/bench$/, replacement: src("bench") },
       { find: /^@clinicalcraft\/core$/, replacement: src("core") },
       { find: /^@clinicalcraft\/world$/, replacement: src("world") },
       { find: /^@clinicalcraft\/content$/, replacement: src("content") },

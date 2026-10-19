@@ -10,6 +10,7 @@ import { entityLevel, type EquipmentType, type Placement, type VoxelPart } from 
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
 import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
+import { beginPortable } from "./portable.js";
 import { roomAt } from "./region.js";
 import { createScreenTexture, type ScreenKind } from "./screens.js";
 import { strings, tx } from "./strings.js";
@@ -240,9 +241,14 @@ export function buildPlacements(ctx: BuildContext): void {
     };
     ctx.placements.set(p.id, info);
 
+    // a portable placement (cart, handheld item) is its own movable group, drawn where the world model says it
+    // stands (embodiment, portable.ts) — never part of the static batches
+    const portable = type.portable ? beginPortable(ctx, { id: p.id, x: p.x, z: p.z, rot }, y, level) : null;
     // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
     let finishFallback: (() => void) | null = null;
     const modelled = !!(ctx.models && type.model);
+    // screens and LEDs of a standalone placement stay in its own group (not in the level-wide atlases)
+    const standalone = modelled || !!portable;
     if (modelled) {
       const fallback = new Group();
       fallback.name = `voxels:${p.id}`;
@@ -255,7 +261,7 @@ export function buildPlacements(ctx: BuildContext): void {
         for (const m of batch.build(fallback, ctx.lib, ctx.shadows)) ctx.pickables.push(m);
         ctx.root = prevRoot;
         ctx.batch = prevBatch;
-        ctx.models!.push({ placementId: p.id, model: type.model!, footprint: { ...type.footprint }, at: { x: p.x, y, z: p.z, rot }, level, fallback });
+        ctx.models!.push({ placementId: p.id, model: type.model!, footprint: { ...type.footprint }, at: { x: p.x, y, z: p.z, rot }, level, fallback, ...(portable ? { parent: portable.record.inner } : {}) });
       };
     }
 
@@ -275,7 +281,7 @@ export function buildPlacements(ctx: BuildContext): void {
         ctx.batch.add(blackId, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
         const lift = part.s[2] / 2 + 0.003;
         const qx = px + Math.sin(ry) * lift, qz = pz + Math.cos(ry) * lift;
-        if (!live && !modelled) {
+        if (!live && !standalone) {
           // static pixel art never changes: packed into one atlas, all panels drawn by two meshes
           sc.texture.dispose();
           staticScreens.push({ level, canvas: sc.canvas, x: qx, y: py, z: qz, ry, w: part.s[0], h: part.s[1], owner: p.id, dim: screenKind === "text" });
@@ -291,7 +297,7 @@ export function buildPlacements(ctx: BuildContext): void {
         ctx.root.add(mesh);
         ctx.pickables.push(mesh);
         if (!live) {
-          // a modelled placement's static screen: its own quad in the voxel fallback group
+          // a standalone (modelled / portable) placement's static screen: its own quad in its group
           ctx.ownedTextures.push(sc.texture);
           continue;
         }
@@ -314,7 +320,7 @@ export function buildPlacements(ctx: BuildContext): void {
         ctx.screens.push({ placementId: p.id, kind: screenKind, mesh, canvas: sc.canvas, ctx: sc.ctx, texture: sc.texture, x: px, z: pz, slotId, lastDraw: -1e9, level });
         continue;
       }
-      if ((anim === "blink" || anim === "pulse") && !modelled) {
+      if ((anim === "blink" || anim === "pulse") && !standalone) {
         // indicator LEDs: merged per (material, animation, phase half) → a handful of draw calls
         const bucket = (p.x * 0.37 + p.z * 0.71) % 1 < 0.5 ? 0 : 1;
         const key = `${level}|${part.m}|${anim}|${bucket}`;
@@ -347,6 +353,7 @@ export function buildPlacements(ctx: BuildContext): void {
       ctx.batch.add(part.m, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
     }
     finishFallback?.();
+    if (portable) for (const m of portable.finish()) ctx.pickables.push(m);
 
     if (type.light) {
       ctx.lights.push({
@@ -371,7 +378,7 @@ export function buildPlacements(ctx: BuildContext): void {
       const top = parts.length ? Math.max(...parts.map((pp) => pp.p[1] + pp.s[1] / 2)) : type.footprint.h;
       sign.position.set(p.x + lx, y + top + 0.5, p.z + lz);
       sign.rotation.y = rot * DEG;
-      ctx.root.add(sign);
+      (portable?.record.inner ?? ctx.root).add(sign);
     }
     if (interactive && kind !== "door") {
       const ub = unionBox(boxes) ?? placementBox({ x: p.x, z: p.z, y, rot }, type.footprint);

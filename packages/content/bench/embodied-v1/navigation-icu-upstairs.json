@@ -1,0 +1,58 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "navigation-icu-upstairs",
+  "suite": "embodied-v1",
+  "category": "navigation",
+  "title": {
+    "zh-CN": "上楼前往 ICU 床位",
+    "en": "Go upstairs to an ICU bed space"
+  },
+  "instruction": {
+    "zh-CN": "在教学医院中，前往二楼的 ICU 1 号床位（走楼梯或乘电梯）。",
+    "en": "In the teaching hospital, go to ICU bed space 1 on the first floor (stairs or lift)."
+  },
+  "caseId": "septic-shock-cap",
+  "facilityId": "teaching-hospital",
+  "locale": "en",
+  "predicates": [
+    {
+      "world": {
+        "kind": "actorInRoom",
+        "room": "icu-1"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorOnLevel",
+        "level": "L1"
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "room",
+          "id": "icu-1"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "target": "room:icu-1"
+        }
+      }
+    ]
+  }
+}

@@ -35,6 +35,7 @@ The built binary is `packages/cli/dist/bin.js` (`npm run build:lib`, then
 | `mcp` | MCP server on stdio (`@clinicalcraft/mcp`). |
 | `import-v4 <files…> [--dest dir]` | Installs the local-only V4 assets from the merged html, its `.part01`/`.part02` files, or the two zips (docs/ASSETS.md). |
 | `eval --cases <ids\|all> [--provider --model --runs n --out report.md --embodied]` | Autopilot benchmark → Markdown + JSON. Offline, it replays each case's reference solution as a smoke test. |
+| `bench list \| run \| demo` | Embodied agent benchmark (docs/EMBODIED.md §13). `list [--suite] [--json]`; `run --suite embodied-v1 --agent reference\|scripted-llm\|llm [--seeds 1-3 --scenario … --category … --out dir --traces --require pct]` → `bench-report.json` + `bench-report.md`, exit 1 below `--require` (default 100 for `reference` / `scripted-llm`) or on any accepted spatial / authorisation violation; `llm` also needs `--live`, `--max-tokens` (or `--max-usd` for a priced model), a configured key, and refuses in CI; `demo --case <id> [--facility --out dir]` → `trace.jsonl` + `demo.md`, exit 1 unless the authoritative state confirms every step. |
 
 The global options are `--cwd`, `--lang zh-CN|en`, `--profile`, `--verbose`,
 `--version` and `--help`. Every command takes `--help`. Unknown commands and

@@ -4,6 +4,7 @@
  * can do, which capabilities are at the patient's bedside, and where to go
  * for something that is not available here.
  */
+import { BEDSIDE_RADIUS, DELIVERED_CAPABILITIES } from "@clinicalcraft/world";
 import {
   entityLevel,
   facilityLevels,
@@ -21,8 +22,8 @@ import {
   type Placement,
 } from "@clinicalcraft/core";
 
-/** Bedside radius around the patient slot (m). */
-export const BEDSIDE_RADIUS = 6;
+/** Bedside radius around the patient slot (m) — the world policy's (`@clinicalcraft/world`). */
+export { BEDSIDE_RADIUS };
 
 export interface StationRef {
   placementId: string;
@@ -124,12 +125,19 @@ export class Stations {
     return !!room && rectContains(room.rect, placement.x, placement.z);
   }
 
-  /** Capabilities available at the patient's bedside (room or ≤ 6 m) plus the personal kit. */
+  /**
+   * Capabilities available at the patient's bedside (room or ≤ 6 m) plus the personal kit — and, as the
+   * world policy counts them (EMBODIED §6), the delivered capabilities (`DELIVERED_CAPABILITIES`: pharmacy
+   * drugs, blood products are brought to the bedside) that any placement of the facility provides. Embodied
+   * mode uses the world's own view instead (carts where they stand now: `EmbodiedLink.bedsideCaps`).
+   */
   bedsideCaps(slotId: string | null): Set<string> {
     const caps = new Set<string>(PERSONAL_KIT);
     for (const p of this.facility.placements) {
+      const own = this.caps(p.id);
+      for (const cap of own) if (DELIVERED_CAPABILITIES.includes(cap)) caps.add(cap);
       if (!this.atBedside(p, slotId)) continue;
-      for (const cap of this.caps(p.id)) caps.add(cap);
+      for (const cap of own) caps.add(cap);
     }
     return caps;
   }

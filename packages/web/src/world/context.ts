@@ -52,6 +52,34 @@ export interface DoorRecord {
   interior?: boolean;
   /** Level the door is on. */
   level: string;
+  /** Locked by the world model (embodiment): stays shut for the player and walkers. */
+  locked?: boolean;
+}
+
+/**
+ * A portable placement (`portable: "cart" | "handheld"`, EMBODIED §8): built
+ * as its own group (not merged into the static batches) so it can be drawn
+ * where the world model says it stands. `group` pivots about the placement's
+ * own origin; its parts are in world coordinates under `inner`.
+ */
+export interface PortableRecord {
+  id: string;
+  group: Group;
+  inner: Group;
+  /** Where the placement was authored (origin y = floor + placement y). */
+  origin: { x: number; y: number; z: number; rot: number; level: string };
+  /** Where it is drawn now (same frame as `origin`). */
+  x: number;
+  z: number;
+  level: string;
+  /** Carried (null spot): hidden, no collider, not aimable. */
+  hidden: boolean;
+  /** Meshes the aim ray tests (removed from the pickables while hidden). */
+  meshes: Object3D[];
+  /** Being pushed by a walker ("avatar" or a staff id): drawn in front of them, no collider until parked. */
+  pushedBy?: string | null;
+  /** Where its aim box, live screens and lights were when built (moves are applied from these). */
+  home?: { box: Box3 | null; screens: Map<ScreenRecord, { x: number; z: number }>; lights: Map<LightCandidate, { x: number; z: number }> };
 }
 
 export interface ScreenRecord {
@@ -137,6 +165,8 @@ export interface ModelRequest {
   level: string;
   /** The placement's voxel parts, in their own group: shown until the model is in, and kept whenever it fails. */
   fallback: Group;
+  /** Where the loaded model goes (a portable placement's group, so it moves with it); default: its level's group. */
+  parent?: Group;
 }
 
 export interface BuildContext {
@@ -177,6 +207,8 @@ export interface BuildContext {
   screens: ScreenRecord[];
   animated: AnimatedPart[];
   placements: Map<string, PlacementInfo>;
+  /** Portable placements (carts, handheld items), each in its own movable group (embodiment). */
+  portables: Map<string, PortableRecord>;
   npcs: Map<string, NpcRecord>;
   /** Meshes carry castShadow flags (the renderer's shadow map decides whether they are used). */
   shadows: boolean;

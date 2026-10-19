@@ -1,0 +1,79 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "interaction-crash-cart-to-garden",
+  "suite": "embodied-v1",
+  "category": "interaction",
+  "title": {
+    "zh-CN": "把抢救车推到花园里的患者身边",
+    "en": "Wheel a resuscitation trolley to the patient in the garden"
+  },
+  "instruction": {
+    "zh-CN": "花园里有一位患者晕倒了。把急诊 1 号诊室的抢救车推到她身边。",
+    "en": "A patient has collapsed in the healing garden. Wheel the resuscitation trolley (crash cart) from ED cubicle 1 to her side."
+  },
+  "caseId": "anaphylaxis-garden",
+  "locale": "en",
+  "predicates": [
+    {
+      "world": {
+        "kind": "deviceAtBedside",
+        "target": "eq:cub1-treatment-cart"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:cub1-treatment-cart"
+        }
+      },
+      {
+        "op": "interact",
+        "target": "eq:cub1-treatment-cart",
+        "operation": "move_to",
+        "goal": {
+          "kind": "interact",
+          "id": "patient:garden-bench"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:cub1-treatment-cart"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:cub1-treatment-cart",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:garden-bench"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

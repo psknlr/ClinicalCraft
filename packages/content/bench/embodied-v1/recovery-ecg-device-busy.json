@@ -1,0 +1,134 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "recovery-ecg-device-busy",
+  "suite": "embodied-v1",
+  "category": "recovery",
+  "title": {
+    "zh-CN": "心电图机被护士占用：换一台继续",
+    "en": "The ECG cart is in use by the nurse: recover with another"
+  },
+  "instruction": {
+    "zh-CN": "为抢救室 1 号床的患者记录一份 12 导联心电图。",
+    "en": "Record a 12-lead ECG for the patient in resuscitation bay 1."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actions": [
+      {
+        "actor": "staff:ed-nurse",
+        "operation": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:resus1-ecg"
+        }
+      },
+      {
+        "actor": "staff:ed-nurse",
+        "operation": "prepare",
+        "target": "eq:resus1-ecg"
+      }
+    ],
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ecg-12lead"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 30,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "ecg-12lead"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus2-ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus2-ecg",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus2-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus2-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus2-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg-12lead"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus2-ecg",
+          "operation": "reset"
+        }
+      }
+    ]
+  }
+}

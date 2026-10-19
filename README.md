@@ -247,6 +247,33 @@ codes: 0 success, 1 error, 2 usage error, 3 `--max-turns` reached, 4
 autopilot ended with the case incomplete. Full flag reference:
 [packages/cli/README.md](packages/cli/README.md).
 
+## Embodied benchmark
+
+`clinicalcraft bench` measures embodied agents in the 3D hospital, headless
+and reproducibly: 36 scenarios in `packages/content/bench/embodied-v1`
+(perception, spatial reasoning, navigation, device interaction, clinical
+workflows — one per built-in case plus the full STEMI encounter —,
+recovery, multi-agent delegation and safety), fixed seeds, a fresh session
+per run, success judged only from the final engine and world state (never
+from what the agent says), with independent spatial-rule and authorisation
+audits and Wilson 95 % intervals.
+
+```bash
+npm run -s cc -- bench list
+npm run -s cc -- bench run --suite embodied-v1 --agent reference      # must be 100 % (infrastructure)
+npm run -s cc -- bench run --suite embodied-v1 --agent scripted-llm   # must be 100 % (model tool path)
+npm run -s cc -- bench run --agent llm --provider anthropic --model <model> --live --max-tokens 2000000 --scenario workflow-pe-ctpa --seeds 1
+npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN       # auditable reference demonstration
+```
+
+`reference` and `scripted-llm` validate the infrastructure, not clinical
+reasoning, and run in CI. A live model (`--agent llm`) runs only with
+`--live` and a spending cap (`--max-tokens`; `--max-usd` only for a model
+with a catalogue price), needs a configured API key and refuses to run in CI.
+Reports: `bench-report.json` + `bench-report.md`; samples in
+[docs/bench/](docs/bench/); scenario catalogue, metric definitions and the
+live-run checklist in [docs/EMBODIED.md §13](docs/EMBODIED.md#13-benchmark).
+
 ## MCP: let Claude Code, Codex or Grok CLI play the clinician
 
 `clinicalcraft mcp` is a stdio MCP server with 17 tools (`list_cases`,

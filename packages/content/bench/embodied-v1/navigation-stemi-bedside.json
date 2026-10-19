@@ -1,0 +1,52 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "navigation-stemi-bedside",
+  "suite": "embodied-v1",
+  "category": "navigation",
+  "title": {
+    "zh-CN": "从入口走到 STEMI 患者床旁",
+    "en": "Walk from the entrance to the STEMI bedside"
+  },
+  "instruction": {
+    "zh-CN": "你在医院入口。走到抢救室 1 号床患者身旁（伸手可及的距离）。",
+    "en": "You are at the hospital entrance. Walk to the patient in resuscitation bay 1 (within arm's reach)."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "predicates": [
+    {
+      "world": {
+        "kind": "actorNear",
+        "target": "patient:resus-1",
+        "range": 1.5
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "patient:resus-1"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "target": "patient"
+        }
+      }
+    ]
+  }
+}

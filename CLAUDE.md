@@ -9,6 +9,7 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 - `packages/content` — cases, facilities, equipment catalogs, JSON Schemas (data only; loaded by `loadContent` in `@clinicalcraft/agent/node`).
 - `packages/agent` — runtime: Op/Event protocol, ClinicalSession, providers, tools, approvals, hooks. `src/node/` is the only place allowed to import `node:*`.
 - `packages/cli`, `packages/server`, `packages/mcp` — front-ends (protocol clients).
+- `packages/bench` — embodied agent benchmark (scenarios in `packages/content/bench`, `clinicalcraft bench`).
 - `packages/web` — Vite + three.js voxel world and UI (vanilla TS DOM).
 - Contracts: `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, `docs/EMBODIED.md`, `docs/FACILITIES.md`, `docs/CASE_AUTHORING.md`.
 

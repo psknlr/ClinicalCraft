@@ -9,6 +9,7 @@ import type { SessionSnapshot } from "@clinicalcraft/agent";
 import type { WorldSave } from "../contracts.js";
 import { cleanActions, restoredPlan } from "./session.js";
 import { sanitizeSettings, type UiPrefs } from "./settings.js";
+import { validWorldSnapshot } from "./spatial.js";
 
 export const SAVE_KEY = "clinicalcraft-v5";
 export const EXPORT_FORMAT = "clinicalcraft-v5";
@@ -110,6 +111,10 @@ function validSnapshot(v: unknown): SessionSnapshot | null {
             .map((d) => ({ who: d.who, speaker: d.speaker.slice(0, 80), text: d.text.slice(0, 8000) })),
         }
       : {}),
+    // Embodied mode (docs/EMBODIED.md R3): the encounter's mode and its physical world (validated shape;
+    // the world model refuses a snapshot of another facility itself).
+    ...(s.embodiment === "embodied" ? { embodiment: "embodied" as const } : {}),
+    ...(s.embodiment === "embodied" && validWorldSnapshot(s.world, typeof s.facilityId === "string" ? s.facilityId : null) ? { world: s.world } : {}),
   };
 }
 

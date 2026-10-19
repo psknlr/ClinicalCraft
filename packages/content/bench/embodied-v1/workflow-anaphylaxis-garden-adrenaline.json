@@ -1,0 +1,86 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-anaphylaxis-garden-adrenaline",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "花园里的过敏性休克：呼救并肌注肾上腺素",
+    "en": "Anaphylaxis in the garden: call for help and give IM adrenaline"
+  },
+  "instruction": {
+    "zh-CN": "一位女士在花园里被蜇后晕倒。呼叫支援，赶到她身边，给予肌内注射肾上腺素。",
+    "en": "A woman collapsed in the healing garden after a sting. Call for help, get to her side and give intramuscular adrenaline."
+  },
+  "caseId": "anaphylaxis-garden",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "intervened": "call-help"
+      }
+    },
+    {
+      "clinical": {
+        "intervened": "adrenaline-im"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "call-help"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "adrenaline-im"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "call-help"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:garden-bench"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "adrenaline-im"
+        }
+      }
+    ]
+  }
+}

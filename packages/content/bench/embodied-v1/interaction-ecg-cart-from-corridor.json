@@ -1,0 +1,141 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "interaction-ecg-cart-from-corridor",
+  "suite": "embodied-v1",
+  "category": "interaction",
+  "title": {
+    "zh-CN": "心电图机被推到走廊：取回并记录心电图",
+    "en": "The ECG cart is in the corridor: fetch it and record an ECG"
+  },
+  "instruction": {
+    "zh-CN": "为抢救室 1 号床的患者记录一份 12 导联心电图。这个床位的心电图机被推到了外面的急诊走廊（抢救室另一台已停用）。",
+    "en": "Record a 12-lead ECG for the patient in resuscitation bay 1. This bay's ECG machine was wheeled out into the ED corridor (the room's other one is out of service)."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "setup": {
+    "actions": [
+      {
+        "actor": "staff:paramedic",
+        "operation": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:resus1-ecg"
+        }
+      },
+      {
+        "actor": "staff:paramedic",
+        "operation": "move_to",
+        "target": "eq:resus1-ecg",
+        "goal": {
+          "kind": "point",
+          "x": 24,
+          "z": -2
+        }
+      }
+    ],
+    "unavailable": [
+      "eq:resus2-ecg"
+    ],
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ecg-12lead"
+      }
+    },
+    {
+      "world": {
+        "kind": "deviceAtBedside",
+        "capability": "ecg-12lead"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 30,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "ecg-12lead"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus1-ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg-12lead"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "reset"
+        }
+      }
+    ]
+  }
+}

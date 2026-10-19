@@ -1,0 +1,99 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-sepsis-cultures-then-antibiotics",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "先留血培养，再给抗生素",
+    "en": "Blood cultures first, then antibiotics"
+  },
+  "instruction": {
+    "zh-CN": "先在检验科工作站申请血培养，再回到床旁给予头孢曲松。",
+    "en": "First request blood cultures at the laboratory workstation, then go back to the bedside and give ceftriaxone."
+  },
+  "caseId": "septic-shock-cap",
+  "locale": "zh-CN",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "blood-cultures"
+      }
+    },
+    {
+      "clinical": {
+        "intervened": "abx-ceftriaxone"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "blood-cultures"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "abx-ceftriaxone"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:lab-workstation"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "order",
+          "parameters": {
+            "investigation": "blood-cultures"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "abx-ceftriaxone"
+        }
+      }
+    ]
+  }
+}

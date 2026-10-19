@@ -1,0 +1,79 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "interaction-attach-monitor",
+  "suite": "embodied-v1",
+  "category": "interaction",
+  "title": {
+    "zh-CN": "连接床旁监护仪",
+    "en": "Attach the bedside monitor"
+  },
+  "instruction": {
+    "zh-CN": "给抢救室 1 号床的患者连接床旁监护仪。",
+    "en": "Attach the bedside monitor to the patient in resuscitation bay 1."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "world": {
+        "kind": "entityState",
+        "target": "eq:resus1-monitor",
+        "state": "attached"
+      }
+    },
+    {
+      "clinical": {
+        "intervened": "cardiac-monitoring"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 20,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "cardiac-monitoring"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-monitor",
+          "operation": "attach",
+          "parameters": {
+            "intervention": "cardiac-monitoring"
+          }
+        }
+      }
+    ]
+  }
+}

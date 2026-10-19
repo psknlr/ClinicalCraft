@@ -74,7 +74,8 @@ export interface MapData {
   walls: MapWall[];
   placements: { x: number; z: number; w: number; d: number; kind: string; solid: boolean; label: string | null }[];
   slots: { x: number; z: number; occupied: boolean; label: string }[];
-  staff: { x: number; z: number; label: string }[];
+  /** Staff where they are now; `moving`: walking a delegated task (highlighted, labelled on the big map). */
+  staff: { x: number; z: number; label: string; moving?: boolean }[];
   northLabel: string;
   /** Stairs and elevators on the level shown (multi-level facilities only). */
   connectors?: MapConnector[];
@@ -223,7 +224,16 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
   }
   for (const st of data.staff) {
     const [x, y] = P(st.x, st.z);
-    ctx.fillStyle = "#c7a1e5";
+    if (st.moving) {
+      // a delegated staff member on the move: a pulsing ring around the dot
+      const pulse = opts.timeMs ? 1 + Math.sin(opts.timeMs / 180) * 0.2 : 1;
+      ctx.strokeStyle = "#e0559b";
+      ctx.lineWidth = opts.big ? 2.5 : 1.5;
+      ctx.beginPath();
+      ctx.arc(x, y, (opts.big ? 10 : 6) * pulse, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = st.moving ? "#f08cc0" : "#c7a1e5";
     ctx.strokeStyle = "#4a2b6b";
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -278,6 +288,12 @@ export function drawMap(ctx: CanvasRenderingContext2D, width: number, height: nu
       if (!sl.occupied) continue;
       const [x, y] = P(sl.x, sl.z);
       place(sl.label, x, y - 13, 160, "bold 11px system-ui, sans-serif", "#1d4f3d");
+    }
+    // staff walking a delegated task: who it is
+    for (const st of data.staff) {
+      if (!st.moving) continue;
+      const [x, y] = P(st.x, st.z);
+      place(st.label, x, y + 15, 180, "bold 11px system-ui, sans-serif", "#7a2350");
     }
     if (data.buildZone && !data.rooms.some((r) => r.kind === "build-zone")) {
       const [x, y] = P(data.buildZone.x, data.buildZone.z);

@@ -1,9 +1,10 @@
 /**
  * Emit JSON Schemas for editors from the zod contracts in
- * `@clinicalcraft/core` (`packages/core/src/schema/*`) and the agent settings
- * schema (`packages/agent/src/settings/schema.ts`).
+ * `@clinicalcraft/core` (`packages/core/src/schema/*`), the agent settings
+ * schema (`packages/agent/src/settings/schema.ts`) and the benchmark
+ * scenario schema (`packages/bench/src/schema.ts`).
  *
- *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings, skill)
+ *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings, skill, bench-scenario)
  *   npx tsx scripts/gen-json-schemas.ts --check  # exit 1 if the files on disk are stale
  *
  * Shared building blocks (LocalizedText, Id, Condition, …) become named
@@ -40,6 +41,9 @@ import {
 } from "../packages/core/src/schema/index.js";
 import { SettingsLayerSchema, SettingsSchema } from "../packages/agent/src/settings/schema.js";
 import { SkillJsonSchema, SkillPredicateSchema, SkillSchema } from "../packages/agent/src/skills/schema.js";
+import { BenchJsonSchema, BenchScenarioSchema, NavGoalSchema } from "../packages/bench/src/schema.js";
+// The bench schema imports the core contracts by package name: reference the same instances so they become `$ref`s.
+import * as benchCore from "@clinicalcraft/core";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "packages/content/schemas");
@@ -118,6 +122,22 @@ const targets: Target[] = [
       "An embodied-mode skill (.clinicalcraft/skills/*.json): typed parameters, safety class, preconditions, steps (tool calls with ${param} / ${steps.<id>.data.<path>} templates, when, retry, onError), postconditions and recovery strategies. Data, never code.",
     schema: SkillSchema,
     definitions: { Id: IdSchema, LocalizedText: LocalizedTextSchema, SkillPredicate: SkillPredicateSchema, JsonValue: SkillJsonSchema },
+  },
+  {
+    file: "bench-scenario.schema.json",
+    name: "BenchScenario",
+    title: "ClinicalCraft embodied benchmark scenario (clinicalcraft/bench-scenario@1)",
+    description:
+      "One scenario of the embodied agent benchmark (packages/content/bench/<suite>/*.json): case and facility, setup (the clinician's pose, dynamic obstacles, devices out of service, doors, staff actions, approval mode and answering policy, permission rules, practice scope), the task, success predicates evaluated on the final authoritative state, limits, the reference solver's steps and the scripted model plan.",
+    schema: BenchScenarioSchema,
+    definitions: {
+      Id: benchCore.IdSchema,
+      LocalizedText: benchCore.LocalizedTextSchema,
+      Condition: benchCore.ConditionSchema,
+      ClinicalAction: benchCore.ClinicalActionSchema,
+      NavGoal: NavGoalSchema,
+      JsonValue: BenchJsonSchema,
+    },
   },
 ];
 

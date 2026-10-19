@@ -4,7 +4,10 @@
  * "开具 X →" (not yet ordered in this phase: a click places the order),
  * "调阅 X →" (ordered) or "X · 请前往 Y" (sets the destination, V4 behaviour), order
  * warnings, turnaround countdown in simulated cases, and the station's
- * evidence grid. Also the device panel (tests + bedside treatments).
+ * evidence grid. Also the device panel (tests + bedside treatments; in
+ * embodied mode also the device's own operations — an ECG cart's prepare →
+ * connect → record → reset — and "Bring to the patient" for a cart, all
+ * through `world_action`, the path the agents use).
  */
 import { matchOrders, orderWarnings, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
@@ -210,8 +213,16 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
     const name = placement ? game.stations.label(placement, L) : args.placementId;
     const caps = game.stations.caps(args.placementId);
     const content = h("div");
+    const ops = h("div", { id: "device-ops" });
+    const renderOps = (): void => {
+      clear(ops);
+      const section = deviceOps(game, args.placementId);
+      if (section) ops.append(section);
+    };
     const render = (): void => {
       clear(content);
+      renderOps();
+      content.append(ops);
       const { investigations, interventions } = game.stations.deviceActions(c, args.placementId);
       const s = game.session.store.snapshot?.state ?? game.session.session.state;
       content.append(h("p", { class: "small muted" }, tr("device.lead"), " ", tr("device.caps", { caps: capList(caps) })));
@@ -226,7 +237,7 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
         content.append(list);
       }
       if (interventions.length) {
-        const bedside = game.stations.bedsideCaps(game.slotId);
+        const bedside = (game.embodied?.bedsideCaps() ?? game.stations.bedsideCaps(game.slotId));
         const scope = game.session.store.config?.practiceScope ?? game.session.settings.practiceScope;
         content.append(h("h3", null, tr("device.interventions")));
         if (placement && !game.stations.atBedside(placement, game.slotId)) content.append(h("p", { class: "notice" }, tr("treat.notBedside")));
@@ -241,6 +252,7 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
     };
     render();
     let last = game.session.store.snapshot?.state;
+    let lastVersion = game.session.store.version;
     return {
       id: "device",
       kicker: tr("device.kicker", { name }),
@@ -248,10 +260,55 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
       body: content,
       update() {
         const now = game.session.store.snapshot?.state;
-        if (now === last) return;
-        last = now;
-        render();
+        if (now !== last) {
+          last = now;
+          render();
+          return;
+        }
+        // device states and parked carts change with world events, not the engine state
+        if (game.session.store.version !== lastVersion && game.embodied) renderOps();
+        lastVersion = game.session.store.version;
       },
     };
   };
+}
+
+/**
+ * Embodied mode: the device's own operations (catalog behaviour, e.g. the ECG cart's prepare → connect →
+ * record → reset, offered from its current state) and, for a cart, "Bring to the patient" (`move_to`).
+ * Each is a `world_action` — validated, spatially checked and (for `record`) run through the approval gate
+ * by the world, exactly as for an agent. Null when the device has none (or clinical mode).
+ */
+function deviceOps(game: Game, placementId: string): HTMLElement | null {
+  const emb = game.embodied;
+  const placement = game.stations.placement(placementId);
+  const type = placement ? game.stations.type(placement) : undefined;
+  if (!emb || !placement || !type) return null;
+  const entityId = `eq:${placementId}`;
+  const behavior = type.behavior && !type.behavior.derived ? type.behavior : null;
+  const portable = type.portable === "cart";
+  const patient = emb.patientId();
+  if (!behavior && !(portable && patient)) return null;
+  const run = (operation: string, extra: Record<string, unknown> = {}) => void emb.worldAction({ operation, targetId: entityId, ...extra });
+  const wrap = h("section", { class: "device-ops" }, h("h3", null, tr("device.ops")), h("p", { class: "small muted" }, tr("device.opsLead")));
+  if (behavior) {
+    const state = emb.deviceState(entityId) ?? behavior.initial;
+    const stateName = behavior.states?.[state]?.name;
+    wrap.append(h("p", { class: "small", id: "device-state", dataset: { state } }, tr("device.state", { state: stateName ? ct(stateName) : state })));
+    wrap.append(
+      h(
+        "div",
+        { class: "row wrap device-op-list" },
+        Object.entries(behavior.operations).map(([id, op]) => {
+          const from = op.from ?? ["*"];
+          const offered = from.includes("*") || from.includes(state);
+          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
+        }),
+      ),
+    );
+  }
+  if (portable && patient) {
+    wrap.append(h("div", { class: "row wrap" }, h("button", { type: "button", id: "device-bring", dataset: { op: "move_to" }, onclick: () => run("move_to", { goal: { kind: "interact", id: patient } }) }, tr("device.bring"))));
+  }
+  return wrap;
 }

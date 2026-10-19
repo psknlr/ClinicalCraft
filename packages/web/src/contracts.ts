@@ -79,6 +79,57 @@ export interface BlockInfo {
   type: string;
 }
 
+/**
+ * A point of a route planned by the world model (`@clinicalcraft/world`
+ * `PathPoint`): `via` names the connector (`connector:<id>`) used to reach it
+ * — stairs and ramps are walked, an elevator is ridden.
+ */
+export interface RoutePoint {
+  x: number;
+  z: number;
+  level: string;
+  via?: string;
+}
+
+/** A body pose in the world model's convention (yaw 0 looks towards −Z; `level` is a facility level id). */
+export interface BodyPose {
+  x: number;
+  y: number;
+  z: number;
+  yaw: number;
+  pitch: number;
+  level: string;
+}
+
+/** Where a moved body stopped: `arrived` false when it was aborted, blocked or interrupted by the player. */
+export interface BodyMove {
+  arrived: boolean;
+  pose: BodyPose;
+  /** Local detours around obstructions (an NPC in the way, a closed door). */
+  replans: number;
+}
+
+/** Where a portable placement (a cart) stands now: world coordinates on `level`, `y` = that level's floor. */
+export interface EquipmentSpot {
+  x: number;
+  y: number;
+  z: number;
+  level: string;
+  /** Degrees (default: the placement's own rotation). */
+  rot?: number;
+}
+
+/** A capture of the 3D viewport (no HUD) as a JPEG. */
+export interface FrameCapture {
+  mimeType: "image/jpeg";
+  /** Base64, without a `data:` prefix. */
+  data: string;
+  width: number;
+  height: number;
+  /** The avatar's camera: eye position (`y` = eye height) and orientation. */
+  pose: BodyPose;
+}
+
 export interface MoveInfo {
   x: number;
   z: number;
@@ -108,6 +159,8 @@ export interface WorldCallbacks {
   onShortcut(action: "journal" | "map" | "inventory" | "pause" | "hotbar" | "chat", arg?: number): void;
   /** Pointer lock lost / window blurred while playing. */
   onPauseRequest(): void;
+  /** The player opened or closed a door with E (renderer door id) — embodied mode mirrors it into the world model. */
+  onDoor?(doorId: string, open: boolean): void;
 }
 
 export interface WorldOptions {
@@ -163,6 +216,33 @@ export interface WorldApi {
    * the doors close, a short ride, the avatar arrives at the same spot of the car on `level` and the doors open.
    */
   rideElevator(connectorId: string, level: string): Promise<void>;
+  /* ---- embodiment (docs/EMBODIED.md §2: the renderer animates what the world model plans) ---- */
+  /**
+   * Walk the avatar along a route planned by the world model (`NavPlan.path`: points walked, stairs climbed,
+   * elevators ridden — never a route of the renderer's own), turning to `yaw` on arrival. Doors on the way
+   * open and close behind; an obstruction is bypassed with a local detour; WASD, `signal` or a dead end stop
+   * it (`arrived: false`, the pose where it stopped).
+   */
+  followRoute(route: RoutePoint[], opts?: { yaw?: number; signal?: AbortSignal }): Promise<BodyMove>;
+  /** Walk a staff NPC (`staffId` without the `staff:` prefix) along a world-model route: the rig walks, doors open as it passes. */
+  walkStaff(staffId: string, route: RoutePoint[], opts?: { yaw?: number; signal?: AbortSignal }): Promise<BodyMove>;
+  /** Put a staff NPC at a pose at once (a restored world), or back at their post (`null`). */
+  placeStaff(staffId: string, pose: BodyPose | null): void;
+  /** Where a staff NPC is drawn now (null: unknown). */
+  staffPose(staffId: string): BodyPose | null;
+  /** Show a portable placement (a cart) where the world model says it stands, back at its own spot (`"home"`), or hide it while carried (`null`). */
+  placeEquipment(placementId: string, at: EquipmentSpot | "home" | null): void;
+  /**
+   * Draw a cart in front of a walker while it is pushed (`by`: "avatar" or a staff id; `null`: stop) — no
+   * collider meanwhile; the world model parks it (`placeEquipment`) when the push ends.
+   */
+  pushEquipment(placementId: string, by: string | null): void;
+  /** Open or close a door (renderer door id; a `door:` prefix is accepted). A locked door does not open. */
+  setDoor(doorId: string, open: boolean): void;
+  /** Lock / unlock a door: a locked door closes and stays shut for the player and for walkers. */
+  setDoorLocked(doorId: string, locked: boolean): void;
+  /** The avatar's view of the 3D world (the WebGL viewport only) as a JPEG at most `maxWidth` px wide. */
+  captureFrame(opts: { maxWidth: number; quality: number }): FrameCapture | null;
   screenshot(): string;
   dispose(): void;
   /** Avatar pose; `level` is the level it stands on. */

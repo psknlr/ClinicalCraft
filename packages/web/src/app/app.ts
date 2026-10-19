@@ -28,6 +28,7 @@ import { devicePanel, ordersPanel, type OrdersArgs } from "../ui/panels/orders.j
 import { confirmResetPanel, pausePanel, type PauseArgs } from "../ui/panels/pause.js";
 import { imagePanel, reportPanel, type ImageArgs, type ReportArgs } from "../ui/panels/report.js";
 import { Toaster, type ToastLevel } from "../ui/toast.js";
+import { ActionFeedback } from "../ui/feedback.js";
 import { playSound } from "./audio.js";
 import { fetchServerCase, loadContent, loadServerContent, type ContentIndex } from "./content.js";
 import type { App, Game, PanelName } from "./context.js";
@@ -35,7 +36,9 @@ import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice,
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
 import { buildLearningRecord } from "./record.js";
 import { startAppSession } from "./session.js";
-import { coarse, Prefs } from "./settings.js";
+import { BrowserCamera, BrowserMover } from "./embodied.js";
+import { EmbodiedLink } from "./embodied-link.js";
+import { coarse, preferredEmbodiment, Prefs } from "./settings.js";
 import type { LogEntry } from "./store.js";
 import { GameWorldLink, patientFor, routeInteraction, slotFor, WorldHost, type Route, type WorldSpec } from "./world-bridge.js";
 
@@ -79,6 +82,11 @@ export class ClinicalCraftApp implements App {
   private readonly toaster: Toaster;
   private readonly approval: ApprovalDialog;
   private readonly dom: AppDom;
+  /** Embodied mode: the world model's body mover and camera, backed by the 3D world (app/embodied.ts). */
+  readonly mover: BrowserMover;
+  readonly camera: BrowserCamera;
+  /** Refusals of the learner's actions with "Go there" (embodied mode). */
+  readonly feedback: ActionFeedback;
   private _slot = 0;
   private lastTalk: ConversationArgs = { agent: "patient" };
   private aim: InteractionTarget | null = null;
@@ -108,6 +116,24 @@ export class ClinicalCraftApp implements App {
     );
     this.hud = new Hud(dom.hud, this);
     this.intro = new Intro(dom.intro, this);
+    this.mover = new BrowserMover({
+      renderer: () => this.world.api,
+      onStart: (actorId, plan) => {
+        this.game?.embodied?.onBodyStart(actorId, plan);
+        this.refresh();
+      },
+      onEnd: (actorId, move) => {
+        this.game?.embodied?.onBodyEnd(actorId, move);
+        this.refresh();
+      },
+      pushing: (actorId) => this.game?.embodied?.pushing(actorId) ?? null,
+    });
+    this.camera = new BrowserCamera({ renderer: () => this.world.api, clock: () => this.game?.session.session.state.clock ?? 0 });
+    this.feedback = new ActionFeedback(
+      () => this.hud.feedbackSlot,
+      () => (this.panels.isOpen ? this.panels.feedbackSlot : null),
+      (goal, label) => void this.game?.embodied?.goTo(goal, label),
+    );
 
     this.panels.modalAbove = () => this.approval.isOpen;
     this.approval.restoreFocus = (previous) => {
@@ -356,6 +382,15 @@ export class ClinicalCraftApp implements App {
       case "elevator":
         this.open("elevator", { connectorId: route.connectorId, level: route.level, name: route.name, stops: route.stops } satisfies ElevatorArgs);
         return;
+      case "world-op": {
+        // embodied: an operation on equipment through the world (a sink's wash_hands)
+        const emb = this.game?.embodied;
+        if (!emb) return;
+        void emb.worldAction({ operation: route.operation, targetId: route.targetId }).then((r) => {
+          if (r?.status === "completed") this.toast(route.title, r.message, "success");
+        });
+        return;
+      }
     }
   }
 
@@ -370,7 +405,14 @@ export class ClinicalCraftApp implements App {
 
   act(action: ClinicalAction, rationale?: string): string | null {
     if (!this.game) return null;
+    // embodied: checked against the world first (a short walk, or "Go there")
+    if (this.game.embodied) return this.game.embodied.act(action, rationale);
     return this.game.session.act(action, rationale);
+  }
+
+  /** The mode a new encounter starts in: the "Embodied agents" preference, clinical without a 3D world. */
+  preferredEmbodiment(): "clinical" | "embodied" {
+    return this.worldFailed ? "clinical" : preferredEmbodiment(this.prefs.value);
   }
 
   save(): boolean {
@@ -443,7 +485,10 @@ export class ClinicalCraftApp implements App {
     if (game) {
       game.link.refresh();
       game.session.reconfigure(this.prefs.value, this.choice(), locale);
+      // a rebuilt scene starts from the facility data: draw the world's physical state again
+      game.embodied?.syncScene();
     }
+    this.feedback.render();
     this.panels.rebuild();
     this.hud.update();
     this.toast(tr("toast.langChanged"));
@@ -529,6 +574,11 @@ export class ClinicalCraftApp implements App {
     const api = this.world.api;
     if (!walk || !dest || !api) return;
     this.panels.close();
+    if (game.embodied) {
+      // embodied: the world plans the walk (access, locks, connectors) and charges its time
+      void game.embodied.goTo({ kind: "point", x: dest.x, z: dest.z, ...(dest.level ? { level: dest.level } : {}) }, dest.label);
+      return;
+    }
     api.walkTo({ x: dest.x, z: dest.z, ...(dest.level ? { level: dest.level } : {}) }).then(
       () => this.toast(tr("toast.arrived"), dest.label),
       (err: unknown) => this.toast(tr("toast.walkFailed"), err instanceof Error ? err.message : String(err), "warning"),
@@ -625,6 +675,9 @@ export class ClinicalCraftApp implements App {
         served: !!this.server?.served,
         resume: save?.snapshot ?? null,
         onTranscriptStopped: () => this.toast(tr("toast.transcriptStopped"), tr("toast.transcriptStoppedBody"), "warning", "transcript-stopped"),
+        // "Embodied agents" (a save keeps the mode it was recorded in)
+        embodiment: this.preferredEmbodiment(),
+        embodied: { mover: this.mover, camera: this.camera },
       });
       const slot = slotFor(caseDef, facility);
       const saved: WorldSave | null = this.saves.data.worlds[facility.id] ?? null;
@@ -653,7 +706,23 @@ export class ClinicalCraftApp implements App {
         locale: () => getLocale(),
         playing: () => this.isPlaying(),
         activeStaff: () => this.game?.activeStaff ?? null,
+        agentDriving: () => this.game?.embodied?.agentDriving() ?? false,
+        embodied: () => this.game?.embodied ?? null,
       });
+      const embodied =
+        session.embodiment === "embodied"
+          ? new EmbodiedLink({
+              app: session,
+              renderer: () => this.world.api,
+              mover: this.mover,
+              facility,
+              caseDef,
+              slotId: slot?.id ?? null,
+              feedback: this.feedback,
+              toast: (title, body, level, key) => this.toast(title, body ?? "", level ?? "info", key),
+              locale: () => getLocale(),
+            })
+          : null;
       const game: Game = {
         caseDef,
         facility,
@@ -664,8 +733,11 @@ export class ClinicalCraftApp implements App {
         stations: link.stations,
         entered: false,
         activeStaff: null,
+        embodied,
       };
       this.game = game;
+      // the scene shows the world's physical state (a restored world: staff, carts, locks)
+      embodied?.syncScene();
       this.lastTalk = {
         agent: caseDef.patient.persona.companion?.answersHistory ? "companion" : "patient",
       };
@@ -712,6 +784,8 @@ export class ClinicalCraftApp implements App {
       ...(level ? { level } : {}),
     });
     game.link.syncWaypoint();
+    // the human avatar is the world model's input device: where it stands now
+    game.embodied?.syncPose();
     this.hud.update();
     // "Fictional teaching case — not medical advice", once per entry (quest card: never over a control).
     this.hud.showDisclaimer();
@@ -735,6 +809,7 @@ export class ClinicalCraftApp implements App {
     for (const off of this.storeOff) off();
     this.storeOff = [];
     game.link.dispose();
+    game.embodied?.dispose();
     this.game = null;
     this.aim = null;
     this.approval.sync();
@@ -800,6 +875,8 @@ export class ClinicalCraftApp implements App {
   private onOverlay(open: boolean): void {
     const api = this.world.api;
     this.syncInert();
+    // a refusal with "Go there" moves into the window (the HUD is inert under it) and back
+    this.feedback.render();
     if (open) {
       api?.pause(true);
     } else if (!this.panels.isOpen && !this.approval.isOpen && this.game?.entered && api) {
@@ -849,6 +926,7 @@ export class ClinicalCraftApp implements App {
           routeInteraction(target, {
             caseDef: game.caseDef,
             slotId: game.slotId,
+            embodied: !!game.embodied,
           }),
         );
       },
@@ -857,8 +935,11 @@ export class ClinicalCraftApp implements App {
         this.hud.onTarget(target, block);
       },
       onMove: (info) => {
+        // the avatar's pose → the world model (~10 Hz; embodied mode), then the HUD (the badge reads it)
+        this.game?.embodied?.syncPose();
         this.hud.onMove(info);
       },
+      onDoor: (doorId, open) => this.game?.embodied?.onDoor(doorId, open),
       onBlock: (kind, type) => {
         if (!BLOCK_TYPES.includes(type as BlockType)) return kind === "check" ? false : undefined;
         const inv = this.inventory;
@@ -986,6 +1067,40 @@ export class ClinicalCraftApp implements App {
       },
       get standalone() {
         return STANDALONE;
+      },
+      /* ---- embodiment (docs/EMBODIED.md): authoritative state for e2e assertions ---- */
+      /** The running encounter's mode ("embodied" | "clinical"), null without a game. */
+      get embodiment() {
+        return app.game?.session.embodiment ?? null;
+      },
+      /** The world model (`ClinicalSession.world()`), null in clinical mode. */
+      get worldModel() {
+        return app.game?.session.world() ?? null;
+      },
+      /** The world's physical state (canonical snapshot), null in clinical mode. */
+      worldSnapshot: () => app.game?.session.world()?.snapshot() ?? null,
+      /** What an actor perceives (EMBODIED §4; records an observation span). */
+      observe: (actorId = "actor:clinician") => app.game?.session.world()?.observe(actorId) ?? null,
+      /** The last `n` spans of the episode trace (all when `n` is omitted). */
+      traceSpans: (n?: number) => {
+        const spans = app.game?.session.session.trace().spans ?? [];
+        return n ? spans.slice(-n) : spans;
+      },
+      /** A learner world action through the UI's path (auto-approach, "Go there"); resolves with the result. */
+      worldAction: (request: Record<string, unknown>) => app.game?.embodied?.worldAction(request as never) ?? Promise.resolve(null),
+      /** A camera frame of the avatar (the `CameraSensor` the session's `get_camera_frame` uses). */
+      cameraFrame: (maxWidth = 768) => app.camera.frame("actor:clinician", { maxWidth, quality: 0.7 }),
+      /** Bodies the world is moving now (Mover). */
+      get moving() {
+        return app.mover.moving().map((m) => m.actorId);
+      },
+      /** The action feedback on screen (a refusal with "Go there"), null when none. */
+      get feedback() {
+        return app.feedback.current;
+      },
+      /** The real-time clock is paused because an agent drives a body. */
+      get agentDriving() {
+        return app.game?.embodied?.agentDriving() ?? false;
       },
     };
   }

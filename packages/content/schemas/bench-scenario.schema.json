@@ -1,0 +1,2141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClinicalCraft embodied benchmark scenario (clinicalcraft/bench-scenario@1)",
+  "description": "One scenario of the embodied agent benchmark (packages/content/bench/<suite>/*.json): case and facility, setup (the clinician's pose, dynamic obstacles, devices out of service, doors, staff actions, approval mode and answering policy, permission rules, practice scope), the task, success predicates evaluated on the final authoritative state, limits, the reference solver's steps and the scripted model plan.",
+  "$ref": "#/definitions/BenchScenario",
+  "definitions": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "LocalizedText": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+          }
+        }
+      ]
+    },
+    "Condition": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            }
+          },
+          "required": [
+            "all"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            }
+          },
+          "required": [
+            "any"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "not": {
+              "$ref": "#/definitions/Condition"
+            }
+          },
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "always": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "always"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asked": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "asked"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "examined": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "examined"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ordered": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "ordered"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "read": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "read"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "resultReady": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "resultReady"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decided": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decided"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "attempted": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "attempted"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decidedFirstTry": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decidedFirstTry"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intervened": {
+              "$ref": "#/definitions/Id"
+            },
+            "minCount": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "intervened"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "phase"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "flag": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "flag"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "objective": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "objective"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "vital": {
+              "type": "string",
+              "enum": [
+                "hr",
+                "sbp",
+                "dbp",
+                "rr",
+                "spo2",
+                "temp",
+                "gcs",
+                "glucose",
+                "etco2",
+                "pain"
+              ]
+            },
+            "op": {
+              "type": "string",
+              "enum": [
+                "lt",
+                "lte",
+                "gt",
+                "gte",
+                "eq"
+              ]
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "vital",
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "elapsed": {
+              "type": "object",
+              "properties": {
+                "gte": {
+                  "type": "number"
+                },
+                "lte": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "elapsed"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hints": {
+              "type": "object",
+              "properties": {
+                "gte": {
+                  "type": "number"
+                },
+                "lte": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "hints"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ClinicalAction": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "start"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ask"
+            },
+            "itemId": {
+              "$ref": "#/definitions/Id"
+            },
+            "via": {
+              "type": "string",
+              "enum": [
+                "button",
+                "free-text",
+                "agent"
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "itemId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "examine"
+            },
+            "findingId": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "findingId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "order"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "at": {
+              "type": "string"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "read"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "set-phase"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "phase"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "hint"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "answer"
+            },
+            "decisionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "optionIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 1
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "decisionId",
+            "optionIds"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "intervene"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "advance-time"
+            },
+            "minutes": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1440
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "wait",
+                "travel",
+                "procedure"
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "minutes"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "flag"
+            },
+            "flag": {
+              "$ref": "#/definitions/Id"
+            },
+            "value": {
+              "type": "boolean",
+              "default": true
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "flag"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "note"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 4000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "finish"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "NavGoal": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "point"
+            },
+            "x": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            },
+            "level": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "range": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "kind",
+            "x",
+            "z"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "entity"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "range": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "interact"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "room"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "follow"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "range": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "look"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "range": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "kind",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "any"
+            },
+            "goals": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/NavGoal"
+              },
+              "minItems": 1,
+              "maxItems": 8
+            }
+          },
+          "required": [
+            "kind",
+            "goals"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "JsonValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4000
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JsonValue"
+          },
+          "maxItems": 64
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/JsonValue"
+          },
+          "propertyNames": {
+            "maxLength": 80
+          }
+        }
+      ]
+    },
+    "BenchScenario": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "schema": {
+          "type": "string",
+          "const": "clinicalcraft/bench-scenario@1"
+        },
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "suite": {
+          "$ref": "#/definitions/Id"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "perception",
+            "spatial",
+            "navigation",
+            "interaction",
+            "clinical-workflow",
+            "recovery",
+            "multi-agent",
+            "safety"
+          ]
+        },
+        "title": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "instruction": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "caseId": {
+          "$ref": "#/definitions/Id"
+        },
+        "facilityId": {
+          "$ref": "#/definitions/Id"
+        },
+        "locale": {
+          "type": "string",
+          "enum": [
+            "zh-CN",
+            "en"
+          ]
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647,
+          "default": 1
+        },
+        "setup": {
+          "type": "object",
+          "properties": {
+            "actor": {
+              "type": "object",
+              "properties": {
+                "pose": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    },
+                    "yaw": {
+                      "type": "number",
+                      "minimum": -360,
+                      "maximum": 360
+                    },
+                    "level": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 160
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "z"
+                  ],
+                  "additionalProperties": false
+                },
+                "at": {
+                  "$ref": "#/definitions/NavGoal"
+                },
+                "yaw": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -360,
+                      "maximum": 360
+                    },
+                    {
+                      "type": "string",
+                      "const": "random"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "actor": {
+                    "type": "string",
+                    "pattern": "^(actor|staff):[A-Za-z0-9._-]+$"
+                  },
+                  "operation": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "target": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "goal": {
+                    "$ref": "#/definitions/NavGoal"
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/definitions/JsonValue"
+                    },
+                    "propertyNames": {
+                      "maxLength": 80
+                    }
+                  }
+                },
+                "required": [
+                  "actor",
+                  "operation"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 32
+            },
+            "obstacles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "level": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "rect": {
+                    "type": "object",
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "z": {
+                        "type": "number"
+                      },
+                      "w": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "d": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      }
+                    },
+                    "required": [
+                      "x",
+                      "z",
+                      "w",
+                      "d"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "label": {
+                    "$ref": "#/definitions/LocalizedText"
+                  }
+                },
+                "required": [
+                  "id",
+                  "rect"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 16
+            },
+            "unavailable": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "maxItems": 32
+            },
+            "doors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "locked": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 16
+            },
+            "clinical": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ClinicalAction"
+              },
+              "maxItems": 32
+            },
+            "approvalMode": {
+              "type": "string",
+              "enum": [
+                "default",
+                "strict",
+                "auto",
+                "plan",
+                "bypass"
+              ]
+            },
+            "approvals": {
+              "type": "string",
+              "enum": [
+                "approve",
+                "deny",
+                "headless"
+              ]
+            },
+            "permissions": {
+              "type": "object",
+              "properties": {
+                "allow": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "maxItems": 32
+                },
+                "ask": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "maxItems": 32
+                },
+                "deny": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  "maxItems": 32
+                }
+              },
+              "additionalProperties": false
+            },
+            "practiceScope": {
+              "type": "string",
+              "enum": [
+                "history-only",
+                "workup",
+                "full"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "allowedTools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,59}$"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "answer": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "entity"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        "predicates": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "clinical": {
+                    "$ref": "#/definitions/Condition"
+                  }
+                },
+                "required": [
+                  "clinical"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "world": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "actorInRoom"
+                          },
+                          "actor": {
+                            "type": "string",
+                            "pattern": "^(actor|staff):[A-Za-z0-9._-]+$"
+                          },
+                          "room": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "room"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "actorOnLevel"
+                          },
+                          "actor": {
+                            "type": "string",
+                            "pattern": "^(actor|staff):[A-Za-z0-9._-]+$"
+                          },
+                          "level": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "level"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "actorNear"
+                          },
+                          "actor": {
+                            "type": "string",
+                            "pattern": "^(actor|staff):[A-Za-z0-9._-]+$"
+                          },
+                          "target": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "range": {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 50
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "target",
+                          "range"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "entityState"
+                          },
+                          "target": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "state": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 160
+                              },
+                              {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 160
+                                },
+                                "minItems": 1,
+                                "maxItems": 8
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "target",
+                          "state"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "deviceAtBedside"
+                          },
+                          "target": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "capability": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "kind"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "handsClean"
+                          },
+                          "actor": {
+                            "type": "string",
+                            "pattern": "^(actor|staff):[A-Za-z0-9._-]+$"
+                          }
+                        },
+                        "required": [
+                          "kind"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "holding"
+                          },
+                          "actor": {
+                            "type": "string",
+                            "pattern": "^(actor|staff):[A-Za-z0-9._-]+$"
+                          },
+                          "item": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "item"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "doorState"
+                          },
+                          "door": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "open": {
+                            "type": "boolean"
+                          },
+                          "locked": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "door"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "world"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "answerEquals": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 160
+                        },
+                        "minItems": 1,
+                        "maxItems": 8
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "answerEquals"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "refusedWith": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "TARGET_NOT_FOUND",
+                          "TARGET_NOT_REACHABLE",
+                          "PATH_BLOCKED",
+                          "STALE_DESTINATION",
+                          "MOVEMENT_INTERRUPTED",
+                          "NAVIGATION_TIMEOUT",
+                          "ACCESS_DENIED",
+                          "NO_INTERACTION_POINT",
+                          "INVALID_REQUEST",
+                          "UNKNOWN_ACTOR",
+                          "OPERATION_NOT_SUPPORTED",
+                          "PRECONDITION_FAILED",
+                          "NOT_IN_RANGE",
+                          "NOT_VISIBLE",
+                          "NOT_AUTHORIZED",
+                          "DEVICE_BUSY",
+                          "DEVICE_UNAVAILABLE",
+                          "STALE_STATE",
+                          "HANDS_FULL",
+                          "NOT_HOLDING",
+                          "CANCELLED",
+                          "SPATIAL_REQUIREMENT_UNMET",
+                          "SPATIAL_PRECONDITION_CHANGED",
+                          "CLINICAL_REJECTED",
+                          "APPROVAL_DENIED",
+                          "HOOK_BLOCKED",
+                          "UNKNOWN_TOOL",
+                          "INVALID_ARGS",
+                          "TOOL_ERROR"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "enum": [
+                              "TARGET_NOT_FOUND",
+                              "TARGET_NOT_REACHABLE",
+                              "PATH_BLOCKED",
+                              "STALE_DESTINATION",
+                              "MOVEMENT_INTERRUPTED",
+                              "NAVIGATION_TIMEOUT",
+                              "ACCESS_DENIED",
+                              "NO_INTERACTION_POINT",
+                              "INVALID_REQUEST",
+                              "UNKNOWN_ACTOR",
+                              "OPERATION_NOT_SUPPORTED",
+                              "PRECONDITION_FAILED",
+                              "NOT_IN_RANGE",
+                              "NOT_VISIBLE",
+                              "NOT_AUTHORIZED",
+                              "DEVICE_BUSY",
+                              "DEVICE_UNAVAILABLE",
+                              "STALE_STATE",
+                              "HANDS_FULL",
+                              "NOT_HOLDING",
+                              "CANCELLED",
+                              "SPATIAL_REQUIREMENT_UNMET",
+                              "SPATIAL_PRECONDITION_CHANGED",
+                              "CLINICAL_REJECTED",
+                              "APPROVAL_DENIED",
+                              "HOOK_BLOCKED",
+                              "UNKNOWN_TOOL",
+                              "INVALID_ARGS",
+                              "TOOL_ERROR"
+                            ]
+                          },
+                          "tool": {
+                            "type": "string",
+                            "pattern": "^[a-z][a-z0-9_]{0,59}$"
+                          },
+                          "target": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "code"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "refusedWith"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "noSpatialViolationsAccepted": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "noSpatialViolationsAccepted"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "noUnauthorisedAcceptance": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "noUnauthorisedAcceptance"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "toolCalledAtMostTimes": {
+                    "type": "object",
+                    "properties": {
+                      "tool": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]{0,59}$"
+                      },
+                      "max": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000
+                      }
+                    },
+                    "required": [
+                      "tool",
+                      "max"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "toolCalledAtMostTimes"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "caseFinished": {
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "caseFinished"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "maxToolCalls": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 40
+            },
+            "maxTurns": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 3
+            },
+            "maxSimMinutes": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1440
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 3600000,
+              "default": 120000
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "reference": {
+          "type": "object",
+          "properties": {
+            "steps": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "observe"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "find"
+                      },
+                      "query": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "patient",
+                              "staff",
+                              "actor",
+                              "equipment",
+                              "door",
+                              "room",
+                              "level",
+                              "connector",
+                              "item"
+                            ]
+                          },
+                          "type": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "capabilities": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 160
+                            },
+                            "minItems": 1,
+                            "maxItems": 8
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "room": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "interaction": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "portableOnly": {
+                            "type": "boolean"
+                          },
+                          "visibleOnly": {
+                            "type": "boolean"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 50
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "save": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "query"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "inspect"
+                      },
+                      "target": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "target"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "answer"
+                      },
+                      "entity": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "from": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "room": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "navigate"
+                      },
+                      "goal": {
+                        "$ref": "#/definitions/NavGoal"
+                      },
+                      "target": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "interact"
+                      },
+                      "target": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "operation": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/JsonValue"
+                        },
+                        "propertyNames": {
+                          "maxLength": 80
+                        }
+                      },
+                      "goal": {
+                        "$ref": "#/definitions/NavGoal"
+                      },
+                      "expect": {
+                        "type": "string",
+                        "enum": [
+                          "TARGET_NOT_FOUND",
+                          "TARGET_NOT_REACHABLE",
+                          "PATH_BLOCKED",
+                          "STALE_DESTINATION",
+                          "MOVEMENT_INTERRUPTED",
+                          "NAVIGATION_TIMEOUT",
+                          "ACCESS_DENIED",
+                          "NO_INTERACTION_POINT",
+                          "INVALID_REQUEST",
+                          "UNKNOWN_ACTOR",
+                          "OPERATION_NOT_SUPPORTED",
+                          "PRECONDITION_FAILED",
+                          "NOT_IN_RANGE",
+                          "NOT_VISIBLE",
+                          "NOT_AUTHORIZED",
+                          "DEVICE_BUSY",
+                          "DEVICE_UNAVAILABLE",
+                          "STALE_STATE",
+                          "HANDS_FULL",
+                          "NOT_HOLDING",
+                          "CANCELLED",
+                          "SPATIAL_REQUIREMENT_UNMET",
+                          "SPATIAL_PRECONDITION_CHANGED",
+                          "CLINICAL_REJECTED",
+                          "APPROVAL_DENIED",
+                          "HOOK_BLOCKED",
+                          "UNKNOWN_TOOL",
+                          "INVALID_ARGS",
+                          "TOOL_ERROR"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "target",
+                      "operation"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "clinical"
+                      },
+                      "action": {
+                        "$ref": "#/definitions/ClinicalAction"
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "action"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "attempt"
+                      },
+                      "action": {
+                        "$ref": "#/definitions/ClinicalAction"
+                      },
+                      "expect": {
+                        "type": "string",
+                        "enum": [
+                          "TARGET_NOT_FOUND",
+                          "TARGET_NOT_REACHABLE",
+                          "PATH_BLOCKED",
+                          "STALE_DESTINATION",
+                          "MOVEMENT_INTERRUPTED",
+                          "NAVIGATION_TIMEOUT",
+                          "ACCESS_DENIED",
+                          "NO_INTERACTION_POINT",
+                          "INVALID_REQUEST",
+                          "UNKNOWN_ACTOR",
+                          "OPERATION_NOT_SUPPORTED",
+                          "PRECONDITION_FAILED",
+                          "NOT_IN_RANGE",
+                          "NOT_VISIBLE",
+                          "NOT_AUTHORIZED",
+                          "DEVICE_BUSY",
+                          "DEVICE_UNAVAILABLE",
+                          "STALE_STATE",
+                          "HANDS_FULL",
+                          "NOT_HOLDING",
+                          "CANCELLED",
+                          "SPATIAL_REQUIREMENT_UNMET",
+                          "SPATIAL_PRECONDITION_CHANGED",
+                          "CLINICAL_REJECTED",
+                          "APPROVAL_DENIED",
+                          "HOOK_BLOCKED",
+                          "UNKNOWN_TOOL",
+                          "INVALID_ARGS",
+                          "TOOL_ERROR"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "action",
+                      "expect"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "delegate"
+                      },
+                      "role": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "task": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "target": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "params": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/JsonValue"
+                        },
+                        "propertyNames": {
+                          "maxLength": 80
+                        }
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "role",
+                      "task"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "skill"
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "params": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/JsonValue"
+                        },
+                        "propertyNames": {
+                          "maxLength": 80
+                        }
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "solve-case"
+                      }
+                    },
+                    "required": [
+                      "op"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 200
+            }
+          },
+          "required": [
+            "steps"
+          ],
+          "additionalProperties": false
+        },
+        "scripted": {
+          "type": "object",
+          "properties": {
+            "plan": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tool": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]{0,59}$"
+                  },
+                  "args": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/definitions/JsonValue"
+                    },
+                    "propertyNames": {
+                      "maxLength": 80
+                    }
+                  }
+                },
+                "required": [
+                  "tool"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 500
+            },
+            "final": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "plan"
+          ],
+          "additionalProperties": false
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "suite",
+        "category",
+        "title",
+        "instruction",
+        "caseId",
+        "locale",
+        "predicates",
+        "reference",
+        "scripted"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

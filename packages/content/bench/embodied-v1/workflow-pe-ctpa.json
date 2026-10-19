@@ -1,0 +1,100 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-pe-ctpa",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "从病房到影像科：申请并阅读 CTPA",
+    "en": "From the ward to radiology: request and read a CTPA"
+  },
+  "instruction": {
+    "zh-CN": "在影像科控制台为这位病房患者申请 CT 肺动脉造影（CTPA），然后阅读报告。",
+    "en": "Request a CT pulmonary angiogram for this ward patient at the radiology console, then read the report."
+  },
+  "caseId": "pulmonary-embolism-postop",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ctpa"
+      }
+    },
+    {
+      "clinical": {
+        "read": "ctpa"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "ctpa"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "ctpa"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:radiology-console"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "order",
+          "parameters": {
+            "investigation": "ctpa"
+          }
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 29
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "read",
+          "parameters": {
+            "investigation": "ctpa"
+          }
+        }
+      }
+    ]
+  }
+}

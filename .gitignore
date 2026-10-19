@@ -19,3 +19,6 @@ packages/web/public/assets/local/
 packages/web/dist-standalone/
 dist-standalone/
 *.standalone.html
+# Benchmark and demonstration outputs (`clinicalcraft bench run|demo`); curated samples live in docs/bench/
+bench-results/
+bench-demo/

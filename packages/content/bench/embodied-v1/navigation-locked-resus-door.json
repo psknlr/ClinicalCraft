@@ -1,0 +1,67 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "navigation-locked-resus-door",
+  "suite": "embodied-v1",
+  "category": "navigation",
+  "title": {
+    "zh-CN": "抢救室正门上锁时到达患者床旁",
+    "en": "Reach the patient with the resuscitation room's main door locked"
+  },
+  "instruction": {
+    "zh-CN": "走到抢救室 1 号床患者身旁。抢救室的双开正门已上锁，请从其他入口进入。",
+    "en": "Walk to the patient in resuscitation bay 1. The resuscitation room's main double door is locked: get in another way."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "doors": [
+      {
+        "id": "door:ed-resus:s:0",
+        "locked": true
+      }
+    ]
+  },
+  "predicates": [
+    {
+      "world": {
+        "kind": "actorNear",
+        "target": "patient:resus-1",
+        "range": 1.5
+      }
+    },
+    {
+      "world": {
+        "kind": "doorState",
+        "door": "door:ed-resus:s:0",
+        "locked": true
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "patient:resus-1"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "target": "patient"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-smzl-lab-cbc",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "门诊：在检验工作站申请并阅读血常规",
+    "en": "Clinic: order and read a full blood count at the lab workstation"
+  },
+  "instruction": {
+    "zh-CN": "在门诊楼的检验工作站为这位患者申请血常规，然后阅读结果。",
+    "en": "Order a full blood count for this patient at the clinic's laboratory workstation, then read the result."
+  },
+  "caseId": "smzl-lung-adeno",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "cbc"
+      }
+    },
+    {
+      "clinical": {
+        "read": "cbc"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "cbc"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "cbc"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ws-lab"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ws-lab",
+          "operation": "order",
+          "parameters": {
+            "investigation": "cbc"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ws-lab",
+          "operation": "read",
+          "parameters": {
+            "investigation": "cbc"
+          }
+        }
+      }
+    ]
+  }
+}

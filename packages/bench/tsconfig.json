@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist", "lib": ["ES2023", "DOM", "DOM.Iterable"], "types": ["node"] },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/__fixtures__"],
+  "references": [{ "path": "../core" }, { "path": "../world" }, { "path": "../content" }, { "path": "../agent" }]
+}

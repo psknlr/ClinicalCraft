@@ -2119,6 +2119,210 @@ details.topic .question {
 }
 
 /* ================================================================ */
+/* Embodiment (docs/EMBODIED.md): badge, action feedback, device      */
+/* operations, live trace, the case-start switch                     */
+/* ================================================================ */
+.embodiment-badge {
+  position: absolute;
+  right: 25px;
+  top: 320px;
+  max-width: 220px;
+  padding: 4px 9px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: #223d2ef0;
+  border: 1px solid #becdaa77;
+  border-left: 3px solid #7fc8a9;
+  box-shadow: 3px 3px #1f3d2344;
+  color: #e9f3e4;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  pointer-events: auto;
+}
+.embodiment-badge.mode-clinical {
+  border-left-color: #c9b37a;
+  color: #f1edd2;
+}
+.embodiment-badge.walking {
+  border-left-color: var(--gold);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.hud-feedback {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 30px);
+  transform: translateX(-50%);
+  width: min(460px, calc(100vw - 32px));
+  pointer-events: auto;
+}
+.action-feedback {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #fcf3e3f5;
+  color: var(--ink);
+  border: 2px solid #c08d63;
+  border-left-width: 5px;
+  box-shadow: 3px 3px #193c2c55;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.action-feedback.tone-info {
+  border-color: var(--ok);
+}
+.action-feedback p {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.action-feedback .row {
+  flex: 0 0 auto;
+  gap: 6px;
+  align-items: center;
+}
+.action-feedback #go-there {
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.action-feedback .close-feedback {
+  padding: 2px 8px;
+  font-size: 14px;
+  line-height: 1;
+}
+.window-feedback:empty {
+  display: none;
+}
+.window-feedback {
+  padding: 0 22px 12px;
+}
+.device-ops {
+  margin: 4px 0 18px;
+  padding: 12px 14px;
+  background: #f2efd9;
+  border-left: 3px solid #79c9e6;
+}
+.device-ops h3 {
+  margin: 0 0 6px;
+}
+.device-op-list {
+  gap: 8px;
+  margin-top: 8px;
+}
+.device-op.unavailable {
+  opacity: 0.55;
+}
+.monitor-read {
+  margin-top: 8px;
+  white-space: pre-line;
+}
+.delegate-chips button {
+  border-color: #7fc8a9;
+}
+.auto-trace {
+  margin-top: 18px;
+}
+.trace {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  max-height: 340px;
+  overflow: auto;
+  border: 1px solid var(--line-soft);
+  background: #fffaf0;
+}
+.trace .empty {
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.trace-group {
+  padding: 8px 12px;
+  border-bottom: 1px dashed var(--line-soft);
+}
+.trace-group.failed {
+  background: #fbeee6;
+}
+.trace-group.running {
+  background: #f4f6e4;
+}
+.trace-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+}
+.trace-head small {
+  margin-left: auto;
+  font-family: var(--mono);
+  color: var(--muted);
+}
+.trace-status {
+  font-weight: 800;
+}
+.trace-group.ok .trace-status {
+  color: var(--ok);
+}
+.trace-group.failed .trace-status {
+  color: var(--danger);
+}
+.trace-steps {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0 0 0 16px;
+  font-size: 11px;
+}
+.trace-step {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+.trace-step[data-depth="1"] {
+  padding-left: 14px;
+}
+.trace-step[data-depth="2"],
+.trace-step[data-depth="3"] {
+  padding-left: 28px;
+}
+.trace-step.failed {
+  color: var(--danger);
+}
+.trace-kind {
+  min-width: 86px;
+  color: var(--muted);
+}
+.trace-error {
+  font-family: var(--mono);
+}
+.trace-hint {
+  color: #6e5718;
+}
+.embodied-row {
+  display: grid;
+  gap: 2px;
+  margin-top: 10px;
+}
+.embodied-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.embodied-row small {
+  color: var(--muted);
+}
+.embodied-row .embodied-saved {
+  color: #6e5718;
+}
+
+/* ================================================================ */
 /* Responsive                                                        */
 /* ================================================================ */
 @media (max-width: 1100px) {
@@ -2394,4 +2598,29 @@ details.topic .question {
 /* <noscript> message (no inline style attribute: CSP-friendly) */
 .noscript {
   padding: 24px;
+}
+
+/* Embodiment on narrow screens: the badge under the minimap label (the autopilot dock moves below it). */
+@media (max-width: 750px) {
+  .embodiment-badge {
+    right: 12px;
+    top: 242px;
+    max-width: min(150px, calc(100vw - 270px));
+    font-size: 9px;
+    padding: 3px 7px;
+  }
+  .autopilot-dock {
+    top: 272px;
+  }
+  .window-feedback {
+    padding: 0 14px 10px;
+  }
+  .action-feedback {
+    flex-wrap: wrap;
+  }
+}
+@media (max-height: 600px) {
+  .embodiment-badge {
+    top: 212px;
+  }
 }

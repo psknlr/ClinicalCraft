@@ -5,8 +5,9 @@
  * agent's provider catalogue, model suggestions, base-URL override — checked
  * against the page's `connect-src` (`checkDirectBaseUrl`) —, API key
  * with show/hide, "remember on this device" opt-in with warning, test
- * connection); approval mode, practice scope, patient pipeline; save
- * export / import / new game.
+ * connection); approval mode, practice scope, patient pipeline, "Embodied
+ * agents" (the mode of the next encounter — a running one keeps its own);
+ * save export / import / new game.
  */
 import { localizedName, type ApprovalMode, type PracticeScope, type ProviderTemplate } from "@clinicalcraft/agent";
 import type { App } from "../../app/context.js";
@@ -26,6 +27,7 @@ export interface PauseArgs {
 const APPROVAL_MODES: ApprovalMode[] = ["default", "strict", "auto", "plan", "bypass"];
 const SCOPES: PracticeScope[] = ["history-only", "workup", "full"];
 const PIPELINES = ["select-voice", "tool"] as const;
+const EMBODIMENTS = ["embodied", "clinical"] as const;
 
 function setting(label: string, hint: string | null, control: HTMLElement, id?: string): HTMLElement {
   return h("label", { class: "setting", ...(id ? { for: id } : {}) }, h("div", null, h("b", null, label), hint ? h("small", null, hint) : null), control);
@@ -555,6 +557,13 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
             s.agent.patient = { ...(s.agent.patient ?? {}), pipeline: v };
           }),
         ),
+        // "Embodied agents" (docs/EMBODIED.md R3): the mode of the next encounter; a running one keeps its own
+        selectRow("setting-embodiment", tr("set.embodiment"), tr("set.embodiment.hint"), EMBODIMENTS, agent.embodiment === "clinical" ? "clinical" : "embodied", (v) => tr(v === "embodied" ? "set.embodiment.on" : "set.embodiment.off"), (v) =>
+          prefs.update((s) => {
+            s.agent.embodiment = v;
+          }),
+        ),
+        game ? h("p", { class: "small muted", id: "embodiment-note" }, tr("set.embodiment.next", { mode: tr(game.embodied ? "emb.mode.embodied" : "emb.mode.clinical") })) : null,
       ),
     );
 

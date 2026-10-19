@@ -14,7 +14,13 @@ export type Leg =
   /** Walk a stairs/ramp flight straight from its approach point to its exit point on `level`. */
   | { kind: "flight"; level: string; path: { x: number; z: number }[] }
   /** Ride an elevator (the avatar stands in its car) to `level`. */
-  | { kind: "ride"; connectorId: string; level: string };
+  | { kind: "ride"; connectorId: string; level: string }
+  /**
+   * Follow given points on a level — a route planned by the world model
+   * (embodiment, see embodiment.ts); obstructions are bypassed with a local
+   * detour to the next point. `final`: the route's goal.
+   */
+  | { kind: "path"; level: string; points: { x: number; z: number }[]; final: boolean };
 
 /** An elevator as routing sees it: its stops (a stop without a car room cannot be boarded). */
 export interface RouteElevator {

@@ -1,0 +1,118 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-appendicitis-bedside-ultrasound",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "床旁超声检查疑似阑尾炎",
+    "en": "Bedside ultrasound for suspected appendicitis"
+  },
+  "instruction": {
+    "zh-CN": "用床旁即时超声为这位患者申请腹部超声，然后阅读结果。",
+    "en": "Order the abdominal ultrasound for this patient with the point-of-care ultrasound at the bedside, then read the result."
+  },
+  "caseId": "acute-appendicitis",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "inv-us"
+      }
+    },
+    {
+      "clinical": {
+        "read": "inv-us"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "inv-us"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "inv-us"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus1-pocus"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-pocus",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-pocus",
+          "operation": "use",
+          "parameters": {
+            "investigation": "inv-us"
+          }
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 44
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "inv-us"
+        }
+      }
+    ]
+  }
+}

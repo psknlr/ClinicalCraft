@@ -5,7 +5,9 @@
  *   settings   localStorage "clinicalcraft-v5-settings" merged with the agent's merge helpers
  *   providers  offline (default) | proxy (served by `clinicalcraft serve`) | direct (user key)
  *   transcript POST /api/transcripts/:id when served, else not kept (nothing in the browser reads it)
- *   dynamic    `walk_to` (executed by the 3D world, see world-bridge.ts)
+ *   embodiment embodied (default in the 3D world: the session runs the world model, the browser supplies
+ *              its Mover / CameraSensor — app/embodied.ts) or clinical; fixed per encounter, a save keeps it
+ *   dynamic    `walk_to` (clinical mode only: executed by the 3D world, see world-bridge.ts)
  */
 import {
   createSession,
@@ -18,8 +20,10 @@ import {
   type TranscriptSink,
 } from "@clinicalcraft/agent";
 import { ClinicalActionSchema, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
+import type { CameraSensor, Mover, WorldRuntime } from "@clinicalcraft/world";
 import { browserResolveProvider, type RuntimeChoice } from "./llm.js";
 import { resolveAgentSettings, type StoredSettings } from "./settings.js";
+import { trimWorldSnapshot, validWorldSnapshot } from "./spatial.js";
 import { SessionStore } from "./store.js";
 
 /**
@@ -188,11 +192,22 @@ export interface AppSessionOptions {
   resume?: SessionSnapshot | null;
   /** Transcript uploads to the server stopped for good (served only). */
   onTranscriptStopped?: (reason: "network" | "refused") => void;
+  /**
+   * The mode of a NEW encounter (docs/EMBODIED.md R3; default clinical). Fixed for the encounter: a resumed
+   * snapshot keeps its recorded mode (absent = clinical). Embodied needs a facility.
+   */
+  embodiment?: "clinical" | "embodied";
+  /** Embodied mode: the renderer-backed body mover and camera (app/embodied.ts). */
+  embodied?: { mover?: Mover; camera?: CameraSensor };
 }
 
 export interface AppSession {
   readonly session: ClinicalSession;
   readonly store: SessionStore;
+  /** The encounter's mode (fixed). */
+  readonly embodiment: "clinical" | "embodied";
+  /** The encounter's world model (embodied), else null — a stable handle (`ClinicalSession.world()`). */
+  world(): WorldRuntime | null;
   readonly settings: ResolvedSettings;
   readonly transcript: TranscriptSink & { flushOnExit?: () => void };
   /** Submit an op (logged into the store first, so the learner's own line renders immediately); `view` = the conversation it came from. */
@@ -204,6 +219,7 @@ export interface AppSession {
   interrupt(): void;
   /** Update provider/model/locale/approval/scope on a running session. */
   reconfigure(stored: StoredSettings, choice: RuntimeChoice, locale: string): void;
+  /** Serializable snapshot (embodied: with its world, the idempotency window trimmed for local storage). */
   snapshot(): SessionSnapshot;
   close(): Promise<void>;
 }
@@ -239,26 +255,38 @@ export function newId(): string {
 }
 
 export async function startAppSession(o: AppSessionOptions): Promise<AppSession> {
-  let { settings } = resolveAgentSettings(o.stored, { provider: o.choice.provider, model: o.choice.model, locale: o.locale });
+  const resume = o.resume && o.resume.caseId === o.caseDef.id ? o.resume : null;
+  // The encounter's mode: a save keeps the one it was recorded in; a new one takes the app's choice.
+  const recorded = resume ? (resume.embodiment === "embodied" ? "embodied" : "clinical") : null;
+  const embodiment: "clinical" | "embodied" = (recorded ?? o.embodiment ?? "clinical") === "embodied" && o.facility ? "embodied" : "clinical";
+  let { settings } = resolveAgentSettings(o.stored, { provider: o.choice.provider, model: o.choice.model, locale: o.locale, embodiment });
   let mode = o.choice.mode;
   const store = new SessionStore(o.caseDef);
   const sessionId = o.resume?.sessionId ?? newId();
   const transcript: TranscriptSink & { flushOnExit?: () => void } = o.served ? new HttpTranscriptSink(sessionId, o.onTranscriptStopped) : new NullTranscriptSink();
 
-  const resume = o.resume && o.resume.caseId === o.caseDef.id ? o.resume : null;
   if (resume) store.restore(resume.messages ?? {});
   // The published workup plan (`/plan`, the journal, the clinician's prompt) survives a save/load.
   const plan = resume ? restoredPlan(resume.plan) : [];
   if (plan.length) store.restorePlan(plan);
 
-  const session = await createSession({
+  // Embodied: the world is built by the session (resume: its saved physical state; a snapshot that does not
+  // fit this facility is dropped — the world starts afresh, the clinical record is still replayed).
+  const savedWorld = embodiment === "embodied" && resume ? validWorldSnapshot(resume.world, o.facility?.id) : null;
+  const embodiedOption = (withSnapshot: boolean) =>
+    embodiment === "embodied"
+      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld } : {}) } }
+      : {};
+  const options = (withSnapshot: boolean): Parameters<typeof createSession>[0] => ({
     caseDef: o.caseDef,
     facility: o.facility,
     catalogs: o.catalogs,
     settings,
     sessionId,
     transcript,
-    dynamicTools: ["walk_to"],
+    // Embodied sessions move bodies through the world's Mover; `walk_to` is the clinical-mode way.
+    dynamicTools: embodiment === "embodied" ? [] : ["walk_to"],
+    ...embodiedOption(withSnapshot),
     // Handled by the web UI itself (see ui/panels/conversation.ts webCommand): hidden from /help.
     disabledCommands: WEB_HANDLED_COMMANDS,
     resolveProvider: browserResolveProvider(() => settings, () => mode),
@@ -268,6 +296,14 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     // Same transcript file (served: sessions/web/<id>.jsonl): continue its ordinal sequence.
     ...(resume && typeof resume.nextOrdinal === "number" && Number.isInteger(resume.nextOrdinal) && resume.nextOrdinal >= 0 ? { transcriptOrdinal: resume.nextOrdinal } : {}),
   });
+  let session: ClinicalSession;
+  try {
+    session = await createSession(options(true));
+  } catch (err) {
+    if (!savedWorld) throw err;
+    console.warn("saved world not restored", err);
+    session = await createSession(options(false));
+  }
 
   // The first events() iterator receives the startup backlog (session_configured, state_snapshot).
   void (async () => {
@@ -287,6 +323,8 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
   return {
     session,
     store,
+    embodiment: session.embodiment,
+    world: () => session.world(),
     get settings() {
       return settings;
     },
@@ -304,7 +342,7 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     },
     interrupt: () => void session.submit({ type: "interrupt" }),
     reconfigure(stored, choice, locale) {
-      settings = resolveAgentSettings(stored, { provider: choice.provider, model: choice.model, locale }).settings;
+      settings = resolveAgentSettings(stored, { provider: choice.provider, model: choice.model, locale, embodiment: session.embodiment }).settings;
       mode = choice.mode;
       submit({
         type: "configure",
@@ -317,7 +355,10 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
         },
       });
     },
-    snapshot: () => session.snapshot(),
+    snapshot: () => {
+      const snap = session.snapshot();
+      return snap.world ? { ...snap, world: trimWorldSnapshot(snap.world) } : snap;
+    },
     async close() {
       try {
         await session.close();

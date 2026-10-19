@@ -5,6 +5,10 @@
  * (`monitorAttached: false`) the screen is dark, the side says so, lists the
  * triage readings taken by hand and offers to attach it (the case's
  * monitoring intervention, through the approval gate like any treatment).
+ * Embodied mode (docs/EMBODIED.md §5): attach, NIBP and reading the screen
+ * are operations of the patient's monitor in the world (`world_action`) —
+ * the same path the agents use, so the learner must stand at the bedside
+ * (a short step is taken for them; otherwise "Go there").
  */
 import { conditionRefs, vitalsAt, type CaseDefinition, type Intervention, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
@@ -71,6 +75,21 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
     const alarms = h("div", { class: "alarm-list", "aria-live": "polite" });
     const nibpText = h("span", { class: "small muted" });
     let nibp: { sbp: number; dbp: number; at: number; none?: boolean } | null = null;
+    // embodied: the patient's monitor in the world model (null: none at the bedside — her own kit, the clinical act)
+    const emb = game.embodied;
+    const device = emb?.patientMonitor() ?? null;
+    const readOut = h("p", { class: "small monitor-read", id: "monitor-read-result", hidden: true });
+    const measured = () => {
+      const snap = vitalsAt(c, store.snapshot?.state ?? game.session.session.state);
+      nibpBtn.disabled = false;
+      if (snap.monitorAttached === false || snap.vitals.sbp == null || snap.vitals.dbp == null) {
+        nibp = null;
+        renderInfo();
+        return;
+      }
+      nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute, ...(snap.unmeasurable?.includes("sbp") ? { none: true } : {}) };
+      renderInfo();
+    };
     const snapshot = (): VitalsSnapshot | null => {
       if (!linked) return null;
       return store.snapshot?.vitals ?? vitalsAt(c, game.session.session.state);
@@ -85,17 +104,18 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
           nibpBtn.disabled = true;
           nibpText.textContent = tr("monitor.nibpMeasuring");
           app.sound("beep");
-          setTimeout(() => {
-            const snap = vitalsAt(c, store.snapshot?.state ?? game.session.session.state);
-            nibpBtn.disabled = false;
-            if (snap.monitorAttached === false || snap.vitals.sbp == null || snap.vitals.dbp == null) {
-              nibp = null;
-              renderInfo();
-              return;
-            }
-            nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute, ...(snap.unmeasurable?.includes("sbp") ? { none: true } : {}) };
-            renderInfo();
-          }, 1400);
+          if (emb && device) {
+            // the monitor's `cycle_nibp` (within reach of the cuff; 45 s of simulated time)
+            void emb.worldAction({ operation: "cycle_nibp", targetId: device }).then((r) => {
+              if (r?.status === "completed") measured();
+              else {
+                nibpBtn.disabled = false;
+                renderInfo();
+              }
+            });
+            return;
+          }
+          setTimeout(measured, 1400);
         },
       },
       tr("monitor.nibp"),
@@ -113,7 +133,13 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
         const manual = spotCheckText(snap);
         if (manual) alarms.append(h("p", { id: "monitor-spot-checks", class: "small" }, h("b", null, `${tr("monitor.spotChecks")}: `), manual));
         if (attachWith) {
-          alarms.append(h("button", { type: "button", id: "monitor-attach", dataset: { intervention: attachWith.id }, onclick: () => app.act({ type: "intervene", interventionId: attachWith.id }) }, tr("monitor.attach")));
+          const attach = () => {
+            // embodied: the monitor's `attach` operation (its clinical effect is this intervention, through the
+            // learner's tool path); no monitor at the bedside: the intervention itself (spatially gated)
+            if (emb && device) void emb.worldAction({ operation: "attach", targetId: device });
+            else app.act({ type: "intervene", interventionId: attachWith.id });
+          };
+          alarms.append(h("button", { type: "button", id: "monitor-attach", dataset: { intervention: attachWith.id }, onclick: attach }, tr("monitor.attach")));
         }
       }
       // Without a monitor nothing alarms (the engine raises no alarm then): no "Alarms" section.
@@ -147,6 +173,26 @@ export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
           );
       }
       if (snap && c.clock.mode === "simulated") alarms.append(h("p", { class: "small muted" }, tr("monitor.minute", { n: Math.round(snap.minute) }), c.clock.startTime ? ` · ${clockLabel(c.clock.startTime, snap.minute)}` : ""));
+      // embodied: reading the screen is an operation of the monitor (within 6 m, line of sight)
+      if (emb && device && linked && !off) {
+        alarms.append(
+          h(
+            "button",
+            {
+              type: "button",
+              id: "monitor-read",
+              onclick: () =>
+                void emb.worldAction({ operation: "read", targetId: device }).then((r) => {
+                  if (r?.status !== "completed") return;
+                  readOut.textContent = r.message;
+                  readOut.hidden = false;
+                }),
+            },
+            tr("monitor.read"),
+          ),
+          readOut,
+        );
+      }
       nibpText.textContent = off ? tr("monitor.nibpOff") : nibp ? tr("monitor.nibpDone", { bp: nibp.none ? tr("monitor.noReading") : `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
     };
     renderInfo();

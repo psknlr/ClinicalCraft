@@ -1,0 +1,78 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "spatial-hand-hygiene-on-foot",
+  "suite": "embodied-v1",
+  "category": "spatial",
+  "title": {
+    "zh-CN": "步行最快能到达的手卫生点",
+    "en": "The hand-hygiene station you can reach soonest on foot"
+  },
+  "instruction": {
+    "zh-CN": "你在病例讨论室。从这里步行，哪一个手卫生点（洗手池或速干手消毒器）最快能到？提交它的实体 ID。",
+    "en": "You are in the case conference room. Which hand-hygiene station (sink or hand-rub dispenser) can you reach soonest on foot from here? Submit its entity id."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "point",
+        "x": -9,
+        "z": -12
+      }
+    }
+  },
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "eq:lobby-sanitizer-w"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "find",
+        "query": {
+          "interaction": "sink",
+          "limit": 3
+        },
+        "save": "sinks"
+      },
+      {
+        "op": "answer",
+        "from": "sinks"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "find_objects",
+        "args": {
+          "interaction": "sink",
+          "limit": 3
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "eq:lobby-sanitizer-w"
+        }
+      }
+    ]
+  }
+}

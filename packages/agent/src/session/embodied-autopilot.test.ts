@@ -45,6 +45,27 @@ async function autopilot(caseId: string, locale: string, clinical: boolean): Pro
   return run;
 }
 
+describe("embodied offline autopilot — trace verification", () => {
+  it("STEMI: every plan span is verified, the waits it inserts before a result is readable included", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { approvalMode: "bypass" } });
+    answerAll(t);
+    await t.session.run({ type: "autopilot", maxTurns: 60 });
+    expect(t.session.state.finished).toBe(true);
+    const spans = t.session.trace().spans;
+    const plans = spans.filter((s) => s.kind === "plan" && s.parentId === null);
+    const waits = plans.filter((s) => s.name === "wait");
+    expect(waits.length).toBeGreaterThan(0);
+    for (const plan of plans) {
+      const verification = spans.find((s) => s.parentId === plan.id && s.kind === "verification");
+      expect(verification?.ok, `${plan.id} ${plan.name}`).toBe(true);
+      expect(plan.ok, `${plan.id} ${plan.name}`).toBe(true);
+    }
+    // A wait's verification is the clock it advanced.
+    for (const wait of waits) expect(wait.clockEnd! - wait.clockStart!).toBeGreaterThan(0);
+    await t.session.close();
+  });
+});
+
 describe("embodied offline autopilot — every built-in case, both locales", () => {
   it("covers the built-in library", () => {
     expect(CASES.length).toBeGreaterThanOrEqual(10);

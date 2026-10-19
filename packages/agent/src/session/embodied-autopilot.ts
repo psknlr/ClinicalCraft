@@ -21,7 +21,7 @@
  * A step the policy makes impossible is narrated and listed as missed —
  * never done through the non-spatial path.
  */
-import type { ClinicalAction } from "@clinicalcraft/core";
+import type { ClinicalAction, SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallStatus } from "../loop.js";
@@ -114,6 +114,16 @@ async function runDevice(e: EmbodiedAutopilotHost, route: DeviceRoute, turnId: s
 /** Device outcomes that end a step (anything else falls back to the clinical tool at the patient's side). */
 const FINAL_DEVICE_OUTCOMES: ReadonlySet<string> = new Set(["completed", "APPROVAL_DENIED", "CANCELLED", "CLINICAL_REJECTED"]);
 
+/**
+ * The postcondition of a step after it ran: its effect is in the engine state —
+ * for a wait the walkthrough inserted (no reference clock to reach), the clock
+ * advanced by its minutes.
+ */
+function stepVerified(step: OfflineClinicianStep, state: SessionState, clockBefore: number): boolean {
+  if (step.action.type === "advance-time" && step.refClockAfter === undefined) return state.clock >= clockBefore + step.action.minutes - 1e-9;
+  return stepAlreadySatisfied(step, state);
+}
+
 /** Carry out one tool step with the body (see the module docs). */
 async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, step: Extract<OfflineClinicianStep, { kind: "tool" }>, turnId: string, signal?: AbortSignal): Promise<StepRun> {
   const intent = actionIntent(step.action as ClinicalAction);
@@ -122,6 +132,7 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
   const plan = e.trace.start("plan", `${step.tool}${item ? ` ${item}` : ""}`, { actorId: actor, ...(e.patientId() ? { refs: { entities: [e.patientId()!] } } : {}), data: { tool: step.tool, args: step.args, ...(intent ? { intent } : {}) } });
   let run: StepRun = { status: "error", ok: false };
   let verified = false;
+  const clockBefore = host.state().clock;
   try {
     run = await e.trace.within(plan.id, async () => {
       let outcome: StepRun;
@@ -166,7 +177,7 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
         const o = await host.executeTool(turnId, step.tool, step.args, signal);
         outcome = { status: o.status, ok: o.status === "ok" && o.output.ok };
       }
-      verified = stepAlreadySatisfied(step, host.state());
+      verified = stepVerified(step, host.state(), clockBefore);
       e.trace.start("verification", step.action.type, { actorId: actor }).end({ ok: verified, worldVersion: e.world().version, data: { postcondition: step.action } });
       return outcome;
     });

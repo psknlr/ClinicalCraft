@@ -11,6 +11,7 @@ import type { PanelHost } from "../ui/panel.js";
 import type { ContentIndex } from "./content.js";
 import type { RuntimeChoice, ServerInfo } from "./llm.js";
 import type { Inventory, SaveStore } from "./persistence.js";
+import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
 import type { Prefs } from "./settings.js";
 import type { Stations } from "./stations.js";
@@ -28,6 +29,8 @@ export interface Game {
   entered: boolean;
   /** Staff id currently in conversation (speaking animation). */
   activeStaff: string | null;
+  /** Embodied mode (docs/EMBODIED.md): the world model ⇄ 3D world controller; null in clinical mode. */
+  embodied: EmbodiedLink | null;
 }
 
 export type PanelName =

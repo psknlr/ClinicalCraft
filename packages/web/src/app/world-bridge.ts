@@ -5,26 +5,17 @@
  *   WorldHost      creates/recreates the world for a facility + patient (also the intro backdrop)
  *   patientFor     the case's patient in the first facility slot accepting `case.setting`
  *   routeInteraction  E on a target → which panel opens (patient/staff/workstation/device/monitor/board/atlas/craft)
- *   GameWorldLink  per game: waypoint beacon from `state_snapshot.waypoint`, NPC speaking/distress,
- *                  oxygen accessories, real-time simulated clock ticks, the `walk_to` dynamic tool
+ *   GameWorldLink  per game: waypoint beacon from `state_snapshot.waypoint`, NPC speaking, the patient's
+ *                  bystander cues (core `patientCues`: distress, oxygen accessory), real-time simulated
+ *                  clock ticks — paused while an agent drives a body (EMBODIED R8) —, the clinical-mode
+ *                  `walk_to` dynamic tool (embodied: mapped onto a world navigation)
  */
-import {
-  alarmLevel,
-  alarmLimitsFor,
-  MONITORED_VITALS,
-  resolveWaypoint,
-  t,
-  vitalValue,
-  type CaseDefinition,
-  type EquipmentCatalog,
-  type FacilityDefinition,
-  type PatientSlot,
-  type SessionState,
-} from "@clinicalcraft/core";
+import { patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { tr } from "../i18n/index.js";
+import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
 import { Stations } from "./stations.js";
 import type { LogEntry } from "./store.js";
@@ -154,6 +145,8 @@ export type Route =
   | { panel: "atlas" }
   | { panel: "craft" }
   | { panel: "elevator"; connectorId: string; level: string; name: string; stops: string[] }
+  /** Embodied mode: an operation on equipment through the world model (a sink's `wash_hands`). */
+  | { panel: "world-op"; targetId: string; operation: string; title: string }
   | { panel: "toast"; title: string; body?: string };
 
 /** Facility staff role → session agent profile. */
@@ -169,7 +162,7 @@ export const STAFF_AGENT: Record<string, string> = {
   porter: "nurse",
 };
 
-export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null }): Route {
+export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null; embodied?: boolean }): Route {
   switch (target.kind) {
     case "patient":
       if (ctx.caseDef && target.caseId === ctx.caseDef.id) return { panel: "conversation", agent: "patient" };
@@ -197,6 +190,10 @@ export function routeInteraction(target: InteractionTarget, ctx: { caseDef: Case
           return { panel: "craft" };
         case "bed":
           return { panel: "toast", title: tr("toast.talkToPatient"), body: tr("toast.talkToPatientBody") };
+        case "sink":
+          // embodied: washing hands is a world operation (hygiene for the operations that need it)
+          if (ctx.embodied) return { panel: "world-op", targetId: `eq:${target.placementId}`, operation: "wash_hands", title: target.name };
+          return { panel: "toast", title: target.name, body: target.hint };
         default:
           return { panel: "toast", title: target.name, body: target.hint };
       }
@@ -219,6 +216,10 @@ export interface GameWorldLinkOptions {
   playing: () => boolean;
   /** Staff currently in conversation (for the speaking animation). */
   activeStaff: () => string | null;
+  /** An agent drives a body (embodied: autopilot, clinician, delegated staff, a world walk) — real-time ticks pause. */
+  agentDriving?: () => boolean;
+  /** The embodied controller (null: clinical mode). */
+  embodied?: () => EmbodiedLink | null;
 }
 
 export class GameWorldLink {
@@ -234,6 +235,7 @@ export class GameWorldLink {
   private offChange: () => void;
   private walkAbort: AbortController | null = null;
   private distressed = false;
+  private accessory: string | null = null;
 
   constructor(private readonly o: GameWorldLinkOptions) {
     this.stations = new Stations(o.facility, o.catalogs);
@@ -301,6 +303,7 @@ export class GameWorldLink {
     this.syncWaypoint();
     const world = this.o.world();
     if (world && this.o.slotId && this.distressed) world.setPatientState(this.o.slotId, { distressed: true });
+    if (world && this.o.slotId && this.accessory) world.setPatientState(this.o.slotId, { accessory: this.accessory as "oxygen-mask" });
   }
 
   private speak(id: string, kind: "patient" | "staff", text: string): void {
@@ -328,16 +331,16 @@ export class GameWorldLink {
         if (staff) this.speak(staff, "staff", msg.text);
       }
     } else if (msg.type === "state_snapshot" && world && this.o.slotId) {
-      const critical = !msg.vitals.baselineOnly && (msg.vitals.alarms.some((a) => a.level === "critical") || (msg.vitals.monitorAttached === false && inExtremis(this.o.caseDef, msg.state)));
-      if (critical !== this.distressed) {
-        this.distressed = critical;
-        world.setPatientState(this.o.slotId, { distressed: critical });
+      // what a bystander sees (core `patientCues`, the same cues the world model shows agents): a sick patient
+      // looks sick (a critical alarm, or no monitor yet and in extremis), oxygen on the face
+      const cues = patientCues(this.o.caseDef, msg.state);
+      if (cues.distressed !== this.distressed) {
+        this.distressed = cues.distressed;
+        world.setPatientState(this.o.slotId, { distressed: cues.distressed });
       }
-    } else if (msg.type === "clinical_event" && msg.event.type === "intervention.applied" && world && this.o.slotId) {
-      const iv = this.o.caseDef.interventions.find((i) => i.id === (msg.event as { interventionId: string }).interventionId);
-      if (iv?.kind === "oxygen") {
-        const label = `${iv.id} ${t(iv.name, "en")}`.toLowerCase();
-        world.setPatientState(this.o.slotId, { accessory: /mask|nrb|non-rebreath|venturi/.test(label) ? "oxygen-mask" : "nasal-cannula" });
+      if (cues.accessory && cues.accessory !== this.accessory) {
+        this.accessory = cues.accessory;
+        world.setPatientState(this.o.slotId, { accessory: cues.accessory });
       }
     } else if (msg.type === "dynamic_tool_call" && msg.tool === "walk_to") {
       void this.walkTo(msg.callId, msg.args);
@@ -351,6 +354,13 @@ export class GameWorldLink {
     if (!world) return void respond(false, "world not available");
     const dest = target ? this.resolveTarget(target) : null;
     if (!dest) return void respond(false, `unknown destination "${target}"`);
+    const embodied = this.o.embodied?.();
+    if (embodied) {
+      // embodied: the legacy `walk_to` maps onto a world navigation (planned and timed by the world)
+      const r = await embodied.goTo({ kind: "point", x: dest.x, z: dest.z, ...(dest.level ? { level: dest.level } : {}) }, dest.label);
+      respond(r?.status === "completed", r?.message ?? `could not walk to ${dest.label}`);
+      return;
+    }
     this.walkAbort?.abort();
     const ctrl = new AbortController();
     this.walkAbort = ctrl;
@@ -371,6 +381,8 @@ export class GameWorldLink {
     const dt = now - this.lastTick;
     this.lastTick = now;
     if (!this.o.playing()) return;
+    // an agent drives a body: the world charges that time (travel, procedures) — real time would count it twice
+    if (this.o.agentDriving?.()) return;
     const c = this.o.caseDef;
     if (c.clock.mode !== "simulated" || c.clock.realtimeScale <= 0) return;
     try {
@@ -379,19 +391,4 @@ export class GameWorldLink {
       console.error(err);
     }
   }
-}
-
-/**
- * Does the patient look critically ill — a monitored vital in its critical
- * band (engine truth: a sick patient looks sick whether or not a monitor is
- * attached)? Drives only the voxel patient's distressed look before the
- * monitor is on; no number is shown.
- */
-export function inExtremis(c: CaseDefinition, s: SessionState): boolean {
-  if (!c.physiology) return false;
-  const limits = alarmLimitsFor(c);
-  return MONITORED_VITALS.some((vital) => {
-    const value = vitalValue(c, s, vital);
-    return value != null && alarmLevel(value, limits[vital]) === "critical";
-  });
 }

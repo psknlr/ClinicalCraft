@@ -51,9 +51,12 @@ packages/world              @clinicalcraft/world    embodied world model (pure, 
                                                     visibility, semantic registry; `createWorldRuntime` — versioned
                                                     physical state, device behaviours, spatial policy, perception,
                                                     action bus, traces (docs/EMBODIED.md)
-packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs, JSON Schemas (data only;
+packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs, benchmark scenarios, JSON Schemas (data only;
                                                     loaded by `loadContent` in @clinicalcraft/agent/node)
 packages/agent              @clinicalcraft/agent    runtime ("." isomorphic, "./node" fs/child_process)
+packages/bench              @clinicalcraft/bench    embodied agent benchmark (Node): scenario schema and suites, reference /
+                                                    scripted / live agents, runner, audits, Wilson-interval reports,
+                                                    reference demonstration (docs/EMBODIED.md §13)
 packages/cli                @clinicalcraft/cli      `clinicalcraft` binary
 packages/server             @clinicalcraft/server   HTTP server (web host + LLM proxy + content API)
 packages/mcp                @clinicalcraft/mcp      MCP stdio server

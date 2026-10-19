@@ -24,6 +24,14 @@ describe("TraceRecorder", () => {
     expect(r.trace()).toMatchObject({ format: "clinicalcraft-trace@1", episodeId: "e", embodiment: "embodied", spans: r.spans() });
   });
 
+  it("an open span keeps the data it was started with; data given at its end is merged over it (like refs)", () => {
+    const { r } = recorder();
+    const plan = r.start("plan", "order_test ecg-12lead", { data: { tool: "order_test", args: { investigationId: "ecg-12lead" } } });
+    expect(plan.end({ ok: true, data: { status: "ok" } }).data).toEqual({ tool: "order_test", args: { investigationId: "ecg-12lead" }, status: "ok" });
+    expect(r.start("plan", "p", { data: { a: 1 } }).end({ ok: true, data: { a: 2 } }).data).toEqual({ a: 2 });
+    expect(r.start("plan", "q").end({ ok: true }).data).toBeUndefined();
+  });
+
   it("keeps at most maxSpans; JSONL has a header and one span per line", () => {
     const { r } = recorder(2);
     for (let i = 0; i < 3; i++) r.add({ parentId: null, kind: "assessment", name: `n${i}`, actorId: null, startedAt: i, endedAt: i, clockStart: 0, clockEnd: 0, worldVersion: 0, ok: true, refs: {} });

@@ -1,0 +1,83 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "perception-nurse-at-station",
+  "suite": "embodied-v1",
+  "category": "perception",
+  "title": {
+    "zh-CN": "认出护士站的值班护士",
+    "en": "Recognise the nurse on duty at the nurse station"
+  },
+  "instruction": {
+    "zh-CN": "你在急诊护士站。这里值班的护士是谁？提交她的实体 ID。",
+    "en": "You are at the ED nurse station. Who is the nurse on duty here? Submit her entity id."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "room",
+        "id": "ed-station"
+      }
+    }
+  },
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "staff:ed-nurse"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "observe"
+      },
+      {
+        "op": "find",
+        "query": {
+          "kind": "staff",
+          "room": "ed-station"
+        },
+        "save": "staff"
+      },
+      {
+        "op": "answer",
+        "from": "staff"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "observe_world",
+        "args": {}
+      },
+      {
+        "tool": "find_entities",
+        "args": {
+          "kind": "staff"
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "staff:ed-nurse"
+        }
+      }
+    ]
+  }
+}

@@ -112,7 +112,7 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
         content.append(h("p", { class: "notice" }, tr("report.unavailable")), buttons);
         return;
       }
-      const refusal = (!order && args.orderSubmission ? store.failures.get(args.orderSubmission) : undefined) ?? (!seen && readSubmission ? store.failures.get(readSubmission) : undefined);
+      const refusal = (!order && args.orderSubmission ? store.failureOf(args.orderSubmission) : undefined) ?? (!seen && readSubmission ? store.failureOf(readSubmission) : undefined);
       if (refusal) {
         content.append(h("p", { class: "notice refused", id: "report-refused" }, tr(order ? "report.readRefused" : "report.orderRefused", { reason: refusal })), buttons);
         return;

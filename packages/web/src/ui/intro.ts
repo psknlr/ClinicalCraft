@@ -224,8 +224,39 @@ export class Intro {
       h("b", { id: "selected-case" }, ct(card.title)),
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
+      this.embodimentRow(card),
       h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
       this.caseStatusLine(card),
+    );
+  }
+
+  /**
+   * "Embodied agents" at case start (docs/EMBODIED.md R3): the mode of a new encounter — fixed while it
+   * runs; continuing a save keeps the saved mode (said under the switch). Clinical without a 3D world.
+   */
+  private embodimentRow(card: CaseCard): HTMLElement {
+    const app = this.app;
+    const on = app.preferredEmbodiment() === "embodied";
+    const toggle = h("input", {
+      type: "checkbox",
+      id: "embodied-toggle",
+      checked: on,
+      disabled: app.worldFailed,
+      onchange: (e: Event) => {
+        const checked = (e.target as HTMLInputElement).checked;
+        app.prefs.update((s) => {
+          s.agent.embodiment = checked ? "embodied" : "clinical";
+        });
+      },
+    });
+    const saved = app.saves.caseSave(card.id);
+    const savedMode = saved ? (saved.snapshot.embodiment === "embodied" ? "emb.mode.embodied" : "emb.mode.clinical") : null;
+    return h(
+      "div",
+      { class: "embodied-row" },
+      h("label", { for: "embodied-toggle" }, toggle, h("span", null, tr("intro.embodied"))),
+      h("small", null, tr("intro.embodiedHint")),
+      savedMode ? h("small", { class: "embodied-saved", id: "embodied-saved" }, tr("intro.embodiedSaved", { mode: tr(savedMode) })) : null,
     );
   }
 

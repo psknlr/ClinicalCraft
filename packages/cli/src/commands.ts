@@ -8,6 +8,7 @@ import type { CliContext } from "./context.js";
 import { runEval } from "./eval.js";
 import { runExec } from "./exec.js";
 import { assetsInspect } from "./assets.js";
+import { benchDemo, benchList, benchRun } from "./bench.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
@@ -58,6 +59,53 @@ export const EXEC: CommandSpec = {
     'clinicalcraft -p "Where does it hurt?" --case smzl-lung-adeno',
     "clinicalcraft exec --case smzl-lung-adeno --autopilot --approval bypass --output-format json",
     "echo '{\"type\":\"slash_command\",\"name\":\"vitals\",\"args\":\"\"}' | clinicalcraft exec --case dka-adult --input-format stream-json --output-format stream-json",
+  ],
+};
+
+const SUITE: FlagSpec = { name: "suite", type: "string", valueName: "<id>", description: { en: "Scenario suite (default embodied-v1)", zh: "场景测试集（默认 embodied-v1）" } };
+
+/** `bench`: the embodied agent benchmark (docs/EMBODIED.md §13). */
+export const BENCH: CommandSpec = {
+  name: "bench",
+  summary: { en: "Embodied agent benchmark: scenario suites, reference / scripted / live agents, reports, demonstration", zh: "具身智能体基准测试：场景测试集、参考/脚本/真实模型智能体、报告与演示" },
+  defaultSubcommand: "list",
+  subcommands: [
+    { name: "list", aliases: ["ls"], summary: { en: "List the scenarios of a suite", zh: "列出测试集中的场景" }, flags: [SUITE, JSON_FLAG], run: benchList },
+    {
+      name: "run",
+      summary: { en: "Run a suite → bench-report.json + bench-report.md (Wilson 95 % intervals)", zh: "运行测试集 → bench-report.json 与 bench-report.md（Wilson 95% 置信区间）" },
+      flags: [
+        SUITE,
+        { name: "agent", type: "string", valueName: "<kind>", choices: ["reference", "scripted-llm", "llm"], description: { en: "reference | scripted-llm (infrastructure validation) | llm (a real model; needs --live)", zh: "reference | scripted-llm（验证基础设施）| llm（真实模型；需 --live）" } },
+        { name: "seeds", type: "string", valueName: "<list>", description: { en: "Run seeds, e.g. 1-5 or 1,2,7 (default 1-3)", zh: "运行种子，如 1-5 或 1,2,7（默认 1-3）" } },
+        { name: "scenario", type: "list", valueName: "<ids>", description: { en: "Only these scenarios", zh: "只运行这些场景" } },
+        { name: "category", type: "list", valueName: "<names>", description: { en: "Only these categories", zh: "只运行这些类别" } },
+        { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default bench-results)", zh: "报告目录（默认 bench-results）" } },
+        { name: "traces", type: "boolean", description: { en: "Also write every run's episode trace (traces/*.jsonl)", zh: "同时写出每次运行的轨迹（traces/*.jsonl）" } },
+        { name: "require", type: "number", valueName: "<percent>", description: { en: "Minimum task success rate (default 100 for reference / scripted-llm)", zh: "最低任务成功率（reference / scripted-llm 默认 100）" } },
+        { name: "live", type: "boolean", description: { en: "Allow the llm agent to call a real model (costs money; never in CI)", zh: "允许 llm 智能体调用真实模型（会产生费用；CI 中禁止）" } },
+        { name: "max-tokens", type: "number", valueName: "<n>", description: { en: "Spending cap: total tokens over the whole run (llm)", zh: "费用上限：整次运行的总 token 数（llm）" } },
+        { name: "max-usd", type: "number", valueName: "<usd>", description: { en: "Spending cap in USD (only for models with a catalogue price)", zh: "以美元计的费用上限（仅限有目录价格的模型）" } },
+        ...SESSION_FLAGS.filter((f) => ["provider", "model", "base-url"].includes(f.name)),
+      ],
+      run: benchRun,
+      examples: [
+        "clinicalcraft bench run --suite embodied-v1 --agent reference",
+        "clinicalcraft bench run --agent scripted-llm --seeds 1-5 --out bench-results/scripted",
+        "clinicalcraft bench run --agent llm --provider anthropic --model claude-opus-5-5 --live --max-tokens 2000000 --seeds 1-3",
+      ],
+    },
+    {
+      name: "demo",
+      summary: { en: "Reference demonstration: the embodied encounter headless → trace.jsonl + demo.md", zh: "参考演示：无界面具身接诊 → trace.jsonl 与 demo.md" },
+      flags: [
+        { name: "case", type: "string", valueName: "<id>", description: { en: "Case id (default stemi-inferior-rv)", zh: "病例 ID（默认 stemi-inferior-rv）" } },
+        { name: "facility", type: "string", valueName: "<id>", description: { en: "Facility (default: the case's own)", zh: "场馆（默认病例自己的场馆）" } },
+        { name: "out", type: "string", valueName: "<dir>", description: { en: "Output directory (default bench-demo)", zh: "输出目录（默认 bench-demo）" } },
+      ],
+      run: benchDemo,
+      examples: ["clinicalcraft bench demo --case stemi-inferior-rv --lang en --out bench-demo"],
+    },
   ],
 };
 
@@ -274,6 +322,7 @@ export const ROOT: CommandSpec = {
       run: runEval,
       examples: ["clinicalcraft eval --cases all --provider offline --out report.md"],
     },
+    BENCH,
   ],
 };
 

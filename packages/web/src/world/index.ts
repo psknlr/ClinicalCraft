@@ -38,12 +38,14 @@ import {
   type Object3D,
 } from "three";
 import { buildingLevels, entityLevel, roomLevel } from "@clinicalcraft/core";
-import { blockBox, buildCollisionModel, patientBodyBox, type DoorSpec } from "@clinicalcraft/world";
-import type { BlockInfo, CreateWorld, InteractionTarget, WorldApi, WorldOptions, WorldPatient, WorldPoint, WorldSave, WorldSettings } from "../contracts.js";
+import { blockBox, buildCollisionModel, patientBodyBox, staffBodyBox, type DoorSpec } from "@clinicalcraft/world";
+import type { BlockInfo, BodyMove, BodyPose, CreateWorld, InteractionTarget, RoutePoint, WorldApi, WorldOptions, WorldPatient, WorldPoint, WorldSave, WorldSettings } from "../contracts.js";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { buildRules, canPlace, cellKey, validBlocks, type BuildRules, type Cell } from "./buildzone.js";
 import type { BuildContext, DoorRecord, LightCandidate, NpcRecord } from "./context.js";
+import { captureJpeg } from "./capture.js";
 import { buildElevators, inCar, type Elevator, type ElevatorStop, type ElevatorTarget } from "./elevator.js";
+import { ROUTE_ARRIVE, worldRouteLegs, yawOfRig } from "./embodiment.js";
 import { buildPlacements, surfaceTop } from "./equipment.js";
 import { ModelCache, modelUrl, placeModel, shortUrl } from "./models.js";
 import { WorldLevels } from "./levels.js";
@@ -52,6 +54,7 @@ import { MaterialLibrary, mergeCatalogs } from "./materials.js";
 import { buildPerson, disposeRig, ROLE_UNIFORMS, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
 import { buildNavGrid, findPath, type NavGrid } from "./pathfind.js";
 import { clampPitch, ColliderGrid, overlapsXZ, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
+import { dragPortable, placePortable, pushPortable, type PortableHost } from "./portable.js";
 import { regionAt } from "./region.js";
 import { SignFactory } from "./signs.js";
 import { animateDoors, buildStructures, setDoorOpen, type WallRecord } from "./structures.js";
@@ -61,6 +64,7 @@ import { roleName, strings, tx } from "./strings.js";
 import { buildTerrain } from "./terrain.js";
 import { createLcg } from "./textures.js";
 import { BoxBatch, isSharedGeometry, releaseSharedGeometry, UNIT_BOX } from "./voxels.js";
+import { StaffWalkers } from "./walkers.js";
 
 export { monitorRenderer } from "../shared/monitor-render.js";
 
@@ -153,6 +157,13 @@ interface AutoWalk {
   legs: Leg[];
   /** Waiting for an elevator ride (the walk resumes on arrival). */
   riding?: boolean;
+  /**
+   * Embodiment (`followRoute`): the current leg follows the world model's points (a stall detours locally
+   * to the next point instead of re-planning the whole leg), and doors this walk opened close behind it.
+   */
+  route?: { opened: Set<DoorRecord>; detours: number };
+  /** Current leg is a `path` leg of a world-model route. */
+  pathLeg?: boolean;
 }
 
 export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
@@ -316,6 +327,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     screens: [],
     animated: [],
     placements: new Map(),
+    portables: new Map(),
     npcs: new Map(),
     // meshes always carry castShadow flags; the renderer's shadow map (quality) decides whether they are used
     shadows: true,
@@ -350,7 +362,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         if (disposed) return;
         const placed = placeModel(scene, req.model, req.footprint, { ...req.at, id: req.placementId }, ctx.shadows);
         if (!placed) throw new Error("empty model");
-        (levelRoots.get(req.level) ?? root).add(placed.group);
+        (req.parent ?? levelRoots.get(req.level) ?? root).add(placed.group);
         req.fallback.visible = false;
         const hidden = new Set<Object3D>();
         req.fallback.traverse((o) => hidden.add(o));
@@ -675,11 +687,11 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     callbacks.onToast(pair[0], pair[1]);
   }
 
-  function toggleDoor(door: DoorRecord, force?: boolean): void {
+  function toggleDoor(door: DoorRecord, force?: boolean, sound = true): void {
     const open = force ?? !door.open;
     if (open === door.open) return;
     setDoorOpen(door, open, locale);
-    callbacks.onSound("door");
+    if (sound) callbacks.onSound("door");
   }
 
   function playerInDoorway(door: DoorRecord): boolean {
@@ -699,7 +711,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
           toast(S.leaveDoor);
           return;
         }
+        if (!door.open && door.locked) {
+          // locked by the world model (embodiment): it stays shut
+          toast(S.doorLocked);
+          return;
+        }
         toggleDoor(door); // both leaves of a double door share one record (V4 toggles them together)
+        callbacks.onDoor?.(door.id, door.open);
         return;
       }
       if (t.kind === "elevator") {
@@ -1178,13 +1196,18 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       w.index++;
       return null;
     }
-    // open closed doors ahead (on the avatar's level)
+    // open closed doors ahead (on the avatar's level); a locked one stays shut (the world model's lock)
     const here = levels.multi ? currentLevel() : level;
     for (const d of ctx.doors) {
-      if (d.open || d.level !== here) continue;
+      if (d.open || d.locked || d.level !== here) continue;
       const near = Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 2.6;
-      if (near) toggleDoor(d, true);
+      if (near) {
+        toggleDoor(d, true);
+        w.route?.opened.add(d);
+      }
     }
+    // a world-model route closes the doors it opened once they are behind it (the world's doors stay as they were)
+    if (w.route) closeDoorsBehind(w.route.opened);
     // progress watchdog: path length still to walk must shrink within 3 s of simulated walking
     // (wall-clock time and straight-line goal distance both misfire: slow frames, detours)
     const remaining = remainingPath(w);
@@ -1241,7 +1264,15 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     w.replans++;
     let path: { x: number; z: number }[];
     if (w.fixed) path = w.fixed.filter((p, i) => i === w.fixed!.length - 1 || Math.hypot(p.x - player.x, p.z - player.z) > 0.35);
-    else {
+    else if (w.pathLeg) {
+      // a world-model route: a local detour to its next point, then on along its points
+      const rest = w.path.slice(Math.min(w.index, Math.max(0, w.path.length - 1)));
+      if (!rest.length) return false;
+      const p = planPath(rest[0], w.level);
+      if (!p) return false;
+      path = [...p.path, ...rest.slice(1)];
+      if (w.route) w.route.detours++;
+    } else {
       const p = planPath(w.goal, w.level);
       if (!p) return false;
       path = p.path;
@@ -1266,6 +1297,17 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     w.stall = 0;
     w.bestRemaining = w.replanBase = Infinity;
     w.fixed = undefined;
+    w.pathLeg = false;
+    if (leg.kind === "path") {
+      // the world model's points on this level (embodiment)
+      w.level = leg.level;
+      w.pathLeg = true;
+      w.path = leg.points.map((p) => ({ ...p }));
+      const end = w.path[w.path.length - 1];
+      w.goal = { x: end.x, z: end.z };
+      w.arrive = leg.final ? ROUTE_ARRIVE : LEG_ARRIVE;
+      return true;
+    }
     if (leg.kind === "ride") {
       w.riding = true;
       w.path = [];
@@ -1285,6 +1327,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     w.level = leg.level;
     if (leg.kind === "flight") {
+      // a flight that starts where the avatar stands (a world route beginning at the stairs): from here
+      if (leg.path.length < 2) leg.path = [{ x: player.x, z: player.z }, ...leg.path];
       w.fixed = leg.path;
       w.path = [...leg.path];
       w.goal = leg.path[leg.path.length - 1];
@@ -1333,6 +1377,161 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     });
   }
 
+  /* ---------------- embodiment: the world model's routes, walking staff, carts, doors, camera ---------------- */
+  // docs/EMBODIED.md §2: the renderer animates what the world model planned and committed (the browser
+  // `Mover`), it never plans or decides itself. See embodiment.ts, walkers.ts, portable.ts, capture.ts.
+
+  /** Kind of a facility connector (route legs: stairs and ramps are walked, elevators ridden). */
+  const connectorKind = (id: string) => (facility.connectors ?? []).find((c) => c.id === id)?.kind ?? null;
+
+  /** Is (x, z) in a door's doorway area (± a body radius)? */
+  function inDoorway(d: DoorRecord, x: number, z: number, r: number = PHYSICS.radius): boolean {
+    const a = d.area;
+    return x + r > a.minX && x - r < a.maxX && z + r > a.minZ && z - r < a.maxZ;
+  }
+
+  /** Is anybody (the player, a walking or standing NPC) in a doorway — `except` left out? */
+  function doorwayOccupied(d: DoorRecord, except: NpcRecord | null): boolean {
+    if ((!levels.multi || d.level === currentLevel()) && inDoorway(d, player.x, player.z)) return true;
+    for (const n of ctx.npcs.values()) if (n !== except && n.level === d.level && inDoorway(d, n.x, n.z, 0.35)) return true;
+    return false;
+  }
+
+  /** Close the doors a world-model walk opened once the avatar is past them and nobody stands in them. */
+  function closeDoorsBehind(opened: Set<DoorRecord>): void {
+    for (const d of [...opened]) {
+      if ((!levels.multi || d.level === currentLevel()) && Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 3) continue;
+      if (doorwayOccupied(d, null)) continue;
+      if (d.open) toggleDoor(d, false);
+      opened.delete(d);
+    }
+  }
+
+  /** The avatar's pose in the world model's convention (feet height, yaw 0 → −Z). */
+  function avatarPose(): BodyPose {
+    return { x: player.x, y: player.y, z: player.z, yaw, pitch, level: levels.multi ? currentLevel() : level };
+  }
+
+  /**
+   * Walk the avatar along a world-model route (`WorldApi.followRoute`): the existing auto-walk machinery
+   * (doors, stalls, flights, elevator rides) on legs built from the route's own points.
+   */
+  function followRoute(route: RoutePoint[], opts: { yaw?: number; signal?: AbortSignal } = {}): Promise<BodyMove> {
+    cancelWalk(new Error("superseded"));
+    return new Promise<BodyMove>((resolve) => {
+      const here = levels.multi ? currentLevel() : level;
+      const tracker = { opened: new Set<DoorRecord>(), detours: 0 };
+      let done = false;
+      const finish = (arrived: boolean) => {
+        if (done) return;
+        done = true;
+        if (arrived) {
+          // settle exactly on the planned spot (a free cell centre) and face the target
+          const end = route[route.length - 1];
+          if (end && end.level === (levels.multi ? currentLevel() : level) && Math.hypot(end.x - player.x, end.z - player.z) <= ROUTE_ARRIVE + 0.1) {
+            player.x = end.x;
+            player.z = end.z;
+          }
+          if (opts.yaw !== undefined && Number.isFinite(opts.yaw)) {
+            yaw = opts.yaw;
+            pitch = 0;
+          }
+          camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
+          camera.rotation.set(pitch, yaw, 0);
+        }
+        resolve({ arrived, pose: avatarPose(), replans: tracker.detours });
+      };
+      if (opts.signal?.aborted || disposed) {
+        finish(false);
+        return;
+      }
+      const legs = worldRouteLegs(route, here, connectorKind);
+      if (!legs.length) {
+        finish(true);
+        return;
+      }
+      const w: AutoWalk = {
+        path: [],
+        index: 0,
+        goal: { x: player.x, z: player.z },
+        arrive: ROUTE_ARRIVE,
+        replans: 0,
+        resolve: () => finish(true),
+        reject: () => finish(false),
+        stall: 0,
+        bestRemaining: Infinity,
+        replanBase: Infinity,
+        signal: opts.signal,
+        level: here,
+        legs,
+        route: tracker,
+      };
+      if (!nextLeg(w)) {
+        finish(false);
+        return;
+      }
+      if (opts.signal) {
+        w.onAbort = () => {
+          if (autoWalk === w) cancelWalk(new DOMException("Aborted", "AbortError") as unknown as Error);
+        };
+        opts.signal.addEventListener("abort", w.onAbort, { once: true });
+      }
+      autoWalk = w;
+    });
+  }
+
+  /** Staff NPCs walking world-model routes (delegated tasks). */
+  const walkers = new StaffWalkers({
+    elevation: (lv) => levels.elevation(lv),
+    levelRoot: (lv) => levelRoots.get(lv) ?? root,
+    connectorKind,
+    doors: () => ctx.doors,
+    // a door far from the player opens without a sound
+    setDoorOpen: (d, open) => toggleDoor(d, open, Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 8),
+    doorwayOccupied,
+    addBody: (x, z, elevation, lv) => {
+      const b = staffBodyBox(x, z);
+      const box = ctx.colliders.add({ ...b, minY: b.minY + elevation, maxY: b.maxY + elevation });
+      colliderLevels.set(box, lv);
+      return box;
+    },
+    removeCollider: (box) => ctx.colliders.remove(box),
+    post: (n) => {
+      const st = (facility.staff ?? []).find((s) => s.id === n.id);
+      return st ? { x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), level: entityLevel(facility, st) } : null;
+    },
+    markShadows,
+  });
+
+  /** Moving portable placements (carts) to where the world model has them. */
+  const portableHost: PortableHost = {
+    ctx,
+    levelRoot: (lv) => levelRoots.get(lv) ?? root,
+    elevation: (lv) => levels.elevation(lv),
+    addCollider: (box, lv) => {
+      const b = ctx.colliders.add(box);
+      colliderLevels.set(b, lv);
+      return b;
+    },
+    removeCollider: (box) => ctx.colliders.remove(box),
+    markShadows,
+  };
+
+  /** Draw the carts being pushed in front of their walkers (each frame while any is pushed). */
+  function dragPushed(): void {
+    for (const rec of ctx.portables.values()) {
+      if (!rec.pushedBy) continue;
+      if (rec.pushedBy === "avatar") dragPortable(portableHost, rec, player.x, player.z, yaw, levels.multi ? currentLevel() : level);
+      else {
+        const n = ctx.npcs.get(`staff:${rec.pushedBy}`);
+        if (n) dragPortable(portableHost, rec, n.x, n.z, yawOfRig(n.rig.root.rotation.y), n.level);
+      }
+    }
+  }
+
+  /** A door record by renderer id (`door:` prefix accepted). */
+  const doorById = (id: string) => ctx.doors.find((d) => d.id === (id.startsWith("door:") ? id.slice("door:".length) : id)) ?? null;
+
   /* ---------------- interior detail culling ---------------- */
   // Signs, live screens, interior door leaves and NPCs inside a building are only drawn while the
   // camera is inside that building or within DETAIL_RANGE of them: from outside, walls and the roof
@@ -1376,9 +1575,23 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     };
     for (const [lv, g] of levelRoots) if (g !== root) set(g, levelShown(lv));
     for (const d of details) set(d.obj, show(d.building, d.x, d.z, d.level));
-    for (const n of ctx.npcs.values()) set(n.rig.root, show(buildingAt(n.x, n.z), n.x, n.z, n.level));
+    for (const n of ctx.npcs.values()) set(n.rig.root, !walkers.riding(n.id) && show(buildingAt(n.x, n.z), n.x, n.z, n.level));
+    // portable placements are drawn where they stand now (and not while carried)
+    for (const pr of ctx.portables.values()) set(pr.group, !pr.hidden && show(buildingAt(pr.x, pr.z), pr.x, pr.z, pr.level));
     // hidden casters were left out of the cached shadow map
     if (changed) markShadows();
+  }
+
+  /** Culling of the NPCs walking now (they move without the camera moving). */
+  function cullWalkers(): void {
+    const cx = camera.position.x, cz = camera.position.z;
+    const camLevel = levels.at(player.y);
+    const inside = buildingAt(cx, cz);
+    for (const n of walkers.walking()) {
+      const bi = buildingAt(n.x, n.z);
+      const shown = !walkers.riding(n.id) && levels.visibleFrom(n.level, camLevel, cx, cz, inside >= 0) && (bi < 0 || bi === inside || Math.hypot(n.x - cx, n.z - cz) < DETAIL_RANGE);
+      if (n.rig.root.visible !== shown) n.rig.root.visible = shown;
+    }
   }
 
   /* ---------------- frame loop ---------------- */
@@ -1438,7 +1651,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       lastFrame = now;
       return;
     }
-    if (!playing() && !autoWalk && !ride && now - lastFrame < PAUSED_FRAME_MS) return;
+    if (!playing() && !autoWalk && !ride && !walkers.active && now - lastFrame < PAUSED_FRAME_MS) return;
     const realDt = Math.max(0, (now - lastFrame) / 1000);
     const dt = Math.min(PHYSICS.maxDt, realDt);
     lastFrame = now;
@@ -1495,6 +1708,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
       camera.rotation.set(pitch, yaw, 0);
     }
+    // staff walking world-model routes (delegated tasks): an animation, real time
+    if (walkers.update(Math.min(realDt, 0.25))) cullWalkers();
+    dragPushed();
     if (animateDoors(ctx.doors, dt)) markShadows();
     followSun(player.x, player.z);
     assignLights(player.x, player.z, false, player.y);
@@ -1614,7 +1830,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
         rooms: facility.rooms.filter((r) => roomLevel(facility, r) === lv).map((r) => ({ ...r.rect, name: tx(r.name, loc), kind: r.kind })),
         walls: walls.filter((w) => w.level === lv).map(toMapWall),
         placements: [...ctx.placements.values()].filter((p) => p.level === lv).map((p) => ({ x: p.x, z: p.z, w: p.w, d: p.d, kind: p.kind, solid: p.solid, label: p.label })),
-        staff: (facility.staff ?? []).filter((st) => entityLevel(facility, st) === lv).map((st) => ({ x: st.x, z: st.z, label: tx(st.name, loc) })),
+        staff: [],
         northLabel: SL.north,
         ...(levels.multi ? { connectors: mapConnectors(lv, loc), levelLabel: levels.name(lv, loc) } : {}),
       };
@@ -1622,6 +1838,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
     return {
       ...data,
+      // actors where they are now (staff walk when delegated; a walking one is highlighted)
+      staff: [...ctx.npcs.values()]
+        .filter((n) => n.kind === "staff" && n.level === lv)
+        .map((n) => ({ x: n.x, z: n.z, label: n.label, ...(walkers.busy(n.id) ? { moving: true } : {}) })),
       slots: facility.patientSlots
         .filter((sl) => entityLevel(facility, sl) === lv)
         .map((sl) => {
@@ -1774,6 +1994,58 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       return levels.list.map((l) => ({ id: l.id, name: levels.name(l.id, loc || locale), elevation: l.elevation }));
     },
     rideElevator,
+    followRoute,
+    walkStaff(staffId, route, o = {}) {
+      const n = ctx.npcs.get(`staff:${staffId.replace(/^staff:/, "")}`);
+      if (!n) return Promise.resolve({ arrived: route.length === 0, pose: { x: 0, y: 0, z: 0, yaw: 0, pitch: 0, level }, replans: 0 });
+      return walkers.start(n, route, o);
+    },
+    placeStaff(staffId, pose) {
+      const n = ctx.npcs.get(`staff:${staffId.replace(/^staff:/, "")}`);
+      if (!n) return;
+      walkers.place(n, pose);
+      detailAt = null;
+    },
+    staffPose(staffId) {
+      const n = ctx.npcs.get(`staff:${staffId.replace(/^staff:/, "")}`);
+      return n ? walkers.pose(n) : null;
+    },
+    placeEquipment(placementId, at) {
+      const rec = ctx.portables.get(placementId.replace(/^eq:/, ""));
+      if (!rec) return;
+      placePortable(portableHost, rec, at);
+      mapCache.clear(); // map dots of moved carts
+      detailAt = null;
+    },
+    pushEquipment(placementId, by) {
+      const rec = ctx.portables.get(placementId.replace(/^eq:/, ""));
+      if (!rec) return;
+      pushPortable(portableHost, rec, by);
+      if (by) dragPushed();
+      markShadows();
+    },
+    setDoor(doorId, open) {
+      const d = doorById(doorId);
+      if (!d || d.open === open) return;
+      if (open && d.locked) return;
+      // never shut a leaf on the player
+      if (!open && doorwayOccupied(d, null)) return;
+      toggleDoor(d, open, Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 8);
+    },
+    setDoorLocked(doorId, locked) {
+      const d = doorById(doorId);
+      if (!d) return;
+      d.locked = locked || undefined;
+      if (locked && d.open && !doorwayOccupied(d, null)) toggleDoor(d, false, Math.hypot(d.centre.x - player.x, d.centre.z - player.z) < 8);
+    },
+    captureFrame(o) {
+      camera.position.set(player.x, player.y + PHYSICS.eye, player.z);
+      camera.rotation.set(pitch, yaw, 0);
+      camera.updateMatrixWorld();
+      const shot = captureJpeg(renderer, scene, camera, o.maxWidth, o.quality);
+      if (!shot) return null;
+      return { mimeType: "image/jpeg", ...shot, pose: { x: player.x, y: player.y + PHYSICS.eye, z: player.z, yaw, pitch, level: levels.multi ? currentLevel() : level } };
+    },
     screenshot() {
       renderer.render(scene, camera);
       return canvas.toDataURL("image/png");
@@ -1784,6 +2056,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       cancelAnimationFrame(raf);
       cancelWalk(new Error("disposed"));
       cancelRide(new Error("disposed"));
+      walkers.stopAll();
       for (const [t, type, fn, o] of listeners) t.removeEventListener(type, fn, o);
       ro?.disconnect();
       if (document.pointerLockElement === canvas) document.exitPointerLock();
@@ -1849,6 +2122,12 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       doors: ctx.doors,
       targets: ctx.targets,
       npcs: ctx.npcs,
+      /** Portable placements (carts, items): their groups, where they are drawn, hidden while carried. */
+      portables: ctx.portables,
+      /** Staff ids walking world-model routes now. */
+      get walkingStaff() {
+        return walkers.walking().map((n) => n.id);
+      },
       screens: ctx.screens,
       warnings: ctx.warnings,
       lib,

@@ -63,6 +63,8 @@ export class PanelHost {
   private readonly body: HTMLElement;
   private readonly foot: HTMLElement;
   private readonly brand: HTMLElement;
+  /** Action feedback inside the window (a refused action and "Go there"), kept across panel changes. */
+  readonly feedbackSlot: HTMLElement;
   private readonly closeBtn: HTMLButtonElement;
   private readonly listeners = new Set<(open: boolean) => void>();
   /** Focused element before the panel opened (restored on close unless the app moved focus). */
@@ -79,11 +81,13 @@ export class PanelHost {
     this.body = h("div", { class: "window-body", id: "panel-body" });
     this.foot = h("span", { id: "panel-foot" });
     this.brand = h("span", null, tr("panel.brand"));
+    this.feedbackSlot = h("div", { class: "window-feedback", id: "panel-feedback" });
     this.win = h(
       "section",
       { class: "window", role: "dialog", "aria-modal": "true", "aria-labelledby": "panel-title", tabindex: "-1" },
       h("header", { class: "window-head" }, h("div", null, this.kicker, this.title), this.closeBtn),
       this.body,
+      this.feedbackSlot,
       h("footer", { class: "window-foot" }, this.foot, this.brand),
     );
     root.appendChild(this.win);

@@ -4,6 +4,9 @@
  * (the case's canonical history questions not yet asked, grouped by topic),
  * free text (Enter sends, `@nurse` addressing), the offline badge, the
  * grounding indicator and — for the patient — Examine / Treat / Notes tabs.
+ * Embodied mode: a nurse (or paramedic) can be delegated a task — she walks
+ * there with her own body (`/delegate staff:<id> <task>`, the session's
+ * `delegate_task`), the outcome shows in this conversation.
  */
 import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, type Resolution } from "@clinicalcraft/agent";
 import {
@@ -19,6 +22,7 @@ import {
 } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
+import { trTask } from "../../app/embodied-link.js";
 import { missingCaps } from "../../app/stations.js";
 import type { ChatItem } from "../../app/store.js";
 import { ageText, sexText } from "../../app/world-bridge.js";
@@ -63,6 +67,10 @@ export function resolveExamSearch(c: CaseDefinition, text: string, locale: strin
 function roleLabel(agent: string): string {
   return trMaybe(`role.${agent}`, agent);
 }
+
+/** Staff roles a learner may delegate bedside tasks to (embodied mode) and the tasks offered. */
+export const DELEGATE_ROLES: ReadonlySet<string> = new Set(["nurse", "paramedic"]);
+export const DELEGATE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access"] as const;
 
 export function conversationPanel(app: App, args: ConversationArgs): () => PanelView {
   return () => {
@@ -173,6 +181,18 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             prompts.map((p) => h("button", { type: "button", onclick: () => app.submit({ type: "user_message", text: p, to: args.agent }) }, p)),
           ),
         );
+        // embodied: delegate a bedside task to this staff member (she walks there herself)
+        if (game.embodied && args.staffId && DELEGATE_ROLES.has(args.staffRole ?? "")) {
+          suggestions.append(
+            h("div", { class: "eyebrow delegate-head" }, tr("conv.delegate")),
+            h("p", { class: "small muted" }, tr("conv.delegateHint")),
+            h(
+              "div",
+              { class: "chips delegate-chips", id: "delegate-chips" },
+              DELEGATE_TASKS.map((task) => h("button", { type: "button", dataset: { task }, onclick: () => app.submit({ type: "user_message", text: `/delegate staff:${args.staffId} ${task}` }, args.agent) }, trTask(task))),
+            ),
+          );
+        }
         return;
       }
       const state = store.snapshot?.state ?? game.session.session.state;
@@ -262,7 +282,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     const examine = (): HTMLElement => {
       const wrap = h("div", { class: "exam-tab" });
       const state = store.snapshot?.state ?? game.session.session.state;
-      const caps = game.stations.bedsideCaps(game.slotId);
+      const caps = (game.embodied?.bedsideCaps() ?? game.stations.bedsideCaps(game.slotId));
       const result = h("div", { class: "exam-result" });
       const q = h("input", { type: "text", placeholder: tr("exam.search"), "aria-label": tr("exam.search"), autocomplete: "off" });
       q.addEventListener("keydown", (e) => e.stopPropagation());
@@ -348,7 +368,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         wrap.append(h("div", { class: "empty" }, tr("treat.empty")));
         return wrap;
       }
-      const caps = game.stations.bedsideCaps(game.slotId);
+      const caps = (game.embodied?.bedsideCaps() ?? game.stations.bedsideCaps(game.slotId));
       const result = h("div");
       const q = h("input", { type: "text", placeholder: tr("treat.search"), "aria-label": tr("treat.search"), autocomplete: "off" });
       q.addEventListener("keydown", (e) => e.stopPropagation());

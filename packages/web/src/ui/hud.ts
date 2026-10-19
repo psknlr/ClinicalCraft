@@ -3,7 +3,9 @@
  * card with hint, region & coordinates, clickable minimap, crosshair and
  * target tooltip, turn-phase bubble, compact vitals strip, V4 hotbar with
  * block counts, controls legend, status bar (phase, save state, simulated
- * clock, provider pill), autopilot dock and V4 touch controls. Everything
+ * clock, provider pill), autopilot dock and V4 touch controls; in embodied mode the embodiment badge
+ * (where the world model has the learner's body, "walking…" while the world moves it) and the slot for
+ * action feedback ("Go there"). Everything
  * renders from the app store; nothing here keeps its own history. On
  * entering the world the quest card also carries the case's teaching-case
  * disclaimer for a few seconds (inside the card, so it never covers a control).
@@ -100,6 +102,11 @@ export class Hud {
     this.el.disclaimer.textContent = on && game ? caseDisclaimer(game.caseDef.disclaimer) : "";
   }
 
+  /** Where action feedback (a refusal with "Go there") shows while no window is open. */
+  get feedbackSlot(): HTMLElement | null {
+    return this.el.feedback ?? null;
+  }
+
   /** Re-create the markup (language change / new game). */
   rebuild(): void {
     clear(this.root);
@@ -129,6 +136,8 @@ export class Hud {
     e.vitals = h("button", { type: "button", id: "vitals-strip", class: "vitals-strip", hidden: true, title: tr("hud.vitalsTitle"), "aria-label": tr("hud.vitalsTitle"), onclick: () => this.app.open("monitor") });
     e.dock = h("div", { id: "autopilot-dock", class: "autopilot-dock", hidden: true });
     e.finished = h("div", { class: "finished-banner", hidden: true });
+    e.embodiment = h("button", { type: "button", id: "embodiment-badge", class: "embodiment-badge", hidden: true, onclick: () => this.app.open("settings", { section: "agents" }) });
+    e.feedback = h("div", { id: "hud-feedback", class: "hud-feedback", hidden: true });
     this.mini = h("canvas", { id: "mini", width: "240", height: "240" });
 
     this.root.append(
@@ -159,10 +168,12 @@ export class Hud {
       h("div", { class: "place" }, e.region, e.coords),
       h("button", { type: "button", id: "minimap-btn", class: "minimap", "aria-label": tr("hud.openMap"), onclick: () => this.app.open("map") }, this.mini),
       h("div", { class: "map-label" }, tr("hud.mapLabel")),
+      e.embodiment,
       e.crosshair,
       e.bubble,
       e.target,
       e.finished,
+      e.feedback,
       h("div", { class: "bottom" }, e.selected, e.hotbar, h("div", { class: "controls", html: tr("hud.controls.html") })),
       h("div", { class: "statusbar" }, e.phase, e.clock, h("br"), e.saved, h("br"), e.pill),
       e.dock,
@@ -252,6 +263,7 @@ export class Hud {
   onMove(info: MoveInfo): void {
     this.el.region.textContent = info.levelName ? `${info.region} · ${info.levelName}` : info.region;
     this.el.coords.textContent = `X ${Math.round(info.x)} · Z ${Math.round(info.z)}`;
+    this.renderEmbodiment();
     const now = performance.now();
     if (now - this.lastMinimap > 120) {
       this.lastMinimap = now;
@@ -364,6 +376,39 @@ export class Hud {
 
     /* autopilot dock */
     this.renderDock();
+
+    /* embodiment badge */
+    this.renderEmbodiment();
+  }
+
+  /**
+   * The embodiment badge: embodied — the place where the world model has the learner's body (it must match
+   * the scene: the avatar is the world's input device), "walking…" while the world moves it; clinical mode
+   * says so. Clicking it opens the settings ("Embodied agents").
+   */
+  private renderEmbodiment(): void {
+    const b = this.el.embodiment;
+    const game = this.app.game;
+    if (!b) return;
+    b.hidden = !game;
+    if (!game) return;
+    const emb = game.embodied;
+    let text: string;
+    let cls: string;
+    if (emb) {
+      const walking = emb.walking;
+      text = walking ? tr("emb.badgeWalking") : tr("emb.badge", { place: emb.placeLabel() ?? tr("emb.outside") });
+      cls = `embodiment-badge mode-embodied${walking ? " walking" : ""}`;
+      b.title = tr("emb.badgeTitle");
+    } else {
+      text = tr("emb.badgeClinical");
+      cls = "embodiment-badge mode-clinical";
+      b.title = tr("emb.badgeClinicalTitle");
+    }
+    if (b.textContent !== text) b.textContent = text;
+    if (b.className !== cls) b.className = cls;
+    b.setAttribute("aria-label", `${text} — ${b.title}`);
+    b.dataset.mode = emb ? "embodied" : "clinical";
   }
 
   /**

@@ -4,10 +4,9 @@
  * readings taken by hand are listed; the voxel patient still looks critically
  * ill when nobody has attached a monitor.
  */
-import { replay, vitalsAt, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
+import { inExtremis, replay, vitalsAt, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
 import { beforeAll, describe, expect, it } from "vitest";
 import { loadContent } from "../../app/content.js";
-import { inExtremis } from "../../app/world-bridge.js";
 import { setLocale } from "../../i18n/index.js";
 import { monitorIntervention, spotCheckText } from "./monitor.js";
 

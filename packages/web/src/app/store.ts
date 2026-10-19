@@ -7,12 +7,18 @@
  * from the event log").
  */
 import type { AgentEvent, AgentRole, ApprovalDecision, EventMsg, Op, PlanItem, TurnPhase } from "@clinicalcraft/agent";
+import type { WorldActionResult } from "@clinicalcraft/world";
 import { t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 
 export type LogEntry =
   | { kind: "event"; at: number; event: AgentEvent }
   | { kind: "op"; at: number; id: string; op: Op; view?: string }
-  | { kind: "restored"; at: number; agent: string; role: "user" | "assistant"; text: string };
+  | { kind: "restored"; at: number; agent: string; role: "user" | "assistant"; text: string }
+  /**
+   * The UI did not submit what the learner asked for (embodied mode: the body stands too far and walking
+   * there is more than a step) — its refusal, under the id the UI handed out (`id`).
+   */
+  | { kind: "refused"; at: number; id: string; text: string };
 
 export type ChatTone = "speech" | "exam" | "treat" | "harm" | "note" | "error" | "command";
 
@@ -97,6 +103,12 @@ export class SessionStore {
   readonly failures = new Map<string, string>();
   /** An autopilot submission is being processed. */
   autopilotRunning = false;
+  /** World action results (embodied mode) by action id, with the submission that caused them (newest last). */
+  readonly worldResults = new Map<string, { result: WorldActionResult; submission: string }>();
+  /** The learner's own `world_action` submissions: submission id → action id. */
+  private readonly worldOps = new Map<string, string>();
+  /** Ids the UI handed out for an action it submitted later (auto-approach) → the real submission id. */
+  private readonly aliases = new Map<string, string>();
   private readonly streams = new Map<string, ChatItem>();
   /**
    * Submission id → the conversation (agent) it belongs to: slash-command output, and warnings /
@@ -181,6 +193,28 @@ export class SessionStore {
     return this.views.get(submissionId) ?? null;
   }
 
+  /** The first refusal/problem of a submission — or of the submission an alias stands for. */
+  failureOf(id: string): string | undefined {
+    return this.failures.get(id) ?? (this.aliases.has(id) ? this.failures.get(this.aliases.get(id)!) : undefined);
+  }
+
+  /** `alias` (an id the UI handed out before submitting) now stands for `submission`. */
+  linkSubmission(alias: string, submission: string): void {
+    this.aliases.set(alias, submission);
+    this.version++;
+    for (const fn of this.changeListeners) fn();
+  }
+
+  /** Log a refusal the UI decided before submitting anything (shown in the conversation, `failureOf(id)`). */
+  refused(id: string, text: string): void {
+    this.append({ kind: "refused", at: Date.now(), id, text });
+  }
+
+  /** World tool calls still running (an agent driving a body). */
+  runningTools(): ToolCallView[] {
+    return this.toolCalls.filter((c) => c.status === "running");
+  }
+
   /** The non-idle phase of an agent's current turn. */
   phaseOf(agent: string): TurnPhase | null {
     return this.phases.get(agent) ?? null;
@@ -224,6 +258,11 @@ export class SessionStore {
   }
 
   private fold(entry: LogEntry): void {
+    if (entry.kind === "refused") {
+      if (!this.failures.has(entry.id)) this.failures.set(entry.id, entry.text);
+      this.chat.push({ key: this.key("x"), role: "system", agent: "patient", speaker: "", text: entry.text, grounded: [], streaming: false, tone: "error", at: entry.at });
+      return;
+    }
     if (entry.kind === "restored") {
       this.chat.push({
         key: this.key("r"),
@@ -271,6 +310,8 @@ export class SessionStore {
       const agent = companion?.answersHistory ? "companion" : "patient";
       this.views.set(id, agent);
       this.chat.push({ key: this.key("q"), role: "learner", agent, speaker: "learner", text: t(item.question, L), grounded: [], streaming: false, tone: "speech", at });
+    } else if (op.type === "world_action" && op.request && typeof op.request.actionId === "string") {
+      this.worldOps.set(id, op.request.actionId);
     } else if (op.type === "autopilot") {
       this.autopilotRunning = true;
     } else if (op.type === "assess") {
@@ -397,10 +438,29 @@ export class SessionStore {
       case "warning":
       case "error": {
         if (msg.type === "error") this.assessing = false;
-        const where = this.views.get(ev.id);
+        // a spatial refusal of a learner action (embodied mode) is action feedback: the patient's conversation shows it
+        const spatial = msg.type === "error" && (msg.code === "SPATIAL_REQUIREMENT_UNMET" || msg.code === "SPATIAL_PRECONDITION_CHANGED");
+        const where = this.views.get(ev.id) ?? (spatial ? "patient" : undefined);
         const text = msg.message.trim();
         if (ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
         if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at });
+        break;
+      }
+      case "world_action_result": {
+        const r = msg.result;
+        if (!r || typeof r.actionId !== "string") break;
+        this.worldResults.delete(r.actionId);
+        this.worldResults.set(r.actionId, { result: r, submission: ev.id });
+        // bounded: the trace panel and feedback need the recent ones only
+        if (this.worldResults.size > 400) this.worldResults.delete(this.worldResults.keys().next().value!);
+        // the learner's own world actions are action feedback in the conversation (walks only when they fail)
+        const mine = this.worldOps.get(ev.id) === r.actionId;
+        const walk = !!r.navigation && r.status === "completed";
+        if (mine && !walk) {
+          const text = r.message.trim();
+          if (r.status !== "completed" && ev.id && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
+          if (text) this.chat.push({ key: this.key("o"), role: "system", agent: this.views.get(ev.id) ?? "patient", speaker: "", text, grounded: [], streaming: false, tone: r.status === "completed" ? "note" : "error", at });
+        }
         break;
       }
       default:

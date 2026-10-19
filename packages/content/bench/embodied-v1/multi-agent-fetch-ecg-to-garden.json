@@ -1,0 +1,73 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "multi-agent-fetch-ecg-to-garden",
+  "suite": "embodied-v1",
+  "category": "multi-agent",
+  "title": {
+    "zh-CN": "请护士把心电图机推到花园",
+    "en": "Ask a nurse to bring the ECG cart to the garden"
+  },
+  "instruction": {
+    "zh-CN": "你在花园里晕倒的患者身旁。请护士把急诊 2 号诊室的心电图机推到这里来，你自己留在患者身边。",
+    "en": "You are with the collapsed patient in the healing garden. Ask a nurse to bring the ECG machine from ED cubicle 2 to you; stay with the patient yourself."
+  },
+  "caseId": "anaphylaxis-garden",
+  "locale": "zh-CN",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:garden-bench"
+      }
+    }
+  },
+  "predicates": [
+    {
+      "world": {
+        "kind": "deviceAtBedside",
+        "target": "eq:cub2-ecg"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorNear",
+        "target": "patient:garden-bench",
+        "range": 3
+      }
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "interact_object",
+        "max": 0
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "delegate",
+        "role": "nurse",
+        "task": "fetch_equipment",
+        "target": "eq:cub2-ecg"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "delegate_task",
+        "args": {
+          "role": "nurse",
+          "task": "fetch_equipment",
+          "target": "eq:cub2-ecg"
+        }
+      }
+    ]
+  }
+}

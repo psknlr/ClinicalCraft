@@ -23,6 +23,7 @@
     "@clinicalcraft/core": "5.0.0",
     "@clinicalcraft/content": "5.0.0",
     "@clinicalcraft/agent": "5.0.0",
+    "@clinicalcraft/bench": "5.0.0",
     "@clinicalcraft/server": "5.0.0",
     "@clinicalcraft/mcp": "5.0.0"
   },

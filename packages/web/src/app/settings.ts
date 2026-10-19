@@ -196,9 +196,14 @@ export class Prefs {
  * Merge the stored agent layer with the runtime choices (provider/model from
  * the LLM mode, locale) using the agent's merge helpers.
  */
-export function resolveAgentSettings(stored: StoredSettings, runtime: { provider: string; model: string | null; locale: string }): { settings: ResolvedSettings; issues: SettingsIssue[] } {
+export function resolveAgentSettings(
+  stored: StoredSettings,
+  runtime: { provider: string; model: string | null; locale: string; embodiment?: "clinical" | "embodied" },
+): { settings: ResolvedSettings; issues: SettingsIssue[] } {
   const flags: SettingsLayerData = { provider: runtime.provider, locale: runtime.locale };
   if (runtime.model) flags.model = runtime.model;
+  // the encounter's mode (fixed for it): the app decides it (preference, a save's recorded mode)
+  if (runtime.embodiment) flags.embodiment = runtime.embodiment;
   const { settings, issues } = mergeSettingsDetailed([
     { source: "user", settings: stored.agent, file: SETTINGS_KEY },
     { source: "flag", settings: flags },
@@ -206,6 +211,15 @@ export function resolveAgentSettings(stored: StoredSettings, runtime: { provider
   // The browser never runs shell hooks and never writes node transcripts.
   settings.hooks = {};
   return { settings, issues };
+}
+
+/**
+ * "Embodied agents" (docs/EMBODIED.md R3): the mode a NEW encounter starts in — embodied by default in
+ * the 3D world (`agent.embodiment` unset), clinical when the learner turned it off. A running or saved
+ * encounter keeps its own mode.
+ */
+export function preferredEmbodiment(stored: StoredSettings): "clinical" | "embodied" {
+  return stored.agent.embodiment === "clinical" ? "clinical" : "embodied";
 }
 
 /** User-supplied API keys (direct mode). Never written into settings, saves or transcripts. */

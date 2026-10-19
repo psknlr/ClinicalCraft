@@ -1,0 +1,88 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "interaction-hand-hygiene",
+  "suite": "embodied-v1",
+  "category": "interaction",
+  "title": {
+    "zh-CN": "接触患者前做手卫生",
+    "en": "Clean your hands before touching the patient"
+  },
+  "instruction": {
+    "zh-CN": "接触患者之前，到最近的手卫生点做手卫生。",
+    "en": "Before you touch the patient, clean your hands at the nearest hand-hygiene station."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    }
+  },
+  "predicates": [
+    {
+      "world": {
+        "kind": "handsClean"
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "find",
+        "query": {
+          "interaction": "sink",
+          "limit": 1
+        },
+        "save": "sink"
+      },
+      {
+        "op": "interact",
+        "target": "@sink",
+        "operation": "wash_hands"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "find_objects",
+        "args": {
+          "interaction": "sink",
+          "limit": 1
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus-sink",
+          "operation": "wash_hands"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus-sink"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus-sink",
+          "operation": "wash_hands"
+        }
+      }
+    ]
+  }
+}

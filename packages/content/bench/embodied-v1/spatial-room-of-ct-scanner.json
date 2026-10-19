@@ -1,0 +1,71 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "spatial-room-of-ct-scanner",
+  "suite": "embodied-v1",
+  "category": "spatial",
+  "title": {
+    "zh-CN": "CT 扫描仪在哪个房间",
+    "en": "Which room holds the CT scanner"
+  },
+  "instruction": {
+    "zh-CN": "CT 扫描仪在哪个房间？提交该房间的实体 ID（room:…）。",
+    "en": "In which room is the CT scanner? Submit that room's entity id (room:…)."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "room:rad-ct"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "find",
+        "query": {
+          "kind": "equipment",
+          "type": "ct-scanner",
+          "limit": 1
+        },
+        "save": "ct"
+      },
+      {
+        "op": "answer",
+        "from": "ct",
+        "room": true
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "find_objects",
+        "args": {
+          "type": "ct-scanner",
+          "limit": 1
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "room:rad-ct"
+        }
+      }
+    ]
+  }
+}

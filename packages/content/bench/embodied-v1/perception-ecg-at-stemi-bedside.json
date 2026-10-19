@@ -1,0 +1,95 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "perception-ecg-at-stemi-bedside",
+  "suite": "embodied-v1",
+  "category": "perception",
+  "title": {
+    "zh-CN": "找到 STEMI 患者床旁能做 12 导联心电图的设备",
+    "en": "Find the device that can record a 12-lead ECG at the STEMI bedside"
+  },
+  "instruction": {
+    "zh-CN": "你刚到医院入口。抢救室 1 号床有一位胸痛患者。找到放在这位患者床旁、能记录 12 导联心电图的设备，并提交它的实体 ID。",
+    "en": "You have just arrived at the hospital entrance. A patient with chest pain is in resuscitation bay 1. Find the device at this patient's bedside that can record a 12-lead ECG and submit its entity id."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "eq:resus1-ecg"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 20,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "patient:resus-1"
+        }
+      },
+      {
+        "op": "observe"
+      },
+      {
+        "op": "find",
+        "query": {
+          "capabilities": [
+            "ecg-12lead"
+          ],
+          "room": "ed-resus"
+        },
+        "save": "ecg"
+      },
+      {
+        "op": "answer",
+        "from": "ecg"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "target": "patient"
+        }
+      },
+      {
+        "tool": "observe_world",
+        "args": {}
+      },
+      {
+        "tool": "find_objects",
+        "args": {
+          "capabilities": [
+            "ecg-12lead"
+          ]
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "eq:resus1-ecg"
+        }
+      }
+    ]
+  }
+}
