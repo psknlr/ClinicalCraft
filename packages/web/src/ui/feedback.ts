@@ -78,12 +78,14 @@ export class ActionFeedback {
                   type: "button",
                   id: "go-there",
                   class: "primary",
+                  title: tr("emb.goThere"),
                   onclick: () => {
                     this.clear();
                     this.go(go, item.label);
                   },
                 },
-                item.label ? tr("emb.goThereTo", { place: item.label }) : tr("emb.goThere"),
+                // the world's hint label is already an instruction ("Go to …", "Get a clear view of …")
+                item.label || tr("emb.goThere"),
               )
             : null,
           h("button", { type: "button", class: "close-feedback", "aria-label": tr("panel.close"), onclick: () => this.clear() }, "×"),

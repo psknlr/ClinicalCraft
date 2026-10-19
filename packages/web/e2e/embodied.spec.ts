@@ -40,6 +40,7 @@ test.describe("embodied mode (en)", () => {
     await shot(page, "embodied-autopilot-walking");
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.finished), { timeout: 400_000, intervals: [2000] }).toBe(true);
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.store.autopilotRunning), { timeout: 60_000 }).toBe(false);
+    await page.locator("#autopilot-trace").scrollIntoViewIfNeeded();
     await shot(page, "embodied-autopilot-trace");
 
     // engine: monitor attached, the ECG recorded and read, treated
@@ -114,7 +115,7 @@ test.describe("embodied mode (en)", () => {
     await shot(page, "embodied-go-there");
     await feedback.locator("#go-there").click();
     // the world planned the way round (through the doors) to a spot with a view of the screen; the avatar walked it
-    await expect(page.locator(".toast").filter({ hasText: "Arrived" }).first()).toBeVisible({ timeout: 120_000 });
+    await expect(page.locator(".toast.show").filter({ hasText: "Arrived" }).first()).toBeVisible({ timeout: 120_000 });
     const there = await worldPose(page);
     expect(Math.hypot(there.x - 30.5, there.z - -21.9)).toBeGreaterThan(3);
     expect(there.z).toBeGreaterThan(-20);
@@ -134,7 +135,7 @@ test.describe("embodied mode (en)", () => {
     await page.locator('#delegate-chips button[data-task="attach_monitor"]').click();
     // she walks (the renderer animates the world's route) and the HUD announces it
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.world.debug.walkingStaff.includes("ed-nurse")), { timeout: 60_000, intervals: [100] }).toBe(true);
-    await expect(page.locator(".toast").filter({ hasText: "walking to" }).first()).toBeVisible();
+    await expect(page.locator(".toast.show").filter({ hasText: "walking to" }).first()).toBeVisible();
     await shot(page, "embodied-delegate-walking");
     await expect.poll(() => page.evaluate(() => typeof (window as any).__QA__.session.state.monitorAttachedAt), { timeout: 180_000 }).toBe("number");
     const after = await worldPose(page, "staff:ed-nurse");
@@ -145,7 +146,7 @@ test.describe("embodied mode (en)", () => {
     expect(Math.hypot(drawn.x - after.x, drawn.z - after.z)).toBeLessThan(0.3);
     const lines = await traceLines(page);
     expect(lines.some((l) => l.startsWith("plan:delegate"))).toBe(true);
-    await expect(page.locator(".toast").filter({ hasText: "Attach the monitor" }).first()).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".toast.show").filter({ hasText: "Attach the monitor" }).first()).toBeVisible({ timeout: 30_000 });
     await shot(page, "embodied-delegate-done");
   });
 
@@ -174,5 +175,99 @@ test.describe("embodied mode (en)", () => {
     await expect(page.locator("#embodiment-note")).toContainText("clinical mode");
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("clinicalcraft-v5-settings") ?? "{}"));
     expect(stored.agent.embodiment).toBe("embodied");
+  });
+});
+
+test.describe("embodied mode (en): doors", () => {
+  test.use({ locale: "en-US" });
+
+  test("(i) a locked door: the learner's unlock is a world action, and the keys rule refuses it", async ({ page }) => {
+    await freshStart(page);
+    await enterCase(page, CASE);
+    await embodiedSetup(page);
+    // a scenario control locks the resus room's door on the corridor; the scene follows the world
+    const door = await page.evaluate(() => {
+      const q = (window as any).__QA__;
+      const doors = q.world.debug.doors.filter((d: any) => d.interior && d.level === "L0" && Math.abs(d.centre.z - -4) < 0.6 && d.centre.x > 26 && d.centre.x < 46);
+      const d = doors[0];
+      q.worldModel.setDoor(`door:${d.id}`, { locked: true });
+      return { id: d.id as string, x: d.centre.x as number, z: d.centre.z as number };
+    });
+    await expect.poll(() => page.evaluate((id) => (window as any).__QA__.world.debug.doors.find((d: any) => d.id === id).locked, door.id)).toBe(true);
+    // in the corridor, facing the door: E
+    await placeAvatar(page, door.x, door.z + 1.6, { x: door.x, z: door.z });
+    const aimed = await page.evaluate(() => {
+      const w = (window as any).__QA__.world;
+      w.debug.updateAim();
+      return w.debug.target;
+    });
+    expect(aimed).toMatchObject({ kind: "door", id: door.id });
+    await page.evaluate(() => (window as any).__QA__.world.interact());
+    // the world answers (porters and reception hold the keys): its refusal in the HUD, traced like any operation
+    const fb = page.locator("#hud-feedback #action-feedback");
+    await expect(fb).toBeVisible({ timeout: 30_000 });
+    await expect.poll(async () => (await traceLines(page)).at(-1)).toBe("interaction:unlock:x:NOT_AUTHORIZED");
+    const st = await page.evaluate((id) => (window as any).__QA__.worldSnapshot().entities[`door:${id}`]?.door, door.id);
+    expect(st).toMatchObject({ locked: true, open: false });
+    await shot(page, "embodied-locked-door");
+  });
+});
+
+test.describe("embodied mode (zh-CN)", () => {
+  test.use({ locale: "zh-CN" });
+
+  test("(g) HUD: badge, refusal with Go there, a delegated nurse's toast, the live trace", async ({ page }) => {
+    await freshStart(page);
+    await enterCase(page, CASE);
+    await embodiedSetup(page, { bypassApprovals: true });
+    await expect(page.locator("#embodiment-badge")).toContainText("具身");
+    // from the entrance: too far for the monitor — the HUD's refusal names the way
+    await page.evaluate((id) => (window as any).__QA__.worldAction({ operation: "attach", targetId: id }), MONITOR);
+    const fb = page.locator("#hud-feedback #action-feedback");
+    await expect(fb).toBeVisible({ timeout: 60_000 });
+    await expect(fb.locator("#go-there")).toContainText("刘振华");
+    await expect(fb).toContainText("米");
+    // a nurse delegated to attach it walks there (the HUD says so) while the refusal is still shown
+    await page.evaluate(() => (window as any).__QA__.submit({ type: "user_message", text: "/delegate staff:ed-nurse attach_monitor" }));
+    await expect(page.locator(".toast.show").filter({ hasText: "正前往" }).first()).toBeVisible({ timeout: 60_000 });
+    await shot(page, "embodied-zh-hud");
+    await expect.poll(() => page.evaluate(() => typeof (window as any).__QA__.session.state.monitorAttachedAt), { timeout: 180_000 }).toBe("number");
+    // the autopilot window's live trace shows her steps: walk → operate → clinical act
+    await page.locator("#autopilot-btn").click();
+    const trace = page.locator("#autopilot-trace");
+    await expect(trace.locator(".trace-group.ok").first()).toBeVisible({ timeout: 30_000 });
+    await expect(trace).toContainText("导航");
+    await expect(trace).toContainText("attach");
+    await trace.scrollIntoViewIfNeeded();
+    await shot(page, "embodied-zh-trace");
+  });
+
+  test("(h) teaching hospital: the world's route upstairs is walked (stairs) to the patient on the first floor", async ({ page }) => {
+    await freshStart(page);
+    await page.evaluate(() => (window as any).__QA__.app.prefs.update((s: any) => (s.ui.quality = "low")));
+    await page.locator('.case-card[data-case="pulmonary-embolism-postop"]').click();
+    await page.locator("#facility-select").selectOption("teaching-hospital");
+    await page.locator("#enter").click();
+    await page.waitForFunction(() => (window as any).__QA__?.game?.entered === true, null, { timeout: 180_000 });
+    expect(await page.evaluate(() => (window as any).__QA__.embodiment)).toBe("embodied");
+    const patient = await page.evaluate(() => `patient:${(window as any).__QA__.game.slotId}`);
+    const start = await worldPose(page);
+    expect(start.level).toBe("L0");
+    const plan = await page.evaluate((id) => (window as any).__QA__.worldModel.plan("actor:clinician", { kind: "interact", id }), patient);
+    expect(plan.ok).toBe(true);
+    expect(plan.target.level).toBe("L1");
+    expect(plan.path.some((p: { via?: string }) => !!p.via)).toBe(true);
+    // "Go there" to the patient: the world plans across the floors, the Mover walks the flight
+    const r = await page.evaluate((id) => (window as any).__QA__.game.embodied.goTo({ kind: "interact", id }, null), patient);
+    expect(r.status).toBe("completed");
+    expect(r.navigation.ok).toBe(true);
+    const end = await worldPose(page);
+    expect(end.level).toBe("L1");
+    expect(Math.hypot(end.x - plan.target.x, end.z - plan.target.z)).toBeLessThan(1);
+    const drawn = await page.evaluate(() => (window as any).__QA__.world.position);
+    expect(drawn.level).toBe("L1");
+    expect(drawn.y).toBeGreaterThan(4);
+    await expect(page.locator("#embodiment-badge")).toContainText("具身");
+    await shot(page, "embodied-teaching-upstairs");
   });
 });

@@ -38,24 +38,51 @@ interface Inst {
   owner: string | undefined;
 }
 
+/** Where a box went in a batch: its material key and instance index (`BoxBatch.hide`). */
+export interface InstanceRef {
+  key: string;
+  index: number;
+}
+
 export class BoxBatch {
   private readonly byMat = new Map<string, Inst[]>();
+  /** The InstancedMesh of each material key, once built. */
+  private readonly built = new Map<string, InstancedMesh>();
   count = 0;
 
-  add(mat: string, x: number, y: number, z: number, sx = 1, sy = 1, sz = 1, ry = 0, owner?: string): void {
-    this.push(mat, { x, y, z, sx, sy, sz, ry, owner });
+  add(mat: string, x: number, y: number, z: number, sx = 1, sy = 1, sz = 1, ry = 0, owner?: string): InstanceRef {
+    return this.push(mat, { x, y, z, sx, sy, sz, ry, owner });
   }
 
   /** A merged box whose texture repeats per world unit (see MaterialLibrary.tiled). */
-  addTiled(mat: string, x: number, y: number, z: number, sx: number, sy: number, sz: number, ry = 0, owner?: string): void {
-    this.push(`${mat}${TILED}`, { x, y, z, sx, sy, sz, ry, owner });
+  addTiled(mat: string, x: number, y: number, z: number, sx: number, sy: number, sz: number, ry = 0, owner?: string): InstanceRef {
+    return this.push(`${mat}${TILED}`, { x, y, z, sx, sy, sz, ry, owner });
   }
 
-  private push(key: string, inst: Inst): void {
+  private push(key: string, inst: Inst): InstanceRef {
     let list = this.byMat.get(key);
     if (!list) this.byMat.set(key, (list = []));
     list.push(inst);
     this.count++;
+    return { key, index: list.length - 1 };
+  }
+
+  /**
+   * Take built instances out of the picture (a portable placement now drawn on its own, embodiment): moved
+   * far below the floor and shrunk — no draw call is added or removed, and the aim ray never meets them.
+   */
+  hide(refs: readonly InstanceRef[]): void {
+    const away = new Matrix4().compose(new Vector3(0, -1000, 0), new Quaternion(), new Vector3(1e-3, 1e-3, 1e-3));
+    const touched = new Set<InstancedMesh>();
+    for (const r of refs) {
+      const mesh = this.built.get(r.key);
+      if (!mesh || r.index >= mesh.count) continue;
+      mesh.setMatrixAt(r.index, away);
+      const owners = mesh.userData.owners as (string | undefined)[] | undefined;
+      if (owners) owners[r.index] = undefined;
+      touched.add(mesh);
+    }
+    for (const mesh of touched) mesh.instanceMatrix.needsUpdate = true;
   }
 
   /** Emit InstancedMeshes (one per material) into `parent`; returns them. */
@@ -91,6 +118,7 @@ export class BoxBatch {
       mesh.userData.material = id;
       if (anyOwner) mesh.userData.owners = owners;
       parent.add(mesh);
+      this.built.set(key, mesh);
       out.push(mesh);
     }
     return out;
@@ -98,6 +126,7 @@ export class BoxBatch {
 
   clear(): void {
     this.byMat.clear();
+    this.built.clear();
     this.count = 0;
   }
 }

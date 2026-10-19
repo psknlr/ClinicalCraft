@@ -161,6 +161,11 @@ export interface WorldCallbacks {
   onPauseRequest(): void;
   /** The player opened or closed a door with E (renderer door id) — embodied mode mirrors it into the world model. */
   onDoor?(doorId: string, open: boolean): void;
+  /**
+   * The player pressed E on a door the world model locked: true when the app takes it (embodied mode asks
+   * the world to `unlock` it — its key rules answer), else the world says it is locked.
+   */
+  onLockedDoor?(doorId: string): boolean;
 }
 
 export interface WorldOptions {

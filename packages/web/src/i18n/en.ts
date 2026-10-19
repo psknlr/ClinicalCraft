@@ -912,7 +912,6 @@ const en: Messages = {
   "emb.badgeClinicalTitle": "Clinical mode: actions do not depend on where you stand (fixed for this encounter). Click for the settings.",
   "emb.outside": "outside",
   "emb.goThere": "Go there",
-  "emb.goThereTo": "Go there · {place}",
   "emb.toast.walking": "{who} is walking to {place}",
   "emb.toast.delegatedDone": "{who} finished: {task}",
   "emb.toast.delegatedFailed": "{who} could not finish: {task}",

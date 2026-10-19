@@ -53,7 +53,7 @@ for (const locale of ["zh-CN", "en-US"] as const) {
 
       // a delegated nurse: her walking toast (while the refusal is still shown)
       await page.evaluate(() => (window as any).__QA__.submit({ type: "user_message", text: "/delegate staff:ed-nurse attach_monitor" }));
-      const toast = page.locator(".toast").filter({ hasText: en ? "walking to" : "正前往" }).first();
+      const toast = page.locator(".toast.show").filter({ hasText: en ? "walking to" : "正前往" }).first();
       await expect(toast).toBeVisible({ timeout: 60_000 });
       const t = (await toast.boundingBox())!;
       expect(t.x).toBeGreaterThanOrEqual(0);

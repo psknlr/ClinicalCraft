@@ -118,6 +118,17 @@ export class EmbodiedLink {
     }
   }
 
+  /**
+   * The player pressed E on a locked door: the learner's `unlock` goes to the world like any operation —
+   * the world's key rules answer (porters and reception hold the keys: a refusal with its reason; a role
+   * that may unlock it opens the lock, and the scene follows the `door.changed` event). True: handled.
+   */
+  unlockDoor(doorId: string): boolean {
+    if (this.disposed || !this.world) return false;
+    void this.worldAction({ operation: "unlock", targetId: `door:${doorId}` }, false);
+    return true;
+  }
+
   /* ---------------------------------------------------------------- */
   /* The scene follows the world                                       */
   /* ---------------------------------------------------------------- */

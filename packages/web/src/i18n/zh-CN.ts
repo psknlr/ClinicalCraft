@@ -914,7 +914,6 @@ const zh = {
   "emb.badgeClinicalTitle": "临床模式：操作不受位置限制（本次接诊固定）。点击查看设置。",
   "emb.outside": "室外",
   "emb.goThere": "前往",
-  "emb.goThereTo": "前往 · {place}",
   "emb.toast.walking": "{who}正前往{place}",
   "emb.toast.delegatedDone": "{who}已完成：{task}",
   "emb.toast.delegatedFailed": "{who}未能完成：{task}",

@@ -942,6 +942,7 @@ export class ClinicalCraftApp implements App {
         this.hud.onMove(info);
       },
       onDoor: (doorId, open) => this.game?.embodied?.onDoor(doorId, open),
+      onLockedDoor: (doorId) => this.game?.embodied?.unlockDoor(doorId) ?? false,
       onBlock: (kind, type) => {
         if (!BLOCK_TYPES.includes(type as BlockType)) return kind === "check" ? false : undefined;
         const inv = this.inventory;

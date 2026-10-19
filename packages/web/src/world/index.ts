@@ -722,8 +722,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
           return;
         }
         if (!door.open && door.locked) {
-          // locked by the world model (embodiment): it stays shut
-          toast(S.doorLocked);
+          // locked by the world model (embodiment): the app asks the world to unlock it (keys), else it stays shut
+          if (!callbacks.onLockedDoor?.(door.id)) toast(S.doorLocked);
           return;
         }
         toggleDoor(door); // both leaves of a double door share one record (V4 toggles them together)

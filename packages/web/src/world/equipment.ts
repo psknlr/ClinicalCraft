@@ -79,6 +79,8 @@ export function placementParts(type: Pick<EquipmentType, "parts">, placement: Pi
 
 interface StaticScreen {
   level: string;
+  /** Of a portable placement (its canvas stays for a standalone quad later). */
+  portable?: boolean;
   canvas: HTMLCanvasElement;
   x: number;
   y: number;
@@ -98,6 +100,33 @@ interface LedPart {
   ry: number;
   s: [number, number, number];
   cast: boolean;
+  /** A portable placement's LED (taken out of the shared mesh when the placement moves). */
+  owner?: string;
+}
+
+/** A static screen quad of a shared atlas mesh, with its atlas UV rectangle. */
+interface AtlasQuad {
+  s: StaticScreen;
+  uv: [u0: number, u1: number, v0: number, v1: number];
+}
+
+/**
+ * The level-wide merged meshes that also hold parts of portable placements (LEDs, static screens): kept so
+ * a placement the world moves can be taken out of them (`detachShared`) and drawn in its own group.
+ */
+interface SharedParts {
+  leds: { mesh: Mesh; key: string; parts: LedPart[] }[];
+  screens: { mesh: Mesh; dim: boolean; quads: AtlasQuad[] }[];
+  /** Owners already taken out. */
+  detached: Set<string>;
+}
+
+const shared = new WeakMap<BuildContext, SharedParts>();
+
+function sharedOf(ctx: BuildContext): SharedParts {
+  let sp = shared.get(ctx);
+  if (!sp) shared.set(ctx, (sp = { leds: [], screens: [], detached: new Set() }));
+  return sp;
 }
 
 /** Shelf-pack canvases into one atlas (pure layout; returns pixel rects and the atlas size). Exported for tests. */
@@ -117,6 +146,47 @@ export function packShelves(sizes: { w: number; h: number }[], width = 512): { r
     rowH = Math.max(rowH, h);
   }
   return { rects, width, height: Math.max(1, y + rowH) };
+}
+
+/** Quad geometry of a static screen (UVs: its atlas rectangle, or the whole texture). */
+function quadGeometry(s: StaticScreen, uv: AtlasQuad["uv"] = [0, 1, 0, 1]) {
+  const g = UNIT_PLANE.clone();
+  const attr = g.getAttribute("uv") as BufferAttribute;
+  const [u0, u1, v0, v1] = uv;
+  for (let k = 0; k < attr.count; k++) attr.setXY(k, u0 + attr.getX(k) * (u1 - u0), v0 + attr.getY(k) * (v1 - v0));
+  g.scale(s.w, s.h, 1).rotateY(s.ry).translate(s.x, s.y, s.z);
+  return g;
+}
+
+/** The material of static screens (dim text panels glow less than imaging / lab screens). */
+function screenMaterial(tex: CanvasTexture, dim: boolean): MeshStandardMaterial {
+  return new MeshStandardMaterial({
+    map: tex,
+    emissiveMap: tex,
+    emissive: new Color(0xffffff),
+    emissiveIntensity: dim ? 0.35 : 0.85,
+    roughness: 0.6,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -2,
+  });
+}
+
+/** A self-lit LED material (cloned per merged mesh: its animation drives it). */
+function ledMaterial(ctx: BuildContext, m: string): MeshStandardMaterial {
+  const material = ctx.lib.get(m).clone() as MeshStandardMaterial;
+  if (material.emissive.getHex() === 0) material.emissive = new Color(material.color);
+  if (!material.emissiveIntensity) material.emissiveIntensity = 0.8;
+  return material;
+}
+
+/** Merged LED geometry of `parts` (null when none). */
+function ledGeometry(parts: readonly LedPart[]) {
+  if (!parts.length) return null;
+  const geoms = parts.map((l) => UNIT_BOX.clone().scale(l.s[0], l.s[1], l.s[2]).rotateY(l.ry).translate(l.x, l.y, l.z));
+  const merged = mergeGeometries(geoms, false);
+  for (const g of geoms) g.dispose();
+  return merged;
 }
 
 function buildStaticScreens(ctx: BuildContext, all: StaticScreen[]): void {
@@ -140,35 +210,24 @@ function buildStaticScreens(ctx: BuildContext, all: StaticScreen[]): void {
     const list = screens.map((s, i) => ({ s, i })).filter((e) => e.s.dim === dim && e.s.level === level);
     if (!list.length) continue;
     ctx.onLevel(level);
-    const geoms = list.map(({ s, i }) => {
-      const g = UNIT_PLANE.clone();
-      const uv = g.getAttribute("uv") as BufferAttribute;
+    const quads: AtlasQuad[] = list.map(({ s, i }) => {
       const r = pack.rects[i];
       const u0 = (r.x + 0.5) / pack.width, u1 = (r.x + s.canvas.width - 0.5) / pack.width;
       const v1 = 1 - (r.y + 0.5) / pack.height, v0 = 1 - (r.y + s.canvas.height - 0.5) / pack.height;
-      for (let k = 0; k < uv.count; k++) uv.setXY(k, u0 + uv.getX(k) * (u1 - u0), v0 + uv.getY(k) * (v1 - v0));
-      g.scale(s.w, s.h, 1).rotateY(s.ry).translate(s.x, s.y, s.z);
-      return g;
+      return { s, uv: [u0, u1, v0, v1] };
     });
+    const geoms = quads.map((q) => quadGeometry(q.s, q.uv));
     const merged = mergeGeometries(geoms, false);
     for (const g of geoms) g.dispose();
     if (!merged) continue;
-    const mat = new MeshStandardMaterial({
-      map: tex,
-      emissiveMap: tex,
-      emissive: new Color(0xffffff),
-      emissiveIntensity: dim ? 0.35 : 0.85,
-      roughness: 0.6,
-      polygonOffset: true,
-      polygonOffsetFactor: -1,
-      polygonOffsetUnits: -2,
-    });
-    const mesh = new Mesh(merged, mat);
+    const mesh = new Mesh(merged, screenMaterial(tex, dim));
     mesh.name = dim ? "screens:text" : "screens:static";
     // ray hits resolve per quad (2 triangles each) to the owning placement
-    mesh.userData.quadOwners = list.map(({ s }) => s.owner);
+    mesh.userData.quadOwners = quads.map((q) => q.s.owner);
     ctx.root.add(mesh);
     ctx.pickables.push(mesh);
+    // the canvases of portable placements' screens are kept: drawn on their own once the world moves them
+    if (quads.some((q) => q.s.portable)) sharedOf(ctx).screens.push({ mesh, dim, quads });
   }
   ctx.onLevel(ctx.level);
 }
@@ -180,19 +239,16 @@ function buildLeds(ctx: BuildContext, leds: Map<string, LedPart[]>): void {
     const key = rest.join("|");
     const [m, anim, bucket] = key.split("|");
     ctx.onLevel(level);
-    const geoms = list.map((l) => UNIT_BOX.clone().scale(l.s[0], l.s[1], l.s[2]).rotateY(l.ry).translate(l.x, l.y, l.z));
-    const merged = mergeGeometries(geoms, false);
-    for (const g of geoms) g.dispose();
+    const merged = ledGeometry(list);
     if (!merged) continue;
-    const material = ctx.lib.get(m).clone() as MeshStandardMaterial;
-    if (material.emissive.getHex() === 0) material.emissive = new Color(material.color);
-    if (!material.emissiveIntensity) material.emissiveIntensity = 0.8;
+    const material = ledMaterial(ctx, m);
     const mesh = new Mesh(merged, material);
     mesh.name = `leds:${key}`;
     mesh.castShadow = list.some((l) => l.cast);
     mesh.receiveShadow = true;
     ctx.root.add(mesh); // not ray-picked: the equipment behind the LED resolves the aim
     ctx.animated.push({ mesh, anim: anim as "blink" | "pulse", base: { y: 0, ry: 0, sx: 1, sy: 1, sz: 1 }, material, phase: Number(bucket) * 0.5 });
+    if (list.some((l) => l.owner)) sharedOf(ctx).leds.push({ mesh, key, parts: list });
   }
   ctx.onLevel(ctx.level);
 }
@@ -241,14 +297,14 @@ export function buildPlacements(ctx: BuildContext): void {
     };
     ctx.placements.set(p.id, info);
 
-    // a portable placement (cart, handheld item) is its own movable group, drawn where the world model says it
-    // stands (embodiment, portable.ts) — never part of the static batches
+    // a portable placement (cart, handheld item) is drawn in the static batches like any other until the world
+    // model moves it; then it becomes its own movable group (embodiment, portable.ts — no draw call before)
     const portable = type.portable ? beginPortable(ctx, { id: p.id, x: p.x, z: p.z, rot }, y, level) : null;
     // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
     let finishFallback: (() => void) | null = null;
     const modelled = !!(ctx.models && type.model);
-    // screens and LEDs of a standalone placement stay in its own group (not in the level-wide atlases)
-    const standalone = modelled || !!portable;
+    // screens and LEDs of a modelled placement stay in its own group (not in the level-wide atlases)
+    const standalone = modelled;
     if (modelled) {
       const fallback = new Group();
       fallback.name = `voxels:${p.id}`;
@@ -284,7 +340,7 @@ export function buildPlacements(ctx: BuildContext): void {
         if (!live && !standalone) {
           // static pixel art never changes: packed into one atlas, all panels drawn by two meshes
           sc.texture.dispose();
-          staticScreens.push({ level, canvas: sc.canvas, x: qx, y: py, z: qz, ry, w: part.s[0], h: part.s[1], owner: p.id, dim: screenKind === "text" });
+          staticScreens.push({ level, canvas: sc.canvas, x: qx, y: py, z: qz, ry, w: part.s[0], h: part.s[1], owner: p.id, dim: screenKind === "text", ...(portable ? { portable: true } : {}) });
           continue;
         }
         // live monitors are self-lit displays redrawn at ≤ 10 Hz (own texture, one draw call each)
@@ -297,7 +353,7 @@ export function buildPlacements(ctx: BuildContext): void {
         ctx.root.add(mesh);
         ctx.pickables.push(mesh);
         if (!live) {
-          // a standalone (modelled / portable) placement's static screen: its own quad in its group
+          // a modelled placement's static screen: its own quad in its group
           ctx.ownedTextures.push(sc.texture);
           continue;
         }
@@ -326,7 +382,7 @@ export function buildPlacements(ctx: BuildContext): void {
         const key = `${level}|${part.m}|${anim}|${bucket}`;
         let list = leds.get(key);
         if (!list) leds.set(key, (list = []));
-        list.push({ x: px, y: py, z: pz, ry, s: part.s, cast: ctx.shadows && ctx.lib.castShadow(part.m) });
+        list.push({ x: px, y: py, z: pz, ry, s: part.s, cast: ctx.shadows && ctx.lib.castShadow(part.m), ...(portable ? { owner: p.id } : {}) });
         continue;
       }
       if (anim === "spin") {
@@ -401,4 +457,72 @@ export function buildPlacements(ctx: BuildContext): void {
   ctx.onLevel(ctx.level);
   buildStaticScreens(ctx, staticScreens);
   buildLeds(ctx, leds);
+}
+
+/**
+ * Take a portable placement's LEDs and static screens out of the level-wide merged meshes (their geometry is
+ * rebuilt without them) and draw them on their own in `parent` (its movable group): LEDs keep their
+ * animation, screens their pixel art. Returns the meshes the aim ray tests (the screens). Once per owner.
+ */
+export function detachShared(ctx: BuildContext, owner: string, parent: Object3D): Object3D[] {
+  const sp = shared.get(ctx);
+  if (!sp || sp.detached.has(owner)) return [];
+  sp.detached.add(owner);
+  const keep = <T extends { owner?: string }>(x: T) => !x.owner || !sp.detached.has(x.owner);
+  const pickables: Object3D[] = [];
+  for (const entry of sp.leds) {
+    const mine = entry.parts.filter((l) => l.owner === owner);
+    if (!mine.length) continue;
+    const rest = entry.parts.filter(keep);
+    const old = entry.mesh.geometry;
+    const geometry = ledGeometry(rest);
+    if (geometry) entry.mesh.geometry = geometry;
+    entry.mesh.visible = !!geometry;
+    if (geometry) old.dispose();
+    const [m, anim, bucket] = entry.key.split("|");
+    const own = ledGeometry(mine);
+    if (!own) continue;
+    const material = ledMaterial(ctx, m);
+    const mesh = new Mesh(own, material);
+    mesh.name = `leds:${owner}:${entry.key}`;
+    mesh.castShadow = mine.some((l) => l.cast);
+    mesh.receiveShadow = true;
+    parent.add(mesh);
+    ctx.animated.push({ mesh, anim: anim as "blink" | "pulse", base: { y: 0, ry: 0, sx: 1, sy: 1, sz: 1 }, material, phase: Number(bucket) * 0.5 });
+  }
+  for (const entry of sp.screens) {
+    const mine = entry.quads.filter((q) => q.s.owner === owner);
+    if (!mine.length) continue;
+    const rest = entry.quads.filter((q) => !sp.detached.has(q.s.owner));
+    const geoms = rest.map((q) => quadGeometry(q.s, q.uv));
+    const geometry = geoms.length ? mergeGeometries(geoms, false) : null;
+    for (const g of geoms) g.dispose();
+    const old = entry.mesh.geometry;
+    if (geometry) {
+      entry.mesh.geometry = geometry;
+      old.dispose();
+    }
+    entry.mesh.visible = !!geometry;
+    entry.mesh.userData.quadOwners = rest.map((q) => q.s.owner);
+    for (const q of mine) {
+      const tex = new CanvasTexture(q.s.canvas);
+      tex.magFilter = NearestFilter;
+      tex.minFilter = NearestFilter;
+      tex.generateMipmaps = false;
+      tex.colorSpace = SRGBColorSpace;
+      ctx.ownedTextures.push(tex);
+      const mesh = new Mesh(quadGeometry(q.s), screenMaterial(tex, entry.dim));
+      mesh.name = `screen:${owner}`;
+      mesh.userData.owner = owner;
+      parent.add(mesh);
+      pickables.push(mesh);
+    }
+  }
+  entryCleanup(sp);
+  return pickables;
+}
+
+/** Nothing to keep for meshes left empty (their parts all moved out). */
+function entryCleanup(sp: SharedParts): void {
+  sp.leds = sp.leds.filter((e) => e.parts.some((l) => !l.owner || !sp.detached.has(l.owner)) || e.mesh.visible);
 }

@@ -75,6 +75,54 @@ tool path (hooks, precheck, approval) → re-validate spatial + target version
 (TOCTOU) → engine commit → device transition → events → result`. If the
 engine rejects or the approval is denied, no device transition is committed.
 
+### 2.1 The browser runtime (A6, `packages/web`)
+
+The 3D world runs embodied by default; "Embodied agents" (case start and the
+settings' agents section) picks the mode of the *next* encounter, a running or
+saved one keeps its own (clinical mode stays available, and is the only mode
+without a 3D world). The session builds the world model; the browser supplies
+its sensors and actuators (`app/embodied.ts`, `app/embodied-link.ts`):
+
+* **Mover** (`BrowserMover`): the avatar follows the world's `NavPlan.path`
+  with the renderer's auto-walk (`WorldApi.followRoute`: path legs, stairs
+  flights walked, elevator rides, doors opened on the way and closed behind,
+  local detours to the next route point when blocked); staff rigs walk theirs
+  (`walkStaff`, deterministic, real time); a cart being `move_to`'d is drawn in
+  front of its walker; portable equipment is drawn where the world parks it
+  (standalone merged groups instead of the static batches). Steering is frame-
+  rate independent (`world/steer.ts`: turn per second, turn in place near a
+  waypoint, passed waypoints count), an agent's walk keeps real time on slow
+  frames (physics sub-steps ≤ `maxDt`, ≤ 0.5 s per frame), and every walk ends:
+  a budget of 3 × the walking time + 20 s, at most 8 local detours, and a body
+  stalled within 0.8 m of the last point stops there. The world commits the
+  pose the Mover reports and charges the travel time once.
+* **CameraSensor** (`BrowserCamera`): the avatar's WebGL viewport only (no HUD,
+  no window), redrawn, ≤ 768 px JPEG, the camera pose and the simulated clock;
+  one capture in flight, at most one per second.
+* **Input device**: the avatar's pose goes to the world as `world_pose`
+  (~10 Hz while it moves, out of band) and again right before every submission
+  and autopilot start, never while the Mover drives it.
+* **Same action path**: the panels' equipment buttons are `world_action` ops
+  (monitor attach / NIBP / read, ECG cart prepare / connect / record / reset,
+  a sink's `wash_hands`, a cart's `move_to` to the bed, a locked door's
+  `unlock` on E); learner clinical actions are checked with `checkSpatial`
+  first. A refusal only about distance whose walk is ≤ 5.5 m (the aim reach)
+  walks the avatar to `hint.goal` and retries once; otherwise the localised
+  refusal shows with "Go there" (a `navigate` to the hint). The session's
+  second refusal line (the model-facing `navigate_to {…}`) is never shown to
+  the learner. Results and refusals of the learner's own operations are
+  written into the conversation.
+* **R8**: real-time ticks pause while an agent drives a body (a Mover walk, the
+  autopilot, a clinician turn, a running body-moving world tool).
+* **What the learner sees**: the HUD embodiment badge (place / walking /
+  clinical mode), toasts for delegated staff walking and finishing, staff NPCs
+  walking, moved carts where they stand, actors on the map, the autopilot
+  window's live trace (step → walk → operate → clinical act → state change →
+  verify, failures with their code and the place a hint names).
+* **QA** (`window.__QA__` with `?qa`): `embodiment`, `worldModel`,
+  `worldSnapshot()`, `observe(actor)`, `traceSpans(n)`, `worldAction(req)`,
+  `cameraFrame(w)`, `moving`, `feedback`, `agentDriving`.
+
 ## 3. Identifiers and entities
 
 Agent-facing ids are stable, readable and prefixed by kind:
@@ -332,7 +380,8 @@ A failed embodied operation never falls back to the non-spatial path.
 
 In the browser the human avatar is held to the same policy; the web layer may
 auto-approach (a short animated step, ≤ the 5.5 m aim reach) before
-submitting an action the learner started from a panel.
+submitting an action the learner started from a panel (implemented in A6,
+§2.1: one retry, otherwise the refusal with "Go there").
 
 **Implemented (`policy.ts`: `DefaultSpatialPolicy`, `SpatialChecker`).** The
 table above, made concrete:
@@ -449,7 +498,8 @@ from the collision model (EMBODIED R2), one grid per level:
   the static colliders plus `WorldDynamics` (obstacles, displaced or removed
   entities, door locks); tests check that a local re-stamp equals a rebuild.
   The web autopilot (`walkTo`) still plans with its own grid over the
-  renderer's colliders — which are now the model's.
+  renderer's colliders — which are now the model's — in clinical mode only;
+  in embodied mode the browser `Mover` walks the world's own plan (§2.1).
 * Used by the dynamic layer (W2): the action bus plans every navigation
   operation with the backend (carts with `accessibleOnly`), verifies refusal
   hints by planning them, and invalidates the doorway after a lock change,
@@ -1047,13 +1097,13 @@ The status table is filled in as work lands (see the end of this file).
 | Device behaviours, authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog (operations per kind, predicates, ECG state machine with reservation and durations, derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions) | — | — |
 | Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`) | yes (W2) | every §6 row (ok, each failure reason, the hint that fixes it); property over every item of the 10 built-in cases in their own facility | — | — |
 | Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`) | yes (W2) | unit (awareness levels, bounds, bearings, cues, monitor screen rules, memory without versions); no case fact in any observation (10 cases × 2 languages) | — | — |
-| Action bus, runtime (`createWorldRuntime`), traces | yes (W2) | unit (commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees) over a fake session on the real engine | wired into the agent session, the CLI and MCP (A5); not yet the web or the HTTP server | — |
+| Action bus, runtime (`createWorldRuntime`), traces | yes (W2) | unit (commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees) over a fake session on the real engine | wired into the agent session, the CLI and MCP (A5) and the web (A6); not yet the HTTP server | — |
 | Room templates (`clinicalcraft/room-template@1`, `compileFacility`, `checkRoomTemplate`; 15 templates) | yes (A4) | core unit (rotations 0/90/180/270 incl. door offsets, ids, determinism, levels and buildings, overrides, every validation error, nested vs partial overlaps, the standalone template check); every template validates alone | compiled at load time by every loader (node `loadContent`, web app, harness, server); `facilities compile` | — |
 | Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate --all` with no issue; hosts 9 of the 10 built-in cases without capability gaps; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e (`teaching-hospital.spec.ts`: offered as an alternative facility, stairs up, elevator down, map floors) | — |
 | Multi-level collision model and physics (`slab`, `ramp`, `rail` colliders; `stepPlayer` on ramps) | yes (A4) | unit (ramp surface, step-up / snap-down limits, flight sides and underside, the real stairs up and down, guarded stairwell); single-level pins unchanged (general-hospital re-pinned for the moved ward monitor only) | browser QA: walking the real stairs with W up and down | — |
 | Multi-level web world (storeys, stairs, elevator ride, level culling, floor-aware lights/aim/region, map floor tabs, cross-level autopilot) | yes (A4) | unit (levels and culling rules, regions per level, elevator cars, routes across levels); e2e; the existing e2e suite unchanged for `clinic-v4` / `general-hospital` | visual QA of both levels, the stairs and the elevator (draw calls and build time in the A4 report) | — |
 | GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache`) | yes (A4) | unit with GLBs generated in code (container, counts, node transforms, bounds, extensions, licence, hash, scale, fit), CLI tests, renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy) | harness QA (`?model=<type>`: models drawn, aim through the footprint, a broken URL keeps the voxels); no built-in catalog ships a model | — |
-| Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 17 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5) | agent unit + integration on built-in cases (refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies) | CLI `--embodied` (play, exec, eval), MCP `start_case {embodied}`; the web: not yet | — |
+| Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 17 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5) | agent unit + integration on built-in cases (refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies) | CLI `--embodied` (play, exec, eval), MCP `start_case {embodied}`; the web (A6, §2.1) | — |
 | Embodied offline autopilot (reference agent) | yes (A5) | every built-in case × zh-CN / en finishes in its own facility with the clinical-mode score (test); STEMI trace chain for the ECG and the monitor | `exec --embodied --autopilot` over the library in both languages | — |
 | Delegation (`delegate_task`: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention) | yes (A5) | nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller | — | — |
 | Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader | — | — |
