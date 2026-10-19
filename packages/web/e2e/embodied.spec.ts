@@ -213,6 +213,45 @@ test.describe("embodied mode (en): doors", () => {
   });
 });
 
+test.describe("embodied mode (en): carts", () => {
+  test.use({ locale: "en-US" });
+
+  test("(j) Bring to the patient: the learner wheels a cart to the bed; it is drawn where the world parks it", async ({ page }) => {
+    await freshStart(page);
+    await enterCase(page, CASE);
+    await embodiedSetup(page, { bypassApprovals: true });
+    const cart = "cub2-ecg"; // the ECG cart of ED cubicle 2, ~25 m from the resus bed
+    const drawnBefore = await page.evaluate((id) => {
+      const q = (window as any).__QA__;
+      const g = q.game;
+      const p = g.stations.placement(id);
+      q.world.debug.teleport(p.x, p.z + 1.4, 0, 0, 0);
+      g.embodied.syncPose();
+      q.interact({ kind: "equipment", placementId: id, type: p.type, interaction: "device", capabilities: g.stations.caps(id), name: id, hint: "", room: p.room ?? null });
+      return q.world.debug.portables.get(id).promoted as boolean;
+    }, cart);
+    // until something moves it, a cart is drawn by the static batches (no draw call of its own)
+    expect(drawnBefore).toBe(false);
+    await page.locator("#device-bring").click();
+    // pushed in front of the avatar while it walks the world's route
+    await expect.poll(() => page.evaluate((id) => (window as any).__QA__.world.debug.portables.get(id).pushedBy ?? null, cart), { timeout: 60_000, intervals: [200] }).toBe("avatar");
+    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
+    const world = await page.evaluate((id) => (window as any).__QA__.worldSnapshot().entities[`eq:${id}`].position, cart);
+    expect(Math.hypot(world.x - SLOT.x, world.z - SLOT.z)).toBeLessThan(6);
+    const drawn = await page.evaluate((id) => {
+      const r = (window as any).__QA__.world.debug.portables.get(id);
+      return { x: r.x, z: r.z, promoted: r.promoted, visible: r.group.visible, pushedBy: r.pushedBy ?? null };
+    }, cart);
+    expect(drawn).toMatchObject({ promoted: true, visible: true, pushedBy: null });
+    expect(Math.hypot(drawn.x - world.x, drawn.z - world.z)).toBeLessThan(0.05);
+    expect((await traceLines(page)).filter((l) => /:move_to:/.test(l))).toEqual([expect.stringMatching(/^\w+:move_to:ok$/)]);
+    await page.keyboard.press("Escape");
+    // look at it, parked by the bed
+    await placeAvatar(page, world.x - 1.6, world.z + 2.2, { x: world.x, z: world.z });
+    await shot(page, "embodied-cart-parked");
+  });
+});
+
 test.describe("embodied mode (zh-CN)", () => {
   test.use({ locale: "zh-CN" });
 

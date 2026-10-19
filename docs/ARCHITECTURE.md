@@ -647,7 +647,9 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   runs the clinical tool through the caller's own tool path (deny rules
   included); walking and procedures charge simulated time; the session keeps
   an `EpisodeTrace` and `world` transcript snapshots. Clinical mode is
-  unchanged.
+  unchanged. The web's 3D world runs embodied by default (chosen per
+  encounter; the browser supplies the `Mover`, the camera and the avatar's
+  pose — EMBODIED §2.1).
 
 ### 4.1 Approval modes
 
