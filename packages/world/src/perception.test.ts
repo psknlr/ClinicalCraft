@@ -241,3 +241,52 @@ describe("perception never reveals case facts (all built-in cases, both language
     }
   }
 });
+
+describe("G13: recent events are the observer's own, its delegates' and what it perceives", () => {
+  const N = "staff:ed-nurse"; // Lin Xiao, at the ED nurse station
+  const mentionsNurse = (w: TestWorld) => w.runtime.observe(A).recentEvents.filter((e) => /Lin Xiao|林晓/.test(e.summary));
+
+  it("another actor out of sight: its walk is not reported; the same walk done for the observer is, in the third person", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    // the clinician in the physician office, far from the ED
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+    expect((await w.act({ actorId: N, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect(w.runtime.find(A, { kind: "staff", awareness: ["visible", "nearby"] }).map((e) => e.id)).not.toContain(N);
+    expect(mentionsNurse(w)).toEqual([]);
+    // a delegated task: the nurse acts for the clinician — the clinician hears of it wherever it is
+    expect((await w.act({ actorId: N, operation: "approach", targetId: "eq:resus1-ecg", onBehalfOf: A })).status).toBe("completed");
+    const told = mentionsNurse(w);
+    expect(told.length).toBeGreaterThan(0);
+    expect(told.map((e) => e.summary).join(" ")).toMatch(/^Lin Xiao moved|Lin Xiao: /);
+    expect(told.every((e) => !/\byou\b/i.test(e.summary))).toBe(true);
+    // never another actor's own discoveries unless done for the observer
+    expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "actor.discovered").every((e) => !/Lin Xiao/.test(e.summary) || told.some((t) => t.id === e.id))).toBe(true);
+  });
+
+  it("the observer's own events are in the second person (both locales); a perceived actor's in the third", async () => {
+    for (const locale of ["en", "zh-CN"]) {
+      const w = makeWorld("stemi-inferior-rv", { locale });
+      expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+      const own = w.runtime.observe(A).recentEvents;
+      expect(own.find((e) => e.type === "actor.moved")!.summary).toMatch(locale === "en" ? /^You moved \d/ : /^你移动了/);
+      expect(own.find((e) => e.type === "action.completed")!.summary).toMatch(locale === "en" ? /^You: / : /^你：/);
+      // the nurse walks into the resus room where the clinician stands: perceived, third person
+      expect((await w.act({ actorId: N, operation: "approach", targetId: "eq:resus1-monitor" })).status).toBe("completed");
+      const seen = w.runtime.find(A, { kind: "staff", awareness: ["visible", "nearby"] }).map((e) => e.id);
+      expect(seen).toContain(N);
+      const nurse = w.runtime.observe(A).recentEvents.filter((e) => /Lin Xiao|林晓/.test(e.summary));
+      expect(nurse.length).toBeGreaterThan(0);
+      expect(nurse.find((e) => e.type === "actor.moved")!.summary).toMatch(locale === "en" ? /^Lin Xiao moved/ : /^林晓移动了/);
+    }
+  });
+
+  it("a device changed out of the observer's sight is not reported; in sight it is", async () => {
+    const w = makeWorld("stemi-inferior-rv");
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
+    expect((await w.act({ actorId: N, operation: "approach", targetId: "eq:resus1-ecg" })).status).toBe("completed");
+    expect((await w.act({ actorId: N, operation: "prepare", targetId: "eq:resus1-ecg" })).status).toBe("completed");
+    expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.state")).toEqual([]);
+    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.state").map((e) => e.summary)).toEqual([expect.stringMatching(/ECG/)]);
+  });
+});
