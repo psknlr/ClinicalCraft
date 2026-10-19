@@ -2,8 +2,14 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    # Feature branches get a measured run too (the implementation branch had never been built by CI).
+    branches: [main, "claude/**"]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
