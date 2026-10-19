@@ -338,7 +338,7 @@ export interface WorldStateSnapshot {
 /* Events                                                              */
 /* ------------------------------------------------------------------ */
 
-export type WorldEvent =
+export type WorldEvent = (
   | { id: string; type: "actor.moved"; actorId: ActorId; from: Pose; to: Pose; distance: number; travelSeconds: number }
   | { id: string; type: "actor.entered-room"; actorId: ActorId; room: string | null; level: string }
   | { id: string; type: "actor.discovered"; actorId: ActorId; entities: EntityId[] }
@@ -352,7 +352,14 @@ export type WorldEvent =
   | { id: string; type: "entity.availability"; entityId: EntityId; available: boolean }
   | { id: string; type: "hygiene"; actorId: ActorId; until: number }
   | { id: string; type: "task.changed"; actorId: ActorId; task: ActorState["task"] }
-  | { id: string; type: "action.completed"; actionId: string; actorId: ActorId; operation: string; status: WorldActionResult["status"]; errorCode?: WorldErrorCode };
+  | { id: string; type: "action.completed"; actionId: string; actorId: ActorId; operation: string; status: WorldActionResult["status"]; errorCode?: WorldErrorCode }
+) & {
+  /**
+   * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a
+   * delegated task): its observations report the event as its delegate's.
+   */
+  onBehalfOf?: ActorId;
+};
 
 export interface WorldEventSummary {
   id: string;
@@ -684,6 +691,11 @@ export interface WorldActionRequest {
   expectedWorldVersion?: number;
   /** Optimistic concurrency on the target entity (recommended). */
   expectedTargetVersion?: number;
+  /**
+   * The actor this action is done for (a delegated task, EMBODIED §8): the
+   * events it causes are that actor's to observe, wherever it is (G13).
+   */
+  onBehalfOf?: ActorId;
 }
 
 export type WorldErrorCode =

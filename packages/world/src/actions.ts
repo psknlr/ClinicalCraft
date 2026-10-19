@@ -186,6 +186,7 @@ export function requestProblem(r: unknown): string | null {
     const v = q[k];
     if (v !== undefined && !(Number.isInteger(v) && (v as number) >= 0)) return `${k} must be a non-negative integer`;
   }
+  if (q.onBehalfOf !== undefined && (typeof q.onBehalfOf !== "string" || !q.onBehalfOf.trim())) return "onBehalfOf must be a non-empty string";
   if (q.goal !== undefined) return goalProblem(q.goal);
   return null;
 }
@@ -242,6 +243,8 @@ export class ActionBus implements EffectsHost {
   private readonly pending = new Map<string, Promise<WorldActionResult>>();
   private readonly tails = new Map<ActorId, Promise<void>>();
   private readonly controllers = new Map<ActorId, Set<AbortController>>();
+  /** The actor each acting body works for right now (`onBehalfOf`; one action per body at a time). */
+  private readonly principals = new Map<ActorId, ActorId>();
 
   constructor(readonly d: ActionBusDeps) {
     this.connectors = connectorInfos(d.facility);
@@ -250,7 +253,10 @@ export class ActionBus implements EffectsHost {
   /* ---------------- helpers for effects ---------------- */
 
   emit(input: WorldEventInput): WorldEvent {
-    return this.d.store.emit(input);
+    // the events of a delegated action name whom it was done for (G13)
+    const by = "actorId" in input && typeof input.actorId === "string" ? input.actorId : input.type === "reservation.changed" ? input.reservedBy : null;
+    const principal = by ? this.principals.get(by) : undefined;
+    return this.d.store.emit(principal ? ({ ...input, onBehalfOf: principal } as WorldEventInput) : input);
   }
 
   invalidate(area: Area & { level: string }): void {
@@ -374,14 +380,20 @@ export class ActionBus implements EffectsHost {
 
   private async run(request: WorldActionRequest, signal: AbortSignal): Promise<WorldActionResult> {
     const t0 = this.timing();
-    if (signal.aborted) return this.finish(request, { status: "cancelled", errorCode: "CANCELLED", message: worldMessage("CANCELLED", this.d.locale), events: [] }, t0);
-    let outcome: Outcome;
+    const principal = typeof request.onBehalfOf === "string" && request.onBehalfOf !== request.actorId && this.d.store.actor(request.onBehalfOf) ? request.onBehalfOf : null;
+    if (principal) this.principals.set(request.actorId, principal);
     try {
-      outcome = await this.dispatch(request, this.d.store.actor(request.actorId)!, signal);
-    } catch (e) {
-      outcome = failed("INVALID_REQUEST", worldMessage("INVALID_REQUEST", this.d.locale, { reason: `internal error: ${e instanceof Error ? e.message : String(e)}` }));
+      if (signal.aborted) return this.finish(request, { status: "cancelled", errorCode: "CANCELLED", message: worldMessage("CANCELLED", this.d.locale), events: [] }, t0);
+      let outcome: Outcome;
+      try {
+        outcome = await this.dispatch(request, this.d.store.actor(request.actorId)!, signal);
+      } catch (e) {
+        outcome = failed("INVALID_REQUEST", worldMessage("INVALID_REQUEST", this.d.locale, { reason: `internal error: ${e instanceof Error ? e.message : String(e)}` }));
+      }
+      return this.finish(request, outcome, t0);
+    } finally {
+      if (principal) this.principals.delete(request.actorId);
     }
-    return this.finish(request, outcome, t0);
   }
 
   private async dispatch(request: WorldActionRequest, actor: ActorState, signal: AbortSignal): Promise<Outcome> {
