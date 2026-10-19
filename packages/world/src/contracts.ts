@@ -12,15 +12,21 @@
  * `ClinicalPort`, i.e. the session's normal tool path).
  */
 import type {
+  ActorRole as CoreActorRole,
+  BehaviorOperation as CoreBehaviorOperation,
   CaseDefinition,
+  ClinicalEffect as CoreClinicalEffect,
   Condition,
+  DeviceBehavior as CoreDeviceBehavior,
   EquipmentCatalog,
   EquipmentType,
   FacilityDefinition,
   LocalizedText,
   SessionState,
   VitalsSnapshot,
+  WorldPredicate as CoreWorldPredicate,
 } from "@clinicalcraft/core";
+import type { WallSpec } from "./walls.js";
 
 /* ------------------------------------------------------------------ */
 /* Identifiers                                                         */
@@ -92,8 +98,8 @@ export interface Aabb {
   maxZ: number;
 }
 
-/** What a collider is made of (navigation and visibility treat them differently). */
-export type ColliderKind = "wall" | "partition" | "window" | "door" | "equipment" | "npc" | "tree" | "block" | "obstacle";
+/** What a collider is made of (navigation and visibility treat them differently). `sign`: the post of a free-standing sign. */
+export type ColliderKind = "wall" | "partition" | "window" | "door" | "equipment" | "npc" | "tree" | "block" | "sign" | "obstacle";
 
 /** One collider of the collision model. Ids are stable so the renderer can toggle doors / move carts. */
 export interface Collider extends Aabb {
@@ -118,9 +124,12 @@ export interface CollisionModel {
   colliders: Collider[];
   /** Door records (ids match renderer door records and `door:` entity ids). */
   doors: DoorSpec[];
+  /** The wall layout the wall/partition/window/door colliders were derived from (the renderer draws the same walls). */
+  walls: WallSpec[];
 }
 
 export interface DoorSpec {
+  /** `door:<ownerKey>:<side>:<n>`; without the prefix it is the renderer's door record id. */
   id: EntityId;
   name: LocalizedText;
   level: string;
@@ -129,12 +138,19 @@ export interface DoorSpec {
   /** Wall axis the door sits in. */
   axis: "x" | "z";
   width: number;
+  /** Leaf height (m). */
+  height: number;
   /** Interior (partition) door vs building entrance. */
   interior: boolean;
+  /** Building or room whose wall the door is in, and the side of it. */
+  owner: string;
+  side: "n" | "s" | "e" | "w";
   /** Collider ids of the closed leaves. */
   colliders: string[];
-  /** Rooms on either side (if any). */
+  /** Rooms on either side (if any): [inside the owner's rect, outside]. */
   rooms: [string | null, string | null];
+  /** Doorway area (opening × wall thickness / 2 + 0.9 m each side): a closing door would hit whoever stands here. */
+  area: { minX: number; maxX: number; minZ: number; maxZ: number };
 }
 
 /* ------------------------------------------------------------------ */
@@ -199,6 +215,8 @@ export interface SemanticEntity {
   portable?: "cart" | "handheld";
   /** Interaction reach in metres from the footprint (defaults per interaction kind). */
   reach: number;
+  /** Declared interaction points (equipment `interactionPoints`) in world coordinates. */
+  interactionPoints?: Vec2[];
   tags: string[];
   /** Public descriptor (what a bystander sees): patient name tag / age-sex tag / posture; staff role and name. */
   public?: Record<string, string>;
@@ -218,7 +236,8 @@ export interface EncounterBinding {
 /* Physical state                                                      */
 /* ------------------------------------------------------------------ */
 
-export type ActorRole = "clinician" | "nurse" | "radiologist" | "pathologist" | "lab-tech" | "attending" | "pharmacist" | "receptionist" | "paramedic" | "porter";
+/** Actor roles (core `ACTOR_ROLES`). */
+export type ActorRole = CoreActorRole;
 
 export interface ActorState {
   id: ActorId;
@@ -265,6 +284,27 @@ export interface DynamicObstacle {
   level: string;
   rect: { x: number; z: number; w: number; d: number };
   label: LocalizedText;
+}
+
+/**
+ * Read access to the physical state the static grids depend on (EMBODIED
+ * §2): implemented by the world state store, read by the navigation grids
+ * (`NavGrids`, `GridAStarBackend`) and the occlusion grids
+ * (`VisibilityModel`). Door state is read at query/compose time; after a
+ * change of locks, obstacles, displaced or removed entities call the
+ * backend's / visibility model's `invalidate(area)`. Every member is optional.
+ */
+export interface WorldDynamics {
+  /** Door state; absent = closed and unlocked (passable for planning, opaque for visibility). */
+  doorState?(doorId: EntityId): { open: boolean; locked: boolean } | null | undefined;
+  /** Temporary obstacles (wet floor, blocked corridor). */
+  obstacles?(): readonly DynamicObstacle[];
+  /** Portable entities away from their registry position (moved carts, dropped items). */
+  displaced?(): readonly { id: EntityId; position: Vec3 & { level: string; rot?: number } }[];
+  /** Entities without a body in the world right now (a carried handheld item). */
+  removed?(): readonly EntityId[];
+  /** Pose of an actor (`actor:*`) or of a staff member away from their post (follow goals). */
+  actorPose?(id: ActorId): Pose | null | undefined;
 }
 
 export interface WorldStateSnapshot {
@@ -443,6 +483,8 @@ export interface NavRequest {
   role: ActorRole;
   /** Max A* expansions per level segment. */
   maxExpanded?: number;
+  /** Only connectors usable with a wheelchair, bed or cart (no stairs) — e.g. while pushing a cart. */
+  accessibleOnly?: boolean;
 }
 
 export type NavPlan =
@@ -541,55 +583,26 @@ export const RANGES = { talk: 3, contact: 1.5, screen: 6, interact: 1.5 } as con
 /* Device behaviours (catalog `behavior`, EMBODIED §8)                 */
 /* ------------------------------------------------------------------ */
 
-/** World predicates (preconditions of operations, skill pre/postconditions). */
-export type WorldPredicate =
-  | { actorWithin: number }
-  | { patientWithin: number }
-  | { deviceAtBedside: true }
-  | { actorHolding: string }
-  | { state: string | string[] }
-  | { role: ActorRole[] }
-  | { handsClean: true }
-  | { all: WorldPredicate[] }
-  | { any: WorldPredicate[] }
-  | { not: WorldPredicate };
+/**
+ * World predicates (preconditions of operations, skill pre/postconditions) —
+ * the core catalog schema's `WorldPredicate` (zod-validated in catalogs).
+ */
+export type WorldPredicate = CoreWorldPredicate;
 
-/** The clinical side of an operation: a clinical tool run through the session's tool path. */
-export interface ClinicalEffect {
-  tool: "order_test" | "read_result" | "intervene" | "check_vitals" | "examine";
-  /**
-   * How the clinical item is chosen: "param" (operation parameter
-   * `investigation` / `intervention` / `finding`), or the first case item whose
-   * `requires` is provided by this device (`by: "capability"`), or the case's
-   * monitoring intervention (`by: "monitoring"`).
-   */
-  select: "param" | "capability" | "monitoring";
-}
+/**
+ * The clinical side of an operation: a clinical tool run through the
+ * session's tool path. `select`: "param" (operation parameter
+ * `investigation` / `intervention` / `finding`), the first case item whose
+ * `requires` is provided by this device (`capability`), or the case's
+ * monitoring intervention (`monitoring`).
+ */
+export type ClinicalEffect = CoreClinicalEffect;
 
-export interface BehaviorOperation {
-  name: LocalizedText;
-  /** States the operation is offered in ("*" = any). */
-  from: string[] | "*";
-  /** State after success (omit: unchanged). */
-  to?: string;
-  requires?: WorldPredicate[];
-  clinical?: ClinicalEffect;
-  /** Simulated seconds the operation takes (added as clinical time on simulated clocks). */
-  durationSeconds?: number;
-  /** Reserve the device for the actor (released by an operation with `release`). */
-  reserve?: boolean;
-  release?: boolean;
-  /** Roles allowed (default: everyone). */
-  roles?: ActorRole[];
-}
+/** One operation of a device behaviour (core `BehaviorOperation`): `from` states ("*" = any), `to`, `requires`, `clinical`, `durationSeconds`, `reserve`/`release`, `roles`. */
+export type BehaviorOperation = CoreBehaviorOperation;
 
-export interface DeviceBehavior {
-  initial: string;
-  states: Record<string, { name?: LocalizedText; available?: boolean }>;
-  operations: Record<string, BehaviorOperation>;
-  /** State derived from the engine instead of stored (EMBODIED R6), e.g. monitor attachment. */
-  derived?: "monitor-attachment";
-}
+/** Declarative device state machine (core `DeviceBehavior`); `derived` states mirror the engine and are never stored (EMBODIED R6). */
+export type DeviceBehavior = CoreDeviceBehavior;
 
 /* ------------------------------------------------------------------ */
 /* Actions                                                             */

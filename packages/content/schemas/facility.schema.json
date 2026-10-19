@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "ClinicalCraft facility (clinicalcraft/facility@1)",
-  "description": "A voxel clinical environment: bounds, terrain, buildings, rooms, equipment placements, patient slots, staff and build zone.",
+  "description": "A voxel clinical environment: bounds, terrain, buildings, rooms, equipment placements, patient slots, staff, build zone, levels, connectors and access zones.",
   "$ref": "#/definitions/Facility",
   "definitions": {
     "Id": {
@@ -461,6 +461,13 @@
               "rect": {
                 "$ref": "#/definitions/Rect"
               },
+              "levels": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "minItems": 1
+              },
               "floor": {
                 "$ref": "#/definitions/Id",
                 "default": "floor"
@@ -596,6 +603,9 @@
                 ]
               },
               "building": {
+                "$ref": "#/definitions/Id"
+              },
+              "level": {
                 "$ref": "#/definitions/Id"
               },
               "rect": {
@@ -767,6 +777,9 @@
               "room": {
                 "$ref": "#/definitions/Id"
               },
+              "level": {
+                "$ref": "#/definitions/Id"
+              },
               "label": {
                 "$ref": "#/definitions/LocalizedText"
               },
@@ -871,6 +884,9 @@
               "room": {
                 "$ref": "#/definitions/Id"
               },
+              "level": {
+                "$ref": "#/definitions/Id"
+              },
               "x": {
                 "type": "number"
               },
@@ -950,6 +966,9 @@
                 "$ref": "#/definitions/LocalizedText"
               },
               "room": {
+                "$ref": "#/definitions/Id"
+              },
+              "level": {
                 "$ref": "#/definitions/Id"
               },
               "x": {
@@ -1165,6 +1184,162 @@
             "zh-CN": "疗愈花园",
             "en": "Healing Garden"
           }
+        },
+        "levels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/Id"
+              },
+              "name": {
+                "$ref": "#/definitions/LocalizedText"
+              },
+              "elevation": {
+                "type": "number",
+                "default": 0
+              },
+              "height": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "default": 5
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "connectors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/Id"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "stairs",
+                  "elevator",
+                  "ramp"
+                ]
+              },
+              "name": {
+                "$ref": "#/definitions/LocalizedText"
+              },
+              "stops": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "level": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "x": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "level",
+                    "x",
+                    "z"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 2
+              },
+              "travelSeconds": {
+                "type": "number",
+                "minimum": 0
+              },
+              "accessible": {
+                "type": "boolean"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "clinician",
+                    "nurse",
+                    "radiologist",
+                    "pathologist",
+                    "lab-tech",
+                    "attending",
+                    "pharmacist",
+                    "receptionist",
+                    "paramedic",
+                    "porter"
+                  ]
+                },
+                "default": []
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "name",
+              "stops"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "access": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/Id"
+              },
+              "name": {
+                "$ref": "#/definitions/LocalizedText"
+              },
+              "level": {
+                "$ref": "#/definitions/Id"
+              },
+              "rect": {
+                "$ref": "#/definitions/Rect"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "clinician",
+                    "nurse",
+                    "radiologist",
+                    "pathologist",
+                    "lab-tech",
+                    "attending",
+                    "pharmacist",
+                    "receptionist",
+                    "paramedic",
+                    "porter"
+                  ]
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "rect",
+              "roles"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
         }
       },
       "required": [

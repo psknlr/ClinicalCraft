@@ -4,7 +4,10 @@
  * and validates them with core's `parseCase` / `parseFacility` /
  * `parseCatalog` (falling back to the zod schemas when the engine helpers are
  * unavailable). The built-in content directory (`@clinicalcraft/content`) is
- * searched first; later directories override earlier ones by id.
+ * searched first; later directories override earlier ones by id. Within one
+ * directory the first case folder (in name order) declaring an id wins and
+ * the others are reported — the same winners as the case index
+ * (`CaseIndexer`, ./case-index.ts).
  */
 import { existsSync, statSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
@@ -34,6 +37,12 @@ export interface LoadContentOptions {
   dirs?: readonly string[];
   /** Include the built-in `@clinicalcraft/content` directory (default true). */
   builtin?: boolean;
+  /**
+   * Load and validate the cases (default true). `false`: facilities and
+   * catalogs only — e.g. `clinicalcraft serve`, which indexes cases with
+   * `CaseIndexer` and validates each one when it is first requested.
+   */
+  cases?: boolean;
 }
 
 type ParseResult<T> = { ok: true; value: T; warnings: ContentIssue[] } | { ok: false; issues: ContentIssue[] };
@@ -188,6 +197,7 @@ export async function loadContent(options: LoadContentOptions = {}): Promise<Loa
       result.facilities.set(parsed.value.id, { def: parsed.value, file });
     }
 
+    if (options.cases === false) continue;
     for (const entry of await listDir(join(dir, "cases"))) {
       if (!entry.isDir) continue;
       const caseDir = join(dir, "cases", entry.name);
@@ -205,7 +215,14 @@ export async function loadContent(options: LoadContentOptions = {}): Promise<Loa
       }
       const warnings = [...parsed.warnings];
       if (parsed.value.id !== entry.name) warnings.push({ path: "id", message: `case id "${parsed.value.id}" differs from its directory name "${entry.name}"`, severity: "warning" });
-      if (result.cases.has(parsed.value.id)) warnings.push({ path: "id", message: `case "${parsed.value.id}" overrides ${result.cases.get(parsed.value.id)!.file}`, severity: "warning" });
+      const previous = result.cases.get(parsed.value.id);
+      // Two folders of one directory with the same id: the first wins (as in the case index, `CaseIndexer`);
+      // a later content directory overrides an earlier one.
+      if (previous && dirname(dirname(previous.dir)) === dir) {
+        report(file, [...warnings, { path: "id", message: `duplicate case id "${parsed.value.id}": ${previous.file} is used (the first folder of this directory)`, severity: "error" }]);
+        continue;
+      }
+      if (previous) warnings.push({ path: "id", message: `case "${parsed.value.id}" overrides ${previous.file}`, severity: "warning" });
       report(file, warnings);
       result.cases.set(parsed.value.id, { def: parsed.value, dir: caseDir, file });
     }

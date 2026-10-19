@@ -28,7 +28,7 @@ import { confirmResetPanel, pausePanel, type PauseArgs } from "../ui/panels/paus
 import { imagePanel, reportPanel, type ImageArgs, type ReportArgs } from "../ui/panels/report.js";
 import { Toaster, type ToastLevel } from "../ui/toast.js";
 import { playSound } from "./audio.js";
-import { loadContent, loadServerContent, type ContentIndex } from "./content.js";
+import { fetchServerCase, loadContent, loadServerContent, type ContentIndex } from "./content.js";
 import type { App, Game, PanelName } from "./context.js";
 import { detectServer, fetchJson, runtimeChoice, STANDALONE, type RuntimeChoice, type ServerInfo } from "./llm.js";
 import { BLOCK_TYPES, download, MAX_IMPORT_BYTES, SaveStore, type BlockType, type Inventory } from "./persistence.js";
@@ -132,18 +132,26 @@ export class ClinicalCraftApp implements App {
       const facility = lastSave && this.content.facilities.has(lastSave.facilityId) ? this.content.facilities.get(lastSave.facilityId)! : this.content.defaultFacility(card);
       if (facility) this.selection = { caseId: card.id, facilityId: facility.id };
     }
+    // Full cases are lazy chunks: the selected one (its patient stands in the backdrop) loads while the
+    // intro paints; the intro shows the selected case's loading state as it changes.
+    const selectedCase = this.selection ? this.content.loadCase(this.selection.caseId) : Promise.resolve(null);
+    this.content.onCaseStatus((id) => {
+      if (!this.game && id === this.selection?.caseId) this.intro.updateCaseStatus();
+    });
     this.intro.show();
     this.hud.show(false);
     const detected = detectServer().then(async (info) => {
       this.server = info;
-      // Served by `clinicalcraft serve`: its contentDirs cases, facilities and catalogs join the library.
-      if (info.served) await loadServerContent(this.content, (url) => fetchJson(url, 6000)).catch(() => 0);
+      // Served by `clinicalcraft serve`: its contentDirs cases (index entries; each case is fetched when
+      // needed), facilities and catalogs join the library.
+      if (info.served) await loadServerContent(this.content, (url) => fetchJson(url, 6000), (id) => fetchServerCase(id)).catch(() => 0);
       this.intro.render();
       this.hud.update();
     });
     // The world build blocks the main thread for a while: let server detection (a couple of
-    // local requests) finish first so its timeout never races the build, and let the intro paint.
-    void Promise.race([detected, new Promise((r) => setTimeout(r, 1500))]).then(() =>
+    // local requests) and the selected case finish first so their timeouts never race the build, and
+    // let the intro paint.
+    void Promise.race([Promise.all([detected, selectedCase]), new Promise((r) => setTimeout(r, 1500))]).then(() =>
       requestAnimationFrame(() =>
         setTimeout(() => {
           this.buildBackdrop();
@@ -179,6 +187,8 @@ export class ClinicalCraftApp implements App {
   /** The intro selection changed: rebuild the backdrop when the facility differs (debounced). */
   selectionChanged(sel: Selection): void {
     this.selection = sel;
+    // Prefetch the full case (a lazy chunk or a server document) so entering is quick.
+    void this.content.loadCase(sel.caseId);
     if (this.backdropTimer) clearTimeout(this.backdropTimer);
     if (this.world.spec?.facility.id === sel.facilityId && this.world.api) return;
     this.backdropTimer = setTimeout(() => {
@@ -190,7 +200,8 @@ export class ClinicalCraftApp implements App {
     if (!sel) return null;
     const facility = this.content.facilities.get(sel.facilityId);
     if (!facility) return null;
-    const caseDef = this.content.getCase(sel.caseId);
+    // Only a case already loaded: the backdrop never waits for one (it shows the patient once loaded).
+    const caseDef = this.content.peekCase(sel.caseId);
     const locale = getLocale();
     return {
       facility,
@@ -570,12 +581,15 @@ export class ClinicalCraftApp implements App {
     if (this.starting) return;
     this.starting = true;
     try {
-      if (this.game) await this.endGame(true);
-      const caseDef = this.content.getCase(caseId);
-      if (!caseDef) {
-        this.toast(tr("library.invalid"), this.content.caseIssues(caseId).join("\n"), "critical");
+      // Load (lazily, cached) and validate the full case before leaving the current one.
+      const loaded = await this.content.loadCase(caseId);
+      if (!loaded.ok) {
+        if (loaded.reason === "invalid") this.toast(tr("library.invalid"), loaded.issues.join("\n"), "critical");
+        else this.toast(tr("library.loadFailed"), loaded.issues.join("\n") || caseId, "critical");
         return;
       }
+      const caseDef = loaded.def;
+      if (this.game) await this.endGame(true);
       const save = resume ? this.saves.caseSave(caseId) : null;
       const facility = this.content.facilities.get(save?.facilityId ?? facilityId) ?? this.content.facilities.get(facilityId);
       if (!facility) return;
@@ -945,6 +959,9 @@ export class ClinicalCraftApp implements App {
         const fid = facilityId ?? (card ? app.content.defaultFacility(card)?.id : undefined) ?? "general-hospital";
         return app.startCase(caseId, fid, resume);
       },
+      /** Load a full case (its lazy chunk, or the server document); resolves true when it is valid. */
+      loadCase: async (caseId: string) => (await app.content.loadCase(caseId)).ok,
+      caseStatus: (caseId: string) => app.content.caseStatus(caseId),
       save: () => app.save(),
       locate: (id: string) => app.world.api?.locate(id) ?? null,
       hotbar: (n: number) => app.hotbar(n),

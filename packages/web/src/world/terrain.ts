@@ -1,12 +1,12 @@
 /**
  * Terrain (V4 ground grid, paths, sand checker, pond, trees, flowers,
- * horizon ring and drifting clouds), generalised to facility data.
+ * horizon ring and drifting clouds), generalised to facility data. Tree
+ * trunk colliders are the collision model's (`tree:<i>`).
  */
 import { Group, InstancedMesh, Matrix4 } from "three";
 import type { BuildContext } from "./context.js";
 import { checkerMaterial, zoneCells } from "./buildzone.js";
 import { greedyRects, rectContains, type Rect } from "./geometry.js";
-import { boxCollider } from "./physics.js";
 import { createLcg } from "./textures.js";
 import { UNIT_BOX } from "./voxels.js";
 
@@ -105,7 +105,6 @@ export function buildTerrain(ctx: BuildContext): { clouds: Group } {
   // trees (V4 tt(): trunk blocks + 3 leaf layers 5×5, 5×5, 3×3)
   for (const t of terrain.trees ?? []) {
     for (let y = 0; y < t.h; y++) ctx.batch.add("wood", t.x, y + 0.5, t.z);
-    ctx.colliders.add(boxCollider(t.x, t.h / 2, t.z, 1, t.h, 1));
     for (let layer = 0; layer < 3; layer++) {
       const g = layer === 2 ? 1 : 2;
       for (let dx = -g; dx <= g; dx++)

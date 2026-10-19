@@ -94,6 +94,48 @@ Agent-facing ids are stable, readable and prefixed by kind:
 Tools accept an unprefixed placement id when it is unambiguous. three.js
 objects, mesh indices and instance indices are never agent-facing.
 
+**Implemented (static layer, `@clinicalcraft/world`).**
+`buildRegistry(facility, catalogs, binding, collision)` returns the
+`SemanticRegistry` of an encounter: levels, rooms, doors, connectors,
+equipment placements, the bound patient and the staff, each with its
+localized `name` (`LocalizedText`), `level`, `room` (declared, else the
+smallest room containing it on its level), `position` (level elevation added
+to `y`), `rot`, rotated `footprint`, `capabilities`
+(`placementCapabilities`), interaction kind, `portable`, `reach`, declared
+`interactionPoints` (world coordinates) and tags. `resolveId(alias)` accepts
+prefixed ids, unprefixed placement / staff / slot / room / level /
+connector / door ids that exactly one entity has, and `"patient"`; an
+ambiguous alias (room `consult-1` and the patient in slot `consult-1`)
+resolves to null. Ids are unique in both built-in facilities (tested).
+
+* Door ids: `door:<owner>:<side>:<n>` numbers the doors of one owner side in
+  build order (`facilityWalls`); a building spanning several levels gets
+  `door:<building>@<level>:<side>:<n>` off the default level. Without the
+  `door:` prefix the id is the renderer's door record id (`clinic:s:0`).
+* Public descriptors (bystander view): patient — `{ name, tag, posture }`
+  (display name, age/sex tag such as "58 years male" / "58岁男性", posture)
+  and nothing else from the case; staff — `{ role, name }`. Patients lying on
+  their slot's bed are centred on it and span its footprint.
+* Default `reach` (m from the footprint) when the equipment type has none
+  (core `DEFAULT_REACH`): workstation 1.2, monitor 2 (reached from the
+  bedside), bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, door 1.2,
+  sink 1, storage 1, staff (`talk`) 2, none 1; the patient uses the contact
+  range 1.5. The wall oxygen outlet declares 2.2 (reached over the bed head).
+  Navigation never plans closer than one cell beyond the collider inflation:
+  effective ranges are at least `MIN_RANGE` = 0.88 m.
+
+Contract refinements made while implementing the static layer (semantics
+unchanged): `ColliderKind` adds `sign` (the post of a free-standing sign —
+the renderer collides with it); `DoorSpec` adds `height`, `owner`, `side`
+and the doorway `area`; `CollisionModel` adds `walls` (the `WallSpec` layout
+both the renderer and the model are built from); `SemanticEntity` adds
+`interactionPoints`; `NavRequest` adds `accessibleOnly` (no stairs: pushing a
+cart, a bed or a wheelchair); `WorldDynamics` is the read interface the
+grids use for door states, obstacles, displaced/removed entities and actor
+poses; `ActorRole`, `WorldPredicate`, `ClinicalEffect`, `BehaviorOperation`
+and `DeviceBehavior` are now the core zod-inferred types of the catalog
+schema.
+
 ## 4. Perception
 
 Read-only tools (embodied mode): `observe_world`, `get_agent_state`,
@@ -106,6 +148,16 @@ Read-only tools (embodied mode): `observe_world`, `get_agent_state`,
   occlusion grid (walls, partitions, closed doors and solid equipment taller
   than eye height block; windows do not). Interaction additionally needs line
   of sight (no operating a workstation through a partition).
+  Implemented as `VisibilityModel`: 0.25 m occlusion grids per level from
+  the collision model's `opaque` colliders that span the eye height (1.62 m
+  above their floor) — so the lintel over a doorway, a window's sill and
+  low furniture do not hide anything, while terrain trees and build-zone
+  blocks do; door leaves occlude while the door is closed (state read at
+  query time); a displaced cart occludes where it stands after
+  `invalidate(area)`. `canSee(pose, entity)` samples the footprint (centre
+  and four corners inset to ¾) — partial occlusion still counts as visible
+  — and a target never hides itself (the ray stops at its footprint). Yaw 0
+  looks towards −Z (the renderer's convention).
 * Reachability is computed separately (path exists for this actor's role,
   respecting restricted areas, locked doors and dynamic obstacles).
 * Observations are bounded (`maxEntities`, nearest first, `truncated` flag)
@@ -178,6 +230,60 @@ and role restrictions) and restricted `access` zones. Dynamic obstacles and
 moved carts update the grid locally. Metrics per navigation: requested goal,
 route, length, replans, travel time, arrival error, failure code.
 
+**Implemented (static layer): `GridAStarBackend`** over `NavGrids` built
+from the collision model (EMBODIED R2), one grid per level:
+
+* Cells are blocked where a body of radius 0.38 m (avatar 0.28 + 0.08 margin
+  + 0.02, as the web autopilot) would touch a collider between 0.05 m and
+  1.78 m above the floor: walls, partitions, windows, solid equipment,
+  patient bodies and beds, trees, blocks, sign posts. Door leaves are
+  passable unless the door is locked. **Staff bodies are not on the static
+  grid** (staff walk; the mover avoids them and re-plans). Off the default
+  level only the inside of the buildings spanning that level is walkable.
+* Goals: `point` (exact point, or the nearest free cell inside furniture;
+  with `range`, any cell within it), `entity` (range default 1.5 m),
+  `interact` (free cells within `reach` of the footprint — or the declared
+  `interactionPoints` — with line of sight, never inside the target; the
+  cheapest to reach wins; yaw faces it), `room` (any free cell inside),
+  `follow` (one-shot, on the target's current pose from
+  `WorldDynamics.actorPose`), `look` (range default 15 m; line of sight,
+  tested lazily on popped cells), `any` (shortest travel time).
+* Multi-level: Dijkstra over a portal graph (the start and every stop of
+  every usable connector; walking edges from grid floods, riding edges
+  `travelSeconds` × stops) — connectors whose `roles` exclude the actor, and
+  stairs when `accessibleOnly`, are not usable. Paths mark the first point
+  after a ride with `via: connector:<id>`. `travelSeconds` = walking on the
+  levels / `WALK_SPEED` + the connectors' seconds; `length` adds the 3D
+  distance between the stops of stairs and ramps (elevators: none).
+* Failures are diagnosed by relaxing restrictions: `ACCESS_DENIED` (a route
+  exists without the access zones / connector role limits; `details.zones`,
+  `details.connectors`, `details.role` — an actor may always leave the zone
+  it stands in), `PATH_BLOCKED` (a route exists through locked doors or
+  dynamic obstacles; `details.doors`, `details.obstacles`),
+  `TARGET_NOT_REACHABLE` (no route at all — a connected-component check
+  answers without searching), `NO_INTERACTION_POINT` (no free spot within
+  reach with line of sight; a look goal without any vantage cell),
+  `TARGET_NOT_FOUND`, `NAVIGATION_TIMEOUT` (A\* expansion budget, default
+  200 000 per search). Messages are localised (zh-CN / en).
+* `invalidate(area)` re-stamps the area (grown by the inflation radius) from
+  the static colliders plus `WorldDynamics` (obstacles, displaced or removed
+  entities, door locks); tests check that a local re-stamp equals a rebuild.
+  The web autopilot (`walkTo`) still plans with its own grid over the
+  renderer's colliders — which are now the model's.
+
+**Measurements** (2026-10-19, Intel Xeon @ 2.10 GHz, 4 cores, Node 22.22.0;
+`general-hospital`, 120 × 100 m, 614 colliders, 240 × 200 nav cells,
+480 × 400 occlusion cells): collision model 8–11 ms, registry 2–3 ms, nav
+grids 1–2 ms, occlusion grids 3 ms (medians of 7 builds). 20 representative
+routes from the entrance (interaction points of the resus patient, ECG cart,
+defibrillator, lab and pathology workstations, CT, ward ECG, ICU crash cart,
+pharmacy terminal, sink; three rooms; two staff; a look goal; two points; an
+`any` goal; 35–96 m) on a fresh backend: median 3.5–4.8 ms, p95 14–24 ms,
+max ≤ 32 ms over 6 rounds. An unreachable target fails in < 1 ms once the
+grid components are cached. `clinic-v4`: every build ≤ 1.5 ms.
+Reproduce: `packages/world/src/nav/backend.test.ts` ("measurements"; asserts
+only generous bounds).
+
 ## 8. Devices, authority and multi-agent work
 
 * Built-in behaviours per interaction kind (workstation, monitor, device,
@@ -226,6 +332,67 @@ physical state.
   fallback and the collider is always the semantic footprint — a model is
   never interactive by itself).
 
+### Measured content scale
+
+How it is built (PROTOCOL §2, §7, §11): one index-entry builder
+(`caseIndexEntry`, agent `library.ts`) feeds the web bundle (a Vite plugin
+serves the index as `virtual:clinicalcraft/case-index`; every full case is
+its own lazy chunk), `clinicalcraft serve` (`GET /api/content/cases`,
+paginated and filtered, strong ETags; cases validated on first request) and
+`clinicalcraft cases index`.
+
+Measured 2026-10-19 with
+`npx tsx --conditions=source scripts/bench/content-scale.ts --cases 100,500,1000`
+(defaults: 300 listing requests and 100 full-case loads per size) on an
+Intel Xeon @ 2.10 GHz, `nproc` 4, 15.7 GiB RAM, Node v22.22.0, Linux 6.18.
+The synthetic catalogue is the 10 built-in cases cloned round-robin with new
+ids and titles (pretty-printed JSON, 0.26 MiB per case), written under the OS
+temp directory and deleted afterwards; each size runs in a fresh process.
+Clones compress far better than varied cases, so the gzip figures are a
+lower bound. These are the numbers of that run on that machine — nothing
+below is extrapolated.
+
+**Web bundle** (`vite build`, the 10 built-in cases; commit 917df5e
+compared with the same tree plus only the index and lazy loading):
+
+| | before | after |
+|---|---:|---:|
+| main chunk (entry) | 2,600,518 B (gzip -9: 839,670 B) | 812,873 B (253,962 B) |
+| `materials` chunk (modulepreload, unchanged) | 1,073,784 B (282,473 B) | 1,073,784 B (282,473 B) |
+| initial JS (entry + modulepreload) | 3,674,302 B (1,122,143 B) | 1,886,657 B (536,435 B) |
+| full cases | inside the main chunk | 10 lazy chunks of 85,313–226,242 B (27,498–72,949 B gzip), 1,815,662 B in all |
+| bundled index (10 cases) | — | 14.3 KiB (5.1 KiB gzip) |
+
+**Index** (`CaseIndexer` over the synthetic directory only):
+
+| cases | case files | cold build (stat + read + hash + build) | re-stat, nothing changed | index JSON raw / gzip | `JSON.parse` of it | rss / heapUsed after indexing (before) |
+|---:|---:|---:|---:|---:|---:|---|
+| 100 | 26.1 MiB | 326 ms | 5.2 ms | 145.0 KiB / 8.6 KiB | 0.82 ms | 151.6 / 24.1 MiB (136.4 / 23.3 MiB) |
+| 500 | 130.4 MiB | 1,453 ms | 17.9 ms | 725.9 KiB / 21.5 KiB | 1.86 ms | 169.2 / 25.4 MiB (134.3 / 23.3 MiB) |
+| 1 000 | 260.9 MiB | 2,491 ms | 31.4 ms | 1,451.9 KiB / 36.4 KiB | 5.69 ms | 179.4 / 28.8 MiB (139.4 / 23.4 MiB) |
+
+**Server** (`clinicalcraft serve` on a free local port, only the synthetic
+directory, keep-alive, sequential requests; p50 / p95 in ms). Listing =
+`GET /api/content/cases` over a fixed mix of pages (`limit` 20/50/200) and
+filters (`q`, `specialty`, `setting`, `locale`); full case =
+`GET /api/content/cases/:id`; the first load reads, validates
+(`parseCase`) and serialises the case:
+
+| cases | listing, first request of a query (n) | listing, repeated | listing, 304 | full case, first load (n) | full case, cached | full case, 304 | rss / heapUsed after the loads |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 100 | 1.61 / 4.20 (187) | 1.12 / 3.74 | 0.97 / 1.50 | 147 / 209 (100) | 2.04 / 2.56 | 0.52 / 0.90 | 420.6 / 60.7 MiB |
+| 500 | 2.04 / 5.50 (295) | 1.88 / 5.28 | 1.37 / 3.20 | 164 / 226 (100) | 1.95 / 3.18 | 0.51 / 0.75 | 503.6 / 76.0 MiB |
+| 1 000 | 2.35 / 6.05 (300) | 2.03 / 5.26 | 1.64 / 4.60 | 157 / 235 (100) | 1.71 / 2.35 | 0.43 / 0.67 | 506.6 / 76.7 MiB |
+
+Reading the numbers: the initial JS no longer grows with the case files —
+only with the index, 1.45 KiB of JSON per case in this catalogue (1,451.9 KiB
+for 1 000), so a large bundled library belongs behind the server's paginated
+listing; listing latency stays in single-digit milliseconds up to 1 000
+cases; the cost that remains per case is validation on first load
+(p50 147–164 ms for these 0.26 MiB cases), paid once per case and file
+version. Not yet measured: browser startup and case-switch latency with a
+large catalogue.
+
 ## 12. MCP and the browser bridge
 
 MCP tools carry annotations. `start_case { embodied: true }` creates a
@@ -249,3 +416,12 @@ models (opt-in, budget-capped, never in CI).
 ## 14. Roadmap and status
 
 The status table is filled in as work lands (see the end of this file).
+
+| area | implemented | tested | validated | production-ready |
+|---|---|---|---|---|
+| Facility schema: `levels`, `connectors`, `access`, per-entity `level`; equipment `portable`, `reach`, `interactionPoints`, `behavior`, `model`; `checkFacility` / `checkCatalogs` rules; JSON Schemas | yes (W1) | core unit tests | built-in content and catalogs validate with no new issue | — |
+| Collision model (`buildCollisionModel`, `facilityWalls`); the renderer takes every collider from it | yes (W1) | parity: the renderer's own collider set captured before and after the switch is identical to the model (every box, door leaf, doorway, NPC body, block) for `clinic-v4`, `general-hospital` and the harness test facility; pinned counts/digests | web e2e suite | — |
+| Semantic registry (`buildRegistry`) | yes (W1) | unit (ids, aliases, descriptors, levels) | — | — |
+| Visibility (`VisibilityModel`) | yes (W1) | unit (walls, windows, doors, FOV, partial occlusion, displaced carts) | — | — |
+| Navigation (`GridAStarBackend`, `NavGrids`) | yes (W1) | unit (real routes in both facilities, every interactive placement, failures, locks, zones, obstacles, moved carts, two-level fixture); measured (§7) | — | — |
+| State store, action bus, devices runtime, spatial policy, observations, traces | contracts only | — | — | — |

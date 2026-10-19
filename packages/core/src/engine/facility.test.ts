@@ -3,10 +3,14 @@ import { describe, expect, it } from "vitest";
 import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
 import {
   assignPatientSlot,
+  buildingLevels,
   caseCapabilityGaps,
   checkCatalogs,
   checkFacility,
+  defaultLevelId,
+  entityLevel,
   facilityCapabilities,
+  facilityLevels,
   mergeCatalogs,
   parseCase,
   parseCatalog,
@@ -15,6 +19,7 @@ import {
   placementCapabilities,
   regionAt,
   resolveWaypoint,
+  roomLevel,
   type Issue,
 } from "./index.js";
 
@@ -296,5 +301,184 @@ describe("caseCapabilityGaps (C3/C4)", () => {
     expect(caseCapabilityGaps(withAlternative, F, CATALOGS).find((g) => g.id === "epi")?.blocking).toBe(false);
     const everything = { ...F, placements: [...F.placements, { ...F.placements[0]!, id: "all-caps", capabilities: ["medications", "oxygen", "iv-access", "lab-blood-gas", "lab-chemistry", "xray", "ct"] }] } as typeof F;
     expect(caseCapabilityGaps(c, everything, CATALOGS)).toEqual([]);
+  });
+});
+
+describe("levels, connectors and access zones (EMBODIED R10)", () => {
+  it("are optional: a facility without them has one implicit level L0", () => {
+    expect(F.levels).toEqual([]);
+    expect(F.connectors).toEqual([]);
+    expect(F.access).toEqual([]);
+    expect(facilityLevels(F)).toEqual([{ id: "L0", name: { "zh-CN": "一层", en: "Ground floor" }, elevation: 0, height: 5 }]);
+    expect(defaultLevelId(F)).toBe("L0");
+    expect(entityLevel(F, F.placements[0])).toBe("L0");
+    expect(checkFacility(F, CATALOGS).filter((i) => /level|connector|access/.test(i.path))).toEqual([]);
+  });
+
+  it("parse with defaults and resolve entity levels (own level → room's level → default level)", () => {
+    const raw = structuredClone(fixture("mini.facility.json")) as Record<string, unknown> & { rooms: Record<string, unknown>[]; placements: Record<string, unknown>[] };
+    raw.levels = [
+      { id: "B1", name: { "zh-CN": "地下一层", en: "Basement" }, elevation: -4 },
+      { id: "G", name: { "zh-CN": "一层", en: "Ground" } },
+    ];
+    raw.rooms[2].level = "B1";
+    const r = parseFacility(raw);
+    if (!r.ok) throw new Error(JSON.stringify(r.issues));
+    const f = r.value;
+    expect(f.levels[1]).toEqual({ id: "G", name: { "zh-CN": "一层", en: "Ground" }, elevation: 0, height: 5 });
+    expect(defaultLevelId(f)).toBe("G"); // elevation 0, not the first listed
+    expect(roomLevel(f, f.rooms[0])).toBe("G");
+    expect(entityLevel(f, { room: "imaging-suite" })).toBe("B1");
+    expect(entityLevel(f, { room: "imaging-suite", level: "G" })).toBe("G");
+    expect(buildingLevels(f, f.buildings[0])).toEqual(["G"]);
+  });
+
+  it("reports unknown levels, level mismatches, bad connector stops and access zones", () => {
+    const f = structuredClone(F);
+    f.levels = [
+      { id: "L0", name: "Ground", elevation: 0, height: 5 },
+      { id: "L1", name: "First", elevation: 5, height: 5 },
+      { id: "L1", name: "Dup", elevation: 5, height: 5 },
+    ];
+    f.buildings[0].levels = ["L0", "L9"];
+    f.rooms[0].level = "L1"; // the clinic building does not span L1
+    f.placements[0].level = "L0"; // its room "consult" is on L1
+    f.staff = [{ id: "s1", role: "nurse", name: "N", room: "consult", level: "L7", x: -8, z: 0, rot: 0 }];
+    f.connectors = [
+      { id: "stairs", kind: "stairs", name: "Stairs", stops: [{ level: "L0", x: 0, z: 0 }, { level: "L1", x: 0, z: 2 }], roles: [] },
+      { id: "bad", kind: "elevator", name: "Lift", stops: [{ level: "L0", x: 0, z: 0 }, { level: "L0", x: 99, z: 0 }, { level: "L5", x: 0, z: 0 }], roles: [] },
+      { id: "flat", kind: "ramp", name: "Ramp", stops: [{ level: "L1", x: 30, z: 0 }, { level: "L0", x: 5, z: 0 }], roles: ["porter"] },
+    ];
+    f.access = [{ id: "or", name: "OR", level: "L3", rect: { x: 0, z: 0, w: 60, d: 4 }, roles: ["attending"] }];
+    const issues = checkFacility(f, CATALOGS).filter((i) => /^(levels|buildings|rooms|placements|staff|connectors|access)\b/.test(i.path) && /level|connector|access|elevation|stop/i.test(i.message + i.path));
+    const brief = issues.map((i) => [i.path, i.severity, i.message]);
+    expect(brief).toEqual(
+      expect.arrayContaining([
+        ["levels.2.id", "error", 'duplicate levels id "L1"'],
+        ["buildings.0.levels.1", "error", 'unknown level "L9"'],
+        ["rooms.0.level", "warning", 'room "consult" is on level "L1", which building "clinic" does not span'],
+        ["placements.0.level", "warning", 'placement "ws-lab" is on level "L0" but its room "consult" is on "L1"'],
+        ["staff.0.level", "error", 'unknown level "L7"'],
+        ["connectors.1.stops.1", "error", 'stop (99, 0) of connector "bad" is outside the facility bounds'],
+        ["connectors.1.stops.1.level", "error", 'consecutive stops of connector "bad" are on the same level "L0"'],
+        ["connectors.1.stops.2.level", "error", 'unknown level "L5"'],
+        ["connectors.2.stops.0", "warning", 'stop of connector "flat" on level "L1" is outside every building on that level'],
+        ["access.0.level", "error", 'unknown level "L3"'],
+        ["access.0.rect", "warning", 'access zone "or" extends outside the facility bounds'],
+      ]),
+    );
+    // stairs inside the clinic building on L1? The building spans L0 and the unknown L9 only → warning
+    expect(brief).toContainEqual(["connectors.0.stops.1", "warning", 'stop of connector "stairs" on level "L1" is outside every building on that level']);
+  });
+
+  it("does not report solids on different levels as overlapping", () => {
+    const f = structuredClone(F);
+    f.levels = [
+      { id: "L0", name: "Ground", elevation: 0, height: 5 },
+      { id: "L1", name: "First", elevation: 5, height: 5 },
+    ];
+    f.buildings[0].levels = ["L0", "L1"];
+    f.placements.push({ ...f.placements.find((p) => p.id === "ct-1")!, id: "ct-upstairs", level: "L1", room: undefined });
+    expect(checkFacility(f, CATALOGS).filter((i) => /overlaps/.test(i.message))).toEqual([]);
+  });
+});
+
+describe("checkCatalogs: embodiment fields", () => {
+  const withType = (patch: Record<string, unknown>) => {
+    const raw = structuredClone(fixture("mini.catalog.json")) as { equipment: Record<string, unknown>[] };
+    Object.assign(raw.equipment.find((e) => e.id === "patient-monitor")!, patch);
+    const r = parseCatalog(raw);
+    if (!r.ok) throw new Error(JSON.stringify(r.issues));
+    const index = r.value.equipment.findIndex((e) => e.id === "patient-monitor");
+    return { issues: checkCatalogs([r.value]).filter((i) => i.path.startsWith(`catalog(${r.value.id}).equipment.${index}.`)), prefix: `catalog(${r.value.id}).equipment.${index}` };
+  };
+
+  it("parses portable, reach, interactionPoints, behaviour and model", () => {
+    const { issues } = withType({
+      solid: true, // the mini catalog's monitor is non-solid (wall-mounted carts are flagged)
+      portable: "cart",
+      reach: 1.4,
+      interactionPoints: [{ x: 0, z: 0.8 }],
+      behavior: {
+        initial: "detached",
+        derived: "monitor-attachment",
+        states: { detached: {}, attached: { name: { "zh-CN": "已连接", en: "Attached" } } },
+        operations: {
+          attach: { name: "Attach", from: ["detached"], to: "attached", requires: [{ all: [{ patientWithin: 1.5 }, { not: { state: "attached" } }] }], clinical: { tool: "intervene", select: "monitoring" } },
+          read: { name: "Read", from: "*", requires: [{ actorWithin: 6 }] },
+        },
+      },
+      model: { uri: "models/monitor.glb", sha256: "a".repeat(64), scale: 0.5, license: "CC0-1.0" },
+    });
+    expect(issues).toEqual([]);
+  });
+
+  it("rejects malformed behaviours and predicates at parse time", () => {
+    const raw = structuredClone(fixture("mini.catalog.json")) as { equipment: Record<string, unknown>[] };
+    raw.equipment[0].behavior = { initial: "a", states: { a: {} }, operations: { go: { name: "Go", from: ["a"], requires: [{ teleport: true }] } } };
+    raw.equipment[1].portable = "trolley";
+    const r = parseCatalog(raw);
+    expect(r.ok).toBe(false);
+    expect(r.ok ? [] : r.issues.map((i) => i.path)).toEqual(expect.arrayContaining(["equipment.0.behavior.operations.go.requires.0", "equipment.1.portable"]));
+  });
+
+  it("reports behaviour inconsistencies, odd interaction points, wall-mounted carts and non-GLB models", () => {
+    const { issues, prefix } = withType({
+      solid: false,
+      portable: "cart",
+      interactionPoints: [{ x: 0, z: 0 }, { x: 0, z: 9 }],
+      behavior: {
+        initial: "off",
+        derived: "monitor-attachment",
+        states: { on: {}, attached: {} },
+        operations: {
+          start: { name: "Start", from: ["off", "on"], to: "running", requires: [{ any: [{ state: "broken" }] }], clinical: { tool: "check_vitals", select: "monitoring" }, release: true },
+        },
+      },
+      model: { uri: "models/monitor.fbx", license: "CC-BY-4.0" },
+    });
+    const brief = issues.map((i) => [i.path.slice(prefix.length + 1), i.severity]);
+    expect(brief).toEqual(
+      expect.arrayContaining([
+        ["behavior.initial", "error"],
+        ["behavior.states", "error"], // derived monitor attachment needs "detached"
+        ["behavior.operations.start.from.0", "error"],
+        ["behavior.operations.start.to", "error"],
+        ["behavior.operations.start.requires.0", "error"],
+        ["behavior.operations.start.clinical.tool", "warning"],
+        ["behavior.operations.start.release", "warning"],
+        ["interactionPoints.1", "warning"], // 8.7 m away, beyond reach
+        ["portable", "warning"], // solid: false (wall-mounted)
+        ["model.uri", "warning"],
+      ]),
+    );
+    // a point inside a non-solid footprint is fine (wall-mounted items are approached from the front)
+    expect(brief).not.toContainEqual(["interactionPoints.0", "warning"]);
+    const solid = withType({ solid: true, interactionPoints: [{ x: 0, z: 0 }] });
+    expect(solid.issues.map((i) => i.message)).toEqual([expect.stringMatching(/lies inside the solid/)]);
+  });
+
+  it("the built-in catalogs' behaviours and portable flags are consistent", () => {
+    const content = new URL("../../../content/", import.meta.url);
+    const read = (rel: string): unknown => JSON.parse(readFileSync(new URL(rel, content), "utf8"));
+    const catalogs = ["materials", "core-furniture", "core-clinical", "core-diagnostics"].map((id) => {
+      const r = parseCatalog(read(`catalogs/${id}.json`));
+      if (!r.ok) throw new Error(`${id}: ${JSON.stringify(r.issues)}`);
+      return r.value;
+    });
+    expect(checkCatalogs(catalogs)).toEqual([]);
+    const equipment = mergeCatalogs(catalogs).equipment;
+    const ecg = equipment.get("ecg-machine")!;
+    expect(ecg.portable).toBe("cart");
+    expect(ecg.behavior?.initial).toBe("idle");
+    expect(Object.keys(ecg.behavior!.operations)).toEqual(["prepare", "connect", "record", "reset"]);
+    expect(ecg.behavior!.operations.record.clinical).toEqual({ tool: "order_test", select: "capability" });
+    const monitor = equipment.get("patient-monitor")!;
+    expect(monitor.behavior).toMatchObject({ derived: "monitor-attachment", initial: "detached" });
+    expect(monitor.behavior!.operations.attach.clinical).toEqual({ tool: "intervene", select: "monitoring" });
+    expect(Object.keys(monitor.behavior!.operations)).toEqual(["attach", "read", "cycle_nibp"]);
+    for (const id of ["defibrillator", "crash-cart", "pocus-cart", "ultrasound-machine", "glucometer-station", "oxygen-cylinder"]) expect(equipment.get(id)?.portable).toBe("cart");
+    // nothing wall-mounted or fixed became portable
+    for (const e of equipment.values()) if (e.portable) expect(e.solid && !e.tags.includes("wall")).toBe(true);
   });
 });

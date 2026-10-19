@@ -75,6 +75,147 @@ export const EQUIPMENT_CATEGORIES = [
   "decor",
 ] as const;
 
+/* ------------------------------------------------------------------ */
+/* Embodiment: actor roles, device behaviours, models                  */
+/* (docs/EMBODIED.md §3, §8; mirrored by @clinicalcraft/world)         */
+/* ------------------------------------------------------------------ */
+
+/** Roles of embodied actors: the learner's avatar (`clinician`) and the facility staff roles. */
+export const ACTOR_ROLES = ["clinician", "nurse", "radiologist", "pathologist", "lab-tech", "attending", "pharmacist", "receptionist", "paramedic", "porter"] as const;
+export const ActorRoleSchema = z.enum(ACTOR_ROLES);
+export type ActorRole = z.infer<typeof ActorRoleSchema>;
+
+/**
+ * World predicates — preconditions of device operations (and skill pre/post
+ * conditions). Distances in metres from footprints:
+ * `actorWithin` the acting actor is within N m of this device;
+ * `patientWithin` the acting actor is within N m of the bound patient;
+ * `deviceAtBedside` this device stands within the bedside radius of the patient;
+ * `actorHolding` the actor holds an item (entity id or equipment type id);
+ * `state` the device is in one of these behaviour states;
+ * `role` the actor has one of these roles; `handsClean` hand hygiene is valid.
+ */
+export type WorldPredicate =
+  | { actorWithin: number }
+  | { patientWithin: number }
+  | { deviceAtBedside: true }
+  | { actorHolding: string }
+  | { state: string | string[] }
+  | { role: ActorRole[] }
+  | { handsClean: true }
+  | { all: WorldPredicate[] }
+  | { any: WorldPredicate[] }
+  | { not: WorldPredicate };
+
+export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
+  z.union([
+    z.object({ actorWithin: z.number().positive() }).strict(),
+    z.object({ patientWithin: z.number().positive() }).strict(),
+    z.object({ deviceAtBedside: z.literal(true) }).strict(),
+    z.object({ actorHolding: z.string().min(1) }).strict(),
+    z.object({ state: z.union([IdSchema, z.array(IdSchema).min(1)]) }).strict(),
+    z.object({ role: z.array(ActorRoleSchema).min(1) }).strict(),
+    z.object({ handsClean: z.literal(true) }).strict(),
+    z.object({ all: z.array(WorldPredicateSchema) }).strict(),
+    z.object({ any: z.array(WorldPredicateSchema) }).strict(),
+    z.object({ not: WorldPredicateSchema }).strict(),
+  ]),
+);
+
+/**
+ * The clinical side of a device operation: a clinical tool run through the
+ * session's normal tool path (hooks → precheck → approval → engine).
+ * `select`: the case item comes from an operation parameter (`param`), is
+ * the first case item whose `requires` this device provides (`capability`),
+ * or is the case's monitoring intervention (`monitoring`).
+ */
+export const ClinicalEffectSchema = z
+  .object({
+    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine"]),
+    select: z.enum(["param", "capability", "monitoring"]),
+  })
+  .strict();
+export type ClinicalEffect = z.infer<typeof ClinicalEffectSchema>;
+
+/** One operation of a device behaviour (offered in the `from` states; `to` = state after success). */
+export const BehaviorOperationSchema = z
+  .object({
+    name: LocalizedTextSchema,
+    /** States the operation is offered in ("*" = any). */
+    from: z.union([z.array(IdSchema).min(1), z.literal("*")]),
+    /** State after success (omit: unchanged). */
+    to: IdSchema.optional(),
+    requires: z.array(WorldPredicateSchema).optional(),
+    clinical: ClinicalEffectSchema.optional(),
+    /** Simulated seconds the operation takes. */
+    durationSeconds: z.number().min(0).optional(),
+    /** Reserve the device for the acting actor (released by an operation with `release`). */
+    reserve: z.boolean().optional(),
+    release: z.boolean().optional(),
+    /** Roles allowed (default: everyone). */
+    roles: z.array(ActorRoleSchema).min(1).optional(),
+  })
+  .strict();
+export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
+
+/**
+ * Declarative device state machine (no code). States that mirror a clinical
+ * fact are `derived` from the engine and never stored (EMBODIED R6):
+ * `monitor-attachment` — "attached"/"detached" follow `monitorAttached(case, state)`.
+ */
+export const DeviceBehaviorSchema = z
+  .object({
+    initial: IdSchema,
+    states: z.record(IdSchema, z.object({ name: LocalizedTextSchema.optional(), available: z.boolean().optional() }).strict()),
+    operations: z.record(IdSchema, BehaviorOperationSchema),
+    derived: z.enum(["monitor-attachment"]).optional(),
+  })
+  .strict();
+export type DeviceBehavior = z.infer<typeof DeviceBehaviorSchema>;
+
+/**
+ * Optional GLB/glTF model of an equipment type — visual only: the voxel
+ * parts stay the fallback, the collider is always the semantic footprint
+ * and a model is never interactive by itself.
+ */
+export const EquipmentModelSchema = z
+  .object({
+    /** Relative path or URL of a `.glb` / `.gltf` file. */
+    uri: z.string().min(1),
+    sha256: z.string().regex(/^[0-9a-f]{64}$/, "expected a lowercase hex SHA-256").optional(),
+    /** Uniform scale or [x, y, z]. */
+    scale: z.union([z.number().positive(), Vec3]).optional(),
+    /** Local offset (m) from the footprint centre on the floor, rotated with the placement. */
+    offset: Vec3.optional(),
+    /** Extra rotation about Y (degrees). */
+    rot: z.number().optional(),
+    /** SPDX id or licence text. */
+    license: z.string().min(1),
+    attribution: LocalizedTextSchema.optional(),
+  })
+  .strict();
+export type EquipmentModel = z.infer<typeof EquipmentModelSchema>;
+
+/**
+ * Default interaction reach (m from the footprint) by interaction kind, used
+ * when an equipment type has no `reach` (`talk`: staff conversation; patients
+ * use the contact range 1.5).
+ */
+export const DEFAULT_REACH = {
+  workstation: 1.2,
+  monitor: 2,
+  bed: 1.5,
+  device: 1.2,
+  atlas: 1.5,
+  board: 2.5,
+  craft: 1.2,
+  door: 1.2,
+  sink: 1,
+  storage: 1,
+  talk: 2,
+  none: 1,
+} as const;
+
 export const EquipmentTypeSchema = z
   .object({
     id: IdSchema,
@@ -105,6 +246,16 @@ export const EquipmentTypeSchema = z
       .strict()
       .optional(),
     tags: z.array(z.string()).default([]),
+    /** Can be moved: `cart` (wheeled to another spot) or `handheld` (carried by an actor). Absent: fixed. */
+    portable: z.enum(["cart", "handheld"]).optional(),
+    /** Interaction reach in metres from the footprint (default per interaction kind, @clinicalcraft/world `DEFAULT_REACH`). */
+    reach: z.number().positive().max(10).optional(),
+    /** Where an actor stands to use it: local offsets from the footprint centre (rotated with the placement). Absent: any free spot within reach. */
+    interactionPoints: z.array(z.object({ x: z.number(), z: z.number() }).strict()).min(1).optional(),
+    /** Declarative device state machine (EMBODIED §8). */
+    behavior: DeviceBehaviorSchema.optional(),
+    /** Optional GLB/glTF model (visual only). */
+    model: EquipmentModelSchema.optional(),
   })
   .strict();
 export type EquipmentType = z.infer<typeof EquipmentTypeSchema>;
@@ -153,11 +304,70 @@ export const WallStyleSchema = z
   })
   .strict();
 
+/* ------------------------------------------------------------------ */
+/* Levels, connectors, access zones (EMBODIED R10; all optional)       */
+/* ------------------------------------------------------------------ */
+
+/** Id of the implicit single level of a facility without `levels`. */
+export const DEFAULT_LEVEL_ID = "L0" as const;
+
+/**
+ * A storey. `floor` (buildings, rooms) is the floor *material*; storeys are
+ * `level`s. A facility without `levels` has one implicit level "L0" at
+ * elevation 0; entities without `level` stand on the default level (the one
+ * at elevation 0, else the first listed).
+ */
+export const LevelSchema = z
+  .object({
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    /** Floor elevation (m); the ground level is 0. */
+    elevation: z.number().default(0),
+    /** Storey height (m). */
+    height: z.number().positive().default(5),
+  })
+  .strict();
+export type Level = z.infer<typeof LevelSchema>;
+
+export const CONNECTOR_KINDS = ["stairs", "elevator", "ramp"] as const;
+
+/** Stairs, an elevator or a ramp between levels (a portal of the navigation graph). */
+export const ConnectorSchema = z
+  .object({
+    id: IdSchema,
+    kind: z.enum(CONNECTOR_KINDS),
+    name: LocalizedTextSchema,
+    /** Where it is entered/left on each level it serves (≥ 2; listed in travel order, e.g. bottom to top). */
+    stops: z.array(z.object({ level: IdSchema, x: z.number(), z: z.number() }).strict()).min(2),
+    /** Seconds between adjacent stops (default by kind: stairs 15, ramp 10, elevator 20). */
+    travelSeconds: z.number().min(0).optional(),
+    /** Usable with a wheelchair, bed or cart (default: elevators and ramps yes, stairs no). */
+    accessible: z.boolean().optional(),
+    /** Roles allowed to use it (empty = everyone). */
+    roles: z.array(ActorRoleSchema).default([]),
+  })
+  .strict();
+export type Connector = z.infer<typeof ConnectorSchema>;
+
+/** A restricted area: only the listed roles may enter it (others cannot plan through it). */
+export const AccessZoneSchema = z
+  .object({
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    level: IdSchema.optional(),
+    rect: RectSchema,
+    roles: z.array(ActorRoleSchema).min(1),
+  })
+  .strict();
+export type AccessZone = z.infer<typeof AccessZoneSchema>;
+
 export const BuildingSchema = z
   .object({
     id: IdSchema,
     name: LocalizedTextSchema,
     rect: RectSchema,
+    /** Levels the building spans (default: the default level only). Walls and openings repeat on each. */
+    levels: z.array(IdSchema).min(1).optional(),
     floor: IdSchema.default("floor"),
     walls: WallStyleSchema.default({}),
     openings: z.array(OpeningSchema).default([]),
@@ -206,6 +416,8 @@ export const RoomSchema = z
     name: LocalizedTextSchema,
     kind: RoomKindSchema,
     building: IdSchema.optional(),
+    /** Level the room is on (default: the default level). */
+    level: IdSchema.optional(),
     rect: RectSchema,
     floor: IdSchema.optional(),
     /** Interior partition walls generated around the rect (only listed sides). */
@@ -239,6 +451,8 @@ export const PlacementSchema = z
     y: z.number().default(0),
     rot: z.number().default(0),
     room: IdSchema.optional(),
+    /** Level (default: the room's level, else the default level). */
+    level: IdSchema.optional(),
     label: LocalizedTextSchema.optional(),
     /** Extra capabilities granted by this placement (e.g. a generic workstation configured as "lab"). */
     capabilities: z.array(CapabilitySchema).optional(),
@@ -268,6 +482,8 @@ export const PatientSlotSchema = z
   .object({
     id: IdSchema,
     room: IdSchema,
+    /** Level (default: the room's level). */
+    level: IdSchema.optional(),
     x: z.number(),
     z: z.number(),
     rot: z.number().default(0),
@@ -287,6 +503,8 @@ export const StaffSchema = z
     role: z.enum(["nurse", "radiologist", "pathologist", "lab-tech", "attending", "pharmacist", "receptionist", "paramedic", "porter"]),
     name: LocalizedTextSchema,
     room: IdSchema,
+    /** Level (default: the room's level). */
+    level: IdSchema.optional(),
     x: z.number(),
     z: z.number(),
     rot: z.number().default(0),
@@ -370,6 +588,12 @@ export const FacilitySchema = z
       .optional(),
     /** Region name lookup fallbacks when outside every room. */
     outdoorRegion: LocalizedTextSchema.default({ "zh-CN": "疗愈花园", en: "Healing Garden" }),
+    /** Storeys (default []: one implicit level "L0" at elevation 0). */
+    levels: z.array(LevelSchema).default([]),
+    /** Stairs, elevators and ramps between levels. */
+    connectors: z.array(ConnectorSchema).default([]),
+    /** Restricted areas (roles). */
+    access: z.array(AccessZoneSchema).default([]),
   })
   .strict();
 export type FacilityDefinition = z.infer<typeof FacilitySchema>;

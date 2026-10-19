@@ -28,6 +28,19 @@
       },
       "screen": "vitals",
       "tags": ["bedside","vitals","ward","icu","resus"],
+      "behavior": {
+        "initial": "detached",
+        "derived": "monitor-attachment",
+        "states": {
+          "detached": {"name": {"zh-CN":"未连接","en":"Not attached"}},
+          "attached": {"name": {"zh-CN":"已连接","en":"Attached"}}
+        },
+        "operations": {
+          "attach": {"name": {"zh-CN":"连接床旁监护","en":"Attach the bedside monitor"}, "from": ["detached"], "to": "attached", "requires": [{"deviceAtBedside": true}, {"patientWithin": 1.5}], "clinical": {"tool": "intervene", "select": "monitoring"}, "durationSeconds": 60},
+          "read": {"name": {"zh-CN":"查看监护参数","en":"Read the monitor"}, "from": ["attached"], "requires": [{"actorWithin": 6}]},
+          "cycle_nibp": {"name": {"zh-CN":"立即测量无创血压","en":"Cycle the NIBP cuff"}, "from": ["attached"], "requires": [{"actorWithin": 1.5}], "durationSeconds": 45}
+        }
+      },
       "parts": [
         {"m":"coal","p":[0,0.08,0],"s":[0.54,0.04,0.06]},
         {"m":"coal","p":[0,0.08,0],"s":[0.06,0.036,0.54]},
@@ -73,6 +86,22 @@
       },
       "screen": "ecg",
       "tags": ["bedside","cardiology","ed","ward"],
+      "portable": "cart",
+      "behavior": {
+        "initial": "idle",
+        "states": {
+          "idle": {"name": {"zh-CN":"待机","en":"Idle"}},
+          "prepared": {"name": {"zh-CN":"已备好","en":"Prepared"}},
+          "connected": {"name": {"zh-CN":"导联已连接","en":"Leads connected"}},
+          "completed": {"name": {"zh-CN":"已记录","en":"Tracing recorded"}}
+        },
+        "operations": {
+          "prepare": {"name": {"zh-CN":"准备心电图机","en":"Prepare the ECG machine"}, "from": ["idle"], "to": "prepared", "requires": [{"deviceAtBedside": true}, {"actorWithin": 1.5}], "durationSeconds": 30, "reserve": true},
+          "connect": {"name": {"zh-CN":"贴电极、连接导联","en":"Place the electrodes and connect the leads"}, "from": ["prepared"], "to": "connected", "requires": [{"patientWithin": 1.5}], "durationSeconds": 120},
+          "record": {"name": {"zh-CN":"记录十二导联心电图","en":"Record a 12-lead ECG"}, "from": ["connected"], "to": "completed", "requires": [{"actorWithin": 1.5}], "clinical": {"tool": "order_test", "select": "capability"}, "durationSeconds": 30},
+          "reset": {"name": {"zh-CN":"撤除导联并复位","en":"Remove the leads and reset"}, "from": ["prepared","connected","completed"], "to": "idle", "release": true, "durationSeconds": 30}
+        }
+      },
       "parts": [
         {"m":"rubber","p":[-0.23,0.03,-0.19],"s":[0.06,0.06,0.06]},
         {"m":"rubber","p":[0.23,0.03,-0.19],"s":[0.06,0.06,0.06]},
@@ -125,6 +154,7 @@
       },
       "screen": "ecg",
       "tags": ["resus","acls","ed","icu"],
+      "portable": "cart",
       "parts": [
         {"m":"rubber","p":[-0.22,0.03,-0.18],"s":[0.06,0.06,0.06]},
         {"m":"rubber","p":[0.22,0.03,-0.18],"s":[0.06,0.06,0.06]},
@@ -185,6 +215,7 @@
       },
       "screen": "none",
       "tags": ["resus","acls","ed","ward","icu"],
+      "portable": "cart",
       "parts": [
         {"m":"rubber","p":[-0.27,0.04,-0.2],"s":[0.08,0.08,0.08]},
         {"m":"rubber","p":[0.27,0.04,-0.2],"s":[0.08,0.08,0.08]},
@@ -242,6 +273,7 @@
       },
       "screen": "none",
       "tags": ["wall","bedside","ward","icu","resus"],
+      "reach": 2.2,
       "parts": [
         {"m":"plastic","p":[0,1.375,-0.11],"s":[0.6,0.75,0.03]},
         {"m":"teal","p":[0,1.725,-0.091],"s":[0.6,0.05,0.007]},
@@ -296,6 +328,7 @@
       },
       "screen": "none",
       "tags": ["transport","ed","ward"],
+      "portable": "cart",
       "parts": [
         {"m":"steel","p":[0,0.08,-0.02],"s":[0.36,0.04,0.36]},
         {"m":"rubber","p":[-0.215,0.08,-0.12],"s":[0.05,0.16,0.16]},
@@ -624,6 +657,7 @@
       },
       "screen": "lab",
       "tags": ["bedside","glucose","ward","ed"],
+      "portable": "cart",
       "parts": [
         {"m":"rubber","p":[-0.26,0.03,-0.19],"s":[0.06,0.06,0.06]},
         {"m":"rubber","p":[0.26,0.03,-0.19],"s":[0.06,0.06,0.06]},

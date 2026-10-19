@@ -5,14 +5,18 @@
  * ill when nobody has attached a monitor.
  */
 import { replay, vitalsAt, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { loadContent } from "../../app/content.js";
 import { inExtremis } from "../../app/world-bridge.js";
 import { setLocale } from "../../i18n/index.js";
 import { monitorIntervention, spotCheckText } from "./monitor.js";
 
+// Full cases are lazy chunks: load the ones these tests use first.
+beforeAll(async () => {
+  for (const id of ["acute-ischemic-stroke", "septic-shock-cap", "anaphylaxis-garden", "stemi-inferior-rv", "pediatric-asthma"]) await loadContent().loadCase(id);
+});
 const getCase = (id: string): CaseDefinition => {
-  const c = loadContent().getCase(id);
+  const c = loadContent().peekCase(id);
   if (!c) throw new Error(`${id} missing`);
   return c;
 };

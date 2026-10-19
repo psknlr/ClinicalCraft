@@ -20,13 +20,21 @@ const server = await startServer({ port: 0, settings });   // → { url, port, h
 |---|---|
 | `GET /api/health` | `{status, name, version, provider, locale, auth, connectOrigins}` — `connectOrigins`: the origins the page's CSP lets it call directly (direct mode); a custom base URL must be one of them (configure it in the server's settings) or go through the proxy |
 | `GET /api/content/index` | case, facility and catalog summaries (spoiler-free) |
-| `GET /api/content/cases/:id` | one case, reference `solution` stripped |
+| `GET /api/content/cases?offset=&limit=&q=&specialty=&setting=&locale=` | the case index, paginated (`limit` ≤ 200) and filtered, in library order: `{total, offset, limit, items, issues, issueCount}` |
+| `GET /api/content/cases/:id` | one case, reference `solution` stripped; validated on its first request (422 `invalid_case` when it is not) |
 | `GET /api/content/facilities/:id`, `GET /api/content/catalogs/:id` | facility / catalog JSON |
 | `GET /api/providers` | provider templates + `configured: boolean` (never a key; base URLs without userinfo, query or fragment) |
 | `POST /api/llm/stream` | `{provider?, model?, request: ChatRequest}` → `text/event-stream` of `StreamEvent`s (upstream error text has keys and credentials masked) |
 | `POST /api/transcripts/:sessionId` | append JSONL transcript items from the browser |
 | `GET /local-assets/*` | local-only assets from `assets/local/` or `~/.clinicalcraft/assets/` (JSON 404 `asset_not_installed` when missing) |
 | anything else | the static web build (`--static <dir>`, default `packages/web/dist`) |
+
+Content scales to large `contentDirs`: cases are indexed (metadata only,
+re-read when a file's mtime or size changes, bounded concurrency) instead of
+validated up front, each case is validated when first requested, and content
+responses carry strong ETags (`If-None-Match` → 304). Duplicate case ids are
+resolved deterministically (a later content directory overrides; within one
+directory the first folder wins) and reported in the listing's `issues`.
 
 Security: binds `127.0.0.1` by default; any non-loopback host requires a
 token (`Authorization: Bearer …`, or open `/?token=…` once to get an

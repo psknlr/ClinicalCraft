@@ -85,7 +85,10 @@ test.describe("case disclaimer (L9)", () => {
       await expect(summary).toBeVisible();
       await expect(summary).toHaveText(text);
       const sb = (await summary.boundingBox())!;
-      expect(sb.x + sb.width).toBeLessThanOrEqual(390);
+      // Sub-pixel tolerance: font metrics differ between machines (CI measured 390.0625); what matters is
+      // that nothing spills past the viewport, i.e. the page never scrolls sideways.
+      expect(sb.x + sb.width).toBeLessThanOrEqual(390.5);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
       await enterCase(page, "dka-adult");
       // The welcome toast names the on-screen button, not a key (J12).
       await expect(page.locator(".toast")).toContainText("then tap Use");

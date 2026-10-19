@@ -8,7 +8,8 @@
 import type { CaseDefinition } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
-import type { EquipmentCatalog, EquipmentType, FacilityDefinition, MaterialDef, Placement, Rect, VoxelPart } from "../schema/facility.js";
+import { DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
+import type { DeviceBehavior, EquipmentCatalog, EquipmentType, FacilityDefinition, Level, MaterialDef, Placement, Rect, VoxelPart, WorldPredicate } from "../schema/facility.js";
 import { DEFAULT_LOCALE, t } from "../i18n.js";
 import type { Issue, PatientSlot, WaypointLocation } from "./types.js";
 
@@ -210,6 +211,48 @@ function area(rect: Rect): number {
 
 function distance(a: { x: number; z: number }, b: { x: number; z: number }): number {
   return Math.hypot(a.x - b.x, a.z - b.z);
+}
+
+/* ------------------------------------------------------------------ */
+/* Levels (storeys)                                                    */
+/* ------------------------------------------------------------------ */
+
+type LevelSource = { levels?: FacilityDefinition["levels"] };
+
+/**
+ * The facility's levels with defaults applied: the declared `levels`, or the
+ * implicit single level `L0` (elevation 0, height 5) when none are declared.
+ */
+export function facilityLevels(f: LevelSource): Level[] {
+  const levels = f.levels ?? [];
+  if (levels.length === 0) return [{ id: DEFAULT_LEVEL_ID, name: { "zh-CN": "一层", en: "Ground floor" }, elevation: 0, height: 5 }];
+  return levels.map((l) => ({ ...l, elevation: l.elevation ?? 0, height: l.height ?? 5 }));
+}
+
+/** Id of the default level: the declared level at elevation 0, else the first one, else `L0`. */
+export function defaultLevelId(f: LevelSource): string {
+  const levels = f.levels ?? [];
+  return (levels.find((l) => (l.elevation ?? 0) === 0) ?? levels[0])?.id ?? DEFAULT_LEVEL_ID;
+}
+
+/** Level of a room: its `level`, else the default level. */
+export function roomLevel(f: LevelSource, room: { level?: string } | undefined): string {
+  return room?.level ?? defaultLevelId(f);
+}
+
+/**
+ * Level of a placement, patient slot or staff member: its own `level`, else
+ * the level of its room (by id), else the default level.
+ */
+export function entityLevel(f: LevelSource & Pick<FacilityDefinition, "rooms">, entity: { level?: string; room?: string }): string {
+  if (entity.level) return entity.level;
+  const room = entity.room ? f.rooms.find((r) => r.id === entity.room) : undefined;
+  return roomLevel(f, room);
+}
+
+/** Levels a building spans: its `levels`, else the default level. */
+export function buildingLevels(f: LevelSource, building: { levels?: string[] }): string[] {
+  return building.levels?.length ? building.levels : [defaultLevelId(f)];
 }
 
 /* ------------------------------------------------------------------ */
@@ -429,14 +472,15 @@ function checkPlacements(f: FacilityDefinition, catalogs: EquipmentCatalog[]): I
 }
 
 function checkOverlaps(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[] {
-  const solids: { index: number; placement: Placement; box: Box }[] = [];
+  const solids: { index: number; placement: Placement; box: Box; level: string }[] = [];
   f.placements.forEach((placement, index) => {
     const type = equipmentOf(catalogs, placement.type);
-    if (type?.solid) solids.push({ index, placement, box: placementBox(placement, type) });
+    if (type?.solid) solids.push({ index, placement, box: placementBox(placement, type), level: entityLevel(f, placement) });
   });
   const issues: Issue[] = [];
   for (let a = 0; a < solids.length; a++) {
     for (let b = a + 1; b < solids.length; b++) {
+      if (solids[a].level !== solids[b].level) continue;
       const o = overlapDepth(solids[a].box, solids[b].box);
       if (o.x > SPATIAL_TOLERANCE && o.z > SPATIAL_TOLERANCE && o.y > SPATIAL_TOLERANCE) {
         issues.push(
@@ -488,6 +532,73 @@ function checkStaffAndSpawn(f: FacilityDefinition): Issue[] {
   return issues;
 }
 
+/** Levels: duplicate ids/elevations, unknown `level` references and level mismatches with the room. */
+function checkLevels(f: FacilityDefinition): Issue[] {
+  const levels = f.levels ?? [];
+  const issues: Issue[] = [...duplicateIds(levels, "levels")];
+  const known = new Set(facilityLevels(f).map((l) => l.id));
+  const elevations = new Map<number, string>();
+  levels.forEach((l, i) => {
+    const other = elevations.get(l.elevation ?? 0);
+    if (other !== undefined && other !== l.id) issues.push(warn(`levels.${i}.elevation`, `levels "${other}" and "${l.id}" have the same elevation`));
+    elevations.set(l.elevation ?? 0, l.id);
+  });
+  const unknown = (path: string, id: string | undefined) => {
+    if (id !== undefined && !known.has(id)) issues.push(err(path, `unknown level "${id}"`));
+  };
+  f.buildings.forEach((b, i) => b.levels?.forEach((id, j) => unknown(`buildings.${i}.levels.${j}`, id)));
+  f.rooms.forEach((r, i) => {
+    unknown(`rooms.${i}.level`, r.level);
+    const building = r.building ? f.buildings.find((b) => b.id === r.building) : undefined;
+    const level = roomLevel(f, r);
+    if (building && known.has(level) && !buildingLevels(f, building).includes(level)) issues.push(warn(`rooms.${i}.level`, `room "${r.id}" is on level "${level}", which building "${building.id}" does not span`));
+  });
+  const mismatch = (path: string, what: string, entity: { id: string; level?: string; room?: string }) => {
+    unknown(`${path}.level`, entity.level);
+    const room = entity.room ? f.rooms.find((r) => r.id === entity.room) : undefined;
+    if (entity.level && room && roomLevel(f, room) !== entity.level) issues.push(warn(`${path}.level`, `${what} "${entity.id}" is on level "${entity.level}" but its room "${room.id}" is on "${roomLevel(f, room)}"`));
+  };
+  f.placements.forEach((p, i) => mismatch(`placements.${i}`, "placement", p));
+  f.patientSlots.forEach((s, i) => mismatch(`patientSlots.${i}`, "slot", s));
+  f.staff.forEach((s, i) => mismatch(`staff.${i}`, "staff", s));
+  return issues;
+}
+
+/** Connectors (stairs/elevators/ramps): stops on known levels, inside the bounds, joining different levels, inside a building above ground. */
+function checkConnectors(f: FacilityDefinition): Issue[] {
+  const connectors = f.connectors ?? [];
+  const issues: Issue[] = [...duplicateIds(connectors, "connectors")];
+  const known = new Set(facilityLevels(f).map((l) => l.id));
+  const ground = defaultLevelId(f);
+  connectors.forEach((c, i) => {
+    c.stops.forEach((stop, j) => {
+      const path = `connectors.${i}.stops.${j}`;
+      if (!known.has(stop.level)) issues.push(err(`${path}.level`, `unknown level "${stop.level}"`));
+      if (!inBounds(f, stop.x, stop.z)) issues.push(err(path, `stop (${stop.x}, ${stop.z}) of connector "${c.id}" is outside the facility bounds`));
+      if (j > 0 && c.stops[j - 1].level === stop.level) issues.push(err(`${path}.level`, `consecutive stops of connector "${c.id}" are on the same level "${stop.level}"`));
+      if (known.has(stop.level) && stop.level !== ground && !f.buildings.some((b) => buildingLevels(f, b).includes(stop.level) && rectContains(b.rect, stop.x, stop.z))) {
+        issues.push(warn(path, `stop of connector "${c.id}" on level "${stop.level}" is outside every building on that level`));
+      }
+    });
+    if (new Set(c.stops.map((s) => s.level)).size < 2) issues.push(err(`connectors.${i}.stops`, `connector "${c.id}" must join at least two levels`));
+  });
+  return issues;
+}
+
+/** Access zones: known level, inside the bounds, unique ids. */
+function checkAccess(f: FacilityDefinition): Issue[] {
+  const zones = f.access ?? [];
+  const issues: Issue[] = [...duplicateIds(zones, "access")];
+  const known = new Set(facilityLevels(f).map((l) => l.id));
+  const b = f.bounds;
+  const boundsRect: Rect | null = b.maxX > b.minX && b.maxZ > b.minZ ? { x: (b.minX + b.maxX) / 2, z: (b.minZ + b.maxZ) / 2, w: b.maxX - b.minX, d: b.maxZ - b.minZ } : null;
+  zones.forEach((zone, i) => {
+    if (zone.level !== undefined && !known.has(zone.level)) issues.push(err(`access.${i}.level`, `unknown level "${zone.level}"`));
+    if (boundsRect && !rectInside(zone.rect, boundsRect)) issues.push(warn(`access.${i}.rect`, `access zone "${zone.id}" extends outside the facility bounds`));
+  });
+  return issues;
+}
+
 /**
  * Validate a facility against the loaded catalogs: unknown catalogs,
  * equipment types and materials (terrain, walls, floors, roofs, partitions,
@@ -495,7 +606,10 @@ function checkStaffAndSpawn(f: FacilityDefinition): Issue[] {
  * bounds/rooms, patient-slot references, out-of-range `hideParts` indices,
  * non-90° rotations, extra parts outside the type's footprint and
  * overlapping solid footprints (warnings, rotation-aware, tolerance
- * `SPATIAL_TOLERANCE`).
+ * `SPATIAL_TOLERANCE`); levels (unknown `level` ids, a level its room or
+ * building is not on), connectors (stops on undefined levels or outside the
+ * bounds, consecutive stops on one level, upper-level stops outside every
+ * building) and access zones (unknown level, outside the bounds).
  */
 export function checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[] {
   const loaded = new Set(catalogs.map((c) => c.id));
@@ -516,6 +630,9 @@ export function checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[
     ...checkPlacements(f, catalogs),
     ...checkSlots(f, catalogs),
     ...checkOverlaps(f, catalogs),
+    ...checkLevels(f),
+    ...checkConnectors(f),
+    ...checkAccess(f),
   );
   return issues;
 }
@@ -524,7 +641,12 @@ export function checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[
  * Validate equipment catalogs together: duplicate material/equipment ids
  * across catalogs, parts using unknown materials (error), parts outside the
  * declared footprint, screens without a "screen" part and non-canonical
- * capabilities (warnings). Paths are prefixed with `catalog(<id>)`.
+ * capabilities (warnings); behaviours (initial/from/to/predicate states must
+ * exist, `derived` monitor attachment needs "attached"/"detached" — errors;
+ * clinical effects the type cannot back, releases without a reservation —
+ * warnings), interaction points (inside a solid footprint or beyond reach —
+ * warnings), portable carts that are wall-mounted and models that are not
+ * GLB/glTF (warnings). Paths are prefixed with `catalog(<id>)`.
  */
 export function checkCatalogs(catalogs: EquipmentCatalog[]): Issue[] {
   const issues: Issue[] = [];
@@ -563,5 +685,62 @@ function checkEquipmentType(e: EquipmentType, path: string, materials: Map<strin
   e.capabilities.forEach((cap, j) => {
     if (!(cap in CAPABILITIES)) issues.push(warn(`${path}.capabilities.${j}`, `non-canonical capability "${cap}"`));
   });
+  if (e.behavior) issues.push(...checkBehavior(e, e.behavior, `${path}.behavior`));
+  issues.push(...checkEmbodiment(e, path));
+  return issues;
+}
+
+/** State ids a world predicate refers to (`state` leaves, outside or inside all/any/not). */
+function predicateStates(p: WorldPredicate, out: string[] = []): string[] {
+  if ("state" in p) out.push(...(Array.isArray(p.state) ? p.state : [p.state]));
+  else if ("all" in p) p.all.forEach((x) => predicateStates(x, out));
+  else if ("any" in p) p.any.forEach((x) => predicateStates(x, out));
+  else if ("not" in p) predicateStates(p.not, out);
+  return out;
+}
+
+function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string): Issue[] {
+  const issues: Issue[] = [];
+  const states = new Set(Object.keys(b.states));
+  if (states.size === 0) issues.push(err(`${path}.states`, `behaviour of "${e.id}" declares no states`));
+  if (!states.has(b.initial)) issues.push(err(`${path}.initial`, `initial state "${b.initial}" is not one of the states of "${e.id}"`));
+  if (b.derived === "monitor-attachment") {
+    for (const needed of ["attached", "detached"]) if (!states.has(needed)) issues.push(err(`${path}.states`, `derived "monitor-attachment" needs a "${needed}" state`));
+    if (e.interaction.kind !== "monitor") issues.push(warn(`${path}.derived`, `"monitor-attachment" on "${e.id}", whose interaction kind is "${e.interaction.kind}" (expected "monitor")`));
+  }
+  const ops = Object.entries(b.operations);
+  if (ops.length === 0) issues.push(warn(`${path}.operations`, `behaviour of "${e.id}" offers no operations`));
+  const reserves = ops.some(([, op]) => op.reserve);
+  for (const [name, op] of ops) {
+    const at = `${path}.operations.${name}`;
+    if (op.from !== "*") {
+      op.from.forEach((s, k) => {
+        if (!states.has(s)) issues.push(err(`${at}.from.${k}`, `unknown state "${s}"`));
+      });
+    }
+    if (op.to !== undefined && !states.has(op.to)) issues.push(err(`${at}.to`, `unknown state "${op.to}"`));
+    (op.requires ?? []).forEach((p, k) => {
+      for (const s of predicateStates(p)) if (!states.has(s)) issues.push(err(`${at}.requires.${k}`, `predicate refers to unknown state "${s}"`));
+    });
+    if (op.clinical?.select === "capability" && e.capabilities.length === 0) issues.push(warn(`${at}.clinical.select`, `"capability" selection on "${e.id}", which provides no capabilities`));
+    if (op.clinical?.select === "monitoring" && op.clinical.tool !== "intervene") issues.push(warn(`${at}.clinical.tool`, `"monitoring" selects an intervention: expected tool "intervene", got "${op.clinical.tool}"`));
+    if (op.release && !reserves) issues.push(warn(`${at}.release`, `"${name}" releases a reservation no operation of "${e.id}" takes`));
+  }
+  return issues;
+}
+
+function checkEmbodiment(e: EquipmentType, path: string): Issue[] {
+  const issues: Issue[] = [];
+  const { w, d } = e.footprint;
+  const reach = e.reach ?? DEFAULT_REACH[e.interaction.kind as keyof typeof DEFAULT_REACH] ?? DEFAULT_REACH.none;
+  (e.interactionPoints ?? []).forEach((p, j) => {
+    const dx = Math.max(0, Math.abs(p.x) - w / 2);
+    const dz = Math.max(0, Math.abs(p.z) - d / 2);
+    if (e.solid && dx <= SPATIAL_TOLERANCE && dz <= SPATIAL_TOLERANCE) issues.push(warn(`${path}.interactionPoints.${j}`, `interaction point (${p.x}, ${p.z}) lies inside the solid ${w}×${d} footprint of "${e.id}"`));
+    else if (Math.hypot(dx, dz) > reach + SPATIAL_TOLERANCE) issues.push(warn(`${path}.interactionPoints.${j}`, `interaction point (${p.x}, ${p.z}) is ${Math.hypot(dx, dz).toFixed(2)} m from "${e.id}", beyond its ${reach} m reach`));
+  });
+  if (e.portable === "cart" && (!e.solid || e.tags.includes("wall"))) issues.push(warn(`${path}.portable`, `"${e.id}" is a portable cart but wall-mounted (${!e.solid ? "solid: false" : 'tag "wall"'})`));
+  if (e.portable === "handheld" && (w > 1 || d > 1 || e.footprint.h > 1.5)) issues.push(warn(`${path}.portable`, `"${e.id}" is too large (${w}×${d}×${e.footprint.h}) to be handheld`));
+  if (e.model && !/\.(glb|gltf)(\.gz)?([?#].*)?$/i.test(e.model.uri)) issues.push(warn(`${path}.model.uri`, `model "${e.model.uri}" is not a .glb/.gltf file`));
   return issues;
 }

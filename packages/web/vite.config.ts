@@ -11,12 +11,16 @@
  *   app's server detection does not log a 404 on every page load.
  * - `--mode standalone` defines `__STANDALONE__ = true`; the single-file
  *   inlining step lives in scripts/inline-standalone.mjs (UI agent).
+ * - `virtual:clinicalcraft/case-index` (src/build/case-index-plugin.ts): the
+ *   case library index, built from packages/content at build/dev time; each
+ *   full case is its own lazy chunk (src/app/content.ts).
  */
 import { defineConfig, type BuildOptions, type Connect, type Plugin } from "vite";
 import { fileURLToPath } from "node:url";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { caseIndexPlugin } from "./src/build/case-index-plugin.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
@@ -163,7 +167,8 @@ export default defineConfig(({ mode }) => ({
       { find: /^@clinicalcraft\/content\//, replacement: path.resolve(here, "../content") + "/" },
     ],
   },
-  plugins: [localAssets()],
+  // The bundled case index (`virtual:clinicalcraft/case-index`); full cases are lazy chunks.
+  plugins: [localAssets(), caseIndexPlugin({ contentDir: path.resolve(here, "../content") })],
   server: {
     fs: { allow: [repoRoot] },
     // CLINICALCRAFT_QA=1: no HMR/reloads (content files may change while QA scripts run)

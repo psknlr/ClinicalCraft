@@ -20,6 +20,7 @@ const zh = {
   "intro.continue": "继续探索 →",
   "intro.startNew": "开始新的探索",
   "intro.preparing": "正在准备世界…",
+  "intro.loadingCase": "正在加载病例…",
   "intro.help": "操作指南",
   "intro.loading": "构建体素场景与离线病例档案",
   "intro.ready": "世界已就绪 · {cases} 个病例 · 无需联网即可游玩",
@@ -57,6 +58,12 @@ const zh = {
   "library.locales": "语言",
   "library.physiology": "实时生理",
   "library.invalid": "病例数据无效",
+  "library.caseLoading": "正在加载病例档案…",
+  "library.caseFailed": "无法加载此病例。",
+  "library.caseRetry": "重试",
+  "library.caseFailedReload": "无法加载此病例的文件，请重新加载页面后再试（存档不受影响）。",
+  "library.caseReload": "重新加载页面",
+  "library.loadFailed": "病例加载失败",
 
   /* ---------------- settings (case setting) ---------------- */
   "setting.outpatient": "门诊",

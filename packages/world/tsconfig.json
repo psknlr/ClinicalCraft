@@ -6,6 +6,6 @@
     "lib": ["ES2023"]
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.ts"],
+  "exclude": ["src/**/*.test.ts", "src/__fixtures__"],
   "references": [{ "path": "../core" }]
 }

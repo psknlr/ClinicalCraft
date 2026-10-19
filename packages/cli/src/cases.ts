@@ -1,5 +1,5 @@
 /**
- * `clinicalcraft cases list|show|validate|verify|new|schema`.
+ * `clinicalcraft cases list|index|show|validate|verify|new|schema`.
  */
 import { existsSync, statSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
@@ -19,7 +19,7 @@ import {
   type Issue,
   type MatchHit,
 } from "@clinicalcraft/core";
-import { builtinContentDir, findProjectRoot, loadContent, type LoadedContent } from "@clinicalcraft/agent/node";
+import { buildCaseIndex, builtinContentDir, findProjectRoot, loadContent, type CaseIndexIssue, type LoadedContent } from "@clinicalcraft/agent/node";
 import { sanitizeTerminal, table } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
@@ -177,6 +177,50 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
   ctx.print(table(rows, { header: true, maxCell: 60 }));
   const broken = content.issues.filter((f) => f.file.endsWith("case.json") && f.issues.some((i) => i.severity === "error"));
   for (const f of broken) ctx.printErr(ctx.err.red(ctx.t("cases.invalidFile", { file: sanitizeTerminal(f.file), n: f.issues.filter((i) => i.severity === "error").length })));
+  return EXIT.ok;
+}
+
+/** One index problem, localised (the file path as found; ids and paths terminal-sanitised). */
+function indexIssueText(ctx: CliContext, issue: CaseIndexIssue): string {
+  const file = sanitizeTerminal(issue.file);
+  const id = sanitizeTerminal(issue.id ?? "");
+  switch (issue.code) {
+    case "unreadable":
+      return ctx.t("cases.index.unreadable", { file });
+    case "invalid-json":
+      return ctx.t("cases.index.invalidJson", { file });
+    case "missing-id":
+      return ctx.t("cases.index.missingId", { file });
+    case "duplicate-id":
+      return ctx.t(issue.severity === "warning" ? "cases.index.overridden" : "cases.index.duplicate", { file, id, used: sanitizeTerminal(issue.usedFile ?? "") });
+  }
+}
+
+/**
+ * `cases index [--json]`: the library index — the metadata the web library,
+ * `clinicalcraft serve` (`GET /api/content/cases`) and this command share
+ * (`caseIndexEntry`), read from the case files without validating them, in
+ * library order. Problems (unreadable files, invalid JSON, duplicate ids) go
+ * to stderr.
+ */
+export async function casesIndex(ctx: CliContext, args: ParsedArgs): Promise<number> {
+  const settings = await loadCliSettings(ctx);
+  const builtin = builtinContentDir();
+  const dirs = [...new Set([...(builtin ? [builtin] : []), ...settings.contentDirs.map((d) => resolve(d))])];
+  const index = await buildCaseIndex({ dirs });
+  if (flagBool(args, "json")) ctx.print(JSON.stringify(index.entries, null, 2));
+  else {
+    const rows = [[ctx.t("col.id"), ctx.t("col.title"), ctx.t("col.difficulty"), ctx.t("col.setting"), ctx.t("col.minutes"), ctx.t("col.hash")]];
+    for (const e of index.entries) {
+      rows.push([sanitizeTerminal(e.id), sanitizeTerminal(t(e.title, ctx.locale)), stars(e.difficulty), settingLabel(ctx, sanitizeTerminal(e.setting)), e.estimatedMinutes ? String(e.estimatedMinutes) : "-", e.contentHash]);
+    }
+    ctx.print(table(rows, { header: true, maxCell: 60 }));
+    ctx.print(ctx.out.dim(ctx.t("cases.index.summary", { n: index.entries.length, dirs: dirs.length })));
+  }
+  for (const issue of index.issues) {
+    const text = indexIssueText(ctx, issue);
+    ctx.printErr(issue.severity === "error" ? ctx.err.red(text) : ctx.err.yellow(text));
+  }
   return EXIT.ok;
 }
 

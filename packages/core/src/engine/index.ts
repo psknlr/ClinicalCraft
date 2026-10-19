@@ -87,6 +87,11 @@ export {
   placementBox,
   rectContains,
   SPATIAL_TOLERANCE,
+  facilityLevels,
+  defaultLevelId,
+  roomLevel,
+  entityLevel,
+  buildingLevels,
   type Box,
   type ResolveWaypointOptions,
 } from "./facility.js";

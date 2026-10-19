@@ -1,9 +1,12 @@
 import { defineConfig } from "vitest/config";
 import { fileURLToPath } from "node:url";
+import { caseIndexPlugin } from "./packages/web/src/build/case-index-plugin.js";
 
 const src = (pkg: string, entry = "index.ts") => fileURLToPath(new URL(`./packages/${pkg}/src/${entry}`, import.meta.url));
 
 export default defineConfig({
+  // The web's bundled case index (`virtual:clinicalcraft/case-index`), as in packages/web/vite.config.ts.
+  plugins: [caseIndexPlugin({ contentDir: fileURLToPath(new URL("./packages/content", import.meta.url)) })],
   resolve: {
     alias: [
       { find: /^@clinicalcraft\/agent\/node$/, replacement: src("agent", "node/index.ts") },

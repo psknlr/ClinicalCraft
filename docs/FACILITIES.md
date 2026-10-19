@@ -72,6 +72,62 @@ case only without blocking gaps (the case's own facility always);
 `facilities validate --all` warns for every case a slot accepts but the
 facility cannot complete.
 
+## Embodiment fields (optional; docs/EMBODIED.md)
+
+All additive: facilities and catalogs without them stay valid and unchanged
+(`clinicalcraft/facility@1`, `clinicalcraft/equipment-catalog@1`). The
+headless world model (`@clinicalcraft/world`) derives colliders, navigation
+grids, occlusion and the semantic registry from them; the web world renders
+the default level.
+
+**Levels.** `floor` (buildings, rooms) is the floor *material*; storeys are
+levels.
+
+| field | where | meaning |
+|---|---|---|
+| `levels: [{ id, name, elevation = 0, height = 5 }]` | facility | storeys; default `[]` = one implicit level `L0` at elevation 0 |
+| `level` | rooms, placements, patient slots, staff | the level the entity stands on (default: the room's level, else the *default level* — the one at elevation 0, else the first) |
+| `levels: [levelId…]` | buildings | levels the building spans (default: the default level); its walls and openings repeat on each, lifted by the level's elevation; off the default level only the inside of these buildings is walkable |
+| `connectors: [{ id, kind: stairs \| elevator \| ramp, name, stops: [{ level, x, z }…] ≥ 2, travelSeconds?, accessible?, roles = [] }]` | facility | portals between levels, stops listed in travel order; `travelSeconds` between adjacent stops (default stairs 15, ramp 10, elevator 20); `accessible` (default: elevators and ramps yes, stairs no) — wheelchairs, beds and pushed carts use only accessible ones; `roles` restrict who may use it (empty = everyone) |
+| `access: [{ id, name, level?, rect, roles ≥ 1 }]` | facility | restricted areas: only these roles may plan through them (`ACCESS_DENIED` otherwise); an actor standing inside may always leave |
+
+Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
+(`nurse`, `radiologist`, `pathologist`, `lab-tech`, `attending`,
+`pharmacist`, `receptionist`, `paramedic`, `porter`).
+
+**Equipment types.**
+
+| field | meaning |
+|---|---|
+| `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `oxygen-cylinder`, `glucometer-station`, `pocus-cart`, `ultrasound-machine` |
+| `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
+| `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
+| `behavior: { initial, states: { id: { name?, available? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`) through the session's normal tool path; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
+| `model: { uri, sha256?, scale?, offset?, rot?, license, attribution? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, the collider is always the footprint and a model is never interactive by itself |
+
+World predicates (`requires`): `{ actorWithin: m }` (the acting actor is
+within m of this device), `{ patientWithin: m }` (… of the bound patient),
+`{ deviceAtBedside: true }` (this device stands within the bedside radius of
+the patient), `{ actorHolding: id }`, `{ state: id | [id…] }`,
+`{ role: [role…] }`, `{ handsClean: true }`, and `all` / `any` / `not`.
+
+**Validation.** `checkFacility`: unknown level ids (buildings, rooms,
+placements, slots, staff, access zones; errors), an entity on another level
+than its room, a room on a level its building does not span, two levels at
+one elevation (warnings); connector stops on undefined levels, outside the
+bounds, consecutive stops on one level, fewer than two levels (errors), an
+upper-level stop outside every building on that level (warning); access
+zones outside the bounds (warning); duplicate ids; solids on different
+levels never "overlap". `checkCatalogs`: behaviour `initial` / `from` / `to` /
+predicate states that do not exist, a derived monitor attachment without
+`attached` / `detached` (errors); a monitor attachment on a non-monitor, a
+`capability` selection on a type without capabilities, `monitoring` with a
+tool other than `intervene`, a `release` without any `reserve`, interaction
+points inside a solid footprint or beyond reach, a wall-mounted portable cart
+(`solid: false` or tag `wall`), a handheld item over 1 × 1 × 1.5 m, a model
+that is not `.glb` / `.gltf` (warnings). Unknown predicate shapes fail
+parsing.
+
 ## Equipment catalogs (ids are a contract — facilities reference them)
 
 `core-furniture.json` — structure, furniture, teaching, outdoor, decor:

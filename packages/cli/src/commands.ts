@@ -2,7 +2,7 @@
  * The command tree (names, aliases, flags, help text) — no handlers' logic here.
  */
 import type { FlagSpec, Localized, ParsedArgs } from "./argv.js";
-import { casesList, casesNew, casesSchema, casesShow, casesValidate, casesVerify } from "./cases.js";
+import { casesIndex, casesList, casesNew, casesSchema, casesShow, casesValidate, casesVerify } from "./cases.js";
 import { configGet, configPath, configSet } from "./config.js";
 import type { CliContext } from "./context.js";
 import { runEval } from "./eval.js";
@@ -70,10 +70,16 @@ export const ROOT: CommandSpec = {
     {
       name: "cases",
       aliases: ["case"],
-      summary: { en: "List, inspect, validate, verify and scaffold cases", zh: "列出、查看、校验、验证和新建病例" },
+      summary: { en: "List, index, inspect, validate, verify and scaffold cases", zh: "列出、索引、查看、校验、验证和新建病例" },
       defaultSubcommand: "list",
       subcommands: [
         { name: "list", aliases: ["ls"], summary: { en: "List available cases", zh: "列出可用病例" }, flags: [JSON_FLAG], run: casesList },
+        {
+          name: "index",
+          summary: { en: "Print the library index (metadata only, no validation; shared with serve and the web)", zh: "输出病例库索引（仅元数据、不做校验；与 serve 和网页共用）" },
+          flags: [JSON_FLAG],
+          run: casesIndex,
+        },
         {
           name: "show",
           usage: "<id>",

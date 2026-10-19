@@ -37,6 +37,8 @@ import {
   type Material,
   type Object3D,
 } from "three";
+import { defaultLevelId, entityLevel } from "@clinicalcraft/core";
+import { blockBox, buildCollisionModel, patientBodyBox, type DoorSpec } from "@clinicalcraft/world";
 import type { BlockInfo, CreateWorld, InteractionTarget, WorldApi, WorldOptions, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { buildRules, canPlace, cellKey, validBlocks, type BuildRules, type Cell } from "./buildzone.js";
@@ -46,7 +48,7 @@ import { drawMap as paintMap, type MapData, type MapWall } from "./map.js";
 import { MaterialLibrary, mergeCatalogs } from "./materials.js";
 import { buildPerson, disposeRig, ROLE_UNIFORMS, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
 import { buildNavGrid, findPath, type NavGrid } from "./pathfind.js";
-import { boxCollider, clampPitch, ColliderGrid, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
+import { clampPitch, ColliderGrid, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
 import { regionAt } from "./region.js";
 import { SignFactory } from "./signs.js";
 import { animateDoors, buildStructures, setDoorOpen, type WallRecord } from "./structures.js";
@@ -213,6 +215,20 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   const merged = mergeCatalogs(opts.catalogs ?? [], facility.materials ?? []);
   const lib = new MaterialLibrary(merged);
   const signs = new SignFactory();
+  // Every collider comes from the facility's collision model (@clinicalcraft/world, EMBODIED R2): the
+  // static ones are registered here; patients (posture changes) and build-zone blocks (mined/placed)
+  // are added at runtime with the model's own box functions (patientBodyBox, blockBox).
+  const collision = buildCollisionModel(facility, opts.catalogs ?? [], { blocks: [] });
+  const level = defaultLevelId(facility);
+  const colliderGrid = new ColliderGrid(2);
+  const physics = new Map<string, Aabb>();
+  for (const c of collision.colliders) {
+    if (c.level !== level) continue; // only the default level is rendered
+    const box: Aabb = { minX: c.minX, maxX: c.maxX, minY: c.minY, maxY: c.maxY, minZ: c.minZ, maxZ: c.maxZ };
+    if (c.kind === "door") box.door = true;
+    physics.set(c.id, colliderGrid.add(box));
+  }
+  const doorSpecs = new Map<string, DoorSpec>(collision.doors.map((d) => [d.id.slice("door:".length), d]));
   const ctx: BuildContext = {
     facility,
     catalogs: merged,
@@ -222,7 +238,11 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     lib,
     signs,
     batch: new BoxBatch(),
-    colliders: new ColliderGrid(2),
+    colliders: colliderGrid,
+    collision,
+    level,
+    physics,
+    doorSpecs,
     pickables: [],
     targets: new Map(),
     doors: [],
@@ -237,6 +257,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     ownedTextures: [],
     warnings: [],
   };
+  if ((facility.levels ?? []).length > 1) ctx.warnings.push(`only level "${level}" is rendered; the other levels exist in the headless world model`);
 
   // ground uses its own batch (not ray-picked: an analytic plane is used instead)
   const groundBatch = new BoxBatch();
@@ -305,17 +326,14 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     o.traverse((c) => (c.raycast = () => {}));
   }
 
-  function npcCollider(posture: Posture, onBed: boolean, x: number, z: number): Aabb | null {
-    if (onBed) return null;
-    if (posture === "standing") return boxCollider(x, 0.94, z, 0.85, 1.88, 0.6);
-    if (posture === "sitting") return boxCollider(x, 0.6, z, 0.8, 1.2, 0.8);
-    return boxCollider(x, 0.25, z, 0.8, 0.5, 2.1);
-  }
-
   function placePatient(p: WorldPatient): void {
     const slot = facility.patientSlots.find((s) => s.id === p.slotId);
     if (!slot) {
       ctx.warnings.push(`unknown patient slot "${p.slotId}"`);
+      return;
+    }
+    if (entityLevel(facility, slot) !== level) {
+      ctx.warnings.push(`patient slot "${p.slotId}" is on level "${entityLevel(facility, slot)}", which is not rendered`);
       return;
     }
     const old = ctx.npcs.get(`patient:${p.slotId}`);
@@ -348,8 +366,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     rig.root.userData.action = target;
     rig.root.userData.highlight = rig.body;
     ctx.pickables.push(rig.root);
-    const collider = npcCollider(posture, posture !== "standing" && !!bed, x, z);
-    if (collider) ctx.colliders.add(collider);
+    // the collision model's body for this slot and posture (none on a bed or chair)
+    const body = patientBodyBox(facility, merged.equipment, p.slotId, posture);
+    const collider = body ? ctx.colliders.add({ ...body }) : null;
     ctx.npcs.set(`patient:${p.slotId}`, {
       kind: "patient",
       id: p.slotId,
@@ -384,6 +403,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
   for (const p of opts.patients ?? []) placePatient(p);
 
   for (const st of facility.staff ?? []) {
+    if (entityLevel(facility, st) !== level) continue; // other levels are not rendered (yet)
     const uni = ROLE_UNIFORMS[st.role] ?? { shirt: "#f1ead5", pants: "#354442" };
     const ap: AppearanceLike = { shirt: uni.shirt, pants: uni.pants, hairStyle: uni.hairStyle, ...(st.appearance ?? {}) };
     const rig = buildPerson(lib, ap, { posture: "standing", coat: !!uni.coat, stripe: uni.stripe, badge: true });
@@ -402,7 +422,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     rig.root.userData.action = target;
     rig.root.userData.highlight = rig.body;
     ctx.pickables.push(rig.root);
-    const collider = ctx.colliders.add(boxCollider(st.x, 0.94, st.z, 0.85, 1.88, 0.6));
+    const collider = physics.get(`staff:${st.id}`) ?? null; // the collision model's staff body
     ctx.npcs.set(`staff:${st.id}`, { kind: "staff", id: st.id, rig, x: st.x, z: st.z, rot: MathUtils.degToRad(st.rot ?? 0), speaking: false, distressed: false, collider, target, label: `${role} · ${name}` });
   }
 
@@ -422,7 +442,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     root.add(mesh);
     mesh.updateMatrixWorld(true); // ray-pickable before the next render
     ctx.pickables.push(mesh);
-    const collider = ctx.colliders.add(boxCollider(cell[0] + 0.5, cell[1] + 0.5, cell[2] + 0.5, 1, 1, 1));
+    const collider = ctx.colliders.add({ ...blockBox(cell) }); // the collision model's block box
     placed.set(k, { mesh, collider, type, cell: [...cell] as Cell });
     markShadows();
     if (notify) callbacks.onBlock("place", type);
@@ -1456,6 +1476,8 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       scene,
       renderer,
       colliders: ctx.colliders,
+      /** The facility's collision model (@clinicalcraft/world): the source of every collider above. */
+      collision,
       placed,
       doors: ctx.doors,
       targets: ctx.targets,

@@ -19,13 +19,31 @@ import { mm } from "./i18n.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
 import type { McpSession, SessionManager } from "./sessions.js";
 
+/**
+ * MCP `ToolAnnotations` (spec 2025-06-18): hints for clients deciding how to
+ * present or confirm a call — never a security boundary (the approval gate
+ * and `confirm: true` are).
+ */
+export interface McpToolAnnotations {
+  /** Human-readable title (also the tool's top-level `title`). */
+  title: string;
+  /** The tool does not modify its environment (the encounter, the session or the server's sessions). */
+  readOnlyHint: boolean;
+  /** It may act irreversibly at high risk on the simulated patient (calls the approval gate can rate `high`). */
+  destructiveHint: boolean;
+  /** Repeating a call with the same arguments has no further effect. */
+  idempotentHint: boolean;
+  /** It reaches outside a closed world: always false (a closed simulation over local case data). */
+  openWorldHint: boolean;
+}
+
 /** A tool as listed by `tools/list`. */
 export interface McpToolSpec {
   name: string;
   title: string;
   description: string;
   inputSchema: Record<string, unknown>;
-  annotations: { readOnlyHint: boolean; destructiveHint: boolean; idempotentHint: boolean; openWorldHint: boolean };
+  annotations: McpToolAnnotations;
 }
 
 /** A `tools/call` result. */
@@ -50,25 +68,45 @@ export interface ToolHost {
 const LOCALE_SCHEMA = { type: "string", enum: ["zh-CN", "en"], description: "Session language (default: the server settings' locale)." };
 const SESSION_ID_SCHEMA = { type: "string", minLength: 1, maxLength: 200, description: "Id returned by start_case." };
 
-const TITLES: Record<string, string> = {
-  list_cases: "List cases",
-  start_case: "Start a case",
-  get_debrief: "Assessment & debrief",
-  ask_patient: "Ask the patient",
-  list_options: "List options",
-  examine: "Examine",
-  order_test: "Order a test",
-  read_result: "Read a result",
-  check_vitals: "Check vitals",
-  intervene: "Intervene",
-  consult: "Consult a colleague",
-  answer_decision: "Answer a decision",
-  set_phase: "Switch phase",
-  wait: "Wait",
-  update_workup: "Update the workup plan",
-  case_status: "Case status",
-  finish_case: "Finish the case",
+const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false } as const;
+const RECORDS = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false } as const;
+
+/**
+ * Annotations of every tool (docs/PROTOCOL.md §11, MCP).
+ * Read-only: they only read the encounter. Everything else changes it — even
+ * a repeated `ask_patient`, `examine` or `read_result` records the act and
+ * spends simulated minutes on a simulated clock; `consult` records a scored
+ * hint when the attending gives one. Destructive: `intervene` (drugs and
+ * procedures act on the patient; contraindicated ones harm, high-risk ones
+ * need confirmation) and `order_test` (invasive investigations such as
+ * angiography are rated `high`). Idempotent: read-only tools, `set_phase`
+ * (the same phase again changes nothing), `update_workup` (it replaces the
+ * plan) and `finish_case` (a finished case refuses a repeat).
+ */
+export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
+  list_cases: { title: "List cases", ...READ_ONLY },
+  start_case: { title: "Start a case", ...RECORDS },
+  get_debrief: { title: "Assessment & debrief", ...READ_ONLY },
+  ask_patient: { title: "Ask the patient", ...RECORDS },
+  list_options: { title: "List options", ...READ_ONLY },
+  examine: { title: "Examine", ...RECORDS },
+  order_test: { title: "Order a test", ...RECORDS, destructiveHint: true },
+  read_result: { title: "Read a result", ...RECORDS },
+  check_vitals: { title: "Check vitals", ...READ_ONLY },
+  intervene: { title: "Intervene", ...RECORDS, destructiveHint: true },
+  consult: { title: "Consult a colleague", ...RECORDS },
+  answer_decision: { title: "Answer a decision", ...RECORDS },
+  set_phase: { title: "Switch phase", ...RECORDS, idempotentHint: true },
+  wait: { title: "Wait", ...RECORDS },
+  update_workup: { title: "Update the workup plan", ...RECORDS, idempotentHint: true },
+  case_status: { title: "Case status", ...READ_ONLY },
+  finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
 };
+
+/** A tool's annotations; one missing from the table gets the spec's cautious defaults (still a closed world). */
+export function toolAnnotations(name: string): McpToolAnnotations {
+  return { ...(TOOL_ANNOTATIONS[name] ?? { title: name, readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false }) };
+}
 
 function withSessionId(schema: Record<string, unknown>): Record<string, unknown> {
   const properties = (schema.properties ?? {}) as Record<string, unknown>;
@@ -93,12 +131,14 @@ function withConfirm(schema: Record<string, unknown>): Record<string, unknown> {
 
 function clinicalSpec(tool: ToolDefinition<Record<string, unknown>>): McpToolSpec {
   const schema = withSessionId(tool.inputSchema);
+  const annotations = toolAnnotations(tool.name);
   return {
     name: tool.name,
-    title: TITLES[tool.name] ?? tool.name,
+    title: annotations.title,
+    // `confirm` follows the approval gate (tools it never asks about are read-only there), not the hints.
     description: `${tool.description} Requires session_id from start_case.${tool.readOnly ? "" : " High-risk or always-ask actions need a second call with confirm: true after the user agreed."}`,
     inputSchema: tool.readOnly ? schema : withConfirm(schema),
-    annotations: { readOnlyHint: tool.readOnly, destructiveHint: tool.name === "intervene", idempotentHint: tool.readOnly, openWorldHint: false },
+    annotations,
   };
 }
 
@@ -108,14 +148,14 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
   return [
     {
       name: "list_cases",
-      title: TITLES.list_cases!,
+      title: toolAnnotations("list_cases").title,
       description: "List the available clinical cases (opaque id handle, spoiler-free title and summary, specialty, difficulty).",
       inputSchema: { type: "object", properties: { locale: LOCALE_SCHEMA }, additionalProperties: false },
-      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+      annotations: toolAnnotations("list_cases"),
     },
     {
       name: "start_case",
-      title: TITLES.start_case!,
+      title: toolAnnotations("start_case").title,
       description:
         "Start an encounter with a case and become the clinician. Returns session_id (pass it to every clinical tool) and the opening: " +
         "who the patient is, the chief complaint and what they say first.",
@@ -130,17 +170,17 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
         required: ["case_id"],
         additionalProperties: false,
       },
-      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
+      annotations: toolAnnotations("start_case"),
     },
     ...clinical,
     {
       name: "get_debrief",
-      title: TITLES.get_debrief!,
+      title: toolAnnotations("get_debrief").title,
       description:
         "Assess the encounter so far (objectives, required history/exam, essential investigations, decisions, safety, examiner judgements) " +
         "and, once the case is complete, the case debrief. A teaching-script measure, not a validated competency score.",
       inputSchema: { type: "object", properties: { session_id: SESSION_ID_SCHEMA }, required: ["session_id"], additionalProperties: false },
-      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: false },
+      annotations: toolAnnotations("get_debrief"),
     },
   ];
 }

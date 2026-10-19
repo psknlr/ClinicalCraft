@@ -35,5 +35,6 @@ export {
   type SessionSummary,
 } from "./transcript.js";
 export { builtinContentDir, loadContent, type ContentIssue, type LoadContentOptions, type LoadedContent } from "./content.js";
+export { buildCaseIndex, CaseIndexer, contentHash, type CaseIndexerOptions, type CaseIndexIssue, type CaseIndexSnapshot, type IndexedCaseFile } from "./case-index.js";
 export { resolveNodeProviderConfig } from "./providers.js";
 export { BootstrapError, catalogsFor, chooseFacility, createNodeSession, findSessionTranscript, untrustedResumeConfig, type CreateNodeSessionOptions } from "./bootstrap.js";

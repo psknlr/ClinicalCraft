@@ -11,8 +11,8 @@ Two entry points:
 
 | import | for |
 |---|---|
-| `@clinicalcraft/agent` | isomorphic (browser-safe, no `node:*`): protocol, providers, tools, approval gate, hooks runner, slash commands, agents, `createSession` |
-| `@clinicalcraft/agent/node` | Node only: settings files, `CLINICALCRAFT.md` memory, custom agents/commands, shell-command hooks, JSONL transcripts, `loadContent`, `createNodeSession` |
+| `@clinicalcraft/agent` | isomorphic (browser-safe, no `node:*`): protocol, providers, tools, approval gate, hooks runner, slash commands, agents, `createSession`, the case library order and index-entry builder (`libraryOrder`, `caseIndexEntry`) |
+| `@clinicalcraft/agent/node` | Node only: settings files, `CLINICALCRAFT.md` memory, custom agents/commands, shell-command hooks, JSONL transcripts, `loadContent`, the case index over content directories (`CaseIndexer`), `createNodeSession` |
 
 ```ts
 import { createNodeSession } from "@clinicalcraft/agent/node";

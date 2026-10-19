@@ -8,7 +8,10 @@ describe("intro footer label", () => {
   it("keeps the V4 prefix but uses the spoiler-free title", () => {
     const card = loadContent().cards.find((c) => c.id === "smzl-lung-adeno");
     if (!card) throw new Error("smzl-lung-adeno card missing");
-    expect(card.label).not.toBeNull();
+    expect(card.labelPrefix).not.toBeNull();
+    // The index never carries the diagnosis-bearing rest of the V4 label.
+    const { id: _id, ...rest } = card;
+    expect(JSON.stringify(rest)).not.toMatch(/SMZL|腺癌|adenocarcinoma/i);
     for (const locale of ["zh-CN", "en"] as const) {
       setLocale(locale);
       const text = footLabel(card);
@@ -19,7 +22,7 @@ describe("intro footer label", () => {
 
   it("falls back to the title when a case has no V4 label", () => {
     setLocale("en");
-    expect(footLabel({ label: null, title: { "zh-CN": "胸痛", en: "Chest pain" } })).toBe("Chest pain");
+    expect(footLabel({ labelPrefix: null, title: { "zh-CN": "胸痛", en: "Chest pain" } })).toBe("Chest pain");
   });
 });
 

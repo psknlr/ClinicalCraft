@@ -1,7 +1,8 @@
 /**
- * Small node:http helpers: JSON responses, typed API errors and a bounded
- * request-body reader.
+ * Small node:http helpers: JSON responses, typed API errors, a bounded
+ * request-body reader and strong ETags with `If-None-Match` revalidation.
  */
+import { createHash } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 /** Default request body limit (2 MB). */
@@ -34,6 +35,56 @@ export function sendJson(res: ServerResponse, status: number, body: unknown, hea
     ...headers,
   });
   res.end(res.req?.method === "HEAD" ? undefined : text);
+}
+
+/** Send an already serialised JSON body (no-op when the response has already started). */
+export function sendJsonText(res: ServerResponse, status: number, text: string, headers: Record<string, string> = {}): void {
+  if (res.headersSent) {
+    if (!res.writableEnded) res.end();
+    return;
+  }
+  res.writeHead(status, {
+    "content-type": "application/json; charset=utf-8",
+    "content-length": String(Buffer.byteLength(text)),
+    "cache-control": "no-store",
+    ...headers,
+  });
+  res.end(res.req?.method === "HEAD" ? undefined : text);
+}
+
+/** A strong ETag for a response body: the SHA-256 of its bytes (base64url), quoted. */
+export function strongEtag(body: string): string {
+  return `"${createHash("sha256").update(body).digest("base64url")}"`;
+}
+
+/**
+ * Does an `If-None-Match` header match `etag`? Weak comparison, as RFC 9110
+ * prescribes for `If-None-Match` (`W/"x"` matches `"x"`); `*` matches any.
+ */
+export function etagMatches(header: string | string[] | undefined, etag: string): boolean {
+  if (!header) return false;
+  const value = Array.isArray(header) ? header.join(",") : header;
+  if (value.trim() === "*") return true;
+  const opaque = etag.replace(/^W\//, "");
+  return value.split(",").some((tag) => tag.trim().replace(/^W\//, "") === opaque);
+}
+
+/** Revalidated on every use, private to the client (content may sit behind the access token). */
+export const CONTENT_CACHE_CONTROL = "private, no-cache";
+
+/**
+ * A cacheable JSON body with its strong ETag: `304 Not Modified` (no body)
+ * when the request's `If-None-Match` matches, else 200.
+ */
+export function sendCachedJson(req: IncomingMessage, res: ServerResponse, body: string, etag: string): void {
+  const headers = { etag, "cache-control": CONTENT_CACHE_CONTROL };
+  if (etagMatches(req.headers["if-none-match"], etag)) {
+    if (res.headersSent) return void (res.writableEnded || res.end());
+    res.writeHead(304, headers);
+    res.end();
+    return;
+  }
+  sendJsonText(res, 200, body, headers);
 }
 
 /** `{ error: { code, message } }` with the given status. */

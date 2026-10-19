@@ -6,10 +6,12 @@
  */
 import { createServer, type IncomingMessage, type RequestListener, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
+import { resolve as resolvePath } from "node:path";
 import { CLINICALCRAFT_VERSION, type LLMProvider, type ProviderConfig, type ResolvedSettings } from "@clinicalcraft/agent";
-import { loadContent, localAssetDirs, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
-import { contentIndex, publicCase } from "./content.js";
-import { HttpError, MAX_BODY_BYTES, mediaType, readBody, sendError, sendJson } from "./http.js";
+import { builtinContentDir, loadContent, localAssetDirs, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
+import { CaseStore, type CachedBody } from "./case-store.js";
+import { parseListingQuery } from "./content.js";
+import { etagMatches, HttpError, MAX_BODY_BYTES, mediaType, readBody, sendCachedJson, sendError, sendJson, strongEtag } from "./http.js";
 import { localeFromAcceptLanguage, sm } from "./i18n.js";
 import { parseProxyCall, providerList, proxySecrets, resolveProxyConfig, streamProxy } from "./llm.js";
 import {
@@ -38,8 +40,18 @@ export interface ServerOptions {
   settings: ResolvedSettings;
   /** Extra content directories (default `settings.contentDirs`). */
   contentDirs?: string[];
+  /** Serve the built-in `@clinicalcraft/content` too (default true). */
+  builtinContent?: boolean;
   /** Pre-loaded content (skips scanning; tests). */
   content?: LoadedContent;
+  /**
+   * How often (ms) the case files are re-stat'ed for changes (default 1000;
+   * 0 = on every content request). Changed files are re-indexed and
+   * re-validated; unchanged ones are not read again.
+   */
+  contentRevalidateMs?: number;
+  /** Concurrent file reads while indexing or validating cases (default 16). */
+  contentConcurrency?: number;
   /** Environment for provider keys and CLINICALCRAFT_HOME (default `process.env`). */
   env?: Env;
   /** Working directory used to find `assets/local` (default `process.cwd()`). */
@@ -101,8 +113,28 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const transcripts = new WebTranscriptStore(env, settings.transcripts.dir, opts.transcriptQuota);
   const shutdown = new AbortController();
   const streams = new Set<Promise<void>>();
+  const contentDirs = opts.contentDirs ?? settings.contentDirs;
+  // Facilities and catalogs (small) are loaded once; cases are indexed and validated on demand (`CaseStore`).
   let contentPromise: Promise<LoadedContent> | null = opts.content ? Promise.resolve(opts.content) : null;
-  const content = () => (contentPromise ??= loadContent({ dirs: opts.contentDirs ?? settings.contentDirs }));
+  const content = () => (contentPromise ??= loadContent({ dirs: contentDirs, cases: false, builtin: opts.builtinContent !== false }));
+  const builtin = opts.builtinContent === false ? null : builtinContentDir();
+  const cases = new CaseStore({
+    dirs: [...new Set([...(builtin ? [builtin] : []), ...contentDirs.map((d) => resolvePath(d))])],
+    ...(opts.content ? { preloaded: opts.content.cases } : {}),
+    ...(opts.contentRevalidateMs !== undefined ? { revalidateMs: opts.contentRevalidateMs } : {}),
+    ...(opts.contentConcurrency !== undefined ? { concurrency: opts.contentConcurrency } : {}),
+  });
+  // Facility and catalog bodies never change while the server runs.
+  const documentBodies = new Map<string, CachedBody>();
+  const documentBody = (key: string, value: unknown): CachedBody => {
+    let hit = documentBodies.get(key);
+    if (!hit) {
+      const body = JSON.stringify(value);
+      hit = { body, etag: strongEtag(body) };
+      documentBodies.set(key, hit);
+    }
+    return hit;
+  };
 
   const handle = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
     for (const [k, v] of Object.entries(baseHeaders)) res.setHeader(k, v);
@@ -151,7 +183,7 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       }
     }
 
-    if (isApi) return routeApi(req, res, method, path, L);
+    if (isApi) return routeApi(req, res, method, url, L);
 
     if (method !== "GET" && method !== "HEAD") {
       return sendError(res, 405, "method_not_allowed", sm(L, "error.methodNotAllowed", { method }), { allow: "GET, HEAD" });
@@ -169,8 +201,8 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     return sendError(res, 404, "no_web_build", sm(L, "error.noWebBuild"));
   };
 
-  const routeApi = async (req: IncomingMessage, res: ServerResponse, method: string, path: string, L: string): Promise<void> => {
-    const segments = path.split("/").filter(Boolean).map((s) => {
+  const routeApi = async (req: IncomingMessage, res: ServerResponse, method: string, url: URL, L: string): Promise<void> => {
+    const segments = url.pathname.split("/").filter(Boolean).map((s) => {
       try {
         return decodeURIComponent(s);
       } catch {
@@ -191,20 +223,43 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
     }
     if (area === "content" && kind && rest.length === 0) {
       if (!get) return notAllowed("GET, HEAD");
-      const loaded = await content();
-      if (kind === "index" && id === undefined) return sendJson(res, 200, contentIndex(loaded));
+      // Library index (legacy shape: every case summary, facilities, catalogs).
+      if (kind === "index" && id === undefined) {
+        const page = await cases.legacyIndex(await content());
+        return sendCachedJson(req, res, page.body, page.etag);
+      }
+      // Paginated, filtered case index in library order.
+      if (kind === "cases" && id === undefined) {
+        const parsed = parseListingQuery(url.searchParams);
+        if (!parsed.ok) return sendError(res, 400, "bad_request", sm(L, "error.badQuery", { message: parsed.message }));
+        const page = await cases.listing(parsed.query);
+        return sendCachedJson(req, res, page.body, page.etag);
+      }
       if (id !== undefined) {
         if (kind === "cases") {
-          const entry = loaded.cases.get(id);
-          return entry ? sendJson(res, 200, publicCase(entry.def)) : sendError(res, 404, "not_found", sm(L, "error.unknownCase", { id }));
+          const etag = await cases.currentEtag(id);
+          if (etag && etagMatches(req.headers["if-none-match"], etag)) return sendCachedJson(req, res, "", etag);
+          const found = await cases.load(id);
+          if (found.status === "ok") return sendCachedJson(req, res, found.body, found.etag);
+          if (found.status === "invalid") {
+            const first = found.issues[0];
+            const message = first ? `${first.path || "(root)"}: ${first.message}` : "-";
+            return sendJson(res, 422, { error: { code: "invalid_case", message: sm(L, "error.invalidCase", { id, message }), issues: found.issues } });
+          }
+          return sendError(res, 404, "not_found", sm(L, "error.unknownCase", { id }));
         }
+        const loaded = await content();
         if (kind === "facilities") {
           const entry = loaded.facilities.get(id);
-          return entry ? sendJson(res, 200, entry.def) : sendError(res, 404, "not_found", sm(L, "error.unknownFacility", { id }));
+          if (!entry) return sendError(res, 404, "not_found", sm(L, "error.unknownFacility", { id }));
+          const page = documentBody(`facility:${id}`, entry.def);
+          return sendCachedJson(req, res, page.body, page.etag);
         }
         if (kind === "catalogs") {
           const entry = loaded.catalogs.get(id);
-          return entry ? sendJson(res, 200, entry.def) : sendError(res, 404, "not_found", sm(L, "error.unknownCatalog", { id }));
+          if (!entry) return sendError(res, 404, "not_found", sm(L, "error.unknownCatalog", { id }));
+          const page = documentBody(`catalog:${id}`, entry.def);
+          return sendCachedJson(req, res, page.body, page.etag);
         }
       }
     }

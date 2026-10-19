@@ -5,7 +5,9 @@
  * facility selector (case default preselected; clinic-v4 only for
  * outpatient cases) and the case's teaching-case disclaimer, Continue /
  * Start new, language toggle, LLM status pill
- * (opens settings) and help.
+ * (opens settings) and help. The library is the case index; the selected
+ * case's full file loads in the background (its status line: loading,
+ * failed — with a retry, or a page reload for a bundled case —, invalid).
  */
 import type { ClinicalCraftApp } from "../app/app.js";
 import type { CaseCard } from "../app/content.js";
@@ -163,9 +165,42 @@ export class Intro {
     const btns = [...this.root.querySelectorAll("button")] as HTMLButtonElement[];
     for (const b of btns) b.disabled = true;
     const enter = this.root.querySelector("#enter");
-    if (enter) enter.textContent = tr("intro.preparing");
+    if (enter) enter.textContent = this.app.content.caseStatus(caseId) === "ready" ? tr("intro.preparing") : tr("intro.loadingCase");
     await this.app.startCase(caseId, facilityId, resume);
     if (!this.app.game) this.render();
+  }
+
+  /** The selected case's load status (in place: re-rendering would steal the focus from the library). */
+  updateCaseStatus(): void {
+    const el = this.root.querySelector<HTMLElement>("#case-load-status");
+    const card = this.selectedCard();
+    if (!el || !card) return;
+    el.replaceWith(this.caseStatusLine(card));
+  }
+
+  /**
+   * Loading / failed / invalid, under the selected case. A server case is fetched and can be retried in
+   * place; a bundled case's chunk cannot (browsers remember a failed `import()` for the page's lifetime,
+   * and a redeployed server has new chunk names anyway): the page is reloaded instead (saves are kept).
+   */
+  private caseStatusLine(card: CaseCard): HTMLElement {
+    const content = this.app.content;
+    const status = content.caseStatus(card.id);
+    const text =
+      status === "loading"
+        ? tr("library.caseLoading")
+        : status === "failed"
+          ? tr(card.source === "server" ? "library.caseFailed" : "library.caseFailedReload")
+          : status === "invalid"
+            ? tr("library.invalid")
+            : "";
+    const action =
+      status !== "failed"
+        ? null
+        : card.source === "server"
+          ? h("button", { type: "button", id: "case-load-retry", class: "link", onclick: () => void content.loadCase(card.id) }, tr("library.caseRetry"))
+          : h("button", { type: "button", id: "case-load-reload", class: "link", onclick: () => location.reload() }, tr("library.caseReload"));
+    return h("p", { id: "case-load-status", class: ["case-load-status", `status-${status}`], role: "status", "aria-live": "polite", hidden: !text, dataset: { status } }, text, action);
   }
 
   private selectedSummary(card: CaseCard): HTMLElement {
@@ -190,6 +225,7 @@ export class Intro {
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
       h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
+      this.caseStatusLine(card),
     );
   }
 
@@ -342,11 +378,11 @@ function escapeHtml(s: string): string {
 
 /**
  * Footer label for the selected case: the V4 "CASE 01" prefix (if any) plus the
- * spoiler-free library title. V4's full label names the diagnosis, so only its
- * prefix is shown before the case is played.
+ * spoiler-free library title. V4's full label names the diagnosis, so the
+ * index carries only its prefix (`labelPrefix`).
  */
-export function footLabel(card: Pick<CaseCard, "label" | "title">): string {
-  const prefix = card.label ? ct(card.label).split("·")[0].trim() : "";
+export function footLabel(card: Pick<CaseCard, "labelPrefix" | "title">): string {
+  const prefix = card.labelPrefix ? ct(card.labelPrefix).trim() : "";
   const title = ct(card.title);
   return prefix ? `${prefix} · ${title}` : title;
 }

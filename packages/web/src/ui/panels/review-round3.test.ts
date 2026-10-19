@@ -5,13 +5,17 @@
  */
 import { resolveFinding } from "@clinicalcraft/agent";
 import { createSession, historyAvailable, orderWarnings, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { loadContent } from "../../app/content.js";
 import { resolveExamSearch, suggestedHistory } from "./conversation.js";
 import { orderNotices } from "./orders.js";
 
+// Full cases are lazy chunks: load the ones these tests use first.
+beforeAll(async () => {
+  for (const id of ["stemi-inferior-rv", "anaphylaxis-garden", "acute-appendicitis", "acute-ischemic-stroke"]) await loadContent().loadCase(id);
+});
 const getCase = (id: string): CaseDefinition => {
-  const c = loadContent().getCase(id);
+  const c = loadContent().peekCase(id);
   if (!c) throw new Error(`${id} missing`);
   return c;
 };

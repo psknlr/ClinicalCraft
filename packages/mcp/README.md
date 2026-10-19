@@ -18,6 +18,7 @@ claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "
 | methods | `initialize` (protocol versions `2025-06-18`, `2025-03-26`, `2024-11-05`), `ping`, `tools/list`, `tools/call`, `resources/list`, `resources/templates/list`, `resources/read`, `notifications/cancelled` |
 | tools (17) | `list_cases {locale?}`, `start_case {case_id, locale?, facility_id?}` → `session_id`; then, each with a required `session_id`: `ask_patient`, `list_options`, `examine`, `order_test`, `read_result`, `check_vitals`, `intervene`, `consult`, `answer_decision`, `set_phase`, `wait`, `update_workup`, `case_status`, `finish_case`, `get_debrief` |
 | resources | `clinicalcraft://cases`, `clinicalcraft://session/{session_id}/state`, `clinicalcraft://session/{session_id}/transcript` |
+| annotations | every tool: `title`, `readOnlyHint` (`list_cases`, `list_options`, `check_vitals`, `case_status`, `get_debrief`), `destructiveHint` (`intervene`, `order_test`), `idempotentHint` (the read-only tools, `set_phase`, `update_workup`, `finish_case`), `openWorldHint: false` (a closed simulation) |
 
 Tool failures (unknown ids, engine rejections, approval refusals) come back as
 results with `isError: true` and a localised explanation, so the calling

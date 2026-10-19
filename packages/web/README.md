@@ -36,11 +36,17 @@ touch screens.
 
 | folder (`src/`) | |
 |---|---|
-| `world/` | voxel renderer, equipment meshes, live screens, NPCs, physics, path-finding, map, build zone |
+| `world/` | voxel renderer, equipment meshes, live screens, NPCs, map, build zone; colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
 | `app/` | app controller, session bridge, settings, LLM modes, persistence, local assets |
 | `ui/` | HUD, intro/case library, approval dialog, panels (conversation, orders, report, monitor, board, journal, debrief, map, atlas, autopilot, inventory, help, pause) |
 | `atlas/` | anatomy viewer (needs the local-only anatomy model) |
 | `harness/` | `world-harness.html`, a QA page that renders facilities without a case |
+| `build/` | the Vite plugin that bundles the case index (`virtual:clinicalcraft/case-index`) |
+
+**Content:** the case library is an index built from `packages/content` at
+build (and dev) time — the card, filter and facility-choice fields only;
+every full case is its own lazy chunk, loaded (and validated) when the case
+is selected or started. Facilities and equipment catalogs are bundled.
 
 E2E tests start Vite on port 5197 (`CC_E2E_PORT`) and use the Chromium at
 `CLINICALCRAFT_E2E_CHROMIUM` (or `PW_CHROMIUM`), else `/opt/pw-browsers/chromium`

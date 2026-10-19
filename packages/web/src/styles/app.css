@@ -229,6 +229,18 @@ html[lang="en"] .intro-card h2 {
   line-height: 1.5;
   color: #6b5a32;
 }
+.case-load-status {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: #5d6b52;
+}
+.case-load-status.status-failed,
+.case-load-status.status-invalid {
+  color: #9b3b2f;
+}
+.case-load-status button.link {
+  margin-left: 8px;
+}
 .continue-last {
   display: grid;
   gap: 2px;

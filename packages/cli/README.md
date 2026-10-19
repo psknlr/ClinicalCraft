@@ -26,7 +26,7 @@ The built binary is `packages/cli/dist/bin.js` (`npm run build:lib`, then
 |---|---|
 | `play [case]` (default) | REPL. With no case, a picker lists the cases with titles in your language. |
 | `exec <prompt>`, `-p [prompt]` | Headless run: a single prompt, or `--autopilot` (the prompt becomes the clinician's goal). |
-| `cases list \| show <id> \| validate [--all \| path…] \| verify <id… \| --all> \| new <id> \| schema [case\|facility\|catalog]` | Case tooling. `new` writes a schema-valid bilingual template and a README, then validates and verifies it. |
+| `cases list \| index \| show <id> \| validate [--all \| path…] \| verify <id… \| --all> \| new <id> \| schema [case\|facility\|catalog]` | Case tooling. `index [--json]` prints the library index (metadata only, the builder `serve` and the web bundle share; no validation). `new` writes a schema-valid bilingual template and a README, then validates and verifies it. |
 | `facilities list \| validate` | Facilities and equipment catalogs. |
 | `providers list \| test <id> \| models <id>` | Provider catalogue (shows whether a key is configured, never the key), a tiny "Reply with OK" request with latency and usage, and `GET /models`. |
 | `config get [key] \| set <key> <value> [--user\|--project\|--local] \| path` | Settings. Secrets are redacted and never written to project settings. |

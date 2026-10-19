@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@clinicalcraft/core": "5.0.0",
+    "@clinicalcraft/world": "5.0.0",
     "@clinicalcraft/content": "5.0.0",
     "@clinicalcraft/agent": "5.0.0",
     "three": "0.180.0"

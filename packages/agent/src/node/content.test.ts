@@ -79,4 +79,21 @@ describe("loadContent", () => {
     expect(content.dirs[0]).toBe(dir);
     expect(content.catalogs.size).toBeGreaterThan(0);
   });
+
+  it("two folders of one directory with the same id: the first folder wins, with an error (like the case index)", async () => {
+    const dir = join(root, "dups");
+    write(join(dir, "cases", "dup-a", "case.json"), miniCase("dup", "First"));
+    write(join(dir, "cases", "dup-b", "case.json"), miniCase("dup", "Second"));
+    const content = await loadContent({ dirs: [dir], builtin: false });
+    expect(content.cases.get("dup")?.def.title).toBe("First");
+    const issues = content.issues.find((i) => i.file === join(dir, "cases", "dup-b", "case.json"))?.issues ?? [];
+    expect(issues.some((i) => i.severity === "error" && /duplicate case id "dup"/.test(i.message))).toBe(true);
+  });
+
+  it("`cases: false` loads facilities and catalogs only", async () => {
+    const content = await loadContent({ dirs: [], cases: false });
+    expect(content.cases.size).toBe(0);
+    expect(content.facilities.size).toBeGreaterThan(0);
+    expect(content.catalogs.size).toBeGreaterThan(0);
+  });
 });

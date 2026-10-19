@@ -35,6 +35,7 @@ import {
   RectSchema,
   VitalsSchema,
   VoxelPartSchema,
+  WorldPredicateSchema,
 } from "../packages/core/src/schema/index.js";
 import { SettingsLayerSchema, SettingsSchema } from "../packages/agent/src/settings/schema.js";
 
@@ -79,7 +80,7 @@ const targets: Target[] = [
     file: "facility.schema.json",
     name: "Facility",
     title: "ClinicalCraft facility (clinicalcraft/facility@1)",
-    description: "A voxel clinical environment: bounds, terrain, buildings, rooms, equipment placements, patient slots, staff and build zone.",
+    description: "A voxel clinical environment: bounds, terrain, buildings, rooms, equipment placements, patient slots, staff, build zone, levels, connectors and access zones.",
     schema: FacilitySchema,
     definitions: { ...common, Rect: RectSchema, Opening: OpeningSchema, Material: MaterialSchema },
   },
@@ -87,9 +88,9 @@ const targets: Target[] = [
     file: "equipment-catalog.schema.json",
     name: "EquipmentCatalog",
     title: "ClinicalCraft equipment catalog (clinicalcraft/equipment-catalog@1)",
-    description: "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction).",
+    description: "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction, embodiment: portable, reach, interaction points, behaviour, model).",
     schema: EquipmentCatalogSchema,
-    definitions: { ...common, Material: MaterialSchema, VoxelPart: VoxelPartSchema, EquipmentType: EquipmentTypeSchema },
+    definitions: { ...common, Material: MaterialSchema, VoxelPart: VoxelPartSchema, EquipmentType: EquipmentTypeSchema, WorldPredicate: WorldPredicateSchema },
   },
   {
     file: "settings.schema.json",

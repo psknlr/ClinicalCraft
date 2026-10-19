@@ -3,6 +3,7 @@
  */
 import type { Box3, Group, Mesh, MeshStandardMaterial, Object3D, PointLight, Scene, Texture } from "three";
 import type { EquipmentType, FacilityDefinition } from "@clinicalcraft/core";
+import type { CollisionModel, DoorSpec } from "@clinicalcraft/world";
 import type { InteractionTarget } from "../contracts.js";
 import type { MaterialLibrary, MergedCatalogs } from "./materials.js";
 import type { Aabb, ColliderGrid } from "./physics.js";
@@ -122,6 +123,17 @@ export interface BuildContext {
   signs: SignFactory;
   batch: BoxBatch;
   colliders: ColliderGrid;
+  /**
+   * The facility's collision model (@clinicalcraft/world, EMBODIED R2): the single
+   * source of every collider. Builders never compute colliders themselves.
+   */
+  collision: CollisionModel;
+  /** Level rendered (the facility's default level; other levels are headless-only for now). */
+  level: string;
+  /** Physics boxes registered in `colliders`, by model collider id (door leaves toggle theirs). */
+  physics: Map<string, Aabb>;
+  /** Door records of the model by renderer door id (`<owner>:<side>:<n>`). */
+  doorSpecs: Map<string, DoorSpec>;
   /** Objects tested by the aim ray (recursive). */
   pickables: Object3D[];
   targets: Map<string, TargetRecord>;

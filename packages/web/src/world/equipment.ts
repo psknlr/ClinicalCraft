@@ -1,11 +1,12 @@
 /**
  * Equipment placements: voxel parts instanced per material (owners map ray
- * hits back to placements), rotated footprint colliders, live/static
- * screens, animated parts, equipment lights, labels and interaction targets.
+ * hits back to placements), live/static screens, animated parts, equipment
+ * lights, labels and interaction targets. The rotated footprint colliders of
+ * solid equipment are the collision model's (`eq:<placementId>`).
  */
 import { Box3, CanvasTexture, Color, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import type { EquipmentType, Placement, VoxelPart } from "@clinicalcraft/core";
+import { entityLevel, type EquipmentType, type Placement, type VoxelPart } from "@clinicalcraft/core";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
 import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
@@ -191,6 +192,7 @@ export function buildPlacements(ctx: BuildContext): void {
   const staticScreens: StaticScreen[] = [];
   const leds = new Map<string, LedPart[]>();
   for (const p of f.placements) {
+    if (entityLevel(f, p) !== ctx.level) continue; // other levels are not rendered (yet)
     const type = ctx.catalogs.equipment.get(p.type);
     if (!type) {
       ctx.warnings.push(`unknown equipment type "${p.type}" (placement ${p.id})`);
@@ -305,10 +307,6 @@ export function buildPlacements(ctx: BuildContext): void {
       ctx.batch.add(part.m, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
     }
 
-    if (info.solid) {
-      const b = placementBox({ x: p.x, z: p.z, y, rot }, type.footprint);
-      ctx.colliders.add({ ...b });
-    }
     if (type.light) {
       ctx.lights.push({
         x: p.x,

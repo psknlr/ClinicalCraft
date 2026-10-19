@@ -18,6 +18,7 @@ const en: Messages = {
   "intro.continue": "Continue →",
   "intro.startNew": "Start over",
   "intro.preparing": "Preparing the world…",
+  "intro.loadingCase": "Loading the case…",
   "intro.help": "How to play",
   "intro.loading": "Building the voxel scene and the offline case files",
   "intro.ready": "World ready · {cases} cases · playable offline",
@@ -55,6 +56,12 @@ const en: Messages = {
   "library.locales": "Languages",
   "library.physiology": "Live physiology",
   "library.invalid": "Invalid case data",
+  "library.caseLoading": "Loading the case file…",
+  "library.caseFailed": "Could not load this case.",
+  "library.caseRetry": "Try again",
+  "library.caseFailedReload": "Could not load this case's file. Reload the page to try again (your saves are kept).",
+  "library.caseReload": "Reload the page",
+  "library.loadFailed": "Could not load the case",
 
   /* ---------------- settings (case setting) ---------------- */
   "setting.outpatient": "Outpatient",

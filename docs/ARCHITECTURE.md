@@ -47,6 +47,8 @@ docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, f
                             CASE_AUTHORING, FACILITIES, ASSETS, DESIGN_PRINCIPLES
 scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA)
 packages/core               @clinicalcraft/core     zod schemas + pure engine
+packages/world              @clinicalcraft/world    embodied world model (pure, headless): collision model, navigation,
+                                                    visibility, semantic registry + world contracts (docs/EMBODIED.md)
 packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs, JSON Schemas (data only;
                                                     loaded by `loadContent` in @clinicalcraft/agent/node)
 packages/agent              @clinicalcraft/agent    runtime ("." isomorphic, "./node" fs/child_process)
@@ -67,7 +69,7 @@ Conventions:
 * Runtime dependencies are deliberately few: `zod` (core, agent), `@anthropic-ai/sdk` (agent), `three` (web). Everything else is node built-ins.
 * Workspace packages are consumed from source in tests/dev and from `dist/` when built — see "Source vs dist" below.
 
-**Source vs dist.** Every workspace package but `web` (`core`, `content`, `agent` incl.
+**Source vs dist.** Every workspace package but `web` (`core`, `world`, `content`, `agent` incl.
 `./node`, `server`, `mcp`, `cli`) maps each code entry point in its `package.json`
 `exports` to three conditions, in this order: `"source"` → `./src/….ts`,
 `"types"` → `./dist/….d.ts`, `"default"` → `./dist/….js`. Who picks what:
@@ -169,10 +171,12 @@ JSON Schema exported to `packages/content/schemas/` for editors).
   clouds), buildings (walls with V4 course materials, openings, roof &
   skylights), rooms (kind, partitions, signs, lights), placements of
   equipment, patient slots (accepted case settings, bed, monitor), staff,
-  signs, build zone.
+  signs, build zone; optional `levels`, `connectors`, `access` zones and
+  per-entity `level` (FACILITIES.md "Embodiment fields").
 * **Equipment catalog** — `schema/facility.ts` (`clinicalcraft/equipment-catalog@1`):
   materials (procedural pixel textures) and equipment types (voxel parts,
-  footprint, capabilities, interaction kind, live screen, light).
+  footprint, capabilities, interaction kind, live screen, light; optional
+  `portable`, `reach`, `interactionPoints`, `behavior`, `model`).
 * **Session** — `schema/session.ts`: `ClinicalAction` (zod, discriminated by
   `type`), `SessionState`, `DomainEvent`, `ReduceResult`.
 
@@ -201,7 +205,8 @@ checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity
                                                         // warnings for keyword wildcards (an English keyword of ≥ 3 words that tokenizes to one token, §3.3)
 verifyCase(c: CaseDefinition): { ok: boolean; issues: Issue[]; finalState: SessionState; assessment: AssessmentReport }
                                                         // replays c.solution; ok iff all objectives done, all decisions decided, no rejections
-checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms…
+checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms,
+                                                        // levels / connectors / access zones (FACILITIES.md "Embodiment fields")…
 
 // session lifecycle (pure)
 createSession(c: CaseDefinition): SessionState          // started=false, phase=initialPhase ?? phases[0].id, clock 0
@@ -294,6 +299,9 @@ arrestKind(base): "vf-asystole" | "pea-pvt" | null; applyArrest; UNMEASURABLE_IN
 unmeasurableAt(c, s, minute?): VitalKey[]               // what an attached monitor cannot read then (arrest) — VitalsSnapshot.unmeasurable
 countCriticalAlarms(c, s): number                       // assessment.ts; the patient's critical-band onsets (patientAlarmsAt), monitor or not
 checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE           // facility.ts
+facilityLevels(f): Level[]; defaultLevelId(f); roomLevel(f, room); entityLevel(f, {level?, room?}); buildingLevels(f, b)
+                                                        // levels with defaults (implicit "L0"; default level = elevation 0, else first; FACILITIES.md)
+ACTOR_ROLES, DEFAULT_REACH, DEFAULT_LEVEL_ID, WorldPredicateSchema, DeviceBehaviorSchema // schema/facility.ts: embodiment vocabulary (EMBODIED §3, §8)
 ```
 
 ### 3.1 Reducer semantics
@@ -700,7 +708,9 @@ spoken by the patient — those come from engine actions.
 
 * **web** — three.js voxel world built from facility + catalogs (V4 look:
   procedural 16×16 pixel textures, instanced boxes, V4 player physics,
-  doors, build zone, crafting). Patients/staff are voxel NPCs; equipment is
+  doors, build zone, crafting). Its walls and every collider come from the
+  `@clinicalcraft/world` collision model (EMBODIED R2), so the headless
+  world and the 3D view agree box for box. Patients/staff are voxel NPCs; equipment is
   interactive (workstations order exams, monitors show live vitals/ECG,
   evidence board takes decisions, atlas kiosk opens the anatomy viewer).
   Panels: conversation (streaming, free text + suggested questions), exam,
@@ -708,6 +718,9 @@ spoken by the patient — those come from engine actions.
   monitor, debrief, case library, settings (provider/model/approval/locale),
   approval dialog, map, inventory, help, pause/save/export. The session runs
   in the browser; LLM calls go direct (user key) or via the server proxy.
+  The case library is a bundled index (`CaseIndexEntry`, built at build time
+  by the shared builder in `@clinicalcraft/agent` library.ts); every full case
+  is a lazy chunk loaded when the case is selected or started (PROTOCOL §11).
   Before a case's monitor is attached (`monitorAttached: false`) the HUD
   vitals strip shows "NO MONITOR · TRIAGE" / "未接监护 · 分诊手测" and only the
   spot checks (muted: no trend, no alarm colour), the monitor screens (panel
@@ -721,7 +734,9 @@ spoken by the patient — those come from engine actions.
   `@nurse …` addressing, `/commands`), `exec`/`-p` headless with
   `--output-format text|json|stream-json`, `--autopilot`, case tooling,
   `serve`, `mcp`, `import-v4`, `eval`.
-* **server** — `node:http`: static web, `GET /api/health`, `/api/content/*`,
+* **server** — `node:http`: static web, `GET /api/health`, `/api/content/*`
+  (a paginated, filterable case index; cases validated on first request;
+  strong ETags),
   `/api/providers`, `POST /api/llm/stream` (provider-neutral SSE proxy; keys
   stay server-side), `POST /api/transcripts/:id`, local-only assets at
   `/local-assets/*`; bound to 127.0.0.1 by default (any other host needs a

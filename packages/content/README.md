@@ -4,7 +4,8 @@ Built-in ClinicalCraft content as plain JSON: clinical cases, facilities
 (worlds) and equipment catalogs, plus the JSON Schemas editors use to
 validate them. The package has no runtime code (`src/index.ts` is empty).
 Node front-ends load it with `loadContent()` from `@clinicalcraft/agent/node`;
-the web client imports the JSON directly (`@clinicalcraft/content/cases/…`).
+the web client bundles a case index built from these files at build time and
+loads each full case as a lazy chunk (`packages/web/src/build/case-index-plugin.ts`).
 
 ```
 cases/<id>/case.json        one case per folder (+ README.md: provenance, design, teaching notes)
