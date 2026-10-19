@@ -8,11 +8,11 @@
  * it or a short walk away — across a room boundary only for an open slot or
  * a cart just outside; never through a wall).
  */
-import { t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+import { buildingLevels, rectContains, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import { BedsideRule } from "./bedside.js";
-import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
+import { RANGES, type ActorId, type ActorState, type EntityId, type EntityKind, type EntityRuntimeState, type Pose, type SeenPlace, type SemanticEntity, type Vec2, type Vec3 } from "./contracts.js";
 import { rotateXZ, rotatedFootprint } from "./geometry.js";
-import { roleName } from "./i18n.js";
+import { roleName, worldMessage } from "./i18n.js";
 import { entityLevel } from "./levels.js";
 import { MIN_RANGE } from "./nav/backend.js";
 import type { NavGrids } from "./nav/grid.js";
@@ -83,11 +83,7 @@ export class WorldLocator {
   place(id: EntityId): Placed | null {
     const e = this.registry.entity(id);
     const actor = this.state.actor(id);
-    if (actor && (!e || e.kind === "staff")) {
-      const fp = { ...BODY_FOOTPRINT.standing };
-      const position = { x: actor.pose.x, y: actor.pose.y, z: actor.pose.z };
-      return { id, kind: e?.kind ?? "actor", entity: e, level: actor.pose.level, position, rot: actor.pose.yaw / (Math.PI / 180), footprint: fp, area: footprintArea({ position, footprint: fp }), room: actor.room };
-    }
+    if (actor && (!e || e.kind === "staff")) return this.bodyAt(id, e, { level: actor.pose.level, x: actor.pose.x, y: actor.pose.y, z: actor.pose.z, rot: actor.pose.yaw / (Math.PI / 180) }, actor.room);
     if (!e) return null;
     const s = this.state.entity(id);
     if (s?.heldBy) {
@@ -97,23 +93,63 @@ export class WorldLocator {
         return { id, kind: e.kind, entity: e, level: holder.pose.level, position, rot: e.rot, area: footprintArea({ position }), room: holder.room, heldBy: holder.id };
       }
     }
-    if (s?.position) {
-      const p = s.position;
-      const rot = p.rot ?? e.rot;
-      const type = e.equipmentType;
-      const footprint = type ? { ...rotatedFootprint(type.footprint.w, type.footprint.d, rot), h: type.footprint.h } : e.footprint;
-      const position = { x: p.x, y: p.y, z: p.z };
-      const placed: Placed = { id, kind: e.kind, entity: e, level: p.level, position, rot, footprint, area: footprintArea({ position, footprint }), room: this.registry.roomAt(p.level, p.x, p.z) };
-      const points = type?.interactionPoints?.map((pt) => {
-        const [dx, dz] = rotateXZ(pt.x, pt.z, rot);
-        return { x: p.x + dx, z: p.z + dz };
-      });
-      if (points) placed.interactionPoints = points;
-      return placed;
-    }
+    return s?.position ? this.movedTo(e, s.position) : this.home(id);
+  }
+
+  /** Where an entity is kept: its placement in the facility (null for actors' bodies and unknown ids). */
+  home(id: EntityId): Placed | null {
+    const e = this.registry.entity(id);
+    if (!e) return null;
     const placed: Placed = { id, kind: e.kind, entity: e, level: e.level, position: { ...e.position }, rot: e.rot, footprint: e.footprint, area: footprintArea(e), room: e.room };
     if (e.interactionPoints) placed.interactionPoints = e.interactionPoints.map((pt) => ({ ...pt }));
     return placed;
+  }
+
+  /**
+   * An entity or actor as if it stood at `at` (where an actor last saw it,
+   * lead note 1): an entity with its footprint turned to `at.rot`, a body
+   * standing there; null for unknown ids.
+   */
+  placedAt(id: EntityId, at: SeenPlace): Placed | null {
+    const e = this.registry.entity(id);
+    if (this.state.actor(id) && (!e || e.kind === "staff")) return this.bodyAt(id, e, at, this.registry.roomAt(at.level, at.x, at.z));
+    return e ? this.movedTo(e, at) : null;
+  }
+
+  private bodyAt(id: EntityId, e: SemanticEntity | null, at: SeenPlace, room: string | null): Placed {
+    const fp = { ...BODY_FOOTPRINT.standing };
+    const position = { x: at.x, y: at.y, z: at.z };
+    return { id, kind: e?.kind ?? "actor", entity: e, level: at.level, position, rot: at.rot ?? 0, footprint: fp, area: footprintArea({ position, footprint: fp }), room };
+  }
+
+  private movedTo(e: SemanticEntity, p: SeenPlace): Placed {
+    const rot = p.rot ?? e.rot;
+    const type = e.equipmentType;
+    const footprint = type ? { ...rotatedFootprint(type.footprint.w, type.footprint.d, rot), h: type.footprint.h } : e.footprint;
+    const position = { x: p.x, y: p.y, z: p.z };
+    const placed: Placed = { id: e.id, kind: e.kind, entity: e, level: p.level, position, rot, footprint, area: footprintArea({ position, footprint }), room: this.registry.roomAt(p.level, p.x, p.z) };
+    const points = type?.interactionPoints?.map((pt) => {
+      const [dx, dz] = rotateXZ(pt.x, pt.z, rot);
+      return { x: p.x + dx, z: p.z + dz };
+    });
+    if (points) placed.interactionPoints = points;
+    return placed;
+  }
+
+  /**
+   * Localised name of where a point is (lead note 2): the room it is in; in
+   * no room but inside a building, that building's corridor; outdoors, the
+   * facility's outdoor region (e.g. "Healing Garden") — never "a corridor".
+   */
+  regionName(at: { level: string; x: number; z: number }): string {
+    const room = this.registry.roomAt(at.level, at.x, at.z);
+    const e = room ? this.registry.entity(`room:${room}`) : null;
+    if (e) return t(e.name, this.locale);
+    const building = this.facility.buildings
+      .filter((b) => rectContains(b.rect, at.x, at.z) && buildingLevels(this.facility, b).includes(at.level))
+      .sort((a, b) => a.rect.w * a.rect.d - b.rect.w * b.rect.d)[0];
+    if (building) return worldMessage("region.corridor", this.locale, { building: t(building.name, this.locale) });
+    return t(this.facility.outdoorRegion, this.locale);
   }
 
   /** Sight target of a placed entity (its current footprint). */

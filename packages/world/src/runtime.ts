@@ -27,7 +27,11 @@ import { bindingPosture, buildRegistry } from "./registry.js";
 import { WorldStateStore } from "./state.js";
 import { VisibilityModel } from "./visibility.js";
 
-const copyActor = (a: ActorState): ActorState => ({ ...a, pose: { ...a.pose }, task: a.task ? { ...a.task } : null, holding: [...a.holding], seen: [...a.seen] });
+const copyActor = (a: ActorState): ActorState => {
+  const out: ActorState = { ...a, pose: { ...a.pose }, task: a.task ? { ...a.task } : null, holding: [...a.holding], seen: [...a.seen] };
+  if (a.lastSeen) out.lastSeen = Object.fromEntries(Object.entries(a.lastSeen).map(([id, p]) => [id, { ...p }]));
+  return out;
+};
 
 /** Build the world of one encounter (see module docs). */
 export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
@@ -102,6 +106,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       return out;
     },
     roomInfo: (actorId, roomId) => perception.roomInfo(actorId, roomId),
+    regionName: (at) => locator.regionName(at),
     canSee(actorId, id) {
       const resolved = actions.resolve(id);
       return !!resolved && perception.canSee(actorId, resolved);

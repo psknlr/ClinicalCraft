@@ -223,6 +223,13 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "level.critical": { "zh-CN": "危急", en: "critical" },
 };
 
+/** Where things are (lead notes 1 and 2). */
+export const WHEREABOUTS: Record<string, Pair> = {
+  "region.corridor": { "zh-CN": "{building}走廊", en: "a corridor of {building}" },
+  "whereabouts.usual": { "zh-CN": "通常放在{where}", en: "usually kept in {where}" },
+  "whereabouts.lastSeen": { "zh-CN": "上次见于{where}", en: "last seen in {where}" },
+};
+
 /** One-line event summaries (WorldEventSummary). */
 export const EVENT_SUMMARIES: Record<string, Pair> = {
   "actor.moved": { "zh-CN": "{actor}移动了 {distance} 米", en: "{actor} moved {distance} m" },
@@ -258,7 +265,7 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
 
 /** Localised world message for a key ({placeholders} filled from vars; unknown keys are returned as is). */
 export function worldMessage(key: string, locale: string, vars: Record<string, string | number> = {}): string {
-  const pair = WORLD_MESSAGES[key] ?? EVENT_SUMMARIES[key];
+  const pair = WORLD_MESSAGES[key] ?? EVENT_SUMMARIES[key] ?? WHEREABOUTS[key];
   return pair ? fill(t(pair, locale), vars) : key;
 }
 

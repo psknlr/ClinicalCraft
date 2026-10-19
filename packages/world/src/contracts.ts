@@ -270,6 +270,21 @@ export interface ActorState {
   seen: EntityId[];
   /** Simulated minute until which hand hygiene is valid (WHO moment 1), or null. */
   handsCleanUntil: number | null;
+  /**
+   * Where this actor last saw each movable thing it has perceived (portable
+   * equipment, staff, other actors): what it believes while not perceiving
+   * it (lead note 1). Absent until the first sighting.
+   */
+  lastSeen?: Record<EntityId, SeenPlace>;
+}
+
+/** A place where an actor saw something (its position, level and facing). */
+export interface SeenPlace {
+  level: string;
+  x: number;
+  y: number;
+  z: number;
+  rot?: number;
 }
 
 export const MAX_HELD = 2;
@@ -417,6 +432,15 @@ export interface ObservedEntity {
   availableActions: string[];
   /** Bystander-visible cues (patients: posture, distressed, accessory; monitors: screen summary when visible). */
   cues?: Record<string, string>;
+  /**
+   * A movable thing not perceived now is reported where the actor believes
+   * it is (lead note 1), and this says which belief: `usual` — where the
+   * department keeps it (portable equipment not seen yet); `last-seen` —
+   * where the actor last saw it (it may have moved since). `level`, `room`,
+   * distances, bearing and reachability then measure to that place. Absent
+   * for perceived things and things that never move.
+   */
+  lastKnown?: { kind: "usual" | "last-seen"; label: string };
 }
 
 export interface WorldObservation {
@@ -843,8 +867,14 @@ export interface WorldRuntime {
   observe(actorId: ActorId, opts?: Partial<PerceptionOptions>): WorldObservation;
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
   inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] }) | null;
-  roomInfo(actorId: ActorId, roomId?: string): { id: string; name: string; kind: string; level: string; exits: { door: EntityId; to: string | null }[]; entities: ObservedEntity[] } | null;
+  roomInfo(actorId: ActorId, roomId?: string): { id: string; name: string; kind: string; level: string; exits: { door: EntityId; to: string | null; toName: string }[]; entities: ObservedEntity[] } | null;
   canSee(actorId: ActorId, id: EntityId): boolean;
+  /**
+   * Localised name of where a point is (lead note 2): its room; in no room
+   * inside a building, that building's corridor; outdoors, the facility's
+   * outdoor region (`outdoorRegion`, e.g. "Healing Garden").
+   */
+  regionName(at: { level: string; x: number; z: number }): string;
 
   /* navigation (read-only planning) */
   plan(actorId: ActorId, goal: NavGoal): NavPlan;

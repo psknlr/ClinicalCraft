@@ -32,6 +32,7 @@ import {
   type EntityId,
   type EntityRuntimeState,
   type Pose,
+  type SeenPlace,
   type Vec3,
   type WorldActionResult,
   type WorldDynamics,
@@ -138,7 +139,9 @@ export class WorldStateStore implements WorldDynamics {
 
   private addActor(a: ActorState): void {
     const seen = [...new Set(a.seen)].sort();
-    this.actorMap.set(a.id, { ...a, seen, holding: [...a.holding] });
+    const actor: ActorState = { ...a, seen, holding: [...a.holding] };
+    if (a.lastSeen) actor.lastSeen = Object.fromEntries(Object.entries(a.lastSeen).map(([id, p]) => [id, { ...p }]));
+    this.actorMap.set(a.id, actor);
     this.memory.set(a.id, new Set(seen));
   }
 
@@ -280,18 +283,27 @@ export class WorldStateStore implements WorldDynamics {
    * Remember entities seen by an actor (EMBODIED R7 "remembered"). Memory is
    * epistemic, not physical: no version changes. Returns the newly remembered ids (sorted).
    */
-  remember(actorId: ActorId, ids: Iterable<EntityId>): EntityId[] {
+  remember(actorId: ActorId, ids: Iterable<EntityId>, placeOf?: (id: EntityId) => SeenPlace | null): EntityId[] {
     const a = this.actorMap.get(actorId);
     const set = this.memory.get(actorId);
     if (!a || !set) return [];
     const added: EntityId[] = [];
     for (const id of ids) {
-      if (id === actorId || set.has(id)) continue;
+      if (id === actorId) continue;
+      // where a movable thing was seen (lead note 1): updated at every sighting
+      const where = placeOf?.(id);
+      if (where) (a.lastSeen ??= {})[id] = { ...where };
+      if (set.has(id)) continue;
       set.add(id);
       added.push(id);
     }
     if (added.length) a.seen = [...set].sort();
     return added.sort();
+  }
+
+  /** Where an actor last saw a movable thing (null: never seen, or it does not move). */
+  lastSeen(actorId: ActorId, id: EntityId): SeenPlace | null {
+    return this.actorMap.get(actorId)?.lastSeen?.[id] ?? null;
   }
 
   /**
