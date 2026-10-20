@@ -187,6 +187,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.notAtBedside": { "zh-CN": "「{target}」不在患者床旁——请先把它推到患者身边。", en: '"{target}" is not at the patient\'s bedside — wheel it to the patient first.' },
   "pre.notAtBedsideFixed": { "zh-CN": "「{target}」不在患者床旁，且无法移动。", en: '"{target}" is not at the patient\'s bedside and cannot be moved.' },
   "pre.notOperableCart": { "zh-CN": "「{target}」离{patient}太远，没法在患者身边操作——请先把它推到患者身边。", en: '"{target}" is too far from {patient} to be used at their side — wheel it to the patient first.' },
+  "pre.noRoomToWork": { "zh-CN": "「{target}」已在{patient}身边，但从这里走不到可以操作它的空位——请先把挡路的推车挪开。", en: '"{target}" is already at {patient}\'s side, but no free spot to work it from can be reached from here — move a cart out of the way first.' },
   "pre.notOperableFixed": { "zh-CN": "「{target}」固定在别处，在{patient}身边够不到——请用患者自己床旁的设备，或推一台便携设备来。", en: '"{target}" is fixed out of reach of {patient}\'s side — use the equipment at the patient\'s own bedside, or bring a portable one.' },
   "pre.notOperableHandheld": { "zh-CN": "请先拿起「{target}」带到{patient}身边。", en: 'Pick up "{target}" and bring it to {patient}.' },
   "pre.predicate": { "zh-CN": "「{operation}」的前提条件不满足。", en: 'The conditions for "{operation}" are not met.' },

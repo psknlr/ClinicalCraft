@@ -30,7 +30,8 @@
     {"id": "drugs", "type": "medication-cabinet", "x": -4.475, "z": 2.2, "rot": 90, "label": {"zh-CN": "麻醉药品柜", "en": "Drug cabinet"}},
     {"id": "cabinet-1", "type": "cabinet", "x": -3, "z": -3.575},
     {"id": "cabinet-2", "type": "cabinet", "x": 3, "z": -3.575},
-    {"id": "scrub-sink", "type": "scrub-sink", "x": 3.4, "z": 3.475, "rot": 180, "label": {"zh-CN": "刷手池", "en": "Scrub sink"}}
+    {"id": "scrub-sink", "type": "scrub-sink", "x": 3.4, "z": 3.475, "rot": 180, "label": {"zh-CN": "刷手池", "en": "Scrub sink"}},
+    {"id": "treatment-cart", "type": "treatment-cart", "x": -2.6, "z": 3.3, "label": {"zh-CN": "麻醉治疗车", "en": "Anaesthetic treatment cart"}}
   ],
   "patientSlots": [
     {"id": "slot", "x": 0, "z": -1.2, "rot": 90, "posture": "lying", "bed": "table", "monitor": "monitor", "accepts": ["operating-room"]}

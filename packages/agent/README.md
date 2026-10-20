@@ -75,5 +75,8 @@ console.log(s.placeLabel(), s.trace().spans.length);
 
 Every feature works with `provider: "offline"`, which is also what the tests
 use (`npx vitest run packages/agent`). The session lives in `src/session/`:
-the `ClinicalSession` class with its op dispatch, the learner's tool path,
-approvals, transcripts and resume, external calls and the embodied wiring.
+`session.ts` is the `ClinicalSession` facade over a `SessionKernel`
+(`kernel.ts`) and its parts — op dispatch (`op-dispatch.ts`), the learner's
+input and tool path (`learner.ts`), agent turns (`agent-turns.ts`), the tool
+context (`tool-path.ts`), the approval gate, agent models, conversations,
+external calls, the embodied wiring and resume.

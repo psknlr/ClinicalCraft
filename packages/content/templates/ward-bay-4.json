@@ -39,7 +39,8 @@
     {"id": "table-1", "type": "overbed-table", "x": -4.3, "z": 0.2},
     {"id": "table-4", "type": "overbed-table", "x": 4.3, "z": 0.2},
     {"id": "sink", "type": "sink", "x": -5.55, "z": 2.4, "rot": 90},
-    {"id": "sanitizer", "type": "hand-sanitizer", "x": 5.3, "z": 3.3}
+    {"id": "sanitizer", "type": "hand-sanitizer", "x": 5.3, "z": 3.3},
+    {"id": "treatment-cart", "type": "treatment-cart", "x": 3.2, "z": 3.35, "label": {"zh-CN": "病房治疗车", "en": "Ward treatment cart"}}
   ],
   "patientSlots": [
     {"id": "bed-1", "x": -4.3, "z": -2.2, "posture": "lying", "bed": "bed-1", "monitor": "monitor-1", "accepts": ["inpatient", "ward"]},

@@ -472,7 +472,12 @@ code path returns it.
   they cannot (an ECG cart parked across a ward), `PRECONDITION_FAILED` with
   the fetch hint — prepare, connect and record of the ECG machine all need
   the cart at the patient's side (leads are short), so a cart across the
-  room is fetched first, never prepared there and connected from afar.
+  room is fetched first, never prepared there and connected from afar. A
+  cart that already stands at the patient's side (within 2.5 m) is never
+  hinted to be fetched again — wheeling it there would leave it where it is:
+  when carts parked around a crowded bed leave no reachable spot to work it
+  from, the refusal says so (`PRECONDITION_FAILED`, "move a cart out of the
+  way first", no hint; `parking.test.ts`).
   Property-tested (`operability.test.ts`): every slot of the three built-in
   hospitals × every device at its bedside (plus the nearest portable
   provider elsewhere of each capability the case needs) × each clinical
@@ -987,7 +992,7 @@ en and zh-CN identical; re-measured 2026-10-20):
 
 **Final clocks** in their own facilities (offline autopilot, embodied vs
 clinical mode, simulated minutes; `exec --autopilot`, 2026-10-20): stroke
-80.2 / 79.7 (en / zh-CN) vs 75.5, PE 87.2 vs 86, STEMI 66.7 vs 60.5, asthma
+80.2 / 79.7 (en / zh-CN) vs 75.5, PE 87.3 vs 86, STEMI 66.7 vs 60.5, asthma
 265.6 vs 265.5, sepsis 81.7 vs 80.5, anaphylaxis 115.0 / 114.5 (en / zh-CN)
 vs 114.5, the others equal (appendicitis 120, DKA 656, T2DM and SMZL 0 —
 static clocks). Every embodied score equals the clinical one (100 % in all
@@ -998,9 +1003,13 @@ this release and is listed in §14.3.
 **In `teaching-hospital`** the porter does the transports (stroke CT 34 m /
 35 m, asthma peak flow in ED cubicle 1 ×2, PE CT 59 m / 62 m by the lift,
 SMZL CT ×3); the transfers go to the hybrid theatre's C-arm (46 m) and ICU 1
-(38 m). There the PE encounter scores **89 %** (17 / 19, 91.7 simulated
-minutes): with the longer walks of that facility the nurse's anticoagulation
-prompt at minute 35 comes before the unfractionated heparin. Every other
+(38 m). There the PE encounter scores **89 %** (17 / 19, 91.8 simulated
+minutes): the heparin comes at minute 35.5, just after the nurse's
+anticoagulation prompt at minute 35 — the ward's ECG cart is fetched and its
+recording takes four simulated minutes (prepare, ten electrodes, record,
+reset) before it. (The reference solution already starts the heparin before
+the CTPA trip, as the case's own teaching point and ESC 2019 say; in its own
+facility the heparin comes at minute 32.4.) Every other
 case it hosts scores 100 % in both modes and languages; `anaphylaxis-garden`
 cannot be played embodied there (no place for a `community` patient —
 `embodiment_no_slot`).
@@ -1637,7 +1646,7 @@ the measurements of §4, §7, §11).
 | Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`): THE bedside rule, THE screen rule, vitals by screen / hands / chart, kind defaults, IV access as patient state, labs sampled at the patient, results never on the device, delivered drugs, busy devices, `patient-at-provider`, capability labels | yes (W2; reviews G4–G10, G8, C14) | every §6 row (ok, each failure reason, the hint that fixes it); the hint property over every item of the 10 cases (transports included); the bedside rule over every slot of the three hospitals; the device-operation convergence sweep (C7); screen rule ⇔ policy; lazy-hint budget | `cases verify --all`; the embodied autopilot over the library (40 / 40 at the clinical score); both benchmark agents with 0 accepted violations | no — validated on the 10 built-in cases and 3 facilities only; no review of the rules by clinical educators is recorded |
 | Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`; awareness, whereabouts, recent events, region names, cross-level reachability) | yes (W2; G13, lead notes 1–2, C16) | unit: awareness levels, bounds, bearings, cues, screen rules, memory without versions, whereabouts and their snapshot, second/third-person events, exits by name, the ICU upstairs reachable and path-sorted; no case fact in any observation | perception / spatial scenarios; `/delegate staff:ed-nurse record_ecg` from the nurse's post (general and teaching hospital) | no — navigation by id goes to the real place, not the believed one (§14.3); `find {}` costs 7–12 ms. Perf |
 | Action bus, runtime (`createWorldRuntime`), world traces | yes (W2) | unit over a fake session on the real engine: commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees | wired into the agent session (CLI, MCP, benchmark, web); every scenario deterministic across seeds | no — the HTTP server hosts no world runtime of its own (it only routes bridge calls). Rel |
-| Room templates (`clinicalcraft/room-template@1`, `compileFacility`, `checkRoomTemplate`; 15 templates) | yes (A4) | core unit: rotations 0/90/180/270 incl. door offsets, ids, determinism, levels and buildings, overrides, every validation error, nested vs partial overlaps, the standalone template check | compiled at load time by every loader (node `loadContent`, the web app, the harness, the server); `facilities compile teaching-hospital` | no — three templates still declare `iv-access`, which their equipment no longer provides (validation warnings, §14.3) |
+| Room templates (`clinicalcraft/room-template@1`, `compileFacility`, `checkRoomTemplate`; 15 templates) | yes (A4) | core unit: rotations 0/90/180/270 incl. door offsets, ids, determinism, levels and buildings, overrides, every validation error, nested vs partial overlaps, the standalone template check | compiled at load time by every loader (node `loadContent`, the web app, the harness, the server); `facilities compile teaching-hospital` | no — Rel, Perf (§14.4); only one two-level facility built from them |
 | Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate`: no issue; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, the accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e `teaching-hospital.spec.ts` (stairs up, elevator down, map floors); `navigation-icu-upstairs`; the autopilot there: 100 % but PE 89 % | no — PE scores 89 % there; `anaphylaxis-garden` has no place there (§14.3) |
 | Multi-level collision model and physics (`slab`, `ramp`, `rail` colliders; `stepPlayer` on ramps) | yes (A4) | unit: ramp surface, step-up / snap-down limits, flight sides and underside, the real stairs up and down, guarded stairwell; single-level pins unchanged | browser QA walking the real stairs; e2e | no — Perf, Rel |
 | Multi-level web world (storeys, stairs, elevator ride, level culling, floor-aware lights / aim / region, map floor tabs, cross-level autopilot) | yes (A4) | unit: levels and culling, regions per level, elevator cars, routes across levels; e2e (the existing suite unchanged for `clinic-v4` / `general-hospital`) | visual QA of both levels, the stairs and the elevator | no — frame times and draw calls not budgeted; Chromium only. Perf |
@@ -1667,9 +1676,11 @@ Stated as they are; none was changed in this behaviour-preserving release.
    phase with a location draws the patient where they arrive, with a toast
    naming the place; walker transports (`transport_patient`) are animated.
 2. **`teaching-hospital` PE: 89 %.** With the offline autopilot the
-   pulmonary-embolism case scores 89 % there (17 / 19): the longer walks
-   bring the nurse's anticoagulation prompt at minute 35 before the
-   unfractionated heparin. Own-facility parity (embodied score = clinical
+   pulmonary-embolism case scores 89 % there (17 / 19): fetching the ward's
+   ECG cart and recording the tracing (four simulated minutes) put the
+   heparin at minute 35.5, just after the nurse's anticoagulation prompt at
+   minute 35. The autopilot replays the reference order and does not hand
+   the ECG to the nurse. Own-facility parity (embodied score = clinical
    score) holds for all 10 cases.
 3. **≈ 0.5-minute en / zh-CN clock difference** in the stroke (80.17 vs
    79.67 min) and anaphylaxis (114.98 vs 114.5 min) embodied runs; it
@@ -1697,13 +1708,9 @@ Stated as they are; none was changed in this behaviour-preserving release.
 10. Built-in catalogs declare no handheld item: `pick_up` / `put_down` /
     `equip` are exercised with a test catalog only.
 11. `STALE_DESTINATION` is declared but never returned.
-12. `facilities validate --all` reports three warnings: the templates
-    `icu-bed-space`, `operating-theatre` and `ward-bay-4` still declare
-    `iv-access`, which no equipment provides since IV access became patient
-    state (G7).
-13. Staff are deterministic scripts; there is no model-driven staff agent
+12. Staff are deterministic scripts; there is no model-driven staff agent
     in the world.
-14. In clinical mode the web autopilot (`walk_to`) still plans on its own
+13. In clinical mode the web autopilot (`walk_to`) still plans on its own
     grid over the renderer's colliders (the same colliders); embodied mode
     walks the world's plan.
 

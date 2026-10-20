@@ -11,7 +11,7 @@
 > 无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹。内置
-> 10 个中英双语教学病例、3 个场馆（含两层的教学医院）、95 种体素设备，以及 41 个具身基准
+> 10 个中英双语教学病例、3 个场馆（含两层的教学医院）、96 种体素设备，以及 41 个具身基准
 > 场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
@@ -101,7 +101,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   model/effort, a server-side key proxy for the browser, and a fully
   **offline** deterministic mode that needs no key.
 - **Data-driven content.** 10 bilingual cases, 3 facilities (one with two
-  storeys, built from 15 room templates) and 95 voxel equipment types, all
+  storeys, built from 15 room templates) and 96 voxel equipment types, all
   JSON validated by zod schemas; every case is verified by replaying a
   reference solution and a matcher regression corpus.
 - **Agent-CLI ergonomics.** Layered settings and profiles, hooks
@@ -245,10 +245,10 @@ are synthetic. Write your own with `npm run cc -- cases new <id>` and
 |---|---|
 | `clinic-v4` · 临床探索中心 Clinical Discovery Centre | data port of the V4 world: healing garden, one clinic building (consult room, lab, imaging, pathology, corridor, conference area), 7 rooms, 21 placements, 1 patient slot, evidence board, atlas kiosk, build zone and crafting bench |
 | `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward, ICU, operating theatre, conference room, gardens — 37 rooms, 258 placements, 14 patient slots for every case setting, 10 staff |
-| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 275 placements, 17 patient slots, 11 staff (a porter among them). Nobody's own facility: offered as an alternative for the 9 cases it can host |
+| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 280 placements, 17 patient slots, 11 staff (a porter among them). Nobody's own facility: offered as an alternative for the 9 cases it can host |
 
-Three equipment catalogs define **95 equipment types** — `core-furniture` (39),
-`core-clinical` (30: monitors, ECG, defibrillator, crash cart, ventilator,
+Three equipment catalogs define **96 equipment types** — `core-furniture` (39),
+`core-clinical` (31: monitors, ECG, defibrillator, crash cart, treatment cart, ventilator,
 infusion pumps, anaesthesia machine, rehabilitation equipment…),
 `core-diagnostics` (26: CT, MRI, X-ray, C-arm, PET-CT, ultrasound, analysers,
 microscope, flow cytometer, endoscopy tower…) — and `materials` holds the

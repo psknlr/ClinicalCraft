@@ -253,6 +253,59 @@
       ]
     },
     {
+      "id": "treatment-cart",
+      "name": {"zh-CN":"治疗车","en":"Treatment cart"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "护理治疗车：抽屉内备静脉留置针、采血管、敷贴、止血带、消毒用品和冲管液，台面放锐器盒和手消毒液，用于床旁静脉穿刺置管与采血。",
+        "en": "Nursing treatment cart: drawers of IV cannulas, blood-sample tubes, dressings, tourniquets, skin prep and flushes, with a sharps bin and hand rub on top, for cannulation and blood sampling at the bedside."
+      },
+      "usage": {
+        "zh-CN": "推到床旁，手卫生后取用留置针和采血管，穿刺置管并同时采血，固定敷贴、冲管；锐器即刻入盒，用后补充物品。",
+        "en": "Wheel it to the bedside, clean your hands, take a cannula and sample tubes, cannulate and draw the bloods together, secure and flush the line; sharps straight into the bin, restock after use."
+      },
+      "capabilities": ["iv-access"],
+      "footprint": {"w":0.9,"d":0.62,"h":1.3},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 打开治疗车","en":"E · Open treatment cart"}
+      },
+      "screen": "none",
+      "tags": ["bedside","ward","icu","surgery"],
+      "portable": "cart",
+      "parts": [
+        {"m":"rubber","p":[-0.27,0.04,-0.2],"s":[0.08,0.08,0.08]},
+        {"m":"rubber","p":[0.27,0.04,-0.2],"s":[0.08,0.08,0.08]},
+        {"m":"rubber","p":[-0.27,0.04,0.2],"s":[0.08,0.08,0.08]},
+        {"m":"rubber","p":[0.27,0.04,0.2],"s":[0.08,0.08,0.08]},
+        {"m":"coal","p":[0,0.105,0],"s":[0.66,0.05,0.5]},
+        {"m":"white","p":[0,0.565,-0.025],"s":[0.66,0.87,0.47]},
+        {"m":"steel","p":[0,0.565,0.206],"s":[0.63,0.86,0.011]},
+        {"m":"mint","p":[0,0.268,0.227],"s":[0.61,0.25,0.035]},
+        {"m":"plastic","p":[0,0.358,0.258],"s":[0.26,0.02,0.025]},
+        {"m":"mint","p":[0,0.5,0.227],"s":[0.61,0.19,0.035]},
+        {"m":"plastic","p":[0,0.56,0.258],"s":[0.26,0.02,0.025]},
+        {"m":"mint","p":[0,0.682,0.227],"s":[0.61,0.15,0.035]},
+        {"m":"plastic","p":[0,0.722,0.258],"s":[0.26,0.02,0.025]},
+        {"m":"mint","p":[0,0.822,0.227],"s":[0.61,0.105,0.035]},
+        {"m":"plastic","p":[0,0.839,0.258],"s":[0.26,0.02,0.025]},
+        {"m":"mint","p":[0,0.939,0.227],"s":[0.61,0.105,0.035]},
+        {"m":"plastic","p":[0,0.956,0.258],"s":[0.26,0.02,0.025]},
+        {"m":"steel","p":[0,1.02,-0.005],"s":[0.69,0.04,0.53]},
+        {"m":"chrome","p":[0.36,0.915,-0.185],"s":[0.06,0.03,0.03]},
+        {"m":"chrome","p":[0.36,0.915,0.155],"s":[0.06,0.03,0.03]},
+        {"m":"chrome","p":[0.405,0.915,-0.015],"s":[0.03,0.03,0.37]},
+        {"m":"yellow","p":[0.24,1.12,-0.15],"s":[0.14,0.16,0.14]},
+        {"m":"biohazard","p":[0.24,1.215,-0.15],"s":[0.15,0.03,0.15]},
+        {"m":"plastic","p":[-0.19,1.095,-0.14],"s":[0.26,0.11,0.2]},
+        {"m":"lead-glass","p":[-0.2,1.21,-0.14],"s":[0.12,0.12,0.12]},
+        {"m":"blue","p":[-0.2,1.28,-0.14],"s":[0.13,0.02,0.13]},
+        {"m":"blue","p":[0.05,1.085,0.11],"s":[0.22,0.09,0.12]},
+        {"m":"lead-glass","p":[0.21,1.09,0.11],"s":[0.1,0.1,0.1]}
+      ]
+    },
+    {
       "id": "oxygen-outlet",
       "name": {"zh-CN":"墙式氧气/负压吸引终端","en":"Wall oxygen & suction outlet"},
       "category": "therapy",

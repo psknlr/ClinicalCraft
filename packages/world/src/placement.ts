@@ -14,7 +14,11 @@
  *   `NOT_VISIBLE`) or the policy's (`SPATIAL_REQUIREMENT_UNMET`) with a
  *   `point` goal on it (the free cell nearest by walking);
  * - none exists (a cart parked across the room) → `PRECONDITION_FAILED`
- *   with a fetch hint: wheel the cart to the patient (`move_to`); a fixed
+ *   with a fetch hint: wheel the cart to the patient (`move_to`) — unless
+ *   it already stands at the patient's side (within `ALREADY_BROUGHT`):
+ *   wheeling it there again would leave it where it is, so the refusal says
+ *   no reachable spot is free to work it from, without a hint (carts parked
+ *   around a crowded bed can box the clinician in); a fixed
  *   device: the policy's own refusal when a walk lets the act be done
  *   without it (e.g. the sample at the patient), else `PRECONDITION_FAILED`
  *   without a hint (as for a handheld item lying elsewhere).
@@ -35,6 +39,12 @@ const POSITIONAL: ReadonlySet<string> = new Set(["not-near-patient", "not-at-pat
 
 /** Candidate spots tried by planning before giving up on a hint. */
 const PLAN_TRIES = 4;
+
+/**
+ * A cart this close to the patient (metres from their footprint) has already been brought: `move_to` leaves a cart
+ * within 1.25 m of the body that wheeled it, who stands at the patient's side — another fetch cannot help.
+ */
+const ALREADY_BROUGHT = 2.5;
 
 /** Does the operation place the actor by both the device (`actorWithin`) and the patient (`patientWithin`)? */
 export function placesByBoth(o: OperationSpec): boolean {
@@ -70,6 +80,11 @@ export function operationPlacement(host: EffectsHost, request: WorldActionReques
   // no spot satisfies both: the device is too far from where the act must happen
   const place = locator.place(id);
   if (place?.entity?.portable === "cart" && !place.heldBy) {
+    // already at the patient's side: say what is wrong instead of hinting the same fetch forever (review C7)
+    const at = locator.patient();
+    if (at && at.level === place.level && distanceToArea(place.position.x, place.position.z, at.area) <= ALREADY_BROUGHT) {
+      return failed("PRECONDITION_FAILED", worldMessage("pre.noRoomToWork", L, { target, patient }), { hint: null });
+    }
     const then = locator.patientId ? { operation: "move_to", targetId: id, goal: { kind: "interact", id: locator.patientId } as NavGoal } : undefined;
     return failed("PRECONDITION_FAILED", worldMessage("pre.notOperableCart", L, { target, patient }), { hint: host.verifyHint(actor, { kind: "interact", id }, worldMessage("hint.fetch", L, { provider: target, patient }), then) ?? null });
   }

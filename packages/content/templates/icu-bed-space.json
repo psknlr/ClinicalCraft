@@ -25,7 +25,8 @@
     {"id": "suction", "type": "suction-unit", "x": 2.35, "z": -0.6, "rot": 270},
     {"id": "dialysis", "type": "dialysis-machine", "x": 2.225, "z": 1, "rot": 270, "label": {"zh-CN": "床旁透析", "en": "Bedside dialysis"}},
     {"id": "sink", "type": "sink", "x": 2.3, "z": 2.7, "rot": 270},
-    {"id": "gloves", "type": "glove-dispenser", "x": -2.515, "z": 2.2, "rot": 90}
+    {"id": "gloves", "type": "glove-dispenser", "x": -2.515, "z": 2.2, "rot": 90},
+    {"id": "treatment-cart", "type": "treatment-cart", "x": -2.1, "z": 3.25, "rot": 90, "label": {"zh-CN": "床旁治疗车", "en": "Bedside treatment cart"}}
   ],
   "patientSlots": [
     {"id": "slot", "x": 0, "z": -1.9, "posture": "lying", "bed": "bed", "monitor": "monitor", "accepts": ["icu"]}

@@ -63,7 +63,7 @@ touch screens.
 
 | folder (`src/`) | |
 |---|---|
-| `world/` | voxel renderer, equipment meshes (and optional GLB models, `models.ts`), live screens, NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
+| `world/` | voxel renderer — `index.ts` builds the `WorldApi` over a `VoxelWorld` (`voxel-world.ts`) and its parts: `stage.ts` (renderer, scene, lights), `facility-build.ts`, `people.ts` (patients and staff), `doors.ts`, `rides.ts`, `autowalk.ts`, `input.ts`, `interaction.ts`, `overlay.ts`, `blocks.ts`, `carts.ts`, `culling.ts`, `frame-loop.ts`, `map-data.ts`, `qa.ts`; equipment meshes (and optional GLB models, `models.ts`), live screens, NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
 | `app/` | app controller, session bridge, settings, LLM modes, persistence, local assets, external control (`external.ts`: the world bridge for `clinicalcraft mcp --attach`) |
 | `ui/` | HUD, intro/case library, approval dialog, panels (conversation, orders, report, monitor, board, journal, debrief, map with floor tabs, elevator, atlas, autopilot, inventory, help, pause) |
 | `atlas/` | anatomy viewer (needs the local-only anatomy model) |

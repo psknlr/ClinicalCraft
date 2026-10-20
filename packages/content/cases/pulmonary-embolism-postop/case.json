@@ -7590,10 +7590,6 @@
       "investigationId": "chem"
     },
     {
-      "type": "order",
-      "investigationId": "ctpa"
-    },
-    {
       "type": "answer",
       "decisionId": "anticoag-choice",
       "optionIds": [
@@ -7607,6 +7603,10 @@
     {
       "type": "intervene",
       "interventionId": "ufh"
+    },
+    {
+      "type": "order",
+      "investigationId": "ctpa"
     },
     {
       "type": "order",
@@ -7626,10 +7626,6 @@
     },
     {
       "type": "read",
-      "investigationId": "ctpa"
-    },
-    {
-      "type": "read",
       "investigationId": "cbc"
     },
     {
@@ -7639,6 +7635,10 @@
     {
       "type": "advance-time",
       "minutes": 15
+    },
+    {
+      "type": "read",
+      "investigationId": "ctpa"
     },
     {
       "type": "read",
