@@ -136,6 +136,13 @@ function worldPredicate(view: FinalView, w: BenchWorldPredicate): { ok: boolean;
       const ok = (w.open === undefined || door.open === w.open) && (w.locked === undefined || door.locked === w.locked);
       return { ok, detail: `${id}: ${door.locked ? "locked" : door.open ? "open" : "closed"}` };
     }
+    case "patientAt": {
+      const place = view.world.patientPlace();
+      if (!place) return { ok: false, detail: "no patient" };
+      const provider = w.provider ? resolve(view, w.provider) : null;
+      const ok = (!w.slot || place.slot === w.slot) && (!provider || place.provider === provider) && (!w.room || place.room === w.room.replace(/^room:/, ""));
+      return { ok, detail: `patient in ${place.slot ?? "—"}${place.provider ? ` at ${place.provider}` : ""} (room ${place.room ?? "—"})` };
+    }
   }
 }
 

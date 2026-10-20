@@ -86,6 +86,8 @@ export interface PortableRecord {
   meshes: Object3D[];
   /** Being pushed by a walker ("avatar" or a staff id): drawn in front of them, no collider until parked. */
   pushedBy?: string | null;
+  /** A trolley a patient travels on (a bed, a stretcher: EMBODIED §8): turned along the way when pushed; its length (m). */
+  trolley?: { length: number };
   /** Where its aim box, live screens and lights were when built (moves are applied from these). */
   home?: { box: Box3 | null; screens: Map<ScreenRecord, { x: number; z: number }>; lights: Map<LightCandidate, { x: number; z: number }> };
 }

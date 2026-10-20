@@ -7,7 +7,9 @@
  *
  *   intent → requirement (`checkSpatial`) → if unmet: walk to `hint.goal`
  *   (wheel a portable provider to the bedside when the policy says the
- *   capability must stand there) → the clinical act — through a device
+ *   capability must stand there; take the patient to the device a study is
+ *   done at — `hint.then: transport_patient` — by a porter when the facility
+ *   has one, else wheeling them yourself) → the clinical act — through a device
  *   operation when a satisfying device offers one (an ECG cart's prepare →
  *   connect → record → reset, the patient's monitor `attach`, a
  *   workstation's `order` / `read`, a device's `use`), else the clinical
@@ -19,14 +21,17 @@
  * `clinical_action` → `state_change`, recorded by the world) or the direct
  * clinical act (`clinical_action` → `state_change`) and a `verification`.
  * A step the policy makes impossible is narrated and listed as missed —
- * never done through the non-spatial path.
+ * never done through the non-spatial path. After a study the patient was
+ * taken to, they are taken back to their bed space unless the next step
+ * needs them at a device too (EMBODIED §8).
  */
 import type { ClinicalAction, SessionState } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
+import { nameOf } from "../tools/world-format.js";
 import { walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
 import { rt } from "./i18n.js";
@@ -120,6 +125,69 @@ async function runDevice(e: EmbodiedAutopilotHost, route: DeviceRoute, turnId: s
   }
 }
 
+/** Does a requirement need the patient at a device (a study done on them there: `patient-at-provider`)? */
+function needsPatientAtProvider(r: SpatialRequirement): boolean {
+  if (r.kind === "patient-at-provider") return true;
+  return (r.kind === "any-of" || r.kind === "all-of") && r.options.some(needsPatientAtProvider);
+}
+
+/**
+ * Take the patient where a hint's `then` says (`transport_patient`, EMBODIED §8): a porter does it when the
+ * facility has one (delegated, through the clinician's tool path), else the clinician walks to the patient's side
+ * and wheels them there. True when the patient got there.
+ */
+async function transportPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, then: NonNullable<ActionHint["then"]>, turnId: string, signal?: AbortSignal): Promise<boolean> {
+  const world = e.world();
+  const L = host.locale;
+  const parameters = { ...(then.parameters ?? {}) };
+  const destination = typeof parameters.destination === "string" ? parameters.destination : "";
+  const target = destination === "home" ? rt(L, "world.transport.home") : destination ? nameOf(world, destination, L) : String(parameters.capability ?? "—");
+  if (world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
+    host.narrate(turnId, rt(L, "clinician.narrate.transportBy", { role: roleName("porter", L), target }));
+    const o = await host.executeTool(turnId, "delegate_task", { role: "porter", task: "transport_patient", params: parameters }, signal);
+    if (o.status === "ok" && o.output.ok) return true;
+    if (signal?.aborted) return false;
+  }
+  host.narrate(turnId, rt(L, "clinician.narrate.transport", { target }));
+  if ((await e.act({ operation: "navigate", goal: { kind: "interact", id: then.targetId } }, turnId, signal)).status !== "completed") return false;
+  return (await e.act({ operation: "transport_patient", targetId: then.targetId, parameters }, turnId, signal)).status === "completed";
+}
+
+/**
+ * After a step, a patient who was taken to a device for a study goes back to their bed space — unless the next
+ * step that acts on the patient needs them at a device too (then `satisfy` takes them on from there).
+ */
+async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, steps: readonly OfflineClinicianStep[], turnId: string, signal?: AbortSignal): Promise<void> {
+  const world = e.world();
+  const place = world.patientPlace();
+  const patient = e.patientId();
+  if (!place || !patient || signal?.aborted) return;
+  const home = place.home.slot ? place.slot === place.home.slot : !place.slot && place.provider === place.home.provider;
+  if (home) return;
+  for (let i = host.cursor.value; i < steps.length; i++) {
+    const step = steps[i]!;
+    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state())) continue;
+    const intent = actionIntent(step.action as ClinicalAction);
+    if (!intent) continue;
+    if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
+    break;
+  }
+  // its own plan span: the walk (or the porter's task) and the verification that the patient is home
+  const plan = e.trace.start("plan", "transport_patient home", { actorId: PRIMARY_ACTOR, refs: { entities: [patient] }, data: { tool: "transport_patient", args: { destination: "home" } } });
+  let ok = false;
+  try {
+    ok = await e.trace.within(plan.id, async () => {
+      await transportPatient(host, e, { operation: "transport_patient", targetId: patient, parameters: { destination: "home" } }, turnId, signal);
+      const now = world.patientPlace();
+      const back = !!now && (now.home.slot ? now.slot === now.home.slot : !now.slot && now.provider === now.home.provider);
+      e.trace.start("verification", "patient home", { actorId: PRIMARY_ACTOR }).end({ ok: back, worldVersion: world.version, data: { place: now ? { slot: now.slot, provider: now.provider } : null } });
+      return back;
+    });
+  } finally {
+    plan.end({ ok, worldVersion: world.version });
+  }
+}
+
 /** Device outcomes that end a step (anything else falls back to the clinical tool at the patient's side). */
 const FINAL_DEVICE_OUTCOMES: ReadonlySet<string> = new Set(["completed", "APPROVAL_DENIED", "CANCELLED", "CLINICAL_REJECTED"]);
 
@@ -154,7 +222,11 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
           let check = world.checkSpatial(actor, intent);
           for (let i = 0; i < MAX_APPROACHES && !check.ok && check.hint && !signal?.aborted; i++) {
             const goal: NavGoal = check.hint.goal;
-            if (check.reason === "provider-not-at-bedside" && goal.kind === "interact" && patient) {
+            const then = check.hint.then;
+            if (then?.operation === "transport_patient") {
+              // the patient to the device the study is done at (or back to their bed space, where fixed kit stands)
+              if (!(await transportPatient(host, e, then, turnId, signal))) break;
+            } else if (check.reason === "provider-not-at-bedside" && goal.kind === "interact" && patient) {
               if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
               if ((await e.act({ operation: "move_to", targetId: goal.id, goal: { kind: "interact", id: patient } }, turnId, signal)).status !== "completed") break;
             } else if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
@@ -248,6 +320,8 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
     if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
     if (run === step && !outcome.ok) host.cursor.missed.push(step);
     if (run === step || host.state().clock === clockBefore) host.cursor.value++;
+    // a study done at a device: the patient goes back to their bed space (unless the next step needs a device too)
+    await returnPatient(host, e, steps, turnId, signal);
   }
   return { status: "end_turn", text: last, grounded: [], done: host.state().finished, toolCalls: executed };
 }

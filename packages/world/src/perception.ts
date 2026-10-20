@@ -275,7 +275,8 @@ export class Perception {
     const loc = this.d.locator;
     if (p.kind === "patient" && loc.slot) {
       const c = this.d.clinical.cues(loc.slot.id);
-      const posture = c.posture ?? p.entity?.public?.posture;
+      // the posture now (G12): the place's (lying on a table or a trolley, standing at a station), else clinical state's
+      const posture = loc.patientPosture() ?? c.posture ?? p.entity?.public?.posture;
       const out: Record<string, string> = {};
       if (posture) out.posture = postureName(posture, L);
       if (c.distressed) out.distressed = worldMessage("cue.distressed", L);
@@ -283,7 +284,8 @@ export class Perception {
       if (c.speaking) out.speaking = worldMessage("cue.speaking", L);
       return out;
     }
-    if (p.entity?.interaction === "monitor" && awareness === "visible" && loc.isPatientMonitor(p.id) && loc.distance(actor.pose, p) <= RANGES.screen + 1e-6 && this.d.rules.state(p.id) === "attached") {
+    // THE screen rule (`WorldLocator.screenInView`): from the monitor's own room, never through a window
+    if (p.entity?.interaction === "monitor" && awareness === "visible" && loc.isPatientMonitor(p.id) && loc.screenInView(actor, p, RANGES.screen) && this.d.rules.state(p.id) === "attached") {
       const snapshot = this.d.clinical.bedside();
       if (!snapshot) return null;
       const screen = formatScreen(snapshot, L);
@@ -381,6 +383,10 @@ export class Perception {
       case "reservation.changed":
         return e.reservedBy === actor.id || sees(e.entityId);
       case "entity.availability":
+        return sees(e.entityId);
+      case "patient.moved":
+        return e.by === actor.id || sees(e.entityId);
+      case "patient.posture":
         return sees(e.entityId);
       case "obstacle.changed": {
         const r = e.obstacle.rect;
@@ -480,8 +486,10 @@ export class Perception {
     switch (e.kind) {
       case "equipment":
         return e.equipmentType ? t(e.equipmentType.description, L) : name;
-      case "patient":
-        return [e.public?.name, e.public?.tag, e.public?.posture ? postureName(e.public.posture, L) : undefined].filter(Boolean).join(L.toLowerCase().startsWith("zh") ? "，" : ", ");
+      case "patient": {
+        const posture = this.d.locator.patientPosture() ?? e.public?.posture;
+        return [e.public?.name, e.public?.tag, posture ? postureName(posture, L) : undefined].filter(Boolean).join(L.toLowerCase().startsWith("zh") ? "，" : ", ");
+      }
       case "staff":
         return `${roleName(e.type, L)} · ${t(e.name, L)}`;
       case "door": {
@@ -592,6 +600,14 @@ export class Perception {
         break;
       case "action.completed":
         summary = worldMessage(key(e.actorId, "action.completed", "self.action"), L, { actor: n(e.actorId), operation: operationName(e.operation, L), status: e.errorCode ?? e.status });
+        break;
+      case "patient.moved": {
+        const place = this.d.locator.patientBody?.placeName(e.to) ?? "—";
+        summary = e.by ? worldMessage(key(e.by, "patient.transported", "self.transported"), L, { actor: n(e.by), patient: n(e.entityId), place }) : worldMessage("patient.moved", L, { patient: n(e.entityId), place });
+        break;
+      }
+      case "patient.posture":
+        summary = worldMessage("patient.posture", L, { patient: n(e.entityId), posture: postureName(e.to, L) });
         break;
     }
     return { id: e.id, type: e.type, summary };

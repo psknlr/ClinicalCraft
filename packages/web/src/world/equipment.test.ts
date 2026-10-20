@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { parseCatalog, parseFacility, type VoxelPart } from "@clinicalcraft/core";
-import { labelColor, packShelves, placementParts, surfaceTop } from "./equipment.js";
+import { labelColor, packShelves, placementParts, surfaceTop, surfaceUnder } from "./equipment.js";
 import { partBox } from "./geometry.js";
 
 type Part = { m: string; p: [number, number, number]; s: [number, number, number]; name?: string };
@@ -32,6 +32,25 @@ describe("surfaceTop (patient on a bed / seat)", () => {
     expect(surfaceTop(t([{ m: "x", p: [0, 0.45, 0], s: [0.4, 0.1, 0.4], name: "seat" }, { m: "x", p: [0, 0.9, 0], s: [1, 0.1, 1] }]))).toBeCloseTo(0.5);
     expect(surfaceTop(undefined)).toBe(0.9);
     expect(surfaceTop(t([{ m: "x", p: [0, 1, 0], s: [0.1, 2, 0.1] }]))).toBe(0.9);
+  });
+});
+
+describe("surfaceUnder (a patient lying on a scanner's table, EMBODIED §8)", () => {
+  // a CT: the table under the patient (0.8 m), the gantry's flat top (1.25 m) at the other end
+  const ct = t([
+    { m: "white", p: [0, 0.4, 0.4], s: [0.6, 0.8, 2.6] },
+    { m: "white", p: [0, 1.2, -1.4], s: [2, 0.1, 0.95] },
+  ]);
+  it("is the top of what is under the point, not the gantry's", () => {
+    expect(surfaceTop(ct)).toBeCloseTo(1.25);
+    expect(surfaceUnder(ct, 0, 0, 0)).toBeCloseTo(0.8);
+    // turned by 90°: the table now lies along x; a point on it, in world axes
+    expect(surfaceUnder(ct, 90, 0.4, 0)).toBeCloseTo(0.8);
+    expect(surfaceUnder(ct, 90, -1.4, 0)).toBeCloseTo(1.25);
+  });
+  it("a named mattress wins; nothing under the point: surfaceTop", () => {
+    expect(surfaceUnder(t([{ m: "x", p: [0, 0.55, 0], s: [0.8, 0.1, 1.9], name: "mattress" }]), 0, 3, 3)).toBeCloseTo(0.6);
+    expect(surfaceUnder(ct, 0, 5, 5)).toBeCloseTo(surfaceTop(ct));
   });
 });
 

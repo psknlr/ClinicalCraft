@@ -120,6 +120,8 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   approach_object: { title: "Approach", ...RECORDS },
   look_at: { title: "Look at", ...RECORDS },
   interact_object: { title: "Operate equipment", ...RECORDS, destructiveHint: true },
+  // moves the patient (and spends simulated time); the same destination again changes nothing
+  transport_patient: { title: "Transport the patient", ...RECORDS, idempotentHint: true },
   cancel_action: { title: "Cancel an action", ...RECORDS, idempotentHint: true },
   delegate_task: { title: "Delegate a task", ...RECORDS, destructiveHint: true },
   execute_skill: { title: "Run a skill", ...RECORDS, destructiveHint: true },

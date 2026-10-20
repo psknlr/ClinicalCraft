@@ -6,7 +6,8 @@
  *   patientFor     the case's patient in the first facility slot accepting `case.setting`
  *   routeInteraction  E on a target → which panel opens (patient/staff/workstation/device/monitor/board/atlas/craft)
  *   GameWorldLink  per game: waypoint beacon from `state_snapshot.waypoint`, NPC speaking, the patient's
- *                  bystander cues (core `patientCues`: distress, oxygen accessory), real-time simulated
+ *                  bystander cues (core `patientCues`: distress, oxygen accessory, posture — in embodied mode the
+ *                  world model places and poses the patient), real-time simulated
  *                  clock ticks — paused while an agent drives a body (EMBODIED R8) —, the clinical-mode
  *                  `walk_to` dynamic tool (embodied: mapped onto a world navigation)
  */
@@ -236,6 +237,7 @@ export class GameWorldLink {
   private walkAbort: AbortController | null = null;
   private distressed = false;
   private accessory: string | null = null;
+  private posture: string | null = null;
 
   constructor(private readonly o: GameWorldLinkOptions) {
     this.stations = new Stations(o.facility, o.catalogs);
@@ -304,6 +306,7 @@ export class GameWorldLink {
     const world = this.o.world();
     if (world && this.o.slotId && this.distressed) world.setPatientState(this.o.slotId, { distressed: true });
     if (world && this.o.slotId && this.accessory) world.setPatientState(this.o.slotId, { accessory: this.accessory as "oxygen-mask" });
+    if (world && this.o.slotId && this.posture && !this.o.embodied?.()) world.setPatientState(this.o.slotId, { posture: this.posture as "lying" });
   }
 
   private speak(id: string, kind: "patient" | "staff", text: string): void {
@@ -341,6 +344,12 @@ export class GameWorldLink {
       if (cues.accessory && cues.accessory !== this.accessory) {
         this.accessory = cues.accessory;
         world.setPatientState(this.o.slotId, { accessory: cues.accessory });
+      }
+      // the posture clinical state gives (G12: lying flat, sitting up): in embodied mode the world model says it,
+      // with where the patient is (a scanner table forces lying) — the embodied link draws that
+      if (cues.posture !== this.posture) {
+        this.posture = cues.posture;
+        if (!this.o.embodied?.()) world.setPatientState(this.o.slotId, { posture: cues.posture });
       }
     } else if (msg.type === "dynamic_tool_call" && msg.tool === "walk_to") {
       void this.walkTo(msg.callId, msg.args);

@@ -7,6 +7,7 @@
 import { Box3, CanvasTexture, Color, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute, type Object3D } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { entityLevel, type EquipmentType, type Placement, type VoxelPart } from "@clinicalcraft/core";
+import { TROLLEY_TYPES } from "@clinicalcraft/world";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
 import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
@@ -63,6 +64,26 @@ export function surfaceTop(type: Pick<EquipmentType, "parts"> | undefined): numb
     if (level >= largest * 0.4 && largest >= 0.15) best = Math.max(best, f.top);
   }
   return best || 0.9;
+}
+
+/**
+ * The top (m above the placement's base) of what a body lies on at a point of a placement (`dx`, `dz`: the
+ * point minus the placement's centre, world axes): the highest part under it below 1.3 m — a scanner's table
+ * where the patient lies, not its gantry; a named mattress or seat first; else `surfaceTop`.
+ */
+export function surfaceUnder(type: Pick<EquipmentType, "parts"> | undefined, rot: number, dx: number, dz: number): number {
+  if (!type) return 0.9;
+  const named = type.parts.find((p) => p.name === "mattress" || p.name === "seat");
+  if (named) return named.p[1] + named.s[1] / 2;
+  // into the type's own frame (the placement turned by `rot` degrees about +Y)
+  const [lx, lz] = rotateXZ(dx, dz, -rot);
+  let best = -1;
+  for (const p of type.parts) {
+    const top = p.p[1] + p.s[1] / 2;
+    if (top > 1.3 || Math.abs(lx - p.p[0]) > p.s[0] / 2 || Math.abs(lz - p.p[2]) > p.s[2] / 2) continue;
+    best = Math.max(best, top);
+  }
+  return best > 0 ? best : surfaceTop(type);
 }
 
 /**
@@ -298,8 +319,11 @@ export function buildPlacements(ctx: BuildContext): void {
     ctx.placements.set(p.id, info);
 
     // a portable placement (cart, handheld item) is drawn in the static batches like any other until the world
-    // model moves it; then it becomes its own movable group (embodiment, portable.ts — no draw call before)
-    const portable = type.portable ? beginPortable(ctx, { id: p.id, x: p.x, z: p.z, rot }, y, level) : null;
+    // model moves it; then it becomes its own movable group (embodiment, portable.ts — no draw call before).
+    // A trolley a patient travels on (a bed, a stretcher: EMBODIED §8) moves the same way.
+    const trolley = TROLLEY_TYPES.includes(type.id);
+    const portable = type.portable || trolley ? beginPortable(ctx, { id: p.id, x: p.x, z: p.z, rot }, y, level) : null;
+    if (portable && trolley) portable.record.trolley = { length: Math.max(type.footprint.w, type.footprint.d) };
     // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
     let finishFallback: (() => void) | null = null;
     const modelled = !!(ctx.models && type.model);

@@ -89,6 +89,8 @@ function describeRequirement(r: SpatialRequirement): string {
         : `delivered to the bedside [${(r.delivered ?? []).join(", ")}]`;
     case "monitor-screen":
       return `the patient's attached monitor ≤ ${r.range} m`;
+    case "patient-at-provider":
+      return `the patient at [${r.capabilities.join(", ")}]`;
     case "clinical":
       return `clinical: ${r.need}${r.interventionId ? ` (${r.interventionId} first)` : ""}`;
     case "any-of":
@@ -148,8 +150,9 @@ export function confirmAction(session: ClinicalSession, action: ClinicalAction |
       // An intervention that attaches the bedside monitor (named by the case's `physiology.monitor.attachedWhen`).
       const attaches = c.physiology?.monitor ? conditionRefs(c.physiology.monitor.attachedWhen).some((r) => r.kind === "intervention" && r.id === action.interventionId) : false;
       if (attaches) {
+        // the patient's monitor where the patient is now (a transfer to the cath lab: the cath lab's — EMBODIED §8)
         const slot = session.facility ? assignPatientSlot(session.facility, c) : null;
-        const monitor = slot?.monitor ? `eq:${slot.monitor}` : null;
+        const monitor = session.world()?.patientMonitor() ?? (slot?.monitor ? `eq:${slot.monitor}` : null);
         const latched = monitorAttached(c, s) && (!monitor || session.world()?.inspect(PRIMARY_ACTOR, monitor)?.state === "attached");
         return { ok: given && latched, what: `${action.interventionId} given; monitor attachment latched (engine + ${monitor ?? "monitor"}) = ${latched}` };
       }

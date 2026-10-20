@@ -42,11 +42,14 @@
 import type { CaseDefinition, FacilityDefinition } from "@clinicalcraft/core";
 import { permits } from "./authority.js";
 import type { DeviceRules } from "./behaviors.js";
+import type { PatientBody } from "./patient.js";
+import { refreshPatient, relocatePatient, transportPatient, type TransportHost } from "./transport.js";
 import type {
   ActionHint,
   ActorId,
   ActorState,
   ClinicalPort,
+  BodyPosture,
   ClinicalView,
   CollisionModel,
   ConnectorInfo,
@@ -56,6 +59,8 @@ import type {
   NavGoal,
   NavPlan,
   NavigationBackend,
+  PatientDestination,
+  PatientRelocation,
   Pose,
   TraceSink,
   WorldActionRequest,
@@ -64,7 +69,7 @@ import type {
 } from "./contracts.js";
 import { WALK_SPEED } from "./contracts.js";
 import { failed, runOperation, type EffectsHost, type Outcome, type Walk } from "./effects.js";
-import { metres, navMessage, operationName, roleName, worldMessage } from "./i18n.js";
+import { listText, metres, navMessage, operationName, roleName, worldMessage } from "./i18n.js";
 import { connectorInfos, levelElevation, levelInfos } from "./levels.js";
 import type { WorldLocator } from "./locate.js";
 import { GridAStarBackend } from "./nav/backend.js";
@@ -85,6 +90,8 @@ export interface ActionBusDeps {
   store: WorldStateStore;
   registry: SemanticRegistry;
   locator: WorldLocator;
+  /** The patient's body: where the patient is, transports and relocations (EMBODIED §8). */
+  patient: PatientBody;
   rules: DeviceRules;
   checker: SpatialChecker;
   perception: Perception;
@@ -163,6 +170,7 @@ function goalShape(g: unknown, depth: number, leaves: string[]): string | null {
     case "look":
     case "room":
       if (typeof goal.id !== "string" || !goal.id.trim()) return `${goal.kind} goals need an id`;
+      if (goal.sameRoom !== undefined && (goal.kind !== "look" || typeof goal.sameRoom !== "boolean")) return "sameRoom is a boolean of look goals";
       return leaf();
     case "any":
       if (depth >= 3) return "goals nest too deep";
@@ -242,8 +250,12 @@ export function progressAlong(from: Pose, plan: Extract<NavPlan, { ok: true }>, 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 const samePose = (a: Pose, b: Pose) => a.x === b.x && a.y === b.y && a.z === b.z && a.yaw === b.yaw && a.pitch === b.pitch && a.level === b.level;
 
-export class ActionBus implements EffectsHost {
+export class ActionBus implements EffectsHost, TransportHost {
   readonly busy = new Map<EntityId, ActorId>();
+  /** The patient's body as the grids hold it (`refreshPatient`). */
+  patientStamp: { key: string; posture: BodyPosture | null; body: { level: string; area: Area } | null };
+  /** The transport walking now (`PatientPlace.transit`). */
+  transit: TransportHost["transit"] = null;
   private readonly connectors: ConnectorInfo[];
   private readonly pending = new Map<string, Promise<WorldActionResult>>();
   private readonly tails = new Map<ActorId, Promise<void>>();
@@ -253,6 +265,7 @@ export class ActionBus implements EffectsHost {
 
   constructor(readonly d: ActionBusDeps) {
     this.connectors = connectorInfos(d.facility);
+    this.patientStamp = { key: d.patient.bodyKey(), posture: d.patient.state() ? d.patient.posture() : null, body: d.patient.body() };
   }
 
   /* ---------------- helpers for effects ---------------- */
@@ -355,6 +368,16 @@ export class ActionBus implements EffectsHost {
     this.emit({ type: "entity.availability", entityId: id, available });
   }
 
+  /** Move the patient at once (a transfer, a phase with a location): see `transport.ts`. */
+  relocatePatient(destination: PatientDestination): PatientRelocation {
+    return relocatePatient(this, destination);
+  }
+
+  /** The clinical posture may have changed the patient's body: re-stamp the grids (see `transport.ts`). */
+  refreshPatient(): boolean {
+    return refreshPatient(this);
+  }
+
   setDoor(idOrAlias: EntityId, state: { open?: boolean; locked?: boolean }): void {
     const id = this.resolve(idOrAlias);
     const door = id ? this.d.collision.doors.find((x) => x.id === id) : undefined;
@@ -432,8 +455,9 @@ export class ActionBus implements EffectsHost {
     const { rules, locator, locale: L } = this.d;
     const o = rules.operation(targetId, request.operation);
     if (!o) {
-      const ops = rules.spec(targetId).operations.map((x) => x.id);
-      return failed("OPERATION_NOT_SUPPORTED", worldMessage("OPERATION_NOT_SUPPORTED", L, { target: locator.name(targetId), operation: request.operation, available: ops.join(", ") || "—" }));
+      // operations by their names in the reader's language, never their ids (extra review item 3)
+      const ops = rules.spec(targetId).operations.map((x) => rules.operationLabel(x));
+      return failed("OPERATION_NOT_SUPPORTED", worldMessage("OPERATION_NOT_SUPPORTED", L, { target: locator.name(targetId), operation: operationName(request.operation, L), available: listText(ops, L) || "—" }));
     }
     const pre = rules.precheck(targetId, o, actor);
     if (pre) return failed(pre.code, pre.message, pre.goal ? { hint: this.verifyHint(actor, pre.goal, pre.label, pre.then) ?? null } : {});
@@ -451,6 +475,7 @@ export class ActionBus implements EffectsHost {
       if (plan.ok) return failed(spatial.code, spatial.message, { hint: { goal: spatial.goal, label: spatial.label ?? "" } });
       return failed(spatial.code, `${spatial.message} ${worldMessage("NO_ROUTE_HINT", L, { target: locator.name(targetId), reason: plan.code })}`, { hint: null });
     }
+    if (o.effect === "transport") return transportPatient(this, request, actor, targetId, signal);
     return runOperation(this, request, actor, targetId, o, signal);
   }
 

@@ -6,6 +6,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { assess, assignPatientSlot, progress, type ClinicalAction } from "@clinicalcraft/core";
+import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { answerAll, builtinContent, makeEmbodiedSession } from "../__fixtures__/embodied.js";
 import { catalogsFor } from "../node/bootstrap.js";
 import { MemoryTranscript } from "../transcript.js";
@@ -83,6 +84,45 @@ describe("embodied offline autopilot — no device stays reserved (review C3)", 
       expect(held, `${facilityId} ${caseId}`).toEqual([]);
       await t.session.close();
     }
+  });
+});
+
+describe("embodied offline autopilot — patient transport (review G8)", () => {
+  /** The patient's moves of an autopilot run: who moved them where. */
+  async function moves(caseId: string, facilityId?: string) {
+    const facility = facilityId ? content.facilities.get(facilityId)!.def : undefined;
+    const t = await makeEmbodiedSession({ caseId, ...(facility ? { facility, catalogs: catalogsFor(content, facility) } : {}), settingsPatch: { approvalMode: "bypass" } });
+    answerAll(t);
+    const out: { by: string | null; slot: string | null; provider: string | null }[] = [];
+    t.session.subscribe((e) => {
+      if (e.msg.type === "world_event" && e.msg.event.type === "patient.moved") out.push({ by: e.msg.event.by, slot: e.msg.event.to.slot, provider: e.msg.event.to.provider });
+    });
+    await t.session.run({ type: "autopilot", maxTurns: 40 });
+    const finished = t.session.state.finished;
+    const orders = t.session.state.orders.map((o) => o.investigationId);
+    await t.session.close();
+    return { out, finished, orders };
+  }
+
+  it("PE (general hospital, no porter): the clinician wheels the patient to CT and back; the transfer to the HDU moves them for good", { timeout: 120_000 }, async () => {
+    const run = await moves("pulmonary-embolism-postop");
+    expect(run.finished).toBe(true);
+    expect(run.orders).toContain("ctpa");
+    expect(run.out).toEqual([
+      { by: PRIMARY_ACTOR, slot: null, provider: "eq:ct-scanner" },
+      { by: PRIMARY_ACTOR, slot: "ward-1", provider: null },
+      { by: null, slot: "icu-1", provider: null },
+    ]);
+  });
+
+  it("acute stroke (teaching hospital, a porter): the porter takes the patient to CT for both scans and back; the angio phase brings them to the C-arm", { timeout: 120_000 }, async () => {
+    const run = await moves("acute-ischemic-stroke", "teaching-hospital");
+    expect(run.finished).toBe(true);
+    const [there, back, ...rest] = run.out;
+    expect(there).toMatchObject({ by: "staff:porter", slot: null });
+    expect(there!.provider).toMatch(/^eq:ct/);
+    expect(back).toEqual({ by: "staff:porter", slot: "resus-1.slot", provider: null });
+    expect(rest.at(-1)).toMatchObject({ by: null, slot: null });
   });
 });
 

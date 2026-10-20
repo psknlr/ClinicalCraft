@@ -1,0 +1,104 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-pe-ctpa-transport",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "CTPA：把患者连床推到 CT，再送回病房",
+    "en": "CTPA: wheel the patient to CT and back to the ward"
+  },
+  "instruction": {
+    "zh-CN": "把这位病房患者连床推到 CT 扫描仪，在扫描仪旁申请 CT 肺动脉造影（CTPA），然后把她送回病房床位。",
+    "en": "Wheel this ward patient on her bed to the CT scanner, request a CT pulmonary angiogram there, then take her back to her ward bed."
+  },
+  "caseId": "pulmonary-embolism-postop",
+  "locale": "zh-CN",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ctpa"
+      }
+    },
+    {
+      "world": {
+        "kind": "patientAt",
+        "slot": "ward-1"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorInRoom",
+        "room": "ward"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "transport",
+        "destination": "eq:ct-scanner"
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "ctpa"
+        }
+      },
+      {
+        "op": "transport",
+        "destination": "home"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:ward-1"
+          }
+        }
+      },
+      {
+        "tool": "transport_patient",
+        "args": {
+          "destination": "eq:ct-scanner"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ct-scanner",
+          "operation": "use",
+          "parameters": {
+            "investigation": "ctpa"
+          }
+        }
+      },
+      {
+        "tool": "transport_patient",
+        "args": {
+          "destination": "home"
+        }
+      }
+    ]
+  }
+}

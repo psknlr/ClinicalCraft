@@ -69,6 +69,18 @@ describe("trace labels", () => {
     expect(traceLabel("verification", "order", ctx)).toBe("Order a test");
   });
 
+  it("names the transport steps (EMBODIED §8): the walk with the patient, a porter's task, the way back and its check", () => {
+    setLocale("zh-CN");
+    expect(traceLabel("interaction", "transport_patient", ctx)).toBe("转运患者");
+    expect(traceLabel("plan", "delegate:transport_patient", ctx)).toBe("委派：用推床把患者送过去");
+    expect(traceLabel("plan", "transport_patient home", ctx)).toBe("送患者回原床位");
+    expect(traceLabel("verification", "patient home", ctx)).toBe("患者已回到原床位");
+    setLocale("en");
+    expect(traceLabel("interaction", "transport_patient", ctx)).toBe("Transport the patient");
+    expect(traceLabel("plan", "transport_patient home", ctx)).toBe("Take the patient back to their bed space");
+    expect(traceLabel("verification", "patient home", ctx)).toBe("Patient back in their bed space");
+  });
+
   it("keeps a name it does not know as it is", () => {
     setLocale("zh-CN");
     expect(traceLabel("interaction", "juggle", ctx)).toBe("juggle");

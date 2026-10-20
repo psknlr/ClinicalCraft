@@ -5,12 +5,12 @@
   "suite": "embodied-v1",
   "category": "clinical-workflow",
   "title": {
-    "zh-CN": "从病房到影像科：申请并阅读 CTPA",
-    "en": "From the ward to radiology: request and read a CTPA"
+    "zh-CN": "从病房到 CT：把患者送去并申请、阅读 CTPA",
+    "en": "From the ward to CT: take the patient there, request and read a CTPA"
   },
   "instruction": {
-    "zh-CN": "在影像科控制台为这位病房患者申请 CT 肺动脉造影（CTPA），然后阅读报告。",
-    "en": "Request a CT pulmonary angiogram for this ward patient at the radiology console, then read the report."
+    "zh-CN": "把这位病房患者送到 CT 扫描仪（检查要在患者身上做），在扫描仪旁或影像科控制台申请 CT 肺动脉造影（CTPA），然后阅读报告。",
+    "en": "Take this ward patient to the CT scanner (the study is done on her there), request a CT pulmonary angiogram at the scanner or the radiology console, then read the report."
   },
   "caseId": "pulmonary-embolism-postop",
   "locale": "en",
@@ -60,6 +60,21 @@
   },
   "scripted": {
     "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:ward-1"
+          }
+        }
+      },
+      {
+        "tool": "transport_patient",
+        "args": {
+          "destination": "eq:ct-scanner"
+        }
+      },
       {
         "tool": "navigate_to",
         "args": {

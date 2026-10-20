@@ -1285,6 +1285,58 @@
               },
               "enterWhen": {
                 "$ref": "#/definitions/Condition"
+              },
+              "location": {
+                "type": "object",
+                "properties": {
+                  "setting": {
+                    "type": "string",
+                    "enum": [
+                      "outpatient",
+                      "emergency",
+                      "inpatient",
+                      "icu",
+                      "ward",
+                      "operating-room",
+                      "community"
+                    ]
+                  },
+                  "roomKind": {
+                    "type": "string",
+                    "enum": [
+                      "entrance",
+                      "reception",
+                      "waiting",
+                      "consult",
+                      "triage",
+                      "resus",
+                      "emergency",
+                      "ward",
+                      "icu",
+                      "operating-room",
+                      "imaging",
+                      "laboratory",
+                      "pathology",
+                      "pharmacy",
+                      "nurse-station",
+                      "conference",
+                      "office",
+                      "corridor",
+                      "storage",
+                      "restroom",
+                      "garden",
+                      "build-zone",
+                      "rehabilitation",
+                      "teaching",
+                      "elevator",
+                      "stairwell"
+                    ]
+                  },
+                  "capability": {
+                    "$ref": "#/definitions/Capability"
+                  }
+                },
+                "additionalProperties": false
               }
             },
             "required": [
@@ -1588,6 +1640,13 @@
                 ],
                 "default": "none"
               },
+              "performedAt": {
+                "type": "string",
+                "enum": [
+                  "bedside",
+                  "provider"
+                ]
+              },
               "value": {
                 "type": "string",
                 "enum": [
@@ -1841,6 +1900,77 @@
                 "enum": [
                   "nursing",
                   "medical"
+                ]
+              },
+              "posture": {
+                "type": "string",
+                "enum": [
+                  "standing",
+                  "sitting",
+                  "lying"
+                ]
+              },
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "setting": {
+                    "type": "string",
+                    "enum": [
+                      "outpatient",
+                      "emergency",
+                      "inpatient",
+                      "icu",
+                      "ward",
+                      "operating-room",
+                      "community"
+                    ]
+                  },
+                  "roomKind": {
+                    "type": "string",
+                    "enum": [
+                      "entrance",
+                      "reception",
+                      "waiting",
+                      "consult",
+                      "triage",
+                      "resus",
+                      "emergency",
+                      "ward",
+                      "icu",
+                      "operating-room",
+                      "imaging",
+                      "laboratory",
+                      "pathology",
+                      "pharmacy",
+                      "nurse-station",
+                      "conference",
+                      "office",
+                      "corridor",
+                      "storage",
+                      "restroom",
+                      "garden",
+                      "build-zone",
+                      "rehabilitation",
+                      "teaching",
+                      "elevator",
+                      "stairwell"
+                    ]
+                  },
+                  "capability": {
+                    "$ref": "#/definitions/Capability"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "device": {
+                "type": "string",
+                "enum": [
+                  "nasal-cannula",
+                  "high-flow-nasal-cannula",
+                  "simple-mask",
+                  "non-rebreather-mask",
+                  "venturi-mask",
+                  "nebuliser-mask"
                 ]
               },
               "risk": {

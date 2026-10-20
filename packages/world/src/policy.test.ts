@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PERSONAL_KIT, facilityCapabilities, type CaseDefinition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type ClinicalIntent, type Pose, type SpatialCheck } from "./contracts.js";
-import { BEDSIDE_CAPABILITIES, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES } from "./capabilities.js";
+import { BEDSIDE_CAPABILITIES, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES, PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
 import { DefaultSpatialPolicy } from "./policy.js";
 import { caseIds, catalogs, loadCase, makeWorld, type TestWorld } from "./__fixtures__/world.js";
 
@@ -27,7 +27,14 @@ async function follow(w: TestWorld, intent: ClinicalIntent, c: SpatialCheck): Pr
   expect(f.hint, f.message).not.toBeNull();
   const nav = await w.act({ actorId: A, operation: "navigate", goal: f.hint!.goal });
   expect(nav.status, nav.message).toBe("completed");
-  if (f.reason === "provider-not-at-bedside" || (f.reason === "provider-busy" && f.hint!.goal.kind === "interact" && f.hint!.goal.id !== w.patientId)) {
+  const then = f.hint!.then;
+  // the patient to bring to a device, or back to their bed space where fixed kit stands (G8): at their side, wheel them there
+  if (f.reason === "patient-not-at-provider") expect(then?.operation).toBe("transport_patient");
+  if (then?.operation === "transport_patient") {
+    expect(f.hint!.goal).toEqual({ kind: "interact", id: w.patientId });
+    const moved = await w.act({ actorId: A, operation: "transport_patient", targetId: then.targetId, ...(then.parameters ? { parameters: then.parameters } : {}) });
+    expect(moved.status, moved.message).toBe("completed");
+  } else if (f.reason === "provider-not-at-bedside" || (f.reason === "provider-busy" && f.hint!.goal.kind === "interact" && f.hint!.goal.id !== w.patientId)) {
     expect(f.hint!.goal.kind).toBe("interact");
     const cart = (f.hint!.goal as { id: string }).id;
     const moved = await w.act({ actorId: A, operation: "move_to", targetId: cart, goal: { kind: "interact", id: w.patientId } });
@@ -67,12 +74,30 @@ describe("DefaultSpatialPolicy: the requirement of each clinical action (EMBODIE
     expect(req(VITALS)).toEqual({ kind: "any-of", options: [{ kind: "monitor-screen", range: 6 }, { kind: "at-patient", range: 1.5, why: "observations" }, CHART] });
   });
 
-  it("bedside investigations: ordered at the bedside or a fixed station; read at the patient or a records terminal — never the device", () => {
-    expect(req(order("ecg-12lead"))).toEqual({ kind: "any-of", options: [{ kind: "bedside-provider", capabilities: ["ecg-12lead"], patientRange: 1.5 }, { kind: "at-provider", capabilities: ["ecg-12lead"], fixedOnly: true }] });
+  it("bedside investigations: ordered at the bedside or a fixed station with the patient there; read at the patient or a records terminal — never the device", () => {
+    // a fixed station counts only with the patient within its reach (G8)
+    const station = { kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["ecg-12lead"] }, { kind: "at-provider", capabilities: ["ecg-12lead"], fixedOnly: true }] };
+    expect(req(order("ecg-12lead"))).toEqual({ kind: "any-of", options: [{ kind: "bedside-provider", capabilities: ["ecg-12lead"], patientRange: 1.5 }, station] });
     expect(req(read("ecg-12lead"))).toEqual({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: ["ecg-12lead"], fixedOnly: true, providerKinds: ["workstation"] }] });
     expect(req(read("cxr-portable"))).toEqual({ kind: "at-provider", capabilities: ["xray"] });
     expect(req(order("poc-glucose"), of("anaphylaxis-garden"))).toEqual({ kind: "anywhere" }); // requires nothing
     for (const cap of ["ecg-12lead", "point-of-care", "ultrasound", "peak-flow", "scale"]) expect(BEDSIDE_CAPABILITIES).toContain(cap);
+  });
+
+  it("studies on the patient at a fixed device: the patient brought there, then ordered at the device or its console; the report read anywhere it is shown (G8)", () => {
+    // CT, fluoroscopy: the patient at the scanner / on the cath-lab table, ordered there or at the console
+    expect(req(order("ct-aortogram"))).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["ct"] }, { kind: "at-provider", capabilities: ["ct"] }] });
+    expect(req(order("coronary-angiography"))).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["fluoroscopy"] }, { kind: "at-provider", capabilities: ["fluoroscopy"] }] });
+    expect(req(read("ct-aortogram"))).toEqual({ kind: "at-provider", capabilities: ["ct"] }); // the report: never the patient
+    // a portable film (performedAt "bedside") moves nobody
+    expect(req(order("cxr-portable"))).toEqual({ kind: "at-provider", capabilities: ["xray"] });
+    // a patient-performed test: the patient at the station, ordered with them or at the station
+    const asthma = of("pediatric-asthma");
+    expect(req(order("pef"), asthma)).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["peak-flow"] }, { kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, { kind: "at-provider", capabilities: ["peak-flow"] }] }] });
+    // a fixed X-ray machine without the portable flag: the patient goes to X-ray
+    expect(req(order("cxr"), asthma)).toEqual({ kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: ["xray"] }, { kind: "at-provider", capabilities: ["xray"] }] });
+    expect(PATIENT_AT_PROVIDER_CAPABILITIES).toEqual(["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"]);
+    expect(PATIENT_PERFORMED_CAPABILITIES).toEqual(["peak-flow", "scale"]);
   });
 
   it("laboratory: the sample at the patient — or, after the IV-access procedure drew the bloods, order entry at a records terminal or a lab station; results on any records terminal", () => {

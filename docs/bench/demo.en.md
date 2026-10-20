@@ -2,14 +2,14 @@
 
 > This demonstrates the infrastructure (a deterministic replay of the case's reference solution), not clinical reasoning.
 
-Case `stemi-inferior-rv` · facility `general-hospital` · language en · commit `4c3600b646dd (uncommitted working-tree changes)` · 2026-10-20T00:55:35.433Z
+Case `stemi-inferior-rv` · facility `general-hospital` · language en · commit `ddbb594d96df (uncommitted working-tree changes)` · 2026-10-20T06:52:45.391Z
 
 The embodied reference clinician (the offline autopilot of embodied mode) works the case headless in its own facility; a supervising clinician answers every approval request (and approves). Every step below links Observation → Plan → Navigation → Object interaction → Clinical action → State change → Verification, with world versions, target versions, action ids and clinical event ids taken from the episode trace (`trace.jsonl`); the verdict of each step is re-checked against the authoritative engine and world state after the run, and the run ends with the Assessment. ✗ marks a world action the world or the spatial gate refused: the refusal and the recovery that followed stay in the record.
 
 ## Summary
 
 - PASSED — every step is confirmed by the authoritative state.
-- 50 steps · 286 trace spans · 25 world actions · world version 19 · 66.51 simulated minutes
+- 50 steps · 288 trace spans · 26 world actions · world version 23 · 66.7 simulated minutes
 - 3 world action(s) refused and recovered from (✗ below)
 - 4 approval request(s) answered by the supervising clinician (4 approved)
 - Independent audits: 44 spatially gated acts, 0 spatial violation(s) accepted; 49 permission-gated acts, 0 unauthorised
@@ -19,7 +19,7 @@ The embodied reference clinician (the offline autopilot of embodied mode) works 
 ### Step 1 — Ordering: 12-lead ECG ✓
 
 - **Observation** — observed observe_world (`b6`, world v0); observed inspect `eq:resus1-ecg` (`b16`, world v1); observed inspect `eq:resus1-ecg` (`b38`, world v4)
-- **Plan** — `order_test ecg-12lead` · requirement bedside-provider [ecg-12lead] | at-provider [ecg-12lead] (fixed) (`b4`)
+- **Plan** — `order_test ecg-12lead` · requirement bedside-provider [ecg-12lead] | the patient at [ecg-12lead] + at-provider [ecg-12lead] (fixed) (`b4`)
 - **Navigation** — navigate → Liu Zhenhua (pseudonym) (`patient:resus-1`): 55.4 m, 14.2 s (action `wa-b7`, world v1)
 - **Object interaction** — prepare 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b17`, world v2, target v1); connect 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b23`, world v3, target v2); record 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b28`, world v4, target v3); reset 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b39`, world v5, target v4)
 - **Approval** — none needed
@@ -36,7 +36,7 @@ The embodied reference clinician (the offline autopilot of embodied mode) works 
 - **Approval** — none needed
 - **Clinical action** — `intervene` → ok; clinical events `ev-46`, `ev-47`, `ev-48`
 - **State change** — world: entity.state; engine: intervention.applied, flag.changed, time.advanced (`ev-46`, `ev-47`, `ev-48`)
-- **Verification** — postcondition in the trace: ok; authoritative state: cardiac-monitoring given; monitor attachment latched (engine + eq:resus1-monitor) = true — confirmed
+- **Verification** — postcondition in the trace: ok; authoritative state: cardiac-monitoring given; monitor attachment latched (engine + eq:cathlab-monitor) = true — confirmed
 
 ### Step 3 — Treating: Peripheral IV access (left forearm) (18G cannula in the left forearm, bloods drawn at the same time (spare the right radial artery for PCI access)) ✓
 
@@ -118,7 +118,7 @@ The embodied reference clinician (the offline autopilot of embodied mode) works 
 ### Step 10 — Ordering: Right-sided and posterior lead ECG (V3R–V6R, V7–V9) ✓
 
 - **Observation** — observed observe_world (`b137`, world v7); observed inspect `eq:resus1-ecg` (`b138`, world v7); observed inspect `eq:resus1-ecg` (`b171`, world v11)
-- **Plan** — `order_test ecg-right-sided` · requirement bedside-provider [ecg-12lead] | at-provider [ecg-12lead] (fixed) (`b135`)
+- **Plan** — `order_test ecg-right-sided` · requirement bedside-provider [ecg-12lead] | the patient at [ecg-12lead] + at-provider [ecg-12lead] (fixed) (`b135`)
 - **Navigation** — navigate → —: 1.0 m, 0.3 s (action `wa-b142`, world v8); navigate → 12-lead ECG 1 (`eq:resus1-ecg`): 0.5 m, 0.1 s (action `wa-b175`, world v12)
 - **Object interaction** — prepare 12-lead ECG 1 (`eq:resus1-ecg`) → failed (action `wa-b139`, world v7, target v4) ✗ NOT_IN_RANGE; prepare 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b150`, world v9, target v5); connect 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b156`, world v10, target v6); record 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b161`, world v11, target v7); reset 12-lead ECG 1 (`eq:resus1-ecg`) → failed (action `wa-b172`, world v11, target v7) ✗ NOT_IN_RANGE; reset 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b182`, world v13, target v8)
 - **Approval** — none needed
@@ -430,140 +430,140 @@ The embodied reference clinician (the offline autopilot of embodied mode) works 
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — intervene (moderate risk): approved
-- **Clinical action** — `intervene` → ok; clinical events `ev-422`, `ev-423`, `ev-424`, `ev-425`
-- **State change** — engine: intervention.applied, flag.changed, phase.changed, time.advanced (`ev-422`, `ev-423`, `ev-424`, `ev-425`)
-- **Verification** — postcondition in the trace: ok; authoritative state: transfer-cath-lab given; monitor attachment latched (engine + eq:resus1-monitor) = true — confirmed
+- **Clinical action** — `intervene` → ok; clinical events `ev-422`, `ev-425`, `ev-426`, `ev-427`
+- **State change** — engine: intervention.applied, flag.changed, phase.changed, time.advanced (`ev-422`, `ev-425`, `ev-426`, `ev-427`)
+- **Verification** — postcondition in the trace: ok; authoritative state: transfer-cath-lab given; monitor attachment latched (engine + eq:cathlab-monitor) = true — confirmed
 
 ### Step 39 — Ordering: Coronary angiography (primary PCI) ✓
 
-- **Observation** — observed observe_world (`b387`, world v13); observed inspect `eq:radiology-console` (`b397`, world v14); observed inspect `eq:radiology-console` (`b408`, world v14)
-- **Plan** — `order_test coronary-angiography` · requirement at-provider [fluoroscopy] (`b385`)
-- **Navigation** — navigate → Radiology Order & Reading Console (`eq:radiology-console`): 31.1 m, 8.0 s (action `wa-b388`, world v14)
-- **Object interaction** — order Radiology Order & Reading Console (`eq:radiology-console`) → completed (action `wa-b398`, world v14, target v0)
+- **Observation** — observed observe_world (`b388`, world v15); observed inspect `eq:radiology-console` (`b398`, world v16); observed inspect `eq:radiology-console` (`b409`, world v16)
+- **Plan** — `order_test coronary-angiography` · requirement the patient at [fluoroscopy] + at-provider [fluoroscopy] (`b386`)
+- **Navigation** — navigate → Radiology Order & Reading Console (`eq:radiology-console`): 31.1 m, 8.0 s (action `wa-b389`, world v16)
+- **Object interaction** — order Radiology Order & Reading Console (`eq:radiology-console`) → completed (action `wa-b399`, world v16, target v0)
 - **Approval** — order_test (moderate risk): approved
-- **Clinical action** — `order_test` → ok; clinical events `ev-444`, `ev-445`
-- **State change** — world: actor.moved; engine: order.placed, time.advanced (`ev-444`, `ev-445`)
+- **Clinical action** — `order_test` → ok; clinical events `ev-446`, `ev-447`
+- **State change** — world: actor.moved; engine: order.placed, time.advanced (`ev-446`, `ev-447`)
 - **Verification** — postcondition in the trace: ok; authoritative state: coronary-angiography ordered — confirmed
 
 ### Step 40 — Waiting 12.62 min ✓
 
 - **Observation** — none needed
-- **Plan** — `wait` (`b410`)
+- **Plan** — `wait` (`b411`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
-- **Clinical action** — `wait` → ok; clinical events `ev-453`
-- **State change** — engine: time.advanced (`ev-453`)
+- **Clinical action** — `wait` → ok; clinical events `ev-455`
+- **State change** — engine: time.advanced (`ev-455`)
 - **Verification** — postcondition in the trace: ok; authoritative state: time advanced 12.62 min — confirmed
 
 ### Step 41 — Waiting 6.88 min ✓
 
 - **Observation** — none needed
-- **Plan** — `wait` (`b413`)
+- **Plan** — `wait` (`b414`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
-- **Clinical action** — `wait` → ok; clinical events `ev-460`
-- **State change** — engine: time.advanced (`ev-460`)
+- **Clinical action** — `wait` → ok; clinical events `ev-462`
+- **State change** — engine: time.advanced (`ev-462`)
 - **Verification** — postcondition in the trace: ok; authoritative state: time advanced 6.88 min — confirmed
 
 ### Step 42 — Reviewing: Coronary angiography (primary PCI) (Cath lab) ✓
 
-- **Observation** — observed observe_world (`b420`, world v14); observed inspect `eq:radiology-console` (`b421`, world v14); observed inspect `eq:radiology-console` (`b430`, world v14)
-- **Plan** — `read_result coronary-angiography` · requirement at-provider [fluoroscopy] (`b418`)
+- **Observation** — observed observe_world (`b421`, world v16); observed inspect `eq:radiology-console` (`b422`, world v16); observed inspect `eq:radiology-console` (`b431`, world v16)
+- **Plan** — `read_result coronary-angiography` · requirement at-provider [fluoroscopy] (`b419`)
 - **Navigation** — none needed
-- **Object interaction** — read Radiology Order & Reading Console (`eq:radiology-console`) → completed (action `wa-b422`, world v14, target v0)
+- **Object interaction** — read Radiology Order & Reading Console (`eq:radiology-console`) → completed (action `wa-b423`, world v16, target v0)
 - **Approval** — none needed
-- **Clinical action** — `read_result` → ok; clinical events `ev-482`, `ev-483`
-- **State change** — engine: result.read, time.advanced (`ev-482`, `ev-483`)
+- **Clinical action** — `read_result` → ok; clinical events `ev-484`, `ev-485`
+- **State change** — engine: result.read, time.advanced (`ev-484`, `ev-485`)
 - **Verification** — postcondition in the trace: ok; authoritative state: coronary-angiography read — confirmed
 
 ### Step 43 — Ordering: 12-lead ECG ✓
 
-- **Observation** — observed observe_world (`b434`, world v14); observed inspect `eq:resus1-ecg` (`b443`, world v15); observed inspect `eq:resus1-ecg` (`b465`, world v18)
-- **Plan** — `order_test ecg-12lead` · requirement bedside-provider [ecg-12lead] | at-provider [ecg-12lead] (fixed) (`b432`)
-- **Navigation** — navigate → Liu Zhenhua (pseudonym) (`patient:resus-1`): 31.1 m, 8.0 s (action `wa-b435`, world v15)
-- **Object interaction** — prepare 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b444`, world v16, target v9); connect 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b450`, world v17, target v10); record 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b455`, world v18, target v11); reset 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b466`, world v19, target v12)
+- **Observation** — observed observe_world (`b435`, world v16); observed inspect `eq:resus1-ecg` (`b454`, world v19); observed inspect `eq:resus1-ecg` (`b476`, world v22)
+- **Plan** — `order_test ecg-12lead` · requirement bedside-provider [ecg-12lead] | the patient at [ecg-12lead] + at-provider [ecg-12lead] (fixed) (`b433`)
+- **Navigation** — navigate → 12-lead ECG 1 (`eq:resus1-ecg`): 30.1 m, 7.7 s (action `wa-b436`, world v17); move_to → 12-lead ECG 1 (`eq:resus1-ecg`): 46.0 m, 11.8 s (action `wa-b444`, world v19)
+- **Object interaction** — prepare 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b455`, world v20, target v10); connect 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b461`, world v21, target v11); record 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b466`, world v22, target v12); reset 12-lead ECG 1 (`eq:resus1-ecg`) → completed (action `wa-b477`, world v23, target v13)
 - **Approval** — none needed
-- **Clinical action** — `order_test` → ok; clinical events `ev-511`, `ev-512`
-- **State change** — world: actor.moved, entity.state, reservation.changed; engine: order.placed, time.advanced (`ev-511`, `ev-512`)
+- **Clinical action** — `order_test` → ok; clinical events `ev-523`, `ev-524`
+- **State change** — world: actor.moved, entity.moved, entity.state, reservation.changed; engine: order.placed, time.advanced (`ev-523`, `ev-524`)
 - **Verification** — postcondition in the trace: ok; authoritative state: ecg-12lead ordered — confirmed
 
 ### Step 44 — Waiting 4 min ✓
 
 - **Observation** — none needed
-- **Plan** — `wait` (`b473`)
+- **Plan** — `wait` (`b484`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
-- **Clinical action** — `wait` → ok; clinical events `ev-521`
-- **State change** — engine: time.advanced (`ev-521`)
+- **Clinical action** — `wait` → ok; clinical events `ev-533`
+- **State change** — engine: time.advanced (`ev-533`)
 - **Verification** — postcondition in the trace: ok; authoritative state: time advanced 4 min — confirmed
 
 ### Step 45 — Reviewing: 12-lead ECG (Cath lab — after PCI) ✓
 
-- **Observation** — observed observe_world (`b478`, world v19)
-- **Plan** — `read_result ecg-12lead` · requirement at-patient ≤ 1.5 m | at-provider [records] | at-provider [ecg-12lead] (fixed) (`b476`)
+- **Observation** — observed observe_world (`b489`, world v23)
+- **Plan** — `read_result ecg-12lead` · requirement at-patient ≤ 1.5 m | at-provider [records] | at-provider [ecg-12lead] (fixed) (`b487`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
-- **Clinical action** — `read_result` → ok; clinical events `ev-533`, `ev-534`, `ev-536`, `ev-538`
-- **State change** — engine: result.read, objective.completed, case.completed, time.advanced (`ev-533`, `ev-534`, `ev-536`, `ev-538`)
+- **Clinical action** — `read_result` → ok; clinical events `ev-545`, `ev-546`, `ev-548`, `ev-550`
+- **State change** — engine: result.read, objective.completed, case.completed, time.advanced (`ev-545`, `ev-546`, `ev-548`, `ev-550`)
 - **Verification** — postcondition in the trace: ok; authoritative state: ecg-12lead read — confirmed
 
 ### Step 46 — Reviewing: Full blood count (Emergency department — resus) ✓
 
-- **Observation** — observed observe_world (`b485`, world v19)
-- **Plan** — `read_result cbc` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b483`)
+- **Observation** — observed observe_world (`b496`, world v23)
+- **Plan** — `read_result cbc` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b494`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
-- **Clinical action** — `read_result` → ok; clinical events `ev-543`, `ev-544`, `ev-545`
-- **State change** — engine: result.read, time.advanced, result.ready (`ev-543`, `ev-544`, `ev-545`)
+- **Clinical action** — `read_result` → ok; clinical events `ev-555`, `ev-556`, `ev-557`
+- **State change** — engine: result.read, time.advanced, result.ready (`ev-555`, `ev-556`, `ev-557`)
 - **Verification** — postcondition in the trace: ok; authoritative state: cbc read — confirmed
 
 ### Step 47 — Reviewing: Electrolytes and renal function (Emergency department — resus) ✓
 
-- **Observation** — observed observe_world (`b493`, world v19)
-- **Plan** — `read_result renal-electrolytes` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b491`)
-- **Navigation** — none needed
-- **Object interaction** — none needed
-- **Approval** — none needed
-- **Clinical action** — `read_result` → ok; clinical events `ev-555`, `ev-556`
-- **State change** — engine: result.read, time.advanced (`ev-555`, `ev-556`)
-- **Verification** — postcondition in the trace: ok; authoritative state: renal-electrolytes read — confirmed
-
-### Step 48 — Reviewing: Coagulation screen (Emergency department — resus) ✓
-
-- **Observation** — observed observe_world (`b500`, world v19)
-- **Plan** — `read_result coagulation` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b498`)
-- **Navigation** — none needed
-- **Object interaction** — none needed
-- **Approval** — none needed
-- **Clinical action** — `read_result` → ok; clinical events `ev-561`, `ev-562`
-- **State change** — engine: result.read, time.advanced (`ev-561`, `ev-562`)
-- **Verification** — postcondition in the trace: ok; authoritative state: coagulation read — confirmed
-
-### Step 49 — Reviewing: High-sensitivity troponin T (Emergency department — resus) ✓
-
-- **Observation** — observed observe_world (`b507`, world v19)
-- **Plan** — `read_result hs-troponin` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b505`)
+- **Observation** — observed observe_world (`b504`, world v23)
+- **Plan** — `read_result renal-electrolytes` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b502`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
 - **Clinical action** — `read_result` → ok; clinical events `ev-567`, `ev-568`
 - **State change** — engine: result.read, time.advanced (`ev-567`, `ev-568`)
+- **Verification** — postcondition in the trace: ok; authoritative state: renal-electrolytes read — confirmed
+
+### Step 48 — Reviewing: Coagulation screen (Emergency department — resus) ✓
+
+- **Observation** — observed observe_world (`b511`, world v23)
+- **Plan** — `read_result coagulation` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-hematology] (`b509`)
+- **Navigation** — none needed
+- **Object interaction** — none needed
+- **Approval** — none needed
+- **Clinical action** — `read_result` → ok; clinical events `ev-573`, `ev-574`
+- **State change** — engine: result.read, time.advanced (`ev-573`, `ev-574`)
+- **Verification** — postcondition in the trace: ok; authoritative state: coagulation read — confirmed
+
+### Step 49 — Reviewing: High-sensitivity troponin T (Emergency department — resus) ✓
+
+- **Observation** — observed observe_world (`b518`, world v23)
+- **Plan** — `read_result hs-troponin` · requirement at-provider [records] | at-patient ≤ 1.5 m | at-provider [lab-chemistry] (`b516`)
+- **Navigation** — none needed
+- **Object interaction** — none needed
+- **Approval** — none needed
+- **Clinical action** — `read_result` → ok; clinical events `ev-579`, `ev-580`
+- **State change** — engine: result.read, time.advanced (`ev-579`, `ev-580`)
 - **Verification** — postcondition in the trace: ok; authoritative state: hs-troponin read — confirmed
 
 ### Step 50 — Finishing the case. ✓
 
 - **Observation** — none needed
-- **Plan** — `finish_case` (`b512`)
+- **Plan** — `finish_case` (`b523`)
 - **Navigation** — none needed
 - **Object interaction** — none needed
 - **Approval** — none needed
-- **Clinical action** — `finish_case` → ok; clinical events `ev-573`
-- **State change** — engine: case.finished (`ev-573`)
+- **Clinical action** — `finish_case` → ok; clinical events `ev-585`
+- **State change** — engine: case.finished (`ev-585`)
 - **Verification** — postcondition in the trace: ok; authoritative state: case finished — confirmed
 
 ## Final assessment
@@ -572,7 +572,7 @@ The embodied reference clinician (the offline autopilot of embodied mode) works 
 - Objectives 5/5
 - Decisions answered correctly on the first try: 4/4
 - Contraindicated interventions: 0
-- Simulated time 66.51 min
+- Simulated time 66.7 min
 - Assessment: `bench-assessment` (yes)
 
 ## Reproduce

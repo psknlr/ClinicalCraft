@@ -38,15 +38,15 @@ import {
   type Object3D,
 } from "three";
 import { buildingLevels, entityLevel, roomLevel } from "@clinicalcraft/core";
-import { blockBox, buildCollisionModel, patientBodyBox, staffBodyBox, type DoorSpec } from "@clinicalcraft/world";
-import type { BlockInfo, BodyMove, BodyPose, CreateWorld, InteractionTarget, RoutePoint, WorldApi, WorldOptions, WorldPatient, WorldPoint, WorldSave, WorldSettings } from "../contracts.js";
+import { blockBox, buildCollisionModel, npcBodyBox, patientBodyBox, staffBodyBox, type DoorSpec } from "@clinicalcraft/world";
+import type { BlockInfo, BodyMove, BodyPose, CreateWorld, InteractionTarget, PatientSpot, RoutePoint, WorldApi, WorldOptions, WorldPatient, WorldPoint, WorldSave, WorldSettings } from "../contracts.js";
 import { monitorRenderer } from "../shared/monitor-render.js";
 import { buildRules, canPlace, cellKey, validBlocks, type BuildRules, type Cell } from "./buildzone.js";
 import type { BuildContext, DoorRecord, LightCandidate, NpcRecord } from "./context.js";
 import { captureJpeg } from "./capture.js";
 import { buildElevators, inCar, type Elevator, type ElevatorStop, type ElevatorTarget } from "./elevator.js";
-import { polylineLength, ROUTE_ARRIVE, worldRouteLegs, yawOfRig } from "./embodiment.js";
-import { buildPlacements, detachShared, surfaceTop } from "./equipment.js";
+import { polylineLength, rigRotationOf, ROUTE_ARRIVE, worldRouteLegs, yawOfRig } from "./embodiment.js";
+import { buildPlacements, detachShared, surfaceTop, surfaceUnder } from "./equipment.js";
 import { ModelCache, modelUrl, placeModel, shortUrl } from "./models.js";
 import { WorldLevels } from "./levels.js";
 import { drawMap as paintMap, type MapConnector, type MapData, type MapWall } from "./map.js";
@@ -54,7 +54,7 @@ import { MaterialLibrary, mergeCatalogs } from "./materials.js";
 import { buildPerson, disposeRig, ROLE_UNIFORMS, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
 import { buildNavGrid, findPath, type NavGrid } from "./pathfind.js";
 import { clampPitch, ColliderGrid, overlapsXZ, PHYSICS, stepPlayer, targetFov, type Aabb, type PlayerState } from "./physics.js";
-import { dragPortable, placePortable, pushPortable, type PortableHost } from "./portable.js";
+import { dragPortable, placePortable, PUSH_AHEAD, pushPortable, type PortableHost } from "./portable.js";
 import { regionAt } from "./region.js";
 import { SignFactory } from "./signs.js";
 import { animateDoors, buildStructures, setDoorOpen, type WallRecord } from "./structures.js";
@@ -436,6 +436,10 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
 
   /* ---------------- NPCs ---------------- */
   const patients = new Map<string, WorldPatient>();
+  /** Where the world model has a patient when not in their own bed space (EMBODIED §8): slot → spot. */
+  const patientSpots = new Map<string, PatientSpot>();
+  /** Patients travelling with a walker ("avatar" or a staff id): slot → walker (drawn on its trolley or ahead of it). */
+  const patientPushes = new Map<string, string>();
   /** Camera position of the last interior-culling pass (null = re-evaluate; see cullDetails). */
   let detailAt: { x: number; z: number; level: string } | null = null;
   const tagSigns: Object3D[] = [];
@@ -451,23 +455,27 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       ctx.warnings.push(`unknown patient slot "${p.slotId}"`);
       return;
     }
-    const slotLevel = entityLevel(facility, slot);
+    // where the world model has them: their own bed space, or a spot (a scanner table, another bed space…)
+    const spot = patientSpots.get(p.slotId) ?? null;
+    const slotLevel = spot ? spot.level : entityLevel(facility, slot);
     const elevation = levels.elevation(slotLevel);
     const old = ctx.npcs.get(`patient:${p.slotId}`);
     if (old) removeNpc(old);
-    const posture: Posture = p.posture ?? slot.posture ?? "standing";
-    const bed = slot.bed ? ctx.placements.get(slot.bed) : undefined;
-    let x = slot.x, z = slot.z, rot = slot.rot ?? 0;
+    const posture: Posture = spot ? spot.posture : (p.posture ?? slot.posture ?? "standing");
+    const bed = spot ? (spot.support ? ctx.placements.get(spot.support) : undefined) : slot.bed ? ctx.placements.get(slot.bed) : undefined;
+    let x = spot ? spot.x : slot.x, z = spot ? spot.z : slot.z, rot = spot ? spot.rot : (slot.rot ?? 0);
     let surface: number | undefined;
+    // on a support at a spot (a scanner's table): the top of what is under the patient there, not the gantry
+    const top = (b: NonNullable<typeof bed>) => b.y + (spot ? surfaceUnder(b.type, b.rot, x - b.x, z - b.z) : surfaceTop(b.type));
     if (posture === "lying") {
       if (bed) {
+        surface = top(bed);
         x = bed.x;
         z = bed.z;
         rot = bed.rot;
-        surface = bed.y + surfaceTop(bed.type);
       } else surface = 0.05;
     } else if (posture === "sitting") {
-      surface = bed ? bed.y + surfaceTop(bed.type) : 0.5;
+      surface = bed ? top(bed) : 0.5;
     }
     const rig = buildPerson(lib, p.appearance as AppearanceLike, { posture, surfaceY: surface, badge: true });
     rig.root.position.set(x, elevation, z);
@@ -483,8 +491,9 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     rig.root.userData.action = target;
     rig.root.userData.highlight = rig.body;
     ctx.pickables.push(rig.root);
-    // the collision model's body for this slot and posture (none on a bed or chair)
-    const body = patientBodyBox(facility, merged.equipment, p.slotId, posture);
+    // the collision model's body for this slot and posture (none on a bed or chair); at a spot: standing, a body
+    // box there (on a table or a trolley, the support collides); travelling with a walker: none
+    const body = patientPushes.has(p.slotId) ? null : spot ? (posture === "standing" || !bed ? npcBodyBox(posture, false, x, z) : null) : patientBodyBox(facility, merged.equipment, p.slotId, posture);
     const collider = body ? ctx.colliders.add({ ...body, minY: body.minY + elevation, maxY: body.maxY + elevation }) : null;
     if (collider) colliderLevels.set(collider, slotLevel);
     ctx.npcs.set(`patient:${p.slotId}`, {
@@ -1552,6 +1561,31 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     }
   }
 
+  /** Draw the patients travelling with a walker (each frame while any is): on the trolley it pushes, else ahead of it. */
+  function dragPatients(): void {
+    for (const [slotId, by] of patientPushes) {
+      const n = ctx.npcs.get(`patient:${slotId}`);
+      if (!n) continue;
+      const walker = by === "avatar" ? { x: player.x, z: player.z, yaw, level: levels.multi ? currentLevel() : level } : (() => {
+        const w = ctx.npcs.get(`staff:${by}`);
+        return w ? { x: w.x, z: w.z, yaw: yawOfRig(w.rig.root.rotation.y), level: w.level } : null;
+      })();
+      if (!walker) continue;
+      const trolley = [...ctx.portables.values()].find((r) => r.trolley && r.pushedBy === by);
+      const at = trolley ? { x: trolley.x, z: trolley.z } : { x: walker.x - Math.sin(walker.yaw) * PUSH_AHEAD, z: walker.z - Math.cos(walker.yaw) * PUSH_AHEAD };
+      if (walker.level !== n.level) {
+        (levelRoots.get(walker.level) ?? root).add(n.rig.root);
+        n.level = walker.level;
+      }
+      n.rig.root.position.set(at.x, levels.elevation(walker.level), at.z);
+      // lying along the trolley (its long axis follows the walking direction); walking: facing the way
+      n.rig.root.rotation.y = n.rig.posture === "lying" ? walker.yaw : rigRotationOf(walker.yaw);
+      n.x = at.x;
+      n.z = at.z;
+      n.rot = n.rig.root.rotation.y;
+    }
+  }
+
   /** A door record by renderer id (`door:` prefix accepted). */
   const doorById = (id: string) => ctx.doors.find((d) => d.id === (id.startsWith("door:") ? id.slice("door:".length) : id)) ?? null;
 
@@ -1746,6 +1780,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     // staff walking world-model routes (delegated tasks): an animation, real time
     if (walkers.update(Math.min(realDt, 0.25))) cullWalkers();
     dragPushed();
+    dragPatients();
     if (animateDoors(ctx.doors, Math.max(dt, walkTime))) markShadows();
     followSun(player.x, player.z);
     assignLights(player.x, player.z, false, player.y);
@@ -2059,6 +2094,52 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       if (by) dragPushed();
       markShadows();
     },
+    placePatient(slotId, at) {
+      const p = patients.get(slotId);
+      if (!p) return;
+      patientPushes.delete(slotId);
+      if (at) patientSpots.set(slotId, { ...at });
+      else patientSpots.delete(slotId);
+      const n = ctx.npcs.get(`patient:${slotId}`);
+      const speaking = n?.speaking ?? false, distressed = n?.distressed ?? false;
+      placePatient(p);
+      const nn = ctx.npcs.get(`patient:${slotId}`);
+      if (nn) {
+        nn.speaking = speaking;
+        nn.distressed = distressed;
+        setDistressed(nn.rig, distressed);
+      }
+      mapCache.clear();
+      detailAt = null;
+    },
+    pushPatient(slotId, by, posture) {
+      const p = patients.get(slotId);
+      const n = ctx.npcs.get(`patient:${slotId}`);
+      if (!p || !n) return;
+      if (!by) {
+        // stays where it was drawn until the world model says where the patient is (`placePatient`)
+        patientPushes.delete(slotId);
+        return;
+      }
+      patientPushes.set(slotId, by);
+      // rebuilt travelling: lying on the trolley the walker pushes (its surface), else walking — no collider
+      const trolley = [...ctx.portables.values()].find((r) => r.trolley && r.pushedBy === by);
+      const want: Posture = posture ?? (trolley ? "lying" : "standing");
+      patientSpots.set(slotId, { x: n.x, z: n.z, level: n.level, rot: 0, posture: want, support: want === "lying" && trolley ? trolley.id : null });
+      const speaking = n.speaking, distressed = n.distressed;
+      placePatient(p);
+      const nn = ctx.npcs.get(`patient:${slotId}`);
+      if (nn) {
+        nn.speaking = speaking;
+        nn.distressed = distressed;
+        setDistressed(nn.rig, distressed);
+        // pushed by the avatar her name tag would fill the first-person view: hidden until she is placed
+        if (by === "avatar") nn.rig.root.traverse((o) => {
+          if (tagSigns.includes(o)) o.visible = false;
+        });
+      }
+      dragPatients();
+    },
     setDoor(doorId, open) {
       const d = doorById(doorId);
       if (!d || d.open === open) return;
@@ -2159,6 +2240,11 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       npcs: ctx.npcs,
       /** Portable placements (carts, items): their groups, where they are drawn, hidden while carried. */
       portables: ctx.portables,
+      /** Where a patient is drawn (EMBODIED §8): position, level, posture, travelling with a walker. */
+      patientPose(slotId: string) {
+        const n = ctx.npcs.get(`patient:${slotId}`);
+        return n ? { x: n.x, z: n.z, level: n.level, posture: n.rig.posture, travelling: patientPushes.get(slotId) ?? null, spot: patientSpots.get(slotId) ?? null } : null;
+      },
       /** Staff ids walking world-model routes now. */
       get walkingStaff() {
         return walkers.walking().map((n) => n.id);

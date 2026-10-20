@@ -13,7 +13,9 @@
  * reset), `obtain_iv_access` (the case's IV-access procedure),
  * `fetch_equipment` (a cart, by id or capability, to the bedside),
  * `give_intervention` (`params.intervention`, fetching what must stand at
- * the bedside).
+ * the bedside), `transport_patient` (the target or `params.destination` —
+ * a device, a bed space or room, `home` — or `params.capability`: the staff
+ * member walks to the patient and wheels them there; porters and nurses).
  */
 import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
@@ -74,15 +76,26 @@ export interface DelegationResult {
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 
-/** The staff member for a role (or a staff id): the one nearest to the patient. */
+/** The staff member for a role (or a staff id): the one nearest to the patient where the patient is now. */
 export function pickStaff(world: WorldRuntime, role: string, patientId: string | null): ActorId | null {
   const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
   if (direct && direct.id.startsWith("staff:")) return direct.id;
   const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
   if (!candidates.length) return null;
-  const patient = patientId ? world.entity(patientId) : null;
-  const dist = (a: (typeof candidates)[number]) => (patient && a.pose.level === patient.level ? Math.hypot(a.pose.x - patient.position.x, a.pose.z - patient.position.z) : 1e9);
+  const place = patientId ? world.patientPlace() : null;
+  const entity = patientId && !place ? world.entity(patientId) : null;
+  const at = place ? { level: place.level, x: place.x, z: place.z } : entity ? { level: entity.level, x: entity.position.x, z: entity.position.z } : null;
+  const dist = (a: (typeof candidates)[number]) => (at && a.pose.level === at.level ? Math.hypot(a.pose.x - at.x, a.pose.z - at.z) : 1e9);
   return [...candidates].sort((a, b) => dist(a) - dist(b) || (a.id < b.id ? -1 : 1))[0]!.id;
+}
+
+/** Where a `transport_patient` task takes the patient (world parameters), or null when it names nowhere. */
+function transportParameters(h: Pick<DelegationHost, "resolve">, staff: ActorId, params: Record<string, unknown>, target: string): Record<string, unknown> | null {
+  const destination = strArg(params, "destination") || target;
+  const capability = strArg(params, "capability");
+  if (destination === "home" || destination === "back") return { destination: "home" };
+  if (destination) return { destination: h.resolve(destination, staff) ?? destination };
+  return capability ? { capability } : null;
 }
 
 /** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
@@ -259,6 +272,17 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         const ok = await fetch(cart);
         verify(`at bedside ${cart}`, ok && h.atBedside(cart));
         return finish(ok && h.atBedside(cart) ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "transport_patient": {
+        const parameters = transportParameters(h, staff, params, target);
+        if (!parameters) return finish("failed", "no-target");
+        if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        const before = world.patientPlace();
+        const r = await operate(patient, "transport_patient", parameters);
+        const after = world.patientPlace();
+        const ok = r.status === "completed" && !!after;
+        verify(`patient at ${after?.provider ?? after?.slot ?? "—"}${before && after && before.x === after.x && before.z === after.z ? " (already there)" : ""}`, ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "give_intervention": {
         const id = interventionOf(h, params, target);

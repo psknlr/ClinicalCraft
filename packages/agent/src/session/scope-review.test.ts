@@ -102,7 +102,7 @@ describe("S3: the spatial gate refuses a clinical act outside the acting body's 
     await t.session.close();
   });
 
-  it("the scope table: a paramedic may manage the airway, a nurse may not; porters only fetch", async () => {
+  it("the scope table: a paramedic may manage the airway, a nurse may not; porters fetch and wheel patients", async () => {
     const septic = (await builtinContent()).cases.get("septic-shock-cap")!.def;
     expect(checkClinicalScope({ role: "paramedic" }, "intervene", "intubation", septic, "en").ok).toBe(true);
     expect(checkClinicalScope({ role: "nurse" }, "intervene", "intubation", septic, "en").ok).toBe(false);
@@ -111,7 +111,12 @@ describe("S3: the spatial gate refuses a clinical act outside the acting body's 
     expect(checkClinicalScope({ role: "nurse" }, "intervene", "icu-referral", septic, "en").ok).toBe(false);
     expect(checkClinicalScope({ role: "attending" }, "intervene", "arterial-line", septic, "en").ok).toBe(true);
     expect(checkClinicalScope({ role: "nurse" }, "order_test", septic.investigations.find((i) => i.requires.includes("ct"))!.id, septic, "en").ok).toBe(false);
-    expect(SCOPE_OF_PRACTICE.porter.tasks).toEqual(["fetch_equipment"]);
+    // porters fetch equipment and wheel patients to a study and back (EMBODIED §8, G8); the front desk only fetches
+    expect(SCOPE_OF_PRACTICE.porter.tasks).toEqual(["fetch_equipment", "transport_patient"]);
+    expect(SCOPE_OF_PRACTICE.receptionist.tasks).toEqual(["fetch_equipment"]);
+    for (const role of ["nurse", "paramedic", "clinician", "attending"] as const) expect(SCOPE_OF_PRACTICE[role].tasks, role).toContain("transport_patient");
+    expect(checkTaskScope({ role: "porter" }, "transport_patient", septic, "en").ok).toBe(true);
+    expect(checkTaskScope({ role: "receptionist" }, "transport_patient", septic, "en").ok).toBe(false);
     expect(checkTaskScope({ role: "porter" }, "attach_monitor", septic, "zh-CN").ok).toBe(false);
     const zh = checkTaskScope({ role: "porter", name: "王师傅" }, "attach_monitor", septic, "zh-CN");
     expect(!zh.ok && zh.message).toMatch(/王师傅.*执业范围/);

@@ -219,6 +219,7 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
       "approach_object",
       "look_at",
       "interact_object",
+      "transport_patient",
       "cancel_action",
       "delegate_task",
       "execute_skill",

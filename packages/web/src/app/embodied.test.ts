@@ -29,6 +29,7 @@ function fakeRenderer(over: Partial<WorldApi> = {}) {
     }),
     staffPose: (id: string) => staff.get(id) ?? null,
     pushEquipment: (id: string, by: string | null) => calls.push(`push:${id}:${by}`),
+    pushPatient: (slot: string, by: string | null, posture?: string) => calls.push(`patient:${slot}:${by}${posture ? `:${posture}` : ""}`),
     placeEquipment: (id: string, at: unknown) => calls.push(`place:${id}:${at === null ? "hidden" : JSON.stringify(at)}`),
     setDoor: (id: string, open: boolean) => calls.push(`door:${id}:${open}`),
     captureFrame: vi.fn((opts: { maxWidth: number }) => ({ mimeType: "image/jpeg", data: "AAAA", width: Math.min(768, opts.maxWidth), height: 300, pose: { x: 1, y: 0, z: 2, yaw: 0, pitch: 0, level: "L0" } })),
@@ -60,6 +61,18 @@ describe("BrowserMover", () => {
     const r = await mover.move("staff:ed-nurse", plan);
     expect(r.arrived).toBe(true);
     expect(calls).toEqual(["push:ecg-cart:ed-nurse", "staff:ed-nurse:2", "push:ecg-cart:null"]);
+  });
+
+  it("a transport (EMBODIED §8): the porter pushes the bed, the patient lying on it, then the world places them", async () => {
+    const { api, calls } = fakeRenderer();
+    const mover = new BrowserMover({
+      renderer: () => api,
+      pushing: (a) => (a === "staff:ed-nurse" ? "ward-bed-1" : null),
+      carrying: (a) => (a === "staff:ed-nurse" ? { slotId: "ward-1", posture: "lying" } : null),
+    });
+    const r = await mover.move("staff:ed-nurse", plan);
+    expect(r.arrived).toBe(true);
+    expect(calls).toEqual(["push:ward-bed-1:ed-nurse", "patient:ward-1:ed-nurse:lying", "staff:ed-nurse:2", "push:ward-bed-1:null", "patient:ward-1:null"]);
   });
 
   it("moves bodies the renderer does not draw instantly, like the headless mover", async () => {

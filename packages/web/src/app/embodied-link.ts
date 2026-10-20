@@ -10,13 +10,15 @@
  *                  retries once; otherwise the localised refusal with "Go there". Equipment operations go
  *                  through `world_action` ops the same way.
  *   view           the scene follows the world: staff where the world has them, carts where they were
- *                  parked, locks; delegated staff walking are announced; a body moved by an agent pauses
+ *                  parked, the patient where the world has them (a transport: lying on the trolley the
+ *                  walker pushes; a transfer: in the new bed space; the posture clinical state gives —
+ *                  EMBODIED §8), locks; delegated staff walking are announced; a body moved by an agent pauses
  *                  the real-time clock (`agentDriving`), so travel is charged once (by the world).
  */
 import { actionIntent } from "@clinicalcraft/agent";
 import { regionAt, t, type CaseDefinition, type ClinicalAction, type FacilityDefinition } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type ActionHint, type ActorId, type NavGoal, type NavPlan, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
-import type { BodyMove, WorldApi } from "../contracts.js";
+import { PRIMARY_ACTOR, type ActionHint, type ActorId, type NavGoal, type NavPlan, type PatientPlace, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
+import type { BodyMove, PatientSpot, WorldApi } from "../contracts.js";
 import { tr, trMaybe } from "../i18n/index.js";
 import type { ActionFeedback, FeedbackItem } from "../ui/feedback.js";
 import { placementIdOf, staffIdOf, type BrowserMover } from "./embodied.js";
@@ -26,7 +28,7 @@ import type { LogEntry } from "./store.js";
 import { prerequisiteOf, WorldView, type ScreenView, type Verdict } from "./world-view.js";
 
 /** World tools during which an agent may drive a body: real-time ticks pause (EMBODIED R8). */
-export const BODY_TOOLS: ReadonlySet<string> = new Set(["navigate_to", "approach_object", "look_at", "interact_object", "delegate_task", "execute_skill"]);
+export const BODY_TOOLS: ReadonlySet<string> = new Set(["navigate_to", "approach_object", "look_at", "interact_object", "transport_patient", "delegate_task", "execute_skill"]);
 
 /** Error codes that end a learner world action before the world ran it (no result will come). */
 const DEAD_CODES: ReadonlySet<string> = new Set(["not_embodied", "invalid_op", "closed", "internal"]);
@@ -160,13 +162,20 @@ export class EmbodiedLink {
       api.placeStaff(sid, atPost ? null : a.pose);
     }
     for (const e of world.entities()) {
-      if (!e.portable) continue;
+      const st = snap.entities[e.id];
+      // carts and items; a trolley a patient was wheeled on (a bed parked beside a scanner) where it was left
+      if (!e.portable && !st?.position) continue;
       const pid = placementIdOf(e.id);
       if (!pid) continue;
-      const st = snap.entities[e.id];
       if (st?.heldBy) api.placeEquipment(pid, null);
       else if (st?.position) api.placeEquipment(pid, { x: st.position.x, y: st.position.y, z: st.position.z, level: st.position.level, ...(st.position.rot !== undefined ? { rot: st.position.rot } : {}) });
       else api.placeEquipment(pid, "home");
+    }
+    // the patient where the world has them (and in the posture clinical state gives)
+    if (this.o.slotId) {
+      const place = world.patientPlace();
+      api.placePatient(this.o.slotId, patientSpotOf(place, this.o.slotId));
+      if (place && !patientSpotOf(place, this.o.slotId)) api.setPatientState(this.o.slotId, { posture: place.posture });
     }
     for (const d of world.collision.doors) {
       const st = snap.entities[d.id]?.door;
@@ -189,9 +198,40 @@ export class EmbodiedLink {
         if (ev.to) this.states.set(ev.entityId, ev.to);
         else this.states.delete(ev.entityId);
         return;
+      case "patient.moved": {
+        // a transport ended (the walker's push stopped) or the team moved the patient: draw them there
+        const api = this.o.renderer();
+        if (!api || !this.o.slotId) return;
+        const spot = patientSpotOf(ev.to, this.o.slotId);
+        api.placePatient(this.o.slotId, spot);
+        if (!spot) api.setPatientState(this.o.slotId, { posture: ev.to.posture });
+        if (ev.by === null) this.o.toast(tr("emb.toast.patientMoved", { place: this.patientPlaceName(ev.to) }), "", "info", "patient-moved");
+        return;
+      }
+      case "patient.posture": {
+        // clinical state changed the posture (positioning, a transfer): the NPC follows
+        const api = this.o.renderer();
+        if (!api || !this.o.slotId) return;
+        const place = this.world?.patientPlace() ?? null;
+        const spot = patientSpotOf(place, this.o.slotId);
+        if (spot) api.placePatient(this.o.slotId, spot);
+        else api.setPatientState(this.o.slotId, { posture: ev.to });
+        return;
+      }
       default:
         return;
     }
+  }
+
+  /** The name of where the patient is (a bed space's room, a device). */
+  private patientPlaceName(place: PatientPlace): string {
+    const world = this.world;
+    const L = this.o.locale();
+    if (place.provider) {
+      const e = world?.entity(place.provider);
+      if (e) return t(e.name, L);
+    }
+    return regionAt(this.o.facility, place.x, place.z, L, place.level);
   }
 
   /** A device's stored behaviour state (ECG cart: idle / prepared / connected / completed), else null. */
@@ -199,10 +239,18 @@ export class EmbodiedLink {
     return this.states.get(entityId) ?? null;
   }
 
-  /** The cart an actor pushes in its current `move_to`: the portable cart nearest to it (within 2.5 m). */
+  /**
+   * The cart an actor pushes in its current `move_to` (the portable cart nearest to it, within 2.5 m), or the
+   * trolley the patient lies on in its `transport_patient` (the world's `transit`).
+   */
   pushing(actorId: ActorId): string | null {
     const world = this.world;
-    if (!world || this.tasks.get(actorId) !== "move_to") return null;
+    if (!world) return null;
+    if (this.tasks.get(actorId) === "transport_patient") {
+      const transit = world.patientPlace()?.transit;
+      return transit?.by === actorId && transit.trolley ? placementIdOf(transit.trolley) : null;
+    }
+    if (this.tasks.get(actorId) !== "move_to") return null;
     const actor = world.actor(actorId);
     if (!actor) return null;
     const snap = world.snapshot();
@@ -215,6 +263,14 @@ export class EmbodiedLink {
       if (d <= 2.5 && (!best || d < best.d)) best = { id: e.id, d };
     }
     return best ? placementIdOf(best.id) : null;
+  }
+
+  /** The patient an actor takes along in its `transport_patient` (lying on the trolley, or walking): their slot and posture. */
+  carrying(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null {
+    const world = this.world;
+    if (!world || !this.o.slotId || this.tasks.get(actorId) !== "transport_patient") return null;
+    const transit = world.patientPlace()?.transit;
+    return transit?.by === actorId ? { slotId: this.o.slotId, posture: transit.posture === "lying" ? "lying" : "standing" } : null;
   }
 
   /** A body starts moving (Mover): delegated staff are announced. */
@@ -315,7 +371,7 @@ export class EmbodiedLink {
   async goTo(goal: NavGoal, label: string | null, then?: ActionHint["then"]): Promise<WorldActionResult | null> {
     const r = await this.submitWorld({ operation: "navigate", goal });
     if (!r || this.disposed) return r;
-    if (r.status === "completed" && then) return this.worldAction({ operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}) });
+    if (r.status === "completed" && then) return this.worldAction({ operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}), ...(then.parameters ? { parameters: then.parameters } : {}) });
     // arrived: where (a map point by the place's name; anything else as the world names it, not the instruction)
     if (r.status === "completed") this.o.toast(tr("toast.arrived"), goal.kind === "point" ? (label ?? "") : learnerText(r.message), "info", "go-there");
     else this.o.feedback.show({ text: learnerText(r.message), goal: null, label: null, tone: "refused" });
@@ -480,6 +536,16 @@ export class EmbodiedLink {
   get walking(): boolean {
     return this.o.mover.isMoving(PRIMARY_ACTOR);
   }
+}
+
+/**
+ * Where the renderer draws the patient for a place of the world model (EMBODIED §8): null in their own bed space
+ * (the case's slot: drawn there in the posture clinical state gives), else the spot — position, posture and the
+ * placement they lie or sit on.
+ */
+export function patientSpotOf(place: PatientPlace | null, slotId: string | null): PatientSpot | null {
+  if (!place || (place.slot !== null && place.slot === slotId)) return null;
+  return { x: place.x, z: place.z, level: place.level, rot: place.rot, posture: place.posture, support: place.support ? placementIdOf(place.support) : null };
 }
 
 /** What the UI shows of a delegation's outcome. */

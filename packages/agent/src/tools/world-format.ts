@@ -5,7 +5,7 @@
  * world's observations already hold only public data (EMBODIED R7).
  */
 import { t } from "@clinicalcraft/core";
-import type { ActorState, ObservedEntity, WorldActionResult, WorldObservation, WorldRuntime } from "@clinicalcraft/world";
+import type { ActionHint, ActorState, ObservedEntity, WorldActionResult, WorldObservation, WorldRuntime } from "@clinicalcraft/world";
 import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
 
 const round1 = (v: number) => (Number.isFinite(v) ? Math.round(v * 10) / 10 : v);
@@ -111,9 +111,27 @@ export function roomText(info: NonNullable<ReturnType<WorldRuntime["roomInfo"]>>
   return lines.join("\n");
 }
 
+/**
+ * The tool call a hint's `then` asks for once there, as a model makes it (extra review item 2: the learner
+ * sentence names no tool; this line does): `transport_patient {"destination":…}` or
+ * `interact_object {"target":…,"operation":…,"parameters":…}` (a cart to wheel: `move_to` with its goal).
+ */
+export function thenCall(then: NonNullable<ActionHint["then"]>): string {
+  if (then.operation === "transport_patient") return `transport_patient ${JSON.stringify(then.parameters ?? {})}`;
+  const parameters = { ...(then.parameters ?? {}), ...(then.goal ? { goal: then.goal } : {}) };
+  return `interact_object ${JSON.stringify({ target: then.targetId, operation: then.operation, ...(Object.keys(parameters).length ? { parameters } : {}) })}`;
+}
+
+/** The lines of a hint for a model: where to go (`navigate_to`), then what to call there. */
+export function hintLines(hint: ActionHint, locale: string): string[] {
+  const lines = [rt(locale, "spatial.hint", { goal: JSON.stringify(hint.goal), label: hint.label })];
+  if (hint.then) lines.push(rt(locale, "spatial.then", { call: thenCall(hint.then) }));
+  return lines;
+}
+
 /** The text of a world action result (its own localised message, plus the hint when it failed). */
 export function actionResultText(result: WorldActionResult, locale: string): string {
   const lines = [result.errorCode ? `${result.message} [${result.errorCode}]` : result.message];
-  if (result.status !== "completed" && result.hint) lines.push(rt(locale, "spatial.hint", { goal: JSON.stringify(result.hint.goal), label: result.hint.label }));
+  if (result.status !== "completed" && result.hint) lines.push(...hintLines(result.hint, locale));
   return lines.join("\n");
 }

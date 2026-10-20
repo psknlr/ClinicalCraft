@@ -108,8 +108,8 @@ function intentOf(action: ClinicalAction): ClinicalIntent | null {
 }
 
 function requiredCapabilities(r: SpatialRequirement): string[] {
-  if (r.kind === "at-provider" || r.kind === "bedside-provider") return r.capabilities;
-  if (r.kind === "any-of") return r.options.flatMap(requiredCapabilities);
+  if (r.kind === "at-provider" || r.kind === "bedside-provider" || r.kind === "patient-at-provider") return r.capabilities;
+  if (r.kind === "any-of" || r.kind === "all-of") return r.options.flatMap(requiredCapabilities);
   return [];
 }
 

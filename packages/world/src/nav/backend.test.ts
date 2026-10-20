@@ -132,6 +132,23 @@ describe("routes in clinic-v4 (V4 clinic, one entrance)", () => {
     expect(w.backend.grids.grid("L0")!.dynamic.every((x) => x === 0)).toBe(true);
   });
 
+  it("ignoreObstacles (a team setting things aside) plans through a dynamic obstacle, never through a locked door", () => {
+    const wet: DynamicObstacle = { id: "wet-floor", level: "L0", rect: { x: 0, z: 9, w: 4, d: 1.2 }, label: { "zh-CN": "地面湿滑", en: "Wet floor" } };
+    const area = { level: "L0", minX: -2, maxX: 2, minZ: 8.4, maxZ: 9.6 };
+    w.s.obstacles.push(wet);
+    w.backend.invalidate(area);
+    const request = { actorId: "actor:clinician", from: w.spawn, goal: { kind: "room", id: "corridor" } as NavGoal, role: "nurse" as ActorRole };
+    expect(w.backend.plan(request)).toMatchObject({ ok: false, code: "PATH_BLOCKED" });
+    const through = ok(w.backend.plan({ ...request, ignoreObstacles: true }));
+    expect(through.length).toBeGreaterThan(0);
+    w.s.locked.add("door:clinic:s:0");
+    w.backend.invalidate();
+    expect(w.backend.plan({ ...request, ignoreObstacles: true })).toMatchObject({ ok: false, code: "PATH_BLOCKED", details: { doors: ["door:clinic:s:0"] } });
+    w.s.locked.clear();
+    w.s.obstacles.length = 0;
+    w.backend.invalidate();
+  });
+
   it("unknown ids and non-interactive targets (messages in zh-CN and en)", () => {
     expect(w.plan({ kind: "interact", id: "eq:nope" })).toMatchObject({ ok: false, code: "TARGET_NOT_FOUND", message: 'Target "eq:nope" not found.' });
     const zh = new GridAStarBackend({ facility: w.f, collision: w.collision, registry: w.registry, locale: "zh-CN" });

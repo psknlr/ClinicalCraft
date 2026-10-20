@@ -340,6 +340,10 @@ no longer select a `specific` or `unknown` fact.
 - NICE CG174. Intravenous fluid therapy in adults in hospital (2013, updated 2017).
 - O'Driscoll BR, et al. BTS guideline for oxygen use in healthcare and emergency settings. *Thorax.* 2017;72(Suppl 1):ii1–ii90.
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for review G12: the `oxygen` intervention names its delivery `device: "nasal-cannula"` (bystanders and the web patient show nasal cannulae, never a mask). Studies done on the patient at a fixed device — the CT abdomen (`inv-ct`) and the plain films (`inv-cxr`, `inv-axr`, departmental X-ray) — need the patient taken to radiology in embodied mode (`transport_patient`, by the learner, a porter or a nurse; docs/EMBODIED.md §8); the reference path images with bedside ultrasound, so the autopilot moves nobody.
+
 ## Validation
 
 ```bash

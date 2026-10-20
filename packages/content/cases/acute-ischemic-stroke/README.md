@@ -345,6 +345,10 @@ In embodied mode a clinical act needs the kit it names at the bedside and IV acc
 
 Scope of practice: `swallow-screen` is authored `scope: "nursing"`: the bedside water-swallow screen is nurse-led on stroke units (docs/EMBODIED.md §8 scope of practice); the sICH protocol stays medical.
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for reviews G8/G12: the `angio` phase has `location: {"capability": "fluoroscopy"}` — when it starts (after `transfer-angio` and the reads it requires) the team moves the patient onto the cath-lab table beside the C-arm (no time charged), where `dsa-evt` is then ordered; `cxr` is `performedAt: "bedside"` (a portable film: nobody is moved); `oxygen` names `device: "nasal-cannula"`. The non-contrast CT head, CTA and CT perfusion are done on the patient at the CT scanner: in embodied mode the patient is wheeled there on the resus trolley and back (the autopilot does both scans in one trip: 36.6 m there, 37.8 m back, 0.16 min each way; in `teaching-hospital` the porter does it). Scores are unchanged (100 in both modes).
+
 ## Validation
 
 ```bash

@@ -25,7 +25,9 @@ describe("operations by kind (built-in and catalog behaviours)", () => {
     expect(ops(w, "eq:resus-sink")).toEqual(["wash_hands"]);
     expect(ops(w, "eq:resus1-bed")).toEqual([]);
     expect(ops(w, "eq:evidence-board")).toEqual([]);
-    for (const id of [w.patientId, "staff:ed-nurse", "room:ed-resus", "level:L0"]) expect(ops(w, id), id).toEqual([]);
+    // the patient is wheeled (or walked) to a device, a bed space or back (EMBODIED §8, G8)
+    expect(ops(w, w.patientId)).toEqual(["transport_patient"]);
+    for (const id of ["staff:ed-nurse", "room:ed-resus", "level:L0"]) expect(ops(w, id), id).toEqual([]);
     const doors = w.runtime.entities().filter((e) => e.kind === "door");
     expect(doors.length).toBeGreaterThan(5);
     for (const d of doors) expect(ops(w, d.id)).toEqual(["open", "close", "lock", "unlock"]); // a door never offers order
@@ -263,7 +265,10 @@ describe("sinks, storage, handheld items, preconditions", () => {
     expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:sterile-tray" })).status).toBe("completed");
     const unwrap = await w.act({ actorId: A, operation: "unwrap", targetId: "eq:sterile-tray" });
     expect(unwrap).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
-    expect(unwrap.message).toMatch(/wash_hands/);
+    // the learner sentence names no tool id; the hint carries it (the nearest sink, then wash_hands there)
+    expect(unwrap.message).toMatch(/sink/);
+    expect(unwrap.message).not.toMatch(/wash_hands/);
+    expect(unwrap.hint).toMatchObject({ goal: { kind: "interact", id: "eq:resus-sink" }, then: { operation: "wash_hands", targetId: "eq:resus-sink" } });
     expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:resus-sink" })).status).toBe("completed");
     w.harness.elapsed.length = 0;
     const wash = await w.act({ actorId: A, operation: "wash_hands", targetId: "eq:resus-sink" });

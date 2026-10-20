@@ -21,6 +21,7 @@ import { metres, worldMessage } from "./i18n.js";
 import type { ActionBusDeps } from "./actions.js";
 import { cellPoint, distanceToArea, type Area } from "./raster.js";
 import { formatScreen } from "./screen.js";
+import type { SightTarget } from "./visibility.js";
 import type { WorldEventInput } from "./state.js";
 
 /** The outcome of an action before the bus stamps versions and records it. */
@@ -242,7 +243,8 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
     host.busy.delete(id);
   }
   const now = store.actor(actor.id)!;
-  const spot = parkingSpot(host, now.pose, id, goalTargetArea(host, goal));
+  // a cart is left beside the body that wheeled it — not between them and what it was brought to
+  const spot = parkingSpot(host, now.pose, id, goalTargetArea(host, goal), goalSight(host, goal));
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
   if (!spot) return { status: "failed", errorCode: "PRECONDITION_FAILED", message: worldMessage("pre.noSpot", L, { target }), events: walk.events, ...base };
   store.patchEntity(id, { position: { ...spot, rot: cart.rot } });
@@ -264,6 +266,14 @@ function goalTargetArea(host: EffectsHost, goal: NavGoal): Area | null {
   return host.d.locator.place(id)?.area ?? null;
 }
 
+/** What a goal's target looks like where it is (its sight target), or null (rooms, points, composite goals). */
+function goalSight(host: EffectsHost, goal: NavGoal): SightTarget | null {
+  if (goal.kind === "point" || goal.kind === "any" || goal.kind === "room") return null;
+  const id = host.d.registry.resolveId(goal.id) ?? goal.id;
+  const p = host.d.locator.place(id);
+  return p ? host.d.locator.sight(p) : null;
+}
+
 const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
 
 /**
@@ -271,17 +281,23 @@ const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m
  * dynamically free navigation cell (no doorway, not the item's own old
  * stamp counted), at least 0.6 m from every actor, within 1.25 m (else 2 m,
  * else 3 m) of the pose — the one nearest to `towards` (the goal's target),
- * then nearest to the pose.
+ * then nearest to the pose. `keepInView`: what the cart was brought to (the
+ * patient on a scanner table) — when it is in view from the pose, the first
+ * spot in that order where the parked cart would not hide it (else the
+ * nearest all the same).
  */
-export function parkingSpot(host: EffectsHost, pose: Pose, id: EntityId, towards: Area | null): (Vec3 & { level: string }) | null {
+export function parkingSpot(host: EffectsHost, pose: Pose, id: EntityId, towards: Area | null, keepInView?: SightTarget | null): (Vec3 & { level: string }) | null {
   const grids = host.d.grids;
   const g = grids?.grid(pose.level);
   const y = levelElevation(host.d.facility, pose.level);
   if (!grids || !g) return { x: pose.x - Math.sin(pose.yaw) * 0.9, y, z: pose.z - Math.cos(pose.yaw) * 0.9, level: pose.level };
   const own = grids.dynamicIds.indexOf(id) + 1;
   const others = host.d.store.actors().filter((a) => a.pose.level === pose.level);
+  const vis = host.d.visibility;
+  const watch = keepInView && keepInView.level === pose.level && vis.visibleFrom(pose.level, pose, keepInView) ? keepInView : null;
+  const rot = host.d.locator.place(id)?.rot;
   for (const radius of [1.25, 2, 3]) {
-    let best: { i: number; score: number } | null = null;
+    const found: { i: number; score: number }[] = [];
     const x0 = Math.max(0, Math.floor((pose.x - radius - g.minX) / g.cell)), x1 = Math.min(g.cols - 1, Math.floor((pose.x + radius - g.minX) / g.cell));
     const z0 = Math.max(0, Math.floor((pose.z - radius - g.minZ) / g.cell)), z1 = Math.min(g.rows - 1, Math.floor((pose.z + radius - g.minZ) / g.cell));
     for (let iz = z0; iz <= z1; iz++)
@@ -291,13 +307,24 @@ export function parkingSpot(host: EffectsHost, pose: Pose, id: EntityId, towards
         const c = cellPoint(g, i);
         const dPose = Math.hypot(c.x - pose.x, c.z - pose.z);
         if (dPose > radius || others.some((a) => Math.hypot(c.x - a.pose.x, c.z - a.pose.z) < 0.6)) continue;
-        const score = (towards ? distanceToArea(c.x, c.z, towards) : 0) + 0.25 * dPose;
-        if (!best || score < best.score - 1e-9) best = { i, score };
+        found.push({ i, score: (towards ? distanceToArea(c.x, c.z, towards) : 0) + 0.25 * dPose });
       }
-    if (best) {
-      const c = cellPoint(g, best.i);
-      return { x: c.x, y, z: c.z, level: pose.level };
+    if (!found.length) continue;
+    // nearest first (ties: the lower cell index, as the scan order)
+    found.sort((a, b) => (Math.abs(a.score - b.score) > 1e-9 ? a.score - b.score : a.i - b.i));
+    let best = found[0]!;
+    if (watch) {
+      const clear = found.slice(0, PARKING_SIGHT_TRIES).find((f) => {
+        const c = cellPoint(g, f.i);
+        return vis.visibleWith(pose.level, pose, watch, { id, x: c.x, z: c.z, ...(rot !== undefined ? { rot } : {}) });
+      });
+      if (clear) best = clear;
     }
+    const c = cellPoint(g, best.i);
+    return { x: c.x, y, z: c.z, level: pose.level };
   }
   return null;
 }
+
+/** Spots tried (nearest first) for one that keeps the patient in view before parking at the nearest anyway. */
+const PARKING_SIGHT_TRIES = 48;

@@ -288,6 +288,10 @@ In embodied mode a clinical act needs the kit it names at the bedside and IV acc
 
 Scope of practice: `ipc` (intermittent pneumatic compression sleeves) is authored `scope: "nursing"`; rescue reperfusion and the IVC filter stay medical (docs/EMBODIED.md §8 scope of practice).
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for reviews G8/G12: the CTPA is done on her at the CT scanner — in embodied mode she is wheeled there on her ward bed (the bed is parked beside the scanner while she lies on its table) and back (85 m each way, 0.37 min; the bench scenario `workflow-pe-ctpa-transport` checks it); `transfer-hdu` has `destination: {"setting": "icu"}` (the team moves her to the first ICU/HDU bed space when it is given; her ward bed goes back to the ward); `positioning` sets `posture: "sitting"` (head of bed up); `cxr` is `performedAt: "bedside"` (portable); `o2-nasal` and `o2-nrb` name `device` `nasal-cannula` and `non-rebreather-mask`. Scores are unchanged (100 in both modes in the general hospital).
+
 ## Validation
 
 ```bash

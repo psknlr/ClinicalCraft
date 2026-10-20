@@ -430,6 +430,10 @@ In embodied mode a clinical act needs the kit it names at the bedside and IV acc
 
 Scope of practice: `remove-sting` is authored `scope: "nursing"` (first aid any nurse gives when delegated; docs/EMBODIED.md §8 scope of practice).
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for reviews G8/G12: positioning sets the posture bystanders, the collider and the web NPC show — `position-supine-legs` → `lying`, `position-sit-upright` → `sitting`, `walk-to-ed` → `lying` (she collapses as she stands and is lowered to the ground), `transfer-ed` → `lying` (on the trolley); the `ed-resus` and `ed` phases have `location: {"setting": "emergency"}`, so when the transfer phase starts the team moves her from the garden bench to the first emergency bed space (resus-1 in the general hospital, 76 m; no time charged beyond the transfer's own); `cxr` is `performedAt: "bedside"` (portable); `oxygen-high-flow` names `device: "non-rebreather-mask"` (a mask on her face, as the dose says). `walk-to-ed` moves nobody (she never gets there). Scores are unchanged.
+
 ## Validate
 
 ```bash

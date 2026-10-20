@@ -9,8 +9,8 @@
  * | `ask_patient` (and the companion) | `near-patient` 3 m + line of sight |
  * | `examine` | `at-patient` 1.5 m; a finding needing capabilities beyond the personal kit: `bedside-provider` (those capabilities at the bedside + actor within 1.5 m of the patient) |
  * | `check_vitals` | `any-of`: `monitor-screen` (the patient's attached monitor, 6 m, line of sight from its own room — never through a window) · `at-patient` 1.5 m (observations by hand) · `at-provider` `records` (the chart) |
- * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · only `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `at-provider` with `fixedOnly` · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
- * | `read_result` | bedside capabilities: `at-patient` · a `records` terminal · a fixed station providing them — never the device · laboratory capabilities: a `records` terminal · `at-patient` · a laboratory station · otherwise as `order_test` |
+ * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`): `all-of` `patient-at-provider` · `at-provider` (the scanner or a console) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
+ * | `read_result` | bedside capabilities: `at-patient` · a `records` terminal · a fixed station providing them — never the device · laboratory capabilities: a `records` terminal · `at-patient` · a laboratory station · otherwise `at-provider` (the report at a console — never the patient) |
  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
  * | `intervene` other kinds | its capabilities (empty `requires`: the kind's defaults, `KIND_DEFAULT_CAPABILITIES`) beyond the personal kit at the bedside (`bedside-provider`; nothing: `at-patient`); delivered capabilities (`DELIVERED_CAPABILITIES`) only need an in-service provider in the facility; `iv-access` is patient state — the case's IV-access procedure done first (`clinical`), unless the patient has a line in situ — except for that procedure itself, which needs the cannulation kit at the bedside |
  * | `consult`, `delegate_task`, cognitive tools | anywhere |
@@ -36,17 +36,30 @@
  * nearest free portable provider to fetch (`move_to` it to the patient), or
  * null when none can be brought; null when nothing in the facility provides
  * it, and null for a clinical prerequisite (`details.prerequisite` names the
- * tool call that establishes it). `any-of` reports the option whose hint is
- * nearest, preferring hints a single navigation fixes over fetching a cart;
- * an `all-of` with a part no walk can fix reports only that part.
+ * tool call that establishes it); the patient away from a device a study
+ * needs: go to the patient, then take them there (`hint.then`:
+ * `transport_patient {destination}`). `any-of` reports the option whose hint
+ * is nearest, preferring hints a single navigation fixes over fetching a
+ * cart, and both over moving the patient; an `all-of` with a part no walk can
+ * fix — or the patient to bring — reports only that part. A satisfied `all-of`
+ * lists in `satisfiedBy` what the actor acts through where they stand before
+ * the device the patient is at (at the console, the scanner's patient on its
+ * table: the console first).
+ *
+ * Failures are ranked lazily (extra review item 4): `reason`, `message`,
+ * `hint` and `details` of a failed check are resolved — the walking-distance
+ * ranking of its candidates — the first time one of them is read, with the
+ * actor where it stood when checked; `ok`, `code` and `requirement` are
+ * eager. A UI that only asks whether an act can be done here pays no flood.
  */
 import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition } from "@clinicalcraft/core";
 import { RANGES, type ActionHint, type ActorId, type ActorState, type ClinicalIntent, type ClinicalView, type EncounterBinding, type EntityId, type InteractionKind, type NavGoal, type SpatialCheck, type SpatialErrorCode, type SpatialPolicy, type SpatialRequirement } from "./contracts.js";
-import { BEDSIDE_CAPABILITIES, BLOOD_SAMPLE_CAPABILITIES, CHART_CAPABILITY, DELIVERED_CAPABILITIES, IV_ACCESS_CAPABILITY, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES } from "./capabilities.js";
+import { BEDSIDE_CAPABILITIES, BLOOD_SAMPLE_CAPABILITIES, CHART_CAPABILITY, DELIVERED_CAPABILITIES, IV_ACCESS_CAPABILITY, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES, PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
 import { ivAccessIntervention, ivAccessInSitu } from "./clinical.js";
 import { listText, metres, worldMessage } from "./i18n.js";
 import type { Placed, StateView, WorldLocator } from "./locate.js";
 import { MIN_RANGE } from "./nav/backend.js";
+import { areaGap, rankedPatientProviders, type TargetDeps } from "./patient.js";
 import type { Reachability } from "./reach.js";
 
 /** Intervention kinds done by phone or pager, from anywhere. */
@@ -67,6 +80,10 @@ export interface DefaultSpatialPolicyOptions {
   labCapabilities?: readonly string[];
   bloodSampleCapabilities?: readonly string[];
   kindDefaults?: Readonly<Record<string, readonly string[]>>;
+  /** Studies done on the patient at a fixed device (default `PATIENT_AT_PROVIDER_CAPABILITIES`). */
+  patientAtProviderCapabilities?: readonly string[];
+  /** Patient-performed tests at a fixed station (default `PATIENT_PERFORMED_CAPABILITIES`). */
+  patientPerformedCapabilities?: readonly string[];
 }
 
 /** The default policy (EMBODIED §6, module table). */
@@ -76,6 +93,8 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
   readonly lab: ReadonlySet<string>;
   readonly blood: ReadonlySet<string>;
   readonly kindDefaults: Readonly<Record<string, readonly string[]>>;
+  readonly onDevice: ReadonlySet<string>;
+  readonly performed: ReadonlySet<string>;
 
   constructor(opts: DefaultSpatialPolicyOptions = {}) {
     this.bedside = new Set(opts.bedsideCapabilities ?? BEDSIDE_CAPABILITIES);
@@ -83,6 +102,8 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
     this.lab = new Set(opts.labCapabilities ?? LAB_CAPABILITIES);
     this.blood = new Set(opts.bloodSampleCapabilities ?? BLOOD_SAMPLE_CAPABILITIES);
     this.kindDefaults = opts.kindDefaults ?? KIND_DEFAULT_CAPABILITIES;
+    this.onDevice = new Set(opts.patientAtProviderCapabilities ?? PATIENT_AT_PROVIDER_CAPABILITIES);
+    this.performed = new Set(opts.patientPerformedCapabilities ?? PATIENT_PERFORMED_CAPABILITIES);
   }
 
   requirementFor(intent: ClinicalIntent, binding: EncounterBinding): SpatialRequirement {
@@ -105,9 +126,18 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
         if (!inv || inv.requires.length === 0) return ANYWHERE;
         const caps = inv.requires.filter((r) => !kit.has(r));
         if (!caps.length) return atPatient;
+        // a study done on the patient at a fixed device, or a test the patient performs at a station: the patient is
+        // brought there (G8) — then ordered at the device or its console, the patient-performed one with them
+        const onPatient = inv.performedAt === "bedside" ? [] : caps.filter((r) => this.onDevice.has(r) || this.performed.has(r));
+        if (intent.kind === "order" && onPatient.length) {
+          const there: SpatialRequirement = { kind: "patient-at-provider", capabilities: onPatient };
+          const by: SpatialRequirement = onPatient.every((r) => this.performed.has(r)) ? { kind: "any-of", options: [atPatient, { kind: "at-provider", capabilities: caps }] } : { kind: "at-provider", capabilities: caps };
+          return { kind: "all-of", options: [there, by] };
+        }
         if (caps.every((r) => this.bedside.has(r))) {
           if (intent.kind === "read") return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps, fixedOnly: true, providerKinds: ["workstation"] }] };
-          return { kind: "any-of", options: [{ kind: "bedside-provider", capabilities: caps, patientRange: POLICY_RANGES.contact }, { kind: "at-provider", capabilities: caps, fixedOnly: true }] };
+          // the device at the bedside — or a fixed station of it, which counts only with the patient within its reach (G8)
+          return { kind: "any-of", options: [{ kind: "bedside-provider", capabilities: caps, patientRange: POLICY_RANGES.contact }, { kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: caps }, { kind: "at-provider", capabilities: caps, fixedOnly: true }] }] };
         }
         if (caps.every((r) => this.lab.has(r))) {
           const station: SpatialRequirement = { kind: "at-provider", capabilities: caps };
@@ -147,11 +177,13 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
 /* Evaluation                                                          */
 /* ------------------------------------------------------------------ */
 
-/** A place that fixes a failure: go there (`interact`), or fetch it (a cart to wheel to the patient). */
+/** A place that fixes a failure: go there (`interact`), or fetch it (a cart to wheel to the patient), or go to the patient and take them to `transport`. */
 interface Candidate {
   goal: NavGoal;
   target: Placed;
   fetch: boolean;
+  /** Where to take the patient (`transport_patient`): a provider, or `home` (back to their bed space). */
+  transport?: EntityId | "home";
 }
 
 interface Failure {
@@ -197,26 +229,75 @@ export class SpatialChecker {
     return this.evaluate(actor, requirement, code);
   }
 
-  /** Evaluate a requirement for an actor (any pose: the action bus evaluates hypothetical spots too). */
+  /**
+   * Evaluate a requirement for an actor (any pose: the action bus evaluates hypothetical spots too). A
+   * failure's `reason`, `message`, `hint` and `details` are resolved lazily (see the module docs).
+   */
   evaluate(actor: ActorState, requirement: SpatialRequirement, code: SpatialErrorCode = "SPATIAL_REQUIREMENT_UNMET"): SpatialCheck {
     const outcome = this.outcome(actor, requirement);
     if (outcome.ok) return { ok: true, requirement, satisfiedBy: outcome.satisfiedBy };
-    const { failure, chosen } = this.choose(actor, outcome.failures);
+    // ranked with the actor where it stands now, whenever the failure is first read
+    const at: ActorState = { ...actor, pose: { ...actor.pose } };
+    let resolved: { reason: string; message: string; hint: ActionHint | null; details: Record<string, unknown> } | null = null;
+    const resolve = () => (resolved ??= this.resolveFailure(at, outcome.failures));
+    const check = { ok: false, code, requirement } as Extract<SpatialCheck, { ok: false }>;
+    for (const key of ["reason", "message", "hint", "details"] as const) Object.defineProperty(check, key, { get: () => resolve()[key], enumerable: true, configurable: true });
+    return check;
+  }
+
+  /** The failure to report and its hint (the ranking). */
+  private resolveFailure(actor: ActorState, failures: Failure[]): { reason: string; message: string; hint: ActionHint | null; details: Record<string, unknown> } {
+    const { failure, chosen } = this.choose(actor, failures);
     const L = this.d.locale;
-    const patient = this.d.locator.patientId;
-    const hint: ActionHint | null = chosen
-      ? {
-          goal: chosen.goal,
-          label: chosen.fetch ? worldMessage("hint.fetch", L, { provider: this.d.locator.name(chosen.target.id), patient: this.patientName() }) : chosen.target.kind === "patient" ? worldMessage("hint.patient", L, { patient: this.patientName() }) : worldMessage("hint.provider", L, { provider: this.d.locator.name(chosen.target.id) }),
-          // a fetch: once at the cart, wheel it to the patient
-          ...(chosen.fetch && patient ? { then: { operation: "move_to", targetId: chosen.target.id, goal: { kind: "interact", id: patient } as NavGoal } } : {}),
-        }
-      : null;
-    return { ok: false, code, requirement, reason: failure.reason, message: failure.message(chosen), hint, details: failure.details };
+    const loc = this.d.locator;
+    const patient = loc.patientId;
+    let hint: ActionHint | null = null;
+    if (chosen?.transport && patient) {
+      // go to the patient, then take them to the device (or back to their bed space)
+      const label = chosen.transport === "home" ? worldMessage("hint.transportHome", L, { patient: this.patientName(), place: this.homeName() }) : worldMessage("hint.transport", L, { patient: this.patientName(), provider: loc.name(chosen.transport) });
+      hint = { goal: chosen.goal, label, then: { operation: "transport_patient", targetId: patient, parameters: { destination: chosen.transport } } };
+    } else if (chosen) {
+      hint = {
+        goal: chosen.goal,
+        label: chosen.fetch ? worldMessage("hint.fetch", L, { provider: loc.name(chosen.target.id), patient: this.patientName() }) : chosen.target.kind === "patient" ? worldMessage("hint.patient", L, { patient: this.patientName() }) : worldMessage("hint.provider", L, { provider: loc.name(chosen.target.id) }),
+        // a fetch: once at the cart, wheel it to the patient
+        ...(chosen.fetch && patient ? { then: { operation: "move_to", targetId: chosen.target.id, goal: { kind: "interact", id: patient } as NavGoal } } : {}),
+      };
+    }
+    return { reason: failure.reason, message: failure.message(chosen), hint, details: failure.details };
   }
 
   private patientName(): string {
     return this.d.locator.patientId ? this.d.locator.name(this.d.locator.patientId) : "—";
+  }
+
+  /** The name of the patient's own place (their bed space, else the provider they belong at). */
+  private homeName(): string {
+    const body = this.d.locator.patientBody;
+    const st = body?.state();
+    if (!body || !st) return "—";
+    const slot = body.slot(st.home.slot);
+    if (slot) return body.slotName(slot);
+    return st.home.provider ? this.d.locator.name(st.home.provider) : "—";
+  }
+
+  /**
+   * Away from their own place (at a device for a study), the kit an act needs may stand back there — fixed
+   * equipment that cannot be brought (the bay's infusion pumps): then take the patient back (null when the
+   * patient is home, or home lacks it too). Every capability must be provided in the home room.
+   */
+  private kitAtHome(caps: readonly string[]): boolean {
+    const loc = this.d.locator;
+    const body = loc.patientBody;
+    const st = body?.state();
+    if (!body || !st) return false;
+    const atHome = st.home.slot ? st.slot === st.home.slot : !st.slot && st.provider === st.home.provider;
+    if (atHome) return false;
+    const homeSlot = body.slot(st.home.slot);
+    const homeRoom = homeSlot ? homeSlot.room : st.home.provider ? (loc.place(st.home.provider)?.room ?? null) : null;
+    if (!homeRoom) return false;
+    const equipment = loc.registry.ofKind("equipment");
+    return caps.every((cap) => equipment.some((e) => loc.capabilities(e.id).includes(cap) && loc.place(e.id)?.room === homeRoom));
   }
 
   private caps(caps: readonly string[]): string {
@@ -247,6 +328,8 @@ export class SpatialChecker {
         return this.screenOutcome(actor, r.range);
       case "clinical":
         return this.clinicalOutcome(r);
+      case "patient-at-provider":
+        return this.patientAtProviderOutcome(actor, r.capabilities);
       case "any-of": {
         const failures: Failure[] = [];
         for (const option of r.options) {
@@ -258,15 +341,19 @@ export class SpatialChecker {
       }
       case "all-of": {
         const used: EntityId[] = [];
+        // the device the patient is at comes after what the actor acts through where they stand (a console
+        // they are at is where they order; the scanner is where the patient lies)
+        const patientAt: EntityId[] = [];
         const failing: Failure[][] = [];
         for (const option of r.options) {
           const o = this.outcome(actor, option);
-          if (o.ok) used.push(...o.satisfiedBy);
+          if (o.ok) (option.kind === "patient-at-provider" ? patientAt : used).push(...o.satisfiedBy);
           else failing.push(o.failures);
         }
-        if (!failing.length) return { ok: true, satisfiedBy: [...new Set(used)] };
-        // a part no walk can fix (a clinical prerequisite, nothing in the facility): report it alone, without hints
-        const stuck = failing.find((fs) => fs.every((f) => !f.candidates.length));
+        if (!failing.length) return { ok: true, satisfiedBy: [...new Set([...used, ...patientAt])] };
+        // a part no walk can fix (a clinical prerequisite, nothing in the facility): report it alone, without hints;
+        // the patient to bring to a device comes first too (a walk to the console would be wasted)
+        const stuck = failing.find((fs) => fs.every((f) => !f.candidates.length)) ?? failing.find((fs) => fs.some((f) => f.reason === "patient-not-at-provider"));
         return { ok: false, failures: stuck ?? failing.flat() };
       }
     }
@@ -381,6 +468,11 @@ export class SpatialChecker {
           const held = providersOf.get(stuck)!.find((p) => loc.atBedside(p))!;
           return { ok: false, failures: [{ reason: "provider-busy", details, candidates: [], message: () => worldMessage("spatial.provider-busy-none", L, { caps: this.caps([stuck]), provider: loc.name(held.id), holder: loc.name(this.busyBy(actor, held.id) ?? "—") }) }] };
         }
+        // fixed kit back in the patient's own bed space (the patient was taken to a device): take them back
+        const needed = missing.length ? missing : lacking;
+        if (this.kitAtHome(needed)) {
+          return { ok: false, failures: [{ reason, details: { ...details, home: true }, candidates: [{ goal: { kind: "interact", id: patient.id }, target: patient, fetch: false, transport: "home" }], message: () => worldMessage("spatial.kit-at-home", L, { caps: this.caps(needed), patient: this.patientName(), place: this.homeName() }) }] };
+        }
         return { ok: false, failures: [{ reason, details, candidates: [], message: () => worldMessage("spatial.provider-not-at-bedside-fixed", L, { caps: this.caps(missing.length ? missing : lacking) }) }] };
       }
       // an item the actor carries is at the bedside as soon as the actor is: go to the patient
@@ -406,6 +498,73 @@ export class SpatialChecker {
     return at.ok ? { ok: true, satisfiedBy: [patient.id, ...used] } : at;
   }
 
+  /** The resolution context of providers for the patient (ranking only: no spots needed). */
+  private targetDeps(): TargetDeps | null {
+    const loc = this.d.locator;
+    if (!loc.patientBody) return null;
+    return {
+      body: loc.patientBody,
+      registry: loc.registry,
+      capabilities: (id) => loc.capabilities(id),
+      reach: (id) => {
+        const p = loc.place(id);
+        return p ? loc.reach(p) : 0;
+      },
+      grids: null,
+      visibility: loc.visibility,
+      sight: (id) => {
+        const p = loc.place(id);
+        return p ? loc.sight(p) : null;
+      },
+      locale: this.d.locale,
+    };
+  }
+
+  /** Is the patient within reach of a provider (where both are now), with a line of sight? */
+  patientWithin(patient: Placed, p: Placed): boolean {
+    const loc = this.d.locator;
+    if (patient.level !== p.level) return false;
+    if (areaGap(patient.area, p.area) > Math.max(loc.reach(p), MIN_RANGE) + 1e-6) return false;
+    return loc.visibility.visibleFrom(p.level, { x: patient.position.x, z: patient.position.z }, loc.sight(p));
+  }
+
+  /**
+   * The patient within reach of an in-service device providing every capability (G8): a scanner, a C-arm,
+   * a station — terminals only where no device provides them (`patientProviders`). Away: go to the patient,
+   * then take them to the nearest one (`transport_patient`).
+   */
+  private patientAtProviderOutcome(actor: ActorState, caps: readonly string[]): Outcome {
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const patient = loc.patient();
+    const deps = this.targetDeps();
+    if (!patient || !deps) return this.noPatient();
+    const capsText = this.caps(caps);
+    const all = rankedPatientProviders(deps, caps);
+    if (!all.length) return { ok: false, failures: [{ reason: "no-provider-in-facility", details: { capabilities: [...caps] }, candidates: [], message: () => worldMessage("spatial.no-provider-in-facility", L, { caps: capsText }) }] };
+    const free = all.filter((id) => !this.busyBy(actor, id));
+    for (const id of free) {
+      const p = loc.place(id);
+      if (p && this.patientWithin(patient, p)) return { ok: true, satisfiedBy: [id] };
+    }
+    if (!free.length) {
+      const holder = this.busyBy(actor, all[0]!)!;
+      return { ok: false, failures: [{ reason: "provider-busy", details: { capabilities: [...caps], providers: all, busy: all }, candidates: [], message: () => worldMessage("spatial.provider-busy-none", L, { caps: capsText, provider: loc.name(all[0]!), holder: loc.name(holder) }) }] };
+    }
+    const destination = free[0]!;
+    return {
+      ok: false,
+      failures: [
+        {
+          reason: "patient-not-at-provider",
+          details: { capabilities: [...caps], providers: free, destination },
+          candidates: [{ goal: { kind: "interact", id: patient.id }, target: patient, fetch: false, transport: destination }],
+          message: () => worldMessage("spatial.patient-not-at-provider", L, { patient: this.patientName(), caps: capsText, provider: loc.name(destination) }),
+        },
+      ],
+    };
+  }
+
   /** The patient's attached monitor, read from its screen: within range, line of sight, from the monitor's own room. */
   private screenOutcome(actor: ActorState, range: number): Outcome {
     const loc = this.d.locator;
@@ -419,9 +578,8 @@ export class SpatialChecker {
       return { ok: false, failures: [{ reason: "no-monitor-attached", details: { monitors: monitors.map((m) => m.id) }, candidates: [], message: () => worldMessage("spatial.no-monitor-attached", L, { patient: this.patientName() }) }] };
     }
     const needed = Math.max(range, MIN_RANGE);
-    for (const m of monitors) {
-      if (actor.room === m.room && loc.distance(actor.pose, m) <= needed + 1e-6 && loc.lineOfSight(actor.pose, m)) return { ok: true, satisfiedBy: [m.id] };
-    }
+    // THE screen rule (`WorldLocator.screenInView`): the monitor's `read`, perception's screen cue and the web use it too
+    for (const m of monitors) if (loc.screenInView(actor, m, range)) return { ok: true, satisfiedBy: [m.id] };
     const m = monitors[0]!;
     return {
       ok: false,
@@ -454,11 +612,13 @@ export class SpatialChecker {
    * straight-line distance (another level, unreachable), then id.
    */
   private choose(actor: ActorState, failures: Failure[]): { failure: Failure; chosen: Candidate | null } {
-    for (const fetch of [false, true]) {
+    // a walk, then a cart to fetch, then the patient to take somewhere
+    const tier = (c: Candidate) => (c.transport ? 2 : c.fetch ? 1 : 0);
+    for (const want of [0, 1, 2]) {
       let best: { failure: Failure; c: Candidate; key: [number, number, string] } | null = null;
       for (const failure of failures) {
         for (const c of failure.candidates) {
-          if (c.fetch !== fetch) continue;
+          if (tier(c) !== want) continue;
           const key = this.rank(actor, c.target);
           if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) best = { failure, c, key };
         }

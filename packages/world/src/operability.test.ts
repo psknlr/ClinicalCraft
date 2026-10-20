@@ -5,7 +5,8 @@
  * hints that spot (a `point` goal); when they cannot (a cart too far from
  * the patient), it hints fetching the cart (`move_to` it to the patient), a
  * fixed device says so without a hint — never hints that alternate between
- * the device and the patient. Property: for every patient slot of the three
+ * the device and the patient. A study on the patient at a fixed station (a
+ * peak-flow station: G8) hints taking the patient there (`transport_patient`). Property: for every patient slot of the three
  * built-in facilities and every device at its bedside (plus the nearest
  * portable provider elsewhere of each bedside capability the case needs),
  * driving each clinical operation from the patient's side by following
@@ -85,9 +86,15 @@ async function drive(w: TestWorld, id: string, operation: string, parameters: Re
     const goal: NavGoal = r.hint.goal;
     const nav = await w.act({ actorId: A, operation: "navigate", goal });
     if (nav.status !== "completed") return "stopped";
-    // a fetch hint says what to do on arrival: wheel the cart to the patient
+    // a fetch hint says what to do on arrival: wheel the cart to the patient; a transport hint (G8): at the
+    // patient's side, take them to the station (a patient-performed test) or back to their bed space
     const then = r.hint.then;
-    if (then) {
+    if (then?.operation === "transport_patient") {
+      expect(goal).toEqual({ kind: "interact", id: w.patientId });
+      expect(then).toMatchObject({ targetId: w.patientId, parameters: { destination: expect.any(String) } });
+      const moved = await w.act({ actorId: A, operation: then.operation, targetId: then.targetId, parameters: then.parameters! });
+      if (moved.status !== "completed") return "stopped";
+    } else if (then) {
       expect(then).toEqual({ operation: "move_to", targetId: goal.kind === "interact" ? goal.id : "?", goal: { kind: "interact", id: w.patientId } });
       const moved = await w.act({ actorId: A, operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}) });
       if (moved.status !== "completed") return "stopped";

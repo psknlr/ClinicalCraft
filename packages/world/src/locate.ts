@@ -257,7 +257,7 @@ export class WorldLocator {
    * policy's `monitor-screen` option, the monitor's `read`, perception's screen cue and the web's screen all
    * use it.
    */
-  screenInView(actor: { pose: Pick<Pose, "x" | "z" | "level">; room: string | null }, monitor: Placed, range = RANGES.screen): boolean {
+  screenInView(actor: { pose: Pick<Pose, "x" | "z" | "level">; room: string | null }, monitor: Placed, range: number = RANGES.screen): boolean {
     if (actor.pose.level !== monitor.level || actor.room !== monitor.room) return false;
     return this.distance(actor.pose, monitor) <= Math.max(range, MIN_RANGE) + 1e-6 && this.lineOfSight(actor.pose, monitor);
   }

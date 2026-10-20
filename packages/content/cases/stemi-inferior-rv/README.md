@@ -242,6 +242,10 @@ In embodied mode a clinical act needs the kit it names at the bedside and IV acc
 
 Scope of practice: `cpr` (chest compressions) and `defibrillation` are authored `scope: "nursing"`: in the arrest a delegated ED/CCU nurse with ILS/ALS training may give the compressions and the shock (docs/EMBODIED.md §8 scope of practice).
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for reviews G8/G12: `transfer-cath-lab` has `destination: {"capability": "fluoroscopy"}` and `posture: "lying"` — when it is given the team moves him onto the cath-lab table beside the C-arm (no time charged; his resus trolley is parked there), where the angiogram is then ordered and the post-PCI ECG recorded (the resus bay's ECG cart is wheeled to the cath lab); the `cath` and `post-pci` phases have the same `location`, so a phase that starts first moves him too; `cxr-portable` is `performedAt: "bedside"`; `oxygen` names `device: "nasal-cannula"`. The CT aortogram (dissection screen, not in the reference path) would take him to CT. Scores are unchanged (100 in both modes).
+
 ## Validation
 
 ```bash

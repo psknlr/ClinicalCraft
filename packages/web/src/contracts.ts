@@ -36,6 +36,22 @@ export interface WorldPatient {
   tag: string;
 }
 
+/**
+ * Where the world model has the patient when it is not their own bed space (EMBODIED §8, patient transport):
+ * a spot at a device (the CT table, the cath-lab table, a peak-flow station), another bed space, or wherever a
+ * transport stopped — in a posture, lying or sitting on a support placement (or standing).
+ */
+export interface PatientSpot {
+  x: number;
+  z: number;
+  level: string;
+  /** Facing (degrees about +Y). */
+  rot: number;
+  posture: WorldPatient["posture"];
+  /** The placement (without `eq:`) the patient lies or sits on — a scanner table, a bed, the trolley; null: standing. */
+  support: string | null;
+}
+
 export type InteractionTarget =
   | { kind: "patient"; slotId: string; caseId: string; name: string; hint: string }
   | { kind: "staff"; staffId: string; role: string; name: string; hint: string }
@@ -239,9 +255,21 @@ export interface WorldApi {
   placeEquipment(placementId: string, at: EquipmentSpot | "home" | null): void;
   /**
    * Draw a cart in front of a walker while it is pushed (`by`: "avatar" or a staff id; `null`: stop) — no
-   * collider meanwhile; the world model parks it (`placeEquipment`) when the push ends.
+   * collider meanwhile; the world model parks it (`placeEquipment`) when the push ends. A trolley (a bed, a
+   * stretcher) is turned along the way.
    */
   pushEquipment(placementId: string, by: string | null): void;
+  /**
+   * Draw the patient where the world model has them (EMBODIED §8): at a spot (`PatientSpot`), or back in their
+   * own bed space (`null`). Their collider (standing) and aim target follow.
+   */
+  placePatient(slotId: string, at: PatientSpot | null): void;
+  /**
+   * Draw the patient travelling with a walker while wheeled or walked (`by`: "avatar" or a staff id; `null`: stop):
+   * lying on the trolley the walker pushes, or walking ahead of them. No collider meanwhile; the world model then
+   * says where they are (`placePatient`).
+   */
+  pushPatient(slotId: string, by: string | null, posture?: WorldPatient["posture"]): void;
   /** Open or close a door (renderer door id; a `door:` prefix is accepted). A locked door does not open. */
   setDoor(doorId: string, open: boolean): void;
   /** Lock / unlock a door: a locked door closes and stays shut for the player and for walkers. */

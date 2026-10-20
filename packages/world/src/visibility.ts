@@ -177,7 +177,7 @@ export class VisibilityModel {
    * (the target's own footprint, so a tall target does not hide itself);
    * `ownDoor` (index + 1 of a door) makes that door's leaves transparent.
    */
-  lineOfSight(level: string, a: { x: number; z: number }, b: { x: number; z: number }, stopIn?: Area, ownDoor = 0): boolean {
+  lineOfSight(level: string, a: { x: number; z: number }, b: { x: number; z: number }, stopIn?: Area, ownDoor = 0, extra?: ReadonlySet<number>): boolean {
     const g = this.grids.get(level);
     if (!g) return false;
     const len = Math.hypot(b.x - a.x, b.z - a.z);
@@ -189,9 +189,25 @@ export class VisibilityModel {
       const x = a.x + (b.x - a.x) * t, z = a.z + (b.z - a.z) * t;
       if (stopIn && x >= stopIn.minX && x <= stopIn.maxX && z >= stopIn.minZ && z <= stopIn.maxZ) return true;
       if (!inFrame(g, x, z)) continue;
-      if (this.blocked(g, cellIndex(g, x, z), ownDoor)) return false;
+      const i = cellIndex(g, x, z);
+      if (this.blocked(g, i, ownDoor) || extra?.has(i)) return false;
     }
     return true;
+  }
+
+  /**
+   * `visibleFrom` with an entity's occluders standing somewhere else too (`moved`: a cart about to be parked
+   * there) — would it hide the target? Its occlusion where it stands now is kept (conservative).
+   */
+  visibleWith(level: string, eye: { x: number; z: number }, target: SightTarget, moved: { id: string; x: number; z: number; rot?: number }): boolean {
+    const g = this.grids.get(level);
+    if (!g || target.level !== level) return false;
+    const extra = new Set<number>();
+    for (const c of this.byEntity.get(moved.id) ?? []) forEachCellCovered(g, shiftBox(c, moved, this.rotOf(moved.id)), (i) => extra.add(i));
+    const own = footprintArea(target);
+    const stopIn = { minX: own.minX - 0.05, maxX: own.maxX + 0.05, minZ: own.minZ - 0.05, maxZ: own.maxZ + 0.05 };
+    const ownDoor = target.id ? (this.doorIndex.get(target.id) ?? 0) : 0;
+    return sightSamples(target).some((p) => this.lineOfSight(level, eye, p, stopIn, ownDoor, extra));
   }
 
   /** Line of sight from a point to any sample of a target (no range or field-of-view test). */

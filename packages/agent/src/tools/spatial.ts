@@ -27,6 +27,7 @@ import { rt } from "../session/i18n.js";
 import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
 import { checkClinicalScope, type ScopeActor, type ScopeRefusal } from "./scope.js";
 import type { ToolContext, ToolDefinition, ToolOutput, VitalsView } from "./types.js";
+import { hintLines } from "./world-format.js";
 
 /** Clinical tools held to the spatial policy (EMBODIED §6). */
 export const SPATIALLY_GATED_TOOLS: readonly string[] = ["ask_patient", "examine", "check_vitals", "order_test", "read_result", "intervene"];
@@ -89,7 +90,7 @@ export function actionIntent(action: ClinicalAction): ClinicalIntent | null {
 /** The refusal of a failed spatial check, as a tool output (`data.code`, `data.hint.goal`…). */
 export function spatialRefusal(check: Extract<SpatialCheck, { ok: false }>, locale: string): ToolOutput {
   const lead = rt(locale, check.code === "SPATIAL_PRECONDITION_CHANGED" ? "spatial.changed" : "spatial.refused", { message: check.message });
-  const next = check.hint ? rt(locale, "spatial.hint", { goal: JSON.stringify(check.hint.goal), label: check.hint.label }) : rt(locale, "spatial.noHint");
+  const next = check.hint ? hintLines(check.hint, locale).join("\n") : rt(locale, "spatial.noHint");
   return {
     ok: false,
     output: `${lead}\n${next}`,

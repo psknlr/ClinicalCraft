@@ -3,7 +3,8 @@
  *
  *   BrowserMover   `Mover` of the world model: the avatar follows the route the world planned with the
  *                  renderer's auto-walk (arrival tolerance, local detours, WASD / abort), staff NPC rigs
- *                  walk theirs, carts are drawn where they were parked, doors open and close; the world
+ *                  walk theirs, carts are drawn where they were parked, a patient being transported travels
+ *                  with the walker (lying on the trolley it pushes — EMBODIED §8), doors open and close; the world
  *                  commits the pose the mover reports and charges the travel time once. A hidden tab
  *                  draws no frames: there a body is treated as undrawn — put at its target at once (also
  *                  a walk under way when the tab is hidden), so an external agent's `navigate_to` does
@@ -25,8 +26,10 @@ export interface MoverHooks {
   onStart?(actorId: ActorId, plan: Plan): void;
   /** It stopped (arrived or not). */
   onEnd?(actorId: ActorId, move: BodyMove): void;
-  /** The cart this move pushes (`move_to`), if any — drawn in front of the walker. */
+  /** The cart this move pushes (`move_to`) or the trolley the patient lies on (`transport_patient`), if any — drawn in front of the walker. */
   pushing?(actorId: ActorId): string | null;
+  /** The patient this move takes along (`transport_patient`): their slot and the posture they travel in. */
+  carrying?(actorId: ActorId): { slotId: string; posture: "lying" | "standing" } | null;
   /** The page is hidden (`document.hidden`): no frames are drawn, so nothing would animate a walk. */
   hidden?(): boolean;
   /** Subscribe to the page becoming hidden; returns the unsubscribe. */
@@ -76,6 +79,9 @@ export class BrowserMover implements Mover {
     }
     const cart = this.hooks.pushing?.(actorId) ?? null;
     if (cart) api!.pushEquipment(cart, staff ?? "avatar");
+    // the patient travels with the walker (on the pushed trolley, or walking ahead): placed by the world model after
+    const patient = this.hooks.carrying?.(actorId) ?? null;
+    if (patient) api!.pushPatient(patient.slotId, staff ?? "avatar", patient.posture);
     // The walk stops when the caller cancels — or when the tab is hidden, and then the move completes without frames.
     const walk = new AbortController();
     let hid = false;
@@ -99,6 +105,7 @@ export class BrowserMover implements Mover {
       offHidden();
       signal?.removeEventListener("abort", onAbort);
       if (cart) this.hooks.renderer()?.pushEquipment(cart, null);
+      if (patient) this.hooks.renderer()?.pushPatient(patient.slotId, null);
     }
     if (hid && !result.arrived && !signal?.aborted) {
       const now = this.hooks.renderer();

@@ -358,11 +358,18 @@ export function rankedPatientProviders(d: TargetDeps, caps: readonly string[]): 
   return rankProviders(d, patientProviders(d, caps), d.body.anchor());
 }
 
-/** The patient's place in a bed space. */
+/**
+ * The patient's place in a bed space. Its bed is where the body that brings the patient stands — or, when
+ * that bed is away (the trolley the patient travels on, parked beside a scanner), the bed space it comes
+ * back to.
+ */
 function slotTarget(d: TargetDeps, slot: PatientSlot): PatientTarget {
   const bed = slot.bed && d.registry.entity(`eq:${slot.bed}`) ? `eq:${slot.bed}` : null;
   const level = d.body.slotLevel(slot);
-  const stand: NavGoal = bed ? { kind: "interact", id: bed } : { kind: "point", x: slot.x, z: slot.z, level, range: 1.5 };
+  const e = bed ? d.registry.entity(bed)! : null;
+  const now = bed ? d.body.equipmentAt(bed) : null;
+  const away = !!e && !!now && (now.level !== e.level || !same(now.x, e.position.x) || !same(now.z, e.position.z));
+  const stand: NavGoal = bed && !away ? { kind: "interact", id: bed } : { kind: "point", x: e ? e.position.x : slot.x, z: e ? e.position.z : slot.z, level, range: 1.5 };
   return { slot: slot.id, provider: null, spot: null, posture: null, support: bed, stand, name: d.body.slotName(slot) };
 }
 
@@ -459,8 +466,8 @@ export function trolleySpot(d: Pick<TargetDeps, "grids" | "visibility" | "body">
   return freeCellNear(d.grids, d.visibility, level, near, TROLLEY_RINGS[TROLLEY_RINGS.length - 1]!, null);
 }
 
-/** Is a target the place the patient is in now? */
+/** Is a target the place the patient is in now (the same bed space, or at the same provider)? */
 export function sameTarget(st: PatientPlaceState, target: PatientTarget): boolean {
   if (target.slot) return st.slot === target.slot;
-  return !st.slot && st.provider === target.provider && !!st.spot && !!target.spot && same(st.spot.x, target.spot.x) && same(st.spot.z, target.spot.z) && st.spot.level === target.spot.level;
+  return !st.slot && !!target.provider && st.provider === target.provider;
 }

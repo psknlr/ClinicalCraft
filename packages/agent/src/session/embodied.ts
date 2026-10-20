@@ -25,7 +25,9 @@
  */
 import { assignPatientSlot, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
+  behaviorOf,
   createWorldRuntime,
+  operationName,
   PRIMARY_ACTOR,
   rhythmAtBedside,
   type ActionHint,
@@ -37,6 +39,8 @@ import {
   type ClinicalPort,
   type ClinicalView,
   type Mover,
+  type PatientDestination,
+  type PatientRelocation,
   type Pose,
   type SpatialCheck,
   type WorldActionRequest,
@@ -55,7 +59,8 @@ import { learnerVitals } from "../tools/format.js";
 import type { ScopeActor } from "../tools/scope.js";
 import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
 import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
-import { createWorldTools, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
+import { createWorldTools, DELEGATION_TASKS, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
+import { nameOf } from "../tools/world-format.js";
 import { runDelegation, type DelegationResult } from "./delegation.js";
 import { heldBy, releaseHeld } from "./device-ops.js";
 import type { ClinicalCaller } from "./embodied-types.js";
@@ -181,6 +186,12 @@ export class EmbodiedSession {
   private readonly engineChanges = new Map<string, { id: string; type: DomainEvent["type"] }[]>();
   private carry = 0;
   private dirty = false;
+  /** Relocation lines for the tool calls running now: each appends them to its output (EMBODIED §8). */
+  private readonly noteCaptures = new Set<string[]>();
+  /** `transport_patient` actions in flight: a relocation clinical state asks for meanwhile waits for them. */
+  private transporting = 0;
+  /** Relocations deferred while a transport was in flight. */
+  private readonly deferred: PatientDestination[] = [];
   private readonly facade: WorldRuntime;
   readonly view: ClinicalView;
   readonly port: ClinicalPort;
@@ -199,7 +210,8 @@ export class EmbodiedSession {
       caseDef: c,
       state: () => host.state(),
       bedside: () => vitalsAt(c, host.state()),
-      cues: (slotId) => (slotId === this.slotId ? { posture: c.patient.posture, speaking: false, ...patientCues(c, host.state()) } : {}),
+      // the posture follows clinical state (G12: an intervention's authored posture, else the case's — core `patientPosture`)
+      cues: (slotId) => (slotId === this.slotId ? { speaking: false, ...patientCues(c, host.state()) } : {}),
       clock: () => host.state().clock,
     };
     this.port = {
@@ -308,6 +320,19 @@ export class EmbodiedSession {
       checkSpatial: (actorId, intent, opts) => w().checkSpatial(actorId, intent, opts),
       atBedside: (id) => w().atBedside(id),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
+      patientPlace: () => w().patientPlace(),
+      patientMonitor: () => w().patientMonitor(),
+      screenInView: (actorId) => w().screenInView(actorId),
+      relocatePatient: (destination) => {
+        let r: PatientRelocation | undefined;
+        self.control(() => (r = w().relocatePatient(destination)));
+        return r!;
+      },
+      refreshPatient: () => {
+        let changed = false;
+        self.control(() => (changed = w().refreshPatient()));
+        return changed;
+      },
       // The learner's world action (a `world_action` op does the same, queued with the turns).
       execute: (request, signal) => self.act({ agent: "learner" }, request, signal),
       feedback: (actionId) => w().feedback(actionId),
@@ -354,6 +379,8 @@ export class EmbodiedSession {
     const entry = { caller, actorId };
     const owned = !this.callers.has(actionId);
     if (owned) this.callers.set(actionId, entry);
+    const transport = request.operation === "transport_patient";
+    if (transport) this.transporting++;
     this.inflight++;
     try {
       const inner = this.inner;
@@ -369,6 +396,10 @@ export class EmbodiedSession {
       if (inner.version !== before) this.record();
       return result;
     } finally {
+      if (transport) {
+        this.transporting--;
+        if (this.transporting === 0) this.flushRelocations();
+      }
       this.inflight--;
       if (this.inflight === 0) this.applyPendingLocale();
     }
@@ -471,9 +502,69 @@ export class EmbodiedSession {
     this.host.dispatch({ type: "advance-time", minutes, reason, by: "system" });
   }
 
-  /** The session noted a clinical event (`ev-<seq>` ids for traces). */
+  /** The session noted a clinical event (`ev-<seq>` ids for traces); the patient's body follows it. */
   noteClinicalEvent(seq: number, event: DomainEvent): void {
     for (const c of this.captures) c.push({ id: `ev-${seq}`, type: event.type });
+    this.followClinicalEvent(event);
+  }
+
+  /**
+   * The patient's body follows clinical state (EMBODIED §8, reviews G8 / G12): an intervention with an authored
+   * `destination` (a transfer) or a phase with a `location` moves the patient there — the team does it, nothing
+   * charged; an authored `posture` changes the body (its collider, what bystanders see).
+   */
+  private followClinicalEvent(event: DomainEvent): void {
+    const c = this.host.caseDef;
+    if (event.type === "intervention.applied") {
+      const destination = c.interventions.find((i) => i.id === event.interventionId)?.destination;
+      if (destination) this.relocate(destination);
+      if (this.inner.refreshPatient()) this.record();
+    } else if (event.type === "phase.changed") {
+      const location = c.phases.find((p) => p.id === event.to)?.location;
+      if (location) this.relocate(location);
+    }
+  }
+
+  /**
+   * Relocate the patient (see `followClinicalEvent`); while someone wheels the patient, after that transport. The
+   * outcome — moved, or no such place here — is appended to the outputs of the tool calls running now and sent as
+   * a notification; already there: nothing to say.
+   */
+  private relocate(destination: PatientDestination): void {
+    if (this.transporting > 0) {
+      this.deferred.push(destination);
+      return;
+    }
+    const r = this.inner.relocatePatient(destination);
+    if (r.ok && !r.moved) {
+      this.record();
+      return;
+    }
+    this.record();
+    for (const lines of this.noteCaptures) lines.push(r.message);
+    this.host.emit({ type: "notification", level: r.ok ? "info" : "warning", title: rt(this.host.locale(), "world.relocated"), body: r.message });
+  }
+
+  private flushRelocations(): void {
+    for (const destination of this.deferred.splice(0)) this.relocate(destination);
+  }
+
+  /** A tool whose call may relocate the patient: the relocation's line is appended to its output. */
+  private withNotes<A extends Record<string, unknown>>(tool: ToolDefinition<A>): ToolDefinition<A> {
+    return {
+      ...tool,
+      run: async (args, ctx) => {
+        const lines: string[] = [];
+        this.noteCaptures.add(lines);
+        let out: ToolOutput;
+        try {
+          out = await tool.run(args, ctx);
+        } finally {
+          this.noteCaptures.delete(lines);
+        }
+        return lines.length ? { ...out, output: [out.output, ...lines].filter(Boolean).join("\n") } : out;
+      },
+    };
   }
 
   /* ---------------------------------------------------------------- */
@@ -511,16 +602,23 @@ export class EmbodiedSession {
     return { role: actor.role, name: entity ? t(entity.name, locale) : actorId };
   }
 
-  /** The clinical tools of a registry, spatially gated (EMBODIED §6); `wait` reports only the vitals in view (G11). */
+  /**
+   * The clinical tools of a registry, spatially gated (EMBODIED §6); `wait` reports only the vitals in view (G11);
+   * every tool whose call can change the phase or give a transfer appends where the patient was moved (§8).
+   */
   gatedTools(get: (name: string) => ToolDefinition<any> | undefined): ToolDefinition<any>[] {
     const gate = this.gate();
     const wait = get("wait");
     return [
       ...SPATIALLY_GATED_TOOLS.flatMap((name) => {
         const tool = get(name);
-        return tool ? [spatiallyGated(tool, gate)] : [];
+        return tool ? [this.withNotes(spatiallyGated(tool, gate))] : [];
       }),
-      ...(wait ? [vitalsGated(wait, gate)] : []),
+      ...(wait ? [this.withNotes(vitalsGated(wait, gate))] : []),
+      ...NOTED_TOOLS.flatMap((name) => {
+        const tool = get(name);
+        return tool ? [this.withNotes(tool)] : [];
+      }),
     ];
   }
 
@@ -578,14 +676,9 @@ export class EmbodiedSession {
     return this.slotId && this.inner.entity(`patient:${this.slotId}`) ? `patient:${this.slotId}` : null;
   }
 
-  /** The patient's monitor: the slot's linked monitor, else a monitor at the bedside. */
+  /** The patient's monitor where the patient is now: the bed space's linked monitor, else a monitor at the bedside (the world's). */
   patientMonitorId(): string | null {
-    const f = this.host.facility!;
-    const slot = f.patientSlots.find((s) => s.id === this.slotId);
-    if (!slot) return null;
-    if (slot.monitor && this.inner.entity(`eq:${slot.monitor}`)) return `eq:${slot.monitor}`;
-    const monitors = this.inner.entities().filter((e) => e.interaction === "monitor");
-    return monitors.find((m) => this.atBedside(m.id))?.id ?? null;
+    return this.inner.patientMonitor();
   }
 
 
@@ -688,7 +781,7 @@ export class EmbodiedSession {
         caller,
         args,
       );
-      return { ok: result.status === "completed", output: delegationText(result, L, this.facade), data: { delegation: result } };
+      return { ok: result.status === "completed", output: delegationText(result, L, this.facade, this.host.caseDef), data: { delegation: result } };
     } finally {
       if (staff) {
         const left = (this.delegates.get(staff) ?? 1) - 1;
@@ -823,8 +916,29 @@ export class EmbodiedSession {
   }
 }
 
-/** The text of a delegation result. */
-export function delegationText(r: DelegationResult, locale: string, world: WorldRuntime): string {
+/** Clinical tools (besides the spatially gated ones) whose calls can relocate the patient: a phase, a decision. */
+const NOTED_TOOLS: readonly string[] = ["set_phase", "answer_decision"];
+
+/**
+ * A delegation step in words (extra review item 5): the operation's name (an entity's own name for a catalog
+ * operation, a delegated clinical act's label) and its target by name — never the ids.
+ */
+function stepWords(s: DelegationResult["steps"][number], locale: string, world: WorldRuntime, caseDef?: CaseDefinition): { operation: string; target: string } {
+  if (s.operation === "intervene") {
+    const iv = caseDef?.interventions.find((i) => i.id === s.target);
+    return { operation: rt(locale, "delegate.op.intervene"), target: iv ? t(iv.name, locale) : (s.target ?? "") };
+  }
+  const e = s.target ? world.entity(s.target) : null;
+  // the patient wheeled somewhere: "Transport the patient" says whom
+  if (s.operation === "transport_patient") return { operation: operationName(s.operation, locale), target: "" };
+  // a task refused before anyone moved (scope of practice): the task itself
+  if (!e && (DELEGATION_TASKS as readonly string[]).includes(s.operation)) return { operation: taskLabel(locale, s.operation), target: "" };
+  const own = e ? behaviorOf(e).operations.find((o) => o.id === s.operation)?.name : undefined;
+  return { operation: operationName(s.operation, locale, own), target: s.target ? nameOf(world, s.target, locale) : "" };
+}
+
+/** The text of a delegation result (operations and entities in words: CLI, MCP and transcripts show it). */
+export function delegationText(r: DelegationResult, locale: string, world: WorldRuntime, caseDef?: CaseDefinition): string {
   if (r.message === "unknown-task") return rt(locale, "delegate.unknownTask", { task: r.task });
   if (r.message === "unknown-role") return rt(locale, "delegate.unknownRole", { role: r.role });
   if (r.message === "not-authorized") return rt(locale, "delegate.notAuthorized", { message: r.refusal ?? "" });
@@ -832,17 +946,18 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   const task = taskLabel(locale, r.task);
   if (r.message === "no-item" || r.message === "no-target") return rt(locale, r.message === "no-item" ? "delegate.noItem" : "delegate.needTarget", { task, what: task, param: "target" });
   const lines = [rt(locale, "delegate.result", { staff, task, status: rt(locale, `delegate.status.${r.status}` as RuntimeKey), steps: r.steps.length, seconds: Math.round(r.elapsedSeconds) })];
-  r.steps.forEach((s, i) =>
+  r.steps.forEach((s, i) => {
+    const words = stepWords(s, locale, world, caseDef);
     lines.push(
       rt(locale, "delegate.step", {
         n: i + 1,
-        operation: s.operation,
-        target: s.target ? ` ${s.target}` : "",
+        operation: words.operation,
+        target: words.target ? ` ${words.target}` : "",
         status: rt(locale, `delegate.status.${s.status}` as RuntimeKey),
         message: s.status === "completed" ? "" : ` — ${s.message.split("\n")[0]}`,
       }),
-    ),
-  );
+    );
+  });
   return lines.join("\n");
 }
 

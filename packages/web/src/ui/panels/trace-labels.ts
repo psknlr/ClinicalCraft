@@ -56,6 +56,8 @@ function stepLabel(name: string, ctx: TraceLabelContext): string {
   if (delegate) return tr("trace.plan.delegate", { task: trTask(delegate[1]!) });
   const skill = /^skill:(.+)$/.exec(name);
   if (skill) return tr("trace.plan.skill", { name: skillLabel(skill[1]!) });
+  // the autopilot taking the patient back after a study (EMBODIED §8)
+  if (name === "transport_patient home") return tr("trace.plan.transportHome");
   const space = name.indexOf(" ");
   if (space < 0) return nameLabel(name);
   return tr("trace.plan.item", { action: nameLabel(name.slice(0, space)), item: itemLabel(ctx.caseDef, name.slice(space + 1).trim()) });
@@ -64,6 +66,7 @@ function stepLabel(name: string, ctx: TraceLabelContext): string {
 /** A verification: an action type, a skill, or a delegation's check (`monitor attached`, `ordered <id>`, …). */
 function verificationLabel(name: string, ctx: TraceLabelContext): string {
   if (name === "monitor attached") return tr("trace.verify.monitorAttached");
+  if (name === "patient home") return tr("trace.verify.patientHome");
   const m = /^(ordered|intervened|at bedside) (.+)$/.exec(name);
   if (m) {
     const key = m[1] === "ordered" ? "trace.verify.ordered" : m[1] === "intervened" ? "trace.verify.intervened" : "trace.verify.atBedside";

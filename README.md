@@ -250,7 +250,7 @@ autopilot ended with the case incomplete. Full flag reference:
 ## Embodied benchmark
 
 `clinicalcraft bench` measures embodied agents in the 3D hospital, headless
-and reproducibly: 40 scenarios in `packages/content/bench/embodied-v1`
+and reproducibly: 41 scenarios in `packages/content/bench/embodied-v1`
 (perception, spatial reasoning, navigation, device interaction, clinical
 workflows — one per built-in case plus the full STEMI encounter —,
 recovery, multi-agent delegation and safety), fixed seeds, a fresh session

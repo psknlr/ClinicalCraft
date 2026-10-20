@@ -75,7 +75,7 @@ function tooDeep(ctx: ToolContext): ToolOutput | null {
 }
 
 /** Tasks staff can be delegated (`delegate_task`). */
-export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention"] as const;
+export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient"] as const;
 
 const GOAL_SCHEMA = {
   type: "object",
@@ -160,11 +160,24 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
       ["target", "operation"],
     ),
   },
+  {
+    name: "transport_patient",
+    description:
+      'Take the patient somewhere on their bed or trolley (or walk a patient who can walk): you must be at the patient\'s side, and you wheel them there. destination: a device a study is done at (e.g. "eq:ct-scanner", the cath-lab C-arm, a peak-flow station), a bed space or room id, or "home" (back to their own bed space). A refusal\'s hint names it (then: transport_patient). Travel takes simulated time. A porter or a nurse can do it for you: delegate_task task transport_patient.',
+    inputSchema: obj(
+      {
+        destination: { type: "string", minLength: 1, maxLength: 120, description: 'Equipment id or alias, bed space or room id, or "home".' },
+        capability: { type: "string", maxLength: 60, description: "Instead of a destination: the nearest device providing this capability (e.g. ct)." },
+      },
+      [],
+    ),
+    scope: "workup",
+  },
   { name: "cancel_action", description: "Stop what a body is doing (default: yours): a walk, a device operation waiting for approval.", inputSchema: obj({ actor: { type: "string", maxLength: 80 } }) },
   {
     name: "delegate_task",
     description:
-      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention). They walk there and act; approvals still apply. Returns status, steps and simulated time.",
+      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there). They walk there and act; approvals still apply. Returns status, steps and simulated time.",
     inputSchema: obj(
       {
         role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },
@@ -294,6 +307,12 @@ function delegatedItem(host: Pick<WorldToolHost, "resolve">, ctx: ToolContext, a
       return ivAccessIntervention(c) ?? "";
     case "fetch_equipment":
       return target ? (host.resolve(target, actorId) ?? target) : strArg(params, "capability");
+    case "transport_patient": {
+      // where the patient is taken: the destination as the world resolves it, `home`, or the capability
+      const destination = strArg(params, "destination") || target;
+      if (destination === "home" || destination === "back") return "home";
+      return destination ? (host.resolve(destination, actorId) ?? destination) : strArg(params, "capability");
+    }
     default:
       return target;
   }
@@ -326,6 +345,13 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
     return id ? nameOf(host.world(), id, ctx.locale) : target;
   };
   const level = (ctx: ToolContext) => host.world().actor(host.actorOf(ctx))?.pose.level ?? "L0";
+  /** Where a transport goes, in words (approval summaries): the entity's name, home, or the capability. */
+  const destinationName = (ctx: ToolContext, args: Record<string, unknown>): string => {
+    const destination = strArg(args, "destination");
+    if (!destination) return strArg(args, "capability") || "—";
+    if (destination === "home" || destination === "back") return rt(ctx.locale, "world.transport.home");
+    return targetName(ctx, destination);
+  };
   /** The names rules may use for one entity id: the canonical id and the unprefixed one ("eq:resus1-ecg", "resus1-ecg"). */
   const spellings = (id: string): string[] => [...new Set([id, id.replace(/^[a-z]+:/, "")])].filter(Boolean);
   /** A target as rules see it: its canonical id when it resolves (review S6). */
@@ -543,6 +569,30 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
       {
         specifier: (args, ctx) => `${strArg(args, "operation")} ${resolvedTarget(args, ctx)}`,
         specifiers: (args, ctx) => [spellings(resolvedTarget(args, ctx)).map((target) => `${strArg(args, "operation")} ${target}`)],
+      },
+    ),
+    acting(
+      "transport_patient",
+      (args, ctx) => rt(ctx.locale, "sum.transport", { destination: destinationName(ctx, args) }),
+      async (args, ctx) => {
+        const actorId = host.actorOf(ctx);
+        const patient = host.resolve("patient", actorId);
+        if (!patient) return failedOutput(ctx, "world.noPatient");
+        const destination = strArg(args, "destination");
+        const capability = strArg(args, "capability");
+        if (!destination && !capability) return failedOutput(ctx, "world.transport.needDestination");
+        // an alias resolves as the world resolves it ("ct-scanner" → eq:ct-scanner); home, bed spaces and rooms as given
+        const resolved = destination && destination !== "home" && destination !== "back" ? (host.resolve(destination, actorId) ?? destination) : destination;
+        const parameters: Record<string, unknown> = resolved ? { destination: resolved } : { capability };
+        return resultOutput(await host.act(ctx, { operation: "transport_patient", targetId: patient, parameters }), L(ctx));
+      },
+      {
+        // Rules name where the patient is taken (`transport_patient(eq:ct-scanner)`, `transport_patient(home)`).
+        specifier: (args, ctx) => {
+          const destination = strArg(args, "destination");
+          if (!destination) return strArg(args, "capability");
+          return destination === "home" || destination === "back" ? "home" : (host.resolve(destination, host.actorOf(ctx)) ?? destination);
+        },
       },
     ),
     acting(

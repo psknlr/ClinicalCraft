@@ -116,6 +116,37 @@ export const OPERATION_NAMES: Record<string, Pair> = {
   pick_up: { "zh-CN": "拿起", en: "Pick up" },
   put_down: { "zh-CN": "放下", en: "Put down" },
   equip: { "zh-CN": "佩戴", en: "Equip" },
+  transport_patient: { "zh-CN": "转运患者", en: "Transport the patient" },
+};
+
+/** Room kinds in words (a destination's `roomKind`). */
+export const ROOM_KIND_NAMES: Record<string, Pair> = {
+  entrance: { "zh-CN": "入口", en: "entrance" },
+  reception: { "zh-CN": "接待处", en: "reception" },
+  waiting: { "zh-CN": "候诊区", en: "waiting area" },
+  consult: { "zh-CN": "诊室", en: "consulting room" },
+  triage: { "zh-CN": "分诊台", en: "triage" },
+  resus: { "zh-CN": "抢救室", en: "resuscitation room" },
+  emergency: { "zh-CN": "急诊诊室", en: "emergency cubicle" },
+  ward: { "zh-CN": "病房", en: "ward" },
+  icu: { "zh-CN": "重症监护室", en: "intensive care unit" },
+  "operating-room": { "zh-CN": "手术室", en: "operating theatre" },
+  imaging: { "zh-CN": "影像室", en: "imaging room" },
+  laboratory: { "zh-CN": "检验科", en: "laboratory" },
+  pathology: { "zh-CN": "病理科", en: "pathology" },
+  pharmacy: { "zh-CN": "药房", en: "pharmacy" },
+  "nurse-station": { "zh-CN": "护士站", en: "nurse station" },
+  conference: { "zh-CN": "会议室", en: "conference room" },
+  office: { "zh-CN": "办公室", en: "office" },
+  corridor: { "zh-CN": "走廊", en: "corridor" },
+  storage: { "zh-CN": "储物间", en: "store room" },
+  restroom: { "zh-CN": "卫生间", en: "restroom" },
+  garden: { "zh-CN": "花园", en: "garden" },
+  "build-zone": { "zh-CN": "建造区", en: "build zone" },
+  rehabilitation: { "zh-CN": "康复室", en: "rehabilitation gym" },
+  teaching: { "zh-CN": "示教室", en: "teaching room" },
+  elevator: { "zh-CN": "电梯", en: "lift" },
+  stairwell: { "zh-CN": "楼梯间", en: "stairwell" },
 };
 
 /** Names of built-in states (catalog behaviours name their own). */
@@ -150,12 +181,12 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   NO_PORT: { "zh-CN": "没有连接临床会话，无法执行临床操作。", en: "No clinical session is connected: clinical operations cannot run." },
   // preconditions
   "pre.state": { "zh-CN": "「{target}」当前{state}，不能「{operation}」。", en: 'Cannot "{operation}": {target} is {state}.' },
-  "pre.handsClean": { "zh-CN": "请先做手卫生（在洗手池执行 wash_hands）。", en: "Clean your hands first (wash_hands at a sink)." },
+  "pre.handsClean": { "zh-CN": "请先在洗手池做手卫生。", en: "Clean your hands at a sink first." },
   "pre.holding": { "zh-CN": "需要先拿着「{item}」。", en: 'You need to hold "{item}".' },
   "pre.role": { "zh-CN": "只有{roles}可以「{operation}」。", en: 'Only {roles} may "{operation}".' },
-  "pre.notAtBedside": { "zh-CN": "「{target}」不在患者床旁——请先把它推到患者身边（move_to）。", en: '"{target}" is not at the patient\'s bedside — wheel it to the patient first (move_to).' },
+  "pre.notAtBedside": { "zh-CN": "「{target}」不在患者床旁——请先把它推到患者身边。", en: '"{target}" is not at the patient\'s bedside — wheel it to the patient first.' },
   "pre.notAtBedsideFixed": { "zh-CN": "「{target}」不在患者床旁，且无法移动。", en: '"{target}" is not at the patient\'s bedside and cannot be moved.' },
-  "pre.notOperableCart": { "zh-CN": "「{target}」离{patient}太远，没法在患者身边操作——请先把它推到患者身边（move_to）。", en: '"{target}" is too far from {patient} to be used at their side — wheel it to the patient first (move_to).' },
+  "pre.notOperableCart": { "zh-CN": "「{target}」离{patient}太远，没法在患者身边操作——请先把它推到患者身边。", en: '"{target}" is too far from {patient} to be used at their side — wheel it to the patient first.' },
   "pre.notOperableFixed": { "zh-CN": "「{target}」固定在别处，在{patient}身边够不到——请用患者自己床旁的设备，或推一台便携设备来。", en: '"{target}" is fixed out of reach of {patient}\'s side — use the equipment at the patient\'s own bedside, or bring a portable one.' },
   "pre.notOperableHandheld": { "zh-CN": "请先拿起「{target}」带到{patient}身边。", en: 'Pick up "{target}" and bring it to {patient}.' },
   "pre.predicate": { "zh-CN": "「{operation}」的前提条件不满足。", en: 'The conditions for "{operation}" are not met.' },
@@ -170,6 +201,9 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.notPortable": { "zh-CN": "「{target}」不能移动。", en: '"{target}" cannot be moved.' },
   "pre.missingParam": { "zh-CN": "缺少参数 {param}。", en: "Missing parameter {param}." },
   "pre.unknownItem": { "zh-CN": "本病例没有「{item}」。", en: 'This case has no "{item}".' },
+  "pre.noDestination": { "zh-CN": "要把患者送到哪里？请给出目的地：设备、床位、房间，或送回原床位", en: "where to? Give a destination: a device, a bed space, a room, or back to their own bed space" },
+  "pre.unknownDestination": { "zh-CN": "这里没有可以把患者送去的「{destination}」。", en: 'There is no "{destination}" here to take the patient to.' },
+  "pre.patientBusy": { "zh-CN": "{patient}正由{holder}转运中。", en: "{patient} is being moved by {holder}." },
   // range / sight
   NOT_IN_RANGE: { "zh-CN": "距「{target}」{distance} 米，需在 {range} 米内。", en: '"{target}" is {distance} m away; within {range} m is needed.' },
   NOT_IN_RANGE_LEVEL: { "zh-CN": "「{target}」在另一层（{level}）。", en: '"{target}" is on another level ({level}).' },
@@ -186,31 +220,51 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "ok.screen": { "zh-CN": "「{target}」屏幕：{screen}", en: '"{target}" screen: {screen}' },
   "ok.moved": { "zh-CN": "已把「{target}」推到 {place}（{distance} 米）。", en: 'Moved "{target}" to {place} ({distance} m).' },
   "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
+  "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
+  "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
+  // relocation by the team (a transfer, a phase with a location)
+  "relocate.done": { "zh-CN": "{patient}已被送到{place}。", en: "{patient} has been moved to {place}." },
+  "relocate.already": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
+  "relocate.none": { "zh-CN": "本院没有{destination}：{patient}留在{place}。", en: "This hospital has no {destination}: {patient} stays in {place}." },
+  "dest.home": { "zh-CN": "原床位", en: "their own bed space" },
+  "dest.roomKind": { "zh-CN": "{kind}", en: "{kind}" },
+  "setting.outpatient": { "zh-CN": "门诊诊室", en: "outpatient consulting room" },
+  "setting.emergency": { "zh-CN": "急诊床位", en: "emergency bed space" },
+  "setting.inpatient": { "zh-CN": "住院病床", en: "inpatient bed" },
+  "setting.icu": { "zh-CN": "ICU/HDU 床位", en: "ICU/HDU bed" },
+  "setting.ward": { "zh-CN": "病房床位", en: "ward bed" },
+  "setting.operating-room": { "zh-CN": "手术室", en: "operating theatre" },
+  "setting.community": { "zh-CN": "院外场所", en: "place outside the hospital" },
   // spatial policy (reasons)
   "spatial.not-near-patient": { "zh-CN": "距{patient} {distance} 米，需在 {range} 米内且视线无遮挡。", en: "You are {distance} m from {patient}; within {range} m with a clear view is needed." },
   "spatial.patient-not-visible": { "zh-CN": "{patient}在 {range} 米范围内，但视线被遮挡。", en: "{patient} is within {range} m but out of sight." },
   "spatial.not-at-patient": { "zh-CN": "需要在{patient}身边（{range} 米内），当前相距 {distance} 米。", en: "You need to be at {patient}'s side (within {range} m); you are {distance} m away." },
   "spatial.no-provider-in-reach": { "zh-CN": "需要{caps}：请到「{provider}」操作（最近）。", en: 'Needs {caps}: go to "{provider}" (nearest).' },
   "spatial.no-provider-in-reach-none": { "zh-CN": "需要{caps}：附近没有可用设备。", en: "Needs {caps}: no usable station is within reach." },
-  "spatial.provider-not-at-bedside": { "zh-CN": "床旁需要{caps}；「{provider}」在别处——请把它推到{patient}身边（move_to）。", en: 'Needs {caps} at the bedside; "{provider}" is elsewhere — wheel it to {patient} (move_to).' },
+  "spatial.provider-not-at-bedside": { "zh-CN": "床旁需要{caps}；「{provider}」在别处——请把它推到{patient}身边。", en: 'Needs {caps} at the bedside; "{provider}" is elsewhere — wheel it to {patient}.' },
   "spatial.provider-not-at-bedside-fixed": { "zh-CN": "床旁需要{caps}，但提供它的设备都固定在别处，无法推来。", en: "Needs {caps} at the bedside, but every device providing it is fixed elsewhere and cannot be brought." },
   "spatial.no-provider-in-facility": { "zh-CN": "本院没有可用的设备提供{caps}。", en: "Nothing usable in this facility provides {caps}." },
   "spatial.no-patient": { "zh-CN": "这个世界里没有患者。", en: "There is no patient in this world." },
   "spatial.not-at-patient.sample": { "zh-CN": "标本要在{patient}身边采集（{range} 米内），当前相距 {distance} 米。", en: "The sample is taken at {patient}'s side (within {range} m); you are {distance} m away." },
   "spatial.not-at-patient.observations": { "zh-CN": "请在{patient}身边测量生命体征（{range} 米内，当前相距 {distance} 米），或在同一房间内看已连接监护仪的屏幕，或到电子病历终端查看记录。", en: "Check the vitals at {patient}'s side (within {range} m; you are {distance} m away), on an attached monitor's screen in its room, or in the chart at a records terminal." },
-  "spatial.provider-busy": { "zh-CN": "床旁的{caps}（「{provider}」）正被{holder}使用——请把「{alternative}」推到{patient}身边（move_to），或等它空出来。", en: 'The bedside {caps} ("{provider}") is in use by {holder} — wheel "{alternative}" to {patient} instead (move_to), or wait for it.' },
+  "spatial.provider-busy": { "zh-CN": "床旁的{caps}（「{provider}」）正被{holder}使用——请把「{alternative}」推到{patient}身边，或等它空出来。", en: 'The bedside {caps} ("{provider}") is in use by {holder} — wheel "{alternative}" to {patient} instead, or wait for it.' },
   "spatial.provider-busy-none": { "zh-CN": "需要{caps}：「{provider}」正被{holder}使用，暂时没有其他可用设备——请稍后再试。", en: 'Needs {caps}: "{provider}" is in use by {holder} and no other one is free — wait for it.' },
   "spatial.no-monitor-attached": { "zh-CN": "{patient}没有连接的监护仪可看。", en: "No monitor is attached to {patient}." },
   "spatial.monitor-not-in-view": { "zh-CN": "看不到「{monitor}」的屏幕：需在它所在的房间内、{range} 米内且视线无遮挡。", en: 'The screen of "{monitor}" is out of view: be in its room, within {range} m, with a clear view.' },
   "spatial.clinical": { "zh-CN": "先要完成「{intervention}」。", en: 'This needs "{intervention}" first.' },
+  "spatial.kit-at-home": { "zh-CN": "床旁需要{caps}，它在{place}且无法推来：请把{patient}送回去。", en: "Needs {caps} at the bedside; it stands in {place} and cannot be brought: take {patient} back there." },
+  "spatial.patient-not-at-provider": { "zh-CN": "这项检查需要{patient}在{caps}旁（「{provider}」）：请把患者送过去。", en: 'This needs {patient} at {caps} ("{provider}"): take the patient there.' },
   "spatial.clinical.iv-access": { "zh-CN": "还没有静脉通路：请先建立静脉通路（「{intervention}」），再给这个药。", en: 'There is no IV access yet: place a cannula first ("{intervention}"), then give this.' },
   "spatial.clinical.sample": { "zh-CN": "还没有采集标本：请到{patient}身边采集，或先建立静脉通路（「{intervention}」，同时采血）。", en: 'No sample has been taken yet: take it at {patient}\'s side, or place IV access first ("{intervention}" draws the bloods).' },
   // hint labels
   "hint.patient": { "zh-CN": "前往{patient}身边", en: "Go to {patient}" },
   "hint.provider": { "zh-CN": "前往「{provider}」", en: 'Go to "{provider}"' },
-  "hint.fetch": { "zh-CN": "取来「{provider}」并推到{patient}身边（move_to）", en: 'Fetch "{provider}" and wheel it to {patient} (move_to)' },
+  "hint.fetch": { "zh-CN": "取来「{provider}」并推到{patient}身边", en: 'Fetch "{provider}" and wheel it to {patient}' },
+  "hint.transport": { "zh-CN": "把{patient}送到「{provider}」", en: 'Take {patient} to "{provider}"' },
+  "hint.transportHome": { "zh-CN": "把{patient}送回{place}", en: "Take {patient} back to {place}" },
   "hint.look": { "zh-CN": "移动到能看清「{target}」的位置", en: 'Get a clear view of "{target}"' },
   "hint.approach": { "zh-CN": "走近「{target}」", en: 'Approach "{target}"' },
+  "hint.wash": { "zh-CN": "到「{target}」洗手", en: 'Wash your hands at "{target}"' },
   "hint.alternative": { "zh-CN": "改用「{target}」", en: 'Use "{target}" instead' },
   "hint.joint": { "zh-CN": "站到既能操作「{target}」又在{patient}身边的位置", en: 'Stand where you can reach both "{target}" and {patient}' },
   // perception
@@ -261,11 +315,16 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
   "self.reserved": { "zh-CN": "{target}由你占用", en: "{target} reserved by you" },
   "self.hygiene": { "zh-CN": "你完成了手卫生", en: "You cleaned your hands" },
   "self.action": { "zh-CN": "你：{operation}（{status}）", en: "You: {operation} ({status})" },
+  // the patient's body (EMBODIED §8)
+  "patient.moved": { "zh-CN": "{patient}被送到{place}", en: "{patient} was moved to {place}" },
+  "patient.transported": { "zh-CN": "{actor}把{patient}送到{place}", en: "{actor} took {patient} to {place}" },
+  "self.transported": { "zh-CN": "你把{patient}送到{place}", en: "You took {patient} to {place}" },
+  "patient.posture": { "zh-CN": "{patient}现在{posture}", en: "{patient} is now {posture}" },
 };
 
 /** Localised world message for a key ({placeholders} filled from vars; unknown keys are returned as is). */
 export function worldMessage(key: string, locale: string, vars: Record<string, string | number> = {}): string {
-  const pair = WORLD_MESSAGES[key] ?? EVENT_SUMMARIES[key] ?? WHEREABOUTS[key];
+  const pair = WORLD_MESSAGES[key] ?? EVENT_SUMMARIES[key] ?? WHEREABOUTS[key] ?? (key.startsWith("roomKind.") ? ROOM_KIND_NAMES[key.slice("roomKind.".length)] : undefined);
   return pair ? fill(t(pair, locale), vars) : key;
 }
 

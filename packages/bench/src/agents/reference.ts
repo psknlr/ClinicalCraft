@@ -12,7 +12,9 @@
  *
  * A `clinical` step is carried out with the body, like the embodied
  * autopilot: the spatial requirement is satisfied first (walk to the
- * refusal's hint; wheel a cart to the bedside when the policy asks for it),
+ * refusal's hint; wheel a cart to the bedside when the policy asks for it;
+ * take the patient to the device a study is done at — `transport_patient`,
+ * by a porter when the facility has one, else wheeling them yourself),
  * a device operation that carries the act out is preferred (an ECG cart's
  * prepare → connect → record → reset, the patient's monitor `attach`, a
  * workstation's `order` / `read`, a device's `use`) — a busy or
@@ -36,7 +38,7 @@ import {
   type OfflineClinicianStep,
 } from "@clinicalcraft/agent";
 import { assignPatientSlot, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
-import { behaviorOf, PRIMARY_ACTOR, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { behaviorOf, PRIMARY_ACTOR, type ActionHint, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type SpatialRequirement, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { footprintDistance } from "../predicates.js";
 import type { RecordedCall } from "../recorder.js";
 import type { BenchFindQuery, ReferenceStep, ScriptedCall } from "../schema.js";
@@ -201,18 +203,52 @@ class ReferenceSolver {
     return slot && this.world.entity(`patient:${slot.id}`) ? `patient:${slot.id}` : null;
   }
 
+  /** The patient's monitor where the patient is now (the world's). */
   private patientMonitorId(): string | null {
-    const slot = this.ctx.session.facility ? assignPatientSlot(this.ctx.session.facility, this.c) : null;
-    return slot?.monitor && this.world.entity(`eq:${slot.monitor}`) ? `eq:${slot.monitor}` : null;
+    return this.world.patientMonitor();
   }
 
-  /** Walk (and fetch) until the act's spatial requirement holds. */
+  /**
+   * Take the patient to a destination (`transport_patient`, EMBODIED §8): a porter does it when the facility has
+   * one (`delegate_task`), else the clinician walks to the patient's side and wheels them there.
+   */
+  private async transport(parameters: Record<string, unknown>): Promise<boolean> {
+    const patient = this.patientId();
+    if (!patient) return false;
+    const destination = typeof parameters.destination === "string" ? parameters.destination : "";
+    if (this.world.actors().some((a) => a.role === "porter" && a.id.startsWith("staff:"))) {
+      const target = destination || String(parameters.capability ?? "");
+      const r = await this.call("delegate_task", { role: "porter", task: "transport_patient", target }, async () => {
+        const events = await this.ctx.session.run({ type: "slash_command", name: "delegate", args: `porter transport_patient ${target}` });
+        const out = events.flatMap((e) => (e.msg.type === "command_output" ? [e.msg] : []))[0];
+        const data = (out?.data ?? null) as { ok?: boolean } | null;
+        return data?.ok ? { ok: true, output: out?.text ?? "" } : { ok: false, code: "TOOL_ERROR", output: out?.text ?? "no output" };
+      });
+      if (r.ok) return true;
+    }
+    if (!(await this.navigate({ kind: "interact", id: patient })).ok) return false;
+    const r = await this.call("transport_patient", { ...parameters }, async () => this.worldOutcome(await this.act({ operation: "transport_patient", targetId: patient, parameters: { ...parameters } })));
+    return r.ok;
+  }
+
+  /** Is the patient away from their own bed space (taken to a device for a study)? */
+  private patientAway(): boolean {
+    const place = this.world.patientPlace();
+    if (!place) return false;
+    return place.home.slot ? place.slot !== place.home.slot : !!place.slot || place.provider !== place.home.provider;
+  }
+
+  /** Walk (and fetch, and take the patient) until the act's spatial requirement holds. */
   private async satisfy(intent: ClinicalIntent): Promise<SpatialCheck> {
     const patient = this.patientId();
     let check = this.world.checkSpatial(PRIMARY_ACTOR, intent);
     for (let i = 0; i < MAX_APPROACHES && !check.ok && check.hint; i++) {
       const goal = check.hint.goal;
-      if (check.reason === "provider-not-at-bedside" && goal.kind === "interact" && patient) {
+      const then: ActionHint["then"] = check.hint.then;
+      if (then?.operation === "transport_patient") {
+        // the patient to the device the study is done at (or back to their bed space, where fixed kit stands)
+        if (!(await this.transport({ ...(then.parameters ?? {}) }))) break;
+      } else if (check.reason === "provider-not-at-bedside" && goal.kind === "interact" && patient) {
         if (!(await this.navigate(goal)).ok) break;
         if (!(await this.operate(goal.id, "move_to", undefined, { kind: "interact", id: patient })).ok) break;
       } else if (!(await this.navigate(goal)).ok) break;
@@ -390,6 +426,23 @@ class ReferenceSolver {
     return r.ok && this.satisfied(action, step);
   }
 
+  /**
+   * After a study the patient was taken to a device for, they go back to their bed space — unless the next step that
+   * acts on the patient needs them at a device too (the embodied autopilot's rule).
+   */
+  private async returnPatient(steps: readonly OfflineClinicianStep[], from: number): Promise<void> {
+    if (!this.patientAway()) return;
+    for (let i = from; i < steps.length; i++) {
+      const step = steps[i]!;
+      if (step.kind !== "tool" || stepAlreadySatisfied(step, this.ctx.session.state)) continue;
+      const intent = actionIntent(step.action as ClinicalAction);
+      if (!intent) continue;
+      if (needsPatientAtProvider(this.world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
+      break;
+    }
+    await this.transport({ destination: "home" });
+  }
+
   /** The whole case: every step of its reference solution (the embodied autopilot's walkthrough rules). */
   private async solveCase(): Promise<void> {
     const steps = clinicianOfflineSteps(this.c, this.L);
@@ -418,6 +471,7 @@ class ReferenceSolver {
       }
       await this.embodied(a, step);
       cursor++;
+      await this.returnPatient(steps, cursor);
     }
   }
 
@@ -513,8 +567,19 @@ class ReferenceSolver {
       case "solve-case":
         await this.solveCase();
         return;
+      case "transport": {
+        const ok = await this.transport({ destination: step.destination });
+        if (!ok) throw new ReferenceExpectationError(`transport to ${step.destination} was not carried out`);
+        return;
+      }
     }
   }
+}
+
+/** Does a requirement need the patient at a device (a study done on them there: `patient-at-provider`)? */
+function needsPatientAtProvider(r: SpatialRequirement): boolean {
+  if (r.kind === "patient-at-provider") return true;
+  return (r.kind === "any-of" || r.kind === "all-of") && r.options.some(needsPatientAtProvider);
 }
 
 /** The reference agent. */

@@ -15,11 +15,12 @@
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type WorldDynamics, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
 import { GridAStarBackend } from "./nav/backend.js";
+import { PatientBody } from "./patient.js";
 import { Perception } from "./perception.js";
 import { DefaultSpatialPolicy, SpatialChecker } from "./policy.js";
 import { Reachability } from "./reach.js";
@@ -42,11 +43,36 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
   const registry = buildRegistry(facility, catalogs, binding, collision);
   const store = new WorldStateStore({ facility, registry, newId: options.newId, spawn: options.spawn, snapshot: options.snapshot });
   const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
-  // the grids and the occlusion read the store (doors, obstacles, moved carts, carried items) as they are built
-  const visibility = new VisibilityModel(facility, collision, { dynamics: store, rotOf });
-  const backend = options.backend ?? new GridAStarBackend({ facility, collision, registry, visibility, dynamics: store, locale, clock: options.now });
+  // the patient's body (EMBODIED §8): where it is now, its posture (the place's, else clinical state's), its collider
+  const staticBody = slot ? collision.colliders.find((c) => c.id === `patient:${slot.id}`) : undefined;
+  const patient = new PatientBody({
+    facility,
+    registry,
+    state: store,
+    slot: slot ?? null,
+    clinicalPosture: () => (slot ? (clinical.cues(slot.id).posture as BodyPosture | undefined) : undefined),
+    initialPosture: bindingPosture(binding, facility),
+    staticBody: staticBody ? { minX: staticBody.minX, maxX: staticBody.maxX, minZ: staticBody.minZ, maxZ: staticBody.maxZ } : null,
+    locale,
+  });
+  // the grids and the occlusion read the physical state (doors, obstacles, moved carts and beds, carried items, the patient's body) as they are built
+  const dynamics: WorldDynamics = {
+    doorState: (id) => store.doorState(id),
+    obstacles: () => store.obstacles(),
+    displaced: () => store.displaced(),
+    removed: () => [...store.removed(), ...patient.removed()],
+    actorPose: (id) => store.actorPose(id),
+    bodies: () => patient.bodies(),
+    placeOf: (id) => {
+      if (id !== patient.id) return null;
+      const p = patient.place();
+      return p ? { level: p.level, x: p.x, z: p.z, footprint: { w: p.footprint.w, d: p.footprint.d } } : null;
+    },
+  };
+  const visibility = new VisibilityModel(facility, collision, { dynamics, rotOf });
+  const backend = options.backend ?? new GridAStarBackend({ facility, collision, registry, visibility, dynamics, locale, clock: options.now });
   const grids = backend instanceof GridAStarBackend ? backend.grids : null;
-  const locator = new WorldLocator(facility, registry, store, visibility, locale, slot?.id ?? null, grids);
+  const locator = new WorldLocator(facility, registry, store, visibility, locale, slot?.id ?? null, grids, patient);
   const perceptionOptions = { ...DEFAULT_PERCEPTION, ...(options.perception ?? {}) };
   let bus: ActionBus | null = null;
   const rules = new DeviceRules({ store, locator, clinical, collision, locale, busy: (id) => bus?.busy.get(id) ?? null });
@@ -55,7 +81,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
   const checker = new SpatialChecker({ locator, state: store, reach, policy, binding, locale, clinical, busy: (id) => bus?.busy.get(id) ?? null });
   const perception = new Perception({ store, locator, rules, reach, clinical, collision, locale, options: perceptionOptions, newId: options.newId });
   const mover = options.mover ?? instantMover((id) => store.actor(id)?.pose ?? null);
-  bus = new ActionBus({ facility, caseDef: binding.caseDef, store, registry, locator, rules, checker, perception, reach, backend, grids, visibility, collision, clinical, port: options.port, mover, locale, now: options.now, trace: options.trace });
+  bus = new ActionBus({ facility, caseDef: binding.caseDef, store, registry, locator, patient, rules, checker, perception, reach, backend, grids, visibility, collision, clinical, port: options.port, mover, locale, now: options.now, trace: options.trace });
   const actions = bus;
   const levels = levelInfos(facility);
   const traceRead = (name: string, actorId: ActorId, entities: string[], fn: () => void) => {
@@ -132,6 +158,20 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
         .ofKind("equipment")
         .filter((e) => locator.capabilities(e.id).includes(capability) && locator.atBedside(locator.place(e.id)!))
         .map((e) => e.id),
+
+    patientPlace: () => {
+      const p = patient.place();
+      return p && actions.transit ? { ...p, transit: { ...actions.transit } } : p;
+    },
+    patientMonitor: () => locator.patientMonitor(),
+    screenInView(actorId: ActorId) {
+      const a = store.actor(actorId);
+      const id = locator.patientMonitor();
+      const m = id && store.available(id) ? locator.place(id) : null;
+      return a && m && locator.screenInView(a, m) ? m.id : null;
+    },
+    relocatePatient: (destination) => actions.relocatePatient(destination),
+    refreshPatient: () => actions.refreshPatient(),
 
     execute: (request, signal) => actions.execute(request, signal),
     feedback: (actionId) => actions.feedback(actionId),

@@ -107,6 +107,22 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 | `behavior: { initial, states: { id: { name?, available? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`) through the session's normal tool path; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
 | `model: { uri, sha256?, scale?, offset?, rot?, license, attribution? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, the collider is always the footprint and a model is never interactive by itself |
 
+**Patients on the move (EMBODIED §8, review G8).** No new field: the world
+model reads what is there. A patient slot's `bed` of type `hospital-bed` or
+`stretcher` (`TROLLEY_TYPES`) is the **trolley that travels with the
+patient** — wheeled (lying) to a scanner and back, parked beside the device
+meanwhile; other beds (an exam couch, a garden bench, an operating table)
+stay. A study on the patient at a fixed device takes them to the device that
+provides it (interaction `device`; a `workstation` only where no device does —
+the V4 clinic's imaging workstation): onto a `bed` placed beside it within its
+reach + 0.5 m (the cath-lab table by the C-arm), onto the device itself for
+`ct`, `mri`, `pet-ct` and `xray` (`TABLE_CAPABILITIES`: the scanner's table),
+else to a free spot within its reach (standing for `peak-flow` and `scale`).
+A transfer resolves `{setting}` / `{roomKind}` to the first slot accepting
+it, `{capability}` to that device. Give a device a patient can be brought to
+a clear approach (a trolley needs ≈ 2 m in front of it) and its room an
+accessible route (beds take lifts and ramps, never stairs).
+
 World predicates (`requires`): `{ actorWithin: m }` (the acting actor is
 within m of this device), `{ patientWithin: m }` (… of the bound patient),
 `{ deviceAtBedside: true }` (this device stands within the bedside radius of

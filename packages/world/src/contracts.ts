@@ -357,6 +357,11 @@ export interface PatientPlace {
   trolley: EntityId | null;
   /** The body's footprint now (a bed's when lying on it). */
   footprint: { w: number; d: number; h: number };
+  /**
+   * While a body wheels (or walks) the patient somewhere (`transport_patient` in progress): who, on which trolley
+   * (null: walking), in which posture — renderers draw them travelling with the walker. Absent otherwise.
+   */
+  transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture };
 }
 
 /**
@@ -403,6 +408,11 @@ export interface WorldDynamics {
    * posture: its static body, if any, is listed in `removed`). Not opaque.
    */
   bodies?(): readonly { id: EntityId; level: string; area: { minX: number; maxX: number; minZ: number; maxZ: number } }[];
+  /**
+   * Where an entity that moves outside the other mechanisms is now (the patient's body, EMBODIED §8): its floor
+   * centre, level and footprint — goals on it lead there; null / undefined: where the registry (or `displaced`) has it.
+   */
+  placeOf?(id: EntityId): { level: string; x: number; z: number; footprint: { w: number; d: number } } | null | undefined;
 }
 
 export interface WorldStateSnapshot {
@@ -575,7 +585,8 @@ export type NavGoal =
   | { kind: "interact"; id: EntityId; operation?: string }
   | { kind: "room"; id: string }
   | { kind: "follow"; id: EntityId; range?: number }
-  | { kind: "look"; id: EntityId; range?: number }
+  /** `sameRoom`: only spots in the target's own room (a screen is never read through a window, EMBODIED §6). */
+  | { kind: "look"; id: EntityId; range?: number; sameRoom?: boolean }
   | { kind: "any"; goals: NavGoal[] };
 
 export type NavErrorCode =
@@ -605,6 +616,11 @@ export interface NavRequest {
   maxExpanded?: number;
   /** Only connectors usable with a wheelchair, bed or cart (no stairs) — e.g. while pushing a cart. */
   accessibleOnly?: boolean;
+  /**
+   * Plan through movable obstacles — displaced carts, obstacles, other bodies: a team moving a patient sets
+   * them aside (the route a relocation records). Walls, fixed equipment, locks and zones still apply.
+   */
+  ignoreObstacles?: boolean;
 }
 
 export type NavPlan =

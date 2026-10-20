@@ -88,7 +88,7 @@ export const NavGoalSchema: z.ZodType<NavGoal> = z.lazy(() =>
     z.object({ kind: z.literal("interact"), id: Ref, operation: Ref.optional() }).strict(),
     z.object({ kind: z.literal("room"), id: Ref }).strict(),
     z.object({ kind: z.literal("follow"), id: Ref, range: z.number().positive().max(50).optional() }).strict(),
-    z.object({ kind: z.literal("look"), id: Ref, range: z.number().positive().max(50).optional() }).strict(),
+    z.object({ kind: z.literal("look"), id: Ref, range: z.number().positive().max(50).optional(), sameRoom: z.boolean().optional() }).strict(),
     z.object({ kind: z.literal("any"), goals: z.array(NavGoalSchema).min(1).max(8) }).strict(),
   ]),
 ) as z.ZodType<NavGoal>;
@@ -155,6 +155,8 @@ export const BenchWorldPredicateSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("handsClean"), actor: ActorRef.optional() }).strict(),
   z.object({ kind: z.literal("holding"), actor: ActorRef.optional(), item: Ref }).strict(),
   z.object({ kind: z.literal("doorState"), door: Ref, open: z.boolean().optional(), locked: z.boolean().optional() }).strict(),
+  /** Where the patient is now (EMBODIED §8): in a bed space (`slot`), at a device (`provider`, an id or alias), in a room. */
+  z.object({ kind: z.literal("patientAt"), slot: Ref.optional(), provider: Ref.optional(), room: Ref.optional() }).strict(),
 ]);
 export type BenchWorldPredicate = z.infer<typeof BenchWorldPredicateSchema>;
 
@@ -237,6 +239,8 @@ export const ReferenceStepSchema = z.discriminatedUnion("op", [
   z.object({ op: z.literal("attempt"), action: ClinicalActionSchema, expect: RefusalCode }).strict(),
   z.object({ op: z.literal("delegate"), role: Ref, task: Ref, target: Ref.optional(), params: JsonObject.optional() }).strict(),
   z.object({ op: z.literal("skill"), id: Ref, params: JsonObject.optional() }).strict(),
+  /** Take the patient to a destination (`transport_patient`: a device, a bed space or room, `home`) — a porter when the facility has one. */
+  z.object({ op: z.literal("transport"), destination: Ref }).strict(),
   /** Work the whole case: every step of its reference solution, carried out with the body as `clinical` does. */
   z.object({ op: z.literal("solve-case") }).strict(),
 ]);

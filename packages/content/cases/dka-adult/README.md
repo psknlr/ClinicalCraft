@@ -306,6 +306,10 @@ In embodied mode a clinical act needs the kit it names at the bedside and IV acc
 
 Scope of practice: `suspend-pump` (removing the insulin pump and infusion set) and `urinary-catheter` are authored `scope: "nursing"`: a delegated nurse may do them (docs/EMBODIED.md §8 scope of practice).
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for review G12 and G8: `oxygen` names `device: "non-rebreather-mask"` (the dose: non-rebreather mask at 15 L/min); the AP chest film (`cxr`) is `performedAt: "bedside"` — an AP film is the portable view taken in resus — so nobody is moved for it. The CT abdomen (`ct-abdomen`, not in the reference path) needs the patient taken to CT in embodied mode.
+
 ## Validation
 
 ```bash

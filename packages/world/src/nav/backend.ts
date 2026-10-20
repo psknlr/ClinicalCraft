@@ -193,7 +193,7 @@ export class GridAStarBackend implements NavigationBackend {
     const budget: Budget = { left: request.maxExpanded ?? this.budget };
     const started = this.clock?.() ?? 0;
     const late = () => this.clock !== null && this.clock() - started > this.wallBudgetMs;
-    const strict: MaskOptions = { role: request.role, allowZones: this.grids.zonesAt(from.level, from.x, from.z) };
+    const strict: MaskOptions = { role: request.role, allowZones: this.grids.zonesAt(from.level, from.x, from.z), ...(request.ignoreObstacles ? { ignoreDynamic: true } : {}) };
     let best: { route: Extract<Route, { ok: true }> } | null = null;
     let exhausted = false;
     for (const target of targets) {
@@ -267,12 +267,14 @@ export class GridAStarBackend implements NavigationBackend {
           const range = Math.min(MAX_LOOK, Math.max(MIN_RANGE, goal.range ?? LOOK_RANGE));
           // lazy: line of sight is tested only on cells the search pops (memoised)
           const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint, id: target.id };
+          // `sameRoom`: only from the target's own room (a screen is never read through a window)
+          const room = goal.sameRoom ? this.registry.roomAt(target.level, target.position.x, target.position.z) : undefined;
           const memo = new Map<number, boolean>();
           const test = (i: number) => {
             let ok = memo.get(i);
             if (ok === undefined) {
               const c = cellPoint(g, i);
-              ok = distanceToArea(c.x, c.z, area) <= range + 1e-9 && !(target.soft && distanceToArea(c.x, c.z, area) < NAV_RADIUS) && this.visibility.visibleFrom(target.level, c, sight);
+              ok = distanceToArea(c.x, c.z, area) <= range + 1e-9 && !(target.soft && distanceToArea(c.x, c.z, area) < NAV_RADIUS) && (room === undefined || this.registry.roomAt(target.level, c.x, c.z) === room) && this.visibility.visibleFrom(target.level, c, sight);
               memo.set(i, ok);
             }
             return ok;
@@ -342,6 +344,9 @@ export class GridAStarBackend implements NavigationBackend {
       return { id: e?.id ?? idOrAlias, level: actorPose.level, position: { x: actorPose.x, z: actorPose.z }, footprint: { w: BODY_FOOTPRINT.standing.w, d: BODY_FOOTPRINT.standing.d }, reach: e?.reach ?? RANGES.talk, kind: e?.kind ?? "actor", name: e ? t(e.name, this.locale) : idOrAlias, soft: true };
     }
     if (!e) return null;
+    // the patient's body where it is now (a bed space, a provider: EMBODIED §8)
+    const body = this.dynamics.placeOf?.(e.id);
+    if (body) return { id: e.id, level: body.level, position: { x: body.x, z: body.z }, footprint: { ...body.footprint }, reach: e.reach, kind: e.kind, name: t(e.name, this.locale), soft: false };
     const moved = (this.dynamics.displaced?.() ?? []).find((d) => d.id === e.id)?.position;
     let position: Vec2 = { x: e.position.x, z: e.position.z };
     let level = e.level;
@@ -578,7 +583,7 @@ export class GridAStarBackend implements NavigationBackend {
     let prevPoint: { x: number; z: number; level: string } | null = null;
     for (const leg of route.legs) {
       const g = this.grids.grid(leg.level)!;
-      const m = this.mask(leg.level, { role: request.role, allowZones: this.grids.zonesAt(request.from.level, request.from.x, request.from.z) })!;
+      const m = this.mask(leg.level, { role: request.role, allowZones: this.grids.zonesAt(request.from.level, request.from.x, request.from.z), ...(request.ignoreObstacles ? { ignoreDynamic: true } : {}) })!;
       if (leg.via && prevPoint) {
         const stop = leg.from;
         const climb = leg.via.kind === "elevator" ? 0 : Math.hypot(stop.x - prevPoint.x, stop.z - prevPoint.z, levelElevation(this.facility, leg.level) - levelElevation(this.facility, prevPoint.level));

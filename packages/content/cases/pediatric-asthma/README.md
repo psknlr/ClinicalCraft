@@ -335,6 +335,10 @@ Paediatric alarm limits (6 years):
 * 中华医学会儿科学分会呼吸学组，《中华儿科杂志》编辑委员会. 儿童支气管哮喘规范化诊治建议（2020年版）. 中华儿科杂志, 2020.
 * Ducharme FM, et al. The Pediatric Respiratory Assessment Measure: a valid clinical score for assessing acute asthma severity from toddlers to teenagers. J Pediatr, 2008.
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for reviews G8/G12: `oxygen` names `device: "simple-mask"` (face mask, as its name says); `position-upright` sets `posture: "sitting"` (upright on his mother's lap); `admit-picu` has `destination: {"setting": "icu"}` (the team moves him to the first ICU/HDU bed space when it is given). The peak flow (`pef`, `spirometry`) is a patient-performed test at a fixed station: in embodied mode he walks with the clinician to the triage peak-flow station, blows, and is taken back to his bed space sitting up (twice in the reference path: 29 m / 28 m, ≈ 0.1 min each way; in `teaching-hospital` the porter takes him to ED cubicle 1's station). The departmental `cxr` (not authored as portable; not in the reference path) would also take him to X-ray. Scores are unchanged.
+
 ## Validation
 
 ```bash

@@ -120,16 +120,19 @@ export const BUILTIN_BEHAVIORS: Readonly<Partial<Record<InteractionKind, Behavio
 
 const NO_BEHAVIOR: BehaviorSpec = { stateSource: "none", initial: null, states: {}, operations: [] };
 
+/** Roles that wheel a patient (`transport_patient`): the clinical team and porters — never the front desk or a lab. */
+export const TRANSPORT_ROLES: readonly ActorRole[] = ["clinician", "attending", "nurse", "paramedic", "porter"];
+
 /**
  * The patient (EMBODIED §8, patient transport): `transport_patient {destination}` — wheel the bed (or walk
- * the patient) to a provider, a bed space or back home; from the patient's side (physical class: porters
- * and nurses may do it).
+ * the patient) to a provider, a bed space or back home; from the patient's side (physical class, narrowed to
+ * `TRANSPORT_ROLES`).
  */
 export const PATIENT_BEHAVIOR: BehaviorSpec = {
   stateSource: "none",
   initial: null,
   states: {},
-  operations: [op("transport_patient", { effect: "transport", requires: [{ patientWithin: RANGES.contact }] })],
+  operations: [op("transport_patient", { effect: "transport", requires: [{ patientWithin: RANGES.contact }], roles: TRANSPORT_ROLES })],
 };
 
 /** Built-in effects that attach by operation name, per interaction kind (catalog behaviours included). */
@@ -342,7 +345,7 @@ export class DeviceRules {
     const env = this.env(actor, place, state);
     for (const p of o.requires) {
       if (isPlacementPredicate(p) || evaluatePredicate(p, env)) continue;
-      return this.predicateFailure(id, p, o, place);
+      return this.predicateFailure(id, p, o, place, actor);
     }
     return null;
   }
@@ -406,11 +409,29 @@ export class DeviceRules {
     }
   }
 
-  private predicateFailure(id: EntityId, p: WorldPredicate, o: OperationSpec, place: Placed | null): RuleFailure {
+  /** The nearest in-service sink to an actor (same level first, then straight-line distance, then id), or null. */
+  private nearestSink(actor: ActorState): EntityId | null {
+    const loc = this.d.locator;
+    let best: { id: EntityId; key: [number, number] } | null = null;
+    for (const e of loc.registry.ofKind("equipment")) {
+      if (!this.d.store.available(e.id) || !this.spec(e.id).operations.some((o) => o.effect === "wash-hands")) continue;
+      const p = loc.place(e.id);
+      if (!p) continue;
+      const key: [number, number] = [p.level === actor.pose.level ? 0 : 1, Math.hypot(p.position.x - actor.pose.x, p.position.z - actor.pose.z)];
+      if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] - 1e-9 || (Math.abs(key[1] - best.key[1]) <= 1e-9 && e.id < best.id)))) best = { id: e.id, key };
+    }
+    return best?.id ?? null;
+  }
+
+  private predicateFailure(id: EntityId, p: WorldPredicate, o: OperationSpec, place: Placed | null, actor: ActorState): RuleFailure {
     const L = this.d.locale;
     const target = this.d.locator.name(id);
     const operation = this.operationLabel(o);
-    if ("handsClean" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.handsClean", L) };
+    if ("handsClean" in p) {
+      // the learner sentence names no tool; the hint does: the nearest sink, then wash_hands there
+      const sink = this.nearestSink(actor);
+      return { code: "PRECONDITION_FAILED", message: worldMessage("pre.handsClean", L), ...(sink ? { goal: { kind: "interact", id: sink } as NavGoal, label: worldMessage("hint.wash", L, { target: this.d.locator.name(sink) }), then: { operation: "wash_hands", targetId: sink } } : {}) };
+    }
     if ("actorHolding" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.holding", L, { item: p.actorHolding }) };
     if ("role" in p) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.role", L, { roles: listText(p.role.map((r) => roleName(r, L)), L), operation }) };
     if ("state" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" }) };
@@ -460,8 +481,8 @@ export class DeviceRules {
   /**
    * A monitor's screen read (`read`): THE screen rule (`WorldLocator.screenInView`, the policy's
    * `monitor-screen` option — from the monitor's own room, within the operation's range, line of sight,
-   * never through a window). Refused NOT_IN_RANGE (another room, too far) or NOT_VISIBLE, with the monitor's
-   * interaction point as the way there.
+   * never through a window). Refused NOT_IN_RANGE (another room, too far) or NOT_VISIBLE, with the way to a
+   * spot in the monitor's room within that range with a line of sight (a `look` goal, `sameRoom`).
    */
   private screenFailure(actor: ActorState, place: Placed, o: OperationSpec): RuleFailure | null {
     const loc = this.d.locator;
@@ -469,9 +490,9 @@ export class DeviceRules {
     const range = o.requires.find((p): p is { actorWithin: number } => "actorWithin" in p)?.actorWithin ?? RANGES.screen;
     if (loc.screenInView(actor, place, range)) return null;
     const target = loc.name(place.id);
-    const goal: NavGoal = { kind: "interact", id: place.id };
-    const label = worldMessage("hint.approach", L, { target });
     const needed = Math.max(range, MIN_RANGE);
+    const goal: NavGoal = { kind: "look", id: place.id, range: needed, sameRoom: true };
+    const label = worldMessage("hint.look", L, { target });
     if (actor.pose.level !== place.level) return { code: "NOT_IN_RANGE", message: worldMessage("NOT_IN_RANGE_LEVEL", L, { target, level: place.level }), goal, label };
     if (actor.room !== place.room) return { code: "NOT_IN_RANGE", message: worldMessage("spatial.monitor-not-in-view", L, { monitor: target, range: metres(needed) }), goal, label };
     const distance = loc.distance(actor.pose, place);

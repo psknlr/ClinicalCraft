@@ -403,3 +403,38 @@ the clinical content, not decoration:
   must be fetchable from the facility as a portable cart — check that the
   facility has an in-service portable placement providing each capability,
   and say in the README what the learner brings.
+
+**Where the patient goes, how they look (embodied mode, EMBODIED §8; reviews
+G8 / G12).** The patient's body moves and shows clinical state; author it,
+never leave it to a guess:
+
+* A study done **on the patient at a fixed device** (`ct`, `mri`, a fixed
+  `xray`, `fluoroscopy`, `pet-ct`, `endoscopy`) or a **patient-performed test**
+  at a station (`peak-flow`, `scale`) needs the patient brought there in
+  embodied mode (`transport_patient`, by the learner, a porter or a nurse).
+  A film taken with a portable machine at the bedside says so: investigation
+  `performedAt: "bedside"` (default `"provider"`) — e.g. the resus "portable
+  CXR" — and then needs nobody moved.
+* A transfer that takes the patient somewhere names it: an intervention's
+  optional `destination` — exactly one of `{ "setting": "icu" }` (the first
+  patient slot accepting that setting), `{ "roomKind": "operating-room" }` or
+  `{ "capability": "fluoroscopy" }` (the patient position at the providing
+  device: the cath-lab table by the C-arm) — e.g. STEMI `transfer-cath-lab`,
+  PE `transfer-hdu`, asthma `admit-picu`. A phase that happens somewhere else
+  says where with `location` (same shape) — STEMI `cath` / `post-pci`, stroke
+  `angio`, anaphylaxis `ed-resus` / `ed`. The patient is moved when the
+  intervention is applied or the phase starts (nothing charged: the act's own
+  time); a facility without such a place leaves the patient where they are,
+  and the result says so. Never author a destination for an order, a consult
+  or a discharge home.
+* A positioning or transfer that changes how the patient lies or sits sets
+  `posture` (`lying` | `sitting` | `standing`): "lie her flat with legs
+  raised" → `lying`, "sit upright" → `sitting`, a trolley transfer →
+  `lying`, a patient made to walk who collapses → `lying`. The latest applied
+  intervention with a posture wins over `patient.posture`; bystanders, the
+  collider and the web NPC show it.
+* An oxygen intervention may name its delivery `device`: `nasal-cannula`,
+  `high-flow-nasal-cannula`, `simple-mask`, `non-rebreather-mask`,
+  `venturi-mask`, `nebuliser-mask`. Masks show a mask on the face, cannulae
+  show cannulae. Without it, a mask named in the id, name or dose text in
+  either language ("15 L/min via non-rebreather mask", "储氧面罩") counts.

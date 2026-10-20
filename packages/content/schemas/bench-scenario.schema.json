@@ -829,6 +829,9 @@
               "type": "number",
               "exclusiveMinimum": 0,
               "maximum": 50
+            },
+            "sameRoom": {
+              "type": "boolean"
             }
           },
           "required": [
@@ -1439,6 +1442,34 @@
                           "door"
                         ],
                         "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "const": "patientAt"
+                          },
+                          "slot": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "provider": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          },
+                          "room": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160
+                          }
+                        },
+                        "required": [
+                          "kind"
+                        ],
+                        "additionalProperties": false
                       }
                     ]
                   }
@@ -2047,6 +2078,25 @@
                     "required": [
                       "op",
                       "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "op": {
+                        "type": "string",
+                        "const": "transport"
+                      },
+                      "destination": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      }
+                    },
+                    "required": [
+                      "op",
+                      "destination"
                     ],
                     "additionalProperties": false
                   },

@@ -48,7 +48,12 @@ describe("validation and resolution", () => {
     const door = w.runtime.collision.doors[0].id;
     const order = await w.act({ actorId: A, operation: "order", targetId: door });
     expect(order).toMatchObject({ status: "failed", errorCode: "OPERATION_NOT_SUPPORTED" });
-    expect(order.message).toMatch(/open, close, lock, unlock/);
+    // operations by their names in the reader's language, never their ids (extra review item 3)
+    expect(order.message).toMatch(/"Order a test"\. Its operations: Open, Close, Lock, Unlock\./);
+    const zh = makeWorld("stemi-inferior-rv", { locale: "zh-CN" });
+    const zhOrder = await zh.act({ actorId: A, operation: "order", targetId: door });
+    expect(zhOrder.message).not.toMatch(/\b(order|open|close|lock|unlock)\b/);
+    expect(zhOrder.message).toMatch(/、/);
     expect(await w.act({ actorId: A, operation: "pick_up", targetId: "ct-scanner" })).toMatchObject({ errorCode: "OPERATION_NOT_SUPPORTED" });
     expect(await w.act({ actorId: A, operation: "use", targetId: w.patientId })).toMatchObject({ errorCode: "OPERATION_NOT_SUPPORTED" });
   });

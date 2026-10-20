@@ -107,6 +107,10 @@ In embodied mode a clinical act needs the kit it names at the bedside and IV acc
 
 Scope of practice: `urinary-catheter` is authored `scope: "nursing"` (a delegated nurse may place it); the arterial line and the intubation stay medical (docs/EMBODIED.md §8 scope of practice).
 
+## Embodied mode: where the patient goes and how they look
+
+Authored for review G12 and G8: `cxr` is `performedAt: "bedside"` (portable film in resus: nobody is moved); the oxygen items name their `device` — `o2-nasal` nasal cannula, `o2-venturi` Venturi mask, `o2-nrb` non-rebreather mask — so the patient shows the mask or cannulae actually given. The CT chest (`ct-chest`, not in the reference path) needs the patient taken to CT in embodied mode.
+
 ## Validation
 
 ```bash

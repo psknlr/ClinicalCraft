@@ -257,18 +257,26 @@ export function pushPortable(host: PortableHost, rec: PortableRecord, by: string
   rec.pushedBy = null;
 }
 
+/** How far in front of the walker (m) a pushed trolley's centre is drawn: half its length beyond the walker's hands. */
+export function trolleyAhead(rec: Pick<PortableRecord, "trolley">): number {
+  return rec.trolley ? 0.35 + rec.trolley.length / 2 : PUSH_AHEAD;
+}
+
 /**
  * Draw a pushed cart in front of its walker (each frame): (x, z) feet, `yaw`
- * the walker's facing (world convention: 0 looks −Z), on `level`.
+ * the walker's facing (world convention: 0 looks −Z), on `level`. A trolley
+ * (a bed) is turned to lie along the walking direction.
  */
 export function dragPortable(host: PortableHost, rec: PortableRecord, x: number, z: number, yaw: number, level: string): void {
-  const ax = x - Math.sin(yaw) * PUSH_AHEAD, az = z - Math.cos(yaw) * PUSH_AHEAD;
+  const ahead = trolleyAhead(rec);
+  const ax = x - Math.sin(yaw) * ahead, az = z - Math.cos(yaw) * ahead;
   const lift = rec.origin.y - host.elevation(rec.origin.level);
   if (level !== rec.level) {
     host.levelRoot(level).add(rec.group);
     rec.level = level;
   }
   rec.group.position.set(ax, host.elevation(level) + lift, az);
+  if (rec.trolley) rec.group.rotation.y = yaw - rec.origin.rot * DEG;
   rec.x = ax;
   rec.z = az;
 }

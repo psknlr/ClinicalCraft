@@ -57,8 +57,14 @@
     {
       "world": {
         "kind": "entityState",
-        "target": "eq:resus1-monitor",
+        "target": "eq:cathlab-monitor",
         "state": "attached"
+      }
+    },
+    {
+      "world": {
+        "kind": "patientAt",
+        "provider": "eq:cathlab-c-arm"
       }
     },
     {
@@ -499,7 +505,20 @@
         "args": {
           "goal": {
             "kind": "interact",
-            "id": "patient:resus-1"
+            "id": "eq:resus1-ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
           }
         }
       },

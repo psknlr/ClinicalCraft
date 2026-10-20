@@ -2,7 +2,7 @@
  * Slash commands of embodied mode (docs/EMBODIED.md): `/look`, `/where`,
  * `/find <query>`, `/go <target>`, `/inspect <target>`,
  * `/use <target> <operation> [key=value…]`, `/map`, `/skill [id] [key=value…]`,
- * `/delegate <role> <task> [target]`. Each runs its world tool as the
+ * `/delegate <role> <task> [target]`, `/transport <destination|home>`. Each runs its world tool as the
  * learner — validation, PreToolUse hooks, the approval gate (and, for an
  * operation with a clinical effect, the clinical tool's own gate) — exactly
  * like `/order` runs `order_test`. Registered only in embodied sessions; in
@@ -23,6 +23,7 @@ const NAMES = [
   ["map", ""],
   ["skill", "[id] [key=value…]"],
   ["delegate", "<role> <task> [target]"],
+  ["transport", "<destination|home>"],
 ] as const;
 
 /** Names of the embodied slash commands. */
@@ -122,6 +123,10 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
       await run("execute_skill", { skill_id: id, ...(Object.keys(params).length ? { params } : {}) });
       return true;
     }
+    case "transport":
+      if (!args) usage(host, name, "<destination|home>");
+      else await run("transport_patient", { destination: args });
+      return true;
     case "delegate": {
       const [role, task, target] = tokens;
       if (!role || !task) usage(host, name, "<role> <task> [target]");
