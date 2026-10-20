@@ -492,7 +492,7 @@ export class ActionBus implements EffectsHost {
       events.push(this.emit({ type: "actor.moved", actorId: actor.id, from, to: { ...pose }, distance: r2(walked), travelSeconds: r2(travelSeconds) }));
       if (roomChanged) events.push(this.emit({ type: "actor.entered-room", actorId: actor.id, room, level: pose.level }));
     }
-    const discovered = store.remember(actor.id, perception.visibleIds(store.actor(actor.id)!));
+    const discovered = perception.notice(store.actor(actor.id)!);
     if (discovered.length) events.push(this.emit({ type: "actor.discovered", actorId: actor.id, entities: discovered }));
     store.setTask(actor.id, null);
     this.emit({ type: "task.changed", actorId: actor.id, task: null });

@@ -35,7 +35,7 @@
  * `version`. `canSee` records nothing.
  */
 import { t, type LocalizedText } from "@clinicalcraft/core";
-import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
+import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
 import type { DeviceRules } from "./behaviors.js";
 import { metres, operationName, postureName, roleName, stateName, worldMessage } from "./i18n.js";
 import type { Placed, WorldLocator } from "./locate.js";
@@ -68,6 +68,21 @@ const round = (v: number, digits: number) => {
   return Math.round(v * f) / f || 0; // never -0
 };
 
+/** Where an actor believes a thing is (`Perception.believed`). */
+interface Belief {
+  p: Placed;
+  lastKnown?: ObservedEntity["lastKnown"];
+}
+
+/** A candidate entry of a listing: where it is believed to be, the awareness, the distance. */
+interface Row extends Belief {
+  a: Awareness;
+  d: number;
+}
+
+/** Unit outward normal of a wall side (north is −Z). */
+const SIDE_NORMAL: Record<DoorSpec["side"], { x: number; z: number }> = { n: { x: 0, z: -1 }, s: { x: 0, z: 1 }, e: { x: 1, z: 0 }, w: { x: -1, z: 0 } };
+
 /** Inspection result (the runtime's `inspect`). */
 export type Inspection = ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] };
 
@@ -77,7 +92,8 @@ export interface RoomInfo {
   name: string;
   kind: string;
   level: string;
-  exits: { door: EntityId; to: string | null }[];
+  /** Doors out of the room: the room beyond (`to`, null for none) and the name of what lies there (a room, a corridor, the outdoor region). */
+  exits: { door: EntityId; to: string | null; toName: string }[];
   entities: ObservedEntity[];
 }
 
@@ -107,7 +123,44 @@ export class Perception {
   mapped(p: Placed): boolean {
     if (p.kind === "room" || p.kind === "door" || p.kind === "connector") return true;
     if (p.kind === "patient") return p.id === this.d.locator.patientId;
-    return p.kind === "equipment" && !p.entity?.portable && MAPPED_INTERACTIONS.includes(p.entity?.interaction ?? "none");
+    if (p.kind !== "equipment") return false;
+    // portable equipment: where the department keeps it (lead note 1; reported there until seen elsewhere)
+    return !!p.entity?.portable || MAPPED_INTERACTIONS.includes(p.entity?.interaction ?? "none");
+  }
+
+  /** Things that move: portable equipment, staff and other actors' bodies (believed where last seen). */
+  private movable(p: Placed): boolean {
+    return p.kind === "staff" || p.kind === "actor" || (p.kind === "equipment" && !!p.entity?.portable);
+  }
+
+  /**
+   * Where the actor believes a thing is (lead note 1): where it is while
+   * perceived (and for things that never move); else where it was last seen;
+   * else, for portable equipment, where it is usually kept.
+   */
+  private believed(actor: ActorState, p: Placed, a: Awareness): Belief {
+    if (a === "visible" || a === "nearby" || !this.movable(p)) return { p };
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const where = (q: Placed) => loc.regionName({ level: q.level, x: q.position.x, z: q.position.z });
+    const seen = this.d.store.lastSeen(actor.id, p.id);
+    const last = seen ? loc.placedAt(p.id, seen) : null;
+    if (last) return { p: last, lastKnown: { kind: "last-seen", label: worldMessage("whereabouts.lastSeen", L, { where: where(last) }) } };
+    const home = p.kind === "equipment" ? loc.home(p.id) : null;
+    if (home) return { p: home, lastKnown: { kind: "usual", label: worldMessage("whereabouts.usual", L, { where: where(home) }) } };
+    return { p };
+  }
+
+  /** Where a movable thing is now, as a sighting (null for things that never move). */
+  private seenPlace(id: EntityId): SeenPlace | null {
+    const p = this.d.locator.place(id);
+    if (!p || !this.movable(p)) return null;
+    return { level: p.level, x: p.position.x, y: p.position.y, z: p.position.z, rot: p.rot };
+  }
+
+  /** Remember what is visible from the actor's pose now, where it is (a walk's arrival); returns the newly seen ids. */
+  notice(actor: ActorState): EntityId[] {
+    return this.d.store.remember(actor.id, this.visibleIds(actor), (id) => this.seenPlace(id));
   }
 
   /** Awareness of an entity for an actor at its current pose, or null when it does not know it. */
@@ -152,11 +205,12 @@ export class Perception {
   }
 
   /** The observed form of an entity for an actor. */
-  observed(actor: ActorState, p: Placed, awareness: Awareness, withReach: boolean): ObservedEntity {
+  observed(actor: ActorState, p: Placed, awareness: Awareness, withReach: boolean, lastKnown?: ObservedEntity["lastKnown"]): ObservedEntity {
     const loc = this.d.locator;
     const e = p.entity;
     const distance = this.distanceTo(actor, p);
-    const inReach = p.kind === "room" ? awareness === "visible" : p.heldBy === actor.id || (p.level === actor.pose.level && distance <= loc.reach(p) + 1e-6 && loc.lineOfSight(actor.pose, p));
+    // a believed place (lastKnown) is never within reach: the thing may not be there
+    const inReach = p.kind === "room" ? awareness === "visible" : p.heldBy === actor.id || (!lastKnown && p.level === actor.pose.level && distance <= loc.reach(p) + 1e-6 && loc.lineOfSight(actor.pose, p));
     const actorState = this.d.store.actor(p.id);
     const out: ObservedEntity = {
       id: p.id,
@@ -186,6 +240,7 @@ export class Perception {
     if (state !== null) out.state = state;
     const cues = awareness === "visible" || awareness === "nearby" ? this.cues(actor, p, awareness) : null;
     if (cues) out.cues = cues;
+    if (lastKnown) out.lastKnown = lastKnown;
     return out;
   }
 
@@ -222,13 +277,18 @@ export class Perception {
   }
 
   private record(actor: ActorState, entities: ObservedEntity[]): void {
+    const placeOf = (id: EntityId) => this.seenPlace(id);
     this.d.store.remember(
       actor.id,
       entities.filter((e) => e.awareness === "visible").map((e) => e.id),
+      placeOf,
     );
+    // a known thing noticed nearby (not looked at) is now known to be here
+    const nearby = entities.filter((e) => e.awareness === "nearby" && this.d.store.remembers(actor.id, e.id)).map((e) => e.id);
+    if (nearby.length) this.d.store.remember(actor.id, nearby, placeOf);
   }
 
-  private ordered(rows: { p: Placed; a: Awareness; d: number }[]): { p: Placed; a: Awareness; d: number }[] {
+  private ordered<R extends Row>(rows: R[]): R[] {
     return rows.sort((x, y) => AWARENESS_ORDER[x.a] - AWARENESS_ORDER[y.a] || x.d - y.d || (x.p.id < y.p.id ? -1 : x.p.id > y.p.id ? 1 : 0));
   }
 
@@ -236,17 +296,18 @@ export class Perception {
   observe(actorId: string, opts: Partial<PerceptionOptions> = {}): WorldObservation {
     const actor = this.actorOf(actorId);
     const o = { ...this.d.options, ...opts };
-    const rows: { p: Placed; a: Awareness; d: number }[] = [];
+    const rows: Row[] = [];
     for (const id of this.universe(actorId)) {
-      const p = this.d.locator.place(id);
-      if (!p || p.kind === "room") continue;
-      const a = this.awareness(actor, p, o);
+      const truth = this.d.locator.place(id);
+      if (!truth || truth.kind === "room") continue;
+      const a = this.awareness(actor, truth, o);
       if (!a || a === "mapped") continue;
-      rows.push({ p, a, d: this.distanceTo(actor, p) });
+      const { p, lastKnown } = this.believed(actor, truth, a);
+      rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown });
     }
     const sorted = this.ordered(rows);
     const kept = sorted.slice(0, Math.max(0, o.maxEntities));
-    const entities = kept.map((r) => this.observed(actor, r.p, r.a, o.reachability));
+    const entities = kept.map((r) => this.observed(actor, r.p, r.a, o.reachability, r.lastKnown));
     this.record(actor, entities);
     const room = actor.room ? this.d.locator.registry.entity(`room:${actor.room}`) : null;
     return {
@@ -323,24 +384,26 @@ export class Perception {
     const allowed = new Set<Awareness>(q.awareness ?? ["visible", "nearby", "remembered", "mapped"]);
     const room = q.room?.startsWith("room:") ? q.room.slice(5) : q.room;
     const needle = q.name?.trim().toLowerCase();
-    const rows: { p: Placed; a: Awareness; d: number }[] = [];
+    const rows: Row[] = [];
     for (const id of this.universe(actorId)) {
-      const p = this.d.locator.place(id);
-      if (!p) continue;
-      if (kinds && !kinds.includes(p.kind)) continue;
-      if (q.type !== undefined && (p.entity?.type ?? this.d.store.actor(id)?.role) !== q.type) continue;
-      if (q.capabilities?.length && !q.capabilities.every((c) => p.entity?.capabilities.includes(c))) continue;
+      const truth = this.d.locator.place(id);
+      if (!truth) continue;
+      if (kinds && !kinds.includes(truth.kind)) continue;
+      if (q.type !== undefined && (truth.entity?.type ?? this.d.store.actor(id)?.role) !== q.type) continue;
+      if (q.capabilities?.length && !q.capabilities.every((c) => truth.entity?.capabilities.includes(c))) continue;
+      if (needle && !this.nameMatches(truth, needle)) continue;
+      const a = this.awareness(actor, truth, o);
+      if (!a || !allowed.has(a) || (q.visibleOnly && a !== "visible")) continue;
+      // where the actor believes it is (lead note 1): the room, level and distance filters follow the belief
+      const { p, lastKnown } = this.believed(actor, truth, a);
       if (room !== undefined && p.room !== room) continue;
       if (q.level !== undefined && p.level !== q.level) continue;
-      if (needle && !this.nameMatches(p, needle)) continue;
-      const a = this.awareness(actor, p, o);
-      if (!a || !allowed.has(a) || (q.visibleOnly && a !== "visible")) continue;
       const d = this.distanceTo(actor, p);
       if (q.maxDistance !== undefined && !(d <= q.maxDistance)) continue;
-      rows.push({ p, a, d });
+      rows.push({ p, a, d, lastKnown });
     }
     const withReach = o.reachability || !!q.reachableOnly || q.sort === "path";
-    let found = rows.map((r) => ({ r, e: this.observed(actor, r.p, r.a, withReach) }));
+    let found = rows.map((r) => ({ r, e: this.observed(actor, r.p, r.a, withReach, r.lastKnown) }));
     if (q.reachableOnly) found = found.filter((x) => x.e.reachable === true);
     const sort = q.sort ?? (withReach ? "path" : "distance");
     found.sort((x, y) => {
@@ -376,7 +439,8 @@ export class Perception {
     if (!p) return null;
     const a = this.awareness(actor, p);
     if (!a) return null;
-    const base = this.observed(actor, p, a, this.d.options.reachability);
+    const belief = this.believed(actor, p, a);
+    const base = this.observed(actor, belief.p, a, this.d.options.reachability, belief.lastKnown);
     this.record(actor, [base]);
     const L = this.d.locale;
     const rules = this.d.rules;
@@ -406,8 +470,7 @@ export class Perception {
         return `${roleName(e.type, L)} · ${t(e.name, L)}`;
       case "door": {
         const door = this.d.collision.doors.find((d) => d.id === e.id);
-        const side = (r: string | null) => (r ? t(this.d.locator.registry.entity(`room:${r}`)?.name ?? r, L) : L.toLowerCase().startsWith("zh") ? "室外" : "outside");
-        return door ? `${name}: ${side(door.rooms[0])} ↔ ${side(door.rooms[1])}` : name;
+        return door ? `${name}: ${this.sideName(door, 0)} ↔ ${this.sideName(door, 1)}` : name;
       }
       default:
         return name;
@@ -421,19 +484,39 @@ export class Perception {
     if (!rid) return null;
     const room = this.d.locator.registry.entity(`room:${rid}`);
     if (!room) return null;
-    const exits = this.d.collision.doors.filter((d) => d.rooms.includes(rid)).map((d) => ({ door: d.id, to: d.rooms[0] === rid ? d.rooms[1] : d.rooms[0] }));
-    const rows: { p: Placed; a: Awareness; d: number }[] = [];
+    const exits = this.d.collision.doors
+      .filter((d) => d.rooms.includes(rid))
+      .map((d) => {
+        const i = d.rooms[0] === rid ? 1 : 0;
+        return { door: d.id, to: d.rooms[i], toName: this.sideName(d, i) };
+      });
+    const rows: Row[] = [];
     for (const id of this.universe(actorId)) {
-      const p = this.d.locator.place(id);
-      if (!p || p.kind === "room" || p.room !== rid) continue;
-      const a = this.awareness(actor, p);
-      if (a) rows.push({ p, a, d: this.distanceTo(actor, p) });
+      const truth = this.d.locator.place(id);
+      if (!truth || truth.kind === "room") continue;
+      const a = this.awareness(actor, truth);
+      if (!a) continue;
+      const { p, lastKnown } = this.believed(actor, truth, a);
+      if (p.room === rid) rows.push({ p, a, d: this.distanceTo(actor, p), lastKnown });
     }
     const entities = this.ordered(rows)
       .slice(0, this.d.options.maxEntities)
-      .map((r) => this.observed(actor, r.p, r.a, this.d.options.reachability));
+      .map((r) => this.observed(actor, r.p, r.a, this.d.options.reachability, r.lastKnown));
     this.record(actor, entities);
     return { id: room.id, name: t(room.name, this.d.locale), kind: room.type, level: room.level, exits, entities };
+  }
+
+  /**
+   * Name of one side of a door (0: inside its owner's wall, 1: outside): the
+   * room there, else what lies beyond the wall — a building's corridor or
+   * the facility's outdoor region (lead note 2).
+   */
+  private sideName(door: DoorSpec, i: 0 | 1): string {
+    const room = door.rooms[i];
+    if (room) return t(this.d.locator.registry.entity(`room:${room}`)?.name ?? room, this.d.locale);
+    const n = SIDE_NORMAL[door.side];
+    const sign = i === 0 ? -1 : 1;
+    return this.d.locator.regionName({ level: door.level, x: door.centre.x + sign * n.x * 0.6, z: door.centre.z + sign * n.z * 0.6 });
   }
 
   /** `canSee`: field of view, range and line of sight now (records nothing). */
