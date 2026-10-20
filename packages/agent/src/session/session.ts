@@ -448,7 +448,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       createdAt: new Date(this.createdAt).toISOString(),
       ...(this.recorder ? { nextOrdinal: this.recorder.nextOrdinal } : {}),
       dialogue: this.dialogue.map((d) => ({ ...d })),
-      ...(this.embodied ? { embodiment: "embodied" as const, world: this.embodied.world().snapshot() } : {}),
+      ...(this.embodied ? { embodiment: "embodied" as const, world: this.embodied.persistentSnapshot() } : {}),
     };
   }
 
@@ -648,6 +648,11 @@ export class ClinicalSession implements ClinicalSessionApi {
       this.emit(id, { type: "warning", message: rt(this.locale, "bridge.cancelledBeforeStart", { tool: String(op.tool) }) });
       return;
     }
+    // Its caller stopped waiting while it was queued (and was told it timed out): never start it (review S11).
+    if (typeof op.deadline === "number" && Number.isFinite(op.deadline) && this.now() >= op.deadline) {
+      this.emit(id, { type: "warning", message: rt(this.locale, "bridge.deadlinePassed", { tool: String(op.tool) }) });
+      return;
+    }
     const signal = entry.controller.signal;
     // An interrupt (the learner's Esc, shutdown) cancels the call too.
     const onInterrupt = () => entry.controller.abort();
@@ -655,6 +660,16 @@ export class ClinicalSession implements ClinicalSessionApi {
     const turnId = this.newId();
     const started = this.now();
     this.emit(id, { type: "turn_started", turnId, agent: "clinician" });
+    // The bypass guard, checked when the call RUNS (review S4): a call queued before the learner switched to
+    // bypass would otherwise act with nothing asking the learner. Only a front-end that opted in is exempt.
+    if (this._settings.approvalMode === "bypass" && op.allowBypass !== true) {
+      turnSignal.removeEventListener("abort", onInterrupt);
+      const output = rt(this.locale, "bridge.bypass");
+      this.emit(id, { type: "tool_call_begin", turnId, agent: "clinician", callId: op.callId, tool: op.tool, args: op.args ?? {} });
+      this.emit(id, { type: "tool_call_end", turnId, agent: "clinician", callId: op.callId, tool: op.tool, ok: false, output, durationMs: 0 });
+      this.finishTurn(id, turnId, "clinician", { status: "denied", text: "", grounded: [] }, started);
+      return;
+    }
     // A state-changing tool starts the encounter once the gate let it through (as the learner's and MCP's paths do).
     const tools = this.toolsFor("clinician").map((tool): ToolDefinition<any> =>
       tool.readOnly

@@ -4,11 +4,15 @@
  * delegated task) — with what it did, in order: observation → navigation →
  * interaction → clinical action → state change → verification, failures
  * with their error code and the place a hint names. A step still running
- * (its plan span is recorded when it ends) shows what it did so far.
+ * (its plan span is recorded when it ends) shows what it did so far. Names,
+ * error codes and actors are shown in the learner's language
+ * (`trace-labels.ts`); the identifiers stay on the elements (`data-name`,
+ * `data-code`, tooltips) for teachers and tests.
  */
 import type { TraceSpan } from "@clinicalcraft/world";
 import { tr, trMaybe } from "../../i18n/index.js";
 import { h } from "../dom.js";
+import { traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
 
 export interface TraceStepView {
   id: string;
@@ -24,6 +28,8 @@ export interface TraceStepView {
 export interface TraceGroupView {
   /** The plan span id (or the span id of a lone action). */
   id: string;
+  /** Kind of the span that names the group (a plan, or the lone action itself). */
+  kind: TraceSpan["kind"];
   name: string;
   /** true / false when finished; null while running. */
   ok: boolean | null;
@@ -85,7 +91,7 @@ export function traceGroups(spans: readonly TraceSpan[], hintOf: (actionId: stri
       }
       steps.push(step);
     }
-    out.push({ id: key, name: root?.name ?? steps[0]?.name ?? key, ok: root ? root.ok : null, actorId: root?.actorId ?? g.members[0]?.actorId ?? null, steps });
+    out.push({ id: key, kind: root?.kind ?? (steps[0] && steps[0].depth === 0 ? steps[0].kind : "plan"), name: root?.name ?? steps[0]?.name ?? key, ok: root ? root.ok : null, actorId: root?.actorId ?? g.members[0]?.actorId ?? null, steps });
   }
   return out.slice(-limit);
 }
@@ -101,8 +107,8 @@ const KIND_ICON: Record<string, string> = {
   assessment: "★",
 };
 
-/** The trace as a list (newest step last). */
-export function traceList(groups: readonly TraceGroupView[]): HTMLElement {
+/** The trace as a list (newest step last), labelled in the learner's language. */
+export function traceList(groups: readonly TraceGroupView[], ctx: TraceLabelContext = { caseDef: null }): HTMLElement {
   const list = h("ol", { class: "trace", id: "autopilot-trace" });
   if (!groups.length) {
     list.append(h("li", { class: "empty" }, tr("auto.traceEmpty")));
@@ -118,8 +124,8 @@ export function traceList(groups: readonly TraceGroupView[]): HTMLElement {
           "div",
           { class: "trace-head" },
           h("span", { class: "trace-status", "aria-label": status === "ok" ? tr("auto.ok") : status === "failed" ? tr("auto.fail") : tr("auto.traceRunning") }, status === "ok" ? "✓" : status === "failed" ? "✕" : "…"),
-          h("b", null, g.name),
-          g.actorId ? h("small", null, g.actorId.replace(/^actor:|^staff:/, "")) : null,
+          h("b", { title: g.name, dataset: { name: g.name } }, traceLabel(g.kind, g.name, ctx)),
+          g.actorId ? h("small", { class: "trace-actor", dataset: { actor: g.actorId } }, traceActorLabel(g.actorId, ctx)) : null,
         ),
         h(
           "ol",
@@ -127,10 +133,10 @@ export function traceList(groups: readonly TraceGroupView[]): HTMLElement {
           g.steps.map((s) =>
             h(
               "li",
-              { class: ["trace-step", `kind-${s.kind}`, s.ok ? "ok" : "failed"], dataset: { kind: s.kind, depth: String(s.depth) } },
+              { class: ["trace-step", `kind-${s.kind}`, s.ok ? "ok" : "failed"], dataset: { kind: s.kind, depth: String(s.depth), name: s.name } },
               h("span", { class: "trace-kind", title: trMaybe(`trace.kind.${s.kind}`, s.kind) }, KIND_ICON[s.kind] ?? "·", " ", trMaybe(`trace.kind.${s.kind}`, s.kind)),
-              h("code", null, s.name),
-              s.errorCode ? h("small", { class: "trace-error" }, s.errorCode) : null,
+              h("span", { class: "trace-name", title: s.name }, traceLabel(s.kind, s.name, ctx)),
+              s.errorCode ? h("small", { class: "trace-error", title: s.errorCode, dataset: { code: s.errorCode } }, traceCodeLabel(s.errorCode)) : null,
               s.hint ? h("small", { class: "trace-hint" }, tr("auto.traceHint", { label: s.hint })) : null,
             ),
           ),

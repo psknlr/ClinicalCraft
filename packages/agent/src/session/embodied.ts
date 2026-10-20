@@ -28,9 +28,11 @@ import {
   createWorldRuntime,
   PRIMARY_ACTOR,
   rhythmAtBedside,
+  type ActionHint,
   type ActorId,
   type CameraSensor,
   type ClinicalIntent,
+  type ClinicalInvokeContext,
   type ClinicalInvokeResult,
   type ClinicalPort,
   type ClinicalView,
@@ -54,6 +56,7 @@ import { createWorldTools, taskLabel, type WorldRequestInput, type WorldToolHost
 import { runDelegation, type DelegationResult } from "./delegation.js";
 import type { ClinicalCaller } from "./embodied-types.js";
 import { rt, type RuntimeKey } from "./i18n.js";
+import { anySignal } from "./signals.js";
 import { SessionTrace } from "./trace.js";
 
 export type { ClinicalCaller } from "./embodied-types.js";
@@ -99,8 +102,26 @@ export interface EmbodiedOptions {
   snapshot?: WorldStateSnapshot;
 }
 
-/** Results kept in a transcript snapshot (without paths and events: resume needs states, not telemetry). */
-const SNAPSHOT_RESULTS = 16;
+/**
+ * Results kept in a transcript snapshot — the world's whole idempotency window (128), so a retried action id is
+ * answered from its record after a resume too (review C12); without paths and events (resume needs states, not
+ * telemetry).
+ */
+const SNAPSHOT_RESULTS = 128;
+
+/**
+ * A world snapshot as the session persists it (transcript `world` items, `SessionSnapshot.world`): the world's own
+ * snapshot plus `elapseCarry` — simulated minutes charged by world actions (travel, procedures) but not yet
+ * dispatched to the engine, which advances in hundredths. Restored with the snapshot, so a resumed session's clock
+ * equals an uninterrupted one's (review C12). The world ignores the extra field.
+ */
+export type PersistedWorldSnapshot = WorldStateSnapshot & { elapseCarry?: number };
+
+/** The elapse remainder a persisted snapshot carries (0 when absent or malformed). */
+function carryOf(snapshot: WorldStateSnapshot | undefined): number {
+  const v = (snapshot as PersistedWorldSnapshot | undefined)?.elapseCarry;
+  return typeof v === "number" && Number.isFinite(v) && v > 0 && v < 1 ? v : 0;
+}
 
 type Listener = (event: WorldEvent, version: number) => void;
 
@@ -111,7 +132,12 @@ export class EmbodiedSession {
   private worldLocale: string;
   private unsubscribe: () => void = () => undefined;
   private readonly listeners = new Set<Listener>();
-  private readonly callers = new Map<ActorId, { caller: ClinicalCaller; actionId: string }[]>();
+  /** The caller of every world action in flight, by action id: its clinical effect runs through exactly that caller's tool path (review C4). */
+  private readonly callers = new Map<string, { caller: ClinicalCaller; actorId: ActorId }>();
+  /** World actions in flight (`act`): a language switch waits until there are none (review C6). */
+  private inflight = 0;
+  /** A language switch deferred while actions were in flight. */
+  private pendingLocale: string | null = null;
   private readonly captures = new Set<{ id: string; type: DomainEvent["type"] }[]>();
   /** Engine changes of a world action's clinical effect (action id → events), for its `state_change` span. */
   private readonly engineChanges = new Map<string, { id: string; type: DomainEvent["type"] }[]>();
@@ -138,10 +164,11 @@ export class EmbodiedSession {
       clock: () => host.state().clock,
     };
     this.port = {
-      invoke: (actorId, tool, args, signal) => this.invoke(actorId, tool, args, signal),
+      invoke: (actorId, tool, args, signal, context) => this.invoke(actorId, tool, args, signal, context),
       elapse: (seconds, reason) => this.elapse(seconds, reason),
     };
     this.worldLocale = host.locale();
+    this.carry = carryOf(options.snapshot);
     this.inner = this.build(options.snapshot, this.worldLocale, true);
     this.facade = this.makeFacade();
   }
@@ -188,11 +215,25 @@ export class EmbodiedSession {
     return this.facade;
   }
 
-  /** Rebuild the world in another language (state kept). */
+  /**
+   * Rebuild the world in another language (state kept). Never while world actions are in flight (review C6): the
+   * rebuild would drop their committed state and recorded results while their time is still charged — it waits
+   * until the last one has finished.
+   */
   setLocale(locale: string): void {
+    if (this.inflight > 0) {
+      this.pendingLocale = locale;
+      return;
+    }
+    this.pendingLocale = null;
     if (locale === this.worldLocale) return;
     this.worldLocale = locale;
     this.inner = this.build(this.inner.snapshot(), locale, false);
+  }
+
+  private applyPendingLocale(): void {
+    const locale = this.pendingLocale;
+    if (locale !== null) this.setLocale(locale);
   }
 
   private makeFacade(): WorldRuntime {
@@ -270,23 +311,28 @@ export class EmbodiedSession {
     const actorId = input.actorId ?? PRIMARY_ACTOR;
     const actionId = input.actionId ?? `wa-${this.host.newId()}`;
     const request: WorldActionRequest = { ...input, actorId, actionId };
-    const entry = { caller, actionId };
-    const stack = this.callers.get(actorId) ?? [];
-    stack.push(entry);
-    this.callers.set(actorId, stack);
-    const before = this.inner.version;
-    let result: WorldActionResult;
+    // A retry of an action id still in flight shares that run, and its caller.
+    const entry = { caller, actorId };
+    const owned = !this.callers.has(actionId);
+    if (owned) this.callers.set(actionId, entry);
+    this.inflight++;
     try {
-      result = await this.inner.execute(request, signal ?? caller.signal);
+      const inner = this.inner;
+      const before = inner.version;
+      let result: WorldActionResult;
+      try {
+        result = await inner.execute(request, signal ?? caller.signal);
+      } finally {
+        if (owned && this.callers.get(actionId) === entry) this.callers.delete(actionId);
+      }
+      this.traceEngineChanges(actionId, actorId);
+      this.host.emit({ type: "world_action_result", result }, caller.submission);
+      if (inner.version !== before) this.record();
+      return result;
     } finally {
-      const i = stack.indexOf(entry);
-      if (i >= 0) stack.splice(i, 1);
-      if (!stack.length) this.callers.delete(actorId);
+      this.inflight--;
+      if (this.inflight === 0) this.applyPendingLocale();
     }
-    this.traceEngineChanges(actionId, actorId);
-    this.host.emit({ type: "world_action_result", result }, caller.submission);
-    if (result.worldVersion !== before) this.record();
-    return result;
   }
 
   /**
@@ -316,23 +362,38 @@ export class EmbodiedSession {
     });
   }
 
-  /** `ClinicalPort.invoke`: the clinical tool through the tool path of the caller driving `actorId`. */
-  private async invoke(actorId: ActorId, tool: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<ClinicalInvokeResult> {
-    const entry = this.callers.get(actorId)?.at(-1);
-    const caller = entry?.caller ?? { agent: "learner" as const };
+  /** The caller of the most recent world action of `actorId` still in flight (a port called without an action id). */
+  private lastCallerOf(actorId: ActorId): ClinicalCaller | null {
+    let found: ClinicalCaller | null = null;
+    for (const entry of this.callers.values()) if (entry.actorId === actorId) found = entry.caller;
+    return found;
+  }
+
+  /**
+   * `ClinicalPort.invoke`: the clinical tool through the tool path of the caller of exactly this world action
+   * (`context.actionId`, review C4) — never another caller's that happens to drive the same body. It is cancelled
+   * by its caller (a turn, an external call) and by the world (`cancel(actorId)`, a cancel operation): either
+   * withdraws a pending approval (review C5). The session's own refusals keep their code: a spatial refusal its
+   * hint (review C13), an acting body outside its role's authority `unauthorized`.
+   */
+  private async invoke(actorId: ActorId, tool: string, args: Record<string, unknown>, signal?: AbortSignal, context?: ClinicalInvokeContext): Promise<ClinicalInvokeResult> {
+    const actionId = context?.actionId;
+    const caller = (actionId ? this.callers.get(actionId)?.caller : undefined) ?? this.lastCallerOf(actorId) ?? { agent: "learner" as const };
+    const combined = anySignal([caller.signal, signal]);
     const captured: { id: string; type: DomainEvent["type"] }[] = [];
     this.captures.add(captured);
     let call: SkillToolCall;
     try {
-      call = await this.host.runTool(signal && !caller.signal ? { ...caller, signal } : caller, tool, args, { actorId, ...(entry ? { worldActionId: entry.actionId } : {}) });
+      call = await this.host.runTool(combined ? { ...caller, signal: combined } : caller, tool, args, { actorId, ...(actionId ? { worldActionId: actionId } : {}) });
     } finally {
       this.captures.delete(captured);
     }
-    if (entry) {
+    if (actionId) {
       const changes = captured.filter((e) => e.type !== "action.rejected");
-      if (changes.length) this.engineChanges.set(entry.actionId, [...(this.engineChanges.get(entry.actionId) ?? []), ...changes]);
+      if (changes.length) this.engineChanges.set(actionId, [...(this.engineChanges.get(actionId) ?? []), ...changes]);
     }
-    const data = call.output.data as { rejected?: unknown } | undefined;
+    const data = call.output.data as { rejected?: unknown; code?: unknown; hint?: unknown } | undefined;
+    const spatial = spatialCodeOf(call.output);
     const outcome: ClinicalInvokeResult["outcome"] =
       call.ok && call.status === "ok"
         ? "ok"
@@ -340,10 +401,22 @@ export class EmbodiedSession {
           ? "denied"
           : call.status === "cancelled" || call.status === "interrupted"
             ? "cancelled"
-            : data?.rejected || spatialCodeOf(call.output)
-              ? "rejected"
-              : "error";
-    return { ok: outcome === "ok", output: call.output.output, outcome, clinicalEventIds: captured.map((e) => e.id) };
+            : spatial
+              ? "spatial"
+              : data?.code === "NOT_AUTHORIZED"
+                ? "unauthorized"
+                : data?.rejected
+                  ? "rejected"
+                  : "error";
+    const firstLine = call.output.output.split("\n")[0] ?? "";
+    return {
+      ok: outcome === "ok",
+      output: call.output.output,
+      outcome,
+      clinicalEventIds: captured.map((e) => e.id),
+      ...(spatial ? { code: spatial, message: firstLine, hint: (data?.hint ?? null) as ActionHint | null } : {}),
+      ...(outcome === "unauthorized" ? { message: firstLine } : {}),
+    };
   }
 
   /** `ClinicalPort.elapse` (EMBODIED R8): simulated clocks only; minutes × realtimeScale, dispatched in hundredths. */
@@ -355,6 +428,7 @@ export class EmbodiedSession {
     const minutes = Math.min(Math.floor(this.carry * 100 + 1e-9) / 100, 24 * 60);
     if (minutes < 0.01) return;
     this.carry = Math.max(0, this.carry - minutes);
+    this.dirty = true; // the remainder is persisted with the world (review C12)
     this.host.dispatch({ type: "advance-time", minutes, reason, by: "system" });
   }
 
@@ -567,9 +641,14 @@ export class EmbodiedSession {
   /* Persistence                                                       */
   /* ---------------------------------------------------------------- */
 
-  /** The world snapshot as the transcript keeps it (idempotency window trimmed). */
-  transcriptSnapshot(): WorldStateSnapshot {
-    const s = this.inner.snapshot();
+  /** The world snapshot as a session save keeps it (`SessionSnapshot.world`): the world's own plus the elapse remainder. */
+  persistentSnapshot(): PersistedWorldSnapshot {
+    return { ...this.inner.snapshot(), ...(this.carry > 0 ? { elapseCarry: this.carry } : {}) };
+  }
+
+  /** The world snapshot as the transcript keeps it (results without telemetry; the elapse remainder). */
+  transcriptSnapshot(): PersistedWorldSnapshot {
+    const s = this.persistentSnapshot();
     return {
       ...s,
       results: s.results.slice(-SNAPSHOT_RESULTS).map((r) => {

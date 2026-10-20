@@ -94,7 +94,8 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   const clockStart = h.state().clock;
   const result: DelegationResult = { staffId: null, role, task, status: "failed", steps: [], elapsedSeconds: 0, clockMinutes: 0, distance: 0 };
   const finish = (status: DelegationResult["status"], message?: string): DelegationResult => {
-    result.status = status;
+    // Stopped by its caller (the learner's interrupt, a cancelled external call): cancelled, not failed (review C17).
+    result.status = status === "failed" && caller.signal?.aborted ? "cancelled" : status;
     if (message) result.message = message;
     result.clockMinutes = r2(h.state().clock - clockStart);
     result.elapsedSeconds = r2(result.elapsedSeconds);
@@ -113,7 +114,8 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     result.steps.push({ operation, ...(targetId ? { target: targetId } : {}), status: r.status, ...(r.errorCode ? { code: r.errorCode } : {}), message: r.message });
     result.elapsedSeconds += r.elapsedSeconds ?? 0;
     result.distance += r.navigation?.length ?? 0;
-    if (r.status === "cancelled" && r.errorCode !== "MOVEMENT_INTERRUPTED") cancelled = true;
+    // A walk stopped short is the caller's cancellation when the caller stopped it (else an obstacle: a failure).
+    if (r.status === "cancelled" && (r.errorCode !== "MOVEMENT_INTERRUPTED" || caller.signal?.aborted)) cancelled = true;
     return r;
   };
   // done for the delegating clinician: its observations report the staff member's actions (G13)

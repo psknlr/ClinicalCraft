@@ -45,15 +45,18 @@ export function loadCase(id: string): CaseDefinition {
   return c;
 }
 
-type Gate = (tool: string, args: Record<string, unknown>, signal?: AbortSignal) => "ok" | "denied" | Promise<"ok" | "denied">;
+/** A refusal of the session's tool path that is not the approval gate's (a spatial re-check, the scope of practice). */
+export type GateRefusal = Pick<ClinicalInvokeResult, "outcome" | "code" | "message" | "hint">;
+type Verdict = "ok" | "denied" | GateRefusal;
+type Gate = (tool: string, args: Record<string, unknown>, signal?: AbortSignal) => Verdict | Promise<Verdict>;
 
 /** Fake clinical side over the real engine. */
 export interface ClinicalHarness {
   view: ClinicalView;
   port: ClinicalPort;
   state(): SessionState;
-  /** Every `invoke` (in order). */
-  calls: { actorId: string; tool: string; args: Record<string, unknown> }[];
+  /** Every `invoke` (in order), with the world action it carries out (`context.actionId`). */
+  calls: { actorId: string; tool: string; args: Record<string, unknown>; actionId?: string }[];
   /** Every `elapse` (in order). */
   elapsed: { seconds: number; reason: string }[];
   /** Decides each invocation before the engine runs it (default: ok). */
@@ -102,11 +105,12 @@ export function clinicalHarness(caseDef: CaseDefinition): ClinicalHarness {
       clock: () => state.clock,
     },
     port: {
-      async invoke(actorId, tool, args, signal): Promise<ClinicalInvokeResult> {
-        h.calls.push({ actorId, tool, args: { ...args } });
+      async invoke(actorId, tool, args, signal, context): Promise<ClinicalInvokeResult> {
+        h.calls.push({ actorId, tool, args: { ...args }, ...(context?.actionId ? { actionId: context.actionId } : {}) });
         const verdict = h.gate ? await h.gate(tool, args, signal) : "ok";
         if (signal?.aborted) return { ok: false, output: "cancelled", outcome: "cancelled", clinicalEventIds: [] };
         if (verdict === "denied") return { ok: false, output: "denied by the approval gate", outcome: "denied", clinicalEventIds: [] };
+        if (typeof verdict === "object") return { ok: false, output: verdict.message ?? "refused", clinicalEventIds: [], ...verdict };
         const action = actionFor(tool, args);
         if (!action) return { ok: true, output: JSON.stringify(vitalsAt(caseDef, state).vitals), outcome: "ok", clinicalEventIds: [] };
         const r = h.dispatch(action);

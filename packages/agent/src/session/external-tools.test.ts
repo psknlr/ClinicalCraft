@@ -157,6 +157,62 @@ describe("external_tool_call — the clinician's tool path in its own turn", () 
   });
 });
 
+describe("external_tool_call — guards re-checked when the call runs (review S4/S11, session side)", () => {
+  it("S4: a call queued before a switch to bypass is refused when it runs (no approval asked, nothing given); allowBypass is exempt", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { approvalMode: "default" } });
+    await external(t, "c-walk", "navigate_to", { target: "patient" });
+    // A asks the learner (moderate risk in default mode); the dialog stays open.
+    const a = external(t, "A", "intervene", { intervention_id: "ticagrelor" });
+    await waitFor(() => t.msgs("approval_request").length === 1);
+    // The learner switches to bypass (queued behind A); B arrives while the mode is still "default".
+    t.session.submit({ type: "configure", patch: { approvalMode: "bypass" } });
+    const b = external(t, "B", "intervene", { intervention_id: "tenecteplase" });
+    t.session.submit({ type: "approval_response", requestId: t.msgs("approval_request")[0]!.requestId, decision: "denied" });
+    await a;
+    const bEvents = await b;
+    expect(t.session.settings.approvalMode).toBe("bypass");
+    const rb = bridgeResultOf(bEvents, "B", "en");
+    expect(rb).toMatchObject({ ok: false, status: "denied" });
+    expect(rb.output).toMatch(/bypass/);
+    expect(msgsOf(bEvents, "turn_aborted")[0]).toMatchObject({ agent: "clinician", reason: "denied" });
+    expect(t.msgs("approval_request")).toHaveLength(1); // only A's
+    expect(given(t)).toEqual([]);
+    // zh-CN wording
+    await t.session.run({ type: "configure", patch: { locale: "zh-CN" } });
+    expect(bridgeResultOf(await external(t, "B2", "intervene", { intervention_id: "aspirin" }), "B2", "zh-CN").output).toMatch(/bypass/);
+    expect(given(t)).toEqual([]);
+    // A front-end that opted in (allowBypass) is exempt.
+    const c = await t.session.run({ type: "external_tool_call", callId: "C", tool: "intervene", args: { intervention_id: "aspirin" }, allowBypass: true });
+    expect(bridgeResultOf(c, "C", "en")).toMatchObject({ ok: true, status: "ok" });
+    expect(given(t)).toEqual(["aspirin"]);
+  });
+
+  it("S11: a call still queued when its deadline passes is dropped, not run (a bilingual notice); one within its deadline runs", async () => {
+    let clock = Date.UTC(2026, 0, 1);
+    const t = await makeEmbodiedSession({ now: () => clock, settingsPatch: { approvalMode: "default" } });
+    await external(t, "c-walk", "navigate_to", { target: "patient" });
+    const a = external(t, "A", "intervene", { intervention_id: "ticagrelor" });
+    await waitFor(() => t.msgs("approval_request").length === 1);
+    const late = t.session.run({ type: "external_tool_call", callId: "LATE", tool: "intervene", args: { intervention_id: "aspirin" }, deadline: clock + 5_000 });
+    const timely = t.session.run({ type: "external_tool_call", callId: "TIMELY", tool: "observe_world", args: {}, deadline: clock + 600_000 });
+    clock += 60_000; // the attach client stopped waiting for LATE (it was told it timed out)
+    t.session.submit({ type: "approval_response", requestId: t.msgs("approval_request")[0]!.requestId, decision: "denied" });
+    await a;
+    const lateEvents = await late;
+    expect(msgsOf(lateEvents, "tool_call_begin")).toEqual([]);
+    const r = bridgeResultOf(lateEvents, "LATE", "en");
+    expect(r).toMatchObject({ ok: false, status: "cancelled" });
+    expect(r.output).toMatch(/not run/);
+    expect(r.output).toMatch(/deadline/);
+    expect(given(t)).toEqual([]);
+    expect(bridgeResultOf(await timely, "TIMELY", "en")).toMatchObject({ ok: true, status: "ok" });
+    // zh-CN
+    await t.session.run({ type: "configure", patch: { locale: "zh-CN" } });
+    const zh = await t.session.run({ type: "external_tool_call", callId: "LATE2", tool: "observe_world", args: {}, deadline: clock - 1 });
+    expect(bridgeResultOf(zh, "LATE2", "zh-CN").output).toMatch(/未执行/);
+  });
+});
+
 describe("bridgeResultOf", () => {
   it("reports notices, warnings and the not-run case; bounds the output", () => {
     const ev = (msg: AgentEvent["msg"], seq: number): AgentEvent => ({ id: "s1", seq, msg });

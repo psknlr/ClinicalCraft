@@ -114,8 +114,13 @@ export type Op =
    * `tool_call_begin` / `tool_call_end` (with this `callId`) → `turn_complete` when the tool ran (ok or not), else
    * `turn_aborted` with `denied` (a deny rule, plan mode, a hook or the learner refused) or `interrupted`
    * (cancelled). Queued like other work; cancelled by `external_tool_cancel` or `interrupt`.
+   *
+   * Checked again when the call RUNS (review S4/S11): `deadline` (ms since epoch, the session's clock — when the
+   * caller stops waiting) — a call still queued then is dropped, not run (a `warning`, no turn); `allowBypass`
+   * (only a front-end that opted in to bypass mode sets it — the web never does) — without it a call that runs
+   * while the approval mode is `bypass` is refused (`turn_aborted` `denied`): nothing would ask the learner.
    */
-  | { type: "external_tool_call"; callId: string; tool: string; args?: unknown }
+  | { type: "external_tool_call"; callId: string; tool: string; args?: unknown; deadline?: number; allowBypass?: boolean }
   /** Cancel an `external_tool_call` by `callId` (out-of-band): still queued → it never runs; running → aborted (a pending approval request is withdrawn). */
   | { type: "external_tool_cancel"; callId: string }
   /** Cancel the running turn (AbortController). */

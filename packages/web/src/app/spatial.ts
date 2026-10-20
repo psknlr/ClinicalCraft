@@ -1,13 +1,13 @@
 /**
  * Spatial rules of the web UI in embodied mode (docs/EMBODIED.md §6) — pure
  * helpers, no DOM. The world model is the authority (the session's spatial
- * gate refuses what the body cannot do from where it stands); the UI only
- * decides how to help the human: a short animated step when they stand just
- * a little too far (within the 5.5 m aim reach), otherwise the localised
- * refusal with "Go there".
+ * gate refuses what the body cannot do from where it stands; what counts as
+ * at the bedside is `WorldRuntime.atBedside` / `bedsideProviders`, never a
+ * rule of the web's own); the UI only decides how to help the human: a short
+ * animated step when they stand just a little too far (within the 5.5 m aim
+ * reach), otherwise the localised refusal with "Go there".
  */
-import { BEDSIDE_RADIUS, DELIVERED_CAPABILITIES, type NavGoal, type NavPlan, type SpatialCheck, type WorldActionResult, type WorldStateSnapshot } from "@clinicalcraft/world";
-import { PERSONAL_KIT, rectContains, type FacilityDefinition } from "@clinicalcraft/core";
+import type { NavGoal, NavPlan, SpatialCheck, WorldActionResult, WorldStateSnapshot } from "@clinicalcraft/world";
 
 /** How far (m of walking) the UI may step the avatar by itself before retrying a refused action: the aim reach. */
 export const AUTO_APPROACH_M = 5.5;
@@ -114,28 +114,31 @@ export function entitySpot(snapshot: Pick<WorldStateSnapshot, "entities" | "acto
   return registry;
 }
 
+/** Why the patient's monitor screen cannot be read (EMBODIED §6 `monitor-screen`). */
+export type ScreenReason = "no-monitor" | "no-monitor-attached" | "monitor-not-in-view";
+
+/** Whether the learner can read the patient's monitor screen now (`monitorId`: that monitor's entity id). */
+export type ScreenState = { readable: true; reason: null; monitorId: string } | { readable: false; reason: ScreenReason; monitorId: string | null };
+
 /**
- * Capabilities at the patient's bedside as the world policy counts them
- * (EMBODIED §6): the personal kit, every in-service placement within the
- * bedside radius of the slot or in the slot's room — where it stands NOW (a
- * cart wheeled over counts) — and the delivered capabilities (pharmacy
- * drugs, blood products) any in-service placement of the facility provides.
+ * The monitor panel and the HUD's vitals strip show the live screen (numbers,
+ * waveforms, rhythm) only when the world's own `check_vitals` check holds
+ * THROUGH THAT MONITOR'S SCREEN — `satisfiedBy` names it (the `monitor-screen`
+ * option: in its room, within 6 m, line of sight; never through a window).
+ * Vitals by hand at the patient or from the chart give numbers through the
+ * tools, never the live screen. `attached`: the engine's `monitorAttached`.
  */
-export function bedsideCapsNow(
-  f: Pick<FacilityDefinition, "patientSlots" | "rooms">,
-  slotId: string | null,
-  equipment: readonly { id: string; capabilities: readonly string[]; x: number; z: number; level: string; room: string | null; available: boolean }[],
-  slotLevel: string,
-): Set<string> {
-  const caps = new Set<string>(PERSONAL_KIT);
-  const slot = f.patientSlots.find((s) => s.id === slotId);
-  const room = slot ? f.rooms.find((r) => r.id === slot.room) : undefined;
-  for (const e of equipment) {
-    if (!e.available) continue;
-    for (const c of e.capabilities) if (DELIVERED_CAPABILITIES.includes(c)) caps.add(c);
-    if (!slot || e.level !== slotLevel) continue;
-    const near = Math.hypot(e.x - slot.x, e.z - slot.z) <= BEDSIDE_RADIUS || (e.room !== null ? e.room === slot.room : !!room && rectContains(room.rect, e.x, e.z));
-    if (near) for (const c of e.capabilities) caps.add(c);
-  }
-  return caps;
+export function screenState(check: SpatialCheck | null, monitorId: string | null, attached: boolean): ScreenState {
+  if (!monitorId) return { readable: false, reason: "no-monitor", monitorId: null };
+  if (!attached || (check && !check.ok && check.reason === "no-monitor-attached")) return { readable: false, reason: "no-monitor-attached", monitorId };
+  if (check?.ok && check.satisfiedBy.includes(monitorId)) return { readable: true, reason: null, monitorId };
+  return { readable: false, reason: "monitor-not-in-view", monitorId };
+}
+
+/**
+ * World and session texts as a person reads them: the operation ids they name for a model ("… to the patient
+ * (move_to)", "（move_to）") are dropped — the "Go there" button does that part. Other parentheses stay.
+ */
+export function learnerText(text: string): string {
+  return text.replace(/\s*[（(][a-z]+(?:_[a-z]+)+[）)]/g, "");
 }

@@ -777,14 +777,32 @@ export interface WorldActionResult {
 export interface ClinicalInvokeResult {
   ok: boolean;
   output: string;
-  /** "denied" when the approval gate or a hook refused; "rejected" when the engine refused. */
-  outcome: "ok" | "denied" | "rejected" | "error" | "cancelled";
+  /**
+   * "denied" when the approval gate or a hook refused; "rejected" when the engine refused; "spatial" when the
+   * session's spatial gate refused (its re-check right before the engine commit: the body moved while an
+   * approval was pending) — `code`, `message` and `hint` say which and where to go (review C13);
+   * "unauthorized" when the acting body's role may not do this (authority, scope of practice — review G2).
+   * None of them committed anything.
+   */
+  outcome: "ok" | "denied" | "rejected" | "error" | "cancelled" | "spatial" | "unauthorized";
   clinicalEventIds: string[];
+  /** Outcome "spatial": the refusal's code. */
+  code?: Extract<WorldErrorCode, "SPATIAL_REQUIREMENT_UNMET" | "SPATIAL_PRECONDITION_CHANGED">;
+  /** Outcomes "spatial" / "unauthorized": the reason, in the session's language. */
+  message?: string;
+  /** Outcome "spatial": where to go (a navigation goal), or null when no walk fixes it. */
+  hint?: ActionHint | null;
+}
+
+/** What the action bus tells the session about a clinical effect (review C4). */
+export interface ClinicalInvokeContext {
+  /** The world action carrying the effect out: the session runs the tool through exactly that action's caller. */
+  actionId: string;
 }
 
 /** The session side the action bus calls for clinical effects (EMBODIED R3: one path to a clinical effect). */
 export interface ClinicalPort {
-  invoke(actorId: ActorId, tool: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<ClinicalInvokeResult>;
+  invoke(actorId: ActorId, tool: string, args: Record<string, unknown>, signal?: AbortSignal, context?: ClinicalInvokeContext): Promise<ClinicalInvokeResult>;
   /** Charge simulated time (travel, operation duration): `advance-time { reason }` on simulated clocks; no-op on static clocks. */
   elapse(seconds: number, reason: "travel" | "procedure"): void;
 }

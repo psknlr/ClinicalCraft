@@ -203,7 +203,7 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
   host.emit({ type: "task.changed", actorId: actor.id, task });
   let r: ClinicalInvokeResult;
   try {
-    r = await port.invoke(actor.id, tool, args, signal);
+    r = await port.invoke(actor.id, tool, args, signal, { actionId: request.actionId });
   } catch (e) {
     r = { ok: false, output: e instanceof Error ? e.message : String(e), outcome: signal.aborted ? "cancelled" : "error", clinicalEventIds: [] };
   } finally {
@@ -214,6 +214,9 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
   const clinical = { tool, ok: r.outcome === "ok", output: r.output };
   if (r.outcome === "cancelled" || (r.outcome !== "ok" && signal.aborted)) return { status: "cancelled", errorCode: "CANCELLED", message: worldMessage("CANCELLED", L), events: [], clinical };
   if (r.outcome === "denied") return failed("APPROVAL_DENIED", worldMessage("APPROVAL_DENIED", L, { output: r.output }), { clinical });
+  // the session's own refusals keep their code (and hint): a spatial re-check is fixed by walking, a role never (C13)
+  if (r.outcome === "spatial") return failed(r.code ?? "SPATIAL_PRECONDITION_CHANGED", r.message ?? r.output, { clinical, hint: r.hint ?? null });
+  if (r.outcome === "unauthorized") return failed("NOT_AUTHORIZED", r.message ?? r.output, { clinical, hint: null });
   if (r.outcome !== "ok") return failed("CLINICAL_REJECTED", worldMessage("CLINICAL_REJECTED", L, { output: r.output }), { clinical, clinicalEventIds: [...r.clinicalEventIds] });
   const events = commitTransition(host, actor, id, o, fromState);
   return { status: "completed", message: worldMessage("ok.clinical", L, { operation, target, output: r.output }), events, clinical, clinicalEventIds: [...r.clinicalEventIds] };

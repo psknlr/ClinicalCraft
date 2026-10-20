@@ -20,6 +20,7 @@ import type { BlockInfo, InteractionTarget, MoveInfo } from "../contracts.js";
 import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 import { append, clear, clockLabel, h } from "./dom.js";
 import { phaseBadge } from "./panels/common.js";
+import { nameLabel } from "./panels/trace-labels.js";
 
 interface SlotDef {
   key: "talk" | "journal" | "map" | "wood" | "stone" | "glass" | "lamp" | "inventory" | "help";
@@ -445,7 +446,7 @@ export class Hud {
       h(
         "div",
         { class: "ext-foot" },
-        h("small", { class: "ext-last", id: "external-last" }, last ? tr("ext.last", { tool: `${last.tool}${last.phase === "finished" ? (last.ok ? " ✓" : " ✕") : " …"}` }) : ""),
+        h("small", { class: "ext-last", id: "external-last", title: last?.tool ?? "" }, last ? tr("ext.last", { tool: `${nameLabel(last.tool)}${last.phase === "finished" ? (last.ok ? " ✓" : " ✕") : " …"}` }) : ""),
         h("button", { type: "button", id: "external-disconnect", class: "danger", onclick: () => void this.app.setExternalControl(false) }, failed ? tr("ext.turnOff") : tr("ext.disconnect")),
       ),
     ]);
@@ -590,7 +591,7 @@ export class Hud {
     append(e.dock, [
       h("span", { class: "dot", "aria-hidden": "true" }),
       h("b", null, tr("auto.dock")),
-      last ? h("small", null, `${last.tool}${last.status === "running" ? " …" : ""}`) : null,
+      last ? h("small", { title: last.tool }, `${nameLabel(last.tool)}${last.status === "running" ? " …" : ""}`) : null,
       h("button", { type: "button", onclick: () => this.app.open("autopilot") }, "↗"),
       h("button", { type: "button", class: "danger", onclick: () => game?.session.interrupt() }, tr("auto.stop")),
     ]);

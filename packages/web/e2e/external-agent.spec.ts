@@ -254,7 +254,9 @@ test.describe("an external agent in the live encounter (en)", () => {
       expect((await toPatient(page))!).toBeLessThan(before!);
       const drawn = await page.evaluate(() => (window as any).__QA__.world.position);
       expect(Math.hypot(drawn.x - after.x, drawn.z - after.z)).toBeLessThan(1);
-      await expect(page.locator("#external-last")).toContainText("navigate_to");
+      // the last call in words (the tool's id stays in the tooltip)
+      await expect(page.locator("#external-last")).toContainText("Walk to");
+      await expect(page.locator("#external-last")).toHaveAttribute("title", "navigate_to");
 
       // interact_object on the ECG cart: prepare, connect, record → the 12-lead ECG is ordered.
       const cart = await page.evaluate(() => {

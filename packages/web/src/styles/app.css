@@ -2094,8 +2094,10 @@ details.topic .question {
   width: 16px;
   font-weight: 700;
 }
-.tool-calls code {
-  font: 700 12px var(--mono);
+.tool-calls code,
+.tool-calls .call-tool {
+  font-size: 12px;
+  font-weight: 700;
 }
 .tool-calls small {
   display: block;
@@ -2383,8 +2385,8 @@ details.topic .question {
 }
 .trace-head small {
   margin-left: auto;
-  font-family: var(--mono);
   color: var(--muted);
+  white-space: nowrap;
 }
 .trace-status {
   font-weight: 800;
@@ -2423,7 +2425,9 @@ details.topic .question {
   color: var(--muted);
 }
 .trace-error {
-  font-family: var(--mono);
+  padding: 0 5px;
+  border: 1px solid currentColor;
+  font-size: 10px;
 }
 .trace-hint {
   color: #6e5718;

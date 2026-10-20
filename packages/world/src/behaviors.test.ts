@@ -110,7 +110,7 @@ describe("the ECG machine (catalog state machine)", () => {
     const record = await w.act({ actorId: A, operation: "record", targetId: ecg });
     expect(record).toMatchObject({ status: "completed", clinical: { tool: "order_test", ok: true } });
     expect(record.clinicalEventIds!.length).toBeGreaterThan(0);
-    expect(w.harness.calls.at(-1)).toEqual({ actorId: A, tool: "order_test", args: { investigation_id: "ecg-12lead" } });
+    expect(w.harness.calls.at(-1)).toEqual({ actorId: A, tool: "order_test", args: { investigation_id: "ecg-12lead" }, actionId: record.actionId });
     expect(w.harness.state().orders.map((o) => o.investigationId)).toContain("ecg-12lead");
     const reset = await w.act({ actorId: A, operation: "reset", targetId: ecg });
     expect(reset.events.map((e) => e.type)).toEqual(["entity.state", "reservation.changed", "action.completed"]);

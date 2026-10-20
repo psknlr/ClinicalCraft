@@ -1,13 +1,12 @@
 /**
  * Spatial rules of the web UI in embodied mode (pure): when the UI steps the
  * avatar over by itself, when it shows the refusal with "Go there", saved
- * world snapshots, where moved equipment stands and what counts as at the
- * bedside.
+ * world snapshots, where moved equipment stands, whether the learner can read
+ * the patient's monitor (the world's own check) and refusal text for people.
  */
-import { BEDSIDE_RADIUS, type NavPlan, type WorldActionResult, type WorldStateSnapshot } from "@clinicalcraft/world";
-import { PERSONAL_KIT } from "@clinicalcraft/core";
+import type { NavPlan, SpatialCheck, WorldActionResult, WorldStateSnapshot } from "@clinicalcraft/world";
 import { describe, expect, it } from "vitest";
-import { approachDecision, AUTO_APPROACH_M, bedsideCapsNow, checkIsRange, entitySpot, resultIsRange, SAVED_RESULTS, trimWorldSnapshot, validWorldSnapshot } from "./spatial.js";
+import { approachDecision, AUTO_APPROACH_M, checkIsRange, entitySpot, learnerText, resultIsRange, SAVED_RESULTS, screenState, trimWorldSnapshot, validWorldSnapshot } from "./spatial.js";
 
 const goal = { kind: "interact", id: "eq:resus1-monitor" } as const;
 const plan = (length: number): NavPlan => ({ ok: true, length, travelSeconds: length / 1.4, path: [], target: { x: 0, y: 0, z: 0, yaw: 0, pitch: 0, level: "L0" }, goal }) as unknown as NavPlan;
@@ -85,31 +84,30 @@ describe("where equipment stands", () => {
     expect(entitySpot(s, "eq:resus1-monitor", { x: 5, z: 6, level: "L0" })).toEqual({ x: 5, z: 6, level: "L0" });
     expect(entitySpot(s, "eq:unknown", null)).toBeNull();
   });
+});
 
-  it("counts the personal kit, equipment near the bed or in its room, and delivered capabilities", () => {
-    const facility = {
-      patientSlots: [{ id: "resus-1", room: "resus", x: 31, z: -17 }],
-      rooms: [{ id: "resus", rect: { x: 26, z: -20, w: 20, d: 8 } }],
-    } as never;
-    const eq = (id: string, capabilities: string[], x: number, z: number, room: string | null, available = true) => ({ id, capabilities, x, z, level: "L0", room, available });
-    const caps = bedsideCapsNow(
-      facility,
-      "resus-1",
-      [
-        eq("monitor", ["monitoring"], 29.6, -19.5, "resus"),
-        eq("cart-near", ["ecg"], 31, -17 + BEDSIDE_RADIUS - 0.5, null),
-        eq("cart-far", ["ultrasound"], 0, 0, null),
-        eq("pharmacy", ["medications"], -14, 5, "pharmacy"),
-        eq("broken", ["defibrillation"], 30, -17, "resus", false),
-      ],
-      "L0",
-    );
-    for (const k of PERSONAL_KIT) expect(caps.has(k)).toBe(true);
-    expect(caps.has("monitoring")).toBe(true);
-    expect(caps.has("ecg")).toBe(true);
-    expect(caps.has("medications")).toBe(true);
-    expect(caps.has("ultrasound")).toBe(false);
-    expect(caps.has("defibrillation")).toBe(false);
+describe("the monitor's screen (EMBODIED §6 monitor-screen)", () => {
+  const vitals = { tool: "check_vitals", kind: "any-of" } as never;
+  const ok = (satisfiedBy: string[]): SpatialCheck => ({ ok: true, requirement: vitals, satisfiedBy });
+  const refused = (reason: string): SpatialCheck => ({ ok: false, code: "SPATIAL_REQUIREMENT_UNMET", requirement: vitals, reason, message: "m", hint: null });
+
+  it("is readable only when the world's vitals check holds through that monitor's screen", () => {
+    expect(screenState(ok(["eq:resus1-monitor"]), "eq:resus1-monitor", true)).toEqual({ readable: true, reason: null, monitorId: "eq:resus1-monitor" });
+  });
+
+  it("is out of view when the vitals come from the hands at the patient or the chart, or are refused", () => {
+    expect(screenState(ok(["patient:resus-1"]), "eq:resus1-monitor", true)).toEqual({ readable: false, reason: "monitor-not-in-view", monitorId: "eq:resus1-monitor" });
+    expect(screenState(ok(["eq:ed-records"]), "eq:resus1-monitor", true)).toMatchObject({ readable: false, reason: "monitor-not-in-view" });
+    expect(screenState(refused("no-provider-in-reach"), "eq:resus1-monitor", true)).toMatchObject({ readable: false, reason: "monitor-not-in-view" });
+    expect(screenState(refused("monitor-not-in-view"), "eq:resus1-monitor", true)).toMatchObject({ readable: false, reason: "monitor-not-in-view" });
+    // another monitor's screen is not this one's
+    expect(screenState(ok(["eq:other-monitor"]), "eq:resus1-monitor", true)).toMatchObject({ readable: false, reason: "monitor-not-in-view" });
+  });
+
+  it("says when nothing is attached, and when the patient has no monitor at all", () => {
+    expect(screenState(ok(["patient:resus-1"]), "eq:resus1-monitor", false)).toEqual({ readable: false, reason: "no-monitor-attached", monitorId: "eq:resus1-monitor" });
+    expect(screenState(refused("no-monitor-attached"), "eq:resus1-monitor", true)).toMatchObject({ readable: false, reason: "no-monitor-attached" });
+    expect(screenState(null, null, true)).toEqual({ readable: false, reason: "no-monitor", monitorId: null });
   });
 });
 
@@ -124,5 +122,14 @@ describe("refusals for the learner", () => {
     expect(commandRefusal({ ok: false, data: { code: "OTHER", message: "x" } })).toBeNull();
     expect(commandRefusal({ ok: true, data: null })).toBeNull();
     expect(commandRefusal(undefined)).toBeNull();
+  });
+
+  it("drops the operation ids a model needs from what a person reads", () => {
+    expect(learnerText('Needs ECG at the bedside; "ECG cart 2" is elsewhere — wheel it to Liu Zhenhua (move_to).')).toBe('Needs ECG at the bedside; "ECG cart 2" is elsewhere — wheel it to Liu Zhenhua.');
+    expect(learnerText("床旁需要十二导联心电图；「心电图机 2」在别处——请把它推到刘振华身边（move_to）。")).toBe("床旁需要十二导联心电图；「心电图机 2」在别处——请把它推到刘振华身边。");
+    expect(learnerText("取来「心电图机 2」并推到刘振华身边（move_to）")).toBe("取来「心电图机 2」并推到刘振华身边");
+    // ordinary parentheses stay
+    expect(learnerText("Peripheral IV access (left forearm)")).toBe("Peripheral IV access (left forearm)");
+    expect(learnerText("建立静脉通路（左前臂）")).toBe("建立静脉通路（左前臂）");
   });
 });
