@@ -7276,6 +7276,7 @@
     {
       "id": "inhaler-teaching",
       "kind": "other",
+      "scope": "nursing",
       "risk": "none",
       "setFlags": [
         "technique-taught"

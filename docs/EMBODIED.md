@@ -734,10 +734,18 @@ them ("Lin Xiao (Nurse): Give Aspirin …?").
 | role | delegable tasks | clinical tools with their body | interventions |
 |---|---|---|---|
 | clinician (the learner's avatar), attending | all | all | all |
-| nurse | `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention` | `check_vitals`, `examine`, `order_test` (bedside tests only: ECG, point of care, peak flow), `read_result`, `intervene` | medication, fluid, oxygen, monitoring, positioning and the case's IV access — never airway / RSI, an arterial line or another procedure, a consult or a disposition |
+| nurse | `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention` | `check_vitals`, `examine`, `order_test` (bedside tests only: ECG, point of care, peak flow), `read_result`, `intervene` | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (chest compressions, defibrillation, urinary catheter, NG tube, bedside swallow screen…) — never an item authored `scope: "medical"`, airway / RSI, an arterial line or another medical procedure, a consult or a disposition |
 | paramedic | as a nurse | as a nurse | as a nurse + airway |
 | porter, receptionist | `fetch_equipment` | — (no clinical class) | — |
 | lab-tech, pharmacist, radiologist, pathologist | `fetch_equipment` | `check_vitals`, `read_result` | — (no patient interventions) |
+
+The intervention column is data, not a guess from the kind: an intervention's
+optional `scope` (`nursing` | `medical`, CASE_AUTHORING) overrides the kind
+default (medication, fluid, oxygen, monitoring and positioning are nursing; the
+case's IV access is nursing; airway is a paramedic's too; everything else is
+medical). Defibrillation is authored as nursing because ED/CCU nurses with
+ILS/ALS training deliver the shock; an author can mark a drug `medical` where
+only a doctor may give it.
 
 ## 9. Skills
 

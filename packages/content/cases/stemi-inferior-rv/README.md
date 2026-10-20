@@ -240,6 +240,8 @@ ERC/AHA resuscitation updates before high-stakes use.
 
 In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the infusions `dobutamine` and `noradrenaline` now also require `iv-access` like the case's other IV drugs (the `iv-access` procedure — "Peripheral IV access and bloods", the crash cart's cannulation kit — first; the reference solution places it first). Blood tests are sampled at the bedside and may be ordered there or, after the cannula and bloods, at the ED records terminal (benchmark `workflow-stemi-labs-at-records-terminal`); the recorded ECG is read at the bedside or a records terminal, never on the cart (`interaction-read-ecg-without-cart`).
 
+Scope of practice: `cpr` (chest compressions) and `defibrillation` are authored `scope: "nursing"`: in the arrest a delegated ED/CCU nurse with ILS/ALS training may give the compressions and the shock (docs/EMBODIED.md §8 scope of practice).
+
 ## Validation
 
 ```bash

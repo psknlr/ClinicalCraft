@@ -6990,6 +6990,7 @@
         "en": "Urinary catheter with hourly urine output"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "导尿",

@@ -428,6 +428,8 @@ Replayed with `reduce`/`vitalsAt` (17 rubric points; the solution scores
 
 In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): there is no kit in the healing garden, so what the reference management uses is brought from the hospital: high-flow oxygen (`oxygen-high-flow`) requires `oxygen` — the ED store's portable oxygen cylinder (`eq:ed-store-o2-1`); nebulised salbutamol (`salbutamol-neb`) requires `nebulizer` + `oxygen` (oxygen-driven); continuous monitoring (`monitoring`) requires `cardiac-monitor` — a monitor-defibrillator wheeled over (its ECG leads still go on when the team arrives: `physiology.monitor.ecgWhen` is unchanged); the 18G cannula (`iv-cannula`) requires `iv-access` — the cannulation kit of a crash or treatment cart — and the IV items (`adrenaline-iv-bolus`, `fluid-bolus`, `chlorphenamine-iv`, `hydrocortisone-iv`) require `iv-access`, i.e. the cannula placed first. IM adrenaline, positioning, removing the stinger and calling for help need nothing beyond the ward nurse's emergency bag. The case stays completable: `cases verify` passes, the embodied autopilot fetches the cylinder, the monitor-defibrillator, a cart and the nebuliser (score 100 in both languages), and the benchmark scenario `workflow-anaphylaxis-garden-oxygen` fetches the portable cylinder.
 
+Scope of practice: `remove-sting` is authored `scope: "nursing"` (first aid any nurse gives when delegated; docs/EMBODIED.md §8 scope of practice).
+
 ## Validate
 
 ```bash

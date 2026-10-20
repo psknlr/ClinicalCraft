@@ -6267,6 +6267,7 @@
         "en": "Suspend and remove the insulin pump and infusion set"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "停泵",
@@ -6609,6 +6610,7 @@
         "en": "Urinary catheter"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "导尿",

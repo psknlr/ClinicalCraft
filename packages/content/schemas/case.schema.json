@@ -1836,6 +1836,13 @@
                 },
                 "default": []
               },
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "nursing",
+                  "medical"
+                ]
+              },
               "risk": {
                 "type": "string",
                 "enum": [

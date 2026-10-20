@@ -5472,6 +5472,7 @@
         "en": "Bilateral intermittent pneumatic compression (IPC)"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "气压治疗",

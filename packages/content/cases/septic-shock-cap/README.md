@@ -105,6 +105,8 @@
 
 In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the vasopressor infusions `norepinephrine` and `dopamine` now also require `iv-access` (the case's `iv-access` procedure first — the reference solution places it first). Blood cultures and the other blood tests are drawn at the bedside: ordered there, or after the cannula and bloods at a records terminal or a laboratory station (benchmark `workflow-sepsis-cultures-then-antibiotics`).
 
+Scope of practice: `urinary-catheter` is authored `scope: "nursing"` (a delegated nurse may place it); the arterial line and the intubation stay medical (docs/EMBODIED.md §8 scope of practice).
+
 ## Validation
 
 ```bash

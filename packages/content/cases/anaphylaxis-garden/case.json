@@ -3393,6 +3393,7 @@
       "id": "remove-sting",
       "name": { "zh-CN": "去除螫针", "en": "Remove the sting" },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": ["拔刺", "去除螫刺", "刮掉毒刺", "取出蜂刺", "除刺", "去除螫针", "拔螫针", "刮掉", "刮刺", "把刺弄出来", "拔掉刺"],
         "en": ["remove sting", "remove stinger", "scrape sting", "flick out", "take out the sting"]

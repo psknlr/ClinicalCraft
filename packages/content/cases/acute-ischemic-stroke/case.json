@@ -4973,6 +4973,7 @@
         "en": "Bedside swallow screen (water-swallow test); nil by mouth until passed"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "吞咽筛查",

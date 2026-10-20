@@ -9,7 +9,7 @@ import type { AddressInfo } from "node:net";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { afterAll, beforeAll, describe, it } from "vitest";
 import type { AgentEvent } from "@clinicalcraft/agent";
 import { buildV4Html, splitParts, writeZip } from "./__fixtures__/v4.js";
@@ -17,6 +17,12 @@ import { buildV4Html, splitParts, writeZip } from "./__fixtures__/v4.js";
 const REPO = fileURLToPath(new URL("../../../", import.meta.url));
 const BIN = join(REPO, "packages/cli/src/bin.ts");
 const TSX = join(REPO, "node_modules/.bin/tsx");
+/**
+ * tsx's loader, for running the CLI in ONE node process. The `tsx` command relays a signal to its child and
+ * SIGKILLs it (exit 130) when the child does not acknowledge within 30 ms — a busy machine turns a graceful
+ * SIGINT into a force kill — so tests that stop the CLI with a signal bypass it.
+ */
+const TSX_LOADER = join(REPO, "node_modules/tsx/dist/loader.mjs");
 const SOURCE_TSCONFIG = join(REPO, "packages/cli/tsconfig.source.json");
 const CLI_VERSION = (JSON.parse(readFileSync(join(REPO, "packages/cli/package.json"), "utf8")) as { version: string }).version;
 
@@ -55,6 +61,8 @@ interface CliOptions {
   cwd?: string;
   /** Interactive: called for every stdout line; stdin stays open until the callback ends it. */
   onLine?: (line: string, stdin: NodeJS.WritableStream, child: ChildProcess) => void;
+  /** The test stops the CLI with a signal: run it in one node process (see `TSX_LOADER`). */
+  signals?: boolean;
 }
 
 /** Run the CLI; `input` (if any) is written to stdin, which is then closed (unless `onLine`). */
@@ -66,7 +74,13 @@ function cli(args: string[], opts: CliOptions = {}): Promise<RunResult> {
   }
   Object.assign(env, { CLINICALCRAFT_HOME: home, HOME: home, TSX_TSCONFIG_PATH: SOURCE_TSCONFIG, NO_COLOR: "1" }, opts.env ?? {});
   return new Promise((resolve, reject) => {
-    const child = spawn(existsSync(TSX) ? TSX : "npx", existsSync(TSX) ? [BIN, ...args] : ["tsx", BIN, ...args], { cwd: opts.cwd ?? work, env, stdio: ["pipe", "pipe", "pipe"] });
+    const [cmd, argv] =
+      opts.signals && existsSync(TSX_LOADER)
+        ? [process.execPath, ["--import", pathToFileURL(TSX_LOADER).href, BIN, ...args]]
+        : existsSync(TSX)
+          ? [TSX, [BIN, ...args]]
+          : ["npx", ["tsx", BIN, ...args]];
+    const child = spawn(cmd, argv, { cwd: opts.cwd ?? work, env, stdio: ["pipe", "pipe", "pipe"] });
     let stdout = "";
     let stderr = "";
     let pendingLine = "";
@@ -421,6 +435,7 @@ describe.concurrent("serve & mcp", () => {
   it("serve starts the HTTP server on loopback and stops on SIGINT", { timeout: T }, async ({ expect }) => {
     let health: unknown = null;
     const r = await cli(["serve", "--port", "0", "--lang", "en"], {
+      signals: true,
       onLine: (line, stdin, child) => {
         const url = /(http:\/\/127\.0\.0\.1:\d+\/)/.exec(line)?.[1];
         if (!url) return;
@@ -453,6 +468,7 @@ describe.concurrent("serve & mcp", () => {
     const args = source === "flag" ? ["--token", token] : source === "file" ? ["--token-file", tokenFile] : [];
     const r = await cli(["serve", "--port", "0", "--lang", "en", ...args], {
       ...(source === "env" ? { env: { CLINICALCRAFT_SERVER_TOKEN: token } } : {}),
+      signals: true,
       onLine: (line, stdin, child) => {
         lines += `${line}\n`;
         const url = /(http:\/\/127\.0\.0\.1:\d+\/)/.exec(line)?.[1];

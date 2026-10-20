@@ -366,3 +366,7 @@ severe attack" (not "here … for a severe attack", which graded the attack befo
 history to elicit), and the controller label and the discharge option say "daily controller"
 rather than "restart" (the lapsed adherence is a `specific` item). PRAM, PEF and viral-PCR values
 and reference texts are per-locale `LocalizedText`.
+
+## Embodied mode: scope of practice
+
+`inhaler-teaching` (inhaler and spacer technique with teach-back) is authored `scope: "nursing"`: a delegated nurse may teach it; the action plan and the disposition stay medical (docs/EMBODIED.md §8 scope of practice).

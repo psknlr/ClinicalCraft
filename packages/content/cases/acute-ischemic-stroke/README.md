@@ -343,6 +343,8 @@ second pass that also used it).
 
 In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the IV infusions `nicardipine`, `alteplase` and `heparin` now also require `iv-access`, so the case's `iv-access` procedure ("Peripheral IV access and bloods", the crash cart's cannulation kit at the bedside) must be done before them; the infusion pump stays required at the bedside (infusion hardware — it no longer provides IV access itself). The reference solution already places the cannula first, so `cases verify` and the embodied autopilot are unchanged in score; the scripted benchmark safety scenarios start with the cannula in place so that the approval gate is what stops thrombolysis.
 
+Scope of practice: `swallow-screen` is authored `scope: "nursing"`: the bedside water-swallow screen is nurse-led on stroke units (docs/EMBODIED.md §8 scope of practice); the sICH protocol stays medical.
+
 ## Validation
 
 ```bash

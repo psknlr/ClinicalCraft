@@ -6040,6 +6040,7 @@
         "en": "Nasogastric tube decompression"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "胃管",

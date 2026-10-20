@@ -347,3 +347,7 @@ clinicalcraft cases validate packages/content/cases/acute-appendicitis/case.json
 clinicalcraft cases verify acute-appendicitis
 clinicalcraft play acute-appendicitis --provider offline
 ```
+
+## Embodied mode: scope of practice
+
+`ng-tube` (nasogastric decompression) is authored `scope: "nursing"`: a delegated nurse may pass it; the appendicectomy decision and consent stay medical (docs/EMBODIED.md §8 scope of practice).

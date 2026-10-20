@@ -389,6 +389,15 @@ the clinical content, not decoration:
   laboratory station; a bedside test (an ECG) is read at the patient or a
   records terminal, never on the device. Outpatient cases without an IV
   procedure therefore order their bloods at the patient's side.
+* Say who may do it when another body acts (a delegated nurse, a skill step —
+  EMBODIED §8 scope of practice): an intervention's optional `scope` is
+  `nursing` (within a registered nurse's and a paramedic's scope: chest
+  compressions, defibrillation by ILS/ALS-trained ED/CCU nurses, a urinary
+  catheter, an NG tube, a bedside swallow screen, inhaler teaching) or
+  `medical` (a doctor's act even when its kind is usually nursing, e.g. a
+  drug only a doctor gives). Omitted, the kind decides: medication, fluid,
+  oxygen, monitoring and positioning are nursing, the case's IV access is
+  nursing, airway is also a paramedic's, everything else is medical.
 * A `community` case has no kit outside: everything it needs (an oxygen
   cylinder, a crash or treatment cart, a monitor-defibrillator, a nebuliser)
   must be fetchable from the facility as a portable cart — check that the

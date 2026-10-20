@@ -424,6 +424,14 @@ export const InterventionSchema = z
     /** Human-readable dose/route (e.g. "Aspirin 300 mg PO chewed"). */
     dose: LocalizedTextSchema.optional(),
     requires: z.array(CapabilitySchema).default([]),
+    /**
+     * Scope of practice when another body does it (embodied mode: a delegated nurse, a skill step): `nursing` —
+     * within a registered nurse's (and a paramedic's) scope, e.g. chest compressions, defibrillation, a urinary
+     * catheter, an NG tube, a bedside swallow screen; `medical` — a doctor's act only, even for a kind nurses
+     * usually give. Omitted: by kind (medication, fluid, oxygen, monitoring and positioning are nursing; airway
+     * is a paramedic's too; the case's IV-access procedure is nursing; everything else is medical).
+     */
+    scope: z.enum(["nursing", "medical"]).optional(),
     /** Drives approval: moderate/high risk actions require confirmation under the default policy. */
     risk: z.enum(["none", "low", "moderate", "high"]).default("low"),
     effects: z.array(VitalEffectSchema).default([]),

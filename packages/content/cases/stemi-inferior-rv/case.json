@@ -5146,6 +5146,7 @@
         "en": "Chest compressions (high-quality CPR)"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "心肺复苏",
@@ -5204,6 +5205,7 @@
         "en": "Unsynchronised defibrillation"
       },
       "kind": "procedure",
+      "scope": "nursing",
       "aliases": {
         "zh-CN": [
           "除颤",

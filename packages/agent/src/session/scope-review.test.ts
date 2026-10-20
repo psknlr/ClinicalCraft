@@ -1,8 +1,9 @@
 /**
  * Review round: role authority and scope of practice (R1 S3 = R2 C2 = R3 G2) — the reviewers' reproductions as
  * regression tests. A body may only do what its role may: a porter or a receptionist nothing clinical, a nurse
- * medication/fluid/oxygen/monitoring/positioning and the case's IV access (no airway, arterial line, procedure,
- * consult or disposition), a paramedic also the airway, the lab, pharmacy and imaging staff no patient
+ * medication/fluid/oxygen/monitoring/positioning, the case's IV access and the items authored `scope: "nursing"`
+ * (CPR, defibrillation, catheters… — no airway, arterial line, other medical procedure, consult or disposition),
+ * a paramedic also the airway, the lab, pharmacy and imaging staff no patient
  * interventions. Delegations are refused before the staff member takes a step; the spatial gate refuses a clinical
  * act by a body outside its role before anyone is asked; the approval names the staff member who would act.
  */
@@ -114,5 +115,58 @@ describe("S3: the spatial gate refuses a clinical act outside the acting body's 
     expect(checkTaskScope({ role: "porter" }, "attach_monitor", septic, "zh-CN").ok).toBe(false);
     const zh = checkTaskScope({ role: "porter", name: "王师傅" }, "attach_monitor", septic, "zh-CN");
     expect(!zh.ok && zh.message).toMatch(/王师傅.*执业范围/);
+  });
+
+  it("authored scope: nurses do the nursing procedures (CPR, defibrillation, catheters, NG tube, swallow screen…), never the medical ones", async () => {
+    const { cases } = await builtinContent();
+    const def = (id: string) => cases.get(id)!.def;
+    const nursing: [string, string][] = [
+      ["stemi-inferior-rv", "cpr"],
+      ["stemi-inferior-rv", "defibrillation"],
+      ["anaphylaxis-garden", "remove-sting"],
+      ["dka-adult", "suspend-pump"],
+      ["dka-adult", "urinary-catheter"],
+      ["septic-shock-cap", "urinary-catheter"],
+      ["acute-appendicitis", "ng-tube"],
+      ["acute-ischemic-stroke", "swallow-screen"],
+      ["pulmonary-embolism-postop", "ipc"],
+      ["pediatric-asthma", "inhaler-teaching"],
+    ];
+    for (const [caseId, item] of nursing) {
+      expect(def(caseId).interventions.find((i) => i.id === item)?.scope, `${caseId} ${item} is authored as nursing`).toBe("nursing");
+      for (const role of ["nurse", "paramedic", "clinician"]) expect(checkClinicalScope({ role }, "intervene", item, def(caseId), "en").ok, `${role} ${caseId} ${item}`).toBe(true);
+      for (const role of ["porter", "receptionist", "pharmacist", "lab-tech"]) expect(checkClinicalScope({ role }, "intervene", item, def(caseId), "en").ok, `${role} ${caseId} ${item}`).toBe(false);
+    }
+    // Medical procedures stay with the doctors.
+    for (const [caseId, item] of [
+      ["septic-shock-cap", "arterial-line"],
+      ["pulmonary-embolism-postop", "rescue-reperfusion"],
+      ["pulmonary-embolism-postop", "ivc-filter"],
+      ["acute-ischemic-stroke", "sich-protocol"],
+      ["acute-appendicitis", "lap-appendectomy"],
+    ] as const) {
+      expect(checkClinicalScope({ role: "nurse" }, "intervene", item, def(caseId), "en").ok, `nurse ${caseId} ${item}`).toBe(false);
+      expect(checkClinicalScope({ role: "attending" }, "intervene", item, def(caseId), "en").ok, `attending ${caseId} ${item}`).toBe(true);
+    }
+    // `scope: "medical"` overrides the kind: a drug only a doctor gives.
+    const stemi = def("stemi-inferior-rv");
+    const drug = stemi.interventions.find((i) => i.kind === "medication")!;
+    const medicalOnly = { ...stemi, interventions: stemi.interventions.map((i) => (i.id === drug.id ? { ...i, scope: "medical" as const } : i)) };
+    expect(checkClinicalScope({ role: "nurse" }, "intervene", drug.id, stemi, "en").ok).toBe(true);
+    const refused = checkClinicalScope({ role: "nurse", name: "Lin Xiao" }, "intervene", drug.id, medicalOnly, "en");
+    expect(refused).toMatchObject({ ok: false, code: "NOT_AUTHORIZED", reason: "intervention" });
+    expect(checkClinicalScope({ role: "attending" }, "intervene", drug.id, medicalOnly, "en").ok).toBe(true);
+    // The refusal lists what a nurse may do, nursing procedures included.
+    expect(!refused.ok && refused.message).toMatch(/nursing procedures/);
+  });
+
+  it("a delegated nurse gives the chest compressions and the shock in the STEMI arrest", async () => {
+    const t = await makeEmbodiedSession({ caseId: "stemi-inferior-rv" });
+    answerAll(t, "approved");
+    for (const item of ["cpr", "defibrillation"]) {
+      const d = await command(t, "delegate", `nurse give_intervention ${item}`);
+      expect((d.data.delegation as { message?: string }).message, `${item}: ${d.text}`).not.toBe("not-authorized");
+    }
+    await t.session.close();
   });
 });
