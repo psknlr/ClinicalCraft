@@ -23,7 +23,7 @@
  * delegated staff act with their `staff:*` body. `world()` is a stable handle:
  * a language switch rebuilds the runtime from its snapshot behind it.
  */
-import { assignPatientSlot, patientCues, t, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { assignPatientSlot, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   createWorldRuntime,
   PRIMARY_ACTOR,
@@ -47,13 +47,17 @@ import {
 } from "@clinicalcraft/world";
 import type { EventMsg } from "../protocol.js";
 import type { ResolvedSettings } from "../settings/schema.js";
-import { parseSkill, type SkillDefinition } from "../skills/schema.js";
+import { findSkill, parseSkill, PROJECT_SKILL_PREFIX, type SkillDefinition } from "../skills/schema.js";
 import { runSkill, skillResultText, type SkillRunner, type SkillToolCall } from "../skills/interpreter.js";
+import { assessSkill, inlineSkillSpecifier, skillSummary, type SkillAssessment } from "../skills/risk.js";
 import { strArg } from "../tools/clinical.js";
-import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, type SpatialGate } from "../tools/spatial.js";
-import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
-import { createWorldTools, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
+import { learnerVitals } from "../tools/format.js";
+import type { ScopeActor } from "../tools/scope.js";
+import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
+import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
+import { createWorldTools, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
 import { runDelegation, type DelegationResult } from "./delegation.js";
+import { heldBy, releaseHeld } from "./device-ops.js";
 import type { ClinicalCaller } from "./embodied-types.js";
 import { rt, type RuntimeKey } from "./i18n.js";
 import { anySignal } from "./signals.js";
@@ -61,13 +65,41 @@ import { SessionTrace } from "./trace.js";
 
 export type { ClinicalCaller } from "./embodied-types.js";
 
-/** Thrown when an embodied session cannot be built (bilingual message, stable `code`). */
+/** Stable codes of `EmbodimentError`. */
+export type EmbodimentErrorCode = "embodiment_requires_facility" | "embodiment_no_slot";
+
+/**
+ * Thrown when an embodied session cannot be built: a stable `code` and the reason in both languages (`message`
+ * joins them; `localized(locale)` picks one) — no facility, or no place in it for the case (review C15).
+ */
 export class EmbodimentError extends Error {
-  readonly code = "embodiment_requires_facility";
-  constructor(message: string) {
-    super(message);
+  constructor(
+    readonly code: EmbodimentErrorCode,
+    readonly messages: { en: string; "zh-CN": string },
+  ) {
+    super(`${messages.en} / ${messages["zh-CN"]}`);
     this.name = "EmbodimentError";
   }
+
+  /** The reason in one language. */
+  localized(locale: string): string {
+    return locale.startsWith("zh") ? this.messages["zh-CN"] : this.messages.en;
+  }
+}
+
+/**
+ * Why an embodied encounter of this case cannot be built in this facility (null: it can) — no facility, or no
+ * patient place that accepts the case's setting (review C15: a world without the patient refuses every act).
+ * Front-ends check it before they start a session (`createNodeSession`, the CLI, MCP `start_case`).
+ */
+export function embodimentProblem(facility: FacilityDefinition | null, caseDef: Pick<CaseDefinition, "setting">): EmbodimentError | null {
+  const both = (key: RuntimeKey, params: Record<string, string> = {}, name?: (locale: string) => string) => ({
+    en: rt("en", key, { ...params, ...(name ? { facility: name("en") } : {}) }),
+    "zh-CN": rt("zh-CN", key, { ...params, ...(name ? { facility: name("zh-CN") } : {}) }),
+  });
+  if (!facility) return new EmbodimentError("embodiment_requires_facility", both("embodied.requiresFacility"));
+  if (!assignPatientSlot(facility, caseDef)) return new EmbodimentError("embodiment_no_slot", both("embodied.noSlot", { setting: caseDef.setting }, (L) => t(facility.name, L)));
+  return null;
 }
 
 /** What the embodied mode needs from its session. */
@@ -83,8 +115,10 @@ export interface EmbodiedHost {
   newId(): string;
   /** Dispatch an engine action outside any tool (travel / procedure time). */
   dispatch(action: ClinicalAction): ReduceResult;
-  /** Run a tool through a caller's tool path, with the acting body (and the world action carrying it out). */
-  runTool(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; worldActionId?: string }): Promise<SkillToolCall>;
+  /** Run a tool through a caller's tool path, with the acting body (and the world action carrying it out, the skill nesting). */
+  runTool(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; worldActionId?: string; skillDepth?: number; progress?: CallProgress }): Promise<SkillToolCall>;
+  /** The session's definition of a tool (risk and summaries of a skill's steps). */
+  tool(name: string): ToolDefinition<any> | undefined;
   /** Emit an event (the caller's submission, else the current one). */
   emit(msg: EventMsg, submission?: string): void;
   /** Write a `world` transcript item. */
@@ -101,6 +135,8 @@ export interface EmbodiedOptions {
   spawn?: Pose;
   snapshot?: WorldStateSnapshot;
 }
+
+export { MAX_SKILL_NESTING };
 
 /**
  * Results kept in a transcript snapshot — the world's whole idempotency window (128), so a retried action id is
@@ -138,6 +174,8 @@ export class EmbodiedSession {
   private inflight = 0;
   /** A language switch deferred while actions were in flight. */
   private pendingLocale: string | null = null;
+  /** Staff carrying out a delegation right now (their whereabouts are the delegating clinician's to know — G13). */
+  private readonly delegates = new Map<ActorId, number>();
   private readonly captures = new Set<{ id: string; type: DomainEvent["type"] }[]>();
   /** Engine changes of a world action's clinical effect (action id → events), for its `state_change` span. */
   private readonly engineChanges = new Map<string, { id: string; type: DomainEvent["type"] }[]>();
@@ -152,7 +190,8 @@ export class EmbodiedSession {
     private readonly options: EmbodiedOptions = {},
   ) {
     const facility = host.facility;
-    if (!facility) throw new EmbodimentError(`${rt("en", "embodied.requiresFacility")} / ${rt("zh-CN", "embodied.requiresFacility")}`);
+    const problem = embodimentProblem(facility, host.caseDef);
+    if (problem || !facility) throw problem;
     const c = host.caseDef;
     this.slotId = assignPatientSlot(facility, c)?.id ?? null;
     this.trace = new SessionTrace({ episodeId: host.sessionId, caseId: c.id, facilityId: facility.id, embodiment: "embodied", now: () => host.now(), clock: () => host.state().clock, newId: () => host.newId() });
@@ -458,16 +497,31 @@ export class EmbodiedSession {
       check: (actorId, intent, recheck) => this.check(actorId, intent, recheck),
       traced: (actorId, tool, args, run) => this.traced(actorId, tool, args, run),
       rhythm: () => rhythmAtBedside(this.inner),
+      staff: (actorId, locale) => this.staffActor(actorId, locale),
+      vitals: (actorId) => this.vitalsView(actorId),
     };
   }
 
-  /** The clinical tools of a registry, spatially gated (EMBODIED §6). */
+  /** A body other than the learner's avatar, as its scope of practice sees it (review S3); null for the avatar. */
+  staffActor(actorId: ActorId, locale: string): ScopeActor | null {
+    if (actorId === PRIMARY_ACTOR) return null;
+    const actor = this.facade.actor(actorId);
+    if (!actor) return { role: "porter", name: actorId }; // an unknown body: no clinical authority
+    const entity = this.facade.entity(actorId);
+    return { role: actor.role, name: entity ? t(entity.name, locale) : actorId };
+  }
+
+  /** The clinical tools of a registry, spatially gated (EMBODIED §6); `wait` reports only the vitals in view (G11). */
   gatedTools(get: (name: string) => ToolDefinition<any> | undefined): ToolDefinition<any>[] {
     const gate = this.gate();
-    return SPATIALLY_GATED_TOOLS.flatMap((name) => {
-      const tool = get(name);
-      return tool ? [spatiallyGated(tool, gate)] : [];
-    });
+    const wait = get("wait");
+    return [
+      ...SPATIALLY_GATED_TOOLS.flatMap((name) => {
+        const tool = get(name);
+        return tool ? [spatiallyGated(tool, gate)] : [];
+      }),
+      ...(wait ? [vitalsGated(wait, gate)] : []),
+    ];
   }
 
   /** The world tools (`get_camera_frame` only with a camera). */
@@ -557,9 +611,42 @@ export class EmbodiedSession {
       clockText: () => this.host.clockText(),
       delegate: (ctx, args) => this.delegate(ctx, args),
       executeSkill: (ctx, args) => this.executeSkill(ctx, args),
-      skillSafety: (args) => this.skillOf(args)?.safety ?? null,
+      skillAssessment: (ctx, args) => this.skillAssessment(ctx, args),
+      skillSpecifier: (args) => (args.skill !== undefined ? inlineSkillSpecifier(args.skill) : strArg(args, "skill_id") || "inline"),
       camera: () => this.options.camera ?? null,
+      isDelegate: (actorId) => this.delegates.has(actorId),
     };
+  }
+
+  /**
+   * What the bedside shows `actorId` (reviews G3/G11 — the one source of every vitals channel: the clinician's
+   * prompt, the MCP state resource, the REPL status line, skill predicates): the world's spatial check for
+   * vitals (the attached monitor's screen within 6 m in its room · hands at the patient · a records terminal);
+   * in view, the learner's view of the snapshot (no ECG morphology; no rhythm without a monitor, ECG machine or
+   * defibrillator at the bedside); else why not.
+   */
+  vitalsView(actorId: ActorId = PRIMARY_ACTOR): VitalsView {
+    const check = this.check(actorId, { tool: "check_vitals", kind: "vitals" });
+    if (!check.ok) return { inView: false, reason: check.reason, message: check.message };
+    const snapshot = vitalsAt(this.host.caseDef, this.host.state());
+    if (!rhythmAtBedside(this.inner)) {
+      delete snapshot.vitals.rhythm;
+      delete snapshot.vitals.ecg;
+    }
+    return { inView: true, snapshot: learnerVitals(snapshot) };
+  }
+
+  /** The vital values the bedside shows `actorId` (null: none in view) — skill `vital` predicates (G1). */
+  shownVitals(actorId: ActorId): Partial<Record<VitalKey, number>> | null {
+    const view = this.vitalsView(actorId);
+    if (!view.inView) return null;
+    const unread = new Set(view.snapshot.unmeasurable ?? []);
+    const out: Partial<Record<VitalKey, number>> = {};
+    for (const key of VITAL_KEYS) {
+      const value = view.snapshot.vitals[key];
+      if (typeof value === "number" && !unread.has(key)) out[key] = value;
+    }
+    return out;
   }
 
   /** The caller of a tool call (its agent's tool path, its turn). */
@@ -574,25 +661,41 @@ export class EmbodiedSession {
   /** `delegate_task`. */
   async delegate(ctx: ToolContext, args: Record<string, unknown>): Promise<ToolOutput> {
     const L = ctx.locale;
+    // Inside a skill that another skill runs: no further work handed out (review C10).
+    if ((ctx.skillDepth ?? 0) > MAX_SKILL_NESTING) return { ok: false, output: rt(L, "skill.tooDeep", { max: MAX_SKILL_NESTING }), data: { code: "SKILL_TOO_DEEP" } };
     const caller = this.callerOf(ctx);
-    const result = await runDelegation(
-      {
-        caseDef: this.host.caseDef,
-        locale: () => this.host.locale(),
-        state: () => this.host.state(),
-        world: () => this.facade,
-        trace: this.trace,
-        act: (c, request) => this.act(c, request),
-        runTool: (c, tool, a, extra) => this.host.runTool(c, tool, a, extra),
-        patientId: () => this.patientId(),
-        patientMonitorId: () => this.patientMonitorId(),
-        atBedside: (id) => this.atBedside(id),
-        resolve: (target, actorId) => this.resolve(target, actorId),
-      },
-      caller,
-      args,
-    );
-    return { ok: result.status === "completed", output: delegationText(result, L, this.facade), data: { delegation: result } };
+    // While the staff member works on it, the delegating clinician knows where they are (G13).
+    let staff: ActorId | null = null;
+    try {
+      const result = await runDelegation(
+        {
+          caseDef: this.host.caseDef,
+          locale: () => this.host.locale(),
+          state: () => this.host.state(),
+          world: () => this.facade,
+          trace: this.trace,
+          act: (c, request) => this.act(c, request),
+          runTool: (c, tool, a, extra) => this.host.runTool(c, tool, a, extra),
+          patientId: () => this.patientId(),
+          patientMonitorId: () => this.patientMonitorId(),
+          atBedside: (id) => this.atBedside(id),
+          resolve: (target, actorId) => this.resolve(target, actorId),
+          onStaff: (id) => {
+            staff = id;
+            this.delegates.set(id, (this.delegates.get(id) ?? 0) + 1);
+          },
+        },
+        caller,
+        args,
+      );
+      return { ok: result.status === "completed", output: delegationText(result, L, this.facade), data: { delegation: result } };
+    } finally {
+      if (staff) {
+        const left = (this.delegates.get(staff) ?? 1) - 1;
+        if (left > 0) this.delegates.set(staff, left);
+        else this.delegates.delete(staff);
+      }
+    }
   }
 
   private skillOf(args: Record<string, unknown>): SkillDefinition | null {
@@ -600,13 +703,54 @@ export class EmbodiedSession {
       const parsed = parseSkill(args.skill);
       return parsed.ok ? parsed.skill : null;
     }
-    const id = strArg(args, "skill_id");
-    return this.host.skills().find((s) => s.id === id) ?? null;
+    return findSkill(this.host.skills(), strArg(args, "skill_id")) ?? null;
+  }
+
+  /** What running a skill can do (review S8): risk, always-ask and the step list of its approval summary. */
+  skillAssessment(ctx: ToolContext, args: Record<string, unknown>): (SkillAssessment & { summary: string }) | null {
+    const skill = this.skillOf(args);
+    if (!skill) return null;
+    const actorId = this.actorOf(ctx);
+    const params = args.params && typeof args.params === "object" && !Array.isArray(args.params) ? (args.params as Record<string, unknown>) : {};
+    const assessment = assessSkill(
+      {
+        caseDef: this.host.caseDef,
+        tool: (name) => this.host.tool(name),
+        ctx,
+        skills: () => this.host.skills(),
+        world: () => this.facade,
+        resolveEntity: (alias) => this.resolve(alias, actorId),
+        patientId: () => this.patientId(),
+        patientMonitorId: () => this.patientMonitorId(),
+      },
+      skill,
+      params,
+    );
+    return { ...assessment, summary: skillSummary(ctx.locale, skill, assessment) };
+  }
+
+  /**
+   * Release what a flow (a skill run) reserved and left reserved (review C3): the device's release operation, as
+   * the same caller but without its (possibly aborted) signal, following a reach hint once.
+   */
+  private async releaseFor(caller: ClinicalCaller, actorId: ActorId, before: ReadonlySet<string>): Promise<void> {
+    const { signal: _cancelled, ...detached } = caller;
+    await releaseHeld(this.facade, actorId, before, async (id, operation) => {
+      const request = { actorId, operation, targetId: id };
+      let r = await this.act(detached, request);
+      if (r.status === "failed" && r.hint && (r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE")) {
+        if ((await this.act(detached, { actorId, operation: "navigate", goal: r.hint.goal })).status === "completed") r = await this.act(detached, request);
+      }
+      return r;
+    });
   }
 
   /** `execute_skill`: a built-in, project or inline skill, run as the caller. */
   async executeSkill(ctx: ToolContext, args: Record<string, unknown>): Promise<ToolOutput> {
     const L = ctx.locale;
+    const depth = ctx.skillDepth ?? 0;
+    // A skill run by a skill may not run another (review C10): recursion ends here, at once.
+    if (depth > MAX_SKILL_NESTING) return { ok: false, output: rt(L, "skill.tooDeep", { max: MAX_SKILL_NESTING }), data: { code: "SKILL_TOO_DEEP" } };
     let skill: SkillDefinition | null;
     if (args.skill !== undefined) {
       const parsed = parseSkill(args.skill);
@@ -628,12 +772,21 @@ export class EmbodiedSession {
       patientMonitorId: () => this.patientMonitorId(),
       resolveEntity: (alias) => this.resolve(alias, actorId),
       atBedside: (id) => this.atBedside(id),
-      callTool: (tool, a) => this.host.runTool(caller, tool, a, { actorId }),
+      callTool: (tool, a, progress) => this.host.runTool(caller, tool, a, { actorId, skillDepth: depth + 1, ...(progress ? { progress } : {}) }),
+      shownVitals: () => this.shownVitals(actorId),
       trace: this.trace,
+      ...(ctx.progress ? { progress: ctx.progress } : {}),
       ...(ctx.signal ? { signal: ctx.signal } : {}),
     };
     const params = args.params && typeof args.params === "object" && !Array.isArray(args.params) ? (args.params as Record<string, unknown>) : {};
-    const result = await runSkill(skill, params, runner);
+    const heldBefore = new Set(heldBy(this.facade, actorId));
+    let result: Awaited<ReturnType<typeof runSkill>> | null = null;
+    try {
+      result = await runSkill(skill, params, runner);
+    } finally {
+      // A skill that did not succeed leaves no device it reserved reserved (review C3).
+      if (result?.status !== "succeeded") await this.releaseFor(caller, actorId, heldBefore);
+    }
     return { ok: result.status === "succeeded", output: skillResultText(result, L), data: { skill: result } };
   }
 
@@ -674,6 +827,7 @@ export class EmbodiedSession {
 export function delegationText(r: DelegationResult, locale: string, world: WorldRuntime): string {
   if (r.message === "unknown-task") return rt(locale, "delegate.unknownTask", { task: r.task });
   if (r.message === "unknown-role") return rt(locale, "delegate.unknownRole", { role: r.role });
+  if (r.message === "not-authorized") return rt(locale, "delegate.notAuthorized", { message: r.refusal ?? "" });
   const staff = r.staffId ? (world.entity(r.staffId) ? t(world.entity(r.staffId)!.name, locale) : r.staffId) : r.role;
   const task = taskLabel(locale, r.task);
   if (r.message === "no-item" || r.message === "no-target") return rt(locale, r.message === "no-item" ? "delegate.noItem" : "delegate.needTarget", { task, what: task, param: "target" });
@@ -692,9 +846,17 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   return lines.join("\n");
 }
 
-/** Build a parsed skill list (built-in first; a project skill with a built-in's id replaces it). */
+/**
+ * Build a parsed skill list: the built-ins, then every project (or user) skill as `project:<id>` — a project
+ * skill never shadows a built-in (review S8); `findSkill` finds `project:<id>` by its bare id when no built-in
+ * has it.
+ */
 export function mergeSkills(builtin: readonly SkillDefinition[], project: readonly SkillDefinition[] = []): SkillDefinition[] {
   const byId = new Map<string, SkillDefinition>();
-  for (const s of [...builtin, ...project]) byId.set(s.id, s);
+  for (const s of builtin) byId.set(s.id, s);
+  for (const s of project) {
+    const id = s.id.startsWith(PROJECT_SKILL_PREFIX) ? s.id : `${PROJECT_SKILL_PREFIX}${s.id}`;
+    byId.set(id, { ...s, id });
+  }
   return [...byId.values()];
 }

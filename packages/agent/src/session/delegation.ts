@@ -15,14 +15,15 @@
  * `give_intervention` (`params.intervention`, fetching what must stand at
  * the bedside).
  */
-import { monitorAttached, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
 import { resolveIntervention, resolveInvestigation, strArg } from "../tools/clinical.js";
+import { checkTaskScope } from "../tools/scope.js";
 import { spatialCodeOf } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { DELEGATION_TASKS } from "../tools/world.js";
-import { clinicalOperation, operationPath, releaseOperation } from "./device-ops.js";
+import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation } from "./device-ops.js";
 import type { ClinicalCaller } from "./embodied-types.js";
 import type { SessionTrace } from "./trace.js";
 
@@ -39,6 +40,8 @@ export interface DelegationHost {
   patientMonitorId(): string | null;
   atBedside(id: string): boolean;
   resolve(target: string, actorId: ActorId): string | null;
+  /** The staff member the task went to (called once, before they act). */
+  onStaff?(staffId: ActorId): void;
 }
 
 export type DelegationTask = (typeof DELEGATION_TASKS)[number];
@@ -63,8 +66,10 @@ export interface DelegationResult {
   clockMinutes: number;
   /** Metres walked. */
   distance: number;
-  /** Why the task could not start (unknown role, task, missing target). */
+  /** Why the task could not start (unknown role, task, missing target, `not-authorized`). */
   message?: string;
+  /** `not-authorized`: why, localised (the staff member's scope of practice — review S3). */
+  refusal?: string;
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
@@ -83,6 +88,15 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
 /** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
 export { ivAccessIntervention };
 
+/** The intervention a `give_intervention` names (`params.intervention` or the target; an id, else a query). */
+function interventionOf(h: Pick<DelegationHost, "caseDef" | "locale">, params: Record<string, unknown>, target: string): string | null {
+  const wanted = strArg(params, "intervention") || target;
+  if (!wanted) return null;
+  const byId = resolveIntervention(h.caseDef, { intervention_id: wanted }, h.locale());
+  const res = byId.kind === "id" ? byId : resolveIntervention(h.caseDef, { query: wanted }, h.locale());
+  return res.kind === "id" ? res.id : null;
+}
+
 /** Run a delegated task (see the module docs). */
 export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, args: Record<string, unknown>): Promise<DelegationResult> {
   const role = strArg(args, "role");
@@ -97,6 +111,10 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     // Stopped by its caller (the learner's interrupt, a cancelled external call): cancelled, not failed (review C17).
     result.status = status === "failed" && caller.signal?.aborted ? "cancelled" : status;
     if (message) result.message = message;
+    return result;
+  };
+  /** The totals, once nothing more happens (the clean-up included). */
+  const settle = (): DelegationResult => {
     result.clockMinutes = r2(h.state().clock - clockStart);
     result.elapsedSeconds = r2(result.elapsedSeconds);
     result.distance = r2(result.distance);
@@ -107,6 +125,19 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   if (!staff) return finish("failed", "unknown-role");
   result.staffId = staff;
   if (!patient) return finish("failed", "no-patient");
+  // Only what the staff member's role may do — checked before they take a step (review S3).
+  const L = h.locale();
+  const entity = world.entity(staff);
+  const who = { role: world.actor(staff)?.role ?? role, name: entity ? t(entity.name, L) : staff };
+  const scoped = checkTaskScope(who, task, h.caseDef, L, task === "give_intervention" ? interventionOf(h, params, target) : null);
+  if (!scoped.ok) {
+    result.refusal = scoped.message;
+    result.steps.push({ operation: task, status: "failed", code: scoped.code, message: scoped.message });
+    return finish("failed", "not-authorized");
+  }
+  h.onStaff?.(staff);
+  // What the staff member holds already is not this task's to release.
+  const heldBefore = new Set(heldBy(world, staff));
 
   const span = h.trace.start("plan", `delegate:${task}`, { actorId: staff, refs: { entities: [patient] }, data: { role, task, ...(target ? { target } : {}) } });
   let cancelled = false;
@@ -230,10 +261,7 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         return finish(ok && h.atBedside(cart) ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "give_intervention": {
-        const wanted = strArg(params, "intervention") || target;
-        const byId = wanted ? resolveIntervention(h.caseDef, { intervention_id: wanted }, h.locale()) : null;
-        const res = byId?.kind === "id" ? byId : wanted ? resolveIntervention(h.caseDef, { query: wanted }, h.locale()) : null;
-        const id = res?.kind === "id" ? res.id : null;
+        const id = interventionOf(h, params, target);
         if (!id) return finish("failed", "no-target");
         const before = h.state().interventions.filter((x) => x.interventionId === id).length;
         if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
@@ -243,8 +271,32 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
       }
     }
   };
+  /**
+   * Whatever the outcome — done, failed, denied, cancelled — the staff member leaves no device reserved (review C3):
+   * a cart prepared for a tracing the learner then refused is reset. Without the task's cancellation signal (an
+   * interrupted task cleans up too).
+   */
+  const cleanUp = async () => {
+    const { signal: _cancelled, ...detached } = caller;
+    await releaseHeld(world, staff, heldBefore, async (id, operation) => {
+      const request: WorldRequestInput = { actorId: staff, operation, targetId: id, onBehalfOf: PRIMARY_ACTOR };
+      let r = record(operation, await h.act(detached, request), id);
+      if (r.status === "failed" && r.hint && (r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE")) {
+        const walk = record("navigate", await h.act(detached, { actorId: staff, operation: "navigate", goal: r.hint.goal, onBehalfOf: PRIMARY_ACTOR }));
+        if (walk.status === "completed") r = record(operation, await h.act(detached, request), id);
+      }
+      return r;
+    });
+  };
   try {
-    return await h.trace.within(span.id, run);
+    return await h.trace.within(span.id, async () => {
+      try {
+        return await run();
+      } finally {
+        await cleanUp();
+        settle();
+      }
+    });
   } finally {
     span.end({ ok: result.status === "completed", worldVersion: world.version, data: { status: result.status, steps: result.steps.length, elapsedSeconds: r2(result.elapsedSeconds) } });
   }

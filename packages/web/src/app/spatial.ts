@@ -7,7 +7,7 @@
  * animated step when they stand just a little too far (within the 5.5 m aim
  * reach), otherwise the localised refusal with "Go there".
  */
-import type { NavGoal, NavPlan, SpatialCheck, WorldActionResult, WorldStateSnapshot } from "@clinicalcraft/world";
+import type { ActionHint, NavGoal, NavPlan, SpatialCheck, WorldActionResult, WorldStateSnapshot } from "@clinicalcraft/world";
 
 /** How far (m of walking) the UI may step the avatar by itself before retrying a refused action: the aim reach. */
 export const AUTO_APPROACH_M = 5.5;
@@ -58,10 +58,11 @@ export function refusalLead(text: string): string {
  * A spatial refusal carried by a command's output (`/vitals`, `/order` … run through the learner's
  * gated tool path: `command_output.data = { ok, data: { code, message, hint } }`), else null.
  */
-export function commandRefusal(data: unknown): { code: string; message: string; hint: { goal: NavGoal; label: string } | null } | null {
+export function commandRefusal(data: unknown): { code: string; message: string; hint: { goal: NavGoal; label: string; then?: ActionHint["then"] } | null } | null {
   const inner = isObj(data) && isObj(data.data) ? data.data : null;
   if (!inner || typeof inner.code !== "string" || !SPATIAL_CODES.has(inner.code)) return null;
-  const hint = isObj(inner.hint) && isObj(inner.hint.goal) ? { goal: inner.hint.goal as unknown as NavGoal, label: typeof inner.hint.label === "string" ? inner.hint.label : "" } : null;
+  const then = isObj(inner.hint) && isObj(inner.hint.then) && typeof inner.hint.then.operation === "string" && typeof inner.hint.then.targetId === "string" ? (inner.hint.then as unknown as ActionHint["then"]) : undefined;
+  const hint = isObj(inner.hint) && isObj(inner.hint.goal) ? { goal: inner.hint.goal as unknown as NavGoal, label: typeof inner.hint.label === "string" ? inner.hint.label : "", ...(then ? { then } : {}) } : null;
   return { code: inner.code, message: typeof inner.message === "string" ? inner.message : "", hint };
 }
 

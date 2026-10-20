@@ -25,6 +25,7 @@ import {
   actionToolName,
   clinicalOperation,
   clinicianOfflineSteps,
+  heldBy,
   minutesUntilReadable,
   operationPath,
   releaseOperation,
@@ -35,7 +36,7 @@ import {
   type OfflineClinicianStep,
 } from "@clinicalcraft/agent";
 import { assignPatientSlot, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { behaviorOf, PRIMARY_ACTOR, type ClinicalIntent, type EntityQuery, type NavGoal, type ObservedEntity, type SpatialCheck, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { footprintDistance } from "../predicates.js";
 import type { RecordedCall } from "../recorder.js";
 import type { BenchFindQuery, ReferenceStep, ScriptedCall } from "../schema.js";
@@ -303,6 +304,26 @@ class ReferenceSolver {
 
   /** Operate a device up to its clinical operation (wheeling a cart to the patient first when it is out of reach of the bedside), then release it. */
   private async runDevice(route: DeviceRoute): Promise<"done" | "final" | "replace" | "fallback"> {
+    const before = new Set(heldBy(this.world, PRIMARY_ACTOR));
+    try {
+      return await this.runDeviceSteps(route);
+    } finally {
+      // Whatever happened — done, refused, failed — the solver leaves no device it reserved reserved (review C3).
+      await this.releaseHeldDevices(before);
+    }
+  }
+
+  /** Reset every device the clinician holds now that it did not hold `before` (best effort). */
+  private async releaseHeldDevices(before: ReadonlySet<string>): Promise<void> {
+    for (const id of heldBy(this.world, PRIMARY_ACTOR)) {
+      const e = this.world.entity(id);
+      if (before.has(id) || !e || e.kind !== "equipment") continue;
+      const release = releaseOperation(behaviorOf(e), this.world.inspect(PRIMARY_ACTOR, id)?.state ?? null);
+      if (release) await this.operate(id, release.id);
+    }
+  }
+
+  private async runDeviceSteps(route: DeviceRoute): Promise<"done" | "final" | "replace" | "fallback"> {
     const path = operationPath(route.spec, this.deviceState(route), route.op);
     if (!path) return "fallback";
     const patient0 = this.patientId();

@@ -6,7 +6,9 @@
  *
  * 1. `precheck` (before the approval gate, on every tool path: model tool
  *    calls, learner commands, learner `clinical_action` ops, MCP): the
- *    acting body must satisfy the requirement (`checkSpatial`) — else a
+ *    acting body's role must be allowed the act (its clinical authority and
+ *    scope of practice, `./scope.ts` — else `NOT_AUTHORIZED`, review S3),
+ *    then it must satisfy the requirement (`checkSpatial`) — else a
  *    refusal with code `SPATIAL_REQUIREMENT_UNMET`, the localised reason and
  *    `hint.goal` (pass it to `navigate_to`) in `data`;
  * 2. `run`: immediately before the engine commit (the tool's first
@@ -20,10 +22,11 @@
  * (phone/pager) are not gated.
  */
 import type { ClinicalAction } from "@clinicalcraft/core";
-import type { ActorId, ClinicalIntent, SpatialCheck } from "@clinicalcraft/world";
+import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
 import { rt } from "../session/i18n.js";
 import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
-import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
+import { checkClinicalScope, type ScopeActor, type ScopeRefusal } from "./scope.js";
+import type { ToolContext, ToolDefinition, ToolOutput, VitalsView } from "./types.js";
 
 /** Clinical tools held to the spatial policy (EMBODIED §6). */
 export const SPATIALLY_GATED_TOOLS: readonly string[] = ["ask_patient", "examine", "check_vitals", "order_test", "read_result", "intervene"];
@@ -94,6 +97,11 @@ export function spatialRefusal(check: Extract<SpatialCheck, { ok: false }>, loca
   };
 }
 
+/** The refusal of an act outside the acting body's role (`data.code` `NOT_AUTHORIZED`, review S3). */
+export function scopeRefusal(check: ScopeRefusal): ToolOutput {
+  return { ok: false, output: check.message, data: { code: check.code, reason: check.reason, message: check.message } };
+}
+
 /** The spatial code of a tool output, if it is a spatial refusal. */
 export function spatialCodeOf(out: ToolOutput | null | undefined): (typeof SPATIAL_CODES)[number] | null {
   const code = (out?.data as { code?: unknown } | undefined)?.code;
@@ -113,7 +121,22 @@ export interface SpatialGate {
   traced?(actorId: ActorId, tool: string, args: Record<string, unknown>, run: () => Promise<ToolOutput>): Promise<ToolOutput>;
   /** Does a device at the bedside show the heart rhythm (`check_vitals` shows none without one)? */
   rhythm?(): boolean;
+  /**
+   * The role and name of a body other than the learner's avatar (a staff member), for its scope of practice and
+   * the approval summary; null for the learner's avatar (a clinician: every act).
+   */
+  staff?(actorId: ActorId, locale: string): ScopeActor | null;
+  /** The vitals a body can see now (review G11): `wait` reports only these. */
+  vitals?(actorId: ActorId): VitalsView;
 }
+
+/** `wait` in embodied mode: its closing vitals line only shows what the acting body can see (review G11). */
+export function vitalsGated<A extends Record<string, unknown>>(tool: ToolDefinition<A>, gate: SpatialGate): ToolDefinition<A> {
+  if (!gate.vitals) return tool;
+  return { ...tool, run: (args, ctx) => tool.run(args, { ...ctx, vitalsView: () => gate.vitals!(gate.actorOf(ctx)) }) };
+}
+
+const roleLabel = (role: string, locale: string) => roleName(role, locale);
 
 /** Thrown inside a gated run when the re-check fails: nothing was committed. */
 class SpatialAbort extends Error {
@@ -130,12 +153,25 @@ class SpatialAbort extends Error {
 export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefinition<A>, gate: SpatialGate): ToolDefinition<A> {
   return {
     ...tool,
+    // The approval names the staff member who would act (review S3).
+    summarize(args, ctx) {
+      const summary = tool.summarize(args, ctx);
+      const who = gate.staff?.(gate.actorOf(ctx), ctx.locale);
+      return who ? rt(ctx.locale, "sum.byStaff", { who: who.name || who.role, role: roleLabel(who.role, ctx.locale), summary }) : summary;
+    },
     precheck(args, ctx) {
       const early = tool.precheck?.(args, ctx);
       if (early) return early;
       const intent = clinicalIntent(tool.name, args, ctx);
       if (!intent) return null;
-      const check = gate.check(gate.actorOf(ctx), intent, false);
+      const actorId = gate.actorOf(ctx);
+      // A body may only do what its role may (authority, scope of practice): refused before anyone is asked.
+      const who = gate.staff?.(actorId, ctx.locale);
+      if (who) {
+        const scoped = checkClinicalScope(who, tool.name, intent.itemId ?? null, ctx.caseDef, ctx.locale);
+        if (!scoped.ok) return scopeRefusal(scoped);
+      }
+      const check = gate.check(actorId, intent, false);
       return check.ok ? null : spatialRefusal(check, ctx.locale);
     },
     async run(args, ctx) {

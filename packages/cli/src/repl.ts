@@ -140,6 +140,8 @@ export class Repl {
       // The model the session calls (custom providers and provider overrides included), not just the templates'.
       resolveModel: (provider, model) => resolvedModelLabel(session.settings, ctx.env, provider, model),
       place: () => session.placeLabel(),
+      // Only what the learner's body can see from where it stands (review G11).
+      vitals: () => session.vitalsView(),
     });
     const settings = session.settings;
     const offline = settings.provider === "offline";

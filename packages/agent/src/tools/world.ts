@@ -16,12 +16,14 @@
  * inspection or the `WorldActionResult` (with `hint` when a failure can be
  * fixed by walking).
  */
+import { roomLevel } from "@clinicalcraft/core";
 import type { ActorId, CameraSensor, EntityKind, EntityQuery, NavGoal, WorldActionRequest, WorldActionResult, WorldRuntime } from "@clinicalcraft/world";
-import { goalProblem } from "@clinicalcraft/world";
-import type { PracticeScope } from "../protocol.js";
+import { goalProblem, ivAccessIntervention, monitoringIntervention } from "@clinicalcraft/world";
+import type { PracticeScope, RiskLevel } from "../protocol.js";
 import { rt } from "../session/i18n.js";
-import { strArg } from "./clinical.js";
+import { resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
+import { WORLD_TOOL_NAMES } from "./learner.js";
 import { actionResultText, entitiesText, inspectionText, nameOf, observationText, roomText, whereText } from "./world-format.js";
 
 /** A world action request as a tool builds it (the host assigns the action id and the acting body). */
@@ -43,37 +45,34 @@ export interface WorldToolHost {
   delegate(ctx: ToolContext, args: Record<string, unknown>): Promise<ToolOutput>;
   /** `execute_skill`. */
   executeSkill(ctx: ToolContext, args: Record<string, unknown>): Promise<ToolOutput>;
-  /** Safety class of a skill (risk of `execute_skill`). */
-  skillSafety(args: Record<string, unknown>): "read-only" | "physical" | "clinical" | "high-risk" | null;
+  /**
+   * What running the skill a call names can do (review S8): the risk and always-ask of its most dangerous step —
+   * never its self-declared safety — and the approval summary listing its steps; null for an unknown or invalid
+   * skill (refused when it runs).
+   */
+  skillAssessment(ctx: ToolContext, args: Record<string, unknown>): { risk: RiskLevel; alwaysAsk: boolean; summary: string } | null;
+  /** Rule specifier of `execute_skill`: the skill id, or `inline:<digest>` of an inline skill. */
+  skillSpecifier(args: Record<string, unknown>): string;
   /** Camera frames (browser runtime only). */
   camera(): CameraSensor | null;
+  /** Is this staff member carrying out the caller's delegation right now (G13: the clinician knows where they are)? */
+  isDelegate(actorId: ActorId): boolean;
 }
 
 const ENTITY_KINDS: readonly EntityKind[] = ["patient", "staff", "actor", "equipment", "door", "room", "level", "connector", "item"];
 
-/** Names of every world tool. */
-export const WORLD_TOOL_NAMES = [
-  "observe_world",
-  "get_agent_state",
-  "find_entities",
-  "find_objects",
-  "inspect_object",
-  "get_nearby_objects",
-  "get_visible_objects",
-  "get_room_info",
-  "get_action_feedback",
-  "navigate_to",
-  "approach_object",
-  "look_at",
-  "interact_object",
-  "cancel_action",
-  "delegate_task",
-  "execute_skill",
-  "get_camera_frame",
-] as const;
+export { WORLD_TOOL_NAMES };
 
 /** World tools that only read (never need approval, may run in parallel). */
 export const WORLD_READ_ONLY_TOOLS: readonly string[] = ["observe_world", "get_agent_state", "find_entities", "find_objects", "inspect_object", "get_nearby_objects", "get_visible_objects", "get_room_info", "get_action_feedback", "get_camera_frame"];
+
+/** How deep skills nest (review C10): a skill may run one skill (or delegate); the one it runs may do neither. */
+export const MAX_SKILL_NESTING = 1;
+
+/** Refuse work handed out too deep inside skills (review C10) — before the approval gate: nobody is asked about it. */
+function tooDeep(ctx: ToolContext): ToolOutput | null {
+  return (ctx.skillDepth ?? 0) > MAX_SKILL_NESTING ? { ok: false, output: rt(ctx.locale, "skill.tooDeep", { max: MAX_SKILL_NESTING }), data: { code: "SKILL_TOO_DEEP" } } : null;
+}
 
 /** Tasks staff can be delegated (`delegate_task`). */
 export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention"] as const;
@@ -130,6 +129,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
       type: { type: "string", maxLength: 80, description: "Equipment type id." },
       interaction: { type: "string", enum: ["workstation", "monitor", "bed", "device", "atlas", "board", "craft", "door", "sink", "storage"], description: "Interaction kind (sink: sinks and hand-rub dispensers)." },
       portable_only: { type: "boolean", description: "Only carts and handheld items (what can be brought to the patient)." },
+      prefer_available: { type: "boolean", description: "List equipment in service that nobody else is using first (a busy or broken device cannot be used)." },
       limit: { type: "integer", minimum: 1, maximum: 50 },
     }),
   },
@@ -204,20 +204,99 @@ function resultOutput(result: WorldActionResult, locale: string): ToolOutput {
   return { ok: result.status === "completed", output: actionResultText(result, locale), data: { result } };
 }
 
+/** The entity a `navigate_to` target names: an id or alias, else the nearest known entity whose name matches (null: unknown). */
+function targetEntity(host: WorldToolHost, actorId: ActorId, target: string): string | null {
+  const id = host.resolve(target, actorId);
+  if (id) return id;
+  // A name ("pharmacy", "ECG"): the nearest known entity whose name matches.
+  return host.world().find(actorId, { name: target, limit: 1 })[0]?.id ?? null;
+}
+
 /** The goal a `navigate_to` target names (null: unknown target). */
 function targetGoal(host: WorldToolHost, actorId: ActorId, target: string, range: number | undefined): NavGoal | null {
   const world = host.world();
-  let id = host.resolve(target, actorId);
-  if (!id) {
-    // A name ("pharmacy", "ECG"): the nearest known entity whose name matches.
-    const hits = world.find(actorId, { name: target, limit: 1 });
-    id = hits[0]?.id ?? null;
-  }
+  const id = targetEntity(host, actorId, target);
   if (!id) return null;
   const e = world.entity(id);
   if (e?.kind === "room") return { kind: "room", id: id.replace(/^room:/, "") };
   if (range !== undefined) return { kind: "entity", id, range };
   return { kind: "interact", id };
+}
+
+/** The room (`room:<id>`) containing a point of the facility, or null. */
+function roomContaining(world: WorldRuntime, level: string, x: number, z: number): string | null {
+  let best: string | null = null;
+  let area = Infinity;
+  for (const room of world.facility.rooms) {
+    if (roomLevel(world.facility, room) !== level || Math.abs(x - room.rect.x) > room.rect.w / 2 || Math.abs(z - room.rect.z) > room.rect.d / 2) continue;
+    const a = room.rect.w * room.rect.d;
+    if (a < area) {
+      area = a;
+      best = room.id;
+    }
+  }
+  return best ? `room:${best}` : null;
+}
+
+/**
+ * The canonical id of every leaf of a navigation goal (review S6): an entity, interaction, look or follow goal its
+ * entity's id (aliases resolved), a room goal `room:<id>`, a point the room containing it (else `point:x,z@level`).
+ * Rules match each leaf — a deny rule on any leaf denies the walk.
+ */
+export function goalLeafIds(host: Pick<WorldToolHost, "world" | "resolve">, actorId: ActorId, goal: unknown): string[] {
+  const out: string[] = [];
+  const visit = (g: unknown) => {
+    if (!g || typeof g !== "object") return;
+    const leaf = g as { kind?: unknown; id?: unknown; goals?: unknown; x?: unknown; z?: unknown; level?: unknown };
+    if (leaf.kind === "any" && Array.isArray(leaf.goals)) return leaf.goals.forEach(visit);
+    if (leaf.kind === "point" && typeof leaf.x === "number" && typeof leaf.z === "number") {
+      const level = typeof leaf.level === "string" ? leaf.level : (host.world().actor(actorId)?.pose.level ?? "L0");
+      out.push(roomContaining(host.world(), level, leaf.x, leaf.z) ?? `point:${leaf.x},${leaf.z}@${level}`);
+      return;
+    }
+    if (typeof leaf.id !== "string") return;
+    if (leaf.kind === "room") {
+      const id = leaf.id.startsWith("room:") ? leaf.id : `room:${leaf.id}`;
+      out.push(host.world().entity(id) ? id : (host.resolve(leaf.id, actorId) ?? id));
+      return;
+    }
+    out.push(host.resolve(leaf.id, actorId) ?? leaf.id);
+  };
+  visit(goal);
+  return [...new Set(out)];
+}
+
+/**
+ * The case item a delegated task acts on (review S6): `params.intervention` / `params.investigation` / the target
+ * resolved to the case's ids, the case's monitoring or IV-access procedure for those tasks, the equipment a fetch
+ * names (resolved) or its capability.
+ */
+function delegatedItem(host: Pick<WorldToolHost, "resolve">, ctx: ToolContext, args: Record<string, unknown>, actorId: ActorId): string {
+  const c = ctx.caseDef;
+  const L = ctx.locale;
+  const params = (args.params && typeof args.params === "object" && !Array.isArray(args.params) ? args.params : {}) as Record<string, unknown>;
+  const target = strArg(args, "target");
+  const byId = <T extends { kind: string }>(r: T) => (r.kind === "id" ? (r as unknown as { id: string }).id : null);
+  switch (strArg(args, "task")) {
+    case "give_intervention": {
+      const wanted = strArg(params, "intervention") || target;
+      if (!wanted) return "";
+      return byId(resolveIntervention(c, { intervention_id: wanted }, L)) ?? byId(resolveIntervention(c, { query: wanted }, L)) ?? wanted;
+    }
+    case "record_ecg": {
+      const wanted = strArg(params, "investigation") || target;
+      if (wanted) return byId(resolveInvestigation(c, { investigation_id: wanted }, L)) ?? byId(resolveInvestigation(c, { query: wanted }, L)) ?? wanted;
+      return c.investigations.find((i) => i.requires.length > 0 && i.requires.every((x) => x === "ecg-12lead"))?.id ?? "";
+    }
+    case "attach_monitor":
+      return monitoringIntervention(c, ["cardiac-monitor"]) ?? "";
+    case "obtain_iv_access":
+      return ivAccessIntervention(c) ?? "";
+    case "fetch_equipment":
+      return target ? (host.resolve(target, actorId) ?? target) : strArg(params, "capability");
+    default:
+      return target;
+  }
 }
 
 /** Build the world tools over a host (registered only in embodied sessions). */
@@ -247,6 +326,25 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
     return id ? nameOf(host.world(), id, ctx.locale) : target;
   };
   const level = (ctx: ToolContext) => host.world().actor(host.actorOf(ctx))?.pose.level ?? "L0";
+  /** The names rules may use for one entity id: the canonical id and the unprefixed one ("eq:resus1-ecg", "resus1-ecg"). */
+  const spellings = (id: string): string[] => [...new Set([id, id.replace(/^[a-z]+:/, "")])].filter(Boolean);
+  /** A target as rules see it: its canonical id when it resolves (review S6). */
+  const resolvedTarget = (args: Record<string, unknown>, ctx: ToolContext) => {
+    const target = strArg(args, "target");
+    return (target && host.resolve(target, host.actorOf(ctx))) || target;
+  };
+  /** `navigate_to`'s rule specifiers: the target's entity, or every leaf of the goal (canonical ids). */
+  const navigateSpecifiers = (args: Record<string, unknown>, ctx: ToolContext): string[] => {
+    const actorId = host.actorOf(ctx);
+    if (args.goal !== undefined) {
+      const leaves = goalLeafIds(host, actorId, args.goal);
+      return leaves.length ? leaves : [""];
+    }
+    const target = strArg(args, "target");
+    if (!target) return [""];
+    const id = targetEntity(host, actorId, target);
+    return [id ?? target];
+  };
 
   const tools: ToolDefinition<Record<string, unknown>>[] = [
     readOnly(
@@ -262,9 +360,25 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
       "get_agent_state",
       () => "get_agent_state",
       async (args, ctx) => {
-        const id = strArg(args, "actor") ? (host.resolve(strArg(args, "actor"), host.actorOf(ctx)) ?? strArg(args, "actor")) : host.actorOf(ctx);
-        const actor = host.world().actor(id);
+        const self = host.actorOf(ctx);
+        const wanted = strArg(args, "actor");
+        const id = wanted ? (host.resolve(wanted, self) ?? wanted) : self;
+        const world = host.world();
+        const actor = world.actor(id);
         if (!actor) return failedOutput(ctx, "world.unknownTarget", { target: id });
+        // Another actor: only what the caller knows (review G13) — live while perceived or working for it, else
+        // where it last saw them, else nothing.
+        if (id !== self && !host.isDelegate(id) && !world.canSee(self, id)) {
+          const me = world.actor(self);
+          const where = me?.lastSeen?.[id];
+          if (!where && !me?.seen.includes(id)) return failedOutput(ctx, "world.actorUnknown", { actor: wanted || id });
+          const place = where ? world.regionName({ level: where.level, x: where.x, z: where.z }, L(ctx)) : rt(L(ctx), "world.actorPlaceUnknown");
+          return {
+            ok: true,
+            output: rt(L(ctx), "world.actorLastSeen", { name: nameOf(world, id, L(ctx)), place }),
+            data: { actor: { id, role: actor.role, awareness: "remembered", lastSeen: where ? { level: where.level, x: where.x, z: where.z, place } : null } },
+          };
+        }
         const lines = [whereText(host.world(), actor, L(ctx), host.clockText())];
         if (actor.holding.length) lines.push(rt(L(ctx), "world.holding", { items: actor.holding.map((h) => nameOf(host.world(), h, L(ctx))).join(", ") }));
         if (actor.task) lines.push(rt(L(ctx), "world.task", { task: actor.task.label }));
@@ -299,20 +413,27 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         const interaction = strArg(args, "interaction");
         const portableOnly = args.portable_only === true;
         const filtered = Boolean(interaction) || portableOnly;
-        const q: EntityQuery = { kind: ["equipment", "item"], limit: filtered ? 500 : limit };
+        const preferAvailable = args.prefer_available === true;
+        const q: EntityQuery = { kind: ["equipment", "item"], limit: filtered || preferAvailable ? 500 : limit };
         if (strArg(args, "query")) q.name = strArg(args, "query");
         if (strArg(args, "type")) q.type = strArg(args, "type");
         if (Array.isArray(args.capabilities) && args.capabilities.length) q.capabilities = args.capabilities.map(String);
         const world = host.world();
-        let list = world.find(host.actorOf(ctx), q);
+        const actorId = host.actorOf(ctx);
+        let list = world.find(actorId, q);
         if (filtered) {
-          list = list
-            .filter((e) => {
-              const def = world.entity(e.id);
-              return (!interaction || def?.interaction === interaction) && (!portableOnly || Boolean(def?.portable));
-            })
-            .slice(0, limit);
+          list = list.filter((e) => {
+            const def = world.entity(e.id);
+            return (!interaction || def?.interaction === interaction) && (!portableOnly || Boolean(def?.portable));
+          });
         }
+        if (preferAvailable) {
+          // In service and not held by someone else first (C8), nearest first within each group.
+          const held = world.snapshot().entities;
+          const usable = (id: string, state: string | undefined) => state !== "out-of-service" && (!held[id]?.reservedBy || held[id]?.reservedBy === actorId);
+          list = [...list.filter((e) => usable(e.id, e.state)), ...list.filter((e) => !usable(e.id, e.state))];
+        }
+        if (filtered || preferAvailable) list = list.slice(0, limit);
         return { ok: true, output: entitiesText(list, L(ctx), level(ctx)), data: { entities: list } };
       },
     ),
@@ -379,7 +500,11 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         } else return failedOutput(ctx, "world.needTarget");
         return resultOutput(await host.act(ctx, { operation: "navigate", goal }), L(ctx));
       },
-      { specifier: (args) => strArg(args, "target") || (typeof (args.goal as { id?: unknown } | undefined)?.id === "string" ? String((args.goal as { id: string }).id) : "") },
+      {
+        // Rules see canonical ids (review S6): the target resolved as the walk resolves it; every leaf of a goal.
+        specifier: (args, ctx) => navigateSpecifiers(args, ctx)[0] ?? "",
+        specifiers: (args, ctx) => navigateSpecifiers(args, ctx).map(spellings),
+      },
     ),
     acting(
       "approach_object",
@@ -389,7 +514,7 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         if (!id) return failedOutput(ctx, "world.unknownTarget", { target: strArg(args, "target") });
         return resultOutput(await host.act(ctx, { operation: "approach", targetId: id }), L(ctx));
       },
-      { specifier: (args) => strArg(args, "target") },
+      { specifier: (args, ctx) => resolvedTarget(args, ctx), specifiers: (args, ctx) => [spellings(resolvedTarget(args, ctx))] },
     ),
     acting(
       "look_at",
@@ -399,7 +524,7 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         if (!id) return failedOutput(ctx, "world.unknownTarget", { target: strArg(args, "target") });
         return resultOutput(await host.act(ctx, { operation: "look_at", targetId: id }), L(ctx));
       },
-      { specifier: (args) => strArg(args, "target") },
+      { specifier: (args, ctx) => resolvedTarget(args, ctx), specifiers: (args, ctx) => [spellings(resolvedTarget(args, ctx))] },
     ),
     acting(
       "interact_object",
@@ -413,8 +538,12 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         if (parameters && parameters.goal !== undefined && request.operation === "move_to") request.goal = parameters.goal as NavGoal;
         return resultOutput(await host.act(ctx, request), L(ctx));
       },
-      // Rules name the operation and the target: `interact_object(lock *)`, `interact_object(* eq:ct-scanner)`.
-      { specifier: (args) => `${strArg(args, "operation")} ${strArg(args, "target")}` },
+      // Rules name the operation and the target as resolved (`interact_object(lock *)`, `interact_object(* eq:ct-scanner)`):
+      // an alias ("ct-scanner", "patient-monitor") names the same entity (review S6).
+      {
+        specifier: (args, ctx) => `${strArg(args, "operation")} ${resolvedTarget(args, ctx)}`,
+        specifiers: (args, ctx) => [spellings(resolvedTarget(args, ctx)).map((target) => `${strArg(args, "operation")} ${target}`)],
+      },
     ),
     acting(
       "cancel_action",
@@ -429,19 +558,27 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
       "delegate_task",
       (args, ctx) => rt(ctx.locale, "sum.delegate", { role: strArg(args, "role"), task: taskLabel(ctx.locale, strArg(args, "task")) }),
       async (args, ctx) => host.delegate(ctx, args),
-      { risk: () => "low", specifier: (args) => `${strArg(args, "task")}${strArg(args, "target") ? ` ${strArg(args, "target")}` : ""}` },
+      {
+        precheck: (_args, ctx) => tooDeep(ctx),
+        risk: () => "low",
+        // `<task> <item>`: the case item (or equipment) it acts on, from the target or the params (review S6).
+        specifier: (args, ctx) => {
+          const item = delegatedItem(host, ctx, args, host.actorOf(ctx));
+          return `${strArg(args, "task")}${item ? ` ${item}` : ""}`;
+        },
+      },
     ),
     acting(
       "execute_skill",
-      (args, ctx) => rt(ctx.locale, "sum.skill", { skill: strArg(args, "skill_id") || "inline" }),
+      // The approval summary lists the steps (review S8).
+      (args, ctx) => host.skillAssessment(ctx, args)?.summary ?? rt(ctx.locale, "sum.skill", { skill: strArg(args, "skill_id") || "inline" }),
       async (args, ctx) => host.executeSkill(ctx, args),
       {
-        risk: (args) => {
-          const safety = host.skillSafety(args);
-          return safety === "high-risk" ? "high" : safety === "clinical" ? "low" : "none";
-        },
-        alwaysAsk: (args) => host.skillSafety(args) === "high-risk",
-        specifier: (args) => strArg(args, "skill_id") || "inline",
+        precheck: (_args, ctx) => tooDeep(ctx),
+        // From what the steps can do, never the skill's own `safety` (review S8).
+        risk: (args, ctx) => host.skillAssessment(ctx, args)?.risk ?? "none",
+        alwaysAsk: (args, ctx) => host.skillAssessment(ctx, args)?.alwaysAsk ?? false,
+        specifier: (args) => host.skillSpecifier(args),
       },
     ),
     readOnly(

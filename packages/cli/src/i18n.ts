@@ -145,6 +145,7 @@ const EN = {
   "status.progress": "{done}/{total}",
   "status.phase": "{phase}",
   "status.noMonitor": "no monitor",
+  "status.vitalsNotInView": "vitals: not in view",
   "status.triage": "triage {readings}",
   "status.place": "@ {place}",
 
@@ -525,6 +526,7 @@ const ZH: Record<MsgKey, string> = {
   "status.progress": "{done}/{total}",
   "status.phase": "{phase}",
   "status.noMonitor": "未接监护",
+  "status.vitalsNotInView": "生命体征：不在视野内",
   "status.triage": "分诊手测 {readings}",
   "status.place": "位置：{place}",
 

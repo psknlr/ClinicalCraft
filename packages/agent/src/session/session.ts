@@ -36,7 +36,7 @@ import { compactConversation, estimateTokens } from "../compaction.js";
 import { emptyHookResult, HookRunner } from "../hooks/runner.js";
 import type { HookInput, HookResult } from "../hooks/types.js";
 import { addUsage, emptyUsage, executeToolCall, runAgentTurn, type AuthorizeRequest, type GateOutcome, type HookSpec, type LoopHost, type TurnResult } from "../loop.js";
-import { actionToolName, checkPermission, PermissionState } from "../permissions.js";
+import { actionToolName, callSpecifiers, checkPermission, PermissionState } from "../permissions.js";
 import type { AgentEvent, AgentRole, ApprovalMode, EventMsg, Op, PlanItem, PracticeScope, RuntimeConfigPatch, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ProviderConfig } from "../providers/types.js";
@@ -46,9 +46,11 @@ import { BUILTIN_SKILLS } from "../skills/builtin.js";
 import type { SkillToolCall } from "../skills/interpreter.js";
 import type { SkillDefinition } from "../skills/schema.js";
 import { rejectionText } from "../tools/clinical.js";
+import { learnerVitals } from "../tools/format.js";
 import { actionIntent, spatialCodeOf, spatialRefusal } from "../tools/spatial.js";
 import { ToolRegistry } from "../tools/index.js";
-import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
+import { isLearnerTool } from "../tools/learner.js";
+import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
 import { validateArgs } from "../tools/validate.js";
 import { normaliseContent, redactValue, TranscriptRecorder } from "../transcript.js";
 import { actionFromToolInput, actionToolArgs } from "./action-input.js";
@@ -98,6 +100,15 @@ const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clini
 /** Longest `external_tool_call` call id / tool name accepted (world bridge). */
 const EXTERNAL_CALL_ID_MAX = 200;
 const EXTERNAL_TOOL_NAME_MAX = 64;
+
+/** What a tool path call carries beyond the caller (embodied mode): the acting body, the world action, the skill nesting. */
+interface ToolPathExtra {
+  actorId?: string;
+  worldActionId?: string;
+  skillDepth?: number;
+  /** A nested skill's share of its caller's `CallProgress` (review S1). */
+  progress?: CallProgress;
+}
 
 /** A valid patient affect intensity (0 calm … 3 most intense). */
 function isAffectIntensity(value: unknown): value is PatientMemory["affectIntensity"] {
@@ -310,6 +321,16 @@ export class ClinicalSession implements ClinicalSessionApi {
     return this.embodied?.roomName(PRIMARY_ACTOR, this.locale) ?? null;
   }
 
+  /**
+   * The bedside vitals as the learner may see them now (reviews G3/G11) — for front-ends' vitals channels (the
+   * MCP state resource, the REPL status line): `learnerVitals` of the snapshot (no ECG morphology); in embodied
+   * mode only where the learner's body can see them (`checkSpatial` vitals: the attached monitor's screen, hands
+   * at the patient, a records terminal), else nothing and why. Audible alarms are announced regardless.
+   */
+  vitalsView(): VitalsView {
+    return this.embodied ? this.embodied.vitalsView(PRIMARY_ACTOR) : { inView: true, snapshot: learnerVitals(vitalsAt(this.caseDef, this._state)) };
+  }
+
   /** Start-up: restore (resume), SessionStart hooks, session_meta, session_configured. Called by `createSession`. */
   async start(): Promise<void> {
     const resume = this.opts.resume;
@@ -344,6 +365,8 @@ export class ClinicalSession implements ClinicalSessionApi {
     const hook = await this.runHook({ hook_event_name: "SessionStart", source: resume ? "resume" : "startup" });
     for (const w of hook.warnings) this.emit("", { type: "warning", message: w });
     for (const issue of this.opts.skillIssues ?? []) this.emit("", { type: "warning", message: rt(this.locale, "embodied.skillIssue", { issue }) });
+    const untrusted = this.opts.skillsUntrusted;
+    if (untrusted && this.embodied) this.emit("", { type: "warning", message: rt(this.locale, "embodied.skillsUntrusted", { files: untrusted.files, dir: untrusted.dir }) });
     this.sessionContext.push(...hook.additionalContext);
     this.emitConfigured("");
     this.emitSnapshot("");
@@ -982,7 +1005,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       memory: this.opts.memory ?? null,
       sessionContext: this.sessionContext,
       plan: this.plan,
-      ...(this.embodied ? { embodied: { place: this.embodied.roomName(PRIMARY_ACTOR, this.locale), skills: this.skillList.map((sk) => sk.id) } } : {}),
+      ...(this.embodied ? { embodied: { place: this.embodied.roomName(PRIMARY_ACTOR, this.locale), skills: this.skillList.map((sk) => sk.id), vitals: this.embodied.vitalsView(PRIMARY_ACTOR) } } : {}),
     };
   }
 
@@ -995,12 +1018,14 @@ export class ClinicalSession implements ClinicalSessionApi {
     };
   }
 
-  private toolContext(agent: AgentRole | "learner", id: string, signal?: AbortSignal, extra: { actorId?: string; worldActionId?: string; turnId?: string } = {}): ToolContext {
+  private toolContext(agent: AgentRole | "learner", id: string, signal?: AbortSignal, extra: ToolPathExtra & { turnId?: string } = {}): ToolContext {
     const dynamic = this.registry.has("walk_to");
     return {
       ...(extra.actorId ? { actorId: extra.actorId } : {}),
       ...(extra.worldActionId ? { worldActionId: extra.worldActionId } : {}),
       ...(extra.turnId ? { turnId: extra.turnId } : {}),
+      ...(extra.skillDepth ? { skillDepth: extra.skillDepth } : {}),
+      ...(extra.progress ? { progress: extra.progress } : {}),
       caseDef: this.caseDef,
       facility: this.facility,
       catalogs: this.catalogs,
@@ -1094,7 +1119,8 @@ export class ClinicalSession implements ClinicalSessionApi {
         } catch {
           specifier = null;
         }
-        if (check.allowSession) this.permissionState.addSessionRule(req.tool.name, specifier);
+        // One rule per thing the call acts on (its canonical name): a composite walk covers exactly its leaves.
+        if (check.allowSession) for (const [name] of callSpecifiers(req.tool, req.args as never, req.ctx, specifier)) this.permissionState.addSessionRule(req.tool.name, name ?? null);
         return { kind: "allow", ruleId: "learner.approved_for_session" };
       }
       case "denied":
@@ -1961,8 +1987,10 @@ export class ClinicalSession implements ClinicalSessionApi {
    * `runLearnerTool` with the tool path's status (ok, error, invalid, blocked, denied, cancelled) — and, in
    * embodied mode, the acting body and the world action carrying the call out (`extra`).
    */
-  private async runLearnerToolDetailed(id: string, name: string, args: Record<string, unknown>, signal?: AbortSignal, extra: { actorId?: string; worldActionId?: string } = {}): Promise<{ output: ToolOutput; status: string }> {
+  private async runLearnerToolDetailed(id: string, name: string, args: Record<string, unknown>, signal?: AbortSignal, extra: ToolPathExtra = {}): Promise<{ output: ToolOutput; status: string }> {
     const L = this.locale;
+    // Only the learner's tools — never an NPC's (reveal_facts, get_progress…) or a front-end's (review S2).
+    if (!isLearnerTool(name)) return { output: { ok: false, output: rt(L, "tool.notLearnerTool", { tool: name }), data: { code: "NOT_A_LEARNER_TOOL" } }, status: "invalid" };
     const tool = this.registry.get(name);
     if (!tool) return { output: { ok: false, output: rt(L, "tool.unknownTool", { tool: name, tools: "-" }) }, status: "invalid" };
     const validated = validateArgs(tool.inputSchema, args);
@@ -1993,9 +2021,11 @@ export class ClinicalSession implements ClinicalSessionApi {
    * effects, skill steps, delegated staff): the learner's (`runLearnerTool`) or a model agent's
    * (`executeToolCall` with its allow-list, hooks and approval gate). Never a shortcut.
    */
-  private async runToolAs(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: { actorId: ActorId; worldActionId?: string }): Promise<SkillToolCall> {
+  private async runToolAs(caller: ClinicalCaller, tool: string, args: Record<string, unknown>, extra: ToolPathExtra & { actorId: ActorId }): Promise<SkillToolCall> {
     const id = caller.submission ?? this.currentSubmission;
     const signal = caller.signal ?? this.active?.controller.signal;
+    // A skill or delegated step is a learner tool whoever the caller is (review S2): checked before anything else.
+    if (!isLearnerTool(tool)) return { ok: false, output: { ok: false, output: rt(this.locale, "tool.notLearnerTool", { tool }), data: { code: "NOT_A_LEARNER_TOOL" } }, status: "invalid" };
     if (caller.agent === "learner") {
       const r = await this.runLearnerToolDetailed(id, tool, args, signal, extra);
       return { ok: r.output.ok && r.status === "ok", output: r.output, status: r.status };
@@ -2030,6 +2060,7 @@ export class ClinicalSession implements ClinicalSessionApi {
       newId: () => this.newId(),
       dispatch: (action) => this.dispatchInternal(action, this.currentSubmission),
       runTool: (caller, tool, args, extra) => this.runToolAs(caller, tool, args, extra),
+      tool: (name) => this.registry.get(name),
       emit: (msg, submission) => this.emit(submission ?? this.currentSubmission, msg),
       recordWorld: (snapshot) => void this.recorder?.record("world", { snapshot }),
       clockText: () => clockLabel(this.caseDef, this._state.clock, this.locale),

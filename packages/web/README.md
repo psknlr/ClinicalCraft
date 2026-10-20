@@ -23,6 +23,18 @@ npm run test:e2e                 # Playwright (Chromium + SwiftShader WebGL)
 | `proxy` | the page is served by `clinicalcraft serve`; calls go through `POST /api/llm/stream` and keys stay on the server |
 | `direct` | your own key, kept in `sessionStorage` unless you opt in to remember it; Anthropic via the official SDK (`dangerouslyAllowBrowser` only in this mode), OpenAI-compatible providers via `fetch` |
 
+**Embodied mode** (the default; docs/EMBODIED.md §2.1, §6): the UI shows no
+more than the world lets the learner perceive and never decides by a rule of
+its own. The monitor panel and the HUD's vitals strip show the live screen
+only while the world's vitals check holds through that monitor's screen
+(otherwise: why, and the way there); the panels' rows show the world's
+verdict from where the learner stands (done here, a short step the UI takes
+and announces, or the world's reason with "Go there" / the act to do first);
+lab tests are ordered at the patient's side from the patient's **Tests** tab
+(the sample is taken there); the autopilot's live trace, the delegation
+outcome and the HUD dock speak the learner's language (`ui/panels/trace-labels.ts`),
+colleagues are named (`app/staff.ts`).
+
 **External agent** (served by `clinicalcraft serve` only): in a running
 encounter, `Esc` → “Allow an external agent to control this session” lets
 your own MCP client (`clinicalcraft mcp --attach`) act as the clinician;

@@ -15,7 +15,7 @@ afterAll(() => rmSync(root, { recursive: true, force: true }));
 const skill = (id: string, name = id) => ({ schema: "clinicalcraft/skill@1", id, name: { en: name, "zh-CN": name }, description: "x", safety: "physical", steps: [{ id: "look", tool: "observe_world" }] });
 
 describe("loadProjectSkills", () => {
-  it("loads user then project skills (project wins), one skill or an array per file; reports invalid ones", async () => {
+  it("loads user then project skills (project wins, trusted project), one skill or an array per file; reports invalid ones", async () => {
     const home = join(root, "home");
     const cwd = join(root, "project");
     mkdirSync(join(home, "skills"), { recursive: true });
@@ -26,7 +26,13 @@ describe("loadProjectSkills", () => {
     writeFileSync(join(cwd, ".clinicalcraft", "skills", "code.json"), JSON.stringify({ ...skill("evil"), script: "require('child_process')" }));
     writeFileSync(join(cwd, ".clinicalcraft", "skills", "notes.txt"), "ignored");
 
-    const loaded = await loadProjectSkills(cwd, { CLINICALCRAFT_HOME: home, HOME: home });
+    // An untrusted project's skills are reported, never loaded (review S8); the user's own always load.
+    const untrusted = await loadProjectSkills(cwd, { CLINICALCRAFT_HOME: home, HOME: home });
+    expect(untrusted.skills.map((s) => s.id).sort()).toEqual(["glance", "survey"]);
+    expect(untrusted.skills.find((s) => s.id === "glance")!.name).toEqual({ en: "user glance", "zh-CN": "user glance" });
+    expect(untrusted.untrusted).toMatchObject({ files: 3 });
+
+    const loaded = await loadProjectSkills(cwd, { CLINICALCRAFT_HOME: home, HOME: home }, { trusted: true });
     expect(loaded.skills.map((s) => s.id).sort()).toEqual(["glance", "survey"]);
     expect(loaded.skills.find((s) => s.id === "glance")!.name).toEqual({ en: "project glance", "zh-CN": "project glance" });
     expect(loaded.issues).toHaveLength(2);

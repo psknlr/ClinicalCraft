@@ -147,6 +147,24 @@ export function bedsideReadings(snapshot: VitalsSnapshot, locale: string): { liv
   return { live, manual };
 }
 
+/**
+ * A vitals snapshot as a learner may see it (review G3): exactly what `vitalsText` shows. Never the ECG
+ * morphology (`vitals.ecg` — "st-elevation" is an interpretation that takes a 12-lead and its reading), no
+ * placeholder values of a case without physiology (`baselineOnly`: nothing recorded), no rhythm while the
+ * monitor shows none (not attached, no ECG leads), no alarm off the monitor nor for a value it cannot read.
+ * Every learner-facing structured output uses it (`check_vitals` data, the MCP state resource, results the
+ * world bridge forwards); only the renderer's `state_snapshot` keeps the full snapshot (it draws the waveform).
+ */
+export function learnerVitals(snapshot: VitalsSnapshot): VitalsSnapshot {
+  if (snapshot.baselineOnly) return { minute: snapshot.minute, vitals: {}, alarms: [], trend: {}, baselineOnly: true };
+  const vitals = { ...snapshot.vitals };
+  delete vitals.ecg;
+  if (offMonitor(snapshot) || withoutEcg(snapshot)) delete vitals.rhythm;
+  const unread = new Set(snapshot.unmeasurable ?? []);
+  const alarms = offMonitor(snapshot) ? [] : snapshot.alarms.filter((a) => a.vital === "hr" || !unread.has(a.vital)).map((a) => ({ ...a }));
+  return { ...snapshot, vitals, alarms, trend: { ...snapshot.trend }, ...(snapshot.spotChecks ? { spotChecks: [...snapshot.spotChecks] } : {}), ...(snapshot.unmeasurable ? { unmeasurable: [...snapshot.unmeasurable] } : {}) };
+}
+
 /** True while the case's bedside monitor is not attached (`VitalsSnapshot.monitorAttached === false`). */
 export function offMonitor(snapshot: VitalsSnapshot): boolean {
   return snapshot.monitorAttached === false;

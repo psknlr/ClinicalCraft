@@ -11,6 +11,9 @@
  * renders from the app store; nothing here keeps its own history. On
  * entering the world the quest card also carries the case's teaching-case
  * disclaimer for a few seconds (inside the card, so it never covers a control).
+ * Embodied mode: the vitals strip shows the monitor's live values only while
+ * the world says the learner can read its screen (`EmbodiedLink.screen`, the
+ * same verdict as the monitor panel); out of view it says so, without a value.
  */
 import { progress as coreProgress, type CaseDefinition, type VitalKey } from "@clinicalcraft/core";
 import type { App } from "../app/context.js";
@@ -64,6 +67,8 @@ export class Hud {
   private disclaimerUntil = 0;
   /** What the external-agent badge shows now (re-rendered only when it changes: its buttons keep focus). */
   private externalKey = "";
+  /** Embodied: whether the strip last showed the monitor's screen as readable (re-rendered when it changes). */
+  private screenKey = "";
   private disclaimerTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
@@ -272,6 +277,9 @@ export class Hud {
     this.el.region.textContent = info.levelName ? `${info.region} · ${info.levelName}` : info.region;
     this.el.coords.textContent = `X ${Math.round(info.x)} · Z ${Math.round(info.z)}`;
     this.renderEmbodiment();
+    // embodied: walking in or out of view of the monitor's screen changes what the strip may show
+    const game = this.app.game;
+    if (game?.embodied && this.screenKey !== this.readableKey()) this.renderVitals(game.caseDef);
     const now = performance.now();
     if (now - this.lastMinimap > 120) {
       this.lastMinimap = now;
@@ -513,10 +521,16 @@ export class Hud {
    * arrows, no alarm colours), or "MONITOR · OFF" when there are none; once
    * attached, the live values.
    */
+  /** Embodied: "readable" / "monitor-not-in-view" / other — whether the strip may show the monitor's live values. */
+  private readableKey(): string {
+    return this.app.game?.embodied?.screenKey() ?? "";
+  }
+
   private renderVitals(c: CaseDefinition): void {
     const e = this.el;
     const game = this.app.game;
     const snap = game?.session.store.snapshot;
+    this.screenKey = this.readableKey();
     if (!c.physiology || !snap || snap.vitals.baselineOnly) {
       e.vitals.hidden = true;
       return;
@@ -524,6 +538,17 @@ export class Hud {
     e.vitals.hidden = false;
     const v = snap.vitals;
     const off = v.monitorAttached === false;
+    // embodied: attached, but its screen is out of view from where the learner stands — no live value here
+    const unseen = !off && this.screenKey === "monitor-not-in-view";
+    e.vitals.classList.toggle("out-of-view", unseen);
+    if (unseen) {
+      e.vitals.classList.remove("off-monitor", "critical");
+      e.vitals.title = tr("hud.outOfViewTitle");
+      e.vitals.setAttribute("aria-label", tr("hud.outOfViewTitle"));
+      clear(e.vitals);
+      e.vitals.append(h("span", { class: "vital v-monitor", dataset: { vital: "monitor" } }, h("small", null, tr("hud.monitor")), h("b", null, tr("hud.outOfView"))));
+      return;
+    }
     const manual = new Set<string>(v.spotChecks ?? []);
     e.vitals.classList.toggle("off-monitor", off);
     const title = off ? tr(manual.size ? "hud.monitorOffTitle" : "hud.monitorOffNone") : tr("hud.vitalsTitle");

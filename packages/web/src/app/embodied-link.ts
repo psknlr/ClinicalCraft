@@ -15,14 +15,15 @@
  */
 import { actionIntent } from "@clinicalcraft/agent";
 import { regionAt, t, type CaseDefinition, type ClinicalAction, type FacilityDefinition } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type ActorId, type NavGoal, type NavPlan, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, type ActionHint, type ActorId, type NavGoal, type NavPlan, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
 import type { BodyMove, WorldApi } from "../contracts.js";
 import { tr, trMaybe } from "../i18n/index.js";
-import type { ActionFeedback } from "../ui/feedback.js";
+import type { ActionFeedback, FeedbackItem } from "../ui/feedback.js";
 import { placementIdOf, staffIdOf, type BrowserMover } from "./embodied.js";
 import type { AppSession } from "./session.js";
-import { approachDecision, bedsideCapsNow, checkIsRange, commandRefusal, entitySpot, refusalLead, resultIsRange } from "./spatial.js";
+import { approachDecision, checkIsRange, commandRefusal, entitySpot, learnerText, refusalLead, resultIsRange, type ScreenState } from "./spatial.js";
 import type { LogEntry } from "./store.js";
+import { prerequisiteOf, WorldView, type ScreenView, type Verdict } from "./world-view.js";
 
 /** World tools during which an agent may drive a body: real-time ticks pause (EMBODIED R8). */
 export const BODY_TOOLS: ReadonlySet<string> = new Set(["navigate_to", "approach_object", "look_at", "interact_object", "delegate_task", "execute_skill"]);
@@ -32,6 +33,7 @@ const DEAD_CODES: ReadonlySet<string> = new Set(["not_embodied", "invalid_op", "
 
 /** How long (ms) a world action may stay without a result after the session reported a problem with it. */
 const STALE_MS = 10_000;
+
 
 export interface EmbodiedLinkOptions {
   app: AppSession;
@@ -47,6 +49,8 @@ export interface EmbodiedLinkOptions {
 
 type Pending = { resolve: (r: WorldActionResult | null) => void; submission: string; timer: ReturnType<typeof setTimeout> | null };
 
+export type { ScreenView, Verdict } from "./world-view.js";
+
 export class EmbodiedLink {
   private lastPose = "";
   private readonly pending = new Map<string, Pending>();
@@ -55,11 +59,14 @@ export class EmbodiedLink {
   /** Stored device states (ECG cart…) as the world reports them. */
   private readonly states = new Map<string, string>();
   private seq = 0;
+  /** What the panels and the HUD may show, asked of the world (monitor, bedside, screen, verdicts). */
+  readonly view: WorldView;
   private readonly offEntry: () => void;
   private offWorld: () => void = () => undefined;
   private disposed = false;
 
   constructor(private readonly o: EmbodiedLinkOptions) {
+    this.view = new WorldView({ world: () => o.app.world(), facility: o.facility, caseDef: o.caseDef, slotId: o.slotId, state: () => o.app.session.state, locale: o.locale, syncPose: () => this.syncPose() });
     this.offEntry = o.app.store.onEntry((e) => this.onEntry(e));
     const world = this.world;
     if (world) {
@@ -249,23 +256,30 @@ export class EmbodiedLink {
     if (!world || !intent || this.o.mover.isMoving(PRIMARY_ACTOR)) return this.o.app.act(action, rationale);
     this.syncPose();
     const check = world.checkSpatial(PRIMARY_ACTOR, intent);
-    if (check.ok) return this.o.app.act(action, rationale);
+    if (check.ok) {
+      // an earlier refusal no longer stands once the learner does something that can be done here
+      this.o.feedback.clear();
+      return this.o.app.act(action, rationale);
+    }
     const alias = `web-act-${++this.seq}`;
     const plan = check.hint ? world.plan(PRIMARY_ACTOR, check.hint.goal) : null;
     const decision = approachDecision(check.hint, checkIsRange(check), plan);
     if (decision.kind === "approach") {
+      // the short walk is said, not a surprise (the window may hide the world): "Walking over — Go to …"
+      this.stepping(check.hint?.label ?? null);
       void this.approach(decision.goal).then((ok) => {
         if (this.disposed) return;
         if (ok) {
+          if (this.o.feedback.current?.tone === "info") this.o.feedback.clear();
           // retry once (the session checks again: a refusal now shows "Go there")
           this.o.app.store.linkSubmission(alias, this.o.app.act(action, rationale));
           return;
         }
-        this.refuse(alias, check.message, check.hint?.goal ?? null, check.hint?.label ?? null);
+        this.refuse(alias, check.message, check.hint?.goal ?? null, check.hint?.label ?? null, prerequisiteOf(check), check.hint?.then);
       });
       return alias;
     }
-    this.refuse(alias, check.message, decision.goal, decision.label);
+    this.refuse(alias, check.message, decision.goal, decision.label, prerequisiteOf(check), check.hint?.then);
     return alias;
   }
 
@@ -278,24 +292,39 @@ export class EmbodiedLink {
   async worldAction(request: Omit<WorldActionRequest, "actionId" | "actorId">, retry = true): Promise<WorldActionResult | null> {
     this.syncPose();
     const r = await this.submitWorld(request);
+    if (r?.status === "completed") this.o.feedback.clear();
     if (!r || this.disposed) return r;
     if (retry && r.hint && resultIsRange(r)) {
       const plan = this.world?.plan(PRIMARY_ACTOR, r.hint.goal) ?? null;
       if (approachDecision(r.hint, true, plan).kind === "approach") {
-        if (await this.approach(r.hint.goal)) return this.worldAction(request, false);
+        this.stepping(r.hint.label);
+        if (await this.approach(r.hint.goal)) {
+          if (this.o.feedback.current?.tone === "info") this.o.feedback.clear();
+          return this.worldAction(request, false);
+        }
       }
     }
-    if (r.status === "failed") this.o.feedback.show({ text: r.message, goal: r.hint?.goal ?? null, label: r.hint?.label ?? null, tone: "refused" });
+    if (r.status === "failed") this.o.feedback.show({ text: learnerText(r.message), goal: r.hint?.goal ?? null, label: r.hint ? learnerText(r.hint.label) : null, tone: "refused", ...(r.hint?.then ? { then: r.hint.then } : {}) });
     return r;
   }
 
-  /** "Go there": walk the avatar to a goal the world named (`hint.goal`) — planned and timed by the world. */
-  async goTo(goal: NavGoal, label: string | null): Promise<WorldActionResult | null> {
+  /**
+   * "Go there": walk the avatar to a goal the world named (`hint.goal`) — planned and timed by the world —
+   * then, for a fetch (`hint.then`), do what the label promises: wheel the cart to the patient (`move_to`).
+   */
+  async goTo(goal: NavGoal, label: string | null, then?: ActionHint["then"]): Promise<WorldActionResult | null> {
     const r = await this.submitWorld({ operation: "navigate", goal });
     if (!r || this.disposed) return r;
-    if (r.status === "completed") this.o.toast(tr("toast.arrived"), label ?? "", "info", "go-there");
-    else this.o.feedback.show({ text: r.message, goal: null, label: null, tone: "refused" });
+    if (r.status === "completed" && then) return this.worldAction({ operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}) });
+    // arrived: where (a map point by the place's name; anything else as the world names it, not the instruction)
+    if (r.status === "completed") this.o.toast(tr("toast.arrived"), goal.kind === "point" ? (label ?? "") : learnerText(r.message), "info", "go-there");
+    else this.o.feedback.show({ text: learnerText(r.message), goal: null, label: null, tone: "refused" });
     return r;
+  }
+
+  /** Say that the body takes a few steps by itself before doing what the learner asked (info, no button). */
+  private stepping(label: string | null): void {
+    this.o.feedback.show({ text: label ? tr("emb.steppingTo", { label: learnerText(label) }) : tr("emb.stepping"), goal: null, label: null, tone: "info" });
   }
 
   /** A short walk to `goal` (auto-approach); true when the avatar got there. */
@@ -304,9 +333,17 @@ export class EmbodiedLink {
     return r?.status === "completed";
   }
 
-  private refuse(alias: string, text: string, goal: NavGoal | null, label: string | null): void {
-    this.o.app.store.refused(alias, text);
-    this.o.feedback.show({ text, goal, label, tone: "refused" });
+  private refuse(alias: string, text: string, goal: NavGoal | null, label: string | null, prerequisite: string | null = null, then?: ActionHint["then"]): void {
+    const words = learnerText(text);
+    this.o.app.store.refused(alias, words);
+    this.o.feedback.show({ text: words, goal, label: label ? learnerText(label) : null, tone: "refused", ...(goal && then ? { then } : {}), ...this.firstAction(prerequisite) });
+  }
+
+  /** A refusal no walk fixes, with the act that does ("Peripheral IV access first"). */
+  private firstAction(interventionId: string | null): Pick<FeedbackItem, "action"> {
+    const iv = interventionId ? this.o.caseDef.interventions.find((x) => x.id === interventionId) : undefined;
+    if (!iv) return {};
+    return { action: { label: tr("emb.doFirst", { name: t(iv.name, this.o.locale()) }), run: () => void this.act({ type: "intervene", interventionId: iv.id }) } };
   }
 
   /** Submit a learner world action and wait for its result. */
@@ -350,7 +387,7 @@ export class EmbodiedLink {
       case "command_output": {
         // a slash command (`/vitals`, `/order …`) refused for where the body stands: the reason, with "Go there"
         const refused = commandRefusal(msg.data);
-        if (refused) this.o.feedback.show({ text: refused.message || refusalLead(msg.text), goal: refused.hint?.goal ?? null, label: refused.hint?.label ?? null, tone: "refused" });
+        if (refused) this.o.feedback.show({ text: learnerText(refused.message || refusalLead(msg.text)), goal: refused.hint?.goal ?? null, label: refused.hint ? learnerText(refused.hint.label) : null, tone: "refused", ...(refused.hint?.then ? { then: refused.hint.then } : {}) });
         // `/delegate` (the conversation's delegate chips): its outcome
         if (msg.name === "delegate") this.delegated(delegationOf(msg.data));
         return;
@@ -387,48 +424,46 @@ export class EmbodiedLink {
     const check = world && intent ? world.checkSpatial(PRIMARY_ACTOR, intent) : null;
     const hint = check && !check.ok ? check.hint : null;
     // the session's text names the model-facing tool call ("navigate_to {…}"): the learner gets the reason only
-    const text = check && !check.ok ? check.message : refusalLead(message);
-    this.o.feedback.show({ text, goal: hint?.goal ?? null, label: hint?.label ?? null, tone: "refused" });
+    const text = learnerText(check && !check.ok ? check.message : refusalLead(message));
+    this.o.feedback.show({ text, goal: hint?.goal ?? null, label: hint ? learnerText(hint.label) : null, tone: "refused", ...(hint?.then ? { then: hint.then } : {}), ...(check ? this.firstAction(prerequisiteOf(check)) : {}) });
   }
 
   /* ---------------------------------------------------------------- */
   /* What panels need                                                  */
   /* ---------------------------------------------------------------- */
 
-  /** The patient's monitor in the world: the slot's linked monitor, else a monitor at the bedside (null: none). */
+  /** The world's patient monitor (`WorldView.patientMonitor`). */
   patientMonitor(): string | null {
-    const world = this.world;
-    const slot = this.o.facility.patientSlots.find((s) => s.id === this.o.slotId);
-    if (!world || !slot) return null;
-    if (slot.monitor && world.entity(`eq:${slot.monitor}`)) return `eq:${slot.monitor}`;
-    const patient = world.entity(`patient:${slot.id}`);
-    for (const e of world.entities()) {
-      if (e.interaction !== "monitor" || !patient || e.level !== patient.level) continue;
-      if (Math.hypot(e.position.x - slot.x, e.position.z - slot.z) <= 6 || (e.room !== null && e.room === slot.room)) return e.id;
-    }
-    return null;
+    return this.view.patientMonitor();
+  }
+
+  /** Capabilities at the bedside as the world counts them now (`WorldView.bedsideCaps`). */
+  bedsideCaps(): Set<string> {
+    return this.view.bedsideCaps();
+  }
+
+  /** Can the learner read the patient's monitor screen from here (`WorldView.screen`)? */
+  screen(): ScreenView {
+    return this.view.screen();
+  }
+
+  /** The same for the HUD's strip, cheap while the body walks (`WorldView.screenKey`). */
+  screenKey(now?: number): "readable" | ScreenState["reason"] {
+    return this.view.screenKey(now);
+  }
+
+  /** The world's verdict on an act from where the body stands (`WorldView.verdict`). */
+  verdict(action: ClinicalAction): Verdict {
+    return this.view.verdict(action);
   }
 
   /**
-   * Capabilities at the patient's bedside as the world counts them now: the personal kit, every in-service
-   * device within the bedside radius or in the room — a cart wheeled over counts, one wheeled away not —
-   * and the delivered capabilities (EMBODIED §6).
+   * Show a refused verdict without submitting anything: the world's words, "Go there" (the hint) or the act
+   * to do first (a clinical prerequisite). For a panel row the learner clicked although it cannot be done here.
    */
-  bedsideCaps(): Set<string> {
-    const world = this.world;
-    const patient = this.patientId();
-    const at = patient ? world?.entity(patient) : null;
-    if (!world || !at) return new Set();
-    const snap = world.snapshot();
-    const equipment = world
-      .entities()
-      .filter((e) => e.kind === "equipment")
-      .flatMap((e) => {
-        const st = snap.entities[e.id];
-        const spot = entitySpot(snap, e.id, { x: e.position.x, z: e.position.z, level: e.level });
-        return spot ? [{ id: e.id, capabilities: e.capabilities, x: spot.x, z: spot.z, level: spot.level, room: st?.position || st?.heldBy ? null : e.room, available: st?.available !== false }] : [];
-      });
-    return bedsideCapsNow(this.o.facility, this.o.slotId, equipment, at.level);
+  explain(v: Verdict): void {
+    if (v.kind !== "refused") return;
+    this.o.feedback.show({ text: v.message, goal: v.hint?.goal ?? null, label: v.hint?.label ?? null, tone: "refused", ...(v.hint?.then ? { then: v.hint.then } : {}), ...this.firstAction(v.prerequisite) });
   }
 
   /** The patient's entity id (`patient:<slot>`), or null. */

@@ -126,7 +126,8 @@ describe("interpreter mechanics (a scripted tool path)", () => {
   it("never retries or recovers a refusal of the approval gate or a hook (denied / blocked)", async () => {
     const log: string[] = [];
     const s = def({
-      steps: [{ id: "give", tool: "intervene", args: { intervention_id: "lysis" }, retry: { attempts: 3, on: ["DENIED", "FAILED"] } }],
+      // (`retry.on` may not even list DENIED — refused at validation, review C9.)
+      steps: [{ id: "give", tool: "intervene", args: { intervention_id: "lysis" }, retry: { attempts: 3, on: ["FAILED"] } }],
       recovery: [{ on: ["*"], strategy: "replan" }],
     });
     const res = await runSkill(s, {}, runner([() => fail("DENIED", "denied", { hint: { goal: { kind: "interact", id: "patient:bay-1" }, label: "go" } })], log));

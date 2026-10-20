@@ -12,8 +12,10 @@ import type { PanelView } from "../panel.js";
 import { figureTile, investigationName, minutesLeft, phaseName } from "./common.js";
 
 export interface ReportBack {
-  panel: "orders" | "device" | "journal" | "board";
+  panel: "orders" | "device" | "journal" | "board" | "conversation";
   placementId?: string;
+  /** The patient's window: the tab to return to (the bedside tests). */
+  tab?: "tests";
 }
 
 export interface ReportArgs {
@@ -77,7 +79,7 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
     const back = (): HTMLElement | null => {
       const b = args.back;
       if (!b) return null;
-      const label = b.panel === "journal" || b.panel === "board" ? tr("report.backJournal") : tr("report.back");
+      const label = b.panel === "journal" || b.panel === "board" ? tr("report.backJournal") : b.panel === "conversation" ? tr("report.backPatient") : tr("report.back");
       return h(
         "button",
         {
@@ -86,6 +88,7 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
           onclick: () => {
             if (b.panel === "orders" && b.placementId) app.open("orders", { placementId: b.placementId });
             else if (b.panel === "device" && b.placementId) app.open("device", { placementId: b.placementId });
+            else if (b.panel === "conversation") app.open("conversation", { agent: "patient", ...(b.tab ? { tab: b.tab } : {}) });
             else if (b.panel === "board") app.open("board");
             else app.open("journal");
           },

@@ -12,7 +12,7 @@
  * (`refused.confirm: "required"`) runs when the client calls again with
  * `confirm: true` (every state-changing tool accepts it).
  */
-import { inScope, isHiddenByDeny, rt, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
+import { EmbodimentError, inScope, isHiddenByDeny, rt, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
 import type { CaseLibrary } from "@clinicalcraft/agent/node";
 import { normalizeLocale, progress, t, type AssessmentReport } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
@@ -296,6 +296,8 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
             ...(outcome.reason === "ask" ? { risk: outcome.risk ?? null, confirm: "required" } : {}),
             // An approval asked inside the call (a world operation's clinical effect, a delegated or skill step).
             ...(outcome.innerTool ? { tool: outcome.innerTool } : {}),
+            // What the refused step (or call) does: "Give Tenecteplase?"; a skill lists its steps (review S1).
+            ...(outcome.summary ? { summary: outcome.summary } : {}),
           };
           const text = outcome.detail ? `${outcome.message}\n\n${outcome.detail}` : outcome.message;
           return textResult(text, { session_id: entry.id, tool: name, ok: false, refused }, true);
@@ -324,6 +326,8 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
       embodied: typeof args.embodied === "boolean" ? args.embodied : null,
     });
   } catch (err) {
+    // No facility or no place in it for the case (review C15): its stable code and the reason in the session language.
+    if (err instanceof EmbodimentError) return textResult(mm(L, "start.failed", { message: err.localized(L) }), { error: err.code, case_id: ref }, true);
     // Unknown facility (BootstrapError), unreadable settings…: the model can pick another case.
     return textResult(mm(L, "start.failed", { message: err instanceof Error ? err.message : String(err) }), { error: "start_failed", case_id: ref }, true);
   }

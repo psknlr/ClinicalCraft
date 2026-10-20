@@ -100,7 +100,8 @@ const RAW: readonly unknown[] = [
     safety: "clinical",
     steps: [
       { id: "go", tool: "navigate_to", args: { target: "${patient}" }, when: notNear(1.5) },
-      { id: "find", tool: "find_objects", args: { capabilities: ["ecg-12lead"], portable_only: true, limit: 1 } },
+      // a cart in service that nobody else is using first (C8: a busy or broken cart is no provider)
+      { id: "find", tool: "find_objects", args: { capabilities: ["ecg-12lead"], portable_only: true, prefer_available: true, limit: 1 } },
       {
         id: "fetch",
         tool: "interact_object",
@@ -111,8 +112,9 @@ const RAW: readonly unknown[] = [
       { id: "clear", tool: "interact_object", args: { target: ECG, operation: "reset" }, when: { entityState: ECG, state: ["completed"] } },
       { id: "prepare", tool: "interact_object", args: { target: ECG, operation: "prepare" }, when: { entityState: ECG, state: ["idle"] } },
       { id: "connect", tool: "interact_object", args: { target: ECG, operation: "connect" }, when: { entityState: ECG, state: ["prepared"] } },
-      { id: "record", tool: "interact_object", args: { target: ECG, operation: "record", parameters: { investigation: "${investigation}" } } },
-      { id: "reset", tool: "interact_object", args: { target: ECG, operation: "reset" }, onError: "continue" },
+      // a refused or failed tracing still ends with the cart reset — never left prepared or connected (C3)
+      { id: "record", tool: "interact_object", args: { target: ECG, operation: "record", parameters: { investigation: "${investigation}" } }, onError: "continue" },
+      { id: "reset", tool: "interact_object", args: { target: ECG, operation: "reset" }, when: { entityState: ECG, state: ["prepared", "connected", "completed"] }, onError: "continue" },
     ],
     postconditions: [{ clinical: { ordered: "${investigation}" } }],
     // a cart at the bedside but out of reach of the patient's side is wheeled over (its refusal hints the fetch)

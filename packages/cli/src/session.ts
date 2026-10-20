@@ -21,7 +21,7 @@ import {
   type CreateNodeSessionOptions,
   type LoadedContent,
 } from "@clinicalcraft/agent/node";
-import type { ClinicalSession } from "@clinicalcraft/agent";
+import { EmbodimentError, type ClinicalSession } from "@clinicalcraft/agent";
 import { suggest } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
 
@@ -123,6 +123,8 @@ export async function openSession(ctx: CliContext, o: OpenSessionOptions): Promi
     return session;
   } catch (err) {
     if (err instanceof BootstrapError) throw new CliError(err.message, EXIT.usage);
+    // No facility, or no place in it for the case (review C15): refused before the session started.
+    if (err instanceof EmbodimentError) throw new CliError(err.localized(ctx.locale), EXIT.usage, ctx.t("facilities.available", { list: [...checked.library.content.facilities.keys()].sort().join(", ") }));
     const message = (err as Error).message ?? String(err);
     if (/profile/i.test(message) && /unknown/i.test(message)) throw new CliError(message, EXIT.usage);
     throw new CliError(message, EXIT.error);

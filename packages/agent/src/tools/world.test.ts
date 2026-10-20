@@ -30,13 +30,21 @@ describe("world tool specs", () => {
       expect(tool!.inputSchema, spec.name).toEqual(spec.inputSchema);
       expect(tool!.scope, spec.name).toBe(spec.scope ?? "history-only");
     }
-    const ctx = {} as never;
+    const s = t.session;
+    const ctx = { caseDef: s.caseDef, facility: s.facility, catalogs: s.catalogs, locale: "en", agent: "learner", state: () => s.state } as never;
     expect(t.session.tool("interact_object")!.specifier!({ target: "eq:ct", operation: "lock" }, ctx)).toBe("lock eq:ct");
     expect(t.session.tool("navigate_to")!.specifier!({ goal: { kind: "interact", id: "patient:resus-1" } }, ctx)).toBe("patient:resus-1");
     expect(t.session.tool("delegate_task")!.specifier!({ task: "give_intervention", target: "aspirin" }, ctx)).toBe("give_intervention aspirin");
     const skill = t.session.tool("execute_skill")!;
     expect(skill.risk({ skill_id: "locate_patient" }, ctx)).toBe("none");
-    expect(skill.risk({ skill_id: "administer_treatment" }, ctx)).toBe("low");
+    // A skill is as risky as what its steps do (review S8): administer_treatment is the drug it gives.
+    for (const drug of ["aspirin", "tenecteplase"]) {
+      const intervene = t.session.tool("intervene")!;
+      expect(skill.risk({ skill_id: "administer_treatment", params: { intervention: drug } }, ctx), drug).toBe(intervene.risk({ intervention_id: drug }, ctx));
+      expect(skill.alwaysAsk!({ skill_id: "administer_treatment", params: { intervention: drug } }, ctx), drug).toBe(intervene.alwaysAsk?.({ intervention_id: drug }, ctx) ?? false);
+    }
+    // Parameters that do not resolve: the run refuses them, nothing to approve.
+    expect(skill.risk({ skill_id: "administer_treatment" }, ctx)).toBe("none");
     const highRisk = { schema: "clinicalcraft/skill@1", id: "lysis", name: "Lysis", description: "x", safety: "high-risk", steps: [{ id: "give", tool: "intervene", args: { intervention_id: "tenecteplase" } }] };
     expect(skill.risk({ skill: highRisk }, ctx)).toBe("high");
     expect(skill.alwaysAsk!({ skill: highRisk }, ctx)).toBe(true);

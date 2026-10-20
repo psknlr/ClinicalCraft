@@ -10,18 +10,12 @@
  */
 import type { App } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
+import { learnerText } from "../../app/spatial.js";
 import { ct, tr } from "../../i18n/index.js";
 import { append, clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { traceGroups, traceList } from "./trace.js";
-import { nameLabel } from "./trace-labels.js";
-
-function argsText(args: unknown): string {
-  if (!args || typeof args !== "object") return "";
-  const parts = Object.entries(args as Record<string, unknown>).map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`);
-  const s = parts.join(", ");
-  return s.length > 140 ? `${s.slice(0, 137)}…` : s;
-}
+import { callArgsLabel, nameLabel } from "./trace-labels.js";
 
 export function autopilotPanel(app: App): () => PanelView {
   return () => {
@@ -43,7 +37,10 @@ export function autopilotPanel(app: App): () => PanelView {
       const key = `${spans.length}:${spans.at(-1)?.id ?? ""}`;
       if (key === traceKey) return;
       traceKey = key;
-      const hintOf = (actionId: string) => store.worldResults.get(actionId)?.result.hint?.label ?? null;
+      const hintOf = (actionId: string) => {
+        const label = store.worldResults.get(actionId)?.result.hint?.label;
+        return label ? learnerText(label) : null;
+      };
       clear(trace);
       // labels in the learner's language: case items by name, staff by name (the world's registry)
       const world = game.session.world();
@@ -88,7 +85,7 @@ export function autopilotPanel(app: App): () => PanelView {
             { class: `call ${c.status}` },
             h("span", { class: "call-status", "aria-label": c.status === "ok" ? tr("auto.ok") : c.status === "failed" ? tr("auto.fail") : tr("auto.running") }, c.status === "ok" ? "✓" : c.status === "failed" ? "✕" : "…"),
             h("b", { class: "call-tool", title: c.tool, dataset: { tool: c.tool } }, nameLabel(c.tool)),
-            h("small", null, argsText(c.args)),
+            h("small", null, callArgsLabel(c.args, game.caseDef)),
             c.output ? h("p", { class: "call-output" }, c.output.length > 280 ? `${c.output.slice(0, 277)}…` : c.output) : null,
           ),
         );

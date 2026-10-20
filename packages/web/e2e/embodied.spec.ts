@@ -76,7 +76,9 @@ test.describe("embodied mode (en)", () => {
     expect(Math.hypot(first.path.at(-1).x - 31, first.path.at(-1).z - -17.325)).toBeLessThan(4);
     // the live trace in the autopilot window: finished steps with their walk / operate / clinical spans
     await expect(page.locator("#autopilot-trace .trace-group.ok").first()).toBeVisible();
-    await expect(page.locator("#autopilot-trace")).toContainText("record");
+    // in words (the identifiers stay on the elements for teachers and tests)
+    await expect(page.locator("#autopilot-trace")).toContainText("Record a 12-lead ECG");
+    await expect(page.locator('#autopilot-trace .trace-step[data-name="record"]').first()).toBeVisible();
     expect(errors).toEqual([]);
   });
 
@@ -104,17 +106,17 @@ test.describe("embodied mode (en)", () => {
     await expect(page.locator("#monitor-off")).toHaveCount(0);
     await shot(page, "embodied-monitor-attached");
 
-    // behind the resus wall (north corridor): within 6 m of the screen but no line of sight; the way round is long
+    // behind the resus wall (north corridor): within 6 m of the screen but no line of sight; the way round is long.
+    // The open panel follows the world: the screen is out of view, nothing is read from here, the way is offered.
     await placeAvatar(page, 30.5, -21.9, SLOT);
-    await page.locator("#monitor-read").click();
-    const feedback = page.locator("#panel #action-feedback");
-    await expect(feedback).toBeVisible({ timeout: 60_000 });
-    await expect(feedback.locator("#go-there")).toBeVisible();
-    const refusal = await page.evaluate(() => (window as any).__QA__.feedback);
-    expect(refusal.goal).toBeTruthy();
-    expect((await traceLines(page)).at(-1)).toMatch(/^interaction:read:x:NOT_(VISIBLE|IN_RANGE)$/);
+    await page.keyboard.press("Escape");
+    await page.locator("#world").focus();
+    await page.keyboard.press("KeyV");
+    await expect(page.locator("#monitor-screen")).toHaveAttribute("data-screen", "out-of-view");
+    await expect(page.locator("#monitor-read")).toHaveCount(0);
+    await expect(page.locator("#monitor-go")).toBeVisible();
     await shot(page, "embodied-go-there");
-    await feedback.locator("#go-there").click();
+    await page.locator("#monitor-go").click();
     // the world planned the way round (through the doors) to a spot with a view of the screen; the avatar walked it
     await expect(page.locator(".toast.show").filter({ hasText: "Arrived" }).first()).toBeVisible({ timeout: 120_000 });
     const there = await worldPose(page);
@@ -277,7 +279,12 @@ test.describe("embodied mode (zh-CN)", () => {
     const trace = page.locator("#autopilot-trace");
     await expect(trace.locator(".trace-group.ok").first()).toBeVisible({ timeout: 30_000 });
     await expect(trace).toContainText("导航");
-    await expect(trace).toContainText("attach");
+    // the steps in Chinese — her name, the task, the operation, the state change — never the runtime identifiers
+    await expect(trace).toContainText("委派：连接监护仪");
+    await expect(trace).toContainText("连接床旁监护");
+    await expect(trace).toContainText("林晓");
+    const shown = await trace.innerText();
+    for (const id of ["attach", "navigate", "entity.state", "actor.moved", "delegate:", "ed-nurse", "intervene"]) expect(shown, id).not.toContain(id);
     await trace.scrollIntoViewIfNeeded();
     await shot(page, "embodied-zh-trace");
   });

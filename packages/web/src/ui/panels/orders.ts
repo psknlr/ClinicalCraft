@@ -7,23 +7,56 @@
  * evidence grid. Also the device panel (tests + bedside treatments; in
  * embodied mode also the device's own operations — an ECG cart's prepare →
  * connect → record → reset — and "Bring to the patient" for a cart, all
- * through `world_action`, the path the agents use).
+ * through `world_action`, the path the agents use). Embodied mode: what a
+ * candidate offers is the world's verdict from where the learner stands
+ * (`EmbodiedLink.verdict`) — a test that cannot be ordered here says why
+ * before anything is placed (a lab test before any sample: at the patient's
+ * side), and its click shows the way. "Sent" is said once the engine has the
+ * order, never for a refused one.
  */
 import { matchOrders, orderWarnings, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
+import type { Verdict } from "../../app/embodied-link.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
-import { treatRow } from "./conversation.js";
+import { treatRow } from "./treat-row.js";
+import type { ReportBack } from "./report.js";
 
 export interface OrdersArgs {
   placementId: string;
   query?: string;
 }
 
+/**
+ * Run `then` once the engine holds the order `key`; nothing when its submission was refused (where the body
+ * stands, the approval, the practice scope) — given up after two minutes.
+ */
+export function whenOrdered(game: Game, key: string, submission: string, then: () => void): void {
+  const store = game.session.store;
+  let off: () => void = () => undefined;
+  let done = false;
+  const finish = () => {
+    done = true;
+    off();
+    clearTimeout(timer);
+  };
+  const timer = setTimeout(finish, 120_000);
+  const check = (): void => {
+    if (done) return;
+    const s = store.snapshot?.state ?? game.session.session.state;
+    if (s.orders.some((o) => o.key === key)) {
+      finish();
+      then();
+    } else if (store.failureOf(submission) !== undefined) finish();
+  };
+  off = store.onChange(check);
+  check();
+}
+
 /** Order (if needed) and open an investigation's report for the current phase. */
-export function orderAndOpen(app: App, game: Game, inv: Investigation, placementId: string | null, back: { panel: "orders" | "device" | "journal"; placementId?: string }): void {
+export function orderAndOpen(app: App, game: Game, inv: Investigation, placementId: string | null, back: ReportBack): void {
   const s = game.session.store.snapshot?.state ?? game.session.session.state;
   const phase = s.phase;
   const key = `${inv.id}@${phase}`;
@@ -33,7 +66,8 @@ export function orderAndOpen(app: App, game: Game, inv: Investigation, placement
     submission = app.act({ type: "order", investigationId: inv.id, ...(placementId ? { at: placementId } : {}) });
     const simulatedWait = game.caseDef.clock.mode === "simulated" && inv.turnaroundMinutes > 0;
     if (simulatedWait) {
-      app.toast(ct(inv.name), tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }));
+      // "sent, result in about N min" once the engine has the order — never for one that was refused
+      if (submission) whenOrdered(game, key, submission, () => app.toast(ct(inv.name), tr("orders.pending", { name: ct(inv.name), min: Math.ceil(inv.turnaroundMinutes) }), "info", `order-${inv.id}`));
       return;
     }
     // Risky orders wait for the approval dialog; the report opens from the evidence grid afterwards.
@@ -51,13 +85,65 @@ export function orderNotices(c: CaseDefinition, query: string, investigationId: 
   return orderWarnings(c, query, investigationId, locale, state);
 }
 
-function candidateButton(app: App, game: Game, inv: Investigation, placementId: string, query: string): HTMLElement {
+/**
+ * Embodied: a test the world says cannot be ordered (or read) from where the learner stands — its name and the
+ * world's words; the click shows the way (Go there, or the act to do first), nothing is placed.
+ */
+export function refusedCandidate(game: Game, inv: Investigation, v: Verdict): HTMLElement {
+  return h(
+    "button",
+    { type: "button", class: "candidate refused", dataset: { investigation: inv.id, reason: v.kind === "refused" ? v.reason : "" }, onclick: () => game.embodied?.explain(v) },
+    h("span", null, ct(inv.name)),
+    h("small", { class: "candidate-why" }, v.kind === "refused" ? v.message : ""),
+  );
+}
+
+/** Embodied: the world's verdict on ordering — or, once ordered in this phase, reading — a test from here. */
+export function testVerdict(game: Game, inv: Investigation): Verdict | null {
+  const emb = game.embodied;
+  if (!emb) return null;
+  const s = game.session.store.snapshot?.state ?? game.session.session.state;
+  const ordered = s.orders.some((o) => o.key === `${inv.id}@${s.phase}`);
+  return emb.verdict(ordered ? { type: "read", investigationId: inv.id, phase: s.phase } : { type: "order", investigationId: inv.id });
+}
+
+/** The order / open button of a test (its label says what a click does). */
+export function testButton(app: App, game: Game, inv: Investigation, placementId: string | null, query: string, back: ReportBack): HTMLElement {
   const c = game.caseDef;
   const L = getLocale();
   const s = game.session.store.snapshot?.state ?? game.session.session.state;
+  const name = ct(inv.name);
+  const order = s.orders.find((o) => o.key === `${inv.id}@${s.phase}`);
+  const left = order ? minutesLeft(c, s, order) : 0;
+  const hasRecord = resultFor(c, inv.id, s.phase) !== null;
+  // Say what a click does: without an order for this phase it places one (time, approval, assessment) —
+  // "Open" only once the test has been ordered.
+  const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : order ? tr("orders.open", { name }) : tr("orders.order", { name });
+  return h(
+    "button",
+    {
+      type: "button",
+      class: ["candidate", !hasRecord ? "no-record" : ""],
+      dataset: { investigation: inv.id },
+      onclick: () => {
+        const before = game.session.store.snapshot?.state ?? game.session.session.state;
+        for (const w of orderNotices(c, query, inv.id, L, before)) app.toast(tr("orders.warning"), w, "warning");
+        orderAndOpen(app, game, inv, placementId, back);
+      },
+    },
+    h("span", null, label),
+    inv.risk === "moderate" || inv.risk === "high" ? riskBadge(inv.risk) : null,
+  );
+}
+
+function candidateButton(app: App, game: Game, inv: Investigation, placementId: string, query: string, back: ReportBack): HTMLElement {
+  const L = getLocale();
   const here = game.stations.caps(placementId);
   const atHere = inv.requires.length > 0 && inv.requires.every((r) => here.includes(r));
   const name = ct(inv.name);
+  // embodied: the world decides from where the learner stands (the station's capabilities are not the rule)
+  const verdict = testVerdict(game, inv);
+  if (verdict) return verdict.kind === "refused" ? refusedCandidate(game, inv, verdict) : testButton(app, game, inv, placementId, query, back);
   if (!atHere) {
     const where = game.stations.nearestProvider(inv.requires, app.playerPos(), L);
     if (!where)
@@ -77,27 +163,7 @@ function candidateButton(app: App, game: Game, inv: Investigation, placementId: 
       tr("orders.goTo", { name, station: where.label }),
     );
   }
-  const order = s.orders.find((o) => o.key === `${inv.id}@${s.phase}`);
-  const left = order ? minutesLeft(c, s, order) : 0;
-  const hasRecord = resultFor(c, inv.id, s.phase) !== null;
-  // Say what a click does: without an order for this phase it places one (time, approval, assessment) —
-  // "Open" only once the test has been ordered.
-  const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : order ? tr("orders.open", { name }) : tr("orders.order", { name });
-  return h(
-    "button",
-    {
-      type: "button",
-      class: ["candidate", !hasRecord ? "no-record" : ""],
-      dataset: { investigation: inv.id },
-      onclick: () => {
-        const before = game.session.store.snapshot?.state ?? game.session.session.state;
-        for (const w of orderNotices(c, query, inv.id, L, before)) app.toast(tr("orders.warning"), w, "warning");
-        orderAndOpen(app, game, inv, placementId, { panel: "orders", placementId });
-      },
-    },
-    h("span", null, label),
-    inv.risk === "moderate" || inv.risk === "high" ? riskBadge(inv.risk) : null,
-  );
+  return testButton(app, game, inv, placementId, query, back);
 }
 
 export function ordersPanel(app: App, args: OrdersArgs): () => PanelView {
@@ -130,7 +196,7 @@ export function ordersPanel(app: App, args: OrdersArgs): () => PanelView {
       }
       for (const id of ids) {
         const inv = c.investigations.find((x) => x.id === id);
-        if (inv) candidates.append(candidateButton(app, game, inv, args.placementId, q));
+        if (inv) candidates.append(candidateButton(app, game, inv, args.placementId, q, { panel: "orders", placementId: args.placementId }));
       }
     };
 
@@ -233,14 +299,17 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
       if (investigations.length) {
         content.append(h("h3", null, tr("device.investigations")));
         const list = h("div", { class: "candidates" });
-        for (const inv of investigations) list.append(candidateButton(app, game, inv, args.placementId, ct(inv.name)));
+        for (const inv of investigations) list.append(candidateButton(app, game, inv, args.placementId, ct(inv.name), { panel: "device", placementId: args.placementId }));
         content.append(list);
       }
       if (interventions.length) {
-        const bedside = (game.embodied?.bedsideCaps() ?? game.stations.bedsideCaps(game.slotId));
+        // clinical mode: the facility's bedside capabilities (embodied rows follow the world's verdict)
+        const bedside = game.embodied ? new Set<string>() : game.stations.bedsideCaps(game.slotId);
         const scope = game.session.store.config?.practiceScope ?? game.session.settings.practiceScope;
         content.append(h("h3", null, tr("device.interventions")));
-        if (placement && !game.stations.atBedside(placement, game.slotId)) content.append(h("p", { class: "notice" }, tr("treat.notBedside")));
+        // at the bedside: the world's rule in embodied mode (a cart where it stands now), the facility's otherwise
+        const away = game.embodied ? !game.session.world()?.atBedside(`eq:${args.placementId}`) : !!placement && !game.stations.atBedside(placement, game.slotId);
+        if (away) content.append(h("p", { class: "notice", id: "device-not-bedside" }, tr("treat.notBedside")));
         content.append(h("div", { class: "treat-list" }, interventions.map((iv) => treatRow(app, game, iv, bedside, scope !== "full"))));
       }
       if (investigations.length) {

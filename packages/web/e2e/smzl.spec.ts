@@ -1,10 +1,10 @@
 /**
  * zh-CN walkthrough of the V4 case (SMZL coexisting with lung adenocarcinoma):
  * intro → case library → world → talk (suggested question → reply) →
- * lab workstation "血常规" (refused before any sample: the blood is drawn at
- * the patient's side) → ordered at the patient's side → read at the lab
- * workstation → report → journal evidence → evidence board decision →
- * finish → debrief.
+ * lab workstation "血常规" (says before any sample that the blood is drawn
+ * at the patient's side, and shows the way) → ordered at the patient's side
+ * (the patient's Tests tab) → read at the lab workstation → report → journal
+ * evidence → evidence board decision → finish → debrief.
  */
 import { expect, test } from "@playwright/test";
 import { dispatch, enterCase, freshStart, shot, talkToPatient, useStation } from "./helpers.js";
@@ -70,19 +70,20 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   await page.locator("#exam-input").fill("血常规");
   await page.locator("#exam-input").press("Enter");
   const candidate = page.locator('.candidate[data-investigation="cbc"]');
-  // Not ordered yet: the button says it places an order (开具), not that it opens a record (调阅).
-  await expect(candidate).toContainText("开具");
+  // The blood is drawn at the patient's side (EMBODIED §6): before a sample the workstation says so, in the world's
+  // words, before anything is placed — and its click shows the way to the patient (no order, no report).
+  await expect(candidate).toHaveClass(/refused/);
+  await expect(candidate).toContainText("标本要在");
   await shot(page, "orders");
-  // The blood is drawn at the patient's side (EMBODIED §6): the workstation cannot place the order before a sample.
   await candidate.click();
-  await expect(page.locator('#panel .window[data-panel="report"]')).toBeVisible();
-  await expect(page.locator("#report-refused")).toBeVisible();
-  await expect(page.locator(".report-text")).toHaveCount(0);
+  await expect(page.locator("#panel #action-feedback #go-there")).toContainText("前往");
+  await expect(page.locator('#panel .window[data-panel="report"]')).toHaveCount(0);
+  expect(await page.evaluate(() => (window as any).__QA__.session.state.orders.length)).toBe(0);
   await page.keyboard.press("Escape");
-  // at the patient's side: the sample is taken and the test ordered there
+  // at the patient's side: the sample is taken and the test ordered there — from the patient's Tests tab
   await talkToPatient(page, { atSide: true });
-  await page.locator(".chat-input").fill("/order 血常规");
-  await page.locator(".chat-input").press("Enter");
+  await page.locator("#tab-tests").click();
+  await page.locator('#bedside-tests [data-investigation="cbc"]').click();
   await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.orders.map((o: any) => o.investigationId))).toContain("cbc");
   await page.keyboard.press("Escape");
   // back at the lab workstation the ordered test is read (调阅)
@@ -95,11 +96,11 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   await expect(page.locator(".report-text")).not.toBeEmpty();
   await shot(page, "report");
 
-  // an exam that belongs to another station → "go to" + waypoint (V4)
+  // an exam that belongs to another station: the world names the station (its click shows the way there)
   await page.locator("#report-back").click();
   await page.locator("#exam-input").fill("骨髓活检");
   await page.locator("#exam-input").press("Enter");
-  await expect(page.locator('.candidate.elsewhere[data-investigation="biopsy"]')).toContainText("请前往");
+  await expect(page.locator('.candidate.refused[data-investigation="biopsy"]')).toContainText("病理");
 
   // journal lists the acquired evidence
   await page.keyboard.press("Escape");

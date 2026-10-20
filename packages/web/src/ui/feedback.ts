@@ -2,11 +2,13 @@
  * Action feedback (embodied mode, docs/EMBODIED.md §6): when the learner's
  * body cannot do what they asked from where it stands — and walking there
  * is more than a step — the localised refusal with a "Go there" button that
- * walks the avatar to the place the world model names (`hint.goal`). Shown
- * inside the open window (the HUD is inert under it), else in the HUD; it
- * leaves by itself after a while, or with ×.
+ * walks the avatar to the place the world model names (`hint.goal`); when no
+ * walk fixes it but an act does (a clinical prerequisite: the IV access
+ * before an IV drug), a button for that act. Shown inside the open window
+ * (the HUD is inert under it), else in the HUD; it leaves by itself after a
+ * while, or with ×.
  */
-import type { NavGoal } from "@clinicalcraft/world";
+import type { ActionHint, NavGoal } from "@clinicalcraft/world";
 import { tr } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
 
@@ -17,6 +19,10 @@ export interface FeedbackItem {
   /** The place, as the world names it. */
   label: string | null;
   tone: "refused" | "info";
+  /** An act that fixes it where no walk does ("Peripheral IV access first"). */
+  action?: { label: string; run: () => void };
+  /** A fetch: what "Go there" does on arrival (wheel the cart to the patient). */
+  then?: ActionHint["then"];
 }
 
 /** How long a refusal stays (ms). */
@@ -31,7 +37,7 @@ export class ActionFeedback {
     private readonly hud: () => HTMLElement | null,
     /** The open window's slot, or null when no window is open. */
     private readonly panel: () => HTMLElement | null,
-    private readonly go: (goal: NavGoal, label: string | null) => void,
+    private readonly go: (goal: NavGoal, label: string | null, then?: ActionHint["then"]) => void,
   ) {}
 
   get current(): FeedbackItem | null {
@@ -81,11 +87,27 @@ export class ActionFeedback {
                   title: tr("emb.goThere"),
                   onclick: () => {
                     this.clear();
-                    this.go(go, item.label);
+                    this.go(go, item.label, item.then);
                   },
                 },
                 // the world's hint label is already an instruction ("Go to …", "Get a clear view of …")
                 item.label || tr("emb.goThere"),
+              )
+            : null,
+          item.action
+            ? h(
+                "button",
+                {
+                  type: "button",
+                  id: "do-first",
+                  class: "primary",
+                  onclick: () => {
+                    const run = item.action!.run;
+                    this.clear();
+                    run();
+                  },
+                },
+                item.action.label,
               )
             : null,
           h("button", { type: "button", class: "close-feedback", "aria-label": tr("panel.close"), onclick: () => this.clear() }, "×"),

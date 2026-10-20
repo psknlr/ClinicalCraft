@@ -15,7 +15,7 @@ import type { TraceSpan } from "@clinicalcraft/world";
 import { setLocale } from "../../i18n/index.js";
 import { startAppSession, type AppSession } from "../../app/session.js";
 import { defaultSettings } from "../../app/settings.js";
-import { traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
+import { callArgsLabel, traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const content = path.resolve(here, "../../../../content");
@@ -86,6 +86,19 @@ describe("trace labels", () => {
     setLocale("en");
     expect(traceActorLabel("actor:clinician", ctx)).toBe("Clinician");
     expect(traceCodeLabel("NOT_VISIBLE")).toBe("no line of sight");
+  });
+});
+
+describe("a tool call's arguments (the autopilot's calls list)", () => {
+  it("names the case items they point at, keeps other arguments, and stays short", () => {
+    setLocale("zh-CN");
+    expect(callArgsLabel({ investigation_id: "ecg-12lead" }, stemi)).toBe("12导联心电图");
+    expect(callArgsLabel({ intervention_id: "cardiac-monitoring", rationale: "STEMI" }, stemi)).toBe("持续心电、血压、血氧监护 · rationale: STEMI");
+    expect(callArgsLabel({ minutes: 5 }, stemi)).toBe("minutes: 5");
+    expect(callArgsLabel(null, stemi)).toBe("");
+    expect(callArgsLabel({ text: "x".repeat(400) }, stemi).length).toBeLessThanOrEqual(140);
+    setLocale("en");
+    expect(callArgsLabel({ investigation_id: "ecg-12lead" }, stemi)).toBe("12-lead ECG");
   });
 });
 

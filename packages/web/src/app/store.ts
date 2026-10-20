@@ -8,7 +8,7 @@
  */
 import type { AgentEvent, AgentRole, ApprovalDecision, EventMsg, Op, PlanItem, TurnPhase } from "@clinicalcraft/agent";
 import type { WorldActionResult } from "@clinicalcraft/world";
-import { commandRefusal, refusalLead, SPATIAL_CODES } from "./spatial.js";
+import { commandRefusal, learnerText, refusalLead, SPATIAL_CODES } from "./spatial.js";
 import { t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 
 export type LogEntry =
@@ -37,6 +37,8 @@ export interface ChatItem {
   at: number;
   grounding?: string;
   nonverbal?: string;
+  /** A command's structured output (`command_output.data`), e.g. a delegation's steps for the learner's view. */
+  data?: unknown;
 }
 
 export interface Snapshot {
@@ -424,9 +426,9 @@ export class SessionStore {
         const where = this.views.get(ev.id) ?? this.interlocutor;
         // a command refused for where the body stands (embodied): the reason only — "Go there" does the rest
         const refused = commandRefusal(msg.data);
-        const text = refused ? refusalLead(msg.text) : msg.text;
+        const text = refused ? learnerText(refusalLead(msg.text)) : msg.text;
         if (refused && ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
-        if (text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text, grounded: [], streaming: false, tone: refused ? "error" : "command", at });
+        if (text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text, grounded: [], streaming: false, tone: refused ? "error" : "command", at, ...(msg.data !== undefined ? { data: msg.data } : {}) });
         break;
       }
       case "plan_updated":
@@ -447,7 +449,7 @@ export class SessionStore {
         const spatial = msg.type === "error" && !!msg.code && SPATIAL_CODES.has(msg.code);
         const where = this.views.get(ev.id) ?? (spatial ? "patient" : undefined);
         // its second line tells a model which tool call fixes it: not for the learner
-        const text = spatial ? refusalLead(msg.message) : msg.message.trim();
+        const text = spatial ? learnerText(refusalLead(msg.message)) : msg.message.trim();
         if (ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
         if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at });
         break;
@@ -463,7 +465,7 @@ export class SessionStore {
         const mine = this.worldOps.get(ev.id) === r.actionId;
         const walk = !!r.navigation && r.status === "completed";
         if (mine && !walk) {
-          const text = r.message.trim();
+          const text = learnerText(r.message.trim());
           if (r.status !== "completed" && ev.id && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
           if (text) this.chat.push({ key: this.key("o"), role: "system", agent: this.views.get(ev.id) ?? "patient", speaker: "", text, grounded: [], streaming: false, tone: r.status === "completed" ? "note" : "error", at });
         }

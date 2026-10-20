@@ -105,3 +105,21 @@ export function traceActorLabel(actorId: string, ctx: TraceLabelContext): string
 export function traceCodeLabel(code: string): string {
   return trMaybe(`trace.code.${code}`, code);
 }
+
+/**
+ * A tool call's arguments for the autopilot's calls list: the case items they point at by name (an
+ * investigation, intervention, finding, question or decision), other arguments as `key: value`; at most 140
+ * characters.
+ */
+export function callArgsLabel(args: unknown, c: CaseDefinition | null): string {
+  if (!args || typeof args !== "object") return "";
+  const parts = Object.entries(args as Record<string, unknown>).map(([k, v]) => {
+    if (typeof v === "string") {
+      const item = itemLabel(c, v);
+      return item !== v ? item : `${k}: ${v}`;
+    }
+    return `${k}: ${JSON.stringify(v)}`;
+  });
+  const s = parts.join(" · ");
+  return s.length > 140 ? `${s.slice(0, 137)}…` : s;
+}

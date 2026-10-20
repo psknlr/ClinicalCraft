@@ -26,6 +26,7 @@ import { caseStatusText } from "../tools/clinical.js";
 import { investigationName, phaseLabel, vitalsText } from "../tools/format.js";
 import { progressText } from "../tools/npc.js";
 import { BUILTIN_AGENT_NAMES } from "./builtin.js";
+import type { VitalsView } from "../tools/types.js";
 import type { AgentProfile } from "./types.js";
 
 /* ------------------------------------------------------------------ */
@@ -73,8 +74,11 @@ export interface PromptContext {
   patientToolPipeline?: boolean;
   /** Current workup plan (clinician). */
   plan?: readonly PlanItem[];
-  /** Embodied mode (docs/EMBODIED.md): where the clinician's body is and the skills it may run. */
-  embodied?: { place: string | null; skills: readonly string[] };
+  /**
+   * Embodied mode (docs/EMBODIED.md): where the clinician's body is, the skills it may run and the vitals it can
+   * see from there (review G11: the `<monitor>` section shows only those).
+   */
+  embodied?: { place: string | null; skills: readonly string[]; vitals?: VitalsView };
 }
 
 /* ------------------------------------------------------------------ */
@@ -475,7 +479,10 @@ export function buildSystemSections(profile: AgentProfile, ctx: PromptContext): 
   if (kind !== "examiner") dynamic("scene", sceneSection(kind, ctx));
   const statusCtx = { caseDef: ctx.caseDef, locale: ctx.locale, state: () => ctx.state };
   if (kind === "nurse" || kind === "attending" || kind === "clinician") {
-    dynamic("monitor", `<monitor>\n${vitalsText(vitalsAt(ctx.caseDef, ctx.state), ctx.locale)}\n</monitor>`);
+    // The embodied clinician sees the bedside only from where its body stands (review G11).
+    const view = kind === "clinician" ? ctx.embodied?.vitals : undefined;
+    const monitor = view && !view.inView ? rt(ctx.locale, "vitals.notInView", { reason: view.message }) : vitalsText(view?.inView ? view.snapshot : vitalsAt(ctx.caseDef, ctx.state), ctx.locale);
+    dynamic("monitor", `<monitor>\n${monitor}\n</monitor>`);
   }
   if (kind === "attending") dynamic("progress", `<progress>\n${progressText(statusCtx).text}\n</progress>`);
   if (kind === "clinician" && ctx.embodied) {

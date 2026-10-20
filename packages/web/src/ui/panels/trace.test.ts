@@ -69,6 +69,18 @@ describe("traceGroups", () => {
     ]);
   });
 
+  it("carries the case item a clinical act was about (its arguments), for the label", () => {
+    const order = span("clinical_action", "order_test", null, { id: "c1", data: { args: { investigation_id: "cbc" } } });
+    const done = span("state_change", "order.placed", "c1");
+    const free = span("clinical_action", "examine", null, { id: "c2", data: { args: { query: "the belly" } } });
+    const groups = traceGroups([order, done, free]);
+    expect(groups.map((g) => [g.name, g.item ?? null])).toEqual([
+      ["order_test", "cbc"],
+      ["examine", null],
+    ]);
+    expect(groups[0]!.steps[0]).toMatchObject({ name: "order_test", item: "cbc" });
+  });
+
   it("returns the last `limit` steps, oldest first", () => {
     const spans: TraceSpan[] = [];
     for (let i = 0; i < 12; i++) spans.push(span("interaction", `op${i}`, null, { id: `x${i}` }));

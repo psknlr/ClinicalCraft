@@ -21,6 +21,7 @@ import {
   type ResolvedSettings,
   type RuntimeKey,
   type TokenUsage,
+  type VitalsView,
 } from "@clinicalcraft/agent";
 import { resolveNodeProviderConfig } from "@clinicalcraft/agent/node";
 import { CLEAR_LINE, type Env, type Palette } from "./ansi.js";
@@ -45,6 +46,11 @@ export interface RendererOptions {
   resolveModel?: (provider: string, model: string | null) => string;
   /** Embodied mode: where the learner's body is (the status line shows it). */
   place?: () => string | null;
+  /**
+   * The vitals the learner may see now (`ClinicalSession.vitalsView`, reviews G3/G11): embodied, only where the
+   * body can see them — else the status line says "vitals: not in view". Without it: the last state snapshot's.
+   */
+  vitals?: () => VitalsView;
 }
 
 interface Configured {
@@ -631,8 +637,10 @@ export class EventRenderer {
       parts.push(m(L, "status.phase", { phase: phaseLabel(c, s.phase, L) }));
       if (c.clock.mode === "simulated") parts.push(clockLabel(c, s.clock));
     }
-    const v = snap?.vitals;
-    if (v && !v.baselineOnly) parts.push(this.vitalsStatus(v));
+    const view = this.o.vitals?.();
+    const v = view ? (view.inView ? view.snapshot : null) : snap?.vitals;
+    if (view && !view.inView) parts.push(m(L, "status.vitalsNotInView"));
+    else if (v && !v.baselineOnly) parts.push(this.vitalsStatus(v));
     const place = this.o.place?.();
     if (place) parts.push(m(L, "status.place", { place: sanitizeTerminal(place) }));
     if (this.configured) {

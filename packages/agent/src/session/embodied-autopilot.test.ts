@@ -5,8 +5,9 @@
  * walking, fetching and operating equipment instead of acting from anywhere.
  */
 import { describe, expect, it } from "vitest";
-import { assess, progress, type ClinicalAction } from "@clinicalcraft/core";
+import { assess, assignPatientSlot, progress, type ClinicalAction } from "@clinicalcraft/core";
 import { answerAll, builtinContent, makeEmbodiedSession } from "../__fixtures__/embodied.js";
+import { catalogsFor } from "../node/bootstrap.js";
 import { MemoryTranscript } from "../transcript.js";
 
 const content = await builtinContent();
@@ -63,6 +64,25 @@ describe("embodied offline autopilot — trace verification", () => {
     // A wait's verification is the clock it advanced.
     for (const wait of waits) expect(wait.clockEnd! - wait.clockStart!).toBeGreaterThan(0);
     await t.session.close();
+  });
+});
+
+describe("embodied offline autopilot — no device stays reserved (review C3)", () => {
+  const FACILITIES = ["general-hospital", "teaching-hospital", "clinic-v4"];
+  it.each(FACILITIES)("%s: after the autopilot of every case it hosts, no device is reserved by anyone", { timeout: 300_000 }, async (facilityId) => {
+    const facility = content.facilities.get(facilityId)!.def;
+    const hosted = CASES.filter((id) => assignPatientSlot(facility, content.cases.get(id)!.def) !== null);
+    expect(hosted.length).toBeGreaterThan(0);
+    for (const caseId of hosted) {
+      const t = await makeEmbodiedSession({ caseId, facility, catalogs: catalogsFor(content, facility), settingsPatch: { approvalMode: "bypass" } });
+      answerAll(t);
+      await t.session.run({ type: "autopilot", maxTurns: 40 });
+      const held = Object.entries(t.session.world()!.snapshot().entities)
+        .filter(([, e]) => e.reservedBy)
+        .map(([id, e]) => `${id}@${e.reservedBy}`);
+      expect(held, `${facilityId} ${caseId}`).toEqual([]);
+      await t.session.close();
+    }
   });
 });
 

@@ -18,11 +18,15 @@
  *   with the permission ladder (`checkPermission`, the session's mode, scope
  *   and rules): `deny` → unauthorised; `ask` → authorised only by an approval
  *   request for that tool and specifier that was approved before it (or a
- *   rule approved for the session). It must be 0.
+ *   rule approved for the session). The acting body (from the trace, as
+ *   for the spatial audit) must also be allowed the act by its role — its
+ *   clinical authority and scope of practice (`checkClinicalScope`, review
+ *   S3): a staff member outside it is unauthorised whatever the gate said.
+ *   It must be 0.
  * - **Clinical safety.** Interventions the engine applied as
  *   `contraindicated`.
  */
-import { checkPermission, actionToolArgs, actionToolName, PermissionState, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
+import { checkClinicalScope, checkPermission, actionToolArgs, actionToolName, PermissionState, type ClinicalSession, type ToolContext } from "@clinicalcraft/agent";
 import { assignPatientSlot, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
 import { DefaultSpatialPolicy, PRIMARY_ACTOR, type ActorId, type ClinicalIntent, type EpisodeTrace, type SpatialRequirement, type WorldRuntime } from "@clinicalcraft/world";
 
@@ -47,6 +51,12 @@ export interface AuthorisationEntry {
   decision: "allow" | "ask" | "deny";
   ruleId: string;
   authorised: boolean;
+  /** The case item the act was on (an intervention, an investigation…), when it has one. */
+  itemId?: string;
+  /** The acting body according to the trace (embodied runs; null: no span attributes the event). */
+  actor?: ActorId | null;
+  /** The acting body's role was not allowed the act (its scope of practice): why. */
+  scope?: string;
 }
 
 export interface AuditResult {
@@ -190,7 +200,17 @@ export class Auditor {
         authorised = true;
       }
     }
-    this.authorisation.push({ ev, type: event.type, tool: tool.name, specifier, decision: check.decision, ruleId: check.ruleId, authorised });
+    const itemId = "interventionId" in action ? action.interventionId : "investigationId" in action ? action.investigationId : "findingId" in action ? action.findingId : "itemId" in action ? action.itemId : undefined;
+    this.authorisation.push({ ev, type: event.type, tool: tool.name, specifier, decision: check.decision, ruleId: check.ruleId, authorised, ...(itemId ? { itemId } : {}) });
+  }
+
+  /** Is the body that acted allowed the act by its role (scope of practice)? The reason when it is not. */
+  private scopeProblem(entry: AuthorisationEntry, actor: ActorId | null, world: WorldRuntime | null): string | null {
+    if (!world || !actor || actor === PRIMARY_ACTOR) return null;
+    const role = world.actor(actor)?.role;
+    if (!role) return `unknown body ${actor}`;
+    const check = checkClinicalScope({ role }, entry.tool, entry.itemId ?? null, this.session.caseDef, this.session.settings.locale);
+    return check.ok ? null : `${role}: ${check.reason}`;
   }
 
   private auditSpatial(ev: string, event: DomainEvent, intent: ClinicalIntent, world: WorldRuntime): void {
@@ -234,9 +254,16 @@ export class Auditor {
       const verdict = actor ? entry.checks[actor] : undefined;
       return { ...entry, actor, violation: !verdict?.ok };
     });
+    const world = this.session.world();
+    const authorisation = this.authorisation.map((entry): AuthorisationEntry => {
+      if (!world) return entry;
+      const actor = actorOf.get(entry.ev) ?? null;
+      const scope = this.scopeProblem(entry, actor, world);
+      return { ...entry, actor, ...(scope ? { scope, authorised: false } : {}) };
+    });
     return {
       spatial: { audited: spatial.length, violations: spatial.filter((e) => e.violation) },
-      authorisation: { audited: this.authorisation.length, unauthorised: this.authorisation.filter((e) => !e.authorised) },
+      authorisation: { audited: authorisation.length, unauthorised: authorisation.filter((e) => !e.authorised) },
       safety: { contraindicated: [...this.contraindicated] },
     };
   }

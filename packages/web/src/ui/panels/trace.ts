@@ -12,7 +12,7 @@
 import type { TraceSpan } from "@clinicalcraft/world";
 import { tr, trMaybe } from "../../i18n/index.js";
 import { h } from "../dom.js";
-import { traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
+import { itemLabel, traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
 
 export interface TraceStepView {
   id: string;
@@ -23,6 +23,8 @@ export interface TraceStepView {
   errorCode?: string;
   /** The place a failed world action's hint names. */
   hint?: string;
+  /** The case item a clinical act was about (its arguments: an investigation, intervention, finding…). */
+  item?: string;
 }
 
 export interface TraceGroupView {
@@ -35,6 +37,19 @@ export interface TraceGroupView {
   ok: boolean | null;
   actorId: string | null;
   steps: TraceStepView[];
+  /** A lone clinical act: the case item it was about. */
+  item?: string;
+}
+
+/** Arguments of a clinical tool that name a case item. */
+const ITEM_ARGS = ["investigation_id", "intervention_id", "finding_id", "item_id", "decision_id"] as const;
+
+/** The case item a span's clinical tool call was about (`data.args`), if any. */
+function spanItem(s: TraceSpan): string | undefined {
+  const args = s.kind === "clinical_action" ? (s.data as { args?: Record<string, unknown> } | undefined)?.args : undefined;
+  if (!args || typeof args !== "object") return undefined;
+  for (const k of ITEM_ARGS) if (typeof args[k] === "string" && args[k]) return args[k] as string;
+  return undefined;
 }
 
 /**
@@ -84,6 +99,8 @@ export function traceGroups(spans: readonly TraceSpan[], hintOf: (actionId: stri
       // under a plan its own spans start at depth 0; under a lone action they sit one level below it
       const depth = s === root ? 0 : depthOf(s, root?.id ?? key) + (root && root.kind !== "plan" ? 1 : 0);
       const step: TraceStepView = { id: s.id, kind: s.kind, name: s.name, ok: s.ok, depth };
+      const item = spanItem(s);
+      if (item) step.item = item;
       if (s.refs.errorCode) step.errorCode = s.refs.errorCode;
       if (!s.ok && s.refs.actionId) {
         const hint = hintOf(s.refs.actionId);
@@ -91,7 +108,8 @@ export function traceGroups(spans: readonly TraceSpan[], hintOf: (actionId: stri
       }
       steps.push(step);
     }
-    out.push({ id: key, kind: root?.kind ?? (steps[0] && steps[0].depth === 0 ? steps[0].kind : "plan"), name: root?.name ?? steps[0]?.name ?? key, ok: root ? root.ok : null, actorId: root?.actorId ?? g.members[0]?.actorId ?? null, steps });
+    const item = root ? spanItem(root) : undefined;
+    out.push({ id: key, kind: root?.kind ?? (steps[0] && steps[0].depth === 0 ? steps[0].kind : "plan"), name: root?.name ?? steps[0]?.name ?? key, ok: root ? root.ok : null, actorId: root?.actorId ?? g.members[0]?.actorId ?? null, steps, ...(item ? { item } : {}) });
   }
   return out.slice(-limit);
 }
@@ -106,6 +124,11 @@ const KIND_ICON: Record<string, string> = {
   verification: "✓",
   assessment: "★",
 };
+
+/** "Order a test · Full blood count": a label with the case item it was about. */
+function withItem(label: string, item: string | undefined, ctx: TraceLabelContext): string {
+  return item ? tr("trace.plan.item", { action: label, item: itemLabel(ctx.caseDef, item) }) : label;
+}
 
 /** The trace as a list (newest step last), labelled in the learner's language. */
 export function traceList(groups: readonly TraceGroupView[], ctx: TraceLabelContext = { caseDef: null }): HTMLElement {
@@ -124,7 +147,7 @@ export function traceList(groups: readonly TraceGroupView[], ctx: TraceLabelCont
           "div",
           { class: "trace-head" },
           h("span", { class: "trace-status", "aria-label": status === "ok" ? tr("auto.ok") : status === "failed" ? tr("auto.fail") : tr("auto.traceRunning") }, status === "ok" ? "✓" : status === "failed" ? "✕" : "…"),
-          h("b", { title: g.name, dataset: { name: g.name } }, traceLabel(g.kind, g.name, ctx)),
+          h("b", { title: g.name, dataset: { name: g.name } }, withItem(traceLabel(g.kind, g.name, ctx), g.item, ctx)),
           g.actorId ? h("small", { class: "trace-actor", dataset: { actor: g.actorId } }, traceActorLabel(g.actorId, ctx)) : null,
         ),
         h(
@@ -135,7 +158,7 @@ export function traceList(groups: readonly TraceGroupView[], ctx: TraceLabelCont
               "li",
               { class: ["trace-step", `kind-${s.kind}`, s.ok ? "ok" : "failed"], dataset: { kind: s.kind, depth: String(s.depth), name: s.name } },
               h("span", { class: "trace-kind", title: trMaybe(`trace.kind.${s.kind}`, s.kind) }, KIND_ICON[s.kind] ?? "·", " ", trMaybe(`trace.kind.${s.kind}`, s.kind)),
-              h("span", { class: "trace-name", title: s.name }, traceLabel(s.kind, s.name, ctx)),
+              h("span", { class: "trace-name", title: s.name }, withItem(traceLabel(s.kind, s.name, ctx), s.item, ctx)),
               s.errorCode ? h("small", { class: "trace-error", title: s.errorCode, dataset: { code: s.errorCode } }, traceCodeLabel(s.errorCode)) : null,
               s.hint ? h("small", { class: "trace-hint" }, tr("auto.traceHint", { label: s.hint })) : null,
             ),

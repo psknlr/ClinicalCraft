@@ -28,7 +28,7 @@ import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
-import { clinicalOperation, operationPath, releaseOperation, type DeviceRoute } from "./device-ops.js";
+import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
 import { rt } from "./i18n.js";
 import type { SessionTrace } from "./trace.js";
 
@@ -81,34 +81,43 @@ function deviceRoute(host: AutopilotHost, e: EmbodiedAutopilotHost, step: Offlin
   return null;
 }
 
-/** Operate a device up to its clinical operation (following a reach hint once per operation), then release it. */
+/**
+ * Operate a device up to its clinical operation (following a reach hint once per operation), then release it.
+ * Whatever happens on the way — a refused approval, a busy or broken device, an interrupt — the body leaves no
+ * device reserved that it took on this route (review C3: the cart is reset, without the turn's signal).
+ */
 async function runDevice(e: EmbodiedAutopilotHost, route: DeviceRoute, turnId: string, signal?: AbortSignal): Promise<StepRun | null> {
   const world = e.world();
-  const operate = async (op: string, parameters?: Record<string, unknown>): Promise<WorldActionResult> => {
-    const request: WorldRequestInput = { operation: op, targetId: route.entityId, ...(parameters ? { parameters } : {}) };
-    let r = await e.act(request, turnId, signal);
+  const operate = async (op: string, parameters?: Record<string, unknown>, sig: AbortSignal | undefined = signal, target = route.entityId): Promise<WorldActionResult> => {
+    const request: WorldRequestInput = { operation: op, targetId: target, ...(parameters ? { parameters } : {}) };
+    let r = await e.act(request, turnId, sig);
     if (r.status === "failed" && r.hint && (r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE")) {
-      const nav = await e.act({ operation: "navigate", goal: r.hint.goal }, turnId, signal);
-      if (nav.status === "completed") r = await e.act(request, turnId, signal);
+      const nav = await e.act({ operation: "navigate", goal: r.hint.goal }, turnId, sig);
+      if (nav.status === "completed") r = await e.act(request, turnId, sig);
     }
     return r;
   };
-  const state = world.inspect(PRIMARY_ACTOR, route.entityId)?.state ?? null;
-  const path = operationPath(route.spec, state, route.op);
-  if (!path) return null;
-  for (const op of path) {
-    const r = await operate(op);
-    // A device that cannot be prepared (busy, out of service…): the clinical tool instead.
-    if (r.status !== "completed") return r.status === "cancelled" ? fromWorld(r, signal) : null;
+  const before = new Set(heldBy(world, PRIMARY_ACTOR));
+  try {
+    const state = world.inspect(PRIMARY_ACTOR, route.entityId)?.state ?? null;
+    const path = operationPath(route.spec, state, route.op);
+    if (!path) return null;
+    for (const op of path) {
+      const r = await operate(op);
+      // A device that cannot be prepared (busy, out of service…): the clinical tool instead.
+      if (r.status !== "completed") return r.status === "cancelled" ? fromWorld(r, signal) : null;
+    }
+    const done = await operate(route.op.id, route.parameters);
+    if (done.status === "completed") {
+      const release = releaseOperation(route.spec, world.inspect(PRIMARY_ACTOR, route.entityId)?.state ?? null);
+      if (release) await operate(release.id);
+    }
+    // The clinical effect ran (or a person / the engine refused it): that is the step's outcome. A device that
+    // cannot be used from where the patient can be treated (out of reach, busy…) leaves the clinical tool.
+    return FINAL_DEVICE_OUTCOMES.has(done.status === "completed" ? "completed" : (done.errorCode ?? "")) ? fromWorld(done, signal) : null;
+  } finally {
+    await releaseHeld(world, PRIMARY_ACTOR, before, (id, op) => operate(op, undefined, undefined, id));
   }
-  const done = await operate(route.op.id, route.parameters);
-  if (done.status === "completed") {
-    const release = releaseOperation(route.spec, world.inspect(PRIMARY_ACTOR, route.entityId)?.state ?? null);
-    if (release) await operate(release.id);
-  }
-  // The clinical effect ran (or a person / the engine refused it): that is the step's outcome. A device that
-  // cannot be used from where the patient can be treated (out of reach, busy…) leaves the clinical tool.
-  return FINAL_DEVICE_OUTCOMES.has(done.status === "completed" ? "completed" : (done.errorCode ?? "")) ? fromWorld(done, signal) : null;
 }
 
 /** Device outcomes that end a step (anything else falls back to the clinical tool at the patient's side). */

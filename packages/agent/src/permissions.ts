@@ -142,6 +142,38 @@ export function findMatchingRule(rules: readonly string[] | undefined, toolName:
   return rules?.find((r) => matchRule(r, toolName, specifier));
 }
 
+/**
+ * The things a call acts on, each with its spellings (`ToolDefinition.specifiers`; default `[[specifier]]`).
+ * A failing classifier gives the plain specifier.
+ */
+export function callSpecifiers<A>(tool: ToolDefinition<A>, args: A, ctx: ToolContext, specifier: string | null): (string | null)[][] {
+  let leaves: string[][] | null = null;
+  try {
+    leaves = tool.specifiers?.(args, ctx) ?? null;
+  } catch {
+    leaves = null;
+  }
+  const cleaned = (leaves ?? []).map((spellings) => spellings.filter((x) => typeof x === "string")).filter((spellings) => spellings.length > 0);
+  return cleaned.length ? cleaned : [[specifier]];
+}
+
+/** A rule matching ANY spelling of ANY thing the call acts on (deny and ask rules). */
+export function findRuleForAny(rules: readonly string[] | undefined, toolName: string, things: readonly (readonly (string | null)[])[]): string | undefined {
+  return rules?.find((r) => things.some((spellings) => spellings.some((s) => matchRule(r, toolName, s))));
+}
+
+/** A rule set covering EVERY thing the call acts on (some rule matches a spelling of each): the first rule that matched. */
+export function findRuleForAll(rules: readonly string[] | undefined, toolName: string, things: readonly (readonly (string | null)[])[]): string | undefined {
+  if (!rules?.length) return undefined;
+  let first: string | undefined;
+  for (const spellings of things) {
+    const rule = rules.find((r) => spellings.some((s) => matchRule(r, toolName, s)));
+    if (!rule) return undefined;
+    first ??= rule;
+  }
+  return first;
+}
+
 /** Format a session rule `tool(specifier)` (or bare `tool`). */
 export function formatRule(tool: string, specifier?: string | null): string {
   return specifier ? `${tool}(${specifier})` : tool;
@@ -177,6 +209,8 @@ export function checkPermission<A>(
 ): PermissionCheck {
   const risk: RiskLevel = safe(() => tool.risk(args, ctx), "high" as RiskLevel);
   const specifier = safe(() => tool.specifier?.(args, ctx) ?? null, null);
+  // Everything the call acts on, by every name (review S6): deny / ask on any, allow on all.
+  const things = callSpecifiers(tool, args, ctx, specifier);
   const session = sessionRules instanceof PermissionState ? sessionRules.sessionRules : sessionRules;
   const label = formatRule(tool.name, specifier);
   const L = ctx?.locale;
@@ -194,7 +228,7 @@ export function checkPermission<A>(
     return result("deny", PERMISSION_RULE_IDS.outOfScope, say("perm.outOfScope", { needed: tool.scope, scope }));
   }
   // 2. deny rules
-  const deny = findMatchingRule(rules.deny, tool.name, specifier);
+  const deny = findRuleForAny(rules.deny, tool.name, things);
   if (deny) return result("deny", PERMISSION_RULE_IDS.deny, say("perm.deny", { rule: deny }));
   // 3. plan mode
   if (mode === "plan" && !tool.readOnly) {
@@ -207,13 +241,13 @@ export function checkPermission<A>(
     return result("ask", PERMISSION_RULE_IDS.alwaysAsk, say("perm.alwaysAsk"), false);
   }
   // 6. ask rules
-  const ask = findMatchingRule(rules.ask, tool.name, specifier);
+  const ask = findRuleForAny(rules.ask, tool.name, things);
   if (ask) return result("ask", PERMISSION_RULE_IDS.ask, say("perm.ask", { rule: ask }), risk !== "high");
   // 7. session approvals
-  const sessionRule = findMatchingRule(session, tool.name, specifier);
+  const sessionRule = findRuleForAll(session, tool.name, things);
   if (sessionRule) return result("allow", PERMISSION_RULE_IDS.sessionAllow, say("perm.session", { rule: sessionRule }));
   // 8. allow rules
-  const allow = findMatchingRule(rules.allow, tool.name, specifier);
+  const allow = findRuleForAll(rules.allow, tool.name, things);
   if (allow) return result("allow", PERMISSION_RULE_IDS.allow, say("perm.allow", { rule: allow }));
   // 9. mode table
   return modeDecision(mode, risk, (key) => say(key, { risk: rt(L, `perm.risk.${risk}` as RuntimeKey) }), result);

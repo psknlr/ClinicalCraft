@@ -7,7 +7,7 @@
  * connect → record, or reset first when a tracing was left on it).
  */
 import type { CaseDefinition } from "@clinicalcraft/core";
-import { behaviorOf, selectClinical, type BehaviorSpec, type EntityId, type OperationSpec, type WorldRuntime } from "@clinicalcraft/world";
+import { behaviorOf, selectClinical, type ActorId, type BehaviorSpec, type EntityId, type OperationSpec, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 
 /** A clinical operation of a device for one tool call. */
 export interface DeviceRoute {
@@ -67,4 +67,33 @@ export function operationPath(spec: BehaviorSpec, state: string | null, goal: Op
 /** The operation that releases a device reservation in this state (e.g. the ECG cart's `reset`), or null. */
 export function releaseOperation(spec: BehaviorSpec, state: string | null): OperationSpec | null {
   return spec.operations.find((o) => o.release && !o.clinical && (o.from === "*" || (state !== null && o.from.includes(state)))) ?? null;
+}
+
+/** Devices `actorId` holds a reservation on now (the world's state). */
+export function heldBy(world: WorldRuntime, actorId: ActorId): EntityId[] {
+  return Object.entries(world.snapshot().entities)
+    .filter(([, e]) => e.reservedBy === actorId)
+    .map(([id]) => id);
+}
+
+/**
+ * Release what a flow reserved and left reserved (review C3): for every device `actorId` holds now that it did
+ * not hold `before`, its release operation from its current state (the ECG cart's `reset`), done by the same
+ * actor through `operate` — which must not carry the flow's own cancellation signal (an interrupted flow still
+ * leaves nothing reserved) and should follow a reach hint (the body may have stepped away). Never throws.
+ */
+export async function releaseHeld(world: WorldRuntime, actorId: ActorId, before: ReadonlySet<EntityId>, operate: (entityId: EntityId, operation: string) => Promise<WorldActionResult>): Promise<void> {
+  for (const id of heldBy(world, actorId)) {
+    if (before.has(id)) continue;
+    const e = world.entity(id);
+    if (!e || e.kind !== "equipment") continue;
+    const state = world.inspect(actorId, id)?.state ?? world.snapshot().entities[id]?.state ?? null;
+    const release = releaseOperation(behaviorOf(e), state);
+    if (!release) continue;
+    try {
+      await operate(id, release.id);
+    } catch {
+      // cleanup is best effort: the flow's own outcome stands
+    }
+  }
 }

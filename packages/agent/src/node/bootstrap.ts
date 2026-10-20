@@ -12,6 +12,7 @@ import type { CameraSensor, Mover, Pose } from "@clinicalcraft/world";
 import type { AgentProfile } from "../agents/types.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { LLMProvider, ProviderConfig } from "../providers/types.js";
+import { embodimentProblem } from "../session/embodied.js";
 import { createSession, type ClinicalSession } from "../session/session.js";
 import type { TranscriptSink } from "../session/types.js";
 import type { SettingsLayerData } from "../settings/merge.js";
@@ -204,6 +205,11 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
   const caseDef = loaded.entry.def;
   const facility = chooseFacility(content, caseDef, opts.facilityId ?? resumed?.sessionMeta?.facilityId ?? undefined, settings.defaultFacility);
   const catalogs = catalogsFor(content, facility);
+  // An embodied encounter needs a place for the patient: refused before anything starts (no transcript — review C15).
+  if (settings.embodiment === "embodied") {
+    const problem = embodimentProblem(facility, caseDef);
+    if (problem) throw problem;
+  }
 
   const [memory, agents, commands, skills] = await Promise.all([
     loadMemory(cwd, env),
@@ -252,6 +258,7 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
           embodied: { ...(opts.embodied ?? {}), ...(resumed?.world ? { snapshot: resumed.world } : {}) },
           skills: skills.skills,
           ...(skills.issues.length ? { skillIssues: skills.issues } : {}),
+          ...("untrusted" in skills && skills.untrusted ? { skillsUntrusted: skills.untrusted } : {}),
         }
       : {}),
     ...(opts.dynamicTools ? { dynamicTools: opts.dynamicTools } : {}),

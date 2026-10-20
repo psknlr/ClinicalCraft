@@ -10,7 +10,7 @@
  * internals that name findings or show unmeasured values (see
  * `LEARNER_STATE_KEYS`; the transcript is redacted in `sessions.ts`).
  */
-import { currentWaypoint, progress, vitalsAt, type SessionState } from "@clinicalcraft/core";
+import { currentWaypoint, progress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import type { CaseLibrary } from "@clinicalcraft/agent/node";
 import { caseHandle, caseListing } from "./format.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
@@ -92,6 +92,12 @@ export function learnerState(state: SessionState, caseId: string): Pick<SessionS
   return visible as Pick<SessionState, (typeof LEARNER_STATE_KEYS)[number]> & { caseId: string };
 }
 
+/** The state resource's vitals: the learner's view, or null with the reason (embodied, nothing in view). */
+function vitalsOf(entry: McpSession): { vitals: VitalsSnapshot | null; vitalsNotInView?: string } {
+  const view = entry.session.vitalsView();
+  return view.inView ? { vitals: view.snapshot } : { vitals: null, vitalsNotInView: view.message };
+}
+
 function stateOf(entry: McpSession) {
   const s = entry.session;
   const c = s.caseDef;
@@ -108,7 +114,8 @@ function stateOf(entry: McpSession) {
     // The engine state's caseId names the diagnosis: the opaque handle instead (as list_cases).
     state: learnerState(state, c.id),
     progress: progress(c, state),
-    vitals: vitalsAt(c, state),
+    // What the learner may see (reviews G3/G11): never the ECG morphology; embodied, only where the body can see them.
+    ...vitalsOf(entry),
     waypoint: currentWaypoint(c, state),
     plan: entry.runner.workupPlan(),
   };

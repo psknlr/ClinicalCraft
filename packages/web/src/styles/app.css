@@ -493,6 +493,12 @@ html[lang="en"] .intro-card h2 {
   border-color: #7d8a80;
   background: #1a1f1ce6;
 }
+/* Embodied: the monitor is attached but its screen is out of view from here — no live value, just the chip. */
+.vitals-strip.out-of-view {
+  border-style: dotted;
+  border-color: #7d8a80;
+  background: #1a1f1ce6;
+}
 .vitals-strip .v-monitor {
   color: #c9cfc8;
   background: #2c332e;
@@ -1026,6 +1032,11 @@ html[lang="en"] .intro-card h2 {
   max-height: 260px;
   overflow-y: auto;
   line-height: 1.5;
+}
+/* a delegation's outcome, in words (not a command's raw output) */
+.msg.system.delegation-result span {
+  font-family: inherit;
+  font-size: 13px;
 }
 .typing {
   display: flex;
@@ -1814,6 +1825,17 @@ details.topic .question {
 }
 #monitor-attach {
   margin: 4px 0 14px;
+}
+/* Embodied: the screen out of view — the way there, then reading it */
+#monitor-go {
+  display: block;
+  max-width: 100%;
+  margin: 4px 0 10px;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+#monitor-out-of-view {
+  overflow-wrap: anywhere;
 }
 #monitor-spot-checks b {
   font-weight: 600;

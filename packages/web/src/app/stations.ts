@@ -3,6 +3,13 @@
  * semantics"): which investigations a workstation can retrieve, what a device
  * can do, which capabilities are at the patient's bedside, and where to go
  * for something that is not available here.
+ *
+ * Clinical mode only for the bedside (`atBedside`, `bedsideCaps`): there is
+ * no world model, and FACILITIES.md has the web check where the learner
+ * stands on top of the session's facility-wide check. Embodied mode never
+ * uses them — the world decides (`EmbodiedLink.patientMonitor` /
+ * `bedsideCaps` / `verdict`: `WorldRuntime.atBedside`, `bedsideProviders`,
+ * `checkSpatial`), so the UI never disagrees with the session.
  */
 import { BEDSIDE_RADIUS, DELIVERED_CAPABILITIES } from "@clinicalcraft/world";
 import {
@@ -115,7 +122,7 @@ export class Stations {
     return this.facility.patientSlots.find((s) => s.id === slotId)?.room ?? null;
   }
 
-  /** True when a placement is at the bedside of `slotId` (same room, or within BEDSIDE_RADIUS of the slot). */
+  /** Clinical mode: true when a placement is at the bedside of `slotId` (same room, or within BEDSIDE_RADIUS of the slot). */
   atBedside(placement: Placement, slotId: string | null): boolean {
     const slot = this.facility.patientSlots.find((s) => s.id === slotId);
     if (!slot) return false;
@@ -126,10 +133,10 @@ export class Stations {
   }
 
   /**
-   * Capabilities available at the patient's bedside (room or ≤ 6 m) plus the personal kit — and, as the
-   * world policy counts them (EMBODIED §6), the delivered capabilities (`DELIVERED_CAPABILITIES`: pharmacy
+   * Clinical mode: capabilities available at the patient's bedside (room or ≤ 6 m) plus the personal kit — and,
+   * as the world policy counts them (EMBODIED §6), the delivered capabilities (`DELIVERED_CAPABILITIES`: pharmacy
    * drugs, blood products are brought to the bedside) that any placement of the facility provides. Embodied
-   * mode uses the world's own view instead (carts where they stand now: `EmbodiedLink.bedsideCaps`).
+   * mode asks the world instead (`EmbodiedLink.bedsideCaps`: `WorldRuntime.bedsideProviders`).
    */
   bedsideCaps(slotId: string | null): Set<string> {
     const caps = new Set<string>(PERSONAL_KIT);

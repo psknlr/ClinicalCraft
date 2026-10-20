@@ -152,7 +152,7 @@ export class ClinicalCraftApp implements App {
     this.feedback = new ActionFeedback(
       () => this.hud.feedbackSlot,
       () => (this.panels.isOpen ? this.panels.feedbackSlot : null),
-      (goal, label) => void this.game?.embodied?.goTo(goal, label),
+      (goal, label, then) => void this.game?.embodied?.goTo(goal, label, then),
     );
 
     this.panels.modalAbove = () => this.approval.isOpen;

@@ -170,6 +170,88 @@ describe("C17: an interrupted delegation reports cancelled", () => {
   });
 });
 
+describe("C3: no device stays reserved after a failed route", () => {
+  const reserved = (t: { session: { world(): { snapshot(): { entities: Record<string, { reservedBy?: string | null }> } } | null } }) =>
+    Object.entries(t.session.world()!.snapshot().entities)
+      .filter(([, e]) => e.reservedBy)
+      .map(([id, e]) => `${id}@${e.reservedBy}`);
+
+  it("a delegated ECG whose record the learner denies: the nurse resets the cart — idle, reserved by nobody, usable by the clinician", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { permissions: { ask: ["order_test"] } } });
+    answerAll(t, "denied");
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const w = t.session.world()!;
+    expect((await w.execute({ actionId: "n1", actorId: "staff:ed-nurse", operation: "approach", targetId: "patient" })).status).toBe("completed");
+    const out = await command(t, "delegate", "nurse record_ecg");
+    expect(out.data.delegation).toMatchObject({ status: "failed" });
+    expect(out.data.delegation.steps.map((s: { operation: string }) => s.operation)).toContain("reset");
+    expect(reserved(t)).toEqual([]);
+    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")!.state).toBe("idle");
+    expect(t.session.state.orders).toEqual([]);
+    await w.execute({ actionId: "c0", actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient" });
+    expect((await w.execute({ actionId: "c1", actorId: PRIMARY_ACTOR, operation: "prepare", targetId: "eq:resus1-ecg" })).status).toBe("completed");
+    await t.session.close();
+  });
+
+  it("perform_ecg whose record is denied: its final reset step runs (onError continue) — nothing stays reserved", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { permissions: { ask: ["order_test"] } } });
+    let decision: "denied" | "approved" = "denied";
+    t.session.subscribe((e) => {
+      if (e.msg.type === "approval_request") t.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision });
+    });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const w = t.session.world()!;
+    await w.execute({ actionId: "c0", actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient" });
+    const out = await command(t, "skill", "perform_ecg");
+    const skill = out.data.skill as { status: string; steps: { id: string; status: string; code?: string }[] };
+    expect(skill.status).not.toBe("succeeded");
+    expect(skill.steps.find((s) => s.id === "record")).toMatchObject({ status: "failed", code: "APPROVAL_DENIED" });
+    expect(skill.steps.find((s) => s.id === "reset")).toMatchObject({ status: "ok" });
+    expect(reserved(t)).toEqual([]);
+    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")!.state).toBe("idle");
+    // The nurse can now record it (approvals granted from here on).
+    decision = "approved";
+    await w.execute({ actionId: "n1", actorId: "staff:ed-nurse", operation: "approach", targetId: "patient" });
+    const d = await command(t, "delegate", "nurse record_ecg");
+    expect(d.data.delegation).toMatchObject({ status: "completed" });
+    await t.session.close();
+  });
+
+  it("a skill that aborts after reserving a device (no cleanup step of its own): the session releases it", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { approvalMode: "bypass" } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const w = t.session.world()!;
+    await w.execute({ actionId: "c0", actorId: PRIMARY_ACTOR, operation: "approach", targetId: "patient" });
+    const skill = {
+      schema: "clinicalcraft/skill@1",
+      id: "half_ecg",
+      name: { "zh-CN": "半个心电图", en: "Half an ECG" },
+      description: { "zh-CN": "准备后失败", en: "Prepares, then fails" },
+      safety: "physical",
+      steps: [
+        { id: "prep", tool: "interact_object", args: { target: "eq:resus1-ecg", operation: "prepare" } },
+        { id: "boom", tool: "interact_object", args: { target: "eq:resus1-ecg", operation: "record", parameters: { investigation: "no-such-test" } } },
+      ],
+    };
+    const ev = await t.session.run({ type: "external_tool_call", callId: "s1", tool: "execute_skill", args: { skill }, allowBypass: true });
+    const end = msgsOf(ev, "tool_call_end").find((m) => m.callId === "s1")!;
+    expect((end.data as { skill: { status: string } }).skill.status).toBe("aborted");
+    expect(reserved(t)).toEqual([]);
+    expect(w.inspect(PRIMARY_ACTOR, "eq:resus1-ecg")!.state).toBe("idle");
+    await t.session.close();
+  });
+
+  it("the embodied autopilot whose ECG the learner denies leaves nothing reserved", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { permissions: { ask: ["order_test(ecg-12lead)"] } } });
+    answerAll(t, "denied");
+    await t.session.run({ type: "autopilot", maxTurns: 8 });
+    expect(t.session.state.orders.some((o) => o.investigationId === "ecg-12lead")).toBe(false);
+    expect(t.msgs("world_action_result").some((m) => m.result.errorCode === "APPROVAL_DENIED")).toBe(true);
+    expect(reserved(t)).toEqual([]);
+    await t.session.close();
+  });
+});
+
 describe("C12: resume equals an uninterrupted run", () => {
   const route = ["patient", "ed-station", "patient", "rad-control", "patient"];
 

@@ -8,9 +8,11 @@
 export const EMBODIED_EN = {
   // session / configuration
   "embodied.requiresFacility": "Embodied mode needs a facility (a world to act in); this session has none.",
+  "embodied.noSlot": "{facility} has no place for this case (its setting: {setting}): an embodied encounter needs a bed or spot for the patient there. Choose another facility, or play the case in clinical mode.",
   "embodied.notEmbodied": "This session is not embodied (embodiment: clinical): world actions are not available.",
   "embodied.fixed": "embodiment is fixed for an encounter (this one is {mode})",
   "embodied.skillIssue": "Project skill not loaded: {issue}",
+  "embodied.skillsUntrusted": "{files} project skill file(s) in {dir} were not loaded: this project is not trusted. Review them, then run `clinicalcraft trust` in the project to use them.",
 
   // spatial gate (EMBODIED §6)
   "spatial.refused": "Not here: {message}",
@@ -55,6 +57,9 @@ export const EMBODIED_EN = {
   "world.room.none": "none",
   "world.unknownRoom": "No room “{room}” in this facility.",
   "world.unknownTarget": "Nothing called “{target}” here (use find_entities to look it up).",
+  "world.actorUnknown": "You do not know where {actor} is: you have not seen them in this encounter (staff you ask to do a task are tracked while they work on it).",
+  "world.actorLastSeen": "{name} is not in view; you last saw them in {place}.",
+  "world.actorPlaceUnknown": "an unknown place",
   "world.feedback.none": "No recorded result for action {id}.",
   "world.cancelled": "Cancelled {count} running action(s) of {actor}.",
   "world.nothingToCancel": "{actor} has nothing running.",
@@ -69,6 +74,27 @@ export const EMBODIED_EN = {
 
   // delegation
   "delegate.unknownRole": "No {role} on duty in this facility.",
+  "delegate.notAuthorized": "{message} Nobody was sent.",
+
+  // scope of practice (review S3; EMBODIED §8)
+  "scope.noClinical": "{who} ({role}) may not do anything clinical: a {role} holds no clinical authority here.",
+  "scope.tool": "{who} ({role}) may not use {tool}: outside a {role}'s scope of practice.",
+  "scope.intervention": "{who} ({role}) may not give {item}: outside a {role}'s scope of practice (a {role} may give: {kinds}).",
+  "scope.investigation": "{who} ({role}) may not order {item}: a {role} records bedside tests only (ECG, point-of-care tests, peak flow).",
+  "scope.task": "{who} ({role}) cannot be asked to {task}: outside a {role}'s scope of practice (a {role} can: {tasks}).",
+  "scope.ivAccess": "the case's IV access",
+  "scope.kind.medication": "medication",
+  "scope.kind.fluid": "fluids",
+  "scope.kind.oxygen": "oxygen",
+  "scope.kind.procedure": "procedures",
+  "scope.kind.positioning": "positioning",
+  "scope.kind.monitoring": "monitoring",
+  "scope.kind.consult": "consults",
+  "scope.kind.disposition": "dispositions",
+  "scope.kind.airway": "airway management",
+  "scope.kind.other": "other orders",
+  "sum.byStaff": "{who} ({role}): {summary}",
+  "vitals.notInView": "Vitals not in view from here: {reason}",
   "delegate.unknownTask": "Unknown task “{task}” (attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention).",
   "delegate.needTarget": "Task {task} needs {param}.",
   "delegate.noItem": "This case has no {what} for the task {task}.",
@@ -100,6 +126,7 @@ export const EMBODIED_EN = {
   "skill.step.ok": "ok",
   "skill.step.failed": "failed",
   "skill.step.skipped": "skipped",
+  "skill.step.resumed": "ok (done earlier)",
   "skill.post": "  postcondition {what}: {status}",
   "skill.post.ok": "holds",
   "skill.post.failed": "does not hold",
@@ -113,6 +140,8 @@ export const EMBODIED_EN = {
   "sum.cancel": "Stop the current action of {actor}",
   "sum.delegate": "Ask the {role} to {task}",
   "sum.skill": "Run the skill {skill}",
+  "sum.skillSteps": "Run the skill {skill}: {steps}",
+  "skill.tooDeep": "Skills nest at most {max} level: a skill run by another skill may not run a skill or delegate a task.",
   "sum.look": "Look around",
 
   // embodied autopilot narration
@@ -157,9 +186,11 @@ export type EmbodiedKey = keyof typeof EMBODIED_EN;
 
 export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "embodied.requiresFacility": "具身模式需要一个场馆（可以行动的世界）；本会话没有场馆。",
+  "embodied.noSlot": "{facility}中没有适合本病例的位置（病例场景：{setting}）：具身诊疗需要在那里为患者安排床位或地点。请选择其他场馆，或以临床模式进行本病例。",
   "embodied.notEmbodied": "本会话不是具身模式（embodiment: clinical），无法执行世界动作。",
   "embodied.fixed": "接诊的具身模式在本次接诊中固定不变（当前为 {mode}）",
   "embodied.skillIssue": "项目技能未加载：{issue}",
+  "embodied.skillsUntrusted": "{dir} 中的 {files} 个项目技能文件未加载：此项目未被信任。请先审阅，然后在项目中运行 `clinicalcraft trust` 再使用。",
 
   "spatial.refused": "此处无法进行：{message}",
   "spatial.changed": "等待期间情况已变化（该操作未执行）：{message}",
@@ -201,6 +232,9 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "world.room.none": "无",
   "world.unknownRoom": "本场馆没有“{room}”这个房间。",
   "world.unknownTarget": "这里没有叫“{target}”的对象（可用 find_entities 查找）。",
+  "world.actorUnknown": "你不知道{actor}在哪里：本次接诊中你还没有见过对方（你委派任务的工作人员在执行任务期间可以追踪）。",
+  "world.actorLastSeen": "{name}不在视线内；你上次是在{place}看到对方的。",
+  "world.actorPlaceUnknown": "未知地点",
   "world.feedback.none": "没有动作 {id} 的记录结果。",
   "world.cancelled": "已取消{actor}正在进行的 {count} 个动作。",
   "world.nothingToCancel": "{actor}当前没有进行中的动作。",
@@ -214,6 +248,27 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "world.time": "{seconds} 秒",
 
   "delegate.unknownRole": "本场馆没有在岗的{role}。",
+  "delegate.notAuthorized": "{message}未派任何人。",
+
+  // 执业范围（review S3；EMBODIED §8）
+  "scope.noClinical": "{who}（{role}）不能进行任何临床操作：{role}在这里没有临床权限。",
+  "scope.tool": "{who}（{role}）不能使用 {tool}：超出{role}的执业范围。",
+  "scope.intervention": "{who}（{role}）不能执行“{item}”：超出{role}的执业范围（{role}可执行：{kinds}）。",
+  "scope.investigation": "{who}（{role}）不能申请“{item}”：{role}只能做床旁检查（心电图、床旁快速检测、峰流速）。",
+  "scope.task": "不能让{who}（{role}）{task}：超出{role}的执业范围（{role}可以：{tasks}）。",
+  "scope.ivAccess": "本病例的静脉通路",
+  "scope.kind.medication": "药物",
+  "scope.kind.fluid": "补液",
+  "scope.kind.oxygen": "氧疗",
+  "scope.kind.procedure": "操作",
+  "scope.kind.positioning": "体位",
+  "scope.kind.monitoring": "监护",
+  "scope.kind.consult": "会诊",
+  "scope.kind.disposition": "去向安排",
+  "scope.kind.airway": "气道管理",
+  "scope.kind.other": "其他医嘱",
+  "sum.byStaff": "{who}（{role}）：{summary}",
+  "vitals.notInView": "从这里看不到生命体征：{reason}",
   "delegate.unknownTask": "未知任务“{task}”（attach_monitor、record_ecg、obtain_iv_access、fetch_equipment、give_intervention）。",
   "delegate.needTarget": "任务 {task} 需要提供 {param}。",
   "delegate.noItem": "本病例没有可用于任务 {task} 的{what}。",
@@ -244,6 +299,7 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "skill.step.ok": "成功",
   "skill.step.failed": "失败",
   "skill.step.skipped": "跳过",
+  "skill.step.resumed": "成功（先前已完成）",
   "skill.post": "  后置条件 {what}：{status}",
   "skill.post.ok": "满足",
   "skill.post.failed": "不满足",
@@ -256,6 +312,8 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "sum.cancel": "停止{actor}当前的动作",
   "sum.delegate": "请{role}{task}",
   "sum.skill": "执行技能 {skill}",
+  "sum.skillSteps": "运行技能“{skill}”：{steps}",
+  "skill.tooDeep": "技能最多嵌套 {max} 层：由其他技能运行的技能不能再运行技能或委派任务。",
   "sum.look": "环顾四周",
 
   "clinician.narrate.walk": "前往{target}。",

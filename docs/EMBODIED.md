@@ -472,6 +472,14 @@ table above, made concrete:
   own room. `rhythmAtBedside(world)` (a monitor, ECG machine or
   defibrillator in service at the bedside) gates the rhythm: `check_vitals`
   drops `rhythm` / `ecg` without one (hand observations, the chart).
+  **Every vitals channel follows this one check** (reviews G3/G11):
+  `ClinicalSession.vitalsView()` is the learner's view (`learnerVitals`:
+  never the ECG morphology — an interpretation that takes a 12-lead and its
+  reading) where the learner's body can see the bedside, else nothing and
+  why. The clinician model's `<monitor>` prompt section ("Vitals not in view
+  from here: …"), `wait`'s closing line, skill `vital` predicates, the MCP
+  state resource (`vitals: null` + `vitalsNotInView`) and the REPL status line
+  ("vitals: not in view") use it; audible alarms are still announced.
 * `clinical` (`{ kind: "clinical", condition, need, interventionId }`): a
   fact the engine must hold (core `evaluate`) — no walk fixes it, so the
   refusal (`clinical-prerequisite`) has no hint and names the act that
@@ -713,6 +721,24 @@ by name to catalog behaviours too (a monitor's `read` shows the screen).
   The clinical class only lets an actor ask for a clinical effect; the
   session's tool path (hooks, approval, practice scope) still decides.
 
+**Scope of practice (review S3; `packages/agent/src/tools/scope.ts`).** On
+top of the operation classes, a role may do only what its profession does at
+the bedside. Checked in the spatial gate's `precheck` for every clinical tool
+call made with a body (a world operation's clinical effect, a skill step, a
+delegated step — `NOT_AUTHORIZED`, before anyone is asked to approve it), by
+`delegate_task` before the staff member takes a step (the task, and the item
+of a `give_intervention`), and by the bench authorisation audit for the body
+the trace says acted. An approval for an act a staff member would do names
+them ("Lin Xiao (Nurse): Give Aspirin …?").
+
+| role | delegable tasks | clinical tools with their body | interventions |
+|---|---|---|---|
+| clinician (the learner's avatar), attending | all | all | all |
+| nurse | `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention` | `check_vitals`, `examine`, `order_test` (bedside tests only: ECG, point of care, peak flow), `read_result`, `intervene` | medication, fluid, oxygen, monitoring, positioning and the case's IV access — never airway / RSI, an arterial line or another procedure, a consult or a disposition |
+| paramedic | as a nurse | as a nurse | as a nurse + airway |
+| porter, receptionist | `fetch_equipment` | — (no clinical class) | — |
+| lab-tech, pharmacist, radiologist, pathologist | `fetch_equipment` | `check_vitals`, `read_result` | — (no patient interventions) |
+
 ## 9. Skills
 
 Declarative workflows (`SkillDefinition`): parameters, required tools,
@@ -742,8 +768,37 @@ the engine and the world, and records a `plan` span with its
 `verification`. The 11 built-in skills validate at load; project skills
 (`~/.clinicalcraft/skills`, `.clinicalcraft/skills`) and inline skills
 (`execute_skill {skill}`) are validated identically — data, never code; an
-invalid project skill is reported, not loaded. `execute_skill` risk: a
-`high-risk` skill asks always, `clinical` is low, others none.
+invalid project skill is reported, not loaded.
+
+**Review hardening (S2, S8, G1, C3, C8–C10).**
+* Steps call learner tools only (the clinical and world tools — never an
+  NPC's `reveal_facts`, `get_progress`, `get_vitals`, `give_hint`, `get_results`
+  or a front-end's `walk_to`): refused at validation and on the tool path.
+* Project skills load only from a trusted project (`clinicalcraft trust`,
+  like its hooks; otherwise reported) and register as `project:<id>` — never
+  shadowing a built-in; skills that run themselves or each other are
+  reported and not loaded; nesting is one level (a skill may run one skill or
+  delegate one task, that skill neither), refused before the approval gate;
+  the interpreter yields to the event loop before every step.
+* `execute_skill`'s risk and always-ask come from the most dangerous act its
+  steps can do (an act unknown until an earlier step ran: high, always ask),
+  never from its declared `safety` (which can only raise them); the approval
+  summary lists the steps.
+* Predicates are no oracle: the condition leaves a skill may test are the
+  learner's own record (`asked`, `examined`, `ordered`, `read`,
+  `resultReady`, `intervened`, `decided`, `attempted`), `objective`,
+  `phase`, `elapsed`, `hints`, `always` — and `vital`, evaluated against what
+  the bedside SHOWS the acting body (nothing shown: false); `flag` and
+  `decidedFirstTry` are refused. Reported postconditions never echo step
+  outputs.
+* A refusal by a person or a hook (directly or inside a world operation) and
+  a cancellation are final: never retried or recovered, and `retry.on` /
+  `recovery.on` may not list them.
+* `alternate-provider` rebinds the device for the rest of the skill (steps,
+  `when`, postconditions), restarting from the first step that targeted it;
+  `perform_ecg` prefers a free, in-service cart and resets the cart even
+  after a refused `record` (`onError: continue`); a skill that does not
+  succeed leaves nothing it reserved reserved.
 
 ## 10. Traces
 
@@ -878,7 +933,11 @@ headless world for that MCP session (implemented, A5: the 16 world tools are
 listed with annotations — perception read-only, `interact_object` /
 `delegate_task` / `execute_skill` destructive —, refused with `not_embodied`
 on a clinical session; approvals asked inside a world operation follow the
-two-step `confirm` of the clinical tools). `clinicalcraft mcp --attach <server>`
+two-step `confirm` of the clinical tools — bound to the inner act a refusal
+named: a confirmed repeat approves exactly those inner asks, each once, and
+refuses any other the same way, so confirming one drug never gives another,
+and a skill's acts done by an earlier attempt are not done again — review S1,
+PROTOCOL §11). `clinicalcraft mcp --attach <server>`
 forwards world and clinical tools to a **registered live browser session**
 through the HTTP server (token-authenticated registration, SSE command
 channel, correlation ids, acknowledgements, timeouts, cancellation,
@@ -1256,10 +1315,10 @@ The status table is filled in as work lands (see the end of this file).
 | Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 17 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5) | agent unit + integration on built-in cases (refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies) | CLI `--embodied` (play, exec, eval), MCP `start_case {embodied}`; the web (A6, §2.1) | — |
 | Web embodied runtime (§2.1: embodied by default, mode per encounter; `BrowserMover` / `BrowserCamera`; `world_pose`; panel operations as `world_action`, auto-approach and "Go there"; R8 tick pause; staff walkers, parked carts promoted lazily, locks; badge, toasts, map actors, live trace) | yes (A6) | unit (frame-rate independent steering — no orbiting at 20 fps —, route legs, mover and camera over a fake renderer, portable promotion, spatial helpers and refusal text, store folding, trace grouping, embodied session start / resume / save validation); e2e `embodied*.spec.ts` (offline autopilot on STEMI asserted from engine + world + trace, auto-approach and "Go there" through a wall, a delegated nurse walking, a vision model's camera frame, clinical mode, a locked door, a cart wheeled to the bed, the two-level walk, the HUD in both languages on desktop and a phone) | the full web e2e suite in embodied mode; draw calls unchanged until equipment moves (§2.1); the offline standalone page from `file://` | — |
 | Embodied offline autopilot (reference agent) | yes (A5) | every built-in case × zh-CN / en finishes in its own facility with the clinical-mode score (test); STEMI trace chain for the ECG and the monitor | `exec --embodied --autopilot` over the library in both languages | — |
-| Delegation (`delegate_task`: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention) | yes (A5); review round: the world's bedside rule, fetch hints followed (`hint.then`), staff actions done `onBehalfOf` the clinician | nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller; `/delegate staff:ed-nurse record_ecg` (general hospital) and `staff:ed-station.nurse` (teaching hospital, the cart fetched to the bed first) from the nurse's post | — | — |
-| Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader | — | — |
+| Delegation (`delegate_task`: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention) | yes (A5); review round: the world's bedside rule, fetch hints followed (`hint.then`), staff actions done `onBehalfOf` the clinician; scope of practice checked before a step (§8 table, S3), interrupted → `cancelled` (C17), nothing left reserved (C3) | nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller; `/delegate staff:ed-nurse record_ecg` (general hospital) and `staff:ed-station.nurse` (teaching hospital, the cart fetched to the bed first) from the nurse's post | — | — |
+| Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5); review round (§9): learner tools only (S2), trusted project skills as `project:<id>` and risk from the steps (S8), learner-visible predicates (G1), alternate-provider rebinding (C8), final refusals (C9), one nesting level and no cycles (C10), clean-up of reservations (C3) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader | — | — |
 | Session traces, `world` transcript items, resume | yes (A5) | trace scopes, JSONL, the STEMI chain; resume from memory and from JSONL (`createNodeSession`), embodiment kept / an explicit other one refused | `exec --trace` | — |
-| MCP embodied (`start_case {embodied}`, 16 world tools with annotations, `not_embodied`, two-step confirmation of approvals inside world operations) | yes (A5) | in-process JSON-RPC tests; real stdio smoke (`clinicalcraft mcp`) | — | — |
+| MCP embodied (`start_case {embodied}`, 16 world tools with annotations, `not_embodied`, two-step confirmation of approvals inside world operations) | yes (A5); review round: a confirmation approves exactly the inner asks its refusals named, each once (S1); vitals only in view (G11); no place for the case → `embodiment_no_slot` before a session opens (C15) | in-process JSON-RPC tests; real stdio smoke (`clinicalcraft mcp`) | — | — |
 | World bridge: MCP ⇄ live browser world (`WorldSessionRouter` routes of `serve`; ops `external_tool_call` / `external_tool_cancel`; browser client `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`) | yes (A8); browser wiring: implemented (A8b — opt-in switch, badge with id and attach key, one-click disconnect, labelled approvals, hidden-tab moves; PROTOCOL §13.6); hardening (review R1 S5/S9/S10/S11): attach keys, per-client cap, same-origin + Authorization-only attach routes, backpressure, deadlines and re-sent cancels | router over HTTP (server token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation explicit and by a departed caller, expiry and heartbeats, DELETE, re-delivery on reconnect, body and call limits, CORS, server shutdown); session ops (clinician tool path, spatial gate, approvals to the learner approved / denied, deny rules, cancel queued / running, interrupt, malformed / duplicate); contract validators and isomorphism; the browser client against a real server in Node (calls, approvals, cancellation, dropped stream without a double run, expiry → re-registration with the same id and key, dispose and session shutdown, the bypass guard, auth failures) and against a fake server (attach key, server-clock deadlines, the deadline cancel, `allowBypass` pass-through, cancel before arrival); MCP attach over stdio with a stubbed server (pairing, no auto-selection, untrusted marking); the review R1 reproductions kept as regression tests (S5 tenancy and decoy, S9 a non-reading stream, S10 dev-origin CORS and cookie-only attach, S11 a timed-out call never running later); the web `ExternalControl` and `BrowserMover` in hidden tabs (unit) | end to end with real processes: `clinicalcraft serve` + a headless embodied STEMI session through the client + `clinicalcraft mcp --attach` over stdio — `navigate_to`, `interact_object` (ECG cart: prepare, connect, record → the order), an intervention the learner approves, one the learner denies, one cancelled while its approval was pending, verified from engine and world state, with a decoy session registered by another token holder never reached; browser wiring: implemented/tested — Playwright `external-agent.spec.ts` (en + zh-CN): a served build, the switch, `mcp --attach` paired by the id and key read from the badge walking to the patient, recording the ECG through the cart (the order) and an approval clicked in the labelled dialog, a hidden tab's walk completing without frames, a denial, disconnect → `session_closed`, a resumed encounter starting off | — |
 | Embodied benchmark (`@clinicalcraft/bench`: scenario schema `clinicalcraft/bench-scenario@1` + JSON Schema, suite `embodied-v1` with 40 scenarios over 8 categories, isolated deterministic runs, recorder, spatial / authorisation / safety audits, predicates on authoritative state, metrics with Wilson 95 % intervals, JSON + Markdown reports; agents `reference`, `scripted-llm`, `llm`; `clinicalcraft bench list\|run`) | yes (A7) | every scenario file validates (schema + references); every predicate kind true and false on a real run; Wilson against Newcombe 1998; 3 scenarios × each agent kind (the `llm` agent wired from settings with a fake provider); a broken agent that only claims success scores 0 over the suite; limits, budget, live-agent refusals (no `--live`, no cap, no key, CI, offline provider, `--max-usd` without a price); CLI | `reference` and `scripted-llm`: 120 / 120 runs each (40 scenarios × seeds 1–3), 0 accepted spatial or authorisation violations, every trace identical across seeds; CI gate (`build-test`, built binary) | — (no live-model run recorded) |
 | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | samples `docs/bench/demo.en.md`, `docs/bench/demo.zh-CN.md` (50 steps, 25 world actions, 0 violations; regenerated after the review round) | — |

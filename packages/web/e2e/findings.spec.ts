@@ -39,13 +39,13 @@ test.describe("grounded web panels (zh-CN)", () => {
     await freshStart(page);
     await enterCase(page, "smzl-lung-adeno");
 
-    // Practice scope "history-only": order_test is out of scope → the report shows the refusal, not the result.
+    // Practice scope "history-only": order_test is out of scope → the report shows the refusal, not the result
+    // (ordered where it can be: at the patient's side, from the patient's Tests tab).
     await qa(page, (q) => q.submit({ type: "configure", patch: { practiceScope: "history-only" } }));
     await page.waitForFunction(() => (window as any).__QA__.store.config?.practiceScope === "history-only");
-    await useStation(page, ["lab-hematology"], "workstation");
-    await page.locator("#exam-input").fill("血常规");
-    await page.locator("#exam-input").press("Enter");
-    await page.locator('.candidate[data-investigation="cbc"]').click();
+    await talkToPatient(page, { atSide: true });
+    await page.locator("#tab-tests").click();
+    await page.locator('#bedside-tests [data-investigation="cbc"]').click();
     await expect(page.locator('#panel .window[data-panel="report"]')).toBeVisible();
     await expect(page.locator("#report-refused")).toBeVisible();
     await expect(page.locator(".report-text")).toHaveCount(0);
@@ -59,10 +59,13 @@ test.describe("grounded web panels (zh-CN)", () => {
     await useStation(page, ["lab-hematology"], "workstation");
     await page.locator("#exam-input").fill("血常规");
     await page.locator("#exam-input").press("Enter");
+    // the station says so before anything is placed (the world's words), and its click shows the way to the patient
+    await expect(page.locator('.candidate[data-investigation="cbc"]')).toHaveClass(/refused/);
     await page.locator('.candidate[data-investigation="cbc"]').click();
-    await expect(page.locator("#report-refused")).toBeVisible();
+    await expect(page.locator("#panel #action-feedback #go-there")).toBeVisible();
     await expect(page.locator(".report-text")).toHaveCount(0);
     await expect(page.locator("#approval")).toBeHidden();
+    expect(await qa(page, (q) => q.session.state.orders.length)).toBe(0);
     await page.keyboard.press("Escape");
 
     // Strict approvals, at the patient's side: while the dialog is pending nothing is shown; after Deny, nothing ordered or seen.

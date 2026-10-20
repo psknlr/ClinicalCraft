@@ -40,7 +40,7 @@ import {
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
 import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
-import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
+import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, learnerVitals, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
 
 export type ToolArgs = Record<string, unknown>;
@@ -653,7 +653,8 @@ const checkVitals: ToolDefinition<ToolArgs> = {
       delete snapshot.vitals.rhythm;
       delete snapshot.vitals.ecg;
     }
-    return { ok: true, output: vitalsText(snapshot, ctx.locale, clockTime(ctx.caseDef, ctx.state().clock, ctx.locale)), data: snapshot };
+    // the data shows what the text shows: never the ECG morphology or a placeholder (review G3)
+    return { ok: true, output: vitalsText(snapshot, ctx.locale, clockTime(ctx.caseDef, ctx.state().clock, ctx.locale)), data: learnerVitals(snapshot) };
   },
 };
 
@@ -934,7 +935,9 @@ const wait: ToolDefinition<ToolArgs> = {
     // For a model (it sees no live events); `/wait` leaves this line out — the learner watched them happen.
     const meanwhile = events.length > 0 ? rt(L, "tool.wait.events", { events: sentenceList(L, events) }) : null;
     if (meanwhile) lines.push(meanwhile);
-    lines.push(vitalsText(vitalsAt(c, s), L));
+    // Embodied mode: only what the body can see from where it stands (review G11).
+    const view = ctx.vitalsView?.();
+    lines.push(view && !view.inView ? rt(L, "vitals.notInView", { reason: view.message }) : vitalsText(view?.inView ? view.snapshot : vitalsAt(c, s), L));
     return { ok: true, output: lines.join("\n"), data: { from, to: s.clock, meanwhile } };
   },
 };

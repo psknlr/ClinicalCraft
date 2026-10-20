@@ -97,6 +97,9 @@ const EN = {
 
   // tools
   "tool.unknownTool": "Unknown tool \"{tool}\". Available tools: {tools}.",
+  "tool.notLearnerTool": "\"{tool}\" is not a tool you can use here: a learner, a skill step or a delegated step may only use the clinical and world tools.",
+  "confirm.what": "What it does: {summary}",
+  "confirm.innerStep": "The step inside {tool} that needs confirmation: {summary}. A confirmation covers only the steps a refusal named; any other step that needs approval is refused and named the same way.",
   "tool.invalidArgs": "Invalid arguments for {tool}: {errors}",
   "tool.blockedByHook": "Blocked by a hook: {reason}",
   "tool.denied": "Not permitted: {reason}",
@@ -507,6 +510,9 @@ const ZH: Record<RuntimeKey, string> = {
   "topic.other": "别的事",
 
   "tool.unknownTool": "未知工具“{tool}”。可用工具：{tools}。",
+  "tool.notLearnerTool": "“{tool}”不是这里可以使用的工具：学员、技能步骤和委派步骤只能使用临床工具和世界工具。",
+  "confirm.what": "具体内容：{summary}",
+  "confirm.innerStep": "{tool} 中需要确认的步骤：{summary}。确认只覆盖拒绝时列出的步骤；其他需要批准的步骤会同样被拒绝并单独列出。",
   "tool.invalidArgs": "{tool} 的参数无效：{errors}",
   "tool.blockedByHook": "被钩子阻止：{reason}",
   "tool.denied": "不允许：{reason}",

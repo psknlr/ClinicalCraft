@@ -101,10 +101,16 @@ export interface SessionOptions {
    * `snapshot` the physical state to restore (resume: the last transcript `world` item).
    */
   embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot };
-  /** Project skills (`.clinicalcraft/skills/*.json`, validated; embodied mode) — they extend the built-in skills. */
+  /**
+   * Project skills (`.clinicalcraft/skills/*.json`, validated; embodied mode) — they extend the built-in skills,
+   * registered as `project:<id>` (they never shadow a built-in; `execute_skill {skill_id: "<id>"}` finds them when
+   * no built-in has that id).
+   */
   skills?: SkillDefinition[];
   /** Problems found while loading project skills (each becomes a startup `warning`). */
   skillIssues?: string[];
+  /** The project's skill files left out because the project is not trusted (a bilingual startup `warning`). */
+  skillsUntrusted?: { dir: string; files: number };
   /** Restore from a previous session (resume). */
   resume?: {
     sessionId: string;

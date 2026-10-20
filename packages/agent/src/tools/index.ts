@@ -16,11 +16,13 @@ import type { ToolDefinition } from "./types.js";
 export * from "./clinical.js";
 export * from "./npc.js";
 export * from "./spatial.js";
+export * from "./scope.js";
 export * from "./world.js";
+export { isLearnerTool, LEARNER_CLINICAL_TOOLS, LEARNER_TOOL_NAMES, LEARNER_TOOLS } from "./learner.js";
 export * from "./world-format.js";
 export * from "./format.js";
 export * from "./validate.js";
-export { toToolSpec, type PermissionCheck, type SideEffect, type ToolContext, type ToolDefinition, type ToolOutput } from "./types.js";
+export { toToolSpec, type PermissionCheck, type SideEffect, type ToolContext, type ToolDefinition, type ToolOutput, type VitalsView } from "./types.js";
 
 /** Dynamic (client-executed) tools a front-end may declare. */
 export const DYNAMIC_TOOLS = ["walk_to"] as const;

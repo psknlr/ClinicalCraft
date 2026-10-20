@@ -22,9 +22,14 @@
  * spatially gated clinical tools and the world tools. An approval the
  * session asks for INSIDE a call (a world operation's clinical effect runs
  * the clinical tool through the session's learner path; delegated and skill
- * steps likewise) follows the same two steps: the first call answers it
- * `denied` and is reported as needing confirmation; its confirmed repeat
- * answers `approved`.
+ * steps likewise) is answered `denied` and the call is refused as needing
+ * confirmation, NAMING that step; the refusal records the ask (tool, rule,
+ * specifier, arguments). A confirmed repeat approves exactly the inner asks
+ * its refusals named — each once — and refuses any other the same way
+ * (review S1): confirming the call itself (its own gate rule) never approves
+ * what it asks inside, and the named asks accumulate across repeats (with
+ * the call's own confirmation). A skill's clinical acts done by an earlier
+ * attempt of the same call are not done again (`CallProgress`).
  *
  * Gap (CONTRACT CHANGE REQUEST): `ClinicalSessionApi` has no public
  * `runTool()`, so this mirrors the session's private learner-tool path, and
@@ -42,6 +47,7 @@ import {
   type RuntimeKey,
   type AgentEvent,
   type AgentRole,
+  type CallProgress,
   type ClinicalSession,
   type CommandHookExecutor,
   type EventMsg,
@@ -80,6 +86,8 @@ export type ToolRunOutcome =
       unconfirmed?: boolean;
       /** An approval asked inside the call: the tool it was for (e.g. `intervene` behind `interact_object`). */
       innerTool?: string;
+      /** What the refused step or call does ("Give Tenecteplase?"; a skill: its steps). */
+      summary?: string;
       /** What the call did before the refused step (its own output). */
       detail?: string;
     };
@@ -117,21 +125,37 @@ function canonicalJson(value: unknown): string {
   return JSON.stringify(value) ?? "null";
 }
 
-/** Identity of a call for the two-step confirmation: tool + validated input + the gate rule that asked. */
-function confirmationKey(tool: string, input: unknown, ruleId: string): string {
-  return `${tool}\u0000${ruleId}\u0000${canonicalJson(input)}`;
+/** Identity of a call for the two-step confirmation: tool + validated input. */
+function callKey(tool: string, input: unknown): string {
+  return `${tool}\u0000${canonicalJson(input)}`;
 }
 
-/** The "rule" of approvals asked inside a call (any inner gate rule: the confirmation covers the whole call). */
-const INNER_RULE = "inner-approval";
+/** Identity of an approval asked inside a call: its tool, gate rule, canonical specifier and arguments. */
+function innerAskKey(tool: string, ruleId: string, specifier: string | null, args: unknown): string {
+  return `${tool}\u0000${ruleId}\u0000${specifier ?? ""}\u0000${canonicalJson(args ?? {})}`;
+}
 
 /** An approval the session asked for inside a bridged call. */
 interface InnerAsk {
+  key: string;
   tool: string;
-  args: unknown;
+  specifier: string | null;
   ruleId: string;
   risk: RiskLevel;
   reason: string;
+  summary: string;
+}
+
+/** A call refused as needing confirmation, waiting for its confirmed repeat (review S1). */
+interface PendingCall {
+  /** Expiry (ms since epoch). */
+  until: number;
+  /** The gate rule that asked about the call itself — a confirmed repeat passes it (null: it did not ask). */
+  outer: string | null;
+  /** Keys of the inner asks the refusals named (accumulated across repeats): each approves ONE matching ask. */
+  inner: string[];
+  /** Clinical acts earlier attempts of the call did (a skill's steps): never done again. */
+  progress: CallProgress;
 }
 
 type HookSpec =
@@ -149,26 +173,46 @@ export class SessionToolRunner {
   private readonly hookRunner = new HookRunner();
   private readonly permissions = new PermissionState();
   private plan: { items: PlanItem[]; explanation: string | null } = { items: [], explanation: null };
-  /** Calls refused as needing confirmation: key → expiry (ms since epoch). */
-  private readonly pending = new Map<string, number>();
+  /** Calls refused as needing confirmation, by `callKey`. */
+  private readonly pending = new Map<string, PendingCall>();
 
   constructor(
     readonly session: ClinicalSession,
     private readonly opts: SessionToolRunnerOptions = {},
   ) {}
 
-  private addPending(key: string): void {
+  private setPending(key: string, call: Omit<PendingCall, "until">): void {
     const now = this.now();
-    for (const [k, until] of this.pending) if (until <= now) this.pending.delete(k);
+    for (const [k, p] of this.pending) if (p.until <= now) this.pending.delete(k);
     this.pending.delete(key);
-    this.pending.set(key, now + CONFIRM_TTL_MS);
+    this.pending.set(key, { ...call, until: now + CONFIRM_TTL_MS });
     while (this.pending.size > MAX_PENDING_CONFIRMATIONS) this.pending.delete(this.pending.keys().next().value!);
   }
 
-  private takePending(key: string): boolean {
-    const until = this.pending.get(key);
+  /** The unexpired record of a refused call (left in place). */
+  private pendingCall(key: string): PendingCall | null {
+    const p = this.pending.get(key);
+    if (p && p.until > this.now()) return p;
     this.pending.delete(key);
-    return until !== undefined && until > this.now();
+    return null;
+  }
+
+  /** A tool's rule specifier for these arguments (null when it has none or it fails). */
+  private specifierOf(tool: ToolDefinition<Record<string, unknown>> | undefined, args: Record<string, unknown>, ctx: ToolContext): string | null {
+    try {
+      return tool?.specifier?.(args, ctx) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** A tool's approval summary ("" when it fails). */
+  private summaryOf(tool: ToolDefinition<Record<string, unknown>> | undefined, args: Record<string, unknown>, ctx: ToolContext): string {
+    try {
+      return tool?.summarize(args, ctx) ?? "";
+    } catch {
+      return "";
+    }
   }
 
   private now(): number {
@@ -190,9 +234,10 @@ export class SessionToolRunner {
   }
 
   /** Tool context for the learner, built on the session's public API. */
-  context(signal?: AbortSignal): ToolContext {
+  context(signal?: AbortSignal, progress?: CallProgress): ToolContext {
     const s = this.session;
     return {
+      ...(progress ? { progress } : {}),
       caseDef: s.caseDef,
       facility: s.facility,
       catalogs: s.catalogs,
@@ -223,7 +268,6 @@ export class SessionToolRunner {
     const validated = validateArgs(tool.inputSchema, rawArgs);
     if (!validated.ok) return { status: "done", output: { ok: false, output: validated.errors.join("; ") }, notices: [] };
     let input = validated.value as Record<string, unknown>;
-    const ctx = this.context(signal);
 
     const pre = await this.runHook({ hook_event_name: "PreToolUse", agent: "learner", tool_name: name, tool_input: input }, signal);
     if (pre.blocked) return { status: "refused", reason: "hook", message: mm(L, "hook.blocked", { tool: name, reason: pre.reason ?? "" }), ruleId: null };
@@ -232,6 +276,13 @@ export class SessionToolRunner {
       if (!again.ok) return { status: "done", output: { ok: false, output: again.errors.join("; ") }, notices: [] };
       input = again.value as Record<string, unknown>;
     }
+
+    // What earlier refused attempts of this very call recorded (review S1): the approvals they named, the acts done.
+    const key = callKey(name, input);
+    const prior = this.pendingCall(key);
+    const confirming = options.confirmed === true && prior !== null;
+    const progress: CallProgress = prior?.progress ?? { done: new Map() };
+    const ctx = this.context(signal, progress);
 
     // A call that cannot run is refused before the gate (e.g. a locked decision: no confirmation round-trip).
     const early = tool.precheck?.(input, ctx);
@@ -242,36 +293,28 @@ export class SessionToolRunner {
     if (check.decision === "deny") {
       return { status: "refused", reason: "deny", message: mm(L, "approval.denied", { tool: name, reason: check.reason, ruleId: check.ruleId }), ruleId: check.ruleId };
     }
-    // The user agreed to this call (a confirmed repeat): approvals asked inside it are approved too.
-    let callConfirmed = false;
-    if (check.decision === "ask" && !pre.approved) {
-      // Two-step confirmation: `confirm: true` counts only for the same call refused before (and only once).
-      const key = confirmationKey(name, input, check.ruleId);
-      const confirmed = options.confirmed === true && this.takePending(key);
-      callConfirmed = confirmed;
-      if (!confirmed) {
-        this.addPending(key);
-        let specifier: string | null = null;
-        try {
-          specifier = tool.specifier?.(input, ctx) ?? null;
-        } catch {
-          specifier = null;
-        }
-        return {
-          status: "refused",
-          reason: "ask",
-          message: mm(L, options.confirmed === true ? "approval.confirmFirst" : "approval.needed", {
-            tool: name,
-            reason: check.reason,
-            ruleId: check.ruleId,
-            rule: formatRule(name, specifier),
-            risk: rt(L, `perm.risk.${check.risk}` as RuntimeKey),
-          }),
-          ruleId: check.ruleId,
-          risk: check.risk,
-          ...(options.confirmed === true ? { unconfirmed: true } : {}),
-        };
-      }
+    // The gate asks about the call itself: only the confirmed repeat of a call refused for that rule runs.
+    const outer = check.decision === "ask" && !pre.approved ? check.ruleId : null;
+    if (outer !== null && !(confirming && prior!.outer === outer)) {
+      this.setPending(key, { outer, inner: prior?.inner ?? [], progress });
+      const summary = this.summaryOf(tool, input, ctx);
+      const message = mm(L, options.confirmed === true && !confirming ? "approval.confirmFirst" : "approval.needed", {
+        tool: name,
+        reason: check.reason,
+        ruleId: check.ruleId,
+        rule: formatRule(name, this.specifierOf(tool, input, ctx)),
+        risk: rt(L, `perm.risk.${check.risk}` as RuntimeKey),
+      });
+      return {
+        status: "refused",
+        reason: "ask",
+        // What the call does — a skill: every step it runs (its clinical acts are confirmed one by one when asked).
+        message: summary ? `${message}\n${rt(L, "confirm.what", { summary })}` : message,
+        ruleId: check.ruleId,
+        risk: check.risk,
+        ...(summary ? { summary } : {}),
+        ...(options.confirmed === true && !confirming ? { unconfirmed: true } : {}),
+      };
     }
 
     if (signal?.aborted) return aborted(); // cancelled while hooks ran
@@ -280,22 +323,26 @@ export class SessionToolRunner {
 
     const notices: string[] = [];
     const warnings: string[] = [];
-    // Approvals the session asks for inside this call: approved when the user agreed to the call (its
-    // confirmed repeat), else denied — and the call is reported as needing confirmation.
-    const innerKey = confirmationKey(name, input, INNER_RULE);
-    const approveInner = callConfirmed || (options.confirmed === true && this.takePending(innerKey));
-    let innerAsk: InnerAsk | null = null;
+    // Approvals the session asks for inside this call: on a confirmed repeat, exactly the asks its refusals named
+    // (each once); anything else is denied and named in a new refusal — never derived from confirming the call.
+    const approvable = confirming ? [...prior!.inner] : [];
+    const refusedAsks: InnerAsk[] = [];
     const off = this.session.subscribe((event: AgentEvent) => {
       const msg: EventMsg = event.msg;
       if (msg.type === "notification") notices.push(msg.body ? `${msg.title}: ${msg.body}` : msg.title);
       if (msg.type === "warning" && !warnings.includes(msg.message)) warnings.push(msg.message);
       if (msg.type === "approval_request") {
-        if (!approveInner) innerAsk ??= { tool: msg.tool, args: msg.args, ruleId: msg.ruleId, risk: msg.risk, reason: msg.reason };
+        const args = (msg.args && typeof msg.args === "object" ? msg.args : {}) as Record<string, unknown>;
+        const specifier = this.specifierOf(this.toolFor(msg.tool), args, ctx);
+        const askKey = innerAskKey(msg.tool, msg.ruleId, specifier, args);
+        const at = approvable.indexOf(askKey);
+        if (at >= 0) approvable.splice(at, 1);
+        else refusedAsks.push({ key: askKey, tool: msg.tool, specifier, ruleId: msg.ruleId, risk: msg.risk, reason: msg.reason, summary: msg.summary });
         this.session.submit({
           type: "approval_response",
           requestId: msg.requestId,
-          decision: approveInner ? "approved" : "denied",
-          reason: approveInner ? "confirmed by the MCP client (confirm: true)" : "needs confirmation: the MCP client must call again with confirm: true",
+          decision: at >= 0 ? "approved" : "denied",
+          reason: at >= 0 ? "confirmed by the MCP client (confirm: true)" : "needs confirmation: the MCP client must call again with confirm: true",
         });
       }
     });
@@ -309,33 +356,33 @@ export class SessionToolRunner {
     }
     await this.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: name, tool_input: input, tool_response: { ok: output.ok, output: output.output } }, signal);
     for (const w of warnings) this.opts.log?.(w);
-    const asked = innerAsk as InnerAsk | null;
+    const asked = refusedAsks[0];
     if (asked) {
-      this.addPending(innerKey);
-      let specifier: string | null = null;
-      try {
-        const inner = this.toolFor(asked.tool);
-        specifier = inner?.specifier?.((asked.args ?? {}) as Record<string, unknown>, ctx) ?? null;
-      } catch {
-        specifier = null;
-      }
+      // Named now: confirmable on the next repeat, with the call's own confirmation and what is still unused (an
+      // unconfirmed attempt keeps what earlier refusals named — once: naming an ask again never doubles it).
+      const inner = confirming ? [...approvable] : [...(prior?.inner ?? [])];
+      for (const a of refusedAsks) if (confirming || !inner.includes(a.key)) inner.push(a.key);
+      this.setPending(key, { outer, inner, progress });
+      const message = mm(L, "approval.needed", {
+        tool: name,
+        reason: asked.reason,
+        ruleId: asked.ruleId,
+        rule: formatRule(asked.tool, asked.specifier),
+        risk: rt(L, `perm.risk.${asked.risk}` as RuntimeKey),
+      });
       return {
         status: "refused",
         reason: "ask",
-        message: mm(L, options.confirmed === true ? "approval.confirmFirst" : "approval.needed", {
-          tool: name,
-          reason: asked.reason,
-          ruleId: asked.ruleId,
-          rule: formatRule(asked.tool, specifier),
-          risk: rt(L, `perm.risk.${asked.risk}` as RuntimeKey),
-        }),
+        message: `${message}\n${rt(L, "confirm.innerStep", { tool: name, summary: asked.summary || formatRule(asked.tool, asked.specifier) })}`,
         ruleId: asked.ruleId,
         risk: asked.risk,
         innerTool: asked.tool,
+        ...(asked.summary ? { summary: asked.summary } : {}),
         detail: output.output,
-        ...(options.confirmed === true ? { unconfirmed: true } : {}),
       };
     }
+    // Done: the confirmation (and the record of this call's attempts) is used up.
+    this.pending.delete(key);
     return { status: "done", output, notices, ...(warnings.length > 0 ? { warnings } : {}) };
   }
 

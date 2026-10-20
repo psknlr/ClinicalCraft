@@ -6,7 +6,9 @@
  * grounding indicator and — for the patient — Examine / Treat / Notes tabs.
  * Embodied mode: a nurse (or paramedic) can be delegated a task — she walks
  * there with her own body (`/delegate staff:<id> <task>`, the session's
- * `delegate_task`), the outcome shows in this conversation.
+ * `delegate_task`), the outcome shows in this conversation. A colleague is
+ * always a named staff member (`app/staff.ts`: the one the world would send
+ * to this patient when the window was opened for a role, e.g. `@nurse`).
  */
 import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, type Resolution } from "@clinicalcraft/agent";
 import {
@@ -20,10 +22,11 @@ import {
   type Intervention,
   type SessionState,
 } from "@clinicalcraft/core";
-import type { App, Game } from "../../app/context.js";
+import type { App } from "../../app/context.js";
 import { statusLabel } from "../../app/llm.js";
 import { trTask } from "../../app/embodied-link.js";
 import { missingCaps } from "../../app/stations.js";
+import { delegateLine, delegationSummary, staffById, staffForAgent, type StaffRef } from "../../app/staff.js";
 import type { ChatItem } from "../../app/store.js";
 import { ageText, sexText } from "../../app/world-bridge.js";
 import { ct, getLocale, tr, trList, trMaybe } from "../../i18n/index.js";
@@ -31,7 +34,12 @@ import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { portrait, STAFF_COLOURS } from "../portrait.js";
 import { parseAddress } from "../address.js";
-import { capList, riskBadge } from "./common.js";
+import { capList } from "./common.js";
+import { bedsideTests } from "./tests-tab.js";
+import { treatRow } from "./treat-row.js";
+import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
+
+export { treatRow };
 
 export { parseAddress };
 
@@ -40,7 +48,7 @@ export interface ConversationArgs {
   staffId?: string;
   staffRole?: string;
   name?: string;
-  tab?: "talk" | "exam" | "treat" | "notes";
+  tab?: "talk" | "exam" | "treat" | "tests" | "notes";
   focusInput?: boolean;
 }
 
@@ -81,9 +89,13 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     const isPatient = args.agent === "patient" || args.agent === "companion";
     const companion = c.patient.persona.companion;
     const agents = new Set<string>(isPatient ? ["patient", "companion"] : [args.agent]);
-    const staffName = args.name ?? roleLabel(args.staffRole ?? args.agent);
-    let tab: NonNullable<ConversationArgs["tab"]> = isPatient ? args.tab ?? "talk" : "talk";
-    if (args.staffId) game.activeStaff = args.staffId;
+    // the colleague by name: the staff member aimed at, else the one this agent stands for here (`@nurse`)
+    const staffCtx = { facility: game.facility, slotId: game.slotId, world: game.session.world() };
+    const staff: StaffRef | null = isPatient ? null : args.staffId ? (staffById(args.staffId, staffCtx) ?? { staffId: args.staffId, role: args.staffRole ?? "", name: args.name ?? args.staffId }) : staffForAgent(args.agent, staffCtx);
+    const staffRole = staff?.role || args.staffRole || args.agent;
+    const staffName = staff?.name ?? roleLabel(staffRole);
+    let tab: NonNullable<ConversationArgs["tab"]> = isPatient ? (args.tab === "tests" && !game.embodied ? "talk" : args.tab ?? "talk") : "talk";
+    if (staff) game.activeStaff = staff.staffId;
 
     /* ---------------- talk tab ---------------- */
     const log = h("div", { class: "chat-log", role: "log", "aria-live": "polite", "aria-label": tr("conv.tab.talk") });
@@ -93,8 +105,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       type: "text",
       autocomplete: "off",
       maxlength: "800",
-      placeholder: isPatient ? tr("conv.placeholder") : tr("conv.placeholderStaff", { name: staffName }),
-      "aria-label": isPatient ? tr("conv.placeholder") : tr("conv.placeholderStaff", { name: staffName }),
+      placeholder: isPatient ? tr("conv.placeholder") : staff ? tr("conv.placeholderStaff", { name: staffName }) : tr("conv.placeholderRole", { role: staffName }),
+      "aria-label": isPatient ? tr("conv.placeholder") : staff ? tr("conv.placeholderStaff", { name: staffName }) : tr("conv.placeholderRole", { role: staffName }),
     });
     const sendBtn = h("button", { class: "primary", type: "submit" }, tr("conv.send"));
     const stopBtn = h("button", { type: "button", hidden: true, onclick: () => game.session.interrupt() }, tr("conv.stop"));
@@ -182,14 +194,14 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
           ),
         );
         // embodied: delegate a bedside task to this staff member (she walks there herself)
-        if (game.embodied && args.staffId && DELEGATE_ROLES.has(args.staffRole ?? "")) {
+        if (game.embodied && staff && DELEGATE_ROLES.has(staff.role)) {
           suggestions.append(
             h("div", { class: "eyebrow delegate-head" }, tr("conv.delegate")),
             h("p", { class: "small muted" }, tr("conv.delegateHint")),
             h(
               "div",
               { class: "chips delegate-chips", id: "delegate-chips" },
-              DELEGATE_TASKS.map((task) => h("button", { type: "button", dataset: { task }, onclick: () => app.submit({ type: "user_message", text: `/delegate staff:${args.staffId} ${task}` }, args.agent) }, trTask(task))),
+              DELEGATE_TASKS.map((task) => h("button", { type: "button", dataset: { task }, onclick: () => app.submit({ type: "user_message", text: `/delegate staff:${staff.staffId} ${task}` }, args.agent) }, trTask(task))),
             ),
           );
         }
@@ -235,8 +247,14 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const nearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 60;
       clear(log);
       const items = store.chatFor(agents);
-      if (!items.length) log.append(h("div", { class: "chat-empty" }, isPatient ? tr("conv.empty") : tr("conv.emptyStaff", { name: staffName })));
-      for (const m of items) log.append(chatBubble(m, c));
+      if (!items.length) log.append(h("div", { class: "chat-empty" }, isPatient ? tr("conv.empty") : staff ? tr("conv.emptyStaff", { name: staffName }) : tr("conv.emptyRole", { role: staffName })));
+      const nameOf = (id: string) => staffById(id, staffCtx)?.name ?? null;
+      // world entities and actors by name (a delegation's steps)
+      const entityName = (id: string) => {
+        const e = staffCtx.world?.entity(id);
+        return e ? ct(e.name) : null;
+      };
+      for (const m of items) log.append(chatBubble(m, c, nameOf, entityName));
       const busy = store.busyAmong(agents);
       typing.hidden = !busy;
       if (busy) {
@@ -255,8 +273,13 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         ? args.agent === "companion" && companion
           ? `${ct(companion.name)} · ${roleLabel("companion")}`
           : tr("conv.portraitCaption", { sex: sexText(c), age: ageText(c) })
-        : `${roleLabel(args.staffRole ?? args.agent)} · ${staffName}`;
-      const look = isPatient ? (args.agent === "companion" && companion?.appearance ? { ...c.patient.appearance, ...companion.appearance } : c.patient.appearance) : { ...(STAFF_COLOURS[args.staffRole ?? args.agent] ?? { shirt: "#6d9fba" }), hair: "#3b3027" };
+        : staff
+          ? // "Nurse · Lin Xiao"; a name that already says the role ("Nurse Feng (triage)") alone
+            staffName.toLowerCase().includes(roleLabel(staffRole).toLowerCase())
+            ? staffName
+            : `${roleLabel(staffRole)} · ${staffName}`
+          : roleLabel(staffRole);
+      const look = isPatient ? (args.agent === "companion" && companion?.appearance ? { ...c.patient.appearance, ...companion.appearance } : c.patient.appearance) : { ...(STAFF_COLOURS[staffRole] ?? { shirt: "#6d9fba" }), hair: "#3b3027" };
       const tags = isPatient ? c.patient.tags.map((x) => h("span", { class: "tag" }, ct(x))) : [];
       const side = h(
         "div",
@@ -282,7 +305,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     const examine = (): HTMLElement => {
       const wrap = h("div", { class: "exam-tab" });
       const state = store.snapshot?.state ?? game.session.session.state;
-      const caps = (game.embodied?.bedsideCaps() ?? game.stations.bedsideCaps(game.slotId));
+      // clinical mode: the facility's bedside capabilities (embodied rows follow the world's verdict)
+      const caps = game.embodied ? new Set<string>() : game.stations.bedsideCaps(game.slotId);
       const result = h("div", { class: "exam-result" });
       const q = h("input", { type: "text", placeholder: tr("exam.search"), "aria-label": tr("exam.search"), autocomplete: "off" });
       q.addEventListener("keydown", (e) => e.stopPropagation());
@@ -315,11 +339,17 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
           );
         }
       };
+      // embodied: the world's verdict from where the learner stands (the click itself goes through act: a short
+      // step, or the refusal with the way there)
+      const emb = game.embodied;
+      const verdictOf = (f: ExamFinding) => emb?.verdict({ type: "examine", findingId: f.id }) ?? null;
       const perform = (f: ExamFinding) => {
-        const missing = missingCaps(f.requires, caps);
-        if (missing.length) {
-          app.toast(ct(f.maneuver), tr("exam.needs", { caps: capList(missing) }), "warning");
-          return;
+        if (!emb) {
+          const missing = missingCaps(f.requires, caps);
+          if (missing.length) {
+            app.toast(ct(f.maneuver), tr("exam.needs", { caps: capList(missing) }), "warning");
+            return;
+          }
         }
         app.act({ type: "examine", findingId: f.id });
       };
@@ -329,6 +359,9 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         wrap.append(h("div", { class: "notice" }, ct(c.examNotRecorded) || tr("exam.none")));
         return wrap;
       }
+      const verdicts = new Map(items.map((f) => [f.id, verdictOf(f)] as const));
+      const away = emb ? distanceNotice(game, [...verdicts.values()].filter((v) => !!v)) : null;
+      if (away) wrap.append(away);
       const groups = new Map<string, ExamFinding[]>();
       for (const f of items) groups.set(f.system, [...(groups.get(f.system) ?? []), f]);
       for (const [system, list] of groups) {
@@ -339,16 +372,21 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             { class: "exam-list" },
             list.map((f) => {
               const done = state.examined.includes(f.id);
-              const missing = missingCaps(f.requires, caps);
+              const v = verdicts.get(f.id) ?? null;
+              // clinical mode: the facility's bedside capabilities; embodied: the world's verdict
+              const missing = v ? [] : missingCaps(f.requires, caps);
+              const refusedHere = !!v && v.kind === "refused" && !onlyDistance(v);
+              const disabled = !done && (v ? !offered(v) : missing.length > 0);
               return h(
                 "div",
                 { class: ["exam-row", done ? "done" : "", f.abnormal && done ? "abnormal" : ""] },
                 h(
                   "button",
-                  { type: "button", class: "question", disabled: missing.length > 0 && !done, dataset: { finding: f.id }, onclick: () => perform(f) },
+                  { type: "button", class: "question", disabled, dataset: { finding: f.id }, onclick: () => perform(f) },
                   h("span", null, ct(f.maneuver)),
-                  h("span", { class: "tick" }, done ? tr("exam.done") : missing.length ? tr("exam.needs", { caps: capList(missing) }) : tr("exam.do") + " →"),
+                  h("span", { class: "tick" }, done ? tr("exam.done") : missing.length ? tr("exam.needs", { caps: capList(missing) }) : refusedHere ? tr("exam.notHere") : tr("exam.do") + " →"),
                 ),
+                !done && v ? refusalNote(v) : null,
                 done ? h("div", { class: "finding" }, ct(f.finding)) : null,
               );
             }),
@@ -368,7 +406,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         wrap.append(h("div", { class: "empty" }, tr("treat.empty")));
         return wrap;
       }
-      const caps = (game.embodied?.bedsideCaps() ?? game.stations.bedsideCaps(game.slotId));
+      // clinical mode: the facility's bedside capabilities (embodied rows follow the world's verdict)
+      const caps = game.embodied ? new Set<string>() : game.stations.bedsideCaps(game.slotId);
       const result = h("div");
       const q = h("input", { type: "text", placeholder: tr("treat.search"), "aria-label": tr("treat.search"), autocomplete: "off" });
       q.addEventListener("keydown", (e) => e.stopPropagation());
@@ -386,6 +425,10 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         }
       };
       wrap.append(h("form", { class: "exam-search", onsubmit: search }, q, h("button", { class: "primary" }, tr("treat.find"))), result);
+      // embodied: away from the patient, one notice with the way there (the rows keep only their own reasons)
+      const emb = game.embodied;
+      const away = emb ? distanceNotice(game, c.interventions.map((iv) => emb.verdict({ type: "intervene", interventionId: iv.id }))) : null;
+      if (away) wrap.insertBefore(away, wrap.children[1] ?? null);
       const groups = new Map<string, Intervention[]>();
       for (const iv of c.interventions) groups.set(iv.kind, [...(groups.get(iv.kind) ?? []), iv]);
       for (const [kind, list] of groups) {
@@ -393,6 +436,9 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       }
       return wrap;
     };
+
+    /* ---------------- tests tab (embodied: order at the patient's side) ---------------- */
+    const tests = (): HTMLElement => bedsideTests(app, game);
 
     /* ---------------- notes tab ---------------- */
     const notes = (): HTMLElement => {
@@ -434,7 +480,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
 
     /* ---------------- tabs ---------------- */
     const tabBody = h("div", { class: "tab-body" });
-    const tabs = isPatient ? (["talk", "exam", "treat", "notes"] as const) : (["talk"] as const);
+    // the bedside tests tab in embodied mode (clinical mode orders at the workstations, as V4 does)
+    const tabs = isPatient ? (game.embodied ? (["talk", "exam", "treat", "tests", "notes"] as const) : (["talk", "exam", "treat", "notes"] as const)) : (["talk"] as const);
     const tabBar = h("div", { class: "tabs", role: "tablist" });
     const tabButtons = new Map<string, HTMLButtonElement>();
     for (const id of tabs) {
@@ -458,7 +505,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         renderSuggestions();
         renderBadge();
         requestAnimationFrame(() => (log.scrollTop = log.scrollHeight));
-      } else tabBody.append(id === "exam" ? examine() : id === "treat" ? treat() : notes());
+      } else tabBody.append(id === "exam" ? examine() : id === "treat" ? treat() : id === "tests" ? tests() : notes());
     };
     select(tab);
 
@@ -485,17 +532,37 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         }
       },
       dispose() {
-        if (game.activeStaff === args.staffId) game.activeStaff = null;
+        if (staff && game.activeStaff === staff.staffId) game.activeStaff = null;
       },
     };
   };
 }
 
-function chatBubble(m: ChatItem, c: CaseDefinition): HTMLElement {
+function chatBubble(m: ChatItem, c: CaseDefinition, nameOf: (staffId: string) => string | null = () => null, entityName: (id: string) => string | null = () => null): HTMLElement {
+  // a delegation's outcome in words (the session's text names operations and entities by id)
+  const delegation = m.role === "system" && m.speaker === "/delegate" ? delegationSummary(m.data, entityName) : null;
+  if (delegation) {
+    return h(
+      "div",
+      { class: ["msg", "system", `tone-${m.tone}`, "delegation-result"], title: m.text },
+      h("b", null, tr("conv.delegateTitle")),
+      h("span", null, [delegation.head, ...delegation.steps].join("\n")),
+    );
+  }
   if (m.role === "system") {
     return h("div", { class: ["msg", "system", `tone-${m.tone}`], role: m.tone === "error" ? "note" : null }, m.speaker ? h("b", null, m.speaker) : null, m.text ? h("span", null, m.text) : null);
   }
   const learner = m.role === "learner";
+  // the learner's delegation (the delegate chips) as a sentence, the command itself in the tooltip
+  const delegated = learner && m.tone === "command" ? delegateLine(m.text, nameOf) : null;
+  if (delegated) {
+    return h(
+      "div",
+      { class: ["msg", "learner", `agent-${m.agent}`, "delegation"], dataset: { agent: m.agent } },
+      h("div", { class: "who" }, tr("role.learner")),
+      h("div", { class: "bubble", title: m.text }, delegated),
+    );
+  }
   const name = learner ? (m.agent !== "patient" && m.agent !== "companion" ? `${tr("role.learner")} → ${trMaybe(`role.${m.agent}`, m.agent)}` : tr("role.learner")) : m.speaker === "monitor" ? tr("role.monitor") : m.speaker;
   const meta: (HTMLElement | null)[] = [];
   if (!learner && m.nonverbal) meta.push(h("i", { class: "nonverbal" }, m.nonverbal));
@@ -507,47 +574,6 @@ function chatBubble(m: ChatItem, c: CaseDefinition): HTMLElement {
     h("div", { class: "who" }, name),
     h("div", { class: "bubble" }, m.text || (m.streaming ? "…" : ""), meta),
     factIds.length ? h("div", { class: "facts", title: tr("conv.grounded") }, "◆ ".repeat(Math.min(factIds.length, 5)).trim()) : null,
-  );
-}
-
-export function treatRow(app: App, game: Game, iv: Intervention, caps: Set<string>, scopeLocked: boolean): HTMLElement {
-  const store = game.session.store;
-  const outcome = store.interventions.get(iv.id);
-  const missing = missingCaps(iv.requires, caps);
-  const maxed = iv.maxDoses !== undefined && (outcome?.count ?? 0) >= iv.maxDoses;
-  let needs = "";
-  if (missing.length) {
-    const where = game.stations.nearestProvider(missing, app.playerPos(), getLocale());
-    needs = where ? tr("treat.needsGo", { caps: capList(missing), place: where.label }) : tr("treat.needs", { caps: capList(missing) });
-  }
-  return h(
-    "div",
-    { class: ["treat-row", outcome ? `given-${outcome.appropriateness}` : ""] },
-    h(
-      "div",
-      { class: "treat-info" },
-      h("b", null, ct(iv.name)),
-      iv.dose ? h("small", null, ct(iv.dose)) : null,
-      h(
-        "div",
-        { class: "badges" },
-        riskBadge(iv.risk),
-        outcome ? h("span", { class: `outcome ${outcome.appropriateness}` }, tr(`treat.outcome.${outcome.appropriateness}`)) : null,
-        outcome ? h("span", { class: "muted small" }, tr("treat.given", { n: outcome.count })) : null,
-      ),
-      needs ? h("small", { class: "needs" }, needs) : null,
-    ),
-    h(
-      "button",
-      {
-        type: "button",
-        class: iv.risk === "high" ? "danger" : "",
-        disabled: missing.length > 0 || maxed || scopeLocked,
-        dataset: { intervention: iv.id },
-        onclick: () => app.act({ type: "intervene", interventionId: iv.id }),
-      },
-      maxed ? tr("treat.max") : tr("treat.give"),
-    ),
   );
 }
 
