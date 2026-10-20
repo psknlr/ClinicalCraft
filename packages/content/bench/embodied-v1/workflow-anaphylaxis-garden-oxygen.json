@@ -1,0 +1,93 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-anaphylaxis-garden-oxygen",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "花园过敏性休克：取来便携氧气瓶给氧",
+    "en": "Garden anaphylaxis: fetch a portable oxygen cylinder"
+  },
+  "instruction": {
+    "zh-CN": "花园长椅上的患者发生过敏反应、呼吸急促。给予高流量吸氧——花园里没有氧气，需要从医院取来便携氧气瓶。",
+    "en": "The patient on the garden bench is having an allergic reaction and is short of breath. Give high-flow oxygen — there is none in the garden: bring a portable oxygen cylinder from the hospital."
+  },
+  "caseId": "anaphylaxis-garden",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:garden-bench"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "intervened": "oxygen-high-flow"
+      }
+    },
+    {
+      "world": {
+        "kind": "deviceAtBedside",
+        "target": "eq:ed-store-o2-1"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "oxygen-high-flow"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ed-store-o2-1"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-store-o2-1",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:garden-bench"
+            }
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "oxygen-high-flow"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "mini-anaphylaxis",
+  "version": "1.0.0",
+  "title": { "en": "Collapse at a picnic (mini)", "zh-CN": "野餐时晕倒（迷你版）" },
+  "summary": { "en": "Simulated-clock test case.", "zh-CN": "模拟时钟测试病例。" },
+  "specialty": ["emergency-medicine"],
+  "difficulty": 2,
+  "setting": "emergency",
+  "locales": ["en", "zh-CN"],
+  "provenance": { "kind": "synthetic" },
+  "patient": {
+    "displayName": { "en": "Alex Chen", "zh-CN": "陈亚历" },
+    "age": 24,
+    "sex": "female",
+    "chiefComplaint": { "en": "Lip swelling and dizziness", "zh-CN": "嘴唇肿胀、头晕" },
+    "persona": {
+      "personality": { "en": "Frightened", "zh-CN": "害怕" },
+      "speechStyle": { "en": "Short breathless sentences", "zh-CN": "气短，说话断续" },
+      "affect": "frightened",
+      "openingLine": { "en": "I can't breathe properly...", "zh-CN": "我喘不上气……" },
+      "fallbackUnknown": { "en": "I don't know.", "zh-CN": "我不知道。" }
+    }
+  },
+  "phases": [
+    { "id": "arrival", "label": { "en": "Arrival", "zh-CN": "到达" } },
+    { "id": "observation", "label": { "en": "Observation", "zh-CN": "观察" }, "learnerSwitchable": false, "enterWhen": { "objective": "stabilise" } }
+  ],
+  "initialPhase": "arrival",
+  "clock": {
+    "mode": "simulated",
+    "startTime": "14:00",
+    "actionCosts": { "ask": 1, "examine": 2, "order": 1, "read": 1, "intervene": 2, "answer": 0 },
+    "limitMinutes": 60
+  },
+  "history": [
+    {
+      "id": "trigger",
+      "topic": "hpi",
+      "question": { "en": "What were you doing when this started?", "zh-CN": "发病前在做什么？" },
+      "answer": { "en": "I had just eaten a satay skewer.", "zh-CN": "我刚吃了一串沙爹烤肉。" },
+      "keywords": { "en": ["eat", "food", "peanut", "trigger"], "zh-CN": ["吃", "食物", "花生", "诱因"] },
+      "required": true
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": { "en": "Do you have any allergies?", "zh-CN": "有没有过敏史？" },
+      "answer": { "en": "I'm allergic to peanuts.", "zh-CN": "我对花生过敏。" },
+      "keywords": { "en": ["allergy", "allergic"], "zh-CN": ["过敏"] },
+      "required": true
+    },
+    {
+      "id": "meds",
+      "topic": "medications",
+      "question": { "en": "Do you take any regular medicines?", "zh-CN": "平时吃什么药？" },
+      "answer": { "en": "No regular medicines.", "zh-CN": "没有长期用药。" },
+      "keywords": { "en": ["medication", "medicine", "tablets", "drugs"], "zh-CN": ["药", "用药"] }
+    },
+    {
+      "id": "breathing",
+      "topic": "associated-symptoms",
+      "disclosure": "volunteer",
+      "question": { "en": "Are you short of breath?", "zh-CN": "有没有气短、呼吸困难？" },
+      "answer": { "en": "Yes, my throat feels tight.", "zh-CN": "有，喉咙发紧。" },
+      "keywords": { "en": ["breath", "breathing", "breathless"], "zh-CN": ["气短", "呼吸", "喘"] }
+    }
+  ],
+  "exam": [
+    {
+      "id": "airway",
+      "system": "heent",
+      "maneuver": { "en": "Assess the airway and listen for stridor", "zh-CN": "评估气道，听诊有无喘鸣" },
+      "keywords": { "en": ["airway", "stridor", "throat"], "zh-CN": ["气道", "喘鸣", "喉"] },
+      "finding": { "en": "Swollen lips, soft inspiratory stridor.", "zh-CN": "口唇肿胀，轻度吸气性喘鸣。" },
+      "abnormal": true,
+      "requires": ["stethoscope"],
+      "required": true
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": { "en": "Inspect the skin", "zh-CN": "查看皮肤" },
+      "keywords": { "en": ["rash", "hives", "skin", "urticaria"], "zh-CN": ["皮疹", "荨麻疹", "皮肤"] },
+      "finding": { "en": "Widespread urticaria.", "zh-CN": "全身荨麻疹。" },
+      "abnormal": true
+    },
+    {
+      "id": "chest",
+      "system": "respiratory",
+      "maneuver": { "en": "Auscultate the chest", "zh-CN": "肺部听诊" },
+      "keywords": { "en": ["chest", "lungs", "wheeze", "auscultate"], "zh-CN": ["肺", "听诊", "哮鸣"] },
+      "finding": { "en": "Mild expiratory wheeze.", "zh-CN": "轻度呼气相哮鸣音。" },
+      "requires": ["stethoscope"]
+    }
+  ],
+  "investigations": [
+    {
+      "id": "abg", "name": { "en": "Arterial blood gas", "zh-CN": "动脉血气" }, "category": "lab",
+      "aliases": { "en": ["abg", "blood gas"], "zh-CN": ["血气"] }, "requires": ["lab-blood-gas"], "turnaroundMinutes": 5, "value": "essential",
+      "results": { "arrival": { "text": { "en": "pH 7.31, lactate 4.1 mmol/L.", "zh-CN": "pH 7.31，乳酸4.1 mmol/L。" }, "critical": true } }
+    },
+    {
+      "id": "tryptase", "name": { "en": "Serum tryptase", "zh-CN": "血清类胰蛋白酶" }, "category": "lab",
+      "aliases": { "en": ["tryptase"], "zh-CN": ["类胰蛋白酶"] }, "requires": ["lab-chemistry"], "turnaroundMinutes": 30,
+      "results": { "arrival": { "text": { "en": "Tryptase 38 µg/L (raised).", "zh-CN": "类胰蛋白酶 38 µg/L（升高）。" } } }
+    },
+    {
+      "id": "cxr", "name": { "en": "Chest X-ray", "zh-CN": "胸片" }, "category": "imaging",
+      "aliases": { "en": ["cxr", "chest x-ray", "chest xray"], "zh-CN": ["胸片", "胸部x线"] }, "requires": ["xray"], "turnaroundMinutes": 10, "value": "low-value",
+      "results": { "arrival": { "text": { "en": "Normal.", "zh-CN": "未见异常。" } } }
+    },
+    {
+      "id": "ct-head", "name": { "en": "CT head", "zh-CN": "头颅CT" }, "category": "imaging",
+      "aliases": { "en": ["ct head", "head ct"], "zh-CN": ["头颅ct", "头部ct"] }, "requires": ["ct"], "turnaroundMinutes": 20, "risk": "moderate", "value": "harmful",
+      "results": { "arrival": { "text": { "en": "Normal.", "zh-CN": "未见异常。" } } }
+    },
+    {
+      "id": "repeat-obs", "name": { "en": "Repeat observations chart", "zh-CN": "复测生命体征记录" }, "category": "record",
+      "aliases": { "en": ["obs chart"], "zh-CN": ["复测"] },
+      "results": { "observation": { "text": { "en": "Stable.", "zh-CN": "平稳。" } } }
+    }
+  ],
+  "interventions": [
+    {
+      "id": "epi", "name": { "en": "Adrenaline 0.5 mg IM", "zh-CN": "肾上腺素0.5mg肌注" }, "kind": "medication",
+      "aliases": { "en": ["epinephrine", "adrenaline", "epi"], "zh-CN": ["肾上腺素"] }, "risk": "moderate", "requires": ["medications"],
+      "effects": [
+        { "vital": "sbp", "delta": 30, "onsetMinutes": 1, "rampMinutes": 3 },
+        { "vital": "hr", "delta": 10, "onsetMinutes": 0, "rampMinutes": 0, "durationMinutes": 5 }
+      ],
+      "maxDoses": 2,
+      "indicatedWhen": { "any": [{ "asked": "trigger" }, { "flag": "stridor" }] }
+    },
+    {
+      "id": "oxygen", "name": { "en": "High-flow oxygen via non-rebreather mask", "zh-CN": "面罩高流量吸氧" }, "kind": "oxygen",
+      "aliases": { "en": ["oxygen", "o2", "non-rebreather"], "zh-CN": ["吸氧", "氧气"] }, "requires": ["oxygen"],
+      "effects": [{ "vital": "spo2", "target": 98, "onsetMinutes": 0, "rampMinutes": 2 }],
+      "setFlags": ["oxygen-on"],
+      "indicatedWhen": { "vital": "spo2", "op": "lt", "value": 94 }
+    },
+    {
+      "id": "chlorphenamine", "name": { "en": "Chlorphenamine 10 mg IV", "zh-CN": "氯苯那敏10mg静注" }, "kind": "medication",
+      "aliases": { "en": ["antihistamine", "chlorphenamine", "piriton"], "zh-CN": ["抗组胺", "氯苯那敏"] }
+    },
+    {
+      "id": "beta-blocker", "name": { "en": "Propranolol 1 mg IV", "zh-CN": "普萘洛尔1mg静注" }, "kind": "medication",
+      "aliases": { "en": ["beta blocker", "propranolol"], "zh-CN": ["β受体阻滞剂", "普萘洛尔"] }, "risk": "high",
+      "effects": [{ "vital": "hr", "delta": -20, "rampMinutes": 1, "durationMinutes": 30 }],
+      "contraindicatedWhen": { "always": true },
+      "harm": { "en": "Beta-blockade worsens anaphylaxis.", "zh-CN": "β受体阻滞剂会加重过敏反应。" }
+    },
+    {
+      "id": "fluids", "name": { "en": "Normal saline 1 L bolus", "zh-CN": "生理盐水1L快速静滴" }, "kind": "fluid",
+      "aliases": { "en": ["fluid", "saline", "bolus"], "zh-CN": ["补液", "生理盐水"] }, "requires": ["iv-access"],
+      "effects": [{ "vital": "sbp", "delta": 10, "onsetMinutes": 0, "rampMinutes": 5, "durationMinutes": 20 }],
+      "indicatedWhen": { "vital": "sbp", "op": "lt", "value": 90 }
+    }
+  ],
+  "physiology": {
+    "baseline": { "hr": 118, "sbp": 100, "dbp": 60, "rr": 22, "spo2": 95, "temp": 36.9, "gcs": 15, "rhythm": "sinus-tachycardia" },
+    "noise": 0,
+    "trends": [
+      { "id": "bp-fall", "vital": "sbp", "perMinute": -2, "min": -50, "until": { "intervened": "epi" }, "recoverPerMinute": 1 },
+      { "id": "dbp-fall", "vital": "dbp", "perMinute": -1, "min": -25, "until": { "intervened": "epi" } },
+      { "id": "desat", "vital": "spo2", "perMinute": -0.5, "min": -12, "until": { "flag": "oxygen-on" } }
+    ],
+    "events": [
+      { "id": "stridor", "atMinute": 10, "setVitals": { "rr": 30 }, "setFlags": ["stridor"], "severity": "warning",
+        "message": { "en": "The patient now has loud stridor.", "zh-CN": "患者出现明显喘鸣。" } },
+      { "id": "collapse", "when": { "vital": "sbp", "op": "lte", "value": 70 }, "setVitals": { "hr": 140 }, "setFlags": ["collapsed"], "severity": "critical",
+        "message": { "en": "She slumps and becomes grey.", "zh-CN": "患者瘫倒，面色灰白。" } }
+    ]
+  },
+  "objectives": [
+    {
+      "id": "assess",
+      "title": { "en": "Assess airway and allergy history", "zh-CN": "评估气道与过敏史" },
+      "hint": { "en": "Look at the airway and ask about allergies.", "zh-CN": "查看气道并询问过敏史。" },
+      "completeWhen": { "all": [{ "examined": "airway" }, { "asked": "allergies" }] },
+      "waypoints": [{ "unless": { "examined": "airway" }, "target": "patient" }, { "target": "records" }]
+    },
+    {
+      "id": "treat",
+      "title": { "en": "Give first-line treatment", "zh-CN": "给予一线治疗" },
+      "hint": { "en": "IM adrenaline.", "zh-CN": "肌注肾上腺素。" },
+      "completeWhen": { "intervened": "epi" },
+      "waypoints": [{ "target": "medications" }]
+    },
+    {
+      "id": "stabilise",
+      "title": { "en": "Stabilise oxygenation", "zh-CN": "稳定氧合" },
+      "hint": { "en": "Oxygen after adrenaline.", "zh-CN": "肾上腺素后吸氧。" },
+      "completeWhen": { "all": [{ "flag": "oxygen-on" }, { "objective": "treat" }] }
+    },
+    {
+      "id": "diagnose",
+      "title": { "en": "Name the diagnosis", "zh-CN": "作出诊断" },
+      "hint": { "en": "Food trigger + airway + shock.", "zh-CN": "食物诱因＋气道＋休克。" },
+      "completeWhen": { "decided": "dx" }
+    },
+    {
+      "id": "dispose",
+      "title": { "en": "Plan disposition", "zh-CN": "制定去向" },
+      "hint": { "en": "Observation and discharge planning.", "zh-CN": "观察与出院计划。" },
+      "completeWhen": { "decided": "disposition" }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dx",
+      "prompt": { "en": "Most likely diagnosis?", "zh-CN": "最可能的诊断？" },
+      "requires": { "objective": "assess" },
+      "need": { "en": "Assess the airway and allergy history first.", "zh-CN": "先评估气道和过敏史。" },
+      "options": [
+        { "id": "anaphylaxis", "text": { "en": "Anaphylaxis", "zh-CN": "过敏性休克" }, "correct": true, "feedback": { "en": "Yes.", "zh-CN": "正确。" } },
+        { "id": "asthma", "text": { "en": "Acute asthma", "zh-CN": "急性哮喘" }, "correct": false, "feedback": { "en": "No.", "zh-CN": "不对。" } },
+        { "id": "panic", "text": { "en": "Panic attack", "zh-CN": "惊恐发作" }, "correct": false, "feedback": { "en": "No.", "zh-CN": "不对。" } }
+      ]
+    },
+    {
+      "id": "disposition",
+      "kind": "multiple",
+      "prompt": { "en": "Select all appropriate disposition steps.", "zh-CN": "选择所有合适的处置。" },
+      "requires": { "phase": "observation" },
+      "need": { "en": "Stabilise the patient first.", "zh-CN": "先稳定病情。" },
+      "options": [
+        { "id": "observe", "text": { "en": "Observe for at least 6 hours", "zh-CN": "至少观察6小时" }, "correct": true, "feedback": { "en": "Yes.", "zh-CN": "是。" } },
+        { "id": "autoinjector", "text": { "en": "Prescribe adrenaline auto-injectors", "zh-CN": "开具肾上腺素自动注射笔" }, "correct": true, "feedback": { "en": "Yes.", "zh-CN": "是。" } },
+        { "id": "discharge-now", "text": { "en": "Discharge now", "zh-CN": "立即出院" }, "correct": false, "feedback": { "en": "No.", "zh-CN": "否。" } },
+        { "id": "referral", "text": { "en": "Refer to allergy clinic", "zh-CN": "转诊过敏专科" }, "correct": true, "feedback": { "en": "Yes.", "zh-CN": "是。" } }
+      ]
+    }
+  ],
+  "rubric": [
+    { "id": "epi-given", "domain": "management", "text": { "en": "Adrenaline given", "zh-CN": "给予肾上腺素" }, "weight": 3, "met": { "intervened": "epi" } },
+    { "id": "no-beta", "domain": "safety", "text": { "en": "No beta-blocker", "zh-CN": "未用β受体阻滞剂" }, "weight": 2, "met": { "not": { "intervened": "beta-blocker" } } },
+    { "id": "airway", "domain": "examination", "text": { "en": "Airway assessed", "zh-CN": "评估气道" }, "weight": 1, "met": { "examined": "airway" } },
+    { "id": "comms", "domain": "communication", "text": { "en": "Reassured the patient", "zh-CN": "安抚患者" }, "weight": 1 }
+  ],
+  "debrief": {
+    "title": { "en": "Debrief", "zh-CN": "复盘" },
+    "conclusion": { "en": "Peanut anaphylaxis.", "zh-CN": "花生过敏性休克。" }
+  },
+  "solution": [
+    { "type": "start" },
+    { "type": "examine", "findingId": "airway" },
+    { "type": "ask", "itemId": "allergies" },
+    { "type": "ask", "itemId": "trigger" },
+    { "type": "intervene", "interventionId": "epi" },
+    { "type": "intervene", "interventionId": "oxygen" },
+    { "type": "answer", "decisionId": "dx", "optionIds": ["anaphylaxis"] },
+    { "type": "answer", "decisionId": "disposition", "optionIds": ["referral", "observe", "autoinjector"] },
+    { "type": "finish" }
+  ]
+}

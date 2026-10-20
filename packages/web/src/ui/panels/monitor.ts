@@ -1,0 +1,288 @@
+/**
+ * Bedside monitor panel: the shared `monitorRenderer` on a large canvas,
+ * the alarm list, and NIBP "cycle now" (re-measures the cuff pressure from
+ * the current physiology snapshot). Before the case's monitor is attached
+ * (`monitorAttached: false`) the screen is dark, the side says so, lists the
+ * triage readings taken by hand and offers to attach it (the case's
+ * monitoring intervention, through the approval gate like any treatment).
+ * Embodied mode (docs/EMBODIED.md §5, §6): attach, NIBP and reading the
+ * screen are operations of the patient's monitor in the world
+ * (`world_action`) — the same path the agents use, so the learner must stand
+ * at the bedside (a short step is taken for them; otherwise "Go there"). The
+ * live screen (waveforms, numbers, rhythm, alarms) shows only while the
+ * world says the learner can read it (`EmbodiedLink.screen`: the world's
+ * vitals check holds through that monitor's screen); out of view, the panel
+ * says why and offers the way there — never the screen.
+ */
+import { conditionRefs, vitalsAt, type CaseDefinition, type Intervention, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import type { App } from "../../app/context.js";
+import type { ScreenView } from "../../app/embodied-link.js";
+import { MONITOR_COLORS, monitorRenderer } from "../../shared/monitor-render.js";
+import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
+import { clear, clockLabel, h } from "../dom.js";
+import type { PanelView } from "../panel.js";
+
+export interface MonitorArgs {
+  placementId: string | null;
+}
+
+const UNITS: Record<string, string> = { hr: "/min", sbp: "mmHg", dbp: "mmHg", rr: "/min", spo2: "%", temp: "°C", gcs: "", glucose: "mmol/L", etco2: "mmHg", pain: "/10" };
+
+/**
+ * The intervention that attaches the case's bedside monitor: the first
+ * `monitoring` intervention named by an `intervened` leaf of
+ * `physiology.monitor.attachedWhen`, in condition order (the case lists the
+ * plain monitoring step first, e.g. stroke's `cardiac-monitoring` before the
+ * post-thrombolysis monitoring order); null when there is none.
+ */
+export function monitorIntervention(c: CaseDefinition): Intervention | null {
+  const when = c.physiology?.monitor?.attachedWhen;
+  if (!when) return null;
+  for (const ref of conditionRefs(when)) {
+    if (ref.kind !== "intervention") continue;
+    const found = c.interventions.find((i) => i.id === ref.id && i.kind === "monitoring");
+    if (found) return found;
+  }
+  return null;
+}
+
+/** "HR 96/min · BP 192/104 mmHg · …" — the spot checks of a snapshot taken before the monitor (static readings). */
+export function spotCheckText(snap: VitalsSnapshot): string {
+  const v = snap.vitals;
+  const keys = new Set<VitalKey>(snap.spotChecks ?? []);
+  const parts: string[] = [];
+  for (const k of snap.spotChecks ?? []) {
+    if (k === "dbp" && keys.has("sbp")) continue;
+    if (k === "sbp" && v.sbp != null && v.dbp != null && keys.has("dbp")) {
+      parts.push(`${trMaybe("vital.bp", "BP")} ${v.sbp}/${v.dbp} mmHg`);
+      continue;
+    }
+    const value = v[k];
+    const unit = UNITS[k] ?? "";
+    if (typeof value === "number") parts.push(`${trMaybe(`vital.${k}`, k)} ${value}${unit === "%" || unit.startsWith("/") ? unit : unit ? ` ${unit}` : ""}`);
+  }
+  return parts.join(" · ");
+}
+
+/** The panel's screen while the learner cannot read it: dark, the reason in words, no reading of any kind. */
+export function drawOutOfView(ctx: CanvasRenderingContext2D, width: number, height: number, title: string, sub: string): void {
+  ctx.save();
+  ctx.fillStyle = MONITOR_COLORS.bg;
+  ctx.fillRect(0, 0, width, height);
+  const u = Math.max(1, Math.min(width / 320, height / 200));
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#9a9a9a";
+  ctx.font = `bold ${Math.round(13 * u)}px ui-monospace, Menlo, monospace`;
+  ctx.fillText(title, width / 2, height / 2 - 8 * u, width - 16);
+  ctx.font = `${Math.round(8.5 * u)}px ui-monospace, Menlo, monospace`;
+  ctx.fillText(sub, width / 2, height / 2 + 10 * u, width - 16);
+  ctx.restore();
+}
+
+export function monitorPanel(app: App, args: MonitorArgs): () => PanelView {
+  return () => {
+    const game = app.game;
+    if (!game) throw new Error("no game");
+    const c = game.caseDef;
+    const store = game.session.store;
+    const slot = game.facility.patientSlots.find((s) => s.id === game.slotId) ?? null;
+    // embodied: the patient's monitor in the world model (null: none at the bedside — her own kit, the clinical act)
+    const emb = game.embodied;
+    const device = emb?.patientMonitor() ?? null;
+    // A monitor placement shows this patient only when it is the patient's monitor: embodied, the world's (the slot's
+    // linked monitor, else one at the bedside); clinical mode, the one linked to the slot (or linked to no slot).
+    const linked = emb
+      ? args.placementId === null || `eq:${args.placementId}` === device
+      : args.placementId === null || !slot?.monitor || slot.monitor === args.placementId || game.facility.patientSlots.every((s) => s.monitor !== args.placementId);
+    const placement = args.placementId ? game.stations.placement(args.placementId) : device ? game.stations.placement(device.slice("eq:".length)) : null;
+    const name = placement ? game.stations.label(placement, getLocale()) : ct(game.caseDef.patient.displayName);
+    const canvas = h("canvas", { class: "monitor-canvas", width: "960", height: "540", role: "img", "aria-label": tr("monitor.title", { name }) });
+    const ctx = canvas.getContext("2d");
+    const alarms = h("div", { class: "alarm-list", "aria-live": "polite" });
+    const nibpText = h("span", { class: "small muted" });
+    let nibp: { sbp: number; dbp: number; at: number; none?: boolean } | null = null;
+    // embodied: can the learner read the screen from where the body stands (the world's verdict)?
+    let screen: ScreenView | null = emb && linked ? emb.screen() : null;
+    const outOfView = () => screen?.reason === "monitor-not-in-view";
+    const screenBox = h("div", { class: "monitor-screen", id: "monitor-screen" });
+    const readOut = h("p", { class: "small monitor-read", id: "monitor-read-result", hidden: true });
+    const measured = () => {
+      const snap = vitalsAt(c, store.snapshot?.state ?? game.session.session.state);
+      nibpBtn.disabled = false;
+      if (snap.monitorAttached === false || snap.vitals.sbp == null || snap.vitals.dbp == null) {
+        nibp = null;
+        renderInfo();
+        return;
+      }
+      nibp = { sbp: Math.round(snap.vitals.sbp), dbp: Math.round(snap.vitals.dbp), at: snap.minute, ...(snap.unmeasurable?.includes("sbp") ? { none: true } : {}) };
+      renderInfo();
+    };
+    const snapshot = (): VitalsSnapshot | null => {
+      if (!linked) return null;
+      return store.snapshot?.vitals ?? vitalsAt(c, game.session.session.state);
+    };
+    /** The screen state on the element (`data-screen`): live, off (not attached), out-of-view, none. */
+    const markScreen = (): void => {
+      const snap = snapshot();
+      screenBox.dataset.screen = !linked || !snap ? "none" : snap.monitorAttached === false ? "off" : outOfView() ? "out-of-view" : "live";
+      // assistive tech hears what the screen shows: nothing readable while it is out of view
+      canvas.setAttribute("aria-label", outOfView() ? `${tr("monitor.title", { name })} — ${tr("monitor.outOfView")}` : tr("monitor.title", { name }));
+    };
+    const nibpBtn = h(
+      "button",
+      {
+        type: "button",
+        id: "nibp-cycle",
+        disabled: !linked,
+        onclick: () => {
+          nibpBtn.disabled = true;
+          nibpText.textContent = tr("monitor.nibpMeasuring");
+          app.sound("beep");
+          if (emb && device) {
+            // the monitor's `cycle_nibp` (within reach of the cuff; 45 s of simulated time)
+            void emb.worldAction({ operation: "cycle_nibp", targetId: device }).then((r) => {
+              if (r?.status === "completed") measured();
+              else {
+                nibpBtn.disabled = false;
+                renderInfo();
+              }
+            });
+            return;
+          }
+          setTimeout(measured, 1400);
+        },
+      },
+      tr("monitor.nibp"),
+    );
+
+    const attachWith = monitorIntervention(c);
+    const renderInfo = (): void => {
+      clear(alarms);
+      markScreen();
+      const snap = snapshot();
+      const off = snap?.monitorAttached === false;
+      if (!off && outOfView() && screen) {
+        // attached, but its screen is not in view from here: say so and offer the way — no reading, no alarm
+        alarms.append(h("h4", null, tr("monitor.outOfView")), h("p", { id: "monitor-out-of-view", class: "notice" }, screen.message ?? tr("monitor.outOfViewBody")));
+        const hint = screen.hint;
+        // the way there — never a reading from here (the monitor's own `read` operation still reads through a
+        // window, which the vitals rule does not: reported to the world package)
+        if (hint) alarms.append(h("button", { type: "button", id: "monitor-go", class: "primary", onclick: () => void emb?.goTo(hint.goal, hint.label) }, hint.label));
+        readOut.hidden = true;
+        nibpText.textContent = nibp ? tr("monitor.nibpDone", { bp: nibp.none ? tr("monitor.noReading") : `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
+        nibpBtn.disabled = !linked;
+        return;
+      }
+      nibpBtn.disabled = !linked || off;
+      nibpBtn.title = off ? tr("monitor.nibpOff") : "";
+      if (off) {
+        alarms.append(h("h4", null, tr("monitor.notAttached")), h("p", { id: "monitor-off", class: "notice" }, tr("monitor.notAttachedBody")));
+        const manual = spotCheckText(snap);
+        if (manual) alarms.append(h("p", { id: "monitor-spot-checks", class: "small" }, h("b", null, `${tr("monitor.spotChecks")}: `), manual));
+        if (attachWith) {
+          const attach = () => {
+            // embodied: the monitor's `attach` operation (its clinical effect is this intervention, through the
+            // learner's tool path); no monitor at the bedside: the intervention itself (spatially gated)
+            if (emb && device) void emb.worldAction({ operation: "attach", targetId: device });
+            else app.act({ type: "intervene", interventionId: attachWith.id });
+          };
+          alarms.append(h("button", { type: "button", id: "monitor-attach", dataset: { intervention: attachWith.id }, onclick: attach }, tr("monitor.attach")));
+        }
+      }
+      // Without a monitor nothing alarms (the engine raises no alarm then): no "Alarms" section.
+      if (!off) alarms.append(h("h4", null, tr("monitor.alarms")));
+      if (!linked) alarms.append(h("p", { class: "small muted" }, tr("monitor.notLinked")));
+      else if (snap?.baselineOnly) alarms.append(h("p", { class: "notice" }, tr("monitor.baseline")));
+      else if (off) {
+        /* nothing more to say: the notice above covers it */
+      } else {
+        // Cardiac arrest: vitals the monitor cannot read do not alarm on their placeholder 0 (hr says "no reading").
+        const unread = new Set<string>(snap?.unmeasurable ?? []);
+        const list = (snap?.alarms ?? []).filter((a) => a.vital === "hr" || !unread.has(a.vital));
+        if (!list.length) alarms.append(h("p", { class: "small muted" }, tr("monitor.noAlarms")));
+        else
+          alarms.append(
+            h(
+              "ul",
+              { class: "alarms" },
+              list.map((a) =>
+                h(
+                  "li",
+                  { class: `alarm ${a.level}` },
+                  h("b", null, tr(`monitor.level.${a.level}`)),
+                  " ",
+                  trMaybe(`vital.${a.vital}`, a.vital),
+                  " ",
+                  h("span", { class: "num" }, unread.has(a.vital) ? tr("monitor.noReading") : `${Math.round(a.value * 10) / 10} ${UNITS[a.vital] ?? ""}`),
+                ),
+              ),
+            ),
+          );
+      }
+      if (snap && c.clock.mode === "simulated") alarms.append(h("p", { class: "small muted" }, tr("monitor.minute", { n: Math.round(snap.minute) }), c.clock.startTime ? ` · ${clockLabel(c.clock.startTime, snap.minute)}` : ""));
+      // embodied: reading the screen is an operation of the monitor (within 6 m, line of sight)
+      if (emb && device && linked && !off) {
+        alarms.append(
+          h(
+            "button",
+            {
+              type: "button",
+              id: "monitor-read",
+              onclick: () =>
+                void emb.worldAction({ operation: "read", targetId: device }).then((r) => {
+                  if (r?.status !== "completed") return;
+                  readOut.textContent = r.message;
+                  readOut.hidden = false;
+                }),
+            },
+            tr("monitor.read"),
+          ),
+          readOut,
+        );
+      }
+      nibpText.textContent = off ? tr("monitor.nibpOff") : nibp ? tr("monitor.nibpDone", { bp: nibp.none ? tr("monitor.noReading") : `${nibp.sbp}/${nibp.dbp}`, time: c.clock.startTime ? clockLabel(c.clock.startTime, nibp.at) : `T+${Math.round(nibp.at)}` }) : "";
+    };
+    renderInfo();
+
+    let raf = 0;
+    const draw = (now: number) => {
+      raf = requestAnimationFrame(draw);
+      if (!canvas.isConnected || !ctx) return;
+      if (outOfView()) drawOutOfView(ctx, canvas.width, canvas.height, tr("monitor.outOfViewScreen"), tr("monitor.outOfViewScreenSub"));
+      else monitorRenderer.draw(ctx, canvas.width, canvas.height, snapshot(), now, getLocale());
+    };
+    raf = requestAnimationFrame(draw);
+    screenBox.append(canvas);
+    let last = store.snapshot;
+    let lastScreen = JSON.stringify(screen);
+    let lastVersion = store.version;
+    return {
+      id: "monitor",
+      kicker: tr("monitor.kicker"),
+      title: tr("monitor.title", { name }),
+      variant: "wide",
+      body: h("div", { class: "monitor-wrap" }, screenBox, h("aside", { class: "monitor-side" }, alarms, h("div", { class: "nibp" }, nibpBtn, nibpText))),
+      update() {
+        // embodied: the body may have been walked (Go there, a short step) — is the screen in view now?
+        if (emb && linked && store.version !== lastVersion) {
+          lastVersion = store.version;
+          screen = emb.screen();
+          const key = JSON.stringify(screen);
+          if (key !== lastScreen) {
+            lastScreen = key;
+            last = store.snapshot;
+            renderInfo();
+            return;
+          }
+        }
+        if (store.snapshot === last) return;
+        last = store.snapshot;
+        renderInfo();
+      },
+      dispose() {
+        cancelAnimationFrame(raf);
+      },
+    };
+  };
+}

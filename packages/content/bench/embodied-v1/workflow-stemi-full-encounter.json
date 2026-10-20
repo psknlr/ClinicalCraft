@@ -1,0 +1,627 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-stemi-full-encounter",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "完整的具身 STEMI 急诊接诊",
+    "en": "Full embodied STEMI ED encounter"
+  },
+  "instruction": {
+    "zh-CN": "从患者到达一直处理到转入导管室：完成每一个学习目标，然后结束病例。",
+    "en": "Manage this patient from arrival to transfer to the cath lab: complete every objective, then finish the case."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "all": [
+          {
+            "objective": "obj1-initial"
+          },
+          {
+            "objective": "obj2-ecg"
+          },
+          {
+            "objective": "obj3-bedside"
+          },
+          {
+            "objective": "obj4-definitive"
+          },
+          {
+            "objective": "obj5-transfer"
+          }
+        ]
+      }
+    },
+    {
+      "clinical": {
+        "all": [
+          {
+            "ordered": "ecg-12lead"
+          },
+          {
+            "read": "ecg-12lead"
+          },
+          {
+            "intervened": "cardiac-monitoring"
+          }
+        ]
+      }
+    },
+    {
+      "world": {
+        "kind": "entityState",
+        "target": "eq:cathlab-monitor",
+        "state": "attached"
+      }
+    },
+    {
+      "world": {
+        "kind": "patientAt",
+        "provider": "eq:cathlab-c-arm"
+      }
+    },
+    {
+      "caseFinished": true
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 400,
+    "maxTurns": 10,
+    "timeoutMs": 600000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "solve-case"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg-12lead"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "reset"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-monitor",
+          "operation": "attach",
+          "parameters": {
+            "intervention": "cardiac-monitoring"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "iv-access"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "When did the pain start, and what were you doing?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "What does the pain feel like?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Does the pain spread anywhere?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Have you been sweating?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Any nausea or vomiting?"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ecg-12lead",
+          "phase": "ed"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg-right-sided"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "reset"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "activate-cath-lab"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:lab-workstation"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "order",
+          "parameters": {
+            "investigation": "hs-troponin"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "order",
+          "parameters": {
+            "investigation": "cbc"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "order",
+          "parameters": {
+            "investigation": "renal-electrolytes"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "order",
+          "parameters": {
+            "investigation": "coagulation"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "aspirin"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "general"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "jvp"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "lungs"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ecg-right-sided",
+          "phase": "ed"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "dx-diagnosis",
+          "option_ids": [
+            "dx-inferior-rv"
+          ]
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Is the pain tearing or ripping, and does it go through to your back?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Any history of stroke, brain bleed, stomach bleeding or other bleeding problems? Any recent surgery or head injury?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Are you allergic to any medicines or anything else?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "What medications do you take, and did you take them today? Did you take anything before coming in?"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "bilateral-bp"
+        }
+      },
+      {
+        "tool": "examine",
+        "args": {
+          "finding_id": "heart"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "nitrate-safety",
+          "option_ids": [
+            "nitro-withhold"
+          ]
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "fluid-bolus"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "ticagrelor"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "ufh"
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "reperfusion-strategy",
+          "option_ids": [
+            "rep-ppci"
+          ]
+        }
+      },
+      {
+        "tool": "answer_decision",
+        "args": {
+          "decision_id": "antithrombotic-bundle",
+          "option_ids": [
+            "at-aspirin",
+            "at-p2y12",
+            "at-ufh"
+          ]
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Do you smoke? How much, and for how long?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "Do you have high blood pressure?"
+        }
+      },
+      {
+        "tool": "ask_patient",
+        "args": {
+          "question": "What are you most worried about? What do you think is going on?"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus1-defibrillator"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-defibrillator",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-defibrillator",
+          "operation": "use",
+          "parameters": {
+            "intervention": "defib-pads"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "transfer-cath-lab"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:radiology-console"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "order",
+          "parameters": {
+            "investigation": "coronary-angiography"
+          }
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 13.36
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 6.14
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "read",
+          "parameters": {
+            "investigation": "coronary-angiography",
+            "phase": "cath"
+          }
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:resus1-ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg-12lead"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:resus1-ecg",
+          "operation": "reset"
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 4
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ecg-12lead",
+          "phase": "post-pci"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:lab-workstation"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "read",
+          "parameters": {
+            "investigation": "cbc",
+            "phase": "ed"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "read",
+          "parameters": {
+            "investigation": "renal-electrolytes",
+            "phase": "ed"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "read",
+          "parameters": {
+            "investigation": "coagulation",
+            "phase": "ed"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "read",
+          "parameters": {
+            "investigation": "hs-troponin",
+            "phase": "ed"
+          }
+        }
+      },
+      {
+        "tool": "finish_case"
+      }
+    ]
+  }
+}

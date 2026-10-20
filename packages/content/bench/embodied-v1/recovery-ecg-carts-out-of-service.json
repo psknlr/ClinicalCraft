@@ -1,0 +1,122 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "recovery-ecg-carts-out-of-service",
+  "suite": "embodied-v1",
+  "category": "recovery",
+  "title": {
+    "zh-CN": "抢救室两台心电图机停用：另取一台",
+    "en": "Both resuscitation-room ECG carts out of service: fetch another"
+  },
+  "instruction": {
+    "zh-CN": "为抢救室 1 号床的患者记录一份 12 导联心电图。",
+    "en": "Record a 12-lead ECG for the patient in resuscitation bay 1."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "setup": {
+    "unavailable": [
+      "eq:resus1-ecg",
+      "eq:resus2-ecg"
+    ],
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ecg-12lead"
+      }
+    },
+    {
+      "world": {
+        "kind": "deviceAtBedside",
+        "capability": "ecg-12lead"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 30,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "ecg-12lead"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:cub2-ecg"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:cub2-ecg",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:cub2-ecg",
+          "operation": "prepare"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:cub2-ecg",
+          "operation": "connect"
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:cub2-ecg",
+          "operation": "record",
+          "parameters": {
+            "investigation": "ecg-12lead"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:cub2-ecg",
+          "operation": "reset"
+        }
+      }
+    ]
+  }
+}

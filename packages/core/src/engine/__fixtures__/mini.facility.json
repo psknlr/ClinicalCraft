@@ -1,0 +1,46 @@
+{
+  "schema": "clinicalcraft/facility@1",
+  "id": "mini-clinic",
+  "name": { "zh-CN": "迷你诊所", "en": "Mini clinic" },
+  "description": { "zh-CN": "测试设施", "en": "Test facility" },
+  "bounds": { "minX": -20, "maxX": 20, "minZ": -20, "maxZ": 20 },
+  "spawn": { "x": 0, "z": 15 },
+  "catalogs": ["mini"],
+  "terrain": {
+    "ground": "grass",
+    "paths": [{ "x": 0, "z": 13, "w": 4, "d": 6, "material": "path" }]
+  },
+  "buildings": [
+    {
+      "id": "clinic",
+      "name": { "zh-CN": "门诊楼", "en": "Clinic building" },
+      "rect": { "x": 0, "z": 0, "w": 30, "d": 20 },
+      "floor": "floor",
+      "openings": [{ "side": "s", "kind": "double-door", "width": 3 }],
+      "roof": { "material": "roof", "skylights": [{ "x": 0, "z": 0, "w": 4, "d": 4 }] }
+    }
+  ],
+  "rooms": [
+    { "id": "consult", "name": { "zh-CN": "诊室", "en": "Consult room" }, "kind": "consult", "building": "clinic", "rect": { "x": -8, "z": 0, "w": 10, "d": 10 },
+      "partitions": [{ "side": "e", "openings": [{ "width": 2, "kind": "door" }] }] },
+    { "id": "bay-1", "name": { "zh-CN": "抢救位", "en": "Resus bay" }, "kind": "resus", "building": "clinic", "rect": { "x": -10, "z": -2, "w": 4, "d": 4 } },
+    { "id": "imaging-suite", "name": { "zh-CN": "影像室", "en": "Imaging" }, "kind": "imaging", "building": "clinic", "rect": { "x": 8, "z": 0, "w": 10, "d": 10 } }
+  ],
+  "placements": [
+    { "id": "ws-lab", "type": "workstation", "x": -8, "z": 4, "room": "consult", "capabilities": ["lab-hematology", "lab-chemistry"],
+      "label": { "zh-CN": "检验工作台", "en": "Lab workstation" } },
+    { "id": "ws-img", "type": "workstation", "x": 8, "z": 4, "room": "imaging-suite", "capabilities": ["ct", "ultrasound"],
+      "label": { "zh-CN": "影像工作站", "en": "Imaging workstation" } },
+    { "id": "ct-1", "type": "ct-scanner", "x": 10, "z": -2, "room": "imaging-suite" },
+    { "id": "couch-1", "type": "exam-couch", "x": -10, "z": -2, "room": "bay-1" },
+    { "id": "mon-1", "type": "patient-monitor", "x": -11, "z": -3.5, "room": "bay-1" },
+    { "id": "board-1", "type": "evidence-board", "x": 0, "z": -8 },
+    { "id": "atlas-1", "type": "anatomy-atlas-kiosk", "x": 4, "z": -8 }
+  ],
+  "patientSlots": [
+    { "id": "slot-bay", "room": "bay-1", "x": -10, "z": -2, "posture": "lying", "bed": "couch-1", "monitor": "mon-1", "accepts": ["outpatient", "emergency"] },
+    { "id": "slot-ward", "room": "consult", "x": -6, "z": 2, "accepts": ["ward"] }
+  ],
+  "staff": [{ "id": "nurse-1", "role": "nurse", "name": { "zh-CN": "李护士", "en": "Nurse Li" }, "room": "consult", "x": -6, "z": -3 }],
+  "buildZone": { "rect": { "x": 0, "z": 16, "w": 6, "d": 6 }, "materials": ["wood", "stone", "glass", "lamp"], "seedBlocks": [{ "cell": [0, 0, 0], "type": "wood" }] }
+}

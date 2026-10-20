@@ -1,0 +1,97 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "spatial-nearest-defibrillator-on-foot",
+  "suite": "embodied-v1",
+  "category": "spatial",
+  "title": {
+    "zh-CN": "步行最快能到达的除颤仪",
+    "en": "The defibrillator you can reach soonest on foot"
+  },
+  "instruction": {
+    "zh-CN": "来这里的路上你经过了几台除颤仪。你现在在影像科控制与阅片室。在你见过的除颤仪中，从这里步行哪一台最快能到？墙和门都算在内。提交它的实体 ID。",
+    "en": "On your way here you passed several defibrillators. You are now in the radiology control and reading room. Of the defibrillators you have seen, which one can you reach soonest on foot from here? Walls and doors count. Submit its entity id."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actions": [
+      {
+        "actor": "actor:clinician",
+        "operation": "look_at",
+        "target": "eq:resus1-defibrillator"
+      },
+      {
+        "actor": "actor:clinician",
+        "operation": "look_at",
+        "target": "eq:resus2-defibrillator"
+      },
+      {
+        "actor": "actor:clinician",
+        "operation": "look_at",
+        "target": "eq:cathlab-defibrillator"
+      }
+    ],
+    "actor": {
+      "at": {
+        "kind": "point",
+        "x": 31,
+        "z": -28
+      }
+    }
+  },
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "eq:cathlab-defibrillator"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "find",
+        "query": {
+          "capabilities": [
+            "defibrillator"
+          ]
+        },
+        "save": "defib"
+      },
+      {
+        "op": "answer",
+        "from": "defib"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "find_entities",
+        "args": {
+          "capabilities": [
+            "defibrillator"
+          ]
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "eq:cathlab-defibrillator"
+        }
+      }
+    ]
+  }
+}

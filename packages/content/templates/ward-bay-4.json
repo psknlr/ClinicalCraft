@@ -1,0 +1,53 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "ward-bay-4",
+  "name": {"zh-CN": "四人病房", "en": "Four-bed ward bay"},
+  "description": {"zh-CN": "内科病房：四张病床，每床配监护仪和吸氧吸引接口，两两共用床头服务通道，两台输液泵，床间隔帘。", "en": "A medical ward bay: four beds, each with a monitor and an oxygen/suction outlet, paired around shared bed-head service gaps, two infusion pumps and curtains between beds."},
+  "kind": "ward",
+  "size": {"w": 12, "d": 8},
+  "floor": "lino",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "double-door", "width": 2.4, "height": 3}]}
+  ],
+  "sign": {"text": {"zh-CN": "病房", "en": "Ward bay"}, "side": "n"},
+  "lights": [
+    {"x": -3, "z": -1.5},
+    {"x": 3, "z": -1.5},
+    {"x": 0, "z": 2}
+  ],
+  "placements": [
+    {"id": "bed-1", "type": "hospital-bed", "x": -4.3, "z": -2.2, "label": {"zh-CN": "1 床", "en": "Bed 1"}},
+    {"id": "monitor-1", "type": "patient-monitor", "x": -3.5, "z": -3.475, "label": {"zh-CN": "1 床监护仪", "en": "Bed 1 monitor"}},
+    {"id": "oxygen-1", "type": "oxygen-outlet", "x": -4.5, "z": -3.7},
+    {"id": "bed-2", "type": "hospital-bed", "x": -1.7, "z": -2.2, "label": {"zh-CN": "2 床", "en": "Bed 2"}},
+    {"id": "monitor-2", "type": "patient-monitor", "x": -2.5, "z": -3.475, "label": {"zh-CN": "2 床监护仪", "en": "Bed 2 monitor"}},
+    {"id": "oxygen-2", "type": "oxygen-outlet", "x": -1.5, "z": -3.7},
+    {"id": "bed-3", "type": "hospital-bed", "x": 1.7, "z": -2.2, "label": {"zh-CN": "3 床", "en": "Bed 3"}},
+    {"id": "monitor-3", "type": "patient-monitor", "x": 2.5, "z": -3.475, "label": {"zh-CN": "3 床监护仪", "en": "Bed 3 monitor"}},
+    {"id": "oxygen-3", "type": "oxygen-outlet", "x": 1.5, "z": -3.7},
+    {"id": "bed-4", "type": "hospital-bed", "x": 4.3, "z": -2.2, "label": {"zh-CN": "4 床", "en": "Bed 4"}},
+    {"id": "monitor-4", "type": "patient-monitor", "x": 3.5, "z": -3.475, "label": {"zh-CN": "4 床监护仪", "en": "Bed 4 monitor"}},
+    {"id": "oxygen-4", "type": "oxygen-outlet", "x": 4.5, "z": -3.7},
+    {"id": "pump-2", "type": "infusion-pump", "x": -0.95, "z": -0.55, "label": {"zh-CN": "2 床输液泵", "en": "Bed 2 infusion pump"}},
+    {"id": "pump-3", "type": "infusion-pump", "x": 0.95, "z": -0.55, "label": {"zh-CN": "3 床输液泵", "en": "Bed 3 infusion pump"}},
+    {"id": "curtain-1", "type": "privacy-curtain", "x": -3, "z": -2.2, "rot": 90},
+    {"id": "curtain-2", "type": "privacy-curtain", "x": 0, "z": -2.2, "rot": 90},
+    {"id": "curtain-3", "type": "privacy-curtain", "x": 3, "z": -2.2, "rot": 90},
+    {"id": "table-1", "type": "overbed-table", "x": -4.3, "z": 0.2},
+    {"id": "table-4", "type": "overbed-table", "x": 4.3, "z": 0.2},
+    {"id": "sink", "type": "sink", "x": -5.55, "z": 2.4, "rot": 90},
+    {"id": "sanitizer", "type": "hand-sanitizer", "x": 5.3, "z": 3.3},
+    {"id": "treatment-cart", "type": "treatment-cart", "x": 3.2, "z": 3.35, "label": {"zh-CN": "病房治疗车", "en": "Ward treatment cart"}}
+  ],
+  "patientSlots": [
+    {"id": "bed-1", "x": -4.3, "z": -2.2, "posture": "lying", "bed": "bed-1", "monitor": "monitor-1", "accepts": ["inpatient", "ward"]},
+    {"id": "bed-2", "x": -1.7, "z": -2.2, "posture": "lying", "bed": "bed-2", "monitor": "monitor-2", "accepts": ["inpatient", "ward"]},
+    {"id": "bed-3", "x": 1.7, "z": -2.2, "posture": "lying", "bed": "bed-3", "monitor": "monitor-3", "accepts": ["inpatient", "ward"]},
+    {"id": "bed-4", "x": 4.3, "z": -2.2, "posture": "lying", "bed": "bed-4", "monitor": "monitor-4", "accepts": ["inpatient", "ward"]}
+  ],
+  "capabilities": ["cardiac-monitor", "oxygen", "suction", "infusion-pump", "iv-access"],
+  "tags": ["ward", "inpatient"]
+}

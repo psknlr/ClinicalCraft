@@ -1,0 +1,115 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-stroke-ct-head",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "把卒中患者送到 CT：申请并阅读头颅 CT",
+    "en": "Take the stroke patient to CT: request and read a CT head"
+  },
+  "instruction": {
+    "zh-CN": "把这位卒中患者送到 CT 扫描仪，在扫描仪旁或影像科控制台申请头颅 CT 平扫，然后阅读报告。",
+    "en": "Take this stroke patient to the CT scanner, request a non-contrast CT head at the scanner or the radiology console, then read the report."
+  },
+  "caseId": "acute-ischemic-stroke",
+  "locale": "zh-CN",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ct-head"
+      }
+    },
+    {
+      "clinical": {
+        "read": "ct-head"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "ct-head"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "ct-head"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "transport_patient",
+        "args": {
+          "destination": "eq:ct-scanner"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:radiology-console"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "order",
+          "parameters": {
+            "investigation": "ct-head"
+          }
+        }
+      },
+      {
+        "tool": "wait",
+        "args": {
+          "minutes": 11.5
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:radiology-console",
+          "operation": "read",
+          "parameters": {
+            "investigation": "ct-head"
+          }
+        }
+      }
+    ]
+  }
+}

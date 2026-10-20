@@ -1,0 +1,44 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "operating-theatre",
+  "name": {"zh-CN": "手术室", "en": "Operating theatre"},
+  "description": {"zh-CN": "手术室：手术台、无影灯、麻醉机、监护仪、C 形臂、器械台、吸引、输液和刷手池；无菌区仅限临床人员。", "en": "An operating theatre: table, surgical light, anaesthesia machine, monitor, C-arm, instrument table, suction, infusion and a scrub sink; the sterile area is for clinical staff only."},
+  "kind": "operating-room",
+  "size": {"w": 10, "d": 8},
+  "floor": "tile-white",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "sliding-door", "width": 2.4, "height": 3}]}
+  ],
+  "sign": {"text": {"zh-CN": "手术室 · 无菌区", "en": "Theatre · sterile"}, "side": "n", "color": "#3f8f5a"},
+  "lights": [
+    {"x": -3, "z": 1.5},
+    {"x": 3, "z": 1.5}
+  ],
+  "placements": [
+    {"id": "table", "type": "operating-table", "x": 0, "z": -1.2, "rot": 90, "label": {"zh-CN": "手术台", "en": "Operating table"}},
+    {"id": "light", "type": "surgical-light", "x": 0, "z": -1.2, "rot": 90, "label": {"zh-CN": "无影灯", "en": "Surgical light"}},
+    {"id": "anaesthesia", "type": "anesthesia-machine", "x": -2, "z": -1.6, "rot": 90, "label": {"zh-CN": "麻醉机", "en": "Anaesthesia machine"}},
+    {"id": "monitor", "type": "patient-monitor", "x": -2, "z": -0.4, "rot": 90, "label": {"zh-CN": "麻醉监护仪", "en": "Anaesthesia monitor"}},
+    {"id": "instruments", "type": "instrument-table", "x": 0.6, "z": 0.5, "rot": 180, "label": {"zh-CN": "器械台", "en": "Instrument table"}},
+    {"id": "suction", "type": "suction-unit", "x": -2, "z": -2.8, "rot": 90},
+    {"id": "infusion-pump", "type": "infusion-pump", "x": -1, "z": -2.8, "label": {"zh-CN": "输液泵", "en": "Infusion pump"}},
+    {"id": "oxygen", "type": "oxygen-outlet", "x": -4.7, "z": -1.2, "rot": 90},
+    {"id": "c-arm", "type": "c-arm", "x": 2.4, "z": -1.2, "rot": 270, "label": {"zh-CN": "C 形臂", "en": "C-arm"}},
+    {"id": "drugs", "type": "medication-cabinet", "x": -4.475, "z": 2.2, "rot": 90, "label": {"zh-CN": "麻醉药品柜", "en": "Drug cabinet"}},
+    {"id": "cabinet-1", "type": "cabinet", "x": -3, "z": -3.575},
+    {"id": "cabinet-2", "type": "cabinet", "x": 3, "z": -3.575},
+    {"id": "scrub-sink", "type": "scrub-sink", "x": 3.4, "z": 3.475, "rot": 180, "label": {"zh-CN": "刷手池", "en": "Scrub sink"}},
+    {"id": "treatment-cart", "type": "treatment-cart", "x": -2.6, "z": 3.3, "label": {"zh-CN": "麻醉治疗车", "en": "Anaesthetic treatment cart"}}
+  ],
+  "patientSlots": [
+    {"id": "slot", "x": 0, "z": -1.2, "rot": 90, "posture": "lying", "bed": "table", "monitor": "monitor", "accepts": ["operating-room"]}
+  ],
+  "zones": [
+    {"id": "sterile", "name": {"zh-CN": "手术室无菌区", "en": "Theatre sterile area"}, "rect": {"x": 0, "z": 0, "w": 10, "d": 8}, "roles": ["clinician", "attending", "nurse", "porter"]}
+  ],
+  "capabilities": ["surgery", "anesthesia", "airway", "cardiac-monitor", "capnography", "suction", "oxygen", "infusion-pump", "iv-access", "fluoroscopy", "medications"],
+  "tags": ["surgery", "restricted"]
+}

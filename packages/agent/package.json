@@ -1,0 +1,16 @@
+{
+  "name": "@clinicalcraft/agent",
+  "version": "5.0.0",
+  "description": "ClinicalCraft agent runtime: Op/Event protocol, ClinicalSession, LLM providers, tools, approvals, hooks, commands, NPC and clinician agents",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "source": "./src/index.ts", "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./node": { "source": "./src/node/index.ts", "types": "./dist/node/index.d.ts", "default": "./dist/node/index.js" }
+  },
+  "files": ["dist"],
+  "scripts": { "build": "tsc -b" },
+  "dependencies": { "@clinicalcraft/core": "5.0.0", "@clinicalcraft/world": "5.0.0", "@anthropic-ai/sdk": "0.131.0", "zod": "3.25.76" }
+}

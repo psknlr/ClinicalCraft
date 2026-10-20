@@ -1,0 +1,775 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClinicalCraft equipment catalog (clinicalcraft/equipment-catalog@1)",
+  "description": "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction, embodiment: portable, reach, interaction points, behaviour, model).",
+  "$ref": "#/definitions/EquipmentCatalog",
+  "definitions": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "LocalizedText": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+          }
+        }
+      ]
+    },
+    "Capability": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "HexColor": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "Material": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "pattern": {
+          "type": "string",
+          "enum": [
+            "noise",
+            "brick",
+            "plank",
+            "tile",
+            "flat",
+            "stripe",
+            "grid",
+            "dots",
+            "screen"
+          ],
+          "default": "noise"
+        },
+        "variance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "default": 0.11
+        },
+        "emissive": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "emissiveIntensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5,
+          "default": 0.3
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "roughness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.93
+        },
+        "metalness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "castShadow": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "required": [
+        "id",
+        "color"
+      ],
+      "additionalProperties": false
+    },
+    "VoxelPart": {
+      "type": "object",
+      "properties": {
+        "m": {
+          "$ref": "#/definitions/Id"
+        },
+        "p": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "s": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "r": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "anim": {
+          "type": "string",
+          "enum": [
+            "none",
+            "blink",
+            "spin",
+            "pulse",
+            "slide"
+          ],
+          "default": "none"
+        }
+      },
+      "required": [
+        "m",
+        "p",
+        "s"
+      ],
+      "additionalProperties": false
+    },
+    "EquipmentType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "name": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "imaging",
+            "laboratory",
+            "pathology",
+            "monitoring",
+            "resuscitation",
+            "therapy",
+            "surgery",
+            "furniture",
+            "computing",
+            "teaching",
+            "sanitation",
+            "storage",
+            "outdoor",
+            "structure",
+            "decor"
+          ]
+        },
+        "description": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "usage": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Capability"
+          },
+          "default": []
+        },
+        "footprint": {
+          "type": "object",
+          "properties": {
+            "w": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "d": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "h": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "w",
+            "d",
+            "h"
+          ],
+          "additionalProperties": false
+        },
+        "solid": {
+          "type": "boolean",
+          "default": true
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VoxelPart"
+          },
+          "minItems": 1
+        },
+        "interaction": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "workstation",
+                "monitor",
+                "bed",
+                "device",
+                "atlas",
+                "board",
+                "craft",
+                "door",
+                "sink",
+                "storage",
+                "none"
+              ]
+            },
+            "prompt": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false,
+          "default": {
+            "kind": "none"
+          }
+        },
+        "screen": {
+          "type": "string",
+          "enum": [
+            "none",
+            "vitals",
+            "ecg",
+            "xray",
+            "ct",
+            "pacs",
+            "lab",
+            "text",
+            "logo"
+          ],
+          "default": "none"
+        },
+        "light": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "$ref": "#/definitions/HexColor"
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0
+            },
+            "distance": {
+              "type": "number",
+              "minimum": 0
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "color",
+            "intensity",
+            "distance",
+            "y"
+          ],
+          "additionalProperties": false
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "portable": {
+          "type": "string",
+          "enum": [
+            "cart",
+            "handheld"
+          ]
+        },
+        "reach": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 10
+        },
+        "interactionPoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x",
+              "z"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "behavior": {
+          "type": "object",
+          "properties": {
+            "initial": {
+              "$ref": "#/definitions/Id"
+            },
+            "states": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "available": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "propertyNames": {
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              }
+            },
+            "operations": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "from": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "minItems": 1
+                      },
+                      {
+                        "type": "string",
+                        "const": "*"
+                      }
+                    ]
+                  },
+                  "to": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "requires": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/WorldPredicate"
+                    }
+                  },
+                  "clinical": {
+                    "type": "object",
+                    "properties": {
+                      "tool": {
+                        "type": "string",
+                        "enum": [
+                          "order_test",
+                          "read_result",
+                          "intervene",
+                          "check_vitals",
+                          "examine"
+                        ]
+                      },
+                      "select": {
+                        "type": "string",
+                        "enum": [
+                          "param",
+                          "capability",
+                          "monitoring"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "tool",
+                      "select"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "durationSeconds": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "reserve": {
+                    "type": "boolean"
+                  },
+                  "release": {
+                    "type": "boolean"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "clinician",
+                        "nurse",
+                        "radiologist",
+                        "pathologist",
+                        "lab-tech",
+                        "attending",
+                        "pharmacist",
+                        "receptionist",
+                        "paramedic",
+                        "porter"
+                      ]
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "name",
+                  "from"
+                ],
+                "additionalProperties": false
+              },
+              "propertyNames": {
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              }
+            },
+            "derived": {
+              "type": "string",
+              "enum": [
+                "monitor-attachment"
+              ]
+            }
+          },
+          "required": [
+            "initial",
+            "states",
+            "operations"
+          ],
+          "additionalProperties": false
+        },
+        "model": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "scale": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              ]
+            },
+            "offset": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "rot": {
+              "type": "number"
+            },
+            "license": {
+              "type": "string",
+              "minLength": 1
+            },
+            "attribution": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "uri",
+            "license"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "category",
+        "description",
+        "footprint",
+        "parts"
+      ],
+      "additionalProperties": false
+    },
+    "WorldPredicate": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "actorWithin": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "actorWithin"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "patientWithin": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "patientWithin"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "deviceAtBedside": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "required": [
+            "deviceAtBedside"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "actorHolding": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "actorHolding"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "state": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Id"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "minItems": 1
+                }
+              ]
+            }
+          },
+          "required": [
+            "state"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "role": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "clinician",
+                  "nurse",
+                  "radiologist",
+                  "pathologist",
+                  "lab-tech",
+                  "attending",
+                  "pharmacist",
+                  "receptionist",
+                  "paramedic",
+                  "porter"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "role"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "handsClean": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "required": [
+            "handsClean"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/WorldPredicate"
+              }
+            }
+          },
+          "required": [
+            "all"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/WorldPredicate"
+              }
+            }
+          },
+          "required": [
+            "any"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "not": {
+              "$ref": "#/definitions/WorldPredicate"
+            }
+          },
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "EquipmentCatalog": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "clinicalcraft/equipment-catalog@1"
+        },
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "name": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Material"
+          },
+          "default": []
+        },
+        "equipment": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EquipmentType"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "outpatient-consult",
+  "name": {"zh-CN": "门诊诊室", "en": "Outpatient consulting room"},
+  "description": {"zh-CN": "门诊诊室：医生办公桌、治疗床、墙挂诊断器械、身高体重秤、血糖仪和病历终端。", "en": "An outpatient consulting room: doctor's desk, treatment plinth, wall diagnostic set, scale, glucometer and a records terminal."},
+  "kind": "consult",
+  "size": {"w": 6, "d": 8},
+  "floor": "floor",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "door", "width": 1.6, "height": 2.6, "offset": 1.6}]}
+  ],
+  "sign": {"text": {"zh-CN": "门诊诊室", "en": "Consulting room"}, "side": "n"},
+  "lights": [
+    {"x": 0, "z": -0.5}
+  ],
+  "placements": [
+    {"id": "plinth", "type": "treatment-plinth", "x": -2.45, "z": -1.5, "label": {"zh-CN": "诊查床", "en": "Examination couch"}},
+    {"id": "desk", "type": "desk", "x": 2.475, "z": -1.5, "rot": 270, "label": {"zh-CN": "医生诊桌", "en": "Doctor's desk"}},
+    {"id": "doctor-chair", "type": "office-chair", "x": 1.4, "z": -1.5, "rot": 90},
+    {"id": "patient-chair", "type": "chair", "x": 0.6, "z": -2.7},
+    {"id": "diagnostic-set", "type": "diagnostic-wall-set", "x": -0.8, "z": -3.725, "label": {"zh-CN": "墙挂诊断器械", "en": "Wall diagnostic set"}},
+    {"id": "records", "type": "records-terminal", "x": 2.525, "z": 0.9, "rot": 270, "label": {"zh-CN": "病历终端", "en": "Records terminal"}},
+    {"id": "glucometer", "type": "glucometer-station", "x": -2.6, "z": 0.45, "rot": 90, "label": {"zh-CN": "血糖仪", "en": "Glucometer"}},
+    {"id": "scale", "type": "weighing-scale", "x": -2.525, "z": 1.6, "rot": 90, "label": {"zh-CN": "身高体重秤", "en": "Scale"}},
+    {"id": "sink", "type": "sink", "x": -1.2, "z": 3.55, "rot": 180}
+  ],
+  "patientSlots": [
+    {"id": "slot", "x": -2.3, "z": -1.5, "rot": 90, "posture": "sitting", "bed": "plinth", "accepts": ["outpatient"]}
+  ],
+  "capabilities": ["records", "scale", "point-of-care", "otoscope", "stethoscope"],
+  "tags": ["outpatient"]
+}

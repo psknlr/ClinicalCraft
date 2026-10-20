@@ -1,0 +1,296 @@
+/**
+ * JSONL transcripts ("rollouts"): one `TranscriptItem` per line under
+ * `<home>/sessions/YYYY/MM/DD/<iso-ts>-<sessionId>.jsonl` (mode 0600).
+ * A single writer appends through a promise chain so lines never interleave.
+ * Credentials are masked before they reach the disk (see `redactSecrets`).
+ */
+import { closeSync, openSync, readSync, realpathSync } from "node:fs";
+import { appendFile, mkdir, open, readdir, readFile, stat } from "node:fs/promises";
+import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
+import type { TranscriptItem, TranscriptSink } from "../session/types.js";
+import { redactValue, secretsFromEnv } from "../transcript.js";
+import { clinicalcraftHome, type Env } from "./home.js";
+
+export interface JsonlTranscriptOptions {
+  /** Base sessions directory (default `<home>/sessions`). */
+  dir?: string | null;
+  sessionId: string;
+  env?: Env;
+  /** Clock (ms since epoch), injectable for tests. */
+  now?: () => number;
+  /** Called when a write fails (the sink keeps going). */
+  onError?: (err: Error) => void;
+  /**
+   * Mask credentials before writing (default true): values of `*_API_KEY` /
+   * `*_TOKEN` / `*SECRET` variables of `env` (default `process.env`), the
+   * extra `secrets`, and well-known key formats.
+   */
+  redact?: boolean;
+  /** Extra secret values to mask (e.g. keys from user settings). */
+  secrets?: readonly string[];
+}
+
+/** Default base directory for transcripts. */
+export function sessionsDir(env: Env = process.env): string {
+  return join(clinicalcraftHome(env), "sessions");
+}
+
+function pad(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+/** `<base>/YYYY/MM/DD/<YYYY-MM-DDTHH-MM-SSZ>-<id>.jsonl` (UTC). */
+export function transcriptPath(base: string, sessionId: string, at: Date): string {
+  const y = at.getUTCFullYear();
+  const m = pad(at.getUTCMonth() + 1);
+  const d = pad(at.getUTCDate());
+  const stamp = `${y}-${m}-${d}T${pad(at.getUTCHours())}-${pad(at.getUTCMinutes())}-${pad(at.getUTCSeconds())}Z`;
+  const safeId = sessionId.replace(/[^A-Za-z0-9_-]/g, "_");
+  return join(base, String(y), m, d, `${stamp}-${safeId}.jsonl`);
+}
+
+/** Append-only JSONL transcript sink. */
+export class JsonlTranscript implements TranscriptSink {
+  readonly path: string;
+  private chain: Promise<void> = Promise.resolve();
+  private dirReady = false;
+  /** Resumed files may end with a torn line (crash mid-write): terminate it before appending. */
+  private checkTail = false;
+  private readonly onError: ((err: Error) => void) | undefined;
+  /** Secrets to mask, or null when redaction is off. */
+  private readonly secrets: readonly string[] | null;
+  /** Number of failed writes so far. */
+  failures = 0;
+
+  private constructor(path: string, onError: ((err: Error) => void) | undefined, redaction: Pick<JsonlTranscriptOptions, "redact" | "secrets" | "env">) {
+    this.path = path;
+    this.onError = onError;
+    this.secrets = redaction.redact === false ? null : [...secretsFromEnv(redaction.env ?? process.env), ...(redaction.secrets ?? [])];
+  }
+
+  /** New transcript file for a session (directories are created on first write). */
+  static create(options: JsonlTranscriptOptions): JsonlTranscript {
+    const base = options.dir || sessionsDir(options.env);
+    const now = new Date((options.now ?? Date.now)());
+    return new JsonlTranscript(transcriptPath(base, options.sessionId, now), options.onError, options);
+  }
+
+  /** Append to an existing transcript (resume). */
+  static at(path: string, onError?: (err: Error) => void, redaction: Pick<JsonlTranscriptOptions, "redact" | "secrets" | "env"> = {}): JsonlTranscript {
+    const t = new JsonlTranscript(path, onError, redaction);
+    t.dirReady = true;
+    t.checkTail = true;
+    return t;
+  }
+
+  write(item: TranscriptItem): Promise<void> {
+    let line: string;
+    try {
+      line = `${JSON.stringify(this.secrets ? redactValue(item, this.secrets) : item)}\n`;
+    } catch (err) {
+      this.report(err);
+      return this.chain;
+    }
+    this.chain = this.chain.then(async () => {
+      try {
+        if (!this.dirReady) {
+          await mkdir(dirname(this.path), { recursive: true, mode: 0o700 });
+          this.dirReady = true;
+        }
+        let prefix = "";
+        if (this.checkTail) {
+          this.checkTail = false;
+          if (!(await endsWithNewline(this.path))) prefix = "\n";
+        }
+        await appendFile(this.path, prefix + line, { encoding: "utf8", mode: 0o600 });
+      } catch (err) {
+        this.report(err);
+      }
+    });
+    return this.chain;
+  }
+
+  /** Resolves once every queued line is on disk. Never rejects. */
+  flush(): Promise<void> {
+    return this.chain;
+  }
+
+  private report(err: unknown): void {
+    this.failures++;
+    this.onError?.(err instanceof Error ? err : new Error(String(err)));
+  }
+}
+
+async function endsWithNewline(path: string): Promise<boolean> {
+  let handle;
+  try {
+    handle = await open(path, "r");
+  } catch {
+    return true; // missing file: nothing to repair
+  }
+  try {
+    const { size } = await handle.stat();
+    if (size === 0) return true;
+    const buf = Buffer.alloc(1);
+    await handle.read(buf, 0, 1, size - 1);
+    return buf[0] === 0x0a;
+  } finally {
+    await handle.close();
+  }
+}
+
+/** Read every item of a JSONL transcript; malformed lines (e.g. a torn last line) are skipped. */
+export async function readTranscript(path: string): Promise<TranscriptItem[]> {
+  const text = await readFile(path, "utf8");
+  const items: TranscriptItem[] = [];
+  for (const line of text.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      const value = JSON.parse(trimmed) as TranscriptItem;
+      if (value && typeof value === "object" && typeof value.type === "string") items.push(value);
+    } catch {
+      /* torn line */
+    }
+  }
+  return items;
+}
+
+export interface SessionSummary {
+  id: string;
+  path: string;
+  caseId: string;
+  startedAt: string;
+  /**
+   * `local`: recorded by this machine's front-ends; `web`: uploaded through
+   * `POST /api/transcripts/:id` (`<sessions>/web/`) — untrusted input, listed
+   * only with `{web: true}`.
+   */
+  origin: "local" | "web";
+}
+
+/** Sub-directory of the sessions directory holding web uploads (see @clinicalcraft/server). */
+export const WEB_TRANSCRIPTS_DIR = "web";
+
+function inside(dir: string, path: string): boolean {
+  const rel = relative(dir, path);
+  return rel !== "" && !rel.startsWith("..") && !isAbsolute(rel);
+}
+
+/** `realpathSync`, or the resolved path when it does not exist. */
+function realOr(path: string): string {
+  try {
+    return realpathSync(resolve(path));
+  } catch {
+    return resolve(path);
+  }
+}
+
+/**
+ * Whether a transcript path lies in the web-upload directory of `base` (the
+ * sessions directory) — lexically or after resolving symlinks, so a
+ * symlinked alias of an upload (or of a symlinked home) still counts as one.
+ */
+export function isWebTranscriptPath(path: string, base: string): boolean {
+  if (inside(join(base, WEB_TRANSCRIPTS_DIR), path)) return true;
+  return inside(realOr(join(base, WEB_TRANSCRIPTS_DIR)), realOr(path));
+}
+
+/**
+ * Whether a transcript is this machine's own recording: its real path lies
+ * under the real path of one of `bases` (sessions directories) and outside
+ * their web-upload directory. Anything else — an upload, a copy reached
+ * through a symlink, a file elsewhere — is resumed as untrusted input.
+ */
+export function isLocalTranscriptPath(path: string, bases: readonly string[]): boolean {
+  const real = realOr(path);
+  return bases.some((base) => base && !isWebTranscriptPath(path, base) && inside(realOr(base), real) && !inside(realOr(join(base, WEB_TRANSCRIPTS_DIR)), real));
+}
+
+function readHead(path: string, bytes = 64 * 1024): string {
+  const fd = openSync(path, "r");
+  try {
+    const buf = Buffer.alloc(bytes);
+    const n = readSync(fd, buf, 0, bytes, 0);
+    return buf.subarray(0, n).toString("utf8");
+  } finally {
+    closeSync(fd);
+  }
+}
+
+async function walkJsonl(dir: string, depth: number, skip?: string): Promise<string[]> {
+  let entries;
+  try {
+    entries = await readdir(dir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+  const out: string[] = [];
+  for (const entry of entries) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory() && depth < 4 && path !== skip) out.push(...(await walkJsonl(path, depth + 1, skip)));
+    else if (entry.isFile() && entry.name.endsWith(".jsonl")) out.push(path);
+  }
+  return out;
+}
+
+export interface ListSessionsOptions {
+  /** Base sessions directory (default `<home>/sessions`). */
+  dir?: string | null;
+  limit?: number;
+  /**
+   * Which recordings: `false` (default) = this machine's own (the web-upload
+   * directory is skipped), `true` = both, `"only"` = web uploads only.
+   */
+  web?: boolean | "only";
+}
+
+/**
+ * List recorded sessions (newest first) from `<home>/sessions` (or `dir`).
+ * Uses each file's `session_meta` line; files without one fall back to the
+ * file name and modification time. Web uploads are untrusted: their id is
+ * always the file name (a `session_meta` naming another session is ignored)
+ * and their start time is clamped to the file's modification time.
+ */
+export async function listSessions(env: Env = process.env, options: ListSessionsOptions = {}): Promise<SessionSummary[]> {
+  const base = options.dir || sessionsDir(env);
+  const webDir = join(base, WEB_TRANSCRIPTS_DIR);
+  const web = options.web ?? false;
+  const files = web === "only" ? await walkJsonl(webDir, 1) : await walkJsonl(base, 0, web ? undefined : webDir);
+  const sessions: SessionSummary[] = [];
+  for (const path of files) {
+    const origin: SessionSummary["origin"] = isWebTranscriptPath(path, base) ? "web" : "local";
+    let meta: Extract<TranscriptItem, { type: "session_meta" }> | undefined;
+    try {
+      for (const line of readHead(path).split("\n")) {
+        if (!line.trim()) continue;
+        try {
+          const item = JSON.parse(line) as TranscriptItem;
+          if (item?.type === "session_meta") {
+            meta = item;
+            break;
+          }
+        } catch {
+          break;
+        }
+      }
+    } catch {
+      continue;
+    }
+    if (origin === "web") {
+      const id = basename(path, ".jsonl");
+      const info = await stat(path).catch(() => null);
+      const mtime = info ? info.mtime.toISOString() : "";
+      const claimed = meta && typeof meta.ts === "string" ? meta.ts : "";
+      sessions.push({ id, path, caseId: meta && typeof meta.payload?.caseId === "string" ? meta.payload.caseId : "", startedAt: claimed && claimed < mtime ? claimed : mtime, origin });
+    } else if (meta) {
+      sessions.push({ id: meta.payload.sessionId, path, caseId: meta.payload.caseId, startedAt: meta.ts, origin });
+    } else {
+      const m = /Z-([A-Za-z0-9_-]+)\.jsonl$/.exec(path);
+      const info = await stat(path).catch(() => null);
+      sessions.push({ id: m?.[1] ?? path, path, caseId: "", startedAt: info ? info.mtime.toISOString() : "", origin });
+    }
+  }
+  sessions.sort((a, b) => (a.startedAt < b.startedAt ? 1 : a.startedAt > b.startedAt ? -1 : 0));
+  return options.limit ? sessions.slice(0, options.limit) : sessions;
+}

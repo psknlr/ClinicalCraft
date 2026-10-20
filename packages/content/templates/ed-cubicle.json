@@ -1,0 +1,34 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "ed-cubicle",
+  "name": {"zh-CN": "急诊诊室隔间", "en": "ED cubicle"},
+  "description": {"zh-CN": "急诊诊疗隔间：平车、监护仪、吸氧、输液泵、处置车和峰流速仪，正面以帘幕开放。", "en": "An emergency treatment cubicle: stretcher, monitor, oxygen, infusion pump, treatment cart and peak-flow meter, open to the corridor behind a curtain."},
+  "kind": "emergency",
+  "size": {"w": 5, "d": 8},
+  "floor": "lino",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "opening", "width": 3.0, "height": 3}]}
+  ],
+  "sign": {"text": {"zh-CN": "急诊隔间", "en": "ED cubicle"}, "side": "n"},
+  "lights": [
+    {"x": 0, "z": -1}
+  ],
+  "placements": [
+    {"id": "stretcher", "type": "stretcher", "x": 0, "z": -2, "label": {"zh-CN": "平车", "en": "Stretcher"}},
+    {"id": "monitor", "type": "patient-monitor", "x": -1.1, "z": -3.475, "label": {"zh-CN": "床旁监护仪", "en": "Bedside monitor"}},
+    {"id": "oxygen", "type": "oxygen-outlet", "x": 0.6, "z": -3.7},
+    {"id": "infusion-pump", "type": "infusion-pump", "x": 1.2, "z": -2.6, "label": {"zh-CN": "输液泵", "en": "Infusion pump"}},
+    {"id": "treatment-cart", "type": "crash-cart", "x": 2.015, "z": 0.2, "rot": 270, "label": {"zh-CN": "处置车", "en": "Treatment cart"}},
+    {"id": "peak-flow", "type": "peak-flow-station", "x": -2.1, "z": 0.4, "rot": 90, "label": {"zh-CN": "峰流速仪", "en": "Peak-flow meter"}},
+    {"id": "sanitizer", "type": "hand-sanitizer", "x": -1.9, "z": 2.4},
+    {"id": "curtain", "type": "privacy-curtain", "x": 0, "z": 3}
+  ],
+  "patientSlots": [
+    {"id": "slot", "x": 0, "z": -2.0, "posture": "lying", "bed": "stretcher", "monitor": "monitor", "accepts": ["emergency"]}
+  ],
+  "capabilities": ["cardiac-monitor", "oxygen", "suction", "infusion-pump", "iv-access", "crash-cart", "medications", "airway", "peak-flow"],
+  "tags": ["emergency"]
+}

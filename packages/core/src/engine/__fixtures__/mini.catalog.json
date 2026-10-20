@@ -1,0 +1,75 @@
+{
+  "schema": "clinicalcraft/equipment-catalog@1",
+  "id": "mini",
+  "name": { "zh-CN": "测试目录", "en": "Test catalog" },
+  "materials": [
+    { "id": "grass", "color": "#79a75f" },
+    { "id": "path", "color": "#d5c6a0" },
+    { "id": "floor", "color": "#cbd6c3", "pattern": "tile" },
+    { "id": "teal", "color": "#2e6b66" },
+    { "id": "cream", "color": "#e0dfc9" },
+    { "id": "wood", "color": "#8b694c", "pattern": "plank" },
+    { "id": "roof", "color": "#6b4a3a" },
+    { "id": "white", "color": "#f1ead5", "pattern": "flat" },
+    { "id": "stone", "color": "#8a8a8a" },
+    { "id": "glass", "color": "#a8d5e0", "opacity": 0.4 },
+    { "id": "lamp", "color": "#ffe9a8", "emissive": "#ffd36b" },
+    { "id": "steel", "color": "#9aa3a8", "metalness": 0.6 },
+    { "id": "screen", "color": "#10202a", "pattern": "screen" },
+    { "id": "mattress", "color": "#dfe8ef" }
+  ],
+  "equipment": [
+    {
+      "id": "workstation", "name": { "zh-CN": "工作站", "en": "Workstation" }, "category": "computing",
+      "description": { "zh-CN": "V4 工作台", "en": "V4 desk with monitor" },
+      "footprint": { "w": 2, "d": 1, "h": 1.6 },
+      "parts": [
+        { "m": "wood", "p": [0, 0.4, 0], "s": [2, 0.8, 1] },
+        { "m": "screen", "p": [0, 1.2, -0.2], "s": [0.8, 0.6, 0.1], "name": "screen" }
+      ],
+      "interaction": { "kind": "workstation" }, "screen": "pacs"
+    },
+    {
+      "id": "exam-couch", "name": { "zh-CN": "检查床", "en": "Exam couch" }, "category": "furniture",
+      "description": { "zh-CN": "检查床", "en": "Consult couch" },
+      "footprint": { "w": 1, "d": 2, "h": 0.8 },
+      "parts": [{ "m": "mattress", "p": [0, 0.4, 0], "s": [1, 0.8, 2] }],
+      "interaction": { "kind": "bed" }
+    },
+    {
+      "id": "patient-monitor", "name": { "zh-CN": "床旁监护仪", "en": "Patient monitor" }, "category": "monitoring",
+      "description": { "zh-CN": "监护仪", "en": "Bedside monitor" },
+      "capabilities": ["cardiac-monitor", "capnography"],
+      "footprint": { "w": 0.6, "d": 0.3, "h": 2 }, "solid": false,
+      "parts": [
+        { "m": "steel", "p": [0, 1.4, -0.1], "s": [0.6, 0.4, 0.1] },
+        { "m": "screen", "p": [0, 1.4, -0.04], "s": [0.5, 0.3, 0.02], "name": "screen" }
+      ],
+      "interaction": { "kind": "monitor" }, "screen": "vitals"
+    },
+    {
+      "id": "evidence-board", "name": { "zh-CN": "证据板", "en": "Evidence board" }, "category": "teaching",
+      "description": { "zh-CN": "V4 证据板", "en": "V4 board" },
+      "capabilities": ["evidence-board"],
+      "footprint": { "w": 2, "d": 0.4, "h": 2 },
+      "parts": [{ "m": "white", "p": [0, 1, 0], "s": [2, 2, 0.4] }],
+      "interaction": { "kind": "board" }
+    },
+    {
+      "id": "anatomy-atlas-kiosk", "name": { "zh-CN": "解剖图谱", "en": "Anatomy atlas" }, "category": "teaching",
+      "description": { "zh-CN": "V4 图谱站", "en": "V4 atlas station" },
+      "capabilities": ["anatomy-atlas"],
+      "footprint": { "w": 1, "d": 1, "h": 1.8 },
+      "parts": [{ "m": "steel", "p": [0, 0.9, 0], "s": [1, 1.8, 1] }],
+      "interaction": { "kind": "atlas" }
+    },
+    {
+      "id": "ct-scanner", "name": { "zh-CN": "CT 扫描仪", "en": "CT scanner" }, "category": "imaging",
+      "description": { "zh-CN": "CT", "en": "CT scanner" },
+      "capabilities": ["ct"],
+      "footprint": { "w": 2, "d": 4, "h": 2 },
+      "parts": [{ "m": "white", "p": [0, 1, 0], "s": [2, 2, 4] }],
+      "interaction": { "kind": "device" }
+    }
+  ]
+}

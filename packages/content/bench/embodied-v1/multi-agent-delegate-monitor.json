@@ -1,0 +1,95 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "multi-agent-delegate-monitor",
+  "suite": "embodied-v1",
+  "category": "multi-agent",
+  "title": {
+    "zh-CN": "请护士连接监护仪并核实",
+    "en": "Delegate the monitor to the nurse and verify"
+  },
+  "instruction": {
+    "zh-CN": "请护士给这位患者连接床旁监护仪，然后核实监护仪已连接。你自己不要操作设备。",
+    "en": "Ask the nurse to attach the bedside monitor to this patient, then verify that it is attached. Do not operate the equipment yourself."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "world": {
+        "kind": "entityState",
+        "target": "eq:resus1-monitor",
+        "state": "attached"
+      }
+    },
+    {
+      "clinical": {
+        "intervened": "cardiac-monitoring"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorNear",
+        "actor": "staff:ed-nurse",
+        "target": "patient:resus-1",
+        "range": 3
+      }
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "interact_object",
+        "max": 0
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "delegate",
+        "role": "nurse",
+        "task": "attach_monitor"
+      },
+      {
+        "op": "inspect",
+        "target": "eq:resus1-monitor"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "delegate_task",
+        "args": {
+          "role": "nurse",
+          "task": "attach_monitor"
+        }
+      },
+      {
+        "tool": "inspect_object",
+        "args": {
+          "target": "eq:resus1-monitor"
+        }
+      }
+    ]
+  }
+}

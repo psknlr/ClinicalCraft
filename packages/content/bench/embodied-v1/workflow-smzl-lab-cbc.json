@@ -1,0 +1,106 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-smzl-lab-cbc",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "床旁采血申请血常规，到检验工作站阅读结果",
+    "en": "Full blood count: sample at the patient's side, result read at the lab workstation"
+  },
+  "instruction": {
+    "zh-CN": "在患者身边采血并申请血常规，然后到门诊楼的检验工作站阅读结果。",
+    "en": "Take the blood sample at the patient's side and order a full blood count there, then read the result at the clinic's laboratory workstation."
+  },
+  "caseId": "smzl-lung-adeno",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "cbc"
+      }
+    },
+    {
+      "clinical": {
+        "read": "cbc"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "cbc"
+        }
+      },
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:ws-lab"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "cbc"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:consult-1"
+          }
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "cbc"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ws-lab"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ws-lab",
+          "operation": "read",
+          "parameters": {
+            "investigation": "cbc"
+          }
+        }
+      }
+    ]
+  }
+}

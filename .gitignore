@@ -1,0 +1,24 @@
+node_modules/
+dist/
+*.tsbuildinfo
+coverage/
+test-results/
+playwright-report/
+.vite/
+# Locally imported, copyrighted or large assets (see docs/ASSETS.md)
+assets/local/
+packages/content/cases/*/assets/
+packages/web/public/assets/local/
+# Personal settings (like Claude Code's settings.local.json)
+.clinicalcraft/settings.local.json
+.clinicalcraft/sessions/
+.env
+.env.*
+.DS_Store
+# Standalone builds may embed local-only copyrighted assets — never commit them
+packages/web/dist-standalone/
+dist-standalone/
+*.standalone.html
+# Benchmark and demonstration outputs (`clinicalcraft bench run|demo`); curated samples live in docs/bench/
+bench-results/
+bench-demo/

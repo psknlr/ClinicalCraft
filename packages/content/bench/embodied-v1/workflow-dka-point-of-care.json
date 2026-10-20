@@ -1,0 +1,147 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-dka-point-of-care",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "推来血糖仪：床旁血糖与血酮",
+    "en": "Fetch the glucometer: bedside glucose and ketones"
+  },
+  "instruction": {
+    "zh-CN": "把护士站的血糖仪推到抢救室 1 号床旁，测指尖血糖和血酮，并阅读两项结果。",
+    "en": "Bring the glucometer from the nurse station to resuscitation bay 1, measure capillary glucose and ketones, and read both results."
+  },
+  "caseId": "dka-adult",
+  "locale": "zh-CN",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "all": [
+          {
+            "ordered": "poc-glucose"
+          },
+          {
+            "ordered": "poc-ketones"
+          },
+          {
+            "read": "poc-glucose"
+          },
+          {
+            "read": "poc-ketones"
+          }
+        ]
+      }
+    },
+    {
+      "world": {
+        "kind": "deviceAtBedside",
+        "capability": "point-of-care"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "poc-glucose"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "poc-ketones"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "poc-glucose"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "poc-ketones"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ed-glucometer"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "move_to",
+          "parameters": {
+            "goal": {
+              "kind": "interact",
+              "id": "patient:resus-1"
+            }
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-glucose"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-glucometer",
+          "operation": "use",
+          "parameters": {
+            "investigation": "poc-ketones"
+          }
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-glucose"
+        }
+      },
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "poc-ketones"
+        }
+      }
+    ]
+  }
+}

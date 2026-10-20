@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    # Feature branches get a measured run too (the implementation branch had never been built by CI).
+    branches: [main, "claude/**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit & integration tests
+        run: npm test
+      # `npm run cc` runs every workspace package from source (the "source" export condition): no build needed.
+      - name: Validate and verify built-in content
+        run: npm run -s cc -- cases validate --all && npm run -s cc -- cases verify --all
+      - name: Build
+        run: npm run build
+      - name: Offline autopilot smoke (every case, built binary)
+        run: node packages/cli/dist/bin.js eval --cases all --provider offline --out eval-report.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: eval-report.md
+      # Embodied benchmark (docs/EMBODIED.md §13): the infrastructure agents must score 100 % with no accepted
+      # spatial or authorisation violation (exit 1 otherwise). Live models never run in CI.
+      - name: Embodied benchmark — reference agent (built binary, must be 100 %)
+        run: node packages/cli/dist/bin.js bench run --suite embodied-v1 --agent reference --seeds 1-3 --out bench-results/reference --lang en
+      - name: Embodied benchmark — scripted-llm agent (built binary, must be 100 %)
+        run: node packages/cli/dist/bin.js bench run --suite embodied-v1 --agent scripted-llm --seeds 1-3 --out bench-results/scripted-llm --lang en
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bench-reports
+          path: bench-results/
+          if-no-files-found: warn
+
+  e2e:
+    # The suite renders the 3D world through SwiftShader (one worker, ~30 min serial): two shards of spec files.
+    name: e2e (${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: build-test
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ["1/2", "2/2"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e -w @clinicalcraft/web -- --shard=${{ matrix.shard }}
+        env:
+          # Read by packages/web/playwright.config.ts: use the browser `playwright install` just fetched.
+          CLINICALCRAFT_E2E_CHROMIUM: playwright
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: e2e-results-${{ strategy.job-index }}
+          path: packages/web/test-results/
+          retention-days: 7

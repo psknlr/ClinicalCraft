@@ -1,0 +1,86 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-asthma-nebuliser",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "床旁吸氧与沙丁胺醇雾化",
+    "en": "Oxygen and nebulised salbutamol at the bedside"
+  },
+  "instruction": {
+    "zh-CN": "给这位患儿吸氧，并用床旁雾化器给予沙丁胺醇雾化。",
+    "en": "Give this child oxygen and nebulised salbutamol with the bedside nebuliser."
+  },
+  "caseId": "pediatric-asthma",
+  "locale": "zh-CN",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "intervened": "oxygen"
+      }
+    },
+    {
+      "clinical": {
+        "intervened": "salbutamol-neb"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "oxygen"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "salbutamol-neb"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "oxygen"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "salbutamol-neb"
+        }
+      }
+    ]
+  }
+}

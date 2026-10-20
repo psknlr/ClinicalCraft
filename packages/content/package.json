@@ -1,0 +1,21 @@
+{
+  "name": "@clinicalcraft/content",
+  "version": "5.0.0",
+  "description": "Built-in ClinicalCraft content (data only): clinical cases, facilities, equipment catalogs and their JSON Schemas; Node front-ends load it with loadContent() from @clinicalcraft/agent/node",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "source": "./src/index.ts", "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./cases/*": "./cases/*",
+    "./facilities/*": "./facilities/*",
+    "./catalogs/*": "./catalogs/*",
+    "./schemas/*": "./schemas/*",
+    "./bench/*": "./bench/*",
+    "./templates/*": "./templates/*"
+  },
+  "files": ["dist", "cases", "facilities", "catalogs", "schemas", "bench", "templates"],
+  "scripts": { "build": "tsc -b" },
+  "dependencies": { "@clinicalcraft/core": "5.0.0" }
+}

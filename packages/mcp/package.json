@@ -1,0 +1,15 @@
+{
+  "name": "@clinicalcraft/mcp",
+  "version": "5.0.0",
+  "description": "ClinicalCraft MCP server: lets external agents (Claude Code, Codex, Grok CLI) play the clinician",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "source": "./src/index.ts", "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+  },
+  "files": ["dist"],
+  "scripts": { "build": "tsc -b" },
+  "dependencies": { "@clinicalcraft/core": "5.0.0", "@clinicalcraft/content": "5.0.0", "@clinicalcraft/agent": "5.0.0" }
+}

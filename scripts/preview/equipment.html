@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Equipment preview</title>
+<style>html,body{margin:0;background:#b4d7da;font:12px system-ui}canvas{display:block}#labels{position:fixed;inset:0;pointer-events:none}#labels div{position:absolute;transform:translate(-50%,0);background:#f3eed8e6;color:#2e4839;padding:2px 5px;border:1px solid #9aa98c;white-space:nowrap;font-weight:600}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+</head><body><div id="labels"></div>
+<script type="module">
+import * as THREE from "three";
+const params = new URLSearchParams(location.search);
+const files = (params.get("catalogs") || "").split(",").filter(Boolean);
+const only = (params.get("only") || "").split(",").filter(Boolean);
+const view = params.get("view") || "iso";
+const cats = await Promise.all(files.map((f) => fetch("/" + f).then((r) => r.json())));
+const mats = new Map(); const eqs = [];
+for (const c of cats) { for (const m of c.materials || []) mats.set(m.id, m); for (const e of c.equipment || []) if (!only.length || only.includes(e.id)) eqs.push(e); }
+let seed = 7103; const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0, seed / 4294967296);
+const cache = new Map(); const missing = new Set();
+function material(id) {
+  if (cache.has(id)) return cache.get(id);
+  const m = mats.get(id); if (!m) { missing.add(id); return material("__missing"); }
+  const cv = document.createElement("canvas"); cv.width = cv.height = 16; const g = cv.getContext("2d"); const base = new THREE.Color(m.color);
+  const v = m.variance ?? 0.11, p = m.pattern || "noise";
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
+    let d = (rnd() - 0.5) * v;
+    if (p === "brick" && (y % 8 === 0 || (x + (y < 8 ? 0 : 8)) % 16 === 0)) d = -0.15;
+    if (p === "plank" && (x % 4 === 0 || y % 15 === 0)) d = -0.15;
+    if (p === "tile" && (x === 0 || y === 0)) d = -0.07;
+    if (p === "stripe" && x % 4 < 2) d -= 0.06;
+    if (p === "grid" && (x % 4 === 0 || y % 4 === 0)) d = -0.08;
+    if (p === "dots" && x % 4 === 1 && y % 4 === 1) d = 0.12;
+    if (p === "screen" && y % 3 === 0) d += 0.05;
+    const c = base.clone().offsetHSL(0, 0, d); g.fillStyle = "#" + c.getHexString(); g.fillRect(x, y, 1, 1);
+  }
+  const tex = new THREE.CanvasTexture(cv); tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestMipmapNearestFilter; tex.colorSpace = THREE.SRGBColorSpace;
+  const mm = new THREE.MeshStandardMaterial({ map: tex, roughness: m.roughness ?? 0.93, metalness: m.metalness ?? 0, transparent: (m.opacity ?? 1) < 1, opacity: m.opacity ?? 1, depthWrite: (m.opacity ?? 1) >= 1, emissive: m.emissive ? new THREE.Color(m.emissive) : new THREE.Color(0), emissiveIntensity: m.emissive ? (m.emissiveIntensity ?? 0.3) : 0 });
+  cache.set(id, mm); return mm;
+}
+mats.set("__missing", { id: "__missing", color: "#ff00ff", pattern: "flat" });
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color("#a8d5e0");
+scene.add(new THREE.HemisphereLight("#d5f4ff", "#83936c", 2.4));
+const sun = new THREE.DirectionalLight("#fff4d4", 3); sun.position.set(-20, 30, 18); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, far: 120 }); scene.add(sun);
+const box = new THREE.BoxGeometry(1, 1, 1);
+const cols = Math.max(1, Math.ceil(Math.sqrt(eqs.length * 1.6))); const cell = 6.5;
+const labels = [];
+eqs.forEach((e, i) => {
+  const g = new THREE.Group(); const cx = (i % cols) * cell, cz = Math.floor(i / cols) * cell; g.position.set(cx, 0, cz);
+  for (const part of e.parts) { const mesh = new THREE.Mesh(box, material(part.m)); mesh.position.set(...part.p); mesh.scale.set(...part.s); if (part.r) mesh.rotation.y = part.r * Math.PI / 180; mesh.castShadow = mesh.receiveShadow = true; g.add(mesh); }
+  const fp = e.footprint; const outline = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(fp.w, fp.h, fp.d)), new THREE.LineBasicMaterial({ color: "#c0392b", transparent: true, opacity: 0.35 })); outline.position.y = fp.h / 2; g.add(outline);
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(cell - 0.4, 0.1, cell - 0.4), material("floor")); floor.position.y = -0.05; floor.receiveShadow = true; g.add(floor);
+  scene.add(g); labels.push({ text: e.id, pos: new THREE.Vector3(cx, -0.2, cz + 1.8 + fp.d / 2) });
+});
+const rows = Math.ceil(eqs.length / cols); const W = Math.min(1900, 260 * cols + 200), H = Math.min(1900, 300 * rows + 200);
+renderer.setSize(W, H);
+const span = Math.max(cols, rows) * cell; const center = new THREE.Vector3((cols - 1) * cell / 2, 0, (rows - 1) * cell / 2);
+const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 500);
+const aspect = W / H; const half = (Math.max(cols * cell / aspect, rows * cell) / 2) * 0.82 + 2;
+cam.left = -half * aspect; cam.right = half * aspect; cam.top = half; cam.bottom = -half; cam.updateProjectionMatrix();
+if (view === "top") { cam.position.set(center.x, 80, center.z + 0.001); } else if (view === "front") { cam.position.set(center.x, 6, center.z + 80); } else { cam.position.set(center.x + 50, 45, center.z + 50); }
+cam.lookAt(center); renderer.render(scene, cam);
+const lab = document.getElementById("labels");
+for (const l of labels) { const p = l.pos.clone().project(cam); const d = document.createElement("div"); d.textContent = l.text; d.style.left = ((p.x * 0.5 + 0.5) * W) + "px"; d.style.top = ((-p.y * 0.5 + 0.5) * H) + "px"; lab.appendChild(d); }
+window.__done = { count: eqs.length, missingMaterials: [...missing], width: W, height: H };
+</script></body></html>

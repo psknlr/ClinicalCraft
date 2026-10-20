@@ -1,0 +1,85 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "perception-ward-oxygen-outlet",
+  "suite": "embodied-v1",
+  "category": "perception",
+  "title": {
+    "zh-CN": "找出给本床位供氧的墙式氧源",
+    "en": "Identify the oxygen outlet that serves this ward bed"
+  },
+  "instruction": {
+    "zh-CN": "你在普通病房这位患者的床旁。哪一个墙式出口为这张床供氧？提交它的实体 ID。",
+    "en": "You are at this patient's bedside on the general ward. Which wall outlet supplies oxygen to this bed? Submit its entity id."
+  },
+  "caseId": "pulmonary-embolism-postop",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:ward-1"
+      }
+    }
+  },
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "eq:ward-oxygen-1"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "observe"
+      },
+      {
+        "op": "find",
+        "query": {
+          "kind": "equipment",
+          "type": "oxygen-outlet",
+          "limit": 3
+        },
+        "save": "o2"
+      },
+      {
+        "op": "answer",
+        "from": "o2"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "observe_world",
+        "args": {}
+      },
+      {
+        "tool": "find_objects",
+        "args": {
+          "type": "oxygen-outlet",
+          "limit": 3
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "eq:ward-oxygen-1"
+        }
+      }
+    ]
+  }
+}

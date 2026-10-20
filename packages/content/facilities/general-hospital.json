@@ -1,0 +1,2348 @@
+{
+  "schema": "clinicalcraft/facility@1",
+  "id": "general-hospital",
+  "name": {
+    "zh-CN": "临床方块综合医院",
+    "en": "ClinicalCraft General Hospital"
+  },
+  "description": {
+    "zh-CN": "体素风格多科室教学医院（V4 诊所的扩展版）：门诊大厅与挂号台、两间门诊诊室、药房；急诊科含预检分诊、两张抢救床位的抢救室、两间急诊诊室、急诊护士站与救护车通道；影像科（X 线、CT、MRI、PET-CT、介入导管室、超声及铅玻璃控制台）、检验科（含血库与微生物）、病理与遗传科、综合病房（4 床）、重症监护室（2 床）、手术室与刷手间、内镜中心、病例讨论室与医生办公室；室外有疗愈花园（池塘、长椅、树木、花卉）、建造园地与工作台、停车场、公交站和道路。患者床位覆盖门诊、急诊、住院/病房、ICU、手术室与社区全部场景。",
+    "en": "A voxel multi-department teaching hospital that grows the V4 clinic into a full campus: main lobby with registration, two outpatient consult rooms and a pharmacy; an Emergency Department with triage, a two-bay resuscitation room, two cubicles, a nurse station and an ambulance bay; radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound and a lead-glass control console), a clinical laboratory with blood bank and microbiology, pathology & genetics, a four-bed general ward, a two-bed ICU, an operating theatre with scrub room, an endoscopy suite, a case-conference room and doctors' office; outside, the healing garden (pond, benches, trees, flowers), the building garden with its workbench, visitor parking, a bus stop and the road. Patient slots cover every case setting: outpatient, emergency, inpatient/ward, ICU, operating room and community."
+  },
+  "bounds": {
+    "minX": -60,
+    "maxX": 60,
+    "minZ": -50,
+    "maxZ": 50
+  },
+  "spawn": {
+    "x": 0,
+    "z": 27,
+    "yaw": 0
+  },
+  "environment": {
+    "sky": "#a8d5e0",
+    "fog": {
+      "color": "#b9d8d6",
+      "near": 60,
+      "far": 150
+    },
+    "sunIntensity": 3.4,
+    "hemisphere": {
+      "sky": "#d5f4ff",
+      "ground": "#83936c",
+      "intensity": 2.6
+    }
+  },
+  "catalogs": ["materials", "core-furniture", "core-clinical", "core-diagnostics"],
+  "materials": [],
+  "terrain": {
+    "ground": "grass",
+    "paths": [
+      {"x": -48, "z": -13.5, "w": 2, "d": 67, "material": "path"},
+      {"x": 0, "z": -46, "w": 98, "d": 2, "material": "path"},
+      {"x": 48, "z": -28.5, "w": 2, "d": 37, "material": "path"},
+      {"x": 0, "z": 40, "w": 128, "d": 2, "material": "path"},
+      {"x": 0, "z": 44.5, "w": 128, "d": 7, "material": "asphalt"},
+      {"x": -59, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -53, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -47, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -41, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -35, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -29, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -23, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -17, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -11, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": -5, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 1, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 7, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 13, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 19, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 25, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 31, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 37, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 43, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 49, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 55, "z": 44.5, "w": 2, "d": 1, "material": "warning-yellow"},
+      {"x": 2, "z": 13, "w": 24, "d": 6, "material": "path"},
+      {"x": 0, "z": 28, "w": 4, "d": 24, "material": "path"},
+      {"x": 13, "z": 18, "w": 2, "d": 4, "material": "path"},
+      {"x": -25.5, "z": 19, "w": 47, "d": 2, "material": "path"},
+      {"x": -37, "z": 28, "w": 2, "d": 16, "material": "path"},
+      {"x": -28, "z": 35, "w": 16, "d": 2, "material": "path"},
+      {"x": -19, "z": 28, "w": 2, "d": 16, "material": "path"},
+      {"x": 27, "z": 28, "w": 26, "d": 16, "material": "asphalt"},
+      {"x": 25, "z": 38.5, "w": 6, "d": 5, "material": "asphalt"},
+      {"x": 14.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 18.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 22.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 26.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 30.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 34.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 38.5, "z": 22.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 14.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 18.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 22.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 26.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 30.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 34.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 38.5, "z": 33.5, "w": 1, "d": 5, "material": "white"},
+      {"x": 54, "z": 23.5, "w": 8, "d": 35, "material": "asphalt"},
+      {"x": 53, "z": -2, "w": 12, "d": 16, "material": "asphalt"},
+      {"x": 53, "z": -4.5, "w": 8, "d": 1, "material": "warning-yellow"},
+      {"x": 53, "z": 0.5, "w": 8, "d": 1, "material": "warning-yellow"}
+    ],
+    "ponds": [
+      {"x": -28, "z": 27, "w": 8, "d": 5}
+    ],
+    "trees": [
+      {"x": -42, "z": 24, "h": 5},
+      {"x": -42, "z": 32, "h": 4},
+      {"x": -33, "z": 23, "h": 4},
+      {"x": -23, "z": 23, "h": 5},
+      {"x": -33, "z": 31.5, "h": 5},
+      {"x": -23, "z": 31.5, "h": 4},
+      {"x": -14, "z": 24, "h": 5},
+      {"x": -14, "z": 32, "h": 4},
+      {"x": -8, "z": 30, "h": 5},
+      {"x": -26, "z": 37.5, "h": 4},
+      {"x": 7, "z": 23, "h": 4},
+      {"x": 7, "z": 33, "h": 5},
+      {"x": -40, "z": -48.6, "h": 4},
+      {"x": -20, "z": -48.6, "h": 5},
+      {"x": 0, "z": -48.6, "h": 4},
+      {"x": 20, "z": -48.6, "h": 5},
+      {"x": 40, "z": -48.6, "h": 4},
+      {"x": -55, "z": -36, "h": 5},
+      {"x": -54, "z": -20, "h": 4},
+      {"x": -55, "z": -4, "h": 5},
+      {"x": -54, "z": 10, "h": 4},
+      {"x": 55, "z": -20, "h": 5},
+      {"x": 55, "z": -36, "h": 4},
+      {"x": 59, "z": 30, "h": 4},
+      {"x": -40, "z": 49, "h": 4},
+      {"x": -15, "z": 49, "h": 5},
+      {"x": 15, "z": 49, "h": 4},
+      {"x": 40, "z": 49, "h": 5}
+    ],
+    "flowers": {
+      "count": 320,
+      "seed": 7103,
+      "exclude": [
+        {"x": 27, "z": 28, "w": 28, "d": 18},
+        {"x": 53, "z": 14, "w": 14, "d": 48},
+        {"x": 2, "z": 13, "w": 26, "d": 8}
+      ]
+    },
+    "horizon": {
+      "count": 96,
+      "radius": 82
+    },
+    "clouds": 22
+  },
+  "buildings": [
+    {
+      "id": "main",
+      "name": {
+        "zh-CN": "临床方块综合医院",
+        "en": "ClinicalCraft General Hospital"
+      },
+      "rect": {
+        "x": 0.0,
+        "z": -16.0,
+        "w": 92,
+        "d": 52
+      },
+      "floor": "floor",
+      "walls": {
+        "height": 5,
+        "base": "teal",
+        "body": "cream",
+        "top": "wood",
+        "thickness": 1.0
+      },
+      "openings": [
+        {"side": "s", "offset": 0, "width": 4, "height": 3.2, "kind": "double-door"},
+        {"side": "s", "offset": 11, "width": 3, "height": 3, "kind": "double-door"},
+        {"side": "s", "offset": -5.5, "width": 2.5, "height": 1.8, "kind": "window", "sill": 1.1},
+        {"side": "s", "offset": 5.5, "width": 2.5, "height": 1.8, "kind": "window", "sill": 1.1},
+        {"side": "s", "offset": -13.5, "width": 2, "height": 1.6, "kind": "window", "sill": 1.2},
+        {"side": "s", "offset": -19, "width": 3, "height": 1.6, "kind": "window", "sill": 1.2},
+        {"side": "s", "offset": -28, "width": 2.5, "height": 1.6, "kind": "window", "sill": 1.3},
+        {"side": "s", "offset": -36, "width": 2.5, "height": 1.6, "kind": "window", "sill": 1.3},
+        {"side": "s", "offset": -43, "width": 1.2, "height": 0.8, "kind": "window", "sill": 1.8},
+        {"side": "s", "offset": 14.5, "width": 1.6, "height": 1.6, "kind": "window", "sill": 1.3},
+        {"side": "s", "offset": 22.5, "width": 2, "height": 1.6, "kind": "window", "sill": 1.3},
+        {"side": "s", "offset": 30.5, "width": 2, "height": 1.6, "kind": "window", "sill": 1.3},
+        {"side": "s", "offset": 43, "width": 2, "height": 1.6, "kind": "window", "sill": 1.2},
+        {"side": "n", "offset": -41.9, "width": 1.2, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "n", "offset": -36.9, "width": 1.2, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "n", "offset": -31.9, "width": 1.2, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "n", "offset": -26.9, "width": 1.2, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "n", "offset": -20.4, "width": 1.2, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "n", "offset": -13.4, "width": 1.2, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "n", "offset": -9, "width": 2, "height": 1.4, "kind": "window", "sill": 1.3},
+        {"side": "n", "offset": -1, "width": 2, "height": 1.4, "kind": "window", "sill": 1.3},
+        {"side": "n", "offset": 12.25, "width": 2, "height": 1.4, "kind": "window", "sill": 1.3},
+        {"side": "w", "offset": 14, "width": 3, "height": 3, "kind": "double-door"},
+        {"side": "w", "offset": -6, "width": 3, "height": 3, "kind": "double-door"},
+        {"side": "w", "offset": -17, "width": 3, "height": 1.6, "kind": "window", "sill": 1.2},
+        {"side": "w", "offset": 4, "width": 3, "height": 1.6, "kind": "window", "sill": 1.2},
+        {"side": "w", "offset": 21, "width": 1.2, "height": 0.8, "kind": "window", "sill": 1.8},
+        {"side": "e", "offset": 14, "width": 3.5, "height": 3.2, "kind": "double-door"},
+        {"side": "e", "offset": -6, "width": 3, "height": 3, "kind": "double-door"},
+        {"side": "e", "offset": 6, "width": 3, "height": 1.2, "kind": "window", "sill": 1.5},
+        {"side": "e", "offset": -21, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.4},
+        {"side": "e", "offset": 21, "width": 2, "height": 1.6, "kind": "window", "sill": 1.2}
+      ],
+      "roof": {
+        "material": "roof",
+        "skylights": [
+          {"x": -15, "z": -2, "w": 60, "d": 2},
+          {"x": 31, "z": -2, "w": 28, "d": 2},
+          {"x": 0, "z": -22, "w": 90, "d": 2},
+          {"x": 0, "z": -12, "w": 2, "d": 14},
+          {"x": 0, "z": 5, "w": 10, "d": 6}
+        ],
+        "beams": "wood"
+      },
+      "sign": {
+        "text": {
+          "zh-CN": "临 床 方 块 综 合 医 院",
+          "en": "CLINICALCRAFT GENERAL HOSPITAL"
+        },
+        "side": "s"
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "id": "restrooms",
+      "name": {
+        "zh-CN": "卫生间",
+        "en": "Restrooms"
+      },
+      "kind": "restroom",
+      "building": "main",
+      "rect": {
+        "x": -43,
+        "z": 5,
+        "w": 6,
+        "d": 10
+      },
+      "floor": "tile-white",
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 1.6, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "卫生间",
+          "en": "Restrooms"
+        },
+        "side": "s"
+      },
+      "lights": [
+        {"x": -43, "z": 5}
+      ]
+    },
+    {
+      "id": "consult-2",
+      "name": {
+        "zh-CN": "门诊诊室 2",
+        "en": "Consult Room 2"
+      },
+      "kind": "consult",
+      "building": "main",
+      "rect": {
+        "x": -36,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 2.5, "width": 1.6, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "诊室 2",
+          "en": "Consult 2"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -36, "z": 5}
+      ]
+    },
+    {
+      "id": "consult-1",
+      "name": {
+        "zh-CN": "门诊诊室 1",
+        "en": "Consult Room 1"
+      },
+      "kind": "consult",
+      "building": "main",
+      "rect": {
+        "x": -28,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 2.5, "width": 1.6, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "诊室 1",
+          "en": "Consult 1"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -28, "z": 5}
+      ]
+    },
+    {
+      "id": "opd-waiting",
+      "name": {
+        "zh-CN": "门诊候诊区",
+        "en": "Outpatient Waiting"
+      },
+      "kind": "waiting",
+      "building": "main",
+      "rect": {
+        "x": -20,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "partitions": [],
+      "sign": {
+        "text": {
+          "zh-CN": "门诊候诊 · 取药请到右侧窗口",
+          "en": "Outpatient Waiting · Pharmacy window →"
+        },
+        "side": "s"
+      },
+      "lights": [
+        {"x": -20, "z": 5}
+      ]
+    },
+    {
+      "id": "pharmacy",
+      "name": {
+        "zh-CN": "门诊药房",
+        "en": "Pharmacy"
+      },
+      "kind": "pharmacy",
+      "building": "main",
+      "rect": {
+        "x": -12,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "floor": "tile-white",
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 1, "width": 1.6, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2.4, "height": 1.3, "kind": "window", "sill": 1.0}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "药 房",
+          "en": "Pharmacy"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -12, "z": 5}
+      ]
+    },
+    {
+      "id": "lobby",
+      "name": {
+        "zh-CN": "门诊大厅 · 挂号咨询",
+        "en": "Main Lobby · Reception"
+      },
+      "kind": "reception",
+      "building": "main",
+      "rect": {
+        "x": 0,
+        "z": 5,
+        "w": 16,
+        "d": 10
+      },
+      "floor": "tile-white",
+      "partitions": [
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2, "height": 3, "kind": "opening"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "门诊大厅 · 挂号咨询",
+          "en": "Main Lobby · Reception"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -4, "z": 5},
+        {"x": 4, "z": 5}
+      ]
+    },
+    {
+      "id": "ed-triage",
+      "name": {
+        "zh-CN": "急诊预检分诊",
+        "en": "ED Triage"
+      },
+      "kind": "triage",
+      "building": "main",
+      "rect": {
+        "x": 12,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1, "width": 3, "height": 3, "kind": "opening"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "急诊预检分诊",
+          "en": "ED Triage"
+        },
+        "side": "n",
+        "color": "#c9473c"
+      },
+      "lights": [
+        {"x": 12, "z": 5}
+      ]
+    },
+    {
+      "id": "ed-cubicle-1",
+      "name": {
+        "zh-CN": "急诊诊室 1",
+        "en": "ED Cubicle 1"
+      },
+      "kind": "emergency",
+      "building": "main",
+      "rect": {
+        "x": 20,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 4.4, "height": 3, "kind": "opening"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "急诊诊室 1",
+          "en": "ED Cubicle 1"
+        },
+        "side": "s",
+        "color": "#c9473c"
+      },
+      "lights": [
+        {"x": 20, "z": 5}
+      ]
+    },
+    {
+      "id": "ed-cubicle-2",
+      "name": {
+        "zh-CN": "急诊诊室 2",
+        "en": "ED Cubicle 2"
+      },
+      "kind": "emergency",
+      "building": "main",
+      "rect": {
+        "x": 28,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 4.4, "height": 3, "kind": "opening"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "急诊诊室 2",
+          "en": "ED Cubicle 2"
+        },
+        "side": "s",
+        "color": "#c9473c"
+      },
+      "lights": [
+        {"x": 28, "z": 5}
+      ]
+    },
+    {
+      "id": "ed-store",
+      "name": {
+        "zh-CN": "急诊器械库",
+        "en": "ED Equipment Store"
+      },
+      "kind": "storage",
+      "building": "main",
+      "rect": {
+        "x": 36,
+        "z": 5,
+        "w": 8,
+        "d": 10
+      },
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "急诊器械库",
+          "en": "ED Equipment Store"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 36, "z": 5}
+      ]
+    },
+    {
+      "id": "ed-staff",
+      "name": {
+        "zh-CN": "急诊医护休息室",
+        "en": "ED Staff Lounge"
+      },
+      "kind": "office",
+      "building": "main",
+      "rect": {
+        "x": 43,
+        "z": 5,
+        "w": 6,
+        "d": 10
+      },
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 1.6, "height": 3, "kind": "door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "医护休息室",
+          "en": "Staff Lounge"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 43, "z": 5}
+      ]
+    },
+    {
+      "id": "street",
+      "name": {
+        "zh-CN": "医院大街",
+        "en": "Hospital Street"
+      },
+      "kind": "corridor",
+      "building": "main",
+      "rect": {
+        "x": -15,
+        "z": -2,
+        "w": 62,
+        "d": 4
+      },
+      "partitions": [],
+      "sign": {
+        "text": {
+          "zh-CN": "医 院 大 街",
+          "en": "Hospital Street"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -41, "z": -2},
+        {"x": -31, "z": -2},
+        {"x": -21, "z": -2},
+        {"x": -11, "z": -2},
+        {"x": 4, "z": -2},
+        {"x": 12, "z": -2}
+      ]
+    },
+    {
+      "id": "ed-hall",
+      "name": {
+        "zh-CN": "急诊通道",
+        "en": "ED Corridor"
+      },
+      "kind": "corridor",
+      "building": "main",
+      "rect": {
+        "x": 31,
+        "z": -2,
+        "w": 30,
+        "d": 4
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 3, "height": 3, "kind": "double-door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "急 诊 通 道",
+          "en": "ED Corridor"
+        },
+        "side": "n",
+        "color": "#c9473c"
+      },
+      "lights": [
+        {"x": 21, "z": -2},
+        {"x": 31, "z": -2},
+        {"x": 41, "z": -2}
+      ]
+    },
+    {
+      "id": "central-corridor",
+      "name": {
+        "zh-CN": "中央走廊",
+        "en": "Central Corridor"
+      },
+      "kind": "corridor",
+      "building": "main",
+      "rect": {
+        "x": 0,
+        "z": -12,
+        "w": 4,
+        "d": 16
+      },
+      "partitions": [],
+      "sign": {
+        "text": {
+          "zh-CN": "中 央 走 廊",
+          "en": "Central Corridor"
+        },
+        "side": "w"
+      },
+      "lights": [
+        {"x": 0, "z": -12}
+      ]
+    },
+    {
+      "id": "north-corridor",
+      "name": {
+        "zh-CN": "北侧走廊",
+        "en": "North Corridor"
+      },
+      "kind": "corridor",
+      "building": "main",
+      "rect": {
+        "x": 0,
+        "z": -22,
+        "w": 92,
+        "d": 4
+      },
+      "partitions": [],
+      "sign": {
+        "text": {
+          "zh-CN": "北 侧 走 廊",
+          "en": "North Corridor"
+        },
+        "side": "s"
+      },
+      "lights": [
+        {"x": -40, "z": -22},
+        {"x": -30, "z": -22},
+        {"x": -20, "z": -22},
+        {"x": -10, "z": -22},
+        {"x": 0, "z": -22},
+        {"x": 10, "z": -22},
+        {"x": 20, "z": -22},
+        {"x": 30, "z": -22},
+        {"x": 40, "z": -22}
+      ]
+    },
+    {
+      "id": "staff-office",
+      "name": {
+        "zh-CN": "医生办公室",
+        "en": "Doctors' Office"
+      },
+      "kind": "office",
+      "building": "main",
+      "rect": {
+        "x": -39,
+        "z": -12,
+        "w": 14,
+        "d": 16
+      },
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 1.8, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 3, "width": 1.8, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -5.5, "width": 1.6, "height": 3, "kind": "door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "医生办公室",
+          "en": "Doctors' Office"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -39, "z": -12}
+      ]
+    },
+    {
+      "id": "or-scrub",
+      "name": {
+        "zh-CN": "手术室刷手间",
+        "en": "Theatre Scrub Room"
+      },
+      "kind": "corridor",
+      "building": "main",
+      "rect": {
+        "x": -24,
+        "z": -17.5,
+        "w": 16,
+        "d": 5
+      },
+      "floor": "tile-blue",
+      "partitions": [
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2.4, "height": 3, "kind": "sliding-door"}
+          ]
+        },
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2.4, "height": 3, "kind": "double-door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "刷手间 · 限制区",
+          "en": "Scrub Room · Restricted"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -24, "z": -17.5}
+      ]
+    },
+    {
+      "id": "or-theatre",
+      "name": {
+        "zh-CN": "手术室",
+        "en": "Operating Theatre"
+      },
+      "kind": "operating-room",
+      "building": "main",
+      "rect": {
+        "x": -24,
+        "z": -9.5,
+        "w": 16,
+        "d": 11
+      },
+      "floor": "tile-blue",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "手 术 室",
+          "en": "Operating Theatre"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -28, "z": -9.5},
+        {"x": -20, "z": -9.5}
+      ]
+    },
+    {
+      "id": "conference",
+      "name": {
+        "zh-CN": "病例讨论室",
+        "en": "Case Conference Room"
+      },
+      "kind": "conference",
+      "building": "main",
+      "rect": {
+        "x": -9,
+        "z": -12,
+        "w": 14,
+        "d": 16
+      },
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2.4, "height": 3, "kind": "double-door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -3, "width": 2, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        },
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "病例讨论 · 证据板",
+          "en": "Case Conference · Evidence Board"
+        },
+        "side": "s"
+      },
+      "lights": [
+        {"x": -9, "z": -15},
+        {"x": -9, "z": -8}
+      ]
+    },
+    {
+      "id": "laboratory",
+      "name": {
+        "zh-CN": "检验科",
+        "en": "Clinical Laboratory"
+      },
+      "kind": "laboratory",
+      "building": "main",
+      "rect": {
+        "x": 9,
+        "z": -12,
+        "w": 14,
+        "d": 16
+      },
+      "floor": "tile-white",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 4, "width": 2, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 4, "width": 2, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 1.6, "height": 1.0, "kind": "window", "sill": 1.0}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "检 验 科",
+          "en": "Clinical Laboratory"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 6, "z": -12},
+        {"x": 12, "z": -12}
+      ]
+    },
+    {
+      "id": "ed-station",
+      "name": {
+        "zh-CN": "急诊护士站",
+        "en": "ED Nurse Station"
+      },
+      "kind": "nurse-station",
+      "building": "main",
+      "rect": {
+        "x": 21,
+        "z": -12,
+        "w": 10,
+        "d": 16
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 6, "height": 3, "kind": "opening"}
+          ]
+        },
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -3.4, "width": 1.8, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 2, "width": 1.8, "height": 3, "kind": "door"},
+            {"offset": -3, "width": 2.5, "height": 1.4, "kind": "window", "sill": 1.0}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "急诊护士站",
+          "en": "ED Nurse Station"
+        },
+        "side": "n",
+        "color": "#c9473c"
+      },
+      "lights": [
+        {"x": 21, "z": -8},
+        {"x": 21, "z": -15}
+      ]
+    },
+    {
+      "id": "ed-resus",
+      "name": {
+        "zh-CN": "抢救室",
+        "en": "Resuscitation Room"
+      },
+      "kind": "resus",
+      "building": "main",
+      "rect": {
+        "x": 36,
+        "z": -12,
+        "w": 20,
+        "d": 16
+      },
+      "floor": "tile-white",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 3.5, "height": 3, "kind": "double-door"}
+          ]
+        },
+        {
+          "side": "n",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "抢 救 室",
+          "en": "Resuscitation Room"
+        },
+        "side": "n",
+        "color": "#c9473c"
+      },
+      "lights": [
+        {"x": 31, "z": -15},
+        {"x": 41, "z": -15},
+        {"x": 36, "z": -9}
+      ]
+    },
+    {
+      "id": "ward",
+      "name": {
+        "zh-CN": "综合病房",
+        "en": "General Ward"
+      },
+      "kind": "ward",
+      "building": "main",
+      "rect": {
+        "x": -36,
+        "z": -33,
+        "w": 20,
+        "d": 18
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -2, "width": 3, "height": 3, "kind": "double-door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "综 合 病 房",
+          "en": "General Ward"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -41, "z": -36},
+        {"x": -31, "z": -36},
+        {"x": -36, "z": -29}
+      ]
+    },
+    {
+      "id": "icu",
+      "name": {
+        "zh-CN": "重症监护室",
+        "en": "Intensive Care Unit"
+      },
+      "kind": "icu",
+      "building": "main",
+      "rect": {
+        "x": -19,
+        "z": -33,
+        "w": 14,
+        "d": 18
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 3, "height": 3, "kind": "double-door"}
+          ]
+        },
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "重症监护室 ICU",
+          "en": "Intensive Care Unit"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -22.5, "z": -36},
+        {"x": -15.5, "z": -36},
+        {"x": -19, "z": -28}
+      ]
+    },
+    {
+      "id": "endoscopy",
+      "name": {
+        "zh-CN": "内镜中心",
+        "en": "Endoscopy Suite"
+      },
+      "kind": "operating-room",
+      "building": "main",
+      "rect": {
+        "x": -5,
+        "z": -33,
+        "w": 14,
+        "d": 18
+      },
+      "floor": "tile-blue",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2.4, "height": 3, "kind": "double-door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "内 镜 中 心",
+          "en": "Endoscopy Suite"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": -5, "z": -36},
+        {"x": -5, "z": -28}
+      ]
+    },
+    {
+      "id": "pathology",
+      "name": {
+        "zh-CN": "病理与遗传科",
+        "en": "Pathology & Genetics"
+      },
+      "kind": "pathology",
+      "building": "main",
+      "rect": {
+        "x": 9,
+        "z": -33,
+        "w": 14,
+        "d": 18
+      },
+      "floor": "tile-white",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": 0, "width": 2, "height": 3, "kind": "door"}
+          ]
+        },
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "病理与遗传",
+          "en": "Pathology & Genetics"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 6, "z": -33},
+        {"x": 12, "z": -33}
+      ]
+    },
+    {
+      "id": "rad-xray",
+      "name": {
+        "zh-CN": "X 线摄影室",
+        "en": "X-ray Room"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 18.5,
+        "z": -37,
+        "w": 5,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1.25, "width": 1.6, "height": 3, "kind": "door"},
+            {"offset": 1.25, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.0}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "X 线",
+          "en": "X-ray"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 18.5, "z": -37}
+      ]
+    },
+    {
+      "id": "rad-ct",
+      "name": {
+        "zh-CN": "CT 室",
+        "en": "CT Suite"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 23.5,
+        "z": -37,
+        "w": 5,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1.25, "width": 1.6, "height": 3, "kind": "door"},
+            {"offset": 1.25, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.0}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "CT",
+          "en": "CT"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 23.5, "z": -37}
+      ]
+    },
+    {
+      "id": "rad-mri",
+      "name": {
+        "zh-CN": "磁共振室",
+        "en": "MRI Suite"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 28.5,
+        "z": -37,
+        "w": 5,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1.25, "width": 1.6, "height": 3, "kind": "door"},
+            {"offset": 1.25, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.0}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "MRI 强磁场",
+          "en": "MRI · Strong magnet"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 28.5, "z": -37}
+      ]
+    },
+    {
+      "id": "rad-petct",
+      "name": {
+        "zh-CN": "PET-CT 室",
+        "en": "PET-CT Suite"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 33.5,
+        "z": -37,
+        "w": 5,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1.25, "width": 1.6, "height": 3, "kind": "door"},
+            {"offset": 1.25, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.0}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "PET-CT",
+          "en": "PET-CT"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 33.5, "z": -37}
+      ]
+    },
+    {
+      "id": "rad-cathlab",
+      "name": {
+        "zh-CN": "介入导管室",
+        "en": "Cath Lab"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 38.5,
+        "z": -37,
+        "w": 5,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1.25, "width": 1.6, "height": 3, "kind": "door"},
+            {"offset": 1.25, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.0}
+          ]
+        },
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": []
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "介入导管室 DSA",
+          "en": "Cath Lab · DSA"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 38.5, "z": -37}
+      ]
+    },
+    {
+      "id": "rad-us",
+      "name": {
+        "zh-CN": "超声室",
+        "en": "Ultrasound Room"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 43.5,
+        "z": -37,
+        "w": 5,
+        "d": 10
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -1.25, "width": 1.6, "height": 3, "kind": "door"},
+            {"offset": 1.25, "width": 1.6, "height": 1.2, "kind": "window", "sill": 1.0}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "超 声",
+          "en": "Ultrasound"
+        },
+        "side": "n"
+      },
+      "lights": [
+        {"x": 43.5, "z": -37}
+      ]
+    },
+    {
+      "id": "rad-control",
+      "name": {
+        "zh-CN": "影像科 · 控制与阅片区",
+        "en": "Radiology · Control & Reading"
+      },
+      "kind": "imaging",
+      "building": "main",
+      "rect": {
+        "x": 31,
+        "z": -28,
+        "w": 30,
+        "d": 8
+      },
+      "floor": "lino",
+      "partitions": [
+        {
+          "side": "s",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [
+            {"offset": -4, "width": 3, "height": 3, "kind": "double-door"},
+            {"offset": -12, "width": 1.8, "height": 3, "kind": "door"}
+          ]
+        }
+      ],
+      "sign": {
+        "text": {
+          "zh-CN": "影像科 · 控制与阅片",
+          "en": "Radiology · Control & Reading"
+        },
+        "side": "s"
+      },
+      "lights": [
+        {"x": 21, "z": -28},
+        {"x": 31, "z": -28},
+        {"x": 41, "z": -28}
+      ]
+    },
+    {
+      "id": "entrance-plaza",
+      "name": {
+        "zh-CN": "入口广场",
+        "en": "Entrance Plaza"
+      },
+      "kind": "entrance",
+      "rect": {
+        "x": 2,
+        "z": 13.5,
+        "w": 24,
+        "d": 5
+      },
+      "partitions": [],
+      "lights": []
+    },
+    {
+      "id": "healing-garden",
+      "name": {
+        "zh-CN": "疗愈花园 · 池畔长椅",
+        "en": "Healing Garden · Pond-side Benches"
+      },
+      "kind": "garden",
+      "rect": {
+        "x": -28,
+        "z": 21.75,
+        "w": 16,
+        "d": 3.5
+      },
+      "partitions": [],
+      "lights": []
+    },
+    {
+      "id": "building-garden",
+      "name": {
+        "zh-CN": "建造园地",
+        "en": "Building Garden"
+      },
+      "kind": "build-zone",
+      "rect": {
+        "x": -53,
+        "z": 21.75,
+        "w": 12,
+        "d": 2.5
+      },
+      "partitions": [],
+      "lights": []
+    },
+    {
+      "id": "ambulance-bay",
+      "name": {
+        "zh-CN": "救护车停靠区",
+        "en": "Ambulance Bay"
+      },
+      "kind": "entrance",
+      "rect": {
+        "x": 53,
+        "z": -2,
+        "w": 12,
+        "d": 16
+      },
+      "partitions": [],
+      "lights": []
+    }
+  ],
+  "placements": [
+    {"id": "reception-desk", "type": "reception-desk", "x": -5, "z": 5, "rot": 90, "room": "lobby", "label": {"zh-CN": "挂号咨询台", "en": "Registration & Enquiries"}},
+    {"id": "reception-records", "type": "records-terminal", "x": -7.475, "z": 7.2, "rot": 90, "room": "lobby", "label": {"zh-CN": "挂号系统终端", "en": "Registration Records Terminal"}},
+    {"id": "lobby-chairs-1", "type": "waiting-chairs", "x": 4.2, "z": 2.9, "rot": 270, "room": "lobby"},
+    {"id": "lobby-chairs-2", "type": "waiting-chairs", "x": 4.2, "z": 7.1, "rot": 270, "room": "lobby"},
+    {"id": "lobby-chairs-3", "type": "waiting-chairs", "x": 6.3, "z": 2.9, "rot": 270, "room": "lobby"},
+    {"id": "lobby-sanitizer-w", "type": "hand-sanitizer", "x": -2.7, "z": 9.25, "rot": 180, "room": "lobby"},
+    {"id": "lobby-clock", "type": "wall-clock", "x": 3.6, "z": 9.45, "rot": 180, "room": "lobby"},
+    {"id": "lobby-plant-w", "type": "potted-plant", "x": -7.35, "z": 9, "rot": 0, "room": "lobby"},
+    {"id": "lobby-plant-e", "type": "potted-plant", "x": 7.35, "z": 9, "rot": 0, "room": "lobby"},
+    {"id": "pharmacy-counter", "type": "desk", "x": -15.425, "z": 5, "rot": 90, "room": "pharmacy", "label": {"zh-CN": "发药窗口", "en": "Dispensing Window"}},
+    {"id": "pharmacy-records", "type": "records-terminal", "x": -15.475, "z": 2.6, "rot": 90, "room": "pharmacy", "label": {"zh-CN": "处方审核终端", "en": "Prescription Review Terminal"}},
+    {"id": "pharmacy-cabinet", "type": "medication-cabinet", "x": -10.7, "z": 9.1, "rot": 180, "room": "pharmacy", "label": {"zh-CN": "药品柜", "en": "Medication Cabinet"}},
+    {"id": "pharmacy-fridge", "type": "medication-fridge", "x": -9.3, "z": 9.1, "rot": 180, "room": "pharmacy", "label": {"zh-CN": "药品冷藏柜", "en": "Medication Fridge"}},
+    {"id": "pharmacy-shelves-1", "type": "pharmacy-shelves", "x": -8.475, "z": 2.6, "rot": 270, "room": "pharmacy"},
+    {"id": "pharmacy-shelves-2", "type": "pharmacy-shelves", "x": -8.475, "z": 4.8, "rot": 270, "room": "pharmacy"},
+    {"id": "pharmacy-shelves-3", "type": "pharmacy-shelves", "x": -8.475, "z": 7, "rot": 270, "room": "pharmacy"},
+    {"id": "opd-chairs-1", "type": "waiting-chairs", "x": -21.6, "z": 3.6, "rot": 90, "room": "opd-waiting"},
+    {"id": "opd-chairs-2", "type": "waiting-chairs", "x": -21.6, "z": 6.6, "rot": 90, "room": "opd-waiting"},
+    {"id": "opd-chairs-3", "type": "waiting-chairs", "x": -19.4, "z": 3.6, "rot": 90, "room": "opd-waiting"},
+    {"id": "opd-vending", "type": "vending-machine", "x": -22.6, "z": 9.025, "rot": 180, "room": "opd-waiting"},
+    {"id": "opd-water", "type": "water-dispenser", "x": -21.4, "z": 9.275, "rot": 180, "room": "opd-waiting"},
+    {"id": "consult-1-couch", "type": "exam-couch", "x": -30.625, "z": 5.3, "rot": 0, "room": "consult-1", "label": {"zh-CN": "诊察床", "en": "Examination Couch"}},
+    {"id": "consult-1-bedside-table", "type": "bedside-table", "x": -29.25, "z": 3, "rot": 270, "room": "consult-1"},
+    {"id": "consult-1-desk", "type": "desk", "x": -24.575, "z": 6, "rot": 270, "room": "consult-1", "label": {"zh-CN": "医生诊桌", "en": "Doctor's Desk"}},
+    {"id": "consult-1-doctor-chair", "type": "office-chair", "x": -25.55, "z": 6, "rot": 90, "room": "consult-1"},
+    {"id": "consult-1-patient-chair", "type": "chair", "x": -24.7, "z": 7.6, "rot": 270, "room": "consult-1"},
+    {"id": "consult-1-diagnostic-set", "type": "diagnostic-wall-set", "x": -30.6, "z": 9.4, "rot": 180, "room": "consult-1", "label": {"zh-CN": "壁挂诊断仪", "en": "Wall Diagnostic Set"}},
+    {"id": "consult-1-sink", "type": "sink", "x": -28.6, "z": 0.5, "rot": 0, "room": "consult-1"},
+    {"id": "consult-2-couch", "type": "exam-couch", "x": -38.625, "z": 5.3, "rot": 0, "room": "consult-2", "label": {"zh-CN": "诊察床", "en": "Examination Couch"}},
+    {"id": "consult-2-bedside-table", "type": "bedside-table", "x": -37.25, "z": 3, "rot": 270, "room": "consult-2"},
+    {"id": "consult-2-desk", "type": "desk", "x": -32.575, "z": 6, "rot": 270, "room": "consult-2", "label": {"zh-CN": "医生诊桌", "en": "Doctor's Desk"}},
+    {"id": "consult-2-doctor-chair", "type": "office-chair", "x": -33.55, "z": 6, "rot": 90, "room": "consult-2"},
+    {"id": "consult-2-patient-chair", "type": "chair", "x": -32.7, "z": 7.6, "rot": 270, "room": "consult-2"},
+    {"id": "consult-2-diagnostic-set", "type": "diagnostic-wall-set", "x": -38.6, "z": 9.4, "rot": 180, "room": "consult-2", "label": {"zh-CN": "壁挂诊断仪", "en": "Wall Diagnostic Set"}},
+    {"id": "consult-2-sink", "type": "sink", "x": -36.6, "z": 0.5, "rot": 0, "room": "consult-2"},
+    {"id": "restroom-sink-1", "type": "sink", "x": -40.5, "z": 3, "rot": 270, "room": "restrooms"},
+    {"id": "restroom-sink-2", "type": "sink", "x": -40.5, "z": 4.4, "rot": 270, "room": "restrooms"},
+    {"id": "triage-desk", "type": "desk", "x": 15.425, "z": 2.2, "rot": 270, "room": "ed-triage", "label": {"zh-CN": "分诊台", "en": "Triage Desk"}},
+    {"id": "triage-nurse-chair", "type": "office-chair", "x": 14.45, "z": 2.2, "rot": 90, "room": "ed-triage"},
+    {"id": "triage-patient-chair", "type": "chair", "x": 15.525, "z": 3.75, "rot": 270, "room": "ed-triage"},
+    {"id": "triage-scale", "type": "weighing-scale", "x": 8.525, "z": 8.4, "rot": 90, "room": "ed-triage", "label": {"zh-CN": "身高体重秤", "en": "Height & Weight Scale"}},
+    {"id": "triage-peak-flow", "type": "peak-flow-station", "x": 8.45, "z": 2.2, "rot": 90, "room": "ed-triage", "label": {"zh-CN": "峰流速仪", "en": "Peak Flow Meter"}},
+    {"id": "triage-sanitizer", "type": "hand-sanitizer", "x": 13.6, "z": 9.25, "rot": 180, "room": "ed-triage"},
+    {"id": "triage-waiting", "type": "waiting-chairs", "x": 15.475, "z": 8.2, "rot": 270, "room": "ed-triage"},
+    {"id": "cub1-stretcher", "type": "stretcher", "x": 20, "z": 7.9, "rot": 180, "room": "ed-cubicle-1", "label": {"zh-CN": "急诊平车 1", "en": "ED Trolley 1"}},
+    {"id": "cub1-monitor", "type": "patient-monitor", "x": 19, "z": 9.15, "rot": 180, "room": "ed-cubicle-1", "label": {"zh-CN": "床旁监护仪 · 急诊诊室 1", "en": "Bedside Monitor · ED Cubicle 1"}},
+    {"id": "cub1-oxygen", "type": "oxygen-outlet", "x": 20.9, "z": 9.375, "rot": 180, "room": "ed-cubicle-1"},
+    {"id": "cub1-infusion-pump", "type": "infusion-pump", "x": 20.95, "z": 8.25, "rot": 0, "room": "ed-cubicle-1"},
+    {"id": "cub1-curtain", "type": "privacy-curtain", "x": 19, "z": 0.75, "rot": 0, "room": "ed-cubicle-1"},
+    {"id": "cub2-stretcher", "type": "stretcher", "x": 28, "z": 7.9, "rot": 180, "room": "ed-cubicle-2", "label": {"zh-CN": "急诊平车 2", "en": "ED Trolley 2"}},
+    {"id": "cub2-monitor", "type": "patient-monitor", "x": 27, "z": 9.15, "rot": 180, "room": "ed-cubicle-2", "label": {"zh-CN": "床旁监护仪 · 急诊诊室 2", "en": "Bedside Monitor · ED Cubicle 2"}},
+    {"id": "cub2-oxygen", "type": "oxygen-outlet", "x": 28.9, "z": 9.375, "rot": 180, "room": "ed-cubicle-2"},
+    {"id": "cub2-infusion-pump", "type": "infusion-pump", "x": 28.95, "z": 8.25, "rot": 0, "room": "ed-cubicle-2"},
+    {"id": "cub2-curtain", "type": "privacy-curtain", "x": 27, "z": 0.75, "rot": 0, "room": "ed-cubicle-2"},
+    {"id": "cub1-treatment-cart", "type": "crash-cart", "x": 23.465, "z": 5.5, "rot": 270, "room": "ed-cubicle-1", "label": {"zh-CN": "急诊治疗车", "en": "ED Treatment Cart"}},
+    {"id": "cub2-ecg", "type": "ecg-machine", "x": 24.5, "z": 5.5, "rot": 90, "room": "ed-cubicle-2", "label": {"zh-CN": "急诊诊室心电图机", "en": "Cubicle ECG Cart"}},
+    {"id": "cub2-nebulizer", "type": "nebulizer", "x": 29.7, "z": 8.25, "rot": 0, "room": "ed-cubicle-2", "label": {"zh-CN": "雾化器", "en": "Nebulizer"}},
+    {"id": "ed-store-cabinet-1", "type": "cabinet", "x": 34, "z": 9.2, "rot": 180, "room": "ed-store"},
+    {"id": "ed-store-cabinet-2", "type": "cabinet", "x": 35.2, "z": 9.2, "rot": 180, "room": "ed-store"},
+    {"id": "ed-store-o2-1", "type": "oxygen-cylinder", "x": 39.525, "z": 6, "rot": 270, "room": "ed-store", "label": {"zh-CN": "氧气钢瓶", "en": "Oxygen Cylinder"}},
+    {"id": "ed-store-wheelchair", "type": "wheelchair", "x": 33, "z": 5, "rot": 90, "room": "ed-store"},
+    {"id": "ed-staff-locker-1", "type": "locker", "x": 45.2, "z": 3, "rot": 270, "room": "ed-staff"},
+    {"id": "ed-staff-locker-2", "type": "locker", "x": 45.2, "z": 4.1, "rot": 270, "room": "ed-staff"},
+    {"id": "ed-staff-table", "type": "desk", "x": 42, "z": 9.1, "rot": 180, "room": "ed-staff"},
+    {"id": "ed-hall-sanitizer", "type": "hand-sanitizer", "x": 44.2, "z": -3.575, "rot": 0, "room": "ed-hall"},
+    {"id": "ed-hall-clock", "type": "wall-clock", "x": 30, "z": -3.775, "rot": 0, "room": "ed-hall"},
+    {"id": "ed-nurse-station", "type": "nurse-station-desk", "x": 21, "z": -7.6, "rot": 180, "room": "ed-station", "label": {"zh-CN": "急诊护士站", "en": "ED Nurse Station"}},
+    {"id": "ed-station-chair", "type": "office-chair", "x": 19.4, "z": -9.1, "rot": 0, "room": "ed-station"},
+    {"id": "ed-records", "type": "records-terminal", "x": 25.475, "z": -6.3, "rot": 270, "room": "ed-station", "label": {"zh-CN": "急诊电子病历终端", "en": "ED Records Terminal"}},
+    {"id": "ed-glucometer", "type": "glucometer-station", "x": 25.55, "z": -7.4, "rot": 270, "room": "ed-station", "label": {"zh-CN": "床旁快速检测站", "en": "Point-of-Care Testing Station"}},
+    {"id": "ed-med-cabinet", "type": "medication-cabinet", "x": 23.4, "z": -19.425, "rot": 0, "room": "ed-station", "label": {"zh-CN": "急诊药品柜", "en": "ED Medication Cabinet"}},
+    {"id": "ed-med-fridge", "type": "medication-fridge", "x": 24.8, "z": -19.425, "rot": 0, "room": "ed-station"},
+    {"id": "ed-whiteboard", "type": "whiteboard", "x": 20.6, "z": -19.765, "rot": 0, "room": "ed-station", "label": {"zh-CN": "急诊患者动态板", "en": "ED Patient Tracking Board"}},
+    {"id": "ed-case-board", "type": "evidence-board", "x": 16.525, "z": -16, "rot": 90, "room": "ed-station", "label": {"zh-CN": "急诊病例讨论板", "en": "ED Case Board"}},
+    {"id": "ed-tube-station", "type": "pneumatic-tube-station", "x": 16.425, "z": -9.6, "rot": 90, "room": "ed-station", "label": {"zh-CN": "气动物流站 · 送检验科", "en": "Pneumatic Tube · to Lab"}},
+    {"id": "ed-station-sink", "type": "sink", "x": 16.5, "z": -6, "rot": 90, "room": "ed-station"},
+    {"id": "resus1-bed", "type": "hospital-bed", "x": 31, "z": -17.325, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救床 1", "en": "Resus Bed 1"}},
+    {"id": "resus1-monitor", "type": "patient-monitor", "x": 29.65, "z": -19.475, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救监护仪 1", "en": "Resus Monitor 1"}},
+    {"id": "resus1-oxygen", "type": "oxygen-outlet", "x": 31.25, "z": -19.7, "rot": 0, "room": "ed-resus"},
+    {"id": "resus1-suction", "type": "suction-unit", "x": 32.25, "z": -19.55, "rot": 0, "room": "ed-resus"},
+    {"id": "resus1-iv-pole", "type": "iv-pole", "x": 29.4, "z": -18.025, "rot": 0, "room": "ed-resus"},
+    {"id": "resus1-infusion-pump", "type": "infusion-pump", "x": 29.4, "z": -17.125, "rot": 0, "room": "ed-resus"},
+    {"id": "resus1-ecg", "type": "ecg-machine", "x": 29.35, "z": -15.825, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "12 导联心电图机 1", "en": "12-lead ECG 1"}},
+    {"id": "resus1-pocus", "type": "pocus-cart", "x": 28.3, "z": -17.525, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "床旁超声 1", "en": "POCUS Cart 1"}},
+    {"id": "resus1-defibrillator", "type": "defibrillator", "x": 32.75, "z": -16.725, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "除颤仪 1", "en": "Defibrillator 1"}},
+    {"id": "resus1-crash-cart", "type": "crash-cart", "x": 32.95, "z": -15.325, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "抢救车 1", "en": "Crash Cart 1"}},
+    {"id": "resus1-ventilator", "type": "ventilator", "x": 32.75, "z": -18.025, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "呼吸机", "en": "Ventilator"}},
+    {"id": "resus1-nebulizer", "type": "nebulizer", "x": 28.3, "z": -16.325, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "雾化器", "en": "Nebulizer"}},
+    {"id": "resus2-bed", "type": "hospital-bed", "x": 41, "z": -17.325, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救床 2", "en": "Resus Bed 2"}},
+    {"id": "resus2-monitor", "type": "patient-monitor", "x": 39.65, "z": -19.475, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救监护仪 2", "en": "Resus Monitor 2"}},
+    {"id": "resus2-oxygen", "type": "oxygen-outlet", "x": 41.25, "z": -19.7, "rot": 0, "room": "ed-resus"},
+    {"id": "resus2-suction", "type": "suction-unit", "x": 42.25, "z": -19.55, "rot": 0, "room": "ed-resus"},
+    {"id": "resus2-iv-pole", "type": "iv-pole", "x": 39.4, "z": -18.025, "rot": 0, "room": "ed-resus"},
+    {"id": "resus2-infusion-pump", "type": "infusion-pump", "x": 39.4, "z": -17.125, "rot": 0, "room": "ed-resus"},
+    {"id": "resus2-ecg", "type": "ecg-machine", "x": 39.35, "z": -15.825, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "12 导联心电图机 2", "en": "12-lead ECG 2"}},
+    {"id": "resus2-pocus", "type": "pocus-cart", "x": 38.3, "z": -17.525, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "床旁超声 2", "en": "POCUS Cart 2"}},
+    {"id": "resus2-defibrillator", "type": "defibrillator", "x": 42.75, "z": -16.725, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "除颤仪 2", "en": "Defibrillator 2"}},
+    {"id": "resus2-crash-cart", "type": "crash-cart", "x": 42.95, "z": -15.325, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "抢救车 2", "en": "Crash Cart 2"}},
+    {"id": "resus-curtain-1", "type": "privacy-curtain", "x": 36, "z": -17.525, "rot": 90, "room": "ed-resus"},
+    {"id": "resus-curtain-2", "type": "privacy-curtain", "x": 36, "z": -15.125, "rot": 90, "room": "ed-resus"},
+    {"id": "resus-sink", "type": "sink", "x": 45.175, "z": -6.4, "rot": 270, "room": "ed-resus"},
+    {"id": "resus-glove-dispenser", "type": "glove-dispenser", "x": 36, "z": -19.765, "rot": 0, "room": "ed-resus"},
+    {"id": "lab-chemistry", "type": "chemistry-analyzer", "x": 4.5, "z": -19.3, "rot": 0, "room": "laboratory", "label": {"zh-CN": "生化免疫分析仪", "en": "Chemistry & Immunoassay Analyzer"}},
+    {"id": "lab-hematology", "type": "hematology-analyzer", "x": 6.6, "z": -19.275, "rot": 0, "room": "laboratory", "label": {"zh-CN": "血细胞分析仪", "en": "Hematology Analyzer"}},
+    {"id": "lab-blood-gas", "type": "blood-gas-analyzer", "x": 7.75, "z": -19.5, "rot": 0, "room": "laboratory", "label": {"zh-CN": "血气分析仪", "en": "Blood Gas Analyzer"}},
+    {"id": "lab-urinalysis", "type": "urinalysis-analyzer", "x": 8.95, "z": -19.45, "rot": 0, "room": "laboratory", "label": {"zh-CN": "尿液分析仪", "en": "Urinalysis Analyzer"}},
+    {"id": "lab-flow", "type": "flow-cytometer", "x": 10.6, "z": -19.375, "rot": 0, "room": "laboratory", "label": {"zh-CN": "流式细胞仪", "en": "Flow Cytometer"}},
+    {"id": "lab-fridge", "type": "lab-fridge", "x": 15.1, "z": -19.4, "rot": 0, "room": "laboratory"},
+    {"id": "lab-biosafety", "type": "biosafety-cabinet", "x": 2.625, "z": -17, "rot": 90, "room": "laboratory", "label": {"zh-CN": "生物安全柜 · 微生物", "en": "Biosafety Cabinet · Microbiology"}},
+    {"id": "lab-centrifuge", "type": "centrifuge", "x": 2.6, "z": -15, "rot": 90, "room": "laboratory"},
+    {"id": "lab-bench", "type": "lab-bench", "x": 2.675, "z": -12.6, "rot": 90, "room": "laboratory"},
+    {"id": "lab-microscope", "type": "microscope", "x": 2.525, "z": -10.45, "rot": 90, "room": "laboratory", "label": {"zh-CN": "检验显微镜", "en": "Laboratory Microscope"}},
+    {"id": "lab-tube-station", "type": "pneumatic-tube-station", "x": 2.425, "z": -5, "rot": 90, "room": "laboratory", "label": {"zh-CN": "气动物流站", "en": "Pneumatic Tube Station"}},
+    {"id": "lab-workstation", "type": "workstation", "x": 9.5, "z": -8.4, "rot": 0, "room": "laboratory", "label": {"zh-CN": "检验医嘱工作站", "en": "Laboratory Order Workstation"}, "capabilities": ["lab-hematology", "lab-chemistry", "lab-blood-gas", "lab-urinalysis", "lab-microbiology", "lab-serology", "lab-endocrine", "flow-cytometry", "blood-bank"]},
+    {"id": "lab-blood-bank", "type": "blood-bank-fridge", "x": 15.4, "z": -15.5, "rot": 270, "room": "laboratory", "label": {"zh-CN": "血库储血冰箱", "en": "Blood Bank Fridge"}},
+    {"id": "lab-sink", "type": "sink", "x": 15.5, "z": -17.6, "rot": 270, "room": "laboratory"},
+    {"id": "lab-bench-2", "type": "lab-bench", "x": 15.325, "z": -8.4, "rot": 270, "room": "laboratory"},
+    {"id": "evidence-board", "type": "evidence-board", "x": -9, "z": -19.475, "rot": 0, "room": "conference", "label": {"zh-CN": "会诊 · 证据拼图", "en": "Case Conference · Evidence Board"}},
+    {"id": "conference-projector", "type": "projector-screen", "x": -4.4, "z": -19.375, "rot": 0, "room": "conference"},
+    {"id": "anatomy-atlas", "type": "anatomy-atlas-kiosk", "x": -15.155, "z": -17.6, "rot": 90, "room": "conference", "label": {"zh-CN": "公开人体解剖图谱", "en": "Open Human Anatomy Atlas"}},
+    {"id": "conference-bookshelf", "type": "bookshelf", "x": -15.295, "z": -12.6, "rot": 90, "room": "conference"},
+    {"id": "conference-whiteboard", "type": "whiteboard", "x": -15.765, "z": -7.8, "rot": 90, "room": "conference"},
+    {"id": "conference-table", "type": "desk", "x": -9, "z": -15.6, "rot": 180, "room": "conference", "label": {"zh-CN": "讨论桌", "en": "Discussion Table"}},
+    {"id": "conference-chair-1", "type": "chair", "x": -11.6, "z": -12.6, "rot": 180, "room": "conference"},
+    {"id": "conference-chair-2", "type": "chair", "x": -10.5, "z": -12.6, "rot": 180, "room": "conference"},
+    {"id": "conference-chair-3", "type": "chair", "x": -7.5, "z": -12.6, "rot": 180, "room": "conference"},
+    {"id": "conference-chair-4", "type": "chair", "x": -6.4, "z": -12.6, "rot": 180, "room": "conference"},
+    {"id": "or-table", "type": "operating-table", "x": -24, "z": -9.5, "rot": 90, "room": "or-theatre", "label": {"zh-CN": "手术床", "en": "Operating Table"}},
+    {"id": "or-light", "type": "surgical-light", "x": -24, "z": -9.5, "rot": 90, "room": "or-theatre", "label": {"zh-CN": "无影灯", "en": "Surgical Light"}},
+    {"id": "or-anesthesia", "type": "anesthesia-machine", "x": -26.3, "z": -10.05, "rot": 90, "room": "or-theatre", "label": {"zh-CN": "麻醉机", "en": "Anaesthesia Machine"}},
+    {"id": "or-monitor", "type": "patient-monitor", "x": -26.2, "z": -8.65, "rot": 90, "room": "or-theatre", "label": {"zh-CN": "术中监护仪", "en": "Intra-operative Monitor"}},
+    {"id": "or-instrument-table", "type": "instrument-table", "x": -23.7, "z": -7.65, "rot": 180, "room": "or-theatre", "label": {"zh-CN": "器械台", "en": "Instrument Table"}},
+    {"id": "or-suction", "type": "suction-unit", "x": -26.2, "z": -11.35, "rot": 90, "room": "or-theatre"},
+    {"id": "or-infusion-pump", "type": "infusion-pump", "x": -25.2, "z": -11.25, "rot": 0, "room": "or-theatre"},
+    {"id": "or-oxygen", "type": "oxygen-outlet", "x": -31.7, "z": -9.5, "rot": 90, "room": "or-theatre"},
+    {"id": "or-cabinet-1", "type": "cabinet", "x": -29.5, "z": -4.475, "rot": 180, "room": "or-theatre", "label": {"zh-CN": "无菌器械柜", "en": "Sterile Supply Cabinet"}},
+    {"id": "or-cabinet-2", "type": "cabinet", "x": -18.5, "z": -4.475, "rot": 180, "room": "or-theatre"},
+    {"id": "or-drug-cabinet", "type": "medication-cabinet", "x": -31.425, "z": -12.6, "rot": 90, "room": "or-theatre", "label": {"zh-CN": "麻醉药品柜", "en": "Anaesthetic Drug Cabinet"}},
+    {"id": "scrub-sink-1", "type": "scrub-sink", "x": -28.4, "z": -15.575, "rot": 180, "room": "or-scrub", "label": {"zh-CN": "外科刷手池", "en": "Surgical Scrub Sink"}},
+    {"id": "scrub-sink-2", "type": "scrub-sink", "x": -19.6, "z": -15.575, "rot": 180, "room": "or-scrub", "label": {"zh-CN": "外科刷手池", "en": "Surgical Scrub Sink"}},
+    {"id": "scrub-gloves", "type": "glove-dispenser", "x": -28, "z": -19.765, "rot": 0, "room": "or-scrub"},
+    {"id": "office-desk", "type": "desk", "x": -45.1, "z": -9, "rot": 90, "room": "staff-office"},
+    {"id": "office-chair", "type": "office-chair", "x": -44.3, "z": -9, "rot": 270, "room": "staff-office"},
+    {"id": "office-records", "type": "records-terminal", "x": -45.15, "z": -7.2, "rot": 90, "room": "staff-office", "label": {"zh-CN": "医生工作站", "en": "Physician Records Terminal"}},
+    {"id": "office-bookshelf", "type": "bookshelf", "x": -42, "z": -19.295, "rot": 0, "room": "staff-office"},
+    {"id": "office-locker-1", "type": "locker", "x": -32.475, "z": -12, "rot": 270, "room": "staff-office"},
+    {"id": "ward-bed-1", "type": "hospital-bed", "x": -43.5, "z": -39.6, "rot": 0, "room": "ward", "label": {"zh-CN": "病床 1", "en": "Ward Bed 1"}},
+    {"id": "ward-monitor-1", "type": "patient-monitor", "x": -42.4, "z": -41.15, "rot": 0, "room": "ward", "label": {"zh-CN": "床旁监护仪 · 1 床", "en": "Bedside Monitor · Bed 1"}},
+    {"id": "ward-oxygen-1", "type": "oxygen-outlet", "x": -43.3, "z": -41.375, "rot": 0, "room": "ward"},
+    {"id": "ward-bedside-table-1", "type": "bedside-table", "x": -42.5, "z": -40.2, "rot": 270, "room": "ward"},
+    {"id": "ward-infusion-pump-1", "type": "infusion-pump", "x": -44.75, "z": -39.3, "rot": 0, "room": "ward", "label": {"zh-CN": "输液泵 · 1 床", "en": "Infusion Pump · Bed 1"}},
+    {"id": "ward-curtain-1", "type": "privacy-curtain", "x": -41, "z": -39.5, "rot": 90, "room": "ward"},
+    {"id": "ward-bed-2", "type": "hospital-bed", "x": -38.5, "z": -39.6, "rot": 0, "room": "ward", "label": {"zh-CN": "病床 2", "en": "Ward Bed 2"}},
+    {"id": "ward-monitor-2", "type": "patient-monitor", "x": -39.7, "z": -41.15, "rot": 0, "room": "ward", "label": {"zh-CN": "床旁监护仪 · 2 床", "en": "Bedside Monitor · Bed 2"}},
+    {"id": "ward-oxygen-2", "type": "oxygen-outlet", "x": -38.3, "z": -41.375, "rot": 0, "room": "ward"},
+    {"id": "ward-bedside-table-2", "type": "bedside-table", "x": -37.5, "z": -40.2, "rot": 270, "room": "ward"},
+    {"id": "ward-infusion-pump-2", "type": "infusion-pump", "x": -39.75, "z": -39.3, "rot": 0, "room": "ward", "label": {"zh-CN": "输液泵 · 2 床", "en": "Infusion Pump · Bed 2"}},
+    {"id": "ward-curtain-2", "type": "privacy-curtain", "x": -36, "z": -39.5, "rot": 90, "room": "ward"},
+    {"id": "ward-bed-3", "type": "hospital-bed", "x": -33.5, "z": -39.6, "rot": 0, "room": "ward", "label": {"zh-CN": "病床 3", "en": "Ward Bed 3"}},
+    {"id": "ward-monitor-3", "type": "patient-monitor", "x": -34.7, "z": -41.15, "rot": 0, "room": "ward", "label": {"zh-CN": "床旁监护仪 · 3 床", "en": "Bedside Monitor · Bed 3"}},
+    {"id": "ward-oxygen-3", "type": "oxygen-outlet", "x": -33.3, "z": -41.375, "rot": 0, "room": "ward"},
+    {"id": "ward-bedside-table-3", "type": "bedside-table", "x": -32.5, "z": -40.2, "rot": 270, "room": "ward"},
+    {"id": "ward-curtain-3", "type": "privacy-curtain", "x": -31, "z": -39.5, "rot": 90, "room": "ward"},
+    {"id": "ward-bed-4", "type": "hospital-bed", "x": -28.5, "z": -39.6, "rot": 0, "room": "ward", "label": {"zh-CN": "病床 4", "en": "Ward Bed 4"}},
+    {"id": "ward-monitor-4", "type": "patient-monitor", "x": -29.7, "z": -41.15, "rot": 0, "room": "ward", "label": {"zh-CN": "床旁监护仪 · 4 床", "en": "Bedside Monitor · Bed 4"}},
+    {"id": "ward-oxygen-4", "type": "oxygen-outlet", "x": -28.3, "z": -41.375, "rot": 0, "room": "ward"},
+    {"id": "ward-bedside-table-4", "type": "bedside-table", "x": -27.5, "z": -40.2, "rot": 270, "room": "ward"},
+    {"id": "ward-curtain-4", "type": "privacy-curtain", "x": -29.4, "z": -37.85, "rot": 0, "room": "ward"},
+    {"id": "ward-nurse-station", "type": "nurse-station-desk", "x": -30.6, "z": -28.6, "rot": 0, "room": "ward", "label": {"zh-CN": "病房护士站", "en": "Ward Nurse Station"}},
+    {"id": "ward-sink", "type": "sink", "x": -45.175, "z": -30, "rot": 90, "room": "ward"},
+    {"id": "ward-med-cabinet", "type": "medication-cabinet", "x": -26.575, "z": -27.6, "rot": 270, "room": "ward", "label": {"zh-CN": "病房药品柜", "en": "Ward Medication Cabinet"}},
+    {"id": "ward-crash-cart", "type": "crash-cart", "x": -26.535, "z": -29.4, "rot": 270, "room": "ward", "label": {"zh-CN": "病房抢救车", "en": "Ward Crash Cart"}},
+    {"id": "ward-defibrillator", "type": "defibrillator", "x": -26.5, "z": -30.6, "rot": 270, "room": "ward"},
+    {"id": "ward-ecg", "type": "ecg-machine", "x": -26.5, "z": -31.6, "rot": 270, "room": "ward", "label": {"zh-CN": "病房心电图机", "en": "Ward ECG Cart"}},
+    {"id": "ward-glucometer", "type": "glucometer-station", "x": -26.45, "z": -32.6, "rot": 270, "room": "ward", "label": {"zh-CN": "床旁快速检测站", "en": "Point-of-Care Testing Station"}},
+    {"id": "ward-sanitizer", "type": "hand-sanitizer", "x": -40.6, "z": -24.425, "rot": 180, "room": "ward"},
+    {"id": "icu-bed-1", "type": "hospital-bed", "x": -22.5, "z": -39.1, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 床 1", "en": "ICU Bed 1"}},
+    {"id": "icu-monitor-1", "type": "patient-monitor", "x": -23.8, "z": -41.15, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 监护仪 1", "en": "ICU Monitor 1"}},
+    {"id": "icu-oxygen-1", "type": "oxygen-outlet", "x": -22.25, "z": -41.375, "rot": 0, "room": "icu"},
+    {"id": "icu-ventilator-1", "type": "ventilator", "x": -20.75, "z": -39.7, "rot": 270, "room": "icu", "label": {"zh-CN": "ICU 呼吸机 1", "en": "ICU Ventilator 1"}},
+    {"id": "icu-iv-pole-1", "type": "iv-pole", "x": -24.1, "z": -39.7, "rot": 0, "room": "icu"},
+    {"id": "icu-infusion-pump-1", "type": "infusion-pump", "x": -24.1, "z": -38.8, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 输液泵 1", "en": "ICU Infusion Pump 1"}},
+    {"id": "icu-bed-2", "type": "hospital-bed", "x": -15.5, "z": -39.1, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 床 2", "en": "ICU Bed 2"}},
+    {"id": "icu-monitor-2", "type": "patient-monitor", "x": -16.8, "z": -41.15, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 监护仪 2", "en": "ICU Monitor 2"}},
+    {"id": "icu-oxygen-2", "type": "oxygen-outlet", "x": -15.25, "z": -41.375, "rot": 0, "room": "icu"},
+    {"id": "icu-ventilator-2", "type": "ventilator", "x": -13.75, "z": -39.7, "rot": 270, "room": "icu", "label": {"zh-CN": "ICU 呼吸机 2", "en": "ICU Ventilator 2"}},
+    {"id": "icu-iv-pole-2", "type": "iv-pole", "x": -17.1, "z": -39.7, "rot": 0, "room": "icu"},
+    {"id": "icu-infusion-pump-2", "type": "infusion-pump", "x": -17.1, "z": -38.8, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 输液泵 2", "en": "ICU Infusion Pump 2"}},
+    {"id": "icu-dialysis", "type": "dialysis-machine", "x": -13.75, "z": -38.4, "rot": 270, "room": "icu", "label": {"zh-CN": "床旁血液净化机", "en": "Bedside Dialysis Machine"}},
+    {"id": "icu-curtain", "type": "privacy-curtain", "x": -19, "z": -39.3, "rot": 90, "room": "icu"},
+    {"id": "icu-station", "type": "nurse-station-desk", "x": -19, "z": -29.6, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 中央监护站", "en": "ICU Central Station"}},
+    {"id": "icu-crash-cart", "type": "crash-cart", "x": -12.535, "z": -31.5, "rot": 270, "room": "icu", "label": {"zh-CN": "ICU 抢救车", "en": "ICU Crash Cart"}},
+    {"id": "icu-defibrillator", "type": "defibrillator", "x": -12.5, "z": -33, "rot": 270, "room": "icu"},
+    {"id": "icu-sink", "type": "sink", "x": -25.5, "z": -30, "rot": 90, "room": "icu"},
+    {"id": "icu-ecg", "type": "ecg-machine", "x": -12.5, "z": -34.4, "rot": 270, "room": "icu", "label": {"zh-CN": "ICU 心电图机", "en": "ICU ECG Cart"}},
+    {"id": "endo-stretcher", "type": "stretcher", "x": -5, "z": -35.5, "rot": 0, "room": "endoscopy", "label": {"zh-CN": "内镜检查床", "en": "Endoscopy Trolley"}},
+    {"id": "endo-tower", "type": "endoscopy-tower", "x": -3.4, "z": -36, "rot": 270, "room": "endoscopy", "label": {"zh-CN": "内镜主机", "en": "Endoscopy Tower"}},
+    {"id": "endo-monitor", "type": "patient-monitor", "x": -6.5, "z": -36.1, "rot": 90, "room": "endoscopy", "label": {"zh-CN": "内镜监护仪", "en": "Endoscopy Monitor"}},
+    {"id": "endo-suction", "type": "suction-unit", "x": -6.5, "z": -35, "rot": 90, "room": "endoscopy"},
+    {"id": "endo-oxygen", "type": "oxygen-outlet", "x": -5, "z": -41.375, "rot": 0, "room": "endoscopy"},
+    {"id": "endo-cabinet", "type": "cabinet", "x": -11.525, "z": -38, "rot": 90, "room": "endoscopy", "label": {"zh-CN": "内镜储存柜", "en": "Scope Storage Cabinet"}},
+    {"id": "endo-sink", "type": "sink", "x": 1.5, "z": -38, "rot": 270, "room": "endoscopy"},
+    {"id": "endo-recovery-trolley", "type": "stretcher", "x": -10.375, "z": -28.6, "rot": 90, "room": "endoscopy", "label": {"zh-CN": "复苏平车", "en": "Recovery Trolley"}},
+    {"id": "endo-recovery-oxygen", "type": "oxygen-outlet", "x": -11.7, "z": -29.6, "rot": 90, "room": "endoscopy"},
+    {"id": "path-bookshelf", "type": "bookshelf", "x": 4, "z": -40.97, "rot": 0, "room": "pathology"},
+    {"id": "path-tissue-processor", "type": "tissue-processor", "x": 7, "z": -41.075, "rot": 0, "room": "pathology", "label": {"zh-CN": "组织脱水机", "en": "Tissue Processor"}},
+    {"id": "path-microtome", "type": "microtome", "x": 8.45, "z": -41.125, "rot": 0, "room": "pathology", "label": {"zh-CN": "切片机", "en": "Microtome"}},
+    {"id": "path-slide-scanner", "type": "slide-scanner", "x": 9.8, "z": -41.1, "rot": 0, "room": "pathology", "label": {"zh-CN": "数字切片扫描仪", "en": "Slide Scanner"}},
+    {"id": "path-microscope", "type": "microscope", "x": 2.525, "z": -36, "rot": 90, "room": "pathology", "label": {"zh-CN": "病理显微镜", "en": "Pathology Microscope"}},
+    {"id": "path-bench", "type": "lab-bench", "x": 2.675, "z": -31, "rot": 90, "room": "pathology"},
+    {"id": "path-cytogenetics", "type": "cytogenetics-workstation", "x": 15.375, "z": -36, "rot": 270, "room": "pathology", "label": {"zh-CN": "细胞遗传与分子工作站", "en": "Cytogenetics & Molecular Workstation"}},
+    {"id": "path-workstation", "type": "workstation", "x": 9, "z": -30, "rot": 0, "room": "pathology", "label": {"zh-CN": "病理与遗传工作台", "en": "Pathology & Genetics Workstation"}, "capabilities": ["histopathology", "cytology", "cytogenetics", "molecular"]},
+    {"id": "path-sink", "type": "sink", "x": 13, "z": -24.5, "rot": 180, "room": "pathology"},
+    {"id": "xray-machine", "type": "xray-machine", "x": 18.5, "z": -37.6, "rot": 0, "room": "rad-xray", "label": {"zh-CN": "数字 X 线摄影机", "en": "Digital X-ray Unit"}},
+    {"id": "xray-chest-stand", "type": "xray-chest-stand", "x": 19.5, "z": -41.1, "rot": 0, "room": "rad-xray", "label": {"zh-CN": "胸片立式架", "en": "Chest X-ray Stand"}},
+    {"id": "ct-scanner", "type": "ct-scanner", "x": 23.5, "z": -37.4, "rot": 0, "room": "rad-ct", "label": {"zh-CN": "64 排 CT", "en": "64-slice CT"}},
+    {"id": "mri-scanner", "type": "mri-scanner", "x": 28.5, "z": -37.4, "rot": 0, "room": "rad-mri", "label": {"zh-CN": "3T 磁共振", "en": "3T MRI"}},
+    {"id": "pet-ct-scanner", "type": "pet-ct-scanner", "x": 33.5, "z": -37.6, "rot": 0, "room": "rad-petct", "label": {"zh-CN": "PET-CT", "en": "PET-CT"}},
+    {"id": "cathlab-table", "type": "operating-table", "x": 39.05, "z": -37, "rot": 0, "room": "rad-cathlab", "label": {"zh-CN": "导管床", "en": "Cath Lab Table"}},
+    {"id": "cathlab-c-arm", "type": "c-arm", "x": 37.6, "z": -37, "rot": 0, "room": "rad-cathlab", "label": {"zh-CN": "C 形臂 · DSA", "en": "C-arm · DSA"}},
+    {"id": "cathlab-monitor", "type": "patient-monitor", "x": 40.1, "z": -41.15, "rot": 0, "room": "rad-cathlab", "label": {"zh-CN": "导管室监护仪", "en": "Cath Lab Monitor"}},
+    {"id": "cathlab-defibrillator", "type": "defibrillator", "x": 37, "z": -41.175, "rot": 0, "room": "rad-cathlab"},
+    {"id": "us-stretcher", "type": "stretcher", "x": 44.1, "z": -37.2, "rot": 0, "room": "rad-us", "label": {"zh-CN": "超声检查床", "en": "Ultrasound Couch"}},
+    {"id": "ultrasound-machine", "type": "ultrasound-machine", "x": 42.6, "z": -37.8, "rot": 90, "room": "rad-us", "label": {"zh-CN": "彩色多普勒超声", "en": "Colour Doppler Ultrasound"}},
+    {"id": "radiology-console", "type": "radiology-console", "x": 24.75, "z": -31.275, "rot": 0, "room": "rad-control", "label": {"zh-CN": "影像医嘱与阅片工作站", "en": "Radiology Order & Reading Console"}, "capabilities": ["xray", "ct", "mri", "ultrasound", "echocardiography", "pet-ct", "fluoroscopy"]},
+    {"id": "mri-console", "type": "radiology-console", "x": 29.8, "z": -31.275, "rot": 0, "room": "rad-control", "label": {"zh-CN": "磁共振控制台", "en": "MRI Control Console"}},
+    {"id": "rad-lightbox-1", "type": "xray-lightbox", "x": 21.6, "z": -24.25, "rot": 180, "room": "rad-control", "label": {"zh-CN": "观片灯", "en": "X-ray Lightbox"}},
+    {"id": "rad-lightbox-2", "type": "xray-lightbox", "x": 23, "z": -24.25, "rot": 180, "room": "rad-control"},
+    {"id": "rad-waiting", "type": "waiting-chairs", "x": 39, "z": -24.525, "rot": 180, "room": "rad-control"},
+    {"id": "entrance-plant-w", "type": "potted-plant", "x": -2.8, "z": 11.1, "rot": 0},
+    {"id": "entrance-plant-e", "type": "potted-plant", "x": 2.8, "z": 11.1, "rot": 0},
+    {"id": "garden-bench-north", "type": "garden-bench", "x": -28, "z": 21.6, "rot": 0, "room": "healing-garden", "label": {"zh-CN": "池畔长椅", "en": "Pond-side Bench"}},
+    {"id": "garden-bench-south", "type": "garden-bench", "x": -28, "z": 32.4, "rot": 180},
+    {"id": "garden-bench-west", "type": "garden-bench", "x": -34.4, "z": 27, "rot": 90},
+    {"id": "garden-bench-east", "type": "garden-bench", "x": -21.6, "z": 27, "rot": 270},
+    {"id": "crafting-bench", "type": "crafting-bench", "x": -53, "z": 21.9, "rot": 0, "room": "building-garden", "label": {"zh-CN": "工作台", "en": "Workbench"}},
+    {"id": "signpost-building-garden", "type": "signpost", "x": -50, "z": 21.9, "rot": 0, "room": "building-garden"},
+    {"id": "signpost-welcome", "type": "signpost", "x": -3.9, "z": 24, "rot": 0},
+    {"id": "signpost-garden", "type": "signpost", "x": -3.9, "z": 21.4, "rot": 0},
+    {"id": "signpost-parking", "type": "signpost", "x": 11.6, "z": 22, "rot": 90},
+    {"id": "signpost-ed-walkin", "type": "signpost", "x": 15.6, "z": 13.6, "rot": 0},
+    {"id": "signpost-ambulance", "type": "signpost", "x": 49.25, "z": 8, "rot": 90},
+    {"id": "bus-stop", "type": "bus-stop", "x": -7, "z": 37.4, "rot": 0, "label": {"zh-CN": "医院公交站", "en": "Hospital Bus Stop"}},
+    {"id": "ambulance", "type": "ambulance", "x": 52.3, "z": -2, "rot": 90, "room": "ambulance-bay", "label": {"zh-CN": "急救车", "en": "Ambulance"}},
+    {"id": "lamp-1", "type": "lamp-post", "x": -3, "z": 18, "rot": 0},
+    {"id": "lamp-2", "type": "lamp-post", "x": 3, "z": 18, "rot": 0},
+    {"id": "lamp-3", "type": "lamp-post", "x": 3, "z": 32, "rot": 0},
+    {"id": "lamp-4", "type": "lamp-post", "x": -8.5, "z": 15.2, "rot": 0, "room": "entrance-plaza"},
+    {"id": "lamp-5", "type": "lamp-post", "x": 10.5, "z": 15.2, "rot": 0, "room": "entrance-plaza"},
+    {"id": "lamp-6", "type": "lamp-post", "x": 13.4, "z": 25, "rot": 0},
+    {"id": "lamp-7", "type": "lamp-post", "x": 40.6, "z": 31, "rot": 0},
+    {"id": "lamp-8", "type": "lamp-post", "x": 47.8, "z": -8.6, "rot": 0, "room": "ambulance-bay"},
+    {"id": "lamp-9", "type": "lamp-post", "x": 47.8, "z": 4.6, "rot": 0, "room": "ambulance-bay"},
+    {"id": "lamp-10", "type": "lamp-post", "x": -39, "z": 21.3, "rot": 0},
+    {"id": "lamp-11", "type": "lamp-post", "x": -17, "z": 34.7, "rot": 0},
+    {"id": "lamp-12", "type": "lamp-post", "x": -56, "z": 21.9, "rot": 0, "room": "building-garden"},
+    {"id": "lamp-13", "type": "lamp-post", "x": 20, "z": 38.4, "rot": 0},
+    {"id": "lamp-14", "type": "lamp-post", "x": 54, "z": 20, "rot": 0}
+  ],
+  "patientSlots": [
+    {"id": "consult-1", "room": "consult-1", "x": -29.125, "z": 5.6, "rot": 90, "posture": "standing", "bed": "consult-1-couch", "accepts": ["outpatient"]},
+    {"id": "consult-2", "room": "consult-2", "x": -37.875, "z": 5.9, "rot": 90, "posture": "sitting", "bed": "consult-2-couch", "accepts": ["outpatient"]},
+    {"id": "resus-1", "room": "ed-resus", "x": 31, "z": -17.325, "rot": 0, "posture": "lying", "bed": "resus1-bed", "monitor": "resus1-monitor", "accepts": ["emergency"]},
+    {"id": "resus-2", "room": "ed-resus", "x": 41, "z": -17.325, "rot": 0, "posture": "lying", "bed": "resus2-bed", "monitor": "resus2-monitor", "accepts": ["emergency"]},
+    {"id": "ed-cubicle-1", "room": "ed-cubicle-1", "x": 20, "z": 7.9, "rot": 180, "posture": "lying", "bed": "cub1-stretcher", "monitor": "cub1-monitor", "accepts": ["emergency"]},
+    {"id": "ed-cubicle-2", "room": "ed-cubicle-2", "x": 28, "z": 7.9, "rot": 180, "posture": "lying", "bed": "cub2-stretcher", "monitor": "cub2-monitor", "accepts": ["emergency"]},
+    {"id": "ward-1", "room": "ward", "x": -43.5, "z": -39.6, "rot": 0, "posture": "lying", "bed": "ward-bed-1", "monitor": "ward-monitor-1", "accepts": ["inpatient", "ward"]},
+    {"id": "ward-2", "room": "ward", "x": -38.5, "z": -39.6, "rot": 0, "posture": "lying", "bed": "ward-bed-2", "monitor": "ward-monitor-2", "accepts": ["inpatient", "ward"]},
+    {"id": "ward-3", "room": "ward", "x": -33.5, "z": -39.6, "rot": 0, "posture": "lying", "bed": "ward-bed-3", "monitor": "ward-monitor-3", "accepts": ["inpatient", "ward"]},
+    {"id": "ward-4", "room": "ward", "x": -28.5, "z": -39.6, "rot": 0, "posture": "lying", "bed": "ward-bed-4", "monitor": "ward-monitor-4", "accepts": ["inpatient", "ward"]},
+    {"id": "icu-1", "room": "icu", "x": -22.5, "z": -39.1, "rot": 0, "posture": "lying", "bed": "icu-bed-1", "monitor": "icu-monitor-1", "accepts": ["icu"]},
+    {"id": "icu-2", "room": "icu", "x": -15.5, "z": -39.1, "rot": 0, "posture": "lying", "bed": "icu-bed-2", "monitor": "icu-monitor-2", "accepts": ["icu"]},
+    {"id": "theatre", "room": "or-theatre", "x": -24, "z": -9.5, "rot": 90, "posture": "lying", "bed": "or-table", "monitor": "or-monitor", "accepts": ["operating-room"]},
+    {"id": "garden-bench", "room": "healing-garden", "x": -28, "z": 21.7, "rot": 0, "posture": "sitting", "bed": "garden-bench-north", "accepts": ["community"]}
+  ],
+  "staff": [
+    {
+      "id": "receptionist",
+      "role": "receptionist",
+      "name": {
+        "zh-CN": "何静",
+        "en": "He Jing"
+      },
+      "room": "lobby",
+      "x": -6.3,
+      "z": 5.0,
+      "rot": 90,
+      "appearance": {
+        "skin": "#d8b494",
+        "hair": "#2d241d",
+        "hairStyle": "bun",
+        "shirt": "#aa6854",
+        "pants": "#354442"
+      },
+      "greeting": {
+        "zh-CN": "您好，欢迎来到临床方块综合医院。门诊在左手边，急诊分诊在右手边，检验科、病例讨论室和病房请沿中央走廊往里走。",
+        "en": "Hello, welcome to ClinicalCraft General Hospital. Clinics are to your left, ED triage to your right; the lab, conference room and wards are down the central corridor."
+      }
+    },
+    {
+      "id": "triage-nurse",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "杨洁",
+        "en": "Yang Jie"
+      },
+      "room": "ed-triage",
+      "x": 13.6,
+      "z": 3.4,
+      "rot": 90,
+      "appearance": {
+        "skin": "#e0bc9c",
+        "hair": "#1f1a17",
+        "hairStyle": "ponytail",
+        "shirt": "#6fa8c7",
+        "pants": "#6fa8c7",
+        "accessory": "mask"
+      },
+      "greeting": {
+        "zh-CN": "这里是急诊预检分诊。生命体征、体重和峰流速都可以在这儿测。",
+        "en": "This is ED triage — vital signs, weight and peak flow can all be checked here."
+      }
+    },
+    {
+      "id": "ed-nurse",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "林晓",
+        "en": "Lin Xiao"
+      },
+      "room": "ed-station",
+      "x": 21.0,
+      "z": -9.4,
+      "rot": 0,
+      "appearance": {
+        "skin": "#d9b08c",
+        "hair": "#2b2420",
+        "hairStyle": "short",
+        "shirt": "#6fa8c7",
+        "pants": "#6fa8c7"
+      },
+      "greeting": {
+        "zh-CN": "急诊护士站。需要上监护、建立静脉通路或采血就叫我，标本可以走气动物流直接送检验科。",
+        "en": "ED nurse station. Call me for monitoring, IV access or bloods — samples go straight to the lab by pneumatic tube."
+      }
+    },
+    {
+      "id": "paramedic",
+      "role": "paramedic",
+      "name": {
+        "zh-CN": "孙浩",
+        "en": "Sun Hao"
+      },
+      "room": "ambulance-bay",
+      "x": 48.6,
+      "z": -5.2,
+      "rot": 270,
+      "appearance": {
+        "skin": "#c99d78",
+        "hair": "#2a2a2a",
+        "hairStyle": "short",
+        "build": "heavy"
+      },
+      "greeting": {
+        "zh-CN": "救护车刚回站。院前交接在抢救室做，往里走右手边就是。",
+        "en": "Ambulance just got back. We do the handover in the resus room — straight in and on your right."
+      }
+    },
+    {
+      "id": "ward-nurse",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "周敏",
+        "en": "Zhou Min"
+      },
+      "room": "ward",
+      "x": -30.6,
+      "z": -27.1,
+      "rot": 180,
+      "appearance": {
+        "skin": "#e3c2a2",
+        "hair": "#3b3027",
+        "hairStyle": "bun",
+        "shirt": "#6fa8c7",
+        "pants": "#6fa8c7"
+      },
+      "greeting": {
+        "zh-CN": "综合病房护士站。护理记录、医嘱执行和交班情况可以问我。",
+        "en": "General ward nurse station. Ask me about nursing records, medication rounds or handover."
+      }
+    },
+    {
+      "id": "radiologist",
+      "role": "radiologist",
+      "name": {
+        "zh-CN": "陈立",
+        "en": "Dr Chen Li"
+      },
+      "room": "rad-control",
+      "x": 24.0,
+      "z": -29.6,
+      "rot": 180,
+      "appearance": {
+        "skin": "#cfa47f",
+        "hair": "#1c1c1c",
+        "hairStyle": "short",
+        "accessory": "glasses"
+      },
+      "greeting": {
+        "zh-CN": "影像科。X 线、CT、MRI、超声、PET-CT 和介入导管室都在后面这一排，申请单在这台控制台开。",
+        "en": "Radiology. X-ray, CT, MRI, PET-CT, the cath lab and ultrasound are all along the back row — request scans at this console."
+      }
+    },
+    {
+      "id": "lab-tech",
+      "role": "lab-tech",
+      "name": {
+        "zh-CN": "王悦",
+        "en": "Wang Yue"
+      },
+      "room": "laboratory",
+      "x": 9.5,
+      "z": -10.0,
+      "rot": 0,
+      "appearance": {
+        "skin": "#e1bf9f",
+        "hair": "#2e2622",
+        "hairStyle": "ponytail",
+        "shirt": "#5f9e6e",
+        "pants": "#5f9e6e",
+        "accessory": "glasses"
+      },
+      "greeting": {
+        "zh-CN": "检验科标本接收。血常规、生化、血气、尿液、微生物和配血都在这里做。",
+        "en": "Laboratory specimen reception. Blood counts, chemistry, blood gases, urinalysis, microbiology and crossmatch are all done here."
+      }
+    },
+    {
+      "id": "pathologist",
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "赵宁",
+        "en": "Dr Zhao Ning"
+      },
+      "room": "pathology",
+      "x": 9.0,
+      "z": -31.6,
+      "rot": 0,
+      "appearance": {
+        "skin": "#d6ae8b",
+        "hair": "#4a3b30",
+        "hairStyle": "curly",
+        "accessory": "glasses"
+      },
+      "greeting": {
+        "zh-CN": "病理与遗传科。组织病理、细胞学、染色体核型和分子检测都可以在工作台申请。",
+        "en": "Pathology & Genetics. Histopathology, cytology, karyotyping and molecular tests can be requested at the workstation."
+      }
+    },
+    {
+      "id": "pharmacist",
+      "role": "pharmacist",
+      "name": {
+        "zh-CN": "刘芳",
+        "en": "Liu Fang"
+      },
+      "room": "pharmacy",
+      "x": -14.4,
+      "z": 5.0,
+      "rot": 270,
+      "appearance": {
+        "skin": "#e4c4a6",
+        "hair": "#2b221c",
+        "hairStyle": "long"
+      },
+      "greeting": {
+        "zh-CN": "药房窗口。处方有疑问、需要核对剂量或配伍禁忌，都可以来问我。",
+        "en": "Pharmacy window. Come to me with prescription queries, dose checks or drug interactions."
+      }
+    },
+    {
+      "id": "attending",
+      "role": "attending",
+      "name": {
+        "zh-CN": "许明",
+        "en": "Dr Xu Ming"
+      },
+      "room": "conference",
+      "x": -5.2,
+      "z": -16.8,
+      "rot": 270,
+      "appearance": {
+        "skin": "#cda383",
+        "hair": "#6b6b6b",
+        "hairStyle": "short",
+        "accessory": "glasses"
+      },
+      "greeting": {
+        "zh-CN": "来，把目前的证据摆到证据板上，我们一起梳理思路。",
+        "en": "Come, put the evidence on the board and let's reason through it together."
+      }
+    }
+  ],
+  "signs": [
+    {"text": {"zh-CN": "W A S D  移动   ·   E  交互", "en": "W A S D  move   ·   E  interact"}, "x": -3.9, "y": 3.1, "z": 24, "rot": 0, "width": 4},
+    {"text": {"zh-CN": "← 疗愈花园 · 建造园地", "en": "← Healing Garden · Building Garden"}, "x": -3.9, "y": 3.1, "z": 21.4, "rot": 0, "width": 4},
+    {"text": {"zh-CN": "建造园地 · 方块仅在此处可编辑", "en": "Building Garden · blocks can only be edited here"}, "x": -50, "y": 3.2, "z": 21.9, "rot": 0, "width": 5},
+    {"text": {"zh-CN": "P 停车场 →", "en": "P  Parking →"}, "x": 11.6, "y": 3.1, "z": 22, "rot": 90, "width": 3},
+    {"text": {"zh-CN": "急诊入口 · 步行", "en": "Emergency · Walk-in"}, "x": 15.6, "y": 3.1, "z": 13.6, "rot": 0, "width": 3.4, "color": "#c9473c"},
+    {"text": {"zh-CN": "急诊 · 救护车专用通道", "en": "Emergency · Ambulances only"}, "x": 49.25, "y": 3.1, "z": 8, "rot": 90, "width": 4, "color": "#c9473c"},
+    {"text": {"zh-CN": "急 诊  EMERGENCY", "en": "EMERGENCY  急诊"}, "x": 11, "y": 3.7, "z": 10.62, "rot": 0, "width": 4, "color": "#c9473c"},
+    {"text": {"zh-CN": "急诊 · 救护车入口", "en": "Emergency · Ambulance Entrance"}, "x": 46.62, "y": 3.9, "z": -2, "rot": 90, "width": 4.2, "color": "#c9473c"},
+    {"text": {"zh-CN": "↑ 检验科 · 病例讨论 · 手术室 · ICU · 病房", "en": "↑ Lab · Conference · Theatre · ICU · Wards"}, "x": 0, "y": 3.5, "z": 0, "rot": 0, "width": 4.4},
+    {"text": {"zh-CN": "← 门诊诊室 · 药房 · 候诊", "en": "← Clinics · Pharmacy · Waiting"}, "x": -7, "y": 3.4, "z": -2, "rot": 90, "width": 3.4},
+    {"text": {"zh-CN": "→ 急诊科 · 影像科", "en": "→ Emergency · Radiology"}, "x": 7, "y": 3.4, "z": -2, "rot": 90, "width": 3.4},
+    {"text": {"zh-CN": "急诊科 EMERGENCY", "en": "EMERGENCY DEPARTMENT"}, "x": 15.7, "y": 3.5, "z": -2, "rot": 90, "width": 3.4, "color": "#c9473c"},
+    {"text": {"zh-CN": "诊室 1", "en": "Consult 1"}, "x": -27.5, "y": 2.4, "z": -0.3, "rot": 0, "width": 2},
+    {"text": {"zh-CN": "诊室 2", "en": "Consult 2"}, "x": -35.5, "y": 2.4, "z": -0.3, "rot": 0, "width": 2},
+    {"text": {"zh-CN": "卫生间", "en": "Restrooms"}, "x": -41.1, "y": 2.4, "z": -0.3, "rot": 0, "width": 1.8},
+    {"text": {"zh-CN": "药房", "en": "Pharmacy"}, "x": -13, "y": 2.4, "z": -0.3, "rot": 0, "width": 2},
+    {"text": {"zh-CN": "急诊分诊", "en": "ED Triage"}, "x": 13.9, "y": 2.4, "z": -0.3, "rot": 0, "width": 2.4, "color": "#c9473c"},
+    {"text": {"zh-CN": "检验科 · 标本接收", "en": "Lab · Specimen Reception"}, "x": 11.7, "y": 2.4, "z": -3.7, "rot": 0, "width": 3},
+    {"text": {"zh-CN": "病例讨论室", "en": "Case Conference"}, "x": -11.7, "y": 2.4, "z": -3.7, "rot": 0, "width": 2.6},
+    {"text": {"zh-CN": "医生办公室", "en": "Doctors' Office"}, "x": -36.6, "y": 2.4, "z": -3.7, "rot": 0, "width": 2.6},
+    {"text": {"zh-CN": "← 病房 · ICU · 内镜中心 · 手术室", "en": "← Wards · ICU · Endoscopy · Theatre"}, "x": -3, "y": 3.4, "z": -22, "rot": 90, "width": 3.8},
+    {"text": {"zh-CN": "→ 病理 · 影像科 · 急诊", "en": "→ Pathology · Radiology · ED"}, "x": 3, "y": 3.4, "z": -22, "rot": 90, "width": 3.6},
+    {"text": {"zh-CN": "↓ 大厅 · 出口", "en": "↓ Lobby · Exit"}, "x": 0, "y": 3.4, "z": -19.7, "rot": 0, "width": 3},
+    {"text": {"zh-CN": "综合病房", "en": "General Ward"}, "x": -35, "y": 2.4, "z": -23.7, "rot": 0, "width": 2.6},
+    {"text": {"zh-CN": "重症监护室 ICU", "en": "Intensive Care Unit"}, "x": -15.8, "y": 2.4, "z": -23.7, "rot": 0, "width": 3},
+    {"text": {"zh-CN": "内镜中心", "en": "Endoscopy"}, "x": -2.4, "y": 2.4, "z": -23.7, "rot": 0, "width": 2.4},
+    {"text": {"zh-CN": "病理与遗传", "en": "Pathology & Genetics"}, "x": 11.6, "y": 2.4, "z": -23.7, "rot": 0, "width": 2.8},
+    {"text": {"zh-CN": "影像科", "en": "Radiology"}, "x": 30.2, "y": 2.4, "z": -23.7, "rot": 0, "width": 3},
+    {"text": {"zh-CN": "手术室 · 限制区", "en": "Theatres · Restricted"}, "x": -21.1, "y": 2.4, "z": -20.3, "rot": 0, "width": 3},
+    {"text": {"zh-CN": "MRI 强磁场 · 禁带金属", "en": "MRI · Strong magnet · No metal"}, "x": 27.25, "y": 3.5, "z": -31.7, "rot": 0, "width": 2.6, "color": "#c9473c"}
+  ],
+  "buildZone": {
+    "rect": {
+      "x": -53,
+      "z": 31,
+      "w": 12,
+      "d": 16
+    },
+    "maxHeight": 7,
+    "maxBlocks": 800,
+    "materials": ["wood", "stone", "glass", "lamp", "teal", "cream", "brick-red"],
+    "seedBlocks": [
+      {"cell": [-56, 0, 30], "type": "wood"},
+      {"cell": [-56, 1, 30], "type": "wood"},
+      {"cell": [-55, 0, 30], "type": "wood"},
+      {"cell": [-54, 0, 30], "type": "stone"},
+      {"cell": [-53, 0, 30], "type": "stone"},
+      {"cell": [-53, 1, 30], "type": "stone"},
+      {"cell": [-52, 0, 30], "type": "glass"},
+      {"cell": [-51, 0, 30], "type": "teal"},
+      {"cell": [-50, 0, 30], "type": "cream"}
+    ]
+  },
+  "outdoorRegion": {
+    "zh-CN": "疗愈花园",
+    "en": "Healing Garden"
+  }
+}

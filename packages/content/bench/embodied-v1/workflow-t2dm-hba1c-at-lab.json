@@ -1,0 +1,106 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-t2dm-hba1c-at-lab",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "床旁采血申请糖化血红蛋白，到检验科工作站阅读结果",
+    "en": "HbA1c: sample at the patient's side, result read at the laboratory workstation"
+  },
+  "instruction": {
+    "zh-CN": "在诊室患者身边采血并申请糖化血红蛋白（HbA1c），然后走到检验科工作站阅读结果。",
+    "en": "Take the blood sample at the patient's side in the clinic room and order an HbA1c there, then walk to the laboratory workstation and read the result."
+  },
+  "caseId": "new-onset-t2dm",
+  "locale": "en",
+  "setup": {
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "inv-hba1c"
+      }
+    },
+    {
+      "clinical": {
+        "read": "inv-hba1c"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 40,
+    "maxTurns": 3,
+    "timeoutMs": 120000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "inv-hba1c"
+        }
+      },
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:lab-workstation"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "inv-hba1c"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:consult-1"
+          }
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "inv-hba1c"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:lab-workstation"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:lab-workstation",
+          "operation": "read",
+          "parameters": {
+            "investigation": "inv-hba1c"
+          }
+        }
+      }
+    ]
+  }
+}

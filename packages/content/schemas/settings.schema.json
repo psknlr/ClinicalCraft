@@ -1,0 +1,1402 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClinicalCraft settings (~/.clinicalcraft/settings.json, .clinicalcraft/settings[.local].json)",
+  "description": "Layered runtime settings: provider/model per agent, approval mode, practice scope, permission rules, hooks, profiles, server and transcripts.",
+  "$ref": "#/definitions/Settings",
+  "definitions": {
+    "SettingsLayer": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "effort": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "agents": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh",
+                  "max"
+                ]
+              },
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "maxTokens": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "maxToolRounds": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "providers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "wire": {
+                "type": "string",
+                "enum": [
+                  "anthropic-messages",
+                  "openai-chat-completions",
+                  "offline",
+                  "proxy"
+                ]
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "baseUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "apiKeyEnv": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "apiKey": {
+                "type": "string"
+              },
+              "headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "defaultModel": {
+                "type": "string"
+              },
+              "models": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "timeoutMs": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "maxRetries": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "locale": {
+          "type": "string",
+          "pattern": "^([zZ][hH]|[eE][nN])(?:[-_][A-Za-z0-9]{1,8})*$",
+          "description": "Session language: zh-CN or en (aliases such as \"zh\", \"zh-Hans\", \"en-US\" are normalised)."
+        },
+        "approvalMode": {
+          "type": "string",
+          "enum": [
+            "default",
+            "strict",
+            "auto",
+            "plan",
+            "bypass"
+          ]
+        },
+        "practiceScope": {
+          "type": "string",
+          "enum": [
+            "history-only",
+            "workup",
+            "full"
+          ]
+        },
+        "embodiment": {
+          "type": "string",
+          "enum": [
+            "clinical",
+            "embodied"
+          ]
+        },
+        "perception": {
+          "type": "object",
+          "properties": {
+            "visibilityRange": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 200
+            },
+            "fovDeg": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 360
+            },
+            "nearbyRange": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 200
+            },
+            "maxEntities": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500
+            },
+            "reachability": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "permissions": {
+          "type": "object",
+          "properties": {
+            "allow": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ask": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "deny": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "hooks": {
+          "type": "object",
+          "properties": {
+            "SessionStart": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "UserPromptSubmit": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "PreToolUse": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "PostToolUse": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "ClinicalEvent": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "Notification": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "PreCompact": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "Stop": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "SessionEnd": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "maxToolRounds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "autoCompact": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "thresholdTokens": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 120000
+            }
+          },
+          "additionalProperties": false
+        },
+        "contentDirs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultCase": {
+          "type": "string"
+        },
+        "defaultFacility": {
+          "type": "string"
+        },
+        "transcripts": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "dir": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "patient": {
+          "type": "object",
+          "properties": {
+            "pipeline": {
+              "type": "string",
+              "enum": [
+                "select-voice",
+                "tool"
+              ],
+              "default": "select-voice"
+            },
+            "strictGrounding": {
+              "type": "boolean",
+              "default": true
+            },
+            "offlineFallback": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "server": {
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string",
+              "default": "127.0.0.1"
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "default": 5178
+            },
+            "token": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Settings": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "effort": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "agents": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh",
+                  "max"
+                ]
+              },
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "maxTokens": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "maxToolRounds": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "providers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "wire": {
+                "type": "string",
+                "enum": [
+                  "anthropic-messages",
+                  "openai-chat-completions",
+                  "offline",
+                  "proxy"
+                ]
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "baseUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "apiKeyEnv": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "apiKey": {
+                "type": "string"
+              },
+              "headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "defaultModel": {
+                "type": "string"
+              },
+              "models": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "timeoutMs": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "maxRetries": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "locale": {
+          "type": "string",
+          "pattern": "^([zZ][hH]|[eE][nN])(?:[-_][A-Za-z0-9]{1,8})*$",
+          "description": "Session language: zh-CN or en (aliases such as \"zh\", \"zh-Hans\", \"en-US\" are normalised)."
+        },
+        "approvalMode": {
+          "type": "string",
+          "enum": [
+            "default",
+            "strict",
+            "auto",
+            "plan",
+            "bypass"
+          ]
+        },
+        "practiceScope": {
+          "type": "string",
+          "enum": [
+            "history-only",
+            "workup",
+            "full"
+          ]
+        },
+        "embodiment": {
+          "type": "string",
+          "enum": [
+            "clinical",
+            "embodied"
+          ]
+        },
+        "perception": {
+          "type": "object",
+          "properties": {
+            "visibilityRange": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 200
+            },
+            "fovDeg": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 360
+            },
+            "nearbyRange": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 200
+            },
+            "maxEntities": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500
+            },
+            "reachability": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "permissions": {
+          "type": "object",
+          "properties": {
+            "allow": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ask": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "deny": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "hooks": {
+          "type": "object",
+          "properties": {
+            "SessionStart": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "UserPromptSubmit": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "PreToolUse": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "PostToolUse": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "ClinicalEvent": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "Notification": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "PreCompact": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "Stop": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "SessionEnd": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "matcher": {
+                    "type": "string"
+                  },
+                  "hooks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "command"
+                        },
+                        "command": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 600,
+                          "default": 60
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "command"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "hooks"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "maxToolRounds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "autoCompact": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "thresholdTokens": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 120000
+            }
+          },
+          "additionalProperties": false
+        },
+        "contentDirs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultCase": {
+          "type": "string"
+        },
+        "defaultFacility": {
+          "type": "string"
+        },
+        "transcripts": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "dir": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "patient": {
+          "type": "object",
+          "properties": {
+            "pipeline": {
+              "type": "string",
+              "enum": [
+                "select-voice",
+                "tool"
+              ],
+              "default": "select-voice"
+            },
+            "strictGrounding": {
+              "type": "boolean",
+              "default": true
+            },
+            "offlineFallback": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "server": {
+          "type": "object",
+          "properties": {
+            "host": {
+              "type": "string",
+              "default": "127.0.0.1"
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "default": 5178
+            },
+            "token": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "profiles": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/SettingsLayer"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "xray-room",
+  "name": {"zh-CN": "X 线与透视室", "en": "X-ray & fluoroscopy room"},
+  "description": {"zh-CN": "放射科 X 线室：X 线机、胸片架、C 形臂透视、超声与心脏超声仪和观片灯。", "en": "Radiology X-ray room: X-ray unit, chest stand, C-arm fluoroscopy, an ultrasound and echocardiography machine and a film viewer."},
+  "kind": "imaging",
+  "size": {"w": 6, "d": 8},
+  "floor": "lino",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "door", "width": 1.8, "height": 2.6, "offset": -1.6}]}
+  ],
+  "sign": {"text": {"zh-CN": "X 线 · 透视", "en": "X-ray · fluoroscopy"}, "side": "n", "color": "#79c9e6"},
+  "lights": [
+    {"x": 0, "z": -1}
+  ],
+  "placements": [
+    {"id": "xray", "type": "xray-machine", "x": 0, "z": -2.35, "label": {"zh-CN": "X 线机", "en": "X-ray unit"}},
+    {"id": "chest-stand", "type": "xray-chest-stand", "x": -2.475, "z": -2.6, "rot": 90},
+    {"id": "c-arm", "type": "c-arm", "x": 2.15, "z": 0.6, "label": {"zh-CN": "C 形臂透视", "en": "C-arm fluoroscopy"}},
+    {"id": "ultrasound", "type": "ultrasound-machine", "x": -2.45, "z": 0.4, "rot": 90, "label": {"zh-CN": "超声与心脏超声", "en": "Ultrasound & echo"}},
+    {"id": "lightbox", "type": "xray-lightbox", "x": 2.75, "z": -2.2, "rot": 270},
+    {"id": "aprons", "type": "cabinet", "x": 1.6, "z": 3.575, "rot": 180, "label": {"zh-CN": "铅衣柜", "en": "Lead apron cabinet"}}
+  ],
+  "capabilities": ["xray", "fluoroscopy", "ultrasound", "echocardiography"],
+  "tags": ["radiology", "imaging"]
+}

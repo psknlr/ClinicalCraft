@@ -1,0 +1,97 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "recovery-iv-drug-before-cannulation",
+  "suite": "embodied-v1",
+  "category": "recovery",
+  "title": {
+    "zh-CN": "未建立静脉通路时静脉给药被拒：先置管再给药",
+    "en": "IV drug refused before cannulation: place the cannula, then give it"
+  },
+  "instruction": {
+    "zh-CN": "这位患者胸痛剧烈。静脉注射吗啡镇痛。",
+    "en": "This patient is in severe chest pain. Give IV morphine."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "intervened": "iv-access"
+      }
+    },
+    {
+      "clinical": {
+        "intervened": "morphine"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "attempt",
+        "action": {
+          "type": "intervene",
+          "interventionId": "morphine"
+        },
+        "expect": "SPATIAL_REQUIREMENT_UNMET"
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "iv-access"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "morphine"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "morphine"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "iv-access"
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "morphine"
+        }
+      }
+    ]
+  }
+}

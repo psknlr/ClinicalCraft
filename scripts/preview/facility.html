@@ -1,0 +1,85 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Facility plan</title>
+<style>html,body{margin:0;background:#c7d6ad;font:11px system-ui}svg{display:block}</style></head><body>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const fac = await fetch("/" + q.get("facility")).then((r) => r.json());
+const cats = await Promise.all((q.get("catalogs") || "").split(",").filter(Boolean).map((f) => fetch("/" + f).then((r) => r.json())));
+const eq = new Map(); const mats = new Map();
+for (const c of cats) { for (const m of c.materials || []) mats.set(m.id, m); for (const e of c.equipment || []) eq.set(e.id, e); }
+for (const m of fac.materials || []) mats.set(m.id, m);
+// one level (default: the level at elevation 0, else the first; facilities without levels have "L0")
+const levels = fac.levels?.length ? fac.levels : [{ id: "L0", name: "L0", elevation: 0 }];
+const ground = (levels.find((l) => (l.elevation ?? 0) === 0) ?? levels[0]).id;
+const level = q.get("level") || ground;
+const roomLevel = (r) => r?.level ?? ground;
+const everyRoom = fac.rooms || [];
+const levelOf = (e) => e.level ?? roomLevel(everyRoom.find((r) => r.id === e.room));
+const spans = (bl) => (bl.levels?.length ? bl.levels : [ground]).includes(level);
+fac.buildings = (fac.buildings || []).filter(spans).map((bl) => ({ ...bl, openings: (bl.openings || []).filter((o) => !o.levels || o.levels.includes(level)) }));
+fac.rooms = everyRoom.filter((r) => roomLevel(r) === level);
+fac.placements = (fac.placements || []).filter((p) => (p.level ?? (p.room ? levelOf(p) : ground)) === level);
+fac.patientSlots = (fac.patientSlots || []).filter((s) => levelOf(s) === level);
+fac.staff = (fac.staff || []).filter((s) => levelOf(s) === level);
+const S = Number(q.get("scale")) || 14, pad = 40; const b = fac.bounds; const W = (b.maxX - b.minX) * S + pad * 2, H = (b.maxZ - b.minZ) * S + pad * 2;
+const X = (x) => (x - b.minX) * S + pad, Z = (z) => (z - b.minZ) * S + pad;
+const col = (id, fb) => mats.get(id)?.color || fb;
+const out = []; const warn = [];
+const rect = (r, fill, stroke = "none", sw = 1, op = 1) => out.push(`<rect x="${X(r.x - r.w / 2)}" y="${Z(r.z - r.d / 2)}" width="${r.w * S}" height="${r.d * S}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" fill-opacity="${op}"/>`);
+const text = (x, z, s, size = 11, fill = "#2e4839", weight = 600) => out.push(`<text x="${X(x)}" y="${Z(z)}" font-size="${size}" text-anchor="middle" fill="${fill}" font-weight="${weight}" paint-order="stroke" stroke="#f3eed8" stroke-width="3">${String(s).replace(/[<&]/g, "")}</text>`);
+const tx = (v) => (typeof v === "string" ? v : v?.en || v?.["zh-CN"] || Object.values(v || {})[0] || "");
+out.push(`<rect x="0" y="0" width="${W}" height="${H}" fill="${col(fac.terrain?.ground || "grass", "#79a75f")}" fill-opacity=".55"/>`);
+for (const p of fac.terrain?.paths || []) rect(p, col(p.material || "path", "#d5c6a0"), "none", 1, 0.9);
+for (const p of fac.terrain?.ponds || []) rect(p, "#609bab", "none", 1, 0.9);
+for (const t of fac.terrain?.trees || []) out.push(`<circle cx="${X(t.x)}" cy="${Z(t.z)}" r="${S * 1.6}" fill="#567e48" fill-opacity=".8"/>`);
+if (fac.buildZone) { rect(fac.buildZone.rect, "#d4b46b", "#8b694c", 2, 0.6); text(fac.buildZone.rect.x, fac.buildZone.rect.z, "BUILD ZONE"); }
+function wall(r, side, thick, color, openings) {
+  const horiz = side === "n" || side === "s"; const len = horiz ? r.w : r.d;
+  const c = horiz ? { x: r.x, z: side === "n" ? r.z - r.d / 2 : r.z + r.d / 2 } : { x: side === "w" ? r.x - r.w / 2 : r.x + r.w / 2, z: r.z };
+  const gaps = (openings || []).filter((o) => !o.side || o.side === side).map((o) => [o.offset - o.width / 2, o.offset + o.width / 2, o.kind || "opening"]).sort((a, b2) => a[0] - b2[0]);
+  let t0 = -len / 2; const segs = [];
+  for (const g of gaps) { if (g[2] === "window") continue; if (g[0] > t0) segs.push([t0, g[0]]); t0 = Math.max(t0, g[1]); }
+  if (t0 < len / 2) segs.push([t0, len / 2]);
+  for (const [a, b2] of segs) { const mid = (a + b2) / 2, l = b2 - a; rect(horiz ? { x: c.x + mid, z: c.z, w: l, d: thick } : { x: c.x, z: c.z + mid, w: thick, d: l }, color, "#2e4839", 0.5); }
+  for (const g of gaps) { const mid = (g[0] + g[1]) / 2, l = g[1] - g[0]; const r2 = horiz ? { x: c.x + mid, z: c.z, w: l, d: thick } : { x: c.x, z: c.z + mid, w: thick, d: l }; if (g[2] === "window") rect(r2, "#8dc4c3", "#2e4839", 0.5); else if (g[2] !== "opening") rect(r2, "#e7c36b", "#7a5a1a", 0.5, 0.9); }
+}
+for (const bl of fac.buildings || []) { rect(bl.rect, col(bl.floor || "floor", "#cbd6c3"), "none"); }
+for (const r of fac.rooms || []) { rect(r.rect, col(r.floor || "floor", "#cbd6c3"), "#7f9a86", 0.5, 0.95); }
+for (const bl of fac.buildings || []) { for (const s of ["n", "s", "e", "w"]) wall(bl.rect, s, bl.walls?.thickness || 1, col(bl.walls?.body || "cream", "#e0dfc9"), (bl.openings || []).filter((o) => o.side === s)); text(bl.rect.x, bl.rect.z - bl.rect.d / 2 - 1.2, tx(bl.name), 13, "#173a2d", 800); }
+for (const r of fac.rooms || []) { for (const p of r.partitions || []) wall(r.rect, p.side, p.thickness || 0.35, col(p.material || "white", "#f1ead5"), p.openings); text(r.rect.x, r.rect.z - r.rect.d / 2 + 1.0, `${tx(r.name)} [${r.kind}]`, 11, "#2e4839", 700); }
+const allIds = new Set();
+for (const p of fac.placements || []) {
+  if (allIds.has(p.id)) warn.push("duplicate placement id " + p.id); allIds.add(p.id);
+  const e = eq.get(p.type); if (!e) { warn.push(`unknown equipment type ${p.type} (${p.id})`); out.push(`<circle cx="${X(p.x)}" cy="${Z(p.z)}" r="6" fill="#ff00ff"/>`); continue; }
+  const rot = ((p.rot || 0) % 360 + 360) % 360; const sw = rot === 90 || rot === 270; const w = sw ? e.footprint.d : e.footprint.w, d = sw ? e.footprint.w : e.footprint.d;
+  rect({ x: p.x, z: p.z, w, d }, e.solid === false ? "#ffffff" : "#5c6f74", "#1d2b2b", 0.8, e.solid === false ? 0.35 : 0.75);
+  // facing arrow (+Z local front rotated)
+  const a = (rot * Math.PI) / 180; const fx = Math.sin(a), fz = Math.cos(a);
+  out.push(`<line x1="${X(p.x)}" y1="${Z(p.z)}" x2="${X(p.x + fx * 0.8)}" y2="${Z(p.z + fz * 0.8)}" stroke="#e7c36b" stroke-width="2"/>`);
+  text(p.x, p.z + d / 2 + 0.7, p.id, 9, "#1d2b2b", 500);
+}
+for (const s of fac.patientSlots || []) { out.push(`<circle cx="${X(s.x)}" cy="${Z(s.z)}" r="7" fill="#66cca8" stroke="#173a2d" stroke-width="2"/>`); text(s.x, s.z - 0.8, "slot:" + s.id + " " + (s.accepts || []).join("/"), 9, "#0d4f3a"); }
+for (const s of fac.staff || []) { out.push(`<circle cx="${X(s.x)}" cy="${Z(s.z)}" r="6" fill="#c7a1e5" stroke="#4a2b6b" stroke-width="2"/>`); text(s.x, s.z - 0.8, s.role, 9, "#4a2b6b"); }
+for (const s of fac.signs || []) text(s.x, s.z, "✎ " + tx(s.text), 9, "#716541", 500);
+// access zones (hatched), stairs/ramp flights and elevator stops on this level
+for (const z of fac.access || []) if ((z.level ?? ground) === level) { rect(z.rect, "#c0392b", "#c0392b", 1.5, 0.12); text(z.rect.x, z.rect.z + z.rect.d / 2 - 0.4, "⛔ " + tx(z.name) + " [" + z.roles.join(",") + "]", 9, "#7a1f16", 600); }
+for (const c of fac.connectors || []) {
+  c.stops.forEach((st, k) => {
+    if (c.kind !== "elevator" && k > 0) {
+      const a = c.stops[k - 1], bb = st, w = c.width ?? 2;
+      if ((a.level === level || bb.level === level) && Math.hypot(a.x - bb.x, a.z - bb.z) > 0.05) {
+        const r = { x: (a.x + bb.x) / 2, z: (a.z + bb.z) / 2, w: Math.abs(a.x - bb.x) || w, d: Math.abs(a.z - bb.z) || w };
+        rect(r, a.level === level ? "#8b694c" : "#ffffff", "#3c2a1a", 1.5, a.level === level ? 0.55 : 0.25);
+        text(r.x, r.z, (a.level === level ? "▲ " : "◇ ") + tx(c.name), 10, "#3c2a1a", 800);
+      }
+    }
+    if (st.level === level) { out.push(`<circle cx="${X(st.x)}" cy="${Z(st.z)}" r="6" fill="${c.kind === "elevator" ? "#4f9dff" : "#e7c36b"}" stroke="#1d2b2b" stroke-width="2"/>`); text(st.x, st.z - 0.7, c.kind + ":" + c.id, 9, "#1d2b2b", 700); }
+  });
+}
+out.push(`<text x="12" y="22" font-size="16" font-weight="800" fill="#173a2d">${String(tx(levels.find((l) => l.id === level)?.name ?? level)).replace(/[<&]/g, "")} (${level})</text>`);
+const sp = fac.spawn; out.push(`<circle cx="${X(sp.x)}" cy="${Z(sp.z)}" r="8" fill="#325c49" stroke="#fff4cf" stroke-width="2"/>`); text(sp.x, sp.z + 1.6, "SPAWN", 10, "#173a2d", 800);
+for (let x = Math.ceil(b.minX / 10) * 10; x <= b.maxX; x += 10) text(x, b.minZ - 1, "x" + x, 9, "#55634b", 400);
+for (let z = Math.ceil(b.minZ / 10) * 10; z <= b.maxZ; z += 10) out.push(`<text x="6" y="${Z(z)}" font-size="9" fill="#55634b">z${z}</text>`);
+document.body.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${out.join("")}</svg>`;
+window.__done = { width: Math.ceil(W), height: Math.ceil(H), level, placements: (fac.placements || []).length, rooms: (fac.rooms || []).length, warnings: warn };
+</script></body></html>

@@ -1,0 +1,85 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "perception-patient-monitor",
+  "suite": "embodied-v1",
+  "category": "perception",
+  "title": {
+    "zh-CN": "找出属于本患者床位的床旁监护仪",
+    "en": "Identify the bedside monitor of this patient's bed"
+  },
+  "instruction": {
+    "zh-CN": "你站在抢救室 1 号床旁（随机朝向）。找出属于这位患者床位的床旁监护仪，并提交它的实体 ID。",
+    "en": "You are standing at the bedside in resuscitation bay 1, facing a random direction. Identify the bedside monitor that belongs to this patient's bed and submit its entity id."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "zh-CN",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      },
+      "yaw": "random"
+    }
+  },
+  "answer": {
+    "kind": "entity"
+  },
+  "predicates": [
+    {
+      "answerEquals": "eq:resus1-monitor"
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "submit_answer",
+        "max": 1
+      }
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "observe"
+      },
+      {
+        "op": "find",
+        "query": {
+          "interaction": "monitor",
+          "limit": 3
+        },
+        "save": "monitors"
+      },
+      {
+        "op": "answer",
+        "from": "monitors"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "observe_world",
+        "args": {}
+      },
+      {
+        "tool": "find_objects",
+        "args": {
+          "interaction": "monitor",
+          "limit": 3
+        }
+      },
+      {
+        "tool": "submit_answer",
+        "args": {
+          "entity_id": "eq:resus1-monitor"
+        }
+      }
+    ]
+  }
+}

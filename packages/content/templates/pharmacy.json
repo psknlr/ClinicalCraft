@@ -1,0 +1,37 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "pharmacy",
+  "name": {"zh-CN": "药房", "en": "Pharmacy"},
+  "description": {"zh-CN": "药房：前台发药窗口和病历终端对外，柜台后为调配区（仅药师和护士），药柜、药品冰箱和药架。", "en": "The pharmacy: a dispensing counter and records terminal at the front; behind the counter the dispensary (pharmacists and nurses only) with drug cabinet, medicine fridge and shelves."},
+  "kind": "pharmacy",
+  "size": {"w": 6, "d": 8},
+  "floor": "floor",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "door", "width": 1.6, "height": 2.6, "offset": -1.8}]}
+  ],
+  "sign": {"text": {"zh-CN": "药房", "en": "Pharmacy"}, "side": "n", "color": "#5f9e6e"},
+  "lights": [
+    {"x": 0, "z": -1.5},
+    {"x": 0, "z": 2}
+  ],
+  "placements": [
+    {"id": "counter", "type": "reception-desk", "x": 1.2, "z": 0.6, "rot": 180, "label": {"zh-CN": "发药柜台", "en": "Dispensing counter"}},
+    {"id": "records", "type": "records-terminal", "x": 2.4, "z": 2.2, "label": {"zh-CN": "药房终端", "en": "Pharmacy terminal"}},
+    {"id": "drug-cabinet", "type": "medication-cabinet", "x": -1.6, "z": -3.475, "label": {"zh-CN": "药品柜", "en": "Drug cabinet"}},
+    {"id": "fridge", "type": "medication-fridge", "x": -0.4, "z": -3.475, "label": {"zh-CN": "药品冰箱", "en": "Medicine fridge"}},
+    {"id": "shelves-1", "type": "pharmacy-shelves", "x": 2.575, "z": -2.65, "rot": 270},
+    {"id": "shelves-2", "type": "pharmacy-shelves", "x": 2.575, "z": -0.85, "rot": 270},
+    {"id": "shelves-3", "type": "pharmacy-shelves", "x": -2.575, "z": -1.6, "rot": 90}
+  ],
+  "staff": [
+    {"id": "pharmacist", "role": "pharmacist", "name": {"zh-CN": "药师", "en": "Pharmacist"}, "x": 0.8, "z": -0.5, "rot": 0, "greeting": {"zh-CN": "处方开好了吗？我帮你核对剂量和相互作用。", "en": "Got a prescription? I can check doses and interactions."}}
+  ],
+  "zones": [
+    {"id": "dispensary", "name": {"zh-CN": "药房调配区", "en": "Pharmacy dispensary"}, "rect": {"x": 0, "z": -1.95, "w": 6, "d": 4.1}, "roles": ["pharmacist", "nurse"]}
+  ],
+  "capabilities": ["medications", "records"],
+  "tags": ["pharmacy", "restricted"]
+}

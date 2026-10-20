@@ -1,0 +1,33 @@
+{
+  "schema": "clinicalcraft/room-template@1",
+  "id": "ct-room",
+  "name": {"zh-CN": "CT 室", "en": "CT room"},
+  "description": {"zh-CN": "放射科 CT 室：CT 扫描仪、影像阅片工作站（CT、X 线、透视、超声医嘱与报告）和吸氧接口。", "en": "Radiology CT room: CT scanner, an imaging reporting console (CT, X-ray, fluoroscopy and ultrasound orders and reports) and an oxygen outlet."},
+  "kind": "imaging",
+  "size": {"w": 7, "d": 8},
+  "floor": "lino",
+  "partitions": [
+    {"side": "n"},
+    {"side": "w"},
+    {"side": "e"},
+    {"side": "s", "openings": [{"kind": "door", "width": 1.8, "height": 2.6, "offset": 2.0}]}
+  ],
+  "sign": {"text": {"zh-CN": "CT 室 · 电离辐射", "en": "CT · radiation"}, "side": "n", "color": "#79c9e6"},
+  "lights": [
+    {"x": -0.8, "z": -1.2},
+    {"x": 2, "z": 0.8}
+  ],
+  "placements": [
+    {"id": "scanner", "type": "ct-scanner", "x": -0.8, "z": -1.1, "label": {"zh-CN": "CT 扫描仪", "en": "CT scanner"}},
+    {"id": "console", "type": "radiology-console", "x": 2, "z": -3.325, "label": {"zh-CN": "影像阅片工作站", "en": "Imaging console"}, "capabilities": ["ct", "xray", "fluoroscopy", "ultrasound"]},
+    {"id": "chair", "type": "office-chair", "x": 2, "z": -2.3, "rot": 180},
+    {"id": "cabinet", "type": "cabinet", "x": 3.075, "z": 1, "rot": 270, "label": {"zh-CN": "对比剂柜", "en": "Contrast cabinet"}},
+    {"id": "sink", "type": "sink", "x": -2.9, "z": 3.55, "rot": 180},
+    {"id": "oxygen", "type": "oxygen-outlet", "x": -3.2, "z": -1.1, "rot": 90}
+  ],
+  "staff": [
+    {"id": "radiologist", "role": "radiologist", "name": {"zh-CN": "放射科医师", "en": "Radiologist"}, "x": 0.9, "z": -2.3, "rot": 180, "greeting": {"zh-CN": "需要做影像检查？在阅片工作站下医嘱，我来出报告。", "en": "Need imaging? Order it at the console and I will report it."}}
+  ],
+  "capabilities": ["ct", "xray", "fluoroscopy", "ultrasound", "oxygen"],
+  "tags": ["radiology", "imaging"]
+}

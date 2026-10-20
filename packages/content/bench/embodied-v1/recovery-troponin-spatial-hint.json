@@ -1,0 +1,88 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "recovery-troponin-spatial-hint",
+  "suite": "embodied-v1",
+  "category": "recovery",
+  "title": {
+    "zh-CN": "在医生工作站申请肌钙蛋白被拒：先到床旁采血",
+    "en": "Troponin refused at the physician's terminal: the sample is taken at the patient"
+  },
+  "instruction": {
+    "zh-CN": "你在医生办公室的工作站前。为抢救室 1 号床的患者申请高敏肌钙蛋白检测。",
+    "en": "You are at the physician's records terminal. Order a high-sensitivity troponin for the patient in resuscitation bay 1."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "eq:office-records"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "hs-troponin"
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 20,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "attempt",
+        "action": {
+          "type": "order",
+          "investigationId": "hs-troponin"
+        },
+        "expect": "SPATIAL_REQUIREMENT_UNMET"
+      },
+      {
+        "op": "clinical",
+        "action": {
+          "type": "order",
+          "investigationId": "hs-troponin"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "hs-troponin"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "patient:resus-1"
+          }
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "hs-troponin"
+        }
+      }
+    ]
+  }
+}

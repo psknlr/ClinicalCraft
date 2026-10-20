@@ -1,0 +1,333 @@
+{
+  "schema": "clinicalcraft/facility@1",
+  "id": "clinic-v4",
+  "name": { "zh-CN": "临床探索中心", "en": "Clinical Discovery Centre" },
+  "description": {
+    "zh-CN": "Virtual Patient V4 体素诊所的数据移植：疗愈花园中的单栋诊所（接诊室、检验室、影像室、病理室、诊所走廊与会诊区），保留 V4 的大门、窗户、天窗、吊灯、标牌、三台工作站及其检查能力分组、会诊证据板、解剖图谱台、书架、花园长椅、池塘、树木、花丛、远景山丘、建造园地与园地工作台。坐标与 V4 源码一致。",
+    "en": "Data port of the Virtual Patient V4 voxel clinic: a single clinic building (consultation, laboratory, imaging, pathology, corridor and case-conference area) in a healing garden, keeping V4's doors, windows, skylight, ceiling lamps, signs, the three workstations with their investigation groupings, evidence board, anatomy atlas kiosk, bookshelves, garden benches, pond, trees, flowers, horizon hills, the building garden and its workbench. Coordinates match the V4 source."
+  },
+  "bounds": { "minX": -35.5, "maxX": 35.5, "minZ": -35.5, "maxZ": 35.5 },
+  "spawn": { "x": 0, "z": 19, "yaw": 0 },
+  "environment": {
+    "sky": "#a8d5e0",
+    "fog": { "color": "#b9d8d6", "near": 38, "far": 82 },
+    "sunIntensity": 3.4,
+    "hemisphere": { "sky": "#d5f4ff", "ground": "#83936c", "intensity": 2.6 }
+  },
+  "catalogs": ["materials", "core-furniture", "core-clinical", "core-diagnostics"],
+  "materials": [],
+  "terrain": {
+    "ground": "grass",
+    "paths": [
+      { "x": 0.5, "z": 20, "w": 5, "d": 24, "material": "path" },
+      { "x": 2, "z": 17, "w": 60, "d": 4, "material": "path" },
+      { "x": 23.5, "z": 1.5, "w": 15, "d": 15, "material": "sand" }
+    ],
+    "ponds": [{ "x": -21, "z": 16, "w": 8, "d": 5 }],
+    "trees": [
+      { "x": -18, "z": 10, "h": 4 },
+      { "x": -22, "z": -12, "h": 5 },
+      { "x": -21, "z": 23, "h": 4 },
+      { "x": 21, "z": 22, "h": 5 },
+      { "x": 29, "z": 15, "h": 4 },
+      { "x": -29, "z": 2, "h": 5 },
+      { "x": 29, "z": -16, "h": 5 },
+      { "x": -8, "z": 28, "h": 4 },
+      { "x": 10, "z": 31, "h": 5 },
+      { "x": -29, "z": -25, "h": 5 },
+      { "x": 19, "z": -29, "h": 5 },
+      { "x": 2, "z": -29, "h": 4 }
+    ],
+    "flowers": {
+      "count": 85,
+      "seed": 7103,
+      "exclude": [
+        { "x": 0, "z": -11.75, "w": 30, "d": 47.5 },
+        { "x": 25.25, "z": 1.5, "w": 20.5, "d": 17 },
+        { "x": 0, "z": 0, "w": 6, "d": 71 },
+        { "x": 0, "z": 16, "w": 71, "d": 8 }
+      ]
+    },
+    "horizon": { "count": 50, "radius": 43 },
+    "clouds": 14
+  },
+  "buildings": [
+    {
+      "id": "clinic",
+      "name": { "zh-CN": "临床探索中心", "en": "Clinical Discovery Centre" },
+      "rect": { "x": 0, "z": -3, "w": 26, "d": 22 },
+      "floor": "floor",
+      "walls": { "height": 5, "base": "teal", "body": "cream", "top": "wood", "thickness": 1 },
+      "openings": [
+        { "side": "s", "offset": 0, "width": 3, "height": 3, "kind": "double-door" },
+        { "side": "s", "offset": -8, "width": 4.6, "height": 2, "sill": 1.3, "kind": "window" },
+        { "side": "s", "offset": 8, "width": 4.6, "height": 2, "sill": 1.3, "kind": "window" },
+        { "side": "w", "offset": 6, "width": 5, "height": 2, "sill": 1, "kind": "window" },
+        { "side": "w", "offset": -4.5, "width": 6, "height": 2, "sill": 1, "kind": "window" },
+        { "side": "e", "offset": 6, "width": 5, "height": 2, "sill": 1, "kind": "window" },
+        { "side": "e", "offset": -4.5, "width": 6, "height": 2, "sill": 1, "kind": "window" }
+      ],
+      "roof": {
+        "material": "roof",
+        "skylights": [{ "x": 0, "z": -2, "w": 5, "d": 17 }],
+        "beams": "wood"
+      },
+      "sign": { "text": { "zh-CN": "临 床 探 索 中 心", "en": "CLINICAL DISCOVERY CENTRE" }, "side": "s" }
+    }
+  ],
+  "rooms": [
+    {
+      "id": "consult",
+      "name": { "zh-CN": "接诊室", "en": "Consultation Room" },
+      "kind": "consult",
+      "building": "clinic",
+      "rect": { "x": -8, "z": 3.5, "w": 10, "d": 9 },
+      "partitions": [
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [{ "offset": -0.5, "width": 3, "height": 3, "kind": "opening" }]
+        }
+      ],
+      "sign": { "text": { "zh-CN": "接 诊", "en": "Consultation" }, "side": "s" },
+      "lights": [{ "x": -8, "z": 3 }]
+    },
+    {
+      "id": "laboratory",
+      "name": { "zh-CN": "检验室", "en": "Laboratory" },
+      "kind": "laboratory",
+      "building": "clinic",
+      "rect": { "x": -8, "z": -7.5, "w": 10, "d": 13 },
+      "partitions": [
+        {
+          "side": "e",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [{ "offset": 0.5, "width": 3, "height": 3, "kind": "opening" }]
+        },
+        { "side": "s", "material": "white", "base": "teal", "height": 4, "thickness": 0.32, "openings": [] }
+      ],
+      "sign": { "text": { "zh-CN": "检验工作台", "en": "Laboratory" }, "side": "s" },
+      "lights": [{ "x": -8, "z": -7 }]
+    },
+    {
+      "id": "imaging",
+      "name": { "zh-CN": "影像室", "en": "Imaging Room" },
+      "kind": "imaging",
+      "building": "clinic",
+      "rect": { "x": 8, "z": 3.5, "w": 10, "d": 9 },
+      "partitions": [
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [{ "offset": -0.5, "width": 3, "height": 3, "kind": "opening" }]
+        }
+      ],
+      "sign": { "text": { "zh-CN": "影 像", "en": "Imaging" }, "side": "s" },
+      "lights": [{ "x": 8, "z": 3 }]
+    },
+    {
+      "id": "pathology",
+      "name": { "zh-CN": "病理室", "en": "Pathology Room" },
+      "kind": "pathology",
+      "building": "clinic",
+      "rect": { "x": 8, "z": -7.5, "w": 10, "d": 13 },
+      "partitions": [
+        {
+          "side": "w",
+          "material": "white",
+          "base": "teal",
+          "height": 4,
+          "thickness": 0.35,
+          "openings": [{ "offset": 0.5, "width": 3, "height": 3, "kind": "opening" }]
+        },
+        { "side": "s", "material": "white", "base": "teal", "height": 4, "thickness": 0.32, "openings": [] }
+      ],
+      "sign": { "text": { "zh-CN": "病理与遗传", "en": "Pathology & Genetics" }, "side": "s" },
+      "lights": [{ "x": 8, "z": -7 }]
+    },
+    {
+      "id": "conference",
+      "name": { "zh-CN": "会诊区", "en": "Conference Area" },
+      "kind": "conference",
+      "building": "clinic",
+      "rect": { "x": 0, "z": -11.5, "w": 6, "d": 5 },
+      "partitions": [],
+      "sign": { "text": { "zh-CN": "会 诊 区", "en": "Case Conference" }, "side": "w" },
+      "lights": [{ "x": 0, "z": -11 }]
+    },
+    {
+      "id": "corridor",
+      "name": { "zh-CN": "诊所走廊", "en": "Clinic Corridor" },
+      "kind": "corridor",
+      "building": "clinic",
+      "rect": { "x": 0, "z": -0.5, "w": 6, "d": 17 },
+      "partitions": [],
+      "sign": { "text": { "zh-CN": "诊 所 走 廊", "en": "Clinic Corridor" }, "side": "s" },
+      "lights": [{ "x": 0, "z": -2 }]
+    },
+    {
+      "id": "building-garden",
+      "name": { "zh-CN": "建造园地", "en": "Building Garden" },
+      "kind": "build-zone",
+      "rect": { "x": 25.25, "z": 10.5, "w": 20.5, "d": 5 },
+      "partitions": [],
+      "lights": []
+    }
+  ],
+  "placements": [
+    { "id": "exam-couch", "type": "exam-couch", "x": -10.6, "z": 2.9, "rot": 0, "room": "consult" },
+    { "id": "consult-bedside-table", "type": "bedside-table", "x": -9.05, "z": 1.3, "rot": 270, "room": "consult" },
+    { "id": "consult-chair", "type": "chair", "x": -5.2, "z": 5.7, "rot": 180, "room": "consult" },
+    {
+      "id": "ws-lab",
+      "type": "workstation",
+      "x": -8,
+      "z": -7,
+      "rot": 0,
+      "room": "laboratory",
+      "label": { "zh-CN": "检验工作台", "en": "Laboratory Workstation" },
+      "capabilities": ["lab-hematology", "lab-chemistry", "lab-serology", "flow-cytometry", "cytology"],
+      "extraParts": [
+        { "m": "white", "p": [-0.97, 1.17, 0.15], "s": [0.11, 0.4, 0.11] },
+        { "m": "red", "p": [-0.97, 1.38, 0.15], "s": [0.12, 0.05, 0.12] },
+        { "m": "white", "p": [-0.8, 1.17, 0.15], "s": [0.11, 0.4, 0.11] },
+        { "m": "red", "p": [-0.8, 1.38, 0.15], "s": [0.12, 0.05, 0.12] },
+        { "m": "white", "p": [-0.63, 1.17, 0.15], "s": [0.11, 0.4, 0.11] },
+        { "m": "red", "p": [-0.63, 1.38, 0.15], "s": [0.12, 0.05, 0.12] },
+        { "m": "white", "p": [-0.46, 1.17, 0.15], "s": [0.11, 0.4, 0.11] },
+        { "m": "red", "p": [-0.46, 1.38, 0.15], "s": [0.12, 0.05, 0.12] }
+      ]
+    },
+    {
+      "id": "ws-imaging",
+      "type": "workstation",
+      "x": 8,
+      "z": 3,
+      "rot": 0,
+      "room": "imaging",
+      "label": { "zh-CN": "影像工作站", "en": "Imaging Workstation" },
+      "capabilities": ["ct", "ultrasound", "pet-ct", "xray"]
+    },
+    { "id": "ct-scanner", "type": "ct-scanner", "x": 10.65, "z": 4, "rot": 0, "room": "imaging" },
+    {
+      "id": "ws-pathology",
+      "type": "workstation",
+      "x": 8,
+      "z": -7,
+      "rot": 0,
+      "room": "pathology",
+      "label": { "zh-CN": "病理与遗传工作台", "en": "Pathology & Genetics Workstation" },
+      "capabilities": ["histopathology", "cytogenetics", "molecular"],
+      "hideParts": [3, 4, 5, 6, 7, 8, 9],
+      "extraParts": [
+        { "m": "coal", "p": [0.6, 1.53, 0], "s": [1.45, 1.02, 0.14] },
+        { "m": "screen", "p": [0.6, 1.54, 0.082], "s": [1.29, 0.85, 0.025], "name": "screen" },
+        { "m": "coal", "p": [0.6, 1.02, 0], "s": [0.14, 0.4, 0.1] },
+        { "m": "coal", "p": [0.6, 0.95, 0.12], "s": [0.9, 0.06, 0.5] },
+        { "m": "white", "p": [0.6, 0.99, 0.49], "s": [1, 0.055, 0.25] },
+        { "m": "plastic", "p": [1.34, 0.975, 0.48], "s": [0.09, 0.03, 0.14] },
+        { "m": "led-green", "p": [1.24, 1.07, 0.073], "s": [0.03, 0.03, 0.006] },
+        { "m": "white", "p": [-0.82, 1.03, 0.08], "s": [0.5, 0.12, 0.55] },
+        { "m": "coal", "p": [-0.8, 1.38, 0], "s": [0.17, 0.65, 0.14] },
+        { "m": "white", "p": [-0.65, 1.7, 0.15], "s": [0.22, 0.17, 0.42] },
+        { "m": "coal", "p": [-0.55, 1.6, 0.35], "s": [0.15, 0.3, 0.15] }
+      ]
+    },
+    {
+      "id": "evidence-board",
+      "type": "evidence-board",
+      "x": 0,
+      "z": -12,
+      "rot": 0,
+      "room": "conference",
+      "label": { "zh-CN": "会诊 · 证据拼图", "en": "Case Conference · Evidence Board" }
+    },
+    {
+      "id": "anatomy-atlas",
+      "type": "anatomy-atlas-kiosk",
+      "x": -5,
+      "z": -11.5,
+      "rot": 0,
+      "room": "laboratory",
+      "label": { "zh-CN": "公开人体解剖图谱", "en": "Open Human Anatomy Atlas" }
+    },
+    { "id": "bookshelf-west", "type": "bookshelf", "x": -11, "z": -12.52, "rot": 0, "room": "laboratory" },
+    { "id": "bookshelf-east", "type": "bookshelf", "x": 11, "z": -12.52, "rot": 0, "room": "pathology" },
+    { "id": "entrance-sanitizer", "type": "hand-sanitizer", "x": 2.35, "z": 6.95, "rot": 0, "room": "corridor" },
+    { "id": "corridor-clock", "type": "wall-clock", "x": -2.775, "z": -1, "rot": 90, "room": "corridor" },
+    { "id": "entrance-plant-west", "type": "potted-plant", "x": -2.3, "z": 9.05, "rot": 0 },
+    { "id": "entrance-plant-east", "type": "potted-plant", "x": 2.3, "z": 9.05, "rot": 0 },
+    { "id": "garden-bench-west", "type": "garden-bench", "x": -8, "z": 14, "rot": 180 },
+    { "id": "garden-bench-east", "type": "garden-bench", "x": 8, "z": 14, "rot": 180 },
+    { "id": "signpost-welcome", "type": "signpost", "x": -3.3, "z": 21, "rot": 0 },
+    { "id": "signpost-building-garden", "type": "signpost", "x": 23, "z": 9.5, "rot": 0, "room": "building-garden" },
+    {
+      "id": "crafting-bench",
+      "type": "crafting-bench",
+      "x": 16.3,
+      "z": 10.8,
+      "rot": 0,
+      "room": "building-garden",
+      "label": { "zh-CN": "工作台", "en": "Workbench" }
+    },
+    { "id": "garden-lamp", "type": "lamp-post", "x": 18, "z": 12.2, "rot": 0, "room": "building-garden" }
+  ],
+  "patientSlots": [
+    {
+      "id": "consult-1",
+      "room": "consult",
+      "x": -8,
+      "z": 3.2,
+      "rot": 0,
+      "posture": "standing",
+      "bed": "exam-couch",
+      "accepts": ["outpatient", "ward", "inpatient", "community"]
+    }
+  ],
+  "staff": [],
+  "signs": [
+    {
+      "text": { "zh-CN": "W A S D  移动   ·   E  交互", "en": "W A S D  move   ·   E  interact" },
+      "x": -3.3,
+      "y": 3.1,
+      "z": 21,
+      "rot": 0,
+      "width": 4,
+      "post": false
+    },
+    {
+      "text": { "zh-CN": "建造园地 · 方块仅在此处可编辑", "en": "Building Garden · blocks can only be edited here" },
+      "x": 23,
+      "y": 3.2,
+      "z": 9.5,
+      "rot": 0,
+      "width": 5,
+      "post": false
+    }
+  ],
+  "buildZone": {
+    "rect": { "x": 23.5, "z": 1.5, "w": 15, "d": 15 },
+    "maxHeight": 7,
+    "maxBlocks": 600,
+    "materials": ["wood", "stone", "glass", "lamp"],
+    "seedBlocks": [
+      { "cell": [20, 0, 0], "type": "wood" },
+      { "cell": [20, 1, 0], "type": "wood" },
+      { "cell": [21, 0, 0], "type": "wood" },
+      { "cell": [22, 0, 0], "type": "stone" },
+      { "cell": [23, 0, 0], "type": "stone" },
+      { "cell": [23, 1, 0], "type": "stone" },
+      { "cell": [24, 0, 0], "type": "glass" }
+    ]
+  },
+  "outdoorRegion": { "zh-CN": "疗愈花园", "en": "Healing Garden" }
+}

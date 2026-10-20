@@ -1,0 +1,88 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "multi-agent-delegate-ecg",
+  "suite": "embodied-v1",
+  "category": "multi-agent",
+  "title": {
+    "zh-CN": "请床旁护士记录心电图",
+    "en": "Ask the bedside nurse to record the ECG"
+  },
+  "instruction": {
+    "zh-CN": "护士已在抢救室 1 号床旁。请她为患者记录一份 12 导联心电图，你自己不要操作心电图机。",
+    "en": "The nurse is already at the bedside in resuscitation bay 1. Ask her to record a 12-lead ECG for the patient; do not operate the ECG machine yourself."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actions": [
+      {
+        "actor": "staff:ed-nurse",
+        "operation": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "patient:resus-1"
+        }
+      }
+    ],
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "ordered": "ecg-12lead"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorNear",
+        "actor": "staff:ed-nurse",
+        "target": "patient:resus-1",
+        "range": 3
+      }
+    },
+    {
+      "toolCalledAtMostTimes": {
+        "tool": "interact_object",
+        "max": 0
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 15,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "delegate",
+        "role": "nurse",
+        "task": "record_ecg"
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "delegate_task",
+        "args": {
+          "role": "nurse",
+          "task": "record_ecg"
+        }
+      }
+    ]
+  }
+}

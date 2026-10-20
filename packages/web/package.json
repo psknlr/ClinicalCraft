@@ -1,0 +1,28 @@
+{
+  "name": "@clinicalcraft/web",
+  "version": "5.0.0",
+  "description": "ClinicalCraft 3D voxel clinical world (browser client)",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:standalone": "vite build --mode standalone && node scripts/inline-standalone.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@clinicalcraft/core": "5.0.0",
+    "@clinicalcraft/world": "5.0.0",
+    "@clinicalcraft/content": "5.0.0",
+    "@clinicalcraft/agent": "5.0.0",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/three": "0.180.0",
+    "vite": "6.4.4"
+  }
+}

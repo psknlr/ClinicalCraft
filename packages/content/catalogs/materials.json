@@ -1,0 +1,375 @@
+{
+  "schema": "clinicalcraft/equipment-catalog@1",
+  "id": "materials",
+  "name": {
+    "zh-CN": "基础材质",
+    "en": "Base materials"
+  },
+  "materials": [
+    {
+      "id": "grass",
+      "color": "#79a75f",
+      "pattern": "noise",
+      "castShadow": false
+    },
+    {
+      "id": "dirt",
+      "color": "#8b694c",
+      "pattern": "noise"
+    },
+    {
+      "id": "stone",
+      "color": "#a9b2a8",
+      "pattern": "brick"
+    },
+    {
+      "id": "path",
+      "color": "#d5c6a0",
+      "pattern": "noise",
+      "castShadow": false
+    },
+    {
+      "id": "cream",
+      "color": "#e0dfc9",
+      "pattern": "tile"
+    },
+    {
+      "id": "white",
+      "color": "#f1ead5",
+      "pattern": "tile"
+    },
+    {
+      "id": "wood",
+      "color": "#a87948",
+      "pattern": "plank"
+    },
+    {
+      "id": "darkwood",
+      "color": "#68503a",
+      "pattern": "plank"
+    },
+    {
+      "id": "teal",
+      "color": "#387c71",
+      "pattern": "plank"
+    },
+    {
+      "id": "leaf",
+      "color": "#567e48",
+      "pattern": "noise"
+    },
+    {
+      "id": "leaflight",
+      "color": "#759452",
+      "pattern": "noise"
+    },
+    {
+      "id": "roof",
+      "color": "#658c83",
+      "pattern": "tile"
+    },
+    {
+      "id": "floor",
+      "color": "#cbd6c3",
+      "pattern": "tile",
+      "castShadow": false
+    },
+    {
+      "id": "blue",
+      "color": "#6d9fba",
+      "pattern": "noise"
+    },
+    {
+      "id": "mint",
+      "color": "#b6ccbb",
+      "pattern": "noise"
+    },
+    {
+      "id": "skin",
+      "color": "#cba88a",
+      "pattern": "noise"
+    },
+    {
+      "id": "hair",
+      "color": "#c6c6ba",
+      "pattern": "noise"
+    },
+    {
+      "id": "coal",
+      "color": "#354442",
+      "pattern": "noise"
+    },
+    {
+      "id": "screen",
+      "color": "#325c57",
+      "pattern": "tile",
+      "emissive": "#4aac8c",
+      "emissiveIntensity": 0.3
+    },
+    {
+      "id": "sand",
+      "color": "#d4b46b",
+      "pattern": "noise",
+      "castShadow": false
+    },
+    {
+      "id": "pink",
+      "color": "#aa8189",
+      "pattern": "noise"
+    },
+    {
+      "id": "purple",
+      "color": "#a397bc",
+      "pattern": "noise"
+    },
+    {
+      "id": "lamp",
+      "color": "#e6debd",
+      "pattern": "tile",
+      "emissive": "#ffe5a0",
+      "emissiveIntensity": 0.3
+    },
+    {
+      "id": "red",
+      "color": "#aa6854",
+      "pattern": "noise"
+    },
+    {
+      "id": "glass",
+      "color": "#8dc4c3",
+      "pattern": "flat",
+      "variance": 0.02,
+      "opacity": 0.22,
+      "roughness": 0.1,
+      "castShadow": false
+    },
+    {
+      "id": "water",
+      "color": "#609bab",
+      "pattern": "flat",
+      "variance": 0.04,
+      "opacity": 0.83,
+      "roughness": 0.2,
+      "castShadow": false
+    },
+    {
+      "id": "steel",
+      "color": "#9aa5a8",
+      "pattern": "flat",
+      "variance": 0.04,
+      "roughness": 0.45,
+      "metalness": 0.4
+    },
+    {
+      "id": "chrome",
+      "color": "#c9d1d3",
+      "pattern": "flat",
+      "variance": 0.03,
+      "roughness": 0.3,
+      "metalness": 0.6
+    },
+    {
+      "id": "black",
+      "color": "#23292b",
+      "pattern": "flat",
+      "variance": 0.04
+    },
+    {
+      "id": "plastic",
+      "color": "#e9ecea",
+      "pattern": "flat",
+      "variance": 0.03,
+      "roughness": 0.6
+    },
+    {
+      "id": "beige",
+      "color": "#d9cfb4",
+      "pattern": "noise",
+      "variance": 0.06
+    },
+    {
+      "id": "yellow",
+      "color": "#e3c04f",
+      "pattern": "flat",
+      "variance": 0.05
+    },
+    {
+      "id": "orange",
+      "color": "#d98a3d",
+      "pattern": "flat",
+      "variance": 0.05
+    },
+    {
+      "id": "green",
+      "color": "#5f9e6e",
+      "pattern": "flat",
+      "variance": 0.05
+    },
+    {
+      "id": "navy",
+      "color": "#34506b",
+      "pattern": "flat",
+      "variance": 0.05
+    },
+    {
+      "id": "scrubs",
+      "color": "#6fa8c7",
+      "pattern": "noise",
+      "variance": 0.06
+    },
+    {
+      "id": "gold",
+      "color": "#e7c36b",
+      "pattern": "flat",
+      "variance": 0.05,
+      "metalness": 0.3,
+      "roughness": 0.5
+    },
+    {
+      "id": "mattress",
+      "color": "#dfe7ea",
+      "pattern": "stripe",
+      "variance": 0.05
+    },
+    {
+      "id": "curtain",
+      "color": "#7fb2b5",
+      "pattern": "stripe",
+      "variance": 0.08
+    },
+    {
+      "id": "lino",
+      "color": "#b9c9c2",
+      "pattern": "tile",
+      "variance": 0.06,
+      "castShadow": false
+    },
+    {
+      "id": "tile-blue",
+      "color": "#9fc2cc",
+      "pattern": "tile",
+      "variance": 0.06,
+      "castShadow": false
+    },
+    {
+      "id": "tile-white",
+      "color": "#e4e8e2",
+      "pattern": "tile",
+      "variance": 0.05,
+      "castShadow": false
+    },
+    {
+      "id": "rubber",
+      "color": "#3c4446",
+      "pattern": "noise",
+      "variance": 0.05
+    },
+    {
+      "id": "led-green",
+      "color": "#5ff09a",
+      "pattern": "flat",
+      "variance": 0,
+      "emissive": "#5ff09a",
+      "emissiveIntensity": 1.2
+    },
+    {
+      "id": "led-red",
+      "color": "#ff5a4a",
+      "pattern": "flat",
+      "variance": 0,
+      "emissive": "#ff5a4a",
+      "emissiveIntensity": 1.2
+    },
+    {
+      "id": "led-amber",
+      "color": "#ffb347",
+      "pattern": "flat",
+      "variance": 0,
+      "emissive": "#ffb347",
+      "emissiveIntensity": 1.0
+    },
+    {
+      "id": "screen-dark",
+      "color": "#1d2b2b",
+      "pattern": "screen",
+      "variance": 0.03,
+      "emissive": "#2a6a5a",
+      "emissiveIntensity": 0.45
+    },
+    {
+      "id": "lightbox",
+      "color": "#eef4f2",
+      "pattern": "flat",
+      "variance": 0.02,
+      "emissive": "#f3f8ff",
+      "emissiveIntensity": 0.8
+    },
+    {
+      "id": "lead-glass",
+      "color": "#a7c7c0",
+      "pattern": "flat",
+      "variance": 0.02,
+      "opacity": 0.4,
+      "roughness": 0.15,
+      "castShadow": false
+    },
+    {
+      "id": "asphalt",
+      "color": "#5d6266",
+      "pattern": "noise",
+      "variance": 0.08,
+      "castShadow": false
+    },
+    {
+      "id": "brick-red",
+      "color": "#a45a48",
+      "pattern": "brick"
+    },
+    {
+      "id": "ambulance-white",
+      "color": "#f2f2ee",
+      "pattern": "flat",
+      "variance": 0.03
+    },
+    {
+      "id": "ambulance-red",
+      "color": "#c9473c",
+      "pattern": "flat",
+      "variance": 0.03
+    },
+    {
+      "id": "warning-yellow",
+      "color": "#e8c547",
+      "pattern": "stripe",
+      "variance": 0.1
+    },
+    {
+      "id": "biohazard",
+      "color": "#d65f3a",
+      "pattern": "flat",
+      "variance": 0.03
+    },
+    {
+      "id": "oxygen-green",
+      "color": "#3f8f5a",
+      "pattern": "flat",
+      "variance": 0.03,
+      "metalness": 0.2
+    },
+    {
+      "id": "paper",
+      "color": "#f6f1e3",
+      "pattern": "noise",
+      "variance": 0.04
+    },
+    {
+      "id": "led-blue",
+      "color": "#4f9dff",
+      "pattern": "flat",
+      "variance": 0,
+      "emissive": "#4f9dff",
+      "emissiveIntensity": 1.2
+    }
+  ],
+  "equipment": []
+}
