@@ -7,18 +7,37 @@
 > 智能体扮演，但每一句事实都必须来自病例数据（“先选事实、再组织语言、最后核验”），病例
 > 未记录的信息一律回答“没有记录”，绝不补出“正常”。你可以在 3D 体素医院里走动、问诊、查体、
 > 开检查、读报告、给药处置，床旁监护仪的生命体征由纯函数生理引擎实时计算；高风险操作需要
-> 确认，结束后有可追溯证据的评估与复盘。内置 10 个中英双语教学病例、2 个场馆、90 种体素设备；
-> 支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
+> 确认，结束后有可追溯证据的评估与复盘。**具身模式**（网页世界默认开启）下，医院是一个
+> 无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
+> 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
+> 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹。内置
+> 10 个中英双语教学病例、3 个场馆（含两层的教学医院）、95 种体素设备，以及 41 个具身基准
+> 场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
-> Grok CLI 扮演医生。本项目仅用于教学模拟，不构成医疗建议。
+> Grok CLI 扮演医生，甚至经 `mcp --attach` 进入你正在浏览器里进行的接诊。本项目仅用于教学
+> 模拟，不构成医疗建议。具身层的设计与状态见 [docs/EMBODIED.md](docs/EMBODIED.md)
+> （中文版：[docs/zh-CN/EMBODIED.md](docs/zh-CN/EMBODIED.md)）。
 
 ClinicalCraft V5 turns *Virtual Patient V4* (a single-file voxel clinic with
 one published case) into a framework: a deterministic clinical simulation
-core, grounded LLM-driven patients and staff, and an agent runtime whose
-design borrows from agentic coding CLIs (Claude Code, Codex CLI, Grok CLI,
-ZCode) — served through a 3D web world, a terminal REPL, headless runs, an
-HTTP server and an MCP server that all speak one protocol.
+core, grounded LLM-driven patients and staff, an embodied world model in
+which agents must walk, look and operate equipment to act, and an agent
+runtime whose design borrows from agentic coding CLIs (Claude Code, Codex
+CLI, Grok CLI, ZCode) — served through a 3D web world, a terminal REPL,
+headless runs, an HTTP server and an MCP server that all speak one protocol.
+
+**Quick links:** [Quick start](#quick-start) ·
+[Embodied agents](#embodied-agents) ·
+[Architecture & contracts](docs/ARCHITECTURE.md) ·
+[Agent protocol](docs/PROTOCOL.md) ·
+[Embodied design & status](docs/EMBODIED.md) ([中文](docs/zh-CN/EMBODIED.md)) ·
+[Benchmark samples](docs/bench/) ·
+[Case authoring](docs/CASE_AUTHORING.md) ·
+[Facilities & equipment](docs/FACILITIES.md) ·
+[Local assets](docs/ASSETS.md) ·
+[Design lineage](docs/DESIGN_PRINCIPLES.md) ·
+[CLI reference](packages/cli/README.md)
 
 ## Features
 
@@ -38,23 +57,53 @@ HTTP server and an MCP server that all speak one protocol.
   exactly. A patient who arrives off the monitor shows only the triage
   readings taken by hand — no live numbers, alarms or rhythm — until the
   learner attaches it.
+- **Embodied agents** ([below](#embodied-agents)). In embodied mode — the web
+  world's default, `--embodied` in the CLI, `start_case {embodied: true}` in
+  MCP — a headless world model of the hospital holds every body to where it
+  stands: the same approval gate and engine, plus a spatial gate before and
+  after it. Agents observe, navigate, operate equipment through validated
+  object actions and verify against authoritative state, with an auditable
+  episode trace.
+  - **Bedside realism:** one bedside rule for everything; bedside tests need
+    the device at the patient (wheel the ECG cart over); laboratory tests are
+    ordered at the patient's side, where the sample is taken (or at a records
+    terminal once the bloods were drawn); results are read at the patient or
+    in the EHR, never off the device; IV drugs need a cannula first.
+  - **Vitals channels:** vitals are visible only from the attached monitor's
+    screen in its room, by hand at the patient, or in the chart — the same
+    check for the monitor panel, the HUD, the REPL status line, the model's
+    prompt and MCP; audible alarms are still announced.
+  - **Patient transport:** studies done on the patient (CT, MRI, X-ray,
+    fluoroscopy, the peak-flow station) need the patient brought there on
+    their bed — by the learner, a model or a porter — and back; transfers and
+    phases with a location relocate the patient.
+  - **Scope of practice:** a nurse, paramedic, porter, receptionist,
+    technician or pharmacist may do only what their profession does at the
+    bedside; approvals name the staff member who would act.
 - **Approvals and scope.** Approval modes (`default`, `strict`, `auto`,
   `plan`, `bypass`), practice scopes (`history-only`, `workup`, `full`) and
   Claude Code-style `tool(specifier)` allow/ask/deny rules gate every
-  state-changing action — including the learner's own button presses.
-  High-risk interventions always ask.
+  state-changing action — including the learner's own button presses and
+  every device operation with a clinical effect. High-risk interventions
+  always ask.
 - **Assessment.** A deterministic rubric over engine state, an independent
   examiner agent for communication items (it must quote evidence), and an
   authored debrief. Scores are formative teaching measures.
 - **Autopilot clinician.** A clinician agent can work the case with the same
-  tools and approvals (`/autopilot`, `exec --autopilot`, `eval`).
+  tools and approvals (`/autopilot`, `exec --autopilot`, `eval`); in embodied
+  mode it walks, fetches equipment and transports the patient.
+- **Embodied benchmark.** `clinicalcraft bench`: 41 reproducible scenarios
+  judged only from the final engine and world state, with spatial and
+  authorisation audits and Wilson 95 % intervals; a reference demonstration
+  of the full STEMI encounter.
 - **Any model, or none.** 13 networked provider templates over two wires (the
   official Anthropic SDK and OpenAI-compatible Chat Completions), per-agent
   model/effort, a server-side key proxy for the browser, and a fully
   **offline** deterministic mode that needs no key.
-- **Data-driven content.** 10 bilingual cases, 2 facilities and 90 voxel
-  equipment types, all JSON validated by zod schemas; every case is verified by
-  replaying a reference solution and a matcher regression corpus.
+- **Data-driven content.** 10 bilingual cases, 3 facilities (one with two
+  storeys, built from 15 room templates) and 95 voxel equipment types, all
+  JSON validated by zod schemas; every case is verified by replaying a
+  reference solution and a matcher regression corpus.
 - **Agent-CLI ergonomics.** Layered settings and profiles, hooks
   (`SessionStart` … `SessionEnd`, shell commands with JSON on stdin),
   Markdown slash commands and agents, `CLINICALCRAFT.md` project memory with
@@ -64,32 +113,47 @@ HTTP server and an MCP server that all speak one protocol.
 ## Architecture
 
 ```
-  content (JSON)        cases/<id>/case.json · facilities/*.json · catalogs/*.json      @clinicalcraft/content
+  content (JSON)        cases/<id>/case.json · facilities/*.json · templates/*.json ·   @clinicalcraft/content
+                        catalogs/*.json · bench/<suite>/*.json
         │  zod schemas
         ▼
   simulation            parse · reduce() · conditions · physiology · matcher ·          @clinicalcraft/core
   (pure, isomorphic)    assessment · facility helpers — no I/O, no wall clock, seeded PRNG
         │
+        ├──────────────▶ embodied world model: collision · navigation · visibility ·    @clinicalcraft/world
+        │                spatial policy · perception · action bus · traces (pure, headless)
         ▼
-  agent runtime         ClinicalSession ─ approval gate ─ hooks ─ tools ─ agents        @clinicalcraft/agent
+  agent runtime         ClinicalSession ─ approval gate ─ spatial gate ─ hooks ─ tools  @clinicalcraft/agent
                         providers: anthropic SDK │ openai-compatible │ offline │ proxy   (+ /node: settings,
                         Op ──► submit()            events() ──► AgentEvent               memory, transcripts)
         │                          (one protocol for every front-end)
         ├──────────────────┬───────────────────┬──────────────────────┬──────────────────────┐
         ▼                  ▼                   ▼                      ▼                      ▼
   3D web world        terminal REPL      headless exec / -p     HTTP server             MCP server (stdio)
-  Vite + three.js     play, cases,       text│json│stream-json, web host, content API,  external agents
-                      providers, config  eval benchmark         LLM proxy (keys stay)   play the clinician
+  Vite + three.js     play, cases,       text│json│stream-json, web host, content API,  external agents play
+                      providers, config  eval, bench            LLM proxy, world bridge the clinician (or
+                                                                                         --attach a live world)
   @clinicalcraft/web  @clinicalcraft/cli @clinicalcraft/cli     @clinicalcraft/server   @clinicalcraft/mcp
+                                         (+ @clinicalcraft/bench)
 ```
 
+| package | what it is |
+|---|---|
+| [`@clinicalcraft/core`](packages/core/README.md) | zod schemas + the pure, deterministic clinical engine (reducer, conditions, physiology, matcher, assessment, facility helpers, room templates, GLB inspection) |
+| [`@clinicalcraft/world`](packages/world/README.md) | the embodied world model: collision, navigation, visibility, semantic registry, spatial policy, perception, device behaviours, action bus, traces — pure and headless |
+| [`@clinicalcraft/content`](packages/content/README.md) | built-in cases, facilities, room templates, equipment catalogs, benchmark scenarios and JSON Schemas (data only) |
+| [`@clinicalcraft/agent`](packages/agent/README.md) | the runtime: `ClinicalSession`, Op/Event protocol, providers, tools, approval gate, hooks, embodied mode, skills, the world bridge client; `./node` for settings, memory, transcripts and content loading |
+| [`@clinicalcraft/bench`](packages/bench/README.md) | the embodied agent benchmark: scenario schema, runner, audits, metrics, reports, reference demonstration |
+| [`@clinicalcraft/cli`](packages/cli/README.md) | the `clinicalcraft` binary (alias `cc5`): REPL, `exec`, case and facility tooling, `serve`, `mcp`, `eval`, `bench`, `assets` |
+| [`@clinicalcraft/server`](packages/server/README.md) | the HTTP server behind `clinicalcraft serve`: web host, content API, LLM proxy, world bridge routes |
+| [`@clinicalcraft/mcp`](packages/mcp/README.md) | the MCP stdio server, headless or attached to a live browser session |
+| [`@clinicalcraft/web`](packages/web/README.md) | the 3D voxel world (Vite + three.js) and its UI |
+
 Contracts: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (content model,
-engine API, runtime) and [docs/PROTOCOL.md](docs/PROTOCOL.md) (`Op` /
-`AgentEvent`, tools, agent loop, providers, approval ladder, front-ends).
-Each package has a short README: [core](packages/core/README.md) ·
-[content](packages/content/README.md) · [agent](packages/agent/README.md) ·
-[cli](packages/cli/README.md) · [server](packages/server/README.md) ·
-[mcp](packages/mcp/README.md) · [web](packages/web/README.md).
+engine API, runtime), [docs/PROTOCOL.md](docs/PROTOCOL.md) (`Op` /
+`AgentEvent`, tools, agent loop, providers, approval ladder, front-ends,
+embodied mode, world bridge) and [docs/EMBODIED.md](docs/EMBODIED.md) (the
+embodied layer, its benchmark and an honest status table).
 
 ## Quick start
 
@@ -100,6 +164,7 @@ npm install
 
 npm run cc -- cases list --lang en              # the case library
 npm run cc -- play stemi-inferior-rv --lang en  # terminal REPL (offline)
+npm run cc -- play stemi-inferior-rv --embodied --lang en   # the same, embodied (walk to the bedside)
 npm run cc                                      # pick a case interactively (zh-CN by default)
 npm run dev                                     # 3D world → http://localhost:5173
 npm run build                                   # libraries (packages/*/dist) + web world (packages/web/dist)
@@ -126,8 +191,8 @@ npm run cc -- play smzl-lung-adeno --provider zhipu --model glm-4.6 --lang zh-CN
 A `--provider` whose key is missing is an error, never a silent fallback to
 offline. Model ids change often: any id is accepted, and
 `providers models <id>` lists `GET /models` when the vendor supports it.
-Capabilities (context window, sampling, reasoning/effort parameters) come
-from regex rules on the model id (`MODEL_RULES`).
+Capabilities (context window, sampling, reasoning/effort parameters, vision)
+come from regex rules on the model id (`MODEL_RULES`).
 
 | id | name | wire | base URL | API key env | default model | browser direct |
 |---|---|---|---|---|---|---|
@@ -180,20 +245,25 @@ are synthetic. Write your own with `npm run cc -- cases new <id>` and
 |---|---|
 | `clinic-v4` · 临床探索中心 Clinical Discovery Centre | data port of the V4 world: healing garden, one clinic building (consult room, lab, imaging, pathology, corridor, conference area), 7 rooms, 21 placements, 1 patient slot, evidence board, atlas kiosk, build zone and crafting bench |
 | `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward, ICU, operating theatre, conference room, gardens — 37 rooms, 258 placements, 14 patient slots for every case setting, 10 staff |
+| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 275 placements, 17 patient slots, 11 staff (a porter among them). Nobody's own facility: offered as an alternative for the 9 cases it can host |
 
-Three equipment catalogs define **90 equipment types** — `core-furniture` (39),
-`core-clinical` (25: monitors, ECG, defibrillator, crash cart, ventilator,
-infusion pumps, anaesthesia machine…), `core-diagnostics` (26: CT, MRI,
-X-ray, C-arm, PET-CT, ultrasound, analysers, microscope, flow cytometer,
-endoscopy tower…) — and `materials` holds the procedural pixel textures. Each
-equipment type declares voxel parts, footprint, capabilities and an
-interaction (workstation, device, monitor, board, atlas…); examinations,
-investigations and interventions require capabilities present in the
-facility — the CLI, MCP and agent tools refuse an item the whole facility
-lacks, the web also checks the station the learner uses, and a facility is
-offered for a case only if every objective can be completed there
-(`facilities validate --all` warns about the pairs that cannot). See
-[docs/FACILITIES.md](docs/FACILITIES.md); `npm run cc -- facilities list`.
+Three equipment catalogs define **95 equipment types** — `core-furniture` (39),
+`core-clinical` (30: monitors, ECG, defibrillator, crash cart, ventilator,
+infusion pumps, anaesthesia machine, rehabilitation equipment…),
+`core-diagnostics` (26: CT, MRI, X-ray, C-arm, PET-CT, ultrasound, analysers,
+microscope, flow cytometer, endoscopy tower…) — and `materials` holds the
+procedural pixel textures. Each equipment type declares voxel parts,
+footprint, capabilities and an interaction (workstation, device, monitor,
+board, atlas…), and optionally `portable` (eight carts can be wheeled),
+`reach`, `interactionPoints`, a declarative `behavior` (the ECG machine and
+the patient monitor) and a GLB `model` (none ships); 15 room templates
+compose facilities. Examinations, investigations and interventions require
+capabilities present in the facility — the CLI, MCP and agent tools refuse
+an item the whole facility lacks, embodied mode also requires the provider
+where the body acts (EMBODIED §6), and a facility is offered for a case only
+if every objective can be completed there (`facilities validate --all` warns
+about the pairs that cannot). See [docs/FACILITIES.md](docs/FACILITIES.md);
+`npm run cc -- facilities list`.
 
 ## In the REPL
 
@@ -207,6 +277,8 @@ offered for a case only if every objective can be completed there
 | `/board` · `/answer <decision> <option…>` · `/phase` · `/wait 10` | decisions (e.g. `/answer diagnosis dual` in SMZL), phases, simulated time |
 | `/hint` `/consult attending …` | Socratic help (hints count against the score) |
 | `/autopilot [goal]` `/finish` `/assess` `/debrief` | clinician agent, finish the case once every objective is complete, assessment (examiner), debrief |
+| `/look` `/where` `/find ecg` `/go patient` `/inspect eq:resus1-ecg` `/use eq:resus1-ecg prepare` `/map` | embodied mode: perceive, walk and operate equipment |
+| `/delegate nurse attach_monitor` `/transport eq:ct-scanner` `/skill perform_ecg` | embodied mode: delegate to staff, take the patient to a device (`/transport home` brings them back), run a skill |
 | `/model` `/provider` `/approval auto` `/scope workup` `/permissions` `/lang en` | runtime control |
 | `/compact` `/export [path]` `/clear` `/quit` | conversation housekeeping |
 | `/sbar` `/differential …` `/osce-checklist` | project commands from `.clinicalcraft/commands/*.md` |
@@ -227,10 +299,13 @@ npm run cc -- -p "Where does it hurt?" --case smzl-lung-adeno --lang en
 # (-s keeps npm's "> clinicalcraft cc" banner out of stdout)
 npm run -s cc -- exec "Work up this patient" --case septic-shock-cap --autopilot --approval bypass --output-format stream-json
 
+# the same encounter embodied, with its episode trace (JSON Lines spans)
+npm run -s cc -- exec "Work up this patient" --case stemi-inferior-rv --embodied --autopilot --approval bypass --output-format json --trace stemi-trace.jsonl
+
 # drive a session yourself: Op JSON lines on stdin
 echo '{"type":"slash_command","name":"vitals","args":""}' | npm run -s cc -- exec --case dka-adult --input-format stream-json --output-format stream-json
 
-# autopilot benchmark over every case → Markdown + JSON report
+# autopilot benchmark over every case → Markdown + JSON report (add --embodied for embodied mode)
 npm run cc -- eval --cases all --provider offline --out eval-report.md
 ```
 
@@ -247,69 +322,86 @@ codes: 0 success, 1 error, 2 usage error, 3 `--max-turns` reached, 4
 autopilot ended with the case incomplete. Full flag reference:
 [packages/cli/README.md](packages/cli/README.md).
 
-## Embodied benchmark
+## Embodied agents
 
-`clinicalcraft bench` measures embodied agents in the 3D hospital, headless
-and reproducibly: 41 scenarios in `packages/content/bench/embodied-v1`
-(perception, spatial reasoning, navigation, device interaction, clinical
-workflows — one per built-in case plus the full STEMI encounter —,
-recovery, multi-agent delegation and safety), fixed seeds, a fresh session
-per run, success judged only from the final engine and world state (never
-from what the agent says), with independent spatial-rule and authorisation
-audits and Wilson 95 % intervals.
+In **embodied mode** the encounter happens in a headless, deterministic world
+model of the facility (`@clinicalcraft/world`): bodies have poses, rooms and
+doors; equipment has places, reach, states and reservations; staff walk.
+The clinical tools stay the same, but each is held to where the acting body
+stands — before the approval gate and again right before the engine
+commits — and a refusal says where to go (`hint.goal`) and what to do there
+(`hint.then`: wheel the cart over, take the patient to the scanner, wash
+your hands). World tools let an agent observe, find, walk, operate equipment
+(the ECG cart's prepare → connect → record → reset, the monitor's attach),
+transport the patient, delegate to staff and run declarative skills; every
+device operation with a clinical effect runs the clinical tool through the
+same gate, so a deny rule also stops a device that would give the drug.
+Walking costs simulated time. Clinical mode is unchanged and remains
+available. Design, rules, measurements and an honest status table
+(implemented / tested / validated / production-ready — nothing is
+production-ready, and no live model has been run through these tools yet):
+[docs/EMBODIED.md](docs/EMBODIED.md) · [中文](docs/zh-CN/EMBODIED.md).
+
+**Where to run it**
+
+- **Web world** — embodied by default. "Embodied agents" on the case-start
+  card (or under *Agents & permissions* in the pause menu) picks the mode of
+  the next encounter. Walk with `WASD`; a refusal shows the reason and "Go
+  there"; the monitor panel shows the live screen only where you can read
+  it; staff walk when you delegate; the autopilot walks, wheels carts and
+  transports the patient.
+- **CLI** — `--embodied` on `play`, `exec` and `eval`; the REPL adds `/look`,
+  `/where`, `/find`, `/go`, `/inspect`, `/use`, `/map`, `/skill`,
+  `/delegate` and `/transport`, and the status line names your room:
+
+  ```bash
+  npm run cc -- play stemi-inferior-rv --embodied --lang en     # then: /go patient · /look · /delegate nurse attach_monitor
+  npm run -s cc -- exec "Work up this patient" --case stemi-inferior-rv --embodied --autopilot --approval bypass --trace stemi-trace.jsonl
+  ```
+
+- **MCP** — `start_case {"case_id": …, "embodied": true}` (or start the
+  server with `clinicalcraft mcp --embodied`) gives your MCP client a body in
+  a headless world of its own: 17 world tools next to the clinical ones, and
+  a refusal's `data.hint.goal` to pass to `navigate_to` (see
+  [MCP](#mcp-let-claude-code-codex-or-grok-cli-play-the-clinician)).
+
+**The embodied benchmark** — `clinicalcraft bench` measures embodied agents
+headless and reproducibly: 41 scenarios in
+`packages/content/bench/embodied-v1` (perception, spatial reasoning,
+navigation, device interaction, clinical workflows — one per built-in case
+plus the full STEMI encounter —, recovery, multi-agent delegation and
+safety), fixed seeds, a fresh session per run, success judged only from the
+final engine and world state (never from what the agent says), with
+independent spatial-rule and authorisation audits and Wilson 95 % intervals.
 
 ```bash
 npm run -s cc -- bench list
 npm run -s cc -- bench run --suite embodied-v1 --agent reference      # must be 100 % (infrastructure)
 npm run -s cc -- bench run --suite embodied-v1 --agent scripted-llm   # must be 100 % (model tool path)
 npm run -s cc -- bench run --agent llm --provider anthropic --model <model> --live --max-tokens 2000000 --scenario workflow-pe-ctpa --seeds 1
-npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN       # auditable reference demonstration
 ```
 
 `reference` and `scripted-llm` validate the infrastructure, not clinical
-reasoning, and run in CI. A live model (`--agent llm`) runs only with
+reasoning, and run in CI (123 / 123 runs each, no accepted spatial or
+authorisation violation). A live model (`--agent llm`) runs only with
 `--live` and a spending cap (`--max-tokens`; `--max-usd` only for a model
-with a catalogue price), needs a configured API key and refuses to run in CI.
-Reports: `bench-report.json` + `bench-report.md`; samples in
-[docs/bench/](docs/bench/); scenario catalogue, metric definitions and the
-live-run checklist in [docs/EMBODIED.md §13](docs/EMBODIED.md#13-benchmark).
+with a catalogue price), needs a configured API key and refuses to run in
+CI; no live run has been recorded yet. Reports: `bench-report.json` +
+`bench-report.md`; samples in [docs/bench/](docs/bench/); scenario catalogue,
+metric definitions and the live-run checklist in
+[docs/EMBODIED.md §13](docs/EMBODIED.md#13-benchmark).
 
-## MCP: let Claude Code, Codex or Grok CLI play the clinician
-
-`clinicalcraft mcp` is a stdio MCP server with 17 tools (`list_cases`,
-`start_case`, `ask_patient`, `examine`, `order_test`, `read_result`,
-`intervene`, `answer_decision`, `finish_case`, `get_debrief`, …) and
-resources for the case library and each session's state and transcript.
-Build once (`npm run build:lib`), then register it with an absolute path —
-run these from the repository root:
+**The reference demonstration** — `bench demo` works the full embodied STEMI
+encounter headless with the reference clinician and writes `trace.jsonl` and
+`demo.md`: for every step, Observation → Plan → Navigation → Object
+interaction → Approval → Clinical action → State change → Verification, with
+span ids, world and target versions, action ids and clinical event ids. It
+passes only if the authoritative state confirms every step (samples:
+[English](docs/bench/demo.en.md), [中文](docs/bench/demo.zh-CN.md)).
 
 ```bash
-# Claude Code
-claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
-
-# Codex CLI
-codex mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
-
-# Grok CLI (stdio transport; see `grok mcp add --help` for your version's flags)
-grok mcp add clinicalcraft --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
+npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN --out bench-demo
 ```
-
-Or in Codex's `~/.codex/config.toml` (any MCP client that launches a stdio
-server takes the same command and arguments):
-
-```toml
-[mcp_servers.clinicalcraft]
-command = "node"
-args = ["/path/to/ClinicalCraft/packages/cli/dist/bin.js", "mcp", "--cwd", "/path/to/ClinicalCraft"]
-```
-
-MCP sessions default to approval mode `auto` (any settings layer that sets
-`approvalMode` wins): low- and moderate-risk actions run, while high-risk and
-always-ask ones (thrombolysis…) and ask rules need a two-step confirmation —
-the first call returns an error explaining the risk, and the client calls
-again with `"confirm": true` once its user agreed. `--approval bypass` drops
-that step (unsafe; for unattended benchmarks only). `--provider`/`--model`
-choose the models behind the patient and staff (offline by default).
 
 ### Connect Claude Code / Codex / Grok CLI to a live world (`mcp --attach`)
 
@@ -352,7 +444,8 @@ shows you; it never picks a session by itself.
    `claude mcp add clinicalcraft-live -e CLINICALCRAFT_ATTACH_KEY=ak_… -e CLINICALCRAFT_WORLD_SESSION=ls_… -- node …/bin.js mcp --attach http://127.0.0.1:5178`).
    Never put the key on the command line of a shared machine (the process
    list). A new opt-in makes a new id and key: `claude mcp remove
-   clinicalcraft-live` and add it again.
+   clinicalcraft-live` and add it again. Without a session id or a key the
+   command exits with a usage error.
 
 The agent calls `navigate_to`, `interact_object`, `examine`, `intervene`… as
 the clinician, through the session's own approval gate: an action that needs
@@ -368,6 +461,49 @@ reports `session_closed`. A server with an access token needs it here too:
 `--token-file <path>` or `CLINICALCRAFT_SERVER_TOKEN` in the MCP server's
 environment — never in the URL. Routes, message shapes and the security
 model: [docs/PROTOCOL.md §13](docs/PROTOCOL.md).
+
+## MCP: let Claude Code, Codex or Grok CLI play the clinician
+
+`clinicalcraft mcp` is a stdio MCP server with 34 tools: 17 for the clinical
+encounter (`list_cases`, `start_case`, `ask_patient`, `examine`,
+`order_test`, `read_result`, `intervene`, `answer_decision`, `finish_case`,
+`get_debrief`, …) and 17 world tools for embodied sessions (`observe_world`,
+`navigate_to`, `interact_object`, `transport_patient`, `delegate_task`,
+`execute_skill`, …), each with MCP annotations, plus resources for the case
+library and each session's state and transcript. Build once
+(`npm run build:lib`), then register it with an absolute path — run these
+from the repository root:
+
+```bash
+# Claude Code
+claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
+
+# Codex CLI
+codex mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
+
+# Grok CLI (stdio transport; see `grok mcp add --help` for your version's flags)
+grok mcp add clinicalcraft --transport stdio --command node --args "$PWD/packages/cli/dist/bin.js" mcp --cwd "$PWD"
+```
+
+Or in Codex's `~/.codex/config.toml` (any MCP client that launches a stdio
+server takes the same command and arguments):
+
+```toml
+[mcp_servers.clinicalcraft]
+command = "node"
+args = ["/path/to/ClinicalCraft/packages/cli/dist/bin.js", "mcp", "--cwd", "/path/to/ClinicalCraft"]
+```
+
+MCP sessions default to approval mode `auto` (any settings layer that sets
+`approvalMode` wins): low- and moderate-risk actions run, while high-risk and
+always-ask ones (thrombolysis…) and ask rules need a two-step confirmation —
+the first call returns an error explaining the risk, and the client calls
+again with `"confirm": true` once its user agreed (inside a world operation
+the confirmation is bound to the act it named). `--approval bypass` drops
+that step (unsafe; for unattended benchmarks only). `--provider`/`--model`
+choose the models behind the patient and staff (offline by default). To act
+in a live browser encounter instead, see
+[`mcp --attach`](#connect-claude-code--codex--grok-cli-to-a-live-world-mcp---attach).
 
 ## Configuration
 
@@ -388,6 +524,7 @@ values and `config set <key> <value> [--user|--project|--local]` writes one
   "locale": "en",
   "approvalMode": "default",
   "practiceScope": "full",
+  "embodiment": "embodied",
   "agents": {
     "patient":  { "provider": "zhipu", "model": "glm-4.6", "effort": "low" },
     "examiner": { "effort": "high" }
@@ -407,10 +544,11 @@ values and `config set <key> <value> [--user|--project|--local]` writes one
 | `providers.<id>` | — | override a template or add one (`wire`, `baseUrl`, `apiKeyEnv`, `headers`, `defaultModel`, `timeoutMs`, `maxRetries` — retries of every model call of a session); a literal `apiKey` is honoured only from user settings, or from the local settings of a trusted project (`clinicalcraft trust`) — never from a project file |
 | `locale` | `zh-CN` | `zh-CN` or `en` |
 | `approvalMode`, `practiceScope` | `default`, `full` | see below |
+| `embodiment`, `perception` | `clinical`, world defaults | `embodied` runs encounters in the world model (CLI `--embodied`; the web world's own default is embodied); `perception` tunes `visibilityRange`, `fovDeg`, `nearbyRange`, `maxEntities`, `reachability` |
 | `permissions.allow/ask/deny` | `[]` | rules such as `order_test(*)`, `examine`, `intervene(alteplase*)` (arrays concatenate across layers) |
 | `hooks` | `{}` | see [Hooks](#hooks) |
 | `maxToolRounds`, `autoCompact` | `12`, on at 120 000 tokens | agent loop limits |
-| `contentDirs` | `[]` | extra directories holding `cases/<id>/case.json`, `facilities/`, `catalogs/`; a relative entry resolves against the directory of the settings file that lists it (from `.clinicalcraft/settings.json`, write `"../content"` for `<project>/content`); `clinicalcraft serve` also offers them to the web library |
+| `contentDirs` | `[]` | extra directories holding `cases/<id>/case.json`, `facilities/`, `templates/`, `catalogs/`; a relative entry resolves against the directory of the settings file that lists it (from `.clinicalcraft/settings.json`, write `"../content"` for `<project>/content`); `clinicalcraft serve` also offers them to the web library |
 | `defaultCase`, `defaultFacility` | — | |
 | `transcripts` | `{enabled: true}` | JSONL rollouts in `~/.clinicalcraft/sessions/YYYY/MM/DD/` |
 | `patient.pipeline`, `.strictGrounding`, `.offlineFallback` | `select-voice`, `true`, `true` | `tool` lets the patient model call `reveal_facts` itself |
@@ -419,8 +557,8 @@ values and `config set <key> <value> [--user|--project|--local]` writes one
 Environment: `CLINICALCRAFT_PROVIDER`, `CLINICALCRAFT_MODEL`,
 `CLINICALCRAFT_LOCALE`, `CLINICALCRAFT_APPROVAL`, `CLINICALCRAFT_SCOPE`,
 `CLINICALCRAFT_PROFILE`; `CLINICALCRAFT_HOME` moves `~/.clinicalcraft`
-(settings, sessions, REPL history, local assets); provider keys as in the
-table above; `NO_COLOR` / `FORCE_COLOR`.
+(settings, sessions, REPL history, local assets, trusted projects); provider
+keys as in the table above; `NO_COLOR` / `FORCE_COLOR`.
 
 | approval mode | none/low risk | moderate | high | inspired by |
 |---|---|---|---|---|
@@ -435,7 +573,9 @@ read-only tools (allowed) → high-risk interventions (always ask unless
 `bypass`) → ask rules → "approved for this session" → allow rules → the mode
 table above. Practice scope removes tools outright: `history-only` (talk,
 examine, vitals, decisions), `workup` (+ orders, results, consults,
-waiting), `full` (+ interventions).
+waiting), `full` (+ interventions). In embodied mode the spatial gate and the
+acting body's scope of practice come first, so an act that cannot be done
+there — or by that body — asks nobody.
 
 **Memory, commands and agents.** `CLINICALCRAFT.md` files (user
 `~/.clinicalcraft/`, project root or `.clinicalcraft/`, and every directory
@@ -445,7 +585,8 @@ companion — with `@path` imports. Markdown slash commands live in
 `.clinicalcraft/commands/*.md` (frontmatter `description`, `argument-hint`,
 `agent`; `$ARGUMENTS`, `$1…$9`) and agent profiles in
 `.clinicalcraft/agents/*.md` (see the example `pharmacist.md`); both also
-load from `~/.clinicalcraft/`.
+load from `~/.clinicalcraft/`. Project skills (`.clinicalcraft/skills/*.json`,
+embodied mode) load only from a trusted project.
 
 ## Hooks
 
@@ -486,11 +627,13 @@ patient: [docs/PROTOCOL.md §6.1](docs/PROTOCOL.md). Examples:
 `npm run dev` serves the 3D world from source at http://localhost:5173
 (offline by default; switch to a direct key in Settings → LLM).
 `npm run cc -- serve` hosts the **built** world (`npm run build` first) with
-the content API and the LLM proxy at http://127.0.0.1:5178, so the browser
-can use your server-side keys (`proxy` mode). It binds to loopback; binding
-another host requires an access token of at least 16 characters
+the content API, the LLM proxy and the world bridge at http://127.0.0.1:5178,
+so the browser can use your server-side keys (`proxy` mode) and an external
+agent can join a live encounter (`mcp --attach`). It binds to loopback;
+binding another host requires an access token of at least 16 characters
 (`CLINICALCRAFT_SERVER_TOKEN`, `--token-file` or `--token`; open `/?token=…`
-once in the browser — it sets a cookie and drops the token from the URL).
+once in the browser — it sets a cookie and drops the token from the URL). It
+speaks plain HTTP: put it behind a TLS proxy for anything but loopback.
 Controls: `WASD` move, mouse look, `E` interact, `T` talk, `V` monitor,
 `J` journal, `M` map, `Esc` pause. Details: [packages/web/README.md](packages/web/README.md),
 [packages/server/README.md](packages/server/README.md).
@@ -522,7 +665,9 @@ npm run cc -- import-v4 Virtual_Patient_V4_Part1.zip Virtual_Patient_V4_Part2.zi
 The default destination is `~/.clinicalcraft/assets`; `assets/local/` (in a
 checkout, git-ignored) is searched first. Every front-end serves them at
 `/local-assets/…`; without them the case stays fully playable and the UI
-shows placeholders. See [docs/ASSETS.md](docs/ASSETS.md).
+shows placeholders. Equipment GLB models use the same local-only scheme and
+`npm run cc -- assets inspect <file.glb> [--type <equipment type>]` checks
+one before use. See [docs/ASSETS.md](docs/ASSETS.md).
 
 ## Development
 
@@ -530,15 +675,18 @@ shows placeholders. See [docs/ASSETS.md](docs/ASSETS.md).
 npm run typecheck        # tsc -b for the libraries (also emits dist/) + web tsc --noEmit
 npm test                 # vitest, every package (workspace packages from source)
 npm run cc -- cases validate --all && npm run cc -- cases verify --all
+npm run cc -- facilities validate --all
+npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --agent scripted-llm
 npm run test:e2e         # Playwright, web world (Chromium with SwiftShader WebGL)
-npm run schemas          # regenerate packages/content/schemas/*.schema.json
+npm run schemas          # regenerate packages/content/schemas/*.schema.json (--check: npx tsx scripts/gen-json-schemas.ts --check)
 npm run clean            # remove dist/ and build info
 ```
 
-Contributor conventions (ESM `NodeNext` with `.js` imports, no I/O in core,
+Contributor conventions (ESM `NodeNext` with `.js` imports, no I/O in core or world,
 bilingual strings, grounding rules) are in [AGENTS.md](AGENTS.md) /
 [CLAUDE.md](CLAUDE.md). Further reading: [Architecture & contracts](docs/ARCHITECTURE.md) ·
-[Agent protocol](docs/PROTOCOL.md) · [Design principles & lineage](docs/DESIGN_PRINCIPLES.md) ·
+[Agent protocol](docs/PROTOCOL.md) · [Embodied agents](docs/EMBODIED.md) ·
+[Design principles & lineage](docs/DESIGN_PRINCIPLES.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) · [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md).
 
@@ -550,14 +698,19 @@ pseudonymous patients. The SMZL case is adapted from a published,
 de-identified case report: 丁凤丽, 秦彩霞, 汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例.
 中国临床案例成果数据库, 2026. DOI [10.3760/cma.cmcr20260128-00421](https://doi.org/10.3760/cma.cmcr20260128-00421).
 Agents may state only facts present in the case data. Scores and debriefs
-are formative teaching measures, not validated competency assessments.
+are formative teaching measures, not validated competency assessments. The
+embodied rules (bedside, scope of practice) are teaching simplifications,
+not any jurisdiction's regulations, and no part of the system is
+production-ready ([docs/EMBODIED.md §14](docs/EMBODIED.md#14-status-limitations-and-what-production-needs)).
 
 ## Credits and licences
 
 - **Code:** MIT (see `package.json`). All code is original; designs were
   inspired by Claude Code (Anthropic; documented behaviour only), Codex CLI
   (OpenAI, Apache-2.0), Grok CLI (MIT) and ZCode (Z.ai, Apache-2.0) — no
-  source was copied.
+  source was copied. Embodied-agent designs referenced Mineflayer,
+  mineflayer-pathfinder, Voyager, AI2-THOR and VirtualHome (concepts only;
+  no code or dependency).
 - **Predecessor:** *Virtual Patient V4* (临床方块世界), whose world, look and
   first case are ported here.
 - **Runtime dependencies:** three.js (MIT), Anthropic TypeScript SDK (MIT),

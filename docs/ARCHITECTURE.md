@@ -13,28 +13,42 @@ server, MCP server) that all speak one protocol.
 ```
                         ┌─────────────────────────────────────────────┐
   content (data)        │  @clinicalcraft/content                     │
-  cases / facilities /  │  cases/*/case.json  facilities/*.json       │
-  equipment catalogs    │  catalogs/*.json    (zod-validated)          │
+  cases / facilities /  │  cases/*/case.json   facilities/*.json      │
+  templates / catalogs  │  templates/*.json    catalogs/*.json        │
+  bench scenarios       │  bench/<suite>/*.json     (zod-validated)   │
                         └──────────────┬──────────────────────────────┘
                                        │
                         ┌──────────────▼──────────────────────────────┐
-  simulation            │  @clinicalcraft/core   (isomorphic, pure)    │
-                        │  schemas · reduce() · conditions · matcher   │
-                        │  physiology · assessment · validation        │
+  simulation            │  @clinicalcraft/core   (isomorphic, pure)   │
+                        │  schemas · reduce() · conditions · matcher  │
+                        │  physiology · assessment · validation       │
+                        │  facility helpers · room templates · GLB    │
                         └──────────────┬──────────────────────────────┘
                                        │
                         ┌──────────────▼──────────────────────────────┐
-  agents                │  @clinicalcraft/agent                        │
-                        │  Op ⇄ Event protocol (SQ/EQ) · ClinicalSession│
-                        │  providers · agent loop · tools · approvals   │
-                        │  hooks · slash commands · NPC/clinician agents│
-                        │  settings · memory · transcripts (node/)      │
+  embodied world        │  @clinicalcraft/world  (pure, headless)     │
+                        │  collision · navigation · visibility        │
+                        │  registry · spatial policy · perception     │
+                        │  device behaviours · action bus · traces    │
+                        └──────────────┬──────────────────────────────┘
+                                       │
+                        ┌──────────────▼──────────────────────────────┐
+  agents                │  @clinicalcraft/agent                       │
+                        │  Op/Event protocol (SQ/EQ) · ClinicalSession│
+                        │  providers · agent loop · tools · approvals │
+                        │  hooks · slash commands · NPC/clinician     │
+                        │  spatial gate · world tools · skills        │
+                        │  world bridge client                        │
+                        │  node/: settings · memory · transcripts ·   │
+                        │  content loading                            │
                         └───┬─────────┬──────────┬──────────┬─────────┘
                             │         │          │          │
               ┌─────────────▼─┐ ┌─────▼────┐ ┌───▼─────┐ ┌──▼──────────┐
   front-ends  │ web (Vite +   │ │ cli REPL │ │ server  │ │ mcp (stdio) │
               │ three.js)     │ │ + exec   │ │ HTTP+SSE│ │ JSON-RPC    │
               └───────────────┘ └──────────┘ └─────────┘ └─────────────┘
+  benchmark   @clinicalcraft/bench (Node) drives ClinicalSession like a
+              front-end; `clinicalcraft bench` runs it (docs/EMBODIED.md §13)
 ```
 
 ## 1. Monorepo layout
@@ -43,22 +57,25 @@ server, MCP server) that all speak one protocol.
 package.json                npm workspaces, scripts
 tsconfig.base.json          NodeNext ESM, strict
 vitest.config.ts            one test runner for every package (src aliases)
-docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, front-ends),
-                            CASE_AUTHORING, FACILITIES, ASSETS, DESIGN_PRINCIPLES
-scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA)
+docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, front-ends, embodied mode, world bridge),
+                            EMBODIED (the embodied layer, its benchmark and status; zh-CN/EMBODIED.md is its translation),
+                            CASE_AUTHORING, FACILITIES, ASSETS, DESIGN_PRINCIPLES; bench/ — generated benchmark reports
+                            and reference demonstrations (samples, not tests)
+scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA),
+                            bench/content-scale.ts (content-scale measurement, docs/EMBODIED.md §11)
 packages/core               @clinicalcraft/core     zod schemas + pure engine
 packages/world              @clinicalcraft/world    embodied world model (pure, headless): collision model, navigation,
                                                     visibility, semantic registry; `createWorldRuntime` — versioned
                                                     physical state, device behaviours, spatial policy, perception,
                                                     action bus, traces (docs/EMBODIED.md)
-packages/content            @clinicalcraft/content  built-in cases, facilities, catalogs, benchmark scenarios, JSON Schemas (data only;
+packages/content            @clinicalcraft/content  built-in cases, facilities, room templates, catalogs, benchmark scenarios, JSON Schemas (data only;
                                                     loaded by `loadContent` in @clinicalcraft/agent/node)
 packages/agent              @clinicalcraft/agent    runtime ("." isomorphic, "./node" fs/child_process)
 packages/bench              @clinicalcraft/bench    embodied agent benchmark (Node): scenario schema and suites, reference /
                                                     scripted / live agents, runner, audits, Wilson-interval reports,
                                                     reference demonstration (docs/EMBODIED.md §13)
 packages/cli                @clinicalcraft/cli      `clinicalcraft` binary
-packages/server             @clinicalcraft/server   HTTP server (web host + LLM proxy + content API)
+packages/server             @clinicalcraft/server   HTTP server (web host + LLM proxy + content API + world bridge)
 packages/mcp                @clinicalcraft/mcp      MCP stdio server
 packages/web                @clinicalcraft/web      3D voxel client (Vite, three@0.180.0)
 .clinicalcraft/             example project config: settings.json, commands/, agents/, hooks/
@@ -69,13 +86,13 @@ Conventions:
 
 * TypeScript 5.9, ESM only, `"module": "NodeNext"` → **relative imports end in `.js`**.
 * Node ≥ 22 (global `fetch`, `ReadableStream`, `DecompressionStream`).
-* No `Date.now()`/`Math.random()` inside `@clinicalcraft/core` — determinism. Use the seeded PRNG in `core/src/engine/random.ts`.
-* Every package exports from `src/index.ts`; tests live next to code as `*.test.ts` (vitest).
-* Runtime dependencies are deliberately few: `zod` (core, agent), `@anthropic-ai/sdk` (agent), `three` (web). Everything else is node built-ins.
+* No `Date.now()`/`Math.random()` inside `@clinicalcraft/core` or `@clinicalcraft/world` — determinism (the world takes clocks and id generators as options; no DOM, three.js or `node:*` either). Use the seeded PRNG in `core/src/engine/random.ts`.
+* Every library package exports from `src/index.ts` (the web is an app); tests live next to code as `*.test.ts` (vitest).
+* Runtime dependencies are deliberately few: `zod` (core, agent, bench), `@anthropic-ai/sdk` (agent), `three` (web). Everything else is node built-ins.
 * Workspace packages are consumed from source in tests/dev and from `dist/` when built — see "Source vs dist" below.
 
 **Source vs dist.** Every workspace package but `web` (`core`, `world`, `content`, `agent` incl.
-`./node`, `server`, `mcp`, `cli`) maps each code entry point in its `package.json`
+`./node`, `bench`, `server`, `mcp`, `cli`) maps each code entry point in its `package.json`
 `exports` to three conditions, in this order: `"source"` → `./src/….ts`,
 `"types"` → `./dist/….d.ts`, `"default"` → `./dist/….js`. Who picks what:
 
@@ -163,6 +180,18 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     from `schema/session.ts`, so a malformed step fails `parseCase` with a
     path such as `solution.7.itemId`); unknown ids inside steps are reported
     per step by `checkCaseIntegrity`.
+  * Embodied-world fields (docs/EMBODIED.md §8), all optional:
+    `interventions[].scope` (`"nursing"` | `"medical"`: whose act it is when
+    another body does it — a delegated nurse, a skill step; omitted = by
+    kind), `interventions[].posture` and `patient.posture` (`standing` |
+    `sitting` | `lying`: what a bystander sees; core `patientPosture`),
+    `interventions[].device` (kind `oxygen`: nasal cannula … non-rebreather
+    or nebuliser mask — the accessory on the face; core `oxygenAccessory`),
+    and `interventions[].destination` / `phases[].location` (a
+    `Destination`: exactly one of a case `setting`, a room `roomKind` or a
+    `capability` — where giving the intervention, or entering the phase,
+    takes the patient; resolved per facility, and when the facility has no
+    such place the patient stays where they are).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
   `decidedFirstTry`, `intervened`, `phase`, `flag`, `objective`, `vital`,
@@ -177,7 +206,10 @@ JSON Schema exported to `packages/content/schemas/` for editors).
   skylights), rooms (kind, partitions, signs, lights), placements of
   equipment, patient slots (accepted case settings, bed, monitor), staff,
   signs, build zone; optional `levels`, `connectors`, `access` zones and
-  per-entity `level` (FACILITIES.md "Embodiment fields").
+  per-entity `level` (FACILITIES.md "Embodiment fields"); `instances` of
+  room templates (`schema/facility.ts` `RoomTemplateSchema`,
+  `clinicalcraft/room-template@1`), expanded into the flat facility by
+  `compileFacility` when content is loaded (§3; FACILITIES.md).
 * **Equipment catalog** — `schema/facility.ts` (`clinicalcraft/equipment-catalog@1`):
   materials (procedural pixel textures) and equipment types (voxel parts,
   footprint, capabilities, interaction kind, live screen, light; optional
@@ -283,10 +315,11 @@ mergeCatalogs(catalogs: EquipmentCatalog[]): { materials: Map<string, MaterialDe
 placementCapabilities(f, catalogs, placementId): string[]
 facilityCapabilities(f, catalogs): Set<string>          // every placement's capabilities ∪ PERSONAL_KIT
 caseCapabilityGaps(c, f, catalogs): CapabilityGap[]     // items an objective/decision/solution uses that f cannot provide; `blocking` = an objective or decision has no alternative (FACILITIES.md)
-regionAt(f, x, z, locale): string                       // smallest room containing the point → building name → outdoorRegion
+regionAt(f, x, z, locale, level?): string               // smallest room containing the point (on that level) → building name → outdoorRegion
 assignPatientSlot(f, c): PatientSlot | null             // first slot accepting c.setting
-resolveWaypoint(f, catalogs, target, options?: { from?: { x: number; z: number }; locale?: string; slotId?: string; preferPatientSlot?: boolean }): { x: number; z: number; label: string } | null
-                                                        // "patient" | "board" | "atlas" | capability | room id | room kind | placement id (order in §3.4)
+resolveWaypoint(f, catalogs, target, options?: { from?: { x: number; z: number }; level?: string; locale?: string; slotId?: string; preferPatientSlot?: boolean }): { x: number; z: number; label: string } | null
+                                                        // "patient" | "board" | "atlas" | capability | room id | room kind | placement id (order in §3.4);
+                                                        // a target on another level than `level` counts LEVEL_CHANGE_PENALTY (30 m) farther
 
 // utilities
 createRng(seed: number): () => number                   // V4 LCG: k = k * 1664525 + 1013904223 >>> 0
@@ -307,6 +340,27 @@ checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE 
 facilityLevels(f): Level[]; defaultLevelId(f); roomLevel(f, room); entityLevel(f, {level?, room?}); buildingLevels(f, b)
                                                         // levels with defaults (implicit "L0"; default level = elevation 0, else first; FACILITIES.md)
 ACTOR_ROLES, DEFAULT_REACH, DEFAULT_LEVEL_ID, WorldPredicateSchema, DeviceBehaviorSchema // schema/facility.ts: embodiment vocabulary (EMBODIED §3, §8)
+PERSONAL_KIT, ROOM_KINDS                                // schema/common.ts: capabilities every learner carries (no equipment needed), room kinds
+DestinationSchema, PostureSchema; RoomTemplateSchema     // schema/case.ts (§2: where a step takes the patient, postures); schema/facility.ts (room templates)
+CAPABILITY_LABELS, capabilityLabels(capabilities, locale): string[]   // i18n.ts: capability display names (zh-CN / en) for every front-end
+
+// bystander cues (cues.ts; the web's voxel patient and the embodied runtime's ClinicalView.cues — EMBODIED §8)
+patientCues(c, s): { distressed: boolean; accessory: "oxygen-mask" | "nasal-cannula" | null; posture: Posture }
+                                                        // distressed = a critical alarm on the bedside snapshot, or (no monitor yet) inExtremis; never baselineOnly
+inExtremis(c, s): boolean                               // a monitored vital in its critical band (engine truth, monitor or not)
+patientPosture(c, s): Posture                           // the latest given intervention's authored posture, else patient.posture
+oxygenAccessory(intervention): "oxygen-mask" | "nasal-cannula" | null   // kind oxygen: its `device`, else a mask named in id/name/dose
+
+// room templates (templates.ts; FACILITIES.md)
+parseRoomTemplate(json): ParseResult<RoomTemplate>; checkRoomTemplate(t, catalogs): Issue[]
+compileFacility(f, templates): { ok: boolean; facility: FacilityDefinition; issues: Issue[] }   // expands `instances` into the flat facility
+rotateLocal(x, z, rot): [number, number]; rotateSide(side, rot); offsetSign(side, rot): 1 | -1   // right-angle rotations of template-local geometry
+
+// GLB / glTF equipment models without a renderer (glb.ts; docs/ASSETS.md, `clinicalcraft assets inspect`)
+parseGlb(bytes: Uint8Array): GlbInfo                    // container, counts, bounds, extensions, issues; throws GlbError when unreadable
+checkModelReference(info, ref: EquipmentModel, footprint, opts?: { sha256?, draco?, tolerance?, errorTolerance? }): AssetIssue[]   // scale, licence, attribution, pinned hash, loadable extensions
+fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; encodeGlb(json, bin?): Uint8Array   // fitting; GLB writer (test fixtures)
+GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```
 
 ### 3.1 Reducer semantics
@@ -596,10 +650,10 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
 * **Protocol (Codex SQ/EQ)** — front-ends `submit(Op)` and consume a stream
   of `AgentEvent`s. The runtime never touches a UI. Every front-end (web,
   REPL, exec, server, MCP) is a protocol client.
-* **ClinicalSession** — owns `CaseDefinition` + `SessionState` (via core
-  `reduce`), NPC conversations, the approval gate, hooks, transcript sink.
-  Processes submissions serially. Deterministic `clinical_action` ops work
-  with no LLM at all.
+* **ClinicalSession** (the session — `packages/agent/src/session/`) — owns
+  `CaseDefinition` + `SessionState` (via core `reduce`), NPC conversations,
+  the approval gate, hooks, transcript sink. Processes submissions serially.
+  Deterministic `clinical_action` ops work with no LLM at all.
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
   `patient`, `companion`, `nurse`, `radiologist`, `pathologist`, `attending`
   (preceptor), `examiner`, `clinician` (autopilot). Custom agents in
@@ -645,7 +699,15 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   (perception, navigation, device operations, delegation, skills, camera
   frames for vision models) are added; a device operation's clinical effect
   runs the clinical tool through the caller's own tool path (deny rules
-  included); walking and procedures charge simulated time; the session keeps
+  included); a body may only do what its role may (**scope of practice**,
+  `tools/scope.ts`: a porter nothing clinical, a nurse no intubation —
+  `NOT_AUTHORIZED` before anyone is asked); every learner-facing vitals
+  channel goes through `vitalsView()` and shows the bedside only where the
+  learner's body can see it; `transport_patient` (and a porter's or nurse's
+  delegated transport) takes the patient to a device and back, and an
+  intervention's `destination` or a phase's `location` relocates them;
+  walking, transport and physical operations charge simulated time (a
+  clinical effect charges only the engine's own costs); the session keeps
   an `EpisodeTrace` and `world` transcript snapshots. Clinical mode is
   unchanged. The web's 3D world runs embodied by default (chosen per
   encounter; the browser supplies the `Mover`, the camera and the avatar's
@@ -748,20 +810,40 @@ spoken by the patient — those come from engine actions.
   disables NIBP and offers "Attach the monitor" (the case's monitoring
   intervention named in `attachedWhen`, through the approval gate). The
   voxel patient still looks distressed when a monitored vital is critical
-  (engine truth — the patient looks ill without a monitor).
+  (engine truth — the patient looks ill without a monitor). In embodied mode
+  (the default) the panels ask the world instead of deciding by rules of
+  their own: the monitor panel and the HUD vitals strip show the live screen
+  only while the world's vitals check holds through that monitor, rows show
+  the world's verdict before a click ("Go there" / the act to do first), and
+  lab tests are ordered from the patient's Tests tab (EMBODIED §2.1).
 * **cli** — `clinicalcraft` REPL (plain text → current interlocutor,
-  `@nurse …` addressing, `/commands`), `exec`/`-p` headless with
-  `--output-format text|json|stream-json`, `--autopilot`, case tooling,
-  `serve`, `mcp`, `import-v4`, `eval`.
+  `@nurse …` addressing, `/commands`; `--embodied` adds `/look`, `/go`,
+  `/use`, `/transport`…), `exec`/`-p` headless with
+  `--output-format text|json|stream-json`, `--autopilot`, `--trace`, case
+  and facility tooling (`cases …`, `facilities list|validate|compile`),
+  `assets inspect`, `trust`, `serve`, `mcp`, `import-v4`, `eval`, `bench`.
 * **server** — `node:http`: static web, `GET /api/health`, `/api/content/*`
   (a paginated, filterable case index; cases validated on first request;
   strong ETags),
   `/api/providers`, `POST /api/llm/stream` (provider-neutral SSE proxy; keys
   stay server-side), `POST /api/transcripts/:id`, local-only assets at
-  `/local-assets/*`; bound to 127.0.0.1 by default (any other host needs a
+  `/local-assets/*`, the world bridge (`/api/world/sessions…`: a learner's
+  live browser session that an attached MCP client may act in — PROTOCOL
+  §13); plain HTTP, bound to 127.0.0.1 by default (any other host needs a
   token). Routes: PROTOCOL §11.
-* **mcp** — stdio JSON-RPC 2.0 MCP server exposing clinical tools so Claude
-  Code / Codex / Grok CLI can play the clinician (approval mode `auto`;
-  high-risk actions need a second call with `confirm: true` that repeats the
-  refused one; session warnings such as an offline fallback come back with
-  each result).
+* **mcp** — stdio JSON-RPC 2.0 MCP server exposing 34 tools (case listing
+  and start, the clinical tools, the world tools of an embodied session,
+  the debrief) so Claude Code / Codex / Grok CLI can play the clinician
+  (approval mode `auto`; high-risk actions need a second call with
+  `confirm: true` that repeats the refused one; session warnings such as an
+  offline fallback come back with each result; `--embodied` makes
+  `start_case` embodied by default). `mcp --attach` serves the same clinical
+  and world tools against a learner's live browser session instead, paired
+  by the session id and attach key the learner hands over; approvals stay
+  with the learner (PROTOCOL §13.7).
+* **bench** — not a front-end for people: `@clinicalcraft/bench` drives
+  embodied sessions with a reference, a scripted or a live agent over the
+  41 scenarios of `embodied-v1`, checks outcomes against authoritative
+  state and re-checks the clinical acts the engine accepted against the
+  spatial policy and the permission ladder (spatial and authorisation
+  audits; `clinicalcraft bench`, EMBODIED §13).

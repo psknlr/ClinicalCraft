@@ -18,7 +18,7 @@ const server = await startServer({ port: 0, settings });   // → { url, port, h
 
 | route | |
 |---|---|
-| `GET /api/health` | `{status, name, version, provider, locale, auth, connectOrigins}` — `connectOrigins`: the origins the page's CSP lets it call directly (direct mode); a custom base URL must be one of them (configure it in the server's settings) or go through the proxy |
+| `GET /api/health` | `{status, name, version, provider, locale, auth, connectOrigins, worldBridge}` — `connectOrigins`: the origins the page's CSP lets it call directly (direct mode); a custom base URL must be one of them (configure it in the server's settings) or go through the proxy; `worldBridge: true`: the world-bridge routes exist (the web offers external control only then) |
 | `GET /api/content/index` | case, facility and catalog summaries (spoiler-free) |
 | `GET /api/content/cases?offset=&limit=&q=&specialty=&setting=&locale=` | the case index, paginated (`limit` ≤ 200) and filtered, in library order: `{total, offset, limit, items, issues, issueCount}` |
 | `GET /api/content/cases/:id` | one case, reference `solution` stripped; validated on its first request (422 `invalid_case` when it is not) |
@@ -37,12 +37,17 @@ responses carry strong ETags (`If-None-Match` → 304). Duplicate case ids are
 resolved deterministically (a later content directory overrides; within one
 directory the first folder wins) and reported in the listing's `issues`.
 
-Security: binds `127.0.0.1` by default; any non-loopback host requires a
-token (`Authorization: Bearer …`, or open `/?token=…` once to get an
+Security: plain HTTP (no TLS — put a TLS-terminating proxy in front for
+anything but loopback); binds `127.0.0.1` by default; any non-loopback host
+requires a token (`Authorization: Bearer …`, or open `/?token=…` once to get an
 `HttpOnly` cookie — the page then redirects to the same URL without the
 token, so it does not stay in the address bar or history). `clinicalcraft
 serve` reads the token from `CLINICALCRAFT_SERVER_TOKEN`, `--token-file`,
 `server.token` or `--token` and requires at least 16 characters. Failing
 requests are logged by path only, never with their query string. Cross-origin requests are refused except from the Vite
 dev server on `localhost:5173–5199`. Error messages follow `Accept-Language`
-(zh-CN / en). Contract: [docs/PROTOCOL.md §11](../../docs/PROTOCOL.md).
+(zh-CN / en). Contract: [docs/PROTOCOL.md §11, §13](../../docs/PROTOCOL.md).
+The world bridge's registry lives in memory (16 live sessions, 4 per client;
+a restart drops them until each browser re-registers); nothing here has been
+security-audited or load-tested (docs/EMBODIED.md §14). Tests:
+`npx vitest run packages/server`.

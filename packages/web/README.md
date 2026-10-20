@@ -33,7 +33,14 @@ and announces, or the world's reason with "Go there" / the act to do first);
 lab tests are ordered at the patient's side from the patient's **Tests** tab
 (the sample is taken there); the autopilot's live trace, the delegation
 outcome and the HUD dock speak the learner's language (`ui/panels/trace-labels.ts`),
-colleagues are named (`app/staff.ts`).
+colleagues are named (`app/staff.ts`). Bodies the world moves are animated
+(`app/embodied.ts`: `BrowserMover` follows the world's route; a transported
+patient lies on the bed the walker pushes); real-time ticks pause while an
+agent drives a body. Known behaviour, not changed in this release: a team
+relocation (a transfer, a phase with a location) is not animated — the
+patient is drawn where they arrive, with a toast naming the place; the
+simulated clock keeps advancing while the tab is hidden; on a phone, toasts
+at the top can briefly cover HUD buttons (docs/EMBODIED.md §14.3).
 
 **External agent** (served by `clinicalcraft serve` only): in a running
 encounter, `Esc` → “Allow an external agent to control this session” lets
@@ -69,7 +76,9 @@ every full case is its own lazy chunk, loaded (and validated) when the case
 is selected or started. Facilities, room templates and equipment catalogs are
 bundled; facilities that place room templates are compiled when loaded.
 
-E2E tests start Vite on port 5197 (`CC_E2E_PORT`; `external-agent.spec.ts`
+The e2e suite (45 tests in 16 spec files, `e2e/`) runs Chromium with
+SwiftShader only — no other browser or real GPU is tested. E2E tests start
+Vite on port 5197 (`CC_E2E_PORT`; `external-agent.spec.ts`
 also builds the web into a temporary directory and runs `clinicalcraft serve`
 and `clinicalcraft mcp --attach` from source) and use the Chromium at
 `CLINICALCRAFT_E2E_CHROMIUM` (or `PW_CHROMIUM`), else `/opt/pw-browsers/chromium`

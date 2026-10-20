@@ -13,7 +13,7 @@ facilities/<id>.json        clinic-v4, general-hospital, teaching-hospital
 templates/<id>.json         room templates (clinicalcraft/room-template@1), expanded into facilities at load time
 catalogs/<id>.json          materials, core-furniture, core-clinical, core-diagnostics
 schemas/*.schema.json       case, facility, room-template, equipment-catalog, settings, skill, bench-scenario (generated: npm run schemas)
-bench/<suite>/<id>.json     embodied benchmark scenarios (clinicalcraft/bench-scenario@1; suite embodied-v1: 40), run by `clinicalcraft bench`
+bench/<suite>/<id>.json     embodied benchmark scenarios (clinicalcraft/bench-scenario@1; suite embodied-v1: 41), run by `clinicalcraft bench`
 ```
 
 | | count |
@@ -23,7 +23,7 @@ bench/<suite>/<id>.json     embodied benchmark scenarios (clinicalcraft/bench-sc
 | room templates | 15 — ED resus bay, ED cubicle, outpatient consult, orthopaedic examination, operating theatre, CT, X-ray, clinical laboratory, 4-bed ward bay, ICU bed space, rehabilitation gym, pharmacy, nursing station, teaching room, elevator car |
 | equipment types | 95 — 39 furniture/scenery, 30 clinical, 26 diagnostic |
 | materials | procedural pixel textures in `materials.json` (V4 palette + clinical additions) and a few catalog-specific ones |
-| benchmark scenarios | 40 in `bench/embodied-v1` — 8 categories, 14 in zh-CN, 26 in en ([docs/EMBODIED.md §13](../../docs/EMBODIED.md#13-benchmark)) |
+| benchmark scenarios | 41 in `bench/embodied-v1` — 8 categories, 15 in zh-CN, 26 in en ([docs/EMBODIED.md §13](../../docs/EMBODIED.md#13-benchmark)) |
 
 Authoring guides: [docs/CASE_AUTHORING.md](../../docs/CASE_AUTHORING.md) and
 [docs/FACILITIES.md](../../docs/FACILITIES.md). Every case must pass both

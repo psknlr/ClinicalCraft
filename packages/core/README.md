@@ -26,15 +26,19 @@ console.log(vitalsAt(c, s).vitals, assess(c, s).score);
 | module (`src/`) | contents |
 |---|---|
 | `schema/case.ts`, `schema/common.ts` | `CaseSchema` (`clinicalcraft/case@1`), `LocalizedText`, the condition DSL, vitals |
-| `schema/facility.ts` | `FacilitySchema`, `EquipmentCatalogSchema` |
+| `schema/facility.ts` | `FacilitySchema`, `EquipmentCatalogSchema`, room templates, the embodiment vocabulary (`ACTOR_ROLES`, `DEFAULT_REACH`, `WorldPredicateSchema`, `DeviceBehaviorSchema`) |
 | `schema/session.ts` | `ClinicalAction`, `SessionState`, `DomainEvent`, `ReduceResult` |
 | `engine/parse.ts`, `integrity.ts`, `verify.ts` | `parseCase/Facility/Catalog`, `checkCaseIntegrity`, `verifyCase` (replays `solution`) |
 | `engine/reducer.ts`, `timeline.ts`, `conditions.ts`, `queries.ts` | `createSession`, `reduce`, `replay`, `evaluate`, `progress`, `orderStatus`… |
 | `engine/physiology.ts`, `arrest.ts` | `vitalsAt` (baseline + trends + intervention effects + noise, alarms, arrest rhythms) |
 | `engine/matcher.ts`, `text.ts` | `matchOrders`, `matchHistory`, `matchExam`, `matchInterventions` (offline NLU, zh-CN + en) |
 | `engine/assessment.ts` | `assess` → deterministic `AssessmentReport` (a teaching-script measure, not a validated score) |
-| `engine/facility.ts` | `checkFacility`, `resolveWaypoint`, `regionAt`, `assignPatientSlot`, `facilityCapabilities` |
-| `i18n.ts` | `LocalizedText` helpers: `t`, `tList`, `normalizeLocale`, `SUPPORTED_LOCALES` (`zh-CN`, `en`) |
+| `engine/facility.ts` | `checkFacility`, `checkCatalogs`, `resolveWaypoint`, `regionAt`, `assignPatientSlot`, `facilityCapabilities`, `caseCapabilityGaps`, levels (`facilityLevels`, `entityLevel`…) |
+| `engine/monitor.ts`, `twins.ts` | the bedside monitor (`monitorAttached`, `ecgAttached`, spot checks); history phase twins (`historyTwin`, `historyCredited`…) |
+| `engine/cues.ts` | what a bystander sees: `patientCues`, `patientPosture`, `oxygenAccessory`, `inExtremis` (used by the embodied world, docs/EMBODIED.md §8.4) |
+| `engine/templates.ts` | room templates: `parseRoomTemplate`, `compileFacility`, `checkRoomTemplate` (docs/FACILITIES.md) |
+| `engine/glb.ts` | GLB/glTF equipment models without a renderer: `parseGlb`, `checkModelReference`, `fitModel`, `encodeGlb` (test fixtures) — behind `clinicalcraft assets inspect` (docs/ASSETS.md) |
+| `i18n.ts` | `LocalizedText` helpers: `t`, `tList`, `normalizeLocale`, `SUPPORTED_LOCALES` (`zh-CN`, `en`); `CAPABILITY_LABELS` / `capabilityLabels` (capability display names for every package) |
 
 JSON Schemas for editors (`packages/content/schemas/*.schema.json`) are
 generated from these schemas with `npm run schemas`.

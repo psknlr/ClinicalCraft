@@ -50,12 +50,21 @@ What is inside (contracts in [docs/PROTOCOL.md](../../docs/PROTOCOL.md)):
   and agent profiles, `CLINICALCRAFT.md` with `@imports`, JSONL rollouts and
   resume.
 - **Embodied mode** (`embodiment: "embodied"`; `src/session/embodied.ts`,
-  `src/tools/spatial.ts`, `src/tools/world.ts`, `src/skills/`; PROTOCOL
-  §12): the session runs a headless `@clinicalcraft/world` runtime for the
-  case's facility — clinical tools are spatially gated (refusals carry
-  `hint.goal`), world tools look, walk, operate equipment, delegate to staff
-  and run skills, walking charges simulated time, and `session.world()` /
+  `src/tools/spatial.ts`, `src/tools/world.ts`, `src/tools/scope.ts`,
+  `src/skills/`; PROTOCOL §12, docs/EMBODIED.md): the session runs a
+  headless `@clinicalcraft/world` runtime for the case's facility —
+  clinical tools are spatially gated before the approval gate and again
+  before the engine commits (refusals carry `hint.goal` and `hint.then`),
+  18 world tools look, walk, operate equipment, transport the patient,
+  delegate to staff and run skills, every body is held to its role's scope
+  of practice, every learner-facing vitals channel follows one check
+  (`vitalsView()`), walking charges simulated time, and `session.world()` /
   `session.trace()` expose the world and the episode trace.
+- **World bridge client** (`src/bridge/`; PROTOCOL §13):
+  `connectWorldBridge` lets a live session (the web world) accept an
+  external agent's tool calls through `clinicalcraft serve`, as clinician
+  turns whose approvals stay with the learner; `WorldAttachClient` is the
+  other end, used by `clinicalcraft mcp --attach`.
 
 ```ts
 const s = await createNodeSession({ caseId: "stemi-inferior-rv", flags: { provider: "offline", embodiment: "embodied" }, transcript: false });
@@ -65,4 +74,6 @@ console.log(s.placeLabel(), s.trace().spans.length);
 ```
 
 Every feature works with `provider: "offline"`, which is also what the tests
-use (`npx vitest run packages/agent`).
+use (`npx vitest run packages/agent`). The session lives in `src/session/`:
+the `ClinicalSession` class with its op dispatch, the learner's tool path,
+approvals, transcripts and resume, external calls and the embodied wiring.

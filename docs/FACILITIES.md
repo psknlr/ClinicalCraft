@@ -57,8 +57,14 @@ capabilities via `placement.capabilities`).
 | `storage`/`sink`/`none` | flavour text only |
 
 Interventions at the bedside require their capabilities within the patient's
-room (or within 6 m of the slot). The CLI and MCP have no spatial rules:
-capability checks there use the whole facility — the agent tools
+room (or within 6 m of the slot). In **embodied mode** (the web's default;
+`--embodied` in the CLI, `start_case {embodied}` in MCP) the world decides
+this for every front-end — one bedside rule (`WorldRuntime.atBedside` /
+`bedsideProviders`: in the slot's room, or within 6 m of the slot and
+visible from it, never through a wall) and the spatial gate of the session
+(docs/EMBODIED.md §6). In **clinical mode** the web checks where the learner
+stands itself, and the CLI and MCP have no spatial rules: capability checks
+there use the whole facility. In both modes the agent tools
 (`examine`, `order_test`, `intervene`; learner commands, model tool calls
 and MCP alike) refuse, before any approval prompt, an item whose `requires`
 are missing from `facilityCapabilities` ("Not available here: … needs …").

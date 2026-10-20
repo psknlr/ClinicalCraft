@@ -114,10 +114,13 @@ const seen = world.observe(PRIMARY_ACTOR); // bounded, localised, never case fac
 
 `npx vitest run packages/world` — collision parity with the renderer
 (counts, kinds and a digest of every box for `clinic-v4` and
-`general-hospital`), wall/door/level semantics, registry ids and
-descriptors, occlusion (walls, windows, doors, field of view, partial
-occlusion, displaced carts), navigation on real routes, failures and the
-synthetic two-level facility (`src/__fixtures__/two-level.ts`), purity.
+`general-hospital`; `multilevel.test.ts`: the teaching hospital's slabs,
+flights, rails, physics on its real stairs and navigation across its
+levels), wall/door/level semantics, registry ids and descriptors
+(`registry.test.ts`), occlusion (walls, windows, doors, field of view,
+partial occlusion, displaced carts), navigation on real routes, failures and
+the synthetic two-level facility (`src/__fixtures__/two-level.ts`), V4
+geometry, physics and the web autopilot's path-finding, purity.
 
 The dynamic layer is tested over the real built-in content with a fake
 session on the real engine (`src/__fixtures__/world.ts`: `makeWorld`,
@@ -140,5 +143,10 @@ last-seen beliefs, region names), `reach.test.ts` (reachability across
 levels), `travel.test.ts` (interrupted multi-level walks), `nav/goals.test.ts`
 (goal cost bounds), `actions.test.ts` (idempotency, stale versions,
 reservations, cancellation, queueing, availability, authority, travel time,
-scenario controls), `runtime.test.ts` (resume, determinism, traces),
-`trace.test.ts`.
+scenario controls), `clinical-port.test.ts` (the action id reaches the session, C4; a refusal keeps its code and hint, C13),
+`runtime.test.ts` (resume, determinism, traces), `trace.test.ts`.
+
+Status (docs/EMBODIED.md §14): implemented and tested, validated on the
+built-in content through the agent session, the CLI, MCP, the benchmark and
+the web e2e suite; not production-ready. Measurements: EMBODIED §4 and §7
+(`nav/backend.test.ts` "measurements" prints one round).

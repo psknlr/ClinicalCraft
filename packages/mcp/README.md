@@ -16,9 +16,9 @@ claude mcp add clinicalcraft -- node "$PWD/packages/cli/dist/bin.js" mcp --cwd "
 | | |
 |---|---|
 | methods | `initialize` (protocol versions `2025-06-18`, `2025-03-26`, `2024-11-05`), `ping`, `tools/list`, `tools/call`, `resources/list`, `resources/templates/list`, `resources/read`, `notifications/cancelled` |
-| tools (33) | `list_cases {locale?}`, `start_case {case_id, locale?, facility_id?, embodied?}` → `session_id`; then, each with a required `session_id`: `ask_patient`, `list_options`, `examine`, `order_test`, `read_result`, `check_vitals`, `intervene`, `consult`, `answer_decision`, `set_phase`, `wait`, `update_workup`, `case_status`, `finish_case`, `get_debrief`; embodied sessions only: `observe_world`, `get_agent_state`, `find_entities`, `find_objects`, `inspect_object`, `get_nearby_objects`, `get_visible_objects`, `get_room_info`, `get_action_feedback`, `navigate_to`, `approach_object`, `look_at`, `interact_object`, `cancel_action`, `delegate_task`, `execute_skill` |
+| tools (34) | `list_cases {locale?}`, `start_case {case_id, locale?, facility_id?, embodied?}` → `session_id`; then, each with a required `session_id`: `ask_patient`, `list_options`, `examine`, `order_test`, `read_result`, `check_vitals`, `intervene`, `consult`, `answer_decision`, `set_phase`, `wait`, `update_workup`, `case_status`, `finish_case`, `get_debrief`; embodied sessions only (17 world tools): `observe_world`, `get_agent_state`, `find_entities`, `find_objects`, `inspect_object`, `get_nearby_objects`, `get_visible_objects`, `get_room_info`, `get_action_feedback`, `navigate_to`, `approach_object`, `look_at`, `interact_object`, `transport_patient`, `cancel_action`, `delegate_task`, `execute_skill` |
 | resources | `clinicalcraft://cases`, `clinicalcraft://session/{session_id}/state`, `clinicalcraft://session/{session_id}/transcript` |
-| annotations | every tool: `title`, `readOnlyHint` (`list_cases`, `list_options`, `check_vitals`, `case_status`, `get_debrief` and the nine perception tools), `destructiveHint` (`intervene`, `order_test`, `interact_object`, `delegate_task`, `execute_skill`), `idempotentHint` (the read-only tools, `set_phase`, `update_workup`, `finish_case`, `cancel_action`), `openWorldHint: false` (a closed simulation) |
+| annotations | every tool: `title`, `readOnlyHint` (`list_cases`, `list_options`, `check_vitals`, `case_status`, `get_debrief` and the nine perception tools), `destructiveHint` (`intervene`, `order_test`, `interact_object`, `delegate_task`, `execute_skill`), `idempotentHint` (the read-only tools, `set_phase`, `update_workup`, `finish_case`, `transport_patient`, `cancel_action`), `openWorldHint: false` (a closed simulation) |
 
 Tool failures (unknown ids, engine rejections, approval refusals) come back as
 results with `isError: true` and a localised explanation, so the calling
@@ -47,8 +47,10 @@ gate then runs always-ask actions without asking; use it only for unattended
 benchmarks.
 
 **Embodied mode.** `start_case {"embodied": true}` (default: the settings'
-`embodiment`) gives the client a body in the case's hospital — a headless
-world per MCP session. Clinical tools then need the right place: a call out
+`embodiment`; `clinicalcraft mcp --embodied` makes it the default) gives the
+client a body in the case's hospital — a headless world per MCP session; a
+facility with no place for the case is refused before a session opens
+(`structuredContent.error = "embodiment_no_slot"`). Clinical tools then need the right place: a call out
 of reach returns `isError` with `structuredContent.data.code =
 "SPATIAL_REQUIREMENT_UNMET"` and `data.hint.goal`, which `navigate_to
 {"goal": …}` follows. `interact_object` operates equipment; an operation
@@ -70,7 +72,9 @@ clinical and world tools with an optional `session_id`, no `start_case` and
 no `confirm` — approvals go to the learner in the browser and a denial comes
 back as `status: "denied"`. What the live session returns is marked as data,
 not instructions (`structuredContent.untrusted: true`).
-`notifications/cancelled` cancels a call in the browser too.
+`notifications/cancelled` cancels a call in the browser too. Without
+`--world-session` (or its variable) or the attach key the command exits with
+a usage error (exit code 2).
 
 Contract: [docs/PROTOCOL.md §11–§13](../../docs/PROTOCOL.md). Tests:
 `npx vitest run packages/mcp`.
