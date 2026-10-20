@@ -325,6 +325,10 @@ There are also three examiner-judged communication items:
 * EASL–EASD–EASO Clinical Practice Guidelines on the management of MASLD. *Journal of Hepatology* 2024.
 * WHO clinical treatment guideline for tobacco cessation in adults. Geneva: WHO, 2024.
 
+## Embodied grounding (world policy)
+
+In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): `iv-home-bp` (home blood-pressure monitoring) changed kind from `monitoring` to `other`: it is advice for home, not a bedside monitor (the kind default monitoring → `cardiac-monitor` would have demanded one in the consult room). There is no IV-access procedure in this outpatient case, so its blood tests (HbA1c, glucose, lipids…) are sampled and ordered at the patient's side; their results can be read at a records terminal, at the patient or at the laboratory workstation.
+
 ## Validation
 
 ```bash

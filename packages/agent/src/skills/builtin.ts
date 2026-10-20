@@ -115,7 +115,8 @@ const RAW: readonly unknown[] = [
       { id: "reset", tool: "interact_object", args: { target: ECG, operation: "reset" }, onError: "continue" },
     ],
     postconditions: [{ clinical: { ordered: "${investigation}" } }],
-    recovery: [REPLAN, ALTERNATE],
+    // a cart at the bedside but out of reach of the patient's side is wheeled over (its refusal hints the fetch)
+    recovery: [REPLAN, FETCH, ALTERNATE],
   },
   {
     schema: S,
@@ -135,7 +136,7 @@ const RAW: readonly unknown[] = [
     schema: S,
     id: "obtain_result",
     name: { "zh-CN": "查看检查结果", en: "Obtain a result" },
-    description: { "zh-CN": "走到能查看该结果的地方（工作站、床旁设备）并阅读结果。", en: "Go where the result can be read (a workstation, a bedside device) and read it." },
+    description: { "zh-CN": "走到能查看该结果的地方（电子病历终端、患者身旁或相应工作站——不是床旁设备）并阅读结果。", en: "Go where the result can be read (a records terminal, the patient's side or a workstation for it — never the bedside device) and read it." },
     params: { investigation: { type: "investigation" }, phase: { type: "string", required: false } },
     safety: "clinical",
     steps: [{ id: "read", tool: "read_result", args: { investigation_id: "${investigation}", phase: "${phase}" } }],

@@ -172,6 +172,9 @@ export interface BenchSessionOptions {
   newId?: () => string;
 }
 
+/** Hints a setup action follows before it counts as failed (a walk to the spot, a fetch). */
+const SETUP_HINT_TRIES = 3;
+
 /** Thrown when a scenario cannot be set up (an unknown entity, a setup action that failed). */
 export class ScenarioSetupError extends Error {
   constructor(message: string) {
@@ -250,8 +253,21 @@ export async function applySetup(session: ClinicalSession, scenario: BenchScenar
   let n = 0;
   for (const a of setup.actions ?? []) {
     const targetId = a.target ? (world.resolveId(a.target) ?? a.target) : undefined;
-    const r = await world.execute({ actionId: `setup-${++n}`, actorId: a.actor, operation: a.operation, ...(targetId ? { targetId } : {}), ...(a.goal ? { goal: a.goal } : {}), ...(a.parameters ? { parameters: a.parameters } : {}) });
-    if (r.status !== "completed") fail(`action ${n} (${a.actor} ${a.operation})`, `${r.errorCode ?? r.status}: ${r.message}`);
+    const index = ++n;
+    const act = () => world.execute({ actionId: `setup-${index}-${++n}`, actorId: a.actor, operation: a.operation, ...(targetId ? { targetId } : {}), ...(a.goal ? { goal: a.goal } : {}), ...(a.parameters ? { parameters: a.parameters } : {}) });
+    let r = await act();
+    // staff do it the way the world says: walk where the refusal hints (and fetch the cart when told), then again
+    for (let tries = 0; r.status === "failed" && r.hint && tries < SETUP_HINT_TRIES; tries++) {
+      const hint = r.hint;
+      const walk = await world.execute({ actionId: `setup-${index}-${++n}`, actorId: a.actor, operation: "navigate", goal: hint.goal });
+      if (walk.status !== "completed") break;
+      if (hint.then) {
+        const then = await world.execute({ actionId: `setup-${index}-${++n}`, actorId: a.actor, operation: hint.then.operation, targetId: hint.then.targetId, ...(hint.then.goal ? { goal: hint.then.goal } : {}) });
+        if (then.status !== "completed") break;
+      }
+      r = await act();
+    }
+    if (r.status !== "completed") fail(`action ${index} (${a.actor} ${a.operation})`, `${r.errorCode ?? r.status}: ${r.message}`);
   }
   try {
     for (const o of setup.obstacles ?? []) world.setObstacle({ id: o.id, level: o.level ?? "L0", rect: o.rect, label: o.label ?? { "zh-CN": "障碍物", en: "Obstacle" } }, true);

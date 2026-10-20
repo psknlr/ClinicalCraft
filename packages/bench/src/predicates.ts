@@ -6,8 +6,8 @@
  * `submit_answer`, the recorded refusals and the audits. Never the agent's
  * text.
  */
-import { assignPatientSlot, evaluate, type CaseDefinition, type FacilityDefinition, type SessionState } from "@clinicalcraft/core";
-import { BEDSIDE_RADIUS, PRIMARY_ACTOR, type SemanticEntity, type WorldRuntime, type WorldStateSnapshot } from "@clinicalcraft/world";
+import { evaluate, type CaseDefinition, type FacilityDefinition, type SessionState } from "@clinicalcraft/core";
+import { PRIMARY_ACTOR, type SemanticEntity, type WorldRuntime, type WorldStateSnapshot } from "@clinicalcraft/world";
 import type { AuditResult } from "./audit.js";
 import type { RecordedCall, RecordedRefusal } from "./recorder.js";
 import type { BenchPredicate, BenchWorldPredicate } from "./schema.js";
@@ -58,28 +58,23 @@ export function footprintDistance(p: { x: number; z: number }, c: { x: number; z
 }
 
 /** Where an entity is now: a moved cart / dropped item (snapshot), its carrier, an actor, else the registry. */
-function placeOf(view: FinalView, id: string): { x: number; z: number; level: string; room: string | null; moved: boolean; entity: SemanticEntity | null } | null {
+function placeOf(view: FinalView, id: string): { x: number; z: number; level: string; room: string | null; entity: SemanticEntity | null } | null {
   const actor = view.world.actor(id);
-  if (actor) return { x: actor.pose.x, z: actor.pose.z, level: actor.pose.level, room: actor.room, moved: true, entity: view.world.entity(id) };
+  if (actor) return { x: actor.pose.x, z: actor.pose.z, level: actor.pose.level, room: actor.room, entity: view.world.entity(id) };
   const e = view.world.entity(id);
   if (!e) return null;
   const rt = view.snapshot.entities[id];
   if (rt?.heldBy) {
     const holder = view.world.actor(rt.heldBy);
-    return holder ? { x: holder.pose.x, z: holder.pose.z, level: holder.pose.level, room: holder.room, moved: true, entity: e } : null;
+    return holder ? { x: holder.pose.x, z: holder.pose.z, level: holder.pose.level, room: holder.room, entity: e } : null;
   }
-  if (rt?.position) return { x: rt.position.x, z: rt.position.z, level: rt.position.level, room: null, moved: true, entity: e };
-  return { x: e.position.x, z: e.position.z, level: e.level, room: e.room, moved: false, entity: e };
+  if (rt?.position) return { x: rt.position.x, z: rt.position.z, level: rt.position.level, room: null, entity: e };
+  return { x: e.position.x, z: e.position.z, level: e.level, room: e.room, entity: e };
 }
 
-/** The bedside rule (within `BEDSIDE_RADIUS` of the patient slot, or in its room for an entity that has not been moved). */
+/** THE bedside rule — the world's (`WorldRuntime.atBedside`, EMBODIED §6), the one the policy and the devices use. */
 export function atBedside(view: FinalView, id: string): boolean {
-  const slot = view.facility ? assignPatientSlot(view.facility, view.caseDef) : null;
-  const p = placeOf(view, id);
-  if (!slot || !p) return false;
-  const patient = view.world.entity(`patient:${slot.id}`);
-  if (!patient || p.level !== patient.level) return false;
-  return Math.hypot(p.x - slot.x, p.z - slot.z) <= BEDSIDE_RADIUS || (!p.moved && p.room !== null && p.room === slot.room);
+  return view.world.atBedside(id);
 }
 
 /** An entity's behaviour state: as the clinician perceives it (derived states from the engine), else as stored. */
@@ -124,8 +119,8 @@ function worldPredicate(view: FinalView, w: BenchWorldPredicate): { ok: boolean;
         return { ok: atBedside(view, target), detail: `${target} ${atBedside(view, target) ? "at" : "not at"} the bedside` };
       }
       const cap = w.capability!;
-      const found = view.world.entities().filter((e) => e.kind === "equipment" && e.capabilities.includes(cap) && view.snapshot.entities[e.id]?.available !== false && atBedside(view, e.id));
-      return { ok: found.length > 0, detail: found.length ? `${found.map((e) => e.id).join(", ")} at the bedside` : `no in-service ${cap} provider at the bedside` };
+      const found = view.world.bedsideProviders(cap);
+      return { ok: found.length > 0, detail: found.length ? `${found.join(", ")} at the bedside` : `no in-service ${cap} provider at the bedside` };
     }
     case "handsClean": {
       const until = actor?.handsCleanUntil ?? null;

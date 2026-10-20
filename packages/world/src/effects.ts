@@ -247,8 +247,8 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
   host.invalidate({ level: cart.level, ...grow(cart.area, 0.5) });
   host.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
   mover.placeEntity?.(id, { ...spot, rot: cart.rot });
-  const place = locator.place(id)!.room;
-  const placeName = place ? locator.name(`room:${place}`) : `(${spot.x.toFixed(1)}, ${spot.z.toFixed(1)})`;
+  // where it now stands: its room, else the building's corridor or the facility's outdoor region (lead note 2)
+  const placeName = locator.regionName({ level: spot.level, x: spot.x, z: spot.z });
   if (walk.interrupted) return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base };
   return { status: "completed", message: worldMessage("ok.moved", L, { target, place: placeName, distance: metres(walk.walked) }), events, ...base };
 }

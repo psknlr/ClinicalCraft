@@ -8,7 +8,8 @@
 import { describe, expect, it } from "vitest";
 import { createSession as createEngineState, monitorAttached } from "@clinicalcraft/core";
 import type { WorldRuntime } from "@clinicalcraft/world";
-import { answerAll, command, makeEmbodiedSession } from "../__fixtures__/embodied.js";
+import { answerAll, builtinContent, command, makeEmbodiedSession } from "../__fixtures__/embodied.js";
+import { catalogsFor } from "../node/bootstrap.js";
 import { loadMiniCase } from "../__fixtures__/mini-case.js";
 import { BUILTIN_SKILL_IDS, BUILTIN_SKILLS } from "./builtin.js";
 import { runSkill, skillResultText, substitute, type SkillRunner, type SkillToolCall } from "./interpreter.js";
@@ -197,6 +198,20 @@ describe("built-in skills on a headless STEMI encounter", () => {
     expect(plan).toMatchObject({ ok: true });
     expect(spans.some((s) => s.parentId === plan.id && s.kind === "verification" && s.ok)).toBe(true);
     expect(spans.some((s) => s.parentId === plan.id && s.kind === "interaction" && s.name === "record")).toBe(true);
+    await t.session.close();
+  });
+
+  it("perform_ecg in the teaching hospital: the bay's cart stands too far from the bed to be used there — it is wheeled over first (C7)", async () => {
+    const content = await builtinContent();
+    const facility = content.facilities.get("teaching-hospital")!.def;
+    const t = await makeEmbodiedSession({ facility, catalogs: catalogsFor(content, facility), settingsPatch: { approvalMode: "bypass" } });
+    answerAll(t);
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const ecg = await command(t, "skill", "perform_ecg");
+    expect(ecg.ok, ecg.text).toBe(true);
+    expect((ecg.data as { skill: { status: string } }).skill.status).toBe("succeeded");
+    expect(ecg.text).toMatch(/fetch-equipment|replan/);
+    expect(t.session.state.orders.map((o) => o.investigationId)).toContain("ecg-12lead");
     await t.session.close();
   });
 

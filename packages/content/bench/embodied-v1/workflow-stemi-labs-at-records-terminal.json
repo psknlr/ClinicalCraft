@@ -1,0 +1,134 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "workflow-stemi-labs-at-records-terminal",
+  "suite": "embodied-v1",
+  "category": "clinical-workflow",
+  "title": {
+    "zh-CN": "床旁采血，到病历终端申请化验",
+    "en": "Bloods drawn at the bedside, labs ordered at a records terminal"
+  },
+  "instruction": {
+    "zh-CN": "在床旁建立静脉通路并采血，然后到急诊护士站的电子病历终端申请血常规和高敏肌钙蛋白。",
+    "en": "Place an IV cannula and draw bloods at the bedside, then order a full blood count and a high-sensitivity troponin at the ED records terminal."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "patient:resus-1"
+      }
+    },
+    "approvals": "approve"
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "intervened": "iv-access"
+      }
+    },
+    {
+      "clinical": {
+        "ordered": "cbc"
+      }
+    },
+    {
+      "clinical": {
+        "ordered": "hs-troponin"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorNear",
+        "target": "eq:ed-records",
+        "range": 2
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 20,
+    "maxTurns": 3,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "intervene",
+          "interventionId": "iv-access"
+        }
+      },
+      {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:ed-records"
+        }
+      },
+      {
+        "op": "interact",
+        "target": "eq:ed-records",
+        "operation": "order",
+        "parameters": {
+          "investigation": "cbc"
+        }
+      },
+      {
+        "op": "interact",
+        "target": "eq:ed-records",
+        "operation": "order",
+        "parameters": {
+          "investigation": "hs-troponin"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "iv-access"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ed-records"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-records",
+          "operation": "order",
+          "parameters": {
+            "investigation": "cbc"
+          }
+        }
+      },
+      {
+        "tool": "interact_object",
+        "args": {
+          "target": "eq:ed-records",
+          "operation": "order",
+          "parameters": {
+            "investigation": "hs-troponin"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -2,7 +2,9 @@
  * Review findings (web): nothing is shown before it is earned and the HUD
  * stays readable —
  *
- *  - a refused order never shows its report (practice scope, strict + Deny);
+ *  - a refused order never shows its report (practice scope, strict + Deny,
+ *    and a lab order at the workstation before any sample: the blood is
+ *    drawn at the patient's side, EMBODIED §6);
  *  - `/assess` mid-case offers only "assessment so far", never the authored
  *    debrief; the journal shows hints only for done objectives;
  *  - locked judgements show neither prompt nor options; the exam search
@@ -50,24 +52,37 @@ test.describe("grounded web panels (zh-CN)", () => {
     await expect(page.locator(".lab-table")).toHaveCount(0);
     expect(await qa(page, (q) => q.session.state.orders.length)).toBe(0);
 
-    // Strict approvals: while the dialog is pending nothing is shown; after Deny, the refusal.
+    // Full scope: at the lab workstation, before any sample, the order is refused (the blood is drawn at the
+    // patient's side) — the refusal, never a report.
     await qa(page, (q) => q.submit({ type: "configure", patch: { practiceScope: "full", approvalMode: "strict" } }));
     await page.waitForFunction(() => (window as any).__QA__.store.config?.approvalMode === "strict");
     await useStation(page, ["lab-hematology"], "workstation");
     await page.locator("#exam-input").fill("血常规");
     await page.locator("#exam-input").press("Enter");
     await page.locator('.candidate[data-investigation="cbc"]').click();
+    await expect(page.locator("#report-refused")).toBeVisible();
+    await expect(page.locator(".report-text")).toHaveCount(0);
+    await expect(page.locator("#approval")).toBeHidden();
+    await page.keyboard.press("Escape");
+
+    // Strict approvals, at the patient's side: while the dialog is pending nothing is shown; after Deny, nothing ordered or seen.
+    await talkToPatient(page, { atSide: true });
+    await chat(page, "/order 血常规");
     await expect(page.locator("#approval")).toBeVisible();
     await expect(page.locator(".report-text")).toHaveCount(0);
     await page.locator("#approval-deny").click();
-    await expect(page.locator("#report-refused")).toBeVisible();
-    await expect(page.locator(".report-text")).toHaveCount(0);
+    await expect(page.locator("#approval")).toBeHidden();
+    expect(await qa(page, (q) => q.session.state.orders.length)).toBe(0);
     expect(await qa(page, (q) => q.session.state.seen.length)).toBe(0);
     await page.keyboard.press("Escape");
 
-    // Back to the default mode: an accepted order + read shows the report.
+    // Back to the default mode: ordered at the patient's side, read at the lab workstation — the report.
     await qa(page, (q) => q.submit({ type: "configure", patch: { approvalMode: "default" } }));
     await page.waitForFunction(() => (window as any).__QA__.store.config?.approvalMode === "default");
+    await talkToPatient(page, { atSide: true });
+    await chat(page, "/order 血常规");
+    await expect.poll(() => qa(page, (q) => q.session.state.orders.map((o: any) => o.investigationId))).toContain("cbc");
+    await page.keyboard.press("Escape");
     await useStation(page, ["lab-hematology"], "workstation");
     await page.locator("#exam-input").fill("血常规");
     await page.locator("#exam-input").press("Enter");

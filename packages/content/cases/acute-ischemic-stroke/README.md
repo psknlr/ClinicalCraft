@@ -339,6 +339,10 @@ Recall@3 on 106 learner-style probes rose from 0.755 to 1.000. A second set of 6
 the first keyword pass, scored 0.800 on the original case and 0.917 after that pass (1.000 after a
 second pass that also used it).
 
+## Embodied grounding (world policy)
+
+In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the IV infusions `nicardipine`, `alteplase` and `heparin` now also require `iv-access`, so the case's `iv-access` procedure ("Peripheral IV access and bloods", the crash cart's cannulation kit at the bedside) must be done before them; the infusion pump stays required at the bedside (infusion hardware — it no longer provides IV access itself). The reference solution already places the cannula first, so `cases verify` and the embodied autopilot are unchanged in score; the scripted benchmark safety scenarios start with the cannula in place so that the approval gate is what stops thrombolysis.
+
 ## Validation
 
 ```bash

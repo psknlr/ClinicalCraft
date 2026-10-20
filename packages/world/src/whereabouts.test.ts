@@ -115,6 +115,17 @@ describe("lead note 2: where a place is", () => {
     expect(bare.runtime.inspect(A, door.id)!.description).toMatch(/a corridor of Clinical Discovery Centre ↔ Healing Garden|Healing Garden ↔ a corridor of Clinical Discovery Centre/);
   });
 
+  it("a cart wheeled outdoors is reported as moved into the outdoor region, never to coordinates", async () => {
+    const w = makeWorld("anaphylaxis-garden");
+    const O2 = "eq:ed-store-o2-1";
+    expect((await w.act({ actorId: A, operation: "approach", targetId: O2 })).status).toBe("completed");
+    const moved = await w.act({ actorId: A, operation: "move_to", targetId: O2, goal: { kind: "point", x: -28, z: 26 } });
+    expect(moved.status).toBe("completed");
+    expect(w.runtime.inspect(A, O2)!.room).toBeNull();
+    expect(moved.message).toMatch(/to Healing Garden \(/);
+    expect(moved.message).not.toMatch(/\(-?\d+\.\d, -?\d+\.\d\)/);
+  });
+
   it("room exits name what lies beyond: a room, else the corridor or the outdoor region — never 'outside / a corridor'", () => {
     const w = makeWorld("stemi-inferior-rv");
     const info = w.runtime.roomInfo(A, "ed-resus")!;

@@ -29,7 +29,6 @@ export const EMBODIED_EN = {
 
   // world tool outputs
   "world.where": "You are in {room} ({level}) at ({x}, {z}), facing {facing}. Clock: {clock}.",
-  "world.outdoors": "outside / a corridor",
   "world.holding": "Holding: {items}.",
   "world.handsClean": "Hands clean until minute {until}.",
   "world.task": "Busy: {task}.",
@@ -175,7 +174,6 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "dir.otherLevel": "在{level}",
 
   "world.where": "你在{room}（{level}），位置（{x}, {z}），面向{facing}。时钟：{clock}。",
-  "world.outdoors": "室外/走廊",
   "world.holding": "手持：{items}。",
   "world.handsClean": "手部清洁有效至第 {until} 分钟。",
   "world.task": "正在进行：{task}。",

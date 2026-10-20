@@ -101,6 +101,10 @@
 * Royal College of Physicians. National Early Warning Score (NEWS) 2. 2017.
 * Bellelli G, et al. Validation of the 4AT, a new instrument for rapid delirium screening. Age Ageing 2014.
 
+## Embodied grounding (world policy)
+
+In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the vasopressor infusions `norepinephrine` and `dopamine` now also require `iv-access` (the case's `iv-access` procedure first — the reference solution places it first). Blood cultures and the other blood tests are drawn at the bedside: ordered there, or after the cannula and bloods at a records terminal or a laboratory station (benchmark `workflow-sepsis-cultures-then-antibiotics`).
+
 ## Validation
 
 ```bash

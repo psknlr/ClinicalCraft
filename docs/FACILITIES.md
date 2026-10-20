@@ -101,7 +101,7 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 
 | field | meaning |
 |---|---|
-| `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `oxygen-cylinder`, `glucometer-station`, `pocus-cart`, `ultrasound-machine` |
+| `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `oxygen-cylinder`, `nebulizer`, `glucometer-station`, `pocus-cart`, `ultrasound-machine`. Every actor knows where the departments keep them (embodied perception: "usually kept in …") until it sees one elsewhere |
 | `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
 | `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
 | `behavior: { initial, states: { id: { name?, available? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`) through the session's normal tool path; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
@@ -292,12 +292,16 @@ take the aim (an invisible footprint box does).
 
 `core-clinical.json` — monitoring, resuscitation, therapy, surgery, pharmacy:
 `patient-monitor` (kind monitor, screen vitals, cardiac-monitor + capnography),
-`ecg-machine` (device, ecg-12lead), `defibrillator` (device, defibrillator),
-`crash-cart` (device, crash-cart + medications + airway + suction),
-`oxygen-outlet` (device, oxygen + suction, wall), `oxygen-cylinder` (device, oxygen),
-`iv-pole` (device, iv-access), `infusion-pump` (device, infusion-pump + iv-access),
+`ecg-machine` (device, ecg-12lead; prepare, connect and record need the cart at
+the patient's side), `defibrillator` (device, defibrillator + cardiac-monitor: a
+monitor-defibrillator), `crash-cart` (device, crash-cart + medications + airway +
+suction + iv-access: the cannulation kit), `oxygen-outlet` (device, oxygen +
+suction, wall), `oxygen-cylinder` (device, oxygen, portable),
+`iv-pole` (no capability, interaction none: a stand), `infusion-pump` (device,
+infusion-pump — infusion hardware; IV access is the patient's cannula, not
+equipment),
 `ventilator` (device, ventilator), `suction-unit` (device, suction),
-`nebulizer` (device, nebulizer), `glucometer-station` (device, point-of-care),
+`nebulizer` (device, nebulizer, portable), `glucometer-station` (device, point-of-care),
 `diagnostic-wall-set` (device, otoscope + stethoscope, wall),
 `anesthesia-machine` (device, anesthesia + airway), `operating-table`,
 `surgical-light` (light), `instrument-table`, `medication-cabinet`

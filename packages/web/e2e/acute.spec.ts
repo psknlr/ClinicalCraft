@@ -81,8 +81,12 @@ test("STEMI (en): vitals, monitor, approval, settings, save/continue", async ({ 
   await expect(page.locator(".exam-row.done .finding").first()).not.toBeEmpty();
   await shot(page, "en-examine");
 
-  // high-risk intervention → approval dialog, default focus on Deny
+  // IV access first: an IV drug needs a cannula in place (patient state, EMBODIED §6 G7) — else it is refused before any approval
   await page.locator("#tab-treat").click();
+  await page.locator('[data-intervention="iv-access"]').click();
+  await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.interventions.some((i: any) => i.interventionId === "iv-access"))).toBe(true);
+
+  // high-risk intervention → approval dialog, default focus on Deny
   const lysis = page.locator('[data-intervention="tenecteplase"]');
   await expect(lysis).toBeEnabled();
   await shot(page, "en-treat");

@@ -38,16 +38,64 @@ export async function enterCase(page: Page, caseId: string): Promise<void> {
 }
 
 /** Teleport next to the case patient and "press E" on them. */
-export async function talkToPatient(page: Page): Promise<void> {
-  await page.evaluate(() => {
+export async function talkToPatient(page: Page, opts: { atSide?: boolean } = {}): Promise<void> {
+  // at their side: within contact range (observations by hand, samples — EMBODIED §6); else 2 m from the slot point
+  if (opts.atSide) await toPatientSide(page);
+  await page.evaluate((atSide) => {
     const qa = (window as any).__QA__;
     const game = qa.game;
     const slot = game.facility.patientSlots.find((s: { id: string }) => s.id === game.slotId);
     const loc = qa.world.locate(slot.id) ?? slot;
-    qa.world.teleport(loc.x, loc.z + 2, 0);
+    if (!atSide) qa.world.teleport(loc.x, loc.z + 2, 0);
     qa.interact({ kind: "patient", slotId: slot.id, caseId: game.caseDef.id, name: "patient", hint: "" });
-  });
+  }, !!opts.atSide);
   await expect(page.locator('#panel .window[data-panel="conversation"]')).toBeVisible();
+}
+
+/**
+ * Stand at the patient's side, facing them: the world's interaction point of the bound patient (within contact
+ * range — hand observations, samples, examination; EMBODIED §6).
+ */
+export async function toPatientSide(page: Page): Promise<void> {
+  const spot = await page.evaluate(() => {
+    const qa = (window as any).__QA__;
+    const world = qa.worldModel;
+    const id = `patient:${qa.game.slotId}`;
+    const plan = world.plan("actor:clinician", { kind: "interact", id });
+    if (!plan.ok) throw new Error(`no way to the patient: ${plan.code}`);
+    const p = world.entity(id).position;
+    return { x: plan.target.x as number, z: plan.target.z as number, face: { x: p.x as number, z: p.z as number } };
+  });
+  await placeAvatar(page, spot.x, spot.z, spot.face);
+}
+
+/**
+ * Wheel the nearest free portable provider of a capability to the patient (the learner walks there and pushes it
+ * back through the world: `move_to`) and wait until every body has stopped; returns its entity id.
+ */
+export async function fetchToPatient(page: Page, capability: string): Promise<string> {
+  const id = await page.evaluate((cap) => {
+    const qa = (window as any).__QA__;
+    const world = qa.worldModel;
+    const found = world.find("actor:clinician", { kind: "equipment", capabilities: [cap], sort: "path" }).filter((e: any) => world.entity(e.id)?.portable && e.state !== "out-of-service");
+    if (!found.length) throw new Error(`no portable ${cap}`);
+    return found[0].id as string;
+  }, capability);
+  // stand at the cart, then wheel it over
+  const at = await page.evaluate((cartId) => {
+    const world = (window as any).__QA__.worldModel;
+    const plan = world.plan("actor:clinician", { kind: "interact", id: cartId });
+    if (!plan.ok) throw new Error(`no way to ${cartId}: ${plan.code}`);
+    return { x: plan.target.x as number, z: plan.target.z as number };
+  }, id);
+  await placeAvatar(page, at.x, at.z);
+  const result = await page.evaluate((cartId) => {
+    const qa = (window as any).__QA__;
+    return qa.worldAction({ operation: "move_to", targetId: cartId, goal: { kind: "interact", id: `patient:${qa.game.slotId}` } });
+  }, id);
+  expect(result?.status, result?.message).toBe("completed");
+  await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
+  return id;
 }
 
 /**

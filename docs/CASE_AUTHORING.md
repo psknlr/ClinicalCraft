@@ -356,3 +356,41 @@ offers another facility only if the case can be completed there — and
 `setting` so a patient slot accepts it: outpatient → consult rooms,
 emergency → resus bays/cubicles, inpatient/ward → ward beds, icu → ICU,
 operating-room → theatre, community → garden bench.
+
+**Grounding the kit (embodied mode, docs/EMBODIED.md §6).** In the 3D world
+a clinical act needs what it names at the bedside, so `requires` is part of
+the clinical content, not decoration:
+
+* Name the kit an intervention needs: high-flow oxygen → `oxygen`, a
+  nebuliser → `nebulizer` (+ `oxygen` when oxygen-driven), continuous
+  monitoring → `cardiac-monitor`, an infusion → `infusion-pump`. An empty
+  `requires` takes its kind's defaults (`KIND_DEFAULT_CAPABILITIES`): `oxygen`
+  → `oxygen`, `monitoring` → `cardiac-monitor`, `fluid` → `iv-access`,
+  `airway` → `airway`; anything else needs only the clinician at the patient.
+  An item that is a plan or advice rather than equipment (an hourly
+  monitoring plan, home blood-pressure monitoring) is kind `other`, not
+  `monitoring`. Drugs and blood products (`medications`, `blood-bank`) are
+  delivered to the bedside.
+* Every IV item (an IV drug, infusion or bolus) requires `iv-access`. IV
+  access is **patient state**: give the case one IV-access procedure (id
+  `iv-access`, else a `procedure` requiring `iv-access`, else a cannulation
+  id) — it needs the cannulation kit (a crash or treatment cart) at the
+  bedside, and the other `iv-access` items then need it done first (they are
+  refused with the procedure to do, no walk fixes it). The reference
+  `solution` must place the cannula before the first IV item. A patient who
+  arrives with a cannula in situ (a post-operative ward patient) sets
+  `extensions.embodied.ivAccessInSitu: true`: IV items need no procedure
+  first (the procedure then places a further line).
+* Laboratory tests (`lab-*`, `blood-bank`, `flow-cytometry`, microbiology) are
+  sampled at the patient: they are ordered at the patient's side, or — once
+  the case's IV-access procedure has drawn the bloods (blood samples; urine
+  is collected at the patient) — at any `records` terminal or a laboratory
+  station. Results are read at a `records` terminal, at the patient or at a
+  laboratory station; a bedside test (an ECG) is read at the patient or a
+  records terminal, never on the device. Outpatient cases without an IV
+  procedure therefore order their bloods at the patient's side.
+* A `community` case has no kit outside: everything it needs (an oxygen
+  cylinder, a crash or treatment cart, a monitor-defibrillator, a nebuliser)
+  must be fetchable from the facility as a portable cart — check that the
+  facility has an in-service portable placement providing each capability,
+  and say in the README what the learner brings.

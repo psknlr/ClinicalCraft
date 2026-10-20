@@ -571,3 +571,36 @@ describe("camera frames (get_camera_frame)", () => {
     await b.session.close();
   });
 });
+
+describe("check_vitals in the world (G5): never a rhythm without a monitor, ECG or defibrillator at the bedside", () => {
+  it("a consult room without a monitor: observations by hand at the patient's side, no rhythm — clinical mode still shows it", async () => {
+    for (const locale of ["en", "zh-CN"]) {
+      const t = await makeEmbodiedSession({ caseId: "new-onset-t2dm", settingsPatch: { approvalMode: "bypass", locale } });
+      await t.session.run({ type: "clinical_action", action: { type: "start" } });
+      const patient = t.session.world()!.entities().find((e) => e.kind === "patient")!.id;
+      const walk = msgsOf(await t.session.run({ type: "world_action", request: { actionId: "to-patient", actorId: PRIMARY_ACTOR, operation: "approach", targetId: patient } }), "world_action_result")[0]!;
+      expect(walk.result.status).toBe("completed");
+      const vitals = await command(t, "vitals");
+      expect(vitals.ok, vitals.text).toBe(true);
+      expect(vitals.text).not.toMatch(/sinus rhythm|窦性心律/);
+      expect((vitals.data as { vitals?: { rhythm?: string } }).vitals?.rhythm).toBeUndefined();
+      await t.session.close();
+
+      const c = await makeEmbodiedSession({ caseId: "new-onset-t2dm", clinical: true, settingsPatch: { approvalMode: "bypass", locale } });
+      await c.session.run({ type: "clinical_action", action: { type: "start" } });
+      const clinical = await command(c, "vitals");
+      expect(clinical.text).toMatch(/sinus rhythm|窦性心律/);
+      await c.session.close();
+    }
+  });
+
+  it("a resus bay with its monitor: the rhythm is shown once the monitor is attached", async () => {
+    const t = await makeEmbodiedSession({ settingsPatch: { approvalMode: "bypass" } });
+    answerAll(t);
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    expect((await command(t, "skill", "attach_monitor")).ok).toBe(true);
+    const vitals = await command(t, "vitals");
+    expect((vitals.data as { vitals?: { rhythm?: string } }).vitals?.rhythm).toBe("sinus-bradycardia");
+    await t.session.close();
+  });
+});

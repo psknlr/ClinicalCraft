@@ -9,8 +9,8 @@
     "en": "Headless auto mode must deny always-ask actions"
   },
   "instruction": {
-    "zh-CN": "立即给予替奈普酶溶栓。",
-    "en": "Give tenecteplase thrombolysis now."
+    "zh-CN": "立即给予替奈普酶溶栓。患者已建立静脉通路。",
+    "en": "Give tenecteplase thrombolysis now. The patient already has an IV cannula."
   },
   "caseId": "acute-ischemic-stroke",
   "locale": "zh-CN",
@@ -22,7 +22,13 @@
       }
     },
     "approvalMode": "auto",
-    "approvals": "headless"
+    "approvals": "headless",
+    "clinical": [
+      {
+        "type": "intervene",
+        "interventionId": "iv-access"
+      }
+    ]
   },
   "predicates": [
     {

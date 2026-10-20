@@ -2,7 +2,8 @@
  * Success predicates — every kind, true and false, evaluated on the final
  * authoritative state of a real run (STEMI, general hospital: the reference
  * solver washes its hands, walks to the bedside past a locked door, is
- * refused a lab order at the bedside and the ECG cart the nurse holds, attaches
+ * refused a CT order at the bedside (imaging is ordered at the radiology
+ * console; lab tests are ordered right there, G9) and the ECG cart the nurse holds, attaches
  * the monitor and answers), plus edge cases on a hand-built view (audit
  * violations, a held item, hand hygiene expiry, refusal targets).
  */
@@ -23,7 +24,7 @@ const content = await loadContent({ dirs: [] });
 const EXPECTED: [BenchPredicate, boolean][] = [
   [{ clinical: { intervened: "cardiac-monitoring" } }, true],
   [{ clinical: { ordered: "ecg-12lead" } }, false],
-  [{ clinical: { not: { ordered: "hs-troponin" } } }, true],
+  [{ clinical: { not: { ordered: "ct-aortogram" } } }, true],
   [{ world: { kind: "actorInRoom", room: "ed-resus" } }, true],
   [{ world: { kind: "actorInRoom", room: "room:rad-ct" } }, false],
   [{ world: { kind: "actorOnLevel", level: "L0" } }, true],
@@ -84,7 +85,7 @@ function scenario(predicates: BenchPredicate[]): BenchScenario {
         { op: "find", query: { interaction: "sink", limit: 1 }, save: "sink" },
         { op: "interact", target: "@sink", operation: "wash_hands" },
         { op: "navigate", goal: { kind: "interact", id: "patient:resus-1" } },
-        { op: "attempt", action: { type: "order", investigationId: "hs-troponin" }, expect: "SPATIAL_REQUIREMENT_UNMET" },
+        { op: "attempt", action: { type: "order", investigationId: "ct-aortogram" }, expect: "SPATIAL_REQUIREMENT_UNMET" },
         { op: "interact", target: "eq:resus1-ecg", operation: "connect", expect: "DEVICE_BUSY" },
         { op: "clinical", action: { type: "intervene", interventionId: "cardiac-monitoring" } },
         { op: "answer", entity: "eq:resus1-ecg" },
@@ -205,5 +206,33 @@ describe("predicates on hand-built views", () => {
     expect(footprintDistance({ x: 0.2, z: 0.1 }, { x: 0, z: 0 }, { w: 1, d: 1 })).toBe(0);
     expect(footprintDistance({ x: 2, z: 0 }, { x: 0, z: 0 }, { w: 1, d: 1 })).toBeCloseTo(1.5, 10);
     expect(footprintDistance({ x: 3, z: 4 }, { x: 0, z: 0 }, undefined)).toBeCloseTo(5, 10);
+  });
+});
+
+describe("deviceAtBedside is the world's bedside rule (C14)", () => {
+  it("a cart wheeled across the patient's room, > 6 m from the slot, is at the bedside — as the world and the policy say", { timeout: 60_000 }, async () => {
+    const parsed = parseScenario({
+      schema: "clinicalcraft/bench-scenario@1",
+      id: "bedside-rule",
+      suite: "tests",
+      category: "interaction",
+      title: { "zh-CN": "床旁", en: "Bedside" },
+      instruction: { "zh-CN": "测试", en: "Test" },
+      caseId: "stemi-inferior-rv",
+      locale: "en",
+      setup: { approvals: "approve" },
+      predicates: [{ world: { kind: "deviceAtBedside", target: "eq:resus2-ecg" } }, { world: { kind: "deviceAtBedside", target: "eq:lab-workstation" } }],
+      reference: {
+        steps: [
+          { op: "navigate", goal: { kind: "interact", id: "eq:resus2-ecg" } },
+          { op: "interact", target: "eq:resus2-ecg", operation: "move_to", goal: { kind: "point", x: 40.5, z: -14.6 } },
+        ],
+      },
+      scripted: { plan: [] },
+    });
+    if (!parsed.ok) throw new Error(parsed.issues.join("\n"));
+    const run = await runScenario(parsed.scenario, createReferenceAgent(), 1, { content });
+    expect(run.status, run.error).toBe("completed");
+    expect(run.predicates.map((p) => p.ok)).toEqual([true, false]);
   });
 });

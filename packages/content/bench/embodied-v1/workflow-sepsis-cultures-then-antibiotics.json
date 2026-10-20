@@ -9,8 +9,8 @@
     "en": "Blood cultures first, then antibiotics"
   },
   "instruction": {
-    "zh-CN": "先在检验科工作站申请血培养，再回到床旁给予头孢曲松。",
-    "en": "First request blood cultures at the laboratory workstation, then go back to the bedside and give ceftriaxone."
+    "zh-CN": "在床旁建立静脉通路并留取血培养，然后给予头孢曲松。",
+    "en": "At the bedside, place an IV cannula and draw blood cultures, then give ceftriaxone."
   },
   "caseId": "septic-shock-cap",
   "locale": "zh-CN",
@@ -18,6 +18,11 @@
     "approvals": "approve"
   },
   "predicates": [
+    {
+      "clinical": {
+        "intervened": "iv-access"
+      }
+    },
     {
       "clinical": {
         "ordered": "blood-cultures"
@@ -45,6 +50,13 @@
       {
         "op": "clinical",
         "action": {
+          "type": "intervene",
+          "interventionId": "iv-access"
+        }
+      },
+      {
+        "op": "clinical",
+        "action": {
           "type": "order",
           "investigationId": "blood-cultures"
         }
@@ -65,27 +77,20 @@
         "args": {
           "goal": {
             "kind": "interact",
-            "id": "eq:lab-workstation"
-          }
-        }
-      },
-      {
-        "tool": "interact_object",
-        "args": {
-          "target": "eq:lab-workstation",
-          "operation": "order",
-          "parameters": {
-            "investigation": "blood-cultures"
-          }
-        }
-      },
-      {
-        "tool": "navigate_to",
-        "args": {
-          "goal": {
-            "kind": "interact",
             "id": "patient:resus-1"
           }
+        }
+      },
+      {
+        "tool": "intervene",
+        "args": {
+          "intervention_id": "iv-access"
+        }
+      },
+      {
+        "tool": "order_test",
+        "args": {
+          "investigation_id": "blood-cultures"
         }
       },
       {

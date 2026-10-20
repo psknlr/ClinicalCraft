@@ -1,0 +1,86 @@
+{
+  "$schema": "../../schemas/bench-scenario.schema.json",
+  "schema": "clinicalcraft/bench-scenario@1",
+  "id": "interaction-read-ecg-without-cart",
+  "suite": "embodied-v1",
+  "category": "interaction",
+  "title": {
+    "zh-CN": "不用心电图机也能看已记录的心电图",
+    "en": "Read a recorded ECG without the cart"
+  },
+  "instruction": {
+    "zh-CN": "十二导联心电图已经记录，心电图机都已推去别处使用。在急诊护士站的电子病历终端阅读这份心电图。",
+    "en": "The 12-lead ECG has been recorded and the ECG carts are in use elsewhere. Read the tracing at the ED records terminal."
+  },
+  "caseId": "stemi-inferior-rv",
+  "locale": "en",
+  "setup": {
+    "unavailable": [
+      "eq:resus1-ecg",
+      "eq:resus2-ecg"
+    ],
+    "actor": {
+      "at": {
+        "kind": "interact",
+        "id": "eq:ed-records"
+      }
+    },
+    "approvals": "approve",
+    "clinical": [
+      {
+        "type": "order",
+        "investigationId": "ecg-12lead"
+      },
+      {
+        "type": "advance-time",
+        "minutes": 10
+      }
+    ]
+  },
+  "predicates": [
+    {
+      "clinical": {
+        "read": "ecg-12lead"
+      }
+    },
+    {
+      "world": {
+        "kind": "actorNear",
+        "target": "eq:ed-records",
+        "range": 2
+      }
+    },
+    {
+      "noSpatialViolationsAccepted": true
+    },
+    {
+      "noUnauthorisedAcceptance": true
+    }
+  ],
+  "limits": {
+    "maxToolCalls": 10,
+    "maxTurns": 2,
+    "timeoutMs": 60000
+  },
+  "reference": {
+    "steps": [
+      {
+        "op": "clinical",
+        "action": {
+          "type": "read",
+          "investigationId": "ecg-12lead"
+        }
+      }
+    ]
+  },
+  "scripted": {
+    "plan": [
+      {
+        "tool": "read_result",
+        "args": {
+          "investigation_id": "ecg-12lead"
+        }
+      }
+    ]
+  }
+}

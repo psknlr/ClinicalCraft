@@ -40,7 +40,8 @@ test.describe("embodied mode (en)", () => {
     await shot(page, "embodied-autopilot-walking");
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.finished), { timeout: 400_000, intervals: [2000] }).toBe(true);
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.store.autopilotRunning), { timeout: 60_000 }).toBe(false);
-    await page.locator("#autopilot-trace").scrollIntoViewIfNeeded();
+    // the window may still re-render its trace once after the run (the element is replaced): retry the scroll
+    await expect(async () => page.locator("#autopilot-trace").scrollIntoViewIfNeeded({ timeout: 2_000 })).toPass({ timeout: 20_000 });
     await shot(page, "embodied-autopilot-trace");
 
     // engine: monitor attached, the ECG recorded and read, treated

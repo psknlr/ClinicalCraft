@@ -300,6 +300,10 @@ conflict, and names the JBDS alternative in feedback. The differences:
   workstation, 23 m) and `records` (pump download). The bed weight
   (`ex-weight`) needs no ward scale: the resus trolley weighs her.
 
+## Embodied grounding (world policy)
+
+In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the IV items `kcl-replacement`, `friii`, `insulin-bolus`, `phosphate`, `ondansetron`, `antibiotics` and `dextrose-10` now also require `iv-access` (the case's `iv-access` procedure first; the reference solution already places it first). `monitoring-plan` ("Set up the hourly monitoring plan") changed kind from `monitoring` to `other`: it is a plan of hourly checks, not a monitor to attach — with the kind default (monitoring → `cardiac-monitor`) it would have demanded a bedside monitor it does not use.
+
 ## Validation
 
 ```bash

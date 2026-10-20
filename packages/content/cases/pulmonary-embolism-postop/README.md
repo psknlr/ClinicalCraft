@@ -282,6 +282,10 @@ only, so the `consultant` (cardiology, surgery) and `pharmacist` briefs are kept
 that add those roles. The surgical view is also given by the `consult-surgeon` intervention's
 response.
 
+## Embodied grounding (world policy)
+
+In embodied mode a clinical act needs the kit it names at the bedside and IV access is patient state (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8): the IV items `ufh`, `furosemide`, `ketorolac`, `morphine`, `paracetamol` and `noradrenaline` now also require `iv-access`. The patient is on post-operative day 3 with a peripheral cannula in her left forearm (general inspection says so), so the case sets `extensions.embodied.ivAccessInSitu: true`: IV drugs need no IV-access procedure first (the `iv-access` intervention places a further line). Her bloods can be ordered at her side; the ward's ECG cart stands across the ward bay and is used only once wheeled to the bed (prepare, connect and record need it at her side), so the reference clinician orders the ECG at her side instead.
+
 ## Validation
 
 ```bash

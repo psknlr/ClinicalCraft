@@ -5,12 +5,12 @@
   "suite": "embodied-v1",
   "category": "recovery",
   "title": {
-    "zh-CN": "床旁申请肌钙蛋白被拒：按提示去检验科",
-    "en": "Troponin refused at the bedside: follow the hint to the lab"
+    "zh-CN": "在医生工作站申请肌钙蛋白被拒：先到床旁采血",
+    "en": "Troponin refused at the physician's terminal: the sample is taken at the patient"
   },
   "instruction": {
-    "zh-CN": "为这位患者申请高敏肌钙蛋白检测。",
-    "en": "Order a high-sensitivity troponin for this patient."
+    "zh-CN": "你在医生办公室的工作站前。为抢救室 1 号床的患者申请高敏肌钙蛋白检测。",
+    "en": "You are at the physician's records terminal. Order a high-sensitivity troponin for the patient in resuscitation bay 1."
   },
   "caseId": "stemi-inferior-rv",
   "locale": "en",
@@ -18,7 +18,7 @@
     "actor": {
       "at": {
         "kind": "interact",
-        "id": "patient:resus-1"
+        "id": "eq:office-records"
       }
     },
     "approvals": "approve"
@@ -73,7 +73,7 @@
         "args": {
           "goal": {
             "kind": "interact",
-            "id": "eq:lab-workstation"
+            "id": "patient:resus-1"
           }
         }
       },

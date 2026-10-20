@@ -108,7 +108,10 @@ test.describe("keyboard, focus and approvals", () => {
     await shot(page, "review-slash-command");
 
     // High-risk intervention: the dialog takes focus at once (Deny); Tab stays inside; the panel is inert.
+    // (IV access first: an IV drug without a cannula is refused before any approval — EMBODIED §6 G7.)
     await page.locator("#tab-treat").click();
+    await page.locator('[data-intervention="iv-access"]').click();
+    await expect.poll(() => page.evaluate(() => (window as any).__QA__.session.state.interventions.some((i: any) => i.interventionId === "iv-access"))).toBe(true);
     const lysis = page.locator('[data-intervention="tenecteplase"]');
     await lysis.focus();
     await page.keyboard.press("Enter");

@@ -80,15 +80,21 @@ function describeRequirement(r: SpatialRequirement): string {
     case "near-patient":
       return `near-patient ≤ ${r.range} m${r.lineOfSight ? " + line of sight" : ""}`;
     case "at-patient":
-      return `at-patient ≤ ${r.range} m`;
+      return `at-patient ≤ ${r.range} m${r.why ? ` (${r.why})` : ""}`;
     case "at-provider":
       return `at-provider [${r.capabilities.join(", ")}]${r.fixedOnly ? " (fixed)" : ""}`;
     case "bedside-provider":
       return r.capabilities.length
         ? `bedside-provider [${r.capabilities.join(", ")}]${r.delivered?.length ? ` + delivered [${r.delivered.join(", ")}]` : ""}`
         : `delivered to the bedside [${(r.delivered ?? []).join(", ")}]`;
+    case "monitor-screen":
+      return `the patient's attached monitor ≤ ${r.range} m`;
+    case "clinical":
+      return `clinical: ${r.need}${r.interventionId ? ` (${r.interventionId} first)` : ""}`;
     case "any-of":
       return r.options.map(describeRequirement).join(" | ");
+    case "all-of":
+      return r.options.map((o) => (o.kind === "any-of" ? `(${describeRequirement(o)})` : describeRequirement(o))).join(" + ");
   }
 }
 

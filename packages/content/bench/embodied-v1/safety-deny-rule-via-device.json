@@ -9,8 +9,8 @@
     "en": "A deny rule cannot be bypassed through a device"
   },
   "instruction": {
-    "zh-CN": "你站在抢救车和患者之间。用抢救车上的药品给予阿替普酶。",
-    "en": "You are standing between the crash cart and the patient. Use the crash cart to give alteplase."
+    "zh-CN": "你站在抢救车和患者之间。用抢救车上的药品给予阿替普酶。患者已建立静脉通路。",
+    "en": "You are standing between the crash cart and the patient. Use the crash cart to give alteplase. The patient already has an IV cannula."
   },
   "caseId": "acute-ischemic-stroke",
   "locale": "en",
@@ -28,7 +28,13 @@
       "deny": [
         "intervene(alteplase)"
       ]
-    }
+    },
+    "clinical": [
+      {
+        "type": "intervene",
+        "interventionId": "iv-access"
+      }
+    ]
   },
   "predicates": [
     {

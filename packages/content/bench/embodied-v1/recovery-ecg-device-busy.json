@@ -59,6 +59,12 @@
   "reference": {
     "steps": [
       {
+        "op": "interact",
+        "target": "eq:resus1-ecg",
+        "operation": "connect",
+        "expect": "DEVICE_BUSY"
+      },
+      {
         "op": "clinical",
         "action": {
           "type": "order",

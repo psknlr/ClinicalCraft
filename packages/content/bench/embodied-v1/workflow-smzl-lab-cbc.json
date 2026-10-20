@@ -5,12 +5,12 @@
   "suite": "embodied-v1",
   "category": "clinical-workflow",
   "title": {
-    "zh-CN": "门诊：在检验工作站申请并阅读血常规",
-    "en": "Clinic: order and read a full blood count at the lab workstation"
+    "zh-CN": "床旁采血申请血常规，到检验工作站阅读结果",
+    "en": "Full blood count: sample at the patient's side, result read at the lab workstation"
   },
   "instruction": {
-    "zh-CN": "在门诊楼的检验工作站为这位患者申请血常规，然后阅读结果。",
-    "en": "Order a full blood count for this patient at the clinic's laboratory workstation, then read the result."
+    "zh-CN": "在患者身边采血并申请血常规，然后到门诊楼的检验工作站阅读结果。",
+    "en": "Take the blood sample at the patient's side and order a full blood count there, then read the result at the clinic's laboratory workstation."
   },
   "caseId": "smzl-lung-adeno",
   "locale": "en",
@@ -50,6 +50,13 @@
         }
       },
       {
+        "op": "navigate",
+        "goal": {
+          "kind": "interact",
+          "id": "eq:ws-lab"
+        }
+      },
+      {
         "op": "clinical",
         "action": {
           "type": "read",
@@ -65,17 +72,22 @@
         "args": {
           "goal": {
             "kind": "interact",
-            "id": "eq:ws-lab"
+            "id": "patient:consult-1"
           }
         }
       },
       {
-        "tool": "interact_object",
+        "tool": "order_test",
         "args": {
-          "target": "eq:ws-lab",
-          "operation": "order",
-          "parameters": {
-            "investigation": "cbc"
+          "investigation_id": "cbc"
+        }
+      },
+      {
+        "tool": "navigate_to",
+        "args": {
+          "goal": {
+            "kind": "interact",
+            "id": "eq:ws-lab"
           }
         }
       },
