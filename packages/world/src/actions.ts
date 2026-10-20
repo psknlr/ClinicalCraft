@@ -70,7 +70,7 @@ import type { WorldLocator } from "./locate.js";
 import { GridAStarBackend } from "./nav/backend.js";
 import type { NavGrids } from "./nav/grid.js";
 import type { Perception } from "./perception.js";
-import { clinicalPlacement } from "./placement.js";
+import { operationPlacement, placesByBoth } from "./placement.js";
 import type { SpatialChecker } from "./policy.js";
 import type { Reachability } from "./reach.js";
 import type { Area } from "./raster.js";
@@ -437,9 +437,10 @@ export class ActionBus implements EffectsHost {
     }
     const pre = rules.precheck(targetId, o, actor);
     if (pre) return failed(pre.code, pre.message, pre.goal ? { hint: this.verifyHint(actor, pre.goal, pre.label, pre.then) ?? null } : {});
-    // an operation with a clinical effect: hint where both its own placement and the policy's hold (never alternating)
-    if (o.clinical || o.toolByParam) {
-      const placement = clinicalPlacement(this, request, actor, targetId, o);
+    // an operation involving the device and the patient (a clinical effect, or placed by both): hint where every
+    // placement rule holds — its own and the policy's — or fetch the cart; never alternating hints
+    if (o.clinical || o.toolByParam || placesByBoth(o)) {
+      const placement = operationPlacement(this, request, actor, targetId, o);
       if (placement) return placement;
     }
     const spatial = rules.spatial(targetId, o, actor);

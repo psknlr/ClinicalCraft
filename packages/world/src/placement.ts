@@ -1,11 +1,14 @@
 /**
- * Where an operation with a clinical effect can be done (EMBODIED §6, C7).
- * Two placement rules meet: the operation's own (within `actorWithin` of the
- * device — else its reach — and/or `patientWithin` of the patient) and the
- * spatial policy's for its clinical act (e.g. at the patient). Hinting each
- * separately can alternate forever (the device's interaction point is too
- * far from the patient, the patient's too far from the device), so a
- * refusal hints a spot where BOTH hold:
+ * Where an operation that involves both a device and the patient can be
+ * done (EMBODIED §6, C7): an operation with a clinical effect, or one that
+ * declares both `actorWithin` (the device) and `patientWithin` (e.g. placing
+ * ECG electrodes from the machine). Two placement rules meet: the
+ * operation's own (within `actorWithin` of the device — else its reach —
+ * and/or `patientWithin` of the patient) and the spatial policy's for its
+ * clinical act (e.g. at the patient; none without a clinical effect).
+ * Hinting each separately can alternate forever (the device's interaction
+ * point is too far from the patient, the patient's too far from the
+ * device), so a refusal hints a spot where BOTH hold:
  *
  * - such a spot exists → the operation's own refusal (`NOT_IN_RANGE` /
  *   `NOT_VISIBLE`) or the policy's (`SPATIAL_REQUIREMENT_UNMET`) with a
@@ -33,17 +36,26 @@ const POSITIONAL: ReadonlySet<string> = new Set(["not-near-patient", "not-at-pat
 /** Candidate spots tried by planning before giving up on a hint. */
 const PLAN_TRIES = 4;
 
+/** Does the operation place the actor by both the device (`actorWithin`) and the patient (`patientWithin`)? */
+export function placesByBoth(o: OperationSpec): boolean {
+  return o.requires.some((p) => "actorWithin" in p) && o.requires.some((p) => "patientWithin" in p);
+}
+
 /**
- * The placement refusal of a clinical operation (see the module docs), or
- * null when the actor may go on (both rules hold, or the policy's failure is
- * not about where the actor stands).
+ * The placement refusal of an operation involving the device and the
+ * patient (see the module docs), or null when the actor may go on (both
+ * rules hold, the policy's failure is not about where the actor stands, or
+ * the operation involves only one of them).
  */
-export function clinicalPlacement(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, o: OperationSpec): Outcome | null {
+export function operationPlacement(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, o: OperationSpec): Outcome | null {
   const { rules, checker, locator, caseDef, locale: L } = host.d;
   const target = locator.name(id);
-  const sel = selectClinical({ effect: o.clinical ?? { tool: "order_test", select: "param" }, toolByParam: o.toolByParam, caps: locator.capabilities(id), match: o.toolByParam ? "intersect" : "subset", parameters: request.parameters, caseDef, locale: L, target });
-  if (!sel.ok) return null;
-  const requirement = checker.requirement(sel.value.intent);
+  let requirement: SpatialRequirement = { kind: "anywhere" };
+  if (o.clinical || o.toolByParam) {
+    const sel = selectClinical({ effect: o.clinical ?? { tool: "order_test", select: "param" }, toolByParam: o.toolByParam, caps: locator.capabilities(id), match: o.toolByParam ? "intersect" : "subset", parameters: request.parameters, caseDef, locale: L, target });
+    if (!sel.ok) return null;
+    requirement = checker.requirement(sel.value.intent);
+  } else if (!placesByBoth(o)) return null;
   const own = rules.spatial(id, o, actor);
   const policy = checker.evaluate(actor, requirement);
   if (!own && policy.ok) return null;

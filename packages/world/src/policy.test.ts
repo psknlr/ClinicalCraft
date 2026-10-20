@@ -36,6 +36,19 @@ async function follow(w: TestWorld, intent: ClinicalIntent, c: SpatialCheck): Pr
   return w.runtime.checkSpatial(A, intent);
 }
 
+/** A device operation by an actor, following its hints (a walk; a fetch: then wheel the cart to the patient) until done. */
+async function operate(w: TestWorld, actorId: string, id: string, operation: string): Promise<void> {
+  for (let i = 0; i < 4; i++) {
+    const r = await w.act({ actorId, operation, targetId: id });
+    if (r.status === "completed") return;
+    expect(r.hint, `${operation} ${id}: ${r.message}`).toBeTruthy();
+    expect((await w.act({ actorId, operation: "navigate", goal: r.hint!.goal })).status).toBe("completed");
+    const then = r.hint!.then;
+    if (then) expect((await w.act({ actorId, operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}) })).status).toBe("completed");
+  }
+  throw new Error(`${operation} ${id} never completed`);
+}
+
 const ivAccess = { kind: "clinical", condition: { intervened: "iv-access" }, need: "iv-access", interventionId: "iv-access" } as const;
 const sample = (iv: string) => ({ kind: "clinical", condition: { intervened: iv }, need: "sample", interventionId: iv }) as const;
 const CHART = { kind: "at-provider", capabilities: ["records"] } as const;
@@ -276,14 +289,12 @@ describe("checkSpatial: every row, ok and each failure, with a hint that fixes i
   it("a device reserved by someone else is not a provider: the other cart in the room, else an alternative to fetch", async () => {
     const w = makeWorld("stemi-inferior-rv");
     const ecg = order("ecg-12lead");
-    // the nurse prepares (and so reserves) the bay's own cart
-    expect((await w.act({ actorId: "staff:ed-nurse", operation: "approach", targetId: "eq:resus1-ecg" })).status).toBe("completed");
-    expect((await w.act({ actorId: "staff:ed-nurse", operation: "prepare", targetId: "eq:resus1-ecg" })).status).toBe("completed");
+    // the nurse prepares (and so reserves) the bay's own cart, at the patient's side
+    await operate(w, "staff:ed-nurse", "eq:resus1-ecg", "prepare");
     expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
     expect(w.runtime.checkSpatial(A, ecg)).toMatchObject({ ok: true, satisfiedBy: [w.patientId, "eq:resus2-ecg"] });
-    // the second cart reserved too: busy — fetch one from elsewhere
-    expect((await w.act({ actorId: "staff:triage-nurse", operation: "approach", targetId: "eq:resus2-ecg" })).status).toBe("completed");
-    expect((await w.act({ actorId: "staff:triage-nurse", operation: "prepare", targetId: "eq:resus2-ecg" })).status).toBe("completed");
+    // the second cart reserved too (wheeled over from bay 2 and prepared): busy — fetch one from elsewhere
+    await operate(w, "staff:triage-nurse", "eq:resus2-ecg", "prepare");
     const busy = failure(w.runtime.checkSpatial(A, ecg));
     expect(busy).toMatchObject({ reason: "provider-busy", details: { busy: ["ecg-12lead"] } });
     expect(busy.message).toMatch(/in use by/);

@@ -96,8 +96,8 @@
           "completed": {"name": {"zh-CN":"已记录","en":"Tracing recorded"}}
         },
         "operations": {
-          "prepare": {"name": {"zh-CN":"准备心电图机","en":"Prepare the ECG machine"}, "from": ["idle"], "to": "prepared", "requires": [{"deviceAtBedside": true}, {"actorWithin": 1.5}], "durationSeconds": 30, "reserve": true},
-          "connect": {"name": {"zh-CN":"贴电极、连接导联","en":"Place the electrodes and connect the leads"}, "from": ["prepared"], "to": "connected", "requires": [{"patientWithin": 1.5}], "durationSeconds": 120},
+          "prepare": {"name": {"zh-CN":"准备心电图机","en":"Prepare the ECG machine"}, "from": ["idle"], "to": "prepared", "requires": [{"deviceAtBedside": true}, {"actorWithin": 1.5}, {"patientWithin": 1.5}], "durationSeconds": 30, "reserve": true},
+          "connect": {"name": {"zh-CN":"贴电极、连接导联","en":"Place the electrodes and connect the leads"}, "from": ["prepared"], "to": "connected", "requires": [{"actorWithin": 1.5}, {"patientWithin": 1.5}], "durationSeconds": 120},
           "record": {"name": {"zh-CN":"记录十二导联心电图","en":"Record a 12-lead ECG"}, "from": ["connected"], "to": "completed", "requires": [{"actorWithin": 1.5}], "clinical": {"tool": "order_test", "select": "capability"}, "durationSeconds": 30},
           "reset": {"name": {"zh-CN":"撤除导联并复位","en":"Remove the leads and reset"}, "from": ["prepared","connected","completed"], "to": "idle", "release": true, "durationSeconds": 30}
         }

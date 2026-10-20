@@ -159,3 +159,32 @@ describe("C7: the reviewer's ECG cart in the teaching hospital's resus bay", () 
     expect(pose.level).toBe(patient.level);
   });
 });
+
+describe("C7: an ECG cart is used at the patient's side — never leads stretched across the room", () => {
+  it("general-hospital ward bed 1: the ward's cart across the room is fetched first (prepare refuses at once with a fetch hint); at the bed prepare → connect → record work", async () => {
+    const w = makeWorld("pulmonary-embolism-postop");
+    const CART = "eq:ward-ecg";
+    expect(w.runtime.atBedside(CART)).toBe(true); // same room: the capability is at the bedside…
+    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect(w.runtime.inspect(A, CART)!.distance).toBeGreaterThan(10);
+    // …but the machine must stand by the bed to be used: no walk to the cart and back, a fetch (nothing charged)
+    const charged = w.harness.elapsed.length;
+    const prepare = await w.act({ actorId: A, operation: "prepare", targetId: CART });
+    expect(prepare).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED", hint: { goal: { kind: "interact", id: CART }, then: { operation: "move_to", targetId: CART, goal: { kind: "interact", id: w.patientId } } } });
+    expect(w.harness.elapsed.length).toBe(charged);
+    // the leads cannot reach across the ward either
+    const trail: string[] = [];
+    for (const op of ["prepare", "connect", "record"]) expect(await drive(w, CART, op, {}, trail), trail.join(" → ")).toBe("done");
+    expect(w.runtime.inspect(A, CART)!.distance).toBeLessThanOrEqual(1.5);
+    expect(w.runtime.inspect(A, w.patientId)!.distance).toBeLessThanOrEqual(1.5);
+  });
+
+  it("connect from the patient's side with the cart across the room is refused (fetch), not done", async () => {
+    const w = makeWorld("pulmonary-embolism-postop");
+    const CART = "eq:ward-ecg";
+    expect((await w.act({ actorId: A, operation: "approach", targetId: CART })).status).toBe("completed");
+    // prepared where it stands (a fixed rule would refuse that too: the patient is across the room)
+    const prepare = await w.act({ actorId: A, operation: "prepare", targetId: CART });
+    expect(prepare).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED", hint: { then: { operation: "move_to" } } });
+  });
+});
