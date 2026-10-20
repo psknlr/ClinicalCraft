@@ -111,6 +111,8 @@ export interface SpatialGate {
    * as `clinical_action` / `state_change` spans around `run`.
    */
   traced?(actorId: ActorId, tool: string, args: Record<string, unknown>, run: () => Promise<ToolOutput>): Promise<ToolOutput>;
+  /** Does a device at the bedside show the heart rhythm (`check_vitals` shows none without one)? */
+  rhythm?(): boolean;
 }
 
 /** Thrown inside a gated run when the re-check fails: nothing was committed. */
@@ -149,6 +151,7 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
       };
       const gated: ToolContext = {
         ...ctx,
+        ...(gate.rhythm ? { bedsideRhythm: () => gate.rhythm!() } : {}),
         dispatch: (action) => {
           guard();
           return ctx.dispatch(action);

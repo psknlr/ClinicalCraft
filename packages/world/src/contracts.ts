@@ -624,6 +624,17 @@ export interface ClinicalIntent {
 
 export type SpatialErrorCode = "SPATIAL_REQUIREMENT_UNMET" | "SPATIAL_PRECONDITION_CHANGED";
 
+/**
+ * The way forward of a recoverable refusal: walk to `goal` (pass it to
+ * `navigate_to`); then, when set, do `then` before retrying — a fetch:
+ * `move_to` the cart (`targetId`) with `goal` the patient.
+ */
+export interface ActionHint {
+  goal: NavGoal;
+  label: string;
+  then?: { operation: string; targetId: EntityId; goal?: NavGoal };
+}
+
 export type SpatialCheck =
   | { ok: true; requirement: SpatialRequirement; satisfiedBy: EntityId[] }
   | {
@@ -640,8 +651,8 @@ export type SpatialCheck =
       reason: string;
       /** Localised explanation. */
       message: string;
-      /** Where to go: pass `hint.goal` to `navigate_to` (null when nothing in the facility satisfies it). */
-      hint: { goal: NavGoal; label: string } | null;
+      /** Where to go: pass `hint.goal` to `navigate_to`, then do `hint.then` if set (null when nothing in the facility satisfies it). */
+      hint: ActionHint | null;
       /** Measurements behind the reason: `distance`, `range`, `missing` capabilities, `providers`… */
       details?: Record<string, unknown>;
     };
@@ -758,8 +769,8 @@ export interface WorldActionResult {
   /** Ids of engine domain events caused by the clinical effect. */
   clinicalEventIds?: string[];
   events: WorldEvent[];
-  /** Where to go / what to do next when the failure is recoverable. */
-  hint?: { goal: NavGoal; label: string } | null;
+  /** Where to go / what to do next when the failure is recoverable (`then`: an operation to do on arrival, e.g. a fetch). */
+  hint?: ActionHint | null;
 }
 
 /** Result of running a clinical tool through the session's tool path (hooks → precheck → approval → engine). */
@@ -872,9 +883,10 @@ export interface WorldRuntime {
   /**
    * Localised name of where a point is (lead note 2): its room; in no room
    * inside a building, that building's corridor; outdoors, the facility's
-   * outdoor region (`outdoorRegion`, e.g. "Healing Garden").
+   * outdoor region (`outdoorRegion`, e.g. "Healing Garden"). In `locale`
+   * (default: the world's).
    */
-  regionName(at: { level: string; x: number; z: number }): string;
+  regionName(at: { level: string; x: number; z: number }, locale?: string): string;
 
   /* navigation (read-only planning) */
   plan(actorId: ActorId, goal: NavGoal): NavPlan;

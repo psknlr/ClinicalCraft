@@ -12,6 +12,7 @@
  */
 import {
   availableDecisions,
+  capabilityLabels,
   currentObjective,
   facilityCapabilities,
   historyAvailable,
@@ -263,7 +264,8 @@ function capabilityRefusal(ctx: Pick<ToolContext, "facility" | "catalogs" | "loc
   const missing = missingCapabilities(ctx, requires);
   if (missing.length === 0) return null;
   const facility = ctx.facility ? t(ctx.facility.name, ctx.locale) : "";
-  const message = rt(ctx.locale, "tool.noCapability", { name, facility, capabilities: joinList(ctx.locale, missing) });
+  // capabilities by their display labels (never raw ids to the learner or the model)
+  const message = rt(ctx.locale, "tool.noCapability", { name, facility, capabilities: joinList(ctx.locale, capabilityLabels(missing, ctx.locale)) });
   return { ok: false, output: message, data: { rejected: { code: "missing-capability" }, message, missing } };
 }
 
@@ -646,6 +648,11 @@ const checkVitals: ToolDefinition<ToolArgs> = {
   summarize: (_args, ctx) => rt(ctx.locale, "sum.vitals"),
   async run(_args, ctx) {
     const snapshot = vitalsAt(ctx.caseDef, ctx.state());
+    // embodied: never a rhythm without a monitor / ECG at the bedside (observations by hand, the chart)
+    if (ctx.bedsideRhythm && !ctx.bedsideRhythm()) {
+      delete snapshot.vitals.rhythm;
+      delete snapshot.vitals.ecg;
+    }
     return { ok: true, output: vitalsText(snapshot, ctx.locale, clockTime(ctx.caseDef, ctx.state().clock, ctx.locale)), data: snapshot };
   },
 };

@@ -10,6 +10,7 @@
 import { describe, expect, it } from "vitest";
 import type { FacilityDefinition } from "@clinicalcraft/core";
 import { BEDSIDE_RADIUS, PRIMARY_ACTOR, type SpatialPolicy } from "./contracts.js";
+import { rhythmAtBedside } from "./bedside.js";
 import { DefaultSpatialPolicy } from "./policy.js";
 import { loadFacility } from "./__fixtures__/content.js";
 import { hospitalWithTestItems, loadCase, makeWorld, type TestWorld } from "./__fixtures__/world.js";
@@ -178,5 +179,21 @@ describe("atBedside: the reviewer's cases", () => {
     const w = makeWorld("stemi-inferior-rv", { facility, slotId: "resus-1.slot" });
     expect(w.runtime.inspect(A, "eq:resus-1.monitor")!.availableActions).toContain("attach");
     expect(w.runtime.inspect(A, "eq:resus-2.monitor")!.availableActions).not.toContain("attach");
+  });
+});
+
+describe("G5: the heart rhythm needs a device that shows it at the bedside (rhythmAtBedside)", () => {
+  it("a resus bay (its monitor): yes; a consult room or the garden bench: no — until a monitor-defibrillator is wheeled there", async () => {
+    expect(rhythmAtBedside(makeWorld("stemi-inferior-rv").runtime)).toBe(true);
+    expect(rhythmAtBedside(makeWorld("new-onset-t2dm").runtime)).toBe(false);
+    const garden = makeWorld("anaphylaxis-garden");
+    expect(rhythmAtBedside(garden.runtime)).toBe(false);
+    const defib = garden.runtime.find(A, { capabilities: ["defibrillator"] })[0]!.id;
+    expect((await garden.act({ actorId: A, operation: "approach", targetId: defib })).status).toBe("completed");
+    expect((await garden.act({ actorId: A, operation: "move_to", targetId: defib, goal: { kind: "interact", id: garden.patientId } })).status).toBe("completed");
+    expect(rhythmAtBedside(garden.runtime)).toBe(true);
+    // out of service: not a source
+    garden.runtime.setAvailability(defib, false);
+    expect(rhythmAtBedside(garden.runtime)).toBe(false);
   });
 });

@@ -38,6 +38,11 @@ export interface ToolContext {
   readonly turnId?: string;
   /** Embodied mode: the world action whose clinical effect this call carries out (its spans are recorded by the world). */
   readonly worldActionId?: string;
+  /**
+   * Embodied mode: does a device at the bedside show the heart rhythm (a monitor, an ECG machine, a defibrillator —
+   * the world's `rhythmAtBedside`)? False: `check_vitals` reports no rhythm (observations by hand or the chart, EMBODIED §6).
+   */
+  readonly bedsideRhythm?: () => boolean;
 }
 
 export interface ToolOutput {

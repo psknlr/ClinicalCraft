@@ -6,8 +6,9 @@
  */
 import { describe, expect, it } from "vitest";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
-import { command, makeEmbodiedSession } from "./__fixtures__/embodied.js";
+import { builtinContent, command, makeEmbodiedSession } from "./__fixtures__/embodied.js";
 import { EMBODIED_COMMAND_NAMES, keyValues } from "./commands-world.js";
+import { catalogsFor } from "./node/bootstrap.js";
 
 describe("keyValues", () => {
   it("parses numbers, booleans, JSON and goal targets", () => {
@@ -62,4 +63,25 @@ describe("embodied slash commands", () => {
     }
     await t.session.close();
   });
+});
+
+describe("/delegate record_ecg from the nurse's post (staff know their department's equipment, lead notes 1 / 4b)", () => {
+  for (const [facilityId, nurse] of [
+    ["general-hospital", "staff:ed-nurse"],
+    ["teaching-hospital", "staff:ed-station.nurse"],
+  ] as const) {
+    it(`${facilityId}: /delegate ${nurse} record_ecg records the ECG (the nurse never saw the cart)`, async () => {
+      const content = await builtinContent();
+      const facility = content.facilities.get(facilityId)!.def;
+      const t = await makeEmbodiedSession({ facility, catalogs: catalogsFor(content, facility), settingsPatch: { approvalMode: "bypass" } });
+      const world = t.session.world()!;
+      expect(world.actor(nurse)!.seen.filter((id) => world.entity(id)?.capabilities.includes("ecg-12lead"))).toEqual([]);
+      const r = await command(t, "delegate", `${nurse} record_ecg`);
+      expect(r.text).not.toMatch(/0 steps|0 步/);
+      expect(r.data, r.text).toMatchObject({ status: "completed" });
+      expect((r.data as { steps: unknown[] }).steps.length).toBeGreaterThan(0);
+      expect(t.session.state().orders.map((o) => o.investigationId)).toContain("ecg-12lead");
+      await t.session.close();
+    });
+  }
 });

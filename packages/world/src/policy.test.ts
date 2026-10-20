@@ -263,6 +263,8 @@ describe("checkSpatial: every row, ok and each failure, with a hint that fixes i
     expect(fetch.message).not.toMatch(/ecg-12lead/);
     const cart = (fetch.hint!.goal as { id: string }).id;
     expect(["eq:cub2-ecg", "eq:ward-ecg", "eq:icu-ecg"]).toContain(cart);
+    // the hint says what to do at the cart: wheel it to the patient
+    expect(fetch.hint!.then).toEqual({ operation: "move_to", targetId: cart, goal: { kind: "interact", id: w.patientId } });
     const after = await follow(w, ecg, fetch);
     expect(after).toMatchObject({ ok: true, satisfiedBy: [w.patientId, cart] });
     // a point-of-care test: the glucometer lives at the ED station, not at the bedside

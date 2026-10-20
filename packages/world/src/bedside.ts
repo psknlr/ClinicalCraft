@@ -21,7 +21,8 @@
  * room (line of sight counts only between open spaces).
  */
 import type { FacilityDefinition, PatientSlot } from "@clinicalcraft/core";
-import { BEDSIDE_RADIUS } from "./contracts.js";
+import { RHYTHM_CAPABILITIES } from "./capabilities.js";
+import { BEDSIDE_RADIUS, type WorldRuntime } from "./contracts.js";
 import type { Placed } from "./locate.js";
 import type { NavGrids } from "./nav/grid.js";
 import { flood, nearestFreeCell } from "./nav/search.js";
@@ -123,4 +124,14 @@ export class BedsideRule {
     }
     return Infinity;
   }
+}
+
+/**
+ * Does a device at the bedside show the heart rhythm (G5)? An in-service
+ * monitor, ECG machine or defibrillator at the bedside (the bedside rule).
+ * Without one, vitals are observations by hand or the chart: never a rhythm
+ * (the engine adds its own condition — the monitor attached, its ECG leads on).
+ */
+export function rhythmAtBedside(world: Pick<WorldRuntime, "bedsideProviders">): boolean {
+  return RHYTHM_CAPABILITIES.some((c) => world.bedsideProviders(c).length > 0);
 }

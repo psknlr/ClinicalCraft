@@ -25,9 +25,9 @@
  */
 import { assignPatientSlot, patientCues, t, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import {
-  BEDSIDE_RADIUS,
   createWorldRuntime,
   PRIMARY_ACTOR,
+  rhythmAtBedside,
   type ActorId,
   type CameraSensor,
   type ClinicalIntent,
@@ -223,8 +223,11 @@ export class EmbodiedSession {
       inspect: (actorId, id) => w().inspect(actorId, id),
       roomInfo: (actorId, roomId) => w().roomInfo(actorId, roomId),
       canSee: (actorId, id) => w().canSee(actorId, id),
+      regionName: (at, locale) => w().regionName(at, locale),
       plan: (actorId, goal) => w().plan(actorId, goal),
       checkSpatial: (actorId, intent, opts) => w().checkSpatial(actorId, intent, opts),
+      atBedside: (id) => w().atBedside(id),
+      bedsideProviders: (capability) => w().bedsideProviders(capability),
       // The learner's world action (a `world_action` op does the same, queued with the turns).
       execute: (request, signal) => self.act({ agent: "learner" }, request, signal),
       feedback: (actionId) => w().feedback(actionId),
@@ -380,6 +383,7 @@ export class EmbodiedSession {
       actorOf: (ctx) => this.actorOf(ctx),
       check: (actorId, intent, recheck) => this.check(actorId, intent, recheck),
       traced: (actorId, tool, args, run) => this.traced(actorId, tool, args, run),
+      rhythm: () => rhythmAtBedside(this.inner),
     };
   }
 
@@ -456,36 +460,17 @@ export class EmbodiedSession {
     return monitors.find((m) => this.atBedside(m.id))?.id ?? null;
   }
 
-  /** Where an entity is now (moved carts, carried items). */
-  private positionOf(id: string): { x: number; z: number; level: string; room: string | null } | null {
-    const e = this.inner.entity(id);
-    if (!e) return null;
-    const state = this.inner.snapshot().entities[id];
-    if (state?.heldBy) {
-      const holder = this.inner.actor(state.heldBy);
-      return holder ? { x: holder.pose.x, z: holder.pose.z, level: holder.pose.level, room: holder.room } : null;
-    }
-    if (state?.position) return { x: state.position.x, z: state.position.z, level: state.position.level, room: null };
-    return { x: e.position.x, z: e.position.z, level: e.level, room: e.room };
-  }
 
-  /** The bedside rule (within the bedside radius of the slot point, or in the slot's room). */
+  /** THE bedside rule of the world (`WorldRuntime.atBedside`). */
   atBedside(id: string): boolean {
-    const slot = this.host.facility!.patientSlots.find((s) => s.id === this.slotId);
-    const patient = this.patientId();
-    const p = this.positionOf(id);
-    const where = patient ? this.inner.entity(patient) : null;
-    if (!slot || !p || !where || p.level !== where.level) return false;
-    return Math.hypot(p.x - slot.x, p.z - slot.z) <= BEDSIDE_RADIUS || (p.room !== null && p.room === slot.room);
+    return this.inner.atBedside(id);
   }
 
-  /** Where a body is (localised room name, or "outside / a corridor") — the REPL status line; null for an unknown actor. */
+  /** Where a body is (its room; else a building's corridor or the facility's outdoor region) — the REPL status line; null for an unknown actor. */
   roomName(actorId: ActorId = PRIMARY_ACTOR, locale = this.host.locale()): string | null {
     const a = this.inner.actor(actorId);
     if (!a) return null;
-    if (!a.room) return rt(locale, "world.outdoors");
-    const e = this.inner.entity(`room:${a.room}`);
-    return e ? t(e.name, locale) : a.room;
+    return this.inner.regionName({ level: a.pose.level, x: a.pose.x, z: a.pose.z }, locale);
   }
 
   /** The host world tools run on. */

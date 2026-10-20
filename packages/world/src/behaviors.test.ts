@@ -130,6 +130,9 @@ describe("the ECG machine (catalog state machine)", () => {
     const other = await w.act({ actorId: A, operation: "record", targetId: "eq:resus1-ecg", parameters: { investigation: "hs-troponin" } });
     expect(other).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
     expect(other.message).toMatch(/cannot provide/);
+    // capabilities by their display labels, never raw ids
+    expect(other.message).toContain("clinical chemistry");
+    expect(other.message).not.toContain("lab-chemistry");
     expect(other.hint).toBeUndefined(); // troponin is a lab test whose sample is taken right here: no walk needed
     const right = await w.act({ actorId: A, operation: "record", targetId: "eq:resus1-ecg", parameters: { investigation: "ecg-right-sided" } });
     expect(right.status).toBe("completed");

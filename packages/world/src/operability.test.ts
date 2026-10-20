@@ -83,11 +83,13 @@ async function drive(w: TestWorld, id: string, operation: string, parameters: Re
     seen.add(key);
     if (!r.hint) return "stopped";
     const goal: NavGoal = r.hint.goal;
-    const fetch = r.hint.label.includes("move_to") && goal.kind === "interact" && goal.id !== w.patientId;
     const nav = await w.act({ actorId: A, operation: "navigate", goal });
     if (nav.status !== "completed") return "stopped";
-    if (fetch) {
-      const moved = await w.act({ actorId: A, operation: "move_to", targetId: goal.id, goal: { kind: "interact", id: w.patientId } });
+    // a fetch hint says what to do on arrival: wheel the cart to the patient
+    const then = r.hint.then;
+    if (then) {
+      expect(then).toEqual({ operation: "move_to", targetId: goal.kind === "interact" ? goal.id : "?", goal: { kind: "interact", id: w.patientId } });
+      const moved = await w.act({ actorId: A, operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}) });
       if (moved.status !== "completed") return "stopped";
     }
   }

@@ -106,7 +106,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       return out;
     },
     roomInfo: (actorId, roomId) => perception.roomInfo(actorId, roomId),
-    regionName: (at) => locator.regionName(at),
+    regionName: (at, locale) => locator.regionName(at, locale),
     canSee(actorId, id) {
       const resolved = actions.resolve(id);
       return !!resolved && perception.canSee(actorId, resolved);

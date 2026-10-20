@@ -30,7 +30,7 @@
  */
 import { monitorAttached, type ClinicalEffect, type LocalizedText } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
-import { MAX_HELD, RANGES, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
+import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
 import type { Placed, WorldLocator } from "./locate.js";
 import { MIN_RANGE } from "./nav/backend.js";
@@ -209,6 +209,8 @@ export interface RuleFailure {
   /** Where to go (verified by the action bus before it is returned). */
   goal?: NavGoal;
   label?: string;
+  /** What to do there before retrying (a fetch: `move_to` the cart to the patient). */
+  then?: ActionHint["then"];
 }
 
 export interface DeviceRulesDeps {
@@ -401,7 +403,7 @@ export class DeviceRules {
       if (!this.d.locator.patientId) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.noPatient", L) };
       const portable = place?.entity?.portable;
       return portable
-        ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.notAtBedside", L, { target }), goal: { kind: "interact", id }, label: worldMessage("hint.fetch", L, { provider: target, patient: this.d.locator.name(this.d.locator.patientId) }) }
+        ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.notAtBedside", L, { target }), goal: { kind: "interact", id }, label: worldMessage("hint.fetch", L, { provider: target, patient: this.d.locator.name(this.d.locator.patientId) }), then: { operation: "move_to", targetId: id, goal: { kind: "interact", id: this.d.locator.patientId } } }
         : { code: "PRECONDITION_FAILED", message: worldMessage("pre.notAtBedsideFixed", L, { target }) };
     }
     return { code: "PRECONDITION_FAILED", message: worldMessage("pre.predicate", L, { operation }) };

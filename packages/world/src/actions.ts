@@ -43,6 +43,7 @@ import type { CaseDefinition, FacilityDefinition } from "@clinicalcraft/core";
 import { permits } from "./authority.js";
 import type { DeviceRules } from "./behaviors.js";
 import type {
+  ActionHint,
   ActorId,
   ActorState,
   ClinicalPort,
@@ -272,10 +273,10 @@ export class ActionBus implements EffectsHost {
     return goalProblem(goal) === null;
   }
 
-  verifyHint(actor: ActorState, goal: NavGoal | undefined, label: string | undefined): { goal: NavGoal; label: string } | null | undefined {
+  verifyHint(actor: ActorState, goal: NavGoal | undefined, label: string | undefined, then?: ActionHint["then"]): ActionHint | null | undefined {
     if (!goal) return undefined;
     const plan = this.d.backend.plan({ actorId: actor.id, from: actor.pose, goal, role: actor.role });
-    return plan.ok ? { goal, label: label ?? "" } : null;
+    return plan.ok ? { goal, label: label ?? "", ...(then ? { then } : {}) } : null;
   }
 
   /* ---------------- public API ---------------- */
@@ -435,7 +436,7 @@ export class ActionBus implements EffectsHost {
       return failed("OPERATION_NOT_SUPPORTED", worldMessage("OPERATION_NOT_SUPPORTED", L, { target: locator.name(targetId), operation: request.operation, available: ops.join(", ") || "—" }));
     }
     const pre = rules.precheck(targetId, o, actor);
-    if (pre) return failed(pre.code, pre.message, pre.goal ? { hint: this.verifyHint(actor, pre.goal, pre.label) ?? null } : {});
+    if (pre) return failed(pre.code, pre.message, pre.goal ? { hint: this.verifyHint(actor, pre.goal, pre.label, pre.then) ?? null } : {});
     // an operation with a clinical effect: hint where both its own placement and the policy's hold (never alternating)
     if (o.clinical || o.toolByParam) {
       const placement = clinicalPlacement(this, request, actor, targetId, o);

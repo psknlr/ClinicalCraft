@@ -17,6 +17,7 @@ export * from "./visibility.js";
 export * from "./nav/index.js";
 export * from "./state.js";
 export * from "./locate.js";
+export * from "./bedside.js";
 export * from "./authority.js";
 export * from "./behaviors.js";
 export * from "./capabilities.js";

@@ -16,7 +16,7 @@
 import { levelElevation } from "./levels.js";
 import { HAND_HYGIENE_MINUTES, type OperationSpec } from "./behaviors.js";
 import { selectClinical } from "./clinical.js";
-import type { ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, Vec3, WorldActionRequest, WorldErrorCode, WorldEvent } from "./contracts.js";
+import type { ActionHint, ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, Vec3, WorldActionRequest, WorldErrorCode, WorldEvent } from "./contracts.js";
 import { metres, worldMessage } from "./i18n.js";
 import type { ActionBusDeps } from "./actions.js";
 import { cellPoint, distanceToArea, type Area } from "./raster.js";
@@ -29,7 +29,7 @@ export interface Outcome {
   errorCode?: WorldErrorCode;
   message: string;
   events: WorldEvent[];
-  hint?: { goal: NavGoal; label: string } | null;
+  hint?: ActionHint | null;
   navigation?: NavigationRecord;
   elapsedSeconds?: number;
   clinical?: { tool: string; ok: boolean; output: string };
@@ -54,7 +54,7 @@ export interface EffectsHost {
   walk(actor: ActorState, plan: Extract<NavPlan, { ok: true }>, signal: AbortSignal, request: WorldActionRequest): Promise<Walk>;
   invalidate(area: Area & { level: string }): void;
   /** Hint for a refusal, verified by planning (null when no route leads there). */
-  verifyHint(actor: ActorState, goal: NavGoal | undefined, label: string | undefined): { goal: NavGoal; label: string } | null | undefined;
+  verifyHint(actor: ActorState, goal: NavGoal | undefined, label: string | undefined, then?: ActionHint["then"]): ActionHint | null | undefined;
   /** Is this a well-formed navigation goal? */
   isGoal(goal: unknown): goal is NavGoal;
 }

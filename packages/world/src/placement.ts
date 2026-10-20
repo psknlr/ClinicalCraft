@@ -58,7 +58,8 @@ export function clinicalPlacement(host: EffectsHost, request: WorldActionRequest
   // no spot satisfies both: the device is too far from where the act must happen
   const place = locator.place(id);
   if (place?.entity?.portable === "cart" && !place.heldBy) {
-    return failed("PRECONDITION_FAILED", worldMessage("pre.notOperableCart", L, { target, patient }), { hint: host.verifyHint(actor, { kind: "interact", id }, worldMessage("hint.fetch", L, { provider: target, patient })) ?? null });
+    const then = locator.patientId ? { operation: "move_to", targetId: id, goal: { kind: "interact", id: locator.patientId } as NavGoal } : undefined;
+    return failed("PRECONDITION_FAILED", worldMessage("pre.notOperableCart", L, { target, patient }), { hint: host.verifyHint(actor, { kind: "interact", id }, worldMessage("hint.fetch", L, { provider: target, patient }), then) ?? null });
   }
   // a fixed device: the act itself can still be done where the policy says (at the patient, with what is there)
   if (!policy.ok && policy.hint) return failed(policy.code, policy.message, { hint: policy.hint });

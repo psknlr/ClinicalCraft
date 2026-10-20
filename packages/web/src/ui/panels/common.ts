@@ -3,14 +3,15 @@
  * phase names, the V4 evidence grid, case figures with the "not installed"
  * placeholder.
  */
-import { isOrderReady, resultFor, type CaseDefinition, type OrderRecord, type SessionState } from "@clinicalcraft/core";
+import { capabilityLabel, isOrderReady, resultFor, type CaseDefinition, type OrderRecord, type SessionState } from "@clinicalcraft/core";
 import { assetExists, caseAssetUrl } from "../../app/assets.js";
 import type { Game } from "../../app/context.js";
-import { ct, joinList, tr, trMaybe } from "../../i18n/index.js";
+import { ct, getLocale, joinList, tr, trMaybe } from "../../i18n/index.js";
 import { h } from "../dom.js";
 
+/** A capability's display label: core's one table (`CAPABILITY_LABELS`), shared with the world and agent messages. */
 export function capLabel(cap: string): string {
-  return trMaybe(`cap.${cap}`, cap);
+  return capabilityLabel(cap, getLocale());
 }
 
 export function capList(caps: readonly string[]): string {

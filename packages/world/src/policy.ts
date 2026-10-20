@@ -41,7 +41,7 @@
  * an `all-of` with a part no walk can fix reports only that part.
  */
 import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition } from "@clinicalcraft/core";
-import { RANGES, type ActorId, type ActorState, type ClinicalIntent, type ClinicalView, type EncounterBinding, type EntityId, type InteractionKind, type NavGoal, type SpatialCheck, type SpatialErrorCode, type SpatialPolicy, type SpatialRequirement } from "./contracts.js";
+import { RANGES, type ActionHint, type ActorId, type ActorState, type ClinicalIntent, type ClinicalView, type EncounterBinding, type EntityId, type InteractionKind, type NavGoal, type SpatialCheck, type SpatialErrorCode, type SpatialPolicy, type SpatialRequirement } from "./contracts.js";
 import { BEDSIDE_CAPABILITIES, BLOOD_SAMPLE_CAPABILITIES, CHART_CAPABILITY, DELIVERED_CAPABILITIES, IV_ACCESS_CAPABILITY, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES } from "./capabilities.js";
 import { ivAccessIntervention, ivAccessInSitu } from "./clinical.js";
 import { listText, metres, worldMessage } from "./i18n.js";
@@ -203,7 +203,15 @@ export class SpatialChecker {
     if (outcome.ok) return { ok: true, requirement, satisfiedBy: outcome.satisfiedBy };
     const { failure, chosen } = this.choose(actor, outcome.failures);
     const L = this.d.locale;
-    const hint = chosen ? { goal: chosen.goal, label: chosen.fetch ? worldMessage("hint.fetch", L, { provider: this.d.locator.name(chosen.target.id), patient: this.patientName() }) : chosen.target.kind === "patient" ? worldMessage("hint.patient", L, { patient: this.patientName() }) : worldMessage("hint.provider", L, { provider: this.d.locator.name(chosen.target.id) }) } : null;
+    const patient = this.d.locator.patientId;
+    const hint: ActionHint | null = chosen
+      ? {
+          goal: chosen.goal,
+          label: chosen.fetch ? worldMessage("hint.fetch", L, { provider: this.d.locator.name(chosen.target.id), patient: this.patientName() }) : chosen.target.kind === "patient" ? worldMessage("hint.patient", L, { patient: this.patientName() }) : worldMessage("hint.provider", L, { provider: this.d.locator.name(chosen.target.id) }),
+          // a fetch: once at the cart, wheel it to the patient
+          ...(chosen.fetch && patient ? { then: { operation: "move_to", targetId: chosen.target.id, goal: { kind: "interact", id: patient } as NavGoal } } : {}),
+        }
+      : null;
     return { ok: false, code, requirement, reason: failure.reason, message: failure.message(chosen), hint, details: failure.details };
   }
 

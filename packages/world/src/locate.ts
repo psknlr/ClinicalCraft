@@ -141,15 +141,15 @@ export class WorldLocator {
    * no room but inside a building, that building's corridor; outdoors, the
    * facility's outdoor region (e.g. "Healing Garden") — never "a corridor".
    */
-  regionName(at: { level: string; x: number; z: number }): string {
+  regionName(at: { level: string; x: number; z: number }, locale: string = this.locale): string {
     const room = this.registry.roomAt(at.level, at.x, at.z);
     const e = room ? this.registry.entity(`room:${room}`) : null;
-    if (e) return t(e.name, this.locale);
+    if (e) return t(e.name, locale);
     const building = this.facility.buildings
       .filter((b) => rectContains(b.rect, at.x, at.z) && buildingLevels(this.facility, b).includes(at.level))
       .sort((a, b) => a.rect.w * a.rect.d - b.rect.w * b.rect.d)[0];
-    if (building) return worldMessage("region.corridor", this.locale, { building: t(building.name, this.locale) });
-    return t(this.facility.outdoorRegion, this.locale);
+    if (building) return worldMessage("region.corridor", locale, { building: t(building.name, locale) });
+    return t(this.facility.outdoorRegion, locale);
   }
 
   /** Sight target of a placed entity (its current footprint). */

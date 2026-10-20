@@ -25,7 +25,7 @@
  * `read_result {investigation_id, phase?}`, `intervene {intervention_id}`,
  * `examine {finding_id}`, `check_vitals {}`.
  */
-import { t, type CaseDefinition, type ClinicalEffect, type Condition } from "@clinicalcraft/core";
+import { capabilityLabels, t, type CaseDefinition, type ClinicalEffect, type Condition } from "@clinicalcraft/core";
 import { BEDSIDE_CAPABILITIES, CHART_CAPABILITY, LAB_CAPABILITIES } from "./capabilities.js";
 import type { ClinicalIntent, WorldErrorCode } from "./contracts.js";
 import { listText, worldMessage } from "./i18n.js";
@@ -201,7 +201,7 @@ export function selectClinical(opts: {
     if (!id) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.noItem", L, { target }) };
     const item = all.find((i) => i.id === id);
     if (!item) return unknown(id);
-    if (!monitoring.includes(id)) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(item.requires, L) || "—" }) };
+    if (!monitoring.includes(id)) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(capabilityLabels(item.requires, L), L) || "—" }) };
     return done(item);
   }
   if (opts.effect.select === "capability" && !opts.toolByParam) {
@@ -209,7 +209,7 @@ export function selectClinical(opts: {
     if (wanted) {
       const item = all.find((i) => i.id === wanted);
       if (!item) return unknown(wanted);
-      if (!candidates.includes(item)) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(item.requires, L) || "—" }), intent: intentFor(tool, item.id) };
+      if (!candidates.includes(item)) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(capabilityLabels(item.requires, L), L) || "—" }), intent: intentFor(tool, item.id) };
       return done(item);
     }
     return candidates[0] ? done(candidates[0]) : { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.noItem", L, { target }) };
@@ -219,6 +219,6 @@ export function selectClinical(opts: {
   const item = all.find((i) => i.id === wanted);
   if (!item) return unknown(wanted);
   const fits = opts.match === "subset" ? item.requires.every((r) => caps.includes(r)) || orderEntry(tool, item.requires, caps) : item.requires.some((r) => caps.includes(r));
-  if (!fits) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(item.requires, L) || "—" }), intent: intentFor(tool, item.id) };
+  if (!fits) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(capabilityLabels(item.requires, L), L) || "—" }), intent: intentFor(tool, item.id) };
   return done(item);
 }

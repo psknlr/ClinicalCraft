@@ -19,7 +19,7 @@
  *       acknowledged call may still run.
  */
 import { mkdtempSync, rmSync } from "node:fs";
-import { createServer, request as httpRequest, type Server } from "node:http";
+import { createServer, request as httpRequest, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { connect, type AddressInfo, type Socket } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -39,6 +39,12 @@ interface Served {
   url: string;
   port: number;
   handler: RequestHandler;
+  /**
+   * The command streams (a 200 on `…/commands`) whose sockets the server still holds open, and the bytes waiting
+   * in their write buffers: what a client that never reads makes the server keep. Deterministic, unlike the
+   * process RSS, which vitest's `threads` pool shares with the other test files.
+   */
+  liveStreams(): { sockets: number; bytes: number };
   close(): Promise<void>;
 }
 
@@ -47,12 +53,20 @@ async function serve(opts: Partial<ServerOptions> & { world?: WorldSessionRouter
   const settings = mergeSettings([{ source: "flag", settings: { locale: "en", transcripts: { enabled: false } } }]);
   const handler = createRequestHandler({ host: "127.0.0.1", settings, content, env: { CLINICALCRAFT_HOME: join(root, "srv") }, log: () => undefined, ...(world ? { worldSessions: world } : {}), ...rest });
   const server: Server = createServer(handler);
+  const streams: Array<{ sock: Socket; res: ServerResponse }> = [];
+  server.on("request", (req: IncomingMessage, res: ServerResponse) => {
+    if ((req.url ?? "").split("?")[0]!.endsWith("/commands")) streams.push({ sock: req.socket, res });
+  });
   await new Promise<void>((r) => server.listen(0, "127.0.0.1", () => r()));
   const port = (server.address() as AddressInfo).port;
   return {
     url: `http://127.0.0.1:${port}/`,
     port,
     handler,
+    liveStreams: () => {
+      const live = streams.filter(({ sock, res }) => res.statusCode === 200 && !sock.destroyed);
+      return { sockets: live.length, bytes: live.reduce((n, { sock }) => n + sock.writableLength, 0) };
+    },
     close: async () => {
       await handler.close();
       server.closeAllConnections();
@@ -379,18 +393,19 @@ describe("S9 — a channel holder that never reads cannot make the server buffer
       const calls: Promise<unknown>[] = [];
       for (let i = 0; i < 32; i++) calls.push(api(s.url, `/${reg.id}/call`, { body: { correlationId: `c${i}`, tool: "navigate_to", args: { target: pad }, timeoutMs: 600_000 }, headers: attach(reg.key) }).catch(() => null));
       await new Promise((r) => setTimeout(r, 500));
-      const m0 = process.memoryUsage();
       for (let k = 0; k < 15; k++) await openStream();
       await new Promise((r) => setTimeout(r, 800));
-      const m1 = process.memoryUsage();
-      const grown = (m1.rss - m0.rss) / 1048576;
       // re-opens beyond the burst are refused…
       expect(statuses.filter((st) => st === 429).length).toBeGreaterThanOrEqual(5);
       // … replaced streams are gone (one stream at most), and what is held for a stream stays within its window.
       const stats = s.handler.worldSessions.stats();
       expect(stats.openStreams).toBeLessThanOrEqual(1);
       expect(stats.inflightBytes).toBeLessThanOrEqual(1024 * 1024 + 70 * 1024);
-      expect(grown).toBeLessThan(150);
+      // Memory (the reviewer's repro grew the process by 1.7 GB): every replaced stream's socket was destroyed
+      // with its backlog, so the server keeps ONE stream open for this client, buffering at most its window.
+      const live = s.liveStreams();
+      expect(live.sockets).toBeLessThanOrEqual(1);
+      expect(live.bytes).toBeLessThanOrEqual(1024 * 1024 + 70 * 1024);
     } finally {
       for (const sock of sockets) sock.destroy();
       await s.close();

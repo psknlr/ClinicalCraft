@@ -16,7 +16,7 @@
  * the bedside).
  */
 import { monitorAttached, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import type { ActorId, NavGoal, WorldActionResult, WorldRuntime } from "@clinicalcraft/world";
+import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
 import { resolveIntervention, resolveInvestigation, strArg } from "../tools/clinical.js";
 import { spatialCodeOf } from "../tools/spatial.js";
@@ -80,15 +80,8 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
   return [...candidates].sort((a, b) => dist(a) - dist(b) || (a.id < b.id ? -1 : 1))[0]!.id;
 }
 
-/** The case's IV-access procedure (id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
-export function ivAccessIntervention(c: CaseDefinition): string | null {
-  return (
-    c.interventions.find((i) => i.id === "iv-access")?.id ??
-    c.interventions.find((i) => i.kind === "procedure" && i.requires.includes("iv-access"))?.id ??
-    c.interventions.find((i) => i.kind === "procedure" && /cannul|iv-access|venous-access/i.test(i.id))?.id ??
-    null
-  );
-}
+/** The case's IV-access procedure (the world's rule: id `iv-access`, else a procedure requiring `iv-access`, else a cannulation). */
+export { ivAccessIntervention };
 
 /** Run a delegated task (see the module docs). */
 export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, args: Record<string, unknown>): Promise<DelegationResult> {
@@ -123,9 +116,10 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     if (r.status === "cancelled" && r.errorCode !== "MOVEMENT_INTERRUPTED") cancelled = true;
     return r;
   };
-  const go = async (goal: NavGoal) => record("navigate", await h.act(caller, { actorId: staff, operation: "navigate", goal }), "id" in goal ? goal.id : undefined);
+  // done for the delegating clinician: its observations report the staff member's actions (G13)
+  const go = async (goal: NavGoal) => record("navigate", await h.act(caller, { actorId: staff, operation: "navigate", goal, onBehalfOf: PRIMARY_ACTOR }), "id" in goal ? goal.id : undefined);
   const operate = async (id: string, operation: string, parameters?: Record<string, unknown>, goal?: NavGoal): Promise<WorldActionResult> => {
-    const request: WorldRequestInput = { actorId: staff, operation, targetId: id, ...(parameters ? { parameters } : {}), ...(goal ? { goal } : {}) };
+    const request: WorldRequestInput = { actorId: staff, operation, targetId: id, onBehalfOf: PRIMARY_ACTOR, ...(parameters ? { parameters } : {}), ...(goal ? { goal } : {}) };
     let r = record(operation, await h.act(caller, request), id);
     if (r.status === "failed" && r.hint && (r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE")) {
       const nav = await go(r.hint.goal);
