@@ -161,6 +161,7 @@
         "zh-CN": "导管室",
         "en": "Cath lab"
       },
+      "location": { "capability": "fluoroscopy" },
       "description": {
         "zh-CN": "导管室已启动、患者转入导管室后的直接PCI。",
         "en": "Primary PCI once the cath lab has been activated and the patient transferred there."
@@ -183,6 +184,7 @@
         "zh-CN": "导管室 · PCI术后",
         "en": "Cath lab — after PCI"
       },
+      "location": { "capability": "fluoroscopy" },
       "description": {
         "zh-CN": "冠脉造影/直接PCI结果出来之后（导管室内）。",
         "en": "After the angiography / primary PCI result is in (still in the cath lab)."
@@ -3294,6 +3296,7 @@
       "requires": [
         "xray"
       ],
+      "performedAt": "bedside",
       "turnaroundMinutes": 20,
       "risk": "low",
       "value": "neutral",
@@ -4861,6 +4864,7 @@
         "en": "Nasal-cannula oxygen"
       },
       "kind": "oxygen",
+      "device": "nasal-cannula",
       "aliases": {
         "zh-CN": [
           "吸氧",
@@ -5031,6 +5035,8 @@
         "en": "Transfer to the cath lab"
       },
       "kind": "disposition",
+      "posture": "lying",
+      "destination": { "capability": "fluoroscopy" },
       "aliases": {
         "zh-CN": [
           "转运",

@@ -5594,6 +5594,7 @@
       "requires": [
         "xray"
       ],
+      "performedAt": "bedside",
       "turnaroundMinutes": 20,
       "risk": "low",
       "value": "essential",
@@ -6121,6 +6122,7 @@
         "en": "Nasal cannula oxygen"
       },
       "kind": "oxygen",
+      "device": "nasal-cannula",
       "aliases": {
         "zh-CN": [
           "鼻导管",
@@ -6175,6 +6177,7 @@
         "en": "Venturi mask oxygen (FiO₂ 0.40)"
       },
       "kind": "oxygen",
+      "device": "venturi-mask",
       "aliases": {
         "zh-CN": [
           "文丘里面罩",
@@ -6225,6 +6228,7 @@
         "en": "Non-rebreather reservoir mask 15 L/min"
       },
       "kind": "oxygen",
+      "device": "non-rebreather-mask",
       "aliases": {
         "zh-CN": [
           "储氧面罩",

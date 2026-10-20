@@ -216,6 +216,40 @@ export type CanonicalCapability = keyof typeof CAPABILITIES;
 export const CapabilitySchema = z.string().min(1).max(60);
 
 /* ------------------------------------------------------------------ */
+/* Room kinds (facilities; a case destination names one)               */
+/* ------------------------------------------------------------------ */
+
+export const ROOM_KINDS = [
+  "entrance",
+  "reception",
+  "waiting",
+  "consult",
+  "triage",
+  "resus",
+  "emergency",
+  "ward",
+  "icu",
+  "operating-room",
+  "imaging",
+  "laboratory",
+  "pathology",
+  "pharmacy",
+  "nurse-station",
+  "conference",
+  "office",
+  "corridor",
+  "storage",
+  "restroom",
+  "garden",
+  "build-zone",
+  "rehabilitation",
+  "teaching",
+  "elevator",
+  "stairwell",
+] as const;
+export const RoomKindSchema = z.enum(ROOM_KINDS);
+
+/* ------------------------------------------------------------------ */
 /* Assets                                                              */
 /* ------------------------------------------------------------------ */
 

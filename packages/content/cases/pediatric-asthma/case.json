@@ -6634,6 +6634,7 @@
     {
       "id": "oxygen",
       "kind": "oxygen",
+      "device": "simple-mask",
       "risk": "low",
       "requires": [
         "oxygen"
@@ -6690,6 +6691,7 @@
     {
       "id": "position-upright",
       "kind": "positioning",
+      "posture": "sitting",
       "risk": "none",
       "maxDoses": 1,
       "name": {
@@ -7460,6 +7462,7 @@
     {
       "id": "admit-picu",
       "kind": "disposition",
+      "destination": { "setting": "icu" },
       "risk": "moderate",
       "name": {
         "zh-CN": "收入儿童重症监护室（PICU/HDU）",

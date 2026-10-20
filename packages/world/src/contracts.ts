@@ -15,6 +15,8 @@ import type {
   ActorRole as CoreActorRole,
   BehaviorOperation as CoreBehaviorOperation,
   CaseDefinition,
+  Destination as CoreDestination,
+  Posture as CorePosture,
   ClinicalEffect as CoreClinicalEffect,
   Condition,
   DeviceBehavior as CoreDeviceBehavior,
@@ -307,7 +309,67 @@ export interface EntityRuntimeState {
   door?: { open: boolean; locked: boolean };
   /** Scenario-controlled availability (`out-of-service` devices). */
   available?: boolean;
+  /** The patient (`patient:<slot>`): where the body is once it moved (EMBODIED §8, patient transport). */
+  patient?: PatientPlaceState;
 }
+
+/** A body posture (core `Posture`). */
+export type BodyPosture = CorePosture;
+
+/**
+ * Where the patient is, as stored (EMBODIED §8, review G8): a bed space (a patient slot) or a spot at a
+ * provider (the CT table, beside the C-arm, in front of the peak-flow station) or wherever a transport
+ * stopped. Absent until the patient first moves: the case's slot, its bed, the clinical posture.
+ */
+export interface PatientPlaceState {
+  /** The bed space the patient occupies (a patient slot id), or null (at a provider, in transit). */
+  slot: string | null;
+  /** The equipment the patient was brought to (`eq:<id>`), or null. */
+  provider: EntityId | null;
+  /** Where a transport back goes: the bed space (or provider) the patient belongs to. */
+  home: { slot: string | null; provider: EntityId | null };
+  /** A spot that is not a bed space (at a provider, in transit): level, centre and facing (degrees); null in a slot. */
+  spot: { level: string; x: number; z: number; rot: number } | null;
+  /** The posture the place forces (lying on a table or a trolley, standing at a station); null: the clinical one. */
+  posture: BodyPosture | null;
+  /** The wheeled bed / trolley that travels with the patient (`eq:<id>`), or null. */
+  trolley: EntityId | null;
+  /** What the patient lies or sits on at the spot (a table, the scanner, the trolley), or null (standing). In a slot: its bed. */
+  support: EntityId | null;
+}
+
+/** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
+export interface PatientPlace {
+  slot: string | null;
+  provider: EntityId | null;
+  home: { slot: string | null; provider: EntityId | null };
+  level: string;
+  /** The body's centre on the floor (a bed's centre when lying on it). */
+  x: number;
+  y: number;
+  z: number;
+  /** Facing (degrees about +Y). */
+  rot: number;
+  room: string | null;
+  /** The posture now: the place's, else the clinical one (an intervention's authored posture, else the case's). */
+  posture: BodyPosture;
+  support: EntityId | null;
+  trolley: EntityId | null;
+  /** The body's footprint now (a bed's when lying on it). */
+  footprint: { w: number; d: number; h: number };
+}
+
+/**
+ * Where a step takes the patient: an authored destination (core `Destination`: a setting, a room kind, a
+ * capability), a bed space (`slot`), a provider (`provider`: an equipment id or alias), or `home` (where a
+ * transport back goes).
+ */
+export type PatientDestination = CoreDestination | { slot: string } | { provider: EntityId } | { home: true };
+
+/** The outcome of `WorldRuntime.relocatePatient`. */
+export type PatientRelocation =
+  | { ok: true; moved: boolean; place: PatientPlace; name: string; message: string }
+  | { ok: false; reason: "no-destination" | "no-patient"; message: string };
 
 /** Temporary obstacle (wet floor, blocked corridor) injected by a scenario or an instructor. */
 export interface DynamicObstacle {
@@ -336,6 +398,11 @@ export interface WorldDynamics {
   removed?(): readonly EntityId[];
   /** Pose of an actor (`actor:*`) or of a staff member away from their post (follow goals). */
   actorPose?(id: ActorId): Pose | null | undefined;
+  /**
+   * Bodies that block walking but are not in the collision model (the patient after moving or changing
+   * posture: its static body, if any, is listed in `removed`). Not opaque.
+   */
+  bodies?(): readonly { id: EntityId; level: string; area: { minX: number; maxX: number; minZ: number; maxZ: number } }[];
 }
 
 export interface WorldStateSnapshot {
@@ -368,6 +435,10 @@ export type WorldEvent = (
   | { id: string; type: "hygiene"; actorId: ActorId; until: number }
   | { id: string; type: "task.changed"; actorId: ActorId; task: ActorState["task"] }
   | { id: string; type: "action.completed"; actionId: string; actorId: ActorId; operation: string; status: WorldActionResult["status"]; errorCode?: WorldErrorCode }
+  /** The patient's body moved (a transport by `by`, or a relocation by the team: `by` null) along `path`. */
+  | { id: string; type: "patient.moved"; entityId: EntityId; from: PatientPlace; to: PatientPlace; by: ActorId | null; distance: number; path: PathPoint[] }
+  /** The patient's posture changed where they are (clinical state: positioning, a transfer). */
+  | { id: string; type: "patient.posture"; entityId: EntityId; from: BodyPosture; to: BodyPosture }
 ) & {
   /**
    * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a
@@ -607,6 +678,12 @@ export type SpatialRequirement =
   | { kind: "bedside-provider"; capabilities: string[]; patientRange: number; delivered?: string[] }
   | { kind: "monitor-screen"; range: number }
   | { kind: "clinical"; condition: Condition; need: "iv-access" | "sample" | (string & {}); interventionId?: string }
+  /**
+   * The patient within reach of an in-service device providing every capability (a study done on the patient
+   * at a fixed device — the CT scanner, the C-arm — or a patient-performed test at a station): no walk of the
+   * actor fixes it — the patient is brought there (`transport_patient`, review G8).
+   */
+  | { kind: "patient-at-provider"; capabilities: string[] }
   | { kind: "any-of"; options: SpatialRequirement[] }
   | { kind: "all-of"; options: SpatialRequirement[] };
 
@@ -632,7 +709,7 @@ export type SpatialErrorCode = "SPATIAL_REQUIREMENT_UNMET" | "SPATIAL_PRECONDITI
 export interface ActionHint {
   goal: NavGoal;
   label: string;
-  then?: { operation: string; targetId: EntityId; goal?: NavGoal };
+  then?: { operation: string; targetId: EntityId; goal?: NavGoal; parameters?: Record<string, unknown> };
 }
 
 export type SpatialCheck =
@@ -929,6 +1006,26 @@ export interface WorldRuntime {
   atBedside(id: EntityId): boolean;
   /** In-service equipment providing `capability` that is at the bedside now (`atBedside`), in registry order. */
   bedsideProviders(capability: string): EntityId[];
+
+  /* the patient's body (EMBODIED §8, patient transport) */
+  /** Where the patient is now (bed space or provider, posture, support, trolley, home); null without a patient. */
+  patientPlace(): PatientPlace | null;
+  /** The patient's monitor where the patient is now: the bed space's linked monitor, else one at the bedside; null: none. */
+  patientMonitor(): EntityId | null;
+  /**
+   * THE screen rule (EMBODIED §6 `monitor-screen`): the patient's monitor this actor can read now — in service,
+   * from the monitor's own room, within the screen range with line of sight (never through a window) — or null.
+   * Attachment is the engine's (`monitorAttached`), not part of this rule.
+   */
+  screenInView(actorId: ActorId): EntityId | null;
+  /**
+   * Move the patient to a destination at once: a transfer the team carries out (a disposition, entering a phase
+   * with a location) — nobody walks, no time is charged (the clinical act's own time). Already there: nothing
+   * moves; no such place in the facility: the patient stays (`ok: false`, a localised message).
+   */
+  relocatePatient(destination: PatientDestination): PatientRelocation;
+  /** Re-read the patient's clinical posture (after an intervention): the body's collider follows; true when the body changed. */
+  refreshPatient(): boolean;
 
   /* actions */
   execute(request: WorldActionRequest, signal?: AbortSignal): Promise<WorldActionResult>;

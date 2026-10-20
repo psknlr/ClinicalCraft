@@ -5037,6 +5037,7 @@
       "requires": [
         "xray"
       ],
+      "performedAt": "bedside",
       "turnaroundMinutes": 30,
       "risk": "low",
       "value": "neutral",
@@ -6527,6 +6528,7 @@
         "en": "High-flow oxygen via non-rebreather mask"
       },
       "kind": "oxygen",
+      "device": "non-rebreather-mask",
       "aliases": {
         "zh-CN": [
           "吸氧",

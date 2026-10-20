@@ -17,6 +17,7 @@ import { entityLevel } from "./levels.js";
 import { MIN_RANGE } from "./nav/backend.js";
 import type { NavGrids } from "./nav/grid.js";
 import { distanceToArea, footprintArea, type Area } from "./raster.js";
+import type { PatientBody } from "./patient.js";
 import { BODY_FOOTPRINT, type SemanticRegistry } from "./registry.js";
 import type { SightTarget, VisibilityModel } from "./visibility.js";
 
@@ -49,9 +50,10 @@ export interface Placed {
 
 /** Shared spatial queries over the static registry and the physical state. */
 export class WorldLocator {
+  /** The case's patient slot (the binding: the patient's identity `patient:<slot>`; where they are now is `patientBody`). */
   readonly slot: PatientSlot | null;
   readonly patientId: EntityId | null;
-  /** The bedside rule of this encounter (`bedside.ts`). */
+  /** The bedside rule of this encounter (`bedside.ts`), measured from where the patient is now. */
   readonly bedside: BedsideRule;
   private readonly monitorIds: EntityId[];
 
@@ -64,11 +66,18 @@ export class WorldLocator {
     slotId: string | null,
     /** The navigation grids (walking distances of the bedside rule); null with a custom backend. */
     grids: NavGrids | null = null,
+    /** The patient's body: where the patient is now (EMBODIED §8); null: always in the case's slot. */
+    readonly patientBody: PatientBody | null = null,
   ) {
     this.monitorIds = registry.ofKind("equipment").filter((e) => e.interaction === "monitor").map((e) => e.id);
     this.slot = (slotId ? facility.patientSlots.find((s) => s.id === slotId) : undefined) ?? null;
     this.patientId = this.slot && registry.entity(`patient:${this.slot.id}`) ? `patient:${this.slot.id}` : null;
-    this.bedside = new BedsideRule({ facility, visibility, grids, slot: this.slot, slotLevel: this.slotLevel(), sight: (p) => this.sight(p) });
+    const slot = this.slot;
+    const anchor = () => {
+      if (this.patientBody) return this.patientBody.anchor();
+      return slot ? { level: entityLevel(facility, slot), x: slot.x, z: slot.z, room: slot.room } : null;
+    };
+    this.bedside = new BedsideRule({ facility, visibility, grids, anchor, sight: (p) => this.sight(p) });
   }
 
   /** Localised display name of an entity or actor (patients: their display name). */
@@ -81,6 +90,7 @@ export class WorldLocator {
 
   /** Where an entity (or actor) is now; null for unknown ids. */
   place(id: EntityId): Placed | null {
+    if (id === this.patientId && this.patientBody) return this.patientPlaced();
     const e = this.registry.entity(id);
     const actor = this.state.actor(id);
     if (actor && (!e || e.kind === "staff")) return this.bodyAt(id, e, { level: actor.pose.level, x: actor.pose.x, y: actor.pose.y, z: actor.pose.z, rot: actor.pose.yaw / (Math.PI / 180) }, actor.room);
@@ -94,6 +104,21 @@ export class WorldLocator {
       }
     }
     return s?.position ? this.movedTo(e, s.position) : this.home(id);
+  }
+
+  /** The patient where the body is now (its place: a bed space or a provider, the posture's footprint). */
+  private patientPlaced(): Placed | null {
+    const e = this.registry.entity(this.patientId!);
+    const p = this.patientBody!.place();
+    if (!e || !p) return null;
+    const position = { x: p.x, y: p.y, z: p.z };
+    return { id: e.id, kind: e.kind, entity: e, level: p.level, position, rot: p.rot, footprint: p.footprint, area: footprintArea({ position, footprint: p.footprint }), room: p.room };
+  }
+
+  /** The patient's posture now (the place's, else the clinical one); null without a patient. */
+  patientPosture(): string | null {
+    if (this.patientBody) return this.patientBody.state() ? this.patientBody.posture() : null;
+    return this.patientId ? (this.registry.entity(this.patientId)?.public?.posture ?? null) : null;
   }
 
   /** Where an entity is kept: its placement in the facility (null for actors' bodies and unknown ids). */
@@ -189,8 +214,10 @@ export class WorldLocator {
     return this.patientId ? this.place(this.patientId) : null;
   }
 
-  /** Level of the patient slot. */
+  /** Level of the patient's place now (the case's slot without a body model). */
   slotLevel(): string | null {
+    const a = this.patientBody?.anchor();
+    if (a) return a.level;
     return this.slot ? entityLevel(this.facility, this.slot) : null;
   }
 
@@ -210,10 +237,29 @@ export class WorldLocator {
    */
   isPatientMonitor(id: EntityId): boolean {
     if (!this.slot || !this.monitorIds.includes(id)) return false;
-    const linked = this.slot.monitor && this.registry.entity(`eq:${this.slot.monitor}`) ? `eq:${this.slot.monitor}` : null;
+    // the bed space the patient is in now (none at a provider: a monitor at that bedside, the cath lab's)
+    const here = this.patientBody ? this.patientBody.slotNow() : this.slot;
+    const linked = here?.monitor && this.registry.entity(`eq:${here.monitor}`) ? `eq:${here.monitor}` : null;
     if (linked) return id === linked;
     const p = this.place(id);
     return !!p && this.atBedside(p);
+  }
+
+  /** The patient's monitor now (the bed space's linked one, else the first monitor at the bedside), or null. */
+  patientMonitor(): EntityId | null {
+    return this.monitorIds.find((id) => this.isPatientMonitor(id) && this.state.available(id)) ?? this.monitorIds.find((id) => this.isPatientMonitor(id)) ?? null;
+  }
+
+  /**
+   * THE screen rule (EMBODIED §6 `monitor-screen`, extra review item 1): can a body at `pose` in `room` read
+   * the screen of a monitor where it stands — the monitor's own room, the same level, within `range` of its
+   * footprint (never below `MIN_RANGE`), with a line of sight; never through a window into another room. The
+   * policy's `monitor-screen` option, the monitor's `read`, perception's screen cue and the web's screen all
+   * use it.
+   */
+  screenInView(actor: { pose: Pick<Pose, "x" | "z" | "level">; room: string | null }, monitor: Placed, range = RANGES.screen): boolean {
+    if (actor.pose.level !== monitor.level || actor.room !== monitor.room) return false;
+    return this.distance(actor.pose, monitor) <= Math.max(range, MIN_RANGE) + 1e-6 && this.lineOfSight(actor.pose, monitor);
   }
 
   /** Capabilities an entity provides (equipment only; an out-of-service device provides nothing). */

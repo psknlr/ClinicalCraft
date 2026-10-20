@@ -19,8 +19,12 @@
  * Never through a wall: fixed equipment in another room does not count,
  * however close; neither does anything seen through a window into another
  * room (line of sight counts only between open spaces).
+ *
+ * The bedside is where the patient is NOW (EMBODIED §8, patient transport):
+ * the slot point and room of the bed space they occupy, or the spot (and its
+ * room) at a provider they were brought to — the "slot" below is that anchor.
  */
-import type { FacilityDefinition, PatientSlot } from "@clinicalcraft/core";
+import type { FacilityDefinition } from "@clinicalcraft/core";
 import { RHYTHM_CAPABILITIES } from "./capabilities.js";
 import { BEDSIDE_RADIUS, type WorldRuntime } from "./contracts.js";
 import type { Placed } from "./locate.js";
@@ -35,26 +39,30 @@ export const OPEN_ROOM_KINDS: readonly string[] = ["corridor"];
 /** Search band around an entity for the walk from the bedside (m beyond its footprint). */
 const WALK_BAND = 1.4;
 
+/** Where the bedside is measured from: the patient's bed space (slot point, its room) or the spot they were brought to. */
+export interface BedsideAnchor {
+  level: string;
+  x: number;
+  z: number;
+  room: string | null;
+}
+
 export interface BedsideRuleDeps {
   facility: FacilityDefinition;
   visibility: VisibilityModel;
   /** The navigation grids (walking distances); null with a custom backend (then only the room and line of sight count). */
   grids: NavGrids | null;
-  slot: PatientSlot | null;
-  /** Level of the slot (null without a slot). */
-  slotLevel: string | null;
+  /** Where the patient is now (null without a patient). */
+  anchor(): BedsideAnchor | null;
   /** The sight target of a placed entity (its current footprint). */
   sight(p: Placed): SightTarget;
 }
 
 /** The bedside rule of one encounter (see the module docs). */
 export class BedsideRule {
-  private walkField: { version: number; field: Float64Array } | null = null;
-  private readonly openSlot: boolean;
+  private walkField: { key: string; field: Float64Array } | null = null;
 
-  constructor(private readonly d: BedsideRuleDeps) {
-    this.openSlot = !d.slot?.room || this.isOpenRoom(d.slot.room);
-  }
+  constructor(private readonly d: BedsideRuleDeps) {}
 
   /** Is a room open space: no room, a room outside every building (outdoors), or an indoor corridor? */
   isOpenRoom(roomId: string | null): boolean {
@@ -64,21 +72,23 @@ export class BedsideRule {
     return !room.building || OPEN_ROOM_KINDS.includes(room.kind);
   }
 
-  /** Is the slot itself in open space (the garden bench)? */
+  /** Is the patient's place in open space now (the garden bench)? */
   get slotIsOpen(): boolean {
-    return this.openSlot;
+    const a = this.d.anchor();
+    return !!a && (!a.room || this.isOpenRoom(a.room));
   }
 
   /** Is the placed entity at the bedside now (see the module docs)? */
   at(p: Placed): boolean {
-    const slot = this.d.slot;
-    if (!slot || p.level !== this.d.slotLevel) return false;
+    const slot = this.d.anchor();
+    if (!slot || p.level !== slot.level) return false;
     if (slot.room && p.room === slot.room) return true;
     if (Math.hypot(p.position.x - slot.x, p.position.z - slot.z) > BEDSIDE_RADIUS + 1e-9) return false;
     const open = this.isOpenRoom(p.room);
     const portable = !!p.entity?.portable || !!p.heldBy;
+    const openSlot = !slot.room || this.isOpenRoom(slot.room);
     // the radius bridges a room boundary only for an open slot, or a portable item just outside the room
-    if (!this.openSlot && !(portable && open)) return false;
+    if (!openSlot && !(portable && open)) return false;
     if (open && this.d.visibility.visibleFrom(p.level, { x: slot.x, z: slot.z }, this.d.sight(p))) return true;
     return this.walk(p) <= BEDSIDE_RADIUS + 1e-9;
   }
@@ -91,14 +101,15 @@ export class BedsideRule {
    */
   walk(p: Placed): number {
     const grids = this.d.grids;
-    const slot = this.d.slot;
-    const level = this.d.slotLevel;
+    const slot = this.d.anchor();
+    const level = slot?.level ?? null;
     const g = level ? grids?.grid(level) : null;
     if (!grids || !g || !slot || !level || p.level !== level) return Infinity;
-    if (!this.walkField || this.walkField.version !== grids.version) {
+    const key = `${grids.version}|${level}|${slot.x},${slot.z}`;
+    if (!this.walkField || this.walkField.key !== key) {
       const mask = grids.compose(level, { role: "clinician", ignoreZones: true, ignoreDynamic: true })!;
       const start = inFrame(g, slot.x, slot.z) ? nearestFreeCell(g, mask, cellIndex(g, slot.x, slot.z), 4) : null;
-      this.walkField = { version: grids.version, field: start === null ? new Float64Array(g.cols * g.rows).fill(Infinity) : flood(g, mask, start) };
+      this.walkField = { key, field: start === null ? new Float64Array(g.cols * g.rows).fill(Infinity) : flood(g, mask, start) };
     }
     const field = this.walkField.field;
     const a = p.area;

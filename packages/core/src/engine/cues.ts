@@ -1,12 +1,14 @@
 /**
  * What a bystander sees of the patient (docs/EMBODIED.md R7, §4): whether
- * they look critically ill and the oxygen accessory they wear — never a
- * number, a finding or a result. One implementation for every runtime: the
- * web world's voxel patient and the embodied agent runtime's
- * `ClinicalView.cues` (@clinicalcraft/agent).
+ * they look critically ill, the oxygen accessory they wear and their posture
+ * — never a number, a finding or a result. One implementation for every
+ * runtime: the web world's voxel patient and the embodied agent runtime's
+ * `ClinicalView.cues` (@clinicalcraft/agent). Review G12: the posture and the
+ * accessory follow clinical state (an intervention's authored `posture`, an
+ * oxygen intervention's `device` or dose text), never the case's static data.
  */
 import { t } from "../i18n.js";
-import type { CaseDefinition, Intervention } from "../schema/case.js";
+import type { CaseDefinition, Intervention, Posture } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
 import { MONITORED_VITALS } from "./monitor.js";
 import { alarmLevel, alarmLimitsFor, vitalsAt } from "./physiology.js";
@@ -29,11 +31,36 @@ export function inExtremis(c: CaseDefinition, s: SessionState): boolean {
 /** What an oxygen intervention puts on the patient's face. */
 export type OxygenAccessory = "oxygen-mask" | "nasal-cannula";
 
-/** The accessory of an oxygen intervention (a mask, NRB, non-rebreather or Venturi mask — else nasal cannula); null for other kinds. */
-export function oxygenAccessory(iv: Pick<Intervention, "id" | "name" | "kind">): OxygenAccessory | null {
+/** Oxygen delivery devices that put a mask on the face (the rest — nasal cannulae — do not). */
+const MASK_DEVICES: ReadonlySet<string> = new Set(["simple-mask", "non-rebreather-mask", "venturi-mask", "nebuliser-mask"]);
+
+/** Words of a mask in an oxygen intervention's id, name or dose (either language). */
+const MASK_WORDS = /mask|nrb|non-rebreath|venturi|reservoir|面罩|储氧/;
+
+/**
+ * The accessory of an oxygen intervention (null for other kinds): its authored `device` decides (a simple,
+ * non-rebreather, Venturi or nebuliser mask is a mask; nasal cannulae, high-flow ones included, are
+ * cannulae); without one, a mask named in its id, name or dose text in either language ("15 L/min via
+ * non-rebreather mask", "储氧面罩") — else nasal cannulae.
+ */
+export function oxygenAccessory(iv: Pick<Intervention, "id" | "name" | "kind"> & Partial<Pick<Intervention, "device" | "dose">>): OxygenAccessory | null {
   if (iv.kind !== "oxygen") return null;
-  const label = `${iv.id} ${t(iv.name, "en")}`.toLowerCase();
-  return /mask|nrb|non-rebreath|venturi/.test(label) ? "oxygen-mask" : "nasal-cannula";
+  if (iv.device) return MASK_DEVICES.has(iv.device) ? "oxygen-mask" : "nasal-cannula";
+  const label = [iv.id, t(iv.name, "en"), t(iv.name, "zh-CN"), iv.dose ? t(iv.dose, "en") : "", iv.dose ? t(iv.dose, "zh-CN") : ""].join(" ").toLowerCase();
+  return MASK_WORDS.test(label) ? "oxygen-mask" : "nasal-cannula";
+}
+
+/**
+ * The patient's posture now (G12): that of the latest intervention given that authors one (positioning,
+ * transfers — "lie her flat" → lying, a trolley transfer → lying), else the case's own.
+ */
+export function patientPosture(c: CaseDefinition, s: SessionState): Posture {
+  let posture: Posture = c.patient.posture ?? "standing";
+  for (const r of s.interventions) {
+    const authored = c.interventions.find((i) => i.id === r.interventionId)?.posture;
+    if (authored) posture = authored;
+  }
+  return posture;
 }
 
 /** Bystander cues of the patient at the session clock. */
@@ -42,6 +69,8 @@ export interface PatientBystanderCues {
   distressed: boolean;
   /** The accessory of the latest oxygen intervention given, or null. */
   accessory: OxygenAccessory | null;
+  /** The posture now (`patientPosture`). */
+  posture: Posture;
 }
 
 /** The patient's bystander cues (see `PatientBystanderCues`). */
@@ -54,5 +83,5 @@ export function patientCues(c: CaseDefinition, s: SessionState): PatientBystande
     const a = iv ? oxygenAccessory(iv) : null;
     if (a) accessory = a;
   }
-  return { distressed, accessory };
+  return { distressed, accessory, posture: patientPosture(c, s) };
 }

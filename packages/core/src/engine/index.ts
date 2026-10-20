@@ -42,7 +42,7 @@ export {
   type AlarmLimit,
 } from "./physiology.js";
 export { arrestKind, applyArrest, UNMEASURABLE_IN_ARREST, ARREST_MAX_ETCO2, type ArrestKind } from "./arrest.js";
-export { inExtremis, oxygenAccessory, patientCues, type OxygenAccessory, type PatientBystanderCues } from "./cues.js";
+export { inExtremis, oxygenAccessory, patientCues, patientPosture, type OxygenAccessory, type PatientBystanderCues } from "./cues.js";
 
 // matching
 export {

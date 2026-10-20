@@ -168,6 +168,7 @@
         "zh-CN": "神经介入导管室",
         "en": "Neuro-angiography suite"
       },
+      "location": { "capability": "fluoroscopy" },
       "description": {
         "zh-CN": "转入导管室后的脑血管造影与机械取栓。",
         "en": "Cerebral angiography and mechanical thrombectomy after transfer."
@@ -3502,6 +3503,7 @@
       "requires": [
         "xray"
       ],
+      "performedAt": "bedside",
       "turnaroundMinutes": 20,
       "risk": "low",
       "value": "low-value",
@@ -4018,6 +4020,7 @@
         "en": "Supplemental oxygen via nasal cannula"
       },
       "kind": "oxygen",
+      "device": "nasal-cannula",
       "aliases": {
         "zh-CN": [
           "吸氧",

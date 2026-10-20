@@ -8,6 +8,7 @@ import {
   LocaleTagSchema,
   LocalizedListSchema,
   LocalizedTextSchema,
+  RoomKindSchema,
   VitalKeySchema,
   VitalsSchema,
 } from "./common.js";
@@ -106,6 +107,27 @@ export type Patient = z.infer<typeof PatientSchema>;
 /* Phases & clock                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Where a step takes the patient in the embodied world (docs/EMBODIED.md §8, review G8): exactly one of a case
+ * `setting` (the first patient slot accepting it — `{ setting: "icu" }` for an HDU/ICU bed), a room `roomKind`
+ * (the first slot in a room of that kind) or a `capability` (the patient's place at the equipment providing it:
+ * `{ capability: "fluoroscopy" }` is the cath-lab table beside the C-arm). Resolved per facility; when the
+ * facility has no such place the patient stays where they are and the step's result says so.
+ */
+export const DestinationSchema = z
+  .object({
+    setting: CaseSettingSchema.optional(),
+    roomKind: RoomKindSchema.optional(),
+    capability: CapabilitySchema.optional(),
+  })
+  .strict()
+  .refine((d) => [d.setting, d.roomKind, d.capability].filter((v) => v !== undefined).length === 1, "a destination names exactly one of setting, roomKind or capability");
+export type Destination = z.infer<typeof DestinationSchema>;
+
+/** The body postures of a patient (the case's `patient.posture`, an intervention's authored `posture`). */
+export const PostureSchema = z.enum(["standing", "sitting", "lying"]);
+export type Posture = z.infer<typeof PostureSchema>;
+
 export const PhaseSchema = z
   .object({
     id: IdSchema,
@@ -115,6 +137,12 @@ export const PhaseSchema = z
     learnerSwitchable: z.boolean().default(true),
     /** Automatic transition into this phase when the condition becomes true. */
     enterWhen: ConditionSchema.optional(),
+    /**
+     * Where the patient is during this phase (embodied mode): entering the phase moves the patient there (the
+     * cath lab, the ED resus bay) unless they already are — e.g. a transfer that happens only once its
+     * preconditions hold.
+     */
+    location: DestinationSchema.optional(),
   })
   .strict();
 export type Phase = z.infer<typeof PhaseSchema>;
@@ -327,6 +355,13 @@ export const InvestigationSchema = z
     turnaroundMinutes: z.number().min(0).default(0),
     /** Invasiveness/risk drives the approval policy (see agent permissions). */
     risk: z.enum(["none", "low", "moderate", "high"]).default("none"),
+    /**
+     * Where the study is done on the patient (embodied mode, docs/EMBODIED.md §6): `provider` — the patient is
+     * brought to the equipment (the default for CT, MRI, PET-CT, fluoroscopy, endoscopy, a fixed X-ray machine,
+     * and the peak-flow or weighing station of a patient-performed test); `bedside` — a mobile unit comes to the
+     * patient (a portable chest X-ray), so nobody is moved.
+     */
+    performedAt: z.enum(["bedside", "provider"]).optional(),
     /** Investigations that are reasonable but not essential are `neutral`; wasteful ones `low-value`. */
     value: z.enum(["essential", "useful", "neutral", "low-value", "harmful"]).default("useful"),
     /**
@@ -432,6 +467,19 @@ export const InterventionSchema = z
      * is a paramedic's too; the case's IV-access procedure is nursing; everything else is medical).
      */
     scope: z.enum(["nursing", "medical"]).optional(),
+    /**
+     * The posture this leaves the patient in (positioning, transfers: "lie her flat" → `lying`, "sit him up" →
+     * `sitting`, a trolley transfer → `lying`) — what a bystander sees, the body's collider and the web figure.
+     */
+    posture: PostureSchema.optional(),
+    /**
+     * Where giving it takes the patient at once (embodied mode): a transfer to an HDU bed (`{ setting: "icu" }`),
+     * to the cath-lab table (`{ capability: "fluoroscopy" }`). Only for a move that happens when it is given — a
+     * transfer that waits for something else is the location of the phase it leads to.
+     */
+    destination: DestinationSchema.optional(),
+    /** Oxygen delivery device (kind `oxygen`): what goes on the patient's face (a mask or nasal cannulae). */
+    device: z.enum(["nasal-cannula", "high-flow-nasal-cannula", "simple-mask", "non-rebreather-mask", "venturi-mask", "nebuliser-mask"]).optional(),
     /** Drives approval: moderate/high risk actions require confirmation under the default policy. */
     risk: z.enum(["none", "low", "moderate", "high"]).default("low"),
     effects: z.array(VitalEffectSchema).default([]),

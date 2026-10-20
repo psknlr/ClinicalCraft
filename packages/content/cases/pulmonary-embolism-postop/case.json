@@ -3573,6 +3573,7 @@
       "requires": [
         "xray"
       ],
+      "performedAt": "bedside",
       "turnaroundMinutes": 20,
       "risk": "none",
       "value": "useful",
@@ -4046,6 +4047,7 @@
         "en": "Oxygen via nasal cannula"
       },
       "kind": "oxygen",
+      "device": "nasal-cannula",
       "aliases": {
         "zh-CN": [
           "吸氧",
@@ -4118,6 +4120,7 @@
         "en": "Oxygen via non-rebreather (reservoir) mask"
       },
       "kind": "oxygen",
+      "device": "non-rebreather-mask",
       "aliases": {
         "zh-CN": [
           "面罩吸氧",
@@ -4275,6 +4278,7 @@
         "en": "Sit upright / head of bed elevated"
       },
       "kind": "positioning",
+      "posture": "sitting",
       "aliases": {
         "zh-CN": [
           "半卧位",
@@ -5632,6 +5636,7 @@
         "en": "Transfer to a monitored bed (HDU/ICU)"
       },
       "kind": "disposition",
+      "destination": { "setting": "icu" },
       "aliases": {
         "zh-CN": [
           "转hdu",

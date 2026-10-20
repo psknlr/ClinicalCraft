@@ -37,7 +37,7 @@ import { MIN_RANGE } from "./nav/backend.js";
 import type { WorldStateStore } from "./state.js";
 
 /** Built-in effects of operations (beyond a declarative state transition). */
-export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip";
+export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "transport";
 
 /** One operation an entity offers (built-in or from the catalog). */
 export interface OperationSpec {
@@ -120,6 +120,18 @@ export const BUILTIN_BEHAVIORS: Readonly<Partial<Record<InteractionKind, Behavio
 
 const NO_BEHAVIOR: BehaviorSpec = { stateSource: "none", initial: null, states: {}, operations: [] };
 
+/**
+ * The patient (EMBODIED §8, patient transport): `transport_patient {destination}` — wheel the bed (or walk
+ * the patient) to a provider, a bed space or back home; from the patient's side (physical class: porters
+ * and nurses may do it).
+ */
+export const PATIENT_BEHAVIOR: BehaviorSpec = {
+  stateSource: "none",
+  initial: null,
+  states: {},
+  operations: [op("transport_patient", { effect: "transport", requires: [{ patientWithin: RANGES.contact }] })],
+};
+
 /** Built-in effects that attach by operation name, per interaction kind (catalog behaviours included). */
 const NAMED_EFFECTS: Partial<Record<InteractionKind, Record<string, BuiltinEffect>>> = {
   monitor: { read: "monitor-read" },
@@ -131,6 +143,7 @@ const cache = new WeakMap<object, BehaviorSpec>();
 /** The behaviour of an entity: its catalog behaviour, else the built-in one of its kind, plus portability operations. */
 export function behaviorOf(e: SemanticEntity): BehaviorSpec {
   if (e.kind === "door") return BUILTIN_BEHAVIORS.door!;
+  if (e.kind === "patient") return PATIENT_BEHAVIOR;
   if (e.kind !== "equipment" || !e.equipmentType) return NO_BEHAVIOR;
   const type = e.equipmentType;
   const hit = cache.get(type);
@@ -315,6 +328,8 @@ export class DeviceRules {
     if (!this.d.store.available(id) || (state !== null && spec.states[state]?.available === false)) return { code: "DEVICE_UNAVAILABLE", message: worldMessage("DEVICE_UNAVAILABLE", L, { target }) };
     const s = this.d.store.entity(id);
     const holder = (s?.reservedBy && s.reservedBy !== actor.id ? s.reservedBy : null) ?? this.otherBusy(id, actor.id);
+    // the patient being wheeled by someone else
+    if (holder && id === loc.patientId) return { code: "DEVICE_BUSY", message: worldMessage("pre.patientBusy", L, { patient: target, holder: loc.name(holder) }) };
     if (holder) {
       // a reserved device is nobody else's provider: point at the nearest free alternative (EMBODIED §6)
       const alt = this.alternativeTo(id, actor);
@@ -421,6 +436,7 @@ export class DeviceRules {
     const loc = this.d.locator;
     const place = loc.place(id);
     if (!place) return null;
+    if (o.effect === "monitor-read") return this.screenFailure(actor, place, o);
     const actorWithin = o.requires.find((p): p is { actorWithin: number } => "actorWithin" in p)?.actorWithin;
     const patientWithin = o.requires.find((p): p is { patientWithin: number } => "patientWithin" in p)?.patientWithin;
     if (actorWithin !== undefined || patientWithin === undefined) {
@@ -439,6 +455,28 @@ export class DeviceRules {
       if (!evaluatePredicate(p, env)) return { code: "NOT_IN_RANGE", message: worldMessage("pre.predicate", this.d.locale, { operation: this.operationLabel(o) }), goal: { kind: "interact", id }, label: worldMessage("hint.approach", this.d.locale, { target: loc.name(id) }) };
     }
     return null;
+  }
+
+  /**
+   * A monitor's screen read (`read`): THE screen rule (`WorldLocator.screenInView`, the policy's
+   * `monitor-screen` option — from the monitor's own room, within the operation's range, line of sight,
+   * never through a window). Refused NOT_IN_RANGE (another room, too far) or NOT_VISIBLE, with the monitor's
+   * interaction point as the way there.
+   */
+  private screenFailure(actor: ActorState, place: Placed, o: OperationSpec): RuleFailure | null {
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const range = o.requires.find((p): p is { actorWithin: number } => "actorWithin" in p)?.actorWithin ?? RANGES.screen;
+    if (loc.screenInView(actor, place, range)) return null;
+    const target = loc.name(place.id);
+    const goal: NavGoal = { kind: "interact", id: place.id };
+    const label = worldMessage("hint.approach", L, { target });
+    const needed = Math.max(range, MIN_RANGE);
+    if (actor.pose.level !== place.level) return { code: "NOT_IN_RANGE", message: worldMessage("NOT_IN_RANGE_LEVEL", L, { target, level: place.level }), goal, label };
+    if (actor.room !== place.room) return { code: "NOT_IN_RANGE", message: worldMessage("spatial.monitor-not-in-view", L, { monitor: target, range: metres(needed) }), goal, label };
+    const distance = loc.distance(actor.pose, place);
+    if (distance > needed + 1e-6) return { code: "NOT_IN_RANGE", message: worldMessage("NOT_IN_RANGE", L, { target, distance: metres(distance), range: metres(needed) }), goal, label };
+    return { code: "NOT_VISIBLE", message: worldMessage("NOT_VISIBLE", L, { target }), goal, label };
   }
 
   /**

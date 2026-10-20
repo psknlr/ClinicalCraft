@@ -12,8 +12,9 @@
  *   slabs (stairwells included; the flights are connector portals).
  *   Staff bodies are NOT static (staff walk; the mover avoids them).
  * - `door`: door leaves (passable unless the door is locked).
- * - `dynamic`: temporary obstacles and displaced carts (re-stamped by
- *   `invalidate(area)` from `WorldDynamics`).
+ * - `dynamic`: temporary obstacles, displaced carts (and a wheeled bed) and
+ *   bodies outside the collision model (the patient after moving or changing
+ *   posture) — re-stamped by `invalidate(area)` from `WorldDynamics`.
  * - `zone`: access zones (only the listed roles may enter).
  */
 import type { FacilityDefinition } from "@clinicalcraft/core";
@@ -142,8 +143,9 @@ export class NavGrids {
     this.version++;
     const obstacles: readonly DynamicObstacle[] = this.dynamics.obstacles?.() ?? [];
     const displaced = this.dynamics.displaced?.() ?? [];
+    const bodies = this.dynamics.bodies?.() ?? [];
     const away = new Set([...displaced.map((d) => d.id), ...(this.dynamics.removed?.() ?? [])]);
-    this.dynamicIds = [...obstacles.map((o) => o.id), ...displaced.map((d) => d.id)];
+    this.dynamicIds = [...obstacles.map((o) => o.id), ...displaced.map((d) => d.id), ...bodies.map((b) => b.id)];
     const doorIndex = new Map(this.doorIds.map((id, i) => [id, i + 1]));
     for (const [level, g] of this.levels) {
       if (area?.level && area.level !== level) continue;
@@ -180,6 +182,12 @@ export class NavGrids {
             if (!g.dynamic[i]) g.dynamic[i] = obstacles.length + k + 1;
           }, clip);
         }
+      });
+      bodies.forEach((b, k) => {
+        if (b.level !== level) return;
+        forEachCellStrict(g, b.area, NAV_INFLATE, (i) => {
+          if (!g.dynamic[i]) g.dynamic[i] = obstacles.length + displaced.length + k + 1;
+        }, clip);
       });
     }
   }

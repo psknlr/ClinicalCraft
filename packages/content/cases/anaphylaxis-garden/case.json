@@ -111,6 +111,7 @@
     {
       "id": "ed-resus",
       "label": { "zh-CN": "急诊抢救室 · 复苏中", "en": "Emergency department · resus bay" },
+      "location": { "setting": "emergency" },
       "description": { "zh-CN": "已转入急诊抢救室，复苏仍在进行。", "en": "Transferred to the ED resus bay; resuscitation still under way." },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -124,6 +125,7 @@
     {
       "id": "ed",
       "label": { "zh-CN": "急诊抢救室 / 观察区", "en": "Emergency department · resus and observation" },
+      "location": { "setting": "emergency" },
       "description": {
         "zh-CN": "平卧转运至急诊，经两剂肾上腺素后病情趋于稳定。",
         "en": "In the ED after transfer lying flat; stabilising after two doses of adrenaline."
@@ -2772,6 +2774,7 @@
         "en": ["cxr", "chestxray", "chestx-ray", "xray", "x-ray", "chestfilm"]
       },
       "requires": ["xray"],
+      "performedAt": "bedside",
       "turnaroundMinutes": 30,
       "risk": "low",
       "value": "low-value",
@@ -3274,6 +3277,7 @@
       "id": "position-supine-legs",
       "name": { "zh-CN": "平卧并抬高双腿", "en": "Lie her flat with legs raised" },
       "kind": "positioning",
+      "posture": "lying",
       "aliases": {
         "zh-CN": ["平卧", "抬腿", "平躺", "抬高下肢", "躺下", "休克体位", "平卧抬腿", "平躺抬腿", "腿抬高"],
         "en": ["lie flat", "legs up", "raise legs", "supine", "layherdown", "elevate legs", "lie down", "lie her flat", "legs raised", "trendelenburg"]
@@ -3296,6 +3300,7 @@
       "id": "position-sit-upright",
       "name": { "zh-CN": "扶她坐直或站起来", "en": "Sit her upright or help her stand" },
       "kind": "positioning",
+      "posture": "sitting",
       "aliases": {
         "zh-CN": ["坐起来", "坐直", "扶她坐起", "站起来", "端坐", "坐着", "让她坐起来"],
         "en": ["sit up", "sit upright", "stand up", "sitherup", "upright", "help her stand", "propherup"]
@@ -3319,6 +3324,7 @@
       "id": "walk-to-ed",
       "name": { "zh-CN": "扶她步行（或坐轮椅）去急诊", "en": "Walk her (or wheel her) to the Emergency Department" },
       "kind": "disposition",
+      "posture": "lying",
       "aliases": {
         "zh-CN": ["走去急诊", "扶她走", "步行去急诊", "轮椅", "坐轮椅去急诊", "自己走过去"],
         "en": ["walk to ed", "walk her", "wheelchair", "walk to emergency", "walk over", "wheel her"]
@@ -3346,6 +3352,7 @@
       "id": "oxygen-high-flow",
       "name": { "zh-CN": "高流量吸氧", "en": "High-flow oxygen" },
       "kind": "oxygen",
+      "device": "non-rebreather-mask",
       "aliases": {
         "zh-CN": ["吸氧", "氧气", "高流量吸氧", "储氧面罩", "面罩吸氧", "给氧", "15升", "上氧", "面罩给氧"],
         "en": ["oxygen", "o2", "high flow oxygen", "non-rebreather", "nrb", "15 litres", "oxygen mask", "nrb mask", "15l"]
@@ -3568,6 +3575,7 @@
       "id": "transfer-ed",
       "name": { "zh-CN": "平卧推床转运至急诊抢救室", "en": "Transfer to the ED resus bay on a trolley, lying flat" },
       "kind": "disposition",
+      "posture": "lying",
       "aliases": {
         "zh-CN": ["转运急诊", "送急诊", "推床", "转入抢救室", "转急诊", "送抢救室", "平车送急诊", "推去急诊", "转抢救室"],
         "en": ["transfer to ed", "move to ed", "trolley", "transfer to resus", "take to emergency department", "stretcher", "move her to resus", "trolley to ed"]

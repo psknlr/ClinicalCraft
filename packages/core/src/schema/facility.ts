@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
-import { CapabilitySchema, HexColorSchema, IdSchema, LocalizedTextSchema } from "./common.js";
+import { CapabilitySchema, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -398,35 +398,6 @@ export const BuildingSchema = z
   })
   .strict();
 
-export const ROOM_KINDS = [
-  "entrance",
-  "reception",
-  "waiting",
-  "consult",
-  "triage",
-  "resus",
-  "emergency",
-  "ward",
-  "icu",
-  "operating-room",
-  "imaging",
-  "laboratory",
-  "pathology",
-  "pharmacy",
-  "nurse-station",
-  "conference",
-  "office",
-  "corridor",
-  "storage",
-  "restroom",
-  "garden",
-  "build-zone",
-  "rehabilitation",
-  "teaching",
-  "elevator",
-  "stairwell",
-] as const;
-export const RoomKindSchema = z.enum(ROOM_KINDS);
 
 /** One interior partition wall of a room side (with its openings, offsets along the wall from its centre). */
 export const RoomPartitionSchema = z

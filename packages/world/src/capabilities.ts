@@ -50,3 +50,19 @@ export const CHART_CAPABILITY = "records";
 /** Capabilities that show the heart rhythm at the bedside: a monitor (or monitor-defibrillator), an ECG machine, a defibrillator. */
 export const RHYTHM_CAPABILITIES: readonly string[] = ["cardiac-monitor", "ecg-12lead", "defibrillator"];
 
+
+/**
+ * Capabilities of studies done ON the patient at a fixed device (review G8): CT, MRI, a fixed X-ray machine,
+ * fluoroscopy, PET-CT, endoscopy — the patient is brought to the device (`patient-at-provider`), unless the
+ * investigation is authored `performedAt: "bedside"` (a portable chest X-ray: a mobile unit comes to the bed).
+ */
+export const PATIENT_AT_PROVIDER_CAPABILITIES: readonly string[] = ["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"];
+
+/** Capabilities of patient-performed tests at a fixed station (peak flow, weight): the patient goes to the station. */
+export const PATIENT_PERFORMED_CAPABILITIES: readonly string[] = ["peak-flow", "scale"];
+
+/** Capabilities whose device has its own patient table (the patient lies on the device itself). */
+export const TABLE_CAPABILITIES: readonly string[] = ["ct", "mri", "pet-ct", "xray"];
+
+/** Equipment types a patient is wheeled on: the bed travels with them (a hospital bed, a stretcher). */
+export const TROLLEY_TYPES: readonly string[] = ["hospital-bed", "stretcher"];

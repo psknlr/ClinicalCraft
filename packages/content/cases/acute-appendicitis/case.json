@@ -6001,6 +6001,7 @@
         "en": "Nasal cannula oxygen 2 L/min"
       },
       "kind": "oxygen",
+      "device": "nasal-cannula",
       "aliases": {
         "zh-CN": [
           "吸氧",
