@@ -121,9 +121,15 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   const operate = async (id: string, operation: string, parameters?: Record<string, unknown>, goal?: NavGoal): Promise<WorldActionResult> => {
     const request: WorldRequestInput = { actorId: staff, operation, targetId: id, onBehalfOf: PRIMARY_ACTOR, ...(parameters ? { parameters } : {}), ...(goal ? { goal } : {}) };
     let r = record(operation, await h.act(caller, request), id);
-    if (r.status === "failed" && r.hint && (r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE")) {
-      const nav = await go(r.hint.goal);
-      if (nav.status === "completed") r = record(operation, await h.act(caller, request), id);
+    // a reach hint: walk there; a fetch hint (`then`): walk to the cart and wheel it to the patient — then retry once
+    const hint = r.status === "failed" ? r.hint : null;
+    if (hint && (r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE" || hint.then)) {
+      let ready = (await go(hint.goal)).status === "completed";
+      if (ready && hint.then) {
+        const then: WorldRequestInput = { actorId: staff, operation: hint.then.operation, targetId: hint.then.targetId, onBehalfOf: PRIMARY_ACTOR, ...(hint.then.goal ? { goal: hint.then.goal } : {}) };
+        ready = record(hint.then.operation, await h.act(caller, then), hint.then.targetId).status === "completed";
+      }
+      if (ready) r = record(operation, await h.act(caller, request), id);
     }
     return r;
   };

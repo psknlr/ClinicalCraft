@@ -78,9 +78,10 @@ describe("/delegate record_ecg from the nurse's post (staff know their departmen
       expect(world.actor(nurse)!.seen.filter((id) => world.entity(id)?.capabilities.includes("ecg-12lead"))).toEqual([]);
       const r = await command(t, "delegate", `${nurse} record_ecg`);
       expect(r.text).not.toMatch(/0 steps|0 步/);
-      expect(r.data, r.text).toMatchObject({ status: "completed" });
-      expect((r.data as { steps: unknown[] }).steps.length).toBeGreaterThan(0);
-      expect(t.session.state().orders.map((o) => o.investigationId)).toContain("ecg-12lead");
+      const delegation = (r.data as { delegation: { status: string; steps: unknown[] } }).delegation;
+      expect(delegation.status, r.text).toBe("completed");
+      expect(delegation.steps.length).toBeGreaterThan(0);
+      expect(t.session.state.orders.map((o) => o.investigationId)).toContain("ecg-12lead");
       await t.session.close();
     });
   }

@@ -178,7 +178,8 @@ describe("createNodeSession", () => {
     const s = await createNodeSession({ caseId: "new-onset-t2dm", facilityId: "clinic-v4", cwd: p.cwd, env: p.env, content, transcript: false, flags: { locale: "en", approvalMode: "bypass" } });
     const events = await s.run({ type: "user_message", text: "/order inv-hba1c" });
     const out = events.flatMap((e) => (e.msg.type === "command_output" ? [e.msg.text] : [])).join("\n");
-    expect(out).toMatch(/^Not available here: .*lab-endocrine/m);
+    expect(out).toMatch(/^Not available here: .*endocrine testing/m); // the capability's display label, never its id
+    expect(out).not.toMatch(/lab-endocrine/);
     expect(out).not.toMatch(/Not possible: Not available/); // review round 3: one prefix, not two
     expect(s.state.orders).toEqual([]);
     // In its own facility the same order is placed.

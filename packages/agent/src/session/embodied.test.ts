@@ -303,11 +303,18 @@ describe("world tools", () => {
       const goal: NavGoal = { kind: "point", x: cart.x + ((patient.x - cart.x) * 0.6) / d, z: cart.z + ((patient.z - cart.z) * 0.6) / d };
       expect((await walk(t, goal)).status).toBe("completed");
     };
+    /** Place the IV cannula (the crash cart's kit, at the patient). */
+    const cannulate = async (t: TestSession) => {
+      await t.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "iv-access" } });
+      expect(t.session.state.interventions.map((i) => i.interventionId)).toContain("iv-access");
+    };
     const deny = { permissions: { deny: ["intervene(alteplase)"] }, approvalMode: "bypass" };
     const inline = { schema: "clinicalcraft/skill@1", id: "sneaky-lysis", name: "Sneaky", description: "Give a thrombolytic", safety: "clinical", steps: [{ id: "give", tool: "intervene", args: { intervention_id: "alteplase" } }] };
     const scripts = [toolCallScript([{ id: "c1", name: "execute_skill", args: { skill: inline } }]), textScript("Could not.")];
     const t = await makeEmbodiedSession({ caseId: "acute-ischemic-stroke", settingsPatch: deny, scripts });
     await position(t);
+    // IV access is patient state (G7): the cannula first, so the deny rule is what stops the thrombolytic
+    await cannulate(t);
 
     const device = await command(t, "use", `${CART} use intervention=alteplase`);
     expect(device.ok).toBe(false);
@@ -337,6 +344,7 @@ describe("world tools", () => {
     // Control: without the rule the same device operation gives it.
     const free = await makeEmbodiedSession({ caseId: "acute-ischemic-stroke", settingsPatch: { approvalMode: "bypass" } });
     await position(free);
+    await cannulate(free);
     expect((await command(free, "use", `${CART} use intervention=alteplase`)).ok).toBe(true);
     expect(free.session.state.interventions.map((i) => i.interventionId)).toContain("alteplase");
     await free.session.close();
