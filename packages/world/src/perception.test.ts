@@ -13,22 +13,25 @@ const facing = (w: TestWorld, from: { x: number; z: number }, id: string): Pose 
 };
 
 describe("awareness levels (EMBODIED R7)", () => {
-  it("from the entrance: the patient and fixed stations are mapped; carts and staff are unknown until seen", async () => {
+  it("from the entrance: the patient, fixed stations and where carts are usually kept are mapped; staff are unknown until seen", async () => {
     const w = makeWorld("stemi-inferior-rv");
     const [patient] = w.runtime.find(A, { kind: "patient" });
     expect(patient).toMatchObject({ id: w.patientId, awareness: "mapped", visible: false, reachable: true });
     expect(patient.cues).toBeUndefined();
     expect(patient.name).toBe("Liu Zhenhua (pseudonym) (58 years male)");
     expect(w.runtime.find(A, { type: "ct-scanner" })).toMatchObject([{ id: "eq:ct-scanner", awareness: "mapped" }]);
-    expect(w.runtime.find(A, { type: "ecg-machine" })).toEqual([]);
+    // portable equipment: on the map where the department keeps it (lead note 1)
+    for (const e of w.runtime.find(A, { type: "ecg-machine" })) expect(e).toMatchObject({ awareness: "mapped", lastKnown: { kind: "usual" }, inReach: false });
+    expect(w.runtime.find(A, { type: "ecg-machine" }).map((e) => e.id)).toContain("eq:resus1-ecg");
     expect(w.runtime.find(A, { kind: "staff" }).map((e) => e.id)).not.toContain("staff:ed-nurse");
-    expect(w.runtime.inspect(A, "eq:resus1-ecg")).toBeNull();
+    expect(w.runtime.inspect(A, "staff:ed-nurse")).toBeNull();
+    expect(w.runtime.inspect(A, "eq:resus1-ecg")).toMatchObject({ awareness: "mapped", room: "ed-resus" });
     for (const e of w.runtime.observe(A).entities) expect(["visible", "nearby", "remembered"]).toContain(e.awareness);
     // at the bedside the cart is visible; walking away it is remembered
     expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
     expect(w.runtime.observe(A).entities.find((e) => e.id === "eq:resus1-ecg")).toMatchObject({ awareness: "visible", state: "idle", stateVersion: 0 });
     expect((await w.act({ actorId: A, operation: "approach", targetId: "lab-workstation" })).status).toBe("completed");
-    expect(w.runtime.find(A, { type: "ecg-machine" })).toMatchObject([{ id: "eq:resus1-ecg", awareness: "remembered", visible: false }]);
+    expect(w.runtime.find(A, { type: "ecg-machine", awareness: ["remembered"] })).toMatchObject([{ id: "eq:resus1-ecg", awareness: "remembered", visible: false, lastKnown: { kind: "last-seen" } }]);
     expect(w.runtime.actor(A)!.seen).toContain("eq:resus1-ecg");
   });
 

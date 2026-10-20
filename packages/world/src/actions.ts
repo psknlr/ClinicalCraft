@@ -117,14 +117,17 @@ const MAX_ACTION_ID = 200;
 
 /** Most leaves a navigation goal may have in all (nested `any` goals included). */
 export const MAX_GOAL_LEAVES = 16;
-/** Largest range (m) of a goal leaf (`point`, `entity`, `follow`, `look`). */
+/** Largest range (m) of a goal leaf (`point`, `entity`, `follow`; `look` has its own). */
 export const MAX_GOAL_RANGE = 30;
+/** Largest range (m) of a `look` goal: the perception's visibility range (a look goal ray-casts per candidate cell). */
+export const MAX_LOOK_RANGE = 15;
 
 /**
  * Why a goal is malformed (null when well-formed): the shape of each leaf,
  * `any` nesting (≤ 3 deep, 1–16 goals each), at most `MAX_GOAL_LEAVES`
- * leaves in all, no duplicate leaf, ranges of at most `MAX_GOAL_RANGE` —
- * the cost bound of every planning request (EMBODIED §7).
+ * leaves in all, no duplicate leaf, ranges of at most `MAX_GOAL_RANGE`
+ * (`look`: `MAX_LOOK_RANGE`) — the cost bound of every planning request
+ * (EMBODIED §7).
  */
 export function goalProblem(g: unknown): string | null {
   const leaves: string[] = [];
@@ -140,10 +143,11 @@ function goalShape(g: unknown, depth: number, leaves: string[]): string | null {
   const goal = g as Record<string, unknown>;
   const finite = (v: unknown) => typeof v === "number" && Number.isFinite(v);
   const range = goal.range === undefined || (finite(goal.range) && (goal.range as number) >= 0);
-  const capped = goal.range === undefined || (goal.range as number) <= MAX_GOAL_RANGE;
+  const cap = goal.kind === "look" ? MAX_LOOK_RANGE : MAX_GOAL_RANGE;
+  const capped = goal.range === undefined || (goal.range as number) <= cap;
   const leaf = (): string | null => {
     if (!range) return "range must be a non-negative number";
-    if (!capped) return `range must be at most ${MAX_GOAL_RANGE} m`;
+    if (!capped) return `range must be at most ${cap} m`;
     leaves.push(JSON.stringify(goal, Object.keys(goal).sort()));
     return null;
   };

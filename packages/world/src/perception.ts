@@ -10,9 +10,25 @@
  * - `remembered`: seen earlier by this actor (`ActorState.seen`).
  * - `mapped`: on the public hospital directory — rooms, doors, connectors,
  *   fixed interactive equipment (workstations, devices, monitors, boards,
- *   atlases, craft benches, sinks) and the patient this encounter is about
- *   (the clinician knows which bed). Never portable equipment, staff or
- *   other actors: those are known only by seeing them.
+ *   atlases, craft benches, sinks), where the departments keep their
+ *   portable equipment (every clinician and staff member knows where the
+ *   ECG cart lives) and the patient this encounter is about (the clinician
+ *   knows which bed). Never staff or other actors: those are known only by
+ *   seeing them.
+ *
+ * Whereabouts (lead note 1): a movable thing (portable equipment, staff,
+ * other actors) not perceived now is reported where the actor believes it
+ * is — where it last saw it (`ActorState.lastSeen`, updated at every
+ * sighting), else, for portable equipment, where it is usually kept — with
+ * `lastKnown` saying which; the room, level and distance filters, the
+ * distances, bearing and reachability all measure to that place, and it is
+ * never `inReach`. Moving a thing out of an actor's sight changes nothing
+ * the actor is told. (Navigation by id still finds the thing where it is.)
+ *
+ * Recent events (G13): an observation lists the actor's own events (in the
+ * second person), those of actions done on its behalf (a delegated task,
+ * `WorldActionRequest.onBehalfOf`), and those about an actor or entity it
+ * perceives now — never another actor's walk out of sight.
  *
  * Observations are bounded: `observe` lists perceived entities (visible,
  * nearby) nearest first, then remembered ones nearest first, at most

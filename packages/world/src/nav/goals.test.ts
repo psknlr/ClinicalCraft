@@ -7,7 +7,7 @@
  * denial-of-service shapes finish fast or are refused.
  */
 import { describe, expect, it } from "vitest";
-import { goalProblem, MAX_GOAL_LEAVES, MAX_GOAL_RANGE } from "../actions.js";
+import { goalProblem, MAX_GOAL_LEAVES, MAX_GOAL_RANGE, MAX_LOOK_RANGE } from "../actions.js";
 import { buildCollisionModel } from "../collision.js";
 import { PRIMARY_ACTOR, type NavGoal } from "../contracts.js";
 import { buildRegistry } from "../registry.js";
@@ -36,11 +36,14 @@ describe("S7: goal shape bounds (goalProblem)", () => {
     const leaf = (i: number): NavGoal => ({ kind: "interact", id: `eq:x-${i}` });
     expect(MAX_GOAL_LEAVES).toBe(16);
     expect(MAX_GOAL_RANGE).toBe(30);
+    expect(MAX_LOOK_RANGE).toBe(15);
     expect(goalProblem(nest(Array.from({ length: 16 }, (_, i) => leaf(i))))).toBeNull();
     expect(goalProblem(nest(Array.from({ length: 17 }, (_, i) => leaf(i))))).toMatch(/16/);
     expect(goalProblem(nest(Array.from({ length: 64 }, (_, i) => leaf(i))))).toMatch(/16/);
     expect(goalProblem({ kind: "any", goals: [leaf(1), { kind: "any", goals: [leaf(1)] }] })).toMatch(/duplicate/);
-    expect(goalProblem({ kind: "look", id: "eq:ct-scanner", range: 1000 })).toMatch(/30/);
+    expect(goalProblem({ kind: "look", id: "eq:ct-scanner", range: 1000 })).toMatch(/15/);
+    expect(goalProblem({ kind: "look", id: "eq:ct-scanner", range: 16 })).toMatch(/15/);
+    expect(goalProblem({ kind: "look", id: "eq:ct-scanner", range: 15 })).toBeNull();
     expect(goalProblem({ kind: "point", x: 0, z: 0, range: 31 })).toMatch(/30/);
     expect(goalProblem({ kind: "entity", id: "patient", range: 30 })).toBeNull();
   });

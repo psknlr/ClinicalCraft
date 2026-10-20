@@ -64,6 +64,8 @@ export interface GridAStarOptions {
 export const MAX_TARGETS = 16;
 /** Largest goal range honoured by the planner (m; larger ranges are clamped). */
 export const MAX_RANGE = 30;
+/** Largest `look` range honoured by the planner (m, the visibility range; larger ranges are clamped). */
+export const MAX_LOOK = 15;
 
 /** The expansion budget left in one `plan` call (shared by every search it runs). */
 interface Budget {
@@ -262,7 +264,7 @@ export class GridAStarBackend implements NavigationBackend {
           return [{ goal, level: target.level, label: target.name, entity: target.id, cells, area, slack: range, face: target.position }];
         }
         if (goal.kind === "look") {
-          const range = Math.min(MAX_RANGE, Math.max(MIN_RANGE, goal.range ?? LOOK_RANGE));
+          const range = Math.min(MAX_LOOK, Math.max(MIN_RANGE, goal.range ?? LOOK_RANGE));
           // lazy: line of sight is tested only on cells the search pops (memoised)
           const sight: SightTarget = { level: target.level, position: target.position, footprint: target.footprint, id: target.id };
           const memo = new Map<number, boolean>();
