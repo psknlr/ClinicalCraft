@@ -9,6 +9,7 @@
       "@clinicalcraft/agent": ["../agent/src/index.ts"],
       "@clinicalcraft/bench": ["../bench/src/index.ts"],
       "@clinicalcraft/core": ["../core/src/index.ts"],
+      "@clinicalcraft/world": ["../world/src/index.ts"],
       "@clinicalcraft/content": ["../content/src/index.ts"],
       "@clinicalcraft/server": ["../server/src/index.ts"],
       "@clinicalcraft/mcp": ["../mcp/src/index.ts"]
