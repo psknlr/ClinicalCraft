@@ -33,6 +33,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [Agent protocol](docs/PROTOCOL.md) ·
 [Embodied design & status](docs/EMBODIED.md) ([中文](docs/zh-CN/EMBODIED.md)) ·
 [Benchmark samples](docs/bench/) ·
+[Grounding benchmark](docs/GROUNDING.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
@@ -390,6 +391,22 @@ CI; no live run has been recorded yet. Reports: `bench-report.json` +
 `bench-report.md`; samples in [docs/bench/](docs/bench/); scenario catalogue,
 metric definitions and the live-run checklist in
 [docs/EMBODIED.md §13](docs/EMBODIED.md#13-benchmark).
+
+**The grounding benchmark** — `bench grounding` measures the deterministic
+layer under every agent, offline: what the patient reveals for a question,
+which item `examine` / `order_test` / `intervene` act on for a free-text or
+guessed-id argument, how the patient router classifies an utterance, and
+whether the voice grounding check blocks a fabricated reply. Suite
+`grounding-v1` (`packages/content/grounding/`): 1,519 items over the ten
+cases in both languages, including a `negation` slice ("hold the heparin"
+must never give heparin), with a `dev` split for tuning and a held-out `test`
+split pinned by digest. Method, honesty protocol and baseline:
+[docs/GROUNDING.md](docs/GROUNDING.md).
+
+```bash
+npm run -s cc -- bench grounding --split dev --lang en
+npm run -s cc -- bench grounding --split test --failures 0 --compare grounding-results/before/grounding-report.json
+```
 
 **The reference demonstration** — `bench demo` works the full embodied STEMI
 encounter headless with the reference clinician and writes `trace.jsonl` and

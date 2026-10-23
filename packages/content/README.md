@@ -12,8 +12,9 @@ cases/<id>/case.json        one case per folder (+ README.md: provenance, design
 facilities/<id>.json        clinic-v4, general-hospital, teaching-hospital
 templates/<id>.json         room templates (clinicalcraft/room-template@1), expanded into facilities at load time
 catalogs/<id>.json          materials, core-furniture, core-clinical, core-diagnostics
-schemas/*.schema.json       case, facility, room-template, equipment-catalog, settings, skill, bench-scenario (generated: npm run schemas)
+schemas/*.schema.json       case, facility, room-template, equipment-catalog, settings, skill, bench-scenario, grounding-set (generated: npm run schemas)
 bench/<suite>/<id>.json     embodied benchmark scenarios (clinicalcraft/bench-scenario@1; suite embodied-v1: 41), run by `clinicalcraft bench`
+grounding/<suite>/<split>/*.json  grounding benchmark items (clinicalcraft/grounding-set@1; suite grounding-v1: dev + held-out test), run by `clinicalcraft bench grounding` (docs/GROUNDING.md)
 ```
 
 | | count |
