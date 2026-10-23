@@ -6,7 +6,8 @@
  *      never reaches the fact selector.
  *   2. Select — `matchHistory` in the current phase (a hit on an item
  *      superseded there counts for its phase twin): hits ≥ 0.55 are selected (≤ 3, within 0.25 of
- *      the best); 0.34–0.55 → re-rank (LLM over the fact INDEX restricted to the
+ *      the best; not one that a more specific hit accounts for entirely —
+ *      `distinctHistoryHits`); 0.34–0.55 → re-rank (LLM over the fact INDEX restricted to the
  *      candidate ids, or a deterministic margin rule offline) or a clarifying
  *      question; nothing → `fallbackUnknown`. `specific` facts need a direct
  *      match; ≤ 1 `volunteer` fact on open questions. Newly selected ids
@@ -23,6 +24,7 @@
  * the prompt); the verifier still runs.
  */
 import {
+  distinctHistoryHits,
   historyAvailable,
   matchHistory,
   t,
@@ -191,7 +193,8 @@ export function selectFacts(c: CaseDefinition, state: SessionState, utterance: s
   const byId = new Map(c.history.map((h) => [h.id, h]));
   // Items of the current phase only; a hit on an item superseded here counts for its twin (`supersedes`).
   const hits = matchHistory(c, utterance, locale, { phase: state.phase }).filter((h) => byId.has(h.id));
-  const strong = hits.filter((h) => h.score >= SELECT_THRESHOLD);
+  // A strong hit that a more specific one accounts for entirely is not selected ("frothy urine" over "urine").
+  const strong = distinctHistoryHits(c, utterance, locale, hits.filter((h) => h.score >= SELECT_THRESHOLD), state.phase);
   const best = strong[0]?.score ?? 0;
   const selected = strong.filter((h) => h.score >= best - SELECT_RELATIVE).slice(0, MAX_SELECTED).map((h) => h.id);
   const candidates = selected.length > 0 ? [] : hits.filter((h) => h.score >= RERANK_THRESHOLD && byId.get(h.id)?.disclosure !== "specific").slice(0, 6);

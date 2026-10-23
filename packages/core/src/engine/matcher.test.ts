@@ -2,8 +2,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
-import { EXCLUDE_KEYWORD_FACTOR, interventionNegation, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, normalizeQuery, orderWarnings, parseCase } from "./index.js";
-import { longestCommonSubstring, phraseScore, prepare, stem, tokenize, tokensMatch } from "./text.js";
+import { distinctHistoryHits, EXCLUDE_KEYWORD_FACTOR, interventionNegation, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, normalizeQuery, orderWarnings, parseCase } from "./index.js";
+import { longestCommonSubstring, phraseEvidence, phraseScore, prepare, stem, tokenize, tokensMatch } from "./text.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
 
@@ -566,11 +566,31 @@ describe("CJK partial overlaps (J1: 2-character runs never select on their own)"
   it("a 2-character run in the middle or end of a 3-character phrase stays below the select band (0.55)", () => {
     expect(score("他今天早上量过血压吗？", "出过血")).toBe(0.5); // 过血
     expect(score("他看东西清楚吗？", "吃东西")).toBe(0.5); // 东西
-    expect(score("平时每天用什么预防的药？", "担心什么")).toBe(0.5); // 什么
   });
-  it("a question bigram at the start of a phrase does not count as its start", () => {
-    expect(score("你平时胰岛素是怎么用的？", "怎么疼")).toBe(0.5);
+  it("a run made only of function characters is no overlap at all", () => {
+    expect(score("平时每天用什么预防的药？", "担心什么")).toBe(0); // 什么
+    expect(score("你平时胰岛素是怎么用的？", "怎么疼")).toBe(0); // 怎么
     expect(score("你平时胰岛素是怎么用的？", "什么药")).toBeLessThan(0.55);
+    expect(score("你室友得的什么病？", "吐的什么")).toBe(0); // 的什么
+    expect(score("你现在在吃什么药？", "现在在哪")).toBe(0); // 现在在
+    expect(score("你喜欢看什么电影？", "来看什么病的")).toBe(0); // 看什么
+    expect(score("有没有咳嗽？", "有没有发烧")).toBe(0); // 有没有
+    // a run with a topic character still counts, function characters and all
+    expect(score("什么时候开始的", "哪里疼，什么时候开始？")).toBeCloseTo(6 / 9, 4);
+    expect(score("你以前有什么病？", "家人有什么病")).toBeCloseTo(4 / 6, 4);
+  });
+  it("reads 痛 and 疼 as one character", () => {
+    expect(score("有多痛？", "有多疼")).toBe(1);
+    expect(score("头疼吗", "头痛")).toBe(1);
+  });
+  it("finds a phrase when the learner adds a particle to it, but takes a phrase's own particles literally", () => {
+    expect(score("吸过毒吗？", "吸毒")).toBe(0.9);
+    expect(score("没吸过毒吧？", "吸毒")).toBe(0.9);
+    expect(score("以前住过院吗？", "住院")).toBe(0.9);
+    expect(score("平常吃的啥药？", "吃了啥药")).toBeLessThan(0.9); // 了 (just now) is not 的
+    expect(score("想不想晕倒？", "晕倒过")).toBeLessThan(0.9); // 过 (has fainted) is not 想晕倒
+    expect(score("他怎么了？", "怎么")).toBe(1); // contained, as before
+    expect(score("他怎么了啊？", "怎么样")).toBe(0); // no topic character
   });
   it("keeps a shared start (typos) and a phrase spelled out with a few characters between", () => {
     expect(score("她有糖尿并吗？", "糖尿病")).toBeCloseTo(2 / 3, 4);
@@ -579,6 +599,51 @@ describe("CJK partial overlaps (J1: 2-character runs never select on their own)"
     // containment and longer runs are unchanged
     expect(score("有没有高血压", "高血压")).toBe(1);
     expect(score("血压高不高", "高血压病史")).toBe(0.4);
+  });
+});
+
+describe("phraseEvidence and distinctHistoryHits (a more specific hit accounts for a lesser one)", () => {
+  const ev = (u: string, p: string) => phraseEvidence(prepare(u), prepare(p));
+  it("names the utterance's topic characters or tokens a phrase accounts for", () => {
+    expect(ev("身边有没有人也拉肚子？", "别人也拉肚子")).toEqual(["c5", "c7", "c8", "c9"]); // 人…拉肚子, not 也
+    expect(ev("身边有没有人也拉肚子？", "反复拉肚子")).toEqual(["c7", "c8", "c9"]);
+    expect(ev("小便时不疼吧？", "小便疼")).toEqual(["c0", "c1", "c4"]); // spelled out
+    expect(ev("以前住过院吗？", "住院")).toEqual(["c2", "c4"]); // but for a particle
+    expect(ev("你室友得的什么病？", "吐的什么")).toEqual([]);
+    expect(ev("Have you noticed any frothy urine?", "frothy urine")).toEqual(["t1", "t2"]);
+    expect(ev("Have you noticed any frothy urine?", "urine")).toEqual(["t2"]);
+  });
+
+  const item = (id: string, en: string[], zh: string[]) => ({
+    ...SIM.history[0]!,
+    id,
+    disclosure: "on-ask" as const,
+    question: { en: id, "zh-CN": id },
+    keywords: { en, "zh-CN": zh },
+    excludeKeywords: [],
+  });
+  const c = {
+    ...SIM,
+    history: [
+      item("urine-volume", ["urine"], ["小便"]),
+      item("urine-other", ["frothy urine"], ["小便疼"]),
+      item("fever", ["fever"], ["发烧"]),
+    ],
+  } as CaseDefinition;
+  const distinct = (u: string, locale: string) => distinctHistoryHits(c, u, locale, matchHistory(c, u, locale)).map((h) => h.id);
+
+  it("drops a hit whose evidence another hit's evidence properly contains", () => {
+    expect(matchHistory(c, "Any frothy urine?", "en").map((h) => h.id)).toEqual(["urine-volume", "urine-other"]);
+    expect(distinct("Any frothy urine?", "en")).toEqual(["urine-other"]);
+    expect(distinct("小便时不疼吧？", "zh-CN")).toEqual(["urine-other"]);
+  });
+  it("keeps hits with their own evidence, equal evidence and a lone hit", () => {
+    expect(distinct("Any frothy urine or fever?", "en")).toEqual(["urine-other", "fever"]);
+    expect(distinct("How much urine do you pass?", "en")).toEqual(["urine-volume", "urine-other"]); // both account for "urine" only
+    expect(distinctHistoryHits(c, "urine", "en", [{ id: "urine-volume", score: 1 }, { id: "urine-other", score: 0.5 }])).toEqual([
+      { id: "urine-volume", score: 1 },
+      { id: "urine-other", score: 0.5 },
+    ]);
   });
 });
 

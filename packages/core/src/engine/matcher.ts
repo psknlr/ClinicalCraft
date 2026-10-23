@@ -23,7 +23,7 @@ import { t } from "../i18n.js";
 import { evaluate } from "./conditions.js";
 import { hasHistoryTwins, historyTwin } from "./twins.js";
 import { analyzeNegation, type NegationAnalysis } from "./negation.js";
-import { allListEntries, allTexts, compactText, normalizeQuery, phraseCoverage, phraseScore, prepare, unique, type Prepared } from "./text.js";
+import { allListEntries, allTexts, normalizeQuery, phraseCoverage, phraseEvidence, phraseScore, prepare, scoringText, unique, type Prepared } from "./text.js";
 import type { MatchHit, MatchOptions } from "./types.js";
 
 export { normalizeQuery } from "./text.js";
@@ -160,7 +160,7 @@ export function orderWarnings(c: CaseDefinition, query: string, investigationId:
 interface IndexedItem {
   id: string;
   phrases: Prepared[];
-  /** `excludeKeywords` of every locale, as `compactText` (non-empty, unique). */
+  /** `excludeKeywords` of every locale, as `scoringText` (non-empty, unique). */
   exclude: string[];
   /** Phases the item is restricted to (undefined = every phase). */
   phases?: string[];
@@ -273,7 +273,7 @@ function preparePhrases(texts: string[]): Prepared[] {
 
 /** Normalised exclude phrases of every locale (`excludeKeywords` may be absent on cases built in code). */
 function excludePhrases(list: Parameters<typeof allListEntries>[0]): string[] {
-  return unique(allListEntries(list, "*").map(compactText).filter((x) => x.length > 0));
+  return unique(allListEntries(list, "*").map(scoringText).filter((x) => x.length > 0));
 }
 
 /**
@@ -301,6 +301,40 @@ export function matchHistory(c: CaseDefinition, utterance: string, locale: strin
   return [...best]
     .map(([id, score]) => ({ id, score }))
     .sort((a, b) => b.score - a.score || (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+}
+
+/**
+ * History hits (as `matchHistory` returns them) less those whose evidence
+ * another hit's evidence properly contains — the more specific match accounts
+ * for all the other one does, and more: "frothy urine" over "urine", "another
+ * hospital" over "hospital", "别人也拉肚子" over "拉肚子". An item's evidence is
+ * what its best-scoring phrases account for in the utterance (`phraseEvidence`,
+ * all phrases tied for its best score), over its own phrases and, with
+ * `phase`, those of the items it answers for there (`historyTwin`). A hit
+ * without evidence is kept and drops nothing; order is kept.
+ */
+export function distinctHistoryHits(c: CaseDefinition, utterance: string, locale: string, hits: readonly MatchHit[], phase?: string): MatchHit[] {
+  if (hits.length < 2) return [...hits];
+  const u = prepare(utterance);
+  const index = historyIndex(c, locale);
+  const twins = phase != null && hasHistoryTwins(c);
+  const evidence = hits.map((hit) => {
+    let best = 0;
+    let keys = new Set<string>();
+    for (const item of index) {
+      if (item.id !== hit.id && !(twins && historyTwin(c, item.id, phase!) === hit.id)) continue;
+      for (const phrase of item.phrases) {
+        const score = phraseScore(u, phrase);
+        if (score <= 0 || score < best - 1e-9) continue;
+        if (score > best + 1e-9) keys = new Set();
+        for (const key of phraseEvidence(u, phrase)) keys.add(key);
+        best = Math.max(best, score);
+      }
+    }
+    return keys;
+  });
+  const within = (a: Set<string>, b: Set<string>) => a.size > 0 && b.size > a.size && [...a].every((key) => b.has(key));
+  return hits.filter((_, i) => !evidence.some((other, j) => j !== i && within(evidence[i]!, other)));
 }
 
 function historyIndex(c: CaseDefinition, locale: string): IndexedItem[] {

@@ -524,13 +524,21 @@ History/exam/intervention matching is a scored keyword matcher: candidate
 phrases = question/maneuver/name + keywords (+ aliases) for the locale and
 for every locale (cross-lingual); score = max over phrases of:
 
-* CJK phrase — longest-common-substring length / phrase length (1 when
-  contained, 0 when fewer than 2 characters are shared, +0.15 when the
-  utterance is a fragment of the phrase); a shared run of only 2 characters
-  is capped at 0.5 (below the patient pipeline's 0.55 select band) unless
-  it is the phrase's own start and not a question bigram (怎么, 什么, 有没…),
-  or the whole phrase occurs in order within a few extra characters
-  ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血" never credits a fact;
+* CJK phrase — 1 when contained; 0.9 when contained once the particles a
+  learner added (过 了 着 的 地 得 吗 呢 吧…) are skipped ("吸过毒吗" ⊇ 吸毒; only
+  for a phrase with two or more topic characters and no particle of its own:
+  "吃了啥药" is not 吃的啥药); else the length of the longest common substring
+  that holds a topic character / phrase length (0 when fewer than 2
+  characters are shared, +0.15 when the utterance is a fragment of the
+  phrase). Function
+  characters (particles, pronouns, question words, auxiliaries, conjunctions,
+  time deictics: 的 什 么 有 没 是 现 在 以 前…) carry no topic: a run made only
+  of them ("的什么", "现在在", "有没有") is no overlap. 痛 is read as 疼. A
+  shared run of only 2 characters is capped at 0.5 (below the patient
+  pipeline's 0.55 select band) unless it is the phrase's own start and not a
+  question bigram (怎么, 什么, 有没…), or the whole phrase occurs in order
+  within a few extra characters ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血"
+  never credits a fact;
 * Latin phrase — share of phrase tokens present in the utterance, or 0.9
   when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
   Tokens (`canonicalToken`): lower-case words minus English stop-words, then
@@ -550,10 +558,10 @@ for every locale (cross-lingual); score = max over phrases of:
   historical, hypertension ≁ hyperthermia, thrombosis ≁ thrombolysis,
   cholecystitis ≁ cholecystectomy.
 
-`excludeKeywords`: if the utterance, normalised with `compactText`
-(`normalizeQuery` minus punctuation — case, spacing and punctuation are
-ignored), contains any exclude phrase of an item (any locale, same
-normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
+`excludeKeywords`: if the utterance, normalised with `scoringText`
+(`normalizeQuery` minus punctuation, 痛 read as 疼 — case, spacing and
+punctuation are ignored), contains any exclude phrase of an item (any
+locale, same normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
 = 0.2 before the threshold, which in practice removes it (1 × 0.2 < 0.34).
 Containment is on whitespace-free text, so prefer distinctive phrases
 ("past medical", "过敏") over short fragments.
@@ -578,8 +586,12 @@ never selected (nor co-selected with its twin) in that phase. Without
 Items with score ≥ `MATCH_THRESHOLD` (0.34) are returned, by score, then
 declaration order. `matchSpecificity` tells resolvers which of two items tied
 at the same score matched the longer, more specific phrase (scores and order
-are unchanged). Deterministic and dependency-free; used offline and as
-RAG hints.
+are unchanged). `distinctHistoryHits` drops a history hit whose evidence —
+the utterance's topic characters or tokens its best-scoring phrases account
+for (`phraseEvidence`) — another hit's evidence properly contains: "frothy
+urine" accounts for all that "urine" does and more, "别人也拉肚子" for all
+that "拉肚子" does; hits with evidence of their own, or equal evidence, stay.
+Deterministic and dependency-free; used offline and as RAG hints.
 
 **Negated instructions** (`matchInterventions` only). `analyzeNegation`
 splits an utterance into clauses (punctuation except 、, dashes, brackets,
@@ -782,7 +794,9 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
    did you stop acting?".
 2. **Select** — `matchHistory(utterance, {phase})`: items available in the
    current phase, a hit on an item superseded there by a phase twin counting
-   for the twin (§3.3); hits ≥ 0.55 are selected (≤ 3, within 0.25 of the best);
+   for the twin (§3.3); hits ≥ 0.55 are selected (≤ 3, within 0.25 of the
+   best; not one that a more specific hit accounts for entirely,
+   `distinctHistoryHits`);
    0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
    canonical question — never answers), strict JSON `{factIds, clarify}`
    restricted to the candidate enum; nothing → `fallbackUnknown` (or the
