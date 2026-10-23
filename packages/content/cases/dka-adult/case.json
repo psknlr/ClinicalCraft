@@ -10204,7 +10204,9 @@
         "text": "Are you trying to lose weight?",
         "locale": "en",
         "expect": [
-          "hx-weight-loss",
+          "hx-weight-loss"
+        ],
+        "alsoOk": [
           "hx-weight"
         ]
       },

@@ -462,6 +462,46 @@ describe("learner wording and tie-breaks for free-text actions (J5)", () => {
     const none = await command(zh, "/give 量子疗法");
     expect(none.out.text).toBe("本病例中没有与“量子疗法”匹配的项目。请换个说法，或输入确切的编号。");
   });
+
+  it("a negated instruction does nothing and says so (zh + en)", async () => {
+    const en = await makeSession();
+    const refused = await command(en, "/give don't give the aspirin");
+    expect(refused.out.text).toBe("Nothing done: “don't give the aspirin” says not to do something (not given: Aspirin 300 mg chewed). To act, say what to do.");
+    const double = await command(en, "/give never withhold aspirin");
+    expect(double.out.text).toBe("Nothing done: “never withhold aspirin” has a double negative. Say plainly what to do.");
+    expect(en.session.state.interventions).toEqual([]);
+    const zh = await makeSession({ settingsPatch: { locale: "zh-CN" } });
+    const zhRefused = await command(zh, "/give 不要给阿司匹林");
+    expect(zhRefused.out.text).toBe("未执行：“不要给阿司匹林”表示不做某事（未给予：阿司匹林 300 mg 嚼服）。如需执行，请直接说明要做什么。");
+    expect(zh.session.state.interventions).toEqual([]);
+  });
+});
+
+describe("guessed ids and stated routes (grounding benchmark, dev split)", () => {
+  const sepsis = loadCase("septic-shock-cap");
+  const ana = loadCase("anaphylaxis-garden");
+
+  it.skipIf(!sepsis)("an id the case lacks is read leniently: spelling, contained words, then as a query", async () => {
+    const { resolveFinding, resolveIntervention, resolveInvestigation } = await import("./tools/clinical.js");
+    expect(resolveInvestigation(sepsis!, { investigation_id: "blood_cultures" }, "en")).toEqual({ kind: "id", id: "blood-cultures" });
+    expect(resolveIntervention(sepsis!, { intervention_id: "ceftriaxone" }, "en")).toEqual({ kind: "id", id: "abx-ceftriaxone" });
+    expect(resolveFinding(sepsis!, { finding_id: "resp-ausc" }, "en")).toEqual({ kind: "id", id: "ex-resp-ausc" });
+    expect(resolveFinding(sepsis!, { finding_id: "lung_auscultation" }, "en")).toEqual({ kind: "id", id: "ex-resp-ausc" });
+    const fluids = resolveIntervention(sepsis!, { intervention_id: "fluids" }, "en");
+    expect(fluids.kind).toBe("ambiguous");
+    expect(fluids.kind === "ambiguous" && fluids.ids).toContain("fluid-bolus");
+    expect(resolveIntervention(sepsis!, { intervention_id: "quantum-therapy" }, "en")).toEqual({ kind: "unknown-id", id: "quantum-therapy" });
+  });
+
+  it.skipIf(!ana)("a stated route never resolves to an item given by another route", async () => {
+    const { resolveIntervention } = await import("./tools/clinical.js");
+    expect(resolveIntervention(ana!, { query: "IV adrenaline" }, "en")).toEqual({ kind: "id", id: "adrenaline-iv-bolus" });
+    expect(resolveIntervention(ana!, { query: "adrenaline 0.5 mg IM" }, "en")).toEqual({ kind: "id", id: "adrenaline-im" });
+    expect(resolveIntervention(ana!, { query: "hydrocortisone" }, "en")).toEqual({ kind: "id", id: "hydrocortisone-iv" });
+    const oral = resolveIntervention(ana!, { query: "oral prednisolone 40 mg" }, "en");
+    expect(oral.kind).toBe("ambiguous");
+    expect(oral.kind === "ambiguous" && oral.ids).toContain("hydrocortisone-iv");
+  });
 });
 
 describe("the shipped project settings (J14)", () => {

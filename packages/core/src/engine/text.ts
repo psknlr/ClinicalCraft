@@ -2,11 +2,13 @@
  * Text normalisation and fuzzy scoring for the offline matcher.
  *
  * Chinese (and other CJK) text has no word boundaries, so it is scored with
- * a longest-common-substring ratio on compact strings. Latin-script text is
- * additionally tokenised on word boundaries with English stop-words removed,
- * British spellings folded to American ones, a light suffix stemmer and a
- * tiny lemma table, so "do you smoke" matches "smoking history" while
- * "medical" and "medication" stay distinct.
+ * a longest-common-substring ratio on compact strings — counting only runs
+ * that hold a topic character, not function characters alone (的什么, 有没有),
+ * skipping particles a learner adds to a phrase (吸过毒 ⊇ 吸毒) and reading 痛
+ * as 疼. Latin-script text is additionally tokenised on word boundaries with
+ * English stop-words removed, British spellings folded to American ones, a
+ * light suffix stemmer and a tiny lemma table, so "do you smoke" matches
+ * "smoking history" while "medical" and "medication" stay distinct.
  */
 import { t, tList, type LocalizedList, type LocalizedText } from "../i18n.js";
 
@@ -19,7 +21,7 @@ export function normalizeQuery(text: string): string {
 }
 
 /** Full-width ASCII forms (U+FF01–U+FF5E: letters, digits, punctuation incl. `（）`) → ASCII. */
-function toHalfWidth(text: string): string {
+export function toHalfWidth(text: string): string {
   return text.replace(/[\uFF01-\uFF5E]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0));
 }
 
@@ -29,6 +31,7 @@ export function compactText(text: string): string {
 }
 
 const CJK = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u;
+const HAN = /\p{Script=Han}/u;
 
 /** True when the text contains CJK characters. */
 export function hasCjk(text: string): boolean {
@@ -200,9 +203,18 @@ export interface Prepared {
   cjk: boolean;
 }
 
+/** Characters spelled one way for scoring: 痛 → 疼 (both "pain": 头痛 ~ 头疼, 有多痛 ~ 有多疼). */
+const CJK_FOLDS: ReadonlyMap<string, string> = new Map([["痛", "疼"]]);
+const CJK_FOLD_RE = new RegExp(`[${[...CJK_FOLDS.keys()].join("")}]`, "gu");
+
+/** `compactText` with the characters of `CJK_FOLDS` folded — the string the matcher scores and checks `excludeKeywords` against. */
+export function scoringText(text: string): string {
+  return compactText(text).replace(CJK_FOLD_RE, (ch) => CJK_FOLDS.get(ch) ?? ch);
+}
+
 /** Prepare text for `phraseScore`. */
 export function prepare(text: string): Prepared {
-  return { compact: compactText(text), tokens: tokenize(text), cjk: hasCjk(text) };
+  return { compact: scoringText(text), tokens: tokenize(text), cjk: hasCjk(text) };
 }
 
 /** Bonus when the whole utterance is a fragment of the phrase. */
@@ -227,33 +239,105 @@ const LATIN_COMPACT_CONTAINMENT = 0.9;
 /** Extra characters a phrase may be spread over in the utterance and still count as spelled out. */
 const SUBSEQUENCE_SLACK = 4;
 
+/**
+ * Positions in `u` of the characters of `p`, in order, within a span of
+ * `p.length + slack` (the first such span); null when there is none.
+ */
+function gappedPositions(u: string, p: string, slack: number): number[] | null {
+  if (!p) return null;
+  for (let start = u.indexOf(p[0]!); start >= 0; start = u.indexOf(p[0]!, start + 1)) {
+    const positions = [start];
+    const end = Math.min(u.length, start + p.length + slack);
+    for (let i = start + 1; i < end && positions.length < p.length; i++) if (u[i] === p[positions.length]) positions.push(i);
+    if (positions.length === p.length) return positions;
+  }
+  return null;
+}
+
 /** True when every character of `p` occurs in `u` in order, within a span of `p.length + slack`. */
 function gappedSubsequence(u: string, p: string, slack: number): boolean {
-  if (!p) return false;
-  for (let start = u.indexOf(p[0]!); start >= 0; start = u.indexOf(p[0]!, start + 1)) {
-    let j = 1;
-    let i = start + 1;
-    const end = Math.min(u.length, start + p.length + slack);
-    for (; i < end && j < p.length; i++) if (u[i] === p[j]) j++;
-    if (j === p.length) return true;
+  return gappedPositions(u, p, slack) !== null;
+}
+
+/**
+ * Characters that carry no topic on their own — particles, pronouns, question
+ * words, auxiliaries, conjunctions, time deictics, "look". A run shared by
+ * the utterance and a phrase made only of these ("的什么" of 你室友得的什么病 ∩
+ * 吐的什么, "现在在" of 现在在哪, "看什么" of 看什么电影 ∩ 来看什么病的) is no
+ * overlap at all, and they are no evidence (`phraseEvidence`).
+ */
+const CJK_FUNCTION_CHARS: ReadonlySet<string> = new Set(
+  "的了吗呢吧啊呀嘛么什怎哪谁几多少有没是不会能要可以在现这那些个一下还都也就又再过得着你我他她它们您请问说讲想看时候很太最近平常经曾已之前后样为因所对把被给跟和与或者如果该应自己好",
+);
+
+/**
+ * The longest run of `u` that `p` also contains and that holds a topic
+ * character (one not in `CJK_FUNCTION_CHARS`): its start in `u` and its
+ * length (0 when there is none).
+ */
+function topicRun(u: string, p: string): { start: number; length: number } {
+  let best = { start: 0, length: 0 };
+  if (!u || !p) return best;
+  const topical = new Array<number>(u.length + 1).fill(0);
+  for (let i = 0; i < u.length; i++) topical[i + 1] = topical[i]! + (CJK_FUNCTION_CHARS.has(u[i]!) ? 0 : 1);
+  let prev = new Array<number>(p.length + 1).fill(0);
+  let curr = new Array<number>(p.length + 1).fill(0);
+  for (let i = 1; i <= u.length; i++) {
+    for (let j = 1; j <= p.length; j++) {
+      const run = u.charCodeAt(i - 1) === p.charCodeAt(j - 1) ? prev[j - 1]! + 1 : 0;
+      curr[j] = run;
+      if (run > best.length && topical[i]! > topical[i - run]!) best = { start: i - run, length: run };
+    }
+    [prev, curr] = [curr, prev];
   }
-  return false;
+  return best;
+}
+
+/** Score of a CJK phrase found in the utterance once particles the utterance adds are skipped (`particlePositions`). */
+const PARTICLE_CONTAINMENT = 0.9;
+
+/** Aspect, structural and sentence-final particles a learner may add to a keyword: 吸过毒 is 吸毒, 住过院 is 住院. */
+const CJK_PARTICLES: ReadonlySet<string> = new Set("过了着的地得吗呢吧啊呀嘛");
+
+/**
+ * Positions in `u` of the characters of `p` when they occur together and in
+ * order once the utterance's particles (`CJK_PARTICLES`) are skipped — the
+ * learner added an aspect or structural particle to the phrase ("吸过毒吗" ⊇
+ * 吸毒, "住过院吗" ⊇ 住院). A phrase with a particle of its own is taken
+ * literally (null: "吃了啥药" is not 吃的啥药, "晕倒过" not 想晕倒), and so is one
+ * with fewer than 2 Han topic characters (not `CJK_FUNCTION_CHARS`).
+ */
+function particlePositions(u: string, p: string): number[] | null {
+  if ([...p].some((ch) => CJK_PARTICLES.has(ch))) return null;
+  if ([...p].filter((ch) => HAN.test(ch) && !CJK_FUNCTION_CHARS.has(ch)).length < 2) return null;
+  let chars = "";
+  const positions: number[] = [];
+  for (let i = 0; i < u.length; i++) {
+    if (CJK_PARTICLES.has(u[i]!)) continue;
+    chars += u[i];
+    positions.push(i);
+  }
+  const at = chars.indexOf(p);
+  return at < 0 ? null : positions.slice(at, at + p.length);
 }
 
 function characterScore(u: string, p: string): number {
   if (!u || !p) return 0;
   if (u.includes(p)) return 1;
-  const common = longestCommonSubstring(u, p);
-  if (common < 2) return 0;
-  let score = common / p.length;
-  if (common < 3) {
-    // Kept: a shared start of the phrase ("糖尿" of 糖尿病) unless it is a question bigram, or the whole
-    // phrase spelled out with a few characters between ("摸一下肚子" ⊇ 摸…肚子, "喝水会不会呛" ⊇ 喝水…呛).
-    const lead = p.slice(0, common);
-    const leading = u.includes(lead) && !GENERIC_CJK_BIGRAMS.has(lead);
-    if (!leading && !gappedSubsequence(u, p, SUBSEQUENCE_SLACK)) score = Math.min(score, SHORT_OVERLAP_CAP);
+  const common = topicRun(u, p).length;
+  let score = 0;
+  if (common >= 2) {
+    score = common / p.length;
+    if (common < 3) {
+      // Kept: a shared start of the phrase ("糖尿" of 糖尿病) unless it is a question bigram, or the whole
+      // phrase spelled out with a few characters between ("摸一下肚子" ⊇ 摸…肚子, "喝水会不会呛" ⊇ 喝水…呛).
+      const lead = p.slice(0, common);
+      const leading = u.includes(lead) && !GENERIC_CJK_BIGRAMS.has(lead);
+      if (!leading && !gappedSubsequence(u, p, SUBSEQUENCE_SLACK)) score = Math.min(score, SHORT_OVERLAP_CAP);
+    }
   }
-  if (u.length >= 2 && p.includes(u)) score += FRAGMENT_BONUS;
+  if (particlePositions(u, p)) score = Math.max(score, PARTICLE_CONTAINMENT);
+  if (score > 0 && u.length >= 2 && p.includes(u)) score += FRAGMENT_BONUS;
   return Math.min(1, score);
 }
 
@@ -265,9 +349,11 @@ function tokenScore(u: string[], p: string[]): number {
 
 /**
  * Similarity of an utterance to one candidate phrase, 0..1.
- * CJK phrases: longest-common-substring length / phrase length (1 when the
- * phrase is contained). Latin phrases: share of phrase tokens present in
- * the utterance (1 when all are), or 0.9 for a ≥ 4-letter compact containment.
+ * CJK phrases: 1 when the phrase is contained, 0.9 when it is but for
+ * particles (`particlePositions`), else the length of the longest common
+ * substring holding a topic character / phrase length. Latin phrases: share of
+ * phrase tokens present in the utterance (1 when all are), or 0.9 for a
+ * ≥ 4-letter compact containment.
  */
 export function phraseScore(utterance: Prepared, phrase: Prepared): number {
   if (phrase.cjk) return characterScore(utterance.compact, phrase.compact);
@@ -287,6 +373,33 @@ export function phraseCoverage(utterance: Prepared, phrase: Prepared): number {
   if (utterance.compact.includes(phrase.compact)) return phrase.compact.length;
   if (phrase.cjk) return longestCommonSubstring(utterance.compact, phrase.compact);
   return phrase.tokens.filter((pt) => utterance.tokens.some((ut) => tokensMatch(ut, pt))).reduce((n, pt) => n + pt.length, 0);
+}
+
+/**
+ * What of an utterance a phrase accounts for, as keys of compact characters
+ * ("c3", CJK phrases) or word tokens ("t1", Latin phrases): the topic
+ * characters (not `CJK_FUNCTION_CHARS`) of a contained CJK phrase's span, of
+ * one spelled out with a few characters between (`SUBSEQUENCE_SLACK`) or but
+ * for particles (`particlePositions`), else of its longest shared
+ * run with a topic character (≥ 2 characters); for a Latin phrase the
+ * utterance tokens (stop-words aside) that match one of its tokens. Empty
+ * when it accounts for nothing.
+ */
+export function phraseEvidence(utterance: Prepared, phrase: Prepared): string[] {
+  const u = utterance.compact;
+  const keys = (positions: number[]) => positions.filter((i) => !CJK_FUNCTION_CHARS.has(u[i]!)).map((i) => `c${i}`);
+  const span = (start: number, length: number) => keys(Array.from({ length }, (_, k) => start + k));
+  if (phrase.cjk) {
+    const p = phrase.compact;
+    if (!u || !p) return [];
+    const at = u.indexOf(p);
+    if (at >= 0) return span(at, p.length);
+    const spelled = gappedPositions(u, p, SUBSEQUENCE_SLACK) ?? particlePositions(u, p);
+    if (spelled) return keys(spelled);
+    const run = topicRun(u, p);
+    return run.length >= 2 ? span(run.start, run.length) : [];
+  }
+  return utterance.tokens.flatMap((ut, i) => (phrase.tokens.some((pt) => tokensMatch(ut, pt)) ? [`t${i}`] : []));
 }
 
 /** Every rendering of a localized text: the requested locale first, then every locale. */

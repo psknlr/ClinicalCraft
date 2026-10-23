@@ -280,7 +280,10 @@ orderWarnings(c, query, investigationId, locale, state?): string[]  // orderMatc
                                                         // and (with `state`, the session before the order) whose `unless` does not hold
 matchHistory(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]   // sorted desc, score 0..1; with `phase`, phase twins applied (§3.3)
 matchExam(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]
-matchInterventions(c, utterance, locale): { id: string; score: number }[]
+matchInterventions(c, utterance, locale): { id: string; score: number }[]   // negation-aware: never an item a negated clause names (§3.3)
+interventionNegation(c, utterance, locale): { withheld: string[]; alternatives: string[]; scopes: string[]; doubleNegated: string[] } | null
+                                                        // what a negated instruction withholds / which withholding items it may mean; null = no negation
+analyzeNegation(text): { negated: boolean; affirmative: string; scopes: string[]; context: string[]; doubleNegated: string[] }   // clause-level cues, en + zh-CN
 matchSpecificity(c, kind: "history"|"exam"|"interventions", utterance, locale, id): number   // coverage (chars) of the item's best phrase; tie-break only (§3.3)
 interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
 
@@ -292,7 +295,7 @@ supersededIn(c, id, phase): string | null               // the item available in
 supersededItems(c, id): string[]; hasHistoryTwins(c): boolean
 historyCredited(c, s, id): boolean                      // asked, or an item superseding it (transitively) was asked — what `asked` conditions test
 creditedHistory(c, s): string[]                         // asked ids, then ids credited through twins (assessment)
-MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2
+MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; ELLIPSIS_FACTOR = 0.8; NEGATED_MARGIN = 0.1
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
@@ -521,13 +524,21 @@ History/exam/intervention matching is a scored keyword matcher: candidate
 phrases = question/maneuver/name + keywords (+ aliases) for the locale and
 for every locale (cross-lingual); score = max over phrases of:
 
-* CJK phrase — longest-common-substring length / phrase length (1 when
-  contained, 0 when fewer than 2 characters are shared, +0.15 when the
-  utterance is a fragment of the phrase); a shared run of only 2 characters
-  is capped at 0.5 (below the patient pipeline's 0.55 select band) unless
-  it is the phrase's own start and not a question bigram (怎么, 什么, 有没…),
-  or the whole phrase occurs in order within a few extra characters
-  ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血" never credits a fact;
+* CJK phrase — 1 when contained; 0.9 when contained once the particles a
+  learner added (过 了 着 的 地 得 吗 呢 吧…) are skipped ("吸过毒吗" ⊇ 吸毒; only
+  for a phrase with two or more topic characters and no particle of its own:
+  "吃了啥药" is not 吃的啥药); else the length of the longest common substring
+  that holds a topic character / phrase length (0 when fewer than 2
+  characters are shared, +0.15 when the utterance is a fragment of the
+  phrase). Function
+  characters (particles, pronouns, question words, auxiliaries, conjunctions,
+  time deictics: 的 什 么 有 没 是 现 在 以 前…) carry no topic: a run made only
+  of them ("的什么", "现在在", "有没有") is no overlap. 痛 is read as 疼. A
+  shared run of only 2 characters is capped at 0.5 (below the patient
+  pipeline's 0.55 select band) unless it is the phrase's own start and not a
+  question bigram (怎么, 什么, 有没…), or the whole phrase occurs in order
+  within a few extra characters ("摸一下肚子" ⊇ 摸…肚子) — so "量过血压" ∩ "出过血"
+  never credits a fact;
 * Latin phrase — share of phrase tokens present in the utterance, or 0.9
   when the phrase (≥ 4 chars, spacing/punctuation aside) is contained.
   Tokens (`canonicalToken`): lower-case words minus English stop-words, then
@@ -547,10 +558,10 @@ for every locale (cross-lingual); score = max over phrases of:
   historical, hypertension ≁ hyperthermia, thrombosis ≁ thrombolysis,
   cholecystitis ≁ cholecystectomy.
 
-`excludeKeywords`: if the utterance, normalised with `compactText`
-(`normalizeQuery` minus punctuation — case, spacing and punctuation are
-ignored), contains any exclude phrase of an item (any locale, same
-normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
+`excludeKeywords`: if the utterance, normalised with `scoringText`
+(`normalizeQuery` minus punctuation, 痛 read as 疼 — case, spacing and
+punctuation are ignored), contains any exclude phrase of an item (any
+locale, same normalisation), the item's score is multiplied by `EXCLUDE_KEYWORD_FACTOR`
 = 0.2 before the threshold, which in practice removes it (1 × 0.2 < 0.34).
 Containment is on whitespace-free text, so prefer distinctive phrases
 ("past medical", "过敏") over short fragments.
@@ -575,8 +586,36 @@ never selected (nor co-selected with its twin) in that phase. Without
 Items with score ≥ `MATCH_THRESHOLD` (0.34) are returned, by score, then
 declaration order. `matchSpecificity` tells resolvers which of two items tied
 at the same score matched the longer, more specific phrase (scores and order
-are unchanged). Deterministic and dependency-free; used offline and as
-RAG hints.
+are unchanged). `distinctHistoryHits` drops a history hit whose evidence —
+the utterance's topic characters or tokens its best-scoring phrases account
+for (`phraseEvidence`) — another hit's evidence properly contains: "frothy
+urine" accounts for all that "urine" does and more, "别人也拉肚子" for all
+that "拉肚子" does; hits with evidence of their own, or equal evidence, stay.
+Deterministic and dependency-free; used offline and as RAG hints.
+
+**Negated instructions** (`matchInterventions` only). `analyzeNegation`
+splits an utterance into clauses (punctuation except 、, dashes, brackets,
+contrastive/sequencing conjunctions — never "and"/"or", which a negation
+carries over; a clause opening with a subordinator such as until/等/如果 is
+`context` of the clause before) and finds cues in both languages (no, not,
+n't, never, nil, hold, withhold, stop, avoid, defer, instead of, not
+indicated, contraindicated; 不/不要/别/勿/停/暂停/暂缓/禁/避免 …, minus look-alikes:
+hold pressure, stop the bleeding, 骤停, 呼吸暂停, 不适, 要不要). A cue negates the
+rest of its clause, or the words before it when nothing follows ("吗啡先不给"),
+when it is a predicate ("aspirin not indicated") or a participle after its
+object; a clause that is only a cue negates the one before ("morphine — no");
+two cues with only function words between them are a double negative, read
+neither way. For an utterance that negates, an intervention phrase that
+itself withholds ("stop the pump", "nil by mouth", "不要抽烟") scores its
+withheld words against the negated clauses and its other words against the
+affirmative ones; the items that best match a negated clause (within
+`NEGATED_MARGIN`) are withheld and never returned; any other item needs
+affirmative support and scores the better of its affirmative score and
+`ELLIPSIS_FACTOR` × its whole-utterance score ("no more fluid boluses, run
+maintenance only"). Utterances without a cue score exactly as before.
+`interventionNegation` reports the withheld items and the withholding items
+whose withheld words name the same thing ("hold the morphine" → "withhold
+analgesia"), which `resolveIntervention` offers instead of acting.
 
 ### 3.4 Semantics notes
 
@@ -746,10 +785,18 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 
 1. **Route** — out-of-fiction requests (asking the "patient" for real medical
    advice, prompt-injection, meta questions) get an in-character deflection and
-   a `warning` event; they never reach the fact selector.
+   a `warning` event; they never reach the fact selector. Injection includes
+   giving the patient another role ("act as a doctor") and asking it to step
+   out of the fiction ("stop role-playing", "不要再扮演了") unless that request
+   is negated ("I don't want you to break character"); meta includes asking
+   what the case says, for its answer or for a hint. Their look-alikes stay in
+   the fiction: "act as a carer", "is that out of character for him?", "when
+   did you stop acting?".
 2. **Select** — `matchHistory(utterance, {phase})`: items available in the
    current phase, a hit on an item superseded there by a phase twin counting
-   for the twin (§3.3); hits ≥ 0.55 are selected (≤ 3, within 0.25 of the best);
+   for the twin (§3.3); hits ≥ 0.55 are selected (≤ 3, within 0.25 of the
+   best; not one that a more specific hit accounts for entirely,
+   `distinctHistoryHits`);
    0.34–0.55 → optional LLM re-rank over the **fact index** (id, topic,
    canonical question — never answers), strict JSON `{factIds, clarify}`
    restricted to the candidate enum; nothing → `fallbackUnknown` (or the
@@ -764,13 +811,24 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 4. **Verify** — numbers, units, drug names and dates in `say` must appear in
    the answers of `usedFactIds` (or persona text) — so must named conditions
    (stroke, heart attack, 糖尿病…, as whole words: "hives" is not "HIV";
-   the case's decision options) and relative dates without digits ("last
-   year", "去年"), and no distinctive phrase of a fact not yet revealed may
-   appear (a pair of English content words, or a 4-character Chinese window
-   inside one punctuation-delimited run with at least two content
-   characters; `disclosure: "unknown"` answers are not facts); otherwise the
-   reply is replaced by the authored answer(s) and `grounding: "template"`
-   is logged. The learner's `warning` (and an MCP client's notices) name
+   the case's decision options; a few exact synonyms ground each other:
+   甲减 ↔ 甲状腺功能减退, heart attack ↔ myocardial infarction), relative
+   dates without digits ("last year", "去年"), month and weekday names,
+   habits' frequencies ("every night", "每天") and a side of the body ("left
+   hand", "右前臂"); quantities count with their unit (litres, bottles,
+   o'clock, 点, 楼, 口…). No distinctive phrase of a fact not yet revealed
+   may appear (a pair of English content words, or a 4-character Chinese
+   window inside one punctuation-delimited run with at least two content
+   characters; `disclosure: "unknown"` answers are not facts). A yes or no
+   to a yes/no question must agree with the facts used, and is not given
+   when no fact was used ("Do you have diabetes?" — "No" would add a normal
+   default the case never recorded); nor may the reply affirm a detail a
+   fact used denies ("never had a leg-pump machine") — `answer-polarity.ts`:
+   the lead word, else the first clause naming the question's topic, decides;
+   "not sure" and inability ("I can't breathe") are no answer, and a mixed
+   answer sharing two content words with what the facts affirm is excused.
+   Otherwise the reply is replaced by the authored answer(s) and
+   `grounding: "template"` is logged. The learner's `warning` (and an MCP client's notices) name
    only the violation **categories** ("a number, a fact not yet asked
    about"), never the quoted text — it may be the unasked fact or the
    diagnosis the check hid; the detailed list goes to the transcript as a

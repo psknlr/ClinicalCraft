@@ -143,6 +143,36 @@ describe("bench demo", () => {
   });
 });
 
+describe("bench grounding", () => {
+  it("writes reports for a filtered run with the tag slice, compares two runs, rejects bad flags", { timeout: T }, async () => {
+    const box = sandbox();
+    const r = await run(["bench", "grounding", "--split", "dev", "--track", "routing", "--out", "g1", "--lang", "en"], box);
+    expect(r.code, r.stderr).toBe(0);
+    expect(r.stdout).toMatch(/grounding-v1 dev: \d+\/\d+ items correct/);
+    expect(r.stdout).toContain("tag negation:");
+    const report = JSON.parse(readFileSync(join(box.cwd, "g1", "grounding-report.json"), "utf8")) as { format: string; suite: string; splits: string[]; items: { track: string }[] };
+    expect(report).toMatchObject({ format: "clinicalcraft-grounding-report@1", suite: "grounding-v1", splits: ["dev"] });
+    expect(new Set(report.items.map((i) => i.track))).toEqual(new Set(["routing"]));
+    expect(readFileSync(join(box.cwd, "g1", "grounding-report.md"), "utf8")).toContain("# ClinicalCraft grounding benchmark");
+    const cmp = await run(["bench", "grounding", "--split", "dev", "--track", "routing", "--out", "g2", "--compare", "g1/grounding-report.json", "--lang", "en"], box);
+    expect(cmp.code, cmp.stderr).toBe(0);
+    expect(cmp.stdout).toContain("Change against");
+    expect(readFileSync(join(box.cwd, "g2", "grounding-report.md"), "utf8")).toContain("Items fixed (0)");
+    for (const [argv, message] of [
+      [["--split", "train"], 'Invalid value "train" for --split'],
+      [["--track", "vibes"], 'Unknown track "vibes"'],
+      [["--suite", "grounding-v9"], 'Unknown grounding suite "grounding-v9"'],
+      [["--case", "no-such-case"], "No grounding item matches the filters"],
+      [["--compare", "missing.json"], "Cannot read the report to compare with"],
+    ] as const) {
+      const bad = await run(["bench", "grounding", ...argv, "--out", "g3", "--lang", "en"], box);
+      expect(bad.code, argv.join(" ")).toBe(2);
+      expect(bad.stderr).toContain(message);
+    }
+    expect(existsSync(join(box.cwd, "g3"))).toBe(false);
+  });
+});
+
 describe("bench approvals = exec's headless rules", () => {
   it("decides every mode × risk × rule like exec", () => {
     const modes: ApprovalMode[] = ["default", "strict", "auto", "plan", "bypass"];

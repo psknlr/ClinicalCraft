@@ -1,0 +1,439 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClinicalCraft grounding set (clinicalcraft/grounding-set@1)",
+  "description": "One file of the grounding benchmark (packages/content/grounding/<suite>/<split>/*.json, docs/GROUNDING.md): held-out free-text items for the patient's fact selection (history), the clinical tools' argument resolution (exam, orders, interventions), the patient router (routing) and the voice grounding check (verifier).",
+  "$ref": "#/definitions/GroundingSet",
+  "definitions": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "GroundingSet": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string",
+          "const": "clinicalcraft/grounding-set@1"
+        },
+        "suite": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+        },
+        "split": {
+          "type": "string",
+          "enum": [
+            "dev",
+            "test"
+          ]
+        },
+        "caseId": {
+          "$ref": "#/definitions/Id"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "zh-CN",
+                  "en"
+                ]
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "expect": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "maxItems": 4
+              },
+              "alsoOk": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "maxItems": 6
+              },
+              "phase": {
+                "$ref": "#/definitions/Id"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "id",
+              "locale",
+              "text",
+              "expect"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 400
+        },
+        "exam": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "zh-CN",
+                  "en"
+                ]
+              },
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "itemId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "expect": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/Id"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "phase": {
+                "$ref": "#/definitions/Id"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "id",
+              "locale",
+              "expect"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 200
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "zh-CN",
+                  "en"
+                ]
+              },
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "itemId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "expect": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/Id"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "phase": {
+                "$ref": "#/definitions/Id"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "id",
+              "locale",
+              "expect"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 200
+        },
+        "interventions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "zh-CN",
+                  "en"
+                ]
+              },
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "itemId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "expect": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/Id"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "phase": {
+                "$ref": "#/definitions/Id"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "id",
+              "locale",
+              "expect"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 200
+        },
+        "routing": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "zh-CN",
+                  "en"
+                ]
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "expect": {
+                "type": "string",
+                "enum": [
+                  "in-fiction",
+                  "meta",
+                  "real-advice",
+                  "injection"
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "id",
+              "locale",
+              "text",
+              "expect"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 400
+        },
+        "verifier": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+              },
+              "locale": {
+                "type": "string",
+                "enum": [
+                  "zh-CN",
+                  "en"
+                ]
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "used": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "maxItems": 4
+              },
+              "asked": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "maxItems": 40
+              },
+              "reply": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 600
+              },
+              "expect": {
+                "type": "string",
+                "enum": [
+                  "pass",
+                  "block"
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "number",
+                  "unit",
+                  "drug",
+                  "term",
+                  "claim",
+                  "denial",
+                  "negation",
+                  "unasked",
+                  "date"
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "id",
+              "locale",
+              "question",
+              "used",
+              "reply",
+              "expect"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 200
+        }
+      },
+      "required": [
+        "format",
+        "suite",
+        "split"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { basename, dirname, join, resolve } from "node:path";
 import {
   caseCapabilityGaps,
   checkCaseIntegrity,
+  distinctHistoryHits,
   hasHistoryTwins,
   historyTwin,
   IdSchema,
@@ -82,7 +83,8 @@ function withPhaseTwins(c: CaseDefinition, hits: readonly MatchHit[], phase: str
  * available in a phase of the first expected item — that are neither
  * expected nor in the utterance's `alsoOk`. Phase twins (`supersedes`) apply
  * in the first phase of the first expected item: a hit on an item superseded
- * there counts for its twin, as in the pipeline.
+ * there counts for its twin, as in the pipeline; so does `distinctHistoryHits`
+ * (a hit that a more specific one accounts for entirely is not selected).
  */
 export function checkUtterances(c: CaseDefinition): { total: number; failures: Issue[]; extras: Issue[] } {
   const corpus = testUtterances(c) ?? [];
@@ -93,7 +95,8 @@ export function checkUtterances(c: CaseDefinition): { total: number; failures: I
     const path = `extensions.testUtterances.${i}`;
     for (const id of u.expect) if (!byId.has(id)) failures.push({ path, message: `unknown history id "${id}"`, severity: "error" });
     const phase = u.expect.length > 0 ? byId.get(u.expect[0]!)?.phases?.[0] : undefined;
-    const selected = withPhaseTwins(c, matchHistory(c, u.text, u.locale), phase).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD);
+    const strong = withPhaseTwins(c, matchHistory(c, u.text, u.locale), phase).filter((h) => h.score >= UTTERANCE_SELECT_THRESHOLD);
+    const selected = distinctHistoryHits(c, u.text, u.locale, strong, phase);
     const got = selected.map((h) => h.id);
     if (u.expect.length === 0) {
       if (got.length > 0) failures.push({ path, message: `"${u.text}" should select nothing, selected ${got.join(", ")}`, severity: "error" });

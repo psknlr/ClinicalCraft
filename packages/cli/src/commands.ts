@@ -8,7 +8,7 @@ import type { CliContext } from "./context.js";
 import { runEval } from "./eval.js";
 import { runExec } from "./exec.js";
 import { assetsInspect } from "./assets.js";
-import { benchDemo, benchList, benchRun } from "./bench.js";
+import { benchDemo, benchGrounding, benchList, benchRun } from "./bench.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
@@ -105,6 +105,30 @@ export const BENCH: CommandSpec = {
       ],
       run: benchDemo,
       examples: ["clinicalcraft bench demo --case stemi-inferior-rv --lang en --out bench-demo"],
+    },
+    {
+      name: "grounding",
+      summary: {
+        en: "Grounding benchmark: held-out items through the patient's fact selection, tool argument resolution, the router and the verifier → grounding-report.json + .md",
+        zh: "语义落地基准：用留出条目评测病人事实选择、工具参数解析、路由器与核验器 → grounding-report.json 与 .md",
+      },
+      flags: [
+        { name: "suite", type: "string", valueName: "<name>", description: { en: "Grounding suite (default grounding-v1)", zh: "语义落地测试集（默认 grounding-v1）" } },
+        { name: "split", type: "string", valueName: "<split>", choices: ["dev", "test", "all"], description: { en: "dev | test (held out) | all (default all)", zh: "dev | test（留出）| all（默认 all）" } },
+        { name: "track", type: "list", valueName: "<names>", description: { en: "Only these tracks: history, exam, orders, interventions, routing, verifier", zh: "只评测这些项：history、exam、orders、interventions、routing、verifier" } },
+        { name: "case", type: "list", valueName: "<ids>", description: { en: "Only these cases", zh: "只评测这些病例" } },
+        { name: "locale", type: "list", valueName: "<langs>", description: { en: "Only items in these languages (zh-CN, en)", zh: "只评测这些语言的条目（zh-CN、en）" } },
+        { name: "tag", type: "list", valueName: "<tags>", description: { en: "Only items with these tags (e.g. negation)", zh: "只评测带这些标签的条目（如 negation）" } },
+        { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default grounding-results)", zh: "报告目录（默认 grounding-results）" } },
+        { name: "failures", type: "number", valueName: "<n>", description: { en: "Failures listed in the Markdown report (default 200)", zh: "Markdown 报告中列出的失败条目数（默认 200）" } },
+        { name: "compare", type: "string", valueName: "<report.json>", description: { en: "A previous grounding-report.json: add metric deltas and the items fixed / broken", zh: "之前的 grounding-report.json：附上指标变化以及修复/退步的条目" } },
+      ],
+      run: benchGrounding,
+      examples: [
+        "clinicalcraft bench grounding --split dev --lang en",
+        "clinicalcraft bench grounding --split dev --tag negation --lang en",
+        "clinicalcraft bench grounding --split test --out grounding-results/after --compare grounding-results/before/grounding-report.json",
+      ],
     },
   ],
 };

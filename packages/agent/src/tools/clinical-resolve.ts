@@ -7,8 +7,11 @@
  * clinical.ts re-exports the public names, so their import path is unchanged.
  */
 import {
+  analyzeNegation,
+  canonicalToken,
   capabilityLabels,
   facilityCapabilities,
+  interventionNegation,
   matchExam,
   matchInterventions,
   matchOrders,
@@ -99,17 +102,60 @@ export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderSta
   return o.ready ? rt(locale, "label.ready") : rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
 }
 
-/** Outcome of resolving an id-or-query argument pair. */
+/**
+ * Outcome of resolving an id-or-query argument pair. `negated`: an
+ * intervention query that says what NOT to do ("don't give GTN") and names no
+ * item that itself withholds — nothing is done; `withheld` are the items it
+ * names, `suggestions` the case items it may still mean (a withholding item
+ * such as "withhold analgesia", or a weak affirmative match).
+ */
 export type Resolution =
   | { kind: "id"; id: string }
   | { kind: "ambiguous"; ids: string[] }
   | { kind: "none"; query: string }
+  | { kind: "negated"; query: string; withheld: string[]; suggestions: string[]; doubleNegative: boolean }
   | { kind: "unknown-id"; id: string }
   | { kind: "missing" };
 
 function exactId(ids: readonly string[], text: string): string | undefined {
   const lower = text.toLowerCase();
   return ids.find((id) => id.toLowerCase() === lower);
+}
+
+/** An id spelled with "-" for "_" and spaces, lower-case. */
+function canonicalId(id: string): string {
+  return id.trim().toLowerCase().replace(/[\s_]+/g, "-");
+}
+
+/** The words of an id ("ex-resp-ausc" → ex, resp, ausc), as canonical tokens (reflexes ~ reflex). */
+function idWords(id: string): string[] {
+  return id
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((w) => w.length > 0)
+    .map(canonicalToken);
+}
+
+/**
+ * Read an id the case does not have leniently — models guess ids from what
+ * they expect a case to contain: the same id spelled with "_" or spaces
+ * ("blood_cultures" → blood-cultures); else the one id whose words include
+ * every word of the guess ("ceftriaxone" → abx-ceftriaxone, "nasal-o2" →
+ * o2-nasal); else the guess read as a free-text query (`asQuery`, with its
+ * clear-winner rule). Several candidates → `ambiguous` (named, nothing done);
+ * none → `unknown-id`.
+ */
+function resolveGuessedId(ids: readonly string[], guess: string, asQuery: (query: string) => Resolution): Resolution {
+  const canonical = canonicalId(guess);
+  const same = ids.find((id) => canonicalId(id) === canonical);
+  if (same) return { kind: "id", id: same };
+  const words = idWords(guess);
+  const containing = words.length > 0 ? ids.filter((id) => words.every((w) => idWords(id).includes(w))) : [];
+  if (containing.length === 1) return { kind: "id", id: containing[0]! };
+  const byQuery = asQuery(guess.replace(/[-_]+/g, " ").trim());
+  if (byQuery.kind === "id" || byQuery.kind === "negated") return byQuery;
+  const named = [...new Set([...containing, ...(byQuery.kind === "ambiguous" ? byQuery.ids : [])])].slice(0, 6);
+  return named.length > 0 ? { kind: "ambiguous", ids: named } : { kind: "unknown-id", id: guess };
 }
 
 /**
@@ -136,7 +182,19 @@ export function resolveHits(hits: readonly MatchHit[], query: string, specificit
   return { kind: "none", query };
 }
 
-/** Resolve `{investigation_id?, query?}` with `matchOrders` (V4 semantics: more than one id = ambiguous). */
+/** `matchOrders` as a resolution (V4 semantics: more than one id = ambiguous). */
+function orderQuery(c: CaseDefinition, query: string, locale: string): Resolution {
+  const matched = matchOrders(c, query, locale);
+  if (matched.length === 1) return { kind: "id", id: matched[0]! };
+  if (matched.length > 1) return { kind: "ambiguous", ids: matched };
+  return { kind: "none", query };
+}
+
+/**
+ * Resolve `{investigation_id?, query?}` with `matchOrders` (V4 semantics: more
+ * than one id = ambiguous). An id the case does not have is read leniently
+ * (`resolveGuessedId`).
+ */
 export function resolveInvestigation(c: CaseDefinition, args: ToolArgs, locale: string, idKey = "investigation_id"): Resolution {
   const ids = c.investigations.map((i) => i.id);
   const id = strArg(args, idKey);
@@ -145,16 +203,13 @@ export function resolveInvestigation(c: CaseDefinition, args: ToolArgs, locale: 
     if (exact) return { kind: "id", id: exact };
     const matched = matchOrders(c, id, locale);
     if (matched.length === 1) return { kind: "id", id: matched[0]! };
-    return { kind: "unknown-id", id };
+    return resolveGuessedId(ids, id, (q) => orderQuery(c, q, locale));
   }
   const query = strArg(args, "query");
   if (!query) return { kind: "missing" };
   const exact = exactId(ids, query);
   if (exact) return { kind: "id", id: exact };
-  const matched = matchOrders(c, query, locale);
-  if (matched.length === 1) return { kind: "id", id: matched[0]! };
-  if (matched.length > 1) return { kind: "ambiguous", ids: matched };
-  return { kind: "none", query };
+  return orderQuery(c, query, locale);
 }
 
 /**
@@ -162,35 +217,98 @@ export function resolveInvestigation(c: CaseDefinition, args: ToolArgs, locale: 
  * query only matches findings available in that phase (as the web exam
  * search does): phase twins ("auscultate the chest" at the scene and in the
  * ED) do not tie, and later phases are not hinted at. Exact ids are not
- * filtered, so the engine still reports `phase-locked` for them.
+ * filtered, so the engine still reports `phase-locked` for them. An id the
+ * case does not have is read leniently (`resolveGuessedId`).
  */
 export function resolveFinding(c: CaseDefinition, args: ToolArgs, locale: string, phase?: string): Resolution {
   const ids = c.exam.map((e) => e.id);
+  const byQuery = (query: string) => resolveHits(matchExam(c, query, locale, phase ? { phase } : {}), query, (hit) => matchSpecificity(c, "exam", query, locale, hit));
   const id = strArg(args, "finding_id");
   if (id) {
     const exact = exactId(ids, id);
-    return exact ? { kind: "id", id: exact } : { kind: "unknown-id", id };
+    return exact ? { kind: "id", id: exact } : resolveGuessedId(ids, id, byQuery);
   }
   const query = strArg(args, "query");
   if (!query) return { kind: "missing" };
   const exact = exactId(ids, query);
   if (exact) return { kind: "id", id: exact };
-  return resolveHits(matchExam(c, query, locale, phase ? { phase } : {}), query, (hit) => matchSpecificity(c, "exam", query, locale, hit));
+  return byQuery(query);
 }
 
-/** Resolve `{intervention_id?, query?}` with `matchInterventions`. */
+/**
+ * Resolve `{intervention_id?, query?}` with `matchInterventions`, which reads
+ * negation: a query that negates an item never resolves to it. When such a
+ * query resolves to nothing — no hit, or only weak ones — the resolution is
+ * `negated` (what it withholds, and what it may still mean) rather than
+ * `none` / `ambiguous`, so the reply can say why nothing was done. An id the
+ * case does not have is read leniently (`resolveGuessedId`).
+ */
 export function resolveIntervention(c: CaseDefinition, args: ToolArgs, locale: string): Resolution {
   const ids = c.interventions.map((i) => i.id);
   const id = strArg(args, "intervention_id");
   if (id) {
     const exact = exactId(ids, id);
-    return exact ? { kind: "id", id: exact } : { kind: "unknown-id", id };
+    return exact ? { kind: "id", id: exact } : resolveGuessedId(ids, id, (q) => interventionQuery(c, q, locale));
   }
   const query = strArg(args, "query");
   if (!query) return { kind: "missing" };
   const exact = exactId(ids, query);
   if (exact) return { kind: "id", id: exact };
-  return resolveHits(matchInterventions(c, query, locale), query, (hit) => matchSpecificity(c, "interventions", query, locale, hit));
+  return interventionQuery(c, query, locale);
+}
+
+/** Routes of administration, as a query or an item's name and aliases state them (en + zh-CN). */
+const ROUTES: readonly (readonly [route: string, pattern: RegExp])[] = [
+  ["oral", /(?<![a-z0-9])(?:oral(?:ly)?|po|p\.o\.|by mouth|tablets?|capsules?|chew(?:ed)?)(?![a-z0-9])|口服|嚼服/],
+  ["iv", /(?<![a-z0-9])(?:iv|i\.v\.|intravenous(?:ly)?)(?![a-z0-9])|静脉|静推|静注|静滴/],
+  ["im", /(?<![a-z0-9])(?:im|i\.m\.|intramuscular(?:ly)?)(?![a-z0-9])|肌注|肌内|肌肉注射/],
+  ["sc", /(?<![a-z0-9])(?:sc|s\.c\.|subcut(?:aneous(?:ly)?)?)(?![a-z0-9])|皮下/],
+  ["inhaled", /(?<![a-z0-9])(?:nebs?|nebuli[sz](?:e|ed|er)|inhaled|inhaler|inhalation)(?![a-z0-9])|雾化|吸入/],
+  ["sublingual", /(?<![a-z0-9])(?:sublingual(?:ly)?|sl)(?![a-z0-9])|舌下/],
+  ["rectal", /(?<![a-z0-9])(?:pr|rectal(?:ly)?|suppositor(?:y|ies))(?![a-z0-9])|直肠|肛塞|纳肛/],
+];
+
+function routesOf(text: string): Set<string> {
+  const lower = text.toLowerCase();
+  return new Set(ROUTES.filter(([, pattern]) => pattern.test(lower)).map(([route]) => route));
+}
+
+/** Routes an intervention states in its name or aliases (any locale); cached per item (case data is immutable). */
+const itemRouteCache = new WeakMap<Intervention, Set<string>>();
+function itemRoutes(iv: Intervention): Set<string> {
+  let routes = itemRouteCache.get(iv);
+  if (!routes) {
+    const name = typeof iv.name === "string" ? [iv.name] : Object.values(iv.name);
+    const aliases = iv.aliases == null ? [] : Array.isArray(iv.aliases) ? iv.aliases : Object.values(iv.aliases).flat();
+    routes = routesOf([...name, ...aliases].join(" | "));
+    itemRouteCache.set(iv, routes);
+  }
+  return routes;
+}
+
+/**
+ * A free-text intervention query (see `resolveIntervention`). A query that
+ * states a route ("oral prednisolone", "IV adrenaline") never resolves to an
+ * item that states only other routes (IV hydrocortisone, IM adrenaline):
+ * such an item is offered as a candidate instead.
+ */
+function interventionQuery(c: CaseDefinition, query: string, locale: string): Resolution {
+  const all = matchInterventions(c, query, locale);
+  const wanted = routesOf(analyzeNegation(query).affirmative);
+  const offRoute = (id: string) => {
+    const iv = c.interventions.find((i) => i.id === id);
+    const own = iv ? itemRoutes(iv) : new Set<string>();
+    return wanted.size > 0 && own.size > 0 && ![...wanted].some((route) => own.has(route));
+  };
+  const hits = all.filter((h) => !offRoute(h.id));
+  const otherRoute = all.filter((h) => offRoute(h.id)).map((h) => h.id);
+  const r = resolveHits(hits, query, (hit) => matchSpecificity(c, "interventions", query, locale, hit));
+  if (r.kind === "id" || (hits[0]?.score ?? 0) >= RESOLVE_THRESHOLD) return r;
+  const candidates = [...(r.kind === "ambiguous" ? r.ids : []), ...otherRoute];
+  const negation = interventionNegation(c, query, locale);
+  if (!negation) return candidates.length > 0 ? { kind: "ambiguous", ids: [...new Set(candidates)].slice(0, 6) } : r;
+  const suggestions = [...new Set([...negation.alternatives, ...candidates])].slice(0, 6);
+  return { kind: "negated", query, withheld: negation.withheld, suggestions, doubleNegative: negation.doubleNegated.length > 0 };
 }
 
 /**
@@ -212,6 +330,23 @@ export function unresolvedOutput(locale: string, r: Exclude<Resolution, { kind: 
         output: rt(locale, "tool.ambiguous", { candidates: r.ids.map((id) => `${id} (${label(id)})`).join(isZh(locale) ? "；" : "; ") }),
         data: { unresolved: "ambiguous", candidates: r.ids.map((id) => ({ id, label: label(id) })) },
       };
+    case "negated": {
+      const sep = isZh(locale) ? "；" : "; ";
+      const withheld = r.withheld.length ? rt(locale, "tool.negated.withheld", { items: joinList(locale, r.withheld.map(label)) }) : "";
+      const head = r.doubleNegative && !r.withheld.length ? rt(locale, "tool.negated.double", { query: r.query }) : rt(locale, "tool.negated", { query: r.query, withheld });
+      const alternatives = r.suggestions.length ? rt(locale, "tool.negated.alternatives", { candidates: r.suggestions.map((id) => `${id} (${label(id)})`).join(sep) }) : "";
+      return {
+        ok: false,
+        output: `${head}${alternatives}`,
+        data: {
+          unresolved: "negated",
+          query: r.query,
+          withheld: r.withheld.map((id) => ({ id, label: label(id) })),
+          candidates: r.suggestions.map((id) => ({ id, label: label(id) })),
+          doubleNegative: r.doubleNegative,
+        },
+      };
+    }
     default: {
       const never: never = r;
       return never;

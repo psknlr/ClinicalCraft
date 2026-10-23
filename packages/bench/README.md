@@ -13,6 +13,7 @@ npm run -s cc -- bench list                                         # 41 scenari
 npm run -s cc -- bench run --suite embodied-v1 --agent reference    # → bench-results/bench-report.{json,md}
 npm run -s cc -- bench run --agent scripted-llm --seeds 1-5 --traces
 npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN --out bench-demo   # → trace.jsonl + demo.md
+npm run -s cc -- bench grounding --split dev --lang en             # grounding benchmark → grounding-results/grounding-report.{json,md}
 ```
 
 | agent | what it is | proves |
@@ -37,6 +38,7 @@ confirms every step of the reference demonstration.
 | `pricing.ts` | the live-run `Budget` (tokens, or USD for a model in `MODEL_PRICES` — empty: list prices change) |
 | `demo.ts` | `runDemo`: the embodied STEMI encounter, step by step, confirmed against the engine and the world |
 | `agents/` | `reference`, `scripted-llm`, `llm` |
+| `grounding/` | the grounding benchmark ([docs/GROUNDING.md](../../docs/GROUNDING.md)): `GroundingSetSchema` (`clinicalcraft/grounding-set@1`), `loadGroundingSuite` / `groundingRefIssues` / `FROZEN_SPLIT_DIGESTS`, the evaluator (the runtime's own selection, resolution, routing and verification functions), metrics with tag slices, the report and `compareGroundingReports` |
 
 ```ts
 import { loadContent } from "@clinicalcraft/agent/node";

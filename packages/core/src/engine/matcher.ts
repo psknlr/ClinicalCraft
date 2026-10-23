@@ -12,13 +12,18 @@
  *   ordered by score, then declaration order. An item whose
  *   `excludeKeywords` (any locale) occur in the normalised utterance has its
  *   score multiplied by `EXCLUDE_KEYWORD_FACTOR` before the threshold.
+ * * `matchInterventions` reads negation (`analyzeNegation`): an instruction
+ *   that negates an item ("don't give GTN", "不要静推氯化钾") never returns
+ *   it; it returns the item that itself withholds ("stop the pump", "nil by
+ *   mouth"), or nothing (`interventionNegation` says what was withheld).
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
 import { t } from "../i18n.js";
 import { evaluate } from "./conditions.js";
 import { hasHistoryTwins, historyTwin } from "./twins.js";
-import { allListEntries, allTexts, compactText, normalizeQuery, phraseCoverage, phraseScore, prepare, unique, type Prepared } from "./text.js";
+import { analyzeNegation, type NegationAnalysis } from "./negation.js";
+import { allListEntries, allTexts, normalizeQuery, phraseCoverage, phraseEvidence, phraseScore, prepare, scoringText, unique, type Prepared } from "./text.js";
 import type { MatchHit, MatchOptions } from "./types.js";
 
 export { normalizeQuery } from "./text.js";
@@ -28,6 +33,18 @@ export const MATCH_THRESHOLD = 0.34;
 
 /** Score multiplier for an item one of whose `excludeKeywords` occurs in the utterance. */
 export const EXCLUDE_KEYWORD_FACTOR = 0.2;
+
+/**
+ * Share of its whole-utterance score an intervention keeps when the
+ * affirmative words support it only in part and the rest of its match lies in
+ * a negated clause (an ellipsis: "no more fluid boluses, run maintenance
+ * only" → maintenance fluids). Below 1 so that an item the affirmative words
+ * name in full wins.
+ */
+export const ELLIPSIS_FACTOR = 0.8;
+
+/** Items within this much of the best match of a negated clause are what that clause withholds. */
+export const NEGATED_MARGIN = 0.1;
 
 /* ------------------------------------------------------------------ */
 /* Regular expressions from case data                                  */
@@ -143,12 +160,67 @@ export function orderWarnings(c: CaseDefinition, query: string, investigationId:
 interface IndexedItem {
   id: string;
   phrases: Prepared[];
-  /** `excludeKeywords` of every locale, as `compactText` (non-empty, unique). */
+  /** `excludeKeywords` of every locale, as `scoringText` (non-empty, unique). */
   exclude: string[];
   /** Phases the item is restricted to (undefined = every phase). */
   phases?: string[];
   /** History item with `disclosure: "unknown"`. */
   unknown?: boolean;
+  /** Interventions: the phrases that negate nothing (as `phrases`, minus `polar`). */
+  plain?: Prepared[];
+  /** Interventions: the phrases that themselves withhold ("stop the pump", "禁食"), by polarity. */
+  polar?: PolarPhrase[];
+}
+
+/** A phrase that negates something, split into what it asks for and what it withholds. */
+interface PolarPhrase {
+  affirmative: Prepared;
+  negated: Prepared;
+  /** Size of each part: tokens (Latin) or characters (CJK). */
+  affirmativeWeight: number;
+  negatedWeight: number;
+}
+
+/** A negated utterance prepared for `scoreNegated`. */
+interface PolarUtterance {
+  full: Prepared;
+  affirmative: Prepared;
+  scopes: Prepared[];
+}
+
+function weightOf(p: Prepared): number {
+  return p.cjk ? p.compact.length : p.tokens.length;
+}
+
+/** Split a phrase by polarity; null when it negates nothing (or only as a double negative). */
+function polarPhrase(text: string): PolarPhrase | null {
+  const negation = analyzeNegation(text);
+  if (!negation.negated || negation.doubleNegated.length > 0) return null;
+  const affirmative = prepare(negation.affirmative);
+  const negated = prepare(negation.scopes.join(" "));
+  const negatedWeight = weightOf(negated);
+  return negatedWeight > 0 ? { affirmative, negated, affirmativeWeight: weightOf(affirmative), negatedWeight } : null;
+}
+
+/** Polarity-aligned score: the phrase's withheld words against the utterance's negated clauses, the rest against its affirmative words. */
+function polarScore(u: PolarUtterance, p: PolarPhrase): number {
+  const negated = Math.max(0, ...u.scopes.map((scope) => phraseScore(scope, p.negated)));
+  const affirmative = p.affirmativeWeight > 0 ? phraseScore(u.affirmative, p.affirmative) : 0;
+  return (negated * p.negatedWeight + affirmative * p.affirmativeWeight) / (p.negatedWeight + p.affirmativeWeight);
+}
+
+function polarCoverage(u: PolarUtterance, p: PolarPhrase): number {
+  const negated = Math.max(0, ...u.scopes.map((scope) => phraseCoverage(scope, p.negated)));
+  return negated + (p.affirmativeWeight > 0 ? phraseCoverage(u.affirmative, p.affirmative) : 0);
+}
+
+function polarUtterance(utterance: string, negation: NegationAnalysis): PolarUtterance {
+  return { full: prepare(utterance), affirmative: prepare(negation.affirmative), scopes: negation.scopes.map(prepare) };
+}
+
+/** True when `analyzeNegation` found something to read (a negated clause or a double negative). */
+function negates(negation: NegationAnalysis): boolean {
+  return negation.negated || negation.doubleNegated.length > 0;
 }
 
 /** Prepared phrase indexes per case collection (case data is treated as immutable). */
@@ -201,7 +273,7 @@ function preparePhrases(texts: string[]): Prepared[] {
 
 /** Normalised exclude phrases of every locale (`excludeKeywords` may be absent on cases built in code). */
 function excludePhrases(list: Parameters<typeof allListEntries>[0]): string[] {
-  return unique(allListEntries(list, "*").map(compactText).filter((x) => x.length > 0));
+  return unique(allListEntries(list, "*").map(scoringText).filter((x) => x.length > 0));
 }
 
 /**
@@ -229,6 +301,40 @@ export function matchHistory(c: CaseDefinition, utterance: string, locale: strin
   return [...best]
     .map(([id, score]) => ({ id, score }))
     .sort((a, b) => b.score - a.score || (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+}
+
+/**
+ * History hits (as `matchHistory` returns them) less those whose evidence
+ * another hit's evidence properly contains — the more specific match accounts
+ * for all the other one does, and more: "frothy urine" over "urine", "another
+ * hospital" over "hospital", "别人也拉肚子" over "拉肚子". An item's evidence is
+ * what its best-scoring phrases account for in the utterance (`phraseEvidence`,
+ * all phrases tied for its best score), over its own phrases and, with
+ * `phase`, those of the items it answers for there (`historyTwin`). A hit
+ * without evidence is kept and drops nothing; order is kept.
+ */
+export function distinctHistoryHits(c: CaseDefinition, utterance: string, locale: string, hits: readonly MatchHit[], phase?: string): MatchHit[] {
+  if (hits.length < 2) return [...hits];
+  const u = prepare(utterance);
+  const index = historyIndex(c, locale);
+  const twins = phase != null && hasHistoryTwins(c);
+  const evidence = hits.map((hit) => {
+    let best = 0;
+    let keys = new Set<string>();
+    for (const item of index) {
+      if (item.id !== hit.id && !(twins && historyTwin(c, item.id, phase!) === hit.id)) continue;
+      for (const phrase of item.phrases) {
+        const score = phraseScore(u, phrase);
+        if (score <= 0 || score < best - 1e-9) continue;
+        if (score > best + 1e-9) keys = new Set();
+        for (const key of phraseEvidence(u, phrase)) keys.add(key);
+        best = Math.max(best, score);
+      }
+    }
+    return keys;
+  });
+  const within = (a: Set<string>, b: Set<string>) => a.size > 0 && b.size > a.size && [...a].every((key) => b.has(key));
+  return hits.filter((_, i) => !evidence.some((other, j) => j !== i && within(evidence[i]!, other)));
 }
 
 function historyIndex(c: CaseDefinition, locale: string): IndexedItem[] {
@@ -263,18 +369,118 @@ function examIndex(c: CaseDefinition, locale: string): IndexedItem[] {
   );
 }
 
-/** Interventions matching a learner utterance (name + aliases, all locales). */
+/**
+ * Interventions matching a learner utterance (name + aliases, all locales).
+ *
+ * An utterance without negation is scored like history and exam items. One
+ * that negates (`analyzeNegation`) is read by polarity:
+ *
+ * * a phrase that itself withholds ("stop the pump", "nil by mouth", "不要抽烟")
+ *   scores its withheld words against the negated clauses and its other words
+ *   against the affirmative ones ("stop the fixed-rate insulin infusion" →
+ *   stop the IV insulin infusion);
+ * * the items that best match a negated clause (within `NEGATED_MARGIN`) are
+ *   withheld and never returned, even when an affirmative clause names their
+ *   class ("no IV chlorphenamine, give an antihistamine"); other items need
+ *   some affirmative support and keep `ELLIPSIS_FACTOR` of their
+ *   whole-utterance score ("no more fluid boluses, run maintenance only";
+ *   "stop the morphine, start a morphine PCA" → the PCA);
+ * * a double negative ("do not delay antibiotics", "不要停泵") is read
+ *   neither way: its clause supports nothing.
+ *
+ * So "don't give GTN" returns nothing, never the GTN; `interventionNegation`
+ * says what it withheld.
+ */
 export function matchInterventions(c: CaseDefinition, utterance: string, locale: string): MatchHit[] {
-  return scoreItems(interventionIndex(c, locale), utterance);
+  const index = interventionIndex(c, locale);
+  const negation = analyzeNegation(utterance);
+  return negates(negation) ? scoreNegated(index, polarUtterance(utterance, negation)).hits : scoreItems(index, utterance);
+}
+
+/** What a negated instruction withholds (`interventionNegation`). */
+export interface InterventionNegation {
+  /** Items a negated clause names that the instruction does not act on ("don't give GTN" → nitroglycerin). */
+  withheld: string[];
+  /** Items that themselves withhold something `withheld` names ("hold the morphine" → withhold analgesia), for a reply to offer. */
+  alternatives: string[];
+  /** What the cues negate (lower-case). */
+  scopes: string[];
+  /** Clauses with a double negative, read neither way. */
+  doubleNegated: string[];
+}
+
+/** Minimum similarity (both ways) of a withheld item's phrase and a withholding item's withheld words for the latter to be offered. */
+const ALTERNATIVE_THRESHOLD = 0.75;
+
+/** A withheld item's phrase and a withholding item's withheld words name the same thing ("止痛" ~ "不给止痛"; not "infusion" ~ "potassium in the infusion"). */
+function sameThing(a: Prepared, b: Prepared): boolean {
+  return Math.min(phraseScore(a, b), phraseScore(b, a)) >= ALTERNATIVE_THRESHOLD;
+}
+
+/**
+ * The negation `matchInterventions` read in an utterance: what it withholds,
+ * which items record withholding that, and any double negative. Null when the
+ * utterance negates nothing.
+ */
+export function interventionNegation(c: CaseDefinition, utterance: string, locale: string): InterventionNegation | null {
+  const negation = analyzeNegation(utterance);
+  if (!negates(negation)) return null;
+  const index = interventionIndex(c, locale);
+  const { hits, withheld } = scoreNegated(index, polarUtterance(utterance, negation));
+  const named = index.filter((item) => withheld.includes(item.id));
+  const taken = new Set([...withheld, ...hits.map((h) => h.id)]);
+  const alternatives = index
+    .filter((item) => !taken.has(item.id) && item.polar!.some((p) => named.some((x) => x.plain!.some((phrase) => sameThing(phrase, p.negated)))))
+    .map((item) => item.id);
+  return { withheld, alternatives, scopes: negation.scopes, doubleNegated: negation.doubleNegated };
+}
+
+/** Scores for a negated utterance (see `matchInterventions`), and the items its negated clauses withhold (minus hits). */
+function scoreNegated(items: IndexedItem[], u: PolarUtterance): { hits: MatchHit[]; withheld: string[] } {
+  if (!u.full.compact) return { hits: [], withheld: [] };
+  const rows = items.map((item) => {
+    let affirmative = 0;
+    let full = 0;
+    const negated = u.scopes.map(() => 0);
+    for (const phrase of item.plain!) {
+      affirmative = Math.max(affirmative, phraseScore(u.affirmative, phrase));
+      full = Math.max(full, phraseScore(u.full, phrase));
+      u.scopes.forEach((scope, i) => (negated[i] = Math.max(negated[i]!, phraseScore(scope, phrase))));
+    }
+    const polar = Math.max(0, ...item.polar!.map((p) => polarScore(u, p)));
+    return { item, affirmative, full, negated, polar };
+  });
+  const withheld = new Set<string>();
+  u.scopes.forEach((_, i) => {
+    const best = Math.max(0, ...rows.map((r) => r.negated[i]!));
+    if (best < MATCH_THRESHOLD) return;
+    for (const r of rows) if (r.negated[i]! >= best - NEGATED_MARGIN) withheld.add(r.item.id);
+  });
+  const hits: MatchHit[] = [];
+  for (const r of rows) {
+    const plain = r.affirmative === 0 || withheld.has(r.item.id) ? 0 : Math.max(r.affirmative, ELLIPSIS_FACTOR * r.full);
+    let best = Math.max(plain, r.polar);
+    if (best > 0 && r.item.exclude.some((x) => u.full.compact.includes(x))) best *= EXCLUDE_KEYWORD_FACTOR;
+    const score = Math.round(best * 10000) / 10000;
+    if (score >= MATCH_THRESHOLD) hits.push({ id: r.item.id, score });
+  }
+  const hit = new Set(hits.map((h) => h.id));
+  return { hits: hits.sort((a, b) => b.score - a.score), withheld: [...withheld].filter((id) => !hit.has(id)) };
 }
 
 function interventionIndex(c: CaseDefinition, locale: string): IndexedItem[] {
   return cachedIndex(c.interventions, `interventions:${locale}`, () =>
-    c.interventions.map((i) => ({
-      id: i.id,
-      phrases: preparePhrases([...allTexts(i.name, locale), ...allListEntries(i.aliases, locale)]),
-      exclude: excludePhrases(i.excludeKeywords),
-    })),
+    c.interventions.map((i) => {
+      const texts = unique([...allTexts(i.name, locale), ...allListEntries(i.aliases, locale)]);
+      const plain: string[] = [];
+      const polar: PolarPhrase[] = [];
+      for (const text of texts) {
+        const split = polarPhrase(text);
+        if (split) polar.push(split);
+        else plain.push(text);
+      }
+      return { id: i.id, phrases: preparePhrases(texts), exclude: excludePhrases(i.excludeKeywords), plain: preparePhrases(plain), polar };
+    }),
   );
 }
 
@@ -296,14 +502,21 @@ export function matchSpecificity(c: CaseDefinition, kind: MatchKind, utterance: 
   if (!item || !u.compact) return 0;
   let best = 0;
   let coverage = 0;
-  for (const phrase of item.phrases) {
-    const score = phraseScore(u, phrase);
-    if (score <= 0) continue;
-    const cover = phraseCoverage(u, phrase);
+  const consider = (score: number, cover: () => number) => {
+    if (score <= 0) return;
     if (score > best + 1e-9) {
       best = score;
-      coverage = cover;
-    } else if (Math.abs(score - best) <= 1e-9) coverage = Math.max(coverage, cover);
+      coverage = cover();
+    } else if (Math.abs(score - best) <= 1e-9) coverage = Math.max(coverage, cover());
+  };
+  const negation = kind === "interventions" ? analyzeNegation(utterance) : null;
+  if (negation && negates(negation)) {
+    // as matchInterventions reads it: plain phrases on the affirmative words, polar phrases by polarity
+    const polar = polarUtterance(utterance, negation);
+    for (const phrase of item.plain!) consider(phraseScore(polar.affirmative, phrase), () => phraseCoverage(polar.affirmative, phrase));
+    for (const phrase of item.polar!) consider(polarScore(polar, phrase), () => polarCoverage(polar, phrase));
+    return coverage;
   }
+  for (const phrase of item.phrases) consider(phraseScore(u, phrase), () => phraseCoverage(u, phrase));
   return coverage;
 }

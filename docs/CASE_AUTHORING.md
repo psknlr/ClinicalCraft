@@ -336,16 +336,21 @@ solution is sent to the browser).
 * `extensions.testUtterances`: at least 15–40 `{ "text", "locale", "expect": [historyIds] }`
   paraphrases (both locales; the built-in cases carry several dozen) used as a
   matcher regression corpus. `cases verify` applies the patient pipeline's
-  selection rule to each: the history items scoring ≥ 0.55 must include every
-  expected id and be led by one of them; `expect: []` must select nothing.
+  selection rule to each: the history items scoring ≥ 0.55 (less any that a
+  more specific one accounts for entirely, `distinctHistoryHits`: "frothy
+  urine" over "urine") must include every expected id and be led by one of
+  them; `expect: []` must select nothing.
   A missing corpus is a warning. So is an utterance whose selection would also
   credit a fact it does not ask about (the pipeline's full rule: ≥ 0.55,
   within 0.25 of the best, at most 3, in a phase of the first expected item):
   fix the keywords, or list a deliberate extra in the entry's `alsoOk: [ids]`.
   Chinese keywords: a phrase sharing only two characters with a question
   (not its first two, or a question bigram such as 怎么/什么) stays below the
-  select band (0.5), so give each item the distinctive 3–4-character phrases
-  learners use ("量过血压", "以前有什么病").
+  select band (0.5), and a run of function characters alone (的什么, 有没有,
+  现在在) shares nothing, so give each item the distinctive 3–4-character
+  phrases learners use ("量过血压", "以前有什么病"). A particle the learner adds
+  is skipped ("吸过毒吗" finds 吸毒) but a keyword's own particles are kept
+  ("吃了啥药" is about just now, not 吃的啥药), and 痛 matches 疼.
 
 ## 8. Facilities
 
