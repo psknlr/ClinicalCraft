@@ -1,15 +1,15 @@
 /**
  * The published package ships every data directory the loaders read
  * (`files`) and exposes it by subpath (`exports`): cases, facilities,
- * catalogs, JSON Schemas, benchmark scenarios and room templates (facilities
- * that place templates cannot be compiled without them).
+ * catalogs, JSON Schemas, benchmark scenarios, grounding sets and room
+ * templates (facilities that place templates cannot be compiled without them).
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const root = new URL("../", import.meta.url);
 const pkg = JSON.parse(readFileSync(new URL("package.json", root), "utf8")) as { files: string[]; exports: Record<string, unknown> };
-const DATA_DIRS = ["cases", "facilities", "catalogs", "schemas", "bench", "templates"];
+const DATA_DIRS = ["cases", "facilities", "catalogs", "schemas", "bench", "grounding", "templates"];
 
 describe("@clinicalcraft/content packaging", () => {
   it("every data directory exists and is published and exported", () => {
