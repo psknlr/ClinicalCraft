@@ -1,0 +1,64 @@
+{
+  "$schema": "../../../schemas/grounding-set.schema.json",
+  "format": "clinicalcraft/grounding-set@1",
+  "suite": "grounding-v1",
+  "split": "dev",
+  "caseId": "pediatric-asthma",
+  "history": [
+    {"id": "pas-d-h01", "locale": "en", "text": "What's been happening with his breathing?", "expect": ["hx-onset"]},
+    {"id": "pas-d-h02", "locale": "en", "text": "Did the inhaler help?", "expect": ["hx-reliever-use-today"]},
+    {"id": "pas-d-h03", "locale": "en", "text": "Have you been to a GP or another hospital for this?", "expect": ["hx-prior-care"]},
+    {"id": "pas-d-h04", "locale": "en", "text": "How often does he need his blue inhaler normally?", "expect": ["hx-interval-symptoms"]},
+    {"id": "pas-d-h05", "locale": "en", "text": "Is he complaining of any chest pain?", "expect": ["hx-chest-pain"]},
+    {"id": "pas-d-h06", "locale": "en", "text": "Is he drowsy?", "expect": ["hx-alertness"]},
+    {"id": "pas-d-h07", "locale": "en", "text": "Any stridor or drooling?", "expect": ["hx-upper-airway"]},
+    {"id": "pas-d-h08", "locale": "en", "text": "Any rash or lip swelling?", "expect": ["hx-anaphylaxis-screen"]},
+    {"id": "pas-d-h09", "locale": "en", "text": "When was he diagnosed with asthma?", "expect": ["hx-asthma-diagnosis"]},
+    {"id": "pas-d-h10", "locale": "en", "text": "Has he ever been intubated?", "expect": ["hx-picu-intubation"]},
+    {"id": "pas-d-h11", "locale": "en", "text": "Any eczema or hay fever?", "expect": ["hx-atopy"]},
+    {"id": "pas-d-h12", "locale": "en", "text": "Have you been abroad?", "expect": ["hx-travel"]},
+    {"id": "pas-d-h13", "locale": "en", "text": "How much is left in the blue inhaler?", "expect": ["hx-unknown-inhaler-left"]},
+    {"id": "pas-d-h14", "locale": "en", "text": "What's his favourite food?", "expect": []},
+    {"id": "pas-d-h15", "locale": "zh-CN", "text": "咳嗽有痰吗？", "expect": ["hx-cough"]},
+    {"id": "pas-d-h16", "locale": "zh-CN", "text": "发烧吗？", "expect": ["hx-fever"]},
+    {"id": "pas-d-h17", "locale": "zh-CN", "text": "能吃能喝吗？", "expect": ["hx-feeding"]},
+    {"id": "pas-d-h18", "locale": "zh-CN", "text": "有没有呛到什么东西？", "expect": ["hx-foreign-body"]},
+    {"id": "pas-d-h19", "locale": "zh-CN", "text": "预防药每天都用吗？", "expect": ["hx-adherence"]},
+    {"id": "pas-d-h20", "locale": "zh-CN", "text": "出生时足月吗？", "expect": ["hx-birth"]},
+    {"id": "pas-d-h21", "locale": "zh-CN", "text": "家里有人抽烟吗？", "expect": ["hx-smoke"]},
+    {"id": "pas-d-h22", "locale": "zh-CN", "text": "你们希望今天我们做什么？", "expect": ["hx-ice-expectations"]},
+    {"id": "pas-d-h23", "locale": "zh-CN", "text": "上次哮喘复查是什么时候？", "expect": ["hx-unknown-last-review"]},
+    {"id": "pas-d-h24", "locale": "zh-CN", "text": "小朋友，现在感觉怎么样？", "phase": "critical", "expect": ["hx-child-feeling-critical"]},
+    {"id": "pas-d-h25", "locale": "zh-CN", "text": "他喜欢画画吗？", "expect": []}
+  ],
+  "exam": [
+    {"id": "pas-d-e01", "locale": "en", "query": "general appearance", "expect": "ex-general"},
+    {"id": "pas-d-e02", "locale": "en", "itemId": "percussion", "expect": "ex-percussion"},
+    {"id": "pas-d-e03", "locale": "en", "query": "heart sounds and cap refill", "expect": "ex-cardiovascular"},
+    {"id": "pas-d-e04", "locale": "zh-CN", "query": "检查上气道有没有喉鸣", "expect": "ex-upper-airway"},
+    {"id": "pas-d-e05", "locale": "zh-CN", "query": "再听一下肺", "phase": "reassess", "expect": "ex-reassess-auscultation"}
+  ],
+  "orders": [
+    {"id": "pas-d-o01", "locale": "en", "query": "sats in air", "expect": "spo2-ra"},
+    {"id": "pas-d-o02", "locale": "en", "itemId": "blood-gas", "expect": "vbg"},
+    {"id": "pas-d-o03", "locale": "en", "query": "C-reactive protein", "expect": "crp"},
+    {"id": "pas-d-o04", "locale": "en", "query": "chest CT", "expect": null},
+    {"id": "pas-d-o05", "locale": "zh-CN", "query": "测个呼气峰流速", "expect": "pef"}
+  ],
+  "interventions": [
+    {"id": "pas-d-i01", "locale": "en", "query": "back-to-back salbutamol nebs", "expect": "salbutamol-neb"},
+    {"id": "pas-d-i02", "locale": "en", "itemId": "ipratropium", "expect": "ipratropium-neb"},
+    {"id": "pas-d-i03", "locale": "en", "query": "IV hydrocortisone", "expect": "hydrocortisone-iv"},
+    {"id": "pas-d-i04", "locale": "en", "query": "give him some cough syrup", "expect": null},
+    {"id": "pas-d-i05", "locale": "zh-CN", "query": "叫上级医生", "expect": "senior-review"},
+    {"id": "pas-d-i06", "locale": "zh-CN", "query": "收住儿科病房", "expect": "admit-ward"}
+  ],
+  "verifier": [
+    {"id": "pas-d-v01", "locale": "en", "question": "When did it start?", "used": ["hx-onset"], "reply": "(Mother) Around midnight. By just after 5 he couldn't finish a sentence, so I brought him in.", "expect": "pass"},
+    {"id": "pas-d-v02", "locale": "en", "question": "When did it start?", "used": ["hx-onset"], "reply": "(Mother) It started yesterday afternoon at school.", "expect": "block", "kind": "claim"},
+    {"id": "pas-d-v03", "locale": "zh-CN", "question": "家里都有谁？", "used": ["hx-home"], "reply": "（妈妈）我、他爸爸、妹妹和奶奶，住6楼，没养宠物。", "expect": "pass"},
+    {"id": "pas-d-v04", "locale": "zh-CN", "question": "家里都有谁？", "used": ["hx-home"], "reply": "（妈妈）我们一家三口，住2楼，养了一只猫。", "expect": "block", "kind": "number"},
+    {"id": "pas-d-v05", "locale": "en", "question": "Has he had his flu jab?", "used": [], "reply": "(Mother) Yes, he had it in October.", "expect": "block", "kind": "claim"},
+    {"id": "pas-d-v06", "locale": "zh-CN", "question": "他预防药用的是什么？", "used": ["hx-controller"], "reply": "（妈妈）橙色的辅舒酮，早晚各喷一下，要用储雾罐。", "expect": "pass"}
+  ]
+}

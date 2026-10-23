@@ -1,10 +1,11 @@
 /**
  * Emit JSON Schemas for editors from the zod contracts in
  * `@clinicalcraft/core` (`packages/core/src/schema/*`), the agent settings
- * schema (`packages/agent/src/settings/schema.ts`) and the benchmark
- * scenario schema (`packages/bench/src/schema.ts`).
+ * schema (`packages/agent/src/settings/schema.ts`), the benchmark
+ * scenario schema (`packages/bench/src/schema.ts`) and the grounding-set
+ * schema (`packages/bench/src/grounding/schema.ts`).
  *
- *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings, skill, bench-scenario)
+ *   npx tsx scripts/gen-json-schemas.ts          # write packages/content/schemas/*.schema.json (case, facility, room-template, equipment-catalog, settings, skill, bench-scenario, grounding-set)
  *   npx tsx scripts/gen-json-schemas.ts --check  # exit 1 if the files on disk are stale
  *
  * Shared building blocks (LocalizedText, Id, Condition, …) become named
@@ -42,6 +43,7 @@ import {
 import { SettingsLayerSchema, SettingsSchema } from "../packages/agent/src/settings/schema.js";
 import { SkillJsonSchema, SkillPredicateSchema, SkillSchema } from "../packages/agent/src/skills/schema.js";
 import { BenchJsonSchema, BenchScenarioSchema, NavGoalSchema } from "../packages/bench/src/schema.js";
+import { GroundingSetSchema } from "../packages/bench/src/grounding/schema.js";
 // The bench and skill schemas import the core contracts by package name: reference the same instances so they become `$ref`s.
 import * as benchCore from "@clinicalcraft/core";
 
@@ -140,6 +142,15 @@ const targets: Target[] = [
       NavGoal: NavGoalSchema,
       JsonValue: BenchJsonSchema,
     },
+  },
+  {
+    file: "grounding-set.schema.json",
+    name: "GroundingSet",
+    title: "ClinicalCraft grounding set (clinicalcraft/grounding-set@1)",
+    description:
+      "One file of the grounding benchmark (packages/content/grounding/<suite>/<split>/*.json, docs/GROUNDING.md): held-out free-text items for the patient's fact selection (history), the clinical tools' argument resolution (exam, orders, interventions), the patient router (routing) and the voice grounding check (verifier).",
+    schema: GroundingSetSchema,
+    definitions: { Id: benchCore.IdSchema },
   },
 ];
 

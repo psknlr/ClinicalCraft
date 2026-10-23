@@ -1,0 +1,63 @@
+{
+  "$schema": "../../../schemas/grounding-set.schema.json",
+  "format": "clinicalcraft/grounding-set@1",
+  "suite": "grounding-v1",
+  "split": "dev",
+  "caseId": "acute-appendicitis",
+  "history": [
+    {"id": "app-d-h01", "locale": "en", "text": "What's brought you to hospital?", "expect": ["hx-chief"]},
+    {"id": "app-d-h02", "locale": "en", "text": "Did the pain come on suddenly or gradually?", "expect": ["hx-onset"]},
+    {"id": "app-d-h03", "locale": "en", "text": "Where's the pain now?", "expect": ["hx-migration"], "alsoOk": ["hx-site-initial", "hx-chief"]},
+    {"id": "app-d-h04", "locale": "en", "text": "Does the pain go into your back or groin?", "expect": ["hx-radiation"]},
+    {"id": "app-d-h05", "locale": "en", "text": "Do bumps in the car make it worse?", "expect": ["hx-aggravating"]},
+    {"id": "app-d-h06", "locale": "en", "text": "Are you hungry at all?", "expect": ["hx-anorexia"]},
+    {"id": "app-d-h07", "locale": "en", "text": "Any diarrhoea or constipation?", "expect": ["hx-bowels"]},
+    {"id": "app-d-h08", "locale": "en", "text": "Any pain in your testicles?", "expect": ["hx-testicular"]},
+    {"id": "app-d-h09", "locale": "en", "text": "Have you had any knocks to your tummy playing sport?", "expect": ["hx-trauma"]},
+    {"id": "app-d-h10", "locale": "en", "text": "Have you had an anaesthetic before?", "expect": ["hx-psh"], "alsoOk": ["hx-family-anaesthesia"]},
+    {"id": "app-d-h11", "locale": "en", "text": "Do you bruise easily?", "expect": ["hx-bleeding"]},
+    {"id": "app-d-h12", "locale": "en", "text": "Do you play video games?", "expect": []},
+    {"id": "app-d-h13", "locale": "zh-CN", "text": "你叫什么名字？多大了？", "expect": ["hx-identity"]},
+    {"id": "app-d-h14", "locale": "zh-CN", "text": "以前有没有这样疼过？", "expect": ["hx-previous"]},
+    {"id": "app-d-h15", "locale": "zh-CN", "text": "你现在在吃什么药？", "expect": ["hx-meds"]},
+    {"id": "app-d-h16", "locale": "zh-CN", "text": "对药物过敏吗？", "expect": ["hx-allergies"]},
+    {"id": "app-d-h17", "locale": "zh-CN", "text": "这几天有没有感冒咳嗽？", "expect": ["hx-resp"]},
+    {"id": "app-d-h18", "locale": "zh-CN", "text": "身边有没有人也拉肚子？", "expect": ["hx-exposures"]},
+    {"id": "app-d-h19", "locale": "zh-CN", "text": "你觉得是什么原因？", "expect": ["hx-ice-ideas"]},
+    {"id": "app-d-h20", "locale": "zh-CN", "text": "疫苗都打全了吗？", "expect": ["hx-vaccines"]},
+    {"id": "app-d-h21", "locale": "zh-CN", "text": "你喜欢听什么音乐？", "expect": []}
+  ],
+  "exam": [
+    {"id": "app-d-e01", "locale": "en", "query": "inspect the abdomen", "expect": "ex-abd-inspect"},
+    {"id": "app-d-e02", "locale": "en", "query": "obturator sign", "expect": "ex-obturator"},
+    {"id": "app-d-e03", "locale": "en", "itemId": "heel-drop", "expect": "ex-cough-heel"},
+    {"id": "app-d-e04", "locale": "zh-CN", "query": "叩一下肾区", "expect": "ex-cva"},
+    {"id": "app-d-e05", "locale": "zh-CN", "query": "检查睾丸", "expect": "ex-testes"}
+  ],
+  "orders": [
+    {"id": "app-d-o01", "locale": "en", "query": "U&Es and glucose", "expect": "inv-ue"},
+    {"id": "app-d-o02", "locale": "en", "itemId": "lipase", "expect": "inv-lft-lipase"},
+    {"id": "app-d-o03", "locale": "en", "query": "erect CXR", "expect": "inv-cxr"},
+    {"id": "app-d-o04", "locale": "en", "query": "MRI pelvis", "expect": null},
+    {"id": "app-d-o05", "locale": "zh-CN", "query": "腹部平片", "expect": "inv-axr"},
+    {"id": "app-d-o06", "locale": "zh-CN", "query": "查凝血", "expect": "inv-coag"}
+  ],
+  "interventions": [
+    {"id": "app-d-i01", "locale": "en", "query": "IV morphine titrated to pain", "expect": "morphine"},
+    {"id": "app-d-i02", "locale": "en", "itemId": "hartmanns", "expect": "iv-fluids"},
+    {"id": "app-d-i03", "locale": "en", "query": "book him for a laparoscopic appendicectomy", "expect": "lap-appendectomy"},
+    {"id": "app-d-i04", "locale": "en", "query": "insulin sliding scale", "expect": null},
+    {"id": "app-d-i05", "locale": "zh-CN", "query": "开塞露通便", "expect": "laxative"},
+    {"id": "app-d-i06", "locale": "zh-CN", "query": "帕瑞昔布静推止痛", "expect": "parecoxib"}
+  ],
+  "verifier": [
+    {"id": "app-d-v01", "locale": "en", "question": "Have you been sick?", "used": ["hx-vomiting"], "reply": "I threw up once around 10 last night — mostly water, no blood. Nothing since.", "expect": "pass"},
+    {"id": "app-d-v02", "locale": "en", "question": "Have you been sick?", "used": ["hx-vomiting"], "reply": "I've thrown up three times today, and there was some blood in it.", "expect": "block", "kind": "number"},
+    {"id": "app-d-v03", "locale": "en", "question": "Any fever?", "used": ["hx-fever"], "reply": "I've felt hot and a bit shivery this evening, but I didn't take my temperature.", "expect": "pass"},
+    {"id": "app-d-v04", "locale": "en", "question": "Any fever?", "used": ["hx-fever"], "reply": "Yes, it was 38.9 when I checked at the dorm.", "expect": "block", "kind": "number"},
+    {"id": "app-d-v05", "locale": "zh-CN", "question": "家里人有什么病吗？", "used": ["hx-family"], "reply": "我爸年轻的时候割过阑尾，其他人身体都还好。", "expect": "pass"},
+    {"id": "app-d-v06", "locale": "zh-CN", "question": "家里人有什么病吗？", "used": ["hx-family"], "reply": "我爸年轻时割过阑尾，我妈有克罗恩病。", "expect": "block", "kind": "claim"},
+    {"id": "app-d-v07", "locale": "zh-CN", "question": "你是做什么的？", "used": ["hx-occupation"], "reply": "我是大二学生，学计算机的，住学校宿舍。", "expect": "pass"},
+    {"id": "app-d-v08", "locale": "en", "question": "Do you have any heart problems?", "used": [], "reply": "No, my heart's fine.", "expect": "block", "kind": "denial"}
+  ]
+}

@@ -20,6 +20,8 @@ export * from "./environment.js";
 export * from "./runner.js";
 export * from "./report.js";
 export * from "./demo.js";
+// the grounding benchmark (docs/GROUNDING.md): the deterministic layer every agent stands on
+export * from "./grounding/index.js";
 export * from "./agents/types.js";
 export * from "./agents/model.js";
 export * from "./agents/reference.js";

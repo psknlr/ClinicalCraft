@@ -1,0 +1,62 @@
+{
+  "$schema": "../../../schemas/grounding-set.schema.json",
+  "format": "clinicalcraft/grounding-set@1",
+  "suite": "grounding-v1",
+  "split": "dev",
+  "caseId": "acute-ischemic-stroke",
+  "history": [
+    {"id": "str-d-h01", "locale": "en", "text": "When did you last see him normal?", "expect": ["lkw"]},
+    {"id": "str-d-h02", "locale": "en", "text": "Did anyone witness the onset?", "expect": ["onset-witness"]},
+    {"id": "str-d-h03", "locale": "en", "text": "Any headache or vomiting?", "expect": ["headache-vomiting"]},
+    {"id": "str-d-h04", "locale": "en", "text": "Did he have a seizure?", "expect": ["loc-seizure"]},
+    {"id": "str-d-h05", "locale": "en", "text": "Any chest or back pain?", "expect": ["chest-back-pain"]},
+    {"id": "str-d-h06", "locale": "en", "text": "Any previous strokes or brain bleeds?", "expect": ["prior-stroke"], "alsoOk": ["prior-tia"]},
+    {"id": "str-d-h07", "locale": "en", "text": "Does he take aspirin or clopidogrel?", "expect": ["anticoagulants"], "alsoOk": ["medications"]},
+    {"id": "str-d-h08", "locale": "en", "text": "Has he had any operations recently?", "expect": ["recent-surgery"]},
+    {"id": "str-d-h09", "locale": "en", "text": "Does he drink?", "expect": ["alcohol"]},
+    {"id": "str-d-h10", "locale": "en", "text": "Is he able to swallow safely?", "expect": ["swallowing"]},
+    {"id": "str-d-h11", "locale": "en", "text": "Do you know what kind of stroke his father had?", "expect": ["unknown-father-stroke-type"], "alsoOk": ["family-history"]},
+    {"id": "str-d-h12", "locale": "en", "text": "Does he like gardening?", "expect": []},
+    {"id": "str-d-h13", "locale": "zh-CN", "text": "他有没有房颤？", "expect": ["pmh-af"]},
+    {"id": "str-d-h14", "locale": "zh-CN", "text": "最近有没有心慌？", "expect": ["palpitations"]},
+    {"id": "str-d-h15", "locale": "zh-CN", "text": "他以前有没有一过性的手脚麻木无力？", "expect": ["prior-tia"]},
+    {"id": "str-d-h16", "locale": "zh-CN", "text": "他吸毒吗？", "expect": ["recreational-drugs"]},
+    {"id": "str-d-h17", "locale": "zh-CN", "text": "他是左撇子吗？", "expect": ["handedness"]},
+    {"id": "str-d-h18", "locale": "zh-CN", "text": "他有没有说看东西模糊或者头晕？", "expect": ["unknown-vision-dizziness"]},
+    {"id": "str-d-h19", "locale": "zh-CN", "text": "如果治疗有风险，他会怎么选？", "expect": ["wishes-consent"]},
+    {"id": "str-d-h20", "locale": "zh-CN", "text": "他平时爱看电视吗？", "expect": []}
+  ],
+  "exam": [
+    {"id": "str-d-e01", "locale": "en", "query": "GCS", "expect": "gcs"},
+    {"id": "str-d-e02", "locale": "en", "query": "check pupils and gaze", "expect": "gaze-pupils"},
+    {"id": "str-d-e03", "locale": "en", "itemId": "finger-nose", "expect": "coordination"},
+    {"id": "str-d-e04", "locale": "zh-CN", "query": "检查一下感觉", "expect": "sensation"},
+    {"id": "str-d-e05", "locale": "zh-CN", "query": "双侧同时刺激看有没有忽视", "expect": "extinction"},
+    {"id": "str-d-e06", "locale": "en", "query": "fundoscopy", "expect": "fundoscopy"}
+  ],
+  "orders": [
+    {"id": "str-d-o01", "locale": "en", "query": "CT perfusion", "expect": "ct-perfusion"},
+    {"id": "str-d-o02", "locale": "en", "itemId": "fbc", "expect": "cbc"},
+    {"id": "str-d-o03", "locale": "en", "query": "U&Es and LFTs", "expect": "chem"},
+    {"id": "str-d-o04", "locale": "en", "query": "EEG", "expect": null},
+    {"id": "str-d-o05", "locale": "zh-CN", "query": "头颅核磁", "expect": "mri-brain"},
+    {"id": "str-d-o06", "locale": "zh-CN", "query": "查一下以前的门诊记录", "expect": "ehr-records"}
+  ],
+  "interventions": [
+    {"id": "str-d-i01", "locale": "en", "query": "tenecteplase 0.25 mg/kg", "expect": "tenecteplase"},
+    {"id": "str-d-i02", "locale": "en", "itemId": "nicardipine-infusion", "expect": "nicardipine"},
+    {"id": "str-d-i03", "locale": "en", "query": "ASA 300 mg PR", "expect": "aspirin"},
+    {"id": "str-d-i04", "locale": "en", "query": "dexamethasone 10 mg IV", "expect": null},
+    {"id": "str-d-i05", "locale": "zh-CN", "query": "转去导管室取栓", "expect": "transfer-angio"},
+    {"id": "str-d-i06", "locale": "zh-CN", "query": "乌拉地尔降压", "expect": "urapidil"}
+  ],
+  "verifier": [
+    {"id": "str-d-v01", "locale": "en", "question": "Does he drink?", "used": ["alcohol"], "reply": "(Wife) Only a glass or two of baijiu with his old workmates at the weekend.", "expect": "pass"},
+    {"id": "str-d-v02", "locale": "en", "question": "Does he drink?", "used": ["alcohol"], "reply": "(Wife) Quite a lot — half a bottle of baijiu every night.", "expect": "block", "kind": "claim"},
+    {"id": "str-d-v03", "locale": "en", "question": "Has he had anything like this before?", "used": ["prior-tia"], "reply": "(Wife) About three weeks ago his right hand went numb at dinner and he couldn't hold his chopsticks. It passed in about ten minutes.", "expect": "pass"},
+    {"id": "str-d-v04", "locale": "zh-CN", "question": "他有高血压吗？", "used": ["pmh-htn"], "reply": "（妻子）有，十来年了，一直吃氨氯地平，在家量一般一百五十多。", "expect": "pass"},
+    {"id": "str-d-v05", "locale": "zh-CN", "question": "他有高血压吗？", "used": ["pmh-htn"], "reply": "（妻子）有，二十年了，一直吃硝苯地平。", "expect": "block", "kind": "drug"},
+    {"id": "str-d-v06", "locale": "zh-CN", "question": "他平时生活能自理吗？", "used": ["functional-baseline"], "reply": "（妻子）完全自理，每天早上走一个小时，还自己买菜做饭。", "expect": "pass"},
+    {"id": "str-d-v07", "locale": "en", "question": "Is he on any blood thinners?", "used": [], "reply": "(Wife) No, he's not on any blood thinners.", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"}
+  ]
+}

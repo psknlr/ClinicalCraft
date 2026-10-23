@@ -1,0 +1,61 @@
+{
+  "$schema": "../../../schemas/grounding-set.schema.json",
+  "format": "clinicalcraft/grounding-set@1",
+  "suite": "grounding-v1",
+  "split": "dev",
+  "caseId": "anaphylaxis-garden",
+  "history": [
+    {"id": "ana-d-h01", "locale": "en", "text": "What happened to you?", "expect": ["pc-sting"]},
+    {"id": "ana-d-h02", "locale": "en", "text": "Is your throat closing up?", "expect": ["hpi-throat"]},
+    {"id": "ana-d-h03", "locale": "en", "text": "Are you short of breath?", "expect": ["hpi-breathing"]},
+    {"id": "ana-d-h04", "locale": "en", "text": "Are you itchy?", "expect": ["hpi-itch-rash"]},
+    {"id": "ana-d-h05", "locale": "en", "text": "Did you see what stung you?", "expect": ["hpi-insect"]},
+    {"id": "ana-d-h06", "locale": "en", "text": "Have you taken any antihistamines since?", "expect": ["self-treatment"], "alsoOk": ["meds"]},
+    {"id": "ana-d-h07", "locale": "en", "text": "Do you have asthma?", "expect": ["pmh-asthma"]},
+    {"id": "ana-d-h08", "locale": "en", "text": "Have you had any operations?", "expect": ["psh"]},
+    {"id": "ana-d-h09", "locale": "en", "text": "Any food allergies?", "expect": ["allergy-drug"]},
+    {"id": "ana-d-h10", "locale": "en", "text": "Do your in-laws keep bees?", "expect": ["social-bees"]},
+    {"id": "ana-d-h11", "locale": "en", "text": "How are you feeling now?", "phase": "treated", "expect": ["status-treated"]},
+    {"id": "ana-d-h12", "locale": "en", "text": "What's your star sign?", "expect": []},
+    {"id": "ana-d-h13", "locale": "zh-CN", "text": "现在头晕吗？", "expect": ["hpi-dizzy"]},
+    {"id": "ana-d-h14", "locale": "zh-CN", "text": "刚才晕过去没有？", "expect": ["hpi-loc"]},
+    {"id": "ana-d-h15", "locale": "zh-CN", "text": "肚子痛不痛？想吐吗？", "expect": ["hpi-gi"]},
+    {"id": "ana-d-h16", "locale": "zh-CN", "text": "以前被蜂蜇过吗？", "expect": ["prev-reaction"]},
+    {"id": "ana-d-h17", "locale": "zh-CN", "text": "最近感冒了吗？", "expect": ["recent-illness"]},
+    {"id": "ana-d-h18", "locale": "zh-CN", "text": "抽烟喝酒吗？", "expect": ["social-habits"]},
+    {"id": "ana-d-h19", "locale": "zh-CN", "text": "你和谁住在一起？", "expect": ["social-home"]},
+    {"id": "ana-d-h20", "locale": "zh-CN", "text": "你希望我们怎么帮你？", "expect": ["ice-expectation"]},
+    {"id": "ana-d-h21", "locale": "zh-CN", "text": "你喜欢看什么书？", "expect": []}
+  ],
+  "exam": [
+    {"id": "ana-d-e01", "locale": "en", "query": "end of the bed look", "expect": "ex-general-scene"},
+    {"id": "ana-d-e02", "locale": "en", "itemId": "eyes", "expect": "ex-eyes"},
+    {"id": "ana-d-e03", "locale": "en", "query": "listen to her heart", "expect": "ex-heart"},
+    {"id": "ana-d-e04", "locale": "zh-CN", "query": "检查一下颈部", "expect": "ex-neck"},
+    {"id": "ana-d-e05", "locale": "zh-CN", "query": "再评估一下气道", "phase": "treated", "expect": "ex-airway-treated"}
+  ],
+  "orders": [
+    {"id": "ana-d-o01", "locale": "en", "query": "serum tryptase", "expect": "tryptase-1"},
+    {"id": "ana-d-o02", "locale": "en", "itemId": "ecg", "expect": "ecg"},
+    {"id": "ana-d-o03", "locale": "en", "query": "bee venom specific IgE", "expect": "venom-sige"},
+    {"id": "ana-d-o04", "locale": "en", "query": "D-dimer", "expect": null},
+    {"id": "ana-d-o05", "locale": "zh-CN", "query": "肾功能电解质", "expect": "ue"}
+  ],
+  "interventions": [
+    {"id": "ana-d-i01", "locale": "en", "query": "IM epinephrine 0.5 mg", "expect": "adrenaline-im"},
+    {"id": "ana-d-i02", "locale": "en", "itemId": "chlorphenamine", "expect": "chlorphenamine-iv"},
+    {"id": "ana-d-i03", "locale": "en", "query": "IV steroids", "expect": "hydrocortisone-iv"},
+    {"id": "ana-d-i04", "locale": "en", "query": "oral prednisolone 40 mg", "expect": null},
+    {"id": "ana-d-i05", "locale": "zh-CN", "query": "建立静脉通路", "expect": "iv-cannula"},
+    {"id": "ana-d-i06", "locale": "zh-CN", "query": "转诊过敏专科", "expect": "allergy-referral"}
+  ],
+  "verifier": [
+    {"id": "ana-d-v01", "locale": "en", "question": "Where were you stung?", "used": ["hpi-sting-site"], "reply": "My right forearm, here. I think the sting's still in.", "expect": "pass"},
+    {"id": "ana-d-v02", "locale": "en", "question": "Where were you stung?", "used": ["hpi-sting-site"], "reply": "On my left hand — I pulled the sting out straight away.", "expect": "block", "kind": "claim"},
+    {"id": "ana-d-v03", "locale": "en", "question": "Have you taken anything for it?", "used": ["self-treatment"], "reply": "No, nothing — there wasn't time, and I've no medicine in my bag.", "expect": "pass"},
+    {"id": "ana-d-v04", "locale": "zh-CN", "question": "有哮喘吗？", "used": ["pmh-asthma"], "reply": "十几岁时有过轻度哮喘，好多年没用过吸入剂了。", "expect": "pass"},
+    {"id": "ana-d-v05", "locale": "zh-CN", "question": "有哮喘吗？", "used": ["pmh-asthma"], "reply": "有哮喘，现在每天都用沙丁胺醇。", "expect": "block", "kind": "drug"},
+    {"id": "ana-d-v06", "locale": "zh-CN", "question": "有没有心脏病、高血压？", "used": [], "reply": "没有，我身体一直很好。", "expect": "block", "kind": "denial"},
+    {"id": "ana-d-v07", "locale": "en", "question": "Do you take beta-blockers?", "used": ["meds-bb"], "reply": "No, I've never taken any blood pressure or heart tablets.", "expect": "pass"}
+  ]
+}

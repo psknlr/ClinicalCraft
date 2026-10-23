@@ -39,7 +39,7 @@ import type { EventMsg, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ProviderErrorInfo, SystemSection } from "../providers/types.js";
 import { availableInPhase } from "../tools/format.js";
-import { checkNonverbal, verifyGrounding, type GroundingCheck } from "./grounding.js";
+import { checkNonverbal, verifyGrounding, type GroundingCheck, type VerifyOptions } from "./grounding.js";
 import { isZh, joinSentences, languageName, rt, type RuntimeKey } from "./i18n.js";
 
 /* ------------------------------------------------------------------ */
@@ -326,6 +326,26 @@ function personaSources(c: CaseDefinition, locale: string): string[] {
   ];
   if (p.companion) out.push(t(p.companion.persona, locale), t(p.companion.name, locale));
   return out;
+}
+
+/**
+ * What the grounding check of a voiced reply (step 4) checks it against: the
+ * answers of the facts used, the persona texts, the learner's words and the
+ * clarifying question as sources; the case's drug lexicon and condition
+ * terms; and the answers of facts available now that were neither revealed
+ * (`state.asked`), allowed this turn nor used (`unrevealed`).
+ */
+export function voiceGroundingInputs(
+  c: CaseDefinition,
+  state: SessionState,
+  used: readonly string[],
+  allowed: ReadonlySet<string>,
+  utterance: string,
+  clarify: string | null,
+  locale: string,
+): { sources: string[]; options: VerifyOptions } {
+  const sources = [...used.map((id) => answerOf(c, id, locale)), ...personaSources(c, locale), utterance, clarify ?? ""];
+  return { sources, options: { drugLexicon: caseDrugLexicon(c), conditionTerms: caseConditionTerms(c), unrevealed: unrevealedAnswers(c, state, new Set([...allowed, ...used]), locale) } };
 }
 
 /** Build the need-to-know PatientContext. */
@@ -634,9 +654,8 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   // 4. Verify.
   const reply = parseVoiceReply(voiced.text, allowedIds);
   const used = [...new Set([...reply.usedFactIds, ...spokenIds.filter((id) => allowedIds.has(id))])];
-  const sources = [...used.map((id) => answerOf(c, id, L)), ...personaSources(c, L), utterance, clarify ?? ""];
+  const { sources, options: grounding } = voiceGroundingInputs(c, input.state(), used, allowedIds, utterance, clarify, L);
   const empty = voiced.stopReason === "max_tokens" ? rt(L, "reason.truncated", { agent: input.speaker, maxTokens: request.maxTokens ?? "?" }) : "empty reply";
-  const grounding = { drugLexicon: caseDrugLexicon(c), conditionTerms: caseConditionTerms(c), unrevealed: unrevealedAnswers(c, input.state(), new Set([...allowedIds, ...used]), L) };
   const check: GroundingCheck = reply.say ? verifyGrounding(reply.say, sources, grounding) : { ok: false, violations: [empty], kinds: ["empty"] };
   if (reply.affectHint === "calmer") input.memory.affectIntensity = Math.max(0, input.memory.affectIntensity - 1) as PatientMemory["affectIntensity"];
   if (reply.affectHint === "worse") input.memory.affectIntensity = Math.min(3, input.memory.affectIntensity + 1) as PatientMemory["affectIntensity"];

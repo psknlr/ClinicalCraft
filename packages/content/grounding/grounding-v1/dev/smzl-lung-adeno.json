@@ -1,0 +1,42 @@
+{
+  "$schema": "../../../schemas/grounding-set.schema.json",
+  "format": "clinicalcraft/grounding-set@1",
+  "suite": "grounding-v1",
+  "split": "dev",
+  "caseId": "smzl-lung-adeno",
+  "history": [
+    {"id": "smz-d-h01", "locale": "en", "text": "What brings you back today?", "expect": ["pain"]},
+    {"id": "smz-d-h02", "locale": "en", "text": "When was the spleen first found to be enlarged?", "expect": ["spleen"]},
+    {"id": "smz-d-h03", "locale": "en", "text": "What medicines are you on?", "expect": ["meds"], "alsoOk": ["pmh-htn", "lung"]},
+    {"id": "smz-d-h04", "locale": "en", "text": "Have you had any surgery?", "expect": ["psh"]},
+    {"id": "smz-d-h05", "locale": "en", "text": "Have you had any fevers?", "expect": ["fever"]},
+    {"id": "smz-d-h06", "locale": "en", "text": "Any new symptoms since the treatment?", "phase": "post", "expect": ["numbness"]},
+    {"id": "smz-d-h07", "locale": "en", "text": "Do you like swimming?", "expect": []},
+    {"id": "smz-d-h08", "locale": "zh-CN", "text": "肺癌是怎么治疗的？", "expect": ["lung"]},
+    {"id": "smz-d-h09", "locale": "zh-CN", "text": "对药物过敏吗？", "expect": ["allergies"]},
+    {"id": "smz-d-h10", "locale": "zh-CN", "text": "您有吸烟史吗？", "expect": ["other"]},
+    {"id": "smz-d-h11", "locale": "zh-CN", "text": "确诊以后做过什么治疗？", "phase": "post", "expect": ["treatment-course"]},
+    {"id": "smz-d-h12", "locale": "zh-CN", "text": "现在吃什么药？", "phase": "post", "expect": ["meds-post"], "alsoOk": ["pmh-htn"]},
+    {"id": "smz-d-h13", "locale": "zh-CN", "text": "您喜欢喝咖啡吗？", "expect": []}
+  ],
+  "exam": [
+    {"id": "smz-d-e01", "locale": "en", "query": "general appearance", "phase": "post", "expect": "exam-general"},
+    {"id": "smz-d-e02", "locale": "en", "itemId": "heart", "phase": "post", "expect": "exam-heart"},
+    {"id": "smz-d-e03", "locale": "zh-CN", "query": "腹部触诊，摸一下肝脾", "phase": "post", "expect": "exam-abdomen"}
+  ],
+  "orders": [
+    {"id": "smz-d-o01", "locale": "en", "query": "PET-CT", "expect": "pet"},
+    {"id": "smz-d-o02", "locale": "en", "itemId": "karyotype", "expect": "karyo"},
+    {"id": "smz-d-o03", "locale": "en", "query": "CT chest", "expect": "chestct"},
+    {"id": "smz-d-o04", "locale": "en", "query": "colonoscopy", "expect": null},
+    {"id": "smz-d-o05", "locale": "zh-CN", "query": "浅表淋巴结B超", "expect": "nodeus"},
+    {"id": "smz-d-o06", "locale": "zh-CN", "query": "EGFR检测结果", "expect": "egfr"}
+  ],
+  "verifier": [
+    {"id": "smz-d-v01", "locale": "en", "question": "Have you had a fever?", "used": ["fever"], "reply": "In April 2025 I had tummy pain with a fever; it settled with anti-infective treatment.", "expect": "pass"},
+    {"id": "smz-d-v02", "locale": "en", "question": "Have you had a fever?", "used": ["fever"], "reply": "Yes, in March 2025, and I needed a week in hospital.", "expect": "block", "kind": "claim"},
+    {"id": "smz-d-v03", "locale": "zh-CN", "question": "治疗后有什么不舒服？", "used": ["numbness"], "reply": "四肢末端发麻，医生说是VP方案的神经毒性，用了营养神经的药好一点。", "expect": "pass"},
+    {"id": "smz-d-v04", "locale": "zh-CN", "question": "治疗后有什么不舒服？", "used": ["numbness"], "reply": "手脚发麻，还掉了很多头发。", "expect": "block", "kind": "claim"},
+    {"id": "smz-d-v05", "locale": "en", "question": "Any family history of cancer?", "used": [], "reply": "No, nobody in my family has had cancer.", "expect": "block", "kind": "denial"}
+  ]
+}
