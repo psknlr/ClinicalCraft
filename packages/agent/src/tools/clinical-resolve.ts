@@ -9,6 +9,7 @@
 import {
   capabilityLabels,
   facilityCapabilities,
+  interventionNegation,
   matchExam,
   matchInterventions,
   matchOrders,
@@ -99,11 +100,18 @@ export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderSta
   return o.ready ? rt(locale, "label.ready") : rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
 }
 
-/** Outcome of resolving an id-or-query argument pair. */
+/**
+ * Outcome of resolving an id-or-query argument pair. `negated`: an
+ * intervention query that says what NOT to do ("don't give GTN") and names no
+ * item that itself withholds — nothing is done; `withheld` are the items it
+ * names, `suggestions` the case items it may still mean (a withholding item
+ * such as "withhold analgesia", or a weak affirmative match).
+ */
 export type Resolution =
   | { kind: "id"; id: string }
   | { kind: "ambiguous"; ids: string[] }
   | { kind: "none"; query: string }
+  | { kind: "negated"; query: string; withheld: string[]; suggestions: string[]; doubleNegative: boolean }
   | { kind: "unknown-id"; id: string }
   | { kind: "missing" };
 
@@ -178,7 +186,13 @@ export function resolveFinding(c: CaseDefinition, args: ToolArgs, locale: string
   return resolveHits(matchExam(c, query, locale, phase ? { phase } : {}), query, (hit) => matchSpecificity(c, "exam", query, locale, hit));
 }
 
-/** Resolve `{intervention_id?, query?}` with `matchInterventions`. */
+/**
+ * Resolve `{intervention_id?, query?}` with `matchInterventions`, which reads
+ * negation: a query that negates an item never resolves to it. When such a
+ * query resolves to nothing — no hit, or only weak ones — the resolution is
+ * `negated` (what it withholds, and what it may still mean) rather than
+ * `none` / `ambiguous`, so the reply can say why nothing was done.
+ */
 export function resolveIntervention(c: CaseDefinition, args: ToolArgs, locale: string): Resolution {
   const ids = c.interventions.map((i) => i.id);
   const id = strArg(args, "intervention_id");
@@ -190,7 +204,13 @@ export function resolveIntervention(c: CaseDefinition, args: ToolArgs, locale: s
   if (!query) return { kind: "missing" };
   const exact = exactId(ids, query);
   if (exact) return { kind: "id", id: exact };
-  return resolveHits(matchInterventions(c, query, locale), query, (hit) => matchSpecificity(c, "interventions", query, locale, hit));
+  const hits = matchInterventions(c, query, locale);
+  const r = resolveHits(hits, query, (hit) => matchSpecificity(c, "interventions", query, locale, hit));
+  if (r.kind === "id" || (hits[0]?.score ?? 0) >= RESOLVE_THRESHOLD) return r;
+  const negation = interventionNegation(c, query, locale);
+  if (!negation) return r;
+  const suggestions = [...new Set([...negation.alternatives, ...(r.kind === "ambiguous" ? r.ids : [])])].slice(0, 6);
+  return { kind: "negated", query, withheld: negation.withheld, suggestions, doubleNegative: negation.doubleNegated.length > 0 };
 }
 
 /**
@@ -212,6 +232,23 @@ export function unresolvedOutput(locale: string, r: Exclude<Resolution, { kind: 
         output: rt(locale, "tool.ambiguous", { candidates: r.ids.map((id) => `${id} (${label(id)})`).join(isZh(locale) ? "；" : "; ") }),
         data: { unresolved: "ambiguous", candidates: r.ids.map((id) => ({ id, label: label(id) })) },
       };
+    case "negated": {
+      const sep = isZh(locale) ? "；" : "; ";
+      const withheld = r.withheld.length ? rt(locale, "tool.negated.withheld", { items: joinList(locale, r.withheld.map(label)) }) : "";
+      const head = r.doubleNegative && !r.withheld.length ? rt(locale, "tool.negated.double", { query: r.query }) : rt(locale, "tool.negated", { query: r.query, withheld });
+      const alternatives = r.suggestions.length ? rt(locale, "tool.negated.alternatives", { candidates: r.suggestions.map((id) => `${id} (${label(id)})`).join(sep) }) : "";
+      return {
+        ok: false,
+        output: `${head}${alternatives}`,
+        data: {
+          unresolved: "negated",
+          query: r.query,
+          withheld: r.withheld.map((id) => ({ id, label: label(id) })),
+          candidates: r.suggestions.map((id) => ({ id, label: label(id) })),
+          doubleNegative: r.doubleNegative,
+        },
+      };
+    }
     default: {
       const never: never = r;
       return never;

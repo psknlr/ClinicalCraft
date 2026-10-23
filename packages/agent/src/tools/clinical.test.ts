@@ -95,6 +95,25 @@ describe("clinical tools", () => {
     expect(given.output).toBe("已给予：阿司匹林 300 mg 嚼服。\n反应：患者嚼服了阿司匹林。");
   });
 
+  it("intervene: a negated instruction acts on nothing and says why (en + zh-CN)", async () => {
+    const en = harness("en");
+    const tool = en.registry.get("intervene")!;
+    expect(tool.risk({ query: "do not thrombolyse, no tenecteplase" }, en.ctx)).toBe("none");
+    const refused = await en.run("intervene", { query: "don't give tenecteplase" });
+    expect(refused.ok).toBe(false);
+    expect(refused.output).toBe('Nothing was done: "don\'t give tenecteplase" is an instruction not to act (not given: Tenecteplase thrombolysis). intervene only performs actions; to withhold one, do not call it.');
+    expect(refused.data).toMatchObject({ unresolved: "negated", withheld: [{ id: "lysis" }], candidates: [], doubleNegative: false });
+    const double = await en.run("intervene", { query: "do not delay the aspirin" });
+    expect(double.output).toBe('Nothing was done: "do not delay the aspirin" contains a double negative. Say plainly what to do ("give …", "stop …").');
+    const kept = await en.run("intervene", { query: "no thrombolysis, give aspirin" });
+    expect(kept.ok).toBe(true);
+    expect(en.state.interventions.map((i) => i.interventionId)).toEqual(["aspirin"]);
+    const zh = harness("zh-CN");
+    const zhRefused = await zh.run("intervene", { query: "溶栓先不做" });
+    expect(zhRefused.output).toBe("未执行任何操作：“溶栓先不做”是一条不做某事的指示（未给予：替奈普酶溶栓）。intervene 只执行操作；若要暂不给予某项，不调用即可。");
+    expect(zh.state.interventions).toEqual([]);
+  });
+
   it("answer_decision validates options and reports requirements", async () => {
     const h = harness();
     expect((await h.run("answer_decision", { decision_id: "dx", option_ids: ["stemi"] })).output).toBe("Not yet answerable: Review the ECG first.");

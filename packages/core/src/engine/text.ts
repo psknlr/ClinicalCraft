@@ -19,7 +19,7 @@ export function normalizeQuery(text: string): string {
 }
 
 /** Full-width ASCII forms (U+FF01–U+FF5E: letters, digits, punctuation incl. `（）`) → ASCII. */
-function toHalfWidth(text: string): string {
+export function toHalfWidth(text: string): string {
   return text.replace(/[\uFF01-\uFF5E]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0));
 }
 

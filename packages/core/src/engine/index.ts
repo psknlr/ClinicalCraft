@@ -53,10 +53,15 @@ export {
   matchExam,
   matchInterventions,
   matchSpecificity,
+  interventionNegation,
   MATCH_THRESHOLD,
   EXCLUDE_KEYWORD_FACTOR,
+  ELLIPSIS_FACTOR,
+  NEGATED_MARGIN,
+  type InterventionNegation,
   type MatchKind,
 } from "./matcher.js";
+export { analyzeNegation, type NegationAnalysis } from "./negation.js";
 export {
   compactText,
   tokenize,

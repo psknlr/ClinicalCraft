@@ -165,16 +165,28 @@ interface UnresolvedData {
   candidates?: { id: string; label: string }[];
   query?: string;
   id?: string;
+  withheld?: { id: string; label: string }[];
+  doubleNegative?: boolean;
 }
 
 /**
  * Learner wording for a query that named no single item (the tool's own text
  * speaks to a model: "call again with an exact id", "use list_options"): one
  * candidate → "Did you mean …? Type /exam <id>"; several → numbered choices
- * with the command for each; none → try other words.
+ * with the command for each; none → try other words; a negated instruction →
+ * nothing done (what it withholds), then any candidates as choices.
  */
 function unresolvedText(locale: string, command: string, data: UnresolvedData): string {
   const candidates = data.candidates ?? [];
+  if (data.unresolved === "negated") {
+    const withheld = (data.withheld ?? []).map((w) => w.label);
+    const head =
+      data.doubleNegative && withheld.length === 0
+        ? rt(locale, "cmd.unresolved.doubleNegative", { query: data.query ?? "" })
+        : rt(locale, "cmd.unresolved.negated", { query: data.query ?? "", withheld: withheld.length ? rt(locale, "tool.negated.withheld", { items: joinList(locale, withheld) }) : "" });
+    if (candidates.length === 0) return head;
+    return [head, rt(locale, "cmd.unresolved.choose"), ...candidates.map((c, i) => rt(locale, "cmd.unresolved.option", { n: i + 1, label: c.label, command: `/${command} ${c.id}` }))].join("\n");
+  }
   if (data.unresolved === "ambiguous" && candidates.length === 1) {
     const only = candidates[0]!;
     return rt(locale, "cmd.unresolved.didYouMean", { label: only.label, command: `/${command} ${only.id}` });

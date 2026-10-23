@@ -280,7 +280,10 @@ orderWarnings(c, query, investigationId, locale, state?): string[]  // orderMatc
                                                         // and (with `state`, the session before the order) whose `unless` does not hold
 matchHistory(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]   // sorted desc, score 0..1; with `phase`, phase twins applied (§3.3)
 matchExam(c, utterance, locale, options?: MatchOptions): { id: string; score: number }[]
-matchInterventions(c, utterance, locale): { id: string; score: number }[]
+matchInterventions(c, utterance, locale): { id: string; score: number }[]   // negation-aware: never an item a negated clause names (§3.3)
+interventionNegation(c, utterance, locale): { withheld: string[]; alternatives: string[]; scopes: string[]; doubleNegated: string[] } | null
+                                                        // what a negated instruction withholds / which withholding items it may mean; null = no negation
+analyzeNegation(text): { negated: boolean; affirmative: string; scopes: string[]; context: string[]; doubleNegated: string[] }   // clause-level cues, en + zh-CN
 matchSpecificity(c, kind: "history"|"exam"|"interventions", utterance, locale, id): number   // coverage (chars) of the item's best phrase; tie-break only (§3.3)
 interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
 
@@ -292,7 +295,7 @@ supersededIn(c, id, phase): string | null               // the item available in
 supersededItems(c, id): string[]; hasHistoryTwins(c): boolean
 historyCredited(c, s, id): boolean                      // asked, or an item superseding it (transitively) was asked — what `asked` conditions test
 creditedHistory(c, s): string[]                         // asked ids, then ids credited through twins (assessment)
-MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2
+MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; ELLIPSIS_FACTOR = 0.8; NEGATED_MARGIN = 0.1
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
@@ -577,6 +580,30 @@ declaration order. `matchSpecificity` tells resolvers which of two items tied
 at the same score matched the longer, more specific phrase (scores and order
 are unchanged). Deterministic and dependency-free; used offline and as
 RAG hints.
+
+**Negated instructions** (`matchInterventions` only). `analyzeNegation`
+splits an utterance into clauses (punctuation except 、, dashes, brackets,
+contrastive/sequencing conjunctions — never "and"/"or", which a negation
+carries over; a clause opening with a subordinator such as until/等/如果 is
+`context` of the clause before) and finds cues in both languages (no, not,
+n't, never, nil, hold, withhold, stop, avoid, defer, instead of, not
+indicated, contraindicated; 不/不要/别/勿/停/暂停/暂缓/禁/避免 …, minus look-alikes:
+hold pressure, stop the bleeding, 骤停, 呼吸暂停, 不适, 要不要). A cue negates the
+rest of its clause, or the words before it when nothing follows ("吗啡先不给"),
+when it is a predicate ("aspirin not indicated") or a participle after its
+object; a clause that is only a cue negates the one before ("morphine — no");
+two cues with only function words between them are a double negative, read
+neither way. For an utterance that negates, an intervention phrase that
+itself withholds ("stop the pump", "nil by mouth", "不要抽烟") scores its
+withheld words against the negated clauses and its other words against the
+affirmative ones; the items that best match a negated clause (within
+`NEGATED_MARGIN`) are withheld and never returned; any other item needs
+affirmative support and scores the better of its affirmative score and
+`ELLIPSIS_FACTOR` × its whole-utterance score ("no more fluid boluses, run
+maintenance only"). Utterances without a cue score exactly as before.
+`interventionNegation` reports the withheld items and the withholding items
+whose withheld words name the same thing ("hold the morphine" → "withhold
+analgesia"), which `resolveIntervention` offers instead of acting.
 
 ### 3.4 Semantics notes
 

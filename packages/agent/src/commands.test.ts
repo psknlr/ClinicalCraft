@@ -462,6 +462,19 @@ describe("learner wording and tie-breaks for free-text actions (J5)", () => {
     const none = await command(zh, "/give 量子疗法");
     expect(none.out.text).toBe("本病例中没有与“量子疗法”匹配的项目。请换个说法，或输入确切的编号。");
   });
+
+  it("a negated instruction does nothing and says so (zh + en)", async () => {
+    const en = await makeSession();
+    const refused = await command(en, "/give don't give the aspirin");
+    expect(refused.out.text).toBe("Nothing done: “don't give the aspirin” says not to do something (not given: Aspirin 300 mg chewed). To act, say what to do.");
+    const double = await command(en, "/give never withhold aspirin");
+    expect(double.out.text).toBe("Nothing done: “never withhold aspirin” has a double negative. Say plainly what to do.");
+    expect(en.session.state.interventions).toEqual([]);
+    const zh = await makeSession({ settingsPatch: { locale: "zh-CN" } });
+    const zhRefused = await command(zh, "/give 不要给阿司匹林");
+    expect(zhRefused.out.text).toBe("未执行：“不要给阿司匹林”表示不做某事（未给予：阿司匹林 300 mg 嚼服）。如需执行，请直接说明要做什么。");
+    expect(zh.session.state.interventions).toEqual([]);
+  });
 });
 
 describe("the shipped project settings (J14)", () => {

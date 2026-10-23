@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
-import { EXCLUDE_KEYWORD_FACTOR, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, normalizeQuery, orderWarnings, parseCase } from "./index.js";
+import { EXCLUDE_KEYWORD_FACTOR, interventionNegation, matchExam, matchHistory, matchInterventions, matchOrders, matchSpecificity, normalizeQuery, orderWarnings, parseCase } from "./index.js";
 import { longestCommonSubstring, phraseScore, prepare, stem, tokenize, tokensMatch } from "./text.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
@@ -267,6 +267,63 @@ describe("matchInterventions", () => {
     expect(matchInterventions(SIM, "give a beta blocker", "en")).toEqual([{ id: "beta-blocker", score: 1 }]);
     expect(matchInterventions(SIM, "fluid bolus", "en")).toEqual([{ id: "fluids", score: 1 }]);
     expect(matchInterventions(SIM, "something unrelated", "en")).toEqual([]);
+  });
+});
+
+describe("matchInterventions — negation (docs/GROUNDING.md §2)", () => {
+  /** SIM plus an item that itself withholds (stop the beta blocker) and an oral antihistamine. */
+  function withWithholding(): CaseDefinition {
+    const json = fixture("mini-anaphylaxis.case.json") as { interventions: unknown[] };
+    json.interventions.push(
+      { id: "stop-bb", name: { en: "Stop the beta blocker", "zh-CN": "停用β受体阻滞剂" }, kind: "medication", aliases: { en: ["hold propranolol"], "zh-CN": ["停普萘洛尔"] } },
+      { id: "oral-antihistamine", name: { en: "Oral cetirizine 10 mg", "zh-CN": "口服西替利嗪10mg" }, kind: "medication", aliases: { en: ["oral antihistamine", "cetirizine"], "zh-CN": ["口服抗组胺", "西替利嗪"] } },
+    );
+    return load(json);
+  }
+  const c = withWithholding();
+
+  it("never returns the item a negated instruction names (en + zh-CN)", () => {
+    for (const q of ["don't give adrenaline", "no adrenaline for now", "hold the epinephrine", "adrenaline not indicated", "不要给肾上腺素", "肾上腺素先不给", "暂停补液"]) {
+      expect(matchInterventions(c, q, "en"), q).toEqual([]);
+    }
+    expect(interventionNegation(c, "don't give adrenaline", "en")).toEqual({ withheld: ["epi"], alternatives: [], scopes: ["give adrenaline"], doubleNegated: [] });
+  });
+
+  it("acts on what the instruction still asks for, and on an item that itself withholds", () => {
+    expect(matchInterventions(c, "no adrenaline, give oxygen", "en")).toEqual([{ id: "oxygen", score: 1 }]);
+    expect(matchInterventions(c, "give oxygen, not a fluid bolus", "en")).toEqual([{ id: "oxygen", score: 1 }]);
+    expect(matchInterventions(c, "stop the propranolol", "en")[0]).toEqual({ id: "stop-bb", score: 1 });
+    expect(matchInterventions(c, "停用普萘洛尔", "zh-CN")[0]).toEqual({ id: "stop-bb", score: 1 });
+    expect(matchInterventions(c, "stop the propranolol", "en").map((h) => h.id)).not.toContain("beta-blocker");
+  });
+
+  it("never brings a withheld item back through its class, and keeps an elliptical affirmative item", () => {
+    expect(matchInterventions(c, "no IV chlorphenamine, give an oral antihistamine", "en")).toEqual([{ id: "oral-antihistamine", score: 1 }]);
+    expect(matchInterventions(c, "no IV chlorphenamine, give an antihistamine", "en").map((h) => h.id)).not.toContain("chlorphenamine");
+    // the bolus is withheld; "saline" alone in the affirmative clause still reads as the saline item, at ELLIPSIS_FACTOR at most
+    expect(matchInterventions(c, "no adrenaline bolus, just oxygen", "en")).toEqual([{ id: "oxygen", score: 1 }]);
+  });
+
+  it("reads a double negative neither way", () => {
+    expect(matchInterventions(c, "don't stop the propranolol", "en")).toEqual([]);
+    expect(interventionNegation(c, "don't stop the propranolol", "en")).toEqual({ withheld: [], alternatives: [], scopes: [], doubleNegated: ["don't stop the propranolol"] });
+  });
+
+  it("resolves an item that withholds what the instruction names, and otherwise offers it", () => {
+    expect(matchInterventions(c, "hold the beta blocker", "en")[0]?.id).toBe("stop-bb");
+    expect(interventionNegation(c, "hold the beta blocker", "en")?.withheld).toEqual(["beta-blocker"]);
+    const json = fixture("mini-anaphylaxis.case.json") as { interventions: unknown[] };
+    json.interventions.push({ id: "no-fluids", name: { en: "Withhold fluids (keep dry)", "zh-CN": "暂不补液" }, kind: "fluid", aliases: { en: ["no saline"] } });
+    const dry = load(json);
+    expect(matchInterventions(dry, "don't run the saline", "en")[0]?.id).toBe("no-fluids");
+    expect(matchInterventions(dry, "no bolus", "en")).toEqual([]);
+    expect(interventionNegation(dry, "no bolus", "en")).toMatchObject({ withheld: ["fluids"], alternatives: ["no-fluids"] });
+    expect(interventionNegation(dry, "no adrenaline", "en")).toMatchObject({ withheld: ["epi"], alternatives: [] });
+  });
+
+  it("leaves utterances without negation scored as before", () => {
+    expect(matchInterventions(c, "give adrenaline now", "en")).toEqual([{ id: "epi", score: 1 }]);
+    expect(interventionNegation(c, "give adrenaline now", "en")).toBeNull();
   });
 });
 
