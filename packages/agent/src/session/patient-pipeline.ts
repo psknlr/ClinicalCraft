@@ -48,22 +48,75 @@ import { isZh, joinSentences, languageName, rt, type RuntimeKey } from "./i18n.j
 
 export type UtteranceRoute = "in-fiction" | "meta" | "real-advice" | "injection";
 
+/** Roles a learner may try to give the patient instead of its own ("act as a doctor"); "act as a carer" is a question about the patient's life. */
+const ASSIGNED_ROLE_EN =
+  "(?:a|an|the|my)?\\s*(?:doctor|physician|clinician|nurse|consultant|specialist|ai|assistant|chatbot|bot|language model|system|developer|admin(?:istrator)?|examiner|tutor|teacher|expert|narrator|game master)\\b";
+const ASSIGNED_ROLE_ZH = "(?:一个|一名|一位)?(?:医生|大夫|护士|专家|医学专家|主任|ai|AI|人工智能|助手|机器人|系统|开发者|管理员|考官|老师)";
+
 const INJECTION: RegExp[] = [
   /\b(ignore|disregard|forget|override)\b.{0,40}\b(instructions?|prompts?|rules|previous|above|system|guidelines)\b/i,
   /\b(system prompt|developer mode|jailbreak|prompt injection|dan mode)\b/i,
   /\b(reveal|show|print|repeat|tell me|list|output)\b.{0,30}\b(instructions|system prompt|your prompt|your rules|answer key|case file|rubric|solution|fact ids?|hidden)\b/i,
-  /\b(pretend (to be|you are)|act as|role-?play as|you are now)\b/i,
+  new RegExp(`\\b(?:pretend (?:to be|you(?:'re| are))|act as|role-?play as|you are now)\\s+${ASSIGNED_ROLE_EN}`, "i"),
+  /\bpretend (?:to be|you(?:'re| are)) my\b/i,
+  /\byou are now (?:in )?(?:debug|developer|dev|admin|god|unrestricted|unfiltered|jailbroken|dan)\b/i,
+  /\bknown_facts\b|\bfact[_ ]index\b|\b(?:tell me|show|print|list|output|give me|read out|dump|reveal|repeat)\b.{0,30}\b(?:known facts|your persona|character sheet|hidden facts?)\b/i,
   /(忽略|无视|忘记|忘掉|不要管).{0,15}(指令|提示|设定|规则|要求|上面|之前|以上)/u,
-  /(系统提示|提示词|开发者模式|越狱|标准答案|告诉我答案|答案是什么|评分标准|病例文件|隐藏信息|事实编号)/u,
-  /(扮演|假装你是|现在你是|你现在是)/u,
+  /(系统提示|提示词|开发者模式|越狱|标准答案|正确答案|参考答案|告诉我答案|答案是什么|评分标准|病例文件|隐藏信息|事实编号|人设)/u,
+  new RegExp(`(?:扮演|假装你是|现在你是|你现在是)${ASSIGNED_ROLE_ZH}`, "u"),
+  /你的(?:全部|所有)?设定|(?:全部|所有)的?设定/u,
 ];
+/**
+ * Asking the patient to step out of the fiction ("stop role-playing", "forget
+ * you're a patient", "不要再扮演了", "你现在不是病人了") — unless the request
+ * is negated before it ("I don't want you to break character", "别出戏").
+ * "Stop acting" and "stop being a patient" may be about the patient's life
+ * ("When did you stop acting?"), so they do not count in a question about the
+ * past; nor does "out of character" without a verb of speaking or stepping
+ * ("Is that out of character for him?").
+ */
+const ROLE_BREAK: { re: RegExp; aboutLife?: true }[] = [
+  { re: /\b(?:stop|quit|drop|end|break|leave|step out of|get out of)\s+(?:the\s+|your\s+)?(?:role-?play(?:ing)?|character|act|simulation|persona)\b/i },
+  {
+    re: /\b(?:stop|quit|drop|end|leave)\s+(?:acting|pretending)(?=\s*(?:[,.!?;]|$|and\b|now\b|please\b))|\b(?:stop|quit)\s+being (?:a|the) patient\b/i,
+    aboutLife: true,
+  },
+  { re: /\b(?:go|step|come|get|break|speak|talk|answer|respond|reply)\s+out of character\b|\booc\b/i },
+  { re: /\bforget (?:that )?you(?:'re| are) (?:a|the) (?:patient|character)\b/i },
+  { re: /\byou(?:'re| are) (?:no longer|not) (?:a|the) patient (?:any ?more|now)\b/i },
+  { re: /(?:停止|不要再|别再|不用再|不要|别|不用)(?:扮演|演了|演戏|装了|装病)|退出角色|跳出角色|出戏|你(?:现在)?不是(?:病人|患者)了|你已经不是(?:病人|患者)/u },
+];
+/** A negation earlier in the clause than the match ("I don't want you to…", "我不是要你…", "别…"). */
+const NEGATED_BEFORE = /\b(?:no|not|never|don't|dont|doesn't|didn't|won't)\b|n't\b|不是|不要你|没让你|没叫你|并不|别误会|不用你|(?:别|不要|不能|不许|不准)$/i;
+/** Requests that only look negated ("why don't you…", "can't you…"). */
+const NEGATIVE_REQUEST = /^\s*no[,，]\s*|\bwhy (?:don't|dont|not)\b|\b(?:can't|cannot|won't|couldn't|wouldn't) you\b/gi;
+/** A question about the past ("did you…", "since he…"). */
+const PAST_QUESTION = /\b(?:did|didn't|have|haven't|has|hasn't|had|hadn't)\s+(?:you|he|she|they|we)\b|\bsince\s+(?:you|he|she|they)\b/i;
+
+function breaksRole(text: string): boolean {
+  for (const { re, aboutLife } of ROLE_BREAK) {
+    const m = re.exec(text);
+    if (!m) continue;
+    const clause = (text.slice(0, m.index).split(/[.!?。！？;；,，]|\bbut\b|但是?|不过/i).pop() ?? "").replace(NEGATIVE_REQUEST, " ");
+    if (NEGATED_BEFORE.test(clause.trimEnd()) || (aboutLife && PAST_QUESTION.test(clause))) continue;
+    return true;
+  }
+  return false;
+}
+
 const META: RegExp[] = [
-  /\bare you (a |an )?(real|human|ai|bot|robot|computer|program|actor|simulat\w*|language model|chatbot)\b/i,
-  /\bis this (a |an )?(simulation|game|test|real)\b/i,
+  /\bare you (?:a |an )?(?:real(?=\s*(?:[?.!]|$|person|human|patient|doctor))|human|ai|bot|robot|computer|program|actor|simulat\w*|language model|chatbot)\b/i,
+  /\bis this (?:a |an )?(?:simulation|game|test|real(?: life)?)\s*(?:[?.!,]|$|or\b)/i,
+  /\b(?:am i|are we)\s+(?:talking|speaking|chatting)\s+(?:to|with)\s+(?:a|an)\s+(?:real person|human|bot|robot|chatbot|computer|machine|ai|program|actor)\b/i,
   /\bwho (made|created|programmed|built) you\b/i,
   /\bwhat (model|llm|ai) are you\b/i,
+  /\b(?:the|this) (?:scenario|case|simulation|exercise|vignette|station) (?:say|says|said|states?|describes?)\b|\baccording to (?:the|this) (?:case|scenario|vignette)\b/i,
+  /\b(?:answer|solution|diagnosis) (?:to|for|of) (?:this|the) (?:case|scenario|station|exercise|simulation|quiz|exam)\b/i,
+  /\b(?:give me|can i (?:have|get)) (?:a |another |some )?(?:hint|clue)s?\b|\b(?:hint|clue)s? (?:about|for|on) the (?:diagnosis|answer|case)\b/i,
   /你是(真人|真的人|ai|机器人|人工智能|程序|模型|演员).{0,3}[吗嘛?？]/iu,
-  /(这是|这个是|这是不是)(游戏|模拟|测试)/u,
+  /(?:这是|这个是|这是不是|这只是)(?:一个|一场|一次)?(?:游戏|模拟|测试|考试|测验|考核|练习)/u,
+  /(?:这个|该|本)(?:病例|案例|病人|患者)(?:最后|最终)的?(?:诊断|答案)|(?:这个|该|本)(?:病例|案例)的?(?:诊断|答案)/u,
+  /(?:给我|给点|来点)(?:一点|一些|点)?(?:提示|线索)/u,
   /谁(开发|制作|创造|编写)(了)?你/u,
   /你是什么(模型|ai|AI)/u,
 ];
@@ -72,15 +125,19 @@ const REAL_ADVICE: RegExp[] = [
   /\b(my|our) (own )?(mother|mom|mum|father|dad|son|daughter|kid|child|wife|husband|partner|friend|grandma|grandpa)\b.{0,40}\b(has|have|had|got|is|takes|was diagnosed)\b/i,
   /\bshould i (take|stop|start|stop taking|be worried about my)\b/i,
   /\b(what|which) (medicine|medication|drug|dose|pill) should i\b/i,
+  /\b(?:not (?:about|for) the case|nothing to do with the case|unrelated to the case)\b/i,
   /(现实中|现实生活|真实生活)/u,
   /我(自己)?(的)?(妈|爸|妈妈|爸爸|母亲|父亲|孩子|儿子|女儿|老婆|老公|妻子|丈夫|朋友|奶奶|爷爷)(也)?(有|得了|患了|在吃|确诊)/u,
+  /我(?:的)?(?:家人|家里人|妈|爸|妈妈|爸爸|母亲|父亲|孩子|儿子|女儿|老婆|老公|妻子|丈夫|朋友|奶奶|爷爷|外婆|外公|姥姥|姥爷).{0,20}(?:要不要|该不该|能不能|可不可以|可以|应该|该)(?:吃|用|打|停|去)/u,
   /我(自己)?(也)?(该|应该|能不能|可以)(吃|停|用|换)(什么)?药/u,
+  /我(?:自己|本人).{0,20}(?:吃什么药|用什么药|该吃|能不能(?:吃|停|用)|要不要(?:吃|停|用)|可以(?:吃|停|用)|停药|怎么治|怎么办)/u,
+  /(?:跟|和|与)(?:这个)?(?:病例|案例)(?:没|无)(?:有)?关/u,
   /(帮|请)我(看看|诊断|分析)(一下)?我(自己)?的/u,
 ];
 
 /** Classify a learner utterance addressed to the patient. */
 export function classifyUtterance(text: string): UtteranceRoute {
-  if (INJECTION.some((re) => re.test(text))) return "injection";
+  if (INJECTION.some((re) => re.test(text)) || breaksRole(text)) return "injection";
   if (META.some((re) => re.test(text))) return "meta";
   if (REAL_ADVICE.some((re) => re.test(text))) return "real-advice";
   return "in-fiction";

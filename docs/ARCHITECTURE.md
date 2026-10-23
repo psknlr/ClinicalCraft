@@ -773,7 +773,13 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 
 1. **Route** — out-of-fiction requests (asking the "patient" for real medical
    advice, prompt-injection, meta questions) get an in-character deflection and
-   a `warning` event; they never reach the fact selector.
+   a `warning` event; they never reach the fact selector. Injection includes
+   giving the patient another role ("act as a doctor") and asking it to step
+   out of the fiction ("stop role-playing", "不要再扮演了") unless that request
+   is negated ("I don't want you to break character"); meta includes asking
+   what the case says, for its answer or for a hint. Their look-alikes stay in
+   the fiction: "act as a carer", "is that out of character for him?", "when
+   did you stop acting?".
 2. **Select** — `matchHistory(utterance, {phase})`: items available in the
    current phase, a hit on an item superseded there by a phase twin counting
    for the twin (§3.3); hits ≥ 0.55 are selected (≤ 3, within 0.25 of the best);
