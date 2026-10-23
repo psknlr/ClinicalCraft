@@ -36,7 +36,9 @@
     { "id": "str-t-h29", "locale": "zh-CN", "text": "他血糖高不高？", "expect": ["pmh-other"] },
     { "id": "str-t-h30", "locale": "zh-CN", "text": "他胆固醇高吗？", "expect": ["unknown-lipids"] },
     { "id": "str-t-h31", "locale": "zh-CN", "text": "他喜欢吃辣吗？", "expect": [] },
-    { "id": "str-t-h32", "locale": "zh-CN", "text": "他会游泳吗？", "expect": [] }
+    { "id": "str-t-h32", "locale": "zh-CN", "text": "他会游泳吗？", "expect": [] },
+    { "id": "str-t-n01", "locale": "en", "text": "He hasn't had any headache or vomiting, has he?", "expect": ["headache-vomiting"], "tags": ["negation"] },
+    { "id": "str-t-n02", "locale": "zh-CN", "text": "他没在吃抗凝药吧？", "expect": ["anticoagulants"], "alsoOk": ["medications"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "str-t-e01", "locale": "en", "query": "perform a full NIH stroke scale", "expect": "nihss" },
@@ -56,7 +58,8 @@
     { "id": "str-t-o05", "locale": "en", "query": "lumbar puncture", "expect": null },
     { "id": "str-t-o06", "locale": "zh-CN", "query": "做个心电图", "expect": "ecg-12lead" },
     { "id": "str-t-o07", "locale": "zh-CN", "query": "做个心脏彩超", "expect": "echo-tte" },
-    { "id": "str-t-o08", "locale": "zh-CN", "query": "抽血查血常规和血小板", "expect": "cbc" }
+    { "id": "str-t-o08", "locale": "zh-CN", "query": "抽血查血常规和血小板", "expect": "cbc" },
+    { "id": "str-t-n06", "locale": "en", "query": "CT head without contrast", "expect": "ct-head", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "str-t-i01", "locale": "en", "query": "start IV alteplase at 0.9 mg/kg", "expect": "alteplase" },
@@ -66,7 +69,10 @@
     { "id": "str-t-i05", "locale": "en", "query": "start an IV insulin infusion", "expect": null },
     { "id": "str-t-i06", "locale": "zh-CN", "query": "启动卒中绿色通道", "expect": "stroke-code" },
     { "id": "str-t-i07", "locale": "zh-CN", "query": "跟家属谈溶栓的风险并签字", "expect": "consent-lysis" },
-    { "id": "str-t-i08", "locale": "zh-CN", "query": "上心电监护", "expect": "cardiac-monitoring" }
+    { "id": "str-t-i08", "locale": "zh-CN", "query": "上心电监护", "expect": "cardiac-monitoring" },
+    { "id": "str-t-n03", "locale": "en", "query": "stop the alteplase infusion now", "expect": "sich-protocol", "tags": ["negation"] },
+    { "id": "str-t-n04", "locale": "zh-CN", "query": "24小时内不要用阿司匹林", "expect": null, "tags": ["negation"] },
+    { "id": "str-t-n05", "locale": "en", "query": "no heparin for him today", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "str-t-v01", "locale": "en", "question": "When was he last normal?", "used": ["lkw"], "reply": "He was fine at five to nine — I was talking to him just before I went out to hang the washing, and I found him like this at about ten past nine.", "expect": "pass" },
@@ -80,6 +86,10 @@
     { "id": "str-t-v09", "locale": "zh-CN", "question": "他有多重？", "used": ["weight"], "reply": "大概75公斤吧。", "expect": "block", "kind": "number" },
     { "id": "str-t-v10", "locale": "zh-CN", "question": "家里人有中风的吗？", "used": ["family-history"], "reply": "他爸七十二岁中风，瘫了好几年。他哥哥也有糖尿病。", "expect": "block", "kind": "claim" },
     { "id": "str-t-v11", "locale": "zh-CN", "question": "他对什么过敏吗？", "used": ["allergies"], "reply": "没有，没听说他对什么药或者吃的过敏。", "expect": "pass" },
-    { "id": "str-t-v12", "locale": "zh-CN", "question": "他有没有糖尿病？", "used": [], "reply": "没有，他血糖一直很正常。", "expect": "block", "kind": "denial" }
+    { "id": "str-t-v12", "locale": "zh-CN", "question": "他有没有糖尿病？", "used": [], "reply": "没有，他血糖一直很正常。", "expect": "block", "kind": "denial" },
+    { "id": "str-t-n07", "locale": "en", "question": "Is he on any blood thinners?", "used": ["anticoagulants"], "reply": "(Wife) Yes, he takes a blood thinner every evening.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "str-t-n08", "locale": "zh-CN", "question": "他有房颤吗？", "used": ["pmh-af"], "reply": "（妻子）没有，他心律一直都正常。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "str-t-n09", "locale": "en", "question": "Has he had any operations or procedures recently?", "used": ["recent-surgery"], "reply": "(Wife) No, nothing recent — his only operation was a hernia repair years ago.", "expect": "pass", "tags": ["negation"] },
+    { "id": "str-t-n10", "locale": "zh-CN", "question": "他以前中过风吗？", "used": ["prior-stroke"], "reply": "（妻子）没有，医生从来没说过他中风。", "expect": "pass", "tags": ["negation"] }
   ]
 }

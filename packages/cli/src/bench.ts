@@ -5,7 +5,7 @@
  *   bench run --suite embodied-v1 --agent reference|scripted-llm|llm [--provider p --model m --live --max-tokens N --max-usd X]
  *             [--seeds 1-5] [--scenario ids] [--category cats] [--out dir] [--traces] [--require pct]
  *   bench demo --case stemi-inferior-rv [--lang zh-CN|en] [--out dir]
- *   bench grounding [--suite grounding-v1] [--split dev|test|all] [--track …] [--case …] [--locale …] [--out dir] [--compare report.json]
+ *   bench grounding [--suite grounding-v1] [--split dev|test|all] [--track …] [--case …] [--locale …] [--tag …] [--out dir] [--compare report.json]
  *
  * Runs use the built-in content only (reproducible). `reference` and
  * `scripted-llm` validate the infrastructure and must score 100 % (the
@@ -256,6 +256,17 @@ export async function benchGrounding(ctx: CliContext, args: ParsedArgs): Promise
   for (const track of tracks) {
     if (!(GROUNDING_TRACKS as readonly string[]).includes(track)) throw new UsageError(bm(L, "grounding.cli.badTrack", { value: track, list: GROUNDING_TRACKS.join(" | ") }));
   }
+  // The report to compare with is read first: a bad path fails before the run.
+  const compareFile = flagString(args, "compare");
+  let before: GroundingReport | null = null;
+  if (compareFile) {
+    try {
+      before = JSON.parse(await readFile(ctx.path(compareFile), "utf8")) as GroundingReport;
+      if (before.format !== GROUNDING_REPORT_FORMAT) throw new Error(before.format);
+    } catch {
+      throw new CliError(bm(L, "grounding.cli.badCompare", { file: ctx.show(ctx.path(compareFile)) }), EXIT.usage);
+    }
+  }
   // Built-in content only: the benchmark must not depend on the user's content directories.
   const content = await loadContent({ dirs: [] });
   const refIssues = loaded.files.flatMap((f) => groundingRefIssues(f.set, content).map((i) => `${f.path}: ${i}`));
@@ -264,7 +275,7 @@ export async function benchGrounding(ctx: CliContext, args: ParsedArgs): Promise
     suite: loaded,
     splits,
     content,
-    filter: { tracks: tracks as GroundingTrack[], cases: flagList(args, "case"), locales: flagList(args, "locale") },
+    filter: { tracks: tracks as GroundingTrack[], cases: flagList(args, "case"), locales: flagList(args, "locale"), tags: flagList(args, "tag") },
     environment: benchEnvironment(ctx.cwd, cliVersion()),
   });
   if (report.items.length === 0) throw new UsageError(bm(L, "grounding.cli.noItems"));
@@ -273,18 +284,7 @@ export async function benchGrounding(ctx: CliContext, args: ParsedArgs): Promise
     if (frozenStatus(report.suite, split as GroundingSplit, digest) === "modified") ctx.printErr(ctx.err.yellow(bm(L, "grounding.cli.modified", { split })));
   }
 
-  let compare = "";
-  const compareFile = flagString(args, "compare");
-  if (compareFile) {
-    let before: GroundingReport;
-    try {
-      before = JSON.parse(await readFile(ctx.path(compareFile), "utf8")) as GroundingReport;
-      if (before.format !== GROUNDING_REPORT_FORMAT) throw new Error(before.format);
-    } catch {
-      throw new CliError(bm(L, "grounding.cli.badCompare", { file: ctx.show(ctx.path(compareFile)) }), EXIT.usage);
-    }
-    compare = groundingCompareMarkdown(compareGroundingReports(before, report), L, ctx.show(ctx.path(compareFile)));
-  }
+  const compare = before ? groundingCompareMarkdown(compareGroundingReports(before, report), L, ctx.show(ctx.path(compareFile!))) : "";
 
   const outDir = ctx.path(flagString(args, "out") ?? "grounding-results");
   await mkdir(outDir, { recursive: true });
@@ -296,6 +296,7 @@ export async function benchGrounding(ctx: CliContext, args: ParsedArgs): Promise
   const m = report.metrics;
   ctx.print(bm(L, "grounding.cli.summary", { suite: report.suite, splits: splits.join("+"), k: m.overall.k, n: m.overall.n, rate: groundingPct(m.overall) }));
   for (const t of m.tracks) ctx.print(bm(L, "grounding.cli.track", { track: t.track, k: t.accuracy.k, n: t.accuracy.n, rate: groundingPct(t.accuracy) }));
+  for (const t of m.byTag) ctx.print(bm(L, "grounding.cli.tag", { tag: t.tag, k: t.accuracy.k, n: t.accuracy.n, rate: groundingPct(t.accuracy) }));
   if (compare) ctx.print(compare);
   ctx.print(bm(L, "grounding.cli.written", { md: ctx.show(mdPath), json: ctx.show(jsonPath) }));
   return EXIT.ok;

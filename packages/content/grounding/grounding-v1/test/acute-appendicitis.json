@@ -30,7 +30,9 @@
     { "id": "app-t-h23", "locale": "zh-CN", "text": "平时抽烟喝酒吗？", "expect": ["hx-substances"] },
     { "id": "app-t-h24", "locale": "zh-CN", "text": "家里人有什么遗传病吗？", "expect": ["hx-family"] },
     { "id": "app-t-h25", "locale": "zh-CN", "text": "你平时睡眠怎么样？", "expect": [] },
-    { "id": "app-t-h26", "locale": "zh-CN", "text": "你会开车吗？", "expect": [] }
+    { "id": "app-t-h26", "locale": "zh-CN", "text": "你会开车吗？", "expect": [] },
+    { "id": "app-t-n01", "locale": "en", "text": "You haven't vomited at all, have you?", "expect": ["hx-vomiting"], "tags": ["negation"] },
+    { "id": "app-t-n02", "locale": "zh-CN", "text": "没有尿痛尿血吧？", "expect": ["hx-urinary"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "app-t-e01", "locale": "en", "query": "palpate the abdomen gently, starting on the left", "expect": "ex-abd-palp" },
@@ -50,7 +52,8 @@
     { "id": "app-t-o05", "locale": "en", "query": "serum troponin", "expect": null },
     { "id": "app-t-o06", "locale": "zh-CN", "query": "查个尿常规", "expect": "inv-ua" },
     { "id": "app-t-o07", "locale": "zh-CN", "query": "肝功能和淀粉酶", "expect": "inv-lft-lipase" },
-    { "id": "app-t-o08", "locale": "zh-CN", "query": "血型鉴定", "expect": "inv-group-screen" }
+    { "id": "app-t-o08", "locale": "zh-CN", "query": "血型鉴定", "expect": "inv-group-screen" },
+    { "id": "app-t-n06", "locale": "en", "query": "CT abdomen and pelvis to exclude a perforation", "expect": "inv-ct", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "app-t-i01", "locale": "en", "query": "ondansetron 4 mg IV", "expect": "ondansetron" },
@@ -60,7 +63,10 @@
     { "id": "app-t-i05", "locale": "en", "query": "give IV hydrocortisone 200 mg", "expect": null },
     { "id": "app-t-i06", "locale": "zh-CN", "query": "静脉滴注对乙酰氨基酚", "expect": "paracetamol" },
     { "id": "app-t-i07", "locale": "zh-CN", "query": "请外科会诊", "expect": "surgical-consult" },
-    { "id": "app-t-i08", "locale": "zh-CN", "query": "下胃管减压", "expect": "ng-tube" }
+    { "id": "app-t-i08", "locale": "zh-CN", "query": "下胃管减压", "expect": "ng-tube" },
+    { "id": "app-t-n03", "locale": "en", "query": "hold off on the morphine until the surgeon has seen him", "expect": "withhold-analgesia", "tags": ["negation"] },
+    { "id": "app-t-n04", "locale": "zh-CN", "query": "暂时不要让他吃东西喝水", "expect": "npo", "tags": ["negation"] },
+    { "id": "app-t-n05", "locale": "en", "query": "no antibiotics yet, wait for the scan result", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "app-t-v01", "locale": "en", "question": "When did it start?", "used": ["hx-onset"], "reply": "It started around 8 yesterday morning on my way to class. It crept up slowly, just a dull ache at first.", "expect": "pass" },
@@ -73,6 +79,10 @@
     { "id": "app-t-v08", "locale": "zh-CN", "question": "最后一次吃东西是什么时候？", "used": ["hx-last-intake"], "reply": "昨天早上七点半吃的早饭，一个面包加一盒牛奶，后来只喝了几口水。", "expect": "pass" },
     { "id": "app-t-v09", "locale": "zh-CN", "question": "现在疼得有多厉害？", "used": ["hx-severity"], "reply": "现在大概5分，动一下能到6分。", "expect": "block", "kind": "number" },
     { "id": "app-t-v10", "locale": "zh-CN", "question": "抽烟吗？", "used": ["hx-substances"], "reply": "不抽烟，偶尔喝点啤酒。我爸年轻的时候割过阑尾。", "expect": "block", "kind": "unasked" },
-    { "id": "app-t-v11", "locale": "zh-CN", "question": "对什么药过敏吗？", "used": [], "reply": "没有，我对什么药都不过敏。", "expect": "block", "kind": "denial" }
+    { "id": "app-t-v11", "locale": "zh-CN", "question": "对什么药过敏吗？", "used": [], "reply": "没有，我对什么药都不过敏。", "expect": "block", "kind": "denial" },
+    { "id": "app-t-n07", "locale": "en", "question": "Have you had a temperature?", "used": ["hx-fever"], "reply": "No, I haven't felt hot or shivery at all.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "app-t-n08", "locale": "zh-CN", "question": "小便有没有什么不对？", "used": ["hx-urinary"], "reply": "有，小便的时候烧得慌，还有点血。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "app-t-n09", "locale": "en", "question": "Ever had an operation?", "used": ["hx-psh"], "reply": "No, I've never had an operation.", "expect": "pass", "tags": ["negation"] },
+    { "id": "app-t-n10", "locale": "zh-CN", "question": "以前这样疼过吗？", "used": ["hx-previous"], "reply": "从来没有这样疼过，这是第一次。", "expect": "pass", "tags": ["negation"] }
   ]
 }

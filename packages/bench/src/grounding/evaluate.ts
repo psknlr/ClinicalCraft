@@ -67,6 +67,8 @@ export interface GroundingItemResult {
   got: string;
   outcome: GroundingOutcome;
   ok: boolean;
+  /** The item's tags (absent when it has none). */
+  tags?: string[];
 }
 
 /** A file to evaluate with its case. */
@@ -81,6 +83,8 @@ export interface GroundingFilter {
   tracks?: readonly GroundingTrack[];
   cases?: readonly string[];
   locales?: readonly string[];
+  /** Keep items carrying any of these tags. */
+  tags?: readonly string[];
 }
 
 function stateAt(c: CaseDefinition, phase: string | undefined, asked: readonly string[] = []): SessionState {
@@ -167,24 +171,25 @@ export function evaluateGroundingItems(inputs: readonly GroundingInput[], filter
     const caseId = set.caseId ?? null;
     if (filter.cases?.length && (caseId === null || !filter.cases.includes(caseId))) continue;
     const c = file.caseDef;
-    const keep = (locale: string) => !filter.locales?.length || filter.locales.includes(locale);
-    const push = (track: GroundingTrack, item: { id: string; locale: string }, r: Pick<GroundingItemResult, "input" | "expected" | "got" | "outcome" | "ok">) =>
-      out.push({ track, split: file.split, file: file.path, caseId, itemId: item.id, locale: item.locale, ...r });
+    const keep = (item: { locale: string; tags?: readonly string[] }) =>
+      (!filter.locales?.length || filter.locales.includes(item.locale)) && (!filter.tags?.length || (item.tags ?? []).some((tag) => filter.tags!.includes(tag)));
+    const push = (track: GroundingTrack, item: { id: string; locale: string; tags?: readonly string[] }, r: Pick<GroundingItemResult, "input" | "expected" | "got" | "outcome" | "ok">) =>
+      out.push({ track, split: file.split, file: file.path, caseId, itemId: item.id, locale: item.locale, ...r, ...(item.tags?.length ? { tags: [...item.tags] } : {}) });
     for (const track of tracks) {
       switch (track) {
         case "history":
-          for (const item of set.history ?? []) if (c && keep(item.locale)) push(track, item, evaluateHistoryItem(c, item));
+          for (const item of set.history ?? []) if (c && keep(item)) push(track, item, evaluateHistoryItem(c, item));
           break;
         case "exam":
         case "orders":
         case "interventions":
-          for (const item of set[track] ?? []) if (c && keep(item.locale)) push(track, item, evaluateToolItem(c, track, item));
+          for (const item of set[track] ?? []) if (c && keep(item)) push(track, item, evaluateToolItem(c, track, item));
           break;
         case "routing":
-          for (const item of set.routing ?? []) if (keep(item.locale)) push(track, item, evaluateRoutingItem(item));
+          for (const item of set.routing ?? []) if (keep(item)) push(track, item, evaluateRoutingItem(item));
           break;
         case "verifier":
-          for (const item of set.verifier ?? []) if (c && keep(item.locale)) push(track, item, evaluateVerifierItem(c, item));
+          for (const item of set.verifier ?? []) if (c && keep(item)) push(track, item, evaluateVerifierItem(c, item));
           break;
         default: {
           const never: never = track;
@@ -220,12 +225,21 @@ export interface TrackMetrics {
   rates: Partial<Record<GroundingRateName, Proportion>>;
 }
 
+/** A tagged slice (e.g. `negation`): accuracy overall and per track, with each track's failures by outcome. */
+export interface TagMetrics {
+  tag: string;
+  accuracy: Proportion;
+  tracks: { track: GroundingTrack; accuracy: Proportion; failures: Partial<Record<GroundingOutcome, number>> }[];
+}
+
 export interface GroundingMetrics {
   /** Every item (micro average). */
   overall: Proportion;
   tracks: TrackMetrics[];
   byLocale: Record<string, Proportion>;
   byCase: Record<string, Proportion>;
+  /** Tagged slices, by tag name. */
+  byTag: TagMetrics[];
 }
 
 function count<T>(list: readonly T[], pred: (x: T) => boolean): number {
@@ -283,7 +297,22 @@ function groupAccuracy(items: readonly GroundingItemResult[], key: (r: Grounding
   return Object.fromEntries([...groups.keys()].sort().map((k) => [k, proportion(count(groups.get(k)!, (r) => r.ok), groups.get(k)!.length)]));
 }
 
-/** Metrics of evaluated items: overall, per track (with the track's rates), per locale and per case — every proportion with its Wilson 95 % interval. */
+function tagMetrics(items: readonly GroundingItemResult[]): TagMetrics[] {
+  const tags = [...new Set(items.flatMap((r) => r.tags ?? []))].sort();
+  return tags.map((tag) => {
+    const own = items.filter((r) => r.tags?.includes(tag));
+    const tracks = GROUNDING_TRACKS.flatMap((track) => {
+      const mine = own.filter((r) => r.track === track);
+      if (!mine.length) return [];
+      const failures: Partial<Record<GroundingOutcome, number>> = {};
+      for (const r of mine) if (!r.ok) failures[r.outcome] = (failures[r.outcome] ?? 0) + 1;
+      return [{ track, accuracy: proportion(count(mine, (r) => r.ok), mine.length), failures }];
+    });
+    return { tag, accuracy: proportion(count(own, (r) => r.ok), own.length), tracks };
+  });
+}
+
+/** Metrics of evaluated items: overall, per track (with the track's rates), per locale, per case and per tag — every proportion with its Wilson 95 % interval. */
 export function groundingMetrics(items: readonly GroundingItemResult[]): GroundingMetrics {
   const tracks: TrackMetrics[] = [];
   for (const track of GROUNDING_TRACKS) {
@@ -296,5 +325,6 @@ export function groundingMetrics(items: readonly GroundingItemResult[]): Groundi
     tracks,
     byLocale: groupAccuracy(items, (r) => r.locale),
     byCase: groupAccuracy(items, (r) => r.caseId),
+    byTag: tagMetrics(items),
   };
 }

@@ -28,7 +28,9 @@
     {"id": "t2d-d-h21", "locale": "zh-CN", "text": "吸过毒吗？", "expect": ["hx-drugs"]},
     {"id": "t2d-d-h22", "locale": "zh-CN", "text": "家里谁做饭？", "expect": ["hx-living"]},
     {"id": "t2d-d-h23", "locale": "zh-CN", "text": "这三个月药按时吃了吗？", "phase": "review", "expect": ["hx-rv-adherence"]},
-    {"id": "t2d-d-h24", "locale": "zh-CN", "text": "你会弹吉他吗？", "expect": []}
+    {"id": "t2d-d-h24", "locale": "zh-CN", "text": "你会弹吉他吗？", "expect": []},
+    {"id": "t2d-d-n01", "locale": "en", "text": "No chest pain when you climb stairs?", "expect": ["hx-cardiac-sx"], "tags": ["negation"]},
+    {"id": "t2d-d-n02", "locale": "zh-CN", "text": "没吸过毒吧？", "expect": ["hx-drugs"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "t2d-d-e01", "locale": "en", "query": "general inspection", "expect": "ex-general"},
@@ -43,7 +45,8 @@
     {"id": "t2d-d-o03", "locale": "en", "query": "kidney function and eGFR", "expect": "inv-renal"},
     {"id": "t2d-d-o04", "locale": "en", "query": "cortisol", "expect": null},
     {"id": "t2d-d-o05", "locale": "zh-CN", "query": "做个OGTT", "expect": "inv-ogtt"},
-    {"id": "t2d-d-o06", "locale": "zh-CN", "query": "查乙肝两对半", "expect": "inv-hbv"}
+    {"id": "t2d-d-o06", "locale": "zh-CN", "query": "查乙肝两对半", "expect": "inv-hbv"},
+    {"id": "t2d-d-n06", "locale": "zh-CN", "query": "查个TSH排除甲亢", "expect": "inv-tsh", "tags": ["negation"]}
   ],
   "interventions": [
     {"id": "t2d-d-i01", "locale": "en", "query": "dapagliflozin 10 mg", "expect": "iv-sglt2i"},
@@ -51,7 +54,10 @@
     {"id": "t2d-d-i03", "locale": "en", "query": "home BP monitoring", "expect": "iv-home-bp"},
     {"id": "t2d-d-i04", "locale": "en", "query": "start sitagliptin", "expect": null},
     {"id": "t2d-d-i05", "locale": "zh-CN", "query": "打乙肝疫苗", "expect": "iv-hbv-vaccine"},
-    {"id": "t2d-d-i06", "locale": "zh-CN", "query": "阿司匹林100 mg每天", "expect": "iv-aspirin"}
+    {"id": "t2d-d-i06", "locale": "zh-CN", "query": "阿司匹林100 mg每天", "expect": "iv-aspirin"},
+    {"id": "t2d-d-n03", "locale": "en", "query": "hold off on medication — diet and exercise first", "expect": "iv-lifestyle-only", "tags": ["negation"]},
+    {"id": "t2d-d-n04", "locale": "zh-CN", "query": "暂时不加胰岛素", "expect": null, "tags": ["negation"]},
+    {"id": "t2d-d-n05", "locale": "en", "query": "don't prescribe the fenofibrate", "expect": null, "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "t2d-d-v01", "locale": "en", "question": "How much are you drinking?", "used": ["hx-polydipsia"], "reply": "Three or four litres a day — mostly iced tea and cola from the office fridge.", "expect": "pass"},
@@ -60,6 +66,10 @@
     {"id": "t2d-d-v04", "locale": "en", "question": "Any medical problems?", "used": ["hx-pmh"], "reply": "Nothing serious, apart from gout — I take allopurinol for it.", "expect": "block", "kind": "drug"},
     {"id": "t2d-d-v05", "locale": "zh-CN", "question": "以前查过血糖吗？", "used": ["hx-prior-glucose"], "reply": "去年单位体检说空腹血糖有点高，6点几，让我半年后复查，我没去。", "expect": "pass"},
     {"id": "t2d-d-v06", "locale": "zh-CN", "question": "以前查过血糖吗？", "used": ["hx-prior-glucose"], "reply": "去年体检空腹血糖是9点多。", "expect": "block", "kind": "number"},
-    {"id": "t2d-d-v07", "locale": "zh-CN", "question": "有没有哮喘？", "used": [], "reply": "没有哮喘。", "expect": "block", "kind": "denial"}
+    {"id": "t2d-d-v07", "locale": "zh-CN", "question": "有没有哮喘？", "used": [], "reply": "没有哮喘。", "expect": "block", "kind": "denial"},
+    {"id": "t2d-d-n07", "locale": "en", "question": "Any nausea or tummy pain?", "used": ["hx-ketosis-sx"], "reply": "Yes, I've been feeling sick and my stomach hurts.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "t2d-d-n08", "locale": "zh-CN", "question": "看东西模糊吗？", "used": ["hx-vision"], "reply": "没有，看东西一直很清楚。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "t2d-d-n09", "locale": "en", "question": "Ever used recreational drugs?", "used": ["hx-drugs"], "reply": "No, never touched anything like that.", "expect": "pass", "tags": ["negation"]},
+    {"id": "t2d-d-n10", "locale": "zh-CN", "question": "有没有恶心呕吐？", "used": ["hx-ketosis-sx"], "reply": "都没有，不恶心也不吐，就是累。", "expect": "pass", "tags": ["negation"]}
   ]
 }

@@ -39,7 +39,9 @@
     { "id": "dka-t-h32", "locale": "zh-CN", "text": "你多高多重？", "expect": ["hx-weight"] },
     { "id": "dka-t-h33", "locale": "zh-CN", "text": "你现在最担心什么？", "expect": ["hx-ice"] },
     { "id": "dka-t-h34", "locale": "zh-CN", "text": "你喜欢看电影吗？", "expect": [] },
-    { "id": "dka-t-h35", "locale": "zh-CN", "text": "你养狗吗？", "expect": [] }
+    { "id": "dka-t-h35", "locale": "zh-CN", "text": "你养狗吗？", "expect": [] },
+    { "id": "dka-t-n01", "locale": "en", "text": "You haven't been able to check your ketones at home, have you?", "expect": ["hx-ketones-home"], "tags": ["negation"] },
+    { "id": "dka-t-n02", "locale": "zh-CN", "text": "没吃过格列净类的药吧？", "expect": ["hx-sglt2"], "alsoOk": ["hx-meds"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "dka-t-e01", "locale": "en", "query": "observe her respiratory pattern — is it Kussmaul?", "expect": "ex-breathing-pattern" },
@@ -59,7 +61,8 @@
     { "id": "dka-t-o05", "locale": "en", "query": "serum ammonia", "expect": null },
     { "id": "dka-t-o06", "locale": "zh-CN", "query": "查淀粉酶和脂肪酶", "expect": "lipase" },
     { "id": "dka-t-o07", "locale": "zh-CN", "query": "抽血培养", "expect": "blood-cultures" },
-    { "id": "dka-t-o08", "locale": "zh-CN", "query": "导出胰岛素泵的数据", "expect": "pump-download" }
+    { "id": "dka-t-o08", "locale": "zh-CN", "query": "导出胰岛素泵的数据", "expect": "pump-download" },
+    { "id": "dka-t-n06", "locale": "zh-CN", "query": "尿妊娠试验排除怀孕", "expect": "urine-hcg", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "dka-t-i01", "locale": "en", "query": "1 litre of normal saline over an hour", "expect": "nacl-1l-1h" },
@@ -69,7 +72,10 @@
     { "id": "dka-t-i05", "locale": "en", "query": "give IV furosemide 40 mg", "expect": null },
     { "id": "dka-t-i06", "locale": "zh-CN", "query": "止吐，用昂丹司琼", "expect": "ondansetron" },
     { "id": "dka-t-i07", "locale": "zh-CN", "query": "皮下打依诺肝素预防血栓", "expect": "vte-prophylaxis" },
-    { "id": "dka-t-i08", "locale": "zh-CN", "query": "请糖尿病专科会诊", "expect": "diabetes-team-referral" }
+    { "id": "dka-t-i08", "locale": "zh-CN", "query": "请糖尿病专科会诊", "expect": "diabetes-team-referral" },
+    { "id": "dka-t-n03", "locale": "en", "query": "do not give potassium as an IV push", "expect": null, "tags": ["negation"] },
+    { "id": "dka-t-n04", "locale": "zh-CN", "query": "停掉胰岛素泵", "expect": "suspend-pump", "tags": ["negation"] },
+    { "id": "dka-t-n05", "locale": "en", "query": "no bicarbonate", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "dka-t-v01", "locale": "en", "question": "Have you checked your sugar at home?", "used": ["hx-glucose-home"], "reply": "Once, yesterday afternoon — it was about 24. The pump suggested a correction but I cancelled it because I wasn't eating.", "expect": "pass" },
@@ -83,6 +89,10 @@
     { "id": "dka-t-v09", "locale": "zh-CN", "question": "吐了几次？", "used": ["hx-vomiting"], "reply": "吐了十几次了，还吐出来一点血。", "expect": "block", "kind": "claim" },
     { "id": "dka-t-v10", "locale": "zh-CN", "question": "家里人有什么病？", "used": ["hx-family"], "reply": "我妈妈有甲状腺的毛病，我外公有2型糖尿病。", "expect": "block", "kind": "claim" },
     { "id": "dka-t-v11", "locale": "zh-CN", "question": "抽烟喝酒吗？", "used": ["hx-smoking-alcohol"], "reply": "不抽烟，酒很少喝，这周一点都没喝。", "expect": "pass" },
-    { "id": "dka-t-v12", "locale": "zh-CN", "question": "泵是怎么设置的？", "used": ["hx-pump-settings"], "reply": "基础率每小时1.2单位，一天大概40个单位。", "expect": "block", "kind": "number" }
+    { "id": "dka-t-v12", "locale": "zh-CN", "question": "泵是怎么设置的？", "used": ["hx-pump-settings"], "reply": "基础率每小时1.2单位，一天大概40个单位。", "expect": "block", "kind": "number" },
+    { "id": "dka-t-n07", "locale": "en", "question": "Did you manage to check your ketones?", "used": ["hx-ketones-home"], "reply": "Yes, I checked them at home and they were high.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "dka-t-n08", "locale": "zh-CN", "question": "吐过吗？", "used": ["hx-vomiting"], "reply": "没有，一次都没吐过。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "dka-t-n09", "locale": "en", "question": "Have you had surgery before?", "used": ["hx-psh"], "reply": "No operations, ever.", "expect": "pass", "tags": ["negation"] },
+    { "id": "dka-t-n10", "locale": "zh-CN", "question": "小便有没有烧灼感？", "used": ["hx-urinary-symptoms"], "reply": "不疼也不烧，就是尿多。", "expect": "pass", "tags": ["negation"] }
   ]
 }

@@ -31,7 +31,9 @@
     {"id": "pe-d-h24", "locale": "zh-CN", "text": "您做什么工作？", "expect": ["h-social"]},
     {"id": "pe-d-h25", "locale": "zh-CN", "text": "最近坐过长途飞机吗？", "expect": ["h-travel"]},
     {"id": "pe-d-h26", "locale": "zh-CN", "text": "您希望我们怎么帮您？", "expect": ["h-ice-expect"]},
-    {"id": "pe-d-h27", "locale": "zh-CN", "text": "您喜欢唱歌吗？", "expect": []}
+    {"id": "pe-d-h27", "locale": "zh-CN", "text": "您喜欢唱歌吗？", "expect": []},
+    {"id": "pe-d-n01", "locale": "en", "text": "You've never had a stroke or brain bleed?", "expect": ["h-neuro-history"], "tags": ["negation"]},
+    {"id": "pe-d-n02", "locale": "zh-CN", "text": "没有用过激素或者避孕药吧？", "expect": ["h-hormones"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "pe-d-e01", "locale": "en", "query": "general inspection", "expect": "ex-general"},
@@ -46,7 +48,8 @@
     {"id": "pe-d-o03", "locale": "en", "query": "group and save", "expect": "group-save"},
     {"id": "pe-d-o04", "locale": "en", "query": "lipase", "expect": null},
     {"id": "pe-d-o05", "locale": "zh-CN", "query": "床旁胸片", "expect": "cxr"},
-    {"id": "pe-d-o06", "locale": "zh-CN", "query": "查血培养", "expect": "blood-cultures"}
+    {"id": "pe-d-o06", "locale": "zh-CN", "query": "查血培养", "expect": "blood-cultures"},
+    {"id": "pe-d-n06", "locale": "zh-CN", "query": "双下肢静脉超声排除深静脉血栓", "expect": "cus-legs", "tags": ["negation"]}
   ],
   "interventions": [
     {"id": "pe-d-i01", "locale": "en", "query": "enoxaparin 1 mg/kg twice daily", "expect": "lmwh-treatment"},
@@ -54,7 +57,10 @@
     {"id": "pe-d-i03", "locale": "en", "query": "IV morphine 2 mg", "expect": "morphine"},
     {"id": "pe-d-i04", "locale": "en", "query": "start warfarin", "expect": null},
     {"id": "pe-d-i05", "locale": "zh-CN", "query": "转HDU", "expect": "transfer-hdu"},
-    {"id": "pe-d-i06", "locale": "zh-CN", "query": "阿替普酶溶栓", "expect": "alteplase"}
+    {"id": "pe-d-i06", "locale": "zh-CN", "query": "阿替普酶溶栓", "expect": "alteplase"},
+    {"id": "pe-d-n03", "locale": "en", "query": "do not give alteplase", "expect": null, "tags": ["negation"]},
+    {"id": "pe-d-n04", "locale": "zh-CN", "query": "暂停肝素泵", "expect": null, "tags": ["negation"]},
+    {"id": "pe-d-n05", "locale": "en", "query": "no morphine for now", "expect": null, "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "pe-d-v01", "locale": "en", "question": "Have you been wearing stockings?", "used": ["h-stockings"], "reply": "They put tight stockings on before the operation, but I took them off on the second day.", "expect": "pass"},
@@ -62,6 +68,10 @@
     {"id": "pe-d-v03", "locale": "zh-CN", "question": "过敏吗？", "used": ["h-allergies"], "reply": "没有已知的过敏，上个月打造影剂也没反应。", "expect": "pass"},
     {"id": "pe-d-v04", "locale": "zh-CN", "question": "过敏吗？", "used": ["h-allergies"], "reply": "我对青霉素过敏，打了会起疹子。", "expect": "block", "kind": "drug"},
     {"id": "pe-d-v05", "locale": "en", "question": "Do you have diabetes?", "used": [], "reply": "No, I don't have diabetes.", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"},
-    {"id": "pe-d-v06", "locale": "zh-CN", "question": "什么时候开始痛的？", "used": ["h-onset"], "reply": "二十分钟前，大概四点，从厕所走回来的路上突然痛的。", "expect": "pass"}
+    {"id": "pe-d-v06", "locale": "zh-CN", "question": "什么时候开始痛的？", "used": ["h-onset"], "reply": "二十分钟前，大概四点，从厕所走回来的路上突然痛的。", "expect": "pass"},
+    {"id": "pe-d-n07", "locale": "en", "question": "Do you have palpitations?", "used": ["h-palpitations"], "reply": "No, my heart feels normal.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "pe-d-n08", "locale": "zh-CN", "question": "以前中过风吗？", "used": ["h-neuro-history"], "reply": "中过一次风，好几年前了。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "pe-d-n09", "locale": "en", "question": "Any long journeys recently?", "used": ["h-travel"], "reply": "No, I haven't been anywhere.", "expect": "pass", "tags": ["negation"]},
+    {"id": "pe-d-n10", "locale": "zh-CN", "question": "用过激素或避孕药吗？", "used": ["h-hormones"], "reply": "从来没用过激素，也没吃过避孕药。", "expect": "pass", "tags": ["negation"]}
   ]
 }

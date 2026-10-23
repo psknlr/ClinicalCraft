@@ -41,7 +41,9 @@
     { "id": "pe-t-h34", "locale": "zh-CN", "text": "您多重？", "expect": ["h-weight"] },
     { "id": "pe-t-h35", "locale": "zh-CN", "text": "肿瘤是几期？", "expect": ["h-unk-stage"] },
     { "id": "pe-t-h36", "locale": "zh-CN", "text": "您喜欢养花吗？", "expect": [] },
-    { "id": "pe-t-h37", "locale": "zh-CN", "text": "您会做饭吗？", "expect": [] }
+    { "id": "pe-t-h37", "locale": "zh-CN", "text": "您会做饭吗？", "expect": [] },
+    { "id": "pe-t-n01", "locale": "en", "text": "You haven't coughed up any blood?", "expect": ["h-haemoptysis"], "tags": ["negation"] },
+    { "id": "pe-t-n02", "locale": "zh-CN", "text": "以前没有得过血栓吧？", "expect": ["h-prior-vte"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "pe-t-e01", "locale": "en", "query": "check her JVP", "expect": "ex-jvp" },
@@ -61,7 +63,8 @@
     { "id": "pe-t-o05", "locale": "en", "query": "V/Q scan", "expect": null },
     { "id": "pe-t-o06", "locale": "zh-CN", "query": "查D-二聚体", "expect": "d-dimer" },
     { "id": "pe-t-o07", "locale": "zh-CN", "query": "床旁心超", "expect": "echo" },
-    { "id": "pe-t-o08", "locale": "zh-CN", "query": "看一下护理记录和用药记录", "expect": "mar" }
+    { "id": "pe-t-o08", "locale": "zh-CN", "query": "看一下护理记录和用药记录", "expect": "mar" },
+    { "id": "pe-t-n06", "locale": "en", "query": "CTPA to rule out a pulmonary embolism", "expect": "ctpa", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "pe-t-i01", "locale": "en", "query": "start a heparin infusion", "expect": "ufh" },
@@ -71,7 +74,10 @@
     { "id": "pe-t-i05", "locale": "en", "query": "give IV amiodarone 300 mg", "expect": null },
     { "id": "pe-t-i06", "locale": "zh-CN", "query": "抬高床头，让她半坐着", "expect": "positioning" },
     { "id": "pe-t-i07", "locale": "zh-CN", "query": "通知外科医生，讨论出血风险", "expect": "consult-surgeon" },
-    { "id": "pe-t-i08", "locale": "zh-CN", "query": "静脉滴注扑热息痛止痛", "expect": "paracetamol" }
+    { "id": "pe-t-i08", "locale": "zh-CN", "query": "静脉滴注扑热息痛止痛", "expect": "paracetamol" },
+    { "id": "pe-t-n03", "locale": "en", "query": "hold the heparin, her wound is oozing", "expect": null, "tags": ["negation"] },
+    { "id": "pe-t-n04", "locale": "zh-CN", "query": "不要溶栓", "expect": null, "tags": ["negation"] },
+    { "id": "pe-t-n05", "locale": "en", "query": "no NSAIDs for the pain", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "pe-t-v01", "locale": "en", "question": "When did it start?", "used": ["h-onset"], "reply": "About twenty minutes ago — around four, walking back from the toilet. It hit me all at once.", "expect": "pass" },
@@ -85,6 +91,10 @@
     { "id": "pe-t-v09", "locale": "zh-CN", "question": "腿有没有不舒服？", "used": ["h-calf"], "reply": "两条腿都肿了，左腿更厉害。", "expect": "block", "kind": "claim" },
     { "id": "pe-t-v10", "locale": "zh-CN", "question": "家里人有血栓吗？", "used": ["h-family"], "reply": "没人得过血栓。我妈妈有高血压，我爸爸78岁时中风去世的。", "expect": "pass" },
     { "id": "pe-t-v11", "locale": "zh-CN", "question": "家里人有血栓吗？", "used": ["h-family"], "reply": "我姐姐前年得过下肢静脉血栓。", "expect": "block", "kind": "claim" },
-    { "id": "pe-t-v12", "locale": "zh-CN", "question": "做的什么手术？", "used": ["h-surgery"], "reply": "三天前开腹切了右边一段肠子，因为长了肿瘤。医生说已经转移到肝了。", "expect": "block", "kind": "claim" }
+    { "id": "pe-t-v12", "locale": "zh-CN", "question": "做的什么手术？", "used": ["h-surgery"], "reply": "三天前开腹切了右边一段肠子，因为长了肿瘤。医生说已经转移到肝了。", "expect": "block", "kind": "claim" },
+    { "id": "pe-t-n07", "locale": "en", "question": "Any blood when you cough?", "used": ["h-haemoptysis"], "reply": "Yes… a little blood in the phlegm…", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "pe-t-n08", "locale": "zh-CN", "question": "腿有没有疼或者肿？", "used": ["h-calf"], "reply": "腿不疼，也不肿。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "pe-t-n09", "locale": "en", "question": "Have you ever had a clot before?", "used": ["h-prior-vte"], "reply": "No, never had a clot.", "expect": "pass", "tags": ["negation"] },
+    { "id": "pe-t-n10", "locale": "zh-CN", "question": "您抽烟吗？", "used": ["h-smoking"], "reply": "不抽，从来没抽过。", "expect": "pass", "tags": ["negation"] }
   ]
 }

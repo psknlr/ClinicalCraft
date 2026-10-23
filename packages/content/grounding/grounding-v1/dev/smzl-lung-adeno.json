@@ -17,7 +17,9 @@
     {"id": "smz-d-h10", "locale": "zh-CN", "text": "您有吸烟史吗？", "expect": ["other"]},
     {"id": "smz-d-h11", "locale": "zh-CN", "text": "确诊以后做过什么治疗？", "phase": "post", "expect": ["treatment-course"]},
     {"id": "smz-d-h12", "locale": "zh-CN", "text": "现在吃什么药？", "phase": "post", "expect": ["meds-post"], "alsoOk": ["pmh-htn"]},
-    {"id": "smz-d-h13", "locale": "zh-CN", "text": "您喜欢喝咖啡吗？", "expect": []}
+    {"id": "smz-d-h13", "locale": "zh-CN", "text": "您喜欢喝咖啡吗？", "expect": []},
+    {"id": "smz-d-n01", "locale": "en", "text": "Has nobody found your spleen enlarged before?", "expect": ["spleen"], "tags": ["negation"]},
+    {"id": "smz-d-n02", "locale": "zh-CN", "text": "没有别的慢性病吧，比如高血压？", "expect": ["pmh-htn"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "smz-d-e01", "locale": "en", "query": "general appearance", "phase": "post", "expect": "exam-general"},
@@ -30,13 +32,19 @@
     {"id": "smz-d-o03", "locale": "en", "query": "CT chest", "expect": "chestct"},
     {"id": "smz-d-o04", "locale": "en", "query": "colonoscopy", "expect": null},
     {"id": "smz-d-o05", "locale": "zh-CN", "query": "浅表淋巴结B超", "expect": "nodeus"},
-    {"id": "smz-d-o06", "locale": "zh-CN", "query": "EGFR检测结果", "expect": "egfr"}
+    {"id": "smz-d-o06", "locale": "zh-CN", "query": "EGFR检测结果", "expect": "egfr"},
+    {"id": "smz-d-n03", "locale": "en", "query": "molecular testing: was the driver gene negative?", "expect": "egfr", "tags": ["negation"]},
+    {"id": "smz-d-n04", "locale": "zh-CN", "query": "流式细胞术排除淋巴瘤", "expect": "flow", "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "smz-d-v01", "locale": "en", "question": "Have you had a fever?", "used": ["fever"], "reply": "In April 2025 I had tummy pain with a fever; it settled with anti-infective treatment.", "expect": "pass"},
     {"id": "smz-d-v02", "locale": "en", "question": "Have you had a fever?", "used": ["fever"], "reply": "Yes, in March 2025, and I needed a week in hospital.", "expect": "block", "kind": "claim"},
     {"id": "smz-d-v03", "locale": "zh-CN", "question": "治疗后有什么不舒服？", "used": ["numbness"], "reply": "四肢末端发麻，医生说是VP方案的神经毒性，用了营养神经的药好一点。", "expect": "pass"},
     {"id": "smz-d-v04", "locale": "zh-CN", "question": "治疗后有什么不舒服？", "used": ["numbness"], "reply": "手脚发麻，还掉了很多头发。", "expect": "block", "kind": "claim"},
-    {"id": "smz-d-v05", "locale": "en", "question": "Any family history of cancer?", "used": [], "reply": "No, nobody in my family has had cancer.", "expect": "block", "kind": "denial"}
+    {"id": "smz-d-v05", "locale": "en", "question": "Any family history of cancer?", "used": [], "reply": "No, nobody in my family has had cancer.", "expect": "block", "kind": "denial"},
+    {"id": "smz-d-n05", "locale": "en", "question": "Do you have high blood pressure?", "used": ["pmh-htn"], "reply": "No, my blood pressure has always been normal.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "smz-d-n06", "locale": "zh-CN", "question": "肺癌是EGFR阳性吗？", "used": ["lung"], "reply": "不是，EGFR是阴性的。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "smz-d-n07", "locale": "en", "question": "Have you had any fevers?", "used": ["fever"], "reply": "Yes, in April 2025, with tummy pain; it settled with treatment.", "expect": "pass", "tags": ["negation"]},
+    {"id": "smz-d-n08", "locale": "zh-CN", "question": "过敏吗？", "used": ["allergies"], "reply": "没有，药物和食物都不过敏。", "expect": "pass", "tags": ["negation"]}
   ]
 }

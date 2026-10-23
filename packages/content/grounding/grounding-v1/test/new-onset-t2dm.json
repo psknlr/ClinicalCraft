@@ -39,7 +39,9 @@
     { "id": "t2d-t-h32", "locale": "zh-CN", "text": "查过血脂吗？", "expect": ["hx-unk-lipids"] },
     { "id": "t2d-t-h33", "locale": "zh-CN", "text": "二甲双胍吃了以后有没有拉肚子？", "phase": "review", "expect": ["hx-rv-sideeffects"] },
     { "id": "t2d-t-h34", "locale": "zh-CN", "text": "你喜欢下棋吗？", "expect": [] },
-    { "id": "t2d-t-h35", "locale": "zh-CN", "text": "你住在几楼？", "expect": [] }
+    { "id": "t2d-t-h35", "locale": "zh-CN", "text": "你住在几楼？", "expect": [] },
+    { "id": "t2d-t-n01", "locale": "en", "text": "You've not had any numbness in your feet?", "expect": ["hx-neuro-sx"], "tags": ["negation"] },
+    { "id": "t2d-t-n02", "locale": "zh-CN", "text": "没有恶心呕吐、肚子疼吧？", "expect": ["hx-ketosis-sx"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "t2d-t-e01", "locale": "en", "query": "measure his waist circumference", "expect": "ex-anthro" },
@@ -59,7 +61,8 @@
     { "id": "t2d-t-o05", "locale": "en", "query": "MRI of the pituitary", "expect": null },
     { "id": "t2d-t-o06", "locale": "zh-CN", "query": "查空腹血糖", "expect": "inv-fpg" },
     { "id": "t2d-t-o07", "locale": "zh-CN", "query": "查个甲功", "expect": "inv-tsh" },
-    { "id": "t2d-t-o08", "locale": "zh-CN", "query": "眼底照相筛查糖网", "expect": "inv-retinal" }
+    { "id": "t2d-t-o08", "locale": "zh-CN", "query": "眼底照相筛查糖网", "expect": "inv-retinal" },
+    { "id": "t2d-t-n06", "locale": "en", "query": "GAD antibodies to exclude autoimmune diabetes", "expect": "inv-cpep-gad", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "t2d-t-i01", "locale": "en", "query": "start metformin 500 mg once daily and titrate up", "expect": "iv-metformin" },
@@ -69,7 +72,10 @@
     { "id": "t2d-t-i05", "locale": "en", "query": "start pioglitazone 15 mg", "expect": null },
     { "id": "t2d-t-i06", "locale": "zh-CN", "query": "开伐尼克兰帮他戒烟", "expect": "iv-smoking" },
     { "id": "t2d-t-i07", "locale": "zh-CN", "query": "外用克霉唑乳膏", "expect": "iv-antifungal" },
-    { "id": "t2d-t-i08", "locale": "zh-CN", "query": "三个月后复诊", "expect": "iv-follow-up" }
+    { "id": "t2d-t-i08", "locale": "zh-CN", "query": "三个月后复诊", "expect": "iv-follow-up" },
+    { "id": "t2d-t-n03", "locale": "en", "query": "don't start any medication yet, lifestyle changes only", "expect": "iv-lifestyle-only", "tags": ["negation"] },
+    { "id": "t2d-t-n04", "locale": "zh-CN", "query": "先不要吃阿司匹林", "expect": null, "tags": ["negation"] },
+    { "id": "t2d-t-n05", "locale": "en", "query": "stop smoking: start varenicline", "expect": "iv-smoking", "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "t2d-t-v01", "locale": "en", "question": "Has your weight changed?", "used": ["hx-weightloss"], "reply": "I've lost about three kilos — I was 92 at last year's check-up and 89 a couple of days ago.", "expect": "pass" },
@@ -83,6 +89,10 @@
     { "id": "t2d-t-v09", "locale": "zh-CN", "question": "以前量过血压吗？", "used": ["hx-prior-bp"], "reply": "去年体检是160/100，医生给我开了降压药。", "expect": "block", "kind": "number" },
     { "id": "t2d-t-v10", "locale": "zh-CN", "question": "喝酒吗？", "used": ["hx-alcohol"], "reply": "应酬的时候喝，一周一两次，一次三瓶啤酒左右。我爸六十八岁中过一次风。", "expect": "block", "kind": "unasked" },
     { "id": "t2d-t-v11", "locale": "zh-CN", "question": "运动吗？", "used": ["hx-exercise"], "reply": "基本不运动，手机上一天也就三千来步。", "expect": "pass" },
-    { "id": "t2d-t-v12", "locale": "zh-CN", "question": "手脚有没有发麻？", "used": [], "reply": "没有，手脚感觉都很正常，也没有脚气。", "expect": "block", "kind": "denial" }
+    { "id": "t2d-t-v12", "locale": "zh-CN", "question": "手脚有没有发麻？", "used": [], "reply": "没有，手脚感觉都很正常，也没有脚气。", "expect": "block", "kind": "denial" },
+    { "id": "t2d-t-n07", "locale": "en", "question": "Do you smoke?", "used": ["hx-smoking"], "reply": "No, I've never smoked.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "t2d-t-n08", "locale": "zh-CN", "question": "活动的时候胸口闷不闷？", "used": ["hx-cardiac-sx"], "reply": "爬楼的时候胸口会闷痛，得停下来歇会儿。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "t2d-t-n09", "locale": "en", "question": "Any tingling in your hands or feet?", "used": ["hx-neuro-sx"], "reply": "No, my hands and feet feel normal.", "expect": "pass", "tags": ["negation"] },
+    { "id": "t2d-t-n10", "locale": "zh-CN", "question": "手抖吗？怕热吗？", "used": ["hx-thyroid-sx"], "reply": "不怕热，手也不抖。", "expect": "pass", "tags": ["negation"] }
   ]
 }

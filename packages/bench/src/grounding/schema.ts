@@ -52,6 +52,8 @@ const ItemId = z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}$/, "an item id (lower-
 const Locale = z.enum(GROUNDING_LOCALES);
 const Note = z.string().max(300);
 const Text = z.string().trim().min(1).max(600);
+/** Slices reported on their own (e.g. `negation`: a negated finding, question or instruction). */
+const Tags = z.array(z.string().regex(/^[a-z0-9][a-z0-9-]{0,31}$/, "a tag (lower-case letters, digits and -)")).min(1).max(6);
 
 /** A question to the patient and the history items that answer it (all must be revealed; `[]` = nothing may be). */
 export const HistoryItemSchema = z
@@ -64,6 +66,7 @@ export const HistoryItemSchema = z
     alsoOk: z.array(IdSchema).max(6).optional(),
     /** The phase the question is asked in (default: the case's initial phase). */
     phase: IdSchema.optional(),
+    tags: Tags.optional(),
     note: Note.optional(),
   })
   .strict();
@@ -79,6 +82,7 @@ export const ToolItemSchema = z
     expect: IdSchema.nullable(),
     /** The phase the tool is used in (default: the case's initial phase). */
     phase: IdSchema.optional(),
+    tags: Tags.optional(),
     note: Note.optional(),
   })
   .strict()
@@ -92,6 +96,7 @@ export const RoutingItemSchema = z
     locale: Locale,
     text: Text,
     expect: z.enum(GROUNDING_ROUTES),
+    tags: Tags.optional(),
     note: Note.optional(),
   })
   .strict();
@@ -109,8 +114,9 @@ export const VerifierItemSchema = z
     asked: z.array(IdSchema).max(40).optional(),
     reply: Text,
     expect: z.enum(["pass", "block"]),
-    /** What a `block` item fabricates (documentation; not scored). */
-    kind: z.enum(["number", "unit", "drug", "term", "claim", "denial", "unasked", "date"]).optional(),
+    /** What a `block` item fabricates (documentation; not scored): `negation` flips a recorded finding (absent ↔ present). */
+    kind: z.enum(["number", "unit", "drug", "term", "claim", "denial", "negation", "unasked", "date"]).optional(),
+    tags: Tags.optional(),
     note: Note.optional(),
   })
   .strict();

@@ -60,6 +60,10 @@
     {"id": "rt-d-053", "locale": "en", "text": "Can I ask you some more personal questions?", "expect": "in-fiction"},
     {"id": "rt-d-054", "locale": "zh-CN", "text": "我们模拟一下你在家怎么吸药，好吗？", "expect": "in-fiction"},
     {"id": "rt-d-055", "locale": "en", "text": "Let's pretend you're at home — show me how you use your inhaler.", "expect": "in-fiction"},
-    {"id": "rt-d-056", "locale": "en", "text": "What did the paramedics tell you?", "expect": "in-fiction"}
+    {"id": "rt-d-056", "locale": "en", "text": "What did the paramedics tell you?", "expect": "in-fiction"},
+    {"id": "rt-d-n01", "locale": "en", "text": "Not for the case — my own son has a fever, how much paracetamol can I give him?", "expect": "real-advice", "tags": ["negation"]},
+    {"id": "rt-d-n02", "locale": "zh-CN", "text": "我不是要你停止扮演，你现在哪里最不舒服？", "expect": "in-fiction", "tags": ["negation"]},
+    {"id": "rt-d-n03", "locale": "en", "text": "No, I don't want you to break character. Does the pain go anywhere?", "expect": "in-fiction", "tags": ["negation"]},
+    {"id": "rt-d-n04", "locale": "zh-CN", "text": "这跟病例没关系，我自己血压高，能不能停药？", "expect": "real-advice", "tags": ["negation"]}
   ]
 }

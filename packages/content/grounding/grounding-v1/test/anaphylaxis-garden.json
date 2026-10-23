@@ -37,7 +37,9 @@
     { "id": "ana-t-h30", "locale": "zh-CN", "text": "做过过敏原测试吗？", "expect": ["prior-testing"] },
     { "id": "ana-t-h31", "locale": "zh-CN", "text": "你最怕的是什么？", "expect": ["ice-concern"] },
     { "id": "ana-t-h32", "locale": "zh-CN", "text": "你几点睡觉？", "expect": [] },
-    { "id": "ana-t-h33", "locale": "zh-CN", "text": "你家养猫吗？", "expect": [] }
+    { "id": "ana-t-h33", "locale": "zh-CN", "text": "你家养猫吗？", "expect": [] },
+    { "id": "ana-t-n01", "locale": "en", "text": "You didn't faint, did you?", "expect": ["hpi-loc"], "alsoOk": ["hpi-dizzy"], "tags": ["negation"] },
+    { "id": "ana-t-n02", "locale": "zh-CN", "text": "你身上没带肾上腺素笔吧？", "expect": ["aai-own"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "ana-t-e01", "locale": "en", "query": "look in her mouth and listen to her voice", "expect": "ex-airway-scene" },
@@ -57,7 +59,8 @@
     { "id": "ana-t-o05", "locale": "zh-CN", "query": "查个血常规", "expect": "fbc" },
     { "id": "ana-t-o06", "locale": "zh-CN", "query": "床旁测个血糖", "expect": "poc-glucose" },
     { "id": "ana-t-o07", "locale": "zh-CN", "query": "拍个胸片", "expect": "cxr" },
-    { "id": "ana-t-o08", "locale": "zh-CN", "query": "1到2小时后再抽一次类胰蛋白酶", "expect": "tryptase-2" }
+    { "id": "ana-t-o08", "locale": "zh-CN", "query": "1到2小时后再抽一次类胰蛋白酶", "expect": "tryptase-2" },
+    { "id": "ana-t-n06", "locale": "en", "query": "pregnancy test to exclude pregnancy", "expect": "upt", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "ana-t-i01", "locale": "en", "query": "adrenaline 0.5 mg IM into the thigh", "expect": "adrenaline-im" },
@@ -67,7 +70,10 @@
     { "id": "ana-t-i05", "locale": "en", "query": "give 2 g of IV magnesium", "expect": null },
     { "id": "ana-t-i06", "locale": "zh-CN", "query": "高流量面罩吸氧", "expect": "oxygen-high-flow" },
     { "id": "ana-t-i07", "locale": "zh-CN", "query": "快速补液500毫升生理盐水", "expect": "fluid-bolus" },
-    { "id": "ana-t-i08", "locale": "zh-CN", "query": "开两支肾上腺素笔并教她怎么用", "expect": "prescribe-aai" }
+    { "id": "ana-t-i08", "locale": "zh-CN", "query": "开两支肾上腺素笔并教她怎么用", "expect": "prescribe-aai" },
+    { "id": "ana-t-n03", "locale": "en", "query": "don't sit her up — lie her flat and raise her legs", "expect": "position-supine-legs", "tags": ["negation"] },
+    { "id": "ana-t-n04", "locale": "zh-CN", "query": "先别让她出院", "expect": null, "tags": ["negation"] },
+    { "id": "ana-t-n05", "locale": "en", "query": "do not let her walk to the emergency department", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "ana-t-v01", "locale": "en", "question": "How much do you weigh?", "used": ["weight"], "reply": "About 62 kilos, I think.", "expect": "pass" },
@@ -81,6 +87,10 @@
     { "id": "ana-t-v09", "locale": "zh-CN", "question": "做过手术吗？", "used": ["psh"], "reply": "十二岁割过阑尾，前年还做过一次胆囊手术。", "expect": "block", "kind": "claim" },
     { "id": "ana-t-v10", "locale": "zh-CN", "question": "有没有可能怀孕？", "used": ["obstetric-lmp"], "reply": "不会，我在吃避孕药，上次月经是两周前。", "expect": "pass" },
     { "id": "ana-t-v11", "locale": "zh-CN", "question": "有没有可能怀孕？", "used": ["obstetric-lmp"], "reply": "不会，月经是三天前才来的。", "expect": "block", "kind": "number" },
-    { "id": "ana-t-v12", "locale": "zh-CN", "question": "抽烟喝酒吗？", "used": ["social-habits"], "reply": "不抽烟，周末偶尔喝一杯红酒，今天没喝。", "expect": "pass" }
+    { "id": "ana-t-v12", "locale": "zh-CN", "question": "抽烟喝酒吗？", "used": ["social-habits"], "reply": "不抽烟，周末偶尔喝一杯红酒，今天没喝。", "expect": "pass" },
+    { "id": "ana-t-n07", "locale": "en", "question": "Did you lose consciousness?", "used": ["hpi-loc"], "reply": "Yes… I blacked out for a moment…", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "ana-t-n08", "locale": "zh-CN", "question": "你身上带着肾上腺素笔吗？", "used": ["aai-own"], "reply": "带着……在包里……", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "ana-t-n09", "locale": "en", "question": "Do you take any heart or blood pressure tablets?", "used": ["meds-bb"], "reply": "No… never taken any…", "expect": "pass", "tags": ["negation"] },
+    { "id": "ana-t-n10", "locale": "zh-CN", "question": "以前做过过敏原检测吗？", "used": ["prior-testing"], "reply": "没有……从来没做过……", "expect": "pass", "tags": ["negation"] }
   ]
 }

@@ -118,6 +118,7 @@ export const BENCH: CommandSpec = {
         { name: "track", type: "list", valueName: "<names>", description: { en: "Only these tracks: history, exam, orders, interventions, routing, verifier", zh: "只评测这些项：history、exam、orders、interventions、routing、verifier" } },
         { name: "case", type: "list", valueName: "<ids>", description: { en: "Only these cases", zh: "只评测这些病例" } },
         { name: "locale", type: "list", valueName: "<langs>", description: { en: "Only items in these languages (zh-CN, en)", zh: "只评测这些语言的条目（zh-CN、en）" } },
+        { name: "tag", type: "list", valueName: "<tags>", description: { en: "Only items with these tags (e.g. negation)", zh: "只评测带这些标签的条目（如 negation）" } },
         { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default grounding-results)", zh: "报告目录（默认 grounding-results）" } },
         { name: "failures", type: "number", valueName: "<n>", description: { en: "Failures listed in the Markdown report (default 200)", zh: "Markdown 报告中列出的失败条目数（默认 200）" } },
         { name: "compare", type: "string", valueName: "<report.json>", description: { en: "A previous grounding-report.json: add metric deltas and the items fixed / broken", zh: "之前的 grounding-report.json：附上指标变化以及修复/退步的条目" } },
@@ -125,6 +126,7 @@ export const BENCH: CommandSpec = {
       run: benchGrounding,
       examples: [
         "clinicalcraft bench grounding --split dev --lang en",
+        "clinicalcraft bench grounding --split dev --tag negation --lang en",
         "clinicalcraft bench grounding --split test --out grounding-results/after --compare grounding-results/before/grounding-report.json",
       ],
     },

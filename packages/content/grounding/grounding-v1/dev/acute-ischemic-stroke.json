@@ -24,7 +24,9 @@
     {"id": "str-d-h17", "locale": "zh-CN", "text": "他是左撇子吗？", "expect": ["handedness"]},
     {"id": "str-d-h18", "locale": "zh-CN", "text": "他有没有说看东西模糊或者头晕？", "expect": ["unknown-vision-dizziness"]},
     {"id": "str-d-h19", "locale": "zh-CN", "text": "如果治疗有风险，他会怎么选？", "expect": ["wishes-consent"]},
-    {"id": "str-d-h20", "locale": "zh-CN", "text": "他平时爱看电视吗？", "expect": []}
+    {"id": "str-d-h20", "locale": "zh-CN", "text": "他平时爱看电视吗？", "expect": []},
+    {"id": "str-d-n01", "locale": "en", "text": "He didn't hit his head when he slumped over, did he?", "expect": ["head-trauma"], "tags": ["negation"]},
+    {"id": "str-d-n02", "locale": "zh-CN", "text": "他以前没有过癫痫吧？", "expect": ["loc-seizure"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "str-d-e01", "locale": "en", "query": "GCS", "expect": "gcs"},
@@ -40,7 +42,8 @@
     {"id": "str-d-o03", "locale": "en", "query": "U&Es and LFTs", "expect": "chem"},
     {"id": "str-d-o04", "locale": "en", "query": "EEG", "expect": null},
     {"id": "str-d-o05", "locale": "zh-CN", "query": "头颅核磁", "expect": "mri-brain"},
-    {"id": "str-d-o06", "locale": "zh-CN", "query": "查一下以前的门诊记录", "expect": "ehr-records"}
+    {"id": "str-d-o06", "locale": "zh-CN", "query": "查一下以前的门诊记录", "expect": "ehr-records"},
+    {"id": "str-d-n06", "locale": "en", "query": "CT angiogram of the head and neck to exclude a large-vessel occlusion", "expect": "cta-head-neck", "tags": ["negation"]}
   ],
   "interventions": [
     {"id": "str-d-i01", "locale": "en", "query": "tenecteplase 0.25 mg/kg", "expect": "tenecteplase"},
@@ -48,7 +51,10 @@
     {"id": "str-d-i03", "locale": "en", "query": "ASA 300 mg PR", "expect": "aspirin"},
     {"id": "str-d-i04", "locale": "en", "query": "dexamethasone 10 mg IV", "expect": null},
     {"id": "str-d-i05", "locale": "zh-CN", "query": "转去导管室取栓", "expect": "transfer-angio"},
-    {"id": "str-d-i06", "locale": "zh-CN", "query": "乌拉地尔降压", "expect": "urapidil"}
+    {"id": "str-d-i06", "locale": "zh-CN", "query": "乌拉地尔降压", "expect": "urapidil"},
+    {"id": "str-d-n03", "locale": "en", "query": "hold the aspirin until the 24-hour scan", "expect": null, "tags": ["negation"]},
+    {"id": "str-d-n04", "locale": "zh-CN", "query": "停用阿替普酶", "expect": "sich-protocol", "tags": ["negation"]},
+    {"id": "str-d-n05", "locale": "en", "query": "don't give him anything by mouth until his swallow is checked", "expect": "swallow-screen", "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "str-d-v01", "locale": "en", "question": "Does he drink?", "used": ["alcohol"], "reply": "(Wife) Only a glass or two of baijiu with his old workmates at the weekend.", "expect": "pass"},
@@ -57,6 +63,10 @@
     {"id": "str-d-v04", "locale": "zh-CN", "question": "他有高血压吗？", "used": ["pmh-htn"], "reply": "（妻子）有，十来年了，一直吃氨氯地平，在家量一般一百五十多。", "expect": "pass"},
     {"id": "str-d-v05", "locale": "zh-CN", "question": "他有高血压吗？", "used": ["pmh-htn"], "reply": "（妻子）有，二十年了，一直吃硝苯地平。", "expect": "block", "kind": "drug"},
     {"id": "str-d-v06", "locale": "zh-CN", "question": "他平时生活能自理吗？", "used": ["functional-baseline"], "reply": "（妻子）完全自理，每天早上走一个小时，还自己买菜做饭。", "expect": "pass"},
-    {"id": "str-d-v07", "locale": "en", "question": "Is he on any blood thinners?", "used": [], "reply": "(Wife) No, he's not on any blood thinners.", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"}
+    {"id": "str-d-v07", "locale": "en", "question": "Is he on any blood thinners?", "used": [], "reply": "(Wife) No, he's not on any blood thinners.", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"},
+    {"id": "str-d-n07", "locale": "en", "question": "Did he have a fit?", "used": ["loc-seizure"], "reply": "(Wife) Yes, his arms and legs were shaking when I found him.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "str-d-n08", "locale": "zh-CN", "question": "他有高血压吗？", "used": ["pmh-htn"], "reply": "（妻子）没有，他血压一直正常。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "str-d-n09", "locale": "en", "question": "Is he a smoker?", "used": ["smoking"], "reply": "(Wife) Not any more — he quit ten years ago.", "expect": "pass", "tags": ["negation"]},
+    {"id": "str-d-n10", "locale": "zh-CN", "question": "他对什么药过敏吗？", "used": ["allergies"], "reply": "（妻子）没有，没听说他对什么药过敏。", "expect": "pass", "tags": ["negation"]}
   ]
 }

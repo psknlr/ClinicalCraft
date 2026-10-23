@@ -40,7 +40,9 @@
     { "id": "pas-t-h33", "locale": "zh-CN", "text": "吸气的时候有没有怪声？", "expect": ["hx-upper-airway"] },
     { "id": "pas-t-h34", "locale": "zh-CN", "text": "做过肺功能吗？", "expect": ["hx-unknown-spirometry"] },
     { "id": "pas-t-h35", "locale": "zh-CN", "text": "孩子喜欢吃什么零食？", "expect": [] },
-    { "id": "pas-t-h36", "locale": "zh-CN", "text": "他会骑自行车吗？", "expect": [] }
+    { "id": "pas-t-h36", "locale": "zh-CN", "text": "他会骑自行车吗？", "expect": [] },
+    { "id": "pas-t-n01", "locale": "en", "text": "He's never been in intensive care, has he?", "expect": ["hx-picu-intubation"], "alsoOk": ["hx-prior-admissions"], "tags": ["negation"] },
+    { "id": "pas-t-n02", "locale": "zh-CN", "text": "他应该没误吸什么异物吧？", "expect": ["hx-foreign-body"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "pas-t-e01", "locale": "en", "query": "can he talk in full sentences?", "expect": "ex-speech" },
@@ -60,7 +62,8 @@
     { "id": "pas-t-o05", "locale": "en", "query": "sweat chloride test", "expect": null },
     { "id": "pas-t-o06", "locale": "zh-CN", "query": "拍个胸片看看", "expect": "cxr" },
     { "id": "pas-t-o07", "locale": "zh-CN", "query": "查血气", "expect": "vbg" },
-    { "id": "pas-t-o08", "locale": "zh-CN", "query": "调一下以前的病历和处方", "expect": "ehr-records" }
+    { "id": "pas-t-o08", "locale": "zh-CN", "query": "调一下以前的病历和处方", "expect": "ehr-records" },
+    { "id": "pas-t-n06", "locale": "en", "query": "chest X-ray to exclude a pneumothorax", "expect": "cxr", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "pas-t-i01", "locale": "en", "query": "salbutamol 10 puffs via spacer", "expect": "salbutamol-mdi" },
@@ -70,7 +73,10 @@
     { "id": "pas-t-i05", "locale": "en", "query": "give adrenaline 0.15 mg IM", "expect": null },
     { "id": "pas-t-i06", "locale": "zh-CN", "query": "面罩吸氧，维持血氧94%以上", "expect": "oxygen" },
     { "id": "pas-t-i07", "locale": "zh-CN", "query": "让孩子坐在妈妈腿上，保持安静", "expect": "position-upright" },
-    { "id": "pas-t-i08", "locale": "zh-CN", "query": "给他写一份哮喘行动计划", "expect": "action-plan" }
+    { "id": "pas-t-i08", "locale": "zh-CN", "query": "给他写一份哮喘行动计划", "expect": "action-plan" },
+    { "id": "pas-t-n03", "locale": "en", "query": "do not sedate him", "expect": null, "tags": ["negation"] },
+    { "id": "pas-t-n04", "locale": "zh-CN", "query": "不需要用抗生素", "expect": null, "tags": ["negation"] },
+    { "id": "pas-t-n05", "locale": "en", "query": "no IV magnesium for now", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "pas-t-v01", "locale": "en", "question": "How much Ventolin has he had?", "used": ["hx-reliever-use-today"], "reply": "Two puffs at 1, two at 3 and two more at 5. Each time it helped for about half an hour.", "expect": "pass" },
@@ -84,6 +90,10 @@
     { "id": "pas-t-v09", "locale": "zh-CN", "question": "孩子多重？", "used": ["hx-weight"], "reply": "大概22公斤吧。", "expect": "block", "kind": "number" },
     { "id": "pas-t-v10", "locale": "zh-CN", "question": "家里有人抽烟吗？", "used": ["hx-smoke"], "reply": "他爸爸抽烟，说是只在阳台抽，可衣服上老有烟味。他奶奶也有哮喘。", "expect": "block", "kind": "claim" },
     { "id": "pas-t-v11", "locale": "zh-CN", "question": "吃过几次激素？", "used": ["hx-oral-steroid-courses"], "reply": "两次，每次吃3天的激素糖浆。", "expect": "pass" },
-    { "id": "pas-t-v12", "locale": "zh-CN", "question": "以前进过ICU吗？", "used": [], "reply": "没有，从来没进过ICU。", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact" }
+    { "id": "pas-t-v12", "locale": "zh-CN", "question": "以前进过ICU吗？", "used": [], "reply": "没有，从来没进过ICU。", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact" },
+    { "id": "pas-t-n07", "locale": "en", "question": "Has he ever needed intensive care?", "used": ["hx-picu-intubation"], "reply": "(Mother) Yes, once — he was on a ventilator in intensive care.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "pas-t-n08", "locale": "zh-CN", "question": "他发烧了吗？", "used": ["hx-fever"], "reply": "（妈妈）没发烧，体温一直正常。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "pas-t-n09", "locale": "en", "question": "Could he have choked on something?", "used": ["hx-foreign-body"], "reply": "(Mother) No, he didn't choke on anything.", "expect": "pass", "tags": ["negation"] },
+    { "id": "pas-t-n10", "locale": "zh-CN", "question": "最近去过外地吗？", "used": ["hx-travel"], "reply": "（妈妈）没有，哪儿也没去。", "expect": "pass", "tags": ["negation"] }
   ]
 }

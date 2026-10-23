@@ -23,7 +23,9 @@
     { "id": "smz-t-h16", "locale": "zh-CN", "text": "治疗以后手脚麻不麻？", "phase": "post", "expect": ["numbness"] },
     { "id": "smz-t-h17", "locale": "zh-CN", "text": "最近胃口、睡眠怎么样？", "phase": "post", "expect": ["general-since-onset"] },
     { "id": "smz-t-h18", "locale": "zh-CN", "text": "您退休前做什么工作？", "expect": [] },
-    { "id": "smz-t-h19", "locale": "zh-CN", "text": "您喜欢钓鱼吗？", "expect": [] }
+    { "id": "smz-t-h19", "locale": "zh-CN", "text": "您喜欢钓鱼吗？", "expect": [] },
+    { "id": "smz-t-n01", "locale": "en", "text": "Apart from the lung cancer, no other tumours?", "expect": ["lung"], "tags": ["negation"] },
+    { "id": "smz-t-n02", "locale": "zh-CN", "text": "没有发过烧吧？", "expect": ["fever"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "smz-t-e01", "locale": "en", "query": "feel for the spleen", "phase": "post", "expect": "exam-abdomen" },
@@ -40,7 +42,9 @@
     { "id": "smz-t-o05", "locale": "en", "query": "serum protein electrophoresis", "expect": null },
     { "id": "smz-t-o06", "locale": "zh-CN", "query": "做个腹部增强CT", "expect": "abdct" },
     { "id": "smz-t-o07", "locale": "zh-CN", "query": "骨髓穿刺涂片", "expect": "marrow" },
-    { "id": "smz-t-o08", "locale": "zh-CN", "query": "查一下乳酸脱氢酶", "expect": "ldh" }
+    { "id": "smz-t-o08", "locale": "zh-CN", "query": "查一下乳酸脱氢酶", "expect": "ldh" },
+    { "id": "smz-t-n03", "locale": "en", "query": "EGFR result — positive or negative?", "expect": "egfr", "tags": ["negation"] },
+    { "id": "smz-t-n04", "locale": "zh-CN", "query": "乙肝筛查，排除乙肝", "expect": "hbv", "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "smz-t-v01", "locale": "en", "question": "When was your enlarged spleen found?", "used": ["spleen"], "reply": "About 30 years ago, and the PET/CT in November 2024 showed it was still markedly enlarged.", "expect": "pass" },
@@ -51,6 +55,10 @@
     { "id": "smz-t-v06", "locale": "zh-CN", "question": "做过手术吗？", "used": ["psh"], "reply": "胆囊以前切除了，什么时候做的病例里没有记录。", "expect": "pass" },
     { "id": "smz-t-v07", "locale": "zh-CN", "question": "做过手术吗？", "used": ["psh"], "reply": "2015年因为胆结石把胆囊切了。", "expect": "block", "kind": "number" },
     { "id": "smz-t-v08", "locale": "zh-CN", "question": "对药物过敏吗？", "used": ["allergies"], "reply": "没有药物过敏，也没有食物过敏。", "expect": "pass" },
-    { "id": "smz-t-v09", "locale": "zh-CN", "question": "有没有其他慢性病？", "used": ["pmh-htn"], "reply": "有高血压好多年了，还有糖尿病。", "expect": "block", "kind": "claim" }
+    { "id": "smz-t-v09", "locale": "zh-CN", "question": "有没有其他慢性病？", "used": ["pmh-htn"], "reply": "有高血压好多年了，还有糖尿病。", "expect": "block", "kind": "claim" },
+    { "id": "smz-t-n05", "locale": "en", "question": "What did the gene test on your lung cancer show?", "used": ["lung"], "reply": "The EGFR test was negative — no mutation was found.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "smz-t-n06", "locale": "zh-CN", "question": "对药物过敏吗？", "used": ["allergies"], "reply": "有，我对青霉素过敏。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "smz-t-n07", "locale": "en", "question": "Any allergies?", "used": ["allergies"], "reply": "No allergies to drugs or food.", "expect": "pass", "tags": ["negation"] },
+    { "id": "smz-t-n08", "locale": "zh-CN", "question": "肺癌的基因检测结果怎么样？", "used": ["lung"], "reply": "记录上写的是EGFR突变阳性，我在吃阿美替尼。", "expect": "pass", "tags": ["negation"] }
   ]
 }

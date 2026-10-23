@@ -35,7 +35,9 @@
     {"id": "sep-d-h28", "locale": "zh-CN", "text": "如果病情加重，家里希望怎么治？", "expect": ["hx-goals-care"]},
     {"id": "sep-d-h29", "locale": "zh-CN", "text": "你们最担心什么？", "expect": ["hx-ice"]},
     {"id": "sep-d-h30", "locale": "zh-CN", "text": "您叫什么名字？", "expect": ["hx-identity"]},
-    {"id": "sep-d-h31", "locale": "zh-CN", "text": "她会织毛衣吗？", "expect": []}
+    {"id": "sep-d-h31", "locale": "zh-CN", "text": "她会织毛衣吗？", "expect": []},
+    {"id": "sep-d-n01", "locale": "en", "text": "No neck stiffness or headache?", "expect": ["hx-headache-neck"], "tags": ["negation"]},
+    {"id": "sep-d-n02", "locale": "zh-CN", "text": "小便时不疼吧？", "expect": ["hx-urinary"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "sep-d-e01", "locale": "en", "query": "listen to her lungs", "expect": "ex-resp-ausc"},
@@ -68,7 +70,8 @@
     {"id": "sep-d-o13", "locale": "zh-CN", "query": "血培养两套", "expect": "blood-cultures"},
     {"id": "sep-d-o14", "locale": "zh-CN", "query": "查个乳酸", "expect": "vbg-lactate"},
     {"id": "sep-d-o15", "locale": "zh-CN", "query": "床旁胸片", "expect": "cxr"},
-    {"id": "sep-d-o16", "locale": "en", "query": "serum ferritin", "expect": null}
+    {"id": "sep-d-o16", "locale": "en", "query": "serum ferritin", "expect": null},
+    {"id": "sep-d-n06", "locale": "en", "query": "urinary antigens to exclude Legionella", "expect": "urine-antigens", "tags": ["negation"]}
   ],
   "interventions": [
     {"id": "sep-d-i01", "locale": "en", "query": "30 ml/kg crystalloid bolus", "expect": "fluid-bolus"},
@@ -85,7 +88,10 @@
     {"id": "sep-d-i12", "locale": "zh-CN", "query": "头孢曲松2g静滴", "expect": "abx-ceftriaxone"},
     {"id": "sep-d-i13", "locale": "zh-CN", "query": "去甲肾上腺素泵入", "expect": "norepinephrine"},
     {"id": "sep-d-i14", "locale": "zh-CN", "query": "补液500ml", "expect": "fluid-bolus"},
-    {"id": "sep-d-i15", "locale": "en", "query": "IV immunoglobulin", "expect": null}
+    {"id": "sep-d-i15", "locale": "en", "query": "IV immunoglobulin", "expect": null},
+    {"id": "sep-d-n03", "locale": "en", "query": "no more fluid boluses, run maintenance only", "expect": "fluid-restrict", "tags": ["negation"]},
+    {"id": "sep-d-n04", "locale": "zh-CN", "query": "暂时不插管", "expect": null, "tags": ["negation"]},
+    {"id": "sep-d-n05", "locale": "en", "query": "don't give vancomycin", "expect": null, "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "sep-d-v01", "locale": "en", "question": "When did the confusion start?", "used": ["hx-confusion"], "reply": "(Daughter) From about 3 or 4 this afternoon — she asked me if it was morning.", "expect": "pass"},
@@ -93,6 +99,10 @@
     {"id": "sep-d-v03", "locale": "zh-CN", "question": "以前有什么病？", "used": ["hx-pmh"], "reply": "（女儿）高血压十来年，糖尿病五六年，都在社区医院开药。", "expect": "pass"},
     {"id": "sep-d-v04", "locale": "zh-CN", "question": "以前有什么病？", "used": ["hx-pmh"], "reply": "（女儿）高血压、糖尿病，还有冠心病，放过两个支架。", "expect": "block", "kind": "claim"},
     {"id": "sep-d-v05", "locale": "zh-CN", "question": "对什么过敏吗？", "used": ["hx-allergies"], "reply": "（女儿）没有已知过敏，青霉素、头孢都用过，没出过问题。", "expect": "pass"},
-    {"id": "sep-d-v06", "locale": "en", "question": "Does she have heart failure?", "used": [], "reply": "(Daughter) No, her heart is fine.", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"}
+    {"id": "sep-d-v06", "locale": "en", "question": "Does she have heart failure?", "used": [], "reply": "(Daughter) No, her heart is fine.", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"},
+    {"id": "sep-d-n07", "locale": "en", "question": "Has she been vomiting?", "used": ["hx-gi"], "reply": "(Daughter) Yes, she's vomited a few times today.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "sep-d-n08", "locale": "zh-CN", "question": "摔倒过吗？", "used": ["hx-falls"], "reply": "（女儿）前天在家摔了一跤，碰到了头。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "sep-d-n09", "locale": "en", "question": "Any headache or stiff neck?", "used": ["hx-headache-neck"], "reply": "(Patient) No headache… neck's not stiff.", "expect": "pass", "tags": ["negation"]},
+    {"id": "sep-d-n10", "locale": "zh-CN", "question": "小便疼吗？", "used": ["hx-urinary"], "reply": "（病人）不疼……（女儿）她没说过小便疼。", "expect": "pass", "tags": ["negation"]}
   ]
 }

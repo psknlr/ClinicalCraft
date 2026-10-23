@@ -129,6 +129,18 @@ export function groundingMarkdown(report: GroundingReport, locale: string, optio
   lines.push(`| ${bm(L, "report.case")} | ${bm(L, "report.trials")} | ${bm(L, "grounding.accuracy")} | ${bm(L, "report.ci")} |`, "|---|---:|---:|---|");
   for (const [k, p] of Object.entries(m.byCase)) lines.push(`| \`${k}\` | ${p.k} / ${p.n} | ${pct(p)} | ${ci(p)} |`);
   lines.push("");
+  if (m.byTag?.length) {
+    lines.push(`## ${bm(L, "grounding.byTag")}`, "");
+    lines.push(`| ${bm(L, "grounding.tag")} | ${bm(L, "grounding.track")} | ${bm(L, "report.trials")} | ${bm(L, "grounding.accuracy")} | ${bm(L, "report.ci")} | ${bm(L, "grounding.failureKinds")} |`, "|---|---|---:|---:|---|---|");
+    for (const tag of m.byTag) {
+      for (const t of tag.tracks) {
+        const failures = Object.entries(t.failures).map(([outcome, n]) => `${outcome} ${n}`).join(", ") || "—";
+        lines.push(`| ${tag.tag} | ${t.track} | ${t.accuracy.k} / ${t.accuracy.n} | ${pct(t.accuracy)} | ${ci(t.accuracy)} | ${failures} |`);
+      }
+      lines.push(`| **${tag.tag}** | **${bm(L, "grounding.allTracks")}** | **${tag.accuracy.k} / ${tag.accuracy.n}** | **${pct(tag.accuracy)}** | ${ci(tag.accuracy)} | |`);
+    }
+    lines.push("");
+  }
 
   const failed = report.items.filter((r) => !r.ok);
   const cap = options.failures ?? 200;
@@ -193,6 +205,9 @@ export function compareGroundingReports(before: GroundingReport, after: Groundin
     const rates = new Set([...Object.keys(b?.rates ?? {}), ...Object.keys(a?.rates ?? {})]);
     for (const rate of rates) deltas.push(delta(`${track}.${rate}`, (b?.rates as Record<string, Proportion> | undefined)?.[rate], (a?.rates as Record<string, Proportion> | undefined)?.[rate]));
   }
+  // Reports written before tags existed have no byTag.
+  const tags = [...new Set([...(before.metrics.byTag ?? []), ...(after.metrics.byTag ?? [])].map((t) => t.tag))].sort();
+  for (const tag of tags) deltas.push(delta(`tag:${tag}`, before.metrics.byTag?.find((t) => t.tag === tag)?.accuracy, after.metrics.byTag?.find((t) => t.tag === tag)?.accuracy));
   const old = new Map(before.items.map((r) => [itemKey(r), r]));
   const fixed: GroundingItemResult[] = [];
   const broken: GroundingItemResult[] = [];

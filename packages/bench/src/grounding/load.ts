@@ -64,7 +64,7 @@ function normalizedText(bytes: Uint8Array): string {
  * published ones. A pin changes only with a new suite version.
  */
 export const FROZEN_SPLIT_DIGESTS: Readonly<Record<string, Partial<Record<GroundingSplit, string>>>> = {
-  "grounding-v1": { test: "eb312c8850222efc99a6a644c28ca1c9b83a367eac5210477ef00fca576edaab" },
+  "grounding-v1": { test: "a11921c293f06d6ee4f88898f06efe5dfc2d7ed86c11b9e1167bff844c026cad" },
 };
 
 /** Whether a split matches its pinned digest (`unpinned` when the suite pins none for it). */

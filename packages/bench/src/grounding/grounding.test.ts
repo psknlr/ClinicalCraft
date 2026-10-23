@@ -39,8 +39,9 @@ const history = (c: CaseDefinition, id: string) => c.history.find((h) => h.id ==
 const set = (extra: Partial<GroundingSet>): unknown => ({ format: "clinicalcraft/grounding-set@1", suite: "s", split: "dev", ...extra });
 
 describe("grounding set schema", () => {
-  it("accepts a routing-only file and a case file", () => {
-    expect(parseGroundingSet(set({ routing: [{ id: "r-1", locale: "en", text: "How old are you?", expect: "in-fiction" }] })).ok).toBe(true);
+  it("accepts a routing-only file and a case file, with tags", () => {
+    expect(parseGroundingSet(set({ routing: [{ id: "r-1", locale: "en", text: "How old are you?", expect: "in-fiction", tags: ["negation"] }] })).ok).toBe(true);
+    expect(parseGroundingSet(set({ routing: [{ id: "r-1", locale: "en", text: "How old are you?", expect: "in-fiction", tags: ["Not A Tag"] }] })).ok).toBe(false);
     expect(parseGroundingSet(set({ caseId: "acute-appendicitis", orders: [{ id: "o-1", locale: "en", query: "fbc", expect: "inv-fbc" }] })).ok).toBe(true);
   });
 
@@ -234,12 +235,37 @@ describe("grounding metrics", () => {
     expect(m.byCase.c1).toMatchObject({ k: 4, n: 8 });
     expect(Object.keys(m.byCase)).toEqual(["c1"]);
     expect(m.tracks.map((t) => t.track)).toEqual(["history", "orders", "routing", "verifier"]);
+    expect(m.byTag).toEqual([]);
+  });
+
+  it("reports tagged slices with their failures by outcome", () => {
+    const tagged = (x: GroundingItemResult): GroundingItemResult => ({ ...x, tags: ["negation"] });
+    const m = groundingMetrics([
+      tagged(r("interventions", "(no item)", "morphine", "wrong-item", false)),
+      tagged(r("interventions", "(no item)", "none", "resolved", true)),
+      tagged(r("verifier", "block (negation)", "pass", "missed-fabrication", false)),
+      r("verifier", "pass", "pass", "verified", true),
+    ]);
+    expect(m.byTag).toHaveLength(1);
+    expect(m.byTag[0]).toMatchObject({ tag: "negation", accuracy: { k: 1, n: 3 } });
+    expect(m.byTag[0]!.tracks).toEqual([
+      expect.objectContaining({ track: "interventions", accuracy: expect.objectContaining({ k: 1, n: 2 }), failures: { "wrong-item": 1 } }),
+      expect.objectContaining({ track: "verifier", accuracy: expect.objectContaining({ k: 0, n: 1 }), failures: { "missed-fabrication": 1 } }),
+    ]);
   });
 });
 
 describe("grounding reports", () => {
   const dev: LoadedGroundingSuite = { ...suite, files: suite.files.filter((f) => f.split === "dev" && (f.set.caseId === "acute-appendicitis" || !f.set.caseId)) };
   const report = runGrounding({ suite: dev, splits: ["dev"], content, filter: { locales: ["en"] }, now: "2026-01-01T00:00:00.000Z" });
+
+  it("filters by tag", () => {
+    const negation = runGrounding({ suite: dev, splits: ["dev"], content, filter: { tags: ["negation"] } });
+    expect(negation.items.length).toBeGreaterThan(5);
+    expect(negation.items.every((i) => i.tags?.includes("negation"))).toBe(true);
+    expect(negation.metrics.byTag.map((t) => t.tag)).toEqual(["negation"]);
+    expect(groundingMarkdown(negation, "en")).toContain("## By tag");
+  });
 
   it("runs the selected split with its digest, filters and every item", () => {
     expect(report).toMatchObject({ format: "clinicalcraft-grounding-report@1", suite: DEFAULT_GROUNDING_SUITE, splits: ["dev"], createdAt: "2026-01-01T00:00:00.000Z", environment: null });

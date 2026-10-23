@@ -44,7 +44,9 @@
     { "id": "sep-t-h37", "locale": "zh-CN", "text": "以前拍过胸片吗？", "expect": ["hx-prior-imaging"] },
     { "id": "sep-t-h38", "locale": "zh-CN", "text": "阿姨，您知道这是哪儿吗？", "expect": ["hx-orientation"] },
     { "id": "sep-t-h39", "locale": "zh-CN", "text": "她喜欢听戏吗？", "expect": [] },
-    { "id": "sep-t-h40", "locale": "zh-CN", "text": "她会打麻将吗？", "expect": [] }
+    { "id": "sep-t-h40", "locale": "zh-CN", "text": "她会打麻将吗？", "expect": [] },
+    { "id": "sep-t-n01", "locale": "en", "text": "She hasn't fallen or hit her head?", "expect": ["hx-falls"], "tags": ["negation"] },
+    { "id": "sep-t-n02", "locale": "zh-CN", "text": "没有吐也没有拉肚子吧？", "expect": ["hx-gi"], "tags": ["negation"] }
   ],
   "exam": [
     { "id": "sep-t-e01", "locale": "en", "query": "percuss her chest", "expect": "ex-resp-percuss" },
@@ -64,7 +66,8 @@
     { "id": "sep-t-o05", "locale": "en", "query": "CT head", "expect": null },
     { "id": "sep-t-o06", "locale": "zh-CN", "query": "查流感和新冠核酸", "expect": "resp-pcr" },
     { "id": "sep-t-o07", "locale": "zh-CN", "query": "留痰做培养", "expect": "sputum" },
-    { "id": "sep-t-o08", "locale": "zh-CN", "query": "床旁超声看看心脏和下腔静脉", "expect": "pocus" }
+    { "id": "sep-t-o08", "locale": "zh-CN", "query": "床旁超声看看心脏和下腔静脉", "expect": "pocus" },
+    { "id": "sep-t-n06", "locale": "en", "query": "chest CT without contrast", "expect": "ct-chest", "tags": ["negation"] }
   ],
   "interventions": [
     { "id": "sep-t-i01", "locale": "en", "query": "500 ml Hartmann's stat", "expect": "fluid-bolus" },
@@ -74,7 +77,10 @@
     { "id": "sep-t-i05", "locale": "en", "query": "start IV aciclovir", "expect": null },
     { "id": "sep-t-i06", "locale": "zh-CN", "query": "加阿奇霉素", "expect": "abx-azithromycin" },
     { "id": "sep-t-i07", "locale": "zh-CN", "query": "插尿管记每小时尿量", "expect": "urinary-catheter" },
-    { "id": "sep-t-i08", "locale": "zh-CN", "query": "联系ICU", "expect": "icu-referral" }
+    { "id": "sep-t-i08", "locale": "zh-CN", "query": "联系ICU", "expect": "icu-referral" },
+    { "id": "sep-t-n03", "locale": "en", "query": "do not delay antibiotics for the CT", "expect": null, "tags": ["negation"] },
+    { "id": "sep-t-n04", "locale": "en", "query": "stop her metformin and amlodipine", "expect": "hold-home-meds", "tags": ["negation"] },
+    { "id": "sep-t-n05", "locale": "zh-CN", "query": "不要用多巴胺", "expect": null, "tags": ["negation"] }
   ],
   "verifier": [
     { "id": "sep-t-v01", "locale": "en", "question": "How high has her temperature been?", "used": ["hx-fever"], "reply": "(Daughter) Over 39 on our thermometer at home. The fever tablets bring it down for a few hours, then it's back.", "expect": "pass" },
@@ -88,6 +94,10 @@
     { "id": "sep-t-v09", "locale": "zh-CN", "question": "她自己吃过什么药？", "used": ["hx-otc-ibuprofen"], "reply": "（女儿）吃的是布洛芬缓释胶囊，一共五次左右，最后一次是今天下午五点。", "expect": "pass" },
     { "id": "sep-t-v10", "locale": "zh-CN", "question": "她自己吃过什么药？", "used": ["hx-otc-ibuprofen"], "reply": "（女儿）吃了布洛芬，还吃了两天阿莫西林。", "expect": "block", "kind": "drug" },
     { "id": "sep-t-v11", "locale": "zh-CN", "question": "她抽烟吗？", "used": ["hx-smoking"], "reply": "（病人）不抽，从来不抽。（女儿）我爸以前抽，十几年前戒了。", "expect": "pass" },
-    { "id": "sep-t-v12", "locale": "zh-CN", "question": "以前得过肺病吗？", "used": [], "reply": "（女儿）没有，她肺一直很好，没得过肺炎。", "expect": "block", "kind": "denial" }
+    { "id": "sep-t-v12", "locale": "zh-CN", "question": "以前得过肺病吗？", "used": [], "reply": "（女儿）没有，她肺一直很好，没得过肺炎。", "expect": "block", "kind": "denial" },
+    { "id": "sep-t-n07", "locale": "en", "question": "Has she taken anything for the fever?", "used": ["hx-otc-ibuprofen"], "reply": "(Daughter) No, she hasn't taken any medicine at all.", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "sep-t-n08", "locale": "zh-CN", "question": "有没有发抖、寒战？", "used": ["hx-rigors"], "reply": "（女儿）没有，她一直没发抖。", "expect": "block", "kind": "negation", "tags": ["negation"] },
+    { "id": "sep-t-n09", "locale": "en", "question": "Any lung problems before?", "used": ["hx-lung-disease"], "reply": "(Daughter) No, her lungs have always been fine — never pneumonia.", "expect": "pass", "tags": ["negation"] },
+    { "id": "sep-t-n10", "locale": "zh-CN", "question": "她喝酒吗？", "used": ["hx-alcohol"], "reply": "（女儿）不喝，她滴酒不沾。", "expect": "pass", "tags": ["negation"] }
   ]
 }

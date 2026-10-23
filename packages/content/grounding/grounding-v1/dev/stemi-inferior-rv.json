@@ -64,7 +64,9 @@
     {"id": "stm-d-h57", "locale": "zh-CN", "text": "做过手术吗？", "expect": ["psh"]},
     {"id": "stm-d-h58", "locale": "zh-CN", "text": "最后一次吃饭是什么时候？", "expect": ["last-meal"]},
     {"id": "stm-d-h59", "locale": "zh-CN", "text": "你最担心的是什么？", "expect": ["ice-concerns"]},
-    {"id": "stm-d-h60", "locale": "zh-CN", "text": "你家养狗吗？", "expect": []}
+    {"id": "stm-d-h60", "locale": "zh-CN", "text": "你家养狗吗？", "expect": []},
+    {"id": "stm-d-n01", "locale": "en", "text": "The pain isn't tearing through to your back?", "expect": ["dissection-screen"], "tags": ["negation"]},
+    {"id": "stm-d-n02", "locale": "zh-CN", "text": "以前心脏没出过问题吧？", "expect": ["pmh-cardiac"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "stm-d-e01", "locale": "en", "query": "general inspection", "expect": "general"},
@@ -79,7 +81,8 @@
     {"id": "stm-d-o03", "locale": "en", "query": "chest x-ray", "expect": "cxr-portable"},
     {"id": "stm-d-o04", "locale": "en", "query": "CT coronary angiogram", "expect": null},
     {"id": "stm-d-o05", "locale": "en", "query": "D-dimer", "expect": "d-dimer"},
-    {"id": "stm-d-o06", "locale": "zh-CN", "query": "查BNP", "expect": "nt-probnp"}
+    {"id": "stm-d-o06", "locale": "zh-CN", "query": "查BNP", "expect": "nt-probnp"},
+    {"id": "stm-d-n06", "locale": "en", "query": "right-sided leads to rule out RV infarction", "expect": "ecg-right-sided", "tags": ["negation"]}
   ],
   "interventions": [
     {"id": "stm-d-i01", "locale": "en", "query": "GTN spray", "expect": "nitroglycerin"},
@@ -87,13 +90,20 @@
     {"id": "stm-d-i03", "locale": "en", "query": "morphine 2.5 mg IV", "expect": "morphine"},
     {"id": "stm-d-i04", "locale": "en", "query": "thrombolyse with alteplase", "expect": null},
     {"id": "stm-d-i05", "locale": "zh-CN", "query": "阿托品0.5 mg静推", "expect": "atropine"},
-    {"id": "stm-d-i06", "locale": "zh-CN", "query": "转运去导管室", "expect": "transfer-cath-lab"}
+    {"id": "stm-d-i06", "locale": "zh-CN", "query": "转运去导管室", "expect": "transfer-cath-lab"},
+    {"id": "stm-d-n03", "locale": "en", "query": "don't give GTN", "expect": null, "tags": ["negation"]},
+    {"id": "stm-d-n04", "locale": "zh-CN", "query": "不要给吗啡", "expect": null, "tags": ["negation"]},
+    {"id": "stm-d-n05", "locale": "en", "query": "no fibrinolysis", "expect": null, "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "stm-d-v01", "locale": "en", "question": "Have you had this pain before?", "used": ["prodrome"], "reply": "Never this bad, but for a couple of weeks my chest got tight on the stairs and settled after a few minutes' rest.", "expect": "pass"},
     {"id": "stm-d-v02", "locale": "en", "question": "Have you had this pain before?", "used": ["prodrome"], "reply": "Yes, I had the same pain last month and went to A&E.", "expect": "block", "kind": "claim"},
     {"id": "stm-d-v03", "locale": "zh-CN", "question": "最后一次吃东西是什么时候？", "used": ["last-meal"], "reply": "早上七点吃的早饭，一碗粥两个包子。", "expect": "pass"},
     {"id": "stm-d-v04", "locale": "zh-CN", "question": "最后一次吃东西是什么时候？", "used": ["last-meal"], "reply": "早上九点吃的，吃了一碗面条。", "expect": "block", "kind": "number"},
-    {"id": "stm-d-v05", "locale": "en", "question": "Any lung problems?", "used": [], "reply": "No, my lungs are fine.", "expect": "block", "kind": "denial"}
+    {"id": "stm-d-v05", "locale": "en", "question": "Any lung problems?", "used": [], "reply": "No, my lungs are fine.", "expect": "block", "kind": "denial"},
+    {"id": "stm-d-n07", "locale": "en", "question": "Have you been sweating?", "used": ["assoc-sweating"], "reply": "No, I haven't been sweating at all.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "stm-d-n08", "locale": "zh-CN", "question": "有没有心脏病史？", "used": ["pmh-cardiac"], "reply": "有，前几年放过一个支架。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "stm-d-n09", "locale": "en", "question": "Is the pain tearing, going through to your back?", "used": ["dissection-screen"], "reply": "No, it's pressing, not tearing — and my back doesn't hurt.", "expect": "pass", "tags": ["negation"]},
+    {"id": "stm-d-n10", "locale": "zh-CN", "question": "心慌吗？", "used": ["palpitations"], "reply": "不心慌，心跳也不乱。", "expect": "pass", "tags": ["negation"]}
   ]
 }

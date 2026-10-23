@@ -27,7 +27,9 @@
     {"id": "dka-d-h20", "locale": "zh-CN", "text": "烟酒沾不沾？", "expect": ["hx-smoking-alcohol"]},
     {"id": "dka-d-h21", "locale": "zh-CN", "text": "你室友得的什么病？", "expect": ["hx-unk-roommate-dx"], "alsoOk": ["hx-sick-contacts"]},
     {"id": "dka-d-h22", "locale": "zh-CN", "text": "现在能吃点东西了吗？", "phase": "resolution", "expect": ["hx-status-resolution"]},
-    {"id": "dka-d-h23", "locale": "zh-CN", "text": "你喜欢什么颜色？", "expect": []}
+    {"id": "dka-d-h23", "locale": "zh-CN", "text": "你喜欢什么颜色？", "expect": []},
+    {"id": "dka-d-n01", "locale": "en", "text": "No burning when you pass urine?", "expect": ["hx-urinary-symptoms"], "tags": ["negation"]},
+    {"id": "dka-d-n02", "locale": "zh-CN", "text": "最近没有感冒咳嗽吧？", "expect": ["hx-resp-infection"], "tags": ["negation"]}
   ],
   "exam": [
     {"id": "dka-d-e01", "locale": "en", "query": "general inspection", "expect": "ex-general"},
@@ -42,7 +44,8 @@
     {"id": "dka-d-o03", "locale": "en", "query": "urine dip", "expect": "urinalysis"},
     {"id": "dka-d-o04", "locale": "en", "query": "TSH", "expect": null},
     {"id": "dka-d-o05", "locale": "zh-CN", "query": "查12导联心电图", "expect": "ecg"},
-    {"id": "dka-d-o06", "locale": "zh-CN", "query": "查糖化血红蛋白", "expect": "hba1c"}
+    {"id": "dka-d-o06", "locale": "zh-CN", "query": "查糖化血红蛋白", "expect": "hba1c"},
+    {"id": "dka-d-n06", "locale": "en", "query": "chest X-ray to rule out pneumonia", "expect": "cxr", "tags": ["negation"]}
   ],
   "interventions": [
     {"id": "dka-d-i01", "locale": "en", "query": "balanced crystalloid 1 L over an hour", "expect": "balanced-1l-1h"},
@@ -50,7 +53,10 @@
     {"id": "dka-d-i03", "locale": "en", "query": "8.4% bicarbonate", "expect": "sodium-bicarbonate"},
     {"id": "dka-d-i04", "locale": "en", "query": "give IV labetalol", "expect": null},
     {"id": "dka-d-i05", "locale": "zh-CN", "query": "开始10%葡萄糖", "expect": "dextrose-10"},
-    {"id": "dka-d-i06", "locale": "zh-CN", "query": "收入内科病房", "expect": "ward-admission"}
+    {"id": "dka-d-i06", "locale": "zh-CN", "query": "收入内科病房", "expect": "ward-admission"},
+    {"id": "dka-d-n03", "locale": "en", "query": "stop the fixed-rate insulin infusion", "expect": "stop-friii", "tags": ["negation"]},
+    {"id": "dka-d-n04", "locale": "zh-CN", "query": "不要静推氯化钾", "expect": null, "tags": ["negation"]},
+    {"id": "dka-d-n05", "locale": "en", "query": "hold the sodium bicarbonate", "expect": null, "tags": ["negation"]}
   ],
   "verifier": [
     {"id": "dka-d-v01", "locale": "en", "question": "When did this start?", "used": ["hx-onset-course"], "reply": "The day before yesterday in the afternoon — feeling sick, then vomiting and some diarrhoea.", "expect": "pass"},
@@ -59,6 +65,10 @@
     {"id": "dka-d-v04", "locale": "en", "question": "When did you last change your set?", "used": ["hx-infusion-set"], "reply": "Six days ago.", "expect": "block", "kind": "number"},
     {"id": "dka-d-v05", "locale": "zh-CN", "question": "以前有什么病？", "used": ["hx-pmh"], "reply": "我11岁得的1型糖尿病，三年前查出甲减。", "expect": "pass"},
     {"id": "dka-d-v06", "locale": "zh-CN", "question": "以前有什么病？", "used": ["hx-pmh"], "reply": "我11岁得的1型糖尿病，还有哮喘。", "expect": "block", "kind": "claim"},
-    {"id": "dka-d-v07", "locale": "zh-CN", "question": "有没有吃过格列净？", "used": [], "reply": "没有，从来没吃过。", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"}
+    {"id": "dka-d-v07", "locale": "zh-CN", "question": "有没有吃过格列净？", "used": [], "reply": "没有，从来没吃过。", "expect": "block", "kind": "denial", "note": "true in the case, but the voice was not given the fact"},
+    {"id": "dka-d-n07", "locale": "en", "question": "Have you taken any gliflozin tablets?", "used": ["hx-sglt2"], "reply": "Yes, I've been taking one to lose weight.", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "dka-d-n08", "locale": "zh-CN", "question": "最近有没有感冒、咳嗽？", "used": ["hx-resp-infection"], "reply": "有，咳嗽好几天了。", "expect": "block", "kind": "negation", "tags": ["negation"]},
+    {"id": "dka-d-n09", "locale": "en", "question": "Any cough or sore throat?", "used": ["hx-resp-infection"], "reply": "No sore throat, no runny nose, no cough.", "expect": "pass", "tags": ["negation"]},
+    {"id": "dka-d-n10", "locale": "zh-CN", "question": "用过大麻吗？", "used": ["hx-recreational-drugs"], "reply": "没有，从来没碰过。", "expect": "pass", "tags": ["negation"]}
   ]
 }
