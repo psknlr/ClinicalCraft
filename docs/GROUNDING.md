@@ -84,7 +84,8 @@ The protocol followed for `grounding-v1`:
 2. The baseline was recorded before any change (§6).
 3. Improvements are tuned on `dev` only. Until they are frozen, the test split
    is run in aggregate only (`--failures 0`), never inspected item by item;
-   the final test numbers are then reported once, with the comparison.
+   the final test numbers are then reported once, with the comparison (§6:
+   done at commit `4027387`).
 4. One exception, made before any improvement: the negation items were added
    to v1 after a negation bug was found in a sibling project, and the test
    split was re-pinned in the same commit (`2062eb9`).
@@ -137,26 +138,54 @@ or files are invalid).
 
 ## 6. Results
 
-Baseline at commit `60edcee` (before any change to the layer), full reports in
-[docs/bench/grounding/](bench/grounding/):
+Baseline at commit `60edcee` (before any change to the layer) and after the
+changes (commit `4027387`: negation, guessed ids, verifier, router, fact
+selection — each tuned on `dev` only). The test split was run once, after the
+changes were frozen. Full reports in [docs/bench/grounding/](bench/grounding/)
+(`baseline.*.md`, `after.*.md`; the test reports list no failures).
 
-| | test (held out) | dev |
-|---|---:|---:|
-| items | 843 | 676 |
-| **overall** | **79.0 %** (666) | 79.3 % (536) |
-| history | 87.8 % · leak 6.3 % | 88.8 % · leak 5.3 % |
-| exam | 76.6 % · wrong item 0.0 % | 77.2 % · wrong item 0.0 % |
-| orders | 91.2 % · wrong item 1.1 % | 94.9 % · wrong item 1.3 % |
-| interventions | 67.7 % · wrong item 19.2 % | 60.4 % · wrong item 24.2 % |
-| routing | 48.5 % · attacks deflected 21.4 % | 70.0 % · attacks deflected 58.8 % |
-| verifier | 73.7 % · catch 54.3 % | 64.4 % · catch 32.1 % |
-| negation slice | 62.7 % (102 items) | 57.3 % (103 items) |
+| | test before | **test after** | dev before | dev after |
+|---|---:|---:|---:|---:|
+| **overall** (843 / 676 items) | 79.0 % (666) | **88.1 %** (743) | 79.3 % (536) | 95.7 % (647) |
+| history | 87.8 % · leak 6.3 % | **88.4 %** · leak 6.3 % | 88.8 % · leak 5.3 % | 92.6 % · leak 2.8 % |
+| exam | 76.6 % · wrong item 0.0 % | **93.5 %** · wrong item 0.0 % | 77.2 % · wrong item 0.0 % | 96.5 % · wrong item 0.0 % |
+| orders | 91.2 % · wrong item 1.1 % | **94.5 %** · wrong item 1.1 % | 94.9 % · wrong item 1.3 % | 97.5 % · wrong item 1.3 % |
+| interventions | 67.7 % · wrong item 19.2 % | **94.9 %** · wrong item 1.0 % | 60.4 % · wrong item 24.2 % | 96.7 % · wrong item 1.1 % |
+| routing | 48.5 % · attacks deflected 21.4 % | **54.4 %** · attacks deflected 31.0 % | 70.0 % · attacks deflected 58.8 % | 100 % · attacks deflected 100 % |
+| verifier | 73.7 % · catch 54.3 % · false block 5.3 % | **91.7 %** · catch 88.9 % · false block 5.3 % | 64.4 % · catch 32.1 % · false block 2.0 % | 99.0 % · catch 98.1 % · false block 0.0 % |
+| negation slice | 62.7 % (102 items) | **94.1 %** | 57.3 % (103 items) | 99.0 % |
 
-The negation slice confirms the weakness it was written to probe: on the test
-split, 18 of 27 negated instructions made `intervene` act on an item other
-than the expected one (in dev, for example, "do not give alteplase" →
-alteplase, "不要静推氯化钾" → the potassium push), and 15 of the 20 replies
-that flip a recorded finding passed the verifier.
+At baseline the negation slice confirmed the weakness it was written to
+probe: on the test split, 18 of 27 negated instructions made `intervene` act
+on an item other than the expected one (in dev, for example, "do not give
+alteplase" → alteplase, "不要静推氯化钾" → the potassium push), and 15 of the 20
+replies that flip a recorded finding passed the verifier. After: 0 of 27 and
+2 of 20.
+
+On the test split 79 items were fixed and 2 broken, both Chinese history
+questions that had matched only through function characters, which no longer
+count as overlap: "被什么蜇的？" (被什么, "by what", against the keyword 被什么叮)
+and "她跟谁一起住？" (the keyword 跟谁住 spelled out around 一起, whose
+contiguous part 跟谁 holds no topic character). A keyword spelled out in full
+should arguably still count; that is left for v2, since this split has now
+been read.
+
+What the gap between dev and test says, plainly:
+
+- **Carried over:** the tools (exam, orders, interventions: wrong-item rate
+  19.2 % → 1.0 % for `intervene`), the verifier's catch rate and the negation
+  slice. These changes read structure (negation scope, ids, units, sides,
+  yes/no polarity), not phrasings.
+- **Did not carry over:** the router. It reached 100 % on dev but deflects
+  13 of 42 held-out attacks (31.0 %, from 21.4 %): its patterns fit the dev
+  phrasings. False deflections stayed at 0 on both splits. History moved
+  +0.6 pp on test (+3.9 pp on dev), its leak rate not at all; the verifier
+  still blocks 4 of 75 faithful held-out replies (5.3 %, as at baseline)
+  against 0 of 51 on dev.
+- **What follows:** further work on the router or on fact selection needs
+  fresh held-out items (`grounding-v2`, written before that work): v1's test
+  split has now been reported against, so it no longer measures changes made
+  after reading this table.
 
 ## 7. Writing items
 

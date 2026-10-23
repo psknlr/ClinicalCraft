@@ -400,7 +400,9 @@ whether the voice grounding check blocks a fabricated reply. Suite
 `grounding-v1` (`packages/content/grounding/`): 1,519 items over the ten
 cases in both languages, including a `negation` slice ("hold the heparin"
 must never give heparin), with a `dev` split for tuning and a held-out `test`
-split pinned by digest. Method, honesty protocol and baseline:
+split pinned by digest. Held-out test: 79.0 % at baseline, 88.1 % after
+the changes tuned on dev (the router generalised least: 100 % on dev, 54 %
+on test). Method, honesty protocol and results:
 [docs/GROUNDING.md](docs/GROUNDING.md).
 
 ```bash
