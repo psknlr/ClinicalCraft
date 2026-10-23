@@ -477,6 +477,33 @@ describe("learner wording and tie-breaks for free-text actions (J5)", () => {
   });
 });
 
+describe("guessed ids and stated routes (grounding benchmark, dev split)", () => {
+  const sepsis = loadCase("septic-shock-cap");
+  const ana = loadCase("anaphylaxis-garden");
+
+  it.skipIf(!sepsis)("an id the case lacks is read leniently: spelling, contained words, then as a query", async () => {
+    const { resolveFinding, resolveIntervention, resolveInvestigation } = await import("./tools/clinical.js");
+    expect(resolveInvestigation(sepsis!, { investigation_id: "blood_cultures" }, "en")).toEqual({ kind: "id", id: "blood-cultures" });
+    expect(resolveIntervention(sepsis!, { intervention_id: "ceftriaxone" }, "en")).toEqual({ kind: "id", id: "abx-ceftriaxone" });
+    expect(resolveFinding(sepsis!, { finding_id: "resp-ausc" }, "en")).toEqual({ kind: "id", id: "ex-resp-ausc" });
+    expect(resolveFinding(sepsis!, { finding_id: "lung_auscultation" }, "en")).toEqual({ kind: "id", id: "ex-resp-ausc" });
+    const fluids = resolveIntervention(sepsis!, { intervention_id: "fluids" }, "en");
+    expect(fluids.kind).toBe("ambiguous");
+    expect(fluids.kind === "ambiguous" && fluids.ids).toContain("fluid-bolus");
+    expect(resolveIntervention(sepsis!, { intervention_id: "quantum-therapy" }, "en")).toEqual({ kind: "unknown-id", id: "quantum-therapy" });
+  });
+
+  it.skipIf(!ana)("a stated route never resolves to an item given by another route", async () => {
+    const { resolveIntervention } = await import("./tools/clinical.js");
+    expect(resolveIntervention(ana!, { query: "IV adrenaline" }, "en")).toEqual({ kind: "id", id: "adrenaline-iv-bolus" });
+    expect(resolveIntervention(ana!, { query: "adrenaline 0.5 mg IM" }, "en")).toEqual({ kind: "id", id: "adrenaline-im" });
+    expect(resolveIntervention(ana!, { query: "hydrocortisone" }, "en")).toEqual({ kind: "id", id: "hydrocortisone-iv" });
+    const oral = resolveIntervention(ana!, { query: "oral prednisolone 40 mg" }, "en");
+    expect(oral.kind).toBe("ambiguous");
+    expect(oral.kind === "ambiguous" && oral.ids).toContain("hydrocortisone-iv");
+  });
+});
+
 describe("the shipped project settings (J14)", () => {
   it("ask rules cover thrombolytics, not the consent talk or post-lysis monitoring", async () => {
     const { matchRule } = await import("./permissions.js");
