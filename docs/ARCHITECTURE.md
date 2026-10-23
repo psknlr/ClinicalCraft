@@ -791,13 +791,24 @@ Default pipeline **select → voice** (`settings.patient.pipeline = "select-voic
 4. **Verify** — numbers, units, drug names and dates in `say` must appear in
    the answers of `usedFactIds` (or persona text) — so must named conditions
    (stroke, heart attack, 糖尿病…, as whole words: "hives" is not "HIV";
-   the case's decision options) and relative dates without digits ("last
-   year", "去年"), and no distinctive phrase of a fact not yet revealed may
-   appear (a pair of English content words, or a 4-character Chinese window
-   inside one punctuation-delimited run with at least two content
-   characters; `disclosure: "unknown"` answers are not facts); otherwise the
-   reply is replaced by the authored answer(s) and `grounding: "template"`
-   is logged. The learner's `warning` (and an MCP client's notices) name
+   the case's decision options; a few exact synonyms ground each other:
+   甲减 ↔ 甲状腺功能减退, heart attack ↔ myocardial infarction), relative
+   dates without digits ("last year", "去年"), month and weekday names,
+   habits' frequencies ("every night", "每天") and a side of the body ("left
+   hand", "右前臂"); quantities count with their unit (litres, bottles,
+   o'clock, 点, 楼, 口…). No distinctive phrase of a fact not yet revealed
+   may appear (a pair of English content words, or a 4-character Chinese
+   window inside one punctuation-delimited run with at least two content
+   characters; `disclosure: "unknown"` answers are not facts). A yes or no
+   to a yes/no question must agree with the facts used, and is not given
+   when no fact was used ("Do you have diabetes?" — "No" would add a normal
+   default the case never recorded); nor may the reply affirm a detail a
+   fact used denies ("never had a leg-pump machine") — `answer-polarity.ts`:
+   the lead word, else the first clause naming the question's topic, decides;
+   "not sure" and inability ("I can't breathe") are no answer, and a mixed
+   answer sharing two content words with what the facts affirm is excused.
+   Otherwise the reply is replaced by the authored answer(s) and
+   `grounding: "template"` is logged. The learner's `warning` (and an MCP client's notices) name
    only the violation **categories** ("a number, a fact not yet asked
    about"), never the quoted text — it may be the unasked fact or the
    diagnosis the check hid; the detailed list goes to the transcript as a

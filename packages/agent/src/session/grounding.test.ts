@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extractClaimTerms, extractDrugMentions, extractNumericTokens, parseChineseNumber, verifyGrounding } from "./grounding.js";
+import { extractClaimTerms, extractDrugMentions, extractNumericTokens, extractSides, parseChineseNumber, verifyGrounding } from "./grounding.js";
 
 describe("numeric token extraction", () => {
   it("handles decimals, ranges, dates, units and ×10⁹", () => {
@@ -76,7 +76,8 @@ describe("diagnoses, history and relative dates must be grounded (C2)", () => {
     expect(verifyGrounding("Maybe it's a pulmonary embolism?", sources, { conditionTerms: ["Pulmonary embolism"] }).ok).toBe(false);
     const unasked = verifyGrounding("It also goes down my left arm.", sources, { unrevealed: ["It goes down my left arm and into my jaw."] });
     expect(unasked.ok).toBe(false);
-    expect(unasked.violations[0]).toMatch(/unasked fact/);
+    expect(unasked.kinds).toEqual(["side", "unasked"]);
+    expect(unasked.violations.join(" ")).toMatch(/unasked fact/);
     expect(verifyGrounding("It's right in the middle of my chest.", sources, { unrevealed: ["It goes down my left arm and into my jaw."] }).ok).toBe(true);
   });
 });
@@ -111,5 +112,63 @@ describe("review round 3: claim-term boundaries, zh unasked-fact windows, violat
     expect(check.kinds).toEqual(expect.arrayContaining(["number", "term", "claim", "unasked"]));
     expect(check.violations.join(" ")).toMatch(/heavy weight/);
     expect(verifyGrounding("Fine.", ["Fine."]).kinds).toEqual([]);
+  });
+});
+
+describe("grounding benchmark, dev split: units, sides, dates, habits, lexicon and yes/no answers", () => {
+  const pairs = (text: string) => extractNumericTokens(text).map((t) => `${t.value}|${t.unit ?? ""}`);
+
+  it("reads amounts, clock times, floors and household sizes with their units", () => {
+    expect(pairs("About six litres a day, three bottles, 9 o'clock")).toEqual(["9|oclock", "6|l", "3|bottle"]);
+    expect(pairs("早上九点吃的，住2楼，一家三口，两个小时前")).toEqual(["2|floor", "9|oclock", "3|people", "2|hour"]);
+    expect(pairs("好一点了，差一点晕过去")).toEqual([]);
+    expect(verifyGrounding("About six litres a day.", ["I get through three or four litres a day."]).kinds).toEqual(["number"]);
+    expect(verifyGrounding("Three or four litres a day.", ["I get through three or four litres a day."]).ok).toBe(true);
+    expect(verifyGrounding("早上九点吃的。", ["早上七点吃的早饭。"]).kinds).toEqual(["number"]);
+    expect(verifyGrounding("两个小时前开始的。", ["2小时前开始疼。"]).ok).toBe(true);
+  });
+
+  it("a side of the body must come from the sources", () => {
+    expect(extractSides("my left hand, the right-hand side, 右前臂, 左下腹")).toEqual([
+      { side: "left", raw: "left hand" },
+      { side: "right", raw: "right-hand side" },
+      { side: "right", raw: "右前臂" },
+      { side: "left", raw: "左下腹" },
+    ]);
+    expect(extractSides("50岁左右, right in the middle, I left work, 左右为难")).toEqual([]);
+    expect(verifyGrounding("On my left hand.", ["Right forearm, here…"]).kinds).toEqual(["side"]);
+    expect(verifyGrounding("My right forearm.", ["Right forearm, here…"]).ok).toBe(true);
+    expect(verifyGrounding("左手被蛰的。", ["右前臂这里……"]).kinds).toEqual(["side"]);
+  });
+
+  it("months, weekdays and habits' frequencies are claims; synonyms ground each other", () => {
+    expect(verifyGrounding("Yes, in March 2025.", ["In April 2025 I had a fever."]).violations).toEqual(['claim "march"']);
+    expect(verifyGrounding("In April 2025.", ["In April 2025 I had a fever."]).ok).toBe(true);
+    expect(verifyGrounding("Quite a lot — half a bottle every night.", ["One or two small glasses with his workmates at the weekend."]).violations).toEqual(['claim "every night"']);
+    expect(verifyGrounding("A glass or two every weekend.", ["One or two small glasses with his workmates at the weekend."]).ok).toBe(true);
+    expect(verifyGrounding("I drink that much every day.", ["I get through three or four litres a day."]).ok).toBe(true);
+    expect(verifyGrounding("About a week ago.", ["It started the day before yesterday."]).violations).toEqual(['claim "a week ago"']);
+    expect(verifyGrounding("三年前查出甲减。", ["三年前查出甲状腺功能减退。"]).ok).toBe(true);
+    expect(verifyGrounding("I'm diabetic.", ["I've had type 1 diabetes since I was 11."]).ok).toBe(true);
+    expect(verifyGrounding("我妈有克罗恩病。", ["家里人身体都还好。"]).violations).toEqual(['claim "克罗恩"']);
+  });
+
+  it("knows more drug names without mistaking everyday words for them", () => {
+    expect(extractDrugMentions("I take allopurinol and sertraline, and cefalexin")).toEqual(expect.arrayContaining(["allopurinol", "sertraline", "cefalexin"]));
+    expect(extractDrugMentions("my cholesterol is high")).toEqual([]);
+    expect(extractDrugMentions("一直吃别嘌醇和恩格列净")).toEqual(expect.arrayContaining(["嘌醇", "恩格列净"]));
+    expect(verifyGrounding("Nothing serious, apart from gout — I take allopurinol for it.", ["Nothing serious — never been in hospital."]).kinds).toEqual(["drug", "claim"]);
+  });
+
+  it("checks a yes/no answer against the facts used (answer-polarity.ts)", () => {
+    const fact = "I've felt sick since about midday. I threw up once around 10 last night. Nothing since.";
+    expect(verifyGrounding("No, I haven't vomited at all.", [fact], { question: "Any vomiting?", answered: [fact] }).kinds).toEqual(["polarity"]);
+    expect(verifyGrounding("I threw up once around 10 last night.", [fact], { question: "Any vomiting?", answered: [fact] }).ok).toBe(true);
+    expect(verifyGrounding("No, my heart's fine.", ["x"], { question: "Do you have any heart problems?", answered: [] }).kinds).toEqual(["polarity"]);
+    expect(verifyGrounding("I'm not sure, doctor.", ["x"], { question: "Do you have any heart problems?", answered: [] }).ok).toBe(true);
+    // without `answered` (the tool pipeline, nonverbal cues) the polarity rules do not run
+    expect(verifyGrounding("No, my heart's fine.", ["x"], { question: "Do you have any heart problems?" }).ok).toBe(true);
+    const stockings = "They put stockings on me before the operation. I've never had a leg-pump machine.";
+    expect(verifyGrounding("Yes, and the leg pumps too.", [stockings], { question: "Have you been wearing stockings?", answered: [stockings] }).violations).toEqual(['denied detail "pump"']);
   });
 });

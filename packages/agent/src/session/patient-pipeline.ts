@@ -332,8 +332,11 @@ function personaSources(c: CaseDefinition, locale: string): string[] {
  * What the grounding check of a voiced reply (step 4) checks it against: the
  * answers of the facts used, the persona texts, the learner's words and the
  * clarifying question as sources; the case's drug lexicon and condition
- * terms; and the answers of facts available now that were neither revealed
- * (`state.asked`), allowed this turn nor used (`unrevealed`).
+ * terms; the answers of facts available now that were neither revealed
+ * (`state.asked`), allowed this turn nor used (`unrevealed`); and the
+ * learner's words with the answers of the facts used (`question`,
+ * `answered`), so a yes/no answer agrees with them — and is not given when
+ * no fact was used.
  */
 export function voiceGroundingInputs(
   c: CaseDefinition,
@@ -344,8 +347,18 @@ export function voiceGroundingInputs(
   clarify: string | null,
   locale: string,
 ): { sources: string[]; options: VerifyOptions } {
-  const sources = [...used.map((id) => answerOf(c, id, locale)), ...personaSources(c, locale), utterance, clarify ?? ""];
-  return { sources, options: { drugLexicon: caseDrugLexicon(c), conditionTerms: caseConditionTerms(c), unrevealed: unrevealedAnswers(c, state, new Set([...allowed, ...used]), locale) } };
+  const answered = used.map((id) => answerOf(c, id, locale)).filter(Boolean);
+  const sources = [...answered, ...personaSources(c, locale), utterance, clarify ?? ""];
+  return {
+    sources,
+    options: {
+      drugLexicon: caseDrugLexicon(c),
+      conditionTerms: caseConditionTerms(c),
+      unrevealed: unrevealedAnswers(c, state, new Set([...allowed, ...used]), locale),
+      question: utterance,
+      answered,
+    },
+  };
 }
 
 /** Build the need-to-know PatientContext. */

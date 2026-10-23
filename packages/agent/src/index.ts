@@ -61,6 +61,7 @@ export * from "./transcript.js";
 export * from "./session/router.js";
 export * from "./session/i18n.js";
 export * from "./session/grounding.js";
+export * from "./session/answer-polarity.js";
 export * from "./session/patient-pipeline.js";
 export * from "./session/events.js";
 export * from "./session/approvals.js";
