@@ -146,6 +146,7 @@ export function groundingMarkdown(report: GroundingReport, locale: string, optio
   const cap = options.failures ?? 200;
   lines.push(`## ${bm(L, "grounding.failures")}`, "");
   if (!failed.length) lines.push(bm(L, "grounding.noFailures"));
+  else if (cap <= 0) lines.push(bm(L, "grounding.failuresHidden", { n: failed.length }));
   else {
     lines.push(
       `| ${bm(L, "grounding.item")} | ${bm(L, "grounding.track")} | ${bm(L, "grounding.input")} | ${bm(L, "grounding.expected")} | ${bm(L, "grounding.got")} | ${bm(L, "grounding.outcome")} |`,
