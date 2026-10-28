@@ -3,8 +3,8 @@
  * Only case data and engine results are stated (grounding rules §2.1); every
  * assessment ends with the teaching-script notice.
  */
-import { caseHandle, investigationName, joinList, reviewStatusLine, rt } from "@clinicalcraft/agent";
-import { t, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
+import { caseHandle, criticalMissLines, investigationName, joinList, reviewStatusLine, rt } from "@clinicalcraft/agent";
+import { specialtyLabels, t, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 
 /**
@@ -78,7 +78,7 @@ export function casesText(cases: readonly ListedCase[], locale: string): string 
   const lines = [mm(locale, "cases.header", { count: cases.length })];
   for (const c of cases) {
     const minutes = c.estimatedMinutes ? mm(locale, "cases.minutes", { minutes: c.estimatedMinutes }) : "";
-    lines.push(mm(locale, "cases.line", { id: caseHandle(c.id), title: t(c.title, locale), specialty: c.specialty.join(", "), difficulty: c.difficulty, minutes }));
+    lines.push(mm(locale, "cases.line", { id: caseHandle(c.id), title: t(c.title, locale), specialty: joinList(locale, specialtyLabels(c.specialty, locale)), difficulty: c.difficulty, minutes }));
     const summary = t(c.summary, locale);
     if (summary) lines.push(`  ${summary}`);
     const review = reviewStatusLine(locale, reviewOf(c));
@@ -89,19 +89,25 @@ export function casesText(cases: readonly ListedCase[], locale: string): string 
   return lines.join("\n");
 }
 
-/** Assessment report (+ examiner judgements and narrative) as text; ends with the teaching-script notice unless `notice: false`. */
+/**
+ * Assessment report (+ examiner judgements and narrative) as text; ends with the teaching-script notice unless
+ * `notice: false`. Once final, the critical rubric items missed come first (unless `critical: false`: the case
+ * debrief that follows lists them).
+ */
 export function assessmentText(
   c: CaseDefinition,
   report: AssessmentReport,
   narrative: string | null,
   judged: readonly { id: string; met: boolean; evidence: string }[],
   locale: string,
-  options: { notice?: boolean; final?: boolean } = {},
+  options: { notice?: boolean; final?: boolean; critical?: boolean } = {},
 ): string {
   const L = locale;
   const name = (id: string) => investigationName(c, id, L);
   const lines = [mm(L, "debrief.header", { title: t(c.title, L) })];
   if (!report.completed) lines.push(mm(L, "debrief.interim"));
+  // Critical items missed, prominently — never mid-case (an answer key).
+  if ((options.final ?? report.completed) && options.critical !== false) lines.push(...criticalMissLines(c, report, L));
   lines.push(
     mm(L, "debrief.score", {
       percent: report.score.percent,

@@ -7,7 +7,9 @@
  * their agent (default: the current interlocutor).
  */
 import {
+  assess,
   currentObjective,
+  historyVoice,
   orderStatus,
   presentedOptions,
   progress,
@@ -29,6 +31,7 @@ import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
 import { executeEmbodiedCommand } from "./commands-world.js";
+import { criticalMisses } from "./critical.js";
 import type { ToolOutput } from "./tools/types.js";
 
 /** What commands need from the session. */
@@ -293,6 +296,11 @@ async function askCommand(host: CommandHost, args: string): Promise<void> {
   if (!args) {
     const listed = listOptionsText({ caseDef: c, locale: L, state: () => host.state() }, "history");
     const items = listed.data as { id: string; question: string; asked: boolean }[];
+    // Nobody can answer now (the patient cannot speak, no companion): say so instead of an empty list.
+    if (items.length === 0 && historyVoice(c, host.state()) === "none") {
+      host.output(listed.text, { items });
+      return;
+    }
     const rows = items.map((it, i) => [`${i + 1}.`, `${it.asked ? "✓" : " "} ${it.question}`]);
     host.output(`${rt(L, "label.history")}:\n${table(rows)}`, { items });
     return;
@@ -396,6 +404,8 @@ function debriefCommand(host: CommandHost): void {
   }
   const d = c.debrief;
   const colon = isZh(L) ? "：" : ": ";
+  // Critical items missed come first, prominently (they do not cap the score).
+  const critical = criticalMisses(c, assess(c, s), L);
   const section = (key: RuntimeKey, items: string[], marker: (i: number) => string = () => "-") =>
     items.length > 0 ? [`${rt(L, key)}${colon.trimEnd()}`, ...items.map((x, i) => `  ${marker(i)} ${x}`)] : [];
   // The case's learning outcomes (they name the diagnosis: listed here, once the debrief is unlocked) and who
@@ -406,6 +416,7 @@ function debriefCommand(host: CommandHost): void {
   const guidelines = review?.guidelines ?? [];
   const lines = [
     t(d.title, L),
+    ...critical.map((x) => rt(L, "critical.missed", { text: x.text })),
     t(d.conclusion, L),
     ...section("cmd.debrief.reasoning", d.keyReasoning.map((x) => t(x, L))),
     ...section("cmd.debrief.outcomes", outcomes, (i) => `${i + 1}.`),
@@ -419,6 +430,7 @@ function debriefCommand(host: CommandHost): void {
   ];
   host.output(lines.join("\n"), {
     title: t(d.title, L),
+    criticalMissed: critical,
     conclusion: t(d.conclusion, L),
     keyReasoning: d.keyReasoning.map((x) => t(x, L)),
     learningOutcomes: outcomes,

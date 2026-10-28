@@ -275,6 +275,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "screen.alarms": { "zh-CN": "报警：{alarms}", en: "alarms: {alarms}" },
   "cue.distressed": { "zh-CN": "看起来很痛苦", en: "visibly distressed" },
   "cue.speaking": { "zh-CN": "正在说话", en: "speaking" },
+  "cue.cannotSpeak": { "zh-CN": "无法说话", en: "cannot speak" },
+  "cue.cannotSpeakWhy": { "zh-CN": "无法说话：{reason}", en: "cannot speak: {reason}" },
   "level.warning": { "zh-CN": "警告", en: "warning" },
   "level.critical": { "zh-CN": "危急", en: "critical" },
 };

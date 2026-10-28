@@ -14,6 +14,7 @@ import {
   availableDecisions,
   currentObjective,
   historyAvailable,
+  historyVoice,
   orderStatus,
   orderWarnings,
   presentedOptions,
@@ -29,6 +30,7 @@ import {
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
 import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { nonVerbalNarration, nonVerbalReason } from "../session/nonverbal.js";
 import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, learnerVitals, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
 import {
   actorFor,
@@ -151,6 +153,11 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
   const data: unknown[] = [];
   switch (kind) {
     case "history":
+      // Nobody can answer now (the patient cannot speak and there is no companion): no item can be asked.
+      if (historyVoice(c, s) === "none") {
+        lines.push(rt(L, "tool.list.cannotAnswer", { text: nonVerbalNarration(c, nonVerbalReason(c, s, L) ?? "", L) }));
+        break;
+      }
       // Items superseded in this phase by a phase twin (`supersedes`) cannot be asked here.
       for (const h of c.history.filter((x) => historyAvailable(c, x.id, s.phase))) {
         const asked = s.asked.includes(h.id);

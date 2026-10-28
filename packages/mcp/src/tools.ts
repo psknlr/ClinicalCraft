@@ -349,12 +349,14 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
     const c = session.caseDef;
     const opening = replies.map((r) => r.text).join("\n") || t(c.patient.persona.openingLine, SL);
     const speaker = replies[0]?.speaker ?? t(c.patient.displayName, SL);
+    // A narration (the patient cannot speak, or an opening line written as an aside) is no one's words.
+    const narrated = replies[0]?.grounding === "narrated";
     const embodied = session.embodiment === "embodied";
     const place = session.placeLabel();
     const text = [
       mm(SL, "start.header", { session: session.id }),
       card?.text ?? "",
-      mm(SL, "start.says", { speaker, text: opening }),
+      narrated ? mm(SL, "start.narration", { text: opening }) : mm(SL, "start.says", { speaker, text: opening }),
       mm(SL, "start.next", { session: session.id }),
       embodied ? mm(SL, "start.embodied", { place: place ?? "-" }) : "",
       noticeLines(SL, warnings),
@@ -401,7 +403,7 @@ async function debrief(entry: McpSession): Promise<McpToolResult> {
     const out = (await session.run({ type: "slash_command", name: "debrief", args: "" })).flatMap((e) => (e.msg.type === "command_output" ? [e.msg] : []))[0];
     if (out) caseDebrief = { text: out.text, data: out.data ?? null };
   }
-  const summary = assessmentText(c, assessment.report, assessment.narrative, assessment.judged, L, { notice: caseDebrief === null, final: complete });
+  const summary = assessmentText(c, assessment.report, assessment.narrative, assessment.judged, L, { notice: caseDebrief === null, final: complete, critical: caseDebrief === null });
   const text = caseDebrief ? `${summary}\n\n${caseDebrief.text}` : summary;
   return textResult(text, {
     session_id: entry.id,

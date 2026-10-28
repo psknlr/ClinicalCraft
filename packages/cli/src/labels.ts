@@ -3,11 +3,14 @@
  * clock mode, provenance, content languages, estimated minutes). Unknown
  * values are shown as recorded — never invented.
  */
+import { specialtyLabel as sharedSpecialtyLabel } from "@clinicalcraft/core";
 import type { MsgKey } from "./i18n.js";
 
 /** The part of a CLI context the labels need. */
 export interface Translator {
   t(key: MsgKey, params?: Record<string, string | number>): string;
+  /** UI language (the shared specialty table); default zh-CN. */
+  locale?: string;
 }
 
 /** `ctx.t(key)` when the key exists, else `fallback`. */
@@ -26,9 +29,9 @@ export function settingLabel(ctx: Translator, setting: string): string {
   return lookup(ctx, `setting.${setting}`, setting);
 }
 
-/** Localised specialty ("emergency-medicine" → 急诊医学 / Emergency medicine). */
+/** Localised specialty ("emergency-medicine" → 急诊医学 / Emergency medicine): core's one table for every front-end. */
 export function specialtyLabel(ctx: Translator, specialty: string): string {
-  return lookup(ctx, `specialty.${specialty}`, specialty.replace(/-/g, " "));
+  return sharedSpecialtyLabel(specialty, ctx.locale ?? "zh-CN");
 }
 
 /** Specialties joined with the locale's list separator. */

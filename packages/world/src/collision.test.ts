@@ -19,10 +19,13 @@ const firstSlot = (f: ReturnType<typeof loadFacility>) => f.patientSlots.slice(0
  * moved from (−44.7, −41.15) — wedged between the wall, bed 1 and its pump,
  * no reachable interaction point — to the other side of the bed head
  * (−42.4, −41.15); counts and kinds unchanged, digest 3201877c → 427e1029.
+ * Re-pinned when the operating theatre got its records terminal (`or-records`,
+ * the record-review rule of EMBODIED §6): one more equipment box, 614 → 615
+ * colliders (equipment 224 → 225), digest 427e1029 → f8bf5701.
  */
 const PARITY = {
   "clinic-v4": { total: 86, doors: 1, digest: "e23bbedf", kinds: { tree: 12, wall: 24, window: 6, door: 2, partition: 14, equipment: 20, npc: 1, block: 7 } },
-  "general-hospital": { total: 614, doors: 38, digest: "427e1029", kinds: { tree: 28, wall: 94, window: 35, door: 53, partition: 160, equipment: 224, npc: 11, block: 9 } },
+  "general-hospital": { total: 615, doors: 38, digest: "f8bf5701", kinds: { tree: 28, wall: 94, window: 35, door: 53, partition: 160, equipment: 225, npc: 11, block: 9 } },
 } as const;
 
 describe("collision model parity with the renderer (EMBODIED R2)", () => {
