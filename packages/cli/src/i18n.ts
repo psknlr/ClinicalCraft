@@ -28,7 +28,7 @@ const EN = {
   "help.globalOptions": "Global options:",
   "help.examples": "Examples:",
   "help.more": "Run `clinicalcraft <command> --help` for a command's options. Settings: ~/.clinicalcraft/settings.json, .clinicalcraft/settings.json (see `clinicalcraft config path`).",
-  "help.exitCodes": "Exit codes: 0 success · 1 error · 2 usage error · 3 max turns reached · 4 autopilot ended with the case incomplete.",
+  "help.exitCodes": "Exit codes: 0 success · 1 error · 2 usage error · 3 max turns reached · 4 the demonstration (--autopilot) ended with the case incomplete.",
   "help.headlessApprovals":
     "Headless approvals: nobody can answer an approval prompt. --approval bypass approves every request (unsafe: for benchmarks); --approval auto approves low/moderate-risk requests but DENIES always-ask, high-risk and ask-rule ones (thrombolysis…) unless you also pass --approve-high-risk; --approval default|strict|plan deny every request (reason \"headless: approval required\"). The agent is told and adapts. With --input-format stream-json --output-format stream-json the client answers each approval_request with an approval_response op while stdin is open.",
 
@@ -182,7 +182,7 @@ const EN = {
   "exec.summary": "Finished: {finished} · objectives {done}/{total} · score {score}%",
   "exec.maxTurns": "Stopped after the maximum of {turns} turns.",
   "exec.denyHighRisk": "headless: always-ask, high-risk and ask-rule actions need a person to confirm them (re-run with --approve-high-risk to allow them unattended)",
-  "exec.incomplete": "The autopilot ended with the case incomplete (objectives {done}/{total}; {denied} action(s) refused) — exit code 4.",
+  "exec.incomplete": "The demonstration (--autopilot) ended with the case incomplete (objectives {done}/{total}; {denied} action(s) refused) — exit code 4.",
 
   // cases
   "cases.unknown": "Unknown case \"{id}\".",
@@ -377,7 +377,7 @@ const EN = {
 
   // eval
   "eval.needCases": "Which cases? `--cases <id,id…>` or `--cases all`",
-  "eval.title": "ClinicalCraft autopilot eval",
+  "eval.title": "ClinicalCraft demonstration (autopilot) eval",
   "eval.meta": "{date} · provider {provider} · model {model} · {runs} run(s) per case · max {turns} turns · approval bypass",
   "eval.col.case": "Case",
   "eval.col.result": "Result",

@@ -25,28 +25,28 @@
   "estimatedMinutes": 35,
   "learningOutcomes": [
     {
-      "zh-CN": "在数分钟内于床旁评估学龄儿童急性哮喘发作的严重程度（说话能力、呼吸做功、SpO₂、心率、呼吸频率、PEF及PRAM评分），并主动排查危及生命的征象。",
-      "en": "Grade the severity of an acute asthma attack in a school-age child at the bedside within minutes — speech, work of breathing, SpO₂, heart and respiratory rate, PEF and the PRAM score — and look actively for life-threatening features."
+      "zh-CN": "在数分钟内于床旁判断学龄儿童为急性重度哮喘发作（说话能力、呼吸做功、SpO₂、心率、呼吸频率、PEF及PRAM评分），并主动排除危及生命的征象（BTS/SIGN 158）。",
+      "en": "Grade an acute severe asthma attack in a school-age child at the bedside within minutes — speech, work of breathing, SpO₂, heart and respiratory rate, PEF and the PRAM score — and actively exclude life-threatening features (BTS/SIGN 158)."
     },
     {
-      "zh-CN": "按所判断的严重程度立即给予第1小时治疗——按正确间隔吸入支气管舒张剂、控制性氧疗及早期全身糖皮质激素——不等待任何检查。",
-      "en": "Start the first-hour treatment for the severity found — inhaled bronchodilators at the right interval, controlled oxygen and an early systemic corticosteroid — without waiting for any test."
+      "zh-CN": "不延误地给予第1小时治疗：吸入沙丁胺醇每20分钟1次×3（pMDI+储雾罐或氧驱动雾化）并加用异丙托溴铵、吸氧使SpO₂ 94–98%、1小时内口服泼尼松龙（1–2 mg/kg，最大40 mg）。",
+      "en": "Give the first-hour bundle without delay: inhaled salbutamol every 20 min ×3 (pMDI + spacer or an oxygen-driven nebuliser) with ipratropium, oxygen to SpO₂ 94–98 % and oral prednisolone (1–2 mg/kg, max 40 mg) within the hour."
     },
     {
-      "zh-CN": "在治疗进行的同时向家长采集有针对性的风险病史：急救药使用、既往急诊/住院/重症监护史、口服激素疗程、控制药依从性与吸入技术、烟草暴露，并排除异物吸入。",
-      "en": "Take a focused, risk-oriented history from the parent while treatment runs: reliever use, previous admissions and intensive care, oral steroid courses, controller adherence and inhaler technique, smoke exposure, and a foreign-body screen."
+      "zh-CN": "在治疗进行的同时向家长采集有针对性的风险病史：急救药使用、既往急诊/住院/重症监护或插管史、口服激素疗程、控制药依从性与吸入技术、烟草暴露，并排除异物吸入。",
+      "en": "Take a focused, risk-oriented history from the parent while treatment runs: reliever use, previous admissions, intensive care or intubation, oral steroid courses, controller adherence and inhaler technique, smoke exposure, and a foreign-body screen."
     },
     {
-      "zh-CN": "1小时用同一结构化工具再评估，区分β₂激动剂的预期作用与病情恶化，仅在反应差或出现危及生命征象时升级治疗（上级会诊、静脉硫酸镁、PICU/HDU）。",
-      "en": "Reassess at 1 hour with the same structured tool, tell expected β₂-agonist effects from deterioration, and escalate (senior review, IV magnesium, PICU/HDU) only for a poor response or life-threatening features."
+      "zh-CN": "1小时用同一结构化工具再评估，识别良好反应及β₂激动剂的预期作用（心动过速、震颤、低钾、高血糖、乳酸升高），仅在反应差或出现危及生命征象时使用静脉硫酸镁、请上级会诊或收入PICU/HDU。",
+      "en": "Reassess at 1 hour with the same structured tool, recognise a good response and the expected β₂-agonist effects (tachycardia, tremor, hypokalaemia, hyperglycaemia, raised lactate), and keep IV magnesium, senior review and PICU/HDU for a poor response or life-threatening features."
     },
     {
-      "zh-CN": "应用出院标准，并借此次就诊改善长期控制：书面哮喘行动计划、吸入技术回示、每日控制药及依从性支持、无烟家庭和早期随访。",
-      "en": "Apply the discharge criteria and use the visit to improve long-term control: a written asthma action plan, inhaler-technique teach-back, a daily controller with adherence support, a smoke-free home and early follow-up."
+      "zh-CN": "应用出院标准（吸空气SpO₂ > 94%、稳定于3–4小时一次的沙丁胺醇、PEF > 75%预计值），并借此次就诊改善长期控制：书面行动计划、吸入技术回示、每日控制药及依从性支持、无烟家庭、2个工作日内复诊。",
+      "en": "Apply the discharge criteria (room-air SpO₂ > 94 %, stable on 3–4-hourly salbutamol, PEF > 75 % predicted) and use the visit to improve long-term control: a written action plan, inhaler-technique teach-back, a daily controller with adherence support, a smoke-free home and review within 2 working days."
     },
     {
-      "zh-CN": "与焦虑的家长和害怕的孩子进行适龄、不带指责的沟通：解释病情和计划、回应家长的顾虑，并用回授法确认何时需要立即返回。",
-      "en": "Communicate with an anxious parent and a frightened child without blame and at the child's level: explain severity and the plan, address the parent's concerns and confirm by teach-back when to come straight back."
+      "zh-CN": "与焦虑、自责的家长和害怕的孩子沟通：不带指责地讨论依从性，回应对激素的担心和对抗生素的期望，并用回授法确认何时需要立即返回。",
+      "en": "Communicate with an anxious, guilty parent and a frightened child: discuss adherence without blame, address steroid worries and the expectation of antibiotics, and confirm by teach-back when to come straight back."
     }
   ],
   "tags": [
@@ -82,7 +82,7 @@
         "儿童支气管哮喘规范化诊治建议（2020年版）"
       ],
       "notes": {
-        "zh-CN": "由AI辅助编写，并对照所引指南完成编辑审核；尚未经执业医师审核——用于教学前，请由本专科临床医师审阅。",
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
         "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
       }
     }

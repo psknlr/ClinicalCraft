@@ -101,7 +101,7 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   answer_decision: { title: "Answer a decision", ...RECORDS },
   set_phase: { title: "Switch phase", ...RECORDS, idempotentHint: true },
   wait: { title: "Wait", ...RECORDS },
-  update_workup: { title: "Update the workup plan", ...RECORDS, idempotentHint: true },
+  update_workup: { title: "Update the work-up plan", ...RECORDS, idempotentHint: true },
   case_status: { title: "Case status", ...READ_ONLY },
   finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);

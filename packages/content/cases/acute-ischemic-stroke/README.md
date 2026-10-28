@@ -22,25 +22,30 @@
 
 By the end of the case the learner can:
 
-1. Establish last known well from a witness and use it — not the time of discovery — to set the
-   thrombolysis (4.5 h) and thrombectomy (6 h) windows.
-2. Score the NIHSS in a patient who cannot speak fluently, and localise the lesion and its likely
-   mechanism from cortical and long-tract signs.
-3. Choose emergency imaging that excludes haemorrhage and detects a treatable large-vessel occlusion
-   without delaying reperfusion, and read the CT (haemorrhage, ASPECTS) and the CTA.
+1. Establish last known well from a witness — 08:55 here, not the 09:10 discovery — and use it to
+   set the thrombolysis (4.5 h) and thrombectomy (6 h) windows.
+2. Score the NIHSS in an aphasic patient and localise a left MCA syndrome from its cortical signs
+   (aphasia, gaze preference, field defect), identifying atrial fibrillation as the likely embolic
+   source.
+3. Choose non-contrast CT with same-session CTA as the first imaging — without waiting for
+   creatinine when there is no known renal disease — and read it for haemorrhage, ASPECTS and a
+   large-vessel occlusion.
 4. Complete the pre-thrombolysis safety check — CT excluding haemorrhage, a glucose result, an
    explicit anticoagulant history and BP < 185/110 mmHg with a titratable IV agent — and give
-   weight-based thrombolysis within a door-to-needle time of 60 minutes, without waiting for results
-   that would not change eligibility.
-5. Apply the thrombectomy criteria and, when they are met, bridge from IV thrombolysis to
-   thrombectomy without waiting for a response to lysis.
+   alteplase 0.9 mg/kg (max 90 mg) or tenecteplase 0.25 mg/kg (max 25 mg) within a door-to-needle
+   time of 60 minutes, without waiting for coagulation or platelet results when no anticoagulant is
+   taken.
+5. Apply the thrombectomy criteria (anterior-circulation LVO, NIHSS ≥ 6, ASPECTS ≥ 6, groin puncture
+   within 6 h of last known well, pre-stroke mRS 0–1) and bridge from IV thrombolysis to
+   thrombectomy without waiting for a response.
 6. Write the post-thrombolysis orders: scheduled neurological and BP observations with BP kept
-   < 180/105 mmHg, no antiplatelets or anticoagulants for 24 h, and nil by mouth — tablets included —
-   until a swallow screen is passed.
+   < 180/105 mmHg, no antiplatelets or anticoagulants for 24 h, and nil by mouth — tablets included
+   — until a swallow screen is passed.
 
-These are `learningOutcomes` in `case.json` (shown on the case card and in the debrief); the HUD
-`objectives` below are the in-game task list. Because the case card shows them before play, they
-state the standard without this patient's findings or the decisions' answers.
+These are `learningOutcomes` in `case.json`; the HUD `objectives` below are the in-game task list.
+Written for the debrief, the outcomes name this patient's findings and the decisions' answers, so
+front-ends show them before play only behind a closed **Learning outcomes (6) · may reveal the
+diagnosis** disclosure and list them in every debrief (CASE_AUTHORING §9.4, GLOSSARY §4).
 
 ## Clinical summary (spoilers)
 
@@ -491,7 +496,8 @@ journal, volume and pages); none was added from memory.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 
-* Added six `learningOutcomes` and `provenance.review` (status `editorial`, the guidance checked).
+* Added six `learningOutcomes` — specific and written for the debrief (CASE_AUTHORING §9.4) — and
+  `provenance.review` (status `editorial`, the guidance checked).
 * References normalised to one Vancouver style with DOIs verified by web lookup. **TRACE-2 corrected**:
   the first author is Wang Y (not "Li S, Pan Y, Wang Z") and the title is "Tenecteplase versus
   alteplase in acute ischaemic cerebrovascular events (TRACE-2) …". The AHA/ASA 2026 guideline now
@@ -539,13 +545,12 @@ CT/CTA，静脉降压至 < 185/110 mmHg后按体重静脉溶栓（替奈普酶20
 （1次取栓eTICI 2c，台上NIHSS 6分）。
 
 **学习目标。**
-1. 通过目击者病史确定最后正常时间，并据此（而非被发现的时间）计算静脉溶栓（4.5小时）和机械取栓（6小时）的时间窗。
-2. 为言语表达困难的患者完成NIHSS评分，并依据皮层征和长束征定位病灶、判断可能的发病机制。
-3. 选择既能排除出血、又能发现可取栓大血管闭塞且不延误再灌注的急诊影像，并判读CT（出血、ASPECTS）与CTA。
-4. 完成溶栓前安全核查（CT排除出血、血糖、明确询问抗凝药、可滴定静脉药降压至 < 185/110 mmHg），入院至溶栓时间
-   ≤ 60分钟内按体重静脉溶栓，不等待不影响适应证判断的化验结果。
-5. 应用机械取栓指征；符合时从静脉溶栓直接桥接取栓，不等待溶栓效果。
-6. 下达溶栓后医嘱：神经功能与血压监测并维持 < 180/105 mmHg，24小时内不用抗栓药，吞咽筛查通过前禁食禁水。
+1. 通过目击者病史确定最后正常时间（本例为08:55，而非09:10被发现的时间），并据此计算静脉溶栓（4.5小时）和机械取栓（6小时）的时间窗。
+2. 为失语患者完成NIHSS评分，依据皮层征（失语、凝视偏好、视野缺损）定位左侧大脑中动脉综合征，并识别心房颤动为最可能的栓子来源。
+3. 首选头颅CT平扫并同次完成头颈CTA（无已知肾病者不等肌酐），判读有无出血、ASPECTS及大血管闭塞。
+4. 完成溶栓前安全核查——CT排除出血、血糖、明确询问抗凝药、用可滴定静脉药将血压降至 < 185/110 mmHg——并在入院至溶栓时间60分钟内给予阿替普酶0.9 mg/kg（最大90 mg）或替奈普酶0.25 mg/kg（最大25 mg），未用抗凝药时不等待凝血和血小板结果。
+5. 应用机械取栓标准（前循环大血管闭塞、NIHSS ≥ 6、ASPECTS ≥ 6、最后正常后6小时内穿刺、发病前mRS 0–1），并从静脉溶栓直接桥接取栓，不等待溶栓效果。
+6. 下达溶栓后医嘱：按时监测神经功能与血压并维持 < 180/105 mmHg，24小时内不用抗血小板药和抗凝药，吞咽筛查通过前禁食禁水（包括口服药）。
 
 **关键决策。** ① 首选影像：立即CT平扫并同次完成CTA，不等肌酐；② 定位与机制：左侧MCA综合征伴大血管闭塞，
 房颤心源性栓塞；③ 溶栓：降压达标后立即溶栓，不等凝血/血小板，同时准备取栓；④ 取栓指征（多选）：M1闭塞、
@@ -554,4 +559,4 @@ NIHSS ≥ 6、ASPECTS ≥ 6、6小时内、发病前mRS 0–1。
 **复盘要点（PEARLS）。** 先请学员谈感受，再复述时间线与关键发现；分析环节聚焦：时间从“最后正常”而非“被发现”
 算起；房颤患者必须点名询问抗凝药，确认未用即不必等凝血结果；192/104 mmHg是可纠正的障碍而非禁忌，忌舌下含服
 硝苯地平；CTA证实大血管闭塞后立即桥接取栓，不等溶栓效果；溶栓后24小时不用抗栓药、吞咽筛查前禁食禁水。最后请学员
-总结下次卒中急救中会保持和改进的做法。本病例为AI辅助编写、经编辑审核的教学材料，尚未经执业医师审核。
+总结下次卒中急救中会保持和改进的做法。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核。

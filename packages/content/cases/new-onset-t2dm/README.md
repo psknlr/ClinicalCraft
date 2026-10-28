@@ -203,7 +203,11 @@ atorvastatin.
   not quote his first-visit ALT or the fatty liver, which this decision does
   not require the learner to have read).
 
-Decision `requires` use first-visit (`phase: initial`) results only.
+Decision `requires` use first-visit (`phase: initial`) results only. The
+objective hints coach with questions ("How many abnormal results does the
+diagnosis need — and does it matter that they come from the same sample?",
+"which first-line drug suits him, what must you check before prescribing
+it?") rather than naming the answers.
 
 ### Rubric (deterministic items, total weight 22)
 
@@ -489,13 +493,16 @@ decisions right first time and no contraindicated interventions.
 - Kidney Disease: Improving Global Outcomes (KDIGO) Diabetes Work Group. KDIGO 2022 clinical practice guideline for diabetes management in chronic kidney disease. Kidney Int. 2022;102(5S):S1-S127. doi:10.1016/j.kint.2022.06.008
 - Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney Int. 2024;105(4S):S117-S314. doi:10.1016/j.kint.2023.10.018
 - 中国血脂管理指南修订联合专家委员会. 中国血脂管理指南（2023年）. 中华心血管病杂志. 2023;51(3):221-255.
-- 中国高血压防治指南修订委员会, 等. 中国高血压防治指南（2024年修订版）. 中华高血压杂志. 2024.
-- Schaper NC, van Netten JJ, Apelqvist J, et al. Practical guidelines on the prevention and management of diabetes-related foot disease (IWGDF 2023 update). Diabetes Metab Res Rev. 2024:e3657. doi:10.1002/dmrr.3657
+- 中国高血压防治指南修订委员会, 高血压联盟（中国）, 中国医疗保健国际交流促进会高血压病学分会, 等. 中国高血压防治指南（2024年修订版）. 中华高血压杂志. 2024;32(7):603-700.
+- Schaper NC, van Netten JJ, Apelqvist J, et al. Practical guidelines on the prevention and management of diabetes-related foot disease (IWGDF 2023 update). Diabetes Metab Res Rev. 2024;40(3):e3657. doi:10.1002/dmrr.3657
 - European Association for the Study of the Liver (EASL), European Association for the Study of Diabetes (EASD), European Association for the Study of Obesity (EASO). EASL–EASD–EASO clinical practice guidelines on the management of metabolic dysfunction-associated steatotic liver disease (MASLD). J Hepatol. 2024;81(3):492-542. doi:10.1016/j.jhep.2024.04.031
 - World Health Organization. WHO clinical treatment guideline for tobacco cessation in adults. Geneva: World Health Organization; 2024.
 
 DOIs were checked on 2026-10-28 against the publisher or indexer record (title,
 journal, year, volume and pages); none is given where that could not be done.
+The Chinese guidelines carry no DOI: their volume and pages were confirmed
+from the journal listings and citing articles, but no DOI could be confirmed
+against a publisher record.
 
 ### To verify
 
@@ -510,9 +517,6 @@ journal, year, volume and pages); none is given where that could not be done.
   above goal, statin intensity, aspirin for primary prevention, hepatitis B
   vaccination at 19–59 years and retinal rescreening every 1–2 years are as
   the case states them from the 2025 edition.
-- Citation details not confirmed: the volume and pages of the Chinese
-  hypertension guideline (2024 revision) and the volume and issue of the IWGDF
-  2023 practical guidelines.
 - The C-peptide/GADA result note cites the Chinese LADA expert consensus (2021),
   which is not in the reference list and was not checked.
 - Terminology: the zh-CN text names MASLD 代谢相关脂肪性肝病 (the Chinese
@@ -528,14 +532,20 @@ journal, year, volume and pages); none is given where that could not be done.
   `provenance.review.guidelines`); the 2026 Standards of Care changes found
   (heart failure, MASH pharmacotherapy for high-risk MASLD, type 1 diabetes)
   do not affect this patient (FIB-4 0.97, no heart failure).
+- **Hints coach, not answer.** Four objective hints gave decision answers away
+  (`obj-diagnosis`: two tests on one sample count; `obj-plan`: lifestyle +
+  DSMES + metformin, statin, ACE inhibitor/ARB, smoking cessation; `obj-workup`
+  and `obj-review`: the repeat UACR and the persistence rule). They now ask
+  the questions that lead there; the guidance (quest-card) texts are unchanged.
 - **Rubric:** `r-safety` (no insulin, sulfonylurea or "lifestyle only"; no
   renally dosed drug before the eGFR) weight 2 → 3, so the safety item weighs
   most; the deterministic total is now 22.
 - **References:** ADA Standards of Care 2025 → 2026, cited by section (2, 9, 10,
   11) with verified DOIs; DOIs added for the ADA/EASD 2022 consensus, KDIGO 2022
   and 2024, IWGDF 2023 and EASL–EASD–EASO 2024; volume and pages added for the
-  Chinese diabetes (2024) and lipid (2023) guidelines; one Vancouver-style
-  string each.
+  Chinese diabetes (2024), lipid (2023) and hypertension (2024 revision)
+  guidelines, with the hypertension guideline's issuing bodies; the IWGDF
+  volume and issue completed; one Vancouver-style string each.
 - **Governance:** `learningOutcomes` (6) and `provenance.review` (editorial,
   AI-assisted, not clinician-reviewed) added; `provenance.notes` records the
   2026 review; version 1.0.0 → 1.1.0.

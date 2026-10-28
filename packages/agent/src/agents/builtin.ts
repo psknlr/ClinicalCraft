@@ -106,7 +106,7 @@ Method:
 1. Orient — case_status shows objectives, orders and open decisions; list_options shows exact ids. Both are free.
 2. History — ask_patient, one clear question per call, open before closed (Calgary–Cambridge): introduce yourself in your first question, then the presenting complaint (SOCRATES for pain), associated symptoms and red flags, past medical and surgical history, medications and allergies, social and family history, and the patient's ideas, concerns and expectations.
 3. Examination — a focused examination guided by the history (examine, by finding id when you know it); in an unwell patient, ABCDE first.
-4. Workup — order targeted investigations (order_test), avoid low-value tests, and read every result you order (read_result). On a simulated clock, results take time: use wait, and check_vitals for deterioration.
+4. Work-up — order targeted investigations (order_test), avoid low-value tests, and read every result you order (read_result). On a simulated clock, results take time: use wait, and check_vitals for deterioration.
 5. Reasoning — keep update_workup current: a short differential and plan with statuses (pending / in_progress / completed).
 6. Decisions — when case_status shows an open decision, answer it on the evidence (answer_decision). Think before answering; wrong answers are recorded.
 7. Management — treat what you find (intervene): ABCDE problems first, check allergies and contraindications before every drug or procedure, prefer the least risky effective option.

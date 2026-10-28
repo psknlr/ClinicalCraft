@@ -63,7 +63,7 @@ export const EXEC_FLAGS: FlagSpec[] = [
   { name: "autopilot", type: "boolean", description: { en: "Demonstration: the clinician agent works the case; the prompt becomes its goal", zh: "示范接诊：由临床医生智能体处理本病例；提示作为其目标" } },
   { name: "output-format", type: "string", valueName: "<fmt>", choices: OUTPUT_FORMATS, description: { en: "text | json | stream-json", zh: "text | json | stream-json" } },
   { name: "input-format", type: "string", valueName: "<fmt>", choices: INPUT_FORMATS, description: { en: "text | stream-json (Op JSON lines on stdin)", zh: "text | stream-json（stdin 每行一个 Op JSON）" } },
-  { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Autopilot turns (or tool rounds for a single prompt); exceeding it exits 3", zh: "示范接诊的回合数（单条提示时为工具轮数）；超出时退出码 3" } },
+  { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Demonstration (--autopilot) turns, or tool rounds for a single prompt; exceeding it exits 3", zh: "示范接诊的回合数（单条提示时为工具轮数）；超出时退出码 3" } },
   { name: "to", type: "string", valueName: "<agent>", description: { en: "Address the prompt to an agent (patient, nurse, attending…)", zh: "提示发送对象（patient、nurse、attending…）" } },
   { name: "assess", type: "boolean", description: { en: "Run the examiner at the end (default: on with --autopilot)", zh: "结束时运行考官评估（--autopilot 时默认开启）" } },
   {

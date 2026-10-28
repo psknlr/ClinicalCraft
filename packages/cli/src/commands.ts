@@ -363,11 +363,11 @@ export const ROOT: CommandSpec = {
     },
     {
       name: "eval",
-      summary: { en: "Autopilot (demonstration clinician) benchmark over cases → Markdown + JSON report", zh: "对病例运行示范接诊评测 → Markdown + JSON 报告" },
+      summary: { en: "Demonstration (autopilot) benchmark over cases → Markdown + JSON report", zh: "对病例运行示范接诊评测 → Markdown + JSON 报告" },
       flags: [
         { name: "cases", type: "list", valueName: "<ids|all>", description: { en: "Case ids (comma-separated) or all", zh: "病例 ID（逗号分隔）或 all" } },
         { name: "runs", type: "number", valueName: "<n>", description: { en: "Runs per case (default 1)", zh: "每个病例的运行次数（默认 1）" } },
-        { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Autopilot turns per run", zh: "每次运行的示范接诊回合数" } },
+        { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Demonstration (autopilot) turns per run", zh: "每次运行的示范接诊回合数" } },
         { name: "out", type: "string", valueName: "<report.md>", description: { en: "Write the Markdown report (+ .json beside it)", zh: "写入 Markdown 报告（并在旁边写 .json）" } },
         { name: "json", type: "string", valueName: "<file>", description: { en: "Write the JSON report here", zh: "JSON 报告路径" } },
         { name: "transcripts", type: "boolean", description: { en: "Record session transcripts (off by default)", zh: "记录会话（默认关闭）" } },

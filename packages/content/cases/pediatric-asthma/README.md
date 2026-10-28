@@ -23,26 +23,30 @@
 
 By the end of the case the learner can:
 
-1. Grade the severity of an acute asthma attack in a school-age child at the bedside within minutes —
-   speech, work of breathing, SpO₂, heart and respiratory rate, PEF and the PRAM score — and look
-   actively for life-threatening features.
-2. Start the first-hour treatment for the severity found — inhaled bronchodilators at the right
-   interval, controlled oxygen and an early systemic corticosteroid — without waiting for any test.
-3. Take a focused, risk-oriented history from the parent while treatment runs: reliever use, previous
-   admissions and intensive care, oral steroid courses, controller adherence and inhaler technique,
-   smoke exposure, and a foreign-body screen.
-4. Reassess at 1 hour with the same structured tool, tell expected β₂-agonist effects from
-   deterioration, and escalate (senior review, IV magnesium, PICU/HDU) only for a poor response or
-   life-threatening features.
-5. Apply the discharge criteria and use the visit to improve long-term control: a written asthma
-   action plan, inhaler-technique teach-back, a daily controller with adherence support, a smoke-free
-   home and early follow-up.
-6. Communicate with an anxious parent and a frightened child without blame and at the child's level:
-   explain severity and the plan, address the parent's concerns and confirm by teach-back when to come
-   straight back.
+1. Grade an acute severe asthma attack in a school-age child at the bedside within minutes — speech,
+   work of breathing, SpO₂, heart and respiratory rate, PEF and the PRAM score — and actively
+   exclude life-threatening features (BTS/SIGN 158).
+2. Give the first-hour bundle without delay: inhaled salbutamol every 20 min ×3 (pMDI + spacer or an
+   oxygen-driven nebuliser) with ipratropium, oxygen to SpO₂ 94–98 % and oral prednisolone
+   (1–2 mg/kg, max 40 mg) within the hour.
+3. Take a focused, risk-oriented history from the parent while treatment runs: reliever use,
+   previous admissions, intensive care or intubation, oral steroid courses, controller adherence and
+   inhaler technique, smoke exposure, and a foreign-body screen.
+4. Reassess at 1 hour with the same structured tool, recognise a good response and the expected
+   β₂-agonist effects (tachycardia, tremor, hypokalaemia, hyperglycaemia, raised lactate), and keep
+   IV magnesium, senior review and PICU/HDU for a poor response or life-threatening features.
+5. Apply the discharge criteria (room-air SpO₂ > 94 %, stable on 3–4-hourly salbutamol, PEF > 75 %
+   predicted) and use the visit to improve long-term control: a written action plan,
+   inhaler-technique teach-back, a daily controller with adherence support, a smoke-free home and
+   review within 2 working days.
+6. Communicate with an anxious, guilty parent and a frightened child: discuss adherence without
+   blame, address steroid worries and the expectation of antibiotics, and confirm by teach-back when
+   to come straight back.
 
-These are `learningOutcomes` in `case.json`. Because the case card shows them before play, they state
-the standard without this child's severity, findings or the decisions' answers.
+These are `learningOutcomes` in `case.json`. Written for the debrief, they name this child's
+severity, the treatment bundle and the decisions' answers, so front-ends show them before play only
+behind a closed **Learning outcomes (6) · may reveal the diagnosis** disclosure and list them in
+every debrief (CASE_AUTHORING §9.4, GLOSSARY §4).
 
 ## Clinical summary (spoilers)
 
@@ -497,7 +501,8 @@ because none could be confirmed; guideline documents 1–4 have none.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 
-* Added six `learningOutcomes` and `provenance.review` (status `editorial`, the guidance checked).
+* Added six `learningOutcomes` — specific and written for the debrief (CASE_AUTHORING §9.4) — and
+  `provenance.review` (status `editorial`, the guidance checked).
 * **Chest X-ray report:** it read "Portable AP chest X-ray" although the film is departmental (no
   `performedAt: "bedside"`, so in embodied mode he is taken to X-ray) — now "Chest X-ray (AP)" in both
   languages.
@@ -537,12 +542,12 @@ PEF 81%，完成行动计划、吸入技术回示、每日控制药、无烟建�
 “疲劳”（需静脉硫酸镁和上级评估）和“危及生命”（需收入PICU/HDU）分支。
 
 **学习目标。**
-1. 数分钟内于床旁评估学龄儿童急性哮喘发作的严重程度（说话能力、呼吸做功、SpO₂、心率、呼吸频率、PEF及PRAM），并主动排查危及生命征象。
-2. 按所判断的严重程度立即给予第1小时治疗（按正确间隔吸入支气管舒张剂、控制性氧疗、早期全身激素），不等待任何检查。
-3. 治疗同时向家长采集有针对性的风险病史，包括依从性、吸入技术、烟草暴露并排除异物吸入。
-4. 1小时用同一工具再评估，区分β₂激动剂的预期作用与病情恶化，仅在反应差或危及生命时升级治疗。
-5. 应用出院标准，并借此次就诊改善长期控制（书面行动计划、吸入技术回示、每日控制药、无烟家庭、早期随访）。
-6. 与焦虑的家长和害怕的孩子进行适龄、不带指责的沟通，并用回授法确认何时需要立即返回。
+1. 在数分钟内于床旁判断学龄儿童为急性重度哮喘发作（说话能力、呼吸做功、SpO₂、心率、呼吸频率、PEF及PRAM评分），并主动排除危及生命的征象（BTS/SIGN 158）。
+2. 不延误地给予第1小时治疗：吸入沙丁胺醇每20分钟1次×3（pMDI+储雾罐或氧驱动雾化）并加用异丙托溴铵、吸氧使SpO₂ 94–98%、1小时内口服泼尼松龙（1–2 mg/kg，最大40 mg）。
+3. 在治疗进行的同时向家长采集有针对性的风险病史：急救药使用、既往急诊/住院/重症监护或插管史、口服激素疗程、控制药依从性与吸入技术、烟草暴露，并排除异物吸入。
+4. 1小时用同一结构化工具再评估，识别良好反应及β₂激动剂的预期作用（心动过速、震颤、低钾、高血糖、乳酸升高），仅在反应差或出现危及生命征象时使用静脉硫酸镁、请上级会诊或收入PICU/HDU。
+5. 应用出院标准（吸空气SpO₂ > 94%、稳定于3–4小时一次的沙丁胺醇、PEF > 75%预计值），并借此次就诊改善长期控制：书面行动计划、吸入技术回示、每日控制药及依从性支持、无烟家庭、2个工作日内复诊。
+6. 与焦虑、自责的家长和害怕的孩子沟通：不带指责地讨论依从性，回应对激素的担心和对抗生素的期望，并用回授法确认何时需要立即返回。
 
 **关键决策。** ① 严重度：急性重度发作，无危及生命征象；② 第1小时一线治疗（多选）：吸入沙丁胺醇×3、
 异丙托溴铵×3、吸氧至94–98%、1小时内口服泼尼松龙；③ 1小时反应良好：滴定并停氧、延长沙丁胺醇间隔、完成激素疗程；
@@ -551,4 +556,4 @@ PEF 81%，完成行动计划、吸入技术回示、每日控制药、无烟建�
 **复盘要点（PEARLS）。** 先谈感受，再复述到院、第1小时和4小时的变化；分析环节聚焦：严重度依据与危及生命征象；
 支气管舒张剂和激素为何要早；1小时心率150是药物作用而非恶化；为何不需要胸片、血气和抗生素；如何不带指责地讨论
 停药与激素顾虑；出院前必须满足什么、如何防止再次发作。指南差异可作讨论点：GINA 2026据公开摘要下调了氧疗阈值，
-中国2025指南急性发作时将雾化ICS与SABA联用。本病例为AI辅助编写、经编辑审核的教学材料，尚未经执业医师审核。
+中国2025指南急性发作时将雾化ICS与SABA联用。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核。

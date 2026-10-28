@@ -29,27 +29,30 @@
 
 By the end of the case the learner can:
 
-1. Recognise from sudden airway, breathing or circulation compromise after a likely trigger (WAO 2020
-   criteria) that the reaction is life-threatening, without waiting for a rash, a blood-pressure
-   threshold or a laboratory result.
-2. Give the first-line drug within minutes at the correct dose, concentration, route and site, using
-   closed-loop communication, and repeat it after a structured 5-minute reassessment when the
-   response is inadequate.
-3. Position a hypotensive, breathless patient safely and transfer her lying flat on a trolley; never
-   sit, stand or walk her while she is hypotensive.
-4. Give supportive care alongside first-line treatment — oxygen, IV fluid, a bronchodilator for
-   persisting bronchospasm — keeping antihistamines and corticosteroids as adjuncts once she is
-   stable.
+1. Recognise anaphylaxis clinically — sudden onset after a likely trigger with airway, breathing or
+   circulation compromise (WAO 2020) — without waiting for a blood-pressure threshold, a rash or a
+   tryptase.
+2. Give IM adrenaline 0.5 mg (0.5 mL of 1 mg/mL) into the anterolateral thigh within 5 minutes,
+   using closed-loop communication, and repeat the same dose after a structured 5-minute
+   reassessment when airway, breathing or circulation are not clearly better.
+3. Position a hypotensive, breathless patient safely (flat with legs raised, head and shoulders
+   slightly up), never sit, stand or walk her while hypotensive, and transfer her lying flat on a
+   trolley.
+4. Add supportive care in the right order — high-flow oxygen, an IV crystalloid bolus, nebulised
+   salbutamol for bronchospasm that persists after adrenaline — keeping antihistamines and
+   corticosteroids as adjuncts once she is stable.
 5. Time the mast-cell tryptase samples (one as soon as resuscitation is under way, one at 1–2 h, a
    baseline ≥ 24 h after recovery) and interpret them with the 1.2 × baseline + 2 µg/L rule, never
    letting sampling delay treatment.
-6. Set the observation period from the RCUK 2021 / NICE NG258 tiers and plan a safe discharge:
-   adrenaline auto-injectors with teach-back training, a written action plan and specialist allergy
-   referral.
+6. Set the observation period from the RCUK 2021 / NICE NG258 tiers (≥ 12 h after resolution when
+   breathing was severely compromised) and plan discharge with two adrenaline auto-injectors,
+   teach-back training, a written action plan and an allergy referral for venom immunotherapy.
 
-These are `learningOutcomes` in `case.json`. Because the case card shows them before play, they
-state the standard without naming the diagnosis, this patient's findings or the decisions' answers
-(the title, summary and triage note do not name it either).
+These are `learningOutcomes` in `case.json`. Written for the debrief, they name the diagnosis, the
+drug and dose and the decisions' answers, so front-ends show them before play only behind a closed
+**Learning outcomes (6) · may reveal the diagnosis** disclosure and list them in every debrief
+(CASE_AUTHORING §9.4, GLOSSARY §4). The title, summary and triage note still do not name the
+diagnosis.
 
 ## Clinical summary (spoilers)
 
@@ -560,7 +563,8 @@ T/CADERM 3008—2019 have no DOI.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 
-* Added six `learningOutcomes` and `provenance.review` (status `editorial`, the guidance checked);
+* Added six `learningOutcomes` — specific and written for the debrief (CASE_AUTHORING §9.4) — and
+  `provenance.review` (status `editorial`, the guidance checked);
   `provenance.notes` names NICE NG258 (2026).
 * References in one Vancouver style with verified DOIs (WAO 2020, EAACI 2021, AAAAI/ACAAI 2020 and
   2023, EAACI 2018); the 2020 practice parameter now carries its full title; NICE NG258 carries its
@@ -601,12 +605,12 @@ RR 26次/分、SpO₂ 92%。诊断：蜜蜂毒液所致严重过敏反应（过�
 平卧推床转运急诊；因严重呼吸受累留观≥12小时，出院带2支自动注射笔、培训与书面计划，转诊变态反应专科。
 
 **学习目标。**
-1. 依据可能诱因后急性出现的气道、呼吸或循环受累（WAO 2020标准）判断反应已危及生命，不等待皮疹、血压阈值或化验结果。
-2. 数分钟内经闭环沟通，以正确的剂量、浓度、途径和部位给予一线药物；5分钟时系统再评估，反应不足即重复。
-3. 为低血压且呼吸困难的患者安全摆放体位，平卧推床转运；低血压时绝不让她坐起、站立或步行。
-4. 在一线治疗的同时给予支持治疗（吸氧、静脉补液、针对持续支气管痉挛的支气管扩张剂），抗组胺药和糖皮质激素仅作辅助。
-5. 按时采集类胰蛋白酶并按“1.2×基础值 + 2 µg/L”解读，绝不因采样延误治疗。
-6. 依据RCUK 2021/NICE NG258分层确定观察时长，并安排安全出院：自动注射笔及回示培训、书面应急计划和专科转诊。
+1. 依据临床表现识别严重过敏反应——可能过敏原暴露后急性起病，伴气道、呼吸或循环受累（WAO 2020）——不等待低血压阈值、皮疹或类胰蛋白酶结果。
+2. 5分钟内经闭环沟通，于大腿前外侧肌注肾上腺素0.5 mg（1 mg/mL溶液0.5 mL）；5分钟时系统再评估，若气道、呼吸或循环未明显好转即重复同剂量。
+3. 为低血压且呼吸困难的患者安全摆放体位（平卧抬腿、头肩稍抬高），低血压时绝不让她坐起、站立或步行，并平卧推床转运。
+4. 按正确顺序加用支持治疗——高流量吸氧、静脉晶体液扩容、对肾上腺素后仍持续的支气管痉挛雾化沙丁胺醇——抗组胺药和糖皮质激素只作为稳定后的辅助用药。
+5. 按时采集类胰蛋白酶（复苏开始后尽早一份、1–2小时一份、恢复≥24小时后基础值），按“1.2×基础值 + 2 µg/L”规则解读，绝不因采样延误治疗。
+6. 依据RCUK 2021/NICE NG258分层确定观察时长（严重呼吸受累者症状缓解后≥12小时），并安排出院：2支肾上腺素自动注射笔、回示培训、书面应急计划及变态反应专科转诊评估蜂毒免疫治疗。
 
 **关键决策。** ① 诊断标准（多选）：接触过敏原后急性起病，气道、呼吸、循环、皮肤黏膜受累（不需要类胰蛋白酶，
 既往大局部反应不是标准）；② 一线治疗：肾上腺素0.5 mg肌注于大腿前外侧，5分钟无改善重复；③ 去向：
@@ -614,5 +618,5 @@ RR 26次/分、SpO₂ 92%。诊断：蜜蜂毒液所致严重过敏反应（过�
 
 **复盘要点（PEARLS）。** 先谈感受，再请学员复述从长椅到急诊的经过；分析环节聚焦：肾上腺素何时给、为何不能
 更早；医嘱复述与1:10 000的十倍剂量错误；血压决定体位；5分钟再评估与第二剂；抗组胺药和激素的位置；为何留观
-过夜、出院要带什么。最后请学员总结下一次严重过敏反应前五分钟要做的三件事。本病例为AI辅助编写、经编辑审核的
+过夜、出院要带什么。最后请学员总结下一次严重过敏反应前五分钟要做的三件事。本病例为人工智能辅助编写、经编辑审核的
 教学材料，尚未经执业医师审核。
