@@ -1,18 +1,19 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653413",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "长期咳喘突然加重 · 74岁男性",
-    "en": "Acute worsening of longstanding breathlessness · man aged 74"
+    "en": "Acute worsening of longstanding breathlessness · 74-year-old man"
   },
   "summary": {
-    "zh-CN": "长期肺病患者静息气促加重，接受治疗后仍迅速恶化；对比血气、影像与病原资料，明确安全升级和证据边界。",
-    "en": "A patient with longstanding lung disease worsens at rest and deteriorates despite treatment; compare gases, imaging and microbiology to assess escalation and evidentiary limits."
+    "zh-CN": "一位长期肺病患者静息气促加重，接受治疗后数小时内再度恶化。对比连续血气、影像与病原资料，权衡升级与治疗目标，并明确证据边界。",
+    "en": "A man with longstanding lung disease worsens at rest and deteriorates again within hours of treatment. Compare serial gases, imaging and microbiology to weigh escalation and goals of care, and state the evidentiary limits."
   },
   "specialty": [
     "respiratory-medicine",
-    "critical-care"
+    "critical-care",
+    "traditional-chinese-medicine"
   ],
   "difficulty": 4,
   "setting": "inpatient",
@@ -21,30 +22,70 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "解读连续血气，识别慢性代偿基础上的急性高碳酸血症呼吸衰竭与无创通气失败。",
+      "en": "Interpret serial blood gases to recognise acute-on-chronic hypercapnic respiratory failure and non-invasive-ventilation failure."
+    },
+    {
+      "zh-CN": "按 2016 国际工作组框架评估疑似特发性肺纤维化急性加重（AE-IPF），并搜寻其他可逆病因。",
+      "en": "Assess suspected acute exacerbation of idiopathic pulmonary fibrosis (AE-IPF) by the 2016 International Working Group framework, and search for other reversible contributors."
+    },
+    {
+      "zh-CN": "按 EORTC/MSGERC 2020 标准区分气道定植与侵袭性真菌病，审慎看待痰培养结果。",
+      "en": "Distinguish airway colonisation from invasive fungal disease (EORTC/MSGERC 2020) and interpret a sputum culture with caution."
+    },
+    {
+      "zh-CN": "在特发性肺纤维化急性加重中，于有创升级前开展治疗目标讨论。",
+      "en": "Hold a goals-of-care discussion before escalation in AE-IPF."
+    },
+    {
+      "zh-CN": "识别附子（黑顺片）的毒性与用药安全，并说明在多重同期治疗下单例归因的局限。",
+      "en": "Recognise aconite (processed aconite) toxicity and medication safety, and state the limits of single-case attribution under multiple concurrent treatments."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
-    "historical-review"
+    "historical-review",
+    "traditional-chinese-medicine"
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "何政恆; 黃卓健; 冼慧雯. 中西醫結合治療特發性肺纖維化合併肺炎1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.022",
+    "citation": "何政恒, 黄卓健, 冼慧雯. 中西医结合治疗特发性肺纤维化合并肺炎1例. 镜湖医学. 2025;25(2):65-66. doi:10.12408/j.issn2223-4462.2025.02.022",
     "doi": "10.12408/j.issn2223-4462.2025.02.022",
     "authors": [
-      "何政恆",
-      "黃卓健",
+      "何政恒",
+      "黄卓健",
       "冼慧雯"
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例（中医专栏）改写，原文为繁体，本病例用简体。保留年龄、性别、病程、连续血气、影像与病原、超声、西医与中医诊断、治疗经过（含破格救心汤与附子剂量）及转归；姓名为化名，医院、城市、日历日期已去除，时间以相对时间表示。原文未记载陪同者；因患者谵妄、重度气促，增设一名陪同家属（儿子）作为教学角色代述病史。对话、问题、决策与评分为教学设计，未记录的数据保持未知。",
+      "en": "Adapted from a published case report (a TCM column); the source is in traditional characters and this case uses simplified characters. Age, sex, course, serial blood gases, imaging and microbiology, the echocardiogram, the Western and TCM diagnoses, the treatment course (including the 破格救心汤 decoction and the aconite dose) and the outcome are retained; names are pseudonyms and the hospital, city and calendar dates are removed, with time given relatively. The report records no companion; because the patient is delirious and severely breathless, a companion (his son) is added as a teaching device to give the history. Dialogue, questions, decisions and scoring are educational design; unrecorded data remain unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ATS/ERS/JRS/ALAT 2022 IPF/PPF",
+        "AE-IPF International Working Group report 2016",
+        "EORTC/MSGERC 2020 invasive fungal disease definitions",
+        "《中国药典》2020年版（附子）"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由呼吸、重症或中医专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a respiratory, intensive care or traditional-Chinese-medicine physician review it before teaching use."
+      }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
-    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化；中药方剂仅为病例记录，不作疗效或安全性背书。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated, and the herbal prescription is recorded only, not endorsed for efficacy or safety."
   },
   "patient": {
     "displayName": {
@@ -54,59 +95,83 @@
     "age": 74,
     "sex": "male",
     "chiefComplaint": {
-      "zh-CN": "咳痰伴喘憋9年，加重4天",
-      "en": "Nine years of cough and breathlessness, worse for four days"
+      "zh-CN": "间断咳嗽、咳痰伴喘憋9年，加重4天",
+      "en": "Intermittent cough and sputum with breathlessness for 9 years, worse for 4 days"
     },
     "triageNote": {
-      "zh-CN": "长期肺病患者静息气促加重，接受治疗后仍迅速恶化；对比血气、影像与病原资料，明确安全升级和证据边界。",
-      "en": "A patient with longstanding lung disease worsens at rest and deteriorates despite treatment; compare gases, imaging and microbiology to assess escalation and evidentiary limits."
+      "zh-CN": "74岁男性，间断咳嗽、咳痰伴喘憋9年，4天来静息时也胸闷气促、下不了床，由儿子陪同入院。入院测体温36.5℃、心率118次/分、呼吸47次/分、血压145/89 mmHg，强迫体位、表情痛苦、谵妄。入院数小时内病情再度变化。",
+      "en": "74-year-old man with 9 years of intermittent cough, sputum and breathlessness, for 4 days breathless and unable to get out of bed even at rest, brought in by his son. On admission T 36.5 °C, HR 118/min, RR 47/min, BP 145/89 mmHg, in a forced posture, distressed and delirious. His condition changed again within hours of admission."
     },
     "tags": [
       {
-        "zh-CN": "咳痰伴喘憋9年，加重4天",
-        "en": "Nine years of cough and breathlessness, worse for four days"
+        "zh-CN": "慢性咳喘",
+        "en": "Chronic cough and breathlessness"
+      },
+      {
+        "zh-CN": "静息气促",
+        "en": "Breathless at rest"
+      },
+      {
+        "zh-CN": "高龄",
+        "en": "Elderly"
+      },
+      {
+        "zh-CN": "谵妄",
+        "en": "Delirium"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "长期肺病的老人，这次喘得很重，还迷糊、看见不存在的东西；大多由儿子代述。",
+        "en": "An elderly man with longstanding lung disease, now severely breathless, confused and seeing things that aren't there; his son answers for him."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "只能断续蹦出几个字，一直喘；说话常接不上，由儿子补充。",
+        "en": "Only a few broken words at a time, constantly gasping; often loses the thread, and his son fills in."
       },
-      "affect": "calm",
+      "healthLiteracy": "low",
+      "affect": "breathless",
       "openingLine": {
-        "zh-CN": "咳嗽咳痰和喘憋已有9年，最近4天更重，静息时也胸闷。",
-        "en": "Cough, sputum and breathlessness have lasted nine years and worsened over four days, with chest tightness even at rest."
+        "zh-CN": "（儿子）他这几天喘得下不了床，坐着躺着都憋，晚上还说胡话、说看见东西。",
+        "en": "(Son) He's been too breathless to get out of bed these last few days; sitting or lying, he can't get his breath, and at night he talks nonsense and says he sees things."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
+      "concerns": [
+        {
+          "zh-CN": "（儿子）他是不是撑不住了？还有别的办法吗？",
+          "en": "(Son) Is he not going to make it? Is there anything else that can be done?"
+        },
+        {
+          "zh-CN": "（儿子）这病还能不能好？",
+          "en": "(Son) Can this illness get better at all?"
+        }
+      ],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "患者谵妄、重度气促，不能可靠叙述；病史由床旁儿子代述，或作诚实旁白。只说病历里有的内容，不编造未记录的症状、数字或诊断。",
+        "en": "The patient is delirious and severely breathless and cannot give a reliable account; the history is given by his son at the bedside, or as an honest narration. State only what is in the notes; never invent symptoms, numbers or diagnoses that are not recorded."
       },
       "companion": {
-        "role": "carer",
+        "role": "child",
         "name": {
-          "zh-CN": "陪同者（教学角色）",
-          "en": "Companion (educational role)"
+          "zh-CN": "蒋文斌（患者儿子，化名）",
+          "en": "Jiang Wenbin (his son, pseudonym)"
         },
         "persona": {
-          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
-          "en": "Relays only the reported history without inventing witnessed events."
+          "zh-CN": "守在床边的儿子，照顾父亲多年，着急但尽量把病史说清楚；只转述病历里记录的事。",
+          "en": "His son at the bedside, who has cared for his father for years — anxious but trying to give the history clearly; relays only what the record contains."
         },
         "answersHistory": true
       }
     },
     "appearance": {
       "stature": "adult",
-      "gown": true
+      "gown": true,
+      "accessory": "oxygen-mask"
     },
-    "posture": "lying"
+    "posture": "sitting"
   },
   "phases": [
     {
@@ -120,8 +185,8 @@
     {
       "id": "workup",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "入院数小时后恶化与关键决策",
+        "en": "Deterioration within hours and key decisions"
       },
       "learnerSwitchable": true
     },
@@ -136,6 +201,12 @@
         "all": [
           {
             "decided": "diagnosis"
+          },
+          {
+            "decided": "fungal"
+          },
+          {
+            "decided": "ventilation"
           },
           {
             "decided": "management"
@@ -160,185 +231,287 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "这次症状持续多久？",
-        "en": "How long has this worsening lasted?"
+        "zh-CN": "这次是因为什么来的？喘了多久了？",
+        "en": "What brought him in? How long has the breathlessness been going on?"
       },
       "answer": {
-        "zh-CN": "咳嗽咳痰和喘憋已有9年，最近4天更重，静息时也胸闷。",
-        "en": "Cough, sputum and breathlessness have lasted nine years and worsened over four days, with chest tightness even at rest."
+        "zh-CN": "他咳嗽、咳痰、喘憋有九年了，断断续续的，这四天一下子重了，坐着躺着都胸闷，下不了床。",
+        "en": "He's had a cough, phlegm and breathlessness for nine years, on and off, but these four days it suddenly got much worse — tight in the chest sitting or lying, and he can't get out of bed."
       },
       "keywords": {
         "zh-CN": [
-          "这次症状持续多久？",
-          "喘憋"
+          "喘",
+          "喘憋",
+          "气促",
+          "咳嗽",
+          "咳痰",
+          "多久",
+          "几年",
+          "加重",
+          "胸闷",
+          "怎么不舒服"
         ],
         "en": [
-          "How long has this worsening lasted?",
-          "breathlessness"
+          "breathless",
+          "breathlessness",
+          "cough",
+          "sputum",
+          "how long",
+          "years",
+          "worse",
+          "chest tightness",
+          "whatbringshimin"
         ]
       },
       "disclosure": "volunteer",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "function",
       "topic": "functional",
       "question": {
-        "zh-CN": "最近活动能力怎样？",
-        "en": "How has activity tolerance changed?"
+        "zh-CN": "最近活动能力怎么样？",
+        "en": "How has his activity tolerance changed recently?"
       },
       "answer": {
-        "zh-CN": "活动耐力逐年下降，这几天不能下床，稍动就更喘。",
-        "en": "Exercise tolerance has declined over time; recently he cannot get out of bed and minimal movement worsens breathlessness."
+        "zh-CN": "这几年走路越来越喘，这几天床都下不了，稍微一动就喘得厉害。",
+        "en": "He's been getting more breathless walking for years; these last few days he can't get out of bed, and the slightest movement leaves him gasping."
       },
       "keywords": {
         "zh-CN": [
-          "最近活动能力怎样？",
-          "活动耐力"
+          "活动能力",
+          "活动耐力",
+          "走路喘",
+          "能不能下床",
+          "活动后气促",
+          "体力",
+          "日常活动",
+          "走几步",
+          "活动受限",
+          "爬楼"
         ],
         "en": [
-          "How has activity tolerance changed?",
-          "activity tolerance"
+          "activity tolerance",
+          "exercise tolerance",
+          "breathless walking",
+          "getoutofbed",
+          "exertion",
+          "mobility",
+          "how far can he walk"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "pmh",
       "topic": "pmh",
       "question": {
-        "zh-CN": "既往肺病和治疗是什么？",
-        "en": "What lung disease and treatment were previously recorded?"
+        "zh-CN": "以前有什么肺病，一直怎么治的？",
+        "en": "What lung disease has he had, and how has it been treated?"
       },
       "answer": {
-        "zh-CN": "9年前诊断肺间质纤维化，长期用吡非尼酮，期间反复感染。",
-        "en": "Interstitial pulmonary fibrosis was diagnosed nine years earlier, treated with pirfenidone, with recurrent infections."
+        "zh-CN": "九年前查出肺纤维化，一直吃一种抗纤维化的药（吡非尼酮），中间反反复复感染，抗感染后能缓过来，但一年比一年差。",
+        "en": "Nine years ago they found pulmonary fibrosis; he's been on an anti-fibrotic tablet (pirfenidone) ever since, with infections coming back again and again that settle with antibiotics, but he's worse year on year."
       },
       "keywords": {
         "zh-CN": [
-          "既往肺病和治疗是什么？",
-          "肺病"
+          "既往史",
+          "肺纤维化",
+          "肺病史",
+          "吡非尼酮",
+          "抗纤维化",
+          "以前的病",
+          "基础病",
+          "反复感染",
+          "慢性肺病",
+          "多久的病"
         ],
         "en": [
-          "What lung disease and treatment were previously recorded?",
-          "pirfenidone"
+          "past medical history",
+          "pulmonary fibrosis",
+          "pirfenidone",
+          "anti-fibrotic",
+          "lung disease",
+          "recurrent infection",
+          "chronic lung disease"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "遗传"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      }
     },
     {
       "id": "medications",
       "topic": "medications",
       "question": {
-        "zh-CN": "此次已接受哪些治疗？",
-        "en": "What treatment has already been given for this episode?"
+        "zh-CN": "这次住院前后已经用了哪些治疗？",
+        "en": "What treatment has already been given around this admission?"
       },
       "answer": {
-        "zh-CN": "已用抗菌、抗真菌药、甲泼尼龙和无创通气，但仍喘憋。",
-        "en": "Antibacterial and antifungal drugs, methylprednisolone and non-invasive ventilation have been used, but breathlessness persists."
+        "zh-CN": "这次已经打了美罗培南、伏立康唑，还有甲泼尼龙40毫克，戴着无创呼吸机，可他还是喘。到底是入院前就开始的还是入院当时开的，病历没说清楚。",
+        "en": "This time he's already had meropenem and voriconazole, and methylprednisolone 40 mg, and he's on a non-invasive ventilator — but he's still breathless. The notes don't make clear whether these began before admission or at admission."
       },
       "keywords": {
         "zh-CN": [
-          "此次已接受哪些治疗？",
-          "用药"
+          "已经用了什么药",
+          "用过什么治疗",
+          "美罗培南",
+          "伏立康唑",
+          "甲泼尼龙",
+          "无创呼吸机",
+          "抗感染药",
+          "激素",
+          "入院前治疗",
+          "现在用什么药"
         ],
         "en": [
-          "What treatment has already been given for this episode?",
-          "medications"
+          "what treatment already",
+          "meropenem",
+          "voriconazole",
+          "methylprednisolone",
+          "non-invasive ventilator",
+          "antibiotics already",
+          "steroid already",
+          "whattreatmentgiven"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      }
     },
     {
       "id": "exposure",
       "topic": "social",
       "question": {
-        "zh-CN": "接触过粉尘毒物或饲养鸟类吗？",
-        "en": "Was there dust, toxic exposure or bird keeping?"
+        "zh-CN": "有没有接触过粉尘、毒物，或者在家养鸟？",
+        "en": "Any exposure to dust or toxins, or does he keep birds at home?"
       },
       "answer": {
-        "zh-CN": "否认粉尘、毒物、放射物质接触，也没有养鸟。",
-        "en": "Dust, toxic or radiation exposure and bird keeping were denied."
+        "zh-CN": "没有。他没接触过什么粉尘毒物，也不养鸟。",
+        "en": "No. He's not been around dust or toxins, and he doesn't keep birds."
       },
       "keywords": {
         "zh-CN": [
-          "接触过粉尘毒物或饲养鸟类吗？",
-          "粉尘"
+          "粉尘",
+          "毒物",
+          "养鸟",
+          "鸟类接触",
+          "职业暴露",
+          "放射物质",
+          "接触史",
+          "有没有养鸟",
+          "粉尘接触",
+          "化学品"
         ],
         "en": [
-          "Was there dust, toxic exposure or bird keeping?",
-          "bird keeping"
+          "dust",
+          "toxin",
+          "bird keeping",
+          "bird contact",
+          "occupational exposure",
+          "radiation",
+          "keepbirds"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "associated",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "还有哪些伴随问题？",
-        "en": "What associated problems were recorded?"
+        "zh-CN": "还有别的问题吗，比如吃饭、睡觉、大小便、精神？",
+        "en": "Any other problems — eating, sleep, bowels and bladder, his mind?"
       },
       "answer": {
-        "zh-CN": "吃不好、睡不好，便秘、尿少，还有说胡话和幻视。",
-        "en": "Poor eating and sleep, constipation, low urine output, delirium and visual hallucinations were reported."
+        "zh-CN": "吃不下、睡不好，大便解不出，小便也少；晚上还说胡话，说看见不存在的东西。",
+        "en": "He's not eating or sleeping, he's constipated, he's passing little urine, and at night he talks nonsense and says he sees things that aren't there."
       },
       "keywords": {
         "zh-CN": [
-          "还有哪些伴随问题？",
-          "幻视"
+          "吃不下",
+          "睡不好",
+          "便秘",
+          "小便少",
+          "幻视",
+          "说胡话",
+          "谵妄",
+          "精神状态",
+          "看见东西",
+          "大小便"
         ],
         "en": [
-          "What associated problems were recorded?",
-          "hallucinations"
+          "poor appetite",
+          "poor sleep",
+          "constipation",
+          "little urine",
+          "hallucinations",
+          "delirium",
+          "confused",
+          "seeing things",
+          "mental state"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "sputum",
@@ -348,57 +521,84 @@
         "en": "What is the sputum like?"
       },
       "answer": {
-        "zh-CN": "最初间断咳白黏痰。",
-        "en": "Initially there was intermittent white sticky sputum."
+        "zh-CN": "这几天断断续续咳白色黏痰。",
+        "en": "These past few days he's been coughing up white, sticky phlegm on and off."
       },
       "keywords": {
         "zh-CN": [
-          "痰是什么样的？",
-          "痰"
+          "痰",
+          "痰的样子",
+          "白痰",
+          "黏痰",
+          "痰颜色",
+          "咳痰",
+          "痰多不多",
+          "什么痰",
+          "有没有血痰",
+          "痰性状"
         ],
         "en": [
+          "sputum",
+          "phlegm",
+          "white sputum",
+          "sticky sputum",
+          "sputum colour",
           "whatisthesputumlike",
-          "sputum"
+          "productive cough"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "later",
       "topic": "hpi",
       "question": {
-        "zh-CN": "入院5小时后发生什么变化？",
-        "en": "What changed five hours after admission?"
+        "zh-CN": "入院大约5小时后发生了什么变化？",
+        "en": "What changed about 5 hours after admission?"
       },
       "answer": {
-        "zh-CN": "喘憋进一步加重，痰中带血，呼吸急促。",
-        "en": "Breathlessness worsened further, with blood-streaked sputum and rapid breathing."
+        "zh-CN": "住进来大概五个钟头，他喘得更厉害了，痰里带血，还是迷糊、说看见东西，呼吸特别快。",
+        "en": "About five hours after he was admitted he got much more breathless, with blood in his phlegm, still confused and seeing things, breathing very fast."
       },
       "keywords": {
         "zh-CN": [
-          "入院5小时后发生什么变化？",
-          "五小时"
+          "5小时后",
+          "入院后变化",
+          "恶化",
+          "痰中带血",
+          "咳血",
+          "喘得更厉害",
+          "呼吸更快",
+          "五个小时",
+          "再次加重",
+          "病情变化"
         ],
         "en": [
-          "What changed five hours after admission?",
-          "five hours"
+          "5 hours later",
+          "five hours",
+          "deteriorate",
+          "blood-streaked sputum",
+          "haemoptysis",
+          "more breathless",
+          "faster breathing",
+          "worsened"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "workup"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "workup"
+      ]
     },
     {
       "id": "allergies",
@@ -408,207 +608,251 @@
         "en": "Any previous drug or food allergies?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对什么过敏",
+          "有没有过敏",
+          "过敏反应",
+          "药敏",
+          "忌口",
+          "过敏源"
         ],
         "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
+          "allergy",
+          "allergies",
+          "drug allergy",
+          "food allergy",
+          "anyallergies",
+          "allergicto"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "family",
       "topic": "family",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "家里人有类似的肺病或者遗传病吗？",
+        "en": "Any family history of similar lung disease or inherited illness?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
-          "家族史"
+          "家族史",
+          "遗传病",
+          "家里有没有人得过",
+          "家族遗传",
+          "家人肺病",
+          "亲属病史",
+          "家里的病",
+          "遗传",
+          "家族病",
+          "父母有病吗"
         ],
         "en": [
-          "Any family history of similar illness?",
-          "family history"
+          "family history",
+          "inherited",
+          "hereditary",
+          "familyillness",
+          "relatives illness",
+          "genetic"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "smoking",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
-        "en": "Do you smoke?"
+        "zh-CN": "他抽烟吗？",
+        "en": "Does he smoke?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "抽烟",
+          "吸烟",
+          "烟",
+          "抽不抽烟",
+          "吸不吸烟",
+          "有没有烟瘾",
+          "烟草",
+          "平时抽烟吗",
+          "每天几支烟",
+          "烟龄"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco",
+          "doeshesmoke",
+          "smokinghistory",
+          "packyears"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
-        "en": "Do you drink alcohol?"
+        "zh-CN": "他平时喝酒吗？",
+        "en": "Does he drink alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "酒",
+          "喝不喝酒",
+          "饮酒史",
+          "平时喝酒吗",
+          "每天喝酒",
+          "酒量",
+          "有没有喝酒",
+          "饮酒量"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "doeshedrink",
+          "alcoholhistory",
+          "booze"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "occupation",
       "topic": "social",
       "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
+        "zh-CN": "他以前做什么工作，生活环境怎样？",
+        "en": "What did he do for work, and what are his living circumstances?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
+          "工作",
+          "职业",
+          "做什么工作",
+          "退休前",
+          "生活环境",
+          "住在哪",
+          "以前的工作",
+          "工种",
+          "谋生",
+          "干什么的"
         ],
         "en": [
-          "What are your work and living circumstances?",
-          "occupation"
+          "occupation",
+          "job",
+          "whatdidhedo",
+          "retired",
+          "livingcircumstances",
+          "whatwashiswork"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
       },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
-        ],
-        "en": [
-          "How independent were you before this illness?",
-          "independence"
-        ]
-      },
-      "disclosure": "unknown",
       "phases": [
         "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      ]
     },
     {
       "id": "expectations",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "你们最担心什么，希望我们怎么帮他？",
+        "en": "What worries you most, and what are you hoping we can do for him?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个病历里没写，我说不上来。",
+        "en": "That isn't in his notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "害怕",
+          "最担心",
+          "期望",
+          "希望怎么治",
+          "想法",
+          "顾虑",
+          "在意什么",
+          "心里怎么想",
+          "诉求"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worried",
+          "concern",
+          "mostworried",
+          "expectation",
+          "hoping",
+          "whatdoyouwant",
+          "fears"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ]
     }
   ],
   "exam": [
@@ -620,17 +864,39 @@
         "en": "Observe posture and mental state"
       },
       "finding": {
-        "zh-CN": "强迫体位、表情痛苦，有谵妄。",
-        "en": "Distressed with a forced posture and delirium."
+        "zh-CN": "强迫体位、表情痛苦，谵妄。",
+        "en": "In a forced posture, distressed, and delirious."
       },
       "abnormal": true,
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "required": true,
+      "phases": [
+        "initial"
+      ]
+    },
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对入院生命体征",
+        "en": "Check the admission vital signs"
+      },
+      "finding": {
+        "zh-CN": "体温36.5℃、心率118次/分、呼吸47次/分、血压145/89 mmHg。",
+        "en": "Temperature 36.5 °C, heart rate 118/min, respiratory rate 47/min, blood pressure 145/89 mmHg."
+      },
+      "abnormal": true,
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true,
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "respiratory",
@@ -640,60 +906,98 @@
         "en": "Auscultate the lungs"
       },
       "finding": {
-        "zh-CN": "双肺呼吸音粗，双下肺爆裂音及湿啰音。",
-        "en": "Coarse breath sounds with basal crackles bilaterally."
+        "zh-CN": "胸廓对称，双肺呼吸音粗，双下肺可闻及爆裂音及湿啰音。",
+        "en": "Symmetric chest, coarse breath sounds in both lungs, with crackles and rales at both bases."
       },
       "abnormal": true,
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "requires": [
+        "stethoscope"
+      ]
     },
     {
-      "id": "vitals",
-      "system": "vitals",
+      "id": "cardiovascular",
+      "system": "cardiovascular",
       "maneuver": {
-        "zh-CN": "核对入院生命体征",
-        "en": "Review admission vital signs"
+        "zh-CN": "听诊心脏",
+        "en": "Auscultate the heart"
       },
       "finding": {
-        "zh-CN": "体温36.5℃、心率118次/分、呼吸47次/分、血压145/89 mmHg。",
-        "en": "Temperature 36.5°C, heart rate 118/min, respiratory rate 47/min and blood pressure 145/89 mmHg."
+        "zh-CN": "心律齐，各瓣膜听诊区未闻及病理性杂音。",
+        "en": "Regular rhythm, with no pathological murmurs over any valve area."
       },
-      "abnormal": true,
-      "phases": [
-        "initial"
-      ],
+      "abnormal": false,
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ],
+      "requires": [
+        "stethoscope"
+      ]
+    },
+    {
+      "id": "tcm",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "中医舌脉诊察",
+        "en": "TCM tongue and pulse examination"
+      },
+      "finding": {
+        "zh-CN": "舌暗红，苔白腻，脉数沉细弱。",
+        "en": "Tongue dark red with a white greasy coating; pulse rapid, deep, thready and weak."
+      },
+      "abnormal": true,
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ]
+    },
+    {
+      "id": "vitals-5h",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "复查恶化时生命体征",
+        "en": "Re-check the vital signs during deterioration"
+      },
+      "finding": {
+        "zh-CN": "入院约5小时后：呼吸57次/分，血氧饱和度78%，心率120次/分；喘憋加重，痰中带血，幻视。",
+        "en": "About 5 hours after admission: respiratory rate 57/min, SpO₂ 78%, heart rate 120/min; worse breathlessness, blood-streaked sputum and visual hallucinations."
+      },
+      "abnormal": true,
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "workup"
+      ]
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告未记录这一项，不能当作正常或阴性（按去标识化摘要整理）。",
+    "en": "The report does not record this manoeuvre, so it cannot be taken as normal or negative (per the de-identified summary)."
   },
   "investigations": [
     {
       "id": "abg",
       "name": {
-        "zh-CN": "连续血气",
-        "en": "Serial blood gases"
+        "zh-CN": "连续动脉血气",
+        "en": "Serial arterial blood gases"
       },
       "category": "lab",
-      "aliases": {
-        "zh-CN": [
-          "连续血气"
-        ],
-        "en": [
-          "Serial blood gases",
-          "abg"
-        ]
-      },
       "requires": [
         "lab-blood-gas"
       ],
@@ -702,16 +1006,151 @@
       "results": {
         "workup": {
           "text": {
-            "zh-CN": "入院pH 7.430、PaCO₂ 56.3、PaO₂ 76.2 mmHg；5小时后pH 7.149、PaCO₂ 118.5、PaO₂ 20.7 mmHg。对应吸氧参数及采样细节不详。",
-            "en": "Initial pH 7.430, PaCO₂ 56.3 and PaO₂ 76.2 mmHg; five hours later pH 7.149, PaCO₂ 118.5 and PaO₂ 20.7 mmHg. Oxygen settings and sampling details are not specified."
+            "zh-CN": "入院血气示慢性代偿的高碳酸血症（含代谢性碱中毒成分）；约5小时后 pH 明显下降、PaCO₂ 急剧升高，由慢性代偿转为急性失代偿。两次之间无创通气持续进行中。",
+            "en": "The admission gas shows compensated chronic hypercapnia (with a metabolic alkalosis component); about five hours later the pH has fallen sharply and the PaCO₂ risen steeply — a move from chronic compensation to acute decompensation. Non-invasive ventilation was ongoing between the two samples."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [],
-          "available": true
+          "available": true,
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "pH（入院）",
+                "en": "pH (admission)"
+              },
+              "value": 7.43,
+              "unit": "",
+              "refLow": 7.35,
+              "refHigh": 7.45,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "PaCO₂（入院）",
+                "en": "PaCO₂ (admission)"
+              },
+              "value": 56.3,
+              "unit": "mmHg",
+              "refLow": 35,
+              "refHigh": 45,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "PaO₂（入院）",
+                "en": "PaO₂ (admission)"
+              },
+              "value": 76.2,
+              "unit": "mmHg",
+              "refLow": 80,
+              "refHigh": 100,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "HCO₃⁻（入院）",
+                "en": "HCO₃⁻ (admission)"
+              },
+              "value": 37.4,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 26,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "BE（入院）",
+                "en": "BE (admission)"
+              },
+              "value": 13.0,
+              "unit": "mmol/L",
+              "refLow": -2,
+              "refHigh": 2,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "pH（5小时后）",
+                "en": "pH (5 h later)"
+              },
+              "value": 7.149,
+              "unit": "",
+              "refLow": 7.35,
+              "refHigh": 7.45,
+              "flag": "LL"
+            },
+            {
+              "analyte": {
+                "zh-CN": "PaCO₂（5小时后）",
+                "en": "PaCO₂ (5 h later)"
+              },
+              "value": 118.5,
+              "unit": "mmHg",
+              "refLow": 35,
+              "refHigh": 45,
+              "flag": "HH"
+            },
+            {
+              "analyte": {
+                "zh-CN": "PaO₂（5小时后）",
+                "en": "PaO₂ (5 h later)"
+              },
+              "value": 20.7,
+              "unit": "mmHg",
+              "refLow": 80,
+              "refHigh": 100,
+              "flag": "LL"
+            },
+            {
+              "analyte": {
+                "zh-CN": "HCO₃⁻（5小时后）",
+                "en": "HCO₃⁻ (5 h later)"
+              },
+              "value": 40.3,
+              "unit": "mmol/L",
+              "refLow": 22,
+              "refHigh": 26,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "BE（5小时后）",
+                "en": "BE (5 h later)"
+              },
+              "value": 9.2,
+              "unit": "mmol/L",
+              "refLow": -2,
+              "refHigh": 2,
+              "flag": "H"
+            }
+          ],
+          "note": {
+            "zh-CN": "同期血氧饱和度78%与 PaO₂ 20.7 mmHg 在生理上不相符（PaO₂ 约 21 mmHg 时氧饱和度应远低于50%，酸血症时更低）；原文未说明标本类型，两值照录不作校正。按 Henderson–Hasselbalch 估算，入院 pH≈7.44、5小时后≈7.15，与所给数值一致。",
+            "en": "The simultaneous SpO₂ of 78% and PaO₂ of 20.7 mmHg are physiologically discordant: at a PaO₂ of about 21 mmHg saturation would be well below 50%, lower still with acidaemia. The report does not state the sample type, so both values are kept uncorrected. By Henderson–Hasselbalch the pH works out at about 7.44 on admission and 7.15 at 5 hours, matching the reported values."
+          },
+          "date": {
+            "zh-CN": "入院当时与约5小时后",
+            "en": "On admission and about 5 hours later"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "动脉血气",
+          "连续血气",
+          "二氧化碳分压",
+          "氧分压"
+        ],
+        "en": [
+          "abg",
+          "arterial blood gas",
+          "serial blood gas",
+          "blood gas",
+          "paco2"
+        ]
       }
     },
     {
@@ -721,35 +1160,50 @@
         "en": "Chest CT"
       },
       "category": "imaging",
-      "aliases": {
-        "zh-CN": [
-          "胸部CT"
-        ],
-        "en": [
-          "Chest CT",
-          "ct"
-        ]
-      },
       "requires": [
         "ct"
       ],
-      "risk": "none",
+      "risk": "moderate",
       "value": "essential",
       "results": {
         "workup": {
           "text": {
-            "zh-CN": "双肺间质改变、炎症及纤维化，透光度下降；右肺体积小，胸膜增厚钙化。图注另述皮下和纵隔气肿及少量气胸，正文未完整说明其时间与处理。",
-            "en": "Bilateral interstitial abnormalities, inflammation and fibrosis with reduced aeration, a small right lung and pleural thickening/calcification. The caption additionally describes subcutaneous/mediastinal emphysema and a small pneumothorax, with timing and treatment incompletely detailed."
+            "zh-CN": "双肺间质病变并炎症，部分纤维化，双肺透光度进一步减低；右肺体积小，右肺多发小结节；双侧胸膜肥厚钙化。图注另述：双肺弥漫磨玻璃影、蜂窝影及网格影，左肺明显，支气管管束增粗紊乱，小叶间隔及小叶内间质增厚，双侧皮下气肿，少量气胸，颈部及纵隔气肿。",
+            "en": "Bilateral interstitial disease with inflammation and partial fibrosis, with further loss of aeration; a small right lung with multiple small right-lung nodules; bilateral pleural thickening and calcification. The figure caption adds: diffuse ground-glass, honeycombing and reticulation, left more than right, thickened and disordered bronchovascular bundles, interlobular and intralobular septal thickening, bilateral subcutaneous emphysema, a small pneumothorax, and neck and mediastinal emphysema."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
+          "available": true,
+          "note": {
+            "zh-CN": "皮下/纵隔气肿与少量气胸见于图注；原文未说明其出现时间与处理，也未说明本次CT相对于5小时恶化的时间。",
+            "en": "The subcutaneous/mediastinal emphysema and small pneumothorax are described in the figure caption; the report does not state when they appeared or how they were handled, nor the CT's timing relative to the 5-hour deterioration."
+          },
           "figures": [
             "fig01"
           ],
-          "available": true
+          "date": {
+            "zh-CN": "入院检查（相对恶化的时间未说明）",
+            "en": "Admission investigation (timing relative to the deterioration not stated)"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "胸部CT",
+          "肺CT",
+          "CT",
+          "胸部影像",
+          "肺部CT"
+        ],
+        "en": [
+          "chest ct",
+          "lung ct",
+          "ct",
+          "ct chest",
+          "thoracic ct"
+        ]
       }
     },
     {
@@ -759,15 +1213,6 @@
         "en": "Sputum microbiology"
       },
       "category": "microbiology",
-      "aliases": {
-        "zh-CN": [
-          "痰病原学"
-        ],
-        "en": [
-          "Sputum microbiology",
-          "microbiology"
-        ]
-      },
       "requires": [
         "lab-microbiology"
       ],
@@ -776,70 +1221,202 @@
       "results": {
         "workup": {
           "text": {
-            "zh-CN": "痰真菌培养见酵母样真菌及菌丝；另记录嗜麦芽窄食单胞菌（原文旧称嗜麦芽假单胞菌）。缺乏侵袭性真菌感染的进一步确证资料。",
-            "en": "Sputum fungal culture showed yeast-like fungi and hyphae; Stenotrophomonas maltophilia was also reported under an older name. Further confirmation of invasive fungal infection is not provided."
+            "zh-CN": "痰真菌培养见酵母样真菌及菌丝；病原学另提示嗜麦芽窄食单胞菌（原文旧称嗜麦芽假单胞菌，formerly Pseudomonas maltophilia）。无侵袭性真菌感染的进一步确证资料。",
+            "en": "Sputum fungal culture showed yeast-like fungi and hyphae; Stenotrophomonas maltophilia (reported under its older name, formerly Pseudomonas maltophilia) was also found. There is no further confirmation of invasive fungal infection."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [],
-          "available": true
+          "available": true,
+          "note": {
+            "zh-CN": "痰为非无菌部位标本；无组织活检或无菌部位培养等侵袭性真菌病的进一步确证资料。药敏结果原文未列出。",
+            "en": "Sputum is a non-sterile-site specimen; there is no tissue biopsy or sterile-site culture to further confirm invasive fungal disease. Susceptibility results are not listed in the report."
+          },
+          "date": {
+            "zh-CN": "入院检查",
+            "en": "Admission investigation"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "痰培养",
+          "痰病原",
+          "真菌培养",
+          "病原学",
+          "痰检"
+        ],
+        "en": [
+          "sputum culture",
+          "sputum microbiology",
+          "fungal culture",
+          "microbiology",
+          "sputum"
+        ]
       }
     },
     {
       "id": "labs",
       "name": {
-        "zh-CN": "血常规和炎症指标",
-        "en": "Blood count and inflammatory markers"
+        "zh-CN": "血常规、炎症指标与BNP",
+        "en": "Blood count, inflammatory markers and BNP"
       },
       "category": "lab",
-      "aliases": {
-        "zh-CN": [
-          "血常规和炎症指标"
-        ],
-        "en": [
-          "Blood count and inflammatory markers",
-          "labs"
-        ]
-      },
       "requires": [
-        "lab-hematology"
+        "lab-hematology",
+        "lab-chemistry"
       ],
       "risk": "none",
       "value": "essential",
       "results": {
         "workup": {
           "text": {
-            "zh-CN": "白细胞10.28×10⁹/L，中性粒细胞89.8%，血红蛋白74 g/L，CRP 12.9 mg/L；恶化时BNP 364 ng/L。",
-            "en": "WBC 10.28×10⁹/L, neutrophils 89.8%, haemoglobin 74 g/L and CRP 12.9 mg/L; BNP during deterioration was 364 ng/L."
+            "zh-CN": "白细胞升高、中性粒细胞比例高、血红蛋白低、CRP轻度升高；恶化时BNP升高，结合超声提示心功能受累。",
+            "en": "A raised white-cell count with a high neutrophil fraction, a low haemoglobin and a mildly raised CRP; BNP was raised at deterioration, which with the echocardiogram suggests cardiac involvement."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [],
-          "available": true
+          "available": true,
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞计数",
+                "en": "White cell count"
+              },
+              "value": 10.28,
+              "unit": "×10⁹/L",
+              "refLow": 3.5,
+              "refHigh": 9.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophil fraction"
+              },
+              "value": 89.8,
+              "unit": "%",
+              "refLow": 40,
+              "refHigh": 75,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 74,
+              "unit": "g/L",
+              "refLow": 130,
+              "refHigh": 175,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "C-reactive protein"
+              },
+              "value": 12.9,
+              "unit": "mg/L",
+              "refLow": 0,
+              "refHigh": 10,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "B型钠尿肽（BNP，恶化时）",
+                "en": "BNP (at deterioration)"
+              },
+              "value": 364,
+              "unit": "ng/L",
+              "refLow": 0,
+              "refHigh": 100,
+              "flag": "H"
+            }
+          ],
+          "date": {
+            "zh-CN": "入院检查（BNP为恶化时）",
+            "en": "Admission investigation (BNP at deterioration)"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "炎症指标",
+          "BNP",
+          "C反应蛋白",
+          "血红蛋白"
+        ],
+        "en": [
+          "blood count",
+          "cbc",
+          "inflammatory markers",
+          "bnp",
+          "crp",
+          "haemoglobin"
+        ]
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "超声心动图",
+        "en": "Echocardiogram"
+      },
+      "category": "imaging",
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "二尖瓣、三尖瓣少量返流，左心室舒张功能减低。右心大小、肺动脉压未报告。",
+            "en": "Trace mitral and tricuspid regurgitation, with reduced left-ventricular diastolic function. The right-heart size and pulmonary artery pressure are not reported."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "note": {
+            "zh-CN": "与慢性肺源性心脏病的诊断相关；右心评估缺失限制了对肺心病的判断。",
+            "en": "Relevant to the diagnosis of chronic cor pulmonale; the missing right-heart assessment limits judgement of cor pulmonale."
+          },
+          "date": {
+            "zh-CN": "入院检查",
+            "en": "Admission investigation"
+          }
+        }
+      },
+      "aliases": {
+        "zh-CN": [
+          "超声心动",
+          "心脏彩超",
+          "心超",
+          "心脏超声",
+          "UCG"
+        ],
+        "en": [
+          "echocardiogram",
+          "echo",
+          "cardiac ultrasound",
+          "ucg"
+        ]
       }
     },
     {
       "id": "followup",
       "name": {
         "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "en": "Treatment and follow-up record (chart review)"
       },
       "category": "record",
-      "aliases": {
-        "zh-CN": [
-          "调阅治疗与随访记录"
-        ],
-        "en": [
-          "Review treatment and follow-up record",
-          "followup"
-        ]
-      },
       "requires": [
         "records"
       ],
@@ -848,22 +1425,404 @@
       "results": {
         "followup": {
           "text": {
-            "zh-CN": "原报告在通气、抗感染及激素等基础上加用中医药，多项干预同时变化。10日影像炎症开始吸收，3周后症状减轻并出院；CT纤维化同前。没有证据证明任何单一药物逆转纤维化。",
-            "en": "The report added traditional medicines while respiratory support, antimicrobials and steroids were used and changed concurrently. Inflammatory opacities improved by day 10 and symptoms improved before discharge after three weeks; CT fibrosis was unchanged. The record does not prove reversal of fibrosis by any single treatment."
+            "zh-CN": "西医处置：美罗培南加氟康唑静滴抗感染（此前曾用伏立康唑），布地奈德加异丙托溴铵雾化抗炎解痉平喘，桉柠蒎肠溶胶囊口服化痰，无创呼吸机辅助通气。考虑特发性肺纤维化急性加重，甲泼尼龙由40 mg/日上调至160 mg q12h。考虑肺源性心脏病心衰、病至喘脱，中医以益气固脱、回阳救逆为法，加生脉注射液泵入、中成药四磨汤内服，并予破格救心汤（红参片40克、山茱萸60克、黑顺片60克、生龙骨60克、生牡蛎60克、五味子30克、煅磁石60克、降香10克、沉香9克，大火急煎150 mL，翻渣再煮150 mL，分2次口服）。经上述救治喘憋缓解，血氧维持95–96%。第10天复查胸部CT透亮度较前增加、炎症逐渐吸收，在破格救心汤基础上加用白扁豆15克、蚕沙15克、天花粉15克、石斛20克、升麻6克。治疗约3周后气促憋闷明显减轻，复查胸部CT透亮度增加、炎症吸收，但纤维化同前，出院休养。",
+            "en": "Western management: meropenem plus fluconazole by infusion for infection (voriconazole had been used earlier), nebulised budesonide plus ipratropium for anti-inflammatory bronchodilation, an oral myrtol (桉柠蒎) mucolytic, and non-invasive ventilation. AE-IPF was considered and methylprednisolone was raised from 40 mg/day to 160 mg q12h. For cor pulmonale with heart failure and a dyspnoeic collapse (喘脱), TCM used a 'boost qi, secure collapse, restore yang, rescue from reversal' approach: Shengmai injection by pump, an oral Simo decoction, and the 破格救心汤 decoction (red ginseng 40 g, cornus 60 g, processed aconite [黑顺片] 60 g, dragon bone 60 g, oyster shell 60 g, schisandra 30 g, calcined magnetite 60 g, dalbergia 10 g, aquilaria 9 g; decocted fast to 150 mL, the residue re-decocted to 150 mL, taken in two oral doses). Breathlessness eased and the oxygen saturation held at 95–96%. By day 10 the chest CT showed increased aeration and resolving inflammation, and 白扁豆 15 g, 蚕沙 15 g, 天花粉 15 g, 石斛 20 g and 升麻 6 g were added. After about three weeks the breathlessness was much improved, the chest CT showed increased aeration and resolved inflammation but unchanged fibrosis, and he was discharged to convalesce."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
+          "available": true,
+          "note": {
+            "zh-CN": "历史处置仅作记录，不等于当前推荐，也非疗效或安全性背书。可核对的结局是急性炎症与症状改善、纤维化未变；多种措施同期使用，无法归因于某一药物。破格救心汤含黑顺片（附子的炮制品）60克，涉及附子毒性与用药安全，见复盘的安全要点与管理决策反馈。",
+            "en": "Historical care is recorded, not endorsed as current practice and not an efficacy or safety endorsement. The verifiable endpoint is improvement in acute inflammation and symptoms with unchanged fibrosis; with many measures used together, no single agent can be credited. The 破格救心汤 decoction contains 60 g of 黑顺片 (processed aconite), which raises aconite toxicity and medication safety — see the debrief safety points and the management-decision feedback."
+          },
           "figures": [
             "fig02"
           ],
-          "available": true
+          "date": {
+            "zh-CN": "住院约3周（调阅）",
+            "en": "Over about three weeks of admission (reviewed in the chart)"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "治疗记录",
+          "随访",
+          "转归",
+          "结局",
+          "中药处方"
+        ],
+        "en": [
+          "treatment record",
+          "follow-up",
+          "outcome",
+          "course",
+          "prescription"
+        ]
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {},
+  "interventions": [
+    {
+      "id": "niv-continue",
+      "name": {
+        "zh-CN": "继续/优化无创通气",
+        "en": "Continue/optimise non-invasive ventilation"
+      },
+      "kind": "airway",
+      "requires": [
+        "ventilator"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "继续无创正压通气并优化参数；若无创通气失败且与治疗目标相符，再考虑有创通气。继续前应注意影像图注所示的气漏。",
+        "en": "Continue non-invasive positive-pressure ventilation and optimise the settings; if it fails and it fits the goals of care, consider invasive ventilation. Note the air leak described in the imaging caption before continuing."
+      },
+      "response": {
+        "zh-CN": "本例以无创通气为主要呼吸支持；5小时后一度 PaCO₂ 118.5 mmHg 提示无创通气失败，需重新评估。",
+        "en": "Non-invasive ventilation was the mainstay here; at 5 hours a PaCO₂ of 118.5 mmHg showed it had failed and needed reassessment."
+      },
+      "aliases": {
+        "zh-CN": [
+          "无创通气",
+          "无创呼吸机",
+          "优化无创",
+          "BiPAP",
+          "继续无创"
+        ],
+        "en": [
+          "non-invasive ventilation",
+          "niv",
+          "bipap",
+          "optimise niv",
+          "continue niv"
+        ]
+      },
+      "scope": "medical",
+      "indicatedWhen": {
+        "read": "abg",
+        "phase": "workup"
+      },
+      "setFlags": [
+        "niv-managed"
+      ]
+    },
+    {
+      "id": "intubate",
+      "name": {
+        "zh-CN": "气管插管与有创通气",
+        "en": "Intubation and invasive ventilation"
+      },
+      "kind": "airway",
+      "requires": [
+        "airway"
+      ],
+      "risk": "high",
+      "dose": {
+        "zh-CN": "无创通气失败时的有创机械通气；在特发性肺纤维化急性加重中应先与患者/家属讨论治疗目标，明确升级是否符合意愿与获益。",
+        "en": "Invasive mechanical ventilation for non-invasive-ventilation failure; in AE-IPF, first discuss goals of care with the patient/family so that escalation matches their wishes and the likely benefit."
+      },
+      "response": {
+        "zh-CN": "有创升级是一种选择，但在终末期纤维化中获益有限，需结合治疗目标决定。原报告未行有创通气。",
+        "en": "Invasive escalation is an option, but benefit is limited in end-stage fibrosis and must be decided with the goals of care. The report did not use invasive ventilation."
+      },
+      "aliases": {
+        "zh-CN": [
+          "插管",
+          "气管插管",
+          "有创通气",
+          "有创呼吸机",
+          "机械通气"
+        ],
+        "en": [
+          "intubate",
+          "intubation",
+          "invasive ventilation",
+          "mechanical ventilation"
+        ]
+      },
+      "scope": "medical"
+    },
+    {
+      "id": "controlled-oxygen",
+      "name": {
+        "zh-CN": "控制性氧疗",
+        "en": "Controlled oxygen therapy"
+      },
+      "kind": "oxygen",
+      "requires": [
+        "oxygen"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "在高碳酸血症患者中采用控制性（目标性）氧疗，经文丘里面罩按目标氧饱和度滴定，避免加重二氧化碳潴留。",
+        "en": "Controlled (target-range) oxygen in a hypercapnic patient, titrated by a Venturi mask to a target saturation, avoiding worsening CO₂ retention."
+      },
+      "response": {
+        "zh-CN": "高碳酸血症患者应避免不加控制的高浓度吸氧；按目标氧饱和度滴定。",
+        "en": "Avoid uncontrolled high-concentration oxygen in a hypercapnic patient; titrate to a target saturation."
+      },
+      "aliases": {
+        "zh-CN": [
+          "吸氧",
+          "控制性氧疗",
+          "文丘里面罩",
+          "目标氧疗",
+          "低流量吸氧"
+        ],
+        "en": [
+          "oxygen",
+          "controlled oxygen",
+          "venturi mask",
+          "target oxygen",
+          "titrated oxygen"
+        ]
+      },
+      "device": "venturi-mask",
+      "indicatedWhen": {
+        "read": "abg",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "steroid-escalation",
+      "name": {
+        "zh-CN": "糖皮质激素升级",
+        "en": "Corticosteroid escalation"
+      },
+      "kind": "medication",
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "考虑特发性肺纤维化急性加重时上调激素（原报告由甲泼尼龙40 mg/日升至160 mg q12h）。激素在特发性肺纤维化急性加重中的证据有限，应与控制感染并行、权衡风险。",
+        "en": "Escalate corticosteroids when AE-IPF is considered (the report raised methylprednisolone from 40 mg/day to 160 mg q12h). The evidence for steroids in AE-IPF is limited; run it alongside infection control and weigh the risks."
+      },
+      "response": {
+        "zh-CN": "本例在考虑特发性肺纤维化急性加重后上调激素；获益证据有限，需与感染、血糖、免疫抑制风险权衡。",
+        "en": "Here steroids were escalated once AE-IPF was considered; benefit evidence is limited, to be balanced against infection, glucose and immunosuppression risks."
+      },
+      "aliases": {
+        "zh-CN": [
+          "激素",
+          "甲泼尼龙",
+          "糖皮质激素",
+          "激素升级",
+          "加激素"
+        ],
+        "en": [
+          "corticosteroid",
+          "methylprednisolone",
+          "steroid",
+          "escalate steroid",
+          "increase steroid"
+        ]
+      },
+      "indicatedWhen": {
+        "read": "abg",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "antimicrobials",
+      "name": {
+        "zh-CN": "抗感染治疗",
+        "en": "Antimicrobial therapy"
+      },
+      "kind": "medication",
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "按病原与当地药敏使用抗菌药物（原报告用美罗培南加氟康唑，此前曾用伏立康唑）。痰中酵母样真菌/菌丝多为定植，是否覆盖霉菌应据侵袭性真菌病证据决定。",
+        "en": "Antimicrobials by pathogen and local susceptibility (the report used meropenem plus fluconazole, having used voriconazole earlier). Sputum yeast/hyphae usually reflect colonisation; mould cover should follow evidence of invasive fungal disease."
+      },
+      "response": {
+        "zh-CN": "氟康唑无霉菌活性——若菌丝提示霉菌则覆盖不足；是否需抗霉菌取决于侵袭性真菌病的证据。",
+        "en": "Fluconazole has no mould activity — insufficient cover if the hyphae indicate a mould; whether antimould therapy is needed depends on evidence of invasive fungal disease."
+      },
+      "aliases": {
+        "zh-CN": [
+          "抗感染",
+          "抗生素",
+          "美罗培南",
+          "氟康唑",
+          "抗真菌"
+        ],
+        "en": [
+          "antimicrobial",
+          "antibiotic",
+          "meropenem",
+          "fluconazole",
+          "antifungal"
+        ]
+      },
+      "indicatedWhen": {
+        "read": "microbiology",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "nebulised-bronchodilator",
+      "name": {
+        "zh-CN": "雾化抗炎解痉平喘",
+        "en": "Nebulised anti-inflammatory bronchodilation"
+      },
+      "kind": "medication",
+      "requires": [
+        "nebulizer"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "布地奈德加异丙托溴铵雾化吸入，抗炎解痉平喘（原报告采用）。",
+        "en": "Nebulised budesonide plus ipratropium for anti-inflammatory bronchodilation (as the report used)."
+      },
+      "response": {
+        "zh-CN": "雾化平喘为对症支持，针对可能的气道病变成分（作者曾诊断支气管哮喘）。",
+        "en": "Nebulised therapy is symptomatic support, aimed at any airway component (the authors diagnosed bronchial asthma)."
+      },
+      "aliases": {
+        "zh-CN": [
+          "雾化",
+          "布地奈德",
+          "异丙托溴铵",
+          "平喘",
+          "雾化吸入"
+        ],
+        "en": [
+          "nebuliser",
+          "nebulizer",
+          "budesonide",
+          "ipratropium",
+          "bronchodilator"
+        ]
+      }
+    },
+    {
+      "id": "mucolytic",
+      "name": {
+        "zh-CN": "口服化痰药",
+        "en": "Oral mucolytic"
+      },
+      "kind": "medication",
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "桉柠蒎肠溶胶囊口服化痰（原报告采用）。",
+        "en": "Oral myrtol (桉柠蒎) enteric capsules as a mucolytic (as the report used)."
+      },
+      "response": {
+        "zh-CN": "对症化痰；不改变基础纤维化。",
+        "en": "Symptomatic mucolysis; it does not change the underlying fibrosis."
+      },
+      "aliases": {
+        "zh-CN": [
+          "化痰",
+          "祛痰",
+          "桉柠蒎",
+          "化痰药",
+          "祛痰药"
+        ],
+        "en": [
+          "mucolytic",
+          "expectorant",
+          "myrtol",
+          "sputum clearance"
+        ]
+      }
+    },
+    {
+      "id": "tcm-decoction-aconite",
+      "name": {
+        "zh-CN": "破格救心汤（含高剂量附子/黑顺片）",
+        "en": "Pogejiuxin decoction (with high-dose aconite / 黑顺片)"
+      },
+      "kind": "medication",
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "dose": {
+        "zh-CN": "破格救心汤（含黑顺片 60 克等；黑顺片为附子的炮制品），大火急煎 150 mL，翻渣再煮 150 mL，分2次口服（原报告处方）。",
+        "en": "The 破格救心汤 decoction (including 黑顺片 60 g; 黑顺片 is processed aconite), decocted fast to 150 mL, the residue re-decocted to 150 mL, taken in two oral doses (the report's prescription)."
+      },
+      "response": {
+        "zh-CN": "原报告在喘脱时将此方作为回阳固脱之用；本例不作疗效或安全性背书。",
+        "en": "The report used this decoction to 'restore yang and secure collapse' during the dyspnoeic collapse; the case does not endorse its efficacy or safety."
+      },
+      "aliases": {
+        "zh-CN": [
+          "破格救心汤",
+          "附子",
+          "黑顺片",
+          "中药",
+          "中药汤剂",
+          "回阳救逆"
+        ],
+        "en": [
+          "pogejiuxin",
+          "aconite",
+          "herbal decoction",
+          "tcm decoction",
+          "chinese herbal"
+        ]
+      },
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "附子（黑顺片为其炮制品）含乌头类生物碱，有毒，须先煎久煎；中毒可致麻痹、心律失常、呼吸困难甚至死亡（香港卫生署中药材中毒警示）。60 克应与《中国药典》2020年版「附子」的剂量范围对照（该范围未经在线核实，用于教学前须查阅药典原文）。在低氧、酸血症合并肺源性心脏病的患者中，心律失常风险叠加。不应以中药替代呼吸支持。",
+        "en": "Aconite (黑顺片 is its processed form) contains toxic aconite alkaloids and must be decocted first and long; poisoning can cause paralysis, arrhythmia, breathing difficulty and even death (Hong Kong Department of Health herbal poisoning alert). The 60 g should be compared with the dose range for 附子 in the 2020 Chinese Pharmacopoeia (that range was not verified online — check the Pharmacopoeia text before teaching use). In a hypoxic, acidaemic patient with cor pulmonale the arrhythmia risk is compounded. Herbal treatment must not replace respiratory support."
+      }
+    },
+    {
+      "id": "goals-of-care",
+      "name": {
+        "zh-CN": "治疗目标讨论",
+        "en": "Goals-of-care discussion"
+      },
+      "kind": "consult",
+      "requires": [],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "在升级（尤其有创通气）前，与患者/家属讨论治疗目标、预后与意愿；特发性肺纤维化为进行性不可逆病变，急性加重预后差。",
+        "en": "Before escalation (especially invasive ventilation), discuss goals of care, prognosis and wishes with the patient/family; IPF is progressive and irreversible, and acute exacerbation carries a poor prognosis."
+      },
+      "response": {
+        "zh-CN": "治疗目标讨论应先于有创升级；记录患者意愿并据此制定计划。",
+        "en": "A goals-of-care discussion should precede invasive escalation; record the patient's wishes and plan accordingly."
+      },
+      "aliases": {
+        "zh-CN": [
+          "治疗目标",
+          "goals of care",
+          "沟通病情",
+          "预后沟通",
+          "缓和医疗",
+          "家属沟通"
+        ],
+        "en": [
+          "goals of care",
+          "advance care planning",
+          "prognosis discussion",
+          "palliative",
+          "family discussion"
+        ]
+      },
+      "setFlags": [
+        "goals-discussed"
+      ]
+    }
+  ],
   "objectives": [
     {
       "id": "objective-1",
@@ -872,8 +1831,8 @@
         "en": "Reconstruct the symptom and medication timeline"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "询问主诉、活动能力、既往肺病与本次已用的治疗；资料未载明时保留未知。",
+        "en": "Ask about the presenting complaint, activity tolerance, the past lung disease and the treatment already given; keep unrecorded data unknown."
       },
       "completeWhen": {
         "all": [
@@ -896,11 +1855,11 @@
       "id": "objective-2",
       "title": {
         "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "en": "Check the bedside clues"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "核对一般情况、生命体征与肺部听诊；未测量不等于正常。",
+        "en": "Check the general appearance, vital signs and chest auscultation; unmeasured is not normal."
       },
       "completeWhen": {
         "all": [
@@ -909,6 +1868,9 @@
           },
           {
             "examined": "respiratory"
+          },
+          {
+            "examined": "vitals"
           }
         ]
       }
@@ -916,26 +1878,54 @@
     {
       "id": "objective-3",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "整合血气、影像与病原",
+        "en": "Integrate the gases, imaging and microbiology"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "对比连续血气，核对影像图注，并审慎看待痰培养，再作判断。",
+        "en": "Compare the serial gases, check the imaging caption and read the sputum culture with caution before deciding."
       },
       "completeWhen": {
-        "decided": "diagnosis"
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "fungal"
+          }
+        ]
       }
     },
     {
       "id": "objective-4",
       "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
+        "zh-CN": "决定呼吸支持与治疗目标",
+        "en": "Set respiratory support and goals of care"
       },
       "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+        "zh-CN": "针对无创通气失败决定下一步呼吸支持，并在升级前权衡治疗目标与可逆诱因。",
+        "en": "Decide the next step in respiratory support for non-invasive-ventilation failure, weighing goals of care and reversible contributors before escalation."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "ventilation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-5",
+      "title": {
+        "zh-CN": "复盘治疗与转归",
+        "en": "Review the treatment and outcome"
+      },
+      "hint": {
+        "zh-CN": "完成各项决策后切换随访阶段，核对原报告的治疗经过与结局。",
+        "en": "Once the decisions are made, enter follow-up to check the report's treatment course and outcome."
       },
       "completeWhen": {
         "all": [
@@ -954,8 +1944,8 @@
     {
       "id": "diagnosis",
       "prompt": {
-        "zh-CN": "哪些问题应同时纳入当前评估？",
-        "en": "Which problems belong in the current assessment?"
+        "zh-CN": "结合连续血气、胸部CT与痰病原，当前评估应如何框定？",
+        "en": "How should the current assessment be framed, given the serial blood gases, chest CT and sputum microbiology?"
       },
       "kind": "single",
       "requires": {
@@ -975,32 +1965,184 @@
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先调阅本阶段的连续血气、胸部CT与痰病原。",
+        "en": "First review this phase's serial blood gases, chest CT and sputum microbiology."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "aecopd-infection",
           "text": {
-            "zh-CN": "纤维化肺病急性恶化伴严重高碳酸血症呼吸衰竭，需评估感染与影像并发症",
-            "en": "Acute deterioration of fibrotic lung disease with severe hypercapnic respiratory failure; assess infection and imaging complications"
+            "zh-CN": "纤维化肺病急性加重合并感染，并发急性高碳酸血症呼吸衰竭；需搜寻其他可逆诱因与影像并发症",
+            "en": "Acute deterioration of fibrotic lung disease with infection, complicated by acute hypercapnic respiratory failure; search for other reversible contributors and imaging complications"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "血气已提示危险变化；痰培养不能单独区分定植和侵袭，图注异常也需核对。",
-            "en": "Blood gases demonstrate dangerous deterioration; sputum culture alone cannot distinguish colonisation from invasion, and caption abnormalities require review."
+            "zh-CN": "正确。连续血气由慢性代偿转为急性失代偿，提示特发性肺纤维化急性加重合并感染；痰培养不能单独区分定植与侵袭，图注的气漏也需核对。作者另诊断了支气管哮喘与肺源性心脏病，提示需搜寻可逆气道成分。",
+            "en": "Correct. The serial gases move from chronic compensation to acute decompensation, pointing to AE-IPF with infection; the sputum culture alone cannot separate colonisation from invasion, and the caption air leak needs review. The authors also diagnosed bronchial asthma and cor pulmonale, prompting a search for a reversible airway component."
           }
         },
         {
-          "id": "unsupported",
+          "id": "invasive-fungal",
           "text": {
-            "zh-CN": "痰培养有真菌即可独立确诊侵袭性真菌肺炎并解释全部恶化",
-            "en": "Fungi in sputum alone prove invasive fungal pneumonia and explain all deterioration"
+            "zh-CN": "痰中有真菌即可确诊侵袭性真菌肺炎，并以此解释全部恶化",
+            "en": "Fungi in the sputum confirm invasive fungal pneumonia and explain all the deterioration"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "血气已提示危险变化；痰培养不能单独区分定植和侵袭，图注异常也需核对。",
-            "en": "Blood gases demonstrate dangerous deterioration; sputum culture alone cannot distinguish colonisation from invasion, and caption abnormalities require review."
+            "zh-CN": "错误。按 EORTC/MSGERC 2020，确诊侵袭性真菌病需组织或无菌部位证据；痰中酵母样真菌及菌丝多为定植。不能以此解释急性高碳酸血症失代偿。",
+            "en": "Wrong. By EORTC/MSGERC 2020, proven invasive fungal disease needs tissue or sterile-site evidence; sputum yeast and hyphae usually reflect colonisation. It cannot account for the acute hypercapnic decompensation."
+          }
+        },
+        {
+          "id": "pure-progression",
+          "text": {
+            "zh-CN": "只是特发性肺纤维化自然进展，没有急性问题",
+            "en": "Just the natural progression of IPF, with nothing acute"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。5小时内 PaCO₂ 由 56.3 升至 118.5 mmHg、pH 降至 7.149，属急性失代偿，绝非单纯缓慢进展。",
+            "en": "Wrong. A PaCO₂ rising from 56.3 to 118.5 mmHg and a pH of 7.149 within 5 hours is acute decompensation, not slow progression."
+          }
+        },
+        {
+          "id": "temp-reassuring",
+          "text": {
+            "zh-CN": "体温36.5℃不高，病情并不危急",
+            "en": "The temperature of 36.5 °C is not raised, so this is not urgent"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。患者无热，但连续血气才是本次危急程度的关键——单次体温正常不能排除危重呼吸衰竭。",
+            "en": "Wrong. He is afebrile, but the serial blood gases, not the temperature, show how critical this is — a single normal temperature does not exclude life-threatening respiratory failure."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fungal",
+      "prompt": {
+        "zh-CN": "痰培养见酵母样真菌及菌丝，应如何解读？",
+        "en": "How should the yeast and hyphae on sputum culture be interpreted?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "microbiology",
+        "phase": "workup"
+      },
+      "need": {
+        "zh-CN": "先调阅本阶段的痰病原结果。",
+        "en": "First review this phase's sputum microbiology."
+      },
+      "options": [
+        {
+          "id": "likely-colonisation",
+          "text": {
+            "zh-CN": "多为气道定植，尚不能按侵袭性真菌病确诊；是否需覆盖霉菌应据侵袭证据与宿主因素决定",
+            "en": "Most likely airway colonisation, not proven invasive fungal disease; whether to cover moulds depends on evidence of invasion and host factors"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。痰中酵母样真菌/菌丝单独多反映定植；EORTC/MSGERC 2020 要求组织或无菌部位证据方可确诊侵袭性真菌病。注意氟康唑无霉菌活性——若为霉菌则覆盖不足。",
+            "en": "Correct. Sputum yeast/hyphae alone usually reflect colonisation; EORTC/MSGERC 2020 requires tissue or sterile-site evidence to confirm invasive fungal disease. Note that fluconazole has no mould activity — insufficient cover if a mould is involved."
+          }
+        },
+        {
+          "id": "confirmed-aspergillosis",
+          "text": {
+            "zh-CN": "即为确诊侵袭性曲霉病，无需更多证据即应抗霉菌治疗",
+            "en": "This confirms invasive aspergillosis; start antimould therapy without needing more evidence"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。痰培养不能确诊侵袭性真菌病，更不能仅凭菌丝即诊断曲霉；盲目抗霉菌有毒性与耐药风险。",
+            "en": "Wrong. A sputum culture cannot confirm invasive fungal disease, let alone diagnose aspergillosis from hyphae alone; empirical antimould therapy carries toxicity and resistance risks."
+          }
+        },
+        {
+          "id": "ignore-fungi",
+          "text": {
+            "zh-CN": "真菌无意义，完全忽略",
+            "en": "The fungi are meaningless and can be ignored entirely"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。定植并非毫无意义——在使用激素、免疫受抑时需警惕进展为侵袭，应结合临床动态评估，而非一概忽略。",
+            "en": "Wrong. Colonisation is not meaningless — under corticosteroids and immunosuppression it can progress to invasion, so reassess clinically rather than dismiss it outright."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ventilation",
+      "prompt": {
+        "zh-CN": "入院约5小时后 PaCO₂ 118.5 mmHg、pH 7.149，无创通气下仍恶化。下一步呼吸支持应如何？",
+        "en": "About 5 hours after admission the PaCO₂ is 118.5 mmHg and the pH 7.149, still worsening on non-invasive ventilation. What is the next step in respiratory support?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "abg",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅本阶段的连续血气与胸部CT（含图注）。",
+        "en": "First review this phase's serial blood gases and chest CT (including the caption)."
+      },
+      "options": [
+        {
+          "id": "niv-fail-goals",
+          "text": {
+            "zh-CN": "识别无创通气失败；在升级前核对影像图注的气漏（气胸/纵隔气肿），并与患者/家属讨论治疗目标",
+            "en": "Recognise non-invasive-ventilation failure; before escalating, check the imaging caption for the air leak (pneumothorax/mediastinal emphysema) and discuss goals of care with the patient/family"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。急性-慢性高碳酸血症失代偿、无创通气下仍恶化即为无创通气失败。图注示少量气胸与皮下/纵隔气肿，正压通气前须评估气漏；特发性肺纤维化急性加重预后差，有创升级前应先明确治疗目标。",
+            "en": "Correct. Acute-on-chronic hypercapnic decompensation that worsens on non-invasive ventilation is NIV failure. The caption shows a small pneumothorax and subcutaneous/mediastinal emphysema, so assess the air leak before positive-pressure ventilation; AE-IPF has a poor prognosis, so clarify goals of care before invasive escalation."
+          }
+        },
+        {
+          "id": "ignore-temp",
+          "text": {
+            "zh-CN": "体温不高，继续原方案观察即可",
+            "en": "The temperature is not raised, so just continue and observe"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。单次体温正常不能反映危急程度；PaCO₂ 118.5 mmHg、pH 7.149 提示急性失代偿，必须重新评估呼吸支持。",
+            "en": "Wrong. A single normal temperature does not reflect the severity; a PaCO₂ of 118.5 mmHg and a pH of 7.149 show acute decompensation and demand a reassessment of respiratory support."
+          }
+        },
+        {
+          "id": "high-fio2",
+          "text": {
+            "zh-CN": "提高吸氧浓度把血氧饱和度拉上去",
+            "en": "Turn up the oxygen concentration to push the saturation up"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。高碳酸血症患者不加控制的高浓度吸氧可加重二氧化碳潴留；且 PaO₂ 20.7 mmHg 与 SpO₂ 78% 不相符，不应单凭饱和度调节。",
+            "en": "Wrong. Uncontrolled high-concentration oxygen can worsen CO₂ retention in a hypercapnic patient; and a PaO₂ of 20.7 mmHg with an SpO₂ of 78% are discordant, so do not titrate on the saturation alone."
+          }
+        },
+        {
+          "id": "intubate-now",
+          "text": {
+            "zh-CN": "立即气管插管行有创通气，无需顾及气漏或治疗目标",
+            "en": "Intubate immediately for invasive ventilation, without regard to the air leak or goals of care"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。有创通气可能合适，但须先核对气漏（正压可加重气胸）并与患者/家属讨论治疗目标；在终末期纤维化中盲目插管未必获益。",
+            "en": "Wrong. Invasive ventilation may be appropriate, but first check the air leak (positive pressure can worsen a pneumothorax) and discuss goals of care; blind intubation in end-stage fibrosis may not help."
           }
         }
       ]
@@ -1008,8 +2150,8 @@
     {
       "id": "management",
       "prompt": {
-        "zh-CN": "应如何处理严重恶化而不夸大证据？",
-        "en": "How should severe deterioration be addressed without overstating evidence?"
+        "zh-CN": "如何在不夸大证据的前提下处理这次严重恶化？",
+        "en": "How should this severe deterioration be managed without overstating the evidence?"
       },
       "kind": "single",
       "requires": {
@@ -1027,32 +2169,56 @@
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先作出诊断决策，调阅本阶段的血常规/炎症指标，并采集已用治疗史。",
+        "en": "First make the diagnosis decision, review this phase's blood count/markers and take the history of treatment already given."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "critical-care-goals",
           "text": {
-            "zh-CN": "紧急重症与呼吸专科评估通气、可逆诱因和治疗目标；不能把中药替代呼吸支持",
-            "en": "Urgent critical-care and respiratory review of ventilation, reversible contributors and goals of care; herbal treatment must not replace respiratory support"
+            "zh-CN": "紧急重症与呼吸专科评估通气、可逆诱因与治疗目标，控制感染；中药不能替代呼吸支持，改善也不能归因于某一药物",
+            "en": "Urgent critical-care and respiratory review of ventilation, reversible contributors and goals of care, with infection control; herbal treatment must not replace respiratory support, and any improvement cannot be attributed to a single agent"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "多种措施同期使用，无法归因；报告复查明确纤维化同前。",
-            "en": "Concurrent interventions prevent causal attribution; follow-up explicitly described unchanged fibrosis."
+            "zh-CN": "正确。多种措施同期使用，无法归因；报告复查明确纤维化同前。应以循证的呼吸支持与感染控制为主，并与患者/家属讨论治疗目标。",
+            "en": "Correct. With many measures used together, nothing can be attributed; follow-up explicitly described unchanged fibrosis. Lead with evidence-based respiratory support and infection control, and discuss goals of care with the patient/family."
           }
         },
         {
-          "id": "unsupported",
+          "id": "copy-aconite",
           "text": {
-            "zh-CN": "复制高剂量含附子方剂并认定它逆转了肺纤维化",
-            "en": "Copy the high-dose aconite-containing prescription and conclude it reversed fibrosis"
+            "zh-CN": "照搬高剂量含附子（黑顺片60克）的破格救心汤，并认定它逆转了肺纤维化",
+            "en": "Copy the high-dose aconite-containing 破格救心汤 (黑顺片 60 g) and conclude it reversed the fibrosis"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "多种措施同期使用，无法归因；报告复查明确纤维化同前。",
-            "en": "Concurrent interventions prevent causal attribution; follow-up explicitly described unchanged fibrosis."
+            "zh-CN": "错误且不安全。附子（黑顺片为其炮制品）含乌头类生物碱，有毒、须久煎，过量可致心律失常与死亡；在低氧酸血症合并肺源性心脏病者风险叠加。且复查明确纤维化同前，改善是急性炎症的吸收，并非纤维化逆转；多药同用无法归因。",
+            "en": "Wrong and unsafe. Aconite (黑顺片 is its processed form) contains toxic aconite alkaloids, must be decocted long, and in overdose can cause arrhythmia and death; the risk is compounded in hypoxic, acidaemic cor pulmonale. The follow-up explicitly showed unchanged fibrosis — the improvement was resolution of acute inflammation, not reversal of fibrosis; and the concurrent drugs preclude attribution."
+          }
+        },
+        {
+          "id": "steroid-only",
+          "text": {
+            "zh-CN": "把大剂量激素作为唯一确证有效的治疗",
+            "en": "Make high-dose corticosteroids the sole proven treatment"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。激素在特发性肺纤维化急性加重中的证据有限，不能作为唯一确证有效的治疗；且需与感染、血糖、免疫抑制风险权衡。",
+            "en": "Wrong. The evidence for steroids in AE-IPF is limited; they cannot be the sole proven treatment and must be balanced against infection, glucose and immunosuppression risks."
+          }
+        },
+        {
+          "id": "stop-antimicrobials",
+          "text": {
+            "zh-CN": "既然真菌多为定植，停用全部抗感染药物",
+            "en": "Since the fungi are mostly colonisers, stop all antimicrobials"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。合并细菌感染（中性粒细胞比例 89.8%、CRP升高、嗜麦芽窄食单胞菌）仍需抗菌治疗；定植不等于无需任何抗感染。",
+            "en": "Wrong. A bacterial infection (neutrophils 89.8%, raised CRP, Stenotrophomonas maltophilia) still needs treatment; colonisation does not mean no antimicrobials at all."
           }
         }
       ]
@@ -1060,11 +2226,11 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "r-hx",
       "domain": "history",
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "采集主诉、活动能力、既往肺病与本次已用治疗",
+        "en": "Elicited the presenting complaint, activity tolerance, past lung disease and treatment already given"
       },
       "weight": 2,
       "met": {
@@ -1085,11 +2251,11 @@
       }
     },
     {
-      "id": "rubric-2",
+      "id": "r-exam",
       "domain": "examination",
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "核对一般情况、肺部与生命体征",
+        "en": "Checked the general appearance, chest and vital signs"
       },
       "weight": 1,
       "met": {
@@ -1099,40 +2265,112 @@
           },
           {
             "examined": "respiratory"
-          }
-        ]
-      }
-    },
-    {
-      "id": "rubric-3",
-      "domain": "diagnosis",
-      "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
-      },
-      "weight": 3,
-      "met": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "rubric-4",
-      "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "weight": 3,
-      "met": {
-        "all": [
-          {
-            "decided": "management"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "examined": "vitals"
           }
         ]
+      }
+    },
+    {
+      "id": "r-abg",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "解读连续血气，识别急性-慢性高碳酸血症失代偿",
+        "en": "Interpreted the serial blood gases and recognised acute-on-chronic hypercapnic decompensation"
+      },
+      "weight": 2,
+      "met": {
+        "read": "abg",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "r-ct-airleak",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "在继续正压通气前注意到胸部CT图注的气漏",
+        "en": "Noted the air leak in the CT caption before continuing positive-pressure ventilation"
+      },
+      "weight": 2,
+      "met": {
+        "read": "ct",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "r-diagnosis",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "正确框定当前评估",
+        "en": "Framed the current assessment correctly"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-fungal",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "区分真菌定植与侵袭性真菌病",
+        "en": "Distinguished fungal colonisation from invasive fungal disease"
+      },
+      "weight": 1,
+      "met": {
+        "decidedFirstTry": "fungal"
+      }
+    },
+    {
+      "id": "r-ventilation",
+      "domain": "management",
+      "text": {
+        "zh-CN": "识别无创通气失败并在升级前权衡气漏与治疗目标",
+        "en": "Recognised NIV failure and weighed the air leak and goals of care before escalation"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "ventilation"
+      }
+    },
+    {
+      "id": "r-management",
+      "domain": "management",
+      "text": {
+        "zh-CN": "循证处理且不夸大单例证据",
+        "en": "Managed on the evidence without overstating the single case"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "r-safety-aconite",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "未以高剂量附子汤剂替代呼吸支持作为主要救治",
+        "en": "Did not use the high-dose aconite decoction as the primary rescue in place of respiratory support"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "intervened": "tcm-decoction-aconite"
+        }
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "在特发性肺纤维化急性加重中与家属开展治疗目标讨论",
+        "en": "Held a goals-of-care discussion with the family in AE-IPF"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "学员是否在升级（尤其有创通气）前，用通俗语言与家属讨论预后与治疗目标、了解患者意愿，并诚实说明特发性肺纤维化急性加重预后差、单例多药无法归因、不以中药替代呼吸支持。",
+        "en": "Did the learner, before escalation (especially invasive ventilation), discuss prognosis and goals of care with the family in plain language and establish the patient's wishes, and state honestly that AE-IPF has a poor prognosis, that a single multi-drug case cannot attribute benefit, and that herbal treatment does not replace respiratory support?"
       }
     }
   ],
@@ -1140,53 +2378,103 @@
     {
       "role": "attending",
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "这是历史病例教学（中西医结合专栏）。先核对当前阶段证据，再讨论鉴别与安全计划。关键点：连续血气显示急性-慢性高碳酸血症失代偿与无创通气失败；痰中真菌多为定植（EORTC/MSGERC 2020）；特发性肺纤维化急性加重预后差，有创升级前应讨论治疗目标；含附子的高剂量方剂涉及毒性与归因问题。原报告处置不自动成为今天的推荐。",
+        "en": "A historical teaching case (an integrative-medicine column). Review the current phase's evidence before the differential and a safe plan. Key points: the serial gases show acute-on-chronic hypercapnic decompensation and NIV failure; sputum fungi usually reflect colonisation (EORTC/MSGERC 2020); AE-IPF has a poor prognosis, so discuss goals of care before invasive escalation; the high-dose aconite-containing decoction raises toxicity and attribution issues. The report's care is not automatically a recommendation for today."
       },
       "interprets": [
         "abg",
         "ct",
         "microbiology",
         "labs",
+        "echo",
         "followup"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pharmacist",
+      "knowledge": {
+        "zh-CN": "可就激素升级与中药安全提供用药信息：甲泼尼龙上调需注意感染、血糖与免疫抑制；破格救心汤含黑顺片（附子炮制品）60克，附子含乌头类生物碱，须先煎久煎，过量可致心律失常，60克应对照《中国药典》剂量范围；氟康唑无霉菌活性。仅就学员已获得的资料解释，不提供未记录数值或诊断。",
+        "en": "Can advise on steroid escalation and herbal safety: escalating methylprednisolone raises infection, glucose and immunosuppression concerns; the 破格救心汤 decoction contains 60 g of 黑顺片 (processed aconite), which holds toxic aconite alkaloids, must be decocted first and long, can cause arrhythmia in overdose, and whose 60 g should be checked against the Pharmacopoeia range; fluconazole has no mould activity. Explains only what the learner already has, with no unrecorded value or diagnosis."
+      },
+      "interprets": [
+        "microbiology",
+        "labs"
       ],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "中西医结合治疗特发性肺纤维化合并肺炎：证据与安全复盘",
+      "en": "Integrative management of IPF with pneumonia: evidence and safety debrief"
     },
     "conclusion": {
-      "zh-CN": "本例的可核对结局是急性炎症和症状改善、纤维化未变。",
-      "en": "The verifiable endpoint is improvement in acute inflammation and symptoms with unchanged fibrosis."
+      "zh-CN": "本例为74岁男性、特发性肺纤维化9年合并肺部感染，入院数小时内由慢性代偿转为急性高碳酸血症呼吸失代偿（考虑特发性肺纤维化急性加重）。作者的西医诊断为特发性肺纤维化、真菌性肺炎、支气管哮喘、2型呼吸衰竭、慢性肺源性心脏病，中医诊断为肺痿（肺肾两虚、痰瘀互结型）。在无创通气、抗感染、激素升级的基础上加用含高剂量附子的破格救心汤。可核对的结局是急性炎症与症状改善、纤维化未变；合并多种同期治疗，无法证明某一药物（含中药或激素）的独立疗效。",
+      "en": "A 74-year-old man with 9 years of IPF and a lung infection who, within hours of admission, moved from chronic compensation to acute hypercapnic respiratory decompensation (AE-IPF was considered). The authors' Western diagnoses were IPF, fungal pneumonia, bronchial asthma, type 2 respiratory failure and chronic cor pulmonale, and the TCM diagnosis was 肺痿 (lung-kidney deficiency with phlegm-stasis). On top of non-invasive ventilation, antimicrobials and corticosteroid escalation, a high-dose aconite-containing 破格救心汤 decoction was added. The verifiable endpoint is improvement in acute inflammation and symptoms with unchanged fibrosis; with many concurrent treatments, no single agent (herbal or steroid) can be shown to work on its own."
     },
     "keyReasoning": [
       {
-        "zh-CN": "连续血气比单次体温更能显示本次危急程度。",
-        "en": "Serial blood gases demonstrate severity better than a single temperature."
+        "zh-CN": "入院 pH 7.430、PaCO₂ 56.3、HCO₃⁻ 37.4 为慢性代偿的高碳酸血症（另有代谢性碱中毒成分）；5小时后 pH 7.149、PaCO₂ 118.5 提示急性加重及无创通气失败。连续血气比单次体温更能显示危急程度。",
+        "en": "Admission pH 7.430, PaCO₂ 56.3 mmHg and HCO₃⁻ 37.4 mmol/L show compensated chronic hypercapnia with an added metabolic alkalosis; five hours later pH 7.149 with PaCO₂ 118.5 mmHg shows acute-on-chronic failure despite NIV. The serial gases, not a single temperature, show the severity."
       },
       {
-        "zh-CN": "单病例同时治疗不能证明中药或激素的独立效应。",
-        "en": "Concurrent treatment in one case cannot establish independent effects of herbs or steroids."
+        "zh-CN": "痰中酵母样真菌及菌丝多为定植；确诊侵袭性真菌病需组织或无菌部位证据（EORTC/MSGERC 2020）。",
+        "en": "Sputum yeast and hyphae usually reflect colonisation; proven invasive fungal disease needs tissue or sterile-site evidence (EORTC/MSGERC 2020)."
+      },
+      {
+        "zh-CN": "影像图注示少量气胸与皮下/纵隔气肿，正压通气前须核对该气漏；特发性肺纤维化急性加重预后差，有创升级前应讨论治疗目标。",
+        "en": "The imaging caption shows a small pneumothorax and subcutaneous/mediastinal emphysema, to be checked before positive-pressure ventilation; AE-IPF carries a poor prognosis, so discuss goals of care before invasive escalation."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是单例回顾，不能证明某种治疗的独立疗效或普遍适用性。原报告同期使用抗感染、激素、雾化、无创通气与多种中药，无法区分各自贡献；可核对的终点仅为急性炎症吸收与症状改善，纤维化同前。历史处置仅作记录，不作疗效或安全性背书；决策与安全评分为教学设计。",
+      "en": "This is a single retrospective case and cannot establish the independent efficacy or general applicability of any treatment. The report used antimicrobials, steroids, nebulisers, non-invasive ventilation and several herbal medicines together, so their separate contributions cannot be told apart; the only verifiable endpoints are resolution of acute inflammation and symptomatic improvement, with fibrosis unchanged. Historical care is recorded only, with no efficacy or safety endorsement; decisions and safety scoring are educational design."
     },
     "unknowns": [
       {
-        "zh-CN": "气胸出现时间、通气参数、详细药敏、侵袭性真菌证据及长期随访。",
-        "en": "Pneumothorax timing, ventilation settings, detailed susceptibility results, invasive fungal evidence and long-term follow-up."
+        "zh-CN": "气胸/气漏的出现时间与处理、无创通气参数、是否曾行有创通气。",
+        "en": "When the pneumothorax/air leak appeared and how it was handled, the NIV settings, and whether invasive ventilation was ever used."
+      },
+      {
+        "zh-CN": "CT相对于5小时恶化的时间、详细药敏、侵袭性真菌病的进一步证据、右心评估与肺动脉压。",
+        "en": "The CT's timing relative to the 5-hour deterioration, detailed susceptibilities, further evidence of invasive fungal disease, and the right-heart assessment and pulmonary pressure."
+      },
+      {
+        "zh-CN": "入院前治疗是否在外院开始、长期随访结局、SpO₂与PaO₂不符的原因（标本类型未说明）。",
+        "en": "Whether the pre-admission treatment began at another hospital, the long-term outcome, and the reason for the SpO₂–PaO₂ discordance (the sample type is not stated)."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "急性加重框架。按 2016 国际工作组报告，特发性肺纤维化急性加重定义已修订，涵盖诱因明确（如感染）与原因不明的急性呼吸恶化；本例高碳酸血症对特发性肺纤维化并不典型，应搜寻其他病因（气道疾病——作者诊断了哮喘；无创通气失败；图注的气漏）。",
+        "en": "The exacerbation framework. The 2016 International Working Group revised the definition of acute exacerbation of IPF to cover both triggered (e.g. infection) and unexplained acute respiratory worsening; the hypercapnia here is atypical for IPF and should prompt a search for other causes (airway disease — the authors diagnosed asthma; NIV failure; the air leak in the caption)."
+      },
+      {
+        "zh-CN": "连续血气与无创通气失败。入院为慢性代偿高碳酸血症，5小时后急性失代偿（pH 7.149、PaCO₂ 118.5 mmHg）即为无创通气失败，须重新评估呼吸支持与治疗目标。",
+        "en": "Serial gases and NIV failure. Admission showed compensated chronic hypercapnia; acute decompensation at 5 hours (pH 7.149, PaCO₂ 118.5 mmHg) is NIV failure and demands a reassessment of respiratory support and goals of care."
+      },
+      {
+        "zh-CN": "定植与侵袭性真菌病。痰中真菌多为定植；EORTC/MSGERC 2020 要求组织或无菌部位证据方可确诊侵袭性真菌病（该框架针对免疫抑制宿主，但在使用激素时有参考意义）。原报告由伏立康唑改为氟康唑——氟康唑无霉菌活性，若为霉菌则覆盖不足。",
+        "en": "Colonisation vs invasive fungal disease. Sputum fungi usually reflect colonisation; EORTC/MSGERC 2020 requires tissue or sterile-site evidence to confirm invasive fungal disease (a framework for immunocompromised hosts, but relevant under corticosteroids). The report switched from voriconazole to fluconazole — fluconazole has no mould activity, so cover would be insufficient if a mould were involved."
+      },
+      {
+        "zh-CN": "治疗目标。特发性肺纤维化为进行性不可逆病变，急性加重预后差；在有创通气等升级前应与患者/家属讨论治疗目标与意愿。",
+        "en": "Goals of care. IPF is progressive and irreversible and its acute exacerbation carries a poor prognosis; discuss goals of care and the patient's wishes before escalation such as invasive ventilation."
+      },
+      {
+        "zh-CN": "附子安全与单例归因。破格救心汤含黑顺片（附子炮制品）60克；附子含乌头类生物碱，有毒、须先煎久煎，过量可致麻痹、心律失常甚至死亡（香港卫生署中药材中毒警示），60克应对照《中国药典》2020年版「附子」剂量范围（本版未在线核实）。在低氧、酸血症合并肺源性心脏病者，心律失常风险叠加。可核对的结局是炎症吸收与症状改善、纤维化未变，且在激素、抗菌与无创通气并用下取得——单例多药无法归因于附子方剂，更不能据此认定其逆转纤维化。",
+        "en": "Aconite safety and single-case attribution. The 破格救心汤 decoction contains 60 g of 黑顺片 (processed aconite); aconite holds toxic aconite alkaloids, must be decocted first and long, and in overdose can cause paralysis, arrhythmia and even death (Hong Kong Department of Health herbal poisoning alert), and the 60 g should be checked against the dose range for 附子 in the 2020 Chinese Pharmacopoeia (not verified for this edition online). In a hypoxic, acidaemic patient with cor pulmonale the arrhythmia risk is compounded. The verifiable outcome — resolution of inflammation and symptoms with unchanged fibrosis — was obtained under concurrent steroids, antimicrobials and non-invasive ventilation, so a single multi-drug case cannot attribute it to the aconite decoction, let alone claim it reversed the fibrosis."
+      }
+    ],
     "references": [
-      "何政恆; 黃卓健; 冼慧雯. 中西醫結合治療特發性肺纖維化合併肺炎1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.022",
+      "何政恒, 黄卓健, 冼慧雯. 中西医结合治疗特发性肺纤维化合并肺炎1例. 镜湖医学. 2025;25(2):65-66. doi:10.12408/j.issn2223-4462.2025.02.022",
       "https://rs.yiigle.com/cmaid/1653413",
-      "ATS/ERS/JRS/ALAT. Idiopathic Pulmonary Fibrosis (an Update) and Progressive Pulmonary Fibrosis in Adults (2022). https://www.thoracic.org/statements/guideline-implementation-tools/matrix-guidelines-and-derivatives-ipf-update.php"
+      "Raghu G, Remy-Jardin M, Richeldi L, et al. Idiopathic pulmonary fibrosis (an update) and progressive pulmonary fibrosis in adults: an official ATS/ERS/JRS/ALAT clinical practice guideline. Am J Respir Crit Care Med. 2022;205(9):e18-e47. doi:10.1164/rccm.202202-0399ST",
+      "Collard HR, Ryerson CJ, Corte TJ, et al. Acute exacerbation of idiopathic pulmonary fibrosis. An international working group report. Am J Respir Crit Care Med. 2016;194(3):265-275. doi:10.1164/rccm.201604-0801CI",
+      "Donnelly JP, Chen SC, Kauffman CA, et al. Revision and update of the consensus definitions of invasive fungal disease from the European Organization for Research and Treatment of Cancer and the Mycoses Study Group Education and Research Consortium. Clin Infect Dis. 2020;71(6):1367-1376. doi:10.1093/cid/ciz1008",
+      "Hong Kong Department of Health. Alert on herbal medicine poisoning (aconitine). Chinese Medicines Regulatory Office; 2020. https://www.cmro.gov.hk/",
+      "国家药典委员会. 中华人民共和国药典（2020年版）一部·附子. 北京: 中国医药科技出版社; 2020."
     ],
     "notice": {
       "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
@@ -1195,8 +2483,20 @@
   },
   "unknowns": [
     {
-      "zh-CN": "气胸出现时间、通气参数、详细药敏、侵袭性真菌证据及长期随访。",
-      "en": "Pneumothorax timing, ventilation settings, detailed susceptibility results, invasive fungal evidence and long-term follow-up."
+      "zh-CN": "气胸/气漏的出现时间与处理、无创通气参数、是否曾行有创通气。",
+      "en": "When the pneumothorax/air leak appeared and how it was handled, the NIV settings, and whether invasive ventilation was ever used."
+    },
+    {
+      "zh-CN": "CT相对于5小时恶化的时间、详细药敏、侵袭性真菌病的进一步证据、右心评估与肺动脉压。",
+      "en": "The CT's timing relative to the deterioration, detailed susceptibilities, further invasive-fungal evidence, and the right-heart assessment."
+    },
+    {
+      "zh-CN": "入院前治疗是否在外院开始、长期随访结局、SpO₂与PaO₂不符的原因。",
+      "en": "Whether the pre-admission treatment began at another hospital, the long-term outcome, and the reason for the SpO₂–PaO₂ discordance."
+    },
+    {
+      "zh-CN": "过敏史、吸烟、饮酒、职业与家族史。",
+      "en": "Allergy history, smoking, alcohol, occupation and family history."
     }
   ],
   "assets": [
@@ -1205,12 +2505,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1653413/fig01.png",
       "title": {
-        "zh-CN": "原报告：急性期胸部CT",
-        "en": "Source: chest CT during acute illness"
+        "zh-CN": "原报告：急性期胸部CT（图1）",
+        "en": "Source: chest CT during the acute illness (Figure 1)"
       },
       "credit": {
-        "zh-CN": "原报告图，何政恆; 黃卓健; 冼慧雯，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图，何政恒等，2025。版权归原权利人。",
+        "en": "Original report figure, He ZH et al., 2025. Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1221,12 +2521,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1653413/fig02.png",
       "title": {
-        "zh-CN": "原报告：治疗后CT，纤维化同前",
-        "en": "Source: follow-up CT with unchanged fibrosis"
+        "zh-CN": "原报告：治疗后胸部CT，纤维化同前（图2）",
+        "en": "Source: chest CT after treatment, fibrosis unchanged (Figure 2)"
       },
       "credit": {
-        "zh-CN": "原报告图，何政恆; 黃卓健; 冼慧雯，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图，何政恒等，2025。版权归原权利人。",
+        "en": "Original report figure, He ZH et al., 2025. Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1303,10 +2603,6 @@
     },
     {
       "type": "ask",
-      "itemId": "self-care"
-    },
-    {
-      "type": "ask",
       "itemId": "expectations"
     },
     {
@@ -1315,11 +2611,19 @@
     },
     {
       "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "examine",
       "findingId": "respiratory"
     },
     {
       "type": "examine",
-      "findingId": "vitals"
+      "findingId": "cardiovascular"
+    },
+    {
+      "type": "examine",
+      "findingId": "tcm"
     },
     {
       "type": "set-phase",
@@ -1328,6 +2632,10 @@
     {
       "type": "ask",
       "itemId": "later"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals-5h"
     },
     {
       "type": "order",
@@ -1366,18 +2674,69 @@
       "phase": "workup"
     },
     {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
       "type": "answer",
       "decisionId": "diagnosis",
       "optionIds": [
-        "supported"
+        "aecopd-infection"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "fungal",
+      "optionIds": [
+        "likely-colonisation"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "ventilation",
+      "optionIds": [
+        "niv-fail-goals"
       ]
     },
     {
       "type": "answer",
       "decisionId": "management",
       "optionIds": [
-        "supported"
+        "critical-care-goals"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "controlled-oxygen"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "niv-continue"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "antimicrobials"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "steroid-escalation"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "nebulised-bronchodilator"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "mucolytic"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "goals-of-care"
     },
     {
       "type": "order",
@@ -1397,117 +2756,260 @@
     "sourceArticleId": "1653413",
     "sourceUrl": "https://rs.yiigle.com/cmaid/1653413",
     "historicalReview": true,
+    "embodied": {
+      "ivAccessInSitu": true
+    },
     "testUtterances": [
       {
-        "text": "这次症状持续多久？",
+        "text": "他喘了多少年了？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "How long has this worsening lasted?",
+        "text": "这次是怎么不舒服，持续多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "how long has he had the breathlessness?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "最近活动能力怎样？",
+        "text": "what's brought him in, the cough and breathlessness?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "最近还能下床吗？",
         "locale": "zh-CN",
         "expect": [
           "function"
         ]
       },
       {
-        "text": "How has activity tolerance changed?",
+        "text": "他活动耐力怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "can he still get out of bed?",
         "locale": "en",
         "expect": [
           "function"
         ]
       },
       {
-        "text": "既往肺病和治疗是什么？",
+        "text": "以前的肺病是什么，吃什么药？",
         "locale": "zh-CN",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "What lung disease and treatment were previously recorded?",
+        "text": "他一直吃什么抗纤维化的药？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "what lung disease does he have?",
         "locale": "en",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "此次已接受哪些治疗？",
+        "text": "这次住院前已经用了哪些治疗？",
         "locale": "zh-CN",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "What treatment has already been given for this episode?",
+        "text": "他已经打过美罗培南和激素了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "what treatment has he already had this admission?",
         "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "接触过粉尘毒物或饲养鸟类吗？",
+        "text": "他家里养鸟吗？",
         "locale": "zh-CN",
         "expect": [
           "exposure"
         ]
       },
       {
-        "text": "Was there dust, toxic exposure or bird keeping?",
+        "text": "有没有接触过粉尘或者毒物？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "does he keep any birds at home?",
         "locale": "en",
         "expect": [
           "exposure"
         ]
       },
       {
-        "text": "还有哪些伴随问题？",
+        "text": "any dust or chemical exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "他是不是有点迷糊、说胡话？",
         "locale": "zh-CN",
         "expect": [
           "associated"
         ]
       },
       {
-        "text": "What associated problems were recorded?",
+        "text": "吃饭睡觉大小便怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "is he confused or seeing things?",
         "locale": "en",
         "expect": [
           "associated"
         ]
       },
       {
-        "text": "痰是什么样的？",
+        "text": "痰是什么颜色的？",
         "locale": "zh-CN",
         "expect": [
           "sputum"
         ]
       },
       {
-        "text": "What is the sputum like?",
+        "text": "痰多不多，什么颜色？",
+        "locale": "zh-CN",
+        "expect": [
+          "sputum"
+        ]
+      },
+      {
+        "text": "what colour is the phlegm?",
         "locale": "en",
         "expect": [
           "sputum"
         ]
       },
       {
-        "text": "入院5小时后发生什么变化？",
+        "text": "入院五个小时后有什么变化？",
         "locale": "zh-CN",
         "expect": [
           "later"
         ]
       },
       {
-        "text": "What changed five hours after admission?",
+        "text": "他后来喘得更厉害了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "later"
+        ]
+      },
+      {
+        "text": "what changed a few hours after admission?",
         "locale": "en",
         "expect": [
           "later"
+        ]
+      },
+      {
+        "text": "他有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "any drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里有没有人得过类似的肺病？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "any family history of lung disease?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "他抽不抽烟？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "does he smoke?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "他平时喝不喝酒？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "does he drink alcohol?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "他退休前做什么工作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "occupation"
+        ]
+      },
+      {
+        "text": "what did he do for work?",
+        "locale": "en",
+        "expect": [
+          "occupation"
         ]
       }
     ]

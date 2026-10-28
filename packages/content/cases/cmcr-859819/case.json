@@ -1,19 +1,20 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-859819",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "孕中期发热咳嗽 · 25岁女性",
-    "en": "Fever and cough in mid-pregnancy · woman aged 25"
+    "en": "Fever and cough in the second trimester · 25-year-old woman"
   },
   "summary": {
-    "zh-CN": "孕中期患者因发热咳嗽入院，随后呼吸状况迅速变化；需核对接触史、病原证据与母胎转归。",
-    "en": "A patient in mid-pregnancy is admitted with fever and cough before rapid respiratory deterioration; review exposures, pathogen evidence and maternal-fetal outcomes."
+    "zh-CN": "一名孕中期患者因发热、咳嗽入院，入院后数小时内呼吸状况急转直下。要在确诊检查回报之前作出时效性处置，并权衡母体与胎儿安全。",
+    "en": "A woman in the second trimester is admitted with fever and cough; within hours her breathing deteriorates sharply. Act before the confirmatory test returns, weighing maternal and fetal safety."
   },
   "specialty": [
     "respiratory-medicine",
     "critical-care",
-    "obstetrics"
+    "obstetrics",
+    "infectious-diseases"
   ],
   "difficulty": 4,
   "setting": "inpatient",
@@ -22,7 +23,33 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "在怀疑新型甲型流感（含禽流感）重症时，于确诊前即经验性开始奥司他韦等神经氨酸酶抑制剂治疗，妊娠期亦然（CDC新型甲型流感临时指南、IDSA 2018）。",
+      "en": "Start empirical neuraminidase-inhibitor treatment (oseltamivir) for suspected severe novel influenza A, including avian influenza, before confirmation and in pregnancy (CDC novel influenza A interim guidance; IDSA 2018)."
+    },
+    {
+      "zh-CN": "采集针对性的暴露史（活禽市场、家庭从事家禽贸易），识别人感染禽流感的流行病学线索。",
+      "en": "Take a targeted exposure history (live-poultry markets, a family poultry trade) to recognise the epidemiology of human avian influenza."
+    },
+    {
+      "zh-CN": "识别无创通气失败与重度急性呼吸窘迫综合征，及时改为有创肺保护性通气（潮气量约 6 mL/kg）。",
+      "en": "Recognise non-invasive-ventilation failure and severe ARDS, and switch promptly to invasive lung-protective ventilation (tidal volume about 6 mL/kg)."
+    },
+    {
+      "zh-CN": "按 ESICM 2023 与 ATS 2024 指南对重度急性呼吸窘迫综合征实施俯卧位通气，并将原报告采用的高压肺复张手法与当前推荐对照。",
+      "en": "Apply prone positioning for severe ARDS per ESICM 2023 and ATS 2024, and set the report's high-pressure recruitment manoeuvres against current recommendations."
+    },
+    {
+      "zh-CN": "说明糖皮质激素和免疫调节剂（免疫球蛋白、胸腺肽）在重症流感中的证据与争议。",
+      "en": "State the evidence on and the controversy over corticosteroids and immunomodulators (immunoglobulin, thymosin) in severe influenza."
+    },
+    {
+      "zh-CN": "启动呼吸道隔离并上报公共卫生部门，同时协调产科共同管理母胎。",
+      "en": "Start respiratory isolation and public-health notification, and coordinate maternal-fetal care with obstetrics."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -30,7 +57,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "颜骏; 吉木森; 刘竞; 孔宪如; 胡秀兰; 杨宏锋; 赵松兰; 刘晓健; 金兆辰. 妊娠合并H7N9禽流感一例. 中华结核和呼吸杂志, 2014. DOI: 10.3760/cma.j.issn.1001-0939.2014.02.021",
+    "citation": "颜骏, 吉木森, 刘竞, 孔宪如, 胡秀兰, 杨宏锋, 等. 妊娠合并H7N9禽流感一例. 中华结核和呼吸杂志. 2014;37(2):139-140. doi:10.3760/cma.j.issn.1001-0939.2014.02.021",
     "doi": "10.3760/cma.j.issn.1001-0939.2014.02.021",
     "authors": [
       "颜骏",
@@ -45,8 +72,27 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写。保留年龄、性别、孕周、暴露史、关键检验与影像、通气策略、各药物剂量、第10病日休克、病原检测与母婴结局；姓名为化名，医院、城市、日历日期及疾控机构名称已去除，时间以相对病日表示。为在重症/插管阶段仍能采集病史，增设一名陪同家属（丈夫）作为教学角色，原报告未记载陪同者。对话、问题、决策与评分为教学设计，未记录的数据保持未知。",
+      "en": "Adapted from a published case. Age, sex, gestation, exposures, key labs and imaging, the ventilation strategy, every drug and dose, the day-10 shock, the pathogen testing and the maternal-infant outcome are retained; names are pseudonyms and hospitals, the city, calendar dates and public-health agencies are removed, with time given as relative illness days. A companion (her husband) is added as a teaching device so that the history can still be taken during the critical, intubated phase; the report records no companion. Dialogue, questions, decisions and scoring are educational design; unrecorded data remain unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "CDC interim guidance on antiviral treatment of novel influenza A (severe disease)",
+        "IDSA 2018 seasonal influenza",
+        "WHO 2024 influenza",
+        "ESICM 2023 ARDS",
+        "ATS 2024 ARDS",
+        "人感染禽流感诊疗方案（2024年版）"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由呼吸、重症或感染专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a respiratory, intensive care or infectious-diseases physician review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -65,41 +111,77 @@
       "en": "One week of cough, sputum and fever"
     },
     "triageNote": {
-      "zh-CN": "孕中期患者因发热咳嗽入院，随后呼吸状况迅速变化；需核对接触史、病原证据与母胎转归。",
-      "en": "A patient in mid-pregnancy is admitted with fever and cough before rapid respiratory deterioration; review exposures, pathogen evidence and maternal-fetal outcomes."
+      "zh-CN": "25岁女性，孕22周余，因咳嗽、咳痰、发热1周收入呼吸科。入院测体温39.9℃，热病容，双肺呼吸音粗，已开始头孢曲松抗感染并吸氧。入院后呼吸情况迅速变化，丈夫在旁陪护。",
+      "en": "25-year-old woman, just over 22 weeks pregnant, admitted to respiratory medicine with a week of cough, sputum and fever. On admission T 39.9 °C, flushed and febrile, with coarse breath sounds in both lungs; ceftriaxone and oxygen have been started. Her breathing changed rapidly after admission, with her husband at the bedside."
     },
     "tags": [
       {
-        "zh-CN": "咳嗽、咳痰、发热1周",
-        "en": "One week of cough, sputum and fever"
+        "zh-CN": "发热",
+        "en": "Fever"
+      },
+      {
+        "zh-CN": "咳嗽",
+        "en": "Cough"
+      },
+      {
+        "zh-CN": "妊娠中期",
+        "en": "Second trimester"
+      },
+      {
+        "zh-CN": "呼吸急促",
+        "en": "Rapid breathing"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "平时身体很好的年轻孕妇，最担心肚子里的孩子；发病后一天比一天喘，说话越来越费力。",
+        "en": "A young pregnant woman, normally very fit, most worried about her baby; more breathless by the day and finding it harder to talk."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "用简单的日常话回答，一句话没说完就得喘口气；不会用医学词。",
+        "en": "Answers in simple, everyday words, pausing for breath mid-sentence; uses no medical terms."
       },
-      "affect": "calm",
+      "healthLiteracy": "low",
+      "affect": "breathless",
       "openingLine": {
-        "zh-CN": "咳嗽、咳痰、发热1周，最高体温40.2℃。",
-        "en": "Cough, sputum and fever have lasted a week; temperature reached 40.2°C."
+        "zh-CN": "医生……我咳了一个礼拜，还一直发高烧……这两天喘得厉害。",
+        "en": "Doctor… I've been coughing for a week and running a high fever… and these last couple of days I can barely catch my breath."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我病历里没写，我说不上来。",
+        "en": "That isn't in my notes, so I can't really say."
       },
+      "concerns": [
+        {
+          "zh-CN": "我肚子里的孩子会不会有事？",
+          "en": "Will my baby be alright?"
+        },
+        {
+          "zh-CN": "我是不是把病传给家里人了？",
+          "en": "Have I passed this on to my family?"
+        }
+      ],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "初诊时还能自己答话，但一直喘；转到重症监护、上了呼吸机以后就说不了话，由丈夫代述。只说病历里有的内容，不编造未记录的症状、数字或诊断。",
+        "en": "At first she can answer for herself but is always breathless; once she is moved to intensive care and put on the ventilator she cannot speak, and her husband answers for her. State only what is in the notes; never invent symptoms, numbers or diagnoses that are not recorded."
+      },
+      "companion": {
+        "role": "spouse",
+        "name": {
+          "zh-CN": "卞磊（患者丈夫，化名）",
+          "en": "Bian Lei (her husband, pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "守在床边的丈夫，着急但尽量把看到的情况说清楚；只转述病历里记录的事，不添加目击细节。",
+          "en": "Her husband at the bedside, anxious but trying to describe clearly what he saw; relays only what the record contains, adding no witnessed detail."
+        },
+        "answersHistory": true
       }
     },
     "appearance": {
       "stature": "adult",
-      "gown": true
+      "gown": true,
+      "accessory": "oxygen-mask"
     },
     "posture": "lying"
   },
@@ -115,10 +197,13 @@
     {
       "id": "workup",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "急剧恶化与关键决策",
+        "en": "Rapid deterioration and key decisions"
       },
-      "learnerSwitchable": true
+      "learnerSwitchable": true,
+      "location": {
+        "setting": "icu"
+      }
     },
     {
       "id": "followup",
@@ -130,10 +215,16 @@
       "enterWhen": {
         "all": [
           {
+            "decided": "empirical-antiviral"
+          },
+          {
             "decided": "diagnosis"
           },
           {
-            "decided": "management"
+            "decided": "respiratory-support"
+          },
+          {
+            "decided": "ards-adjuncts"
           },
           {
             "objective": "objective-1"
@@ -155,453 +246,650 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "发热咳嗽有多久了？",
-        "en": "How long have fever and cough been present?"
+        "zh-CN": "这次是因为什么来的？发热咳嗽多久了？",
+        "en": "What brought you in? How long have the fever and cough been going on?"
       },
       "answer": {
-        "zh-CN": "咳嗽、咳痰、发热1周，最高体温40.2℃。",
-        "en": "Cough, sputum and fever have lasted a week; temperature reached 40.2°C."
+        "zh-CN": "咳嗽、咳痰、发烧一个礼拜了，最高烧到四十度二。嗓子疼，浑身酸。",
+        "en": "I've had a cough, phlegm and fever for a week — my temperature got up to over 40. My throat hurts and I ache all over."
       },
       "keywords": {
         "zh-CN": [
-          "发热咳嗽有多久了？",
-          "发热咳嗽"
+          "发热",
+          "发烧",
+          "咳嗽",
+          "多久",
+          "几天",
+          "烧了多久",
+          "咳了多久",
+          "烧到多少度",
+          "主诉",
+          "怎么不舒服"
         ],
         "en": [
-          "How long have fever and cough been present?",
-          "fever cough"
+          "fever",
+          "cough",
+          "how long",
+          "howmanydays",
+          "temperature",
+          "chief complaint",
+          "whatbringsyouin",
+          "feverandcough"
         ]
       },
       "disclosure": "volunteer",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     },
     {
-      "id": "symptoms",
+      "id": "associated",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "还伴有哪些不舒服？",
-        "en": "What other symptoms accompany the illness?"
+        "zh-CN": "还有别的不舒服吗？痰是什么样的？",
+        "en": "Any other symptoms? What is the phlegm like?"
       },
       "answer": {
-        "zh-CN": "四肢酸痛、咽痛，咳少量白色黏痰。",
-        "en": "There are muscle aches and a sore throat, with a small amount of white sticky sputum."
+        "zh-CN": "浑身酸痛，嗓子疼，咳出来一点点白黏痰，不多。",
+        "en": "I ache all over, my throat is sore, and I cough up a little white sticky phlegm, not much."
       },
       "keywords": {
         "zh-CN": [
-          "还伴有哪些不舒服？",
-          "酸痛"
+          "酸痛",
+          "肌肉酸痛",
+          "咽痛",
+          "嗓子疼",
+          "白痰",
+          "痰的颜色",
+          "痰",
+          "其他症状",
+          "还有哪里不舒服",
+          "伴随症状"
         ],
         "en": [
-          "What other symptoms accompany the illness?",
-          "sputum"
+          "aches",
+          "muscle aches",
+          "sore throat",
+          "sputum",
+          "phlegm",
+          "white sputum",
+          "other symptoms",
+          "associated"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     },
     {
       "id": "pregnancy",
       "topic": "obstetric",
       "question": {
-        "zh-CN": "发病时怀孕多少周？",
-        "en": "How far along was the pregnancy at onset?"
+        "zh-CN": "怀孕多久了？",
+        "en": "How far along is the pregnancy?"
       },
       "answer": {
-        "zh-CN": "发病时停经22周加6天，超声证实是中期妊娠。",
-        "en": "At onset the pregnancy was 22 weeks and 6 days, confirmed by ultrasound."
+        "zh-CN": "发病的时候停经二十二周多了，做过B超，说是中期。",
+        "en": "When I fell ill it was over twenty-two weeks since my last period; I'd had a scan and they said it was the middle of the pregnancy."
       },
       "keywords": {
         "zh-CN": [
-          "发病时怀孕多少周？",
-          "孕周"
+          "怀孕",
+          "孕周",
+          "停经",
+          "几个月",
+          "怀孕几个月",
+          "怀孕多久",
+          "多少周",
+          "孕期",
+          "妊娠",
+          "肚子里的孩子"
         ],
         "en": [
-          "How far along was the pregnancy at onset?",
-          "gestation"
+          "pregnant",
+          "gestation",
+          "weeks pregnant",
+          "howmanyweeks",
+          "how far along",
+          "trimester",
+          "pregnancy"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     },
     {
       "id": "exposure",
       "topic": "social",
       "question": {
-        "zh-CN": "近期接触过家禽吗？",
-        "en": "Was there contact with poultry?"
+        "zh-CN": "发病前接触过活禽或者去过活禽市场吗？",
+        "en": "Before you fell ill, had you been near live poultry or a live-poultry market?"
       },
       "answer": {
-        "zh-CN": "发病前有家禽接触史。",
-        "en": "There was poultry exposure before the illness."
+        "zh-CN": "碰过的。我爸妈就在市场上卖鸡鸭，我们家就住在农贸市场旁边。",
+        "en": "Yes. My mum and dad sell chickens and ducks at the market, and we live right next to it."
       },
       "keywords": {
         "zh-CN": [
-          "近期接触过家禽吗？",
-          "家禽"
+          "家禽",
+          "活禽",
+          "活鸡",
+          "活鸭",
+          "鸡鸭",
+          "禽类接触",
+          "接触过活鸡",
+          "去过活禽市场",
+          "碰过活禽",
+          "鸟类"
         ],
         "en": [
-          "Was there contact with poultry?",
-          "poultry"
+          "poultry",
+          "live birds",
+          "chickens",
+          "ducks",
+          "livepoultry",
+          "poultrymarket",
+          "beennearbirds",
+          "bird contact"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       },
-      "required": true
-    },
-    {
-      "id": "pmh",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "以前有明确的基础病吗？",
-        "en": "Were there known underlying illnesses?"
-      },
-      "answer": {
-        "zh-CN": "以前没有明确基础病史。",
-        "en": "No definite underlying illness was reported."
-      },
-      "keywords": {
-        "zh-CN": [
-          "以前有明确的基础病吗？",
-          "基础病"
-        ],
-        "en": [
-          "Were there known underlying illnesses?",
-          "underlying illness"
-        ]
-      },
-      "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      "speaker": "patient"
     },
     {
-      "id": "smoking",
+      "id": "occupation",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
-        "en": "Do you smoke?"
+        "zh-CN": "平时做什么工作？家里人是做什么的？",
+        "en": "What do you do for a living? What do your family do?"
       },
       "answer": {
-        "zh-CN": "没有吸烟史。",
-        "en": "There is no smoking history."
+        "zh-CN": "我是家庭主妇，平时在家。我们住在农贸市场附近，我爸妈在市场卖家禽，公婆卖猪肉。",
+        "en": "I'm a housewife and mostly at home. We live near the farmers' market; my parents sell poultry there and my in-laws sell pork."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "工作",
+          "职业",
+          "做什么工作",
+          "家庭主妇",
+          "家里人做什么",
+          "父母做什么",
+          "生活环境",
+          "住在哪",
+          "靠什么生活",
+          "谋生"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "occupation",
+          "whatdoyoudoforaliving",
+          "housewife",
+          "whatdoyourparentsdo",
+          "livingcircumstances",
+          "whatdoesyourfamilydo",
+          "work"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient",
+      "excludeKeywords": {
+        "zh-CN": [
+          "家禽",
+          "活禽",
+          "鸡鸭"
+        ],
+        "en": [
+          "poultry",
+          "birds"
+        ]
       }
     },
     {
       "id": "medications",
       "topic": "medications",
       "question": {
-        "zh-CN": "入院初期接受什么治疗？",
-        "en": "What treatment was started on admission?"
+        "zh-CN": "入院后给你用了什么治疗？",
+        "en": "What treatment were you given after you came in?"
       },
       "answer": {
-        "zh-CN": "最初用了头孢曲松并吸氧。",
-        "en": "Ceftriaxone and oxygen were started initially."
+        "zh-CN": "住进来先给我打了头孢曲松，还吸上了氧。",
+        "en": "When I came in they started me on a ceftriaxone drip and put me on oxygen."
       },
       "keywords": {
         "zh-CN": [
-          "入院初期接受什么治疗？",
-          "用药"
+          "入院治疗",
+          "用了什么药",
+          "打了什么针",
+          "头孢",
+          "抗生素",
+          "吸氧",
+          "入院后治疗",
+          "开始的治疗",
+          "现在用什么药",
+          "挂的什么水"
         ],
         "en": [
-          "What treatment was started on admission?",
-          "medications"
+          "treatment on admission",
+          "what medicine",
+          "antibiotic",
+          "ceftriaxone",
+          "oxygen",
+          "started treatment",
+          "whatdrugsareyouon"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient",
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
       }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前身体怎么样，有没有查出过什么病？",
+        "en": "How has your health been before this — any illnesses ever found?"
+      },
+      "answer": {
+        "zh-CN": "以前身体挺好，没查出过什么病。",
+        "en": "I've always been well; nothing's ever been found."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往史",
+          "基础病",
+          "以前的病",
+          "有什么病",
+          "以前身体",
+          "慢性病",
+          "过去病史",
+          "得过什么病",
+          "身体好不好",
+          "健康状况"
+        ],
+        "en": [
+          "past medical history",
+          "underlying illness",
+          "chronic disease",
+          "previous illness",
+          "anyconditions",
+          "healthbefore"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient",
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时抽烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "不抽烟。",
+        "en": "No, I don't smoke."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "抽不抽烟",
+          "吸不吸烟",
+          "有没有烟瘾",
+          "烟草",
+          "平时抽烟吗",
+          "每天几支烟",
+          "烟龄"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco",
+          "doyousmoke",
+          "smokinghistory",
+          "packyears"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     },
     {
       "id": "progression",
       "topic": "hpi",
       "question": {
-        "zh-CN": "入院后呼吸如何变化？",
-        "en": "How did breathing change after admission?"
+        "zh-CN": "入院以后呼吸是怎么变化的？",
+        "en": "How did her breathing change after she came in?"
       },
       "answer": {
-        "zh-CN": "入院10小时内出现胸闷和呼吸困难，并迅速加重。",
-        "en": "Chest tightness and respiratory distress developed and rapidly worsened within ten hours of admission."
+        "zh-CN": "住进来没多久就喘上了，胸口发闷，越来越重，十来个钟头人就不行了，赶紧送进了重症监护。",
+        "en": "Not long after she was admitted she started gasping — a tight chest, getting worse and worse; within about ten hours she was in a bad way and they rushed her into intensive care."
       },
       "keywords": {
         "zh-CN": [
-          "入院后呼吸如何变化？",
-          "呼吸恶化"
+          "呼吸变化",
+          "喘",
+          "胸闷",
+          "呼吸困难",
+          "恶化",
+          "越来越重",
+          "呼吸急促",
+          "喘不上气",
+          "入院后呼吸",
+          "转重症"
         ],
         "en": [
-          "How did breathing change after admission?",
-          "respiratory deterioration"
+          "breathing change",
+          "breathless",
+          "chest tightness",
+          "shortness of breath",
+          "deteriorate",
+          "worse",
+          "gasping",
+          "respiratory distress"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "workup"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "workup"
+      ]
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "以前有药物或食物过敏吗？",
+        "zh-CN": "以前有药物或者食物过敏吗？",
         "en": "Any previous drug or food allergies?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我病历里没写，我说不上来。",
+        "en": "That isn't in my notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对什么过敏",
+          "有没有过敏",
+          "过敏反应",
+          "药敏",
+          "忌口",
+          "过敏源"
         ],
         "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
+          "allergy",
+          "allergies",
+          "drug allergy",
+          "food allergy",
+          "anyallergies",
+          "allergicto"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     },
     {
-      "id": "family",
+      "id": "family-history",
       "topic": "family",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "家里人有类似的遗传病或者慢性病吗？",
+        "en": "Any family history of inherited or chronic illness?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我病历里没写，我说不上来。",
+        "en": "That isn't in my notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
-          "家族史"
+          "家族史",
+          "遗传病",
+          "家里有没有人得过",
+          "家族遗传",
+          "父母有病吗",
+          "家人健康",
+          "亲属病史",
+          "家里的病",
+          "遗传",
+          "家族病"
         ],
         "en": [
-          "Any family history of similar illness?",
-          "family history"
+          "family history",
+          "inherited",
+          "hereditary",
+          "familyillness",
+          "relatives illness",
+          "genetic"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
+        "zh-CN": "平时喝酒吗？",
         "en": "Do you drink alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我病历里没写，我说不上来。",
+        "en": "That isn't in my notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "酒",
+          "喝不喝酒",
+          "饮酒史",
+          "平时喝酒吗",
+          "每天喝酒",
+          "酒量",
+          "有没有喝酒",
+          "饮酒量"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "doyoudrink",
+          "alcoholhistory",
+          "booze"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "occupation",
-      "topic": "social",
-      "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
       },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
-        ],
-        "en": [
-          "What are your work and living circumstances?",
-          "occupation"
-        ]
-      },
-      "disclosure": "unknown",
       "phases": [
         "initial"
       ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
-        ],
-        "en": [
-          "How independent were you before this illness?",
-          "independence"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "expectations",
-      "topic": "ice",
-      "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
-        ],
-        "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      "speaker": "patient"
     },
     {
       "id": "supplements",
       "topic": "medications",
       "question": {
-        "zh-CN": "还服用其他非处方药或保健品吗？",
-        "en": "Were other non-prescription medicines or supplements used?"
+        "zh-CN": "还吃过其他非处方药或者保健品吗？",
+        "en": "Were any other over-the-counter medicines or supplements used?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息。",
-        "en": "This information is not recorded in the source."
+        "zh-CN": "这个我病历里没写，我说不上来。",
+        "en": "That isn't in my notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "还服用其他非处方药或保健品吗？"
+          "非处方药",
+          "保健品",
+          "补品",
+          "自己买的药",
+          "营养品",
+          "中成药",
+          "其他药",
+          "平时吃的药",
+          "维生素",
+          "偏方"
         ],
         "en": [
-          "Were other non-prescription medicines or supplements used?"
+          "overthecounter",
+          "supplement",
+          "otc",
+          "herbal",
+          "vitamins",
+          "othermedicines",
+          "self medication"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "你最担心的是什么，希望我们怎么帮你？",
+        "en": "What worries you most, and what are you hoping we can do?"
+      },
+      "answer": {
+        "zh-CN": "这个我病历里没写，我说不上来。",
+        "en": "That isn't in my notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "害怕",
+          "最担心",
+          "期望",
+          "希望怎么治",
+          "想法",
+          "顾虑",
+          "在意什么",
+          "心里怎么想",
+          "诉求"
+        ],
+        "en": [
+          "worried",
+          "concern",
+          "mostworried",
+          "expectation",
+          "hoping",
+          "whatdoyouwant",
+          "fears"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient"
     }
   ],
   "exam": [
@@ -610,20 +898,41 @@
       "system": "general",
       "maneuver": {
         "zh-CN": "观察初诊一般情况",
-        "en": "Observe the initial general appearance"
+        "en": "Observe the general appearance at presentation"
       },
       "finding": {
-        "zh-CN": "初诊有热病容，体温39.9℃。",
-        "en": "Initially she appeared acutely febrile, with a temperature of 39.9°C."
+        "zh-CN": "热病容，精神疲倦；初诊体温39.9℃。",
+        "en": "Flushed and febrile, looking tired; temperature 39.9 °C at presentation."
       },
       "abnormal": true,
-      "phases": [
-        "initial"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "required": true,
+      "phases": [
+        "initial"
+      ]
+    },
+    {
+      "id": "temperature",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "测量初诊体温",
+        "en": "Measure the temperature at presentation"
+      },
+      "finding": {
+        "zh-CN": "初诊体温39.9℃，病程中最高达40.2℃。",
+        "en": "Temperature 39.9 °C at presentation, with a peak of 40.2 °C during the illness."
+      },
+      "abnormal": true,
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "initial"
+      ]
     },
     {
       "id": "lungs",
@@ -633,170 +942,78 @@
         "en": "Auscultate the lungs at presentation"
       },
       "finding": {
-        "zh-CN": "初诊双肺呼吸音粗，无干湿啰音。",
-        "en": "Initial breath sounds were coarse without wheeze or crackles."
+        "zh-CN": "双肺呼吸音粗，未闻及干湿性啰音。",
+        "en": "Coarse breath sounds in both lungs, with no wheeze or crackles."
       },
-      "abnormal": false,
-      "phases": [
-        "initial"
-      ],
+      "abnormal": true,
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "requires": [
+        "stethoscope"
+      ]
+    },
+    {
+      "id": "distress",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察恶化时的一般情况",
+        "en": "Observe the general appearance during deterioration"
+      },
+      "finding": {
+        "zh-CN": "入院约10小时内出现明显呼吸窘迫，呼吸最快达50次/分；随后转入重症监护并气管插管。",
+        "en": "Within about 10 hours of admission she was in marked respiratory distress, with a respiratory rate up to 50/min; she was then moved to intensive care and intubated."
+      },
+      "abnormal": true,
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "phases": [
+        "workup"
+      ]
     },
     {
       "id": "later-lungs",
       "system": "respiratory",
       "maneuver": {
-        "zh-CN": "复核恶化时呼吸检查",
-        "en": "Review respiratory examination during deterioration"
+        "zh-CN": "复查恶化时肺部",
+        "en": "Re-examine the lungs during deterioration"
       },
       "finding": {
-        "zh-CN": "呼吸最快50次/分，双肺散在湿啰音。",
-        "en": "Respiratory rate reached 50/min, with scattered bilateral crackles."
+        "zh-CN": "双肺可闻及散在湿啰音，呼吸最快50次/分。",
+        "en": "Scattered crackles in both lungs, with a respiratory rate up to 50/min."
       },
       "abnormal": true,
-      "phases": [
-        "workup"
-      ],
       "source": {
         "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
         "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      },
+      "phases": [
+        "workup"
+      ],
+      "requires": [
+        "stethoscope"
+      ]
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告未记录这一项，不能当作正常或阴性（按去标识化摘要整理）。",
+    "en": "The report does not record this manoeuvre, so it cannot be taken as normal or negative (per the de-identified summary)."
   },
   "investigations": [
-    {
-      "id": "oxygenation",
-      "name": {
-        "zh-CN": "血气与氧合记录",
-        "en": "Blood gas and oxygenation record"
-      },
-      "category": "lab",
-      "aliases": {
-        "zh-CN": [
-          "血气与氧合记录"
-        ],
-        "en": [
-          "Blood gas and oxygenation record",
-          "oxygenation"
-        ]
-      },
-      "requires": [
-        "lab-blood-gas"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "面罩吸氧时PaO₂/FiO₂为42 mmHg；转入ICU时39 mmHg。无创通气1小时低氧改善不明显。",
-            "en": "PaO₂/FiO₂ was 42 mmHg on mask oxygen and 39 mmHg on ICU transfer. Hypoxaemia did not improve substantially after one hour of non-invasive ventilation."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "xray",
-      "name": {
-        "zh-CN": "胸部X线",
-        "en": "Chest radiograph"
-      },
-      "category": "imaging",
-      "aliases": {
-        "zh-CN": [
-          "胸部X线"
-        ],
-        "en": [
-          "Chest radiograph",
-          "xray"
-        ]
-      },
-      "requires": [
-        "xray"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "发病第8天双肺大片模糊影；原图描述肺门旁和左下肺明显，有支气管充气征。",
-            "en": "On illness day 8 there were extensive bilateral opacities, particularly perihilar and left lower-zone, with air bronchograms."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [
-            "fig01"
-          ],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "pcr",
-      "name": {
-        "zh-CN": "呼吸道H7N9核酸",
-        "en": "Respiratory H7N9 PCR"
-      },
-      "category": "microbiology",
-      "aliases": {
-        "zh-CN": [
-          "呼吸道H7N9核酸"
-        ],
-        "en": [
-          "Respiratory H7N9 PCR",
-          "pcr"
-        ]
-      },
-      "requires": [
-        "lab-microbiology"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "鼻咽拭子H7N9亚型特异性血凝素基因阳性，经疾控复核。",
-            "en": "Nasopharyngeal testing was positive for the H7N9-specific haemagglutinin gene, confirmed by public-health laboratories."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
     {
       "id": "cbc",
       "name": {
         "zh-CN": "初诊血常规",
-        "en": "Initial blood count"
+        "en": "Blood count at presentation"
       },
       "category": "lab",
-      "aliases": {
-        "zh-CN": [
-          "初诊血常规"
-        ],
-        "en": [
-          "Initial blood count",
-          "cbc"
-        ]
-      },
       "requires": [
         "lab-hematology"
       ],
@@ -805,70 +1022,288 @@
       "results": {
         "workup": {
           "text": {
-            "zh-CN": "白细胞7.9×10⁹/L，中性粒细胞比例0.84；正文另列淋巴细胞2.8×10⁹/L，两项分类数据不自洽，按原记录保留而不校正。",
-            "en": "WBC was 7.9×10⁹/L with neutrophil fraction 0.84; the separately reported lymphocyte count of 2.8×10⁹/L is inconsistent with that differential and is retained without correction."
+            "zh-CN": "白细胞计数未见升高，中性粒细胞比例升高，淋巴细胞计数正常范围。分类数据不自洽，按原记录保留。",
+            "en": "The white-cell count is not raised, the neutrophil fraction is high and the lymphocyte count is within range. The differential is internally inconsistent and is kept as recorded."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [],
-          "available": true
+          "available": true,
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞计数",
+                "en": "White cell count"
+              },
+              "value": 7.9,
+              "unit": "×10⁹/L",
+              "refLow": 3.5,
+              "refHigh": 9.5,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophil fraction"
+              },
+              "value": 0.84,
+              "unit": "",
+              "refLow": 0.4,
+              "refHigh": 0.75,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "淋巴细胞计数",
+                "en": "Lymphocyte count"
+              },
+              "value": 2.8,
+              "unit": "×10⁹/L",
+              "refLow": 1.1,
+              "refHigh": 3.2,
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "内部矛盾（照录不校正）：0.84 × 7.9 ≈ 6.6×10⁹/L 中性粒细胞，加 2.8×10⁹/L 淋巴细胞已超过白细胞总数 7.9×10⁹/L。原报告未说明原因。",
+            "en": "Internal contradiction, kept uncorrected: 0.84 × 7.9 ≈ 6.6×10⁹/L neutrophils plus 2.8×10⁹/L lymphocytes already exceeds the total white-cell count of 7.9×10⁹/L. The report gives no explanation."
+          },
+          "date": {
+            "zh-CN": "入院当日（约病程第7天）",
+            "en": "Day of admission (about illness day 7)"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血细胞分析",
+          "全血细胞"
+        ],
+        "en": [
+          "cbc",
+          "fbc",
+          "full blood count",
+          "blood count"
+        ]
       }
     },
     {
-      "id": "obstetric",
+      "id": "oxygenation",
       "name": {
-        "zh-CN": "产科超声记录",
-        "en": "Obstetric ultrasound record"
+        "zh-CN": "血气与氧合指标",
+        "en": "Blood gas and oxygenation"
       },
-      "category": "record",
-      "aliases": {
-        "zh-CN": [
-          "产科超声记录"
-        ],
-        "en": [
-          "Obstetric ultrasound record",
-          "obstetric"
-        ]
-      },
+      "category": "lab",
       "requires": [
-        "ultrasound"
+        "lab-blood-gas"
       ],
       "risk": "none",
       "value": "essential",
       "results": {
         "workup": {
           "text": {
-            "zh-CN": "超声证实中期妊娠；连续胎心监测数值和完整产科检查结果未给出。",
-            "en": "Ultrasound confirmed mid-pregnancy; serial fetal-heart values and a complete obstetric examination are not provided."
+            "zh-CN": "面罩吸氧下氧合指数（PaO₂/FiO₂）仅 42 mmHg；次日凌晨转入重症监护时为 39 mmHg，急性生理与慢性健康评分（APACHE Ⅱ）23 分。随后试用无创通气 1 小时，低氧血症改善不明显。（1 mmHg ≈ 0.133 kPa。）",
+            "en": "On mask oxygen the oxygenation index (PaO₂/FiO₂) was only 42 mmHg; by the early hours, on transfer to intensive care, it was 39 mmHg, with an APACHE II score of 23. A one-hour trial of non-invasive ventilation did not improve the hypoxaemia. (1 mmHg ≈ 0.133 kPa.)"
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [],
-          "available": true
+          "available": true,
+          "note": {
+            "zh-CN": "氧合指数 < 100 mmHg 属重度急性呼吸窘迫综合征（柏林定义）。采样时的具体吸入氧浓度与血气分压原报告未逐项列出；后续氧合变化见随访记录。",
+            "en": "An oxygenation index < 100 mmHg is severe ARDS (Berlin definition). The exact FiO₂ and partial pressures at each sample are not individually listed; the later trajectory is in the follow-up record."
+          },
+          "date": {
+            "zh-CN": "入院约10小时至转入重症监护（约病程第7–8天）",
+            "en": "From about 10 hours after admission to ICU transfer (about illness days 7–8)"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "氧合指数",
+          "氧合",
+          "动脉血气",
+          "PaO2/FiO2"
+        ],
+        "en": [
+          "abg",
+          "blood gas",
+          "oxygenation index",
+          "pf ratio",
+          "pao2 fio2"
+        ]
       }
     },
     {
-      "id": "followup",
+      "id": "xray",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "床旁胸部X线",
+        "en": "Portable chest radiograph"
       },
-      "category": "record",
+      "category": "imaging",
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "双肺大片状模糊影，以肺门旁及左下肺明显，可见支气管充气征（床旁便携机摄片，约病程第8天）。",
+            "en": "Extensive bilateral patchy opacities, most marked perihilar and in the left lower zone, with air bronchograms (portable film at the bedside, about illness day 8)."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "note": {
+            "zh-CN": "重症监护内以便携机床旁摄片；系列胸片与胸部CT（治疗前后对照）见随访阶段的系列影像记录。",
+            "en": "Taken at the bedside with a portable unit in intensive care; the serial radiographs and chest CT (before-and-after comparison) are in the follow-up serial-imaging record."
+          },
+          "date": {
+            "zh-CN": "约病程第8天",
+            "en": "About illness day 8"
+          }
+        }
+      },
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "胸片",
+          "胸部X线",
+          "X光",
+          "床旁胸片",
+          "胸部平片"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "chest x-ray",
+          "cxr",
+          "chest radiograph",
+          "portable film",
+          "chestfilm"
         ]
       },
+      "performedAt": "bedside"
+    },
+    {
+      "id": "pcr",
+      "name": {
+        "zh-CN": "呼吸道H7N9核酸检测",
+        "en": "Respiratory H7N9 nucleic-acid test"
+      },
+      "category": "microbiology",
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "鼻咽拭子检测禽流感病毒H7N9亚型特异的血凝素基因阳性（荧光定量PCR与实时荧光RT-PCR），并经上级疾控机构复核确认。确诊时约为病程第10天。",
+            "en": "The nasopharyngeal swab was positive for the H7N9-subtype-specific haemagglutinin gene (quantitative and real-time RT-PCR) and was confirmed by the provincial public-health laboratory. Confirmation came at about illness day 10."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "critical": true,
+          "date": {
+            "zh-CN": "约病程第10天确诊",
+            "en": "Confirmed at about illness day 10"
+          }
+        }
+      },
+      "aliases": {
+        "zh-CN": [
+          "核酸",
+          "H7N9核酸",
+          "禽流感核酸",
+          "病原核酸",
+          "流感PCR"
+        ],
+        "en": [
+          "pcr",
+          "h7n9 pcr",
+          "nucleic acid",
+          "influenza pcr",
+          "rt-pcr"
+        ]
+      }
+    },
+    {
+      "id": "obstetric",
+      "name": {
+        "zh-CN": "产科超声记录（调阅）",
+        "en": "Obstetric ultrasound record (chart review)"
+      },
+      "category": "record",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "text": {
+            "zh-CN": "既往超声证实为中期妊娠（约孕22周余）。连续胎心监测的具体数值及完整产科检查结果原报告未提供。",
+            "en": "An earlier ultrasound confirmed a second-trimester pregnancy (about 22 weeks). The report does not provide serial fetal-heart values or a complete obstetric examination."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "date": {
+            "zh-CN": "入院前超声（调阅）",
+            "en": "Pre-admission scan (reviewed in the chart)"
+          }
+        },
+        "workup": {
+          "text": {
+            "zh-CN": "既往超声证实为中期妊娠（约孕22周余）。连续胎心监测的具体数值及完整产科检查结果原报告未提供。",
+            "en": "An earlier ultrasound confirmed a second-trimester pregnancy (about 22 weeks). The report does not provide serial fetal-heart values or a complete obstetric examination."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "date": {
+            "zh-CN": "入院前超声（调阅）",
+            "en": "Pre-admission scan (reviewed in the chart)"
+          }
+        }
+      },
+      "aliases": {
+        "zh-CN": [
+          "产科超声",
+          "产科记录",
+          "胎儿超声",
+          "B超",
+          "孕检记录"
+        ],
+        "en": [
+          "obstetric ultrasound",
+          "obstetric record",
+          "fetal scan",
+          "antenatal record"
+        ]
+      }
+    },
+    {
+      "id": "public-health",
+      "name": {
+        "zh-CN": "公共卫生与接触者记录（调阅）",
+        "en": "Public-health and contact record (chart review)"
+      },
+      "category": "record",
       "requires": [
         "records"
       ],
@@ -877,30 +1312,664 @@
       "results": {
         "followup": {
           "text": {
-            "zh-CN": "原报告采用有创肺保护通气、俯卧位、抗病毒等综合治疗，也使用免疫调节和短程激素。第20病日通过自主呼吸试验后拔管；后续病毒核酸转阴。第110病日、孕38周加4天剖宫产娩出3.3 kg女婴，报告母婴健康；未给出长期随访期限。",
-            "en": "The report used invasive lung-protective ventilation, prone positioning, antivirals and other measures, including immunomodulation and short-course steroids. She passed a spontaneous breathing trial and was extubated on illness day 20; subsequent viral tests became negative. On illness day 110 at 38+4 weeks she delivered a 3.3 kg girl by caesarean; mother and infant were reported healthy without a defined long-term follow-up interval."
+            "zh-CN": "疾控在其父母售卖点的笼具和家禽粪便样本中检出H7N9病毒核酸。其家人及密切接触者18人（含医护人员）经医学观察均无发热等异常。",
+            "en": "Public-health testing found H7N9 nucleic acid in cages and poultry droppings at her parents' stall. Her 18 family members and close contacts (including staff) were kept under medical observation and none developed fever or other abnormality."
           },
           "source": {
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [],
-          "available": true
+          "available": true,
+          "date": {
+            "zh-CN": "确诊后（约病程第10天起）",
+            "en": "After confirmation (from about illness day 10)"
+          }
         }
+      },
+      "aliases": {
+        "zh-CN": [
+          "公共卫生",
+          "疾控",
+          "接触者",
+          "密切接触",
+          "流行病学调查"
+        ],
+        "en": [
+          "public health",
+          "contact tracing",
+          "close contacts",
+          "epidemiology",
+          "surveillance"
+        ]
+      }
+    },
+    {
+      "id": "serial-imaging",
+      "name": {
+        "zh-CN": "系列胸片与胸部CT（调阅）",
+        "en": "Serial radiographs and chest CT (chart review)"
+      },
+      "category": "record",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告第8–30病日系列影像（含恢复期）：胸片（第8、9、10、12病日）示双肺大片状模糊影，第10病日合并肺水肿，其后逐渐吸收；胸部CT（第15、18、23、30病日）示双肺渗出性病变逐渐吸收。",
+            "en": "The source's serial imaging over illness days 8–30 (including recovery): chest radiographs (days 8, 9, 10 and 12) show extensive bilateral opacities, with pulmonary oedema on day 10 and gradual clearing thereafter; chest CT (days 15, 18, 23 and 30) shows the exudative changes gradually resorbing."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "figures": [
+            "fig01"
+          ],
+          "date": {
+            "zh-CN": "病程第8–30天（调阅）",
+            "en": "Illness days 8–30 (reviewed in the chart)"
+          }
+        }
+      },
+      "aliases": {
+        "zh-CN": [
+          "系列影像",
+          "复查影像",
+          "系列胸片",
+          "复查CT",
+          "影像随访"
+        ],
+        "en": [
+          "serial imaging",
+          "follow-up imaging",
+          "serial films",
+          "repeat ct",
+          "imaging over time"
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Treatment and follow-up record (chart review)"
+      },
+      "category": "record",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告处置：有创肺保护性通气（潮气量约 6 mL/kg，依静态压力-容积曲线低位转折点加 2 cmH₂O 设置呼气末正压），间断控制性肺膨胀（呼气末正压 30 cmH₂O 维持 30 秒）；第8–13病日俯卧位通气（每次 4～6 小时，每日 2 次），并行液体负平衡管理，氧合指数由 < 100 升至 110 mmHg。考虑禽流感流行季节，结合血常规与影像，确诊前即给予奥司他韦 150 mg 经鼻胃管每12小时一次，疗程7天；并予免疫球蛋白 20 g/日（10天后渐减，第27天停）、胸腺肽α1 1.6 mg/日（第30天停）、入住重症监护即开始肠内营养。第10病日血压降至 83/53 mmHg，胸片示肺水肿，予白蛋白 20 g、呋塞米 60 mg 利尿，并加用甲泼尼龙（首日 200 mg，后 120 mg/日维持 2 天停用），血压回升至 114/65 mmHg。第16病日体温正常，第18病日氧合指数升至 150 mmHg，第20病日达 200 mmHg 并通过自主呼吸试验后拔管，改无创通气再过渡至鼻导管吸氧，转普通病房待产。约病程第17天起多次咽拭子及下呼吸道标本H7N9核酸转阴。第110病日、孕38周余经剖宫产娩出健康女婴（3.3 kg），母女均体健；未给出长期随访期限。",
+            "en": "The report's management: invasive lung-protective ventilation (tidal volume about 6 mL/kg; PEEP set at the lower inflection point of the static pressure–volume curve plus 2 cmH₂O), with intermittent sustained-inflation recruitment (PEEP 30 cmH₂O held for 30 seconds); prone positioning on illness days 8–13 (4–6 h per session, twice daily) with negative-fluid-balance management, raising the oxygenation index from < 100 to 110 mmHg. Given the avian-influenza season and the blood count and imaging, oseltamivir 150 mg via nasogastric tube every 12 hours for 7 days was started before confirmation, together with immunoglobulin 20 g/day (tapered from day 10, stopped day 27), thymosin α1 1.6 mg/day (stopped day 30) and enteral nutrition from ICU admission. On illness day 10 the blood pressure fell to 83/53 mmHg with pulmonary oedema on the film; albumin 20 g and furosemide 60 mg were given with methylprednisolone (200 mg on day 1, then 120 mg/day for 2 days, then stopped), and the pressure recovered to 114/65 mmHg. The temperature normalised by day 16, the oxygenation index rose to 150 mmHg by day 18 and to 200 mmHg by day 20, when she passed a spontaneous-breathing trial and was extubated, stepping down to non-invasive ventilation and then nasal oxygen before transfer to the ward. From about illness day 17 repeated throat and lower-airway samples were negative for H7N9. On illness day 110, at just over 38 weeks, she delivered a healthy girl (3.3 kg) by caesarean section; mother and infant were both well. No defined long-term follow-up interval is given."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "available": true,
+          "note": {
+            "zh-CN": "历史处置仅作记录，不等于当前推荐；原报告将奥司他韦疗程记为7天，讨论部分又称“持续到病毒检测阴性”，两处照录（见复盘与证据边界）。",
+            "en": "Historical care is recorded, not endorsed as current practice; the report gives the oseltamivir course as 7 days but the discussion says it was continued 'until viral tests were negative' — both are kept (see the debrief and evidence boundaries)."
+          },
+          "date": {
+            "zh-CN": "病程第8–110天（调阅）",
+            "en": "Illness days 8–110 (reviewed in the chart)"
+          }
+        }
+      },
+      "aliases": {
+        "zh-CN": [
+          "治疗记录",
+          "随访",
+          "转归",
+          "结局",
+          "后续治疗"
+        ],
+        "en": [
+          "treatment record",
+          "follow-up",
+          "outcome",
+          "course",
+          "what happened next"
+        ]
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {},
+  "interventions": [
+    {
+      "id": "oxygen-mask",
+      "name": {
+        "zh-CN": "面罩吸氧",
+        "en": "Oxygen by face mask"
+      },
+      "kind": "oxygen",
+      "requires": [
+        "oxygen"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "储氧面罩/普通面罩高流量吸氧，目标维持可耐受的氧合；重度低氧时为过渡措施。",
+        "en": "High-flow oxygen by mask, aiming for a tolerable saturation; a bridge while severe hypoxaemia is addressed."
+      },
+      "response": {
+        "zh-CN": "面罩吸氧下氧合指数仅 42 mmHg，提示重度低氧，需升级呼吸支持。",
+        "en": "On mask oxygen the oxygenation index was only 42 mmHg — severe hypoxaemia needing escalation."
+      },
+      "aliases": {
+        "zh-CN": [
+          "吸氧",
+          "面罩吸氧",
+          "给氧",
+          "储氧面罩",
+          "高流量吸氧"
+        ],
+        "en": [
+          "oxygen",
+          "face mask oxygen",
+          "give oxygen",
+          "mask oxygen"
+        ]
+      },
+      "device": "simple-mask",
+      "indicatedWhen": {
+        "always": true
+      }
+    },
+    {
+      "id": "niv",
+      "name": {
+        "zh-CN": "无创通气（试用）",
+        "en": "Non-invasive ventilation (trial)"
+      },
+      "kind": "airway",
+      "requires": [
+        "ventilator"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "短时试用无创正压通气；若 1 小时内低氧无明显改善应及时改有创通气。",
+        "en": "A short trial of non-invasive positive-pressure ventilation; switch promptly to invasive ventilation if hypoxaemia does not improve within about an hour."
+      },
+      "response": {
+        "zh-CN": "无创通气试用 1 小时低氧改善不明显，提示无创通气失败。",
+        "en": "After an hour of non-invasive ventilation the hypoxaemia had not improved — non-invasive ventilation had failed."
+      },
+      "aliases": {
+        "zh-CN": [
+          "无创通气",
+          "无创呼吸机",
+          "无创",
+          "面罩通气",
+          "BiPAP"
+        ],
+        "en": [
+          "non-invasive ventilation",
+          "niv",
+          "bipap",
+          "cpap",
+          "noninvasive"
+        ]
+      },
+      "scope": "medical",
+      "indicatedWhen": {
+        "read": "oxygenation",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "intubate-lpv",
+      "name": {
+        "zh-CN": "气管插管与有创肺保护性通气",
+        "en": "Intubation and invasive lung-protective ventilation"
+      },
+      "kind": "airway",
+      "requires": [
+        "airway"
+      ],
+      "risk": "high",
+      "dose": {
+        "zh-CN": "气管插管，肺保护性通气：潮气量约 6 mL/kg 理想体重，限制平台压，依静态压力-容积曲线低位转折点设置呼气末正压。",
+        "en": "Intubate and ventilate lung-protectively: tidal volume about 6 mL/kg ideal body weight, limited plateau pressure, PEEP set from the lower inflection point of the static pressure–volume curve."
+      },
+      "response": {
+        "zh-CN": "改为有创机械通气并采用肺保护性策略；随后以俯卧位通气改善氧合。",
+        "en": "Switched to invasive mechanical ventilation with a lung-protective strategy; prone positioning then improved oxygenation."
+      },
+      "aliases": {
+        "zh-CN": [
+          "插管",
+          "气管插管",
+          "有创通气",
+          "机械通气",
+          "肺保护性通气"
+        ],
+        "en": [
+          "intubate",
+          "intubation",
+          "invasive ventilation",
+          "mechanical ventilation",
+          "lung protective"
+        ]
+      },
+      "scope": "medical",
+      "indicatedWhen": {
+        "read": "oxygenation",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "prone",
+      "name": {
+        "zh-CN": "俯卧位通气",
+        "en": "Prone positioning"
+      },
+      "kind": "positioning",
+      "requires": [],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "重度急性呼吸窘迫综合征俯卧位通气；PROSEVA 研究采用每次 ≥ 16 小时的长时程方案（氧合指数 < 150 mmHg）。原报告为每次 4～6 小时、每日 2 次。",
+        "en": "Prone positioning for severe ARDS; PROSEVA used long sessions of at least 16 hours (oxygenation index < 150 mmHg). The report used 4–6-hour sessions twice daily."
+      },
+      "response": {
+        "zh-CN": "俯卧位通气后氧合指数由 < 100 升至 110 mmHg。",
+        "en": "After prone positioning the oxygenation index rose from < 100 to 110 mmHg."
+      },
+      "aliases": {
+        "zh-CN": [
+          "俯卧位",
+          "俯卧位通气",
+          "翻身俯卧",
+          "趴着通气",
+          "俯卧"
+        ],
+        "en": [
+          "prone",
+          "prone positioning",
+          "proning",
+          "turn prone"
+        ]
+      },
+      "posture": "lying",
+      "indicatedWhen": {
+        "read": "oxygenation",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "recruitment",
+      "name": {
+        "zh-CN": "长时程高压肺复张手法",
+        "en": "Prolonged high-pressure recruitment manoeuvre"
+      },
+      "kind": "procedure",
+      "requires": [
+        "ventilator"
+      ],
+      "risk": "moderate",
+      "dose": {
+        "zh-CN": "控制性肺膨胀：呼气末正压升至 30 cmH₂O 维持 30 秒（原报告采用）。",
+        "en": "Sustained inflation: raising PEEP to 30 cmH₂O and holding it for 30 seconds (as the report did)."
+      },
+      "response": {
+        "zh-CN": "采用后氧合仍 < 100 mmHg；当前指南不推荐常规高压肺复张。",
+        "en": "After it the oxygenation index was still < 100 mmHg; current guidance does not recommend routine high-pressure recruitment."
+      },
+      "aliases": {
+        "zh-CN": [
+          "肺复张",
+          "控制性肺膨胀",
+          "高压复张",
+          "复张手法",
+          "肺复张手法"
+        ],
+        "en": [
+          "recruitment manoeuvre",
+          "recruitment maneuver",
+          "lung recruitment",
+          "sustained inflation"
+        ]
+      },
+      "scope": "medical",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "ESICM 2023 强推荐不使用长时程高压肺复张手法，ATS 2024 对中重度急性呼吸窘迫综合征亦强推荐不使用；可引起气压伤、血流动力学紊乱而无生存获益。原报告曾采用，属历史做法。",
+        "en": "ESICM 2023 strongly recommends against prolonged high-pressure recruitment manoeuvres, and ATS 2024 strongly recommends against them in moderate-to-severe ARDS; they risk barotrauma and haemodynamic compromise with no survival benefit. The report used one — a historical practice."
+      }
+    },
+    {
+      "id": "oseltamivir",
+      "name": {
+        "zh-CN": "奥司他韦（经验性）",
+        "en": "Oseltamivir (empirical)"
+      },
+      "kind": "medication",
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "奥司他韦 150 mg 经鼻胃管每12小时一次；重症住院患者可考虑延长疗程（如 10 天）。怀疑新型甲型流感重症时应尽早经验性给药，不等待核酸结果；妊娠期首选奥司他韦。",
+        "en": "Oseltamivir 150 mg via nasogastric tube every 12 hours; a longer course (e.g. 10 days) may be considered for severely ill hospitalised patients. For suspected severe novel influenza A, start empirically as soon as possible without waiting for the nucleic-acid result; oseltamivir is preferred in pregnancy."
+      },
+      "response": {
+        "zh-CN": "尽早经验性抗病毒是本例的首要教学点：原报告在确诊前即开始奥司他韦。",
+        "en": "Early empirical antiviral treatment is the first teaching point of this case: the report started oseltamivir before confirmation."
+      },
+      "aliases": {
+        "zh-CN": [
+          "奥司他韦",
+          "达菲",
+          "神经氨酸酶抑制剂",
+          "抗病毒",
+          "抗流感药"
+        ],
+        "en": [
+          "oseltamivir",
+          "tamiflu",
+          "neuraminidase inhibitor",
+          "antiviral",
+          "antivirals"
+        ]
+      },
+      "indicatedWhen": {
+        "all": [
+          {
+            "asked": "exposure"
+          },
+          {
+            "read": "oxygenation",
+            "phase": "workup"
+          }
+        ]
+      },
+      "setFlags": [
+        "antiviral-started"
+      ]
+    },
+    {
+      "id": "isolate-notify",
+      "name": {
+        "zh-CN": "呼吸道隔离并上报公共卫生",
+        "en": "Respiratory isolation and public-health notification"
+      },
+      "kind": "other",
+      "requires": [],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "负压/单间飞沫与接触隔离，医护佩戴呼吸防护；按规定向公共卫生部门报告疑似人感染禽流感病例。",
+        "en": "Negative-pressure or single-room droplet-and-contact isolation with respiratory protection for staff; notify the public-health authorities of a suspected human avian-influenza case as required."
+      },
+      "response": {
+        "zh-CN": "启动隔离并上报；后续疾控在其父母售卖点笼具和禽粪中检出H7N9核酸，接触者医学观察均无发热。",
+        "en": "Isolation and notification were started; public-health testing later found H7N9 in cages and droppings at her parents' stall, and the monitored contacts stayed afebrile."
+      },
+      "aliases": {
+        "zh-CN": [
+          "隔离",
+          "呼吸道隔离",
+          "上报",
+          "公共卫生报告",
+          "负压病房"
+        ],
+        "en": [
+          "isolation",
+          "isolate",
+          "notify public health",
+          "report case",
+          "droplet precautions"
+        ]
+      },
+      "indicatedWhen": {
+        "asked": "exposure"
+      },
+      "setFlags": [
+        "isolation-started"
+      ]
+    },
+    {
+      "id": "ivig",
+      "name": {
+        "zh-CN": "静脉注射免疫球蛋白",
+        "en": "Intravenous immunoglobulin"
+      },
+      "kind": "medication",
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "免疫球蛋白 20 g/日（原报告 10 天后渐减，第27天停）。",
+        "en": "Immunoglobulin 20 g/day (the report tapered from day 10 and stopped on day 27)."
+      },
+      "response": {
+        "zh-CN": "IDSA 2018 不推荐将免疫球蛋白作为流感的辅助治疗，WHO 2024 对重症流感的被动免疫治疗作有条件不推荐；单例无法证明其独立疗效。",
+        "en": "IDSA 2018 does not recommend immunoglobulin as adjunctive influenza therapy, and WHO 2024 conditionally recommends against passive immune therapy in severe influenza; a single case cannot establish its independent effect."
+      },
+      "aliases": {
+        "zh-CN": [
+          "免疫球蛋白",
+          "丙种球蛋白",
+          "IVIG",
+          "静脉丙球",
+          "免疫治疗"
+        ],
+        "en": [
+          "immunoglobulin",
+          "ivig",
+          "gamma globulin",
+          "immunotherapy"
+        ]
+      }
+    },
+    {
+      "id": "thymosin",
+      "name": {
+        "zh-CN": "胸腺肽α1",
+        "en": "Thymosin α1"
+      },
+      "kind": "medication",
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "胸腺肽α1 1.6 mg/日（原报告第30天停）。",
+        "en": "Thymosin α1 1.6 mg/day (the report stopped it on day 30)."
+      },
+      "response": {
+        "zh-CN": "免疫调节剂缺乏当前流感指南支持；历史病例合并多药，无法归因于某一药物。",
+        "en": "Immunomodulators are not supported by current influenza guidance; with many drugs given together, no single agent's effect can be attributed."
+      },
+      "aliases": {
+        "zh-CN": [
+          "胸腺肽",
+          "胸腺肽α1",
+          "免疫调节",
+          "胸腺素",
+          "免疫增强"
+        ],
+        "en": [
+          "thymosin",
+          "thymosin alpha",
+          "immunomodulator",
+          "immune modulation"
+        ]
+      }
+    },
+    {
+      "id": "high-dose-steroid",
+      "name": {
+        "zh-CN": "大剂量糖皮质激素（常规抗炎）",
+        "en": "High-dose corticosteroids (routine anti-inflammatory)"
+      },
+      "kind": "medication",
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "moderate",
+      "dose": {
+        "zh-CN": "大剂量甲泼尼龙（> 150 mg/日甲泼尼龙当量）作为重症流感/急性呼吸窘迫综合征的常规抗炎。",
+        "en": "High-dose methylprednisolone (> 150 mg/day methylprednisolone-equivalent) as routine anti-inflammatory therapy for severe influenza/ARDS."
+      },
+      "response": {
+        "zh-CN": "历史上短程使用于休克期；当前证据不支持常规大剂量激素抗炎。",
+        "en": "Historically used as a short course during the shock episode; current evidence does not support routine high-dose anti-inflammatory steroids."
+      },
+      "aliases": {
+        "zh-CN": [
+          "激素",
+          "糖皮质激素",
+          "甲泼尼龙",
+          "大剂量激素",
+          "冲击激素"
+        ],
+        "en": [
+          "corticosteroid",
+          "steroid",
+          "methylprednisolone",
+          "high dose steroid",
+          "pulse steroid"
+        ]
+      },
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "在 H7N9 观察队列（Cao 2016）中，> 150 mg/日甲泼尼龙当量的大剂量激素与更高死亡率和更长病毒排出相关；WHO 2024 对重症流感有条件不推荐糖皮质激素，IDSA 2018 不推荐辅助激素。原报告曾于第10病日循环不稳定时短程使用（首日 200 mg，后 120 mg/日 2 天停），与常规大剂量抗炎不同，需加区分；ATS 2024 对急性呼吸窘迫综合征总体有条件推荐激素，故需如实呈现其争议。",
+        "en": "In an H7N9 observational cohort (Cao 2016), high-dose corticosteroids (> 150 mg/day methylprednisolone-equivalent) were associated with higher mortality and longer viral shedding; WHO 2024 conditionally recommends against corticosteroids in severe influenza and IDSA 2018 recommends against adjunctive steroids. The report used a short course during the day-10 circulatory instability (200 mg on day 1, then 120 mg/day for 2 days), which differs from routine high-dose anti-inflammatory use; ATS 2024 conditionally suggests corticosteroids for ARDS in general, so the tension must be shown honestly."
+      }
+    },
+    {
+      "id": "conservative-fluids",
+      "name": {
+        "zh-CN": "保守液体管理（白蛋白加利尿）",
+        "en": "Conservative fluid management (albumin plus diuresis)"
+      },
+      "kind": "fluid",
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "在保证组织灌注的前提下行液体负平衡；原报告第10病日肺水肿、休克时予白蛋白 20 g 后呋塞米 60 mg 利尿，血压回升至 114/65 mmHg。",
+        "en": "Negative fluid balance while preserving tissue perfusion; on illness day 10, for pulmonary oedema and shock, albumin 20 g followed by furosemide 60 mg was given, and the pressure recovered to 114/65 mmHg."
+      },
+      "response": {
+        "zh-CN": "急性呼吸窘迫综合征稳定后保守液体策略有助减轻肺水；需与低血压权衡。",
+        "en": "A conservative fluid strategy once ARDS is stable helps reduce lung water; balance against hypotension."
+      },
+      "aliases": {
+        "zh-CN": [
+          "利尿",
+          "呋塞米",
+          "白蛋白",
+          "液体负平衡",
+          "脱水"
+        ],
+        "en": [
+          "diuresis",
+          "furosemide",
+          "albumin",
+          "negative fluid balance",
+          "fluid restriction"
+        ]
+      },
+      "indicatedWhen": {
+        "read": "oxygenation",
+        "phase": "workup"
+      }
+    },
+    {
+      "id": "enteral-nutrition",
+      "name": {
+        "zh-CN": "早期肠内营养",
+        "en": "Early enteral nutrition"
+      },
+      "kind": "other",
+      "requires": [],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "入住重症监护即开始肠内营养，俯卧位通气期间仍维持少量供给。",
+        "en": "Enteral nutrition from ICU admission, continued in small amounts even during prone positioning."
+      },
+      "response": {
+        "zh-CN": "早期肠内营养；病程中未出现胃肠功能障碍。",
+        "en": "Early enteral nutrition; no gastrointestinal dysfunction occurred during the illness."
+      },
+      "aliases": {
+        "zh-CN": [
+          "肠内营养",
+          "鼻饲营养",
+          "营养支持",
+          "喂养",
+          "鼻胃管营养"
+        ],
+        "en": [
+          "enteral nutrition",
+          "tube feeding",
+          "nutrition support",
+          "feeding"
+        ]
+      }
+    },
+    {
+      "id": "obstetric-consult",
+      "name": {
+        "zh-CN": "产科会诊与母胎协同",
+        "en": "Obstetric consult and maternal-fetal coordination"
+      },
+      "kind": "consult",
+      "requires": [],
+      "risk": "low",
+      "dose": {
+        "zh-CN": "请产科共同评估胎儿监护与分娩时机；重症救治与产科管理并行。",
+        "en": "Involve obstetrics to assess fetal monitoring and the timing of delivery; run critical care and obstetric management in parallel."
+      },
+      "response": {
+        "zh-CN": "母胎协同管理；本例最终于约病程第110天、孕38周余剖宫产娩出健康女婴。",
+        "en": "Maternal-fetal care was coordinated; she eventually delivered a healthy girl by caesarean at just over 38 weeks, about illness day 110."
+      },
+      "aliases": {
+        "zh-CN": [
+          "产科会诊",
+          "产科",
+          "胎儿监护",
+          "母胎",
+          "请产科"
+        ],
+        "en": [
+          "obstetric consult",
+          "obstetrics",
+          "fetal monitoring",
+          "maternal fetal",
+          "refer obstetrics"
+        ]
+      }
+    }
+  ],
   "objectives": [
     {
       "id": "objective-1",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "重建症状与暴露时间线",
+        "en": "Reconstruct the symptom and exposure timeline"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "询问主诉、伴随症状、孕周和发病前的接触情况；资料未载明时保留未知。",
+        "en": "Ask about the presenting complaint, associated symptoms, gestation and any exposure before the illness; keep unrecorded data unknown."
       },
       "completeWhen": {
         "all": [
@@ -908,7 +1977,7 @@
             "asked": "presentation"
           },
           {
-            "asked": "symptoms"
+            "asked": "associated"
           },
           {
             "asked": "pregnancy"
@@ -923,11 +1992,11 @@
       "id": "objective-2",
       "title": {
         "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "en": "Check the bedside clues"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "核对初诊一般情况和肺部听诊；未测量不等于正常。",
+        "en": "Check the general appearance and chest auscultation at presentation; unmeasured is not normal."
       },
       "completeWhen": {
         "all": [
@@ -943,31 +2012,52 @@
     {
       "id": "objective-3",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "在确诊前作出时效性处置",
+        "en": "Act before the diagnosis is confirmed"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "进展迅速的重度低氧性肺炎合并明确的禽类接触史，需要在核酸回报前作出时效性决策。",
+        "en": "A rapidly progressive, severely hypoxaemic pneumonia with a clear poultry exposure calls for a time-critical decision before the nucleic-acid test returns."
       },
       "completeWhen": {
-        "decided": "diagnosis"
+        "decided": "empirical-antiviral"
       }
     },
     {
       "id": "objective-4",
       "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
+        "zh-CN": "整合证据并确定呼吸支持",
+        "en": "Integrate the evidence and set respiratory support"
       },
       "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+        "zh-CN": "结合暴露史、核酸、影像与氧合明确诊断，并针对无创通气失败决定下一步呼吸支持。",
+        "en": "Pull the exposure, nucleic-acid, imaging and oxygenation together for the diagnosis, and decide the next step in respiratory support for non-invasive-ventilation failure."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "respiratory-support"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-5",
+      "title": {
+        "zh-CN": "权衡辅助治疗并复盘转归",
+        "en": "Weigh the adjuncts and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "对照当前指南权衡俯卧位、激素与免疫调节等辅助治疗，再切换随访阶段核对原报告结局。",
+        "en": "Weigh the adjuncts — prone positioning, corticosteroids, immunomodulators — against current guidance, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "ards-adjuncts"
           },
           {
             "read": "followup",
@@ -979,10 +2069,111 @@
   ],
   "decisions": [
     {
+      "id": "empirical-antiviral",
+      "prompt": {
+        "zh-CN": "孕中期、家禽接触史、禽流感流行季节，病情迅速进展为双肺炎症和重度低氧——核酸尚未回报。现在应采取下列哪些措施？（多选）",
+        "en": "Second trimester, a poultry exposure, avian-influenza season, rapidly progressive bilateral pneumonia and severe hypoxaemia — with the nucleic-acid test not yet back. Which of the following should you do now? (select all that apply)"
+      },
+      "kind": "multiple",
+      "requires": {
+        "all": [
+          {
+            "asked": "exposure"
+          },
+          {
+            "read": "oxygenation",
+            "phase": "workup"
+          },
+          {
+            "read": "xray",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集暴露史并调阅本阶段的氧合与胸片。",
+        "en": "First take the exposure history and review this phase's oxygenation and chest film."
+      },
+      "options": [
+        {
+          "id": "oseltamivir-now",
+          "text": {
+            "zh-CN": "立即经验性给予奥司他韦，不等待核酸结果",
+            "en": "Start oseltamivir empirically now, without waiting for the nucleic-acid result"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。CDC新型甲型流感临时指南指出重症疑似/很可能/确诊病例应尽早抗病毒，“不应等待实验室结果”；IDSA 2018 对住院高危患者（含孕妇）不等检测即治疗；妊娠期首选奥司他韦。这是本例首要教学点。",
+            "en": "Correct. CDC interim guidance for severe novel influenza A says to treat suspected, probable or confirmed cases as soon as possible and 'not delayed while waiting for laboratory testing results'; IDSA 2018 treats hospitalised high-risk patients (including pregnant women) without waiting for testing; oseltamivir is preferred in pregnancy. This is the case's first teaching point."
+          }
+        },
+        {
+          "id": "isolate",
+          "text": {
+            "zh-CN": "单间/负压飞沫与接触隔离，并上报公共卫生部门",
+            "en": "Isolate (single room/negative pressure, droplet and contact precautions) and notify public health"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。疑似人感染禽流感应立即隔离并按规定上报；本例后续疾控在其父母售卖点笼具和禽粪中检出H7N9核酸。",
+            "en": "Correct. A suspected human avian-influenza case must be isolated at once and notified as required; public-health testing here later found H7N9 in cages and droppings at her parents' stall."
+          }
+        },
+        {
+          "id": "send-specimens",
+          "text": {
+            "zh-CN": "留取呼吸道标本送检甲型流感H7N9核酸",
+            "en": "Send respiratory specimens for influenza A(H7N9) testing"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。抗病毒不等待结果，但仍应尽快留取鼻咽拭子/下呼吸道标本明确病原，指导隔离、接触者管理与疗程。",
+            "en": "Correct. Treatment does not wait for the result, but respiratory specimens should still be taken promptly to establish the pathogen and guide isolation, contact management and duration."
+          }
+        },
+        {
+          "id": "icu-review",
+          "text": {
+            "zh-CN": "请重症医学评估通气支持",
+            "en": "Arrange critical-care review for ventilatory support"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。面罩吸氧下氧合指数仅 42 mmHg，属极重度低氧，需尽早升级呼吸支持；本例次日凌晨即转入重症监护。",
+            "en": "Correct. On mask oxygen the oxygenation index was only 42 mmHg — extreme hypoxaemia needing early escalation of respiratory support; she was moved to intensive care in the early hours."
+          }
+        },
+        {
+          "id": "wait-for-pcr",
+          "text": {
+            "zh-CN": "继续头孢曲松，等核酸确诊后再考虑抗病毒",
+            "en": "Continue ceftriaxone and wait for the nucleic-acid result before starting antivirals"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误且危险。延误经验性抗病毒与指南相悖：重症疑似新型甲型流感应尽早用药，不等结果。细菌覆盖可保留，但不能替代抗病毒。",
+            "en": "Wrong and dangerous. Delaying empirical antivirals contradicts the guidance: severe suspected novel influenza A should be treated early, not after results. Bacterial cover may continue but must not replace antivirals."
+          }
+        },
+        {
+          "id": "withhold-pregnancy",
+          "text": {
+            "zh-CN": "因为怀孕而暂不使用奥司他韦",
+            "en": "Withhold oseltamivir because of the pregnancy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。妊娠是重症流感的高危因素，CDC与IDSA均建议孕妇及产后两周内尽早使用奥司他韦；不治疗的风险远大于用药风险。",
+            "en": "Wrong. Pregnancy is a risk factor for severe influenza; CDC and IDSA both advise prompt oseltamivir in pregnancy and up to two weeks postpartum. The risk of not treating far outweighs the risk of the drug."
+          }
+        }
+      ]
+    },
+    {
       "id": "diagnosis",
       "prompt": {
-        "zh-CN": "结合接触史、核酸和氧合，最合理的判断是什么？",
-        "en": "What interpretation best integrates exposure, PCR and oxygenation?"
+        "zh-CN": "结合接触史、核酸、影像与氧合，最合理的判断是什么？",
+        "en": "What interpretation best integrates the exposure, nucleic-acid test, imaging and oxygenation?"
       },
       "kind": "single",
       "requires": {
@@ -1005,41 +2196,138 @@
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先采集暴露史并调阅本阶段的核酸、氧合与胸片。",
+        "en": "First take the exposure history and review this phase's nucleic-acid, oxygenation and chest-film results."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "h7n9-ards",
           "text": {
-            "zh-CN": "H7N9感染伴重度低氧性呼吸衰竭/ARDS",
-            "en": "H7N9 infection with severe hypoxaemic respiratory failure/ARDS"
+            "zh-CN": "人感染H7N9禽流感，合并重度低氧性呼吸衰竭/急性呼吸窘迫综合征",
+            "en": "Human H7N9 avian influenza with severe hypoxaemic respiratory failure / ARDS"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "病原阳性与双肺影、极低氧合共同支持重症感染；妊娠不能淡化母体危重程度。",
-            "en": "Positive pathogen testing, bilateral opacities and very poor oxygenation support severe infection; pregnancy does not diminish maternal urgency."
+            "zh-CN": "正确。核酸阳性、家禽接触、双肺大片影合并氧合指数 < 100 mmHg，共同支持H7N9重症感染合并重度急性呼吸窘迫综合征（柏林定义）；妊娠不降低母体危重程度。",
+            "en": "Correct. A positive nucleic-acid test, poultry exposure, extensive bilateral opacities and an oxygenation index < 100 mmHg together support severe H7N9 infection with severe ARDS (Berlin definition); pregnancy does not lessen maternal urgency."
           }
         },
         {
-          "id": "unsupported",
+          "id": "bacterial-cap",
           "text": {
-            "zh-CN": "普通上呼吸道感染，等待自然恢复即可",
+            "zh-CN": "单纯重症细菌性社区获得性肺炎，继续头孢曲松即可",
+            "en": "Severe bacterial community-acquired pneumonia alone; continue ceftriaxone"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不足。H7N9核酸阳性与流行病学线索指向病毒性重症肺炎；仅抗菌不覆盖病毒。可合并细菌感染，但不能以此否定抗病毒。",
+            "en": "Insufficient. A positive H7N9 test and the epidemiology point to severe viral pneumonia; antibacterials alone do not cover the virus. A bacterial co-infection is possible but does not override antivirals."
+          }
+        },
+        {
+          "id": "pulmonary-oedema",
+          "text": {
+            "zh-CN": "妊娠相关肺水肿",
+            "en": "Pulmonary oedema of pregnancy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。虽然第10病日曾出现肺水肿，但发病即有发热、禽类接触和核酸阳性，提示感染性而非单纯容量性病因；肺水肿是并发表现而非主诊断。",
+            "en": "Wrong. Although pulmonary oedema appeared on day 10, the fever, poultry exposure and positive nucleic-acid test from the outset point to an infective rather than a purely volume cause; the oedema is a complication, not the main diagnosis."
+          }
+        },
+        {
+          "id": "uri",
+          "text": {
+            "zh-CN": "普通上呼吸道感染，观察即可",
             "en": "An uncomplicated upper respiratory infection needing only observation"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "病原阳性与双肺影、极低氧合共同支持重症感染；妊娠不能淡化母体危重程度。",
-            "en": "Positive pathogen testing, bilateral opacities and very poor oxygenation support severe infection; pregnancy does not diminish maternal urgency."
+            "zh-CN": "错误。氧合指数 42 mmHg 与双肺大片影绝非普通上感；延误处置会致命。",
+            "en": "Wrong. An oxygenation index of 42 mmHg with extensive bilateral opacities is nothing like an upper respiratory infection; delay would be fatal."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "respiratory-support",
       "prompt": {
-        "zh-CN": "怎样在证据有限时制定下一步？",
-        "en": "How should the next plan account for limited evidence?"
+        "zh-CN": "无创通气试用 1 小时低氧无明显改善，氧合指数持续 < 100 mmHg，下一步呼吸支持应如何？",
+        "en": "An hour of non-invasive ventilation has not improved the hypoxaemia and the oxygenation index stays < 100 mmHg. What is the next step in respiratory support?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "oxygenation",
+            "phase": "workup"
+          },
+          {
+            "decided": "empirical-antiviral"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先作出时效性处置决策，并调阅本阶段的氧合结果。",
+        "en": "First make the time-critical decision and review this phase's oxygenation result."
+      },
+      "options": [
+        {
+          "id": "intubate-lpv",
+          "text": {
+            "zh-CN": "及时改有创机械通气，采用肺保护性策略（潮气量约 6 mL/kg），并考虑俯卧位通气",
+            "en": "Switch promptly to invasive mechanical ventilation with a lung-protective strategy (tidal volume about 6 mL/kg) and consider prone positioning"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。无创通气失败、重度急性呼吸窘迫综合征应及时有创肺保护性通气；ESICM 2023/ATS 2024 对中重度急性呼吸窘迫综合征强推荐俯卧位。本例即如此处理。",
+            "en": "Correct. With non-invasive-ventilation failure and severe ARDS, switch promptly to invasive lung-protective ventilation; ESICM 2023/ATS 2024 strongly recommend prone positioning in moderate-to-severe ARDS. This is what was done."
+          }
+        },
+        {
+          "id": "continue-niv",
+          "text": {
+            "zh-CN": "继续无创通气，暂不插管",
+            "en": "Continue non-invasive ventilation and hold off on intubation"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。无创通气已试用 1 小时无改善即为失败，继续拖延只会延误肺保护性通气、加重缺氧性器官损害。",
+            "en": "Wrong. An hour of non-invasive ventilation without improvement is failure; persisting only delays lung-protective ventilation and worsens hypoxic organ injury."
+          }
+        },
+        {
+          "id": "high-tidal",
+          "text": {
+            "zh-CN": "有创通气但用大潮气量尽快纠正低氧",
+            "en": "Intubate but use large tidal volumes to correct the hypoxaemia quickly"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。大潮气量加重呼吸机相关肺损伤；急性呼吸窘迫综合征应限制潮气量（约 6 mL/kg）和平台压。",
+            "en": "Wrong. Large tidal volumes worsen ventilator-induced lung injury; ARDS needs limited tidal volume (about 6 mL/kg) and plateau pressure."
+          }
+        },
+        {
+          "id": "hfno-only",
+          "text": {
+            "zh-CN": "仅予经鼻高流量氧疗继续观察",
+            "en": "Give high-flow nasal oxygen only and keep observing"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。氧合指数持续 < 100 mmHg、无创通气已失败，继续非有创支持不足以保证氧合，应尽早插管。",
+            "en": "Wrong. With the oxygenation index persistently < 100 mmHg and non-invasive ventilation already failed, non-invasive support cannot secure oxygenation — intubate early."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ards-adjuncts",
+      "prompt": {
+        "zh-CN": "按当前指南，对本例重度急性呼吸窘迫综合征，哪一组辅助/支持措施最合理？",
+        "en": "By current guidance, which set of adjunctive or supportive measures is most appropriate for this severe ARDS?"
       },
       "kind": "single",
       "requires": {
@@ -1048,8 +2336,7 @@
             "decided": "diagnosis"
           },
           {
-            "read": "obstetric",
-            "phase": "workup"
+            "decided": "respiratory-support"
           },
           {
             "read": "oxygenation",
@@ -1058,32 +2345,56 @@
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先完成诊断与呼吸支持决策，并调阅本阶段的氧合结果。",
+        "en": "First complete the diagnosis and respiratory-support decisions and review this phase's oxygenation result."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "prone-lpv-ecmo",
           "text": {
-            "zh-CN": "立即重症、呼吸、感染及产科协作，评估呼吸支持、抗病毒与母胎监测",
-            "en": "Immediate critical-care, respiratory, infection and obstetric coordination for respiratory support, antivirals and maternal-fetal monitoring"
+            "zh-CN": "俯卧位通气、肺保护性通气、保守液体管理，难治时转诊静脉-静脉体外膜肺，并协同产科；避免常规大剂量激素与免疫调节剂",
+            "en": "Prone positioning, lung-protective ventilation, conservative fluids, referral for VV-ECMO if refractory, and obstetric coordination — avoiding routine high-dose corticosteroids and immunomodulators"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "单例合并多种治疗不能证明每种措施的独立疗效；应由专科依当下病情和指南决策。",
-            "en": "A single case with multiple concurrent therapies cannot prove each treatment’s independent effect; specialists must use the current condition and guidance."
+            "zh-CN": "正确。ESICM 2023/ATS 2024 支持俯卧位与肺保护性通气，重度难治者考虑静脉-静脉体外膜肺；免疫球蛋白/胸腺肽缺乏证据，常规大剂量激素在 H7N9 观察队列（Cao 2016）与更高死亡率相关。",
+            "en": "Correct. ESICM 2023/ATS 2024 support prone positioning and lung-protective ventilation, with VV-ECMO for severe refractory cases; immunoglobulin/thymosin lack evidence, and routine high-dose corticosteroids were associated with higher mortality in an H7N9 cohort (Cao 2016)."
           }
         },
         {
-          "id": "unsupported",
+          "id": "recruitment-routine",
           "text": {
-            "zh-CN": "照搬病例中的免疫球蛋白、胸腺肽和激素组合并认定必然有效",
-            "en": "Copy the reported immunoglobulin, thymosin and steroid combination as proven effective"
+            "zh-CN": "常规采用长时程高压肺复张手法改善氧合",
+            "en": "Routinely use prolonged high-pressure recruitment manoeuvres to improve oxygenation"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "单例合并多种治疗不能证明每种措施的独立疗效；应由专科依当下病情和指南决策。",
-            "en": "A single case with multiple concurrent therapies cannot prove each treatment’s independent effect; specialists must use the current condition and guidance."
+            "zh-CN": "错误。ESICM 2023 强推荐不使用长时程高压肺复张，ATS 2024 亦然；有气压伤与血流动力学风险而无生存获益。原报告曾采用，属历史做法。",
+            "en": "Wrong. ESICM 2023 strongly recommends against prolonged high-pressure recruitment, as does ATS 2024; it risks barotrauma and haemodynamic compromise with no survival benefit. The report used it — a historical practice."
+          }
+        },
+        {
+          "id": "ivig-thymosin",
+          "text": {
+            "zh-CN": "以免疫球蛋白加胸腺肽α1为主要治疗并认定有效",
+            "en": "Make immunoglobulin plus thymosin α1 the main treatment and regard it as proven effective"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。IDSA 2018 不推荐免疫球蛋白，WHO 2024 对被动免疫治疗有条件不推荐；单例合并多药无法证明其独立疗效。",
+            "en": "Wrong. IDSA 2018 does not recommend immunoglobulin and WHO 2024 conditionally recommends against passive immune therapy; a single case with many concurrent drugs cannot prove their independent effect."
+          }
+        },
+        {
+          "id": "highdose-steroid-routine",
+          "text": {
+            "zh-CN": "常规大剂量糖皮质激素冲击抗炎",
+            "en": "Give routine high-dose corticosteroid pulses as anti-inflammatory therapy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。WHO 2024 对重症流感有条件不推荐激素，Cao 2016 显示 > 150 mg/日甲泼尼龙当量与更高死亡率和更长排毒相关。ATS 2024 对急性呼吸窘迫综合征总体有条件推荐激素，故需区分：循环不稳定时的短程使用不同于常规大剂量冲击。",
+            "en": "Wrong. WHO 2024 conditionally recommends against steroids in severe influenza, and Cao 2016 linked > 150 mg/day methylprednisolone-equivalent to higher mortality and longer shedding. ATS 2024 conditionally suggests steroids for ARDS in general, so distinguish a short course for circulatory instability from routine high-dose pulses."
           }
         }
       ]
@@ -1091,11 +2402,11 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "r-hx",
       "domain": "history",
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "采集主诉、伴随症状、孕周与禽类接触史",
+        "en": "Elicited the presenting complaint, associated symptoms, gestation and poultry exposure"
       },
       "weight": 2,
       "met": {
@@ -1104,7 +2415,7 @@
             "asked": "presentation"
           },
           {
-            "asked": "symptoms"
+            "asked": "associated"
           },
           {
             "asked": "pregnancy"
@@ -1116,11 +2427,11 @@
       }
     },
     {
-      "id": "rubric-2",
+      "id": "r-exam",
       "domain": "examination",
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "核对初诊一般情况、肺部与恶化时肺部",
+        "en": "Checked the general appearance, chest and the chest during deterioration"
       },
       "weight": 1,
       "met": {
@@ -1130,40 +2441,119 @@
           },
           {
             "examined": "lungs"
+          },
+          {
+            "examined": "later-lungs"
           }
         ]
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "r-specimens",
+      "domain": "investigations",
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "留取呼吸道标本送H7N9核酸检测",
+        "en": "Sent respiratory specimens for H7N9 testing"
       },
-      "weight": 3,
+      "weight": 1,
       "met": {
-        "decided": "diagnosis"
+        "ordered": "pcr"
       }
     },
     {
-      "id": "rubric-4",
-      "domain": "management",
+      "id": "r-oxygenation",
+      "domain": "investigations",
       "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
+        "zh-CN": "识别重度低氧并复核胸片",
+        "en": "Recognised severe hypoxaemia and reviewed the chest film"
       },
-      "weight": 3,
+      "weight": 1,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "read": "oxygenation",
+            "phase": "workup"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "xray",
+            "phase": "workup"
           }
         ]
+      }
+    },
+    {
+      "id": "r-empirical",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "确诊前即经验性开始抗病毒（时效性关键）",
+        "en": "Started empirical antivirals before confirmation (the time-critical step)"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "empirical-antiviral"
+      }
+    },
+    {
+      "id": "r-diagnosis",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "正确整合证据作出诊断",
+        "en": "Reached the correct diagnosis from the evidence"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-support",
+      "domain": "management",
+      "text": {
+        "zh-CN": "无创通气失败后及时改有创肺保护性通气",
+        "en": "Switched promptly to invasive lung-protective ventilation after NIV failure"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "respiratory-support"
+      }
+    },
+    {
+      "id": "r-adjuncts",
+      "domain": "management",
+      "text": {
+        "zh-CN": "按当前指南权衡急性呼吸窘迫综合征辅助治疗",
+        "en": "Weighed the ARDS adjuncts against current guidance"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "ards-adjuncts"
+      }
+    },
+    {
+      "id": "r-safety-rm",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "未采用常规长时程高压肺复张手法",
+        "en": "Did not apply routine prolonged high-pressure recruitment manoeuvres"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "intervened": "recruitment"
+        }
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "向家属说明隔离与病情，并与产科协同沟通母胎管理",
+        "en": "Explained isolation and severity to the family and coordinated maternal-fetal care with obstetrics"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "学员是否用通俗语言向家属说明隔离与报告的必要、病情危重程度，并说明已请产科共同管理母胎、权衡分娩时机；是否诚实交代单例证据的局限。",
+        "en": "Did the learner explain, in plain language, the need for isolation and notification and the severity, and say that obstetrics is co-managing the mother and baby and the timing of delivery; and were the limits of single-case evidence stated honestly?"
       }
     }
   ],
@@ -1171,54 +2561,111 @@
     {
       "role": "attending",
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别与安全计划。关键教学点：怀疑新型甲型流感重症应在确诊前即经验性抗病毒（妊娠期亦然）；无创通气失败应及时有创肺保护性通气并俯卧位；免疫球蛋白、胸腺肽与常规大剂量激素缺乏当前证据支持。原报告处置不自动成为今天的推荐。",
+        "en": "A historical teaching case. Review the current phase's evidence before discussing the differential and a safe plan. Key points: suspected severe novel influenza A should have empirical antivirals before confirmation (including in pregnancy); non-invasive-ventilation failure needs timely invasive lung-protective ventilation and prone positioning; immunoglobulin, thymosin and routine high-dose corticosteroids lack current support. The report's care is not automatically a recommendation for today."
       },
       "interprets": [
+        "cbc",
         "oxygenation",
         "xray",
         "pcr",
-        "cbc",
         "obstetric",
+        "public-health",
+        "serial-imaging",
         "followup"
       ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "nurse",
+      "knowledge": {
+        "zh-CN": "负责隔离与基础护理：负压/单间飞沫与接触隔离、严格手卫生、密闭式吸痰、床头抬高；可执行吸氧、监护、俯卧位翻身、鼻胃管给药等护理操作。按原报告如实转述已有数据，不提供未记录的数值或诊断。",
+        "en": "Handles isolation and bedside care: negative-pressure or single-room droplet-and-contact precautions, strict hand hygiene, closed suctioning, head-up positioning; can carry out oxygen, monitoring, prone turns and nasogastric drug administration. Relays only recorded data, never an unrecorded value or a diagnosis."
+      },
+      "interprets": [],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "妊娠合并H7N9禽流感：证据与安全复盘",
+      "en": "H7N9 avian influenza in pregnancy: evidence and safety debrief"
     },
     "conclusion": {
-      "zh-CN": "该病例记录妊娠合并H7N9重症肺炎后母婴存活；不能从多药联用的单例推出具体辅助药物有效。",
-      "en": "This case records maternal and infant survival after severe H7N9 pneumonia in pregnancy; it cannot establish efficacy of individual adjunctive drugs."
+      "zh-CN": "本例为孕中期（约孕22周余）妊娠合并人感染H7N9禽流感，并发重度低氧性呼吸衰竭/急性呼吸窘迫综合征。经确诊前即经验性抗病毒、无创通气失败后及时有创肺保护性通气与俯卧位、保守液体管理及母胎协同，最终临床痊愈，约病程第110天剖宫产娩出健康女婴。可核对的结局是母婴存活；合并多种治疗的单例不能证明某一辅助药物的独立疗效。",
+      "en": "A woman in the second trimester (about 22 weeks) with human H7N9 avian influenza complicated by severe hypoxaemic respiratory failure / ARDS. With empirical antivirals before confirmation, a timely switch to invasive lung-protective ventilation and prone positioning after non-invasive-ventilation failure, conservative fluids and maternal-fetal coordination, she recovered and delivered a healthy girl by caesarean at about illness day 110. The verifiable endpoint is maternal and infant survival; a single case with many concurrent treatments cannot establish any one adjunct's independent effect."
     },
     "keyReasoning": [
       {
-        "zh-CN": "家禽暴露引导病原检测，核酸提供特异证据。",
-        "en": "Poultry exposure prompted targeted testing and PCR provided specific evidence."
+        "zh-CN": "明确的家禽接触史加流行季节，使经验性抗病毒的指征在核酸回报前就已成立。",
+        "en": "A clear poultry exposure in the influenza season established the indication for empirical antivirals before the nucleic-acid result."
       },
       {
-        "zh-CN": "无创通气后仍极差的氧合是升级评估的关键。",
-        "en": "Persistently severe oxygenation impairment after non-invasive support was a key reason for escalation."
+        "zh-CN": "入院约10小时内面罩吸氧下氧合指数仅 42 mmHg，属极重度低氧；无创通气仅试用 1 小时即改有创通气。",
+        "en": "Within about 10 hours of admission the oxygenation index on mask oxygen was only 42 mmHg — extreme hypoxaemia; non-invasive ventilation was tried for just an hour before switching to invasive ventilation."
+      },
+      {
+        "zh-CN": "病原阳性、双肺大片影与氧合指数 < 100 mmHg 共同支持重症H7N9感染合并重度急性呼吸窘迫综合征。",
+        "en": "The positive pathogen test, extensive bilateral opacities and an oxygenation index < 100 mmHg together support severe H7N9 infection with severe ARDS."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是单例回顾，不能证明某种治疗的独立疗效或普遍适用性。原报告同期使用了抗病毒、免疫调节、激素、俯卧位和液体管理等多种措施，无法区分各自贡献。历史处置仅作记录；决策与安全评分为教学设计。",
+      "en": "This is a single retrospective case and cannot establish the independent efficacy or general applicability of any treatment. The report used antivirals, immunomodulation, steroids, prone positioning and fluid management together, so the contribution of each cannot be separated. Historical care is recorded only; decisions and safety scoring are educational design."
     },
     "unknowns": [
       {
-        "zh-CN": "完整胎心时间序列、长期婴儿发育结局和分类血细胞数据矛盾原因。",
-        "en": "Complete fetal-heart series, long-term infant development and the cause of the blood differential inconsistency."
+        "zh-CN": "完整的胎心监测时间序列与长期婴儿发育结局。",
+        "en": "The full fetal-heart monitoring series and long-term infant developmental outcome."
+      },
+      {
+        "zh-CN": "血常规分类数据的内部矛盾原因、免疫学检查结果与依痰涂片选用的具体抗菌方案。",
+        "en": "The cause of the internally inconsistent blood differential, the immunological test results and the exact antibiotic regimen chosen on the sputum smear."
+      },
+      {
+        "zh-CN": "各次血气的具体吸入氧浓度与分压、呼吸机参数细节。",
+        "en": "The exact FiO₂ and partial pressures of each blood gas and the detailed ventilator settings."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "经验性抗病毒的时机。CDC新型甲型流感临时指南对重症疑似/很可能/确诊病例推荐尽早抗病毒，“不应等待实验室结果”；IDSA 2018 对住院高危患者（含孕妇、产后两周内）不等检测即治疗。奥司他韦为妊娠期首选。",
+        "en": "Timing of empirical antivirals. CDC interim guidance for severe novel influenza A recommends treating suspected, probable or confirmed cases as soon as possible and 'not delayed while waiting for laboratory testing results'; IDSA 2018 treats hospitalised high-risk patients (including pregnant women and those up to two weeks postpartum) without waiting for testing. Oseltamivir is preferred in pregnancy."
+      },
+      {
+        "zh-CN": "肺复张手法。原报告采用持续肺膨胀（呼气末正压 30 cmH₂O 维持 30 秒）。ESICM 2023 强推荐不使用长时程高压肺复张（对短时程为弱推荐不使用），ATS 2024 对中重度急性呼吸窘迫综合征亦强推荐不使用长时程肺复张——历史做法与当前推荐在此分歧。",
+        "en": "Recruitment manoeuvres. The report used a sustained inflation (PEEP 30 cmH₂O for 30 s). ESICM 2023 strongly recommends against prolonged high-pressure recruitment manoeuvres (weakly against brief ones), and ATS 2024 strongly recommends against prolonged manoeuvres in moderate-to-severe ARDS — where the historical practice and current guidance part."
+      },
+      {
+        "zh-CN": "俯卧位通气。原报告每次 4～6 小时、每日 2 次（第8–13病日）。ESICM 2023/ATS 2024 对插管的中重度急性呼吸窘迫综合征强推荐俯卧位；PROSEVA 研究采用每次 ≥ 16 小时、氧合指数 < 150 mmHg 的方案，28 天病死率 16% 对 32.8%。",
+        "en": "Prone positioning. The report used 4–6-hour sessions twice daily (illness days 8–13). ESICM 2023/ATS 2024 strongly recommend prone positioning for intubated moderate-to-severe ARDS; PROSEVA used sessions of at least 16 hours with an oxygenation index < 150 mmHg, and 28-day mortality was 16% vs 32.8%."
+      },
+      {
+        "zh-CN": "糖皮质激素。原报告于第10病日循环不稳定时短程使用甲泼尼龙（首日 200 mg，后 120 mg/日 2 天停）。WHO 2024 对重症流感有条件不推荐激素，IDSA 2018 不推荐辅助激素；H7N9 观察队列（Cao 2016）显示 > 150 mg/日甲泼尼龙当量的大剂量激素与更高死亡率和更长排毒相关。ATS 2024 对急性呼吸窘迫综合征总体有条件推荐激素，故应如实呈现这一张力。",
+        "en": "Corticosteroids. The report used a short methylprednisolone course during the day-10 circulatory instability (200 mg day 1, then 120 mg/day for 2 days). WHO 2024 conditionally recommends against steroids in severe influenza and IDSA 2018 recommends against adjunctive steroids; an H7N9 cohort (Cao 2016) linked high-dose steroids (> 150 mg/day methylprednisolone-equivalent) to higher mortality and longer shedding. ATS 2024 conditionally suggests steroids for ARDS in general, so present the tension honestly."
+      },
+      {
+        "zh-CN": "免疫调节剂。免疫球蛋白与胸腺肽α1均无当前流感指南支持；IDSA 2018 不推荐辅助免疫球蛋白，WHO 2024 对被动免疫治疗有条件不推荐。",
+        "en": "Immunomodulators. Neither immunoglobulin nor thymosin α1 is supported by current influenza guidance; IDSA 2018 recommends against adjunctive immunoglobulin and WHO 2024 conditionally recommends against passive immune therapy."
+      },
+      {
+        "zh-CN": "奥司他韦剂量与疗程。原报告给予 150 mg 每12小时、疗程7天。CDC对重症住院患者可考虑延长疗程（如 10 天），最佳剂量与疗程尚不确定；随机对照研究（BMJ 2013）显示重症流感双倍剂量较标准剂量无额外获益。",
+        "en": "Oseltamivir dose and duration. The report gave 150 mg every 12 hours for 7 days. CDC says longer courses (e.g. 10 days) may be considered for severely ill hospitalised patients, with the optimal dose and duration uncertain; a randomised trial (BMJ 2013) found no added benefit of double-dose over standard-dose oseltamivir in severe influenza."
+      }
+    ],
     "references": [
-      "颜骏; 吉木森; 刘竞; 孔宪如; 胡秀兰; 杨宏锋; 赵松兰; 刘晓健; 金兆辰. 妊娠合并H7N9禽流感一例. 中华结核和呼吸杂志, 2014. DOI: 10.3760/cma.j.issn.1001-0939.2014.02.021",
+      "颜骏, 吉木森, 刘竞, 孔宪如, 胡秀兰, 杨宏锋, 等. 妊娠合并H7N9禽流感一例. 中华结核和呼吸杂志. 2014;37(2):139-140. doi:10.3760/cma.j.issn.1001-0939.2014.02.021",
       "https://rs.yiigle.com/cmaid/859819",
-      "CDC. Interim Guidance on Antiviral Treatment of Human Infections with Novel Influenza A Viruses Associated with Severe Human Disease (2025). https://www.cdc.gov/bird-flu/hcp/clinicians-evaluating-patients/interim-guidance-treatment-humans.html"
+      "Centers for Disease Control and Prevention. Interim guidance on the use of antiviral medications for treatment of human infections with novel influenza A viruses associated with severe human disease. Atlanta: CDC. https://www.cdc.gov/bird-flu/hcp/clinicians-evaluating-patients/interim-guidance-treatment-humans.html (accessed 2026-10-28).",
+      "Uyeki TM, Bernstein HH, Bradley JS, et al. Clinical practice guidelines by the Infectious Diseases Society of America: 2018 update on diagnosis, treatment, chemoprophylaxis, and institutional outbreak management of seasonal influenza. Clin Infect Dis. 2019;68(6):e1-e47. doi:10.1093/cid/ciy866",
+      "World Health Organization. Clinical practice guidelines for influenza. Geneva: WHO; 2024.",
+      "国家卫生健康委员会办公厅, 国家中医药管理局综合司. 人感染禽流感诊疗方案（2024年版）. 北京; 2024.",
+      "Grasselli G, Calfee CS, Camporota L, et al. ESICM guidelines on acute respiratory distress syndrome: definition, phenotyping and respiratory support strategies. Intensive Care Med. 2023;49(7):727-759. doi:10.1007/s00134-023-07050-7",
+      "Qadir N, Sahetya S, Munshi L, et al. An update on management of adult patients with acute respiratory distress syndrome: an official American Thoracic Society clinical practice guideline. Am J Respir Crit Care Med. 2024;209(1):24-36. doi:10.1164/rccm.202311-2011ST",
+      "Guérin C, Reignier J, Richard JC, et al. Prone positioning in severe acute respiratory distress syndrome. N Engl J Med. 2013;368(23):2159-2168. doi:10.1056/NEJMoa1214103",
+      "Cao B, Gao H, Zhou B, et al. Adjuvant corticosteroid treatment in adults with influenza A (H7N9) viral pneumonia. Crit Care Med. 2016;44(6):e318-e328. doi:10.1097/CCM.0000000000001616",
+      "South East Asia Infectious Disease Clinical Research Network. Effect of double dose oseltamivir on clinical and virological outcomes in children and adults admitted to hospital with severe influenza: double blind randomised controlled trial. BMJ. 2013;346:f3039. doi:10.1136/bmj.f3039",
+      "ARDS Definition Task Force; Ranieri VM, Rubenfeld GD, Thompson BT, et al. Acute respiratory distress syndrome: the Berlin definition. JAMA. 2012;307(23):2526-2533."
     ],
     "notice": {
       "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
@@ -1227,8 +2674,20 @@
   },
   "unknowns": [
     {
-      "zh-CN": "完整胎心时间序列、长期婴儿发育结局和分类血细胞数据矛盾原因。",
-      "en": "Complete fetal-heart series, long-term infant development and the cause of the blood differential inconsistency."
+      "zh-CN": "完整胎心监测时间序列、长期婴儿发育结局。",
+      "en": "The complete fetal-heart monitoring series and the long-term infant developmental outcome."
+    },
+    {
+      "zh-CN": "血常规分类数据内部矛盾的原因、免疫学检查结果。",
+      "en": "The cause of the internally inconsistent blood differential and the immunological test results."
+    },
+    {
+      "zh-CN": "各次血气的吸入氧浓度与分压、呼吸机参数细节、依痰涂片选用的抗菌方案。",
+      "en": "The FiO₂ and partial pressures of each blood gas, detailed ventilator settings, and the antibiotic regimen chosen on the sputum smear."
+    },
+    {
+      "zh-CN": "既往史中的过敏史、饮酒、家族遗传病及其他非处方用药。",
+      "en": "Allergy history, alcohol use, family history and any over-the-counter medicines."
     }
   ],
   "assets": [
@@ -1237,12 +2696,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-859819/fig01.png",
       "title": {
-        "zh-CN": "原报告：第8病日胸片",
-        "en": "Source: chest radiograph on illness day 8"
+        "zh-CN": "原报告：第8–30病日系列胸片与胸部CT（含恢复期）",
+        "en": "Source: serial chest radiographs and CT, illness days 8–30 (includes recovery)"
       },
       "credit": {
-        "zh-CN": "原报告图，颜骏; 吉木森; 刘竞; 孔宪如; 胡秀兰; 杨宏锋; 赵松兰; 刘晓健; 金兆辰，2014。版权归原权利人。",
-        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图，颜骏等，2014。版权归原权利人。",
+        "en": "Original report figure, Yan J et al., 2014. Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1275,7 +2734,7 @@
     },
     {
       "type": "ask",
-      "itemId": "symptoms"
+      "itemId": "associated"
     },
     {
       "type": "ask",
@@ -1287,6 +2746,14 @@
     },
     {
       "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
       "itemId": "pmh"
     },
     {
@@ -1295,15 +2762,11 @@
     },
     {
       "type": "ask",
-      "itemId": "medications"
-    },
-    {
-      "type": "ask",
       "itemId": "allergies"
     },
     {
       "type": "ask",
-      "itemId": "family"
+      "itemId": "family-history"
     },
     {
       "type": "ask",
@@ -1311,23 +2774,19 @@
     },
     {
       "type": "ask",
-      "itemId": "occupation"
-    },
-    {
-      "type": "ask",
-      "itemId": "self-care"
+      "itemId": "supplements"
     },
     {
       "type": "ask",
       "itemId": "expectations"
     },
     {
-      "type": "ask",
-      "itemId": "supplements"
+      "type": "examine",
+      "findingId": "appearance"
     },
     {
       "type": "examine",
-      "findingId": "appearance"
+      "findingId": "temperature"
     },
     {
       "type": "examine",
@@ -1340,6 +2799,10 @@
     {
       "type": "ask",
       "itemId": "progression"
+    },
+    {
+      "type": "examine",
+      "findingId": "distress"
     },
     {
       "type": "examine",
@@ -1362,6 +2825,28 @@
       "type": "read",
       "investigationId": "xray",
       "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "empirical-antiviral",
+      "optionIds": [
+        "oseltamivir-now",
+        "isolate",
+        "send-specimens",
+        "icu-review"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "oxygen-mask"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "oseltamivir"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "isolate-notify"
     },
     {
       "type": "order",
@@ -1394,15 +2879,64 @@
       "type": "answer",
       "decisionId": "diagnosis",
       "optionIds": [
-        "supported"
+        "h7n9-ards"
       ]
     },
     {
+      "type": "intervene",
+      "interventionId": "niv"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "intubate-lpv"
+    },
+    {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "respiratory-support",
       "optionIds": [
-        "supported"
+        "intubate-lpv"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "prone"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "conservative-fluids"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "enteral-nutrition"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "obstetric-consult"
+    },
+    {
+      "type": "answer",
+      "decisionId": "ards-adjuncts",
+      "optionIds": [
+        "prone-lpv-ecmo"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "public-health"
+    },
+    {
+      "type": "read",
+      "investigationId": "public-health",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "serial-imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "serial-imaging",
+      "phase": "followup"
     },
     {
       "type": "order",
@@ -1422,117 +2956,274 @@
     "sourceArticleId": "859819",
     "sourceUrl": "https://rs.yiigle.com/cmaid/859819",
     "historicalReview": true,
+    "embodied": {
+      "ivAccessInSitu": true
+    },
     "testUtterances": [
       {
-        "text": "发热咳嗽有多久了？",
+        "text": "发烧咳嗽有几天了？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "How long have fever and cough been present?",
+        "text": "这次发烧咳嗽是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "最高烧到多少度？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "how many days of fever and cough?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "还伴有哪些不舒服？",
-        "locale": "zh-CN",
-        "expect": [
-          "symptoms"
-        ]
-      },
-      {
-        "text": "What other symptoms accompany the illness?",
+        "text": "how high did the fever get?",
         "locale": "en",
         "expect": [
-          "symptoms"
+          "presentation"
         ]
       },
       {
-        "text": "发病时怀孕多少周？",
+        "text": "嗓子疼不疼，还有别的不舒服吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "痰是什么颜色的？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "浑身酸痛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "any muscle aches or sore throat?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "what does the sputum look like?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "怀孕几个月了？",
         "locale": "zh-CN",
         "expect": [
           "pregnancy"
         ]
       },
       {
-        "text": "How far along was the pregnancy at onset?",
+        "text": "现在孕多少周？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "how many weeks pregnant is she?",
         "locale": "en",
         "expect": [
           "pregnancy"
         ]
       },
       {
-        "text": "近期接触过家禽吗？",
+        "text": "how far along in the pregnancy?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "最近碰过活鸡活鸭吗？",
         "locale": "zh-CN",
         "expect": [
           "exposure"
         ]
       },
       {
-        "text": "Was there contact with poultry?",
+        "text": "有没有接触过禽类？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "去过活禽市场吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "has she been near any live birds or markets?",
         "locale": "en",
         "expect": [
           "exposure"
         ]
       },
       {
-        "text": "以前有明确的基础病吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "pmh"
-        ]
-      },
-      {
-        "text": "Were there known underlying illnesses?",
+        "text": "any contact with poultry before she got ill?",
         "locale": "en",
         "expect": [
-          "pmh"
+          "exposure"
         ]
       },
       {
-        "text": "您吸烟吗？",
+        "text": "家里人是做什么的？",
         "locale": "zh-CN",
         "expect": [
-          "smoking"
+          "occupation"
         ]
       },
       {
-        "text": "Do you smoke?",
+        "text": "她平时做什么工作？",
+        "locale": "zh-CN",
+        "expect": [
+          "occupation"
+        ]
+      },
+      {
+        "text": "what do your parents do for a living?",
         "locale": "en",
         "expect": [
-          "smoking"
+          "occupation"
         ]
       },
       {
-        "text": "入院初期接受什么治疗？",
+        "text": "住院后挂的什么水？",
         "locale": "zh-CN",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "What treatment was started on admission?",
+        "text": "入院用了什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "what treatment was started when she was admitted?",
         "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "入院后呼吸如何变化？",
+        "text": "以前有什么慢性病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "以前查出过什么病没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "any past medical conditions?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "她抽不抽烟？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "does she smoke at all?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "入院后喘得厉害吗？",
         "locale": "zh-CN",
         "expect": [
           "progression"
         ]
       },
       {
-        "text": "How did breathing change after admission?",
+        "text": "how did her breathing get worse after admission?",
         "locale": "en",
         "expect": [
           "progression"
+        ]
+      },
+      {
+        "text": "有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "any drug or food allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里有没有人得过遗传病？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-history"
+        ]
+      },
+      {
+        "text": "any family history of illness?",
+        "locale": "en",
+        "expect": [
+          "family-history"
+        ]
+      },
+      {
+        "text": "她平时喝不喝酒？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "does she drink alcohol?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
         ]
       }
     ]
