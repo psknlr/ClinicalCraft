@@ -1,27 +1,49 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423434",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "反复心悸胸闷 · 42岁女性",
-    "en": "Recurrent palpitations and chest tightness · woman aged 42"
+    "en": "Recurrent palpitations and chest tightness · 42-year-old woman"
   },
   "summary": {
-    "zh-CN": "既往心脏手术后症状持续，复查后再次手术；按阶段追踪抗凝、抗心律失常用药和出血证据。",
-    "en": "Persistent symptoms after earlier cardiac surgery lead to reassessment and another operation; trace anticoagulant, antiarrhythmic and bleeding records by phase."
+    "zh-CN": "一位心脏瓣膜病女性入院手术，术后住院期间出现新的问题：沿着时间线复核病情、用药和检查。",
+    "en": "A woman with valve disease is admitted for surgery, and a new problem appears during her post-operative stay: follow her condition, medicines and results along the timeline."
   },
   "specialty": [
     "cardiology",
     "clinical-pharmacology"
   ],
-  "difficulty": 4,
+  "difficulty": 3,
   "setting": "inpatient",
   "facility": "general-hospital",
   "locales": [
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "预见胺碘酮–华法林相互作用：合用时预先将华法林减量约 1/3–1/2，并在之后数周每隔几天复查INR。",
+      "en": "Anticipate the amiodarone–warfarin interaction: reduce warfarin by about one-third to one-half when the two are started together and check the INR every few days for the following weeks."
+    },
+    {
+      "zh-CN": "用胺碘酮的药代动力学解释加用后INR延迟、非线性的升高。",
+      "en": "Explain a delayed, non-linear INR rise after amiodarone starts, using amiodarone's pharmacokinetics."
+    },
+    {
+      "zh-CN": "按ACC 2020共识的大出血标准给维生素K拮抗剂相关出血分级，再决定是否逆转，并说明为何非大出血一般不用逆转剂。",
+      "en": "Grade bleeding on a vitamin K antagonist by the ACC 2020 major-bleeding criteria before choosing reversal, and explain why non-major bleeds generally need no reversal agent."
+    },
+    {
+      "zh-CN": "出血停止后以较低剂量尽早恢复抗凝，并制定出院后的INR监测计划，权衡新生物瓣和房颤的血栓风险。",
+      "en": "Restart anticoagulation early at a lower dose once bleeding stops and set an INR plan after discharge, weighing the thrombotic risk of a new bioprosthesis and AF."
+    },
+    {
+      "zh-CN": "识别医嘱单上并存的相互作用（胺碘酮–地高辛），并如实为单一病例的药物不良反应做因果分级。",
+      "en": "Identify co-existing interactions on the drug chart (amiodarone–digoxin) and grade causality honestly in a single-case adverse drug reaction."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -29,778 +51,1886 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "刘俊. 联合应用华法林与胺碘酮致国际标准化比值升高和血尿. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.011",
+    "citation": "刘俊. 联合应用华法林与胺碘酮致国际标准化比值升高和血尿. 药物不良反应杂志. 2014;16(1):40-41. doi:10.3760/cma.j.issn.1008-5734.2014.01.011",
     "doi": "10.3760/cma.j.issn.1008-5734.2014.01.011",
     "authors": [
       "刘俊"
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例报告改写。年龄、性别、病史、查体、全部检查数值、手术、每一次用药剂量与调整、出血和处理经过及出院时间均取自原文；患者为化名，医院、日历日期和身份细节已去除，时间以“入院第N天”“术后第N天”表示。对话、决策、干预选项、评分和教学要点为教学设计，原文未记录的内容保持未知。原文内部不一致已保留并标注：英文摘要写第17天PT 18.7 s、INR 1.6，中文摘要和正文为PT 16.6 s、INR 1.4（病例以正文为准）。PDF第1页开头为另一篇文章的结尾。2026-10-28按ACC 2020口服抗凝药出血管理共识、CHEST 2012（ACCP第9版）、ESC 2024房颤和ESC/EACTS 2025瓣膜病指南及美国胺碘酮说明书做了编辑审校（版本1.1.0）。",
+      "en": "Adapted from a published case report. Age, sex, history, examination, every test value, the operation, every drug dose and change, the bleed, its management and the discharge day come from the report; the patient has a pseudonym, hospitals, calendar dates and identifying details are removed, and times are given as hospital or postoperative days. The dialogue, decisions, intervention options, scoring and teaching points are educational design, and what the report does not record stays unknown. An internal inconsistency is kept and labelled: the English abstract gives day-17 PT 18.7 s and INR 1.6, the Chinese abstract and main text PT 16.6 s and INR 1.4 (the case follows the main text). Page 1 of the PDF opens with the end of another article. Editorial review against the ACC 2020 pathway on bleeding with oral anticoagulants, CHEST 2012 (ACCP 9th edition), ESC 2024 AF, ESC/EACTS 2025 valvular disease and the US amiodarone label on 2026-10-28 (version 1.1.0)."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ACC 2020 expert consensus decision pathway: bleeding in patients on oral anticoagulants",
+        "CHEST 2012 (ACCP 9th edition): evidence-based management of anticoagulant therapy",
+        "ESC 2024 AF",
+        "ESC/EACTS 2025 valvular heart disease",
+        "US amiodarone prescribing information (drug interactions: warfarin, digoxin)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
-    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。病程和结局取自原报告；你的选择不会改变已发表的病程，也不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. The course and outcome come from the published report; your choices do not change it, and unrecorded physiology is not simulated."
   },
   "patient": {
     "displayName": {
-      "zh-CN": "陶女士（化名）",
-      "en": "Ms Tao (pseudonym)"
+      "zh-CN": "秦女士（化名）",
+      "en": "Ms Qin (pseudonym)"
     },
     "age": 42,
     "sex": "female",
     "chiefComplaint": {
-      "zh-CN": "活动后心悸胸闷长期反复，近1周加重",
-      "en": "Longstanding exertional palpitations and chest tightness, worse for one week"
+      "zh-CN": "活动后心悸、胸闷14年，加重1周",
+      "en": "Exertional palpitations and chest tightness for 14 years, worse for a week"
     },
     "triageNote": {
-      "zh-CN": "既往心脏手术后症状持续，复查后再次手术；按阶段追踪抗凝、抗心律失常用药和出血证据。",
-      "en": "Persistent symptoms after earlier cardiac surgery lead to reassessment and another operation; trace anticoagulant, antiarrhythmic and bleeding records by phase."
+      "zh-CN": "42岁女性，活动后心悸、胸闷14年，近1周加重并出现双下肢水肿，收住病房。入院测：体温 36.4 ℃，脉搏 84 次/分，呼吸 19 次/分，血压 128/86 mmHg。",
+      "en": "42-year-old woman admitted to the ward with 14 years of exertional palpitations and chest tightness, worse for a week with swollen legs. Admission observations: T 36.4 °C, pulse 84/min, RR 19/min, BP 128/86 mmHg."
     },
     "tags": [
       {
-        "zh-CN": "活动后心悸胸闷长期反复，近1周加重",
-        "en": "Longstanding exertional palpitations and chest tightness, worse for one week"
+        "zh-CN": "瓣膜病",
+        "en": "Valve disease"
+      },
+      {
+        "zh-CN": "心律不齐",
+        "en": "Irregular pulse"
+      },
+      {
+        "zh-CN": "下肢水肿",
+        "en": "Leg swelling"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "42岁女性，成年后大半时间与心脏病相处，耐心、配合，对住院有些疲惫；出现新问题时会担心。",
+        "en": "A 42-year-old woman who has lived with heart disease for most of her adult life — patient and cooperative, a little weary of hospitals, and worried when something new goes wrong."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "用日常口语回答，句子简短，用“心慌”“胸口闷”“腿肿”“小便发红”这类说法；不知道药名、剂量和化验数字。",
+        "en": "Short, everyday answers in lay words (“palpitations”, “tight chest”, “swollen legs”, “red urine”); does not know drug names, doses or test numbers."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "anxious",
       "openingLine": {
-        "zh-CN": "活动后心悸、胸闷14年，最近1周加重。",
-        "en": "Exertional palpitations and chest tightness have persisted for 14 years and worsened in the last week."
+        "zh-CN": "医生，我一活动就心慌、胸口闷，十四年了，这一个礼拜更厉害了。",
+        "en": "Doctor, whenever I do anything I get palpitations and a tight chest — fourteen years now, and this past week it's been worse."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [
+        {
+          "zh-CN": "这次手术以后，我能不能真的好起来？",
+          "en": "After this operation, will I actually get better?"
+        },
+        {
+          "zh-CN": "吃这么多药，会不会有什么副作用？",
+          "en": "With all these medicines, could there be side effects?"
+        }
+      ],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "配合、有点疲惫；用普通人的话回答，不知道药名、剂量或检查结果，问到就让医生看医嘱单和病历。术后出现血尿时明显紧张，会追问是不是很危险、回家后还会不会再出血。只说答案里有的内容，不说诊断。",
+        "en": "Cooperative and a little tired; answers in lay words, does not know drug names, doses or results and points the doctor to the drug chart and notes. Visibly worried once the haematuria appears, asking whether it is dangerous and whether it could happen again at home. Says only what the answers contain and never names a diagnosis."
       }
     },
     "appearance": {
+      "skin": "#d9b89a",
+      "hair": "#2f2620",
+      "hairStyle": "bun",
+      "shirt": "#a7c4d6",
+      "pants": "#4f5a66",
+      "build": "slim",
       "stature": "adult",
-      "gown": true
+      "gown": true,
+      "accessory": "none"
     },
     "posture": "lying"
   },
   "phases": [
     {
-      "id": "initial",
+      "id": "admission",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "入院评估",
+        "en": "Admission assessment"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "手术前：问诊、查体和基线检查。",
+        "en": "Before surgery: history, examination and baseline tests."
+      },
+      "learnerSwitchable": false
     },
     {
-      "id": "workup",
+      "id": "postop",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "术后第1–8天",
+        "en": "Postoperative days 1–8"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+      "description": {
+        "zh-CN": "入院第9天手术；术后开始华法林抗凝，第8天房颤复发。",
+        "en": "Surgery on hospital day 9; warfarin starts after surgery and AF recurs on day 8."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "objective": "obj-admission-history"
           },
           {
-            "decided": "management"
-          },
-          {
-            "objective": "objective-1"
-          },
-          {
-            "objective": "objective-2"
+            "objective": "obj-admission-assessment"
           }
         ]
       }
+    },
+    {
+      "id": "haematuria",
+      "label": {
+        "zh-CN": "术后第14–16天",
+        "en": "Postoperative days 14–16"
+      },
+      "description": {
+        "zh-CN": "INR继续变化，第16天出现新问题。",
+        "en": "The INR keeps changing, and a new problem appears on day 16."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-amiodarone"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处理与出院",
+        "en": "Reported management and discharge"
+      },
+      "description": {
+        "zh-CN": "原报告记录的处理、恢复抗凝和出院；之后的情况未报告。",
+        "en": "The management, restart and discharge the report records; what followed is not reported."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-bleed"
+      }
     }
   ],
-  "initialPhase": "initial",
+  "initialPhase": "admission",
   "clock": {
     "mode": "static",
-    "realtimeScale": 0
+    "realtimeScale": 0,
+    "actionCosts": {
+      "ask": 0,
+      "examine": 0,
+      "order": 0,
+      "read": 0,
+      "intervene": 0,
+      "answer": 0
+    }
   },
   "history": [
     {
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "心悸胸闷持续多久？",
-        "en": "How long have palpitations and tightness persisted?"
+        "zh-CN": "您这次是哪里不舒服来住院的？",
+        "en": "What has brought you into hospital this time?"
       },
       "answer": {
-        "zh-CN": "活动后心悸、胸闷14年，最近1周加重。",
-        "en": "Exertional palpitations and chest tightness have persisted for 14 years and worsened in the last week."
+        "zh-CN": "一活动就心慌、胸口发闷，已经十四年了。这一个礼拜更厉害了。",
+        "en": "Whenever I do anything I get palpitations and my chest feels tight — it's been fourteen years now. This past week it's been worse."
       },
       "keywords": {
         "zh-CN": [
-          "心悸胸闷持续多久？",
-          "心悸"
+          "哪里不舒服",
+          "为什么住院",
+          "心慌",
+          "心悸",
+          "胸闷",
+          "胸口闷",
+          "多少年了",
+          "怎么不舒服"
         ],
         "en": [
-          "How long have palpitations and tightness persisted?",
-          "palpitations"
+          "brought you into hospital",
+          "brought in",
+          "in hospital",
+          "the matter",
+          "palpitations",
+          "chest tightness",
+          "how long",
+          "main problem",
+          "reason for admission",
+          "trouble with your heart",
+          "symptoms"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "小便",
+          "尿",
+          "出血",
+          "手术以后",
+          "药"
+        ],
+        "en": [
+          "urine",
+          "blood",
+          "bleed",
+          "since the operation",
+          "medic",
+          "tablet",
+          "drug"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
+      }
     },
     {
       "id": "associated",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "还伴有什么症状？",
-        "en": "What associated symptoms were reported?"
+        "zh-CN": "还有别的不舒服吗？比如晚上憋醒、腿肿？",
+        "en": "Anything else — waking up breathless at night, swollen legs?"
       },
       "answer": {
-        "zh-CN": "过去有夜间阵发性呼吸困难，最近出现双腿水肿。",
-        "en": "There had been paroxysmal nocturnal dyspnoea, with recent bilateral leg oedema."
+        "zh-CN": "以前晚上睡着会憋醒，得坐起来喘气。这一个礼拜两条腿也肿了。",
+        "en": "I used to wake up at night short of breath and have to sit up. And this past week both my legs have swollen."
       },
       "keywords": {
         "zh-CN": [
-          "还伴有什么症状？",
-          "夜间呼吸困难"
+          "还有什么不舒服",
+          "憋醒",
+          "夜里喘",
+          "腿肿",
+          "水肿",
+          "气短",
+          "躺不平",
+          "伴随症状"
         ],
         "en": [
-          "What associated symptoms were reported?",
-          "nocturnal dyspnoea"
+          "anything else",
+          "breathless at night",
+          "swollen legs",
+          "swelling",
+          "legs swell",
+          "ankle swelling",
+          "short of breath",
+          "oedema",
+          "edema",
+          "lie flat"
         ]
       },
-      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "小便",
+          "尿",
+          "出血"
+        ],
+        "en": [
+          "urine",
+          "bleed"
+        ]
+      },
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
+      }
     },
     {
       "id": "surgery",
       "topic": "psh",
       "question": {
-        "zh-CN": "以前接受过什么心脏手术？",
-        "en": "What previous cardiac operation was performed?"
+        "zh-CN": "以前做过心脏手术吗？",
+        "en": "Have you had heart surgery before?"
       },
       "answer": {
-        "zh-CN": "14年前做过三尖瓣下移畸形矫治，症状没有明显缓解。",
-        "en": "Ebstein anomaly was repaired 14 years earlier without clear symptom relief."
+        "zh-CN": "十四年前在当地医院做过心脏手术，说是先天性的，三尖瓣往下长了，叫三尖瓣下移。做完也没觉得好多少。",
+        "en": "Fourteen years ago I had heart surgery at the local hospital — they said I was born with it, one of my valves sits too low (Ebstein's, they called it). I didn't feel much better afterwards."
       },
       "keywords": {
         "zh-CN": [
-          "以前接受过什么心脏手术？",
-          "矫治手术"
+          "做过手术",
+          "做过什么手术",
+          "心脏做过",
+          "心脏手术",
+          "开过刀",
+          "以前的手术",
+          "三尖瓣下移",
+          "先天性心脏病",
+          "矫治术"
         ],
         "en": [
-          "What previous cardiac operation was performed?",
-          "Ebstein repair"
+          "heart surgery",
+          "previous operation",
+          "operated on",
+          "ebstein",
+          "congenital heart disease",
+          "surgery before",
+          "operation in the past"
         ]
       },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "allergies",
-      "topic": "allergies",
-      "question": {
-        "zh-CN": "以前有食物或药物过敏吗？",
-        "en": "Any previous food or drug allergies?"
-      },
-      "answer": {
-        "zh-CN": "否认食物和药物过敏史。",
-        "en": "Food and drug allergies were denied."
-      },
-      "keywords": {
-        "zh-CN": [
-          "以前有食物或药物过敏吗？",
-          "药物过敏"
-        ],
-        "en": [
-          "Any previous food or drug allergies?",
-          "allergies"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "pmh",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "是否有高血压、糖尿病或泌尿疾病？",
-        "en": "Was there hypertension, diabetes or urinary disease?"
-      },
-      "answer": {
-        "zh-CN": "否认高血压、糖尿病和泌尿生殖系统病史。",
-        "en": "Hypertension, diabetes and genitourinary disease were denied."
-      },
-      "keywords": {
-        "zh-CN": [
-          "是否有高血压、糖尿病或泌尿疾病？",
-          "泌尿疾病"
-        ],
-        "en": [
-          "Was there hypertension, diabetes or urinary disease?",
-          "urinary disease"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "medications",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "入院前的药物清单是否有记录？",
-        "en": "Is the pre-admission medication list recorded?"
-      },
-      "answer": {
-        "zh-CN": "原报告没有完整列出入院前长期用药。",
-        "en": "The full pre-admission medication list is not documented."
-      },
-      "keywords": {
-        "zh-CN": [
-          "入院前的药物清单是否有记录？"
-        ],
-        "en": [
-          "Is the pre-admission medication list recorded?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
       }
     },
     {
       "id": "murmur",
       "topic": "pmh",
       "question": {
-        "zh-CN": "什么时候首次发现心脏杂音？",
+        "zh-CN": "什么时候第一次发现心脏有杂音？",
         "en": "When was a heart murmur first found?"
       },
       "answer": {
-        "zh-CN": "约20年前体检发现，当时没有不适。",
-        "en": "A murmur was found about 20 years earlier during an examination, when there were no symptoms."
+        "zh-CN": "二十年前体检，医生说心脏有杂音。那时候一点都不难受，就没当回事。",
+        "en": "Twenty years ago at a check-up the doctor said I had a heart murmur. I felt completely fine then, so I didn't think much of it."
       },
       "keywords": {
         "zh-CN": [
-          "什么时候首次发现心脏杂音？",
-          "杂音"
+          "杂音",
+          "心脏杂音",
+          "体检发现",
+          "第一次发现",
+          "什么时候发现",
+          "二十年前"
         ],
         "en": [
-          "When was a heart murmur first found?",
-          "murmur"
+          "murmur",
+          "heart murmur",
+          "first found",
+          "check-up",
+          "murmur discovered",
+          "first noticed"
         ]
       },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
       }
     },
     {
-      "id": "bleeding",
-      "topic": "hpi",
+      "id": "allergies",
+      "topic": "allergies",
       "question": {
-        "zh-CN": "此次术后出现什么出血表现？",
-        "en": "What postoperative bleeding appeared?"
+        "zh-CN": "您对什么药或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
       },
       "answer": {
-        "zh-CN": "这次手术后第16天出现肉眼血尿。",
-        "en": "Visible haematuria appeared on postoperative day 16."
+        "zh-CN": "没有，吃的、用的药都不过敏。",
+        "en": "No, I'm not allergic to any food or medicine."
       },
       "keywords": {
         "zh-CN": [
-          "此次术后出现什么出血表现？",
-          "血尿"
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对什么过敏",
+          "青霉素"
         ],
         "en": [
-          "What postoperative bleeding appeared?",
-          "haematuria"
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "food allergy",
+          "penicillin"
         ]
       },
-      "disclosure": "on-ask",
-      "phases": [
-        "workup"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
       }
     },
     {
-      "id": "family",
-      "topic": "family",
+      "id": "pmh",
+      "topic": "pmh",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "有没有高血压、糖尿病，或者肾脏、泌尿方面的病？",
+        "en": "Any high blood pressure, diabetes, or kidney or urinary problems?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "没有高血压，也没有糖尿病。肾、尿路、妇科这些也从来没出过毛病。",
+        "en": "No high blood pressure and no diabetes. And I've never had anything wrong with my kidneys, bladder or anything gynae."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
-          "家族史"
+          "高血压",
+          "糖尿病",
+          "肾脏",
+          "泌尿",
+          "尿路",
+          "妇科",
+          "其他病",
+          "以前有什么病"
         ],
         "en": [
-          "Any family history of similar illness?",
-          "family history"
+          "high blood pressure",
+          "diabetes",
+          "kidney problems",
+          "kidney trouble",
+          "bladder",
+          "kidney",
+          "urinary problems",
+          "other illnesses",
+          "past medical history",
+          "gynae"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "现在",
+          "今天",
+          "导尿",
+          "尿管"
+        ],
+        "en": [
+          "family",
+          "today",
+          "catheter"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "住院前您平时吃哪些药？",
+        "en": "What medicines were you taking before you came into hospital?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时吃什么药",
+          "住院前的药",
+          "在家吃的药",
+          "长期吃药",
+          "常用药"
+        ],
+        "en": [
+          "usual medicines",
+          "tablets at home",
+          "regular medication",
+          "before you came in",
+          "medicines at home"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "现在",
+          "医院里"
+        ],
+        "en": [
+          "allerg",
+          "now",
+          "in hospital"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
+      }
+    },
+    {
+      "id": "current-meds",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "现在在医院里吃的是哪些药？",
+        "en": "Which medicines are you on here in hospital?"
+      },
+      "answer": {
+        "zh-CN": "护士每天按时把药发给我，名字和剂量我记不清，您看医嘱单吧。",
+        "en": "The nurses bring my tablets every day — I can't remember the names or doses, so you'd better check the drug chart."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在吃什么药",
+          "医院里的药",
+          "在吃哪些药",
+          "用的什么药",
+          "医嘱",
+          "药单"
+        ],
+        "en": [
+          "medicines now",
+          "the ward",
+          "ward medicines",
+          "giving you",
+          "current medication",
+          "drug chart",
+          "what tablets",
+          "which drugs"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "住院前",
+          "在家"
+        ],
+        "en": [
+          "allerg",
+          "before",
+          "at home"
+        ]
+      },
+      "source": {
+        "zh-CN": "教学改写：指引学员查看用药记录",
+        "en": "Teaching adaptation: points the learner to the drug chart"
       }
     },
     {
       "id": "smoking",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
+        "zh-CN": "您抽烟吗？",
         "en": "Do you smoke?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "抽烟",
+          "吸烟",
+          "香烟",
+          "烟龄",
+          "吸不吸烟"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "smoke",
+          "smoking",
+          "smoker",
+          "cigarettes",
+          "tobacco"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
       }
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
+        "zh-CN": "平时喝酒吗？",
         "en": "Do you drink alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "酒量",
+          "白酒",
+          "啤酒"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine",
+          "units"
         ]
       },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "occupation",
-      "topic": "social",
-      "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
+          "喝水",
+          "吃饭"
         ],
         "en": [
-          "What are your work and living circumstances?",
-          "occupation"
+          "water",
+          "eating"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
-        ],
-        "en": [
-          "How independent were you before this illness?",
-          "independence"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "expectations",
-      "topic": "ice",
-      "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
-        ],
-        "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
       }
     },
     {
       "id": "supplements",
       "topic": "medications",
       "question": {
-        "zh-CN": "还服用其他非处方药或保健品吗？",
-        "en": "Were other non-prescription medicines or supplements used?"
+        "zh-CN": "有没有吃中药、保健品或者自己买的药？",
+        "en": "Any herbal remedies, supplements or medicines you bought yourself?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息。",
-        "en": "This information is not recorded in the source."
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "还服用其他非处方药或保健品吗？"
+          "中药",
+          "保健品",
+          "自己买的药",
+          "偏方",
+          "草药",
+          "营养品"
         ],
         "en": [
-          "Were other non-prescription medicines or supplements used?"
+          "herbal",
+          "supplements",
+          "over-the-counter",
+          "remedies",
+          "vitamins",
+          "bought yourself"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有心脏病或出血方面的病吗？",
+        "en": "Does anyone in your family have heart disease or a bleeding problem?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族史",
+          "家里人",
+          "遗传",
+          "父母",
+          "兄弟姐妹",
+          "家里有人"
+        ],
+        "en": [
+          "family history",
+          "relatives",
+          "runs in the family",
+          "parents",
+          "siblings",
+          "inherited"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
+      }
+    },
+    {
+      "id": "diet",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "手术以后吃饭怎么样？",
+        "en": "How has your eating been since the operation?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃饭",
+          "胃口",
+          "饮食",
+          "吃得下",
+          "进食",
+          "吃得怎么样"
+        ],
+        "en": [
+          "eating",
+          "appetite",
+          "diet",
+          "food",
+          "meals",
+          "eating properly"
         ]
       },
       "disclosure": "unknown",
       "phases": [
-        "initial"
+        "postop",
+        "haematuria",
+        "followup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
+      }
+    },
+    {
+      "id": "haematuria",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "今天小便有什么变化吗？",
+        "en": "Have you noticed anything different about your urine today?"
+      },
+      "answer": {
+        "zh-CN": "今天小便是红的，一看就是血。",
+        "en": "Today my urine came out red — you could see it was blood."
+      },
+      "keywords": {
+        "zh-CN": [
+          "小便",
+          "尿血",
+          "血尿",
+          "尿里有血",
+          "尿是红的",
+          "尿的颜色",
+          "出血",
+          "哪里出血"
+        ],
+        "en": [
+          "urine",
+          "blood in your urine",
+          "haematuria",
+          "hematuria",
+          "red urine",
+          "any bleeding",
+          "passing urine"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "疼",
+          "烧",
+          "导尿管",
+          "牙龈",
+          "大便"
+        ],
+        "en": [
+          "pain",
+          "burn",
+          "catheter",
+          "gums",
+          "stool"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "haematuria"
+      ],
+      "source": {
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "haematuria-now",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在小便怎么样了？",
+        "en": "How is your urine now?"
+      },
+      "answer": {
+        "zh-CN": "现在小便颜色已经正常了，后来再没见过血。",
+        "en": "My urine's back to a normal colour now, and I haven't seen any more blood."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在小便",
+          "小便好了吗",
+          "现在还红",
+          "血尿好了",
+          "现在尿的颜色",
+          "小便现在"
+        ],
+        "en": [
+          "urine now",
+          "still blood",
+          "more blood",
+          "clear now",
+          "urine colour",
+          "bleeding stopped",
+          "cleared up"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "疼",
+          "烧",
+          "导尿管"
+        ],
+        "en": [
+          "pain",
+          "burn",
+          "catheter"
+        ]
+      },
+      "disclosure": "volunteer",
+      "supersedes": [
+        "haematuria"
+      ],
+      "phases": [
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例部分；患者口吻为教学改写",
+        "en": "Case section of the report; the patient's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "urinary-symptoms",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "小便时疼不疼？有没有发烧？",
+        "en": "Any pain or burning when you pass urine, or a fever?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "小便疼",
+          "尿痛",
+          "尿尿疼",
+          "小便的时候疼",
+          "排尿疼",
+          "烧灼",
+          "尿频",
+          "尿急",
+          "发烧",
+          "发热"
+        ],
+        "en": [
+          "pain passing urine",
+          "burning",
+          "stinging",
+          "frequency",
+          "urgency",
+          "fever",
+          "temperature"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "haematuria",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
+      }
+    },
+    {
+      "id": "other-bleeding",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "别的地方有没有出血，比如牙龈、鼻子、大便发黑或者身上青紫？",
+        "en": "Any bleeding anywhere else — gums, nose, black stools or bruising?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "牙龈出血",
+          "流鼻血",
+          "黑便",
+          "大便发黑",
+          "青紫",
+          "淤青",
+          "别处出血"
+        ],
+        "en": [
+          "gums",
+          "nosebleed",
+          "black stools",
+          "bruising",
+          "bleeding elsewhere",
+          "vomiting blood"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "haematuria",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
+      }
+    },
+    {
+      "id": "catheter",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在还插着导尿管吗？",
+        "en": "Do you still have a urinary catheter in?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "导尿管",
+          "尿管",
+          "插尿管",
+          "导尿",
+          "拔尿管"
+        ],
+        "en": [
+          "catheter",
+          "urinary catheter",
+          "foley",
+          "tube in your bladder",
+          "catheterised"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "haematuria",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未记录",
+        "en": "Not recorded in the report"
       }
     }
   ],
   "exam": [
     {
-      "id": "cardiac",
-      "system": "cardiovascular",
+      "id": "vitals",
+      "system": "vitals",
       "maneuver": {
-        "zh-CN": "检查颈静脉及心脏",
-        "en": "Examine neck veins and heart"
+        "zh-CN": "测量生命体征（数桡动脉脉搏）",
+        "en": "Vital signs (count the radial pulse)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "生命体征",
+          "血压",
+          "脉搏",
+          "体温",
+          "呼吸频率",
+          "量血压"
+        ],
+        "en": [
+          "vital signs",
+          "blood pressure",
+          "pulse",
+          "temperature",
+          "respiratory rate",
+          "obs"
+        ]
       },
       "finding": {
-        "zh-CN": "颈静脉中度怒张，肝颈静脉回流征阳性；心律不齐，三尖瓣区Ⅲ/6级、心尖Ⅱ/6级收缩期杂音。",
-        "en": "Moderately distended neck veins and positive hepatojugular reflux; irregular rhythm with grade III/6 tricuspid-area and II/6 apical systolic murmurs."
+        "zh-CN": "体温 36.4 ℃，脉搏（桡动脉）84 次/分，呼吸 19 次/分，血压 128/86 mmHg。",
+        "en": "Temperature 36.4 °C, radial pulse 84/min, respiratory rate 19/min, blood pressure 128/86 mmHg."
+      },
+      "abnormal": false,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告入院体格检查",
+        "en": "Admission examination in the report"
+      }
+    },
+    {
+      "id": "neck",
+      "system": "neck",
+      "maneuver": {
+        "zh-CN": "检查颈静脉和肝颈静脉回流征",
+        "en": "Jugular venous pressure and hepatojugular reflux"
+      },
+      "keywords": {
+        "zh-CN": [
+          "颈静脉",
+          "颈静脉怒张",
+          "肝颈回流",
+          "肝颈静脉回流征",
+          "看脖子"
+        ],
+        "en": [
+          "jvp",
+          "jugular venous pressure",
+          "neck veins",
+          "hepatojugular reflux",
+          "abdominojugular"
+        ]
+      },
+      "finding": {
+        "zh-CN": "颈静脉中度怒张，肝颈静脉回流征阳性。",
+        "en": "Moderately distended neck veins; hepatojugular reflux positive."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告入院体格检查",
+        "en": "Admission examination in the report"
+      }
+    },
+    {
+      "id": "chest",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "肺部听诊",
+        "en": "Auscultate the chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听肺",
+          "肺部听诊",
+          "呼吸音",
+          "啰音",
+          "听诊肺"
+        ],
+        "en": [
+          "listen to the chest",
+          "lungs",
+          "breath sounds",
+          "crackles",
+          "chest auscultation"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双肺呼吸音粗。",
+        "en": "Coarse breath sounds in both lungs."
       },
       "abnormal": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告入院体格检查",
+        "en": "Admission examination in the report"
+      }
+    },
+    {
+      "id": "cardiac",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊（数心尖部心率）",
+        "en": "Auscultate the heart (count the apical rate)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听心脏",
+          "心脏听诊",
+          "杂音",
+          "心音",
+          "心尖",
+          "心率"
+        ],
+        "en": [
+          "listen to the heart",
+          "heart sounds",
+          "murmur",
+          "auscultate",
+          "apex",
+          "apical rate"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心率 89 次/分，心律不齐，心音强弱不等；三尖瓣听诊区闻及Ⅲ/6级收缩期杂音，心尖部闻及Ⅱ/6级收缩期杂音；肺动脉瓣第二心音亢进。",
+        "en": "Heart rate 89/min, irregular, with varying intensity of the heart sounds; a grade III/6 systolic murmur in the tricuspid area and a grade II/6 systolic murmur at the apex; loud pulmonary second sound."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "原报告入院体格检查",
+        "en": "Admission examination in the report"
       }
     },
     {
       "id": "legs",
-      "system": "general",
+      "system": "musculoskeletal",
       "maneuver": {
-        "zh-CN": "检查下肢与呼吸状态",
-        "en": "Examine the legs and respiratory state"
+        "zh-CN": "检查双下肢水肿",
+        "en": "Check the legs for oedema"
+      },
+      "keywords": {
+        "zh-CN": [
+          "下肢水肿",
+          "腿肿",
+          "脚肿",
+          "按压小腿",
+          "水肿"
+        ],
+        "en": [
+          "leg oedema",
+          "leg edema",
+          "swollen legs",
+          "ankles",
+          "pitting"
+        ]
       },
       "finding": {
-        "zh-CN": "双下肢轻度水肿，双肺呼吸音粗。",
-        "en": "Mild bilateral leg oedema and coarse breath sounds."
+        "zh-CN": "双下肢轻度水肿。",
+        "en": "Mild oedema of both legs."
       },
       "abnormal": true,
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告入院体格检查",
+        "en": "Admission examination in the report"
       }
     },
     {
-      "id": "vitals",
-      "system": "vitals",
+      "id": "urine-look",
+      "system": "genitourinary",
       "maneuver": {
-        "zh-CN": "核对入院生命体征",
-        "en": "Review admission vital signs"
+        "zh-CN": "查看尿液",
+        "en": "Look at the urine"
+      },
+      "keywords": {
+        "zh-CN": [
+          "看尿",
+          "看看小便",
+          "尿液颜色",
+          "查看尿液",
+          "尿袋"
+        ],
+        "en": [
+          "look at the urine",
+          "urine colour",
+          "inspect urine",
+          "urine bag",
+          "check the urine"
+        ]
       },
       "finding": {
-        "zh-CN": "体温36.4℃、脉搏84次/分、呼吸19次/分、血压128/86 mmHg；听诊心率89次/分。",
-        "en": "Temperature 36.4°C, pulse 84/min, respiratory rate 19/min and blood pressure 128/86 mmHg; auscultated heart rate 89/min."
+        "zh-CN": "肉眼可见的血尿（尿液呈红色）。",
+        "en": "Visible haematuria (the urine is red)."
       },
       "abnormal": true,
+      "required": true,
       "phases": [
-        "initial"
+        "haematuria"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告病例部分（术后第16天）",
+        "en": "Case section of the report (postoperative day 16)"
+      }
+    },
+    {
+      "id": "urine-look-followup",
+      "system": "genitourinary",
+      "maneuver": {
+        "zh-CN": "查看尿液",
+        "en": "Look at the urine"
+      },
+      "keywords": {
+        "zh-CN": [
+          "看尿",
+          "看看小便",
+          "尿液颜色",
+          "查看尿液",
+          "尿袋"
+        ],
+        "en": [
+          "look at the urine",
+          "urine colour",
+          "inspect urine",
+          "urine bag",
+          "check the urine"
+        ]
+      },
+      "finding": {
+        "zh-CN": "尿液颜色已恢复正常。",
+        "en": "The urine is back to a normal colour."
+      },
+      "abnormal": false,
+      "phases": [
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例部分（术后第16–17天）",
+        "en": "Case section of the report (postoperative days 16–17)"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这项检查的结果；请把它当作未知，既不当作正常，也不当作异常。",
+    "en": "The published report does not record this examination; treat it as unknown — neither normal nor abnormal."
   },
   "investigations": [
     {
-      "id": "cardiac-tests",
+      "id": "admission-labs",
       "name": {
-        "zh-CN": "超声与心电图",
-        "en": "Echocardiography and ECG"
+        "zh-CN": "入院血常规与B型利钠肽",
+        "en": "Admission blood count and BNP"
       },
-      "category": "record",
+      "category": "lab",
       "aliases": {
         "zh-CN": [
-          "超声与心电图"
+          "血常规",
+          "入院化验",
+          "BNP",
+          "脑钠肽",
+          "B型利钠肽",
+          "利钠肽"
         ],
         "en": [
-          "Echocardiography and ECG",
-          "cardiac-tests"
+          "blood count",
+          "fbc",
+          "cbc",
+          "bnp",
+          "admission bloods",
+          "natriuretic peptide"
         ]
       },
       "requires": [
-        "echocardiography"
+        "lab-hematology",
+        "lab-chemistry"
       ],
-      "risk": "none",
-      "value": "essential",
+      "turnaroundMinutes": 45,
+      "value": "useful",
       "results": {
-        "workup": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
           "text": {
-            "zh-CN": "超声为三尖瓣重度、二尖瓣中度关闭不全及中度肺动脉高压；心电图房颤、完全性右束支阻滞及ST-T改变。",
-            "en": "Echo showed severe tricuspid and moderate mitral regurgitation with moderate pulmonary hypertension; ECG showed AF, complete RBBB and ST-T abnormalities."
+            "zh-CN": "白细胞 4.5×10⁹/L，中性粒细胞比例 0.86，血小板 128×10⁹/L；B型利钠肽 822 ng/L。",
+            "en": "White cells 4.5 ×10⁹/L, neutrophil fraction 0.86, platelets 128 ×10⁹/L; BNP 822 ng/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞计数",
+                "en": "White cell count"
+              },
+              "value": 4.5,
+              "unit": "×10⁹/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophil fraction"
+              },
+              "value": 0.86,
+              "unit": "",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板计数",
+                "en": "Platelet count"
+              },
+              "value": 128,
+              "unit": "×10⁹/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "B型利钠肽（BNP）",
+                "en": "B-type natriuretic peptide (BNP)"
+              },
+              "value": 822,
+              "unit": "ng/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文未给任何参考范围，也未标注升高或降低。",
+            "en": "The report gives no reference ranges and flags none of these values."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "drug-timeline",
-      "name": {
-        "zh-CN": "手术与术后用药时间线",
-        "en": "Surgery and postoperative medicine timeline"
-      },
-      "category": "record",
-      "aliases": {
-        "zh-CN": [
-          "手术与术后用药时间线"
-        ],
-        "en": [
-          "Surgery and postoperative medicine timeline",
-          "drug-timeline"
-        ]
-      },
-      "requires": [
-        "records"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "住院第9天行三尖瓣生物瓣置换、二尖瓣成形及房颤消融。术后第1天开始华法林；第8天房颤复发加用胺碘酮。其后INR渐升，虽两次下调华法林，第16天仍出现血尿。",
-            "en": "On hospital day 9 she had bioprosthetic tricuspid replacement, mitral repair and AF ablation. Warfarin began on postoperative day 1; amiodarone was added for recurrent AF on day 8. INR rose and haematuria occurred on day 16 despite two warfarin reductions."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "原报告入院实验室检查",
+            "en": "Admission laboratory tests in the report"
+          }
         }
       }
     },
     {
       "id": "coagulation",
       "name": {
-        "zh-CN": "连续凝血检查",
-        "en": "Serial coagulation tests"
+        "zh-CN": "凝血酶原时间与INR",
+        "en": "Prothrombin time and INR"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "连续凝血检查"
+          "凝血",
+          "凝血功能",
+          "INR",
+          "PT",
+          "国际标准化比值",
+          "凝血酶原时间"
         ],
         "en": [
-          "Serial coagulation tests",
-          "coagulation"
+          "inr",
+          "pt",
+          "prothrombin time",
+          "coagulation",
+          "clotting",
+          "international normalised ratio"
         ]
       },
       "requires": [
         "lab-hematology"
       ],
-      "risk": "none",
+      "turnaroundMinutes": 45,
       "value": "essential",
       "results": {
-        "workup": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
           "text": {
-            "zh-CN": "基线INR 1.0；术后第3、8、14、15天分别1.3、1.9、2.2、2.4；第16天PT 60.0秒、INR 5.1。",
-            "en": "Baseline INR 1.0; postoperative days 3, 8, 14 and 15 showed 1.3, 1.9, 2.2 and 2.4, respectively. On day 16 PT was 60.0 seconds and INR 5.1."
+            "zh-CN": "入院：PT 11.7 s，INR 1.0。",
+            "en": "On admission: PT 11.7 s, INR 1.0."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间（PT）",
+                "en": "Prothrombin time (PT)"
+              },
+              "value": 11.7,
+              "unit": "s",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "国际标准化比值（INR）",
+                "en": "International normalised ratio (INR)"
+              },
+              "value": 1.0,
+              "unit": "",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告入院实验室检查",
+            "en": "Admission laboratory tests in the report"
+          }
+        },
+        "postop": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第8天",
+            "en": "Postoperative day 8"
+          },
+          "text": {
+            "zh-CN": "术后第8天：PT 21.3 s，INR 1.9。（第3天的PT/INR见用药记录。）",
+            "en": "Postoperative day 8: PT 21.3 s, INR 1.9. (The day-3 PT/INR is on the drug chart.)"
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间（PT）",
+                "en": "Prothrombin time (PT)"
+              },
+              "value": 21.3,
+              "unit": "s",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "国际标准化比值（INR）",
+                "en": "International normalised ratio (INR)"
+              },
+              "value": 1.9,
+              "unit": "",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        },
+        "haematuria": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
+          "text": {
+            "zh-CN": "术后第16天：PT 60.0 s，INR 5.1。（第14、15天的PT/INR见用药记录。）",
+            "en": "Postoperative day 16: PT 60.0 s, INR 5.1. (The day-14 and day-15 PT/INR are on the drug chart.)"
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间（PT）",
+                "en": "Prothrombin time (PT)"
+              },
+              "value": 60.0,
+              "unit": "s",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "国际标准化比值（INR）",
+                "en": "International normalised ratio (INR)"
+              },
+              "value": 5.1,
+              "unit": "",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          },
+          "critical": true
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第17天",
+            "en": "Postoperative day 17"
+          },
+          "text": {
+            "zh-CN": "次日（术后第17天）：PT 16.6 s，INR 1.4。（术后第16天两次维生素K₁后的数值见处理与出院记录。）",
+            "en": "Next day (postoperative day 17): PT 16.6 s, INR 1.4. (The values after each vitamin K1 dose on day 16 are in the treatment and discharge record.)"
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间（PT）",
+                "en": "Prothrombin time (PT)"
+              },
+              "value": 16.6,
+              "unit": "s",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "国际标准化比值（INR）",
+                "en": "International normalised ratio (INR)"
+              },
+              "value": 1.4,
+              "unit": "",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文内部不一致：英文摘要写“第17天PT 18.7 s、INR 1.6”，而中文摘要和正文均为第17天（次日）PT 16.6 s、INR 1.4；18.7 s/1.6是正文中第二次注射维生素K₁后4小时的数值。本病例以正文为准，并保留此标注。",
+            "en": "Internal inconsistency in the source: the English abstract gives PT 18.7 s and INR 1.6 on day 17, whereas the Chinese abstract and the main text give PT 16.6 s and INR 1.4 on day 17 (the next day); 18.7 s/1.6 are the main text's values 4 h after the second vitamin K1 dose. The case follows the main text and keeps this note."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
         }
       }
     },
     {
       "id": "urine",
       "name": {
-        "zh-CN": "尿检与泌尿系记录",
-        "en": "Urine and urinary-tract records"
+        "zh-CN": "尿常规与尿红细胞计数",
+        "en": "Urinalysis and urine red-cell count"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "尿检与泌尿系记录"
+          "尿常规",
+          "尿检",
+          "尿红细胞",
+          "验尿",
+          "尿液检查"
         ],
         "en": [
-          "Urine and urinary-tract records",
-          "urine"
+          "urinalysis",
+          "urine test",
+          "urine dipstick",
+          "urine red cells",
+          "urine microscopy"
         ]
       },
       "requires": [
         "lab-urinalysis"
       ],
-      "risk": "none",
+      "turnaroundMinutes": 30,
       "value": "essential",
       "results": {
-        "workup": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
           "text": {
-            "zh-CN": "术前尿常规及泌尿系统超声无异常；第16天肉眼血尿，尿红细胞300/μL。",
-            "en": "Preoperative urinalysis and urinary ultrasound were unremarkable; on day 16 visible haematuria accompanied urinary RBCs of 300/µL."
+            "zh-CN": "入院尿常规：未见异常。",
+            "en": "Admission urinalysis: no abnormality."
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
+          "values": [],
           "figures": [],
-          "available": true
+          "source": {
+            "zh-CN": "原报告入院实验室检查",
+            "en": "Admission laboratory tests in the report"
+          }
+        },
+        "haematuria": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
+          "text": {
+            "zh-CN": "术后第16天：肉眼血尿，尿红细胞计数 300/μL。",
+            "en": "Postoperative day 16: visible haematuria; urine red-cell count 300/µL."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿红细胞计数",
+                "en": "Urine red-cell count"
+              },
+              "value": 300,
+              "unit": "/µL",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              }
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          },
+          "critical": true
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第17天",
+            "en": "Postoperative day 17"
+          },
+          "text": {
+            "zh-CN": "次日（术后第17天）：尿红细胞计数阴性。",
+            "en": "Next day (postoperative day 17): urine red-cell count negative."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "12导联",
+          "做个心电图",
+          "ECG"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "12-lead",
+          "electrocardiogram",
+          "heart tracing"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "turnaroundMinutes": 5,
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
+          "text": {
+            "zh-CN": "心房颤动，完全性右束支传导阻滞，T波倒置，ST段压低。",
+            "en": "Atrial fibrillation, complete right bundle branch block, T-wave inversion and ST depression."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "超声心动图",
+        "en": "Echocardiogram"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "超声心动图",
+          "心脏彩超",
+          "心超",
+          "心脏超声"
+        ],
+        "en": [
+          "echo",
+          "echocardiogram",
+          "cardiac ultrasound",
+          "heart scan",
+          "tte"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "turnaroundMinutes": 30,
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
+          "text": {
+            "zh-CN": "三尖瓣重度关闭不全；二尖瓣增厚伴中度关闭不全；主动脉瓣轻度关闭不全；中度肺动脉高压。",
+            "en": "Severe tricuspid regurgitation; thickened mitral valve with moderate regurgitation; mild aortic regurgitation; moderate pulmonary hypertension."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "abdo-us",
+      "name": {
+        "zh-CN": "肝胆胰脾及泌尿系超声",
+        "en": "Abdominal and urinary-tract ultrasound"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "腹部超声",
+          "泌尿系超声",
+          "肝胆胰脾超声",
+          "肾脏超声",
+          "腹部B超"
+        ],
+        "en": [
+          "abdominal ultrasound",
+          "renal ultrasound",
+          "urinary tract ultrasound",
+          "kidney ultrasound",
+          "liver ultrasound"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "turnaroundMinutes": 30,
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
+          "text": {
+            "zh-CN": "肝、胆、胰、脾及泌尿系统超声未见异常。",
+            "en": "Liver, gallbladder, pancreas, spleen and urinary tract: no abnormality on ultrasound."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "drug-timeline",
+      "name": {
+        "zh-CN": "手术与用药记录",
+        "en": "Operation and drug chart record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "用药记录",
+          "医嘱单",
+          "药单",
+          "手术记录",
+          "用药时间线"
+        ],
+        "en": [
+          "drug chart",
+          "medication chart",
+          "operation record",
+          "medicines record",
+          "drug timeline"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
+          "text": {
+            "zh-CN": "入院诊断：（1）三尖瓣重度关闭不全；（2）二尖瓣中度关闭不全；（3）三尖瓣下移畸形矫治术后；（4）心房颤动。入院后口服呋塞米 20 mg、螺内酯 20 mg、琥珀酸美托洛尔 47.5 mg，均每日1次。",
+            "en": "Admission diagnoses: (1) severe tricuspid regurgitation; (2) moderate mitral regurgitation; (3) after repair of an Ebstein anomaly; (4) atrial fibrillation. After admission: oral furosemide 20 mg, spironolactone 20 mg and metoprolol succinate 47.5 mg, each once daily."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        },
+        "postop": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第9天至术后第8天",
+            "en": "Hospital day 9 to postoperative day 8"
+          },
+          "text": {
+            "zh-CN": "入院第9天行三尖瓣生物瓣膜置换＋二尖瓣成形＋房颤射频消融术。术后第1天起口服华法林 3.00 mg/d，同时口服地高辛 0.125 mg、厄贝沙坦 0.15 g，均每日1次。术后第3天PT 15.5 s、INR 1.3，华法林增至 3.75 mg/d。术后第8天再次出现心房颤动（心率 81 次/分），PT 21.3 s、INR 1.9，团队计划加用胺碘酮 0.2 g口服，每日1次。原报告没有说明术前的呋塞米、螺内酯和美托洛尔术后是否继续。",
+            "en": "Hospital day 9: bioprosthetic tricuspid valve replacement, mitral valve repair and radiofrequency ablation of AF. From postoperative day 1: oral warfarin 3.00 mg/day with digoxin 0.125 mg and irbesartan 0.15 g, each once daily. Day 3: PT 15.5 s, INR 1.3; warfarin increased to 3.75 mg/day. Day 8: atrial fibrillation recurred (heart rate 81/min) with PT 21.3 s and INR 1.9, and the team plans oral amiodarone 0.2 g once daily. The report does not say whether the pre-operative furosemide, spironolactone and metoprolol continued after surgery."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        },
+        "haematuria": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第8–16天",
+            "en": "Postoperative days 8–16"
+          },
+          "text": {
+            "zh-CN": "术后第8天：加用胺碘酮 0.2 g每日1次，华法林维持 3.75 mg/d。术后第14天PT 26.0 s、INR 2.2，华法林减至 3.00 mg/d；第15天PT 27.9 s、INR 2.4，减至 2.25 mg/d。第16天出现肉眼血尿。",
+            "en": "Postoperative day 8: amiodarone 0.2 g once daily started, warfarin kept at 3.75 mg/day. Day 14: PT 26.0 s, INR 2.2; warfarin reduced to 3.00 mg/day. Day 15: PT 27.9 s, INR 2.4; reduced to 2.25 mg/day. Day 16: visible haematuria."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
         }
       }
     },
@@ -813,81 +1943,940 @@
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "出血严重程度资料"
+          "出血严重程度",
+          "出血评估",
+          "血红蛋白变化",
+          "有没有输血",
+          "出血分级"
         ],
         "en": [
-          "Bleeding severity documentation",
-          "bleeding-severity"
+          "bleeding severity",
+          "bleed assessment",
+          "haemoglobin drop",
+          "transfusion",
+          "major bleeding"
         ]
       },
       "requires": [
         "records"
       ],
-      "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "haematuria": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
           "text": {
             "zh-CN": "正文未列血尿时血红蛋白下降幅度、血流动力学或输血需求；不能据现有资料自动分为大出血或轻微出血。",
             "en": "The haemoglobin change, haemodynamics at the time of bleeding and transfusion needs are not reported; available evidence does not establish a major or minor bleeding category."
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
+          "values": [],
           "figures": [],
-          "available": true
+          "source": {
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "fbc-postop",
+      "name": {
+        "zh-CN": "复查血常规（血红蛋白）",
+        "en": "Repeat blood count (haemoglobin)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "复查血常规",
+          "术后血常规",
+          "血红蛋白",
+          "Hb",
+          "查血红蛋白"
+        ],
+        "en": [
+          "repeat blood count",
+          "haemoglobin",
+          "hemoglobin",
+          "hb",
+          "repeat fbc",
+          "postop fbc"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "turnaroundMinutes": 45,
+      "value": "essential",
+      "results": {
+        "haematuria": {
+          "available": false,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出术后任何血红蛋白、血小板或其他血常规结果。",
+            "en": "The report gives no haemoglobin, platelet count or other blood count after surgery."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "digoxin-level",
+      "name": {
+        "zh-CN": "地高辛血药浓度",
+        "en": "Digoxin level"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "地高辛浓度",
+          "地高辛血药浓度",
+          "地高辛水平",
+          "查地高辛"
+        ],
+        "en": [
+          "digoxin level",
+          "digoxin concentration",
+          "serum digoxin",
+          "dig level"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 60,
+      "value": "useful",
+      "results": {
+        "postop": {
+          "available": false,
+          "date": {
+            "zh-CN": "术后第8天",
+            "en": "Postoperative day 8"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出地高辛血药浓度。",
+            "en": "The report gives no digoxin level."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        },
+        "haematuria": {
+          "available": false,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出地高辛血药浓度。",
+            "en": "The report gives no digoxin level."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "chem-postop",
+      "name": {
+        "zh-CN": "术后肝肾功能",
+        "en": "Post-operative renal and liver tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肝功能",
+          "肾功能",
+          "肝肾功能",
+          "肌酐",
+          "转氨酶",
+          "白蛋白"
+        ],
+        "en": [
+          "liver function",
+          "renal function",
+          "creatinine",
+          "lfts",
+          "albumin",
+          "u and e"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 45,
+      "value": "useful",
+      "results": {
+        "postop": {
+          "available": false,
+          "date": {
+            "zh-CN": "术后第8天",
+            "en": "Postoperative day 8"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出术后的肝功能、肾功能或白蛋白。",
+            "en": "The report gives no liver tests, renal function or albumin after surgery."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        },
+        "haematuria": {
+          "available": false,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出术后的肝功能、肾功能或白蛋白。",
+            "en": "The report gives no liver tests, renal function or albumin after surgery."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "urine-culture",
+      "name": {
+        "zh-CN": "尿培养",
+        "en": "Urine culture"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "尿培养",
+          "尿液培养",
+          "尿细菌培养",
+          "中段尿培养"
+        ],
+        "en": [
+          "urine culture",
+          "msu",
+          "urine cultures",
+          "midstream urine"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "turnaroundMinutes": 60,
+      "value": "useful",
+      "results": {
+        "haematuria": {
+          "available": false,
+          "date": {
+            "zh-CN": "术后第16天",
+            "en": "Postoperative day 16"
+          },
+          "text": {
+            "zh-CN": "原报告没有做或没有报告尿培养。",
+            "en": "No urine culture is reported."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
         }
       }
     },
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "调阅处理与出院记录",
+        "en": "Review the treatment and discharge record"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "出院记录",
+          "随访",
+          "处理经过",
+          "后来怎么处理",
+          "结局"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "discharge record",
+          "follow-up",
+          "followup",
+          "outcome",
+          "what was done"
         ]
       },
       "requires": [
         "records"
       ],
-      "risk": "none",
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后第16–17天",
+            "en": "Postoperative days 16–17"
+          },
           "text": {
-            "zh-CN": "报告停华法林并使用维生素K后PT/INR下降，次日尿红细胞阴性，降低华法林后复用并出院。原文肌注维生素K的处理保留为历史事实，不供复制。远期INR稳定性、再次出血和血栓结局未记载。",
-            "en": "The report withheld warfarin and used vitamin K, after which PT/INR fell and urinary RBCs were negative the next day. Warfarin was restarted at a lower dose before discharge. Historical intramuscular vitamin K is recorded but not endorsed. Long-term INR stability, recurrent bleeding and thrombosis are not documented."
+            "zh-CN": "原报告的处理：术后第16天停用华法林，其余治疗不变（胺碘酮维持原剂量），肌内注射维生素K₁ 10 mg；4小时后PT 48.2 s、INR 4.1，再次肌内注射维生素K₁ 10 mg；又4小时后PT 18.7 s、INR 1.6，尿色逐渐恢复正常。次日尿红细胞计数阴性，PT 16.6 s、INR 1.4，恢复口服华法林 1.50 mg/d，其余治疗不变。术后第17天各项指标基本正常，未再出现血尿，当日出院。原报告没有记录出院后的INR、再次出血或血栓情况，也没有写明抗凝目标范围。",
+            "en": "Reported management: on postoperative day 16 warfarin was stopped and all other treatment continued (amiodarone at the same dose), with vitamin K1 10 mg intramuscularly; 4 h later PT 48.2 s and INR 4.1, so a second 10 mg intramuscular dose was given; 4 h after that PT 18.7 s and INR 1.6, and the urine colour gradually returned to normal. The next day the urine red-cell count was negative, PT 16.6 s and INR 1.4, and oral warfarin was restarted at 1.50 mg/day with no other change. On postoperative day 17 her results were described as essentially normal, there was no further haematuria, and she was discharged that day. The report records no INR after discharge, no later bleeding or thrombosis, and no target INR range."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文内部不一致：英文摘要写“第17天PT 18.7 s、INR 1.6”，而中文摘要和正文均为第17天（次日）PT 16.6 s、INR 1.4；18.7 s/1.6是正文中第二次注射维生素K₁后4小时的数值。本病例以正文为准，并保留此标注。",
+            "en": "Internal inconsistency in the source: the English abstract gives PT 18.7 s and INR 1.6 on day 17, whereas the Chinese abstract and the main text give PT 16.6 s and INR 1.4 on day 17 (the next day); 18.7 s/1.6 are the main text's values 4 h after the second vitamin K1 dose. The case follows the main text and keeps this note."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "原报告病例部分",
+            "en": "Case section of the report"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "admission-labs",
+        "ifMatches": "复查|术后|repeat|postop|recheck|haemoglobin|hemoglobin|血红蛋白",
+        "remove": [
+          "admission-labs"
+        ],
+        "add": [
+          "fbc-postop"
+        ]
+      }
+    ],
+    "exact": {
+      "超声": [
+        "echo",
+        "abdo-us"
+      ],
+      "b超": [
+        "echo",
+        "abdo-us"
+      ],
+      "ultrasound": [
+        "echo",
+        "abdo-us"
+      ]
+    },
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "amiodarone",
+      "name": {
+        "zh-CN": "胺碘酮 0.2 g 口服，每日1次",
+        "en": "Amiodarone 0.2 g orally once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "胺碘酮",
+          "可达龙",
+          "抗心律失常药"
+        ],
+        "en": [
+          "amiodarone",
+          "cordarone",
+          "antiarrhythmic",
+          "start amiodarone"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "停用",
+          "停掉"
+        ],
+        "en": [
+          "stop"
+        ]
+      },
+      "dose": {
+        "zh-CN": "胺碘酮 0.2 g口服，每日1次。",
+        "en": "Amiodarone 0.2 g orally once daily."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "postop"
+      },
+      "response": {
+        "zh-CN": "已开具胺碘酮 0.2 g每日1次。",
+        "en": "Amiodarone 0.2 g once daily is charted."
+      }
+    },
+    {
+      "id": "warfarin-reduce",
+      "name": {
+        "zh-CN": "加用胺碘酮时预先减少华法林剂量",
+        "en": "Pre-emptive warfarin dose reduction for amiodarone"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "华法林减量",
+          "减少华法林",
+          "华法林减到",
+          "调低华法林"
+        ],
+        "en": [
+          "reduce warfarin",
+          "lower the warfarin",
+          "cut the warfarin dose",
+          "warfarin reduction"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在当前剂量基础上减量约 1/3–1/2，此后按INR调整。",
+        "en": "Reduce the current dose by about one-third to one-half, then adjust to the INR."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "indicatedWhen": {
+        "phase": "postop"
+      },
+      "contraindicatedWhen": {
+        "phase": "haematuria"
+      },
+      "harm": {
+        "zh-CN": "她在服华法林期间出现了出血：先查INR，这时应停用华法林，而不只是减量。",
+        "en": "She is bleeding on warfarin: check the INR and withhold warfarin now, rather than merely reducing it."
+      },
+      "response": {
+        "zh-CN": "华法林已按新剂量开具。",
+        "en": "Warfarin is charted at the reduced dose."
+      }
+    },
+    {
+      "id": "warfarin-continue",
+      "name": {
+        "zh-CN": "华法林维持原剂量",
+        "en": "Continue warfarin at the current dose"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "华法林不变",
+          "维持华法林",
+          "华法林原剂量",
+          "继续华法林"
+        ],
+        "en": [
+          "continue warfarin",
+          "keep the warfarin dose",
+          "warfarin unchanged",
+          "same warfarin dose"
+        ]
+      },
+      "dose": {
+        "zh-CN": "维持当前华法林剂量不变。",
+        "en": "Keep the current warfarin dose unchanged."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "phase": "postop"
+          },
+          {
+            "phase": "haematuria"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "胺碘酮抑制华法林代谢（CYP2C9和CYP1A2），剂量不变会在之后数天到数周内抗凝过度。如果她已经出血、INR很高，则必须停用华法林。",
+        "en": "Amiodarone inhibits warfarin metabolism (CYP2C9 and CYP1A2): an unchanged dose over-anticoagulates over the following days to weeks. If she is already bleeding with a high INR, warfarin must be withheld."
+      },
+      "response": {
+        "zh-CN": "华法林剂量维持不变。",
+        "en": "The warfarin dose is left unchanged."
+      }
+    },
+    {
+      "id": "digoxin-reduce",
+      "name": {
+        "zh-CN": "地高辛减量（或停用）",
+        "en": "Reduce (or stop) digoxin"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "地高辛减量",
+          "地高辛减半",
+          "停地高辛",
+          "调整地高辛"
+        ],
+        "en": [
+          "reduce digoxin",
+          "halve digoxin",
+          "stop digoxin",
+          "digoxin dose"
+        ]
+      },
+      "dose": {
+        "zh-CN": "加用胺碘酮时地高辛减量约一半或停用，监测心率。",
+        "en": "Reduce digoxin by about half (or stop it) when amiodarone starts, and watch the heart rate."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "indicatedWhen": {
+        "any": [
+          {
+            "intervened": "amiodarone"
+          },
+          {
+            "phase": "postop"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "地高辛剂量已调整。原报告没有说明地高辛是否改动，也没有地高辛血药浓度。",
+        "en": "Digoxin is adjusted. The report does not say whether digoxin was changed and gives no digoxin level."
+      }
+    },
+    {
+      "id": "inr-plan",
+      "name": {
+        "zh-CN": "密切监测INR计划",
+        "en": "Close INR monitoring plan"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "监测INR",
+          "复查INR",
+          "INR监测",
+          "定期查INR",
+          "查凝血"
+        ],
+        "en": [
+          "monitor the inr",
+          "inr checks",
+          "repeat inr",
+          "inr monitoring",
+          "check inr every"
+        ]
+      },
+      "dose": {
+        "zh-CN": "接下来数周每 2–3 天查一次INR，稳定后至少每周一次，按结果调整华法林。",
+        "en": "INR every 2–3 days for the next few weeks, then at least weekly once stable, adjusting warfarin to the results."
+      },
+      "requires": [],
+      "risk": "none",
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "postop"
+          },
+          {
+            "phase": "followup"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "INR复查计划已写入医嘱。",
+        "en": "The INR monitoring plan is written into the orders."
+      }
+    },
+    {
+      "id": "pharmacist",
+      "name": {
+        "zh-CN": "请临床药师审核用药",
+        "en": "Clinical pharmacist medication review"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "临床药师",
+          "药师会诊",
+          "请药师",
+          "药物审核",
+          "用药审核"
+        ],
+        "en": [
+          "pharmacist",
+          "pharmacy review",
+          "clinical pharmacist",
+          "medication review",
+          "drug interaction check"
+        ]
+      },
+      "dose": {
+        "zh-CN": "请临床药师到床旁审核医嘱。",
+        "en": "Ask the clinical pharmacist to review the drug chart with you."
+      },
+      "requires": [],
+      "risk": "none",
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "临床药师与你一起看医嘱单，提醒你签字前先查清胺碘酮会怎样影响她正在用的华法林和地高辛。",
+        "en": "The clinical pharmacist goes through the drug chart with you and asks you to check what amiodarone will do to her warfarin and digoxin before you sign it."
+      }
+    },
+    {
+      "id": "hold-warfarin",
+      "name": {
+        "zh-CN": "停用华法林",
+        "en": "Withhold warfarin"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "停用华法林",
+          "停华法林",
+          "暂停华法林",
+          "今天不吃华法林"
+        ],
+        "en": [
+          "withhold warfarin",
+          "stop warfarin",
+          "hold warfarin",
+          "omit warfarin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "暂停华法林，复查INR后再决定何时恢复。",
+        "en": "Withhold warfarin and decide when to restart after repeat INR checks."
+      },
+      "requires": [],
+      "risk": "low",
+      "indicatedWhen": {
+        "phase": "haematuria"
+      },
+      "contraindicatedWhen": {
+        "phase": "postop"
+      },
+      "harm": {
+        "zh-CN": "她术后才一周，刚置换三尖瓣生物瓣又有房颤：此时停用华法林会让她失去抗凝保护，应当减量而不是停药。",
+        "en": "One week after a tricuspid bioprosthesis, with atrial fibrillation, stopping warfarin leaves her without anticoagulant protection; reduce the dose rather than stop it."
+      },
+      "response": {
+        "zh-CN": "华法林已暂停。",
+        "en": "Warfarin is withheld."
+      }
+    },
+    {
+      "id": "vitk-im",
+      "name": {
+        "zh-CN": "维生素K₁ 10 mg 肌内注射",
+        "en": "Vitamin K1 10 mg intramuscularly"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肌注维生素K",
+          "维生素K1肌注",
+          "维生素K肌内注射",
+          "肌注VitK"
+        ],
+        "en": [
+          "im vitamin k",
+          "intramuscular vitamin k",
+          "vitamin k im",
+          "vitamin k1 injection"
+        ]
+      },
+      "dose": {
+        "zh-CN": "维生素K₁ 10 mg肌内注射。",
+        "en": "Vitamin K1 (phytomenadione) 10 mg intramuscularly."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "出血尚未分级就给 10 mg（再重复一次），会把INR压到治疗范围以下，给重新抗凝带来困难。现行指南按出血严重程度决定是否逆转以及剂量和给药途径。",
+        "en": "Giving 10 mg (and repeating it) before the bleed has been graded pushes the INR below the therapeutic range and makes re-anticoagulation harder. Current guidance chooses whether to reverse, the dose and the route by the severity of the bleed."
+      },
+      "response": {
+        "zh-CN": "已肌内注射。",
+        "en": "Given intramuscularly."
+      }
+    },
+    {
+      "id": "vitk-iv",
+      "name": {
+        "zh-CN": "维生素K₁ 5–10 mg 缓慢静脉滴注",
+        "en": "Vitamin K1 5–10 mg by slow IV infusion"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "静脉维生素K",
+          "维生素K静滴",
+          "维生素K1静脉",
+          "静推维生素K"
+        ],
+        "en": [
+          "iv vitamin k",
+          "intravenous vitamin k",
+          "vitamin k iv",
+          "vitamin k infusion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "维生素K₁ 5–10 mg稀释后缓慢静脉滴注。",
+        "en": "Vitamin K1 (phytomenadione) 5–10 mg, diluted, by slow IV infusion."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "response": {
+        "zh-CN": "已静脉滴注。这一剂量是大出血时与凝血酶原复合物合用的缓慢逆转部分；用于非大出血会让INR矫枉过正，给重新抗凝带来困难。",
+        "en": "Given. At this dose vitamin K is the slow arm of reversal for major bleeding, given with a prothrombin complex concentrate; for a non-major bleed it overshoots and makes re-anticoagulation harder."
+      }
+    },
+    {
+      "id": "pcc",
+      "name": {
+        "zh-CN": "人凝血酶原复合物（四因子PCC）",
+        "en": "Four-factor prothrombin complex concentrate (4F-PCC)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "凝血酶原复合物",
+          "PCC",
+          "四因子",
+          "逆转华法林"
+        ],
+        "en": [
+          "pcc",
+          "prothrombin complex concentrate",
+          "4f-pcc",
+          "beriplex",
+          "octaplex"
+        ]
+      },
+      "dose": {
+        "zh-CN": "人凝血酶原复合物，按INR和体重给药，静脉输注。",
+        "en": "Four-factor prothrombin complex concentrate, IV, dosed by INR and weight."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "病历中没有任何提示大出血的证据（未记录血红蛋白下降、血流动力学不稳定或关键部位出血）。凝血酶原复合物会给术后两周的生物瓣和房颤患者带来血栓风险；ACC 2020共识把逆转剂留给大出血。",
+        "en": "Nothing in the record makes this a major bleed (no haemoglobin fall, instability or critical site is recorded). A prothrombin complex concentrate brings a thrombotic risk to a two-week-old bioprosthesis with AF; ACC 2020 reserves reversal agents for major bleeding."
+      },
+      "response": {
+        "zh-CN": "已输注。",
+        "en": "Given."
+      }
+    },
+    {
+      "id": "restart-warfarin",
+      "name": {
+        "zh-CN": "出血停止后以较低剂量恢复华法林",
+        "en": "Restart warfarin at a reduced dose once the bleeding has stopped"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "恢复华法林",
+          "重新开始华法林",
+          "华法林复用",
+          "重新抗凝"
+        ],
+        "en": [
+          "restart warfarin",
+          "resume warfarin",
+          "re-anticoagulate",
+          "start warfarin again"
+        ]
+      },
+      "dose": {
+        "zh-CN": "出血停止、INR回落后，以低于出血前的剂量恢复，按INR调整。",
+        "en": "Once the bleeding has stopped and the INR is down, restart at a lower dose than before the bleed and adjust to the INR."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "indicatedWhen": {
+        "phase": "followup"
+      },
+      "contraindicatedWhen": {
+        "phase": "haematuria"
+      },
+      "harm": {
+        "zh-CN": "她还在出血：要等血尿停止、INR回落后再恢复华法林。",
+        "en": "She is still bleeding: restart warfarin only once the haematuria has stopped and the INR has come down."
+      },
+      "response": {
+        "zh-CN": "已开具：出血停止、INR回落后以较低剂量恢复华法林，此后按INR调整。",
+        "en": "Charted: warfarin restarts at a lower dose once the bleeding has stopped and the INR is down, then follows the INR."
+      }
+    },
+    {
+      "id": "stop-amiodarone",
+      "name": {
+        "zh-CN": "停用胺碘酮",
+        "en": "Stop amiodarone"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "停用胺碘酮",
+          "停胺碘酮",
+          "停掉胺碘酮"
+        ],
+        "en": [
+          "stop amiodarone",
+          "discontinue amiodarone",
+          "withdraw amiodarone"
+        ]
+      },
+      "dose": {
+        "zh-CN": "停用胺碘酮。",
+        "en": "Stop amiodarone."
+      },
+      "requires": [],
+      "risk": "low",
+      "response": {
+        "zh-CN": "已停用。原报告指出胺碘酮停药后作用仍可持续 8–10 天，所以相互作用不会很快消失；她的房颤也需要另作节律或心室率控制安排。",
+        "en": "Stopped. The report notes that amiodarone's effect persists for 8–10 days after stopping, so the interaction will not switch off quickly — and her AF will need another rhythm or rate plan."
+      }
+    },
+    {
+      "id": "bleeding-education",
+      "name": {
+        "zh-CN": "出院用药与出血风险宣教",
+        "en": "Discharge teaching on bleeding signs and INR checks"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "出院宣教",
+          "用药宣教",
+          "告诉她出血征象",
+          "健康教育",
+          "出院指导"
+        ],
+        "en": [
+          "discharge teaching",
+          "patient education",
+          "warning signs",
+          "bleeding advice",
+          "counselling"
+        ]
+      },
+      "dose": {
+        "zh-CN": "向她讲解出血警示征象（血尿、黑便、异常淤斑或出血）、何时就医和INR复查计划。",
+        "en": "Explain the warning signs of bleeding (blood in the urine, black stools, unusual bruising or bleeding), when to seek help and the INR plan."
+      },
+      "requires": [],
+      "risk": "none",
+      "indicatedWhen": {
+        "phase": "followup"
+      },
+      "response": {
+        "zh-CN": "你和她一起过了一遍出血警示征象、就医时机和INR复查安排。",
+        "en": "You go through the warning signs, when to seek help and the INR checks with her."
+      }
+    },
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "外周静脉留置针",
+        "en": "Peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "打针",
+          "开通静脉"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "venflon",
+          "iv line"
+        ]
+      },
+      "dose": {
+        "zh-CN": "置入外周静脉留置针。",
+        "en": "Insert a peripheral IV cannula."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "response": {
+        "zh-CN": "留置针已置入。",
+        "en": "The cannula is in."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-admission-history",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "入院问诊",
+        "en": "Admission history"
+      },
+      "short": {
+        "zh-CN": "问诊",
+        "en": "History"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "问清症状持续多久、这一周有什么变化、以前做过什么心脏手术，再问过敏史和其他疾病——包括肾脏和泌尿系统。",
+        "en": "Find out how long the symptoms have gone on and what changed this week, what heart surgery she has had, then her allergies and other illnesses — kidneys and bladder included."
+      },
+      "guidance": {
+        "zh-CN": "到床旁问诊。",
+        "en": "Take her history at the bedside."
       },
       "completeWhen": {
         "all": [
@@ -902,56 +2891,524 @@
           },
           {
             "asked": "allergies"
+          },
+          {
+            "asked": "pmh"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-2",
+      "id": "obj-admission-assessment",
       "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "入院查体与基线检查",
+        "en": "Admission examination and baseline tests"
+      },
+      "short": {
+        "zh-CN": "查体与基线",
+        "en": "Exam and baseline"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "查颈静脉、心脏、肺和下肢，比较腕部脉搏和心尖部心率；送检血常规、凝血、尿常规，并做心电图和超声，记下手术前的基线。",
+        "en": "Examine the neck veins, heart, chest and legs and compare the wrist pulse with the apical rate; send the blood count, clotting and urinalysis, and get the ECG and the scans — this is her pre-operative baseline."
+      },
+      "guidance": {
+        "zh-CN": "床旁查体，然后开基线检查。",
+        "en": "Examine her at the bedside, then order the baseline tests."
       },
       "completeWhen": {
         "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "neck"
+          },
           {
             "examined": "cardiac"
           },
           {
             "examined": "legs"
+          },
+          {
+            "read": "admission-labs"
+          },
+          {
+            "read": "coagulation",
+            "phase": "admission"
+          },
+          {
+            "read": "urine",
+            "phase": "admission"
+          },
+          {
+            "read": "ecg"
+          },
+          {
+            "read": "echo"
+          },
+          {
+            "read": "abdo-us"
+          },
+          {
+            "read": "drug-timeline",
+            "phase": "admission"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "examined": "legs"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "ecg"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "target": "records"
+        }
+      ]
     },
     {
-      "id": "objective-3",
+      "id": "obj-amiodarone",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "术后第8天：复核医嘱",
+        "en": "Day 8 after surgery: review the drug chart"
+      },
+      "short": {
+        "zh-CN": "医嘱",
+        "en": "Drug chart"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "房颤在术后第8天复发，团队准备加用胺碘酮。签字前先看看她正在用哪些药，胺碘酮会对它们产生什么影响、多快出现。",
+        "en": "AF has come back on day 8 and the team wants to add amiodarone. Before you sign, look at what else she is taking and what amiodarone will do to each drug — and how quickly."
+      },
+      "guidance": {
+        "zh-CN": "调阅术后用药记录和INR，再到会诊板作答第1项决策并调整医嘱。",
+        "en": "Read the post-operative drug chart and INRs, answer decision 1 on the case board and adjust the orders."
       },
       "completeWhen": {
-        "decided": "diagnosis"
-      }
+        "all": [
+          {
+            "read": "drug-timeline",
+            "phase": "postop"
+          },
+          {
+            "read": "coagulation",
+            "phase": "postop"
+          },
+          {
+            "decided": "coprescription"
+          },
+          {
+            "intervened": "amiodarone"
+          },
+          {
+            "intervened": "warfarin-reduce"
+          },
+          {
+            "intervened": "digoxin-reduce"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "drug-timeline",
+            "phase": "postop"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "decided": "coprescription"
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-4",
+      "id": "obj-bleed",
       "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
+        "zh-CN": "术后第16天：评估新出现的问题",
+        "en": "Day 16 after surgery: assess the new problem"
+      },
+      "short": {
+        "zh-CN": "新问题",
+        "en": "New problem"
       },
       "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+        "zh-CN": "看看尿液，查INR和尿检，看病历里关于出血程度有哪些、缺哪些；然后判断原因、你有多大把握，以及怎样止血又不让她失去抗凝保护。",
+        "en": "Look at the urine, check the INR and urine tests and see what the record does and does not say about how badly she is bleeding; then decide the cause, how sure you can be, and how to stop the bleeding without leaving her unprotected."
+      },
+      "guidance": {
+        "zh-CN": "床旁查看后调阅检查与记录，作答第2、3项决策并下达医嘱。",
+        "en": "See her, read the results and records, answer decisions 2 and 3 and give your orders."
       },
       "completeWhen": {
+        "all": [
+          {
+            "asked": "haematuria"
+          },
+          {
+            "examined": "urine-look"
+          },
+          {
+            "read": "urine",
+            "phase": "haematuria"
+          },
+          {
+            "read": "coagulation",
+            "phase": "haematuria"
+          },
+          {
+            "read": "bleeding-severity"
+          },
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "intervened": "hold-warfarin"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "examined": "urine-look"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "bleeding-severity"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-discharge",
+      "title": {
+        "zh-CN": "安排出院",
+        "en": "Plan the discharge"
+      },
+      "short": {
+        "zh-CN": "出院",
+        "en": "Discharge"
+      },
+      "hint": {
+        "zh-CN": "看原报告怎样处理、INR降到了多少；想想她回家后的几周里抗凝风险在哪里，谁来查、多久查一次。",
+        "en": "See how the report handled it and where the INR ended up; then think about where her anticoagulation risk lies over the coming weeks at home — and who checks it, and how often."
+      },
+      "guidance": {
+        "zh-CN": "调阅处理与出院记录，作答第4项决策，恢复抗凝并做出院宣教。",
+        "en": "Read the treatment and discharge record, answer decision 4, restart anticoagulation and do the discharge teaching."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "followup",
+            "phase": "followup"
+          },
+          {
+            "decided": "discharge"
+          },
+          {
+            "intervened": "restart-warfarin"
+          },
+          {
+            "intervened": "bleeding-education"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "followup",
+            "phase": "followup"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "decided": "discharge"
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "coprescription",
+      "prompt": {
+        "zh-CN": "术后第8天房颤复发（心率 81 次/分），INR 1.9，华法林 3.75 mg/d（第3天刚加量），同时在用地高辛 0.125 mg/d。团队计划加用胺碘酮 0.2 g每日1次。华法林和其他医嘱怎么处理？",
+        "en": "On postoperative day 8 AF has recurred (heart rate 81/min); the INR is 1.9 on warfarin 3.75 mg/day (increased on day 3), and she is also on digoxin 0.125 mg/day. The team plans amiodarone 0.2 g once daily. What do you do with the warfarin and the rest of the chart?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "drug-timeline",
+            "phase": "postop"
+          },
+          {
+            "read": "coagulation",
+            "phase": "postop"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅术后用药记录和术后INR。",
+        "en": "First read the post-operative drug chart and INRs."
+      },
+      "options": [
+        {
+          "id": "reduce-monitor",
+          "text": {
+            "zh-CN": "开胺碘酮的同时预先把华法林减量约 1/3–1/2，此后数周每 2–3 天查INR，并复核地高辛（减半或停用）和心率控制药物",
+            "en": "Start amiodarone with a pre-emptive warfarin reduction of about one-third to one-half, check the INR every 2–3 days for the following weeks, and review digoxin (halve or stop) and her rate-control drugs"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。胺碘酮及其代谢产物抑制CYP2C9和CYP1A2，使S-华法林浓度升高（原报告讨论）。美国胺碘酮说明书：合用后 3–4 天PT约延长一倍，应将华法林减量 1/3–1/2 并监测PT；同时复核地高辛，约减量一半或停用。原报告引用的减量幅度为 25%–50%，Sanoski与Bauman按胺碘酮维持剂量给出的减量为 200 mg/d时约 30%。",
+            "en": "Correct. Amiodarone and its metabolite inhibit CYP2C9 and CYP1A2 and raise S-warfarin levels (the report's discussion). The US amiodarone label: co-administration roughly doubles the PT after 3–4 days — reduce warfarin by one-third to one-half and monitor the PT — and review digoxin, reducing it by about half or stopping it. The report cites a 25–50 % reduction; Sanoski and Bauman scale it to the amiodarone maintenance dose (about 30 % at 200 mg/day)."
+          }
+        },
+        {
+          "id": "keep-dose",
+          "text": {
+            "zh-CN": "华法林维持 3.75 mg/d：INR还没到 2.0，相互作用要几周后才会出现",
+            "en": "Keep warfarin at 3.75 mg/day — the INR is still below 2.0 and the interaction takes weeks to appear"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对，这正是原报告团队的做法。相互作用几天内就开始：说明书称 3–4 天后PT约延长一倍；原报告写明胺碘酮连续服用 4–5 天起效、5–7 天达作用高峰，并会持续累积数周（Sanoski：高峰约在第7周）。在刚加量、INR仍在上升（1.3→1.9）的华法林上叠加胺碘酮，最容易“冲过头”。",
+            "en": "No — and this is what the report's team did. The interaction starts within days: the label says the PT roughly doubles after 3–4 days, the report notes that amiodarone acts after 4–5 days and peaks at 5–7 days, and the effect keeps building for weeks (Sanoski: peak around week 7). Adding amiodarone to a warfarin dose that was just increased, with the INR still climbing (1.3 → 1.9), is a set-up for overshoot."
+          }
+        },
+        {
+          "id": "stop-warfarin",
+          "text": {
+            "zh-CN": "先停用华法林，等胺碘酮约一个月达到稳态后再重新开始",
+            "en": "Stop warfarin until amiodarone reaches steady state in about a month, then start again"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。她术后仅一周，刚置换三尖瓣生物瓣，又有房颤，停药一个月会让她暴露于瓣膜和心房血栓风险中（ESC/EACTS 2025瓣膜病指南：外科生物瓣术后早期的抗凝方案需个体化）。处理相互作用靠减量和密切监测，而不是停药。",
+            "en": "No. One week after a tricuspid bioprosthesis, with AF, a month off anticoagulation exposes her to valve and atrial thrombus (ESC/EACTS 2025: early anticoagulation after a surgical bioprosthesis is individualised). The interaction is managed by reducing the dose and monitoring closely, not by stopping."
+          }
+        },
+        {
+          "id": "increase",
+          "text": {
+            "zh-CN": "趁胺碘酮还没起效，先把华法林加量，尽快达到目标范围",
+            "en": "Increase warfarin now to reach the target range before amiodarone takes effect"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。这会让两种作用叠加：华法林加量的效应和胺碘酮的抑制作用都在之后几天显现，INR可能急剧升高。合用时的方向是减量，而不是加量。",
+            "en": "No. The two effects would stack: both the dose increase and amiodarone's inhibition show over the next days, and the INR can climb steeply. With this combination the dose goes down, not up."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "术后第16天：肉眼血尿，尿红细胞 300/μL，PT 60.0 s，INR 5.1（前两天为 2.2、2.4，期间华法林已两次减量）。最可能的解释是什么？你有多大把握？",
+        "en": "Postoperative day 16: visible haematuria, urine red cells 300/µL, PT 60.0 s, INR 5.1 (2.2 and 2.4 on the two days before, despite two warfarin reductions). What is the most likely explanation, and how sure can you be?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "haematuria"
+          },
+          {
+            "read": "urine",
+            "phase": "haematuria"
+          },
+          {
+            "read": "coagulation",
+            "phase": "haematuria"
+          },
+          {
+            "read": "drug-timeline",
+            "phase": "haematuria"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问她小便的情况，并调阅术后第14–16天的INR、尿检和用药记录。",
+        "en": "First ask about her urine and read the INRs, urine tests and drug chart for days 14–16."
+      },
+      "options": [
+        {
+          "id": "interaction-probable",
+          "text": {
+            "zh-CN": "华法林–胺碘酮相互作用导致抗凝过度（加用胺碘酮时华法林未减量），术后早期状态和右心淤血可能也有影响；这是“很可能”而非“肯定”的药物相互作用，仍需排除尿路局部原因（导尿损伤、感染）",
+            "en": "Over-anticoagulation from the warfarin–amiodarone interaction (warfarin not reduced when amiodarone started), perhaps helped by the early post-operative state and right-sided congestion — a probable rather than certain interaction, with a local urinary cause (catheter trauma, infection) still to exclude"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。时间关系吻合（合用 8 天后INR从 2.4 一天升到 5.1），术前尿常规和泌尿系超声正常、无泌尿生殖系统病史，都支持相互作用；停用华法林后INR是否回落、出血是否停止（去激发）还会提供证据。但单一病例、没有再激发，又有其他可能的促成因素（术后早期、术前右心淤血、进食情况和导尿史都未记录），因此更恰当的判断是“很可能”。",
+            "en": "Correct. The timing fits (eight days into the combination the INR jumped from 2.4 to 5.1 in a day), and her pre-operative urinalysis and urinary ultrasound were normal with no genitourinary history — both support the interaction; whether the INR falls and the bleeding stops once warfarin is withheld (dechallenge) will add evidence. But it is one case, without rechallenge, and other contributors are possible (the early post-operative state, pre-operative right-sided congestion, and her intake and any catheter, which are not recorded), so “probable” is the fair grading."
+          }
+        },
+        {
+          "id": "urinary-cause",
+          "text": {
+            "zh-CN": "尿路局部原因（导尿损伤或感染），INR升高只是巧合",
+            "en": "A local urinary cause — catheter trauma or infection — with the high INR a coincidence"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不太可能是主要原因。INR 5.1远高于治疗范围，而且一天内从 2.4 翻倍，抗凝过度本身就足以引起血尿；术前尿常规、泌尿系超声正常，也无泌尿生殖系统病史。不过导尿史和尿路症状病历都没记录，值得核实——抗凝过度会让局部病变更容易出血。",
+            "en": "Unlikely to be the main cause. An INR of 5.1 is far above range and doubled from 2.4 in a day — enough on its own to cause haematuria — and her pre-operative urinalysis and urinary ultrasound were normal with no genitourinary history. Still, catheter history and urinary symptoms are not recorded and are worth checking: over-anticoagulation makes a local lesion bleed more easily."
+          }
+        },
+        {
+          "id": "amio-liver",
+          "text": {
+            "zh-CN": "胺碘酮引起肝损伤，凝血因子合成减少",
+            "en": "Amiodarone liver injury reducing clotting-factor production"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "病历不支持。术后没有记录任何肝功能结果，术前肝脏超声正常；INR的变化方式与已知的华法林代谢受抑一致。在没有肝功能证据时，先按药物相互作用处理并补查肝功能，而不是先下肝损伤的结论。",
+            "en": "The record does not support it: no liver tests are recorded after surgery and the pre-operative liver ultrasound was normal, while the INR pattern matches the known inhibition of warfarin metabolism. Without liver evidence, treat it as the interaction and check liver tests, rather than conclude liver injury."
+          }
+        },
+        {
+          "id": "certain",
+          "text": {
+            "zh-CN": "肯定是药物相互作用：术前尿检正常，已经排除了其他原因",
+            "en": "Certainly the interaction: the normal pre-operative urine tests rule out any other cause"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是原报告作者的结论（“故可以明确”），但证据支撑的是“很可能”而不是“肯定”。术前检查正常不能排除术后出现的导尿损伤或感染；单一病例没有再激发，其他促成因素也未排除。报告不良反应时应如实分级，不要把可能性写成确定性。",
+            "en": "This is the authors' conclusion (“故可以明确” — “so it can be stated definitely”), but the evidence supports “probable”, not “certain”. Normal pre-operative tests cannot exclude catheter trauma or infection after surgery, there is no rechallenge in a single case, and other contributors are not excluded. Grade an adverse reaction honestly; do not turn likelihood into certainty."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "术后第16天，肉眼血尿，INR 5.1。病历里没有血红蛋白、血流动力学和输血资料。现在怎么处理抗凝和出血？",
+        "en": "Postoperative day 16: visible haematuria with an INR of 5.1. The record has no haemoglobin, haemodynamic or transfusion data. How do you manage the anticoagulation and the bleeding now?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "bleeding-severity"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成第2项决策，并调阅出血严重程度资料。",
+        "en": "First answer decision 2 and read the bleeding-severity documentation."
+      },
+      "options": [
+        {
+          "id": "classify-hold",
+          "text": {
+            "zh-CN": "停用华法林，先按ACC 2020标准给出血分级（复查血红蛋白、评估血流动力学、有无血块或尿潴留、出血部位）；非大出血一般不用逆转剂，复查INR等它回落；只有大出血才静脉用维生素K₁并联合凝血酶原复合物",
+            "en": "Withhold warfarin and first grade the bleed by the ACC 2020 criteria (repeat haemoglobin, haemodynamics, clots or retention, the site); a non-major bleed generally needs no reversal agent — recheck the INR as it falls; only a major bleed gets IV vitamin K1 with a prothrombin complex concentrate"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。ACC 2020共识：大出血指关键部位出血、血流动力学不稳定，或显性出血伴血红蛋白下降 ≥ 2 g/dL或需输注 ≥ 2 单位红细胞；逆转剂一般不用于非大出血。本例病历缺少分级所需资料，所以第一步是补齐它们。若需要用维生素K₁，剂量和途径由出血程度决定，目标是止血而不是把INR压到正常。",
+            "en": "Correct. ACC 2020: a major bleed is one at a critical site, with haemodynamic instability, or overt bleeding with a haemoglobin fall of ≥ 2 g/dL or ≥ 2 units of red cells transfused; reversal agents are generally not for non-major bleeds. This record lacks the data to grade it, so getting them is the first step. If vitamin K1 is used, its dose and route follow the bleed's severity — the aim is to stop the bleeding, not to normalise the INR."
+          }
+        },
+        {
+          "id": "im-vitk-repeat",
+          "text": {
+            "zh-CN": "停用华法林，立即肌内注射维生素K₁ 10 mg，4小时后INR仍高就再注射一次",
+            "en": "Withhold warfarin and give vitamin K1 10 mg intramuscularly now, repeating it after 4 h if the INR is still high"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对，这是原报告团队的做法（间隔4小时两次肌注，共 20 mg；之后的INR见处理与出院记录）。出血还没分级就大剂量逆转，容易矫枉过正：20 mg维生素K₁可使INR降到她新生物瓣和房颤所需的范围以下，给重新抗凝带来困难。现行做法是先分级，再按严重程度决定是否逆转、剂量和途径（ACC 2020）。",
+            "en": "No — and this is what the report's team did (two 10 mg intramuscular doses 4 h apart; the INRs that followed are in the treatment and discharge record). Reversing hard before the bleed is graded tends to overshoot: 20 mg of vitamin K1 can take the INR below the range her new bioprosthesis and AF need, which makes re-anticoagulation harder. Today: grade first, then decide whether to reverse, how much and by which route (ACC 2020)."
+          }
+        },
+        {
+          "id": "pcc-now",
+          "text": {
+            "zh-CN": "立即输注凝血酶原复合物并静脉用维生素K₁，让INR马上恢复正常",
+            "en": "Give a prothrombin complex concentrate and IV vitamin K1 now to normalise the INR at once"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。病历中没有大出血的证据，ACC 2020共识把逆转剂留给大出血。对术后两周的生物瓣和房颤患者，把INR迅速完全纠正会带来不必要的血栓风险。",
+            "en": "No. Nothing in the record shows a major bleed, and ACC 2020 reserves reversal agents for major bleeding. Rapid full correction of the INR adds an unnecessary thrombotic risk two weeks after a bioprosthesis, with AF."
+          }
+        },
+        {
+          "id": "continue-lower",
+          "text": {
+            "zh-CN": "华法林继续用，按 2.25 mg/d再减一点，观察小便",
+            "en": "Carry on with warfarin at a slightly lower dose than 2.25 mg/day and watch the urine"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。INR 5.1并且正在出血，必须先停用华法林；继续给药会让INR进一步升高。减量是在INR回到范围、出血停止后才考虑的事。",
+            "en": "No. With an INR of 5.1 and active bleeding, warfarin is withheld first; giving more would push the INR higher. A lower dose is a decision for after the bleeding has stopped and the INR is back in range."
+          }
+        },
+        {
+          "id": "stop-for-good",
+          "text": {
+            "zh-CN": "永久停用华法林，改用阿司匹林",
+            "en": "Stop warfarin for good and switch to aspirin"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。房颤加上刚置换的三尖瓣生物瓣需要口服抗凝，阿司匹林不能替代。ACC 2020共识：大多数患者在医学上安全时就应尽早恢复抗凝。",
+            "en": "No. AF with a newly implanted tricuspid bioprosthesis needs oral anticoagulation, which aspirin does not replace. ACC 2020: in most patients anticoagulation is restarted as soon as it is medically safe."
+          }
+        }
+      ]
+    },
+    {
+      "id": "discharge",
+      "prompt": {
+        "zh-CN": "按原报告：次日恢复华法林 1.50 mg/d，INR 1.4，当天出院，继续服用胺碘酮。出院计划最需要补上的是什么？",
+        "en": "As reported: warfarin restarted at 1.50 mg/day the next day with an INR of 1.4, discharged that day, still on amiodarone. What does the discharge plan most need?"
+      },
+      "kind": "single",
+      "requires": {
         "all": [
           {
             "decided": "management"
@@ -961,109 +3418,58 @@
             "phase": "followup"
           }
         ]
-      }
-    }
-  ],
-  "decisions": [
-    {
-      "id": "diagnosis",
-      "prompt": {
-        "zh-CN": "哪项解释最符合用药和INR变化？",
-        "en": "Which explanation best fits the medicines and INR trajectory?"
-      },
-      "kind": "single",
-      "requires": {
-        "all": [
-          {
-            "read": "drug-timeline",
-            "phase": "workup"
-          },
-          {
-            "read": "coagulation",
-            "phase": "workup"
-          },
-          {
-            "read": "urine",
-            "phase": "workup"
-          }
-        ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先调阅处理与出院记录。",
+        "en": "First read the treatment and discharge record."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "close-inr",
           "text": {
-            "zh-CN": "华法林抗凝过强，胺碘酮相互作用是重要相关因素",
-            "en": "Excess warfarin anticoagulation, with amiodarone interaction an important contributor"
+            "zh-CN": "出院后几天内复查INR，此后至少每周复查直至稳定，按INR调整华法林——胺碘酮的作用还会持续累积数周；同时复核地高辛，并教她识别出血征象和就医时机",
+            "en": "An INR within a few days of discharge and then at least weekly until stable, adjusting warfarin to it — the amiodarone effect keeps building for weeks; also review digoxin and teach her the bleeding warning signs and when to seek help"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "加用胺碘酮后INR和出血轨迹支持相互作用；仍需评估出血程度和其他原因。",
-            "en": "The INR and bleeding trajectory after amiodarone supports an interaction, while bleeding severity and other causes still need assessment."
+            "zh-CN": "正确。她出院时INR 1.4，低于常用的房颤维生素K拮抗剂目标范围（INR 2.0–3.0），同时胺碘酮约一个月才达稳态（原报告），相互作用高峰可在数周后（Sanoski）——剂量需求会继续变化。尽早、频繁地复查INR，加上地高辛复核和出血宣教，才能在“出血”和“血栓”两端之间保持平衡（ACC 2020：在安全时尽早恢复抗凝并密切监测）。",
+            "en": "Correct. She went home with an INR of 1.4, below the usual VKA target in AF (INR 2.0–3.0), while amiodarone takes about a month to reach steady state (the report) and the interaction can peak weeks later (Sanoski) — so her dose needs will keep shifting. Early and frequent INR checks, a digoxin review and bleeding teaching keep her between bleeding and clotting (ACC 2020: restart when safe and monitor closely)."
           }
         },
         {
-          "id": "unsupported",
+          "id": "clinic-3-months",
           "text": {
-            "zh-CN": "INR升高与药物无关，按单纯泌尿感染处理",
-            "en": "The INR rise is unrelated to medicines and should be treated as simple urinary infection"
+            "zh-CN": "INR已经降下来了，三个月后瓣膜门诊复查一次就够了",
+            "en": "The INR is down now, so a check at the three-month valve clinic is enough"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "加用胺碘酮后INR和出血轨迹支持相互作用；仍需评估出血程度和其他原因。",
-            "en": "The INR and bleeding trajectory after amiodarone supports an interaction, while bleeding severity and other causes still need assessment."
-          }
-        }
-      ]
-    },
-    {
-      "id": "management",
-      "prompt": {
-        "zh-CN": "当前最安全的处理原则是什么？",
-        "en": "What is the safest current management principle?"
-      },
-      "kind": "single",
-      "requires": {
-        "all": [
-          {
-            "decided": "diagnosis"
-          },
-          {
-            "read": "bleeding-severity",
-            "phase": "workup"
-          }
-        ]
-      },
-      "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
-      },
-      "options": [
-        {
-          "id": "supported",
-          "text": {
-            "zh-CN": "立即由临床团队评估出血、暂缓抗凝及逆转需要，结合血栓风险制定复用与密切INR监测计划",
-            "en": "Prompt clinician assessment of bleeding, interruption and reversal needs, followed by a thrombotic-risk-informed restart and close INR monitoring plan"
-          },
-          "correct": true,
-          "feedback": {
-            "zh-CN": "逆转方式和复用时机取决于出血严重度及抗凝指征；病例历史剂量/肌注途径不作为教学推荐。",
-            "en": "Reversal and restart depend on bleeding severity and indication; the report’s historical dose and intramuscular route are not educational recommendations."
+            "zh-CN": "不对。胺碘酮的作用还会累积数周，华法林剂量需求在出院后仍会变化；三个月不查INR，既可能再次出血，也可能因抗凝不足出现血栓。",
+            "en": "No. Amiodarone's effect keeps building for weeks, so her warfarin needs will change after discharge; three months without an INR risks both another bleed and a clot from under-anticoagulation."
           }
         },
         {
-          "id": "unsupported",
+          "id": "wait-a-week",
           "text": {
-            "zh-CN": "照搬原文肌注维生素K和固定次日复用剂量",
-            "en": "Copy the historical intramuscular vitamin K and fixed next-day restart dose"
+            "zh-CN": "出血后应停用华法林至少一周，次日恢复太早了，应再次停药",
+            "en": "Warfarin should be withheld for at least a week after a bleed — restarting the next day was too early, so stop it again"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "逆转方式和复用时机取决于出血严重度及抗凝指征；病例历史剂量/肌注途径不作为教学推荐。",
-            "en": "Reversal and restart depend on bleeding severity and indication; the report’s historical dose and intramuscular route are not educational recommendations."
+            "zh-CN": "不对。血尿已停止、尿红细胞转阴，而她有房颤和两周前置换的生物瓣，血栓风险真实存在。ACC 2020共识：大多数患者在医学上安全时就应尽早恢复抗凝。问题不在于恢复太早，而在于随后的监测计划。",
+            "en": "No. The haematuria has stopped and the urine red cells are negative, while her AF and two-week-old bioprosthesis carry a real thrombotic risk. ACC 2020: in most patients anticoagulation is restarted as soon as it is medically safe. The problem is not the early restart but the monitoring that follows it."
+          }
+        },
+        {
+          "id": "stop-amio-old-dose",
+          "text": {
+            "zh-CN": "停用胺碘酮，华法林恢复到原来的 3.75 mg/d",
+            "en": "Stop amiodarone and go back to the previous 3.75 mg/day warfarin dose"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。原报告指出胺碘酮停药后作用仍可持续 8–10 天，而且它清除缓慢、相互作用只会逐渐消退，所以华法林剂量需求在之后一段时间里都会漂移；直接回到 3.75 mg/d有再次过量的风险。是否继续胺碘酮是节律控制的另一个决定，无论怎样都需要按INR滴定华法林。",
+            "en": "No. The report notes that amiodarone's effect lasts 8–10 days after stopping, and because it is cleared slowly the interaction fades only gradually, so her warfarin needs would keep drifting, and going straight back to 3.75 mg/day risks another overshoot. Whether to continue amiodarone is a separate rhythm decision; either way warfarin is titrated to the INR."
           }
         }
       ]
@@ -1071,11 +3477,11 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "rb-history",
       "domain": "history",
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "入院问诊：病程、伴随症状、既往心脏手术、过敏史及其他疾病（含泌尿生殖系统）",
+        "en": "Admission history: course, associated symptoms, previous heart surgery, allergies and other illness (genitourinary included)"
       },
       "weight": 2,
       "met": {
@@ -1091,20 +3497,29 @@
           },
           {
             "asked": "allergies"
+          },
+          {
+            "asked": "pmh"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
+      "id": "rb-exam",
       "domain": "examination",
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "入院查体：生命体征、颈静脉、心脏和下肢",
+        "en": "Admission examination: vital signs, neck veins, heart and legs"
       },
-      "weight": 1,
+      "weight": 2,
       "met": {
         "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "neck"
+          },
           {
             "examined": "cardiac"
           },
@@ -1115,50 +3530,220 @@
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "rb-baseline",
+      "domain": "investigations",
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "记录术前基线：血常规、凝血、尿常规、心电图、超声心动图和泌尿系超声",
+        "en": "Recorded the pre-operative baseline: blood count, clotting, urinalysis, ECG, echo and urinary ultrasound"
       },
-      "weight": 3,
+      "weight": 1,
       "met": {
-        "decided": "diagnosis"
+        "all": [
+          {
+            "read": "admission-labs"
+          },
+          {
+            "read": "coagulation",
+            "phase": "admission"
+          },
+          {
+            "read": "urine",
+            "phase": "admission"
+          },
+          {
+            "read": "ecg"
+          },
+          {
+            "read": "echo"
+          },
+          {
+            "read": "abdo-us"
+          }
+        ]
       }
     },
     {
-      "id": "rubric-4",
+      "id": "rb-coprescribe",
       "domain": "management",
       "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
+        "zh-CN": "首次作答即选择加用胺碘酮时预先减少华法林并密切监测INR，并据此下达医嘱",
+        "en": "Chose a pre-emptive warfarin reduction with close INR checks when amiodarone started, at the first attempt, and ordered it"
       },
       "weight": 3,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "decidedFirstTry": "coprescription"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "intervened": "warfarin-reduce"
+          },
+          {
+            "intervened": "inr-plan"
           }
         ]
+      }
+    },
+    {
+      "id": "rb-safety-dose",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有在加用胺碘酮后维持华法林原剂量",
+        "en": "Did not keep warfarin at full dose alongside amiodarone"
+      },
+      "weight": 3,
+      "met": {
+        "not": {
+          "intervened": "warfarin-continue"
+        }
+      }
+    },
+    {
+      "id": "rb-digoxin",
+      "domain": "management",
+      "text": {
+        "zh-CN": "加用胺碘酮时复核并调整地高辛",
+        "en": "Reviewed and adjusted digoxin when amiodarone started"
+      },
+      "weight": 2,
+      "met": {
+        "intervened": "digoxin-reduce"
+      }
+    },
+    {
+      "id": "rb-dx",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即把血尿归因于很可能的华法林–胺碘酮相互作用，并保留对其他原因的鉴别",
+        "en": "Attributed the haematuria to a probable warfarin–amiodarone interaction, keeping other causes open, at the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-bleed",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即先给出血分级、不对非大出血用逆转剂，并停用华法林",
+        "en": "Graded the bleed before any reversal and withheld warfarin, at the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "management"
+          },
+          {
+            "intervened": "hold-warfarin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-safety-reversal",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有给予肌内注射维生素K₁或凝血酶原复合物",
+        "en": "Gave neither intramuscular vitamin K1 nor a prothrombin complex concentrate"
+      },
+      "weight": 3,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "vitk-im"
+            },
+            {
+              "intervened": "pcc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rb-discharge",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即制定出院后密切INR监测计划，恢复华法林并做出血宣教",
+        "en": "Planned close INR follow-up after discharge at the first attempt, restarted warfarin and taught the bleeding signs"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "discharge"
+          },
+          {
+            "intervened": "restart-warfarin"
+          },
+          {
+            "intervened": "bleeding-education"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "向患者解释发生了什么，以及出院后的抗凝和复查安排",
+        "en": "Explained to her what happened and the anticoagulation and INR plan after discharge"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用通俗语言说明血尿与两种药相互影响、抗凝过强有关，坦诚这是可能而非确定的结论；解释为什么还要继续吃华法林（新瓣膜和房颤的血栓风险）；具体说明什么时候、在哪里查INR，哪些出血征象需要马上就医；请她复述要点，并回应她的担心。",
+        "en": "Good performance: explains in plain words that the bleeding came from two medicines interacting and thinning her blood too much, and is honest that this is likely rather than certain; explains why she still needs warfarin (clot risk with the new valve and AF); gives specific timing and place for INR checks and the bleeding signs that need urgent help; asks her to repeat the key points back and responds to her worries."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "熊护士（病房）",
+        "en": "Nurse Xiong (ward)"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "病房护士：负责发药、记录出入量和执行医嘱。医嘱单和检查结果可在护士站电脑上调阅；病房有心电图机、药柜和抢救车，超声需要从影像科推来。复述医嘱，只报告已经出来的结果数值，不解读、不作诊断；被问到病历里没有的内容（如导尿情况、术后血红蛋白）时如实说没有记录。",
+        "en": "Ward nurse: gives the medicines, records intake and output and carries out orders. The drug chart and results are on the station computer; the ward has an ECG cart, a medicines cabinet and a crash cart, and an ultrasound machine has to be brought from imaging. Reads orders back, reports values only for results that are back, never interprets or diagnoses, and says plainly when something is not in the record (a urinary catheter, a post-operative haemoglobin)."
+      }
+    },
+    {
+      "role": "pharmacist",
+      "name": {
+        "zh-CN": "廖药师（临床药师）",
+        "en": "Pharmacist Liao (clinical pharmacist)"
+      },
+      "knowledge": {
+        "zh-CN": "临床药师，与学员一起审核医嘱。可以讲解：华法林是S-和R-对映体的消旋体，分别经CYP2C9和CYP1A2代谢；胺碘酮及脱乙基胺碘酮抑制两者；胺碘酮口服吸收慢且不规则，约一个月达稳态，停药后作用仍持续，因此相互作用会在数天到数周内逐步加强；美国胺碘酮说明书建议合用时华法林减量 1/3–1/2 并监测PT，地高辛减量约一半或停用。先问学员“胺碘酮会对她的华法林和地高辛做什么”，听到学员的方案后再给具体数字。只讨论学员已经看到的结果，不提前说出INR数值或诊断。",
+        "en": "Clinical pharmacist who reviews the chart with the learner. Can explain: warfarin is a racemate whose S and R forms are metabolised by CYP2C9 and CYP1A2; amiodarone and desethylamiodarone inhibit both; amiodarone is absorbed slowly and erratically, reaches steady state in about a month and keeps acting after it is stopped, so the interaction builds over days to weeks; the US amiodarone label advises reducing warfarin by one-third to one-half with PT monitoring, and reducing digoxin by about half or stopping it. Asks the learner first what amiodarone will do to her warfarin and digoxin, and gives numbers only after hearing the learner's plan. Discusses only results the learner has seen and never states INR values or a diagnosis ahead of them."
       },
       "interprets": [
-        "cardiac-tests",
         "drug-timeline",
         "coagulation",
+        "digoxin-level"
+      ]
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "魏医生（主治医师）",
+        "en": "Dr Wei (attending)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，只围绕学员已获得的资料提问，例如：“她的桡动脉脉搏和心尖心率为什么不一样？”“胺碘酮会怎样影响华法林？多快出现？”“为什么INR在两次减量后还会一天翻倍？”“这次出血算大出血吗？你还需要知道什么？”“出血之后，两周前置换的生物瓣加上房颤，她需要怎样的INR？”“你有多大把握说是胺碘酮引起的？”。可以讲ACC 2020抗凝出血共识、ESC 2024房颤和ESC/EACTS 2025瓣膜病指南的相关原则。不提前说出诊断或任何决策的正确选项；不补充病例中没有的数据（术后血红蛋白、导尿情况、出院后INR均无记录）。",
+        "en": "Socratic teacher who asks only about information the learner already has, e.g. “Why do her radial pulse and apical rate differ?”, “What will amiodarone do to her warfarin, and how fast?”, “Why did the INR double in a day after two dose cuts?”, “Is this a major bleed — what else do you need to know?”, “After the bleed, what INR does she need two weeks after a bioprosthesis, with AF?”, “How sure can you be that amiodarone caused it?”. May explain the relevant principles of the ACC 2020 pathway on bleeding with oral anticoagulants, ESC 2024 AF and ESC/EACTS 2025 valvular disease. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (a post-operative haemoglobin, catheter use and INRs after discharge are not recorded)."
+      },
+      "interprets": [
+        "admission-labs",
+        "coagulation",
         "urine",
+        "ecg",
+        "echo",
+        "abdo-us",
+        "drug-timeline",
         "bleeding-severity",
         "followup"
       ],
@@ -1167,48 +3752,117 @@
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：胺碘酮–华法林相互作用、INR升高与血尿",
+      "en": "Debrief: the amiodarone–warfarin interaction, a rising INR and haematuria"
     },
     "conclusion": {
-      "zh-CN": "临床时间线支持抗凝药相互作用；风险可在添加药物后延迟显现，需要持续复核。",
-      "en": "The clinical timeline supports an anticoagulant interaction whose risk may emerge after a delay and requires continued review."
+      "zh-CN": "三尖瓣生物瓣置换、二尖瓣成形及房颤消融术后服用华法林，术后第8天加用胺碘酮时华法林未减量；8 天后INR升至 5.1并出现肉眼血尿，最可能是华法林–胺碘酮相互作用所致（很可能，而非原文所称的“肯定”）。原报告停用华法林并两次肌注维生素K₁ 10 mg，次日INR 1.4、尿红细胞转阴，以 1.50 mg/d恢复华法林并于术后第17天出院；出院后的INR和结局未报告。",
+      "en": "On warfarin after a bioprosthetic tricuspid valve replacement, mitral repair and AF ablation, she started amiodarone on postoperative day 8 without a warfarin reduction; eight days later the INR was 5.1 with visible haematuria — most likely the warfarin–amiodarone interaction (probable, not the “definite” the report claims). The report stopped warfarin and gave vitamin K1 10 mg intramuscularly twice; the next day the INR was 1.4 and the urine red cells negative, warfarin was restarted at 1.50 mg/day and she went home on postoperative day 17. INRs and outcome after discharge are not reported."
     },
     "keyReasoning": [
       {
-        "zh-CN": "药物相互作用的效应不必在第一剂后立刻出现。",
-        "en": "The effect of a drug interaction need not appear immediately after the first dose."
+        "zh-CN": "加用胺碘酮时华法林维持原剂量（刚加量后、INR仍在上升），是这次过度抗凝的关键处方环节。",
+        "en": "Keeping warfarin at full dose when amiodarone started — just after a dose increase, with the INR still rising — was the key prescribing step behind the over-anticoagulation."
       },
       {
-        "zh-CN": "纠正出血后仍需重新平衡抗凝与血栓风险。",
-        "en": "After bleeding correction, anticoagulation and thrombotic risk must be reassessed."
+        "zh-CN": "INR在两次减量后仍一天翻倍：相互作用延迟出现、逐步累积，减量来得太晚。",
+        "en": "The INR doubled in a day despite two dose cuts: the interaction is delayed and cumulative, and the reductions came too late."
+      },
+      {
+        "zh-CN": "术前尿常规和泌尿系超声正常、无泌尿生殖系统病史、停药后好转，支持相互作用；但单一病例只能判为“很可能”。",
+        "en": "Normal pre-operative urine tests and urinary ultrasound, no genitourinary history and improvement on withdrawal support the interaction — but a single case grades it as probable."
+      },
+      {
+        "zh-CN": "出血的处理取决于分级；病历缺少血红蛋白和血流动力学资料，大剂量肌注维生素K₁使INR降到治疗范围以下。",
+        "en": "Bleeding management depends on grading; the record lacks haemoglobin and haemodynamic data, and large intramuscular vitamin K1 doses took the INR below range."
+      },
+      {
+        "zh-CN": "新生物瓣和房颤的血栓风险要求尽早、以较低剂量恢复抗凝，并在出院后密切监测INR。",
+        "en": "The thrombotic risk of a new bioprosthesis with AF calls for an early, lower-dose restart and close INR monitoring after discharge."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是一例单中心的历史病例报告，不能证明某种剂量调整或逆转方案的效果。报告没有给出术后血红蛋白、肝肾功能、地高辛浓度、导尿情况、INR目标范围和出院后的结果；本病例中的决策、干预选项和评分是教学设计，不改变已发表的病程。",
+      "en": "This is a single historical case report and cannot show the effect of any dose adjustment or reversal strategy. The report gives no post-operative haemoglobin, renal or liver tests, digoxin level, catheter history, target INR or results after discharge; the decisions, intervention options and scoring here are teaching design and do not change the published course."
     },
     "unknowns": [
       {
-        "zh-CN": "血尿时血红蛋白与生命体征、长期抗凝目标及远期随访。",
-        "en": "Haemoglobin and vital signs during haematuria, long-term anticoagulation target and follow-up."
+        "zh-CN": "血尿时的血红蛋白、血流动力学、输血需要和导尿情况。",
+        "en": "Haemoglobin, haemodynamics, transfusion needs and catheter use at the time of the haematuria."
+      },
+      {
+        "zh-CN": "术后肝肾功能、地高辛浓度以及胺碘酮加用后的心率。",
+        "en": "Post-operative renal and liver tests, the digoxin level and the heart rate after amiodarone."
+      },
+      {
+        "zh-CN": "团队的INR目标范围、出院后的INR和之后有无再次出血或血栓。",
+        "en": "The team's target INR, INRs after discharge and any later bleeding or thrombosis."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "加用胺碘酮时预先减少华法林。胺碘酮及其代谢产物抑制CYP2C9和CYP1A2，使S-华法林浓度升高（原报告讨论）。美国胺碘酮说明书：合用后 3–4 天PT约延长一倍，华法林应减量 1/3–1/2 并监测PT；原报告引用 25%–50%；Sanoski与Bauman按胺碘酮维持剂量给出 400/300/200/100 mg/d时分别减少 40%/35%/30%/25%。历史与现行：原报告团队加用胺碘酮时维持 3.75 mg/d，8 天后INR升至 5.1 并出现血尿。",
+        "en": "Reduce warfarin pre-emptively when amiodarone starts. Amiodarone and its metabolite inhibit CYP2C9 and CYP1A2 and raise S-warfarin levels (the report's discussion). The US amiodarone label: co-administration roughly doubles the PT after 3–4 days — reduce warfarin by one-third to one-half and monitor the PT; the report cites 25–50 %; Sanoski and Bauman scale it to the amiodarone maintenance dose (40/35/30/25 % at 400/300/200/100 mg/day). Then and now: the report's team kept 3.75 mg/day when amiodarone started, and eight days later the INR was 5.1 with haematuria."
+      },
+      {
+        "zh-CN": "相互作用延迟出现、而且不是线性的。INR 1.9→2.2→2.4后一天跳到 5.1，期间华法林已两次减量。原报告：胺碘酮口服吸收慢且不规则，连续服用 4–5 天起效、5–7 天达作用高峰，约一个月达稳态，停药后作用仍持续 8–10 天；Sanoski：相互作用高峰约在第7周。所以合用后要在数周内每隔几天查一次INR，而不是等INR升高再追着减量。",
+        "en": "The interaction is delayed and non-linear. The INR went 1.9 → 2.2 → 2.4 and then jumped to 5.1 in a day, despite two dose cuts. The report: oral amiodarone is absorbed slowly and erratically, acts after 4–5 days, peaks at 5–7 days, reaches steady state in about a month and keeps acting for 8–10 days after stopping; Sanoski: the interaction peaks around week 7. So check the INR every few days for weeks after the start, rather than chasing a rising INR with late reductions."
+      },
+      {
+        "zh-CN": "先给出血分级，再决定是否逆转（ACC 2020共识）。大出血：关键部位出血、血流动力学不稳定，或显性出血伴血红蛋白下降 ≥ 2 g/dL或输注 ≥ 2 单位红细胞；逆转剂一般不用于非大出血。CHEST 2012（ACCP第9版）：INR 4.5–10且无出血时不建议常规使用维生素K。本例病历缺少分级资料。历史与现行：原报告 8 小时内肌注维生素K₁共 20 mg，次日INR降到 1.4。",
+        "en": "Grade the bleed before choosing reversal (ACC 2020 decision pathway). Major bleeding: a critical site, haemodynamic instability, or overt bleeding with a haemoglobin fall of ≥ 2 g/dL or ≥ 2 units of red cells transfused; reversal agents are generally not for non-major bleeds. CHEST 2012 (ACCP 9th edition): no routine vitamin K for an INR of 4.5–10 without bleeding. This record lacks the data to grade the bleed. Then and now: the report gave 20 mg of intramuscular vitamin K1 within 8 h, and the INR was 1.4 the next day."
+      },
+      {
+        "zh-CN": "在医学上安全时尽早恢复抗凝（ACC 2020共识），并以较低剂量、密切监测重新开始。她有房颤和两周前置换的三尖瓣生物瓣：ESC 2024房颤指南和ESC/EACTS 2025瓣膜病指南都要求权衡血栓风险，术后早期抗凝方案需个体化。原报告次日以 1.50 mg/d恢复，当天出院，但没有记录出院后的INR监测。",
+        "en": "Restart anticoagulation as soon as it is medically safe (ACC 2020), at a lower dose with close monitoring. She has AF and a two-week-old tricuspid bioprosthesis: ESC 2024 AF and ESC/EACTS 2025 valvular disease both weigh the thrombotic risk, and early post-operative anticoagulation is individualised. The report restarted 1.50 mg/day the next day and discharged her that day, but records no INR follow-up after discharge."
+      },
+      {
+        "zh-CN": "看完整个医嘱单。她在用地高辛 0.125 mg/d：美国胺碘酮说明书建议加用胺碘酮时复核地高辛，约减量一半或停用；原报告没有说明地高辛是否调整，也没有地高辛血药浓度或心率记录。",
+        "en": "Read the whole drug chart. She was on digoxin 0.125 mg/day: the US amiodarone label advises reviewing digoxin when amiodarone starts and reducing it by about half or stopping it; the report does not say whether digoxin was changed and records no digoxin level or later heart rate."
+      },
+      {
+        "zh-CN": "如实给不良反应分级。作者写“故可以明确”，但单一病例只有合理的时间关系和停药后好转，没有再激发，术后早期状态、术前右心淤血、进食和导尿情况也未排除，因此更恰当的结论是“很可能”的药物相互作用。",
+        "en": "Grade an adverse drug reaction honestly. The authors write that the cause “can be stated definitely”, but one case with a plausible time course and improvement on withdrawal — no rechallenge, and with the early post-operative state, pre-operative right-sided congestion, intake and catheter use not excluded — supports a probable interaction, not a certain one."
+      }
+    ],
     "references": [
-      "刘俊. 联合应用华法林与胺碘酮致国际标准化比值升高和血尿. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.011",
-      "https://rs.yiigle.com/cmaid/1423434",
-      "2020 ACC Expert Consensus Decision Pathway on Management of Bleeding in Patients on Oral Anticoagulants. https://www.acc.org/latest-in-cardiology/ten-points-to-remember/2020/07/10/11/26/2020-acc-expert-consensus-decision-pathway-on-bleeding"
+      "刘俊. 联合应用华法林与胺碘酮致国际标准化比值升高和血尿. 药物不良反应杂志. 2014;16(1):40-41. doi:10.3760/cma.j.issn.1008-5734.2014.01.011. Available from: https://rs.yiigle.com/cmaid/1423434",
+      "Tomaselli GF, Mahaffey KW, et al. 2020 ACC expert consensus decision pathway on management of bleeding in patients on oral anticoagulants. J Am Coll Cardiol. 2020;76(5):594-622. doi:10.1016/j.jacc.2020.04.053",
+      "Holbrook A, Schulman S, et al. Evidence-based management of anticoagulant therapy: Antithrombotic Therapy and Prevention of Thrombosis, 9th ed: American College of Chest Physicians Evidence-Based Clinical Practice Guidelines. Chest. 2012;141(2 Suppl):e152S-e184S.",
+      "Van Gelder IC, et al. 2024 ESC Guidelines for the management of atrial fibrillation. Eur Heart J. 2024;45(36):3314-3414. doi:10.1093/eurheartj/ehae176",
+      "Praz F, Borger MA, et al. 2025 ESC/EACTS Guidelines for the management of valvular heart disease. Eur Heart J. 2025;46(44):4635-4736. doi:10.1093/eurheartj/ehaf194",
+      "Sanoski CA, Bauman JL. Clinical observations with the amiodarone/warfarin interaction: dosing relationships with long-term therapy. Chest. 2002;121(1):19-23.",
+      "中华医学会心血管病学分会, 中国老年学学会心脑血管病专业委员会. 华法林抗凝治疗的中国专家共识. 中华内科杂志. 2013;52(1):76-82."
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "血尿时血红蛋白与生命体征、长期抗凝目标及远期随访。",
-      "en": "Haemoglobin and vital signs during haematuria, long-term anticoagulation target and follow-up."
+      "zh-CN": "入院前的长期用药、吸烟、饮酒、中药或保健品及家族史。",
+      "en": "Her medicines before admission, smoking, alcohol, herbal remedies or supplements, and family history."
+    },
+    {
+      "zh-CN": "术前的呋塞米、螺内酯和美托洛尔术后是否继续，以及其他术后用药。",
+      "en": "Whether the pre-operative furosemide, spironolactone and metoprolol continued after surgery, and any other post-operative drugs."
+    },
+    {
+      "zh-CN": "术后血红蛋白、血小板、肝肾功能、白蛋白和地高辛血药浓度。",
+      "en": "Post-operative haemoglobin, platelets, liver and renal function, albumin and digoxin level."
+    },
+    {
+      "zh-CN": "血尿时的血流动力学、是否输血、有无导尿管、尿路症状和尿培养。",
+      "en": "Haemodynamics at the time of haematuria, any transfusion, a urinary catheter, urinary symptoms and a urine culture."
+    },
+    {
+      "zh-CN": "术后进食情况，以及胺碘酮加用后的心率和节律变化。",
+      "en": "Her eating after surgery, and her heart rate and rhythm after amiodarone."
+    },
+    {
+      "zh-CN": "团队采用的INR目标范围、长期抗凝计划、出院后的INR，以及之后有无再次出血或血栓。",
+      "en": "The INR target the team used, the long-term anticoagulation plan, INRs after discharge, and any later bleeding or thrombosis."
     }
   ],
   "assets": [
@@ -1247,6 +3901,10 @@
     },
     {
       "type": "ask",
+      "itemId": "murmur"
+    },
+    {
+      "type": "ask",
       "itemId": "allergies"
     },
     {
@@ -1259,11 +3917,7 @@
     },
     {
       "type": "ask",
-      "itemId": "murmur"
-    },
-    {
-      "type": "ask",
-      "itemId": "family"
+      "itemId": "current-meds"
     },
     {
       "type": "ask",
@@ -1275,19 +3929,23 @@
     },
     {
       "type": "ask",
-      "itemId": "occupation"
-    },
-    {
-      "type": "ask",
-      "itemId": "self-care"
-    },
-    {
-      "type": "ask",
-      "itemId": "expectations"
-    },
-    {
-      "type": "ask",
       "itemId": "supplements"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "examine",
+      "findingId": "neck"
+    },
+    {
+      "type": "examine",
+      "findingId": "chest"
     },
     {
       "type": "examine",
@@ -1298,34 +3956,13 @@
       "findingId": "legs"
     },
     {
-      "type": "examine",
-      "findingId": "vitals"
-    },
-    {
-      "type": "set-phase",
-      "phase": "workup"
-    },
-    {
-      "type": "ask",
-      "itemId": "bleeding"
-    },
-    {
       "type": "order",
-      "investigationId": "cardiac-tests"
+      "investigationId": "admission-labs"
     },
     {
       "type": "read",
-      "investigationId": "cardiac-tests",
-      "phase": "workup"
-    },
-    {
-      "type": "order",
-      "investigationId": "drug-timeline"
-    },
-    {
-      "type": "read",
-      "investigationId": "drug-timeline",
-      "phase": "workup"
+      "investigationId": "admission-labs",
+      "phase": "admission"
     },
     {
       "type": "order",
@@ -1334,7 +3971,7 @@
     {
       "type": "read",
       "investigationId": "coagulation",
-      "phase": "workup"
+      "phase": "admission"
     },
     {
       "type": "order",
@@ -1343,7 +3980,139 @@
     {
       "type": "read",
       "investigationId": "urine",
-      "phase": "workup"
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "drug-timeline"
+    },
+    {
+      "type": "read",
+      "investigationId": "drug-timeline",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "abdo-us"
+    },
+    {
+      "type": "read",
+      "investigationId": "abdo-us",
+      "phase": "admission"
+    },
+    {
+      "type": "ask",
+      "itemId": "diet"
+    },
+    {
+      "type": "order",
+      "investigationId": "drug-timeline"
+    },
+    {
+      "type": "read",
+      "investigationId": "drug-timeline",
+      "phase": "postop"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "postop"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "pharmacist"
+    },
+    {
+      "type": "answer",
+      "decisionId": "coprescription",
+      "optionIds": [
+        "reduce-monitor"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "amiodarone"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "warfarin-reduce"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "digoxin-reduce"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "inr-plan"
+    },
+    {
+      "type": "ask",
+      "itemId": "haematuria"
+    },
+    {
+      "type": "ask",
+      "itemId": "urinary-symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "catheter"
+    },
+    {
+      "type": "examine",
+      "findingId": "urine-look"
+    },
+    {
+      "type": "order",
+      "investigationId": "drug-timeline"
+    },
+    {
+      "type": "read",
+      "investigationId": "drug-timeline",
+      "phase": "haematuria"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "haematuria"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "haematuria"
     },
     {
       "type": "order",
@@ -1352,21 +4121,42 @@
     {
       "type": "read",
       "investigationId": "bleeding-severity",
-      "phase": "workup"
+      "phase": "haematuria"
+    },
+    {
+      "type": "order",
+      "investigationId": "fbc-postop"
+    },
+    {
+      "type": "read",
+      "investigationId": "fbc-postop",
+      "phase": "haematuria"
     },
     {
       "type": "answer",
       "decisionId": "diagnosis",
       "optionIds": [
-        "supported"
+        "interaction-probable"
       ]
     },
     {
       "type": "answer",
       "decisionId": "management",
       "optionIds": [
-        "supported"
+        "classify-hold"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "hold-warfarin"
+    },
+    {
+      "type": "ask",
+      "itemId": "haematuria-now"
+    },
+    {
+      "type": "examine",
+      "findingId": "urine-look-followup"
     },
     {
       "type": "order",
@@ -1376,6 +4166,39 @@
       "type": "read",
       "investigationId": "followup",
       "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "followup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "discharge",
+      "optionIds": [
+        "close-inr"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "restart-warfarin"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "bleeding-education"
     },
     {
       "type": "finish"
@@ -1388,115 +4211,283 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "心悸胸闷持续多久？",
+        "text": "您怎么不舒服？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "How long have palpitations and tightness persisted?",
+        "text": "心慌多少年了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "what sort of trouble have you had with your heart?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "还伴有什么症状？",
+        "text": "how long have you had the palpitations?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "晚上睡觉会憋醒吗？",
         "locale": "zh-CN",
         "expect": [
           "associated"
         ]
       },
       {
-        "text": "What associated symptoms were reported?",
+        "text": "腿肿不肿？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "any swelling in your legs?",
         "locale": "en",
         "expect": [
           "associated"
         ]
       },
       {
-        "text": "以前接受过什么心脏手术？",
+        "text": "do you get breathless lying flat at night?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "您以前开过刀吗？",
         "locale": "zh-CN",
         "expect": [
           "surgery"
         ]
       },
       {
-        "text": "What previous cardiac operation was performed?",
+        "text": "心脏做过什么手术？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "have you ever had an operation on your heart?",
         "locale": "en",
         "expect": [
           "surgery"
         ]
       },
       {
-        "text": "以前有食物或药物过敏吗？",
+        "text": "对药过敏吗？",
         "locale": "zh-CN",
         "expect": [
           "allergies"
         ]
       },
       {
-        "text": "Any previous food or drug allergies?",
+        "text": "any drug allergies?",
         "locale": "en",
         "expect": [
           "allergies"
         ]
       },
       {
-        "text": "是否有高血压、糖尿病或泌尿疾病？",
+        "text": "有没有糖尿病？",
         "locale": "zh-CN",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "Was there hypertension, diabetes or urinary disease?",
+        "text": "肾脏或者膀胱以前有过问题吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "do you have high blood pressure or diabetes?",
         "locale": "en",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "入院前的药物清单是否有记录？",
-        "locale": "zh-CN",
-        "expect": [
-          "medications"
-        ]
-      },
-      {
-        "text": "Is the pre-admission medication list recorded?",
+        "text": "ever had kidney or bladder trouble?",
         "locale": "en",
         "expect": [
-          "medications"
+          "pmh"
         ]
       },
       {
-        "text": "什么时候首次发现心脏杂音？",
+        "text": "心脏杂音是什么时候查出来的？",
         "locale": "zh-CN",
         "expect": [
           "murmur"
         ]
       },
       {
-        "text": "When was a heart murmur first found?",
+        "text": "when did someone first hear a murmur?",
         "locale": "en",
         "expect": [
           "murmur"
         ]
       },
       {
-        "text": "此次术后出现什么出血表现？",
+        "text": "您在家平时都吃什么药？",
         "locale": "zh-CN",
         "expect": [
-          "bleeding"
+          "medications"
         ]
       },
       {
-        "text": "What postoperative bleeding appeared?",
+        "text": "what tablets do you normally take at home?",
         "locale": "en",
         "expect": [
-          "bleeding"
+          "medications"
+        ]
+      },
+      {
+        "text": "您现在每天吃哪些药？",
+        "locale": "zh-CN",
+        "expect": [
+          "current-meds"
+        ]
+      },
+      {
+        "text": "which medicines are they giving you on the ward?",
+        "locale": "en",
+        "expect": [
+          "current-meds"
+        ]
+      },
+      {
+        "text": "你抽烟吗",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "do you drink much?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "有没有自己吃什么中药？",
+        "locale": "zh-CN",
+        "expect": [
+          "supplements"
+        ]
+      },
+      {
+        "text": "家里人有类似的心脏病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "胃口怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "diet"
+        ]
+      },
+      {
+        "text": "have you been eating much since the surgery?",
+        "locale": "en",
+        "expect": [
+          "diet"
+        ]
+      },
+      {
+        "text": "小便颜色有没有变？",
+        "locale": "zh-CN",
+        "expect": [
+          "haematuria"
+        ]
+      },
+      {
+        "text": "尿里有血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "haematuria"
+        ]
+      },
+      {
+        "text": "have you seen any blood in your urine?",
+        "locale": "en",
+        "expect": [
+          "haematuria"
+        ]
+      },
+      {
+        "text": "尿尿的时候疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "urinary-symptoms"
+        ]
+      },
+      {
+        "text": "does it sting when you pee?",
+        "locale": "en",
+        "expect": [
+          "urinary-symptoms"
+        ]
+      },
+      {
+        "text": "刷牙的时候牙龈出血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-bleeding"
+        ]
+      },
+      {
+        "text": "any black or tarry stools?",
+        "locale": "en",
+        "expect": [
+          "other-bleeding"
+        ]
+      },
+      {
+        "text": "你身上还有尿管吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "catheter"
+        ]
+      },
+      {
+        "text": "is there still a catheter in your bladder?",
+        "locale": "en",
+        "expect": [
+          "catheter"
+        ]
+      },
+      {
+        "text": "小便现在还红吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "haematuria-now"
+        ]
+      },
+      {
+        "text": "is your urine clear now?",
+        "locale": "en",
+        "expect": [
+          "haematuria-now"
         ]
       }
     ]
