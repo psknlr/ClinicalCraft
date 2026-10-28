@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "smzl-lung-adeno",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "title": {
     "zh-CN": "左上腹痛与脾大 · 74岁男性",
     "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"
@@ -23,6 +23,32 @@
     "en"
   ],
   "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "整合血常规、腹部影像、骨髓活检及流式细胞术，诊断脾边缘区淋巴瘤（SMZL）伴骨髓侵犯，并把已知的肺腺癌作为另一条独立的证据链处理（BSH 2024）。",
+      "en": "Integrate the blood count, abdominal imaging, bone marrow biopsy and flow cytometry to diagnose splenic marginal zone lymphoma (SMZL) with marrow involvement, and keep the known lung adenocarcinoma on a separate evidence chain (BSH 2024)."
+    },
+    {
+      "zh-CN": "抗CD20治疗前完成HBsAg、抗-HBc及HBV DNA评估；抗-HBc阳性时，即使HBV DNA低于检测限，也要制定再激活的预防与监测方案（EASL 2025）。",
+      "en": "Before anti-CD20 therapy, assess HBsAg, anti-HBc and HBV DNA, and when anti-HBc is positive plan reactivation prophylaxis and monitoring even if HBV DNA is below the detection limit (EASL 2025)."
+    },
+    {
+      "zh-CN": "正确解读骨髓核型t(4;12)(q23;q13)：它是本例淋巴瘤克隆的发现；两种肿瘤是否同源、是否存在融合基因，需要配对组织的分子证据。",
+      "en": "Interpret the marrow karyotype t(4;12)(q23;q13) correctly: it is a finding in this patient’s lymphoma clone, and a shared origin with the lung cancer or a fusion gene needs molecular evidence from paired tissue."
+    },
+    {
+      "zh-CN": "区分骨髓穿刺细胞学、骨髓组织活检与流式细胞术，不把分母不同的百分比直接比较。",
+      "en": "Distinguish bone marrow aspirate cytology, trephine biopsy and flow cytometry, and do not compare percentages that have different denominators."
+    },
+    {
+      "zh-CN": "治疗后对两种肿瘤分别复评：流式改善支持淋巴瘤有治疗反应，但不能单独判定完全缓解，也不能替代肺癌复评（BSH 2024；血液肿瘤合并实体肿瘤诊疗专家共识2025）。",
+      "en": "Re-evaluate each tumour separately after treatment: improvement on flow cytometry supports a lymphoma response but neither establishes complete remission on its own nor replaces re-evaluation of the lung cancer (BSH 2024; 2025 Chinese consensus on haematological malignancy with a solid tumour)."
+    },
+    {
+      "zh-CN": "当病例记录缺失（吸烟史、家族史、EGFR位点、TNM分期、HBsAg）时，如实向患者说明，不施压、不替患者补全。",
+      "en": "When the record is silent (smoking, family history, the EGFR variant, TNM stage, HBsAg), say so honestly to the patient without pressing or filling the gap."
+    }
+  ],
   "tags": [
     "published-case",
     "v4-port",
@@ -46,6 +72,23 @@
     "notes": {
       "zh-CN": "病例：丁凤丽、秦彩霞、汪家吉，2026。DOI：10.3760/cma.cmcr20260128-00421。由 Virtual Patient V4（临床方块世界 CASE 01）移植。7张PNG原图与原病例PDF来自用户提供的V4压缩包，原图版权归原权利人；仅在本机安装（clinicalcraft import-v4），不随仓库分发。问诊回答依原文整理。缺失数据保持未知；报告按原始时间呈现。肺癌进展在正文既往史与讨论中的叙述不一致，复盘保留此限制。原CT配图为腹部，没有肺结节局部原图；没有原始流式散点图，也没有完整DICOM序列。人体图谱为标准人体模型，未重建本例病灶大小、肺结节或骨髓浸润范围。患者是使用化名的通用教学NPC，不还原真实患者容貌。V5在V4基础上补充的病史条目与复评期体格检查均摘自原文并逐条注明来源；原文体格检查记录于第3周期治疗入院时，诊断期体格检查未记录。完成度不是已验证的临床能力评分。",
       "en": "Case: Ding Fengli, Qin Caixia, Wang Jiaji, 2026. DOI: 10.3760/cma.cmcr20260128-00421. Ported from Virtual Patient V4 (Clinical Craft CASE 01). The seven original PNG figures and the source PDF come from the V4 package supplied by the user; figure copyright remains with the original rights holders. They are installed locally only (clinicalcraft import-v4) and are not distributed with the repository. Interview answers are compiled from the source text. Missing data stay unknown; reports are presented with their original dates. The main text's past history and discussion are inconsistent about lung cancer progression, and the review keeps this limitation. The original CT figures show the abdomen only — there is no local image of the lung nodule, no raw flow cytometry plot and no complete DICOM series. The anatomy atlas is a standard human model and does not reconstruct this patient's lesion size, lung nodule or extent of marrow infiltration. The patient is a generic teaching NPC with a pseudonym and does not reproduce a real patient's appearance. History items and the re-evaluation-phase physical examination that V5 adds to V4 are taken from the source text, each with its source noted; the source's physical examination was recorded on admission for treatment cycle 3, and no diagnostic-phase examination is recorded. Completion is not a validated clinical competency score."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "BSH 2024 marginal zone lymphoma (Walewska et al.)",
+        "JSH 2023 practical guidelines: marginal zone lymphoma",
+        "血液肿瘤合并实体肿瘤诊疗专家共识（2025年版）",
+        "EASL 2025 hepatitis B"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
