@@ -24,7 +24,7 @@ import { buildCaseIndex, builtinContentDir, findProjectRoot, loadContent, type C
 import { reviewStatusLine, sanitizeTerminal, table } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
-import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, settingLabel, specialtiesLabel, stars } from "./labels.js";
+import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, reviewTag, settingLabel, specialtiesLabel, stars } from "./labels.js";
 import { sortedCases } from "./picker.js";
 import { caseTemplate, readmeTemplate } from "./scaffold.js";
 
@@ -154,8 +154,7 @@ function findCase(ctx: CliContext, content: LoadedContent, id: string): { def: C
 /** A case's review status for a table cell: "editorial review 2026-10-28" / "编辑审核 2026-10-28", "-" when none is recorded. */
 function reviewCell(ctx: CliContext, c: CaseDefinition): string {
   const review = c.provenance.review;
-  if (!review) return "-";
-  return `${ctx.t(`review.${review.status}` as "review.editorial")}${review.reviewedAt ? ` ${review.reviewedAt}` : ""}`;
+  return review ? reviewTag(ctx, review) : "-";
 }
 
 /** What the JSON listings say of a case's review (null when none is recorded). */

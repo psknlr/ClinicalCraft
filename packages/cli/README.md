@@ -24,7 +24,7 @@ The built binary is `packages/cli/dist/bin.js` (`npm run build:lib`, then
 
 | command | purpose |
 |---|---|
-| `play [case]` (default) | REPL. With no case, a picker lists the cases with titles in your language. |
+| `play [case]` (default) | REPL. With no case, a picker lists the cases with titles in your language and each case's review status (never the ids). |
 | `exec <prompt>`, `-p [prompt]` | Headless run: a single prompt, or `--autopilot` (the demonstration: the clinician agent works the case; the prompt becomes its goal). |
 | `cases list \| index \| show <id> \| validate [--all \| path…] \| verify <id… \| --all> \| new <id> \| schema [case\|facility\|catalog\|template\|skill]` | Case tooling. `list` shows each case's review status ("editorial review 2026-10-28", with a line saying that is not a clinician's review); `list --json` adds the learning outcomes and the review for authors and facilitators. `show` prints the spoiler-free card, the review status, notes and reviewers, and — under a heading that warns they may name the diagnosis — the learning outcomes and the guidance checked. `index [--json]` prints the library index (metadata only, the builder `serve` and the web bundle share; no validation; the review status and the number of learning outcomes, never their text). `new` writes a schema-valid bilingual template (with a learning-outcome placeholder and `review: unreviewed`) and a README in the facilitator-guide template of docs/CASE_AUTHORING.md §9.6, then validates and verifies it. |
 | `facilities list \| validate [--all \| path…] \| compile <id \| file> [--out file]` | Facilities, room templates and equipment catalogs; `compile` prints the flat facility a front-end loads (room templates expanded). |

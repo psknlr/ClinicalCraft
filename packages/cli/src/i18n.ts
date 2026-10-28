@@ -174,6 +174,7 @@ const EN = {
   "picker.none": "No cases found (check `contentDirs` in your settings).",
   "picker.needCase": "No case given and stdin is not a terminal: pass a case id (or set defaultCase).",
   "picker.cancelled": "No case chosen.",
+  "picker.reviewLegend": "“Editorial review” = an internal editorial review against the cited guidance, not by a licensed clinician.",
 
   // exec
   "exec.noPrompt": "No prompt: pass one (`exec \"…\"`, `-p \"…\"`, `-` for stdin) or use --autopilot / --input-format stream-json.",
@@ -564,6 +565,7 @@ const ZH: Record<MsgKey, string> = {
   "picker.none": "未找到病例（请检查设置中的 `contentDirs`）。",
   "picker.needCase": "未指定病例且 stdin 不是终端：请传入病例 ID（或设置 defaultCase）。",
   "picker.cancelled": "未选择病例。",
+  "picker.reviewLegend": "“编辑审核”指对照所引指南进行的内部编辑审核，并非执业医师审核。",
 
   "exec.noPrompt": "缺少提示：请传入（`exec \"…\"`、`-p \"…\"`，`-` 表示读 stdin），或使用 --autopilot / --input-format stream-json。",
   "exec.autoApproved": "自动批准（无界面）：{summary}",

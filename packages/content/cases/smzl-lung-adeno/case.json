@@ -2713,7 +2713,7 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "学习者用患者能理解的话解释为何需要血常规、影像及骨髓检查；避免堆砌术语；确认患者理解并留出提问机会；在证据充分前不向患者下诊断结论。",
+        "zh-CN": "学员用患者能理解的话解释为何需要血常规、影像及骨髓检查；避免堆砌术语；确认患者理解并留出提问机会；在证据充分前不向患者下诊断结论。",
         "en": "The learner explains in words the patient can follow why blood tests, imaging and bone marrow tests are needed; avoids piling up jargon; checks understanding and invites questions; and does not give the patient a diagnosis before the evidence supports it."
       }
     },
@@ -2726,7 +2726,7 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "当患者无法回答（如吸烟史、家族史、EGFR位点、肺癌TNM、HBsAg）时，学习者承认信息缺失，不施压、不替患者补造事实，并说明将如何获取这些信息。",
+        "zh-CN": "当患者无法回答（如吸烟史、家族史、EGFR位点、肺癌TNM、HBsAg）时，学员承认信息缺失，不施压、不替患者补造事实，并说明将如何获取这些信息。",
         "en": "When the patient cannot answer (e.g. smoking, family history, EGFR variant, lung cancer TNM stage, HBsAg), the learner acknowledges the gap, neither pressures the patient nor supplies invented facts, and says how the information would be obtained."
       }
     }
@@ -2735,11 +2735,11 @@
     {
       "role": "radiologist",
       "name": {
-        "zh-CN": "影像科医生",
+        "zh-CN": "放射科医生",
         "en": "Radiologist"
       },
       "knowledge": {
-        "zh-CN": "只依据学习者已调阅的报告文字与原包代表图解读，不补充报告以外的发现。原包只有代表层面截图，没有完整DICOM序列：不能重建图像或测量体积，不用二维测量值推算脾脏体积；不同时间点的代表图未经配准。原包仅有增强CT代表图，平扫与增强CT不能视为等价。胸部CT和浅表淋巴结超声只有文字记录，没有原图；肺结节直径未提供；原文关于肺癌是否进展的叙述前后不一致。PET/CT代谢增高本身不等于病理确诊，且只有治疗前PET/CT。不对病理、分期或最终诊断下结论。",
+        "zh-CN": "只依据学员已调阅的报告文字与原包代表图解读，不补充报告以外的发现。原包只有代表层面截图，没有完整DICOM序列：不能重建图像或测量体积，不用二维测量值推算脾脏体积；不同时间点的代表图未经配准。原包仅有增强CT代表图，平扫与增强CT不能视为等价。胸部CT和浅表淋巴结超声只有文字记录，没有原图；肺结节直径未提供；原文关于肺癌是否进展的叙述前后不一致。PET/CT代谢增高本身不等于病理确诊，且只有治疗前PET/CT。不对病理、分期或最终诊断下结论。",
         "en": "Interprets only the report text and the representative images in the source package that the learner has already retrieved, and adds no findings beyond the reports. The package contains only representative slices, not full DICOM series: no reconstruction or volume measurement is possible, and spleen volume must not be estimated from two-dimensional measurements; images from different time points are not co-registered. Only contrast-enhanced CT images exist, so a non-contrast CT is not equivalent. The chest CT and the superficial lymph node ultrasound exist only as text, with no images; the lung nodule diameter is not given; the source is internally inconsistent about whether the lung cancer progressed. Increased metabolism on PET/CT is not by itself a pathological diagnosis, and only a pre-treatment PET/CT exists. Does not draw conclusions about pathology, staging or the final diagnosis."
       },
       "interprets": [
@@ -2758,7 +2758,7 @@
         "en": "Pathologist"
       },
       "knowledge": {
-        "zh-CN": "只依据学习者已调阅的骨髓细胞学、骨髓活检／免疫组化、流式细胞术、染色体核型及EGFR检测记录解读，不补充报告以外的抗体或结果。骨髓穿刺细胞学与骨髓活检是不同取材方法；细胞学、流式与活检的比例分母不同，不能直接比较；不能仅凭CD5、CD10阴性单独定性，需结合形态与完整免疫表型。图5未逐一标明A/B切片的抗体名称，不擅自补注。核型不能确定融合基因，也不能证明与肺癌同源；同源性及驱动机制需要两种肿瘤的配对分子证据。没有原始流式散点图、治疗后活检图或复查核型。EGFR具体位点、检测平台和原始报告未提供，不补写19del或L858R。",
+        "zh-CN": "只依据学员已调阅的骨髓细胞学、骨髓活检／免疫组化、流式细胞术、染色体核型及EGFR检测记录解读，不补充报告以外的抗体或结果。骨髓穿刺细胞学与骨髓活检是不同取材方法；细胞学、流式与活检的比例分母不同，不能直接比较；不能仅凭CD5、CD10阴性单独定性，需结合形态与完整免疫表型。图5未逐一标明A/B切片的抗体名称，不擅自补注。核型不能确定融合基因，也不能证明与肺癌同源；同源性及驱动机制需要两种肿瘤的配对分子证据。没有原始流式散点图、治疗后活检图或复查核型。EGFR具体位点、检测平台和原始报告未提供，不补写19del或L858R。",
         "en": "Interprets only the bone marrow cytology, bone marrow biopsy / immunohistochemistry, flow cytometry, karyotype and EGFR testing record that the learner has already retrieved, and adds no antibodies or results beyond the reports. Marrow aspirate cytology and marrow biopsy are different sampling methods; the percentages from cytology, flow cytometry and biopsy have different denominators and cannot be compared directly; CD5/CD10 negativity alone cannot characterise the disease — morphology and the full immunophenotype must be considered. Fig. 5 does not label the antibody for each of panels A/B, and none should be added. A karyotype cannot identify a fusion gene or prove a common origin with the lung cancer; common origin and driver mechanisms require paired molecular evidence from both tumours. There are no raw flow cytometry plots, no post-treatment biopsy images and no repeat karyotype. The specific EGFR variant, testing platform and original report are not provided; 19del or L858R must not be filled in."
       },
       "interprets": [
@@ -2777,7 +2777,7 @@
         "en": "Attending preceptor"
       },
       "knowledge": {
-        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学习者把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；约30年前就发现脾大，不能据此认定淋巴瘤已经持续30年；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
+        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学员把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；约30年前就发现脾大，不能据此认定淋巴瘤已经持续30年；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
         "en": "Teaches by Socratic questioning and never gives the diagnosis or the answers to the decisions directly. Suggested path: history (pain, course of the splenomegaly, previous tumours) → blood count and abdominal imaging → bone marrow biopsy and flow cytometry → submit the diagnostic reasoning at the board → hepatitis B screen, karyotype and post-treatment re-evaluation. When the learner attributes every abnormality to a single disease, ask which evidence supports that and which does not. Reminders: missing data stay unknown and are never invented; results keep their original dates; switching case phase is a review of historical records, not live progression; percentages from different sampling methods cannot be compared directly; a spleen known to be enlarged for about 30 years does not by itself establish that a lymphoma has been present for 30 years; completion and decision records are teaching-script measures, not a validated competency score."
       },
       "interprets": [],

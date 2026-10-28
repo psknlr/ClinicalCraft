@@ -1,7 +1,8 @@
 /**
  * Learning outcomes and the clinical review status in the CLI (docs/GLOSSARY.md §4): `cases list` / `cases show`
  * state the review honestly, `cases show` lists the outcomes for facilitators, `cases index` carries a count only,
- * and the `play` banner gives the review and how many outcomes the debrief will list — never their text.
+ * the case picker tags each case's review, and the `play` banner gives the review and how many outcomes the debrief
+ * will list — never their text.
  */
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -10,8 +11,11 @@ import { PassThrough } from "node:stream";
 import { afterAll, describe, expect, it } from "vitest";
 import type { CaseIndexEntry } from "@clinicalcraft/agent";
 import { MINI_CASE_INPUT } from "../../agent/src/__fixtures__/mini-case.js";
+import { createPalette } from "./ansi.js";
 import type { CliIO } from "./context.js";
+import { m, type MsgKey } from "./i18n.js";
 import { main } from "./main.js";
+import { pickerLine } from "./picker.js";
 
 const root = mkdtempSync(join(tmpdir(), "cc-cli-meta-"));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -100,6 +104,16 @@ describe("case metadata in the CLI", () => {
     expect(entry).toMatchObject({ learningOutcomeCount: 2, review: { status: "editorial", reviewedAt: "2026-10-28" } });
     expect(r.stdout).not.toContain("withhold nitrates");
     expect(r.stdout).not.toContain("ESC 2023 ACS");
+  });
+
+  it("the case picker (play without a case) states each case's review, never the id", () => {
+    const ctx = (locale: string) => ({ locale, out: createPalette(false), t: (key: MsgKey, params?: Record<string, string | number>) => m(locale, key, params) });
+    const c = { id: "meta-chest-pain", difficulty: 3, setting: "emergency", title: { "zh-CN": "胸痛 · 58岁男性", en: "Chest pain · 58-year-old man" }, review: { status: "editorial", reviewedAt: "2026-10-28" } };
+    expect(pickerLine(ctx("en"), c, 0)).toBe(" 1. Chest pain · 58-year-old man ★★★☆☆ · emergency · editorial review 2026-10-28");
+    expect(pickerLine(ctx("zh-CN"), c, 9)).toBe("10. 胸痛 · 58岁男性 ★★★☆☆ · 急诊 · 编辑审核 2026-10-28");
+    expect(pickerLine(ctx("en"), { ...c, review: null }, 0)).toBe(" 1. Chest pain · 58-year-old man ★★★☆☆ · emergency");
+    expect(m("en", "picker.reviewLegend")).toContain("not by a licensed clinician");
+    expect(m("zh-CN", "picker.reviewLegend")).toContain("并非执业医师审核");
   });
 
   it("the play banner states the review and how many outcomes the debrief lists, not the outcomes", { timeout: T }, async () => {

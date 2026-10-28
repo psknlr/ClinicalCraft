@@ -419,7 +419,7 @@ const EN = {
   "attending.offline.done": "You've completed every objective. Before you finish, let's debrief: how did that go for you? Then summarise the key events and your reasoning, and tell me what remains uncertain.",
   "examiner.offline.narrative": "Teaching-script assessment (not a validated competency score): {percent}% of deterministic rubric points ({earned}/{possible}). Objectives {done}/{total}. Required history {hAsked}/{hRequired}, required examination {eDone}/{eRequired}. {missing}{judged}",
   "examiner.offline.missing": "Missed required history: {list}. ",
-  "examiner.offline.judged": "{count} communication item(s) need an LLM examiner and were not judged offline.",
+  "examiner.offline.judged": "{count} communication item(s) need a language-model examiner and were not judged offline.",
   "examiner.unverifiedQuote": "(evidence quote not found in the transcript)",
 
   // clinician narration (offline autopilot)
@@ -836,7 +836,7 @@ const ZH: Record<RuntimeKey, string> = {
   "attending.offline.done": "所有目标都已完成。结束之前我们先复盘一下：你感觉这次接诊怎么样？然后总结一下关键经过和你的推理，并说说还有哪些不确定的地方。",
   "examiner.offline.narrative": "教学脚本评估（并非经过验证的能力评分）：确定性评分项得分 {percent}%（{earned}/{possible}）。目标完成 {done}/{total}。必问病史 {hAsked}/{hRequired}，必查体格检查 {eDone}/{eRequired}。{missing}{judged}",
   "examiner.offline.missing": "遗漏的必问病史：{list}。",
-  "examiner.offline.judged": "{count} 项沟通类评分需要 LLM 考官评判，离线模式下未评判。",
+  "examiner.offline.judged": "{count} 项沟通类评分需要语言模型考官评判，离线模式下未评判。",
   "examiner.unverifiedQuote": "（在记录中找不到该证据引文）",
 
   "clinician.goal": "你是接诊医生。请完整处理本病例：系统地采集病史、进行有针对性的体格检查、开具并查看有针对性的辅助检查、用 update_workup 随时更新鉴别诊断、在会诊板上回答所有决策、给予恰当的处置，最后调用 finish_case。",

@@ -66,3 +66,11 @@ export function stars(difficulty: number): string {
 export function caseChoiceMeta(ctx: Translator, c: { difficulty: number; setting: string }): string {
   return `${stars(c.difficulty)} · ${settingLabel(ctx, c.setting)}`;
 }
+
+/**
+ * A case's review status as a short tag — "editorial review 2026-10-28" / "编辑审核 2026-10-28" (docs/GLOSSARY.md §4);
+ * an unknown status is shown as recorded. Listings that use it print the legend of "editorial review" once.
+ */
+export function reviewTag(ctx: Translator, review: { status: string; reviewedAt?: string | null }): string {
+  return `${lookup(ctx, `review.${review.status}`, review.status)}${review.reviewedAt ? ` ${review.reviewedAt}` : ""}`;
+}

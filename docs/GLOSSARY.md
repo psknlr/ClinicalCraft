@@ -142,6 +142,7 @@ developer documents use.
 | agent | agent | 智能体 | agent profile | never 代理 |
 | external agent | external agent | 外部智能体 | `mcp --attach`, world bridge | |
 | provider; model | provider; model | 服务商；模型 | provider id; model id | |
+| language model | language model; offline (deterministic) | 语言模型；离线（确定性应答） | LLM / 大模型, provider `offline` | the web world, the REPL and the debrief say "language model" / 语言模型; "LLM" / 大模型 is the technical word (README, docs, CLI command help) |
 | proxy | proxy | 代理 | provider `proxy` | the only use of 代理 |
 | the world | the world (the 3D hospital) | 世界 | world model / 世界模型 (`@clinicalcraft/world`) | |
 | trace | trace (live trace) | 轨迹（实时轨迹） | episode trace, `--trace` | |
@@ -223,9 +224,9 @@ appear:
 | every debrief: web debrief panel, `/debrief`, MCP `get_debrief` once the case is complete | the full list |
 
 **Review status** (`provenance.review`) is shown wherever a case is offered
-(library card, selected case, CLI `cases list` / `cases show` / `play`, MCP
-`list_cases`, the journal's sources panel, the debrief), only when the case
-records it, in exactly these words:
+(library card, selected case, CLI `cases list` / `cases show` / `play` and its
+case picker, MCP `list_cases`, the journal's sources panel, the debrief), only
+when the case records it, in exactly these words:
 
 | `status` | en | zh-CN |
 |---|---|---|
@@ -238,8 +239,10 @@ The reviewers and the review notes appear with it in the full-case views
 condition, so it waits for `cases show` and the unlocked debrief.
 
 Short tag on a library card: "Not yet reviewed" / 尚未审核, "Editorial review" /
-编辑审核, "Clinician-reviewed" / 执业医师已审核. Never claim clinician review the
-case does not record.
+编辑审核, "Clinician-reviewed" / 执业医师已审核 (lower-case in the CLI's
+`cases list` column and case picker, each followed by a one-line legend: an
+editorial review is not a review by a licensed clinician). Never claim
+clinician review the case does not record.
 
 ## 5. Adding a term
 
