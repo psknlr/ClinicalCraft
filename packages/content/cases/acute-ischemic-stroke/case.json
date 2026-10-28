@@ -6644,7 +6644,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-dtn",
@@ -6770,7 +6771,27 @@
             }
           }
         ]
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "d-lysis"
+          },
+          {
+            "intervened": "alteplase"
+          },
+          {
+            "intervened": "tenecteplase"
+          },
+          {
+            "intervened": "aspirin"
+          },
+          {
+            "intervened": "heparin"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-swallow",
@@ -7398,7 +7419,7 @@
         ]
       },
       {
-        "text": "他抽烟吗？",
+        "text": "他有没有抽烟的习惯？",
         "locale": "zh-CN",
         "expect": [
           "smoking"
@@ -7531,7 +7552,7 @@
         ]
       },
       {
-        "text": "Does he smoke?",
+        "text": "Is he a smoker?",
         "locale": "en",
         "expect": [
           "smoking"
@@ -7545,7 +7566,7 @@
         ]
       },
       {
-        "text": "Was his father's stroke a clot or a bleed?",
+        "text": "Do you know whether his father's stroke was a clot or a bleed?",
         "locale": "en",
         "expect": [
           "unknown-father-stroke-type"
@@ -7702,7 +7723,7 @@
         ]
       },
       {
-        "text": "Is he right or left handed?",
+        "text": "Which is his dominant hand?",
         "locale": "en",
         "expect": [
           "handedness"

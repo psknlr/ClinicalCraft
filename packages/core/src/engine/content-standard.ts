@@ -14,9 +14,10 @@
  * | a record review (`performedAt: "records"`) needs no device and carries no risk | `investigations.<i>.requires` / `.risk` |
  * | no exam finding is a "not recorded" placeholder (`examNotRecorded` says that) | `exam.<i>.finding` |
  * | a child under 12 is not asked adult social history (smoking, alcohol, drugs, work) — the carer is | `history.<i>` |
+ * | an avoided-harm item gated by `scoredWhen` counts whenever its harm is done (each harmful step is in the gate) | `rubric.<i>.scoredWhen` |
  */
 import type { CaseDefinition, HistoryItem } from "../schema/case.js";
-import { PERSONAL_KIT } from "../schema/common.js";
+import { PERSONAL_KIT, type Condition } from "../schema/common.js";
 import { hasLocale, t, type LocalizedText } from "../i18n.js";
 import { createSession } from "./reducer.js";
 import { historyVoice } from "./speech.js";
@@ -236,6 +237,86 @@ function checkChildSocialHistory(c: CaseDefinition): Issue[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Avoided-harm items gated by scoredWhen                              */
+/* ------------------------------------------------------------------ */
+
+/** A literal of a condition in disjunctive normal form: a leaf (asked, intervened, flag…) or its negation. */
+interface Literal {
+  leaf: Condition;
+  positive: boolean;
+}
+
+/** `cond` (negated when `negate`) in disjunctive normal form — a list of conjunctions; null past `limit` of them. */
+function dnf(cond: Condition, negate: boolean, limit = 256): Literal[][] | null {
+  if ("not" in cond) return dnf(cond.not, !negate, limit);
+  const or = (parts: Condition[]): Literal[][] | null => {
+    const out: Literal[][] = [];
+    for (const part of parts) {
+      const d = dnf(part, negate, limit);
+      if (d === null || out.length + d.length > limit) return null;
+      out.push(...d);
+    }
+    return out;
+  };
+  const and = (parts: Condition[]): Literal[][] | null => {
+    let out: Literal[][] = [[]];
+    for (const part of parts) {
+      const d = dnf(part, negate, limit);
+      if (d === null || out.length * d.length > limit) return null;
+      out = out.flatMap((a) => d.map((b) => [...a, ...b]));
+    }
+    return out;
+  };
+  if ("all" in cond) return negate ? or(cond.all) : and(cond.all);
+  if ("any" in cond) return negate ? and(cond.any) : or(cond.any);
+  if ("always" in cond) return cond.always !== negate ? [[]] : [];
+  return [[{ leaf: cond, positive: !negate }]];
+}
+
+/** Doing one of these makes `scoredWhen` hold: the condition itself, or the leaves of its (nested) `any`. */
+function triggers(cond: Condition): Condition[] {
+  if ("any" in cond) return cond.any.flatMap(triggers);
+  if ("all" in cond || "not" in cond || "always" in cond) return [];
+  return [cond];
+}
+
+/** Does the trigger hold whenever the step is done (`{ intervened: x }` covers `{ intervened: x, minCount: 2 }`)? */
+function covers(trigger: Condition, step: Condition): boolean {
+  if ("intervened" in trigger && "intervened" in step) return trigger.intervened === step.intervened && (trigger.minCount ?? 1) <= (step.minCount ?? 1);
+  if ("ordered" in trigger && "ordered" in step) return trigger.ordered === step.ordered && (trigger.phase === undefined || trigger.phase === step.phase);
+  if ("flag" in trigger && "flag" in step) return trigger.flag === step.flag;
+  return false;
+}
+
+/** A step a harm is made of: something given, ordered, or a flag the case's interventions and events set. */
+const isStep = (leaf: Condition) => "intervened" in leaf || "ordered" in leaf || "flag" in leaf;
+
+/**
+ * An item gated by `scoredWhen` must count whenever it is lost by a harm: each way of failing `met` by doing
+ * something (a conjunction of `¬met` with a step in it — omissions need no cover) has to make `scoredWhen` hold
+ * through one of its steps, or doing only that harm would leave the item unscored and cost nothing.
+ */
+function checkScoredWhenCoverage(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  c.rubric.forEach((r, i) => {
+    if (!r.met || !r.scoredWhen || ("always" in r.scoredWhen && r.scoredWhen.always)) return;
+    const ways = dnf(r.met, true);
+    if (ways === null) return; // too large to reason about
+    const gate = triggers(r.scoredWhen);
+    const reported = new Set<string>();
+    for (const way of ways) {
+      const steps = way.filter((l) => l.positive && isStep(l.leaf)).map((l) => l.leaf);
+      if (steps.length === 0 || steps.some((s) => gate.some((g) => covers(g, s)))) continue;
+      const shown = steps.map((s) => JSON.stringify(s)).join(" + ");
+      if (reported.has(shown)) continue;
+      reported.add(shown);
+      issues.push(warn(`rubric.${i}.scoredWhen`, `rubric item "${r.id}" is lost by ${shown}, but its scoredWhen does not hold when only that is done (the harm would go unscored): add it to the scoredWhen "any"`));
+    }
+  });
+  return issues;
+}
+
+/* ------------------------------------------------------------------ */
 /* Entry point                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -251,5 +332,6 @@ export function checkContentStandard(c: CaseDefinition): Issue[] {
     ...checkRecordReviews(c),
     ...checkExamPlaceholders(c),
     ...checkChildSocialHistory(c),
+    ...checkScoredWhenCoverage(c),
   ];
 }

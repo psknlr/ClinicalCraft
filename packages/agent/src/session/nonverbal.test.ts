@@ -3,7 +3,8 @@
  * never speaks — history goes to the companion when the case has one (whatever `answersHistory` says), else
  * the reply is an honest narration (speaker: the narrator, no fact revealed); the opening line too.
  */
-import { t, type CaseInput } from "@clinicalcraft/core";
+import { readFileSync } from "node:fs";
+import { parseCase, t, type CaseInput } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
 import { loadMiniCase, makeSession, msgsOf } from "../__fixtures__/harness.js";
 import { buildSystemSections } from "../agents/prompts.js";
@@ -152,5 +153,24 @@ describe("a patient who cannot speak", () => {
     const call = msgsOf(events, "tool_call_end").find((e) => e.tool === "ask_patient")!;
     expect(call.output).toBe("Li Ming cannot answer: intubated and sedated.");
     expect(t1.session.state.asked).toEqual([]);
+  });
+});
+
+describe("septic-shock-cap after intubation (the built-in case)", () => {
+  it("the patient narrates on approach; the daughter answers history in her own words", async () => {
+    const parsed = parseCase(JSON.parse(readFileSync(new URL("../../../content/cases/septic-shock-cap/case.json", import.meta.url), "utf8")));
+    if (!parsed.ok) throw new Error("septic-shock-cap");
+    const c = parsed.value;
+    const t1 = await makeSession({ caseDef: c });
+    await t1.session.run({ type: "clinical_action", action: { type: "start" } });
+    const before = msgsOf(await t1.session.run({ type: "user_message", text: "", to: "patient" }), "agent_message").at(-1)!;
+    expect(before.grounding).toBe("opening");
+    // a high-risk act: given straight through the engine (no approval to answer in this test)
+    expect(t1.session.dispatch({ type: "intervene", interventionId: "intubation" }).rejected).toBeUndefined();
+    const approach = msgsOf(await t1.session.run({ type: "user_message", text: "", to: "patient" }), "agent_message").at(-1)!;
+    expect(approach).toMatchObject({ agent: "patient", grounding: "narrated", text: "Lin Xiuzhen cannot speak: intubated, sedated and on mechanical ventilation after rapid-sequence induction." });
+    const allergies = c.history.find((h) => h.id === "hx-allergies")!;
+    const reply = msgsOf(await t1.session.run({ type: "user_message", text: t(allergies.question, "en") }), "agent_message").at(-1)!;
+    expect(reply).toMatchObject({ agent: "companion", text: t(allergies.answer, "en"), grounded: ["hx-allergies"] });
   });
 });

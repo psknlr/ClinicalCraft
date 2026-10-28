@@ -114,6 +114,32 @@ describe("content standard lints", () => {
     expect(at(risky, `investigations.${idx(risky)}.risk`)).toHaveLength(1);
   });
 
+  it("an avoided-harm item with scoredWhen counts whenever its harm is done", () => {
+    const gate = (scoredWhen: Json) =>
+      build((j) => {
+        j.rubric.find((r: Json) => r.id === "no-beta").scoredWhen = scoredWhen;
+      });
+    const index = (c: CaseDefinition) => c.rubric.findIndex((r) => r.id === "no-beta");
+    // the decision alone: a beta-blocker given before it would leave the item unscored, so the harm would cost nothing
+    const narrow = gate({ attempted: "dx" });
+    expect(at(narrow, `rubric.${index(narrow)}.scoredWhen`).map((i) => i.message)).toEqual([
+      'rubric item "no-beta" is lost by {"intervened":"beta-blocker"}, but its scoredWhen does not hold when only that is done (the harm would go unscored): add it to the scoredWhen "any"',
+    ]);
+    expect(lints(gate({ any: [{ attempted: "dx" }, { intervened: "beta-blocker" }] }))).toEqual([]);
+    // a harm made of two steps is covered by either; an omission (a step not done) needs no cover
+    const pair = build((j) =>
+      j.rubric.push({
+        id: "r-one-line",
+        domain: "safety",
+        text: both("One antihistamine line, given after adrenaline", "抗组胺药只用一种，且在肾上腺素之后"),
+        weight: 1,
+        met: { all: [{ intervened: "epi" }, { not: { all: [{ intervened: "chlorphenamine" }, { intervened: "fluids" }] } }] },
+        scoredWhen: { any: [{ attempted: "dx" }, { intervened: "fluids" }] },
+      }),
+    );
+    expect(lints(pair)).toEqual([]);
+  });
+
   it('an exam finding is not a "not recorded" placeholder (examNotRecorded says that)', () => {
     const c = build((j) => (j.exam[2].finding = both("Not recorded in the source.", "原文未记录。")));
     expect(at(c, "exam.2.finding")).toHaveLength(1);

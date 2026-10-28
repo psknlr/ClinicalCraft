@@ -4,6 +4,7 @@
  * the learning-record export. Also the "Sources & scope" credits panel.
  */
 import { assetContentType, assetExists, caseAssetUrl } from "../../app/assets.js";
+import { citesSource } from "@clinicalcraft/agent";
 import { progress } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import { caseDisclaimer, ct, reviewLine, tr } from "../../i18n/index.js";
@@ -120,10 +121,14 @@ export function sourcePanel(app: App): () => PanelView {
     if (!game) throw new Error("no game");
     const c = game.caseDef;
     const p = c.provenance;
+    // A published case's source usually names the diagnosis: its citation, DOI, authors and notes wait for the
+    // unlocked debrief (docs/GLOSSARY.md §4 — the CLI, MCP and the server content API keep them back too).
+    const hidden = citesSource(c) && !debriefUnlocked(c, game.session.store.snapshot?.state ?? game.session.session.state);
     const rows: [string, string][] = [];
-    if (p.citation) rows.push([tr("source.citation"), p.citation]);
-    if (p.doi) rows.push([tr("source.doi"), p.doi]);
-    if (p.authors.length) rows.push([tr("source.authors"), p.authors.join("; ")]);
+    if (hidden && (p.citation || p.doi || p.authors.length)) rows.push([tr("source.citation"), tr("source.hidden")]);
+    if (p.citation && !hidden) rows.push([tr("source.citation"), p.citation]);
+    if (p.doi && !hidden) rows.push([tr("source.doi"), p.doi]);
+    if (p.authors.length && !hidden) rows.push([tr("source.authors"), p.authors.join("; ")]);
     if (p.license) rows.push([tr("source.license"), p.license]);
     const assets = h("ul", { class: "asset-list" });
     for (const a of c.assets) {
@@ -142,7 +147,7 @@ export function sourcePanel(app: App): () => PanelView {
       body: [
         rows.length ? h("dl", { class: "source-dl" }, rows.map(([k, v]) => [h("dt", null, k), h("dd", null, v)])) : null,
         p.kind === "synthetic" ? h("p", { class: "notice" }, tr("source.synthetic")) : null,
-        p.notes ? h("p", null, h("b", null, tr("source.notes")), " ", ct(p.notes)) : null,
+        p.notes && !hidden ? h("p", null, h("b", null, tr("source.notes")), " ", ct(p.notes)) : null,
         // Who checked the content, as the case records it (docs/GLOSSARY.md §4). The guidance list names the
         // condition, so it waits for the unlocked debrief.
         p.review

@@ -150,19 +150,22 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
               r.rubric.map((item) => {
                 const def = c.rubric.find((x) => x.id === item.id);
                 const j = judged.get(item.id);
+                // `scored: false`: its precondition (`scoredWhen`) did not arise — it counts neither way
                 const status =
-                  item.met === true
-                    ? h("span", { class: "pill ok" }, tr("debrief.met"))
-                    : item.met === false
-                      ? h("span", { class: "pill no" }, tr("debrief.unmet"))
-                      : j
-                        ? h("span", { class: `pill ${j.met ? "ok" : "no"} judged` }, j.met ? tr("debrief.judgedMet") : tr("debrief.judgedUnmet"))
-                        : h("span", { class: "pill pending" }, tr("debrief.needsExaminer"));
+                  item.scored === false
+                    ? h("span", { class: "pill pending", title: tr("debrief.notScoredHint") }, tr("debrief.notScored"))
+                    : item.met === true
+                      ? h("span", { class: "pill ok" }, tr("debrief.met"))
+                      : item.met === false
+                        ? h("span", { class: "pill no" }, tr("debrief.unmet"))
+                        : j
+                          ? h("span", { class: `pill ${j.met ? "ok" : "no"} judged` }, j.met ? tr("debrief.judgedMet") : tr("debrief.judgedUnmet"))
+                          : h("span", { class: "pill pending" }, tr("debrief.needsExaminer"));
                 return h(
                   "tr",
-                  null,
+                  { class: item.critical ? "critical" : undefined, dataset: { item: item.id } },
                   h("td", { class: "domain" }, trMaybe(`debrief.domain.${item.domain}`, item.domain)),
-                  h("td", null, ct(def?.text) || item.id, j?.evidence ? h("small", { class: "evidence" }, tr("debrief.evidence", { text: j.evidence })) : null),
+                  h("td", null, ct(def?.text) || item.id, item.critical ? h("span", { class: "pill critical" }, tr("debrief.critical")) : null, j?.evidence ? h("small", { class: "evidence" }, tr("debrief.evidence", { text: j.evidence })) : null),
                   h("td", { class: "num" }, `×${item.weight}`),
                   h("td", null, status),
                 );
@@ -203,9 +206,12 @@ export function debriefPanel(app: App): () => PanelView {
       const outcomes = c.learningOutcomes.map((x) => ct(x)).filter(Boolean);
       const review = reviewLine(c.provenance.review);
       const guidelines = c.provenance.review?.guidelines ?? [];
+      // Critical items missed (`rubric[].critical`), prominently — once the debrief is unlocked (mid-case they would be an answer key).
+      const critical = unlocked ? (report?.criticalMissed ?? []).map((id) => ct(c.rubric.find((x) => x.id === id)?.text) || id) : [];
       mount(
         content,
         unlocked ? h("div", { style: "text-align:center" }, h("div", { class: "done-mark" }, "✓"), h("h3", null, tr("debrief.lead")), h("p", null, tr("debrief.leadSub"))) : null,
+        critical.length ? h("div", { class: "critical-missed", id: "debrief-critical", role: "alert" }, h("h4", null, `⚠ ${tr("debrief.criticalMissed")}`), h("ul", null, critical.map((x) => h("li", null, x)))) : null,
         !s.finished ? h("p", { class: "notice" }, tr("debrief.notFinished")) : null,
         !unlocked ? h("p", { class: "notice", id: "debrief-locked" }, tr("debrief.locked")) : null,
         h(

@@ -9,7 +9,7 @@
 import type { AgentEvent, AgentRole, ApprovalDecision, EventMsg, Op, PlanItem, TurnPhase } from "@clinicalcraft/agent";
 import type { WorldActionResult } from "@clinicalcraft/world";
 import { commandRefusal, learnerText, refusalLead, SPATIAL_CODES } from "./spatial.js";
-import { t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
+import { createSession as createEngineState, historyVoice, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 
 export type LogEntry =
   | { kind: "event"; at: number; event: AgentEvent }
@@ -309,8 +309,8 @@ export class SessionStore {
       const itemId = op.action.itemId;
       const item = this.caseDef.history.find((h) => h.id === itemId);
       if (!item) return;
-      const companion = this.caseDef.patient.persona.companion;
-      const agent = companion?.answersHistory ? "companion" : "patient";
+      // Who answers (core `historyVoice`): the companion who answers history — or any companion while the patient cannot speak.
+      const agent = historyVoice(this.caseDef, this.snapshot?.state ?? createEngineState(this.caseDef), itemId) === "companion" ? "companion" : "patient";
       this.views.set(id, agent);
       this.chat.push({ key: this.key("q"), role: "learner", agent, speaker: "learner", text: t(item.question, L), grounded: [], streaming: false, tone: "speech", at });
     } else if (op.type === "world_action" && op.request && typeof op.request.actionId === "string") {
@@ -373,7 +373,12 @@ export class SessionStore {
         const extra = msg as typeof msg & { grounding?: string; nonverbal?: string };
         const stream = this.streams.get(msg.turnId);
         const speaker = this.displaySpeaker(String(msg.agent), msg.speaker);
-        if (stream) {
+        if (extra.grounding === "narrated") {
+          // A narration (the patient cannot speak, or an aside): a note in the conversation, never the patient's words.
+          if (stream) this.streams.delete(msg.turnId);
+          if (stream) this.chat.splice(this.chat.indexOf(stream), 1);
+          this.chat.push({ key: this.key("n"), role: "system", agent: String(msg.agent), speaker, text: msg.text, grounded: [], streaming: false, tone: "note", at, grounding: "narrated" });
+        } else if (stream) {
           this.streams.delete(msg.turnId);
           Object.assign(stream, { text: msg.text, grounded: msg.grounded, streaming: false, speaker });
           if (extra.grounding) stream.grounding = extra.grounding;

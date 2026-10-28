@@ -7498,6 +7498,37 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-supportive"
+          },
+          {
+            "flag": "analgesia-given"
+          },
+          {
+            "intervened": "withhold-analgesia"
+          },
+          {
+            "intervened": "discharge"
+          },
+          {
+            "intervened": "laxative"
+          },
+          {
+            "intervened": "oral-intake"
+          },
+          {
+            "flag": "theatre-premature"
+          },
+          {
+            "flag": "nom-without-ct"
+          },
+          {
+            "flag": "perforation-suspected"
+          }
+        ]
       }
     },
     {
@@ -7522,6 +7553,22 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-imaging"
+          },
+          {
+            "ordered": "inv-axr"
+          },
+          {
+            "ordered": "inv-cxr"
+          },
+          {
+            "ordered": "inv-blood-cultures"
+          }
+        ]
       }
     },
     {
@@ -8059,7 +8106,7 @@
   "extensions": {
     "testUtterances": [
       {
-        "text": "今天哪里不舒服？",
+        "text": "你今天来是哪里不舒服？",
         "locale": "zh-CN",
         "expect": [
           "hx-chief"
@@ -8192,7 +8239,7 @@
         ]
       },
       {
-        "text": "你最担心的是什么？",
+        "text": "现在你心里最担心什么？",
         "locale": "zh-CN",
         "expect": [
           "hx-ice-concerns"
@@ -8255,14 +8302,14 @@
         ]
       },
       {
-        "text": "How's your appetite?",
+        "text": "How has your appetite been?",
         "locale": "en",
         "expect": [
           "hx-anorexia"
         ]
       },
       {
-        "text": "Any nausea or vomiting?",
+        "text": "Have you been vomiting at all?",
         "locale": "en",
         "expect": [
           "hx-vomiting"

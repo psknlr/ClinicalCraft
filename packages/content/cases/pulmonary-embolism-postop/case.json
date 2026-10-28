@@ -7230,7 +7230,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-safety-no-harm",
@@ -7998,7 +7999,7 @@
         ]
       },
       {
-        "text": "Have you coughed up any blood?",
+        "text": "Have you been coughing up blood?",
         "locale": "en",
         "expect": [
           "h-haemoptysis"
@@ -8040,7 +8041,7 @@
         ]
       },
       {
-        "text": "Do you smoke?",
+        "text": "Do you smoke cigarettes at all?",
         "locale": "en",
         "expect": [
           "h-smoking"

@@ -219,6 +219,32 @@ describe("content and provider API", () => {
     expect(index.catalogs.length).toBe(content.catalogs.size);
   });
 
+  it("GET /api/content/cases/:id leaves a published case's source out unless ?spoilers=1 (docs/GLOSSARY.md §4)", async () => {
+    const def = content.cases.get(SMZL)!.def;
+    expect(def.provenance.doi).toBeTruthy();
+    const res = await fetch(new URL(`api/content/cases/${SMZL}`, server.url));
+    const text = await res.text();
+    const body = JSON.parse(text) as { provenance: Record<string, unknown>; debrief: { references: string[] } };
+    expect(body.provenance).toEqual({ kind: "published-case", authors: [], license: def.provenance.license, review: def.provenance.review });
+    expect(body.debrief.references).toEqual([]);
+    for (const bit of [def.provenance.citation!, def.provenance.doi!]) expect(text).not.toContain(bit);
+    const full = await fetch(new URL(`api/content/cases/${SMZL}?spoilers=1`, server.url));
+    const withSource = (await full.json()) as { provenance: Record<string, unknown>; debrief: { references: string[] }; solution?: unknown };
+    expect(withSource.provenance).toMatchObject({ citation: def.provenance.citation, doi: def.provenance.doi });
+    expect(withSource.debrief.references).toEqual(def.debrief.references);
+    expect(withSource).not.toHaveProperty("solution");
+    // each variant has its own strong ETag, and revalidates
+    const etag = res.headers.get("etag")!;
+    const spoilerEtag = full.headers.get("etag")!;
+    expect(etag).not.toBe(spoilerEtag);
+    expect((await fetch(new URL(`api/content/cases/${SMZL}`, server.url), { headers: { "if-none-match": etag } })).status).toBe(304);
+    expect((await fetch(new URL(`api/content/cases/${SMZL}?spoilers=1`, server.url), { headers: { "if-none-match": spoilerEtag } })).status).toBe(304);
+    expect((await fetch(new URL(`api/content/cases/${SMZL}?spoilers=1`, server.url), { headers: { "if-none-match": etag } })).status).toBe(200);
+    // a synthetic case is the same either way
+    const stemi = await (await fetch(new URL("api/content/cases/stemi-inferior-rv", server.url))).text();
+    expect(await (await fetch(new URL("api/content/cases/stemi-inferior-rv?spoilers=1", server.url))).text()).toBe(stemi);
+  });
+
   it("GET /api/content/cases/:id strips the reference solution; unknown ids are 404", async () => {
     const res = await fetch(new URL(`api/content/cases/${SMZL}`, server.url));
     const body = (await res.json()) as Record<string, unknown>;

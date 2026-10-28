@@ -6831,7 +6831,18 @@
         "not": {
           "intervened": "nitroglycerin"
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "nitrate-safety"
+          },
+          {
+            "intervened": "nitroglycerin"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-no-routine-o2",
@@ -6845,6 +6856,19 @@
         "not": {
           "flag": "routine-oxygen"
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "aspirin"
+          },
+          {
+            "flag": "cath-lab-activated"
+          },
+          {
+            "flag": "routine-oxygen"
+          }
+        ]
       }
     },
     {
@@ -6875,6 +6899,31 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "reperfusion-strategy"
+          },
+          {
+            "attempted": "antithrombotic-bundle"
+          },
+          {
+            "intervened": "tenecteplase"
+          },
+          {
+            "intervened": "fondaparinux"
+          },
+          {
+            "intervened": "furosemide"
+          },
+          {
+            "intervened": "metoprolol-iv"
+          },
+          {
+            "intervened": "admit-ccu"
+          }
+        ]
       }
     },
     {
@@ -7889,7 +7938,7 @@
         ]
       },
       {
-        "text": "喝酒吗？",
+        "text": "平时喝不喝酒？",
         "locale": "zh-CN",
         "expect": [
           "alcohol"

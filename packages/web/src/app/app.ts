@@ -5,7 +5,7 @@
  * this object; the world only talks to it through `WorldCallbacks`.
  */
 import type { Op } from "@clinicalcraft/agent";
-import { regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import { historyVoice, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
@@ -803,8 +803,9 @@ export class ClinicalCraftApp implements App {
       this.game = game;
       // the scene shows the world's physical state (a restored world: staff, carts, locks)
       embodied?.syncScene();
+      // Who answers history first (core `historyVoice`): the companion who answers it, or any companion while the patient cannot speak.
       this.lastTalk = {
-        agent: caseDef.patient.persona.companion?.answersHistory ? "companion" : "patient",
+        agent: historyVoice(caseDef, session.session.state) === "companion" ? "companion" : "patient",
       };
       this.storeOff.push(
         session.store.onEntry((e) => this.onEntry(e)),

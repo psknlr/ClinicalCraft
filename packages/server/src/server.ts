@@ -250,9 +250,12 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
       }
       if (id !== undefined) {
         if (kind === "cases") {
-          const etag = await cases.currentEtag(id);
+          // A published case's source (citation, DOI, references) only on request: `?spoilers=1` (the web asks, and
+          // shows it once the case is complete).
+          const spoilers = url.searchParams.get("spoilers") === "1";
+          const etag = await cases.currentEtag(id, spoilers);
           if (etag && etagMatches(req.headers["if-none-match"], etag)) return sendCachedJson(req, res, "", etag);
-          const found = await cases.load(id);
+          const found = await cases.load(id, spoilers);
           if (found.status === "ok") return sendCachedJson(req, res, found.body, found.etag);
           if (found.status === "invalid") {
             const first = found.issues[0];
