@@ -53,7 +53,8 @@ test("map, inventory, crafting, help, atlas, autopilot", async ({ page }) => {
   // source & scope + original figure placeholder
   await page.locator("#journal-btn").click();
   await page.locator("#source-btn").click();
-  await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("DOI");
+  await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("将在完成病例后开放");
+  await expect(page.locator('#panel .window[data-panel="source"]')).not.toContainText("DOI");
   await shot(page, "source");
   await page.evaluate(() => {
     const qa = (window as any).__QA__;

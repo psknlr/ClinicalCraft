@@ -20,4 +20,13 @@ test("CMCR collection lists 20 cases, loads a case, and keeps the original paper
   await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("将在完成病例后开放");
   await expect(page.locator('#panel .window[data-panel="source"]')).not.toContainText("室間隔破裂");
   await shot(page, "cmcr-source-locked");
+  await page.evaluate(() => {
+    const qa = (window as any).__QA__;
+    for (const action of qa.game.caseDef.solution) qa.dispatch(action);
+  });
+  await expect.poll(() => page.evaluate(() => (window as any).__QA__.store.snapshot.state.finished)).toBe(true);
+  await page.evaluate(() => (window as any).__QA__.route("source"));
+  await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("DOI");
+  await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("室間隔破裂");
+  await expect(page.locator(".asset-status")).toHaveCount(4);
 });

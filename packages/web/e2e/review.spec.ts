@@ -221,12 +221,12 @@ test.describe("assets, toasts and the finished HUD", () => {
     expect(box!.y).toBeGreaterThan(head!.y + head!.height);
     await shot(page, "review-assets-missing-report");
 
-    // Journal: the source PDF button is disabled; Sources lists every asset as not installed.
+    // The source PDF and diagnosis-bearing credits stay locked before the debrief.
     await page.evaluate(() => (window as any).__QA__.route("journal"));
     await expect(page.locator("#download-paper")).toBeDisabled();
     await page.locator("#source-btn").click();
-    const assets = await page.evaluate(() => (window as any).__QA__.game.caseDef.assets.length);
-    await expect(page.locator(".asset-status.missing")).toHaveCount(assets);
+    await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("将在完成病例后开放");
+    await expect(page.locator(".asset-status")).toHaveCount(0);
     await page.keyboard.press("Escape");
 
     // Atlas: "not installed" status; reopening it never exhausts WebGL contexts.
@@ -257,6 +257,14 @@ test.describe("assets, toasts and the finished HUD", () => {
     await expect(page.locator("#chapter")).toHaveText("CASE CLOSED");
     await expect(page.locator("#quest-title")).toHaveText("病例已结束 · 查看复盘");
     await shot(page, "review-hud-finished");
+
+    // After completion, missing media is still reported accurately in the unlocked credits.
+    await page.evaluate(() => (window as any).__QA__.route("journal"));
+    await expect(page.locator("#download-paper")).toBeDisabled();
+    await page.locator("#source-btn").click();
+    await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("DOI");
+    const assets = await page.evaluate(() => (window as any).__QA__.game.caseDef.assets.length);
+    await expect(page.locator(".asset-status.missing")).toHaveCount(assets);
 
     expect(consoleLog.filter((l) => !/local-assets|404 \(Not Found\)/.test(l))).toEqual([]);
   });
