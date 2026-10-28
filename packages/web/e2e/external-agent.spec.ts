@@ -328,12 +328,12 @@ test.describe("an external agent in the live encounter (en)", () => {
 test.describe("an external agent in the live encounter (zh-CN)", () => {
   test.use({ locale: "zh-CN" });
 
-  test("开关与徽标；隐藏标签页中的行走不卡住；外部代理的审批被拒绝；离开接诊即断开，恢复的接诊默认关闭；接诊结束即断开", async ({ page }) => {
+  test("开关与徽标；隐藏标签页中的行走不卡住；外部智能体的审批被拒绝；离开接诊即断开，恢复的接诊默认关闭；接诊结束即断开", async ({ page }) => {
     await openServed(page);
     await enterCase(page, CASE);
     await embodiedSetup(page);
     const paired = (await setExternal(page, true, "external-toggle-zh"))!;
-    await expect(page.locator("#external-state")).toHaveText("外部代理已连接");
+    await expect(page.locator("#external-state")).toHaveText("外部智能体已连接");
     await shot(page, "external-badge-zh");
     const mcp = new McpAttach(paired.id, paired.key);
     try {
@@ -375,8 +375,8 @@ test.describe("an external agent in the live encounter (zh-CN)", () => {
         expect(goal, early.content[0]?.text).toBeTruthy();
         await mcp.call("navigate_to", { goal });
       }
-      await expect(page.locator("#approval-source")).toHaveText("外部代理");
-      await expect(page.locator("#approval .approval-from")).toContainText("外部代理");
+      await expect(page.locator("#approval-source")).toHaveText("外部智能体");
+      await expect(page.locator("#approval .approval-from")).toContainText("外部智能体");
       await shot(page, "external-approval-zh");
       await page.locator("#approval-deny").click();
       const clop = await pending!;

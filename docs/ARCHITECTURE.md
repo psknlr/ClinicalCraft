@@ -59,7 +59,8 @@ tsconfig.base.json          NodeNext ESM, strict
 vitest.config.ts            one test runner for every package (src aliases)
 docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, front-ends, embodied mode, world bridge),
                             EMBODIED (the embodied layer, its benchmark and status; zh-CN/EMBODIED.md is its translation),
-                            CASE_AUTHORING, FACILITIES, ASSETS, DESIGN_PRINCIPLES; bench/ — generated benchmark reports
+                            CASE_AUTHORING (incl. the clinical content standard), FACILITIES, ASSETS, DESIGN_PRINCIPLES,
+                            GLOSSARY (product words of both languages, register); bench/ — generated benchmark reports
                             and reference demonstrations (samples, not tests)
 scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA),
                             bench/content-scale.ts (content-scale measurement, docs/EMBODIED.md §11)
@@ -122,6 +123,18 @@ JSON Schema exported to `packages/content/schemas/` for editors).
   scenario events, alarm limits), objectives (with waypoints), decisions,
   rubric, NPC briefs, debrief, unknowns, assets, reference `solution`.
   Optional authoring fields (all defaulted, so older case files stay valid):
+  * `learningOutcomes` — `LocalizedText[]`, default `[]`: measurable
+    outcomes (an action verb and its standard), distinct from the HUD
+    `objectives`. They usually name the diagnosis, so the library index
+    carries only their number (`CaseIndexEntry.learningOutcomeCount`) and
+    front-ends list them in the debrief, before play only on request
+    (docs/GLOSSARY.md §4; content standard: docs/CASE_AUTHORING.md §9).
+  * `provenance.review` — `{status: "unreviewed" | "editorial" |
+    "clinician-reviewed", reviewedAt?: YYYY-MM-DD, reviewers, guidelines,
+    notes?}` (strict), optional: how far the content has been checked. The
+    index carries `{status, reviewedAt}` (`CaseIndexEntry.review`); every
+    front-end states it wherever the case is offered, in the words of
+    docs/GLOSSARY.md §4 (`reviewStatusLine` in the agent package).
   * `history[].excludeKeywords`, `exam[].excludeKeywords`,
     `interventions[].excludeKeywords` — `LocalizedList`, default `[]`;
     phrases that argue *against* the item in the offline matcher (§3.3).
@@ -694,8 +707,11 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   the approval gate, hooks, transcript sink. Processes submissions serially.
   Deterministic `clinical_action` ops work with no LLM at all.
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
-  `patient`, `companion`, `nurse`, `radiologist`, `pathologist`, `attending`
-  (preceptor), `examiner`, `clinician` (autopilot). Custom agents in
+  `patient` and `companion` (portrayed like standardised patients),
+  `nurse` (ISBAR / SBAR), `radiologist`, `pathologist`, `attending`
+  (Socratic preceptor; PEARLS debrief), `examiner` (communication against
+  the Calgary–Cambridge guide), `clinician` (autopilot — a demonstration to
+  the learner). Custom agents in
   `.clinicalcraft/agents/*.md`. Each NPC has a tool allow-list and a
   grounding contract (§4.2).
 * **Providers** — one interface, two wire protocols: `anthropic-messages`
@@ -853,8 +869,10 @@ spoken by the patient — those come from engine actions.
   interactive (workstations order exams, monitors show live vitals/ECG,
   evidence board takes decisions, atlas kiosk opens the anatomy viewer).
   Panels: conversation (streaming, free text + suggested questions), exam,
-  order entry, report & original image viewer, journal, evidence board,
-  monitor, debrief, case library, settings (provider/model/approval/locale),
+  order entry, report & original image viewer, journal, case board,
+  monitor, debrief (with the case's learning outcomes and review status),
+  case library (each card states the review status; the selected case has a
+  closed learning-outcomes disclosure), settings (provider/model/approval/locale),
   approval dialog, map, inventory, help, pause/save/export. The session runs
   in the browser; LLM calls go direct (user key) or via the server proxy.
   The case library is a bundled index (`CaseIndexEntry`, built at build time

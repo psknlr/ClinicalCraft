@@ -6,6 +6,7 @@ import { makeSession, msgsOf } from "./__fixtures__/harness.js";
 import { loadMiniCase as loadMiniCaseWith } from "./__fixtures__/mini-case.js";
 import { BUILTIN_COMMANDS, commandDescription } from "./commands.js";
 import type { ApprovalDecision } from "./protocol.js";
+import { reviewStatusLine } from "./session/i18n.js";
 import { displayWidth, table } from "./tools/format.js";
 
 async function command(t: Awaited<ReturnType<typeof makeSession>>, line: string) {
@@ -125,7 +126,7 @@ describe("built-in commands", () => {
     expect((await command(t, "/hint")).out.text).toBe("Hint: Ask when the pain started and what it feels like.");
     expect(t.session.state.hints).toBe(1);
     expect((await command(t, "/note likely ACS")).out.text).toBe("Note added.");
-    expect((await command(t, "/plan")).out.text).toBe("No workup plan yet.");
+    expect((await command(t, "/plan")).out.text).toBe("No work-up plan yet.");
     expect((await command(t, "/phase")).out.text).toContain("[ed] Emergency (current)");
     expect((await command(t, "/talk nurse")).out.text).toBe("Now talking to: nurse");
     expect((await command(t, "/talk wizard")).out.text).toMatch(/Unknown agent/);
@@ -144,6 +145,43 @@ describe("built-in commands", () => {
     const { out } = await command(t, "/debrief");
     expect(out.text).toContain("Inferior STEMI.");
     expect(out.text).toContain("not a validated competency score");
+  });
+
+  it("/debrief lists the learning outcomes and the clinical review once unlocked, in both languages (docs/GLOSSARY.md §4)", async () => {
+    const caseDef = loadMiniCaseWith((c) => {
+      c.learningOutcomes = [{ "zh-CN": "识别下壁STEMI并避免硝酸酯", en: "Recognise an inferior STEMI and withhold nitrates" }];
+      c.provenance = { ...c.provenance, review: { status: "editorial", reviewedAt: "2026-10-28", reviewers: ["ClinicalCraft editorial review (AI-assisted)"], guidelines: ["ESC 2023 ACS"] } };
+    });
+    for (const [locale, outcome, review, guidance] of [
+      ["en", "  1. Recognise an inferior STEMI and withhold nitrates", "Clinical review: Editorial review 2026-10-28 · not yet reviewed by a licensed clinician", "Guidance checked: ESC 2023 ACS"],
+      ["zh-CN", "  1. 识别下壁STEMI并避免硝酸酯", "审核状态：编辑审核 2026-10-28 · 尚未经执业医师审核", "核对的指南：ESC 2023 ACS"],
+    ] as const) {
+      const t = await makeSession({ caseDef, settingsPatch: { locale } });
+      // Locked: the outcomes name the diagnosis.
+      expect((await command(t, "/debrief")).out.text).not.toContain(outcome.trim().slice(3));
+      await t.session.run({ type: "autopilot" });
+      const { out } = await command(t, "/debrief");
+      expect(out.text).toContain(outcome);
+      expect(out.text).toContain(review);
+      expect(out.text).toContain(guidance);
+      expect(out.data).toMatchObject({ learningOutcomes: [outcome.trim().slice(3)], review: { status: "editorial", reviewedAt: "2026-10-28", guidelines: ["ESC 2023 ACS"] } });
+    }
+    // A case without the metadata keeps the debrief as it was.
+    const plain = await makeSession();
+    await plain.session.run({ type: "autopilot" });
+    const { out } = await command(plain, "/debrief");
+    expect(out.text).not.toMatch(/Learning outcomes|Clinical review/);
+    expect(out.data).toMatchObject({ learningOutcomes: [], review: null });
+  });
+
+  it("reviewStatusLine words each review status as the glossary fixes it, never more than the case records", () => {
+    expect(reviewStatusLine("en", { status: "editorial", reviewedAt: "2026-10-28" })).toBe("Editorial review 2026-10-28 · not yet reviewed by a licensed clinician");
+    expect(reviewStatusLine("zh-CN", { status: "editorial", reviewedAt: "2026-10-28" })).toBe("编辑审核 2026-10-28 · 尚未经执业医师审核");
+    expect(reviewStatusLine("en", { status: "editorial" })).toBe("Editorial review · not yet reviewed by a licensed clinician");
+    expect(reviewStatusLine("zh-CN", { status: "clinician-reviewed", reviewedAt: null })).toBe("已经执业医师审核");
+    expect(reviewStatusLine("en", { status: "unreviewed" })).toBe("Not yet reviewed (neither editorial nor clinician review)");
+    expect(reviewStatusLine("en", { status: "approved-by-someone" })).toBe("");
+    expect(reviewStatusLine("en", null)).toBe("");
   });
 
   it("/export returns a snapshot; /permissions shows rules; unknown commands are reported", async () => {

@@ -24,7 +24,7 @@ export const SESSION_FLAGS: FlagSpec[] = [
   { name: "model", type: "string", valueName: "<id>", description: { en: "Model id", zh: "模型 ID" } },
   { name: "base-url", type: "string", valueName: "<url>", description: { en: "Override the provider's base URL", zh: "覆盖服务商的 Base URL" } },
   { name: "approval", type: "string", valueName: "<mode>", choices: APPROVAL_CHOICES, description: { en: "Approval mode: default | strict | auto | plan | bypass", zh: "审批模式：default | strict | auto | plan | bypass" } },
-  { name: "scope", type: "string", valueName: "<scope>", choices: SCOPE_CHOICES, description: { en: "Practice scope: history-only | workup | full", zh: "执业范围：history-only | workup | full" } },
+  { name: "scope", type: "string", valueName: "<scope>", choices: SCOPE_CHOICES, description: { en: "Practice scope: history-only | workup | full", zh: "操作范围：history-only | workup | full" } },
   { name: "facility", type: "string", valueName: "<id>", description: { en: "Facility (world) to place the case in", zh: "病例所在的场馆" } },
   { name: "max-tool-rounds", type: "number", valueName: "<n>", description: { en: "Tool rounds per agent turn", zh: "每个智能体回合的工具调用轮数上限" } },
   { name: "ephemeral", type: "boolean", description: { en: "Do not write a session transcript", zh: "不写入会话记录" } },
@@ -32,8 +32,8 @@ export const SESSION_FLAGS: FlagSpec[] = [
     name: "embodied",
     type: "boolean",
     description: {
-      en: "Embodied mode: a headless 3D hospital — move, find and operate equipment; clinical actions need you in the right place",
-      zh: "具身模式：无界面三维医院——走动、寻找并操作设备；临床操作需要身处正确的位置",
+      en: "In-world mode: a headless 3D hospital — walk, find and operate equipment; clinical acts need you in the right place",
+      zh: "实景模式：无界面三维医院——走动、寻找并操作设备；临床操作需要身处正确的位置",
     },
   },
   {
@@ -60,10 +60,10 @@ export const RESUME_FLAGS: FlagSpec[] = [
 export const EXEC_FLAGS: FlagSpec[] = [
   { name: "print", short: "p", type: "string", optionalValue: true, valueName: "[prompt]", description: { en: "Run headless with this prompt (same as `exec <prompt>`)", zh: "以无界面模式运行该提示（等同 `exec <prompt>`）" } },
   { name: "case", type: "string", valueName: "<id>", description: { en: "Case id", zh: "病例 ID" } },
-  { name: "autopilot", type: "boolean", description: { en: "Let the clinician agent drive; the prompt becomes its goal", zh: "由临床医生智能体自动接诊；提示作为其目标" } },
+  { name: "autopilot", type: "boolean", description: { en: "Demonstration: the clinician agent works the case; the prompt becomes its goal", zh: "示范接诊：由临床医生智能体处理本病例；提示作为其目标" } },
   { name: "output-format", type: "string", valueName: "<fmt>", choices: OUTPUT_FORMATS, description: { en: "text | json | stream-json", zh: "text | json | stream-json" } },
   { name: "input-format", type: "string", valueName: "<fmt>", choices: INPUT_FORMATS, description: { en: "text | stream-json (Op JSON lines on stdin)", zh: "text | stream-json（stdin 每行一个 Op JSON）" } },
-  { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Autopilot turns (or tool rounds for a single prompt); exceeding it exits 3", zh: "自动驾驶回合数（单条提示时为工具轮数）；超出时退出码 3" } },
+  { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Demonstration (--autopilot) turns, or tool rounds for a single prompt; exceeding it exits 3", zh: "示范接诊的回合数（单条提示时为工具轮数）；超出时退出码 3" } },
   { name: "to", type: "string", valueName: "<agent>", description: { en: "Address the prompt to an agent (patient, nurse, attending…)", zh: "提示发送对象（patient、nurse、attending…）" } },
   { name: "assess", type: "boolean", description: { en: "Run the examiner at the end (default: on with --autopilot)", zh: "结束时运行考官评估（--autopilot 时默认开启）" } },
   {
@@ -76,7 +76,7 @@ export const EXEC_FLAGS: FlagSpec[] = [
   },
   { name: "quiet", short: "q", type: "boolean", description: { en: "No progress on stderr (text format)", zh: "不在 stderr 输出进度（text 格式）" } },
   { name: "output-last-message", short: "o", type: "string", valueName: "<file>", description: { en: "Also write the final message to this file", zh: "同时把最终消息写入该文件" } },
-  { name: "trace", type: "string", valueName: "<file>", description: { en: "Write the episode trace (JSON Lines spans; embodied mode) to this file", zh: "把本次接诊的轨迹（JSON Lines，具身模式）写入该文件" } },
+  { name: "trace", type: "string", valueName: "<file>", description: { en: "Write the episode trace (JSON Lines spans; in-world mode) to this file", zh: "把本次接诊的轨迹（JSON Lines，实景模式）写入该文件" } },
 ];
 
 export const JSON_FLAG: FlagSpec = { name: "json", type: "boolean", description: { en: "Machine-readable JSON output", zh: "输出 JSON" } };

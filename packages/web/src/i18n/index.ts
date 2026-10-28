@@ -87,6 +87,23 @@ export function caseDisclaimer(text: LocalizedText | undefined | null): string {
   return (text != null && ct(text).trim()) || tr("case.disclaimerFallback");
 }
 
+/** What a case records of its clinical review (`provenance.review`, or a library entry's `review`). */
+export interface ReviewLike {
+  status: string;
+  reviewedAt?: string | null;
+}
+
+/**
+ * The review status line, worded as docs/GLOSSARY.md §4 fixes it ("Editorial review 2026-10-28 · not yet
+ * reviewed by a licensed clinician" / "编辑审核 2026-10-28 · 尚未经执业医师审核"); "" without a review or for
+ * an unknown status. Never says more than the case records.
+ */
+export function reviewLine(review: ReviewLike | null | undefined): string {
+  if (!review) return "";
+  const text = trMaybe(`review.line.${review.status}`, "", { date: review.reviewedAt ?? "" });
+  return text.replace(/\s+·/g, " ·").replace(/\s{2,}/g, " ").trim();
+}
+
 /** Locale-aware list join. */
 export function joinList(items: string[]): string {
   return items.join(current === "zh-CN" ? "、" : ", ");

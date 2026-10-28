@@ -12,7 +12,7 @@ const EN = {
 export type BridgeMessageKey = keyof typeof EN;
 
 const ZH: Record<BridgeMessageKey, string> = {
-  "bridge.deadlinePassed": "外部代理的 {tool} 调用未执行：调用方已停止等待（已超过截止时间）。",
+  "bridge.deadlinePassed": "外部智能体的 {tool} 调用未执行：调用方已停止等待（已超过截止时间）。",
 };
 
 /** A bridge client message in `locale`, `{name}` placeholders filled in. */

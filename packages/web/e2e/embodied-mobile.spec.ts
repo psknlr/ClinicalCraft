@@ -29,7 +29,7 @@ for (const locale of ["zh-CN", "en-US"] as const) {
       await embodiedSetup(page, { bypassApprovals: true });
       const badge = page.locator("#embodiment-badge");
       await expect(badge).toBeVisible();
-      await expect(badge).toContainText(en ? "Embodied" : "具身");
+      await expect(badge).toContainText(en ? "In-world" : "实景");
       const b = (await boxOf(page, "#embodiment-badge"))!;
       expect(b.x).toBeGreaterThanOrEqual(0);
       expect(b.x + b.width).toBeLessThanOrEqual(390);

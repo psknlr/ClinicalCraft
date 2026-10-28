@@ -11,7 +11,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface, type Interface } from "node:readline";
 import { createSession as createEngineState, currentWaypoint, progress, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
-import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
+import { agentLabel, availableInPhase, PROVIDER_TEMPLATES, reviewStatusLine, sanitizeTerminal, visiblePhases, type AgentEvent, type ApprovalDecision, type ClinicalSession, type EventMsg } from "@clinicalcraft/agent";
 import { CaseLibrary } from "@clinicalcraft/agent/node";
 import { flagString, UsageError, type ParsedArgs } from "./argv.js";
 import { EXIT, loadCliSettings, requireProviderKey, resumeRef, sessionFlagsLayer, type CliContext } from "./context.js";
@@ -189,6 +189,11 @@ export class Repl {
     r.line(`${ct(c.patient.displayName)} · ${ageLabel(c, L)} · ${sexLabel(c.patient.sex, L)} · ${ct(c.patient.chiefComplaint)}`);
     if (c.patient.triageNote) r.line(p.dim(ct(c.patient.triageNote)));
     if (c.disclaimer) r.line(p.dim(ct(c.disclaimer)));
+    // The review status, honestly; the learning outcomes only as a count — they usually name the diagnosis,
+    // so the debrief lists them (docs/GLOSSARY.md §4).
+    const review = reviewStatusLine(L, c.provenance.review);
+    if (review) r.line(p.dim(sanitizeTerminal(review)));
+    if (c.learningOutcomes.length > 0) r.line(p.dim(m(L, "play.outcomes", { n: c.learningOutcomes.length })));
     const cfg = r.configured!;
     r.line(p.dim(m(L, "repl.config", { provider: cfg.provider, model: cfg.model || "-", approval: cfg.approvalMode, scope: cfg.practiceScope, locale: L })));
     if (this.options.resumed) r.line(p.cyan(m(L, "repl.resumed", { id: this.session.id, actions: this.session.snapshot().actions.length })));

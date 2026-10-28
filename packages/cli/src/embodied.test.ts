@@ -83,6 +83,6 @@ describe("play --embodied", () => {
     const box = sandbox();
     const r = await run(["play", "stemi-inferior-rv", "--provider", "offline", "--ephemeral", "--lang", "zh-CN"], box, "/look\n/quit\n");
     expect(r.code, r.stderr).toBe(0);
-    expect(r.stdout).toMatch(/具身/);
+    expect(r.stdout).toMatch(/仅在实景模式下可用（用 --embodied 启动）/);
   });
 });

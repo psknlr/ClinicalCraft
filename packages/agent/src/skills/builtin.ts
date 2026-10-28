@@ -149,7 +149,7 @@ const RAW: readonly unknown[] = [
     schema: S,
     id: "review_imaging",
     name: { "zh-CN": "阅片", en: "Review imaging" },
-    description: { "zh-CN": "到影像工作站阅读影像报告，并请影像科医生一起解读。", en: "Read an imaging report at an imaging station and review it with the radiologist." },
+    description: { "zh-CN": "到影像工作站阅读影像报告，并请放射科医生一起解读。", en: "Read an imaging report at an imaging station and review it with the radiologist." },
     params: { investigation: { type: "investigation" } },
     safety: "clinical",
     steps: [

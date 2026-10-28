@@ -105,7 +105,7 @@ describe("MCP embodied mode", () => {
     expect(started.isError).toBeUndefined();
     const session = started.structuredContent!.session_id as string;
     expect(started.structuredContent).toMatchObject({ embodiment: "embodied", place: expect.any(String) });
-    expect(started.content[0]!.text).toMatch(/Embodied mode/);
+    expect(started.content[0]!.text).toMatch(/In-world mode \(embodied\)/);
 
     const refused = await c.call("examine", { session_id: session, finding_id: "general" });
     expect(refused.isError).toBe(true);

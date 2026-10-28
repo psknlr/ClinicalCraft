@@ -567,7 +567,7 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
             s.agent.patient = { ...(s.agent.patient ?? {}), pipeline: v };
           }),
         ),
-        // "Embodied agents" (docs/EMBODIED.md R3): the mode of the next encounter; a running one keeps its own
+        // "In-world mode" (embodiment; docs/EMBODIED.md R3): the mode of the next encounter; a running one keeps its own
         selectRow("setting-embodiment", tr("set.embodiment"), tr("set.embodiment.hint"), EMBODIMENTS, agent.embodiment === "clinical" ? "clinical" : "embodied", (v) => tr(v === "embodied" ? "set.embodiment.on" : "set.embodiment.off"), (v) =>
           prefs.update((s) => {
             s.agent.embodiment = v;

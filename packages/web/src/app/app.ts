@@ -475,7 +475,7 @@ export class ClinicalCraftApp implements App {
     }, 1500);
   }
 
-  /** The mode a new encounter starts in: the "Embodied agents" preference, clinical without a 3D world. */
+  /** The mode a new encounter starts in: the "In-world mode" preference, clinical without a 3D world. */
   preferredEmbodiment(): "clinical" | "embodied" {
     return this.worldFailed ? "clinical" : preferredEmbodiment(this.prefs.value);
   }
@@ -740,7 +740,7 @@ export class ClinicalCraftApp implements App {
         served: !!this.server?.served,
         resume: save?.snapshot ?? null,
         onTranscriptStopped: () => this.toast(tr("toast.transcriptStopped"), tr("toast.transcriptStoppedBody"), "warning", "transcript-stopped"),
-        // "Embodied agents" (a save keeps the mode it was recorded in)
+        // "In-world mode" (a save keeps the mode it was recorded in)
         embodiment: this.preferredEmbodiment(),
         embodied: { mover: this.mover, camera: this.camera },
       });

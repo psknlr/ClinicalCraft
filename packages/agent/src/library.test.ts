@@ -71,6 +71,37 @@ describe("caseIndexEntry", () => {
     expect(entry).toMatchObject({ id: "bare", title: { en: "T" }, summary: "", specialty: ["a"], difficulty: 1, setting: "outpatient", facility: null, locales: [], estimatedMinutes: null, provenance: "synthetic", tags: [], physiology: false, objectives: 0, labelPrefix: null, disclaimer: null, version: "", capabilityNeeds: [] });
   });
 
+  it("carries the review status and date and the number of learning outcomes, never their text (docs/GLOSSARY.md §4)", () => {
+    for (const [id, raw] of raws) {
+      const entry = caseIndexEntry(raw, HASH)!;
+      const def = content.cases.get(id)!.def;
+      expect(entry.learningOutcomeCount, id).toBe(def.learningOutcomes.length);
+      const review = def.provenance.review;
+      expect(entry.review, id).toEqual(review ? { status: review.status, reviewedAt: review.reviewedAt ?? null } : null);
+      // Outcomes usually name the diagnosis: none of their text reaches the index.
+      for (const outcome of def.learningOutcomes) {
+        for (const text of typeof outcome === "string" ? [outcome] : Object.values(outcome)) expect(JSON.stringify(entry), id).not.toContain(text.slice(0, 30));
+      }
+    }
+    const raw = {
+      id: "meta",
+      learningOutcomes: [{ en: "Recognise X", "zh-CN": "识别 X" }, 7, { en: "Treat X" }],
+      provenance: { kind: "synthetic", review: { status: "editorial", reviewedAt: "2026-10-28", reviewers: ["R"], guidelines: ["G 2023"], notes: { en: "N" } } },
+    };
+    expect(caseIndexEntry(raw, HASH)).toMatchObject({ learningOutcomeCount: 2, review: { status: "editorial", reviewedAt: "2026-10-28" } });
+    expect(JSON.stringify(caseIndexEntry(raw, HASH))).not.toMatch(/Recognise|G 2023|"N"/);
+    // An unknown status is no review; a malformed date is no date.
+    expect(caseIndexEntry({ id: "x", provenance: { review: { status: "approved" } } }, HASH)!.review).toBeNull();
+    expect(caseIndexEntry({ id: "x", provenance: { review: { status: "unreviewed", reviewedAt: "28/10/2026" } } }, HASH)!.review).toEqual({ status: "unreviewed", reviewedAt: null });
+    expect(caseIndexEntry({ id: "x" }, HASH)).toMatchObject({ learningOutcomeCount: 0, review: null });
+    // Untrusted entries (a server listing) are clamped the same way.
+    expect(normalizeIndexEntry({ id: "x", learningOutcomeCount: 1e9, review: { status: "clinician-reviewed", reviewedAt: "2026-01-02", notes: "x" } })).toMatchObject({
+      learningOutcomeCount: 100,
+      review: { status: "clinician-reviewed", reviewedAt: "2026-01-02" },
+    });
+    expect(normalizeIndexEntry({ id: "x", learningOutcomeCount: "6", review: "editorial" })).toMatchObject({ learningOutcomeCount: 0, review: null });
+  });
+
   it("sorts like the shared library order (index entries and full cases alike)", () => {
     const entries = [...raws.values()].map((raw) => caseIndexEntry(raw, HASH)!);
     expect(libraryOrder(entries).map((e) => e.id)).toEqual(libraryOrder(defs).map((c) => c.id));

@@ -110,10 +110,10 @@ export const BENCH: CommandSpec = {
       name: "grounding",
       summary: {
         en: "Grounding benchmark: held-out items through the patient's fact selection, tool argument resolution, the router and the verifier → grounding-report.json + .md",
-        zh: "语义落地基准：用留出条目评测病人事实选择、工具参数解析、路由器与核验器 → grounding-report.json 与 .md",
+        zh: "事实依据基准：用留出条目评测患者的事实选择、工具参数解析、路由器与核验器 → grounding-report.json 与 .md",
       },
       flags: [
-        { name: "suite", type: "string", valueName: "<name>", description: { en: "Grounding suite (default grounding-v1)", zh: "语义落地测试集（默认 grounding-v1）" } },
+        { name: "suite", type: "string", valueName: "<name>", description: { en: "Grounding suite (default grounding-v1)", zh: "事实依据测试集（默认 grounding-v1）" } },
         { name: "split", type: "string", valueName: "<split>", choices: ["dev", "test", "all"], description: { en: "dev | test (held out) | all (default all)", zh: "dev | test（留出）| all（默认 all）" } },
         { name: "track", type: "list", valueName: "<names>", description: { en: "Only these tracks: history, exam, orders, interventions, routing, verifier", zh: "只评测这些项：history、exam、orders、interventions、routing、verifier" } },
         { name: "case", type: "list", valueName: "<ids>", description: { en: "Only these cases", zh: "只评测这些病例" } },
@@ -146,7 +146,7 @@ export const ROOT: CommandSpec = {
       summary: { en: "List, index, inspect, validate, verify and scaffold cases", zh: "列出、索引、查看、校验、验证和新建病例" },
       defaultSubcommand: "list",
       subcommands: [
-        { name: "list", aliases: ["ls"], summary: { en: "List available cases", zh: "列出可用病例" }, flags: [JSON_FLAG], run: casesList },
+        { name: "list", aliases: ["ls"], summary: { en: "List available cases with their review status", zh: "列出可用病例及其审核状态" }, flags: [JSON_FLAG], run: casesList },
         {
           name: "index",
           summary: { en: "Print the library index (metadata only, no validation; shared with serve and the web)", zh: "输出病例库索引（仅元数据、不做校验；与 serve 和网页共用）" },
@@ -156,7 +156,7 @@ export const ROOT: CommandSpec = {
         {
           name: "show",
           usage: "<id>",
-          summary: { en: "Show a case (no spoilers)", zh: "查看病例（不剧透）" },
+          summary: { en: "Show a case: its spoiler-free card, review status and, for facilitators, the learning outcomes", zh: "查看病例：不剧透的病例卡片、审核状态，以及供导师查看的学习目标" },
           flags: [JSON_FLAG, { name: "full", type: "boolean", description: { en: "With --json: include the reference solution", zh: "与 --json 同用：包含参考解法" } }],
           run: casesShow,
         },
@@ -331,7 +331,7 @@ export const ROOT: CommandSpec = {
           name: "world-session",
           type: "string",
           valueName: "<id>",
-          description: { en: "Attach (required): the live session to act in — the id in the learner's External agent badge (or CLINICALCRAFT_WORLD_SESSION)", zh: "连接模式（必填）：要操作的实时会话——学员“外部代理”徽标中的 ID（或 CLINICALCRAFT_WORLD_SESSION）" },
+          description: { en: "Attach (required): the live session to act in — the id in the learner's External agent badge (or CLINICALCRAFT_WORLD_SESSION)", zh: "连接模式（必填）：要操作的实时会话——学员“外部智能体”徽标中的 ID（或 CLINICALCRAFT_WORLD_SESSION）" },
         },
         {
           name: "attach-key-file",
@@ -363,11 +363,11 @@ export const ROOT: CommandSpec = {
     },
     {
       name: "eval",
-      summary: { en: "Autopilot benchmark over cases → Markdown + JSON report", zh: "对病例运行自动驾驶基准 → Markdown + JSON 报告" },
+      summary: { en: "Demonstration (autopilot) benchmark over cases → Markdown + JSON report", zh: "对病例运行示范接诊评测 → Markdown + JSON 报告" },
       flags: [
         { name: "cases", type: "list", valueName: "<ids|all>", description: { en: "Case ids (comma-separated) or all", zh: "病例 ID（逗号分隔）或 all" } },
         { name: "runs", type: "number", valueName: "<n>", description: { en: "Runs per case (default 1)", zh: "每个病例的运行次数（默认 1）" } },
-        { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Autopilot turns per run", zh: "每次运行的自动驾驶回合数" } },
+        { name: "max-turns", type: "number", valueName: "<n>", description: { en: "Demonstration (autopilot) turns per run", zh: "每次运行的示范接诊回合数" } },
         { name: "out", type: "string", valueName: "<report.md>", description: { en: "Write the Markdown report (+ .json beside it)", zh: "写入 Markdown 报告（并在旁边写 .json）" } },
         { name: "json", type: "string", valueName: "<file>", description: { en: "Write the JSON report here", zh: "JSON 报告路径" } },
         { name: "transcripts", type: "boolean", description: { en: "Record session transcripts (off by default)", zh: "记录会话（默认关闭）" } },

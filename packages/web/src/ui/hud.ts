@@ -487,7 +487,7 @@ export class Hud {
   /**
    * The embodiment badge: embodied — the place where the world model has the learner's body (it must match
    * the scene: the avatar is the world's input device), "walking…" while the world moves it; clinical mode
-   * says so. Clicking it opens the settings ("Embodied agents").
+   * says so. Clicking it opens the settings ("In-world mode").
    */
   private renderEmbodiment(): void {
     const b = this.el.embodiment;

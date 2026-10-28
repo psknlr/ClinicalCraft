@@ -126,7 +126,7 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   // evidence board: answer the diagnosis decision with the scripted answer
   await page.evaluate(() => (window as any).__QA__.route("board"));
   const card = page.locator('.decision[data-decision="diagnosis"]');
-  await expect(card).toContainText("可以判断");
+  await expect(card).toContainText("可以作答");
   const correct = await page.evaluate(() => (window as any).__QA__.game.caseDef.decisions.find((d: any) => d.id === "diagnosis").options.find((o: any) => o.correct).id as string);
   await card.locator(`[data-option="${correct}"]`).click();
   await expect(card).toHaveClass(/correct/);
