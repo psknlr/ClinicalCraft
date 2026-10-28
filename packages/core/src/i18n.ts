@@ -161,6 +161,7 @@ export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: st
   "acute-medicine": { "zh-CN": "急症内科", en: "Acute medicine" },
   "allergy-immunology": { "zh-CN": "变态反应与免疫", en: "Allergy & immunology" },
   anesthesiology: { "zh-CN": "麻醉科", en: "Anaesthesia" },
+  "cardiac-surgery": { "zh-CN": "心脏外科", en: "Cardiac surgery" },
   cardiology: { "zh-CN": "心内科", en: "Cardiology" },
   "clinical-pharmacology": { "zh-CN": "临床药理", en: "Clinical pharmacology" },
   "colorectal-surgery": { "zh-CN": "结直肠外科", en: "Colorectal surgery" },
@@ -175,6 +176,7 @@ export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: st
   "hepatobiliary-surgery": { "zh-CN": "肝胆外科", en: "Hepatobiliary surgery" },
   hepatology: { "zh-CN": "肝病科", en: "Hepatology" },
   immunology: { "zh-CN": "免疫科", en: "Immunology" },
+  "integrative-medicine": { "zh-CN": "中西医结合", en: "Integrative medicine" },
   "infectious-disease": { "zh-CN": "感染科", en: "Infectious disease" },
   "internal-medicine": { "zh-CN": "内科", en: "Internal medicine" },
   neonatology: { "zh-CN": "新生儿科", en: "Neonatology" },
@@ -190,6 +192,7 @@ export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: st
   "respiratory-medicine": { "zh-CN": "呼吸内科", en: "Respiratory medicine" },
   rheumatology: { "zh-CN": "风湿免疫科", en: "Rheumatology" },
   "sleep-medicine": { "zh-CN": "睡眠医学", en: "Sleep medicine" },
+  "traditional-chinese-medicine": { "zh-CN": "中医", en: "Traditional Chinese medicine" },
   urology: { "zh-CN": "泌尿外科", en: "Urology" },
   "vascular-medicine": { "zh-CN": "血管医学", en: "Vascular medicine" },
 };

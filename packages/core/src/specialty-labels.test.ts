@@ -35,6 +35,10 @@ const REQUIRED = [
   "pediatrics",
   "neurology",
   "cardiology",
+  "general-surgery",
+  "cardiac-surgery",
+  "integrative-medicine",
+  "traditional-chinese-medicine",
 ];
 
 function libraryIds(): string[] {

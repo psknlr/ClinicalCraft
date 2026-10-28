@@ -409,6 +409,68 @@ describe("checkSpatial: every row, ok and each failure, with a hint that fixes i
  * reached by following its own hints). Never a loop (the same refusal at the
  * same spot twice), never stuck.
  */
+/** STEMI with a record review added: the outside hospital's echo report, authored with a leftover device requirement. */
+function withRecordReview(requires: string[]): CaseDefinition {
+  const c = structuredClone(loadCase("stemi-inferior-rv"));
+  c.investigations.push({
+    id: "outside-echo",
+    name: { en: "Outside hospital echo report", "zh-CN": "外院超声心动图报告" },
+    category: "record",
+    aliases: [],
+    requires,
+    performedAt: "records",
+    turnaroundMinutes: 0,
+    risk: "none",
+    value: "useful",
+    alternativeTo: [],
+    results: { [c.phases[0]!.id]: { available: true, text: { en: "Normal LV function.", "zh-CN": "左室功能正常。" }, values: [], figures: [], critical: false } },
+  });
+  return c;
+}
+
+describe('record review (performedAt: "records", EMBODIED §6): a records terminal or the notes at the bedside — never a transport, a sample or a device', () => {
+  const NOTES = { kind: "at-patient", range: 1.5, why: "notes" } as const;
+
+  it("the requirement, whatever the item's requires say", () => {
+    const p = new DefaultSpatialPolicy();
+    for (const requires of [["records"], [], ["echocardiography"], ["mri", "records"]]) {
+      const binding = { caseDef: withRecordReview(requires), slotId: "resus-1", locale: "en" };
+      expect(p.requirementFor(order("outside-echo"), binding), JSON.stringify(requires)).toEqual({ kind: "any-of", options: [CHART, NOTES] });
+      expect(p.requirementFor(read("outside-echo"), binding)).toEqual({ kind: "any-of", options: [CHART, NOTES] });
+    }
+  });
+
+  it("retrieved at the ED records terminal or at the patient; from elsewhere one walk fixes it (no cart, no transport)", async () => {
+    const w = makeWorld("stemi-inferior-rv", { caseDef: withRecordReview(["mri"]) });
+    const intent = order("outside-echo");
+    const far = failure(w.runtime.checkSpatial(A, intent));
+    expect(["not-at-patient", "no-provider-in-reach"]).toContain(far.reason);
+    expect(far.hint?.then).toBeUndefined();
+    expect(await follow(w, intent, far)).toMatchObject({ ok: true });
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "ed-records" })).status).toBe("completed");
+    expect(w.runtime.checkSpatial(A, intent)).toMatchObject({ ok: true, satisfiedBy: ["eq:ed-records"] });
+    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect(w.runtime.checkSpatial(A, intent)).toMatchObject({ ok: true, satisfiedBy: [w.patientId] });
+    expect(w.runtime.checkSpatial(A, read("outside-echo"))).toMatchObject({ ok: true });
+  });
+
+  it("a records terminal's order/read operations retrieve it; no device's use does", async () => {
+    const w = makeWorld("stemi-inferior-rv", { caseDef: withRecordReview(["mri"]) });
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "ed-records" })).status).toBe("completed");
+    const ordered = await w.act({ actorId: A, operation: "order", targetId: "eq:ed-records", parameters: { investigation: "outside-echo" } });
+    expect(ordered.status, ordered.message).toBe("completed");
+    expect(w.harness.state().orders.map((o) => o.investigationId)).toContain("outside-echo");
+    const shown = await w.act({ actorId: A, operation: "read", targetId: "eq:ed-records", parameters: { investigation: "outside-echo" } });
+    expect(shown.status, shown.message).toBe("completed");
+  });
+
+  it("the refusal at a distance says where (localised)", () => {
+    const w = makeWorld("stemi-inferior-rv", { caseDef: withRecordReview(["records"]), locale: "zh-CN" });
+    const f = failure(w.runtime.checkSpatial(A, order("outside-echo")));
+    expect(f.message).toMatch(/病历|电子病历终端/);
+  });
+});
+
 describe("property: hints lead to a passing check for every item of every built-in case", () => {
   for (const caseId of caseIds()) {
     it(caseId, async () => {

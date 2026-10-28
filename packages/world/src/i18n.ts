@@ -247,6 +247,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "spatial.no-provider-in-facility": { "zh-CN": "本院没有可用的设备提供{caps}。", en: "Nothing usable in this facility provides {caps}." },
   "spatial.no-patient": { "zh-CN": "这个世界里没有患者。", en: "There is no patient in this world." },
   "spatial.not-at-patient.sample": { "zh-CN": "标本要在{patient}身边采集（{range} 米内），当前相距 {distance} 米。", en: "The sample is taken at {patient}'s side (within {range} m); you are {distance} m away." },
+  "spatial.not-at-patient.notes": { "zh-CN": "请在{patient}床旁查阅病历记录（{range} 米内，当前相距 {distance} 米），或到电子病历终端调阅。", en: "Read the notes at {patient}'s bedside (within {range} m; you are {distance} m away), or retrieve the record at a records terminal." },
   "spatial.not-at-patient.observations": { "zh-CN": "请在{patient}身边测量生命体征（{range} 米内，当前相距 {distance} 米），或在同一房间内看已连接监护仪的屏幕，或到电子病历终端查看记录。", en: "Check the vitals at {patient}'s side (within {range} m; you are {distance} m away), on an attached monitor's screen in its room, or in the chart at a records terminal." },
   "spatial.provider-busy": { "zh-CN": "床旁的{caps}（「{provider}」）正被{holder}使用——请把「{alternative}」推到{patient}身边，或等它空出来。", en: 'The bedside {caps} ("{provider}") is in use by {holder} — wheel "{alternative}" to {patient} instead, or wait for it.' },
   "spatial.provider-busy-none": { "zh-CN": "需要{caps}：「{provider}」正被{holder}使用，暂时没有其他可用设备——请稍后再试。", en: 'Needs {caps}: "{provider}" is in use by {holder} and no other one is free — wait for it.' },
