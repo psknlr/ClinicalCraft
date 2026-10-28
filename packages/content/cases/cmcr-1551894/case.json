@@ -1,0 +1,1514 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1551894",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "反复下肢水肿与腹胀 · 35岁女性",
+    "en": "Recurrent leg swelling and abdominal fullness · woman aged 35"
+  },
+  "summary": {
+    "zh-CN": "多年水肿近期伴胸腹壁静脉显露和皮肤变化，逐步核对查体与血管影像。",
+    "en": "Longstanding oedema is accompanied by visible chest and abdominal veins and skin changes; review examination and vascular imaging in sequence."
+  },
+  "specialty": [
+    "hepatology",
+    "vascular-medicine"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王立恒; 庄聰. 中西醫結合治療巴德-吉亞利綜合征1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.021",
+    "doi": "10.12408/j.issn2223-4462.2025.01.021",
+    "authors": [
+      "王立恒",
+      "庄聰"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "姚女士（化名）",
+      "en": "Ms Yao (pseudonym)"
+    },
+    "age": 35,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "双下肢反复水肿10余年",
+      "en": "Recurrent bilateral leg oedema for over ten years"
+    },
+    "triageNote": {
+      "zh-CN": "多年水肿近期伴胸腹壁静脉显露和皮肤变化，逐步核对查体与血管影像。",
+      "en": "Longstanding oedema is accompanied by visible chest and abdominal veins and skin changes; review examination and vascular imaging in sequence."
+    },
+    "tags": [
+      {
+        "zh-CN": "双下肢反复水肿10余年",
+        "en": "Recurrent bilateral leg oedema for over ten years"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "10多年前开始两边脚踝反复肿。",
+        "en": "Both ankles began swelling repeatedly over ten years ago."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "双腿水肿从什么时候开始？",
+        "en": "When did the leg swelling begin?"
+      },
+      "answer": {
+        "zh-CN": "10多年前开始两边脚踝反复肿。",
+        "en": "Both ankles began swelling repeatedly over ten years ago."
+      },
+      "keywords": {
+        "zh-CN": [
+          "双腿水肿从什么时候开始？",
+          "水肿"
+        ],
+        "en": [
+          "When did the leg swelling begin?",
+          "leg swelling"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "modifiers",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "什么情况下水肿加重或减轻？",
+        "en": "What makes the swelling worse or better?"
+      },
+      "answer": {
+        "zh-CN": "久坐会更肿，以前自己吃过利尿药后能消退，药名不清楚。",
+        "en": "Prolonged sitting worsens it; an unspecified diuretic taken without a prescription previously relieved it."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么情况下水肿加重或减轻？",
+          "久坐"
+        ],
+        "en": [
+          "What makes the swelling worse or better?",
+          "sitting"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "changes",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "近一年出现哪些新变化？",
+        "en": "What changes developed over the last year?"
+      },
+      "answer": {
+        "zh-CN": "胸腹壁的静脉越来越明显，上腹发胀，小腿皮肤变黑并有破损。",
+        "en": "Chest and abdominal veins became prominent, with upper abdominal fullness, darkened lower-leg skin and skin breaks."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近一年出现哪些新变化？",
+          "静脉"
+        ],
+        "en": [
+          "What changes developed over the last year?",
+          "prominent veins"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有什么慢性病？",
+        "en": "What chronic illness was known?"
+      },
+      "answer": {
+        "zh-CN": "以前有甲状腺功能亢进。",
+        "en": "There is a history of hyperthyroidism."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有什么慢性病？",
+          "甲亢"
+        ],
+        "en": [
+          "What chronic illness was known?",
+          "hyperthyroidism"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "skin",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有皮疹和瘙痒？",
+        "en": "Were there a rash or itching?"
+      },
+      "answer": {
+        "zh-CN": "全身皮肤痒并有皮疹。",
+        "en": "There was widespread itching and a rash."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有没有皮疹和瘙痒？",
+          "瘙痒"
+        ],
+        "en": [
+          "Were there a rash or itching?",
+          "itching"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "长期药物清单是否完整？",
+        "en": "Is the regular medication list available?"
+      },
+      "answer": {
+        "zh-CN": "只知道用过不详的利尿药，其他长期药物没有记录。",
+        "en": "An unspecified diuretic is mentioned; other regular medicines are not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "长期药物清单是否完整？",
+          "用药"
+        ],
+        "en": [
+          "Is the regular medication list available?",
+          "medications"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "thrombosis",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前发生过血栓吗？",
+        "en": "Was there previous thrombosis?"
+      },
+      "answer": {
+        "zh-CN": "原报告没有提供血栓病史。",
+        "en": "Previous thrombosis is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前发生过血栓吗？"
+        ],
+        "en": [
+          "Was there previous thrombosis?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "obstetric",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "妊娠或激素使用情况如何？",
+        "en": "What pregnancy or hormonal treatment history is available?"
+      },
+      "answer": {
+        "zh-CN": "这部分原报告未记录。",
+        "en": "The report does not document this."
+      },
+      "keywords": {
+        "zh-CN": [
+          "妊娠或激素使用情况如何？"
+        ],
+        "en": [
+          "What pregnancy or hormonal treatment history is available?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "veins",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查胸腹壁静脉和血流方向",
+        "en": "Examine chest and abdominal veins and flow direction"
+      },
+      "finding": {
+        "zh-CN": "胸前、胸侧与腹壁静脉曲张，血流由下向上；肝可触及，脾显著大且质硬。",
+        "en": "Dilated chest and abdominal wall veins carry blood upward; the liver is palpable and the spleen markedly enlarged and firm."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "legs",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查下肢水肿与皮肤",
+        "en": "Examine leg oedema and skin"
+      },
+      "finding": {
+        "zh-CN": "双下肢Ⅱ度凹陷性水肿，足靴区色素沉着及已愈合创面；背部皮疹无渗液。",
+        "en": "Bilateral grade II pitting oedema, gaiter-area pigmentation and healed lesions; a non-exuding back rash."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "触诊腹部",
+        "en": "Palpate the abdomen"
+      },
+      "finding": {
+        "zh-CN": "腹部饱满但柔软，无压痛或反跳痛。",
+        "en": "The abdomen is full but soft, without tenderness or rebound."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "doppler",
+      "name": {
+        "zh-CN": "肝静脉与下腔静脉超声",
+        "en": "Hepatic vein and inferior vena cava Doppler"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "肝静脉与下腔静脉超声"
+        ],
+        "en": [
+          "Hepatic vein and inferior vena cava Doppler",
+          "doppler"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肝静脉13–15 mm，近端下腔静脉回流道狭窄、峰速269 cm/s，远端扩张至33 mm；门静脉通畅、向肝血流21 cm/s。",
+            "en": "Hepatic veins measure 13–15 mm; proximal IVC outflow narrowing has peak velocity 269 cm/s, with distal dilatation to 33 mm. The portal vein is patent with hepatopetal flow of 21 cm/s."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "mri",
+      "name": {
+        "zh-CN": "上腹部MRI",
+        "en": "Upper abdominal MRI"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "上腹部MRI"
+        ],
+        "en": [
+          "Upper abdominal MRI",
+          "mri"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肝脾增大，肝内静脉扩张迂曲；下腔静脉局部宽4.3 cm，肝内段局部狭窄至1.3 cm；腹壁侧支循环丰富。",
+            "en": "Hepatosplenomegaly with dilated tortuous intrahepatic veins; local IVC diameter is 4.3 cm, narrowing to 1.3 cm in the intrahepatic segment, with extensive abdominal-wall collaterals."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Complete blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规"
+        ],
+        "en": [
+          "Complete blood count",
+          "cbc"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "白细胞2.5×10⁹/L，红细胞3.72×10¹²/L，血红蛋白97 g/L，血小板60×10⁹/L。",
+            "en": "WBC 2.5×10⁹/L, RBC 3.72×10¹²/L, haemoglobin 97 g/L and platelets 60×10⁹/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "thyroid",
+      "name": {
+        "zh-CN": "甲状腺与肾功能记录",
+        "en": "Thyroid and renal function record"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "甲状腺与肾功能记录"
+        ],
+        "en": [
+          "Thyroid and renal function record",
+          "thyroid"
+        ]
+      },
+      "requires": [
+        "lab-endocrine"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "甲功五项在报告正常范围；凝血、肾功能、电解质等概述为大致正常，未列逐项数值。",
+            "en": "Five thyroid tests were within the reported reference range; coagulation, renal function and electrolytes were summarised as broadly normal without individual values."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告行球囊扩张及支架植入，随后配合中药，13天后症状、血常规和超声概述改善并出院；未给出复查数值、抗凝方案、支架长期通畅率或长期结局。前后照片为合图，仅在此阶段展示。",
+            "en": "The report describes balloon dilatation and stenting with subsequent herbal treatment. Symptoms, blood count and ultrasound were summarised as improved after 13 days before discharge; numerical follow-up, anticoagulation, long-term stent patency and outcome are not given. Composite before/after photographs appear only in this phase."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01",
+            "fig02",
+            "fig03"
+          ],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "modifiers"
+          },
+          {
+            "asked": "changes"
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪种血流障碍最符合体征与影像？",
+        "en": "Which flow disturbance best fits the signs and imaging?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "doppler",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "examined": "veins"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "肝静脉流出道/下腔静脉梗阻所致巴德–吉亚利综合征",
+            "en": "Budd–Chiari syndrome from hepatic venous outflow/IVC obstruction"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "向上回流的腹壁静脉和流出道狭窄相互吻合；不能被常见水肿原因掩盖。",
+            "en": "Upward abdominal-wall venous flow and outflow narrowing are concordant and should not be dismissed as common causes of oedema."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "仅甲亢或久坐能解释所有侧支循环和静脉狭窄",
+            "en": "Hyperthyroidism or sitting alone explains the collaterals and venous stenosis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "向上回流的腹壁静脉和流出道狭窄相互吻合；不能被常见水肿原因掩盖。",
+            "en": "Upward abdominal-wall venous flow and outflow narrowing are concordant and should not be dismissed as common causes of oedema."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "治疗讨论中应保留哪些安全边界？",
+        "en": "Which safety limits should guide treatment discussion?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "cbc",
+            "phase": "workup"
+          },
+          {
+            "read": "thyroid",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "转肝病与介入团队评估梗阻处理、出血风险及病因；不凭单例归因中药疗效",
+            "en": "Hepatology and intervention review of obstruction, bleeding risk and aetiology; avoid attributing efficacy to herbs from one case"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "明确梗阻和血小板减少需要个体化专业计划；历史联合疗法不能拆分证明疗效。",
+            "en": "Documented obstruction and thrombocytopenia require an individualised specialist plan; combined historical treatment cannot isolate efficacy."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "仅继续自行利尿并跳过梗阻评估",
+            "en": "Continue unsupervised diuretics and omit outflow assessment"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "明确梗阻和血小板减少需要个体化专业计划；历史联合疗法不能拆分证明疗效。",
+            "en": "Documented obstruction and thrombocytopenia require an individualised specialist plan; combined historical treatment cannot isolate efficacy."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "modifiers"
+          },
+          {
+            "asked": "changes"
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "doppler",
+        "mri",
+        "cbc",
+        "thyroid",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "病因定位在肝静脉流出道，已记录介入后短期改善；联合中药的独立效果无法从单例分离。",
+      "en": "The lesion localises to hepatic venous outflow, with short-term improvement after intervention; the independent effect of concurrent herbs cannot be separated."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "静脉方向是定位线索，而不是仅描述外观。",
+        "en": "Venous flow direction helps localisation rather than merely describing appearance."
+      },
+      {
+        "zh-CN": "血小板减少影响治疗安全评估。",
+        "en": "Thrombocytopenia matters to treatment safety."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "血栓倾向评估、抗凝策略、介入细节及长期支架通畅情况。",
+        "en": "Thrombophilia assessment, anticoagulation strategy, procedural details and long-term stent patency."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "王立恒; 庄聰. 中西醫結合治療巴德-吉亞利綜合征1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.021",
+      "https://rs.yiigle.com/cmaid/1551894",
+      "EASL Clinical Practice Guidelines on vascular diseases of the liver. https://www.journal-of-hepatology.eu/article/S0168-8278(25)02406-7/abstract"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "血栓倾向评估、抗凝策略、介入细节及长期支架通畅情况。",
+      "en": "Thrombophilia assessment, anticoagulation strategy, procedural details and long-term stent patency."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551894/fig01.png",
+      "title": {
+        "zh-CN": "原报告：胸腹壁静脉治疗前后合图",
+        "en": "Source: composite before/after chest and abdominal veins"
+      },
+      "credit": {
+        "zh-CN": "原报告图，王立恒; 庄聰，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8c8073feb47780f22305dfb0536469a9056a683f1fb7b80e40edb1621bae91ea"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551894/fig02.png",
+      "title": {
+        "zh-CN": "原报告：背部皮疹治疗前后合图",
+        "en": "Source: composite before/after back rash"
+      },
+      "credit": {
+        "zh-CN": "原报告图，王立恒; 庄聰，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "b1f149115cdca4767d58e4002e84443941557bdff377c015ca4b85705e1ced06"
+    },
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551894/fig03.png",
+      "title": {
+        "zh-CN": "原报告：下肢治疗前后合图",
+        "en": "Source: composite before/after leg changes"
+      },
+      "credit": {
+        "zh-CN": "原报告图，王立恒; 庄聰，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "e118b48fb0c65c17eadf4408327ca51326e36b62e96dc37de2f9ea4d55bd28cc"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1551894/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "057edd84a2bb7bd11d6f35f9fcd70132b1cbf9a4c6e74e1b819ef0daf62bc4e0"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "modifiers"
+    },
+    {
+      "type": "ask",
+      "itemId": "changes"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "skin"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "thrombosis"
+    },
+    {
+      "type": "ask",
+      "itemId": "obstetric"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "veins"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "doppler"
+    },
+    {
+      "type": "read",
+      "investigationId": "doppler",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "mri",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "thyroid"
+    },
+    {
+      "type": "read",
+      "investigationId": "thyroid",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1551894",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1551894",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "双腿水肿从什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did the leg swelling begin?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "什么情况下水肿加重或减轻？",
+        "locale": "zh-CN",
+        "expect": [
+          "modifiers"
+        ]
+      },
+      {
+        "text": "What makes the swelling worse or better?",
+        "locale": "en",
+        "expect": [
+          "modifiers"
+        ]
+      },
+      {
+        "text": "近一年出现哪些新变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "changes"
+        ]
+      },
+      {
+        "text": "What changes developed over the last year?",
+        "locale": "en",
+        "expect": [
+          "changes"
+        ]
+      },
+      {
+        "text": "以前有什么慢性病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "What chronic illness was known?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "有没有皮疹和瘙痒？",
+        "locale": "zh-CN",
+        "expect": [
+          "skin"
+        ]
+      },
+      {
+        "text": "Were there a rash or itching?",
+        "locale": "en",
+        "expect": [
+          "skin"
+        ]
+      },
+      {
+        "text": "长期药物清单是否完整？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Is the regular medication list available?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "以前发生过血栓吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "thrombosis"
+        ]
+      },
+      {
+        "text": "Was there previous thrombosis?",
+        "locale": "en",
+        "expect": [
+          "thrombosis"
+        ]
+      },
+      {
+        "text": "妊娠或激素使用情况如何？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "What pregnancy or hormonal treatment history is available?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      }
+    ]
+  }
+}

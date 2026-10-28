@@ -1,0 +1,1568 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-70005",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "发热与腹股沟红肿 · 8岁男孩",
+    "en": "Fever and groin swelling · boy aged 8"
+  },
+  "summary": {
+    "zh-CN": "儿童发热和局部红肿在初期抗感染后仍进展；追踪暴露史、脓肿、培养与器官功能变化。",
+    "en": "A child has fever and local swelling progressing despite initial antimicrobial treatment; trace exposures, abscesses, cultures and organ dysfunction."
+  },
+  "specialty": [
+    "pediatrics",
+    "infectious-disease",
+    "critical-care"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "孙静敏; 金丹群; 许愿愿; 郑丽云. 紫色色杆菌脓毒症一例并文献复习. 中国小儿急救医学, 2014. DOI: 10.3760/cma.j.issn.1673-4912.2014.01.023",
+    "doi": "10.3760/cma.j.issn.1673-4912.2014.01.023",
+    "authors": [
+      "孙静敏",
+      "金丹群",
+      "许愿愿",
+      "郑丽云"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小禾（化名）",
+      "en": "He (pseudonym)"
+    },
+    "age": 8,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "发热5天伴右腹股沟红肿",
+      "en": "Five days of fever with right groin swelling"
+    },
+    "triageNote": {
+      "zh-CN": "儿童发热和局部红肿在初期抗感染后仍进展；追踪暴露史、脓肿、培养与器官功能变化。",
+      "en": "A child has fever and local swelling progressing despite initial antimicrobial treatment; trace exposures, abscesses, cultures and organ dysfunction."
+    },
+    "tags": [
+      {
+        "zh-CN": "发热5天伴右腹股沟红肿",
+        "en": "Five days of fever with right groin swelling"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "5天前开始发热，右腹股沟也红肿，最初包块像黄豆大。",
+        "en": "Fever and right groin redness began five days earlier, initially with a bean-sized lump."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
+          "en": "Relays only the reported history without inventing witnessed events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "发热和包块从什么时候开始？",
+        "en": "When did fever and the lump begin?"
+      },
+      "answer": {
+        "zh-CN": "5天前开始发热，右腹股沟也红肿，最初包块像黄豆大。",
+        "en": "Fever and right groin redness began five days earlier, initially with a bean-sized lump."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热和包块从什么时候开始？",
+          "发热包块"
+        ],
+        "en": [
+          "When did fever and the lump begin?",
+          "fever lump"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "包块和体温后来怎样变化？",
+        "en": "How did the lump and temperature change?"
+      },
+      "answer": {
+        "zh-CN": "包块越来越大，痛得不能走路，持续高热和明显畏寒。",
+        "en": "The lump enlarged and became painful enough to prevent walking, with persistent high fever and marked chills."
+      },
+      "keywords": {
+        "zh-CN": [
+          "包块和体温后来怎样变化？",
+          "不能走路"
+        ],
+        "en": [
+          "How did the lump and temperature change?",
+          "cannot walk"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "发病前有游泳或水体接触吗？",
+        "en": "Was there swimming or water exposure before illness?"
+      },
+      "answer": {
+        "zh-CN": "约1周前游过泳；没有记录确切水质或采样结果。",
+        "en": "There was swimming about a week earlier; water quality and environmental sampling are not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病前有游泳或水体接触吗？",
+          "游泳"
+        ],
+        "en": [
+          "Was there swimming or water exposure before illness?",
+          "swimming"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "此前用了什么抗感染治疗？",
+        "en": "What antimicrobial treatment had already been given?"
+      },
+      "answer": {
+        "zh-CN": "外院用了头孢哌酮和原文称“氧哌嗪”的药，症状没改善。",
+        "en": "The earlier hospital used cefoperazone and a second antibiotic not unambiguously identified in the report; symptoms did not improve."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前用了什么抗感染治疗？",
+          "用药"
+        ],
+        "en": [
+          "What antimicrobial treatment had already been given?",
+          "antibiotics"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "trauma",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "有外伤或皮肤破损吗？",
+        "en": "Was there trauma or broken skin?"
+      },
+      "answer": {
+        "zh-CN": "否认外伤和皮肤破损，也没有特殊物质接触。",
+        "en": "Trauma, broken skin and unusual substance exposure were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有外伤或皮肤破损吗？",
+          "外伤"
+        ],
+        "en": [
+          "Was there trauma or broken skin?",
+          "trauma"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "cough",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "还有其他伴随症状吗？",
+        "en": "What other symptoms accompanied the illness?"
+      },
+      "answer": {
+        "zh-CN": "病程中有轻微咳嗽。",
+        "en": "There was a mild cough during the illness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还有其他伴随症状吗？",
+          "轻咳"
+        ],
+        "en": [
+          "What other symptoms accompanied the illness?",
+          "mild cough"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "出生经过有异常吗？",
+        "en": "Were there problems around birth?"
+      },
+      "answer": {
+        "zh-CN": "足月顺产，没有窒息或抢救史。",
+        "en": "He was born at term vaginally without asphyxia or resuscitation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生经过有异常吗？",
+          "出生"
+        ],
+        "en": [
+          "Were there problems around birth?",
+          "birth"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有特殊病史吗？",
+        "en": "Is there a notable family history?"
+      },
+      "answer": {
+        "zh-CN": "原记录说没有特殊家族史。",
+        "en": "The record describes no notable family history."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有特殊病史吗？",
+          "家族史"
+        ],
+        "en": [
+          "Is there a notable family history?",
+          "family history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "supplements",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "还服用其他非处方药或保健品吗？",
+        "en": "Were other non-prescription medicines or supplements used?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还服用其他非处方药或保健品吗？"
+        ],
+        "en": [
+          "Were other non-prescription medicines or supplements used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "groin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查右侧腹股沟",
+        "en": "Examine the right groin"
+      },
+      "finding": {
+        "zh-CN": "红肿压痛包块约10×2 cm，皮温高；右腿活动受限，未发现明显皮肤破口。",
+        "en": "A red, warm, tender mass approximately 10×2 cm restricts right-leg movement; no obvious skin breach is seen."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部和肝脾",
+        "en": "Examine the abdomen, liver and spleen"
+      },
+      "finding": {
+        "zh-CN": "腹软，肝肋下2.5 cm、脾肋下3 cm。",
+        "en": "Soft abdomen; liver palpable 2.5 cm and spleen 3 cm below the costal margins."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "shock",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "复核病情恶化时灌注和意识",
+        "en": "Review perfusion and consciousness during deterioration"
+      },
+      "finding": {
+        "zh-CN": "第4住院日烦躁、呼吸困难、肢冷、足背动脉未触及，心率220次/分，伴抽搐及意识丧失。",
+        "en": "On hospital day 4 there was agitation, respiratory distress, cold limbs, impalpable dorsalis pedis pulses and heart rate 220/min, followed by seizures and unconsciousness."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "调阅腹股沟CT",
+        "en": "Review groin CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "调阅腹股沟CT"
+        ],
+        "en": [
+          "Review groin CT",
+          "ct"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "右腹股沟肿胀，数个强化结节状软组织影，考虑感染伴小脓肿。",
+            "en": "Right groin swelling with several enhancing nodular soft-tissue lesions, interpreted as infection with small abscesses."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "culture",
+      "name": {
+        "zh-CN": "调阅血和穿刺液培养/药敏",
+        "en": "Review blood and aspirate cultures/susceptibility"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "调阅血和穿刺液培养/药敏"
+        ],
+        "en": [
+          "Review blood and aspirate cultures/susceptibility",
+          "culture"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "第4住院日前后双份穿刺液及血培养均检出紫色色杆菌（Chromobacterium violaceum）。报告美罗培南、亚胺培南、环丙沙星等敏感；头孢曲松、头孢他啶、哌拉西林耐药。判读标准和MIC未列出。",
+            "en": "Around hospital day 4, two aspirate samples and blood grew Chromobacterium violaceum. Meropenem, imipenem and ciprofloxacin were among agents reported susceptible; ceftriaxone, ceftazidime and piperacillin were resistant. MICs and interpretive criteria are not supplied."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig02"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "inflammation",
+      "name": {
+        "zh-CN": "调阅血常规及炎症指标",
+        "en": "Review blood counts and inflammatory markers"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "调阅血常规及炎症指标"
+        ],
+        "en": [
+          "Review blood counts and inflammatory markers",
+          "inflammation"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "入院白细胞29.26×10⁹/L、血红蛋白119 g/L、血小板205×10⁹/L；CRP 151.96 mg/L、PCT>25 ng/mL。恶化时血红蛋白57 g/L、血小板9×10⁹/L。",
+            "en": "At admission WBC was 29.26×10⁹/L, haemoglobin 119 g/L and platelets 205×10⁹/L, with CRP 151.96 mg/L and PCT >25 ng/mL. During deterioration haemoglobin fell to 57 g/L and platelets to 9×10⁹/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "organ-function",
+      "name": {
+        "zh-CN": "调阅凝血和器官功能",
+        "en": "Review coagulation and organ-function tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "调阅凝血和器官功能"
+        ],
+        "en": [
+          "Review coagulation and organ-function tests",
+          "organ-function"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "恶化时INR 1.77、PT 20.7秒、APTT 47.1秒，ALT 281 U/L、AST 990 U/L，乳酸887 mg/L（按原文单位保留）。",
+            "en": "During deterioration INR was 1.77, PT 20.7 s, APTT 47.1 s, ALT 281 U/L, AST 990 U/L and lactate 887 mg/L (unit retained as reported)."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "drainage",
+      "name": {
+        "zh-CN": "调阅引流及病理记录",
+        "en": "Review drainage and pathology record"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "调阅引流及病理记录"
+        ],
+        "en": [
+          "Review drainage and pathology record",
+          "drainage"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "第3住院日切开引流出约10 mL黄色脓液；组织大部坏死，急慢性炎细胞浸润及小脓肿。初始万古霉素治疗下仍进展。",
+            "en": "On hospital day 3 incision and drainage yielded about 10 mL yellow pus. Tissue showed extensive necrosis, acute/chronic inflammation and microabscesses; illness progressed during initial vancomycin treatment."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告改用美罗培南并进行机械通气、休克和凝血支持、血液净化等。期间反复休克、出血及少尿；第7住院日休克和出血好转，血小板35×10⁹/L。第8日后进一步治疗终止，随访获悉死亡；短期指标改善不等于最终存活。",
+            "en": "The report changed to meropenem and used ventilation, shock/coagulation support and blood purification. Recurrent shock, bleeding and oliguria occurred. Shock and bleeding improved by hospital day 7 and platelets reached 35×10⁹/L. Further treatment ended after day 8 and follow-up reported death; short-term improvement was not survival."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "exposure"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "groin"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "如何整合局部病灶、培养和全身恶化？",
+        "en": "How should local lesions, cultures and systemic deterioration be integrated?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "culture",
+            "phase": "workup"
+          },
+          {
+            "read": "organ-function",
+            "phase": "workup"
+          },
+          {
+            "examined": "shock"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "紫色色杆菌侵袭性感染，伴脓毒性休克及器官功能损伤",
+            "en": "Invasive Chromobacterium violaceum infection with septic shock and organ dysfunction"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "血和病灶培养一致，伴灌注、意识及凝血异常，不能局限于皮肤诊断。",
+            "en": "Concordant blood and lesion cultures with perfusion, neurological and coagulation abnormalities establish a systemic problem."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只是局部脓肿，培养与全身症状无关",
+            "en": "A local abscess only; cultures are unrelated to systemic illness"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "血和病灶培养一致，伴灌注、意识及凝血异常，不能局限于皮肤诊断。",
+            "en": "Concordant blood and lesion cultures with perfusion, neurological and coagulation abnormalities establish a systemic problem."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "进一步处理怎样避免延续无效方案？",
+        "en": "How should further care avoid persisting with ineffective therapy?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "drainage",
+            "phase": "workup"
+          },
+          {
+            "read": "inflammation",
+            "phase": "workup"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "PICU、感染和外科协作，紧急处理休克与感染灶，并按培养及可靠药敏调整抗菌方案",
+            "en": "PICU, infection and surgery coordinate urgent shock care and source control, with antimicrobial revision using cultures and reliable susceptibility interpretation"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "引流不代替有效抗菌和器官支持；具体药物和剂量需要专家评估，不能把病例药敏推广到所有菌株。",
+            "en": "Drainage does not replace effective antimicrobials and organ support; expert selection is required and this isolate’s susceptibility cannot be generalised."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "因为已切开引流，只继续单用原抗革兰阳性菌方案等待",
+            "en": "Continue only the original Gram-positive regimen because drainage has already been performed"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "引流不代替有效抗菌和器官支持；具体药物和剂量需要专家评估，不能把病例药敏推广到所有菌株。",
+            "en": "Drainage does not replace effective antimicrobials and organ support; expert selection is required and this isolate’s susceptibility cannot be generalised."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "exposure"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "groin"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "ct",
+        "culture",
+        "inflammation",
+        "organ-function",
+        "drainage",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "病原与感染灶证据一致，最终结局为死亡；游泳是暴露线索而非已证实感染途径。",
+      "en": "Pathogen and source evidence are concordant and the final outcome was death; swimming is an exposure clue, not a proven route of infection."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "局部病灶恶化和全身灌注变化需要持续重新评估。",
+        "en": "Local progression and systemic perfusion changes require repeated reassessment."
+      },
+      {
+        "zh-CN": "免疫功能部分筛查未见明显异常，不能排除所有先天免疫缺陷。",
+        "en": "Unremarkable selected immune tests do not exclude every inherited immune disorder."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "确切感染入口、水样证据、MIC/药敏标准、完整免疫缺陷评估及死亡具体机制。",
+        "en": "Exact portal of entry, environmental evidence, MIC/interpretive criteria, complete immunodeficiency evaluation and precise mechanism of death."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "孙静敏; 金丹群; 许愿愿; 郑丽云. 紫色色杆菌脓毒症一例并文献复习. 中国小儿急救医学, 2014. DOI: 10.3760/cma.j.issn.1673-4912.2014.01.023",
+      "https://rs.yiigle.com/cmaid/70005",
+      "Surviving Sepsis Campaign. International Guidelines for the Management of Sepsis and Septic Shock in Children (2026). https://www.sccm.org/survivingsepsiscampaign/guidelines-and-resources/surviving-sepsis-campaign-pediatric-guidelines"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "确切感染入口、水样证据、MIC/药敏标准、完整免疫缺陷评估及死亡具体机制。",
+      "en": "Exact portal of entry, environmental evidence, MIC/interpretive criteria, complete immunodeficiency evaluation and precise mechanism of death."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-70005/fig01.png",
+      "title": {
+        "zh-CN": "原报告：腹股沟CT",
+        "en": "Source: groin CT"
+      },
+      "credit": {
+        "zh-CN": "原报告图，孙静敏; 金丹群; 许愿愿; 郑丽云，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c6f40570ce7cc956d8113749333a6e9dce0fc9f2a31455bc9ad6843057900a7f"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-70005/fig02.png",
+      "title": {
+        "zh-CN": "原报告：培养菌落",
+        "en": "Source: cultured colonies"
+      },
+      "credit": {
+        "zh-CN": "原报告图，孙静敏; 金丹群; 许愿愿; 郑丽云，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "02c141f37ef5dda7dc831d5be33dea1bac136788d3bccd9c936f6802b6a4a31c"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-70005/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "dee93413023efdce80bb5c2cabb409c0444a8d68620eddf81d2319cd5d2d4aff"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "trauma"
+    },
+    {
+      "type": "ask",
+      "itemId": "cough"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "supplements"
+    },
+    {
+      "type": "examine",
+      "findingId": "groin"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "examine",
+      "findingId": "shock"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "culture"
+    },
+    {
+      "type": "read",
+      "investigationId": "culture",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "inflammation"
+    },
+    {
+      "type": "read",
+      "investigationId": "inflammation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "organ-function"
+    },
+    {
+      "type": "read",
+      "investigationId": "organ-function",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "drainage"
+    },
+    {
+      "type": "read",
+      "investigationId": "drainage",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "70005",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/70005",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "发热和包块从什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did fever and the lump begin?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "包块和体温后来怎样变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "How did the lump and temperature change?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "发病前有游泳或水体接触吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Was there swimming or water exposure before illness?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "此前用了什么抗感染治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What antimicrobial treatment had already been given?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "有外伤或皮肤破损吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "Was there trauma or broken skin?",
+        "locale": "en",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "还有其他伴随症状吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "What other symptoms accompanied the illness?",
+        "locale": "en",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "出生经过有异常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Were there problems around birth?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "家族中有特殊病史吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Is there a notable family history?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      }
+    ]
+  }
+}

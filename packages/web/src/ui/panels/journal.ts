@@ -11,6 +11,7 @@ import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { evidenceGrid } from "./common.js";
 import { debriefUnlocked } from "./debrief.js";
+import { sourceMaterialUnlocked } from "../../app/source-access.js";
 
 export function journalPanel(app: App): () => PanelView {
   return () => {
@@ -29,19 +30,27 @@ export function journalPanel(app: App): () => PanelView {
     const pdfAsset = c.assets.find((a) => a.kind === "pdf");
     const pdf = pdfAsset ? caseAssetUrl(c, pdfAsset.id) : null;
     const pdfBtn = h("button", { type: "button", id: "download-paper", disabled: true, title: tr("journal.pdfMissing") }, tr("journal.pdf"));
+    let pdfReady = false;
+    const updatePdf = (): void => {
+      const unlocked = sourceMaterialUnlocked(c, store.snapshot?.state ?? game.session.session.state);
+      pdfBtn.disabled = !pdfReady || !unlocked;
+      pdfBtn.title = !unlocked ? tr("journal.pdfLocked") : pdfReady ? "" : tr("journal.pdfMissing");
+    };
     if (pdf?.url) {
       // Opened in a same-origin tab: only a real PDF (never an SVG/HTML file with that name).
       void assetContentType(pdf.url).then((type) => {
-        const ok = type === "application/pdf";
-        pdfBtn.disabled = !ok;
-        pdfBtn.title = ok ? "" : tr("journal.pdfMissing");
-        if (ok) pdfBtn.onclick = () => window.open(pdf.url!, "_blank", "noopener");
+        pdfReady = type === "application/pdf";
+        updatePdf();
+        if (pdfReady) pdfBtn.onclick = () => {
+          if (sourceMaterialUnlocked(c, store.snapshot?.state ?? game.session.session.state)) window.open(pdf.url!, "_blank", "noopener");
+        };
       });
     }
 
     const render = (): void => {
       const snap = store.snapshot;
       const s = snap?.state ?? game.session.session.state;
+      updatePdf();
       const done = new Set(Object.keys(s.objectivesDone));
       clear(tasks);
       // The teaching hint is a scored action (HUD hint button): the journal shows it only for completed
@@ -120,6 +129,15 @@ export function sourcePanel(app: App): () => PanelView {
     if (!game) throw new Error("no game");
     const c = game.caseDef;
     const p = c.provenance;
+    const state = game.session.store.snapshot?.state ?? game.session.session.state;
+    if (!sourceMaterialUnlocked(c, state)) {
+      return {
+        id: "source",
+        kicker: tr("source.kicker"),
+        title: tr("source.title"),
+        body: [h("p", { class: "notice" }, tr("source.locked")), h("p", { id: "source-disclaimer" }, caseDisclaimer(c.disclaimer)), h("button", { type: "button", onclick: () => app.open("journal") }, tr("report.backJournal"))],
+      };
+    }
     const rows: [string, string][] = [];
     if (p.citation) rows.push([tr("source.citation"), p.citation]);
     if (p.doi) rows.push([tr("source.doi"), p.doi]);

@@ -1,0 +1,1515 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653413",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "长期咳喘突然加重 · 74岁男性",
+    "en": "Acute worsening of longstanding breathlessness · man aged 74"
+  },
+  "summary": {
+    "zh-CN": "长期肺病患者静息气促加重，接受治疗后仍迅速恶化；对比血气、影像与病原资料，明确安全升级和证据边界。",
+    "en": "A patient with longstanding lung disease worsens at rest and deteriorates despite treatment; compare gases, imaging and microbiology to assess escalation and evidentiary limits."
+  },
+  "specialty": [
+    "respiratory-medicine",
+    "critical-care"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "何政恆; 黃卓健; 冼慧雯. 中西醫結合治療特發性肺纖維化合併肺炎1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.022",
+    "doi": "10.12408/j.issn2223-4462.2025.02.022",
+    "authors": [
+      "何政恆",
+      "黃卓健",
+      "冼慧雯"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "蒋先生（化名）",
+      "en": "Mr Jiang (pseudonym)"
+    },
+    "age": 74,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "咳痰伴喘憋9年，加重4天",
+      "en": "Nine years of cough and breathlessness, worse for four days"
+    },
+    "triageNote": {
+      "zh-CN": "长期肺病患者静息气促加重，接受治疗后仍迅速恶化；对比血气、影像与病原资料，明确安全升级和证据边界。",
+      "en": "A patient with longstanding lung disease worsens at rest and deteriorates despite treatment; compare gases, imaging and microbiology to assess escalation and evidentiary limits."
+    },
+    "tags": [
+      {
+        "zh-CN": "咳痰伴喘憋9年，加重4天",
+        "en": "Nine years of cough and breathlessness, worse for four days"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "咳嗽咳痰和喘憋已有9年，最近4天更重，静息时也胸闷。",
+        "en": "Cough, sputum and breathlessness have lasted nine years and worsened over four days, with chest tightness even at rest."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      },
+      "companion": {
+        "role": "carer",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
+          "en": "Relays only the reported history without inventing witnessed events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次症状持续多久？",
+        "en": "How long has this worsening lasted?"
+      },
+      "answer": {
+        "zh-CN": "咳嗽咳痰和喘憋已有9年，最近4天更重，静息时也胸闷。",
+        "en": "Cough, sputum and breathlessness have lasted nine years and worsened over four days, with chest tightness even at rest."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这次症状持续多久？",
+          "喘憋"
+        ],
+        "en": [
+          "How long has this worsening lasted?",
+          "breathlessness"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "最近活动能力怎样？",
+        "en": "How has activity tolerance changed?"
+      },
+      "answer": {
+        "zh-CN": "活动耐力逐年下降，这几天不能下床，稍动就更喘。",
+        "en": "Exercise tolerance has declined over time; recently he cannot get out of bed and minimal movement worsens breathlessness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最近活动能力怎样？",
+          "活动耐力"
+        ],
+        "en": [
+          "How has activity tolerance changed?",
+          "activity tolerance"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "既往肺病和治疗是什么？",
+        "en": "What lung disease and treatment were previously recorded?"
+      },
+      "answer": {
+        "zh-CN": "9年前诊断肺间质纤维化，长期用吡非尼酮，期间反复感染。",
+        "en": "Interstitial pulmonary fibrosis was diagnosed nine years earlier, treated with pirfenidone, with recurrent infections."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往肺病和治疗是什么？",
+          "肺病"
+        ],
+        "en": [
+          "What lung disease and treatment were previously recorded?",
+          "pirfenidone"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "此次已接受哪些治疗？",
+        "en": "What treatment has already been given for this episode?"
+      },
+      "answer": {
+        "zh-CN": "已用抗菌、抗真菌药、甲泼尼龙和无创通气，但仍喘憋。",
+        "en": "Antibacterial and antifungal drugs, methylprednisolone and non-invasive ventilation have been used, but breathlessness persists."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此次已接受哪些治疗？",
+          "用药"
+        ],
+        "en": [
+          "What treatment has already been given for this episode?",
+          "medications"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "接触过粉尘毒物或饲养鸟类吗？",
+        "en": "Was there dust, toxic exposure or bird keeping?"
+      },
+      "answer": {
+        "zh-CN": "否认粉尘、毒物、放射物质接触，也没有养鸟。",
+        "en": "Dust, toxic or radiation exposure and bird keeping were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "接触过粉尘毒物或饲养鸟类吗？",
+          "粉尘"
+        ],
+        "en": [
+          "Was there dust, toxic exposure or bird keeping?",
+          "bird keeping"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "associated",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "还有哪些伴随问题？",
+        "en": "What associated problems were recorded?"
+      },
+      "answer": {
+        "zh-CN": "吃不好、睡不好，便秘、尿少，还有说胡话和幻视。",
+        "en": "Poor eating and sleep, constipation, low urine output, delirium and visual hallucinations were reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还有哪些伴随问题？",
+          "幻视"
+        ],
+        "en": [
+          "What associated problems were recorded?",
+          "hallucinations"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "sputum",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "痰是什么样的？",
+        "en": "What is the sputum like?"
+      },
+      "answer": {
+        "zh-CN": "最初间断咳白黏痰。",
+        "en": "Initially there was intermittent white sticky sputum."
+      },
+      "keywords": {
+        "zh-CN": [
+          "痰是什么样的？",
+          "痰"
+        ],
+        "en": [
+          "whatisthesputumlike",
+          "sputum"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "later",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "入院5小时后发生什么变化？",
+        "en": "What changed five hours after admission?"
+      },
+      "answer": {
+        "zh-CN": "喘憋进一步加重，痰中带血，呼吸急促。",
+        "en": "Breathlessness worsened further, with blood-streaked sputum and rapid breathing."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院5小时后发生什么变化？",
+          "五小时"
+        ],
+        "en": [
+          "What changed five hours after admission?",
+          "five hours"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察体位与意识",
+        "en": "Observe posture and mental state"
+      },
+      "finding": {
+        "zh-CN": "强迫体位、表情痛苦，有谵妄。",
+        "en": "Distressed with a forced posture and delirium."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "respiratory",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊肺部",
+        "en": "Auscultate the lungs"
+      },
+      "finding": {
+        "zh-CN": "双肺呼吸音粗，双下肺爆裂音及湿啰音。",
+        "en": "Coarse breath sounds with basal crackles bilaterally."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对入院生命体征",
+        "en": "Review admission vital signs"
+      },
+      "finding": {
+        "zh-CN": "体温36.5℃、心率118次/分、呼吸47次/分、血压145/89 mmHg。",
+        "en": "Temperature 36.5°C, heart rate 118/min, respiratory rate 47/min and blood pressure 145/89 mmHg."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "abg",
+      "name": {
+        "zh-CN": "连续血气",
+        "en": "Serial blood gases"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "连续血气"
+        ],
+        "en": [
+          "Serial blood gases",
+          "abg"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "入院pH 7.430、PaCO₂ 56.3、PaO₂ 76.2 mmHg；5小时后pH 7.149、PaCO₂ 118.5、PaO₂ 20.7 mmHg。对应吸氧参数及采样细节不详。",
+            "en": "Initial pH 7.430, PaCO₂ 56.3 and PaO₂ 76.2 mmHg; five hours later pH 7.149, PaCO₂ 118.5 and PaO₂ 20.7 mmHg. Oxygen settings and sampling details are not specified."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "胸部CT",
+        "en": "Chest CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部CT"
+        ],
+        "en": [
+          "Chest CT",
+          "ct"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "双肺间质改变、炎症及纤维化，透光度下降；右肺体积小，胸膜增厚钙化。图注另述皮下和纵隔气肿及少量气胸，正文未完整说明其时间与处理。",
+            "en": "Bilateral interstitial abnormalities, inflammation and fibrosis with reduced aeration, a small right lung and pleural thickening/calcification. The caption additionally describes subcutaneous/mediastinal emphysema and a small pneumothorax, with timing and treatment incompletely detailed."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "microbiology",
+      "name": {
+        "zh-CN": "痰病原学",
+        "en": "Sputum microbiology"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "痰病原学"
+        ],
+        "en": [
+          "Sputum microbiology",
+          "microbiology"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "痰真菌培养见酵母样真菌及菌丝；另记录嗜麦芽窄食单胞菌（原文旧称嗜麦芽假单胞菌）。缺乏侵袭性真菌感染的进一步确证资料。",
+            "en": "Sputum fungal culture showed yeast-like fungi and hyphae; Stenotrophomonas maltophilia was also reported under an older name. Further confirmation of invasive fungal infection is not provided."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "labs",
+      "name": {
+        "zh-CN": "血常规和炎症指标",
+        "en": "Blood count and inflammatory markers"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规和炎症指标"
+        ],
+        "en": [
+          "Blood count and inflammatory markers",
+          "labs"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "白细胞10.28×10⁹/L，中性粒细胞89.8%，血红蛋白74 g/L，CRP 12.9 mg/L；恶化时BNP 364 ng/L。",
+            "en": "WBC 10.28×10⁹/L, neutrophils 89.8%, haemoglobin 74 g/L and CRP 12.9 mg/L; BNP during deterioration was 364 ng/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告在通气、抗感染及激素等基础上加用中医药，多项干预同时变化。10日影像炎症开始吸收，3周后症状减轻并出院；CT纤维化同前。没有证据证明任何单一药物逆转纤维化。",
+            "en": "The report added traditional medicines while respiratory support, antimicrobials and steroids were used and changed concurrently. Inflammatory opacities improved by day 10 and symptoms improved before discharge after three weeks; CT fibrosis was unchanged. The record does not prove reversal of fibrosis by any single treatment."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig02"
+          ],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "function"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "respiratory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪些问题应同时纳入当前评估？",
+        "en": "Which problems belong in the current assessment?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "abg",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "microbiology",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "纤维化肺病急性恶化伴严重高碳酸血症呼吸衰竭，需评估感染与影像并发症",
+            "en": "Acute deterioration of fibrotic lung disease with severe hypercapnic respiratory failure; assess infection and imaging complications"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "血气已提示危险变化；痰培养不能单独区分定植和侵袭，图注异常也需核对。",
+            "en": "Blood gases demonstrate dangerous deterioration; sputum culture alone cannot distinguish colonisation from invasion, and caption abnormalities require review."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "痰培养有真菌即可独立确诊侵袭性真菌肺炎并解释全部恶化",
+            "en": "Fungi in sputum alone prove invasive fungal pneumonia and explain all deterioration"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "血气已提示危险变化；痰培养不能单独区分定植和侵袭，图注异常也需核对。",
+            "en": "Blood gases demonstrate dangerous deterioration; sputum culture alone cannot distinguish colonisation from invasion, and caption abnormalities require review."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "应如何处理严重恶化而不夸大证据？",
+        "en": "How should severe deterioration be addressed without overstating evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "labs",
+            "phase": "workup"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "紧急重症与呼吸专科评估通气、可逆诱因和治疗目标；不能把中药替代呼吸支持",
+            "en": "Urgent critical-care and respiratory review of ventilation, reversible contributors and goals of care; herbal treatment must not replace respiratory support"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "多种措施同期使用，无法归因；报告复查明确纤维化同前。",
+            "en": "Concurrent interventions prevent causal attribution; follow-up explicitly described unchanged fibrosis."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "复制高剂量含附子方剂并认定它逆转了肺纤维化",
+            "en": "Copy the high-dose aconite-containing prescription and conclude it reversed fibrosis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "多种措施同期使用，无法归因；报告复查明确纤维化同前。",
+            "en": "Concurrent interventions prevent causal attribution; follow-up explicitly described unchanged fibrosis."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "function"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "respiratory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "abg",
+        "ct",
+        "microbiology",
+        "labs",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "本例的可核对结局是急性炎症和症状改善、纤维化未变。",
+      "en": "The verifiable endpoint is improvement in acute inflammation and symptoms with unchanged fibrosis."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "连续血气比单次体温更能显示本次危急程度。",
+        "en": "Serial blood gases demonstrate severity better than a single temperature."
+      },
+      {
+        "zh-CN": "单病例同时治疗不能证明中药或激素的独立效应。",
+        "en": "Concurrent treatment in one case cannot establish independent effects of herbs or steroids."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "气胸出现时间、通气参数、详细药敏、侵袭性真菌证据及长期随访。",
+        "en": "Pneumothorax timing, ventilation settings, detailed susceptibility results, invasive fungal evidence and long-term follow-up."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "何政恆; 黃卓健; 冼慧雯. 中西醫結合治療特發性肺纖維化合併肺炎1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.022",
+      "https://rs.yiigle.com/cmaid/1653413",
+      "ATS/ERS/JRS/ALAT. Idiopathic Pulmonary Fibrosis (an Update) and Progressive Pulmonary Fibrosis in Adults (2022). https://www.thoracic.org/statements/guideline-implementation-tools/matrix-guidelines-and-derivatives-ipf-update.php"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "气胸出现时间、通气参数、详细药敏、侵袭性真菌证据及长期随访。",
+      "en": "Pneumothorax timing, ventilation settings, detailed susceptibility results, invasive fungal evidence and long-term follow-up."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653413/fig01.png",
+      "title": {
+        "zh-CN": "原报告：急性期胸部CT",
+        "en": "Source: chest CT during acute illness"
+      },
+      "credit": {
+        "zh-CN": "原报告图，何政恆; 黃卓健; 冼慧雯，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "96b36ae2788044fb0bf396ae047d9deea02ec6ca04310a1bcd6090391e26445c"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653413/fig02.png",
+      "title": {
+        "zh-CN": "原报告：治疗后CT，纤维化同前",
+        "en": "Source: follow-up CT with unchanged fibrosis"
+      },
+      "credit": {
+        "zh-CN": "原报告图，何政恆; 黃卓健; 冼慧雯，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "6aad19347b3bf92338879f6545248836e07a014cc80fa716c43bf3d43b51b678"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1653413/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8e211b70f59bc58691500e6a9b24f0f9128bf832b3a2fa91a4b31338f7e1bb4d"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated"
+    },
+    {
+      "type": "ask",
+      "itemId": "sputum"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "respiratory"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "later"
+    },
+    {
+      "type": "order",
+      "investigationId": "abg"
+    },
+    {
+      "type": "read",
+      "investigationId": "abg",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "microbiology"
+    },
+    {
+      "type": "read",
+      "investigationId": "microbiology",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "labs"
+    },
+    {
+      "type": "read",
+      "investigationId": "labs",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1653413",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653413",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "这次症状持续多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long has this worsening lasted?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "最近活动能力怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "How has activity tolerance changed?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "既往肺病和治疗是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "What lung disease and treatment were previously recorded?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "此次已接受哪些治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What treatment has already been given for this episode?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "接触过粉尘毒物或饲养鸟类吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Was there dust, toxic exposure or bird keeping?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "还有哪些伴随问题？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "What associated problems were recorded?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "痰是什么样的？",
+        "locale": "zh-CN",
+        "expect": [
+          "sputum"
+        ]
+      },
+      {
+        "text": "What is the sputum like?",
+        "locale": "en",
+        "expect": [
+          "sputum"
+        ]
+      },
+      {
+        "text": "入院5小时后发生什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "later"
+        ]
+      },
+      {
+        "text": "What changed five hours after admission?",
+        "locale": "en",
+        "expect": [
+          "later"
+        ]
+      }
+    ]
+  }
+}

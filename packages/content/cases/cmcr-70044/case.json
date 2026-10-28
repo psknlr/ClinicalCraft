@@ -1,0 +1,1500 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-70044",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "咳嗽与发热 · 10岁男孩",
+    "en": "Cough and fever · boy aged 10"
+  },
+  "summary": {
+    "zh-CN": "儿童呼吸道症状治疗未改善，需认真核对既往过敏史，并在检查阶段识别输液后快速发生的危急变化。",
+    "en": "A child’s respiratory illness has not improved; check allergy history carefully and recognise a rapid infusion-related emergency in the investigation phase."
+  },
+  "specialty": [
+    "pediatrics",
+    "emergency-medicine",
+    "clinical-pharmacology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "张睿; 裴亮; 王佳; 张晗; 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学, 2014. DOI: 10.3760/cma.j.issn.1673-4912.2014.01.026",
+    "doi": "10.3760/cma.j.issn.1673-4912.2014.01.026",
+    "authors": [
+      "张睿",
+      "裴亮",
+      "王佳",
+      "张晗",
+      "韩晓华"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小安（化名）",
+      "en": "An (pseudonym)"
+    },
+    "age": 10,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "咳嗽10天、发热5天",
+      "en": "Ten days of cough and five days of fever"
+    },
+    "triageNote": {
+      "zh-CN": "儿童呼吸道症状治疗未改善，需认真核对既往过敏史，并在检查阶段识别输液后快速发生的危急变化。",
+      "en": "A child’s respiratory illness has not improved; check allergy history carefully and recognise a rapid infusion-related emergency in the investigation phase."
+    },
+    "tags": [
+      {
+        "zh-CN": "咳嗽10天、发热5天",
+        "en": "Ten days of cough and five days of fever"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "咳嗽10天，发热5天。",
+        "en": "Cough has lasted ten days and fever five days."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
+          "en": "Relays only the reported history without inventing witnessed events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "孩子咳嗽发热多久了？",
+        "en": "How long has the child had cough and fever?"
+      },
+      "answer": {
+        "zh-CN": "咳嗽10天，发热5天。",
+        "en": "Cough has lasted ten days and fever five days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子咳嗽发热多久了？",
+          "咳嗽发热"
+        ],
+        "en": [
+          "How long has the child had cough and fever?",
+          "cough fever"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前发生过什么药物过敏？",
+        "en": "What previous medicine allergy was reported?"
+      },
+      "answer": {
+        "zh-CN": "以前有过青霉素过敏，原记录称某批次过敏；具体表现没写。",
+        "en": "Penicillin allergy had been reported, described historically as batch-related; the reaction details were not recorded."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前发生过什么药物过敏？",
+          "青霉素过敏"
+        ],
+        "en": [
+          "What previous medicine allergy was reported?",
+          "penicillin allergy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "来院前用过什么药？",
+        "en": "Which medicines were used before admission?"
+      },
+      "answer": {
+        "zh-CN": "诊所输注头孢呋辛、氨溴索和炎琥宁4天，没有好转。",
+        "en": "Cefuroxime, ambroxol and Yanhuning had been infused for four days without improvement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "来院前用过什么药？",
+          "用药"
+        ],
+        "en": [
+          "Which medicines were used before admission?",
+          "cefuroxime"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有药物过敏吗？",
+        "en": "Is there a family history of drug allergy?"
+      },
+      "answer": {
+        "zh-CN": "否认家属药物过敏史。",
+        "en": "Family drug allergy was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家人有药物过敏吗？",
+          "家族过敏"
+        ],
+        "en": [
+          "Is there a family history of drug allergy?",
+          "family allergy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "atopy",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "是否有其他过敏体质记录？",
+        "en": "Was another atopic history recorded?"
+      },
+      "answer": {
+        "zh-CN": "原记录否认过敏体质，但既往青霉素反应仍须保留，不能据此否定药物风险。",
+        "en": "The record denied an atopic tendency, but the prior penicillin reaction remains relevant and must not be dismissed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "是否有其他过敏体质记录？",
+          "过敏体质"
+        ],
+        "en": [
+          "Was another atopic history recorded?",
+          "atopy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "体重记录是多少？",
+        "en": "What is the recorded body weight?"
+      },
+      "answer": {
+        "zh-CN": "原报告没有记录体重。",
+        "en": "Body weight is not recorded."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重记录是多少？"
+        ],
+        "en": [
+          "What is the recorded body weight?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "immunisation",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "疫苗接种情况怎样？",
+        "en": "What is the immunisation history?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录疫苗史。",
+        "en": "Immunisation history is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疫苗接种情况怎样？"
+        ],
+        "en": [
+          "What is the immunisation history?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "reaction",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "新输液后孩子有什么反应？",
+        "en": "What happened after the new infusion began?"
+      },
+      "answer": {
+        "zh-CN": "开始约15秒后突然呼吸困难，口周和咽部发麻，全身发痒。",
+        "en": "About 15 seconds after starting, breathing became difficult with perioral/throat numbness and generalised itching."
+      },
+      "keywords": {
+        "zh-CN": [
+          "新输液后孩子有什么反应？",
+          "输液后"
+        ],
+        "en": [
+          "What happened after the new infusion began?",
+          "after infusion"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "supplements",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "还服用其他非处方药或保健品吗？",
+        "en": "Were other non-prescription medicines or supplements used?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还服用其他非处方药或保健品吗？"
+        ],
+        "en": [
+          "Were other non-prescription medicines or supplements used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "travel",
+      "topic": "social",
+      "question": {
+        "zh-CN": "近期是否有旅行史？",
+        "en": "Was there recent travel?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期是否有旅行史？"
+        ],
+        "en": [
+          "Was there recent travel?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "initial",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "查找入院体检",
+        "en": "Retrieve admission examination"
+      },
+      "finding": {
+        "zh-CN": "原报告概述入院检查各指标未见异常，未列详细数值。",
+        "en": "Admission examination was summarised as unremarkable, without individual values."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "initial-vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对输液前生命体征数值",
+        "en": "Check pre-infusion vital-sign values"
+      },
+      "finding": {
+        "zh-CN": "输液前具体体温、血压和氧饱和度未列出，不能补写。",
+        "en": "Exact pre-infusion temperature, blood pressure and oxygen saturation are not provided and must not be invented."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "观察突发症状时皮肤",
+        "en": "Observe skin during the acute reaction"
+      },
+      "finding": {
+        "zh-CN": "片状隆起红疹，部分融合，伴大汗及面色苍白。",
+        "en": "Raised red patches, some confluent, with diaphoresis and pallor."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "perfusion",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查意识和末梢灌注",
+        "en": "Assess consciousness and peripheral perfusion"
+      },
+      "finding": {
+        "zh-CN": "神志恍惚、脉弱、四肢凉，毛细血管再充盈超过5秒。",
+        "en": "Clouded consciousness, weak pulse, cool extremities and capillary refill over five seconds."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "xray",
+      "name": {
+        "zh-CN": "入院胸部X线",
+        "en": "Admission chest radiograph"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "入院胸部X线"
+        ],
+        "en": [
+          "Admission chest radiograph",
+          "xray"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "胸片提示左肺炎症。",
+            "en": "The chest radiograph indicated left-sided pulmonary inflammation."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "skin-test",
+      "name": {
+        "zh-CN": "调阅皮试记录",
+        "en": "Review skin-test record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅皮试记录"
+        ],
+        "en": [
+          "Review skin-test record",
+          "skin-test"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "入院青霉素皮试阴性。该结果不能排除随后对头孢噻肟/舒巴坦的严重反应。",
+            "en": "The admission penicillin skin test was negative. This does not exclude a subsequent severe reaction to cefotaxime/sulbactam."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "observations",
+      "name": {
+        "zh-CN": "急性反应生命体征",
+        "en": "Acute reaction observations"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "急性反应生命体征"
+        ],
+        "en": [
+          "Acute reaction observations",
+          "observations"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "血压60/30 mmHg，SpO₂ 85%，心率约140次/分、呼吸约50次/分，口周发绀。",
+            "en": "Blood pressure 60/30 mmHg, SpO₂ 85%, heart rate about 140/min and respiratory rate about 50/min, with perioral cyanosis."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "infusion-chart",
+      "name": {
+        "zh-CN": "新输液与发作时间",
+        "en": "New infusion and onset record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "新输液与发作时间"
+        ],
+        "en": [
+          "New infusion and onset record",
+          "infusion-chart"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "头孢噻肟钠/舒巴坦钠开始后约15秒出现呼吸、皮肤和循环异常；此前头孢呋辛治疗未记录同样反应。",
+            "en": "Respiratory, skin and circulatory abnormalities began about 15 seconds after cefotaxime/sulbactam started; the same reaction had not been documented during earlier cefuroxime treatment."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "历史报告先停药、保留静脉通路、给激素、监测和吸氧，随后静脉推注肾上腺素并再用激素。5分钟后血压及氧合改善，1小时后较稳定，治疗10天出院。该先激素/静脉推注顺序不作为正确答案；具体致敏成分及长期过敏随访未证实。",
+            "en": "Historically the drug was stopped, IV access maintained, and steroids, monitoring and oxygen given before an IV adrenaline bolus and further steroids. Blood pressure and oxygenation improved after five minutes, stability was reported at one hour and discharge followed ten days of treatment. The steroid-first/IV-bolus sequence is not a correct teaching pathway; the precise allergenic component and long-term allergy follow-up were not established."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "allergies"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "initial"
+          },
+          {
+            "examined": "initial-vitals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "怎样解释突发的多系统表现？",
+        "en": "How should the abrupt multi-system findings be interpreted?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "observations",
+            "phase": "workup"
+          },
+          {
+            "read": "infusion-chart",
+            "phase": "workup"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "perfusion"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "药物相关严重过敏反应并休克，立即启动急救",
+            "en": "Drug-associated anaphylaxis with shock requiring immediate emergency response"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "皮肤、呼吸与循环同时受累且紧邻药物暴露，阴性青霉素皮试不推翻临床急症。",
+            "en": "Skin, breathing and circulation are affected immediately after drug exposure; a negative penicillin skin test does not negate this clinical emergency."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "皮试阴性所以不是过敏，只是害怕输液",
+            "en": "A negative skin test excludes allergy; this is infusion anxiety"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "皮肤、呼吸与循环同时受累且紧邻药物暴露，阴性青霉素皮试不推翻临床急症。",
+            "en": "Skin, breathing and circulation are affected immediately after drug exposure; a negative penicillin skin test does not negate this clinical emergency."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "如何把当前安全原则与原报告处置区分？",
+        "en": "How should current safety principles be separated from historical care?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "skin-test",
+            "phase": "workup"
+          },
+          {
+            "asked": "weight"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "停可疑药并呼救，按儿童过敏急救流程及时肌注肾上腺素及ABC支持；体重和剂量由专业人员核实",
+            "en": "Stop the suspected infusion and call for help; provide prompt intramuscular adrenaline and ABC support under a paediatric anaphylaxis protocol, with weight/dose verification by clinicians"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "RCUK强调肌注肾上腺素为首线；常规激素不能替代它，静脉肾上腺素需特定专业环境。",
+            "en": "RCUK identifies intramuscular adrenaline as first-line; routine steroids do not replace it, and intravenous adrenaline requires an appropriate expert setting."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "先仅给激素等待，或照搬原报告肾上腺素静脉推注",
+            "en": "Give only steroids first and wait, or copy the report’s intravenous adrenaline bolus"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "RCUK强调肌注肾上腺素为首线；常规激素不能替代它，静脉肾上腺素需特定专业环境。",
+            "en": "RCUK identifies intramuscular adrenaline as first-line; routine steroids do not replace it, and intravenous adrenaline requires an appropriate expert setting."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "allergies"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "initial"
+          },
+          {
+            "examined": "initial-vitals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "xray",
+        "skin-test",
+        "observations",
+        "infusion-chart",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "短时间内皮肤、呼吸和循环异常支持严重过敏伴休克；既往耐受及阴性皮试均不能使新反应失去紧急性。",
+      "en": "Rapid skin, respiratory and circulatory findings support anaphylaxis with shock; prior tolerance and a negative skin test do not remove its urgency."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "临床识别和及时急救不等待机制或具体成分确证。",
+        "en": "Recognition and emergency care do not wait for confirmation of mechanism or a specific component."
+      },
+      {
+        "zh-CN": "既往所谓批次过敏不代表其他批次安全。",
+        "en": "A historical description of batch-related allergy does not establish safety of another batch."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "体重、过敏原确证、胰蛋白酶结果及长期复发/过敏专科随访。",
+        "en": "Weight, allergen confirmation, tryptase and long-term recurrence/allergy follow-up."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "张睿; 裴亮; 王佳; 张晗; 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学, 2014. DOI: 10.3760/cma.j.issn.1673-4912.2014.01.026",
+      "https://rs.yiigle.com/cmaid/70044",
+      "Resuscitation Council UK. Emergency treatment of anaphylaxis: Guidelines for healthcare providers (2021). https://www.resus.org.uk/library/additional-guidance/guidance-anaphylaxis/emergency-treatment-anaphylactic-reactions"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "体重、过敏原确证、胰蛋白酶结果及长期复发/过敏专科随访。",
+      "en": "Weight, allergen confirmation, tryptase and long-term recurrence/allergy follow-up."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-70044/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "994fc6a32c9762b6931129c5cc13cfa16d2af0f5f0c8d87f87b831525490238a"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "atopy"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "immunisation"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "supplements"
+    },
+    {
+      "type": "ask",
+      "itemId": "travel"
+    },
+    {
+      "type": "examine",
+      "findingId": "initial"
+    },
+    {
+      "type": "examine",
+      "findingId": "initial-vitals"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "reaction"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "perfusion"
+    },
+    {
+      "type": "order",
+      "investigationId": "xray"
+    },
+    {
+      "type": "read",
+      "investigationId": "xray",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "skin-test"
+    },
+    {
+      "type": "read",
+      "investigationId": "skin-test",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "observations"
+    },
+    {
+      "type": "read",
+      "investigationId": "observations",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "infusion-chart"
+    },
+    {
+      "type": "read",
+      "investigationId": "infusion-chart",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "70044",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/70044",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "孩子咳嗽发热多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long has the child had cough and fever?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "以前发生过什么药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What previous medicine allergy was reported?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "来院前用过什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Which medicines were used before admission?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "家人有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Is there a family history of drug allergy?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "是否有其他过敏体质记录？",
+        "locale": "zh-CN",
+        "expect": [
+          "atopy"
+        ]
+      },
+      {
+        "text": "Was another atopic history recorded?",
+        "locale": "en",
+        "expect": [
+          "atopy"
+        ]
+      },
+      {
+        "text": "体重记录是多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "What is the recorded body weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "疫苗接种情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "What is the immunisation history?",
+        "locale": "en",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "新输液后孩子有什么反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "What happened after the new infusion began?",
+        "locale": "en",
+        "expect": [
+          "reaction"
+        ]
+      }
+    ]
+  }
+}

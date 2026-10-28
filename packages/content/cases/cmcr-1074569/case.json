@@ -1,0 +1,1511 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1074569",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "体检发现肝多发占位 · 55岁女性",
+    "en": "Multiple liver lesions found at a check-up · woman aged 55"
+  },
+  "summary": {
+    "zh-CN": "无明显腹部体征的患者因影像发现肝占位就诊，需寻找原发部位并通过多学科评估安排后续治疗。",
+    "en": "A patient with no clear abdominal signs presents after liver lesions are detected; identify the primary site and formulate a multidisciplinary plan."
+  },
+  "specialty": [
+    "oncology",
+    "colorectal-surgery",
+    "hepatobiliary-surgery"
+  ],
+  "difficulty": 4,
+  "setting": "outpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "林奇; 叶青海; 余一祎; 侯英勇; 王健; 周波; 陈漪; 饶圣祥; 丁建勇; 任黎; 韦烨; 许剑民. 多学科协作治疗T4N1cM1期结肠癌一例. 中华结直肠疾病电子杂志, 2014. DOI: 10.3877/cma.j.issn.2095-3224.2014.01.12",
+    "doi": "10.3877/cma.j.issn.2095-3224.2014.01.12",
+    "authors": [
+      "林奇",
+      "叶青海",
+      "余一祎",
+      "侯英勇",
+      "王健",
+      "周波",
+      "陈漪",
+      "饶圣祥",
+      "丁建勇",
+      "任黎",
+      "韦烨",
+      "许剑民"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "程女士（化名）",
+      "en": "Ms Cheng (pseudonym)"
+    },
+    "age": 55,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "体检发现肝多发占位1周",
+      "en": "Multiple liver lesions identified one week earlier"
+    },
+    "triageNote": {
+      "zh-CN": "无明显腹部体征的患者因影像发现肝占位就诊，需寻找原发部位并通过多学科评估安排后续治疗。",
+      "en": "A patient with no clear abdominal signs presents after liver lesions are detected; identify the primary site and formulate a multidisciplinary plan."
+    },
+    "tags": [
+      {
+        "zh-CN": "体检发现肝多发占位1周",
+        "en": "Multiple liver lesions identified one week earlier"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "1周前体检发现肝脏有多处占位。",
+        "en": "A check-up one week earlier found multiple liver lesions."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "sitting"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次就诊的原因是什么？",
+        "en": "What prompted this visit?"
+      },
+      "answer": {
+        "zh-CN": "1周前体检发现肝脏有多处占位。",
+        "en": "A check-up one week earlier found multiple liver lesions."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这次就诊的原因是什么？",
+          "肝占位"
+        ],
+        "en": [
+          "What prompted this visit?",
+          "liver lesions"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有哪些慢性疾病？",
+        "en": "What chronic illnesses were present?"
+      },
+      "answer": {
+        "zh-CN": "既往体健，否认肝炎、高血压及心脏病史。",
+        "en": "Previously healthy; hepatitis, hypertension and heart disease were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有哪些慢性疾病？",
+          "慢性病"
+        ],
+        "en": [
+          "What chronic illnesses were present?",
+          "chronic illness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "有家族遗传病史吗？",
+        "en": "Is there a family history of hereditary disease?"
+      },
+      "answer": {
+        "zh-CN": "否认家族性遗传病史；具体肿瘤家族谱未列出。",
+        "en": "Hereditary disease was denied; a detailed cancer pedigree is not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有家族遗传病史吗？",
+          "家族遗传"
+        ],
+        "en": [
+          "Is there a family history of hereditary disease?",
+          "hereditary history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "bowel",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "有便血、排便改变或腹痛吗？",
+        "en": "Were rectal bleeding, bowel changes or abdominal pain reported?"
+      },
+      "answer": {
+        "zh-CN": "原报告未列这些症状的具体问诊回答，不能当作否认。",
+        "en": "Specific responses about these symptoms are not documented and must not be treated as denials."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有便血、排便改变或腹痛吗？"
+        ],
+        "en": [
+          "Were rectal bleeding, bowel changes or abdominal pain reported?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时服用什么药？",
+        "en": "What regular medicines are used?"
+      },
+      "answer": {
+        "zh-CN": "完整长期用药清单未记录。",
+        "en": "A complete regular medication list is not recorded."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时服用什么药？"
+        ],
+        "en": [
+          "What regular medicines are used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过腹部手术吗？",
+        "en": "Was there previous abdominal surgery?"
+      },
+      "answer": {
+        "zh-CN": "原报告未提供此前手术史。",
+        "en": "Earlier surgical history is not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前做过腹部手术吗？"
+        ],
+        "en": [
+          "Was there previous abdominal surgery?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "近期体重有变化吗？",
+        "en": "Has weight changed recently?"
+      },
+      "answer": {
+        "zh-CN": "原报告没有记录体重变化。",
+        "en": "Weight change is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重有变化吗？"
+        ],
+        "en": [
+          "Has weight changed recently?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "screening",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以往做过肠镜或筛查吗？",
+        "en": "Were colonoscopy or screening performed previously?"
+      },
+      "answer": {
+        "zh-CN": "原记录未提供既往筛查史。",
+        "en": "Previous screening history is not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以往做过肠镜或筛查吗？"
+        ],
+        "en": [
+          "Were colonoscopy or screening performed previously?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "supplements",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "还服用其他非处方药或保健品吗？",
+        "en": "Were other non-prescription medicines or supplements used?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还服用其他非处方药或保健品吗？"
+        ],
+        "en": [
+          "Were other non-prescription medicines or supplements used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "status",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "评估初诊功能状态",
+        "en": "Review initial performance status"
+      },
+      "finding": {
+        "zh-CN": "原报告PS评分为0，未描述活动受限。",
+        "en": "The source reports performance status 0 without activity limitation."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部和浅表淋巴结",
+        "en": "Examine abdomen and superficial nodes"
+      },
+      "finding": {
+        "zh-CN": "腹部查体无明显阳性体征，浅表淋巴结未肿大。",
+        "en": "No clear positive abdominal signs or enlarged superficial nodes were reported."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "liver-mri",
+      "name": {
+        "zh-CN": "调阅肝脏MRI",
+        "en": "Review liver MRI"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "调阅肝脏MRI"
+        ],
+        "en": [
+          "Review liver MRI",
+          "liver-mri"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肝内多发病灶，其中一枚巨大融合病灶；MDT将肝病灶评估为潜在可切除。",
+            "en": "Multiple hepatic lesions including a large confluent lesion; the MDT considered the hepatic disease potentially resectable."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "body-imaging",
+      "name": {
+        "zh-CN": "调阅CT与PET-CT",
+        "en": "Review CT and PET-CT"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅CT与PET-CT"
+        ],
+        "en": [
+          "Review CT and PET-CT",
+          "body-imaging"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "结肠局部肠壁增厚，肠周多个小淋巴结，肝内多发低密度灶，支持寻找结肠来源。",
+            "en": "Focal colonic wall thickening with multiple small pericolic nodes and multiple low-density liver lesions supported investigation of a colonic source."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "endoscopy",
+      "name": {
+        "zh-CN": "调阅结肠镜及活检",
+        "en": "Review colonoscopy and biopsy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅结肠镜及活检"
+        ],
+        "en": [
+          "Review colonoscopy and biopsy",
+          "endoscopy"
+        ]
+      },
+      "requires": [
+        "endoscopy"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "距肛缘35 cm处环周占位，镜体无法通过；活检为腺癌。原MDT记录原发灶有梗阻。",
+            "en": "A circumferential mass 35 cm from the anal verge prevented passage of the colonoscope; biopsy showed adenocarcinoma. The original MDT documented obstruction at the primary."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "markers",
+      "name": {
+        "zh-CN": "调阅肿瘤标志物及常规检查",
+        "en": "Review tumour markers and routine tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "调阅肿瘤标志物及常规检查"
+        ],
+        "en": [
+          "Review tumour markers and routine tests",
+          "markers"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "CEA 781.4 ng/mL、CA19-9 287 ng/mL、AFP 1.5 ng/mL；血常规与肝肾功能未见明显异常，HBsAg阴性。",
+            "en": "CEA 781.4 ng/mL, CA19-9 287 ng/mL and AFP 1.5 ng/mL; blood count and liver/renal tests had no significant abnormality, and HBsAg was negative."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "molecular",
+      "name": {
+        "zh-CN": "调阅肿瘤分子检测",
+        "en": "Review tumour molecular testing"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "调阅肿瘤分子检测"
+        ],
+        "en": [
+          "Review tumour molecular testing",
+          "molecular"
+        ]
+      },
+      "requires": [
+        "molecular"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "原记录KRAS与BRAF野生型，未列检测位点范围、NRAS、MMR/MSI等信息；不能自动视为完整现代分子分层。",
+            "en": "KRAS and BRAF were reported wild type without assay coverage, NRAS or MMR/MSI information; this is not automatically a complete contemporary molecular profile."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告先切除乙状结肠原发灶，病理为pT4N1cM1：6枚淋巴结未见转移，但有4枚癌结节。4周期FOLFOX加西妥昔单抗后肝灶部分缓解，接受肝切除，病理符合结肠来源。之后继续系统治疗；后来CEA再升、尾状叶新病灶，切除后肝门淋巴结1/1阳性，改FOLFIRI加西妥昔单抗后维持治疗。报告末次复查未见复发转移，但未证明永久治愈。",
+            "en": "The source describes sigmoid resection with pT4N1cM1 pathology: no metastasis in six sampled nodes but four tumour deposits. After four FOLFOX/cetuximab cycles the hepatic disease partially responded and was resected, with colorectal-origin pathology. Systemic therapy continued. A later CEA rise and new caudate lesion led to another resection, with one of one hilar nodes positive, followed by FOLFIRI/cetuximab and maintenance. No recurrence was reported at the final assessment, but permanent cure is not established."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig02"
+          ],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "asked": "bowel"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "status"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪种临床判断最符合已获得资料？",
+        "en": "Which clinical interpretation best fits the available evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "liver-mri",
+            "phase": "workup"
+          },
+          {
+            "read": "body-imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "endoscopy",
+            "phase": "workup"
+          },
+          {
+            "read": "markers",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "乙状结肠腺癌伴临床肝转移，原发灶存在梗阻问题",
+            "en": "Sigmoid adenocarcinoma with clinically diagnosed liver metastases and primary-tumour obstruction"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "结肠活检提供组织学证据，肝影像与高CEA相互支持；后续肝组织证据需到随访阶段核对。",
+            "en": "Colon biopsy supplies tissue evidence and liver imaging is concordant with high CEA; subsequent liver pathology must be checked in follow-up."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只有原发性肝癌，忽略结肠活检",
+            "en": "Primary liver cancer alone, disregarding the colon biopsy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "结肠活检提供组织学证据，肝影像与高CEA相互支持；后续肝组织证据需到随访阶段核对。",
+            "en": "Colon biopsy supplies tissue evidence and liver imaging is concordant with high CEA; subsequent liver pathology must be checked in follow-up."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "怎样制定可复评的治疗路径？",
+        "en": "How should an adaptable treatment pathway be planned?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "molecular",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "结直肠、肝胆和肿瘤团队共同处理梗阻、评估转化治疗及切除机会，并补齐当前治疗所需分子资料",
+            "en": "Colorectal, hepatobiliary and oncology teams address obstruction, assess conversion/resection options and complete molecular information required for current treatment"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "可切除性需反复MDT判断；历史方案与有限分子结果不能直接代替今天的个体化选择。",
+            "en": "Resectability requires repeated MDT review; a historical regimen and incomplete molecular results cannot substitute for present-day individualisation."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "因已有多发肝病灶就永久排除切除，或仅凭旧KRAS结果固定照搬靶向方案",
+            "en": "Permanently exclude resection because liver lesions are multiple, or copy targeted therapy solely from the old KRAS result"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "可切除性需反复MDT判断；历史方案与有限分子结果不能直接代替今天的个体化选择。",
+            "en": "Resectability requires repeated MDT review; a historical regimen and incomplete molecular results cannot substitute for present-day individualisation."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "asked": "bowel"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "status"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "liver-mri",
+        "body-imaging",
+        "endoscopy",
+        "markers",
+        "molecular",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "可切除性与治疗目标随复评而变化；淋巴结0/6不等于N0，原报告癌结节使其列为N1c。",
+      "en": "Resectability and goals changed with reassessment; zero of six positive nodes did not imply N0 because tumour deposits were reported as N1c."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "原发灶梗阻影响治疗先后顺序。",
+        "en": "Obstruction at the primary influenced treatment sequencing."
+      },
+      {
+        "zh-CN": "CEA变化需与影像和组织证据一起解读，不能单独确定复发或治愈。",
+        "en": "CEA trends require imaging and tissue context and do not alone establish recurrence or cure."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整RAS/MMR/MSI、当时检测范围、具体远期随访截止时间。",
+        "en": "Extended RAS/MMR/MSI, original assay coverage and precise final follow-up duration."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "原下载MRI合图含治疗前后影像及身份信息，因此未嵌入教学场景；MRI结论依据原文描述。",
+        "en": "The downloaded MRI composite includes pre/post-treatment images and identifying details, so it is not embedded in this teaching scene; MRI findings use the source narrative."
+      }
+    ],
+    "references": [
+      "林奇; 叶青海; 余一祎; 侯英勇; 王健; 周波; 陈漪; 饶圣祥; 丁建勇; 任黎; 韦烨; 许剑民. 多学科协作治疗T4N1cM1期结肠癌一例. 中华结直肠疾病电子杂志, 2014. DOI: 10.3877/cma.j.issn.2095-3224.2014.01.12",
+      "https://rs.yiigle.com/cmaid/1074569",
+      "ASCO. Treatment of Metastatic Colorectal Cancer guideline. https://ascopubs.org/doi/10.1200/JCO.22.01690"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整RAS/MMR/MSI、当时检测范围、具体远期随访截止时间。",
+      "en": "Extended RAS/MMR/MSI, original assay coverage and precise final follow-up duration."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1074569/fig02.png",
+      "title": {
+        "zh-CN": "原报告图3：全治疗过程CEA曲线",
+        "en": "Source figure 3: CEA across the full treatment course"
+      },
+      "credit": {
+        "zh-CN": "原报告图，林奇; 叶青海; 余一祎; 侯英勇; 王健; 周波; 陈漪; 饶圣祥; 丁建勇; 任黎; 韦烨; 许剑民，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "19e0e14b34ea285e3f9038b2233eceb2dbe147e084b533a48b735465620b8a5e"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1074569/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "2ee732e4f7d44a34cd8245c1d07afaa66f182f97b48146b3b8d7679bb03ebfe2"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "bowel"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "screening"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "supplements"
+    },
+    {
+      "type": "examine",
+      "findingId": "status"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver-mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver-mri",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "body-imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "body-imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "endoscopy"
+    },
+    {
+      "type": "read",
+      "investigationId": "endoscopy",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "markers",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "molecular"
+    },
+    {
+      "type": "read",
+      "investigationId": "molecular",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1074569",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1074569",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "这次就诊的原因是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What prompted this visit?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "以前有哪些慢性疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "What chronic illnesses were present?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "有家族遗传病史吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Is there a family history of hereditary disease?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "有便血、排便改变或腹痛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "Were rectal bleeding, bowel changes or abdominal pain reported?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "平时服用什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What regular medicines are used?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "以前做过腹部手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Was there previous abdominal surgery?",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "近期体重有变化吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Has weight changed recently?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "以往做过肠镜或筛查吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "screening"
+        ]
+      },
+      {
+        "text": "Were colonoscopy or screening performed previously?",
+        "locale": "en",
+        "expect": [
+          "screening"
+        ]
+      }
+    ]
+  }
+}

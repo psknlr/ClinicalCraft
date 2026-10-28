@@ -8,6 +8,7 @@
 import { assess, t, type CaseDefinition } from "@clinicalcraft/core";
 import type { Game } from "./context.js";
 import type { RuntimeChoice } from "./llm.js";
+import { sourceMaterialUnlocked } from "./source-access.js";
 
 export const LEARNING_RECORD_FORMAT = "clinicalcraft-learning-record@1";
 
@@ -18,6 +19,7 @@ export function buildLearningRecord(game: Game, locale: string, choice: RuntimeC
   const state = session.state;
   const snapshot = session.snapshot();
   const report = store.assessment?.report ?? assess(c, state);
+  const sourceUnlocked = sourceMaterialUnlocked(c, state);
   return {
     format: LEARNING_RECORD_FORMAT,
     exportedAt: new Date().toISOString(),
@@ -27,8 +29,8 @@ export function buildLearningRecord(game: Game, locale: string, choice: RuntimeC
       version: c.version,
       title: t(c.title, locale),
       provenance: c.provenance.kind,
-      citation: c.provenance.citation ?? null,
-      doi: c.provenance.doi ?? null,
+      citation: sourceUnlocked ? c.provenance.citation ?? null : null,
+      doi: sourceUnlocked ? c.provenance.doi ?? null : null,
     },
     facility: game.facility.id,
     sessionId: session.id,

@@ -1,0 +1,1540 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-859819",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "孕中期发热咳嗽 · 25岁女性",
+    "en": "Fever and cough in mid-pregnancy · woman aged 25"
+  },
+  "summary": {
+    "zh-CN": "孕中期患者因发热咳嗽入院，随后呼吸状况迅速变化；需核对接触史、病原证据与母胎转归。",
+    "en": "A patient in mid-pregnancy is admitted with fever and cough before rapid respiratory deterioration; review exposures, pathogen evidence and maternal-fetal outcomes."
+  },
+  "specialty": [
+    "respiratory-medicine",
+    "critical-care",
+    "obstetrics"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "颜骏; 吉木森; 刘竞; 孔宪如; 胡秀兰; 杨宏锋; 赵松兰; 刘晓健; 金兆辰. 妊娠合并H7N9禽流感一例. 中华结核和呼吸杂志, 2014. DOI: 10.3760/cma.j.issn.1001-0939.2014.02.021",
+    "doi": "10.3760/cma.j.issn.1001-0939.2014.02.021",
+    "authors": [
+      "颜骏",
+      "吉木森",
+      "刘竞",
+      "孔宪如",
+      "胡秀兰",
+      "杨宏锋",
+      "赵松兰",
+      "刘晓健",
+      "金兆辰"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "许女士（化名）",
+      "en": "Ms Xu (pseudonym)"
+    },
+    "age": 25,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "咳嗽、咳痰、发热1周",
+      "en": "One week of cough, sputum and fever"
+    },
+    "triageNote": {
+      "zh-CN": "孕中期患者因发热咳嗽入院，随后呼吸状况迅速变化；需核对接触史、病原证据与母胎转归。",
+      "en": "A patient in mid-pregnancy is admitted with fever and cough before rapid respiratory deterioration; review exposures, pathogen evidence and maternal-fetal outcomes."
+    },
+    "tags": [
+      {
+        "zh-CN": "咳嗽、咳痰、发热1周",
+        "en": "One week of cough, sputum and fever"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "咳嗽、咳痰、发热1周，最高体温40.2℃。",
+        "en": "Cough, sputum and fever have lasted a week; temperature reached 40.2°C."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "发热咳嗽有多久了？",
+        "en": "How long have fever and cough been present?"
+      },
+      "answer": {
+        "zh-CN": "咳嗽、咳痰、发热1周，最高体温40.2℃。",
+        "en": "Cough, sputum and fever have lasted a week; temperature reached 40.2°C."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热咳嗽有多久了？",
+          "发热咳嗽"
+        ],
+        "en": [
+          "How long have fever and cough been present?",
+          "fever cough"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "symptoms",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "还伴有哪些不舒服？",
+        "en": "What other symptoms accompany the illness?"
+      },
+      "answer": {
+        "zh-CN": "四肢酸痛、咽痛，咳少量白色黏痰。",
+        "en": "There are muscle aches and a sore throat, with a small amount of white sticky sputum."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还伴有哪些不舒服？",
+          "酸痛"
+        ],
+        "en": [
+          "What other symptoms accompany the illness?",
+          "sputum"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pregnancy",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "发病时怀孕多少周？",
+        "en": "How far along was the pregnancy at onset?"
+      },
+      "answer": {
+        "zh-CN": "发病时停经22周加6天，超声证实是中期妊娠。",
+        "en": "At onset the pregnancy was 22 weeks and 6 days, confirmed by ultrasound."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病时怀孕多少周？",
+          "孕周"
+        ],
+        "en": [
+          "How far along was the pregnancy at onset?",
+          "gestation"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "近期接触过家禽吗？",
+        "en": "Was there contact with poultry?"
+      },
+      "answer": {
+        "zh-CN": "发病前有家禽接触史。",
+        "en": "There was poultry exposure before the illness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期接触过家禽吗？",
+          "家禽"
+        ],
+        "en": [
+          "Was there contact with poultry?",
+          "poultry"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有明确的基础病吗？",
+        "en": "Were there known underlying illnesses?"
+      },
+      "answer": {
+        "zh-CN": "以前没有明确基础病史。",
+        "en": "No definite underlying illness was reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有明确的基础病吗？",
+          "基础病"
+        ],
+        "en": [
+          "Were there known underlying illnesses?",
+          "underlying illness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "没有吸烟史。",
+        "en": "There is no smoking history."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "入院初期接受什么治疗？",
+        "en": "What treatment was started on admission?"
+      },
+      "answer": {
+        "zh-CN": "最初用了头孢曲松并吸氧。",
+        "en": "Ceftriaxone and oxygen were started initially."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院初期接受什么治疗？",
+          "用药"
+        ],
+        "en": [
+          "What treatment was started on admission?",
+          "medications"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "入院后呼吸如何变化？",
+        "en": "How did breathing change after admission?"
+      },
+      "answer": {
+        "zh-CN": "入院10小时内出现胸闷和呼吸困难，并迅速加重。",
+        "en": "Chest tightness and respiratory distress developed and rapidly worsened within ten hours of admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院后呼吸如何变化？",
+          "呼吸恶化"
+        ],
+        "en": [
+          "How did breathing change after admission?",
+          "respiratory deterioration"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "supplements",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "还服用其他非处方药或保健品吗？",
+        "en": "Were other non-prescription medicines or supplements used?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还服用其他非处方药或保健品吗？"
+        ],
+        "en": [
+          "Were other non-prescription medicines or supplements used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "appearance",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察初诊一般情况",
+        "en": "Observe the initial general appearance"
+      },
+      "finding": {
+        "zh-CN": "初诊有热病容，体温39.9℃。",
+        "en": "Initially she appeared acutely febrile, with a temperature of 39.9°C."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊初诊肺部",
+        "en": "Auscultate the lungs at presentation"
+      },
+      "finding": {
+        "zh-CN": "初诊双肺呼吸音粗，无干湿啰音。",
+        "en": "Initial breath sounds were coarse without wheeze or crackles."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "later-lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "复核恶化时呼吸检查",
+        "en": "Review respiratory examination during deterioration"
+      },
+      "finding": {
+        "zh-CN": "呼吸最快50次/分，双肺散在湿啰音。",
+        "en": "Respiratory rate reached 50/min, with scattered bilateral crackles."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "oxygenation",
+      "name": {
+        "zh-CN": "血气与氧合记录",
+        "en": "Blood gas and oxygenation record"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气与氧合记录"
+        ],
+        "en": [
+          "Blood gas and oxygenation record",
+          "oxygenation"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "面罩吸氧时PaO₂/FiO₂为42 mmHg；转入ICU时39 mmHg。无创通气1小时低氧改善不明显。",
+            "en": "PaO₂/FiO₂ was 42 mmHg on mask oxygen and 39 mmHg on ICU transfer. Hypoxaemia did not improve substantially after one hour of non-invasive ventilation."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "xray",
+      "name": {
+        "zh-CN": "胸部X线",
+        "en": "Chest radiograph"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部X线"
+        ],
+        "en": [
+          "Chest radiograph",
+          "xray"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "发病第8天双肺大片模糊影；原图描述肺门旁和左下肺明显，有支气管充气征。",
+            "en": "On illness day 8 there were extensive bilateral opacities, particularly perihilar and left lower-zone, with air bronchograms."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "pcr",
+      "name": {
+        "zh-CN": "呼吸道H7N9核酸",
+        "en": "Respiratory H7N9 PCR"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "呼吸道H7N9核酸"
+        ],
+        "en": [
+          "Respiratory H7N9 PCR",
+          "pcr"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "鼻咽拭子H7N9亚型特异性血凝素基因阳性，经疾控复核。",
+            "en": "Nasopharyngeal testing was positive for the H7N9-specific haemagglutinin gene, confirmed by public-health laboratories."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "初诊血常规",
+        "en": "Initial blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "初诊血常规"
+        ],
+        "en": [
+          "Initial blood count",
+          "cbc"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "白细胞7.9×10⁹/L，中性粒细胞比例0.84；正文另列淋巴细胞2.8×10⁹/L，两项分类数据不自洽，按原记录保留而不校正。",
+            "en": "WBC was 7.9×10⁹/L with neutrophil fraction 0.84; the separately reported lymphocyte count of 2.8×10⁹/L is inconsistent with that differential and is retained without correction."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "obstetric",
+      "name": {
+        "zh-CN": "产科超声记录",
+        "en": "Obstetric ultrasound record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "产科超声记录"
+        ],
+        "en": [
+          "Obstetric ultrasound record",
+          "obstetric"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "超声证实中期妊娠；连续胎心监测数值和完整产科检查结果未给出。",
+            "en": "Ultrasound confirmed mid-pregnancy; serial fetal-heart values and a complete obstetric examination are not provided."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告采用有创肺保护通气、俯卧位、抗病毒等综合治疗，也使用免疫调节和短程激素。第20病日通过自主呼吸试验后拔管；后续病毒核酸转阴。第110病日、孕38周加4天剖宫产娩出3.3 kg女婴，报告母婴健康；未给出长期随访期限。",
+            "en": "The report used invasive lung-protective ventilation, prone positioning, antivirals and other measures, including immunomodulation and short-course steroids. She passed a spontaneous breathing trial and was extubated on illness day 20; subsequent viral tests became negative. On illness day 110 at 38+4 weeks she delivered a 3.3 kg girl by caesarean; mother and infant were reported healthy without a defined long-term follow-up interval."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "symptoms"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "appearance"
+          },
+          {
+            "examined": "lungs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "结合接触史、核酸和氧合，最合理的判断是什么？",
+        "en": "What interpretation best integrates exposure, PCR and oxygenation?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "exposure"
+          },
+          {
+            "read": "pcr",
+            "phase": "workup"
+          },
+          {
+            "read": "oxygenation",
+            "phase": "workup"
+          },
+          {
+            "read": "xray",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "H7N9感染伴重度低氧性呼吸衰竭/ARDS",
+            "en": "H7N9 infection with severe hypoxaemic respiratory failure/ARDS"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "病原阳性与双肺影、极低氧合共同支持重症感染；妊娠不能淡化母体危重程度。",
+            "en": "Positive pathogen testing, bilateral opacities and very poor oxygenation support severe infection; pregnancy does not diminish maternal urgency."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "普通上呼吸道感染，等待自然恢复即可",
+            "en": "An uncomplicated upper respiratory infection needing only observation"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "病原阳性与双肺影、极低氧合共同支持重症感染；妊娠不能淡化母体危重程度。",
+            "en": "Positive pathogen testing, bilateral opacities and very poor oxygenation support severe infection; pregnancy does not diminish maternal urgency."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "怎样在证据有限时制定下一步？",
+        "en": "How should the next plan account for limited evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "obstetric",
+            "phase": "workup"
+          },
+          {
+            "read": "oxygenation",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "立即重症、呼吸、感染及产科协作，评估呼吸支持、抗病毒与母胎监测",
+            "en": "Immediate critical-care, respiratory, infection and obstetric coordination for respiratory support, antivirals and maternal-fetal monitoring"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "单例合并多种治疗不能证明每种措施的独立疗效；应由专科依当下病情和指南决策。",
+            "en": "A single case with multiple concurrent therapies cannot prove each treatment’s independent effect; specialists must use the current condition and guidance."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "照搬病例中的免疫球蛋白、胸腺肽和激素组合并认定必然有效",
+            "en": "Copy the reported immunoglobulin, thymosin and steroid combination as proven effective"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "单例合并多种治疗不能证明每种措施的独立疗效；应由专科依当下病情和指南决策。",
+            "en": "A single case with multiple concurrent therapies cannot prove each treatment’s independent effect; specialists must use the current condition and guidance."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "symptoms"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "appearance"
+          },
+          {
+            "examined": "lungs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "oxygenation",
+        "xray",
+        "pcr",
+        "cbc",
+        "obstetric",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "该病例记录妊娠合并H7N9重症肺炎后母婴存活；不能从多药联用的单例推出具体辅助药物有效。",
+      "en": "This case records maternal and infant survival after severe H7N9 pneumonia in pregnancy; it cannot establish efficacy of individual adjunctive drugs."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "家禽暴露引导病原检测，核酸提供特异证据。",
+        "en": "Poultry exposure prompted targeted testing and PCR provided specific evidence."
+      },
+      {
+        "zh-CN": "无创通气后仍极差的氧合是升级评估的关键。",
+        "en": "Persistently severe oxygenation impairment after non-invasive support was a key reason for escalation."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整胎心时间序列、长期婴儿发育结局和分类血细胞数据矛盾原因。",
+        "en": "Complete fetal-heart series, long-term infant development and the cause of the blood differential inconsistency."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "颜骏; 吉木森; 刘竞; 孔宪如; 胡秀兰; 杨宏锋; 赵松兰; 刘晓健; 金兆辰. 妊娠合并H7N9禽流感一例. 中华结核和呼吸杂志, 2014. DOI: 10.3760/cma.j.issn.1001-0939.2014.02.021",
+      "https://rs.yiigle.com/cmaid/859819",
+      "CDC. Interim Guidance on Antiviral Treatment of Human Infections with Novel Influenza A Viruses Associated with Severe Human Disease (2025). https://www.cdc.gov/bird-flu/hcp/clinicians-evaluating-patients/interim-guidance-treatment-humans.html"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整胎心时间序列、长期婴儿发育结局和分类血细胞数据矛盾原因。",
+      "en": "Complete fetal-heart series, long-term infant development and the cause of the blood differential inconsistency."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-859819/fig01.png",
+      "title": {
+        "zh-CN": "原报告：第8病日胸片",
+        "en": "Source: chest radiograph on illness day 8"
+      },
+      "credit": {
+        "zh-CN": "原报告图，颜骏; 吉木森; 刘竞; 孔宪如; 胡秀兰; 杨宏锋; 赵松兰; 刘晓健; 金兆辰，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f4bc3f2f2cb0adc66180346f000e7498f1d7de6e74abd79161a4b5b18b4f5f2b"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-859819/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "67794d2a839745841039c995733e7bdaa154a8c2cf83642b3032e08f5c6381b7"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "pregnancy"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "supplements"
+    },
+    {
+      "type": "examine",
+      "findingId": "appearance"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "examine",
+      "findingId": "later-lungs"
+    },
+    {
+      "type": "order",
+      "investigationId": "oxygenation"
+    },
+    {
+      "type": "read",
+      "investigationId": "oxygenation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "xray"
+    },
+    {
+      "type": "read",
+      "investigationId": "xray",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "pcr"
+    },
+    {
+      "type": "read",
+      "investigationId": "pcr",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "obstetric"
+    },
+    {
+      "type": "read",
+      "investigationId": "obstetric",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "859819",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/859819",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "发热咳嗽有多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long have fever and cough been present?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "还伴有哪些不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "symptoms"
+        ]
+      },
+      {
+        "text": "What other symptoms accompany the illness?",
+        "locale": "en",
+        "expect": [
+          "symptoms"
+        ]
+      },
+      {
+        "text": "发病时怀孕多少周？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "How far along was the pregnancy at onset?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "近期接触过家禽吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Was there contact with poultry?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "以前有明确的基础病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Were there known underlying illnesses?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "您吸烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "Do you smoke?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "入院初期接受什么治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What treatment was started on admission?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "入院后呼吸如何变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "How did breathing change after admission?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      }
+    ]
+  }
+}

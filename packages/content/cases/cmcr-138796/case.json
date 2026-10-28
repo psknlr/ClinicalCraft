@@ -1,0 +1,1536 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-138796",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "水肿、少尿与反复腹痛 · 36岁女性",
+    "en": "Oedema, oliguria and recurrent abdominal pain · woman aged 36"
+  },
+  "summary": {
+    "zh-CN": "水肿和血尿先于两次腹部手术，随后少尿加重。重建跨器官时间线，核对免疫及病理证据。",
+    "en": "Oedema and haematuria preceded two abdominal operations before worsening oliguria. Reconstruct the multi-organ timeline and review immunological and pathological evidence."
+  },
+  "specialty": [
+    "nephrology",
+    "rheumatology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "常冬元; 安萌; 陈旻; 周福德; 邹万忠; 赵明辉. 第309例　急性腹痛—肠套叠—急性肾损伤. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.02.017",
+    "doi": "10.3760/cma.j.issn.0376-2491.2014.02.017",
+    "authors": [
+      "常冬元",
+      "安萌",
+      "陈旻",
+      "周福德",
+      "邹万忠",
+      "赵明辉"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "施女士（化名）",
+      "en": "Ms Shi (pseudonym)"
+    },
+    "age": 36,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "水肿1个多月，肌酐快速升高",
+      "en": "Over a month of oedema with rapidly rising creatinine"
+    },
+    "triageNote": {
+      "zh-CN": "水肿和血尿先于两次腹部手术，随后少尿加重。重建跨器官时间线，核对免疫及病理证据。",
+      "en": "Oedema and haematuria preceded two abdominal operations before worsening oliguria. Reconstruct the multi-organ timeline and review immunological and pathological evidence."
+    },
+    "tags": [
+      {
+        "zh-CN": "水肿1个多月，肌酐快速升高",
+        "en": "Over a month of oedema with rapidly rising creatinine"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一个多月前双腿对称凹陷性水肿，尿颜色变深，没力气、吃不下、上腹胀。",
+        "en": "Over a month earlier both legs developed pitting oedema, with darker urine, fatigue, poor appetite and upper abdominal fullness."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "最早出现哪些症状？",
+        "en": "Which symptoms came first?"
+      },
+      "answer": {
+        "zh-CN": "一个多月前双腿对称凹陷性水肿，尿颜色变深，没力气、吃不下、上腹胀。",
+        "en": "Over a month earlier both legs developed pitting oedema, with darker urine, fatigue, poor appetite and upper abdominal fullness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最早出现哪些症状？",
+          "水肿"
+        ],
+        "en": [
+          "Which symptoms came first?",
+          "oedema"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "renal-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "尿量后来如何变化？",
+        "en": "How did urine output change?"
+      },
+      "answer": {
+        "zh-CN": "后来尿越来越少，最低每天约80–100 mL。",
+        "en": "Urine output fell progressively to about 80–100 mL per day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "尿量后来如何变化？",
+          "尿量"
+        ],
+        "en": [
+          "How did urine output change?",
+          "urine output"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "腹痛导致过哪些手术？",
+        "en": "Which operations followed abdominal pain?"
+      },
+      "answer": {
+        "zh-CN": "先因腹痛按阑尾炎做了手术，之后又腹痛、恶心、呕吐、腹泻，因肠套叠切除了升结肠。",
+        "en": "An operation was first performed for presumed appendicitis; later pain, nausea, vomiting and diarrhoea led to ascending-colon resection for intussusception."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹痛导致过哪些手术？",
+          "腹部手术"
+        ],
+        "en": [
+          "Which operations followed abdominal pain?",
+          "abdominal surgery"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "用药及可能相关药物史是什么？",
+        "en": "What medicines and relevant drug exposures are recorded?"
+      },
+      "answer": {
+        "zh-CN": "用过降压和利尿治疗，门诊用氨氯地平；没有服用丙硫氧嘧啶等药物史。",
+        "en": "Antihypertensive and diuretic treatment was used, including outpatient amlodipine; propylthiouracil exposure was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用药及可能相关药物史是什么？",
+          "用药"
+        ],
+        "en": [
+          "What medicines and relevant drug exposures are recorded?",
+          "propylthiouracil"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "negative",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有发热、紫癜、关节痛或黑便吗？",
+        "en": "Were fever, purpura, joint pain or black stools present?"
+      },
+      "answer": {
+        "zh-CN": "再次腹痛时没有发热、关节痛、黑便或皮肤黏膜紫癜瘀斑。",
+        "en": "During recurrent pain there was no fever, joint pain, black stool or mucocutaneous purpura/bruising."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有发热、紫癜、关节痛或黑便吗？",
+          "紫癜"
+        ],
+        "en": [
+          "Were fever, purpura, joint pain or black stools present?",
+          "purpura"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "发病以前健康情况怎样？",
+        "en": "How was health before this illness?"
+      },
+      "answer": {
+        "zh-CN": "以前身体健康。",
+        "en": "Previously healthy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病以前健康情况怎样？",
+          "既往健康"
+        ],
+        "en": [
+          "How was health before this illness?",
+          "previous health"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "pressure",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最初测过多高的血压？",
+        "en": "What early blood pressure was recorded?"
+      },
+      "answer": {
+        "zh-CN": "最初就诊血压180/100 mmHg，后来门诊160/100 mmHg。",
+        "en": "Initial blood pressure was 180/100 mmHg and a later clinic reading was 160/100 mmHg."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初测过多高的血压？",
+          "血压"
+        ],
+        "en": [
+          "What early blood pressure was recorded?",
+          "blood pressure"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "lung-history",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "是否有咯血病史？",
+        "en": "Was haemoptysis reported?"
+      },
+      "answer": {
+        "zh-CN": "原报告未明确记载咯血病史。",
+        "en": "A history of haemoptysis is not explicitly documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "是否有咯血病史？"
+        ],
+        "en": [
+          "Was haemoptysis reported?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "检查一般情况与水肿",
+        "en": "Examine general appearance and oedema"
+      },
+      "finding": {
+        "zh-CN": "皮肤黏膜及睑结膜略苍白，入肾内科时双下肢已无水肿。",
+        "en": "Mild pallor of skin, mucosa and palpebral conjunctiva; leg oedema was absent on nephrology admission."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部及手术切口",
+        "en": "Examine abdomen and surgical wound"
+      },
+      "finding": {
+        "zh-CN": "腹软，腹带及敷料清洁干燥，无渗血。",
+        "en": "Abdomen soft; binder and wound dressing were clean and dry without oozing."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对入院生命体征",
+        "en": "Review admission vital signs"
+      },
+      "finding": {
+        "zh-CN": "血压130/70 mmHg、心率88次/分；心肺检查无异常记录。",
+        "en": "Blood pressure 130/70 mmHg and heart rate 88/min; cardiac and lung examination were reported unremarkable."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "renal",
+      "name": {
+        "zh-CN": "肾功能与尿液检查",
+        "en": "Renal function and urine tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肾功能与尿液检查"
+        ],
+        "en": [
+          "Renal function and urine tests",
+          "renal"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肌酐从261、351、679升至700 μmol/L；入院尿蛋白+++、24小时尿蛋白2.31 g，红细胞30–40/HPF。",
+            "en": "Creatinine rose through 261, 351 and 679 to 700 μmol/L. At admission urine protein was +++, 24-hour protein 2.31 g and RBCs 30–40/HPF."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "serology",
+      "name": {
+        "zh-CN": "ANCA及鉴别免疫检查",
+        "en": "ANCA and differential serology"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "ANCA及鉴别免疫检查"
+        ],
+        "en": [
+          "ANCA and differential serology",
+          "serology"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "pANCA阳性，MPO抗体115000 RU/L（参考<20000）；抗GBM、ANA及抗dsDNA阴性。",
+            "en": "pANCA positive, MPO antibody 115000 RU/L (reference <20000); anti-GBM, ANA and anti-dsDNA negative."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "肾脏活检",
+        "en": "Kidney biopsy"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "肾脏活检"
+        ],
+        "en": [
+          "Kidney biopsy",
+          "biopsy"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "免疫荧光阴性。5个肾小球均见新月体：2个细胞性、2个细胞纤维性、1个纤维性；毛细血管袢严重破坏，符合Ⅲ型新月体肾炎。",
+            "en": "Immunofluorescence was negative. All five sampled glomeruli had crescents: two cellular, two fibrocellular and one fibrous, with severe capillary-tuft damage, consistent with type III crescentic glomerulonephritis."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "bowel",
+      "name": {
+        "zh-CN": "复核肠道切除病理",
+        "en": "Review resected bowel pathology"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "复核肠道切除病理"
+        ],
+        "en": [
+          "Review resected bowel pathology",
+          "bowel"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "黏膜糜烂、溃疡和重度水肿，血管充血并炎细胞浸润；讨论中复阅描述小动脉周围炎细胞及个别血管纤维素样坏死，支持消化道受累。",
+            "en": "Mucosal erosions, ulcers and marked oedema with congested vessels and inflammatory infiltrates; the discussion’s re-review describes periarteriolar inflammation and focal fibrinoid vascular necrosis, supporting gastrointestinal involvement."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "inflammation",
+      "name": {
+        "zh-CN": "血常规与炎症指标",
+        "en": "Blood count and inflammatory markers"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规与炎症指标"
+        ],
+        "en": [
+          "Blood count and inflammatory markers",
+          "inflammation"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "血红蛋白85 g/L，白细胞12×10⁹/L，血小板332×10⁹/L，ESR 78 mm/h，CRP 15.3 mg/L。",
+            "en": "Haemoglobin 85 g/L, WBC 12×10⁹/L, platelets 332×10⁹/L, ESR 78 mm/h and CRP 15.3 mg/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告使用透析、糖皮质激素及环磷酰胺，并给予肺孢子菌预防。尿量回升至1300–1500 mL/日后脱离透析；肌酐先降至约200，后120 μmol/L，尿检及炎症指标恢复正常，无腹痛。记录未给出长期复发情况。",
+            "en": "The report used dialysis, corticosteroids and cyclophosphamide with Pneumocystis prophylaxis. Urine output rose to 1300–1500 mL/day and dialysis was stopped; creatinine fell first to about 200 and later 120 μmol/L, with normal urine/inflammatory tests and no abdominal pain. Long-term relapse status is not given."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "renal-course"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "怎样统一解释肾脏与肠道证据？",
+        "en": "What unifying interpretation fits the renal and bowel evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "renal",
+            "phase": "workup"
+          },
+          {
+            "read": "serology",
+            "phase": "workup"
+          },
+          {
+            "read": "biopsy",
+            "phase": "workup"
+          },
+          {
+            "read": "bowel",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "ANCA相关小血管炎，伴少免疫沉积新月体肾炎及消化道受累",
+            "en": "ANCA-associated small-vessel vasculitis with pauci-immune crescentic glomerulonephritis and gastrointestinal involvement"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "肾脏异常早于手术，抗体和活检形成独立的证据链，肠病理支持系统受累。",
+            "en": "Renal abnormalities preceded surgery; serology and biopsy form an independent evidence chain, with bowel pathology supporting systemic involvement."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只把少尿解释为腹部手术后的暂时脱水",
+            "en": "Attribute oliguria solely to transient dehydration after surgery"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "肾脏异常早于手术，抗体和活检形成独立的证据链，肠病理支持系统受累。",
+            "en": "Renal abnormalities preceded surgery; serology and biopsy form an independent evidence chain, with bowel pathology supporting systemic involvement."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "此时优先怎样组织治疗与监测？",
+        "en": "How should treatment and monitoring be organised?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "inflammation",
+            "phase": "workup"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "肾内与风湿团队紧急评估器官威胁性病变、免疫治疗、透析需要和感染预防",
+            "en": "Urgent nephrology/rheumatology assessment of organ-threatening disease, immunotherapy, dialysis need and infection prevention"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "快速肾衰和活动性病理需要及时专科处理；具体方案须结合感染与术后风险。",
+            "en": "Rapid renal failure and active pathology warrant prompt specialist care; the regimen must account for infection and postoperative risk."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "等待肠道完全康复后再评估迅速恶化的肾功能",
+            "en": "Wait for complete bowel recovery before assessing rapidly worsening renal function"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "快速肾衰和活动性病理需要及时专科处理；具体方案须结合感染与术后风险。",
+            "en": "Rapid renal failure and active pathology warrant prompt specialist care; the regimen must account for infection and postoperative risk."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "renal-course"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "renal",
+        "serology",
+        "biopsy",
+        "bowel",
+        "inflammation",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "跨器官时间线与血清、肾病理相互印证，治疗后报告肾功能恢复并脱离透析。",
+      "en": "The multi-organ chronology, serology and renal pathology are concordant; renal recovery and dialysis independence were reported after treatment."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "不要把所有肾损伤归因于术后，因为蛋白尿、血尿和肌酐升高早已存在。",
+        "en": "Do not attribute all kidney injury to surgery: proteinuria, haematuria and elevated creatinine preceded it."
+      },
+      {
+        "zh-CN": "无紫癜并不能推翻已获得的抗体与病理证据。",
+        "en": "Absent purpura does not negate the serological and pathological evidence."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "长期复发、最终维持治疗时长及完整感染筛查。",
+        "en": "Long-term relapse, final maintenance-treatment duration and complete infection screening."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "常冬元; 安萌; 陈旻; 周福德; 邹万忠; 赵明辉. 第309例　急性腹痛—肠套叠—急性肾损伤. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.02.017",
+      "https://rs.yiigle.com/cmaid/138796",
+      "KDIGO 2024 Clinical Practice Guideline for ANCA-Associated Vasculitis, with amendments. https://kdigo.org/guidelines/antineutrophilic-cytoplasmic-antibody-anca-associated-vasculitis-aav/"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "长期复发、最终维持治疗时长及完整感染筛查。",
+      "en": "Long-term relapse, final maintenance-treatment duration and complete infection screening."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-138796/fig01.png",
+      "title": {
+        "zh-CN": "原报告：肾活检光镜",
+        "en": "Source: kidney biopsy light microscopy"
+      },
+      "credit": {
+        "zh-CN": "原报告图，常冬元; 安萌; 陈旻; 周福德; 邹万忠; 赵明辉，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "7f2f6a1210bd9ef7b63583ed14e39dc4aeeae3ff0580b84e01cd2fc56e317740"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-138796/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "4d8b9d373a91a3b64bb28b27e42a337ee4ddc22c5507dfe142aa05e1a07887f8"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "renal-course"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "negative"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "pressure"
+    },
+    {
+      "type": "ask",
+      "itemId": "lung-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal"
+    },
+    {
+      "type": "read",
+      "investigationId": "renal",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "serology"
+    },
+    {
+      "type": "read",
+      "investigationId": "serology",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "bowel"
+    },
+    {
+      "type": "read",
+      "investigationId": "bowel",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "inflammation"
+    },
+    {
+      "type": "read",
+      "investigationId": "inflammation",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "138796",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/138796",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "最早出现哪些症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Which symptoms came first?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "尿量后来如何变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "renal-course"
+        ]
+      },
+      {
+        "text": "How did urine output change?",
+        "locale": "en",
+        "expect": [
+          "renal-course"
+        ]
+      },
+      {
+        "text": "腹痛导致过哪些手术？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Which operations followed abdominal pain?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "用药及可能相关药物史是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What medicines and relevant drug exposures are recorded?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "有发热、紫癜、关节痛或黑便吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "negative"
+        ]
+      },
+      {
+        "text": "Were fever, purpura, joint pain or black stools present?",
+        "locale": "en",
+        "expect": [
+          "negative"
+        ]
+      },
+      {
+        "text": "发病以前健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "How was health before this illness?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "最初测过多高的血压？",
+        "locale": "zh-CN",
+        "expect": [
+          "pressure"
+        ]
+      },
+      {
+        "text": "What early blood pressure was recorded?",
+        "locale": "en",
+        "expect": [
+          "pressure"
+        ]
+      },
+      {
+        "text": "是否有咯血病史？",
+        "locale": "zh-CN",
+        "expect": [
+          "lung-history"
+        ]
+      },
+      {
+        "text": "Was haemoptysis reported?",
+        "locale": "en",
+        "expect": [
+          "lung-history"
+        ]
+      }
+    ]
+  }
+}

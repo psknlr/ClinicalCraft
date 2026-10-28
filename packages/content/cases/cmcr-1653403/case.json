@@ -1,0 +1,1648 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653403",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "孕晚期胎动减少 · 29岁女性",
+    "en": "Reduced fetal movements late in pregnancy · woman aged 29"
+  },
+  "summary": {
+    "zh-CN": "常规产检时报告胎动减少，需复核胎儿监护、围产期资料和母婴血液检查。",
+    "en": "Reduced fetal movements are reported at a routine antenatal visit; review fetal monitoring, perinatal records and maternal/infant blood tests."
+  },
+  "specialty": [
+    "obstetrics",
+    "neonatology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "梁建明; 黃芳芳; 吳思敏; 余善恩. 胎母輸血綜合症1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.014",
+    "doi": "10.12408/j.issn2223-4462.2025.02.014",
+    "authors": [
+      "梁建明",
+      "黃芳芳",
+      "吳思敏",
+      "余善恩"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "唐女士（化名）",
+      "en": "Ms Tang (pseudonym)"
+    },
+    "age": 29,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "孕37周加2天，近一周胎动减少",
+      "en": "At 37 weeks and 2 days, fetal movements have decreased for a week"
+    },
+    "triageNote": {
+      "zh-CN": "常规产检时报告胎动减少，需复核胎儿监护、围产期资料和母婴血液检查。",
+      "en": "Reduced fetal movements are reported at a routine antenatal visit; review fetal monitoring, perinatal records and maternal/infant blood tests."
+    },
+    "tags": [
+      {
+        "zh-CN": "孕37周加2天，近一周胎动减少",
+        "en": "At 37 weeks and 2 days, fetal movements have decreased for a week"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "这一周觉得宝宝动得比以前少，没有具体计数。",
+        "en": "The baby has seemed to move less over the last week; I did not count movements."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying",
+    "ageUnit": "years"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次胎动有什么变化？",
+        "en": "How have fetal movements changed?"
+      },
+      "answer": {
+        "zh-CN": "这一周觉得宝宝动得比以前少，没有具体计数。",
+        "en": "The baby has seemed to move less over the last week; I did not count movements."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这次胎动有什么变化？",
+          "胎动减少"
+        ],
+        "en": [
+          "How have fetal movements changed?",
+          "reduced movements"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "gestation",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "目前孕周及孕产次是多少？",
+        "en": "What are the gestational age and obstetric history?"
+      },
+      "answer": {
+        "zh-CN": "现在37周加2天，孕3产2。",
+        "en": "I am at 37 weeks and 2 days, gravida 3 para 2."
+      },
+      "keywords": {
+        "zh-CN": [
+          "目前孕周及孕产次是多少？",
+          "孕周"
+        ],
+        "en": [
+          "What are the gestational age and obstetric history?",
+          "gestational age"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "antenatal",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "之前是否规律产检？",
+        "en": "Was antenatal care regular?"
+      },
+      "answer": {
+        "zh-CN": "之前按时做产前检查。",
+        "en": "I attended regular antenatal checks."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前是否规律产检？",
+          "产检"
+        ],
+        "en": [
+          "Was antenatal care regular?",
+          "antenatal care"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "孕前有哪些慢性病？",
+        "en": "What chronic conditions preceded pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "平时身体好，否认高血压、糖尿病、冠心病、慢性肝肾病及消化道出血史。",
+        "en": "I was usually healthy and denied hypertension, diabetes, coronary disease, chronic liver/kidney disease and gastrointestinal bleeding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕前有哪些慢性病？",
+          "慢性病"
+        ],
+        "en": [
+          "What chronic conditions preceded pregnancy?",
+          "chronic conditions"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "有已知家族病史吗？",
+        "en": "Was any family medical history reported?"
+      },
+      "answer": {
+        "zh-CN": "否认家族病史。",
+        "en": "A family medical history was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有已知家族病史吗？",
+          "家族史"
+        ],
+        "en": [
+          "Was any family medical history reported?",
+          "family history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "screening",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "早中孕筛查有没有异常提示？",
+        "en": "Did early or mid-pregnancy screening suggest abnormalities?"
+      },
+      "answer": {
+        "zh-CN": "早孕唐氏筛查是低风险，中孕超声没有发现明显异常，糖耐量检查正常。",
+        "en": "Early aneuploidy screening was low risk, mid-pregnancy ultrasound had no obvious abnormality, and glucose tolerance was normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "早中孕筛查有没有异常提示？",
+          "筛查"
+        ],
+        "en": [
+          "Did early or mid-pregnancy screening suggest abnormalities?",
+          "screening"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "blood-group",
+      "topic": "other",
+      "question": {
+        "zh-CN": "母亲的血型是什么？",
+        "en": "What is the maternal blood group?"
+      },
+      "answer": {
+        "zh-CN": "我是B型、Rh阳性。",
+        "en": "My blood group is B, Rh positive."
+      },
+      "keywords": {
+        "zh-CN": [
+          "母亲的血型是什么？",
+          "血型"
+        ],
+        "en": [
+          "What is the maternal blood group?",
+          "blood group"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "recent-scan",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "近期超声提示什么胎位？",
+        "en": "What presentation was reported on the recent scan?"
+      },
+      "answer": {
+        "zh-CN": "就诊前约一周超声提示单胎臀位。",
+        "en": "An ultrasound about a week before presentation showed a singleton breech pregnancy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期超声提示什么胎位？",
+          "胎位"
+        ],
+        "en": [
+          "What presentation was reported on the recent scan?",
+          "breech"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有阴道流血或腹痛吗？",
+        "en": "Was there vaginal bleeding or abdominal pain?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有阴道流血或腹痛吗？"
+        ],
+        "en": [
+          "Was there vaginal bleeding or abdominal pain?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "trauma",
+      "topic": "other",
+      "question": {
+        "zh-CN": "近期有腹部外伤吗？",
+        "en": "Was there recent abdominal trauma?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期有腹部外伤吗？"
+        ],
+        "en": [
+          "Was there recent abdominal trauma?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "既往分娩方式和手术情况怎样？",
+        "en": "What were the previous delivery methods and operations?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往分娩方式和手术情况怎样？"
+        ],
+        "en": [
+          "What were the previous delivery methods and operations?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "孕期使用了哪些药物？",
+        "en": "Which medicines were used during pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期使用了哪些药物？"
+        ],
+        "en": [
+          "Which medicines were used during pregnancy?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "有药物过敏记录吗？",
+        "en": "Are medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有药物过敏记录吗？"
+        ],
+        "en": [
+          "Are medicine allergies documented?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "孕期烟草暴露情况怎样？",
+        "en": "What tobacco exposure occurred in pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期烟草暴露情况怎样？"
+        ],
+        "en": [
+          "What tobacco exposure occurred in pregnancy?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "孕期饮酒情况怎样？",
+        "en": "What alcohol exposure occurred in pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期饮酒情况怎样？"
+        ],
+        "en": [
+          "What alcohol exposure occurred in pregnancy?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "maternal-vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对母亲就诊生命体征",
+        "en": "Review maternal presentation vital signs"
+      },
+      "finding": {
+        "zh-CN": "原报告未列母亲就诊时体温、脉搏、血压及血氧数值。",
+        "en": "Maternal presentation temperature, pulse, blood pressure and oxygen saturation were not provided."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "maternal-exam",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对母亲腹部及产科体检",
+        "en": "Review maternal abdominal and obstetric examination"
+      },
+      "finding": {
+        "zh-CN": "原报告未提供母亲腹部压痛、宫缩或宫颈检查的具体所见。",
+        "en": "Detailed maternal abdominal tenderness, contractions and cervical examination findings were not provided."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "newborn",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "复核出生后婴儿情况",
+        "en": "Review the newborn immediately after delivery"
+      },
+      "finding": {
+        "zh-CN": "活女婴体重2.38 kg，Apgar 8分，肤色苍白、吐沫、呼吸困难；心率200次/分，血压49/25 mmHg。",
+        "en": "The live female infant weighed 2.38 kg with Apgar 8, pallor, frothing and respiratory distress; heart rate was 200/min and BP 49/25 mmHg."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "ctg",
+      "name": {
+        "zh-CN": "胎心监护记录",
+        "en": "Cardiotocography record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胎心监护记录"
+        ],
+        "en": [
+          "Cardiotocography record",
+          "ctg"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "急诊胎监可疑正弦波，不能排除胎儿宫内状况不良，因此行剖宫产。未提供完整胎监条带、持续时间或波幅。",
+            "en": "Emergency monitoring showed a suspected sinusoidal pattern; fetal compromise could not be excluded and caesarean delivery followed. The full trace, duration and amplitude are unavailable."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "neonate-blood",
+      "name": {
+        "zh-CN": "新生儿血液检查",
+        "en": "Neonatal blood tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "新生儿血液检查"
+        ],
+        "en": [
+          "Neonatal blood tests",
+          "neonate-blood"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "出生后Hb 38 g/L。婴儿O型、Rh阳性，Coombs试验阴性；不能将母婴ABO不同单独当成重度贫血的病因。",
+            "en": "Postnatal haemoglobin was 38 g/L. The infant was group O, Rh positive, with negative Coombs testing; an ABO difference alone does not establish the cause of severe anaemia."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "maternal-kb",
+      "name": {
+        "zh-CN": "母血KB试验及相关检查",
+        "en": "Maternal Kleihauer–Betke and related tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "母血KB试验及相关检查"
+        ],
+        "en": [
+          "Maternal Kleihauer–Betke and related tests",
+          "maternal-kb"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "母血KB试验HbF含量9.2%，AFP 11582 μg/L，母亲Hb 149 g/L。报告未进行失血体积的完整校正计算。",
+            "en": "Maternal KB testing reported HbF 9.2%, AFP 11582 µg/L and maternal haemoglobin 149 g/L. A fully adjusted fetal blood-loss volume was not calculated in the report."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "placenta",
+      "name": {
+        "zh-CN": "胎盘病理",
+        "en": "Placental pathology"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "胎盘病理"
+        ],
+        "en": [
+          "Placental pathology",
+          "placenta"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "局灶梗死占胎盘总面积不足5%；部分羊膜上皮退变，胎膜绒毛板个别中性粒细胞，绒毛无明显炎症浸润。脐带两动脉一静脉，未见肿瘤。",
+            "en": "Focal infarction involved less than 5% of placental area; some amniotic epithelial degeneration and sparse neutrophils in the membrane/chorionic plate were reported without obvious villous inflammation. The cord had two arteries and one vein, with no tumour."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "antenatal-imaging",
+      "name": {
+        "zh-CN": "近期产前超声",
+        "en": "Recent antenatal ultrasound"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "近期产前超声"
+        ],
+        "en": [
+          "Recent antenatal ultrasound",
+          "antenatal-imaging"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "就诊前约一周胎心141次/分、羊水指数12.25 cm、脐动脉S/D 2.03、估重2754 g，胎动可见；早前一次结果不代表本次胎儿状况。",
+            "en": "About a week earlier fetal heart rate was 141/min, AFI 12.25 cm, umbilical artery S/D 2.03 and estimated weight 2754 g, with visible movement; an earlier scan does not establish current fetal wellbeing."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告剖宫产后新生儿接受无创通气、两次红细胞输注及抗感染治疗，Hb先升至74、后121 g/L，呼吸困难改善，约一周后出院；产妇术后恢复良好。未提供长期神经发育随访。",
+            "en": "After caesarean delivery the infant received non-invasive ventilation, two red-cell transfusions and antimicrobial treatment. Haemoglobin rose first to 74 and then 121 g/L, breathing improved and discharge followed about a week later. Maternal postoperative recovery was good; long-term neurodevelopment was not reported."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "gestation"
+          },
+          {
+            "asked": "antenatal"
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "maternal-vitals"
+          },
+          {
+            "examined": "maternal-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪条证据链最能解释围产期贫血？",
+        "en": "Which evidence chain best explains the perinatal anaemia?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "ctg",
+            "phase": "workup"
+          },
+          {
+            "read": "neonate-blood",
+            "phase": "workup"
+          },
+          {
+            "read": "maternal-kb",
+            "phase": "workup"
+          },
+          {
+            "asked": "presentation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "胎动减少及异常胎监、婴儿重度贫血和母血胎儿红细胞证据支持胎母输血综合征",
+            "en": "Reduced movements and abnormal monitoring, severe neonatal anaemia and fetal-cell evidence in maternal blood support fetomaternal haemorrhage"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "胎儿失血可造成婴儿严重贫血而母亲Hb不低；KB结果需结合母婴临床资料解释。",
+            "en": "Fetal blood loss can cause severe infant anaemia without low maternal haemoglobin; KB findings must be interpreted with both clinical records."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "母亲血红蛋白正常，所以不可能存在胎儿失血",
+            "en": "Normal maternal haemoglobin excludes fetal blood loss"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "胎儿失血可造成婴儿严重贫血而母亲Hb不低；KB结果需结合母婴临床资料解释。",
+            "en": "Fetal blood loss can cause severe infant anaemia without low maternal haemoglobin; KB findings must be interpreted with both clinical records."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "在这些危重证据下如何组织后续？",
+        "en": "How should care be organised given the severe findings?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "examined": "newborn"
+          },
+          {
+            "read": "placenta",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "产科与新生儿团队紧急协作，评估分娩时机、复苏与输血，并复核贫血原因和监测反应",
+            "en": "Urgent obstetric and neonatal coordination for delivery timing, resuscitation and transfusion assessment, with anaemia evaluation and response monitoring"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "胎动变化与当前监护是即时风险信号；输血种类、速度和剂量需由新生儿团队根据状态决定。",
+            "en": "Changed movement and current monitoring indicate immediate risk; transfusion product, rate and dose require neonatal assessment."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "因为早前产检正常，可等常规复诊而无需急诊评估",
+            "en": "Earlier normal antenatal tests justify waiting for routine review"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "胎动变化与当前监护是即时风险信号；输血种类、速度和剂量需由新生儿团队根据状态决定。",
+            "en": "Changed movement and current monitoring indicate immediate risk; transfusion product, rate and dose require neonatal assessment."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "gestation"
+          },
+          {
+            "asked": "antenatal"
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "maternal-vitals"
+          },
+          {
+            "examined": "maternal-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "ctg",
+        "neonate-blood",
+        "maternal-kb",
+        "placenta",
+        "antenatal-imaging",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告证据支持胎母输血造成严重胎儿/新生儿贫血；常规产检和母亲Hb正常不能消除当前风险。",
+      "en": "The evidence supports fetomaternal haemorrhage with severe fetal/neonatal anaemia; earlier routine tests and normal maternal haemoglobin do not remove current risk."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "胎监是提示而非本文提供的完整确诊条带。",
+        "en": "The described monitoring pattern is a clue, not a complete diagnostic trace supplied by the report."
+      },
+      {
+        "zh-CN": "阴性Coombs和KB结果应放在同一鉴别诊断链条中。",
+        "en": "Negative Coombs and KB findings belong in the same differential diagnostic assessment."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整胎监、胎儿失血的准确体积与速度、MCA多普勒及长期神经发育。",
+        "en": "Complete CTG, exact volume/rate of fetal blood loss, MCA Doppler and long-term neurodevelopment."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "梁建明; 黃芳芳; 吳思敏; 余善恩. 胎母輸血綜合症1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.014",
+      "https://rs.yiigle.com/cmaid/1653403",
+      "RCOG. Reduced Fetal Movements, Green-top Guideline No.57, second edition 2026. https://www.rcog.org.uk/guidance/browse-all-guidance/green-top-guidelines/reduced-fetal-movements-green-top-guideline-no-57/"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整胎监、胎儿失血的准确体积与速度、MCA多普勒及长期神经发育。",
+      "en": "Complete CTG, exact volume/rate of fetal blood loss, MCA Doppler and long-term neurodevelopment."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653403/fig01.png",
+      "title": {
+        "zh-CN": "原报告：母血KB染色中的HbF红细胞",
+        "en": "Source: HbF-containing cells on maternal KB staining"
+      },
+      "credit": {
+        "zh-CN": "原报告图，梁建明; 黃芳芳; 吳思敏; 余善恩，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "bee0eccfa3d1ac029b59629e3cc0436b45890642b009a7a3af0311b8632e80ca"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1653403/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "fe494bafa2039f925224f227a14a26d96e04938b2075a9a6c401233c7f6f65df"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "gestation"
+    },
+    {
+      "type": "ask",
+      "itemId": "antenatal"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "screening"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood-group"
+    },
+    {
+      "type": "ask",
+      "itemId": "recent-scan"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "trauma"
+    },
+    {
+      "type": "ask",
+      "itemId": "psh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "maternal-vitals"
+    },
+    {
+      "type": "examine",
+      "findingId": "maternal-exam"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "examine",
+      "findingId": "newborn"
+    },
+    {
+      "type": "order",
+      "investigationId": "ctg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ctg",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "neonate-blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "neonate-blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "maternal-kb"
+    },
+    {
+      "type": "read",
+      "investigationId": "maternal-kb",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "placenta"
+    },
+    {
+      "type": "read",
+      "investigationId": "placenta",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "antenatal-imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "antenatal-imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1653403",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653403",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "这次胎动有什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How have fetal movements changed?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "目前孕周及孕产次是多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "gestation"
+        ]
+      },
+      {
+        "text": "What are the gestational age and obstetric history?",
+        "locale": "en",
+        "expect": [
+          "gestation"
+        ]
+      },
+      {
+        "text": "之前是否规律产检？",
+        "locale": "zh-CN",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "Was antenatal care regular?",
+        "locale": "en",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "孕前有哪些慢性病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "What chronic conditions preceded pregnancy?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "有已知家族病史吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Was any family medical history reported?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "早中孕筛查有没有异常提示？",
+        "locale": "zh-CN",
+        "expect": [
+          "screening"
+        ]
+      },
+      {
+        "text": "Did early or mid-pregnancy screening suggest abnormalities?",
+        "locale": "en",
+        "expect": [
+          "screening"
+        ]
+      },
+      {
+        "text": "母亲的血型是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-group"
+        ]
+      },
+      {
+        "text": "What is the maternal blood group?",
+        "locale": "en",
+        "expect": [
+          "blood-group"
+        ]
+      },
+      {
+        "text": "近期超声提示什么胎位？",
+        "locale": "zh-CN",
+        "expect": [
+          "recent-scan"
+        ]
+      },
+      {
+        "text": "What presentation was reported on the recent scan?",
+        "locale": "en",
+        "expect": [
+          "recent-scan"
+        ]
+      }
+    ]
+  }
+}

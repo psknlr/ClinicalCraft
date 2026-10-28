@@ -1,0 +1,1461 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1423446",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "恶心呕吐与腹泻 · 78岁女性",
+    "en": "Nausea, vomiting and diarrhoea · woman aged 78"
+  },
+  "summary": {
+    "zh-CN": "老年患者伴糖尿病和进食不足，急诊输液后出现新症状；用时间线和床旁检测识别药物安全问题。",
+    "en": "An older patient with diabetes and poor intake develops symptoms during an emergency infusion; use timing and bedside measurements to assess medication safety."
+  },
+  "specialty": [
+    "emergency-medicine",
+    "clinical-pharmacology"
+  ],
+  "difficulty": 4,
+  "setting": "emergency",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "宋智慧; 赵环宇. 乳酸左氧氟沙星氯化钠注射液致严重低血糖. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.019",
+    "doi": "10.3760/cma.j.issn.1008-5734.2014.01.019",
+    "authors": [
+      "宋智慧",
+      "赵环宇"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "高女士（化名）",
+      "en": "Ms Gao (pseudonym)"
+    },
+    "age": 78,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "恶心、呕吐、反酸、腹泻3天",
+      "en": "Three days of nausea, vomiting, reflux and diarrhoea"
+    },
+    "triageNote": {
+      "zh-CN": "老年患者伴糖尿病和进食不足，急诊输液后出现新症状；用时间线和床旁检测识别药物安全问题。",
+      "en": "An older patient with diabetes and poor intake develops symptoms during an emergency infusion; use timing and bedside measurements to assess medication safety."
+    },
+    "tags": [
+      {
+        "zh-CN": "恶心、呕吐、反酸、腹泻3天",
+        "en": "Three days of nausea, vomiting, reflux and diarrhoea"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "恶心、呕吐、反酸和腹泻已经3天。",
+        "en": "Nausea, vomiting, reflux and diarrhoea have lasted three days."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次为什么来急诊？",
+        "en": "What brought you to the emergency department?"
+      },
+      "answer": {
+        "zh-CN": "恶心、呕吐、反酸和腹泻已经3天。",
+        "en": "Nausea, vomiting, reflux and diarrhoea have lasted three days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这次为什么来急诊？",
+          "腹泻"
+        ],
+        "en": [
+          "What brought you to the emergency department?",
+          "diarrhoea"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "diabetes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "糖尿病有多久，平时怎么治？",
+        "en": "How long have you had diabetes and how is it treated?"
+      },
+      "answer": {
+        "zh-CN": "2型糖尿病2年，平时规律服瑞格列奈，阿卡波糖服得不规律。",
+        "en": "Type 2 diabetes has been present for two years, with regular repaglinide and irregular acarbose use."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糖尿病有多久，平时怎么治？",
+          "糖尿病"
+        ],
+        "en": [
+          "How long have you had diabetes and how is it treated?",
+          "diabetes"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "intake",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "就诊当天吃饭和服降糖药了吗？",
+        "en": "Did you eat or take glucose-lowering medicines that day?"
+      },
+      "answer": {
+        "zh-CN": "当天没有进食，也停了降糖药。",
+        "en": "She had not eaten that day and had withheld glucose-lowering medicines."
+      },
+      "keywords": {
+        "zh-CN": [
+          "就诊当天吃饭和服降糖药了吗？",
+          "进食"
+        ],
+        "en": [
+          "Did you eat or take glucose-lowering medicines that day?",
+          "food intake"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "腹泻后自行吃过哪些药？",
+        "en": "What medicines did you take for diarrhoea?"
+      },
+      "answer": {
+        "zh-CN": "自行吃过盐酸小檗碱2天，就诊当天也停了。",
+        "en": "Berberine had been self-administered for two days and was also withheld on the presentation day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹泻后自行吃过哪些药？",
+          "用药"
+        ],
+        "en": [
+          "What medicines did you take for diarrhoea?",
+          "berberine"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh-gi",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有什么消化道病史？",
+        "en": "What gastrointestinal history was present?"
+      },
+      "answer": {
+        "zh-CN": "以前有胃溃疡和反流性食管炎，自述已经治愈。",
+        "en": "There was a history of gastric ulcer and reflux oesophagitis, reported as cured."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有什么消化道病史？",
+          "胃溃疡"
+        ],
+        "en": [
+          "What gastrointestinal history was present?",
+          "gastric ulcer"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "stool",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "腹泻次数和是否便血有记录吗？",
+        "en": "Are stool frequency or blood in the stool recorded?"
+      },
+      "answer": {
+        "zh-CN": "原报告没有具体记录。",
+        "en": "The report does not provide those details."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹泻次数和是否便血有记录吗？"
+        ],
+        "en": [
+          "Are stool frequency or blood in the stool recorded?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "prior-hypo",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前发生过低血糖吗？",
+        "en": "Were there previous episodes of hypoglycaemia?"
+      },
+      "answer": {
+        "zh-CN": "既往低血糖史没有记录。",
+        "en": "Previous hypoglycaemia is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前发生过低血糖吗？"
+        ],
+        "en": [
+          "Were there previous episodes of hypoglycaemia?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "infusion-symptoms",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "输液开始后发生了什么？",
+        "en": "What happened after the infusion began?"
+      },
+      "answer": {
+        "zh-CN": "输注左氧氟沙星约10分钟后大汗、心慌、脸色苍白，反应淡漠。",
+        "en": "About ten minutes after levofloxacin began, she developed sweating, palpitations, pallor and reduced responsiveness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "输液开始后发生了什么？",
+          "输液反应"
+        ],
+        "en": [
+          "What happened after the infusion began?",
+          "infusion symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对输液前生命体征",
+        "en": "Review pre-infusion vital signs"
+      },
+      "finding": {
+        "zh-CN": "体温36.5℃、脉搏70次/分、呼吸20次/分、血压130/80 mmHg。",
+        "en": "Temperature 36.5°C, pulse 70/min, respiratory rate 20/min and blood pressure 130/80 mmHg."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "查找腹部体检记录",
+        "en": "Retrieve abdominal examination findings"
+      },
+      "finding": {
+        "zh-CN": "原报告没有详细腹部体检，不能补写无压痛。",
+        "en": "Detailed abdominal examination is not reported; absence of tenderness must not be invented."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "reaction",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察输液后状态",
+        "en": "Observe the state after infusion"
+      },
+      "finding": {
+        "zh-CN": "大汗、面色苍白、意识淡漠。",
+        "en": "Diaphoresis, pallor and reduced responsiveness."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "glucose",
+      "name": {
+        "zh-CN": "床旁血糖",
+        "en": "Bedside blood glucose"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "床旁血糖"
+        ],
+        "en": [
+          "Bedside blood glucose",
+          "glucose"
+        ]
+      },
+      "requires": [
+        "point-of-care"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "首次出现症状时血糖3.0 mmol/L；就诊前空腹血糖记录为6.0 mmol/L。",
+            "en": "Glucose was 3.0 mmol/L at the first symptomatic episode, compared with a recorded fasting value of 6.0 mmol/L before treatment."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "chemistry",
+      "name": {
+        "zh-CN": "电解质和肾功能",
+        "en": "Electrolytes and renal function"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "电解质和肾功能"
+        ],
+        "en": [
+          "Electrolytes and renal function",
+          "chemistry"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "血钾3.2 mmol/L、钠134 mmol/L、肌酐65 μmol/L、CRP 5.4 mg/L；血常规未见异常。",
+            "en": "Potassium 3.2 mmol/L, sodium 134 mmol/L, creatinine 65 μmol/L and CRP 5.4 mg/L; the blood count was reported unremarkable."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "medication-chart",
+      "name": {
+        "zh-CN": "调阅输液顺序",
+        "en": "Review infusion sequence"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅输液顺序"
+        ],
+        "en": [
+          "Review infusion sequence",
+          "medication-chart"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "先静脉输注奥美拉唑，后接续左氧氟沙星；后者约10分钟出现症状。细菌性腹泻仅为当时临床考虑，无病原确证记录。",
+            "en": "Omeprazole was infused first, followed by levofloxacin; symptoms began about ten minutes into the latter. Bacterial diarrhoea was suspected but no pathogen confirmation is documented."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "心电图和胸片记录",
+        "en": "ECG and chest-film record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "心电图和胸片记录"
+        ],
+        "en": [
+          "ECG and chest-film record",
+          "ecg"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "输液前心电图正常，胸片未见明显异常。",
+            "en": "Before infusion the ECG was normal and the chest film showed no obvious abnormality."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告首次暂停左氧氟沙星并补糖后好转，但未复测血糖；医师恢复输液，约5分钟后再次症状并测得1.9 mmol/L。再次停药、静脉补糖后意识恢复，末次血糖9.6 mmol/L。复盘把这次再激发作为风险事件，而非推荐做法；长期随访未载。",
+            "en": "The report describes improvement after pausing levofloxacin and giving glucose, without repeat glucose measurement. Infusion was restarted and symptoms recurred about five minutes later at 1.9 mmol/L. Stopping the drug and giving intravenous glucose again restored consciousness; the final glucose was 9.6 mmol/L. Rechallenge is reviewed as an unsafe event, not recommended practice; long-term follow-up is unavailable."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "intake"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "怎样理解出汗、意识改变和血糖？",
+        "en": "How should sweating, altered responsiveness and glucose be interpreted?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "glucose",
+            "phase": "workup"
+          },
+          {
+            "read": "medication-chart",
+            "phase": "workup"
+          },
+          {
+            "asked": "intake"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "症状性低血糖，应怀疑输液相关药物反应并核对其他诱因",
+            "en": "Symptomatic hypoglycaemia with a suspected infusion-related drug reaction; review other contributors"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "低血糖是实测事实；禁食、既往降糖药及用药时间都要纳入，而不能凭短潜伏期排除。",
+            "en": "Hypoglycaemia is measured; fasting, glucose-lowering therapy and timing all matter, and short latency does not exclude a drug contribution."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只因输液很快就发作，排除左氧氟沙星参与",
+            "en": "Exclude levofloxacin because symptoms appeared soon after infusion"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "低血糖是实测事实；禁食、既往降糖药及用药时间都要纳入，而不能凭短潜伏期排除。",
+            "en": "Hypoglycaemia is measured; fasting, glucose-lowering therapy and timing all matter, and short latency does not exclude a drug contribution."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "首次反应时怎样做最安全？",
+        "en": "What is the safest response to the first episode?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "chemistry",
+            "phase": "workup"
+          },
+          {
+            "asked": "diabetes"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "停止可疑药物，立即按专业流程纠正并复测血糖，评估意识及气道，避免再激发",
+            "en": "Stop the suspected drug, promptly correct and recheck glucose under a clinical protocol, assess consciousness/airway and avoid rechallenge"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "低血糖可严重或反复；症状改善不能代替复测，更不能以危险再激发作诊断试验。",
+            "en": "Hypoglycaemia can be severe or recurrent; symptom improvement does not replace repeat testing, and dangerous rechallenge is not a diagnostic test."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "症状稍缓解就恢复原输液，用再次发作验证药因",
+            "en": "Restart the infusion after symptom improvement to confirm causation by recurrence"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "低血糖可严重或反复；症状改善不能代替复测，更不能以危险再激发作诊断试验。",
+            "en": "Hypoglycaemia can be severe or recurrent; symptom improvement does not replace repeat testing, and dangerous rechallenge is not a diagnostic test."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "intake"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "glucose",
+        "chemistry",
+        "medication-chart",
+        "ecg",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "时间关系、低血糖实测值和报告中的复现支持左氧氟沙星相关反应；今天的教学路径在首次反应就阻止再激发。",
+      "en": "Timing, measured hypoglycaemia and the reported recurrence support a levofloxacin-associated reaction; the educational pathway prevents rechallenge after the first episode."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "正常初始肌酐不能消除老年糖尿病患者的药物风险。",
+        "en": "A normal initial creatinine does not remove medication risk in an older patient with diabetes."
+      },
+      {
+        "zh-CN": "再激发历史增加因果证据，但不能成为需要重做的步骤。",
+        "en": "Historical recurrence adds causal evidence but is not a step to repeat."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "首次纠正后血糖、长期复发情况及感染病原。",
+        "en": "Glucose after the first correction, long-term recurrence and an infectious pathogen."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "宋智慧; 赵环宇. 乳酸左氧氟沙星氯化钠注射液致严重低血糖. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.019",
+      "https://rs.yiigle.com/cmaid/1423446",
+      "FDA Drug Safety Communication, 2018: fluoroquinolone-associated serious hypoglycaemia. https://www.fda.gov/downloads/Drugs/DrugSafety/UCM612834.pdf"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "首次纠正后血糖、长期复发情况及感染病原。",
+      "en": "Glucose after the first correction, long-term recurrence and an infectious pathogen."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1423446/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c9f931040cdc30b9a7515995c0a33110c22271e3104c0745b3e01f318ef5b80e"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "diabetes"
+    },
+    {
+      "type": "ask",
+      "itemId": "intake"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh-gi"
+    },
+    {
+      "type": "ask",
+      "itemId": "stool"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-hypo"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "infusion-symptoms"
+    },
+    {
+      "type": "examine",
+      "findingId": "reaction"
+    },
+    {
+      "type": "order",
+      "investigationId": "glucose"
+    },
+    {
+      "type": "read",
+      "investigationId": "glucose",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "chemistry"
+    },
+    {
+      "type": "read",
+      "investigationId": "chemistry",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "medication-chart"
+    },
+    {
+      "type": "read",
+      "investigationId": "medication-chart",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1423446",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1423446",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "这次为什么来急诊？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What brought you to the emergency department?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "糖尿病有多久，平时怎么治？",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "How long have you had diabetes and how is it treated?",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "就诊当天吃饭和服降糖药了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "intake"
+        ]
+      },
+      {
+        "text": "Did you eat or take glucose-lowering medicines that day?",
+        "locale": "en",
+        "expect": [
+          "intake"
+        ]
+      },
+      {
+        "text": "腹泻后自行吃过哪些药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What medicines did you take for diarrhoea?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "以前有什么消化道病史？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-gi"
+        ]
+      },
+      {
+        "text": "What gastrointestinal history was present?",
+        "locale": "en",
+        "expect": [
+          "pmh-gi"
+        ]
+      },
+      {
+        "text": "腹泻次数和是否便血有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "Are stool frequency or blood in the stool recorded?",
+        "locale": "en",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "以前发生过低血糖吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-hypo"
+        ]
+      },
+      {
+        "text": "Were there previous episodes of hypoglycaemia?",
+        "locale": "en",
+        "expect": [
+          "prior-hypo"
+        ]
+      },
+      {
+        "text": "输液开始后发生了什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "infusion-symptoms"
+        ]
+      },
+      {
+        "text": "What happened after the infusion began?",
+        "locale": "en",
+        "expect": [
+          "infusion-symptoms"
+        ]
+      }
+    ]
+  }
+}

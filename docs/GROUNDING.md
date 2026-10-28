@@ -73,6 +73,19 @@ says **MODIFIED** next to its digest (the CLI warns on stderr). A pin changes
 only with a new suite version (`grounding-v2`), so published test numbers stay
 comparable.
 
+`grounding-v1` covers the original ten cases in **each** split, in Chinese
+and English: `acute-appendicitis`, `acute-ischemic-stroke`,
+`anaphylaxis-garden`, `dka-adult`, `new-onset-t2dm`, `pediatric-asthma`,
+`pulmonary-embolism-postop`, `septic-shock-cap`, `smzl-lung-adeno` and
+`stemi-inferior-rv`. Its 843 test items and 676 dev items do not grow when
+the case catalogue grows. The 20 CMCR adaptations are outside this fixed
+cohort: they have their own per-case `extensions.testUtterances` and
+reference `solution`, checked by `cases verify --all` and the CMCR content
+tests. Those checks are authoring regressions, **not** a held-out grounding
+benchmark. A claim about held-out performance on CMCR needs a separate
+versioned suite with fresh dev/test items; v1's digest and results remain
+unchanged.
+
 The protocol followed for `grounding-v1`:
 
 1. Test items were written from the case records — the questions, tool

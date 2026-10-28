@@ -1,0 +1,1695 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653404",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "高热与足背红肿 · 4岁1个月男孩",
+    "en": "High fever and a swollen foot · boy aged 4 years 1 month"
+  },
+  "summary": {
+    "zh-CN": "有反复皮肤及呼吸道感染的儿童再次高热，局部皮损扩展；从感染处理追踪免疫学线索。",
+    "en": "A child with recurrent skin and respiratory infections develops high fever and spreading skin lesions; follow the infection assessment into immunological investigation."
+  },
+  "specialty": [
+    "pediatrics",
+    "immunology",
+    "infectious-disease"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "李靜; 黃潔馨; 苗研. 以反復感染及濕疹為表現的X連鎖無丙種球蛋白血症1例基因診斷. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.015",
+    "doi": "10.12408/j.issn2223-4462.2025.02.015",
+    "authors": [
+      "李靜",
+      "黃潔馨",
+      "苗研"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小禾（化名）",
+      "en": "He (pseudonym)"
+    },
+    "age": 49,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "发热3天，右足背红肿疼痛1天",
+      "en": "Three days of fever and one day of painful right-foot swelling"
+    },
+    "triageNote": {
+      "zh-CN": "有反复皮肤及呼吸道感染的儿童再次高热，局部皮损扩展；从感染处理追踪免疫学线索。",
+      "en": "A child with recurrent skin and respiratory infections develops high fever and spreading skin lesions; follow the infection assessment into immunological investigation."
+    },
+    "tags": [
+      {
+        "zh-CN": "发热3天，右足背红肿疼痛1天",
+        "en": "Three days of fever and one day of painful right-foot swelling"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "孩子高热3天，右脚背红肿疼痛1天。",
+        "en": "The child has had high fever for three days and a painful swollen right foot for one day."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
+          "en": "Relays only the reported history without inventing witnessed events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying",
+    "ageUnit": "months"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "孩子这次哪里不舒服？",
+        "en": "What is troubling the child this time?"
+      },
+      "answer": {
+        "zh-CN": "孩子高热3天，右脚背红肿疼痛1天。",
+        "en": "The child has had high fever for three days and a painful swollen right foot for one day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子这次哪里不舒服？",
+          "足背红肿"
+        ],
+        "en": [
+          "What is troubling the child this time?",
+          "swollen foot"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "spread",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "脚上的红肿怎样发展？",
+        "en": "How did the swelling spread?"
+      },
+      "answer": {
+        "zh-CN": "从脚背湿疹破损处开始，后来红肿蔓延到脚踝和小腿。",
+        "en": "It began at an eczema lesion on the foot and spread to the ankle and lower leg."
+      },
+      "keywords": {
+        "zh-CN": [
+          "脚上的红肿怎样发展？",
+          "红肿蔓延"
+        ],
+        "en": [
+          "How did the swelling spread?",
+          "spreading swelling"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "入院前用了什么药，效果怎样？",
+        "en": "Which medicine was tried before admission and did it help?"
+      },
+      "answer": {
+        "zh-CN": "用了阿莫西林克拉维酸，仍发高热，红肿继续加重。",
+        "en": "Amoxicillin/clavulanate was used, but high fever and swelling continued."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院前用了什么药，效果怎样？",
+          "阿莫西林"
+        ],
+        "en": [
+          "Which medicine was tried before admission and did it help?",
+          "amoxicillin"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "recurrent-infections",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有哪些反复感染？",
+        "en": "Which infections have recurred?"
+      },
+      "answer": {
+        "zh-CN": "较早一年两次因肺炎住院，之后一年分别因肺炎和高热伴双大腿脓疱住院。",
+        "en": "There were two pneumonia admissions in an earlier year, then another pneumonia admission and an admission for fever with pustules on both thighs."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有哪些反复感染？",
+          "反复感染"
+        ],
+        "en": [
+          "Which infections have recurred?",
+          "recurrent infections"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "eczema",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "湿疹从什么时候开始？",
+        "en": "When did eczema begin?"
+      },
+      "answer": {
+        "zh-CN": "出生后就反复全身湿疹。",
+        "en": "Widespread eczema has recurred since after birth."
+      },
+      "keywords": {
+        "zh-CN": [
+          "湿疹从什么时候开始？",
+          "湿疹"
+        ],
+        "en": [
+          "When did eczema begin?",
+          "eczema"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "prior-organism",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前皮肤感染查到过什么？",
+        "en": "Was an organism identified in a previous skin infection?"
+      },
+      "answer": {
+        "zh-CN": "以前脓疱的分泌物查出过甲氧西林敏感的金黄色葡萄球菌。",
+        "en": "A previous pustule culture grew methicillin-sensitive Staphylococcus aureus."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前皮肤感染查到过什么？",
+          "以前培养"
+        ],
+        "en": [
+          "Was an organism identified in a previous skin infection?",
+          "previous culture"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "cough",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "住院后有没有新的呼吸症状？",
+        "en": "Did respiratory symptoms appear after admission?"
+      },
+      "answer": {
+        "zh-CN": "第二天出现咳嗽。",
+        "en": "Cough appeared on the second admission day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "住院后有没有新的呼吸症状？",
+          "新发咳嗽"
+        ],
+        "en": [
+          "Did respiratory symptoms appear after admission?",
+          "new cough"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "孩子有明确药物过敏吗？",
+        "en": "Does the child have a documented medicine allergy?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子有明确药物过敏吗？"
+        ],
+        "en": [
+          "Does the child have a documented medicine allergy?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "母系亲属有反复感染或早夭吗？",
+        "en": "Are recurrent infections or early deaths known in maternal relatives?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "母系亲属有反复感染或早夭吗？"
+        ],
+        "en": [
+          "Are recurrent infections or early deaths known in maternal relatives?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "immunisation",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "疫苗接种史如何？",
+        "en": "What is the vaccination history?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疫苗接种史如何？"
+        ],
+        "en": [
+          "What is the vaccination history?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "development",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "生长发育情况有记录吗？",
+        "en": "Is growth and development documented?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生长发育情况有记录吗？"
+        ],
+        "en": [
+          "Is growth and development documented?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "孩子以前做过手术吗？",
+        "en": "Has the child undergone surgery?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子以前做过手术吗？"
+        ],
+        "en": [
+          "Has the child undergone surgery?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "本次体重是多少？",
+        "en": "What is the current body weight?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "本次体重是多少？"
+        ],
+        "en": [
+          "What is the current body weight?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "家中有烟草暴露吗？",
+        "en": "Is there household tobacco exposure?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家中有烟草暴露吗？"
+        ],
+        "en": [
+          "Is there household tobacco exposure?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "孕期酒精暴露史有记录吗？",
+        "en": "Is prenatal alcohol exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期酒精暴露史有记录吗？"
+        ],
+        "en": [
+          "Is prenatal alcohol exposure documented?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "foot",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查右足及小腿",
+        "en": "Examine the right foot and lower leg"
+      },
+      "finding": {
+        "zh-CN": "右第五趾关节表面皮肤淤黑约0.5×0.5 cm；足及小腿肿痛，无波动感。",
+        "en": "A roughly 0.5 × 0.5 cm dark lesion overlies the right fifth-toe joint; the foot and lower leg are swollen and painful without fluctuance."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "other-lesions",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查其余皮肤病灶",
+        "en": "Examine the other skin lesions"
+      },
+      "finding": {
+        "zh-CN": "耻骨联合区和臀部有数个溃疡。",
+        "en": "Several ulcers are present over the pubic region and buttocks."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "复核第2天肺部听诊",
+        "en": "Review day-2 lung auscultation"
+      },
+      "finding": {
+        "zh-CN": "咳嗽后肺部可闻及细湿啰音。",
+        "en": "Fine crackles were heard after the onset of cough."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "infection-tests",
+      "name": {
+        "zh-CN": "炎症指标与病原培养",
+        "en": "Inflammatory markers and cultures"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "炎症指标与病原培养"
+        ],
+        "en": [
+          "Inflammatory markers and cultures",
+          "infection-tests"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "CRP 328 mg/L、PCT 16.6 ng/mL；皮损分泌物第3天培养为MSSA，血培养阴性。",
+            "en": "CRP 328 mg/L and PCT 16.6 ng/mL; day-3 lesion culture grew MSSA and blood culture was negative."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "foot-ultrasound",
+      "name": {
+        "zh-CN": "足背超声与皮损记录",
+        "en": "Foot ultrasound and skin-lesion record"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "足背超声与皮损记录"
+        ],
+        "en": [
+          "Foot ultrasound and skin-lesion record",
+          "foot-ultrasound"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "右足背皮下软组织广泛水肿，未见脓腔。原图为患者皮肤情况，不是超声影像。",
+            "en": "There was extensive subcutaneous soft-tissue oedema on the right foot without an abscess cavity. The source figure shows skin findings, not ultrasound images."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "chest",
+      "name": {
+        "zh-CN": "胸部X线",
+        "en": "Chest radiograph"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部X线"
+        ],
+        "en": [
+          "Chest radiograph",
+          "chest"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "双肺支气管肺炎。",
+            "en": "Bilateral bronchopneumonia was reported."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "immunoglobulins",
+      "name": {
+        "zh-CN": "免疫球蛋白及原表核对",
+        "en": "Immunoglobulins and source-table review"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "免疫球蛋白及原表核对"
+        ],
+        "en": [
+          "Immunoglobulins and source-table review",
+          "immunoglobulins"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "首次IgG 3.15 g/L、复查3.14 g/L（表列参考7.0–16.0），IgA <0.1 g/L；后续IgG 2.73 g/L、IgA <0.10 g/L。IgM 1.29后0.75 g/L。正文称IgE无异常，但表1为306 μg/L、参考<144；该矛盾保留，不能改写成IgE正常。",
+            "en": "Initial IgG was 3.15 then 3.14 g/L (table reference 7.0–16.0), with IgA <0.1 g/L; later IgG was 2.73 g/L and IgA <0.10 g/L. IgM was 1.29 then 0.75 g/L. The narrative calls IgE unremarkable, whereas Table 1 gives 306 µg/L against <144; this discrepancy is retained rather than reported as normal."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "lymphocytes",
+      "name": {
+        "zh-CN": "后续淋巴细胞流式检查",
+        "en": "Subsequent lymphocyte flow cytometry"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "后续淋巴细胞流式检查"
+        ],
+        "en": [
+          "Subsequent lymphocyte flow cytometry",
+          "lymphocytes"
+        ]
+      },
+      "requires": [
+        "flow-cytometry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "B细胞绝对计数6.0 cells/μL（参考90–660）；T细胞、CD4、CD8及NK细胞计数正常。",
+            "en": "B-cell absolute count was 6.0 cells/µL (reference 90–660); T-cell, CD4, CD8 and NK-cell counts were normal."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "genetics",
+      "name": {
+        "zh-CN": "后续BTK基因报告",
+        "en": "Subsequent BTK genetic report"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "后续BTK基因报告"
+        ],
+        "en": [
+          "Subsequent BTK genetic report",
+          "genetics"
+        ]
+      },
+      "requires": [
+        "molecular"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "BTK半合子变异NM_000061.3:c.1632-2A>G。原报告未提供母亲基因检测，不能将其携带状态视为已证实。",
+            "en": "A hemizygous BTK variant, NM_000061.3:c.1632-2A>G, was reported. Maternal testing was not provided, so carrier status cannot be asserted."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "急性感染先使用万古霉素，培养后改克林霉素加头孢曲松；第5天退热、足肿痛消退，第9天皮肤无溃破红肿及焦痂。明确免疫缺陷后给予静脉免疫球蛋白，后续每月替代；报告时暂未再因严重感染住院，随访期限未明确。",
+            "en": "Acute infection was initially treated with vancomycin, then clindamycin plus ceftriaxone after culture. Fever and foot swelling resolved by day 5, with no skin ulceration, erythema or eschar by day 9. After the immune diagnosis, intravenous immunoglobulin was started and continued monthly; no further severe-infection admissions were recorded by publication, but follow-up length was unspecified."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "spread"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "recurrent-infections"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "foot"
+          },
+          {
+            "examined": "other-lesions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "怎样整合反复感染与免疫学结果？",
+        "en": "How should recurrent infections and immune results be integrated?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "recurrent-infections"
+          },
+          {
+            "read": "immunoglobulins",
+            "phase": "workup"
+          },
+          {
+            "read": "lymphocytes",
+            "phase": "workup"
+          },
+          {
+            "read": "genetics",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "低IgG/IgA、明显B细胞减少和BTK变异支持X连锁无丙种球蛋白血症",
+            "en": "Low IgG/IgA, marked B-cell depletion and a BTK variant support X-linked agammaglobulinaemia"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "多个独立证据形成抗体缺陷诊断链；IgM未降低不应自动排除本例表型。",
+            "en": "Independent findings form an antibody-deficiency evidence chain; a non-low IgM does not automatically exclude this reported phenotype."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只要有湿疹，反复肺炎及B细胞减少都不必进一步解释",
+            "en": "Eczema alone makes recurrent pneumonia and B-cell depletion irrelevant"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "多个独立证据形成抗体缺陷诊断链；IgM未降低不应自动排除本例表型。",
+            "en": "Independent findings form an antibody-deficiency evidence chain; a non-low IgM does not automatically exclude this reported phenotype."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "怎样兼顾急性感染和长期风险？",
+        "en": "How should acute infection and long-term risk both be addressed?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "infection-tests",
+            "phase": "workup"
+          },
+          {
+            "read": "foot-ultrasound",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "按培养和临床状态处理感染，并转免疫专科制定免疫球蛋白替代、疫苗安全及遗传咨询计划",
+            "en": "Treat infection using cultures and clinical status, and arrange immunology assessment for immunoglobulin replacement, vaccine safety and genetic counselling"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "局部感染消退不等于抗体缺陷消失；替代方案及接种需由专科个体化制定。",
+            "en": "Resolution of a local infection does not remove the antibody defect; replacement and vaccination need an individual specialist plan."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "皮损消退即可结束评估，不需要长期免疫随访",
+            "en": "Stop evaluation when the skin heals, without long-term immune follow-up"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "局部感染消退不等于抗体缺陷消失；替代方案及接种需由专科个体化制定。",
+            "en": "Resolution of a local infection does not remove the antibody defect; replacement and vaccination need an individual specialist plan."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "spread"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "recurrent-infections"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "foot"
+          },
+          {
+            "examined": "other-lesions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "infection-tests",
+        "foot-ultrasound",
+        "chest",
+        "immunoglobulins",
+        "lymphocytes",
+        "genetics",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告诊断XLA并伴中重度特应性皮炎；反复细菌感染、抗体及B细胞异常和BTK变异相互印证。",
+      "en": "The report diagnosed XLA with moderate-to-severe atopic dermatitis; recurrent bacterial infection, antibody/B-cell abnormalities and the BTK variant are concordant."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "既往多次肺炎和MSSA皮肤感染是免疫评估的重要触发点。",
+        "en": "Repeated pneumonias and MSSA skin infections are important triggers for immune investigation."
+      },
+      {
+        "zh-CN": "正文与表格IgE不一致必须显式保留。",
+        "en": "The IgE discrepancy between narrative and table must remain explicit."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "母亲携带状态、完整疫苗记录、患者体重、明确随访期限及IgE矛盾原因。",
+        "en": "Maternal carrier status, full vaccination history, weight, defined follow-up length and the reason for the IgE discrepancy."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "李靜; 黃潔馨; 苗研. 以反復感染及濕疹為表現的X連鎖無丙種球蛋白血症1例基因診斷. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.015",
+      "https://rs.yiigle.com/cmaid/1653404",
+      "GeneReviews. X-Linked Agammaglobulinemia. https://www.ncbi.nlm.nih.gov/books/NBK1453/"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "母亲携带状态、完整疫苗记录、患者体重、明确随访期限及IgE矛盾原因。",
+      "en": "Maternal carrier status, full vaccination history, weight, defined follow-up length and the reason for the IgE discrepancy."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653404/fig01.png",
+      "title": {
+        "zh-CN": "原报告：皮肤病灶照片",
+        "en": "Source: photographs of skin lesions"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李靜; 黃潔馨; 苗研，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "3d5374a5ae3d5c0af600d4b07098ba383032840058e8a096fd5595831aaa7f68"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1653404/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "71d6db5391699190f0063baf7ac6bd132ca2dd6f1c3eba18782722020333873d"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "spread"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "recurrent-infections"
+    },
+    {
+      "type": "ask",
+      "itemId": "eczema"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-organism"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "immunisation"
+    },
+    {
+      "type": "ask",
+      "itemId": "development"
+    },
+    {
+      "type": "ask",
+      "itemId": "psh"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "foot"
+    },
+    {
+      "type": "examine",
+      "findingId": "other-lesions"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "cough"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "order",
+      "investigationId": "infection-tests"
+    },
+    {
+      "type": "read",
+      "investigationId": "infection-tests",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "foot-ultrasound"
+    },
+    {
+      "type": "read",
+      "investigationId": "foot-ultrasound",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "chest"
+    },
+    {
+      "type": "read",
+      "investigationId": "chest",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "immunoglobulins"
+    },
+    {
+      "type": "read",
+      "investigationId": "immunoglobulins",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "lymphocytes"
+    },
+    {
+      "type": "read",
+      "investigationId": "lymphocytes",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "genetics"
+    },
+    {
+      "type": "read",
+      "investigationId": "genetics",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1653404",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653404",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "孩子这次哪里不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What is troubling the child this time?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "脚上的红肿怎样发展？",
+        "locale": "zh-CN",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "How did the swelling spread?",
+        "locale": "en",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "入院前用了什么药，效果怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Which medicine was tried before admission and did it help?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "以前有哪些反复感染？",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrent-infections"
+        ]
+      },
+      {
+        "text": "Which infections have recurred?",
+        "locale": "en",
+        "expect": [
+          "recurrent-infections"
+        ]
+      },
+      {
+        "text": "湿疹从什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "When did eczema begin?",
+        "locale": "en",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "以前皮肤感染查到过什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-organism"
+        ]
+      },
+      {
+        "text": "Was an organism identified in a previous skin infection?",
+        "locale": "en",
+        "expect": [
+          "prior-organism"
+        ]
+      },
+      {
+        "text": "住院后有没有新的呼吸症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "Did respiratory symptoms appear after admission?",
+        "locale": "en",
+        "expect": [
+          "cough"
+        ]
+      }
+    ]
+  }
+}

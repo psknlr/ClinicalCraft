@@ -11,7 +11,7 @@
 > 无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹。内置
-> 10 个中英双语教学病例、3 个场馆（含两层的教学医院）、96 种体素设备，以及 41 个具身基准
+> 30 个中英双语教学病例（含新增的中华病例说 20 例）、3 个场馆（含两层的教学医院）、96 种体素设备，以及 41 个具身基准
 > 场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
@@ -35,6 +35,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [Benchmark samples](docs/bench/) ·
 [Grounding benchmark](docs/GROUNDING.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) ·
+[中华病例说 20 例 / CMCR collection](docs/CMCR_CASES.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
 [Design lineage](docs/DESIGN_PRINCIPLES.md) ·
@@ -221,6 +222,10 @@ Anthropic-compatible gateway under `providers` in settings (see below).
 
 ## Case library
 
+The original ten scenarios below are joined by the [20-case CMCR collection](docs/CMCR_CASES.md):
+published multispecialty reports reconstructed as bilingual, staged historical encounters.
+Use the collection filter in the web library to find them. Original PDFs and figures are installed locally.
+
 | id | 标题 | title | specialty | setting | difficulty | clock | facility |
 |---|---|---|---|---|---|---|---|
 | [`acute-appendicitis`](packages/content/cases/acute-appendicitis/README.md) | 腹痛 · 19岁男性 | Abdominal pain · 19-year-old man | emergency-medicine, general-surgery | emergency | ★★☆☆☆ | simulated | general-hospital |
@@ -236,8 +241,8 @@ Anthropic-compatible gateway under `providers` in settings (see below).
 
 Titles are deliberately spoiler-free; each case README names the diagnosis
 and is written for authors and teachers. `smzl-lung-adeno` is the faithful
-port of the V4 case, adapted from a published case report; the other nine
-are synthetic. Write your own with `npm run cc -- cases new <id>` and
+port of the V4 case, adapted from a published case report; the other nine in the table
+are synthetic. The additional 20 CMCR cases are published cases. Write your own with `npm run cc -- cases new <id>` and
 [docs/CASE_AUTHORING.md](docs/CASE_AUTHORING.md).
 
 ## Facilities and equipment
@@ -246,7 +251,7 @@ are synthetic. Write your own with `npm run cc -- cases new <id>` and
 |---|---|
 | `clinic-v4` · 临床探索中心 Clinical Discovery Centre | data port of the V4 world: healing garden, one clinic building (consult room, lab, imaging, pathology, corridor, conference area), 7 rooms, 21 placements, 1 patient slot, evidence board, atlas kiosk, build zone and crafting bench |
 | `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward, ICU, operating theatre, conference room, gardens — 37 rooms, 258 placements, 14 patient slots for every case setting, 10 staff |
-| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 280 placements, 17 patient slots, 11 staff (a porter among them). Nobody's own facility: offered as an alternative for the 9 cases it can host |
+| `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 280 placements, 17 patient slots, 11 staff (a porter among them). Offered as an alternative for compatible cases |
 
 Three equipment catalogs define **96 equipment types** — `core-furniture` (39),
 `core-clinical` (31: monitors, ECG, defibrillator, crash cart, treatment cart, ventilator,

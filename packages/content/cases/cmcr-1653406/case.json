@@ -1,0 +1,1621 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653406",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "足月妊娠待产 · 34岁女性",
+    "en": "Term pregnancy awaiting delivery · woman aged 34"
+  },
+  "summary": {
+    "zh-CN": "初次妊娠临近分娩，破膜后准备剖宫产；按阶段核对围手术期变化、检验与多学科处置。",
+    "en": "A first pregnancy near delivery, with caesarean planned after membrane rupture; review perioperative changes, investigations and multidisciplinary care in sequence."
+  },
+  "specialty": [
+    "obstetrics",
+    "anesthesiology",
+    "critical-care"
+  ],
+  "difficulty": 4,
+  "setting": "operating-room",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "陳明輝. 圍手術期孕婦羊水栓塞1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.017",
+    "doi": "10.12408/j.issn2223-4462.2025.02.017",
+    "authors": [
+      "陳明輝"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "陆女士（化名）",
+      "en": "Ms Lu (pseudonym)"
+    },
+    "age": 34,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "孕40周加6天入院待产",
+      "en": "Admitted awaiting delivery at 40 weeks and 6 days"
+    },
+    "triageNote": {
+      "zh-CN": "初次妊娠临近分娩，破膜后准备剖宫产；按阶段核对围手术期变化、检验与多学科处置。",
+      "en": "A first pregnancy near delivery, with caesarean planned after membrane rupture; review perioperative changes, investigations and multidisciplinary care in sequence."
+    },
+    "tags": [
+      {
+        "zh-CN": "孕40周加6天入院待产",
+        "en": "Admitted awaiting delivery at 40 weeks and 6 days"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "这是第一次怀孕，孕40周加6天来住院待产。",
+        "en": "This is my first pregnancy; I was admitted awaiting delivery at 40 weeks and 6 days."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying",
+    "ageUnit": "years"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次为什么住院？",
+        "en": "Why were you admitted?"
+      },
+      "answer": {
+        "zh-CN": "这是第一次怀孕，孕40周加6天来住院待产。",
+        "en": "This is my first pregnancy; I was admitted awaiting delivery at 40 weeks and 6 days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这次为什么住院？",
+          "待产"
+        ],
+        "en": [
+          "whywereyouadmitted",
+          "awaiting delivery"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "rupture",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "入院后羊水有什么变化？",
+        "en": "What happened to the amniotic fluid after admission?"
+      },
+      "answer": {
+        "zh-CN": "入院第二天出现阴道流液，羊水呈黄绿色。",
+        "en": "On the second admission day, vaginal fluid leakage appeared and the fluid was yellow-green."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院后羊水有什么变化？",
+          "流液"
+        ],
+        "en": [
+          "What happened to the amniotic fluid after admission?",
+          "fluid leakage"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "delivery-plan",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "为什么安排剖宫产？",
+        "en": "Why was caesarean delivery planned?"
+      },
+      "answer": {
+        "zh-CN": "医生认为短时间内难以自然分娩，准备剖宫产。",
+        "en": "The team thought vaginal delivery was unlikely soon and planned a caesarean."
+      },
+      "keywords": {
+        "zh-CN": [
+          "为什么安排剖宫产？",
+          "分娩计划"
+        ],
+        "en": [
+          "Why was caesarean delivery planned?",
+          "delivery plan"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "anaesthetic-plan",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最初准备采用什么麻醉？",
+        "en": "What anaesthetic was initially planned?"
+      },
+      "answer": {
+        "zh-CN": "原记录说没有椎管内麻醉禁忌，最初准备腰麻。",
+        "en": "The record states no contraindication to neuraxial anaesthesia, with spinal anaesthesia initially planned."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初准备采用什么麻醉？",
+          "麻醉计划"
+        ],
+        "en": [
+          "What anaesthetic was initially planned?",
+          "anaesthetic plan"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "symptom-turn",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "侧卧准备麻醉时出现什么不适？",
+        "en": "What symptoms appeared while positioning for anaesthesia?"
+      },
+      "answer": {
+        "zh-CN": "右侧卧后心前区和腹部不舒服，吐出约300毫升胃内容物。",
+        "en": "After right-side positioning there was precordial and abdominal discomfort, followed by about 300 mL of gastric vomiting."
+      },
+      "keywords": {
+        "zh-CN": [
+          "侧卧准备麻醉时出现什么不适？",
+          "侧卧后"
+        ],
+        "en": [
+          "What symptoms appeared while positioning for anaesthesia?",
+          "after positioning"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "early-response",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "平卧和吸氧后症状怎样？",
+        "en": "What happened after lying flat and receiving oxygen?"
+      },
+      "answer": {
+        "zh-CN": "当时生命体征没有明显变化，但心前区和腹部仍不舒服。",
+        "en": "Vital signs initially showed no clear change, but precordial and abdominal discomfort persisted."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平卧和吸氧后症状怎样？",
+          "持续不适"
+        ],
+        "en": [
+          "What happened after lying flat and receiving oxygen?",
+          "persistent discomfort"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "孕前是否有心肺疾病？",
+        "en": "Was there pre-existing heart or lung disease?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕前是否有心肺疾病？"
+        ],
+        "en": [
+          "Was there pre-existing heart or lung disease?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过手术吗？",
+        "en": "Were there previous operations?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前做过手术吗？"
+        ],
+        "en": [
+          "Were there previous operations?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "入院前使用哪些药物？",
+        "en": "Which medicines were used before admission?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院前使用哪些药物？"
+        ],
+        "en": [
+          "Which medicines were used before admission?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物过敏吗？",
+        "en": "Were previous medicine allergies known?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物过敏吗？"
+        ],
+        "en": [
+          "Were previous medicine allergies known?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "bleeding-history",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有异常出血或凝血问题吗？",
+        "en": "Was there previous abnormal bleeding or a coagulation disorder?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有异常出血或凝血问题吗？"
+        ],
+        "en": [
+          "Was there previous abnormal bleeding or a coagulation disorder?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "infection",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "手术前是否测到发热？",
+        "en": "Was fever documented before surgery?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术前是否测到发热？"
+        ],
+        "en": [
+          "Was fever documented before surgery?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有血栓或出血病史吗？",
+        "en": "Was there familial thrombosis or abnormal bleeding?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有血栓或出血病史吗？"
+        ],
+        "en": [
+          "Was there familial thrombosis or abnormal bleeding?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "孕期是否吸烟或接触烟草？",
+        "en": "Was there smoking or tobacco exposure in pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期是否吸烟或接触烟草？"
+        ],
+        "en": [
+          "Was there smoking or tobacco exposure in pregnancy?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "孕期饮酒情况有记录吗？",
+        "en": "Was alcohol use in pregnancy recorded?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期饮酒情况有记录吗？"
+        ],
+        "en": [
+          "Was alcohol use in pregnancy recorded?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "entry-vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对入室生命体征",
+        "en": "Check operating-room entry vital signs"
+      },
+      "finding": {
+        "zh-CN": "入室血压138/87 mmHg，心率78次/分，未吸氧SpO₂ 98%。",
+        "en": "On entry, BP was 138/87 mmHg, heart rate 78/min and room-air SpO₂ 98%."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "baseline-exam",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对术前心肺体检",
+        "en": "Review the preoperative heart and lung examination"
+      },
+      "finding": {
+        "zh-CN": "原报告未给出术前心肺听诊或气道评估的具体所见。",
+        "en": "Detailed preoperative auscultation and airway examination findings were not reported."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "collapse",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "复核术中危急体征",
+        "en": "Review signs during intraoperative collapse"
+      },
+      "finding": {
+        "zh-CN": "分娩期间全身皮肤紫绀，血压最低41/29 mmHg；SpO₂先降到85%，继而无法测出。",
+        "en": "During delivery, generalised cyanosis developed; BP reached 41/29 mmHg and SpO₂ fell to 85% before becoming unmeasurable."
+      },
+      "abnormal": true,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "pupils",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对术中瞳孔",
+        "en": "Review intraoperative pupils"
+      },
+      "finding": {
+        "zh-CN": "瞳孔约2–3 mm，等大等圆，对光反射存在。",
+        "en": "Pupils were about 2–3 mm, equal and round, with preserved light reflexes."
+      },
+      "abnormal": false,
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "fetal-monitor",
+      "name": {
+        "zh-CN": "胎心监测时间线",
+        "en": "Fetal-heart monitoring timeline"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胎心监测时间线"
+        ],
+        "en": [
+          "Fetal-heart monitoring timeline",
+          "fetal-monitor"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "入室胎心监测正常；孕妇出现不适后复测约60次/分。团队改行全麻急诊剖宫产。",
+            "en": "Fetal monitoring was initially normal; after maternal symptoms the fetal heart rate was about 60/min, prompting general anaesthesia and urgent caesarean delivery."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "circulatory-record",
+      "name": {
+        "zh-CN": "术中呼吸循环记录",
+        "en": "Intraoperative respiratory and circulatory record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "术中呼吸循环记录"
+        ],
+        "en": [
+          "Intraoperative respiratory and circulatory record",
+          "circulatory-record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "插管过程顺利，手术开始5分钟内娩出活婴。其间母体严重低氧读数及低血压，需多种血管活性药物；未报告心跳呼吸骤停。",
+            "en": "Intubation was uncomplicated and a live infant was delivered within five minutes of surgery starting. Severe maternal hypoxaemic readings and hypotension required multiple vasoactive agents; cardiorespiratory arrest was not reported."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-gas",
+      "name": {
+        "zh-CN": "术中血气",
+        "en": "Intraoperative blood gas"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "术中血气"
+        ],
+        "en": [
+          "Intraoperative blood gas",
+          "blood-gas"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "pH 7.15，报告为呼吸性合并代谢性酸中毒；Hb不低、PaO₂正常，但未给出后二者数值。",
+            "en": "pH was 7.15, described as mixed respiratory and metabolic acidosis; haemoglobin was not low and PaO₂ was reported normal, without numerical values for either."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "凝血功能",
+        "en": "Coagulation tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "凝血功能"
+        ],
+        "en": [
+          "Coagulation tests",
+          "coagulation"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "PT 12.5秒，APTT 40.2秒，纤维蛋白原1.38 g/L，D-二聚体9.22 μg/mL。作者记载凝血异常，但明确指出未有清晰DIC表现。",
+            "en": "PT 12.5 seconds, APTT 40.2 seconds, fibrinogen 1.38 g/L and D-dimer 9.22 µg/mL. The authors described coagulation abnormalities but explicitly noted no clear DIC presentation."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "术中心脏超声",
+        "en": "Intraoperative echocardiography"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "术中心脏超声"
+        ],
+        "en": [
+          "Intraoperative echocardiography",
+          "echo"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "左室射血分数正常，右室不大，未报告具体数值或完整右心功能。",
+            "en": "Left ventricular ejection fraction was reported normal and the right ventricle not enlarged; numerical values and a full right-heart assessment were not provided."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告启动院内抢救团队并通知ECMO团队待命，给予机械通气、血管活性支持及血制品等综合处置，未报告实际使用ECMO。术后第2天拔管，第3天转普通病房，第6天母体情况稳定出院。婴儿Apgar序列为5、7、8、9，评分时间点未列明；长期母婴结局未记载。",
+            "en": "The hospital emergency team was activated and the ECMO team stood by; mechanical ventilation, vasoactive agents and blood products formed part of combined support. Actual ECMO use was not reported. The mother was extubated on postoperative day 2, moved to the ward on day 3 and discharged stable on day 6. Infant Apgar scores were listed as 5, 7, 8 and 9 without time points; long-term maternal and infant outcomes were not documented."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "rupture"
+          },
+          {
+            "asked": "delivery-plan"
+          },
+          {
+            "asked": "anaesthetic-plan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "entry-vitals"
+          },
+          {
+            "examined": "baseline-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "如何解释分娩时突然的呼吸循环衰竭？",
+        "en": "How should abrupt respiratory and circulatory failure during delivery be interpreted?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "circulatory-record",
+            "phase": "workup"
+          },
+          {
+            "read": "coagulation",
+            "phase": "workup"
+          },
+          {
+            "read": "blood-gas",
+            "phase": "workup"
+          },
+          {
+            "examined": "collapse"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "考虑羊水栓塞等产科危急病因，结合凝血异常并继续排查出血、过敏等原因",
+            "en": "Consider amniotic fluid embolism among obstetric emergencies, integrating coagulation abnormalities while evaluating haemorrhage, allergy and other causes"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "报告最终诊断羊水栓塞，但未有明确DIC或心脏骤停；这是临床综合判断，单个结果不能确证。",
+            "en": "The report diagnosed amniotic fluid embolism despite no clear DIC or cardiac arrest; this is an integrated clinical judgement, not confirmation by one result."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "凝血异常就等于已满足所有研究标准，可停止鉴别诊断",
+            "en": "Abnormal coagulation proves every research criterion and ends the differential diagnosis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "报告最终诊断羊水栓塞，但未有明确DIC或心脏骤停；这是临床综合判断，单个结果不能确证。",
+            "en": "The report diagnosed amniotic fluid embolism despite no clear DIC or cardiac arrest; this is an integrated clinical judgement, not confirmation by one result."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "面对这些证据，首要组织措施是什么？",
+        "en": "What is the immediate organisational priority?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "fetal-monitor",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "立即启动产科、麻醉、重症及输血协作，支持氧合循环并评估凝血治疗，避免等待确证",
+            "en": "Activate obstetric, anaesthetic, critical-care and transfusion support immediately; support oxygenation and circulation and assess coagulopathy without waiting for confirmation"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "紧急支持与病因评估应并行；原报告多药处理不等于每一种药物都具有独立获益。",
+            "en": "Resuscitative support and diagnostic assessment proceed together; the multiple historical drugs do not establish independent benefit for each."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "先等待特异确诊试验，再处理母体低血压和低氧",
+            "en": "Wait for a specific confirmatory test before treating maternal hypotension and hypoxia"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "紧急支持与病因评估应并行；原报告多药处理不等于每一种药物都具有独立获益。",
+            "en": "Resuscitative support and diagnostic assessment proceed together; the multiple historical drugs do not establish independent benefit for each."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "rupture"
+          },
+          {
+            "asked": "delivery-plan"
+          },
+          {
+            "asked": "anaesthetic-plan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "entry-vitals"
+          },
+          {
+            "examined": "baseline-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "fetal-monitor",
+        "circulatory-record",
+        "blood-gas",
+        "coagulation",
+        "echo",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "这是报告诊断的围分娩期羊水栓塞，关键在及时识别突发心肺衰竭及凝血异常，并保留诊断证据的边界。",
+      "en": "The authors diagnosed peripartum amniotic fluid embolism; the key is early recognition of abrupt cardiopulmonary failure and coagulation abnormalities while retaining diagnostic limitations."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "临床紧急处置无需等到罕见病得到专一检验确证。",
+        "en": "Emergency support cannot wait for a rare disease to be confirmed by a specific test."
+      },
+      {
+        "zh-CN": "无法测出的SpO₂不是数值为零；报告正常PaO₂也须保留采样时点不明的限制。",
+        "en": "An unmeasurable SpO₂ is not zero; the reported normal PaO₂ must retain uncertainty about sample timing."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "准确失血量、连续血气时点、完整DIC评分及长期母婴神经结局。",
+        "en": "Exact blood loss, serial blood-gas timing, complete DIC scoring and long-term maternal/infant neurological outcomes."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "陳明輝. 圍手術期孕婦羊水栓塞1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.017",
+      "https://rs.yiigle.com/cmaid/1653406",
+      "SMFM. Checklist for initial management of amniotic fluid embolism, updated 2026. https://publications.smfm.org/publications/636-society-for-maternal-fetal-medicine-special-statement-checklist/"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "准确失血量、连续血气时点、完整DIC评分及长期母婴神经结局。",
+      "en": "Exact blood loss, serial blood-gas timing, complete DIC scoring and long-term maternal/infant neurological outcomes."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1653406/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "40bcf032fa78f0fbbfe0cbcb9eafc6010f89af0621b50acfff9e860dceb72dc0"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "rupture"
+    },
+    {
+      "type": "ask",
+      "itemId": "delivery-plan"
+    },
+    {
+      "type": "ask",
+      "itemId": "anaesthetic-plan"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "psh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "infection"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "entry-vitals"
+    },
+    {
+      "type": "examine",
+      "findingId": "baseline-exam"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "symptom-turn"
+    },
+    {
+      "type": "ask",
+      "itemId": "early-response"
+    },
+    {
+      "type": "examine",
+      "findingId": "collapse"
+    },
+    {
+      "type": "examine",
+      "findingId": "pupils"
+    },
+    {
+      "type": "order",
+      "investigationId": "fetal-monitor"
+    },
+    {
+      "type": "read",
+      "investigationId": "fetal-monitor",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "circulatory-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "circulatory-record",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood-gas"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood-gas",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1653406",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653406",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "这次为什么住院？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Why were you admitted?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "入院后羊水有什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "rupture"
+        ]
+      },
+      {
+        "text": "What happened to the amniotic fluid after admission?",
+        "locale": "en",
+        "expect": [
+          "rupture"
+        ]
+      },
+      {
+        "text": "为什么安排剖宫产？",
+        "locale": "zh-CN",
+        "expect": [
+          "delivery-plan"
+        ]
+      },
+      {
+        "text": "Why was caesarean delivery planned?",
+        "locale": "en",
+        "expect": [
+          "delivery-plan"
+        ]
+      },
+      {
+        "text": "最初准备采用什么麻醉？",
+        "locale": "zh-CN",
+        "expect": [
+          "anaesthetic-plan"
+        ]
+      },
+      {
+        "text": "What anaesthetic was initially planned?",
+        "locale": "en",
+        "expect": [
+          "anaesthetic-plan"
+        ]
+      },
+      {
+        "text": "侧卧准备麻醉时出现什么不适？",
+        "locale": "zh-CN",
+        "expect": [
+          "symptom-turn"
+        ]
+      },
+      {
+        "text": "What symptoms appeared while positioning for anaesthesia?",
+        "locale": "en",
+        "expect": [
+          "symptom-turn"
+        ]
+      },
+      {
+        "text": "平卧和吸氧后症状怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "early-response"
+        ]
+      },
+      {
+        "text": "What happened after lying flat and receiving oxygen?",
+        "locale": "en",
+        "expect": [
+          "early-response"
+        ]
+      }
+    ]
+  }
+}

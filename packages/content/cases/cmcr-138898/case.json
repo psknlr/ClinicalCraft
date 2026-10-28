@@ -1,0 +1,1576 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-138898",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "乏力、纳差与皮肤瘀斑 · 57岁男性",
+    "en": "Fatigue, poor appetite and bruising · man aged 57"
+  },
+  "summary": {
+    "zh-CN": "全血细胞减少伴骨髓异常细胞，外院诊断与部分证据不一致；重新核对形态、免疫表型及跨器官线索。",
+    "en": "Pancytopenia and abnormal marrow cells coexist with evidence discordant with the earlier diagnosis; reassess morphology, immunophenotype and multi-organ clues."
+  },
+  "specialty": [
+    "hematology",
+    "oncology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "张路; 王书杰; 杨辰. 第311例　全血细胞减少—胰酶升高—低钠血症—骨髓中大量原始细胞. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.08.018",
+    "doi": "10.3760/cma.j.issn.0376-2491.2014.08.018",
+    "authors": [
+      "张路",
+      "王书杰",
+      "杨辰"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "陆先生（化名）",
+      "en": "Mr Lu (pseudonym)"
+    },
+    "age": 57,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "乏力纳差3个月，皮肤瘀斑1周",
+      "en": "Three months of fatigue and poor appetite, with bruising for one week"
+    },
+    "triageNote": {
+      "zh-CN": "全血细胞减少伴骨髓异常细胞，外院诊断与部分证据不一致；重新核对形态、免疫表型及跨器官线索。",
+      "en": "Pancytopenia and abnormal marrow cells coexist with evidence discordant with the earlier diagnosis; reassess morphology, immunophenotype and multi-organ clues."
+    },
+    "tags": [
+      {
+        "zh-CN": "乏力纳差3个月，皮肤瘀斑1周",
+        "en": "Three months of fatigue and poor appetite, with bruising for one week"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "乏力、食欲下降3个月，越来越明显。",
+        "en": "Fatigue and poor appetite have worsened over three months."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "乏力和食欲变化多久了？",
+        "en": "How long have fatigue and appetite changes lasted?"
+      },
+      "answer": {
+        "zh-CN": "乏力、食欲下降3个月，越来越明显。",
+        "en": "Fatigue and poor appetite have worsened over three months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "乏力和食欲变化多久了？",
+          "乏力"
+        ],
+        "en": [
+          "How long have fatigue and appetite changes lasted?",
+          "fatigue"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "bruising",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "皮肤出现了什么变化？",
+        "en": "What skin changes appeared?"
+      },
+      "answer": {
+        "zh-CN": "最近1周腹部和腹股沟出现瘀斑，没有明显诱因。",
+        "en": "Bruises appeared on the abdomen and groin over the last week without an obvious trigger."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤出现了什么变化？",
+          "瘀斑"
+        ],
+        "en": [
+          "What skin changes appeared?",
+          "bruising"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "weight",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "体重下降了多少？",
+        "en": "How much weight was lost?"
+      },
+      "answer": {
+        "zh-CN": "发病以来体重下降了14公斤。",
+        "en": "Weight has fallen by 14 kg since the illness began."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重下降了多少？",
+          "体重"
+        ],
+        "en": [
+          "How much weight was lost?",
+          "weight loss"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "prior-label",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "之前医生怎样解释检查，治疗有效吗？",
+        "en": "What diagnosis was previously proposed and did treatment help?"
+      },
+      "answer": {
+        "zh-CN": "外院考虑急性髓系白血病和急性胰腺炎，禁食、补液、抑酸后没有好转，低钠一直存在。",
+        "en": "Another hospital considered AML and acute pancreatitis; fasting, fluids and acid suppression did not help, and low sodium persisted."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前医生怎样解释检查，治疗有效吗？",
+          "外院诊断"
+        ],
+        "en": [
+          "What diagnosis was previously proposed and did treatment help?",
+          "earlier diagnosis"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "饮酒及以前腹痛情况怎样？",
+        "en": "What is the alcohol and earlier abdominal-pain history?"
+      },
+      "answer": {
+        "zh-CN": "过去长期大量饮酒，约两年前饮酒后腹痛被诊断胰腺炎，治疗后戒酒，没有再出现类似疼痛。",
+        "en": "There was long-term heavy alcohol use; pain after drinking about two years earlier was labelled pancreatitis. After treatment he stopped drinking and similar pain did not recur."
+      },
+      "keywords": {
+        "zh-CN": [
+          "饮酒及以前腹痛情况怎样？",
+          "饮酒"
+        ],
+        "en": [
+          "What is the alcohol and earlier abdominal-pain history?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "不吸烟。",
+        "en": "He does not smoke."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "respiratory",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "此次有没有咳嗽咳痰或胸痛？",
+        "en": "Were cough, sputum or chest pain present this time?"
+      },
+      "answer": {
+        "zh-CN": "本次此前没有咳嗽、咳痰或胸痛。",
+        "en": "No cough, sputum or chest pain was reported before the subsequent deterioration."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此次有没有咳嗽咳痰或胸痛？",
+          "咳嗽胸痛"
+        ],
+        "en": [
+          "Were cough, sputum or chest pain present this time?",
+          "respiratory symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "是否有完整长期用药记录？",
+        "en": "Is a complete regular medication history available?"
+      },
+      "answer": {
+        "zh-CN": "原报告未列完整长期用药清单。",
+        "en": "A complete regular medication list is not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "是否有完整长期用药记录？"
+        ],
+        "en": [
+          "Is a complete regular medication history available?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "supplements",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "还服用其他非处方药或保健品吗？",
+        "en": "Were other non-prescription medicines or supplements used?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还服用其他非处方药或保健品吗？"
+        ],
+        "en": [
+          "Were other non-prescription medicines or supplements used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "travel",
+      "topic": "social",
+      "question": {
+        "zh-CN": "近期是否有旅行史？",
+        "en": "Was there recent travel?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期是否有旅行史？"
+        ],
+        "en": [
+          "Was there recent travel?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查皮肤和黏膜",
+        "en": "Examine skin and mucosa"
+      },
+      "finding": {
+        "zh-CN": "贫血貌；腹壁及双腹股沟散在瘀点、瘀斑，无触痛。",
+        "en": "Pale appearance with scattered nontender petechiae and bruises on the abdomen and groins."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "nodes-abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部和腹股沟淋巴结",
+        "en": "Examine abdomen and groin nodes"
+      },
+      "finding": {
+        "zh-CN": "腹股沟多枚活动、无压痛淋巴结，最大约1×1 cm；中上腹、右上腹轻压痛，无反跳痛或肌紧张，肝脾未触及。",
+        "en": "Several mobile nontender groin nodes up to 1×1 cm; mild upper/ right-upper abdominal tenderness without rebound or guarding, and no palpable liver or spleen."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊初诊肺部",
+        "en": "Auscultate lungs at presentation"
+      },
+      "finding": {
+        "zh-CN": "初诊双肺呼吸音清，无干湿啰音，自然状态SpO₂ 98%。",
+        "en": "Initial breath sounds were clear without wheeze or crackles, with SpO₂ 98% on room air."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "调阅血常规与电解质",
+        "en": "Review blood counts and electrolytes"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "调阅血常规与电解质"
+        ],
+        "en": [
+          "Review blood counts and electrolytes",
+          "blood"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "住院白细胞1.9–2.5×10⁹/L、血红蛋白62–69 g/L、血小板11–21×10⁹/L。早期血钠121 mmol/L；低钠持续。",
+            "en": "Inpatient WBC 1.9–2.5×10⁹/L, haemoglobin 62–69 g/L and platelets 11–21×10⁹/L; early sodium was 121 mmol/L and hyponatraemia persisted."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "marrow-flow",
+      "name": {
+        "zh-CN": "调阅骨髓形态与流式",
+        "en": "Review marrow morphology and flow cytometry"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅骨髓形态与流式"
+        ],
+        "en": [
+          "Review marrow morphology and flow cytometry",
+          "marrow-flow"
+        ]
+      },
+      "requires": [
+        "flow-cytometry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "骨髓涂片所谓原始细胞76%，无Auer小体、POX阴性；异常群体部分表达CD15/CD117，多种血细胞谱系标志阴性，不能只据“原始”外观确诊AML。",
+            "en": "Marrow cells labelled blasts comprised 76%, without Auer rods and with negative POX. The abnormal population partly expressed CD15/CD117 but lacked many haematopoietic lineage markers; blast-like appearance alone does not establish AML."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "调阅骨髓活检及免疫组化",
+        "en": "Review marrow biopsy and immunohistochemistry"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "调阅骨髓活检及免疫组化"
+        ],
+        "en": [
+          "Review marrow biopsy and immunohistochemistry",
+          "biopsy"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "造血组织减少，大量癌细胞浸润；AE1/AE3、CAM5.2、Syn阳性，MPO及LCA阴性，TTF1阴性，Ki-67约30%。病理符合小细胞神经内分泌癌。",
+            "en": "Reduced haematopoietic tissue with extensive carcinoma infiltration; AE1/AE3, CAM5.2 and synaptophysin positive, MPO/LCA and TTF1 negative, Ki-67 about 30%. Pathology was consistent with small-cell neuroendocrine carcinoma."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "调阅胸部CT",
+        "en": "Review chest CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "调阅胸部CT"
+        ],
+        "en": [
+          "Review chest CT",
+          "ct"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "左肺门占位及纵隔淋巴结增大；早期普通胸片曾正常。",
+            "en": "Left hilar mass and enlarged mediastinal nodes; an earlier plain chest film had been normal."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "pet-markers",
+      "name": {
+        "zh-CN": "调阅PET-CT与肿瘤标志物",
+        "en": "Review PET-CT and tumour markers"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅PET-CT与肿瘤标志物"
+        ],
+        "en": [
+          "Review PET-CT and tumour markers",
+          "pet-markers"
+        ]
+      },
+      "requires": [
+        "pet-ct"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "PET-CT显示左上肺近肺门1.6×2.9 cm结节SUVmax 5.6，肺门/锁骨上淋巴结及骨髓摄取增高；NSE 250.4 μg/L、ProGRP>5000 ng/L。未取得肺灶直接病理。",
+            "en": "PET-CT showed a left upper perihilar 1.6×2.9 cm nodule with SUVmax 5.6 and increased hilar/supraclavicular nodal and marrow uptake. NSE was 250.4 μg/L and ProGRP >5000 ng/L. Direct lung-lesion histology was not obtained."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "enzymes",
+      "name": {
+        "zh-CN": "调阅胰酶与腹部影像",
+        "en": "Review pancreatic enzymes and abdominal imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅胰酶与腹部影像"
+        ],
+        "en": [
+          "Review pancreatic enzymes and abdominal imaging",
+          "enzymes"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "脂肪酶1686–2086 U/L、淀粉酶216–264 U/L，腹部影像无胰腺明显异常，缺乏本次典型胰腺炎疼痛。血尿渗透压及尿钠未完善，SIADH仅为临床考虑。",
+            "en": "Lipase 1686–2086 U/L and amylase 216–264 U/L, without clear pancreatic imaging abnormalities or typical acute pancreatitis pain this episode. Serum/urine osmolality and urine sodium were not obtained; SIADH was a clinical possibility."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "确诊后转肿瘤科当日突发发热、呼吸困难和Ⅰ型呼吸衰竭，右肺大片影被考虑出血或感染。支持治疗后仍进展；进一步抢救终止，随访获悉转运途中死亡。未记录开始肿瘤特异治疗，也未证实肺部急变的唯一机制。",
+            "en": "On the day of oncology transfer after diagnosis, fever, dyspnoea and type I respiratory failure developed, with extensive right-lung opacities considered haemorrhage or infection. Deterioration continued despite support; further resuscitation ended and death in transit was reported. Tumour-specific therapy and a single confirmed mechanism of the pulmonary deterioration are not documented."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "bruising"
+          },
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "prior-label"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "nodes-abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪种结论最符合组织与影像证据？",
+        "en": "Which conclusion best fits tissue and imaging evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "marrow-flow",
+            "phase": "workup"
+          },
+          {
+            "read": "biopsy",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "pet-markers",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "骨髓转移性小细胞神经内分泌癌，临床支持肺原发，肺灶未直接活检",
+            "en": "Metastatic small-cell neuroendocrine carcinoma in marrow, with a clinically supported pulmonary primary not directly biopsied"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "形态需与免疫组化结合；肺原发推断和骨髓病理确证应分开表达。",
+            "en": "Morphology requires immunohistochemical correlation; inference of a pulmonary primary must be distinguished from proven marrow pathology."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "看到大量原始样细胞即可确诊AML，忽略上皮及神经内分泌标记",
+            "en": "Numerous blast-like cells establish AML regardless of epithelial/neuroendocrine markers"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "形态需与免疫组化结合；肺原发推断和骨髓病理确证应分开表达。",
+            "en": "Morphology requires immunohistochemical correlation; inference of a pulmonary primary must be distinguished from proven marrow pathology."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "如何在治疗前处理这些不一致？",
+        "en": "How should discordant evidence be handled before treatment?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "enzymes",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "血液、病理与肿瘤团队复核来源并支持贫血、出血及低钠；不按未证实AML直接诱导化疗",
+            "en": "Haematology, pathology and oncology review the primary while supporting anaemia, bleeding and sodium abnormalities; do not give AML induction on an unconfirmed label"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "胰酶和低钠需要机制评估；不完整证据不能当作独立确诊，错误谱系判断会改变治疗方向。",
+            "en": "Enzyme elevation and hyponatraemia need mechanistic assessment; incomplete evidence is not confirmation, and wrong lineage assignment changes treatment direction."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "把胰酶升高和低钠分别当作已确诊胰腺炎与SIADH，直接进入AML诱导",
+            "en": "Treat pancreatitis and SIADH as already proven and proceed with AML induction"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "胰酶和低钠需要机制评估；不完整证据不能当作独立确诊，错误谱系判断会改变治疗方向。",
+            "en": "Enzyme elevation and hyponatraemia need mechanistic assessment; incomplete evidence is not confirmation, and wrong lineage assignment changes treatment direction."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "bruising"
+          },
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "prior-label"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "nodes-abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "blood",
+        "marrow-flow",
+        "biopsy",
+        "ct",
+        "pet-markers",
+        "enzymes",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "骨髓病理确证转移性小细胞癌，肺原发为综合临床判断；最终死亡，不能补写化疗缓解。",
+      "en": "Marrow pathology confirmed metastatic small-cell carcinoma, with pulmonary origin inferred clinically. The final outcome was death, not an unreported chemotherapy response."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "POX阴性或无Auer小体单独并不能排除所有AML；本例依赖整套免疫和组织证据。",
+        "en": "Negative POX or absent Auer rods alone do not exclude every AML; the full tissue and immunophenotypic pattern matters."
+      },
+      {
+        "zh-CN": "低钠相关SIADH及胰酶异位分泌属于可能机制，不是本例完成检测的确证。",
+        "en": "SIADH and ectopic pancreatic-enzyme production are possible mechanisms, not directly confirmed in this patient."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "肺灶组织学、血尿渗透压/尿钠、胰酶来源及终末呼吸衰竭机制。",
+        "en": "Lung-lesion histology, serum/urine osmolality and sodium, enzyme source and mechanism of terminal respiratory failure."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "张路; 王书杰; 杨辰. 第311例　全血细胞减少—胰酶升高—低钠血症—骨髓中大量原始细胞. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.08.018",
+      "https://rs.yiigle.com/cmaid/138898",
+      "National Cancer Institute. Small Cell Lung Cancer Treatment (PDQ), health professional version. https://www.cancer.gov/types/lung/hp/small-cell-lung-treatment-pdq"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "肺灶组织学、血尿渗透压/尿钠、胰酶来源及终末呼吸衰竭机制。",
+      "en": "Lung-lesion histology, serum/urine osmolality and sodium, enzyme source and mechanism of terminal respiratory failure."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-138898/fig01.png",
+      "title": {
+        "zh-CN": "原报告：胸部CT肺门和纵隔病变",
+        "en": "Source: hilar and mediastinal findings on chest CT"
+      },
+      "credit": {
+        "zh-CN": "原报告图，张路; 王书杰; 杨辰，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "114ecf749f42f6902006d03083463e175d228a6ced31afe283159fbfcb200938"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-138898/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c79b870116442acd6a285a16ca00c1a19a10b19f859d3e2f6e1d8bd020a052a1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "bruising"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-label"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "respiratory"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "supplements"
+    },
+    {
+      "type": "ask",
+      "itemId": "travel"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "nodes-abdomen"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "marrow-flow"
+    },
+    {
+      "type": "read",
+      "investigationId": "marrow-flow",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "pet-markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "pet-markers",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "enzymes"
+    },
+    {
+      "type": "read",
+      "investigationId": "enzymes",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "138898",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/138898",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "乏力和食欲变化多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long have fatigue and appetite changes lasted?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "皮肤出现了什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "bruising"
+        ]
+      },
+      {
+        "text": "What skin changes appeared?",
+        "locale": "en",
+        "expect": [
+          "bruising"
+        ]
+      },
+      {
+        "text": "体重下降了多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "How much weight was lost?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "之前医生怎样解释检查，治疗有效吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-label"
+        ]
+      },
+      {
+        "text": "What diagnosis was previously proposed and did treatment help?",
+        "locale": "en",
+        "expect": [
+          "prior-label"
+        ]
+      },
+      {
+        "text": "饮酒及以前腹痛情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "What is the alcohol and earlier abdominal-pain history?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "您吸烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "Do you smoke?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "此次有没有咳嗽咳痰或胸痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "Were cough, sputum or chest pain present this time?",
+        "locale": "en",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "是否有完整长期用药记录？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Is a complete regular medication history available?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,1552 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1551890",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "胸痛后心功能恶化 · 65岁女性",
+    "en": "Worsening cardiac function after chest pain · woman aged 65"
+  },
+  "summary": {
+    "zh-CN": "胸痛就诊后持续恶化，复核病程、新发体征及分阶段检查，讨论转诊与支持策略。",
+    "en": "Review the course, new examination findings and staged investigations after deterioration following chest pain."
+  },
+  "specialty": [
+    "cardiology",
+    "critical-care"
+  ],
+  "difficulty": 4,
+  "setting": "icu",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "李文俊; 蕭鳳儀; 何澄邦. 急性心肌梗死併發室間隔破裂ECMO支持1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.017",
+    "doi": "10.12408/j.issn2223-4462.2025.01.017",
+    "authors": [
+      "李文俊",
+      "蕭鳳儀",
+      "何澄邦"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "林女士（化名）",
+      "en": "Ms Lin (pseudonym)"
+    },
+    "age": 65,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "胸痛1天后病情加重",
+      "en": "Deterioration after one day of chest pain"
+    },
+    "triageNote": {
+      "zh-CN": "胸痛就诊后持续恶化，复核病程、新发体征及分阶段检查，讨论转诊与支持策略。",
+      "en": "Review the course, new examination findings and staged investigations after deterioration following chest pain."
+    },
+    "tags": [
+      {
+        "zh-CN": "胸痛1天后病情加重",
+        "en": "Deterioration after one day of chest pain"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "最初胸痛持续了1天，随后病情越来越重。",
+        "en": "Chest pain had lasted one day before the first presentation, followed by deterioration."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      },
+      "companion": {
+        "role": "carer",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
+          "en": "Relays only the reported history without inventing witnessed events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "最初为什么就诊？",
+        "en": "What prompted the first presentation?"
+      },
+      "answer": {
+        "zh-CN": "最初胸痛持续了1天，随后病情越来越重。",
+        "en": "Chest pain had lasted one day before the first presentation, followed by deterioration."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初为什么就诊？",
+          "胸痛"
+        ],
+        "en": [
+          "What prompted the first presentation?",
+          "chest pain"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最初治疗后病情怎样变化？",
+        "en": "How did the illness progress after initial treatment?"
+      },
+      "answer": {
+        "zh-CN": "最初治疗后心功能继续恶化，后来转入重症监护。",
+        "en": "Cardiac function continued to deteriorate after initial treatment, leading to intensive care transfer."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初治疗后病情怎样变化？",
+          "恶化"
+        ],
+        "en": [
+          "How did the illness progress after initial treatment?",
+          "deterioration"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有哪些慢性病？",
+        "en": "Which chronic illnesses were present?"
+      },
+      "answer": {
+        "zh-CN": "以前有高血压和高脂血症。",
+        "en": "There was a history of hypertension and hyperlipidaemia."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有哪些慢性病？",
+          "慢性病"
+        ],
+        "en": [
+          "Which chronic illnesses were present?",
+          "hypertension"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "首次就诊后用了什么治疗？",
+        "en": "What treatment was given at the first hospital?"
+      },
+      "answer": {
+        "zh-CN": "记录有扩冠、抗凝和TNK溶栓，具体全套用药资料没有给出。",
+        "en": "The record describes coronary vasodilator treatment, anticoagulation and TNK thrombolysis; the full medication list is not given."
+      },
+      "keywords": {
+        "zh-CN": [
+          "首次就诊后用了什么治疗？",
+          "用药"
+        ],
+        "en": [
+          "What treatment was given at the first hospital?",
+          "medications"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pain-detail",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "胸痛的性质和放射部位是什么？",
+        "en": "What was the character and radiation of the chest pain?"
+      },
+      "answer": {
+        "zh-CN": "原记录只说明胸痛1天，没有说明性质或放射。",
+        "en": "Only one day of chest pain is documented; character and radiation are not described."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸痛的性质和放射部位是什么？"
+        ],
+        "en": [
+          "What was the character and radiation of the chest pain?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前接受过心脏手术吗？",
+        "en": "Was there previous cardiac surgery?"
+      },
+      "answer": {
+        "zh-CN": "原记录没有说明既往手术史。",
+        "en": "Previous surgical history is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前接受过心脏手术吗？"
+        ],
+        "en": [
+          "Was there previous cardiac surgery?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "home-meds",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "发病前长期服用哪些药？",
+        "en": "Which medicines were used before this illness?"
+      },
+      "answer": {
+        "zh-CN": "长期用药清单未记录。",
+        "en": "A regular medication list is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病前长期服用哪些药？"
+        ],
+        "en": [
+          "Which medicines were used before this illness?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "syncope",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "胸痛时是否晕厥？",
+        "en": "Was there syncope during the chest pain?"
+      },
+      "answer": {
+        "zh-CN": "原报告未描述晕厥。",
+        "en": "The report does not describe syncope."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸痛时是否晕厥？"
+        ],
+        "en": [
+          "Was there syncope during the chest pain?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "cardiac",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "复核心脏听诊",
+        "en": "Review cardiac auscultation"
+      },
+      "finding": {
+        "zh-CN": "病程进展时出现新的收缩期杂音。",
+        "en": "A new systolic murmur appeared during deterioration."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "查找转入时生命体征",
+        "en": "Retrieve vital signs at transfer"
+      },
+      "finding": {
+        "zh-CN": "正文未列出转入时血压、脉搏或氧饱和度，不能补为正常。",
+        "en": "Transfer blood pressure, pulse and oxygen saturation are not listed and must not be assumed normal."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "心电图",
+        "en": "Electrocardiogram"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图"
+        ],
+        "en": [
+          "Electrocardiogram",
+          "ecg"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "初诊V2–V5 ST段抬高；转入时为广泛前壁急性心肌梗死图形及完全性右束支传导阻滞。",
+            "en": "Initial ST elevation in V2–V5; transfer ECG showed an extensive anterior infarction pattern and complete right bundle branch block."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "markers",
+      "name": {
+        "zh-CN": "心肌损伤标志物",
+        "en": "Cardiac injury markers"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "心肌损伤标志物"
+        ],
+        "en": [
+          "Cardiac injury markers",
+          "markers"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "转入后CK-MB 247 ng/mL，高敏肌钙蛋白T 16016 ng/L。",
+            "en": "After transfer, CK-MB was 247 ng/mL and high-sensitivity troponin T 16016 ng/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "床旁超声心动图",
+        "en": "Bedside echocardiography"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "床旁超声心动图"
+        ],
+        "en": [
+          "Bedside echocardiography",
+          "echo"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "室间隔瘤伴破裂，缺损直径1.52 cm，有左向右分流。",
+            "en": "Septal aneurysm with rupture, a 1.52 cm defect and left-to-right shunting."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig02"
+          ],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "angiography",
+      "name": {
+        "zh-CN": "调阅冠状动脉造影",
+        "en": "Review coronary angiography"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅冠状动脉造影"
+        ],
+        "en": [
+          "Review coronary angiography",
+          "angiography"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "紧急造影显示三支病变；各病变程度及逐支血管详情未列出。",
+            "en": "Emergency angiography showed three-vessel disease; individual lesion severity and vessel details are not provided."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "xray",
+      "name": {
+        "zh-CN": "调阅胸部X线",
+        "en": "Review chest radiograph"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "调阅胸部X线"
+        ],
+        "en": [
+          "Review chest radiograph",
+          "xray"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "初次就诊胸片提示肺水肿。",
+            "en": "The initial chest radiograph indicated pulmonary oedema."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告记录机械通气、CRRT、IABP和VA-ECMO支持，团队每日以超声及灌注资料调整支持。外科提出待边缘稳定后评估修补；患者较稳定后转回原治疗机构。正文没有确认最终手术或远期存活。",
+            "en": "The report describes ventilation, CRRT, IABP and VA-ECMO, with daily echo and perfusion-guided support. Surgery considered repair after tissue stabilisation. The patient stabilised sufficiently for transfer back; definitive repair and long-term survival are not reported."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [
+            "fig03"
+          ],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "cardiac"
+          },
+          {
+            "examined": "vitals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪些结果共同解释新杂音与心功能恶化？",
+        "en": "Which findings explain the new murmur and deteriorating cardiac function?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "ecg",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "examined": "cardiac"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "心肌梗死后室间隔破裂并左向右分流",
+            "en": "Post-infarction ventricular septal rupture with left-to-right shunting"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "超声直接显示缺损及分流；新杂音要求寻找机械并发症。",
+            "en": "Echo directly demonstrates the defect and shunt; a new murmur warrants assessment for a mechanical complication."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只有心肌缺血，无机械并发症",
+            "en": "Ischaemia alone without a mechanical complication"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "超声直接显示缺损及分流；新杂音要求寻找机械并发症。",
+            "en": "Echo directly demonstrates the defect and shunt; a new murmur warrants assessment for a mechanical complication."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "此时如何形成安全的下一步计划？",
+        "en": "How should a safe next-step plan be formed?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "angiography",
+            "phase": "workup"
+          },
+          {
+            "read": "markers",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "立即由重症、心内和心外团队评估支持桥接与个体化修补时机",
+            "en": "Urgent joint critical-care and cardiac-team assessment of bridging support and individualised repair timing"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "原报告选择机械支持后延迟评估；其时间表不能普遍套用，ECMO是支持桥梁而非修补。",
+            "en": "The report selected mechanical support with delayed assessment; its timetable is not universal, and ECMO provides a bridge rather than repair."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "所有患者必须固定等待4–6周，稳定后无需修补评估",
+            "en": "Every patient must wait 4–6 weeks and needs no repair assessment once stable"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "原报告选择机械支持后延迟评估；其时间表不能普遍套用，ECMO是支持桥梁而非修补。",
+            "en": "The report selected mechanical support with delayed assessment; its timetable is not universal, and ECMO provides a bridge rather than repair."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "cardiac"
+          },
+          {
+            "examined": "vitals"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "ecg",
+        "markers",
+        "echo",
+        "angiography",
+        "xray",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "证据支持梗死后室间隔破裂。已报告结局为桥接后转院，不能写成修补成功或治愈。",
+      "en": "Evidence supports post-infarction septal rupture. The reported endpoint was transfer after bridging support, not proven successful repair or cure."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "新杂音、肺水肿和超声分流构成相互支持的证据链。",
+        "en": "The new murmur, pulmonary oedema and echocardiographic shunt are concordant."
+      },
+      {
+        "zh-CN": "三支病变不能单独决定本例的PCI及修补策略。",
+        "en": "Three-vessel disease alone does not determine the PCI or repair strategy."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "最终修补手术、远期结局、转入时完整生命体征。",
+        "en": "Definitive repair, long-term outcome and complete transfer vital signs."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "原文4–6周计划是本例团队的历史决定，不是固定等待规则。",
+        "en": "The reported 4–6-week plan was this team’s historical decision, not a fixed waiting rule."
+      }
+    ],
+    "references": [
+      "李文俊; 蕭鳳儀; 何澄邦. 急性心肌梗死併發室間隔破裂ECMO支持1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.017",
+      "https://rs.yiigle.com/cmaid/1551890",
+      "American Heart Association. Mechanical Complications of Acute Myocardial Infarction (2021 scientific statement). https://professional.heart.org/en/science-news/mechanical-complications-of-acute-myocardial-infarction"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "最终修补手术、远期结局、转入时完整生命体征。",
+      "en": "Definitive repair, long-term outcome and complete transfer vital signs."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551890/fig01.png",
+      "title": {
+        "zh-CN": "原报告：转入后心电图",
+        "en": "Source: ECG after transfer"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李文俊; 蕭鳳儀; 何澄邦，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f46816e3d9388e5e3d41a5210b373e8d55809b0248a5c44efea4b0ced0a41e88"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551890/fig02.png",
+      "title": {
+        "zh-CN": "原报告：床旁超声",
+        "en": "Source: bedside echocardiography"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李文俊; 蕭鳳儀; 何澄邦，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "afb1e7634fd3f001c7d93120181ee1f2701ff289bacb0070101c94455a00915d"
+    },
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551890/fig03.png",
+      "title": {
+        "zh-CN": "原报告讨论：ECMO血流示意（非检查结果）",
+        "en": "Source discussion: ECMO flow illustration (not a patient investigation)"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李文俊; 蕭鳳儀; 何澄邦，2025。版权归原权利人。",
+        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "ff98ade11d25721017d7dda79fa4d6b75814e72d5159788100e22bb1d4b05af3"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1551890/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8fd259dc5e80c056994cc64622e3c928f43f0e8806adb7214dee655827e1b71b"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-detail"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "home-meds"
+    },
+    {
+      "type": "ask",
+      "itemId": "syncope"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "cardiac"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "markers",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "angiography"
+    },
+    {
+      "type": "read",
+      "investigationId": "angiography",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "xray"
+    },
+    {
+      "type": "read",
+      "investigationId": "xray",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1551890",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1551890",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "最初为什么就诊？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What prompted the first presentation?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "最初治疗后病情怎样变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "How did the illness progress after initial treatment?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "以前有哪些慢性病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Which chronic illnesses were present?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "首次就诊后用了什么治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What treatment was given at the first hospital?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "胸痛的性质和放射部位是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-detail"
+        ]
+      },
+      {
+        "text": "What was the character and radiation of the chest pain?",
+        "locale": "en",
+        "expect": [
+          "pain-detail"
+        ]
+      },
+      {
+        "text": "以前接受过心脏手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Was there previous cardiac surgery?",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "发病前长期服用哪些药？",
+        "locale": "zh-CN",
+        "expect": [
+          "home-meds"
+        ]
+      },
+      {
+        "text": "Which medicines were used before this illness?",
+        "locale": "en",
+        "expect": [
+          "home-meds"
+        ]
+      },
+      {
+        "text": "胸痛时是否晕厥？",
+        "locale": "zh-CN",
+        "expect": [
+          "syncope"
+        ]
+      },
+      {
+        "text": "Was there syncope during the chest pain?",
+        "locale": "en",
+        "expect": [
+          "syncope"
+        ]
+      }
+    ]
+  }
+}

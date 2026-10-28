@@ -1,0 +1,1669 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-51617",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "持续发热与嗜睡 · 34日龄女婴",
+    "en": "Persistent fever and drowsiness · girl aged 34 days"
+  },
+  "summary": {
+    "zh-CN": "小婴儿抗感染后仍持续发热，既往短暂眼红口唇红容易被忽略；需结合心脏、脑脊液及炎症证据。",
+    "en": "A young infant remains febrile after antibiotics; brief earlier eye and lip redness may be overlooked, requiring cardiac, CSF and inflammatory evidence to be integrated."
+  },
+  "specialty": [
+    "pediatrics",
+    "pediatric-cardiology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "杜曾庆. 新生儿不完全性川崎病并发无菌性脑膜炎一例. 中华儿科杂志, 2014. DOI: 10.3760/cma.j.issn.0578-1310.2014.01.016",
+    "doi": "10.3760/cma.j.issn.0578-1310.2014.01.016",
+    "authors": [
+      "杜曾庆"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小宁（化名）",
+      "en": "Ning (pseudonym)"
+    },
+    "age": 34,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "发热10天，精神饮食差并嗜睡",
+      "en": "Ten days of fever, poor feeding and drowsiness"
+    },
+    "triageNote": {
+      "zh-CN": "小婴儿抗感染后仍持续发热，既往短暂眼红口唇红容易被忽略；需结合心脏、脑脊液及炎症证据。",
+      "en": "A young infant remains febrile after antibiotics; brief earlier eye and lip redness may be overlooked, requiring cardiac, CSF and inflammatory evidence to be integrated."
+    },
+    "tags": [
+      {
+        "zh-CN": "发热10天，精神饮食差并嗜睡",
+        "en": "Ten days of fever, poor feeding and drowsiness"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "已经发热10天，最高38.9℃。",
+        "en": "Fever has lasted ten days and reached 38.9°C."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
+          "en": "Relays only the reported history without inventing witnessed events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "ageUnit": "days",
+    "weightKg": 4.3
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "孩子发热多久，最高多高？",
+        "en": "How long has the fever lasted and how high has it been?"
+      },
+      "answer": {
+        "zh-CN": "已经发热10天，最高38.9℃。",
+        "en": "Fever has lasted ten days and reached 38.9°C."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子发热多久，最高多高？",
+          "发热十天"
+        ],
+        "en": [
+          "How long has the fever lasted and how high has it been?",
+          "ten-day fever"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "来院前用了哪些抗生素？",
+        "en": "Which antibiotics were given before admission?"
+      },
+      "answer": {
+        "zh-CN": "用过静滴阿莫西林2天、头孢吡肟3天，仍然发热。",
+        "en": "Intravenous amoxicillin for two days and cefepime for three days did not stop the fever."
+      },
+      "keywords": {
+        "zh-CN": [
+          "来院前用了哪些抗生素？",
+          "抗生素"
+        ],
+        "en": [
+          "Which antibiotics were given before admission?",
+          "antibiotics"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "mucosal",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "病刚开始时眼睛和嘴唇怎样？",
+        "en": "How did the eyes and lips look early in the illness?"
+      },
+      "answer": {
+        "zh-CN": "刚开始有过双眼红、嘴唇红。",
+        "en": "Both eyes and the lips were red early in the illness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病刚开始时眼睛和嘴唇怎样？",
+          "眼红"
+        ],
+        "en": [
+          "How did the eyes and lips look early in the illness?",
+          "red eyes"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "feeding",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "孩子吃奶和精神怎样？",
+        "en": "How are feeding and alertness?"
+      },
+      "answer": {
+        "zh-CN": "吃得不好，精神差，比平时嗜睡。",
+        "en": "Feeding and general responsiveness are poor, with increased drowsiness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子吃奶和精神怎样？",
+          "吃奶"
+        ],
+        "en": [
+          "How are feeding and alertness?",
+          "feeding"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "rash",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "发病后出现过皮疹吗？",
+        "en": "Has a rash appeared during this illness?"
+      },
+      "answer": {
+        "zh-CN": "家长说没有出过皮疹。",
+        "en": "The parent reports no rash."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病后出现过皮疹吗？",
+          "皮疹"
+        ],
+        "en": [
+          "Has a rash appeared during this illness?",
+          "rash"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "neck-nodes",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有看到颈部淋巴结肿大吗？",
+        "en": "Were swollen neck glands noticed?"
+      },
+      "answer": {
+        "zh-CN": "家长否认颈部淋巴结肿大。",
+        "en": "The parent denies enlarged neck glands."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有看到颈部淋巴结肿大吗？",
+          "颈部肿大"
+        ],
+        "en": [
+          "Were swollen neck glands noticed?",
+          "neck glands"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "cough",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有咳嗽？",
+        "en": "Is there a cough?"
+      },
+      "answer": {
+        "zh-CN": "有一点咳嗽。",
+        "en": "There is a slight cough."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有没有咳嗽？",
+          "咳嗽"
+        ],
+        "en": [
+          "isthereacough",
+          "cough"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "发热前有什么明确诱因？",
+        "en": "Was there an obvious trigger before fever?"
+      },
+      "answer": {
+        "zh-CN": "发热前没有明显诱因。",
+        "en": "There was no obvious trigger."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热前有什么明确诱因？",
+          "诱因"
+        ],
+        "en": [
+          "Was there an obvious trigger before fever?",
+          "trigger"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "出生孕周和分娩情况怎样？",
+        "en": "What were the gestational age at birth and delivery details?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生孕周和分娩情况怎样？"
+        ],
+        "en": [
+          "What were the gestational age at birth and delivery details?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "immunisation",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "出生后接种过什么疫苗？",
+        "en": "Which vaccines have been given since birth?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生后接种过什么疫苗？"
+        ],
+        "en": [
+          "Which vaccines have been given since birth?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "有已知药物过敏吗？",
+        "en": "Are medicine allergies known?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有已知药物过敏吗？"
+        ],
+        "en": [
+          "Are medicine allergies known?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Is there similar illness in the family?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？"
+        ],
+        "en": [
+          "Is there similar illness in the family?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "此次之前有住院或慢性疾病吗？",
+        "en": "Were there earlier admissions or chronic conditions?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此次之前有住院或慢性疾病吗？"
+        ],
+        "en": [
+          "Were there earlier admissions or chronic conditions?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "照护环境中有烟草暴露吗？",
+        "en": "Is there tobacco exposure in the care environment?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境中有烟草暴露吗？"
+        ],
+        "en": [
+          "Is there tobacco exposure in the care environment?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "孕期是否有酒精暴露记录？",
+        "en": "Is prenatal alcohol exposure recorded?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
+        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期是否有酒精暴露记录？"
+        ],
+        "en": [
+          "Is prenatal alcohol exposure recorded?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "检查体温、反应和前囟",
+        "en": "Examine temperature, responsiveness and fontanelle"
+      },
+      "finding": {
+        "zh-CN": "入院体温37.4℃后升至38.5℃，嗜睡、一般情况差；前囟平，2.5×2.5 cm且张力较高，颈抵抗可疑，无缺氧征。",
+        "en": "Admission temperature was 37.4°C, later 38.5°C, with drowsiness and poor general condition. The flat 2.5 × 2.5 cm fontanelle had increased tension; neck resistance was equivocal and hypoxic signs absent."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "mucosa",
+      "system": "heent",
+      "maneuver": {
+        "zh-CN": "检查眼、口唇、皮肤及颈部淋巴结",
+        "en": "Examine eyes, lips, skin and cervical nodes"
+      },
+      "finding": {
+        "zh-CN": "当时球结膜无充血、口唇无皲裂或发红，颈淋巴结不大且无皮疹；这不否定早期家长观察。",
+        "en": "At examination there was no conjunctival injection, lip redness/cracking, enlarged cervical nodes or rash; this does not negate earlier parental observations."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "cardiorespiratory",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查心肺及基础生命体征",
+        "en": "Examine heart, lungs and basic vital signs"
+      },
+      "finding": {
+        "zh-CN": "心率124次/分，呼吸36次/分；心律齐、无病理杂音；双肺呼吸音粗，无啰音。",
+        "en": "Heart rate was 124/min and respiratory rate 36/min; rhythm was regular without a pathological murmur, and breath sounds were coarse without crackles."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部和下肢",
+        "en": "Examine abdomen and lower limbs"
+      },
+      "finding": {
+        "zh-CN": "腹软，肝脾不大，双下肢无硬肿。",
+        "en": "Abdomen was soft without hepatosplenomegaly; there was no lower-limb sclerema."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "inflammation",
+      "name": {
+        "zh-CN": "血常规及CRP",
+        "en": "Blood count and CRP"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规及CRP"
+        ],
+        "en": [
+          "Blood count and CRP",
+          "inflammation"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "Hb 118 g/L，WBC 14.9×10⁹/L，中性粒细胞0.65，血小板822×10⁹/L，CRP >200 mg/L。",
+            "en": "Haemoglobin 118 g/L, WBC 14.9×10⁹/L, neutrophil fraction 0.65, platelets 822×10⁹/L and CRP >200 mg/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "csf",
+      "name": {
+        "zh-CN": "脑脊液检查",
+        "en": "Cerebrospinal fluid examination"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "脑脊液检查"
+        ],
+        "en": [
+          "Cerebrospinal fluid examination",
+          "csf"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "蛋白0.49 g/L；葡萄糖、氯化物及细胞数均报告正常，未给出具体数值。",
+            "en": "Protein was 0.49 g/L; glucose, chloride and cell count were reported normal without numerical values."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "cultures",
+      "name": {
+        "zh-CN": "血及脑脊液培养",
+        "en": "Blood and CSF cultures"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "血及脑脊液培养"
+        ],
+        "en": [
+          "Blood and CSF cultures",
+          "cultures"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "血及脑脊液细菌培养均阴性。此前已使用抗菌药，阴性培养不能独自排除所有感染。",
+            "en": "Blood and CSF bacterial cultures were negative. Antibiotics had already been used; negative cultures alone do not exclude all infection."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "超声心动图",
+        "en": "Echocardiography"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "超声心动图"
+        ],
+        "en": [
+          "Echocardiography",
+          "echo"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "左冠状动脉3.0 mm、右冠状动脉3.1–4.7 mm，内膜均毛糙；报告分别为轻度与中度扩张，另有漏斗型动脉导管未闭。未提供身高或冠脉Z值。",
+            "en": "The left coronary artery was 3.0 mm and the right 3.1–4.7 mm, both with irregular intima; reported as mild and moderate dilatation, respectively, with funnel-shaped patent ductus arteriosus. Height and coronary Z scores were unavailable."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "other-tests",
+      "name": {
+        "zh-CN": "胸片与其他化验",
+        "en": "Chest radiograph and other laboratory tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸片与其他化验"
+        ],
+        "en": [
+          "Chest radiograph and other laboratory tests",
+          "other-tests"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "胸片双肺纹理增多，腹部超声未见明显异常。总胆红素30.9 μmol/L、直接9.2、间接21.7；血糖5.8 mmol/L；肝酶、肾功能及所列心肌酶均报告正常。",
+            "en": "Chest radiograph showed increased bilateral markings and abdominal ultrasound no clear abnormality. Total bilirubin was 30.9 µmol/L, direct 9.2 and indirect 21.7; glucose 5.8 mmol/L. Liver enzymes, renal function and listed cardiac enzymes were reported normal."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告用静脉免疫球蛋白、阿司匹林及甘露醇等治疗，2天后退热，住院11天出院；出院时血小板915×10⁹/L、CRP 20.9 mg/L。病程始终未出现指趾脱皮。2个月后冠脉无明显改善；半年时右冠4.2 mm、左冠2.8 mm且动脉导管关闭。3岁3个月时生长发育及神经检查正常，左冠正常，右冠仍3.4 mm、内膜欠光滑，继续随访。历史长期阿司匹林剂量不作为本教学推荐。",
+            "en": "The report used IV immunoglobulin, aspirin, mannitol and supportive care. Fever resolved in two days and discharge followed 11 hospital days, with platelets 915×10⁹/L and CRP 20.9 mg/L. Digital peeling never appeared. Coronary changes persisted at two months; at six months the right coronary artery was 4.2 mm and left 2.8 mm, with ductal closure. At age 3 years 3 months growth, development and neurological examination were normal; the left coronary artery was normal but the right remained 3.4 mm with irregular intima, requiring continued follow-up. Historical long-term aspirin doses are not recommended by this teaching case."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true,
+          "note": {
+            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
+            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "mucosal"
+          },
+          {
+            "asked": "feeding"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "mucosa"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "持续发热和冠脉结果如何整合？",
+        "en": "How should persistent fever and coronary findings be integrated?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "mucosal"
+          },
+          {
+            "read": "inflammation",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "cultures",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "考虑不完全川崎病，报告并诊无菌性脑膜炎；同时保留小婴儿感染评估",
+            "en": "Consider incomplete Kawasaki disease; the report also diagnosed aseptic meningitis, while maintaining infection evaluation in this young infant"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "早期黏膜症状、持续发热、明显炎症及冠脉异常构成关键证据；脑脊液蛋白改变和阴性培养需结合临床与抗菌药背景解释。",
+            "en": "Earlier mucosal symptoms, persistent fever, marked inflammation and coronary abnormalities form the key evidence; CSF protein and negative cultures require clinical and antibiotic-context interpretation."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "没有皮疹或当前眼红即可排除川崎病，且培养阴性足以排除感染",
+            "en": "Absent rash or current eye redness excludes Kawasaki disease, and negative cultures exclude infection"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "早期黏膜症状、持续发热、明显炎症及冠脉异常构成关键证据；脑脊液蛋白改变和阴性培养需结合临床与抗菌药背景解释。",
+            "en": "Earlier mucosal symptoms, persistent fever, marked inflammation and coronary abnormalities form the key evidence; CSF protein and negative cultures require clinical and antibiotic-context interpretation."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "应如何制定安全的治疗与复查计划？",
+        "en": "How should a safe treatment and review plan be arranged?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "read": "other-tests",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "由儿科心脏团队评估免疫治疗和冠脉风险，按当前体重及风险制定抗血小板方案并连续超声随访",
+            "en": "Paediatric cardiology assessment of immunotherapy and coronary risk, with weight/risk-based antiplatelet planning and serial echocardiography"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "历史阿司匹林剂量不是当前处方；冠脉绝对径不能在身高未知时自行转换成Z值，持续异常需要专科随访。",
+            "en": "Historical aspirin doses are not current prescriptions; coronary diameters cannot be converted into Z scores without missing size data, and persistent abnormalities require specialist follow-up."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "把原文多年递增的阿司匹林固定剂量直接用于今天所有婴儿",
+            "en": "Copy the report’s progressively increased fixed aspirin doses for all infants today"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "历史阿司匹林剂量不是当前处方；冠脉绝对径不能在身高未知时自行转换成Z值，持续异常需要专科随访。",
+            "en": "Historical aspirin doses are not current prescriptions; coronary diameters cannot be converted into Z scores without missing size data, and persistent abnormalities require specialist follow-up."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "mucosal"
+          },
+          {
+            "asked": "feeding"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "mucosa"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "inflammation",
+        "csf",
+        "cultures",
+        "echo",
+        "other-tests",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "入院时是34日龄婴儿，发病约在24日龄；冠脉异常及早期黏膜线索支持报告的不完全川崎病诊断，远期右冠仍异常。",
+      "en": "The infant was 34 days old at admission, with onset around day 24; coronary changes and earlier mucosal clues support the reported incomplete Kawasaki diagnosis, with persistent right-coronary abnormality later."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "症状可能短暂出现，初诊体检阴性不能抹去早期病史。",
+        "en": "Transient symptoms can disappear; a negative current examination does not erase earlier history."
+      },
+      {
+        "zh-CN": "退热不代表冠脉病变已经消失。",
+        "en": "Resolution of fever does not mean coronary lesions have resolved."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "出生史、入院身高和冠脉Z值、完整病原排查及更长期冠脉结局。",
+        "en": "Birth history, admission height/coronary Z scores, complete pathogen evaluation and longer-term coronary outcome."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "杜曾庆. 新生儿不完全性川崎病并发无菌性脑膜炎一例. 中华儿科杂志, 2014. DOI: 10.3760/cma.j.issn.0578-1310.2014.01.016",
+      "https://rs.yiigle.com/cmaid/51617",
+      "AHA. Update on Diagnosis and Management of Kawasaki Disease, 2024. DOI 10.1161/CIR.0000000000001295. https://www.ahajournals.org/doi/10.1161/CIR.0000000000001295"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "出生史、入院身高和冠脉Z值、完整病原排查及更长期冠脉结局。",
+      "en": "Birth history, admission height/coronary Z scores, complete pathogen evaluation and longer-term coronary outcome."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-51617/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "6b0a59ecbb8e3389704f05fb7c6b876da3de15ef10332ab565baf9cd7ee6b1f5"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "mucosal"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "rash"
+    },
+    {
+      "type": "ask",
+      "itemId": "neck-nodes"
+    },
+    {
+      "type": "ask",
+      "itemId": "cough"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "immunisation"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "mucosa"
+    },
+    {
+      "type": "examine",
+      "findingId": "cardiorespiratory"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "inflammation"
+    },
+    {
+      "type": "read",
+      "investigationId": "inflammation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "csf"
+    },
+    {
+      "type": "read",
+      "investigationId": "csf",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cultures"
+    },
+    {
+      "type": "read",
+      "investigationId": "cultures",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "other-tests"
+    },
+    {
+      "type": "read",
+      "investigationId": "other-tests",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "51617",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/51617",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "孩子发热多久，最高多高？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long has the fever lasted and how high has it been?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "来院前用了哪些抗生素？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Which antibiotics were given before admission?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "病刚开始时眼睛和嘴唇怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "mucosal"
+        ]
+      },
+      {
+        "text": "How did the eyes and lips look early in the illness?",
+        "locale": "en",
+        "expect": [
+          "mucosal"
+        ]
+      },
+      {
+        "text": "孩子吃奶和精神怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "How are feeding and alertness?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "发病后出现过皮疹吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "rash"
+        ]
+      },
+      {
+        "text": "Has a rash appeared during this illness?",
+        "locale": "en",
+        "expect": [
+          "rash"
+        ]
+      },
+      {
+        "text": "有看到颈部淋巴结肿大吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "neck-nodes"
+        ]
+      },
+      {
+        "text": "Were swollen neck glands noticed?",
+        "locale": "en",
+        "expect": [
+          "neck-nodes"
+        ]
+      },
+      {
+        "text": "有没有咳嗽？",
+        "locale": "zh-CN",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "Is there a cough?",
+        "locale": "en",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "发热前有什么明确诱因？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Was there an obvious trigger before fever?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,1504 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1423434",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "反复心悸胸闷 · 42岁女性",
+    "en": "Recurrent palpitations and chest tightness · woman aged 42"
+  },
+  "summary": {
+    "zh-CN": "既往心脏手术后症状持续，复查后再次手术；按阶段追踪抗凝、抗心律失常用药和出血证据。",
+    "en": "Persistent symptoms after earlier cardiac surgery lead to reassessment and another operation; trace anticoagulant, antiarrhythmic and bleeding records by phase."
+  },
+  "specialty": [
+    "cardiology",
+    "clinical-pharmacology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "刘俊. 联合应用华法林与胺碘酮致国际标准化比值升高和血尿. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.011",
+    "doi": "10.3760/cma.j.issn.1008-5734.2014.01.011",
+    "authors": [
+      "刘俊"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "陶女士（化名）",
+      "en": "Ms Tao (pseudonym)"
+    },
+    "age": 42,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "活动后心悸胸闷长期反复，近1周加重",
+      "en": "Longstanding exertional palpitations and chest tightness, worse for one week"
+    },
+    "triageNote": {
+      "zh-CN": "既往心脏手术后症状持续，复查后再次手术；按阶段追踪抗凝、抗心律失常用药和出血证据。",
+      "en": "Persistent symptoms after earlier cardiac surgery lead to reassessment and another operation; trace anticoagulant, antiarrhythmic and bleeding records by phase."
+    },
+    "tags": [
+      {
+        "zh-CN": "活动后心悸胸闷长期反复，近1周加重",
+        "en": "Longstanding exertional palpitations and chest tightness, worse for one week"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "活动后心悸、胸闷14年，最近1周加重。",
+        "en": "Exertional palpitations and chest tightness have persisted for 14 years and worsened in the last week."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "心悸胸闷持续多久？",
+        "en": "How long have palpitations and tightness persisted?"
+      },
+      "answer": {
+        "zh-CN": "活动后心悸、胸闷14年，最近1周加重。",
+        "en": "Exertional palpitations and chest tightness have persisted for 14 years and worsened in the last week."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心悸胸闷持续多久？",
+          "心悸"
+        ],
+        "en": [
+          "How long have palpitations and tightness persisted?",
+          "palpitations"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "associated",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "还伴有什么症状？",
+        "en": "What associated symptoms were reported?"
+      },
+      "answer": {
+        "zh-CN": "过去有夜间阵发性呼吸困难，最近出现双腿水肿。",
+        "en": "There had been paroxysmal nocturnal dyspnoea, with recent bilateral leg oedema."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还伴有什么症状？",
+          "夜间呼吸困难"
+        ],
+        "en": [
+          "What associated symptoms were reported?",
+          "nocturnal dyspnoea"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前接受过什么心脏手术？",
+        "en": "What previous cardiac operation was performed?"
+      },
+      "answer": {
+        "zh-CN": "14年前做过三尖瓣下移畸形矫治，症状没有明显缓解。",
+        "en": "Ebstein anomaly was repaired 14 years earlier without clear symptom relief."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前接受过什么心脏手术？",
+          "矫治手术"
+        ],
+        "en": [
+          "What previous cardiac operation was performed?",
+          "Ebstein repair"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有食物或药物过敏吗？",
+        "en": "Any previous food or drug allergies?"
+      },
+      "answer": {
+        "zh-CN": "否认食物和药物过敏史。",
+        "en": "Food and drug allergies were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有食物或药物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous food or drug allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "是否有高血压、糖尿病或泌尿疾病？",
+        "en": "Was there hypertension, diabetes or urinary disease?"
+      },
+      "answer": {
+        "zh-CN": "否认高血压、糖尿病和泌尿生殖系统病史。",
+        "en": "Hypertension, diabetes and genitourinary disease were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "是否有高血压、糖尿病或泌尿疾病？",
+          "泌尿疾病"
+        ],
+        "en": [
+          "Was there hypertension, diabetes or urinary disease?",
+          "urinary disease"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "入院前的药物清单是否有记录？",
+        "en": "Is the pre-admission medication list recorded?"
+      },
+      "answer": {
+        "zh-CN": "原报告没有完整列出入院前长期用药。",
+        "en": "The full pre-admission medication list is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院前的药物清单是否有记录？"
+        ],
+        "en": [
+          "Is the pre-admission medication list recorded?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "murmur",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "什么时候首次发现心脏杂音？",
+        "en": "When was a heart murmur first found?"
+      },
+      "answer": {
+        "zh-CN": "约20年前体检发现，当时没有不适。",
+        "en": "A murmur was found about 20 years earlier during an examination, when there were no symptoms."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么时候首次发现心脏杂音？",
+          "杂音"
+        ],
+        "en": [
+          "When was a heart murmur first found?",
+          "murmur"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "此次术后出现什么出血表现？",
+        "en": "What postoperative bleeding appeared?"
+      },
+      "answer": {
+        "zh-CN": "这次手术后第16天出现肉眼血尿。",
+        "en": "Visible haematuria appeared on postoperative day 16."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此次术后出现什么出血表现？",
+          "血尿"
+        ],
+        "en": [
+          "What postoperative bleeding appeared?",
+          "haematuria"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "supplements",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "还服用其他非处方药或保健品吗？",
+        "en": "Were other non-prescription medicines or supplements used?"
+      },
+      "answer": {
+        "zh-CN": "原报告未记录这项信息。",
+        "en": "This information is not recorded in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "还服用其他非处方药或保健品吗？"
+        ],
+        "en": [
+          "Were other non-prescription medicines or supplements used?"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "cardiac",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查颈静脉及心脏",
+        "en": "Examine neck veins and heart"
+      },
+      "finding": {
+        "zh-CN": "颈静脉中度怒张，肝颈静脉回流征阳性；心律不齐，三尖瓣区Ⅲ/6级、心尖Ⅱ/6级收缩期杂音。",
+        "en": "Moderately distended neck veins and positive hepatojugular reflux; irregular rhythm with grade III/6 tricuspid-area and II/6 apical systolic murmurs."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "legs",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "检查下肢与呼吸状态",
+        "en": "Examine the legs and respiratory state"
+      },
+      "finding": {
+        "zh-CN": "双下肢轻度水肿，双肺呼吸音粗。",
+        "en": "Mild bilateral leg oedema and coarse breath sounds."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对入院生命体征",
+        "en": "Review admission vital signs"
+      },
+      "finding": {
+        "zh-CN": "体温36.4℃、脉搏84次/分、呼吸19次/分、血压128/86 mmHg；听诊心率89次/分。",
+        "en": "Temperature 36.4°C, pulse 84/min, respiratory rate 19/min and blood pressure 128/86 mmHg; auscultated heart rate 89/min."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "cardiac-tests",
+      "name": {
+        "zh-CN": "超声与心电图",
+        "en": "Echocardiography and ECG"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "超声与心电图"
+        ],
+        "en": [
+          "Echocardiography and ECG",
+          "cardiac-tests"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "超声为三尖瓣重度、二尖瓣中度关闭不全及中度肺动脉高压；心电图房颤、完全性右束支阻滞及ST-T改变。",
+            "en": "Echo showed severe tricuspid and moderate mitral regurgitation with moderate pulmonary hypertension; ECG showed AF, complete RBBB and ST-T abnormalities."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "drug-timeline",
+      "name": {
+        "zh-CN": "手术与术后用药时间线",
+        "en": "Surgery and postoperative medicine timeline"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "手术与术后用药时间线"
+        ],
+        "en": [
+          "Surgery and postoperative medicine timeline",
+          "drug-timeline"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "住院第9天行三尖瓣生物瓣置换、二尖瓣成形及房颤消融。术后第1天开始华法林；第8天房颤复发加用胺碘酮。其后INR渐升，虽两次下调华法林，第16天仍出现血尿。",
+            "en": "On hospital day 9 she had bioprosthetic tricuspid replacement, mitral repair and AF ablation. Warfarin began on postoperative day 1; amiodarone was added for recurrent AF on day 8. INR rose and haematuria occurred on day 16 despite two warfarin reductions."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "连续凝血检查",
+        "en": "Serial coagulation tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "连续凝血检查"
+        ],
+        "en": [
+          "Serial coagulation tests",
+          "coagulation"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "基线INR 1.0；术后第3、8、14、15天分别1.3、1.9、2.2、2.4；第16天PT 60.0秒、INR 5.1。",
+            "en": "Baseline INR 1.0; postoperative days 3, 8, 14 and 15 showed 1.3, 1.9, 2.2 and 2.4, respectively. On day 16 PT was 60.0 seconds and INR 5.1."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "urine",
+      "name": {
+        "zh-CN": "尿检与泌尿系记录",
+        "en": "Urine and urinary-tract records"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "尿检与泌尿系记录"
+        ],
+        "en": [
+          "Urine and urinary-tract records",
+          "urine"
+        ]
+      },
+      "requires": [
+        "lab-urinalysis"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "术前尿常规及泌尿系统超声无异常；第16天肉眼血尿，尿红细胞300/μL。",
+            "en": "Preoperative urinalysis and urinary ultrasound were unremarkable; on day 16 visible haematuria accompanied urinary RBCs of 300/µL."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "bleeding-severity",
+      "name": {
+        "zh-CN": "出血严重程度资料",
+        "en": "Bleeding severity documentation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "出血严重程度资料"
+        ],
+        "en": [
+          "Bleeding severity documentation",
+          "bleeding-severity"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "正文未列血尿时血红蛋白下降幅度、血流动力学或输血需求；不能据现有资料自动分为大出血或轻微出血。",
+            "en": "The haemoglobin change, haemodynamics at the time of bleeding and transfusion needs are not reported; available evidence does not establish a major or minor bleeding category."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告停华法林并使用维生素K后PT/INR下降，次日尿红细胞阴性，降低华法林后复用并出院。原文肌注维生素K的处理保留为历史事实，不供复制。远期INR稳定性、再次出血和血栓结局未记载。",
+            "en": "The report withheld warfarin and used vitamin K, after which PT/INR fell and urinary RBCs were negative the next day. Warfarin was restarted at a lower dose before discharge. Historical intramuscular vitamin K is recorded but not endorsed. Long-term INR stability, recurrent bleeding and thrombosis are not documented."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "associated"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "cardiac"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪项解释最符合用药和INR变化？",
+        "en": "Which explanation best fits the medicines and INR trajectory?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "drug-timeline",
+            "phase": "workup"
+          },
+          {
+            "read": "coagulation",
+            "phase": "workup"
+          },
+          {
+            "read": "urine",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "华法林抗凝过强，胺碘酮相互作用是重要相关因素",
+            "en": "Excess warfarin anticoagulation, with amiodarone interaction an important contributor"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "加用胺碘酮后INR和出血轨迹支持相互作用；仍需评估出血程度和其他原因。",
+            "en": "The INR and bleeding trajectory after amiodarone supports an interaction, while bleeding severity and other causes still need assessment."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "INR升高与药物无关，按单纯泌尿感染处理",
+            "en": "The INR rise is unrelated to medicines and should be treated as simple urinary infection"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "加用胺碘酮后INR和出血轨迹支持相互作用；仍需评估出血程度和其他原因。",
+            "en": "The INR and bleeding trajectory after amiodarone supports an interaction, while bleeding severity and other causes still need assessment."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "当前最安全的处理原则是什么？",
+        "en": "What is the safest current management principle?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "bleeding-severity",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "立即由临床团队评估出血、暂缓抗凝及逆转需要，结合血栓风险制定复用与密切INR监测计划",
+            "en": "Prompt clinician assessment of bleeding, interruption and reversal needs, followed by a thrombotic-risk-informed restart and close INR monitoring plan"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "逆转方式和复用时机取决于出血严重度及抗凝指征；病例历史剂量/肌注途径不作为教学推荐。",
+            "en": "Reversal and restart depend on bleeding severity and indication; the report’s historical dose and intramuscular route are not educational recommendations."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "照搬原文肌注维生素K和固定次日复用剂量",
+            "en": "Copy the historical intramuscular vitamin K and fixed next-day restart dose"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "逆转方式和复用时机取决于出血严重度及抗凝指征；病例历史剂量/肌注途径不作为教学推荐。",
+            "en": "Reversal and restart depend on bleeding severity and indication; the report’s historical dose and intramuscular route are not educational recommendations."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "associated"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "cardiac"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "cardiac-tests",
+        "drug-timeline",
+        "coagulation",
+        "urine",
+        "bleeding-severity",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "临床时间线支持抗凝药相互作用；风险可在添加药物后延迟显现，需要持续复核。",
+      "en": "The clinical timeline supports an anticoagulant interaction whose risk may emerge after a delay and requires continued review."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "药物相互作用的效应不必在第一剂后立刻出现。",
+        "en": "The effect of a drug interaction need not appear immediately after the first dose."
+      },
+      {
+        "zh-CN": "纠正出血后仍需重新平衡抗凝与血栓风险。",
+        "en": "After bleeding correction, anticoagulation and thrombotic risk must be reassessed."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "血尿时血红蛋白与生命体征、长期抗凝目标及远期随访。",
+        "en": "Haemoglobin and vital signs during haematuria, long-term anticoagulation target and follow-up."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "刘俊. 联合应用华法林与胺碘酮致国际标准化比值升高和血尿. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.011",
+      "https://rs.yiigle.com/cmaid/1423434",
+      "2020 ACC Expert Consensus Decision Pathway on Management of Bleeding in Patients on Oral Anticoagulants. https://www.acc.org/latest-in-cardiology/ten-points-to-remember/2020/07/10/11/26/2020-acc-expert-consensus-decision-pathway-on-bleeding"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "血尿时血红蛋白与生命体征、长期抗凝目标及远期随访。",
+      "en": "Haemoglobin and vital signs during haematuria, long-term anticoagulation target and follow-up."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1423434/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "414cfff8354807c059172791a9559458f0ad6a11d0625258ce1d89c62371d0c1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "murmur"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "supplements"
+    },
+    {
+      "type": "examine",
+      "findingId": "cardiac"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "order",
+      "investigationId": "cardiac-tests"
+    },
+    {
+      "type": "read",
+      "investigationId": "cardiac-tests",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "drug-timeline"
+    },
+    {
+      "type": "read",
+      "investigationId": "drug-timeline",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "bleeding-severity"
+    },
+    {
+      "type": "read",
+      "investigationId": "bleeding-severity",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1423434",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1423434",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "心悸胸闷持续多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long have palpitations and tightness persisted?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "还伴有什么症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "What associated symptoms were reported?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "以前接受过什么心脏手术？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "What previous cardiac operation was performed?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有食物或药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any previous food or drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "是否有高血压、糖尿病或泌尿疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Was there hypertension, diabetes or urinary disease?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "入院前的药物清单是否有记录？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Is the pre-admission medication list recorded?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "什么时候首次发现心脏杂音？",
+        "locale": "zh-CN",
+        "expect": [
+          "murmur"
+        ]
+      },
+      {
+        "text": "When was a heart murmur first found?",
+        "locale": "en",
+        "expect": [
+          "murmur"
+        ]
+      },
+      {
+        "text": "此次术后出现什么出血表现？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "What postoperative bleeding appeared?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      }
+    ]
+  }
+}

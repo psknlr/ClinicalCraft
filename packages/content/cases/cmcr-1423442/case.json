@@ -1,0 +1,1494 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1423442",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "胸背痛与渐进性无力 · 46岁男性",
+    "en": "Chest/back pain and progressive weakness · man aged 46"
+  },
+  "summary": {
+    "zh-CN": "长期抗病毒治疗者出现难以解释的骨痛、骨折与行走困难，核对药物史及血尿生化组合。",
+    "en": "A patient on long-term antiviral therapy develops unexplained bone pain, fractures and difficulty walking; review medicines and paired blood/urine chemistry."
+  },
+  "specialty": [
+    "nephrology",
+    "endocrinology",
+    "clinical-pharmacology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 25,
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "孙旦萍; 刘国萍; 赵敏. 阿德福韦酯致范科尼综合征合并骨软化. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.017",
+    "doi": "10.3760/cma.j.issn.1008-5734.2014.01.017",
+    "authors": [
+      "孙旦萍",
+      "刘国萍",
+      "赵敏"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "沈先生（化名）",
+      "en": "Mr Shen (pseudonym)"
+    },
+    "age": 46,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "胸背痛3年，四肢乏力1年",
+      "en": "Three years of chest/back pain and one year of limb weakness"
+    },
+    "triageNote": {
+      "zh-CN": "长期抗病毒治疗者出现难以解释的骨痛、骨折与行走困难，核对药物史及血尿生化组合。",
+      "en": "A patient on long-term antiviral therapy develops unexplained bone pain, fractures and difficulty walking; review medicines and paired blood/urine chemistry."
+    },
+    "tags": [
+      {
+        "zh-CN": "胸背痛3年，四肢乏力1年",
+        "en": "Three years of chest/back pain and one year of limb weakness"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "按病例记录提供信息；性格为教学设定。",
+        "en": "Provides the recorded history; personality is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
+        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "胸背痛3年，四肢乏力约1年，越来越严重。",
+        "en": "Chest and back pain have lasted three years and limb weakness about a year, progressively worsening."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "原报告未记录，不能当作正常或阴性。",
+        "en": "Not documented in the report; this must not be treated as normal or negative."
+      },
+      "actingNotes": {
+        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
+        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初次接诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "检查与临床决策",
+        "en": "Investigations and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告治疗与随访",
+        "en": "Reported treatment and follow-up"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "objective": "objective-1"
+          },
+          {
+            "objective": "objective-2"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "疼痛和无力持续了多久？",
+        "en": "How long have pain and weakness lasted?"
+      },
+      "answer": {
+        "zh-CN": "胸背痛3年，四肢乏力约1年，越来越严重。",
+        "en": "Chest and back pain have lasted three years and limb weakness about a year, progressively worsening."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疼痛和无力持续了多久？",
+          "胸背痛"
+        ],
+        "en": [
+          "How long have pain and weakness lasted?",
+          "back pain"
+        ]
+      },
+      "disclosure": "volunteer",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "行走和起身受到什么影响？",
+        "en": "How are walking and rising affected?"
+      },
+      "answer": {
+        "zh-CN": "从上楼困难发展到平地也走不动，翻身、坐起和站立都困难。",
+        "en": "Difficulty climbing stairs progressed to difficulty walking on level ground, turning, sitting up and standing."
+      },
+      "keywords": {
+        "zh-CN": [
+          "行走和起身受到什么影响？",
+          "行走"
+        ],
+        "en": [
+          "How are walking and rising affected?",
+          "walking"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "hepatitis",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "有什么长期疾病？",
+        "en": "What longstanding illness is present?"
+      },
+      "answer": {
+        "zh-CN": "慢性乙型肝炎已有10多年。",
+        "en": "Chronic hepatitis B has been present for over ten years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "有什么长期疾病？",
+          "乙肝"
+        ],
+        "en": [
+          "What longstanding illness is present?",
+          "hepatitis B"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "长期服用哪种抗病毒药？",
+        "en": "Which antiviral medicine has been taken long term?"
+      },
+      "answer": {
+        "zh-CN": "连续多年服用阿德福韦酯，约9年。",
+        "en": "Adefovir dipivoxil has been taken for approximately nine years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "长期服用哪种抗病毒药？",
+          "阿德福韦"
+        ],
+        "en": [
+          "Which antiviral medicine has been taken long term?",
+          "adefovir"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      },
+      "required": true
+    },
+    {
+      "id": "pain-location",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "哪里痛，什么时候更明显？",
+        "en": "Where is the pain and what worsens it?"
+      },
+      "answer": {
+        "zh-CN": "肋弓和肩胛骨附近更明显，活动后加重，后来止痛药也不管用。",
+        "en": "Pain is prominent around the rib margins and scapulae, worsens with activity and later did not respond to analgesics."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里痛，什么时候更明显？",
+          "肋弓"
+        ],
+        "en": [
+          "Where is the pain and what worsens it?",
+          "rib pain"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "体重和身高有变化吗？",
+        "en": "Have weight and height changed?"
+      },
+      "answer": {
+        "zh-CN": "发病后体重少了3公斤，身高少了3厘米。",
+        "en": "Since the pain began, weight fell by 3 kg and height by 3 cm."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重和身高有变化吗？",
+          "身高"
+        ],
+        "en": [
+          "Have weight and height changed?",
+          "height loss"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "steroid",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "长期用激素或卧床吗？",
+        "en": "Has there been prolonged steroid use or bed rest?"
+      },
+      "answer": {
+        "zh-CN": "没有长期用糖皮质激素，也没有长期卧床史。",
+        "en": "There was no long-term glucocorticoid use or history of prolonged bed rest."
+      },
+      "keywords": {
+        "zh-CN": [
+          "长期用激素或卧床吗？",
+          "激素"
+        ],
+        "en": [
+          "Has there been prolonged steroid use or bed rest?",
+          "glucocorticoids"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "calcium",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "之前补钙有效吗？",
+        "en": "Did earlier calcium treatment help?"
+      },
+      "answer": {
+        "zh-CN": "之前按骨质疏松补过钙，没有明显好转。",
+        "en": "Calcium given for presumed osteoporosis did not produce clear improvement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前补钙有效吗？",
+          "补钙"
+        ],
+        "en": [
+          "Did earlier calcium treatment help?",
+          "calcium"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有药物或食物过敏吗？",
+        "en": "Any previous drug or food allergies?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有药物或食物过敏吗？",
+          "药物过敏"
+        ],
+        "en": [
+          "Any previous drug or food allergies?",
+          "allergies"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有类似疾病吗？",
+        "en": "Any family history of similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族中有类似疾病吗？",
+          "家族史"
+        ],
+        "en": [
+          "Any family history of similar illness?",
+          "family history"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您吸烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "您吸烟吗？",
+          "吸烟"
+        ],
+        "en": [
+          "doyousmoke",
+          "smoking"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时饮酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时饮酒吗？",
+          "饮酒"
+        ],
+        "en": [
+          "Do you drink alcohol?",
+          "alcohol"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "工作和生活环境怎样？",
+        "en": "What are your work and living circumstances?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作和生活环境怎样？",
+          "职业"
+        ],
+        "en": [
+          "What are your work and living circumstances?",
+          "occupation"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病前的日常自理情况怎样？",
+        "en": "How independent were you before this illness?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生病前的日常自理情况怎样？",
+          "自理"
+        ],
+        "en": [
+          "How independent were you before this illness?",
+          "independence"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "最担心什么，希望怎样处理？",
+        "en": "What concerns you most and what do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这部分原记录没有说明。",
+        "en": "The source record does not provide this information."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最担心什么，希望怎样处理？",
+          "担心"
+        ],
+        "en": [
+          "What concerns you most and what do you hope for?",
+          "concerns"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "bones",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查疼痛部位",
+        "en": "Examine painful skeletal areas"
+      },
+      "finding": {
+        "zh-CN": "颈椎、上胸椎、肩胛骨和肋骨有压痛，肋弓外翻及局部增粗。",
+        "en": "Tenderness over the cervical/upper thoracic spine, scapulae and ribs, with everted thickened rib margins."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    },
+    {
+      "id": "power",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "评估行走及肌力",
+        "en": "Assess gait and muscle power"
+      },
+      "finding": {
+        "zh-CN": "体形消瘦，不能行走，肌力4级，直腿抬高试验阳性。",
+        "en": "Thin build, unable to walk, muscle power grade 4 and a positive straight-leg-raise test."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录，不能当作正常或阴性。",
+    "en": "Not documented in the report; this must not be treated as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "血生化",
+        "en": "Blood chemistry"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血生化"
+        ],
+        "en": [
+          "Blood chemistry",
+          "blood"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "磷0.53 mmol/L、钾3.1 mmol/L、尿酸117 μmol/L，ALP 201 U/L；钙2.2 mmol/L、肌酐103 μmol/L、空腹血糖4.1 mmol/L。",
+            "en": "Phosphate 0.53 mmol/L, potassium 3.1 mmol/L, urate 117 μmol/L and ALP 201 U/L; calcium 2.2 mmol/L, creatinine 103 μmol/L and fasting glucose 4.1 mmol/L."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "urine",
+      "name": {
+        "zh-CN": "尿糖与肾小管蛋白",
+        "en": "Urine glucose and tubular proteins"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "尿糖与肾小管蛋白"
+        ],
+        "en": [
+          "Urine glucose and tubular proteins",
+          "urine"
+        ]
+      },
+      "requires": [
+        "lab-urinalysis"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "尿糖++、蛋白+，α1微球蛋白168 mg/L，24小时尿蛋白0.93 g；尿磷13 mmol/24 h。不能仅以尿磷绝对值判定磷丢失，原记录无磷排泄分数。",
+            "en": "Urine glucose ++ and protein +; α1-microglobulin 168 mg/L, 24-hour protein 0.93 g and phosphate 13 mmol/24 h. Absolute urinary phosphate alone does not establish phosphate wasting; fractional phosphate excretion is not provided."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "abg",
+      "name": {
+        "zh-CN": "血气分析",
+        "en": "Blood gas analysis"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气分析"
+        ],
+        "en": [
+          "Blood gas analysis",
+          "abg"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "pH 7.24、PaCO₂ 31 mmHg、碳酸氢根13 mmol/L；血氯111 mmol/L，提示代谢性酸中毒。",
+            "en": "pH 7.24, PaCO₂ 31 mmHg and bicarbonate 13 mmol/L with chloride 111 mmol/L, consistent with metabolic acidosis."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "bone",
+      "name": {
+        "zh-CN": "骨影像与骨密度记录",
+        "en": "Bone imaging and densitometry records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨影像与骨密度记录"
+        ],
+        "en": [
+          "Bone imaging and densitometry records",
+          "bone"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "骨密度提示骨质疏松，骨扫描多发代谢活跃灶，胸片有双侧多发肋骨骨折；脊柱MRI有退变和部分椎体信号异常。",
+            "en": "Densitometry showed osteoporosis, bone scan multiple active foci and chest radiography multiple bilateral rib fractures; spinal MRI showed degeneration and some abnormal vertebral signals."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "hbv",
+      "name": {
+        "zh-CN": "乙肝监测与肾动态显像",
+        "en": "HBV monitoring and renal scintigraphy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "乙肝监测与肾动态显像"
+        ],
+        "en": [
+          "HBV monitoring and renal scintigraphy",
+          "hbv"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "HBsAg、抗HBe及抗HBc阳性，HBV DNA低于4.2×10² copies/mL；肾动态显像报告双肾滤过中度受损，无具体GFR数值。",
+            "en": "HBsAg, anti-HBe and anti-HBc were positive; HBV DNA <4.2×10² copies/mL. Renal scintigraphy reported moderate bilateral filtration impairment without a numerical GFR."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅治疗与随访记录"
+        ],
+        "en": [
+          "Review treatment and follow-up record",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告停用阿德福韦，改用恩替卡韦，并补磷、钾及钙/活性维生素D等。停药后磷未立刻恢复；出院时症状改善。约半年复查磷0.81、钾3.6 mmol/L，尿糖阴性，能大步行走且疼痛减轻。",
+            "en": "The report stopped adefovir, substituted entecavir and provided phosphate, potassium and calcium/active vitamin D support. Phosphate did not normalise immediately; symptoms improved by discharge. About six months later phosphate was 0.81 and potassium 3.6 mmol/L, urine glucose was negative and walking and pain had improved."
+          },
+          "source": {
+            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
+            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          },
+          "figures": [],
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "objective-1",
+      "title": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "hint": {
+        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
+        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "function"
+          },
+          {
+            "asked": "hepatitis"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-2",
+      "title": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "hint": {
+        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
+        "en": "Check documented examination findings; unmeasured is not normal."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "bones"
+          },
+          {
+            "examined": "power"
+          }
+        ]
+      }
+    },
+    {
+      "id": "objective-3",
+      "title": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
+        "en": "Enter the investigation phase and review records before deciding."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "objective-4",
+      "title": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
+        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪个判断能同时解释骨病与血尿异常？",
+        "en": "What interpretation integrates the bone disease and blood/urine abnormalities?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "urine",
+            "phase": "workup"
+          },
+          {
+            "read": "abg",
+            "phase": "workup"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "阿德福韦相关近端肾小管功能障碍（范科尼综合征）伴低磷性骨软化",
+            "en": "Adefovir-associated proximal tubular dysfunction (Fanconi syndrome) with hypophosphataemic osteomalacia"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正常血糖下尿糖、肾小管蛋白、酸中毒和低磷共同指向近端肾小管障碍。",
+            "en": "Glycosuria with normal blood glucose, tubular proteinuria, acidosis and hypophosphataemia together point to proximal tubular dysfunction."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "只有普通骨质疏松，肌酐不高便可排除肾损害",
+            "en": "Simple osteoporosis alone; a modest creatinine excludes renal damage"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "正常血糖下尿糖、肾小管蛋白、酸中毒和低磷共同指向近端肾小管障碍。",
+            "en": "Glycosuria with normal blood glucose, tubular proteinuria, acidosis and hypophosphataemia together point to proximal tubular dysfunction."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "安全的药物调整应包含哪些内容？",
+        "en": "What should safe medication revision include?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "hbv",
+            "phase": "workup"
+          },
+          {
+            "read": "bone",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
+        "en": "First obtain the relevant history and retrieve the key records for this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "肝病、肾内与药师协作更换可疑药物并维持合适抗HBV方案，监测电解质和肾小管恢复",
+            "en": "Hepatology, nephrology and pharmacy coordinate replacement of the suspected drug while maintaining appropriate HBV therapy and monitoring electrolytes/tubular recovery"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "需要同时处理毒性、抗病毒连续性和代谢异常；不能只看骨密度或肌酐。",
+            "en": "Toxicity, antiviral continuity and metabolic abnormalities all need attention; densitometry and creatinine alone are insufficient."
+          }
+        },
+        {
+          "id": "unsupported",
+          "text": {
+            "zh-CN": "自行停掉所有抗乙肝药，只补钙等待好转",
+            "en": "Stop all HBV therapy independently and treat only with calcium"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "需要同时处理毒性、抗病毒连续性和代谢异常；不能只看骨密度或肌酐。",
+            "en": "Toxicity, antiviral continuity and metabolic abnormalities all need attention; densitometry and creatinine alone are insufficient."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rubric-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建症状与用药时间线",
+        "en": "Reconstruct the symptom and medication timeline"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "function"
+          },
+          {
+            "asked": "hepatitis"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-2",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对床旁线索",
+        "en": "Check bedside clues"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "bones"
+          },
+          {
+            "examined": "power"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rubric-3",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "整合检查证据",
+        "en": "Integrate investigation evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "rubric-4",
+      "domain": "management",
+      "text": {
+        "zh-CN": "形成安全计划并复盘转归",
+        "en": "Form a safe plan and review the outcome"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
+        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+      },
+      "interprets": [
+        "blood",
+        "urine",
+        "abg",
+        "bone",
+        "hbv",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "骨痛背后有药物相关近端肾小管损伤；停用并更换药物后恢复是渐进的。",
+      "en": "Drug-associated proximal tubular injury underlies the bone symptoms, with gradual improvement after withdrawal and substitution."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "尿糖必须与同一阶段血糖一起解释。",
+        "en": "Interpret glycosuria together with contemporaneous blood glucose."
+      },
+      {
+        "zh-CN": "骨质疏松与骨软化可以同时存在。",
+        "en": "Osteoporosis and osteomalacia can coexist."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
+      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "肾小管磷重吸收参数、准确GFR及原文维生素D数值的单位疑点。",
+        "en": "Tubular phosphate reabsorption indices, exact GFR and the questionable reported vitamin D unit."
+      }
+    ],
+    "teachingPoints": [],
+    "references": [
+      "孙旦萍; 刘国萍; 赵敏. 阿德福韦酯致范科尼综合征合并骨软化. 药物不良反应杂志, 2014. DOI: 10.3760/cma.j.issn.1008-5734.2014.01.017",
+      "https://rs.yiigle.com/cmaid/1423442",
+      "DailyMed. HEPSERA (adefovir dipivoxil) prescribing information, renal toxicity and discontinuation monitoring. https://www.dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=80595d45-2224-47d1-bd5c-4b11a824e5bd&type=display"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "肾小管磷重吸收参数、准确GFR及原文维生素D数值的单位疑点。",
+      "en": "Tubular phosphate reabsorption indices, exact GFR and the questionable reported vitamin D unit."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1423442/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f06c37dfd06c37f662c7f08406c491c7cb71a888e6043c271d32fc7e34ba1dc1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "hepatitis"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-location"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "steroid"
+    },
+    {
+      "type": "ask",
+      "itemId": "calcium"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "bones"
+    },
+    {
+      "type": "examine",
+      "findingId": "power"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "abg"
+    },
+    {
+      "type": "read",
+      "investigationId": "abg",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "bone"
+    },
+    {
+      "type": "read",
+      "investigationId": "bone",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "hbv"
+    },
+    {
+      "type": "read",
+      "investigationId": "hbv",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1423442",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1423442",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "疼痛和无力持续了多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long have pain and weakness lasted?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "行走和起身受到什么影响？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "How are walking and rising affected?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "有什么长期疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "hepatitis"
+        ]
+      },
+      {
+        "text": "What longstanding illness is present?",
+        "locale": "en",
+        "expect": [
+          "hepatitis"
+        ]
+      },
+      {
+        "text": "长期服用哪种抗病毒药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Which antiviral medicine has been taken long term?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "哪里痛，什么时候更明显？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-location"
+        ]
+      },
+      {
+        "text": "Where is the pain and what worsens it?",
+        "locale": "en",
+        "expect": [
+          "pain-location"
+        ]
+      },
+      {
+        "text": "体重和身高有变化吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Have weight and height changed?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "长期用激素或卧床吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "steroid"
+        ]
+      },
+      {
+        "text": "Has there been prolonged steroid use or bed rest?",
+        "locale": "en",
+        "expect": [
+          "steroid"
+        ]
+      },
+      {
+        "text": "之前补钙有效吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "calcium"
+        ]
+      },
+      {
+        "text": "Did earlier calcium treatment help?",
+        "locale": "en",
+        "expect": [
+          "calcium"
+        ]
+      }
+    ]
+  }
+}
