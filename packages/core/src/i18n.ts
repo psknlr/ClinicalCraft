@@ -131,7 +131,7 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   dialysis: { "zh-CN": "血液透析", en: "haemodialysis" },
   // Teaching & records
   "anatomy-atlas": { "zh-CN": "解剖图谱", en: "the anatomy atlas" },
-  "evidence-board": { "zh-CN": "证据板", en: "the evidence board" },
+  "evidence-board": { "zh-CN": "会诊板", en: "the case board" },
   records: { "zh-CN": "电子病历终端", en: "an electronic health record terminal" },
   crafting: { "zh-CN": "制作台", en: "a crafting bench" },
 };

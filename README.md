@@ -255,7 +255,7 @@ are synthetic. Write your own with `npm run cc -- cases new <id>` and
 
 | facility | contents |
 |---|---|
-| `clinic-v4` · 临床探索中心 Clinical Discovery Centre | data port of the V4 world: healing garden, one clinic building (consult room, lab, imaging, pathology, corridor, conference area), 7 rooms, 21 placements, 1 patient slot, evidence board, atlas kiosk, build zone and crafting bench |
+| `clinic-v4` · 临床探索中心 Clinical Discovery Centre | data port of the V4 world: healing garden, one clinic building (consult room, lab, imaging, pathology, corridor, conference area), 7 rooms, 21 placements, 1 patient slot, case board, atlas kiosk, build zone and crafting bench |
 | `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward, ICU, operating theatre, conference room, gardens — 37 rooms, 258 placements, 14 patient slots for every case setting, 10 staff |
 | `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 280 placements, 17 patient slots, 11 staff (a porter among them). Nobody's own facility: offered as an alternative for the 9 cases it can host |
 
@@ -285,7 +285,7 @@ about the pairs that cannot). See [docs/FACILITIES.md](docs/FACILITIES.md);
 | `@nurse what are the latest vitals?` | address someone else for one message; `/talk nurse` switches |
 | `/ask` · `/ask 3` | list the canonical history questions, or ask one |
 | `/exam abdomen` `/order 血常规` `/results` `/read cbc` `/give aspirin` | examine, order, list orders, read a result, give a treatment |
-| `/vitals` `/status` `/case` `/plan` `/note …` | monitor, session status, case summary, workup plan, notes |
+| `/vitals` `/status` `/case` `/plan` `/note …` | monitor, session status, case summary, work-up plan, notes |
 | `/board` · `/answer <decision> <option…>` · `/phase` · `/wait 10` | the case board's decisions (e.g. `/answer diagnosis dual` in SMZL), phases, simulated time |
 | `/hint` `/consult attending …` | Socratic help (hints count against the score) |
 | `/autopilot [goal]` `/finish` `/assess` `/debrief` | demonstration (the clinician agent works the case), finish the case once every objective is complete, assessment (examiner), debrief (with the learning outcomes) |

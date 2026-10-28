@@ -33,7 +33,7 @@ names. Only the words around them follow the glossary.
 | external agent (`mcp --attach`) | 外部代理 | **外部智能体** | as above; the badge, approvals, CLI and MCP texts name it alike |
 | model provider | 提供商 (agent), 供应商 (web), 服务商 (CLI, bench) | **服务商** | the CLI and benchmark already used it |
 | a case-board decision (`decisions[]`) | 判断 / "judgement" (web), 决策 / "decision" (CLI, agent, MCP) | **决策** / **decision** (临床决策 / clinical decisions) | the schema, tools and reports say decision; "can answer" reads 可以作答 |
-| the board where decisions are made | 会诊板 / "case board" (web), 决策板 / "evidence board" (CLI, agent) | **会诊板** (panel title 会诊证据板) / **case board** | the object in the world; the web already used it |
+| the board where decisions are made | 会诊板 / "case board" (web), 决策板 / "evidence board" (CLI, agent), 证据板 / "the evidence board" (capability label, `answer_decision`) | **会诊板** (panel title 会诊证据板) / **case board** | the object in the world; the web already used it. In-world signs and labels (facility data) name each board, e.g. "ED Case Board", "Case Conference · Evidence Board" |
 | case phase (`phases[]`) | 时期 (web), 阶段 (agent, CLI) | **阶段** | acute cases have stages, not periods; matches the runtime |
 | facility (`facility`) | 场景 (web), 场馆 (CLI, agent) | **场馆** | 场景 is the case setting (门诊, 急诊…); one word per concept |
 | practice scope (`practiceScope`: history only / work-up / full) | 执业范围 | **操作范围** | 执业范围 is the scope of practice of a profession (a porter may do nothing clinical); the session setting is a different thing |
@@ -84,7 +84,7 @@ developer documents use.
 | objective | objective; a "chapter" in the HUD | 任务目标（HUD 中为“章节”）；简称“目标” | `objectives[]` | the in-game task list; "目标" alone always means an objective |
 | learning outcome | learning outcome | 学习目标 | `learningOutcomes[]` | an action verb and its standard; see §4 |
 | decision | decision (clinical decisions) | 决策（临床决策） | `decisions[]`, `answer_decision` | answered on the case board |
-| case board | case board | 会诊板（面板标题：会诊证据板） | interaction kind `board`, `/board` | |
+| case board | case board | 会诊板（面板标题：会诊证据板） | interaction kind `board`, `/board`, object type `evidence-board` | a facility's own sign may name its board (急诊病例讨论板, 会诊 · 证据拼图) |
 | hint | hint (counts against the score) | 提示（计入评分） | `hint`, `give_hint` | |
 | journal | journal | 随身档案 | journal panel | |
 | learning record | learning record | 学习记录 | export file | |

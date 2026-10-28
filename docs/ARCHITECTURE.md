@@ -867,7 +867,7 @@ spoken by the patient — those come from engine actions.
   `@clinicalcraft/world` collision model (EMBODIED R2), so the headless
   world and the 3D view agree box for box. Patients/staff are voxel NPCs; equipment is
   interactive (workstations order exams, monitors show live vitals/ECG,
-  evidence board takes decisions, atlas kiosk opens the anatomy viewer).
+  the case board takes decisions, atlas kiosk opens the anatomy viewer).
   Panels: conversation (streaming, free text + suggested questions), exam,
   order entry, report & original image viewer, journal, case board,
   monitor, debrief (with the case's learning outcomes and review status),

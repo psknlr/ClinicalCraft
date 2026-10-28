@@ -567,7 +567,7 @@ function lockedDecisionRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
 const answerDecision: ToolDefinition<ToolArgs> = {
   name: "answer_decision",
   description:
-    "Answer a decision on the evidence board (single best answer: one option id; select-all: every option id you choose). " +
+    "Answer a decision on the case board (single best answer: one option id; select-all: every option id you choose). " +
     "Returns whether it is correct and feedback. Decisions unlock once their evidence has been gathered.",
   inputSchema: {
     type: "object",
