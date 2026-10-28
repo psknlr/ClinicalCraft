@@ -1,14 +1,14 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551887",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "睡眠障碍与注意力下降 · 31岁女性",
-    "en": "Sleep disturbance and reduced concentration · woman aged 31"
+    "en": "Sleep disturbance and difficulty concentrating · 31-year-old woman"
   },
   "summary": {
-    "zh-CN": "睡眠问题随后出现认知及运动变化，重建症状进程并核对家族史、神经检查及遗传报告的证据边界。",
-    "en": "Sleep problems are followed by cognitive and motor changes; reconstruct progression and examine family, neurological and genetic evidence with its limitations."
+    "zh-CN": "31岁女性，睡眠变差、注意力难以集中，此后数月内出现言语错乱和肢体不自主活动。依据一篇已发表病例的历史记录分阶段回看，缺失的资料保持未知。",
+    "en": "A 31-year-old woman with poor sleep and difficulty concentrating develops muddled speech and involuntary limb movements over the following months. A staged review of the historical record of a published case; missing data stay unknown."
   },
   "specialty": [
     "neurology",
@@ -16,13 +16,35 @@
     "genetics"
   ],
   "difficulty": 4,
-  "setting": "inpatient",
+  "setting": "outpatient",
   "facility": "general-hospital",
   "locales": [
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "从首诊到死亡重建这例快速进展疾病的时间线（以首诊为第0天的相对时间），并指出作者所述病程时长与文中日期的矛盾。",
+      "en": "Reconstruct the timeline of this rapidly progressive illness from the first visit to death (relative to the first visit as day 0) and identify the conflict between the duration the authors state and the dates in the text."
+    },
+    {
+      "zh-CN": "用2018年中国专家共识（及2022年修订）把记录资料分级为可能、很可能或确诊的FFI，并说出缺失的证据：自主神经表现、PSG、PET/SPECT和具体PRNP变异（D178N-129M）。",
+      "en": "Grade the recorded evidence as possible, probable or definite FFI with the 2018 Chinese consensus (and its 2022 revision), naming the missing evidence: autonomic features, PSG, PET/SPECT and the specific PRNP variant (D178N-129M)."
+    },
+    {
+      "zh-CN": "解释为什么MRI、脑电图和脑脊液常规正常不能排除遗传性朊蛋白病，并在基因检测的同时安排可治疗类似疾病的检查（血清和脑脊液自身免疫性脑炎抗体、副肿瘤筛查）。",
+      "en": "Explain why a normal MRI, EEG and routine CSF do not exclude genetic prion disease, and arrange tests for the treatable mimics (serum and CSF autoimmune-encephalitis antibodies, a paraneoplastic screen) alongside genetic testing."
+    },
+    {
+      "zh-CN": "按WHO 2000 TSE感染控制指南为有创操作、脑脊液和组织标本及器械落实防护，并说明为什么不需要隔离患者。",
+      "en": "Apply the WHO 2000 TSE infection-control precautions to invasive procedures, CSF and tissue specimens and instruments, and explain why the patient needs no isolation."
+    },
+    {
+      "zh-CN": "规划遗传咨询（母系亲属、自愿的预测性检测、不推断母亲的基因状况），并在吞咽和意识恶化之前开始舒缓照护和预立医疗照护计划。",
+      "en": "Plan genetic counselling (maternal-line relatives, voluntary predictive testing, no assumptions about her mother's status) and start palliative care and advance care planning before swallowing and consciousness fail."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -30,7 +52,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "梁建明; 葉婉婷; 鄧紫瑩; 趙凱茵. 家族性致死性失眠症患者1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.014",
+    "citation": "梁建明, 葉婉婷, 鄧紫瑩, 趙凱茵. 家族性致死性失眠症患者1例. 鏡湖醫學. 2025;25(1):57-58. doi:10.12408/j.issn2223-4462.2025.01.014",
     "doi": "10.12408/j.issn2223-4462.2025.01.014",
     "authors": [
       "梁建明",
@@ -40,8 +62,28 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写。年龄、性别、症状、检查结果和结局按原文；姓名为化名，医院、日历日期和送检地点已去除，时间以首诊为第0天的相对时间表示。对话、问题、决策、处置选项和评分为教学设计；感染控制、遗传咨询和舒缓照护是按现行指南加入的教学内容，原报告未记录。原文的两处疑点保留并标注：病程时长（作者称约9个月，与文中日期不一致）和含义不明的“感能力差”。未记录的数据保持未知。",
+      "en": "Adapted from a published case. Age, sex, symptoms, results and outcome follow the source; names are pseudonyms, and the hospital, calendar dates and the testing laboratory's location are removed — times are relative to the first visit as day 0. Dialogue, questions, decisions, management options and scoring are teaching design; infection control, genetic counselling and palliative care are added from current guidance and are not recorded in the report. Two oddities of the source are kept and labelled: the duration (the authors' “about nine months” conflicts with the dates in the text) and the unclear phrase “感能力差”. Unrecorded data stay unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "Expert consensus on clinical diagnostic criteria for FFI 2018 (Wu LY, et al. Chin Med J 2018)",
+        "Proposal of new diagnostic criteria for FFI 2022 (Chu M, et al. J Neurol 2022)",
+        "GeneReviews: Genetic prion disease (Zerr & Schmitz, updated 2021-01-07)",
+        "WHO infection control guidelines for TSE 2000 (WHO/CDS/CSR/APH/2000.3)",
+        "PHAC Classic CJD in Canada: quick reference guide 2007",
+        "Graus 2016 clinical approach to autoimmune encephalitis (Lancet Neurol)",
+        "中国自身免疫性脑炎诊治专家共识（2022年版）"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -50,104 +92,150 @@
   },
   "patient": {
     "displayName": {
-      "zh-CN": "何女士（化名）",
-      "en": "Ms He (pseudonym)"
+      "zh-CN": "钟女士（化名）",
+      "en": "Ms Zhong (pseudonym)"
     },
     "age": 31,
+    "ageUnit": "years",
     "sex": "female",
     "chiefComplaint": {
       "zh-CN": "睡眠障碍，注意力难以集中",
       "en": "Sleep disturbance and difficulty concentrating"
     },
     "triageNote": {
-      "zh-CN": "睡眠问题随后出现认知及运动变化，重建症状进程并核对家族史、神经检查及遗传报告的证据边界。",
-      "en": "Sleep problems are followed by cognitive and motor changes; reconstruct progression and examine family, neurological and genetic evidence with its limitations."
+      "zh-CN": "31岁女性，门诊首诊：近来睡不好、注意力难以集中，白天犯困。病史待询问。",
+      "en": "31-year-old woman, first outpatient visit: sleeping badly and struggling to concentrate, sleepy in the daytime. History still to be taken."
     },
     "tags": [
       {
-        "zh-CN": "睡眠障碍，注意力难以集中",
-        "en": "Sleep disturbance and difficulty concentrating"
+        "zh-CN": "睡眠差",
+        "en": "Poor sleep"
+      },
+      {
+        "zh-CN": "白天犯困",
+        "en": "Daytime sleepiness"
+      },
+      {
+        "zh-CN": "病史待询问",
+        "en": "History to be taken"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "31岁，礼貌而有些紧张，容易担心；记得自己哪段时间睡不好，说不清医学上的细节。病情进展后反应变慢、容易走神。",
+        "en": "A polite, rather tense 31-year-old who worries easily; she remembers when her sleep went wrong but not the medical details. As the illness progresses she becomes slower and easily loses her thread."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "日常口语，句子短，偶尔停顿、想不起词；不用医学术语。",
+        "en": "Everyday speech in short sentences, sometimes pausing for a word; no medical terms."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "anxious",
       "openingLine": {
-        "zh-CN": "睡眠质量变差，注意力难以集中。",
-        "en": "Sleep quality deteriorated and concentrating became difficult."
+        "zh-CN": "医生您好……我最近一直睡不好，注意力也集中不了。",
+        "en": "Hello, doctor… I just haven't been sleeping properly lately, and I can't concentrate."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "只讲当前阶段已经揭示的病史，用自己的话说，不增减数字、时间或药名；不解释检查结果，不谈诊断。首诊时你自己回答；入院以后你说话容易颠三倒四、想不起事，近来的变化让陪同的家属补充。",
+        "en": "Say only the history revealed in the current phase, in your own words, without adding or changing numbers, times or drug names; do not interpret results or discuss diagnoses. At the first visit you answer for yourself; from the admission onwards you lose your thread and forget things, so let your family member fill in the recent changes."
       },
       "companion": {
         "role": "carer",
         "name": {
-          "zh-CN": "陪同者（教学角色）",
-          "en": "Companion (educational role)"
+          "zh-CN": "家属",
+          "en": "Family member"
         },
         "persona": {
-          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
-          "en": "Relays only the reported history without inventing witnessed events."
+          "zh-CN": "她的家属（原报告没有写明与她的具体关系）。着急但克制，说话直接，讲自己在家看到的变化；不知道的就说不知道，不替她回答她自己的感受。",
+          "en": "Her family member (the report does not say how they are related). Worried but composed and plain-spoken; describes what they have seen at home, says so when they do not know, and does not answer for her own feelings."
         },
         "answersHistory": true
       }
     },
     "appearance": {
       "stature": "adult",
-      "gown": true
+      "gown": false
     },
-    "posture": "lying",
-    "ageUnit": "years"
+    "posture": "sitting"
   },
   "phases": [
     {
       "id": "initial",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "首诊（门诊）",
+        "en": "First visit (outpatient)"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "第0天：首次门诊。患者自述睡眠和注意力问题；原报告没有记录这次就诊的体格检查、生命体征和处理。",
+        "en": "Day 0: the first outpatient visit. She describes her sleep and concentration; the report records no examination, vital signs or management for this visit."
+      },
+      "learnerSwitchable": true,
+      "location": {
+        "setting": "outpatient"
+      }
     },
     {
       "id": "workup",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "入院检查（首诊后约4个月）",
+        "en": "Admission work-up (about 4 months after the first visit)"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "首诊后约4个月入院。家属补充近一两个月的变化；入院时已完成的检查报告在病历中，可在病历终端调阅。",
+        "en": "Admitted about 4 months after the first visit. Her family member fills in the changes of the past month or two; the reports of the tests done during the admission are in the record, to be read at a records terminal."
+      },
+      "learnerSwitchable": true,
+      "location": {
+        "setting": "inpatient"
+      }
+    },
+    {
+      "id": "clinic",
+      "label": {
+        "zh-CN": "专科门诊（首诊后约5个月）",
+        "en": "Specialist clinic (about 5 months after the first visit)"
+      },
+      "description": {
+        "zh-CN": "首诊后约5个月的专科门诊复诊：重新详细采集病史，安排进一步检查。",
+        "en": "A specialist clinic review about 5 months after the first visit: a fresh, detailed history and further tests."
+      },
+      "learnerSwitchable": true,
+      "location": {
+        "setting": "outpatient"
+      }
     },
     {
       "id": "followup",
       "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+        "zh-CN": "后续病程与结局（首诊后约6–10个月）",
+        "en": "Later course and outcome (about 6–10 months after the first visit)"
+      },
+      "description": {
+        "zh-CN": "原报告记录的后续病程和结局：这是对历史记录的回看，不推进患者的实时病情。",
+        "en": "The later course and outcome as the report records them: a review of the historical record, not the patient's live course."
       },
       "learnerSwitchable": false,
+      "location": {
+        "setting": "inpatient"
+      },
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "decided": "dec-workup"
           },
           {
-            "decided": "management"
+            "decided": "dx-criteria"
           },
           {
-            "objective": "objective-1"
+            "decided": "dec-infection"
           },
           {
-            "objective": "objective-2"
+            "decided": "dec-family"
           }
         ]
       }
@@ -163,652 +251,1229 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "最初是什么不适？",
-        "en": "What were the first symptoms?"
+        "zh-CN": "这次主要是哪里不舒服？",
+        "en": "What's been bothering you?"
       },
       "answer": {
-        "zh-CN": "睡眠质量变差，注意力难以集中。",
-        "en": "Sleep quality deteriorated and concentrating became difficult."
+        "zh-CN": "主要是睡不好，睡眠质量越来越差，注意力也集中不了。",
+        "en": "Mainly my sleep — it keeps getting worse — and I can't concentrate."
       },
       "keywords": {
         "zh-CN": [
-          "最初是什么不适？",
-          "睡眠障碍"
+          "哪里不舒服",
+          "怎么不舒服",
+          "主要问题",
+          "来看什么",
+          "什么问题",
+          "怎么了",
+          "主诉"
         ],
         "en": [
-          "What were the first symptoms?",
-          "sleep disturbance"
+          "bothering",
+          "whatbringsyou",
+          "whatstheproblem",
+          "theproblem",
+          "complaint",
+          "whatswrong",
+          "comeintoday"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "什么时候",
+          "多久",
+          "药",
+          "家里"
+        ],
+        "en": [
+          "when did",
+          "how long",
+          "medic",
+          "family"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
         "initial"
       ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·首诊（患者自述）；问答措辞为教学改写",
+        "en": "Source: first visit (her own account); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "睡不好是从什么时候开始的？",
+        "en": "When did the sleep problems start?"
       },
-      "required": true,
-      "excludeKeywords": {
+      "answer": {
+        "zh-CN": "具体哪天我记不清了。我月经不调，吃了避孕药以后，就发现睡得越来越差。",
+        "en": "I can't remember exactly when. My periods were irregular, and after I started the contraceptive pill I found I was sleeping worse and worse."
+      },
+      "keywords": {
         "zh-CN": [
-          "具体表现"
+          "什么时候开始",
+          "多久了",
+          "多长时间",
+          "起病",
+          "开始睡不好",
+          "怎么开始的",
+          "之前有什么诱因",
+          "诱因"
         ],
         "en": [
-          "sleep disturbance like"
+          "whendiditstart",
+          "whendidthisstart",
+          "how long",
+          "onset",
+          "since when",
+          "started",
+          "began",
+          "trigger"
         ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient",
+      "source": {
+        "zh-CN": "原文·首诊（患者自述）；问答措辞为教学改写",
+        "en": "Source: first visit (her own account); wording adapted for teaching"
       }
     },
     {
       "id": "sleep-pattern",
       "topic": "hpi",
       "question": {
-        "zh-CN": "睡不好具体表现是什么？",
-        "en": "What was the sleep disturbance like?"
+        "zh-CN": "晚上睡得怎么样？",
+        "en": "How are you sleeping at night?"
       },
       "answer": {
-        "zh-CN": "眠浅、恶梦多，容易惊跳和惊慌，白天又比较嗜睡。",
-        "en": "Sleep was shallow with frequent nightmares, startle and panic, while daytime drowsiness increased."
+        "zh-CN": "睡得很浅，老做噩梦，动不动就吓一跳，心里发慌。白天反倒老犯困。",
+        "en": "Very lightly. I keep having nightmares, I startle at the slightest thing and feel panicky. And then in the daytime I'm sleepy all the time."
       },
       "keywords": {
         "zh-CN": [
-          "睡不好具体表现是什么？",
-          "恶梦"
+          "睡得怎么样",
+          "睡眠",
+          "睡觉",
+          "失眠",
+          "睡不着",
+          "睡着",
+          "睡得着",
+          "睡不好",
+          "噩梦",
+          "恶梦",
+          "做梦",
+          "惊醒",
+          "吓一跳",
+          "白天犯困",
+          "白天困",
+          "嗜睡",
+          "犯困"
         ],
         "en": [
-          "What was the sleep disturbance like?",
-          "nightmares"
+          "sleep",
+          "sleeping",
+          "insomnia",
+          "nightmares",
+          "dreams",
+          "startle",
+          "jumpy",
+          "drowsy",
+          "sleepy",
+          "daytime sleepiness",
+          "night"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "安眠药",
+          "什么时候开始",
+          "多久",
+          "帮助睡眠"
+        ],
+        "en": [
+          "sleeping tablets",
+          "sleeping pills",
+          "when did",
+          "how long",
+          "help you sleep",
+          "helpyousleep",
+          "taken anything"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "原文·首诊（患者自述）；问答措辞为教学改写",
+        "en": "Source: first visit (her own account); wording adapted for teaching"
+      }
     },
     {
-      "id": "medications",
-      "topic": "medications",
+      "id": "concentration",
+      "topic": "hpi",
       "question": {
-        "zh-CN": "症状前后用过哪些药？",
-        "en": "Which medicines were used around symptom onset?"
+        "zh-CN": "注意力怎么样？",
+        "en": "How is your concentration?"
       },
       "answer": {
-        "zh-CN": "因月经不调用过避孕药，之后发现睡眠变差；还自行服过阿普唑仑。这里只记录先后顺序，不能证明药物造成疾病。",
-        "en": "Contraceptive pills were used for irregular menstruation before sleep worsened, and alprazolam was self-administered. This records timing without proving drug causation."
+        "zh-CN": "后来注意力很难集中，做事老走神。",
+        "en": "After a while I found it really hard to concentrate — my mind keeps wandering."
       },
       "keywords": {
         "zh-CN": [
-          "症状前后用过哪些药？",
-          "阿普唑仑"
+          "注意力",
+          "集中",
+          "走神",
+          "专心",
+          "分心",
+          "精力"
         ],
         "en": [
-          "Which medicines were used around symptom onset?",
-          "alprazolam"
+          "concentrate",
+          "concentration",
+          "focus",
+          "attention",
+          "distracted",
+          "mind wandering"
         ]
       },
       "disclosure": "on-ask",
+      "required": false,
       "phases": [
         "initial"
       ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "weight-change",
-      "topic": "associated-symptoms",
-      "question": {
-        "zh-CN": "食欲和体重怎样？",
-        "en": "How were appetite and weight?"
-      },
-      "answer": {
-        "zh-CN": "起初胃口还可以，但体重明显下降了6公斤。",
-        "en": "Appetite was initially preserved, but weight fell by 6 kg."
-      },
-      "keywords": {
-        "zh-CN": [
-          "食欲和体重怎样？",
-          "体重下降"
-        ],
-        "en": [
-          "How were appetite and weight?",
-          "weight loss"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "原文·首诊（患者自述“注意力难集中”；同句的“感能力差”含义不明，未采用）",
+        "en": "Source: first visit (her own account: hard to concentrate; the unclear phrase '感能力差' in the same sentence is not used)"
+      }
     },
     {
       "id": "mood",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "开始时有没有明显情绪低落？",
-        "en": "Was there clear low mood initially?"
+        "zh-CN": "这段时间心情怎么样？会不会很低落？",
+        "en": "How has your mood been? Have you felt low?"
       },
       "answer": {
-        "zh-CN": "开始时没有明显情绪低落，后来出现焦虑紧张。",
-        "en": "There was no clear initial low mood, although anxiety and tension appeared later."
+        "zh-CN": "心情倒没有特别低落，就是容易慌。",
+        "en": "Not especially low, no — I just panic easily."
       },
       "keywords": {
         "zh-CN": [
-          "开始时有没有明显情绪低落？",
-          "情绪低落"
+          "心情",
+          "情绪",
+          "低落",
+          "抑郁",
+          "开心",
+          "高兴",
+          "郁闷",
+          "心情不好"
         ],
         "en": [
-          "Was there clear low mood initially?",
-          "low mood"
+          "mood",
+          "low",
+          "depressed",
+          "down",
+          "feeling low",
+          "sad",
+          "spirits"
         ]
       },
       "disclosure": "on-ask",
+      "required": false,
       "phases": [
         "initial"
       ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·首诊（患者自述）；问答措辞为教学改写",
+        "en": "Source: first visit (her own account); wording adapted for teaching"
       }
     },
     {
-      "id": "progression",
-      "topic": "hpi",
-      "question": {
-        "zh-CN": "随后记忆和行为有何变化？",
-        "en": "How did memory and behaviour subsequently change?"
-      },
-      "answer": {
-        "zh-CN": "数月内出现乱语和四肢不自主活动，记忆力逐渐下降，并有视物模糊。",
-        "en": "Within several months, incoherent speech and involuntary limb movements appeared, followed by progressive memory loss and blurred vision."
-      },
-      "keywords": {
-        "zh-CN": [
-          "随后记忆和行为有何变化？",
-          "记忆下降"
-        ],
-        "en": [
-          "How did memory and behaviour subsequently change?",
-          "memory loss"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "workup"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "family",
-      "topic": "family",
-      "question": {
-        "zh-CN": "亲属有类似的病程吗？",
-        "en": "Did any relative have a similar course?"
-      },
-      "answer": {
-        "zh-CN": "进一步询问后家人提到舅舅也有类似症状，曾被诊断为脑萎缩和帕金森病，已经去世。",
-        "en": "On further questioning, relatives reported a maternal uncle with similar symptoms, previously labelled cerebral atrophy and Parkinson disease, who had died."
-      },
-      "keywords": {
-        "zh-CN": [
-          "亲属有类似的病程吗？",
-          "舅舅"
-        ],
-        "en": [
-          "Did any relative have a similar course?",
-          "maternal uncle"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "workup"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "recent-infection",
+      "id": "weight-change",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "住院前有近期感染记录吗？",
-        "en": "Was there a recent infection before admission?"
+        "zh-CN": "胃口和体重有变化吗？",
+        "en": "Any change in your appetite or weight?"
       },
       "answer": {
-        "zh-CN": "住院前数天新冠检测阳性，但睡眠问题已经持续数月。",
-        "en": "A COVID test was positive a few days before admission, but the sleep problems had been present for months."
+        "zh-CN": "胃口还可以，可体重掉了6公斤，掉得挺明显的。",
+        "en": "My appetite's been all right, but I've lost 6 kilos — quite noticeably."
       },
       "keywords": {
         "zh-CN": [
-          "住院前有近期感染记录吗？",
-          "新冠"
+          "体重",
+          "瘦了",
+          "变瘦",
+          "掉秤",
+          "胃口",
+          "食欲",
+          "吃饭怎么样",
+          "消瘦",
+          "体重下降"
         ],
         "en": [
-          "Was there a recent infection before admission?",
-          "COVID"
+          "weight",
+          "lost weight",
+          "weight loss",
+          "appetite",
+          "howareyoueating",
+          "thinner",
+          "kilos"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "workup"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "pmh",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "除月经不调外还有既往病史吗？",
-        "en": "Were there other prior illnesses beyond irregular menstruation?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
-        "zh-CN": [
-          "除月经不调外还有既往病史吗？"
-        ],
-        "en": [
-          "Were there other prior illnesses beyond irregular menstruation?"
-        ]
-      },
-      "disclosure": "unknown",
+      "required": true,
       "phases": [
         "initial"
       ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·首诊（患者自述）；问答措辞为教学改写",
+        "en": "Source: first visit (her own account); wording adapted for teaching"
       }
     },
     {
-      "id": "allergies",
-      "topic": "allergies",
+      "id": "medications",
+      "topic": "medications",
       "question": {
-        "zh-CN": "药物过敏史是什么？",
-        "en": "What is the medicine-allergy history?"
+        "zh-CN": "平时吃什么药吗？",
+        "en": "Are you taking any medicines?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "因为月经不调吃过避孕药。睡不着的时候，我自己吃过阿普唑仑。",
+        "en": "I've been on the contraceptive pill for my irregular periods. And when I couldn't sleep I took some alprazolam on my own."
       },
       "keywords": {
         "zh-CN": [
-          "药物过敏史是什么？"
+          "吃什么药",
+          "用药",
+          "吃药",
+          "服药",
+          "药物",
+          "安眠药",
+          "避孕药",
+          "阿普唑仑",
+          "镇静药",
+          "帮助睡眠"
         ],
         "en": [
-          "What is the medicine-allergy history?"
+          "medicines",
+          "medication",
+          "tablets",
+          "pills",
+          "sleeping tablets",
+          "sleeping pills",
+          "contraceptive",
+          "the pill",
+          "alprazolam",
+          "drugs",
+          "help you sleep"
         ]
       },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "psh",
-      "topic": "psh",
-      "question": {
-        "zh-CN": "以前有手术吗？",
-        "en": "Were there previous operations?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "以前有手术吗？"
+          "过敏",
+          "剂量",
+          "多少",
+          "几片",
+          "吃了多久",
+          "多大量"
         ],
         "en": [
-          "Were there previous operations?"
+          "allerg",
+          "dose",
+          "how much",
+          "how many",
+          "how often"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "smoking",
-      "topic": "social",
-      "question": {
-        "zh-CN": "是否有吸烟史？",
-        "en": "Was there a smoking history?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
-        "zh-CN": [
-          "是否有吸烟史？"
-        ],
-        "en": [
-          "Was there a smoking history?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "alcohol",
-      "topic": "social",
-      "question": {
-        "zh-CN": "是否有饮酒史？",
-        "en": "Was there an alcohol-use history?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
-        "zh-CN": [
-          "是否有饮酒史？"
-        ],
-        "en": [
-          "Was there an alcohol-use history?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "occupation",
-      "topic": "social",
-      "question": {
-        "zh-CN": "工作和生活环境有记录吗？",
-        "en": "Are work and living circumstances documented?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
-        "zh-CN": [
-          "工作和生活环境有记录吗？"
-        ],
-        "en": [
-          "Are work and living circumstances documented?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·首诊（患者自述）；问答措辞为教学改写",
+        "en": "Source: first visit (her own account); wording adapted for teaching"
       }
     },
     {
       "id": "dose",
       "topic": "medications",
       "question": {
-        "zh-CN": "阿普唑仑的剂量和使用频率是多少？",
-        "en": "What were the alprazolam dose and frequency?"
+        "zh-CN": "阿普唑仑吃多少、吃了多久？",
+        "en": "How much alprazolam did you take, and for how long?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "吃多少、吃了多久，我的病例里没有记录，我说不上来。",
+        "en": "How much and for how long isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "阿普唑仑的剂量和使用频率是多少？"
+          "剂量",
+          "吃多少",
+          "几片",
+          "吃了多久",
+          "多大量",
+          "每天吃几次"
         ],
         "en": [
-          "What were the alprazolam dose and frequency?"
+          "dose",
+          "how much",
+          "howmanytablets",
+          "how often",
+          "howlonghaveyoubeentaking",
+          "alprazolam dose"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
         "initial"
       ],
+      "speaker": "patient"
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前得过什么病吗？",
+        "en": "Have you had any illnesses before?"
+      },
+      "answer": {
+        "zh-CN": "月经一直不太规律。别的病，我的病例里没有记录，我说不上来。",
+        "en": "My periods have never been very regular. Anything else isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前得过什么病",
+          "既往史",
+          "既往病史",
+          "以前有什么病",
+          "慢性病",
+          "基础病",
+          "月经不调",
+          "月经",
+          "例假",
+          "老毛病"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "medical history",
+          "medical problems",
+          "chronic illness",
+          "periods",
+          "irregular periods"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "手术"
+        ],
+        "en": [
+          "family",
+          "operation",
+          "surgery"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "speaker": "patient",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·首诊（月经不调为服避孕药的原因）；其余既往史未记录",
+        "en": "Source: first visit (irregular periods were the reason for the pill); no other past history recorded"
       }
+    },
+    {
+      "id": "autonomic",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有出汗特别多、心慌、发热或者血压高？",
+        "en": "Any heavy sweating, racing heart, fevers or high blood pressure?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出汗",
+          "多汗",
+          "盗汗",
+          "心慌",
+          "心跳快",
+          "血压高",
+          "血压",
+          "发热",
+          "体温"
+        ],
+        "en": [
+          "sweating",
+          "sweats",
+          "palpitations",
+          "racing heart",
+          "blood pressure",
+          "high blood pressure",
+          "fever",
+          "temperature"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "speaker": "patient"
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药过敏吗？",
+        "en": "Are you allergic to any medicines?"
+      },
+      "answer": {
+        "zh-CN": "过不过敏，我的病例里没有记录，我说不上来。",
+        "en": "Whether I've any allergies isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对什么过敏",
+          "食物过敏"
+        ],
+        "en": [
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "reaction to medicines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "speaker": "patient"
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过手术吗？",
+        "en": "Have you ever had an operation?"
+      },
+      "answer": {
+        "zh-CN": "做没做过手术，我的病例里没有记录，我说不上来。",
+        "en": "Whether I've had any operations isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术",
+          "做过手术",
+          "开过刀",
+          "开刀",
+          "手术史"
+        ],
+        "en": [
+          "operation",
+          "operations",
+          "surgery",
+          "hadanoperation",
+          "operated on"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "speaker": "patient"
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您抽烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "抽不抽烟，我的病例里没有记录，我说不上来。",
+        "en": "Smoking isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟",
+          "吸烟史"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "smoker",
+          "cigarettes",
+          "tobacco"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "speaker": "patient"
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时喝酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "喝不喝酒，我的病例里没有记录，我说不上来。",
+        "en": "Drinking isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒",
+          "白酒",
+          "啤酒"
+        ],
+        "en": [
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "speaker": "patient"
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您做什么工作？",
+        "en": "What do you do for work?"
+      },
+      "answer": {
+        "zh-CN": "工作和生活上的情况，我的病例里没有记录，我说不上来。",
+        "en": "My work and home life aren't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作",
+          "职业",
+          "上班",
+          "做什么的",
+          "和谁住",
+          "家里几口人"
+        ],
+        "en": [
+          "work",
+          "job",
+          "occupation",
+          "workforaliving",
+          "live with",
+          "home"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里有人",
+          "家族",
+          "注意力"
+        ],
+        "en": [
+          "family history",
+          "relatives",
+          "focus",
+          "concentrat"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "speaker": "patient"
+    },
+    {
+      "id": "admission-complaint",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次为什么住院？",
+        "en": "What brought her into hospital this time?"
+      },
+      "answer": {
+        "zh-CN": "她这半年一直很紧张，什么事都想得特别多；这一个多月记性越来越差。",
+        "en": "She's been really tense for the past six months, overthinking everything, and for the last month or so her memory's been getting worse and worse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "为什么住院",
+          "这次住院",
+          "怎么住院",
+          "住院原因",
+          "这次怎么了",
+          "哪里不好",
+          "主要问题"
+        ],
+        "en": [
+          "whyissheinhospital",
+          "broughtherin",
+          "admitted",
+          "admission",
+          "this time",
+          "main problem"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "workup"
+      ],
+      "speaker": "companion",
+      "source": {
+        "zh-CN": "原文·入院主诉；问答措辞为教学改写",
+        "en": "Source: the admission complaint; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "speech-movements",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "说话和动作有没有什么变化？",
+        "en": "Any change in how she talks or moves?"
+      },
+      "answer": {
+        "zh-CN": "从上个月开始，她说话颠三倒四，净说些让人听不懂的话；手脚还会不由自主地乱动。",
+        "en": "Since last month she's been talking in a muddle — saying things that don't make sense — and her arms and legs move on their own."
+      },
+      "keywords": {
+        "zh-CN": [
+          "说话",
+          "胡言乱语",
+          "说胡话",
+          "乱语",
+          "颠三倒四",
+          "乱动",
+          "不自主",
+          "抽动",
+          "手脚动",
+          "行为",
+          "动作"
+        ],
+        "en": [
+          "speech",
+          "talking",
+          "talks",
+          "nonsense",
+          "muddled",
+          "movements",
+          "jerking",
+          "jerky",
+          "twitching",
+          "behaviour",
+          "behavior"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "workup"
+      ],
+      "speaker": "companion",
+      "source": {
+        "zh-CN": "原文·入院前病史（家属所述）；问答措辞为教学改写",
+        "en": "Source: history before the admission (as her family reported it); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "memory",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "她记性怎么样？",
+        "en": "How is her memory?"
+      },
+      "answer": {
+        "zh-CN": "记性一天比一天差，这一个多月特别明显。",
+        "en": "Her memory's going downhill day by day — it's been really obvious this past month or so."
+      },
+      "keywords": {
+        "zh-CN": [
+          "记性",
+          "记忆",
+          "健忘",
+          "忘事",
+          "记不住",
+          "糊涂",
+          "认人",
+          "智力"
+        ],
+        "en": [
+          "memory",
+          "forgetful",
+          "forgetting",
+          "remember",
+          "confusion",
+          "muddled",
+          "dementia"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "workup"
+      ],
+      "speaker": "companion",
+      "source": {
+        "zh-CN": "原文·入院前病史（家属所述）；问答措辞为教学改写",
+        "en": "Source: history before the admission (as her family reported it); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "anxiety",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "她情绪怎么样？紧张吗？",
+        "en": "How has she been in herself — anxious?"
+      },
+      "answer": {
+        "zh-CN": "这半年一直很紧张，什么都想得多；这个月初那阵子特别焦虑。",
+        "en": "She's been tense for six months, worrying about everything, and around the start of this month she was really anxious."
+      },
+      "keywords": {
+        "zh-CN": [
+          "情绪",
+          "心情",
+          "紧张",
+          "焦虑",
+          "担心",
+          "害怕",
+          "烦躁",
+          "多虑"
+        ],
+        "en": [
+          "mood",
+          "anxious",
+          "anxiety",
+          "worried",
+          "nervous",
+          "tense",
+          "agitated"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "最担心",
+          "您担心",
+          "你担心"
+        ],
+        "en": [
+          "mostworried",
+          "worriedabout",
+          "you most"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "workup"
+      ],
+      "speaker": "companion",
+      "source": {
+        "zh-CN": "原文·入院前病史（家属所述）；问答措辞为教学改写",
+        "en": "Source: history before the admission (as her family reported it); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "vision",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "她看东西清楚吗？",
+        "en": "Is her eyesight all right?"
+      },
+      "answer": {
+        "zh-CN": "从这个月初开始，她老说看东西模糊。",
+        "en": "Since the start of this month she keeps saying things look blurry."
+      },
+      "keywords": {
+        "zh-CN": [
+          "看东西",
+          "视力",
+          "眼睛",
+          "模糊",
+          "看不清",
+          "视物"
+        ],
+        "en": [
+          "eyesight",
+          "vision",
+          "blurred",
+          "blurry",
+          "eyes",
+          "see clearly"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "workup"
+      ],
+      "speaker": "companion",
+      "source": {
+        "zh-CN": "原文·入院前病史（家属所述）；问答措辞为教学改写",
+        "en": "Source: history before the admission (as her family reported it); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "recent-infection",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "最近有没有发烧、感冒，或者得过新冠？",
+        "en": "Any recent fever, cold or COVID?"
+      },
+      "answer": {
+        "zh-CN": "住院前几天新冠检测是阳性。有没有发烧，我说不上来。",
+        "en": "Her COVID test came back positive a few days before she came in. Whether she had a temperature, I couldn't say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "新冠",
+          "感冒",
+          "发烧",
+          "发热",
+          "感染",
+          "核酸",
+          "抗原",
+          "阳了"
+        ],
+        "en": [
+          "covid",
+          "coronavirus",
+          "cold",
+          "flu",
+          "fever",
+          "infection",
+          "virus",
+          "tested positive"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "workup"
+      ],
+      "speaker": "companion",
+      "source": {
+        "zh-CN": "原文·入院前病史（“近期数天新冠病毒检测阳性”）；是否发热未记录",
+        "en": "Source: history before the admission (a positive COVID test in the days before); fever not recorded"
+      }
+    },
+    {
+      "id": "sleep-admission",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "她住院前后晚上睡得怎么样？",
+        "en": "How has she been sleeping around the time of this admission?"
+      },
+      "answer": {
+        "zh-CN": "这段时间她晚上睡得怎么样，她的病例里没有记录，我说不上来。",
+        "en": "How she's been sleeping lately isn't in her case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "睡得怎么样",
+          "睡眠",
+          "睡觉",
+          "失眠",
+          "睡不着",
+          "噩梦"
+        ],
+        "en": [
+          "sleep",
+          "sleeping",
+          "insomnia",
+          "nights",
+          "nightmares"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "workup",
+        "clinic"
+      ],
+      "speaker": "companion"
     },
     {
       "id": "self-care",
       "topic": "functional",
       "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
+        "zh-CN": "她现在生活能自理吗？",
+        "en": "Can she still look after herself day to day?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "她现在生活上能不能自己料理，她的病例里没有记录，我说不上来。",
+        "en": "Whether she can manage on her own isn't in her case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
+          "自理",
+          "生活自理",
+          "照顾自己",
+          "穿衣吃饭",
+          "日常生活",
+          "需要人照顾"
         ],
         "en": [
-          "How independent were you before this illness?",
-          "independence"
+          "look after herself",
+          "independent",
+          "self-care",
+          "daily activities",
+          "manageonherown",
+          "washing and dressing"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
-        "initial"
+        "workup",
+        "clinic"
       ],
+      "speaker": "companion"
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有没有人得过类似的病？",
+        "en": "Has anyone in the family had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "她舅舅以前也有过类似的情况，当时说是脑萎缩和帕金森病，人已经不在了。",
+        "en": "Her uncle on her mother's side had something similar. At the time they said it was brain shrinkage and Parkinson's. He's passed away."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里有没有人",
+          "家里人",
+          "家族史",
+          "家族",
+          "亲戚",
+          "亲属",
+          "舅舅",
+          "遗传",
+          "类似的病",
+          "得过一样的病"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "family history",
+          "runs in the family",
+          "uncle",
+          "hereditary",
+          "genetic",
+          "anyone else",
+          "similar illness"
+        ]
+      },
+      "disclosure": "specific",
+      "required": true,
+      "phases": [
+        "workup",
+        "clinic"
+      ],
+      "speaker": "companion",
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·首诊后约5个月专科门诊（“经医生询问病史得知”）；入院阶段同样可问到，原报告未说明入院时是否问过",
+        "en": "Source: specialist clinic about 5 months after the first visit (learned when the doctor asked); it can be asked on admission too — the report does not say whether it was asked then"
       }
     },
     {
       "id": "expectations",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "您最担心的是什么？",
+        "en": "What worries you most about all this?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "我最担心什么，我的病例里没有记录，我说不上来。",
+        "en": "What worries me most isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "顾虑",
+          "害怕什么",
+          "希望",
+          "期望",
+          "想法"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worries",
+          "worried",
+          "concerns",
+          "hoping",
+          "expect",
+          "ideas",
+          "afraid"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
+      "required": false,
+      "speaker": "patient"
     }
   ],
   "exam": [
     {
-      "id": "initial-exam",
-      "system": "general",
-      "maneuver": {
-        "zh-CN": "核对首次门诊一般检查",
-        "en": "Review the first outpatient examination"
-      },
-      "finding": {
-        "zh-CN": "最初就诊的完整一般体检及生命体征未记录。",
-        "en": "The full general examination and vital signs at the first visit are not documented."
-      },
-      "abnormal": false,
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "initial-neuro",
-      "system": "neurological",
-      "maneuver": {
-        "zh-CN": "核对首次神经系统检查",
-        "en": "Review the initial neurological examination"
-      },
-      "finding": {
-        "zh-CN": "首次就诊时具体神经系统查体未提供，后续住院检查另行分阶段核对。",
-        "en": "Detailed neurological findings at the first visit were not provided; later inpatient findings are reviewed separately."
-      },
-      "abnormal": false,
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
       "id": "cognition",
       "system": "mental-status",
       "maneuver": {
-        "zh-CN": "核对住院时认知检查",
-        "en": "Review inpatient cognitive examination"
+        "zh-CN": "检查精神状态、记忆力和计算力",
+        "en": "Assess her mental state, memory and calculation"
+      },
+      "keywords": {
+        "zh-CN": [
+          "记忆",
+          "记忆力",
+          "计算",
+          "计算力",
+          "100减7",
+          "认知",
+          "精神状态",
+          "智能",
+          "定向",
+          "mmse",
+          "moca"
+        ],
+        "en": [
+          "memory",
+          "calculation",
+          "serial sevens",
+          "cognition",
+          "cognitive",
+          "mental state",
+          "mental status",
+          "mmse",
+          "moca",
+          "orientation"
+        ]
       },
       "finding": {
-        "zh-CN": "精神紧张，记忆力及计算力欠佳。",
-        "en": "She was tense, with impaired memory and calculation."
+        "zh-CN": "神情紧张；记忆力欠佳，计算力欠佳。",
+        "en": "She is tense; memory and calculation are both poor."
       },
       "abnormal": true,
+      "required": true,
       "phases": [
         "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·入院查体（“精神紧张，记忆力欠佳计算力欠佳”）；未给出量表评分",
+        "en": "Source: examination on admission; no test scores given"
       }
     },
     {
       "id": "motor",
       "system": "neurological",
       "maneuver": {
-        "zh-CN": "核对住院时运动检查",
-        "en": "Review inpatient motor examination"
+        "zh-CN": "检查四肢肌张力和不自主运动（震颤）",
+        "en": "Examine limb tone and involuntary movements (tremor)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肌张力",
+          "肌肉张力",
+          "震颤",
+          "手抖",
+          "抖动",
+          "不自主运动",
+          "肢体",
+          "四肢",
+          "运动系统",
+          "神经系统查体",
+          "僵硬"
+        ],
+        "en": [
+          "tone",
+          "tremor",
+          "shaking",
+          "involuntary movements",
+          "limbs",
+          "rigidity",
+          "motor",
+          "neurological examination",
+          "neuro exam"
+        ]
       },
       "finding": {
-        "zh-CN": "四肢肌张力正常，双上肢轻度震颤。",
-        "en": "Limb tone was normal, with mild tremor of both upper limbs."
+        "zh-CN": "四肢肌张力正常；双上肢轻度震颤。",
+        "en": "Tone is normal in all four limbs; there is a mild tremor of both arms."
       },
       "abnormal": true,
+      "required": true,
       "phases": [
         "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文·入院查体（“四肢肌张力正常，双上肢轻度震颤”）",
+        "en": "Source: examination on admission"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这项检查的结果，不能据此认为正常。",
+    "en": "The report does not record this examination, so it cannot be taken as normal."
   },
   "investigations": [
     {
       "id": "mri",
       "name": {
-        "zh-CN": "颅脑MRI及静脉成像",
-        "en": "Brain MRI and MR venography"
+        "zh-CN": "调阅颅脑MRI及脑静脉MRV报告",
+        "en": "Review the brain MRI and MR venography report"
       },
-      "category": "imaging",
+      "category": "record",
       "aliases": {
         "zh-CN": [
-          "颅脑MRI及静脉成像"
+          "颅脑mri",
+          "头颅mri",
+          "脑mri",
+          "头部核磁",
+          "核磁共振",
+          "磁共振",
+          "核磁",
+          "mri",
+          "mrv",
+          "脑静脉成像",
+          "静脉成像"
         ],
         "en": [
-          "Brain MRI and MR venography",
-          "mri"
-        ]
-      },
-      "requires": [
-        "mri"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "颅脑MRI未见明显异常，脑静脉MRI成像未见异常。",
-            "en": "No clear abnormality was reported on brain MRI or MR venography."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
-          }
-        }
-      }
-    },
-    {
-      "id": "eeg",
-      "name": {
-        "zh-CN": "脑电图",
-        "en": "Electroencephalogram"
-      },
-      "category": "bedside",
-      "aliases": {
-        "zh-CN": [
-          "脑电图"
-        ],
-        "en": [
-          "Electroencephalogram",
-          "eeg"
+          "mri",
+          "brain mri",
+          "head mri",
+          "mr venography",
+          "mrv",
+          "magnetic resonance",
+          "mri report"
         ]
       },
       "requires": [
@@ -818,19 +1483,67 @@
       "value": "essential",
       "results": {
         "workup": {
+          "date": {
+            "zh-CN": "首诊后约4个月（入院期间）",
+            "en": "About 4 months after the first visit (during the admission)"
+          },
           "text": {
-            "zh-CN": "报告轻度异常脑电图，可见较多散在θ活动；未见癫痫样放电及局灶性改变。",
-            "en": "EEG was described as mildly abnormal with increased scattered theta activity, without epileptiform discharges or focal changes."
+            "zh-CN": "颅脑MRI扫描未见明显异常征象；脑静脉MRI成像（MRV）未见异常。报告未说明是否包括弥散加权成像（DWI）序列。",
+            "en": "Brain MRI: no obvious abnormality. MR venography: normal. The report does not say whether diffusion-weighted (DWI) sequences were obtained."
+          },
+          "note": {
+            "zh-CN": "调阅入院期间已完成检查的报告（在病历终端查看），不是对患者重新检查。",
+            "en": "A review of a report from the admission, read at a records terminal — not a new test on the patient."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "原文·入院辅助检查",
+            "en": "Source: investigations during the admission"
+          }
+        }
+      }
+    },
+    {
+      "id": "eeg",
+      "name": {
+        "zh-CN": "调阅脑电图报告",
+        "en": "Review the EEG report"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "脑电图",
+          "脑电",
+          "eeg"
+        ],
+        "en": [
+          "eeg",
+          "electroencephalogram",
+          "electroencephalography",
+          "brain waves"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "首诊后约4个月（入院期间）",
+            "en": "About 4 months after the first visit (during the admission)"
           },
-          "figures": [],
-          "available": true,
+          "text": {
+            "zh-CN": "安静清醒闭目状态下，双侧后枕部以8–9 Hz、20–60 μV的α节律为优势背景，双侧对称，波形欠佳，调节、调幅尚可；可见少数散在14–20 Hz、10–20 μV的β波及多量散在5–7 Hz、20–50 μV的θ波；未见癫痫样放电及局灶性改变。结论：轻度异常脑电图。",
+            "en": "Awake, resting, eyes closed: a dominant 8–9 Hz, 20–60 μV alpha rhythm over both posterior regions, symmetrical, waveform rather poor, regulation and amplitude modulation acceptable; a few scattered 14–20 Hz, 10–20 μV beta waves and many scattered 5–7 Hz, 20–50 μV theta waves; no epileptiform discharges or focal changes. Conclusion: mildly abnormal EEG."
+          },
           "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "调阅入院期间已完成检查的报告（在病历终端查看），不是对患者重新检查。",
+            "en": "A review of a report from the admission, read at a records terminal — not a new test on the patient."
+          },
+          "source": {
+            "zh-CN": "原文·入院辅助检查",
+            "en": "Source: investigations during the admission"
           }
         }
       }
@@ -838,97 +1551,76 @@
     {
       "id": "csf",
       "name": {
-        "zh-CN": "脑脊液记录",
-        "en": "Cerebrospinal fluid record"
-      },
-      "category": "lab",
-      "aliases": {
-        "zh-CN": [
-          "脑脊液记录"
-        ],
-        "en": [
-          "Cerebrospinal fluid record",
-          "csf"
-        ]
-      },
-      "requires": [
-        "lab-chemistry"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "脑脊液常规检查概述无异常，未提供逐项数值，也未给出RT-QuIC或14-3-3检测结果。",
-            "en": "Routine CSF was summarised as unremarkable without itemised values; RT-QuIC and 14-3-3 results were not supplied."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
-          }
-        }
-      }
-    },
-    {
-      "id": "prnp",
-      "name": {
-        "zh-CN": "PRNP基因报告摘要",
-        "en": "PRNP genetic report summary"
-      },
-      "category": "genetics",
-      "aliases": {
-        "zh-CN": [
-          "PRNP基因报告摘要"
-        ],
-        "en": [
-          "PRNP genetic report summary",
-          "prnp"
-        ]
-      },
-      "requires": [
-        "molecular"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "正文仅写PRNP（+），据此报告诊断FFI；未公开具体变异、致病性分类或密码子129信息。讨论表中的一般标准不是本人的基因结果。",
-            "en": "The narrative states only PRNP positive and reports an FFI diagnosis; the variant, pathogenicity classification and codon-129 information are not disclosed. General diagnostic criteria in the discussion table are not this patient’s genetic results."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
-          }
-        }
-      }
-    },
-    {
-      "id": "sleep-study",
-      "name": {
-        "zh-CN": "多导睡眠监测资料",
-        "en": "Polysomnography documentation"
+        "zh-CN": "调阅脑脊液检查报告（入院时腰椎穿刺）",
+        "en": "Review the CSF report (lumbar puncture during the admission)"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "多导睡眠监测资料"
+          "脑脊液",
+          "腰穿",
+          "腰椎穿刺",
+          "csf"
         ],
         "en": [
-          "Polysomnography documentation",
-          "sleep-study"
+          "csf",
+          "cerebrospinal fluid",
+          "lumbar puncture",
+          "spinal tap",
+          "lp result"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "首诊后约4个月（入院期间）",
+            "en": "About 4 months after the first visit (during the admission)"
+          },
+          "text": {
+            "zh-CN": "入院期间行腰椎穿刺脑脊液检查：报告“未见异常”。原文未列出细胞数、蛋白、糖等逐项数值，也未报告14-3-3蛋白、RT-QuIC或自身免疫性脑炎抗体。",
+            "en": "Lumbar puncture during the admission: CSF reported as showing no abnormality. The source lists no cell count, protein or glucose values and reports no 14-3-3 protein, RT-QuIC or autoimmune-encephalitis antibodies."
+          },
+          "note": {
+            "zh-CN": "调阅入院期间已完成检查的报告（在病历终端查看），不是对患者重新检查。",
+            "en": "A review of a report from the admission, read at a records terminal — not a new test on the patient."
+          },
+          "source": {
+            "zh-CN": "原文·入院辅助检查",
+            "en": "Source: investigations during the admission"
+          }
+        }
+      }
+    },
+    {
+      "id": "routine",
+      "name": {
+        "zh-CN": "调阅入院常规检查（腹部超声、胸片、心电图）",
+        "en": "Review the routine admission tests (abdominal ultrasound, chest X-ray, ECG)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "腹部超声",
+          "超声",
+          "b超",
+          "胸片",
+          "x光",
+          "心电图",
+          "常规检查"
+        ],
+        "en": [
+          "abdominal ultrasound",
+          "ultrasound",
+          "chest x-ray",
+          "cxr",
+          "x-ray",
+          "ecg",
+          "routine tests"
         ]
       },
       "requires": [
@@ -938,19 +1630,232 @@
       "value": "neutral",
       "results": {
         "workup": {
+          "date": {
+            "zh-CN": "首诊后约4个月（入院期间）",
+            "en": "About 4 months after the first visit (during the admission)"
+          },
           "text": {
-            "zh-CN": "原病例未提供多导睡眠监测结果，不能从讨论中补入患者的睡眠结构。",
-            "en": "The case provides no polysomnography results; sleep architecture cannot be imported from the discussion."
+            "zh-CN": "超声：肝、胆、胰、脾、双肾未见异常声像。X线：肺、心、膈未见异常。心电图：正常心电图。",
+            "en": "Ultrasound: liver, gallbladder, pancreas, spleen and both kidneys unremarkable. X-ray: lungs, heart and diaphragm normal. ECG: normal."
+          },
+          "note": {
+            "zh-CN": "调阅入院期间已完成检查的报告（在病历终端查看），不是对患者重新检查。",
+            "en": "A review of a report from the admission, read at a records terminal — not a new test on the patient."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
+            "zh-CN": "原文·入院辅助检查",
+            "en": "Source: investigations during the admission"
+          }
+        }
+      }
+    },
+    {
+      "id": "ae-antibodies",
+      "name": {
+        "zh-CN": "自身免疫性脑炎抗体（血清和脑脊液）及副肿瘤筛查",
+        "en": "Autoimmune-encephalitis antibodies (serum and CSF) and paraneoplastic screen"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "自身免疫性脑炎",
+          "脑炎抗体",
+          "自免脑",
+          "抗体",
+          "副肿瘤",
+          "nmdar",
+          "iglon5"
+        ],
+        "en": [
+          "autoimmune encephalitis",
+          "encephalitis antibodies",
+          "antibody panel",
+          "paraneoplastic",
+          "nmda",
+          "iglon5",
+          "anti-neuronal"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
           "available": false,
+          "text": {
+            "zh-CN": "原报告未报告自身免疫性脑炎抗体或副肿瘤筛查，本病例没有可提供的结果。",
+            "en": "The report gives no autoimmune-encephalitis antibody or paraneoplastic results; the case has none to show."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        },
+        "clinic": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未报告自身免疫性脑炎抗体或副肿瘤筛查，本病例没有可提供的结果。",
+            "en": "The report gives no autoimmune-encephalitis antibody or paraneoplastic results; the case has none to show."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "sleep-study",
+      "name": {
+        "zh-CN": "多导睡眠监测（PSG）",
+        "en": "Polysomnography (PSG)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "多导睡眠",
+          "睡眠监测",
+          "psg",
+          "睡眠图"
+        ],
+        "en": [
+          "polysomnography",
+          "psg",
+          "sleep study",
+          "video psg"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未报告多导睡眠监测，不能从讨论部分补入她的睡眠结构。",
+            "en": "No polysomnography is reported; her sleep architecture cannot be taken from the discussion."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        },
+        "clinic": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未报告多导睡眠监测，不能从讨论部分补入她的睡眠结构。",
+            "en": "No polysomnography is reported; her sleep architecture cannot be taken from the discussion."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "pet",
+      "name": {
+        "zh-CN": "FDG-PET或SPECT（丘脑代谢）",
+        "en": "FDG-PET or SPECT (thalamic metabolism)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "pet",
+          "spect",
+          "丘脑代谢",
+          "脑代谢",
+          "核医学"
+        ],
+        "en": [
+          "pet",
+          "fdg-pet",
+          "spect",
+          "thalamic metabolism",
+          "nuclear medicine"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未做或未报告PET/SPECT。",
+            "en": "No PET or SPECT is reported."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        },
+        "clinic": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未做或未报告PET/SPECT。",
+            "en": "No PET or SPECT is reported."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "prnp",
+      "name": {
+        "zh-CN": "PRNP基因检测（外送）",
+        "en": "PRNP gene test (send-out)"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "prnp",
+          "朊蛋白基因",
+          "朊病毒基因",
+          "基因检测",
+          "基因"
+        ],
+        "en": [
+          "prnp",
+          "prion gene",
+          "prion protein gene",
+          "genetic test",
+          "gene test",
+          "genetic testing"
+        ]
+      },
+      "requires": [
+        "molecular"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "clinic": {
+          "date": {
+            "zh-CN": "首诊后约5个月专科门诊当天抽血，其后回报",
+            "en": "Blood taken at the specialist clinic about 5 months after the first visit; reported later"
+          },
+          "text": {
+            "zh-CN": "PRNP（+）。报告原文仅此一项结论性写法：没有写明具体变异（例如D178N）、129位密码子基因型、杂合状态或致病性分级。作者据此诊断家族性致死性失眠症（FFI）。",
+            "en": "PRNP (+). That single conclusion is all the report gives: no named variant (such as D178N), codon-129 genotype, zygosity or pathogenicity class. On this basis the authors diagnosed fatal familial insomnia (FFI)."
+          },
           "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "原文：“基因报告提示：PRNP (+)，从而确诊FFI”；样本送外院实验室检测。",
+            "en": "Source wording: the genetic report showed “PRNP (+)”, “confirming FFI”; the sample went to an external laboratory."
+          },
+          "source": {
+            "zh-CN": "原文·专科门诊与基因报告",
+            "en": "Source: specialist clinic and genetic report"
           }
         }
       }
@@ -958,17 +1863,26 @@
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "调阅后续病程与结局记录",
+        "en": "Review the record of the later course and outcome"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访",
+          "后续病程",
+          "病程记录",
+          "结局",
+          "转归",
+          "出院记录"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "follow-up",
+          "followup",
+          "later course",
+          "outcome",
+          "course record",
+          "discharge summaries"
         ]
       },
       "requires": [
@@ -978,35 +1892,409 @@
       "value": "useful",
       "results": {
         "followup": {
+          "date": {
+            "zh-CN": "首诊后约6–10个月",
+            "en": "About 6–10 months after the first visit"
+          },
           "text": {
-            "zh-CN": "后来发生肢体僵直及意识障碍，支持治疗后曾短暂好转；再因肺炎入院，吞咽下降而留置胃管。之后出现低血糖及营养状况差，最终因呼吸衰竭死亡。报告从发病到死亡约9个月，未给出尸检或详细基因变异。",
-            "en": "Later rigidity and impaired consciousness led to admission, with temporary improvement after support. A subsequent pneumonia admission was complicated by dysphagia requiring a feeding tube. Hypoglycaemia and poor nutrition followed, and death occurred from respiratory failure about nine months after onset. Autopsy and detailed genetic findings were not supplied."
+            "zh-CN": "首诊后约6个月：出现气粗、肢体僵直、昏迷、呼之不应，紧急入院，经支持治疗好转出院（原文未写明具体措施）。首诊后约7–8个月：因“发热、咳痰3天，气促3小时”入院，考虑肺炎；住院期间睡眠仍差，神志清醒，吞咽功能下降、进食差，需要留置胃管。首诊后约9–10个月：因低血糖经急诊入院，意识差，进食差，营养状态差，入院第8天因呼吸衰竭死亡。原文未报告尸检、具体PRNP变异或亲属检测。",
+            "en": "About 6 months after the first visit: laboured breathing, limb rigidity, coma and unresponsiveness led to an emergency admission; she improved with supportive treatment and went home (the measures are not described). About 7–8 months: admitted with 3 days of fever and sputum and 3 hours of breathlessness, thought to be pneumonia; during that stay she still slept badly, was alert, had worsening swallowing and poor intake, and needed a nasogastric tube. About 9–10 months: admitted through the emergency department with hypoglycaemia, poorly conscious, eating little and poorly nourished; she died of respiratory failure on day 8 of that admission. No autopsy, specific PRNP variant or testing of relatives is reported."
+          },
+          "note": {
+            "zh-CN": "病程时长前后不一致（原文保留）：讨论部分称“从发病到死亡，历时大概九个月”；按文中日期，首诊至死亡约9–10个月（首诊只记到月份），而入院主诉“紧张、多虑半年”提示症状起于首诊前约2个月，起病至死亡约12个月。原文未解释。",
+            "en": "The duration is inconsistent in the source (kept as printed): the discussion says “about nine months from onset to death”; by the dates in the text the first visit to death is about 9–10 months (the first visit is dated only to the month), while the admission complaint of “six months of tension and overthinking” puts onset about 2 months before the first visit — about 12 months from onset to death. The source does not explain this."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "原文·病例资料（后续入院与结局）及讨论",
+            "en": "Source: case history (later admissions and outcome) and discussion"
           }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "warnings": [
+      {
+        "investigation": "prnp",
+        "ifMatches": "prnp|朊蛋白|朊病毒|基因|gene|genetic",
+        "message": {
+          "zh-CN": "提示：基因检测前应向患者和家属说明检测目的、结果对亲属的意义，并取得知情同意（最好先经遗传咨询）。",
+          "en": "Note: before genetic testing, explain to her and her family what the test is for and what the result means for relatives, and obtain consent (ideally after genetic counselling)."
+        },
+        "unless": {
+          "intervened": "genetic-counselling"
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "genetic-counselling",
+      "name": {
+        "zh-CN": "转介临床遗传咨询（患者及家属）",
+        "en": "Refer to clinical genetics for counselling (patient and family)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "遗传咨询",
+          "遗传科",
+          "遗传门诊",
+          "基因咨询",
+          "转遗传"
+        ],
+        "en": [
+          "genetic counselling",
+          "genetic counseling",
+          "clinical genetics",
+          "genetics referral",
+          "refer to genetics"
+        ]
+      },
+      "dose": {
+        "zh-CN": "说明常染色体显性遗传及每个子女50%的遗传风险；讨论检测的目的、局限和对亲属的意义；高风险成年亲属是否做预测性检测，在遗传咨询后自愿决定（包括有权选择不知道）。",
+        "en": "Explain autosomal dominant inheritance and the 50% risk to each child; discuss what testing can and cannot tell, and what it means for relatives; at-risk adult relatives decide about predictive testing voluntarily after counselling (including the right not to know)."
+      },
+      "risk": "none",
+      "setFlags": [
+        "genetics-referred"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "asked": "family"
+          },
+          {
+            "read": "prnp"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "遗传咨询门诊已预约。遗传咨询师会先和患者、家属谈基因结果的含义，并索取写明具体变异的完整报告，再讨论哪些成年亲属可能需要咨询。原报告未记录这一步。",
+        "en": "A clinical genetics appointment is booked. The counsellor will first go through what the result means with her and her family, ask for the full report naming the variant, and then discuss which adult relatives may want counselling. The report does not record this step."
+      }
+    },
+    {
+      "id": "palliative-acp",
+      "name": {
+        "zh-CN": "舒缓（姑息）医疗会诊与预立医疗照护计划",
+        "en": "Palliative care referral and advance care planning"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "舒缓医疗",
+          "姑息",
+          "安宁疗护",
+          "预立医疗",
+          "照护计划",
+          "临终关怀",
+          "生前预嘱"
+        ],
+        "en": [
+          "palliative",
+          "palliative care",
+          "advance care planning",
+          "acp",
+          "end of life",
+          "goals of care",
+          "hospice"
+        ]
+      },
+      "dose": {
+        "zh-CN": "趁她还能表达意愿，和她及家属讨论照护目标：营养与喂养方式（如是否放胃管）、出现肺炎或呼吸衰竭时是否抢救、在哪里照护；同时处理睡眠差、焦虑和不自主运动等症状。",
+        "en": "While she can still say what she wants, discuss goals of care with her and her family: nutrition and feeding (for example whether to have a feeding tube), whether to attempt resuscitation if pneumonia or respiratory failure comes, and where she would be cared for; and treat symptoms such as poor sleep, anxiety and involuntary movements."
+      },
+      "risk": "none",
+      "setFlags": [
+        "acp-started"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "read": "prnp"
+          },
+          {
+            "decided": "dx-criteria"
+          },
+          {
+            "phase": "followup"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已请舒缓医疗团队会诊，第一次照护目标谈话已约好，患者和家属都会参加。原报告未记录舒缓医疗或预立医疗照护计划，这是按现行照护原则加入的一步。",
+        "en": "The palliative care team is asked to see her and a first goals-of-care conversation is booked with her and her family. The report does not record palliative care or advance care planning; this step is added from current practice."
+      }
+    },
+    {
+      "id": "tse-precautions",
+      "name": {
+        "zh-CN": "按朊蛋白病（TSE）感染控制要求处理",
+        "en": "Apply prion-disease (TSE) infection-control precautions"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "感染控制",
+          "朊蛋白防护",
+          "tse防护",
+          "院感",
+          "标本标注",
+          "一次性器械",
+          "器械处理",
+          "防护措施"
+        ],
+        "en": [
+          "infection control",
+          "tse precautions",
+          "prion precautions",
+          "label specimens",
+          "single-use instruments",
+          "instrument decontamination",
+          "precautions"
+        ]
+      },
+      "dose": {
+        "zh-CN": "通知感染控制科；日常护理按标准预防，无需隔离；脑脊液和组织标本标注“疑似朊蛋白病”并告知检验科；有创操作尽量使用一次性器械，接触高感染性组织（脑、脊髓、眼）的器械按TSE专门程序灭活或销毁——常规消毒灭菌不能可靠灭活朊蛋白。",
+        "en": "Inform infection control; standard precautions for routine care, no isolation; label CSF and tissue specimens “suspected prion disease” and tell the laboratory; single-use instruments for invasive procedures where possible, and instruments that touch high-infectivity tissue (brain, spinal cord, eye) decontaminated by TSE-specific methods or destroyed — routine disinfection and sterilisation do not reliably inactivate prions."
+      },
+      "risk": "none",
+      "setFlags": [
+        "tse-precautions"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "asked": "family"
+          },
+          {
+            "read": "prnp"
+          },
+          {
+            "decided": "dec-workup"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "感染控制科已知悉。护士在标本申请单上标注“疑似朊蛋白病”，并向病区说明：日常护理照常、不需要隔离。原报告没有提到任何感染控制措施。",
+        "en": "Infection control is informed. The nurse marks the specimen forms “suspected prion disease” and tells the ward that routine care carries on as usual, with no isolation. The report mentions no infection-control measures."
+      }
+    },
+    {
+      "id": "isolation",
+      "name": {
+        "zh-CN": "单间隔离（空气和接触传播隔离）",
+        "en": "Single-room isolation (airborne and contact precautions)"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "隔离",
+          "单间",
+          "空气隔离",
+          "接触隔离",
+          "n95"
+        ],
+        "en": [
+          "isolation",
+          "isolate",
+          "side room",
+          "airborne precautions",
+          "contact precautions",
+          "n95"
+        ]
+      },
+      "dose": {
+        "zh-CN": "安排单间，所有人进入时戴N95口罩、穿隔离衣。",
+        "en": "A single room; everyone entering wears an N95 respirator and a gown."
+      },
+      "risk": "low",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "护士长提出疑问：朊蛋白病不会经空气、飞沫或日常接触传播，WHO 2000 TSE感染控制指南指出这类患者无需隔离，也不应因此被拒绝任何检查或治疗。隔离只会增加她和家属的负担，真正的风险在有创操作的器械和标本。",
+        "en": "The ward sister queries it: prion disease does not spread by air, droplets or everyday contact, and the WHO 2000 TSE infection-control guidelines say such patients need no isolation and must not be denied any test or treatment because of it. Isolation only burdens her and her family; the real risks are instruments and specimens from invasive procedures."
+      }
+    },
+    {
+      "id": "hypnotic-escalation",
+      "name": {
+        "zh-CN": "加大阿普唑仑剂量或加用其他安眠药",
+        "en": "Increase the alprazolam or add another sleeping tablet"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "加安眠药",
+          "安眠药加量",
+          "阿普唑仑加量",
+          "加用安眠药",
+          "镇静催眠",
+          "佐匹克隆",
+          "唑吡坦",
+          "地西泮"
+        ],
+        "en": [
+          "more alprazolam",
+          "increase alprazolam",
+          "sleeping tablet",
+          "hypnotic",
+          "sedative",
+          "zopiclone",
+          "zolpidem",
+          "diazepam"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按医嘱加用或加量镇静催眠药（具体药名和剂量由医生确定）。",
+        "en": "Start or increase a sedative hypnotic as prescribed (drug and dose decided by the doctor)."
+      },
+      "risk": "moderate",
+      "maxDoses": 2,
+      "response": {
+        "zh-CN": "护士提醒：她此前已自行服用阿普唑仑，睡眠并没有改善；原报告也没有记录任何药物让她睡得更好。加量镇静催眠药不会改变病程，还可能加重意识混乱、增加跌倒风险，吞咽差或合并肺部感染时还会抑制呼吸——用之前要权衡，并说清楚目的。",
+        "en": "The nurse points out that she has already taken alprazolam on her own without better sleep, and the report records no drug that helped her sleep. More sedative hypnotics will not change the course; they can worsen confusion and falls and, with poor swallowing or a chest infection, depress breathing — weigh it and be clear about the aim before giving it."
+      }
+    },
+    {
+      "id": "stop-ocp",
+      "name": {
+        "zh-CN": "停用口服避孕药（认为是病因）",
+        "en": "Stop the contraceptive pill (as the presumed cause)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "停避孕药",
+          "停用避孕药",
+          "停药",
+          "不吃避孕药"
+        ],
+        "en": [
+          "stop the pill",
+          "stop contraceptive",
+          "stop the contraceptive pill",
+          "discontinue the pill"
+        ]
+      },
+      "dose": {
+        "zh-CN": "停用口服避孕药，月经不调另行处理。",
+        "en": "Stop the oral contraceptive; manage the irregular periods separately."
+      },
+      "risk": "low",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "可以与妇科一起重新考虑避孕和月经不调的处理，但这不会改变她的病程：原报告只记录了服药后出现睡眠变差的先后顺序，先后不等于因果。",
+        "en": "Contraception and the irregular periods can be reconsidered with gynaecology, but this will not change her course: the report records only that the poor sleep followed the pill — sequence is not causation."
+      }
+    },
+    {
+      "id": "swallow-screen",
+      "name": {
+        "zh-CN": "床旁吞咽筛查并请营养科评估",
+        "en": "Bedside swallow screen and dietitian review"
+      },
+      "kind": "other",
+      "scope": "nursing",
+      "aliases": {
+        "zh-CN": [
+          "吞咽",
+          "吞咽评估",
+          "吞咽筛查",
+          "洼田饮水",
+          "营养科",
+          "营养评估"
+        ],
+        "en": [
+          "swallow screen",
+          "swallowing assessment",
+          "swallow test",
+          "dietitian",
+          "nutrition review",
+          "salt referral"
+        ]
+      },
+      "dose": {
+        "zh-CN": "护士床旁吞咽筛查；营养科评估进食量和营养状态。",
+        "en": "A nurse-led bedside swallow screen; the dietitian assesses intake and nutritional state."
+      },
+      "risk": "none",
+      "setFlags": [
+        "swallow-screened"
+      ],
+      "maxDoses": 2,
+      "response": {
+        "zh-CN": "护士完成床旁吞咽筛查并请营养科会诊。原报告只在首诊后约7–8个月的肺炎住院时记录了吞咽功能下降和进食差。",
+        "en": "The nurse completes a bedside swallow screen and asks the dietitian to review her. The report records worsening swallowing and poor intake only from the pneumonia admission about 7–8 months after the first visit."
+      }
+    },
+    {
+      "id": "ng-tube",
+      "name": {
+        "zh-CN": "留置鼻胃管行肠内营养",
+        "en": "Nasogastric tube for enteral feeding"
+      },
+      "kind": "procedure",
+      "scope": "nursing",
+      "aliases": {
+        "zh-CN": [
+          "胃管",
+          "鼻胃管",
+          "鼻饲",
+          "插胃管",
+          "肠内营养"
+        ],
+        "en": [
+          "ng tube",
+          "nasogastric tube",
+          "nasogastric",
+          "tube feeding",
+          "enteral feeding"
+        ]
+      },
+      "dose": {
+        "zh-CN": "吞咽评估提示经口进食不安全时，经鼻胃管给予肠内营养；先与患者和家属按照护目标讨论。",
+        "en": "When the swallow assessment shows oral intake is unsafe, feed through a nasogastric tube — after discussing it with her and her family in line with the goals of care."
+      },
+      "risk": "low",
+      "maxDoses": 1,
+      "posture": "lying",
+      "contraindicatedWhen": {
+        "not": {
+          "phase": "followup"
+        }
+      },
+      "harm": {
+        "zh-CN": "此时没有吞咽困难或进食不足的记录，鼻胃管没有指征：原报告到首诊后约7–8个月的肺炎住院时才记录吞咽功能下降。",
+        "en": "Nothing at this point records difficulty swallowing or poor intake, so a nasogastric tube is not indicated: the report records worsening swallowing only at the pneumonia admission about 7–8 months after the first visit."
+      },
+      "response": {
+        "zh-CN": "已留置鼻胃管。原报告记录：首诊后约7–8个月因肺炎住院时吞咽功能下降、进食差，留置了胃管；约2个月后她又因低血糖、营养状态差入院。是否管饲应当是依照照护目标、与她和家属共同做出的决定，而不是吞咽变差后的自动步骤。",
+        "en": "A nasogastric tube is placed. The report records that at the pneumonia admission about 7–8 months after the first visit her swallowing and intake had worsened and a feeding tube was placed; about 2 months later she was admitted again with hypoglycaemia and poor nutrition. Whether to tube-feed should be a decision made with her and her family against the goals of care, not an automatic step once swallowing fails."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-first-visit",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "首诊：弄清睡眠问题",
+        "en": "First visit: understand the sleep problem"
+      },
+      "short": {
+        "zh-CN": "首诊病史",
+        "en": "First visit"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "问清睡不好的具体表现、从什么时候开始、和用药的先后关系，以及胃口和体重；再问她自己吃过什么药。",
+        "en": "Pin down what the poor sleep is like, when it began and how it relates to any medicines, plus her appetite and weight; then ask what she has taken herself."
+      },
+      "guidance": {
+        "zh-CN": "和患者交谈：睡眠的具体情况、起病时间、体重和用药。",
+        "en": "Talk to the patient: what her sleep is like, when it started, her weight and her medicines."
       },
       "completeWhen": {
         "all": [
@@ -1014,181 +2302,621 @@
             "asked": "presentation"
           },
           {
+            "asked": "onset"
+          },
+          {
             "asked": "sleep-pattern"
           },
           {
-            "asked": "medications"
-          },
-          {
             "asked": "weight-change"
+          },
+          {
+            "asked": "medications"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-2",
+      "id": "obj-admission",
       "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "入院：病情进展与查体",
+        "en": "Admission: progression and examination"
+      },
+      "short": {
+        "zh-CN": "入院评估",
+        "en": "Admission"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "切换到入院阶段。问陪同的家属，这一两个月她说话、动作、记性和情绪有什么变化；再查记忆、计算力、肌张力和震颤。",
+        "en": "Switch to the admission phase. Ask her family member how her speech, movements, memory and mood have changed over the past month or two; then test memory, calculation, tone and tremor."
+      },
+      "guidance": {
+        "zh-CN": "在病房问家属近来的变化，并为患者做认知和运动检查。",
+        "en": "On the ward, ask her family member about the recent changes and examine her cognition and movements."
       },
       "completeWhen": {
         "all": [
           {
-            "examined": "initial-exam"
+            "asked": "admission-complaint"
           },
           {
-            "examined": "initial-neuro"
+            "asked": "speech-movements"
+          },
+          {
+            "asked": "memory"
+          },
+          {
+            "examined": "cognition"
+          },
+          {
+            "examined": "motor"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-3",
+      "id": "obj-reports",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "调阅入院检查并规划下一步",
+        "en": "Review the admission reports and plan the next steps"
+      },
+      "short": {
+        "zh-CN": "检查报告",
+        "en": "Reports"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "到病历终端逐份看MRI和MRV、脑电图、脑脊液报告：正常结果能排除什么、不能排除什么？还缺哪些证据、哪些可治疗的病因还没查？",
+        "en": "At a records terminal, read the MRI and MRV, EEG and CSF reports one by one: what can a normal result rule out, and what can it not? What evidence is missing, and which treatable causes are still unchecked?"
       },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      "guidance": {
+        "zh-CN": "在病历终端调阅入院时的检查报告，再到会诊板回答下一步检查的问题。",
+        "en": "Read the admission reports at a records terminal, then answer the work-up question on the case board."
       },
       "completeWhen": {
         "all": [
-          {
-            "decided": "management"
-          },
-          {
-            "read": "followup",
-            "phase": "followup"
-          }
-        ]
-      }
-    }
-  ],
-  "decisions": [
-    {
-      "id": "diagnosis",
-      "prompt": {
-        "zh-CN": "对报告诊断和证据边界应如何表述？",
-        "en": "How should the reported diagnosis and evidence limits be stated?"
-      },
-      "kind": "single",
-      "requires": {
-        "all": [
-          {
-            "asked": "family"
-          },
-          {
-            "asked": "progression"
-          },
           {
             "read": "mri",
             "phase": "workup"
           },
           {
-            "read": "prnp",
+            "read": "eeg",
             "phase": "workup"
-          }
-        ]
-      },
-      "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
-      },
-      "options": [
-        {
-          "id": "supported",
-          "text": {
-            "zh-CN": "进展性失眠伴认知运动异常及家族线索支持遗传性朊蛋白病方向；原报告诊断FFI，但基因细节需复核",
-            "en": "Progressive insomnia with cognitive/motor changes and familial clues supports genetic prion disease; the report diagnosed FFI, but genetic details require verification"
-          },
-          "correct": true,
-          "feedback": {
-            "zh-CN": "PRNP阳性的简写不提供具体致病变异；同时正常MRI不能解释或取消快速进展的临床证据。",
-            "en": "The shorthand PRNP positive does not identify the pathogenic variant, while normal MRI does not negate the rapidly progressive clinical evidence."
-          }
-        },
-        {
-          "id": "unsupported",
-          "text": {
-            "zh-CN": "MRI正常即可排除神经退行性疾病，或直接假定患者已证实D178N变异",
-            "en": "A normal MRI excludes neurodegeneration, or the patient can simply be assumed to have a proven D178N variant"
-          },
-          "correct": false,
-          "feedback": {
-            "zh-CN": "PRNP阳性的简写不提供具体致病变异；同时正常MRI不能解释或取消快速进展的临床证据。",
-            "en": "The shorthand PRNP positive does not identify the pathogenic variant, while normal MRI does not negate the rapidly progressive clinical evidence."
-          }
-        }
-      ]
-    },
-    {
-      "id": "management",
-      "prompt": {
-        "zh-CN": "下一步最恰当的照护与沟通原则是什么？",
-        "en": "What care and communication principles are most appropriate next?"
-      },
-      "kind": "single",
-      "requires": {
-        "all": [
-          {
-            "decided": "diagnosis"
           },
           {
             "read": "csf",
             "phase": "workup"
           },
           {
+            "decided": "dec-workup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "read": "mri",
+                "phase": "workup"
+              },
+              {
+                "read": "eeg",
+                "phase": "workup"
+              },
+              {
+                "read": "csf",
+                "phase": "workup"
+              }
+            ]
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-diagnosis",
+      "title": {
+        "zh-CN": "专科门诊：家族史、基因检测与诊断分级",
+        "en": "Specialist clinic: family history, genetic test and grading"
+      },
+      "short": {
+        "zh-CN": "诊断分级",
+        "en": "Grading"
+      },
+      "hint": {
+        "zh-CN": "家里有没有人得过类似、病程很快的病？基因报告具体写了什么、没写什么？再对照共识的核心特征和提示性特征逐项核对。",
+        "en": "Has anyone in the family had a similar, fast-moving illness? What exactly does the genetic report say — and leave out? Then check the consensus core and suggestive features one by one."
+      },
+      "guidance": {
+        "zh-CN": "在专科门诊追问家族史、送检并查看基因结果，再到会诊板为诊断分级。",
+        "en": "At the specialist clinic, take the family history, send and read the genetic test, then grade the diagnosis on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "family"
+          },
+          {
+            "read": "prnp",
+            "phase": "clinic"
+          },
+          {
+            "decided": "dx-criteria"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "asked": "family"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "prnp",
+            "phase": "clinic"
+          },
+          "target": "molecular"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-safety-family",
+      "title": {
+        "zh-CN": "安全、家属与照护计划",
+        "en": "Safety, the family and the care plan"
+      },
+      "short": {
+        "zh-CN": "安全与沟通",
+        "en": "Safety & family"
+      },
+      "hint": {
+        "zh-CN": "她做过腰椎穿刺——标本和器械要怎么处理？需要隔离吗？家属问会不会遗传，你怎么谈、转给谁？趁她还能表达意愿，照护目标谈了吗？",
+        "en": "She has had a lumbar puncture — how should specimens and instruments be handled? Does she need isolation? When the family asks whether it is inherited, how do you talk about it and who do you refer to? While she can still say what she wants, have goals of care been discussed?"
+      },
+      "guidance": {
+        "zh-CN": "落实感染控制、遗传咨询和舒缓照护，并在会诊板回答安全和家属沟通的问题。",
+        "en": "Put infection control, genetic counselling and palliative care in place, and answer the safety and family questions on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "dec-infection"
+          },
+          {
+            "decided": "dec-family"
+          },
+          {
+            "intervened": "tse-precautions"
+          },
+          {
+            "intervened": "genetic-counselling"
+          },
+          {
+            "intervened": "palliative-acp"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-course",
+      "title": {
+        "zh-CN": "回顾病程与结局",
+        "en": "Review the course and outcome"
+      },
+      "short": {
+        "zh-CN": "病程结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "进入病程阶段，在病历终端核对后来的几次入院和结局；对比作者所说的病程时长和文中的时间线。",
+        "en": "In the course phase, check the later admissions and the outcome at a records terminal, and compare the duration the authors give with the timeline in the text."
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅后续病程与结局记录。",
+        "en": "Read the record of the later course and outcome at a records terminal."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec-workup",
+      "kind": "multiple",
+      "prompt": {
+        "zh-CN": "入院时颅脑MRI和MRV、脑电图（只有θ活动增多的轻度异常）和脑脊液常规都没有明确异常。下一步哪些措施是必要的？（多选）",
+        "en": "On admission the brain MRI and MRV, the EEG (only a mild excess of theta) and the routine CSF show nothing definite. Which next steps are warranted? (Select all that apply.)"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
             "read": "eeg",
+            "phase": "workup"
+          },
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "any": [
+              {
+                "asked": "speech-movements"
+              },
+              {
+                "asked": "memory"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先在病历终端查看入院时的MRI、脑电图和脑脊液报告，并了解近来的神经精神变化。",
+        "en": "First read the admission MRI, EEG and CSF reports at a records terminal and find out about the recent neuropsychiatric changes."
+      },
+      "options": [
+        {
+          "id": "wu-family",
+          "correct": true,
+          "text": {
+            "zh-CN": "详细追问家族史：三代以内有没有人患过类似、进展迅速的神经精神疾病或顽固失眠",
+            "en": "Take a detailed family history: anyone in three generations with a similar, rapidly progressive neuropsychiatric illness or intractable insomnia"
+          },
+          "feedback": {
+            "zh-CN": "正确。家族史既是2018年共识的提示性特征，也决定后续基因检测和遗传咨询；原报告直到首诊后约5个月的专科门诊才记录到舅舅的类似病史。",
+            "en": "Correct. The family history is a suggestive feature in the 2018 consensus and shapes genetic testing and counselling; the report records the uncle's similar illness only at the specialist clinic about 5 months after the first visit."
+          }
+        },
+        {
+          "id": "wu-antibodies",
+          "correct": true,
+          "text": {
+            "zh-CN": "送检血清和脑脊液自身免疫性脑炎抗体，并做副肿瘤筛查",
+            "en": "Send serum and CSF autoimmune-encephalitis antibodies and screen for an underlying tumour"
+          },
+          "feedback": {
+            "zh-CN": "正确。自身免疫性脑炎和副肿瘤综合征是作者列出的鉴别诊断，而且可以治疗；其诊断路径包括血清和脑脊液的神经元抗体检测（Graus 2016；中国2022自身免疫性脑炎共识）。抗IgLON5抗体相关疾病就以睡眠障碍伴睡眠呼吸异常为突出表现（Sabater 2014）。原报告没有这些检测。",
+            "en": "Correct. Autoimmune encephalitis and paraneoplastic syndromes are in the authors' differential and are treatable; their diagnostic approach includes neuronal antibody testing in serum and CSF (Graus 2016; the Chinese 2022 consensus on autoimmune encephalitis). Anti-IgLON5 disease presents with a prominent sleep disorder and sleep-breathing abnormalities (Sabater 2014). The report has none of these tests."
+          }
+        },
+        {
+          "id": "wu-prnp",
+          "correct": true,
+          "text": {
+            "zh-CN": "在遗传咨询和知情同意后做PRNP基因检测，并要求报告写明具体变异和129位密码子",
+            "en": "PRNP gene testing after genetic counselling and consent, asking for the exact variant and codon 129 to be reported"
+          },
+          "feedback": {
+            "zh-CN": "正确。遗传性朊蛋白病靠PRNP基因检测确诊（GeneReviews）；FFI对应D178N与129位甲硫氨酸位于同一等位基因（D178N-129M）。检测前要说明结果对亲属的意义并取得同意。",
+            "en": "Correct. Genetic prion disease is confirmed by PRNP testing (GeneReviews); FFI is D178N on the same allele as methionine at codon 129 (D178N-129M). Before testing, explain what the result means for relatives and obtain consent."
+          }
+        },
+        {
+          "id": "wu-anxiety",
+          "correct": false,
+          "text": {
+            "zh-CN": "检查基本正常，按焦虑和失眠处理：阿普唑仑加量、停用避孕药，门诊随访即可",
+            "en": "The tests are essentially normal: treat it as anxiety and insomnia — more alprazolam, stop the pill, outpatient follow-up"
+          },
+          "feedback": {
+            "zh-CN": "不正确。快速进展的认知下降、言语错乱、不自主运动和震颤不能用焦虑解释；共识指出FFI的辅助检查敏感性低，正常的MRI、脑电图和脑脊液常规不能让诊断停在这里。加量镇静催眠药也不会恢复睡眠。",
+            "en": "Incorrect. Rapidly progressive cognitive decline, muddled speech, involuntary movements and tremor are not explained by anxiety; the consensus notes the low sensitivity of tests in FFI, so a normal MRI, EEG and routine CSF cannot end the work-up here. More sedative hypnotics will not restore sleep either."
+          }
+        },
+        {
+          "id": "wu-biopsy",
+          "correct": false,
+          "text": {
+            "zh-CN": "尽快行脑组织活检以明确诊断",
+            "en": "Arrange a brain biopsy promptly to make the diagnosis"
+          },
+          "feedback": {
+            "zh-CN": "不恰当。疑似朊蛋白病时，脑组织属于WHO 2000所列的高感染性组织，活检器械需要专门处理；而遗传性朊蛋白病可以用血液PRNP基因检测确诊（GeneReviews），活检不是首选。",
+            "en": "Not appropriate. With a prion disease possible, brain is a high-infectivity tissue in the WHO 2000 guidance and the instruments need special handling, while a genetic prion disease can be confirmed by PRNP testing on blood (GeneReviews) — biopsy is not the first step."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dx-criteria",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "对照原文表2转载的2018年中国专家共识（可能的／很可能的／确诊的FFI），本例记录的资料应如何分级？",
+        "en": "Against the 2018 Chinese expert consensus that the report reproduces in its Table 2 (possible, probable, definite FFI), how should the recorded evidence be graded?"
+      },
+      "requires": {
+        "all": [
+          {
+            "asked": "sleep-pattern"
+          },
+          {
+            "any": [
+              {
+                "asked": "speech-movements"
+              },
+              {
+                "asked": "memory"
+              }
+            ]
+          },
+          {
+            "examined": "cognition"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "read": "prnp",
+            "phase": "clinic"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先了解睡眠和神经精神症状、完成查体、追问家族史，并查看PRNP检测结果。",
+        "en": "First establish the sleep and neuropsychiatric symptoms, examine her, take the family history and read the PRNP result."
+      },
+      "options": [
+        {
+          "id": "probable-unverified",
+          "correct": true,
+          "text": {
+            "zh-CN": "临床上为“很可能的FFI”（A组睡眠障碍＋B组快速进展的认知与神经精神症状，加上舅舅类似病史这一提示性特征）；报告只写“PRNP（+）”，没有D178N和129位密码子，“确诊”无法按同一标准核实",
+            "en": "Probable FFI on clinical grounds (group A sleep disturbance + group B rapidly progressive cognitive and neuropsychiatric features, plus the uncle's similar illness as a suggestive feature); the report gives only “PRNP (+)” without D178N or codon 129, so “definite” cannot be checked against the same criteria"
+          },
+          "feedback": {
+            "zh-CN": "正确。原文表2转载的2018年中国专家共识（Wu 2018）：A组＋1–2项B/C组核心特征为“可能”；两组以上核心特征再加一项以上提示性特征（RPD与失眠的阳性家族史、PSG证据、SPECT/PET丘脑低代谢）为“很可能”；“确诊”依赖PRNP检测，表2写明为D178N突变伴129位密码子多态性。本例C组自主神经表现、PSG和PET都没有报告，舅舅“类似症状”的细节也未展开，所以“很可能”是记录资料能支持的上限。“PRNP（+）”可以对应多种PRNP致病变异（遗传性CJD和GSS都在作者的鉴别诊断中），需要写明变异的完整报告。2022年修订标准（Chu 2022）保留了“可能＋阳性家族史或v-PSG/PET/SPECT异常＝很可能”的层级。",
+            "en": "Correct. The 2018 Chinese expert consensus reproduced in the source's Table 2 (Wu 2018): group A plus one or two group B/C core features is “possible”; two or more core groups plus at least one suggestive feature (a family history of RPD and insomnia, PSG evidence, thalamic hypometabolism on SPECT/PET) is “probable”; “definite” rests on PRNP testing, which Table 2 specifies as the D178N mutation with the codon-129 polymorphism. Here the group C autonomic features, PSG and PET are all unreported and the uncle's “similar symptoms” are not described, so “probable” is the most the recorded data support. “PRNP (+)” could mean any of several pathogenic PRNP variants — genetic CJD and GSS are both in the authors' differential — so a full report naming the variant is needed. The 2022 revision (Chu 2022) keeps the step from possible to probable with a positive family history or v-PSG/PET/SPECT abnormalities."
+          }
+        },
+        {
+          "id": "definite",
+          "correct": false,
+          "text": {
+            "zh-CN": "已确诊FFI：PRNP阳性即满足确诊标准，无需再核对",
+            "en": "Definite FFI: a positive PRNP result meets the definite criterion, so there is nothing further to check"
+          },
+          "feedback": {
+            "zh-CN": "不够严谨。这是原报告的结论，但它自己转载的标准要求PRNP结果为D178N突变并注明129位密码子；“PRNP（+）”没有说明是哪个变异——同一基因的其他致病变异可表现为遗传性CJD或GSS（作者列出的鉴别诊断）。FFI对应D178N与129位甲硫氨酸位于同一等位基因（GeneReviews）。应索取完整报告（变异名称和129位基因型）后再定为“确诊”。",
+            "en": "Not rigorous enough. That is the report's own conclusion, but the criteria it reproduces require the D178N mutation with codon 129 stated; “PRNP (+)” does not say which variant — other pathogenic variants of the same gene cause genetic CJD or GSS (the authors' own differential). FFI is D178N on the same allele as methionine at codon 129 (GeneReviews). Ask for the full report (the variant and the codon-129 genotype) before calling it definite."
+          }
+        },
+        {
+          "id": "excluded",
+          "correct": false,
+          "text": {
+            "zh-CN": "基本可排除朊蛋白病：颅脑MRI、脑静脉成像和脑脊液常规都正常，脑电图只是轻度异常",
+            "en": "Prion disease is effectively excluded: brain MRI, MR venography and routine CSF are normal and the EEG is only mildly abnormal"
+          },
+          "feedback": {
+            "zh-CN": "不正确。2018年共识特别指出，FFI诊断困难的原因之一就是辅助检查敏感性低；共识的诊断要素是睡眠、神经精神和自主神经表现，加上PSG、SPECT/PET和家族史，并不包括MRI或脑脊液常规是否异常。正常的MRI、脑电图和脑脊液常规不能排除FFI。",
+            "en": "Incorrect. The 2018 consensus points out that one reason FFI is hard to diagnose is the low sensitivity of diagnostic tests; its criteria rest on sleep, neuropsychiatric and autonomic features plus PSG, SPECT/PET and the family history — not on whether the MRI or routine CSF is abnormal. A normal MRI, EEG and routine CSF do not exclude FFI."
+          }
+        },
+        {
+          "id": "unclassifiable",
+          "correct": false,
+          "text": {
+            "zh-CN": "无法分级：没有多导睡眠监测和PET，共识标准不能用于本例",
+            "en": "It cannot be graded: without polysomnography and PET the consensus criteria cannot be applied"
+          },
+          "feedback": {
+            "zh-CN": "不正确。PSG和SPECT/PET只是提示性特征中的两项，不是前提：仅凭临床核心特征就能判断“可能的FFI”，阳性家族史本身也是提示性特征。缺少PSG和PET应写进证据边界，而不是放弃分级。",
+            "en": "Incorrect. PSG and SPECT/PET are only two of the suggestive features, not prerequisites: the clinical core features alone reach “possible FFI”, and a positive family history is itself a suggestive feature. Missing PSG and PET belong in the evidence boundaries — they are no reason not to grade."
+          }
+        },
+        {
+          "id": "anxiety-insomnia",
+          "correct": false,
+          "text": {
+            "zh-CN": "焦虑相关的原发性失眠：避孕药诱发，苯二氮䓬类使病情加重",
+            "en": "Primary insomnia with anxiety, triggered by the contraceptive pill and worsened by the benzodiazepine"
+          },
+          "feedback": {
+            "zh-CN": "不正确。焦虑确实存在，但它解释不了数月内进行性的记忆力和计算力下降、言语错乱、肢体不自主运动和震颤，也解释不了家族中类似的病例；服避孕药以后出现失眠只是时间先后，不能证明因果。",
+            "en": "Incorrect. She is anxious, but anxiety does not explain months of progressive memory and calculation decline, muddled speech, involuntary limb movements and tremor, or a similar illness in the family; insomnia that followed starting the pill is a sequence, not proof of cause."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dec-infection",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "遗传性朊蛋白病已进入鉴别诊断，PRNP检测也已安排。她入院时做过腰椎穿刺。今后诊疗中，哪项感染控制安排最恰当？",
+        "en": "A genetic prion disease is now in the differential and PRNP testing is planned. She had a lumbar puncture during the admission. Which infection-control arrangement is right for her care from now on?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "dec-workup"
+          },
+          {
+            "read": "csf",
             "phase": "workup"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先完成下一步检查的决策，并查看入院时的脑脊液报告。",
+        "en": "First decide the next steps in the work-up and read the admission CSF report."
       },
       "options": [
         {
-          "id": "supported",
-          "text": {
-            "zh-CN": "神经与遗传团队复核病因、讨论支持和舒缓照护，并在正式遗传咨询后考虑亲属检测",
-            "en": "Neurology/genetics review of the cause, supportive and palliative care planning, and consideration of family testing after formal genetic counselling"
-          },
+          "id": "ic-tse",
           "correct": true,
+          "text": {
+            "zh-CN": "日常护理按标准预防，无需隔离；有创操作、脑脊液和组织标本按TSE感染控制要求处理：标注并告知检验科，尽量用一次性器械，接触高感染性组织的器械按专门程序灭活或销毁",
+            "en": "Standard precautions for routine care, no isolation; invasive procedures, CSF and tissue specimens under TSE precautions: label them and tell the laboratory, single-use instruments where possible, and instruments that touch high-infectivity tissue decontaminated by TSE-specific methods or destroyed"
+          },
           "feedback": {
-            "zh-CN": "症状控制不等于病程逆转；家族风险讨论须尊重知情选择，不能将亲属症状或基因状态自行补全。",
-            "en": "Symptom control is not reversal of disease; familial risk discussions require informed choice without inventing relatives’ symptoms or genotype."
+            "zh-CN": "正确。WHO 2000 TSE感染控制指南：脑、脊髓和眼为高感染性组织，脑脊液的感染性较低；完整皮肤接触的风险可忽略，患者无需隔离，也不应因此被拒绝任何检查或治疗；真正需要管理的是有创操作的器械和标本。朊蛋白能耐受常规消毒灭菌。加拿大CJD感染控制指南把GSS和FFI患者也列为需要这些措施的人群。原报告没有提到感染控制。",
+            "en": "Correct. WHO 2000 TSE infection-control guidelines: brain, spinal cord and eye are high-infectivity tissues and CSF carries less infectivity; contact with intact skin carries negligible risk, so the patient needs no isolation and must not be denied any test or treatment — what needs managing is the instruments and specimens of invasive procedures. Prions resist routine disinfection and sterilisation. The Canadian CJD infection-control guidance lists patients with GSS and FFI among those these measures apply to. The report mentions no infection control."
           }
         },
         {
-          "id": "unsupported",
-          "text": {
-            "zh-CN": "承诺安眠药可以治愈，并把亲属全部视为已患病",
-            "en": "Promise that sedatives will cure the disease and treat all relatives as affected"
-          },
+          "id": "ic-isolate",
           "correct": false,
+          "text": {
+            "zh-CN": "单间隔离，所有接触者戴N95口罩，按空气和接触传播隔离",
+            "en": "Single-room isolation, N95 respirators for everyone, airborne and contact precautions"
+          },
           "feedback": {
-            "zh-CN": "症状控制不等于病程逆转；家族风险讨论须尊重知情选择，不能将亲属症状或基因状态自行补全。",
-            "en": "Symptom control is not reversal of disease; familial risk discussions require informed choice without inventing relatives’ symptoms or genotype."
+            "zh-CN": "不需要。朊蛋白病不经空气、飞沫或日常接触传播；WHO 2000指出这类患者无需隔离。过度隔离增加她和家属的负担，却没有针对真正的风险——有创操作的器械和标本。",
+            "en": "Not needed. Prion disease does not spread by air, droplets or everyday contact, and WHO 2000 says these patients need no isolation. Over-isolation burdens her and her family and misses the real risk — instruments and specimens from invasive procedures."
+          }
+        },
+        {
+          "id": "ic-none",
+          "correct": false,
+          "text": {
+            "zh-CN": "不需要特殊措施：这是遗传病，不是传染病",
+            "en": "No special measures: this is a genetic disease, not an infection"
+          },
+          "feedback": {
+            "zh-CN": "不正确。遗传性朊蛋白病的异常朊蛋白同样可以经器械和组织医源性传播，这正是TSE感染控制针对的风险；加拿大CJD感染控制指南把GSS和FFI患者也列为需要这些措施的人群。",
+            "en": "Incorrect. The abnormal prion protein of genetic prion disease can also be transmitted iatrogenically through instruments and tissue — exactly the risk TSE precautions target; the Canadian CJD guidance lists patients with GSS and FFI among those the measures apply to."
+          }
+        },
+        {
+          "id": "ic-avoid",
+          "correct": false,
+          "text": {
+            "zh-CN": "今后不再给她做任何有创操作，包括腰椎穿刺、胃管和静脉穿刺",
+            "en": "No further invasive procedures for her — no lumbar puncture, feeding tube or even venepuncture"
+          },
+          "feedback": {
+            "zh-CN": "不正确。WHO 2000指出，不应因TSE而拒绝患者任何需要的检查或治疗；要改变的是器械和标本的处理方式。",
+            "en": "Incorrect. WHO 2000 says a patient must not be denied any needed test or treatment because of a TSE; what changes is how instruments and specimens are handled."
+          }
+        },
+        {
+          "id": "ic-autoclave",
+          "correct": false,
+          "text": {
+            "zh-CN": "复用器械沿用常规清洗和高压灭菌即可",
+            "en": "Routine cleaning and standard autoclaving of reusable instruments is enough"
+          },
+          "feedback": {
+            "zh-CN": "不够。朊蛋白能耐受常规消毒和灭菌方法；接触高感染性组织的器械要按WHO 2000推荐的TSE专门程序处理或直接销毁，能用一次性器械时优先一次性。",
+            "en": "Not enough. Prions survive routine disinfection and sterilisation; instruments that touch high-infectivity tissue need the TSE-specific methods WHO 2000 recommends, or destruction, and single-use instruments are preferred where possible."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dec-family",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "PRNP检测回报“阳性”，她舅舅曾有类似病史。关于家族成员的风险和检测，最恰当的做法是？",
+        "en": "The PRNP test comes back “positive”, and her uncle had a similar illness. What is the best approach to her relatives' risk and testing?"
+      },
+      "requires": {
+        "all": [
+          {
+            "asked": "family"
+          },
+          {
+            "read": "prnp",
+            "phase": "clinic"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先追问家族史，并查看PRNP检测结果。",
+        "en": "First take the family history and read the PRNP result."
+      },
+      "options": [
+        {
+          "id": "fam-counsel",
+          "correct": true,
+          "text": {
+            "zh-CN": "转介遗传咨询：说明常染色体显性遗传，每个子女有50%的遗传风险；高风险成年亲属是否做预测性检测，在咨询后自愿决定（包括有权不知道）；同时索取写明具体变异的完整报告",
+            "en": "Refer to clinical genetics: explain autosomal dominant inheritance and the 50% risk to each child; at-risk adult relatives decide about predictive testing voluntarily after counselling (including the right not to know); and obtain the full report naming the variant"
+          },
+          "feedback": {
+            "zh-CN": "正确。GeneReviews：携带者的每个子女有50%的概率遗传致病变异。舅舅是母亲一方的亲属，提示风险可能来自母系，但母亲的健康和基因状况原报告没有记录，不能推断。疾病目前无法根治，预测性检测须在遗传咨询后由本人自愿决定；亲属检测还需要先知道她的具体变异。",
+            "en": "Correct. GeneReviews: each child of a carrier has a 50% chance of inheriting the pathogenic variant. The uncle is on her mother's side, which suggests the risk may come through the maternal line, but her mother's health and genetic status are not recorded and must not be inferred. With no curative treatment, predictive testing is a voluntary choice after counselling, and testing relatives first needs her exact variant."
+          }
+        },
+        {
+          "id": "fam-test-all",
+          "correct": false,
+          "text": {
+            "zh-CN": "建议所有亲属，包括孩子，马上都去做PRNP检测",
+            "en": "Advise every relative, children included, to have PRNP testing straight away"
+          },
+          "feedback": {
+            "zh-CN": "不恰当。预测性检测必须知情、自愿，并在遗传咨询之后进行；一刀切地要求所有人检测不尊重个人选择。亲属检测还需要先知道她的具体变异。",
+            "en": "Not appropriate. Predictive testing must be informed, voluntary and preceded by genetic counselling; telling everyone to be tested disregards each person's choice. Testing relatives also needs her exact variant first."
+          }
+        },
+        {
+          "id": "fam-unrelated",
+          "correct": false,
+          "text": {
+            "zh-CN": "舅舅当年诊断的是脑萎缩和帕金森病，和她的病无关，家属不用担心",
+            "en": "Her uncle had brain atrophy and Parkinson's disease, which is unrelated; the family need not worry"
+          },
+          "feedback": {
+            "zh-CN": "不正确。舅舅当年的诊断没有经过基因证实；他“类似症状”的病史正是2018年共识列出的提示性特征（RPD与失眠的阳性家族史），不能因为旧的诊断名称就忽略。",
+            "en": "Incorrect. The uncle's diagnosis was never confirmed genetically; his “similar symptoms” are exactly the suggestive feature the 2018 consensus lists (a family history of RPD and insomnia), and an old diagnostic label is no reason to dismiss them."
+          }
+        },
+        {
+          "id": "fam-mother",
+          "correct": false,
+          "text": {
+            "zh-CN": "告诉家属：她母亲一定是携带者，应该马上检测",
+            "en": "Tell the family that her mother must be a carrier and should be tested now"
+          },
+          "feedback": {
+            "zh-CN": "不能这样推断。舅舅提示母系可能有风险，但母亲的健康和基因状况原报告都没有记录；不能把推测当作事实告诉家属，母亲是否检测同样要在遗传咨询后自愿决定。",
+            "en": "That cannot be inferred. The uncle points to a possible maternal-line risk, but her mother's health and genetic status are not recorded; a guess must not be presented to the family as fact, and whether her mother is tested is likewise her own choice after counselling."
+          }
+        },
+        {
+          "id": "fam-withhold",
+          "correct": false,
+          "text": {
+            "zh-CN": "为了不让家属焦虑，暂时不告诉他们遗传风险",
+            "en": "Hold back the genetic risk from the family so as not to alarm them"
+          },
+          "feedback": {
+            "zh-CN": "不恰当。在患者同意的前提下与家属坦诚沟通遗传风险并提供遗传咨询，是亲属能够自主决定的前提；隐瞒会剥夺他们的选择。",
+            "en": "Not appropriate. With her consent, an honest conversation about genetic risk plus an offer of counselling is what lets relatives make their own decisions; withholding it takes that choice away."
           }
         }
       ]
@@ -1196,134 +2924,371 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "r-hx-sleep",
       "domain": "history",
-      "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
-      },
       "weight": 2,
+      "text": {
+        "zh-CN": "首诊时问清睡眠问题的表现、起病和用药的先后、体重下降和自行服用的药物",
+        "en": "At the first visit, established what the sleep problem is like, its onset relative to medicines, the weight loss and the self-medication"
+      },
       "met": {
         "all": [
           {
             "asked": "presentation"
           },
           {
+            "asked": "onset"
+          },
+          {
             "asked": "sleep-pattern"
           },
           {
-            "asked": "medications"
-          },
-          {
             "asked": "weight-change"
+          },
+          {
+            "asked": "medications"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
+      "id": "r-hx-progression",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "入院时从家属处了解快速进展：言语错乱、不自主运动、记忆力下降和入院主诉",
+        "en": "On admission, learned the rapid progression from her family: muddled speech, involuntary movements, memory decline and the admission complaint"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "admission-complaint"
+          },
+          {
+            "asked": "speech-movements"
+          },
+          {
+            "asked": "memory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-hx-family",
+      "domain": "history",
+      "weight": 3,
+      "text": {
+        "zh-CN": "追问到家族史（舅舅的类似病史）",
+        "en": "Elicited the family history (the uncle's similar illness)"
+      },
+      "met": {
+        "asked": "family"
+      }
+    },
+    {
+      "id": "r-exam",
       "domain": "examination",
+      "weight": 2,
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "检查认知（记忆、计算力）和运动（肌张力、震颤）",
+        "en": "Examined cognition (memory, calculation) and movement (tone, tremor)"
       },
-      "weight": 1,
       "met": {
         "all": [
           {
-            "examined": "initial-exam"
+            "examined": "cognition"
           },
           {
-            "examined": "initial-neuro"
+            "examined": "motor"
           }
         ]
       }
     },
     {
-      "id": "rubric-3",
+      "id": "r-inv-reports",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "在病历中调阅入院时的MRI和MRV、脑电图和脑脊液报告",
+        "en": "Reviewed the admission MRI and MRV, EEG and CSF reports in the record"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "read": "eeg",
+            "phase": "workup"
+          },
+          {
+            "read": "csf",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-inv-plan",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即选对下一步检查：家族史、自身免疫性脑炎抗体和副肿瘤筛查、咨询后的PRNP检测",
+        "en": "Chose the next steps correctly at the first attempt: family history, autoimmune-encephalitis antibodies and a tumour screen, PRNP testing after counselling"
+      },
+      "met": {
+        "decidedFirstTry": "dec-workup"
+      }
+    },
+    {
+      "id": "r-dx",
       "domain": "diagnosis",
-      "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
-      },
       "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即按2018年共识把记录资料分级为“很可能的FFI”，并指出“确诊”因缺少具体变异而无法核实",
+        "en": "Graded the recorded evidence as probable FFI by the 2018 consensus at the first attempt, noting that “definite” cannot be checked without the variant"
+      },
       "met": {
-        "decided": "diagnosis"
+        "decidedFirstTry": "dx-criteria"
       }
     },
     {
-      "id": "rubric-4",
-      "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
+      "id": "r-safety-tse",
+      "domain": "safety",
       "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即选对感染控制安排，落实TSE防护措施，且没有不必要地隔离患者",
+        "en": "Chose the infection-control arrangement correctly at the first attempt, put TSE precautions in place and did not isolate her unnecessarily"
+      },
       "met": {
         "all": [
           {
-            "decided": "management"
+            "decidedFirstTry": "dec-infection"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "intervened": "tse-precautions"
+          },
+          {
+            "not": {
+              "intervened": "isolation"
+            }
           }
         ]
+      }
+    },
+    {
+      "id": "r-mgmt-genetics",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即选对家属风险与预测性检测的做法，并转介遗传咨询",
+        "en": "Chose the approach to relatives' risk and predictive testing correctly at the first attempt and referred for genetic counselling"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "dec-family"
+          },
+          {
+            "intervened": "genetic-counselling"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-mgmt-palliative",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "请舒缓医疗会诊，并开始预立医疗照护计划（喂养方式、抢救意愿、照护地点）",
+        "en": "Referred to palliative care and began advance care planning (feeding, resuscitation, place of care)"
+      },
+      "met": {
+        "intervened": "palliative-acp"
+      }
+    },
+    {
+      "id": "r-safety-sedation",
+      "domain": "safety",
+      "weight": 1,
+      "text": {
+        "zh-CN": "规划检查之后，没有把加量镇静催眠药当作治疗",
+        "en": "Once the work-up was planned, did not treat her with escalating sedative hypnotics"
+      },
+      "met": {
+        "all": [
+          {
+            "attempted": "dec-workup"
+          },
+          {
+            "not": {
+              "intervened": "hypnotic-escalation"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 2,
+      "text": {
+        "zh-CN": "与患者和家属沟通：病情、证据的不确定性、遗传风险和照护目标",
+        "en": "Talked with her and her family about the illness, the uncertainty in the evidence, the genetic risk and the goals of care"
+      },
+      "judgeGuidance": {
+        "zh-CN": "良好表现：先了解对方已知道什么、想知道多少；用通俗语言说明这是一种快速进展、目前无法根治的疾病，诊断依据和仍不确定之处（基因报告没写具体变异）都说清楚，不给虚假的希望，也不过早下定论；解释常染色体显性遗传和每个子女50%的风险，强调亲属检测在遗传咨询后自愿决定，不推断母亲的基因状况；趁她还能表达意愿，邀请她本人参与喂养方式、抢救意愿和照护地点的讨论；回应焦虑，给出联系人和下一步安排，并用回授法确认理解。",
+        "en": "Good practice: find out what they already know and how much they want to know; explain in plain words that this is a rapidly progressive illness with no curative treatment, saying both what the diagnosis rests on and what remains uncertain (the genetic report names no variant), without false hope or a premature verdict; explain autosomal dominant inheritance and the 50% risk to each child, stress that relatives decide about testing voluntarily after counselling, and do not infer her mother's status; while she can still say what she wants, involve her in decisions about feeding, resuscitation and place of care; respond to anxiety, give a named contact and the next steps, and check understanding by teach-back."
       }
     }
   ],
   "npcs": [
     {
       "role": "attending",
+      "name": {
+        "zh-CN": "带教上级医师",
+        "en": "Attending"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "这是一篇已发表病例的分阶段回看。用苏格拉底式提问带教：请学员先核对当前阶段已有的证据，再列鉴别诊断；对数月内快速进展的认知和神经精神症状，提醒学员把可治疗的病因（自身免疫性、副肿瘤性）和遗传性病因都考虑进去，正常的常规检查不能让评估就此停止；诊断分级时请学员对照报告引用的诊断标准逐项核对，并说出缺失的证据；讨论安全问题时请学员说明有创操作、标本和器械的处理依据。原报告团队的处置不自动成为今天的推荐；不替学员下诊断结论，也不提前说出检查结果。",
+        "en": "This is a staged review of a published case. Teach Socratically: have the learner check the evidence available in the current phase before listing a differential; for cognitive and neuropsychiatric decline that progresses over months, prompt them to consider treatable causes (autoimmune, paraneoplastic) as well as genetic ones, and not to let normal routine tests end the work-up; when they grade the diagnosis, ask them to check the criteria the report cites item by item and to name the missing evidence; on safety, ask what the handling of invasive procedures, specimens and instruments rests on. What the report's team did is not automatically today's recommendation; do not make the diagnosis for the learner or reveal results in advance."
       },
       "interprets": [
         "mri",
         "eeg",
         "csf",
+        "routine",
         "prnp",
         "sleep-study",
+        "pet",
         "followup"
       ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "病区护士",
+        "en": "Ward nurse"
+      },
+      "knowledge": {
+        "zh-CN": "负责病区事务和交接：标本送检、联系感染控制科和营养科、吞咽筛查、鼻胃管护理。不知道病例记录以外的信息；不解读检查结果，也不谈诊断。",
+        "en": "Handles ward logistics and handover: sending specimens, contacting infection control and the dietitian, swallow screening and nasogastric tube care. Knows nothing beyond the case record; does not interpret results or discuss the diagnosis."
+      },
+      "interprets": [],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：快速进展的失眠与神经精神症状",
+      "en": "Debrief: rapidly progressive insomnia with neuropsychiatric decline"
     },
     "conclusion": {
-      "zh-CN": "原报告称FFI，临床进展与家族线索值得重视；本教学不把未披露的基因细节或讨论中的通用症状写成患者事实。",
-      "en": "The report labels the condition FFI, with important progression and family clues; this case does not convert undisclosed genetics or generic discussion symptoms into patient facts."
+      "zh-CN": "原报告诊断家族性致死性失眠症（FFI）：31岁女性以睡眠障碍起病，数月内出现快速进展的认知和神经精神症状、不自主运动和震颤，舅舅有类似病史，PRNP检测报告“阳性”。按原文转载的2018年中国专家共识，记录资料符合“很可能的FFI”；报告没有给出D178N和129位密码子，“确诊”无法按同一标准核实。MRI、脑电图和脑脊液常规正常不能排除本病。她在首诊后约9–10个月死于呼吸衰竭。",
+      "en": "The report diagnoses fatal familial insomnia (FFI): a 31-year-old woman whose illness began with disturbed sleep developed, within months, rapidly progressive cognitive and neuropsychiatric decline, involuntary movements and tremor; her maternal uncle had a similar illness and her PRNP test was reported “positive”. By the 2018 Chinese consensus the source reproduces, the recorded evidence fits probable FFI; the report gives neither D178N nor codon 129, so “definite” cannot be checked against the same criteria. A normal MRI, EEG and routine CSF do not exclude the disease. She died of respiratory failure about 9–10 months after the first visit."
     },
     "keyReasoning": [
       {
-        "zh-CN": "避孕药和新冠的先后顺序不等于病因证明。",
-        "en": "Timing relative to contraception or COVID does not establish causation."
+        "zh-CN": "时间先后不等于因果：睡眠变差出现在服避孕药之后、新冠阳性出现在入院前几天，这些只是时间线上的事件。",
+        "en": "Sequence is not causation: the poor sleep followed starting the pill and the COVID test was positive days before admission — events on the timeline, not causes."
       },
       {
-        "zh-CN": "迅速进展且带家族线索的失眠应超越单纯情绪解释。",
-        "en": "Rapid progression and familial clues warrant evaluation beyond a purely emotional explanation for insomnia."
+        "zh-CN": "数月内从失眠发展到记忆和计算力下降、言语错乱、不自主运动和震颤，是快速进展的神经精神综合征，不能用焦虑或安眠药解释。",
+        "en": "Progression over months from insomnia to failing memory and calculation, muddled speech, involuntary movements and tremor is a rapidly progressive neuropsychiatric syndrome that anxiety or sleeping tablets do not explain."
+      },
+      {
+        "zh-CN": "家族史在首诊后约5个月才被记录；它既是共识的提示性特征，也是基因检测和遗传咨询的起点。",
+        "en": "The family history was recorded only about 5 months after the first visit; it is both a suggestive feature in the consensus and the starting point for genetic testing and counselling."
+      },
+      {
+        "zh-CN": "MRI、脑电图和脑脊液常规正常，在FFI中并不意外；正常结果应促使你寻找共识要求的证据（PSG、PET、家族史、基因），并排除可治疗的病因。",
+        "en": "A normal MRI, EEG and routine CSF are no surprise in FFI; they should send you to the evidence the consensus asks for (PSG, PET, family history, genetics) and to the treatable causes."
+      },
+      {
+        "zh-CN": "“PRNP（+）”是结论而不是报告：没有变异名称和129位基因型，就无法按原文转载的标准核实“确诊”，也无法给亲属做针对性检测。",
+        "en": "“PRNP (+)” is a conclusion, not a report: without the variant and the codon-129 genotype, “definite” cannot be checked against the criteria the source reproduces, and relatives cannot be offered targeted testing."
+      },
+      {
+        "zh-CN": "病程时长的自相矛盾要标出来：作者称约9个月，文中日期给出首诊至死亡约9–10个月，按入院主诉推算的起病至死亡约12个月。",
+        "en": "Flag the inconsistent duration: the authors say about nine months; the dates give about 9–10 months from the first visit to death and about 12 months from the onset implied by the admission complaint."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是一篇单个病例报告的回看：PRNP具体变异、自主神经表现、PSG和PET都没有报告，“很可能”是记录资料能支持的上限；作者所述病程时长与文中日期不一致；感染控制、遗传咨询和舒缓照护是按现行指南加入的教学内容，原报告没有记录这些措施。病例中的处置不代表报告团队当时的做法。",
+      "en": "This reviews a single case report: the PRNP variant, autonomic features, PSG and PET are not reported, so “probable” is the most the recorded data support; the duration the authors give conflicts with the dates in the text; infection control, genetic counselling and palliative care are teaching content added from current guidance and are not recorded in the report. Management offered in the case does not represent what the report's team did."
     },
     "unknowns": [
       {
-        "zh-CN": "具体PRNP变异及致病性、密码子129、多导睡眠监测、RT-QuIC、完整可逆病因评估及亲属基因结果。",
-        "en": "Specific PRNP variant/pathogenicity, codon 129, polysomnography, RT-QuIC, full reversible-cause evaluation and relatives’ genetic results."
+        "zh-CN": "PRNP具体变异、129位密码子基因型、杂合状态和致病性分级（报告只写“PRNP（+）”）。",
+        "en": "The PRNP variant, codon-129 genotype, zygosity and pathogenicity class (the report gives only “PRNP (+)”)."
+      },
+      {
+        "zh-CN": "自主神经表现（血压、心率、出汗、呼吸节律）及任何一次就诊的生命体征。",
+        "en": "Autonomic features (blood pressure, heart rate, sweating, breathing pattern) and vital signs at any visit."
+      },
+      {
+        "zh-CN": "多导睡眠监测、FDG-PET或SPECT。",
+        "en": "Polysomnography, FDG-PET or SPECT."
+      },
+      {
+        "zh-CN": "自身免疫性脑炎抗体、副肿瘤筛查；MRI是否包括DWI序列；脑脊液逐项数值、14-3-3蛋白和RT-QuIC。",
+        "en": "Autoimmune-encephalitis antibodies and a paraneoplastic screen; whether the MRI included DWI; itemised CSF values, 14-3-3 protein and RT-QuIC."
+      },
+      {
+        "zh-CN": "首诊时的体格检查和处理；阿普唑仑的剂量和疗程；其他既往史、过敏史、手术史、吸烟饮酒和职业。",
+        "en": "The examination and management at the first visit; the alprazolam dose and duration; other past history, allergies, operations, smoking, alcohol and occupation."
+      },
+      {
+        "zh-CN": "原文“其后出现感能力差”含义不明（打印版亦如此），未采用，也未改写成“记忆”或“感知”。",
+        "en": "The source's phrase “其后出现感能力差” is unclear (so printed) and is not used, nor rewritten as “memory” or “perception”."
+      },
+      {
+        "zh-CN": "母亲及其他亲属的健康和基因状况；舅舅的具体症状和病程。",
+        "en": "Her mother's and other relatives' health and genetic status; the uncle's actual symptoms and course."
+      },
+      {
+        "zh-CN": "每次入院的具体治疗（“支持治疗”、肺炎和低血糖的处理）；尸检。",
+        "en": "The treatment given at each admission (the “supportive treatment”, the management of the pneumonia and the hypoglycaemia); autopsy."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "用标准给诊断分级，而不是复述报告的结论：2018年中国专家共识（Wu 2018，原文表2转载）区分可能、很可能和确诊的FFI，2022年修订版（Chu 2022）增加了两项排除条件并保留“阳性家族史或v-PSG/PET/SPECT异常可把‘可能’升为‘很可能’”的层级。本例记录资料达到“很可能”；“PRNP（+）”没有写明变异，而FFI对应的是D178N与129位甲硫氨酸位于同一等位基因（GeneReviews 2021）。",
+        "en": "Grade the diagnosis against criteria instead of repeating the report's conclusion: the 2018 Chinese expert consensus (Wu 2018, reproduced in the source's Table 2) separates possible, probable and definite FFI, and the 2022 revision (Chu 2022) adds two exclusion items while keeping the step from possible to probable with a positive family history or v-PSG/PET/SPECT abnormalities. The recorded data here reach “probable”; “PRNP (+)” names no variant, whereas FFI is D178N on the same allele as methionine at codon 129 (GeneReviews, 2021 update)."
+      },
+      {
+        "zh-CN": "正常的MRI、脑电图和脑脊液常规不能排除FFI：2018年共识强调辅助检查敏感性低，诊断要素是睡眠、神经精神和自主神经表现，加上PSG、SPECT/PET和家族史。本例的C组表现、PSG和PET都没有记录——把它们写进证据边界。",
+        "en": "A normal MRI, EEG and routine CSF do not exclude FFI: the 2018 consensus stresses the low sensitivity of diagnostic tests and builds the diagnosis on sleep, neuropsychiatric and autonomic features plus PSG, SPECT/PET and the family history. Here the group C features, PSG and PET are all unrecorded — they belong in the evidence boundaries."
+      },
+      {
+        "zh-CN": "先排除可治疗的类似疾病：自身免疫性脑炎和副肿瘤综合征是作者自己列出的鉴别诊断，应送检血清和脑脊液抗体并筛查肿瘤（Graus 2016；中国自身免疫性脑炎诊治专家共识2022年版）；抗IgLON5抗体相关疾病以睡眠障碍伴睡眠呼吸异常为突出表现（Sabater 2014）。原报告没有这些检测。",
+        "en": "Exclude the treatable mimics first: autoimmune encephalitis and paraneoplastic syndromes are in the authors' own differential, so test serum and CSF antibodies and screen for a tumour (Graus 2016; Chinese expert consensus on autoimmune encephalitis, 2022 edition); anti-IgLON5 disease presents with a prominent sleep disorder and sleep-breathing abnormalities (Sabater 2014). The report has none of these tests."
+      },
+      {
+        "zh-CN": "一旦怀疑朊蛋白病（包括遗传型），就按WHO 2000 TSE感染控制指南处理：日常护理按标准预防、无需隔离、不拒绝任何需要的检查或治疗；脑、脊髓和眼是高感染性组织，脑脊液感染性较低；有创操作的器械和标本按TSE要求处理——尽量用一次性器械，接触高感染性组织的器械按专门程序灭活或销毁，标本标注并告知检验科。加拿大CJD感染控制指南（2007）把GSS和FFI患者也列入。本例做过腰椎穿刺，原报告没有提到任何防护措施。",
+        "en": "Once prion disease (including the genetic forms) is suspected, follow the WHO 2000 TSE infection-control guidelines: standard precautions for routine care, no isolation, no needed test or treatment withheld; brain, spinal cord and eye are high-infectivity tissues and CSF carries less infectivity; the instruments and specimens of invasive procedures are handled under TSE precautions — single-use instruments where possible, instruments that touch high-infectivity tissue decontaminated by TSE-specific methods or destroyed, specimens labelled and the laboratory told. The Canadian CJD infection-control guide (2007) includes patients with GSS and FFI. She had a lumbar puncture; the report mentions no precautions."
+      },
+      {
+        "zh-CN": "遗传咨询与家属：常染色体显性遗传，携带者每个子女有50%的风险（GeneReviews 2021）。舅舅提示风险可能来自母系，但母亲的情况没有记录，不能推断；高风险成年亲属是否做预测性检测，在遗传咨询后自愿决定，而且需要先知道她的具体变异。",
+        "en": "Genetic counselling and the family: autosomal dominant inheritance, a 50% risk to each child of a carrier (GeneReviews, 2021 update). The uncle suggests a maternal-line risk, but her mother's status is not recorded and must not be inferred; at-risk adult relatives decide about predictive testing voluntarily after counselling, and testing them first needs her exact variant."
+      },
+      {
+        "zh-CN": "尽早规划舒缓照护：遗传性朊蛋白病目前没有针对病因的治疗（GeneReviews 2021）。本例的后续病程——肺炎、吞咽下降需要胃管、低血糖和营养不良、呼吸衰竭死亡——说明喂养方式、抢救意愿和照护地点要在她还能表达意愿时就讨论。原报告没有记录舒缓医疗或预立医疗照护计划。",
+        "en": "Plan palliative care early: genetic prion disease has no treatment of its cause (GeneReviews, 2021 update). Her later course — pneumonia, failing swallowing needing a feeding tube, hypoglycaemia and malnutrition, death from respiratory failure — shows why feeding, resuscitation and place of care should be discussed while she can still say what she wants. The report records no palliative care or advance care planning."
+      }
+    ],
     "references": [
-      "梁建明; 葉婉婷; 鄧紫瑩; 趙凱茵. 家族性致死性失眠症患者1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.014",
-      "https://rs.yiigle.com/cmaid/1551887",
-      "GeneReviews. Genetic Prion Disease. https://www.ncbi.nlm.nih.gov/books/NBK1229/"
+      "梁建明, 葉婉婷, 鄧紫瑩, 趙凱茵. 家族性致死性失眠症患者1例. 鏡湖醫學. 2025;25(1):57-58. https://rs.yiigle.com/cmaid/1551887. doi:10.12408/j.issn2223-4462.2025.01.014",
+      "Wu LY, Zhan SQ, Huang ZY, et al. Expert consensus on clinical diagnostic criteria for fatal familial insomnia. Chin Med J (Engl). 2018;131(13):1613-1617. doi:10.4103/0366-6999.235115",
+      "Chu M, Xie K, et al. Proposal of new diagnostic criteria for fatal familial insomnia. J Neurol. 2022;269(9):4909-4919. doi:10.1007/s00415-022-11135-6",
+      "Zerr I, Schmitz M. Genetic prion disease. 2003 [updated 2021 Jan 7]. In: Adam MP, et al., editors. GeneReviews® [Internet]. Seattle (WA): University of Washington, Seattle; 1993-. Available from: https://www.ncbi.nlm.nih.gov/books/NBK1229/",
+      "World Health Organization. WHO infection control guidelines for transmissible spongiform encephalopathies: report of a WHO consultation, Geneva, Switzerland, 23-26 March 1999. Geneva: World Health Organization; 2000. WHO/CDS/CSR/APH/2000.3",
+      "Public Health Agency of Canada. Classic Creutzfeldt-Jakob disease in Canada: quick reference guide 2007. Ottawa: Public Health Agency of Canada; 2007.",
+      "Graus F, Titulaer MJ, Balu R, et al. A clinical approach to diagnosis of autoimmune encephalitis. Lancet Neurol. 2016;15(4):391-404. doi:10.1016/S1474-4422(15)00401-9",
+      "中华医学会神经病学分会神经感染性疾病与脑脊液细胞学学组. 中国自身免疫性脑炎诊治专家共识（2022年版）. 中华神经科杂志. 2022;55(9):931-949.",
+      "Sabater L, Gaig C, Gelpi E, et al. A novel non-rapid-eye movement and rapid-eye-movement parasomnia with sleep breathing disorder associated with antibodies to IgLON5: a case series, characterisation of the antigen, and post-mortem study. Lancet Neurol. 2014;13(6):575-586. doi:10.1016/S1474-4422(14)70051-1"
     ],
     "notice": {
       "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
@@ -1332,8 +3297,36 @@
   },
   "unknowns": [
     {
-      "zh-CN": "具体PRNP变异及致病性、密码子129、多导睡眠监测、RT-QuIC、完整可逆病因评估及亲属基因结果。",
-      "en": "Specific PRNP variant/pathogenicity, codon 129, polysomnography, RT-QuIC, full reversible-cause evaluation and relatives’ genetic results."
+      "zh-CN": "PRNP具体变异、129位密码子基因型、杂合状态和致病性分级（报告只写“PRNP（+）”）。",
+      "en": "The PRNP variant, codon-129 genotype, zygosity and pathogenicity class (the report gives only “PRNP (+)”)."
+    },
+    {
+      "zh-CN": "自主神经表现（血压、心率、出汗、呼吸节律）及任何一次就诊的生命体征。",
+      "en": "Autonomic features (blood pressure, heart rate, sweating, breathing pattern) and vital signs at any visit."
+    },
+    {
+      "zh-CN": "多导睡眠监测、FDG-PET或SPECT。",
+      "en": "Polysomnography, FDG-PET or SPECT."
+    },
+    {
+      "zh-CN": "自身免疫性脑炎抗体、副肿瘤筛查；MRI是否包括DWI序列；脑脊液逐项数值、14-3-3蛋白和RT-QuIC。",
+      "en": "Autoimmune-encephalitis antibodies and a paraneoplastic screen; whether the MRI included DWI; itemised CSF values, 14-3-3 protein and RT-QuIC."
+    },
+    {
+      "zh-CN": "首诊时的体格检查和处理；阿普唑仑的剂量和疗程；其他既往史、过敏史、手术史、吸烟饮酒和职业。",
+      "en": "The examination and management at the first visit; the alprazolam dose and duration; other past history, allergies, operations, smoking, alcohol and occupation."
+    },
+    {
+      "zh-CN": "原文“其后出现感能力差”含义不明（打印版亦如此），未采用，也未改写成“记忆”或“感知”。",
+      "en": "The source's phrase “其后出现感能力差” is unclear (so printed) and is not used, nor rewritten as “memory” or “perception”."
+    },
+    {
+      "zh-CN": "母亲及其他亲属的健康和基因状况；舅舅的具体症状和病程。",
+      "en": "Her mother's and other relatives' health and genetic status; the uncle's actual symptoms and course."
+    },
+    {
+      "zh-CN": "每次入院的具体治疗（“支持治疗”、肺炎和低血糖的处理）；尸检。",
+      "en": "The treatment given at each admission (the “supportive treatment”, the management of the pneumonia and the hypoglycaemia); autopsy."
     }
   ],
   "assets": [
@@ -1342,12 +3335,12 @@
       "kind": "pdf",
       "path": "/local-assets/cases/cmcr-1551887/source.pdf",
       "title": {
-        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
-        "en": "Source PDF (contains the outcome; for debrief review)"
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页下方另有其他文章的参考文献续页）",
+        "en": "Source PDF (contains the outcome; for debrief review; the foot of page 2 carries another article's continued references)"
       },
       "credit": {
-        "zh-CN": "原作者及出版方保留版权。",
-        "en": "Copyright retained by the original authors and publisher."
+        "zh-CN": "梁建明、葉婉婷、鄧紫瑩、趙凱茵，2025。原作者及出版方保留版权。",
+        "en": "梁建明, 葉婉婷, 鄧紫瑩, 趙凱茵 (authors' names as printed), 2025. Copyright retained by the original authors and publisher."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1364,15 +3357,15 @@
     },
     {
       "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
       "itemId": "sleep-pattern"
     },
     {
       "type": "ask",
-      "itemId": "medications"
-    },
-    {
-      "type": "ask",
-      "itemId": "weight-change"
+      "itemId": "concentration"
     },
     {
       "type": "ask",
@@ -1380,7 +3373,23 @@
     },
     {
       "type": "ask",
+      "itemId": "weight-change"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "dose"
+    },
+    {
+      "type": "ask",
       "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "autonomic"
     },
     {
       "type": "ask",
@@ -1404,23 +3413,7 @@
     },
     {
       "type": "ask",
-      "itemId": "dose"
-    },
-    {
-      "type": "ask",
-      "itemId": "self-care"
-    },
-    {
-      "type": "ask",
       "itemId": "expectations"
-    },
-    {
-      "type": "examine",
-      "findingId": "initial-exam"
-    },
-    {
-      "type": "examine",
-      "findingId": "initial-neuro"
     },
     {
       "type": "set-phase",
@@ -1428,15 +3421,35 @@
     },
     {
       "type": "ask",
-      "itemId": "progression"
+      "itemId": "admission-complaint"
     },
     {
       "type": "ask",
-      "itemId": "family"
+      "itemId": "speech-movements"
+    },
+    {
+      "type": "ask",
+      "itemId": "memory"
+    },
+    {
+      "type": "ask",
+      "itemId": "anxiety"
+    },
+    {
+      "type": "ask",
+      "itemId": "vision"
     },
     {
       "type": "ask",
       "itemId": "recent-infection"
+    },
+    {
+      "type": "ask",
+      "itemId": "sleep-admission"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
     },
     {
       "type": "examine",
@@ -1475,12 +3488,62 @@
     },
     {
       "type": "order",
+      "investigationId": "routine"
+    },
+    {
+      "type": "read",
+      "investigationId": "routine",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "dec-workup",
+      "optionIds": [
+        "wu-family",
+        "wu-antibodies",
+        "wu-prnp"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "ae-antibodies"
+    },
+    {
+      "type": "read",
+      "investigationId": "ae-antibodies",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "dec-infection",
+      "optionIds": [
+        "ic-tse"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "tse-precautions"
+    },
+    {
+      "type": "set-phase",
+      "phase": "clinic"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "genetic-counselling"
+    },
+    {
+      "type": "order",
       "investigationId": "prnp"
     },
     {
       "type": "read",
       "investigationId": "prnp",
-      "phase": "workup"
+      "phase": "clinic"
     },
     {
       "type": "order",
@@ -1489,20 +3552,33 @@
     {
       "type": "read",
       "investigationId": "sleep-study",
-      "phase": "workup"
+      "phase": "clinic"
+    },
+    {
+      "type": "order",
+      "investigationId": "pet"
+    },
+    {
+      "type": "read",
+      "investigationId": "pet",
+      "phase": "clinic"
     },
     {
       "type": "answer",
-      "decisionId": "diagnosis",
+      "decisionId": "dx-criteria",
       "optionIds": [
-        "supported"
+        "probable-unverified"
       ]
     },
     {
+      "type": "intervene",
+      "interventionId": "palliative-acp"
+    },
+    {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "dec-family",
       "optionIds": [
-        "supported"
+        "fam-counsel"
       ]
     },
     {
@@ -1525,115 +3601,283 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "最初是什么不适？",
+        "text": "你好，今天来看什么？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "What were the first symptoms?",
+        "text": "What seems to be the problem?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "睡不好具体表现是什么？",
+        "text": "什么时候开始睡不好的？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long has this been going on?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "睡得怎么样？做梦多吗？",
         "locale": "zh-CN",
         "expect": [
           "sleep-pattern"
         ]
       },
       {
-        "text": "What was the sleep disturbance like?",
+        "text": "做噩梦吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "sleep-pattern"
+        ]
+      },
+      {
+        "text": "白天困不困？",
+        "locale": "zh-CN",
+        "expect": [
+          "sleep-pattern"
+        ]
+      },
+      {
+        "text": "How are you sleeping?",
         "locale": "en",
         "expect": [
           "sleep-pattern"
         ]
       },
       {
-        "text": "症状前后用过哪些药？",
-        "locale": "zh-CN",
-        "expect": [
-          "medications"
-        ]
-      },
-      {
-        "text": "Which medicines were used around symptom onset?",
+        "text": "Do you have nightmares?",
         "locale": "en",
         "expect": [
-          "medications"
+          "sleep-pattern"
         ]
       },
       {
-        "text": "食欲和体重怎样？",
+        "text": "能集中注意力吗？",
         "locale": "zh-CN",
         "expect": [
-          "weight-change"
+          "concentration"
         ]
       },
       {
-        "text": "How were appetite and weight?",
+        "text": "Can you focus at work?",
         "locale": "en",
         "expect": [
-          "weight-change"
+          "concentration"
         ]
       },
       {
-        "text": "开始时有没有明显情绪低落？",
+        "text": "心情怎么样？",
         "locale": "zh-CN",
         "expect": [
           "mood"
         ]
       },
       {
-        "text": "Was there clear low mood initially?",
+        "text": "Have you been feeling down?",
         "locale": "en",
         "expect": [
           "mood"
         ]
       },
       {
-        "text": "随后记忆和行为有何变化？",
+        "text": "体重有变化吗？",
         "locale": "zh-CN",
         "expect": [
-          "progression"
+          "weight-change"
         ]
       },
       {
-        "text": "How did memory and behaviour subsequently change?",
+        "text": "Have you lost weight?",
         "locale": "en",
         "expect": [
-          "progression"
+          "weight-change"
         ]
       },
       {
-        "text": "亲属有类似的病程吗？",
+        "text": "吃过安眠药吗？",
         "locale": "zh-CN",
         "expect": [
-          "family"
+          "medications"
         ]
       },
       {
-        "text": "Did any relative have a similar course?",
+        "text": "Are you on any medication?",
         "locale": "en",
         "expect": [
-          "family"
+          "medications"
         ]
       },
       {
-        "text": "住院前有近期感染记录吗？",
+        "text": "Have you taken anything to help you sleep?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "阿普唑仑吃了几片？",
+        "locale": "zh-CN",
+        "expect": [
+          "dose"
+        ]
+      },
+      {
+        "text": "以前有什么病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Any past medical history?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "有没有出很多汗或者心慌？",
+        "locale": "zh-CN",
+        "expect": [
+          "autonomic"
+        ]
+      },
+      {
+        "text": "Any sweating or palpitations?",
+        "locale": "en",
+        "expect": [
+          "autonomic"
+        ]
+      },
+      {
+        "text": "有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "她为什么这次住院？",
+        "locale": "zh-CN",
+        "expect": [
+          "admission-complaint"
+        ]
+      },
+      {
+        "text": "Why was she admitted?",
+        "locale": "en",
+        "expect": [
+          "admission-complaint"
+        ]
+      },
+      {
+        "text": "她说话有没有变得乱七八糟？",
+        "locale": "zh-CN",
+        "expect": [
+          "speech-movements"
+        ]
+      },
+      {
+        "text": "Has her speech changed?",
+        "locale": "en",
+        "expect": [
+          "speech-movements"
+        ]
+      },
+      {
+        "text": "记性怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "memory"
+        ]
+      },
+      {
+        "text": "Is her memory getting worse?",
+        "locale": "en",
+        "expect": [
+          "memory"
+        ]
+      },
+      {
+        "text": "她最近焦虑吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "anxiety"
+        ]
+      },
+      {
+        "text": "Has she been anxious?",
+        "locale": "en",
+        "expect": [
+          "anxiety"
+        ]
+      },
+      {
+        "text": "看东西清楚吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "Any problems with her vision?",
+        "locale": "en",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "最近有没有感冒发烧？",
         "locale": "zh-CN",
         "expect": [
           "recent-infection"
         ]
       },
       {
-        "text": "Was there a recent infection before admission?",
+        "text": "Has she had covid recently?",
         "locale": "en",
         "expect": [
           "recent-infection"
+        ]
+      },
+      {
+        "text": "家里有人得过类似的病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Has anyone in your family had anything similar?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anything run in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
         ]
       }
     ]
