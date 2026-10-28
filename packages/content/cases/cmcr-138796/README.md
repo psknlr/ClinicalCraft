@@ -272,7 +272,7 @@ decisions right first time and no contraindicated interventions.
 - Offline autopilot (2026-10-28): clinical and embodied, zh-CN and en, all
   24/24 (100 %), every objective done.
 
-## Fidelity limits — source and adaptation
+## Source and adaptation
 
 **From the report** (paraphrased): age, sex, symptoms and their order; the
 dated local-hospital, clinic and surgical findings (converted to relative

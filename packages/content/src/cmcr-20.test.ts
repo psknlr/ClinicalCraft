@@ -69,3 +69,69 @@ describe("CMCR published-case collection", () => {
     expect(verification.ok, JSON.stringify(verification.issues)).toBe(true);
   });
 });
+
+/** Same text for the matcher: case, spaces and sentence punctuation do not count. */
+const plain = (s: string): string => s.toLowerCase().replace(/[\s?？。.!！,，]/g, "");
+const DOI = /^10\.\d{4,9}\/[-._;()/:A-Za-z0-9]+$/;
+
+function load(id: string) {
+  const parsed = parseCase(JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")));
+  if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues));
+  return parsed.value;
+}
+
+describe("CMCR teaching depth and governance (docs/CASE_AUTHORING.md §9)", () => {
+  for (const id of ids) it(`${id}: decisions, rubric, debrief, references, matcher corpus and README`, () => {
+    const c = load(id);
+    expect(c.version).toBe("1.1.0");
+    // Decisions test reasoning: at least three, each with at least three options and feedback of its own.
+    expect(c.decisions.length).toBeGreaterThanOrEqual(3);
+    for (const d of c.decisions) {
+      expect(d.options.length, d.id).toBeGreaterThanOrEqual(3);
+      const feedback = d.options.map((o) => JSON.stringify(o.feedback));
+      expect(new Set(feedback).size, `${d.id}: identical feedback on two options`).toBe(feedback.length);
+    }
+    // The rubric: a safety item, first-try decision scoring and one examiner-judged communication item.
+    expect(c.rubric.length).toBeGreaterThanOrEqual(8);
+    expect(c.rubric.some((r) => r.domain === "safety")).toBe(true);
+    expect(JSON.stringify(c.rubric)).toContain("decidedFirstTry");
+    expect(c.rubric.some((r) => r.domain === "communication" && !r.met && !!r.judgeGuidance)).toBe(true);
+    expect(c.debrief.teachingPoints.length).toBeGreaterThanOrEqual(3);
+    expect(c.learningOutcomes.length).toBeGreaterThanOrEqual(4);
+    // An honest review status: editorial, never a claimed clinician review.
+    expect(c.provenance.review?.status).toBe("editorial");
+    expect(c.provenance.review?.notes?.en).toMatch(/not yet reviewed by a licensed clinician/);
+    // The library card and the triage note are different texts.
+    for (const locale of ["zh-CN", "en"] as const) expect(c.summary[locale], locale).not.toBe(c.patient.triageNote?.[locale]);
+    // References: well-formed DOIs (a hyphen, never an en dash).
+    expect(c.provenance.doi).toMatch(DOI);
+    for (const ref of c.debrief.references) {
+      for (const m of ref.matchAll(/\b10\.\d{4,9}\/\S+/g)) expect(m[0].replace(/[.,;]+$/, ""), ref).toMatch(DOI);
+    }
+    // The matcher corpus: genuine paraphrases, none a canonical question, one for every required history item.
+    const utterances = c.extensions.testUtterances as { text: string; locale: string; expect: string[] }[];
+    expect(utterances.length).toBeGreaterThanOrEqual(30);
+    const questions = new Set(c.history.flatMap((h) => [h.question["zh-CN"], h.question.en]).filter((q): q is string => !!q).map(plain));
+    expect(utterances.filter((u) => questions.has(plain(u.text))).map((u) => u.text)).toEqual([]);
+    for (const h of c.history.filter((item) => item.required)) {
+      expect(utterances.some((u) => u.expect.includes(h.id)), `no paraphrase for ${h.id}`).toBe(true);
+    }
+    // A record review reads the chart: no device, no sampling, no procedure risk.
+    for (const i of c.investigations.filter((inv) => inv.requires.includes("records"))) {
+      expect(i.requires, i.id).toEqual(["records"]);
+      expect(i.risk, i.id).toBe("none");
+    }
+    // The facilitator guide.
+    const readme = readFileSync(new URL(`../cases/${id}/README.md`, import.meta.url), "utf8");
+    for (const heading of ["Learning outcomes", "Source and adaptation", "References", "Changelog", "中文摘要"]) {
+      expect(readme, heading).toMatch(new RegExp(`^## ${heading}`, "m"));
+    }
+  });
+
+  it("gives every patient a distinct pseudonym in both languages", () => {
+    for (const locale of ["zh-CN", "en"] as const) {
+      const names = ids.map((id) => load(id).patient.displayName[locale]);
+      expect(new Set(names).size, locale).toBe(names.length);
+    }
+  });
+});

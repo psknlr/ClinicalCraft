@@ -2978,7 +2978,7 @@
         ]
       },
       {
-        "text": "does he smoke?",
+        "text": "is he a smoker?",
         "locale": "en",
         "expect": [
           "smoking"
@@ -2992,7 +2992,7 @@
         ]
       },
       {
-        "text": "does he drink alcohol?",
+        "text": "does he drink at all?",
         "locale": "en",
         "expect": [
           "alcohol"

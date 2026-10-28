@@ -215,7 +215,7 @@ the team relocation is not charged. The portable film and the bedside samples ar
 **Measured (offline autopilot, 2026-10-28).** `general-hospital`, en: 16/16 (100 %), 5/5 objectives, no contraindicated
 intervention; clinical and in-world mode give the same score (static clock, 0 simulated minutes).
 
-## Fidelity limits
+## Source and adaptation
 
 * **Source and adaptation.**
   * *From the report:* age, sex, gestation, the poultry exposure and household, the admission exam and blood count,
