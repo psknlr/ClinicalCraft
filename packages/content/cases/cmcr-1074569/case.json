@@ -74,8 +74,8 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，病例文本中已去除医院、日历日期和可识别的职业细节，时间以相对时间表示；原文图表保留其原始标注（CEA曲线的横轴为治疗期间的日期）。对话、问题、决策、评分和处置选项为教学设计；原文未记录的数据保持未知。原报告的肝脏MRI合图及转载该图的原文PDF含可识别信息，出于隐私保护未纳入，其所见以文字保留。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms; hospitals, calendar dates and identifying occupational details are removed from the case text, and times are relative; published figures keep their original annotations (the CEA curve's x-axis shows dates during treatment). Dialogue, questions, decisions, scoring and management options are educational design; data the source does not record stay unknown. The report's liver MRI composite, and the source PDF that reprints it, carry identifying details and are withheld for privacy; their findings are kept as text."
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，病例文本中已去除医院、日历日期和可识别的职业细节，时间以相对时间表示。对话、问题、决策、评分和处置选项为教学设计；原文未记录的数据保持未知。原报告的肝脏MRI合图及转载该图的原文PDF含可识别信息、CEA曲线（原文图3）横轴标有患者检查的日历日期，均未纳入本病例，其所见以文字保留。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms; hospitals, calendar dates and identifying occupational details are removed from the case text, and times are relative. Dialogue, questions, decisions, scoring and management options are educational design; data the source does not record stay unknown. The report's liver MRI composite and the source PDF that reprints it carry identifying details, and the CEA curve (source fig. 3) carries the calendar dates of the patient's tests; all three are withheld, and their findings are kept as text."
     },
     "review": {
       "status": "editorial",
@@ -1517,8 +1517,8 @@
             "en": "Whole course (first visit to the time of the report)"
           },
           "text": {
-            "zh-CN": "原文没有逐点列出CEA数值；治疗全程的CEA曲线（原文图3）见随访记录。",
-            "en": "The source does not list CEA values point by point; the whole-course CEA curve (source fig. 3) is in the follow-up record."
+            "zh-CN": "原文没有逐点列出CEA数值；治疗全程的CEA曲线（原文图3）因标有日历日期未纳入本病例。",
+            "en": "The source does not list CEA values point by point; the whole-course CEA curve (source fig. 3) is withheld because it carries calendar dates."
           },
           "source": {
             "zh-CN": "治疗经过",
@@ -2306,15 +2306,13 @@
             "en": "To the time of the report (after about month 27)"
           },
           "text": {
-            "zh-CN": "尾状叶切除和其后的FOLFIRI联合西妥昔单抗治疗之后，以氟尿嘧啶+亚叶酸钙+西妥昔单抗每2周一次维持治疗，至报告截稿时定期复查未见复发转移。原文没有报告总生存时间或更长期的结局。原文图3为治疗全程的CEA变化曲线。",
-            "en": "After the caudate resection and the FOLFIRI plus cetuximab that followed, she continued fluorouracil + calcium folinate + cetuximab every 2 weeks as maintenance; regular reviews showed no recurrence or metastasis up to the time of the report. The source reports no overall survival or longer-term outcome. Source fig. 3 is the CEA curve across the whole course."
+            "zh-CN": "尾状叶切除和其后的FOLFIRI联合西妥昔单抗治疗之后，以氟尿嘧啶+亚叶酸钙+西妥昔单抗每2周一次维持治疗，至报告截稿时定期复查未见复发转移。原文没有报告总生存时间或更长期的结局。原文图3为治疗全程的CEA变化曲线，因横轴标有患者各次检查的日历日期，未纳入本病例。",
+            "en": "After the caudate resection and the FOLFIRI plus cetuximab that followed, she continued fluorouracil + calcium folinate + cetuximab every 2 weeks as maintenance; regular reviews showed no recurrence or metastasis up to the time of the report. The source reports no overall survival or longer-term outcome. Source fig. 3, the CEA curve across the whole course, is withheld because its x-axis carries the calendar dates of the patient’s tests."
           },
-          "figures": [
-            "fig02"
-          ],
+          "figures": [],
           "note": {
-            "zh-CN": "图3保留原图的日期标注（横轴为检测日期）；病例文本使用相对时间。原文没有给出曲线上各点的数值。",
-            "en": "Fig. 3 keeps the published figure's date labels (the x-axis shows test dates); the case text uses relative time. The source gives no values for the points on the curve."
+            "zh-CN": "病例内容只用相对时间，因此未收录标有日历日期的CEA曲线（原文图3）；原文也没有给出曲线上各点的数值。",
+            "en": "Case content uses relative time only, so the CEA curve with calendar dates on its axis (source fig. 3) is not included; the source gives no values for the points on the curve either."
           },
           "source": {
             "zh-CN": "治疗经过",
@@ -4080,24 +4078,7 @@
       "en": "CEA values at each time point (after presentation only the curve in source fig. 3); the capecitabine maintenance dose and dates; the exact time of the last follow-up and overall survival."
     }
   ],
-  "assets": [
-    {
-      "id": "fig02",
-      "kind": "image",
-      "path": "/local-assets/cases/cmcr-1074569/fig02.png",
-      "title": {
-        "zh-CN": "原报告图3：治疗全程的CEA变化曲线（横轴保留原图的日期标注）",
-        "en": "Source figure 3: CEA across the whole course of treatment (the x-axis keeps the original date labels)"
-      },
-      "credit": {
-        "zh-CN": "原报告图（林奇等，2014）。版权归原权利人。",
-        "en": "Original report figure (林奇 et al., 2014). Copyright remains with the original rights holders."
-      },
-      "license": "© original rights holders — local teaching use only",
-      "localOnly": true,
-      "sha256": "19e0e14b34ea285e3f9038b2233eceb2dbe147e084b533a48b735465620b8a5e"
-    }
-  ],
+  "assets": [],
   "solution": [
     {
       "type": "start"

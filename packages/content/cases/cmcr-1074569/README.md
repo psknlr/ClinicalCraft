@@ -194,7 +194,7 @@ right first time and no contraindicated intervention.
   and does not match the usual bolus + 46-hour infusion split (400 + 2400 mg/m²) — kept as printed and labelled "not a
   dosing reference".
 - **Timeline:** 4 cycles every 2 weeks ≈ 8 weeks (months 1–3); recurrence at month 20 (17 months after the
-  hepatectomy); 12 FOLFIRI cycles ≈ 24 weeks (months 21–27). The CEA curve (fig. 3) spans about 28 months.
+  hepatectomy); 12 FOLFIRI cycles ≈ 24 weeks (months 21–27). The source's CEA curve (fig. 3, withheld) spans about 28 months.
 
 ## Facilitator notes
 
@@ -280,9 +280,8 @@ unknown (`disclosure: "unknown"`, the library's "That isn't recorded in my case 
 
 **Figures.** `fig01` (the liver MRI composite, source figs 1–2) and the source PDF are **withdrawn** (identifying
 overlays; `scripts/cmcr-withdrawn-assets.json`); their findings are kept as text in the MRI results. `fig02` (source
-fig. 3, the CEA curve) was viewed: it carries test dates on its x-axis and the journal watermark, no direct
-identifier, and stays under the provenance note that published figures keep their annotations. It spans the whole
-course, so it is attached only to the `followup` record (the last phase), not to an earlier result.
+fig. 3, the CEA curve) is **withdrawn** too: its x-axis carries the calendar dates of the patient's tests, and the
+case content uses relative time only. The follow-up record says so; the course itself is given in the records.
 
 ## Matcher notes
 
@@ -341,6 +340,8 @@ White Rose repository; PubMed record 36252154 via a library catalogue and Guidel
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
+- Privacy: source fig. 3 (the CEA curve) withdrawn — its axis shows the calendar dates of the patient's tests
+  (`scripts/cmcr-withdrawn-assets.json`); the follow-up record says why.
 - **Decisions rebuilt:** 2 binary questions with identical feedback on both options → 5 decisions (one select-all)
   with 4–5 options and distinct feedback, opened only when their evidence exists and before the record that answers
   them: diagnosis, sequencing with an obstructing primary, biomarkers before first-line therapy, conversion timing,

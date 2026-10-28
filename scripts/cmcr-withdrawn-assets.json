@@ -1,5 +1,5 @@
 {
-  "$comment": "CMCR source media that are never installed or shown because they identify a patient (docs/CMCR_CASES.md, Privacy). The installer refuses them and removes a copy an earlier version installed (matched by checksum); the collection test keeps them out of the cases.",
+  "$comment": "CMCR source media that are never installed or shown because they identify a patient or carry the patient's calendar dates (docs/CMCR_CASES.md, Privacy). The installer refuses them and removes a copy an earlier version installed (matched by checksum); the collection test keeps them out of the cases.",
   "withdrawn": [
     {
       "case": "cmcr-70005",
@@ -24,6 +24,12 @@
       "file": "source.pdf",
       "sha256": "2ee732e4f7d44a34cd8245c1d07afaa66f182f97b48146b3b8d7679bb03ebfe2",
       "reason": "The source PDF reprints that MRI composite."
+    },
+    {
+      "case": "cmcr-1074569",
+      "file": "fig02.png",
+      "sha256": "19e0e14b34ea285e3f9038b2233eceb2dbe147e084b533a48b735465620b8a5e",
+      "reason": "The CEA chart's x-axis carries the day-level calendar dates of the patient's tests; case content uses relative time only."
     },
     {
       "case": "cmcr-1653409",

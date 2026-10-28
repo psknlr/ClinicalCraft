@@ -86,7 +86,7 @@ The cases run in the general hospital in in-world (embodied) mode, and the offli
 
 The downloaded `selected-20` directory holds `<articleId>.json`, `<articleId>.txt`, `<articleId>.pdf`, and `media/<articleId>/<original filename>`. Its `manifest.json`, `drive-files.json` and `download-audit.json` preserve local source and integrity records. The source corpus has 57,571 parseable records; malformed JSONL lines 19,624 and 27,321 were excluded. Corpus SHA-256: `0c4ca86979fd5edb4f95fc1dd983087dde479255492b4edacf698050dce0a53c`.
 
-The download contains 20 PDFs, 24 figures and 4 table CSVs. The cases reference 22 figures and 17 PDFs: the other two figures and three PDFs are withdrawn because they identify a patient (see Privacy below). The withdrawn images' findings remain in the cases as text.
+The download contains 20 PDFs, 24 figures and 4 table CSVs. The cases reference 21 figures and 17 PDFs: the other three figures and three PDFs are withdrawn because they identify a patient or carry the patient's calendar dates (see Privacy below). The withdrawn images' findings remain in the cases as text.
 
 ```sh
 node scripts/install-cmcr-assets.mjs "E:/clinicalcraft-source/中华病例说/selected-20"
@@ -98,18 +98,19 @@ The installer verifies PNG/PDF signatures and the authored checksums, refuses wi
 ## 隐私 / Privacy
 
 - 病例文本使用化名，已去除医院、日历日期、证件号及可识别的职业细节；时间以相对时间表示（如“入院第3天”）。化名在 20 例中互不重复。
-- 每张原图和 PDF 页面都按原始分辨率检查过烧录的身份信息（姓名、证件号或病历号、出生日期、医院、影像采集日期时间）。含此类信息的文件一律撤下：列入 `scripts/cmcr-withdrawn-assets.json`（附原因和校验和），安装脚本拒绝安装，并删除旧版本已安装的同一文件；病例集测试保证病例不再引用它。所见仍以文字保留，复盘时的参考文献（DOI、链接）指向出版方原文。
+- 每张原图和全部 20 份 PDF 的每一页（300 dpi）都按原始分辨率检查过烧录的身份信息（姓名、证件号或病历号、出生日期、医院、影像采集日期时间）。含此类信息、或在病例中展示时带有患者日历日期的文件一律撤下：列入 `scripts/cmcr-withdrawn-assets.json`（附原因和校验和），安装脚本拒绝安装，并删除旧版本已安装的同一文件；病例集测试保证病例不再引用它。所见仍以文字保留，复盘时的参考文献（DOI、链接）指向出版方原文。
 - 论文正文中的作者单位、通讯邮箱和日期属于出版信息，不是病例文本；原文 PDF 只在病例完成后开放。
 
-Case text uses pseudonyms (distinct across the 20) and omits hospitals, calendar dates, ID numbers and identifying occupational details. Every figure and PDF page was checked at full resolution for burned-in direct identifiers (a name, an ID or record number, a date of birth, a hospital, an acquisition date and time in a scanner overlay). A file that shows one is withdrawn: it is listed in `scripts/cmcr-withdrawn-assets.json` with its reason and checksum, the installer refuses it, and the collection test keeps it out of the cases. Publication metadata printed in the article text (author affiliations, a correspondence e-mail, dates in the report) is part of the publication, not of the case text; the source PDF opens only after the case is complete.
+Case text uses pseudonyms (distinct across the 20) and omits hospitals, calendar dates, ID numbers and identifying occupational details. Every figure, every embedded image and all 44 pages of the 20 PDFs (rendered at 300 dpi) were checked at full resolution for burned-in direct identifiers (a name, an ID or record number, a date of birth, a hospital, an acquisition date and time in a scanner overlay). A file that shows one — or a figure shown during play that carries the patient's calendar dates — is withdrawn: it is listed in `scripts/cmcr-withdrawn-assets.json` with its reason and checksum, the installer refuses it, and the collection test keeps it out of the cases. Publication metadata printed in the article text (author affiliations, a correspondence e-mail, dates in the report) is part of the publication, not of the case text; the source PDF opens only after the case is complete.
 
 | Case | Withdrawn | Why |
 |---|---|---|
 | cmcr-70005 | groin CT (fig01), source PDF | the CT shows the patient's name, an ID number, the hospital and the scan time; the PDF reprints it |
 | cmcr-1074569 | liver MRI composite (fig01), source PDF | identifying overlays (date of birth, acquisition time, an ID number); the PDF reprints it |
+| cmcr-1074569 | CEA curve (fig02) | its x-axis shows the calendar dates of the patient's tests, while case content uses relative time only |
 | cmcr-1653409 | source PDF | its back cover reprints another article's PET/CT with the hospital, that patient's date of birth and the scan date |
 
-Published figures may keep chart annotations — the 1074569 CEA curve's axis shows treatment dates — and the case's provenance note says so. Journal PDFs share pages with other articles; the PDF asset titles say what else is on the pages:
+The remaining figures carry at most the journal's watermark. Journal PDFs share pages with other articles; the PDF asset titles say what else is on the pages:
 
 - part of another article: 1423434 p1, 33716 p2, 1653406 p2 (journal p79), 1551887 p2, 1551894 p2, 1653403 p2, 1423446 p2 (a notice to authors), 51617 p1, 1551893 p2;
 - the journal's back-cover figure page, with other articles' clinical images and no direct identifier: 1551890 p3, 1551894 p3, 1653403 p3, 1653404 p3. Two of them show a software screenshot with a computer user name (1551890, 1551894) — not a patient identifier.
