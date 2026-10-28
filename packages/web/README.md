@@ -4,9 +4,17 @@ The 3D voxel clinical world (Vite + three@0.180.0, vanilla TypeScript DOM, no
 UI framework). The world is built from a facility JSON and the equipment
 catalogs; patients and staff are voxel NPCs; equipment is interactive
 (workstations take orders, monitors show live vitals and an ECG trace, the
-evidence board takes decisions, the atlas kiosk opens the anatomy viewer).
+case board takes decisions, the atlas kiosk opens the anatomy viewer).
 The `ClinicalSession` runs in the browser, so the world is fully playable
-offline. The UI is bilingual (zh-CN / en).
+offline. The UI is bilingual (zh-CN / en), in the words of
+[docs/GLOSSARY.md](../../docs/GLOSSARY.md).
+
+**Case library:** each card states the case's clinical review status
+("Editorial review" — the selected case: "Editorial review 2026-10-28 · not
+yet reviewed by a licensed clinician"); the selected case's learning outcomes
+sit in a closed "Learning outcomes (n) · may reveal the diagnosis" disclosure
+(their text comes from the full case: the bundled index carries a count only);
+the debrief lists them in full, with the guidance the review checked.
 
 ```bash
 npm run dev                      # http://localhost:5173 (workspace packages from source, no build needed)
@@ -23,7 +31,7 @@ npm run test:e2e                 # Playwright (Chromium + SwiftShader WebGL)
 | `proxy` | the page is served by `clinicalcraft serve`; calls go through `POST /api/llm/stream` and keys stay on the server |
 | `direct` | your own key, kept in `sessionStorage` unless you opt in to remember it; Anthropic via the official SDK (`dangerouslyAllowBrowser` only in this mode), OpenAI-compatible providers via `fetch` |
 
-**Embodied mode** (the default; docs/EMBODIED.md §2.1, §6): the UI shows no
+**Embodied mode** — "In-world mode" to the learner (the default; docs/EMBODIED.md §2.1, §6): the UI shows no
 more than the world lets the learner perceive and never decides by a rule of
 its own. The monitor panel and the HUD's vitals strip show the live screen
 only while the world's vitals check holds through that monitor's screen
@@ -31,7 +39,7 @@ only while the world's vitals check holds through that monitor's screen
 verdict from where the learner stands (done here, a short step the UI takes
 and announces, or the world's reason with "Go there" / the act to do first);
 lab tests are ordered at the patient's side from the patient's **Tests** tab
-(the sample is taken there); the autopilot's live trace, the delegation
+(the sample is taken there); the demonstration's (autopilot's) live trace, the delegation
 outcome and the HUD dock speak the learner's language (`ui/panels/trace-labels.ts`),
 colleagues are named (`app/staff.ts`). Bodies the world moves are animated
 (`app/embodied.ts`: `BrowserMover` follows the world's route; a transported

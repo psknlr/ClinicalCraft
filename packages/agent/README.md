@@ -2,7 +2,10 @@
 
 The ClinicalCraft agent runtime. A `ClinicalSession` owns one case and its
 engine state, runs the LLM-driven (or offline) patient, companion, nurse,
-consultants, attending, examiner and clinician agents, and speaks a
+consultants, attending, examiner and clinician agents — personas built on
+simulation-education practice: standardised-patient portrayal (ASPE), ISBAR /
+SBAR handover and escalation, PEARLS debriefing with advocacy–inquiry,
+Calgary–Cambridge communication (`agents/builtin.ts`; PROTOCOL §8) — and speaks a
 Codex-style submission/event protocol: front-ends `submit(Op)` and consume
 `AgentEvent`s. The runtime never touches a UI, so the web world, the REPL,
 headless `exec`, the HTTP server and the MCP server are all protocol clients.
@@ -11,7 +14,7 @@ Two entry points:
 
 | import | for |
 |---|---|
-| `@clinicalcraft/agent` | isomorphic (browser-safe, no `node:*`): protocol, providers, tools, approval gate, hooks runner, slash commands, agents, `createSession`, the case library order and index-entry builder (`libraryOrder`, `caseIndexEntry`) |
+| `@clinicalcraft/agent` | isomorphic (browser-safe, no `node:*`): protocol, providers, tools, approval gate, hooks runner, slash commands, agents, `createSession`, the case library order and index-entry builder (`libraryOrder`, `caseIndexEntry`; the entry's `review` and `learningOutcomeCount`), runtime strings (`rt`, `reviewStatusLine`) |
 | `@clinicalcraft/agent/node` | Node only: settings files, `CLINICALCRAFT.md` memory, custom agents/commands, shell-command hooks, JSONL transcripts, `loadContent`, the case index over content directories (`CaseIndexer`), `createNodeSession` |
 
 ```ts

@@ -13,7 +13,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { dispatch, enterCase, freshStart, useStation } from "./helpers.js";
+import { dispatch, enterCase, freshStart, shot, useStation } from "./helpers.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const disclaimer = (caseId: string): Record<"zh-CN" | "en", string> =>
@@ -53,6 +53,52 @@ async function expectClearOfControls(page: Page, notice: Locator): Promise<void>
     expect(intersects(card!, c.box), `quest card overlaps ${c.id}`).toBe(false);
   }
 }
+
+test.describe("review status and learning outcomes on the case card (docs/GLOSSARY.md §4)", () => {
+  const stemi = (): { learningOutcomes?: Record<"zh-CN" | "en", string>[]; provenance: { review?: { status: string; reviewedAt?: string } } } =>
+    JSON.parse(fs.readFileSync(path.resolve(here, "../../content/cases/stemi-inferior-rv/case.json"), "utf8"));
+
+  test("the review is stated on the card; the outcomes stay closed until opened (zh-CN, desktop)", async ({ page }) => {
+    const c = stemi();
+    test.skip(!c.provenance.review || !c.learningOutcomes?.length, "the STEMI case records no review or outcomes yet");
+    await freshStart(page);
+    const card = page.locator('.case-card[data-case="stemi-inferior-rv"]');
+    await expect(card.locator(".review-tag")).toHaveText("编辑审核");
+    await card.click();
+    await expect(page.locator("#case-review")).toHaveText(`编辑审核 ${c.provenance.review!.reviewedAt} · 尚未经执业医师审核`);
+    const outcomes = page.locator("#case-outcomes");
+    await expect(outcomes).toHaveJSProperty("open", false);
+    await expect(outcomes.locator("summary")).toHaveText(`学习目标（${c.learningOutcomes!.length}）· 可能提示诊断`);
+    await expect(outcomes.locator("li").first()).toBeHidden();
+    await outcomes.locator("summary").click();
+    await expect(outcomes.locator("li")).toHaveCount(c.learningOutcomes!.length);
+    await expect(outcomes.locator("li").first()).toHaveText(c.learningOutcomes![0]!["zh-CN"]);
+    await page.locator(".intro-selected").scrollIntoViewIfNeeded();
+    await shot(page, "case-card-review-outcomes-desktop-zh");
+  });
+
+  test.describe("on a phone (390×844, touch)", () => {
+    test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+
+    test("fits the screen with the outcomes open (en)", async ({ page }) => {
+      const c = stemi();
+      test.skip(!c.provenance.review || !c.learningOutcomes?.length, "the STEMI case records no review or outcomes yet");
+      await freshStart(page);
+      await page.locator("#lang-toggle").click();
+      await page.waitForFunction(() => document.documentElement.lang === "en");
+      await page.locator('.case-card[data-case="stemi-inferior-rv"]').click();
+      await expect(page.locator("#case-review")).toHaveText(`Editorial review ${c.provenance.review!.reviewedAt} · not yet reviewed by a licensed clinician`);
+      const outcomes = page.locator("#case-outcomes");
+      await outcomes.locator("summary").click();
+      await expect(outcomes.locator("li").first()).toHaveText(c.learningOutcomes![0]!.en);
+      await outcomes.scrollIntoViewIfNeeded();
+      const box = (await outcomes.boundingBox())!;
+      expect(box.x + box.width).toBeLessThanOrEqual(390.5);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+      await shot(page, "case-card-review-outcomes-phone-en");
+    });
+  });
+});
 
 test.describe("case disclaimer (L9)", () => {
   test("intro summary, once on entering the world, and in Sources (zh-CN, desktop)", async ({ page }) => {

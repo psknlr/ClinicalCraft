@@ -31,6 +31,7 @@ npm run test:e2e           # Playwright (web)
 - TypeScript ESM, `NodeNext`: relative imports end in `.js`.
 - Contract types first; keep modules small (no god files); JSDoc on exports.
 - All user-facing strings are bilingual (zh-CN + en) — runtime strings in `*/i18n.ts`, content as `LocalizedText`.
+- Words follow `docs/GLOSSARY.md`: learner-facing terms (in-world mode / 实景模式, demonstration / 示范接诊, 智能体, 学员…) vs technical names (embodied, autopilot), and the register rules; add a term there first.
 - Grounding: agents may only state facts from case data; never add "normal" defaults for unrecorded data.
 - Embodied mode has one path to a clinical effect (the session's tool path) and one bedside rule / one screen rule in `@clinicalcraft/world` — front-ends ask the world, never re-implement a rule.
 - Docs: if code and a contract doc disagree, fix one of them in the same change; keep `docs/zh-CN/EMBODIED.md` in step with `docs/EMBODIED.md`, and keep the status table honest.

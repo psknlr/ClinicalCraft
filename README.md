@@ -7,17 +7,18 @@
 > 智能体扮演，但每一句事实都必须来自病例数据（“先选事实、再组织语言、最后核验”），病例
 > 未记录的信息一律回答“没有记录”，绝不补出“正常”。你可以在 3D 体素医院里走动、问诊、查体、
 > 开检查、读报告、给药处置，床旁监护仪的生命体征由纯函数生理引擎实时计算；高风险操作需要
-> 确认，结束后有可追溯证据的评估与复盘。**具身模式**（网页世界默认开启）下，医院是一个
-> 无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
+> 确认，结束后有可追溯证据的评估与复盘，每个病例写明可测量的学习目标与审核状态。**实景模式**
+> （技术名称为具身模式，网页世界默认开启）下，医院是一个无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
-> 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹。内置
-> 10 个中英双语教学病例、3 个场馆（含两层的教学医院）、96 种体素设备，以及 41 个具身基准
-> 场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
+> 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
+> 临床医生智能体还能做示范接诊。内置 10 个中英双语教学病例、3 个场馆（含两层的教学医院）、
+> 96 种体素设备，以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
 > Grok CLI 扮演医生，甚至经 `mcp --attach` 进入你正在浏览器里进行的接诊。本项目仅用于教学
 > 模拟，不构成医疗建议。具身层的设计与状态见 [docs/EMBODIED.md](docs/EMBODIED.md)
-> （中文版：[docs/zh-CN/EMBODIED.md](docs/zh-CN/EMBODIED.md)）。
+> （中文版：[docs/zh-CN/EMBODIED.md](docs/zh-CN/EMBODIED.md)），中英术语见
+> [docs/GLOSSARY.md](docs/GLOSSARY.md)。
 
 ClinicalCraft V5 turns *Virtual Patient V4* (a single-file voxel clinic with
 one published case) into a framework: a deterministic clinical simulation
@@ -38,6 +39,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
 [Design lineage](docs/DESIGN_PRINCIPLES.md) ·
+[Glossary](docs/GLOSSARY.md) ·
 [CLI reference](packages/cli/README.md)
 
 ## Features
@@ -51,17 +53,17 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   answer. The patient model never sees unrevealed answers, results or the
   diagnosis; unrecorded data stays "not recorded".
 - **Interactive clinical work.** History, examination, order entry with
-  turnaround times, results and images, interventions, an evidence board of
+  turnaround times, results and images, interventions, a case board of
   decisions, phases, and a simulated clock. Vitals come from a pure
   physiology engine (baseline, deterioration trends, intervention effects,
   scripted events, alarms, cardiac-arrest rhythms), so every session replays
   exactly. A patient who arrives off the monitor shows only the triage
   readings taken by hand — no live numbers, alarms or rhythm — until the
   learner attaches it.
-- **Embodied agents** ([below](#embodied-agents)). In embodied mode — the web
-  world's default, `--embodied` in the CLI, `start_case {embodied: true}` in
-  MCP — a headless world model of the hospital holds every body to where it
-  stands: the same approval gate and engine, plus a spatial gate before and
+- **Embodied agents** ([below](#embodied-agents)). In embodied mode — *in-world
+  mode* (实景模式) in the learner's interface; the web world's default,
+  `--embodied` in the CLI, `start_case {embodied: true}` in MCP — a headless
+  world model of the hospital holds every body to where it stands: the same approval gate and engine, plus a spatial gate before and
   after it. Agents observe, navigate, operate equipment through validated
   object actions and verify against authoritative state, with an auditable
   episode trace.
@@ -87,12 +89,15 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   state-changing action — including the learner's own button presses and
   every device operation with a clinical effect. High-risk interventions
   always ask.
-- **Assessment.** A deterministic rubric over engine state, an independent
-  examiner agent for communication items (it must quote evidence), and an
-  authored debrief. Scores are formative teaching measures.
-- **Autopilot clinician.** A clinician agent can work the case with the same
-  tools and approvals (`/autopilot`, `exec --autopilot`, `eval`); in embodied
-  mode it walks, fetches equipment and transports the patient.
+- **Assessment and debrief.** A deterministic rubric over engine state, an
+  independent examiner agent for communication items (judged against the
+  Calgary–Cambridge guide; it must quote evidence), and an authored debrief
+  with the case's learning outcomes; the attending debriefs with PEARLS.
+  Scores are formative teaching measures.
+- **Demonstration (autopilot).** The clinician agent demonstrates the case
+  while the learner watches, with the same tools and approvals (`/autopilot`,
+  `exec --autopilot`, `eval`); in embodied mode it walks, fetches equipment
+  and transports the patient.
 - **Embodied benchmark.** `clinicalcraft bench`: 41 reproducible scenarios
   judged only from the final engine and world state, with spatial and
   authorisation audits and Wilson 95 % intervals; a reference demonstration
@@ -235,7 +240,13 @@ Anthropic-compatible gateway under `providers` in settings (see below).
 | [`stemi-inferior-rv`](packages/content/cases/stemi-inferior-rv/README.md) | 胸痛 · 58岁男性 | Chest pain · 58-year-old man | emergency-medicine, cardiology | emergency | ★★★☆☆ | simulated | general-hospital |
 
 Titles are deliberately spoiler-free; each case README names the diagnosis
-and is written for authors and teachers. `smzl-lung-adeno` is the faithful
+and is written for facilitators. Every case states its learning outcomes —
+listed in the debrief, and before play only on request, since they usually
+name the diagnosis — and how far its content has been checked
+(`provenance.review`): wherever a case is offered it says, for example,
+"Editorial review 2026-10-28 · not yet reviewed by a licensed clinician"
+([docs/GLOSSARY.md §4](docs/GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show);
+content standard: [CASE_AUTHORING §9](docs/CASE_AUTHORING.md#9-clinical-content-standard)). `smzl-lung-adeno` is the faithful
 port of the V4 case, adapted from a published case report; the other nine
 are synthetic. Write your own with `npm run cc -- cases new <id>` and
 [docs/CASE_AUTHORING.md](docs/CASE_AUTHORING.md).
@@ -275,11 +286,11 @@ about the pairs that cannot). See [docs/FACILITIES.md](docs/FACILITIES.md);
 | `/ask` · `/ask 3` | list the canonical history questions, or ask one |
 | `/exam abdomen` `/order 血常规` `/results` `/read cbc` `/give aspirin` | examine, order, list orders, read a result, give a treatment |
 | `/vitals` `/status` `/case` `/plan` `/note …` | monitor, session status, case summary, workup plan, notes |
-| `/board` · `/answer <decision> <option…>` · `/phase` · `/wait 10` | decisions (e.g. `/answer diagnosis dual` in SMZL), phases, simulated time |
+| `/board` · `/answer <decision> <option…>` · `/phase` · `/wait 10` | the case board's decisions (e.g. `/answer diagnosis dual` in SMZL), phases, simulated time |
 | `/hint` `/consult attending …` | Socratic help (hints count against the score) |
-| `/autopilot [goal]` `/finish` `/assess` `/debrief` | clinician agent, finish the case once every objective is complete, assessment (examiner), debrief |
-| `/look` `/where` `/find ecg` `/go patient` `/inspect eq:resus1-ecg` `/use eq:resus1-ecg prepare` `/map` | embodied mode: perceive, walk and operate equipment |
-| `/delegate nurse attach_monitor` `/transport eq:ct-scanner` `/skill perform_ecg` | embodied mode: delegate to staff, take the patient to a device (`/transport home` brings them back), run a skill |
+| `/autopilot [goal]` `/finish` `/assess` `/debrief` | demonstration (the clinician agent works the case), finish the case once every objective is complete, assessment (examiner), debrief (with the learning outcomes) |
+| `/look` `/where` `/find ecg` `/go patient` `/inspect eq:resus1-ecg` `/use eq:resus1-ecg prepare` `/map` | in-world mode: perceive, walk and operate equipment |
+| `/delegate nurse attach_monitor` `/transport eq:ct-scanner` `/skill perform_ecg` | in-world mode: delegate to staff, take the patient to a device (`/transport home` brings them back), run a skill |
 | `/model` `/provider` `/approval auto` `/scope workup` `/permissions` `/lang en` | runtime control |
 | `/compact` `/export [path]` `/clear` `/quit` | conversation housekeeping |
 | `/sbar` `/differential …` `/osce-checklist` | project commands from `.clinicalcraft/commands/*.md` |
@@ -345,11 +356,12 @@ production-ready, and no live model has been run through these tools yet):
 
 **Where to run it**
 
-- **Web world** — embodied by default. "Embodied agents" on the case-start
-  card (or under *Agents & permissions* in the pause menu) picks the mode of
-  the next encounter. Walk with `WASD`; a refusal shows the reason and "Go
-  there"; the monitor panel shows the live screen only where you can read
-  it; staff walk when you delegate; the autopilot walks, wheels carts and
+- **Web world** — embodied by default. "In-world mode" (实景模式) on the
+  case-start card (or under *Agents & permissions* in the pause menu) picks
+  the mode of the next encounter; the HUD badge reads "In-world · ‹place›".
+  Walk with `WASD`; a refusal shows the reason and "Go there"; the monitor
+  panel shows the live screen only where you can read it; staff walk when you
+  delegate; in a demonstration the clinician agent walks, wheels carts and
   transports the patient.
 - **CLI** — `--embodied` on `play`, `exec` and `eval`; the REPL adds `/look`,
   `/where`, `/find`, `/go`, `/inspect`, `/use`, `/map`, `/skill`,
@@ -563,7 +575,7 @@ values and `config set <key> <value> [--user|--project|--local]` writes one
 | `providers.<id>` | — | override a template or add one (`wire`, `baseUrl`, `apiKeyEnv`, `headers`, `defaultModel`, `timeoutMs`, `maxRetries` — retries of every model call of a session); a literal `apiKey` is honoured only from user settings, or from the local settings of a trusted project (`clinicalcraft trust`) — never from a project file |
 | `locale` | `zh-CN` | `zh-CN` or `en` |
 | `approvalMode`, `practiceScope` | `default`, `full` | see below |
-| `embodiment`, `perception` | `clinical`, world defaults | `embodied` runs encounters in the world model (CLI `--embodied`; the web world's own default is embodied); `perception` tunes `visibilityRange`, `fovDeg`, `nearbyRange`, `maxEntities`, `reachability` |
+| `embodiment`, `perception` | `clinical`, world defaults | `embodied` runs encounters in the world model — in-world mode to learners (CLI `--embodied`; the web world's own default is embodied); `perception` tunes `visibilityRange`, `fovDeg`, `nearbyRange`, `maxEntities`, `reachability` |
 | `permissions.allow/ask/deny` | `[]` | rules such as `order_test(*)`, `examine`, `intervene(alteplase*)` (arrays concatenate across layers) |
 | `hooks` | `{}` | see [Hooks](#hooks) |
 | `maxToolRounds`, `autoCompact` | `12`, on at 120 000 tokens | agent loop limits |
@@ -703,7 +715,8 @@ npm run clean            # remove dist/ and build info
 
 Contributor conventions (ESM `NodeNext` with `.js` imports, no I/O in core or world,
 bilingual strings, grounding rules) are in [AGENTS.md](AGENTS.md) /
-[CLAUDE.md](CLAUDE.md). Further reading: [Architecture & contracts](docs/ARCHITECTURE.md) ·
+[CLAUDE.md](CLAUDE.md); the words of both languages are in
+[docs/GLOSSARY.md](docs/GLOSSARY.md). Further reading: [Architecture & contracts](docs/ARCHITECTURE.md) ·
 [Agent protocol](docs/PROTOCOL.md) · [Embodied agents](docs/EMBODIED.md) ·
 [Design principles & lineage](docs/DESIGN_PRINCIPLES.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) · [Facilities & equipment](docs/FACILITIES.md) ·
@@ -717,7 +730,11 @@ pseudonymous patients. The SMZL case is adapted from a published,
 de-identified case report: 丁凤丽, 秦彩霞, 汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例.
 中国临床案例成果数据库, 2026. DOI [10.3760/cma.cmcr20260128-00421](https://doi.org/10.3760/cma.cmcr20260128-00421).
 Agents may state only facts present in the case data. Scores and debriefs
-are formative teaching measures, not validated competency assessments. The
+are formative teaching measures, not validated competency assessments. A
+case's `provenance.review` says how far its content has been checked; an
+editorial review — the most any built-in case records — is not a review by a
+licensed clinician: have a clinician of the specialty review a case before
+teaching with it. The
 embodied rules (bedside, scope of practice) are teaching simplifications,
 not any jurisdiction's regulations, and no part of the system is
 production-ready ([docs/EMBODIED.md §14](docs/EMBODIED.md#14-status-limitations-and-what-production-needs)).

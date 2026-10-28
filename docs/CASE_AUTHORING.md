@@ -2,8 +2,9 @@
 
 A case is one JSON file, `packages/content/cases/<id>/case.json`, validated by
 `CaseSchema` (`packages/core/src/schema/case.ts`; JSON Schema for editors in
-`packages/content/schemas/case.schema.json`). Optional `README.md` beside it
-explains provenance and teaching notes. Commands:
+`packages/content/schemas/case.schema.json`). A `README.md` beside it is the
+case's facilitator guide (§9.6). Every case meets the clinical content
+standard (§9); its words follow [GLOSSARY.md](GLOSSARY.md). Commands:
 
 ```bash
 clinicalcraft cases new <id>                                         # scaffold a schema-valid bilingual template + README
@@ -32,15 +33,16 @@ solution is sent to the browser).
    pseudonymous patient names, a `disclaimer` ("虚构教学病例，不构成医疗建议。" /
    "Fictional teaching case — not medical advice."). Never base a synthetic case
    on an identifiable real patient.
-3. **Clinical accuracy** — management must follow current major guidelines
-   (name them in `debrief.references` as plain citations, e.g. "Surviving Sepsis
-   Campaign 2021 adult guidelines"); doses, thresholds and time windows must be
-   correct for the stated patient (weight, age, renal function). Do not invent
-   DOIs or URLs.
+3. **Clinical accuracy** — management must follow current major guidelines,
+   checked by version (§9.1) and cited in `debrief.references` in one
+   Vancouver-style form (§9.4); doses, thresholds and time windows must be
+   correct for the stated patient (weight, age, renal function). Never invent
+   guideline versions, trial names, statistics, DOIs, URLs or page numbers.
 4. **Bilingual** — `locales: ["zh-CN", "en"]` (source language first); every
-   `LocalizedText` has both. Use standard Chinese medical terminology
-   (e.g. 急性ST段抬高型心肌梗死, 糖尿病酮症酸中毒) and natural lay Chinese in
-   the patient's voice; same for English.
+   `LocalizedText` has both, stating the same facts. Use standard Chinese
+   medical terminology (e.g. 急性ST段抬高型心肌梗死, 糖尿病酮症酸中毒) and
+   natural lay Chinese in the patient's voice; the library's British spelling
+   in English (§9.3).
 5. **No spoilers** in `title`, `summary`, `patient.chiefComplaint`, `tags`,
    `triageNote` or objective titles. (Title may name the presentation:
    "胸痛 · 58岁男性" / "Chest pain · 58-year-old man".)
@@ -307,6 +309,9 @@ solution is sent to the browser).
   `waypoints` (capability / role targets). The `hint` is the scored hint
   (shown for done objectives and on request); `guidance` is the quest-card and
   journal copy. Neither may state results the learner has not obtained.
+  Objectives are the in-game task list (任务目标); the case's
+  `learningOutcomes` (学习目标) are what the learner should be able to do
+  afterwards (§9.4) — keep the two distinct.
 * 2–5 `decisions` (single best answer or select-all) with educational feedback
   on **every** option, unlocked by `requires` once the evidence exists. A
   locked decision is shown only by number and `need`; once unlocked its
@@ -443,3 +448,143 @@ never leave it to a guess:
   `venturi-mask`, `nebuliser-mask`. Masks show a mask on the face, cannulae
   show cannulae. Without it, a mask named in the id, name or dose text in
   either language ("15 L/min via non-rebreather mask", "储氧面罩") counts.
+
+## 9. Clinical content standard
+
+Every case reads like a peer-reviewed simulation scenario from a professional
+medical-education programme: clinically exact, internally consistent,
+bilingual at a professional register, and fitted to ClinicalCraft (grounded
+agents, in-world mode, benchmarks). Improve substance; do not churn correct
+text for style alone.
+
+### 9.1 Clinical accuracy and currency
+
+* Check every clinical statement, value, dose, threshold and decision against
+  current international and Chinese guidance, and name the version you
+  checked (e.g. "ESC 2023 ACS", "AHA/ASA 2019 AIS + 2023 update",
+  "中国急性缺血性脑卒中诊治指南 2023", "Surviving Sepsis Campaign 2021",
+  "GINA 2024", "ADA Standards of Care 2025", "JBDS 2023 DKA", "WSES 2020
+  appendicitis", "EAACI 2021 anaphylaxis") in `provenance.review.guidelines`.
+* Fix errors and outdated recommendations, and say what changed (and why) in
+  the README changelog (§9.6).
+* Never invent guideline versions, trial names, statistics, DOIs or page
+  numbers. What you cannot verify you leave out, or keep in its existing
+  wording and list under "To verify" in the README.
+
+### 9.2 Internal consistency
+
+* Vitals trajectories agree with the physiology model; lab values carry units
+  (SI; zh-CN uses mmol/L and the like; conventional units in parentheses only
+  where clinically customary), reference ranges, derived values (anion gap,
+  corrected Na, osmolality, A–a gradient, eGFR stage, HbA1c ↔ mean glucose)
+  and scores (NIHSS, Wells / Geneva / sPESI, qSOFA / NEWS2 / CURB-65 / SOFA,
+  PRAM / GINA severity, Alvarado / AIR, HEART…).
+* Doses: weight-based where applicable, maximum doses, routes, dilutions,
+  infusion rates, contraindications; drug and test names identical everywhere
+  in the case.
+* The debrief, rubric, decisions, hints, NPC briefs, physiology,
+  `authorChecks` and the reference `solution` agree with each other.
+* Grounding (§1.1): facts only from the case record; never "normal" defaults
+  for unrecorded data.
+
+### 9.3 Bilingual register
+
+* zh-CN clinical text uses standard terminology (全国科学技术名词审定委员会;
+  generic drug names per 中国药典 / 国家药品通用名称) and consistent names for
+  drugs and tests; the patient's and relatives' speech is natural lay Chinese
+  (no translationese, no clinical jargon in their mouths).
+* en uses the library's British spelling (haemoglobin, anaesthesia,
+  oedema…), the clinical register in reports and the lay register in patient
+  speech.
+* Both languages state the same facts — no drift in numbers, sides or times.
+  Product words (objective, learning outcome, in-world mode…) are the
+  glossary's ([GLOSSARY.md](GLOSSARY.md)).
+
+### 9.4 Teaching design
+
+* `learningOutcomes` (top level, bilingual): 4–6 measurable outcomes, each an
+  action verb and its standard ("Recognise right-ventricular involvement from
+  V4R and withhold nitrates") — distinct from the HUD `objectives` (§7).
+  Being specific, they usually name the diagnosis, so front-ends show them
+  before play only on request and list them in every debrief
+  ([GLOSSARY.md §4](GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show));
+  write them for the debrief, not as a teaser.
+* Objectives' hints coach without giving the answer; decisions test
+  reasoning, not trivia.
+* Rubric weights reflect clinical importance: safety-critical items weigh
+  most.
+* Each debrief teaching point ties to the cited guidance; `boundaries` and
+  `unknowns` stay honest.
+* `debrief.references`: one consistent Vancouver-style string each — "Authors.
+  Title. Journal. Year;Vol(Issue):pages. doi:10.xxxx/yyyy" (a guideline: the
+  issuing body, title, year and journal). Add a DOI **only** after verifying
+  it with a web lookup (Crossref `api.crossref.org/works?query=…`, PubMed,
+  the publisher's page) — never from memory.
+
+### 9.5 Governance and versioning
+
+* `provenance.review` states honestly how far the content has been checked:
+
+  ```json
+  "review": {
+    "status": "editorial",
+    "reviewedAt": "2026-10-28",
+    "reviewers": ["ClinicalCraft editorial review (AI-assisted)"],
+    "guidelines": ["ESC 2023 ACS"],
+    "notes": {
+      "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+      "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+    }
+  }
+  ```
+
+  `status` is `unreviewed`, `editorial` (an internal editorial review against
+  the cited guidance, not by a licensed clinician) or `clinician-reviewed`
+  (reviewed by a licensed clinician of the specialty). Never claim a clinician
+  review that did not happen. Front-ends print the status wherever the case is
+  offered ([GLOSSARY.md §4](GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show)).
+* A substantive revision bumps the case `version` (1.0.0 → 1.1.0 for an
+  editorial pass) and adds a dated entry to the README changelog.
+
+### 9.6 The README: one facilitator guide per case
+
+Every case README follows one template, in this order:
+
+1. `# <case-id> — <presentation> · <patient>` (English title line)
+2. Case card: setting, facility, difficulty, estimated time, specialty,
+   languages, review status
+3. Learning outcomes
+4. Clinical summary (spoilers: diagnosis, key findings)
+5. Scenario timeline and physiology
+6. Decisions and assessment (objectives, rubric, how wrong choices score)
+7. Reference path (`solution`)
+8. Clinical numbers check
+9. Facilitator notes — debrief questions in PEARLS order (reactions →
+   description → analysis → summary), common learner errors and how the case
+   surfaces them
+10. Embodied mode (learners' in-world mode: grounding, scope of practice,
+    where the patient goes)
+11. Fidelity limits
+12. Matcher notes (if the case has them)
+13. References
+14. Changelog
+15. Validation (the commands)
+16. 中文摘要 — a Chinese facilitator summary: 病例概要、学习目标、关键决策、复盘要点
+
+Move and tidy the content of the existing technical sections into it; drop
+none.
+
+### 9.7 Must stay green
+
+* `clinicalcraft cases validate <case.json>` and `cases verify <id>` (and
+  `--all` at the end); `extensions.testUtterances` keep passing.
+* The grounding benchmark (`packages/content/grounding/grounding-v1/`, a
+  held-out instrument — [GROUNDING.md](GROUNDING.md)): keep every id it
+  references and never edit its sets; run `bench grounding --split dev` and
+  `--split test` before and after and compare — no case may lose items (per
+  case and per track). When a wording change breaks an item, adjust the
+  change (keywords, aliases), not the item.
+* In-world mode: `npx vitest run packages/agent/src/session/embodied-autopilot.test.ts`
+  (embodied score = clinical score), `bench run --agent reference` and
+  `--agent scripted-llm` at 100 %, `facilities validate --all`,
+  `npx vitest run packages/world packages/content packages/core`.

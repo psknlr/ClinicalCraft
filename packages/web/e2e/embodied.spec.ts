@@ -262,7 +262,7 @@ test.describe("embodied mode (zh-CN)", () => {
     await freshStart(page);
     await enterCase(page, CASE);
     await embodiedSetup(page, { bypassApprovals: true });
-    await expect(page.locator("#embodiment-badge")).toContainText("具身");
+    await expect(page.locator("#embodiment-badge")).toContainText("实景");
     // from the entrance: too far for the monitor — the HUD's refusal names the way
     await page.evaluate((id) => (window as any).__QA__.worldAction({ operation: "attach", targetId: id }), MONITOR);
     const fb = page.locator("#hud-feedback #action-feedback");
@@ -314,7 +314,7 @@ test.describe("embodied mode (zh-CN)", () => {
     const drawn = await page.evaluate(() => (window as any).__QA__.world.position);
     expect(drawn.level).toBe("L1");
     expect(drawn.y).toBeGreaterThan(4);
-    await expect(page.locator("#embodiment-badge")).toContainText("具身");
+    await expect(page.locator("#embodiment-badge")).toContainText("实景");
     await shot(page, "embodied-teaching-upstairs");
   });
 });

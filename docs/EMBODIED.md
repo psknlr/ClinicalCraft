@@ -11,6 +11,14 @@
 > "validated", and nothing here is production-ready. Measurements carry their
 > date and machine. Chinese translation: [zh-CN/EMBODIED.md](zh-CN/EMBODIED.md)
 > (this English version is authoritative).
+>
+> **Terms.** *Embodied mode* (具身模式, `embodiment: "embodied"`) is this
+> document's technical name for an encounter in which every actor has a body
+> in a world model and a clinical act is held to where that body stands.
+> Learners never read it: their interface calls it **in-world mode**
+> (实景模式), and the autopilot — the clinician agent working the case — a
+> **demonstration** (示范接诊). Both languages' product words and register:
+> [GLOSSARY.md](GLOSSARY.md).
 
 ## What changed from the proposal
 
@@ -159,9 +167,9 @@ The full step table is in §5.
 
 ### 2.1 The browser runtime
 
-The 3D world runs embodied by default. "Embodied agents" — on the case-start
-card and under *Agents & permissions* in the pause menu (`Esc`) — picks the
-mode of the *next* encounter; a running or saved encounter keeps its own. Clinical mode stays
+The 3D world runs embodied by default. "In-world mode" (实景模式) — on the
+case-start card and under *Agents & permissions* in the pause menu (`Esc`) —
+picks the mode of the *next* encounter; a running or saved encounter keeps its own. Clinical mode stays
 available and is the only mode without a world model. The session builds
 the world model; the browser supplies its sensors and actuators
 (`packages/web/src/app/embodied.ts`, `app/embodied-link.ts`):
@@ -221,10 +229,10 @@ the world model; the browser supplies its sensors and actuators
 * **R8**: real-time ticks pause while an agent drives a body (a Mover walk,
   the autopilot, a clinician turn, a running body-moving world tool, an
   external agent's call).
-* **What the learner sees**: the HUD embodiment badge (place / walking /
-  clinical mode), toasts for delegated staff walking and finishing, staff
+* **What the learner sees**: the HUD embodiment badge ("In-world · ‹place›" /
+  "In-world · walking…" / "Clinical mode"), toasts for delegated staff walking and finishing, staff
   NPCs walking, moved carts where they stand, actors on the map, the
-  autopilot window's live trace (step → walk → operate → clinical act →
+  demonstration (autopilot) window's live trace (step → walk → operate → clinical act →
   state change → verify, failures with their code and the place a hint
   names).
 * **Known behaviour** (stated, not changed in this release): a team

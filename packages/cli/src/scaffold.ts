@@ -1,7 +1,8 @@
 /**
  * `clinicalcraft cases new <id>` template: a minimal, schema-valid synthetic
  * case (zh-CN + en placeholders marked 【待填写】/[TODO]) whose reference
- * `solution` passes `cases verify`, plus an author README.
+ * `solution` passes `cases verify`, plus a README in the facilitator-guide
+ * template of docs/CASE_AUTHORING.md §9.6.
  */
 
 const TODO_ZH = "【待填写】";
@@ -25,12 +26,17 @@ export function caseTemplate(id: string): Record<string, unknown> {
     facility: "general-hospital",
     locales: ["zh-CN", "en"],
     estimatedMinutes: 20,
+    learningOutcomes: [
+      both(`${TODO_ZH}一条可测量的学习目标：动词加标准（例如“依据……识别……并……”）。`, `${TODO_EN}One measurable learning outcome: an action verb and its standard (e.g. "Recognise … from … and …").`),
+    ],
     tags: ["synthetic", "template"],
     provenance: {
       kind: "synthetic",
       authors: ["TODO"],
       license: "MIT",
       notes: both(`${TODO_ZH}依据哪些指南编写；声明为虚构病例。`, `${TODO_EN}Which guidelines the case follows; state that it is fictional.`),
+      // Honest from the start: nobody has reviewed a new case (docs/CASE_AUTHORING.md §9.5).
+      review: { status: "unreviewed", reviewers: [], guidelines: [] },
     },
     disclaimer: both("虚构教学病例，不构成医疗建议。", "Fictional teaching case — not medical advice."),
     patient: {
@@ -196,37 +202,94 @@ export function caseTemplate(id: string): Record<string, unknown> {
 
 /** Author README for a new case. */
 export function readmeTemplate(id: string): string {
-  return `# \`${id}\` — TODO title
+  return `# ${id} — TODO presentation · TODO patient
 
-> **Spoilers for case authors and faculty.** Learners open the case from the
-> case library; keep the title, summary, chief complaint and tags spoiler-free.
+> **Facilitator guide — spoilers.** Learners open the case from the case
+> library; keep the title, summary, chief complaint and tags spoiler-free.
 
 > **Synthetic case.** Fictional teaching case — not medical advice. The patient
 > is a pseudonym; no value is based on a real patient.
+
+The sections follow docs/CASE_AUTHORING.md §9.6; its §9 is the clinical content
+standard every case meets.
+
+## Case card
 
 | | |
 |---|---|
 | id / version | \`${id}\` / \`0.1.0\` |
 | setting / facility | \`outpatient\` / \`general-hospital\` |
-| locales | \`zh-CN\` (source language), \`en\` |
-| clock | \`static\` |
+| difficulty / estimated time | 2 / 20 min |
+| specialty | TODO |
+| languages | \`zh-CN\` (source language), \`en\` |
+| review status | not yet reviewed (\`provenance.review.status: unreviewed\`) |
 
-## Authoring checklist (docs/CASE_AUTHORING.md)
+## Learning outcomes
 
-- [ ] Replace every 【待填写】 / [TODO] placeholder in both languages.
-- [ ] 15–40 history items (SOCRATES, red flags, PMH, medications, allergies, social, family, ROS, ICE); 4–10 \`required\`.
-- [ ] 8–25 exam findings incl. pertinent negatives; vital signs in \`physiology.baseline\` for acute cases.
-- [ ] A realistic investigation panel (essential/useful/neutral/low-value) with results per phase.
-- [ ] 4–6 objectives, 2–5 decisions with feedback on every option, 8–15 rubric items (+1–3 examiner-judged).
-- [ ] Guideline references in \`debrief.references\` (plain citations, no invented DOIs/URLs).
-- [ ] \`solution\` completes every objective and answers every decision; \`extensions.testUtterances\` has 15–40 bilingual entries.
+1. TODO — an action verb and its standard (\`learningOutcomes\`, 4–6).
 
-## Check it
+## Clinical summary
+
+TODO — diagnosis and key findings.
+
+## Scenario timeline and physiology
+
+TODO
+
+## Decisions and assessment
+
+TODO — objectives, rubric, how wrong choices score.
+
+## Reference path (\`solution\`)
+
+TODO
+
+## Clinical numbers check
+
+TODO — derived values and scores, each with its inputs.
+
+## Facilitator notes
+
+TODO — debrief questions in PEARLS order (reactions → description → analysis →
+summary), common learner errors and how the case surfaces them.
+
+## Embodied mode
+
+TODO — the learners' in-world mode: grounding, scope of practice, where the
+patient goes.
+
+## Fidelity limits
+
+TODO
+
+## References
+
+TODO — Vancouver style; a DOI only once verified (docs/CASE_AUTHORING.md §9.4).
+
+## Changelog
+
+- 0.1.0 — scaffolded with \`clinicalcraft cases new\`.
+
+## Validation
 
 \`\`\`bash
 clinicalcraft cases validate path/to/${id}/case.json
 clinicalcraft cases verify ${id}
 clinicalcraft play ${id} --provider offline
 \`\`\`
+
+## 中文摘要
+
+TODO — 病例概要、学习目标、关键决策、复盘要点。
+
+## Authoring checklist
+
+- [ ] Replace every 【待填写】 / [TODO] placeholder in both languages.
+- [ ] 15–40 history items (SOCRATES, red flags, PMH, medications, allergies, social, family, ROS, ICE); 4–10 \`required\`.
+- [ ] 8–25 exam findings incl. pertinent negatives; vital signs in \`physiology.baseline\` for acute cases.
+- [ ] A realistic investigation panel (essential/useful/neutral/low-value) with results per phase.
+- [ ] 4–6 objectives, 4–6 learning outcomes, 2–5 decisions with feedback on every option, 8–15 rubric items (+1–3 examiner-judged).
+- [ ] Guidance checked by version in \`provenance.review.guidelines\`; Vancouver-style \`debrief.references\` (DOIs only once verified; never invented).
+- [ ] \`solution\` completes every objective and answers every decision; \`extensions.testUtterances\` has 15–40 bilingual entries.
 `;
 }
