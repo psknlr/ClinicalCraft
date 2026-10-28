@@ -70,6 +70,8 @@ test.describe("review status and learning outcomes on the case card (docs/GLOSSA
     await expect(outcomes).toHaveJSProperty("open", false);
     await expect(outcomes.locator("summary")).toHaveText(`学习目标（${c.learningOutcomes!.length}）· 可能提示诊断`);
     await expect(outcomes.locator("li").first()).toBeHidden();
+    await page.locator(".intro-selected").scrollIntoViewIfNeeded();
+    await shot(page, "case-card-review-desktop-zh-closed");
     await outcomes.locator("summary").click();
     await expect(outcomes.locator("li")).toHaveCount(c.learningOutcomes!.length);
     await expect(outcomes.locator("li").first()).toHaveText(c.learningOutcomes![0]!["zh-CN"]);

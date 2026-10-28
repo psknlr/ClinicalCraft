@@ -256,6 +256,18 @@ html[lang="en"] .intro-card h2 {
 .case-outcomes li + li {
   margin-top: 3px;
 }
+/* Desktop: the library is a fixed-height column — the case list keeps at least one card in view, and a long
+   selected-case summary (learning outcomes open) scrolls in place instead of squeezing the list away. */
+@media (min-width: 901px) {
+  .case-list {
+    min-height: 124px;
+  }
+  .intro-selected {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
 .case-disclaimer {
   margin: 8px 0 0;
   padding-left: 8px;
