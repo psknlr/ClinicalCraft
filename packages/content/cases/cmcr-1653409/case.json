@@ -1,96 +1,169 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653409",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
-    "zh-CN": "耻骨上逐渐增大的皮下肿物 · 15岁女孩",
-    "en": "Enlarging suprapubic subcutaneous mass · girl aged 15"
+    "zh-CN": "逐渐增大的耻骨上皮下肿物 · 15岁女孩",
+    "en": "Enlarging lump under the skin above the pubic bone · 15-year-old girl"
   },
   "summary": {
-    "zh-CN": "青少年发现局限皮下肿物，临床记录较少；通过切除标本、组织形态和免疫组化形成有边界的判断与随访计划。",
-    "en": "An adolescent has a localised subcutaneous mass with a limited clinical record; integrate the specimen, morphology and immunohistochemistry into a bounded interpretation and follow-up plan."
+    "zh-CN": "15岁女孩，耻骨上方皮下肿物20余天、逐渐增大。完成问诊和查体，决定切除前要做什么，再根据切除标本的形态和免疫组化作出诊断并制定随访计划。依据已发表病例改写的历史回顾；原文未记录的资料保持未知。",
+    "en": "A 15-year-old girl has had a lump under the skin above the pubic bone for more than 20 days, and it is growing. Take the history and examine her, decide what must happen before it is removed, then make the diagnosis from the specimen's morphology and immunohistochemistry and plan follow-up. A historical review adapted from a published case; whatever the report does not record stays unknown."
   },
   "specialty": [
     "dermatology",
     "pathology"
   ],
-  "difficulty": 4,
+  "difficulty": 3,
   "setting": "outpatient",
   "facility": "general-hospital",
   "locales": [
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 20,
+  "learningOutcomes": [
+    {
+      "zh-CN": "评估儿童或青少年逐渐增大的软组织肿物的危险信号，并在任何切除前安排超声（NICE NG12：48小时内）。",
+      "en": "Assess an enlarging soft-tissue lump in a child or young person for red flags and arrange an ultrasound before any excision (NICE NG12: within 48 hours)."
+    },
+    {
+      "zh-CN": "根据肿物大小、深度和超声表现，在切除活检与转诊行影像引导下粗针活检之间作出选择（ESMO–EURACAN–GENTURIS 2021）。",
+      "en": "Choose between excisional biopsy and referral for image-guided core biopsy by the lesion's size, depth and ultrasound appearance (ESMO–EURACAN–GENTURIS 2021)."
+    },
+    {
+      "zh-CN": "综合部位、形态与免疫组化诊断浅表性血管黏液瘤并排除相似病变，把本例实际做过的染色与文献对照区分开。",
+      "en": "Integrate site, morphology and an immunohistochemical panel to diagnose superficial angiomyxoma and exclude its mimics, keeping the patient's own stains apart from literature comparisons."
+    },
+    {
+      "zh-CN": "为切除不完整可复发的良性肿瘤制定术后计划：确认切缘、安排局部随访，不做放疗。",
+      "en": "Plan aftercare for a benign tumour that recurs after incomplete excision: confirm the margins, arrange local follow-up and avoid radiotherapy."
+    },
+    {
+      "zh-CN": "说明浅表性血管黏液瘤在什么情况下应评估Carney综合征（Stratakis 2001诊断标准），以及为什么单个病灶不足以诊断。",
+      "en": "State when a superficial angiomyxoma should prompt evaluation for Carney complex (Stratakis 2001 criteria) and why a single lesion is not enough to diagnose it."
+    },
+    {
+      "zh-CN": "直接与青少年本人沟通，并向她和家长解释良性诊断、复发风险和随访。",
+      "en": "Speak with the teenager directly, and explain a benign diagnosis, its recurrence risk and the follow-up to her and her parent."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
-    "historical-review"
+    "historical-review",
+    "soft-tissue-lump",
+    "adolescent-health",
+    "pathology"
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "古杰鳴. 淺表性血管黏液瘤1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.019",
+    "citation": "古杰鳴. 淺表性血管黏液瘤1例. 鏡湖醫學. 2025;25(2):57. doi:10.12408/j.issn2223-4462.2025.02.019",
     "doi": "10.12408/j.issn2223-4462.2025.02.019",
     "authors": [
       "古杰鳴"
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写（原文为繁体中文，病例文本改用简体）。年龄、性别、病程、既往史、专科检查、病理大体、镜下与免疫组化、6年随访结局取自原文“患者”一节和讨论末句，鉴别诊断与复发数据取自“讨论”；化名，医院与日历日期已去除。陪同的母亲、对话、决策、干预、评分为依据现行指南设计的教学内容；原文未记录的资料保持未知。原图4幅（大体、低倍、高倍、CD34）不含身份信息。原文PDF第2页为期刊封底，其中另一篇文章的PET/CT图像烧录有医院名称和日期信息，因此本病例不引用该PDF，所见以文字保留，参考文献指向出版方原文。",
+      "en": "Adapted from a published case (the source is in traditional Chinese; the case uses simplified characters). Age, sex, the course, past history, local examination, gross, microscopic and immunohistochemical pathology and the 6-year outcome come from the source's ‘Patient’ section and the last sentence of its discussion; the differential diagnosis and recurrence figures come from its ‘Discussion’; the name is a pseudonym, and the hospital and calendar dates are removed. The accompanying mother, dialogue, decisions, interventions and scoring are teaching material built on current guidance; data the source does not record stay unknown. The four figures (gross, low power, high power, CD34) carry no identifiers. Page 2 of the source PDF is the journal's back cover, where another article's PET/CT image shows a burned-in hospital name and dates, so this case does not reference the PDF; its findings stay in the case as text and the reference points to the publisher's copy."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "NICE NG12 Suspected cancer: recognition and referral (2015, last updated April 2026), recommendations on soft tissue sarcoma in children and young people",
+        "ESMO–EURACAN–GENTURIS Clinical Practice Guidelines 2021: soft tissue and visceral sarcomas",
+        "Carney complex diagnostic criteria (Stratakis, Kirschner, Carney 2001)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
-    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+    "zh-CN": "依据已发表病例报告改写的历史病例回顾，仅供医学教育使用，不构成诊疗建议。病例不模拟原报告没有记录的病情变化。",
+    "en": "A historical review adapted from a published case report, for medical education only; it is not medical advice. The case does not simulate anything the report does not record."
   },
   "patient": {
     "displayName": {
-      "zh-CN": "小宁（化名）",
-      "en": "Ning (pseudonym)"
+      "zh-CN": "郑悦（化名）",
+      "en": "Zheng Yue (pseudonym)"
     },
     "age": 15,
     "sex": "female",
     "chiefComplaint": {
-      "zh-CN": "耻骨上皮下肿物20余天，逐渐增大",
-      "en": "Suprapubic subcutaneous mass enlarging over more than twenty days"
+      "zh-CN": "耻骨上方皮下肿物20余天，逐渐增大",
+      "en": "A lump under the skin above the pubic bone for more than 20 days, getting bigger"
     },
     "triageNote": {
-      "zh-CN": "青少年发现局限皮下肿物，临床记录较少；通过切除标本、组织形态和免疫组化形成有边界的判断与随访计划。",
-      "en": "An adolescent has a localised subcutaneous mass with a limited clinical record; integrate the specimen, morphology and immunohistochemistry into a bounded interpretation and follow-up plan."
+      "zh-CN": "15岁女孩，由妈妈陪同来门诊：耻骨上方皮下摸到一个包，20多天了，越来越大。病史与查体待完成。",
+      "en": "15-year-old girl in clinic with her mother: a lump under the skin above the pubic bone, first noticed more than 20 days ago and getting bigger. History and examination still to be done."
     },
     "tags": [
       {
-        "zh-CN": "耻骨上皮下肿物20余天，逐渐增大",
-        "en": "Suprapubic subcutaneous mass enlarging over more than twenty days"
+        "zh-CN": "耻骨上皮下肿物",
+        "en": "Lump above the pubic bone"
+      },
+      {
+        "zh-CN": "青少年",
+        "en": "Adolescent"
+      },
+      {
+        "zh-CN": "门诊",
+        "en": "Clinic"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "15岁女孩，有点腼腆，回答简短，只说自己知道的；不清楚的就直说不知道。",
+        "en": "A shy 15-year-old who answers briefly and only says what she knows; when she doesn't know, she says so."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "青少年的日常口语，说“那个包”“小肚子下面”，不用医学术语；当着妈妈的面谈身体隐私时有些不自在。",
+        "en": "Everyday teenage speech — “the lump”, “low down on my tummy” — with no medical terms; a little uncomfortable talking about her body in front of her mum."
       },
+      "healthLiteracy": "medium",
       "affect": "calm",
       "openingLine": {
-        "zh-CN": "20多天前发现耻骨上方皮下有肿物。",
-        "en": "A mass under the skin above the pubic area was noticed more than twenty days earlier."
+        "zh-CN": "医生好。我小肚子最下面、靠近耻骨的地方皮下长了个包，二十多天前发现的。",
+        "en": "Hi, doctor. There's a lump under the skin right at the bottom of my tummy, near the pubic bone — I found it twenty-odd days ago."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "只讲已经透露的病史，用自己的话说，不增减数字或时间。这个包是二十多天前发现的，之后慢慢变大；以前没生过什么大病。平时疼不疼、痒不痒，身上别处有没有类似的包或色斑，心慌晕倒、月经和身高体重，用药、过敏，家里人的情况，学校和家里，抽烟喝酒，病例都没有记录——被问到就直说没有记录。妈妈在旁边陪着，但病史由你自己回答。随访阶段（术后6年）：那个地方没再长过包。",
+        "en": "Only state history facts that have been revealed, in your own words, without changing numbers or times. You found the lump twenty-odd days ago and it has slowly grown; you have never had anything serious. Pain or itching, other lumps or spots on your skin, palpitations or fainting, periods, height and weight, medicines, allergies, your family's health, school and home, smoking and drinking are not recorded — if asked, say plainly that they are not recorded. Your mother is with you, but you answer your own history. In the follow-up phase (six years after the operation): nothing has grown back there."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "冯女士（化名，母亲）",
+          "en": "Ms Feng (her mother, pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "郑悦的妈妈，陪女儿来门诊，话不多，比较关心手术和以后会不会再长。病史由女儿自己回答；医生问到病史时，请医生直接问女儿。不补充病例没有记录的任何事实。",
+          "en": "Zheng Yue's mother, who has come to clinic with her; quiet, and mostly concerned about the operation and whether it might come back. Her daughter answers her own history — if asked about it, she suggests the doctor asks her daughter. She adds no fact the record does not hold."
+        },
+        "answersHistory": false,
+        "appearance": {
+          "stature": "adult",
+          "hairStyle": "bun"
+        }
       }
     },
     "appearance": {
       "stature": "teen",
-      "gown": true
+      "build": "slim",
+      "hairStyle": "ponytail",
+      "gown": false
     },
     "posture": "sitting"
   },
@@ -98,39 +171,55 @@
     {
       "id": "initial",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "门诊评估",
+        "en": "Clinic assessment"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "门诊：问诊和查体，并决定切除前要做什么。",
+        "en": "Clinic: history and examination, and what must happen before the lump is removed."
+      },
+      "learnerSwitchable": false
     },
     {
-      "id": "workup",
+      "id": "excision",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "切除与病理（原报告）",
+        "en": "Excision and pathology (as reported)"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+      "description": {
+        "zh-CN": "原报告：手术切除肿物后送病理科；原文没有记录术前影像、手术方式和切缘。",
+        "en": "As reported: the lump was excised and sent to pathology; the source records no pre-operative imaging, operative details or margins."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "decided": "pre-excision"
           },
           {
-            "decided": "management"
+            "intervened": "excision"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告随访（术后6年）",
+        "en": "Reported follow-up (6 years after surgery)"
+      },
+      "description": {
+        "zh-CN": "原报告的术后随访记录。",
+        "en": "The report's post-operative follow-up."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "follow-up"
           },
           {
-            "objective": "objective-1"
-          },
-          {
-            "objective": "objective-2"
+            "decided": "carney"
           }
         ]
       }
@@ -146,444 +235,666 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "肿物什么时候发现，位于哪里？",
-        "en": "When and where was the mass noticed?"
+        "zh-CN": "这个包是什么时候、在哪里发现的？",
+        "en": "When and where did you first notice the lump?"
       },
       "answer": {
-        "zh-CN": "20多天前发现耻骨上方皮下有肿物。",
-        "en": "A mass under the skin above the pubic area was noticed more than twenty days earlier."
+        "zh-CN": "二十多天前发现的，在小肚子最下面、耻骨上方的皮下。",
+        "en": "Twenty-odd days ago — it's under the skin right at the bottom of my tummy, just above the pubic bone."
       },
       "keywords": {
         "zh-CN": [
-          "肿物什么时候发现，位于哪里？",
-          "耻骨上"
+          "什么时候发现",
+          "发现多久",
+          "多长时间了",
+          "多久了",
+          "长在哪",
+          "在哪里发现",
+          "哪个位置",
+          "皮下的包",
+          "什么时候长的",
+          "包是什么时候",
+          "哪里不舒服",
+          "来看什么"
         ],
         "en": [
-          "When and where was the mass noticed?",
-          "suprapubic"
+          "notice lump",
+          "first notice",
+          "find lump",
+          "found lump",
+          "how long lump",
+          "whereisthelump",
+          "lump located",
+          "when found",
+          "whatbringsyou"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（主诉）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (presenting complaint); simulated answer compiled from the source"
+      }
     },
     {
       "id": "growth",
       "topic": "hpi",
       "question": {
-        "zh-CN": "发现后大小怎样变化？",
-        "en": "How has its size changed since discovery?"
+        "zh-CN": "发现以后，这个包有没有变化？",
+        "en": "Has the lump changed since you found it?"
       },
       "answer": {
-        "zh-CN": "肿物逐渐增大。",
-        "en": "The mass has gradually enlarged."
+        "zh-CN": "在慢慢变大。",
+        "en": "It's been slowly getting bigger."
       },
       "keywords": {
         "zh-CN": [
-          "发现后大小怎样变化？",
-          "增大"
+          "变大",
+          "长大",
+          "越来越大",
+          "大了",
+          "大小变化",
+          "增大",
+          "长得快",
+          "有变化"
         ],
         "en": [
-          "How has its size changed since discovery?",
-          "growth"
+          "bigger",
+          "grown",
+          "growing",
+          "larger",
+          "grow",
+          "change size",
+          "increase size",
+          "getting big"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（现病史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (history of the lump); simulated answer compiled from the source"
+      }
     },
     {
       "id": "pmh",
       "topic": "pmh",
       "question": {
-        "zh-CN": "过去有什么重要病史？",
-        "en": "What significant medical history was recorded?"
+        "zh-CN": "你以前生过什么病、住过院吗？",
+        "en": "Have you had any illnesses or hospital stays before?"
       },
       "answer": {
-        "zh-CN": "原记录说既往病史无特殊。",
-        "en": "The source describes no notable past medical history."
+        "zh-CN": "以前没生过什么大病。",
+        "en": "I've never had anything serious."
       },
       "keywords": {
         "zh-CN": [
-          "过去有什么重要病史？",
-          "既往病史"
+          "生过病",
+          "生过什么病",
+          "以前的病",
+          "既往史",
+          "住过院",
+          "大病",
+          "身体好不好",
+          "慢性病",
+          "身体一直",
+          "健康",
+          "做过手术",
+          "什么手术",
+          "手术史"
         ],
         "en": [
-          "What significant medical history was recorded?",
-          "medical history"
+          "illnesses",
+          "medical history",
+          "medical problems",
+          "been ill",
+          "hospital before",
+          "health problems",
+          "conditions",
+          "serious illness",
+          "healthy",
+          "operations",
+          "surgery before"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "excision"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（既往史“无特殊”）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (past history ‘unremarkable’); simulated answer compiled from the source"
+      }
     },
     {
       "id": "other-lesions",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "是否还有别处肿物或色素斑？",
-        "en": "Were other masses or pigmented skin lesions reported?"
+        "zh-CN": "身上别的地方还有、或者以前长过类似的包吗？",
+        "en": "Do you have, or have you ever had, other lumps like this anywhere?"
       },
       "answer": {
-        "zh-CN": "原报告没有系统记录其他部位病变，不能当作已排除。",
-        "en": "The report does not systematically document other lesions, so their absence is not established."
+        "zh-CN": "别的地方有没有，我的病例里没有记录，我说不上来。",
+        "en": "Whether there are any others isn't in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "是否还有别处肿物或色素斑？"
+          "别的地方",
+          "其他地方",
+          "类似的包",
+          "还有包",
+          "别处",
+          "其他的包",
+          "多发",
+          "以前长过",
+          "也长过"
         ],
         "en": [
-          "Were other masses or pigmented skin lesions reported?"
+          "other lumps",
+          "elsewhere",
+          "anywhere else",
+          "lumps elsewhere",
+          "similar lump",
+          "lump before",
+          "another lump",
+          "other places"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "pigmentation",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "皮肤上有没有斑点、雀斑或颜色深的斑，比如嘴唇、眼皮周围？",
+        "en": "Any freckles, spots or darker patches on your skin — around your lips or eyelids, for example?"
       },
-      "required": true
+      "answer": {
+        "zh-CN": "皮肤上有没有这些斑，我的病例里没有记录，我说不上来。",
+        "en": "My case notes don't say anything about spots on my skin, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "色斑",
+          "斑点",
+          "雀斑",
+          "色素斑",
+          "色素沉着",
+          "小黑点",
+          "黑点",
+          "痣",
+          "眼皮",
+          "嘴唇"
+        ],
+        "en": [
+          "freckles",
+          "spots",
+          "dark patches",
+          "pigmentation",
+          "lips",
+          "eyelids",
+          "moles",
+          "birthmarks",
+          "dark spots"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
     },
     {
       "id": "pain",
       "topic": "pain",
       "question": {
-        "zh-CN": "不碰时是否疼痛或瘙痒？",
-        "en": "Was there spontaneous pain or itching?"
+        "zh-CN": "平时这个包会疼或者痒吗？",
+        "en": "Does the lump hurt or itch on its own?"
       },
       "answer": {
-        "zh-CN": "原报告仅记载查体压痛，未描述自发疼痛或瘙痒。",
-        "en": "Only tenderness on examination is documented; spontaneous pain and itching are not described."
+        "zh-CN": "平时疼不疼、痒不痒，我的病例里没有记录，我说不上来。",
+        "en": "Whether it hurts or itches on its own isn't in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "不碰时是否疼痛或瘙痒？"
+          "疼",
+          "疼不疼",
+          "痛不痛",
+          "疼吗",
+          "疼痛",
+          "痒",
+          "瘙痒",
+          "会疼"
         ],
         "en": [
-          "Was there spontaneous pain or itching?"
+          "hurt",
+          "painful",
+          "pain",
+          "sore",
+          "tender",
+          "itchy",
+          "itch",
+          "ache"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "cardiac",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近有没有心慌、胸闷气短，或者晕倒过？",
+        "en": "Have you had any palpitations, chest tightness, breathlessness or fainting?"
+      },
+      "answer": {
+        "zh-CN": "这些情况我的病例里没有记录，我说不上来。",
+        "en": "Nothing like that is recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心慌",
+          "心悸",
+          "胸闷",
+          "气短",
+          "喘不上气",
+          "晕倒",
+          "晕厥",
+          "心跳快"
+        ],
+        "en": [
+          "palpitations",
+          "heart racing",
+          "breathless",
+          "short of breath",
+          "fainting",
+          "faint",
+          "chest pain",
+          "passedout"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "puberty-periods",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近身高、体重或者月经有没有明显变化？",
+        "en": "Any big changes in your height, weight or periods recently?"
+      },
+      "answer": {
+        "zh-CN": "这方面我的病例里没有记录，我说不上来。",
+        "en": "My case notes don't say anything about that, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "月经",
+          "例假",
+          "体重变化",
+          "长高",
+          "身高",
+          "发育",
+          "胖了",
+          "瘦了",
+          "大姨妈"
+        ],
+        "en": [
+          "periods",
+          "menstrual",
+          "weight change",
+          "height",
+          "growth spurt",
+          "puberty",
+          "gained weight",
+          "lost weight"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "medications",
       "topic": "medications",
       "question": {
-        "zh-CN": "近期有没有用药或外用处理？",
-        "en": "Were medicines or topical treatments used recently?"
+        "zh-CN": "最近有没有吃药，或者在包上抹过药膏？",
+        "en": "Are you taking any medicines, or have you put any cream on the lump?"
       },
       "answer": {
-        "zh-CN": "原报告没有提供用药信息。",
-        "en": "Medication information is not provided."
+        "zh-CN": "吃没吃药、抹没抹药，我的病例里没有记录，我说不上来。",
+        "en": "Whether I've taken any medicines or used any cream isn't in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "近期有没有用药或外用处理？"
+          "吃药",
+          "用药",
+          "药膏",
+          "抹药",
+          "吃什么药",
+          "药物",
+          "服药"
         ],
         "en": [
-          "Were medicines or topical treatments used recently?"
+          "medication",
+          "medicines",
+          "tablets",
+          "cream",
+          "ointment",
+          "pills"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "recurrence",
-      "topic": "hpi",
-      "question": {
-        "zh-CN": "以前出现过类似肿物吗？",
-        "en": "Were there similar masses previously?"
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       },
-      "answer": {
-        "zh-CN": "此前是否有类似肿物未记录。",
-        "en": "Previous similar masses are not documented."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "以前出现过类似肿物吗？"
+          "过敏"
         ],
         "en": [
-          "Were there similar masses previously?"
+          "allerg"
         ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "endocrine",
-      "topic": "ros",
-      "question": {
-        "zh-CN": "是否有内分泌或心脏方面症状？",
-        "en": "Were endocrine or cardiac symptoms recorded?"
-      },
-      "answer": {
-        "zh-CN": "原报告没有针对性问诊资料。",
-        "en": "A targeted history is not supplied."
-      },
-      "keywords": {
-        "zh-CN": [
-          "是否有内分泌或心脏方面症状？"
-        ],
-        "en": [
-          "Were endocrine or cardiac symptoms recorded?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       }
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "以前有药物或食物过敏吗？",
-        "en": "Any previous drug or food allergies?"
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "过不过敏，我的病例里没有记录，我说不上来。",
+        "en": "Allergies aren't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "食物过敏",
+          "对什么过敏"
         ],
         "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
+          "allergy",
+          "allergic",
+          "allergies",
+          "reaction medicine",
+          "drug allergy"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "family",
       "topic": "family",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "家里人有没有长过类似的包，或者有心脏、内分泌方面的病？",
+        "en": "Has anyone in your family had lumps like this, or heart or hormone problems?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "家里人的情况我的病例里没有记录，我说不上来。",
+        "en": "My family's health isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
-          "家族史"
+          "家里人",
+          "家族",
+          "家族史",
+          "爸爸妈妈",
+          "亲戚",
+          "遗传",
+          "家里有人",
+          "父母"
         ],
         "en": [
-          "Any family history of similar illness?",
-          "family history"
+          "family",
+          "relatives",
+          "parents",
+          "runs in the family",
+          "hereditary",
+          "mum dad"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "school-home",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时上学、在家里都还好吗？",
+        "en": "How are things at school and at home?"
+      },
+      "answer": {
+        "zh-CN": "学校和家里的情况我的病例里没有记录，我说不上来。",
+        "en": "My case notes don't say anything about school or home, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "上学",
+          "学校",
+          "读书",
+          "在家",
+          "家里怎么样",
+          "几年级",
+          "学习",
+          "上课"
+        ],
+        "en": [
+          "school",
+          "home life",
+          "lessons",
+          "friends",
+          "year at school",
+          "classes",
+          "studying"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "smoking",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
-        "en": "Do you smoke?"
+        "zh-CN": "你抽过烟吗？电子烟也算。",
+        "en": "Have you ever smoked — vapes included?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "抽没抽过烟，我的病例里没有记录，我说不上来。",
+        "en": "Smoking isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "抽烟",
+          "吸烟",
+          "烟",
+          "电子烟",
+          "香烟",
+          "抽过烟"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "smoke",
+          "smoking",
+          "vape",
+          "vaping",
+          "cigarettes",
+          "tobacco"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
-        "en": "Do you drink alcohol?"
+        "zh-CN": "你喝过酒吗？",
+        "en": "Have you ever had any alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "喝没喝过酒，我的病例里没有记录，我说不上来。",
+        "en": "Drinking isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "酒",
+          "喝过酒",
+          "啤酒"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine",
+          "drunk"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "occupation",
-      "topic": "social",
-      "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
-        ],
-        "en": [
-          "What are your work and living circumstances?",
-          "occupation"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
-        ],
-        "en": [
-          "How independent were you before this illness?",
-          "independence"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "expectations",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "你（和妈妈）最担心的是什么？",
+        "en": "What are you (and your mum) most worried about?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "顾虑",
+          "害怕",
+          "希望",
+          "想法",
+          "最怕"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worry",
+          "worried",
+          "concerns",
+          "hoping",
+          "afraid",
+          "scared",
+          "expect"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "followup-status",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "手术以后，那个地方还长过包吗？",
+        "en": "Has a lump come back there since the operation?"
+      },
+      "answer": {
+        "zh-CN": "没有。手术到现在六年了，那里没再长过。",
+        "en": "No. It's been six years since the operation, and nothing has grown back there."
+      },
+      "keywords": {
+        "zh-CN": [
+          "又长出来",
+          "长回来",
+          "复发",
+          "再长",
+          "又长",
+          "手术后",
+          "术后",
+          "这几年"
+        ],
+        "en": [
+          "come back",
+          "grown back",
+          "recurrence",
+          "since the operation",
+          "after the operation",
+          "back again",
+          "returned"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "以前",
+          "过去",
+          "既往",
+          "做过"
+        ],
+        "en": [
+          "before",
+          "previous",
+          "ever had"
+        ]
+      },
+      "disclosure": "on-ask",
       "phases": [
-        "initial"
+        "followup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·讨论末句（术后随访6年未见复发）；依据原文整理的模拟回答",
+        "en": "Main text · Discussion, last sentence (no recurrence at 6-year follow-up); simulated answer compiled from the source"
       }
     }
   ],
@@ -592,62 +903,199 @@
       "id": "mass",
       "system": "skin",
       "maneuver": {
-        "zh-CN": "检查皮下肿物",
-        "en": "Examine the subcutaneous mass"
+        "zh-CN": "视诊并触诊耻骨上方的肿物",
+        "en": "Look at and feel the lump above the pubic bone"
+      },
+      "keywords": {
+        "zh-CN": [
+          "检查肿物",
+          "触诊肿物",
+          "摸包",
+          "摸肿物",
+          "看看包",
+          "肿物查体",
+          "专科检查",
+          "触诊",
+          "检查包块",
+          "这个包",
+          "那个包",
+          "检查包"
+        ],
+        "en": [
+          "examine lump",
+          "feel lump",
+          "palpate lump",
+          "palpate mass",
+          "look at lump",
+          "examine mass",
+          "palpation"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "色斑",
+          "色素",
+          "淋巴结",
+          "心脏",
+          "全身",
+          "其他检查"
+        ],
+        "en": [
+          "pigment",
+          "freckle",
+          "lymph",
+          "heart",
+          "rest of the examination",
+          "restoftheexamination"
+        ]
       },
       "finding": {
-        "zh-CN": "肿物约2×2×1.5 cm，边界清楚、可活动、有压痛。",
-        "en": "The mass measures approximately 2×2×1.5 cm, is well defined and mobile, and is tender."
+        "zh-CN": "肿物约2 cm×2 cm×1.5 cm，边界清楚，可活动，有压痛。",
+        "en": "The lump measures about 2 cm × 2 cm × 1.5 cm; it is well defined, mobile and tender."
       },
       "abnormal": true,
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·患者（专科检查）",
+        "en": "Main text · Patient (local examination)"
       }
     },
     {
       "id": "other-exam",
       "system": "general",
       "maneuver": {
-        "zh-CN": "复核其他体检记录",
-        "en": "Review the rest of the examination"
+        "zh-CN": "完成其余体格检查",
+        "en": "Complete the rest of the examination"
+      },
+      "keywords": {
+        "zh-CN": [
+          "全身检查",
+          "其他检查",
+          "体格检查",
+          "全面查体",
+          "其余查体",
+          "一般检查",
+          "查体"
+        ],
+        "en": [
+          "rest of the examination",
+          "full examination",
+          "general examination",
+          "other examination",
+          "systemic examination",
+          "complete examination",
+          "whole body examination"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "色斑",
+          "色素",
+          "皮肤",
+          "淋巴结",
+          "心脏",
+          "听诊"
+        ],
+        "en": [
+          "pigment",
+          "freckle",
+          "skin",
+          "lymph",
+          "heart",
+          "auscultat"
+        ]
       },
       "finding": {
-        "zh-CN": "原文只概述其他检查未见异常，未列具体生命体征、皮肤全身检查或内分泌体征。",
-        "en": "Other examinations are only summarised as unremarkable; specific vital signs, full skin examination and endocrine signs are not listed."
+        "zh-CN": "其他检查未见异常（原文仅此一句概述）。",
+        "en": "The rest of the examination was unremarkable (the source gives only this one-line summary)."
       },
       "abnormal": false,
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·患者（“其他检查未见异常”）",
+        "en": "Main text · Patient (‘other examinations unremarkable’)"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这项检查，病例无法提供所见（不等于正常）。",
+    "en": "The report does not record this examination, so the case has no finding to give (which does not mean it was normal)."
   },
   "investigations": [
     {
+      "id": "ultrasound",
+      "name": {
+        "zh-CN": "肿物超声（高频浅表超声）",
+        "en": "Ultrasound of the lump (high-frequency superficial ultrasound)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "超声",
+          "b超",
+          "彩超",
+          "浅表超声",
+          "软组织超声",
+          "包块超声",
+          "肿物超声"
+        ],
+        "en": [
+          "ultrasound",
+          "soft tissue ultrasound",
+          "superficial ultrasound",
+          "scan the lump",
+          "sonography",
+          "doppler"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录术前超声或其他影像检查，病例不提供结果。",
+            "en": "The report records no pre-operative ultrasound or other imaging, so the case has no result."
+          },
+          "source": {
+            "zh-CN": "正文·患者（未提及影像）",
+            "en": "Main text · Patient (no imaging mentioned)"
+          }
+        }
+      }
+    },
+    {
       "id": "gross",
       "name": {
-        "zh-CN": "调阅标本大体描述",
-        "en": "Review gross specimen description"
+        "zh-CN": "标本大体检查",
+        "en": "Gross examination of the specimen"
       },
       "category": "pathology",
       "aliases": {
         "zh-CN": [
-          "调阅标本大体描述"
+          "大体",
+          "大体标本",
+          "标本外观",
+          "肉眼检查",
+          "大体检查",
+          "病理"
         ],
         "en": [
-          "Review gross specimen description",
-          "gross"
+          "gross",
+          "gross specimen",
+          "macroscopic",
+          "specimen appearance",
+          "gross examination",
+          "pathology"
         ]
       },
       "requires": [
@@ -656,36 +1104,51 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "切除组织为一块柔软胶冻样结节。",
-            "en": "The excised specimen was a soft gelatinous nodule."
+        "excision": {
+          "available": true,
+          "date": {
+            "zh-CN": "切除后（原文无日期）",
+            "en": "After excision (no date in the source)"
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          "text": {
+            "zh-CN": "结节状组织1块，胶冻样，质软（图1）。",
+            "en": "One nodular piece of tissue, gelatinous and soft (Fig. 1)."
           },
           "figures": [
             "fig01"
           ],
-          "available": true
+          "source": {
+            "zh-CN": "正文·患者（病理肉眼检查），图1",
+            "en": "Main text · Patient (gross pathology), Fig. 1"
+          }
         }
       }
     },
     {
       "id": "microscopy",
       "name": {
-        "zh-CN": "调阅组织学切片",
-        "en": "Review histological sections"
+        "zh-CN": "组织学切片（HE）",
+        "en": "Histology (H&E sections)"
       },
       "category": "pathology",
       "aliases": {
         "zh-CN": [
-          "调阅组织学切片"
+          "镜下",
+          "组织学",
+          "切片",
+          "he染色",
+          "显微镜下",
+          "病理切片",
+          "病理"
         ],
         "en": [
-          "Review histological sections",
-          "microscopy"
+          "microscopy",
+          "histology",
+          "h&e",
+          "sections",
+          "slides",
+          "microscopic",
+          "pathology"
         ]
       },
       "requires": [
@@ -694,37 +1157,55 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "病变呈模糊结节或分叶状，血管较多，黏液样间质内散在梭形细胞，伴少量中性粒细胞浸润。",
-            "en": "The lesion has indistinct nodular/lobulated architecture, numerous vessels and scattered spindle cells in myxoid stroma, with some neutrophilic infiltration."
+        "excision": {
+          "available": true,
+          "date": {
+            "zh-CN": "切除后（原文无日期）",
+            "en": "After excision (no date in the source)"
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          "text": {
+            "zh-CN": "镜下呈模糊结节状或分叶状结构，由较多血管、黏液样间质及散在的梭形细胞组成，并见散在中性粒细胞浸润（图2低倍、图3高倍）。",
+            "en": "Indistinct nodular or lobulated architecture made up of numerous vessels, myxoid stroma and scattered spindle cells, with scattered neutrophils (Fig. 2, low power; Fig. 3, high power)."
           },
           "figures": [
             "fig02",
             "fig03"
           ],
-          "available": true
+          "source": {
+            "zh-CN": "正文·患者（镜下所见），图2、图3",
+            "en": "Main text · Patient (microscopy), Figs 2 and 3"
+          }
         }
       }
     },
     {
       "id": "ihc",
       "name": {
-        "zh-CN": "调阅免疫组化",
-        "en": "Review immunohistochemistry"
+        "zh-CN": "免疫组化（CD34、CK、Desmin、S-100）",
+        "en": "Immunohistochemistry (CD34, CK, desmin, S-100)"
       },
       "category": "pathology",
       "aliases": {
         "zh-CN": [
-          "调阅免疫组化"
+          "免疫组化",
+          "cd34",
+          "s-100",
+          "s100",
+          "desmin",
+          "结蛋白",
+          "角蛋白",
+          "病理"
         ],
         "en": [
-          "Review immunohistochemistry",
-          "ihc"
+          "immunohistochemistry",
+          "ihc",
+          "cd34",
+          "s-100",
+          "s100",
+          "desmin",
+          "cytokeratin",
+          "immunostains",
+          "pathology"
         ]
       },
       "requires": [
@@ -733,36 +1214,132 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "excision": {
+          "available": true,
+          "date": {
+            "zh-CN": "切除后（原文无日期）",
+            "en": "After excision (no date in the source)"
+          },
           "text": {
-            "zh-CN": "梭形细胞局灶CD34阳性，CK、Desmin和S-100阴性。病例未报告SOX10、ER或PR结果；讨论中的其他肿瘤表型不是本例检测结果。",
-            "en": "Spindle cells show focal CD34 positivity and negative CK, desmin and S-100. SOX10, ER and PR are not reported for this patient; comparator tumour profiles in the discussion are not patient results."
+            "zh-CN": "梭形细胞CD34局部阳性（图4）；CK、Desmin、S-100阴性。",
+            "en": "Spindle cells focally CD34 positive (Fig. 4); CK, desmin and S-100 negative."
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
+          "values": [
+            {
+              "analyte": "CD34",
+              "value": {
+                "zh-CN": "局部阳性",
+                "en": "focally positive"
+              },
+              "flag": "A"
+            },
+            {
+              "analyte": "CK",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              }
+            },
+            {
+              "analyte": "Desmin",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              }
+            },
+            {
+              "analyte": "S-100",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              }
+            }
+          ],
           "figures": [
             "fig04"
           ],
-          "available": true
+          "note": {
+            "zh-CN": "讨论中列出的其他肿瘤免疫表型（如SOX10、ER、PR、SMA、Actin）是文献对照，不是本例的检测结果。",
+            "en": "The other tumours' immunoprofiles in the discussion (SOX10, ER, PR, SMA, actin…) are literature comparisons, not results for this patient."
+          },
+          "source": {
+            "zh-CN": "正文·患者（免疫组化），图4",
+            "en": "Main text · Patient (immunohistochemistry), Fig. 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "ihc-additional",
+      "name": {
+        "zh-CN": "补充免疫组化（SOX10、ER、PR、SMA）",
+        "en": "Additional immunohistochemistry (SOX10, ER, PR, SMA)"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "sox10",
+          "雌激素受体",
+          "孕激素受体",
+          "雌孕激素受体",
+          "er/pr",
+          "sma",
+          "平滑肌肌动蛋白",
+          "补充免疫组化",
+          "加做免疫组化"
+        ],
+        "en": [
+          "sox10",
+          "oestrogen receptor",
+          "estrogen receptor",
+          "progesterone receptor",
+          "er/pr",
+          "sma",
+          "smooth muscle actin",
+          "additional stains",
+          "extra stains"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "excision": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未报告本例的SOX10、ER、PR或SMA染色，病例不提供结果。",
+            "en": "The report gives no SOX10, ER, PR or SMA staining for this patient, so the case has no result."
+          },
+          "source": {
+            "zh-CN": "正文·患者与讨论（未报告这些染色）",
+            "en": "Main text · Patient and discussion (these stains not reported)"
+          }
         }
       }
     },
     {
       "id": "operative-record",
       "name": {
-        "zh-CN": "调阅手术与切缘资料",
-        "en": "Review operation and margin documentation"
+        "zh-CN": "手术与切缘记录（原报告）",
+        "en": "Operation and margin record (as reported)"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅手术与切缘资料"
+          "手术记录",
+          "切缘",
+          "手术方式",
+          "切除记录",
+          "切缘状态"
         ],
         "en": [
-          "Review operation and margin documentation",
-          "operative-record"
+          "operation note",
+          "operative record",
+          "margins",
+          "margin status",
+          "excision record"
         ]
       },
       "requires": [
@@ -771,34 +1348,44 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "excision": {
+          "available": true,
+          "date": {
+            "zh-CN": "切除（原文无日期）",
+            "en": "Excision (no date in the source)"
+          },
           "text": {
-            "zh-CN": "记录已手术切除肿物并送病理；未列切缘状态、完整切除的组织学确认或术前影像。",
-            "en": "Excision and submission to pathology are documented; margin status, histological confirmation of complete removal and preoperative imaging are not given."
+            "zh-CN": "原报告记录：手术切除肿物后送病理科。未记录手术方式（切除范围、麻醉）和切缘状态，也未记录术前影像。",
+            "en": "The report records that the lump was excised and sent to pathology. It records neither the operation (extent of excision, anaesthetic) nor the margin status, and no pre-operative imaging."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "正文·患者（手术切除）",
+            "en": "Main text · Patient (excision)"
+          }
         }
       }
     },
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "原报告随访记录",
+        "en": "Reported follow-up"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访",
+          "随访记录",
+          "转归",
+          "结局",
+          "复发情况"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "follow-up",
+          "followup",
+          "outcome",
+          "follow up record",
+          "recurrence record"
         ]
       },
       "requires": [
@@ -808,31 +1395,386 @@
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后6年",
+            "en": "6 years after surgery"
+          },
           "text": {
-            "zh-CN": "原报告明确术后随访6年，未见局部复发或转移；没有提供每次随访方式、切缘复核或系统性综合征筛查。6年良好结局属于本例事实，不代表所有类似病变不需随访。",
-            "en": "The report explicitly states six years of postoperative follow-up without recurrence or metastasis. Visit methods, margin review and systematic syndrome screening are not detailed. This favourable six-year outcome is case-specific and does not remove the need for follow-up in other patients."
+            "zh-CN": "原报告：术后随访6年，未见复发及转移。未记录随访方式与间隔、切缘复核，也未记录是否评估过Carney综合征。",
+            "en": "As reported: followed up for 6 years after the operation without recurrence or metastasis. The report records neither how or how often she was seen, nor any margin review, nor whether Carney complex was ever assessed."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "讨论（末句）",
+            "en": "Discussion (last sentence)"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "interventions": [
+    {
+      "id": "excision",
+      "name": {
+        "zh-CN": "完整切除肿物（切除活检）并送病理",
+        "en": "Complete excision (excisional biopsy) with histology"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "切除",
+          "手术切除",
+          "完整切除",
+          "切除活检",
+          "切掉",
+          "局部切除",
+          "肿物切除",
+          "做手术"
+        ],
+        "en": [
+          "excision",
+          "excise",
+          "excisional biopsy",
+          "remove lump",
+          "surgical removal",
+          "cutitout",
+          "local excision"
+        ]
+      },
+      "dose": {
+        "zh-CN": "完整切除肿物（带少许正常组织，不切破肿物），标本全部送病理。",
+        "en": "Remove the lump whole, with a little normal tissue and without cutting into it, and send all of it for histology."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "decided": "pre-excision"
+          },
+          {
+            "ordered": "ultrasound"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "按原报告：手术切除肿物并送病理科。原文未记录术前影像、手术方式或切缘。",
+        "en": "As in the report: the lump is excised and sent to pathology. The source records no pre-operative imaging, operative details or margins."
+      }
+    },
+    {
+      "id": "incisional-biopsy",
+      "name": {
+        "zh-CN": "门诊切开活检（只取一部分）",
+        "en": "Incisional biopsy in clinic (taking only part of it)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "切开活检",
+          "部分切除",
+          "取一块",
+          "门诊活检",
+          "切一块",
+          "活检"
+        ],
+        "en": [
+          "incisional biopsy",
+          "biopsy",
+          "partial excision",
+          "take a piece",
+          "punch biopsy",
+          "open biopsy"
+        ]
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "对约2 cm的浅表肿物，ESMO–EURACAN–GENTURIS 2021认为切除活检可能最实用；在门诊只切开取一部分，拿不到完整标本、还要再做一次手术，若为肉瘤，计划外的切开还会给后续手术带来困难。开放活检只应在肉瘤中心决定后进行。",
+        "en": "For a superficial lump of about 2 cm, ESMO–EURACAN–GENTURIS 2021 say an excisional biopsy may be the most practical option; cutting into part of it in clinic gives an incomplete specimen and a second operation, and if it were a sarcoma an unplanned incision makes the definitive surgery harder. Open biopsy belongs to cases decided in a sarcoma reference centre."
+      },
+      "response": {
+        "zh-CN": "原报告没有做这项操作，病例不提供结果。上级医师叫停：先做影像。",
+        "en": "This was not done in the report, so the case gives no result. The attending stops it: image the lump first."
+      }
+    },
+    {
+      "id": "observe",
+      "name": {
+        "zh-CN": "先观察，不做影像，1–2个月后复诊",
+        "en": "Watch and wait without imaging; review in 1–2 months"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "观察",
+          "先观察",
+          "暂不处理",
+          "等等看",
+          "过段时间再看",
+          "观察等待"
+        ],
+        "en": [
+          "watch and wait",
+          "observe",
+          "observation",
+          "wait and see",
+          "review later"
+        ]
+      },
+      "requires": [],
+      "risk": "low",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "儿童和青少年不明原因、逐渐增大的肿物，NICE NG12建议48小时内做超声；只观察会延误诊断。",
+        "en": "For a child or young person with an unexplained lump that is getting bigger, NICE NG12 advises an ultrasound within 48 hours; simply waiting delays the diagnosis."
+      },
+      "response": {
+        "zh-CN": "原报告没有采用观察，病例不模拟观察之后的变化。",
+        "en": "The report did not take this course, and the case does not simulate what would follow."
+      }
+    },
+    {
+      "id": "wide-excision",
+      "name": {
+        "zh-CN": "未做影像就按肉瘤做广泛切除",
+        "en": "Wide ‘sarcoma’ excision without imaging or biopsy"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "广泛切除",
+          "根治性切除",
+          "按肉瘤切除",
+          "大范围切除"
+        ],
+        "en": [
+          "wide excision",
+          "wide local excision",
+          "radical excision",
+          "sarcoma excision"
+        ]
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "phase": "initial"
+      },
+      "harm": {
+        "zh-CN": "肉瘤的根治手术要在影像和组织学诊断之后由多学科团队计划；对约2 cm的浅表肿物直接做广泛切除，若为良性是过度治疗，若为肉瘤又是一次没有计划的手术。",
+        "en": "Definitive sarcoma surgery is planned by a multidisciplinary team after imaging and a tissue diagnosis; a wide excision of a superficial lump of about 2 cm without them over-treats a benign lesion or, if it were a sarcoma, is an unplanned operation."
+      },
+      "response": {
+        "zh-CN": "原报告没有做这项手术，病例不模拟其结果。",
+        "en": "The report did not do this, and the case does not simulate its result."
+      }
+    },
+    {
+      "id": "sarcoma-referral",
+      "name": {
+        "zh-CN": "转诊肉瘤多学科团队（MRI+影像引导下粗针活检）",
+        "en": "Refer to the sarcoma MDT (MRI and image-guided core biopsy)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "转诊肉瘤",
+          "肉瘤中心",
+          "肉瘤团队",
+          "粗针活检",
+          "粗针穿刺",
+          "穿刺活检",
+          "影像引导活检"
+        ],
+        "en": [
+          "sarcoma referral",
+          "sarcoma team",
+          "sarcoma mdt",
+          "core biopsy",
+          "image guided biopsy",
+          "refer to sarcoma"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "转诊已发出。超声提示软组织肉瘤，或结果不确定而仍有疑虑时，这是正确的一步（NICE NG12）。本例原报告没有经过肉瘤中心，直接手术切除；病例按原报告继续。",
+        "en": "Referral sent. It is the right step when ultrasound suggests a soft tissue sarcoma, or is uncertain while concern persists (NICE NG12). In the report she went straight to excision without a sarcoma centre, and the case follows the report."
+      }
+    },
+    {
+      "id": "carney-evaluation",
+      "name": {
+        "zh-CN": "转诊评估Carney综合征（超声心动图、内分泌评估、遗传咨询）",
+        "en": "Refer for Carney complex evaluation (echocardiography, endocrine review, genetic counselling)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "carney",
+          "卡尼综合征",
+          "心脏超声",
+          "超声心动图",
+          "遗传咨询",
+          "内分泌评估"
+        ],
+        "en": [
+          "carney complex",
+          "carney",
+          "echocardiography",
+          "echocardiogram",
+          "genetic counselling",
+          "endocrine review"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "转诊已发出。原报告未记录是否评估过Carney综合征。",
+        "en": "Referral sent. The report does not record whether Carney complex was ever assessed."
+      }
+    },
+    {
+      "id": "pathology-consult",
+      "name": {
+        "zh-CN": "与病理医生讨论切缘和鉴别诊断",
+        "en": "Discuss the margins and the differential with the pathologist"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "病理会诊",
+          "问病理科",
+          "联系病理医生",
+          "讨论切缘",
+          "病理科"
+        ],
+        "en": [
+          "pathologist",
+          "discuss with pathology",
+          "ask pathology",
+          "call pathology",
+          "discuss margins"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "operative-record"
+      },
+      "response": {
+        "zh-CN": "已联系病理科。原报告没有写切缘状态，病例无法补充。",
+        "en": "Pathology contacted. The report does not state the margin status, and the case cannot add it."
+      }
+    },
+    {
+      "id": "follow-up",
+      "name": {
+        "zh-CN": "安排局部随访，教她自查复发",
+        "en": "Arrange local follow-up and teach her to check for recurrence"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "随访",
+          "复诊",
+          "定期复查",
+          "安排随访",
+          "门诊随访",
+          "自查"
+        ],
+        "en": [
+          "follow-up",
+          "follow up",
+          "clinic review",
+          "arrange follow-up",
+          "self-check"
+        ]
+      },
+      "dose": {
+        "zh-CN": "门诊定期复查切口及周围；教她和家人自查，摸到新的包及时复诊（原文引用的复发时间为术后6–58个月，平均18个月）。",
+        "en": "Regular clinic review of the scar and the area around it; teach her and her family to check it and to come back promptly with any new lump (the source cites recurrence at 6–58 months after surgery, mean 18 months)."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "follow-up"
+      },
+      "response": {
+        "zh-CN": "已安排随访。原报告随访了6年，但没有记录随访方式和间隔。",
+        "en": "Follow-up arranged. The report followed her for 6 years but does not record how or how often."
+      }
+    },
+    {
+      "id": "adjuvant-rt",
+      "name": {
+        "zh-CN": "术后辅助放疗",
+        "en": "Adjuvant radiotherapy"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "放疗",
+          "辅助放疗",
+          "放射治疗",
+          "局部放疗"
+        ],
+        "en": [
+          "radiotherapy",
+          "adjuvant radiotherapy",
+          "radiation",
+          "local radiotherapy"
+        ]
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "high",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "没有病理证实需要放疗的恶性肿瘤就不应放疗；良性肿瘤的复发靠完整切除来预防、复发后可再切除。对15岁女孩放疗只会带来远期放射损伤和继发肿瘤的风险，没有获益。",
+        "en": "Radiotherapy needs a malignant tumour, proven on pathology, that calls for it; a benign tumour's recurrence is prevented by complete excision and treated by re-excision. In a 15-year-old, radiotherapy would bring only late radiation damage and a risk of second cancers, with no benefit."
+      },
+      "response": {
+        "zh-CN": "原报告没有放疗，病例不模拟其结果。",
+        "en": "The report gave no radiotherapy, and the case does not simulate its result."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-history",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "了解肿物的经过和相关病史",
+        "en": "Find out the lump's story and the relevant history"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "问清什么时候、在哪里发现，有没有变大，以前的健康情况，以及身上别处的包和皮肤上的斑；病历没有记录的就记为未知。",
+        "en": "Ask when and where she found it, whether it has grown, her past health, and about other lumps and spots on her skin; whatever the record does not hold stays unknown."
+      },
+      "guidance": {
+        "zh-CN": "在诊室与郑悦交谈（妈妈陪同），病史由她本人回答。",
+        "en": "Talk to Zheng Yue in the clinic room (her mother is with her); she answers her own history."
       },
       "completeWhen": {
         "all": [
@@ -849,17 +1791,30 @@
             "asked": "other-lesions"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-2",
+      "id": "obj-exam",
       "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "检查肿物并完成查体",
+        "en": "Examine the lump and complete the examination"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Examination"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "记下大小、边界、活动度和压痛；“其他检查未见异常”只能照原文理解，不能扩大成一项项具体阴性。",
+        "en": "Record its size, edges, mobility and tenderness; take ‘rest of the examination unremarkable’ as the source says it, not as a list of specific negatives."
+      },
+      "guidance": {
+        "zh-CN": "征得她同意并有陪检者在场，检查肿物，再完成其余查体。",
+        "en": "With her consent and a chaperone present, examine the lump, then complete the examination."
       },
       "completeWhen": {
         "all": [
@@ -870,105 +1825,281 @@
             "examined": "other-exam"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-3",
+      "id": "obj-plan",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "决定切除前要做什么",
+        "en": "Decide what must happen before removal"
+      },
+      "short": {
+        "zh-CN": "切除前",
+        "en": "Before removal"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "想想一个在长大的肿物在青少年身上意味着什么，以及哪些特征需要先排除软组织肉瘤。",
+        "en": "Think about what a growing lump means in a young person, and which features call for a soft tissue sarcoma to be excluded first."
       },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      "guidance": {
+        "zh-CN": "在会诊板上作出切除前的决策，再安排处理。",
+        "en": "Make the pre-excision decision on the case board, then act on it."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "decided": "pre-excision"
+          },
+          {
+            "intervened": "excision"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-diagnosis",
+      "title": {
+        "zh-CN": "依据标本作出诊断",
+        "en": "Make the diagnosis from the specimen"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
+      },
+      "hint": {
+        "zh-CN": "把部位、形态和免疫组化放在一起看，再逐一对照每个鉴别诊断自己的阳性标记。",
+        "en": "Put the site, the morphology and the immunohistochemistry together, then check each differential against its own positive markers."
+      },
+      "guidance": {
+        "zh-CN": "在病理工作站查看大体、镜下和免疫组化结果。",
+        "en": "Read the gross, microscopy and immunohistochemistry results at the pathology workstation."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ihc"
+          },
+          "target": "histopathology"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-follow-up",
+      "title": {
+        "zh-CN": "制定随访并复盘结局",
+        "en": "Plan follow-up and review the outcome"
+      },
+      "short": {
+        "zh-CN": "随访",
+        "en": "Follow-up"
+      },
+      "hint": {
+        "zh-CN": "想想这种肿瘤为什么会复发、本例缺了哪项记录，以及什么情况下要考虑相关的综合征。",
+        "en": "Think about why this tumour recurs, which record is missing here, and when a related syndrome should be considered."
+      },
+      "guidance": {
+        "zh-CN": "查看手术与切缘记录，作出随访与综合征决策，再查看原报告的随访记录。",
+        "en": "Read the operation and margin record, make the follow-up and syndrome decisions, then read the report's follow-up."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "follow-up"
+          },
+          {
+            "decided": "carney"
           },
           {
             "read": "followup",
             "phase": "followup"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
     }
   ],
   "decisions": [
     {
-      "id": "diagnosis",
+      "id": "pre-excision",
       "prompt": {
-        "zh-CN": "形态和免疫组化共同支持什么？",
-        "en": "What is supported by morphology and immunohistochemistry together?"
+        "zh-CN": "15岁女孩，耻骨上皮下肿物20余天、逐渐增大，约2 cm×2 cm×1.5 cm，边界清楚、可活动、有压痛。切除前最合适的处理是？",
+        "en": "A 15-year-old girl has a lump under the skin above the pubic bone that has grown over more than 20 days; it is about 2 cm × 2 cm × 1.5 cm, well defined, mobile and tender. What is the most appropriate step before it is removed?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "read": "gross",
-            "phase": "workup"
+            "asked": "presentation"
           },
           {
-            "read": "microscopy",
-            "phase": "workup"
+            "asked": "growth"
           },
           {
-            "read": "ihc",
-            "phase": "workup"
+            "examined": "mass"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先问清肿物的经过，并检查肿物本身。",
+        "en": "First take the history of the lump and examine it."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "ultrasound-first",
           "text": {
-            "zh-CN": "浅表性血管黏液瘤；根据本例证据保留鉴别范围",
-            "en": "Superficial angiomyxoma, while respecting the limits of this case’s differential evidence"
+            "zh-CN": "先尽快做肿物超声：若证实为体积小、位置表浅、表现良性的病变，可完整切除活检；若超声提示可疑、病变深在或体积较大，转诊肉瘤团队行MRI和影像引导下粗针活检",
+            "en": "Ultrasound the lump promptly first: if it confirms a small, superficial lesion with benign features, remove it whole as an excisional biopsy; if ultrasound is suspicious or the lesion is deep or large, refer to a sarcoma team for MRI and image-guided core biopsy"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "浅表部位、黏液基质、血管、梭形细胞与免疫组合需共同解释，单一CD34标记不特异。",
-            "en": "Superficial location, myxoid matrix, vessels, spindle cells and the immunopanel must be integrated; CD34 alone is nonspecific."
+            "zh-CN": "对。NICE NG12：儿童和青少年不明原因、逐渐增大的肿物，48小时内做直接超声；超声提示软组织肉瘤，或结果不确定而仍有疑虑时，48小时内转诊。ESMO–EURACAN–GENTURIS 2021：影像之后，标准做法是多针粗针活检，<3 cm的浅表病变则切除活检可能最实用。原报告未记录术前影像。",
+            "en": "Correct. NICE NG12: a child or young person with an unexplained lump that is getting bigger should have a direct-access ultrasound within 48 hours, and a very urgent referral (within 48 hours) if it suggests a soft tissue sarcoma or is uncertain while concern persists. ESMO–EURACAN–GENTURIS 2021: after imaging, multiple core-needle biopsies are the standard, while for superficial lesions under 3 cm an excisional biopsy may be the most practical option. The report records no pre-operative imaging."
           }
         },
         {
-          "id": "unsupported",
+          "id": "watch",
           "text": {
-            "zh-CN": "CD34阳性本身即可诊断侵袭性血管黏液瘤或肉瘤",
-            "en": "CD34 positivity alone establishes aggressive angiomyxoma or sarcoma"
+            "zh-CN": "边界清楚、能活动，多半是良性的，先观察1–2个月",
+            "en": "It is well defined and mobile, so probably benign — watch it for 1–2 months"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "浅表部位、黏液基质、血管、梭形细胞与免疫组合需共同解释，单一CD34标记不特异。",
-            "en": "Superficial location, myxoid matrix, vessels, spindle cells and the immunopanel must be integrated; CD34 alone is nonspecific."
+            "zh-CN": "不对。边界清楚、可活动并不能排除恶性；这个肿物二十多天来一直在长，按NICE NG12应在48小时内做超声，而不是等待。",
+            "en": "No. Being well defined and mobile does not exclude malignancy; this lump has grown over more than 20 days, and NICE NG12 asks for an ultrasound within 48 hours rather than waiting."
+          }
+        },
+        {
+          "id": "incisional",
+          "text": {
+            "zh-CN": "门诊先切开取一块组织活检，再决定怎么处理",
+            "en": "Take an incisional biopsy in clinic first, then decide"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。未做影像就切开取材，拿不到完整标本，若为肉瘤还会影响后续手术。对<3 cm的浅表病变，影像之后完整切除活检通常更实用；需要开放活检时应由肉瘤中心决定（ESMO–EURACAN–GENTURIS 2021）。",
+            "en": "No. Cutting into it without imaging gives an incomplete specimen and, if it were a sarcoma, compromises later surgery. For a superficial lesion under 3 cm, excisional biopsy after imaging is usually more practical; an open biopsy, when needed, is decided by a sarcoma centre (ESMO–EURACAN–GENTURIS 2021)."
+          }
+        },
+        {
+          "id": "wide",
+          "text": {
+            "zh-CN": "不必先做影像，直接按软组织肉瘤做广泛切除",
+            "en": "Skip imaging and go straight to a wide excision as for a soft tissue sarcoma"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。没有影像和组织学诊断就做广泛切除：若是良性，是过度治疗；若是肉瘤，又是一次没有计划的手术。肉瘤手术应在影像和活检之后由多学科团队计划。",
+            "en": "No. A wide excision without imaging or a tissue diagnosis over-treats a benign lump or, if it were a sarcoma, is an unplanned operation. Sarcoma surgery is planned by a multidisciplinary team after imaging and biopsy."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "diagnosis",
       "prompt": {
-        "zh-CN": "怎样形成随访计划而不补造已完成的检查？",
-        "en": "How should follow-up be planned without inventing completed assessments?"
+        "zh-CN": "切除标本：胶冻样软结节；镜下为模糊结节或分叶状，血管多，黏液样间质中散在梭形细胞，并见散在中性粒细胞；梭形细胞CD34局部阳性，CK、Desmin、S-100阴性。最可能的诊断是？",
+        "en": "The specimen: a soft gelatinous nodule; microscopy shows indistinct nodules or lobules with many vessels and scattered spindle cells in a myxoid stroma, with scattered neutrophils; spindle cells focally CD34 positive, CK, desmin and S-100 negative. What is the most likely diagnosis?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "gross"
+          },
+          {
+            "read": "microscopy"
+          },
+          {
+            "read": "ihc"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先查看大体、镜下和免疫组化结果。",
+        "en": "First read the gross description, the microscopy and the immunohistochemistry."
+      },
+      "options": [
+        {
+          "id": "superficial-angiomyxoma",
+          "text": {
+            "zh-CN": "浅表性血管黏液瘤（皮肤黏液瘤）",
+            "en": "Superficial angiomyxoma (cutaneous myxoma)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "对。浅表部位，镜下为纤细间隔分隔的模糊结节，黏液样间质中有散在梭形细胞和较多小血管，间质中性粒细胞可作为特征；CD34不同程度阳性，S-100、Desmin、CK阴性——与本例一致（原文讨论）。CD34单独看并不特异，要和形态、部位合起来看。",
+            "en": "Correct. A superficial site; indistinct nodules separated by fine septa, with scattered spindle cells and many small vessels in a myxoid stroma, and stromal neutrophils as a characteristic clue; CD34 variably positive with S-100, desmin and CK negative — all matching this case (the source's discussion). CD34 alone is not specific: it counts only with the morphology and the site."
+          }
+        },
+        {
+          "id": "nerve-sheath-myxoma",
+          "text": {
+            "zh-CN": "真皮神经鞘黏液瘤",
+            "en": "Dermal nerve sheath myxoma"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。真皮神经鞘黏液瘤呈小叶状，梭形细胞排列成漩涡状或条索状，S-100和SOX10阳性；本例S-100阴性（SOX10未做）。",
+            "en": "No. Dermal nerve sheath myxoma is lobular, with spindle cells in whorls or cords, and is S-100 and SOX10 positive; here S-100 is negative (SOX10 was not done)."
+          }
+        },
+        {
+          "id": "aggressive-angiomyxoma",
+          "text": {
+            "zh-CN": "侵袭性（深部）血管黏液瘤",
+            "en": "Aggressive (deep) angiomyxoma"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。侵袭性血管黏液瘤好发于深部盆腔和会阴，Desmin、ER、PR通常阳性；本例位于皮下、可活动，Desmin阴性（ER、PR未做）。",
+            "en": "No. Aggressive angiomyxoma arises deep in the pelvis and perineum and is usually desmin, ER and PR positive; this lump is subcutaneous and mobile, and desmin is negative (ER and PR were not done)."
+          }
+        },
+        {
+          "id": "myxofibrosarcoma",
+          "text": {
+            "zh-CN": "低级别黏液纤维肉瘤",
+            "en": "Low-grade myxofibrosarcoma"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。低级别黏液纤维肉瘤的细胞聚集在弧线状血管周围，并有局灶核异型或多形性；本例报告没有描述异型性或弧线状血管。",
+            "en": "No. In low-grade myxofibrosarcoma the cells cluster around curvilinear vessels, with focal nuclear atypia or pleomorphism; neither atypia nor curvilinear vessels is described here."
+          }
+        }
+      ]
+    },
+    {
+      "id": "follow-up",
+      "prompt": {
+        "zh-CN": "诊断为浅表性血管黏液瘤，原报告没有写切缘状态。下一步怎样处理最合适？",
+        "en": "The diagnosis is superficial angiomyxoma, and the report does not give the margin status. What is the best next step?"
       },
       "kind": "single",
       "requires": {
@@ -977,41 +2108,148 @@
             "decided": "diagnosis"
           },
           {
-            "read": "operative-record",
-            "phase": "workup"
-          },
-          {
-            "asked": "other-lesions"
+            "read": "operative-record"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先作出诊断，并查看手术与切缘记录。",
+        "en": "First make the diagnosis and read the operation and margin record."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "margins-follow-up",
           "text": {
-            "zh-CN": "核实切缘与切除范围，安排局部复发随访；若出现多发病灶或相关体征，再针对性评估综合征线索",
-            "en": "Confirm margins and extent of excision, plan local recurrence surveillance and evaluate syndromic clues if multiple lesions or relevant signs emerge"
+            "zh-CN": "向病理科确认切缘是否完整（不完整则考虑再切除），并安排局部随访，教她自查复发",
+            "en": "Confirm with pathology whether the margins are clear (re-excise if incomplete), and arrange local follow-up, teaching her to check for recurrence"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "本例切缘和综合征筛查未记录；不完整切除有复发风险，但单个肿物不能确证综合征。",
-            "en": "Margins and syndromic screening are not documented; incomplete excision may recur, but one lesion does not establish a syndrome."
+            "zh-CN": "对。浅表性血管黏液瘤切除不干净可局部复发（原文引用的复发率约30%–40%，复发多在术后6–58个月、平均18个月），所以要求完整切除并随访；本例切缘状态没有记录，必须先弄清楚。",
+            "en": "Correct. Superficial angiomyxoma recurs locally after incomplete excision (the source cites a recurrence rate of about 30–40 %, at 6–58 months, mean 18), so complete excision and follow-up are needed; the margin status is not recorded here and must be clarified first."
           }
         },
         {
-          "id": "unsupported",
+          "id": "no-follow-up",
           "text": {
-            "zh-CN": "病理为良性就不需随访，并据一处肿物直接确诊Carney综合征",
-            "en": "A benign label removes the need for follow-up and a single lesion directly proves Carney complex"
+            "zh-CN": "良性肿瘤，切掉就好，不需要随访",
+            "en": "It is benign and has been removed, so no follow-up is needed"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "本例切缘和综合征筛查未记录；不完整切除有复发风险，但单个肿物不能确证综合征。",
-            "en": "Margins and syndromic screening are not documented; incomplete excision may recur, but one lesion does not establish a syndrome."
+            "zh-CN": "不对。良性不等于不会复发：切除不完整时局部复发并不少见（原文引用约30%–40%），而本例连切缘状态都不知道。",
+            "en": "No. Benign does not mean it cannot come back: local recurrence after incomplete excision is not rare (the source cites about 30–40 %), and here even the margin status is unknown."
+          }
+        },
+        {
+          "id": "adjuvant-rt",
+          "text": {
+            "zh-CN": "术后补充局部放疗，预防复发",
+            "en": "Add local radiotherapy to prevent recurrence"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。这是良性肿瘤，原文称至今未见远处转移报道；复发靠完整切除来预防，复发后可以再切除。给15岁的孩子放疗弊大于利。",
+            "en": "No. This is a benign tumour with no distant metastasis ever reported (the source); recurrence is prevented by complete excision and treated by re-excision. Radiotherapy in a 15-year-old does far more harm than good."
+          }
+        },
+        {
+          "id": "carney-confirmed",
+          "text": {
+            "zh-CN": "这一个黏液瘤就足以诊断Carney综合征，应立即全面筛查",
+            "en": "This one myxoma is enough to diagnose Carney complex, so start full screening now"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。一个皮肤黏液瘤只是Carney综合征的一项主要表现；诊断需要两项主要表现，或一项主要表现加一项补充条件（一级亲属患病或PRKAR1A失活突变）（Stratakis 2001）。应先针对性地询问和检查其他表现。",
+            "en": "No. A single cutaneous myxoma is only one major manifestation of Carney complex; the diagnosis needs two major manifestations, or one major plus a supplemental criterion (an affected first-degree relative or an inactivating PRKAR1A mutation) (Stratakis 2001). First ask and examine for the other features."
+          }
+        }
+      ]
+    },
+    {
+      "id": "carney",
+      "prompt": {
+        "zh-CN": "在一位浅表性血管黏液瘤患者身上，下列哪些发现提示应进一步评估Carney综合征？（多选）",
+        "en": "In a patient with a superficial angiomyxoma, which of these findings should prompt further evaluation for Carney complex? (Select all that apply.)"
+      },
+      "kind": "multiple",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "asked": "other-lesions"
+          },
+          {
+            "asked": "pigmentation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先作出诊断，并问过身上其他部位的包和皮肤上的斑。",
+        "en": "First make the diagnosis and ask about other lumps and spots on the skin."
+      },
+      "options": [
+        {
+          "id": "multiple",
+          "text": {
+            "zh-CN": "身上还有其他皮肤或黏膜黏液瘤（多发）",
+            "en": "Other myxomas of the skin or mucosa (multiple lesions)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "是。多发的皮肤黏液瘤是考虑Carney综合征的经典线索（原文讨论；Stratakis 2001）。",
+            "en": "Yes. Multiple cutaneous myxomas are the classic prompt to consider Carney complex (the source's discussion; Stratakis 2001)."
+          }
+        },
+        {
+          "id": "ear-breast",
+          "text": {
+            "zh-CN": "病变位于外耳或乳房",
+            "en": "A lesion on the external ear or the breast"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "是。原文指出，即使单发，位于乳房或外耳的黏液瘤也应考虑Carney综合征。",
+            "en": "Yes. The source notes that even a single myxoma on the breast or the external ear should raise Carney complex."
+          }
+        },
+        {
+          "id": "spotty-pigmentation",
+          "text": {
+            "zh-CN": "嘴唇、眼睑/结膜或外阴黏膜的斑点状色素沉着",
+            "en": "Spotty pigmentation of the lips, eyelids or conjunctiva, or the genital mucosa"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "是。典型分布的斑点状皮肤色素沉着是Carney综合征的主要表现之一（Stratakis 2001）。",
+            "en": "Yes. Spotty skin pigmentation in the typical distribution is one of the major manifestations of Carney complex (Stratakis 2001)."
+          }
+        },
+        {
+          "id": "single-typical",
+          "text": {
+            "zh-CN": "单个耻骨上病灶，有压痛，但没有上述任何表现",
+            "en": "A single tender lesion above the pubic bone with none of the above"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不必。躯干上单个病灶、不伴其他表现，并不提示Carney综合征——但本例有没有其他病灶或色斑原文没有记录，所以要问、要查；一级亲属患病也会改变判断。",
+            "en": "No. A single lesion on the trunk with no other feature does not suggest Carney complex — but whether this patient has other lesions or pigmentation is not recorded, so ask and look; an affected first-degree relative would also change the picture."
+          }
+        },
+        {
+          "id": "cd34",
+          "text": {
+            "zh-CN": "梭形细胞CD34局部阳性",
+            "en": "Focal CD34 positivity of the spindle cells"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不是。CD34阳性是浅表性血管黏液瘤常见的免疫表型，与是否合并Carney综合征无关。",
+            "en": "No. CD34 positivity is the usual immunoprofile of superficial angiomyxoma and says nothing about Carney complex."
           }
         }
       ]
@@ -1019,13 +2257,13 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "r-hx-lump",
       "domain": "history",
+      "weight": 1,
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "问清肿物：何时、何处发现，是否增大，以往健康情况",
+        "en": "Characterised the lump: when and where it was found, whether it has grown, her past health"
       },
-      "weight": 2,
       "met": {
         "all": [
           {
@@ -1036,21 +2274,63 @@
           },
           {
             "asked": "pmh"
-          },
-          {
-            "asked": "other-lesions"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
-      "domain": "examination",
-      "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
-      },
+      "id": "r-hx-carney",
+      "domain": "history",
       "weight": 1,
+      "text": {
+        "zh-CN": "询问身上其他部位的包和皮肤色斑（Carney综合征线索）",
+        "en": "Asked about other lumps and skin pigmentation (Carney complex clues)"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "other-lesions"
+          },
+          {
+            "asked": "pigmentation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-hx-adolescent",
+      "domain": "history",
+      "weight": 1,
+      "text": {
+        "zh-CN": "按青少年的特点问诊：学校与家庭、吸烟或饮酒",
+        "en": "Took an adolescent history: school and home, smoking or alcohol"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "school-home"
+          },
+          {
+            "any": [
+              {
+                "asked": "smoking"
+              },
+              {
+                "asked": "alcohol"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "检查肿物（大小、边界、活动度、压痛）并完成其余查体",
+        "en": "Examined the lump (size, edges, mobility, tenderness) and completed the examination"
+      },
       "met": {
         "all": [
           {
@@ -1063,98 +2343,290 @@
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "r-imaging",
+      "domain": "investigations",
+      "weight": 2,
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "切除前申请肿物超声",
+        "en": "Requested an ultrasound of the lump before excision"
       },
-      "weight": 3,
       "met": {
-        "decided": "diagnosis"
+        "ordered": "ultrasound",
+        "phase": "initial"
       }
     },
     {
-      "id": "rubric-4",
+      "id": "r-pre",
       "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
       "weight": 3,
+      "text": {
+        "zh-CN": "第一次作答即选对切除前的处理（先做超声，再决定切除活检或转诊肉瘤团队）",
+        "en": "Chose the pre-excision step correctly at the first attempt (ultrasound first, then excisional biopsy or sarcoma referral)"
+      },
+      "met": {
+        "decidedFirstTry": "pre-excision"
+      }
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "第一次作答即诊断正确（浅表性血管黏液瘤）",
+        "en": "Made the diagnosis correctly at the first attempt (superficial angiomyxoma)"
+      },
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-follow",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "第一次作答即选对术后处理，并安排了局部随访",
+        "en": "Chose the post-excision plan correctly at the first attempt and arranged local follow-up"
+      },
       "met": {
         "all": [
           {
-            "decided": "management"
+            "decidedFirstTry": "follow-up"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "intervened": "follow-up"
           }
         ]
+      }
+    },
+    {
+      "id": "r-margins",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "与病理科核实切缘状态",
+        "en": "Checked the margin status with pathology"
+      },
+      "met": {
+        "intervened": "pathology-consult"
+      }
+    },
+    {
+      "id": "r-carney",
+      "domain": "diagnosis",
+      "weight": 1,
+      "text": {
+        "zh-CN": "第一次作答即正确说出提示Carney综合征的表现",
+        "en": "Identified the features that should prompt evaluation for Carney complex at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "carney"
+      }
+    },
+    {
+      "id": "r-safety",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "没有不做影像就观察、没有门诊切开活检、没有未经影像的广泛切除，也没有放疗",
+        "en": "No watch-and-wait without imaging, no incisional biopsy in clinic, no wide excision without imaging, and no radiotherapy"
+      },
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "observe"
+            },
+            {
+              "intervened": "incisional-biopsy"
+            },
+            {
+              "intervened": "wide-excision"
+            },
+            {
+              "intervened": "adjuvant-rt"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 2,
+      "text": {
+        "zh-CN": "沟通：与青少年本人直接交谈，向她和妈妈解释超声、手术、良性诊断与复发风险",
+        "en": "Communication: spoke with the teenager directly and explained the ultrasound, the operation, the benign diagnosis and the recurrence risk to her and her mother"
+      },
+      "judgeGuidance": {
+        "zh-CN": "表现良好：直接和15岁的她交谈，病史由她本人回答，并在妈妈在场的同时给她单独谈敏感问题的机会；用通俗的话解释为什么切除前要先做超声，以及手术会怎么做；拿到病理后说明这是良性肿瘤，但切除不完整可能复发，为什么要随访，出现新的包或皮肤色斑时要来看；向她和妈妈确认听懂了并请她们提问；不超出证据去吓唬她们（例如肿瘤或综合征）。征得同意，查体时有陪检者。",
+        "en": "Good performance: speaks to the 15-year-old directly — she answers her own history — and, with her mother present, offers her time alone for sensitive questions; explains in plain words why the lump needs an ultrasound before it is removed and what the operation involves; once the pathology is back, explains that it is a benign tumour that can come back if not completely removed, why follow-up matters, and to come back with any new lump or skin spots; checks that she and her mother have understood and invites their questions; does not frighten them beyond the evidence (cancer, syndromes). Asks consent and offers a chaperone for the examination."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "门诊护士 白洁",
+        "en": "Clinic nurse Bai Jie"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "交班：郑悦，15岁女孩，妈妈陪同来门诊，耻骨上方皮下肿物20多天，越来越大。原文没有记录生命体征。后勤（被问到时才说）：浅表超声要把超声推车推到诊室；切除标本送病理科；她未满18岁，手术同意需要家长参与；查体可安排女性陪检者。不知道诊断，不解读检查结果。",
+        "en": "Handover: Zheng Yue, a 15-year-old girl with her mother in clinic: a lump under the skin above the pubic bone for more than 20 days, getting bigger. The source records no vital signs. Logistics (only when asked): the ultrasound cart is wheeled to the clinic room for a superficial scan; excised tissue goes to pathology; she is under 18, so consent for surgery involves a parent; a female chaperone can be arranged. Does not know the diagnosis and does not interpret results."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "病理科医生 柯医生",
+        "en": "Dr Ke, pathologist"
+      },
+      "knowledge": {
+        "zh-CN": "学员看过结果后可以讲解：黏液样软组织病变的鉴别（浅表性血管黏液瘤、真皮神经鞘黏液瘤、侵袭性血管黏液瘤、低级别黏液纤维肉瘤）各自的形态线索——如纤细间隔、黏液样间质、梭形或星状细胞、血管形态、间质中性粒细胞、核异型；免疫组化的用途和局限（CD34不特异；S-100/SOX10、Desmin/ER/PR、SMA各自提示什么）；切缘状态与复发的关系。不替学员下诊断，只讨论学员已经看过的结果。",
+        "en": "Once the learner has read the results, can explain the differential of myxoid soft-tissue lesions (superficial angiomyxoma, dermal nerve sheath myxoma, aggressive angiomyxoma, low-grade myxofibrosarcoma) and the morphological clues that separate them — fine septa, myxoid stroma, spindle or stellate cells, the pattern of the vessels, stromal neutrophils, nuclear atypia; what the stains can and cannot do (CD34 is not specific; what S-100/SOX10, desmin/ER/PR and SMA each point to); and how margin status relates to recurrence. Does not make the diagnosis for the learner, and discusses only results the learner has read."
       },
       "interprets": [
         "gross",
         "microscopy",
         "ihc",
-        "operative-record",
-        "followup"
+        "ihc-additional"
       ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师 戴医生",
+        "en": "Dr Dai, attending"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教：这是历史病例，原报告的做法不等于今天的推荐。引导学员说出青少年逐渐增大的肿物要先排除什么、切除前为什么先做超声、什么情况下转诊肉瘤团队、怎样把形态和免疫组化合起来作诊断、良性肿瘤为什么还要随访，以及什么情况下考虑Carney综合征。只讨论学员已经获得的资料，不直接给出答案。",
+        "en": "Socratic teaching: this is a historical case, and what the report's team did is not automatically today's recommendation. Draws out what a growing lump in a young person must be checked for, why ultrasound comes before excision, when to refer to a sarcoma team, how morphology and stains combine into a diagnosis, why a benign tumour still needs follow-up, and when Carney complex should be considered. Discusses only what the learner has found and never gives the answer outright."
+      },
+      "interprets": [],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：青少年逐渐增大的皮下肿物",
+      "en": "Debrief: a growing lump under the skin in a teenager"
     },
     "conclusion": {
-      "zh-CN": "切除标本形态和免疫组合支持浅表性血管黏液瘤；本例6年未复发，未记录的切缘或综合征检查仍未知。",
-      "en": "Specimen morphology and immunophenotype support superficial angiomyxoma; no recurrence was reported over six years, while undocumented margin and syndrome assessments remain unknown."
+      "zh-CN": "切除标本的形态与免疫组化（CD34局部阳性，CK、Desmin、S-100阴性）支持浅表性血管黏液瘤；原报告术后随访6年无复发和转移。原文没有记录术前影像、切缘状态和Carney综合征相关评估。按现行做法，切除前应先做超声（NICE NG12），并在术后确认切缘、安排局部随访。",
+      "en": "The specimen's morphology and immunohistochemistry (CD34 focally positive; CK, desmin and S-100 negative) support superficial angiomyxoma, and the report records no recurrence or metastasis over 6 years of follow-up. The source records no pre-operative imaging, no margin status and no assessment for Carney complex. Current practice would image the lump before excision (NICE NG12), confirm the margins afterwards and arrange local follow-up."
     },
     "keyReasoning": [
       {
-        "zh-CN": "患者实测免疫组化与讨论中的典型表型要分开。",
-        "en": "Separate the patient’s actual immunostains from typical comparator profiles in the discussion."
+        "zh-CN": "青少年身上二十多天来逐渐增大的皮下肿物，首先要排除软组织肉瘤：先做超声，再根据超声决定切除活检还是转诊肉瘤团队。",
+        "en": "A lump under the skin that has grown over more than 20 days in a young person must first be checked for a soft tissue sarcoma: ultrasound first, then excisional biopsy or a sarcoma referral according to the ultrasound."
       },
       {
-        "zh-CN": "“其他检查未见异常”不能扩大成未列项目均阴性。",
-        "en": "“Other examinations unremarkable” must not be expanded into negative results for unspecified tests."
+        "zh-CN": "诊断要把部位、形态和免疫组化合在一起；把本例实际做过的染色与讨论中的文献对照分开（SOX10、ER、PR本例未做）。",
+        "en": "The diagnosis combines the site, the morphology and the immunohistochemistry; keep the stains this patient actually had apart from the literature comparisons in the discussion (SOX10, ER and PR were not done)."
+      },
+      {
+        "zh-CN": "“其他检查未见异常”只能照原文理解——原文的“检查”可能指查体，也可能包括辅助检查——不能扩大成未列出的项目都是阴性。",
+        "en": "‘Other examinations unremarkable’ must be taken as the source says it — the word may mean the physical examination or include investigations — and must not be expanded into negative results for anything not listed."
+      },
+      {
+        "zh-CN": "单个皮肤黏液瘤只是Carney综合征的一项主要表现；有没有其他病灶、色斑或家族史本例没有记录，应主动询问和检查。",
+        "en": "A single cutaneous myxoma is only one major manifestation of Carney complex; whether there are other lesions, pigmentation or a family history is not recorded here, so ask and examine for them."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是单个病例报告，不能证明某种处理的效果或普遍适用性。原报告的诊疗过程按事实呈现；决策、选项和评分是依据现行指南设计的教学内容。原报告没有记录术前影像，不能据此认为没有做过。",
+      "en": "This is a single case report and cannot show that one approach works better or applies generally. The report's course is presented as fact; the decisions, options and scoring are teaching material built on current guidance. The report records no pre-operative imaging, which does not prove that none was done."
     },
     "unknowns": [
       {
-        "zh-CN": "切缘状态、术前影像、系统皮肤/内分泌评估及具体随访方法。",
-        "en": "Margin status, preoperative imaging, systematic skin/endocrine evaluation and follow-up methods."
+        "zh-CN": "术前影像",
+        "en": "Pre-operative imaging"
+      },
+      {
+        "zh-CN": "切缘状态与手术方式",
+        "en": "Margin status and operative details"
+      },
+      {
+        "zh-CN": "是否含上皮成分；SOX10、ER、PR等染色",
+        "en": "Epithelial elements; SOX10, ER, PR and other stains"
+      },
+      {
+        "zh-CN": "其他病灶、皮肤色素沉着、心脏或内分泌症状、家族史",
+        "en": "Other lesions, skin pigmentation, cardiac or endocrine symptoms, family history"
+      },
+      {
+        "zh-CN": "随访方式与是否评估过Carney综合征",
+        "en": "How she was followed up, and whether Carney complex was assessed"
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "NICE NG12（2015年发布，2026年更新）：儿童和青少年不明原因、逐渐增大的肿物，48小时内做直接超声以评估软组织肉瘤；超声提示肉瘤，或结果不确定而仍有疑虑时，48小时内转诊。原报告没有记录术前影像——今天应先做超声再切除。",
+        "en": "NICE NG12 (2015, updated 2026): a child or young person with an unexplained lump that is increasing in size should have a direct-access ultrasound within 48 hours to assess for soft tissue sarcoma, and a very urgent referral (within 48 hours) if it suggests sarcoma or is uncertain while concern persists. The report records no pre-operative imaging — today the lump would be scanned before it is removed."
+      },
+      {
+        "zh-CN": "ESMO–EURACAN–GENTURIS 2021：影像之后，软组织肿物的标准诊断方法是多针粗针活检；<3 cm的浅表病变，切除活检可能最实用；开放活检只在肉瘤中心决定后进行。",
+        "en": "ESMO–EURACAN–GENTURIS 2021: after imaging, multiple core-needle biopsies are the standard diagnostic approach to a soft-tissue mass; for superficial lesions under 3 cm an excisional biopsy may be the most practical option; open biopsy is for selected cases decided in a sarcoma reference centre."
+      },
+      {
+        "zh-CN": "浅表性血管黏液瘤是良性皮肤肿瘤，切除不干净可局部复发（原文引用复发率约30%–40%，复发多在术后6–58个月、平均18个月，伴上皮成分者更易复发），至今未见远处转移报道：要求完整切除、确认切缘并局部随访，不做放疗。",
+        "en": "Superficial angiomyxoma is a benign skin tumour that recurs locally after incomplete excision (the source cites about 30–40 %, mostly at 6–58 months, mean 18, and more often with epithelial elements), with no distant metastasis reported: excise it completely, confirm the margins, follow up locally and do not irradiate."
+      },
+      {
+        "zh-CN": "Carney综合征（Stratakis 2001诊断标准）：两项主要表现，或一项主要表现加一项补充条件（一级亲属患病或PRKAR1A失活突变）即可诊断；皮肤黏液瘤、典型分布的斑点状色素沉着和心脏黏液瘤都是主要表现。多发病灶、外耳或乳房病灶（原文）应促使进一步评估；单个病灶不能确诊。",
+        "en": "Carney complex (Stratakis 2001 criteria): two major manifestations, or one major manifestation plus a supplemental criterion (an affected first-degree relative or an inactivating PRKAR1A mutation), make the diagnosis; cutaneous myxoma, spotty skin pigmentation in the typical distribution and cardiac myxoma are all major manifestations. Multiple lesions, or a lesion on the external ear or breast (the source), should prompt further evaluation; a single lesion does not make the diagnosis."
+      },
+      {
+        "zh-CN": "鉴别诊断靠形态加针对性的免疫组化：真皮神经鞘黏液瘤S-100/SOX10阳性；侵袭性血管黏液瘤位于深部盆腔/会阴，Desmin/ER/PR阳性；低级别黏液纤维肉瘤有弧线状血管和核异型（原文讨论）。本例S-100、Desmin阴性，其余标记未做。",
+        "en": "The differential rests on morphology plus targeted stains: dermal nerve sheath myxoma is S-100/SOX10 positive; aggressive angiomyxoma lies deep in the pelvis or perineum and is desmin/ER/PR positive; low-grade myxofibrosarcoma has curvilinear vessels and nuclear atypia (the source's discussion). Here S-100 and desmin were negative, and the other markers were not done."
+      }
+    ],
     "references": [
-      "古杰鳴. 淺表性血管黏液瘤1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.02.019",
-      "https://rs.yiigle.com/cmaid/1653409"
+      "古杰鳴. 淺表性血管黏液瘤1例. 鏡湖醫學. 2025;25(2):57. doi:10.12408/j.issn2223-4462.2025.02.019. Available from: https://rs.yiigle.com/cmaid/1653409",
+      "National Institute for Health and Care Excellence. Suspected cancer: recognition and referral. NICE guideline NG12. London: NICE; 2015 (last updated 2026). Available from: https://www.nice.org.uk/guidance/ng12",
+      "Gronchi A, Miah AB, Dei Tos AP, et al. Soft tissue and visceral sarcomas: ESMO–EURACAN–GENTURIS Clinical Practice Guidelines for diagnosis, treatment and follow-up. Ann Oncol. 2021;32(11):1348-1365. doi:10.1016/j.annonc.2021.07.006",
+      "Stratakis CA, Kirschner LS, Carney JA. Clinical and molecular features of the Carney complex: diagnostic criteria and recommendations for patient evaluation. J Clin Endocrinol Metab. 2001;86(9):4041-4046. doi:10.1210/jcem.86.9.7903"
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "切缘状态、术前影像、系统皮肤/内分泌评估及具体随访方法。",
-      "en": "Margin status, preoperative imaging, systematic skin/endocrine evaluation and follow-up methods."
+      "zh-CN": "术前影像（超声、MRI）：原文未记录（不能据此认为没做）。",
+      "en": "Pre-operative imaging (ultrasound, MRI): not recorded (which does not prove it was not done)."
+    },
+    {
+      "zh-CN": "切缘状态、切除范围和麻醉方式：原文未记录。",
+      "en": "Margin status, extent of excision and anaesthetic: not recorded."
+    },
+    {
+      "zh-CN": "本例是否含上皮成分：原文未报告（讨论称1/3以上的肿瘤可见上皮成分，且伴上皮成分者复发率更高）。",
+      "en": "Whether this tumour contained epithelial elements: not reported (the discussion says over a third of these tumours do, with a higher recurrence rate)."
+    },
+    {
+      "zh-CN": "SOX10、ER、PR、SMA/Actin等染色：本例未报告。",
+      "en": "SOX10, ER, PR, SMA/actin and other stains: not reported for this patient."
+    },
+    {
+      "zh-CN": "其他部位病灶、皮肤色素沉着、心脏或内分泌症状、家族史：原文未记录。",
+      "en": "Other lesions, skin pigmentation, cardiac or endocrine symptoms and family history: not recorded."
+    },
+    {
+      "zh-CN": "平时疼痛或瘙痒、用药、过敏、学校与家庭、吸烟饮酒、生命体征：原文未记录。",
+      "en": "Pain or itching at rest, medicines, allergies, school and home, smoking and alcohol, vital signs: not recorded."
+    },
+    {
+      "zh-CN": "随访方式与间隔、是否评估过Carney综合征：原文未记录。",
+      "en": "How and how often she was followed up, and whether Carney complex was assessed: not recorded."
+    },
+    {
+      "zh-CN": "原文用语含混：“其他检查未见异常”中的“检查”可指体格检查，也可包括辅助检查，原文未区分。",
+      "en": "Ambiguity in the source: ‘other examinations unremarkable’ (其他檢查) can mean the physical examination or include investigations; the source does not say which."
     }
   ],
   "assets": [
@@ -1163,12 +2635,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1653409/fig01.png",
       "title": {
-        "zh-CN": "原报告：胶冻样大体标本",
-        "en": "Source: gelatinous gross specimen"
+        "zh-CN": "原报告图1：胶冻样外观（大体）",
+        "en": "Source Fig. 1: gelatinous appearance (gross)"
       },
       "credit": {
         "zh-CN": "原报告图，古杰鳴，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "en": "Original report figure (Gu, 2025). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1179,12 +2651,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1653409/fig02.png",
       "title": {
-        "zh-CN": "原报告：低倍组织学",
-        "en": "Source: low-power histology"
+        "zh-CN": "原报告图2：黏液样间质及较多小血管（低倍）",
+        "en": "Source Fig. 2: myxoid stroma with many small vessels (low power)"
       },
       "credit": {
         "zh-CN": "原报告图，古杰鳴，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "en": "Original report figure (Gu, 2025). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1195,12 +2667,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1653409/fig03.png",
       "title": {
-        "zh-CN": "原报告：高倍组织学",
-        "en": "Source: high-power histology"
+        "zh-CN": "原报告图3：黏液样间质伴散在梭形细胞及少量中性粒细胞（高倍）",
+        "en": "Source Fig. 3: myxoid stroma with scattered spindle cells and a few neutrophils (high power)"
       },
       "credit": {
         "zh-CN": "原报告图，古杰鳴，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "en": "Original report figure (Gu, 2025). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1211,32 +2683,16 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1653409/fig04.png",
       "title": {
-        "zh-CN": "原报告：CD34免疫组化",
-        "en": "Source: CD34 immunohistochemistry"
+        "zh-CN": "原报告图4：梭形细胞CD34免疫组化（中倍）",
+        "en": "Source Fig. 4: CD34 immunohistochemistry of the spindle cells (medium power)"
       },
       "credit": {
         "zh-CN": "原报告图，古杰鳴，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "en": "Original report figure (Gu, 2025). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
       "sha256": "ed3b3c870e75f84c8c7160aeb619baab6380a1173c322c825f1badabfd18a0c6"
-    },
-    {
-      "id": "source-pdf",
-      "kind": "pdf",
-      "path": "/local-assets/cases/cmcr-1653409/source.pdf",
-      "title": {
-        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页为期刊封底，含本文图1–4及其他文章的临床图片）",
-        "en": "Source PDF (contains the outcome; for debrief review; page 2 is the journal’s back cover, with this report’s figures 1–4 and other articles’ clinical images)"
-      },
-      "credit": {
-        "zh-CN": "原作者及出版方保留版权。",
-        "en": "Copyright retained by the original authors and publisher."
-      },
-      "license": "© original rights holders — local teaching use only",
-      "localOnly": true,
-      "sha256": "6d185f565d7c3418aeb91a52e7ed29bf2b0020c49bd4e4f5c11e263618c0ef01"
     }
   ],
   "solution": [
@@ -1261,19 +2717,23 @@
     },
     {
       "type": "ask",
+      "itemId": "pigmentation"
+    },
+    {
+      "type": "ask",
       "itemId": "pain"
     },
     {
       "type": "ask",
+      "itemId": "cardiac"
+    },
+    {
+      "type": "ask",
+      "itemId": "puberty-periods"
+    },
+    {
+      "type": "ask",
       "itemId": "medications"
-    },
-    {
-      "type": "ask",
-      "itemId": "recurrence"
-    },
-    {
-      "type": "ask",
-      "itemId": "endocrine"
     },
     {
       "type": "ask",
@@ -1285,19 +2745,15 @@
     },
     {
       "type": "ask",
+      "itemId": "school-home"
+    },
+    {
+      "type": "ask",
       "itemId": "smoking"
     },
     {
       "type": "ask",
       "itemId": "alcohol"
-    },
-    {
-      "type": "ask",
-      "itemId": "occupation"
-    },
-    {
-      "type": "ask",
-      "itemId": "self-care"
     },
     {
       "type": "ask",
@@ -1312,8 +2768,24 @@
       "findingId": "other-exam"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
+      "type": "order",
+      "investigationId": "ultrasound"
+    },
+    {
+      "type": "read",
+      "investigationId": "ultrasound",
+      "phase": "initial"
+    },
+    {
+      "type": "answer",
+      "decisionId": "pre-excision",
+      "optionIds": [
+        "ultrasound-first"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "excision"
     },
     {
       "type": "order",
@@ -1322,7 +2794,7 @@
     {
       "type": "read",
       "investigationId": "gross",
-      "phase": "workup"
+      "phase": "excision"
     },
     {
       "type": "order",
@@ -1331,7 +2803,7 @@
     {
       "type": "read",
       "investigationId": "microscopy",
-      "phase": "workup"
+      "phase": "excision"
     },
     {
       "type": "order",
@@ -1340,7 +2812,23 @@
     {
       "type": "read",
       "investigationId": "ihc",
-      "phase": "workup"
+      "phase": "excision"
+    },
+    {
+      "type": "order",
+      "investigationId": "ihc-additional"
+    },
+    {
+      "type": "read",
+      "investigationId": "ihc-additional",
+      "phase": "excision"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "superficial-angiomyxoma"
+      ]
     },
     {
       "type": "order",
@@ -1349,21 +2837,35 @@
     {
       "type": "read",
       "investigationId": "operative-record",
-      "phase": "workup"
+      "phase": "excision"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "pathology-consult"
     },
     {
       "type": "answer",
-      "decisionId": "diagnosis",
+      "decisionId": "follow-up",
       "optionIds": [
-        "supported"
+        "margins-follow-up"
       ]
     },
     {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "carney",
       "optionIds": [
-        "supported"
+        "multiple",
+        "ear-breast",
+        "spotty-pigmentation"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "follow-up"
+    },
+    {
+      "type": "ask",
+      "itemId": "followup-status"
     },
     {
       "type": "order",
@@ -1385,115 +2887,283 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "肿物什么时候发现，位于哪里？",
+        "text": "这个包是什么时候发现的？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "When and where was the mass noticed?",
+        "text": "包长在哪里？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "发现多长时间了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "它有变大吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "是不是越来越大了？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "以前生过什么病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "身体一直都好吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "身上别的地方还有类似的包吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-lesions"
+        ]
+      },
+      {
+        "text": "以前别的地方也长过这种包吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-lesions"
+        ]
+      },
+      {
+        "text": "皮肤上有没有雀斑或者色斑？",
+        "locale": "zh-CN",
+        "expect": [
+          "pigmentation"
+        ]
+      },
+      {
+        "text": "嘴唇或者眼皮上有没有小黑点？",
+        "locale": "zh-CN",
+        "expect": [
+          "pigmentation"
+        ]
+      },
+      {
+        "text": "平时痛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "会不会痒？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "有没有心慌或者喘不上气？",
+        "locale": "zh-CN",
+        "expect": [
+          "cardiac"
+        ]
+      },
+      {
+        "text": "晕倒过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cardiac"
+        ]
+      },
+      {
+        "text": "月经正常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty-periods"
+        ]
+      },
+      {
+        "text": "最近长高或者体重变化大吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty-periods"
+        ]
+      },
+      {
+        "text": "最近在吃什么药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "对什么东西过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里人有没有长过这种包？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "在学校怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "school-home"
+        ]
+      },
+      {
+        "text": "你试过抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "喝过酒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "你最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "手术后那里又长出来过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "followup-status"
+        ]
+      },
+      {
+        "text": "When did you notice the lump?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "发现后大小怎样变化？",
-        "locale": "zh-CN",
+        "text": "Where is the lump?",
+        "locale": "en",
         "expect": [
-          "growth"
+          "presentation"
         ]
       },
       {
-        "text": "How has its size changed since discovery?",
+        "text": "Has it been getting bigger?",
         "locale": "en",
         "expect": [
           "growth"
         ]
       },
       {
-        "text": "过去有什么重要病史？",
-        "locale": "zh-CN",
+        "text": "Is it growing?",
+        "locale": "en",
         "expect": [
-          "pmh"
+          "growth"
         ]
       },
       {
-        "text": "What significant medical history was recorded?",
+        "text": "Have you had any illnesses before?",
         "locale": "en",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "是否还有别处肿物或色素斑？",
-        "locale": "zh-CN",
-        "expect": [
-          "other-lesions"
-        ]
-      },
-      {
-        "text": "Were other masses or pigmented skin lesions reported?",
+        "text": "Do you have any other lumps anywhere else?",
         "locale": "en",
         "expect": [
           "other-lesions"
         ]
       },
       {
-        "text": "不碰时是否疼痛或瘙痒？",
-        "locale": "zh-CN",
+        "text": "Any freckles or dark spots on your skin?",
+        "locale": "en",
         "expect": [
-          "pain"
+          "pigmentation"
         ]
       },
       {
-        "text": "Was there spontaneous pain or itching?",
+        "text": "Does it hurt?",
         "locale": "en",
         "expect": [
           "pain"
         ]
       },
       {
-        "text": "近期有没有用药或外用处理？",
-        "locale": "zh-CN",
+        "text": "Any palpitations or fainting?",
+        "locale": "en",
         "expect": [
-          "medications"
+          "cardiac"
         ]
       },
       {
-        "text": "Were medicines or topical treatments used recently?",
+        "text": "Are your periods regular?",
+        "locale": "en",
+        "expect": [
+          "puberty-periods"
+        ]
+      },
+      {
+        "text": "Are you taking any medicines?",
         "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "以前出现过类似肿物吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "recurrence"
-        ]
-      },
-      {
-        "text": "Were there similar masses previously?",
+        "text": "Any allergies?",
         "locale": "en",
         "expect": [
-          "recurrence"
+          "allergies"
         ]
       },
       {
-        "text": "是否有内分泌或心脏方面症状？",
-        "locale": "zh-CN",
-        "expect": [
-          "endocrine"
-        ]
-      },
-      {
-        "text": "Were endocrine or cardiac symptoms recorded?",
+        "text": "Does anything run in your family?",
         "locale": "en",
         "expect": [
-          "endocrine"
+          "family"
+        ]
+      },
+      {
+        "text": "How's school going?",
+        "locale": "en",
+        "expect": [
+          "school-home"
+        ]
+      },
+      {
+        "text": "Has it come back since the operation?",
+        "locale": "en",
+        "expect": [
+          "followup-status"
         ]
       }
     ]

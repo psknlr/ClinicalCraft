@@ -1,20 +1,20 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551893",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
-    "zh-CN": "逐渐增大的阴囊肿物 · 40岁男性",
-    "en": "Enlarging scrotal mass · man aged 40"
+    "zh-CN": "逐渐增大的左侧阴囊肿物 · 40岁男性",
+    "en": "Enlarging left scrotal mass · 40-year-old man"
   },
   "summary": {
-    "zh-CN": "无痛阴囊肿物逐渐增大，需区分睾丸与睾旁来源，并核对影像、标志物和后续组织学的证据范围。",
-    "en": "A painless scrotal mass enlarges over time; assess testicular versus paratesticular location and the limits of imaging, markers and subsequent histology."
+    "zh-CN": "40岁男性，左侧阴囊肿物11个月，逐渐增大。完成问诊、阴囊查体、术前影像和血清学评估，选择手术方式并做术前沟通，再结合术后病理复盘。依据已发表病例改写的历史回顾；原文未记录的资料保持未知。",
+    "en": "A 40-year-old man has had a lump in the left side of his scrotum for 11 months, and it is getting bigger. Take the history, examine him, complete the pre-operative imaging and blood tests, choose the operation and counsel him, then review the pathology. A historical review adapted from a published case; whatever the report does not record stays unknown."
   },
   "specialty": [
     "urology",
     "pathology"
   ],
-  "difficulty": 4,
+  "difficulty": 3,
   "setting": "outpatient",
   "facility": "general-hospital",
   "locales": [
@@ -22,14 +22,39 @@
     "en"
   ],
   "estimatedMinutes": 25,
+  "learningOutcomes": [
+    {
+      "zh-CN": "检查阴囊肿物，并把触诊与超声结合起来判断肿物来自睾丸还是睾丸旁；在获得组织学结论前，把任何阴囊内实性肿物都按可能恶性处理。",
+      "en": "Examine a scrotal mass and combine palpation with ultrasound to judge whether it arises from the testis or beside it, managing any solid intrascrotal mass as possibly malignant until histology says otherwise."
+    },
+    {
+      "zh-CN": "按EAU 2026完成术前评估——双侧睾丸超声、血清AFP、hCG与LDH、分期CT，并认识到β-hCG（或PSA）正常既不能代替、也不能补全这组标志物。",
+      "en": "Complete the EAU 2026 pre-operative work-up — bilateral testicular ultrasound, serum AFP, hCG and LDH, and staging CT — recognising that a normal β-hCG (or PSA) neither replaces nor completes that panel."
+    },
+    {
+      "zh-CN": "对性质不明、标志物阴性的肿物选择经腹股沟入路并术中快速冰冻：良性则切除病灶、保留睾丸，恶性则行经腹股沟根治性睾丸切除；绝不经阴囊活检。",
+      "en": "Choose an inguinal approach with frozen section for an indeterminate, marker-negative mass, so that a benign lesion is removed and the testis kept (radical inguinal orchidectomy if malignant), and never biopsy through the scrotum."
+    },
+    {
+      "zh-CN": "术前与患者讨论可能切除睾丸和精子冷冻保存（EAU 2026强推荐），并在术后用通俗的话解释良性病理结果和随访。",
+      "en": "Before surgery, discuss the possible loss of the testis and sperm banking with the patient (EAU 2026, strong recommendation), and afterwards explain a benign result and the follow-up in plain words."
+    },
+    {
+      "zh-CN": "解读纤维性假瘤的病理报告——间皮标记、B/T淋巴细胞混合、IgG4⁺细胞计数与IgG4/IgG比值——不凭细胞计数诊断IgG4相关疾病或启动治疗（2012年波士顿共识）。",
+      "en": "Interpret a fibrous pseudotumour report — mesothelial markers, mixed B and T lymphocytes, IgG4⁺ counts against the IgG4/IgG ratio — without diagnosing IgG4-related disease or starting treatment on cell counts alone (Boston consensus 2012)."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
-    "historical-review"
+    "historical-review",
+    "urology",
+    "scrotal-mass",
+    "pre-operative-work-up"
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "葉蔭霆; 陳泰業; 張錦標. 成人睾丸纖維性假瘤1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.020",
+    "citation": "葉蔭霆, 陳泰業, 張錦標. 成人睾丸纖維性假瘤1例. 鏡湖醫學. 2025;25(1):66-67. doi:10.12408/j.issn2223-4462.2025.01.020",
     "doi": "10.12408/j.issn2223-4462.2025.01.020",
     "authors": [
       "葉蔭霆",
@@ -38,13 +63,29 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写（原文为繁体中文，病例文本改用简体）。年龄、性别、病史、查体、检查数值、手术与病理均取自原文“患者”一节，作者的鉴别与反思取自“讨论”；化名，医院和日历日期（入院年份、手术日期）已去除，时间改为相对时间。对话、决策、干预、评分和随访阶段为依据现行指南设计的教学内容；原文未记录的资料保持未知，原文内部的矛盾按原样标注。原图2幅（超声、切除标本）不含身份信息，按原文保留其标注；原文PDF第2页下半为同期其他文章的参考文献。",
+      "en": "Adapted from a published case (the source is in traditional Chinese; the case uses simplified characters). Age, sex, history, examination, test values, the operation and the pathology come from the source's ‘Patient’ section, and the authors' differential and reflections from its ‘Discussion’; the name is a pseudonym, and the hospital and calendar dates (admission year, date of operation) are removed in favour of relative times. Dialogue, decisions, interventions, scoring and the follow-up phase are teaching material built on current guidance; data the source does not record stay unknown, and contradictions within the source are labelled as printed. The two figures (ultrasound, resected specimen) carry no identifiers and keep their original annotations; the lower half of page 2 of the source PDF carries another article's references."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "EAU Guidelines on Testicular Cancer 2026 (limited text update, March 2026)",
+        "Boston consensus statement on the pathology of IgG4-related disease (Mod Pathol 2012)",
+        "2019 ACR/EULAR classification criteria for IgG4-related disease"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
-    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+    "zh-CN": "依据已发表病例报告改写的历史病例回顾，仅供医学教育使用，不构成诊疗建议。病例不模拟原报告没有记录的病情变化。",
+    "en": "A historical review adapted from a published case report, for medical education only; it is not medical advice. The case does not simulate anything the report does not record."
   },
   "patient": {
     "displayName": {
@@ -55,44 +96,55 @@
     "sex": "male",
     "chiefComplaint": {
       "zh-CN": "发现左侧阴囊肿物11个月",
-      "en": "Left scrotal mass noticed eleven months earlier"
+      "en": "A lump in the left side of the scrotum for 11 months"
     },
     "triageNote": {
-      "zh-CN": "无痛阴囊肿物逐渐增大，需区分睾丸与睾旁来源，并核对影像、标志物和后续组织学的证据范围。",
-      "en": "A painless scrotal mass enlarges over time; assess testicular versus paratesticular location and the limits of imaging, markers and subsequent histology."
+      "zh-CN": "40岁男性，今天门诊就诊：自诉约11个月前发现左侧阴囊里有个包，近来在长大。病史与查体待完成。",
+      "en": "40-year-old man in clinic today: he found a lump in the left side of his scrotum about 11 months ago, and it has been growing. History and examination still to be done."
     },
     "tags": [
       {
-        "zh-CN": "发现左侧阴囊肿物11个月",
-        "en": "Left scrotal mass noticed eleven months earlier"
+        "zh-CN": "左侧阴囊肿物",
+        "en": "Left scrotal lump"
+      },
+      {
+        "zh-CN": "在长大",
+        "en": "Getting bigger"
+      },
+      {
+        "zh-CN": "门诊",
+        "en": "Clinic"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "40岁男性，沉稳、配合，话不多；只说自己知道的事，不清楚的会直接说。",
+        "en": "A steady, cooperative 40-year-old man of few words; he says what he knows and plainly admits what he doesn't."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "日常口语，句子简短；说到阴囊时有点拘谨，常用“下面”“那里”；不用医学术语。",
+        "en": "Everyday speech in short sentences; a little reserved about his scrotum (“down there”); no medical terms."
       },
+      "healthLiteracy": "medium",
       "affect": "calm",
       "openingLine": {
-        "zh-CN": "11个月前洗澡时发现左边阴囊有肿物。",
-        "en": "A left scrotal mass was noticed while bathing eleven months earlier."
+        "zh-CN": "医生您好。我左边阴囊里有个包，十一个月前洗澡时摸到的。",
+        "en": "Hello, doctor. There's a lump on the left side of my scrotum — I felt it in the shower about eleven months ago."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "只讲已经透露的病史，用自己的话说，不增减数字或时间。这个包一直不疼、不坠胀，走路活动如常，所以一直没看医生，直到它越来越大。隐睾、家里人的病、孩子和生育打算、其他病和手术、用药、过敏、抽烟喝酒和工作，病例都没有记录——被问到就直说没有记录。医生提到可能是肿瘤或要切除睾丸时，可以问这对你意味着什么，但不要编造担忧、婚育情况或其他事实。手术阶段你在手术室，不能交谈。",
+        "en": "Only state history facts that have been revealed, in your own words, without changing numbers or times. The lump has never hurt or dragged and you walk and work as normal, which is why you didn't see anyone until it kept growing. An undescended testicle, family illnesses, children and plans for children, other illnesses and operations, medicines, allergies, smoking, drinking and your job are not recorded — if asked, say plainly that they are not recorded. If the doctor mentions a tumour or removing the testicle, you may ask what that would mean for you, but do not invent worries, a family situation or any other fact. During the operation phase you are in theatre and cannot talk."
       }
     },
     "appearance": {
       "stature": "adult",
-      "gown": true
+      "build": "average",
+      "gown": false
     },
     "posture": "sitting"
   },
@@ -100,41 +152,66 @@
     {
       "id": "initial",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "门诊评估与术前检查",
+        "en": "Clinic assessment and pre-operative work-up"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "本次门诊：问诊，阴囊与腹股沟查体，阴囊超声、血清标志物、性激素和分期CT（原报告的术前检查），然后选择手术方式并做术前沟通。",
+        "en": "This clinic episode: history, scrotal and groin examination, scrotal ultrasound, serum markers, sex hormones and staging CT (the report's pre-operative work-up), then the choice of operation and pre-operative counselling."
+      },
+      "learnerSwitchable": false
     },
     {
-      "id": "workup",
+      "id": "operation",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "手术与术后病理（原报告）",
+        "en": "Operation and pathology (as reported)"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+      "description": {
+        "zh-CN": "原报告：术前诊断“左侧睾丸肿瘤，性质待定”，行左侧高位睾丸切除术；没有术中快速冰冻病理的记录。标本送病理。",
+        "en": "As reported: pre-operative diagnosis “left testicular tumour, nature undetermined”; a left high orchidectomy was done, with no intra-operative frozen section recorded. The specimen went to pathology."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "decided": "plan"
           },
           {
-            "decided": "management"
+            "decided": "consent"
           },
           {
-            "objective": "objective-1"
-          },
-          {
-            "objective": "objective-2"
+            "any": [
+              {
+                "intervened": "inguinal-exploration-fs"
+              },
+              {
+                "intervened": "radical-orchidectomy"
+              }
+            ]
           }
         ]
+      },
+      "location": {
+        "roomKind": "operating-room"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告转归与随访",
+        "en": "Reported outcome and follow-up"
+      },
+      "description": {
+        "zh-CN": "术后门诊复诊：对照病理和原报告的记录复盘，并安排随访。",
+        "en": "Post-operative clinic visit: go through the pathology and the report's record, and arrange follow-up."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "pathology"
+      },
+      "location": {
+        "setting": "outpatient"
       }
     }
   ],
@@ -148,145 +225,242 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "什么时候发现肿物？",
-        "en": "When was the mass first noticed?"
+        "zh-CN": "这个包是什么时候、怎么发现的？",
+        "en": "When and how did you first notice the lump?"
       },
       "answer": {
-        "zh-CN": "11个月前洗澡时发现左边阴囊有肿物。",
-        "en": "A left scrotal mass was noticed while bathing eleven months earlier."
+        "zh-CN": "大概十一个月前洗澡的时候，摸到左边阴囊里有个包。",
+        "en": "About eleven months ago — I felt a lump on the left side of my scrotum in the shower."
       },
       "keywords": {
         "zh-CN": [
-          "什么时候发现肿物？",
-          "阴囊肿物"
+          "什么时候发现",
+          "怎么发现的",
+          "怎么摸到",
+          "发现多久",
+          "多长时间了",
+          "有多久了",
+          "阴囊里的包",
+          "阴囊肿物",
+          "第一次发现",
+          "摸到这个包",
+          "哪里不舒服",
+          "来看什么"
         ],
         "en": [
-          "When was the mass first noticed?",
-          "scrotal mass"
+          "first notice",
+          "notice lump",
+          "find lump",
+          "found lump",
+          "how long lump",
+          "how long swelling",
+          "lump first",
+          "when found",
+          "discover lump",
+          "whatbringsyou"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（主诉与现病史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (presenting complaint); simulated answer compiled from the source"
+      }
     },
     {
       "id": "progression",
       "topic": "hpi",
       "question": {
-        "zh-CN": "肿物后来怎样变化？",
-        "en": "How has the mass changed?"
+        "zh-CN": "发现以后，这个包有什么变化？",
+        "en": "Has the lump changed since you first noticed it?"
       },
       "answer": {
-        "zh-CN": "一直逐渐变大，所以来就诊。",
-        "en": "It has gradually enlarged, prompting this visit."
+        "zh-CN": "一直在慢慢变大，越来越大，所以这次来看了。",
+        "en": "It's been slowly getting bigger and bigger — that's why I've come in now."
       },
       "keywords": {
         "zh-CN": [
-          "肿物后来怎样变化？",
-          "逐渐增大"
+          "变大",
+          "长大",
+          "越来越大",
+          "越长越大",
+          "大了",
+          "有没有变化",
+          "长得快",
+          "增大",
+          "变化"
         ],
         "en": [
-          "How has the mass changed?",
-          "enlarging"
+          "bigger",
+          "grown",
+          "growing",
+          "larger",
+          "grow",
+          "increase size",
+          "changed size",
+          "change since"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（现病史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (history of the lump); simulated answer compiled from the source"
+      }
     },
     {
       "id": "pain",
       "topic": "pain",
       "question": {
-        "zh-CN": "有疼痛或坠胀吗？",
-        "en": "Is there pain or dragging discomfort?"
+        "zh-CN": "这个包疼吗？有没有往下坠、发胀的感觉？",
+        "en": "Does it hurt, or feel heavy or dragging?"
       },
       "answer": {
-        "zh-CN": "没有疼痛或阴囊坠胀。",
-        "en": "There is no pain or scrotal dragging discomfort."
+        "zh-CN": "不疼，也没有往下坠、发胀的感觉。",
+        "en": "No, it doesn't hurt, and there's no heavy or dragging feeling."
       },
       "keywords": {
         "zh-CN": [
-          "有疼痛或坠胀吗？",
-          "疼痛"
+          "疼",
+          "疼不疼",
+          "痛不痛",
+          "疼吗",
+          "疼痛",
+          "坠胀",
+          "下坠",
+          "发胀",
+          "胀痛",
+          "坠痛",
+          "酸胀"
         ],
         "en": [
-          "Is there pain or dragging discomfort?",
-          "pain"
+          "hurt",
+          "painful",
+          "pain",
+          "ache",
+          "aching",
+          "sore",
+          "tender",
+          "dragging",
+          "heaviness",
+          "heavy feeling"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "睾丸炎",
+          "附睾炎"
+        ],
+        "en": [
+          "orchitis",
+          "epididymitis"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（现病史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (history of the lump); simulated answer compiled from the source"
+      }
     },
     {
       "id": "trauma",
       "topic": "pmh",
       "question": {
-        "zh-CN": "以前阴囊受过伤或发炎吗？",
-        "en": "Was there scrotal injury or inflammation before?"
+        "zh-CN": "以前那里受过伤吗？得过睾丸炎或附睾炎吗？",
+        "en": "Have you ever injured that area, or had orchitis or epididymitis?"
       },
       "answer": {
-        "zh-CN": "没有阴囊外伤、睾丸炎或附睾炎病史。",
-        "en": "Scrotal trauma, orchitis and epididymitis were denied."
+        "zh-CN": "没有。那里没受过伤，也没发过炎。",
+        "en": "No — I've never injured it, and I've never had an inflamed or infected testicle."
       },
       "keywords": {
         "zh-CN": [
-          "以前阴囊受过伤或发炎吗？",
-          "外伤炎症"
+          "受伤",
+          "受过伤",
+          "外伤",
+          "撞到",
+          "撞伤",
+          "踢到",
+          "睾丸炎",
+          "附睾炎",
+          "发过炎",
+          "发炎",
+          "睾丸感染"
         ],
         "en": [
-          "Was there scrotal injury or inflammation before?",
-          "trauma inflammation"
+          "injury",
+          "injured",
+          "trauma",
+          "hit",
+          "kicked",
+          "orchitis",
+          "epididymitis",
+          "testicle infection",
+          "inflammation",
+          "inflamed"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "降下来",
+          "隐睾",
+          "下降",
+          "没下来"
+        ],
+        "en": [
+          "undescended",
+          "descend",
+          "come down"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "正文·患者（既往史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (past history); simulated answer compiled from the source"
+      }
     },
     {
       "id": "function",
       "topic": "functional",
       "question": {
-        "zh-CN": "走路活动是否受影响？",
-        "en": "Are walking and activities affected?"
+        "zh-CN": "走路、干活受影响吗？",
+        "en": "Does it get in the way of walking or everyday activities?"
       },
       "answer": {
-        "zh-CN": "走路和活动如常。",
-        "en": "Walking and activities are unchanged."
+        "zh-CN": "不影响，走路、活动都跟平常一样。",
+        "en": "No, I walk and get about just as normal."
       },
       "keywords": {
         "zh-CN": [
-          "走路活动是否受影响？",
-          "活动"
+          "走路",
+          "活动",
+          "影响生活",
+          "干活",
+          "运动",
+          "行走",
+          "日常活动",
+          "影响走路"
         ],
         "en": [
-          "Are walking and activities affected?",
-          "activities"
+          "walking",
+          "walk",
+          "activities",
+          "daily activities",
+          "exercise",
+          "getabout",
+          "everyday life",
+          "mobility"
         ]
       },
       "disclosure": "on-ask",
@@ -294,29 +468,42 @@
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·患者（现病史与既往史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (history); simulated answer compiled from the source"
       }
     },
     {
-      "id": "medications",
-      "topic": "medications",
+      "id": "prior-care",
+      "topic": "hpi",
       "question": {
-        "zh-CN": "此前为肿物接受过治疗吗？",
-        "en": "Was the mass treated before this visit?"
+        "zh-CN": "之前为这个包看过医生、治疗过吗？",
+        "en": "Have you seen anyone or had any treatment for this lump before?"
       },
       "answer": {
-        "zh-CN": "此前没有针对肿物就诊治疗；其他长期药物未列。",
-        "en": "No assessment or treatment was sought for the mass previously; other regular medicines are not listed."
+        "zh-CN": "之前没看过，也没治过。",
+        "en": "No, I haven't seen anyone about it or had any treatment."
       },
       "keywords": {
         "zh-CN": [
-          "此前为肿物接受过治疗吗？",
-          "治疗"
+          "看过医生",
+          "看过病",
+          "治疗过",
+          "治过",
+          "以前看过",
+          "就诊过",
+          "别的医院",
+          "处理过",
+          "检查过"
         ],
         "en": [
-          "Was the mass treated before this visit?",
-          "treatment"
+          "seen anyone",
+          "treated",
+          "treatment before",
+          "other hospital",
+          "been checked",
+          "previous treatment",
+          "checked before",
+          "doctor before"
         ]
       },
       "disclosure": "on-ask",
@@ -324,296 +511,607 @@
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·患者（现病史与既往史）；依据原文整理的模拟回答",
+        "en": "Main text · Patient (history); simulated answer compiled from the source"
       }
     },
     {
-      "id": "urinary",
-      "topic": "associated-symptoms",
+      "id": "cryptorchidism",
+      "topic": "pmh",
       "question": {
-        "zh-CN": "是否有排尿症状？",
-        "en": "Were urinary symptoms recorded?"
+        "zh-CN": "小时候睾丸有没有没降到阴囊里（隐睾），或者为此做过手术？",
+        "en": "As a child, did either testicle fail to come down properly (an undescended testicle), or did you have an operation for it?"
       },
       "answer": {
-        "zh-CN": "原报告没有具体记录排尿症状。",
-        "en": "Specific urinary symptoms are not documented."
+        "zh-CN": "小时候的这些情况，我的病例里没有记录，我说不上来。",
+        "en": "My case notes don't say anything about that from my childhood, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "是否有排尿症状？"
+          "隐睾",
+          "睾丸下降",
+          "没降下来",
+          "睾丸未降",
+          "下降不全",
+          "没下来",
+          "睾丸固定术",
+          "小时候睾丸"
         ],
         "en": [
-          "Were urinary symptoms recorded?"
+          "undescended",
+          "cryptorchidism",
+          "testicle come down",
+          "descend",
+          "orchidopexy",
+          "childhood testicle",
+          "come down"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "fertility",
-      "topic": "other",
-      "question": {
-        "zh-CN": "生育计划及既往生育情况是否记录？",
-        "en": "Are fertility history and future plans recorded?"
-      },
-      "answer": {
-        "zh-CN": "原报告没有这部分资料。",
-        "en": "The report does not supply this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生育计划及既往生育情况是否记录？"
-        ],
-        "en": [
-          "Are fertility history and future plans recorded?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "allergies",
-      "topic": "allergies",
-      "question": {
-        "zh-CN": "以前有药物或食物过敏吗？",
-        "en": "Any previous drug or food allergies?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
-        ],
-        "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "family",
       "topic": "family",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "家里有人得过睾丸肿瘤或其他肿瘤吗？",
+        "en": "Has anyone in your family had testicular cancer or another cancer?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "家里人的情况我的病例里没有记录，我说不上来。",
+        "en": "My family's health isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
-          "家族史"
+          "家里人",
+          "家族史",
+          "家里有人",
+          "亲属",
+          "遗传",
+          "父亲",
+          "兄弟",
+          "家族"
         ],
         "en": [
-          "Any family history of similar illness?",
+          "family",
+          "relatives",
+          "runs in the family",
+          "brother",
+          "father",
+          "hereditary",
           "family history"
         ]
       },
+      "excludeKeywords": {
+        "zh-CN": [
+          "要孩子",
+          "生孩子"
+        ],
+        "en": [
+          "start a family",
+          "startafamily"
+        ]
+      },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "fertility",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您有孩子吗？以后还打算要孩子吗？",
+        "en": "Do you have children, or are you hoping to have any in future?"
+      },
+      "answer": {
+        "zh-CN": "有没有孩子、还想不想要，我的病例里没有记录，我说不上来。",
+        "en": "Whether I have children or want any isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孩子",
+          "小孩",
+          "要孩子",
+          "生育",
+          "生孩子",
+          "备孕",
+          "结婚",
+          "生育计划",
+          "不育",
+          "要小孩"
+        ],
+        "en": [
+          "children",
+          "kids",
+          "fertility",
+          "start a family",
+          "baby",
+          "married",
+          "partner",
+          "infertility"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "小时候"
+        ],
+        "en": [
+          "as a child",
+          "asachild",
+          "childhood"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "urinary",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "小便有没有什么问题？",
+        "en": "Any problems passing urine?"
+      },
+      "answer": {
+        "zh-CN": "小便的情况我的病例里没有记录，我说不上来。",
+        "en": "Nothing about passing urine is in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "小便",
+          "排尿",
+          "尿频",
+          "尿急",
+          "尿痛",
+          "尿血",
+          "解小便",
+          "撒尿"
+        ],
+        "en": [
+          "urine",
+          "passing urine",
+          "peeing",
+          "urinating",
+          "waterworks",
+          "bladder",
+          "wee",
+          "urinary"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了这个，以前还得过什么病、做过什么手术吗？",
+        "en": "Apart from this, have you had any other illnesses or operations?"
+      },
+      "answer": {
+        "zh-CN": "别的病和手术我的病例里没有记录，我说不上来。",
+        "en": "Other illnesses or operations aren't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "得过什么病",
+          "既往史",
+          "做过手术",
+          "什么手术",
+          "手术史",
+          "开过刀",
+          "慢性病",
+          "高血压",
+          "糖尿病",
+          "住过院",
+          "其他病"
+        ],
+        "en": [
+          "medical history",
+          "illnesses",
+          "operations",
+          "surgery before",
+          "medical problems",
+          "conditions",
+          "hospital before",
+          "other illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时有没有长期吃什么药？",
+        "en": "Do you take any regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "平时吃不吃药，我的病例里没有记录，我说不上来。",
+        "en": "Whether I take any regular medicines isn't in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "吃药",
+          "用药",
+          "长期服药",
+          "药物",
+          "平时用的药",
+          "服药"
+        ],
+        "en": [
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "regular medicines",
+          "drugs",
+          "prescriptions"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "过不过敏，我的病例里没有记录，我说不上来。",
+        "en": "Allergies aren't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对药过敏"
+        ],
+        "en": [
+          "allergy",
+          "allergic",
+          "allergies",
+          "reaction medicine",
+          "drug allergy"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "smoking",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
+        "zh-CN": "您抽烟吗？",
         "en": "Do you smoke?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "抽不抽烟，我的病例里没有记录，我说不上来。",
+        "en": "Smoking isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟",
+          "抽不抽"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco",
+          "smoker"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
+        "zh-CN": "平时喝酒吗？",
         "en": "Do you drink alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "喝不喝酒，我的病例里没有记录，我说不上来。",
+        "en": "Drinking isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "酒",
+          "啤酒",
+          "白酒"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine",
+          "units"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "occupation",
       "topic": "social",
       "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
+        "zh-CN": "您做什么工作？",
+        "en": "What do you do for a living?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "工作方面我的病例里没有记录，我说不上来。",
+        "en": "My job isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
+          "工作",
+          "职业",
+          "上班",
+          "做什么的",
+          "干什么工作",
+          "干哪行"
         ],
         "en": [
-          "What are your work and living circumstances?",
-          "occupation"
+          "job",
+          "work",
+          "occupation",
+          "living",
+          "employed",
+          "profession"
         ]
       },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
+          "工作量"
         ],
         "en": [
-          "How independent were you before this illness?",
-          "independence"
+          "waterworks"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     },
     {
       "id": "expectations",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "您最担心的是什么？希望这次怎么处理？",
+        "en": "What worries you most, and what are you hoping we can do?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这些想法我的病例里没有记录，我说不上来。",
+        "en": "My case notes don't record anything about that, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "顾虑",
+          "希望",
+          "期望",
+          "想法",
+          "害怕",
+          "最怕"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worry",
+          "worried",
+          "concerns",
+          "hoping",
+          "expect",
+          "afraid",
+          "ideas"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
+      }
+    },
+    {
+      "id": "postop-status",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "手术以后您恢复得怎么样？",
+        "en": "How have you been since the operation?"
+      },
+      "answer": {
+        "zh-CN": "手术后恢复得怎么样，我的病例里没有记录，我说不上来。",
+        "en": "How I've been since the operation isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "术后",
+          "手术以后",
+          "手术后",
+          "恢复",
+          "伤口",
+          "做完手术"
+        ],
+        "en": [
+          "since the operation",
+          "recovery",
+          "recovering",
+          "wound",
+          "after surgery",
+          "after the operation",
+          "feeling now"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "以前",
+          "过去",
+          "既往",
+          "做过"
+        ],
+        "en": [
+          "before",
+          "previous",
+          "ever had"
         ]
       },
       "disclosure": "unknown",
       "phases": [
-        "initial"
+        "followup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "缺失信息：原文未记录，明确保留未知，不补造回答",
+        "en": "Missing information: not recorded in the source; kept explicitly unknown, no answer invented"
       }
     }
   ],
   "exam": [
     {
-      "id": "mass",
+      "id": "inspection",
       "system": "genitourinary",
       "maneuver": {
-        "zh-CN": "触诊左侧阴囊肿物",
-        "en": "Palpate the left scrotal mass"
+        "zh-CN": "视诊阴囊",
+        "en": "Inspect the scrotum"
+      },
+      "keywords": {
+        "zh-CN": [
+          "视诊",
+          "看一下阴囊",
+          "看看阴囊",
+          "阴囊外观",
+          "观察阴囊"
+        ],
+        "en": [
+          "inspect scrotum",
+          "look scrotum",
+          "inspection",
+          "scrotal appearance",
+          "look at the scrotum"
+        ]
       },
       "finding": {
-        "zh-CN": "左阴囊明显肿胀，肿物质硬、固定、界清、无压痛；触诊难分清睾丸与附睾界限。",
-        "en": "Marked left scrotal swelling with a firm, fixed, well-defined nontender mass; the testicular/epididymal boundary is difficult to define by palpation."
+        "zh-CN": "左侧阴囊明显肿胀。",
+        "en": "The left side of the scrotum is markedly swollen."
       },
       "abnormal": true,
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·患者（查体）",
+        "en": "Main text · Patient (examination)"
+      }
+    },
+    {
+      "id": "mass",
+      "system": "genitourinary",
+      "maneuver": {
+        "zh-CN": "触诊左侧睾丸、附睾与肿块",
+        "en": "Palpate the left testis, epididymis and mass"
+      },
+      "keywords": {
+        "zh-CN": [
+          "触诊",
+          "触诊睾丸",
+          "摸睾丸",
+          "检查睾丸",
+          "睾丸触诊",
+          "触诊肿块",
+          "摸肿块",
+          "阴囊触诊",
+          "附睾"
+        ],
+        "en": [
+          "palpate testis",
+          "feel testicle",
+          "examine testicle",
+          "palpate mass",
+          "feel lump",
+          "scrotal examination",
+          "examine scrotum",
+          "epididymis",
+          "palpation"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "右侧",
+          "右边",
+          "对侧",
+          "另一侧",
+          "肚子",
+          "腹部"
+        ],
+        "en": [
+          "right testicle",
+          "right testis",
+          "other testicle",
+          "other testis",
+          "contralateral",
+          "abdomen"
+        ]
+      },
+      "finding": {
+        "zh-CN": "左侧睾丸增大；触诊分不清睾丸与附睾的界限。肿块质硬、边界清楚、无压痛，位置固定。",
+        "en": "The left testis is enlarged, and the boundary between testis and epididymis cannot be felt. The mass is hard, well defined, non-tender and fixed."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·患者（查体）",
+        "en": "Main text · Patient (examination)"
       }
     },
     {
@@ -621,41 +1119,66 @@
       "system": "lymphatic",
       "maneuver": {
         "zh-CN": "检查双侧腹股沟淋巴结",
-        "en": "Examine both groins for nodes"
+        "en": "Examine both groins for lymph nodes"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹股沟淋巴结",
+          "淋巴结",
+          "摸腹股沟",
+          "腹股沟"
+        ],
+        "en": [
+          "inguinal nodes",
+          "groin nodes",
+          "lymph nodes",
+          "groin"
+        ]
       },
       "finding": {
         "zh-CN": "双侧腹股沟未触及肿大淋巴结。",
-        "en": "No enlarged inguinal nodes were palpable."
+        "en": "No enlarged lymph nodes in either groin."
       },
       "abnormal": false,
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·患者（查体）",
+        "en": "Main text · Patient (examination)"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这项检查，病例无法提供所见（不等于正常）。",
+    "en": "The report does not record this examination, so the case has no finding to give (which does not mean it was normal)."
   },
   "investigations": [
     {
       "id": "ultrasound",
       "name": {
-        "zh-CN": "调阅阴囊超声",
-        "en": "Review scrotal ultrasound"
+        "zh-CN": "阴囊超声（双侧睾丸，高频探头）",
+        "en": "Scrotal ultrasound (both testes, high-frequency probe)"
       },
       "category": "imaging",
       "aliases": {
         "zh-CN": [
-          "调阅阴囊超声"
+          "阴囊超声",
+          "睾丸超声",
+          "b超",
+          "超声",
+          "彩超",
+          "阴囊彩超",
+          "多普勒"
         ],
         "en": [
-          "Review scrotal ultrasound",
-          "ultrasound"
+          "ultrasound",
+          "scrotal ultrasound",
+          "testicular ultrasound",
+          "doppler",
+          "sonography",
+          "scrotal scan"
         ]
       },
       "requires": [
@@ -664,108 +1187,433 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "左阴囊多发实性肿块，约7.0×3.6 cm，与睾丸分界尚清，怀疑阴囊软组织来源。",
-            "en": "Multiple solid left scrotal masses, approximately 7.0×3.6 cm, relatively distinct from the testis, suggesting a scrotal soft-tissue origin."
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "门诊术前检查（第0天起；原文日期已去除）",
+            "en": "Pre-operative clinic work-up (from day 0; the source's dates removed)"
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          "text": {
+            "zh-CN": "左侧阴囊内多发实性肿块，与睾丸分界尚清，可疑阴囊软组织来源肿瘤，大小约7.0 cm×3.6 cm（图1）。报告未描述右侧睾丸。",
+            "en": "Multiple solid masses in the left hemiscrotum, fairly distinct from the testis; a tumour of scrotal soft-tissue origin is suspected; size about 7.0 cm × 3.6 cm (Fig. 1). The report does not describe the right testis."
           },
           "figures": [
             "fig01"
           ],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "ct",
-      "name": {
-        "zh-CN": "调阅胸腹盆增强CT",
-        "en": "Review contrast chest/abdominal/pelvic CT"
-      },
-      "category": "imaging",
-      "aliases": {
-        "zh-CN": [
-          "调阅胸腹盆增强CT"
-        ],
-        "en": [
-          "Review contrast chest/abdominal/pelvic CT",
-          "ct"
-        ]
-      },
-      "requires": [
-        "ct"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "左阴囊混合密度肿块，较大者约4.1×4.3×5.4 cm，少量积液；扫描范围未见转移灶。影像未确立良恶性。",
-            "en": "Mixed-density left scrotal masses, the largest about 4.1×4.3×5.4 cm, with a small fluid collection; no metastasis was seen within the scan range. Imaging did not establish benignity or malignancy."
+          "note": {
+            "zh-CN": "图1为原报告的3幅超声图（左侧睾丸及多个标注“M”的肿块）。超声所测7.0 cm×3.6 cm与CT所测较大肿块4.1 cm×4.3 cm×5.4 cm不一致，两处原文如此。",
+            "en": "Fig. 1 is the report's three ultrasound panels (the left testis and several masses marked “M”). The ultrasound size (7.0 cm × 3.6 cm) differs from the larger mass on CT (4.1 × 4.3 × 5.4 cm); both are as printed in the source."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "正文·患者（超声），图1",
+            "en": "Main text · Patient (ultrasound), Fig. 1"
+          }
         }
       }
     },
     {
       "id": "markers",
       "name": {
-        "zh-CN": "调阅肿瘤标志物与激素",
-        "en": "Review tumour markers and hormones"
+        "zh-CN": "血清肿瘤标志物（AFP、β-hCG、LDH）",
+        "en": "Serum tumour markers (AFP, β-hCG, LDH)"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "调阅肿瘤标志物与激素"
+          "肿瘤标志物",
+          "标志物",
+          "甲胎蛋白",
+          "afp",
+          "hcg",
+          "β-hcg",
+          "绒毛膜促性腺激素",
+          "乳酸脱氢酶",
+          "ldh",
+          "psa"
         ],
         "en": [
-          "Review tumour markers and hormones",
-          "markers"
+          "tumour markers",
+          "tumor markers",
+          "markers",
+          "afp",
+          "alpha-fetoprotein",
+          "alpha fetoprotein",
+          "hcg",
+          "beta hcg",
+          "ldh",
+          "lactate dehydrogenase",
+          "psa"
+        ]
+      },
+      "requires": [
+        "lab-chemistry",
+        "lab-endocrine"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "门诊术前检查（第0天起；原文日期已去除）",
+            "en": "Pre-operative clinic work-up (from day 0; the source's dates removed)"
+          },
+          "text": {
+            "zh-CN": "β-hCG <0.2 mIU/mL（原文与性激素一并列出）。原文只写“肿瘤指标如PSA等未发现异常升高”：AFP和LDH没有单独结果，PSA没有数值，各项均未给参考范围。",
+            "en": "β-hCG < 0.2 mIU/mL (listed by the source together with the sex hormones). The source says only that “tumour markers such as PSA” were not raised: AFP and LDH have no separate result, PSA has no value, and no reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": "β-hCG",
+              "value": "<0.2",
+              "unit": "mIU/mL",
+              "refText": {
+                "zh-CN": "原文未给参考范围（判为正常）",
+                "en": "no range given (reported as normal)"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "甲胎蛋白（AFP）",
+                "en": "Alpha-fetoprotein (AFP)"
+              },
+              "value": {
+                "zh-CN": "未单列",
+                "en": "not reported"
+              },
+              "refText": {
+                "zh-CN": "原文未单列结果",
+                "en": "no separate result in the source"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸脱氢酶（LDH）",
+                "en": "Lactate dehydrogenase (LDH)"
+              },
+              "value": {
+                "zh-CN": "未单列",
+                "en": "not reported"
+              },
+              "refText": {
+                "zh-CN": "原文未单列结果",
+                "en": "no separate result in the source"
+              }
+            },
+            {
+              "analyte": "PSA",
+              "value": {
+                "zh-CN": "未升高（无数值）",
+                "en": "not raised (no value)"
+              },
+              "refText": {
+                "zh-CN": "原文未给数值和参考范围",
+                "en": "no value or range given"
+              }
+            }
+          ],
+          "note": {
+            "zh-CN": "原文没有AFP和LDH的单独结果，病例不补写。",
+            "en": "The source gives no separate AFP or LDH result, and the case does not invent one."
+          },
+          "source": {
+            "zh-CN": "正文·患者（术前检查）",
+            "en": "Main text · Patient (pre-operative work-up)"
+          }
+        }
+      }
+    },
+    {
+      "id": "hormones",
+      "name": {
+        "zh-CN": "性激素（FSH、LH、睾酮）",
+        "en": "Sex hormones (FSH, LH, testosterone)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "性激素",
+          "激素",
+          "睾酮",
+          "fsh",
+          "lh",
+          "促卵泡生成素",
+          "黄体生成素",
+          "生殖激素"
+        ],
+        "en": [
+          "sex hormones",
+          "hormones",
+          "testosterone",
+          "fsh",
+          "lh",
+          "gonadotrophins",
+          "gonadotropins"
         ]
       },
       "requires": [
         "lab-endocrine"
       ],
       "risk": "none",
-      "value": "essential",
+      "value": "useful",
       "results": {
-        "workup": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "门诊术前检查（第0天起；原文日期已去除）",
+            "en": "Pre-operative clinic work-up (from day 0; the source's dates removed)"
+          },
           "text": {
-            "zh-CN": "β-hCG<0.2 mIU/mL，PSA等未报告异常升高；FSH 8.2 IU/L、LH 4.47 IU/L、睾酮8.28 nmol/L。原文概述激素正常但未列参考范围；AFP/LDH具体结果缺失。",
-            "en": "β-hCG <0.2 mIU/mL, with no reported PSA elevation; FSH 8.2 IU/L, LH 4.47 IU/L and testosterone 8.28 nmol/L. The report summarised hormones as normal without ranges; specific AFP/LDH results are missing."
+            "zh-CN": "FSH 8.2 IU/L，LH 4.47 IU/L，睾酮 8.28 nmol/L。原文称性激素各项正常，未给参考范围。",
+            "en": "FSH 8.2 IU/L, LH 4.47 IU/L, testosterone 8.28 nmol/L. The source calls the sex hormones normal but gives no reference ranges."
+          },
+          "values": [
+            {
+              "analyte": "FSH",
+              "value": 8.2,
+              "unit": "IU/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围（判为正常）",
+                "en": "no range given (reported as normal)"
+              }
+            },
+            {
+              "analyte": "LH",
+              "value": 4.47,
+              "unit": "IU/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围（判为正常）",
+                "en": "no range given (reported as normal)"
+              }
+            },
+            {
+              "analyte": {
+                "zh-CN": "睾酮",
+                "en": "Testosterone"
+              },
+              "value": 8.28,
+              "unit": "nmol/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围（判为正常）",
+                "en": "no range given (reported as normal)"
+              }
+            }
+          ],
+          "note": {
+            "zh-CN": "原文把β-hCG与这些激素写在一起（见肿瘤标志物）。",
+            "en": "The source lists β-hCG together with these hormones (see the tumour markers)."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "正文·患者（术前检查）",
+            "en": "Main text · Patient (pre-operative work-up)"
+          }
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "胸部、腹部、盆腔增强CT",
+        "en": "Contrast-enhanced CT of the chest, abdomen and pelvis"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "增强ct",
+          "ct",
+          "胸腹盆ct",
+          "胸腹盆增强",
+          "分期ct",
+          "腹部ct",
+          "电脑断层"
+        ],
+        "en": [
+          "ct",
+          "ct scan",
+          "staging ct",
+          "ct chest abdomen pelvis",
+          "contrast ct",
+          "cat scan"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "门诊术前检查（第0天起；原文日期已去除）",
+            "en": "Pre-operative clinic work-up (from day 0; the source's dates removed)"
           },
-          "figures": [],
-          "available": true
+          "text": {
+            "zh-CN": "左侧阴囊内混合密度肿块，较大者约4.1 cm×4.3 cm×5.4 cm，考虑肿瘤性病变可能；扫描范围内未见转移病灶；左侧阴囊内少量积液。",
+            "en": "Mixed-density masses in the left hemiscrotum, the larger about 4.1 cm × 4.3 cm × 5.4 cm; a neoplastic lesion is considered possible; no metastatic lesion within the scanned field; a small amount of fluid in the left hemiscrotum."
+          },
+          "source": {
+            "zh-CN": "正文·患者（胸腹盆CT增强）",
+            "en": "Main text · Patient (contrast CT of chest, abdomen and pelvis)"
+          }
+        }
+      }
+    },
+    {
+      "id": "mri",
+      "name": {
+        "zh-CN": "阴囊MRI",
+        "en": "Scrotal MRI"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "阴囊mri",
+          "磁共振",
+          "mri",
+          "核磁",
+          "阴囊核磁",
+          "核磁共振"
+        ],
+        "en": [
+          "mri",
+          "scrotal mri",
+          "magnetic resonance",
+          "mr scan",
+          "mri scrotum"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录本例术前做过阴囊MRI，病例不提供结果。",
+            "en": "The report records no pre-operative scrotal MRI for this patient, so the case has no result."
+          },
+          "source": {
+            "zh-CN": "正文·患者与讨论（未记录MRI）",
+            "en": "Main text · Patient and discussion (no MRI recorded)"
+          }
+        }
+      }
+    },
+    {
+      "id": "operative-record",
+      "name": {
+        "zh-CN": "术前诊断与手术记录（原报告）",
+        "en": "Pre-operative diagnosis and operation record (as reported)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "手术记录",
+          "术前诊断",
+          "手术方式",
+          "手术经过",
+          "术式"
+        ],
+        "en": [
+          "operation note",
+          "operative record",
+          "operation record",
+          "pre-operative diagnosis",
+          "surgical procedure"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "operation": {
+          "available": true,
+          "date": {
+            "zh-CN": "手术（原文日期已去除）",
+            "en": "Operation (the source's date removed)"
+          },
+          "text": {
+            "zh-CN": "术前诊断：“左侧睾丸肿瘤，性质待定”。手术：左侧睾丸高位切除术（即经腹股沟根治性睾丸切除）。原报告未记录术中快速冰冻病理、手术入路细节、麻醉方式、手术时间或并发症。",
+            "en": "Pre-operative diagnosis: “left testicular tumour, nature undetermined”. Operation: left high orchidectomy (that is, a radical inguinal orchidectomy). The report records no intra-operative frozen section and no details of the approach, the anaesthetic, the duration or any complications."
+          },
+          "source": {
+            "zh-CN": "正文·患者（诊断与手术）",
+            "en": "Main text · Patient (diagnosis and operation)"
+          }
+        }
+      }
+    },
+    {
+      "id": "frozen-section",
+      "name": {
+        "zh-CN": "术中快速冰冻病理",
+        "en": "Intra-operative frozen section"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "冰冻",
+          "快速冰冻",
+          "冰冻病理",
+          "术中冰冻",
+          "冰冻切片"
+        ],
+        "en": [
+          "frozen section",
+          "frozen",
+          "intraoperative frozen",
+          "intra-operative histology"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "operation": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录术中快速冰冻病理，病例不提供结果。",
+            "en": "The report records no intra-operative frozen section, so the case has no result."
+          },
+          "source": {
+            "zh-CN": "正文·患者与讨论（未记录冰冻病理）",
+            "en": "Main text · Patient and discussion (no frozen section recorded)"
+          }
         }
       }
     },
     {
       "id": "pathology",
       "name": {
-        "zh-CN": "调阅切除标本病理及免疫组化",
-        "en": "Review resection pathology and immunohistochemistry"
+        "zh-CN": "术后病理及免疫组化",
+        "en": "Surgical pathology and immunohistochemistry"
       },
       "category": "pathology",
       "aliases": {
         "zh-CN": [
-          "调阅切除标本病理及免疫组化"
+          "病理",
+          "术后病理",
+          "病理报告",
+          "免疫组化",
+          "大体标本",
+          "组织学",
+          "石蜡病理"
         ],
         "en": [
-          "Review resection pathology and immunohistochemistry",
-          "pathology"
+          "pathology",
+          "histology",
+          "histopathology",
+          "immunohistochemistry",
+          "ihc",
+          "specimen",
+          "final pathology"
         ]
       },
       "requires": [
@@ -774,36 +1622,48 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "历史手术为左高位睾丸切除。术后见硬化性纤维胶原增生和炎细胞浸润，倾向纤维性假瘤。Calretinin阳性、BerEP4阴性；IgG4局部>50/HPF但IgG4/IgG<20%，周围睾丸附睾精索无明显病变。",
-            "en": "The historical operation was a left high inguinal orchiectomy. Histology showed sclerotic collagenous proliferation and inflammation, favouring fibrous pseudotumour. Calretinin was positive and BerEP4 negative; local IgG4-positive cells exceeded 50/HPF but IgG4/IgG was <20%, with no clear surrounding testicular, epididymal or cord lesion."
+        "operation": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后（原文未给报告日期）",
+            "en": "After the operation (no report date in the source)"
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          "text": {
+            "zh-CN": "大体：长条形结构为精索；纵切面下方圆形结节状结构为肿瘤，上方半月形为可疑受压睾丸组织（图2）。局部可见囊腔样结构；肿物旁睾丸组织约3 cm×2.5 cm×2 cm，精索约10 cm×1.5 cm×1 cm，附睾观察不清。免疫组化：间皮细胞Calretinin（+）、Ber-EP4（−）；淋巴细胞CD20与CD3混合阳性；IgG4阳性细胞局部增多（>50/HPF），IgG4/IgG比例<20%。病变呈硬化性纤维胶原增生伴炎症细胞浸润，倾向纤维性假瘤（favor fibrous pseudotumor）。周围睾丸、附睾及精索未见明显病变。",
+            "en": "Gross: the long structure is the spermatic cord; on the longitudinal section the round nodular structure below is the tumour and the half-moon above is probably compressed testis (Fig. 2). Focal cyst-like spaces. Testicular tissue beside the mass about 3 cm × 2.5 cm × 2 cm; cord about 10 cm × 1.5 cm × 1 cm; epididymis not clearly identified. Immunohistochemistry: mesothelial cells calretinin positive, Ber-EP4 negative; lymphocytes a mixture of CD20- and CD3-positive cells; IgG4-positive cells focally increased (> 50/HPF) with an IgG4/IgG ratio < 20 %. Sclerosing fibrocollagenous proliferation with inflammatory cell infiltration, favouring fibrous pseudotumour (“favor fibrous pseudotumor”). The surrounding testis, epididymis and cord show no obvious lesion."
           },
           "figures": [
             "fig02"
           ],
-          "available": true
+          "source": {
+            "zh-CN": "正文·患者（术后病理），图2及图注",
+            "en": "Main text · Patient (pathology), Fig. 2 and its legend"
+          }
         }
       }
     },
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "原报告转归与作者复盘",
+        "en": "Reported outcome and the authors' reflection"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访",
+          "转归",
+          "随访记录",
+          "结局",
+          "原报告结局",
+          "作者复盘"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "follow-up",
+          "followup",
+          "outcome",
+          "follow up record",
+          "reported outcome"
         ]
       },
       "requires": [
@@ -813,31 +1673,442 @@
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
           "text": {
-            "zh-CN": "原报告记录高位切除后病理倾向纤维性假瘤，作者反思进一步术前影像和术中冰冻可能帮助避免不必要切除。未提供本例MRI、冰冻结果、长期复发情况、术后激素或生育结局，不能补写治愈或功能完整。",
-            "en": "The report records orchiectomy followed by pathology favouring fibrous pseudotumour. The authors reflected that additional preoperative imaging and frozen section may help avoid unnecessary resection. No patient-specific MRI, frozen section, long-term recurrence, postoperative hormonal or fertility outcome is provided."
+            "zh-CN": "原报告：术后病理倾向纤维性假瘤。作者在讨论末段写道：本例最初怀疑睾丸恶性肿瘤，术前阴囊超声结合血清标志物“排除了睾丸肿瘤这一诊断”，但术前不能明确诊断，故行高位睾丸切除；今后遇到疑似睾丸占位，术前应完善MRI，术中性质仍不能确定时快速冰冻病理有助于避免不必要的睾丸附睾切除，治疗原则是保留睾丸的手术。原报告未记录术后恢复、随访时长、复发、睾酮或生育结局。",
+            "en": "As reported: the pathology favoured fibrous pseudotumour. In the last paragraph of the discussion the authors write that a testicular malignancy was suspected at first; that pre-operative scrotal ultrasound with the serum markers “excluded the diagnosis of testicular tumour”, yet no firm diagnosis could be made before surgery, so a high orchidectomy was done; and that a suspected testicular mass should in future have an MRI before surgery, with a rapid frozen section when its nature is still uncertain at operation, to avoid needless removal of the testis and epididymis — the principle being testis-sparing surgery. The report records no post-operative recovery, length of follow-up, recurrence, testosterone or fertility outcome."
+          },
+          "note": {
+            "zh-CN": "原文矛盾：讨论称术前检查“排除了睾丸肿瘤”，而术前诊断为“左侧睾丸肿瘤，性质待定”并行根治性手术。原文如此，病例不作调和。",
+            "en": "A contradiction in the source: the discussion says the pre-operative tests “excluded testicular tumour”, while the pre-operative diagnosis was “left testicular tumour, nature undetermined” and a radical operation was done. This is how the source reads; the case does not reconcile it."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "讨论（末段）",
+            "en": "Discussion (final paragraph)"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifMatches": "section",
+        "remove": [
+          "ct"
+        ]
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "sperm-banking",
+      "name": {
+        "zh-CN": "讨论精子冷冻保存并转介生殖中心",
+        "en": "Discuss sperm banking and refer for semen cryopreservation"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "精子冷冻",
+          "精子库",
+          "冻精",
+          "生育力保存",
+          "保存精子",
+          "精液冷冻",
+          "生殖中心",
+          "冷冻精子"
+        ],
+        "en": [
+          "sperm banking",
+          "sperm bank",
+          "semen cryopreservation",
+          "fertility preservation",
+          "freeze sperm",
+          "bank sperm"
+        ]
+      },
+      "dose": {
+        "zh-CN": "术前向他说明：切除一侧睾丸及可能的后续治疗会影响生育；可在手术前做精液分析并冷冻保存精子；转介生殖医学中心。",
+        "en": "Before surgery, explain that losing a testis, and any later treatment, can affect fertility; offer semen analysis and sperm cryopreservation before the operation; refer to the reproductive medicine centre."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "phase": "operation"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        }
+      },
+      "response": {
+        "zh-CN": "已与他讨论，并转介生殖医学中心。原报告未记录他的生育意愿、精液分析或是否冷冻了精子。",
+        "en": "Discussed with him and referred to the reproductive medicine centre. The report does not record his wishes about children, a semen analysis or whether sperm was banked."
+      }
+    },
+    {
+      "id": "inguinal-exploration-fs",
+      "name": {
+        "zh-CN": "经腹股沟探查+术中快速冰冻（良性则保留睾丸）",
+        "en": "Inguinal exploration with frozen section (keep the testis if benign)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "腹股沟探查",
+          "冰冻切片",
+          "术中冰冻",
+          "快速冰冻",
+          "保留睾丸",
+          "保睾手术",
+          "睾丸部分切除",
+          "保留睾丸手术",
+          "腹股沟切口探查"
+        ],
+        "en": [
+          "inguinal exploration",
+          "frozen section",
+          "testis sparing",
+          "testis-sparing surgery",
+          "organ sparing",
+          "partial orchidectomy",
+          "keep the testis"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经腹股沟切口，先控制精索，将睾丸和肿块连同鞘膜一并提出；切下病灶送快速冰冻：良性则只切除病灶、保留睾丸；恶性或不能确定则行经腹股沟根治性睾丸切除（精索在内环口切断）。不经阴囊入路。",
+        "en": "Groin incision; control the spermatic cord first and deliver the testis and mass within their coverings; send the excised lesion for frozen section — if benign, remove only the lesion and keep the testis; if malignant or indeterminate, proceed to radical inguinal orchidectomy (cord divided at the internal ring). No scrotal approach."
+      },
+      "requires": [],
+      "scope": "medical",
+      "posture": "lying",
+      "risk": "high",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "read": "ultrasound"
+          },
+          {
+            "read": "markers"
+          },
+          {
+            "read": "ct"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "all": [
+            {
+              "read": "ultrasound"
+            },
+            {
+              "read": "markers"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "在阴囊超声和血清标志物结果出来之前就手术：EAU 2026要求在任何睾丸切除前完成双侧睾丸超声，并检测AFP、hCG和LDH。",
+        "en": "Operating before the scrotal ultrasound and serum markers are available: EAU 2026 asks for bilateral testicular ultrasound and AFP, hCG and LDH before any orchidectomy."
+      },
+      "response": {
+        "zh-CN": "你的方案是经腹股沟探查并送快速冰冻。原报告的实际情况：术中未记录快速冰冻病理，团队行左侧高位（经腹股沟根治性）睾丸切除术。若当时送了冰冻会得到什么结果，原文无从得知。",
+        "en": "Your plan is an inguinal exploration with frozen section. What the report records: no intra-operative frozen section, and the team performed a left high (radical inguinal) orchidectomy. What a frozen section would have shown cannot be known from the source."
+      }
+    },
+    {
+      "id": "radical-orchidectomy",
+      "name": {
+        "zh-CN": "左侧经腹股沟根治性睾丸切除（高位睾丸切除，原报告术式）",
+        "en": "Left radical inguinal orchidectomy (high orchidectomy — the operation in the report)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "根治性睾丸切除",
+          "高位睾丸切除",
+          "睾丸切除",
+          "切除睾丸",
+          "睾丸根治术",
+          "高位切除",
+          "切掉睾丸"
+        ],
+        "en": [
+          "radical orchidectomy",
+          "radical orchiectomy",
+          "inguinal orchidectomy",
+          "high orchidectomy",
+          "orchidectomy",
+          "orchiectomy",
+          "remove testicle"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经腹股沟切口，于内环口处切断精索，切除左侧睾丸、附睾及肿块。",
+        "en": "Groin incision; divide the spermatic cord at the internal inguinal ring and remove the left testis, epididymis and mass."
+      },
+      "requires": [],
+      "scope": "medical",
+      "posture": "lying",
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "not": {
+          "all": [
+            {
+              "read": "ultrasound"
+            },
+            {
+              "read": "markers"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "在阴囊超声和血清标志物结果出来之前就手术：EAU 2026要求在任何睾丸切除前完成双侧睾丸超声，并检测AFP、hCG和LDH。",
+        "en": "Operating before the scrotal ultrasound and serum markers are available: EAU 2026 asks for bilateral testicular ultrasound and AFP, hCG and LDH before any orchidectomy."
+      },
+      "response": {
+        "zh-CN": "按原报告：团队行左侧高位睾丸切除术，术中未记录快速冰冻病理。标本送病理。",
+        "en": "As in the report: the team performs a left high orchidectomy; no intra-operative frozen section is recorded. The specimen goes to pathology."
+      }
+    },
+    {
+      "id": "trans-scrotal-biopsy",
+      "name": {
+        "zh-CN": "经阴囊穿刺或切开活检",
+        "en": "Trans-scrotal needle or open biopsy"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "穿刺活检",
+          "阴囊穿刺",
+          "经阴囊活检",
+          "细针穿刺",
+          "切开活检",
+          "阴囊切开",
+          "活检",
+          "粗针穿刺"
+        ],
+        "en": [
+          "biopsy",
+          "needle biopsy",
+          "scrotal biopsy",
+          "trans-scrotal biopsy",
+          "fine needle",
+          "fna",
+          "core biopsy",
+          "open biopsy"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经阴囊皮肤进针或切开取材。",
+        "en": "Needle or open sampling through the scrotal skin."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "疑有睾丸肿瘤时应避免经阴囊入路：EAU指出经阴囊手术会增加局部复发。需要组织学时，应经腹股沟探查（并可送冰冻）获取。",
+        "en": "When a testicular tumour is possible, any scrotal approach is avoided: EAU notes that it increases local recurrence. Tissue, when needed, comes from an inguinal exploration (with frozen section if required)."
+      },
+      "response": {
+        "zh-CN": "原报告没有做这项操作，病例不提供结果。上级医师叫停：先考虑经腹股沟入路。",
+        "en": "This was not done in the report, so the case gives no result. The attending stops it: think about an inguinal approach first."
+      }
+    },
+    {
+      "id": "observation",
+      "name": {
+        "zh-CN": "暂时观察，3个月后复查超声",
+        "en": "Watch and wait: repeat the ultrasound in 3 months"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "观察",
+          "复查超声",
+          "暂不手术",
+          "等等看",
+          "定期复查",
+          "先观察",
+          "观察等待"
+        ],
+        "en": [
+          "watch and wait",
+          "observe",
+          "observation",
+          "repeat ultrasound",
+          "review in 3 months",
+          "wait and see"
+        ]
+      },
+      "requires": [],
+      "risk": "low",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "11个月来进行性增大的阴囊实性肿块需要现在明确诊断：β-hCG正常不能排除睾丸生殖细胞肿瘤，AFP和LDH也还没有结果。",
+        "en": "A solid scrotal mass that has grown for 11 months needs a diagnosis now: a normal β-hCG does not exclude a testicular germ-cell tumour, and AFP and LDH are still missing."
+      },
+      "response": {
+        "zh-CN": "原报告没有采用观察，病例不模拟观察之后的病程。",
+        "en": "The report did not take this course, and the case does not simulate what would follow."
+      }
+    },
+    {
+      "id": "steroids-igg4",
+      "name": {
+        "zh-CN": "按IgG4相关疾病经验性使用糖皮质激素",
+        "en": "Empirical glucocorticoids for presumed IgG4-related disease"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "激素",
+          "糖皮质激素",
+          "泼尼松",
+          "泼尼松龙",
+          "甲泼尼龙",
+          "免疫抑制"
+        ],
+        "en": [
+          "steroids",
+          "prednisolone",
+          "prednisone",
+          "glucocorticoids",
+          "methylprednisolone",
+          "immunosuppression"
+        ]
+      },
+      "requires": [],
+      "risk": "moderate",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "全身激素需要有IgG4相关疾病的诊断——依据特征性组织学、IgG4/IgG比值和临床表现综合判断；没有这样的诊断就用激素，只会带来不良反应，没有获益。",
+        "en": "Systemic steroids need a diagnosis of IgG4-related disease, built on characteristic histology, the IgG4/IgG ratio and the clinical picture; given without one, they bring only side effects and no benefit."
+      },
+      "response": {
+        "zh-CN": "原报告没有使用激素，病例不模拟用药后的变化。",
+        "en": "The report gave no steroids, and the case does not simulate any effect."
+      }
+    },
+    {
+      "id": "adjuvant-chemo",
+      "name": {
+        "zh-CN": "按睾丸生殖细胞肿瘤给予辅助化疗",
+        "en": "Adjuvant chemotherapy as for a testicular germ-cell tumour"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "化疗",
+          "辅助化疗",
+          "bep方案",
+          "顺铂",
+          "卡铂"
+        ],
+        "en": [
+          "chemotherapy",
+          "adjuvant chemotherapy",
+          "bep",
+          "cisplatin",
+          "carboplatin"
+        ]
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "化疗只用于病理和分期证实需要化疗的恶性生殖细胞肿瘤；没有这样的诊断就化疗，只有毒性（包括对生育的影响），没有获益。",
+        "en": "Chemotherapy is for a malignant germ-cell tumour whose pathology and stage call for it; given without such a diagnosis it brings only toxicity, including to fertility, and no benefit."
+      },
+      "response": {
+        "zh-CN": "原报告没有化疗，病例不模拟用药后的变化。",
+        "en": "The report gave no chemotherapy, and the case does not simulate any effect."
+      }
+    },
+    {
+      "id": "follow-up-plan",
+      "name": {
+        "zh-CN": "术后门诊随访：检查留下的睾丸，复查睾酮并评估生育",
+        "en": "Post-operative clinic follow-up: the remaining testis, testosterone and fertility"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "随访",
+          "术后随访",
+          "安排随访",
+          "复诊",
+          "门诊随访",
+          "随访计划",
+          "术后复查"
+        ],
+        "en": [
+          "follow-up plan",
+          "arrange follow-up",
+          "clinic review",
+          "outpatient review",
+          "post-operative review"
+        ]
+      },
+      "dose": {
+        "zh-CN": "教他自查留下的睾丸；复查睾酮（必要时加LH）；想要孩子时做精液分析或转生殖科；再摸到阴囊肿物及时复诊。",
+        "en": "Teach self-examination of the remaining testis; recheck testosterone (with LH if needed); semen analysis or a fertility referral if he wants children; come back promptly with any new scrotal lump."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "pathology"
+      },
+      "response": {
+        "zh-CN": "已安排术后随访。原报告未记录随访方式、时长或结果。",
+        "en": "Follow-up arranged. The report records no follow-up method, duration or result."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-history",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "了解肿块的经过与危险因素",
+        "en": "Find out the story of the lump and the risk factors"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "问清什么时候发现、有没有变大、疼不疼，再问外伤、睾丸炎或附睾炎、隐睾和生育打算；病例没有记录的内容记为未知。",
+        "en": "Ask when he found it, whether it has grown and whether it hurts, then about injury, orchitis or epididymitis, an undescended testicle and plans for children; whatever the case does not record stays unknown."
+      },
+      "guidance": {
+        "zh-CN": "在诊室与韩先生交谈：肿块的经过、伴随症状和睾丸肿瘤的危险因素。",
+        "en": "Talk to Mr Han in the clinic room: the story of the lump, associated symptoms and testicular cancer risk factors."
       },
       "completeWhen": {
         "all": [
@@ -854,20 +2125,36 @@
             "asked": "trauma"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-2",
+      "id": "obj-exam",
       "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "检查阴囊与腹股沟",
+        "en": "Examine the scrotum and groins"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Examination"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "先视诊，再触诊睾丸、附睾和肿块，最后查腹股沟淋巴结；原文没有记录的查体不代表正常。",
+        "en": "Inspect first, then feel the testis, epididymis and mass, then the groin nodes; an examination the report does not record is not a normal one."
+      },
+      "guidance": {
+        "zh-CN": "带陪检者完成阴囊和腹股沟检查。",
+        "en": "Examine the scrotum and groins, with a chaperone."
       },
       "completeWhen": {
         "all": [
+          {
+            "examined": "inspection"
+          },
           {
             "examined": "mass"
           },
@@ -875,145 +2162,449 @@
             "examined": "nodes"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-3",
+      "id": "obj-workup",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "术前评估：影像、标志物与分期",
+        "en": "Pre-operative work-up: imaging, markers and staging"
+      },
+      "short": {
+        "zh-CN": "术前检查",
+        "en": "Work-up"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "想想指南要求手术前完成哪些检查，并留意哪些结果其实缺失；再对照查体和超声，判断肿块的来源和性质。",
+        "en": "Think which tests the guidance asks for before any operation, and notice which results are actually missing; then weigh the examination against the ultrasound to judge where the mass arises and what it might be."
       },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      "guidance": {
+        "zh-CN": "开具并查看阴囊超声、血清标志物、性激素和分期CT。",
+        "en": "Order and read the scrotal ultrasound, serum markers, sex hormones and staging CT."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "read": "ultrasound"
+          },
+          {
+            "read": "markers"
+          },
+          {
+            "read": "ct"
+          },
+          {
+            "decided": "origin"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ultrasound"
+          },
+          "target": "ultrasound"
+        },
+        {
+          "unless": {
+            "read": "ct"
+          },
+          "target": "ct"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "制定手术方案并做术前沟通",
+        "en": "Choose the operation and counsel him"
+      },
+      "short": {
+        "zh-CN": "手术方案",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "比较查体和超声对肿块来源的判断，想想怎样在切掉睾丸之前先弄清良恶性，以及手术前必须和他谈哪些事。",
+        "en": "Compare what the examination and the ultrasound say about where the mass arises, think how benign could be told from malignant before a testis is removed, and what he must hear before the operation."
+      },
+      "guidance": {
+        "zh-CN": "在会诊板上作出手术方案和术前谈话的决策，然后安排手术。",
+        "en": "Make the operative-plan and pre-operative counselling decisions on the case board, then book the operation."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "plan"
+          },
+          {
+            "decided": "consent"
+          },
+          {
+            "any": [
+              {
+                "intervened": "inguinal-exploration-fs"
+              },
+              {
+                "intervened": "radical-orchidectomy"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-pathology",
+      "title": {
+        "zh-CN": "解读病理并复盘原报告",
+        "en": "Interpret the pathology and review the report"
+      },
+      "short": {
+        "zh-CN": "病理与复盘",
+        "en": "Pathology"
+      },
+      "hint": {
+        "zh-CN": "先看形态学，再看细胞计数和比值；最后对照原报告作者事后的反思。",
+        "en": "Read the morphology first and the cell counts and ratio second; then compare with what the report's authors concluded in hindsight."
+      },
+      "guidance": {
+        "zh-CN": "查看手术记录和术后病理，作出病理决策；术后门诊时查看原报告的转归记录。",
+        "en": "Read the operation record and the pathology and make the pathology decision; at the post-operative clinic, read the report's outcome record."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "pathology"
           },
           {
             "read": "followup",
             "phase": "followup"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "pathology"
+          },
+          "target": "histopathology"
+        },
+        {
+          "target": "records"
+        }
+      ]
     }
   ],
   "decisions": [
     {
-      "id": "diagnosis",
+      "id": "origin",
       "prompt": {
-        "zh-CN": "术前影像和标志物可以支持到什么程度？",
-        "en": "What can preoperative imaging and markers establish?"
+        "zh-CN": "结合病史、查体和阴囊超声，您对这个肿块的判断是？",
+        "en": "Putting the history, the examination and the scrotal ultrasound together, how do you assess this mass?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "read": "ultrasound",
-            "phase": "workup"
+            "asked": "presentation"
           },
           {
-            "read": "ct",
-            "phase": "workup"
+            "asked": "progression"
           },
           {
-            "read": "markers",
-            "phase": "workup"
+            "examined": "mass"
+          },
+          {
+            "read": "ultrasound"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先问清肿块的经过，触诊左侧睾丸和肿块，并查看阴囊超声。",
+        "en": "First take the history of the lump, palpate the left testis and the mass, and read the scrotal ultrasound."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "possible-malignant",
           "text": {
-            "zh-CN": "多发阴囊实性病变，可能睾旁来源，性质仍需组织学及专科评估",
-            "en": "Multiple solid scrotal lesions, possibly paratesticular, requiring tissue and specialist assessment of their nature"
+            "zh-CN": "来源不明的阴囊内实性肿块：触诊左睾丸增大、与附睾分不清，超声却示与睾丸分界尚清。在组织学明确前须按可能恶性（睾丸生殖细胞肿瘤或睾丸旁肿瘤）处理，良性睾丸旁病变也在鉴别之列",
+            "en": "A solid intrascrotal mass of uncertain origin — the left testis feels enlarged and inseparable from the epididymis, yet ultrasound shows the masses fairly distinct from the testis. Until histology says otherwise, manage it as possibly malignant (a testicular germ-cell tumour or a paratesticular tumour), with benign paratesticular lesions in the differential"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "影像定位和不高的标志物不能独立排除恶性；本例正文与讨论对术前排除肿瘤的表述不一致，应保留不确定性。",
-            "en": "Location and non-elevated markers do not independently exclude malignancy; the report’s preoperative statements are inconsistent and uncertainty must be retained."
+            "zh-CN": "对。查体和超声对来源的判断不一致，肿块又是实性、进行性增大的，所以不能排除恶性——这正是本例的难点。良性睾丸旁病变也在鉴别之列，原文还列出血管外皮瘤样肿瘤、鞘膜恶性间皮瘤等需要鉴别的病变，但最终只能靠组织学确认。",
+            "en": "Correct. The examination and the ultrasound disagree about the origin, and the mass is solid and growing, so malignancy cannot be set aside — that is the crux of this case. Benign paratesticular lesions are in the differential too, and the source lists others to exclude (haemangiopericytoma-like tumours, malignant mesothelioma of the tunica vaginalis), but only histology can settle it."
           }
         },
         {
-          "id": "unsupported",
+          "id": "hydrocele",
           "text": {
-            "zh-CN": "标志物不高即可排除恶性并直接确诊纤维性假瘤",
-            "en": "Non-elevated markers exclude malignancy and directly establish fibrous pseudotumour"
+            "zh-CN": "鞘膜积液或附睾囊肿，向他解释是良性的就可以",
+            "en": "A hydrocele or an epididymal cyst — reassure him that it is benign"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "影像定位和不高的标志物不能独立排除恶性；本例正文与讨论对术前排除肿瘤的表述不一致，应保留不确定性。",
-            "en": "Location and non-elevated markers do not independently exclude malignancy; the report’s preoperative statements are inconsistent and uncertainty must be retained."
+            "zh-CN": "不对。超声显示的是多发实性肿块，查体肿块质硬、进行性增大；按囊性病变去安慰他，只会延误诊断。",
+            "en": "No. Ultrasound shows multiple solid masses, and on examination the mass is hard and growing; reassurance meant for a cystic lesion would only delay the diagnosis."
+          }
+        },
+        {
+          "id": "orchitis",
+          "text": {
+            "zh-CN": "慢性附睾睾丸炎，先用2周抗生素再复查",
+            "en": "Chronic epididymo-orchitis — two weeks of antibiotics, then review"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。他11个月来一直不疼、不坠胀，也没有睾丸炎或附睾炎病史；无痛、质硬、进行性增大的实性肿块不能按感染处理，抗生素“试验”只会延误诊断。",
+            "en": "No. He has had no pain or dragging for 11 months and no history of orchitis or epididymitis; a painless, hard, growing solid mass must not be treated as an infection, and an antibiotic trial only delays the diagnosis."
+          }
+        },
+        {
+          "id": "cancer-excluded",
+          "text": {
+            "zh-CN": "超声示睾丸旁来源，已可排除睾丸肿瘤，择期把肿物切掉即可",
+            "en": "Ultrasound shows it arises beside the testis, so testicular cancer is excluded and the lump can simply be removed electively"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。超声只说与睾丸“分界尚清”，而触诊左睾丸增大、与附睾分不清；单凭超声定位不能排除睾丸肿瘤。何况睾丸旁的实性肿块本身也可能是恶性的。",
+            "en": "No. Ultrasound only calls the masses “fairly distinct” from the testis, while palpation finds an enlarged testis inseparable from the epididymis; ultrasound location alone cannot exclude a testicular tumour. And a solid paratesticular mass can itself be malignant."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "plan",
       "prompt": {
-        "zh-CN": "结合术后病理，应怎样复盘并规划后续？",
-        "en": "How should postoperative pathology guide review and further planning?"
+        "zh-CN": "左侧阴囊实性肿块11个月、进行性增大；左睾丸增大，触诊与附睾分不清；超声示多发实性肿块，与睾丸分界尚清；β-hCG正常，AFP和LDH没有单独结果；CT未见转移。手术前最合适的处理是？",
+        "en": "A solid left scrotal mass has grown over 11 months; the left testis is enlarged and cannot be separated from the epididymis; ultrasound shows multiple solid masses fairly distinct from the testis; β-hCG is normal and AFP and LDH have no separate result; CT shows no metastasis. What is the most appropriate plan before surgery?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "decided": "diagnosis"
+            "decided": "origin"
           },
           {
-            "read": "pathology",
-            "phase": "workup"
+            "read": "ultrasound"
+          },
+          {
+            "read": "markers"
+          },
+          {
+            "read": "ct"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先完成对肿块的判断，并查看超声、肿瘤标志物和分期CT。",
+        "en": "First settle your assessment of the mass, and read the ultrasound, the tumour markers and the staging CT."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "inguinal-fs",
           "text": {
-            "zh-CN": "泌尿与病理团队核对良性纤维性病变并个体化随访；类似未手术病例可讨论进一步定位及保器官评估，不能倒推本例一定适合某术式",
-            "en": "Urology/pathology review the benign-leaning fibrous lesion and individualise follow-up; similar unoperated cases may merit further localisation and organ-preservation assessment without retrospectively asserting one mandatory operation here"
+            "zh-CN": "补齐AFP、β-hCG和LDH，并确认对侧睾丸；超声仍定位不清时加做阴囊MRI；然后经腹股沟探查并送快速冰冻——良性则切除病灶、保留睾丸，恶性则行经腹股沟根治性睾丸切除",
+            "en": "Complete AFP, β-hCG and LDH and check the other testis; add a scrotal MRI if ultrasound still cannot place the lesion; then explore through the groin with frozen section — excise the lesion and keep the testis if benign, radical inguinal orchidectomy if malignant"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "IgG4计数、比例、形态与系统证据需合并判断；手术选择也受定位、恶性风险及可行性限制。",
-            "en": "IgG4 count, ratio, morphology and systemic evidence must be integrated; operation choice depends on location, malignant risk and feasibility."
+            "zh-CN": "对。EAU 2026：任何睾丸切除前都要检测AFP、hCG和LDH，并做双侧睾丸超声（本例报告没有描述对侧睾丸）；超声不能确定时MRI可作补充；体积小或性质不明、标志物阴性且对侧睾丸正常的睾丸肿块，可在快速冰冻配合下保留睾丸，而根治性睾丸切除仍是恶性时的标准术式。本例超声提示病变在睾丸旁，同样经腹股沟探查加冰冻的思路可在良性时只切除病灶——这也是本例作者事后的结论。",
+            "en": "Correct. EAU 2026: AFP, hCG and LDH are measured, and both testes scanned, before any orchidectomy (this report does not describe the other testis); MRI can help when ultrasound is inconclusive; for a small or indeterminate, marker-negative testicular mass with a normal contralateral testis, testis-sparing surgery may be offered, always with frozen section, while radical orchidectomy stays the standard for cancer. Here ultrasound places the lesion beside the testis, and the same groin exploration with frozen section lets a benign lesion be excised alone — the conclusion this report's authors reached in hindsight."
           }
         },
         {
-          "id": "unsupported",
+          "id": "scrotal-biopsy",
           "text": {
-            "zh-CN": "仅IgG4细胞局部增多就确诊系统IgG4病并开始经验性免疫抑制",
-            "en": "Local IgG4-positive cells alone diagnose systemic IgG4 disease and justify empirical immunosuppression"
+            "zh-CN": "先经阴囊穿刺活检，拿到病理再决定术式",
+            "en": "Biopsy it through the scrotum first and choose the operation on the histology"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "IgG4计数、比例、形态与系统证据需合并判断；手术选择也受定位、恶性风险及可行性限制。",
-            "en": "IgG4 count, ratio, morphology and systemic evidence must be integrated; operation choice depends on location, malignant risk and feasibility."
+            "zh-CN": "不对。疑有睾丸肿瘤时应避免经阴囊入路（EAU：会增加局部复发）。需要组织学时，应经腹股沟探查并送快速冰冻。",
+            "en": "No. When a testicular tumour is possible, any scrotal approach is avoided (EAU: it increases local recurrence). When histology is needed, it comes from an inguinal exploration with frozen section."
+          }
+        },
+        {
+          "id": "radical-now",
+          "text": {
+            "zh-CN": "直接行左侧经腹股沟根治性睾丸切除（原报告的做法）",
+            "en": "Go straight to a left radical inguinal orchidectomy (what the report's team did)"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不是最佳。怀疑睾丸癌时这是标准术式，原报告也是这样做的；但本例超声提示肿块位于睾丸旁、β-hCG正常，AFP和LDH还缺——先补齐标志物，再在快速冰冻指导下手术，若为良性病变就能保住睾丸。",
+            "en": "Not the best choice. It is the standard operation when testicular cancer is suspected, and it is what the report's team did; but here ultrasound placed the masses beside the testis, β-hCG was normal and AFP and LDH were still missing — complete the markers, then operate guided by a frozen section, and a benign lesion would let him keep the testis."
+          }
+        },
+        {
+          "id": "observe",
+          "text": {
+            "zh-CN": "标志物正常，先观察，3个月后复查超声",
+            "en": "The markers are normal, so watch and repeat the ultrasound in 3 months"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。β-hCG正常不能排除睾丸生殖细胞肿瘤，何况AFP和LDH都没有结果；PSA与睾丸肿瘤无关。一个11个月来不断增大的实性肿块，需要现在明确诊断。",
+            "en": "No. A normal β-hCG does not exclude a testicular germ-cell tumour, and AFP and LDH have not even been reported; PSA has nothing to do with testicular tumours. A solid mass that has grown for 11 months needs a diagnosis now."
+          }
+        }
+      ]
+    },
+    {
+      "id": "consent",
+      "prompt": {
+        "zh-CN": "术前谈话时，下列哪些内容必须向他说明？（多选）",
+        "en": "In the pre-operative discussion, which of these must you cover with him? (Select all that apply.)"
+      },
+      "kind": "multiple",
+      "requires": {
+        "decided": "plan"
+      },
+      "need": {
+        "zh-CN": "先确定手术方案。",
+        "en": "First agree the operative plan."
+      },
+      "options": [
+        {
+          "id": "may-lose-testis",
+          "text": {
+            "zh-CN": "如果冰冻提示恶性或无法确定，术中可能要切除左侧睾丸",
+            "en": "If the frozen section shows cancer or is inconclusive, the left testis may have to be removed during the operation"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "必须说明。能否保留睾丸取决于术中所见和冰冻结果；他要在术前知道并同意可能的根治性切除。",
+            "en": "Must be covered. Whether the testis can be kept depends on the findings and the frozen section; he needs to know about, and agree to, a possible radical orchidectomy beforehand."
+          }
+        },
+        {
+          "id": "sperm-banking",
+          "text": {
+            "zh-CN": "手术前可以冷冻保存精子，并转介生殖中心",
+            "en": "Sperm can be banked before the operation, with a referral to the reproductive medicine centre"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "必须说明。EAU 2026（强推荐）：开始睾丸癌的任何治疗前，与所有男性讨论精子冷冻保存。原报告没有记录这一步。",
+            "en": "Must be covered. EAU 2026 (strong recommendation): discuss sperm banking with every man before any treatment for testicular cancer starts. The report does not record it."
+          }
+        },
+        {
+          "id": "groin-incision",
+          "text": {
+            "zh-CN": "切口在腹股沟（大腿根上方），不经阴囊",
+            "en": "The incision will be in the groin, not through the scrotum"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应当说明。经腹股沟入路是为了在分清良恶性之前不破坏阴囊；患者常以为手术在阴囊上做，提前说清能避免误解。",
+            "en": "Should be covered. The groin approach leaves the scrotum intact until benign and malignant are told apart; patients often expect a scrotal cut, so saying it beforehand avoids confusion."
+          }
+        },
+        {
+          "id": "reassure-benign",
+          "text": {
+            "zh-CN": "标志物正常，可以向他保证不是癌",
+            "en": "The markers are normal, so you can promise him it is not cancer"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不能这样说。标志物正常不能排除恶性，AFP和LDH也不全；虚假的保证会让他在冰冻或最终病理不理想时毫无准备。",
+            "en": "You cannot say that. Normal markers do not exclude malignancy, and AFP and LDH are incomplete; false reassurance leaves him unprepared if the frozen section or the final pathology is unfavourable."
+          }
+        },
+        {
+          "id": "chemo-certain",
+          "text": {
+            "zh-CN": "术后肯定需要化疗",
+            "en": "He will certainly need chemotherapy afterwards"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。是否需要进一步治疗取决于最终病理和分期；现在下结论既不准确，也会无谓地吓到他。",
+            "en": "No. Whether any further treatment is needed depends on the final pathology and staging; saying it now is inaccurate and needlessly frightening."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pathology",
+      "prompt": {
+        "zh-CN": "术后病理：硬化性纤维胶原增生伴炎症细胞浸润，倾向纤维性假瘤；间皮细胞Calretinin（+）、Ber-EP4（−）；淋巴细胞CD20与CD3混合阳性；IgG4阳性细胞局部>50/HPF，IgG4/IgG<20%；周围睾丸、附睾及精索未见明显病变。您怎样解读，接下来怎么办？",
+        "en": "Final pathology: sclerosing fibrocollagenous proliferation with inflammation, favouring fibrous pseudotumour; mesothelial cells calretinin positive, Ber-EP4 negative; lymphocytes a mixture of CD20- and CD3-positive cells; IgG4-positive cells focally > 50/HPF, IgG4/IgG < 20 %; the surrounding testis, epididymis and cord show no obvious lesion. How do you interpret it, and what next?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "pathology"
+      },
+      "need": {
+        "zh-CN": "先查看术后病理报告。",
+        "en": "First read the surgical pathology report."
+      },
+      "options": [
+        {
+          "id": "benign-fp",
+          "text": {
+            "zh-CN": "良性睾丸旁纤维性假瘤，已随标本切除：不需辅助治疗；IgG4比值不支持IgG4相关疾病，除非出现其他器官受累的线索，不必按此检查或治疗；门诊随访留下的睾丸、睾酮和生育",
+            "en": "A benign paratesticular fibrous pseudotumour, removed with the specimen: no adjuvant treatment; the IgG4 ratio does not support IgG4-related disease, so no work-up or treatment for it unless other organs give a clue; clinic follow-up of the remaining testis, testosterone and fertility"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "对。纤维性假瘤是良性反应性病变，原文称尚无恶变报道。IgG4相关疾病的病理诊断首先靠特征性形态（致密淋巴浆细胞浸润、席纹状纤维化、闭塞性静脉炎），IgG4计数和比值是次要证据；本例比值<20%，远低于常用的40%界值（2012年波士顿共识）。",
+            "en": "Correct. Fibrous pseudotumour is a benign reactive lesion, with no malignant change reported (the source's discussion). The pathological diagnosis of IgG4-related disease rests first on the characteristic morphology (a dense lymphoplasmacytic infiltrate, storiform fibrosis, obliterative phlebitis), with IgG4 counts and ratios secondary; a ratio < 20 % is far below the usual 40 % threshold (Boston consensus 2012)."
+          }
+        },
+        {
+          "id": "igg4-rd",
+          "text": {
+            "zh-CN": "IgG4阳性细胞>50/HPF，可诊断IgG4相关疾病，开始糖皮质激素治疗",
+            "en": "More than 50 IgG4-positive cells per HPF: diagnose IgG4-related disease and start glucocorticoids"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。IgG4阳性细胞增多见于许多炎症，单凭计数不能诊断；本例IgG4/IgG<20%，报告也没有描述席纹状纤维化或闭塞性静脉炎。2019年ACR/EULAR标准是研究用的分类标准，不能用来给单个病灶下诊断；病灶已经切除，激素没有指征。",
+            "en": "No. Raised IgG4-positive cells occur in many inflammatory lesions, and a count alone does not make the diagnosis; here IgG4/IgG is < 20 %, and no storiform fibrosis or obliterative phlebitis is described. The 2019 ACR/EULAR criteria classify patients for research and do not diagnose a single lesion; with the lesion removed, steroids have no indication."
+          }
+        },
+        {
+          "id": "mesothelioma",
+          "text": {
+            "zh-CN": "Calretinin阳性提示鞘膜恶性间皮瘤，需全身分期并辅助治疗",
+            "en": "Calretinin positivity points to malignant mesothelioma of the tunica vaginalis: stage him and give adjuvant treatment"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。Calretinin（+）、Ber-EP4（−）只说明这些细胞是间皮细胞而不是腺上皮，并不说明它们是恶性的；报告没有描述异型性或浸润，病理医生的结论倾向纤维性假瘤。恶性间皮瘤是原文列出的鉴别诊断，不是本例的诊断。",
+            "en": "No. Calretinin positive and Ber-EP4 negative show only that these cells are mesothelial rather than glandular, not that they are malignant; no atypia or invasion is described, and the pathologist favoured fibrous pseudotumour. Malignant mesothelioma is a differential the source lists, not this patient's diagnosis."
+          }
+        },
+        {
+          "id": "gct-surveillance",
+          "text": {
+            "zh-CN": "按睾丸生殖细胞肿瘤进行CT监测，并评估腹膜后淋巴结清扫",
+            "en": "Follow him up like a testicular germ-cell tumour, with CT surveillance and an assessment for retroperitoneal lymph node dissection"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。病理没有生殖细胞肿瘤成分；良性病变不需要肿瘤学监测或腹膜后淋巴结清扫，反复做CT只会增加辐射和焦虑。",
+            "en": "No. The pathology shows no germ-cell tumour; a benign lesion needs no oncological surveillance or retroperitoneal lymph node dissection, and repeated CT would add only radiation and anxiety."
           }
         }
       ]
@@ -1021,13 +2612,13 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "r-hx-lump",
       "domain": "history",
+      "weight": 1,
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "问清肿块：何时、怎样发现，是否增大，有无疼痛坠胀，有无外伤或睾丸/附睾炎",
+        "en": "Characterised the lump: when and how it was found, growth, pain or dragging, injury and orchitis or epididymitis"
       },
-      "weight": 2,
       "met": {
         "all": [
           {
@@ -1046,15 +2637,37 @@
       }
     },
     {
-      "id": "rubric-2",
-      "domain": "examination",
-      "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
-      },
+      "id": "r-hx-risk",
+      "domain": "history",
       "weight": 1,
+      "text": {
+        "zh-CN": "询问睾丸肿瘤危险因素和生育打算（隐睾、生育）",
+        "en": "Asked about testicular cancer risk factors and plans for children (undescended testis, fertility)"
+      },
       "met": {
         "all": [
+          {
+            "asked": "cryptorchidism"
+          },
+          {
+            "asked": "fertility"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "视诊阴囊，触诊睾丸、附睾与肿块，检查腹股沟淋巴结",
+        "en": "Inspected the scrotum, palpated the testis, epididymis and mass, and examined the groin nodes"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "inspection"
+          },
           {
             "examined": "mass"
           },
@@ -1065,99 +2678,350 @@
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "r-inv-workup",
+      "domain": "investigations",
+      "weight": 1,
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "查看阴囊超声、血清肿瘤标志物和分期CT",
+        "en": "Read the scrotal ultrasound, the serum tumour markers and the staging CT"
       },
-      "weight": 3,
-      "met": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "rubric-4",
-      "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "weight": 3,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "read": "ultrasound"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "markers"
+          },
+          {
+            "read": "ct"
           }
         ]
+      }
+    },
+    {
+      "id": "r-inv-mri",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "因肿块来源不清而申请阴囊MRI",
+        "en": "Requested a scrotal MRI because the origin of the mass was unclear"
+      },
+      "met": {
+        "ordered": "mri"
+      }
+    },
+    {
+      "id": "r-dx-origin",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "第一次作答即正确判断：来源不明的实性肿块须按可能恶性处理",
+        "en": "Judged at the first attempt that a solid mass of uncertain origin must be managed as possibly malignant"
+      },
+      "met": {
+        "decidedFirstTry": "origin"
+      }
+    },
+    {
+      "id": "r-plan",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "第一次作答即选对术前方案（补齐标志物、必要时MRI、经腹股沟探查+快速冰冻）",
+        "en": "Chose the pre-operative plan correctly at the first attempt (complete markers, MRI if needed, inguinal exploration with frozen section)"
+      },
+      "met": {
+        "decidedFirstTry": "plan"
+      }
+    },
+    {
+      "id": "r-op-choice",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "选择经腹股沟探查+快速冰冻，而不是直接根治性切除",
+        "en": "Chose inguinal exploration with frozen section rather than an immediate radical orchidectomy"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "inguinal-exploration-fs"
+          },
+          {
+            "not": {
+              "intervened": "radical-orchidectomy"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-fertility",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "术前讨论精子冷冻保存，且第一次作答即答对术前谈话内容",
+        "en": "Discussed sperm banking before surgery and chose the counselling content correctly at the first attempt"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "sperm-banking"
+          },
+          {
+            "decidedFirstTry": "consent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-safety",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "没有经阴囊活检、没有“观察等待”，也没有对良性病变用激素或化疗",
+        "en": "No trans-scrotal biopsy, no watch-and-wait, and no steroids or chemotherapy for a benign lesion"
+      },
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "trans-scrotal-biopsy"
+            },
+            {
+              "intervened": "observation"
+            },
+            {
+              "intervened": "steroids-igg4"
+            },
+            {
+              "intervened": "adjuvant-chemo"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "r-path",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "第一次作答即正确解读病理（良性纤维性假瘤，IgG4比值不支持IgG4相关疾病）",
+        "en": "Interpreted the pathology correctly at the first attempt (benign fibrous pseudotumour; the IgG4 ratio does not support IgG4-related disease)"
+      },
+      "met": {
+        "decidedFirstTry": "pathology"
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 2,
+      "text": {
+        "zh-CN": "沟通：说明不确定性、手术方式与可能切除睾丸、精子冷冻，以及术后的病理结果和随访",
+        "en": "Communication: explained the uncertainty, the operation and the possible loss of the testis, sperm banking, and afterwards the pathology and follow-up"
+      },
+      "judgeGuidance": {
+        "zh-CN": "表现良好：手术前用通俗的话说明肿块是实性的、在长大，目前还不能排除癌，标志物也不全；讲清经腹股沟手术和术中冰冻、睾丸可能被切除，并在手术前提出精子冷冻保存；确认他听懂了、请他提问，不作虚假的保证。术后说明肿块是良性的，IgG4的发现意味着什么、不意味着什么，以及随访安排。全程尊重隐私，查体时有陪检者。",
+        "en": "Good performance: before surgery, explains in plain words that the lump is solid and growing, that cancer cannot yet be ruled out and that the markers are incomplete; explains the groin operation with a frozen section, that the testis may have to be removed, and offers sperm banking before the operation; checks what he has understood and invites questions, without false reassurance. After surgery, explains that the lump was benign, what the IgG4 finding does and does not mean, and the follow-up plan. Respects his privacy throughout and offers a chaperone for the examination."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "门诊护士 苏晴",
+        "en": "Clinic nurse Su Qing"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "交班：韩先生，40岁，今天门诊就诊，左侧阴囊肿物约11个月，近来增大。原文没有记录生命体征。后勤（被问到时才说）：阴囊超声要把超声推车推到诊室；抽血在床旁采样；增强CT和MRI要送他去影像科；手术在手术室；精子冷冻可转介生殖中心；查体可安排陪检者。不知道诊断，不解读检查结果。",
+        "en": "Handover: Mr Han, 40, in clinic today with a lump in the left side of his scrotum for about 11 months, now getting bigger. The source records no vital signs. Logistics (only when asked): the ultrasound cart is wheeled to the clinic room for the scrotal scan; bloods are taken at the bedside; contrast CT and MRI mean taking him to radiology; surgery is in theatre; sperm banking is by referral to the reproductive medicine centre; a chaperone can be arranged for the examination. Does not know the diagnosis and does not interpret results."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "泌尿外科主任医师 孟医生",
+        "en": "Dr Meng, consultant urologist"
+      },
+      "knowledge": {
+        "zh-CN": "学员看过结果后可以讲解：超声怎样判断阴囊肿块在睾丸内还是睾丸旁，以及查体与影像为什么可能不一致；EAU 2026的要点——双侧睾丸超声，睾丸切除前检测AFP、hCG、LDH，避免经阴囊入路，性质不明、标志物阴性的肿块可在快速冰冻配合下保留睾丸，治疗前讨论精子冷冻保存。只讨论学员已经看过的结果，不直接给出答案。",
+        "en": "Once the learner has read the results, can explain how ultrasound tells an intratesticular from a paratesticular scrotal mass and why examination and imaging may disagree; and the EAU 2026 essentials — bilateral testicular ultrasound, AFP, hCG and LDH before orchidectomy, no scrotal approach, testis-sparing surgery with frozen section for an indeterminate marker-negative mass, sperm banking discussed before treatment. Discusses only results the learner has read and never gives the answer outright."
       },
       "interprets": [
         "ultrasound",
-        "ct",
         "markers",
-        "pathology",
-        "followup"
+        "hormones",
+        "ct",
+        "mri"
       ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "病理科医生 闵医生",
+        "en": "Dr Min, pathologist"
+      },
+      "knowledge": {
+        "zh-CN": "学员看过病理后可以讲解：Calretinin/Ber-EP4用于区分间皮细胞与腺上皮，而不是区分良恶性；B、T淋巴细胞混合提示反应性浸润；IgG4相关疾病的病理诊断以形态为先，IgG4计数需结合IgG4/IgG比值（2012年波士顿共识）；“倾向”一词的含义；快速冰冻的作用和局限。只讨论学员已经看过的结果，不直接给出答案。",
+        "en": "Once the learner has read the pathology, can explain that calretinin and Ber-EP4 separate mesothelial cells from glandular epithelium, not benign from malignant; that a mixture of B and T lymphocytes suggests a reactive infiltrate; that IgG4-related disease is diagnosed on morphology first, with IgG4 counts read against the IgG4/IgG ratio (Boston consensus 2012); what “favoured” means in a report; and what a frozen section can and cannot do. Discusses only results the learner has read and never gives the answer outright."
+      },
+      "interprets": [
+        "pathology",
+        "frozen-section"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师 包医生",
+        "en": "Dr Bao, attending"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教：这是历史病例，原报告的做法不等于今天的推荐。引导学员说出查体和超声为什么不一致、标志物能排除什么不能排除什么、为什么避免经阴囊入路、什么时候可以考虑保留睾丸手术，以及术前怎样谈生育。只讨论学员已经获得的资料，不直接给出答案。",
+        "en": "Socratic teaching: this is a historical case, and what the report's team did is not automatically today's recommendation. Draws out why the examination and the ultrasound disagree, what the markers can and cannot exclude, why a scrotal approach is avoided, when testis-sparing surgery can be considered, and how to discuss fertility before surgery. Discusses only what the learner has found and never gives the answer outright."
+      },
+      "interprets": [],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：保留还是切除睾丸",
+      "en": "Debrief: keep the testis or remove it?"
     },
     "conclusion": {
-      "zh-CN": "病理倾向纤维性假瘤；术前不确定性、缺失标志物和IgG4证据限制必须保留。",
-      "en": "Pathology favoured fibrous pseudotumour; preoperative uncertainty, missing markers and limits of the IgG4 evidence must remain explicit."
+      "zh-CN": "术后病理倾向良性睾丸旁纤维性假瘤（IgG4阳性细胞局部>50/HPF，但IgG4/IgG<20%）。原报告术前诊断为“左侧睾丸肿瘤，性质待定”，未记录阴囊MRI和术中快速冰冻，行左侧高位睾丸切除；作者事后认为这两项检查本可避免不必要的睾丸切除。按EAU 2026，对性质不明、标志物阴性的肿块，应补齐AFP、hCG和LDH，经腹股沟探查并送快速冰冻，良性则保留睾丸，并在术前讨论精子冷冻保存。",
+      "en": "The pathology favoured a benign paratesticular fibrous pseudotumour (IgG4-positive cells focally > 50/HPF, but IgG4/IgG < 20 %). The report's pre-operative diagnosis was “left testicular tumour, nature undetermined”; no scrotal MRI or intra-operative frozen section is recorded, and a left high orchidectomy was done — the authors concluded in hindsight that both tests could have avoided removing the testis. Under EAU 2026, an indeterminate, marker-negative mass calls for complete AFP, hCG and LDH, an inguinal exploration with frozen section and testis preservation if benign, with sperm banking discussed before surgery."
     },
     "keyReasoning": [
       {
-        "zh-CN": "超声、CT与触诊的定位不完全一致，应核对原始影像。",
-        "en": "Ultrasound, CT and palpation do not localise the lesion identically and require correlation."
+        "zh-CN": "查体（左睾丸增大、与附睾分不清）与超声（与睾丸分界尚清）对来源的判断不一致：这种不一致本身就是需要MRI或术中冰冻来回答的问题。",
+        "en": "Examination (an enlarged testis inseparable from the epididymis) and ultrasound (masses fairly distinct from the testis) disagree about the origin: that disagreement is itself the question an MRI or a frozen section should answer."
       },
       {
-        "zh-CN": "正常或未升高标志物不能作为恶性肿瘤排除试验。",
-        "en": "Normal or non-elevated markers are not a rule-out test for malignancy."
+        "zh-CN": "β-hCG正常、PSA未升高不能排除睾丸生殖细胞肿瘤；本例AFP和LDH没有单独结果，而PSA与睾丸肿瘤无关。",
+        "en": "A normal β-hCG and an unraised PSA do not exclude a testicular germ-cell tumour; here AFP and LDH have no separate result, and PSA has nothing to do with testicular tumours."
+      },
+      {
+        "zh-CN": "疑有睾丸肿瘤时，组织只能经腹股沟获取（腹股沟探查±术中冰冻），不能经阴囊穿刺或切开活检。",
+        "en": "When a testicular tumour is possible, tissue is obtained only through the groin (inguinal exploration ± frozen section), never by trans-scrotal needle or open biopsy."
+      },
+      {
+        "zh-CN": "病理解读以形态为先：间皮细胞Calretinin（+）/Ber-EP4（−）说明的是细胞类型而不是良恶性；B、T淋巴细胞混合提示反应性；IgG4计数要结合比值看，本例比值<20%。",
+        "en": "Pathology is read morphology-first: calretinin-positive, Ber-EP4-negative mesothelial cells tell you the cell type, not benign versus malignant; mixed B and T lymphocytes suggest a reactive process; IgG4 counts are read against the ratio, which is < 20 % here."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是单个病例报告，不能证明某种术式的效果或普遍适用性。原报告的诊疗过程按事实呈现；决策、选项和评分是依据现行指南设计的教学内容。若当时送了快速冰冻会得到什么结果，原文无从得知。",
+      "en": "This is a single case report and cannot show that one operation works better or applies generally. The report's course is presented as fact; the decisions, options and scoring are teaching material built on current guidance. What a frozen section would have shown at the time cannot be known from the source."
     },
     "unknowns": [
       {
-        "zh-CN": "MRI/冰冻病理、AFP/LDH、激素参考区间、系统IgG4评估及长期功能结局。",
-        "en": "MRI/frozen section, AFP/LDH, hormone reference ranges, systemic IgG4 assessment and long-term functional outcome."
+        "zh-CN": "AFP、LDH的具体结果以及激素和β-hCG的参考范围",
+        "en": "The actual AFP and LDH results, and the reference ranges for the hormones and β-hCG"
+      },
+      {
+        "zh-CN": "对侧睾丸的查体和超声所见",
+        "en": "The examination and ultrasound findings of the other testis"
+      },
+      {
+        "zh-CN": "隐睾史、家族史、生育史与生育意愿",
+        "en": "Undescended testis, family history, children and wishes about children"
+      },
+      {
+        "zh-CN": "阴囊MRI与术中冰冻病理",
+        "en": "Scrotal MRI and intra-operative frozen section"
+      },
+      {
+        "zh-CN": "血清IgG4和其他器官评估",
+        "en": "Serum IgG4 and assessment of other organs"
+      },
+      {
+        "zh-CN": "术后恢复、随访、复发、睾酮和生育结局",
+        "en": "Post-operative recovery, follow-up, recurrence, testosterone and fertility outcome"
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "EAU睾丸癌指南2026（2026年3月有限更新）：怀疑睾丸肿瘤时行双侧睾丸高频超声（强推荐）；睾丸切除前检测血清AFP、hCG和LDH，术后复查。本例只有β-hCG和性激素数值，AFP和LDH缺失——这是历史做法与现行要求的差距。",
+        "en": "EAU Guidelines on Testicular Cancer 2026 (limited update, March 2026): bilateral high-frequency testicular ultrasound when a testicular tumour is suspected (strong recommendation); serum AFP, hCG and LDH before orchidectomy and repeated after it. This report has only β-hCG and the sex hormones — AFP and LDH are missing, a gap between historical practice and current requirements."
+      },
+      {
+        "zh-CN": "EAU 2026：经腹股沟根治性睾丸切除（精索在内环口切断）是睾丸癌的标准术式；对体积小或性质不明、标志物阴性且对侧睾丸正常的肿块，可行保留睾丸手术，但必须配合快速冰冻，并告知小肿块也可能是癌；超声不能确定时可考虑阴囊MRI。原报告没有做冰冻而行根治性切除，作者事后认为MRI和冰冻本可保住睾丸。",
+        "en": "EAU 2026: radical inguinal orchidectomy (cord divided at the internal ring) is the standard operation for testicular cancer; testis-sparing surgery may be offered for small or indeterminate, marker-negative masses with a normal contralateral testis — only with frozen section, and with the warning that even small masses can be cancer; scrotal MRI can be considered when ultrasound is inconclusive. The report's team did a radical orchidectomy without frozen section, and the authors concluded in hindsight that MRI and frozen section could have saved the testis."
+      },
+      {
+        "zh-CN": "EAU：怀疑睾丸肿瘤时避免经阴囊入路，因为它会增加局部复发；需要组织学时经腹股沟探查获取。",
+        "en": "EAU: avoid any scrotal approach when testicular cancer is suspected, because it increases local recurrence; when histology is needed, obtain it through an inguinal exploration."
+      },
+      {
+        "zh-CN": "EAU 2026（强推荐）：开始睾丸癌任何治疗前，与所有男性讨论精子冷冻保存。原报告没有记录他的生育情况，也没有记录这一步。",
+        "en": "EAU 2026 (strong recommendation): discuss sperm banking with every man before any treatment for testicular cancer starts. The report records neither his fertility situation nor this step."
+      },
+      {
+        "zh-CN": "IgG4相关疾病的病理诊断以特征性形态（致密淋巴浆细胞浸润、席纹状纤维化、闭塞性静脉炎）为先，IgG4计数和IgG4/IgG比值为辅（2012年波士顿共识；常用比值界值>40%）；2019年ACR/EULAR标准是研究用的分类标准，不用于诊断单个病灶。本例比值<20%，与原文讨论中“可能为IgG4介导”的推测不符。",
+        "en": "IgG4-related disease is diagnosed pathologically on the characteristic morphology first (a dense lymphoplasmacytic infiltrate, storiform fibrosis, obliterative phlebitis), with IgG4 counts and the IgG4/IgG ratio secondary (Boston consensus 2012; usual ratio threshold > 40 %); the 2019 ACR/EULAR criteria classify patients for research and do not diagnose a single lesion. Here the ratio was < 20 %, which does not fit the source discussion's suggestion of an IgG4-mediated process."
+      }
+    ],
     "references": [
-      "葉蔭霆; 陳泰業; 張錦標. 成人睾丸纖維性假瘤1例. 鏡湖醫學, 2025. DOI: 10.12408/j.issn2223-4462.2025.01.020",
-      "https://rs.yiigle.com/cmaid/1551893",
-      "EAU Guidelines on Testicular Cancer. Diagnostic evaluation. https://uroweb.org/guidelines/testicular-cancer/chapter/diagnostic-evaluation"
+      "葉蔭霆, 陳泰業, 張錦標. 成人睾丸纖維性假瘤1例. 鏡湖醫學. 2025;25(1):66-67. doi:10.12408/j.issn2223-4462.2025.01.020. Available from: https://rs.yiigle.com/cmaid/1551893",
+      "European Association of Urology. EAU Guidelines on Testicular Cancer. Arnhem: EAU Guidelines Office; 2026 (limited text update March 2026). Available from: https://uroweb.org/guidelines/testicular-cancer",
+      "Deshpande V, Zen Y, Chan JK, et al. Consensus statement on the pathology of IgG4-related disease. Mod Pathol. 2012;25(9):1181-1192. doi:10.1038/modpathol.2012.72",
+      "Wallace ZS, Naden RP, Chari S, et al. The 2019 American College of Rheumatology/European League Against Rheumatism classification criteria for IgG4-related disease. Arthritis Rheumatol. 2020;72(1):7-19. doi:10.1002/art.41120",
+      "Zhang Z, Yang J, Li M, et al. Paratesticular fibrous pseudotumor: a report of five cases and literature review. Front Med. 2014;8(4):484-488. doi:10.1007/s11684-014-0325-3"
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "MRI/冰冻病理、AFP/LDH、激素参考区间、系统IgG4评估及长期功能结局。",
-      "en": "MRI/frozen section, AFP/LDH, hormone reference ranges, systemic IgG4 assessment and long-term functional outcome."
+      "zh-CN": "AFP与LDH：原文只写“肿瘤指标如PSA等未发现异常升高”，没有单独结果；激素与β-hCG也未给参考范围。",
+      "en": "AFP and LDH: the source says only that “tumour markers such as PSA” were not raised, with no separate results; no reference ranges are given for the hormones or β-hCG."
+    },
+    {
+      "zh-CN": "对侧（右侧）睾丸：查体与超声均未描述；透光试验、腹部、锁骨上淋巴结和乳腺查体也未记录。",
+      "en": "The other (right) testis: described neither on examination nor on ultrasound; transillumination and the abdominal, supraclavicular-node and breast examinations are not recorded."
+    },
+    {
+      "zh-CN": "隐睾史、肿瘤家族史、生育史与生育意愿、其他既往病史、用药、过敏、吸烟饮酒、职业和他的顾虑：原文未记录。",
+      "en": "Undescended testis, family history of cancer, children and wishes about children, other past illnesses, medicines, allergies, smoking, alcohol, occupation and his concerns: not recorded."
+    },
+    {
+      "zh-CN": "术前阴囊MRI和术中快速冰冻病理：原文均未记录。",
+      "en": "A pre-operative scrotal MRI and an intra-operative frozen section: neither is recorded."
+    },
+    {
+      "zh-CN": "血清IgG4、其他器官评估，以及病理是否见席纹状纤维化或闭塞性静脉炎：原文未记录。",
+      "en": "Serum IgG4, assessment of other organs, and whether the pathology showed storiform fibrosis or obliterative phlebitis: not recorded."
+    },
+    {
+      "zh-CN": "术后恢复、随访时长、复发、睾酮与生育结局：原文未记录。",
+      "en": "Post-operative recovery, length of follow-up, recurrence, testosterone and fertility outcome: not recorded."
+    },
+    {
+      "zh-CN": "原文矛盾①：讨论称术前超声结合血清标志物“排除了睾丸肿瘤这一诊断”，而术前诊断为“左侧睾丸肿瘤，性质待定”，并行高位睾丸切除（两处原文如此）。",
+      "en": "Source contradiction 1: the discussion says pre-operative ultrasound with serum markers “excluded the diagnosis of testicular tumour”, yet the pre-operative diagnosis was “left testicular tumour, nature undetermined” and a high orchidectomy was done (both as printed)."
+    },
+    {
+      "zh-CN": "原文矛盾②：引言称本病“主要来源于睾丸实质，很少在附睾和精索生长”，讨论又称约2/3发生于睾丸鞘膜、10%发生于附睾；题目把它称为“睾丸”病变，而本例病理示周围睾丸、附睾及精索未见明显病变（原文如此）。",
+      "en": "Source contradiction 2: the introduction says the disease “arises mainly from the testicular parenchyma, rarely the epididymis and cord”, while the discussion says about two-thirds arise in the tunica vaginalis and 10 % in the epididymis; the title calls it a “testicular” lesion, yet this patient's pathology shows no obvious lesion in the surrounding testis, epididymis or cord (as printed)."
+    },
+    {
+      "zh-CN": "原文差异③：超声测得约7.0 cm×3.6 cm，CT测得较大者约4.1 cm×4.3 cm×5.4 cm（两处原文如此）。",
+      "en": "Source discrepancy 3: ultrasound measured about 7.0 cm × 3.6 cm and CT about 4.1 cm × 4.3 cm × 5.4 cm for the larger mass (both as printed)."
+    },
+    {
+      "zh-CN": "原文差异④：讨论推测本病可能是IgG4介导的疾病，而本例IgG4/IgG比例<20%（原文如此）。",
+      "en": "Source discrepancy 4: the discussion suggests the disease may be IgG4-mediated, while this patient's IgG4/IgG ratio was < 20 % (as printed)."
     }
   ],
   "assets": [
@@ -1166,12 +3030,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1551893/fig01.png",
       "title": {
-        "zh-CN": "原报告：阴囊超声",
-        "en": "Source: scrotal ultrasound"
+        "zh-CN": "原报告图1：阴囊超声（3幅）",
+        "en": "Source Fig. 1: scrotal ultrasound (three panels)"
       },
       "credit": {
-        "zh-CN": "原报告图，葉蔭霆; 陳泰業; 張錦標，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图，葉蔭霆、陳泰業、張錦標，2025。版权归原权利人。",
+        "en": "Original report figure (Ye, Chen, Zhang, 2025). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1182,12 +3046,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1551893/fig02.png",
       "title": {
-        "zh-CN": "原报告：手术切除标本",
-        "en": "Source: resection specimen"
+        "zh-CN": "原报告图2：切除标本外观及纵切面",
+        "en": "Source Fig. 2: the resected specimen and its longitudinal section"
       },
       "credit": {
-        "zh-CN": "原报告图，葉蔭霆; 陳泰業; 張錦標，2025。版权归原权利人。",
-        "en": "Original report figure, 2025. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图，葉蔭霆、陳泰業、張錦標，2025。版权归原权利人。",
+        "en": "Original report figure (Ye, Chen, Zhang, 2025). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1198,8 +3062,8 @@
       "kind": "pdf",
       "path": "/local-assets/cases/cmcr-1551893/source.pdf",
       "title": {
-        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
-        "en": "Source PDF (contains the outcome; for debrief review)"
+        "zh-CN": "原报告PDF（含诊断与结局，仅供复盘；第2页下半为同期其他文章的参考文献）",
+        "en": "Source PDF (contains the diagnosis and outcome; for debrief review; the lower half of page 2 carries another article's references)"
       },
       "credit": {
         "zh-CN": "原作者及出版方保留版权。",
@@ -1236,11 +3100,15 @@
     },
     {
       "type": "ask",
-      "itemId": "medications"
+      "itemId": "prior-care"
     },
     {
       "type": "ask",
-      "itemId": "urinary"
+      "itemId": "cryptorchidism"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
     },
     {
       "type": "ask",
@@ -1248,11 +3116,19 @@
     },
     {
       "type": "ask",
-      "itemId": "allergies"
+      "itemId": "urinary"
     },
     {
       "type": "ask",
-      "itemId": "family"
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
     },
     {
       "type": "ask",
@@ -1268,11 +3144,11 @@
     },
     {
       "type": "ask",
-      "itemId": "self-care"
+      "itemId": "expectations"
     },
     {
-      "type": "ask",
-      "itemId": "expectations"
+      "type": "examine",
+      "findingId": "inspection"
     },
     {
       "type": "examine",
@@ -1283,26 +3159,20 @@
       "findingId": "nodes"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
-    },
-    {
       "type": "order",
       "investigationId": "ultrasound"
     },
     {
       "type": "read",
       "investigationId": "ultrasound",
-      "phase": "workup"
+      "phase": "initial"
     },
     {
-      "type": "order",
-      "investigationId": "ct"
-    },
-    {
-      "type": "read",
-      "investigationId": "ct",
-      "phase": "workup"
+      "type": "answer",
+      "decisionId": "origin",
+      "optionIds": [
+        "possible-malignant"
+      ]
     },
     {
       "type": "order",
@@ -1311,7 +3181,76 @@
     {
       "type": "read",
       "investigationId": "markers",
-      "phase": "workup"
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "hormones"
+    },
+    {
+      "type": "read",
+      "investigationId": "hormones",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "mri",
+      "phase": "initial"
+    },
+    {
+      "type": "answer",
+      "decisionId": "plan",
+      "optionIds": [
+        "inguinal-fs"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "consent",
+      "optionIds": [
+        "may-lose-testis",
+        "sperm-banking",
+        "groin-incision"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "sperm-banking"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "inguinal-exploration-fs"
+    },
+    {
+      "type": "order",
+      "investigationId": "operative-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "operative-record",
+      "phase": "operation"
+    },
+    {
+      "type": "order",
+      "investigationId": "frozen-section"
+    },
+    {
+      "type": "read",
+      "investigationId": "frozen-section",
+      "phase": "operation"
     },
     {
       "type": "order",
@@ -1320,21 +3259,22 @@
     {
       "type": "read",
       "investigationId": "pathology",
-      "phase": "workup"
+      "phase": "operation"
     },
     {
       "type": "answer",
-      "decisionId": "diagnosis",
+      "decisionId": "pathology",
       "optionIds": [
-        "supported"
+        "benign-fp"
       ]
     },
     {
-      "type": "answer",
-      "decisionId": "management",
-      "optionIds": [
-        "supported"
-      ]
+      "type": "intervene",
+      "interventionId": "follow-up-plan"
+    },
+    {
+      "type": "ask",
+      "itemId": "postop-status"
     },
     {
       "type": "order",
@@ -1356,115 +3296,283 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "什么时候发现肿物？",
+        "text": "这个包块是什么时候发现的？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "When was the mass first noticed?",
+        "text": "你是怎么摸到这个肿块的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "这个包有没有变大？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "最近是不是越长越大了？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "疼不疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "阴囊有没有坠胀的感觉？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "那里受过伤吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "以前得过睾丸炎或者附睾炎吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "小时候有没有隐睾？",
+        "locale": "zh-CN",
+        "expect": [
+          "cryptorchidism"
+        ]
+      },
+      {
+        "text": "你的睾丸小时候都降下来了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cryptorchidism"
+        ]
+      },
+      {
+        "text": "有孩子了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fertility"
+        ]
+      },
+      {
+        "text": "以后还想要小孩吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fertility"
+        ]
+      },
+      {
+        "text": "走路会不会受影响？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "之前去别的医院看过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "现在吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里有人得过肿瘤吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "小便正常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "urinary"
+        ]
+      },
+      {
+        "text": "抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "喝不喝酒？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "你是干什么工作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "occupation"
+        ]
+      },
+      {
+        "text": "你最担心的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "以前做过什么手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "做完手术感觉怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "postop-status"
+        ]
+      },
+      {
+        "text": "When did you first notice the lump?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "肿物后来怎样变化？",
-        "locale": "zh-CN",
+        "text": "How long have you had this swelling?",
+        "locale": "en",
         "expect": [
-          "progression"
+          "presentation"
         ]
       },
       {
-        "text": "How has the mass changed?",
+        "text": "Has it got any bigger?",
         "locale": "en",
         "expect": [
           "progression"
         ]
       },
       {
-        "text": "有疼痛或坠胀吗？",
-        "locale": "zh-CN",
+        "text": "Is it growing?",
+        "locale": "en",
         "expect": [
-          "pain"
+          "progression"
         ]
       },
       {
-        "text": "Is there pain or dragging discomfort?",
+        "text": "Does it hurt at all?",
         "locale": "en",
         "expect": [
           "pain"
         ]
       },
       {
-        "text": "以前阴囊受过伤或发炎吗？",
-        "locale": "zh-CN",
+        "text": "Any aching or heaviness down there?",
+        "locale": "en",
         "expect": [
-          "trauma"
+          "pain"
         ]
       },
       {
-        "text": "Was there scrotal injury or inflammation before?",
+        "text": "Have you ever had an injury to your testicles?",
         "locale": "en",
         "expect": [
           "trauma"
         ]
       },
       {
-        "text": "走路活动是否受影响？",
-        "locale": "zh-CN",
-        "expect": [
-          "function"
-        ]
-      },
-      {
-        "text": "Are walking and activities affected?",
+        "text": "Have you ever had orchitis or epididymitis?",
         "locale": "en",
         "expect": [
-          "function"
+          "trauma"
         ]
       },
       {
-        "text": "此前为肿物接受过治疗吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "medications"
-        ]
-      },
-      {
-        "text": "Was the mass treated before this visit?",
+        "text": "Did you have an undescended testicle as a child?",
         "locale": "en",
         "expect": [
-          "medications"
+          "cryptorchidism"
         ]
       },
       {
-        "text": "是否有排尿症状？",
-        "locale": "zh-CN",
+        "text": "Do you have any kids?",
+        "locale": "en",
         "expect": [
-          "urinary"
+          "fertility"
         ]
       },
       {
-        "text": "Were urinary symptoms recorded?",
+        "text": "Are you planning to start a family?",
+        "locale": "en",
+        "expect": [
+          "fertility"
+        ]
+      },
+      {
+        "text": "Any trouble with your waterworks?",
         "locale": "en",
         "expect": [
           "urinary"
         ]
       },
       {
-        "text": "生育计划及既往生育情况是否记录？",
-        "locale": "zh-CN",
+        "text": "Are you on any regular medication?",
+        "locale": "en",
         "expect": [
-          "fertility"
+          "medications"
         ]
       },
       {
-        "text": "Are fertility history and future plans recorded?",
+        "text": "Any allergies?",
         "locale": "en",
         "expect": [
-          "fertility"
+          "allergies"
+        ]
+      },
+      {
+        "text": "Does cancer run in your family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How are you recovering after the surgery?",
+        "locale": "en",
+        "expect": [
+          "postop-status"
         ]
       }
     ]
