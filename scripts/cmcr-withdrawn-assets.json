@@ -1,0 +1,29 @@
+{
+  "$comment": "CMCR source media that are never installed or shown because they identify a patient (docs/CMCR_CASES.md, Privacy). The installer refuses them and removes a copy an earlier version installed (matched by checksum); the collection test keeps them out of the cases.",
+  "withdrawn": [
+    {
+      "case": "cmcr-70005",
+      "file": "fig01.png",
+      "sha256": "c6f40570ce7cc956d8113749333a6e9dce0fc9f2a31455bc9ad6843057900a7f",
+      "reason": "The published groin CT shows the patient's name, an ID number, the hospital and the acquisition date and time."
+    },
+    {
+      "case": "cmcr-70005",
+      "file": "source.pdf",
+      "sha256": "dee93413023efdce80bb5c2cabb409c0444a8d68620eddf81d2319cd5d2d4aff",
+      "reason": "The source PDF reprints that CT figure."
+    },
+    {
+      "case": "cmcr-1074569",
+      "file": "fig01.png",
+      "sha256": "8be0678ea7a9ef32f62c37c6510b7a1a0ea7d66df56d796b041eef5b91341359",
+      "reason": "The published liver MRI composite carries identifying overlays."
+    },
+    {
+      "case": "cmcr-1074569",
+      "file": "source.pdf",
+      "sha256": "2ee732e4f7d44a34cd8245c1d07afaa66f182f97b48146b3b8d7679bb03ebfe2",
+      "reason": "The source PDF reprints that MRI composite."
+    }
+  ]
+}

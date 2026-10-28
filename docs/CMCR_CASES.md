@@ -23,7 +23,7 @@ These are **static, staged historical reviews**, not validated continuous physio
 
 The downloaded `selected-20` directory holds `<articleId>.json`, `<articleId>.txt`, `<articleId>.pdf`, and `media/<articleId>/<original filename>`. Its `manifest.json`, `drive-files.json` and `download-audit.json` preserve local source and integrity records. The source corpus has 57,571 parseable records; malformed JSONL lines 19,624 and 27,321 were excluded. Corpus SHA-256: `0c4ca86979fd5edb4f95fc1dd983087dde479255492b4edacf698050dce0a53c`.
 
-The download contains 20 PDFs, 24 figures and 4 table CSVs. The teaching app references 23 figures: the combined liver MRI in report 1074569 is omitted because it contains identifying fields and mixes pretreatment and post-treatment scans. The original download is preserved locally; its documented imaging findings remain in the case.
+The download contains 20 PDFs, 24 figures and 4 table CSVs. The teaching app references 22 figures and 18 PDFs: four files are withdrawn because they identify a patient (see Privacy below). The original download is preserved locally; the withdrawn images' findings remain in the cases as text.
 
 ```sh
 node scripts/install-cmcr-assets.mjs "E:/clinicalcraft-source/中华病例说/selected-20"
@@ -31,6 +31,20 @@ npm run dev
 ```
 
 The installer verifies PNG/PDF signatures and any authored checksums, preserves differing existing assets, and writes only to ignored `assets/local/cases/cmcr-<articleId>/`. It leaves a SHA-256 manifest in `assets/local/cmcr-20-manifest.json`. Original PDFs, figures, downloaded tables and full source text are **not distributed in Git**. Without local media, the authored report text remains playable; the image viewer shows a missing-asset placeholder.
+
+## 隐私 / Privacy
+
+- 病例文本使用化名，已去除医院、日历日期、证件号及可识别的职业细节；时间以相对时间表示（如“入院第3天”）。
+- 每张原图和 PDF 页面都检查过烧录的身份信息（姓名、证件号或病历号、医院、影像采集日期时间）。含此类信息的文件一律撤下：列入 `scripts/cmcr-withdrawn-assets.json`（附原因和校验和），安装脚本拒绝安装，并删除旧版本已安装的同一文件；病例集测试保证病例不再引用它。所见仍以文字保留，复盘时的参考文献（DOI、链接）指向出版方原文。
+
+Case text uses pseudonyms and omits hospitals, calendar dates, ID numbers and identifying occupational details; times are relative ("hospital day 3"). Every figure and PDF page was checked for burned-in identifiers (a name, an ID or record number, a hospital, an acquisition date and time). A file that shows one is withdrawn: it is listed in `scripts/cmcr-withdrawn-assets.json` with its reason and checksum, the installer refuses it and removes a copy an earlier version installed (only when the bytes match), and the collection test keeps it out of the cases. Its findings stay in the case as text; the debrief's reference (DOI, URL) points to the publisher's copy.
+
+| Case | Withdrawn | Why |
+|---|---|---|
+| cmcr-70005 | groin CT (fig01), source PDF | the CT shows the patient's name, an ID number, the hospital and the scan time; the PDF reprints it |
+| cmcr-1074569 | liver MRI composite (fig01), source PDF | identifying overlays; the PDF reprints it |
+
+Published figures may keep chart annotations — the 1074569 CEA curve's axis shows treatment dates — and the case's provenance note says so. Journal PDFs share pages with other articles: some include part of another article (1423434 p1, 33716 p2, 1653406 p79) or the journal's back-cover figure page with other articles' clinical images (1551890 p3, 1653409 p2), none with a direct identifier. They open only after the case is complete, and their titles say what else is on the pages.
 
 ## 来源对应 / Source map
 

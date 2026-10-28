@@ -40,8 +40,8 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。原报告的腹股沟CT图及原文PDF（转载该图）显示患者身份信息，出于隐私保护未纳入本病例；CT所见以文字保留。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown. The report’s groin CT figure, and the source PDF that reprints it, show patient identifiers and are withheld for privacy; the CT findings are kept as text."
     }
   },
   "disclaimer": {
@@ -709,9 +709,7 @@
             "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
             "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
           },
-          "figures": [
-            "fig01"
-          ],
+          "figures": [],
           "available": true
         }
       }
@@ -1245,22 +1243,6 @@
   ],
   "assets": [
     {
-      "id": "fig01",
-      "kind": "image",
-      "path": "/local-assets/cases/cmcr-70005/fig01.png",
-      "title": {
-        "zh-CN": "原报告：腹股沟CT",
-        "en": "Source: groin CT"
-      },
-      "credit": {
-        "zh-CN": "原报告图，孙静敏; 金丹群; 许愿愿; 郑丽云，2014。版权归原权利人。",
-        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
-      },
-      "license": "© original rights holders — local teaching use only",
-      "localOnly": true,
-      "sha256": "c6f40570ce7cc956d8113749333a6e9dce0fc9f2a31455bc9ad6843057900a7f"
-    },
-    {
       "id": "fig02",
       "kind": "image",
       "path": "/local-assets/cases/cmcr-70005/fig02.png",
@@ -1275,22 +1257,6 @@
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
       "sha256": "02c141f37ef5dda7dc831d5be33dea1bac136788d3bccd9c936f6802b6a4a31c"
-    },
-    {
-      "id": "source-pdf",
-      "kind": "pdf",
-      "path": "/local-assets/cases/cmcr-70005/source.pdf",
-      "title": {
-        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
-        "en": "Source PDF (contains the outcome; for debrief review)"
-      },
-      "credit": {
-        "zh-CN": "原作者及出版方保留版权。",
-        "en": "Copyright retained by the original authors and publisher."
-      },
-      "license": "© original rights holders — local teaching use only",
-      "localOnly": true,
-      "sha256": "dee93413023efdce80bb5c2cabb409c0444a8d68620eddf81d2319cd5d2d4aff"
     }
   ],
   "solution": [

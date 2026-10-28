@@ -17,6 +17,17 @@ describe("CMCR published-case collection", () => {
     expect(readdirSync(new URL("../cases/", import.meta.url)).filter((id) => id.startsWith("cmcr-")).sort()).toEqual(ids);
   });
 
+  it("never references media withdrawn because they identify a patient", () => {
+    const { withdrawn } = JSON.parse(readFileSync(new URL("../../../scripts/cmcr-withdrawn-assets.json", import.meta.url), "utf8")) as {
+      withdrawn: { case: string; file: string; sha256: string }[];
+    };
+    expect(withdrawn.length).toBeGreaterThan(0);
+    for (const w of withdrawn) {
+      const c = JSON.parse(readFileSync(new URL(`../cases/${w.case}/case.json`, import.meta.url), "utf8")) as { assets: { path: string; sha256?: string }[] };
+      expect(c.assets.filter((a) => a.path.endsWith(`/${w.file}`) || a.sha256 === w.sha256), `${w.case}/${w.file}`).toEqual([]);
+    }
+  });
+
   for (const id of ids) it(`${id}: grounded, staged and completable without original media`, () => {
     const parsed = parseCase(JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")));
     if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues));

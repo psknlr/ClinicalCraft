@@ -48,8 +48,8 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，病例文本中已去除医院、日历日期和职业身份细节；原文图表保留其原始标注（CEA曲线的横轴为治疗日期）。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。原文的肝脏MRI合图及转载该图的原文PDF含可识别信息，出于隐私保护未纳入。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed from the case text; published figures keep their original annotations (the CEA curve’s axis shows treatment dates). Dialogue, questions, scoring and safety options are educational design; missing data remain unknown. The report’s liver MRI composite, and the source PDF that reprints it, carry identifying overlays and are withheld for privacy."
     }
   },
   "disclaimer": {
@@ -1222,22 +1222,6 @@
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
       "sha256": "19e0e14b34ea285e3f9038b2233eceb2dbe147e084b533a48b735465620b8a5e"
-    },
-    {
-      "id": "source-pdf",
-      "kind": "pdf",
-      "path": "/local-assets/cases/cmcr-1074569/source.pdf",
-      "title": {
-        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
-        "en": "Source PDF (contains the outcome; for debrief review)"
-      },
-      "credit": {
-        "zh-CN": "原作者及出版方保留版权。",
-        "en": "Copyright retained by the original authors and publisher."
-      },
-      "license": "© original rights holders — local teaching use only",
-      "localOnly": true,
-      "sha256": "2ee732e4f7d44a34cd8245c1d07afaa66f182f97b48146b3b8d7679bb03ebfe2"
     }
   ],
   "solution": [
