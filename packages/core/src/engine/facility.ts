@@ -5,7 +5,7 @@
  * Coordinates: 1 unit = 1 m, rect `x`/`z` are centres, equipment origin is
  * the footprint centre on the floor, `rot` in degrees about +Y.
  */
-import type { CaseDefinition } from "../schema/case.js";
+import type { CaseDefinition, Investigation } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
 import { DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
@@ -71,6 +71,15 @@ export function facilityCapabilities(f: FacilityDefinition, catalogs: EquipmentC
   return caps;
 }
 
+/**
+ * The capabilities an investigation needs of a facility: its `requires` — except a record review
+ * (`performedAt: "records"`, an existing report retrieved from the chart), which needs none: it is read at a
+ * records terminal or in the notes at the bedside, never with a device (docs/CASE_AUTHORING.md §5).
+ */
+export function investigationNeeds(inv: Pick<Investigation, "requires" | "performedAt">): string[] {
+  return inv.performedAt === "records" ? [] : [...(inv.requires ?? [])];
+}
+
 /** A case item a facility cannot provide (its `requires` capabilities are missing there). */
 export interface CapabilityGap {
   kind: "exam" | "investigation" | "intervention";
@@ -127,7 +136,7 @@ export function caseCapabilityGaps(c: CaseDefinition, f: FacilityDefinition, cat
     }
   };
   consider("exam", c.exam);
-  consider("investigation", c.investigations);
+  consider("investigation", c.investigations.map((i) => ({ id: i.id, requires: investigationNeeds(i) })));
   consider("intervention", c.interventions);
   if (missingOf.size === 0) return [];
   const unavailable = new Set(missingOf.keys());

@@ -176,10 +176,20 @@ export interface AssessmentReport {
   investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
   safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number };
-  /** `met: null` = transcript-judged item (needs the examiner agent). */
-  rubric: { id: string; domain: string; weight: number; met: boolean | null }[];
-  /** Deterministic rubric items only. */
+  /**
+   * `met: null` = transcript-judged item (needs the examiner agent). `scored: false` (present only then): the
+   * item's `scoredWhen` does not hold, so it counts neither as earned nor as possible. `critical: true`
+   * (present only then): a critical item.
+   */
+  rubric: { id: string; domain: string; weight: number; met: boolean | null; scored?: false; critical?: true }[];
+  /** Deterministic rubric items only, scored ones only (`scoredWhen`). */
   score: { earned: number; possible: number; percent: number };
+  /**
+   * Critical deterministic items missed — scored and not met — in rubric order. Present when the case marks
+   * any item `critical` (empty: none missed); every debrief shows them prominently. Judged critical items are
+   * missed when the examiner judges them unmet.
+   */
+  criticalMissed?: string[];
 }
 
 /* ------------------------------------------------------------------ */
