@@ -141,6 +141,13 @@
         "en": "Only state history facts that have been revealed, in your own words, without changing numbers or times. The lump has never hurt or dragged and you walk and work as normal, which is why you didn't see anyone until it kept growing. An undescended testicle, family illnesses, children and plans for children, other illnesses and operations, medicines, allergies, smoking, drinking and your job are not recorded — if asked, say plainly that they are not recorded. If the doctor mentions a tumour or removing the testicle, you may ask what that would mean for you, but do not invent worries, a family situation or any other fact. During the operation phase you are in theatre and cannot talk."
       }
     },
+    "nonVerbalWhen": {
+      "phase": "operation"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "他正在手术室接受手术，现在不能交谈；术后门诊复诊时再和他沟通。",
+      "en": "He is in theatre for his operation and cannot talk now; you can speak with him at the post-operative clinic visit."
+    },
     "appearance": {
       "stature": "adult",
       "build": "average",
@@ -1528,6 +1535,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1669,6 +1677,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2800,7 +2809,33 @@
             }
           ]
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "plan"
+          },
+          {
+            "intervened": "inguinal-exploration-fs"
+          },
+          {
+            "intervened": "radical-orchidectomy"
+          },
+          {
+            "intervened": "trans-scrotal-biopsy"
+          },
+          {
+            "intervened": "observation"
+          },
+          {
+            "intervened": "steroids-igg4"
+          },
+          {
+            "intervened": "adjuvant-chemo"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-path",

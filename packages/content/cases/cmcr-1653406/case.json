@@ -148,6 +148,20 @@
         "en": "Awake on the operating table, nervous but cooperative. After being positioned for the spinal she suddenly feels awful in her chest and tummy and vomits; from then on she speaks in short, frightened phrases. From the induction of general anaesthesia until extubation on postoperative day 2 she cannot speak. In the last phase (postoperative day 6) she is tired but calm. State only the history that has been asked about, in your own words, without adding or changing numbers, times or drug names; say plainly when something is not recorded."
       }
     },
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "collapse"
+        },
+        {
+          "phase": "icu"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "气管插管、机械通气中（手术室内为全身麻醉）",
+      "en": "intubated and ventilated (under general anaesthesia in theatre)"
+    },
     "appearance": {
       "stature": "adult",
       "gown": true,
@@ -2095,6 +2109,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "alternativeTo": [],
@@ -2149,6 +2164,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "alternativeTo": [],
@@ -4131,7 +4147,8 @@
       },
       "met": {
         "intervened": "call-met"
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-first",
@@ -4266,7 +4283,36 @@
             }
           }
         ]
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "management"
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "intervened": "noradrenaline"
+          },
+          {
+            "intervened": "adrenaline"
+          },
+          {
+            "intervened": "dopamine"
+          },
+          {
+            "intervened": "dobutamine"
+          },
+          {
+            "intervened": "rapid-fluids"
+          },
+          {
+            "intervened": "heparin"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-handover",

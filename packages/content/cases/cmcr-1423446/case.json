@@ -140,6 +140,13 @@
         "en": "Only state facts that have been asked about, in your own words, without changing doses, days or drug names. At the bedside call: speak quietly and slowly, a few words at a time, and do not give a full history. After the first treatment: speak normally again. Do not discuss results, examination findings or diagnoses."
       }
     },
+    "nonVerbalWhen": {
+      "phase": "reaction"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "她大汗、意识淡漠，说话含糊，此刻不能可靠地回答问题。",
+      "en": "She is sweating and apathetic, her speech is unclear, and she cannot answer questions reliably right now."
+    },
     "appearance": {
       "stature": "adult",
       "gown": true,
@@ -1591,7 +1598,7 @@
                 "zh-CN": "血糖",
                 "en": "Glucose"
               },
-              "value": 3.0,
+              "value": 3,
               "unit": "mmol/L",
               "flag": "L"
             }
@@ -1696,7 +1703,7 @@
                 "zh-CN": "葡萄糖（空腹）",
                 "en": "Glucose (fasting)"
               },
-              "value": 6.0,
+              "value": 6,
               "unit": "mmol/L"
             },
             {
@@ -1933,6 +1940,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1992,6 +2000,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -3378,6 +3387,9 @@
         "not": {
           "intervened": "levofloxacin-iv"
         }
+      },
+      "scoredWhen": {
+        "attempted": "abx-indication"
       }
     },
     {
@@ -3403,7 +3415,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-dx",
@@ -3448,6 +3461,22 @@
         "not": {
           "intervened": "oral-sugar"
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "iv-dextrose"
+          },
+          {
+            "intervened": "glucose-infusion"
+          },
+          {
+            "intervened": "glucagon-im"
+          },
+          {
+            "intervened": "oral-sugar"
+          }
+        ]
       }
     },
     {
@@ -3488,7 +3517,18 @@
         "not": {
           "intervened": "restart-levofloxacin"
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "after-recovery"
+          },
+          {
+            "intervened": "restart-levofloxacin"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-comm",

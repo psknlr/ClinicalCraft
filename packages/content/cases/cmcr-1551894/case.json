@@ -2356,6 +2356,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2401,6 +2402,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2450,6 +2452,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -3806,7 +3809,8 @@
             "intervened": "pharmacist-review"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-safety-stepwise",
@@ -3827,6 +3831,9 @@
             }
           }
         ]
+      },
+      "scoredWhen": {
+        "attempted": "dec-management"
       }
     },
     {

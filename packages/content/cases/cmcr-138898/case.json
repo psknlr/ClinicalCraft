@@ -165,6 +165,13 @@
         }
       }
     },
+    "nonVerbalWhen": {
+      "phase": "followup"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "原报告中，他当天病情持续恶化、氧合无法维持，已不能交谈。",
+      "en": "In the report he kept deteriorating that day and his oxygenation could not be maintained; he can no longer talk."
+    },
     "appearance": {
       "stature": "adult",
       "build": "slim",
@@ -1653,6 +1660,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1737,7 +1745,7 @@
                 "zh-CN": "直接胆红素",
                 "en": "Direct bilirubin"
               },
-              "value": 5.0,
+              "value": 5,
               "unit": "μmol/L",
               "flag": "N"
             },
@@ -1855,6 +1863,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1901,6 +1910,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1947,6 +1957,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1996,6 +2007,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2050,6 +2062,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2897,6 +2910,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -4234,7 +4248,8 @@
       },
       "met": {
         "decidedFirstTry": "next-step"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-inv-solid",
@@ -4355,7 +4370,11 @@
             }
           }
         ]
-      }
+      },
+      "scoredWhen": {
+        "attempted": "next-step"
+      },
+      "critical": true
     },
     {
       "id": "rb-comm",

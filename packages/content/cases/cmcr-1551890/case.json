@@ -163,6 +163,13 @@
         }
       }
     },
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "正在机械通气（接着呼吸机），无法说话",
+      "en": "on a ventilator (mechanical ventilation) and cannot speak"
+    },
     "appearance": {
       "skin": "#d8b597",
       "hair": "#8d877f",
@@ -1147,6 +1154,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "initial": {
@@ -1213,6 +1221,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "initial": {
@@ -1277,6 +1286,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "initial": {
@@ -1343,6 +1353,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "initial": {
@@ -1407,6 +1418,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "workup": {
@@ -1963,6 +1975,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "bridge": {
@@ -2039,6 +2052,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "followup": {
@@ -3354,7 +3368,33 @@
             }
           ]
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "support"
+          },
+          {
+            "intervened": "vasoactive"
+          },
+          {
+            "intervened": "iabp"
+          },
+          {
+            "intervened": "va-ecmo"
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "intervened": "repeat-lysis"
+          },
+          {
+            "intervened": "request-multivessel-pci"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "rb-heart-team",

@@ -1173,6 +1173,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "alternativeTo": [],
@@ -1227,6 +1228,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "alternativeTo": [],
@@ -1243,7 +1245,7 @@
                 "zh-CN": "双顶径",
                 "en": "Biparietal diameter"
               },
-              "value": 9.0,
+              "value": 9,
               "unit": "cm"
             },
             {
@@ -1339,6 +1341,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "alternativeTo": [],
@@ -1440,6 +1443,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "alternativeTo": [],
@@ -1506,6 +1510,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "alternativeTo": [],
@@ -1890,6 +1895,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "alternativeTo": [],
@@ -3021,7 +3027,27 @@
             }
           }
         ]
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "management"
+          },
+          {
+            "intervened": "emergency-cs"
+          },
+          {
+            "intervened": "reassure-home"
+          },
+          {
+            "intervened": "ecv"
+          },
+          {
+            "intervened": "induction"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-antid",
@@ -3052,6 +3078,16 @@
             "not": {
               "intervened": "anti-d"
             }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "anti-d"
+          },
+          {
+            "intervened": "anti-d"
           }
         ]
       }

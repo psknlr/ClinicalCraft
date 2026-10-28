@@ -77,10 +77,10 @@ Case-by-case content (spoiler-free titles; the diagnoses are in the source map b
 
 The cases run in the general hospital in in-world (embodied) mode, and the offline demonstration finishes each one at the clinical score (`exec --embodied --autopilot`). Content conventions:
 
-- **Record reviews read the chart.** A report that already exists when the learner arrives (another hospital's tests, an earlier admission, the course record) is `requires: ["records"]`: it is read at a records terminal, never by moving the patient, sampling or wheeling a device, and it carries no procedure risk. The framework's `performedAt: "records"` marks these explicitly.
+- **Record reviews read the chart.** A report that already exists when the learner arrives (another hospital's tests, an earlier admission, the course record) is `performedAt: "records"` with `requires: ["records"]`: it is read at a records terminal (or in the notes at the bedside), never by moving the patient, sampling or wheeling a device, and it carries no procedure risk.
 - **Tests the learner orders keep their devices** (CT, MRI, endoscopy move the patient; ICU films are bedside films); ICU, theatre and ward phases carry the patient's location.
-- **Patients who cannot speak** (ventilated, sedated, encephalopathic, an infant) are answered by their carer or companion; the framework's `patient.nonVerbalWhen` makes the patient's silence explicit.
-- **Harm-avoidance rubric items** are not earned by doing nothing: each one's condition includes the step at which the harm became possible (the framework's `rubric[].scoredWhen` states it explicitly).
+- **Patients who cannot speak** (ventilated, sedated, encephalopathic, an infant) carry `patient.nonVerbalWhen` with a reason: while it holds the patient never speaks — the carer or companion answers, or a narration says why nobody can.
+- **Harm-avoidance rubric items** count only once the harm was possible (`rubric[].scoredWhen`), so a learner who does nothing scores 0 in every case (the collection test checks it); items whose miss matters most are `critical` and are named first in the debrief.
 
 ## 本地原图与 PDF / Local media
 

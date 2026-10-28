@@ -166,6 +166,13 @@
         "answersHistory": true
       }
     },
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "患者谵妄、重度气促（呼吸47–57次/分），不能可靠叙述病史；由床旁陪同的儿子代述，或作诚实的旁白。",
+      "en": "The patient is delirious and severely breathless (respiratory rate 47–57/min) and cannot give a reliable history; his son at the bedside gives it, or it is narrated honestly."
+    },
     "appearance": {
       "stature": "adult",
       "gown": true,
@@ -1064,7 +1071,7 @@
                 "zh-CN": "BE（入院）",
                 "en": "BE (admission)"
               },
-              "value": 13.0,
+              "value": 13,
               "unit": "mmol/L",
               "refLow": -2,
               "refHigh": 2,
@@ -1420,6 +1427,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2358,7 +2366,18 @@
         "not": {
           "intervened": "tcm-decoction-aconite"
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "decided": "management"
+          },
+          {
+            "intervened": "niv-continue"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-comm",

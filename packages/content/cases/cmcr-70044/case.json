@@ -1277,6 +1277,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "admission": {
@@ -1320,6 +1321,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "admission": {
@@ -1423,6 +1425,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "admission": {
@@ -1572,6 +1575,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "followup": {
@@ -2919,7 +2923,8 @@
       },
       "met": {
         "decidedFirstTry": "diagnosis"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-adrenaline-choice",
@@ -2931,7 +2936,8 @@
       },
       "met": {
         "decidedFirstTry": "adrenaline"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-first-line",
@@ -2950,7 +2956,8 @@
             "intervened": "adrenaline-im"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-support",
@@ -3009,7 +3016,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-aftercare",

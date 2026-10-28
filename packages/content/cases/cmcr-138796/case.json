@@ -1597,6 +1597,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1677,6 +1678,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1767,6 +1769,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1849,6 +1852,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2426,6 +2430,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2512,6 +2517,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -3854,7 +3860,8 @@
             "phase": "admission"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-inv-workup",
@@ -4002,7 +4009,33 @@
             }
           ]
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "induction"
+          },
+          {
+            "intervened": "mp-pulse"
+          },
+          {
+            "intervened": "mp-40"
+          },
+          {
+            "intervened": "cyclophosphamide"
+          },
+          {
+            "intervened": "rituximab"
+          },
+          {
+            "intervened": "azathioprine"
+          },
+          {
+            "intervened": "defer-immunosuppression"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-comm",

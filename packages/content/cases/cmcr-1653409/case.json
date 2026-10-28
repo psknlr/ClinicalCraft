@@ -1345,6 +1345,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1391,6 +1392,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2447,7 +2449,30 @@
             }
           ]
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "pre-excision"
+          },
+          {
+            "intervened": "excision"
+          },
+          {
+            "intervened": "observe"
+          },
+          {
+            "intervened": "incisional-biopsy"
+          },
+          {
+            "intervened": "wide-excision"
+          },
+          {
+            "intervened": "adjuvant-rt"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-comm",

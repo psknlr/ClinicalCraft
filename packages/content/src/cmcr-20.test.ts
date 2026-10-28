@@ -1,7 +1,7 @@
 /** Content contract for the 20 source-grounded historical cases. */
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { availableDecisions, caseCapabilityGaps, createSession, parseCase, parseCatalog, parseFacility, reduce, verifyCase } from "@clinicalcraft/core";
+import { assess, availableDecisions, caseCapabilityGaps, createSession, parseCase, parseCatalog, parseFacility, reduce, verifyCase } from "@clinicalcraft/core";
 
 const ids = ["1551890", "33716", "859819", "1653413", "1551894", "138796", "1423446", "1423442", "1423434", "70044", "1653406", "1653403", "1653404", "1551887", "51617", "70005", "138898", "1074569", "1551893", "1653409"].map((id) => `cmcr-${id}`).sort();
 const hospital = parseFacility(JSON.parse(readFileSync(new URL("../facilities/general-hospital.json", import.meta.url), "utf8")));
@@ -116,11 +116,15 @@ describe("CMCR teaching depth and governance (docs/CASE_AUTHORING.md §9)", () =
     for (const h of c.history.filter((item) => item.required)) {
       expect(utterances.some((u) => u.expect.includes(h.id)), `no paraphrase for ${h.id}`).toBe(true);
     }
-    // A record review reads the chart: no device, no sampling, no procedure risk.
-    for (const i of c.investigations.filter((inv) => inv.requires.includes("records"))) {
+    // A record review reads the chart: no device, no sampling, no procedure risk — and says so (`performedAt`).
+    for (const i of c.investigations.filter((inv) => inv.requires.includes("records") || inv.performedAt === "records")) {
       expect(i.requires, i.id).toEqual(["records"]);
+      expect(i.performedAt, i.id).toBe("records");
       expect(i.risk, i.id).toBe("none");
     }
+    // Doing nothing earns nothing: harm-avoidance items count only once the harm was possible (`scoredWhen`).
+    const idle = assess(c, reduce(c, createSession(c), { type: "start" }).state);
+    expect(idle.score.earned, "a learner who does nothing").toBe(0);
     // The facilitator guide.
     const readme = readFileSync(new URL(`../cases/${id}/README.md`, import.meta.url), "utf8");
     for (const heading of ["Learning outcomes", "Source and adaptation", "References", "Changelog", "中文摘要"]) {

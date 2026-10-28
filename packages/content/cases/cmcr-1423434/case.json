@@ -1468,7 +1468,7 @@
                 "zh-CN": "国际标准化比值（INR）",
                 "en": "International normalised ratio (INR)"
               },
-              "value": 1.0,
+              "value": 1,
               "unit": "",
               "refText": {
                 "zh-CN": "原文未给参考范围",
@@ -1540,7 +1540,7 @@
                 "zh-CN": "凝血酶原时间（PT）",
                 "en": "Prothrombin time (PT)"
               },
-              "value": 60.0,
+              "value": 60,
               "unit": "s",
               "refText": {
                 "zh-CN": "原文未给参考范围",
@@ -1879,6 +1879,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "admission": {
@@ -1960,6 +1961,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "haematuria": {
@@ -2232,6 +2234,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "followup": {
@@ -3596,7 +3599,24 @@
         "not": {
           "intervened": "warfarin-continue"
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "coprescription"
+          },
+          {
+            "intervened": "amiodarone"
+          },
+          {
+            "intervened": "warfarin-reduce"
+          },
+          {
+            "intervened": "warfarin-continue"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "rb-digoxin",
@@ -3660,7 +3680,27 @@
             }
           ]
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "management"
+          },
+          {
+            "intervened": "hold-warfarin"
+          },
+          {
+            "intervened": "vitk-im"
+          },
+          {
+            "intervened": "vitk-iv"
+          },
+          {
+            "intervened": "pcc"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "rb-discharge",

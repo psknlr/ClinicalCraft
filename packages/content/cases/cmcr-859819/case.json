@@ -178,6 +178,13 @@
         "answersHistory": true
       }
     },
+    "nonVerbalWhen": {
+      "phase": "workup"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "转入重症监护后经气管插管、有创机械通气，无法说话；病史由床旁陪同的丈夫代述，或作诚实的旁白。",
+      "en": "After transfer to intensive care she is intubated and mechanically ventilated and cannot speak; the history is given by her husband at the bedside, or as an honest narration."
+    },
     "appearance": {
       "stature": "adult",
       "gown": true,
@@ -1247,6 +1254,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1307,6 +1315,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1353,6 +1362,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1402,6 +1412,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2541,7 +2552,18 @@
         "not": {
           "intervened": "recruitment"
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "decided": "ards-adjuncts"
+          },
+          {
+            "intervened": "oseltamivir"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-comm",

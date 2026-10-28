@@ -1385,8 +1385,8 @@
               },
               "value": 3.15,
               "unit": "g/L",
-              "refLow": 7.0,
-              "refHigh": 16.0,
+              "refLow": 7,
+              "refHigh": 16,
               "flag": "L"
             },
             {
@@ -1397,7 +1397,7 @@
               "value": "<0.1",
               "unit": "g/L",
               "refLow": 0.7,
-              "refHigh": 4.0,
+              "refHigh": 4,
               "flag": "L"
             },
             {
@@ -1427,8 +1427,8 @@
               },
               "value": 3.14,
               "unit": "g/L",
-              "refLow": 7.0,
-              "refHigh": 16.0,
+              "refLow": 7,
+              "refHigh": 16,
               "flag": "L"
             },
             {
@@ -1439,7 +1439,7 @@
               "value": "<0.1",
               "unit": "g/L",
               "refLow": 0.7,
-              "refHigh": 4.0,
+              "refHigh": 4,
               "flag": "L"
             }
           ],
@@ -1478,6 +1478,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1557,6 +1558,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1576,7 +1578,7 @@
                 "zh-CN": "B细胞绝对计数",
                 "en": "B cells (absolute)"
               },
-              "value": 6.0,
+              "value": 6,
               "unit": "cells/µL",
               "refLow": 90,
               "refHigh": 660,
@@ -1660,6 +1662,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1710,6 +1713,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2775,7 +2779,8 @@
       "weight": 3,
       "met": {
         "decidedFirstTry": "confirm"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-safety-longterm",
@@ -2787,7 +2792,8 @@
       "weight": 3,
       "met": {
         "decidedFirstTry": "long-term"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-safety-vaccine",
@@ -2801,7 +2807,11 @@
         "not": {
           "intervened": "live-vaccine"
         }
-      }
+      },
+      "scoredWhen": {
+        "attempted": "long-term"
+      },
+      "critical": true
     },
     {
       "id": "rb-outcome",

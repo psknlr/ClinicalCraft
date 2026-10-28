@@ -1407,6 +1407,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1497,6 +1498,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1958,6 +1960,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2049,6 +2052,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -3232,7 +3236,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-workup",
@@ -3294,7 +3299,8 @@
             "intervened": "book-surgery"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-no-deferral",
@@ -3308,6 +3314,19 @@
         "not": {
           "intervened": "defer-surgery"
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "surgery"
+          },
+          {
+            "intervened": "defer-surgery"
+          },
+          {
+            "intervened": "book-surgery"
+          }
+        ]
       }
     },
     {

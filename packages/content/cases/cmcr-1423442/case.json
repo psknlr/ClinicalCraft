@@ -2107,7 +2107,7 @@
                 "zh-CN": "α1微球蛋白",
                 "en": "α1-microglobulin"
               },
-              "value": 168.0,
+              "value": 168,
               "unit": "mg/L",
               "refLow": 0,
               "refHigh": 12.5,
@@ -2529,6 +2529,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2585,6 +2586,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2655,6 +2657,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2747,6 +2750,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -2801,6 +2805,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -4403,7 +4408,8 @@
             "phase": "admission"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-dx-phosphate",
@@ -4519,7 +4525,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-safety-bone",
@@ -4533,6 +4540,25 @@
         "not": {
           "intervened": "bisphosphonate"
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "metabolic"
+          },
+          {
+            "intervened": "phosphate"
+          },
+          {
+            "intervened": "calcitriol"
+          },
+          {
+            "intervened": "calcium-d3"
+          },
+          {
+            "intervened": "bisphosphonate"
+          }
+        ]
       }
     },
     {

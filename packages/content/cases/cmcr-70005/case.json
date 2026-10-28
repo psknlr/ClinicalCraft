@@ -168,6 +168,23 @@
         }
       }
     },
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "shock"
+        },
+        {
+          "phase": "picu"
+        },
+        {
+          "phase": "followup"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "入院第4天起：抽搐、意识丧失，随后在PICU机械通气，不能说话；病史由家长回答。",
+      "en": "From hospital day 4: a seizure with loss of consciousness, then mechanical ventilation in the PICU — he cannot speak, and his parent answers."
+    },
     "appearance": {
       "stature": "child",
       "gown": true,
@@ -1792,6 +1809,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "admission": {
@@ -2164,6 +2182,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "picu": {
@@ -2427,6 +2446,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "day3": {
@@ -2773,6 +2793,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "picu": {
@@ -2820,6 +2841,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "essential",
       "results": {
         "picu": {
@@ -2868,6 +2890,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "followup": {
@@ -2913,6 +2936,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "value": "useful",
       "results": {
         "followup": {
@@ -4488,7 +4512,8 @@
       },
       "met": {
         "decidedFirstTry": "shock"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-first-hour",
@@ -4513,7 +4538,8 @@
             "intervened": "transfer-picu"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-definitive",
@@ -4559,6 +4585,10 @@
             }
           }
         ]
+      },
+      "scoredWhen": {
+        "read": "culture",
+        "phase": "picu"
       }
     },
     {

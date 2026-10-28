@@ -157,6 +157,13 @@
         "answersHistory": true
       }
     },
+    "nonVerbalWhen": {
+      "phase": "followup"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "病程回看阶段：原报告记录她首诊后约6个月昏迷、约9–10个月意识差，并于末次入院第8天死亡；这一阶段回看的是病程记录，她已无法回答问题。",
+      "en": "Course review: the report records coma about 6 months after the first visit, poor consciousness at about 9–10 months and her death on day 8 of the last admission; this phase reviews that record, and she can no longer answer questions."
+    },
     "appearance": {
       "stature": "adult",
       "gown": false
@@ -1479,6 +1486,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1525,6 +1533,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1573,6 +1582,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "essential",
       "results": {
@@ -1626,6 +1636,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "neutral",
       "results": {
@@ -1730,6 +1741,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1783,6 +1795,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -1888,6 +1901,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -3075,7 +3089,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-mgmt-genetics",
@@ -3127,6 +3142,9 @@
             }
           }
         ]
+      },
+      "scoredWhen": {
+        "attempted": "dec-workup"
       }
     },
     {

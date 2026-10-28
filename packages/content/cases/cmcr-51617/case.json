@@ -155,6 +155,13 @@
         }
       }
     },
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "34日龄婴儿，不会说话；病史由家长回答。",
+      "en": "A 34-day-old infant cannot speak; her parent answers the history."
+    },
     "appearance": {
       "stature": "infant",
       "gown": true
@@ -2075,7 +2082,7 @@
                 "zh-CN": "左冠状动脉内径",
                 "en": "Left coronary artery diameter"
               },
-              "value": 3.0,
+              "value": 3,
               "unit": "mm"
             },
             {
@@ -2143,6 +2150,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -2193,6 +2201,7 @@
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
@@ -3381,7 +3390,8 @@
             "intervened": "ivig"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-mgmt-acute",
@@ -3419,7 +3429,8 @@
       "weight": 3,
       "met": {
         "decidedFirstTry": "long-term"
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-outcome",
