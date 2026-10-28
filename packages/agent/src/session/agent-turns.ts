@@ -7,7 +7,7 @@
  * else — and when a model call fails or refuses with nothing said — its deterministic offline responder.
  * Also the autopilot's host: the clinician driving the case through the same tool path.
  */
-import { assess } from "@clinicalcraft/core";
+import { assess, patientNonVerbal } from "@clinicalcraft/core";
 import { attendingOffline, consultantOffline, examinerOffline, nurseOffline } from "../agents/offline.js";
 import { agentKind, buildSystemSections, npcDisplayName, patientLocation } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
@@ -120,7 +120,10 @@ export class AgentTurns {
       return { status: "end_turn", text: "", grounded: [] };
     }
     let speaker: "patient" | "companion" = target;
-    if (speaker === "patient" && utterance.trim() && companion?.answersHistory) {
+    if (speaker === "patient" && utterance.trim() && companion && patientNonVerbal(c, k.state)) {
+      // The patient cannot speak (`patient.nonVerbalWhen`): the companion answers, whatever `answersHistory` says.
+      speaker = "companion";
+    } else if (speaker === "patient" && utterance.trim() && companion?.answersHistory) {
       // The companion answers history — except items authored as the patient's own words (`speaker: "patient"`).
       const selected = selectFacts(c, k.state, utterance, k.locale).selected;
       const own = selected.length > 0 && selected.every((id) => c.history.find((h) => h.id === id)?.speaker === "patient");
@@ -187,6 +190,13 @@ export class AgentTurns {
       if (res.diagnostics?.length) k.recorder?.record("diagnostic", { agent: speaker, source: "grounding", detail: res.diagnostics });
       if (res.aborted) return { status: "interrupted", text: "", grounded: [] };
       if (res.error) return { status: "error", text: "", grounded: [], error: res.error };
+      if (res.narrated) {
+        // A narration (the patient cannot speak, or an aside): the narrator's line — never streamed as the
+        // patient's words and never kept in their voice history; the examiner's dialogue has it as narration.
+        k.emit(id, { type: "agent_message", turnId, agent: speaker, speaker: res.speakerName, text: res.text, grounded: [], grounding: "narrated", nonverbal: null });
+        k.conversations.addDialogue({ who: speaker, speaker: res.speakerName, text: res.text });
+        return { status: "end_turn", text: res.text, grounded: [] };
+      }
       k.conversations.append(speaker, res.messages);
       if (res.text) {
         k.emit(id, { type: "agent_message_delta", turnId, agent: speaker, delta: res.text });

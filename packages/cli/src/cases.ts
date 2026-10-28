@@ -6,7 +6,9 @@ import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import {
   caseCapabilityGaps,
+  caseTestUtterances,
   checkCaseIntegrity,
+  checkContentStandard,
   distinctHistoryHits,
   hasHistoryTwins,
   historyTwin,
@@ -21,10 +23,10 @@ import {
   type MatchHit,
 } from "@clinicalcraft/core";
 import { buildCaseIndex, builtinContentDir, findProjectRoot, loadContent, type CaseIndexIssue, type LoadedContent } from "@clinicalcraft/agent/node";
-import { reviewStatusLine, sanitizeTerminal, table } from "@clinicalcraft/agent";
+import { caseSource, citesSource, reviewStatusLine, sanitizeTerminal, table, withoutSource } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
-import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, settingLabel, specialtiesLabel, stars } from "./labels.js";
+import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, reviewTag, settingLabel, specialtiesLabel, stars } from "./labels.js";
 import { sortedCases } from "./picker.js";
 import { caseTemplate, readmeTemplate } from "./scaffold.js";
 
@@ -35,23 +37,8 @@ export const UTTERANCE_SELECT_RELATIVE = 0.25;
 /** …and at most this many. */
 export const UTTERANCE_MAX_SELECTED = 3;
 
-interface TestUtterance {
-  text: string;
-  locale: string;
-  expect: string[];
-  /** Further ids the pipeline may select with the expected ones without a warning. */
-  alsoOk?: string[];
-}
-
-/** Read `extensions.testUtterances` defensively. */
-export function testUtterances(c: CaseDefinition): TestUtterance[] | null {
-  const raw = (c.extensions as Record<string, unknown>).testUtterances;
-  if (!Array.isArray(raw)) return null;
-  return raw.filter(
-    (u): u is TestUtterance =>
-      !!u && typeof u === "object" && typeof (u as TestUtterance).text === "string" && typeof (u as TestUtterance).locale === "string" && Array.isArray((u as TestUtterance).expect),
-  );
-}
+/** Read `extensions.testUtterances` defensively (core `caseTestUtterances`). */
+export const testUtterances = caseTestUtterances;
 
 /** True when two items' phase restrictions overlap (no `phases` = every phase). */
 function sharePhase(a: readonly string[] | undefined, b: readonly string[] | undefined): boolean {
@@ -154,8 +141,7 @@ function findCase(ctx: CliContext, content: LoadedContent, id: string): { def: C
 /** A case's review status for a table cell: "editorial review 2026-10-28" / "编辑审核 2026-10-28", "-" when none is recorded. */
 function reviewCell(ctx: CliContext, c: CaseDefinition): string {
   const review = c.provenance.review;
-  if (!review) return "-";
-  return `${ctx.t(`review.${review.status}` as "review.editorial")}${review.reviewedAt ? ` ${review.reviewedAt}` : ""}`;
+  return review ? reviewTag(ctx, review) : "-";
 }
 
 /** What the JSON listings say of a case's review (null when none is recorded). */
@@ -165,9 +151,23 @@ function reviewJson(c: CaseDefinition, locale: string) {
   return { status: review.status, reviewedAt: review.reviewedAt ?? null, text: reviewStatusLine(locale, review), reviewers: review.reviewers, guidelines: review.guidelines, notes: review.notes ? t(review.notes, locale) : null };
 }
 
+/** "published case report — <citation> (doi:<doi>)": the source as `cases show` and `cases list --details` give it with `--spoilers`. */
+function sourceText(ctx: CliContext, c: CaseDefinition): string {
+  const prov = c.provenance;
+  const raw = (text: string) => sanitizeTerminal(text);
+  return `${provenanceLabel(ctx, prov.kind)}${prov.citation ? ` — ${raw(prov.citation)}` : ""}${prov.doi ? ` (doi:${raw(prov.doi)})` : ""}`;
+}
+
+/** The source line of a case: the whole source with `--spoilers` (or for a synthetic case), else the kind and that it is hidden. */
+function sourceLine(ctx: CliContext, c: CaseDefinition, spoilers: boolean): { text: string; hidden: boolean } {
+  const hidden = citesSource(c) && !spoilers && !!(c.provenance.citation || c.provenance.doi);
+  return { text: hidden ? provenanceLabel(ctx, c.provenance.kind) : sourceText(ctx, c), hidden };
+}
+
 export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const content = await loadAll(ctx);
   const cases = sortedCases(content, ctx.locale);
+  const spoilers = flagBool(args, "spoilers");
   if (flagBool(args, "json")) {
     ctx.print(
       JSON.stringify(
@@ -185,6 +185,8 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
           learningOutcomes: c.learningOutcomes.map((o) => t(o, ctx.locale)),
           review: reviewJson(c, ctx.locale),
           file: content.cases.get(c.id)?.file ?? null,
+          // A published case's citation usually names the diagnosis: only on request (docs/GLOSSARY.md §4).
+          ...(spoilers && citesSource(c) ? { source: caseSource(c) } : {}),
         })),
         null,
         2,
@@ -195,6 +197,19 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
   const rows = [[ctx.t("col.id"), ctx.t("col.title"), ctx.t("col.difficulty"), ctx.t("col.setting"), ctx.t("col.minutes"), ctx.t("col.review")]];
   for (const c of cases) rows.push([c.id, sanitizeTerminal(t(c.title, ctx.locale)), stars(c.difficulty), settingLabel(ctx, c.setting), c.estimatedMinutes ? String(c.estimatedMinutes) : "-", reviewCell(ctx, c)]);
   ctx.print(table(rows, { header: true, maxCell: 60 }));
+  if (flagBool(args, "details")) {
+    // Per case: the specialties by their labels and the source — a published case's citation only with --spoilers.
+    let hidden = false;
+    for (const c of cases) {
+      const source = sourceLine(ctx, c, spoilers);
+      hidden ||= source.hidden;
+      ctx.print();
+      ctx.print(`${ctx.out.bold(sanitizeTerminal(c.id))} ${sanitizeTerminal(t(c.title, ctx.locale))}`);
+      ctx.print(`  ${ctx.t("show.specialties")} ${specialtiesLabel(ctx, c.specialty)}`);
+      ctx.print(`  ${ctx.t("show.provenance")} ${source.text}`);
+    }
+    if (hidden) ctx.print(ctx.out.dim(ctx.t("cases.sourceHidden")));
+  }
   // Say what an editorial review is, once, whenever one is listed (never claim more than the case records).
   if (cases.some((c) => c.provenance.review?.status === "editorial")) ctx.print(ctx.out.dim(ctx.t("cases.reviewLegend")));
   const broken = content.issues.filter((f) => f.file.endsWith("case.json") && f.issues.some((i) => i.severity === "error"));
@@ -252,10 +267,13 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
   const content = await loadAll(ctx);
   const { def: c, file } = findCase(ctx, content, id);
   const L = ctx.locale;
+  const spoilers = flagBool(args, "spoilers");
   if (flagBool(args, "json")) {
+    // --full: the whole case file (the reference solution too); otherwise no solution, and — for a published or
+    // adapted case — no citation, DOI or source references unless --spoilers (they usually name the diagnosis).
     const { solution, ...publicView } = c;
-    ctx.print(JSON.stringify(flagBool(args, "full") ? c : publicView, null, 2));
     void solution;
+    ctx.print(JSON.stringify(flagBool(args, "full") ? c : spoilers ? publicView : withoutSource(publicView), null, 2));
     return EXIT.ok;
   }
   const p = ctx.out;
@@ -277,7 +295,10 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
   );
   ctx.print(`${p.bold(ctx.t("show.locales"))} ${languagesLabel(ctx, c.locales)} · ${clockModeLabel(ctx, c.clock.mode)}`);
   const prov = c.provenance;
-  ctx.print(`${p.bold(ctx.t("show.provenance"))} ${provenanceLabel(ctx, prov.kind)}${prov.citation ? ` — ${raw(prov.citation)}` : ""}${prov.doi ? ` (doi:${raw(prov.doi)})` : ""}`);
+  // A published case's citation usually names the diagnosis: its kind only, unless --spoilers.
+  const source = sourceLine(ctx, c, spoilers);
+  ctx.print(`${p.bold(ctx.t("show.provenance"))} ${source.text}`);
+  if (source.hidden) ctx.print(p.dim(`  ${ctx.t("cases.sourceHidden")}`));
   // Who checked the content, exactly as the case records it (docs/GLOSSARY.md §4).
   const review = prov.review;
   if (review) {
@@ -370,7 +391,11 @@ export function facilityIssues(c: CaseDefinition, content: Pick<LoadedContent, "
   }));
 }
 
-export async function validateCaseFile(file: string, content?: Pick<LoadedContent, "facilities" | "catalogs">): Promise<FileValidation> {
+/**
+ * Schema, referential integrity, the clinical content standard's lints (warnings, core `checkContentStandard`)
+ * and the facility check of one case file. `strict`: warnings fail it too (`cases validate --strict`).
+ */
+export async function validateCaseFile(file: string, content?: Pick<LoadedContent, "facilities" | "catalogs">, strict = false): Promise<FileValidation> {
   let json: unknown;
   try {
     json = JSON.parse((await readFile(file, "utf8")).replace(/^﻿/, ""));
@@ -383,11 +408,12 @@ export async function validateCaseFile(file: string, content?: Pick<LoadedConten
     const id = json && typeof json === "object" && typeof (json as { id?: unknown }).id === "string" ? (json as { id: string }).id : null;
     return { file, id, ok: false, errors: parsed.issues.filter((i) => i.severity === "error"), warnings: parsed.issues.filter((i) => i.severity === "warning"), def: null };
   }
-  const issues = [...parsed.warnings, ...checkCaseIntegrity(parsed.value), ...facilityIssues(parsed.value, content)];
+  const issues = [...parsed.warnings, ...checkCaseIntegrity(parsed.value), ...checkContentStandard(parsed.value), ...facilityIssues(parsed.value, content)];
   const dirName = basename(dirname(file));
   if (basename(file) === "case.json" && dirName !== parsed.value.id) issues.push({ path: "id", message: `case id "${parsed.value.id}" differs from its directory name "${dirName}"`, severity: "warning" });
   const errors = issues.filter((i) => i.severity === "error");
-  return { file, id: parsed.value.id, ok: errors.length === 0, errors, warnings: issues.filter((i) => i.severity === "warning"), def: parsed.value };
+  const warnings = issues.filter((i) => i.severity === "warning");
+  return { file, id: parsed.value.id, ok: errors.length === 0 && (!strict || warnings.length === 0), errors, warnings, def: parsed.value };
 }
 
 function resolveTargets(ctx: CliContext, paths: readonly string[]): string[] {
@@ -410,7 +436,8 @@ export async function casesValidate(ctx: CliContext, args: ParsedArgs): Promise<
   if (files.length === 0) throw new CliError(ctx.t("cases.noFiles"), EXIT.error);
   // Facilities and catalogs of the same content directories: a case must be completable in its own facility.
   const content = await loadContent({ dirs: settings.contentDirs });
-  const results = await Promise.all([...new Set(files)].map((f) => validateCaseFile(f, content)));
+  const strict = flagBool(args, "strict");
+  const results = await Promise.all([...new Set(files)].map((f) => validateCaseFile(f, content, strict)));
   const failed = results.filter((r) => !r.ok).length;
   if (flagBool(args, "json")) {
     ctx.print(JSON.stringify(results.map(({ def, ...r }) => (void def, r)), null, 2));
@@ -426,7 +453,7 @@ export async function casesValidate(ctx: CliContext, args: ParsedArgs): Promise<
     ctx.print(`${label} ${rel}${r.id ? p.dim(` (${sanitizeTerminal(r.id)})`) : ""} ${p.dim(counts)}`);
     printIssues(ctx, [...r.errors, ...r.warnings], showWarnings);
   }
-  ctx.print(failed > 0 ? p.red(ctx.t("cases.validateFailed", { failed, total: results.length })) : p.green(ctx.t("cases.validateOk", { total: results.length })));
+  ctx.print(failed > 0 ? p.red(ctx.t(strict ? "cases.validateFailedStrict" : "cases.validateFailed", { failed, total: results.length })) : p.green(ctx.t("cases.validateOk", { total: results.length })));
   return failed > 0 ? EXIT.error : EXIT.ok;
 }
 
@@ -436,6 +463,8 @@ export interface CaseVerification {
   steps: number;
   objectives: { done: number; total: number };
   decisions: { decided: number; total: number };
+  /** The reference path's rubric score (deterministic, scored items: core `assess`). */
+  score: { earned: number; possible: number; percent: number };
   /** `extra`: utterances that also select (and credit) unexpected facts (warnings). */
   utterances: { total: number; failed: number; extra: number };
   issues: Issue[];
@@ -450,12 +479,15 @@ export function verifyCaseDefinition(c: CaseDefinition): CaseVerification {
   if (testUtterances(c) === null) issues.push({ path: "extensions.testUtterances", message: "missing matcher regression corpus (15–40 bilingual utterances)", severity: "warning" });
   if (c.solution.length === 0) issues.push({ path: "solution", message: "no reference solution", severity: "error" });
   const a = result.assessment;
+  // The reference path shows what good looks like: it should miss no critical rubric item.
+  for (const id of a.criticalMissed ?? []) issues.push({ path: `rubric.${c.rubric.findIndex((r) => r.id === id)}`, message: `the reference solution misses the critical rubric item "${id}"`, severity: "warning" });
   return {
     id: c.id,
     ok: issues.every((i) => i.severity !== "error") && result.ok,
     steps: c.solution.length,
     objectives: { done: a.objectives.filter((o) => o.done).length, total: a.objectives.length },
     decisions: { decided: a.decisions.filter((d) => d.decided).length, total: a.decisions.length },
+    score: { ...a.score },
     utterances: { total: corpus.total, failed: corpus.failures.length, extra: corpus.extras.length },
     issues,
   };
@@ -485,6 +517,9 @@ export async function casesVerify(ctx: CliContext, args: ParsedArgs): Promise<nu
           decisions: r.decisions.total,
           passed: r.utterances.total - r.utterances.failed,
           utterances: r.utterances.total,
+          earned: r.score.earned,
+          possible: r.score.possible,
+          percent: r.score.percent,
         }),
       )}`,
     );

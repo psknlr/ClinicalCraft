@@ -1,7 +1,7 @@
 /**
  * What a bystander sees of the patient (docs/EMBODIED.md R7, §4): whether
- * they look critically ill, the oxygen accessory they wear and their posture
- * — never a number, a finding or a result. One implementation for every
+ * they look critically ill, the oxygen accessory they wear, their posture and
+ * whether they can speak — never a number, a finding or a result. One implementation for every
  * runtime: the web world's voxel patient and the embodied agent runtime's
  * `ClinicalView.cues` (@clinicalcraft/agent). Review G12: the posture and the
  * accessory follow clinical state (an intervention's authored `posture`, an
@@ -13,6 +13,7 @@ import type { SessionState } from "../schema/session.js";
 import { MONITORED_VITALS } from "./monitor.js";
 import { alarmLevel, alarmLimitsFor, vitalsAt } from "./physiology.js";
 import { vitalValue } from "./signal.js";
+import { patientNonVerbal } from "./speech.js";
 
 /**
  * Does the patient look critically ill — a monitored vital in its critical
@@ -71,6 +72,8 @@ export interface PatientBystanderCues {
   accessory: OxygenAccessory | null;
   /** The posture now (`patientPosture`). */
   posture: Posture;
+  /** The patient cannot speak now (`patient.nonVerbalWhen` holds): intubated, sedated, an infant… */
+  nonVerbal: boolean;
 }
 
 /** The patient's bystander cues (see `PatientBystanderCues`). */
@@ -83,5 +86,5 @@ export function patientCues(c: CaseDefinition, s: SessionState): PatientBystande
     const a = iv ? oxygenAccessory(iv) : null;
     if (a) accessory = a;
   }
-  return { distressed, accessory, posture: patientPosture(c, s) };
+  return { distressed, accessory, posture: patientPosture(c, s), nonVerbal: patientNonVerbal(c, s) };
 }

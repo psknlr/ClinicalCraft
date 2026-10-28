@@ -11,6 +11,7 @@
  * | `check_vitals` | `any-of`: `monitor-screen` (the patient's attached monitor, 6 m, line of sight from its own room — never through a window) · `at-patient` 1.5 m (observations by hand) · `at-provider` `records` (the chart) |
  * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`): `all-of` `patient-at-provider` · `at-provider` (the scanner or a console) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
  * | `read_result` | bedside capabilities: `at-patient` · a `records` terminal · a fixed station providing them — never the device · laboratory capabilities: a `records` terminal · `at-patient` · a laboratory station · otherwise `at-provider` (the report at a console — never the patient) |
+ * | `order_test` / `read_result` of a record review (`performedAt: "records"`: an existing report retrieved from the chart) | `any-of` `at-provider` `records` (a records terminal) · `at-patient` (`why: "notes"`: the notes at the bedside) — never a transport, a sample or a device, whatever `requires` says |
  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
  * | `intervene` other kinds | its capabilities (empty `requires`: the kind's defaults, `KIND_DEFAULT_CAPABILITIES`) beyond the personal kit at the bedside (`bedside-provider`; nothing: `at-patient`); delivered capabilities (`DELIVERED_CAPABILITIES`) only need an in-service provider in the facility; `iv-access` is patient state — the case's IV-access procedure done first (`clinical`), unless the patient has a line in situ — except for that procedure itself, which needs the cannulation kit at the bedside |
  * | `consult`, `delegate_task`, cognitive tools | anywhere |
@@ -123,6 +124,9 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
       case "order":
       case "read": {
         const inv = intent.investigationId ? c.investigations.find((x) => x.id === intent.investigationId) : undefined;
+        // a record review: an existing report retrieved from the chart — at a records terminal, or the notes at
+        // the bedside; never a transport, a sample or a device, whatever `requires` says
+        if (inv?.performedAt === "records") return { kind: "any-of", options: [chart, { kind: "at-patient", range: POLICY_RANGES.contact, why: "notes" }] };
         if (!inv || inv.requires.length === 0) return ANYWHERE;
         const caps = inv.requires.filter((r) => !kit.has(r));
         if (!caps.length) return atPatient;

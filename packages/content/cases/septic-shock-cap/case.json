@@ -92,7 +92,7 @@
         "RCP NEWS2 (2017)"
       ],
       "notes": {
-        "zh-CN": "AI辅助编写，并已对照所列指南做编辑审校；尚未经执业临床医师审阅——用于教学前，请先由本专科临床医师审核。",
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
         "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
       }
     }
@@ -7957,7 +7957,7 @@
         "en": "Hypotension plus raised lactate: blood cultures first if they cause no delay, then IV empirical antibiotics within the hour (β-lactam plus macrolide) and balanced crystalloid in boluses, reassessing after each."
       },
       "guidance": {
-        "zh-CN": "在决策板上确定抗菌药物时机和方案，然后给药；完成至少三次500 mL液体推注。",
+        "zh-CN": "在会诊板上确定抗菌药物时机和方案，然后给药；完成至少三次500 mL液体推注。",
         "en": "Settle antibiotic timing and regimen on the decision board, give them, and complete at least three 500 mL boluses."
       },
       "completeWhen": {
@@ -8030,7 +8030,7 @@
         "en": "Reassess after the initial fluids: if MAP stays < 65 mmHg start norepinephrine (a peripheral start is fine), repeat the lactate, and reclassify her using Sepsis-3."
       },
       "guidance": {
-        "zh-CN": "复评灌注，决定升压策略，开始去甲肾上腺素，复查乳酸，并在决策板上完成Sepsis-3判断。",
+        "zh-CN": "复评灌注，决定升压策略，开始去甲肾上腺素，复查乳酸，并在会诊板上完成Sepsis-3判断。",
         "en": "Reassess perfusion, decide on the vasopressor, start norepinephrine, repeat the lactate and complete the Sepsis-3 question on the board."
       },
       "completeWhen": {
@@ -9075,7 +9075,7 @@
         "en": "Dr Wang (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教：只追问学习者已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、1小时集束化（SSC 2018更新；其中1小时内抗菌和30 mL/kg补液的要求在SSC 2021及其2026年更新中均保留）、去甲肾上腺素可经外周起始、初始MAP目标（SSC 2026：≥65岁成人60–65 mmHg）、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
+        "zh-CN": "苏格拉底式带教：只追问学员已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、1小时集束化（SSC 2018更新；其中1小时内抗菌和30 mL/kg补液的要求在SSC 2021及其2026年更新中均保留）、去甲肾上腺素可经外周起始、初始MAP目标（SSC 2026：≥65岁成人60–65 mmHg）、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
         "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does her lactate tell you?', 'Why does her pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the Hour-1 bundle (SSC 2018 update; its 1-hour antibiotic and 30 mL/kg fluid elements stand in SSC 2021 and the 2026 update), peripheral norepinephrine, the initial MAP target (SSC 2026: 60–65 mmHg for adults aged 65 or over) and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
       },
       "interprets": [
@@ -9095,7 +9095,7 @@
         "en": "Dr Liu (radiology)"
       },
       "knowledge": {
-        "zh-CN": "只解读学习者已调阅的影像报告，以报告原文为准；可讲解支气管充气征、胸腔积液及右心缘轮廓征如何帮助判断实变的性质与部位（下叶还是中叶）。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "zh-CN": "只解读学员已调阅的影像报告，以报告原文为准；可讲解支气管充气征、胸腔积液及右心缘轮廓征如何帮助判断实变的性质与部位（下叶还是中叶）。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学员尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
         "en": "Interprets only imaging the learner has retrieved, in the report's own words; can explain how air bronchograms, an effusion and the silhouette of the right heart border help characterise and localise consolidation (lower versus middle lobe). A non-contrast CT cannot assess for PE. POCUS is clinician-performed; can explain hepatisation, B-lines and the IVC and their limits. Adds no findings beyond the reports. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
@@ -9112,7 +9112,7 @@
         "en": "Ms Wu (microbiology lab)"
       },
       "knowledge": {
-        "zh-CN": "只解释学习者已拿到的微生物结果，以报告原文为准：痰标本质量如何分级、革兰染色形态只能提示而不能确定病原、尿抗原检测的意义，以及培养需要数天才能给出鉴定和药敏。抗菌药物后采集的标本阳性率会下降。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "zh-CN": "只解释学员已拿到的微生物结果，以报告原文为准：痰标本质量如何分级、革兰染色形态只能提示而不能确定病原、尿抗原检测的意义，以及培养需要数天才能给出鉴定和药敏。抗菌药物后采集的标本阳性率会下降。若学员尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
         "en": "Explains only microbiology results the learner has, in the report's own words: how sputum quality is graded, that Gram-stain morphology suggests but does not prove an organism, what a urinary antigen adds, and that cultures take days to give an identification and susceptibilities. Samples taken after antibiotics have lower yield. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
@@ -9130,7 +9130,7 @@
         "en": "Pharmacist Zhao (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。学习者拿到肌酐结果后，可按Cockcroft-Gault估算肌酐清除率，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。学习者已阅读的心电图QTc低于500 ms时可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）是脓毒性休克和重症CAP的辅助治疗（SCCM 2024重点更新），不能替代升压药；具体方案和疗程由ICU决定。对乙酰氨基酚1 g IV，若肌酐清除率≤30 mL/min则间隔至少6小时（先查肾功能）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学习者说出病人的诊断。",
+        "zh-CN": "只引用学员已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。学员拿到肌酐结果后，可按Cockcroft-Gault估算肌酐清除率，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。学员已阅读的心电图QTc低于500 ms时可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）是脓毒性休克和重症CAP的辅助治疗（SCCM 2024重点更新），不能替代升压药；具体方案和疗程由ICU决定。对乙酰氨基酚1 g IV，若肌酐清除率≤30 mL/min则间隔至少6小时（先查肾功能）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学员说出病人的诊断。",
         "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Once the learner has the creatinine, can estimate creatinine clearance (Cockcroft–Gault), which is unreliable in non-steady-state AKI — give full first doses. With a QTc below 500 ms on the ECG the learner has read, a macrolide or a fluoroquinolone may be used, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is an adjunct in septic shock and severe CAP (SCCM 2024 focused update) and never replaces a vasopressor; the regimen and duration are an ICU decision. Paracetamol 1 g IV, at least 6 h apart if creatinine clearance is ≤ 30 mL/min (check the chemistry first); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity. Gives general drug guidance only and does not state the patient's diagnosis for the learner."
       },
       "interprets": [
@@ -9146,7 +9146,7 @@
         "en": "Dr Sun (ICU registrar)"
       },
       "knowledge": {
-        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路，并评估氢化可的松等糖皮质激素辅助治疗（脓毒性休克合并重症CAP；SCCM 2024重点更新）。不评论学习者尚未获得的结果，不替学习者下诊断。",
+        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路，并评估氢化可的松等糖皮质激素辅助治疗（脓毒性休克合并重症CAP；SCCM 2024重点更新）。不评论学员尚未获得的结果，不替学员下诊断。",
         "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider adjunctive corticosteroids (hydrocortisone) for septic shock with severe CAP (SCCM 2024 focused update). Does not comment on results the learner does not have or state a diagnosis the learner has not made."
       },
       "interprets": [],

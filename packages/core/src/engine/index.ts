@@ -6,6 +6,7 @@
 // validation & loading
 export { parseCase, parseFacility, parseCatalog, issuesFromZodError, contentWarnings, formatPath } from "./parse.js";
 export { checkCaseIntegrity } from "./integrity.js";
+export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
 
 // session lifecycle
@@ -43,6 +44,7 @@ export {
 } from "./physiology.js";
 export { arrestKind, applyArrest, UNMEASURABLE_IN_ARREST, ARREST_MAX_ETCO2, type ArrestKind } from "./arrest.js";
 export { inExtremis, oxygenAccessory, patientCues, patientPosture, type OxygenAccessory, type PatientBystanderCues } from "./cues.js";
+export { historyVoice, patientNonVerbal, type HistoryVoice } from "./speech.js";
 
 // matching
 export {
@@ -86,6 +88,7 @@ export {
   placementCapabilities,
   facilityCapabilities,
   caseCapabilityGaps,
+  investigationNeeds,
   type CapabilityGap,
   regionAt,
   assignPatientSlot,

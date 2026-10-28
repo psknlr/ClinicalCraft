@@ -49,6 +49,8 @@ export * from "./agents/offline.js";
 
 // runtime
 export * from "./library.js";
+export * from "./case-source.js";
+export * from "./critical.js";
 export * from "./concurrency.js";
 export * from "./terminal.js";
 export * from "./loop.js";

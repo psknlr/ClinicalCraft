@@ -1,8 +1,9 @@
 /**
  * Referential integrity of a parsed case: every id referenced from
- * conditions, waypoints, results, figures, order matching (incl. warning
- * `unless` conditions), history `supersedes` links and the reference
- * solution must exist; condition leaves must be able to become true;
+ * conditions (incl. rubric `scoredWhen` and `patient.nonVerbalWhen`),
+ * waypoints, results, figures, order matching (incl. warning `unless`
+ * conditions), history `supersedes` links and the reference solution must
+ * exist; condition leaves must be able to become true;
  * objectives must be completable, decisions unlockable and answerable, and
  * phases enterable.
  */
@@ -197,7 +198,11 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
   c.physiology?.events.forEach((ev, i) => issues.push(...checkCondition(c, ids, ev.when, ["physiology", "events", i, "when"])));
   issues.push(...checkCondition(c, ids, c.physiology?.monitor?.attachedWhen, ["physiology", "monitor", "attachedWhen"]));
   issues.push(...checkCondition(c, ids, c.physiology?.monitor?.ecgWhen, ["physiology", "monitor", "ecgWhen"]));
-  c.rubric.forEach((r, i) => issues.push(...checkCondition(c, ids, r.met, ["rubric", i, "met"])));
+  c.rubric.forEach((r, i) => {
+    issues.push(...checkCondition(c, ids, r.met, ["rubric", i, "met"]));
+    issues.push(...checkCondition(c, ids, r.scoredWhen, ["rubric", i, "scoredWhen"]));
+  });
+  issues.push(...checkCondition(c, ids, c.patient.nonVerbalWhen, ["patient", "nonVerbalWhen"]));
   c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
   return issues;
 }
@@ -560,6 +565,9 @@ function checkReachability(c: CaseDefinition, ids: Ids): Issue[] {
   });
   c.rubric.forEach((r, i) => {
     if (r.met && tri(r.met, leaf) === false) issues.push(warn(["rubric", i, "met"], `rubric item "${r.id}" can never be met, so it lowers every learner's score`));
+    if (r.scoredWhen && tri(r.scoredWhen, leaf) === false) {
+      issues.push(warn(["rubric", i, "scoredWhen"], `rubric item "${r.id}" can never be scored: scoredWhen depends on objectives, decisions or phases that can never be reached`));
+    }
   });
   const monitor = c.physiology?.monitor;
   if (monitor && tri(monitor.attachedWhen, leaf) === false) {
@@ -617,10 +625,22 @@ function checkKeywordPhrases(c: CaseDefinition): Issue[] {
   return issues;
 }
 
+/**
+ * `patient.nonVerbalWhen` and `nonVerbalReason` go together: the runtime narrates the reason whenever
+ * nobody can answer, and a reason without a condition is never shown.
+ */
+function checkNonVerbal(c: CaseDefinition): Issue[] {
+  const { nonVerbalWhen, nonVerbalReason } = c.patient;
+  if (nonVerbalWhen && !nonVerbalReason) return [warn(["patient", "nonVerbalReason"], "patient.nonVerbalWhen without a nonVerbalReason: say why the patient cannot speak (it is narrated when nobody can answer)")];
+  if (nonVerbalReason && !nonVerbalWhen) return [warn(["patient", "nonVerbalReason"], "patient.nonVerbalReason without a nonVerbalWhen: it is never shown")];
+  return [];
+}
+
 export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
   const ids = collectIds(c);
   return [
     ...checkCollections(c),
+    ...checkNonVerbal(c),
     ...checkKeywordPhrases(c),
     ...checkAllConditions(c, ids),
     ...checkPhaseLists(ids, c.history, "history"),

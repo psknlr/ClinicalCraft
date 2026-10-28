@@ -15,7 +15,7 @@ describe("patient cues (bystander view, EMBODIED R7)", () => {
     const sick = builtin("anaphylaxis-garden");
     const s = reduce(sick, createSession(sick), { type: "start" }).state;
     expect(inExtremis(sick, s)).toBe(true);
-    expect(patientCues(sick, s)).toEqual({ distressed: true, accessory: null, posture: "sitting" });
+    expect(patientCues(sick, s)).toEqual({ distressed: true, accessory: null, posture: "sitting", nonVerbal: false });
     const stable = builtin("stemi-inferior-rv");
     const t = reduce(stable, createSession(stable), { type: "start" }).state;
     expect(inExtremis(stable, t)).toBe(false);

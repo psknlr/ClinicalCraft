@@ -38,7 +38,7 @@
  *
  * Grounding: entities carry public data only — names, the patient's public
  * descriptor, behaviour states, capabilities, operations. Patient cues come
- * from `ClinicalView.cues` (posture, distress, accessory, speaking) and only
+ * from `ClinicalView.cues` (posture, distress, accessory, speaking, cannot speak) and only
  * while the patient is perceived; a monitor shows its screen
  * (`ClinicalView.bedside`, the `check_vitals` snapshot) only while it is
  * visible, within the 6 m screen range, the patient's monitor and attached.
@@ -282,6 +282,7 @@ export class Perception {
       if (c.distressed) out.distressed = worldMessage("cue.distressed", L);
       if (c.accessory) out.accessory = c.accessory;
       if (c.speaking) out.speaking = worldMessage("cue.speaking", L);
+      if (c.cannotSpeak !== undefined) out.speech = c.cannotSpeak ? worldMessage("cue.cannotSpeakWhy", L, { reason: c.cannotSpeak }) : worldMessage("cue.cannotSpeak", L);
       return out;
     }
     // THE screen rule (`WorldLocator.screenInView`): from the monitor's own room, never through a window

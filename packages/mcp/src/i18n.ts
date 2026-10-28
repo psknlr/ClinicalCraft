@@ -13,6 +13,7 @@ const EN = {
   "cases.outcomes": "  {n} learning outcome(s): get_debrief lists them once the case is complete.",
   "start.header": "Session {session} started.",
   "start.says": "{speaker}: “{text}”",
+  "start.narration": "({text})",
   "start.next":
     "Pass session_id \"{session}\" to every clinical tool. Talk with ask_patient, find ids with list_options, then examine / order_test / read_result / answer_decision; " +
     "case_status shows objectives and open decisions; finish_case when every objective is complete; get_debrief for the assessment.",
@@ -84,6 +85,7 @@ const ZH: Record<McpMessageKey, string> = {
   "cases.outcomes": "  学习目标 {n} 条：病例完成后由 get_debrief 列出。",
   "start.header": "会话 {session} 已开始。",
   "start.says": "{speaker}：“{text}”",
+  "start.narration": "（{text}）",
   "start.next":
     "每个临床工具都要传入 session_id \"{session}\"。用 ask_patient 问诊，用 list_options 查找 id，然后 examine / order_test / read_result / answer_decision；" +
     "case_status 显示目标与待作答的决策；所有目标完成后调用 finish_case；get_debrief 获取评估。",

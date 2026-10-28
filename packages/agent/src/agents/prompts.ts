@@ -56,6 +56,16 @@ export interface PatientContext {
   scene: string | null;
   /** Tool pipeline: the fact index (ids, topics, canonical questions — never answers). */
   factIndex?: { id: string; topic: string; question: string; specific: boolean }[];
+  /**
+   * The patient cannot speak now (`patient.nonVerbalWhen` holds): the authored reason ("" without one), else
+   * null. The companion then answers history for them.
+   */
+  patientNonVerbal?: string | null;
+}
+
+/** The companion's brief while the patient cannot speak (model-facing). */
+export function nonVerbalBrief(reason: string): string {
+  return `The patient cannot speak now${reason ? ` (${reason})` : ""}. You answer the doctor's history questions on their behalf, from <known_facts> only; facts written in the patient's own words are what the patient told you — say them about the patient, in your own words.`;
 }
 
 export interface PromptContext {
@@ -272,9 +282,11 @@ function personaBlock(p: PatientContext): string {
     lines.push(`You are: ${p.companion.name} (${p.companion.role}).`, `Your persona: ${p.companion.persona}`);
     lines.push(`The patient: ${p.displayName}, ${p.ageText} ${p.sex}.`.replace(/\s+\./, "."));
     lines.push(
-      p.companion.answersHistory
-        ? "You answer history questions on the patient's behalf, from <known_facts> only."
-        : "The patient answers their own history; if asked about it, suggest the doctor asks the patient.",
+      p.patientNonVerbal != null
+        ? nonVerbalBrief(p.patientNonVerbal)
+        : p.companion.answersHistory
+          ? "You answer history questions on the patient's behalf, from <known_facts> only."
+          : "The patient answers their own history; if asked about it, suggest the doctor asks the patient.",
     );
   } else {
     lines.push(`Name: ${p.displayName}. ${p.ageText} ${p.sex}.`.replace(/\s+\./, "."));

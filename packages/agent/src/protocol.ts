@@ -192,8 +192,12 @@ export type EventMsg =
       speaker: string;
       text: string;
       grounded: string[];
-      /** How the text was produced: model output that passed the verifier, the authored answer, offline responder, in-character deflection, opening line, greeting or a clarifying question. */
-      grounding?: "llm" | "template" | "offline" | "deflected" | "opening" | "greeting" | "clarify";
+      /**
+       * How the text was produced: model output that passed the verifier, the authored answer, offline responder, in-character deflection, opening line, greeting,
+       * a clarifying question, or a narration (`narrated`: the patient cannot speak — `patient.nonVerbalWhen` — or an opening line written as an aside; `speaker` is
+       * the narrator's label and nothing is revealed).
+       */
+      grounding?: "llm" | "template" | "offline" | "deflected" | "opening" | "greeting" | "clarify" | "narrated";
       /** Non-verbal cue for the world/UI (e.g. "winces, holding the left flank"). */
       nonverbal?: string | null;
     }

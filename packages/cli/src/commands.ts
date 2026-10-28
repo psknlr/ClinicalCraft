@@ -36,6 +36,11 @@ export interface CommandSpec {
 
 const ALL: FlagSpec = { name: "all", type: "boolean", description: { en: "Every item in the content directories", zh: "内容目录中的全部条目" } };
 const QUIET: FlagSpec = { name: "quiet", short: "q", type: "boolean", description: { en: "Hide warnings", zh: "不显示警告" } };
+const SPOILERS: FlagSpec = {
+  name: "spoilers",
+  type: "boolean",
+  description: { en: "Show a published case's citation, DOI and source references (they may name the diagnosis)", zh: "显示已发表病例的出处、DOI 与来源文献（可能提示诊断）" },
+};
 const TIMEOUT: FlagSpec = { name: "timeout", type: "number", valueName: "<sec>", description: { en: "Request timeout in seconds", zh: "请求超时（秒）" } };
 const BASE_URL: FlagSpec = { name: "base-url", type: "string", valueName: "<url>", description: { en: "Override the provider's base URL", zh: "覆盖服务商的 Base URL" } };
 const MODEL: FlagSpec = { name: "model", type: "string", valueName: "<id>", description: { en: "Model id", zh: "模型 ID" } };
@@ -146,7 +151,13 @@ export const ROOT: CommandSpec = {
       summary: { en: "List, index, inspect, validate, verify and scaffold cases", zh: "列出、索引、查看、校验、验证和新建病例" },
       defaultSubcommand: "list",
       subcommands: [
-        { name: "list", aliases: ["ls"], summary: { en: "List available cases with their review status", zh: "列出可用病例及其审核状态" }, flags: [JSON_FLAG], run: casesList },
+        {
+          name: "list",
+          aliases: ["ls"],
+          summary: { en: "List available cases with their review status", zh: "列出可用病例及其审核状态" },
+          flags: [JSON_FLAG, { name: "details", type: "boolean", description: { en: "Per case: the specialties and the source", zh: "逐个病例列出专科与来源" } }, SPOILERS],
+          run: casesList,
+        },
         {
           name: "index",
           summary: { en: "Print the library index (metadata only, no validation; shared with serve and the web)", zh: "输出病例库索引（仅元数据、不做校验；与 serve 和网页共用）" },
@@ -157,14 +168,14 @@ export const ROOT: CommandSpec = {
           name: "show",
           usage: "<id>",
           summary: { en: "Show a case: its spoiler-free card, review status and, for facilitators, the learning outcomes", zh: "查看病例：不剧透的病例卡片、审核状态，以及供导师查看的学习目标" },
-          flags: [JSON_FLAG, { name: "full", type: "boolean", description: { en: "With --json: include the reference solution", zh: "与 --json 同用：包含参考解法" } }],
+          flags: [JSON_FLAG, { name: "full", type: "boolean", description: { en: "With --json: the whole case file, the reference solution and the source included", zh: "与 --json 同用：输出完整病例文件，包含参考解法与来源" } }, SPOILERS],
           run: casesShow,
         },
         {
           name: "validate",
           usage: "[--all | path…]",
-          summary: { en: "Schema + referential-integrity validation", zh: "结构与引用完整性校验" },
-          flags: [ALL, JSON_FLAG, QUIET],
+          summary: { en: "Schema, referential-integrity and content-standard validation", zh: "结构、引用完整性与内容标准校验" },
+          flags: [ALL, JSON_FLAG, QUIET, { name: "strict", type: "boolean", description: { en: "Fail on warnings too (the clinical content standard's lints)", zh: "警告也视为失败（临床内容标准检查）" } }],
           run: casesValidate,
         },
         {

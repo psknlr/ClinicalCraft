@@ -9431,7 +9431,7 @@
         "ecg"
       ],
       "knowledge": {
-        "zh-CN": "苏格拉底式带教：引导学习者依据BTS/SIGN、GINA和中国儿童哮喘指南判断严重度，给出第1小时的治疗组合，识别升级指征（反应差→静脉硫酸镁、上级/PICU会诊；危及生命征象），以及出院标准和长期控制的薄弱环节（依从性、吸入技术、二手烟、无行动计划）。不直接给答案，只讨论学习者已经获得的信息。",
+        "zh-CN": "苏格拉底式带教：引导学员依据BTS/SIGN、GINA和中国儿童哮喘指南判断严重度，给出第1小时的治疗组合，识别升级指征（反应差→静脉硫酸镁、上级/PICU会诊；危及生命征象），以及出院标准和长期控制的薄弱环节（依从性、吸入技术、二手烟、无行动计划）。不直接给答案，只讨论学员已经获得的信息。",
         "en": "Socratic preceptor: guides the learner, using BTS/SIGN, GINA and the Chinese paediatric asthma guideline, to grade severity, assemble the first-hour treatment bundle, recognise escalation triggers (poor response → IV magnesium, senior/PICU review; life-threatening features) and the discharge criteria, and to spot the weak points in long-term control (adherence, technique, second-hand smoke, no action plan). Never gives answers outright and discusses only information the learner already has."
       }
     },
@@ -9445,7 +9445,7 @@
         "cxr"
       ],
       "knowledge": {
-        "zh-CN": "仅在学习者已拿到胸片后解读，以报告原文为准：可讲解过度充气和支气管壁增厚在哮喘发作中常见，以及胸片主要用于排查气胸、纵隔气肿或实变；会提醒急性哮喘不常规拍胸片。",
+        "zh-CN": "仅在学员已拿到胸片后解读，以报告原文为准：可讲解过度充气和支气管壁增厚在哮喘发作中常见，以及胸片主要用于排查气胸、纵隔气肿或实变；会提醒急性哮喘不常规拍胸片。",
         "en": "Interprets the chest X-ray only once the learner has it, in the report's own words: can explain that hyperinflation and peribronchial thickening are common in acute asthma and that the film is looked at for pneumothorax, pneumomediastinum or consolidation; will point out that chest X-rays are not routine in acute asthma."
       }
     },

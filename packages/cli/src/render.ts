@@ -6,6 +6,7 @@
  */
 import { progress as caseProgress, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
+  criticalMissLines,
   findProviderTemplate,
   investigationName,
   noReading,
@@ -363,7 +364,9 @@ export class EventRenderer {
       }
       case "agent_message": {
         const agent = String(msg.agent);
-        if (msg.speaker && msg.speaker !== agent) this.speakers.set(`${this.L}\u0000${agent}`, msg.speaker);
+        // A narration or a monitor announcement is not the agent's name: later streamed lines keep theirs.
+        const narration = msg.grounding === "narrated" || msg.speaker === rt(L, "speaker.narrator") || msg.speaker === rt(L, "speaker.monitor");
+        if (msg.speaker && msg.speaker !== agent && !narration) this.speakers.set(`${this.L}\u0000${agent}`, msg.speaker);
         const key = `${msg.turnId}:${agent}`;
         if (this.streamed.has(key)) {
           this.streamed.delete(key);
@@ -587,6 +590,8 @@ export class EventRenderer {
     }
     if (report.investigations.lowValue.length) this.line(p.dim(m(L, "assess.lowValue", { list: report.investigations.lowValue.map((id) => investigationName(c, id, L)).join(", ") })));
     if (report.safety.contraindicated.length) this.line(p.red(m(L, "assess.unsafe", { count: report.safety.contraindicated.length })));
+    // Critical items missed, prominently — once the case is complete (mid-case they would be an answer key).
+    if (final) for (const line of criticalMissLines(c, report, L)) this.line(p.bold(p.red(line)));
     for (const j of judged) this.line(`  ${j.met ? p.green("✓") : p.yellow("·")} ${j.id}${j.evidence ? p.dim(` — ${truncate(j.evidence, 100)}`) : ""}`);
     if (narrative) this.line(narrative);
     this.line(p.dim(m(L, "assess.notice")));
