@@ -1,14 +1,14 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-51617",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "持续发热与嗜睡 · 34日龄女婴",
-    "en": "Persistent fever and drowsiness · girl aged 34 days"
+    "en": "Persistent fever and drowsiness · 34-day-old girl"
   },
   "summary": {
-    "zh-CN": "小婴儿抗感染后仍持续发热，既往短暂眼红口唇红容易被忽略；需结合心脏、脑脊液及炎症证据。",
-    "en": "A young infant remains febrile after antibiotics; brief earlier eye and lip redness may be overlooked, requiring cardiac, CSF and inflammatory evidence to be integrated."
+    "zh-CN": "34日龄女婴，外院抗感染治疗后仍持续发热、精神差。",
+    "en": "A 34-day-old girl remains febrile and listless after antibiotics at another hospital."
   },
   "specialty": [
     "pediatrics",
@@ -21,7 +21,29 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别≤6月龄婴儿不明原因发热≥7天伴炎症指标升高时须评估不完全川崎病，在没有或仅有少数主要表现时也要查血并做超声心动图（AHA 2017）。",
+      "en": "Recognise that an infant aged 6 months or younger with 7 or more days of unexplained fever and raised inflammatory markers needs evaluation for incomplete Kawasaki disease, including blood tests and an echocardiogram even with few or no principal features (AHA 2017)."
+    },
+    {
+      "zh-CN": "向家长追问已消退的早期黏膜表现，并按AHA 2017补充实验室标准逐项判断哪些满足、哪些不满足、哪些未检测。",
+      "en": "Elicit transient early mucocutaneous signs from the parent and check each AHA 2017 supplementary laboratory criterion as met, not met or not tested."
+    },
+    {
+      "zh-CN": "说明绝对冠脉内径会低估婴儿冠脉病变分级，在确定抗栓方案前先测身长、按体表面积计算Z值并按危险分层处理（AHA 2017/2024）。",
+      "en": "Explain why absolute coronary diameters under-grade coronary involvement in infants, and obtain length, body surface area and Z-scores before choosing antithrombotic therapy by risk level (AHA 2017/2024)."
+    },
+    {
+      "zh-CN": "发病10天后确诊但发热或冠脉异常伴炎症持续时，仍给予IVIG 2 g/kg单次输注，并识别<6月龄等需强化初始治疗的高危特征（AHA 2017；AHA 2024）。",
+      "en": "Give IVIG 2 g/kg as a single infusion when Kawasaki disease is diagnosed after day 10 with persisting fever or coronary changes and inflammation, and identify high-risk features such as age under 6 months that favour intensified primary therapy (AHA 2017; AHA 2024)."
+    },
+    {
+      "zh-CN": "按年龄别参考值解读婴儿脑脊液，区分原作者的诊断与病历实际证明的内容，并将历史用药剂量与现行推荐逐项对比。",
+      "en": "Interpret infant CSF against age-specific reference values, separate the authors' diagnosis from what the record shows, and compare each historical dose with current recommendations."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -29,15 +51,33 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "杜曾庆. 新生儿不完全性川崎病并发无菌性脑膜炎一例. 中华儿科杂志, 2014. DOI: 10.3760/cma.j.issn.0578-1310.2014.01.016",
+    "citation": "杜曾庆. 新生儿不完全性川崎病并发无菌性脑膜炎一例. 中华儿科杂志. 2014;52(1):63-64. doi:10.3760/cma.j.issn.0578-1310.2014.01.016",
     "doi": "10.3760/cma.j.issn.0578-1310.2014.01.016",
     "authors": [
       "杜曾庆"
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写（2026-10-28编辑修订）。保留年龄、性别、病程、检查数值、诊断和原报告的治疗与随访；姓名为化名，医院和日历日期已去除，时间改为相对时间（入院=病程第10天，生后第34天）。原报告的治疗剂量作为历史事实记录，mg/kg换算为推算值；原作者的诊断（并发无菌性脑膜炎）照录并在复盘中对照年龄别参考值讨论。对话、决策、评分和干预为教学设计；原报告未记录的数据保持未知。",
+      "en": "Adapted from a published case report (editorial revision 2026-10-28). Age, sex, course, test values, diagnosis and the report's treatment and follow-up are retained; names are pseudonyms; the hospital and calendar dates are removed and times are relative (admission = illness day 10, day 34 of life). The report's doses are recorded as historical fact, with derived mg/kg values marked as derived; the authors' diagnosis (with aseptic meningitis) is kept and discussed against age-specific reference values in the debrief. Dialogue, decisions, scoring and interventions are teaching design; data the report does not record stay unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "AHA 2017 scientific statement on Kawasaki disease (McCrindle et al.)",
+        "AHA 2024 update on Kawasaki disease (Jone et al.), with the 2025 corrections",
+        "川崎病诊断和急性期治疗专家共识（2022）",
+        "中国儿童川崎病诊疗循证指南（2023年）",
+        "Shah et al. 2011 age-specific CSF protein reference values"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -46,107 +86,137 @@
   },
   "patient": {
     "displayName": {
-      "zh-CN": "小宁（化名）",
-      "en": "Ning (pseudonym)"
+      "zh-CN": "朵朵（化名）",
+      "en": "Duoduo (pseudonym)"
     },
     "age": 34,
+    "ageUnit": "days",
     "sex": "female",
+    "weightKg": 4.3,
     "chiefComplaint": {
-      "zh-CN": "发热10天，精神饮食差并嗜睡",
-      "en": "Ten days of fever, poor feeding and drowsiness"
+      "zh-CN": "发热10天，精神、吃奶差伴嗜睡",
+      "en": "Ten days of fever with poor feeding, listlessness and drowsiness"
     },
     "triageNote": {
-      "zh-CN": "小婴儿抗感染后仍持续发热，既往短暂眼红口唇红容易被忽略；需结合心脏、脑脊液及炎症证据。",
-      "en": "A young infant remains febrile after antibiotics; brief earlier eye and lip redness may be overlooked, requiring cardiac, CSF and inflammatory evidence to be integrated."
+      "zh-CN": "34日龄女婴，体重4.3 kg（已称重）。发热10天，最高38.9 ℃，外院抗感染治疗5天无效，近日嗜睡、吃奶差。门诊拟“发热待查，败血症？”收入院。入院时T 37.4 ℃，HR 124次/分，RR 36次/分。家长陪同。",
+      "en": "34-day-old girl, 4.3 kg (weighed). Ten days of fever, highest 38.9 °C, despite 5 days of anti-infective treatment at another hospital; now drowsy and feeding poorly. Admitted from clinic as “fever of unknown origin — sepsis?”. On admission T 37.4 °C, HR 124/min, RR 36/min. A parent is with her."
     },
     "tags": [
       {
-        "zh-CN": "发热10天，精神饮食差并嗜睡",
-        "en": "Ten days of fever, poor feeding and drowsiness"
+        "zh-CN": "持续发热",
+        "en": "Persistent fever"
+      },
+      {
+        "zh-CN": "嗜睡",
+        "en": "Drowsy"
+      },
+      {
+        "zh-CN": "吃奶差",
+        "en": "Poor feeding"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "小婴儿，不会说话，病史由家长回答。家长焦急、疲惫——孩子烧了10天，在外院打了5天吊针也不见好——但配合问诊。",
+        "en": "A young infant who cannot speak; her parent answers the history. The parent is worried and tired — ten days of fever and five days of drips elsewhere have not helped — but cooperative."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "家长用日常口语、短句回答；说得出烧了几天、最高多少度、在外院用过哪些药，记不清的就直说记不清；不用医学术语。",
+        "en": "The parent answers in short, everyday sentences; knows how many days of fever, the highest temperature and which drips were given elsewhere, and says so when unsure; uses no medical terms."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "drowsy",
       "openingLine": {
-        "zh-CN": "已经发热10天，最高38.9℃。",
-        "en": "Fever has lasted ten days and reached 38.9°C."
+        "zh-CN": "（家长）医生，孩子烧了10天了，最高烧到38度9，一直不退。",
+        "en": "(Parent) Doctor, she's had a fever for ten days — it went up to 38.9 and it just won't settle."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "（家长）这个我说不上来，医生。",
+        "en": "(Parent) I'm not sure about that, doctor."
       },
+      "concerns": [],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "婴儿：嗜睡，少哭少动，不会说话。家长：抱着孩子，焦急但配合；只回答被问到的内容，不主动补充；被问到检查结果或诊断时，说这要听医生的。",
+        "en": "Infant: drowsy, cries and moves little, cannot speak. Parent: holding the baby, anxious but cooperative; answers only what is asked and volunteers nothing more; asked about results or the diagnosis, says that is for the doctors to say."
       },
       "companion": {
         "role": "parent",
         "name": {
-          "zh-CN": "陪同者（教学角色）",
-          "en": "Companion (educational role)"
+          "zh-CN": "朵朵的家长（化名）",
+          "en": "Duoduo's parent (pseudonym)"
         },
         "persona": {
-          "zh-CN": "只转述原报告中的病史，不新增目击经历。",
-          "en": "Relays only the reported history without inventing witnessed events."
+          "zh-CN": "患儿家长（原报告未说明是父亲还是母亲）。焦急、疲惫但配合，用日常口语回答，记不清的直说。",
+          "en": "The baby's parent (the report does not say which parent). Worried and tired but cooperative; answers in everyday words and says so when unsure."
         },
-        "answersHistory": true
+        "answersHistory": true,
+        "appearance": {
+          "stature": "adult"
+        }
       }
     },
     "appearance": {
       "stature": "infant",
       "gown": true
     },
-    "posture": "lying",
-    "ageUnit": "days",
-    "weightKg": 4.3
+    "posture": "lying"
   },
   "phases": [
     {
       "id": "initial",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "入院：病程第10天",
+        "en": "Admission: illness day 10"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "34日龄女婴入院，生后第24天起病。向家长采集病史并进行床旁查体；先决定下一步评估，检查结果随后开放。",
+        "en": "A 34-day-old girl is admitted; the illness began on day 24 of life. Take the history from her parent and examine her; decide on the next step before the results open."
+      },
+      "learnerSwitchable": false
     },
     {
       "id": "workup",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "入院后：检查与初始治疗",
+        "en": "After admission: investigations and first treatment"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "检查结果按原报告呈现（原报告未注明各项检查的具体日期）。在此阶段作出诊断并开始治疗。",
+        "en": "Results are those of the report (it does not give the day of each test). Make the diagnosis and start treatment in this phase."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "next-step"
+      }
+    },
+    {
+      "id": "discharge",
+      "label": {
+        "zh-CN": "住院第11天：出院前",
+        "en": "Hospital day 11: before discharge"
+      },
+      "description": {
+        "zh-CN": "原报告的住院经过与出院前复查；在出院前制定长期方案。",
+        "en": "The report's inpatient course and pre-discharge tests; plan long-term care before she goes home."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-treat"
+      }
     },
     {
       "id": "followup",
       "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+        "zh-CN": "出院后随访：2个月至3岁3个月",
+        "en": "Follow-up after discharge: 2 months to 3 years 3 months"
+      },
+      "description": {
+        "zh-CN": "原报告的出院后随访记录（时间已改为相对时间）。",
+        "en": "The report's follow-up after discharge (times made relative)."
       },
       "learnerSwitchable": false,
       "enterWhen": {
-        "all": [
-          {
-            "decided": "diagnosis"
-          },
-          {
-            "decided": "management"
-          },
-          {
-            "objective": "objective-1"
-          },
-          {
-            "objective": "objective-2"
-          }
-        ]
+        "objective": "obj-discharge"
       }
     }
   ],
@@ -160,530 +230,914 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "孩子发热多久，最高多高？",
-        "en": "How long has the fever lasted and how high has it been?"
+        "zh-CN": "孩子发烧几天了？最高烧到多少度？",
+        "en": "How many days has she had a fever, and how high has it gone?"
       },
       "answer": {
-        "zh-CN": "已经发热10天，最高38.9℃。",
-        "en": "Fever has lasted ten days and reached 38.9°C."
+        "zh-CN": "（家长）烧了10天了，最高到38度9，一直退不下来。",
+        "en": "(Parent) Ten days now. It's been up to 38.9 and it just won't come down."
       },
       "keywords": {
         "zh-CN": [
-          "孩子发热多久，最高多高？",
-          "发热十天"
+          "发烧几天",
+          "发热多久",
+          "烧了多久",
+          "烧了几天",
+          "烧多久",
+          "最高多少度",
+          "最高体温",
+          "体温最高",
+          "最高烧到",
+          "发烧",
+          "发热",
+          "体温多高",
+          "烧到多少",
+          "退烧"
         ],
         "en": [
-          "How long has the fever lasted and how high has it been?",
-          "ten-day fever"
+          "fever",
+          "temperature",
+          "feverish",
+          "febrile",
+          "high temperature",
+          "highest temperature",
+          "days of fever",
+          "how long fever"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "medications",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "来院前用了哪些抗生素？",
-        "en": "Which antibiotics were given before admission?"
-      },
-      "answer": {
-        "zh-CN": "用过静滴阿莫西林2天、头孢吡肟3天，仍然发热。",
-        "en": "Intravenous amoxicillin for two days and cefepime for three days did not stop the fever."
-      },
-      "keywords": {
-        "zh-CN": [
-          "来院前用了哪些抗生素？",
-          "抗生素"
-        ],
-        "en": [
-          "Which antibiotics were given before admission?",
-          "antibiotics"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "mucosal",
-      "topic": "associated-symptoms",
-      "question": {
-        "zh-CN": "病刚开始时眼睛和嘴唇怎样？",
-        "en": "How did the eyes and lips look early in the illness?"
-      },
-      "answer": {
-        "zh-CN": "刚开始有过双眼红、嘴唇红。",
-        "en": "Both eyes and the lips were red early in the illness."
-      },
-      "keywords": {
-        "zh-CN": [
-          "病刚开始时眼睛和嘴唇怎样？",
-          "眼红"
-        ],
-        "en": [
-          "How did the eyes and lips look early in the illness?",
-          "red eyes"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "feeding",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "孩子吃奶和精神怎样？",
-        "en": "How are feeding and alertness?"
-      },
-      "answer": {
-        "zh-CN": "吃得不好，精神差，比平时嗜睡。",
-        "en": "Feeding and general responsiveness are poor, with increased drowsiness."
-      },
-      "keywords": {
-        "zh-CN": [
-          "孩子吃奶和精神怎样？",
-          "吃奶"
-        ],
-        "en": [
-          "How are feeding and alertness?",
-          "feeding"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "rash",
-      "topic": "associated-symptoms",
-      "question": {
-        "zh-CN": "发病后出现过皮疹吗？",
-        "en": "Has a rash appeared during this illness?"
-      },
-      "answer": {
-        "zh-CN": "家长说没有出过皮疹。",
-        "en": "The parent reports no rash."
-      },
-      "keywords": {
-        "zh-CN": [
-          "发病后出现过皮疹吗？",
-          "皮疹"
-        ],
-        "en": [
-          "Has a rash appeared during this illness?",
-          "rash"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "neck-nodes",
-      "topic": "associated-symptoms",
-      "question": {
-        "zh-CN": "有看到颈部淋巴结肿大吗？",
-        "en": "Were swollen neck glands noticed?"
-      },
-      "answer": {
-        "zh-CN": "家长否认颈部淋巴结肿大。",
-        "en": "The parent denies enlarged neck glands."
-      },
-      "keywords": {
-        "zh-CN": [
-          "有看到颈部淋巴结肿大吗？",
-          "颈部肿大"
-        ],
-        "en": [
-          "Were swollen neck glands noticed?",
-          "neck glands"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "cough",
-      "topic": "associated-symptoms",
-      "question": {
-        "zh-CN": "有没有咳嗽？",
-        "en": "Is there a cough?"
-      },
-      "answer": {
-        "zh-CN": "有一点咳嗽。",
-        "en": "There is a slight cough."
-      },
-      "keywords": {
-        "zh-CN": [
-          "有没有咳嗽？",
-          "咳嗽"
-        ],
-        "en": [
-          "isthereacough",
-          "cough"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·现病史（10 d前起病发热，最高38.9 ℃）；家长口吻为教学改写",
+        "en": "Main text · present illness (fever from 10 days before admission, highest 38.9 °C); the parent's wording is a teaching adaptation"
       }
     },
     {
       "id": "onset",
       "topic": "hpi",
       "question": {
-        "zh-CN": "发热前有什么明确诱因？",
-        "en": "Was there an obvious trigger before fever?"
+        "zh-CN": "发烧之前有没有什么诱因？",
+        "en": "Did anything seem to set the fever off?"
       },
       "answer": {
-        "zh-CN": "发热前没有明显诱因。",
-        "en": "There was no obvious trigger."
+        "zh-CN": "（家长）没有，好好的突然就烧起来了，说不出什么原因。",
+        "en": "(Parent) No, nothing — she just started running a temperature out of the blue."
       },
       "keywords": {
         "zh-CN": [
-          "发热前有什么明确诱因？",
-          "诱因"
+          "诱因",
+          "什么原因",
+          "怎么开始",
+          "怎么烧起来",
+          "着凉",
+          "受凉",
+          "起因"
         ],
         "en": [
-          "Was there an obvious trigger before fever?",
-          "trigger"
+          "trigger",
+          "triggered",
+          "cause of the fever",
+          "what caused",
+          "set off the fever",
+          "caught a chill"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "正文·现病史（无明显诱因）；家长口吻为教学改写",
+        "en": "Main text · present illness (no obvious trigger); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "在外面医院用过什么药？打了几天针？",
+        "en": "What treatment has she had at the other hospital?"
+      },
+      "answer": {
+        "zh-CN": "（家长，翻着外院的单子）在那边打了吊针，先是阿莫西林2天，后来换头孢吡肟打了3天，还用过别的，具体我说不清，烧还是不退。",
+        "en": "(Parent, looking at the other hospital's papers) She had drips there — amoxicillin for two days, then cefepime for three — and something else I can't remember. The fever still didn't go."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用过什么药",
+          "用了什么药",
+          "抗生素",
+          "打针",
+          "吊针",
+          "输液",
+          "点滴",
+          "外院治疗",
+          "头孢",
+          "阿莫西林",
+          "消炎药",
+          "用药"
+        ],
+        "en": [
+          "antibiotics",
+          "medicines",
+          "medication",
+          "treatment so far",
+          "drip",
+          "injections",
+          "amoxicillin",
+          "cefepime",
+          "already been given",
+          "other hospital"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史（外院静滴阿莫西林2 d、头孢吡肟3 d“等治疗”，仍发热）；家长口吻为教学改写",
+        "en": "Main text · present illness (IV amoxicillin 2 days and cefepime 3 days “and other treatment” elsewhere; still febrile); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "mucosal",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "刚开始生病的时候，眼睛和嘴唇有没有发红？",
+        "en": "When she first fell ill, were her eyes or lips red?"
+      },
+      "answer": {
+        "zh-CN": "（家长）有的，刚开始两只眼睛都红红的，嘴唇也很红，后来自己就消了。",
+        "en": "(Parent) Yes — at the start both her eyes were red and her lips were very red too. It went away by itself."
+      },
+      "keywords": {
+        "zh-CN": [
+          "眼睛红",
+          "眼红",
+          "红眼",
+          "嘴唇红",
+          "口唇红",
+          "嘴唇",
+          "眼睛",
+          "结膜",
+          "眼睛充血",
+          "嘴巴红"
+        ],
+        "en": [
+          "red eyes",
+          "eyes red",
+          "bloodshot",
+          "conjunctivitis",
+          "red lips",
+          "lips",
+          "eyes",
+          "mouth red",
+          "pink eye"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（病初有过双眼红、口唇红）；家长口吻为教学改写",
+        "en": "Main text · present illness (red eyes and red lips early in the illness); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "feeding",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "孩子吃奶怎么样？精神好不好？",
+        "en": "How is she feeding, and how alert is she?"
+      },
+      "answer": {
+        "zh-CN": "（家长）吃奶很差，没什么精神，比平时嗜睡多了。",
+        "en": "(Parent) She isn't feeding well and she's much sleepier than usual."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃奶",
+          "喝奶",
+          "吃得怎么样",
+          "胃口",
+          "精神",
+          "嗜睡",
+          "爱睡",
+          "睡得多",
+          "没精神",
+          "反应"
+        ],
+        "en": [
+          "feeding",
+          "feeds",
+          "milk",
+          "appetite",
+          "alert",
+          "sleepy",
+          "drowsy",
+          "lethargic",
+          "floppy"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史（精神饮食差，嗜睡）；家长口吻为教学改写",
+        "en": "Main text · present illness (poor spirits and feeding, drowsy); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "cough",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "咳嗽吗？",
+        "en": "Has she been coughing?"
+      },
+      "answer": {
+        "zh-CN": "（家长）有一点咳嗽，不厉害。",
+        "en": "(Parent) A little cough, nothing much."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咳嗽",
+          "咳不咳",
+          "有痰",
+          "咳得厉害"
+        ],
+        "en": [
+          "cough",
+          "coughing",
+          "chesty",
+          "phlegm"
         ]
       },
       "disclosure": "on-ask",
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·现病史（稍咳）；家长口吻为教学改写",
+        "en": "Main text · present illness (slight cough); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "rash",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "生病以来出过皮疹吗？",
+        "en": "Has she had a rash at any point?"
+      },
+      "answer": {
+        "zh-CN": "（家长）没出过疹子。",
+        "en": "(Parent) No, she's never had a rash."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮疹",
+          "出疹",
+          "疹子",
+          "红疹",
+          "起疹"
+        ],
+        "en": [
+          "rash",
+          "spots",
+          "skin rash",
+          "blotches"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "正文·现病史（家长否认皮疹）；家长口吻为教学改写",
+        "en": "Main text · present illness (the parents deny a rash); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "neck-nodes",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "脖子上有没有摸到肿大的淋巴结或包块？",
+        "en": "Have you felt any swollen glands or lumps in her neck?"
+      },
+      "answer": {
+        "zh-CN": "（家长）没有，脖子上没摸到什么包。",
+        "en": "(Parent) No, I haven't felt any lumps in her neck."
+      },
+      "keywords": {
+        "zh-CN": [
+          "脖子",
+          "颈部",
+          "颈部淋巴结",
+          "淋巴结",
+          "淋巴结肿大",
+          "脖子上有包",
+          "包块",
+          "颈淋巴"
+        ],
+        "en": [
+          "neck",
+          "glands",
+          "swollen glands",
+          "lymph nodes",
+          "lumps",
+          "neck lump"
+        ]
+      },
+      "disclosure": "on-ask",
+      "source": {
+        "zh-CN": "正文·现病史（家长否认颈淋巴结肿大）；家长口吻为教学改写",
+        "en": "Main text · present illness (the parents deny cervical lymph-node swelling); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "hands-feet",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "刚开始她的手脚有没有红肿？",
+        "en": "Were her hands or feet red or puffy at the start?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手脚",
+          "手脚红肿",
+          "手掌",
+          "脚底",
+          "手指",
+          "脚趾",
+          "手脚肿"
+        ],
+        "en": [
+          "hands",
+          "feet",
+          "hands and feet",
+          "puffy hands",
+          "swollen feet",
+          "palms",
+          "soles"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
       }
     },
     {
       "id": "birth",
       "topic": "developmental",
       "question": {
-        "zh-CN": "出生孕周和分娩情况怎样？",
-        "en": "What were the gestational age at birth and delivery details?"
+        "zh-CN": "她是足月出生的吗？出生时顺利吗？",
+        "en": "Was she born at term, and was the birth straightforward?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "出生孕周和分娩情况怎样？"
+          "足月",
+          "早产",
+          "出生",
+          "生的时候",
+          "顺产",
+          "剖宫产",
+          "出生体重",
+          "孕周"
         ],
         "en": [
-          "What were the gestational age at birth and delivery details?"
+          "born",
+          "birth",
+          "term",
+          "premature",
+          "delivery",
+          "gestation",
+          "birth weight"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "feeding-type",
+      "topic": "other",
+      "question": {
+        "zh-CN": "她吃母乳还是奶粉？",
+        "en": "Is she breastfed or on formula?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "母乳",
+          "奶粉",
+          "喂养方式",
+          "人工喂养",
+          "混合喂养"
+        ],
+        "en": [
+          "breastfed",
+          "breast milk",
+          "formula",
+          "bottle",
+          "breastfeeding"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "urine",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "这几天尿多不多？一天换几次尿布？",
+        "en": "How many wet nappies has she had these last few days?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "尿",
+          "小便",
+          "尿布",
+          "尿量",
+          "尿不湿",
+          "撒尿"
+        ],
+        "en": [
+          "wee",
+          "urine",
+          "nappies",
+          "wet nappies",
+          "diapers",
+          "passing urine"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "sick-contacts",
+      "topic": "other",
+      "question": {
+        "zh-CN": "家里或身边最近有没有人发烧、生病？",
+        "en": "Has anyone around her been ill or feverish recently?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里有人生病",
+          "接触",
+          "传染",
+          "身边有人",
+          "别人发烧",
+          "生病的人"
+        ],
+        "en": [
+          "anyone ill",
+          "sick contacts",
+          "contact",
+          "infectious",
+          "anyone at home ill",
+          "unwell people"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "maternal",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "妈妈生她的时候有没有发烧？产前查过B族链球菌吗？",
+        "en": "Did her mother have a fever around the birth, or a group B strep test in pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "妈妈发烧",
+          "产时发热",
+          "B族链球菌",
+          "gbs",
+          "产前检查",
+          "怀孕时"
+        ],
+        "en": [
+          "mother fever",
+          "group b strep",
+          "gbs",
+          "pregnancy",
+          "during labour",
+          "antenatal"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
       }
     },
     {
       "id": "immunisation",
       "topic": "immunisation",
       "question": {
-        "zh-CN": "出生后接种过什么疫苗？",
-        "en": "Which vaccines have been given since birth?"
+        "zh-CN": "出生后打过哪些疫苗？",
+        "en": "Which vaccines has she had since birth?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "出生后接种过什么疫苗？"
+          "疫苗",
+          "打预防针",
+          "预防针",
+          "接种",
+          "卡介苗",
+          "乙肝疫苗"
         ],
         "en": [
-          "Which vaccines have been given since birth?"
+          "vaccines",
+          "vaccination",
+          "jabs",
+          "immunisations",
+          "bcg",
+          "hepatitis b vaccine"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
       }
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "有已知药物过敏吗？",
-        "en": "Are medicine allergies known?"
+        "zh-CN": "她对什么药过敏吗？",
+        "en": "Is she allergic to any medicines?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "有已知药物过敏吗？"
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对什么药过敏"
         ],
         "en": [
-          "Are medicine allergies known?"
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "family",
-      "topic": "family",
-      "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Is there similar illness in the family?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
-        "zh-CN": [
-          "家族中有类似疾病吗？"
-        ],
-        "en": [
-          "Is there similar illness in the family?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
       }
     },
     {
       "id": "pmh",
       "topic": "pmh",
       "question": {
-        "zh-CN": "此次之前有住院或慢性疾病吗？",
-        "en": "Were there earlier admissions or chronic conditions?"
+        "zh-CN": "这次之前她还生过别的病、住过院吗？",
+        "en": "Before this, has she had any other illness or been in hospital?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "此次之前有住院或慢性疾病吗？"
+          "以前生过病",
+          "住过院",
+          "既往",
+          "以前的病",
+          "其他病"
         ],
         "en": [
-          "Were there earlier admissions or chronic conditions?"
+          "previous illness",
+          "hospital before",
+          "past medical history",
+          "beforethis",
+          "other illnesses"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
       }
     },
     {
-      "id": "smoking",
-      "topic": "social",
+      "id": "family",
+      "topic": "family",
       "question": {
-        "zh-CN": "照护环境中有烟草暴露吗？",
-        "en": "Is there tobacco exposure in the care environment?"
+        "zh-CN": "家里有人得过类似的病或者心脏病吗？",
+        "en": "Has anyone in the family had a similar illness or heart disease?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
+        "zh-CN": "（家长）这个她的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in her notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "照护环境中有烟草暴露吗？"
+          "家里人",
+          "家族",
+          "遗传",
+          "心脏病",
+          "类似的病",
+          "亲戚"
         ],
         "en": [
-          "Is there tobacco exposure in the care environment?"
+          "family",
+          "relatives",
+          "runs in the family",
+          "heart disease",
+          "similar illness"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "alcohol",
-      "topic": "social",
-      "question": {
-        "zh-CN": "孕期是否有酒精暴露记录？",
-        "en": "Is prenatal alcohol exposure recorded?"
-      },
-      "answer": {
-        "zh-CN": "原报告未记录这项信息；不能据此认为正常或不存在。",
-        "en": "This information is not recorded; absence of documentation is not a normal or negative finding."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "孕期是否有酒精暴露记录？"
+          "生病的人",
+          "接触"
         ],
         "en": [
-          "Is prenatal alcohol exposure recorded?"
+          "contact",
+          "anyone ill"
         ]
       },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "occupation",
-      "topic": "social",
-      "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
-        ],
-        "en": [
-          "What are your work and living circumstances?",
-          "occupation"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
-        ],
-        "en": [
-          "How independent were you before this illness?",
-          "independence"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
       }
     },
     {
       "id": "expectations",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "您现在最担心的是什么？",
+        "en": "What worries you most at the moment?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "（家长）烧了这么多天，打针也不见好……我们就怕是什么大病。她到底是怎么了？",
+        "en": "(Parent) All these days of fever and the drips haven't helped… we're scared it's something serious. What's wrong with her?"
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "害怕",
+          "顾虑",
+          "最怕",
+          "着急"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worried",
+          "worries",
+          "concerns",
+          "scared",
+          "afraid",
+          "expect"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "教学改写：原报告未记录家长的想法与担忧，此为通用表述，不含病历事实",
+        "en": "Teaching adaptation: the report does not record the parent's ideas or concerns; a generic statement with no clinical facts"
+      }
+    },
+    {
+      "id": "status-discharge",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "她这几天怎么样了？",
+        "en": "How has she been these last few days?"
+      },
+      "answer": {
+        "zh-CN": "（家长）用药两天以后就不烧了，现在吃奶、精神都好了。",
+        "en": "(Parent) Two days after the treatment the fever went, and now she's feeding and alert again."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这几天怎么样",
+          "现在怎么样",
+          "好点了吗",
+          "还烧吗",
+          "退烧了吗",
+          "最近怎样"
+        ],
+        "en": [
+          "howisshenow",
+          "better",
+          "still feverish",
+          "fever gone",
+          "these last few days",
+          "improving"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "discharge"
+      ],
+      "supersedes": [
+        "presentation",
+        "feeding",
+        "cough"
+      ],
+      "source": {
+        "zh-CN": "正文·诊疗经过（2 d后体温降至正常，住院11 d临床症状消失）；家长口吻为教学改写",
+        "en": "Main text · inpatient course (afebrile after 2 days; symptoms resolved during the 11-day stay); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "meds-discharge",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "回家以后她要吃什么药？",
+        "en": "What medicine is she going home on?"
+      },
+      "answer": {
+        "zh-CN": "（家长）医生说回家要吃阿司匹林，一次50毫克，一天两次；还让我们别带她接触出水痘的人。",
+        "en": "(Parent) The doctors said aspirin at home, 50 milligrams twice a day — and to keep her away from anyone with chickenpox."
+      },
+      "keywords": {
+        "zh-CN": [
+          "回家吃什么药",
+          "出院带药",
+          "现在吃什么药",
+          "阿司匹林",
+          "吃什么药"
+        ],
+        "en": [
+          "goinghomeon",
+          "discharge medicine",
+          "aspirin",
+          "medicine now",
+          "take at home"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "phases": [
+        "discharge"
+      ],
+      "supersedes": [
+        "medications"
+      ],
+      "source": {
+        "zh-CN": "正文·诊疗经过（出院后服阿司匹林50 mg、2次/d，嘱避免与水痘患者接触）；家长口吻为教学改写",
+        "en": "Main text · inpatient course (aspirin 50 mg twice daily after discharge; advised to avoid contact with varicella); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "status-followup",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "出院以后她身体怎么样？",
+        "en": "How has she been since she went home?"
+      },
+      "answer": {
+        "zh-CN": "（家长）出院后没再发烧，吃得好、长得也好，现在3岁多了；医生说心脏右边那根血管还没完全恢复，要一直复查。",
+        "en": "(Parent) No more fevers since she came home; she eats well and has grown well — she's over three now. The doctors say one of the heart's blood vessels, on the right, still hasn't fully recovered, so she keeps having check-ups."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出院以后",
+          "出院后",
+          "现在怎么样",
+          "身体怎么样",
+          "长得怎么样",
+          "复查"
+        ],
+        "en": [
+          "since she went home",
+          "since discharge",
+          "howisshenowadays",
+          "growing",
+          "check-ups",
+          "doing nowadays"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "presentation",
+        "feeding",
+        "cough",
+        "status-discharge"
+      ],
+      "source": {
+        "zh-CN": "正文·随访（体温、精神饮食正常，生长发育正常；右冠状动脉仍未完全恢复，继续随访）；家长口吻为教学改写",
+        "en": "Main text · follow-up (afebrile, feeding normally, normal growth and development; the right coronary artery has not fully recovered; follow-up continues); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "meds-followup",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "这几年一直在吃什么药？",
+        "en": "What medicine has she been taking over these years?"
+      },
+      "answer": {
+        "zh-CN": "（家长）一直吃阿司匹林。出院两个月后加到一次100毫克、一天两次；快3岁时又改成一次100毫克、一天三次，到现在还这么吃。",
+        "en": "(Parent) Aspirin the whole time. Two months after discharge it went up to 100 milligrams twice a day, and when she was nearly three it changed to 100 milligrams three times a day. She's still on that."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这几年吃什么药",
+          "一直吃什么药",
+          "现在吃什么药",
+          "阿司匹林",
+          "吃药"
+        ],
+        "en": [
+          "taking over these years",
+          "medicine now",
+          "aspirin",
+          "still taking",
+          "dose now"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "medications",
+        "meds-discharge"
+      ],
+      "source": {
+        "zh-CN": "正文·随访（出院2个月改为100 mg、2次/d；2岁11个月改为100 mg、3次/d；3岁3个月仍为100 mg、3次/d）；家长口吻为教学改写",
+        "en": "Main text · follow-up (100 mg twice daily from 2 months after discharge; 100 mg three times daily from 2 years 11 months; unchanged at 3 years 3 months); the parent's wording is a teaching adaptation"
       }
     }
   ],
@@ -692,60 +1146,181 @@
       "id": "general",
       "system": "general",
       "maneuver": {
-        "zh-CN": "检查体温、反应和前囟",
-        "en": "Examine temperature, responsiveness and fontanelle"
+        "zh-CN": "观察一般情况和反应，测体温",
+        "en": "Observe her general condition and responsiveness; take her temperature"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "精神状态",
+          "反应",
+          "体温",
+          "测体温",
+          "看看孩子",
+          "整体情况",
+          "缺氧"
+        ],
+        "en": [
+          "general condition",
+          "general appearance",
+          "responsiveness",
+          "temperature",
+          "howshelooks",
+          "alertness",
+          "hypoxia"
+        ]
       },
       "finding": {
-        "zh-CN": "入院体温37.4℃后升至38.5℃，嗜睡、一般情况差；前囟平，2.5×2.5 cm且张力较高，颈抵抗可疑，无缺氧征。",
-        "en": "Admission temperature was 37.4°C, later 38.5°C, with drowsiness and poor general condition. The flat 2.5 × 2.5 cm fontanelle had increased tension; neck resistance was equivocal and hypoxic signs absent."
+        "zh-CN": "入院体温37.4 ℃，之后升至38.5 ℃；一般情况差，嗜睡；无缺氧征。体重4.3 kg。",
+        "en": "Temperature 37.4 °C on admission, later rising to 38.5 °C; poor general condition, drowsy; no signs of hypoxia. Weight 4.3 kg."
       },
       "abnormal": true,
+      "requires": [
+        "thermometer"
+      ],
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·入院体检：体温37.4 ℃后升至38.5 ℃，体重4.3 kg，一般情况差，嗜睡，缺氧征(–)",
+        "en": "Main text · admission examination: T 37.4 °C rising to 38.5 °C, weight 4.3 kg, poor general condition, drowsy, no signs of hypoxia"
+      }
+    },
+    {
+      "id": "fontanelle",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "摸前囟，检查颈部",
+        "en": "Feel the fontanelle and check the neck"
+      },
+      "keywords": {
+        "zh-CN": [
+          "前囟",
+          "囟门",
+          "颈抵抗",
+          "脖子硬",
+          "脑膜刺激征",
+          "颈强直",
+          "神经系统"
+        ],
+        "en": [
+          "fontanelle",
+          "neck stiffness",
+          "meningism",
+          "meningeal signs",
+          "neck",
+          "neurological"
+        ]
+      },
+      "finding": {
+        "zh-CN": "前囟平，2.5 cm×2.5 cm，张力较高；颈抵抗可疑。",
+        "en": "Anterior fontanelle flat, 2.5 × 2.5 cm, with rather raised tension; equivocal neck stiffness."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体检：前囟平，2.5 cm×2.5 cm，张力较高，颈抵抗可疑",
+        "en": "Main text · admission examination: anterior fontanelle flat, 2.5 × 2.5 cm, tension rather high, neck stiffness equivocal"
       }
     },
     {
       "id": "mucosa",
       "system": "heent",
       "maneuver": {
-        "zh-CN": "检查眼、口唇、皮肤及颈部淋巴结",
-        "en": "Examine eyes, lips, skin and cervical nodes"
+        "zh-CN": "检查眼睛、口唇、皮肤和颈部淋巴结",
+        "en": "Look at the eyes, lips, skin and neck nodes"
+      },
+      "keywords": {
+        "zh-CN": [
+          "眼睛",
+          "结膜",
+          "口唇",
+          "嘴唇",
+          "皮疹",
+          "皮肤",
+          "淋巴结",
+          "口腔",
+          "杨梅舌"
+        ],
+        "en": [
+          "eyes",
+          "conjunctiva",
+          "lips",
+          "mouth",
+          "rash",
+          "skin",
+          "lymph nodes",
+          "tongue"
+        ]
       },
       "finding": {
-        "zh-CN": "当时球结膜无充血、口唇无皲裂或发红，颈淋巴结不大且无皮疹；这不否定早期家长观察。",
-        "en": "At examination there was no conjunctival injection, lip redness/cracking, enlarged cervical nodes or rash; this does not negate earlier parental observations."
+        "zh-CN": "球结膜无充血；口唇无皲裂、无发红；颈部淋巴结不大；无皮疹。",
+        "en": "No conjunctival injection; lips neither cracked nor red; cervical nodes not enlarged; no rash."
       },
       "abnormal": false,
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·入院体检：球结膜无充血，口唇无皲裂、发红，颈淋巴结无肿大，皮疹(–)",
+        "en": "Main text · admission examination: no conjunctival injection, lips not cracked or red, cervical nodes not enlarged, no rash"
       }
     },
     {
       "id": "cardiorespiratory",
       "system": "cardiovascular",
       "maneuver": {
-        "zh-CN": "检查心肺及基础生命体征",
-        "en": "Examine heart, lungs and basic vital signs"
+        "zh-CN": "听心肺，数心率和呼吸",
+        "en": "Listen to the heart and lungs; count the heart and breathing rates"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心肺",
+          "听诊",
+          "心脏",
+          "杂音",
+          "心率",
+          "呼吸音",
+          "肺部",
+          "啰音",
+          "呼吸频率"
+        ],
+        "en": [
+          "heart",
+          "lungs",
+          "auscultate",
+          "murmur",
+          "heart rate",
+          "breath sounds",
+          "chest",
+          "crackles",
+          "respiratory rate"
+        ]
       },
       "finding": {
-        "zh-CN": "心率124次/分，呼吸36次/分；心律齐、无病理杂音；双肺呼吸音粗，无啰音。",
-        "en": "Heart rate was 124/min and respiratory rate 36/min; rhythm was regular without a pathological murmur, and breath sounds were coarse without crackles."
+        "zh-CN": "心率124次/分，呼吸36次/分；心律齐，未闻及病理性杂音；双肺呼吸音粗，未闻及啰音。",
+        "en": "Heart rate 124/min, respiratory rate 36/min; regular rhythm, no pathological murmur; coarse breath sounds without crackles."
       },
       "abnormal": false,
+      "requires": [
+        "stethoscope"
+      ],
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·入院体检：心率124次/min，呼吸36次/min，心律齐，未闻及病理性杂音，双肺呼吸音粗糙，未闻及啰音",
+        "en": "Main text · admission examination: HR 124/min, RR 36/min, regular rhythm, no pathological murmur, coarse breath sounds, no crackles"
       }
     },
     {
@@ -753,63 +1328,272 @@
       "system": "abdomen",
       "maneuver": {
         "zh-CN": "检查腹部和下肢",
-        "en": "Examine abdomen and lower limbs"
+        "en": "Examine the abdomen and legs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "肝脾",
+          "肝大",
+          "脾大",
+          "下肢",
+          "硬肿"
+        ],
+        "en": [
+          "abdomen",
+          "tummy",
+          "liver",
+          "spleen",
+          "hepatosplenomegaly",
+          "legs",
+          "sclerema"
+        ]
       },
       "finding": {
-        "zh-CN": "腹软，肝脾不大，双下肢无硬肿。",
-        "en": "Abdomen was soft without hepatosplenomegaly; there was no lower-limb sclerema."
+        "zh-CN": "腹软，肝脾不大；双下肢无硬肿。",
+        "en": "Soft abdomen, no hepatosplenomegaly; no sclerema of the legs."
       },
       "abnormal": false,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "正文·入院体检：腹软，肝脾无肿大，双下肢无硬肿",
+        "en": "Main text · admission examination: abdomen soft, no hepatosplenomegaly, no sclerema of the legs"
+      }
+    },
+    {
+      "id": "extremities",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查手指、脚趾末端有无脱皮",
+        "en": "Check the fingertips and toes for peeling"
+      },
+      "keywords": {
+        "zh-CN": [
+          "脱皮",
+          "指端",
+          "趾端",
+          "手指脱皮",
+          "脚趾",
+          "膜状脱皮"
+        ],
+        "en": [
+          "peeling",
+          "desquamation",
+          "fingertips",
+          "toes",
+          "periungual"
+        ]
+      },
+      "finding": {
+        "zh-CN": "整个病程中指（趾）端始终未出现脱皮。",
+        "en": "No periungual peeling of the fingers or toes at any point in the illness."
+      },
+      "abnormal": false,
+      "phases": [
+        "discharge"
+      ],
+      "source": {
+        "zh-CN": "正文·诊疗经过：病程中始终未出现指、趾端脱皮",
+        "en": "Main text · inpatient course: no periungual peeling at any time"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告未记录这项检查。",
+    "en": "The source report does not record this examination."
   },
   "investigations": [
     {
-      "id": "inflammation",
+      "id": "fbc-crp",
       "name": {
-        "zh-CN": "血常规及CRP",
-        "en": "Blood count and CRP"
+        "zh-CN": "血常规、C反应蛋白及血沉",
+        "en": "Blood count, CRP and ESR"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "血常规及CRP"
+          "血常规",
+          "血象",
+          "全血细胞",
+          "c反应蛋白",
+          "crp",
+          "血沉",
+          "炎症指标",
+          "白细胞",
+          "血小板",
+          "血红蛋白"
         ],
         "en": [
-          "Blood count and CRP",
-          "inflammation"
+          "blood count",
+          "fbc",
+          "cbc",
+          "full blood count",
+          "crp",
+          "c-reactive protein",
+          "esr",
+          "inflammatory markers",
+          "platelets",
+          "white cell count",
+          "haemoglobin"
         ]
       },
       "requires": [
         "lab-hematology"
       ],
-      "risk": "none",
+      "risk": "low",
       "value": "essential",
       "results": {
         "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
           "text": {
-            "zh-CN": "Hb 118 g/L，WBC 14.9×10⁹/L，中性粒细胞0.65，血小板822×10⁹/L，CRP >200 mg/L。",
-            "en": "Haemoglobin 118 g/L, WBC 14.9×10⁹/L, neutrophil fraction 0.65, platelets 822×10⁹/L and CRP >200 mg/L."
+            "zh-CN": "血红蛋白118 g/L，白细胞14.9×10⁹/L（中性粒细胞0.65，淋巴细胞0.35），血小板822×10⁹/L，C反应蛋白>200 mg/L。血沉未记录。",
+            "en": "Haemoglobin 118 g/L, white cells 14.9 ×10⁹/L (neutrophils 0.65, lymphocytes 0.35), platelets 822 ×10⁹/L, CRP >200 mg/L. ESR not recorded."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 118,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "White cells"
+              },
+              "value": 14.9,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophil fraction"
+              },
+              "value": 0.65,
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "淋巴细胞比例",
+                "en": "Lymphocyte fraction"
+              },
+              "value": 0.35,
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 822,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "CRP"
+              },
+              "value": ">200",
+              "unit": "mg/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血沉",
+                "en": "ESR"
+              },
+              "value": {
+                "zh-CN": "未记录",
+                "en": "not recorded"
+              },
+              "unit": "mm/h"
+            }
+          ],
+          "note": {
+            "zh-CN": "原报告未给出参考范围。",
+            "en": "The report gives no reference ranges."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
+          }
+        },
+        "discharge": {
           "available": true,
+          "date": {
+            "zh-CN": "出院前（住院第11天前后）",
+            "en": "Before discharge (around hospital day 11)"
+          },
+          "text": {
+            "zh-CN": "出院前复查：血红蛋白116 g/L，白细胞8.8×10⁹/L（中性粒细胞0.38，淋巴细胞0.26），血小板915×10⁹/L，C反应蛋白20.9 mg/L。",
+            "en": "Pre-discharge: haemoglobin 116 g/L, white cells 8.8 ×10⁹/L (neutrophils 0.38, lymphocytes 0.26), platelets 915 ×10⁹/L, CRP 20.9 mg/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 116,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "White cells"
+              },
+              "value": 8.8,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophil fraction"
+              },
+              "value": 0.38,
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "淋巴细胞比例",
+                "en": "Lymphocyte fraction"
+              },
+              "value": 0.26,
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 915,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "CRP"
+              },
+              "value": 20.9,
+              "unit": "mg/L"
+            }
+          ],
           "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "原报告未给出参考范围。",
+            "en": "The report gives no reference ranges."
+          },
+          "source": {
+            "zh-CN": "正文·诊疗经过：出院前血常规复查",
+            "en": "Main text · inpatient course: pre-discharge blood count"
           }
         }
       }
@@ -817,39 +1601,95 @@
     {
       "id": "csf",
       "name": {
-        "zh-CN": "脑脊液检查",
-        "en": "Cerebrospinal fluid examination"
+        "zh-CN": "腰椎穿刺：脑脊液常规及生化",
+        "en": "Lumbar puncture: CSF cell count and biochemistry"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
+          "腰穿",
+          "腰椎穿刺",
+          "脑脊液",
+          "脑脊液常规",
+          "脑脊液生化",
+          "csf",
           "脑脊液检查"
         ],
         "en": [
-          "Cerebrospinal fluid examination",
-          "csf"
+          "lumbar puncture",
+          "lp",
+          "csf",
+          "spinal tap",
+          "cerebrospinal fluid",
+          "csf protein"
         ]
       },
       "requires": [
         "lab-chemistry"
       ],
-      "risk": "none",
+      "risk": "moderate",
       "value": "essential",
       "results": {
         "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
           "text": {
-            "zh-CN": "蛋白0.49 g/L；葡萄糖、氯化物及细胞数均报告正常，未给出具体数值。",
-            "en": "Protein was 0.49 g/L; glucose, chloride and cell count were reported normal without numerical values."
+            "zh-CN": "脑脊液蛋白0.49 g/L；葡萄糖、氯化物和细胞数报告均正常（原报告未给出这三项的数值）。",
+            "en": "CSF protein 0.49 g/L; glucose, chloride and cell count reported normal (the report gives no values for these three)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "脑脊液蛋白",
+                "en": "CSF protein"
+              },
+              "value": 0.49,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "脑脊液葡萄糖",
+                "en": "CSF glucose"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "脑脊液氯化物",
+                "en": "CSF chloride"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "脑脊液细胞数",
+                "en": "CSF cell count"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            }
+          ],
+          "note": {
+            "zh-CN": "原报告未给出参考范围；原作者在诊疗经过中称脑脊液蛋白“增高”。",
+            "en": "The report gives no reference ranges; in the inpatient course the authors call the CSF protein “raised”."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
           }
         }
       }
@@ -857,17 +1697,23 @@
     {
       "id": "cultures",
       "name": {
-        "zh-CN": "血及脑脊液培养",
+        "zh-CN": "血培养及脑脊液培养",
         "en": "Blood and CSF cultures"
       },
       "category": "microbiology",
       "aliases": {
         "zh-CN": [
-          "血及脑脊液培养"
+          "血培养",
+          "脑脊液培养",
+          "培养",
+          "细菌培养",
+          "病原学"
         ],
         "en": [
-          "Blood and CSF cultures",
-          "cultures"
+          "blood culture",
+          "csf culture",
+          "cultures",
+          "bacterial culture"
         ]
       },
       "requires": [
@@ -877,19 +1723,308 @@
       "value": "essential",
       "results": {
         "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
           "text": {
-            "zh-CN": "血及脑脊液细菌培养均阴性。此前已使用抗菌药，阴性培养不能独自排除所有感染。",
-            "en": "Blood and CSF bacterial cultures were negative. Antibiotics had already been used; negative cultures alone do not exclude all infection."
+            "zh-CN": "血及脑脊液细菌培养均阴性。采样前已在外院用过5天抗生素。",
+            "en": "Blood and CSF bacterial cultures: no growth. Five days of antibiotics had been given elsewhere before sampling."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
+          }
+        }
+      }
+    },
+    {
+      "id": "chemistry",
+      "name": {
+        "zh-CN": "肝肾功能、胆红素、心肌酶及血糖",
+        "en": "Liver and renal function, bilirubin, cardiac enzymes and glucose"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肝功能",
+          "肾功能",
+          "生化",
+          "胆红素",
+          "转氨酶",
+          "心肌酶",
+          "血糖",
+          "白蛋白",
+          "alt"
+        ],
+        "en": [
+          "liver function",
+          "renal function",
+          "biochemistry",
+          "bilirubin",
+          "alt",
+          "transaminases",
+          "cardiac enzymes",
+          "glucose",
+          "albumin",
+          "u&e"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "workup": {
           "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
+          "text": {
+            "zh-CN": "总胆红素30.9 μmol/L（直接胆红素9.2 μmol/L，间接胆红素21.7 μmol/L）；丙氨酸转氨酶、天冬氨酸转氨酶、尿素、肌酐、乳酸脱氢酶及其同工酶、α-羟丁酸脱氢酶、肌酸激酶及其同工酶均报告正常；血糖5.8 mmol/L。白蛋白未记录。",
+            "en": "Total bilirubin 30.9 µmol/L (direct 9.2 µmol/L, indirect 21.7 µmol/L); ALT, AST, urea, creatinine, LDH and its isoenzymes, α-hydroxybutyrate dehydrogenase, creatine kinase and CK-MB all reported normal; glucose 5.8 mmol/L. Albumin not recorded."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "总胆红素",
+                "en": "Total bilirubin"
+              },
+              "value": 30.9,
+              "unit": "µmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "直接胆红素",
+                "en": "Direct bilirubin"
+              },
+              "value": 9.2,
+              "unit": "µmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "间接胆红素",
+                "en": "Indirect bilirubin"
+              },
+              "value": 21.7,
+              "unit": "µmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "丙氨酸转氨酶",
+                "en": "ALT"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "血糖",
+                "en": "Glucose"
+              },
+              "value": 5.8,
+              "unit": "mmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "白蛋白",
+                "en": "Albumin"
+              },
+              "value": {
+                "zh-CN": "未记录",
+                "en": "not recorded"
+              },
+              "unit": "g/L"
+            }
+          ],
           "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "原报告未给出参考范围。",
+            "en": "The report gives no reference ranges."
+          },
+          "source": {
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
+          }
+        }
+      }
+    },
+    {
+      "id": "urinalysis",
+      "name": {
+        "zh-CN": "尿常规",
+        "en": "Urinalysis"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "尿常规",
+          "尿检",
+          "小便化验",
+          "尿液"
+        ],
+        "en": [
+          "urinalysis",
+          "urine test",
+          "urine dip",
+          "urine microscopy"
+        ]
+      },
+      "requires": [
+        "lab-urinalysis"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录尿常规。",
+            "en": "The report records no urinalysis."
+          },
+          "source": {
+            "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+            "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "ecg",
+          "ekg",
+          "做个心电图"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "electrocardiogram",
+          "12-lead"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
+          "text": {
+            "zh-CN": "窦性心动过速（原报告未给出心率）。",
+            "en": "Sinus tachycardia (rate not reported)."
+          },
+          "source": {
+            "zh-CN": "正文·入院体检：心电图检查为窦性心动过速",
+            "en": "Main text · admission examination: ECG showed sinus tachycardia"
+          }
+        }
+      }
+    },
+    {
+      "id": "cxr",
+      "name": {
+        "zh-CN": "胸部X线片",
+        "en": "Chest radiograph"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "胸部x线",
+          "x光",
+          "拍片",
+          "胸部平片"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest radiograph",
+          "chest film"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
+          "text": {
+            "zh-CN": "双肺纹理增多。",
+            "en": "Increased lung markings on both sides."
+          },
+          "source": {
+            "zh-CN": "正文·影像学检查",
+            "en": "Main text · imaging"
+          }
+        }
+      }
+    },
+    {
+      "id": "abdo-us",
+      "name": {
+        "zh-CN": "肝、胆、脾、双肾超声",
+        "en": "Ultrasound of the liver, gallbladder, spleen and kidneys"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "腹部超声",
+          "腹部b超",
+          "肝胆b超",
+          "b超",
+          "肝胆脾肾"
+        ],
+        "en": [
+          "abdominal ultrasound",
+          "abdominal us",
+          "liver ultrasound",
+          "gallbladder",
+          "renal ultrasound"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
+          "text": {
+            "zh-CN": "肝、胆、脾、双肾未见明显异常。",
+            "en": "Liver, gallbladder, spleen and both kidneys: no obvious abnormality."
+          },
+          "source": {
+            "zh-CN": "正文·影像学检查",
+            "en": "Main text · imaging"
           }
         }
       }
@@ -897,17 +2032,25 @@
     {
       "id": "echo",
       "name": {
-        "zh-CN": "超声心动图",
-        "en": "Echocardiography"
+        "zh-CN": "超声心动图（心脏彩超）",
+        "en": "Echocardiogram"
       },
       "category": "imaging",
       "aliases": {
         "zh-CN": [
-          "超声心动图"
+          "超声心动图",
+          "心脏彩超",
+          "心超",
+          "心脏超声",
+          "冠脉",
+          "冠状动脉"
         ],
         "en": [
-          "Echocardiography",
-          "echo"
+          "echocardiogram",
+          "echo",
+          "cardiac ultrasound",
+          "coronary arteries",
+          "heart scan"
         ]
       },
       "requires": [
@@ -917,59 +2060,109 @@
       "value": "essential",
       "results": {
         "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原报告未注明日期）",
+            "en": "After admission (day not stated)"
+          },
           "text": {
-            "zh-CN": "左冠状动脉3.0 mm、右冠状动脉3.1–4.7 mm，内膜均毛糙；报告分别为轻度与中度扩张，另有漏斗型动脉导管未闭。未提供身高或冠脉Z值。",
-            "en": "The left coronary artery was 3.0 mm and the right 3.1–4.7 mm, both with irregular intima; reported as mild and moderate dilatation, respectively, with funnel-shaped patent ductus arteriosus. Height and coronary Z scores were unavailable."
+            "zh-CN": "（1）左冠状动脉轻度扩张（3.0 mm），内膜毛糙；右冠状动脉中度扩张（3.1–4.7 mm），内膜毛糙。（2）动脉导管未闭（漏斗型）。",
+            "en": "(1) Left coronary artery mildly dilated (3.0 mm) with irregular intima; right coronary artery moderately dilated (3.1–4.7 mm) with irregular intima. (2) Patent ductus arteriosus (funnel-shaped)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "左冠状动脉内径",
+                "en": "Left coronary artery diameter"
+              },
+              "value": 3.0,
+              "unit": "mm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "右冠状动脉内径",
+                "en": "Right coronary artery diameter"
+              },
+              "value": "3.1–4.7",
+              "unit": "mm"
+            }
+          ],
+          "note": {
+            "zh-CN": "报告按绝对内径分级，未给出体表面积或Z值；入院身长未记录。",
+            "en": "Graded by absolute diameter, with no body surface area or Z-scores; length on admission was not recorded."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
+            "zh-CN": "正文·影像学检查：心脏彩超",
+            "en": "Main text · imaging: echocardiogram"
+          }
+        },
+        "followup": {
           "available": true,
+          "date": {
+            "zh-CN": "出院后2个月至3岁3个月",
+            "en": "2 months after discharge to age 3 years 3 months"
+          },
+          "text": {
+            "zh-CN": "出院后2个月：冠状动脉病变无明显好转（未给出内径）。约半年后：动脉导管已关闭；右冠状动脉4.2 mm、左冠状动脉2.8 mm，内膜均欠光滑。2岁11个月：左冠状动脉正常，右冠状动脉3.9 mm，内膜欠光滑。3岁3个月：左冠状动脉正常，右冠状动脉3.4 mm，内膜欠光滑。",
+            "en": "2 months after discharge: coronary lesions not clearly improved (no diameters given). About 6 months later: ductus closed; right coronary artery 4.2 mm and left 2.8 mm, both with irregular intima. At 2 years 11 months: left coronary artery normal, right 3.9 mm with irregular intima. At 3 years 3 months: left normal, right 3.4 mm with irregular intima."
+          },
           "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "均为绝对内径，未给出Z值；3岁3个月时身高96 cm、体重13 kg。",
+            "en": "All absolute diameters, no Z-scores; at 3 years 3 months height was 96 cm and weight 13 kg."
+          },
+          "source": {
+            "zh-CN": "正文·随访：彩超复查",
+            "en": "Main text · follow-up: repeat echocardiograms"
           }
         }
       }
     },
     {
-      "id": "other-tests",
+      "id": "course",
       "name": {
-        "zh-CN": "胸片与其他化验",
-        "en": "Chest radiograph and other laboratory tests"
+        "zh-CN": "调阅住院经过及出院记录",
+        "en": "Review the inpatient course and discharge record"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "胸片与其他化验"
+          "住院经过",
+          "出院记录",
+          "病程记录",
+          "住院记录",
+          "治疗经过"
         ],
         "en": [
-          "Chest radiograph and other laboratory tests",
-          "other-tests"
+          "inpatient course",
+          "discharge record",
+          "discharge summary",
+          "treatment given",
+          "hospital course"
         ]
       },
       "requires": [
         "records"
       ],
       "risk": "none",
-      "value": "essential",
+      "value": "useful",
       "results": {
-        "workup": {
+        "discharge": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院第1–11天",
+            "en": "Hospital days 1–11"
+          },
           "text": {
-            "zh-CN": "胸片双肺纹理增多，腹部超声未见明显异常。总胆红素30.9 μmol/L、直接9.2、间接21.7；血糖5.8 mmol/L；肝酶、肾功能及所列心肌酶均报告正常。",
-            "en": "Chest radiograph showed increased bilateral markings and abdominal ultrasound no clear abnormality. Total bilirubin was 30.9 µmol/L, direct 9.2 and indirect 21.7; glucose 5.8 mmol/L. Liver enzymes, renal function and listed cardiac enzymes were reported normal."
+            "zh-CN": "原报告的处理：诊断为不完全川崎病并发无菌性脑膜炎后，给予甘露醇“脱水降颅压”（剂量未记录），静脉滴注丙种球蛋白7.5 g 1次（按入院体重4.3 kg约1.7 g/kg，推算；输注时的病程日和输注时长未记录），口服阿司匹林100 mg、每日2次（约47 mg/kg/日，推算）及对症治疗。2天后体温降至正常，住院11天临床症状消失，好转出院。出院前复查：血红蛋白116 g/L，白细胞8.8×10⁹/L，血小板915×10⁹/L，C反应蛋白20.9 mg/L。整个病程未出现指（趾）端脱皮。出院带药：阿司匹林50 mg、每日2次（按入院体重约23 mg/kg/日，推算）；定期复查，嘱避免与水痘患者接触。",
+            "en": "The report's treatment: after the diagnosis of incomplete Kawasaki disease with aseptic meningitis she received mannitol “to dehydrate and lower intracranial pressure” (dose not recorded), IV immunoglobulin 7.5 g once (about 1.7 g/kg at the admission weight of 4.3 kg, derived; the illness day and infusion time are not recorded), oral aspirin 100 mg twice daily (about 47 mg/kg/day, derived) and supportive care. She was afebrile 2 days later, her symptoms resolved during the 11-day stay and she went home improved. Pre-discharge: haemoglobin 116 g/L, white cells 8.8 ×10⁹/L, platelets 915 ×10⁹/L, CRP 20.9 mg/L. No periungual peeling at any time. Discharge medicine: aspirin 50 mg twice daily (about 23 mg/kg/day at the admission weight, derived); regular review, and advice to avoid contact with anyone who has chickenpox."
+          },
+          "note": {
+            "zh-CN": "甘露醇为原作者依据前囟张力作出的历史处理；病历未记录颅内压增高的其他证据。mg/kg为本病例推算，非原文。",
+            "en": "Mannitol was the authors' historical choice, based on the fontanelle tension; the record shows no other evidence of raised intracranial pressure. The mg/kg values are derived for this case, not stated in the report."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "正文·诊疗经过",
+            "en": "Main text · inpatient course"
           }
         }
       }
@@ -977,17 +2170,24 @@
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "调阅出院后随访记录",
+        "en": "Review the follow-up record"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访记录",
+          "门诊随访",
+          "复查记录",
+          "随访",
+          "远期结局"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "follow-up record",
+          "follow up",
+          "clinic follow-up",
+          "outcome",
+          "later reviews"
         ]
       },
       "requires": [
@@ -997,35 +2197,616 @@
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后2个月至3岁3个月",
+            "en": "2 months after discharge to age 3 years 3 months"
+          },
           "text": {
-            "zh-CN": "原报告用静脉免疫球蛋白、阿司匹林及甘露醇等治疗，2天后退热，住院11天出院；出院时血小板915×10⁹/L、CRP 20.9 mg/L。病程始终未出现指趾脱皮。2个月后冠脉无明显改善；半年时右冠4.2 mm、左冠2.8 mm且动脉导管关闭。3岁3个月时生长发育及神经检查正常，左冠正常，右冠仍3.4 mm、内膜欠光滑，继续随访。历史长期阿司匹林剂量不作为本教学推荐。",
-            "en": "The report used IV immunoglobulin, aspirin, mannitol and supportive care. Fever resolved in two days and discharge followed 11 hospital days, with platelets 915×10⁹/L and CRP 20.9 mg/L. Digital peeling never appeared. Coronary changes persisted at two months; at six months the right coronary artery was 4.2 mm and left 2.8 mm, with ductal closure. At age 3 years 3 months growth, development and neurological examination were normal; the left coronary artery was normal but the right remained 3.4 mm with irregular intima, requiring continued follow-up. Historical long-term aspirin doses are not recommended by this teaching case."
+            "zh-CN": "出院后2个月：体温正常，精神饮食正常；超声心动图示冠状动脉病变无明显好转；血小板652×10⁹/L；阿司匹林改为100 mg、每日2次。约半年后：生长发育正常，精神饮食好；动脉导管已关闭，右冠状动脉4.2 mm、左冠状动脉2.8 mm，内膜均欠光滑；血小板正常；继服阿司匹林100 mg、每日2次。2岁11个月：一般情况好，心肺正常，血小板正常；左冠状动脉正常，右冠状动脉3.9 mm、内膜欠光滑；阿司匹林改为100 mg、每日3次。3岁3个月：身高96 cm，体重13 kg，生长发育正常，智力好，心肺及神经系统检查正常，血常规、血小板正常；左冠状动脉正常，右冠状动脉3.4 mm、内膜欠光滑；继续随访，阿司匹林仍为100 mg、每日3次（约23 mg/kg/日，推算）。原作者记录：服用阿司匹林3年2个月未见明显不良反应。",
+            "en": "2 months after discharge: afebrile, feeding and alert; echocardiogram: coronary lesions not clearly improved; platelets 652 ×10⁹/L; aspirin increased to 100 mg twice daily. About 6 months later: normal growth and development, feeding well; ductus closed; right coronary artery 4.2 mm and left 2.8 mm, both with irregular intima; platelets normal; aspirin 100 mg twice daily continued. At 2 years 11 months: well, heart and lungs normal, platelets normal; left coronary artery normal, right 3.9 mm with irregular intima; aspirin changed to 100 mg three times daily. At 3 years 3 months: height 96 cm, weight 13 kg, normal growth and development, bright, normal heart, lungs and neurological examination, normal blood count and platelets; left coronary artery normal, right 3.4 mm with irregular intima; follow-up continues on aspirin 100 mg three times daily (about 23 mg/kg/day, derived). The authors record no obvious adverse effects over 3 years 2 months of aspirin."
+          },
+          "note": {
+            "zh-CN": "日期已改为相对时间；mg/kg为本病例推算。原报告的阿司匹林剂量为历史做法，不是现行推荐（见复盘）。",
+            "en": "Dates made relative; mg/kg derived for this case. The report's aspirin doses are historical practice, not current recommendations (see the debrief)."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true,
-          "note": {
-            "zh-CN": "这是既有病历资料调阅，不是对患者重新施行检查；本场景不模拟检查风险或治疗反应。",
-            "en": "This retrieves an existing report rather than performing a new test; this scenario does not simulate procedural risk or treatment response."
+            "zh-CN": "正文·随访",
+            "en": "Main text · follow-up"
           }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [],
+    "exact": {},
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "外周静脉置管",
+        "en": "Peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "置管",
+          "留置针",
+          "开通静脉",
+          "建立静脉通道",
+          "打留置针"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "iv line",
+          "venflon",
+          "peripheral line"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针，妥善固定；置管时可同时采血送检。",
+        "en": "Peripheral IV cannula, well secured; blood samples can be taken at insertion."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "静脉通路已建立，采血已送检。",
+        "en": "IV access is in place and the blood samples have gone to the laboratory."
+      }
+    },
+    {
+      "id": "ivig",
+      "name": {
+        "zh-CN": "静脉注射免疫球蛋白（IVIG）2 g/kg，单次输注",
+        "en": "IV immunoglobulin (IVIG) 2 g/kg, single infusion"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "ivig",
+          "丙种球蛋白",
+          "丙球",
+          "静脉丙种球蛋白",
+          "免疫球蛋白",
+          "静注人免疫球蛋白"
+        ],
+        "en": [
+          "ivig",
+          "immunoglobulin",
+          "iv immunoglobulin",
+          "gamma globulin",
+          "intravenous immunoglobulin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "IVIG 2 g/kg，单次静脉输注，一般10–12小时输完；输注中监测生命体征及输注反应。",
+        "en": "IVIG 2 g/kg as a single IV infusion, usually over 10–12 hours; monitor vital signs and for infusion reactions."
+      },
+      "requires": [
+        "medications",
+        "infusion-pump",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [
+        "ivig-given"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "开始输注：按4.3 kg计算为8.6 g。护士按说明书逐步调快泵速，并记录生命体征。",
+        "en": "Infusion started: 8.6 g for 4.3 kg. The nurse steps up the pump rate as the product sheet directs and charts the observations."
+      }
+    },
+    {
+      "id": "aspirin-acute",
+      "name": {
+        "zh-CN": "阿司匹林（急性期剂量）",
+        "en": "Aspirin (acute-phase dose)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿司匹林",
+          "aspirin",
+          "乙酰水杨酸",
+          "阿斯匹林"
+        ],
+        "en": [
+          "aspirin",
+          "acetylsalicylic acid",
+          "asa"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "小剂量",
+          "3–5",
+          "3-5"
+        ],
+        "en": [
+          "low dose",
+          "low-dose",
+          "3-5",
+          "3–5"
+        ]
+      },
+      "dose": {
+        "zh-CN": "口服30–50 mg/kg/日，分3次（中国2022共识；AHA为中等剂量30–50或大剂量80–100 mg/kg/日）；退热48–72小时后改为3–5 mg/kg每日1次。",
+        "en": "30–50 mg/kg/day orally in 3 divided doses (Chinese 2022 consensus; AHA: moderate 30–50 or high 80–100 mg/kg/day); switch to 3–5 mg/kg once daily 48–72 hours after defervescence."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "已开具：按4.3 kg约每日130–215 mg，分3次口服。",
+        "en": "Prescribed: about 130–215 mg a day for 4.3 kg, in 3 doses by mouth."
+      }
+    },
+    {
+      "id": "z-score",
+      "name": {
+        "zh-CN": "测量身长，按体表面积计算冠脉Z值",
+        "en": "Measure length and calculate coronary Z-scores from body surface area"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "z值",
+          "冠脉z值",
+          "测身长",
+          "量身长",
+          "体表面积",
+          "bsa"
+        ],
+        "en": [
+          "z score",
+          "z-score",
+          "coronary z",
+          "measure length",
+          "body surface area",
+          "bsa"
+        ]
+      },
+      "dose": {
+        "zh-CN": "测身长和体重→体表面积（如Mosteller公式），用同一套Z值公式计算各冠脉节段并在随访中沿用。",
+        "en": "Measure length and weight → body surface area (for example the Mosteller formula), then apply one Z-score equation to each coronary segment and keep it for follow-up."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "echo"
+      },
+      "response": {
+        "zh-CN": "原报告未记录入院身长，所以本病例给不出Z值。按4.3 kg及50–58 cm的常见身长推算，体表面积约0.24–0.26 m²（Mosteller，推算）；在这样的体型下，3.0 mm和4.7 mm的冠脉内径很可能已达冠脉瘤标准。须由儿童心脏科用固定公式计算并据此分级。",
+        "en": "The report does not record her length on admission, so this case cannot give Z-scores. For 4.3 kg and a typical length of 50–58 cm the body surface area is about 0.24–0.26 m² (Mosteller, derived); at that size, coronary diameters of 3.0 and 4.7 mm are very likely aneurysmal. Paediatric cardiology must calculate them with a fixed equation and grade accordingly."
+      }
+    },
+    {
+      "id": "cardiology-consult",
+      "name": {
+        "zh-CN": "请儿童心脏科会诊",
+        "en": "Paediatric cardiology consultation"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "心脏科会诊",
+          "儿童心脏科",
+          "请心脏科",
+          "心内科会诊",
+          "心脏专科"
+        ],
+        "en": [
+          "cardiology",
+          "paediatric cardiology",
+          "cardiology consult",
+          "heart team",
+          "cardiologist"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "read": "echo"
+      },
+      "response": {
+        "zh-CN": "儿童心脏科医生：“冠脉要按Z值分级——请量身长、算体表面积，我们用同一套公式随访。她不到6个月，属高危，可以考虑在IVIG基础上强化初始治疗；抗栓方案等Z值出来再定。”",
+        "en": "Paediatric cardiologist: “Grade the coronaries by Z-score — measure her length, work out the body surface area, and we'll use one equation throughout follow-up. She's under 6 months, so she's high-risk and intensified initial therapy alongside IVIG is worth considering; the antithrombotic plan waits for the Z-scores.”"
+      }
+    },
+    {
+      "id": "steroid-adjunct",
+      "name": {
+        "zh-CN": "糖皮质激素辅助初始治疗（高危患儿，与儿童心脏科商定）",
+        "en": "Adjunctive corticosteroid with initial therapy (high-risk patient, agreed with paediatric cardiology)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "激素",
+          "糖皮质激素",
+          "泼尼松龙",
+          "甲泼尼龙",
+          "强化治疗"
+        ],
+        "en": [
+          "steroid",
+          "corticosteroid",
+          "prednisolone",
+          "methylprednisolone",
+          "intensified therapy"
+        ]
+      },
+      "dose": {
+        "zh-CN": "与IVIG同时开始；具体药物、剂量和疗程由儿童心脏科或川崎病团队确定（AHA 2024：最佳方案尚无定论）。",
+        "en": "Started with IVIG; drug, dose and duration set by paediatric cardiology or the Kawasaki disease team (AHA 2024: the optimal regimen is not settled)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "intervened": "cardiology-consult"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已与儿童心脏科商定并开始。原报告未记录使用糖皮质激素。",
+        "en": "Agreed with paediatric cardiology and started. The report records no corticosteroid."
+      }
+    },
+    {
+      "id": "mannitol",
+      "name": {
+        "zh-CN": "甘露醇（降颅压）",
+        "en": "Mannitol (to lower intracranial pressure)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "甘露醇",
+          "脱水",
+          "降颅压",
+          "脱水剂"
+        ],
+        "en": [
+          "mannitol",
+          "lower intracranial pressure",
+          "osmotic therapy",
+          "dehydrating agent"
+        ]
+      },
+      "dose": {
+        "zh-CN": "20%甘露醇0.25–1 g/kg静脉滴注，20–30分钟滴完（高渗治疗）。",
+        "en": "20% mannitol 0.25–1 g/kg IV over 20–30 minutes (hyperosmolar therapy)."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已给。这是原报告的历史处理（依据前囟张力较高）。病历未记录颅内压增高的其他证据——前囟是平的；高渗治疗用于有颅内压增高或脑疝征象者，现行川崎病指南没有用甘露醇治疗无菌性脑膜炎的推荐，而渗透性利尿会让吃奶差的小婴儿更缺水。",
+        "en": "Given. This was the report's historical choice, based on the fontanelle tension. The record shows no other evidence of raised intracranial pressure — the fontanelle was flat; hyperosmolar therapy is for signs of raised pressure or herniation, current Kawasaki disease guidance does not recommend mannitol for aseptic meningitis, and the osmotic diuresis further dries out a poorly feeding young infant."
+      }
+    },
+    {
+      "id": "antibiotics",
+      "name": {
+        "zh-CN": "继续经验性静脉抗生素（等待培养结果）",
+        "en": "Continue empirical IV antibiotics while cultures are pending"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗生素",
+          "继续抗生素",
+          "头孢",
+          "抗感染",
+          "广谱抗生素"
+        ],
+        "en": [
+          "antibiotics",
+          "continue antibiotics",
+          "broad-spectrum antibiotics",
+          "iv antibiotics"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按本院小婴儿脓毒症方案经验性用药，培养阴性后再评估是否停用。",
+        "en": "Empirical treatment per the local young-infant sepsis protocol, reviewed once the cultures are negative."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 2,
+      "response": {
+        "zh-CN": "已开具。病情危重的发热小婴儿在培养报阴性前继续抗生素是合理的，但它不治疗川崎病，也不能代替IVIG。原报告未说明入院后是否继续用抗生素。",
+        "en": "Prescribed. Continuing antibiotics until the cultures are negative is reasonable in a sick febrile young infant, but it does not treat Kawasaki disease or replace IVIG. The report does not say whether antibiotics were continued after admission."
+      }
+    },
+    {
+      "id": "ibuprofen",
+      "name": {
+        "zh-CN": "布洛芬退热",
+        "en": "Ibuprofen for fever"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "布洛芬",
+          "美林",
+          "退烧药",
+          "非甾体"
+        ],
+        "en": [
+          "ibuprofen",
+          "nurofen",
+          "nsaid",
+          "antipyretic"
+        ]
+      },
+      "dose": {
+        "zh-CN": "布洛芬口服混悬液按体重给药。",
+        "en": "Ibuprofen oral suspension by weight."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "intervened": "aspirin-acute"
+          },
+          {
+            "intervened": "aspirin-low"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "她在服阿司匹林：布洛芬会拮抗阿司匹林不可逆的抗血小板作用（AHA 2017），冠脉扩张的患儿应避免同用；需要退热时用对乙酰氨基酚。",
+        "en": "She is on aspirin: ibuprofen antagonises aspirin's irreversible antiplatelet effect (AHA 2017) and should be avoided in a child with dilated coronary arteries; use paracetamol for fever."
+      },
+      "response": {
+        "zh-CN": "护士暂缓发药并请你复核。",
+        "en": "The nurse holds the dose and asks you to review it."
+      }
+    },
+    {
+      "id": "aspirin-low",
+      "name": {
+        "zh-CN": "小剂量阿司匹林3–5 mg/kg，每日1次（抗血小板）",
+        "en": "Low-dose aspirin 3–5 mg/kg once daily (antiplatelet)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "小剂量阿司匹林",
+          "阿司匹林减量",
+          "抗血小板",
+          "3–5 mg/kg",
+          "3-5mg/kg"
+        ],
+        "en": [
+          "low-dose aspirin",
+          "low dose aspirin",
+          "antiplatelet",
+          "aspirin 3-5",
+          "reduce aspirin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "退热48–72小时后改为3–5 mg/kg口服每日1次；疗程和是否加用其他抗栓药按冠脉Z值危险分层决定。",
+        "en": "From 48–72 hours after defervescence, 3–5 mg/kg orally once daily; duration and any added antithrombotic follow the coronary Z-score risk level."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "intervened": "ivig"
+          },
+          {
+            "phase": "discharge"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已开具：按4.3 kg约13–22 mg每日1次，需用合适的儿童剂型。",
+        "en": "Prescribed: about 13–22 mg once daily for 4.3 kg, in a suitable paediatric formulation."
+      }
+    },
+    {
+      "id": "anticoagulation",
+      "name": {
+        "zh-CN": "低分子肝素抗凝（大型或巨大冠脉瘤时）",
+        "en": "Low-molecular-weight heparin (if a large or giant aneurysm)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗凝",
+          "低分子肝素",
+          "依诺肝素",
+          "华法林",
+          "肝素"
+        ],
+        "en": [
+          "anticoagulation",
+          "lmwh",
+          "enoxaparin",
+          "warfarin",
+          "heparin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在小剂量阿司匹林基础上加用低分子肝素（婴儿剂量，按抗Xa活性调整）或华法林（INR 2.0–3.0），适用于Z值≥10或内径≥8 mm的冠脉瘤；与儿童心脏科、血液科共同管理。",
+        "en": "Added to low-dose aspirin: LMWH (infant dosing, adjusted to anti-Xa activity) or warfarin (INR 2.0–3.0), for aneurysms with Z ≥10 or ≥8 mm; managed with paediatric cardiology and haematology."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "是否抗凝取决于Z值分级：本病例没有身长，无法定级，实际工作中先算Z值再决定。原报告未记录使用抗凝药。",
+        "en": "Whether to anticoagulate depends on the Z-score grade: without her length this case cannot grade it, so in practice the Z-scores come first. The report records no anticoagulant."
+      }
+    },
+    {
+      "id": "discharge-teaching",
+      "name": {
+        "zh-CN": "出院宣教：阿司匹林期间的防护、疫苗安排、复诊",
+        "en": "Discharge teaching: precautions on aspirin, vaccine timing, review"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "出院宣教",
+          "健康教育",
+          "出院指导",
+          "疫苗安排",
+          "水痘",
+          "流感疫苗"
+        ],
+        "en": [
+          "discharge teaching",
+          "discharge advice",
+          "education",
+          "vaccines",
+          "chickenpox",
+          "flu vaccine"
+        ]
+      },
+      "dose": {
+        "zh-CN": "长期服阿司匹林：接触水痘或流感、出现发热时及时就诊（瑞氏综合征风险），每年接种灭活流感疫苗，不用布洛芬；IVIG后11个月内暂缓麻疹、水痘等活疫苗；说明按时复查超声心动图的重要性。",
+        "en": "On long-term aspirin: seek review promptly after contact with chickenpox or influenza or with any fever (Reye syndrome risk), give inactivated influenza vaccine every year, avoid ibuprofen; defer measles and varicella vaccines for 11 months after IVIG; explain why the echocardiogram reviews matter."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "discharge"
+      },
+      "response": {
+        "zh-CN": "家长复述了要点。原报告的医嘱是定期复查、避免接触水痘患者。",
+        "en": "The parent repeats the key points back. The report's advice was regular review and avoiding contact with chickenpox."
+      }
+    },
+    {
+      "id": "echo-follow-up",
+      "name": {
+        "zh-CN": "安排超声心动图随访（按危险分层）",
+        "en": "Arrange echocardiographic follow-up by risk level"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "随访超声",
+          "复查心超",
+          "复查彩超",
+          "安排复查",
+          "门诊随访"
+        ],
+        "en": [
+          "follow-up echo",
+          "repeat echo",
+          "echo follow-up",
+          "arrange review",
+          "clinic review"
+        ]
+      },
+      "dose": {
+        "zh-CN": "高危患儿约1周内首次复查（AHA 2024），此后按冠脉危险分层安排超声心动图及其他评估。",
+        "en": "First review within about 1 week for a high-risk patient (AHA 2024), then echocardiography and other tests by coronary risk level."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "discharge"
+      },
+      "response": {
+        "zh-CN": "已预约儿童心脏科门诊和超声心动图复查。",
+        "en": "Paediatric cardiology clinic and repeat echocardiography booked."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-history",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "向家长了解发热经过",
+        "en": "Take the fever history from the parent"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "烧了几天、最高多少度、在外院用过什么？刚生病时出现过、现在已经看不到的表现有哪些？",
+        "en": "How long, how high, and what has been tried? Which signs appeared early in the illness and may have gone by now?"
+      },
+      "guidance": {
+        "zh-CN": "家长在床旁抱着孩子。问清发热经过、外院治疗、吃奶和精神，以及病初的表现。",
+        "en": "The parent is holding the baby at the bedside. Ask about the fever, treatment elsewhere, feeding and alertness, and how the illness began."
       },
       "completeWhen": {
         "all": [
@@ -1045,14 +2826,18 @@
       }
     },
     {
-      "id": "objective-2",
+      "id": "obj-exam",
       "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "床旁查体",
+        "en": "Examine her"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "精神反应、前囟和颈部怎样？此刻的眼睛、口唇、皮肤和颈部淋巴结又怎样？",
+        "en": "How alert is she, and how are the fontanelle and neck? How do the eyes, lips, skin and neck nodes look right now?"
+      },
+      "guidance": {
+        "zh-CN": "检查一般情况、前囟和颈部、黏膜皮肤及心肺。",
+        "en": "Check her general condition, fontanelle and neck, mucosa and skin, heart and lungs."
       },
       "completeWhen": {
         "all": [
@@ -1060,67 +2845,221 @@
             "examined": "general"
           },
           {
+            "examined": "fontanelle"
+          },
+          {
             "examined": "mucosa"
+          },
+          {
+            "examined": "cardiorespiratory"
           }
         ]
       }
     },
     {
-      "id": "objective-3",
+      "id": "obj-workup",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "安排检查并整合结果",
+        "en": "Investigate and put the results together"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "≤6月龄婴儿发热≥7天时，哪些化验和影像能支持或排除你考虑的诊断？脑脊液结果要和哪个年龄段的参考值比较？",
+        "en": "In an infant of 6 months or younger with 7 days or more of fever, which tests support or exclude what you are considering? Against which age's reference values do you read the CSF?"
       },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      "guidance": {
+        "zh-CN": "先在会诊板决定下一步，再开检查、调阅结果并作出诊断。",
+        "en": "Decide the next step on the case board, then order the tests, read the results and make the diagnosis."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "decided": "next-step"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "fbc-crp",
+            "phase": "workup"
+          },
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "decided": "diagnosis"
           }
         ]
+      }
+    },
+    {
+      "id": "obj-treat",
+      "title": {
+        "zh-CN": "开始急性期治疗",
+        "en": "Start acute treatment"
+      },
+      "hint": {
+        "zh-CN": "病程已到第10天，还值得用什么？她属于哪一类风险？她的冠脉大小应该用什么尺度衡量？",
+        "en": "On illness day 10, what is still worth giving? Which risk group is she in? On what scale should her coronary size be judged?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板上决定治疗，然后开具并给药。",
+        "en": "Decide the treatment on the case board, then prescribe and give it."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "treatment"
+          },
+          {
+            "intervened": "ivig"
+          },
+          {
+            "intervened": "aspirin-acute"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-discharge",
+      "title": {
+        "zh-CN": "制定出院和长期方案",
+        "en": "Plan discharge and long-term care"
+      },
+      "hint": {
+        "zh-CN": "退热后阿司匹林用多大剂量？抗栓强度由什么决定？长期服阿司匹林、刚用过IVIG，对疫苗和感染意味着什么？",
+        "en": "What aspirin dose after the fever settles? What decides how much antithrombotic therapy she needs? What do long-term aspirin and recent IVIG mean for vaccines and infections?"
+      },
+      "guidance": {
+        "zh-CN": "调阅住院经过和出院前复查，在会诊板上决定出院方案。",
+        "en": "Read the inpatient course and pre-discharge tests, then decide the discharge plan on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "course",
+            "phase": "discharge"
+          },
+          {
+            "decided": "long-term"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "复盘原报告的随访",
+        "en": "Review the reported follow-up"
+      },
+      "hint": {
+        "zh-CN": "对照原报告的随访：冠脉怎样变化？当年的阿司匹林剂量与现行推荐差多少？",
+        "en": "Compare the report's follow-up: how did the coronary arteries change, and how far were the doses then from today's advice?"
+      },
+      "guidance": {
+        "zh-CN": "调阅出院后的随访记录。",
+        "en": "Read the follow-up record."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
       }
     }
   ],
   "decisions": [
     {
-      "id": "diagnosis",
+      "id": "next-step",
       "prompt": {
-        "zh-CN": "持续发热和冠脉结果如何整合？",
-        "en": "How should persistent fever and coronary findings be integrated?"
+        "zh-CN": "34日龄女婴发热10天，外院抗生素5天无效；家长说病初双眼和口唇发红，现已消退；现在嗜睡，前囟张力偏高。下一步最合适的是？",
+        "en": "A 34-day-old girl has had 10 days of fever despite 5 days of antibiotics elsewhere; her parent describes red eyes and lips early in the illness, now gone; she is drowsy and her fontanelle feels tense. What is the best next step?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
+            "asked": "presentation"
+          },
+          {
+            "asked": "medications"
+          },
+          {
             "asked": "mucosal"
           },
           {
-            "read": "inflammation",
-            "phase": "workup"
+            "examined": "general"
           },
           {
-            "read": "echo",
+            "examined": "fontanelle"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先向家长问清发热经过、外院治疗和病初的眼睛、嘴唇情况，并检查一般情况和前囟。",
+        "en": "First take the fever history, treatment elsewhere and the early eye and lip changes from the parent, and check her general condition and fontanelle."
+      },
+      "options": [
+        {
+          "id": "parallel-workup",
+          "text": {
+            "zh-CN": "同时按严重细菌感染和不完全川崎病评估：血常规、CRP和血沉、白蛋白、ALT、尿常规和血培养，腰椎穿刺查脑脊液及培养，并尽快做超声心动图",
+            "en": "Evaluate for serious bacterial infection and incomplete Kawasaki disease together: blood count, CRP and ESR, albumin, ALT, urinalysis and blood culture, a lumbar puncture with CSF culture, and an echocardiogram without delay"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。AHA 2017的不完全川崎病流程：≤6月龄婴儿发热≥7天且无其他解释，即使没有主要表现也要查炎症指标，有全身炎症就做超声心动图；她还有2项已消退的主要表现（双眼、口唇）。嗜睡的发热小婴儿仍须培养和脑脊液检查——两条线并行，而不是二选一。",
+            "en": "Correct. The AHA 2017 incomplete-Kawasaki algorithm: an infant of 6 months or younger on day 7 or later of unexplained fever needs inflammatory markers, and an echocardiogram if inflammation is present, even with no principal features — and she has had two transient ones (eyes, lips). A drowsy febrile young infant still needs cultures and CSF: the two evaluations run in parallel, not one instead of the other."
+          }
+        },
+        {
+          "id": "broaden-antibiotics",
+          "text": {
+            "zh-CN": "先升级为更广谱的抗生素，等培养结果；川崎病至少要有4项主要表现才需要考虑",
+            "en": "Escalate to broader-spectrum antibiotics and wait for the cultures; Kawasaki disease only needs considering with at least four principal features"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。“5项中4项”只定义完全型川崎病；小婴儿常常表现不全，却是冠脉风险最高的人群。只换抗生素不找川崎病，会白白耗掉治疗窗（AHA 2017）。",
+            "en": "No. Four of five features defines complete Kawasaki disease only; young infants often have fewer features yet carry the highest coronary risk. Changing antibiotics without looking for Kawasaki disease wastes days of the treatment window (AHA 2017)."
+          }
+        },
+        {
+          "id": "neuro-first",
+          "text": {
+            "zh-CN": "以脑膜炎为主：先做头颅影像并用降颅压药，心脏评估以后再说",
+            "en": "Treat this as meningitis first: brain imaging and drugs to lower intracranial pressure now, the heart later"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。前囟平、张力偏高和可疑颈抵抗需要的是腰穿和培养，而不是在没有颅内压增高证据时就降颅压；这个病威胁的是冠状动脉，超声心动图不能等。",
+            "en": "No. A flat fontanelle with somewhat raised tension and equivocal neck stiffness call for a lumbar puncture and cultures, not for lowering intracranial pressure without evidence that it is raised; what this illness threatens is the coronary arteries, and the echocardiogram cannot wait."
+          }
+        },
+        {
+          "id": "kd-excluded",
+          "text": {
+            "zh-CN": "眼红和唇红已经消退、也没有皮疹，可以排除川崎病，继续观察",
+            "en": "The red eyes and lips have gone and there is no rash, so Kawasaki disease is excluded: observe"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。主要表现常常一过性出现，病史中出现过就算数；今天黏膜检查正常不能抹掉病史（AHA 2017）。观察等于让一个发热、嗜睡的小婴儿得不到评估和治疗。",
+            "en": "No. Principal features are often transient and count when the history reports them; a normal mucosal examination today does not erase them (AHA 2017). Observation leaves a febrile, drowsy young infant unassessed and untreated."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "结合病史、炎症指标、脑脊液、培养和超声心动图，哪种表述最符合证据？",
+        "en": "Putting together the history, inflammatory markers, CSF, cultures and echocardiogram, which statement best fits the evidence?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "fbc-crp",
             "phase": "workup"
           },
           {
@@ -1130,89 +3069,183 @@
           {
             "read": "cultures",
             "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先调阅血常规及CRP、脑脊液、培养和超声心动图结果。",
+        "en": "First read the blood count and CRP, the CSF, the cultures and the echocardiogram."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "incomplete-kd",
           "text": {
-            "zh-CN": "考虑不完全川崎病，报告并诊无菌性脑膜炎；同时保留小婴儿感染评估",
-            "en": "Consider incomplete Kawasaki disease; the report also diagnosed aseptic meningitis, while maintaining infection evaluation in this young infant"
+            "zh-CN": "不完全川崎病：发热≥5天伴2项主要表现、CRP明显升高、血小板增多，超声心动图示冠脉扩张（按她的体型很可能已达冠脉瘤范围）；脑脊液细胞数和蛋白都在该日龄的正常范围内，病历并未证明脑膜炎",
+            "en": "Incomplete Kawasaki disease: fever of 5 days or more with 2 principal features, a markedly raised CRP and thrombocytosis, and coronary dilatation on the echo (very likely aneurysmal at her size); CSF cells and protein are within normal limits for her age, so the record does not demonstrate meningitis"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "早期黏膜症状、持续发热、明显炎症及冠脉异常构成关键证据；脑脊液蛋白改变和阴性培养需结合临床与抗菌药背景解释。",
-            "en": "Earlier mucosal symptoms, persistent fever, marked inflammation and coronary abnormalities form the key evidence; CSF protein and negative cultures require clinical and antibiotic-context interpretation."
+            "zh-CN": "正确。按AHA 2017流程：CRP≥3.0 mg/dL之后，补充实验室标准只满足1项（第7天后血小板≥450×10⁹/L；白细胞14.9×10⁹/L略低于15，ALT正常，白蛋白和尿常规未查），因此由阳性的超声心动图决定。脑脊液蛋白0.49 g/L低于29–42日龄的第95百分位数0.89 g/L（Shah 2011），且无细胞数增多。",
+            "en": "Correct. Following the AHA 2017 algorithm: with CRP of 3.0 mg/dL or more, only one supplementary criterion is met (platelets of 450 ×10⁹/L or more after day 7; white cells of 14.9 ×10⁹/L are just under 15, ALT is normal, albumin and urine were not tested), so the positive echocardiogram decides. A CSF protein of 0.49 g/L is below the 95th centile for 29–42 days (0.89 g/L; Shah 2011), and there is no pleocytosis."
           }
         },
         {
-          "id": "unsupported",
+          "id": "kd-meningitis",
           "text": {
-            "zh-CN": "没有皮疹或当前眼红即可排除川崎病，且培养阴性足以排除感染",
-            "en": "Absent rash or current eye redness excludes Kawasaki disease, and negative cultures exclude infection"
+            "zh-CN": "川崎病并发无菌性脑膜炎：脑脊液蛋白升高，加上嗜睡和前囟张力高，即可诊断",
+            "en": "Kawasaki disease with aseptic meningitis: the raised CSF protein, with the drowsiness and tense fontanelle, makes the diagnosis"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "早期黏膜症状、持续发热、明显炎症及冠脉异常构成关键证据；脑脊液蛋白改变和阴性培养需结合临床与抗菌药背景解释。",
-            "en": "Earlier mucosal symptoms, persistent fever, marked inflammation and coronary abnormalities form the key evidence; CSF protein and negative cultures require clinical and antibiotic-context interpretation."
+            "zh-CN": "这是原报告作者的诊断，但证据不足。0.49 g/L在34日龄属正常（29–42日龄第95百分位数0.89 g/L，Shah 2011），细胞数也正常；川崎病相关的无菌性脑膜炎通常表现为培养阴性的脑脊液细胞数增多。发热、炎症明显的小婴儿出现嗜睡，并不需要用脑膜炎来解释。",
+            "en": "That was the authors' diagnosis, but the evidence does not support it. 0.49 g/L is normal at 34 days (95th centile 0.89 g/L at 29–42 days; Shah 2011) and the cell count was normal; Kawasaki-associated aseptic meningitis is ordinarily a culture-negative CSF pleocytosis. Drowsiness in a febrile, highly inflamed young infant does not need meningitis to explain it."
+          }
+        },
+        {
+          "id": "culture-negative-sepsis",
+          "text": {
+            "zh-CN": "培养阴性的败血症或部分治疗过的细菌性脑膜炎，延长抗生素疗程即可；不足4项主要表现就不是川崎病",
+            "en": "Culture-negative sepsis or partly treated bacterial meningitis — extend the antibiotics; with fewer than four principal features it is not Kawasaki disease"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。采样前用过抗生素确实会降低培养阳性率，但脑脊液细胞数、糖、氯化物正常不支持细菌性脑膜炎，冠脉扩张也不是败血症能解释的；“不足4项”恰恰是不完全川崎病的情形。原作者也以无感染灶、培养阴性、抗生素无效而排除了败血症。",
+            "en": "No. Antibiotics before sampling do lower culture yield, but normal CSF cells, glucose and chloride argue against bacterial meningitis, and sepsis does not explain coronary dilatation; fewer than four features is exactly the incomplete-Kawasaki situation. The authors, too, excluded sepsis: no focus, negative cultures, no response to antibiotics."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "treatment",
       "prompt": {
-        "zh-CN": "应如何制定安全的治疗与复查计划？",
-        "en": "How should a safe treatment and review plan be arranged?"
+        "zh-CN": "诊断明确（病程第10天前后），应怎样开始治疗？",
+        "en": "With the diagnosis made (around illness day 10), how should treatment start?"
       },
       "kind": "single",
       "requires": {
-        "all": [
-          {
-            "decided": "diagnosis"
-          },
-          {
-            "read": "echo",
-            "phase": "workup"
-          },
-          {
-            "read": "other-tests",
-            "phase": "workup"
-          }
-        ]
+        "decided": "diagnosis"
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先在会诊板上作出诊断。",
+        "en": "First make the diagnosis on the case board."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "ivig-high-risk",
           "text": {
-            "zh-CN": "由儿科心脏团队评估免疫治疗和冠脉风险，按当前体重及风险制定抗血小板方案并连续超声随访",
-            "en": "Paediatric cardiology assessment of immunotherapy and coronary risk, with weight/risk-based antiplatelet planning and serial echocardiography"
+            "zh-CN": "立即静脉输注IVIG 2 g/kg（单次）并口服阿司匹林；她<6月龄、诊断时已有冠脉扩张，属高危，与儿童心脏科讨论强化初始治疗（如加用糖皮质激素）；量身长、按体表面积计算冠脉Z值，抗栓方案按Z值分级确定",
+            "en": "Give IVIG 2 g/kg as a single infusion now with oral aspirin; she is high-risk (under 6 months, coronary dilatation at diagnosis), so discuss intensified initial therapy (for example a corticosteroid) with paediatric cardiology; measure her length, express the coronary sizes as Z-scores from body surface area, and base antithrombotic therapy on the Z grade"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "历史阿司匹林剂量不是当前处方；冠脉绝对径不能在身高未知时自行转换成Z值，持续异常需要专科随访。",
-            "en": "Historical aspirin doses are not current prescriptions; coronary diameters cannot be converted into Z scores without missing size data, and persistent abnormalities require specialist follow-up."
+            "zh-CN": "正确。AHA 2017：IVIG 2 g/kg单次输注；发病10天后若仍发热或有冠脉异常且炎症持续（CRP>3.0 mg/dL），仍应给予（Ⅱa类，证据B级）。AHA 2024：<6月龄或基线Z值≥2.5为高危，强化初始治疗可能获益。绝对内径会低估婴儿冠脉病变，大型或巨大冠脉瘤（Z≥10或≥8 mm）须在小剂量阿司匹林基础上加抗凝。",
+            "en": "Correct. AHA 2017: IVIG 2 g/kg as a single infusion, still indicated after day 10 when fever or coronary abnormalities persist with ongoing inflammation (CRP >3.0 mg/dL; Class IIa, LOE B). AHA 2024: age under 6 months or a baseline Z of 2.5 or more is high-risk, and intensified initial therapy may benefit. Absolute diameters under-grade infants; a large or giant aneurysm (Z ≥10 or ≥8 mm) needs anticoagulation on top of low-dose aspirin."
           }
         },
         {
-          "id": "unsupported",
+          "id": "too-late",
           "text": {
-            "zh-CN": "把原文多年递增的阿司匹林固定剂量直接用于今天所有婴儿",
-            "en": "Copy the report’s progressively increased fixed aspirin doses for all infants today"
+            "zh-CN": "已到发病第10天，IVIG已经没用，只用阿司匹林",
+            "en": "It is day 10 already — too late for IVIG; aspirin alone"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "历史阿司匹林剂量不是当前处方；冠脉绝对径不能在身高未知时自行转换成Z值，持续异常需要专科随访。",
-            "en": "Historical aspirin doses are not current prescriptions; coronary diameters cannot be converted into Z scores without missing size data, and persistent abnormalities require specialist follow-up."
+            "zh-CN": "不对。AHA 2017推荐：发病10天后仍发热或有冠脉异常、且炎症持续（CRP>3.0 mg/dL）者仍应用IVIG。她两者都有（CRP>200 mg/L），不用IVIG就放弃了唯一被证明能减少冠脉瘤的治疗。",
+            "en": "No. AHA 2017 recommends IVIG after day 10 for persistent fever or coronary abnormalities with ongoing inflammation (CRP >3.0 mg/dL). She has both (CRP >200 mg/L): withholding IVIG gives up the one treatment shown to reduce aneurysms."
+          }
+        },
+        {
+          "id": "absolute-grade",
+          "text": {
+            "zh-CN": "报告为轻度、中度扩张，常规用IVIG和阿司匹林即可，不必算Z值，出院后单用阿司匹林",
+            "en": "The report grades the dilatation as mild and moderate: routine IVIG and aspirin, no need for Z-scores, aspirin alone after discharge"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。按毫米分级会低估婴儿的冠脉病变：4.3 kg婴儿的右冠状动脉4.7 mm很可能已是冠脉瘤。AHA 2017/2024按体表面积校正的Z值分级，这一分级决定是单用阿司匹林还是加抗凝，以及多久复查一次。",
+            "en": "No. Millimetre grading under-classifies coronary disease in infants: a 4.7-mm right coronary artery in a 4.3-kg infant is very likely an aneurysm. AHA 2017/2024 grade by body-surface-area-adjusted Z-score, and that grade decides between aspirin alone and aspirin plus anticoagulation, and how often to scan."
+          }
+        },
+        {
+          "id": "antibiotics-first",
+          "text": {
+            "zh-CN": "先继续抗生素并复查脑脊液，排除感染后再决定是否用IVIG",
+            "en": "Continue the antibiotics and repeat the CSF first; decide about IVIG once infection is excluded"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。培养已阴性，脑脊液在该日龄正常；再等一次腰穿只会进一步推迟IVIG，而她的冠脉已经扩张。如有需要，抗生素可以同时继续，但不能代替IVIG。",
+            "en": "No. The cultures are already negative and the CSF is normal for her age; waiting for another lumbar puncture only delays IVIG further while her coronary arteries are already dilated. Antibiotics can continue alongside if needed, but they do not replace IVIG."
+          }
+        }
+      ]
+    },
+    {
+      "id": "long-term",
+      "prompt": {
+        "zh-CN": "出院前（住院第11天）：已退热，血小板915×10⁹/L，CRP 20.9 mg/L，冠脉Z值尚未算出。出院方案哪项最合适？",
+        "en": "Before discharge (hospital day 11): afebrile, platelets 915 ×10⁹/L, CRP 20.9 mg/L, coronary Z-scores not yet calculated. Which discharge plan is best?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "course",
+        "phase": "discharge"
+      },
+      "need": {
+        "zh-CN": "先调阅住院经过及出院记录。",
+        "en": "First read the inpatient course and discharge record."
+      },
+      "options": [
+        {
+          "id": "z-based-plan",
+          "text": {
+            "zh-CN": "改为小剂量阿司匹林3–5 mg/kg每日1次；算出Z值后按危险分层决定是否加抗凝（大型或巨大冠脉瘤加低分子肝素或华法林）并安排超声随访；每年接种灭活流感疫苗、避免布洛芬，接触水痘或流感时及时就诊；IVIG后11个月内暂缓麻疹、水痘等活疫苗",
+            "en": "Switch to low-dose aspirin 3–5 mg/kg once daily; once the Z-scores are known, decide on anticoagulation by risk level (LMWH or warfarin for a large or giant aneurysm) and schedule echocardiograms; inactivated influenza vaccine every year, no ibuprofen, prompt review after contact with chickenpox or influenza; defer measles and varicella vaccines for 11 months after IVIG"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。AHA 2017/2024及中国2022共识：退热后改为3–5 mg/kg/日；抗栓按Z值危险分层，大型或巨大冠脉瘤在小剂量阿司匹林基础上加低分子肝素或华法林是合理的（Ⅱa类，证据B级）。长期服阿司匹林者感染流感或水痘有瑞氏综合征风险——原报告“避免接触水痘患者”的医嘱即为此；IVIG会削弱麻疹、水痘疫苗的应答。",
+            "en": "Correct. AHA 2017/2024 and the Chinese 2022 consensus: 3–5 mg/kg/day once the fever has settled; thromboprophylaxis follows the Z-score risk level, and LMWH or warfarin added to low-dose aspirin is reasonable for a large or giant aneurysm (Class IIa, LOE B). Influenza or varicella on long-term aspirin carries a Reye syndrome risk — the reason for the report's advice to avoid chickenpox contacts; IVIG blunts the response to measles and varicella vaccines."
+          }
+        },
+        {
+          "id": "report-dose",
+          "text": {
+            "zh-CN": "按原报告的做法：阿司匹林50 mg每日2次（约23 mg/kg/日），一直用到冠脉恢复",
+            "en": "As the report did: aspirin 50 mg twice daily (about 23 mg/kg/day) until the coronary arteries recover"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是原报告的方案，沿用了当时“2个月后减为15–30 mg/(kg·d)”的旧做法。现行抗血小板剂量是3–5 mg/kg每日1次（AHA 2017/2024；中国2022共识）：更大的剂量增加胃肠道和瑞氏综合征风险，却不增加抗血小板作用，对需要抗凝的大型冠脉瘤也无济于事。",
+            "en": "That is the report's regimen, following the older practice of 15–30 mg/kg/day after 2 months. The antiplatelet dose today is 3–5 mg/kg once daily (AHA 2017/2024; Chinese 2022 consensus): higher doses add gastrointestinal and Reye syndrome risk without more antiplatelet effect, and do nothing for a large aneurysm that needs anticoagulation."
+          }
+        },
+        {
+          "id": "stop-aspirin",
+          "text": {
+            "zh-CN": "已退热、CRP下降，出院时停用阿司匹林，3个月后复查超声",
+            "en": "She is afebrile and the CRP is falling: stop aspirin at discharge and repeat the echo in 3 months"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。冠脉仍在扩张，至少要继续小剂量阿司匹林，Z值分级高时还要更多；高危患儿约1周内就应复查（AHA 2024），以便及时发现正在扩大的冠脉瘤。",
+            "en": "No. The coronary arteries are still dilated, so at least low-dose aspirin continues, and more if the Z grade demands it; a high-risk infant should be re-scanned within about a week (AHA 2024) to catch an expanding aneurysm."
+          }
+        },
+        {
+          "id": "routine-vaccines",
+          "text": {
+            "zh-CN": "按常规程序接种所有疫苗，包括到期的含麻疹成分疫苗；长期服阿司匹林不需要特别防护",
+            "en": "Vaccinate on the routine schedule, including measles-containing vaccine when due; no special precautions on long-term aspirin"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。IVIG 2 g/kg后11个月内输入的抗体会削弱麻疹、水痘疫苗的应答，应暂缓接种；长期服阿司匹林的孩子要每年接种灭活流感疫苗，并了解瑞氏综合征的风险（AHA 2017）。",
+            "en": "No. For 11 months after IVIG 2 g/kg the infused antibodies blunt measles and varicella vaccine responses, so defer them; a child on long-term aspirin needs inactivated influenza vaccine every year and advice about Reye syndrome (AHA 2017)."
           }
         }
       ]
@@ -1220,11 +3253,11 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "rb-hx-fever",
       "domain": "history",
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "问清发热时长与高度、外院治疗、吃奶和精神",
+        "en": "Fever duration and height, treatment elsewhere, feeding and alertness asked"
       },
       "weight": 2,
       "met": {
@@ -1236,20 +3269,29 @@
             "asked": "medications"
           },
           {
-            "asked": "mucosal"
-          },
-          {
             "asked": "feeding"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
+      "id": "rb-hx-mucosal",
+      "domain": "history",
+      "text": {
+        "zh-CN": "追问到已消退的早期眼红、唇红",
+        "en": "The transient early red eyes and lips elicited"
+      },
+      "weight": 2,
+      "met": {
+        "asked": "mucosal"
+      }
+    },
+    {
+      "id": "rb-exam",
       "domain": "examination",
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "检查一般情况、前囟与颈部、黏膜皮肤和心肺",
+        "en": "General condition, fontanelle and neck, mucosa and skin, heart and lungs examined"
       },
       "weight": 1,
       "met": {
@@ -1258,57 +3300,200 @@
             "examined": "general"
           },
           {
+            "examined": "fontanelle"
+          },
+          {
             "examined": "mucosa"
+          },
+          {
+            "examined": "cardiorespiratory"
           }
         ]
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "rb-inv",
+      "domain": "investigations",
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "调阅血常规及CRP、脑脊液、培养和超声心动图",
+        "en": "Blood count and CRP, CSF, cultures and echocardiogram read"
       },
-      "weight": 3,
-      "met": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "rubric-4",
-      "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "weight": 3,
+      "weight": 2,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "read": "fbc-crp",
+            "phase": "workup"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "cultures",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
           }
         ]
+      }
+    },
+    {
+      "id": "rb-next-step",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "首次即选择并行评估感染与不完全川崎病（含超声心动图）",
+        "en": "Parallel evaluation for infection and incomplete Kawasaki disease, including an echocardiogram, chosen first time"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "next-step"
+      }
+    },
+    {
+      "id": "rb-dx",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次即正确整合证据：不完全川崎病，脑脊液在年龄参考范围内",
+        "en": "Evidence integrated correctly first time: incomplete Kawasaki disease, CSF within age norms"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-safety-ivig",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "给予IVIG 2 g/kg，未因“已过第10天”或按毫米分级而放弃或降级治疗",
+        "en": "IVIG 2 g/kg given — not withheld as “past day 10” or downgraded by millimetre grading"
+      },
+      "weight": 4,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "treatment"
+          },
+          {
+            "intervened": "ivig"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-acute",
+      "domain": "management",
+      "text": {
+        "zh-CN": "急性期阿司匹林，并按Z值评估冠脉（计算Z值或请儿童心脏科）",
+        "en": "Acute-phase aspirin given and the coronaries assessed by Z-score (calculated, or paediatric cardiology involved)"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "intervened": "aspirin-acute"
+          },
+          {
+            "any": [
+              {
+                "intervened": "z-score"
+              },
+              {
+                "intervened": "cardiology-consult"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-safety-longterm",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即选择按Z值分级的抗栓方案及疫苗、瑞氏综合征防护",
+        "en": "Z-graded antithrombotic plan with vaccine and Reye syndrome precautions chosen first time"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "long-term"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "对照原报告的随访记录复盘结局",
+        "en": "Reported follow-up reviewed"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-comm",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "与家长沟通：解释检查目的、诊断、IVIG与长期随访",
+        "en": "Communication with the parent: tests, diagnosis, IVIG and long-term follow-up explained"
+      },
+      "weight": 2,
+      "judgeGuidance": {
+        "zh-CN": "用家长听得懂的话说明：为什么考虑川崎病、腰穿和心脏超声的目的、IVIG的作用和常见反应、冠脉需要长期复查、服阿司匹林期间的注意事项；承认不确定性，回应担忧，用复述确认理解。不使用未解释的术语，不作超出病历的承诺。",
+        "en": "In words the parent understands, explains why Kawasaki disease is being considered, what the lumbar puncture and echocardiogram are for, what IVIG does and its common reactions, why the coronary arteries need long-term review and what to watch for on aspirin; acknowledges uncertainty, responds to the parent's worry and checks understanding by teach-back. Uses no unexplained jargon and promises nothing beyond the record."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "责任护士",
+        "en": "Ward nurse"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "入院交接：34日龄女婴，体重4.3 kg（已称重），由门诊以“发热待查，败血症？”收入；外院静滴抗生素5天；家长陪护。建立静脉通路时可一并采血；腰穿由医生操作，护士协助固定体位。IVIG需输液泵，按说明书逐步调速。",
+        "en": "Admission handover: 34-day-old girl, 4.3 kg (weighed), admitted from clinic as “fever of unknown origin — sepsis?”; 5 days of IV antibiotics elsewhere; a parent is staying. Bloods can be taken when the cannula goes in; the doctor does the lumbar puncture with the nurse holding her position. IVIG runs on an infusion pump, stepped up as the product sheet directs."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "儿童心脏科医生",
+        "en": "Paediatric cardiologist"
+      },
+      "knowledge": {
+        "zh-CN": "冠脉按AHA 2017/2024以体表面积校正的Z值分级：<2无受累，2–<2.5仅扩张，2.5–<5小型瘤，5–<10中型瘤，≥10或≥8 mm大型/巨大瘤；抗栓方案按危险分层。<6月龄或基线Z值≥2.5为高危。没有身长就算不出Z值，不能凭绝对内径定级。",
+        "en": "Coronary arteries are graded by body-surface-area-adjusted Z-score (AHA 2017/2024): <2 no involvement, 2 to <2.5 dilation only, 2.5 to <5 small aneurysm, 5 to <10 medium, ≥10 or ≥8 mm large/giant; antithrombotic therapy follows the risk level. Age under 6 months or a baseline Z of 2.5 or more is high-risk. Without a length the Z-score cannot be calculated, and absolute diameters must not be used to grade."
       },
       "interprets": [
-        "inflammation",
+        "echo"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先让学员陈述证据，再追问：婴儿不完全川崎病的评估流程（AHA 2017）；补充实验室标准哪几项满足；脑脊液要和日龄参考值比较；冠脉大小为什么要换算成Z值；发病10天后IVIG的指征；原报告的历史处理（甘露醇、IVIG用量、阿司匹林剂量）与现行推荐有何不同。不替学员作答。",
+        "en": "This is a historical teaching case. Let the learner state the evidence first, then ask: the infant pathway for incomplete Kawasaki disease (AHA 2017); which supplementary criteria are met; reading CSF against age norms; why coronary size must be converted to Z-scores; the indication for IVIG after day 10; and how the report's historical choices (mannitol, the IVIG amount, the aspirin doses) differ from current advice. Do not answer for the learner."
+      },
+      "interprets": [
+        "fbc-crp",
         "csf",
         "cultures",
+        "chemistry",
         "echo",
-        "other-tests",
+        "course",
         "followup"
       ],
       "revealsDiagnosis": false
@@ -1316,48 +3501,112 @@
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：持续发热的小婴儿",
+      "en": "Debrief: a young infant with persistent fever"
     },
     "conclusion": {
-      "zh-CN": "入院时是34日龄婴儿，发病约在24日龄；冠脉异常及早期黏膜线索支持报告的不完全川崎病诊断，远期右冠仍异常。",
-      "en": "The infant was 34 days old at admission, with onset around day 24; coronary changes and earlier mucosal clues support the reported incomplete Kawasaki diagnosis, with persistent right-coronary abnormality later."
+      "zh-CN": "原报告诊断为不完全川崎病并发无菌性脑膜炎。按现行标准，病历支持不完全川崎病伴冠脉扩张（按她的体型很可能已达冠脉瘤范围）；脑脊液细胞数、糖、氯化物正常，蛋白0.49 g/L在该日龄参考范围内，病历本身并未证明脑膜炎。她接受IVIG 7.5 g（约1.7 g/kg）和阿司匹林后2天退热；左冠状动脉在2岁11个月前恢复正常，3岁3个月时右冠状动脉仍为3.4 mm、内膜欠光滑。",
+      "en": "The report diagnosed incomplete Kawasaki disease with aseptic meningitis. By current standards the record supports incomplete Kawasaki disease with coronary dilatation (very likely aneurysmal at her size); CSF cells, glucose and chloride were normal and a protein of 0.49 g/L is within age norms, so the record itself does not demonstrate meningitis. She was afebrile 2 days after IVIG 7.5 g (about 1.7 g/kg) and aspirin; the left coronary artery was normal by 2 years 11 months, and at 3 years 3 months the right coronary artery was still 3.4 mm with irregular intima."
     },
     "keyReasoning": [
       {
-        "zh-CN": "症状可能短暂出现，初诊体检阴性不能抹去早期病史。",
-        "en": "Transient symptoms can disappear; a negative current examination does not erase earlier history."
+        "zh-CN": "≤6月龄婴儿发热≥7天且无其他解释，即使没有主要表现也要查炎症指标、做超声心动图；她还有2项已消退的主要表现（双眼、口唇发红），入院时检查正常不能抹掉病史。",
+        "en": "An infant of 6 months or younger with 7 or more days of unexplained fever needs inflammatory markers and an echocardiogram even without principal features; she had two that had faded (red eyes and lips), and a normal examination on admission does not erase the history."
       },
       {
-        "zh-CN": "退热不代表冠脉病变已经消失。",
-        "en": "Resolution of fever does not mean coronary lesions have resolved."
+        "zh-CN": "补充实验室标准（AHA 2017）：CRP≥3.0 mg/dL满足；其余6项中仅血小板≥450×10⁹/L（第7天后）满足，白细胞14.9×10⁹/L略低于15，ALT正常，血红蛋白118 g/L不提示贫血，白蛋白和尿常规未检测——所以由超声心动图决定。",
+        "en": "Supplementary criteria (AHA 2017): CRP of 3.0 mg/dL or more is met; of the other six, only platelets of 450 ×10⁹/L or more after day 7 is met — white cells of 14.9 ×10⁹/L are just under 15, ALT is normal, a haemoglobin of 118 g/L does not suggest anaemia, and albumin and urine were not tested — so the echocardiogram decides."
+      },
+      {
+        "zh-CN": "原作者依据嗜睡、前囟张力较高、颈抵抗可疑及其认为“增高”的脑脊液蛋白诊断无菌性脑膜炎；但细胞数、糖、氯化物均正常，0.49 g/L也低于29–42日龄第95百分位数0.89 g/L（Shah 2011），病历本身并未证明脑膜炎。",
+        "en": "The authors diagnosed aseptic meningitis from drowsiness, a tense fontanelle, equivocal neck stiffness and a CSF protein they regarded as raised. But cells, glucose and chloride were normal and 0.49 g/L is below the 95th centile for 29–42 days (0.89 g/L; Shah 2011), so the record itself does not demonstrate meningitis."
+      },
+      {
+        "zh-CN": "绝对内径分级会低估婴儿冠脉病变：须测身长，按同一套Z值公式计算并在随访中沿用（AHA 2024）；她体重4.3 kg，3.0 mm和4.7 mm很可能已达冠脉瘤标准，抗栓方案取决于Z值分级。",
+        "en": "Absolute diameters under-grade coronary disease in infants: measure the length, compute Z-scores with one equation and keep it for follow-up (AHA 2024); at 4.3 kg, diameters of 3.0 and 4.7 mm are very likely aneurysmal, and the antithrombotic plan depends on the Z grade."
+      },
+      {
+        "zh-CN": "原作者的鉴别：无皮疹，排除猩红热、麻疹、渗出性多形红斑；无感染灶、血培养阴性、抗生素无效而按川崎病治疗有效，排除败血症；无结膜充血、口唇改变及冠脉损害等表现者才考虑全身型幼年特发性关节炎，故也排除。",
+        "en": "The authors' differential: no rash, so scarlet fever, measles and erythema multiforme were excluded; no focus, a negative blood culture, no response to antibiotics and a response to Kawasaki treatment excluded sepsis; systemic juvenile idiopathic arthritis was excluded because it lacks conjunctival injection, lip changes and coronary lesions."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是单个历史病例：不能据此证明某种治疗的独立疗效。原报告的IVIG用量（约1.7 g/kg）、阿司匹林剂量和甘露醇是当年的做法，记录为事实，不是今天的推荐。没有身长就算不出冠脉Z值，本病例只说明“很可能达到冠脉瘤标准”，不给出具体Z值。本场景不模拟治疗反应，所有结局来自原报告。",
+      "en": "This is a single historical case: it cannot show the independent effect of any treatment. The report's IVIG amount (about 1.7 g/kg), aspirin doses and mannitol were the practice of the time, recorded as facts, not current advice. Without her length no coronary Z-score can be calculated, so the case says only that the diameters are very likely aneurysmal and gives no Z value. Treatment responses are not simulated; every outcome comes from the report."
     },
     "unknowns": [
       {
-        "zh-CN": "出生史、入院身高和冠脉Z值、完整病原排查及更长期冠脉结局。",
-        "en": "Birth history, admission height/coronary Z scores, complete pathogen evaluation and longer-term coronary outcome."
+        "zh-CN": "入院身长、体表面积和冠脉Z值；血沉、白蛋白和尿常规；脑脊液糖、氯化物和细胞数的具体数值及实验室参考范围。",
+        "en": "Length, body surface area and coronary Z-scores on admission; ESR, albumin and urinalysis; the CSF glucose, chloride and cell values and the laboratory's reference ranges."
+      },
+      {
+        "zh-CN": "IVIG输注时的病程日和输注时长、甘露醇剂量、入院后是否继续抗生素、心电图心率。",
+        "en": "The illness day and duration of the IVIG infusion, the mannitol dose, whether antibiotics continued after admission, the ECG rate."
+      },
+      {
+        "zh-CN": "出生史、喂养方式、疫苗接种史、家族史、母亲围产期情况及病初手足改变。",
+        "en": "Birth history, feeding, immunisations, family history, maternal peripartum history and any early hand or foot changes."
+      },
+      {
+        "zh-CN": "3岁3个月以后的冠脉结局。",
+        "en": "The coronary outcome after 3 years 3 months."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "婴儿的不完全川崎病（AHA 2017，AHA 2024沿用）：≤6月龄、发热≥7天且无其他解释者查炎症指标，有全身炎症即做超声心动图；CRP≥3.0 mg/dL后，补充实验室标准≥3项或超声心动图阳性即应治疗。",
+        "en": "Incomplete Kawasaki disease in infants (AHA 2017, kept in AHA 2024): an infant of 6 months or younger with 7 or more days of unexplained fever gets inflammatory markers and, with systemic inflammation, an echocardiogram; once CRP is 3.0 mg/dL or more, three or more supplementary criteria or a positive echocardiogram mean treatment."
+      },
+      {
+        "zh-CN": "IVIG 2 g/kg单次输注；发病10天后若仍发热或有冠脉异常且炎症持续，仍应给予（AHA 2017，Ⅱa类，证据B级）。原报告用7.5 g（约1.7 g/kg）。",
+        "en": "IVIG 2 g/kg as a single infusion, still given after day 10 when fever or coronary abnormalities persist with ongoing inflammation (AHA 2017, Class IIa, LOE B). The report gave 7.5 g (about 1.7 g/kg)."
+      },
+      {
+        "zh-CN": "高危患儿（<6月龄或基线冠脉Z值≥2.5）强化初始治疗（IVIG联合糖皮质激素或英夫利昔单抗）可能获益，具体方案与儿童心脏科商定（AHA 2024）。",
+        "en": "In high-risk patients (under 6 months or a baseline coronary Z of 2.5 or more), intensified initial therapy (IVIG with a corticosteroid or infliximab) may benefit; agree the regimen with paediatric cardiology (AHA 2024)."
+      },
+      {
+        "zh-CN": "冠脉按体表面积校正的Z值分级（AHA 2017/2024）；抗栓按危险分层：小剂量阿司匹林3–5 mg/kg/日，大型或巨大冠脉瘤加低分子肝素或华法林（AHA 2017，Ⅱa类，证据B级；AHA 2024表2及2025年更正），Z≥5时可考虑双联抗血小板（AHA 2024）。",
+        "en": "Grade coronaries by body-surface-area-adjusted Z-score (AHA 2017/2024); thromboprophylaxis by risk level: low-dose aspirin 3–5 mg/kg/day, plus LMWH or warfarin for a large or giant aneurysm (AHA 2017, Class IIa, LOE B; AHA 2024 Table 2 with its 2025 corrections); dual antiplatelet therapy may be considered at Z ≥5 (AHA 2024)."
+      },
+      {
+        "zh-CN": "婴儿脑脊液须按日龄参考值解读（Shah 2011：29–42日龄蛋白第95百分位数0.89 g/L）；川崎病相关无菌性脑膜炎通常是脑脊液细胞数增多。IVIG本身也可引起无菌性脑膜炎（说明书所列不良反应），是另一回事。没有颅内压增高证据时不用甘露醇。",
+        "en": "Read infant CSF against age-specific values (Shah 2011: 95th centile for protein 0.89 g/L at 29–42 days); Kawasaki-associated aseptic meningitis is ordinarily a CSF pleocytosis. IVIG itself can cause aseptic meningitis (a labelled adverse effect), a separate matter. Mannitol has no place without evidence of raised intracranial pressure."
+      },
+      {
+        "zh-CN": "阿司匹林：急性期30–50 mg/kg/日，退热48–72小时后改为3–5 mg/kg/日（中国2022共识、2023循证指南；AHA 2024）；原报告急性期约47 mg/kg/日，之后长期约23 mg/kg/日，属当年做法。长期服用者每年接种灭活流感疫苗，避免布洛芬，接触水痘或流感时及时就诊；IVIG后11个月内暂缓麻疹、水痘疫苗（AHA 2017）。",
+        "en": "Aspirin: 30–50 mg/kg/day in the acute phase, then 3–5 mg/kg/day from 48–72 hours after defervescence (Chinese 2022 consensus and 2023 evidence-based guideline; AHA 2024); the report used about 47 and then about 23 mg/kg/day long term, the practice of its time. On long-term aspirin: inactivated influenza vaccine every year, no ibuprofen, prompt review after contact with chickenpox or influenza; defer measles and varicella vaccines for 11 months after IVIG (AHA 2017)."
+      }
+    ],
     "references": [
-      "杜曾庆. 新生儿不完全性川崎病并发无菌性脑膜炎一例. 中华儿科杂志, 2014. DOI: 10.3760/cma.j.issn.0578-1310.2014.01.016",
-      "https://rs.yiigle.com/cmaid/51617",
-      "AHA. Update on Diagnosis and Management of Kawasaki Disease, 2024. DOI 10.1161/CIR.0000000000001295. https://www.ahajournals.org/doi/10.1161/CIR.0000000000001295"
+      "杜曾庆. 新生儿不完全性川崎病并发无菌性脑膜炎一例. 中华儿科杂志. 2014;52(1):63-64. doi:10.3760/cma.j.issn.0578-1310.2014.01.016. https://rs.yiigle.com/cmaid/51617",
+      "McCrindle BW, Rowley AH, Newburger JW, et al. Diagnosis, treatment, and long-term management of Kawasaki disease: a scientific statement for health professionals from the American Heart Association. Circulation. 2017;135(17):e927-e999. doi:10.1161/CIR.0000000000000484",
+      "Jone PN, Tremoulet A, Choueiter N, et al. Update on diagnosis and management of Kawasaki disease: a scientific statement from the American Heart Association. Circulation. 2024;150(23):e481-e500. doi:10.1161/CIR.0000000000001295",
+      "中华医学会儿科学分会心血管学组, 中华医学会儿科学分会风湿学组, 中华医学会儿科学分会免疫学组, 等. 川崎病诊断和急性期治疗专家共识. 中华儿科杂志. 2022;60(1):6-13. doi:10.3760/cma.j.cn112140-20211018-00879",
+      "陕西省川崎病诊疗中心/陕西省人民医院儿童病院, 国家儿童医学中心/首都医科大学附属北京儿童医院, 上海交通大学医学院附属儿童医院, 等. 中国儿童川崎病诊疗循证指南（2023年）. 中国当代儿科杂志. 2023;25(12):1198-1210. doi:10.7499/j.issn.1008-8830.2309038",
+      "Shah SS, Ebberson J, Kestenbaum LA, Hodinka RL, Zorc JJ. Age-specific reference values for cerebrospinal fluid protein concentration in neonates and young infants. J Hosp Med. 2011;6(1):22-27. doi:10.1002/jhm.711"
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure completion of this teaching pathway — a teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "出生史、入院身高和冠脉Z值、完整病原排查及更长期冠脉结局。",
-      "en": "Birth history, admission height/coronary Z scores, complete pathogen evaluation and longer-term coronary outcome."
+      "zh-CN": "入院身长、体表面积和冠脉Z值；血沉、白蛋白和尿常规；脑脊液糖、氯化物和细胞数的具体数值及实验室参考范围。",
+      "en": "Length, body surface area and coronary Z-scores on admission; ESR, albumin and urinalysis; the CSF glucose, chloride and cell values and the laboratory's reference ranges."
+    },
+    {
+      "zh-CN": "IVIG输注时的病程日和输注时长、甘露醇剂量、入院后是否继续抗生素、心电图心率。",
+      "en": "The illness day and duration of the IVIG infusion, the mannitol dose, whether antibiotics continued after admission, the ECG rate."
+    },
+    {
+      "zh-CN": "出生史、喂养方式、疫苗接种史、家族史、母亲围产期情况及病初手足改变。",
+      "en": "Birth history, feeding, immunisations, family history, maternal peripartum history and any early hand or foot changes."
+    },
+    {
+      "zh-CN": "3岁3个月以后的冠脉结局。",
+      "en": "The coronary outcome after 3 years 3 months."
     }
   ],
   "assets": [
@@ -1366,8 +3615,8 @@
       "kind": "pdf",
       "path": "/local-assets/cases/cmcr-51617/source.pdf",
       "title": {
-        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
-        "en": "Source PDF (contains the outcome; for debrief review)"
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第1页上部为同期另一篇文章的结尾及其附图）",
+        "en": "Source PDF (contains the outcome; for debrief review; the top of page 1 carries the end of another article with its figures)"
       },
       "credit": {
         "zh-CN": "原作者及出版方保留版权。",
@@ -1388,6 +3637,10 @@
     },
     {
       "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
       "itemId": "medications"
     },
     {
@@ -1400,6 +3653,10 @@
     },
     {
       "type": "ask",
+      "itemId": "cough"
+    },
+    {
+      "type": "ask",
       "itemId": "rash"
     },
     {
@@ -1408,15 +3665,27 @@
     },
     {
       "type": "ask",
-      "itemId": "cough"
-    },
-    {
-      "type": "ask",
-      "itemId": "onset"
+      "itemId": "hands-feet"
     },
     {
       "type": "ask",
       "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding-type"
+    },
+    {
+      "type": "ask",
+      "itemId": "urine"
+    },
+    {
+      "type": "ask",
+      "itemId": "sick-contacts"
+    },
+    {
+      "type": "ask",
+      "itemId": "maternal"
     },
     {
       "type": "ask",
@@ -1428,27 +3697,11 @@
     },
     {
       "type": "ask",
-      "itemId": "family"
-    },
-    {
-      "type": "ask",
       "itemId": "pmh"
     },
     {
       "type": "ask",
-      "itemId": "smoking"
-    },
-    {
-      "type": "ask",
-      "itemId": "alcohol"
-    },
-    {
-      "type": "ask",
-      "itemId": "occupation"
-    },
-    {
-      "type": "ask",
-      "itemId": "self-care"
+      "itemId": "family"
     },
     {
       "type": "ask",
@@ -1457,6 +3710,10 @@
     {
       "type": "examine",
       "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "fontanelle"
     },
     {
       "type": "examine",
@@ -1471,16 +3728,23 @@
       "findingId": "abdomen"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
+      "type": "answer",
+      "decisionId": "next-step",
+      "optionIds": [
+        "parallel-workup"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
     },
     {
       "type": "order",
-      "investigationId": "inflammation"
+      "investigationId": "fbc-crp"
     },
     {
       "type": "read",
-      "investigationId": "inflammation",
+      "investigationId": "fbc-crp",
       "phase": "workup"
     },
     {
@@ -1503,6 +3767,51 @@
     },
     {
       "type": "order",
+      "investigationId": "chemistry"
+    },
+    {
+      "type": "read",
+      "investigationId": "chemistry",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "urinalysis"
+    },
+    {
+      "type": "read",
+      "investigationId": "urinalysis",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cxr"
+    },
+    {
+      "type": "read",
+      "investigationId": "cxr",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "abdo-us"
+    },
+    {
+      "type": "read",
+      "investigationId": "abdo-us",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
       "investigationId": "echo"
     },
     {
@@ -1511,27 +3820,91 @@
       "phase": "workup"
     },
     {
-      "type": "order",
-      "investigationId": "other-tests"
+      "type": "intervene",
+      "interventionId": "cardiology-consult"
     },
     {
-      "type": "read",
-      "investigationId": "other-tests",
-      "phase": "workup"
+      "type": "intervene",
+      "interventionId": "z-score"
     },
     {
       "type": "answer",
       "decisionId": "diagnosis",
       "optionIds": [
-        "supported"
+        "incomplete-kd"
       ]
     },
     {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "treatment",
       "optionIds": [
-        "supported"
+        "ivig-high-risk"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "ivig"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "aspirin-acute"
+    },
+    {
+      "type": "examine",
+      "findingId": "extremities"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-discharge"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds-discharge"
+    },
+    {
+      "type": "order",
+      "investigationId": "course"
+    },
+    {
+      "type": "read",
+      "investigationId": "course",
+      "phase": "discharge"
+    },
+    {
+      "type": "order",
+      "investigationId": "fbc-crp"
+    },
+    {
+      "type": "read",
+      "investigationId": "fbc-crp",
+      "phase": "discharge"
+    },
+    {
+      "type": "answer",
+      "decisionId": "long-term",
+      "optionIds": [
+        "z-based-plan"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "aspirin-low"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "discharge-teaching"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "echo-follow-up"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-followup"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds-followup"
     },
     {
       "type": "order",
@@ -1540,6 +3913,15 @@
     {
       "type": "read",
       "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
       "phase": "followup"
     },
     {
@@ -1553,115 +3935,276 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "孩子发热多久，最高多高？",
+        "text": "她烧了多少天了？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "How long has the fever lasted and how high has it been?",
+        "text": "体温最高到过多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long has she had a temperature?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "来院前用了哪些抗生素？",
+        "text": "What's the highest her fever has been?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "在外院打了什么吊针？",
         "locale": "zh-CN",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "Which antibiotics were given before admission?",
+        "text": "之前用过哪些抗生素？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Has she had any antibiotics already?",
         "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "病刚开始时眼睛和嘴唇怎样？",
+        "text": "What did the other hospital give her?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "刚开始眼睛红不红、嘴唇红不红？",
         "locale": "zh-CN",
         "expect": [
           "mucosal"
         ]
       },
       {
-        "text": "How did the eyes and lips look early in the illness?",
+        "text": "病初有没有结膜充血？",
+        "locale": "zh-CN",
+        "expect": [
+          "mucosal"
+        ]
+      },
+      {
+        "text": "Were her eyes bloodshot at the start?",
         "locale": "en",
         "expect": [
           "mucosal"
         ]
       },
       {
-        "text": "孩子吃奶和精神怎样？",
+        "text": "Did her lips go red early on?",
+        "locale": "en",
+        "expect": [
+          "mucosal"
+        ]
+      },
+      {
+        "text": "吃奶怎么样？",
         "locale": "zh-CN",
         "expect": [
           "feeding"
         ]
       },
       {
-        "text": "How are feeding and alertness?",
+        "text": "孩子是不是特别爱睡？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "How is she feeding?",
         "locale": "en",
         "expect": [
           "feeding"
         ]
       },
       {
-        "text": "发病后出现过皮疹吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "rash"
-        ]
-      },
-      {
-        "text": "Has a rash appeared during this illness?",
+        "text": "Is she more sleepy than usual?",
         "locale": "en",
         "expect": [
-          "rash"
+          "feeding"
         ]
       },
       {
-        "text": "有看到颈部淋巴结肿大吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "neck-nodes"
-        ]
-      },
-      {
-        "text": "Were swollen neck glands noticed?",
-        "locale": "en",
-        "expect": [
-          "neck-nodes"
-        ]
-      },
-      {
-        "text": "有没有咳嗽？",
+        "text": "有咳嗽吗",
         "locale": "zh-CN",
         "expect": [
           "cough"
         ]
       },
       {
-        "text": "Is there a cough?",
+        "text": "Any cough?",
         "locale": "en",
         "expect": [
           "cough"
         ]
       },
       {
-        "text": "发热前有什么明确诱因？",
+        "text": "身上出过疹子没有？",
         "locale": "zh-CN",
         "expect": [
-          "onset"
+          "rash"
         ]
       },
       {
-        "text": "Was there an obvious trigger before fever?",
+        "text": "Any rash on her skin?",
         "locale": "en",
         "expect": [
-          "onset"
+          "rash"
+        ]
+      },
+      {
+        "text": "脖子上有没有包块？",
+        "locale": "zh-CN",
+        "expect": [
+          "neck-nodes"
+        ]
+      },
+      {
+        "text": "Any lumps in her neck?",
+        "locale": "en",
+        "expect": [
+          "neck-nodes"
+        ]
+      },
+      {
+        "text": "手脚有没有肿过？",
+        "locale": "zh-CN",
+        "expect": [
+          "hands-feet"
+        ]
+      },
+      {
+        "text": "Were her hands or feet ever swollen?",
+        "locale": "en",
+        "expect": [
+          "hands-feet"
+        ]
+      },
+      {
+        "text": "是早产儿吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was she premature?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "是母乳喂养吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding-type"
+        ]
+      },
+      {
+        "text": "Is she breastfed?",
+        "locale": "en",
+        "expect": [
+          "feeding-type"
+        ]
+      },
+      {
+        "text": "尿布湿得多吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "urine"
+        ]
+      },
+      {
+        "text": "打过预防针吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "Has she had her jabs?",
+        "locale": "en",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里有人得过心脏病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anything run in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "你们最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "What are you most worried about?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "出院后孩子长得好吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-followup"
+        ]
+      },
+      {
+        "text": "What is she taking at home now?",
+        "locale": "en",
+        "expect": [
+          "meds-discharge"
         ]
       }
     ]
