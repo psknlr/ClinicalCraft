@@ -177,7 +177,7 @@ function worldSpec(spec: WorldToolSpec): McpToolSpec {
     name: spec.name,
     title: annotations.title,
     description:
-      `${spec.description} Embodied sessions only (start_case with embodied: true); requires session_id.` +
+      `${spec.description} In-world (embodied) sessions only (start_case with embodied: true); requires session_id.` +
       (readOnly ? "" : " A step that needs approval (e.g. a device giving a high-risk drug) needs a second call with confirm: true after the user agreed."),
     inputSchema: readOnly ? schema : withConfirm(schema),
     annotations,
@@ -192,7 +192,9 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
     {
       name: "list_cases",
       title: toolAnnotations("list_cases").title,
-      description: "List the available clinical cases (opaque id handle, spoiler-free title and summary, specialty, difficulty).",
+      description:
+        "List the available clinical cases (opaque id handle, spoiler-free title and summary, specialty, difficulty, clinical review status, " +
+        "and how many learning outcomes the case has — get_debrief lists them once the case is complete, since they usually name the diagnosis).",
       inputSchema: { type: "object", properties: { locale: LOCALE_SCHEMA }, additionalProperties: false },
       annotations: toolAnnotations("list_cases"),
     },
@@ -212,7 +214,7 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
           embodied: {
             type: "boolean",
             description:
-              "Embodied mode: you get a body in the case's hospital (a headless world) — walk with navigate_to, look with observe_world, operate equipment with interact_object; " +
+              "In-world mode (embodied): you get a body in the case's hospital (a headless world) — walk with navigate_to, look with observe_world, operate equipment with interact_object; " +
               "clinical tools then need you in the right place. Fixed for the encounter. Default: the server settings (embodiment).",
           },
         },
@@ -228,7 +230,7 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
       title: toolAnnotations("get_debrief").title,
       description:
         "Assess the encounter so far (objectives, required history/exam, essential investigations, decisions, safety, examiner judgements) " +
-        "and, once the case is complete, the case debrief. A teaching-script measure, not a validated competency score.",
+        "and, once the case is complete, the case debrief with its learning outcomes and review status. A teaching-script measure, not a validated competency score.",
       inputSchema: { type: "object", properties: { session_id: SESSION_ID_SCHEMA }, required: ["session_id"], additionalProperties: false },
       annotations: toolAnnotations("get_debrief"),
     },

@@ -281,7 +281,7 @@ describe("grounding reports", () => {
     expect(md).toContain(`# ClinicalCraft grounding benchmark — ${DEFAULT_GROUNDING_SUITE}`);
     expect(md).toContain("Wilson");
     expect(md).not.toMatch(/\| `dev\/acute-appendicitis#/);
-    expect(groundingMarkdown(report, "zh-CN")).toContain("语义落地基准");
+    expect(groundingMarkdown(report, "zh-CN")).toContain("事实依据基准");
     const pinned = FROZEN_SPLIT_DIGESTS[DEFAULT_GROUNDING_SUITE]!.test!;
     expect(groundingMarkdown({ ...report, digests: { test: pinned } }, "en")).toContain("frozen: matches the pinned digest");
     expect(groundingMarkdown({ ...report, digests: { test: "0".repeat(64) } }, "en")).toContain("MODIFIED");

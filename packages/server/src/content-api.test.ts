@@ -79,7 +79,8 @@ describe("GET /api/content/cases (built-in content)", () => {
     expect(body!.offset).toBe(0);
     expect(body!.limit).toBe(50);
     for (const e of body!.items) expect(Object.keys(e).sort()).toEqual([...CASE_INDEX_ENTRY_KEYS].sort());
-    expect(JSON.stringify(body)).not.toContain("solution");
+    // No reference solution (a learning outcome may still say "saline solution").
+    expect(JSON.stringify(body)).not.toMatch(/"solution"\s*:/);
     expect(body!.issues).toEqual([]);
   });
 

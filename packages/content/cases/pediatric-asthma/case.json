@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pediatric-asthma",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "夜间喘息加重 · 6岁男孩",
     "en": "Worsening wheeze overnight · 6-year-old boy"
@@ -23,6 +23,32 @@
     "en"
   ],
   "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "在数分钟内于床旁评估学龄儿童急性哮喘发作的严重程度（说话能力、呼吸做功、SpO₂、心率、呼吸频率、PEF及PRAM评分），并主动排查危及生命的征象。",
+      "en": "Grade the severity of an acute asthma attack in a school-age child at the bedside within minutes — speech, work of breathing, SpO₂, heart and respiratory rate, PEF and the PRAM score — and look actively for life-threatening features."
+    },
+    {
+      "zh-CN": "按所判断的严重程度立即给予第1小时治疗——按正确间隔吸入支气管舒张剂、控制性氧疗及早期全身糖皮质激素——不等待任何检查。",
+      "en": "Start the first-hour treatment for the severity found — inhaled bronchodilators at the right interval, controlled oxygen and an early systemic corticosteroid — without waiting for any test."
+    },
+    {
+      "zh-CN": "在治疗进行的同时向家长采集有针对性的风险病史：急救药使用、既往急诊/住院/重症监护史、口服激素疗程、控制药依从性与吸入技术、烟草暴露，并排除异物吸入。",
+      "en": "Take a focused, risk-oriented history from the parent while treatment runs: reliever use, previous admissions and intensive care, oral steroid courses, controller adherence and inhaler technique, smoke exposure, and a foreign-body screen."
+    },
+    {
+      "zh-CN": "1小时用同一结构化工具再评估，区分β₂激动剂的预期作用与病情恶化，仅在反应差或出现危及生命征象时升级治疗（上级会诊、静脉硫酸镁、PICU/HDU）。",
+      "en": "Reassess at 1 hour with the same structured tool, tell expected β₂-agonist effects from deterioration, and escalate (senior review, IV magnesium, PICU/HDU) only for a poor response or life-threatening features."
+    },
+    {
+      "zh-CN": "应用出院标准，并借此次就诊改善长期控制：书面哮喘行动计划、吸入技术回示、每日控制药及依从性支持、无烟家庭和早期随访。",
+      "en": "Apply the discharge criteria and use the visit to improve long-term control: a written asthma action plan, inhaler-technique teach-back, a daily controller with adherence support, a smoke-free home and early follow-up."
+    },
+    {
+      "zh-CN": "与焦虑的家长和害怕的孩子进行适龄、不带指责的沟通：解释病情和计划、回应家长的顾虑，并用回授法确认何时需要立即返回。",
+      "en": "Communicate with an anxious parent and a frightened child without blame and at the child's level: explain severity and the plan, address the parent's concerns and confirm by teach-back when to come straight back."
+    }
+  ],
   "tags": [
     "paediatrics",
     "emergency",
@@ -38,8 +64,27 @@
     ],
     "license": "MIT",
     "notes": {
-      "zh-CN": "为 ClinicalCraft V5 编写的虚构教学病例，不基于任何真实患者；人名均为化名。处理依据 GINA 2024、BTS/SIGN 158 及中国儿童哮喘指南（2016）/建议（2020）。",
-      "en": "Synthetic teaching case written for ClinicalCraft V5; not based on any real patient; all names are pseudonyms. Management follows GINA 2024, BTS/SIGN 158 and the Chinese paediatric asthma guideline (2016) / recommendations (2020)."
+      "zh-CN": "为 ClinicalCraft V5 编写的虚构教学病例，不基于任何真实患者；人名均为化名。处理依据 BTS/SIGN 158（急性发作）、GINA 2024 及中国儿童哮喘指南（2016，2025年更新）/建议（2020），并对照 GINA 2026 的更新要点核对。",
+      "en": "Synthetic teaching case written for ClinicalCraft V5; not based on any real patient; all names are pseudonyms. Management follows BTS/SIGN 158 (acute asthma), GINA 2024 and the Chinese paediatric asthma guideline (2016, updated 2025) / recommendations (2020), checked against the GINA 2026 changes."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "BTS/SIGN 158 (2019), acute asthma in children (retained after NICE NG245)",
+        "GINA 2024 (case written to it); GINA 2026 changes checked from published summaries",
+        "NICE/BTS/SIGN NG245 (2024)",
+        "儿童支气管哮喘诊断与防治指南（2025）",
+        "儿童支气管哮喘诊断与防治指南（2016年版）",
+        "儿童支气管哮喘规范化诊治建议（2020年版）"
+      ],
+      "notes": {
+        "zh-CN": "由AI辅助编写，并对照所引指南完成编辑审核；尚未经执业医师审核——用于教学前，请由本专科临床医师审阅。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -5966,8 +6011,8 @@
       "results": {
         "arrival": {
           "text": {
-            "zh-CN": "床旁胸部正位片：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
-            "en": "Portable AP chest X-ray: hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
+            "zh-CN": "胸部正位片（前后位）：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
+            "en": "Chest X-ray (AP): hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
           },
           "note": {
             "zh-CN": "急性哮喘不常规拍胸片（BTS/GINA）：仅在怀疑气胸/纵隔气肿、实变，危及生命的发作、治疗无反应或需要机械通气时考虑。",
@@ -5976,8 +6021,8 @@
         },
         "reassess": {
           "text": {
-            "zh-CN": "床旁胸部正位片：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
-            "en": "Portable AP chest X-ray: hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
+            "zh-CN": "胸部正位片（前后位）：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
+            "en": "Chest X-ray (AP): hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
           },
           "note": {
             "zh-CN": "急性哮喘不常规拍胸片（BTS/GINA）：仅在怀疑气胸/纵隔气肿、实变，危及生命的发作、治疗无反应或需要机械通气时考虑。",
@@ -5986,8 +6031,8 @@
         },
         "discharge": {
           "text": {
-            "zh-CN": "床旁胸部正位片：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
-            "en": "Portable AP chest X-ray: hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
+            "zh-CN": "胸部正位片（前后位）：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
+            "en": "Chest X-ray (AP): hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
           },
           "note": {
             "zh-CN": "急性哮喘不常规拍胸片（BTS/GINA）：仅在怀疑气胸/纵隔气肿、实变，危及生命的发作、治疗无反应或需要机械通气时考虑。",
@@ -5996,8 +6041,8 @@
         },
         "critical": {
           "text": {
-            "zh-CN": "床旁胸部正位片：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
-            "en": "Portable AP chest X-ray: hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
+            "zh-CN": "胸部正位片（前后位）：双肺过度充气（右膈顶低于第10后肋，可见11根后肋，膈面变平）；双侧肺门周围支气管壁增厚（袖口征）；未见肺实变、肺不张、气胸或纵隔气肿；心影大小正常。",
+            "en": "Chest X-ray (AP): hyperinflated lungs (right hemidiaphragm below the 10th posterior rib — 11 posterior ribs visible — with flattened diaphragms); bilateral perihilar peribronchial wall thickening (cuffing); no consolidation, collapse, pneumothorax or pneumomediastinum; normal heart size."
           },
           "note": {
             "zh-CN": "急性哮喘不常规拍胸片（BTS/GINA）：仅在怀疑气胸/纵隔气肿、实变，危及生命的发作、治疗无反应或需要机械通气时考虑。",
@@ -9049,11 +9094,11 @@
       "domain": "diagnosis",
       "weight": 2,
       "text": {
-        "zh-CN": "正确判断为急性重度发作（无危及生命征象）",
-        "en": "Correctly graded an acute severe exacerbation without life-threatening features"
+        "zh-CN": "首次作答即正确判断为急性重度发作（无危及生命征象）",
+        "en": "Correctly graded an acute severe exacerbation without life-threatening features at the first attempt"
       },
       "met": {
-        "decided": "dec-severity"
+        "decidedFirstTry": "dec-severity"
       }
     },
     {
@@ -9475,33 +9520,35 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "剂量（20 kg）：沙丁胺醇pMDI 100 µg/揿经储雾罐6–10揿或雾化2.5–5 mg，第1小时每20分钟×3；异丙托溴铵250 µg×3；泼尼松龙1–2 mg/kg（最大40 mg）共3–5天；反应差时静脉硫酸镁40 mg/kg（最大2 g）≥20分钟。",
-        "en": "Doses (20 kg): salbutamol pMDI 100 µg/puff via spacer 6–10 puffs or 2.5–5 mg nebulised, every 20 min ×3 in the first hour; ipratropium 250 µg ×3; prednisolone 1–2 mg/kg (max 40 mg) for 3–5 days; for poor response IV magnesium sulfate 40 mg/kg (max 2 g) over ≥ 20 min."
+        "zh-CN": "剂量（20 kg）：沙丁胺醇pMDI 100 µg/揿经储雾罐6–10揿或雾化2.5–5 mg，第1小时每20分钟×3；异丙托溴铵250 µg×3；泼尼松龙1–2 mg/kg（最大40 mg）共3–5天；反应差时静脉硫酸镁40 mg/kg（最大2 g）≥20分钟（BTS/SIGN 158；GINA）。",
+        "en": "Doses (20 kg): salbutamol pMDI 100 µg/puff via spacer 6–10 puffs or 2.5–5 mg nebulised, every 20 min ×3 in the first hour; ipratropium 250 µg ×3; prednisolone 1–2 mg/kg (max 40 mg) for 3–5 days; for poor response IV magnesium sulfate 40 mg/kg (max 2 g) over ≥ 20 min (BTS/SIGN 158; GINA)."
       },
       {
-        "zh-CN": "pMDI+储雾罐与雾化同样有效；6岁儿童通常可用口含嘴储雾罐：每次1揿、平静呼吸5–6次，不要一次连按多揿。",
-        "en": "pMDI + spacer is as effective as a nebuliser; most 6-year-olds can use a mouthpiece spacer: one puff at a time with 5–6 tidal breaths, never several puffs at once."
+        "zh-CN": "pMDI+储雾罐与雾化同样有效；6岁儿童通常可用口含嘴储雾罐：每次1揿、平静呼吸5–6次，不要一次连按多揿（BTS/SIGN 158；GINA）。",
+        "en": "pMDI + spacer is as effective as a nebuliser; most 6-year-olds can use a mouthpiece spacer: one puff at a time with 5–6 tidal breaths, never several puffs at once (BTS/SIGN 158; GINA)."
       },
       {
-        "zh-CN": "儿童急性哮喘禁用镇静剂（已插管机械通气者除外）；氨茶碱仅考虑用于对最大剂量吸入治疗、全身激素和静脉硫酸镁均无反应的重度或危及生命发作，需心电监护并在重症监护条件下使用（GINA 不推荐）。",
-        "en": "Sedatives are contraindicated in acute asthma (outside intubated, ventilated care); aminophylline is only considered for severe or life-threatening asthma unresponsive to maximal inhaled therapy, systemic steroids and IV magnesium, with ECG monitoring in a critical-care setting (GINA advises against it)."
+        "zh-CN": "儿童急性哮喘禁用镇静剂（已插管机械通气者除外）；氨茶碱仅考虑用于对最大剂量吸入治疗、全身激素和静脉硫酸镁均无反应的重度或危及生命发作，需心电监护并在重症监护条件下使用（BTS/SIGN 158；GINA 不推荐）。",
+        "en": "Sedatives are contraindicated in acute asthma (outside intubated, ventilated care); aminophylline is only considered for severe or life-threatening asthma unresponsive to maximal inhaled therapy, systemic steroids and IV magnesium, with ECG monitoring in a critical-care setting (BTS/SIGN 158; GINA advises against it)."
       },
       {
-        "zh-CN": "出院标准：吸空气SpO₂>94%、稳定于3–4小时一次的沙丁胺醇、PEF>75%预计值/个人最佳（能测时）；残余轻微哮鸣音和沙丁胺醇相关心动过速不是留院理由。",
-        "en": "Discharge criteria: room-air SpO₂ > 94%, stable on 3–4-hourly salbutamol, PEF > 75% predicted/best (if measurable); mild residual wheeze and salbutamol-related tachycardia are not reasons to stay."
+        "zh-CN": "出院标准：吸空气SpO₂>94%、稳定于3–4小时一次的沙丁胺醇、PEF>75%预计值/个人最佳（能测时）；残余轻微哮鸣音和沙丁胺醇相关心动过速不是留院理由（BTS/SIGN 158）。",
+        "en": "Discharge criteria: room-air SpO₂ > 94%, stable on 3–4-hourly salbutamol, PEF > 75% predicted/best (if measurable); mild residual wheeze and salbutamol-related tachycardia are not reasons to stay (BTS/SIGN 158)."
       },
       {
-        "zh-CN": "每次急诊发作都是“哨点事件”：检查依从性（取药记录）、吸入技术、诱因和二手烟，给书面行动计划，恢复/调整控制药，2个工作日内复诊，并建议接种流感疫苗。",
-        "en": "Every ED attack is a sentinel event: check adherence (refill record), technique, triggers and smoke exposure; give a written action plan; restart or adjust the controller; arrange review within 2 working days; recommend flu vaccination."
+        "zh-CN": "每次急诊发作都是“哨点事件”：检查依从性（取药记录）、吸入技术、诱因和二手烟，给书面行动计划，恢复/调整控制药，2个工作日内复诊，并建议接种流感疫苗（BTS/SIGN 158；GINA）。",
+        "en": "Every ED attack is a sentinel event: check adherence (refill record), technique, triggers and smoke exposure; give a written action plan; restart or adjust the controller; arrange review within 2 working days; recommend flu vaccination (BTS/SIGN 158; GINA)."
       }
     ],
     "references": [
-      "Global Initiative for Asthma (GINA). Global Strategy for Asthma Management and Prevention, 2024 update.",
-      "British Thoracic Society / Scottish Intercollegiate Guidelines Network. SIGN 158: British guideline on the management of asthma, 2019 (acute asthma in children).",
-      "BTS/NICE/SIGN. Asthma: diagnosis, monitoring and chronic asthma management (NICE guideline NG245), 2024.",
-      "中华医学会儿科学分会呼吸学组，《中华儿科杂志》编辑委员会. 儿童支气管哮喘诊断与防治指南（2016年版）. 中华儿科杂志, 2016.",
-      "中华医学会儿科学分会呼吸学组，《中华儿科杂志》编辑委员会. 儿童支气管哮喘规范化诊治建议（2020年版）. 中华儿科杂志, 2020.",
-      "Ducharme FM, et al. The Pediatric Respiratory Assessment Measure: a valid clinical score for assessing acute asthma severity from toddlers to teenagers. J Pediatr, 2008."
+      "British Thoracic Society, Scottish Intercollegiate Guidelines Network. SIGN 158: British guideline on the management of asthma. Edinburgh: SIGN; 2019 (acute asthma in children; the acute-asthma recommendations are retained after NICE NG245).",
+      "Global Initiative for Asthma. Global Strategy for Asthma Management and Prevention, 2024 update. GINA; 2024.",
+      "Global Initiative for Asthma. Global Strategy for Asthma Management and Prevention, 2026 update. GINA; 2026.",
+      "National Institute for Health and Care Excellence, British Thoracic Society, Scottish Intercollegiate Guidelines Network. Asthma: diagnosis, monitoring and chronic asthma management (BTS, NICE, SIGN). NICE guideline NG245. London: NICE; 2024.",
+      "中华医学会儿科学分会呼吸学组, 等. 儿童支气管哮喘诊断与防治指南（2025）. 中华儿科杂志. 2025;63(4):324-337.",
+      "中华医学会儿科学分会呼吸学组, 《中华儿科杂志》编辑委员会. 儿童支气管哮喘诊断与防治指南（2016年版）. 中华儿科杂志. 2016;54(3):167-181. doi:10.3760/cma.j.issn.0578-1310.2016.03.003",
+      "中华儿科杂志编辑委员会, 中华医学会儿科学分会呼吸学组, 中国医师协会儿科医师分会儿童呼吸专业委员会. 儿童支气管哮喘规范化诊治建议（2020年版）. 中华儿科杂志. 2020;58(9):708-717.",
+      "Ducharme FM, Chalut D, Plotnick L, et al. The Pediatric Respiratory Assessment Measure: a valid clinical score for assessing acute asthma severity from toddlers to teenagers. J Pediatr. 2008;152(4):476-480. doi:10.1016/j.jpeds.2007.08.034"
     ],
     "notice": {
       "zh-CN": "本评分为教学脚本指标，并非经过验证的能力评估；虚构教学病例，不构成医疗建议。",

@@ -1,7 +1,7 @@
 /** The intro footer must not reveal a case's diagnosis before it is played; the selected case shows its disclaimer. */
 import { describe, expect, it } from "vitest";
 import { loadContent } from "../app/content.js";
-import { caseDisclaimer, setLocale } from "../i18n/index.js";
+import { caseDisclaimer, reviewLine, setLocale } from "../i18n/index.js";
 import { footLabel } from "./intro.js";
 
 describe("intro footer label", () => {
@@ -45,6 +45,34 @@ describe("case disclaimer (selected-case summary, quest card, Sources)", () => {
     expect(caseDisclaimer({ "zh-CN": " ", en: " " })).toMatch(/not medical advice/);
     setLocale("zh-CN");
     expect(caseDisclaimer(undefined)).toBe("虚构教学病例，不构成医疗建议；仅供教学模拟。");
+  });
+});
+
+describe("review status and learning outcomes on the case card (docs/GLOSSARY.md §4)", () => {
+  it("words each review status as the glossary fixes it, in both languages", () => {
+    setLocale("en");
+    expect(reviewLine({ status: "editorial", reviewedAt: "2026-10-28" })).toBe("Editorial review 2026-10-28 · not yet reviewed by a licensed clinician");
+    expect(reviewLine({ status: "clinician-reviewed", reviewedAt: null })).toBe("Reviewed by a licensed clinician");
+    expect(reviewLine({ status: "unknown-status" })).toBe("");
+    expect(reviewLine(null)).toBe("");
+    setLocale("zh-CN");
+    expect(reviewLine({ status: "editorial", reviewedAt: "2026-10-28" })).toBe("编辑审核 2026-10-28 · 尚未经执业医师审核");
+    expect(reviewLine({ status: "editorial" })).toBe("编辑审核 · 尚未经执业医师审核");
+    expect(reviewLine({ status: "unreviewed" })).toBe("尚未审核（未经编辑审核，也未经执业医师审核）");
+  });
+
+  it("the library index carries the review and the outcome count; the outcomes' text stays in the full case", async () => {
+    const content = loadContent();
+    for (const card of content.cards) {
+      const loaded = await content.loadCase(card.id);
+      if (!loaded.ok) throw new Error(`${card.id} did not load`);
+      const def = loaded.def;
+      expect(card.learningOutcomeCount, card.id).toBe(def.learningOutcomes.length);
+      expect(card.review, card.id).toEqual(def.provenance.review ? { status: def.provenance.review.status, reviewedAt: def.provenance.review.reviewedAt ?? null } : null);
+      for (const outcome of def.learningOutcomes) {
+        for (const text of typeof outcome === "string" ? [outcome] : Object.values(outcome)) expect(JSON.stringify(card), card.id).not.toContain(text.slice(0, 30));
+      }
+    }
   });
 });
 

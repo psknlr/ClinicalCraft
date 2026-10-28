@@ -21,7 +21,7 @@ import {
   type MatchHit,
 } from "@clinicalcraft/core";
 import { buildCaseIndex, builtinContentDir, findProjectRoot, loadContent, type CaseIndexIssue, type LoadedContent } from "@clinicalcraft/agent/node";
-import { sanitizeTerminal, table } from "@clinicalcraft/agent";
+import { reviewStatusLine, sanitizeTerminal, table } from "@clinicalcraft/agent";
 import { flagBool, flagString, suggest, UsageError, type ParsedArgs } from "./argv.js";
 import { CliError, contentDirsHint, EXIT, hints, loadCliSettings, type CliContext } from "./context.js";
 import { clockModeLabel, languagesLabel, minutesLabel, provenanceLabel, settingLabel, specialtiesLabel, stars } from "./labels.js";
@@ -151,6 +151,20 @@ function findCase(ctx: CliContext, content: LoadedContent, id: string): { def: C
 /* list / show                                                         */
 /* ------------------------------------------------------------------ */
 
+/** A case's review status for a table cell: "editorial review 2026-10-28" / "编辑审核 2026-10-28", "-" when none is recorded. */
+function reviewCell(ctx: CliContext, c: CaseDefinition): string {
+  const review = c.provenance.review;
+  if (!review) return "-";
+  return `${ctx.t(`review.${review.status}` as "review.editorial")}${review.reviewedAt ? ` ${review.reviewedAt}` : ""}`;
+}
+
+/** What the JSON listings say of a case's review (null when none is recorded). */
+function reviewJson(c: CaseDefinition, locale: string) {
+  const review = c.provenance.review;
+  if (!review) return null;
+  return { status: review.status, reviewedAt: review.reviewedAt ?? null, text: reviewStatusLine(locale, review), reviewers: review.reviewers, guidelines: review.guidelines, notes: review.notes ? t(review.notes, locale) : null };
+}
+
 export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<number> {
   const content = await loadAll(ctx);
   const cases = sortedCases(content, ctx.locale);
@@ -167,6 +181,9 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
           estimatedMinutes: c.estimatedMinutes ?? null,
           locales: c.locales,
           provenance: c.provenance.kind,
+          // Learning outcomes usually name the diagnosis: this listing is for authors and facilitators (docs/GLOSSARY.md §4).
+          learningOutcomes: c.learningOutcomes.map((o) => t(o, ctx.locale)),
+          review: reviewJson(c, ctx.locale),
           file: content.cases.get(c.id)?.file ?? null,
         })),
         null,
@@ -175,9 +192,11 @@ export async function casesList(ctx: CliContext, args: ParsedArgs): Promise<numb
     );
     return EXIT.ok;
   }
-  const rows = [[ctx.t("col.id"), ctx.t("col.title"), ctx.t("col.difficulty"), ctx.t("col.setting"), ctx.t("col.minutes")]];
-  for (const c of cases) rows.push([c.id, sanitizeTerminal(t(c.title, ctx.locale)), stars(c.difficulty), settingLabel(ctx, c.setting), c.estimatedMinutes ? String(c.estimatedMinutes) : "-"]);
+  const rows = [[ctx.t("col.id"), ctx.t("col.title"), ctx.t("col.difficulty"), ctx.t("col.setting"), ctx.t("col.minutes"), ctx.t("col.review")]];
+  for (const c of cases) rows.push([c.id, sanitizeTerminal(t(c.title, ctx.locale)), stars(c.difficulty), settingLabel(ctx, c.setting), c.estimatedMinutes ? String(c.estimatedMinutes) : "-", reviewCell(ctx, c)]);
   ctx.print(table(rows, { header: true, maxCell: 60 }));
+  // Say what an editorial review is, once, whenever one is listed (never claim more than the case records).
+  if (cases.some((c) => c.provenance.review?.status === "editorial")) ctx.print(ctx.out.dim(ctx.t("cases.reviewLegend")));
   const broken = content.issues.filter((f) => f.file.endsWith("case.json") && f.issues.some((i) => i.severity === "error"));
   for (const f of broken) ctx.printErr(ctx.err.red(ctx.t("cases.invalidFile", { file: sanitizeTerminal(f.file), n: f.issues.filter((i) => i.severity === "error").length })));
   return EXIT.ok;
@@ -259,11 +278,28 @@ export async function casesShow(ctx: CliContext, args: ParsedArgs): Promise<numb
   ctx.print(`${p.bold(ctx.t("show.locales"))} ${languagesLabel(ctx, c.locales)} · ${clockModeLabel(ctx, c.clock.mode)}`);
   const prov = c.provenance;
   ctx.print(`${p.bold(ctx.t("show.provenance"))} ${provenanceLabel(ctx, prov.kind)}${prov.citation ? ` — ${raw(prov.citation)}` : ""}${prov.doi ? ` (doi:${raw(prov.doi)})` : ""}`);
+  // Who checked the content, exactly as the case records it (docs/GLOSSARY.md §4).
+  const review = prov.review;
+  if (review) {
+    ctx.print(`${p.bold(ctx.t("show.review"))} ${reviewStatusLine(L, review)}`);
+    if (review.notes) ctx.print(p.dim(`  ${ct(review.notes)}`));
+    if (review.reviewers.length) ctx.print(p.dim(`  ${ctx.t("show.reviewers", { list: review.reviewers.map(raw).join("; ") })}`));
+  }
   if (c.disclaimer) ctx.print(p.dim(ct(c.disclaimer)));
   ctx.print();
   ctx.print(p.bold(ctx.t("show.objectives")));
   c.objectives.forEach((o, i) => ctx.print(`  ${i + 1}. ${ct(o.title)}`));
   ctx.print();
+  // The facilitator part: learning outcomes and the guidance checked usually name the diagnosis.
+  if (c.learningOutcomes.length) {
+    ctx.print(p.bold(ctx.t("show.outcomes")));
+    c.learningOutcomes.forEach((o, i) => ctx.print(`  ${i + 1}. ${ct(o)}`));
+    if (review?.guidelines.length) ctx.print(p.dim(`  ${ctx.t("show.guidelines", { list: review.guidelines.map(raw).join("; ") })}`));
+    ctx.print();
+  } else if (review?.guidelines.length) {
+    ctx.print(p.dim(ctx.t("show.guidelines", { list: review.guidelines.map(raw).join("; ") })));
+    ctx.print();
+  }
   ctx.print(
     p.dim(
       ctx.t("show.counts", {

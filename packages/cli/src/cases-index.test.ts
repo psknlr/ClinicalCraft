@@ -47,7 +47,8 @@ describe("cases index", () => {
     for (const e of entries) expect(Object.keys(e).sort()).toEqual([...CASE_INDEX_ENTRY_KEYS].sort());
     const builtin = builtinContentDir();
     if (builtin) expect(entries).toEqual((await buildCaseIndex({ dirs: [builtin] })).entries);
-    expect(r.stdout).not.toContain("solution");
+    // No reference solution (a learning outcome may still say "saline solution").
+    expect(r.stdout).not.toMatch(/"solution"\s*:/);
   });
 
   it("prints a table in the UI language and reports index problems on stderr", { timeout: T }, async () => {

@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "anaphylaxis-garden",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": { "zh-CN": "花园蜇伤后呼吸困难 · 30岁女性", "en": "Breathless after a sting in the garden · 30-year-old woman" },
   "summary": {
     "zh-CN": "午后的医院疗愈花园里，一位来探视家属的年轻女性在长椅旁突然不适。你和带着病区急救包赶来的护士一起，在没有抢救室设备的户外完成快速评估与处理，随后安排转运、检查与去向。",
@@ -13,14 +13,40 @@
   "facility": "general-hospital",
   "locales": ["zh-CN", "en"],
   "estimatedMinutes": 25,
+  "learningOutcomes": [
+    { "zh-CN": "依据可能诱因后急性出现的气道、呼吸或循环受累（WAO 2020标准）判断反应已危及生命，不等待皮疹、血压阈值或化验结果。", "en": "Recognise from sudden airway, breathing or circulation compromise after a likely trigger (WAO 2020 criteria) that the reaction is life-threatening, without waiting for a rash, a blood-pressure threshold or a laboratory result." },
+    { "zh-CN": "数分钟内经闭环沟通，以正确的剂量、浓度、途径和部位给予一线药物；5分钟时系统再评估，反应不足即重复。", "en": "Give the first-line drug within minutes at the correct dose, concentration, route and site, using closed-loop communication, and repeat it after a structured 5-minute reassessment when the response is inadequate." },
+    { "zh-CN": "为低血压且呼吸困难的患者安全摆放体位，平卧推床转运；低血压时绝不让她坐起、站立或步行。", "en": "Position a hypotensive, breathless patient safely and transfer her lying flat on a trolley; never sit, stand or walk her while she is hypotensive." },
+    { "zh-CN": "在一线治疗的同时给予支持治疗（吸氧、静脉补液、针对持续支气管痉挛的支气管扩张剂），抗组胺药和糖皮质激素只作为稳定后的辅助用药。", "en": "Give supportive care alongside first-line treatment — oxygen, IV fluid, a bronchodilator for persisting bronchospasm — keeping antihistamines and corticosteroids as adjuncts once she is stable." },
+    { "zh-CN": "按时采集类胰蛋白酶（复苏开始后尽早一份、1–2小时一份、恢复≥24小时后基础值），按“1.2×基础值 + 2 µg/L”规则解读，绝不因采样延误治疗。", "en": "Time the mast-cell tryptase samples (one as soon as resuscitation is under way, one at 1–2 h, a baseline ≥ 24 h after recovery) and interpret them with the 1.2 × baseline + 2 µg/L rule, never letting sampling delay treatment." },
+    { "zh-CN": "依据RCUK 2021/NICE NG258分层确定观察时长，并安排安全出院：肾上腺素自动注射笔及回示培训、书面应急计划和变态反应专科转诊。", "en": "Set the observation period from the RCUK 2021 / NICE NG258 tiers and plan a safe discharge: adrenaline auto-injectors with teach-back training, a written action plan and specialist allergy referral." }
+  ],
   "tags": ["acute", "simulated-clock", "community", "garden", "resuscitation", "synthetic"],
   "provenance": {
     "kind": "synthetic",
     "authors": ["ClinicalCraft content team"],
     "license": "MIT",
     "notes": {
-      "zh-CN": "完全虚构的教学病例，按RCUK 2021、WAO 2020、EAACI 2021等指南编写；人物均为化名，不对应任何真实患者。",
-      "en": "Entirely fictional teaching case written to RCUK 2021, WAO 2020 and EAACI 2021 guidance; all names are pseudonyms and no real patient is depicted."
+      "zh-CN": "完全虚构的教学病例，按RCUK 2021、WAO 2020、EAACI 2021及NICE NG258（2026）等指南编写；人物均为化名，不对应任何真实患者。",
+      "en": "Entirely fictional teaching case written to RCUK 2021, WAO 2020, EAACI 2021 and NICE NG258 (2026) guidance; all names are pseudonyms and no real patient is depicted."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": ["ClinicalCraft editorial review (AI-assisted)"],
+      "guidelines": [
+        "RCUK 2021 anaphylaxis",
+        "WAO 2020 anaphylaxis guidance",
+        "EAACI 2021 anaphylaxis",
+        "AAAAI/ACAAI 2023 anaphylaxis practice parameter",
+        "NICE NG258 (2026)",
+        "EAACI 2018 Hymenoptera venom immunotherapy",
+        "T/CADERM 3008—2019 严重过敏反应诊断和早期治疗规范"
+      ],
+      "notes": {
+        "zh-CN": "由AI辅助编写，并对照所引指南完成编辑审核；尚未经执业医师审核——用于教学前，请由本专科临床医师审阅。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": { "zh-CN": "虚构教学病例，不构成医疗建议。", "en": "Fictional teaching case — not medical advice." },
@@ -4616,7 +4642,7 @@
     {
       "id": "r-safe-posture",
       "domain": "safety",
-      "weight": 1,
+      "weight": 2,
       "text": {
         "zh-CN": "平卧推床转运；从未让低血压患者坐起、站立或步行",
         "en": "Transferred her lying flat on a trolley; never sat up, stood or walked the hypotensive patient"
@@ -4782,34 +4808,36 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "‘IM，大腿，1 mg/mL，0.5 mL’——把这句话说出口，让护士复述，并记下时间。",
-        "en": "'IM, thigh, 1 mg/mL, 0.5 mL' — say it aloud, get a read-back, note the time."
+        "zh-CN": "‘IM，大腿，1 mg/mL，0.5 mL’——把这句话说出口，让护士复述，并记下时间；5分钟后再评估（RCUK 2021）。",
+        "en": "'IM, thigh, 1 mg/mL, 0.5 mL' — say it aloud, get a read-back, note the time and reassess at 5 minutes (RCUK 2021)."
       },
       {
-        "zh-CN": "类胰蛋白酶：复苏开始后尽早采第一份（不延误治疗），1–2小时（不迟于4小时）采第二份，≥24小时后采基础值；早期正常不能排除诊断。",
-        "en": "Tryptase: first sample as soon as feasible once resuscitation is under way (never delaying it), a second at 1–2 h (no later than 4 h), and a baseline ≥ 24 h after recovery; a normal early value does not exclude anaphylaxis."
+        "zh-CN": "类胰蛋白酶：复苏开始后尽早采第一份（不延误治疗），1–2小时（不迟于4小时）采第二份，≥24小时后采基础值；早期正常不能排除诊断（RCUK 2021；NICE NG258）。",
+        "en": "Tryptase: first sample as soon as feasible once resuscitation is under way (never delaying it), a second at 1–2 h (no later than 4 h), and a baseline ≥ 24 h after recovery; a normal early value does not exclude anaphylaxis (RCUK 2021; NICE NG258)."
       },
       {
-        "zh-CN": "双相反应：约5%（文献1–20%）；荟萃分析中位发生时间约11小时（0.2–72小时）。初始反应严重（尤其低血压）或需多剂肾上腺素者风险更高。预防性激素/抗组胺药不能可靠预防。",
-        "en": "Biphasic reactions: about 5% (reported 1–20%); in meta-analysis the median onset is about 11 h (range 0.2–72 h). More likely after a severe initial reaction (especially hypotension) or when more than one adrenaline dose was needed. Prophylactic steroids/antihistamines do not reliably prevent them."
+        "zh-CN": "双相反应：约5%（文献1–20%）；荟萃分析中位发生时间约11小时（0.2–72小时；Lee 2015）。初始反应严重（尤其低血压）或需多剂肾上腺素者风险更高。预防性激素/抗组胺药不能可靠预防（AAAAI/ACAAI 2020）。",
+        "en": "Biphasic reactions: about 5% (reported 1–20%); in meta-analysis the median onset is about 11 h (range 0.2–72 h; Lee 2015). More likely after a severe initial reaction (especially hypotension) or when more than one adrenaline dose was needed. Prophylactic steroids/antihistamines do not reliably prevent them (AAAAI/ACAAI 2020)."
       },
       {
-        "zh-CN": "出院清单：2支自动注射笔（随身携带）、回示培训、书面应急计划、变态反应专科转诊；告知风险因素（哮喘、β受体阻滞剂/ACEI、运动/酒精/NSAID等辅因子）。",
-        "en": "Discharge checklist: two auto-injectors carried at all times, teach-back training, written action plan, allergy referral; discuss risk modifiers (asthma, beta-blockers/ACE inhibitors, cofactors such as exercise, alcohol and NSAIDs)."
+        "zh-CN": "出院清单：2支自动注射笔（随身携带）、回示培训、书面应急计划、变态反应专科转诊；告知风险因素（哮喘、β受体阻滞剂/ACEI、运动/酒精/NSAID等辅因子）——RCUK 2021、NICE NG258、EAACI 2021。",
+        "en": "Discharge checklist: two auto-injectors carried at all times, teach-back training, written action plan, allergy referral; discuss risk modifiers (asthma, beta-blockers/ACE inhibitors, cofactors such as exercise, alcohol and NSAIDs) — RCUK 2021, NICE NG258, EAACI 2021."
       },
       {
-        "zh-CN": "蜂毒免疫治疗显著降低再次全身反应的风险；高暴露者（如家人养蜂）尤其获益。",
-        "en": "Venom immunotherapy markedly lowers the risk of future systemic reactions — especially valuable with high exposure (e.g. family beekeepers)."
+        "zh-CN": "蜂毒免疫治疗显著降低再次全身反应的风险；高暴露者（如家人养蜂）尤其获益——EAACI 2018。",
+        "en": "Venom immunotherapy markedly lowers the risk of future systemic reactions — especially valuable with high exposure, e.g. family beekeepers (EAACI 2018)."
       }
     ],
     "references": [
-      "Resuscitation Council UK. Emergency treatment of anaphylaxis: Guidelines for healthcare providers. 2021.",
-      "Cardona V, Ansotegui IJ, Ebisawa M, et al. World Allergy Organization anaphylaxis guidance 2020. World Allergy Organ J. 2020;13(10):100472.",
-      "Muraro A, Worm M, Alviani C, et al. EAACI guidelines: Anaphylaxis (2021 update). Allergy. 2022;77(2):357-377.",
-      "Golden DBK, Wang J, Waserman S, et al. Anaphylaxis: A 2023 practice parameter update. Ann Allergy Asthma Immunol. 2024;132(2):124-176.",
-      "Shaker MS, Wallace DV, Golden DBK, et al. Anaphylaxis—a 2020 practice parameter update, systematic review, and GRADE analysis. J Allergy Clin Immunol. 2020;145(4):1082-1123.",
-      "National Institute for Health and Care Excellence. Anaphylaxis: assessment and referral after emergency treatment (NG258). 2026 (replaces CG134, 2011).",
-      "Sturm GJ, Varga EM, Roberts G, et al. EAACI guidelines on allergen immunotherapy: Hymenoptera venom allergy. Allergy. 2018;73(4):744-764.",
+      "Resuscitation Council UK. Emergency treatment of anaphylaxis: guidelines for healthcare providers. London: Resuscitation Council UK; 2021.",
+      "Cardona V, Ansotegui IJ, Ebisawa M, et al. World Allergy Organization anaphylaxis guidance 2020. World Allergy Organ J. 2020;13(10):100472. doi:10.1016/j.waojou.2020.100472",
+      "Muraro A, Worm M, Alviani C, et al. EAACI guidelines: Anaphylaxis (2021 update). Allergy. 2022;77(2):357-377. doi:10.1111/all.15032",
+      "Golden DBK, Wang J, Waserman S, et al. Anaphylaxis: A 2023 practice parameter update. Ann Allergy Asthma Immunol. 2024;132(2):124-176. doi:10.1016/j.anai.2023.09.015",
+      "Shaker MS, Wallace DV, Golden DBK, et al. Anaphylaxis—a 2020 practice parameter update, systematic review, and Grading of Recommendations, Assessment, Development and Evaluation (GRADE) analysis. J Allergy Clin Immunol. 2020;145(4):1082-1123. doi:10.1016/j.jaci.2020.01.017",
+      "National Institute for Health and Care Excellence. Anaphylaxis: assessment and referral after emergency treatment. NICE guideline NG258. London: NICE; 2026 (updates and replaces CG134, 2011).",
+      "Sturm GJ, Varga EM, Roberts G, et al. EAACI guidelines on allergen immunotherapy: Hymenoptera venom allergy. Allergy. 2018;73(4):744-764. doi:10.1111/all.13262",
+      "Lee S, Bellolio MF, Hess EP, et al. Time of Onset and Predictors of Biphasic Anaphylactic Reactions: A Systematic Review and Meta-analysis. J Allergy Clin Immunol Pract. 2015;3(3):408-416. doi:10.1016/j.jaip.2014.12.010",
+      "Brown SGA. Clinical features and severity grading of anaphylaxis. J Allergy Clin Immunol. 2004;114(2):371-376. doi:10.1016/j.jaci.2004.04.029",
       "中国医学救援协会. 严重过敏反应诊断和早期治疗规范（团体标准 T/CADERM 3008—2019）. 2019."
     ],
     "notice": {

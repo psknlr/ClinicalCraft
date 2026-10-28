@@ -7,7 +7,7 @@
 pseudonym (刘振华（化名）/ Liu Zhenhua; his wife 王丽（化名）/ Wang Li) and every number was written for teaching.
 虚构教学病例，不构成医疗建议 / Fictional teaching case — not medical advice.
 
-## 1. Case card
+## Case card
 
 | | |
 |---|---|
@@ -16,12 +16,12 @@ pseudonym (刘振华（化名）/ Liu Zhenhua; his wife 王丽（化名）/ Wang
 | specialty | emergency medicine, cardiology |
 | difficulty / estimated time | 3 / 5 · 35 min (simulated clock, 120-min limit) |
 | languages | `zh-CN` (source), `en` |
-| review status | `editorial` (2026-10-28): AI-assisted authoring and editorial review against the guidance listed in §13; **not yet reviewed by a licensed clinician** — have an emergency physician or cardiologist review it before teaching use |
+| review status | `editorial` (2026-10-28): AI-assisted authoring and editorial review against the guidance listed under References; **not yet reviewed by a licensed clinician** — have an emergency physician or cardiologist review it before teaching use |
 | phases | `ed` 急诊抢救室 → `cath` 导管室 (automatic once he has been transferred **and** the lab activated) → `post-pci` 导管室 · PCI术后 (automatic once the angiography/PCI result is ready); none learner-switchable |
 | clock | simulated, starts 09:10, `realtimeScale` 1, limit 120 min; costs: ask 0.5, examine 1, order 0.5, read 0.5, intervene 1.5 min |
 | content | 41 history items (3 `unknown`), 14 exam findings, 17 investigations, 27 interventions, 6 learning outcomes, 5 objectives, 4 decisions, 16 rubric items (14 deterministic, 2 examiner-judged), 5 NPC briefs, 92 matcher test utterances |
 
-## 2. Learning outcomes
+## Learning outcomes
 
 After the case the learner can:
 
@@ -38,9 +38,9 @@ After the case the learner can:
 6. Anticipate VF in the first hours (continuous monitoring, pads on), withhold routine oxygen while SpO₂ ≥ 90%, and
    hand over to the cath-lab team with SBAR.
 
-These are the case's `learningOutcomes`; the HUD `objectives` (§5) are the in-game task list.
+These are the case's `learningOutcomes`; the HUD `objectives` (see Decisions and assessment) are the in-game task list.
 
-## 3. Clinical summary
+## Clinical summary
 
 A 58-year-old smoker (38 pack-years) with hypertension and untreated dyslipidaemia (he stopped atorvastatin after
 three months) walks into the ED with his wife at 09:10. Crushing retrosternal pain began at about 08:00 while he
@@ -58,7 +58,7 @@ at 52.
 - **Outcome:** primary PCI via the right radial artery — one drug-eluting stent to the proximal RCA, final TIMI 3
   flow, patent RV branch, pain 2/10; post-PCI ST resolution > 70 %.
 
-## 4. Scenario timeline and physiology
+## Scenario timeline and physiology
 
 Baseline: HR 54 sinus bradycardia, BP 98/62 (MAP 74), RR 18, SpO₂ 96 % on room air, T 36.6 °C, GCS 15, capillary
 glucose 8.6 mmol/L, pain 8/10. The monitor overlay shows ST elevation. Alarms use the adult limits, set explicitly.
@@ -75,9 +75,9 @@ through them).
 | Minute / trigger | What happens |
 |---|---|
 | 0 | Arrival in resus; triage set by hand; no IV access. |
+| from 0 | Trends `rv-sbp-fall` / `rv-dbp-fall`: SBP −0.3/min (floor −15), DBP −0.15/min (floor −8) until the first fluid bolus or reperfusion, then recovery. Untreated SBP is about 88 mmHg at 35 min. |
 | 10, no ECG read | `ecg-delay`: nurse prompt; `ecg-late` (fails `r-ecg-10min`). |
 | from 10 | Trend `brady-hr-fall`: HR −0.1/min (floor −8) until atropine or reperfusion. |
-| from 0 | Trends `rv-sbp-fall` / `rv-dbp-fall`: SBP −0.3/min (floor −15), DBP −0.15/min (floor −8) until the first fluid bolus or reperfusion, then recovery. Untreated SBP is about 88 mmHg at 35 min. |
 | 20, not activated | `late-activation`: nurse prompt ("what's the plan?"); fails `r-no-troponin-wait`. |
 | troponin ready before activation | `troponin-wait` (fails `r-no-troponin-wait`). |
 | ≥ 35, neither activated nor transferred | `vf-arrest`: VF, RR 0, GCS 3. The engine's arrest rule shows HR, BP and SpO₂ as unmeasurable ("---", critical alarms) whatever the trends and earlier drugs add, so the event sets none of them. |
@@ -103,7 +103,7 @@ metoprolol, routine oxygen, fondaparinux, tenecteplase when PCI is available, cl
 enoxaparin, CCU admission for medical therapy, CT aortogram, ABG (radial puncture before radial PCI), D-dimer and
 CK-MB, activating the lab before reading an ECG, and transferring before the lab is activated.
 
-## 5. Decisions and assessment
+## Decisions and assessment
 
 **Objectives (HUD):** `obj1-initial` (ECG read in `ed`, onset and character asked, general inspection) →
 `obj2-ecg` (right-sided leads read, diagnosis decided) → `obj3-bedside` (JVP and lungs examined, nitrate decision,
@@ -151,7 +151,7 @@ of the five harmful options costs 2; routine oxygen, troponin-waiting, a late EC
 VF arrest each fail their own item. Contraindicated interventions are also logged as safety events with their `harm`
 text.
 
-## 6. Reference path (`solution`)
+## Reference path (`solution`)
 
 ECG ordered at minute 0.5 and read at 6.5; monitor and IV access with bloods before the history. Right-sided leads
 ordered, cath lab activated at 8.5, bloods sent, then aspirin. Focused exam (general, JVP, lungs), right-sided ECG
@@ -160,7 +160,7 @@ sounds. Nitrate decision, then a 500 mL bolus, ticagrelor 180 mg and UFH. Reperf
 Risk factors and ICE, then pads. Transfer at 28.5 min. Angiography (20 min), post-PCI ECG, and blood results read;
 finish at 60.5 min. Without VF and in the lab within 60 min, the deterministic rubric scores 22/22 (100 %).
 
-## 7. Clinical numbers check
+## Clinical numbers check
 
 - MAP = (98 + 2 × 62) / 3 = 74 mmHg.
 - Anion gap = Na − (Cl + HCO₃) = 139 − (103 + 24) = 12 mmol/L.
@@ -181,7 +181,7 @@ finish at 60.5 min. Without VF and in the lab within 60 min, the deterministic r
 - ECG ST elevation in III fell from 3.0 to 0.5 mm after PCI (> 70 % resolution); post-PCI rate 68/min, as the
   `reperfusion` event sets.
 
-## 8. Facilitator notes
+## Facilitator notes
 
 **Debrief questions (PEARLS order).**
 
@@ -214,7 +214,7 @@ finish at 60.5 min. Without VF and in the lab within 60 min, the deterministic r
 | Transfer before the activation call | `transfer-before-activation` (he waits at the door); `r-door-to-lab` lost |
 | Shock with a pulse | `early-shock` (painful; may itself induce VF) |
 
-## 9. Embodied mode
+## Embodied mode
 
 **Grounding the kit** (docs/EMBODIED.md §6, docs/CASE_AUTHORING.md §8). A clinical act needs the kit it names at the
 bedside, and IV access is patient state: the infusions `dobutamine` and `noradrenaline` require `iv-access` like the
@@ -239,7 +239,7 @@ waypoint points to the nearest placement with `fluoroscopy`: from resus the radi
 inside the cath lab the C-arm. Lab tests are ordered at the bedside or a records/laboratory station. Embodied and
 clinical scores are equal (100 % in both modes and languages).
 
-## 10. Fidelity limits
+## Fidelity limits
 
 - The coronary-angiography notice in `orderMatching.warnings` has `"unless"` = phase `cath` or `post-pci`: once he is
   in the cath lab (entered only when the lab has been activated and he has been transferred) the result exists and
@@ -265,7 +265,7 @@ clinical scores are equal (100 % in both modes and languages).
   pacing for it).
 - Prasugrel is not stocked in this ED (the nurse's stock list); the P2Y12 choice is ticagrelor or clopidogrel.
 
-## 11. Matcher notes
+## Matcher notes
 
 **Patient matcher.**
 
@@ -307,7 +307,7 @@ clinical scores are equal (100 % in both modes and languages).
   instead. "Shock him", "deliver a shock", "defibrillate", 除颤 and 电击 still reach `defibrillation`.
 - The capillary-glucose reference text is per-locale (随机 3.9–7.8 / random 3.9–7.8).
 
-## 12. References
+## References
 
 The case's `debrief.references` (one Vancouver string each). DOIs were verified on 2026-10-28 by web search, each
 returning the publisher's or PubMed's record for that DOI with matching title, journal, volume and pages (the
@@ -335,10 +335,10 @@ could be verified.
 9. Panchal AR, Bartos JA, Cabañas JG, et al. Part 3: adult basic and advanced life support: 2020 American Heart
    Association Guidelines for Cardiopulmonary Resuscitation and Emergency Cardiovascular Care. Circulation.
    2020;142(16 Suppl 2):S366-S468. doi:10.1161/CIR.0000000000000916
-10. Stub D, Smith K, Bernard S, et al. Air versus oxygen in ST-segment-elevation myocardial infarction (AVOID).
-    Circulation. 2015;131(24):2143-2150. doi:10.1161/CIRCULATIONAHA.114.014494
-11. Hofmann R, James SK, Jernberg T, et al. Oxygen therapy in suspected acute myocardial infarction (DETO2X-AMI).
-    N Engl J Med. 2017;377(13):1240-1249. doi:10.1056/NEJMoa1706222
+10. Stub D, Smith K, Bernard S, et al. Air versus oxygen in ST-segment-elevation myocardial infarction. Circulation.
+    2015;131(24):2143-2150. doi:10.1161/CIRCULATIONAHA.114.014494
+11. Hofmann R, James SK, Jernberg T, et al. Oxygen therapy in suspected acute myocardial infarction. N Engl J Med.
+    2017;377(13):1240-1249. doi:10.1056/NEJMoa1706222
 12. Kubica J, Adamski P, Ostrowska M, et al. Morphine delays and attenuates ticagrelor exposure and action in patients
     with myocardial infarction: the randomized, double-blind, placebo-controlled IMPRESSION trial. Eur Heart J.
     2016;37(3):245-252. doi:10.1093/eurheartj/ehv547
@@ -349,8 +349,6 @@ could be verified.
     acute ST-segment elevation myocardial infarction: the OASIS-6 randomized trial. JAMA. 2006;295(13):1519-1530.
     doi:10.1001/jama.295.13.joc60038
 
-(Trial acronyms in brackets after refs. 10–11 are for the reader here; the case strings give the published titles.)
-
 **Resuscitation content** (VF arrest, bradycardia) was written to ERC 2021 / AHA 2020 and checked against the 2025
 guidance as far as it could be read: ERC 2025 keeps adrenaline after the third shock in a shockable rhythm and reports
 no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
@@ -358,8 +356,8 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
 ### To verify
 
 - **V4R threshold.** The case teaches ST elevation ≥ 1 mm in V4R (the classic criterion; his V4R shows 1.5 mm, so the
-  diagnosis holds either way). The Fourth Universal Definition's own threshold for V3R/V4R (possibly ≥ 0.5 mm) could not
-  be read from the primary text.
+  diagnosis holds either way). The Fourth Universal Definition's own threshold for V3R/V4R could not be read from the
+  primary text.
 - **ESC 2023 class for additional leads** (V3R, V4R, V7–V9) in inferior STEMI — tagged "ESC 2023" in the teaching
   point without a class.
 - **ERC 2025 bradycardia algorithm** — the atropine first dose (the case keeps ERC 2021's 0.5 mg, "AHA uses 1 mg").
@@ -367,7 +365,7 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
   wording).
 - Ref. 2: the issue number (cited without it); ref. 4: a DOI (none could be verified, so none is given).
 
-## 13. Changelog
+## Changelog
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 
@@ -385,7 +383,7 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
 - New `learningOutcomes` (6) and `provenance.review` (`editorial`); version 1.0.0 → 1.1.0.
 - README restructured to the facilitator-guide template (PEARLS debrief, common errors, rubric table, Chinese summary).
 
-## 14. Validation
+## Validation
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/stemi-inferior-rv/case.json
@@ -395,7 +393,7 @@ npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --age
 npm run -s cc -- bench grounding --split dev && npm run -s cc -- bench grounding --split test --failures 0
 ```
 
-## 15. 中文摘要
+## 中文摘要
 
 **病例概要。** 58岁男性，吸烟（38包年）、高血压、血脂异常且自行停用他汀，09:10由妻子陪同步入急诊抢救室。约08:00搬文件上楼时突发
 胸骨后压榨样疼痛，向下颌和左臂放射，伴大汗、恶心及站立时眼前发黑。诊断为**急性下壁ST段抬高型心肌梗死合并右心室梗死**（右冠近段、

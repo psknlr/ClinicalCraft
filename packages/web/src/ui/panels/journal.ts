@@ -6,7 +6,7 @@
 import { assetContentType, assetExists, caseAssetUrl } from "../../app/assets.js";
 import { progress } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
-import { caseDisclaimer, ct, tr } from "../../i18n/index.js";
+import { caseDisclaimer, ct, reviewLine, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { evidenceGrid } from "./common.js";
@@ -143,6 +143,18 @@ export function sourcePanel(app: App): () => PanelView {
         rows.length ? h("dl", { class: "source-dl" }, rows.map(([k, v]) => [h("dt", null, k), h("dd", null, v)])) : null,
         p.kind === "synthetic" ? h("p", { class: "notice" }, tr("source.synthetic")) : null,
         p.notes ? h("p", null, h("b", null, tr("source.notes")), " ", ct(p.notes)) : null,
+        // Who checked the content, as the case records it (docs/GLOSSARY.md §4). The guidance list names the
+        // condition, so it waits for the unlocked debrief.
+        p.review
+          ? h(
+              "section",
+              { class: "source-review", id: "source-review", dataset: { status: p.review.status } },
+              h("h3", null, tr("review.title")),
+              h("p", { class: "notice" }, reviewLine(p.review)),
+              p.review.notes ? h("p", { class: "small" }, ct(p.review.notes)) : null,
+              p.review.reviewers.length ? h("p", { class: "small muted" }, tr("review.reviewers", { list: p.review.reviewers.join("; ") })) : null,
+            )
+          : null,
         h("p", { class: "notice", id: "source-disclaimer" }, h("b", null, tr("source.disclaimer")), " ", caseDisclaimer(c.disclaimer)),
         c.assets.length ? [h("h3", null, tr("source.assets")), assets] : null,
         h("p", null, tr("source.agents")),

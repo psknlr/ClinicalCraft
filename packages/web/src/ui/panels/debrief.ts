@@ -1,6 +1,7 @@
 /**
  * Debrief: the V4 completion screen (done mark, metrics, conclusion, key
- * reasoning, boundaries, unknowns, notice) plus the `AssessmentReport`
+ * reasoning, evidence boundaries, unknowns, the case's learning outcomes,
+ * teaching points, references, its clinical review status, notice) plus the `AssessmentReport`
  * visualised — objectives, history/exam coverage, investigation stewardship,
  * first-try decisions, safety events, the rubric (deterministic met/unmet,
  * examiner-judged items with evidence) and the examiner narrative. Scores are
@@ -9,7 +10,7 @@
 import { availableDecisions, progress, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import type { AssessmentView } from "../../app/store.js";
-import { ct, joinList, tr, trMaybe } from "../../i18n/index.js";
+import { ct, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { investigationName } from "./common.js";
@@ -198,6 +199,10 @@ export function debriefPanel(app: App): () => PanelView {
       const d = c.debrief;
       // Mid-case (e.g. after /assess) only the formative assessment: the authored debrief is the answer.
       const unlocked = debriefUnlocked(c, s);
+      // Learning outcomes usually name the diagnosis: listed with the unlocked debrief only (docs/GLOSSARY.md §4).
+      const outcomes = c.learningOutcomes.map((x) => ct(x)).filter(Boolean);
+      const review = reviewLine(c.provenance.review);
+      const guidelines = c.provenance.review?.guidelines ?? [];
       mount(
         content,
         unlocked ? h("div", { style: "text-align:center" }, h("div", { class: "done-mark" }, "✓"), h("h3", null, tr("debrief.lead")), h("p", null, tr("debrief.leadSub"))) : null,
@@ -218,8 +223,18 @@ export function debriefPanel(app: App): () => PanelView {
               d.keyReasoning.length ? h("p", null, h("b", null, tr("debrief.keyReasoning")), d.keyReasoning.map((x) => ct(x)).join(" ")) : null,
               d.boundaries ? h("p", null, h("b", null, tr("debrief.boundaries")), ct(d.boundaries)) : null,
               d.unknowns.length ? h("p", null, h("b", null, tr("debrief.unknowns")), joinList(d.unknowns.map((x) => ct(x)))) : null,
+              outcomes.length ? [h("h4", null, tr("debrief.outcomes")), h("ol", { class: "teaching outcomes", id: "debrief-outcomes" }, outcomes.map((x) => h("li", null, x)))] : null,
               d.teachingPoints.length ? [h("h4", null, tr("debrief.teaching")), h("ul", { class: "teaching" }, d.teachingPoints.map((x) => h("li", null, ct(x))))] : null,
               d.references.length ? [h("h4", null, tr("debrief.references")), h("ul", { class: "refs small" }, d.references.map((x) => h("li", null, x)))] : null,
+              review
+                ? h(
+                    "p",
+                    { class: "small muted", id: "debrief-review" },
+                    h("b", null, tr("debrief.review")),
+                    review,
+                    guidelines.length ? [h("br"), tr("review.guidelines", { list: guidelines.join("; ") })] : null,
+                  )
+                : null,
             ]
           : null,
         h("div", { class: "notice" }, ct(d.notice) || tr("debrief.notice")),

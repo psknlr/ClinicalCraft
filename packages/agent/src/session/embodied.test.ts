@@ -91,7 +91,7 @@ describe("embodied mode — contracts (PROTOCOL §12)", () => {
   it("fixes the embodiment for the encounter: configure refuses a change (localised)", async () => {
     for (const [locale, pattern] of [
       ["en", /embodied/i],
-      ["zh-CN", /具身/],
+      ["zh-CN", /实景/],
     ] as const) {
       const t = await makeEmbodiedSession({ settingsPatch: { locale } });
       const events = await t.session.run({ type: "configure", patch: { embodiment: "clinical" } });

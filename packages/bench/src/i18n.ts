@@ -222,7 +222,7 @@ const ZH: Record<Key, string> = {
   "task.final": "完成。",
   "answer.recorded": "已记录答案：{id}（“{name}”）。",
   "answer.unknown": "此世界中没有实体“{id}”——未记录。请使用 observe_world / find_entities 返回的 ID。",
-  "approval.declined": "带教医师拒绝了该请求（基准测试）。",
+  "approval.declined": "上级医师拒绝了该请求（基准测试）。",
   "approval.headless": "无人值守：需要人工审批",
   "approval.headlessHighRisk": "无人值守 auto 模式：必须确认、ask 规则和高风险的操作需要人来批准（不会自动批准）",
 
@@ -294,7 +294,7 @@ const ZH: Record<Key, string> = {
 
   "demo.title": "参考演示 —— 具身接诊：{title}",
   "demo.intro":
-    "具身参考医生（具身模式下的离线自动驾驶）在病例自己的场馆中无界面地完成接诊；每一个审批请求都由一位上级医生答复（批准）。下面每一步都把 观察 → 计划 → 导航 → 设备交互 → 临床操作 → 状态变化 → 核验 串联起来，并给出世界版本、目标版本、动作 ID 与临床事件 ID（均取自本次轨迹 `trace.jsonl`）；每一步的结论都在运行结束后对照权威的引擎状态和世界状态重新核验，最后给出评估。✗ 表示被世界或空间闸门拒绝的世界动作：拒绝及随后的恢复都保留在记录中。",
+    "具身参考医生（具身模式下的离线示范接诊）在病例自己的场馆中无界面地完成接诊；每一个审批请求都由一位上级医师答复（批准）。下面每一步都把 观察 → 计划 → 导航 → 设备交互 → 临床操作 → 状态变化 → 核验 串联起来，并给出世界版本、目标版本、动作 ID 与临床事件 ID（均取自本次轨迹 `trace.jsonl`）；每一步的结论都在运行结束后对照权威的引擎状态和世界状态重新核验，最后给出评估。✗ 表示被世界或空间闸门拒绝的世界动作：拒绝及随后的恢复都保留在记录中。",
   "demo.disclaimer": "本演示验证的是基础设施（确定性地重放病例的参考解法），而不是临床推理能力。",
   "demo.meta": "病例 `{caseId}` · 场馆 `{facilityId}` · 语言 {locale} · 提交 `{commit}` · {date}",
   "demo.summary": "概要",
@@ -333,7 +333,7 @@ const ZH: Record<Key, string> = {
   "demo.approvalLine": "{tool}（{risk} 风险）：{decision}",
   "demo.requirement": "空间要求 {kind}",
   "demo.refused": "{n} 次世界动作被拒绝并已恢复（见下文 ✗）",
-  "demo.approvals": "{n} 个审批请求由上级医生答复（批准 {approved} 个）",
+  "demo.approvals": "{n} 个审批请求由上级医师答复（批准 {approved} 个）",
   "demo.audit": "独立审计：{spatial} 个受空间约束的操作，被接受的空间违规 {violations} 个；{gated} 个受权限约束的操作，未经授权 {unauthorised} 个",
 
   "cli.list.header": "{suite} 共 {n} 个场景",
@@ -358,9 +358,9 @@ const ZH: Record<Key, string> = {
   "cli.demo.written": "演示：{md} 与 {trace}",
   "cli.demo.failed": "演示未通过（详见 {md}）。",
 
-  "grounding.title": "ClinicalCraft 语义落地基准 — {suite}（{splits}）",
+  "grounding.title": "ClinicalCraft 事实依据基准 — {suite}（{splits}）",
   "grounding.disclaimer":
-    "本基准衡量的是 ClinicalCraft 所有智能体共同依赖的确定性层——病人的事实选择、临床工具对自由文本与猜测 ID 参数的解析、病人路由器以及语音回复的落地核验——在留出数据上离线评测。它不衡量大模型的临床推理（真实模型请用 `bench run --agent llm` 与 `eval`）。区间为按条目计算的 Wilson 95 % 区间。",
+    "本基准衡量的是 ClinicalCraft 所有智能体共同依赖的确定性层——患者的事实选择、临床工具对自由文本与猜测 ID 参数的解析、患者路由器以及对模型措辞后回复的事实核验——在留出数据上离线评测。它不衡量大模型的临床推理（真实模型请用 `bench run --agent llm` 与 `eval`）。区间为按条目计算的 Wilson 95 % 区间。",
   "grounding.splits": "数据划分",
   "grounding.split.dev": "dev（开发集）",
   "grounding.split.test": "test（留出测试集）",
@@ -388,12 +388,12 @@ const ZH: Record<Key, string> = {
   "grounding.expected": "期望",
   "grounding.got": "实际",
   "grounding.outcome": "结果",
-  "grounding.track.history": "病史——病人的事实选择",
+  "grounding.track.history": "病史——患者的事实选择",
   "grounding.track.exam": "查体——examine 工具的参数",
   "grounding.track.orders": "检查——order_test / read_result 的参数",
   "grounding.track.interventions": "处置——intervene 的参数",
   "grounding.track.routing": "路由——注入、元问题与现实求医的拦截",
-  "grounding.track.verifier": "核验——语音回复中的编造内容",
+  "grounding.track.verifier": "核验——模型措辞回复中的编造内容",
   "grounding.rate.leakRate": "泄露率：说出了未被问到的事实（越低越好）",
   "grounding.rate.answerRate": "作答率：病例中有答案的问题得到回答",
   "grounding.rate.abstainRate": "弃答率：病例中没有答案的问题未被回答",
@@ -416,12 +416,12 @@ const ZH: Record<Key, string> = {
   "grounding.cli.tag": "  标签 {tag}：{k}/{n}（{rate}）",
   "grounding.cli.written": "报告：{md} 与 {json}",
   "grounding.cli.modified": "警告：{split} 划分与登记的摘要不一致，这些结果不能与已发布的数字比较。",
-  "grounding.cli.unknownSuite": "未知的语义落地测试集“{suite}”。可用：{list}",
-  "grounding.cli.invalid": "语义落地测试集 {suite} 中有无效文件：",
-  "grounding.cli.refIssues": "语义落地条目引用了病例中不存在的条目：",
+  "grounding.cli.unknownSuite": "未知的事实依据测试集“{suite}”。可用：{list}",
+  "grounding.cli.invalid": "事实依据测试集 {suite} 中有无效文件：",
+  "grounding.cli.refIssues": "事实依据条目引用了病例中不存在的条目：",
   "grounding.cli.badTrack": "未知评测项“{value}”（{list}）。",
   "grounding.cli.badSplit": "未知数据划分“{value}”（dev | test | all）。",
-  "grounding.cli.noItems": "没有符合筛选条件的语义落地条目。",
+  "grounding.cli.noItems": "没有符合筛选条件的事实依据条目。",
   "grounding.cli.badCompare": "无法读取用于比较的报告：{file}",
 };
 

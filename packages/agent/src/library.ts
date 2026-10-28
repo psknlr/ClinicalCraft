@@ -55,6 +55,19 @@ export function libraryOrder<T extends LibraryOrderKey>(cases: Iterable<T>): T[]
  */
 export type CapabilityNeed = string[] | { all: CapabilityNeed[] } | { any: CapabilityNeed[] };
 
+/** Review statuses of `provenance.review.status` (core `CaseSchema`). */
+export const REVIEW_STATUSES = ["unreviewed", "editorial", "clinician-reviewed"] as const;
+
+/**
+ * A case's clinical review as the library shows it (`provenance.review`): its status and date, stated honestly
+ * wherever the case is offered (docs/GLOSSARY.md §4). Reviewers, guidance and notes stay in the full case.
+ */
+export interface CaseReviewSummary {
+  status: (typeof REVIEW_STATUSES)[number];
+  /** Date of the last review (YYYY-MM-DD), or null when the case gives none. */
+  reviewedAt: string | null;
+}
+
 /**
  * One case in the library index: exactly what the library cards, filters and
  * facility choice need. No patient data, answers, results or solution.
@@ -84,6 +97,13 @@ export interface CaseIndexEntry {
   labelPrefix: LocalizedText | null;
   /** The case's teaching disclaimer (shown before play), or null. */
   disclaimer: LocalizedText | null;
+  /**
+   * How many learning outcomes the case states (`learningOutcomes`) — a count only: specific by design, the
+   * outcomes usually name the diagnosis, and the index stays spoiler-free (docs/GLOSSARY.md §4).
+   */
+  learningOutcomeCount: number;
+  /** The case's recorded clinical review (`provenance.review`), or null when it records none. */
+  review: CaseReviewSummary | null;
   /** Hash of the case file's bytes (16 hex digits of its SHA-256): changes whenever the file does. */
   contentHash: string;
   /**
@@ -112,6 +132,8 @@ export const CASE_INDEX_ENTRY_KEYS: readonly (keyof CaseIndexEntry)[] = [
   "objectives",
   "labelPrefix",
   "disclaimer",
+  "learningOutcomeCount",
+  "review",
   "contentHash",
   "capabilityNeeds",
 ];
@@ -146,6 +168,15 @@ function labelPrefix(label: LocalizedText | null): LocalizedText | null {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(label)) if (cut(v)) out[k] = cut(v);
   return Object.keys(out).length ? out : null;
+}
+
+/** `provenance.review` reduced to what the library shows (status and date); null without a known status. */
+function reviewOf(v: unknown): CaseReviewSummary | null {
+  const r = obj(v);
+  const status = REVIEW_STATUSES.find((x) => x === r.status);
+  if (!status) return null;
+  const reviewedAt = typeof r.reviewedAt === "string" && /^\d{4}-\d{2}-\d{2}$/.test(r.reviewedAt) ? r.reviewedAt : null;
+  return { status, reviewedAt };
 }
 
 /* ---- capability needs ---------------------------------------------- */
@@ -321,6 +352,8 @@ export function caseIndexEntry(rawCase: unknown, contentHash: string): CaseIndex
     objectives: Array.isArray(raw.objectives) ? raw.objectives.length : 0,
     labelPrefix: labelPrefix(localized(v4.caseLabel)),
     disclaimer: localized(raw.disclaimer),
+    learningOutcomeCount: Array.isArray(raw.learningOutcomes) ? raw.learningOutcomes.filter((x) => localized(x) !== null).length : 0,
+    review: reviewOf(obj(raw.provenance).review),
     contentHash,
     capabilityNeeds: capabilityNeeds(raw),
   };
@@ -398,6 +431,8 @@ export function normalizeIndexEntry(value: unknown): CaseIndexEntry | null {
     objectives: Math.round(num(v.objectives, 0, 1000, 0)),
     labelPrefix: safeLocalized(v.labelPrefix),
     disclaimer: safeLocalized(v.disclaimer),
+    learningOutcomeCount: Math.round(num(v.learningOutcomeCount, 0, 100, 0)),
+    review: reviewOf(v.review),
     contentHash: typeof v.contentHash === "string" && /^[A-Za-z0-9:_-]{1,128}$/.test(v.contentHash) ? v.contentHash : "",
     capabilityNeeds: Array.isArray(v.capabilityNeeds)
       ? v.capabilityNeeds

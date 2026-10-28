@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-appendicitis",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "腹痛 · 19岁男性",
     "en": "Abdominal pain · 19-year-old man"
@@ -22,6 +22,32 @@
     "en"
   ],
   "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "采集重点病史，确认典型时序（脐周痛转移至右下腹，厌食和恶心先于呕吐），并检查腹膜刺激征和关键阴性体征，包括在征得同意、有陪检者在场时检查睾丸。",
+      "en": "Take a focused history that establishes the classic sequence (periumbilical pain migrating to the right iliac fossa, anorexia and nausea before vomiting), and examine for peritonism and the pertinent negatives, including the testes with consent and a chaperone."
+    },
+    {
+      "zh-CN": "到院40分钟内、不必等检查完成，给予静脉阿片类滴定镇痛、止吐、静脉补液并禁食，并能说明镇痛不会掩盖诊断。",
+      "en": "Give titrated IV opioid analgesia, an antiemetic, IV fluids and nil by mouth within 40 minutes of arrival, without waiting for the work-up, and explain why analgesia does not mask the diagnosis."
+    },
+    {
+      "zh-CN": "依据已获得的资料计算Alvarado和AIR评分，解释两者为何结论不同，并为年轻、体型偏瘦的患者先选分级加压超声而非CT。",
+      "en": "Calculate the Alvarado and AIR scores from the findings obtained, explain why they disagree, and choose graded-compression ultrasound before CT for a young, slim patient."
+    },
+    {
+      "zh-CN": "综合临床、检验和超声结果诊断急性非复杂性阑尾炎，并用已记录的阴性结果排除睾丸扭转、输尿管结石、胃肠炎和克罗恩病。",
+      "en": "Diagnose acute uncomplicated appendicitis from the combined clinical, laboratory and ultrasound findings, excluding torsion, ureteric colic, gastroenteritis and Crohn's disease with the recorded negatives."
+    },
+    {
+      "zh-CN": "给予单次术前窄谱静脉抗生素（头孢呋辛或头孢曲松联合甲硝唑），避免碳青霉烯类和重复用药，并在3小时内请外科会诊处理。",
+      "en": "Give a single pre-operative dose of narrow-spectrum IV antibiotics (cefuroxime or ceftriaxone plus metronidazole), avoiding carbapenems and duplicate regimens, and involve the surgical team within 3 hours."
+    },
+    {
+      "zh-CN": "与患者讨论腹腔镜阑尾切除术和“抗生素优先”方案（需CT确认；约四分之一到三分之一一年内仍需手术），共同决策并取得知情同意。",
+      "en": "Discuss laparoscopic appendectomy and the antibiotics-first option (CT confirmation needed; about a quarter to a third still need surgery within a year) and reach a shared, consented decision with the patient."
+    }
+  ],
   "tags": [
     "emergency",
     "abdominal-pain",
@@ -42,6 +68,25 @@
     "notes": {
       "zh-CN": "依据急性阑尾炎的典型表现和现行指南编写的虚构教学病例；姓名、学校及所有细节均为虚构，不基于任何真实患者。",
       "en": "Fictional teaching case written from the typical presentation of acute appendicitis and current guidelines; the name, university and all details are invented and not based on any real patient."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "WSES Jerusalem guidelines 2020 and 2025 edition (JAMA Surg 2026)",
+        "SAGES 2024 appendicitis guideline",
+        "ACR Appropriateness Criteria right lower quadrant pain 2022",
+        "Cochrane 2011 analgesia in acute abdominal pain",
+        "APPAC (2015; 5-year 2018) and CODA (2020) trials",
+        "BTS 2017 emergency oxygen (target ranges reaffirmed 2019)"
+      ],
+      "notes": {
+        "zh-CN": "AI辅助编写，并已对照所列指南做编辑审校；尚未经执业临床医师审阅——用于教学前，请先由本专科临床医师审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -50,8 +95,8 @@
   },
   "patient": {
     "displayName": {
-      "zh-CN": "周宇航",
-      "en": "Zhou Yuhang"
+      "zh-CN": "周宇航（化名）",
+      "en": "Zhou Yuhang (pseudonym)"
     },
     "age": 19,
     "ageUnit": "years",
@@ -124,8 +169,8 @@
       "companion": {
         "role": "friend",
         "name": {
-          "zh-CN": "室友 吴凡",
-          "en": "Wu Fan, his roommate"
+          "zh-CN": "吴凡（室友，化名）",
+          "en": "Wu Fan (roommate, pseudonym)"
         },
         "persona": {
           "zh-CN": "同宿舍室友，陪他打车来急诊；很担心，话不多；病史问题让患者本人回答；隐私检查时主动回避。",
@@ -6873,8 +6918,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确：年轻、体型偏瘦的患者首选超声，无电离辐射；WSES 2020 建议超声作为一线影像，结果不确定时再行（低剂量）CT。超声阳性且临床高度怀疑时即可交外科处理。",
-            "en": "Correct — first-line in young, slim patients and radiation-free; WSES 2020 recommends ultrasound first and (low-dose) CT if it is inconclusive. A positive scan with high clinical suspicion is enough to hand over to the surgeons."
+            "zh-CN": "正确：年轻、体型偏瘦的患者首选超声，无电离辐射；WSES 2020 建议超声作为一线影像，结果不确定时再行（低剂量）CT；其 2025 版建议以风险评分（AIR、AAS）联合超声作为低剂量 CT 的替代方案，肥胖成人则首选 CT。超声阳性且临床高度怀疑时即可交外科处理。",
+            "en": "Correct — first-line in young, slim patients and radiation-free; WSES 2020 recommends ultrasound first and (low-dose) CT if it is inconclusive, and its 2025 edition suggests risk scores (AIR, AAS) combined with ultrasound as an alternative to low-dose CT, with CT first in adults with obesity. A positive scan with high clinical suspicion is enough to hand over to the surgeons."
           }
         },
         {
@@ -7074,8 +7119,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确：腹腔镜阑尾切除术仍是非复杂性阑尾炎的标准治疗（WSES 2020；SAGES 2024）：术后疼痛轻、切口感染少、住院时间短。非复杂性者术后无需继续抗生素。",
-            "en": "Correct — laparoscopic appendectomy remains the standard treatment for uncomplicated appendicitis (WSES 2020; SAGES 2024): less pain, fewer wound infections, shorter stay. No post-operative antibiotics are needed if it is uncomplicated at operation."
+            "zh-CN": "正确：腹腔镜阑尾切除术仍是非复杂性阑尾炎的标准治疗（WSES 2020 及其 2025 版；SAGES 2024）：术后疼痛轻、切口感染少、住院时间短。非复杂性者术后无需继续抗生素。",
+            "en": "Correct — laparoscopic appendectomy remains the standard treatment for uncomplicated appendicitis (WSES 2020 and its 2025 edition; SAGES 2024): less pain, fewer wound infections, shorter stay. No post-operative antibiotics are needed if it is uncomplicated at operation."
           }
         },
         {
@@ -7110,8 +7155,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误：动态观察适用于诊断不明确的患者；本例诊断已明确。WSES 2020 认为，在使用抗生素的前提下，非复杂性阑尾炎手术短时推迟（< 24 小时）是安全的，但不用抗生素的观察并不合适。",
-            "en": "Incorrect — active observation is for equivocal cases, and this diagnosis is established. WSES 2020 accepts a short in-hospital delay (< 24 h) before appendectomy in uncomplicated appendicitis with antibiotics, but untreated observation is not appropriate."
+            "zh-CN": "错误：动态观察适用于诊断不明确的患者；本例诊断已明确。WSES（2020 版及 2025 版）认为，在使用抗生素的前提下，非复杂性阑尾炎手术短时推迟（< 24 小时）是安全的，但不用抗生素的观察并不合适。",
+            "en": "Incorrect — active observation is for equivocal cases, and this diagnosis is established. WSES (2020 and the 2025 edition) accepts a short in-hospital delay (< 24 h) before appendectomy in uncomplicated appendicitis with antibiotics, but untreated observation is not appropriate."
           }
         },
         {
@@ -7683,8 +7728,8 @@
         "en": "Always examine the testes and hernial orifices in a young man with lower abdominal pain."
       },
       {
-        "zh-CN": "WSES 2020 建议用 AIR 或成人阑尾炎评分（AAS）进行风险分层：中危者行影像学检查。",
-        "en": "WSES 2020 recommends risk stratification with the AIR or Adult Appendicitis Score (AAS): image those at intermediate risk."
+        "zh-CN": "WSES 2020 建议用 AIR 或成人阑尾炎评分（AAS）进行风险分层，中危者行影像学检查；2025 版继续采用这两种评分。",
+        "en": "WSES 2020 recommends risk stratification with the AIR or the Adult Appendicitis Score (AAS), with imaging for those at intermediate risk; the 2025 edition keeps both scores."
       },
       {
         "zh-CN": "早期、充分的镇痛（阿片类滴定 + 对乙酰氨基酚）是标准治疗，不会掩盖诊断。",
@@ -7704,20 +7749,22 @@
       }
     ],
     "references": [
-      "Di Saverio S, Podda M, De Simone B, et al. Diagnosis and treatment of acute appendicitis: 2020 update of the WSES Jerusalem guidelines. World J Emerg Surg. 2020;15:27.",
-      "Gorter RR, Eker HH, Gorter-Stam MAW, et al. Diagnosis and management of acute appendicitis. EAES consensus development conference 2015. Surg Endosc. 2016;30:4668–4690.",
-      "Expert Panel on Gastrointestinal Imaging. ACR Appropriateness Criteria® Right Lower Quadrant Pain: 2022 Update. J Am Coll Radiol. 2022;19(11S):S445–S461.",
-      "Kumar SS, Collings AT, Lamm R, et al. SAGES guideline for the diagnosis and treatment of appendicitis. Surg Endosc. 2024.",
-      "Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557–564.",
-      "Andersson M, Andersson RE. The appendicitis inflammatory response score: a tool for the diagnosis of acute appendicitis that outperforms the Alvarado score. World J Surg. 2008;32(8):1843–1849.",
-      "Manterola C, Vial M, Moraga J, Astudillo P. Analgesia in patients with acute abdominal pain. Cochrane Database Syst Rev. 2011;(1):CD005660.",
-      "CODA Collaborative. A randomized trial comparing antibiotics with appendectomy for appendicitis. N Engl J Med. 2020;383(20):1907–1919.",
-      "Salminen P, Paajanen H, Rautio T, et al. Antibiotic therapy vs appendectomy for treatment of uncomplicated acute appendicitis: the APPAC randomized clinical trial. JAMA. 2015;313(23):2340–2348.",
-      "Salminen P, Tuominen R, Paajanen H, et al. Five-year follow-up of antibiotic therapy for uncomplicated acute appendicitis in the APPAC randomized clinical trial. JAMA. 2018;320(12):1259–1265.",
-      "Bratzler DW, Dellinger EP, Olsen KM, et al. Clinical practice guidelines for antimicrobial prophylaxis in surgery. Am J Health Syst Pharm. 2013;70(3):195–283.",
-      "Solomkin JS, Mazuski JE, Bradley JS, et al. Diagnosis and management of complicated intra-abdominal infection in adults and children: guidelines by the Surgical Infection Society and the Infectious Diseases Society of America. Clin Infect Dis. 2010;50(2):133–164.",
-      "National Institute for Health and Care Excellence. Intravenous fluid therapy in adults in hospital (CG174), 2013, updated 2017.",
-      "O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in healthcare and emergency settings. Thorax. 2017;72(Suppl 1):ii1–ii90."
+      "Podda M, Ceresoli M, De Simone B, et al. Diagnosis and treatment of acute appendicitis: 2025 edition of the World Society of Emergency Surgery Jerusalem guidelines. JAMA Surg. 2026;161(3):283-295. doi:10.1001/jamasurg.2025.6218",
+      "Di Saverio S, Podda M, De Simone B, et al. Diagnosis and treatment of acute appendicitis: 2020 update of the WSES Jerusalem guidelines. World J Emerg Surg. 2020;15(1):27. doi:10.1186/s13017-020-00306-3",
+      "Gorter RR, Eker HH, Gorter-Stam MAW, et al. Diagnosis and management of acute appendicitis. EAES consensus development conference 2015. Surg Endosc. 2016;30(11):4668-4690. doi:10.1007/s00464-016-5245-7",
+      "Expert Panel on Gastrointestinal Imaging; Kambadakone AR, Santillan CS, et al. ACR Appropriateness Criteria® right lower quadrant pain: 2022 update. J Am Coll Radiol. 2022;19(11S):S445-S461. doi:10.1016/j.jacr.2022.09.011",
+      "Kumar SS, Collings AT, Lamm R, et al. SAGES guideline for the diagnosis and treatment of appendicitis. Surg Endosc. 2024;38(6):2974-2994. doi:10.1007/s00464-024-10813-y",
+      "Alvarado A. A practical score for the early diagnosis of acute appendicitis. Ann Emerg Med. 1986;15(5):557-564. doi:10.1016/s0196-0644(86)80993-3",
+      "Andersson M, Andersson RE. The appendicitis inflammatory response score: a tool for the diagnosis of acute appendicitis that outperforms the Alvarado score. World J Surg. 2008;32(8):1843-1849. doi:10.1007/s00268-008-9649-y",
+      "Manterola C, Vial M, Moraga J, Astudillo P. Analgesia in patients with acute abdominal pain. Cochrane Database Syst Rev. 2011;(1):CD005660. doi:10.1002/14651858.CD005660.pub3",
+      "CODA Collaborative. A randomized trial comparing antibiotics with appendectomy for appendicitis. N Engl J Med. 2020;383(20):1907-1919. doi:10.1056/NEJMoa2014320",
+      "Salminen P, Paajanen H, Rautio T, et al. Antibiotic therapy vs appendectomy for treatment of uncomplicated acute appendicitis: the APPAC randomized clinical trial. JAMA. 2015;313(23):2340-2348.",
+      "Salminen P, Tuominen R, Paajanen H, et al. Five-year follow-up of antibiotic therapy for uncomplicated acute appendicitis in the APPAC randomized clinical trial. JAMA. 2018;320(12):1259-1265. doi:10.1001/jama.2018.13201",
+      "Bratzler DW, Dellinger EP, Olsen KM, et al. Clinical practice guidelines for antimicrobial prophylaxis in surgery. Am J Health Syst Pharm. 2013;70(3):195-283.",
+      "Mazuski JE, Tessier JM, May AK, et al. The Surgical Infection Society revised guidelines on the management of intra-abdominal infection. Surg Infect (Larchmt). 2017;18(1):1-76. doi:10.1089/sur.2016.261",
+      "Solomkin JS, Mazuski JE, Bradley JS, et al. Diagnosis and management of complicated intra-abdominal infection in adults and children: guidelines by the Surgical Infection Society and the Infectious Diseases Society of America. Clin Infect Dis. 2010;50(2):133-164.",
+      "National Institute for Health and Care Excellence. Intravenous fluid therapy in adults in hospital (CG174). London: NICE; 2013 (updated 2017).",
+      "O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax. 2017;72(Suppl 1):ii1-ii90."
     ],
     "notice": {
       "zh-CN": "本结果为教学脚本的形成性评估指标，并非经过验证的能力评分。",

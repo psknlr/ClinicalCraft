@@ -24,24 +24,24 @@
   "estimatedMinutes": 40,
   "learningOutcomes": [
     {
-      "zh-CN": "通过知情人病史确定最后正常时间，并据此（而非被发现的时间）计算静脉溶栓（4.5小时）和机械取栓（6小时）的时间窗。",
-      "en": "Establish last known well from a collateral history and use it — not the time he was found — to set the IV thrombolysis (4.5 h) and thrombectomy (6 h) windows."
+      "zh-CN": "通过目击者病史确定最后正常时间，并据此（而非被发现的时间）计算静脉溶栓（4.5小时）和机械取栓（6小时）的时间窗。",
+      "en": "Establish last known well from a witness and use it — not the time of discovery — to set the thrombolysis (4.5 h) and thrombectomy (6 h) windows."
     },
     {
-      "zh-CN": "为失语患者完成NIHSS评分，并依据皮层征定位左侧大脑中动脉综合征、识别提示大血管闭塞的临床表现。",
-      "en": "Score the NIHSS in an aphasic patient and localise a left MCA syndrome from the cortical signs that point to a large-vessel occlusion."
+      "zh-CN": "为言语表达困难的患者完成NIHSS评分，并依据皮层征和长束征定位病灶、判断可能的发病机制。",
+      "en": "Score the NIHSS in a patient who cannot speak fluently, and localise the lesion and its likely mechanism from cortical and long-tract signs."
     },
     {
-      "zh-CN": "选择首选影像（头颅CT平扫并同次完成头颈CTA，无肾病史者不等肌酐），并判读CT（出血、ASPECTS）与CTA（闭塞部位）以支持再灌注决策。",
-      "en": "Choose the first imaging (non-contrast CT with same-session CTA, without waiting for creatinine in a patient with no known renal disease) and read the CT (haemorrhage, ASPECTS) and CTA (site of occlusion) for the reperfusion decisions."
+      "zh-CN": "选择既能排除出血、又能发现可取栓大血管闭塞且不延误再灌注的急诊影像，并判读CT（出血、ASPECTS）与CTA。",
+      "en": "Choose emergency imaging that excludes haemorrhage and detects a treatable large-vessel occlusion without delaying reperfusion, and read the CT (haemorrhage, ASPECTS) and the CTA."
     },
     {
-      "zh-CN": "完成溶栓前安全核查——CT排除出血、血糖、明确询问抗凝药、用可滴定静脉药将血压降至 < 185/110 mmHg——并在入院至溶栓时间60分钟内按体重给予阿替普酶或替奈普酶，未用抗凝药时不等待凝血和血小板结果。",
-      "en": "Complete the pre-thrombolysis safety check — CT excluding haemorrhage, a glucose result, an explicit anticoagulant history and BP < 185/110 mmHg with a titratable IV agent — and give weight-based alteplase or tenecteplase within a door-to-needle time of 60 minutes, without waiting for coagulation or platelet results when no anticoagulant is taken."
+      "zh-CN": "完成溶栓前安全核查——CT排除出血、血糖、明确询问抗凝药、用可滴定静脉药将血压降至 < 185/110 mmHg——并在入院至溶栓时间60分钟内按体重静脉溶栓，不等待不影响适应证判断的化验结果。",
+      "en": "Complete the pre-thrombolysis safety check — CT excluding haemorrhage, a glucose result, an explicit anticoagulant history and BP < 185/110 mmHg with a titratable IV agent — and give weight-based thrombolysis within a door-to-needle time of 60 minutes, without waiting for results that would not change eligibility."
     },
     {
-      "zh-CN": "应用机械取栓标准（前循环大血管闭塞、NIHSS ≥ 6、ASPECTS ≥ 6、最后正常后6小时内穿刺、发病前mRS 0–1），并在溶栓后立即桥接取栓，不等待溶栓效果。",
-      "en": "Apply the thrombectomy criteria (anterior-circulation LVO, NIHSS ≥ 6, ASPECTS ≥ 6, groin puncture within 6 h of last known well, pre-stroke mRS 0–1) and bridge straight from lysis to thrombectomy without waiting for a response."
+      "zh-CN": "应用机械取栓指征；符合时从静脉溶栓直接桥接取栓，不等待溶栓效果。",
+      "en": "Apply the thrombectomy criteria and, when they are met, bridge from IV thrombolysis to thrombectomy without waiting for a response to lysis."
     },
     {
       "zh-CN": "下达溶栓后医嘱：按时监测神经功能与血压并维持 < 180/105 mmHg，24小时内不用抗血小板药和抗凝药，吞咽筛查通过前禁食禁水（包括口服药）。",

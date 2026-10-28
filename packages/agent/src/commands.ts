@@ -23,7 +23,7 @@ import type { SlashCommand } from "./agents/types.js";
 import type { PlanItem, RuntimeConfigPatch } from "./protocol.js";
 import { PROVIDER_TEMPLATES, localizedName } from "./providers/catalog.js";
 import type { SessionSnapshot } from "./session/types.js";
-import { agentLabel, isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
+import { agentLabel, isZh, joinList, reviewStatusLine, rt, type RuntimeKey } from "./session/i18n.js";
 import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
@@ -395,25 +395,38 @@ function debriefCommand(host: CommandHost): void {
     return;
   }
   const d = c.debrief;
-  const section = (key: RuntimeKey, items: string[]) => (items.length > 0 ? [`${rt(L, key)}:`, ...items.map((x) => `  - ${x}`)] : []);
+  const colon = isZh(L) ? "：" : ": ";
+  const section = (key: RuntimeKey, items: string[], marker: (i: number) => string = () => "-") =>
+    items.length > 0 ? [`${rt(L, key)}${colon.trimEnd()}`, ...items.map((x, i) => `  ${marker(i)} ${x}`)] : [];
+  // The case's learning outcomes (they name the diagnosis: listed here, once the debrief is unlocked) and who
+  // reviewed the content (docs/GLOSSARY.md §4).
+  const outcomes = c.learningOutcomes.map((x) => t(x, L)).filter(Boolean);
+  const review = c.provenance.review;
+  const reviewLine = reviewStatusLine(L, review);
+  const guidelines = review?.guidelines ?? [];
   const lines = [
     t(d.title, L),
     t(d.conclusion, L),
     ...section("cmd.debrief.reasoning", d.keyReasoning.map((x) => t(x, L))),
+    ...section("cmd.debrief.outcomes", outcomes, (i) => `${i + 1}.`),
     ...section("cmd.debrief.teaching", d.teachingPoints.map((x) => t(x, L))),
-    ...(d.boundaries ? [`${rt(L, "cmd.debrief.boundaries")}: ${t(d.boundaries, L)}`] : []),
+    ...(d.boundaries ? [`${rt(L, "cmd.debrief.boundaries")}${colon}${t(d.boundaries, L)}`] : []),
     ...section("cmd.debrief.unknowns", d.unknowns.map((x) => t(x, L))),
     ...section("cmd.debrief.references", d.references),
+    ...(reviewLine ? [`${rt(L, "cmd.debrief.review")}${colon}${reviewLine}`] : []),
+    ...(reviewLine && guidelines.length > 0 ? [`${rt(L, "cmd.debrief.guidelines")}${colon}${guidelines.join("; ")}`] : []),
     d.notice ? t(d.notice, L) : rt(L, "cmd.debrief.notice"),
   ];
   host.output(lines.join("\n"), {
     title: t(d.title, L),
     conclusion: t(d.conclusion, L),
     keyReasoning: d.keyReasoning.map((x) => t(x, L)),
+    learningOutcomes: outcomes,
     teachingPoints: d.teachingPoints.map((x) => t(x, L)),
     boundaries: d.boundaries ? t(d.boundaries, L) : null,
     unknowns: d.unknowns.map((x) => t(x, L)),
     references: d.references,
+    review: review ? { status: review.status, reviewedAt: review.reviewedAt ?? null, text: reviewLine, guidelines } : null,
     notice: d.notice ? t(d.notice, L) : rt(L, "cmd.debrief.notice"),
   });
 }
