@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "stemi-inferior-rv",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "胸痛 · 58岁男性",
     "en": "Chest pain · 58-year-old man"
@@ -22,6 +22,32 @@
     "en"
   ],
   "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "到院10分钟内完成并判读12导联心电图：依据II、III、aVF导联ST段抬高（III > II）伴I、aVL导联对应性压低，将下壁STEMI定位于右冠状动脉。",
+      "en": "Acquire and interpret a 12-lead ECG within 10 minutes of arrival, localising an inferior STEMI to the right coronary artery from ST elevation in II, III and aVF (III > II) with reciprocal depression in I and aVL."
+    },
+    {
+      "zh-CN": "下壁STEMI加做右胸导联（V4R）和后壁导联，并结合低血压、颈静脉压升高而双肺清晰的床旁三联征，识别右心室受累。",
+      "en": "Record right-sided (V4R) and posterior leads in inferior STEMI, and recognise right-ventricular involvement from them and from the bedside triad of hypotension, raised JVP and clear lungs."
+    },
+    {
+      "zh-CN": "右心室梗死时不用硝酸酯、利尿剂和静脉β受体阻滞剂；以谨慎补液维持前负荷、每次补液后复评；阿托品只用于症状性心动过缓。",
+      "en": "Withhold nitrates, diuretics and IV beta-blockers in right-ventricular infarction; support preload with cautious fluid boluses, reassessing after each; reserve atropine for symptomatic bradycardia."
+    },
+    {
+      "zh-CN": "仅凭心电图、不等肌钙蛋白即一键启动导管室行直接PCI；说出ESC 2023的时间目标（STEMI诊断至导丝通过 ≤ 60分钟），以及何时改选溶栓（预计 > 120分钟）。",
+      "en": "Activate the cath lab for primary PCI on the ECG alone, without waiting for troponin; state the ESC 2023 target (STEMI diagnosis to wire crossing ≤ 60 min) and when fibrinolysis is chosen instead (expected delay > 120 min)."
+    },
+    {
+      "zh-CN": "排查出血史和主动脉夹层线索后，给予PCI前抗栓组合（阿司匹林 + 一种P2Y12抑制剂 + 普通肝素），避免磺达肝癸钠和两种P2Y12抑制剂同时负荷。",
+      "en": "After screening for bleeding and aortic dissection, give the pre-PCI antithrombotic bundle (aspirin + one P2Y12 inhibitor + UFH), avoiding fondaparinux and dual P2Y12 loading."
+    },
+    {
+      "zh-CN": "预判急性期室颤（持续监护、提前贴好除颤电极），SpO₂ ≥ 90%时不常规吸氧，并以SBAR向导管室团队交接。",
+      "en": "Anticipate VF in the first hours (continuous monitoring, pads on), withhold routine oxygen while SpO₂ ≥ 90%, and hand over to the cath-lab team with SBAR."
+    }
+  ],
   "tags": [
     "chest-pain",
     "time-critical",
@@ -39,6 +65,26 @@
     "notes": {
       "zh-CN": "完全虚构的教学病例，依据现行ESC/ACC-AHA/中华医学会指南编写；姓名为化名，不对应任何真实患者。",
       "en": "Entirely fictional teaching case written to current ESC, ACC/AHA and Chinese Society of Cardiology guidance; the name is a pseudonym and corresponds to no real patient."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESC 2023 ACS",
+        "ACC/AHA/ACEP/NAEMSP/SCAI 2025 ACS",
+        "ACCF/AHA 2013 STEMI (right-ventricular infarction)",
+        "中华医学会心血管病学分会 急性ST段抬高型心肌梗死诊断和治疗指南（2019）",
+        "Fourth Universal Definition of Myocardial Infarction (2018)",
+        "ERC 2025 Adult Advanced Life Support",
+        "AHA 2025 CPR & ECC, Part 9: Adult Advanced Life Support"
+      ],
+      "notes": {
+        "zh-CN": "AI辅助编写，并已对照所列指南做编辑审校；尚未经执业临床医师审阅——用于教学前，请先由本专科临床医师审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -107,8 +153,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "持续剧烈胸痛，时不时用拳头按住胸口，说话短促、偶尔停下来喘气；害怕但想显得镇定，提到父亲时声音发颤。若监护提示血压骤降（例如用药后），表现为头晕、恶心、说话无力；若护士报告他叫不太醒、血压几乎测不出，则几乎不能回应，只会含糊呻吟，血压回升后才能重新简短回答；若发生心搏骤停则毫无反应，复苏后迷糊、只能呻吟。只说已被问到的病史内容，不主动补充细节，不使用医学术语。",
-        "en": "In constant severe pain, intermittently pressing a fist to his chest; clipped speech with pauses for breath; scared but trying to seem calm, voice wavering when his father comes up. If the monitor shows a sudden fall in blood pressure (e.g. after a drug), he becomes dizzy, nauseated and weak-voiced; if the nurse reports he is barely rousable with an unrecordable pressure, he can only mumble and groan until his pressure recovers; in cardiac arrest he is completely unresponsive, and after resuscitation drowsy and only groaning. Only states history he has been asked about, adds no details of his own, uses no medical terms."
+        "zh-CN": "持续剧烈胸痛，时不时用拳头按住胸口，说话短促、偶尔停下来喘气；害怕但想显得镇定，提到父亲时声音发颤。若血压骤降（例如用药后），表现为头晕、恶心、说话无力；若护士报告他叫不太醒、血压几乎测不出，则几乎不能回应，只会含糊呻吟，血压回升后才能重新简短回答；若发生心搏骤停则毫无反应，复苏后迷糊、只能呻吟。只说已被问到的病史内容，不主动补充细节，不使用医学术语。",
+        "en": "In constant severe pain, intermittently pressing a fist to his chest; clipped speech with pauses for breath; scared but trying to seem calm, voice wavering when his father comes up. If his blood pressure falls suddenly (e.g. after a drug), he becomes dizzy, nauseated and weak-voiced; if the nurse reports he is barely rousable with an unrecordable pressure, he can only mumble and groan until his pressure recovers; in cardiac arrest he is completely unresponsive, and after resuscitation drowsy and only groaning. Only states history he has been asked about, adds no details of his own, uses no medical terms."
       },
       "companion": {
         "role": "spouse",
@@ -2443,8 +2489,8 @@
         },
         "post-pci": {
           "text": {
-            "zh-CN": "PCI术后心电图：窦性心律，66次/分。II、III、aVF导联ST段较术前回落 > 70%（III导联残余抬高0.5 mm），I、aVL导联对应性压低消失；III、aVF导联出现Q波，下壁T波开始倒置。PR 0.18 s，无房室传导阻滞。",
-            "en": "Post-PCI ECG: sinus rhythm, 66 bpm. ST elevation in II, III and aVF has resolved by > 70% (residual 0.5 mm in III); reciprocal depression in I and aVL has resolved. Q waves in III and aVF with early inferior T-wave inversion. PR 0.18 s, no AV block."
+            "zh-CN": "PCI术后心电图：窦性心律，68次/分。II、III、aVF导联ST段较术前回落 > 70%（III导联残余抬高0.5 mm），I、aVL导联对应性压低消失；III、aVF导联出现Q波，下壁T波开始倒置。PR 0.18 s，无房室传导阻滞。",
+            "en": "Post-PCI ECG: sinus rhythm, 68 bpm. ST elevation in II, III and aVF has resolved by > 70% (residual 0.5 mm in III); reciprocal depression in I and aVL has resolved. Q waves in III and aVF with early inferior T-wave inversion. PR 0.18 s, no AV block."
           },
           "note": {
             "zh-CN": "ST段回落 > 70%提示心肌再灌注良好。",
@@ -3935,8 +3981,8 @@
         "en": "Ticagrelor has already been loaded — adding clopidogrel is duplicate P2Y12 inhibition with no benefit and added bleeding risk; if de-escalation to clopidogrel is ever needed in the acute phase, the 600 mg load is given 24 h after the last ticagrelor dose."
       },
       "response": {
-        "zh-CN": "氯吡格雷600 mg已口服。（无禁忌时首选替格瑞洛；氯吡格雷用于替格瑞洛不可用、有禁忌或出血风险高者。）",
-        "en": "Clopidogrel 600 mg given orally. (Ticagrelor is preferred unless it is unavailable or contraindicated, or bleeding risk is high.)"
+        "zh-CN": "氯吡格雷600 mg已口服。（无禁忌时首选强效P2Y12抑制剂——替格瑞洛，或可获得时用普拉格雷；氯吡格雷用于二者均不可用、有禁忌或出血风险高者。）",
+        "en": "Clopidogrel 600 mg given orally. (A potent P2Y12 inhibitor — ticagrelor, or prasugrel where available — is preferred; clopidogrel is for patients who can take neither, or whose bleeding risk is high.)"
       }
     },
     {
@@ -6516,8 +6562,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。本院流程在直接PCI前给予一种P2Y12抑制剂负荷（中国指南推荐尽早给予；ESC 2023将常规预先给药列为可以考虑，IIb类）。无禁忌时首选替格瑞洛而非氯吡格雷；氯吡格雷用于替格瑞洛不可用、有禁忌或出血风险高者。",
-            "en": "Correct. This pathway loads one P2Y12 inhibitor before primary PCI (Chinese guidance recommends early loading; ESC 2023 rates routine pretreatment as 'may be considered', class IIb). Ticagrelor is preferred over clopidogrel unless it is unavailable or contraindicated, or bleeding risk is high."
+            "zh-CN": "正确。本院流程在直接PCI前给予一种P2Y12抑制剂负荷（中国指南推荐尽早给予；ESC 2023将常规预先给药列为可以考虑，IIb类）。无禁忌时首选强效P2Y12抑制剂（替格瑞洛或普拉格雷；ESC 2023认为拟行PCI者可优先考虑普拉格雷，IIa类）而非氯吡格雷；氯吡格雷用于二者均不可用、有禁忌或出血风险高者。本院急诊未备普拉格雷。",
+            "en": "Correct. This pathway loads one P2Y12 inhibitor before primary PCI (Chinese guidance recommends early loading; ESC 2023 rates routine pretreatment as 'may be considered', class IIb). A potent P2Y12 inhibitor (ticagrelor or prasugrel; ESC 2023 favours prasugrel for patients proceeding to PCI, class IIa) is preferred over clopidogrel unless neither can be used or bleeding risk is high. This ED does not stock prasugrel."
           }
         },
         {
@@ -6780,7 +6826,7 @@
         "zh-CN": "未使用硝酸酯类药物",
         "en": "No nitrate given"
       },
-      "weight": 2,
+      "weight": 3,
       "met": {
         "not": {
           "intervened": "nitroglycerin"
@@ -6808,7 +6854,7 @@
         "zh-CN": "未使用溶栓、磺达肝癸钠、利尿剂、静脉β受体阻滞剂，也未选择保守收治",
         "en": "No fibrinolysis, fondaparinux, diuretic or IV beta-blocker, and no conservative admission"
       },
-      "weight": 1,
+      "weight": 2,
       "met": {
         "not": {
           "any": [
@@ -7011,43 +7057,45 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "所有下壁STEMI都应加做右胸导联（V3R–V4R）和后壁导联（V7–V9）。",
-        "en": "Record right-sided (V3R–V4R) and posterior (V7–V9) leads in every inferior STEMI."
+        "zh-CN": "所有下壁STEMI都应加做右胸导联（V3R–V4R）和后壁导联（V7–V9）（ESC 2023；ACCF/AHA 2013）。",
+        "en": "Record right-sided (V3R–V4R) and posterior (V7–V9) leads in every inferior STEMI (ESC 2023; ACCF/AHA 2013)."
       },
       {
-        "zh-CN": "右室梗死：避免硝酸酯、利尿剂；每次补液250–500 mL后复评；维持房室同步。",
-        "en": "RV infarction: avoid nitrates and diuretics; reassess after each 250–500 mL fluid bolus; maintain AV synchrony."
+        "zh-CN": "右室梗死：避免硝酸酯、利尿剂；每次补液250–500 mL后复评；维持房室同步（ACCF/AHA 2013右室梗死部分）。",
+        "en": "RV infarction: avoid nitrates and diuretics; reassess after each 250–500 mL fluid bolus; maintain AV synchrony (ACCF/AHA 2013, right-ventricular infarction)."
       },
       {
         "zh-CN": "SpO₂ ≥ 90%时不常规吸氧（ESC 2023 III类推荐；AVOID、DETO2X-AMI研究）。",
         "en": "No routine oxygen when SpO₂ ≥ 90% (ESC 2023 class III; AVOID, DETO2X-AMI)."
       },
       {
-        "zh-CN": "阿片类会延迟口服P2Y12抑制剂吸收（IMPRESSION）并加重低血压和呕吐——如需镇痛应小剂量滴定。",
-        "en": "Opioids delay oral P2Y12 absorption (IMPRESSION) and worsen hypotension and vomiting — if analgesia is needed, titrate small doses."
+        "zh-CN": "阿片类会延迟口服P2Y12抑制剂吸收并加重低血压和呕吐——如需镇痛，应小剂量静脉滴定（ESC 2023；IMPRESSION研究）。",
+        "en": "Opioids delay oral P2Y12 absorption and worsen hypotension and vomiting — if analgesia is needed, titrate small IV doses (ESC 2023; IMPRESSION)."
       },
       {
-        "zh-CN": "直接PCI不用磺达肝癸钠（OASIS-6）；可及时PCI时不先溶栓（ASSENT-4 PCI）。",
-        "en": "No fondaparinux for primary PCI (OASIS-6); no fibrinolysis before timely PCI (ASSENT-4 PCI)."
+        "zh-CN": "直接PCI不用磺达肝癸钠（ESC 2023；OASIS-6）；可及时PCI时不先溶栓（ESC 2023；ASSENT-4 PCI）。",
+        "en": "No fondaparinux for primary PCI (ESC 2023; OASIS-6); no fibrinolysis before timely PCI (ESC 2023; ASSENT-4 PCI)."
       },
       {
-        "zh-CN": "STEMI最初数小时室颤风险最高：持续监护、提前贴电极；室颤时立即除颤，电击后立即继续高质量胸外按压。",
-        "en": "VF risk is highest in the first hours of STEMI: monitor continuously with pads on; in VF, shock immediately and resume high-quality compressions straight after the shock."
+        "zh-CN": "STEMI最初数小时室颤风险最高：持续监护、提前贴电极；室颤时立即除颤，电击后立即继续高质量胸外按压（ERC 2025、AHA 2025成人高级生命支持）。",
+        "en": "VF risk is highest in the first hours of STEMI: monitor continuously with pads on; in VF, shock immediately and resume high-quality compressions straight after the shock (ERC 2025 and AHA 2025 adult ALS)."
       }
     ],
     "references": [
-      "Byrne RA, Rossello X, Coughlan JJ, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J. 2023;44(38):3720-3826.",
-      "Rao SV, O'Donoghue ML, Ruel M, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for the Management of Patients With Acute Coronary Syndromes. Circulation. 2025.",
-      "O'Gara PT, Kushner FG, Ascheim DD, et al. 2013 ACCF/AHA Guideline for the Management of ST-Elevation Myocardial Infarction. Circulation. 2013;127(4):e362-e425.",
+      "Byrne RA, Rossello X, Coughlan JJ, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J. 2023;44(38):3720-3826. doi:10.1093/eurheartj/ehad191",
+      "Rao SV, O'Donoghue ML, Ruel M, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI guideline for the management of patients with acute coronary syndromes. Circulation. 2025;151:e771-e862. doi:10.1161/CIR.0000000000001309",
+      "O'Gara PT, Kushner FG, Ascheim DD, et al. 2013 ACCF/AHA guideline for the management of ST-elevation myocardial infarction. Circulation. 2013;127(4):e362-e425. doi:10.1161/CIR.0b013e3182742cf6",
       "中华医学会心血管病学分会, 中华心血管病杂志编辑委员会. 急性ST段抬高型心肌梗死诊断和治疗指南(2019). 中华心血管病杂志. 2019;47(10):766-783.",
-      "Thygesen K, Alpert JS, Jaffe AS, et al. Fourth Universal Definition of Myocardial Infarction (2018). Circulation. 2018;138(20):e618-e651.",
-      "Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2021: Adult advanced life support. Resuscitation. 2021;161:115-151.",
-      "Panchal AR, Bartos JA, Cabañas JG, et al. Part 3: Adult Basic and Advanced Life Support: 2020 American Heart Association Guidelines for Cardiopulmonary Resuscitation and Emergency Cardiovascular Care. Circulation. 2020;142(16 Suppl 2):S366-S468.",
-      "Stub D, Smith K, Bernard S, et al. Air Versus Oxygen in ST-Segment-Elevation Myocardial Infarction (AVOID). Circulation. 2015;131(24):2143-2150.",
-      "Hofmann R, James SK, Jernberg T, et al. Oxygen Therapy in Suspected Acute Myocardial Infarction (DETO2X-AMI). N Engl J Med. 2017;377(13):1240-1249.",
-      "Kubica J, Adamski P, Ostrowska M, et al. Morphine delays and attenuates ticagrelor exposure and action in patients with myocardial infarction: the randomized, double-blind, placebo-controlled IMPRESSION trial. Eur Heart J. 2016;37(3):245-252.",
-      "ASSENT-4 PCI investigators. Primary versus tenecteplase-facilitated percutaneous coronary intervention in patients with ST-segment elevation acute myocardial infarction (ASSENT-4 PCI): randomised trial. Lancet. 2006;367(9510):569-578.",
-      "Yusuf S, Mehta SR, Chrolavicius S, et al. Effects of fondaparinux on mortality and reinfarction in patients with acute ST-segment elevation myocardial infarction: the OASIS-6 randomized trial. JAMA. 2006;295(13):1519-1530."
+      "Thygesen K, Alpert JS, Jaffe AS, et al. Fourth universal definition of myocardial infarction (2018). Circulation. 2018;138(20):e618-e651. doi:10.1161/CIR.0000000000000617",
+      "Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2025 adult advanced life support. Resuscitation. 2025;215(Suppl 1):110769. doi:10.1016/j.resuscitation.2025.110769",
+      "Wigginton JG, Agarwal S, Bartos JA, et al. Part 9: adult advanced life support: 2025 American Heart Association Guidelines for Cardiopulmonary Resuscitation and Emergency Cardiovascular Care. Circulation. 2025;152(16 Suppl 2):S538-S577. doi:10.1161/CIR.0000000000001376",
+      "Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2021: adult advanced life support. Resuscitation. 2021;161:115-151. doi:10.1016/j.resuscitation.2021.02.010",
+      "Panchal AR, Bartos JA, Cabañas JG, et al. Part 3: adult basic and advanced life support: 2020 American Heart Association Guidelines for Cardiopulmonary Resuscitation and Emergency Cardiovascular Care. Circulation. 2020;142(16 Suppl 2):S366-S468. doi:10.1161/CIR.0000000000000916",
+      "Stub D, Smith K, Bernard S, et al. Air versus oxygen in ST-segment-elevation myocardial infarction. Circulation. 2015;131(24):2143-2150. doi:10.1161/CIRCULATIONAHA.114.014494",
+      "Hofmann R, James SK, Jernberg T, et al. Oxygen therapy in suspected acute myocardial infarction. N Engl J Med. 2017;377(13):1240-1249. doi:10.1056/NEJMoa1706222",
+      "Kubica J, Adamski P, Ostrowska M, et al. Morphine delays and attenuates ticagrelor exposure and action in patients with myocardial infarction: the randomized, double-blind, placebo-controlled IMPRESSION trial. Eur Heart J. 2016;37(3):245-252. doi:10.1093/eurheartj/ehv547",
+      "ASSENT-4 PCI investigators. Primary versus tenecteplase-facilitated percutaneous coronary intervention in patients with ST-segment elevation acute myocardial infarction (ASSENT-4 PCI): randomised trial. Lancet. 2006;367(9510):569-578. doi:10.1016/S0140-6736(06)68147-6",
+      "Yusuf S, Mehta SR, Chrolavicius S, et al. Effects of fondaparinux on mortality and reinfarction in patients with acute ST-segment elevation myocardial infarction: the OASIS-6 randomized trial. JAMA. 2006;295(13):1519-1530. doi:10.1001/jama.295.13.joc60038"
     ],
     "notice": {
       "zh-CN": "本评分为教学脚本指标，并非经过验证的能力评估。",
