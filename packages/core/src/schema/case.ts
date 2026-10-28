@@ -751,6 +751,12 @@ export const CaseSchema = z
     /** Content languages; the first is the source language. */
     locales: z.array(LocaleTagSchema).min(1),
     estimatedMinutes: z.number().positive().optional(),
+    /**
+     * What the learner will be able to do after the case: measurable outcomes (an action verb and its standard,
+     * e.g. "Recognise right-ventricular involvement from V4R and avoid nitrates"), shown on the case card and in the
+     * debrief. Distinct from `objectives` — the in-game task list the HUD tracks.
+     */
+    learningOutcomes: z.array(LocalizedTextSchema).default([]),
     tags: z.array(z.string()).default([]),
     provenance: z
       .object({
@@ -760,6 +766,24 @@ export const CaseSchema = z
         authors: z.array(z.string()).default([]),
         license: z.string().optional(),
         notes: LocalizedTextSchema.optional(),
+        /**
+         * Clinical governance — how far the content has been checked, stated honestly: `unreviewed`; `editorial`
+         * (internal editorial review against the cited guidance, not by a licensed clinician); `clinician-reviewed`
+         * (reviewed by a licensed clinician of the specialty). Front-ends say so wherever the case is offered.
+         */
+        review: z
+          .object({
+            status: z.enum(["unreviewed", "editorial", "clinician-reviewed"]),
+            /** Date of the last review against current guidance (YYYY-MM-DD). */
+            reviewedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD").optional(),
+            /** Who reviewed: roles, or names given with consent. */
+            reviewers: z.array(z.string()).default([]),
+            /** The guidance the content was checked against, with its version (e.g. "ESC 2023 ACS"). */
+            guidelines: z.array(z.string()).default([]),
+            notes: LocalizedTextSchema.optional(),
+          })
+          .strict()
+          .optional(),
       })
       .strict(),
     disclaimer: LocalizedTextSchema.optional(),

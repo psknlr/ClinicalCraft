@@ -985,6 +985,13 @@
           "type": "number",
           "exclusiveMinimum": 0
         },
+        "learningOutcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LocalizedText"
+          },
+          "default": []
+        },
         "tags": {
           "type": "array",
           "items": {
@@ -1021,6 +1028,44 @@
             },
             "notes": {
               "$ref": "#/definitions/LocalizedText"
+            },
+            "review": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "unreviewed",
+                    "editorial",
+                    "clinician-reviewed"
+                  ]
+                },
+                "reviewedAt": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "reviewers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                },
+                "guidelines": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                },
+                "notes": {
+                  "$ref": "#/definitions/LocalizedText"
+                }
+              },
+              "required": [
+                "status"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
