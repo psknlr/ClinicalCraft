@@ -1,14 +1,14 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1074569",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "体检发现肝多发占位 · 55岁女性",
-    "en": "Multiple liver lesions found at a check-up · woman aged 55"
+    "en": "Multiple liver lesions found at a health check · 55-year-old woman"
   },
   "summary": {
-    "zh-CN": "无明显腹部体征的患者因影像发现肝占位就诊，需寻找原发部位并通过多学科评估安排后续治疗。",
-    "en": "A patient with no clear abdominal signs presents after liver lesions are detected; identify the primary site and formulate a multidisciplinary plan."
+    "zh-CN": "体检发现肝内多发占位：查明原因，再与多学科团队一起制定并调整治疗计划。",
+    "en": "Multiple liver lesions found at a health check: work out the cause, then plan and adapt treatment with the multidisciplinary team."
   },
   "specialty": [
     "oncology",
@@ -22,7 +22,33 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "整合结肠镜活检、CEA、AFP、HBsAg和影像，判断肝内多发病灶为结肠癌同时性肝转移，并排除原发性肝癌。",
+      "en": "Identify synchronous colorectal liver metastases from the colonoscopy biopsy, CEA, AFP, HBsAg and imaging, and exclude primary liver cancer."
+    },
+    {
+      "zh-CN": "列出转移性结直肠癌一线治疗前必须完成的生物标志物——RAS扩展检测（KRAS/NRAS第2–4外显子）、BRAF V600E和MMR/MSI——并说明各自如何改变治疗（ESMO 2026，ASCO 2023）。",
+      "en": "Specify the biomarkers needed before first-line therapy for metastatic colorectal cancer — extended RAS (KRAS/NRAS exons 2–4), BRAF V600E and MMR/MSI — and how each changes treatment (ESMO 2026, ASCO 2023)."
+    },
+    {
+      "zh-CN": "在MDT框架内为梗阻性原发灶合并潜在可切除肝转移安排治疗顺序：先处理原发灶，再转化治疗并反复复评可切除性。",
+      "en": "Sequence treatment within an MDT for an obstructing primary with potentially resectable liver metastases: the primary first, then conversion therapy with repeated review of resectability."
+    },
+    {
+      "zh-CN": "在转化治疗获得缓解后及时安排肝切除，并说明延长术前化疗的代价（化疗相关肝损伤、病灶“消失”）。",
+      "en": "Time liver resection promptly after a conversion response, and explain the cost of prolonged pre-operative chemotherapy (chemotherapy-related liver injury, “disappearing” metastases)."
+    },
+    {
+      "zh-CN": "依据术后病理分期：识别癌结节对应N1c，并指出检出淋巴结少于12枚时淋巴结分期可能不足（AJCC/UICC TNM第8版）。",
+      "en": "Stage from the pathology: recognise tumour deposits as N1c, and that fewer than 12 examined nodes may understage the nodes (AJCC/UICC TNM 8th edition)."
+    },
+    {
+      "zh-CN": "对随访中的CEA升高，以影像和MDT评估作出处理，对孤立、可切除的肝内复发选择再次切除。",
+      "en": "Respond to a rising CEA at follow-up with imaging and MDT review, and choose repeat resection for an isolated, resectable liver recurrence."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -30,7 +56,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "林奇; 叶青海; 余一祎; 侯英勇; 王健; 周波; 陈漪; 饶圣祥; 丁建勇; 任黎; 韦烨; 许剑民. 多学科协作治疗T4N1cM1期结肠癌一例. 中华结直肠疾病电子杂志, 2014. DOI: 10.3877/cma.j.issn.2095-3224.2014.01.12",
+    "citation": "林奇, 叶青海, 余一祎, 侯英勇, 王健, 周波, 等. 多学科协作治疗T4N1cM1期结肠癌一例. 中华结直肠疾病电子杂志. 2014;3(1):45-46. doi:10.3877/cma.j.issn.2095-3224.2014.01.12",
     "doi": "10.3877/cma.j.issn.2095-3224.2014.01.12",
     "authors": [
       "林奇",
@@ -48,8 +74,25 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，病例文本中已去除医院、日历日期和职业身份细节；原文图表保留其原始标注（CEA曲线的横轴为治疗日期）。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。原文的肝脏MRI合图及转载该图的原文PDF含可识别信息，出于隐私保护未纳入。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed from the case text; published figures keep their original annotations (the CEA curve’s axis shows treatment dates). Dialogue, questions, scoring and safety options are educational design; missing data remain unknown. The report’s liver MRI composite, and the source PDF that reprints it, carry identifying overlays and are withheld for privacy."
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，病例文本中已去除医院、日历日期和可识别的职业细节，时间以相对时间表示；原文图表保留其原始标注（CEA曲线的横轴为治疗期间的日期）。对话、问题、决策、评分和处置选项为教学设计；原文未记录的数据保持未知。原报告的肝脏MRI合图及转载该图的原文PDF含可识别信息，出于隐私保护未纳入，其所见以文字保留。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms; hospitals, calendar dates and identifying occupational details are removed from the case text, and times are relative; published figures keep their original annotations (the CEA curve's x-axis shows dates during treatment). Dialogue, questions, decisions, scoring and management options are educational design; data the source does not record stay unknown. The report's liver MRI composite, and the source PDF that reprints it, carry identifying details and are withheld for privacy; their findings are kept as text."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESMO metastatic colorectal cancer Clinical Practice Guideline 2026 (Ann Oncol 2026;37(6):759-776; checked through its publication record and published summaries)",
+        "ESMO metastatic colorectal cancer Clinical Practice Guideline 2023 (superseded; historical comparison)",
+        "ASCO guideline: treatment of metastatic colorectal cancer 2023",
+        "AJCC/UICC TNM classification, 8th edition (colorectal N1c)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -65,44 +108,60 @@
     "sex": "female",
     "chiefComplaint": {
       "zh-CN": "体检发现肝多发占位1周",
-      "en": "Multiple liver lesions identified one week earlier"
+      "en": "Multiple liver lesions found at a health check one week ago"
     },
     "triageNote": {
-      "zh-CN": "无明显腹部体征的患者因影像发现肝占位就诊，需寻找原发部位并通过多学科评估安排后续治疗。",
-      "en": "A patient with no clear abdominal signs presents after liver lesions are detected; identify the primary site and formulate a multidisciplinary plan."
+      "zh-CN": "55岁女性，一周前体检发现肝内多发占位，今日门诊初诊。病史待询问。",
+      "en": "55-year-old woman; a health check a week ago found multiple liver lesions. First clinic visit today. History still to be taken."
     },
     "tags": [
       {
-        "zh-CN": "体检发现肝多发占位1周",
-        "en": "Multiple liver lesions identified one week earlier"
+        "zh-CN": "肝内多发占位",
+        "en": "Multiple liver lesions"
+      },
+      {
+        "zh-CN": "门诊初诊",
+        "en": "First clinic visit"
+      },
+      {
+        "zh-CN": "病史待询问",
+        "en": "History to be taken"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "55岁的已婚女性，一向身体好，性格温和、配合。体检结果来得突然，她心里很紧张，但尽量把话说清楚。",
+        "en": "A 55-year-old married woman who has always been well; gentle and cooperative. The health-check result came out of the blue and she is anxious, but tries to answer clearly."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "普通话口语，句子短；听不懂的医学词会反问；病例里没记的事直接说没记录。",
+        "en": "Plain everyday speech in short sentences; asks what medical words mean; says plainly when something isn't in her notes."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "anxious",
       "openingLine": {
-        "zh-CN": "1周前体检发现肝脏有多处占位。",
-        "en": "A check-up one week earlier found multiple liver lesions."
+        "zh-CN": "医生您好，我一个星期前体检，说肝上长了好几个东西，我挺害怕的。",
+        "en": "Hello, doctor. A health check a week ago found several lumps in my liver, and I'm quite frightened."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [
+        {
+          "zh-CN": "这些东西是不是癌？还能治吗？",
+          "en": "Is it cancer? Can it still be treated?"
+        }
+      ],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "坐在诊室里，有点拘谨，说到“肝上的东西”就紧张。只讲病例里有的事实；医生没告诉她的检查数值、诊断和治疗名称一概不说；被问到没有记录的事，就用兜底的那句话回答。",
+        "en": "Sits in the consulting room, a little stiff, and tenses up when “the lumps in my liver” come up. Says only what her record holds; never states test values, diagnoses or treatment names the doctor has not told her; answers anything unrecorded with the fallback line."
       }
     },
     "appearance": {
       "stature": "adult",
-      "gown": true
+      "hairStyle": "bun",
+      "gown": false
     },
     "posture": "sitting"
   },
@@ -110,41 +169,68 @@
     {
       "id": "initial",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "初诊与检查（第0天起）",
+        "en": "First visit and work-up (from day 0)"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "门诊初诊：问诊、查体，开具并调阅检查，作出诊断，并与MDT确定初始方案。",
+        "en": "First clinic visit: history, examination, tests ordered and read, the diagnosis, and the initial plan with the MDT."
+      },
+      "learnerSwitchable": false
     },
     {
-      "id": "workup",
+      "id": "conversion",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "原发灶切除后的转化治疗（约第1–3个月）",
+        "en": "Conversion therapy after resection of the primary (about months 1–3)"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+      "description": {
+        "zh-CN": "原发灶切除术后接受4个周期转化治疗；复评疗效，并决定肝转移灶的手术时机。",
+        "en": "After resection of the primary she has had four cycles of conversion therapy; reassess the response and decide when to operate on the liver."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "objective": "obj-assess"
           },
           {
-            "decided": "management"
+            "objective": "obj-diagnosis"
           },
           {
-            "objective": "objective-1"
-          },
-          {
-            "objective": "objective-2"
+            "objective": "obj-plan"
           }
         ]
+      }
+    },
+    {
+      "id": "surveillance",
+      "label": {
+        "zh-CN": "肝切除术后维持与随访（约第3–20个月）",
+        "en": "Maintenance and follow-up after the hepatectomy (about months 3–20)"
+      },
+      "description": {
+        "zh-CN": "肝转移灶切除后继续全身治疗，再口服维持；约第20个月复查时出现新情况。",
+        "en": "After the liver resection, systemic therapy continued and then oral maintenance; at about month 20 a check-up shows something new."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-conversion"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "再次肝切除后与原报告结局（约第20个月起，至报告截稿）",
+        "en": "After the second liver operation, and the report's outcome (from about month 20 to the time of the report)"
+      },
+      "description": {
+        "zh-CN": "尾状叶复发灶切除后的治疗，以及原报告记录的最后随访。",
+        "en": "Treatment after the caudate recurrence was removed, and the last follow-up the report records."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-recurrence"
       }
     }
   ],
@@ -158,614 +244,1189 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "这次就诊的原因是什么？",
-        "en": "What prompted this visit?"
+        "zh-CN": "这次是因为什么来看病的？",
+        "en": "What brings you in today?"
       },
       "answer": {
-        "zh-CN": "1周前体检发现肝脏有多处占位。",
-        "en": "A check-up one week earlier found multiple liver lesions."
+        "zh-CN": "一个星期前体检，查出来肝上长了好几个东西，我就赶紧来看了。",
+        "en": "A health check a week ago found several lumps in my liver, so I came straight in."
       },
       "keywords": {
         "zh-CN": [
-          "这次就诊的原因是什么？",
-          "肝占位"
+          "来看什么",
+          "看什么病",
+          "为什么来",
+          "哪里不舒服",
+          "什么问题",
+          "体检",
+          "查出来",
+          "肝上长",
+          "肝脏占位",
+          "怎么发现的",
+          "怎么查出来"
         ],
         "en": [
-          "What prompted this visit?",
-          "liver lesions"
+          "whatbringsyou",
+          "whatsbroughtyou",
+          "reason for coming",
+          "whyhaveyoucome",
+          "health check",
+          "check-up",
+          "lumps in the liver",
+          "liver lumps",
+          "howwasitfound",
+          "howdidtheyfind",
+          "find the lumps",
+          "presenting complaint"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "pmh",
-      "topic": "pmh",
-      "question": {
-        "zh-CN": "以前有哪些慢性疾病？",
-        "en": "What chronic illnesses were present?"
-      },
-      "answer": {
-        "zh-CN": "既往体健，否认肝炎、高血压及心脏病史。",
-        "en": "Previously healthy; hepatitis, hypertension and heart disease were denied."
-      },
-      "keywords": {
-        "zh-CN": [
-          "以前有哪些慢性疾病？",
-          "慢性病"
-        ],
-        "en": [
-          "What chronic illnesses were present?",
-          "chronic illness"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "family",
-      "topic": "family",
-      "question": {
-        "zh-CN": "有家族遗传病史吗？",
-        "en": "Is there a family history of hereditary disease?"
-      },
-      "answer": {
-        "zh-CN": "否认家族性遗传病史；具体肿瘤家族谱未列出。",
-        "en": "Hereditary disease was denied; a detailed cancer pedigree is not provided."
-      },
-      "keywords": {
-        "zh-CN": [
-          "有家族遗传病史吗？",
-          "家族遗传"
-        ],
-        "en": [
-          "Is there a family history of hereditary disease?",
-          "hereditary history"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "病例介绍·主诉",
+        "en": "Case presentation · chief complaint"
+      }
     },
     {
       "id": "bowel",
       "topic": "hpi",
       "question": {
-        "zh-CN": "有便血、排便改变或腹痛吗？",
-        "en": "Were rectal bleeding, bowel changes or abdominal pain reported?"
+        "zh-CN": "最近大便有没有带血、变细，排便习惯有没有改变，有没有肚子痛或腹胀？",
+        "en": "Have you noticed any blood in your stools, a change in your bowel habit, tummy pain or bloating?"
       },
       "answer": {
-        "zh-CN": "原报告未列这些症状的具体问诊回答，不能当作否认。",
-        "en": "Specific responses about these symptoms are not documented and must not be treated as denials."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "有便血、排便改变或腹痛吗？"
+          "便血",
+          "大便带血",
+          "大便里有血",
+          "黑便",
+          "大便正常",
+          "大便怎么样",
+          "大便颜色",
+          "大便习惯",
+          "排便习惯",
+          "大便次数",
+          "大便变细",
+          "腹泻",
+          "拉肚子",
+          "便秘",
+          "肚子痛",
+          "腹痛",
+          "腹胀",
+          "肚子胀",
+          "排气",
+          "肠梗阻"
         ],
         "en": [
-          "Were rectal bleeding, bowel changes or abdominal pain reported?"
+          "blood in your stool",
+          "bloodinstool",
+          "stools",
+          "rectal bleeding",
+          "back passage",
+          "bowel habit",
+          "change in bowel",
+          "bowels changed",
+          "diarrhoea",
+          "constipation",
+          "tummy pain",
+          "tummy ache",
+          "abdominal pain",
+          "bloating",
+          "passing wind",
+          "obstruction"
         ]
       },
       "disclosure": "unknown",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       },
-      "required": true
-    },
-    {
-      "id": "medications",
-      "topic": "medications",
-      "question": {
-        "zh-CN": "平时服用什么药？",
-        "en": "What regular medicines are used?"
-      },
-      "answer": {
-        "zh-CN": "完整长期用药清单未记录。",
-        "en": "A complete regular medication list is not recorded."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "平时服用什么药？"
+          "家里",
+          "家族",
+          "肠镜"
         ],
         "en": [
-          "What regular medicines are used?"
+          "family",
+          "screening",
+          "colonoscopy"
         ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "operations",
-      "topic": "psh",
-      "question": {
-        "zh-CN": "以前做过腹部手术吗？",
-        "en": "Was there previous abdominal surgery?"
-      },
-      "answer": {
-        "zh-CN": "原报告未提供此前手术史。",
-        "en": "Earlier surgical history is not provided."
-      },
-      "keywords": {
-        "zh-CN": [
-          "以前做过腹部手术吗？"
-        ],
-        "en": [
-          "Was there previous abdominal surgery?"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
       }
     },
     {
       "id": "weight",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "近期体重有变化吗？",
-        "en": "Has weight changed recently?"
+        "zh-CN": "最近体重有没有下降？胃口怎么样？",
+        "en": "Have you lost any weight recently? How's your appetite?"
       },
       "answer": {
-        "zh-CN": "原报告没有记录体重变化。",
-        "en": "Weight change is not documented."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "近期体重有变化吗？"
+          "体重",
+          "瘦",
+          "消瘦",
+          "掉秤",
+          "体重下降",
+          "胃口",
+          "食欲",
+          "吃饭怎么样"
         ],
         "en": [
-          "Has weight changed recently?"
+          "weight loss",
+          "lost weight",
+          "losing weight",
+          "weight",
+          "appetite",
+          "eating"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       }
     },
     {
-      "id": "screening",
-      "topic": "other",
+      "id": "pmh",
+      "topic": "pmh",
       "question": {
-        "zh-CN": "以往做过肠镜或筛查吗？",
-        "en": "Were colonoscopy or screening performed previously?"
+        "zh-CN": "以前得过什么病吗？比如肝炎、高血压、心脏病？",
+        "en": "Have you had any medical problems before — hepatitis, high blood pressure, heart trouble?"
       },
       "answer": {
-        "zh-CN": "原记录未提供既往筛查史。",
-        "en": "Previous screening history is not provided."
+        "zh-CN": "以前身体挺好的，没得过肝炎，也没有高血压、心脏病。",
+        "en": "I've always been healthy — no hepatitis, no high blood pressure, no heart trouble."
       },
       "keywords": {
         "zh-CN": [
-          "以往做过肠镜或筛查吗？"
+          "以前得过什么病",
+          "以前有什么病",
+          "以前生过什么病",
+          "以前身体怎么样",
+          "身体一直",
+          "既往史",
+          "既往病史",
+          "慢性病",
+          "肝炎",
+          "乙肝",
+          "肝病",
+          "高血压",
+          "心脏病",
+          "老毛病"
         ],
         "en": [
-          "Were colonoscopy or screening performed previously?"
+          "past medical history",
+          "pmh",
+          "medical problems",
+          "previous illnesses",
+          "long-term conditions",
+          "medical conditions",
+          "hepatitis",
+          "liver disease",
+          "liver problems",
+          "high blood pressure",
+          "hypertension",
+          "heart disease",
+          "heart problems",
+          "heart trouble",
+          "chronic illness"
         ]
       },
-      "disclosure": "unknown",
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "家人",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "parents"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病例介绍·既往史",
+        "en": "Case presentation · past history"
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过手术吗？",
+        "en": "Have you had any operations before?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做过手术",
+          "动过手术",
+          "开过刀",
+          "手术史",
+          "以前手术"
+        ],
+        "en": [
+          "operations before",
+          "previous surgery",
+          "hadanoperation",
+          "anysurgery",
+          "hadsurgery",
+          "surgical history",
+          "operations in the past",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时在吃什么药吗？",
+        "en": "Do you take any regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "吃药",
+          "用药",
+          "服药",
+          "长期用药",
+          "药物",
+          "保健品",
+          "降压药"
+        ],
+        "en": [
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "regular meds",
+          "supplements",
+          "drugs you take"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "维持"
+        ],
+        "en": [
+          "allerg",
+          "maintenance"
+        ]
       }
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "以前有药物或食物过敏吗？",
-        "en": "Any previous drug or food allergies?"
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "青霉素",
+          "食物过敏"
         ],
         "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
+          "allergy",
+          "allergic",
+          "allergies",
+          "drug allergy",
+          "penicillin"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有没有得过癌症，特别是肠癌，或者有什么遗传病？",
+        "en": "Has anyone in your family had cancer, especially bowel cancer, or anything that runs in the family?"
+      },
+      "answer": {
+        "zh-CN": "家里没听说有什么遗传的病。至于谁得过什么癌，这个我的病例里没有记录，我说不上来。",
+        "en": "Nothing that runs in the family, as far as I know. Whether anyone has had cancer isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族史",
+          "家里人",
+          "家里有人",
+          "家族",
+          "遗传",
+          "遗传病",
+          "父母",
+          "兄弟姐妹",
+          "亲戚",
+          "家族里"
+        ],
+        "en": [
+          "family history",
+          "fhx",
+          "runs in the family",
+          "run in your family",
+          "relatives",
+          "parents",
+          "brothers or sisters",
+          "hereditary",
+          "genetic",
+          "bowel cancer in the family"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病例介绍·既往史（“否认家族性遗传病史”；肿瘤家族史未单独记录）",
+        "en": "Case presentation · past history (familial hereditary disease denied; no separate cancer family history)"
+      }
+    },
+    {
+      "id": "marital",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "结婚了吗？生过孩子吗？",
+        "en": "Are you married? Do you have children?"
+      },
+      "answer": {
+        "zh-CN": "结婚了，有一个儿子。",
+        "en": "Yes, I'm married, and I have one son."
+      },
+      "keywords": {
+        "zh-CN": [
+          "结婚",
+          "婚育",
+          "孩子",
+          "小孩",
+          "儿子",
+          "生育",
+          "爱人",
+          "丈夫"
+        ],
+        "en": [
+          "married",
+          "children",
+          "kids",
+          "son",
+          "husband",
+          "partner"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "遗传",
+          "家族史",
+          "癌"
+        ],
+        "en": [
+          "cancer",
+          "runs in",
+          "hereditary"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病例介绍·婚育史",
+        "en": "Case presentation · marital and reproductive history"
       }
     },
     {
       "id": "smoking",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
+        "zh-CN": "抽烟吗？",
         "en": "Do you smoke?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "抽烟",
+          "吸烟",
+          "香烟",
+          "烟瘾"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       }
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
+        "zh-CN": "平时喝酒吗？",
         "en": "Do you drink alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "白酒",
+          "啤酒",
+          "酒量"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       }
     },
     {
       "id": "occupation",
       "topic": "social",
       "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
+        "zh-CN": "您是做什么工作的？",
+        "en": "What work do you do?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
+          "工作",
+          "职业",
+          "上班",
+          "干什么的",
+          "做什么的"
         ],
         "en": [
-          "What are your work and living circumstances?",
-          "occupation"
+          "job",
+          "work",
+          "occupation",
+          "whatdoyoudoforaliving",
+          "employment",
+          "profession"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       }
     },
     {
-      "id": "self-care",
+      "id": "screening",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前做过肠镜或者大便潜血检查吗？",
+        "en": "Have you ever had a colonoscopy or a stool test for hidden blood?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做过肠镜",
+          "查过肠镜",
+          "肠镜检查",
+          "筛查",
+          "大便潜血",
+          "潜血"
+        ],
+        "en": [
+          "colonoscopy before",
+          "hadacolonoscopy",
+          "screening",
+          "stool test",
+          "fit test",
+          "occult blood",
+          "bowel screening"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
+      }
+    },
+    {
+      "id": "function",
       "topic": "functional",
       "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
+        "zh-CN": "平时活动怎么样？做家务、走路有没有受影响？",
+        "en": "How are you getting about day to day — housework, walking?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "平时活动都正常，干什么都不受影响。",
+        "en": "I get about normally — nothing's holding me back."
       },
       "keywords": {
         "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
+          "活动",
+          "日常生活",
+          "自理",
+          "家务",
+          "走路",
+          "干活",
+          "体力"
         ],
         "en": [
-          "How independent were you before this illness?",
-          "independence"
+          "day to day",
+          "activities",
+          "getting about",
+          "housework",
+          "walking",
+          "independent",
+          "manage at home"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病例介绍·体检（PS评分0分），口语改写",
+        "en": "Case presentation · examination (PS 0), in her own words"
       }
     },
     {
-      "id": "expectations",
+      "id": "ice",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "您自己最担心的是什么？",
+        "en": "What's worrying you most about all this?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "我就怕这是癌，怕治不好。",
+        "en": "I'm scared it's cancer, and that it can't be treated."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "害怕",
+          "顾虑",
+          "最怕",
+          "想法",
+          "期望",
+          "希望"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worried",
+          "worry",
+          "worrying",
+          "concerns",
+          "scared",
+          "afraid",
+          "expectations",
+          "hoping"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "教学设定：原文未记录患者的想法与担忧",
+        "en": "Teaching adaptation: the source does not record her concerns"
       }
     },
     {
-      "id": "supplements",
-      "topic": "medications",
+      "id": "status-conversion",
+      "topic": "other",
       "question": {
-        "zh-CN": "还服用其他非处方药或保健品吗？",
-        "en": "Were other non-prescription medicines or supplements used?"
+        "zh-CN": "做完手术、化疗以后感觉怎么样？",
+        "en": "How have you been since the operation and the chemotherapy?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息。",
-        "en": "This information is not recorded in the source."
+        "zh-CN": "手术挺顺利的，化疗也还顺利，没出什么大问题。",
+        "en": "The operation went fine, and the chemo's gone smoothly too — no real problems."
       },
       "keywords": {
         "zh-CN": [
-          "还服用其他非处方药或保健品吗？"
+          "感觉怎么样",
+          "现在怎么样",
+          "最近怎么样",
+          "化疗怎么样",
+          "化疗反应",
+          "手术后",
+          "恢复得怎么样",
+          "副作用"
         ],
         "en": [
-          "Were other non-prescription medicines or supplements used?"
+          "howareyoufeeling",
+          "howhaveyoubeen",
+          "howdidthechemogo",
+          "chemo going",
+          "problems with the chemo",
+          "side effects",
+          "since the operation",
+          "recovery",
+          "howarethings"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
       "phases": [
-        "initial"
+        "conversion"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "治疗经过（“手术过程顺利”“化疗过程顺利”），口语改写",
+        "en": "Treatment course (operation and chemotherapy “went smoothly”), in her own words"
+      }
+    },
+    {
+      "id": "status-surveillance",
+      "topic": "other",
+      "question": {
+        "zh-CN": "肝脏手术以后这段时间怎么样？",
+        "en": "How have things been since the liver operation?"
+      },
+      "answer": {
+        "zh-CN": "肝上的手术做完，又化疗了几个疗程，后来一直吃药维持，复查都说没事。这次复查，医生说有个指标又高了。",
+        "en": "After the liver operation I had more chemo, then I've been on tablets to keep it under control, and the check-ups were all fine. This time the doctor said one of the blood markers has gone up again."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肝脏手术以后",
+          "肝手术以后",
+          "这段时间",
+          "维持治疗",
+          "吃药维持",
+          "复查结果",
+          "感觉怎么样",
+          "现在怎么样",
+          "最近怎么样"
+        ],
+        "en": [
+          "since the liver operation",
+          "after the liver surgery",
+          "maintenance",
+          "maintenance tablets",
+          "check-ups",
+          "howareyoufeeling",
+          "howhaveyoubeen",
+          "howarethings"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "surveillance"
+      ],
+      "supersedes": [
+        "status-conversion"
+      ],
+      "source": {
+        "zh-CN": "治疗经过（术后8个疗程、口服维持、期间复查无异常；后CEA升高），口语改写",
+        "en": "Treatment course (8 more cycles, oral maintenance, normal checks, then a CEA rise), in her own words"
+      }
+    },
+    {
+      "id": "status-followup",
+      "topic": "other",
+      "question": {
+        "zh-CN": "再做手术以后，现在情况怎么样？",
+        "en": "How are things now, since the second liver operation?"
+      },
+      "answer": {
+        "zh-CN": "后来又做了一次手术，化疗也做完了，现在每两个星期来输一次液维持，定期复查都说没有复发。",
+        "en": "I had another operation and finished the chemo, and now I come in every two weeks for a drip to keep it in check. The regular check-ups say it hasn't come back."
+      },
+      "keywords": {
+        "zh-CN": [
+          "第二次手术",
+          "再次手术",
+          "又做了手术",
+          "现在情况",
+          "复发了吗",
+          "感觉怎么样",
+          "现在怎么样",
+          "最近怎么样"
+        ],
+        "en": [
+          "second operation",
+          "second liver operation",
+          "since the second",
+          "come back",
+          "howareyoufeeling",
+          "howhaveyoubeen",
+          "howarethingsnow"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "status-surveillance"
+      ],
+      "source": {
+        "zh-CN": "治疗经过（再次手术、FOLFIRI联合西妥昔单抗及维持治疗、定期复查未见复发），口语改写",
+        "en": "Treatment course (second operation, FOLFIRI plus cetuximab and maintenance, no recurrence at regular reviews), in her own words"
       }
     }
   ],
   "exam": [
     {
-      "id": "status",
+      "id": "performance-status",
       "system": "general",
       "maneuver": {
-        "zh-CN": "评估初诊功能状态",
-        "en": "Review initial performance status"
+        "zh-CN": "评估体能状态（PS评分）",
+        "en": "Assess performance status (PS)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "体能状态",
+          "ps评分",
+          "ecog",
+          "一般情况",
+          "活动能力",
+          "体力状况"
+        ],
+        "en": [
+          "performance status",
+          "ps",
+          "ecog",
+          "general condition",
+          "functional status",
+          "fitness"
+        ]
       },
       "finding": {
-        "zh-CN": "原报告PS评分为0，未描述活动受限。",
-        "en": "The source reports performance status 0 without activity limitation."
+        "zh-CN": "体能状态（PS）评分0分：活动能力完全正常，不受限制。",
+        "en": "Performance status (PS) 0: fully active, without restriction."
       },
       "abnormal": false,
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病例介绍·体检",
+        "en": "Case presentation · examination"
+      }
+    },
+    {
+      "id": "lymph-nodes",
+      "system": "lymphatic",
+      "maneuver": {
+        "zh-CN": "检查浅表淋巴结（颈部、锁骨上、腋窝、腹股沟）",
+        "en": "Examine the superficial lymph nodes (neck, supraclavicular fossae, axillae, groins)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "淋巴结",
+          "浅表淋巴结",
+          "锁骨上",
+          "颈部淋巴结",
+          "腋窝",
+          "腹股沟"
+        ],
+        "en": [
+          "lymph nodes",
+          "nodes",
+          "supraclavicular",
+          "lymphadenopathy",
+          "glands",
+          "axilla"
+        ]
+      },
+      "finding": {
+        "zh-CN": "浅表淋巴结无肿大。",
+        "en": "No enlarged superficial lymph nodes."
+      },
+      "abnormal": false,
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病例介绍·体检",
+        "en": "Case presentation · examination"
       }
     },
     {
       "id": "abdomen",
       "system": "abdomen",
       "maneuver": {
-        "zh-CN": "检查腹部和浅表淋巴结",
-        "en": "Examine abdomen and superficial nodes"
+        "zh-CN": "腹部视诊、触诊、叩诊和听诊",
+        "en": "Inspect, palpate, percuss and auscultate the abdomen"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "腹部查体",
+          "触诊",
+          "压痛",
+          "包块",
+          "肝大",
+          "摸肚子"
+        ],
+        "en": [
+          "abdomen",
+          "abdominal",
+          "palpate",
+          "tummy",
+          "liver edge",
+          "hepatomegaly",
+          "mass",
+          "tenderness"
+        ]
       },
       "finding": {
-        "zh-CN": "腹部查体无明显阳性体征，浅表淋巴结未肿大。",
-        "en": "No clear positive abdominal signs or enlarged superficial nodes were reported."
+        "zh-CN": "腹部查体未发现明显阳性体征。",
+        "en": "Abdominal examination: no obvious abnormal signs."
       },
       "abnormal": false,
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病例介绍·体检",
+        "en": "Case presentation · examination"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这项检查，结果不可得，不能把它当作正常。",
+    "en": "The source report does not record this examination, so there is no finding to give — and it must not be assumed normal."
   },
   "investigations": [
     {
-      "id": "liver-mri",
+      "id": "health-check",
       "name": {
-        "zh-CN": "调阅肝脏MRI",
-        "en": "Review liver MRI"
-      },
-      "category": "imaging",
-      "aliases": {
-        "zh-CN": [
-          "调阅肝脏MRI"
-        ],
-        "en": [
-          "Review liver MRI",
-          "liver-mri"
-        ]
-      },
-      "requires": [
-        "mri"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "肝内多发病灶，其中一枚巨大融合病灶；MDT将肝病灶评估为潜在可切除。",
-            "en": "Multiple hepatic lesions including a large confluent lesion; the MDT considered the hepatic disease potentially resectable."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "body-imaging",
-      "name": {
-        "zh-CN": "调阅CT与PET-CT",
-        "en": "Review CT and PET-CT"
+        "zh-CN": "调阅体检报告",
+        "en": "Review the health-check report"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅CT与PET-CT"
+          "体检报告",
+          "体检结果",
+          "体检单",
+          "外院报告"
         ],
         "en": [
-          "Review CT and PET-CT",
-          "body-imaging"
+          "health check report",
+          "check-up report",
+          "health screening report",
+          "outside report"
         ]
       },
       "requires": [
-        "ct"
+        "records"
       ],
       "risk": "none",
-      "value": "essential",
+      "value": "useful",
       "results": {
-        "workup": {
+        "initial": {
+          "available": false,
+          "date": {
+            "zh-CN": "初诊前1周",
+            "en": "One week before the first visit"
+          },
           "text": {
-            "zh-CN": "结肠局部肠壁增厚，肠周多个小淋巴结，肝内多发低密度灶，支持寻找结肠来源。",
-            "en": "Focal colonic wall thickening with multiple small pericolic nodes and multiple low-density liver lesions supported investigation of a colonic source."
+            "zh-CN": "原文只记载“体检发现肝多发占位1周”，没有记录体检的检查方式和报告内容。",
+            "en": "The source records only that a health check one week earlier found multiple liver lesions; the type of test and the report itself are not recorded."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "病例介绍·主诉",
+            "en": "Case presentation · chief complaint"
+          }
         }
       }
     },
     {
-      "id": "endoscopy",
+      "id": "fbc",
       "name": {
-        "zh-CN": "调阅结肠镜及活检",
-        "en": "Review colonoscopy and biopsy"
-      },
-      "category": "record",
-      "aliases": {
-        "zh-CN": [
-          "调阅结肠镜及活检"
-        ],
-        "en": [
-          "Review colonoscopy and biopsy",
-          "endoscopy"
-        ]
-      },
-      "requires": [
-        "endoscopy"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "距肛缘35 cm处环周占位，镜体无法通过；活检为腺癌。原MDT记录原发灶有梗阻。",
-            "en": "A circumferential mass 35 cm from the anal verge prevented passage of the colonoscope; biopsy showed adenocarcinoma. The original MDT documented obstruction at the primary."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "markers",
-      "name": {
-        "zh-CN": "调阅肿瘤标志物及常规检查",
-        "en": "Review tumour markers and routine tests"
+        "zh-CN": "血常规",
+        "en": "Full blood count"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "调阅肿瘤标志物及常规检查"
+          "血常规",
+          "血细胞分析",
+          "血象",
+          "全血细胞计数",
+          "cbc"
         ],
         "en": [
-          "Review tumour markers and routine tests",
-          "markers"
+          "fbc",
+          "full blood count",
+          "cbc",
+          "complete blood count",
+          "blood count",
+          "haemoglobin"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "血常规无明显异常（原文未列具体数值和参考范围）。",
+            "en": "Full blood count: no significant abnormality (the source gives no values or reference ranges)."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "lft-rft",
+      "name": {
+        "zh-CN": "肝肾功能",
+        "en": "Liver and renal function tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肝功能",
+          "肾功能",
+          "肝肾功能",
+          "生化",
+          "转氨酶",
+          "肌酐",
+          "胆红素"
+        ],
+        "en": [
+          "lfts",
+          "liver function",
+          "renal function",
+          "u&e",
+          "urea and electrolytes",
+          "creatinine",
+          "biochemistry",
+          "kidney function"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "肝功能、肾功能无明显异常（原文未列具体数值和参考范围）。",
+            "en": "Liver and renal function: no significant abnormality (the source gives no values or reference ranges)."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "hbsag",
+      "name": {
+        "zh-CN": "乙肝表面抗原（HBsAg）",
+        "en": "Hepatitis B surface antigen (HBsAg)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "乙肝表面抗原",
+          "乙肝",
+          "hbsag",
+          "乙肝两对半",
+          "肝炎病毒"
+        ],
+        "en": [
+          "hbsag",
+          "hepatitis b",
+          "hep b",
+          "hepatitis serology",
+          "hepatitis b surface antigen"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "HBsAg阴性。",
+            "en": "HBsAg negative."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "乙肝表面抗原（HBsAg）",
+                "en": "HBsAg"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": ""
+            }
+          ],
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "tumour-markers",
+      "name": {
+        "zh-CN": "血清肿瘤标志物（CEA、AFP、CA19-9）",
+        "en": "Serum tumour markers (CEA, AFP, CA19-9)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肿瘤标志物",
+          "肿瘤指标",
+          "肿标",
+          "cea",
+          "癌胚抗原",
+          "afp",
+          "甲胎蛋白",
+          "ca199",
+          "ca19-9",
+          "复查cea"
+        ],
+        "en": [
+          "tumour markers",
+          "tumor markers",
+          "cea",
+          "carcinoembryonic antigen",
+          "afp",
+          "alpha-fetoprotein",
+          "ca19-9",
+          "ca 19-9",
+          "repeat cea"
         ]
       },
       "requires": [
@@ -774,34 +1435,431 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
           "text": {
-            "zh-CN": "CEA 781.4 ng/mL、CA19-9 287 ng/mL、AFP 1.5 ng/mL；血常规与肝肾功能未见明显异常，HBsAg阴性。",
-            "en": "CEA 781.4 ng/mL, CA19-9 287 ng/mL and AFP 1.5 ng/mL; blood count and liver/renal tests had no significant abnormality, and HBsAg was negative."
+            "zh-CN": "CEA 781.4 ng/mL，AFP 1.5 ng/mL，CA19-9 287 ng/mL。",
+            "en": "CEA 781.4 ng/mL, AFP 1.5 ng/mL, CA19-9 287 ng/mL."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "癌胚抗原（CEA）",
+                "en": "Carcinoembryonic antigen (CEA)"
+              },
+              "value": 781.4,
+              "unit": "ng/mL"
+            },
+            {
+              "analyte": {
+                "zh-CN": "甲胎蛋白（AFP）",
+                "en": "Alpha-fetoprotein (AFP)"
+              },
+              "value": 1.5,
+              "unit": "ng/mL"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CA19-9（单位按原文）",
+                "en": "CA19-9 (unit as printed)"
+              },
+              "value": 287,
+              "unit": "ng/mL"
+            }
+          ],
+          "note": {
+            "zh-CN": "单位按原文（ng/ml）；CA19-9通常以U/mL报告。原文没有给出参考范围，因此各项数值不作高低标注。",
+            "en": "Units as printed (ng/ml); CA19-9 is usually reported in U/mL. The source gives no reference ranges, so no value is flagged high or low."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        },
+        "conversion": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第3个月（4个周期转化治疗后）",
+            "en": "About month 3 (after four cycles of conversion therapy)"
           },
-          "figures": [],
-          "available": true
+          "text": {
+            "zh-CN": "4个周期转化治疗后复查：CEA值明显下降（原文未给具体数值）。",
+            "en": "Repeat after four cycles of conversion therapy: CEA had fallen markedly (no value given in the source)."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        },
+        "surveillance": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第20个月",
+            "en": "About month 20"
+          },
+          "text": {
+            "zh-CN": "复查发现CEA值明显升高（原文未给具体数值）。",
+            "en": "Repeat testing found a marked rise in CEA (no value given in the source)."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "全程（初诊至报告截稿）",
+            "en": "Whole course (first visit to the time of the report)"
+          },
+          "text": {
+            "zh-CN": "原文没有逐点列出CEA数值；治疗全程的CEA曲线（原文图3）见随访记录。",
+            "en": "The source does not list CEA values point by point; the whole-course CEA curve (source fig. 3) is in the follow-up record."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
         }
       }
     },
     {
-      "id": "molecular",
+      "id": "ct-abdomen",
       "name": {
-        "zh-CN": "调阅肿瘤分子检测",
-        "en": "Review tumour molecular testing"
+        "zh-CN": "腹部CT",
+        "en": "Abdominal CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "腹部ct",
+          "腹部ct扫描",
+          "腹盆腔ct",
+          "上腹部ct",
+          "腹部增强ct"
+        ],
+        "en": [
+          "abdominal ct",
+          "ct abdomen",
+          "ct of the abdomen",
+          "abdomen ct",
+          "staging ct"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "alternativeTo": [
+        "liver-mri"
+      ],
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "结肠局部肠壁增厚，肠周多发小淋巴结，肝内多发低密度灶。",
+            "en": "Focal thickening of the colonic wall, multiple small pericolic lymph nodes, multiple hypodense liver lesions."
+          },
+          "note": {
+            "zh-CN": "原文把腹部CT、MRI和PET/CT的结果合并为一句报告（“结肠局部肠壁增厚，肠周多发性小淋巴结，肝内多发性低密度灶”），没有分别给出各项检查的所见。",
+            "en": "The source reports the abdominal CT, MRI and PET/CT together in one sentence (“focal colonic wall thickening, multiple small pericolic lymph nodes, multiple hypodense liver lesions”), without separate findings for each."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        },
+        "surveillance": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第20个月",
+            "en": "About month 20"
+          },
+          "text": {
+            "zh-CN": "腹部MRI、CT：结肠癌肝转移术后，肝尾状叶新发转移灶。",
+            "en": "Abdominal MRI and CT: after resection of the colorectal liver metastases, a new metastasis in the caudate lobe."
+          },
+          "note": {
+            "zh-CN": "原文将这次的MRI与CT合并报告，未给出病灶大小（见再次手术记录）。",
+            "en": "The source reports this MRI and CT together and gives no lesion size (see the second operation record)."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        }
+      }
+    },
+    {
+      "id": "liver-mri",
+      "name": {
+        "zh-CN": "肝脏MRI",
+        "en": "Liver MRI"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "肝脏mri",
+          "肝脏核磁",
+          "核磁共振",
+          "磁共振",
+          "上腹部mri",
+          "腹部mri",
+          "复查mri"
+        ],
+        "en": [
+          "liver mri",
+          "mri liver",
+          "mri of the liver",
+          "magnetic resonance",
+          "mr liver",
+          "repeat mri"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "alternativeTo": [
+        "ct-abdomen"
+      ],
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "肝内多发低密度灶，其中1枚为巨大融合病灶（原文图1为这次肝脏MRI，因含可识别信息未纳入本病例）。",
+            "en": "Multiple hypodense liver lesions, one of them large and confluent (source fig. 1 is this liver MRI; it is not included in this case because it carries identifying details)."
+          },
+          "note": {
+            "zh-CN": "原文把腹部CT、MRI和PET/CT的所见合并报告；“1枚巨大融合”出自MDT讨论对图1的描述。原文没有给出病灶数目、大小和肝段分布。",
+            "en": "The source reports the CT, MRI and PET/CT findings together; “one large confluent lesion” comes from the MDT discussion of fig. 1. The number, size and segments of the lesions are not given."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        },
+        "conversion": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第3个月（4个周期转化治疗后）",
+            "en": "About month 3 (after four cycles of conversion therapy)"
+          },
+          "text": {
+            "zh-CN": "复查MRI：肝脏转移灶较前明显缩小（原文图2，未纳入本病例）。MDT将疗效评价为部分缓解（PR）。",
+            "en": "Repeat MRI: the liver metastases are markedly smaller than before (source fig. 2, not included in this case). The MDT assessed the response as a partial response (PR)."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        },
+        "surveillance": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第20个月",
+            "en": "About month 20"
+          },
+          "text": {
+            "zh-CN": "腹部MRI、CT：结肠癌肝转移术后，肝尾状叶新发转移灶。",
+            "en": "Abdominal MRI and CT: after resection of the colorectal liver metastases, a new metastasis in the caudate lobe."
+          },
+          "note": {
+            "zh-CN": "原文将这次的MRI与CT合并报告，未给出病灶大小（见再次手术记录）。",
+            "en": "The source reports this MRI and CT together and gives no lesion size (see the second operation record)."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        }
+      }
+    },
+    {
+      "id": "pet-ct",
+      "name": {
+        "zh-CN": "全身PET/CT",
+        "en": "Whole-body PET/CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "pet",
+          "pet-ct",
+          "pet/ct",
+          "petct",
+          "正电子"
+        ],
+        "en": [
+          "pet",
+          "pet-ct",
+          "pet/ct",
+          "pet scan",
+          "positron"
+        ]
+      },
+      "requires": [
+        "pet-ct"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "结肠局部肠壁增厚，肠周多发小淋巴结，肝内多发低密度灶。原文未单独描述PET/CT的代谢所见（如SUV值）。",
+            "en": "Focal thickening of the colonic wall, multiple small pericolic lymph nodes, multiple hypodense liver lesions. The source gives no separate PET/CT metabolic findings (such as SUV)."
+          },
+          "note": {
+            "zh-CN": "原文把腹部CT、MRI和PET/CT的结果合并为一句报告（“结肠局部肠壁增厚，肠周多发性小淋巴结，肝内多发性低密度灶”），没有分别给出各项检查的所见。",
+            "en": "The source reports the abdominal CT, MRI and PET/CT together in one sentence (“focal colonic wall thickening, multiple small pericolic lymph nodes, multiple hypodense liver lesions”), without separate findings for each."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "ct-chest",
+      "name": {
+        "zh-CN": "胸部CT",
+        "en": "Chest CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部ct",
+          "肺部ct",
+          "胸部增强ct",
+          "胸腹盆ct"
+        ],
+        "en": [
+          "chest ct",
+          "ct chest",
+          "ct thorax",
+          "lung ct",
+          "ct chest abdomen pelvis"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": false,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "原报告没有单独记录胸部CT（初诊时做了全身PET/CT，见PET/CT报告）。",
+            "en": "The source records no separate chest CT (a whole-body PET/CT was done at presentation — see that report)."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "colonoscopy",
+      "name": {
+        "zh-CN": "结肠镜检查及活检",
+        "en": "Colonoscopy with biopsy"
+      },
+      "category": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "肠镜",
+          "结肠镜",
+          "电子结肠镜",
+          "肠镜活检",
+          "结肠镜活检",
+          "内镜检查"
+        ],
+        "en": [
+          "colonoscopy",
+          "scope",
+          "lower gi endoscopy",
+          "colonoscopy and biopsy",
+          "endoscopy"
+        ]
+      },
+      "requires": [
+        "endoscopy"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
+          "text": {
+            "zh-CN": "距肛缘35 cm处占位，肿物占肠腔一周，内镜无法通过。活检病理：腺癌。",
+            "en": "A mass 35 cm from the anal verge, involving the whole circumference of the lumen; the colonoscope could not pass it. Biopsy histology: adenocarcinoma."
+          },
+          "note": {
+            "zh-CN": "内镜未能通过病变，近端结肠本次未能观察。",
+            "en": "The scope could not pass the lesion, so the colon beyond it was not seen at this examination."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "kras-braf",
+      "name": {
+        "zh-CN": "肿瘤基因检测（KRAS、BRAF）",
+        "en": "Tumour gene testing (KRAS, BRAF)"
       },
       "category": "genetics",
       "aliases": {
         "zh-CN": [
-          "调阅肿瘤分子检测"
+          "基因检测",
+          "kras",
+          "braf",
+          "k-ras",
+          "b-raf",
+          "分子检测",
+          "基因突变"
         ],
         "en": [
-          "Review tumour molecular testing",
-          "molecular"
+          "kras",
+          "braf",
+          "k-ras",
+          "b-raf",
+          "gene test",
+          "mutation test",
+          "molecular test"
         ]
       },
       "requires": [
@@ -810,34 +1868,429 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
+          },
           "text": {
-            "zh-CN": "原记录KRAS与BRAF野生型，未列检测位点范围、NRAS、MMR/MSI等信息；不能自动视为完整现代分子分层。",
-            "en": "KRAS and BRAF were reported wild type without assay coverage, NRAS or MMR/MSI information; this is not automatically a complete contemporary molecular profile."
+            "zh-CN": "K-ras和B-raf基因均为野生型。原文未写明检测的外显子/位点和检测方法。",
+            "en": "K-ras and B-raf: both wild type. The source does not state which exons or codons were tested, or the method."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "extended-molecular",
+      "name": {
+        "zh-CN": "补充肿瘤分子检测",
+        "en": "Further tumour molecular testing"
+      },
+      "category": "genetics",
+      "aliases": {
+        "zh-CN": [
+          "补充分子检测",
+          "补充基因检测",
+          "nras",
+          "ras扩展",
+          "扩展ras",
+          "全ras",
+          "mmr",
+          "msi",
+          "错配修复",
+          "微卫星",
+          "林奇"
+        ],
+        "en": [
+          "further molecular",
+          "extended ras",
+          "nras",
+          "all ras",
+          "mmr",
+          "msi",
+          "mismatch repair",
+          "microsatellite",
+          "lynch",
+          "dmmr"
+        ]
+      },
+      "requires": [
+        "molecular"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "date": {
+            "zh-CN": "初诊（第0天）",
+            "en": "First visit (day 0)"
           },
-          "figures": [],
-          "available": true
+          "text": {
+            "zh-CN": "原报告除“K-ras和B-raf基因均为野生型”外，没有其他肿瘤分子或免疫组化检测的记录。",
+            "en": "Apart from “K-ras and B-raf both wild type”, the source records no other tumour molecular or immunohistochemical testing."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "liver-biopsy",
+      "name": {
+        "zh-CN": "经皮肝穿刺活检",
+        "en": "Percutaneous liver biopsy"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "肝穿",
+          "肝穿刺",
+          "肝活检",
+          "肝穿刺活检",
+          "肝脏穿刺"
+        ],
+        "en": [
+          "liver biopsy",
+          "percutaneous biopsy",
+          "biopsy of the liver",
+          "core biopsy of the liver"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "moderate",
+      "value": "low-value",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有做肝穿刺活检。",
+            "en": "No liver biopsy was performed in the source."
+          },
+          "source": {
+            "zh-CN": "病例介绍·辅助检查",
+            "en": "Case presentation · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "op-pathology",
+      "name": {
+        "zh-CN": "调阅原发灶手术记录与病理报告",
+        "en": "Review the operation note and pathology of the primary resection"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "手术记录",
+          "病理报告",
+          "术后病理",
+          "原发灶病理",
+          "结肠癌病理",
+          "手术病理"
+        ],
+        "en": [
+          "operation note",
+          "operative findings",
+          "pathology report",
+          "histology report",
+          "resection pathology",
+          "surgical pathology"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "conversion": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊同月",
+            "en": "The same month as the first visit"
+          },
+          "text": {
+            "zh-CN": "全麻下行机器人辅助乙状结肠癌Dixon术（前切除）。术中探查：肝右叶3枚转移结节，直径分别约10 cm、3 cm和3 cm；左叶2枚，直径均约3 cm；乙状结肠上段肿块直径约6 cm，占肠腔一周，累及全层及左侧腹壁。手术顺利。术后病理：乙状结肠溃疡型腺癌，分化II–III级，侵及全层及周围脂肪组织，脉管内见癌栓，切缘阴性；淋巴结0/6，另见癌结节4枚。病理分期pT4N1cM1（入院诊断为cT3NxM1）。",
+            "en": "Robot-assisted Dixon (anterior) resection of the sigmoid cancer under general anaesthesia. At operation: three metastatic nodules in the right lobe of the liver (about 10, 3 and 3 cm) and two in the left lobe (about 3 cm each); a mass of about 6 cm in the upper sigmoid, encircling the lumen and involving the full thickness of the wall and the left abdominal wall. The operation was uneventful. Pathology: ulcerating adenocarcinoma of the sigmoid colon, grade II–III, invading the full thickness of the wall and the surrounding fat, with tumour emboli in vessels; margins clear; lymph nodes 0/6, plus 4 tumour deposits. Pathological stage pT4N1cM1 (admission diagnosis cT3NxM1)."
+          },
+          "note": {
+            "zh-CN": "原文如此，未作更正：pT4的依据只见于术中所见（“累及全层及左侧腹壁”），病理描述只写“侵及全层及周围脂肪组织”，未写明组织学上的浆膜或邻近结构侵犯。原文只检出6枚淋巴结。",
+            "en": "As printed, not corrected: pT4 rests only on the operative finding (involvement of the full thickness and the left abdominal wall); the pathology text says only “invading the full thickness and the surrounding fat” and records no histological serosal or adjacent-structure invasion. Only 6 lymph nodes were examined."
+          },
+          "source": {
+            "zh-CN": "治疗经过·手术与术后病理",
+            "en": "Treatment course · operation and pathology"
+          }
+        }
+      }
+    },
+    {
+      "id": "mdt-record",
+      "name": {
+        "zh-CN": "调阅MDT讨论记录",
+        "en": "Review the MDT discussion record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "mdt记录",
+          "多学科讨论记录",
+          "会诊记录",
+          "mdt意见",
+          "多学科意见"
+        ],
+        "en": [
+          "mdt record",
+          "mdt minutes",
+          "mdt outcome",
+          "tumour board record",
+          "tumor board record",
+          "multidisciplinary record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "conversion": {
+          "available": true,
+          "date": {
+            "zh-CN": "初诊当月",
+            "en": "The month of the first visit"
+          },
+          "text": {
+            "zh-CN": "初诊MDT（结直肠癌门诊）：诊断乙状结肠癌伴肝转移；原发灶有梗阻；肝内多发转移，其中1枚巨大融合；评估为潜在可切除。建议先行原发灶手术切除，后行化疗加靶向治疗。",
+            "en": "First MDT (colorectal cancer clinic): sigmoid cancer with liver metastases; the primary is obstructing; multiple liver metastases, one large and confluent; judged potentially resectable. Recommendation: resect the primary first, then chemotherapy plus targeted therapy."
+          },
+          "note": {
+            "zh-CN": "原文如此：MDT写明“原发灶有梗阻”，但病例中没有记录梗阻的症状、体征或影像证据，只有“内镜不能通过”。",
+            "en": "As printed: the MDT states the primary was obstructing, but no obstructive symptoms, signs or imaging are recorded — only that the colonoscope could not pass."
+          },
+          "source": {
+            "zh-CN": "治疗经过·MDT讨论",
+            "en": "Treatment course · MDT discussion"
+          }
+        },
+        "surveillance": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第3个月",
+            "en": "About month 3"
+          },
+          "text": {
+            "zh-CN": "转化治疗后MDT：疗效评价为部分缓解（PR），建议行肝转移灶切除术，术后继续原方案化疗。",
+            "en": "MDT after conversion therapy: partial response (PR); recommendation: resect the liver metastases, then continue the same chemotherapy."
+          },
+          "source": {
+            "zh-CN": "治疗经过·MDT讨论",
+            "en": "Treatment course · MDT discussion"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第20个月",
+            "en": "About month 20"
+          },
+          "text": {
+            "zh-CN": "复发后MDT：肝尾状叶新发转移灶1枚，建议行转移灶手术切除。",
+            "en": "MDT at recurrence: one new metastasis in the caudate lobe; recommendation: surgical resection."
+          },
+          "source": {
+            "zh-CN": "治疗经过·MDT讨论",
+            "en": "Treatment course · MDT discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "treatment-record",
+      "name": {
+        "zh-CN": "调阅化疗记录",
+        "en": "Review the chemotherapy record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "化疗记录",
+          "化疗方案",
+          "用药记录",
+          "治疗记录",
+          "疗程记录"
+        ],
+        "en": [
+          "chemotherapy record",
+          "chemo record",
+          "treatment record",
+          "regimen record",
+          "cycles given"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "conversion": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第1–3个月",
+            "en": "About months 1–3"
+          },
+          "text": {
+            "zh-CN": "接受4个疗程FOLFOX联合西妥昔单抗（原文用商品名“爱必妥”）：西妥昔单抗500 mg/m²，氟尿嘧啶3200 mg/m²，亚叶酸钙400 mg/m²，奥沙利铂85 mg/m²，每2周一次。化疗过程顺利。",
+            "en": "Four cycles of FOLFOX plus cetuximab (the source uses the brand name Erbitux): cetuximab 500 mg/m², fluorouracil 3200 mg/m², calcium folinate 400 mg/m² and oxaliplatin 85 mg/m², every 2 weeks. Chemotherapy went smoothly."
+          },
+          "note": {
+            "zh-CN": "剂量按原文；原文没有写氟尿嘧啶推注与持续输注的分配，不能作为现行剂量参考。",
+            "en": "Doses as printed; the source does not split the fluorouracil into bolus and infusion, so do not use these as a dosing reference."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        },
+        "surveillance": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第3–20个月",
+            "en": "About months 3–20"
+          },
+          "text": {
+            "zh-CN": "肝切除术后完成原方案（FOLFOX联合西妥昔单抗）8个疗程，此后口服卡培他滨（原文用商品名“希罗达”）维持；期间复查无异常。",
+            "en": "After the hepatectomy she completed 8 more cycles of the same regimen (FOLFOX plus cetuximab), then oral capecitabine maintenance (the source uses the brand name Xeloda); checks during this time were normal."
+          },
+          "note": {
+            "zh-CN": "原文没有写卡培他滨的剂量和起止时间。",
+            "en": "The source gives no capecitabine dose or dates."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第21–27个月，此后维持至报告截稿",
+            "en": "About months 21–27, then maintenance to the time of the report"
+          },
+          "text": {
+            "zh-CN": "尾状叶切除术后接受FOLFIRI联合西妥昔单抗12个疗程：西妥昔单抗500 mg/m²，氟尿嘧啶3200 mg/m²，亚叶酸钙400 mg/m²，伊立替康180 mg/m²，每2周一次。此后以氟尿嘧啶+亚叶酸钙+西妥昔单抗每2周一次维持。",
+            "en": "After the caudate resection she received 12 cycles of FOLFIRI plus cetuximab: cetuximab 500 mg/m², fluorouracil 3200 mg/m², calcium folinate 400 mg/m² and irinotecan 180 mg/m², every 2 weeks. Maintenance then continued with fluorouracil + calcium folinate + cetuximab every 2 weeks."
+          },
+          "note": {
+            "zh-CN": "剂量按原文，不能作为现行剂量参考。",
+            "en": "Doses as printed; do not use them as a dosing reference."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
+        }
+      }
+    },
+    {
+      "id": "hepatectomy-record",
+      "name": {
+        "zh-CN": "调阅肝脏手术记录与病理",
+        "en": "Review the liver operation notes and pathology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肝切除记录",
+          "肝脏手术记录",
+          "肝切除病理",
+          "肝转移灶病理",
+          "肝手术记录"
+        ],
+        "en": [
+          "hepatectomy record",
+          "liver operation note",
+          "liver resection record",
+          "liver pathology",
+          "hepatectomy pathology"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "surveillance": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第3个月",
+            "en": "About month 3"
+          },
+          "text": {
+            "zh-CN": "全麻下行肝左右叶部分切除术。术中探查：腹腔粘连，肝门淋巴结无肿大，门静脉主干无栓子，肝脏无硬化；见肿瘤5枚，分别位于肝左内叶、左外叶III段及右叶VII、VIII段，直径约1.5–5.5 cm，术中B超证实肿瘤位置。术后病理：腺癌，结合病史符合肠癌肝转移。",
+            "en": "Partial resection of the left and right lobes of the liver under general anaesthesia. At operation: adhesions; no enlarged hilar lymph nodes; no thrombus in the main portal vein; no cirrhosis. Five tumours — in the left medial section, segment III and segments VII and VIII — 1.5–5.5 cm across, confirmed with intra-operative ultrasound. Pathology: adenocarcinoma, consistent with colorectal liver metastases given the history."
+          },
+          "note": {
+            "zh-CN": "原文没有报告肝切缘；讨论中称“最终获得R0切除”，但没有切缘记录。",
+            "en": "No resection margin is reported; the discussion says an R0 resection was achieved, but no margin is recorded."
+          },
+          "source": {
+            "zh-CN": "治疗经过·肝切除与术后病理",
+            "en": "Treatment course · hepatectomy and pathology"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "约第20个月",
+            "en": "About month 20"
+          },
+          "text": {
+            "zh-CN": "全麻下行肝尾状叶切除加肝门淋巴结切除术。术中探查：肝门有1枚1.5 cm×1 cm肿大淋巴结，门静脉主干无栓子，肝脏无硬化；肿瘤位于肝尾状叶I段，大小约1.5 cm×1.3 cm×1 cm，边界清，无包膜。术后病理：（肝尾状叶）腺癌，II级，结合病史符合肠癌肝转移，周围肝组织未见结节性肝硬化；送检肝门部淋巴结1枚，见癌转移（1/1）。",
+            "en": "Caudate lobectomy with hilar lymph node dissection under general anaesthesia. At operation: one enlarged hilar node of 1.5 cm × 1 cm; no thrombus in the main portal vein; no cirrhosis; the tumour lay in segment I (caudate lobe), about 1.5 × 1.3 × 1 cm, well defined, without a capsule. Pathology: adenocarcinoma of the caudate lobe, grade II, consistent with colorectal liver metastasis given the history; no nodular cirrhosis in the surrounding liver; the one hilar lymph node sent contained metastatic carcinoma (1/1)."
+          },
+          "source": {
+            "zh-CN": "治疗经过·再次肝切除与术后病理",
+            "en": "Treatment course · second liver operation and pathology"
+          }
         }
       }
     },
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "调阅原报告的后续随访记录",
+        "en": "Review the report's later follow-up record"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访记录",
+          "随访",
+          "结局",
+          "后续情况",
+          "最后一次复查"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "follow-up record",
+          "followup",
+          "follow-up",
+          "outcome",
+          "latest review",
+          "last follow-up"
         ]
       },
       "requires": [
@@ -847,33 +2300,577 @@
       "value": "useful",
       "results": {
         "followup": {
-          "text": {
-            "zh-CN": "原报告先切除乙状结肠原发灶，病理为pT4N1cM1：6枚淋巴结未见转移，但有4枚癌结节。4周期FOLFOX加西妥昔单抗后肝灶部分缓解，接受肝切除，病理符合结肠来源。之后继续系统治疗；后来CEA再升、尾状叶新病灶，切除后肝门淋巴结1/1阳性，改FOLFIRI加西妥昔单抗后维持治疗。报告末次复查未见复发转移，但未证明永久治愈。",
-            "en": "The source describes sigmoid resection with pT4N1cM1 pathology: no metastasis in six sampled nodes but four tumour deposits. After four FOLFOX/cetuximab cycles the hepatic disease partially responded and was resected, with colorectal-origin pathology. Systemic therapy continued. A later CEA rise and new caudate lesion led to another resection, with one of one hilar nodes positive, followed by FOLFIRI/cetuximab and maintenance. No recurrence was reported at the final assessment, but permanent cure is not established."
+          "available": true,
+          "date": {
+            "zh-CN": "至报告截稿（约第27个月以后）",
+            "en": "To the time of the report (after about month 27)"
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+          "text": {
+            "zh-CN": "尾状叶切除和其后的FOLFIRI联合西妥昔单抗治疗之后，以氟尿嘧啶+亚叶酸钙+西妥昔单抗每2周一次维持治疗，至报告截稿时定期复查未见复发转移。原文没有报告总生存时间或更长期的结局。原文图3为治疗全程的CEA变化曲线。",
+            "en": "After the caudate resection and the FOLFIRI plus cetuximab that followed, she continued fluorouracil + calcium folinate + cetuximab every 2 weeks as maintenance; regular reviews showed no recurrence or metastasis up to the time of the report. The source reports no overall survival or longer-term outcome. Source fig. 3 is the CEA curve across the whole course."
           },
           "figures": [
             "fig02"
           ],
-          "available": true
+          "note": {
+            "zh-CN": "图3保留原图的日期标注（横轴为检测日期）；病例文本使用相对时间。原文没有给出曲线上各点的数值。",
+            "en": "Fig. 3 keeps the published figure's date labels (the x-axis shows test dates); the case text uses relative time. The source gives no values for the points on the curve."
+          },
+          "source": {
+            "zh-CN": "治疗经过",
+            "en": "Treatment course"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifMatches": "pet|正电子|positron",
+        "remove": [
+          "ct-abdomen",
+          "ct-chest"
+        ]
+      },
+      {
+        "ifMatches": "胸|chest|thorax|肺|lung",
+        "remove": [
+          "ct-abdomen"
+        ]
+      },
+      {
+        "ifMatches": "nras|扩展|全ras|allras|extended|外显子|exon|mmr|msi|错配|微卫星|林奇|lynch|补充",
+        "remove": [
+          "kras-braf"
+        ],
+        "add": [
+          "extended-molecular"
+        ]
+      }
+    ],
+    "exact": {
+      "ct": [
+        "ct-abdomen"
+      ],
+      "ctscan": [
+        "ct-abdomen"
+      ],
+      "增强ct": [
+        "ct-abdomen"
+      ],
+      "mri": [
+        "liver-mri"
+      ],
+      "核磁": [
+        "liver-mri"
+      ],
+      "mr": [
+        "liver-mri"
+      ]
+    },
+    "warnings": [
+      {
+        "investigation": "liver-mri",
+        "ifMatches": ".",
+        "message": {
+          "zh-CN": "原报告的肝脏MRI图像（图1、图2）含可识别信息，未纳入本病例；结果只有文字描述。",
+          "en": "The report's liver MRI images (figs 1 and 2) carry identifying details and are not included in this case; the result is text only."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "mdt-referral",
+      "name": {
+        "zh-CN": "提交结直肠癌肝转移多学科团队（MDT）讨论",
+        "en": "Refer to the colorectal liver-metastasis multidisciplinary team (MDT)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "mdt",
+          "多学科",
+          "多学科讨论",
+          "提交mdt",
+          "多学科会诊",
+          "肿瘤多学科"
+        ],
+        "en": [
+          "mdt",
+          "refer to mdt",
+          "multidisciplinary team",
+          "tumour board",
+          "tumor board",
+          "mdt discussion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "提交结直肠癌MDT：结直肠外科、肝胆外科、肿瘤内科、放射科和病理科共同讨论",
+        "en": "Refer to the colorectal cancer MDT: colorectal surgery, hepatobiliary surgery, medical oncology, radiology and pathology"
+      },
+      "requires": [],
+      "risk": "none",
+      "setFlags": [
+        "mdt-referred"
+      ],
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "已提交MDT讨论。团队会结合影像、病理和分子检测结果，讨论原发灶怎样处理、肝转移灶能否切除以及全身治疗方案。",
+        "en": "Referred to the MDT. The team will use the imaging, pathology and molecular results to discuss how to manage the primary, whether the liver metastases can be removed, and the systemic treatment."
+      }
+    },
+    {
+      "id": "refer-primary-resection",
+      "name": {
+        "zh-CN": "转结直肠外科：切除原发灶",
+        "en": "Refer to colorectal surgery to resect the primary"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "切除原发灶",
+          "原发灶切除",
+          "结肠癌根治",
+          "乙状结肠切除",
+          "dixon",
+          "前切除",
+          "先做肠子手术",
+          "结直肠外科"
+        ],
+        "en": [
+          "resect the primary",
+          "primary resection",
+          "sigmoid colectomy",
+          "anterior resection",
+          "dixon",
+          "colorectal surgery",
+          "operate on the bowel"
+        ]
+      },
+      "dose": {
+        "zh-CN": "全麻下切除乙状结肠原发灶（原报告为机器人辅助Dixon术），术中探查肝脏，完整送检病理",
+        "en": "Resection of the sigmoid primary under general anaesthesia (robot-assisted Dixon resection in the report), assessing the liver at operation and sending the specimen for full pathology"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "mdt-sequence"
+      },
+      "response": {
+        "zh-CN": "结直肠外科接收转诊并安排手术。术后可在病历中调阅手术记录和病理报告。",
+        "en": "Colorectal surgery accepts the referral and schedules the operation. Afterwards the operation note and pathology report will be in the chart."
+      }
+    },
+    {
+      "id": "conversion-chemo",
+      "name": {
+        "zh-CN": "转化治疗：FOLFOX联合西妥昔单抗（每2周一次）",
+        "en": "Conversion therapy: FOLFOX plus cetuximab (every 2 weeks)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "folfox",
+          "西妥昔单抗",
+          "爱必妥",
+          "奥沙利铂",
+          "转化治疗",
+          "化疗加靶向",
+          "抗egfr",
+          "开始化疗"
+        ],
+        "en": [
+          "folfox",
+          "cetuximab",
+          "erbitux",
+          "oxaliplatin",
+          "conversion therapy",
+          "chemo plus targeted",
+          "anti-egfr",
+          "start chemotherapy"
+        ]
+      },
+      "dose": {
+        "zh-CN": "原报告方案：西妥昔单抗500 mg/m²，氟尿嘧啶3200 mg/m²，亚叶酸钙400 mg/m²，奥沙利铂85 mg/m²，静脉给药，每2周一次；4个周期后复评",
+        "en": "Regimen as in the report: cetuximab 500 mg/m², fluorouracil 3200 mg/m², calcium folinate 400 mg/m² and oxaliplatin 85 mg/m² IV every 2 weeks; reassess after 4 cycles"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "decided": "biomarkers"
+          },
+          {
+            "intervened": "refer-primary-resection"
+          },
+          {
+            "ordered": "extended-molecular"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "not": {
+              "ordered": "extended-molecular"
+            }
+          },
+          {
+            "not": {
+              "intervened": "refer-primary-resection"
+            }
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "还没有申请补充分子检测就开始了抗EGFR单抗：RAS突变的肿瘤用西妥昔单抗不仅无益，还可能有害；dMMR/MSI-H的肿瘤一线应首选免疫治疗。若原发灶尚未处理，这个环周、内镜都无法通过的肿瘤在化疗期间可能发生梗阻。",
+        "en": "Anti-EGFR therapy was started before further molecular testing had been requested: in RAS-mutant tumours cetuximab gives no benefit and may cause harm, and dMMR/MSI-H tumours should have immunotherapy first line. If the primary has not been dealt with, this encircling tumour the scope could not pass may obstruct during chemotherapy."
+      },
+      "response": {
+        "zh-CN": "已开具4个周期的转化治疗，在化疗日间病房执行，4个周期后复评疗效。",
+        "en": "Four cycles of conversion therapy are prescribed, to be given in the chemotherapy day unit, with the response reassessed after 4 cycles."
+      }
+    },
+    {
+      "id": "palliative-capecitabine",
+      "name": {
+        "zh-CN": "单药卡培他滨姑息化疗，不再评估手术",
+        "en": "Single-agent capecitabine as palliation, with no further surgical assessment"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "卡培他滨单药",
+          "希罗达单药",
+          "姑息化疗",
+          "单药化疗",
+          "口服化疗",
+          "卡培他滨"
+        ],
+        "en": [
+          "capecitabine alone",
+          "single-agent capecitabine",
+          "palliative chemotherapy",
+          "xeloda",
+          "capecitabine",
+          "oral chemotherapy only"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "维持"
+        ],
+        "en": [
+          "maintenance"
+        ]
+      },
+      "dose": {
+        "zh-CN": "卡培他滨1250 mg/m²口服，每日2次，第1–14天，每3周重复；作为姑息治疗，不再安排可切除性复评",
+        "en": "Capecitabine 1250 mg/m² orally twice daily, days 1–14 every 3 weeks, as palliation, with no further resectability review"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "她体能状态0分，肝转移有经转化治疗后切除的机会：只给低强度的单药姑息治疗、不再评估手术，会错失根治性切除的可能。应提交MDT，选择高缓解率的转化方案并复评可切除性。",
+        "en": "She is fully active (PS 0) and her liver disease may become resectable after conversion therapy: low-intensity single-agent palliation with no further surgical review throws away the chance of a curative resection. Take her to the MDT, choose a high-response conversion regimen and reassess resectability."
+      },
+      "response": {
+        "zh-CN": "已开具卡培他滨单药。",
+        "en": "Single-agent capecitabine is prescribed."
+      }
+    },
+    {
+      "id": "simultaneous-resection",
+      "name": {
+        "zh-CN": "立即一期同时切除原发灶和全部肝转移灶",
+        "en": "Immediate one-stage resection of the primary and all the liver metastases"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "同期切除",
+          "一期同时切除",
+          "肠肝同期切除",
+          "同时切除",
+          "一起切掉"
+        ],
+        "en": [
+          "simultaneous resection",
+          "synchronous resection",
+          "one-stage resection",
+          "resect everything now",
+          "combined bowel and liver resection"
+        ]
+      },
+      "dose": {
+        "zh-CN": "结直肠外科与肝外科联合手术，一次切除乙状结肠原发灶和全部肝转移灶",
+        "en": "A combined colorectal and liver operation removing the sigmoid primary and every liver metastasis at once"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "初诊时肝内多发转移、其中1枚巨大融合，MDT评估为“潜在可切除”而非可以直接切除：立即做大范围一期切除，难以保证R0切除和足够的剩余肝脏，手术风险高。应先处理原发灶并行转化治疗，再由MDT复评。",
+        "en": "At presentation there were multiple liver metastases, one large and confluent, which the MDT judged “potentially resectable” rather than resectable now: an immediate extensive one-stage operation is unlikely to achieve clear margins with enough liver left, and carries high risk. Deal with the primary and give conversion therapy first, then let the MDT reassess."
+      },
+      "response": {
+        "zh-CN": "肝外科会诊后认为现在不宜一次切除全部肝转移灶，建议先提交MDT讨论。",
+        "en": "The liver surgeons advise against removing all the liver metastases in one operation now, and suggest MDT discussion first."
+      }
+    },
+    {
+      "id": "refer-hepatectomy",
+      "name": {
+        "zh-CN": "转肝外科：切除肝转移灶（术中超声定位）",
+        "en": "Refer to liver surgery to resect the liver metastases (with intra-operative ultrasound)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "肝切除",
+          "肝转移灶切除",
+          "切肝",
+          "肝脏手术",
+          "肝外科",
+          "再次肝切除",
+          "切除复发灶"
+        ],
+        "en": [
+          "hepatectomy",
+          "liver resection",
+          "resect the liver metastases",
+          "liver surgery",
+          "metastasectomy",
+          "repeat hepatectomy",
+          "re-resection"
+        ]
+      },
+      "dose": {
+        "zh-CN": "切除肝转移灶，术中超声定位病灶；术后继续全身治疗",
+        "en": "Resection of the liver metastases, locating the lesions with intra-operative ultrasound; systemic therapy continues after surgery"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "any": [
+          {
+            "decided": "conversion-timing"
+          },
+          {
+            "decided": "recurrence"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "phase": "initial"
+      },
+      "harm": {
+        "zh-CN": "转化治疗前就切除肝转移灶：肝内多发、其中1枚巨大融合，MDT评估为“潜在可切除”，此时很难做到R0切除并保留足够的肝脏。应先转化治疗，再由MDT复评。",
+        "en": "The liver metastases were sent for resection before conversion therapy: they are multiple, one large and confluent, and judged only “potentially resectable” — clear margins with enough liver left are unlikely now. Convert first, then let the MDT reassess."
+      },
+      "response": {
+        "zh-CN": "肝外科接收转诊并安排手术。术后可在病历中调阅手术记录和病理。",
+        "en": "Liver surgery accepts the referral and schedules the operation. Afterwards the operation note and pathology will be in the chart."
+      }
+    },
+    {
+      "id": "continue-until-cr",
+      "name": {
+        "zh-CN": "继续原方案化疗，直到肝转移灶在影像上完全消失再考虑手术",
+        "en": "Continue the same chemotherapy until the liver metastases disappear on imaging, then consider surgery"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "继续化疗",
+          "继续原方案",
+          "化疗到消失",
+          "等完全缓解",
+          "再化疗几个周期"
+        ],
+        "en": [
+          "continue chemo",
+          "more cycles",
+          "continue until complete response",
+          "wait for complete response",
+          "keep going with chemo"
+        ]
+      },
+      "dose": {
+        "zh-CN": "FOLFOX联合西妥昔单抗继续每2周一次，暂不安排肝切除",
+        "en": "FOLFOX plus cetuximab continued every 2 weeks, with no liver resection planned for now"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "已经部分缓解、可以切除时继续化疗：周期越多，化疗相关肝损伤越重、手术风险越高，还可能出现耐药；影像上“消失”的病灶常常仍有残留肿瘤，术中反而难以找到。原报告专家点评（引2013年NCCN指南）强调转化成功后要抓住手术时机。",
+        "en": "Carrying on with chemotherapy once there is a partial response and the disease is resectable: more cycles mean more chemotherapy-related liver injury, higher surgical risk and possible resistance, and lesions that “disappear” on imaging often still contain tumour yet become hard to find at operation. The report's commentary (citing NCCN 2013) stresses operating once conversion succeeds."
+      },
+      "response": {
+        "zh-CN": "已安排继续原方案化疗。",
+        "en": "The same chemotherapy is continued."
+      }
+    },
+    {
+      "id": "post-hepatectomy-chemo",
+      "name": {
+        "zh-CN": "肝切除术后继续全身治疗并口服维持",
+        "en": "Systemic therapy after the hepatectomy, then oral maintenance"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "术后化疗",
+          "术后继续化疗",
+          "卡培他滨维持",
+          "希罗达维持",
+          "口服维持"
+        ],
+        "en": [
+          "post-operative chemotherapy",
+          "chemo after surgery",
+          "capecitabine maintenance",
+          "xeloda maintenance",
+          "oral maintenance"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按原报告：原方案（FOLFOX联合西妥昔单抗）再完成8个疗程，此后口服卡培他滨维持（原文未写维持剂量）",
+        "en": "As in the report: 8 more cycles of the same regimen (FOLFOX plus cetuximab), then oral capecitabine maintenance (no maintenance dose given in the source)"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已按原报告安排术后8个疗程及口服卡培他滨维持。这是原报告团队的选择；术后是否继续抗EGFR单抗，本病例不作评分。",
+        "en": "Eight post-operative cycles and oral capecitabine maintenance are arranged, as in the report. This was the report's team's choice; whether the anti-EGFR antibody should continue after surgery is not scored in this case."
+      }
+    },
+    {
+      "id": "abandon-surgery-chemo",
+      "name": {
+        "zh-CN": "放弃再次手术，只改用二线化疗",
+        "en": "Give up further surgery and switch to second-line chemotherapy only"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "改二线",
+          "二线化疗",
+          "放弃手术",
+          "不做手术了",
+          "改用folfiri"
+        ],
+        "en": [
+          "second-line chemotherapy",
+          "switch to second line",
+          "nomoresurgery",
+          "give up surgery",
+          "switch to folfiri"
+        ]
+      },
+      "dose": {
+        "zh-CN": "FOLFIRI（伊立替康+氟尿嘧啶+亚叶酸钙）每2周一次，作为姑息治疗，不再考虑手术",
+        "en": "FOLFIRI (irinotecan + fluorouracil + calcium folinate) every 2 weeks as palliation, with surgery no longer considered"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "孤立、可切除的肝内复发再次切除才有长期控制的机会（原报告专家点评：能手术切除的首选手术切除）；只用姑息化疗就放弃了这个机会。",
+        "en": "An isolated, resectable liver recurrence has its best chance of long-term control from repeat resection (the report's commentary: resect it when it can be resected); palliative chemotherapy alone gives that chance up."
+      },
+      "response": {
+        "zh-CN": "已开具二线化疗。",
+        "en": "Second-line chemotherapy is prescribed."
+      }
+    },
+    {
+      "id": "post-recurrence-chemo",
+      "name": {
+        "zh-CN": "再次肝切除术后全身治疗并维持",
+        "en": "Systemic therapy after the second liver operation, then maintenance"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "folfiri加西妥昔",
+          "folfiri联合西妥昔单抗",
+          "伊立替康",
+          "术后folfiri",
+          "维持治疗"
+        ],
+        "en": [
+          "folfiri plus cetuximab",
+          "folfiri cetuximab",
+          "irinotecan",
+          "folfiri after surgery",
+          "maintenance therapy"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按原报告：FOLFIRI联合西妥昔单抗12个疗程（伊立替康180 mg/m²等，每2周一次），此后氟尿嘧啶+亚叶酸钙+西妥昔单抗每2周一次维持",
+        "en": "As in the report: 12 cycles of FOLFIRI plus cetuximab (irinotecan 180 mg/m² and the rest every 2 weeks), then fluorouracil + calcium folinate + cetuximab every 2 weeks as maintenance"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已按原报告安排术后FOLFIRI联合西妥昔单抗及维持治疗。这是原报告团队的选择，本病例不对其单独评分。",
+        "en": "FOLFIRI plus cetuximab after surgery and the maintenance are arranged, as in the report. This was the report's team's choice and is not scored on its own in this case."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-assess",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "明确来诊经过并完成查体",
+        "en": "Establish how she came to clinic and examine her"
+      },
+      "short": {
+        "zh-CN": "问诊查体",
+        "en": "History & exam"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "这些肝内病灶是怎么发现的？哪些症状、既往史和家族史会改变你对它们来源的判断？她现在的体能状态怎样？",
+        "en": "How were these liver lesions found? Which symptoms, past history and family history would change your thinking about where they come from? How fit is she now?"
+      },
+      "guidance": {
+        "zh-CN": "在诊室询问她的情况，然后完成查体。",
+        "en": "Talk with her in the consulting room, then examine her."
       },
       "completeWhen": {
         "all": [
@@ -888,172 +2885,719 @@
           },
           {
             "asked": "bowel"
-          }
-        ]
-      }
-    },
-    {
-      "id": "objective-2",
-      "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
-      },
-      "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
-      },
-      "completeWhen": {
-        "all": [
+          },
           {
-            "examined": "status"
+            "examined": "performance-status"
           },
           {
             "examined": "abdomen"
+          },
+          {
+            "examined": "lymph-nodes"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-3",
+      "id": "obj-diagnosis",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "寻找原发灶并初步分期",
+        "en": "Find the primary and stage the disease"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "肝内多发病灶时，原发灶最可能在哪里？哪项检查能直接取到组织？哪些结果能帮你排除肝脏本身的肿瘤？",
+        "en": "With multiple liver lesions, where is the primary most likely to be? Which test can take tissue directly? Which results help you exclude a tumour of the liver itself?"
       },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      "guidance": {
+        "zh-CN": "开具并调阅血液检查、肿瘤标志物、腹部影像和内镜检查，再到会诊板作出判断。",
+        "en": "Order and read the blood tests, tumour markers, abdominal imaging and endoscopy, then make your judgement at the case board."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "read": "colonoscopy",
+            "phase": "initial"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "tumour-markers",
+            "phase": "initial"
+          },
+          {
+            "any": [
+              {
+                "read": "ct-abdomen",
+                "phase": "initial"
+              },
+              {
+                "read": "liver-mri",
+                "phase": "initial"
+              },
+              {
+                "read": "pet-ct",
+                "phase": "initial"
+              }
+            ]
+          },
+          {
+            "decided": "dx-primary"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "colonoscopy",
+            "phase": "initial"
+          },
+          "target": "endoscopy"
+        },
+        {
+          "unless": {
+            "read": "liver-mri",
+            "phase": "initial"
+          },
+          "target": "mri"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "与MDT确定初始治疗",
+        "en": "Agree the initial treatment with the MDT"
+      },
+      "short": {
+        "zh-CN": "初始方案",
+        "en": "Initial plan"
+      },
+      "hint": {
+        "zh-CN": "这个原发灶会给后续治疗带来什么风险？肝转移现在能切吗，以后有没有可能切？用靶向药之前还缺哪些结果？",
+        "en": "What risk does this primary pose during treatment? Can the liver disease be removed now — or later? Which results are still missing before a targeted drug?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板完成两项决策，再开出决策所要求的转诊和治疗。",
+        "en": "Make the two decisions at the case board, then place the referrals and treatment they call for."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "mdt-sequence"
+          },
+          {
+            "decided": "biomarkers"
+          },
+          {
+            "intervened": "mdt-referral"
+          },
+          {
+            "intervened": "refer-primary-resection"
+          },
+          {
+            "intervened": "conversion-chemo"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "decided": "mdt-sequence"
+              },
+              {
+                "decided": "biomarkers"
+              }
+            ]
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-conversion",
+      "title": {
+        "zh-CN": "复评转化疗效并决定手术时机",
+        "en": "Reassess the conversion response and time the surgery"
+      },
+      "short": {
+        "zh-CN": "转化",
+        "en": "Conversion"
+      },
+      "hint": {
+        "zh-CN": "转化治疗追求的是什么——影像上完全消失，还是变得可以切除？多化疗几个周期要付出什么代价？",
+        "en": "What is conversion therapy aiming for — disappearance on imaging, or resectability? What do extra cycles cost?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅手术和病理记录，复查CEA和肝脏MRI，再到会诊板作出决策。",
+        "en": "Read the operation and pathology record at a records terminal, repeat the CEA and the liver MRI, then decide at the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "op-pathology",
+            "phase": "conversion"
+          },
+          {
+            "read": "tumour-markers",
+            "phase": "conversion"
+          },
+          {
+            "read": "liver-mri",
+            "phase": "conversion"
+          },
+          {
+            "decided": "conversion-timing"
+          },
+          {
+            "intervened": "refer-hepatectomy"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "op-pathology",
+            "phase": "conversion"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "read": "liver-mri",
+            "phase": "conversion"
+          },
+          "target": "mri"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-recurrence",
+      "title": {
+        "zh-CN": "处理随访中的新变化",
+        "en": "Act on the new finding at follow-up"
+      },
+      "short": {
+        "zh-CN": "随访",
+        "en": "Follow-up"
+      },
+      "hint": {
+        "zh-CN": "维持治疗期间CEA升高意味着什么？单凭这一个指标够不够？如果只有一个新病灶，有哪些选择？",
+        "en": "What does a rising CEA on maintenance therapy mean? Is that one marker enough on its own? If there is a single new lesion, what are the options?"
+      },
+      "guidance": {
+        "zh-CN": "调阅肝脏手术记录，复查CEA和腹部影像，在会诊板作出决策并安排相应处理。",
+        "en": "Read the liver operation record, repeat the CEA and the abdominal imaging, decide at the case board and act on it."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "hepatectomy-record",
+            "phase": "surveillance"
+          },
+          {
+            "read": "tumour-markers",
+            "phase": "surveillance"
+          },
+          {
+            "any": [
+              {
+                "read": "liver-mri",
+                "phase": "surveillance"
+              },
+              {
+                "read": "ct-abdomen",
+                "phase": "surveillance"
+              }
+            ]
+          },
+          {
+            "decided": "recurrence"
+          },
+          {
+            "intervened": "refer-hepatectomy",
+            "minCount": 2
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "hepatectomy-record",
+            "phase": "surveillance"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "any": [
+              {
+                "read": "liver-mri",
+                "phase": "surveillance"
+              },
+              {
+                "read": "ct-abdomen",
+                "phase": "surveillance"
+              }
+            ]
+          },
+          "target": "mri"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "核对原报告的后续治疗与结局",
+        "en": "Check the later treatment and outcome in the report"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "第二次手术发现了什么？原报告的随访到什么时候为止，它能说明什么、不能说明什么？",
+        "en": "What did the second operation find? How far does the report's follow-up go, and what can — and can't — it tell you?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅随访记录。",
+        "en": "Read the follow-up record at a records terminal."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
     }
   ],
   "decisions": [
     {
-      "id": "diagnosis",
+      "id": "dx-primary",
       "prompt": {
-        "zh-CN": "哪种临床判断最符合已获得资料？",
-        "en": "Which clinical interpretation best fits the available evidence?"
+        "zh-CN": "结合目前的病史、查体和检查结果，肝内多发病灶最可能是什么？",
+        "en": "Putting the history, examination and results together, what are the multiple liver lesions most likely to be?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "read": "liver-mri",
-            "phase": "workup"
+            "read": "colonoscopy",
+            "phase": "initial"
           },
           {
-            "read": "body-imaging",
-            "phase": "workup"
+            "read": "tumour-markers",
+            "phase": "initial"
           },
           {
-            "read": "endoscopy",
-            "phase": "workup"
-          },
-          {
-            "read": "markers",
-            "phase": "workup"
+            "any": [
+              {
+                "read": "ct-abdomen",
+                "phase": "initial"
+              },
+              {
+                "read": "liver-mri",
+                "phase": "initial"
+              },
+              {
+                "read": "pet-ct",
+                "phase": "initial"
+              }
+            ]
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先调阅结肠镜活检、肿瘤标志物和腹部影像。",
+        "en": "First read the colonoscopy and biopsy, the tumour markers and the abdominal imaging."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "crc-liver-mets",
           "text": {
-            "zh-CN": "乙状结肠腺癌伴临床肝转移，原发灶存在梗阻问题",
-            "en": "Sigmoid adenocarcinoma with clinically diagnosed liver metastases and primary-tumour obstruction"
+            "zh-CN": "乙状结肠腺癌伴同时性多发肝转移",
+            "en": "Sigmoid adenocarcinoma with synchronous multiple liver metastases"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "结肠活检提供组织学证据，肝影像与高CEA相互支持；后续肝组织证据需到随访阶段核对。",
-            "en": "Colon biopsy supplies tissue evidence and liver imaging is concordant with high CEA; subsequent liver pathology must be checked in follow-up."
+            "zh-CN": "正确。距肛缘35 cm的环周肿物活检为腺癌；CEA高达781.4 ng/mL，而AFP不高、HBsAg阴性；影像为肝内多发低密度灶。这些共同指向结肠原发、肝转移，即IV期（M1）。肝转移灶的组织学证据后来来自肝切除标本。",
+            "en": "Correct. The encircling mass 35 cm from the anal verge is adenocarcinoma on biopsy; the CEA is very high (781.4 ng/mL) while the AFP is not raised and HBsAg is negative; imaging shows multiple hypodense liver lesions. Together these point to a colonic primary with liver metastases — stage IV (M1). Tissue proof from the liver came later, from the resection specimen."
           }
         },
         {
-          "id": "unsupported",
+          "id": "hcc",
           "text": {
-            "zh-CN": "只有原发性肝癌，忽略结肠活检",
-            "en": "Primary liver cancer alone, disregarding the colon biopsy"
+            "zh-CN": "原发性肝癌，结肠肿物是另一个独立的早期肿瘤",
+            "en": "Primary liver cancer, with the colonic mass a separate early tumour"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "结肠活检提供组织学证据，肝影像与高CEA相互支持；后续肝组织证据需到随访阶段核对。",
-            "en": "Colon biopsy supplies tissue evidence and liver imaging is concordant with high CEA; subsequent liver pathology must be checked in follow-up."
+            "zh-CN": "证据不支持。AFP 1.5 ng/mL不高，HBsAg阴性，也没有肝炎病史；多发低密度灶加上极高的CEA，更符合结直肠癌肝转移。",
+            "en": "Not supported. The AFP is not raised (1.5 ng/mL), HBsAg is negative and there is no history of hepatitis; multiple hypodense lesions with a very high CEA fit colorectal liver metastases far better."
+          }
+        },
+        {
+          "id": "benign-liver",
+          "text": {
+            "zh-CN": "肝内良性病变（如血管瘤），结肠癌尚属局限期",
+            "en": "Benign liver lesions (such as haemangiomas), with the colon cancer still localised"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不能这样假设。局限期结肠癌很难解释高达781.4 ng/mL的CEA，影像也是多发低密度灶。在有相反证据之前应按转移性疾病分期，否则会低估分期、选错治疗。",
+            "en": "You can't assume that. Localised colon cancer hardly explains a CEA of 781.4 ng/mL, and imaging shows multiple hypodense lesions. Stage it as metastatic unless the evidence says otherwise; calling it localised would understage her and lead to the wrong treatment."
+          }
+        },
+        {
+          "id": "cup-biopsy-first",
+          "text": {
+            "zh-CN": "原发灶不明的肝转移癌，必须先做肝穿刺活检才能判断来源",
+            "en": "Liver metastases of unknown primary — a liver biopsy is needed before the source can be judged"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "原发灶并非不明：结肠活检已证实腺癌，整体表现与结肠来源一致。只有当影像、标志物与结肠病理不相符，或结果会改变治疗时，才需要肝穿刺；否则它只增加出血等风险而不改变决策。",
+            "en": "The primary is not unknown: the colonic biopsy proves adenocarcinoma and the whole picture fits a colonic source. A liver biopsy is needed only when imaging, markers and the colonic pathology disagree, or when the result would change management; otherwise it adds risk, such as bleeding, without changing the plan."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "mdt-sequence",
       "prompt": {
-        "zh-CN": "怎样制定可复评的治疗路径？",
-        "en": "How should an adaptable treatment pathway be planned?"
+        "zh-CN": "乙状结肠肿物占肠腔一周、内镜无法通过；肝内多发病灶，其中1枚为巨大融合病灶；她体能状态0分。下一步的治疗路径最合适的是？",
+        "en": "The sigmoid mass encircles the lumen and the scope could not pass; there are multiple liver lesions, one of them large and confluent; she is fully active (PS 0). Which treatment pathway is best?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "decided": "diagnosis"
+            "decided": "dx-primary"
           },
           {
-            "read": "molecular",
-            "phase": "workup"
+            "read": "liver-mri",
+            "phase": "initial"
+          },
+          {
+            "examined": "performance-status"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先完成诊断判断，评估体能状态，并调阅肝脏MRI。",
+        "en": "Make the diagnosis first, assess her performance status, and read the liver MRI."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "mdt-primary-first",
           "text": {
-            "zh-CN": "结直肠、肝胆和肿瘤团队共同处理梗阻、评估转化治疗及切除机会，并补齐当前治疗所需分子资料",
-            "en": "Colorectal, hepatobiliary and oncology teams address obstruction, assess conversion/resection options and complete molecular information required for current treatment"
+            "zh-CN": "提交多学科团队（MDT）讨论：先处理有梗阻风险的原发灶，随后进行以转化为目标的高效全身治疗，并在治疗中反复复评肝转移灶能否切除",
+            "en": "Take her to the multidisciplinary team (MDT): deal first with the primary that threatens to obstruct, then give high-response systemic therapy aimed at conversion, re-reviewing whether the liver metastases can be removed as treatment goes on"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "可切除性需反复MDT判断；历史方案与有限分子结果不能直接代替今天的个体化选择。",
-            "en": "Resectability requires repeated MDT review; a historical regimen and incomplete molecular results cannot substitute for present-day individualisation."
+            "zh-CN": "正确，也与原报告的MDT一致：肿瘤环周、内镜不能通过，MDT认为原发灶有梗阻，于是先切除原发灶（支架或造口也是处理梗阻的选择）；肝转移被评为“潜在可切除”，随后给予高缓解率的转化治疗，并由MDT反复判断能否切除（ESMO mCRC 2023/2026）。",
+            "en": "Correct — and what the report's MDT decided. The tumour encircles the lumen and the scope could not pass, so the MDT judged the primary obstructing and had it resected first (a stent or a defunctioning stoma are other ways to deal with obstruction); the liver disease was judged “potentially resectable”, so high-response conversion therapy followed, with the MDT reviewing resectability repeatedly (ESMO mCRC 2023/2026)."
           }
         },
         {
-          "id": "unsupported",
+          "id": "one-stage-now",
           "text": {
-            "zh-CN": "因已有多发肝病灶就永久排除切除，或仅凭旧KRAS结果固定照搬靶向方案",
-            "en": "Permanently exclude resection because liver lesions are multiple, or copy targeted therapy solely from the old KRAS result"
+            "zh-CN": "立即一期同时切除原发灶和全部肝转移灶",
+            "en": "Resect the primary and all the liver metastases now, in one operation"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "可切除性需反复MDT判断；历史方案与有限分子结果不能直接代替今天的个体化选择。",
-            "en": "Resectability requires repeated MDT review; a historical regimen and incomplete molecular results cannot substitute for present-day individualisation."
+            "zh-CN": "不合适。肝内多发转移伴巨大融合病灶，MDT评估为“潜在可切除”——也就是目前还不能可靠地做到R0切除并保留足够的肝脏。现在就切，可能切不干净或剩余肝脏不足；应先转化治疗再复评。",
+            "en": "Not appropriate. Multiple liver metastases with a large confluent lesion were judged “potentially resectable” — that is, not yet reliably removable with clear margins and enough liver left. Operating now risks an incomplete resection or too little remaining liver; convert first, then re-review."
+          }
+        },
+        {
+          "id": "palliative-single",
+          "text": {
+            "zh-CN": "不经MDT，直接按不可切除处理，给予单药姑息化疗",
+            "en": "Treat it as unresectable without an MDT, with single-agent palliative chemotherapy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。她体能状态0分，肝转移有经转化治疗后切除的机会；不经MDT评估就选择低强度姑息治疗，会错失根治性切除的可能。原报告专家点评也把MDT视为成功的关键。",
+            "en": "Not appropriate. She is fully active (PS 0) and her liver disease may become resectable after conversion; choosing low-intensity palliation without an MDT review throws away the chance of a curative resection. The report's commentary also calls the MDT the key to success."
+          }
+        },
+        {
+          "id": "chemo-first-leave-primary",
+          "text": {
+            "zh-CN": "先全身化疗，暂不处理原发灶，等肝转移灶缩小后再一并手术",
+            "en": "Start systemic therapy now and leave the primary alone until the liver metastases shrink, then operate on both"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "对没有症状的原发灶，先全身治疗是常用做法；但这个肿瘤环周、内镜都无法通过，化疗期间发生完全性肠梗阻或穿孔的风险高，所以要先处理原发灶（切除、支架或造口）。",
+            "en": "For a primary that causes no symptoms, systemic therapy first is a common approach; but this tumour encircles the lumen so tightly the scope could not pass, so complete obstruction or perforation during chemotherapy is a real risk — deal with the primary first (resection, a stent or a stoma)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "biomarkers",
+      "prompt": {
+        "zh-CN": "原报告的基因检测只写了“K-ras和B-raf基因均为野生型”。按现行指南，转移性结直肠癌开始一线全身治疗前应完成哪些检测？（选出全部正确项）",
+        "en": "The report's gene test says only “K-ras and B-raf both wild type”. Under current guidance, which tests are needed before first-line systemic therapy for metastatic colorectal cancer? (Select all that apply.)"
+      },
+      "kind": "multiple",
+      "requires": {
+        "all": [
+          {
+            "decided": "dx-primary"
+          },
+          {
+            "read": "kras-braf",
+            "phase": "initial"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成诊断判断，并调阅已有的肿瘤基因检测结果。",
+        "en": "Make the diagnosis first, and read the existing tumour gene test result."
+      },
+      "options": [
+        {
+          "id": "ras-extended",
+          "text": {
+            "zh-CN": "RAS扩展检测：KRAS和NRAS的第2、3、4外显子",
+            "en": "Extended RAS testing: KRAS and NRAS exons 2, 3 and 4"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "需要。任何RAS突变都意味着抗EGFR单抗无效，所以用西妥昔单抗前必须确认KRAS和NRAS第2–4外显子均为野生型（ESMO mCRC 2023/2026；ASCO 2023）。本例原报告当时只报告了“K-ras野生型”，没有写检测范围。",
+            "en": "Needed. Any RAS mutation means anti-EGFR antibodies do not work, so before cetuximab KRAS and NRAS exons 2–4 must all be wild type (ESMO mCRC 2023/2026; ASCO 2023). At the time, this report gave only “K-ras wild type”, without saying what was tested."
+          }
+        },
+        {
+          "id": "braf",
+          "text": {
+            "zh-CN": "BRAF V600E突变检测",
+            "en": "BRAF V600E mutation"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "需要。BRAF V600E突变提示预后差，并决定是否需要针对BRAF的治疗方案；本例原报告写“B-raf野生型”。",
+            "en": "Needed. A BRAF V600E mutation carries a poor prognosis and decides whether BRAF-directed treatment is needed; this report says “B-raf wild type”."
+          }
+        },
+        {
+          "id": "mmr-msi",
+          "text": {
+            "zh-CN": "错配修复（MMR）蛋白免疫组化或微卫星不稳定（MSI）检测",
+            "en": "Mismatch repair (MMR) immunohistochemistry or microsatellite instability (MSI) testing"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "需要。dMMR/MSI-H的转移性结直肠癌一线首选免疫检查点抑制剂（ASCO 2023：帕博利珠单抗；ESMO 2026的一线选择首先取决于MMR/MSI状态），这一结果也提示要评估林奇综合征。原报告没有这项检测。",
+            "en": "Needed. dMMR/MSI-H metastatic colorectal cancer should have an immune checkpoint inhibitor first line (ASCO 2023: pembrolizumab; in ESMO 2026 the first-line choice turns first on MMR/MSI status), and the result also prompts assessment for Lynch syndrome. The report has no such test."
+          }
+        },
+        {
+          "id": "egfr-ihc",
+          "text": {
+            "zh-CN": "EGFR蛋白表达（免疫组化），据此决定能否用西妥昔单抗",
+            "en": "EGFR protein expression by immunohistochemistry, to decide whether cetuximab can be used"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不需要。EGFR免疫组化表达不能预测抗EGFR单抗的疗效；决定是否用西妥昔单抗的是RAS（及BRAF）状态和原发灶部位。",
+            "en": "Not needed. EGFR expression on immunohistochemistry does not predict benefit from anti-EGFR antibodies; RAS (and BRAF) status and the side of the primary decide whether cetuximab is used."
+          }
+        },
+        {
+          "id": "pdl1",
+          "text": {
+            "zh-CN": "PD-L1免疫组化，据此决定能否用免疫治疗",
+            "en": "PD-L1 immunohistochemistry, to decide whether immunotherapy can be used"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不需要。结直肠癌免疫治疗的疗效标志是dMMR/MSI-H，而不是PD-L1表达。",
+            "en": "Not needed. In colorectal cancer the marker for immunotherapy is dMMR/MSI-H, not PD-L1 expression."
+          }
+        }
+      ]
+    },
+    {
+      "id": "conversion-timing",
+      "prompt": {
+        "zh-CN": "4个周期FOLFOX联合西妥昔单抗后，CEA明显下降，MRI示肝转移灶明显缩小，MDT评为部分缓解（PR）。下一步最合适的是？",
+        "en": "After four cycles of FOLFOX plus cetuximab the CEA has fallen markedly, MRI shows the liver metastases much smaller, and the MDT rates it a partial response (PR). What is the best next step?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "tumour-markers",
+            "phase": "conversion"
+          },
+          {
+            "read": "liver-mri",
+            "phase": "conversion"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先在本阶段复查CEA和肝脏MRI。",
+        "en": "First repeat the CEA and the liver MRI in this phase."
+      },
+      "options": [
+        {
+          "id": "resect-now",
+          "text": {
+            "zh-CN": "经MDT确认可以切除后，尽快切除肝转移灶（术中超声定位病灶），术后继续全身治疗",
+            "en": "Once the MDT confirms the disease is resectable, remove the liver metastases promptly (locating them with intra-operative ultrasound), with systemic therapy continuing after surgery"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确，也是原报告的做法：4个周期后PR，随即行肝左右叶部分切除。转化成功后应抓住手术时机——原报告专家点评引用2013年NCCN指南：联合化疗一般2～3个月，过多周期会导致耐药并加重肝损伤。",
+            "en": "Correct — and what the report's team did: a partial response after 4 cycles, then partial resection of both lobes. Once conversion succeeds, operate while the window is open; the report's commentary, citing NCCN 2013, says combination chemotherapy usually lasts 2–3 months, and more cycles bring resistance and more liver injury."
+          }
+        },
+        {
+          "id": "continue-until-gone",
+          "text": {
+            "zh-CN": "继续原方案，直到肝转移灶在影像上完全消失再手术",
+            "en": "Continue the same regimen until the liver metastases disappear on imaging, then operate"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。周期越多，化疗相关肝损伤越重、手术并发症越多；影像上“消失”的病灶常常仍有残留肿瘤，却会让外科医生找不到要切的部位。",
+            "en": "Not appropriate. Each extra cycle adds chemotherapy-related liver injury and surgical complications, and lesions that “disappear” on imaging often still contain tumour — while leaving the surgeon unable to find what to remove."
+          }
+        },
+        {
+          "id": "stop-observe",
+          "text": {
+            "zh-CN": "已经部分缓解，停止治疗观察，等进展再处理",
+            "en": "She has responded — stop treatment and watch, acting only if it progresses"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。部分缓解不等于治愈；停药观察会让病灶再次长大，错过切除的时机。",
+            "en": "Not appropriate. A partial response is not a cure; stopping and watching lets the disease grow back and the window for resection closes."
+          }
+        },
+        {
+          "id": "switch-second-line",
+          "text": {
+            "zh-CN": "改用二线方案（FOLFIRI联合西妥昔单抗）“巩固”疗效后再评估",
+            "en": "Switch to a second-line regimen (FOLFIRI plus cetuximab) to “consolidate” the response, then reassess"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。更换方案用于疾病进展或不能耐受；方案有效时换药没有依据，只会推迟手术、增加毒性。",
+            "en": "Not appropriate. A regimen is changed for progression or intolerance; switching one that is working has no rationale and only delays surgery and adds toxicity."
+          }
+        }
+      ]
+    },
+    {
+      "id": "recurrence",
+      "prompt": {
+        "zh-CN": "初诊后约20个月（肝切除后口服维持期间），CEA明显升高，MRI和CT示肝尾状叶新发转移灶1枚。下一步最合适的是？",
+        "en": "About 20 months after the first visit, on maintenance therapy after the hepatectomy, the CEA has risen markedly and MRI and CT show one new metastasis in the caudate lobe. What is the best next step?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "tumour-markers",
+            "phase": "surveillance"
+          },
+          {
+            "any": [
+              {
+                "read": "liver-mri",
+                "phase": "surveillance"
+              },
+              {
+                "read": "ct-abdomen",
+                "phase": "surveillance"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先在本阶段复查CEA和腹部影像。",
+        "en": "First repeat the CEA and the abdominal imaging in this phase."
+      },
+      "options": [
+        {
+          "id": "mdt-re-resect",
+          "text": {
+            "zh-CN": "提交MDT：确认没有其他部位转移后，再次手术切除这个孤立病灶，术后继续全身治疗",
+            "en": "Take it to the MDT: once disease elsewhere is excluded, resect this isolated lesion, with systemic therapy afterwards"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确，也是原报告的做法（肝尾状叶切除加肝门淋巴结切除）。孤立、可切除的肝内复发首选再次切除（原报告专家点评），术前应完成全面的影像分期。",
+            "en": "Correct — and what the report's team did (caudate lobectomy with hilar lymph node dissection). An isolated, resectable liver recurrence is best treated by repeat resection (the report's commentary), after full staging with imaging."
+          }
+        },
+        {
+          "id": "chemo-only",
+          "text": {
+            "zh-CN": "不再考虑手术，改为二线姑息化疗",
+            "en": "No more surgery — switch to second-line palliative chemotherapy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。孤立、可切除的肝内复发，再次切除才有长期控制的机会；单纯姑息化疗放弃了这个机会。",
+            "en": "Not appropriate. For an isolated, resectable liver recurrence, repeat resection offers the chance of long-term control; palliative chemotherapy alone gives that up."
+          }
+        },
+        {
+          "id": "continue-maintenance",
+          "text": {
+            "zh-CN": "继续口服卡培他滨维持，3个月后复查再决定",
+            "en": "Carry on with capecitabine maintenance and recheck in 3 months"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。维持治疗期间出现新病灶就是进展；继续原维持方案并等待，只会让病灶长大，可能失去切除的机会。",
+            "en": "Not appropriate. A new lesion on maintenance therapy is progression; carrying on and waiting lets it grow and may lose the chance to remove it."
+          }
+        },
+        {
+          "id": "repeat-cea-first",
+          "text": {
+            "zh-CN": "CEA可能是假阳性，先复查CEA，正常了就不用处理",
+            "en": "The CEA may be a false positive — repeat it, and if it comes back normal no action is needed"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。这次不只是CEA升高，影像已经见到新的转移灶；即使CEA回落，也不能否定影像上的复发。CEA要和影像、病理一起解读。",
+            "en": "Not appropriate. This is not just a CEA rise — imaging shows a new metastasis, and a falling CEA would not cancel that out. CEA must be read together with imaging and pathology."
           }
         }
       ]
@@ -1061,13 +3605,13 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "rb-hx-context",
       "domain": "history",
+      "weight": 1,
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "询问就诊经过、既往史（包括肝炎）和家族史",
+        "en": "Asks how the lesions were found, the past history (including hepatitis) and the family history"
       },
-      "weight": 2,
       "met": {
         "all": [
           {
@@ -1078,132 +3622,462 @@
           },
           {
             "asked": "family"
-          },
-          {
-            "asked": "bowel"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
-      "domain": "examination",
-      "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
-      },
+      "id": "rb-hx-bowel",
+      "domain": "history",
       "weight": 1,
+      "text": {
+        "zh-CN": "询问便血、排便习惯改变、腹痛腹胀等肠道症状，并接受原报告未记录这一事实",
+        "en": "Asks about bowel symptoms (bleeding, change in habit, pain, distension) and accepts that the report does not record them"
+      },
+      "met": {
+        "asked": "bowel"
+      }
+    },
+    {
+      "id": "rb-ex",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "评估体能状态，并检查腹部和浅表淋巴结",
+        "en": "Assesses performance status and examines the abdomen and the superficial lymph nodes"
+      },
       "met": {
         "all": [
           {
-            "examined": "status"
+            "examined": "performance-status"
           },
           {
             "examined": "abdomen"
+          },
+          {
+            "examined": "lymph-nodes"
           }
         ]
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "rb-inv-primary",
+      "domain": "investigations",
+      "weight": 2,
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "调阅结肠镜活检、肿瘤标志物（含AFP）、HBsAg和腹部影像，以明确原发灶和分期",
+        "en": "Reads the colonoscopy biopsy, the tumour markers (including AFP), HBsAg and abdominal imaging to establish the primary and the stage"
       },
-      "weight": 3,
-      "met": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "rubric-4",
-      "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "weight": 3,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "read": "colonoscopy",
+            "phase": "initial"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "tumour-markers",
+            "phase": "initial"
+          },
+          {
+            "read": "hbsag",
+            "phase": "initial"
+          },
+          {
+            "any": [
+              {
+                "read": "ct-abdomen",
+                "phase": "initial"
+              },
+              {
+                "read": "liver-mri",
+                "phase": "initial"
+              },
+              {
+                "read": "pet-ct",
+                "phase": "initial"
+              }
+            ]
           }
         ]
+      }
+    },
+    {
+      "id": "rb-dx",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即判断为乙状结肠腺癌伴同时性肝转移",
+        "en": "Identifies sigmoid adenocarcinoma with synchronous liver metastases at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "dx-primary"
+      }
+    },
+    {
+      "id": "rb-mgmt-sequence",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即选择经MDT先处理梗阻性原发灶、再转化治疗的路径，并提交MDT",
+        "en": "Chooses at the first attempt the MDT pathway — the obstructing primary first, then conversion therapy — and refers to the MDT"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "mdt-sequence"
+          },
+          {
+            "intervened": "mdt-referral"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-biomarkers",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即指出一线治疗前需完成RAS扩展检测、BRAF V600E和MMR/MSI，并申请补充分子检测",
+        "en": "Names at the first attempt extended RAS, BRAF V600E and MMR/MSI as needed before first-line therapy, and requests the further molecular testing"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "biomarkers"
+          },
+          {
+            "ordered": "extended-molecular"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-timing",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即在转化治疗获得部分缓解后及时安排肝转移灶切除",
+        "en": "Schedules liver resection promptly once conversion therapy has achieved a partial response, at the first attempt"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "conversion-timing"
+          },
+          {
+            "intervened": "refer-hepatectomy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-recurrence",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "随访中CEA升高时复查影像，首次作答即选择经MDT评估后再次切除孤立复发灶，并安排转诊",
+        "en": "When the CEA rises at follow-up, repeats the imaging, chooses at the first attempt MDT review and repeat resection of the isolated recurrence, and refers"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "recurrence"
+          },
+          {
+            "intervened": "refer-hepatectomy",
+            "minCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-inv-records",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "在各阶段调阅手术、病理和MDT记录",
+        "en": "Reads the operation, pathology and MDT records at each stage"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "op-pathology",
+            "phase": "conversion"
+          },
+          {
+            "read": "mdt-record",
+            "phase": "conversion"
+          },
+          {
+            "read": "hepatectomy-record",
+            "phase": "surveillance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "没有作出有害的处置：未在转化治疗前一期切除全部病灶，未给单药姑息治疗，未在部分缓解后无限期继续化疗，未在孤立复发时放弃手术",
+        "en": "Avoids the harmful choices: no one-stage resection of everything before conversion, no single-agent palliation, no open-ended chemotherapy after the partial response, and no abandoning surgery for the isolated recurrence"
+      },
+      "met": {
+        "all": [
+          {
+            "attempted": "mdt-sequence"
+          },
+          {
+            "not": {
+              "intervened": "simultaneous-resection"
+            }
+          },
+          {
+            "not": {
+              "intervened": "palliative-capecitabine"
+            }
+          },
+          {
+            "not": {
+              "intervened": "continue-until-cr"
+            }
+          },
+          {
+            "not": {
+              "intervened": "abandon-surgery-chemo"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-comm",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "用通俗语言向她解释诊断和分阶段的治疗计划，坦诚说明不确定性并回应她的担心",
+        "en": "Explains the diagnosis and the staged plan in plain language, is honest about uncertainty and responds to her fears"
+      },
+      "judgeGuidance": {
+        "zh-CN": "优秀表现：先了解她已经知道什么、最担心什么（是不是癌、能不能治）；用通俗语言说明“肠子上的肿瘤已经转移到肝脏”，解释为什么先做肠子的手术、再用化疗加靶向药缩小肝上的病灶，之后由多学科团队再评估能否切肝；不承诺治愈，也不说“没希望”；说明还要补做哪些检测、为什么；用复述确认她听懂了，并留出提问时间。",
+        "en": "Good performance: first finds out what she already knows and what worries her most (is it cancer, can it be treated); explains in plain words that the bowel tumour has spread to the liver, why the bowel operation comes first and why chemotherapy plus a targeted drug then aims to shrink the liver lesions before the team reassesses liver surgery; promises no cure and does not call it hopeless; explains which further tests are needed and why; checks understanding with teach-back and invites questions."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "门诊护士",
+        "en": "Clinic nurse"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "门诊护士：负责候诊、检查预约和转运安排。会告诉学员：报告和以往记录在病历终端调阅；影像和内镜检查需要患者到相应科室。不解读检查结果，不讨论诊断。",
+        "en": "Clinic nurse: handles the waiting list, test bookings and getting patients to tests. Tells the learner that reports and earlier records are read at a records terminal, and that imaging and endoscopy need the patient taken to the department. Does not interpret results or discuss the diagnosis."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "radiologist",
+      "name": {
+        "zh-CN": "放射科医生",
+        "en": "Radiologist"
+      },
+      "knowledge": {
+        "zh-CN": "只依据学员已调阅的报告文字解读，不补充原文以外的所见。原文把腹部CT、MRI和PET/CT合并成一句报告，没有分别的所见，也没有病灶数目、大小、肝段分布或SUV值；原报告的MRI图像因含可识别信息未纳入，不能描述图像本身。可切除性是MDT的综合判断，不由影像科单独决定。",
+        "en": "Interprets only the report text the learner has already read and adds no findings beyond the source. The source reports the abdominal CT, MRI and PET/CT in one sentence, with no separate findings and no lesion count, size, segments or SUV; the report's MRI images are withheld because they carry identifying details, so the images themselves cannot be described. Resectability is the MDT's overall judgement, not radiology's alone."
       },
       "interprets": [
+        "ct-abdomen",
         "liver-mri",
-        "body-imaging",
-        "endoscopy",
-        "markers",
-        "molecular",
-        "followup"
+        "pet-ct",
+        "ct-chest"
       ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "病理科医生",
+        "en": "Pathologist"
+      },
+      "knowledge": {
+        "zh-CN": "只依据学员已调阅的活检、手术病理和分子检测记录解读，不补写未记录的抗体、基因或位点。可以讲解：TNM第8版中癌结节（无淋巴结转移时）归为N1c；检出淋巴结少于12枚时淋巴结分期可能不足；pT4需要组织学证据（穿透脏层腹膜或侵犯邻近结构）。",
+        "en": "Interprets only the biopsy, surgical pathology and molecular records the learner has already read, and adds no unrecorded antibodies, genes or codons. Can explain that in TNM 8th edition tumour deposits without nodal metastasis are N1c, that fewer than 12 examined nodes may understage the nodes, and that pT4 needs histological evidence (penetration of the visceral peritoneum or invasion of adjacent structures)."
+      },
+      "interprets": [
+        "colonoscopy",
+        "op-pathology",
+        "hepatectomy-record",
+        "kras-braf",
+        "extended-molecular"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "结直肠外科医生（MDT）",
+        "en": "Colorectal surgeon (MDT)"
+      },
+      "knowledge": {
+        "zh-CN": "MDT中的结直肠外科医生，按学员已调阅的结果解释手术记录、病理和MDT记录。不替学员回答会诊板上的决策题，不透露原报告团队之后的决定，也不预告病程。",
+        "en": "The colorectal surgeon on the MDT; explains the operation notes, pathology and MDT records the learner has already read. Does not answer the case-board decisions for the learner, reveal what the report's team decided next, or foretell the course."
+      },
+      "interprets": [
+        "mdt-record",
+        "op-pathology",
+        "hepatectomy-record",
+        "colonoscopy"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师（带教）",
+        "en": "Attending (preceptor)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，不直接给出诊断或决策题答案。引导顺序：来诊经过与危险因素 → 查体 → 寻找原发灶（结肠镜、肿瘤标志物、影像）→ 分子检测 → MDT与治疗顺序 → 转化疗效与手术时机 → 随访中的CEA。提醒学员：这是历史病例，原报告的处置是事实记录，不自动等于今天的推荐；未记录的信息保持未知。",
+        "en": "Socratic preceptor; never gives the diagnosis or a decision's answer. Guides in this order: how she presented and her risk factors → examination → finding the primary (colonoscopy, tumour markers, imaging) → molecular testing → MDT and the order of treatment → conversion response and timing of surgery → the CEA at follow-up. Reminds the learner that this is a historical case: the report's management is a fact of the record, not automatically today's recommendation, and anything unrecorded stays unknown."
+      },
+      "interprets": [],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：结肠癌同时性肝转移的多学科治疗",
+      "en": "Debrief: multidisciplinary management of colon cancer with synchronous liver metastases"
     },
     "conclusion": {
-      "zh-CN": "可切除性与治疗目标随复评而变化；淋巴结0/6不等于N0，原报告癌结节使其列为N1c。",
-      "en": "Resectability and goals changed with reassessment; zero of six positive nodes did not imply N0 because tumour deposits were reported as N1c."
+      "zh-CN": "乙状结肠腺癌伴同时性多发肝转移（入院临床分期cT3NxM1，术后病理pT4N1cM1：淋巴结0/6，但有4枚癌结节）。经MDT先切除有梗阻的原发灶，4个周期FOLFOX联合西妥昔单抗转化治疗后部分缓解并行肝切除；约20个月后CEA升高、尾状叶孤立复发，再次切除（肝门淋巴结1/1阳性）后接受FOLFIRI联合西妥昔单抗及维持治疗，至报告截稿时定期复查未见复发转移。",
+      "en": "Sigmoid adenocarcinoma with synchronous multiple liver metastases (admission clinical stage cT3NxM1; pathological stage pT4N1cM1 — nodes 0/6 but 4 tumour deposits). The MDT had the obstructing primary resected first; after four cycles of FOLFOX plus cetuximab the liver disease partially responded and was resected. About 20 months on, a CEA rise revealed an isolated caudate-lobe recurrence, which was resected (hilar node 1/1 positive), followed by FOLFIRI plus cetuximab and maintenance; regular reviews showed no recurrence up to the time of the report."
     },
     "keyReasoning": [
       {
-        "zh-CN": "原发灶梗阻影响治疗先后顺序。",
-        "en": "Obstruction at the primary influenced treatment sequencing."
+        "zh-CN": "结肠镜活检给出了腺癌的组织学证据；CEA极高而AFP不高、HBsAg阴性，影像为肝内多发低密度灶，支持结肠原发、同时性肝转移。",
+        "en": "The colonoscopy biopsy gave histological proof of adenocarcinoma; a very high CEA with a normal AFP, negative HBsAg and multiple hypodense liver lesions supported a colonic primary with synchronous liver metastases."
       },
       {
-        "zh-CN": "CEA变化需与影像和组织证据一起解读，不能单独确定复发或治愈。",
-        "en": "CEA trends require imaging and tissue context and do not alone establish recurrence or cure."
+        "zh-CN": "肿瘤环周、内镜不能通过，MDT据此认为原发灶有梗阻，决定先切除原发灶；肝转移被评为“潜在可切除”，因此随后选择高缓解率的转化治疗。",
+        "en": "The tumour encircled the lumen and the scope could not pass, so the MDT judged the primary obstructing and resected it first; the liver disease was judged potentially resectable, so a high-response conversion regimen followed."
+      },
+      {
+        "zh-CN": "4个周期后部分缓解即行肝切除：转化治疗的目标是变得可以切除，而不是影像上完全消失。",
+        "en": "Liver resection followed the partial response at four cycles: conversion therapy aims at resectability, not at disappearance on imaging."
+      },
+      {
+        "zh-CN": "淋巴结0/6不等于N0：4枚癌结节使N分期为N1c；而且只检出6枚淋巴结。",
+        "en": "Nodes 0/6 did not mean N0: four tumour deposits made it N1c — and only six nodes were examined."
+      },
+      {
+        "zh-CN": "CEA要与影像和组织证据一起解读：再次升高时，影像发现孤立的尾状叶复发，经MDT再次切除。",
+        "en": "CEA was read together with imaging and tissue: when it rose again, imaging found an isolated caudate recurrence, which the MDT had resected."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是一篇单中心、单例的历史报告（治疗期约2.5年），不能证明某种方案的独立疗效或普遍适用性。病例记录的是原报告团队的实际处置；与现行指南的比较是教学设计。原报告的肝脏MRI图像因含可识别信息未纳入，MRI所见只能依据原文文字。原报告的随访约两年多，没有报告总生存。",
+      "en": "This is a single-centre, single-patient historical report (about two and a half years of treatment); it cannot establish the independent efficacy or general applicability of any regimen. The case records what the report's team actually did; the comparison with current guidance is teaching design. The report's liver MRI images are withheld because they carry identifying details, so the MRI findings rest on the text alone. The report's follow-up runs to a little over two years and gives no overall survival."
     },
     "unknowns": [
       {
-        "zh-CN": "完整RAS/MMR/MSI、当时检测范围、具体远期随访截止时间。",
-        "en": "Extended RAS/MMR/MSI, original assay coverage and precise final follow-up duration."
+        "zh-CN": "完整的RAS状态（NRAS、KRAS第3/4外显子）和MMR/MSI状态；原K-ras/B-raf检测的范围和方法（包括是否专门检测了BRAF V600E）。",
+        "en": "Full RAS status (NRAS, KRAS exons 3/4) and MMR/MSI status; the scope and method of the original K-ras/B-raf testing (including whether BRAF V600E itself was tested)."
+      },
+      {
+        "zh-CN": "便血、排便习惯改变、腹痛、体重变化等症状，以及用药、过敏、吸烟、饮酒、职业、既往手术和肠镜筛查史。",
+        "en": "Bowel bleeding, change in bowel habit, abdominal pain or weight change, and her medicines, allergies, smoking, alcohol, occupation, previous operations and screening colonoscopy."
+      },
+      {
+        "zh-CN": "家族中的肿瘤史（只记录“否认家族性遗传病史”）。",
+        "en": "A family history of cancer (only “familial hereditary disease denied” is recorded)."
+      },
+      {
+        "zh-CN": "“原发灶有梗阻”的临床依据：没有记录梗阻的症状、体征或影像证据，只有“内镜不能通过”。",
+        "en": "The clinical basis for “the primary is obstructing”: no obstructive symptoms, signs or imaging are recorded — only that the scope could not pass."
+      },
+      {
+        "zh-CN": "pT4的组织学依据：病理描述只写“侵及全层及周围脂肪组织”，T4只见于术中所见。",
+        "en": "The histological basis for pT4: the pathology text says only “invading the full thickness and the surrounding fat”; T4 appears only in the operative findings."
+      },
+      {
+        "zh-CN": "肝切除的切缘：讨论称“最终获得R0切除”，但没有切缘记录。",
+        "en": "The hepatectomy margins: the discussion claims an R0 resection, but no margin is recorded."
+      },
+      {
+        "zh-CN": "各时间点的CEA数值（初诊后只有原文图3的曲线）；卡培他滨维持的剂量和起止时间；最后一次随访的确切时间和总生存。",
+        "en": "CEA values at each time point (after presentation only the curve in source fig. 3); the capecitabine maintenance dose and dates; the exact time of the last follow-up and overall survival."
       }
     ],
     "teachingPoints": [
       {
-        "zh-CN": "原下载MRI合图含治疗前后影像及身份信息，因此未嵌入教学场景；MRI结论依据原文描述。",
-        "en": "The downloaded MRI composite includes pre/post-treatment images and identifying details, so it is not embedded in this teaching scene; MRI findings use the source narrative."
+        "zh-CN": "生物标志物先于方案（ESMO mCRC 2026，取代2023版；ASCO 2023）：转移性结直肠癌确诊时检测RAS（KRAS和NRAS第2、3、4外显子）、BRAF V600E和MMR/MSI。任何RAS突变都不用抗EGFR单抗；dMMR/MSI-H一线首选免疫治疗；BRAF V600E会改变方案。本例当时只报告了“K-ras、B-raf野生型”，没有NRAS和MMR/MSI——按今天的标准，开始西妥昔单抗前还缺这些结果。",
+        "en": "Biomarkers before the regimen (ESMO mCRC 2026, replacing the 2023 version; ASCO 2023): test RAS (KRAS and NRAS exons 2, 3 and 4), BRAF V600E and MMR/MSI at diagnosis of metastatic colorectal cancer. Any RAS mutation rules out anti-EGFR antibodies; dMMR/MSI-H disease should have immunotherapy first line; BRAF V600E changes the regimen. At the time this report gave only “K-ras and B-raf wild type”, with no NRAS or MMR/MSI — by today's standard those results were still missing when cetuximab started."
+      },
+      {
+        "zh-CN": "方案选择（ASCO 2023；ESMO mCRC 2026）：左半结肠（含乙状结肠）、RAS/BRAF野生型、pMMR的肿瘤，一线首选双药化疗联合抗EGFR单抗，其高缓解率也适合转化治疗。所以原报告的FOLFOX加西妥昔单抗在今天仍属合理的方案——前提是先补齐RAS扩展检测和MMR/MSI。",
+        "en": "Choosing the regimen (ASCO 2023; ESMO mCRC 2026): for a left-sided (including sigmoid), RAS/BRAF wild-type, pMMR tumour, doublet chemotherapy plus an anti-EGFR antibody is the preferred first line, and its high response rate suits conversion. The report's FOLFOX plus cetuximab is therefore still a reasonable regimen today — provided extended RAS and MMR/MSI testing come first."
+      },
+      {
+        "zh-CN": "原发灶的处理取决于症状（ESMO mCRC 2023/2026）：无症状的原发灶通常先全身治疗；有梗阻（或出血、穿孔风险）时先处理原发灶——切除、支架或造口。本例的“梗阻”只见于MDT记录和讨论，病例中只有“内镜不能通过”这一证据，没有梗阻症状或影像记录。",
+        "en": "How the primary is handled depends on symptoms (ESMO mCRC 2023/2026): an asymptomatic primary usually gets systemic therapy first; an obstructing one (or one at risk of bleeding or perforation) is dealt with first — resection, a stent or a stoma. Here “obstruction” appears only in the MDT record and the discussion; the only evidence in the case is that the scope could not pass, with no obstructive symptoms or imaging recorded."
+      },
+      {
+        "zh-CN": "可切除性由MDT判断，并在治疗中反复复评（ESMO mCRC 2023/2026）。转化成功后应尽快手术：原报告专家点评引用2013年NCCN指南，联合化疗一般2～3个月，过多周期会导致耐药并加重肝损伤；影像上“消失”的病灶也会让手术更难。本例4个周期后部分缓解即行肝切除，符合这一原则。",
+        "en": "Resectability is an MDT judgement, revisited as treatment goes on (ESMO mCRC 2023/2026). Once conversion succeeds, operate soon: the report's commentary, citing NCCN 2013, says combination chemotherapy usually lasts 2–3 months and more cycles bring resistance and more liver injury; lesions that “disappear” on imaging also make surgery harder. Here the liver was resected after a partial response at four cycles, in line with that principle."
+      },
+      {
+        "zh-CN": "分期以病理为准（AJCC/UICC TNM第8版）：淋巴结0/6但有4枚癌结节，属N1c而非N0。入院临床分期cT3NxM1，术后为pT4N1cM1；pT4的依据只来自术中“累及左侧腹壁”，病理描述并未写明。本例只检出6枚淋巴结，少于通常要求的12枚，淋巴结分期可能不足。",
+        "en": "Staging rests on the pathology (AJCC/UICC TNM 8th edition): nodes 0/6 with 4 tumour deposits is N1c, not N0. The admission clinical stage was cT3NxM1 and the pathological stage pT4N1cM1; pT4 rests only on the operative finding of left abdominal-wall involvement, which the pathology text does not state. Only 6 nodes were examined — fewer than the 12 usually expected — so the nodal staging may be incomplete."
+      },
+      {
+        "zh-CN": "CEA要结合影像和病理解读（ESMO mCRC 2023/2026的随访原则）：CEA升高提示需要影像复查和MDT评估，但单凭CEA既不能诊断复发，CEA下降也不等于治愈。孤立、可切除的肝内复发首选再次切除（原报告专家点评）。本例再次切除时肝门淋巴结1/1阳性；报告截稿时未见复发，但随访只有两年多，不能据此判断远期结局。",
+        "en": "Read CEA with imaging and pathology (the follow-up principles of ESMO mCRC 2023/2026): a rising CEA calls for imaging and MDT review, but CEA alone neither diagnoses recurrence nor, when it falls, proves cure. An isolated, resectable liver recurrence is best re-resected (the report's commentary). Here the second operation found a positive hilar node (1/1); there was no recurrence at the time of the report, but two-odd years of follow-up cannot show the long-term outcome."
       }
     ],
     "references": [
-      "林奇; 叶青海; 余一祎; 侯英勇; 王健; 周波; 陈漪; 饶圣祥; 丁建勇; 任黎; 韦烨; 许剑民. 多学科协作治疗T4N1cM1期结肠癌一例. 中华结直肠疾病电子杂志, 2014. DOI: 10.3877/cma.j.issn.2095-3224.2014.01.12",
-      "https://rs.yiigle.com/cmaid/1074569",
-      "ASCO. Treatment of Metastatic Colorectal Cancer guideline. https://ascopubs.org/doi/10.1200/JCO.22.01690"
+      "林奇, 叶青海, 余一祎, 侯英勇, 王健, 周波, 等. 多学科协作治疗T4N1cM1期结肠癌一例. 中华结直肠疾病电子杂志. 2014;3(1):45-46. doi:10.3877/cma.j.issn.2095-3224.2014.01.12. Available from: https://rs.yiigle.com/cmaid/1074569",
+      "Cremolini C, Chalabi M, Elez E, et al.; ESMO Guidelines Committee. Metastatic colorectal cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up. Ann Oncol. 2026;37(6):759-776.",
+      "Cervantes A, Adam R, Roselló S, et al.; ESMO Guidelines Committee. Metastatic colorectal cancer: ESMO Clinical Practice Guideline for diagnosis, treatment and follow-up. Ann Oncol. 2023;34(1):10-32. doi:10.1016/j.annonc.2022.10.003",
+      "Morris VK, Kennedy EB, Baxter NN, et al. Treatment of metastatic colorectal cancer: ASCO guideline. J Clin Oncol. 2023;41(3):678-700. doi:10.1200/JCO.22.01690"
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure completion of this teaching pathway — a teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "完整RAS/MMR/MSI、当时检测范围、具体远期随访截止时间。",
-      "en": "Extended RAS/MMR/MSI, original assay coverage and precise final follow-up duration."
+      "zh-CN": "完整的RAS状态（NRAS、KRAS第3/4外显子）和MMR/MSI状态；原K-ras/B-raf检测的范围和方法（包括是否专门检测了BRAF V600E）。",
+      "en": "Full RAS status (NRAS, KRAS exons 3/4) and MMR/MSI status; the scope and method of the original K-ras/B-raf testing (including whether BRAF V600E itself was tested)."
+    },
+    {
+      "zh-CN": "便血、排便习惯改变、腹痛、体重变化等症状，以及用药、过敏、吸烟、饮酒、职业、既往手术和肠镜筛查史。",
+      "en": "Bowel bleeding, change in bowel habit, abdominal pain or weight change, and her medicines, allergies, smoking, alcohol, occupation, previous operations and screening colonoscopy."
+    },
+    {
+      "zh-CN": "家族中的肿瘤史（只记录“否认家族性遗传病史”）。",
+      "en": "A family history of cancer (only “familial hereditary disease denied” is recorded)."
+    },
+    {
+      "zh-CN": "“原发灶有梗阻”的临床依据：没有记录梗阻的症状、体征或影像证据，只有“内镜不能通过”。",
+      "en": "The clinical basis for “the primary is obstructing”: no obstructive symptoms, signs or imaging are recorded — only that the scope could not pass."
+    },
+    {
+      "zh-CN": "pT4的组织学依据：病理描述只写“侵及全层及周围脂肪组织”，T4只见于术中所见。",
+      "en": "The histological basis for pT4: the pathology text says only “invading the full thickness and the surrounding fat”; T4 appears only in the operative findings."
+    },
+    {
+      "zh-CN": "肝切除的切缘：讨论称“最终获得R0切除”，但没有切缘记录。",
+      "en": "The hepatectomy margins: the discussion claims an R0 resection, but no margin is recorded."
+    },
+    {
+      "zh-CN": "各时间点的CEA数值（初诊后只有原文图3的曲线）；卡培他滨维持的剂量和起止时间；最后一次随访的确切时间和总生存。",
+      "en": "CEA values at each time point (after presentation only the curve in source fig. 3); the capecitabine maintenance dose and dates; the exact time of the last follow-up and overall survival."
     }
   ],
   "assets": [
@@ -1212,12 +4086,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-1074569/fig02.png",
       "title": {
-        "zh-CN": "原报告图3：全治疗过程CEA曲线",
-        "en": "Source figure 3: CEA across the full treatment course"
+        "zh-CN": "原报告图3：治疗全程的CEA变化曲线（横轴保留原图的日期标注）",
+        "en": "Source figure 3: CEA across the whole course of treatment (the x-axis keeps the original date labels)"
       },
       "credit": {
-        "zh-CN": "原报告图，林奇; 叶青海; 余一祎; 侯英勇; 王健; 周波; 陈漪; 饶圣祥; 丁建勇; 任黎; 韦烨; 许剑民，2014。版权归原权利人。",
-        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图（林奇等，2014）。版权归原权利人。",
+        "en": "Original report figure (林奇 et al., 2014). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1234,23 +4108,7 @@
     },
     {
       "type": "ask",
-      "itemId": "pmh"
-    },
-    {
-      "type": "ask",
-      "itemId": "family"
-    },
-    {
-      "type": "ask",
       "itemId": "bowel"
-    },
-    {
-      "type": "ask",
-      "itemId": "medications"
-    },
-    {
-      "type": "ask",
-      "itemId": "operations"
     },
     {
       "type": "ask",
@@ -1258,11 +4116,27 @@
     },
     {
       "type": "ask",
-      "itemId": "screening"
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
     },
     {
       "type": "ask",
       "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "marital"
     },
     {
       "type": "ask",
@@ -1278,27 +4152,81 @@
     },
     {
       "type": "ask",
-      "itemId": "self-care"
+      "itemId": "screening"
     },
     {
       "type": "ask",
-      "itemId": "expectations"
+      "itemId": "function"
     },
     {
       "type": "ask",
-      "itemId": "supplements"
+      "itemId": "ice"
     },
     {
       "type": "examine",
-      "findingId": "status"
+      "findingId": "performance-status"
+    },
+    {
+      "type": "examine",
+      "findingId": "lymph-nodes"
     },
     {
       "type": "examine",
       "findingId": "abdomen"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
+      "type": "order",
+      "investigationId": "health-check"
+    },
+    {
+      "type": "read",
+      "investigationId": "health-check",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "fbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "fbc",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "lft-rft"
+    },
+    {
+      "type": "read",
+      "investigationId": "lft-rft",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "hbsag"
+    },
+    {
+      "type": "read",
+      "investigationId": "hbsag",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "tumour-markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "tumour-markers",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct-abdomen"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct-abdomen",
+      "phase": "initial"
     },
     {
       "type": "order",
@@ -1307,57 +4235,255 @@
     {
       "type": "read",
       "investigationId": "liver-mri",
-      "phase": "workup"
+      "phase": "initial"
     },
     {
       "type": "order",
-      "investigationId": "body-imaging"
+      "investigationId": "pet-ct"
     },
     {
       "type": "read",
-      "investigationId": "body-imaging",
-      "phase": "workup"
+      "investigationId": "pet-ct",
+      "phase": "initial"
     },
     {
       "type": "order",
-      "investigationId": "endoscopy"
+      "investigationId": "colonoscopy"
     },
     {
       "type": "read",
-      "investigationId": "endoscopy",
-      "phase": "workup"
+      "investigationId": "colonoscopy",
+      "phase": "initial"
     },
     {
       "type": "order",
-      "investigationId": "markers"
+      "investigationId": "kras-braf"
     },
     {
       "type": "read",
-      "investigationId": "markers",
-      "phase": "workup"
-    },
-    {
-      "type": "order",
-      "investigationId": "molecular"
-    },
-    {
-      "type": "read",
-      "investigationId": "molecular",
-      "phase": "workup"
+      "investigationId": "kras-braf",
+      "phase": "initial"
     },
     {
       "type": "answer",
-      "decisionId": "diagnosis",
+      "decisionId": "dx-primary",
       "optionIds": [
-        "supported"
+        "crc-liver-mets"
       ]
     },
     {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "mdt-sequence",
       "optionIds": [
-        "supported"
+        "mdt-primary-first"
       ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "biomarkers",
+      "optionIds": [
+        "ras-extended",
+        "braf",
+        "mmr-msi"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "extended-molecular"
+    },
+    {
+      "type": "read",
+      "investigationId": "extended-molecular",
+      "phase": "initial"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "mdt-referral"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "refer-primary-resection"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "conversion-chemo"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-conversion"
+    },
+    {
+      "type": "order",
+      "investigationId": "op-pathology"
+    },
+    {
+      "type": "read",
+      "investigationId": "op-pathology",
+      "phase": "conversion"
+    },
+    {
+      "type": "order",
+      "investigationId": "mdt-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "mdt-record",
+      "phase": "conversion"
+    },
+    {
+      "type": "order",
+      "investigationId": "treatment-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "treatment-record",
+      "phase": "conversion"
+    },
+    {
+      "type": "order",
+      "investigationId": "tumour-markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "tumour-markers",
+      "phase": "conversion"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver-mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver-mri",
+      "phase": "conversion"
+    },
+    {
+      "type": "answer",
+      "decisionId": "conversion-timing",
+      "optionIds": [
+        "resect-now"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "refer-hepatectomy"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-surveillance"
+    },
+    {
+      "type": "order",
+      "investigationId": "hepatectomy-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "hepatectomy-record",
+      "phase": "surveillance"
+    },
+    {
+      "type": "order",
+      "investigationId": "mdt-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "mdt-record",
+      "phase": "surveillance"
+    },
+    {
+      "type": "order",
+      "investigationId": "treatment-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "treatment-record",
+      "phase": "surveillance"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "post-hepatectomy-chemo"
+    },
+    {
+      "type": "order",
+      "investigationId": "tumour-markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "tumour-markers",
+      "phase": "surveillance"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver-mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver-mri",
+      "phase": "surveillance"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct-abdomen"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct-abdomen",
+      "phase": "surveillance"
+    },
+    {
+      "type": "answer",
+      "decisionId": "recurrence",
+      "optionIds": [
+        "mdt-re-resect"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "mdt-referral"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "refer-hepatectomy"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "hepatectomy-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "hepatectomy-record",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "mdt-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "mdt-record",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "treatment-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "treatment-record",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "tumour-markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "tumour-markers",
+      "phase": "followup"
     },
     {
       "type": "order",
@@ -1367,6 +4493,10 @@
       "type": "read",
       "investigationId": "followup",
       "phase": "followup"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "post-recurrence-chemo"
     },
     {
       "type": "finish"
@@ -1379,115 +4509,281 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "这次就诊的原因是什么？",
+        "text": "您今天来是想看什么问题？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "What prompted this visit?",
+        "text": "肝上的东西是怎么查出来的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "大便里有没有见过血？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "最近拉肚子或者便秘吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "肚子胀不胀，还排气吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "最近人有没有瘦？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "以前有没有乙肝或者别的肝病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "有高血压、心脏病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "之前开过刀吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "现在有在吃什么药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里有人得过肠癌或者别的癌吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "您父母那边有什么遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "结婚了吗？有小孩吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "marital"
+        ]
+      },
+      {
+        "text": "平时抽不抽烟？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "喝不喝酒？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "做什么工作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "occupation"
+        ]
+      },
+      {
+        "text": "以前查过肠镜吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "screening"
+        ]
+      },
+      {
+        "text": "平时干活、走路有没有受影响？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "您最担心的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "ice"
+        ]
+      },
+      {
+        "text": "化疗做下来感觉怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-conversion"
+        ]
+      },
+      {
+        "text": "这段时间吃药维持，身体怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-surveillance"
+        ]
+      },
+      {
+        "text": "第二次手术以后恢复得怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-followup"
+        ]
+      },
+      {
+        "text": "今天天气怎么样？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "So what's brought you to the clinic?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "以前有哪些慢性疾病？",
-        "locale": "zh-CN",
-        "expect": [
-          "pmh"
-        ]
-      },
-      {
-        "text": "What chronic illnesses were present?",
+        "text": "How did they find the lumps in your liver?",
         "locale": "en",
         "expect": [
-          "pmh"
+          "presentation"
         ]
       },
       {
-        "text": "有家族遗传病史吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "family"
-        ]
-      },
-      {
-        "text": "Is there a family history of hereditary disease?",
-        "locale": "en",
-        "expect": [
-          "family"
-        ]
-      },
-      {
-        "text": "有便血、排便改变或腹痛吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "bowel"
-        ]
-      },
-      {
-        "text": "Were rectal bleeding, bowel changes or abdominal pain reported?",
+        "text": "Any bleeding from your back passage?",
         "locale": "en",
         "expect": [
           "bowel"
         ]
       },
       {
-        "text": "平时服用什么药？",
-        "locale": "zh-CN",
-        "expect": [
-          "medications"
-        ]
-      },
-      {
-        "text": "What regular medicines are used?",
+        "text": "Have your bowels changed at all, like diarrhoea or constipation?",
         "locale": "en",
         "expect": [
-          "medications"
+          "bowel"
         ]
       },
       {
-        "text": "以前做过腹部手术吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "operations"
-        ]
-      },
-      {
-        "text": "Was there previous abdominal surgery?",
+        "text": "Any tummy ache or bloating?",
         "locale": "en",
         "expect": [
-          "operations"
+          "bowel"
         ]
       },
       {
-        "text": "近期体重有变化吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "weight"
-        ]
-      },
-      {
-        "text": "Has weight changed recently?",
+        "text": "Has your weight dropped recently?",
         "locale": "en",
         "expect": [
           "weight"
         ]
       },
       {
-        "text": "以往做过肠镜或筛查吗？",
-        "locale": "zh-CN",
+        "text": "Have you ever had hepatitis?",
+        "locale": "en",
         "expect": [
-          "screening"
+          "pmh"
         ]
       },
       {
-        "text": "Were colonoscopy or screening performed previously?",
+        "text": "Any operations in the past?",
         "locale": "en",
         "expect": [
-          "screening"
+          "surgery"
+        ]
+      },
+      {
+        "text": "Are you on any tablets?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Any allergies to medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Does bowel cancer run in your family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Are you married? Any kids?",
+        "locale": "en",
+        "expect": [
+          "marital"
+        ]
+      },
+      {
+        "text": "Do you drink at all?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "Any problems with the chemo so far?",
+        "locale": "en",
+        "expect": [
+          "status-conversion"
+        ]
+      },
+      {
+        "text": "What's worrying you the most?",
+        "locale": "en",
+        "expect": [
+          "ice"
+        ]
+      },
+      {
+        "text": "How are you doing now, after the second liver operation?",
+        "locale": "en",
+        "expect": [
+          "status-followup"
         ]
       }
     ]

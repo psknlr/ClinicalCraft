@@ -1,14 +1,14 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-138898",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "乏力、纳差与皮肤瘀斑 · 57岁男性",
-    "en": "Fatigue, poor appetite and bruising · man aged 57"
+    "en": "Fatigue, poor appetite and bruising · 57-year-old man"
   },
   "summary": {
-    "zh-CN": "全血细胞减少伴骨髓异常细胞，外院诊断与部分证据不一致；重新核对形态、免疫表型及跨器官线索。",
-    "en": "Pancytopenia and abnormal marrow cells coexist with evidence discordant with the earlier diagnosis; reassess morphology, immunophenotype and multi-organ clues."
+    "zh-CN": "乏力、纳差伴皮肤瘀斑，外院查见全血细胞减少，转入血液科进一步诊治。",
+    "en": "Fatigue, poor appetite and bruising with pancytopenia found at another hospital; admitted to haematology for further assessment."
   },
   "specialty": [
     "hematology",
@@ -21,7 +21,33 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别不支持急性髓系白血病的特征（无Auer小体、POX阴性、谱系标志阴性、病程缓慢、CD56表达），在骨髓“原始细胞”增多时暂缓诱导化疗。",
+      "en": "Recognise the features that argue against AML despite many marrow “blasts” — no Auer rods, a negative POX, a lineage-negative immunophenotype, a slow course, CD56 expression — and hold off induction."
+    },
+    {
+      "zh-CN": "在任何诱导化疗之前，安排骨髓活检免疫组化并寻找实体瘤原发灶（胸部CT、PET-CT、肿瘤标志物）。",
+      "en": "Order a marrow trephine with immunohistochemistry and a search for a solid primary (chest CT, PET-CT, tumour markers) before any induction chemotherapy."
+    },
+    {
+      "zh-CN": "把上皮/神经内分泌免疫组化谱（AE1/AE3、CAM5.2、Syn、CgA阳性，MPO、LCA阴性）解读为转移性小细胞癌，结合影像和NSE、ProGRP推定肺原发，并分期为广泛期（TNM第8版：N3、M1）。",
+      "en": "Interpret an epithelial/neuroendocrine immunohistochemical profile (AE1/AE3, CAM5.2, synaptophysin, CgA positive; MPO, LCA negative) as metastatic small-cell carcinoma, infer a lung primary from imaging, NSE and ProGRP, and stage it as extensive disease (TNM 8th edition: N3, M1)."
+    },
+    {
+      "zh-CN": "解释小细胞肺癌的副肿瘤低钠（SIADH）和异位胰酶升高，安排SIADH评估，并按欧洲指南（2014）的速度上限安全纠正慢性低钠。",
+      "en": "Explain paraneoplastic hyponatraemia (SIADH) and ectopic pancreatic-enzyme production in small-cell lung cancer, and plan the SIADH work-up and a safe correction rate for chronic hyponatraemia (European guideline 2014)."
+    },
+    {
+      "zh-CN": "说明为什么胸片正常不能排除中心型肺肿瘤（原报告引用的敏感度约26%），对可疑患者尽早做胸部CT。",
+      "en": "Explain why a normal chest X-ray does not exclude a central lung tumour (the report quotes a sensitivity of about 26 %), and get an early chest CT when lung cancer is suspected."
+    },
+    {
+      "zh-CN": "对伴发热、新肺部阴影和呼吸衰竭的免疫低下患者，立即给氧、经验性抗感染（SSC 2021）和血制品支持，并及早与患者及家属讨论治疗目标。",
+      "en": "Manage fever with a new lung opacity and respiratory failure in an immunocompromised patient — oxygen, prompt empirical antibiotics (SSC 2021) and blood products — and open an early goals-of-care conversation with the patient and family."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -29,7 +55,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "张路; 王书杰; 杨辰. 第311例　全血细胞减少—胰酶升高—低钠血症—骨髓中大量原始细胞. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.08.018",
+    "citation": "张路, 王书杰, 杨辰. 第311例 全血细胞减少—胰酶升高—低钠血症—骨髓中大量原始细胞. 中华医学杂志. 2014;94(8):624-626. doi:10.3760/cma.j.issn.0376-2491.2014.08.018",
     "doi": "10.3760/cma.j.issn.0376-2491.2014.08.018",
     "authors": [
       "张路",
@@ -38,8 +64,25 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，病例文本中已去除医院、日历日期和可识别的职业细节，时间以相对时间表示（第0天为入院当天）。对话、问题、决策、评分和处置选项为教学设计；原文未记录的数据保持未知。原文图1（胸部CT）和原文PDF（第624–626页，只含本文）经检查没有烧录的身份信息（姓名、证件号、医院或采集时间）；PDF的正文保留原刊的日期和作者单位。",
+      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms; hospitals, calendar dates and identifying occupational details are removed from the case text, and times are relative (day 0 = the day of admission). Dialogue, questions, decisions, scoring and management options are educational design; data the source does not record stay unknown. Source fig. 1 (chest CT) and the source PDF (pp. 624–626, this article only) were checked and carry no burned-in identifier (a name, an ID number, a hospital or an acquisition time); the PDF's text keeps the published dates and the authors' affiliations."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESMO Clinical Practice Guidelines: small-cell lung cancer 2021",
+        "European clinical practice guideline on diagnosis and treatment of hyponatraemia 2014 (ESE/ESICM/ERBP)",
+        "Surviving Sepsis Campaign 2021 (adults; the 2026 update is cited but its wording was not checked)",
+        "UICC/AJCC TNM classification, 8th edition (lung: N3 supraclavicular nodes, M1)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -48,51 +91,85 @@
   },
   "patient": {
     "displayName": {
-      "zh-CN": "陆先生（化名）",
-      "en": "Mr Lu (pseudonym)"
+      "zh-CN": "聂先生（化名）",
+      "en": "Mr Nie (pseudonym)"
     },
     "age": 57,
     "sex": "male",
     "chiefComplaint": {
-      "zh-CN": "乏力纳差3个月，皮肤瘀斑1周",
-      "en": "Three months of fatigue and poor appetite, with bruising for one week"
+      "zh-CN": "乏力、食欲下降3个月，皮肤瘀斑1周",
+      "en": "Tiredness and poor appetite for three months; bruising for one week"
     },
     "triageNote": {
-      "zh-CN": "全血细胞减少伴骨髓异常细胞，外院诊断与部分证据不一致；重新核对形态、免疫表型及跨器官线索。",
-      "en": "Pancytopenia and abnormal marrow cells coexist with evidence discordant with the earlier diagnosis; reassess morphology, immunophenotype and multi-organ clues."
+      "zh-CN": "57岁男性，乏力、纳差3个月，皮肤瘀斑1周；外院查见全血细胞减少后转来，今日收入血液科病房。病史待询问。",
+      "en": "57-year-old man with three months of tiredness and poor appetite and a week of bruising; transferred after another hospital found pancytopenia, and admitted to the haematology ward today. History still to be taken."
     },
     "tags": [
       {
-        "zh-CN": "乏力纳差3个月，皮肤瘀斑1周",
-        "en": "Three months of fatigue and poor appetite, with bruising for one week"
+        "zh-CN": "全血细胞减少",
+        "en": "Pancytopenia"
+      },
+      {
+        "zh-CN": "外院转入",
+        "en": "Transferred from another hospital"
+      },
+      {
+        "zh-CN": "病史待询问",
+        "en": "History to be taken"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "57岁男性，三个月来越来越没力气，又辗转了两家医院，人很疲惫；配合，话不多，最想知道自己到底得了什么病。",
+        "en": "A 57-year-old man worn down by three months of growing weakness and two hospitals; cooperative and quiet, and above all wants to know what is really wrong with him."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "普通话口语，句子短，说话有气无力；医学名词只会转述医生告诉他的说法（“白血病”“胰腺炎”）。",
+        "en": "Plain speech in short, tired sentences; uses medical words only as he was told them (“leukaemia”, “pancreatitis”)."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "anxious",
       "openingLine": {
-        "zh-CN": "乏力、食欲下降3个月，越来越明显。",
-        "en": "Fatigue and poor appetite have worsened over three months."
+        "zh-CN": "医生，我这三个月老是没劲儿，吃不下饭，越来越重了。",
+        "en": "Doctor, for three months I've had no energy and I can't eat, and it's getting worse."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [
+        {
+          "zh-CN": "那边医院说是白血病，到底是不是？",
+          "en": "The other hospital said it was leukaemia — is it really?"
+        }
+      ],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "躺在病床上，说话慢、容易累，偶尔低头看肚子上的青紫。只说病例里有的事实；医生没告诉他的检查数值、诊断和治疗一概不说；被问到没有记录的事，就用兜底的那句话回答。",
+        "en": "Lies in bed, speaks slowly and tires easily, now and then glancing at the bruises on his abdomen. Says only what his record holds; never states test values, diagnoses or treatments he has not been told; answers anything unrecorded with the fallback line."
+      },
+      "companion": {
+        "role": "carer",
+        "name": {
+          "zh-CN": "聂先生的家属（化名）",
+          "en": "Mr Nie's relative (pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "陪同住院的家属（原报告没有写明与患者的关系）；焦虑但克制，关心诊断和下一步怎么治。不回答病史问题，只在谈到病情、预后和治疗意愿时参与谈话；不说出病例里没有的事实。",
+          "en": "The relative staying with him in hospital (the report does not say how they are related); anxious but composed, wanting to know the diagnosis and what comes next. Does not answer history questions; joins in when the illness, the outlook and wishes about treatment are discussed, and states no fact the case does not hold."
+        },
+        "answersHistory": false,
+        "appearance": {
+          "stature": "adult",
+          "build": "average",
+          "hairStyle": "short"
+        }
       }
     },
     "appearance": {
       "stature": "adult",
-      "gown": true
+      "build": "slim",
+      "gown": true,
+      "hairStyle": "short"
     },
     "posture": "lying"
   },
@@ -100,41 +177,65 @@
     {
       "id": "initial",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "入院当天（第0天）",
+        "en": "Admission day (day 0)"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "入院当天：采集病史、查体，调阅外院和本院急诊的检查资料，决定下一步怎么做。",
+        "en": "Admission day: take the history, examine him, review the other hospital's and the emergency department's records, and decide what to do next."
+      },
+      "learnerSwitchable": false
     },
     {
       "id": "workup",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "入院第1–5天：寻找诊断",
+        "en": "Hospital days 1–5: establishing the diagnosis"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+      "description": {
+        "zh-CN": "入院后的进一步检查与诊断。",
+        "en": "Further tests after admission, and the diagnosis."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "objective": "obj-assess"
           },
           {
-            "decided": "management"
-          },
-          {
-            "objective": "objective-1"
-          },
-          {
-            "objective": "objective-2"
+            "objective": "obj-next"
           }
         ]
+      }
+    },
+    {
+      "id": "deterioration",
+      "label": {
+        "zh-CN": "入院第5天：转入肿瘤科当天",
+        "en": "Hospital day 5: the day of transfer to oncology"
+      },
+      "description": {
+        "zh-CN": "确诊后转入肿瘤科病房的当天，病情突然变化。",
+        "en": "The day he moves to the oncology ward after the diagnosis, his condition suddenly changes."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告结局",
+        "en": "Outcome in the report"
+      },
+      "description": {
+        "zh-CN": "当天的救治经过与原报告记录的结局。",
+        "en": "The rest of that day and the outcome the report records."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-deterioration"
       }
     }
   ],
@@ -148,293 +249,646 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "乏力和食欲变化多久了？",
-        "en": "How long have fatigue and appetite changes lasted?"
+        "zh-CN": "哪里不舒服？多长时间了？",
+        "en": "What's been troubling you, and for how long?"
       },
       "answer": {
-        "zh-CN": "乏力、食欲下降3个月，越来越明显。",
-        "en": "Fatigue and poor appetite have worsened over three months."
+        "zh-CN": "这三个月老是没劲儿，不想吃饭，越来越厉害。",
+        "en": "For three months I've had no energy and no appetite, and it keeps getting worse."
       },
       "keywords": {
         "zh-CN": [
-          "乏力和食欲变化多久了？",
-          "乏力"
+          "哪里不舒服",
+          "怎么不舒服",
+          "多长时间",
+          "多久了",
+          "没劲",
+          "乏力",
+          "没力气",
+          "累",
+          "精神",
+          "食欲",
+          "吃不下",
+          "胃口",
+          "主要问题"
         ],
         "en": [
-          "How long have fatigue and appetite changes lasted?",
-          "fatigue"
+          "whatstroublingyou",
+          "whatsbotheringyou",
+          "bothering",
+          "what's wrong",
+          "how long",
+          "tired",
+          "tiredness",
+          "fatigue",
+          "no energy",
+          "appetite",
+          "main problem",
+          "presenting complaint"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·主诉与现病史",
+        "en": "Case summary · chief complaint and history"
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "一开始是怎么起病的？有什么诱因，当时还有别的不舒服吗？",
+        "en": "How did it start — was there any trigger, and did anything else bother you at first?"
       },
-      "required": true
+      "answer": {
+        "zh-CN": "三个月前没什么原因就开始没劲儿、不想吃饭，别的倒没觉得有什么明显不舒服的。",
+        "en": "It started three months ago for no reason I could see — just no energy and no appetite. Nothing else really bothered me."
+      },
+      "keywords": {
+        "zh-CN": [
+          "怎么开始",
+          "怎么起病",
+          "起病",
+          "诱因",
+          "什么原因",
+          "一开始",
+          "别的不舒服",
+          "伴随症状",
+          "还有什么症状",
+          "其他症状",
+          "发烧",
+          "发热",
+          "出汗"
+        ],
+        "en": [
+          "howdiditstart",
+          "trigger",
+          "whatstartedit",
+          "anything else",
+          "other symptoms",
+          "howitbegan",
+          "first symptoms",
+          "fever",
+          "fevers",
+          "night sweats"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·现病史（无诱因，无其他明显伴随症状）",
+        "en": "Case summary · history (no trigger, no other obvious symptoms)"
+      }
     },
     {
       "id": "bruising",
       "topic": "hpi",
       "question": {
-        "zh-CN": "皮肤出现了什么变化？",
-        "en": "What skin changes appeared?"
+        "zh-CN": "身上有没有出现青紫或者出血点？",
+        "en": "Have you noticed any bruises or tiny red spots on your skin?"
       },
       "answer": {
-        "zh-CN": "最近1周腹部和腹股沟出现瘀斑，没有明显诱因。",
-        "en": "Bruises appeared on the abdomen and groin over the last week without an obvious trigger."
+        "zh-CN": "这一个星期，肚子上和大腿根儿出了些青紫，也没磕着碰着。",
+        "en": "This past week some bruises have come up on my tummy and in my groins, and I haven't knocked myself."
       },
       "keywords": {
         "zh-CN": [
-          "皮肤出现了什么变化？",
-          "瘀斑"
+          "青紫",
+          "瘀斑",
+          "淤青",
+          "出血点",
+          "皮肤上",
+          "紫癜",
+          "磕着碰着",
+          "瘀青"
         ],
         "en": [
-          "What skin changes appeared?",
-          "bruising"
+          "bruises",
+          "bruising",
+          "red spots",
+          "petechiae",
+          "purpura",
+          "marks on your skin",
+          "spots on your skin"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "病历摘要·现病史（入院前1周起腹部及腹股沟瘀斑，无诱因）",
+        "en": "Case summary · history (bruising of the abdomen and groins for a week, no trigger)"
+      }
     },
     {
       "id": "weight",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "体重下降了多少？",
-        "en": "How much weight was lost?"
+        "zh-CN": "体重有没有变化？",
+        "en": "Has your weight changed?"
       },
       "answer": {
-        "zh-CN": "发病以来体重下降了14公斤。",
-        "en": "Weight has fallen by 14 kg since the illness began."
+        "zh-CN": "生病以来瘦了十四公斤。",
+        "en": "I've lost about 14 kilos since this started."
       },
       "keywords": {
         "zh-CN": [
-          "体重下降了多少？",
-          "体重"
+          "体重",
+          "瘦",
+          "消瘦",
+          "掉秤",
+          "体重下降",
+          "多少斤",
+          "多少公斤"
         ],
         "en": [
-          "How much weight was lost?",
-          "weight loss"
+          "weight",
+          "lost weight",
+          "weight loss",
+          "losing weight",
+          "kilos",
+          "thinner"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "病历摘要·现病史（起病以来体重下降14 kg）",
+        "en": "Case summary · history (14 kg lost since onset)"
+      }
     },
     {
       "id": "prior-label",
       "topic": "hpi",
       "question": {
-        "zh-CN": "之前医生怎样解释检查，治疗有效吗？",
-        "en": "What diagnosis was previously proposed and did treatment help?"
+        "zh-CN": "之前在别的医院看过吗？医生怎么说，治疗以后有没有好转？",
+        "en": "Were you seen at another hospital first? What did they tell you, and did their treatment help?"
       },
       "answer": {
-        "zh-CN": "外院考虑急性髓系白血病和急性胰腺炎，禁食、补液、抑酸后没有好转，低钠一直存在。",
-        "en": "Another hospital considered AML and acute pancreatitis; fasting, fluids and acid suppression did not help, and low sodium persisted."
+        "zh-CN": "在我们当地医院看过。那边说是白血病，还说胰腺发炎了，让我不吃饭、输液，还用了抑制胃酸的药，一点也没好，就转到你们这儿来了。",
+        "en": "I was seen at our local hospital first. They said it was leukaemia, and that my pancreas was inflamed. They stopped me eating, put me on a drip and gave me medicine for stomach acid, but nothing got better, so they sent me here."
       },
       "keywords": {
         "zh-CN": [
-          "之前医生怎样解释检查，治疗有效吗？",
-          "外院诊断"
+          "别的医院",
+          "外院",
+          "当地医院",
+          "之前看过",
+          "怎么诊断",
+          "医生怎么说",
+          "诊断是什么",
+          "白血病",
+          "治疗效果",
+          "有没有好转",
+          "转过来"
         ],
         "en": [
-          "What diagnosis was previously proposed and did treatment help?",
-          "earlier diagnosis"
+          "other hospital",
+          "another hospital",
+          "local hospital",
+          "whatdidtheytellyou",
+          "whatdidtheysayitwas",
+          "previous diagnosis",
+          "leukaemia",
+          "didithelp",
+          "treatment so far",
+          "referred here"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "前年",
+          "喝酒",
+          "以前得过"
+        ],
+        "en": [
+          "years ago",
+          "drink",
+          "ever had"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
-    },
-    {
-      "id": "alcohol",
-      "topic": "social",
-      "question": {
-        "zh-CN": "饮酒及以前腹痛情况怎样？",
-        "en": "What is the alcohol and earlier abdominal-pain history?"
-      },
-      "answer": {
-        "zh-CN": "过去长期大量饮酒，约两年前饮酒后腹痛被诊断胰腺炎，治疗后戒酒，没有再出现类似疼痛。",
-        "en": "There was long-term heavy alcohol use; pain after drinking about two years earlier was labelled pancreatitis. After treatment he stopped drinking and similar pain did not recur."
-      },
-      "keywords": {
-        "zh-CN": [
-          "饮酒及以前腹痛情况怎样？",
-          "饮酒"
-        ],
-        "en": [
-          "What is the alcohol and earlier abdominal-pain history?",
-          "alcohol"
-        ]
-      },
-      "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·现病史（外院诊断“急性髓系白血病、急性胰腺炎”，禁食、补液、抑酸后无好转）",
+        "en": "Case summary · history (outside diagnosis of AML and acute pancreatitis; no improvement with fasting, fluids and acid suppression)"
       }
     },
     {
-      "id": "smoking",
-      "topic": "social",
+      "id": "abdominal-pain",
+      "topic": "pain",
       "question": {
-        "zh-CN": "您吸烟吗？",
-        "en": "Do you smoke?"
+        "zh-CN": "这次肚子痛不痛？",
+        "en": "Have you had any tummy pain this time?"
       },
       "answer": {
-        "zh-CN": "不吸烟。",
-        "en": "He does not smoke."
+        "zh-CN": "这次肚子不疼。",
+        "en": "No, my tummy hasn't hurt this time."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "肚子痛",
+          "肚子疼",
+          "腹痛",
+          "胃痛",
+          "上腹痛",
+          "肚子不舒服",
+          "腹部疼痛"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "tummy pain",
+          "abdominal pain",
+          "stomach pain",
+          "belly pain",
+          "pain in your tummy",
+          "tummy ache"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "前年",
+          "喝酒"
+        ],
+        "en": [
+          "years ago",
+          "after drinking"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "分析与讨论（本次起病除胰酶升高外，并无腹痛等表现）",
+        "en": "Discussion (apart from the raised enzymes there was no abdominal pain this time)"
       }
     },
     {
       "id": "respiratory",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "此次有没有咳嗽咳痰或胸痛？",
-        "en": "Were cough, sputum or chest pain present this time?"
+        "zh-CN": "有没有咳嗽、咳痰或者胸痛？",
+        "en": "Any cough, phlegm or chest pain?"
       },
       "answer": {
-        "zh-CN": "本次此前没有咳嗽、咳痰或胸痛。",
-        "en": "No cough, sputum or chest pain was reported before the subsequent deterioration."
+        "zh-CN": "这次没有咳嗽、咳痰，胸口也不痛，喘气还行。",
+        "en": "No cough or phlegm, no chest pain, and my breathing's been all right."
       },
       "keywords": {
         "zh-CN": [
-          "此次有没有咳嗽咳痰或胸痛？",
-          "咳嗽胸痛"
+          "咳嗽",
+          "咳痰",
+          "有痰",
+          "胸痛",
+          "胸口痛",
+          "气短",
+          "喘",
+          "呼吸",
+          "憋气"
         ],
         "en": [
-          "Were cough, sputum or chest pain present this time?",
-          "respiratory symptoms"
+          "cough",
+          "coughing",
+          "phlegm",
+          "sputum",
+          "chest pain",
+          "short of breath",
+          "breathless",
+          "breathing"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "分析与讨论（没有咳嗽、咳痰、胸痛等呼吸系统症状）",
+        "en": "Discussion (no cough, sputum, chest pain or other respiratory symptoms)"
       }
     },
     {
-      "id": "medications",
-      "topic": "medications",
+      "id": "alcohol",
+      "topic": "social",
       "question": {
-        "zh-CN": "是否有完整长期用药记录？",
-        "en": "Is a complete regular medication history available?"
+        "zh-CN": "喝酒吗？以前喝得多不多？",
+        "en": "Do you drink? Did you use to drink much?"
       },
       "answer": {
-        "zh-CN": "原报告未列完整长期用药清单。",
-        "en": "A complete regular medication list is not supplied."
+        "zh-CN": "以前酒喝得很多。前年喝完酒肚子痛，说是胰腺炎，治好以后就戒了，后来再没那样痛过。",
+        "en": "I used to drink a lot. Two years ago I got bad tummy pain after drinking — they said it was pancreatitis — and once that was treated I gave up. It's never hurt like that since."
       },
       "keywords": {
         "zh-CN": [
-          "是否有完整长期用药记录？"
+          "喝酒",
+          "饮酒",
+          "酒量",
+          "白酒",
+          "啤酒",
+          "戒酒",
+          "以前得过胰腺炎",
+          "胰腺炎病史",
+          "得过胰腺炎"
         ],
         "en": [
-          "Is a complete regular medication history available?"
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "spirits",
+          "gave up drinking",
+          "pancreatitis before",
+          "had pancreatitis"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
+      "required": true,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·既往史（长期大量饮酒；饮酒后腹痛诊为“急性胰腺炎”，好转后戒酒，未再发作）",
+        "en": "Case summary · past history (long-term heavy drinking; acute pancreatitis after drinking, then abstinence without recurrence)"
       }
     },
     {
-      "id": "allergies",
-      "topic": "allergies",
+      "id": "smoking",
+      "topic": "social",
       "question": {
-        "zh-CN": "以前有药物或食物过敏吗？",
-        "en": "Any previous drug or food allergies?"
+        "zh-CN": "抽烟吗？",
+        "en": "Do you smoke?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "我不抽烟。",
+        "en": "No, I don't smoke."
       },
       "keywords": {
         "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
+          "抽烟",
+          "吸烟",
+          "香烟",
+          "烟瘾"
         ],
         "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·既往史（不吸烟）",
+        "en": "Case summary · past history (does not smoke)"
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前还得过什么病吗？",
+        "en": "Have you had any other illnesses before?"
+      },
+      "answer": {
+        "zh-CN": "前年得过一次胰腺炎。别的病，我的病例里没有记录，我说不上来。",
+        "en": "I had pancreatitis two years ago. Beyond that, it isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前得过什么病",
+          "以前有什么病",
+          "还有什么病",
+          "别的病",
+          "其他病",
+          "既往史",
+          "既往病史",
+          "慢性病",
+          "高血压",
+          "糖尿病",
+          "心脏病",
+          "老毛病"
+        ],
+        "en": [
+          "past medical history",
+          "pmh",
+          "medical problems",
+          "previous illnesses",
+          "other illnesses",
+          "high blood pressure",
+          "diabetes",
+          "heart disease"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·既往史",
+        "en": "Case summary · past history"
       }
     },
     {
       "id": "family",
       "topic": "family",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "家里人有没有得过什么大病？",
+        "en": "Has anyone in your family had serious illnesses?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "家里人没什么特别的病。",
+        "en": "Nobody in my family has had anything in particular."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
+          "家族史",
+          "家里人",
+          "家里有人",
+          "家族",
+          "遗传",
+          "父母",
+          "兄弟姐妹",
+          "亲戚"
+        ],
+        "en": [
+          "family history",
+          "fhx",
+          "runs in the family",
+          "cancer in the family",
+          "cancer in your family",
+          "relatives",
+          "parents",
+          "brothers or sisters",
+          "hereditary",
+          "genetic"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·既往史（家族史无特殊）",
+        "en": "Case summary · past history (family history unremarkable)"
+      }
+    },
+    {
+      "id": "marital",
+      "topic": "social",
+      "question": {
+        "zh-CN": "结婚了吗？家里有孩子吗？",
+        "en": "Are you married? Do you have children?"
+      },
+      "answer": {
+        "zh-CN": "家里这方面都挺好的，没什么特别的。",
+        "en": "All fine on that side — nothing out of the ordinary."
+      },
+      "keywords": {
+        "zh-CN": [
+          "结婚",
+          "婚育",
+          "孩子",
+          "小孩",
+          "爱人",
+          "老婆",
+          "妻子",
+          "生育"
+        ],
+        "en": [
+          "married",
+          "children",
+          "kids",
+          "wife",
+          "partner"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "遗传",
           "家族史"
         ],
         "en": [
-          "Any family history of similar illness?",
-          "family history"
+          "runs in",
+          "hereditary"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·既往史（婚育史无特殊）",
+        "en": "Case summary · past history (marital and reproductive history unremarkable)"
+      }
+    },
+    {
+      "id": "confusion",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近脑子清楚吗？有没有犯糊涂、反应慢？",
+        "en": "Has your mind been clear — any confusion or muddled thinking?"
+      },
+      "answer": {
+        "zh-CN": "脑子挺清楚的，没糊涂过。",
+        "en": "My head's clear — I haven't been confused."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糊涂",
+          "脑子清楚",
+          "反应慢",
+          "意识",
+          "神志",
+          "说胡话",
+          "记性",
+          "迷糊"
+        ],
+        "en": [
+          "confused",
+          "confusion",
+          "muddled",
+          "mind clear",
+          "drowsy",
+          "memory",
+          "thinking clearly"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查（神志清楚）；分析与讨论（低钠不伴神志异常）",
+        "en": "Case summary · examination (alert); discussion (no change in consciousness with the hyponatraemia)"
+      }
+    },
+    {
+      "id": "other-bleeding",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "有没有牙龈出血、流鼻血，或者大便发黑？",
+        "en": "Any bleeding from your gums or nose, or black stools?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "牙龈出血",
+          "刷牙出血",
+          "流鼻血",
+          "鼻出血",
+          "黑便",
+          "大便发黑",
+          "尿血",
+          "便血"
+        ],
+        "en": [
+          "gums bleed",
+          "bleeding gums",
+          "nosebleeds",
+          "nose bleeds",
+          "black stools",
+          "blood in your urine",
+          "blood in your stool"
         ]
       },
       "disclosure": "unknown",
@@ -442,29 +896,125 @@
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时在吃什么药吗？",
+        "en": "Do you take any regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "吃药",
+          "用药",
+          "服药",
+          "长期用药",
+          "药物",
+          "保健品"
+        ],
+        "en": [
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "regular meds",
+          "drugs you take"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "胃酸",
+          "外院",
+          "别的医院",
+          "那边"
+        ],
+        "en": [
+          "allerg",
+          "acid",
+          "other hospital",
+          "they give"
+        ]
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "青霉素",
+          "食物过敏"
+        ],
+        "en": [
+          "allergy",
+          "allergic",
+          "allergies",
+          "drug allergy",
+          "penicillin"
+        ]
+      },
+      "disclosure": "unknown",
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       }
     },
     {
       "id": "occupation",
       "topic": "social",
       "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
+        "zh-CN": "您是做什么工作的？",
+        "en": "What work do you do?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
+          "工作",
+          "职业",
+          "上班",
+          "干什么的",
+          "做什么的"
         ],
         "en": [
-          "What are your work and living circumstances?",
-          "occupation"
+          "job",
+          "work",
+          "occupation",
+          "whatdoyoudoforaliving",
+          "profession"
         ]
       },
       "disclosure": "unknown",
@@ -472,208 +1022,1119 @@
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录",
+        "en": "Not recorded in the source"
       }
     },
     {
-      "id": "self-care",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
-      },
-      "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
-      },
-      "keywords": {
-        "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
-        ],
-        "en": [
-          "How independent were you before this illness?",
-          "independence"
-        ]
-      },
-      "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      }
-    },
-    {
-      "id": "expectations",
+      "id": "ice",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "您自己最担心的是什么？",
+        "en": "What's worrying you most?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "那边说是白血病，我心里一直没底，就想知道到底是什么病。",
+        "en": "They said it was leukaemia, and I've been on edge ever since — I just want to know what this really is."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "害怕",
+          "顾虑",
+          "最怕",
+          "想法",
+          "期望",
+          "希望"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worried",
+          "worry",
+          "worrying",
+          "concerns",
+          "scared",
+          "afraid",
+          "expectations",
+          "hoping"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
+      "required": false,
       "phases": [
         "initial"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "教学设定：原文未记录患者的想法与担忧",
+        "en": "Teaching adaptation: the source does not record his concerns"
       }
     },
     {
-      "id": "supplements",
-      "topic": "medications",
+      "id": "status-workup",
+      "topic": "other",
       "question": {
-        "zh-CN": "还服用其他非处方药或保健品吗？",
-        "en": "Were other non-prescription medicines or supplements used?"
+        "zh-CN": "住院这几天感觉怎么样？",
+        "en": "How have you been these few days in hospital?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息。",
-        "en": "This information is not recorded in the source."
+        "zh-CN": "还是没什么力气，吃得也少。",
+        "en": "Still no energy, and I'm still not eating much."
       },
       "keywords": {
         "zh-CN": [
-          "还服用其他非处方药或保健品吗？"
+          "这几天",
+          "住院以后",
+          "感觉怎么样",
+          "现在怎么样",
+          "好点了吗",
+          "最近怎么样"
         ],
         "en": [
-          "Were other non-prescription medicines or supplements used?"
+          "these few days",
+          "since you came in",
+          "howareyoufeeling",
+          "howhaveyoubeen",
+          "any better",
+          "howarethings"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
+      "required": false,
       "phases": [
-        "initial"
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·现病史（起病以来精神及食欲差）",
+        "en": "Case summary · history (poor energy and appetite since onset)"
       }
     },
     {
-      "id": "travel",
-      "topic": "social",
+      "id": "status-deterioration",
+      "topic": "other",
       "question": {
-        "zh-CN": "近期是否有旅行史？",
-        "en": "Was there recent travel?"
+        "zh-CN": "现在哪里不舒服？",
+        "en": "What's troubling you right now?"
       },
       "answer": {
-        "zh-CN": "原报告未记录这项信息。",
-        "en": "This information is not recorded in the source."
+        "zh-CN": "发烧……喘不上气……",
+        "en": "Fever… can't get my breath…"
       },
       "keywords": {
         "zh-CN": [
-          "近期是否有旅行史？"
+          "现在哪里不舒服",
+          "现在怎么样",
+          "感觉怎么样",
+          "发烧",
+          "喘",
+          "呼吸困难",
+          "喘不上气",
+          "憋气",
+          "气短"
         ],
         "en": [
-          "Was there recent travel?"
+          "howareyoufeeling",
+          "right now",
+          "fever",
+          "breathless",
+          "short of breath",
+          "cant breathe",
+          "breathing",
+          "difficulty breathing"
         ]
       },
-      "disclosure": "unknown",
+      "disclosure": "on-ask",
+      "required": false,
       "phases": [
-        "initial"
+        "deterioration"
+      ],
+      "supersedes": [
+        "status-workup",
+        "respiratory"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·诊治经过（转入肿瘤科当天发热、呼吸困难）",
+        "en": "Case summary · course (fever and breathlessness on the day of transfer)"
       }
     }
   ],
   "exam": [
     {
-      "id": "skin",
-      "system": "skin",
+      "id": "vitals",
+      "system": "vitals",
       "maneuver": {
-        "zh-CN": "检查皮肤和黏膜",
-        "en": "Examine skin and mucosa"
+        "zh-CN": "测量生命体征",
+        "en": "Take the vital signs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "生命体征",
+          "体温",
+          "血压",
+          "脉搏",
+          "心率",
+          "呼吸频率",
+          "血氧",
+          "量一下"
+        ],
+        "en": [
+          "vital signs",
+          "vitals",
+          "obs",
+          "observations",
+          "temperature",
+          "blood pressure",
+          "pulse",
+          "oxygen saturation",
+          "sats"
+        ]
       },
       "finding": {
-        "zh-CN": "贫血貌；腹壁及双腹股沟散在瘀点、瘀斑，无触痛。",
-        "en": "Pale appearance with scattered nontender petechiae and bruises on the abdomen and groins."
+        "zh-CN": "体温36.6 ℃，脉搏80次/分，呼吸20次/分，血压120/77 mmHg，SpO₂ 98%（未吸氧）。",
+        "en": "Temperature 36.6 °C, pulse 80/min, respiratory rate 20/min, BP 120/77 mmHg, SpO₂ 98 % on room air."
       },
-      "abnormal": true,
+      "abnormal": false,
+      "required": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
       }
     },
     {
-      "id": "nodes-abdomen",
-      "system": "abdomen",
+      "id": "general",
+      "system": "general",
       "maneuver": {
-        "zh-CN": "检查腹部和腹股沟淋巴结",
-        "en": "Examine abdomen and groin nodes"
+        "zh-CN": "观察一般情况和神志",
+        "en": "Assess his general appearance and consciousness"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "神志",
+          "意识",
+          "面色",
+          "贫血貌",
+          "精神状态",
+          "一般状况"
+        ],
+        "en": [
+          "general appearance",
+          "conscious",
+          "alert",
+          "pale",
+          "pallor",
+          "looks unwell",
+          "general inspection"
+        ]
       },
       "finding": {
-        "zh-CN": "腹股沟多枚活动、无压痛淋巴结，最大约1×1 cm；中上腹、右上腹轻压痛，无反跳痛或肌紧张，肝脾未触及。",
-        "en": "Several mobile nontender groin nodes up to 1×1 cm; mild upper/ right-upper abdominal tenderness without rebound or guarding, and no palpable liver or spleen."
+        "zh-CN": "神志清楚，贫血貌。",
+        "en": "Alert; looks anaemic (pale)."
       },
       "abnormal": true,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查皮肤黏膜（有无瘀点、瘀斑）",
+        "en": "Examine the skin for petechiae and bruising"
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤",
+          "瘀点",
+          "瘀斑",
+          "出血点",
+          "青紫",
+          "黏膜",
+          "紫癜"
+        ],
+        "en": [
+          "skin",
+          "petechiae",
+          "bruises",
+          "bruising",
+          "purpura",
+          "rash",
+          "mucosa"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹壁及双侧腹股沟散在瘀点、瘀斑，无触痛。",
+        "en": "Scattered petechiae and bruises over the abdominal wall and both groins, not tender."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "nodes",
+      "system": "lymphatic",
+      "maneuver": {
+        "zh-CN": "检查腹股沟淋巴结",
+        "en": "Examine the inguinal lymph nodes"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹股沟淋巴结",
+          "腹股沟",
+          "淋巴结",
+          "浅表淋巴结",
+          "大腿根"
+        ],
+        "en": [
+          "inguinal nodes",
+          "groin nodes",
+          "lymph nodes",
+          "groin",
+          "glands"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "锁骨上",
+          "颈部",
+          "颈淋巴结",
+          "腋窝"
+        ],
+        "en": [
+          "supraclavicular",
+          "neck",
+          "cervical",
+          "axilla",
+          "axillary"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双侧腹股沟可扪及多枚淋巴结，最大者1 cm×1 cm，质韧、活动可、无压痛。",
+        "en": "Several lymph nodes palpable in both groins, the largest 1 cm × 1 cm, firm, mobile and not tender."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
       }
     },
     {
       "id": "lungs",
       "system": "respiratory",
       "maneuver": {
-        "zh-CN": "听诊初诊肺部",
-        "en": "Auscultate lungs at presentation"
+        "zh-CN": "肺部听诊",
+        "en": "Auscultate the chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肺部",
+          "听肺",
+          "呼吸音",
+          "啰音",
+          "胸部听诊",
+          "听一下肺"
+        ],
+        "en": [
+          "chest",
+          "lungs",
+          "breath sounds",
+          "crackles",
+          "listen to the chest",
+          "auscultate the lungs"
+        ]
       },
       "finding": {
-        "zh-CN": "初诊双肺呼吸音清，无干湿啰音，自然状态SpO₂ 98%。",
-        "en": "Initial breath sounds were clear without wheeze or crackles, with SpO₂ 98% on room air."
+        "zh-CN": "双肺呼吸音清，未闻及干湿啰音。",
+        "en": "Breath sounds clear on both sides; no wheeze or crackles."
+      },
+      "abnormal": false,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "heart",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊",
+        "en": "Auscultate the heart"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏",
+          "心音",
+          "杂音",
+          "心律",
+          "听心脏"
+        ],
+        "en": [
+          "heart",
+          "heart sounds",
+          "murmur",
+          "rhythm",
+          "listen to the heart"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心率80次/分，律齐，未闻及杂音。",
+        "en": "Heart rate 80/min, regular, no murmurs."
       },
       "abnormal": false,
       "phases": [
-        "initial"
+        "initial",
+        "workup"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "腹部检查",
+        "en": "Examine the abdomen"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "触诊",
+          "压痛",
+          "反跳痛",
+          "肝脾",
+          "包块",
+          "移动性浊音",
+          "腹水"
+        ],
+        "en": [
+          "abdomen",
+          "abdominal",
+          "palpate",
+          "tenderness",
+          "liver",
+          "spleen",
+          "mass",
+          "ascites",
+          "shifting dullness"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹壁偏韧；中上腹、右上腹轻压痛，无反跳痛，无肌紧张；肝脾肋下未触及，全腹未触及异常包块；移动性浊音阴性。",
+        "en": "Abdominal wall slightly firm; mild tenderness in the epigastrium and right upper quadrant, without rebound or guarding; liver and spleen not palpable below the costal margins; no abnormal mass; shifting dullness negative."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "legs",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查双下肢有无水肿",
+        "en": "Check the legs for oedema"
+      },
+      "keywords": {
+        "zh-CN": [
+          "下肢",
+          "水肿",
+          "腿肿",
+          "浮肿",
+          "双腿"
+        ],
+        "en": [
+          "legs",
+          "oedema",
+          "edema",
+          "ankle swelling",
+          "swollen legs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双下肢不肿。",
+        "en": "No leg oedema."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "神经系统检查（反射、脑膜刺激征）",
+        "en": "Neurological examination (reflexes, meningeal signs)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神经系统",
+          "反射",
+          "病理反射",
+          "巴氏征",
+          "克氏征",
+          "脑膜刺激征",
+          "神经查体"
+        ],
+        "en": [
+          "neurological",
+          "neuro exam",
+          "reflexes",
+          "plantars",
+          "babinski",
+          "kernig",
+          "meningism"
+        ]
+      },
+      "finding": {
+        "zh-CN": "生理反射存在，病理反射阴性，克氏征阴性。",
+        "en": "Normal reflexes present; no pathological reflexes; Kernig's sign negative."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · examination on admission"
+      }
+    },
+    {
+      "id": "distress-day5",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "床旁重新评估一般情况和呼吸",
+        "en": "Reassess him at the bedside — general state and breathing"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "生命体征",
+          "体温",
+          "呼吸",
+          "发热",
+          "精神状态",
+          "重新评估"
+        ],
+        "en": [
+          "vital signs",
+          "vitals",
+          "general state",
+          "breathing",
+          "fever",
+          "temperature",
+          "reassess",
+          "work of breathing"
+        ]
+      },
+      "finding": {
+        "zh-CN": "发热，呼吸困难。",
+        "en": "Febrile and breathless."
+      },
+      "abnormal": true,
+      "phases": [
+        "deterioration"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·诊治经过（转入肿瘤科当天）",
+        "en": "Case summary · course (day of transfer to oncology)"
+      }
+    },
+    {
+      "id": "lungs-day5",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "肺部听诊",
+        "en": "Auscultate the chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肺部",
+          "听肺",
+          "呼吸音",
+          "啰音",
+          "胸部听诊",
+          "听一下肺"
+        ],
+        "en": [
+          "chest",
+          "lungs",
+          "breath sounds",
+          "crackles",
+          "listen to the chest",
+          "auscultate the lungs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双肺可闻及湿啰音。",
+        "en": "Crackles over both lungs."
+      },
+      "abnormal": true,
+      "required": false,
+      "phases": [
+        "deterioration"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·诊治经过（转入肿瘤科当天）",
+        "en": "Case summary · course (day of transfer to oncology)"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这项检查，结果不可得，不能把它当作正常。",
+    "en": "The source report does not record this examination, so there is no finding to give — and it must not be assumed normal."
   },
   "investigations": [
     {
+      "id": "outside-bloods",
+      "name": {
+        "zh-CN": "调阅外院血液检查",
+        "en": "Review the other hospital's blood tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院化验",
+          "外院血常规",
+          "外院检查",
+          "当地医院检查",
+          "外院生化",
+          "外院血液",
+          "外院血钠"
+        ],
+        "en": [
+          "outside bloods",
+          "other hospital's bloods",
+          "local hospital results",
+          "previous blood tests",
+          "outside results"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前约1个月（当地医院）",
+            "en": "About one month before admission (local hospital)"
+          },
+          "text": {
+            "zh-CN": "血常规：白细胞（2.7～1.9）×10⁹/L，中性粒细胞（1.08～1.36）×10⁹/L，血红蛋白106～88 g/L，血小板（25～23）×10⁹/L；尿常规正常。肝肾功能正常：丙氨酸转氨酶20 U/L，总胆红素19.9 μmol/L，直接胆红素5.0 μmol/L，肌酐59 μmol/L。血钠121 mmol/L（降低），乳酸脱氢酶660 U/L（升高）。脂肪酶1200 U/L（升高），淀粉酶335 U/L（升高）。凝血功能正常：PT 13.8 s，APTT 28.2 s，纤维蛋白原3.93 g/L。甲肝IgM抗体、乙肝表面抗原、丙肝抗体均阴性。甲状腺功能正常。",
+            "en": "Full blood count: white cells (2.7–1.9) ×10⁹/L, neutrophils (1.08–1.36) ×10⁹/L, haemoglobin 106–88 g/L, platelets (25–23) ×10⁹/L; urinalysis normal. Liver and renal function normal: ALT 20 U/L, total bilirubin 19.9 μmol/L, direct bilirubin 5.0 μmol/L, creatinine 59 μmol/L. Sodium 121 mmol/L (low); LDH 660 U/L (raised). Lipase 1200 U/L (raised), amylase 335 U/L (raised). Clotting normal: PT 13.8 s, APTT 28.2 s, fibrinogen 3.93 g/L. Hepatitis A IgM, hepatitis B surface antigen and hepatitis C antibody negative. Thyroid function normal."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "White cells"
+              },
+              "value": {
+                "zh-CN": "2.7～1.9",
+                "en": "2.7–1.9"
+              },
+              "unit": "×10⁹/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞",
+                "en": "Neutrophils"
+              },
+              "value": {
+                "zh-CN": "1.08～1.36",
+                "en": "1.08–1.36"
+              },
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": {
+                "zh-CN": "106～88",
+                "en": "106–88"
+              },
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": {
+                "zh-CN": "25～23",
+                "en": "25–23"
+              },
+              "unit": "×10⁹/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "丙氨酸转氨酶",
+                "en": "ALT"
+              },
+              "value": 20,
+              "unit": "U/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "总胆红素",
+                "en": "Total bilirubin"
+              },
+              "value": 19.9,
+              "unit": "μmol/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "直接胆红素",
+                "en": "Direct bilirubin"
+              },
+              "value": 5.0,
+              "unit": "μmol/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酐",
+                "en": "Creatinine"
+              },
+              "value": 59,
+              "unit": "μmol/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血钠",
+                "en": "Sodium"
+              },
+              "value": 121,
+              "unit": "mmol/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸脱氢酶",
+                "en": "LDH"
+              },
+              "value": 660,
+              "unit": "U/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "脂肪酶",
+                "en": "Lipase"
+              },
+              "value": 1200,
+              "unit": "U/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "淀粉酶",
+                "en": "Amylase"
+              },
+              "value": 335,
+              "unit": "U/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间（PT）",
+                "en": "Prothrombin time (PT)"
+              },
+              "value": 13.8,
+              "unit": "s",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "活化部分凝血活酶时间（APTT）",
+                "en": "APTT"
+              },
+              "value": 28.2,
+              "unit": "s",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "纤维蛋白原",
+                "en": "Fibrinogen"
+              },
+              "value": 3.93,
+              "unit": "g/L",
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "区间按原文写法列出（多次检查）。原文没有给参考范围；高低标注依原文所写的“降低、升高、正常”，血细胞依讨论中的“全血细胞明显减少”。",
+            "en": "Ranges are written as in the source (serial tests). The source gives no reference ranges; the flags follow its own “low, raised, normal” and, for the blood counts, the discussion's “marked pancytopenia”."
+          },
+          "source": {
+            "zh-CN": "病历摘要·外院检查",
+            "en": "Case summary · tests at the other hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "outside-imaging",
+      "name": {
+        "zh-CN": "调阅外院影像与胃镜检查",
+        "en": "Review the other hospital's imaging and gastroscopy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院影像",
+          "外院片子",
+          "头颅mri",
+          "心脏超声",
+          "腹部b超",
+          "外院胃镜",
+          "外院超声"
+        ],
+        "en": [
+          "outside imaging",
+          "head mri",
+          "echo",
+          "echocardiogram",
+          "abdominal ultrasound",
+          "gastroscopy",
+          "previous scans"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前约1个月（当地医院）",
+            "en": "About one month before admission (local hospital)"
+          },
+          "text": {
+            "zh-CN": "头颅MRI：左侧放射冠缺血灶。心脏超声：左室射血分数74%，大致正常。肝胆胰脾超声：大致正常。胃镜：慢性非萎缩性胃炎、十二指肠球炎（病理：慢性炎症）。",
+            "en": "Head MRI: an ischaemic focus in the left corona radiata. Echocardiogram: LV ejection fraction 74 %, essentially normal. Ultrasound of the liver, biliary tree, pancreas and spleen: essentially normal. Gastroscopy: chronic non-atrophic gastritis and duodenal bulbitis (histology: chronic inflammation)."
+          },
+          "source": {
+            "zh-CN": "病历摘要·外院检查",
+            "en": "Case summary · tests at the other hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "chest-xray-outside",
+      "name": {
+        "zh-CN": "调阅外院胸部X线片",
+        "en": "Review the other hospital's chest X-ray"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院胸片",
+          "以前的胸片",
+          "外院胸部x线",
+          "外院x光片",
+          "之前的胸片"
+        ],
+        "en": [
+          "outside chest x-ray",
+          "previous chest x-ray",
+          "earlier cxr",
+          "old chest film",
+          "outside cxr"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前约1个月（当地医院）",
+            "en": "About one month before admission (local hospital)"
+          },
+          "text": {
+            "zh-CN": "胸部X线片正常。",
+            "en": "Chest X-ray: normal."
+          },
+          "source": {
+            "zh-CN": "病历摘要·外院检查",
+            "en": "Case summary · tests at the other hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "outside-marrow",
+      "name": {
+        "zh-CN": "调阅外院血涂片、骨髓涂片与免疫分型",
+        "en": "Review the other hospital's blood film, marrow smear and immunophenotyping"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院骨髓",
+          "外院骨穿",
+          "外院免疫分型",
+          "外院流式",
+          "外院血涂片"
+        ],
+        "en": [
+          "outside marrow",
+          "previous marrow",
+          "outside flow cytometry",
+          "outside immunophenotyping",
+          "outside blood film"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前约1个月（当地医院）",
+            "en": "About one month before admission (local hospital)"
+          },
+          "text": {
+            "zh-CN": "血涂片：白细胞分类正常，成熟红细胞大小不等，血小板分布少。骨髓涂片：可见大量原始细胞。免疫分型：CD34⁺细胞占有核细胞0.2%；CD45/SSC设门见一异常细胞群，占有核细胞12.6%，表达CD15、CD56、CD81、CD117，部分表达CD13。外院诊断“急性髓系白血病、急性胰腺炎”。",
+            "en": "Blood film: normal white-cell differential, anisocytosis of the red cells, few platelets. Marrow smear: many blasts. Immunophenotyping: CD34+ cells 0.2 % of nucleated cells; on CD45/SSC gating an abnormal population of 12.6 % of nucleated cells expressing CD15, CD56, CD81 and CD117, and partly CD13. Outside diagnosis: “acute myeloid leukaemia, acute pancreatitis”."
+          },
+          "source": {
+            "zh-CN": "病历摘要·外院检查",
+            "en": "Case summary · tests at the other hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow-flow",
+      "name": {
+        "zh-CN": "调阅本院急诊骨髓涂片与免疫分型",
+        "en": "Review this hospital's emergency marrow smear and immunophenotyping"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "急诊骨髓",
+          "本院骨髓涂片",
+          "骨髓涂片",
+          "骨髓形态",
+          "骨穿结果",
+          "免疫分型",
+          "流式细胞"
+        ],
+        "en": [
+          "marrow smear",
+          "bone marrow aspirate",
+          "marrow morphology",
+          "emergency marrow",
+          "flow cytometry",
+          "immunophenotyping"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前14天（本院急诊）",
+            "en": "14 days before admission (this hospital's emergency department)"
+          },
+          "text": {
+            "zh-CN": "骨髓涂片：原始细胞0.76，未见Auer小体，POX染色阴性。免疫分型：P2异常表型占41.4%，CD15⁺（32.0%）、CD117⁺（50.0%）；CD3、CD4、CD5、CD7、CD8、CD10、CD11b、CD13、CD14、CD19、CD20、CD22、CD33、CD34、CD38、HLA-DR和GP-A均阴性。",
+            "en": "Marrow smear: blasts 0.76 (76 %), no Auer rods, POX stain negative. Immunophenotyping: an abnormal P2 population of 41.4 %, CD15+ (32.0 %) and CD117+ (50.0 %); CD3, CD4, CD5, CD7, CD8, CD10, CD11b, CD13, CD14, CD19, CD20, CD22, CD33, CD34, CD38, HLA-DR and GP-A all negative."
+          },
+          "note": {
+            "zh-CN": "涂片、流式和后来活检的比例分母不同，不能直接相互比较。",
+            "en": "The smear, flow cytometry and the later trephine use different denominators, so their percentages cannot be compared directly."
+          },
+          "source": {
+            "zh-CN": "病历摘要·本院急诊检查",
+            "en": "Case summary · tests at this hospital's emergency department"
+          }
+        }
+      }
+    },
+    {
+      "id": "enzymes",
+      "name": {
+        "zh-CN": "调阅入院前本院胰酶监测与粪便检查",
+        "en": "Review this hospital's pre-admission enzyme monitoring and stool tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胰酶",
+          "脂肪酶",
+          "淀粉酶",
+          "胰酶监测",
+          "粪常规",
+          "大便潜血",
+          "便潜血"
+        ],
+        "en": [
+          "lipase",
+          "amylase",
+          "pancreatic enzymes",
+          "enzyme monitoring",
+          "stool test",
+          "faecal occult blood",
+          "stool occult blood"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前（本院，原文未写具体日期）",
+            "en": "Before admission (this hospital; no date in the source)"
+          },
+          "text": {
+            "zh-CN": "监测脂肪酶升高：1686～2086 U/L；淀粉酶升高：216～264 U/L。粪常规及潜血阴性。",
+            "en": "Monitoring: lipase raised at 1686–2086 U/L and amylase raised at 216–264 U/L. Stool routine and occult blood negative."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "脂肪酶",
+                "en": "Lipase"
+              },
+              "value": {
+                "zh-CN": "1686～2086",
+                "en": "1686–2086"
+              },
+              "unit": "U/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "淀粉酶",
+                "en": "Amylase"
+              },
+              "value": {
+                "zh-CN": "216～264",
+                "en": "216–264"
+              },
+              "unit": "U/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "粪便潜血",
+                "en": "Faecal occult blood"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": "",
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "原文没有给参考范围；“升高”为原文所注。",
+            "en": "The source gives no reference ranges; “raised” is the source's."
+          },
+          "source": {
+            "zh-CN": "病历摘要·本院急诊检查",
+            "en": "Case summary · tests at this hospital's emergency department"
+          }
+        }
+      }
+    },
+    {
       "id": "blood",
       "name": {
-        "zh-CN": "调阅血常规与电解质",
-        "en": "Review blood counts and electrolytes"
+        "zh-CN": "血常规（入院后监测）",
+        "en": "Full blood count (monitored after admission)"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "调阅血常规与电解质"
+          "血常规",
+          "血象",
+          "全血细胞计数",
+          "复查血常规",
+          "网织红细胞",
+          "cbc"
         ],
         "en": [
-          "Review blood counts and electrolytes",
-          "blood"
+          "fbc",
+          "full blood count",
+          "cbc",
+          "blood count",
+          "repeat fbc",
+          "reticulocytes"
         ]
       },
       "requires": [
@@ -682,180 +2143,107 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "initial": {
+          "available": false,
           "text": {
-            "zh-CN": "住院白细胞1.9–2.5×10⁹/L、血红蛋白62–69 g/L、血小板11–21×10⁹/L。早期血钠121 mmol/L；低钠持续。",
-            "en": "Inpatient WBC 1.9–2.5×10⁹/L, haemoglobin 62–69 g/L and platelets 11–21×10⁹/L; early sodium was 121 mmol/L and hyponatraemia persisted."
+            "zh-CN": "原文没有单独列出入院当天的血常规；入院后（第0–5天）的监测结果见“入院第1–5天”阶段。",
+            "en": "The source gives no separate admission-day count; the monitoring results for days 0–5 are in the “hospital days 1–5” phase."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "marrow-flow",
-      "name": {
-        "zh-CN": "调阅骨髓形态与流式",
-        "en": "Review marrow morphology and flow cytometry"
-      },
-      "category": "record",
-      "aliases": {
-        "zh-CN": [
-          "调阅骨髓形态与流式"
-        ],
-        "en": [
-          "Review marrow morphology and flow cytometry",
-          "marrow-flow"
-        ]
-      },
-      "requires": [
-        "flow-cytometry"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        },
         "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后监测（第0–5天，原文合并报告）",
+            "en": "Monitored after admission (days 0–5, reported together)"
+          },
           "text": {
-            "zh-CN": "骨髓涂片所谓原始细胞76%，无Auer小体、POX阴性；异常群体部分表达CD15/CD117，多种血细胞谱系标志阴性，不能只据“原始”外观确诊AML。",
-            "en": "Marrow cells labelled blasts comprised 76%, without Auer rods and with negative POX. The abnormal population partly expressed CD15/CD117 but lacked many haematopoietic lineage markers; blast-like appearance alone does not establish AML."
+            "zh-CN": "白细胞（1.9～2.5）×10⁹/L，血红蛋白62～69 g/L，血小板（21～11）×10⁹/L，网织红细胞0.021。",
+            "en": "White cells (1.9–2.5) ×10⁹/L, haemoglobin 62–69 g/L, platelets (21–11) ×10⁹/L, reticulocytes 0.021."
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "biopsy",
-      "name": {
-        "zh-CN": "调阅骨髓活检及免疫组化",
-        "en": "Review marrow biopsy and immunohistochemistry"
-      },
-      "category": "pathology",
-      "aliases": {
-        "zh-CN": [
-          "调阅骨髓活检及免疫组化"
-        ],
-        "en": [
-          "Review marrow biopsy and immunohistochemistry",
-          "biopsy"
-        ]
-      },
-      "requires": [
-        "histopathology"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "造血组织减少，大量癌细胞浸润；AE1/AE3、CAM5.2、Syn阳性，MPO及LCA阴性，TTF1阴性，Ki-67约30%。病理符合小细胞神经内分泌癌。",
-            "en": "Reduced haematopoietic tissue with extensive carcinoma infiltration; AE1/AE3, CAM5.2 and synaptophysin positive, MPO/LCA and TTF1 negative, Ki-67 about 30%. Pathology was consistent with small-cell neuroendocrine carcinoma."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "ct",
-      "name": {
-        "zh-CN": "调阅胸部CT",
-        "en": "Review chest CT"
-      },
-      "category": "imaging",
-      "aliases": {
-        "zh-CN": [
-          "调阅胸部CT"
-        ],
-        "en": [
-          "Review chest CT",
-          "ct"
-        ]
-      },
-      "requires": [
-        "ct"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "左肺门占位及纵隔淋巴结增大；早期普通胸片曾正常。",
-            "en": "Left hilar mass and enlarged mediastinal nodes; an earlier plain chest film had been normal."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [
-            "fig01"
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "White cells"
+              },
+              "value": {
+                "zh-CN": "1.9～2.5",
+                "en": "1.9–2.5"
+              },
+              "unit": "×10⁹/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": {
+                "zh-CN": "62～69",
+                "en": "62–69"
+              },
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": {
+                "zh-CN": "21～11",
+                "en": "21–11"
+              },
+              "unit": "×10⁹/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "网织红细胞",
+                "en": "Reticulocytes"
+              },
+              "value": 0.021,
+              "unit": ""
+            }
           ],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "pet-markers",
-      "name": {
-        "zh-CN": "调阅PET-CT与肿瘤标志物",
-        "en": "Review PET-CT and tumour markers"
-      },
-      "category": "record",
-      "aliases": {
-        "zh-CN": [
-          "调阅PET-CT与肿瘤标志物"
-        ],
-        "en": [
-          "Review PET-CT and tumour markers",
-          "pet-markers"
-        ]
-      },
-      "requires": [
-        "pet-ct"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "PET-CT显示左上肺近肺门1.6×2.9 cm结节SUVmax 5.6，肺门/锁骨上淋巴结及骨髓摄取增高；NSE 250.4 μg/L、ProGRP>5000 ng/L。未取得肺灶直接病理。",
-            "en": "PET-CT showed a left upper perihilar 1.6×2.9 cm nodule with SUVmax 5.6 and increased hilar/supraclavicular nodal and marrow uptake. NSE was 250.4 μg/L and ProGRP >5000 ng/L. Direct lung-lesion histology was not obtained."
+          "note": {
+            "zh-CN": "原文只给监测区间，没有逐日数值和参考范围；“全血细胞减少”为原文所述。",
+            "en": "The source gives only the monitoring ranges, without daily values or reference ranges; “pancytopenia” is the source's word."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
         }
       }
     },
     {
-      "id": "enzymes",
+      "id": "electrolytes",
       "name": {
-        "zh-CN": "调阅胰酶与腹部影像",
-        "en": "Review pancreatic enzymes and abdominal imaging"
+        "zh-CN": "电解质（入院后）",
+        "en": "Electrolytes (after admission)"
       },
-      "category": "record",
+      "category": "lab",
       "aliases": {
         "zh-CN": [
-          "调阅胰酶与腹部影像"
+          "电解质",
+          "血钠",
+          "血钾",
+          "复查血钠",
+          "生化",
+          "钠"
         ],
         "en": [
-          "Review pancreatic enzymes and abdominal imaging",
-          "enzymes"
+          "electrolytes",
+          "sodium",
+          "u&e",
+          "urea and electrolytes",
+          "repeat sodium",
+          "potassium"
         ]
       },
       "requires": [
@@ -864,34 +2252,646 @@
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（原文未写具体日期）",
+            "en": "After admission (no date in the source)"
+          },
           "text": {
-            "zh-CN": "脂肪酶1686–2086 U/L、淀粉酶216–264 U/L，腹部影像无胰腺明显异常，缺乏本次典型胰腺炎疼痛。血尿渗透压及尿钠未完善，SIADH仅为临床考虑。",
-            "en": "Lipase 1686–2086 U/L and amylase 216–264 U/L, without clear pancreatic imaging abnormalities or typical acute pancreatitis pain this episode. Serum/urine osmolality and urine sodium were not obtained; SIADH was a clinical possibility."
+            "zh-CN": "原文没有列出入院后的电解质数值，只记录低钠血症持续存在、补钠效果不明显，且不伴神志异常（外院血钠121 mmol/L）。",
+            "en": "The source gives no electrolyte values after admission; it records only that the hyponatraemia persisted, responded poorly to sodium supplementation and caused no change in consciousness (the outside sodium was 121 mmol/L)."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "病历摘要·诊治经过；分析与讨论",
+            "en": "Case summary · course; discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "sodium-workup",
+      "name": {
+        "zh-CN": "血、尿渗透压及尿钠",
+        "en": "Serum and urine osmolality, urine sodium"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血渗透压",
+          "尿渗透压",
+          "尿钠",
+          "渗透压",
+          "siadh",
+          "抗利尿激素",
+          "低钠原因"
+        ],
+        "en": [
+          "serum osmolality",
+          "urine osmolality",
+          "urine sodium",
+          "osmolality",
+          "siadh",
+          "cause of the low sodium"
+        ]
+      },
+      "requires": [
+        "lab-chemistry",
+        "lab-urinalysis"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告入院初期没有查血、尿渗透压和尿钠（作者说明：当时重点在尽快明确原发病，且低钠不伴严重症状）。",
+            "en": "Not measured early in the admission in the source (the authors explain that the priority was to establish the underlying disease quickly, and the hyponatraemia caused no severe symptoms)."
           },
-          "figures": [],
-          "available": true
+          "source": {
+            "zh-CN": "分析与讨论",
+            "en": "Discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "cortisol",
+      "name": {
+        "zh-CN": "血皮质醇",
+        "en": "Serum cortisol"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "皮质醇",
+          "肾上腺功能",
+          "促肾上腺皮质激素"
+        ],
+        "en": [
+          "cortisol",
+          "adrenal function",
+          "synacthen",
+          "acth"
+        ]
+      },
+      "requires": [
+        "lab-endocrine"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有皮质醇的检测记录。",
+            "en": "The source has no cortisol result."
+          },
+          "source": {
+            "zh-CN": "原文未记录",
+            "en": "Not recorded in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "骨髓活检（病理及免疫组化）",
+        "en": "Bone marrow trephine biopsy (histology and immunohistochemistry)"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "骨髓活检",
+          "骨活检",
+          "骨髓病理",
+          "免疫组化",
+          "环钻活检",
+          "骨髓活检免疫组化"
+        ],
+        "en": [
+          "trephine",
+          "marrow biopsy",
+          "bone marrow biopsy",
+          "immunohistochemistry",
+          "marrow histology",
+          "trephine biopsy"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "moderate",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "入院当天还没有这项结果（原文：入院后才完成，结果见“入院第1–5天”阶段）。",
+            "en": "No result yet on the day of admission (in the source it was done after admission; see the “hospital days 1–5” phase)."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（第5天前回报）",
+            "en": "After admission (reported by hospital day 5)"
+          },
+          "text": {
+            "zh-CN": "骨髓中造血组织减少，大量癌细胞浸润。免疫组化：AE1/AE3、CD10、CAM5.2和Syn阳性，CD3散在阳性，CD15和嗜铬粒蛋白A（CgA）弱阳性；CD20、CD23、CD5、CD79a、cyclin D1、MPO、LCA、S100和TTF-1均阴性；Ki-67 30%。符合小细胞神经内分泌癌。",
+            "en": "Reduced haematopoietic tissue with extensive infiltration by carcinoma. Immunohistochemistry: AE1/AE3, CD10, CAM5.2 and synaptophysin positive; scattered CD3-positive cells; CD15 and chromogranin A (CgA) weakly positive; CD20, CD23, CD5, CD79a, cyclin D1, MPO, LCA, S100 and TTF-1 negative; Ki-67 30 %. Consistent with small-cell neuroendocrine carcinoma."
+          },
+          "note": {
+            "zh-CN": "原文如此，未作更正：TTF-1阴性和Ki-67 30%对小细胞癌而言不典型；原文讨论把CD56归为上皮标记、把CAM5.2归为神经内分泌标记，而CAM5.2是细胞角蛋白、CD56是神经内分泌相关标记。原文未写取材日期。",
+            "en": "As printed, not corrected: a negative TTF-1 and a Ki-67 of 30 % are atypical for small-cell carcinoma; the discussion groups CD56 with the epithelial markers and CAM5.2 with the neuroendocrine ones, whereas CAM5.2 is a cytokeratin and CD56 a neuroendocrine-associated marker. The source does not date the sampling."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "tumour-markers",
+      "name": {
+        "zh-CN": "血清肿瘤标志物",
+        "en": "Serum tumour markers"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肿瘤标志物",
+          "肿瘤指标",
+          "肿标",
+          "nse",
+          "神经元特异性烯醇化酶",
+          "progrp",
+          "胃泌素释放肽前体",
+          "cyfra21-1",
+          "癌胚抗原"
+        ],
+        "en": [
+          "tumour markers",
+          "tumor markers",
+          "nse",
+          "neuron-specific enolase",
+          "progrp",
+          "cyfra 21-1",
+          "psa",
+          "ca19-9"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "入院当天还没有这项结果（原文：入院后才完成，结果见“入院第1–5天”阶段）。",
+            "en": "No result yet on the day of admission (in the source it was done after admission; see the “hospital days 1–5” phase)."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（第1–5天）",
+            "en": "After admission (hospital days 1–5)"
+          },
+          "text": {
+            "zh-CN": "神经元特异性烯醇化酶（NSE）250.4 μg/L（升高），胃泌素释放肽前体（ProGRP）>5000 ng/L（升高）；细胞角蛋白19片段（CYFRA21-1）、CA19-9、CA15-3和前列腺特异性抗原（PSA）正常。",
+            "en": "Neuron-specific enolase (NSE) 250.4 μg/L (raised); pro-gastrin-releasing peptide (ProGRP) > 5000 ng/L (raised); CYFRA 21-1, CA19-9, CA15-3 and prostate-specific antigen (PSA) normal."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "神经元特异性烯醇化酶（NSE）",
+                "en": "NSE"
+              },
+              "value": 250.4,
+              "unit": "μg/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "胃泌素释放肽前体（ProGRP）",
+                "en": "ProGRP"
+              },
+              "value": "> 5000",
+              "unit": "ng/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CYFRA21-1",
+                "en": "CYFRA 21-1"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CA19-9",
+                "en": "CA19-9"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CA15-3",
+                "en": "CA15-3"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "前列腺特异性抗原（PSA）",
+                "en": "PSA"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": "",
+              "flag": "N"
+            }
+          ],
+          "note": {
+            "zh-CN": "原文没有给参考范围；高低标注依原文。",
+            "en": "The source gives no reference ranges; the flags are the source's."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "胸部CT",
+        "en": "Chest CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部ct",
+          "肺部ct",
+          "胸部CT",
+          "肺ct",
+          "胸部增强ct"
+        ],
+        "en": [
+          "chest ct",
+          "ct chest",
+          "ct thorax",
+          "lung ct",
+          "ct scan of the chest"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "入院当天还没有这项结果（原文：入院后才完成，结果见“入院第1–5天”阶段）。",
+            "en": "No result yet on the day of admission (in the source it was done after admission; see the “hospital days 1–5” phase)."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（第1–5天）",
+            "en": "After admission (hospital days 1–5)"
+          },
+          "text": {
+            "zh-CN": "左肺门影增大，纵隔淋巴结增大（原文图1：箭头示左肺门占位及纵隔淋巴结肿大）。",
+            "en": "An enlarged left hilar shadow and enlarged mediastinal lymph nodes (source fig. 1: arrows on the left hilar mass and an enlarged mediastinal node)."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "pet-ct",
+      "name": {
+        "zh-CN": "全身PET-CT",
+        "en": "Whole-body PET-CT"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "pet",
+          "pet-ct",
+          "pet/ct",
+          "petct",
+          "正电子"
+        ],
+        "en": [
+          "pet",
+          "pet-ct",
+          "pet/ct",
+          "pet scan",
+          "positron"
+        ]
+      },
+      "requires": [
+        "pet-ct"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "入院当天还没有这项结果（原文：入院后才完成，结果见“入院第1–5天”阶段）。",
+            "en": "No result yet on the day of admission (in the source it was done after admission; see the “hospital days 1–5” phase)."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后（第1–5天）",
+            "en": "After admission (hospital days 1–5)"
+          },
+          "text": {
+            "zh-CN": "左肺上叶近肺门处代谢增高结节，1.6 cm×2.9 cm，SUVmax 5.6，伴左肺门、左锁骨上淋巴结转移；全身骨髓摄取不均匀增高；肝、胆、胰、脾未见代谢增高灶。",
+            "en": "A hypermetabolic nodule in the left upper lobe near the hilum, 1.6 × 2.9 cm, SUVmax 5.6, with left hilar and left supraclavicular lymph node metastases; uneven increased uptake throughout the bone marrow; no hypermetabolic focus in the liver, biliary tree, pancreas or spleen."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "bronchoscopy",
+      "name": {
+        "zh-CN": "支气管镜检查及活检",
+        "en": "Bronchoscopy with biopsy"
+      },
+      "category": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "支气管镜",
+          "气管镜",
+          "纤支镜",
+          "肺活检",
+          "支气管镜活检"
+        ],
+        "en": [
+          "bronchoscopy",
+          "bronchoscope",
+          "ebus",
+          "lung biopsy",
+          "bronchial biopsy"
+        ]
+      },
+      "requires": [
+        "endoscopy"
+      ],
+      "risk": "high",
+      "value": "low-value",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有做支气管镜。",
+            "en": "No bronchoscopy was done in the source."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有做支气管镜：作者认为他病情重、进展快、诊断证据已较充分，支气管镜等有创操作的风险远大于获益。",
+            "en": "No bronchoscopy was done in the source: the authors judged that, with a very sick and rapidly worsening patient and fairly complete evidence, the risk of invasive procedures such as bronchoscopy far outweighed the benefit."
+          },
+          "source": {
+            "zh-CN": "分析与讨论",
+            "en": "Discussion"
+          }
+        },
+        "deterioration": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有做支气管镜。",
+            "en": "No bronchoscopy was done in the source."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "cxr-day5",
+      "name": {
+        "zh-CN": "床旁胸部X线片（急诊）",
+        "en": "Urgent bedside chest X-ray"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "床旁胸片",
+          "急诊胸片",
+          "复查胸片",
+          "床边胸片",
+          "胸片",
+          "胸部x线片"
+        ],
+        "en": [
+          "portable cxr",
+          "bedside chest x-ray",
+          "urgent chest x-ray",
+          "repeat chest x-ray",
+          "chest x-ray",
+          "cxr"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "low",
+      "performedAt": "bedside",
+      "value": "essential",
+      "results": {
+        "deterioration": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第5天（转入肿瘤科当天）",
+            "en": "Hospital day 5 (the day of transfer to oncology)"
+          },
+          "text": {
+            "zh-CN": "右肺大面积团片状高密度影（出血？感染？）。",
+            "en": "A large area of patchy dense opacity in the right lung (haemorrhage? infection?)."
+          },
+          "note": {
+            "zh-CN": "报告中的疑问号为原文所有；没有后续影像或病原学结果。",
+            "en": "The question marks are the report's own; there is no later imaging or microbiology."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "abg",
+      "name": {
+        "zh-CN": "动脉血气分析",
+        "en": "Arterial blood gas"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "动脉血气",
+          "血气分析",
+          "abg"
+        ],
+        "en": [
+          "abg",
+          "arterial blood gas",
+          "blood gas",
+          "gases"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "deterioration": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第5天（转入肿瘤科当天）",
+            "en": "Hospital day 5 (the day of transfer to oncology)"
+          },
+          "text": {
+            "zh-CN": "提示Ⅰ型呼吸衰竭（原文没有给出具体数值）。",
+            "en": "Type I respiratory failure (no values given in the source)."
+          },
+          "source": {
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-cultures",
+      "name": {
+        "zh-CN": "血培养",
+        "en": "Blood cultures"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "血培养",
+          "培养",
+          "病原学",
+          "痰培养"
+        ],
+        "en": [
+          "blood cultures",
+          "cultures",
+          "microbiology",
+          "sputum culture"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "deterioration": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有记录是否留取血培养或做其他病原学检查。",
+            "en": "The source does not record blood cultures or any other microbiology."
+          },
+          "source": {
+            "zh-CN": "原文未记录",
+            "en": "Not recorded in the source"
+          }
         }
       }
     },
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "调阅原报告的后续记录",
+        "en": "Review the report's record of what followed"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访记录",
+          "随访",
+          "结局",
+          "后续情况",
+          "后来怎么样"
         ],
         "en": [
-          "Review treatment and follow-up record",
-          "followup"
+          "follow-up record",
+          "followup",
+          "follow-up",
+          "outcome",
+          "what happened next"
         ]
       },
       "requires": [
@@ -901,31 +2901,610 @@
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第5天（转入肿瘤科当天）",
+            "en": "Hospital day 5 (the day of transfer to oncology)"
+          },
           "text": {
-            "zh-CN": "确诊后转肿瘤科当日突发发热、呼吸困难和Ⅰ型呼吸衰竭，右肺大片影被考虑出血或感染。支持治疗后仍进展；进一步抢救终止，随访获悉转运途中死亡。未记录开始肿瘤特异治疗，也未证实肺部急变的唯一机制。",
-            "en": "On the day of oncology transfer after diagnosis, fever, dyspnoea and type I respiratory failure developed, with extensive right-lung opacities considered haemorrhage or infection. Deterioration continued despite support; further resuscitation ended and death in transit was reported. Tumour-specific therapy and a single confirmed mechanism of the pulmonary deterioration are not documented."
+            "zh-CN": "给予储氧面罩吸氧、输血、止血及美罗培南经验性抗感染等支持治疗后，病情仍持续进展，氧合无法维持。患者家属放弃进一步抢救，自动出院；电话随访获悉患者当日于转运途中死亡。原报告没有记录开始抗肿瘤治疗，肺部急性病变的原因（出血或感染）也未能明确。",
+            "en": "Despite reservoir-mask oxygen, transfusion, haemostatic treatment and empirical meropenem, he kept deteriorating and his oxygenation could not be maintained. His family declined further resuscitation and took him home against medical advice; a follow-up phone call learned that he died the same day on the way. The report records no anticancer treatment, and the cause of the acute lung change (haemorrhage or infection) was never established."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "病历摘要·诊治经过",
+            "en": "Case summary · course in hospital"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifMatches": "外院|以前|之前|outside|previous|earlier|old",
+        "ifHas": "cxr-day5",
+        "remove": [
+          "cxr-day5"
+        ]
+      },
+      {
+        "ifMatches": "床旁|急诊|复查|床边|portable|bedside|urgent|repeat",
+        "ifHas": "chest-xray-outside",
+        "remove": [
+          "chest-xray-outside"
+        ]
+      },
+      {
+        "ifMatches": "外院|outside|previous|local",
+        "ifHas": "marrow-flow",
+        "remove": [
+          "marrow-flow"
+        ],
+        "add": [
+          "outside-marrow"
+        ]
+      }
+    ],
+    "exact": {
+      "ct": [
+        "ct"
+      ],
+      "ctscan": [
+        "ct"
+      ],
+      "胸片": [
+        "cxr-day5"
+      ],
+      "cxr": [
+        "cxr-day5"
+      ],
+      "骨穿": [
+        "marrow-flow"
+      ]
+    },
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立外周静脉通路并抽血",
+        "en": "Insert a peripheral IV cannula and draw bloods"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "开通静脉",
+          "扎针",
+          "抽血",
+          "建立通路"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "venflon",
+          "draw bloods",
+          "iv line"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针，置管时同步抽血送检",
+        "en": "Peripheral IV cannula; draw bloods while cannulating"
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "scope": "nursing",
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "外周静脉通路已建立，血标本已抽取。",
+        "en": "Peripheral IV access is in and the bloods are drawn."
+      }
+    },
+    {
+      "id": "transfusion-support",
+      "name": {
+        "zh-CN": "输血与止血支持（红细胞、血小板）",
+        "en": "Transfusion and haemostatic support (red cells, platelets)"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "输血",
+          "输红细胞",
+          "输血小板",
+          "成分输血",
+          "止血",
+          "备血"
+        ],
+        "en": [
+          "transfusion",
+          "transfuse",
+          "red cells",
+          "platelets",
+          "blood products",
+          "platelet transfusion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按血红蛋白、血小板计数和出血情况输注红细胞和/或血小板（原报告只写“输血”“止血”，未写成分和剂量）",
+        "en": "Red cells and/or platelets according to the haemoglobin, the platelet count and any bleeding (the report says only “transfusion” and “haemostasis”, without products or doses)"
+      },
+      "requires": [
+        "blood-bank",
+        "iv-access"
+      ],
+      "scope": "nursing",
+      "risk": "moderate",
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "any": [
+          {
+            "read": "outside-bloods",
+            "phase": "initial"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已配血并开始输注。",
+        "en": "Crossmatched and the transfusion is running."
+      }
+    },
+    {
+      "id": "nutrition-support",
+      "name": {
+        "zh-CN": "营养支持",
+        "en": "Nutritional support"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "营养支持",
+          "营养",
+          "恢复进食",
+          "营养科",
+          "肠内营养"
+        ],
+        "en": [
+          "nutritional support",
+          "nutrition",
+          "restart eating",
+          "dietitian",
+          "feeding"
+        ]
+      },
+      "dose": {
+        "zh-CN": "评估营养状况，恢复经口进食并补充营养，必要时请营养科会诊",
+        "en": "Assess his nutrition, restart oral intake with supplements, and ask the dietitians to see him if needed"
+      },
+      "requires": [],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "已安排营养支持。",
+        "en": "Nutritional support is arranged."
+      }
+    },
+    {
+      "id": "sodium-plan",
+      "name": {
+        "zh-CN": "低钠血症：查明原因并缓慢纠正",
+        "en": "Hyponatraemia: find the cause and correct it slowly"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "低钠处理",
+          "纠正低钠",
+          "限水",
+          "补钠计划",
+          "缓慢补钠",
+          "低钠评估"
+        ],
+        "en": [
+          "hyponatraemia plan",
+          "correct the sodium slowly",
+          "fluid restriction",
+          "sodium plan",
+          "slow correction"
+        ]
+      },
+      "dose": {
+        "zh-CN": "评估容量状态，送检血、尿渗透压和尿钠；若符合SIADH，先限制入液量；定期复查血钠，24小时内升高不超过10 mmol/L，此后每24小时不超过8 mmol/L，高危者（如长期大量饮酒、营养不良）目标更保守",
+        "en": "Assess volume status and send serum and urine osmolality and urine sodium; if it is SIADH, restrict fluids first; recheck the sodium regularly, keeping the rise to no more than 10 mmol/L in the first 24 h and 8 mmol/L in each 24 h after — lower targets for high-risk patients (such as heavy drinkers or the malnourished)"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "sodium"
+      },
+      "response": {
+        "zh-CN": "低钠血症的评估和缓慢纠正计划已下达，护士按医嘱复查血钠。",
+        "en": "The hyponatraemia work-up and slow-correction plan are ordered; the nurses will recheck the sodium as instructed."
+      }
+    },
+    {
+      "id": "hypertonic-bolus",
+      "name": {
+        "zh-CN": "3%高渗盐水150 mL静脉推注",
+        "en": "3 % hypertonic saline 150 mL IV bolus"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "高渗盐水",
+          "3%氯化钠",
+          "高渗钠",
+          "浓钠推注"
+        ],
+        "en": [
+          "hypertonic saline",
+          "3% saline",
+          "3 percent saline",
+          "hypertonic bolus"
+        ]
+      },
+      "dose": {
+        "zh-CN": "3%氯化钠150 mL，20分钟内静脉输注，可重复",
+        "en": "3 % sodium chloride 150 mL IV over 20 min, repeatable"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 2,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "他的低钠是慢性的，神志清楚、没有严重症状：高渗盐水推注只用于有严重症状（如抽搐、昏迷、心肺窘迫）的低钠血症。过快升高血钠会引起渗透性脱髓鞘，长期大量饮酒和营养不良使他属于高危。",
+        "en": "His hyponatraemia is chronic and he is alert without severe symptoms: a hypertonic saline bolus is only for hyponatraemia with severe symptoms (such as seizures, coma or cardiorespiratory distress). Raising the sodium too fast causes osmotic demyelination, and heavy drinking and malnutrition put him at high risk."
+      },
+      "response": {
+        "zh-CN": "高渗盐水已开始推注。",
+        "en": "The hypertonic saline bolus is running."
+      }
+    },
+    {
+      "id": "rapid-correction",
+      "name": {
+        "zh-CN": "静脉补钠，力争24小时内把血钠纠正到正常",
+        "en": "IV sodium to bring the level back to normal within 24 hours"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "快速补钠",
+          "补钠到正常",
+          "24小时纠正",
+          "静脉补钠",
+          "浓氯化钠"
+        ],
+        "en": [
+          "rapid correction",
+          "correct sodium to normal",
+          "normalise the sodium",
+          "iv sodium",
+          "concentrated saline"
+        ]
+      },
+      "dose": {
+        "zh-CN": "静脉补充氯化钠，目标24小时内血钠≥135 mmol/L",
+        "en": "IV sodium chloride aiming for a sodium of ≥ 135 mmol/L within 24 hours"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "从121 mmol/L在24小时内纠正到正常，升幅远超每24小时10 mmol/L的上限；慢性低钠时大脑已经适应，过快纠正会引起渗透性脱髓鞘，饮酒和营养不良使他风险更高。",
+        "en": "Going from 121 mmol/L to normal in 24 hours far exceeds the limit of 10 mmol/L per 24 hours; the brain has adapted to chronic hyponatraemia, and over-rapid correction causes osmotic demyelination — a higher risk with his drinking and malnutrition."
+      },
+      "response": {
+        "zh-CN": "已开始静脉补钠。",
+        "en": "IV sodium replacement has started."
+      }
+    },
+    {
+      "id": "aml-induction",
+      "name": {
+        "zh-CN": "按急性髓系白血病开始诱导化疗（“3+7”方案）",
+        "en": "Start induction chemotherapy for AML (“7 + 3”)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "诱导化疗",
+          "3+7",
+          "da方案",
+          "柔红霉素",
+          "阿糖胞苷",
+          "白血病化疗"
+        ],
+        "en": [
+          "induction chemotherapy",
+          "7+3",
+          "daunorubicin",
+          "cytarabine",
+          "aml chemo",
+          "induction"
+        ]
+      },
+      "dose": {
+        "zh-CN": "柔红霉素60 mg/m²静脉注射，第1–3天；阿糖胞苷100–200 mg/m²/日持续静脉输注，第1–7天",
+        "en": "Daunorubicin 60 mg/m² IV on days 1–3 plus cytarabine 100–200 mg/m²/day by continuous IV infusion on days 1–7"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "急性髓系白血病的诊断并不成立：“原始细胞”无Auer小体、POX阴性，髓系和其他谱系标志大多阴性，病程也不像未治疗的急性白血病。对浸润骨髓的转移癌给予强烈诱导化疗，只会加重骨髓抑制、感染和出血，却治不了真正的病。应先做骨髓活检免疫组化并寻找实体瘤原发灶。",
+        "en": "The diagnosis of AML does not stand: the “blasts” have no Auer rods and a negative POX, most myeloid and other lineage markers are negative, and the course is not that of untreated acute leukaemia. Intensive induction for what is in fact a carcinoma infiltrating the marrow only deepens marrow suppression, infection and bleeding without treating the real disease. Get the trephine immunohistochemistry and look for a solid primary first."
+      },
+      "response": {
+        "zh-CN": "已开具诱导化疗医嘱。",
+        "en": "Induction chemotherapy is prescribed."
+      }
+    },
+    {
+      "id": "pancreatitis-nbm",
+      "name": {
+        "zh-CN": "继续按急性胰腺炎处理：禁食、静脉补液、抑酸",
+        "en": "Carry on treating acute pancreatitis: nil by mouth, IV fluids, acid suppression"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "禁食",
+          "按胰腺炎治",
+          "胰腺炎治疗",
+          "抑酸",
+          "禁食补液"
+        ],
+        "en": [
+          "nil by mouth",
+          "nbm",
+          "treat pancreatitis",
+          "acid suppression",
+          "pancreatitis treatment"
+        ]
+      },
+      "dose": {
+        "zh-CN": "禁食，静脉补液，质子泵抑制剂抑酸",
+        "en": "Nil by mouth, IV fluids and a proton-pump inhibitor"
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "scope": "medical",
+      "risk": "low",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "他这次没有腹痛，腹部影像大致正常，按胰腺炎治疗后胰酶也没有下降——急性胰腺炎证据不足，胰酶升高需要另找原因；继续禁食只会加重他的营养不良（已瘦了14 kg）。",
+        "en": "He has no abdominal pain this time, abdominal imaging is essentially normal and the enzymes did not fall with pancreatitis treatment — there is not enough evidence of acute pancreatitis, so the raised enzymes need another explanation; more fasting only worsens his malnutrition (he has lost 14 kg)."
+      },
+      "response": {
+        "zh-CN": "已按胰腺炎继续处理。",
+        "en": "Pancreatitis treatment is continued."
+      }
+    },
+    {
+      "id": "transfer-oncology",
+      "name": {
+        "zh-CN": "确诊后转专科继续治疗",
+        "en": "Transfer to the treating specialty once the diagnosis is confirmed"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "转肿瘤科",
+          "转科",
+          "肿瘤科",
+          "肿瘤内科",
+          "请专科接管"
+        ],
+        "en": [
+          "transfer to oncology",
+          "oncology",
+          "medical oncology",
+          "transfer",
+          "hand over to the specialty"
+        ]
+      },
+      "dose": {
+        "zh-CN": "与接收专科交接后转科，由专科制定治疗方案",
+        "en": "Hand over to the receiving specialty and transfer, for them to plan treatment"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "肿瘤科接收，他当天转入肿瘤科病房。",
+        "en": "Oncology accepts him, and he moves to the oncology ward the same day."
+      }
+    },
+    {
+      "id": "o2-reservoir",
+      "name": {
+        "zh-CN": "储氧面罩吸氧",
+        "en": "Oxygen by reservoir (non-rebreather) mask"
+      },
+      "kind": "oxygen",
+      "device": "non-rebreather-mask",
+      "aliases": {
+        "zh-CN": [
+          "储氧面罩",
+          "非重复呼吸面罩",
+          "面罩吸氧",
+          "高流量吸氧",
+          "吸氧"
+        ],
+        "en": [
+          "non-rebreather",
+          "nrb",
+          "reservoir mask",
+          "high-flow oxygen",
+          "oxygen"
+        ]
+      },
+      "dose": {
+        "zh-CN": "储氧面罩，氧流量15 L/min，按SpO₂调整",
+        "en": "Reservoir mask at 15 L/min, titrated to the SpO₂"
+      },
+      "requires": [
+        "oxygen"
+      ],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "deterioration"
+      },
+      "response": {
+        "zh-CN": "已给储氧面罩吸氧，护士持续观察他的氧合。",
+        "en": "Reservoir-mask oxygen is on; the nurse keeps watching his oxygenation."
+      }
+    },
+    {
+      "id": "meropenem",
+      "name": {
+        "zh-CN": "美罗培南经验性抗感染",
+        "en": "Empirical meropenem"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "美罗培南",
+          "抗生素",
+          "抗感染",
+          "广谱抗生素",
+          "碳青霉烯"
+        ],
+        "en": [
+          "meropenem",
+          "antibiotics",
+          "broad-spectrum antibiotic",
+          "carbapenem",
+          "empirical antibiotics"
+        ]
+      },
+      "dose": {
+        "zh-CN": "美罗培南1 g静脉滴注，每8小时一次（原报告没有写剂量；此为肾功能正常成人的常用剂量）",
+        "en": "Meropenem 1 g IV every 8 hours (the report gives no dose; this is a usual adult dose with normal renal function)"
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "deterioration"
+      },
+      "response": {
+        "zh-CN": "美罗培南已开始静脉滴注。若还没有留取血培养，应立即留取，但不要因此推迟用药。",
+        "en": "Meropenem is running IV. If blood cultures have not been taken, take them now — but do not delay the antibiotic for them."
+      }
+    },
+    {
+      "id": "goals-of-care",
+      "name": {
+        "zh-CN": "与患者及家属沟通病情和治疗目标（包括是否进一步抢救）",
+        "en": "Talk with him and his family about the illness and the goals of care, including further resuscitation"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "沟通",
+          "家属谈话",
+          "病情告知",
+          "治疗目标",
+          "抢救意愿",
+          "预后",
+          "谈话"
+        ],
+        "en": [
+          "goals of care",
+          "talk to the family",
+          "breaking bad news",
+          "resuscitation status",
+          "dnacpr",
+          "prognosis discussion",
+          "family meeting"
+        ]
+      },
+      "dose": {
+        "zh-CN": "坦诚说明诊断、病情的严重程度和可能的走向，了解他和家属的意愿，共同决定是否进入重症监护、是否进一步抢救",
+        "en": "Explain the diagnosis, how serious things are and what may happen; find out his and his family's wishes; decide together about intensive care and further resuscitation"
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "none",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "phase": "deterioration"
+      },
+      "response": {
+        "zh-CN": "你已与他和家属谈话，并记录了他们的意愿。",
+        "en": "You have talked with him and his family and recorded their wishes."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-assess",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "梳理起病经过、外院诊治和查体",
+        "en": "Piece together the illness, the earlier care and the examination"
+      },
+      "short": {
+        "zh-CN": "问诊查体",
+        "en": "History & exam"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "起病快还是慢？外院给了什么诊断、治疗后怎样？哪些症状支持那个诊断，哪些不支持？查体时要重点看哪些出血和浸润的体征？",
+        "en": "Did this come on quickly or slowly? What did the other hospital diagnose, and how did he respond? Which symptoms fit that label — and which don't? Which signs of bleeding or infiltration will you look for?"
+      },
+      "guidance": {
+        "zh-CN": "到他床旁询问病史并完成查体。",
+        "en": "Take his history at the bedside and examine him."
       },
       "completeWhen": {
         "all": [
@@ -940,82 +3519,112 @@
           },
           {
             "asked": "prior-label"
-          }
-        ]
-      }
-    },
-    {
-      "id": "objective-2",
-      "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
-      },
-      "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
-      },
-      "completeWhen": {
-        "all": [
+          },
+          {
+            "asked": "abdominal-pain"
+          },
+          {
+            "asked": "respiratory"
+          },
+          {
+            "asked": "alcohol"
+          },
+          {
+            "examined": "vitals"
+          },
           {
             "examined": "skin"
           },
           {
-            "examined": "nodes-abdomen"
-          }
-        ]
-      }
-    },
-    {
-      "id": "objective-3",
-      "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
-      },
-      "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
-      },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
-      },
-      "completeWhen": {
-        "all": [
-          {
-            "decided": "management"
+            "examined": "nodes"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "examined": "abdomen"
+          },
+          {
+            "examined": "lungs"
           }
         ]
-      }
-    }
-  ],
-  "decisions": [
-    {
-      "id": "diagnosis",
-      "prompt": {
-        "zh-CN": "哪种结论最符合组织与影像证据？",
-        "en": "Which conclusion best fits tissue and imaging evidence?"
       },
-      "kind": "single",
-      "requires": {
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-next",
+      "title": {
+        "zh-CN": "核对已有资料，决定下一步",
+        "en": "Review the records and decide what comes next"
+      },
+      "short": {
+        "zh-CN": "下一步",
+        "en": "Next step"
+      },
+      "hint": {
+        "zh-CN": "这些“原始细胞”像典型的急性髓系白血病吗？哪些结果用白血病解释不通？在开始任何强烈治疗之前还缺什么证据？低钠应该怎样评估、纠正多快？",
+        "en": "Do these “blasts” look like typical AML? Which results can leukaemia not explain? What evidence is still missing before any intensive treatment? How should the low sodium be assessed, and how fast corrected?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅外院和本院急诊的资料，然后到会诊板作出两项决策。",
+        "en": "Read the outside and emergency records at a records terminal, then make the two decisions at the case board."
+      },
+      "completeWhen": {
         "all": [
+          {
+            "read": "outside-bloods",
+            "phase": "initial"
+          },
           {
             "read": "marrow-flow",
-            "phase": "workup"
+            "phase": "initial"
           },
+          {
+            "read": "enzymes",
+            "phase": "initial"
+          },
+          {
+            "decided": "next-step"
+          },
+          {
+            "decided": "sodium"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "marrow-flow",
+            "phase": "initial"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-diagnosis",
+      "title": {
+        "zh-CN": "寻找原发灶并明确诊断",
+        "en": "Find the primary and make the diagnosis"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
+      },
+      "hint": {
+        "zh-CN": "哪项检查能直接回答骨髓里是什么细胞？如果是实体瘤，原发灶最可能在哪里，用什么检查去找？确诊之后由谁接手？",
+        "en": "Which test answers directly what the cells in the marrow are? If it is a solid tumour, where is the primary most likely to be, and how will you find it? Who takes over once the diagnosis is made?"
+      },
+      "guidance": {
+        "zh-CN": "在入院后阶段重新开具并调阅检查，到会诊板作出诊断，然后安排转科。",
+        "en": "In the post-admission phase, order and read the tests, make the diagnosis at the case board, then arrange the transfer."
+      },
+      "completeWhen": {
+        "all": [
           {
             "read": "biopsy",
             "phase": "workup"
@@ -1025,91 +3634,470 @@
             "phase": "workup"
           },
           {
-            "read": "pet-markers",
+            "read": "pet-ct",
             "phase": "workup"
+          },
+          {
+            "read": "tumour-markers",
+            "phase": "workup"
+          },
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "intervened": "transfer-oncology"
           }
         ]
       },
-      "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
-      },
-      "options": [
+      "waypoints": [
         {
-          "id": "supported",
-          "text": {
-            "zh-CN": "骨髓转移性小细胞神经内分泌癌，临床支持肺原发，肺灶未直接活检",
-            "en": "Metastatic small-cell neuroendocrine carcinoma in marrow, with a clinically supported pulmonary primary not directly biopsied"
+          "unless": {
+            "read": "biopsy",
+            "phase": "workup"
           },
-          "correct": true,
-          "feedback": {
-            "zh-CN": "形态需与免疫组化结合；肺原发推断和骨髓病理确证应分开表达。",
-            "en": "Morphology requires immunohistochemical correlation; inference of a pulmonary primary must be distinguished from proven marrow pathology."
-          }
+          "target": "histopathology"
         },
         {
-          "id": "unsupported",
-          "text": {
-            "zh-CN": "看到大量原始样细胞即可确诊AML，忽略上皮及神经内分泌标记",
-            "en": "Numerous blast-like cells establish AML regardless of epithelial/neuroendocrine markers"
+          "unless": {
+            "read": "pet-ct",
+            "phase": "workup"
           },
-          "correct": false,
-          "feedback": {
-            "zh-CN": "形态需与免疫组化结合；肺原发推断和骨髓病理确证应分开表达。",
-            "en": "Morphology requires immunohistochemical correlation; inference of a pulmonary primary must be distinguished from proven marrow pathology."
-          }
+          "target": "pet-ct"
+        },
+        {
+          "target": "board"
         }
       ]
     },
     {
-      "id": "management",
+      "id": "obj-deterioration",
+      "title": {
+        "zh-CN": "处理转科当天的急性恶化",
+        "en": "Manage the sudden deterioration on the day of transfer"
+      },
+      "short": {
+        "zh-CN": "急变",
+        "en": "Deterioration"
+      },
+      "hint": {
+        "zh-CN": "发热加新的肺部阴影，在这个血小板极低、免疫低下的患者身上要想到什么？哪些处理一刻也不能等？谁需要参与决定接下来怎么办？",
+        "en": "In a man with very low platelets and weak defences, what does fever with a new lung shadow make you think of? What cannot wait? Who needs to be part of deciding what happens next?"
+      },
+      "guidance": {
+        "zh-CN": "到床旁重新评估，开具床旁胸片和血气，到会诊板作出决策并开始处理。",
+        "en": "Reassess him at the bedside, get the bedside chest X-ray and a blood gas, decide at the case board and start treatment."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "any": [
+              {
+                "examined": "lungs-day5"
+              },
+              {
+                "examined": "distress-day5"
+              }
+            ]
+          },
+          {
+            "read": "cxr-day5",
+            "phase": "deterioration"
+          },
+          {
+            "read": "abg",
+            "phase": "deterioration"
+          },
+          {
+            "decided": "deterioration"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "any": [
+              {
+                "examined": "lungs-day5"
+              },
+              {
+                "examined": "distress-day5"
+              }
+            ]
+          },
+          "target": "patient"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "核对原报告的结局",
+        "en": "Check the outcome in the report"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "原报告的救治做了什么？结局怎样？哪些原因到最后仍不清楚？",
+        "en": "What did the report's team do, and what happened? Which causes were never established?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅原报告的后续记录。",
+        "en": "Read the report's record of what followed at a records terminal."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "next-step",
       "prompt": {
-        "zh-CN": "如何在治疗前处理这些不一致？",
-        "en": "How should discordant evidence be handled before treatment?"
+        "zh-CN": "骨髓涂片“原始细胞”0.76，但未见Auer小体、POX阴性，异常细胞群只表达CD15、CD117，其余髓系及各谱系标志多为阴性；同时低钠持续、胰酶升高，外院按急性髓系白血病、急性胰腺炎处理无效。下一步最合适的是？",
+        "en": "The marrow smear shows 76 % “blasts”, but no Auer rods and a negative POX, and the abnormal population expresses only CD15 and CD117, with most myeloid and other lineage markers negative; meanwhile the sodium stays low and the pancreatic enzymes high, and treatment for AML and acute pancreatitis elsewhere has not helped. What is the best next step?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "decided": "diagnosis"
+            "asked": "prior-label"
           },
           {
-            "read": "blood",
-            "phase": "workup"
+            "read": "outside-bloods",
+            "phase": "initial"
+          },
+          {
+            "read": "marrow-flow",
+            "phase": "initial"
           },
           {
             "read": "enzymes",
+            "phase": "initial"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先询问外院的诊治经过，并调阅外院血液检查、本院急诊骨髓涂片与免疫分型及胰酶资料。",
+        "en": "First ask about the care at the other hospital, and read the outside blood tests, this hospital's emergency marrow smear and immunophenotyping, and the enzyme results."
+      },
+      "options": [
+        {
+          "id": "withhold-search",
+          "text": {
+            "zh-CN": "暂不诱导化疗：先给支持治疗，追查骨髓活检病理及免疫组化，并寻找实体瘤原发灶（如胸部CT）",
+            "en": "Hold off induction chemotherapy: give supportive care, chase the marrow trephine histology and immunohistochemistry, and look for a solid primary (for example with a chest CT)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确，也是原报告团队的做法。形态、细胞化学和免疫分型都不典型，病程也不像未治疗的急性白血病，还有白血病解释不了的低钠和胰酶升高——应先排除骨髓转移癌。作者在入院后第5天明确了诊断。",
+            "en": "Correct — and what the report's team did. Morphology, cytochemistry and immunophenotype are all atypical, the course is not that of untreated acute leukaemia, and leukaemia does not explain the hyponatraemia or the raised enzymes — so a carcinoma metastatic to the marrow must be excluded first. The authors had the diagnosis on hospital day 5."
+          }
+        },
+        {
+          "id": "start-induction",
+          "text": {
+            "zh-CN": "诱导化疗不能拖：骨髓原始细胞已达76%，今天就按急性髓系白血病开始“3+7”诱导",
+            "en": "Induction can't wait — the marrow has 76 % blasts, so start “7 + 3” induction for AML today"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。“原始细胞”比例高不等于急性髓系白血病：本例无Auer小体、POX阴性、谱系标志大多阴性，这个诊断并不成立。谱系判断错误时给予强烈化疗，只会造成严重的骨髓抑制、感染和出血。",
+            "en": "Not appropriate. A high proportion of “blasts” does not make it AML: with no Auer rods, a negative POX and mostly negative lineage markers, that diagnosis is unproven. Intensive chemotherapy given on the wrong lineage brings profound marrow suppression, infection and bleeding."
+          }
+        },
+        {
+          "id": "treat-pancreatitis",
+          "text": {
+            "zh-CN": "先继续按急性胰腺炎禁食、补液、抑酸，等胰酶降下来再评估骨髓",
+            "en": "Keep treating acute pancreatitis — nil by mouth, fluids, acid suppression — until the enzymes fall, then reassess the marrow"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。他这次没有腹痛，外院腹部超声大致正常，禁食、补液、抑酸后胰酶也没有下降——急性胰腺炎证据不足；继续禁食只会加重营养不良。胰酶升高需要另找原因。",
+            "en": "Not appropriate. He has no abdominal pain this time, the earlier abdominal ultrasound was essentially normal, and the enzymes did not fall with fasting, fluids and acid suppression — there is not enough evidence of acute pancreatitis, and more fasting only worsens his malnutrition. The raised enzymes need another explanation."
+          }
+        },
+        {
+          "id": "correct-sodium-first",
+          "text": {
+            "zh-CN": "先把血钠尽快纠正到正常，再考虑其他检查",
+            "en": "Correct the sodium to normal as fast as possible first, then think about other tests"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。他的低钠是慢性的，神志清楚、没有严重症状，不需要也不应该快速纠正：过快升高血钠可致渗透性脱髓鞘，长期大量饮酒和营养不良使他风险更高。低钠本身是诊断线索，应查明原因。",
+            "en": "Not appropriate. His hyponatraemia is chronic and he is alert with no severe symptoms, so it neither needs nor should get rapid correction: raising the sodium too fast can cause osmotic demyelination, and heavy drinking and malnutrition put him at higher risk. The low sodium is itself a clue — find its cause."
+          }
+        }
+      ]
+    },
+    {
+      "id": "sodium",
+      "prompt": {
+        "zh-CN": "外院血钠121 mmol/L，入院后低钠持续、补钠效果不明显；他神志清楚，没有严重症状。他长期大量饮酒，体重下降了14 kg。低钠血症的处理最合适的是？",
+        "en": "The sodium was 121 mmol/L at the other hospital and has stayed low since admission despite supplementation; he is alert with no severe symptoms. He has a long history of heavy drinking and has lost 14 kg. What is the best approach to the hyponatraemia?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "outside-bloods",
+            "phase": "initial"
+          },
+          {
+            "read": "electrolytes",
+            "phase": "initial"
+          },
+          {
+            "any": [
+              {
+                "asked": "confusion"
+              },
+              {
+                "examined": "general"
+              }
+            ]
+          },
+          {
+            "asked": "alcohol"
+          },
+          {
+            "asked": "weight"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅外院血液检查和入院后的电解质记录，评估他的神志，并询问饮酒和体重变化。",
+        "en": "First read the outside blood tests and the electrolyte record since admission, assess his consciousness, and ask about alcohol and weight."
+      },
+      "options": [
+        {
+          "id": "workup-slow",
+          "text": {
+            "zh-CN": "按慢性、无严重症状的低钠处理：评估容量状态，查血、尿渗透压和尿钠（甲状腺功能外院正常，肾上腺皮质功能还需评估），针对病因治疗；如需纠正，24小时内升高不超过10 mmol/L、此后每24小时不超过8 mmol/L，并因饮酒和营养不良取更保守的目标",
+            "en": "Treat it as chronic hyponatraemia without severe symptoms: assess volume status, send serum and urine osmolality and urine sodium (thyroid function was normal elsewhere; adrenal function still needs assessing), and treat the cause; if correcting, keep the rise to no more than 10 mmol/L in the first 24 h and 8 mmol/L in each 24 h after, aiming lower because of his drinking and malnutrition"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确（欧洲低钠血症指南2014）。SIADH是排除性诊断：需要低血浆渗透压、尿液不适当浓缩、尿钠、临床容量正常，以及甲状腺和肾上腺功能正常等依据。原报告入院初期没有查渗透压和尿钠（作者认为当时首要的是尽快明确原发病）。限制纠正速度是防止渗透性脱髓鞘的关键。",
+            "en": "Correct (European hyponatraemia guideline 2014). SIADH is a diagnosis of exclusion: it needs a low serum osmolality, inappropriately concentrated urine, a urine sodium, clinical euvolaemia, and normal thyroid and adrenal function. The report did not measure osmolality or urine sodium early in the admission (the authors felt the first priority was to find the underlying disease). Limiting the rate of correction is what prevents osmotic demyelination."
+          }
+        },
+        {
+          "id": "hypertonic-now",
+          "text": {
+            "zh-CN": "立即静脉推注3%高渗盐水，迅速提高血钠",
+            "en": "Give a 3 % hypertonic saline bolus now to raise the sodium quickly"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。高渗盐水推注用于有严重症状（如抽搐、昏迷、心肺窘迫）的低钠血症；他神志清楚、没有严重症状，快速升高血钠会增加渗透性脱髓鞘的风险。",
+            "en": "Not appropriate. A hypertonic saline bolus is for hyponatraemia with severe symptoms (such as seizures, coma or cardiorespiratory distress); he is alert without severe symptoms, and raising the sodium quickly adds the risk of osmotic demyelination."
+          }
+        },
+        {
+          "id": "normal-in-24h",
+          "text": {
+            "zh-CN": "24小时内把血钠补到正常（≥135 mmol/L）",
+            "en": "Bring the sodium back to normal (≥ 135 mmol/L) within 24 hours"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。从121 mmol/L在24小时内补到正常，升幅远超10 mmol/L的上限；慢性低钠时大脑已经适应，过快纠正会引起渗透性脱髓鞘，饮酒和营养不良使他风险更高。",
+            "en": "Not appropriate. Going from 121 mmol/L to normal in 24 hours far exceeds the 10 mmol/L limit; the brain has adapted to chronic hyponatraemia, and over-rapid correction causes osmotic demyelination — a higher risk with his drinking and malnutrition."
+          }
+        },
+        {
+          "id": "ignore",
+          "text": {
+            "zh-CN": "低钠只是吃得少引起的，不用评估，等恢复进食自然会好",
+            "en": "The low sodium is just from eating so little — no work-up needed; it will recover once he eats again"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。持续、补钠效果不明显的低钠血症必须查明原因；它本身就是诊断线索，可能来自尚未发现的原发病。",
+            "en": "Not appropriate. Persistent hyponatraemia that does not respond to supplementation needs its cause found; it is a diagnostic clue in itself and may come from a disease not yet found."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "骨髓活检符合小细胞神经内分泌癌。结合胸部CT、PET-CT和血清肿瘤标志物，最合适的诊断是？",
+        "en": "The marrow trephine is consistent with small-cell neuroendocrine carcinoma. With the chest CT, the PET-CT and the serum tumour markers, what is the best diagnosis?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "pet-ct",
+            "phase": "workup"
+          },
+          {
+            "read": "tumour-markers",
             "phase": "workup"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先在入院后阶段调阅骨髓活检免疫组化、胸部CT、PET-CT和血清肿瘤标志物。",
+        "en": "First read, in the post-admission phase, the trephine immunohistochemistry, the chest CT, the PET-CT and the serum tumour markers."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "sclc-marrow",
           "text": {
-            "zh-CN": "血液、病理与肿瘤团队复核来源并支持贫血、出血及低钠；不按未证实AML直接诱导化疗",
-            "en": "Haematology, pathology and oncology review the primary while supporting anaemia, bleeding and sodium abnormalities; do not give AML induction on an unconfirmed label"
+            "zh-CN": "小细胞肺癌（左肺门中心型）骨髓转移，广泛期（IV期）；肺部原发灶依据临床证据推定，未取得肺部组织",
+            "en": "Small-cell lung cancer (central, left hilar) with bone marrow metastasis — extensive stage (stage IV); the lung primary is inferred from clinical evidence, without lung tissue"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "胰酶和低钠需要机制评估；不完整证据不能当作独立确诊，错误谱系判断会改变治疗方向。",
-            "en": "Enzyme elevation and hyponatraemia need mechanistic assessment; incomplete evidence is not confirmation, and wrong lineage assignment changes treatment direction."
+            "zh-CN": "正确。骨髓病理确定了小细胞癌；中心型左肺门高代谢占位，PET上只有肺、肺门/纵隔、锁骨上淋巴结和骨髓摄取，加上NSE、ProGRP高滴度，共同支持肺原发（原报告诊断为小细胞肺癌）。骨髓受累即远处转移，属广泛期。左锁骨上淋巴结转移按TNM分期（第7版和第8版相同）为N3，原报告写作T1N2M1，其中N分期有误。",
+            "en": "Correct. The marrow histology establishes small-cell carcinoma; a central, hypermetabolic left hilar mass, PET uptake only in the lung, hilar/mediastinal and supraclavicular nodes and the marrow, and very high NSE and ProGRP together support a lung primary (the report's diagnosis). Marrow involvement is distant metastasis: extensive stage. A left supraclavicular node metastasis is N3 in the TNM classification (the same in the 7th and 8th editions), so the report's T1N2M1 has the N category wrong."
           }
         },
         {
-          "id": "unsupported",
+          "id": "pancreatic-net",
           "text": {
-            "zh-CN": "把胰酶升高和低钠分别当作已确诊胰腺炎与SIADH，直接进入AML诱导",
-            "en": "Treat pancreatitis and SIADH as already proven and proceed with AML induction"
+            "zh-CN": "胰腺神经内分泌癌骨髓转移（胰酶升高提示胰腺来源）",
+            "en": "Pancreatic neuroendocrine carcinoma with marrow metastasis (the raised enzymes point to the pancreas)"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "胰酶和低钠需要机制评估；不完整证据不能当作独立确诊，错误谱系判断会改变治疗方向。",
-            "en": "Enzyme elevation and hyponatraemia need mechanistic assessment; incomplete evidence is not confirmation, and wrong lineage assignment changes treatment direction."
+            "zh-CN": "不支持。PET-CT示肝、胆、胰、脾均无代谢增高灶，外院腹部超声也大致正常；胰酶升高可来自肿瘤的异位分泌，并不说明原发在胰腺。",
+            "en": "Not supported. PET-CT shows no hypermetabolic focus in the liver, biliary tree, pancreas or spleen, and the earlier abdominal ultrasound was essentially normal; raised enzymes can come from ectopic production by the tumour and do not place the primary in the pancreas."
+          }
+        },
+        {
+          "id": "aml-aberrant",
+          "text": {
+            "zh-CN": "急性髓系白血病伴异常抗原表达，骨髓中的癌细胞只是继发改变",
+            "en": "AML with aberrant antigen expression; the carcinoma cells in the marrow are a secondary change"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不支持。肿瘤细胞表达上皮和神经内分泌标记（AE1/AE3、CAM5.2、Syn、CgA），而MPO、LCA阴性——这些细胞不是造血细胞。",
+            "en": "Not supported. The tumour cells express epithelial and neuroendocrine markers (AE1/AE3, CAM5.2, synaptophysin, CgA) and are MPO- and LCA-negative — they are not blood-forming cells."
+          }
+        },
+        {
+          "id": "must-bronchoscope",
+          "text": {
+            "zh-CN": "原发灶不明的神经内分泌癌，必须先做支气管镜取得肺组织才能下诊断",
+            "en": "Neuroendocrine carcinoma of unknown primary — bronchoscopy for lung tissue is needed before any diagnosis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "组织学诊断已经由骨髓活检确立，肺原发靠临床证据推定；作者认为他病情重、进展快、血小板极低，支气管镜等有创操作的风险远大于获益。指南通常要求病理确诊——本例的组织来自骨髓。",
+            "en": "The histological diagnosis already comes from the marrow, and the lung primary is inferred clinically; the authors judged that in a very sick, rapidly worsening man with very low platelets, bronchoscopy and other invasive procedures carried far more risk than benefit. Guidelines ask for a pathological diagnosis — here the tissue is the marrow."
+          }
+        }
+      ]
+    },
+    {
+      "id": "deterioration",
+      "prompt": {
+        "zh-CN": "转入肿瘤科当天，他出现发热、呼吸困难，双肺湿啰音；胸片示右肺大片高密度影（出血？感染？），血气为Ⅰ型呼吸衰竭；入院后血小板在11–21×10⁹/L之间。接下来最合适的处理是？",
+        "en": "On the day he moves to oncology he develops fever and breathlessness with crackles over both lungs; the chest X-ray shows a large dense opacity in the right lung (haemorrhage? infection?), and the blood gas shows type I respiratory failure; his platelets since admission have been 11–21 ×10⁹/L. What is the best management now?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "any": [
+              {
+                "examined": "lungs-day5"
+              },
+              {
+                "examined": "distress-day5"
+              }
+            ]
+          },
+          {
+            "read": "cxr-day5",
+            "phase": "deterioration"
+          },
+          {
+            "read": "abg",
+            "phase": "deterioration"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先到床旁重新评估他，调阅床旁胸片和动脉血气，并确认入院后的血常规。",
+        "en": "First reassess him at the bedside, read the bedside chest X-ray and the blood gas, and check the blood counts since admission."
+      },
+      "options": [
+        {
+          "id": "resus-bundle",
+          "text": {
+            "zh-CN": "立即储氧面罩高流量给氧，留取血培养后尽快开始经验性广谱抗生素，输注血小板等血制品并处理出血，请上级和重症医生评估，同时尽早与他和家属坦诚讨论治疗目标",
+            "en": "High-flow oxygen by reservoir mask now, blood cultures and then prompt empirical broad-spectrum antibiotics, platelets and other blood products for possible bleeding, senior and critical-care review — and an early, honest conversation with him and his family about the goals of care"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。免疫功能低下、血小板极低的患者出现发热和新的肺部阴影，需要同时处理感染和出血：留取培养后尽快开始经验性抗生素（拯救脓毒症运动2021：可能感染性休克或高度怀疑脓毒症时1小时内），并纠正低氧。这是骨髓广泛受累的广泛期小细胞肺癌，还要及早讨论治疗目标和抢救意愿。原报告给予了储氧面罩吸氧、输血、止血和美罗培南。",
+            "en": "Correct. Fever with a new lung opacity in an immunocompromised man with very low platelets means treating infection and bleeding together: start empirical antibiotics promptly after cultures (Surviving Sepsis Campaign 2021: within 1 hour when septic shock is possible or sepsis is likely) and correct the hypoxaemia. With extensive-stage small-cell lung cancer and widespread marrow involvement, the goals of care and his wishes about resuscitation must also be discussed early. The report's team gave reservoir-mask oxygen, transfusion, haemostatic treatment and meropenem."
+          }
+        },
+        {
+          "id": "bronchoscopy-first",
+          "text": {
+            "zh-CN": "先做急诊支气管镜和肺泡灌洗，明确是出血还是感染后再用药",
+            "en": "Urgent bronchoscopy and lavage first, to tell bleeding from infection before treating"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。他低氧、血小板极低，支气管镜本身风险很高；等待明确病因会延误抗感染和支持治疗。应先经验性处理，再视情况选择检查。",
+            "en": "Not appropriate. He is hypoxaemic with very low platelets, so bronchoscopy itself is high-risk, and waiting for a cause delays antibiotics and support. Treat empirically first, then decide which tests are worth doing."
+          }
+        },
+        {
+          "id": "wait-cultures",
+          "text": {
+            "zh-CN": "先留血培养，等培养和药敏结果出来再决定用哪种抗生素",
+            "en": "Take blood cultures and wait for the results and sensitivities before choosing an antibiotic"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。培养结果需要数天；疑似脓毒症时应在留取培养后立即开始经验性抗生素，而不是等结果（拯救脓毒症运动2021）。",
+            "en": "Not appropriate. Cultures take days; when sepsis is suspected, start empirical antibiotics as soon as the cultures are taken rather than waiting for results (Surviving Sepsis Campaign 2021)."
+          }
+        },
+        {
+          "id": "chemo-today",
+          "text": {
+            "zh-CN": "病因是肿瘤，今天就开始依托泊苷联合铂类化疗，肺部阴影不必另行处理",
+            "en": "The cause is the cancer — start etoposide–platinum chemotherapy today and leave the lung opacity alone"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不合适。新的肺部阴影伴发热和呼吸衰竭，首先要按可能的感染或出血处理；在急性问题没有控制、治疗目标也没有讨论之前就化疗，会进一步加重骨髓抑制和感染风险。",
+            "en": "Not appropriate. A new lung opacity with fever and respiratory failure must first be treated as possible infection or bleeding; starting chemotherapy before the acute problem is controlled and before the goals of care are discussed deepens the marrow suppression and the risk of infection."
           }
         }
       ]
@@ -1117,13 +4105,13 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "rb-hx-course",
       "domain": "history",
+      "weight": 1,
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "询问乏力纳差的病程、皮肤瘀斑和体重下降",
+        "en": "Asks about the course of the tiredness and poor appetite, the bruising and the weight loss"
       },
-      "weight": 2,
       "met": {
         "all": [
           {
@@ -1134,128 +4122,460 @@
           },
           {
             "asked": "weight"
-          },
-          {
-            "asked": "prior-label"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
-      "domain": "examination",
+      "id": "rb-hx-label",
+      "domain": "history",
+      "weight": 2,
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "追问外院诊断与治疗反应，并问出不支持胰腺炎和支持另寻原因的阴性症状（这次没有腹痛、没有呼吸道症状）",
+        "en": "Explores the outside diagnosis and the response to treatment, and elicits the negatives that argue against it (no abdominal pain this time, no respiratory symptoms)"
       },
-      "weight": 1,
       "met": {
         "all": [
+          {
+            "asked": "prior-label"
+          },
+          {
+            "asked": "abdominal-pain"
+          },
+          {
+            "asked": "respiratory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-hx-risk",
+      "domain": "history",
+      "weight": 1,
+      "text": {
+        "zh-CN": "询问饮酒和吸烟史",
+        "en": "Asks about alcohol and smoking"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "alcohol"
+          },
+          {
+            "asked": "smoking"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-ex",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "完成生命体征、皮肤出血、淋巴结、腹部和肺部检查",
+        "en": "Examines the vital signs, the skin for bleeding, the lymph nodes, the abdomen and the chest"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
           {
             "examined": "skin"
           },
           {
-            "examined": "nodes-abdomen"
+            "examined": "nodes"
+          },
+          {
+            "examined": "abdomen"
+          },
+          {
+            "examined": "lungs"
           }
         ]
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "rb-inv-records",
+      "domain": "investigations",
+      "weight": 2,
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "调阅外院血液检查和胸片、本院急诊骨髓涂片与免疫分型及胰酶资料",
+        "en": "Reads the outside blood tests and chest X-ray, this hospital's emergency marrow smear and immunophenotyping, and the enzyme results"
       },
-      "weight": 3,
-      "met": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "rubric-4",
-      "domain": "management",
-      "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "weight": 3,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "read": "outside-bloods",
+            "phase": "initial"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "read": "chest-xray-outside",
+            "phase": "initial"
+          },
+          {
+            "read": "marrow-flow",
+            "phase": "initial"
+          },
+          {
+            "read": "enzymes",
+            "phase": "initial"
           }
         ]
+      }
+    },
+    {
+      "id": "rb-dx-next",
+      "domain": "diagnosis",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即在诊断不确定时暂缓诱导化疗，转而追查骨髓活检并寻找实体瘤原发灶",
+        "en": "At the first attempt, holds off induction while the diagnosis is uncertain and instead chases the trephine and looks for a solid primary"
+      },
+      "met": {
+        "decidedFirstTry": "next-step"
+      }
+    },
+    {
+      "id": "rb-inv-solid",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "入院后调阅骨髓活检免疫组化、胸部CT、PET-CT和肿瘤标志物",
+        "en": "After admission, reads the trephine immunohistochemistry, chest CT, PET-CT and tumour markers"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "pet-ct",
+            "phase": "workup"
+          },
+          {
+            "read": "tumour-markers",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-dx",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即诊断为小细胞肺癌骨髓转移（广泛期），并说明肺原发为临床推定",
+        "en": "Diagnoses small-cell lung cancer with marrow metastasis (extensive stage) at the first attempt, noting that the lung primary is a clinical inference"
+      },
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-mgmt-sodium",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即选择评估SIADH并限速缓慢纠正低钠，并送检血、尿渗透压和尿钠",
+        "en": "Chooses at the first attempt to work up SIADH and correct the sodium slowly within limits, and sends serum and urine osmolality and urine sodium"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "sodium"
+          },
+          {
+            "ordered": "sodium-workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-mgmt-deterioration",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "病情恶化时首次作答即选择同时处理感染、出血和低氧，并留取血培养、给氧和经验性抗生素",
+        "en": "When he deteriorates, chooses at the first attempt to treat infection, bleeding and hypoxaemia together, and takes blood cultures, gives oxygen and starts empirical antibiotics"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "deterioration"
+          },
+          {
+            "ordered": "blood-cultures"
+          },
+          {
+            "intervened": "o2-reservoir"
+          },
+          {
+            "intervened": "meropenem"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "没有作出有害的处置：未按未证实的急性髓系白血病诱导化疗，未用高渗盐水推注或快速纠正低钠，未继续禁食按胰腺炎处理",
+        "en": "Avoids the harmful choices: no induction for unproven AML, no hypertonic bolus or rapid correction of the sodium, no further fasting for pancreatitis"
+      },
+      "met": {
+        "all": [
+          {
+            "attempted": "next-step"
+          },
+          {
+            "not": {
+              "intervened": "aml-induction"
+            }
+          },
+          {
+            "not": {
+              "intervened": "hypertonic-bolus"
+            }
+          },
+          {
+            "not": {
+              "intervened": "rapid-correction"
+            }
+          },
+          {
+            "not": {
+              "intervened": "pancreatitis-nbm"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-comm",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "坦诚说明诊断的不确定性和修正后的诊断，并在病情恶化时与他和家属讨论治疗目标",
+        "en": "Is honest about the diagnostic uncertainty and the revised diagnosis, and when he deteriorates discusses the goals of care with him and his family"
+      },
+      "judgeGuidance": {
+        "zh-CN": "优秀表现：入院时解释为什么暂时不按白血病治疗、还要做哪些检查；确诊后用通俗语言说明“骨髓里的是从肺部来的癌细胞，不是白血病”，不回避病情严重；病情突然恶化时，告诉他和家属情况危急、可能的原因和能做的处理，询问他们对重症监护和进一步抢救的意愿，并尊重他们的决定；用复述确认理解，并给予情感支持。",
+        "en": "Good performance: on admission explains why he is not being treated for leukaemia yet and which tests come next; after the diagnosis explains in plain words that the cells in his marrow are cancer cells from the lung, not leukaemia, without hiding how serious it is; when he suddenly deteriorates, tells him and his family that he is critically ill, what the likely causes are and what can be done, asks about their wishes on intensive care and further resuscitation and respects their decision; checks understanding with teach-back and offers emotional support."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "病房护士",
+        "en": "Ward nurse"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "血液科病房护士：负责交接班、静脉通路、输血和标本送检，告诉学员外院和急诊的资料在病历终端调阅。不解读检查结果，不讨论诊断。",
+        "en": "Haematology ward nurse: handles handover, IV access, transfusion and samples, and tells the learner that the outside and emergency records are read at a records terminal. Does not interpret results or discuss the diagnosis."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "病理科医生（血液病理）",
+        "en": "Pathologist (haematopathology)"
+      },
+      "knowledge": {
+        "zh-CN": "只依据学员已调阅的血涂片、骨髓涂片、免疫分型和骨髓活检记录解读，不补充报告以外的抗体或结果。可以讲解：转移癌细胞在形态上可与原始细胞相似；POX阴性本身不能排除所有急性髓系白血病；CD56（NCAM）是神经内分泌相关标记，CAM5.2是低分子量细胞角蛋白；涂片、流式和活检的比例分母不同，不能直接比较。不预告诊断。",
+        "en": "Interprets only the blood film, marrow smear, immunophenotyping and trephine records the learner has already read, adding no antibodies or results beyond them. Can explain that metastatic carcinoma cells can look like blasts; that a negative POX alone does not exclude every AML; that CD56 (NCAM) is a neuroendocrine-associated marker and CAM5.2 a low-molecular-weight cytokeratin; and that smear, flow and trephine percentages have different denominators. Does not foretell the diagnosis."
       },
       "interprets": [
-        "blood",
+        "outside-marrow",
         "marrow-flow",
+        "biopsy"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "radiologist",
+      "name": {
+        "zh-CN": "放射科医生",
+        "en": "Radiologist"
+      },
+      "knowledge": {
+        "zh-CN": "只依据学员已调阅的影像报告和原文图片解读，不补充报告以外的所见。PET-CT代谢增高本身不是病理诊断；床旁胸片的表现原报告也不能区分出血还是感染。",
+        "en": "Interprets only the imaging reports and source images the learner has already read, adding no findings beyond them. Increased uptake on PET-CT is not in itself a pathological diagnosis, and the report itself could not tell bleeding from infection on the bedside film."
+      },
+      "interprets": [
+        "chest-xray-outside",
+        "outside-imaging",
+        "ct",
+        "pet-ct",
+        "cxr-day5"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "肿瘤科医生",
+        "en": "Oncologist"
+      },
+      "knowledge": {
+        "zh-CN": "肿瘤科医生：在学员已调阅的结果基础上讨论确诊后的治疗原则和病情恶化时的处理；不替学员回答会诊板上的决策题，不预告病程和结局。",
+        "en": "Oncologist: discusses, on the basis of results the learner has already read, the principles of treatment after the diagnosis and how to handle a deterioration; does not answer the case-board decisions for the learner, and does not foretell the course or the outcome."
+      },
+      "interprets": [
         "biopsy",
         "ct",
-        "pet-markers",
-        "enzymes",
-        "followup"
+        "pet-ct",
+        "tumour-markers"
       ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师（带教）",
+        "en": "Attending (preceptor)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，不直接给出诊断或决策题答案。引导顺序：外院诊断与治疗反应 → 支持和反对急性髓系白血病的证据 → 白血病解释不了的线索（低钠、胰酶、没有腹痛）→ 骨髓活检和原发灶 → 低钠的评估和纠正速度 → 病情恶化时的处理与治疗目标。提醒学员：这是历史病例，原报告的处置是事实记录，不自动等于今天的推荐；未记录的信息保持未知。",
+        "en": "Socratic preceptor; never gives the diagnosis or a decision's answer. Guides in this order: the outside diagnosis and the response to treatment → the evidence for and against AML → the clues leukaemia cannot explain (low sodium, raised enzymes, no abdominal pain) → the trephine and the primary → assessing the hyponatraemia and how fast to correct it → managing the deterioration and the goals of care. Reminds the learner that this is a historical case: the report's management is a fact of the record, not automatically today's recommendation, and anything unrecorded stays unknown."
+      },
+      "interprets": [],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：骨髓中的“原始细胞”不一定是白血病",
+      "en": "Debrief: “blasts” in the marrow are not always leukaemia"
     },
     "conclusion": {
-      "zh-CN": "骨髓病理确证转移性小细胞癌，肺原发为综合临床判断；最终死亡，不能补写化疗缓解。",
-      "en": "Marrow pathology confirmed metastatic small-cell carcinoma, with pulmonary origin inferred clinically. The final outcome was death, not an unreported chemotherapy response."
+      "zh-CN": "骨髓转移的小细胞肺癌（左肺门中心型，广泛期）：骨髓活检免疫组化确定为小细胞神经内分泌癌，肺原发由中心型肺门占位、PET分布和NSE、ProGRP高滴度推定。外院按“急性髓系白血病、急性胰腺炎”处理无效；本院暂缓诱导化疗、追查骨髓活检并寻找原发灶，入院第5天确诊。顽固低钠和无腹痛的胰酶升高可用小细胞肺癌的副肿瘤表现解释。转入肿瘤科当天出现发热、呼吸衰竭和右肺大片阴影，家属放弃进一步抢救，患者当日在转运途中死亡，未开始抗肿瘤治疗。",
+      "en": "Small-cell lung cancer (central, left hilar; extensive stage) metastatic to the bone marrow: the trephine immunohistochemistry showed small-cell neuroendocrine carcinoma, and the lung primary was inferred from the central hilar mass, the PET distribution and very high NSE and ProGRP. Treatment elsewhere for “AML and acute pancreatitis” had failed; here the team held off induction, chased the trephine and looked for the primary, reaching the diagnosis on hospital day 5. The persistent hyponatraemia and the painless rise in pancreatic enzymes fit paraneoplastic effects of small-cell lung cancer. On the day of transfer to oncology he developed fever, respiratory failure and a large right-lung opacity; his family declined further resuscitation, and he died the same day on the way home, before any anticancer treatment."
     },
     "keyReasoning": [
       {
-        "zh-CN": "POX阴性或无Auer小体单独并不能排除所有AML；本例依赖整套免疫和组织证据。",
-        "en": "Negative POX or absent Auer rods alone do not exclude every AML; the full tissue and immunophenotypic pattern matters."
+        "zh-CN": "“原始细胞”比例高并不等于急性髓系白血病：无Auer小体、POX阴性，异常细胞群只表达少数髓系标志而其余谱系标志阴性，病程也不像未治疗的急性白血病。（原报告讨论把POX阴性作为不符合髓系白血病的依据，这一点需要修正：POX阴性本身不能排除所有急性髓系白血病，例如微分化型或原始巨核细胞型；本例真正决定性的是骨髓活检免疫组化。）",
+        "en": "A high proportion of “blasts” did not mean AML: no Auer rods, a negative POX, an abnormal population expressing only a few myeloid markers with the other lineages negative, and a course unlike untreated acute leukaemia. (A correction to the report's discussion, which counts the negative POX against a myeloid leukaemia: a negative POX alone does not exclude every AML — minimally differentiated or megakaryoblastic AML, for example; what decided this case was the trephine immunohistochemistry.)"
       },
       {
-        "zh-CN": "低钠相关SIADH及胰酶异位分泌属于可能机制，不是本例完成检测的确证。",
-        "en": "SIADH and ectopic pancreatic-enzyme production are possible mechanisms, not directly confirmed in this patient."
+        "zh-CN": "骨髓活检免疫组化显示上皮和神经内分泌标记阳性（AE1/AE3、CAM5.2、Syn、CgA），MPO、LCA阴性：骨髓中是转移性小细胞癌，不是造血肿瘤。",
+        "en": "The trephine showed epithelial and neuroendocrine markers (AE1/AE3, CAM5.2, synaptophysin, CgA) with negative MPO and LCA: the marrow held metastatic small-cell carcinoma, not a blood cancer."
+      },
+      {
+        "zh-CN": "肺原发靠临床证据推定：中心型左肺门高代谢占位，PET上只有肺、肺门/纵隔、锁骨上淋巴结和骨髓摄取，NSE和ProGRP高滴度；没有取得肺部组织。",
+        "en": "The lung primary rests on clinical evidence: a central, hypermetabolic left hilar mass, PET uptake confined to the lung, hilar/mediastinal and supraclavicular nodes and the marrow, and very high NSE and ProGRP; no lung tissue was obtained."
+      },
+      {
+        "zh-CN": "顽固低钠和无腹痛的胰酶升高都可以是小细胞肺癌的副肿瘤表现；外院“急性胰腺炎”的标签掩盖了这些线索。",
+        "en": "The persistent hyponatraemia and the painless rise in pancreatic enzymes can both be paraneoplastic effects of small-cell lung cancer; the outside label of acute pancreatitis hid these clues."
+      },
+      {
+        "zh-CN": "外院胸片正常并不能排除中心型肺肿瘤；早做胸部CT可能更早诊断。",
+        "en": "A normal chest X-ray elsewhere did not exclude a central lung tumour; an early chest CT might have found it sooner."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "这是一例单例历史报告，不能证明某种处理的独立疗效。肺原发为临床推定，没有肺部组织；SIADH和异位胰酶分泌是依据最终诊断作出的推断，没有渗透压、尿钠或酶来源的检测。终末肺部病变的原因（出血或感染）未明确，没有病原学或尸检结果。原报告没有开始抗肿瘤治疗；病例中与现行指南的比较是教学设计。",
+      "en": "A single historical case report; it cannot establish the independent effect of any management. The lung primary is a clinical inference without lung tissue; SIADH and ectopic enzyme production are inferences from the final diagnosis, with no osmolality, urine sodium or enzyme-source testing. The cause of the terminal lung change (bleeding or infection) was never established, with no microbiology or post-mortem. No anticancer treatment was started; the comparisons with current guidance are teaching design."
     },
     "unknowns": [
       {
-        "zh-CN": "肺灶组织学、血尿渗透压/尿钠、胰酶来源及终末呼吸衰竭机制。",
-        "en": "Lung-lesion histology, serum/urine osmolality and sodium, enzyme source and mechanism of terminal respiratory failure."
+        "zh-CN": "肺部病灶的组织学（没有做支气管镜）。",
+        "en": "The histology of the lung lesion (no bronchoscopy was done)."
+      },
+      {
+        "zh-CN": "血、尿渗透压，尿钠和皮质醇——SIADH没有经过检测证实；入院后电解质的具体数值。",
+        "en": "Serum and urine osmolality, urine sodium and cortisol — SIADH was never confirmed by testing; the electrolyte values after admission."
+      },
+      {
+        "zh-CN": "胰酶升高的来源（没有做同工酶或组织检测）。",
+        "en": "The source of the raised pancreatic enzymes (no isoenzyme or tissue testing)."
+      },
+      {
+        "zh-CN": "终末肺部病变是出血还是感染；血培养等病原学结果；恶化时的生命体征和血气数值。",
+        "en": "Whether the terminal lung change was haemorrhage or infection; blood cultures or other microbiology; the vital signs and blood-gas values at the deterioration."
+      },
+      {
+        "zh-CN": "用药、过敏、职业和其他既往病史；牙龈出血、鼻出血或黑便等其他出血表现。",
+        "en": "Medicines, allergies, occupation and any other past illness; other bleeding such as from the gums or nose, or black stools."
+      },
+      {
+        "zh-CN": "原报告内部不一致（原文如此，未作更正）：分期写作T1N2M1，但PET示左锁骨上淋巴结转移（应为N3）；讨论把CD56归为上皮标记、把CAM5.2归为神经内分泌标记；TTF-1阴性和Ki-67 30%对小细胞癌不典型。",
+        "en": "Inconsistencies inside the report (as printed, not corrected): it stages T1N2M1, yet its PET shows a left supraclavicular node metastasis (N3); the discussion groups CD56 with the epithelial markers and CAM5.2 with the neuroendocrine ones; a negative TTF-1 and a Ki-67 of 30 % are atypical for small-cell carcinoma."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "“原始细胞”不等于白血病（原报告“启示”）：发现全血细胞减少和骨髓“原始细胞”时，要结合病史和其他检查排除骨髓转移癌——形态上转移癌细胞可与原始细胞相似。本例形态、细胞化学和免疫分型都不典型，病程缓慢，又有白血病难以解释的低钠和胰酶升高，所以团队暂缓诱导、先做骨髓活检免疫组化，入院第5天确诊。",
+        "en": "“Blasts” are not always leukaemia (the report's own lesson): with pancytopenia and marrow “blasts”, use the history and other tests to exclude a carcinoma in the marrow — metastatic cells can look like blasts. Here the morphology, cytochemistry and immunophenotype were all atypical, the course was slow, and the low sodium and raised enzymes were unexplained by leukaemia, so the team held off induction and got the trephine immunohistochemistry, with the diagnosis on hospital day 5."
+      },
+      {
+        "zh-CN": "低钠血症（欧洲低钠血症指南2014）：SIADH是排除性诊断——低血浆渗透压、尿液不适当浓缩、尿钠、临床容量正常、甲状腺和肾上腺功能正常；小细胞肺癌是常见原因（原报告引用：约10%的小细胞肺癌出现SIADH）。慢性、无严重症状的低钠应针对病因、缓慢纠正：24小时内升高不超过10 mmol/L，此后每24小时不超过8 mmol/L；长期大量饮酒和营养不良者渗透性脱髓鞘风险更高，目标应更保守。本例入院初期没有查渗透压和尿钠。",
+        "en": "Hyponatraemia (European hyponatraemia guideline 2014): SIADH is a diagnosis of exclusion — low serum osmolality, inappropriately concentrated urine, a urine sodium, clinical euvolaemia, normal thyroid and adrenal function; small-cell lung cancer is a common cause (the report quotes SIADH in about 10 % of patients). Treat chronic hyponatraemia without severe symptoms by its cause and correct it slowly: no more than 10 mmol/L in the first 24 h and 8 mmol/L in each 24 h after; heavy drinkers and the malnourished are at higher risk of osmotic demyelination and need lower targets. Here osmolality and urine sodium were not measured early in the admission."
+      },
+      {
+        "zh-CN": "胸片正常不能排除肺癌（原报告引用Henschke 1999）：原文引用的胸片敏感度仅约26%；本例外院胸片“正常”，而胸部CT显示左肺门占位和纵隔淋巴结肿大。对有可疑表现（如顽固低钠、不明原因的骨髓异常细胞）的患者，应尽早做胸部CT。",
+        "en": "A normal chest X-ray does not exclude lung cancer (the report, citing Henschke 1999): the sensitivity it quotes for chest radiography is only about 26 %; here the outside film was “normal” while the chest CT showed a left hilar mass and enlarged mediastinal nodes. When something is suspicious (persistent hyponatraemia, unexplained abnormal marrow cells), get a chest CT early."
+      },
+      {
+        "zh-CN": "胰酶升高不等于胰腺炎（原报告“启示”）：没有腹痛、腹部影像正常、按胰腺炎治疗无效时，要另找胰酶升高的原因；部分小细胞肺癌可异位产生淀粉酶和脂肪酶，常伴SIADH，提示预后较差。",
+        "en": "Raised pancreatic enzymes are not always pancreatitis (the report's own lesson): with no abdominal pain, normal abdominal imaging and no response to pancreatitis treatment, look for another cause; some small-cell lung cancers produce amylase and lipase ectopically, often with SIADH and a poorer prognosis."
+      },
+      {
+        "zh-CN": "小细胞肺癌的分期与一线治疗（ESMO SCLC 2021；TNM第8版）：骨髓受累属远处转移，为广泛期（IV期）；左锁骨上淋巴结转移为N3（原报告写作N2）。广泛期一线治疗是铂类联合依托泊苷，体能状态0–1者联合抗PD-L1抗体（阿替利珠单抗或度伐利尤单抗）。诊断需要病理——本例的组织来自骨髓，作者因风险而未做支气管镜。本例在开始抗肿瘤治疗前即已死亡。",
+        "en": "Staging and first-line treatment of small-cell lung cancer (ESMO SCLC 2021; TNM 8th edition): marrow involvement is distant metastasis — extensive stage (stage IV); a left supraclavicular node is N3 (the report wrote N2). First-line treatment for extensive stage is platinum plus etoposide, with an anti-PD-L1 antibody (atezolizumab or durvalumab) for patients with a performance status of 0–1. The diagnosis needs pathology — here it came from the marrow, and the authors judged bronchoscopy too risky. He died before any anticancer treatment."
+      },
+      {
+        "zh-CN": "病情急转直下时（拯救脓毒症运动2021）：免疫低下、血小板极低的患者出现发热和新的肺部阴影，应在留取培养后尽快开始经验性广谱抗生素（可能感染性休克或高度怀疑脓毒症时1小时内），同时给氧、输注血小板处理可能的出血，并及早与患者和家属讨论治疗目标。原报告中家属最终放弃了进一步抢救。",
+        "en": "When he suddenly deteriorates (Surviving Sepsis Campaign 2021): fever with a new lung opacity in an immunocompromised patient with very low platelets calls for empirical broad-spectrum antibiotics as soon as cultures are taken (within 1 hour when septic shock is possible or sepsis is likely), oxygen, platelets for possible bleeding, and an early conversation with the patient and family about the goals of care. In the report the family finally declined further resuscitation."
+      }
+    ],
     "references": [
-      "张路; 王书杰; 杨辰. 第311例　全血细胞减少—胰酶升高—低钠血症—骨髓中大量原始细胞. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.08.018",
-      "https://rs.yiigle.com/cmaid/138898",
-      "National Cancer Institute. Small Cell Lung Cancer Treatment (PDQ), health professional version. https://www.cancer.gov/types/lung/hp/small-cell-lung-treatment-pdq"
+      "张路, 王书杰, 杨辰. 第311例 全血细胞减少—胰酶升高—低钠血症—骨髓中大量原始细胞. 中华医学杂志. 2014;94(8):624-626. doi:10.3760/cma.j.issn.0376-2491.2014.08.018. Available from: https://rs.yiigle.com/cmaid/138898",
+      "Dingemans AC, Früh M, Ardizzoni A, et al.; ESMO Guidelines Committee. Small-cell lung cancer: ESMO Clinical Practice Guidelines for diagnosis, treatment and follow-up. Ann Oncol. 2021;32(7):839-853. doi:10.1016/j.annonc.2021.03.207",
+      "Spasovski G, Vanholder R, Allolio B, et al. Clinical practice guideline on diagnosis and treatment of hyponatraemia. Eur J Endocrinol. 2014;170(3):G1-G47. doi:10.1530/EJE-13-1020",
+      "Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2021. Crit Care Med. 2021;49(11):e1063-e1143. doi:10.1097/CCM.0000000000005337",
+      "Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2026. Crit Care Med. 2026."
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure completion of this teaching pathway — a teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "肺灶组织学、血尿渗透压/尿钠、胰酶来源及终末呼吸衰竭机制。",
-      "en": "Lung-lesion histology, serum/urine osmolality and sodium, enzyme source and mechanism of terminal respiratory failure."
+      "zh-CN": "肺部病灶的组织学（没有做支气管镜）。",
+      "en": "The histology of the lung lesion (no bronchoscopy was done)."
+    },
+    {
+      "zh-CN": "血、尿渗透压，尿钠和皮质醇——SIADH没有经过检测证实；入院后电解质的具体数值。",
+      "en": "Serum and urine osmolality, urine sodium and cortisol — SIADH was never confirmed by testing; the electrolyte values after admission."
+    },
+    {
+      "zh-CN": "胰酶升高的来源（没有做同工酶或组织检测）。",
+      "en": "The source of the raised pancreatic enzymes (no isoenzyme or tissue testing)."
+    },
+    {
+      "zh-CN": "终末肺部病变是出血还是感染；血培养等病原学结果；恶化时的生命体征和血气数值。",
+      "en": "Whether the terminal lung change was haemorrhage or infection; blood cultures or other microbiology; the vital signs and blood-gas values at the deterioration."
+    },
+    {
+      "zh-CN": "用药、过敏、职业和其他既往病史；牙龈出血、鼻出血或黑便等其他出血表现。",
+      "en": "Medicines, allergies, occupation and any other past illness; other bleeding such as from the gums or nose, or black stools."
+    },
+    {
+      "zh-CN": "原报告内部不一致（原文如此，未作更正）：分期写作T1N2M1，但PET示左锁骨上淋巴结转移（应为N3）；讨论把CD56归为上皮标记、把CAM5.2归为神经内分泌标记；TTF-1阴性和Ki-67 30%对小细胞癌不典型。",
+      "en": "Inconsistencies inside the report (as printed, not corrected): it stages T1N2M1, yet its PET shows a left supraclavicular node metastasis (N3); the discussion groups CD56 with the epithelial markers and CAM5.2 with the neuroendocrine ones; a negative TTF-1 and a Ki-67 of 30 % are atypical for small-cell carcinoma."
     }
   ],
   "assets": [
@@ -1264,12 +4584,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-138898/fig01.png",
       "title": {
-        "zh-CN": "原报告：胸部CT肺门和纵隔病变",
-        "en": "Source: hilar and mediastinal findings on chest CT"
+        "zh-CN": "原报告图1：胸部CT（箭头示左肺门占位及纵隔淋巴结肿大）",
+        "en": "Source figure 1: chest CT (arrows on the left hilar mass and an enlarged mediastinal node)"
       },
       "credit": {
-        "zh-CN": "原报告图，张路; 王书杰; 杨辰，2014。版权归原权利人。",
-        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图（张路、王书杰、杨辰，2014）。版权归原权利人。",
+        "en": "Original report figure (张路, 王书杰, 杨辰, 2014). Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1302,6 +4622,10 @@
     },
     {
       "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
       "itemId": "bruising"
     },
     {
@@ -1314,6 +4638,14 @@
     },
     {
       "type": "ask",
+      "itemId": "abdominal-pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "respiratory"
+    },
+    {
+      "type": "ask",
       "itemId": "alcohol"
     },
     {
@@ -1322,7 +4654,23 @@
     },
     {
       "type": "ask",
-      "itemId": "respiratory"
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "marital"
+    },
+    {
+      "type": "ask",
+      "itemId": "confusion"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-bleeding"
     },
     {
       "type": "ask",
@@ -1334,27 +4682,19 @@
     },
     {
       "type": "ask",
-      "itemId": "family"
-    },
-    {
-      "type": "ask",
       "itemId": "occupation"
     },
     {
       "type": "ask",
-      "itemId": "self-care"
+      "itemId": "ice"
     },
     {
-      "type": "ask",
-      "itemId": "expectations"
+      "type": "examine",
+      "findingId": "vitals"
     },
     {
-      "type": "ask",
-      "itemId": "supplements"
-    },
-    {
-      "type": "ask",
-      "itemId": "travel"
+      "type": "examine",
+      "findingId": "general"
     },
     {
       "type": "examine",
@@ -1362,24 +4702,63 @@
     },
     {
       "type": "examine",
-      "findingId": "nodes-abdomen"
+      "findingId": "nodes"
     },
     {
       "type": "examine",
       "findingId": "lungs"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
+      "type": "examine",
+      "findingId": "heart"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs"
+    },
+    {
+      "type": "examine",
+      "findingId": "neuro"
     },
     {
       "type": "order",
-      "investigationId": "blood"
+      "investigationId": "outside-bloods"
     },
     {
       "type": "read",
-      "investigationId": "blood",
-      "phase": "workup"
+      "investigationId": "outside-bloods",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "outside-imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "outside-imaging",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "chest-xray-outside"
+    },
+    {
+      "type": "read",
+      "investigationId": "chest-xray-outside",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "outside-marrow"
+    },
+    {
+      "type": "read",
+      "investigationId": "outside-marrow",
+      "phase": "initial"
     },
     {
       "type": "order",
@@ -1388,6 +4767,85 @@
     {
       "type": "read",
       "investigationId": "marrow-flow",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "enzymes"
+    },
+    {
+      "type": "read",
+      "investigationId": "enzymes",
+      "phase": "initial"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "order",
+      "investigationId": "electrolytes"
+    },
+    {
+      "type": "read",
+      "investigationId": "electrolytes",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "sodium-workup"
+    },
+    {
+      "type": "read",
+      "investigationId": "sodium-workup",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "cortisol"
+    },
+    {
+      "type": "read",
+      "investigationId": "cortisol",
+      "phase": "initial"
+    },
+    {
+      "type": "answer",
+      "decisionId": "next-step",
+      "optionIds": [
+        "withhold-search"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "sodium",
+      "optionIds": [
+        "workup-slow"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "sodium-plan"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfusion-support"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "nutrition-support"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
       "phase": "workup"
     },
     {
@@ -1410,34 +4868,93 @@
     },
     {
       "type": "order",
-      "investigationId": "pet-markers"
+      "investigationId": "pet-ct"
     },
     {
       "type": "read",
-      "investigationId": "pet-markers",
+      "investigationId": "pet-ct",
       "phase": "workup"
     },
     {
       "type": "order",
-      "investigationId": "enzymes"
+      "investigationId": "tumour-markers"
     },
     {
       "type": "read",
-      "investigationId": "enzymes",
+      "investigationId": "tumour-markers",
       "phase": "workup"
     },
     {
       "type": "answer",
       "decisionId": "diagnosis",
       "optionIds": [
-        "supported"
+        "sclc-marrow"
       ]
     },
     {
+      "type": "intervene",
+      "interventionId": "transfer-oncology"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-deterioration"
+    },
+    {
+      "type": "examine",
+      "findingId": "distress-day5"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs-day5"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "o2-reservoir"
+    },
+    {
+      "type": "order",
+      "investigationId": "cxr-day5"
+    },
+    {
+      "type": "read",
+      "investigationId": "cxr-day5",
+      "phase": "deterioration"
+    },
+    {
+      "type": "order",
+      "investigationId": "abg"
+    },
+    {
+      "type": "read",
+      "investigationId": "abg",
+      "phase": "deterioration"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood-cultures"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood-cultures",
+      "phase": "deterioration"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "meropenem"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfusion-support"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "goals-of-care"
+    },
+    {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "deterioration",
       "optionIds": [
-        "supported"
+        "resus-bundle"
       ]
     },
     {
@@ -1460,115 +4977,281 @@
     "historicalReview": true,
     "testUtterances": [
       {
-        "text": "乏力和食欲变化多久了？",
+        "text": "您这次主要是哪里不舒服？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "How long have fatigue and appetite changes lasted?",
+        "text": "没力气多长时间了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "刚开始有什么原因吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "身上的青紫是什么时候出现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "bruising"
+        ]
+      },
+      {
+        "text": "皮肤上有没有出血点？",
+        "locale": "zh-CN",
+        "expect": [
+          "bruising"
+        ]
+      },
+      {
+        "text": "最近瘦了多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "之前在别的医院怎么诊断的？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-label"
+        ]
+      },
+      {
+        "text": "外院治疗以后有好转吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-label"
+        ]
+      },
+      {
+        "text": "这回肚子疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "abdominal-pain"
+        ]
+      },
+      {
+        "text": "咳嗽吗？有痰吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "平时喝酒多吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "以前得过胰腺炎吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "抽不抽烟？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "以前还有什么别的病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "家里人身体都好吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "结婚了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "marital"
+        ]
+      },
+      {
+        "text": "最近有没有犯糊涂？",
+        "locale": "zh-CN",
+        "expect": [
+          "confusion"
+        ]
+      },
+      {
+        "text": "刷牙的时候牙龈出血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-bleeding"
+        ]
+      },
+      {
+        "text": "现在吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "对药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "您最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "ice"
+        ]
+      },
+      {
+        "text": "住院这几天好点了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-workup"
+        ]
+      },
+      {
+        "text": "现在喘得厉害吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-deterioration"
+        ]
+      },
+      {
+        "text": "你喜欢哪个球队？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "What's been bothering you most?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "皮肤出现了什么变化？",
-        "locale": "zh-CN",
+        "text": "How long have you been feeling so tired?",
+        "locale": "en",
         "expect": [
-          "bruising"
+          "presentation"
         ]
       },
       {
-        "text": "What skin changes appeared?",
+        "text": "Have you noticed bruises anywhere?",
         "locale": "en",
         "expect": [
           "bruising"
         ]
       },
       {
-        "text": "体重下降了多少？",
-        "locale": "zh-CN",
-        "expect": [
-          "weight"
-        ]
-      },
-      {
-        "text": "How much weight was lost?",
+        "text": "How much weight have you lost?",
         "locale": "en",
         "expect": [
           "weight"
         ]
       },
       {
-        "text": "之前医生怎样解释检查，治疗有效吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "prior-label"
-        ]
-      },
-      {
-        "text": "What diagnosis was previously proposed and did treatment help?",
+        "text": "What did the doctors at the other hospital say it was?",
         "locale": "en",
         "expect": [
           "prior-label"
         ]
       },
       {
-        "text": "饮酒及以前腹痛情况怎样？",
-        "locale": "zh-CN",
-        "expect": [
-          "alcohol"
-        ]
-      },
-      {
-        "text": "What is the alcohol and earlier abdominal-pain history?",
+        "text": "Any tummy pain this time round?",
         "locale": "en",
         "expect": [
-          "alcohol"
+          "abdominal-pain"
         ]
       },
       {
-        "text": "您吸烟吗？",
-        "locale": "zh-CN",
-        "expect": [
-          "smoking"
-        ]
-      },
-      {
-        "text": "Do you smoke?",
-        "locale": "en",
-        "expect": [
-          "smoking"
-        ]
-      },
-      {
-        "text": "此次有没有咳嗽咳痰或胸痛？",
-        "locale": "zh-CN",
-        "expect": [
-          "respiratory"
-        ]
-      },
-      {
-        "text": "Were cough, sputum or chest pain present this time?",
+        "text": "Have you been coughing at all?",
         "locale": "en",
         "expect": [
           "respiratory"
         ]
       },
       {
-        "text": "是否有完整长期用药记录？",
-        "locale": "zh-CN",
+        "text": "How much do you drink?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "Do you smoke cigarettes?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "Anything that runs in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Are you on any regular tablets?",
+        "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "Is a complete regular medication history available?",
+        "text": "Any allergies to medicines?",
         "locale": "en",
         "expect": [
-          "medications"
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any bleeding from your gums, or nosebleeds?",
+        "locale": "en",
+        "expect": [
+          "other-bleeding"
+        ]
+      },
+      {
+        "text": "Have you felt muddled or confused?",
+        "locale": "en",
+        "expect": [
+          "confusion"
+        ]
+      },
+      {
+        "text": "Is your breathing bad right now?",
+        "locale": "en",
+        "expect": [
+          "status-deterioration"
+        ]
+      },
+      {
+        "text": "What worries you the most?",
+        "locale": "en",
+        "expect": [
+          "ice"
         ]
       }
     ]
