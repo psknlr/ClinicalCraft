@@ -1,18 +1,19 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-138796",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "水肿、少尿与反复腹痛 · 36岁女性",
-    "en": "Oedema, oliguria and recurrent abdominal pain · woman aged 36"
+    "en": "Oedema, low urine output and recurrent abdominal pain · 36-year-old woman"
   },
   "summary": {
-    "zh-CN": "水肿和血尿先于两次腹部手术，随后少尿加重。重建跨器官时间线，核对免疫及病理证据。",
-    "en": "Oedema and haematuria preceded two abdominal operations before worsening oliguria. Reconstruct the multi-organ timeline and review immunological and pathological evidence."
+    "zh-CN": "腿肿一个多月，期间做过两次腹部手术，现在尿量越来越少，从外科转到肾内科。",
+    "en": "Weeks of leg swelling, two abdominal operations along the way, and now dwindling urine output: a transfer from surgery to the renal ward."
   },
   "specialty": [
     "nephrology",
-    "rheumatology"
+    "rheumatology",
+    "general-surgery"
   ],
   "difficulty": 4,
   "setting": "inpatient",
@@ -21,7 +22,29 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 25,
+  "estimatedMinutes": 40,
+  "learningOutcomes": [
+    {
+      "zh-CN": "按相对时间重建多器官病程，证明蛋白尿、血尿和肌酐升高早于两次腹部手术（入院前约8周已有肌酐261 μmol/L，阑尾切除在其后约2周）。",
+      "en": "Reconstruct a multi-organ timeline in relative time showing that proteinuria, haematuria and a raised creatinine preceded both abdominal operations (creatinine 261 μmol/L about 8 weeks before admission, the appendicectomy about 2 weeks later)."
+    },
+    {
+      "zh-CN": "根据MPO-ANCA强阳性、抗GBM、ANA和抗dsDNA阴性及免疫荧光阴性的新月体肾炎，诊断寡免疫性急进性肾小球肾炎，并说明只有5个肾小球时分类和预后判断的局限。",
+      "en": "Diagnose pauci-immune rapidly progressive glomerulonephritis from a strongly positive MPO-ANCA, negative anti-GBM, ANA and anti-dsDNA and an immunofluorescence-negative crescentic biopsy, and state the limits of classifying and prognosticating from five glomeruli."
+    },
+    {
+      "zh-CN": "识别ANCA相关血管炎的消化道受累可表现为阑尾炎样腹痛和成人肠套叠，并主动要求病理科复阅既往切除标本。",
+      "en": "Recognise gastrointestinal involvement by ANCA-associated vasculitis presenting as appendicitis-like pain and adult intussusception, and ask pathology to re-review resected specimens."
+    },
+    {
+      "zh-CN": "依据KDIGO 2024制定诱导方案：糖皮质激素（冲击后减量）联合环磷酰胺或利妥昔单抗，肌酐> 300 μmol/L且需透析时考虑血浆置换，不因等待活检而推迟；并与原报告（2014年发表）的方案比较。",
+      "en": "Plan induction against KDIGO 2024 — glucocorticoids (pulses, then a reduced-dose taper) with cyclophosphamide or rituximab, plasma exchange considered when creatinine is > 300 μmol/L with dialysis need, no delay for the biopsy — and compare it with the regimen in the report (published 2014)."
+    },
+    {
+      "zh-CN": "安排支持与安全措施：透析指征、复方磺胺甲噁唑预防肺孢子菌肺炎（EULAR 2022）、近期结肠切除后的感染监测，以及环磷酰胺前排除妊娠和讨论生育问题。",
+      "en": "Put the supportive and safety measures in place: dialysis indications, co-trimoxazole Pneumocystis prophylaxis (EULAR 2022), infection vigilance after a recent colectomy, and excluding pregnancy and discussing fertility before cyclophosphamide."
+    }
+  ],
   "tags": [
     "cmcr-20",
     "published-case",
@@ -29,25 +52,41 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "常冬元; 安萌; 陈旻; 周福德; 邹万忠; 赵明辉. 第309例　急性腹痛—肠套叠—急性肾损伤. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.02.017",
+    "citation": "常冬元, 安萌, 陈旻, 周福德, 邹万忠, 赵明辉. 第309例 急性腹痛—肠套叠—急性肾损伤. 中华医学杂志. 2014;94(2):151-152. doi:10.3760/cma.j.issn.0376-2491.2014.02.017",
     "doi": "10.3760/cma.j.issn.0376-2491.2014.02.017",
     "authors": [
-      "常冬元",
-      "安萌",
-      "陈旻",
-      "周福德",
-      "邹万忠",
-      "赵明辉"
+      "常冬元 (Chang Dongyuan)",
+      "安萌 (An Meng)",
+      "陈旻 (Chen Min)",
+      "周福德 (Zhou Fude)",
+      "邹万忠 (Zou Wanzhong)",
+      "赵明辉 (Zhao Minghui)"
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表病例改写。保留年龄、性别和临床证据；姓名为化名，医院、日历日期、职业身份细节已去除。对话、问题、评分和安全选项为教学设计，未记录的数据明确未知。",
-      "en": "Adapted from a published case. Age, sex and clinical evidence are retained; names are pseudonyms and hospitals, calendar dates and identifying occupational details are removed. Dialogue, questions, scoring and safety options are educational design; missing data remain unknown."
+      "zh-CN": "依据已发表病例（中华医学杂志“疑难病例析评”第309例）改写。保留年龄、性别、临床经过、检查数值及原文参考值、病理、用药剂量和结局；姓名为化名，医院和日历日期已去除，时间改为相对时间（转入肾内科当天为第0天）。原文矛盾或存疑之处按原文保留并标注：主诉“水肿1个月余”与其首次就诊日期（入院前约8周）不一致；入院时血肌酐700 μmol/L而尿素氮7.88 mmol/L，二者不相称，原文未说明采样与透析的先后。原报告图1与图2印在同一幅合图中，本地下载只有这一个文件（fig01），两张图都在其中。问诊措辞、决策、干预选项、评分和复盘为教学设计；原文未记录的数据保持未知。2026-10-28编辑修订（1.1.0）。",
+      "en": "Adapted from a published case (Chinese Medical Journal 'Difficult case analysis' no. 309). Age, sex, clinical course, test values with the source's reference ranges, pathology, drug doses and outcome are retained; the name is a pseudonym, the hospital and calendar dates are removed and times are relative (transfer to the renal ward = day 0). Points where the source contradicts itself or is doubtful stay as printed and are labelled: the chief complaint's 'oedema for over a month' does not match its own first visit about 8 weeks before admission; at admission creatinine 700 μmol/L sits with a urea of 7.88 mmol/L, a discordant pair, and the report does not say how sampling related to dialysis. The source prints Figs 1 and 2 as one composite; the local download holds that single file (fig01), which contains both. Question wording, decisions, intervention options, scoring and debrief are teaching design; data the source does not record stay unknown. Editorial revision 2026-10-28 (1.1.0)."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "KDIGO 2024 ANCA-associated vasculitis guideline (Kidney Int 2024;105(3S):S71-S116; corrigendum to Practice Point 9.3.1.9)",
+        "EULAR 2022 update of the AAV recommendations (Ann Rheum Dis 2024;83(1):30-47)",
+        "Berden 2010 histopathological classification of ANCA-associated glomerulonephritis"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
-    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果来自原报告，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Results come from the report; undocumented physiological changes are not simulated."
   },
   "patient": {
     "displayName": {
@@ -57,40 +96,50 @@
     "age": 36,
     "sex": "female",
     "chiefComplaint": {
-      "zh-CN": "水肿1个多月，肌酐快速升高",
-      "en": "Over a month of oedema with rapidly rising creatinine"
+      "zh-CN": "间断双下肢水肿1个多月，血肌酐明显升高10多天",
+      "en": "Intermittent leg swelling for over a month; creatinine markedly raised for over 10 days"
     },
     "triageNote": {
-      "zh-CN": "水肿和血尿先于两次腹部手术，随后少尿加重。重建跨器官时间线，核对免疫及病理证据。",
-      "en": "Oedema and haematuria preceded two abdominal operations before worsening oliguria. Reconstruct the multi-organ timeline and review immunological and pathological evidence."
+      "zh-CN": "外科转来：近期因升结肠套叠行腹腔镜升结肠切除术，腹带在位；近来每天尿量约80–100 mL。请肾内科接诊评估。",
+      "en": "Transferred from surgery: recent laparoscopic ascending-colon resection for intussusception, abdominal binder in place; urine output about 80–100 mL a day. For renal assessment."
     },
     "tags": [
       {
-        "zh-CN": "水肿1个多月，肌酐快速升高",
-        "en": "Over a month of oedema with rapidly rising creatinine"
+        "zh-CN": "水肿",
+        "en": "Oedema"
+      },
+      {
+        "zh-CN": "尿少",
+        "en": "Low urine output"
+      },
+      {
+        "zh-CN": "近期腹部手术",
+        "en": "Recent abdominal surgery"
       }
     ],
     "persona": {
       "personality": {
-        "zh-CN": "按病例记录提供信息；性格为教学设定。",
-        "en": "Provides the recorded history; personality is an educational convention."
+        "zh-CN": "36岁女性，一个多月里腿肿、两次肚子手术、又转了科，人很疲惫，也有些焦虑，但愿意配合，回答清楚。",
+        "en": "A 36-year-old woman who in a little over a month has had swollen legs, two abdominal operations and a transfer between wards; tired and somewhat anxious, but cooperative and clear."
       },
       "speechStyle": {
-        "zh-CN": "用简短的日常语言回答，医学数据由病历核对。",
-        "en": "Answers briefly in everyday language; technical data are checked in the chart."
+        "zh-CN": "朴实的口语，句子短；记得医生说过的血压数字和手术经过，不用医学术语，记不清的就直说。",
+        "en": "Plain, everyday speech in short sentences; remembers the blood pressure numbers and the operations she was told about, avoids medical terms, and says so when she can't remember."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "anxious",
       "openingLine": {
-        "zh-CN": "一个多月前双腿对称凹陷性水肿，尿颜色变深，没力气、吃不下、上腹胀。",
-        "en": "Over a month earlier both legs developed pitting oedema, with darker urine, fatigue, poor appetite and upper abdominal fullness."
+        "zh-CN": "医生，我这一个多月腿一直肿，中间做了两次肚子的手术，现在尿越来越少了。",
+        "en": "Doctor, my legs have been swollen for over a month, I've had two operations on my tummy along the way, and now I'm hardly passing any urine."
       },
       "fallbackUnknown": {
-        "zh-CN": "原报告未记录，不能当作正常或阴性。",
-        "en": "Not documented in the report; this must not be treated as normal or negative."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
+      "concerns": [],
       "actingNotes": {
-        "zh-CN": "只能复述当前阶段已有资料；不扮演未被报告的症状或心理状态。",
-        "en": "Use only evidence available in the current phase; do not invent symptoms or mental states."
+        "zh-CN": "刚做完腹腔镜手术，腹带包着，翻身、坐起时会护着肚子。只讲已经问到的病史事实，用自己的话说，不增减数字、时间和药名；不解释化验和病理，不谈诊断。治疗后的阶段按当时的情况回答。",
+        "en": "Just after laparoscopic surgery, with a binder on; guards her abdomen when turning or sitting up. Only state history facts that have been asked about, in your own words, without adding or changing numbers, times or drug names; do not interpret tests or pathology or talk about a diagnosis. In the later phases answer for that time."
       }
     },
     "appearance": {
@@ -101,47 +150,78 @@
   },
   "phases": [
     {
-      "id": "initial",
+      "id": "admission",
       "label": {
-        "zh-CN": "初次接诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "转入肾内科（第0天）",
+        "en": "Transfer to the renal ward (day 0)"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "从外科转入肾内科当天：问诊、查体、调阅外院和本院既往记录、入院检查，并决定初始治疗。",
+        "en": "The day of transfer from surgery: history, examination, earlier records from the local hospital and this hospital, admission tests, and the first treatment decisions."
+      },
+      "learnerSwitchable": false
     },
     {
-      "id": "workup",
+      "id": "biopsy",
       "label": {
-        "zh-CN": "检查与临床决策",
-        "en": "Investigations and decisions"
+        "zh-CN": "肾活检与病理复阅（入院后第9天）",
+        "en": "Kidney biopsy and pathology review (hospital day 9)"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "原报告治疗与随访",
-        "en": "Reported treatment and follow-up"
+      "description": {
+        "zh-CN": "原报告在入院后第9天做肾活检，并在诊断明确后复阅肠切除标本。此阶段的结果是原报告的事实。",
+        "en": "The report's kidney biopsy on hospital day 9 and the re-review of the resected bowel after the diagnosis. This phase's results are the report's facts."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "decided": "diagnosis"
+            "objective": "obj-history"
           },
           {
-            "decided": "management"
+            "objective": "obj-exam"
           },
           {
-            "objective": "objective-1"
+            "objective": "obj-diagnosis"
           },
           {
-            "objective": "objective-2"
+            "objective": "obj-plan"
           }
         ]
       }
+    },
+    {
+      "id": "course",
+      "label": {
+        "zh-CN": "原报告的治疗经过",
+        "en": "Treatment course as reported"
+      },
+      "description": {
+        "zh-CN": "原报告的诱导治疗和住院经过。记录是原报告的事实，不随学员的选择改变。",
+        "en": "The report's induction treatment and hospital course. The record is the report's fact and does not change with the learner's choices."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-biopsy"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "后续随访",
+        "en": "Later follow-up"
+      },
+      "description": {
+        "zh-CN": "原报告最后一次记录的病情（具体时间未给出）。",
+        "en": "The last status the report records (its timing is not given)."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "read": "course",
+        "phase": "course"
+      }
     }
   ],
-  "initialPhase": "initial",
+  "initialPhase": "admission",
   "clock": {
     "mode": "static",
     "realtimeScale": 0
@@ -151,717 +231,2281 @@
       "id": "presentation",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "最早出现哪些症状？",
-        "en": "Which symptoms came first?"
+        "zh-CN": "这次是因为什么转到肾内科来的？",
+        "en": "What's brought you over to the kidney ward?"
       },
       "answer": {
-        "zh-CN": "一个多月前双腿对称凹陷性水肿，尿颜色变深，没力气、吃不下、上腹胀。",
-        "en": "Over a month earlier both legs developed pitting oedema, with darker urine, fatigue, poor appetite and upper abdominal fullness."
+        "zh-CN": "一个多月前两条腿都肿了，一按一个坑，尿的颜色也变深了，人没劲、吃不下饭，上腹发胀。中间做了两次肚子的手术，现在尿越来越少，医生说肌酐这十来天升得很厉害，就把我转过来了。",
+        "en": "Over a month ago both my legs swelled up — you could press a dent into them — my urine went dark, and I felt weak, off my food and bloated up top. I've had two tummy operations along the way, and now I'm hardly passing water; they said my creatinine has shot up these last ten days or so, so they moved me here."
       },
       "keywords": {
         "zh-CN": [
-          "最早出现哪些症状？",
-          "水肿"
+          "哪里不舒服",
+          "怎么不舒服",
+          "为什么转过来",
+          "转到",
+          "转科",
+          "为什么住院",
+          "这次来",
+          "主要症状",
+          "主诉"
         ],
         "en": [
-          "Which symptoms came first?",
-          "oedema"
+          "whatbringsyou",
+          "whatsbroughtyou",
+          "main problem",
+          "whatswrong",
+          "whatsthetrouble",
+          "whyareyouhere",
+          "chief complaint",
+          "transferred"
         ]
       },
       "disclosure": "volunteer",
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
     },
     {
-      "id": "renal-course",
+      "id": "first-visit",
       "topic": "hpi",
       "question": {
-        "zh-CN": "尿量后来如何变化？",
-        "en": "How did urine output change?"
+        "zh-CN": "第一次因为腿肿去看病是什么时候？当时医生怎么说？",
+        "en": "When did you first see a doctor about the swelling, and what did they say?"
       },
       "answer": {
-        "zh-CN": "后来尿越来越少，最低每天约80–100 mL。",
-        "en": "Urine output fell progressively to about 80–100 mL per day."
+        "zh-CN": "差不多两个月前在当地医院看的。量血压180/100，说尿里有蛋白、有红细胞，肾功能也不好。给我降压、利尿，腿肿消了一些。",
+        "en": "About two months ago at the local hospital. My blood pressure was 180 over 100, they said there was protein and blood in my urine and my kidneys weren't working well. They gave me blood-pressure tablets and water tablets, and the swelling went down a bit."
       },
       "keywords": {
         "zh-CN": [
-          "尿量后来如何变化？",
-          "尿量"
+          "第一次看病",
+          "最早去医院",
+          "当地医院",
+          "腿肿多久",
+          "什么时候开始肿",
+          "第一次就诊",
+          "当时怎么说",
+          "最开始"
         ],
         "en": [
-          "How did urine output change?",
-          "urine output"
+          "firstsawadoctor",
+          "firstgotoadoctor",
+          "firstwenttothedoctor",
+          "first visit",
+          "local hospital",
+          "whendiditstart",
+          "howlong",
+          "swelling start",
+          "first noticed",
+          "atthebeginning"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "first-pain",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "第一次肚子疼是怎么回事？",
+        "en": "Tell me about the first time your tummy hurt."
+      },
+      "answer": {
+        "zh-CN": "那次看完腿肿大概两个星期后肚子疼，没拉肚子、没发烧，也没出夜汗，大便里没有黏液、没有脓血。当地医院说是急性阑尾炎，就做手术切了。",
+        "en": "About two weeks after that visit about the swelling my tummy started hurting. No diarrhoea, no fever, no night sweats, and nothing like mucus or pus or blood in my stools. The local hospital said it was acute appendicitis and took my appendix out."
+      },
+      "keywords": {
+        "zh-CN": [
+          "第一次肚子疼",
+          "第一次腹痛",
+          "阑尾炎",
+          "阑尾",
+          "阑尾手术",
+          "肚子疼过",
+          "第一次疼"
+        ],
+        "en": [
+          "first tummy pain",
+          "first abdominal pain",
+          "appendicitis",
+          "appendix",
+          "appendicectomy",
+          "first time it hurt"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "clinic-visit",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "后来在我们医院肾内科门诊看过吗？",
+        "en": "Did you come to our kidney clinic after that?"
+      },
+      "answer": {
+        "zh-CN": "一个月前来这儿的肾内科门诊看过。血压160/100，说尿蛋白比以前多，24小时漏了三点六克，肌酐也比以前高。给我开了氨氯地平，一天一片，5毫克。",
+        "en": "Yes, about a month ago. My blood pressure was 160 over 100; they said there was more protein in my urine than before — 3.6 grams in 24 hours — and my creatinine was higher. They put me on amlodipine, one 5 mg tablet a day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肾内科门诊",
+          "门诊",
+          "一个月前",
+          "24小时尿蛋白",
+          "尿蛋白",
+          "门诊看过"
+        ],
+        "en": [
+          "kidney clinic",
+          "renal clinic",
+          "outpatient",
+          "a month ago",
+          "24-hour protein",
+          "clinic visit"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "urine-output",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近尿量有什么变化？",
+        "en": "Has the amount of urine you pass changed?"
+      },
+      "answer": {
+        "zh-CN": "二十多天前尿就开始少了，后来越来越少，现在一天只有八十到一百毫升。",
+        "en": "It started dropping twenty-odd days ago and kept falling — now it's only 80 to 100 millilitres a day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "尿量",
+          "尿少",
+          "尿多少",
+          "一天尿多少",
+          "小便少",
+          "尿不多",
+          "小便量"
+        ],
+        "en": [
+          "urine output",
+          "howmuchurine",
+          "passing urine",
+          "howmuchdoyoupass",
+          "less urine",
+          "howmuchwater",
+          "volume of urine"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "second-pain",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这次肚子疼是怎么开始的？",
+        "en": "How did this latest bout of tummy pain start?"
       },
-      "required": true
+      "answer": {
+        "zh-CN": "十八天前又肚子疼，还恶心、吐、拉肚子。没有黑便，关节不疼，不发烧，身上也没起紫斑、瘀斑。来这儿急诊拍了CT，说是肠套叠，就做了腹腔镜手术，切了一段升结肠。",
+        "en": "Eighteen days ago my tummy started hurting again, with sickness, vomiting and diarrhoea. No black stools, no joint pains, no fever and no purple spots or bruises. I came to your emergency department, the CT showed the bowel had telescoped into itself, and they did a keyhole operation and took out part of the ascending colon."
+      },
+      "keywords": {
+        "zh-CN": [
+          "又肚子疼",
+          "第二次肚子疼",
+          "第二次腹痛",
+          "这次肚子疼",
+          "恶心呕吐",
+          "拉肚子",
+          "肠套叠",
+          "急诊"
+        ],
+        "en": [
+          "second bout",
+          "tummy pain again",
+          "abdominal pain again",
+          "pain came back",
+          "vomiting",
+          "diarrhoea",
+          "intussusception",
+          "emergency department",
+          "latest pain"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
     },
     {
       "id": "surgery",
       "topic": "psh",
       "question": {
-        "zh-CN": "腹痛导致过哪些手术？",
-        "en": "Which operations followed abdominal pain?"
+        "zh-CN": "做过哪些手术？",
+        "en": "What operations have you had?"
       },
       "answer": {
-        "zh-CN": "先因腹痛按阑尾炎做了手术，之后又腹痛、恶心、呕吐、腹泻，因肠套叠切除了升结肠。",
-        "en": "An operation was first performed for presumed appendicitis; later pain, nausea, vomiting and diarrhoea led to ascending-colon resection for intussusception."
+        "zh-CN": "两次。先是在当地医院切了阑尾，后来在这儿做了腹腔镜，切了一段结肠，说是肠套叠。",
+        "en": "Two. First my appendix was taken out at the local hospital, then here they did a keyhole operation and removed a piece of bowel because of the telescoping."
       },
       "keywords": {
         "zh-CN": [
-          "腹痛导致过哪些手术？",
-          "腹部手术"
+          "手术",
+          "做过什么手术",
+          "开过刀",
+          "动过手术",
+          "腹腔镜",
+          "开刀",
+          "手术史"
         ],
         "en": [
-          "Which operations followed abdominal pain?",
-          "abdominal surgery"
+          "operations",
+          "surgery",
+          "operated on",
+          "keyhole",
+          "laparoscopic",
+          "surgical history",
+          "hadanoperation"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
-      "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "肾穿",
+          "活检"
+        ],
+        "en": [
+          "biopsy"
+        ]
       },
-      "required": true
+      "source": {
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
     },
     {
       "id": "medications",
       "topic": "medications",
       "question": {
-        "zh-CN": "用药及可能相关药物史是什么？",
-        "en": "What medicines and relevant drug exposures are recorded?"
+        "zh-CN": "现在在吃哪些药？",
+        "en": "What medicines are you taking at the moment?"
       },
       "answer": {
-        "zh-CN": "用过降压和利尿治疗，门诊用氨氯地平；没有服用丙硫氧嘧啶等药物史。",
-        "en": "Antihypertensive and diuretic treatment was used, including outpatient amlodipine; propylthiouracil exposure was denied."
+        "zh-CN": "门诊开的氨氯地平，一天一片，5毫克。当地医院还给过降压和利尿的药，名字记不清了。",
+        "en": "The amlodipine from the clinic, one 5 mg tablet a day. The local hospital also gave me something for blood pressure and a water tablet, but I don't remember their names."
       },
       "keywords": {
         "zh-CN": [
-          "用药及可能相关药物史是什么？",
-          "用药"
+          "吃什么药",
+          "在吃的药",
+          "用药",
+          "服药",
+          "降压药",
+          "利尿药",
+          "氨氯地平",
+          "平时吃药"
         ],
         "en": [
-          "What medicines and relevant drug exposures are recorded?",
-          "propylthiouracil"
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "whatdoyoutake",
+          "amlodipine",
+          "water tablets",
+          "regular medication"
         ]
       },
       "disclosure": "on-ask",
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "丙硫",
+          "甲状腺",
+          "甲亢"
+        ],
+        "en": [
+          "allerg",
+          "thyroid",
+          "propylthiouracil",
+          "ptu"
+        ]
+      },
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-      },
-      "required": true
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
     },
     {
-      "id": "negative",
-      "topic": "ros",
+      "id": "ptu",
+      "topic": "medications",
       "question": {
-        "zh-CN": "有发热、紫癜、关节痛或黑便吗？",
-        "en": "Were fever, purpura, joint pain or black stools present?"
+        "zh-CN": "有没有吃过丙硫氧嘧啶这类治甲状腺的药？",
+        "en": "Have you ever taken propylthiouracil or another thyroid tablet?"
       },
       "answer": {
-        "zh-CN": "再次腹痛时没有发热、关节痛、黑便或皮肤黏膜紫癜瘀斑。",
-        "en": "During recurrent pain there was no fever, joint pain, black stool or mucocutaneous purpura/bruising."
+        "zh-CN": "没有，丙硫氧嘧啶这一类的药我从来没吃过。",
+        "en": "No, I've never taken propylthiouracil or anything like it."
       },
       "keywords": {
         "zh-CN": [
-          "有发热、紫癜、关节痛或黑便吗？",
-          "紫癜"
+          "丙硫氧嘧啶",
+          "丙基硫氧嘧啶",
+          "甲亢药",
+          "治甲状腺的药",
+          "甲状腺",
+          "ptu",
+          "抗甲状腺药"
         ],
         "en": [
-          "Were fever, purpura, joint pain or black stools present?",
-          "purpura"
+          "propylthiouracil",
+          "ptu",
+          "thyroid tablets",
+          "antithyroid",
+          "hydralazine",
+          "drug-induced",
+          "thyroid medicine"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · past history; the patient's lay wording is a teaching adaptation"
       }
     },
     {
       "id": "pmh",
       "topic": "pmh",
       "question": {
-        "zh-CN": "发病以前健康情况怎样？",
-        "en": "How was health before this illness?"
+        "zh-CN": "以前有过什么病吗？",
+        "en": "Have you had any health problems before all this?"
       },
       "answer": {
-        "zh-CN": "以前身体健康。",
-        "en": "Previously healthy."
+        "zh-CN": "以前身体一直挺好的。",
+        "en": "I've always been healthy before this."
       },
       "keywords": {
         "zh-CN": [
-          "发病以前健康情况怎样？",
-          "既往健康"
+          "以前的病",
+          "既往史",
+          "身体怎么样",
+          "慢性病",
+          "以前身体",
+          "得过什么病",
+          "基础病"
         ],
         "en": [
-          "How was health before this illness?",
-          "previous health"
+          "past medical history",
+          "health problems before",
+          "previously well",
+          "well before",
+          "medical problems",
+          "long-term conditions",
+          "illnesses before"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "手术",
+          "开刀",
+          "药"
+        ],
+        "en": [
+          "operation",
+          "surgery",
+          "medicine",
+          "tablet"
+        ]
+      },
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · past history; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "negative",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "身上起过紫斑、关节疼，或者发烧吗？",
+        "en": "Have you had any rash, joint pains or fever?"
+      },
+      "answer": {
+        "zh-CN": "这次肚子疼的时候没发烧，关节不疼，身上没起过紫斑、瘀斑，大便也没发黑。",
+        "en": "When my tummy hurt this time there was no fever, no joint pain, no purple spots or bruising, and no black stools."
+      },
+      "keywords": {
+        "zh-CN": [
+          "紫斑",
+          "紫癜",
+          "皮疹",
+          "出疹子",
+          "关节疼",
+          "关节痛",
+          "发烧",
+          "发热",
+          "黑便",
+          "瘀斑"
+        ],
+        "en": [
+          "rash",
+          "purpura",
+          "purple spots",
+          "joint pain",
+          "fever",
+          "temperature",
+          "black stools",
+          "bruising",
+          "arthralgia"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
       }
     },
     {
       "id": "pressure",
       "topic": "hpi",
       "question": {
-        "zh-CN": "最初测过多高的血压？",
-        "en": "What early blood pressure was recorded?"
+        "zh-CN": "以前量过血压吗？",
+        "en": "Has your blood pressure been checked before?"
       },
       "answer": {
-        "zh-CN": "最初就诊血压180/100 mmHg，后来门诊160/100 mmHg。",
-        "en": "Initial blood pressure was 180/100 mmHg and a later clinic reading was 160/100 mmHg."
+        "zh-CN": "第一次在当地医院量的是180/100，后来门诊量的是160/100。",
+        "en": "The first time, at the local hospital, it was 180 over 100; later at the clinic it was 160 over 100."
       },
       "keywords": {
         "zh-CN": [
-          "最初测过多高的血压？",
-          "血压"
+          "血压",
+          "量血压",
+          "高血压",
+          "血压高",
+          "血压多少"
         ],
         "en": [
-          "What early blood pressure was recorded?",
-          "blood pressure"
+          "blood pressure",
+          "bp",
+          "hypertension",
+          "high blood pressure",
+          "bp readings"
         ]
       },
       "disclosure": "on-ask",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · history of present illness; the patient's lay wording is a teaching adaptation"
       }
     },
     {
       "id": "lung-history",
       "topic": "associated-symptoms",
       "question": {
-        "zh-CN": "是否有咯血病史？",
-        "en": "Was haemoptysis reported?"
+        "zh-CN": "有没有咳嗽、咳血或者气短？",
+        "en": "Any cough, coughing up blood or breathlessness?"
       },
       "answer": {
-        "zh-CN": "原报告未明确记载咯血病史。",
-        "en": "A history of haemoptysis is not explicitly documented."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "是否有咯血病史？"
+          "咳嗽",
+          "咳血",
+          "咯血",
+          "气短",
+          "喘",
+          "痰中带血",
+          "呼吸困难"
         ],
         "en": [
-          "Was haemoptysis reported?"
+          "cough",
+          "coughing up blood",
+          "haemoptysis",
+          "breathless",
+          "short of breath",
+          "blood in phlegm"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "ent",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "鼻子有没有出血、鼻塞，耳朵听得清吗？",
+        "en": "Any nosebleeds, a blocked nose or trouble hearing?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "鼻出血",
+          "流鼻血",
+          "鼻塞",
+          "鼻窦",
+          "听力",
+          "耳朵"
+        ],
+        "en": [
+          "nosebleeds",
+          "blocked nose",
+          "sinus",
+          "hearing",
+          "ears",
+          "crusting"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "numbness",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "手脚有没有麻木或者针刺感？",
+        "en": "Any numbness or pins and needles in your hands or feet?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "麻木",
+          "发麻",
+          "针刺感",
+          "手脚麻",
+          "感觉异常"
+        ],
+        "en": [
+          "numbness",
+          "pins and needles",
+          "tingling",
+          "numb",
+          "loss of feeling"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "体重有没有变化？",
+        "en": "Has your weight changed?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "瘦了",
+          "变瘦",
+          "体重下降"
+        ],
+        "en": [
+          "weight",
+          "lost weight",
+          "weight loss",
+          "thinner"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "以前有药物或食物过敏吗？",
-        "en": "Any previous drug or food allergies?"
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "以前有药物或食物过敏吗？",
-          "药物过敏"
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对什么过敏"
         ],
         "en": [
-          "Any previous drug or food allergies?",
-          "allergies"
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "food allergy",
+          "reactions to medicines"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
       "id": "family",
       "topic": "family",
       "question": {
-        "zh-CN": "家族中有类似疾病吗？",
-        "en": "Any family history of similar illness?"
+        "zh-CN": "家里有人得过肾病或者类似的病吗？",
+        "en": "Has anyone in your family had kidney disease or anything like this?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "家族中有类似疾病吗？",
-          "家族史"
+          "家里人",
+          "家族史",
+          "家人",
+          "遗传",
+          "父母",
+          "兄弟姐妹"
         ],
         "en": [
-          "Any family history of similar illness?",
-          "family history"
+          "family history",
+          "runs in the family",
+          "relatives",
+          "parents",
+          "inherited",
+          "anyone in your family"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
       "id": "smoking",
       "topic": "social",
       "question": {
-        "zh-CN": "您吸烟吗？",
+        "zh-CN": "抽烟吗？",
         "en": "Do you smoke?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "您吸烟吗？",
-          "吸烟"
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟"
         ],
         "en": [
-          "doyousmoke",
-          "smoking"
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
       "id": "alcohol",
       "topic": "social",
       "question": {
-        "zh-CN": "平时饮酒吗？",
+        "zh-CN": "平时喝酒吗？",
         "en": "Do you drink alcohol?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "平时饮酒吗？",
-          "饮酒"
+          "喝酒",
+          "饮酒",
+          "酒量",
+          "白酒",
+          "啤酒"
         ],
         "en": [
-          "Do you drink alcohol?",
-          "alcohol"
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
       "id": "occupation",
       "topic": "social",
       "question": {
-        "zh-CN": "工作和生活环境怎样？",
-        "en": "What are your work and living circumstances?"
+        "zh-CN": "您是做什么工作的？",
+        "en": "What do you do for a living?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "工作和生活环境怎样？",
-          "职业"
+          "做什么工作",
+          "工作",
+          "职业",
+          "上班",
+          "干什么的"
         ],
         "en": [
-          "What are your work and living circumstances?",
-          "occupation"
+          "job",
+          "occupation",
+          "foraliving",
+          "whatdoyoudoforwork",
+          "line of work",
+          "employment"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
-      "id": "self-care",
-      "topic": "functional",
+      "id": "pregnancy",
+      "topic": "obstetric",
       "question": {
-        "zh-CN": "生病前的日常自理情况怎样？",
-        "en": "How independent were you before this illness?"
+        "zh-CN": "月经规律吗？有没有怀孕的可能或者打算？",
+        "en": "Are your periods regular, and could you be pregnant or are you planning a pregnancy?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "生病前的日常自理情况怎样？",
-          "自理"
+          "月经",
+          "怀孕",
+          "生育",
+          "要孩子",
+          "避孕",
+          "妊娠"
         ],
         "en": [
-          "How independent were you before this illness?",
-          "independence"
+          "periods",
+          "pregnant",
+          "pregnancy",
+          "fertility",
+          "contraception",
+          "planning a family"
         ]
       },
       "disclosure": "unknown",
-      "phases": [
-        "initial"
-      ],
+      "required": false,
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     },
     {
       "id": "expectations",
       "topic": "ice",
       "question": {
-        "zh-CN": "最担心什么，希望怎样处理？",
-        "en": "What concerns you most and what do you hope for?"
+        "zh-CN": "这次住院您最担心什么？",
+        "en": "What worries you most about all this?"
       },
       "answer": {
-        "zh-CN": "这部分原记录没有说明。",
-        "en": "The source record does not provide this information."
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
       },
       "keywords": {
         "zh-CN": [
-          "最担心什么，希望怎样处理？",
-          "担心"
+          "担心",
+          "顾虑",
+          "最怕",
+          "希望",
+          "期望"
         ],
         "en": [
-          "What concerns you most and what do you hope for?",
-          "concerns"
+          "worries",
+          "worried",
+          "concerns",
+          "hoping for",
+          "expect"
         ]
       },
       "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "status-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这阵子感觉怎么样？",
+        "en": "How have you been feeling lately?"
+      },
+      "answer": {
+        "zh-CN": "尿多起来了，一天有一千三到一千五毫升，医生说已经不用透析了。",
+        "en": "I'm passing much more now — 1,300 to 1,500 millilitres a day — and the doctors say I don't need dialysis any more."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在感觉",
+          "这阵子",
+          "好点了吗",
+          "好些了",
+          "现在尿多少",
+          "还透析吗",
+          "感觉怎么样"
+        ],
+        "en": [
+          "feeling now",
+          "howareyounow",
+          "anybetter",
+          "feeling better",
+          "urine now",
+          "water works",
+          "waterworks",
+          "still on dialysis",
+          "lately"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
       "phases": [
-        "initial"
+        "course"
+      ],
+      "supersedes": [
+        "presentation",
+        "urine-output"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "meds-course",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "现在用的是什么药？",
+        "en": "What medicines are you on now?"
+      },
+      "answer": {
+        "zh-CN": "先挂了几天大剂量的激素，现在每天吃泼尼松，50毫克；每个月输一次环磷酰胺；还吃复方新诺明，一周两次，一次两片。",
+        "en": "First I had a few days of high-dose steroid drips; now I take prednisone, 50 mg a day. I have cyclophosphamide through a drip once a month, and co-trimoxazole, two tablets twice a week."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在吃什么药",
+          "现在用的药",
+          "激素",
+          "泼尼松",
+          "环磷酰胺",
+          "复方新诺明",
+          "用什么药"
+        ],
+        "en": [
+          "medicines now",
+          "whatareyouonnow",
+          "steroids",
+          "prednisone",
+          "cyclophosphamide",
+          "co-trimoxazole",
+          "current medication"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "phases": [
+        "course"
+      ],
+      "supersedes": [
+        "medications"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "status-followup",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在恢复得怎么样？",
+        "en": "How are you getting on now?"
+      },
+      "answer": {
+        "zh-CN": "现在挺稳定的，肚子也不疼了。医生说尿检和炎症指标都正常了，肾功能也好多了。",
+        "en": "I'm stable now and the tummy pain has gone. The doctors say my urine tests and inflammation markers are normal again and my kidneys are much better."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "恢复",
+          "还疼吗",
+          "肚子还疼吗",
+          "现在感觉",
+          "好了吗"
+        ],
+        "en": [
+          "howareyounow",
+          "recovery",
+          "any pain now",
+          "tummy pain now",
+          "feeling now",
+          "gettingon"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "presentation",
+        "urine-output",
+        "status-course"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Case summary · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "meds-followup",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "后来的药是怎么吃的？",
+        "en": "What have you been taking since then?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "后来吃什么药",
+          "现在吃的药",
+          "维持治疗",
+          "还在吃药吗",
+          "在吃什么药"
+        ],
+        "en": [
+          "since then",
+          "medicines now",
+          "maintenance",
+          "still on treatment",
+          "whatareyoutaking"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "medications",
+        "meds-course"
+      ],
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
       }
     }
   ],
   "exam": [
     {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "测血压和心率",
+        "en": "Check her blood pressure and pulse"
+      },
+      "keywords": {
+        "zh-CN": [
+          "血压",
+          "量血压",
+          "心率",
+          "脉搏",
+          "生命体征",
+          "测血压"
+        ],
+        "en": [
+          "blood pressure",
+          "bp",
+          "pulse",
+          "heart rate",
+          "vital signs",
+          "observations"
+        ]
+      },
+      "finding": {
+        "zh-CN": "血压130/70 mmHg，心率88次/分。",
+        "en": "Blood pressure 130/70 mmHg, heart rate 88/min."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · admission examination"
+      }
+    },
+    {
       "id": "general",
       "system": "general",
       "maneuver": {
-        "zh-CN": "检查一般情况与水肿",
-        "en": "Examine general appearance and oedema"
+        "zh-CN": "看皮肤、黏膜和睑结膜",
+        "en": "Look at her skin, mucous membranes and conjunctivae"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "苍白",
+          "贫血貌",
+          "皮肤",
+          "黏膜",
+          "睑结膜",
+          "面色",
+          "看皮肤"
+        ],
+        "en": [
+          "general appearance",
+          "pallor",
+          "pale",
+          "anaemic",
+          "skin",
+          "conjunctivae",
+          "mucous membranes"
+        ]
       },
       "finding": {
-        "zh-CN": "皮肤黏膜及睑结膜略苍白，入肾内科时双下肢已无水肿。",
-        "en": "Mild pallor of skin, mucosa and palpebral conjunctiva; leg oedema was absent on nephrology admission."
+        "zh-CN": "全身皮肤黏膜、睑结膜略苍白。",
+        "en": "Skin, mucous membranes and palpebral conjunctivae slightly pale."
       },
       "abnormal": true,
+      "requires": [],
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · admission examination"
+      }
+    },
+    {
+      "id": "cardioresp",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心肺听诊",
+        "en": "Listen to the heart and lungs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏",
+          "肺部",
+          "听诊",
+          "心肺",
+          "心音",
+          "呼吸音",
+          "听心肺"
+        ],
+        "en": [
+          "heart",
+          "lungs",
+          "auscultate",
+          "chest",
+          "heart sounds",
+          "breath sounds",
+          "listen to the chest"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心肺未见异常。",
+        "en": "Heart and lungs normal."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · admission examination"
       }
     },
     {
       "id": "abdomen",
       "system": "abdomen",
       "maneuver": {
-        "zh-CN": "检查腹部及手术切口",
-        "en": "Examine abdomen and surgical wound"
+        "zh-CN": "检查腹部和手术切口",
+        "en": "Examine the abdomen and the wound"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "伤口",
+          "切口",
+          "腹带",
+          "敷料",
+          "摸肚子",
+          "腹部触诊"
+        ],
+        "en": [
+          "abdomen",
+          "tummy",
+          "wound",
+          "incision",
+          "dressing",
+          "binder",
+          "palpate the abdomen",
+          "abdominal examination"
+        ]
       },
       "finding": {
-        "zh-CN": "腹软，腹带及敷料清洁干燥，无渗血。",
-        "en": "Abdomen soft; binder and wound dressing were clean and dry without oozing."
+        "zh-CN": "腹软，腹带包扎，伤口敷料清洁干燥，无渗血。",
+        "en": "Abdomen soft; abdominal binder in place; wound dressing clean and dry, no oozing."
       },
       "abnormal": false,
+      "requires": [],
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · admission examination"
       }
     },
     {
-      "id": "vitals",
-      "system": "vitals",
+      "id": "legs",
+      "system": "cardiovascular",
       "maneuver": {
-        "zh-CN": "核对入院生命体征",
-        "en": "Review admission vital signs"
+        "zh-CN": "检查双下肢水肿",
+        "en": "Check her legs for oedema"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腿肿",
+          "水肿",
+          "下肢",
+          "双下肢",
+          "浮肿",
+          "按一下腿"
+        ],
+        "en": [
+          "leg swelling",
+          "oedema",
+          "edema",
+          "swollen legs",
+          "ankles",
+          "pitting"
+        ]
       },
       "finding": {
-        "zh-CN": "血压130/70 mmHg、心率88次/分；心肺检查无异常记录。",
-        "en": "Blood pressure 130/70 mmHg and heart rate 88/min; cardiac and lung examination were reported unremarkable."
+        "zh-CN": "双下肢不肿。",
+        "en": "No leg oedema."
       },
       "abnormal": false,
+      "requires": [],
+      "required": true,
       "phases": [
-        "initial"
+        "admission"
       ],
       "source": {
-        "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-        "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · admission examination"
+      }
+    },
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "四肢神经系统检查",
+        "en": "Examine the limbs neurologically"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肌力",
+          "肌张力",
+          "病理征",
+          "神经系统",
+          "巴氏征",
+          "四肢检查",
+          "神经查体"
+        ],
+        "en": [
+          "power",
+          "tone",
+          "reflexes",
+          "neurological examination",
+          "babinski",
+          "plantars",
+          "limb strength"
+        ]
+      },
+      "finding": {
+        "zh-CN": "四肢肌张力正常，肌力Ⅴ级，双侧病理征阴性。",
+        "en": "Limb tone normal, power grade 5, no pathological reflexes on either side."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "病历摘要·入院体格检查",
+        "en": "Case summary · admission examination"
       }
     }
   ],
   "examNotRecorded": {
-    "zh-CN": "原报告未记录，不能当作正常或阴性。",
-    "en": "Not documented in the report; this must not be treated as normal or negative."
+    "zh-CN": "原报告没有记录这一项查体：入院查体只写到血压、心率、皮肤黏膜、心肺、腹部和伤口、双下肢及四肢神经系统；转入后的阶段没有再记录查体。",
+    "en": "The report does not record this manoeuvre: the admission examination covers only blood pressure, heart rate, skin and mucosa, heart and lungs, abdomen and wound, legs and the limb neurology; no examination is recorded in the later phases."
   },
   "investigations": [
     {
-      "id": "renal",
+      "id": "local-records",
       "name": {
-        "zh-CN": "肾功能与尿液检查",
-        "en": "Renal function and urine tests"
+        "zh-CN": "当地医院就诊记录（入院前约8周）",
+        "en": "Local hospital record (about 8 weeks before admission)"
       },
-      "category": "lab",
+      "category": "record",
       "aliases": {
         "zh-CN": [
-          "肾功能与尿液检查"
+          "当地医院",
+          "外院记录",
+          "外院化验",
+          "第一次化验",
+          "最早的化验",
+          "当地的检查"
         ],
         "en": [
-          "Renal function and urine tests",
-          "renal"
+          "local hospital",
+          "outside records",
+          "first results",
+          "earliest results",
+          "local records",
+          "referral notes"
         ]
       },
       "requires": [
-        "lab-chemistry"
+        "records"
       ],
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前57天（约8周）",
+            "en": "57 days (about 8 weeks) before admission"
+          },
           "text": {
-            "zh-CN": "肌酐从261、351、679升至700 μmol/L；入院尿蛋白+++、24小时尿蛋白2.31 g，红细胞30–40/HPF。",
-            "en": "Creatinine rose through 261, 351 and 679 to 700 μmol/L. At admission urine protein was +++, 24-hour protein 2.31 g and RBCs 30–40/HPF."
+            "zh-CN": "入院前57天（约8周），当地医院：血压180/100 mmHg；尿常规蛋白++，红细胞80–100/HPF；血肌酐261 μmol/L。经降压、利尿治疗，水肿有所缓解。",
+            "en": "57 days (about 8 weeks) before admission, local hospital: blood pressure 180/100 mmHg; urinalysis protein ++, red cells 80–100/HPF; creatinine 261 μmol/L. Antihypertensive and diuretic treatment eased the oedema."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白",
+                "en": "Urine protein"
+              },
+              "value": "++",
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿红细胞",
+                "en": "Urine red cells"
+              },
+              "value": "80–100",
+              "unit": "/HPF",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血肌酐",
+                "en": "Creatinine"
+              },
+              "value": 261,
+              "unit": "μmol/L",
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文主诉写“水肿1个月余”，而这次因水肿就诊已在入院前约8周：原文前后不一致，两种说法都保留。",
+            "en": "The source's chief complaint says 'oedema for over a month', yet this visit for the oedema was about 8 weeks before admission: the source is inconsistent and both statements are kept."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "病历摘要·现病史（转科前的检查）",
+            "en": "Case summary · history (tests before the transfer)"
+          }
+        }
+      }
+    },
+    {
+      "id": "clinic-records",
+      "name": {
+        "zh-CN": "本院肾内科门诊记录（入院前约1个月）",
+        "en": "Renal clinic record, this hospital (about 1 month before admission)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "门诊记录",
+          "肾内科门诊",
+          "门诊化验",
+          "一个月前的化验",
+          "门诊病历"
+        ],
+        "en": [
+          "clinic record",
+          "renal clinic",
+          "outpatient record",
+          "clinic results",
+          "month before"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前约1个月",
+            "en": "About 1 month before admission"
           },
+          "text": {
+            "zh-CN": "入院前约1个月，本院肾内科门诊：血压160/100 mmHg；尿常规蛋白+++，红细胞满视野；24小时尿蛋白3.61 g；血肌酐351 μmol/L。予苯磺酸氨氯地平5 mg/日口服。",
+            "en": "About 1 month before admission, renal clinic of this hospital: blood pressure 160/100 mmHg; urinalysis protein +++, red cells too numerous to count; 24-hour urine protein 3.61 g; creatinine 351 μmol/L. Amlodipine besilate 5 mg a day started."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白",
+                "en": "Urine protein"
+              },
+              "value": "+++",
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿红细胞",
+                "en": "Urine red cells"
+              },
+              "value": {
+                "zh-CN": "满视野",
+                "en": "too numerous to count"
+              },
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "24小时尿蛋白",
+                "en": "24-hour urine protein"
+              },
+              "value": 3.61,
+              "unit": "g/24 h",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血肌酐",
+                "en": "Creatinine"
+              },
+              "value": 351,
+              "unit": "μmol/L",
+              "flag": "H"
+            }
+          ],
           "figures": [],
-          "available": true
+          "source": {
+            "zh-CN": "病历摘要·现病史（转科前的检查）",
+            "en": "Case summary · history (tests before the transfer)"
+          }
+        }
+      }
+    },
+    {
+      "id": "surgical-records",
+      "name": {
+        "zh-CN": "外科住院记录（入院前18天至转科）",
+        "en": "Surgical admission record (18 days before admission to transfer)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外科记录",
+          "外科病历",
+          "急诊记录",
+          "腹部ct",
+          "手术记录",
+          "转科记录"
+        ],
+        "en": [
+          "surgical notes",
+          "surgical record",
+          "emergency notes",
+          "abdominal ct",
+          "operation note",
+          "transfer letter"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前18天至转科",
+            "en": "18 days before admission until the transfer"
+          },
+          "text": {
+            "zh-CN": "入院前18天因腹痛伴恶心、呕吐、腹泻急诊就诊，腹部CT提示升结肠套叠，行腹腔镜升结肠切除术（手术日期原文未给出）。外科住院期间复查尿常规与之前相同，尿量逐渐减少至80–100 mL/24 h，血肌酐逐渐升高至679 μmol/L，随后转入肾内科。",
+            "en": "18 days before admission she came to the emergency department with abdominal pain, nausea, vomiting and diarrhoea; abdominal CT showed an ascending-colon intussusception and she had a laparoscopic ascending-colon resection (the date of the operation is not given). During the surgical stay the urinalysis was unchanged, urine output fell to 80–100 mL/24 h and creatinine rose to 679 μmol/L; she was then transferred to nephrology."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿量",
+                "en": "Urine output"
+              },
+              "value": "80–100",
+              "unit": "mL/24 h",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血肌酐（转科前）",
+                "en": "Creatinine (before transfer)"
+              },
+              "value": 679,
+              "unit": "μmol/L",
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "切除标本当时的病理报告原文未单独给出。",
+            "en": "The original pathology report on the resected bowel is not given."
+          },
+          "source": {
+            "zh-CN": "病历摘要·现病史（转科前的检查）",
+            "en": "Case summary · history (tests before the transfer)"
+          }
         }
       }
     },
     {
       "id": "serology",
       "name": {
-        "zh-CN": "ANCA及鉴别免疫检查",
-        "en": "ANCA and differential serology"
+        "zh-CN": "ANCA及相关血清学（外科住院期间送检）",
+        "en": "ANCA and related serology (sent during the surgical stay)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "anca",
+          "抗中性粒细胞胞质抗体",
+          "mpo",
+          "抗mpo",
+          "抗gbm",
+          "抗肾小球基底膜",
+          "ana",
+          "抗核抗体",
+          "dsdna",
+          "自身抗体",
+          "免疫指标"
+        ],
+        "en": [
+          "anca",
+          "mpo",
+          "anti-mpo",
+          "anti-gbm",
+          "ana",
+          "antinuclear",
+          "dsdna",
+          "autoantibodies",
+          "vasculitis screen",
+          "immunology"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "外科住院期间（入院前18天内）",
+            "en": "During the surgical stay (within 18 days before admission)"
+          },
+          "text": {
+            "zh-CN": "核周型ANCA（pANCA）阳性；抗髓过氧化物酶（MPO）抗体115 000 RU/L（参考值< 20 000 RU/L）；抗肾小球基底膜（GBM）抗体阴性；抗核抗体（ANA）和抗双链DNA（dsDNA）抗体阴性。",
+            "en": "Perinuclear ANCA (pANCA) positive; anti-myeloperoxidase (MPO) antibody 115,000 RU/L (reference < 20,000 RU/L); anti-glomerular basement membrane (GBM) antibody negative; antinuclear antibody (ANA) and anti-double-stranded DNA (dsDNA) negative."
+          },
+          "values": [
+            {
+              "analyte": "pANCA",
+              "value": {
+                "zh-CN": "阳性",
+                "en": "positive"
+              },
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "抗MPO抗体",
+                "en": "Anti-MPO antibody"
+              },
+              "value": 115000,
+              "unit": "RU/L",
+              "refHigh": 20000,
+              "refText": {
+                "zh-CN": "< 20 000",
+                "en": "< 20,000"
+              },
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "抗GBM抗体",
+                "en": "Anti-GBM antibody"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": "ANA",
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": "",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "抗dsDNA抗体",
+                "en": "Anti-dsDNA"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": "",
+              "flag": "N"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "PR3-ANCA和补体原文未报告。",
+            "en": "PR3-ANCA and complement were not reported."
+          },
+          "source": {
+            "zh-CN": "病历摘要·现病史（转科前的检查）",
+            "en": "Case summary · history (tests before the transfer)"
+          }
+        }
+      }
+    },
+    {
+      "id": "renal",
+      "name": {
+        "zh-CN": "肾功能和尿液检查（入院）",
+        "en": "Renal function and urine tests (admission)"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "ANCA及鉴别免疫检查"
+          "肾功能",
+          "肌酐",
+          "尿素氮",
+          "尿常规",
+          "尿蛋白",
+          "24小时尿蛋白",
+          "尿沉渣",
+          "血肌酐"
         ],
         "en": [
-          "ANCA and differential serology",
-          "serology"
+          "renal function",
+          "creatinine",
+          "urea",
+          "u&e",
+          "urinalysis",
+          "urine protein",
+          "24-hour protein",
+          "urine sediment"
         ]
       },
       "requires": [
-        "lab-serology"
+        "lab-chemistry",
+        "lab-urinalysis"
       ],
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入肾内科当天（第0天）",
+            "en": "Day of transfer (day 0)"
+          },
           "text": {
-            "zh-CN": "pANCA阳性，MPO抗体115000 RU/L（参考<20000）；抗GBM、ANA及抗dsDNA阴性。",
-            "en": "pANCA positive, MPO antibody 115000 RU/L (reference <20000); anti-GBM, ANA and anti-dsDNA negative."
+            "zh-CN": "血肌酐700 μmol/L，尿素氮7.88 mmol/L；尿常规蛋白+++；24小时尿蛋白定量2.31 g；尿沉渣镜检红细胞30–40/HPF。",
+            "en": "Creatinine 700 μmol/L, urea 7.88 mmol/L; urinalysis protein +++; 24-hour urine protein 2.31 g; urine sediment red cells 30–40/HPF."
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "biopsy",
-      "name": {
-        "zh-CN": "肾脏活检",
-        "en": "Kidney biopsy"
-      },
-      "category": "pathology",
-      "aliases": {
-        "zh-CN": [
-          "肾脏活检"
-        ],
-        "en": [
-          "Kidney biopsy",
-          "biopsy"
-        ]
-      },
-      "requires": [
-        "histopathology"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "免疫荧光阴性。5个肾小球均见新月体：2个细胞性、2个细胞纤维性、1个纤维性；毛细血管袢严重破坏，符合Ⅲ型新月体肾炎。",
-            "en": "Immunofluorescence was negative. All five sampled glomeruli had crescents: two cellular, two fibrocellular and one fibrous, with severe capillary-tuft damage, consistent with type III crescentic glomerulonephritis."
-          },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [
-            "fig01"
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血肌酐",
+                "en": "Creatinine"
+              },
+              "value": 700,
+              "unit": "μmol/L",
+              "flag": "HH"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿素氮",
+                "en": "Urea"
+              },
+              "value": 7.88,
+              "unit": "mmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白",
+                "en": "Urine protein"
+              },
+              "value": "+++",
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "24小时尿蛋白",
+                "en": "24-hour urine protein"
+              },
+              "value": 2.31,
+              "unit": "g/24 h",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿沉渣红细胞",
+                "en": "Urine sediment red cells"
+              },
+              "value": "30–40",
+              "unit": "/HPF",
+              "flag": "A"
+            }
           ],
-          "available": true
-        }
-      }
-    },
-    {
-      "id": "bowel",
-      "name": {
-        "zh-CN": "复核肠道切除病理",
-        "en": "Review resected bowel pathology"
-      },
-      "category": "pathology",
-      "aliases": {
-        "zh-CN": [
-          "复核肠道切除病理"
-        ],
-        "en": [
-          "Review resected bowel pathology",
-          "bowel"
-        ]
-      },
-      "requires": [
-        "histopathology"
-      ],
-      "risk": "none",
-      "value": "essential",
-      "results": {
-        "workup": {
-          "text": {
-            "zh-CN": "黏膜糜烂、溃疡和重度水肿，血管充血并炎细胞浸润；讨论中复阅描述小动脉周围炎细胞及个别血管纤维素样坏死，支持消化道受累。",
-            "en": "Mucosal erosions, ulcers and marked oedema with congested vessels and inflammatory infiltrates; the discussion’s re-review describes periarteriolar inflammation and focal fibrinoid vascular necrosis, supporting gastrointestinal involvement."
+          "figures": [],
+          "note": {
+            "zh-CN": "原文如此：尿素氮7.88 mmol/L与肌酐700 μmol/L（约7.9 mg/dL）明显不相称，原文没有说明采血是否在透析之后。原文未给出这些项目的参考值。",
+            "en": "As printed: a urea of 7.88 mmol/L is clearly out of keeping with a creatinine of 700 μmol/L (about 7.9 mg/dL), and the report does not say whether the sample followed dialysis. The report gives no reference ranges for these tests."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
-          "figures": [],
-          "available": true
+            "zh-CN": "病历摘要·入院实验室检查（数值及参考值按原文）",
+            "en": "Case summary · admission laboratory tests (values and reference ranges as printed)"
+          }
         }
       }
     },
     {
       "id": "inflammation",
       "name": {
-        "zh-CN": "血常规与炎症指标",
-        "en": "Blood count and inflammatory markers"
+        "zh-CN": "血常规和炎症指标（入院）",
+        "en": "Blood count and inflammatory markers (admission)"
       },
       "category": "lab",
       "aliases": {
         "zh-CN": [
-          "血常规与炎症指标"
+          "血常规",
+          "血红蛋白",
+          "白细胞",
+          "血小板",
+          "血沉",
+          "红细胞沉降率",
+          "c反应蛋白",
+          "crp",
+          "esr",
+          "炎症指标"
         ],
         "en": [
-          "Blood count and inflammatory markers",
-          "inflammation"
+          "full blood count",
+          "fbc",
+          "blood count",
+          "haemoglobin",
+          "white cells",
+          "platelets",
+          "esr",
+          "crp",
+          "c-reactive protein",
+          "inflammatory markers"
         ]
       },
       "requires": [
-        "lab-hematology"
+        "lab-hematology",
+        "lab-chemistry"
       ],
       "risk": "none",
       "value": "essential",
       "results": {
-        "workup": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入肾内科当天（第0天）",
+            "en": "Day of transfer (day 0)"
+          },
           "text": {
-            "zh-CN": "血红蛋白85 g/L，白细胞12×10⁹/L，血小板332×10⁹/L，ESR 78 mm/h，CRP 15.3 mg/L。",
-            "en": "Haemoglobin 85 g/L, WBC 12×10⁹/L, platelets 332×10⁹/L, ESR 78 mm/h and CRP 15.3 mg/L."
+            "zh-CN": "白细胞12 × 10⁹/L，血红蛋白85 g/L，血小板332 × 10⁹/L；红细胞沉降率（ESR）78 mm/h；C反应蛋白（CRP）15.3 mg/L（参考值< 8 mg/L）。",
+            "en": "White cells 12 × 10⁹/L, haemoglobin 85 g/L, platelets 332 × 10⁹/L; ESR 78 mm/h; CRP 15.3 mg/L (reference < 8 mg/L)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "White cells"
+              },
+              "value": 12,
+              "unit": "× 10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 85,
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 332,
+              "unit": "× 10⁹/L"
+            },
+            {
+              "analyte": "ESR",
+              "value": 78,
+              "unit": "mm/h",
+              "flag": "H"
+            },
+            {
+              "analyte": "CRP",
+              "value": 15.3,
+              "unit": "mg/L",
+              "refHigh": 8,
+              "refText": {
+                "zh-CN": "< 8",
+                "en": "< 8"
+              },
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "病历摘要·入院实验室检查（数值及参考值按原文）",
+            "en": "Case summary · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "renal-us",
+      "name": {
+        "zh-CN": "双肾超声",
+        "en": "Renal ultrasound"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "肾脏超声",
+          "双肾超声",
+          "肾b超",
+          "b超",
+          "超声",
+          "肾脏大小"
+        ],
+        "en": [
+          "renal ultrasound",
+          "kidney ultrasound",
+          "ultrasound",
+          "us kidneys",
+          "kidney size"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "performedAt": "bedside",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后、活检前（具体日期原文未给出）",
+            "en": "After admission, before the biopsy (date not given)"
+          },
+          "text": {
+            "zh-CN": "右肾长约9.7 cm，实质厚约1.4 cm；左肾长约9.9 cm，实质厚约1.6 cm；实质回声弥漫性稍增强，内部结构尚清。",
+            "en": "Right kidney about 9.7 cm long with parenchyma about 1.4 cm thick; left kidney about 9.9 cm with parenchyma about 1.6 cm; parenchymal echogenicity diffusely slightly increased, internal structure fairly clear."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "病历摘要·入院实验室检查（数值及参考值按原文）",
+            "en": "Case summary · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "肾穿刺活检",
+        "en": "Kidney biopsy"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "肾活检",
+          "肾穿",
+          "肾穿刺",
+          "肾脏活检",
+          "肾病理",
+          "活检"
+        ],
+        "en": [
+          "kidney biopsy",
+          "renal biopsy",
+          "biopsy",
+          "renal histology",
+          "kidney pathology"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "moderate",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "肾穿刺活检已安排；原报告的活检在入院后第9天完成，报告尚未回来。",
+            "en": "A kidney biopsy is arranged; in the report it was done on hospital day 9 and the report is not back yet."
+          },
+          "values": [],
+          "figures": []
+        },
+        "biopsy": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后第9天",
+            "en": "Hospital day 9"
+          },
+          "text": {
+            "zh-CN": "免疫荧光：均阴性。光镜：5个肾小球，毛细血管袢严重破坏，2个细胞性、2个细胞纤维性、1个纤维性新月体；肾小管萎缩；肾间质水肿，灶状淋巴细胞和单核细胞浸润伴纤维化；小动脉壁增厚。符合Ⅲ型新月体肾炎。电镜：Ⅲ型新月体肾炎。",
+            "en": "Immunofluorescence: all negative. Light microscopy: 5 glomeruli with severe disruption of the capillary tufts — 2 cellular, 2 fibrocellular and 1 fibrous crescent; tubular atrophy; interstitial oedema with focal lymphocytic and monocytic infiltrate and fibrosis; thickened arteriolar walls. Consistent with type III crescentic glomerulonephritis. Electron microscopy: type III crescentic glomerulonephritis."
+          },
+          "values": [],
+          "figures": [
+            "fig01"
+          ],
+          "note": {
+            "zh-CN": "原图1A：PASM+Masson染色×200，毛细血管袢严重破坏、纤维性新月体形成；1B：间质水肿，灶状淋巴和单核细胞浸润伴纤维化（与图2印在同一幅合图中）。",
+            "en": "Source Fig 1A: PASM + Masson ×200, severe tuft disruption with a fibrous crescent; 1B: interstitial oedema with focal lymphocytic and monocytic infiltrate and fibrosis (printed in one composite with Fig 2)."
           },
           "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
+            "zh-CN": "病历摘要·肾活检和胃肠道病理；分析与讨论（复阅）",
+            "en": "Case summary · kidney biopsy and GI pathology; analysis and discussion (re-review)"
+          }
+        }
+      }
+    },
+    {
+      "id": "bowel",
+      "name": {
+        "zh-CN": "肠切除标本病理（复阅）",
+        "en": "Resected bowel pathology (re-review)"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "肠病理",
+          "结肠病理",
+          "切除标本",
+          "病理复阅",
+          "复阅病理",
+          "手术标本",
+          "肠道病理"
+        ],
+        "en": [
+          "bowel pathology",
+          "colon histology",
+          "resected specimen",
+          "pathology review",
+          "re-review",
+          "surgical specimen",
+          "colectomy specimen"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "外科切除标本当时的病理报告内容，原报告没有给出；可以请病理科复阅。",
+            "en": "The report does not give the original pathology report on the resected bowel; a re-review can be requested."
           },
+          "values": [],
+          "figures": []
+        },
+        "biopsy": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后、诊断明确之后",
+            "en": "After admission, once the diagnosis was established"
+          },
+          "text": {
+            "zh-CN": "诊断明确后复阅升结肠切除标本（原文标注“右半升结肠”）：升结肠及小肠肠壁全层结构清楚；黏膜多灶糜烂及表浅溃疡；黏膜及黏膜下层高度水肿，血管高度扩张充血、淤血，弥漫大量急、慢性炎细胞浸润；肌层及外膜少量炎细胞浸润。讨论中的再次审阅：水肿明显，小动脉周围有嗜酸性粒细胞、淋巴细胞和单核细胞浸润，个别血管可见纤维素样坏死。",
+            "en": "Re-review after the diagnosis of the resected ascending colon (labelled 'right ascending colon' in the report): full-thickness structure of the ascending colon and small bowel preserved; multifocal mucosal erosions and superficial ulcers; marked mucosal and submucosal oedema with greatly dilated, congested vessels and a diffuse heavy acute and chronic inflammatory infiltrate; scant inflammation in the muscularis and serosa. The discussion's second look: marked oedema, eosinophils, lymphocytes and monocytes around arterioles, and fibrinoid necrosis in occasional vessels."
+          },
+          "values": [],
+          "figures": [
+            "fig01"
+          ],
+          "note": {
+            "zh-CN": "原图2（与图1印在同一幅合图中）：HE染色×100，结肠血管高度扩张充血、淤血，弥漫大量急、慢性炎细胞浸润。",
+            "en": "Source Fig 2 (printed in one composite with Fig 1): HE ×100, greatly dilated, congested colonic vessels with a diffuse heavy acute and chronic inflammatory infiltrate."
+          },
+          "source": {
+            "zh-CN": "病历摘要·肾活检和胃肠道病理；分析与讨论（复阅）",
+            "en": "Case summary · kidney biopsy and GI pathology; analysis and discussion (re-review)"
+          }
+        }
+      }
+    },
+    {
+      "id": "hbv-screen",
+      "name": {
+        "zh-CN": "乙肝病毒血清学",
+        "en": "Hepatitis B serology"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "乙肝",
+          "乙肝五项",
+          "hbsag",
+          "乙肝表面抗原",
+          "两对半"
+        ],
+        "en": [
+          "hepatitis b",
+          "hbsag",
+          "hepatitis serology",
+          "anti-hbc",
+          "hbv screen"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录乙肝病毒血清学。",
+            "en": "The report records no hepatitis B serology."
+          },
+          "values": [],
+          "figures": []
+        }
+      }
+    },
+    {
+      "id": "chest-imaging",
+      "name": {
+        "zh-CN": "胸部X线",
+        "en": "Chest X-ray"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "胸部x线",
+          "胸部影像",
+          "胸部ct",
+          "肺部影像"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest film",
+          "chest imaging",
+          "lung imaging"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "performedAt": "bedside",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录胸部影像。",
+            "en": "The report records no chest imaging."
+          },
+          "values": [],
+          "figures": []
+        }
+      }
+    },
+    {
+      "id": "course",
+      "name": {
+        "zh-CN": "调阅治疗与住院经过记录（原报告）",
+        "en": "Review the treatment and hospital-course record (as reported)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "治疗经过",
+          "住院经过",
+          "治疗记录",
+          "病程记录",
+          "用药记录"
+        ],
+        "en": [
+          "treatment record",
+          "hospital course",
+          "progress notes",
+          "drug chart",
+          "course record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院后第9天起",
+            "en": "From hospital day 9"
+          },
+          "text": {
+            "zh-CN": "诊断明确后给予甲泼尼龙40 mg/日静脉滴注、血液透析及对症支持治疗，并予甲泼尼龙250、500、500 mg静脉滴注冲击治疗。冲击后尿量增加至1 300–1 500 mL/日，血肌酐逐渐下降至200 μmol/L，ESR 10 mm/h，CRP 3.43 mg/L，脱离透析。继续泼尼松50 mg/日口服；入院后第13天起环磷酰胺0.8 g每月1次静脉滴注；复方磺胺甲噁唑（每片含磺胺甲噁唑0.4 g、甲氧苄啶0.08 g）每周2次、每次2片口服，预防肺孢子菌肺炎。原报告没有记录血浆置换或利妥昔单抗。",
+            "en": "Once the diagnosis was established she received methylprednisolone 40 mg/day IV, haemodialysis and supportive care, then IV methylprednisolone pulses of 250, 500 and 500 mg. After the pulses urine output rose to 1,300–1,500 mL/day, creatinine fell to 200 μmol/L, ESR was 10 mm/h and CRP 3.43 mg/L, and dialysis was stopped. Prednisone 50 mg/day was continued orally; from hospital day 13, IV cyclophosphamide 0.8 g monthly; co-trimoxazole (each tablet sulfamethoxazole 0.4 g + trimethoprim 0.08 g), 2 tablets twice a week, as Pneumocystis prophylaxis. The report records no plasma exchange or rituximab."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿量",
+                "en": "Urine output"
+              },
+              "value": "1300–1500",
+              "unit": "mL/day"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血肌酐",
+                "en": "Creatinine"
+              },
+              "value": 200,
+              "unit": "μmol/L",
+              "flag": "H"
+            },
+            {
+              "analyte": "ESR",
+              "value": 10,
+              "unit": "mm/h"
+            },
+            {
+              "analyte": "CRP",
+              "value": 3.43,
+              "unit": "mg/L",
+              "refHigh": 8,
+              "refText": {
+                "zh-CN": "< 8",
+                "en": "< 8"
+              },
+              "flag": "N"
+            }
+          ],
           "figures": [],
-          "available": true
+          "note": {
+            "zh-CN": "透析和甲泼尼龙40 mg/日开始的具体日期、冲击治疗的日期原文未给出；文中按“诊断明确后”叙述。原文把复方磺胺甲噁唑写作“复方新诺明”。",
+            "en": "The report gives no start date for dialysis or methylprednisolone 40 mg/day, nor dates for the pulses; it describes them after 'the diagnosis was established'. The report uses the older name 复方新诺明 for co-trimoxazole."
+          },
+          "source": {
+            "zh-CN": "病历摘要·治疗经过",
+            "en": "Case summary · treatment and course"
+          }
         }
       }
     },
     {
       "id": "followup",
       "name": {
-        "zh-CN": "调阅治疗与随访记录",
-        "en": "Review treatment and follow-up record"
+        "zh-CN": "调阅随访记录",
+        "en": "Review the follow-up record"
       },
       "category": "record",
       "aliases": {
         "zh-CN": [
-          "调阅治疗与随访记录"
+          "随访",
+          "随访记录",
+          "复查记录",
+          "转归",
+          "后来怎么样"
         ],
         "en": [
-          "Review treatment and follow-up record",
+          "follow-up",
+          "follow up record",
+          "outcome",
+          "later review",
           "followup"
         ]
       },
@@ -872,31 +2516,578 @@
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "原报告最后一次记录（时间未给出）",
+            "en": "The report's last record (timing not given)"
+          },
           "text": {
-            "zh-CN": "报告使用透析、糖皮质激素及环磷酰胺，并给予肺孢子菌预防。尿量回升至1300–1500 mL/日后脱离透析；肌酐先降至约200，后120 μmol/L，尿检及炎症指标恢复正常，无腹痛。记录未给出长期复发情况。",
-            "en": "The report used dialysis, corticosteroids and cyclophosphamide with Pneumocystis prophylaxis. Urine output rose to 1300–1500 mL/day and dialysis was stopped; creatinine fell first to about 200 and later 120 μmol/L, with normal urine/inflammatory tests and no abdominal pain. Long-term relapse status is not given."
+            "zh-CN": "病情稳定：血肌酐120 μmol/L，尿检、ESR、CRP均正常，无腹痛。最终诊断：ANCA相关小血管炎，小血管炎肾损害，Ⅲ型新月体肾小球肾炎，急性肾损伤，肾性高血压，小血管炎消化道损害。原报告未给出这次记录的时间、维持治疗方案和远期复发情况。",
+            "en": "Stable: creatinine 120 μmol/L; urine tests, ESR and CRP normal; no abdominal pain. Final diagnoses: ANCA-associated small-vessel vasculitis with renal involvement, type III crescentic glomerulonephritis, acute kidney injury, renal hypertension, and small-vessel vasculitis of the gut. The report gives no date for this status, no maintenance regimen and no long-term relapse data."
           },
-          "source": {
-            "zh-CN": "原报告正文的去标识化摘要；对话措辞为教学改写。",
-            "en": "De-identified summary of the source report; dialogue wording is an educational adaptation."
-          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血肌酐",
+                "en": "Creatinine"
+              },
+              "value": 120,
+              "unit": "μmol/L"
+            }
+          ],
           "figures": [],
-          "available": true
+          "source": {
+            "zh-CN": "病历摘要·治疗经过",
+            "en": "Case summary · treatment and course"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [],
+    "exact": {},
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立外周静脉通路",
+        "en": "Insert a peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "打留置针",
+          "开放静脉",
+          "静脉穿刺"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "iv line",
+          "venflon"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针，同时可抽血送检。",
+        "en": "Peripheral IV cannula; bloods can be drawn at the same time."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "外周静脉留置针已置入，并已抽血送检。",
+        "en": "A peripheral cannula is in place and bloods have been drawn."
+      }
+    },
+    {
+      "id": "haemodialysis",
+      "name": {
+        "zh-CN": "安排血液透析（联系血液净化中心）",
+        "en": "Arrange haemodialysis with the dialysis unit"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "血液透析",
+          "透析",
+          "血透",
+          "安排透析",
+          "血液净化",
+          "肾脏替代"
+        ],
+        "en": [
+          "haemodialysis",
+          "hemodialysis",
+          "dialysis",
+          "arrange dialysis",
+          "renal replacement",
+          "start dialysis"
+        ]
+      },
+      "dose": {
+        "zh-CN": "紧急血液透析；指征包括无尿或少尿伴严重氮质血症、高钾血症、酸中毒或液体过负荷。原报告记录了透析，但未给出开始日期。",
+        "en": "Urgent haemodialysis; indications include anuria or oliguria with severe uraemia, hyperkalaemia, acidosis or fluid overload. The report records dialysis but not its start date."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "dialysis"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "read": "renal"
+          },
+          {
+            "asked": "urine-output"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "血液净化中心已接收，今天开始透析。",
+        "en": "The dialysis unit has accepted her; dialysis starts today."
+      }
+    },
+    {
+      "id": "mp-pulse",
+      "name": {
+        "zh-CN": "甲泼尼龙静脉冲击",
+        "en": "IV methylprednisolone pulses"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "甲泼尼龙冲击",
+          "激素冲击",
+          "冲击治疗",
+          "甲强龙冲击",
+          "大剂量激素"
+        ],
+        "en": [
+          "methylprednisolone pulse",
+          "pulsed methylprednisolone",
+          "iv methylprednisolone",
+          "steroid pulse",
+          "pulse steroids"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "40"
+        ],
+        "en": [
+          "40 mg"
+        ]
+      },
+      "dose": {
+        "zh-CN": "甲泼尼龙静脉滴注冲击，每日1次、共3天（原报告依次为250、500、500 mg），之后改口服并减量；监测血糖、血压和感染。",
+        "en": "IV methylprednisolone pulses once daily for 3 days (the report gave 250, 500 and 500 mg), then oral glucocorticoid with a taper; monitor glucose, blood pressure and infection."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [
+        "gc-started"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "甲泼尼龙冲击已开始。",
+        "en": "Methylprednisolone pulses started."
+      }
+    },
+    {
+      "id": "mp-40",
+      "name": {
+        "zh-CN": "甲泼尼龙40 mg每日1次静脉滴注",
+        "en": "Methylprednisolone 40 mg IV once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "甲泼尼龙40",
+          "甲强龙40",
+          "激素40mg"
+        ],
+        "en": [
+          "methylprednisolone 40",
+          "methylprednisolone 40 mg",
+          "iv steroid 40 mg"
+        ]
+      },
+      "dose": {
+        "zh-CN": "甲泼尼龙40 mg静脉滴注，每日1次（原报告冲击前的用量）。",
+        "en": "Methylprednisolone 40 mg IV once daily (the report's dose before the pulses)."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [
+        "gc-started"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "已开始（与原报告冲击前相同）。原报告随后改为冲击治疗。",
+        "en": "Started (as in the report before its pulses). The report then moved to pulses."
+      }
+    },
+    {
+      "id": "prednisone",
+      "name": {
+        "zh-CN": "泼尼松口服并逐步减量",
+        "en": "Oral prednisone with a taper"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "泼尼松",
+          "强的松",
+          "口服激素",
+          "激素减量"
+        ],
+        "en": [
+          "prednisone",
+          "prednisolone",
+          "oral steroids",
+          "steroid taper"
+        ]
+      },
+      "dose": {
+        "zh-CN": "冲击后口服泼尼松，原报告起始50 mg/日；今天多采用减量方案（PEXIVAS），按体重确定起始剂量并较快减量。",
+        "en": "Oral prednisone after the pulses; the report started at 50 mg a day. Today a reduced-dose schedule (PEXIVAS) is usual, with a weight-based starting dose and a faster taper."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "intervened": "mp-pulse"
+          },
+          {
+            "intervened": "mp-40"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "口服泼尼松已开始，并写明减量计划。",
+        "en": "Oral prednisone started, with the taper written up."
+      }
+    },
+    {
+      "id": "cyclophosphamide",
+      "name": {
+        "zh-CN": "环磷酰胺静脉滴注",
+        "en": "IV cyclophosphamide"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "环磷酰胺",
+          "ctx",
+          "cyc",
+          "环磷",
+          "环磷酰胺冲击"
+        ],
+        "en": [
+          "cyclophosphamide",
+          "cyc",
+          "iv cyclophosphamide",
+          "cytoxan",
+          "endoxan"
+        ]
+      },
+      "dose": {
+        "zh-CN": "静脉环磷酰胺，剂量按年龄、肾功能（本例需透析）和白细胞计数调整；原报告自入院后第13天起0.8 g每月1次。给药前排除妊娠、讨论生育问题，监测血常规，并配合肺孢子菌预防。",
+        "en": "IV cyclophosphamide, with the dose adjusted for age, kidney function (dialysis-dependent here) and white-cell count; the report gave 0.8 g monthly from hospital day 13. Exclude pregnancy and discuss fertility first, monitor the blood count, and give Pneumocystis prophylaxis."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "effects": [],
+      "setFlags": [
+        "induction-agent"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "首剂环磷酰胺已安排。药师提醒按肾功能调整剂量，给药前查血常规和妊娠试验。",
+        "en": "The first cyclophosphamide dose is arranged. The pharmacist reminds you to adjust the dose for kidney function and check the blood count and a pregnancy test first."
+      }
+    },
+    {
+      "id": "rituximab",
+      "name": {
+        "zh-CN": "利妥昔单抗静脉滴注",
+        "en": "IV rituximab"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "利妥昔单抗",
+          "美罗华",
+          "rtx",
+          "抗cd20"
+        ],
+        "en": [
+          "rituximab",
+          "rtx",
+          "mabthera",
+          "anti-cd20"
+        ]
+      },
+      "dose": {
+        "zh-CN": "375 mg/m²每周1次、共4次，或1 g、间隔2周、共2次；首剂前筛查乙肝（HBsAg、抗-HBc），预防输注反应。肌酐> 354 μmol/L（4 mg/dL）时单用利妥昔单抗的证据有限，可与环磷酰胺联用（KDIGO 2024）。原报告未使用。",
+        "en": "375 mg/m² weekly for 4 doses, or 1 g twice 2 weeks apart; screen for hepatitis B (HBsAg, anti-HBc) before the first dose and premedicate against infusion reactions. With creatinine > 354 μmol/L (4 mg/dL) the evidence for rituximab alone is limited and it can be combined with cyclophosphamide (KDIGO 2024). Not used in the report."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "effects": [],
+      "setFlags": [
+        "induction-agent"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "首剂利妥昔单抗已安排；药师提醒先查乙肝血清学。",
+        "en": "The first rituximab dose is arranged; the pharmacist reminds you to check hepatitis B serology first."
+      }
+    },
+    {
+      "id": "plasma-exchange",
+      "name": {
+        "zh-CN": "安排血浆置换",
+        "en": "Arrange plasma exchange"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "血浆置换",
+          "血浆交换",
+          "plex",
+          "安排血浆置换"
+        ],
+        "en": [
+          "plasma exchange",
+          "plasmapheresis",
+          "plex",
+          "arrange plasma exchange"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按PEXIVAS方案约14天内置换7次，通常经中心静脉导管。KDIGO 2024：肌酐> 300 μmol/L（3.4 mg/dL）、需要透析或肌酐快速上升、弥漫性肺泡出血伴低氧血症时考虑。原报告未使用。",
+        "en": "Per PEXIVAS, about 7 exchanges within 14 days, usually through a central venous catheter. KDIGO 2024: consider when creatinine is > 300 μmol/L (3.4 mg/dL), with dialysis need or a rapidly rising creatinine, or with diffuse alveolar haemorrhage and hypoxaemia. Not used in the report."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "renal"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "血浆置换已与血液净化团队商定；置换不能代替激素加环磷酰胺或利妥昔单抗。",
+        "en": "Plasma exchange is agreed with the apheresis team; it does not replace glucocorticoids with cyclophosphamide or rituximab."
+      }
+    },
+    {
+      "id": "co-trimoxazole",
+      "name": {
+        "zh-CN": "复方磺胺甲噁唑预防肺孢子菌肺炎",
+        "en": "Co-trimoxazole Pneumocystis prophylaxis"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "复方磺胺甲噁唑",
+          "复方新诺明",
+          "磺胺",
+          "smz",
+          "预防肺孢子菌",
+          "tmp-smx"
+        ],
+        "en": [
+          "co-trimoxazole",
+          "cotrimoxazole",
+          "septrin",
+          "bactrim",
+          "tmp-smx",
+          "pcp prophylaxis",
+          "pneumocystis prophylaxis"
+        ]
+      },
+      "dose": {
+        "zh-CN": "原报告：每片含磺胺甲噁唑0.4 g、甲氧苄啶0.08 g，每周2次、每次2片口服；按肾功能调整，监测血钾和血常规。",
+        "en": "As in the report: each tablet sulfamethoxazole 0.4 g + trimethoprim 0.08 g, 2 tablets twice a week by mouth; adjust for kidney function and monitor potassium and the blood count."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "intervened": "cyclophosphamide"
+          },
+          {
+            "intervened": "rituximab"
+          },
+          {
+            "intervened": "mp-pulse"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "复方磺胺甲噁唑已开始（与原报告相同）。",
+        "en": "Co-trimoxazole started (as in the report)."
+      }
+    },
+    {
+      "id": "azathioprine",
+      "name": {
+        "zh-CN": "硫唑嘌呤作为诱导治疗",
+        "en": "Azathioprine as induction"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "硫唑嘌呤",
+          "依木兰",
+          "aza"
+        ],
+        "en": [
+          "azathioprine",
+          "imuran",
+          "aza"
+        ]
+      },
+      "dose": {
+        "zh-CN": "硫唑嘌呤口服，代替环磷酰胺或利妥昔单抗。",
+        "en": "Oral azathioprine in place of cyclophosphamide or rituximab."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "intervened": "cyclophosphamide"
+            },
+            {
+              "intervened": "rituximab"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "硫唑嘌呤用于维持缓解，不能作为器官受威胁、需要透析的ANCA相关血管炎的诱导治疗；用它代替环磷酰胺或利妥昔单抗会让肾功能继续丢失（KDIGO 2024：激素联合环磷酰胺或利妥昔单抗）。",
+        "en": "Azathioprine maintains remission; it is not induction for organ-threatening, dialysis-requiring ANCA-associated vasculitis, and using it instead of cyclophosphamide or rituximab lets kidney function keep slipping away (KDIGO 2024: glucocorticoids with cyclophosphamide or rituximab)."
+      },
+      "response": {
+        "zh-CN": "医嘱已录入。",
+        "en": "The order is entered."
+      }
+    },
+    {
+      "id": "defer-immunosuppression",
+      "name": {
+        "zh-CN": "暂缓免疫抑制，等肠吻合口愈合后再开始",
+        "en": "Hold immunosuppression until the bowel anastomosis has healed"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "暂缓免疫抑制",
+          "先不用激素",
+          "等伤口愈合",
+          "推迟免疫治疗",
+          "暂不治疗"
+        ],
+        "en": [
+          "hold immunosuppression",
+          "delay immunosuppression",
+          "wait for the wound",
+          "defer treatment",
+          "no steroids yet"
+        ]
+      },
+      "dose": {
+        "zh-CN": "暂不使用激素和其他免疫抑制剂，待吻合口愈合、排除感染后再评估。",
+        "en": "No glucocorticoid or other immunosuppressant until the anastomosis has healed and infection is excluded."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "需要透析的急进性肾炎每推迟一天都在丢失肾功能；近期手术要求加强感染和伤口监测，而不是推迟诱导。KDIGO 2024也强调病情迅速恶化时不应因等待（如等活检）而推迟免疫抑制。",
+        "en": "Dialysis-requiring RPGN loses kidney function with every day of delay; a recent operation calls for closer infection and wound monitoring, not for postponing induction. KDIGO 2024 likewise stresses not delaying immunosuppression (for example, for a biopsy) when the patient is deteriorating quickly."
+      },
+      "response": {
+        "zh-CN": "已记录暂缓。护士问：“她的尿还是只有一百毫升左右，要不要再请示一下？”",
+        "en": "Recorded as on hold. The nurse asks: “She's still only passing about 100 mL a day — should we check that plan again?”"
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "objective-1",
+      "id": "obj-history",
       "title": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "按时间顺序重建病程",
+        "en": "Rebuild the story in time order"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
       },
       "hint": {
-        "zh-CN": "询问主诉、进展、重要既往史及用药；资料未载明时保留未知。",
-        "en": "Ask about presentation, progression, relevant history and medicines; retain missing data as unknown."
+        "zh-CN": "肾脏的问题和两次肚子疼，哪个先出现？按时间问：腿肿、尿和血压，两次腹痛和手术，然后问药物和有没有皮疹、关节痛、发热。",
+        "en": "Which came first — the kidney problem or the two bouts of abdominal pain? Take it in order: the swelling, the urine and the blood pressure, both bouts of pain and the operations; then ask about medicines and about rash, joint pain or fever."
+      },
+      "guidance": {
+        "zh-CN": "到病床旁问诊：首次就诊、两次腹痛和手术、尿量变化、用药以及阴性症状。",
+        "en": "At the bedside, take the history: the first visit, both bouts of pain and the operations, the urine output, her medicines and the negatives."
       },
       "completeWhen": {
         "all": [
@@ -904,139 +3095,419 @@
             "asked": "presentation"
           },
           {
-            "asked": "renal-course"
+            "asked": "first-visit"
+          },
+          {
+            "asked": "first-pain"
+          },
+          {
+            "asked": "urine-output"
+          },
+          {
+            "asked": "second-pain"
           },
           {
             "asked": "surgery"
           },
           {
             "asked": "medications"
+          },
+          {
+            "asked": "ptu"
+          },
+          {
+            "asked": "negative"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-2",
+      "id": "obj-exam",
       "title": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "床旁查体",
+        "en": "Examine her at the bedside"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Exam"
       },
       "hint": {
-        "zh-CN": "核对原报告的体检发现；未测量不是正常。",
-        "en": "Check documented examination findings; unmeasured is not normal."
+        "zh-CN": "看血压、贫血貌、心肺、腹部和伤口，再看腿还肿不肿。",
+        "en": "Check her blood pressure, look for pallor, listen to the heart and lungs, examine the abdomen and wound, and see whether the legs are still swollen."
+      },
+      "guidance": {
+        "zh-CN": "在床旁完成血压心率、一般情况、心肺、腹部伤口和双下肢检查。",
+        "en": "At the bedside, check BP and pulse, general appearance, heart and lungs, abdomen and wound, and legs."
       },
       "completeWhen": {
         "all": [
+          {
+            "examined": "vitals"
+          },
           {
             "examined": "general"
           },
           {
+            "examined": "cardioresp"
+          },
+          {
             "examined": "abdomen"
+          },
+          {
+            "examined": "legs"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "objective-3",
+      "id": "obj-diagnosis",
       "title": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "用记录核对时间线，作出统一诊断",
+        "en": "Check the timeline against the records and make one diagnosis"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
       },
       "hint": {
-        "zh-CN": "切换检查阶段，逐项调阅资料后再作判断。",
-        "en": "Enter the investigation phase and review records before deciding."
+        "zh-CN": "把当地医院、门诊和外科住院时的肌酐和尿检按日期排开，再看血清学：一个病能不能解释所有器官的问题？",
+        "en": "Line up the creatinine and urine results from the local hospital, the clinic and the surgical stay by date, then look at the serology: can one disease explain every organ involved?"
       },
-      "completeWhen": {
-        "decided": "diagnosis"
-      }
-    },
-    {
-      "id": "objective-4",
-      "title": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
-      },
-      "hint": {
-        "zh-CN": "先完成管理决策，再切换随访阶段核对原报告结局。",
-        "en": "Complete the management decision, then enter follow-up to check the reported outcome."
+      "guidance": {
+        "zh-CN": "在病历终端调阅既往记录和血清学，在床旁留取入院血尿标本，然后在会诊板作出诊断。",
+        "en": "Read the earlier records and the serology at a records terminal, take the admission blood and urine at the bedside, then make the diagnosis on the case board."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "management"
+            "read": "local-records",
+            "phase": "admission"
+          },
+          {
+            "read": "clinic-records",
+            "phase": "admission"
+          },
+          {
+            "read": "surgical-records",
+            "phase": "admission"
+          },
+          {
+            "read": "serology",
+            "phase": "admission"
+          },
+          {
+            "read": "renal",
+            "phase": "admission"
+          },
+          {
+            "decided": "diagnosis"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "serology",
+            "phase": "admission"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "read": "renal",
+            "phase": "admission"
+          },
+          "target": "patient"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "开始诱导和支持治疗",
+        "en": "Start induction and supportive treatment"
+      },
+      "short": {
+        "zh-CN": "处置",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "尿量和肌酐说明她现在需要什么支持？要不要等活检结果才开始治疗？用强免疫抑制前，哪些感染和生育问题要先处理？",
+        "en": "What support do her urine output and creatinine call for now? Must treatment wait for the biopsy? Before strong immunosuppression, which infection and fertility issues come first?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板完成诱导和支持治疗两项决策；安排肾活检；开出透析、激素冲击、诱导药物和感染预防。",
+        "en": "Answer the induction and supportive-care decisions on the case board; arrange the kidney biopsy; prescribe dialysis, glucocorticoid pulses, an induction drug and infection prophylaxis."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "induction"
+          },
+          {
+            "decided": "supportive"
+          },
+          {
+            "ordered": "biopsy",
+            "phase": "admission"
+          },
+          {
+            "intervened": "haemodialysis"
+          },
+          {
+            "intervened": "mp-pulse"
+          },
+          {
+            "any": [
+              {
+                "intervened": "cyclophosphamide"
+              },
+              {
+                "intervened": "rituximab"
+              }
+            ]
+          },
+          {
+            "intervened": "co-trimoxazole"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "decided": "induction"
+              },
+              {
+                "decided": "supportive"
+              }
+            ]
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-biopsy",
+      "title": {
+        "zh-CN": "解读肾活检，复阅肠道病理",
+        "en": "Interpret the kidney biopsy and review the bowel pathology"
+      },
+      "short": {
+        "zh-CN": "病理",
+        "en": "Pathology"
+      },
+      "hint": {
+        "zh-CN": "新月体是细胞性、纤维细胞性还是纤维性，对能否恢复意味着什么？只有几个肾小球时结论能有多确定？切下来的肠子里有没有同样的病？",
+        "en": "What do cellular, fibrocellular and fibrous crescents each mean for recovery? How sure can you be from only a few glomeruli? Is the same disease in the bowel that was removed?"
+      },
+      "guidance": {
+        "zh-CN": "在病理工作站调阅第9天的肾活检报告，并申请复阅肠切除标本；然后在会诊板作答。",
+        "en": "At the pathology workstation, read the day-9 kidney biopsy and request a re-review of the resected bowel; then answer on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "biopsy"
+          },
+          {
+            "read": "bowel",
+            "phase": "biopsy"
+          },
+          {
+            "decided": "biopsy-interpretation"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "read": "biopsy",
+                "phase": "biopsy"
+              },
+              {
+                "read": "bowel",
+                "phase": "biopsy"
+              }
+            ]
+          },
+          "target": "histopathology"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "复盘治疗经过和随访",
+        "en": "Review the treatment course and follow-up"
+      },
+      "short": {
+        "zh-CN": "转归",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "原报告当年是怎么治疗的？和今天的方案相比有什么不同？她最后恢复到什么程度？",
+        "en": "How did the team treat her at the time, how does that compare with today's plan, and how far did she recover?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅原报告的治疗经过；随访阶段开放后调阅随访记录。",
+        "en": "Read the report's treatment course at a records terminal; once follow-up opens, read the follow-up record."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "course",
+            "phase": "course"
           },
           {
             "read": "followup",
             "phase": "followup"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
     }
   ],
   "decisions": [
     {
       "id": "diagnosis",
       "prompt": {
-        "zh-CN": "怎样统一解释肾脏与肠道证据？",
-        "en": "What unifying interpretation fits the renal and bowel evidence?"
+        "zh-CN": "活检报告还没回来。哪一个诊断能统一解释她的肾脏、两次腹痛和这些化验？",
+        "en": "The biopsy is not back yet. Which diagnosis explains her kidneys, both bouts of abdominal pain and these results?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "read": "renal",
-            "phase": "workup"
+            "asked": "presentation"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "ptu"
+          },
+          {
+            "read": "local-records",
+            "phase": "admission"
+          },
+          {
+            "read": "clinic-records",
+            "phase": "admission"
+          },
+          {
+            "read": "surgical-records",
+            "phase": "admission"
           },
           {
             "read": "serology",
-            "phase": "workup"
+            "phase": "admission"
           },
           {
-            "read": "biopsy",
-            "phase": "workup"
-          },
-          {
-            "read": "bowel",
-            "phase": "workup"
+            "read": "renal",
+            "phase": "admission"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先问清病程、手术和药物史，并调阅当地医院、门诊、外科住院记录、血清学和入院肾功能。",
+        "en": "Take the history of the illness, the operations and the drugs, and read the local-hospital, clinic and surgical records, the serology and the admission renal tests first."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "aav",
           "text": {
-            "zh-CN": "ANCA相关小血管炎，伴少免疫沉积新月体肾炎及消化道受累",
-            "en": "ANCA-associated small-vessel vasculitis with pauci-immune crescentic glomerulonephritis and gastrointestinal involvement"
+            "zh-CN": "MPO-ANCA相关小血管炎：急进性肾小球肾炎，消化道受累可解释阑尾炎样腹痛和肠套叠",
+            "en": "MPO-ANCA–associated small-vessel vasculitis: rapidly progressive glomerulonephritis, with gut involvement explaining the appendicitis-like pain and the intussusception"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "肾脏异常早于手术，抗体和活检形成独立的证据链，肠病理支持系统受累。",
-            "en": "Renal abnormalities preceded surgery; serology and biopsy form an independent evidence chain, with bowel pathology supporting systemic involvement."
+            "zh-CN": "正确。肾脏最先受累：入院前约8周已有蛋白尿、血尿和肌酐261 μmol/L，比阑尾切除早约2周；约1个月前肌酐351 μmol/L、24小时尿蛋白3.61 g；转科前679、入院700 μmol/L——几周内急进性加重。抗MPO抗体115 000 RU/L（参考值上限的5倍多），抗GBM、ANA、抗dsDNA阴性，也没有服用丙硫氧嘧啶等药物。作者的启示是：多器官受累时先找一元论解释。KDIGO 2024实践要点：临床表现相符且MPO/PR3-ANCA阳性时，病情迅速恶化者不应因等待活检而推迟治疗；活检用于确认和评估病变。",
+            "en": "Correct. The kidney came first: proteinuria, haematuria and a creatinine of 261 μmol/L about 8 weeks before admission, some 2 weeks before the appendicectomy; creatinine 351 μmol/L with 3.61 g/24 h of protein about a month before; 679 before transfer and 700 μmol/L on admission — a rapidly progressive course over weeks. Anti-MPO 115,000 RU/L (over five times the upper reference limit) with negative anti-GBM, ANA and anti-dsDNA, and no propylthiouracil or similar drugs. The authors' lesson: in multi-organ disease look first for one explanation. KDIGO 2024 practice point: with a compatible picture and positive MPO- or PR3-ANCA, do not delay treatment for a biopsy when the patient is deteriorating quickly; the biopsy confirms and stages the disease."
           }
         },
         {
-          "id": "unsupported",
+          "id": "atn",
           "text": {
-            "zh-CN": "只把少尿解释为腹部手术后的暂时脱水",
-            "en": "Attribute oliguria solely to transient dehydration after surgery"
+            "zh-CN": "术后急性肾小管坏死：两次手术、呕吐腹泻造成的脱水和手术打击",
+            "en": "Post-operative acute tubular necrosis from dehydration (vomiting, diarrhoea) and the stress of two operations"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "肾脏异常早于手术，抗体和活检形成独立的证据链，肠病理支持系统受累。",
-            "en": "Renal abnormalities preceded surgery; serology and biopsy form an independent evidence chain, with bowel pathology supporting systemic involvement."
+            "zh-CN": "不对。蛋白尿、血尿和肌酐261 μmol/L在第一次手术前约2周就已存在；24小时尿蛋白3.61 g、尿红细胞满视野是肾小球病变，不是单纯的肾小管坏死。把肾损伤归咎于手术，正是本例可能漏诊的地方。",
+            "en": "No. Proteinuria, haematuria and a creatinine of 261 μmol/L were present about 2 weeks before the first operation, and 3.61 g/24 h of protein with countless red cells point to glomerular disease, not simple tubular necrosis. Blaming the kidneys on the surgery is exactly how this diagnosis could be missed."
+          }
+        },
+        {
+          "id": "iga",
+          "text": {
+            "zh-CN": "IgA血管炎（过敏性紫癜）伴肾炎和肠道受累",
+            "en": "IgA vasculitis (Henoch–Schönlein purpura) with nephritis and gut involvement"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "肾和肠同时受累确实可见于IgA血管炎，但她第二次腹痛时没有紫癜、瘀斑或关节痛，而抗MPO抗体强阳性。活检免疫荧光若见IgA沉积才支持IgA血管炎；在拿到活检前，现有证据指向ANCA相关血管炎。",
+            "en": "Kidney plus gut involvement can occur in IgA vasculitis, but she had no purpura, bruising or joint pain during the second bout, and her anti-MPO is strongly positive. IgA deposits on biopsy immunofluorescence would be needed for IgA vasculitis; before the biopsy, the evidence points to ANCA-associated vasculitis."
+          }
+        },
+        {
+          "id": "anti-gbm",
+          "text": {
+            "zh-CN": "抗肾小球基底膜病",
+            "en": "Anti-glomerular basement membrane disease"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。抗GBM抗体阴性，也没有记录到肺出血；抗GBM病通常表现为急进性肾炎，但需要抗GBM抗体或活检线样IgG沉积支持。（ANCA与抗GBM双阳性时需要血浆置换，本例不属于这种情况。）",
+            "en": "No. Anti-GBM antibody is negative and no lung haemorrhage is recorded; anti-GBM disease does cause RPGN, but it needs the antibody or linear IgG on biopsy. (Double-positive ANCA and anti-GBM disease needs plasma exchange; that is not this case.)"
+          }
+        },
+        {
+          "id": "lupus",
+          "text": {
+            "zh-CN": "狼疮性肾炎",
+            "en": "Lupus nephritis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "年轻女性出现肾炎时应想到狼疮，但ANA和抗dsDNA均阴性，也没有记录到皮疹、关节炎等其他系统表现，不支持狼疮性肾炎；活检免疫荧光若为“满堂亮”才会重新考虑。",
+            "en": "Lupus belongs on the list for a young woman with nephritis, but ANA and anti-dsDNA are negative and no rash, arthritis or other lupus features are recorded; a 'full-house' immunofluorescence pattern on biopsy would reopen the question."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "induction",
       "prompt": {
-        "zh-CN": "此时优先怎样组织治疗与监测？",
-        "en": "How should treatment and monitoring be organised?"
+        "zh-CN": "肌酐700 μmol/L，每天尿量约100 mL，ANCA相关血管炎诊断已基本明确，活检尚未回报。诱导治疗怎样安排？",
+        "en": "Creatinine is 700 μmol/L, urine output about 100 mL a day, ANCA-associated vasculitis is all but established and the biopsy is not back. How should induction be organised?"
       },
       "kind": "single",
       "requires": {
@@ -1046,40 +3517,230 @@
           },
           {
             "read": "inflammation",
-            "phase": "workup"
+            "phase": "admission"
           },
           {
-            "asked": "medications"
+            "read": "renal-us",
+            "phase": "admission"
           }
         ]
       },
       "need": {
-        "zh-CN": "先采集相关病史并调阅此阶段的关键检查。",
-        "en": "First obtain the relevant history and retrieve the key records for this phase."
+        "zh-CN": "先作出诊断，并查看血常规、炎症指标和双肾超声。",
+        "en": "Make the diagnosis and read the blood count, inflammatory markers and renal ultrasound first."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "start-now",
           "text": {
-            "zh-CN": "肾内与风湿团队紧急评估器官威胁性病变、免疫治疗、透析需要和感染预防",
-            "en": "Urgent nephrology/rheumatology assessment of organ-threatening disease, immunotherapy, dialysis need and infection prevention"
+            "zh-CN": "现在开始：甲泼尼龙静脉冲击后改为减量口服激素，联合环磷酰胺或利妥昔单抗；肌酐> 300 μmol/L且需透析，考虑血浆置换；尽快安排肾活检，但不因此推迟治疗",
+            "en": "Start now: IV methylprednisolone pulses then a reduced-dose oral taper, with cyclophosphamide or rituximab; with creatinine > 300 μmol/L and dialysis need, consider plasma exchange; arrange the biopsy soon without delaying treatment"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "快速肾衰和活动性病理需要及时专科处理；具体方案须结合感染与术后风险。",
-            "en": "Rapid renal failure and active pathology warrant prompt specialist care; the regimen must account for infection and postoperative risk."
+            "zh-CN": "正确。KDIGO 2024推荐（1B）：新发ANCA相关血管炎用糖皮质激素联合环磷酰胺或利妥昔单抗诱导；肌酐> 4 mg/dL（354 μmol/L）时单用利妥昔单抗的证据有限，环磷酰胺加激素或利妥昔单抗联合环磷酰胺都可考虑。实践要点9.3.1.9：肌酐> 3.4 mg/dL（300 μmol/L）、需要透析或肌酐快速上升、弥漫性肺泡出血伴低氧时考虑血浆置换——她符合前几项。KDIGO 2024还更支持减量激素方案（PEXIVAS）。原报告的团队用了甲泼尼龙40 mg/日、250/500/500 mg冲击、泼尼松50 mg/日和环磷酰胺0.8 g每月1次，没有记录血浆置换或利妥昔单抗。",
+            "en": "Correct. KDIGO 2024 recommends (1B) glucocorticoids with cyclophosphamide or rituximab for new-onset ANCA-associated vasculitis; with creatinine > 4 mg/dL (354 μmol/L) the evidence for rituximab alone is limited, and cyclophosphamide with glucocorticoids, or rituximab with cyclophosphamide, can be considered. Practice point 9.3.1.9: consider plasma exchange with creatinine > 3.4 mg/dL (300 μmol/L), dialysis need or a rapidly rising creatinine, or diffuse alveolar haemorrhage with hypoxaemia — she meets the first criteria. KDIGO 2024 also favours reduced-dose glucocorticoid regimens (PEXIVAS). The report's team used methylprednisolone 40 mg/day, pulses of 250/500/500 mg, prednisone 50 mg/day and cyclophosphamide 0.8 g monthly, with no plasma exchange or rituximab recorded."
           }
         },
         {
-          "id": "unsupported",
+          "id": "gc-alone",
           "text": {
-            "zh-CN": "等待肠道完全康复后再评估迅速恶化的肾功能",
-            "en": "Wait for complete bowel recovery before assessing rapidly worsening renal function"
+            "zh-CN": "先单用大剂量糖皮质激素，看反应再决定是否加免疫抑制剂",
+            "en": "High-dose glucocorticoids alone first, adding a second agent only if she fails to respond"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "快速肾衰和活动性病理需要及时专科处理；具体方案须结合感染与术后风险。",
-            "en": "Rapid renal failure and active pathology warrant prompt specialist care; the regimen must account for infection and postoperative risk."
+            "zh-CN": "不够。器官受威胁的ANCA相关血管炎应从一开始就联合环磷酰胺或利妥昔单抗（KDIGO 2024）；作者也指出治疗主要是糖皮质激素联合环磷酰胺。单用激素时失败和复发更多，而她的肾功能等不起。",
+            "en": "Not enough. Organ-threatening ANCA-associated vasculitis needs cyclophosphamide or rituximab from the start (KDIGO 2024), and the authors also describe glucocorticoids plus cyclophosphamide as the core treatment. Glucocorticoids alone fail and relapse more often, and her kidneys cannot wait."
+          }
+        },
+        {
+          "id": "wait-bowel",
+          "text": {
+            "zh-CN": "等肠吻合口完全愈合、排除感染后再开始免疫抑制",
+            "en": "Wait until the bowel anastomosis has fully healed and infection is excluded before any immunosuppression"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。需要透析的急进性肾炎每推迟一天都在丢失肾功能。近期手术意味着要加强感染监测、检查伤口和吻合口，而不是推迟诱导；KDIGO 2024也强调病情迅速恶化时不应因等待而延误治疗。",
+            "en": "No. Dialysis-requiring RPGN loses kidney function with every day of delay. A recent operation means closer infection surveillance and checks of the wound and anastomosis, not postponing induction; KDIGO 2024 also stresses not delaying treatment when the patient is deteriorating quickly."
+          }
+        },
+        {
+          "id": "azathioprine",
+          "text": {
+            "zh-CN": "糖皮质激素联合硫唑嘌呤诱导",
+            "en": "Glucocorticoids with azathioprine for induction"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。硫唑嘌呤用于维持缓解（EULAR 2022：维持期可用硫唑嘌呤或甲氨蝶呤替代利妥昔单抗），不能作为器官受威胁、需要透析的病例的诱导治疗。",
+            "en": "No. Azathioprine maintains remission (EULAR 2022 lists azathioprine or methotrexate as maintenance alternatives to rituximab); it is not induction for organ-threatening, dialysis-requiring disease."
+          }
+        },
+        {
+          "id": "plex-only",
+          "text": {
+            "zh-CN": "先做血浆置换，等结果再决定是否用免疫抑制",
+            "en": "Plasma exchange first, deciding about immunosuppression afterwards"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。血浆置换只能清除循环中的抗体，不能阻止抗体产生；它是激素联合环磷酰胺或利妥昔单抗之外的辅助手段（KDIGO 2024实践要点9.3.1.9用的是“考虑”），绝不能代替诱导治疗。",
+            "en": "No. Plasma exchange removes circulating antibody but does not stop its production; it is an adjunct to glucocorticoids with cyclophosphamide or rituximab (KDIGO 2024 practice point 9.3.1.9 says 'consider'), never a substitute for induction."
+          }
+        }
+      ]
+    },
+    {
+      "id": "supportive",
+      "prompt": {
+        "zh-CN": "与诱导治疗同时，哪些支持和安全措施应该现在安排？（选出所有正确项）",
+        "en": "Alongside induction, which supportive and safety measures belong in the plan now? (Select all that apply.)"
+      },
+      "kind": "multiple",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "asked": "urine-output"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先作出诊断，问清尿量，并检查腹部和伤口。",
+        "en": "Make the diagnosis, ask about her urine output and examine the abdomen and wound first."
+      },
+      "options": [
+        {
+          "id": "dialysis",
+          "text": {
+            "zh-CN": "现在开始血液透析：每天尿量约100 mL、肌酐700 μmol/L；随着诱导起效，定期评估能否脱离透析",
+            "en": "Start haemodialysis now — about 100 mL of urine a day and a creatinine of 700 μmol/L — and reassess regularly for recovery as induction works"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应选。每天80–100 mL已接近无尿（< 100 mL/24 h），加上肌酐700 μmol/L，需要肾脏替代治疗。急进性肾炎在积极诱导后可以恢复，所以要定期评估，而不是默认长期透析。",
+            "en": "Yes. 80–100 mL a day is effectively anuria (< 100 mL/24 h), and with a creatinine of 700 μmol/L she needs kidney replacement therapy. RPGN can recover with prompt induction, so reassess regularly rather than assume long-term dialysis."
+          }
+        },
+        {
+          "id": "pjp",
+          "text": {
+            "zh-CN": "使用环磷酰胺、利妥昔单抗或大剂量激素期间，用复方磺胺甲噁唑预防肺孢子菌肺炎",
+            "en": "Co-trimoxazole prophylaxis against Pneumocystis pneumonia while on cyclophosphamide, rituximab or high-dose glucocorticoids"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应选。EULAR 2022（推荐17）：接受利妥昔单抗、环磷酰胺和/或大剂量激素的ANCA相关血管炎患者，推荐复方磺胺甲噁唑预防肺孢子菌肺炎和其他感染；按肾功能调整剂量。原报告给的是每周2次、每次2片。",
+            "en": "Yes. EULAR 2022 (recommendation 17): patients receiving rituximab, cyclophosphamide and/or high-dose glucocorticoids should have co-trimoxazole prophylaxis against Pneumocystis pneumonia and other infections, with the dose adjusted for kidney function. The report gave 2 tablets twice a week."
+          }
+        },
+        {
+          "id": "pre-cyc",
+          "text": {
+            "zh-CN": "用环磷酰胺前排除妊娠并讨论生育问题；因为刚做完结肠切除，密切观察感染和伤口、吻合口",
+            "en": "Before cyclophosphamide, exclude pregnancy and discuss fertility; after the recent colectomy, watch closely for infection and for wound or anastomotic problems"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应选。环磷酰胺有致畸性和性腺毒性，她36岁，月经和生育意愿原文未记录，必须先问清、做妊娠试验并讨论生育保护（利妥昔单抗是对生育影响较小的选择）。大剂量免疫抑制叠加近期腹部手术，感染和吻合口并发症的风险更高，需要每天评估——这是加强监测，不是推迟治疗的理由。",
+            "en": "Yes. Cyclophosphamide is teratogenic and gonadotoxic; she is 36 and her periods and plans for children are not recorded, so ask, test for pregnancy and discuss fertility protection first (rituximab is the gentler option for fertility). Heavy immunosuppression on top of recent bowel surgery raises the risk of infection and anastomotic problems, so review her daily — a reason for vigilance, not for delaying treatment."
+          }
+        },
+        {
+          "id": "no-pjp",
+          "text": {
+            "zh-CN": "她肺部查体正常，不需要预防肺孢子菌",
+            "en": "Her chest examination is normal, so she needs no Pneumocystis prophylaxis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。预防针对的是免疫抑制带来的风险，与当前肺部是否受累无关；肺孢子菌肺炎在接受环磷酰胺或利妥昔单抗加激素的患者中可以致命。",
+            "en": "No. Prophylaxis addresses the risk created by immunosuppression, whatever the lungs look like now; Pneumocystis pneumonia can be fatal in patients on cyclophosphamide or rituximab with glucocorticoids."
+          }
+        },
+        {
+          "id": "dialysis-threshold",
+          "text": {
+            "zh-CN": "先控制血压和纠正贫血，等肌酐超过某个固定数值再透析",
+            "en": "Control the blood pressure and correct the anaemia first, and dialyse only once the creatinine passes a fixed threshold"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。透析的指征是临床的——无尿或少尿、严重氮质血症、高钾血症、酸中毒、液体过负荷——而不是某个固定的肌酐数值。她已经接近无尿，透析不应等待。",
+            "en": "No. Dialysis is started on clinical grounds — anuria or oliguria, severe uraemia, hyperkalaemia, acidosis, fluid overload — not at a fixed creatinine number. She is close to anuric, and dialysis should not wait."
+          }
+        }
+      ]
+    },
+    {
+      "id": "biopsy-interpretation",
+      "prompt": {
+        "zh-CN": "第9天活检：免疫荧光阴性；5个肾小球中2个细胞性、2个细胞纤维性、1个纤维性新月体；有肾小管萎缩和间质纤维化。如何解读？",
+        "en": "Day-9 biopsy: immunofluorescence negative; of 5 glomeruli, 2 cellular, 2 fibrocellular and 1 fibrous crescent; tubular atrophy and interstitial fibrosis. How do you read it?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "biopsy",
+        "phase": "biopsy"
+      },
+      "need": {
+        "zh-CN": "先调阅第9天的肾活检报告。",
+        "en": "Read the day-9 kidney biopsy report first."
+      },
+      "options": [
+        {
+          "id": "active",
+          "text": {
+            "zh-CN": "寡免疫性新月体肾炎，以活动性新月体为主，仍有恢复可能；但只有5个肾小球，分型和预后判断要谨慎，继续积极诱导",
+            "en": "Pauci-immune crescentic glomerulonephritis with mostly active crescents, so recovery is still possible; with only 5 glomeruli, classification and prognosis are uncertain — continue full induction"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。Ⅲ型（寡免疫性）新月体肾炎符合ANCA相关肾炎。细胞性和细胞纤维性新月体代表活动性病变，纤维性新月体、肾小管萎缩和间质纤维化代表慢性病变。Berden 2010病理分型来自至少含10个肾小球的标本；只有5个肾小球时，一个肾小球就能改变分型，所以结论要谨慎。作者引用本组研究：细胞性新月体可以独立于初始肾功能预测肾功能转归。",
+            "en": "Correct. Type III (pauci-immune) crescentic glomerulonephritis fits ANCA-associated nephritis. Cellular and fibrocellular crescents are active lesions; fibrous crescents, tubular atrophy and interstitial fibrosis are chronic ones. The Berden 2010 classes were derived from biopsies with at least 10 glomeruli; with 5, a single glomerulus can change the class, so be cautious. The authors cite their own cohort showing that cellular crescents predict renal outcome independently of initial function."
+          }
+        },
+        {
+          "id": "irreversible",
+          "text": {
+            "zh-CN": "已有纤维性新月体、肾小管萎缩和间质纤维化，说明不可逆，停止免疫抑制，准备长期透析",
+            "en": "Fibrous crescents, tubular atrophy and fibrosis mean irreversible disease: stop immunosuppression and plan long-term dialysis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。5个肾小球中只有1个纤维性新月体，其余4个是细胞性或细胞纤维性的活动性病变；慢性病变存在不等于没有恢复机会，过早放弃诱导会失去恢复的可能。",
+            "en": "No. Only 1 of the 5 glomeruli has a fibrous crescent; the other 4 are active cellular or fibrocellular lesions, and chronic damage does not rule out recovery. Abandoning induction now throws away the chance of recovery."
+          }
+        },
+        {
+          "id": "not-immune",
+          "text": {
+            "zh-CN": "免疫荧光阴性，说明不是免疫介导的肾炎，应找其他原因",
+            "en": "A negative immunofluorescence means this is not immune-mediated nephritis; look for another cause"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。“寡免疫”正是指免疫荧光没有或只有很少免疫沉积，这是ANCA相关肾炎的特点（而抗GBM病是线样IgG沉积，免疫复合物性肾炎有颗粒样沉积）。免疫荧光阴性加新月体和MPO-ANCA阳性，恰恰支持诊断。",
+            "en": "No. 'Pauci-immune' means exactly that: little or no immune deposit on immunofluorescence — the hallmark of ANCA-associated nephritis (anti-GBM disease shows linear IgG, immune-complex nephritis granular deposits). A negative immunofluorescence with crescents and a positive MPO-ANCA supports the diagnosis."
+          }
+        },
+        {
+          "id": "repeat",
+          "text": {
+            "zh-CN": "只有5个肾小球，标本不够，治疗前应重复肾活检",
+            "en": "Only 5 glomeruli is inadequate: repeat the biopsy before treating"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。5个肾小球限制了分型和预后判断，但5个都有新月体、免疫荧光阴性，加上MPO-ANCA强阳性，诊断已经足够明确。对需要透析、刚做过手术的患者重复穿刺，会增加出血风险并延误治疗。",
+            "en": "No. Five glomeruli limit classification and prognosis, but crescents in all five with negative immunofluorescence and a strongly positive MPO-ANCA make the diagnosis secure. Repeating the biopsy in a dialysis-dependent patient just after surgery adds bleeding risk and delay."
           }
         }
       ]
@@ -1087,11 +3748,11 @@
   ],
   "rubric": [
     {
-      "id": "rubric-1",
+      "id": "r-hx-timeline",
       "domain": "history",
       "text": {
-        "zh-CN": "重建症状与用药时间线",
-        "en": "Reconstruct the symptom and medication timeline"
+        "zh-CN": "按时间重建病程（首次就诊、两次腹痛和手术、尿量变化），并问了紫癜、关节痛、发热等阴性症状和既往史",
+        "en": "Rebuilt the course in time order (the first visit, both bouts of pain and the operations, the fall in urine output) and asked about purpura, joint pain, fever and her past health"
       },
       "weight": 2,
       "met": {
@@ -1100,131 +3761,445 @@
             "asked": "presentation"
           },
           {
-            "asked": "renal-course"
+            "asked": "first-visit"
+          },
+          {
+            "asked": "first-pain"
+          },
+          {
+            "asked": "urine-output"
+          },
+          {
+            "asked": "second-pain"
           },
           {
             "asked": "surgery"
           },
           {
-            "asked": "medications"
+            "asked": "negative"
+          },
+          {
+            "asked": "pmh"
           }
         ]
       }
     },
     {
-      "id": "rubric-2",
+      "id": "r-safety-drug",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "排除药物诱发的原因：问了用药史和丙硫氧嘧啶等药物",
+        "en": "Excluded a drug-induced cause: asked about her medicines and propylthiouracil-type drugs"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "ptu"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam",
       "domain": "examination",
       "text": {
-        "zh-CN": "核对床旁线索",
-        "en": "Check bedside clues"
+        "zh-CN": "查了血压心率、贫血貌、心肺、腹部伤口和双下肢",
+        "en": "Checked BP and pulse, pallor, heart and lungs, abdomen and wound, and legs"
       },
       "weight": 1,
       "met": {
         "all": [
           {
+            "examined": "vitals"
+          },
+          {
             "examined": "general"
           },
           {
+            "examined": "cardioresp"
+          },
+          {
             "examined": "abdomen"
+          },
+          {
+            "examined": "legs"
           }
         ]
       }
     },
     {
-      "id": "rubric-3",
-      "domain": "diagnosis",
+      "id": "r-inv-records",
+      "domain": "investigations",
       "text": {
-        "zh-CN": "整合检查证据",
-        "en": "Integrate investigation evidence"
+        "zh-CN": "调阅当地医院、门诊和外科记录，确认肾脏异常早于两次手术",
+        "en": "Read the local-hospital, clinic and surgical records and established that the kidney abnormalities preceded both operations"
       },
-      "weight": 3,
+      "weight": 2,
       "met": {
-        "decided": "diagnosis"
+        "all": [
+          {
+            "read": "local-records",
+            "phase": "admission"
+          },
+          {
+            "read": "clinic-records",
+            "phase": "admission"
+          },
+          {
+            "read": "surgical-records",
+            "phase": "admission"
+          }
+        ]
       }
     },
     {
-      "id": "rubric-4",
+      "id": "r-inv-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "查看血清学、入院肾功能和尿检、血常规与炎症指标及双肾超声",
+        "en": "Read the serology, the admission renal tests and urine, the blood count and inflammatory markers, and the renal ultrasound"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "serology",
+            "phase": "admission"
+          },
+          {
+            "read": "renal",
+            "phase": "admission"
+          },
+          {
+            "read": "inflammation",
+            "phase": "admission"
+          },
+          {
+            "read": "renal-us",
+            "phase": "admission"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "活检回报前首次作答即作出统一诊断",
+        "en": "Made the unifying diagnosis at the first attempt, before the biopsy"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-dx-biopsy",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确解读活检：活动性病变为主、取样有限",
+        "en": "Read the biopsy correctly at the first attempt: mostly active lesions, limited sampling"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "biopsy-interpretation"
+      }
+    },
+    {
+      "id": "r-mgmt-induction",
       "domain": "management",
       "text": {
-        "zh-CN": "形成安全计划并复盘转归",
-        "en": "Form a safe plan and review the outcome"
+        "zh-CN": "首次作答即选对诱导方案，并开始激素冲击和环磷酰胺或利妥昔单抗",
+        "en": "Chose induction correctly at the first attempt and started glucocorticoid pulses with cyclophosphamide or rituximab"
       },
       "weight": 3,
       "met": {
         "all": [
           {
-            "decided": "management"
+            "decidedFirstTry": "induction"
           },
           {
-            "read": "followup",
-            "phase": "followup"
+            "intervened": "mp-pulse"
+          },
+          {
+            "any": [
+              {
+                "intervened": "cyclophosphamide"
+              },
+              {
+                "intervened": "rituximab"
+              }
+            ]
           }
         ]
+      }
+    },
+    {
+      "id": "r-mgmt-support",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即选对支持措施，并安排了血液透析",
+        "en": "Chose the supportive measures correctly at the first attempt and arranged haemodialysis"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "supportive"
+          },
+          {
+            "intervened": "haemodialysis"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-safety-pjp",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "使用诱导药物的同时给予肺孢子菌预防",
+        "en": "Gave Pneumocystis prophylaxis with the induction drug"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "any": [
+              {
+                "intervened": "cyclophosphamide"
+              },
+              {
+                "intervened": "rituximab"
+              }
+            ]
+          },
+          {
+            "intervened": "co-trimoxazole"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-safety-undertreat",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有用硫唑嘌呤代替诱导，也没有因术后而暂缓免疫抑制",
+        "en": "Did not substitute azathioprine for induction or hold immunosuppression because of the recent surgery"
+      },
+      "weight": 3,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "azathioprine"
+            },
+            {
+              "intervened": "defer-immunosuppression"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "向患者解释统一诊断、治疗的紧迫性和风险",
+        "en": "Explained the single diagnosis, the urgency of treatment and its risks to her"
+      },
+      "weight": 2,
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用通俗语言说明一种病（血管炎）同时伤了肾和肠，两次手术并不是肾坏掉的原因；坦率说明肾功能很差，现在需要透析，但积极治疗后有可能恢复；解释为什么不能等伤口完全长好再治疗，同时会密切看伤口和感染；说明激素和环磷酰胺（或利妥昔单抗）的主要风险——感染、对生育的影响——以及预防用药，询问月经和生育打算并说明需要妊娠试验；用复述确认她理解，回应她的焦虑，不作不实的保证。",
+        "en": "Good performance: explains in plain words that one disease (a vasculitis) has hit both the kidneys and the bowel and that the operations did not cause the kidney failure; says honestly that the kidneys are badly affected and dialysis is needed now, but recovery is possible with prompt treatment; explains why treatment cannot wait for the wound to heal fully, while promising close watch on the wound and infection; sets out the main risks of steroids and cyclophosphamide (or rituximab) — infection and fertility — and the preventive tablets, asks about her periods and plans for children and explains the pregnancy test; checks understanding with teach-back, responds to her anxiety and makes no false promises."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "病房护士",
+        "en": "Ward nurse"
+      },
       "knowledge": {
-        "zh-CN": "这是历史病例教学。先核对当前阶段原始证据，再讨论鉴别诊断及安全计划；原报告处置不自动成为今天的推荐。",
-        "en": "This is a historical teaching case. Review evidence for the current phase before discussing differential diagnosis and a safe plan; reported care is not automatically a recommendation for current practice."
+        "zh-CN": "肾内科病房护士。交班：从外科转来，近期做了腹腔镜升结肠切除，腹带在位；每天尿量约80–100 mL。可以协助留取血、尿标本，联系血液净化中心和病理科，执行医嘱。不解读化验结果。",
+        "en": "Renal ward nurse. Handover: transferred from surgery after a recent laparoscopic ascending-colon resection, binder in place; urine output about 80–100 mL a day. Can help take blood and urine samples, contact the dialysis unit and pathology, and carry out orders. Does not interpret results."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，不直接给出诊断。引导学员：多器官受累时先找一元论解释；把每次的肌酐和尿检按日期排开，看肾脏问题和手术哪个在先；血管炎可以表现为外科急腹症；病情迅速恶化时不要等活检才开始治疗；想清楚透析、血浆置换、感染预防和生育问题；请病理科复阅既往标本。原报告的处理是历史事实，不自动等于今天的推荐。",
+        "en": "Socratic preceptor who does not give the diagnosis away. Steers the learner to: look first for one explanation of multi-organ disease; line up every creatinine and urinalysis by date to see whether the kidney problem or the surgery came first; remember that vasculitis can present as a surgical abdomen; not wait for a biopsy to start treatment in a rapidly deteriorating patient; think through dialysis, plasma exchange, infection prophylaxis and fertility; ask pathology to re-review earlier specimens. The report's management is a historical fact, not automatically today's recommendation."
       },
       "interprets": [
-        "renal",
+        "local-records",
+        "clinic-records",
+        "surgical-records",
         "serology",
-        "biopsy",
-        "bowel",
+        "renal",
         "inflammation",
-        "followup"
+        "renal-us",
+        "biopsy",
+        "bowel"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "病理科医生",
+        "en": "Pathologist"
+      },
+      "knowledge": {
+        "zh-CN": "可以在学员读到报告后解释：新月体的类型（细胞性、细胞纤维性、纤维性）与活动性和慢性程度的关系；免疫荧光阴性（寡免疫）的意义；肾小球数量少时分型和预后判断的局限；肠道标本中血管炎的表现。不提前提供尚未调阅的结果。",
+        "en": "Once the learner has the reports, can explain: what cellular, fibrocellular and fibrous crescents say about activity and chronicity; what a negative (pauci-immune) immunofluorescence means; the limits of classifying and prognosticating from few glomeruli; what vasculitis looks like in a bowel specimen. Does not give results the learner has not read."
+      },
+      "interprets": [
+        "biopsy",
+        "bowel"
       ],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "病例证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：先有肾病，后有手术",
+      "en": "Debrief: the kidneys came before the operations"
     },
     "conclusion": {
-      "zh-CN": "跨器官时间线与血清、肾病理相互印证，治疗后报告肾功能恢复并脱离透析。",
-      "en": "The multi-organ chronology, serology and renal pathology are concordant; renal recovery and dialysis independence were reported after treatment."
+      "zh-CN": "MPO-ANCA相关小血管炎：首先表现为急进性肾小球肾炎（Ⅲ型、寡免疫性新月体肾炎；肌酐约8周内由261升至700 μmol/L，需要透析），并累及消化道——第一次腹痛按急性阑尾炎手术，第二次为升结肠套叠，切除标本复阅见血管炎改变。肾脏异常早于两次手术。经甲泼尼龙冲击、血液透析、泼尼松和环磷酰胺治疗后脱离透析，肌酐降至120 μmol/L，尿检和炎症指标恢复正常。",
+      "en": "MPO-ANCA–associated small-vessel vasculitis: it presented first as rapidly progressive glomerulonephritis (type III, pauci-immune crescentic nephritis; creatinine rising from 261 to 700 μmol/L over about 8 weeks, needing dialysis) and involved the gut — the first bout of pain was operated on as appendicitis, the second was an ascending-colon intussusception, and the re-reviewed specimen showed vasculitic change. The kidney abnormalities came before both operations. After methylprednisolone pulses, haemodialysis, prednisone and cyclophosphamide she came off dialysis, her creatinine fell to 120 μmol/L and her urine tests and inflammatory markers returned to normal."
     },
     "keyReasoning": [
       {
-        "zh-CN": "不要把所有肾损伤归因于术后，因为蛋白尿、血尿和肌酐升高早已存在。",
-        "en": "Do not attribute all kidney injury to surgery: proteinuria, haematuria and elevated creatinine preceded it."
+        "zh-CN": "时间线：入院前约8周蛋白尿、血尿、肌酐261 μmol/L（比阑尾切除早约2周）；约1个月前肌酐351 μmol/L、24小时尿蛋白3.61 g；转科前679、入院700 μmol/L——肾病先于两次手术。",
+        "en": "Timeline: proteinuria, haematuria and creatinine 261 μmol/L about 8 weeks before admission (some 2 weeks before the appendicectomy); creatinine 351 μmol/L and 3.61 g/24 h of protein about a month before; 679 before transfer and 700 μmol/L on admission — the kidney disease preceded both operations."
       },
       {
-        "zh-CN": "无紫癜并不能推翻已获得的抗体与病理证据。",
-        "en": "Absent purpura does not negate the serological and pathological evidence."
+        "zh-CN": "多器官受累先找一元论：抗MPO抗体115 000 RU/L（参考值< 20 000），抗GBM、ANA、抗dsDNA阴性，没有丙硫氧嘧啶等药物暴露。",
+        "en": "One explanation for many organs: anti-MPO 115,000 RU/L (reference < 20,000), negative anti-GBM, ANA and anti-dsDNA, no propylthiouracil-type drug exposure."
+      },
+      {
+        "zh-CN": "每天80–100 mL的尿量已接近无尿（< 100 mL/24 h），加上肌酐700 μmol/L（约7.9 mg/dL），需要透析，并达到KDIGO 2024考虑血浆置换的标准。",
+        "en": "A urine output of 80–100 mL a day is effectively anuria (< 100 mL/24 h); with a creatinine of 700 μmol/L (about 7.9 mg/dL) she needs dialysis and meets the KDIGO 2024 criteria for considering plasma exchange."
+      },
+      {
+        "zh-CN": "入院尿素氮7.88 mmol/L与肌酐700 μmol/L不相称，原文未说明采血与透析的先后：不要用这个尿素值判断病情轻重。",
+        "en": "The admission urea of 7.88 mmol/L does not fit a creatinine of 700 μmol/L, and the report does not say how the sample related to dialysis: do not judge severity from that urea."
+      },
+      {
+        "zh-CN": "活检：免疫荧光阴性、5个肾小球全部有新月体（4个为细胞性或细胞纤维性）——寡免疫性新月体肾炎，以活动性病变为主；但样本少于Berden分型要求的10个肾小球。",
+        "en": "Biopsy: negative immunofluorescence and crescents in all 5 glomeruli (4 cellular or fibrocellular) — pauci-immune crescentic nephritis with mostly active lesions, though the sample is below the 10 glomeruli the Berden classes were built on."
+      },
+      {
+        "zh-CN": "消化道：阑尾炎样腹痛和成人升结肠套叠（升结肠位于腹膜后、活动度小），作者认为是肠壁血管炎所致；复阅见小动脉周围炎细胞浸润和个别血管纤维素样坏死。",
+        "en": "Gut: appendicitis-like pain and an adult ascending-colon intussusception (a retroperitoneal, relatively fixed segment), which the authors attribute to vasculitis of the bowel wall; the re-review found periarteriolar inflammation and occasional fibrinoid necrosis."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单例观察，不能证明某种治疗的独立疗效或普遍适用性。历史处置仅记录事实；安全决策为教学设计。",
-      "en": "This single observation cannot establish the independent efficacy or general applicability of a treatment. Historical care is recorded as fact; safety decisions are educational design."
+      "zh-CN": "单个病例。原报告的治疗顺序（诊断明确后才开始激素和透析）和剂量是历史事实；透析、甲泼尼龙和冲击治疗的开始日期原文未给出。今天的方案（KDIGO 2024）是教学设计中的“正确选项”，不代表该患者当年接受过。随访时间、维持治疗和远期复发原文均未报告。",
+      "en": "A single case. The report's sequence (glucocorticoids and dialysis after the diagnosis was established) and doses are historical facts; it gives no start dates for dialysis, methylprednisolone or the pulses. Today's plan (KDIGO 2024) is the case's teaching answer, not what she received. The timing of follow-up, the maintenance treatment and long-term relapse are not reported."
     },
     "unknowns": [
       {
-        "zh-CN": "长期复发、最终维持治疗时长及完整感染筛查。",
-        "en": "Long-term relapse, final maintenance-treatment duration and complete infection screening."
+        "zh-CN": "原文矛盾：主诉“水肿1个月余”，而首次因水肿就诊在入院前约8周（57天）。",
+        "en": "Source contradiction: the chief complaint says 'oedema for over a month', yet the first visit for the oedema was about 8 weeks (57 days) before admission."
+      },
+      {
+        "zh-CN": "入院尿素氮7.88 mmol/L与肌酐700 μmol/L不相称；采血与透析的先后、透析开始的日期原文未给出。",
+        "en": "The admission urea of 7.88 mmol/L does not fit a creatinine of 700 μmol/L; when the sample was taken relative to dialysis, and when dialysis started, are not given."
+      },
+      {
+        "zh-CN": "PR3-ANCA、补体、乙肝血清学、胸部影像、尿红细胞形态或管型、体温和呼吸频率未报告。",
+        "en": "PR3-ANCA, complement, hepatitis B serology, chest imaging, urinary red-cell morphology or casts, temperature and respiratory rate are not reported."
+      },
+      {
+        "zh-CN": "阑尾切除标本和结肠切除标本最初的病理报告内容未报告；结肠切除的具体日期未给出。",
+        "en": "The original pathology reports on the appendix and the colectomy specimen are not reported, nor the exact date of the colectomy."
+      },
+      {
+        "zh-CN": "咳嗽咯血、耳鼻症状、麻木、体重变化、月经和生育意愿、吸烟饮酒、职业、家族史和过敏史未记录。",
+        "en": "Cough or haemoptysis, ear and nose symptoms, numbness, weight change, periods and plans for children, smoking, alcohol, occupation, family history and allergies are not recorded."
+      },
+      {
+        "zh-CN": "随访时间、维持治疗方案和远期复发情况未报告。",
+        "en": "The timing of follow-up, the maintenance regimen and long-term relapse are not reported."
       }
     ],
-    "teachingPoints": [],
+    "teachingPoints": [
+      {
+        "zh-CN": "多器官受累先找一元论（原报告“启示”）：ANCA相关血管炎的消化道受累可表现为腹痛、出血、溃疡、缺血和穿孔，甚至被当作外科急腹症手术；诊断明确后请病理科复阅既往标本。",
+        "en": "Look for one diagnosis in multi-organ disease (the report's own lesson): gut involvement in ANCA-associated vasculitis can present as pain, bleeding, ulcers, ischaemia or perforation, even as a surgical abdomen; once the diagnosis is made, ask pathology to re-review earlier specimens."
+      },
+      {
+        "zh-CN": "不要等活检：KDIGO 2024实践要点——临床表现相符且MPO/PR3-ANCA阳性时，病情迅速恶化者不应因等待肾活检而推迟免疫抑制；活检在可行时尽快完成，用于确认和评估。原报告的叙述顺序是活检确诊后才开始治疗。",
+        "en": "Do not wait for the biopsy: KDIGO 2024 practice point — with a compatible picture and positive MPO- or PR3-ANCA, do not delay immunosuppression for a kidney biopsy in a rapidly deteriorating patient; biopsy as soon as feasible to confirm and stage. The report describes treatment starting after the biopsy confirmed the diagnosis."
+      },
+      {
+        "zh-CN": "诱导治疗（KDIGO 2024，推荐9.3.1.1，1B）：糖皮质激素联合环磷酰胺或利妥昔单抗；肌酐> 4 mg/dL（354 μmol/L）时单用利妥昔单抗的证据有限，可选环磷酰胺加激素或利妥昔单抗联合环磷酰胺；更支持减量激素方案（PEXIVAS）。对比原报告：甲泼尼龙40 mg/日和250/500/500 mg冲击、泼尼松50 mg/日、环磷酰胺0.8 g每月1次。",
+        "en": "Induction (KDIGO 2024 recommendation 9.3.1.1, 1B): glucocorticoids with cyclophosphamide or rituximab; with creatinine > 4 mg/dL (354 μmol/L) the evidence for rituximab alone is limited, so cyclophosphamide with glucocorticoids, or rituximab with cyclophosphamide, are the options; reduced-dose glucocorticoid regimens (PEXIVAS) are favoured. Compare the report: methylprednisolone 40 mg/day and 250/500/500 mg pulses, prednisone 50 mg/day, cyclophosphamide 0.8 g monthly."
+      },
+      {
+        "zh-CN": "血浆置换（KDIGO 2024实践要点9.3.1.9，含勘误）：肌酐> 3.4 mg/dL（300 μmol/L）、需要透析或肌酐快速上升、弥漫性肺泡出血伴低氧血症时考虑。她符合标准，原报告没有使用；这是“考虑”，不是必须，也不能代替诱导。",
+        "en": "Plasma exchange (KDIGO 2024 practice point 9.3.1.9, as corrected): consider it with creatinine > 3.4 mg/dL (300 μmol/L), dialysis need or a rapidly rising creatinine, or diffuse alveolar haemorrhage with hypoxaemia. She met the criteria and the report did not use it; it is 'consider', not 'must', and never a substitute for induction."
+      },
+      {
+        "zh-CN": "安全：使用利妥昔单抗、环磷酰胺和/或大剂量激素时用复方磺胺甲噁唑预防肺孢子菌肺炎（EULAR 2022推荐17；原报告每周2次、每次2片）；利妥昔单抗前筛查乙肝；环磷酰胺前排除妊娠、讨论生育；近期结肠切除意味着更密切的感染和伤口监测，而不是推迟治疗。",
+        "en": "Safety: co-trimoxazole Pneumocystis prophylaxis with rituximab, cyclophosphamide and/or high-dose glucocorticoids (EULAR 2022 recommendation 17; the report gave 2 tablets twice a week); hepatitis B screening before rituximab; exclude pregnancy and discuss fertility before cyclophosphamide; a recent colectomy means closer infection and wound surveillance, not delayed treatment."
+      },
+      {
+        "zh-CN": "活检的活动性与慢性病变：细胞性、细胞纤维性新月体代表活动性，纤维性新月体、肾小管萎缩和间质纤维化代表慢性；Berden 2010分型来自至少10个肾小球的标本，5个肾小球时要谨慎。作者引用本组研究指出细胞新月体可独立于初始肾功能预测转归——她后来脱离了透析，肌酐降至120 μmol/L。",
+        "en": "Activity and chronicity on biopsy: cellular and fibrocellular crescents are active, fibrous crescents, tubular atrophy and interstitial fibrosis chronic; the Berden 2010 classes were built on biopsies with at least 10 glomeruli, so be cautious with 5. The authors cite their own cohort showing that cellular crescents predict outcome independently of initial kidney function — she came off dialysis and her creatinine fell to 120 μmol/L."
+      }
+    ],
     "references": [
-      "常冬元; 安萌; 陈旻; 周福德; 邹万忠; 赵明辉. 第309例　急性腹痛—肠套叠—急性肾损伤. 中华医学杂志, 2014. DOI: 10.3760/cma.j.issn.0376-2491.2014.02.017",
-      "https://rs.yiigle.com/cmaid/138796",
-      "KDIGO 2024 Clinical Practice Guideline for ANCA-Associated Vasculitis, with amendments. https://kdigo.org/guidelines/antineutrophilic-cytoplasmic-antibody-anca-associated-vasculitis-aav/"
+      "常冬元, 安萌, 陈旻, 周福德, 邹万忠, 赵明辉. 第309例 急性腹痛—肠套叠—急性肾损伤. 中华医学杂志. 2014;94(2):151-152. doi:10.3760/cma.j.issn.0376-2491.2014.02.017. https://rs.yiigle.com/cmaid/138796",
+      "Kidney Disease: Improving Global Outcomes (KDIGO) ANCA Vasculitis Work Group. KDIGO 2024 Clinical Practice Guideline for the Management of Antineutrophil Cytoplasmic Antibody (ANCA)-Associated Vasculitis. Kidney Int. 2024;105(3S):S71-S116. doi:10.1016/j.kint.2023.10.008",
+      "Hellmich B, Sanchez-Alamo B, Schirmer JH, et al. EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update. Ann Rheum Dis. 2024;83(1):30-47. doi:10.1136/ard-2022-223764",
+      "Berden AE, Ferrario F, Hagen EC, et al. Histopathologic classification of ANCA-associated glomerulonephritis. J Am Soc Nephrol. 2010;21(10):1628-1636.",
+      "Chang DY, Wu LH, Liu G, et al. Re-evaluation of the histopathologic classification of ANCA-associated glomerulonephritis: a study of 121 patients in a single center. Nephrol Dial Transplant. 2012;27:2343-2349.",
+      "Hauer HA, Bajema IM, van Houwelingen HC, et al. Determinants of outcome in ANCA-associated glomerulonephritis: a prospective clinico-histopathological analysis of 96 patients. Kidney Int. 2002;62:1732-1742."
     ],
     "notice": {
-      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
-      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure completion of this teaching pathway — a teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "长期复发、最终维持治疗时长及完整感染筛查。",
-      "en": "Long-term relapse, final maintenance-treatment duration and complete infection screening."
+      "zh-CN": "原文矛盾：主诉“水肿1个月余”，而首次因水肿就诊在入院前约8周（57天）。",
+      "en": "Source contradiction: the chief complaint says 'oedema for over a month', yet the first visit for the oedema was about 8 weeks (57 days) before admission."
+    },
+    {
+      "zh-CN": "入院尿素氮7.88 mmol/L与肌酐700 μmol/L不相称；采血与透析的先后、透析开始的日期原文未给出。",
+      "en": "The admission urea of 7.88 mmol/L does not fit a creatinine of 700 μmol/L; when the sample was taken relative to dialysis, and when dialysis started, are not given."
+    },
+    {
+      "zh-CN": "PR3-ANCA、补体、乙肝血清学、胸部影像、尿红细胞形态或管型、体温和呼吸频率未报告。",
+      "en": "PR3-ANCA, complement, hepatitis B serology, chest imaging, urinary red-cell morphology or casts, temperature and respiratory rate are not reported."
+    },
+    {
+      "zh-CN": "阑尾切除标本和结肠切除标本最初的病理报告内容未报告；结肠切除的具体日期未给出。",
+      "en": "The original pathology reports on the appendix and the colectomy specimen are not reported, nor the exact date of the colectomy."
+    },
+    {
+      "zh-CN": "咳嗽咯血、耳鼻症状、麻木、体重变化、月经和生育意愿、吸烟饮酒、职业、家族史和过敏史未记录。",
+      "en": "Cough or haemoptysis, ear and nose symptoms, numbness, weight change, periods and plans for children, smoking, alcohol, occupation, family history and allergies are not recorded."
+    },
+    {
+      "zh-CN": "随访时间、维持治疗方案和远期复发情况未报告。",
+      "en": "The timing of follow-up, the maintenance regimen and long-term relapse are not reported."
     }
   ],
   "assets": [
@@ -1233,12 +4208,12 @@
       "kind": "image",
       "path": "/local-assets/cases/cmcr-138796/fig01.png",
       "title": {
-        "zh-CN": "原报告：肾活检光镜",
-        "en": "Source: kidney biopsy light microscopy"
+        "zh-CN": "原报告图1（肾活检光镜，1A、1B）与图2（结肠病理，HE ×100）合图",
+        "en": "Source Figs 1 (kidney biopsy light microscopy, 1A–1B) and 2 (colon histology, HE ×100) in one composite"
       },
       "credit": {
-        "zh-CN": "原报告图，常冬元; 安萌; 陈旻; 周福德; 邹万忠; 赵明辉，2014。版权归原权利人。",
-        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+        "zh-CN": "原报告图，常冬元、安萌、陈旻、周福德、邹万忠、赵明辉，中华医学杂志，2014。版权归原权利人。",
+        "en": "Original report figure, Chang Dongyuan, An Meng, Chen Min, Zhou Fude, Zou Wanzhong, Zhao Minghui, National Medical Journal of China, 2014. Copyright remains with the original rights holders."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1253,8 +4228,8 @@
         "en": "Source PDF (contains the outcome; for debrief review)"
       },
       "credit": {
-        "zh-CN": "原作者及出版方保留版权。",
-        "en": "Copyright retained by the original authors and publisher."
+        "zh-CN": "常冬元、安萌、陈旻、周福德、邹万忠、赵明辉，中华医学杂志，2014。原作者及出版方保留版权。",
+        "en": "Chang Dongyuan, An Meng, Chen Min, Zhou Fude, Zou Wanzhong, Zhao Minghui, National Medical Journal of China, 2014. Copyright retained by the original authors and publisher."
       },
       "license": "© original rights holders — local teaching use only",
       "localOnly": true,
@@ -1271,7 +4246,23 @@
     },
     {
       "type": "ask",
-      "itemId": "renal-course"
+      "itemId": "first-visit"
+    },
+    {
+      "type": "ask",
+      "itemId": "first-pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "clinic-visit"
+    },
+    {
+      "type": "ask",
+      "itemId": "urine-output"
+    },
+    {
+      "type": "ask",
+      "itemId": "second-pain"
     },
     {
       "type": "ask",
@@ -1283,11 +4274,15 @@
     },
     {
       "type": "ask",
-      "itemId": "negative"
+      "itemId": "ptu"
     },
     {
       "type": "ask",
       "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "negative"
     },
     {
       "type": "ask",
@@ -1296,6 +4291,18 @@
     {
       "type": "ask",
       "itemId": "lung-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "ent"
+    },
+    {
+      "type": "ask",
+      "itemId": "numbness"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
     },
     {
       "type": "ask",
@@ -1319,7 +4326,7 @@
     },
     {
       "type": "ask",
-      "itemId": "self-care"
+      "itemId": "pregnancy"
     },
     {
       "type": "ask",
@@ -1327,7 +4334,15 @@
     },
     {
       "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "examine",
       "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "cardioresp"
     },
     {
       "type": "examine",
@@ -1335,20 +4350,38 @@
     },
     {
       "type": "examine",
-      "findingId": "vitals"
+      "findingId": "legs"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
+      "type": "examine",
+      "findingId": "neuro"
     },
     {
       "type": "order",
-      "investigationId": "renal"
+      "investigationId": "local-records"
     },
     {
       "type": "read",
-      "investigationId": "renal",
-      "phase": "workup"
+      "investigationId": "local-records",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "clinic-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "clinic-records",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "surgical-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "surgical-records",
+      "phase": "admission"
     },
     {
       "type": "order",
@@ -1357,25 +4390,23 @@
     {
       "type": "read",
       "investigationId": "serology",
-      "phase": "workup"
+      "phase": "admission"
     },
     {
       "type": "order",
-      "investigationId": "biopsy"
+      "investigationId": "renal"
     },
     {
       "type": "read",
-      "investigationId": "biopsy",
-      "phase": "workup"
+      "investigationId": "renal",
+      "phase": "admission"
     },
     {
-      "type": "order",
-      "investigationId": "bowel"
-    },
-    {
-      "type": "read",
-      "investigationId": "bowel",
-      "phase": "workup"
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "aav"
+      ]
     },
     {
       "type": "order",
@@ -1384,21 +4415,110 @@
     {
       "type": "read",
       "investigationId": "inflammation",
-      "phase": "workup"
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal-us"
+    },
+    {
+      "type": "read",
+      "investigationId": "renal-us",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
     },
     {
       "type": "answer",
-      "decisionId": "diagnosis",
+      "decisionId": "induction",
       "optionIds": [
-        "supported"
+        "start-now"
       ]
     },
     {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "supportive",
       "optionIds": [
-        "supported"
+        "dialysis",
+        "pjp",
+        "pre-cyc"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "haemodialysis"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "mp-pulse"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "cyclophosphamide"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "co-trimoxazole"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "plasma-exchange"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "prednisone"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "biopsy"
+    },
+    {
+      "type": "order",
+      "investigationId": "bowel"
+    },
+    {
+      "type": "read",
+      "investigationId": "bowel",
+      "phase": "biopsy"
+    },
+    {
+      "type": "answer",
+      "decisionId": "biopsy-interpretation",
+      "optionIds": [
+        "active"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "status-course"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds-course"
+    },
+    {
+      "type": "order",
+      "investigationId": "course"
+    },
+    {
+      "type": "read",
+      "investigationId": "course",
+      "phase": "course"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-followup"
     },
     {
       "type": "order",
@@ -1418,117 +4538,286 @@
     "sourceArticleId": "138796",
     "sourceUrl": "https://rs.yiigle.com/cmaid/138796",
     "historicalReview": true,
+    "clinicalScores": {
+      "creatinineMgPerDl": {
+        "value": 7.9,
+        "formula": "700 μmol/L ÷ 88.4 ≈ 7.92 mg/dL (261 → 2.95; 351 → 3.97; 679 → 7.68; 200 → 2.26; 120 → 1.36)"
+      },
+      "mpoTimesUpperLimit": {
+        "value": 5.75,
+        "formula": "115,000 ÷ 20,000 = 5.75 × the upper reference limit"
+      },
+      "anuria": {
+        "value": "80–100 mL/24 h",
+        "formula": "< 100 mL/24 h is the usual definition of anuria; < 400 mL/24 h oliguria"
+      },
+      "plexThreshold": {
+        "value": "met",
+        "formula": "KDIGO 2024 PP 9.3.1.9: SCr > 3.4 mg/dL (300 μmol/L) — 700 μmol/L = 7.9 mg/dL, with dialysis need"
+      },
+      "rituximabLimitedDataThreshold": {
+        "value": "exceeded",
+        "formula": "KDIGO 2024: SCr > 4 mg/dL (354 μmol/L) — limited data for rituximab with glucocorticoids alone"
+      },
+      "daysFirstVisitToAdmission": {
+        "value": 57,
+        "formula": "relative dates from the source: first visit day −57, appendicectomy day −42, clinic ≈ day −30, second pain day −18, admission day 0, biopsy day 9, cyclophosphamide from day 13"
+      }
+    },
     "testUtterances": [
       {
-        "text": "最早出现哪些症状？",
+        "text": "你哪里不舒服？",
         "locale": "zh-CN",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "Which symptoms came first?",
+        "text": "怎么转到我们科来了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What's the trouble today?",
         "locale": "en",
         "expect": [
           "presentation"
         ]
       },
       {
-        "text": "尿量后来如何变化？",
+        "text": "腿肿最早是什么时候开始看病的？",
         "locale": "zh-CN",
         "expect": [
-          "renal-course"
+          "first-visit"
         ]
       },
       {
-        "text": "How did urine output change?",
+        "text": "When did you first go to a doctor about your legs?",
         "locale": "en",
         "expect": [
-          "renal-course"
+          "first-visit"
         ]
       },
       {
-        "text": "腹痛导致过哪些手术？",
+        "text": "阑尾炎那次是怎么回事？",
+        "locale": "zh-CN",
+        "expect": [
+          "first-pain"
+        ]
+      },
+      {
+        "text": "Tell me about the appendix operation.",
+        "locale": "en",
+        "expect": [
+          "first-pain"
+        ],
+        "alsoOk": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "一天尿多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "urine-output"
+        ]
+      },
+      {
+        "text": "How much urine are you passing?",
+        "locale": "en",
+        "expect": [
+          "urine-output"
+        ]
+      },
+      {
+        "text": "这次肚子疼还伴随什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "second-pain"
+        ]
+      },
+      {
+        "text": "What happened when the pain came back?",
+        "locale": "en",
+        "expect": [
+          "second-pain"
+        ]
+      },
+      {
+        "text": "做过什么手术？",
         "locale": "zh-CN",
         "expect": [
           "surgery"
         ]
       },
       {
-        "text": "Which operations followed abdominal pain?",
+        "text": "Have you had any operations?",
         "locale": "en",
         "expect": [
           "surgery"
         ]
       },
       {
-        "text": "用药及可能相关药物史是什么？",
+        "text": "平时吃什么药？",
         "locale": "zh-CN",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "What medicines and relevant drug exposures are recorded?",
+        "text": "What tablets do you take?",
         "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "有发热、紫癜、关节痛或黑便吗？",
+        "text": "吃过治甲亢的药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ptu"
+        ]
+      },
+      {
+        "text": "Any thyroid medicines in the past?",
+        "locale": "en",
+        "expect": [
+          "ptu"
+        ]
+      },
+      {
+        "text": "身上起过紫癜吗？关节疼不疼？",
         "locale": "zh-CN",
         "expect": [
           "negative"
         ]
       },
       {
-        "text": "Were fever, purpura, joint pain or black stools present?",
+        "text": "Any rashes or joint pains?",
         "locale": "en",
         "expect": [
           "negative"
         ]
       },
       {
-        "text": "发病以前健康情况怎样？",
+        "text": "以前身体怎么样？",
         "locale": "zh-CN",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "How was health before this illness?",
+        "text": "Were you well before all this?",
         "locale": "en",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "最初测过多高的血压？",
+        "text": "血压高吗？",
         "locale": "zh-CN",
         "expect": [
           "pressure"
         ]
       },
       {
-        "text": "What early blood pressure was recorded?",
-        "locale": "en",
-        "expect": [
-          "pressure"
-        ]
-      },
-      {
-        "text": "是否有咯血病史？",
+        "text": "咳过血吗？",
         "locale": "zh-CN",
         "expect": [
           "lung-history"
         ]
       },
       {
-        "text": "Was haemoptysis reported?",
+        "text": "Have you coughed up any blood?",
         "locale": "en",
         "expect": [
           "lung-history"
+        ]
+      },
+      {
+        "text": "流过鼻血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ent"
+        ]
+      },
+      {
+        "text": "对什么药过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Are you allergic to anything?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "平时抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "做什么工作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "occupation"
+        ]
+      },
+      {
+        "text": "Does anything run in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How much do you drink?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "有没有可能怀孕了？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "现在还透析吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "How's your water works now?",
+        "locale": "en",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "现在用哪些药？",
+        "locale": "zh-CN",
+        "expect": [
+          "meds-course"
+        ]
+      },
+      {
+        "text": "肚子还疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-followup"
         ]
       }
     ]
