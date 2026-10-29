@@ -734,6 +734,9 @@ in it is medical advice. The nine synthetic cases are fictional, with
 pseudonymous patients. The SMZL case is adapted from a published,
 de-identified case report: 丁凤丽, 秦彩霞, 汪家吉. 伴t(4;12)(q23;q13)易位合并肺腺癌的脾边缘区淋巴瘤1例.
 中国临床案例成果数据库, 2026. DOI [10.3760/cma.cmcr20260128-00421](https://doi.org/10.3760/cma.cmcr20260128-00421).
+The 20 CMCR cases are teaching adaptations of published case reports, with pseudonyms, relative times and no
+figure or PDF that identifies a patient; the reports remain © their publishers and are not distributed here
+([docs/CMCR_CASES.md](docs/CMCR_CASES.md), Privacy).
 Agents may state only facts present in the case data. Scores and debriefs
 are formative teaching measures, not validated competency assessments. A
 case's `provenance.review` says how far its content has been checked; an
