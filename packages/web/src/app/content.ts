@@ -362,7 +362,8 @@ export async function fetchServerCase(id: string, timeoutMs = 20_000): Promise<u
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
-    const res = await fetch(`/api/content/cases/${encodeURIComponent(id)}`, { signal: ctrl.signal, headers: { accept: "application/json" } });
+    // `?spoilers=1`: with a published case's source — the web shows it only once the case is complete (sources panel, debrief).
+    const res = await fetch(`/api/content/cases/${encodeURIComponent(id)}?spoilers=1`, { signal: ctrl.signal, headers: { accept: "application/json" } });
     const json = (res.headers.get("content-type") ?? "").includes("json") ? ((await res.json().catch(() => null)) as { error?: { message?: unknown } } | null) : null;
     if (res.ok && json && typeof json === "object") return json;
     throw new Error(typeof json?.error?.message === "string" ? json.error.message : `HTTP ${res.status}`);
@@ -408,7 +409,7 @@ export async function loadServerContent(index: ContentIndex, get: JsonGetter, fe
     const full =
       fetchCase ??
       (async (id: string) => {
-        const doc = await get(`/api/content/cases/${encodeURIComponent(id)}`);
+        const doc = await get(`/api/content/cases/${encodeURIComponent(id)}?spoilers=1`);
         if (!doc || typeof doc !== "object") throw new Error(`the server did not send case "${id}"`);
         return doc;
       });

@@ -2,13 +2,16 @@
 
 A case is one JSON file, `packages/content/cases/<id>/case.json`, validated by
 `CaseSchema` (`packages/core/src/schema/case.ts`; JSON Schema for editors in
-`packages/content/schemas/case.schema.json`). Optional `README.md` beside it
-explains provenance and teaching notes. Commands:
+`packages/content/schemas/case.schema.json`). A `README.md` beside it is the
+case's facilitator guide (§9.6). Every case meets the clinical content
+standard (§9); its words follow [GLOSSARY.md](GLOSSARY.md). Commands:
 
 ```bash
 clinicalcraft cases new <id>                                         # scaffold a schema-valid bilingual template + README
-clinicalcraft cases validate packages/content/cases/<id>/case.json   # schema + integrity (paths or --all)
-clinicalcraft cases verify <id>                                      # replays `solution` + the utterance corpus (ids or --all)
+clinicalcraft cases validate packages/content/cases/<id>/case.json   # schema + integrity + content lints (paths or --all)
+clinicalcraft cases validate --all --strict                          # the same, and any warning fails (§9.8)
+clinicalcraft cases verify <id>                                      # replays `solution` (its rubric score) + the utterance corpus (ids or --all)
+clinicalcraft cases show <id> --spoilers                             # the facilitator view, with a published case's source (§9.5)
 clinicalcraft play <id> --provider offline                           # play it in the terminal
 ```
 
@@ -32,15 +35,16 @@ solution is sent to the browser).
    pseudonymous patient names, a `disclaimer` ("虚构教学病例，不构成医疗建议。" /
    "Fictional teaching case — not medical advice."). Never base a synthetic case
    on an identifiable real patient.
-3. **Clinical accuracy** — management must follow current major guidelines
-   (name them in `debrief.references` as plain citations, e.g. "Surviving Sepsis
-   Campaign 2021 adult guidelines"); doses, thresholds and time windows must be
-   correct for the stated patient (weight, age, renal function). Do not invent
-   DOIs or URLs.
+3. **Clinical accuracy** — management must follow current major guidelines,
+   checked by version (§9.1) and cited in `debrief.references` in one
+   Vancouver-style form (§9.4); doses, thresholds and time windows must be
+   correct for the stated patient (weight, age, renal function). Never invent
+   guideline versions, trial names, statistics, DOIs, URLs or page numbers.
 4. **Bilingual** — `locales: ["zh-CN", "en"]` (source language first); every
-   `LocalizedText` has both. Use standard Chinese medical terminology
-   (e.g. 急性ST段抬高型心肌梗死, 糖尿病酮症酸中毒) and natural lay Chinese in
-   the patient's voice; same for English.
+   `LocalizedText` has both, stating the same facts. Use standard Chinese
+   medical terminology (e.g. 急性ST段抬高型心肌梗死, 糖尿病酮症酸中毒) and
+   natural lay Chinese in the patient's voice; the library's British spelling
+   in English (§9.3).
 5. **No spoilers** in `title`, `summary`, `patient.chiefComplaint`, `tags`,
    `triageNote` or objective titles. (Title may name the presentation:
    "胸痛 · 58岁男性" / "Chest pain · 58-year-old man".)
@@ -58,6 +62,22 @@ solution is sent to the browser).
   A history item whose `answer` is the patient's own words (a child saying how
   they feel) sets `speaker: "patient"`: it is then spoken by the patient, not
   the companion (default `companion` when it answers history).
+* A patient who cannot speak for part of the case (intubated, sedated, in
+  theatre, an infant) sets `patient.nonVerbalWhen` — a condition (§7):
+  `{ "intervened": "intubation" }`, `{ "phase": "icu" }`, `{ "always": true }`
+  — and `patient.nonVerbalReason`, a bilingual phrase that follows
+  "<name> cannot answer:" ("intubated and sedated on VA-ECMO" / "气管插管镇静中").
+  While the condition holds the patient never speaks: the companion answers
+  the history whatever `answersHistory` says, relaying an answer written in
+  the patient's own words ("She told us: “…”"); without a companion the
+  question gets the honest narration "<name> cannot answer: <reason>", reveals
+  no fact and is refused by the engine (`cannot-answer`). The offline
+  responders, the model patient's prompt, the grounding check and every
+  front-end's speaker label follow it, and in in-world mode the patient shows
+  "cannot speak: <reason>". The opening line is then narration, not speech:
+  write it as one bracketed aside ("（她接着呼吸机，无法说话。）" / "(She is on a
+  ventilator and cannot speak.)") or let the companion open. `cases validate`
+  warns when only one of the two fields is set.
 * `appearance` matches age/sex/build (stature `child` for 2–12 y, `infant` < 2 y);
   `posture` matches the setting (lying in resus, sitting in clinic).
 
@@ -169,6 +189,15 @@ solution is sent to the browser).
   absent (the UI says "no record").
 * `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
   ultrasound): reading either satisfies "essential investigations" in the assessment.
+* A report that already exists — an outside scan, an old echo, the operative
+  note, the drug chart, a referral letter — is a **record review**:
+  `performedAt: "records"`, `requires` at most `["records"]`, `risk: "none"`.
+  It is retrieved from the chart, not performed: in in-world mode it is
+  ordered and read at a records terminal or at the patient's side (the notes
+  at the bedside) — never a device, a transport or a sample — it adds no
+  capability gap (`caseCapabilityGaps`), and it carries no procedure risk
+  (no approval prompt, whatever `risk` says). The lints (§9.8) warn when one
+  requires a device or a risk.
 * `orderMatching.warnings` are shown whenever the order query matches, in every
   phase. Word them as a condition that stays true once it is met ("a result
   exists only once the lab has been activated and the patient is there"), not
@@ -307,6 +336,16 @@ solution is sent to the browser).
   `waypoints` (capability / role targets). The `hint` is the scored hint
   (shown for done objectives and on request); `guidance` is the quest-card and
   journal copy. Neither may state results the learner has not obtained.
+  Objectives are the in-game task list (任务目标); the case's
+  `learningOutcomes` (学习目标) are what the learner should be able to do
+  afterwards (§9.4) — keep the two distinct.
+* `phases` stage the case (presentation → work-up → treatment → follow-up).
+  A phase with `learnerSwitchable: false` and an `enterWhen` opens on its own
+  when the condition first becomes true, and stays reachable afterwards: a
+  learner who looks back at an earlier, switchable phase can select it again
+  (until the case reaches it, it is `phase-locked`). Gate a phase on the
+  objectives or decisions that precede it, never on reading the result that
+  answers a later decision.
 * 2–5 `decisions` (single best answer or select-all) with educational feedback
   on **every** option, unlocked by `requires` once the evidence exists. A
   locked decision is shown only by number and `need`; once unlocked its
@@ -322,6 +361,31 @@ solution is sent to the browser).
   communication items judged by the examiner (`judgeGuidance`, no `met`).
   Score decisions with `decidedFirstTry`: with a few options and feedback on
   each, `decided` gives full marks to guess-and-retry.
+* An **avoided-harm item** ("no nitrate", "no bicarbonate", "avoided low-value
+  tests") is met by doing nothing. Give it `scoredWhen`: the item counts only
+  once that condition holds — before, it is neither earned nor possible
+  (`scored: false` in the report; the web debrief marks it "not scored"). The
+  condition says the harm became possible (the learner started treatment or
+  reached the decision) **and lists every harm the item is lost by**, so the
+  harm alone always counts:
+  `"scoredWhen": { "any": [{ "attempted": "nitrate-safety" }, { "intervened":
+  "nitroglycerin" }] }`. It is evaluated on the final state; `cases validate`
+  warns when a harm in `met` would leave the item unscored (§9.8) and when
+  `scoredWhen` can never hold. (Gating inside `met` instead — `"all":
+  [{ "flag": "anticoagulated" }, { "not": … }]` — makes inaction a miss, not
+  "not scored".) The same goes for any item inaction meets: "at most two
+  hints" counts once the diagnosis is attempted or a third hint used. A
+  learner who does nothing scores 0 in every built-in case (core
+  `rubric-scoring.test.ts`).
+* `critical: true` marks the item whose miss is the case's dangerous error or
+  missed life-saving act (IM adrenaline within 5 minutes; no thrombolysis in a
+  post-operative PE): a scored, unmet critical item is named first in every
+  debrief (web, CLI `/debrief`, MCP `get_debrief`; `AssessmentReport.criticalMissed`).
+  It does not cap the score. Mark one or two items, not every safety item.
+* `cases verify` reports the reference path's rubric score (`--json`:
+  `score.earned`, `score.possible`, `score.percent`); it warns when the
+  reference path misses a critical item. Replay the main wrong paths and
+  "do nothing" for the README's score table (§9.6).
 * `npcs`: nurse (triage handover, logistics), consultants who interpret results
   the learner already has, attending (Socratic). Knowledge must not exceed the case,
   and must not contain result findings or derived values (another study's
@@ -376,6 +440,10 @@ the clinical content, not decoration:
   monitoring plan, home blood-pressure monitoring) is kind `other`, not
   `monitoring`. Drugs and blood products (`medications`, `blood-bank`) are
   delivered to the bedside.
+* A record review (`performedAt: "records"`, §5) needs no kit: it is ordered
+  and read at a placement providing `records` (a records terminal or a
+  nursing-station desk; the operating theatres have a records terminal too)
+  or at the patient's side.
 * Every IV item (an IV drug, infusion or bolus) requires `iv-access`. IV
   access is **patient state**: give the case one IV-access procedure (id
   `iv-access`, else a `procedure` requiring `iv-access`, else a cannulation
@@ -443,3 +511,180 @@ never leave it to a guess:
   `venturi-mask`, `nebuliser-mask`. Masks show a mask on the face, cannulae
   show cannulae. Without it, a mask named in the id, name or dose text in
   either language ("15 L/min via non-rebreather mask", "储氧面罩") counts.
+
+## 9. Clinical content standard
+
+Every case reads like a peer-reviewed simulation scenario from a professional
+medical-education programme: clinically exact, internally consistent,
+bilingual at a professional register, and fitted to ClinicalCraft (grounded
+agents, in-world mode, benchmarks). Improve substance; do not churn correct
+text for style alone.
+
+### 9.1 Clinical accuracy and currency
+
+* Check every clinical statement, value, dose, threshold and decision against
+  current international and Chinese guidance, and name the version you
+  checked (e.g. "ESC 2023 ACS", "AHA/ASA 2019 AIS + 2023 update",
+  "中国急性缺血性脑卒中诊治指南 2023", "Surviving Sepsis Campaign 2021",
+  "GINA 2024", "ADA Standards of Care 2025", "JBDS 2023 DKA", "WSES 2020
+  appendicitis", "EAACI 2021 anaphylaxis") in `provenance.review.guidelines`.
+* Fix errors and outdated recommendations, and say what changed (and why) in
+  the README changelog (§9.6).
+* Never invent guideline versions, trial names, statistics, DOIs or page
+  numbers. What you cannot verify you leave out, or keep in its existing
+  wording and list under "To verify" in the README.
+
+### 9.2 Internal consistency
+
+* Vitals trajectories agree with the physiology model; lab values carry units
+  (SI; zh-CN uses mmol/L and the like; conventional units in parentheses only
+  where clinically customary), reference ranges, derived values (anion gap,
+  corrected Na, osmolality, A–a gradient, eGFR stage, HbA1c ↔ mean glucose)
+  and scores (NIHSS, Wells / Geneva / sPESI, qSOFA / NEWS2 / CURB-65 / SOFA,
+  PRAM / GINA severity, Alvarado / AIR, HEART…).
+* Doses: weight-based where applicable, maximum doses, routes, dilutions,
+  infusion rates, contraindications; drug and test names identical everywhere
+  in the case.
+* The debrief, rubric, decisions, hints, NPC briefs, physiology,
+  `authorChecks` and the reference `solution` agree with each other.
+* Grounding (§1.1): facts only from the case record; never "normal" defaults
+  for unrecorded data.
+
+### 9.3 Bilingual register
+
+* zh-CN clinical text uses standard terminology (全国科学技术名词审定委员会;
+  generic drug names per 中国药典 / 国家药品通用名称) and consistent names for
+  drugs and tests; the patient's and relatives' speech is natural lay Chinese
+  (no translationese, no clinical jargon in their mouths).
+* en uses the library's British spelling (haemoglobin, anaesthesia,
+  oedema…), the clinical register in reports and the lay register in patient
+  speech.
+* Both languages state the same facts — no drift in numbers, sides or times.
+  Product words (objective, learning outcome, in-world mode…) are the
+  glossary's ([GLOSSARY.md](GLOSSARY.md)).
+
+### 9.4 Teaching design
+
+* `learningOutcomes` (top level, bilingual): 4–6 measurable outcomes, each an
+  action verb and its standard ("Recognise right-ventricular involvement from
+  V4R and withhold nitrates") — distinct from the HUD `objectives` (§7).
+  Being specific, they usually name the diagnosis, so front-ends show them
+  before play only on request and list them in every debrief
+  ([GLOSSARY.md §4](GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show));
+  write them for the debrief, not as a teaser.
+* Objectives' hints coach without giving the answer; decisions test
+  reasoning, not trivia.
+* Rubric weights reflect clinical importance: safety-critical items weigh
+  most.
+* Each debrief teaching point ties to the cited guidance; `boundaries` and
+  `unknowns` stay honest.
+* `debrief.references`: one consistent Vancouver-style string each — "Authors.
+  Title. Journal. Year;Vol(Issue):pages. doi:10.xxxx/yyyy" (a guideline: the
+  issuing body, title, year and journal). Add a DOI **only** after verifying
+  it with a web lookup (Crossref `api.crossref.org/works?query=…`, PubMed,
+  the publisher's page) — never from memory.
+
+### 9.5 Governance and versioning
+
+* `provenance.review` states honestly how far the content has been checked:
+
+  ```json
+  "review": {
+    "status": "editorial",
+    "reviewedAt": "2026-10-28",
+    "reviewers": ["ClinicalCraft editorial review (AI-assisted)"],
+    "guidelines": ["ESC 2023 ACS"],
+    "notes": {
+      "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+      "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+    }
+  }
+  ```
+
+  `status` is `unreviewed`, `editorial` (an internal editorial review against
+  the cited guidance, not by a licensed clinician) or `clinician-reviewed`
+  (reviewed by a licensed clinician of the specialty). Never claim a clinician
+  review that did not happen. Front-ends print the status wherever the case is
+  offered ([GLOSSARY.md §4](GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show)).
+* A substantive revision bumps the case `version` (1.0.0 → 1.1.0 for an
+  editorial pass, 1.1.0 → 1.1.1 for a scoring or corpus fix) and adds a dated
+  entry to the README changelog.
+* A published or adapted case's source — `provenance.citation`, `doi`,
+  `authors`, `notes` and `debrief.references` — names the diagnosis (a case
+  report's title usually does), so front-ends keep it back until the case is
+  complete: the web journal's sources panel and learning record, the CLI
+  (`cases show` and `cases list --details` show it only with `--spoilers`;
+  `cases show --json` without `--spoilers` or `--full` leaves it out), MCP
+  listings, resources and a mid-case `get_debrief`, and the server's case
+  API (`GET /api/content/cases/<id>` without `?spoilers=1`). The debrief of a
+  completed case lists the references
+  ([GLOSSARY.md §4](GLOSSARY.md#4-learning-outcomes-and-review-status-where-they-show)).
+
+### 9.6 The README: one facilitator guide per case
+
+Every case README follows one template, in this order:
+
+1. `# <case-id> — <presentation> · <patient>` (English title line)
+2. Case card: setting, facility, difficulty, estimated time, specialty,
+   languages, review status
+3. Learning outcomes
+4. Clinical summary (spoilers: diagnosis, key findings)
+5. Scenario timeline and physiology
+6. Decisions and assessment (objectives, rubric, how wrong choices score)
+7. Reference path (`solution`)
+8. Clinical numbers check
+9. Facilitator notes — debrief questions in PEARLS order (reactions →
+   description → analysis → summary), common learner errors and how the case
+   surfaces them
+10. Embodied mode (learners' in-world mode: grounding, scope of practice,
+    where the patient goes)
+11. Fidelity limits
+12. Matcher notes (if the case has them)
+13. References
+14. Changelog
+15. Validation (the commands)
+16. 中文摘要 — a Chinese facilitator summary: 病例概要、学习目标、关键决策、复盘要点
+
+Move and tidy the content of the existing technical sections into it; drop
+none. One exception: `smzl-lung-adeno`, the port of the V4 page, keeps its
+parity-oriented README (V4 → V5 mapping, deliberate divergences, evidence
+boundaries), which core `smzl-parity.test.ts` is written against; it carries
+the learning outcomes, the review status and the changelog.
+
+### 9.7 Must stay green
+
+* `clinicalcraft cases validate <case.json>` and `cases verify <id>` (and
+  `--all` at the end); `cases validate --all --strict` with 0 warnings;
+  `extensions.testUtterances` keep passing.
+* The grounding benchmark (`packages/content/grounding/grounding-v1/`, a
+  held-out instrument — [GROUNDING.md](GROUNDING.md)): keep every id it
+  references and never edit its sets; run `bench grounding --split dev` and
+  `--split test` before and after and compare — no case may lose items (per
+  case and per track). When a wording change breaks an item, adjust the
+  change (keywords, aliases), not the item.
+* In-world mode: `npx vitest run packages/agent/src/session/embodied-autopilot.test.ts`
+  (embodied score = clinical score), `bench run --agent reference` and
+  `--agent scripted-llm` at 100 %, `facilities validate --all`,
+  `npx vitest run packages/world packages/content packages/core`.
+
+### 9.8 Content lints
+
+`cases validate` checks the standard's mechanical parts
+(`checkContentStandard`, `packages/core/src/engine/content-standard.ts`). Each
+finding is a **warning**: the case still plays. `cases validate --strict`
+fails on any warning — the built-in cases have none, and a new case should
+not either. Fix the content where a lint finds a real problem; when a lint is
+wrong for a case, say so in the README rather than bending the text to it.
+
+| lint | where it points |
+|---|---|
+| a DOI is well-formed (`^10\.\d{4,9}/[-._;()/:A-Za-z0-9]+$`: no prefix, en dash or space) — `provenance.doi` and every reference that mentions "doi" | `provenance.doi`, `debrief.references.<i>` |
+| every option of a decision has its own feedback (no two the same) | `decisions.<i>.options.<j>.feedback` |
+| rubric ≥ 8 items with ≥ 1 `safety` item; ≥ 3 teaching points; ≥ 3 learning outcomes; `provenance.review` present | `rubric`, `debrief.teachingPoints`, `learningOutcomes`, `provenance.review` |
+| an objective hint does not contain a correct option's text (the answer) | `objectives.<i>.hint` |
+| the triage note and the opening line are not the library summary | `patient.triageNote`, `patient.persona.openingLine` |
+| test utterances paraphrase: none is its item's canonical question; every required history item has one (a phase twin's counts for the items it supersedes) | `extensions.testUtterances.<i>`, `history.<i>` |
+| a record review (`performedAt: "records"`) requires no device (at most `records`) and has `risk: "none"` | `investigations.<i>.requires`, `.risk` |
+| no exam finding says it is "not recorded" (`examNotRecorded` answers for anything unrecorded) | `exam.<i>.finding` |
+| a child under 12 is not asked adult social history (smoking, alcohol, drugs, work): the carer is | `history.<i>` |
+| an avoided-harm item with `scoredWhen` counts whenever its harm is done: each harmful step in `met` is in the `scoredWhen` "any" | `rubric.<i>.scoredWhen` |

@@ -17,7 +17,8 @@ import { relative } from "node:path";
 import { parseCase } from "@clinicalcraft/core";
 import { caseIndexEntryOf, createLimiter, libraryOrder, type Limiter } from "@clinicalcraft/agent";
 import { CaseIndexer, contentHash, type CaseIndexSnapshot, type IndexedCaseFile, type LoadedContent } from "@clinicalcraft/agent/node";
-import { caseListing, legacyContentIndex, listingKey, publicCase, type ListingIssue, type ListingQuery } from "./content.js";
+import type { CaseDefinition } from "@clinicalcraft/core";
+import { caseListing, hasSpoilers, learnerCase, legacyContentIndex, listingKey, publicCase, type ListingIssue, type ListingQuery } from "./content.js";
 import { strongEtag } from "./http.js";
 
 export interface CaseStoreOptions {
@@ -47,7 +48,26 @@ export interface CachedBody {
   etag: string;
 }
 
-type Verdict = { hash: string; ok: true; body?: string; etag: string } | { hash: string; ok: false; issues: { path: string; message: string }[] };
+/**
+ * A case's validation verdict. `body` / `etag`: the default (learner) form; `full` / `fullEtag`: the form with the
+ * source (`?spoilers=1`) when it differs (a published or adapted case). Bodies may be evicted (rebuilt on demand).
+ */
+type Verdict = { hash: string; ok: true; body?: string; etag: string; full?: string; fullEtag?: string } | { hash: string; ok: false; issues: { path: string; message: string }[] };
+
+/** The verdict of a valid case: both served forms. */
+function okVerdict(hash: string, def: CaseDefinition): Verdict {
+  const body = JSON.stringify(learnerCase(def));
+  if (!hasSpoilers(def)) return { hash, ok: true, body, etag: strongEtag(body) };
+  const full = JSON.stringify(publicCase(def));
+  return { hash, ok: true, body, etag: strongEtag(body), full, fullEtag: strongEtag(full) };
+}
+
+const bytesOf = (v: Verdict): number => (v.ok ? (v.body?.length ?? 0) + (v.full?.length ?? 0) : 0);
+
+/** The served form of a cached valid case (its bodies present). */
+function served(v: Extract<Verdict, { ok: true }>, spoilers: boolean): CaseLoad {
+  return spoilers && v.full !== undefined ? { status: "ok", body: v.full, etag: v.fullEtag! } : { status: "ok", body: v.body!, etag: v.etag };
+}
 
 /** Counters for diagnostics, tests and the content-scale benchmark. */
 export interface CaseStoreStats {
@@ -144,14 +164,18 @@ export class CaseStore {
    * its body was evicted), so a revalidation can be answered without
    * rebuilding it; null when unknown.
    */
-  async currentEtag(id: string): Promise<string | null> {
+  async currentEtag(id: string, spoilers = false): Promise<string | null> {
     const file = (await this.index()).files.get(id);
     const known = this.verdicts.get(id);
-    return file && known?.ok && known.hash === file.entry.contentHash ? known.etag : null;
+    if (!file || !known?.ok || known.hash !== file.entry.contentHash) return null;
+    return spoilers ? (known.fullEtag ?? known.etag) : known.etag;
   }
 
-  /** A full public case: validated on first request, verdict cached until the file changes. */
-  async load(id: string): Promise<CaseLoad> {
+  /**
+   * A full public case: validated on first request, verdict cached until the file changes. By default its
+   * learner form (`learnerCase`: no source of a published case); `spoilers`: with it (`publicCase`).
+   */
+  async load(id: string, spoilers = false): Promise<CaseLoad> {
     const snapshot = await this.index();
     const file = snapshot.files.get(id);
     if (!file) return { status: "not-found" };
@@ -163,7 +187,7 @@ export class CaseStore {
         // Most recently used last (LRU eviction order).
         this.verdicts.delete(id);
         this.verdicts.set(id, known);
-        return { status: "ok", body: known.body, etag: known.etag };
+        return served(known, spoilers);
       }
     }
     const key = `${id}\u0000${hash}`;
@@ -172,7 +196,10 @@ export class CaseStore {
       running = this.limit(() => this.validate(id, file)).finally(() => this.loading.delete(key));
       this.loading.set(key, running);
     }
-    return running;
+    const verdict = await running;
+    if (verdict.status !== "ok") return verdict;
+    const now = this.verdicts.get(id);
+    return now?.ok && now.body !== undefined ? served(now, spoilers) : verdict;
   }
 
   private async validate(id: string, file: IndexedCaseFile): Promise<CaseLoad> {
@@ -180,8 +207,7 @@ export class CaseStore {
       // Validated when it was loaded.
       const def = this.preloaded.cases.get(id)?.def;
       if (!def) return { status: "not-found" };
-      const body = JSON.stringify(publicCase(def));
-      return this.remember(id, { hash: file.entry.contentHash, ok: true, body, etag: strongEtag(body) });
+      return this.remember(id, okVerdict(file.entry.contentHash, def));
     }
     let bytes: Buffer;
     try {
@@ -209,26 +235,24 @@ export class CaseStore {
       this.lastRefresh = Number.NEGATIVE_INFINITY;
       return { status: "not-found" };
     }
-    const body = JSON.stringify(publicCase(parsed.value));
-    return this.remember(id, { hash, ok: true, body, etag: strongEtag(body) });
+    return this.remember(id, okVerdict(hash, parsed.value));
   }
 
   private remember(id: string, verdict: Verdict): CaseLoad {
     const old = this.verdicts.get(id);
-    if (old?.ok && old.body !== undefined) this.counters.cachedBytes -= old.body.length;
+    if (old?.ok && old.body !== undefined) this.counters.cachedBytes -= bytesOf(old);
     this.verdicts.delete(id);
     this.verdicts.set(id, verdict);
     if (!verdict.ok) return { status: "invalid", issues: verdict.issues };
-    const body = verdict.body!;
-    this.counters.cachedBytes += body.length;
+    this.counters.cachedBytes += bytesOf(verdict);
     // Evict the least recently used bodies (their verdicts stay; a body is rebuilt on demand).
     for (const [otherId, v] of this.verdicts) {
       if (this.counters.cachedBytes <= this.maxCachedBytes) break;
       if (otherId === id || !v.ok || v.body === undefined) continue;
-      this.counters.cachedBytes -= v.body.length;
-      this.verdicts.set(otherId, { hash: v.hash, ok: true, etag: v.etag });
+      this.counters.cachedBytes -= bytesOf(v);
+      this.verdicts.set(otherId, { hash: v.hash, ok: true, etag: v.etag, ...(v.fullEtag ? { fullEtag: v.fullEtag } : {}) });
     }
-    return { status: "ok", body, etag: verdict.etag };
+    return { status: "ok", body: verdict.body!, etag: verdict.etag };
   }
 
   private cached(key: string, build: () => unknown): CachedBody {

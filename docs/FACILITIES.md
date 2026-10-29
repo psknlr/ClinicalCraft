@@ -51,7 +51,7 @@ capabilities via `placement.capabilities`).
 | `device` | actions panel: investigations + interventions whose `requires` intersect the device capabilities (ECG cart → 12-lead ECG; defibrillator → shocks; O₂ outlet → oxygen) |
 | `monitor` | bedside monitor panel (live vitals, ECG trace, alarms) for the patient in the linked slot |
 | `bed` | nothing by itself (talk to the patient NPC) |
-| `board` | evidence board (decisions, phase switch, compare images) |
+| `board` | case board (decisions, phase switch, compare images; object type `evidence-board`) |
 | `atlas` | anatomy atlas |
 | `craft` | V4 crafting bench |
 | `storage`/`sink`/`none` | flavour text only |
@@ -225,7 +225,7 @@ size w × d in m):
 | `ed-cubicle` | emergency | 5 × 8 | stretcher, monitor, O₂, infusion pump, crash cart, peak-flow station, curtain; open front; emergency slot |
 | `outpatient-consult` | consult | 6 × 8 | treatment plinth, desk, chairs, diagnostic wall set, records terminal, glucometer, scale, sink; outpatient slot |
 | `ortho-exam` | consult | 6 × 8 | treatment plinth, X-ray lightbox, desk, records terminal, wheelchair, sink; outpatient slot |
-| `operating-theatre` | operating-room | 10 × 8 | operating table, surgical light, anaesthesia machine, monitor, instrument table, suction, infusion pump, O₂, C-arm, medication cabinet, scrub sink; sliding door; restricted zone `sterile` (clinician, attending, nurse, porter); operating-room slot |
+| `operating-theatre` | operating-room | 10 × 8 | operating table, surgical light, anaesthesia machine, monitor, instrument table, suction, infusion pump, O₂, C-arm, medication cabinet, records terminal, scrub sink; sliding door; restricted zone `sterile` (clinician, attending, nurse, porter); operating-room slot |
 | `ct-room` | imaging | 7 × 8 | CT scanner, radiology console, O₂, sink; radiologist |
 | `xray-room` | imaging | 6 × 8 | X-ray machine, chest stand, C-arm, ultrasound/echo machine, lightbox |
 | `clinical-lab` | laboratory | 10 × 8 | chemistry, haematology, blood-gas and urinalysis analysers, flow cytometer, cytogenetics workstation, biosafety cabinet, centrifuge, microscope, blood-bank and lab fridges, workstation, tube station (13 laboratory/pathology capabilities); lab technician |
@@ -234,7 +234,7 @@ size w × d in m):
 | `rehab-gym` | rehabilitation | 10 × 8 | parallel bars, treatment plinths, exercise bikes, wall bars, exercise mat, scale, wheelchair |
 | `pharmacy` | pharmacy | 6 × 8 | counter, records terminal, medication cabinet and fridge, pharmacy shelves; restricted zone `dispensary` (pharmacist, nurse); pharmacist |
 | `nursing-station` | nurse-station | 6 × 8 | nurse-station desk, records terminal, board, medication cabinet and fridge, glucometer, ECG cart, crash cart, defibrillator, sink; open front; nurse |
-| `teaching-room` | teaching | 10 × 8 | evidence board, anatomy atlas kiosk, projector screen, whiteboard, bookshelf, 6 desks; attending |
+| `teaching-room` | teaching | 10 × 8 | case board, anatomy atlas kiosk, projector screen, whiteboard, bookshelf, 6 desks; attending |
 | `elevator-cabin` | elevator | 2.4 × 2.4 | steel walls, 1.4 m glass sliding door: an elevator car (one per level it serves) |
 
 Five catalog types were added for the rehabilitation gym (`core-clinical.json`):
@@ -274,7 +274,7 @@ Five catalog types were added for the rehabilitation gym (`core-clinical.json`):
   has floor tabs (stairs and elevator cars drawn as symbols, a floor badge,
   the avatar and the destination faded on other floors). Destinations carry
   their level.
-* **Autopilot.** `walkTo({ x, z, level })` to another level walks to the
+* **Auto-walk ("Go there").** `walkTo({ x, z, level })` to another level walks to the
   nearest flight's approach point, climbs or descends it, and walks on — or,
   without stairs, rides an elevator (fewest level changes first).
 * Single-level facilities render, collide and navigate exactly as before.
@@ -354,12 +354,12 @@ cytogenetics + molecular), `slide-scanner`, `microtome`, `tissue-processor`,
 * `clinic-v4` — faithful data port of the V4 world: healing garden, single
   clinic building (consult, lab, imaging, pathology, corridor, conference
   area), V4 doors/windows/skylight/lamps/signs, workstations with V4
-  capability groupings, evidence board, atlas kiosk, shelves, garden
+  capability groupings, case board, atlas kiosk, shelves, garden
   benches, pond, trees, flowers, horizon, build zone and crafting bench.
   Default for `outpatient` cases whose `facility` is `clinic-v4`.
 * `general-hospital` — multi-department hospital (ED with resus bays and
   ambulance bay, outpatient clinic, radiology, laboratory, pathology,
-  pharmacy, ward, ICU, operating room, nurse station, conference room,
+  pharmacy, ward, ICU, operating theatre, nurse station, conference room,
   garden + build zone). Patient slots accept every case setting.
 * `teaching-hospital` — a two-level teaching hospital composed from room
   templates (22 instances): **L0** entrance plaza, lobby with reception,

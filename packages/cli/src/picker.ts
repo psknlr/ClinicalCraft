@@ -8,9 +8,9 @@ import { t, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core"
 import { libraryOrder, sanitizeTerminal } from "@clinicalcraft/agent";
 import { CaseLibrary, type LoadedContent } from "@clinicalcraft/agent/node";
 import { CliError, EXIT, type CliContext } from "./context.js";
-import { caseChoiceMeta } from "./labels.js";
+import { caseChoiceMeta, reviewTag } from "./labels.js";
 
-export { caseChoiceMeta, stars } from "./labels.js";
+export { caseChoiceMeta, reviewTag, stars } from "./labels.js";
 
 /**
  * Cases in library order — published cases first, then by difficulty, then
@@ -23,8 +23,23 @@ export function sortedCases(content: LoadedContent, _locale?: string): CaseDefin
   return libraryOrder([...content.cases.values()].map((e) => e.def));
 }
 
-/** What the picker shows of a case: a full case or a case index entry. */
-export type PickerCase = Pick<CaseDefinition, "id" | "difficulty"> & { title: LocalizedText; setting: string };
+/** What the picker shows of a case: a full case or a case index entry (its review status, when one is recorded). */
+export type PickerCase = Pick<CaseDefinition, "id" | "difficulty"> & {
+  title: LocalizedText;
+  setting: string;
+  review?: { status: string; reviewedAt?: string | null } | null;
+};
+
+/**
+ * One picker line: number, spoiler-free title, difficulty, setting and — where a case is offered, the review status
+ * is stated (docs/GLOSSARY.md §4) — its review tag. Never the id, which names the diagnosis.
+ */
+export function pickerLine(ctx: Pick<CliContext, "t" | "out" | "locale">, c: PickerCase, index: number): string {
+  const p = ctx.out;
+  const num = String(index + 1).padStart(2, " ");
+  const review = c.review ? ` · ${reviewTag(ctx, c.review)}` : "";
+  return `${p.dim(num)}. ${sanitizeTerminal(t(c.title, ctx.locale))} ${p.dim(`${caseChoiceMeta(ctx, c)}${review}`)}`;
+}
 
 /** Resolve a picker answer (1-based number, id or unique prefix) against a list. */
 export function resolveChoice<T extends { id: string }>(answer: string, cases: readonly T[]): T | null {
@@ -50,12 +65,11 @@ export async function pickCase(ctx: CliContext, source: readonly string[] | Case
   }
   const p = ctx.out;
   ctx.print(p.bold(ctx.t("picker.title")));
-  cases.forEach((c, i) => {
-    const num = String(i + 1).padStart(2, " ");
-    // Titles are spoiler-free; ids name the diagnosis (stemi-inferior-rv…), so the list never shows them
-    // (typing an id still works, for those who know it).
-    ctx.print(`${p.dim(num)}. ${sanitizeTerminal(t(c.title, ctx.locale))} ${p.dim(caseChoiceMeta(ctx, c))}`);
-  });
+  // Titles are spoiler-free; ids name the diagnosis (stemi-inferior-rv…), so the list never shows them
+  // (typing an id still works, for those who know it).
+  cases.forEach((c, i) => ctx.print(pickerLine(ctx, c, i)));
+  // What "editorial review" means, once, whenever one is offered (never claim more than the case records).
+  if (cases.some((c) => c.review?.status === "editorial")) ctx.print(p.dim(ctx.t("picker.reviewLegend")));
   const rl = createInterface({ input: ctx.io.stdin, output: ctx.io.stdout, terminal: true });
   let closed = false;
   let waiting: ((answer: string | null) => void) | null = null;

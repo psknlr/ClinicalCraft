@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "septic-shock-cap",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "发热、咳嗽伴意识模糊 · 72岁女性",
     "en": "Fever, cough and confusion · 72-year-old woman"
@@ -24,6 +24,32 @@
     "en"
   ],
   "estimatedMinutes": 45,
+  "learningOutcomes": [
+    {
+      "zh-CN": "依据Sepsis-3识别老年患者的脓毒性休克（感染导致SOFA急性增加≥2分；充分液体复苏后仍需升压药维持MAP ≥ 65 mmHg，且乳酸>2 mmol/L），并把qSOFA和NEWS2当作预警工具而非诊断标准。",
+      "en": "Recognise septic shock in an older adult by the Sepsis-3 criteria (infection with an acute SOFA rise ≥ 2; a vasopressor needed to keep MAP ≥ 65 mmHg after adequate fluids, with lactate > 2 mmol/L), treating qSOFA and NEWS2 as alarms, not diagnostic criteria."
+    },
+    {
+      "zh-CN": "在不延误治疗的前提下留取两套血培养，并在识别休克后1小时内静脉给予经验性抗菌药物：无MRSA或铜绿假单胞菌危险因素的重症CAP选用β-内酰胺联合大环内酯（或呼吸喹诺酮）。",
+      "en": "Take two sets of blood cultures without delaying treatment and give IV empirical antibiotics within 1 hour of recognising shock — for severe CAP without MRSA or Pseudomonas risk factors, a β-lactam plus a macrolide (or a respiratory fluoroquinolone)."
+    },
+    {
+      "zh-CN": "以平衡晶体液每次500 mL分次推注、逐步达到约30 mL/kg，每次推注后复评灌注和肺部；补液后MAP仍<65 mmHg时开始去甲肾上腺素（可经外周静脉起始），并滴定至初始目标MAP 65 mmHg（SSC 2026：≥65岁成人60–65 mmHg）。",
+      "en": "Resuscitate with balanced crystalloid in 500 mL boluses towards about 30 mL/kg, reassessing perfusion and the chest after each, and start norepinephrine (peripherally if needed) when MAP stays below 65 mmHg, titrating to an initial target of 65 mmHg (60–65 mmHg for adults aged 65 or over, SSC 2026)."
+    },
+    {
+      "zh-CN": "到院即测乳酸并在初始复苏后复查，并用阴离子间隙、Winter公式和Δ比值解读看似接近正常的静脉pH。",
+      "en": "Measure lactate on arrival and repeat it after initial resuscitation, and interpret a near-normal venous pH using the anion gap, Winter's formula and the delta ratio."
+    },
+    {
+      "zh-CN": "用就诊时数据计算CURB-65，运用ATS/IDSA重症CAP标准判断严重程度，并以SBAR向ICU交班。",
+      "en": "Score CURB-65 from presentation data, apply the ATS/IDSA severe-CAP criteria and refer to ICU with an SBAR handover."
+    },
+    {
+      "zh-CN": "保障休克合并急性肾损伤时的用药安全：问出自行服用的NSAIDs，暂停二甲双胍、降压药和NSAIDs，使用大环内酯或喹诺酮前查看QTc，首剂抗菌药物足量。",
+      "en": "Keep medicines safe in shock with AKI: elicit over-the-counter NSAID use, hold metformin, antihypertensives and NSAIDs, check the QTc before a macrolide or fluoroquinolone, and give full first antibiotic doses."
+    }
+  ],
   "tags": [
     "emergency",
     "resuscitation",
@@ -41,8 +67,34 @@
     ],
     "license": "MIT (synthetic teaching content)",
     "notes": {
-      "zh-CN": "虚构教学病例，由临床教育者依据现行指南（Sepsis-3、拯救脓毒症运动2021、ATS/IDSA 2019 CAP指南、中国成人CAP指南2016年版等）编写；患者、家属和工作人员均为化名，不对应任何真实个人。所有化验数值均为虚构，并已逐项核对内部一致性（阴离子间隙、校正钠、MAP、CURB-65、qSOFA、NEWS2、SOFA、KDIGO分期、血气代偿）。生理模型为教学简化（线性趋势、即时撤效）。",
-      "en": "Fictional teaching case written by clinician-educators against current guidelines (Sepsis-3, Surviving Sepsis Campaign 2021, ATS/IDSA 2019 CAP guideline, Chinese adult CAP guideline 2016 and others). The patient, family and staff are pseudonymous and do not correspond to any real person. All laboratory values are invented and have been checked for internal consistency (anion gap, corrected sodium, MAP, CURB-65, qSOFA, NEWS2, SOFA, KDIGO stage, blood-gas compensation). The physiology model is a teaching simplification (linear trends, instant offsets)."
+      "zh-CN": "虚构教学病例，依据现行指南（Sepsis-3、拯救脓毒症运动2021及其2026年更新、ATS/IDSA 2019与ATS 2025 CAP指南、中国成人CAP指南2016年版等）编写；患者、家属和工作人员均为化名，不对应任何真实个人。所有化验数值均为虚构，并已逐项核对内部一致性（阴离子间隙、校正钠、MAP、CURB-65、qSOFA、NEWS2、SOFA、KDIGO分期、血气代偿）。生理模型为教学简化（线性趋势、即时撤效）。",
+      "en": "Fictional teaching case written against current guidelines (Sepsis-3, the Surviving Sepsis Campaign 2021 guidelines and their 2026 update, the ATS/IDSA 2019 and ATS 2025 CAP guidelines, the Chinese adult CAP guideline 2016 and others). The patient, family and staff are pseudonymous and do not correspond to any real person. All laboratory values are invented and have been checked for internal consistency (anion gap, corrected sodium, MAP, CURB-65, qSOFA, NEWS2, SOFA, KDIGO stage, blood-gas compensation). The physiology model is a teaching simplification (linear trends, instant offsets)."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "Sepsis-3 (2016)",
+        "Surviving Sepsis Campaign 2021 (adults)",
+        "Surviving Sepsis Campaign 2026 (adults)",
+        "Surviving Sepsis Campaign Hour-1 bundle (2018 update)",
+        "SCCM 2024 focused update: corticosteroids in sepsis, ARDS and CAP",
+        "ATS/IDSA 2019 CAP",
+        "ATS 2025 CAP",
+        "ERS/ESICM/ESCMID/ALAT 2023 severe CAP",
+        "中华医学会呼吸病学分会 中国成人社区获得性肺炎诊断和治疗指南（2016年版）",
+        "中国医师协会急诊医师分会 中国脓毒症/脓毒性休克急诊治疗指南（2018）",
+        "BTS 2017 oxygen use in adults",
+        "KDIGO 2012 AKI",
+        "RCP NEWS2 (2017)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -154,7 +206,14 @@
       "gown": true,
       "accessory": "none"
     },
-    "posture": "lying"
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "intervened": "intubation"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "快速顺序诱导后已气管插管、镇静，正在机械通气",
+      "en": "intubated, sedated and on mechanical ventilation after rapid-sequence induction"
+    }
   },
   "phases": [
     {
@@ -6780,8 +6839,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "去甲肾上腺素（以碱基计）4 mg 加入5%葡萄糖至250 mL（16 µg/mL），经近端粗外周静脉（≥20G，肘前/上臂）专用通路泵入；起始0.05 µg/kg/min（3 µg/min ≈ 11 mL/h），每5–10分钟按0.02–0.05 µg/kg/min调整，目标MAP ≥ 65 mmHg；每小时检查穿刺点有无外渗，尽早建立动脉及中心静脉通路。",
-        "en": "Norepinephrine (as base) 4 mg in 5% glucose to 250 mL (16 µg/mL) via a dedicated proximal large-bore peripheral cannula (≥ 20G, antecubital/upper arm) on a pump; start 0.05 µg/kg/min (3 µg/min ≈ 11 mL/h), titrate by 0.02–0.05 µg/kg/min every 5–10 min to MAP ≥ 65 mmHg; check the site hourly for extravasation and arrange arterial and central access early."
+        "zh-CN": "去甲肾上腺素（以碱基计）4 mg 加入5%葡萄糖至250 mL（16 µg/mL），经近端粗外周静脉（≥20G，肘前/上臂）专用通路泵入；起始0.05 µg/kg/min（3 µg/min ≈ 11 mL/h），每5–10分钟按0.02–0.05 µg/kg/min调整，初始目标MAP 65 mmHg（SSC 2026对≥65岁成人建议60–65 mmHg，避免过高）；每小时检查穿刺点有无外渗，尽早建立动脉及中心静脉通路。",
+        "en": "Norepinephrine (as base) 4 mg in 5% glucose to 250 mL (16 µg/mL) via a dedicated proximal large-bore peripheral cannula (≥ 20G, antecubital/upper arm) on a pump; start 0.05 µg/kg/min (3 µg/min ≈ 11 mL/h), titrate by 0.02–0.05 µg/kg/min every 5–10 min to an initial MAP target of 65 mmHg (SSC 2026 suggests 60–65 mmHg for adults aged 65 or over; avoid overshooting); check the site hourly for extravasation and arrange arterial and central access early."
       },
       "requires": [
         "infusion-pump",
@@ -6819,8 +6878,8 @@
         ]
       },
       "response": {
-        "zh-CN": "去甲肾上腺素经左肘前18G留置针泵入。接下来约10分钟内平均动脉压逐渐上升——按MAP ≥ 65 mmHg滴定，并每小时检查穿刺点。若MAP仍<65 mmHg，可再次选择去甲肾上腺素上调泵速（每次约+0.05 µg/kg/min）。",
-        "en": "Norepinephrine running through the 18G cannula in the left antecubital fossa. Over the next 10 minutes or so the MAP climbs — titrate to MAP ≥ 65 mmHg and check the site hourly. If the MAP stays < 65 mmHg, choose norepinephrine again to step up the rate (each step about +0.05 µg/kg/min)."
+        "zh-CN": "去甲肾上腺素经左肘前18G留置针泵入。接下来约10分钟内平均动脉压逐渐上升——按初始目标MAP 65 mmHg滴定（她已72岁，60–65 mmHg即可，避免过高），并每小时检查穿刺点。若MAP仍低于目标，可再次选择去甲肾上腺素上调泵速（每次约+0.05 µg/kg/min）。",
+        "en": "Norepinephrine running through the 18G cannula in the left antecubital fossa. Over the next 10 minutes or so the MAP climbs — titrate to an initial target of 65 mmHg (at 72, 60–65 mmHg is enough; avoid overshooting) and check the site hourly. If the MAP stays below target, choose norepinephrine again to step up the rate (each step about +0.05 µg/kg/min)."
       }
     },
     {
@@ -6919,8 +6978,8 @@
       ],
       "maxDoses": 1,
       "response": {
-        "zh-CN": "氢化可的松50 mg已静脉注射，对血压没有即刻作用，不能替代升压药——补液后MAP仍<65 mmHg时应开始去甲肾上腺素。SSC 2021建议对持续需要升压药的脓毒性休克加用氢化可的松（200 mg/d）；重症CAP的糖皮质激素治疗（SCCM 2024重点更新）由ICU决定剂量和疗程。",
-        "en": "Hydrocortisone 50 mg given IV. It has no immediate effect on blood pressure and does not replace a vasopressor — if MAP stays < 65 mmHg after fluids, start norepinephrine. SSC 2021 suggests adding hydrocortisone (200 mg/day) in septic shock with an ongoing vasopressor requirement; corticosteroids for severe CAP (SCCM 2024 focused update) are part of the ICU plan for dose and duration."
+        "zh-CN": "氢化可的松50 mg已静脉注射，对血压没有即刻作用，不能替代升压药——补液后MAP仍<65 mmHg时应开始去甲肾上腺素。激素在这里是辅助治疗：SCCM 2024重点更新建议脓毒性休克使用糖皮质激素，并推荐用于重症细菌性CAP；ATS 2025 CAP指南也建议重症CAP使用全身糖皮质激素。常用氢化可的松200 mg/d，具体剂量和疗程与ICU商定。",
+        "en": "Hydrocortisone 50 mg given IV. It has no immediate effect on blood pressure and does not replace a vasopressor — if MAP stays < 65 mmHg after fluids, start norepinephrine. Steroids are an adjunct here: the SCCM 2024 focused update suggests corticosteroids in septic shock and recommends them in severe bacterial CAP, and the ATS 2025 CAP guideline suggests systemic corticosteroids in severe CAP. Hydrocortisone 200 mg/day is the usual regimen — agree the dose and duration with ICU."
       }
     },
     {
@@ -7236,8 +7295,8 @@
         "always": true
       },
       "response": {
-        "zh-CN": "ICU孙医生接听：听完你的SBAR交班后同意收治，约30–45分钟内有床位。她请你在转运前把MAP维持在65 mmHg以上（必要时开始或上调去甲肾上腺素）、复查乳酸，同时与家属沟通病情和治疗目标。",
-        "en": "ICU registrar Dr Sun takes your SBAR handover and accepts her; a bed will be ready in about 30–45 minutes. Until transfer she asks you to keep the MAP ≥ 65 mmHg (starting or titrating norepinephrine as needed), repeat the lactate, and talk with the family about severity and goals of care."
+        "zh-CN": "ICU孙医生接听：听完你的SBAR交班后同意收治，约30–45分钟内有床位。她请你在转运前把MAP维持在初始目标65 mmHg左右（她已72岁，60–65 mmHg即可；必要时开始或上调去甲肾上腺素）、复查乳酸，同时与家属沟通病情和治疗目标。",
+        "en": "ICU registrar Dr Sun takes your SBAR handover and accepts her; a bed will be ready in about 30–45 minutes. Until transfer she asks you to keep the MAP at about 65 mmHg (60–65 mmHg is fine at her age; start or titrate norepinephrine as needed), repeat the lactate, and talk with the family about severity and goals of care."
       }
     },
     {
@@ -7905,7 +7964,7 @@
         "en": "Hypotension plus raised lactate: blood cultures first if they cause no delay, then IV empirical antibiotics within the hour (β-lactam plus macrolide) and balanced crystalloid in boluses, reassessing after each."
       },
       "guidance": {
-        "zh-CN": "在决策板上确定抗菌药物时机和方案，然后给药；完成至少三次500 mL液体推注。",
+        "zh-CN": "在会诊板上确定抗菌药物时机和方案，然后给药；完成至少三次500 mL液体推注。",
         "en": "Settle antibiotic timing and regimen on the decision board, give them, and complete at least three 500 mL boluses."
       },
       "completeWhen": {
@@ -7978,7 +8037,7 @@
         "en": "Reassess after the initial fluids: if MAP stays < 65 mmHg start norepinephrine (a peripheral start is fine), repeat the lactate, and reclassify her using Sepsis-3."
       },
       "guidance": {
-        "zh-CN": "复评灌注，决定升压策略，开始去甲肾上腺素，复查乳酸，并在决策板上完成Sepsis-3判断。",
+        "zh-CN": "复评灌注，决定升压策略，开始去甲肾上腺素，复查乳酸，并在会诊板上完成Sepsis-3判断。",
         "en": "Reassess perfusion, decide on the vasopressor, start norepinephrine, repeat the lactate and complete the Sepsis-3 question on the board."
       },
       "completeWhen": {
@@ -8165,8 +8224,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。SSC 2021：对可能的脓毒性休克或高度可能的脓毒症，建议识别后1小时内给予抗菌药物；在不明显延误的前提下先留取血培养。观察性研究显示，休克患者抗菌药物每延迟一小时，死亡率随之升高。",
-            "en": "Correct. SSC 2021 recommends antimicrobials within 1 hour of recognising possible septic shock or probable sepsis, with blood cultures first provided this causes no substantial delay. In shock, observational data link each hour of delay with higher mortality."
+            "zh-CN": "正确。SSC 2021及其2026年更新：对可能的脓毒性休克或高度可能的脓毒症，推荐立即给予抗菌药物，最好在识别后1小时内；在不明显延误的前提下先留取血培养。观察性研究显示，休克患者抗菌药物每延迟一小时，死亡率随之升高。",
+            "en": "Correct. SSC 2021 and its 2026 update recommend antimicrobials immediately, ideally within 1 hour of recognising possible septic shock or probable sepsis, with blood cultures first provided this causes no substantial delay. In shock, observational data link each hour of delay with higher mortality."
           }
         },
         {
@@ -8201,8 +8260,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。3小时的时间窗适用于可能脓毒症但无休克、且感染可能性不确定的情况。她低血压伴乳酸4.6 mmol/L，应在1小时内用药。",
-            "en": "No. The 3-hour window applies to possible sepsis without shock when infection is uncertain. She is hypotensive with a lactate of 4.6 mmol/L — antibiotics belong within the hour."
+            "zh-CN": "不妥。3小时的时间窗（SSC 2021）适用于可能脓毒症但无休克、且感染可能性不确定的情况。她低血压伴乳酸4.6 mmol/L，应在1小时内用药。",
+            "en": "No. The 3-hour window (SSC 2021) applies to possible sepsis without shock when infection is uncertain. She is hypotensive with a lactate of 4.6 mmol/L — antibiotics belong within the hour."
           }
         },
         {
@@ -8358,13 +8417,13 @@
         {
           "id": "a",
           "text": {
-            "zh-CN": "经近端粗外周静脉（≥20G）立即开始去甲肾上腺素，目标MAP ≥ 65 mmHg，随后再建立动脉和中心静脉通路",
-            "en": "Start norepinephrine now through a proximal large-bore peripheral cannula (≥ 20G), target MAP ≥ 65 mmHg, and place arterial and central lines afterwards"
+            "zh-CN": "经近端粗外周静脉（≥20G）立即开始去甲肾上腺素，初始目标MAP 65 mmHg，随后再建立动脉和中心静脉通路",
+            "en": "Start norepinephrine now through a proximal large-bore peripheral cannula (≥ 20G), targeting an initial MAP of 65 mmHg, and place arterial and central lines afterwards"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。去甲肾上腺素是一线升压药；SSC 2021建议不必等待中心静脉，可经外周静脉起始，目标MAP 65 mmHg，并尽早建立动脉监测。",
-            "en": "Correct. Norepinephrine is first line; SSC 2021 suggests starting it peripherally rather than waiting for central access, targeting a MAP of 65 mmHg, with arterial monitoring as soon as practical."
+            "zh-CN": "正确。去甲肾上腺素是一线升压药；SSC 2021建议不必等待中心静脉，可经外周静脉起始，并尽早建立动脉监测。SSC 2026仍推荐初始MAP目标65 mmHg（而非更高）；对像她这样≥65岁的成人，建议60–65 mmHg——按此滴定，避免过高。",
+            "en": "Correct. Norepinephrine is first line; SSC 2021 suggests starting it peripherally rather than waiting for central access, with arterial monitoring as soon as practical. SSC 2026 keeps an initial MAP target of 65 mmHg over higher targets and, for adults aged 65 or over like her, suggests 60–65 mmHg — titrate to that and avoid overshooting."
           }
         },
         {
@@ -8399,8 +8458,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。激素起效慢，不能替代升压药，也不能及时纠正MAP——应先开始去甲肾上腺素。SSC 2021建议在持续需要升压药（如去甲肾上腺素≥0.25 µg/kg/min且≥4小时）时加用氢化可的松；重症CAP的激素治疗是ICU的后续决策，而不是升压药的替代。",
-            "en": "No. Steroids act slowly and neither replace a vasopressor nor restore MAP in time — start norepinephrine. SSC 2021 suggests adding hydrocortisone for an ongoing vasopressor requirement (e.g. norepinephrine ≥ 0.25 µg/kg/min for ≥ 4 h); steroids for severe CAP are a later ICU decision, never a substitute for a vasopressor."
+            "zh-CN": "不妥。激素起效慢，不能替代升压药，也不能及时纠正MAP——应先开始去甲肾上腺素。激素是辅助治疗：SCCM 2024重点更新建议脓毒性休克使用糖皮质激素（弱推荐），并推荐用于重症细菌性CAP（强推荐）；SSC 2021则将氢化可的松限定于持续需要升压药（如去甲肾上腺素≥0.25 µg/kg/min且≥4小时）时加用。应与ICU共同制定激素方案，而不是用它代替升压药。",
+            "en": "No. Steroids act slowly and neither replace a vasopressor nor restore MAP in time — start norepinephrine. Steroids are an adjunct: the SCCM 2024 focused update suggests corticosteroids in septic shock (conditional) and recommends them in severe bacterial CAP (strong), whereas SSC 2021 tied hydrocortisone to an ongoing vasopressor requirement (e.g. norepinephrine ≥ 0.25 µg/kg/min for ≥ 4 h). Plan them with ICU — never instead of a vasopressor."
           }
         },
         {
@@ -8509,8 +8568,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。qSOFA（呼吸≥22、意识改变、收缩压≤100）只是床旁预后/警示工具，并非诊断标准；SSC 2021不建议单独用qSOFA作为筛查工具。",
-            "en": "No. qSOFA (RR ≥ 22, altered mentation, SBP ≤ 100) is a bedside prognostic prompt, not a diagnostic criterion; SSC 2021 recommends against using it alone as a screening tool."
+            "zh-CN": "不妥。qSOFA（呼吸≥22、意识改变、收缩压≤100）只是床旁预后/警示工具，并非诊断标准；SSC 2021及其2026年更新均不建议单独用qSOFA作为筛查工具（优先NEWS/NEWS2、MEWS或SIRS）。",
+            "en": "No. qSOFA (RR ≥ 22, altered mentation, SBP ≤ 100) is a bedside prognostic prompt, not a diagnostic criterion; SSC 2021 and its 2026 update recommend against using it alone as a screening tool (NEWS/NEWS2, MEWS or SIRS are preferred)."
           }
         },
         {
@@ -8816,7 +8875,7 @@
         "zh-CN": "到达抢救室60分钟内给予有效的静脉经验性抗菌药物",
         "en": "Gave effective IV empirical antibiotics within 60 minutes of reaching resus"
       },
-      "weight": 2,
+      "weight": 3,
       "met": {
         "all": [
           {
@@ -8828,7 +8887,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-abx-regimen",
@@ -8904,7 +8964,7 @@
         "zh-CN": "避免有害选择：限制补液、为CT延误抗生素、无指征插管、收普通病房",
         "en": "Avoided harmful choices: fluid restriction, delaying antibiotics for CT, unindicated intubation, ward admission"
       },
-      "weight": 2,
+      "weight": 3,
       "met": {
         "all": [
           {
@@ -8931,6 +8991,31 @@
             "not": {
               "intervened": "ward-admission"
             }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "flag": "any-abx"
+          },
+          {
+            "intervened": "fluid-restrict"
+          },
+          {
+            "intervened": "defer-abx-ct"
+          },
+          {
+            "flag": "ct-before-abx"
+          },
+          {
+            "intervened": "intubation"
+          },
+          {
+            "intervened": "ward-admission"
           }
         ]
       }
@@ -9023,8 +9108,8 @@
         "en": "Dr Wang (ED attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教：只追问学习者已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、1小时集束化（SSC 2018更新，与SSC 2021一致）、去甲肾上腺素可经外周起始、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
-        "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does her lactate tell you?', 'Why does her pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the Hour-1 bundle (SSC 2018 update, consistent with SSC 2021), peripheral norepinephrine, and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
+        "zh-CN": "苏格拉底式带教：只追问学员已获得的资料，例如“她的MAP是多少？”“她的乳酸说明什么？”“为什么她的pH看起来几乎正常？”“补液后血压只是短暂上升说明什么？”“哪些家里的药需要停？”“CURB-65的R项她得分吗？”。可以提示Sepsis-3定义、1小时集束化（SSC 2018更新；其中1小时内抗菌和30 mL/kg补液的要求在SSC 2021及其2026年更新中均保留）、去甲肾上腺素可经外周起始、初始MAP目标（SSC 2026：≥65岁成人60–65 mmHg）、氧疗目标94–98%。不提前说出诊断，不补充病例中没有的数据。",
+        "en": "Socratic teacher: asks only about information the learner already has, e.g. 'What is her MAP?', 'What does her lactate tell you?', 'Why does her pH look almost normal?', 'What does a transient rise in BP after a bolus tell you?', 'Which home medicines need stopping?', 'Does she score the R in CURB-65?'. May point to the Sepsis-3 definitions, the Hour-1 bundle (SSC 2018 update; its 1-hour antibiotic and 30 mL/kg fluid elements stand in SSC 2021 and the 2026 update), peripheral norepinephrine, the initial MAP target (SSC 2026: 60–65 mmHg for adults aged 65 or over) and the 94–98% oxygen target. Does not announce the diagnosis early or add data the case does not contain."
       },
       "interprets": [
         "vbg-lactate",
@@ -9043,7 +9128,7 @@
         "en": "Dr Liu (radiology)"
       },
       "knowledge": {
-        "zh-CN": "只解读学习者已调阅的影像报告，以报告原文为准；可讲解支气管充气征、胸腔积液及右心缘轮廓征如何帮助判断实变的性质与部位（下叶还是中叶）。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "zh-CN": "只解读学员已调阅的影像报告，以报告原文为准；可讲解支气管充气征、胸腔积液及右心缘轮廓征如何帮助判断实变的性质与部位（下叶还是中叶）。CT平扫不能评估肺栓塞。床旁超声由临床医生完成，可帮助解释肝样变、B线和下腔静脉的意义及局限。不补充报告以外的发现。若学员尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
         "en": "Interprets only imaging the learner has retrieved, in the report's own words; can explain how air bronchograms, an effusion and the silhouette of the right heart border help characterise and localise consolidation (lower versus middle lobe). A non-contrast CT cannot assess for PE. POCUS is clinician-performed; can explain hepatisation, B-lines and the IVC and their limits. Adds no findings beyond the reports. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
@@ -9060,7 +9145,7 @@
         "en": "Ms Wu (microbiology lab)"
       },
       "knowledge": {
-        "zh-CN": "只解释学习者已拿到的微生物结果，以报告原文为准：痰标本质量如何分级、革兰染色形态只能提示而不能确定病原、尿抗原检测的意义，以及培养需要数天才能给出鉴定和药敏。抗菌药物后采集的标本阳性率会下降。若学习者尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
+        "zh-CN": "只解释学员已拿到的微生物结果，以报告原文为准：痰标本质量如何分级、革兰染色形态只能提示而不能确定病原、尿抗原检测的意义，以及培养需要数天才能给出鉴定和药敏。抗菌药物后采集的标本阳性率会下降。若学员尚未调阅相应结果，只说明需要先开具/阅读，不透露任何内容。",
         "en": "Explains only microbiology results the learner has, in the report's own words: how sputum quality is graded, that Gram-stain morphology suggests but does not prove an organism, what a urinary antigen adds, and that cultures take days to give an identification and susceptibilities. Samples taken after antibiotics have lower yield. If the learner has not retrieved a result yet, say it must be ordered/read first and reveal nothing of it."
       },
       "interprets": [
@@ -9078,8 +9163,8 @@
         "en": "Pharmacist Zhao (ED clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "只引用学习者已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。学习者拿到肌酐结果后，可按Cockcroft-Gault估算肌酐清除率，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。学习者已阅读的心电图QTc低于500 ms时可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）用于持续需要升压药的脓毒性休克，不能替代升压药；重症CAP的糖皮质激素治疗由ICU决定。对乙酰氨基酚1 g IV，若肌酐清除率≤30 mL/min则间隔至少6小时（先查肾功能）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学习者说出病人的诊断。",
-        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Once the learner has the creatinine, can estimate creatinine clearance (Cockcroft–Gault), which is unreliable in non-steady-state AKI — give full first doses. With a QTc below 500 ms on the ECG the learner has read, a macrolide or a fluoroquinolone may be used, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is for septic shock with an ongoing vasopressor requirement and never replaces a vasopressor; corticosteroids for severe CAP are an ICU decision. Paracetamol 1 g IV, at least 6 h apart if creatinine clearance is ≤ 30 mL/min (check the chemistry first); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity. Gives general drug guidance only and does not state the patient's diagnosis for the learner."
+        "zh-CN": "只引用学员已拿到的结果（如QTc、肌酐）；若尚未检查，提醒先做心电图/查肾功能，不说出具体数值。剂量与安全建议：头孢曲松2 g q24h、阿奇霉素500 mg q24h、莫西沙星400 mg q24h均无需按肾功能调整；左氧氟沙星需按肾功能调整。学员拿到肌酐结果后，可按Cockcroft-Gault估算肌酐清除率，但急性肾损伤非稳态时不可靠——首剂抗菌药物应足量。学员已阅读的心电图QTc低于500 ms时可以使用大环内酯或喹诺酮，但避免两者合用。万古霉素在AKI中有肾毒性。应暂停二甲双胍、氨氯地平，避免NSAIDs。去甲肾上腺素外周配制4 mg/250 mL（16 µg/mL），0.05 µg/kg/min约为11 mL/h。氢化可的松50 mg q6h（200 mg/d）是脓毒性休克和重症CAP的辅助治疗（SCCM 2024重点更新），不能替代升压药；具体方案和疗程由ICU决定。对乙酰氨基酚1 g IV，若肌酐清除率≤30 mL/min则间隔至少6小时（先查肾功能）；她有脱水、进食差等肝毒性危险因素，24小时不超过3 g。只提供一般用药建议，不替学员说出病人的诊断。",
+        "en": "Quotes results (QTc, creatinine, creatinine clearance) only once the learner has the ECG/chemistry; if not yet done, advises checking them first without giving numbers. Dosing and safety advice: ceftriaxone 2 g q24h, azithromycin 500 mg q24h and moxifloxacin 400 mg q24h need no renal adjustment; levofloxacin would. Once the learner has the creatinine, can estimate creatinine clearance (Cockcroft–Gault), which is unreliable in non-steady-state AKI — give full first doses. With a QTc below 500 ms on the ECG the learner has read, a macrolide or a fluoroquinolone may be used, but not both together. Vancomycin is nephrotoxic in AKI. Hold metformin and amlodipine; avoid NSAIDs. Peripheral norepinephrine 4 mg/250 mL (16 µg/mL): 0.05 µg/kg/min ≈ 11 mL/h. Hydrocortisone 50 mg q6h (200 mg/day) is an adjunct in septic shock and severe CAP (SCCM 2024 focused update) and never replaces a vasopressor; the regimen and duration are an ICU decision. Paracetamol 1 g IV, at least 6 h apart if creatinine clearance is ≤ 30 mL/min (check the chemistry first); max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity. Gives general drug guidance only and does not state the patient's diagnosis for the learner."
       },
       "interprets": [
         "ecg",
@@ -9094,8 +9179,8 @@
         "en": "Dr Sun (ICU registrar)"
       },
       "knowledge": {
-        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路；若去甲肾上腺素需求升至≥0.25 µg/kg/min并持续，将评估氢化可的松，并综合考虑重症CAP的糖皮质激素治疗。不评论学习者尚未获得的结果，不替学习者下诊断。",
-        "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider hydrocortisone if norepinephrine needs rise to ≥ 0.25 µg/kg/min and persist, and will weigh corticosteroids for severe CAP. Does not comment on results the learner does not have or state a diagnosis the learner has not made."
+        "zh-CN": "接受SBAR交班后收治；会追问MAP、去甲肾上腺素剂量、乳酸变化、氧需求、尿量、过敏史和治疗意愿。ICU床位约30–45分钟可用；ICU将建立动脉和中心静脉通路，并评估氢化可的松等糖皮质激素辅助治疗（脓毒性休克合并重症CAP；SCCM 2024重点更新）。不评论学员尚未获得的结果，不替学员下诊断。",
+        "en": "Accepts the patient after an SBAR handover; asks about MAP, norepinephrine dose, lactate trend, oxygen requirement, urine output, allergies and goals of care. An ICU bed will be ready in about 30–45 minutes; ICU will place arterial and central lines and will consider adjunctive corticosteroids (hydrocortisone) for septic shock with severe CAP (SCCM 2024 focused update). Does not comment on results the learner does not have or state a diagnosis the learner has not made."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -9107,8 +9192,8 @@
       "en": "Severe right lower lobe community-acquired pneumonia with septic shock"
     },
     "conclusion": {
-      "zh-CN": "72岁女性，右下叶社区获得性肺炎导致脓毒性休克（Sepsis-3：初始液体复苏后仍需去甲肾上腺素维持MAP ≥ 65 mmHg，乳酸到院时4.6 mmol/L、初始补液后3.6 mmol/L）。痰涂片见大量革兰阳性矛头状双球菌、肺炎链球菌尿抗原阳性，提示肺炎链球菌可能性大（血培养待回报）。合并急性肾损伤（KDIGO 2期：肌酐156 µmol/L，为8个月前基线78 µmol/L的2.0倍，伴少尿）、脓毒症相关谵妄（4AT 7分）和低氧血症。CURB-65 4分；符合ATS/IDSA重症CAP（1项主要标准：需升压药；3项次要标准：意识障碍、尿素升高、需积极补液的低血压）。正确处理：吸氧并滴定至94–98%、抗菌药物前留取两套血培养、1小时内头孢曲松+阿奇霉素、平衡晶体液分次推注并复评、外周起始去甲肾上腺素至MAP ≥ 65 mmHg、复查乳酸（4.6→3.6 mmol/L，下降约22%）、停用二甲双胍/降压药/NSAIDs、收入ICU。",
-      "en": "A 72-year-old woman with right lower lobe community-acquired pneumonia causing septic shock (Sepsis-3: norepinephrine needed to keep MAP ≥ 65 mmHg after initial fluid resuscitation; lactate 4.6 mmol/L on arrival and 3.6 mmol/L after initial fluids). Numerous Gram-positive lancet-shaped diplococci on sputum and a positive pneumococcal urinary antigen make Streptococcus pneumoniae likely (blood cultures pending). Complications: acute kidney injury (KDIGO stage 2: creatinine 156 µmol/L, 2.0 × the baseline of 78 µmol/L from 8 months ago, with oliguria), sepsis-associated delirium (4AT 7) and hypoxaemia. CURB-65 4; ATS/IDSA severe CAP (1 major criterion — vasopressor; 3 minor — confusion, uraemia, hypotension needing aggressive fluids). Correct management: oxygen titrated to 94–98%, two blood-culture sets before antibiotics, ceftriaxone + azithromycin within the hour, balanced crystalloid boluses with reassessment, peripheral norepinephrine to MAP ≥ 65 mmHg, repeat lactate (4.6 → 3.6 mmol/L, down about 22%), metformin/antihypertensives/NSAIDs held, ICU admission."
+      "zh-CN": "72岁女性，右下叶社区获得性肺炎导致脓毒性休克（Sepsis-3：初始液体复苏后仍需去甲肾上腺素维持MAP ≥ 65 mmHg，乳酸到院时4.6 mmol/L、初始补液后3.6 mmol/L）。痰涂片见大量革兰阳性矛头状双球菌、肺炎链球菌尿抗原阳性，提示肺炎链球菌可能性大（血培养待回报）。合并急性肾损伤（KDIGO 2期：肌酐156 µmol/L，为8个月前基线78 µmol/L的2.0倍，伴少尿）、脓毒症相关谵妄（4AT 7分）和低氧血症。CURB-65 4分；符合ATS/IDSA重症CAP（1项主要标准：需升压药；3项次要标准：意识障碍、尿素升高、需积极补液的低血压）。正确处理：吸氧并滴定至94–98%、抗菌药物前留取两套血培养、1小时内头孢曲松+阿奇霉素、平衡晶体液分次推注并复评、外周起始去甲肾上腺素至初始目标MAP 65 mmHg、复查乳酸（4.6→3.6 mmol/L，下降约22%）、停用二甲双胍/降压药/NSAIDs、收入ICU。",
+      "en": "A 72-year-old woman with right lower lobe community-acquired pneumonia causing septic shock (Sepsis-3: norepinephrine needed to keep MAP ≥ 65 mmHg after initial fluid resuscitation; lactate 4.6 mmol/L on arrival and 3.6 mmol/L after initial fluids). Numerous Gram-positive lancet-shaped diplococci on sputum and a positive pneumococcal urinary antigen make Streptococcus pneumoniae likely (blood cultures pending). Complications: acute kidney injury (KDIGO stage 2: creatinine 156 µmol/L, 2.0 × the baseline of 78 µmol/L from 8 months ago, with oliguria), sepsis-associated delirium (4AT 7) and hypoxaemia. CURB-65 4; ATS/IDSA severe CAP (1 major criterion — vasopressor; 3 minor — confusion, uraemia, hypotension needing aggressive fluids). Correct management: oxygen titrated to 94–98%, two blood-culture sets before antibiotics, ceftriaxone + azithromycin within the hour, balanced crystalloid boluses with reassessment, peripheral norepinephrine to an initial MAP target of 65 mmHg, repeat lactate (4.6 → 3.6 mmol/L, down about 22%), metformin/antihypertensives/NSAIDs held, ICU admission."
     },
     "keyReasoning": [
       {
@@ -9124,8 +9209,8 @@
         "en": "Hidden acidosis: a venous pH of 7.35 looks almost normal, but HCO₃⁻ 15.8 mmol/L, BE −8.7 and an anion gap of 19 (about 21 corrected for albumin) show a high-anion-gap metabolic acidosis. Winter's formula predicts an arterial pCO₂ of about 32 ± 2 mmHg, yet the venous pCO₂ is only 29 mmHg (arterial lower still) — a concurrent respiratory alkalosis. ΔAG/ΔHCO₃⁻ ≈ 9/8 ≈ 1.1 suggests a pure high-AG acidosis (lactate plus AKI)."
       },
       {
-        "zh-CN": "液体与升压：每次推注后血压只短暂上升又回落，提示血管麻痹而非单纯容量不足。约25–33 mL/kg后MAP仍<65 mmHg，应开始去甲肾上腺素（可经外周起始），而不是在低氧的肺炎患者中无限补液。",
-        "en": "Fluids and pressors: each bolus raised the pressure only transiently — vasoplegia rather than pure hypovolaemia. With MAP still < 65 mmHg after about 25–33 mL/kg, start norepinephrine (peripherally if needed) rather than pouring more fluid into a hypoxaemic pneumonia patient."
+        "zh-CN": "液体与升压：每次推注后血压只短暂上升又回落，提示血管麻痹而非单纯容量不足。约25–33 mL/kg后MAP仍<65 mmHg，应开始去甲肾上腺素（可经外周起始），而不是在低氧的肺炎患者中无限补液；滴定至初始MAP 65 mmHg（SSC 2026对≥65岁成人建议60–65 mmHg，避免过高）。",
+        "en": "Fluids and pressors: each bolus raised the pressure only transiently — vasoplegia rather than pure hypovolaemia. With MAP still < 65 mmHg after about 25–33 mL/kg, start norepinephrine (peripherally if needed) rather than pouring more fluid into a hypoxaemic pneumonia patient; titrate to an initial MAP of 65 mmHg (SSC 2026 suggests 60–65 mmHg for adults aged 65 or over — avoid overshooting)."
       },
       {
         "zh-CN": "严重程度：CURB-65按分诊数据为4分（RR 28不计分）；需要升压药本身即为ATS/IDSA主要标准——收入ICU。",
@@ -9168,45 +9253,47 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "早期集束化处理（SSC 2018“1小时集束化”，与SSC 2021推荐一致）：测乳酸，升高者复查；不明显延误的前提下先留血培养；疑似休克1小时内给予广谱抗菌药物；低灌注（低血压或乳酸≥4 mmol/L）时3小时内给予至少30 mL/kg晶体液（首选平衡液；属弱推荐，需反复复评并个体化）；补液中/后MAP<65 mmHg开始升压药。",
-        "en": "Early bundle (the SSC 2018 'Hour-1 bundle', consistent with SSC 2021): measure lactate and repeat it if raised; take blood cultures first if this causes no substantial delay; broad-spectrum antimicrobials within 1 hour for possible shock; at least 30 mL/kg crystalloid within 3 hours for hypoperfusion (hypotension or lactate ≥ 4 mmol/L) — balanced preferred, a weak recommendation, so reassess and individualise; vasopressors if MAP < 65 mmHg during or after fluids."
+        "zh-CN": "早期集束化处理（SSC 2018“1小时集束化”；SSC 2021及其2026年更新保留了1小时内抗菌和30 mL/kg补液的要求）：测乳酸，升高者复查；不明显延误的前提下先留血培养；疑似休克1小时内给予广谱抗菌药物；低灌注（低血压或乳酸≥4 mmol/L）时3小时内给予至少30 mL/kg晶体液（属弱推荐，需反复复评并个体化；首选平衡晶体液而非生理盐水）；补液中/后MAP<65 mmHg开始升压药，初始目标MAP 65 mmHg（SSC 2026对≥65岁成人建议60–65 mmHg）。",
+        "en": "Early bundle (the SSC 2018 'Hour-1 bundle'; SSC 2021 and its 2026 update keep its 1-hour antibiotic and 30 mL/kg elements): measure lactate and repeat it if raised; take blood cultures first if this causes no substantial delay; broad-spectrum antimicrobials within 1 hour for possible shock; at least 30 mL/kg crystalloid within 3 hours for hypoperfusion (hypotension or lactate ≥ 4 mmol/L) — a weak (conditional) recommendation, so reassess and individualise, with balanced crystalloid preferred to saline; vasopressors if MAP < 65 mmHg during or after fluids, to an initial MAP target of 65 mmHg (SSC 2026 suggests 60–65 mmHg for adults aged 65 or over)."
       },
       {
-        "zh-CN": "去甲肾上腺素是一线升压药，可经近端粗外周静脉起始；血管加压素为二线；不推荐多巴胺作为一线。激素不能替代升压药：SSC 2021建议持续需要升压药时加用氢化可的松（200 mg/d）；SCCM 2024重点更新推荐重症细菌性CAP使用糖皮质激素（CAPE COD试验排除了脓毒性休克患者），具体方案由ICU决定。",
-        "en": "Norepinephrine is first line and can start through a proximal large-bore peripheral cannula; vasopressin is second line; dopamine is not recommended first line. Steroids never replace a vasopressor: SSC 2021 suggests hydrocortisone (200 mg/day) for an ongoing vasopressor requirement, and the SCCM 2024 focused update recommends corticosteroids in severe bacterial CAP (the CAPE COD trial excluded patients in septic shock); the regimen is decided in ICU."
+        "zh-CN": "去甲肾上腺素是一线升压药，可经近端粗外周静脉起始（SSC 2021）；血管加压素为二线；不推荐多巴胺作为一线。激素不能替代升压药，而是辅助治疗：SSC 2021建议持续需要升压药时加用氢化可的松（200 mg/d）；SCCM 2024重点更新建议脓毒性休克使用糖皮质激素（弱推荐），并推荐用于重症细菌性CAP（强推荐；CAPE COD试验排除了脓毒性休克患者）；ATS 2025 CAP指南也建议重症CAP使用全身糖皮质激素。具体方案由ICU决定。",
+        "en": "Norepinephrine is first line and can start through a proximal large-bore peripheral cannula (SSC 2021); vasopressin is second line; dopamine is not recommended first line. Steroids never replace a vasopressor — they are an adjunct: SSC 2021 suggests hydrocortisone (200 mg/day) for an ongoing vasopressor requirement; the SCCM 2024 focused update suggests corticosteroids in septic shock (conditional) and recommends them in severe bacterial CAP (strong; the CAPE COD trial excluded patients in septic shock); and the ATS 2025 CAP guideline suggests systemic corticosteroids in severe CAP. The regimen is decided in ICU."
       },
       {
-        "zh-CN": "氧疗：无高碳酸血症风险者目标SpO₂ 94–98%；危重初始可用储氧面罩，但稳定后应下调，避免高氧。",
-        "en": "Oxygen: target SpO₂ 94–98% when there is no hypercapnia risk; a reservoir mask is acceptable initially in critical illness, but step down once stable to avoid hyperoxaemia."
+        "zh-CN": "氧疗（BTS 2017）：无高碳酸血症风险者目标SpO₂ 94–98%；危重初始可用储氧面罩，但稳定后应下调，避免高氧。",
+        "en": "Oxygen (BTS 2017): target SpO₂ 94–98% when there is no hypercapnia risk; a reservoir mask is acceptable initially in critical illness, but step down once stable to avoid hyperoxaemia."
       },
       {
-        "zh-CN": "用药安全：休克和AKI时暂停二甲双胍、降压药和NSAIDs（她在家吃了布洛芬）；用大环内酯/喹诺酮前看QTc，避免两者合用；按肾功能选药和调整剂量，但首剂要足量。",
-        "en": "Medication safety: in shock with AKI, hold metformin, antihypertensives and NSAIDs (she had been taking ibuprofen at home); check the QTc before a macrolide or fluoroquinolone and do not combine them; choose and adjust drugs for renal function, but give full first doses."
+        "zh-CN": "用药安全（KDIGO 2012：AKI时尽可能停用肾毒性药物）：休克和AKI时暂停二甲双胍、降压药和NSAIDs（她在家吃了布洛芬）；用大环内酯/喹诺酮前看QTc，避免两者合用；按肾功能选药和调整剂量，但首剂要足量。",
+        "en": "Medication safety (KDIGO 2012: stop nephrotoxic drugs in AKI where possible): in shock with AKI, hold metformin, antihypertensives and NSAIDs (she had been taking ibuprofen at home); check the QTc before a macrolide or fluoroquinolone and do not combine them; choose and adjust drugs for renal function, but give full first doses."
       },
       {
-        "zh-CN": "评分工具的边界：CURB-65要用就诊时数据，逐项核对阈值（RR≥30、尿素>7 mmol/L、SBP<90或DBP≤60、年龄≥65）；qSOFA和NEWS2用于警示，不能单独用于诊断或排除脓毒症。",
-        "en": "Know the limits of scores: compute CURB-65 from presentation data and check each threshold (RR ≥ 30, urea > 7 mmol/L, SBP < 90 or DBP ≤ 60, age ≥ 65); qSOFA and NEWS2 raise alarms but cannot diagnose or exclude sepsis on their own."
+        "zh-CN": "评分工具的边界：CURB-65要用就诊时数据，逐项核对阈值（RR≥30、尿素>7 mmol/L、SBP<90或DBP≤60、年龄≥65）；qSOFA和NEWS2用于警示，不能单独用于诊断或排除脓毒症；SSC 2021及其2026年更新均不建议单独用qSOFA筛查。",
+        "en": "Know the limits of scores: compute CURB-65 from presentation data and check each threshold (RR ≥ 30, urea > 7 mmol/L, SBP < 90 or DBP ≤ 60, age ≥ 65); qSOFA and NEWS2 raise alarms but cannot diagnose or exclude sepsis on their own, and SSC 2021 and its 2026 update recommend against qSOFA as a single screening tool."
       },
       {
-        "zh-CN": "沟通：谵妄患者的病史依赖家属；尽早与家属沟通病情严重性和治疗目标；用SBAR向ICU交班，口头医嘱闭环确认。",
-        "en": "Communication: a delirious patient's history depends on family; discuss severity and goals of care early; hand over to ICU with SBAR and close the loop on verbal orders."
+        "zh-CN": "沟通：谵妄患者的病史依赖家属；尽早与家属沟通病情严重性和治疗目标（SSC 2021：与患者和家属讨论治疗目标和预后，并建议在72小时内尽早讨论）；用SBAR向ICU交班，口头医嘱闭环确认。",
+        "en": "Communication: a delirious patient's history depends on family; discuss severity and goals of care early (SSC 2021 recommends discussing goals of care and prognosis with patients and families, and suggests doing so within 72 hours); hand over to ICU with SBAR and close the loop on verbal orders."
       }
     ],
     "references": [
-      "Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Crit Care Med 2021; Intensive Care Med 2021.",
-      "Singer M, Deutschman CS, Seymour CW, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA 2016.",
-      "Levy MM, Evans LE, Rhodes A. The Surviving Sepsis Campaign Bundle: 2018 Update. Crit Care Med 2018.",
-      "Metlay JP, Waterer GW, Long AC, et al. Diagnosis and Treatment of Adults with Community-acquired Pneumonia. An Official Clinical Practice Guideline of the American Thoracic Society and Infectious Diseases Society of America. Am J Respir Crit Care Med 2019.",
-      "Martin-Loeches I, Torres A, Nagavci B, et al. ERS/ESICM/ESCMID/ALAT guidelines for the management of severe community-acquired pneumonia. Intensive Care Med 2023.",
-      "中华医学会呼吸病学分会. 中国成人社区获得性肺炎诊断和治疗指南（2016年版）. 中华结核和呼吸杂志 2016.",
-      "中国医师协会急诊医师分会, 中国研究型医院学会休克与脓毒症专业委员会. 中国脓毒症/脓毒性休克急诊治疗指南（2018）.",
-      "Lim WS, van der Eerden MM, Laing R, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax 2003.",
-      "O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax 2017.",
-      "Kidney Disease: Improving Global Outcomes (KDIGO) Acute Kidney Injury Work Group. KDIGO Clinical Practice Guideline for Acute Kidney Injury. Kidney Int Suppl 2012.",
-      "Dequin PF, Meziani F, Quenot JP, et al. Hydrocortisone in Severe Community-Acquired Pneumonia. N Engl J Med 2023.",
-      "Chaudhuri D, Nei AM, Rochwerg B, et al. 2024 Focused Update: Guidelines on Use of Corticosteroids in Sepsis, Acute Respiratory Distress Syndrome, and Community-Acquired Pneumonia. Crit Care Med 2024.",
-      "Royal College of Physicians. National Early Warning Score (NEWS) 2: Standardising the assessment of acute-illness severity in the NHS. London: RCP, 2017.",
-      "Bellelli G, Morandi A, Davis DH, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing 2014."
+      "Singer M, Deutschman CS, Seymour CW, et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA. 2016;315(8):801-810. doi:10.1001/jama.2016.0287",
+      "Evans L, Rhodes A, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2021. Crit Care Med. 2021;49(11):e1063-e1143. doi:10.1097/CCM.0000000000005337. Also published in: Intensive Care Med. 2021;47(11):1181-1247. doi:10.1007/s00134-021-06506-y",
+      "Prescott HC, Antonelli M, Alhazzani W, et al. Surviving Sepsis Campaign: international guidelines for management of sepsis and septic shock 2026. Crit Care Med. 2026. doi:10.1097/CCM.0000000000007075. Also published in: Intensive Care Med. 2026. doi:10.1007/s00134-026-08361-1",
+      "Levy MM, Evans LE, Rhodes A. The Surviving Sepsis Campaign bundle: 2018 update. Crit Care Med. 2018;46(6):997-1000. doi:10.1097/CCM.0000000000003119",
+      "Chaudhuri D, Nei AM, Rochwerg B, et al. 2024 focused update: guidelines on use of corticosteroids in sepsis, acute respiratory distress syndrome, and community-acquired pneumonia. Crit Care Med. 2024;52(5):e219-e233. doi:10.1097/CCM.0000000000006172",
+      "Metlay JP, Waterer GW, Long AC, et al. Diagnosis and treatment of adults with community-acquired pneumonia. An official clinical practice guideline of the American Thoracic Society and Infectious Diseases Society of America. Am J Respir Crit Care Med. 2019;200(7):e45-e67. doi:10.1164/rccm.201908-1581ST",
+      "Jones BE, Ramirez JA, Oren E, et al. Diagnosis and management of community-acquired pneumonia: an official American Thoracic Society clinical practice guideline. Am J Respir Crit Care Med. 2025;212(1):24-44. doi:10.1164/rccm.202507-1692ST",
+      "Martin-Loeches I, Torres A, Nagavci B, et al. ERS/ESICM/ESCMID/ALAT guidelines for the management of severe community-acquired pneumonia. Intensive Care Med. 2023;49:615-632. doi:10.1007/s00134-023-07033-8",
+      "中华医学会呼吸病学分会. 中国成人社区获得性肺炎诊断和治疗指南（2016年版）. 中华结核和呼吸杂志. 2016;39(4):253-279.",
+      "中国医师协会急诊医师分会, 中国研究型医院学会休克与脓毒症专业委员会. 中国脓毒症/脓毒性休克急诊治疗指南（2018）. 临床急诊杂志. 2018;19(9):567-588. doi:10.13201/j.issn.1009-5918.2018.09.001",
+      "O'Driscoll BR, Howard LS, Earis J, Mak V. BTS guideline for oxygen use in adults in healthcare and emergency settings. Thorax. 2017;72(Suppl 1):ii1-ii90. doi:10.1136/thoraxjnl-2016-209729",
+      "Kidney Disease: Improving Global Outcomes (KDIGO) Acute Kidney Injury Work Group. KDIGO clinical practice guideline for acute kidney injury. Kidney Int Suppl. 2012;2(1):1-138. doi:10.1038/kisup.2012.1",
+      "Dequin PF, Meziani F, Quenot JP, et al. Hydrocortisone in severe community-acquired pneumonia. N Engl J Med. 2023;388(21):1931-1941. doi:10.1056/NEJMoa2215145",
+      "Lim WS, van der Eerden MM, Laing R, et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003;58(5):377-382. doi:10.1136/thorax.58.5.377",
+      "Royal College of Physicians. National Early Warning Score (NEWS) 2: standardising the assessment of acute-illness severity in the NHS. London: RCP; 2017.",
+      "Bellelli G, Morandi A, Davis DH, et al. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing. 2014;43(4):496-502. doi:10.1093/ageing/afu021"
     ],
     "notice": {
       "zh-CN": "本评分为教学脚本的形成性评价指标，并非经过验证的临床能力评分。模拟时间、方块场景和声音仅为游戏呈现。",
@@ -9668,7 +9755,7 @@
         ]
       },
       {
-        "text": "她抽烟吗？",
+        "text": "你妈妈平时抽烟吗？",
         "locale": "zh-CN",
         "expect": [
           "hx-smoking"
@@ -10190,7 +10277,9 @@
       "vbg_hh_late": "reassess-late gas: pH 7.29, pCO2 27 mmHg (3.6 kPa) → HCO3 = 0.0307 × 27 × 10^(7.29 − 6.1) = 12.8; BE ≈ 0.93 × (12.8 − 24.4 + 14.8 × (−0.11)) = −12.3; Winter's expected arterial pCO2 1.5 × 12.8 + 8 = 27 ± 2",
       "anion_gap_late": "134 − (100 + 13) = 21 mmol/L; albumin-corrected 21 + 0.25 × (40 − 29) ≈ 24; chemistry HCO3 13 vs gas 12.8",
       "kdigo_late": "174/78 = 2.2 → stage 2; urea 12.9 mmol/L × 2.8 = BUN 36 mg/dL",
-      "lactate_late": "antibiotics after 60 min → reassess-late phase: lactate 4.6 → 5.8 mmol/L (+26 %, not clearing)"
+      "lactate_late": "antibiotics after 60 min → reassess-late phase: lactate 4.6 → 5.8 mmol/L (+26 %, not clearing)",
+      "map_target_ssc2026": "SSC 2026: initial MAP target 65 mmHg (strong); adults ≥ 65 y: 60–65 mmHg (conditional) → she is 72. Reference path: MAP ≈ 61–65 at reassessment before norepinephrine, ≈ 68–74 on one step (+14/+8 mmHg); start criterion stays MAP < 65 after fluids (Sepsis-3 / Hour-1 bundle)",
+      "rubric_weights": "deterministic 21 = r-hx-key 2 + r-hx-safety 1 + r-exam 1 + r-dx 1 + r-reasoning 1 + r-o2 1 + r-lactate 1 + r-cultures 1 + r-abx-1h 3 + r-abx-regimen 1 + r-fluids 1 + r-norepi 2 + r-safety 3 + r-med-safety 1 + r-icu 1; judged r-comm-family 1 + r-comm-team 1"
     }
   }
 }

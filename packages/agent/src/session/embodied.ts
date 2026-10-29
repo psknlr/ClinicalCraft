@@ -65,6 +65,7 @@ import { runDelegation, type DelegationResult } from "./delegation.js";
 import { heldBy, releaseHeld } from "./device-ops.js";
 import type { ClinicalCaller } from "./embodied-types.js";
 import { rt, type RuntimeKey } from "./i18n.js";
+import { nonVerbalReason } from "./nonverbal.js";
 import { anySignal } from "./signals.js";
 import { SessionTrace } from "./trace.js";
 
@@ -210,8 +211,14 @@ export class EmbodiedSession {
       caseDef: c,
       state: () => host.state(),
       bedside: () => vitalsAt(c, host.state()),
-      // the posture follows clinical state (G12: an intervention's authored posture, else the case's — core `patientPosture`)
-      cues: (slotId) => (slotId === this.slotId ? { speaking: false, ...patientCues(c, host.state()) } : {}),
+      // the posture follows clinical state (G12: an intervention's authored posture, else the case's — core `patientPosture`);
+      // a patient who cannot speak (`patient.nonVerbalWhen`) shows it, with the authored reason
+      cues: (slotId) => {
+        if (slotId !== this.slotId) return {};
+        const { nonVerbal: _nonVerbal, ...cues } = patientCues(c, host.state());
+        const reason = nonVerbalReason(c, host.state(), host.locale());
+        return { speaking: false, ...cues, ...(reason !== null ? { cannotSpeak: reason } : {}) };
+      },
       clock: () => host.state().clock,
     };
     this.port = {

@@ -153,6 +153,8 @@ export type RejectionCode =
   | "max-doses"
   | "already-decided"
   | "objectives-incomplete"
+  /** `ask`: the patient cannot speak now (`patient.nonVerbalWhen`) and the case has no companion to answer. */
+  | "cannot-answer"
   | "invalid";
 
 export interface ReduceResult {

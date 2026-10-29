@@ -239,7 +239,7 @@ describe("mcp --attach (AttachedMcpServer)", () => {
     const c = new Client(bridge);
     const world = await c.call("navigate_to", { target: "patient" });
     expect(world.structuredContent).toMatchObject({ error: "not_embodied" });
-    expect(world.content[0]!.text).toMatch(/needs an embodied encounter/);
+    expect(world.content[0]!.text).toMatch(/needs an in-world \(embodied\) encounter/);
     const other = await c.call("order_test", { investigation_id: "ecg-12lead" });
     expect(other.structuredContent).toMatchObject({ error: "not_available" });
     expect(bridge.calls).toEqual([]);

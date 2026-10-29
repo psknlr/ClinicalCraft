@@ -6,7 +6,7 @@
  * commit, the engine, PostToolUse hooks. Only learner tools may run on this path (never an NPC's or a
  * front-end's), and simulation-owned flags can never be set directly.
  */
-import { ClinicalActionSchema, t, type ClinicalAction, type ReduceResult } from "@clinicalcraft/core";
+import { ClinicalActionSchema, historyVoice, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { agentKind } from "../agents/prompts.js";
 import { executeCommand, type CommandHost } from "../commands.js";
@@ -20,6 +20,7 @@ import { actionFromToolInput, actionToolArgs } from "./action-input.js";
 import type { AgentTurnMode } from "./agent-turns.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
+import { spokenAnswer } from "./nonverbal.js";
 import { sessionSnapshot } from "./resume.js";
 import { parseLearnerInput, resolveAgentAlias } from "./router.js";
 import type { ToolPathExtra } from "./tool-path.js";
@@ -214,6 +215,9 @@ export class LearnerPath {
       }
     }
     let result!: ReduceResult;
+    // Who answers a button question is decided on the state it is asked in (the engine judges it there too).
+    const voice = action.type === "ask" ? historyVoice(k.caseDef, k.state, action.itemId) : null;
+    const asked = k.state;
     const commit = () => (result = k.dispatch(action, id));
     if (intent && embodied && tool) {
       await embodied.gate().traced!(PRIMARY_ACTOR, tool.name, args ?? {}, async () => (commit(), { ok: !result.rejected, output: "" }));
@@ -223,7 +227,7 @@ export class LearnerPath {
     if (rejection) {
       k.emit(id, { type: "warning", message: rejection });
     } else if (action.type === "ask") {
-      this.speakAuthoredAnswer(id, action.itemId);
+      this.speakAuthoredAnswer(id, action.itemId, voice === "companion" ? "companion" : "patient", asked);
     }
     if (tool && args) {
       // Same hook sequence as an agent's tool call: PreToolUse → gate → run → PostToolUse.
@@ -241,17 +245,19 @@ export class LearnerPath {
     return result;
   }
 
-  /** Button-style ask: the patient (or companion) speaks the authored answer. */
-  private speakAuthoredAnswer(id: string, itemId: string): void {
+  /**
+   * Button-style ask: the patient — or the companion (`historyVoice`: one who answers history, or any companion
+   * while the patient cannot speak, relaying the patient's own words) — speaks the authored answer.
+   */
+  private speakAuthoredAnswer(id: string, itemId: string, agent: "patient" | "companion", askedIn: SessionState): void {
     const k = this.k;
     const c = k.caseDef;
     const item = c.history.find((h) => h.id === itemId);
     if (!item) return;
     const companion = c.patient.persona.companion;
-    const agent = companion?.answersHistory && item.speaker !== "patient" ? "companion" : "patient";
     const speaker = agent === "companion" && companion ? t(companion.name, k.locale) : t(c.patient.displayName, k.locale);
     const question = t(item.question, k.locale);
-    const text = t(item.answer, k.locale);
+    const text = spokenAnswer(c, askedIn, itemId, k.locale, agent);
     k.patientMemory[agent].approached = true;
     k.conversations.append(agent, [
       { role: "user", content: [{ type: "text", text: question }] },

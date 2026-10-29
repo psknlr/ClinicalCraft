@@ -118,6 +118,11 @@ describe("cues: bystander facts only, while perceived", () => {
     expect(w.runtime.inspect(A, w.patientId)!.cues).toEqual({ posture: "sitting", distressed: "visibly distressed", accessory: "oxygen mask", speaking: "speaking" });
     // the description tells the posture now (G12: truthful bystander cues), not the encounter's first one
     expect(w.runtime.inspect(A, w.patientId)!.description).toBe("Liu Zhenhua (pseudonym), 58 years male, sitting");
+    // a patient who cannot speak (`patient.nonVerbalWhen`): visible to a bystander, with the authored reason
+    w.harness.cues = { posture: "lying", cannotSpeak: "intubated and sedated" };
+    expect(w.runtime.inspect(A, w.patientId)!.cues).toEqual({ posture: "lying", speech: "cannot speak: intubated and sedated" });
+    w.harness.cues = { posture: "lying", cannotSpeak: "" };
+    expect(w.runtime.inspect(A, w.patientId)!.cues).toEqual({ posture: "lying", speech: "cannot speak" });
   });
 
   it("the monitor screen only when the monitor is visible, within 6 m, the patient's and attached — what check_vitals shows", async () => {

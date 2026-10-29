@@ -409,6 +409,68 @@ describe("checkSpatial: every row, ok and each failure, with a hint that fixes i
  * reached by following its own hints). Never a loop (the same refusal at the
  * same spot twice), never stuck.
  */
+/** STEMI with a record review added: the outside hospital's echo report, authored with a leftover device requirement. */
+function withRecordReview(requires: string[]): CaseDefinition {
+  const c = structuredClone(loadCase("stemi-inferior-rv"));
+  c.investigations.push({
+    id: "outside-echo",
+    name: { en: "Outside hospital echo report", "zh-CN": "外院超声心动图报告" },
+    category: "record",
+    aliases: [],
+    requires,
+    performedAt: "records",
+    turnaroundMinutes: 0,
+    risk: "none",
+    value: "useful",
+    alternativeTo: [],
+    results: { [c.phases[0]!.id]: { available: true, text: { en: "Normal LV function.", "zh-CN": "左室功能正常。" }, values: [], figures: [], critical: false } },
+  });
+  return c;
+}
+
+describe('record review (performedAt: "records", EMBODIED §6): a records terminal or the notes at the bedside — never a transport, a sample or a device', () => {
+  const NOTES = { kind: "at-patient", range: 1.5, why: "notes" } as const;
+
+  it("the requirement, whatever the item's requires say", () => {
+    const p = new DefaultSpatialPolicy();
+    for (const requires of [["records"], [], ["echocardiography"], ["mri", "records"]]) {
+      const binding = { caseDef: withRecordReview(requires), slotId: "resus-1", locale: "en" };
+      expect(p.requirementFor(order("outside-echo"), binding), JSON.stringify(requires)).toEqual({ kind: "any-of", options: [CHART, NOTES] });
+      expect(p.requirementFor(read("outside-echo"), binding)).toEqual({ kind: "any-of", options: [CHART, NOTES] });
+    }
+  });
+
+  it("retrieved at the ED records terminal or at the patient; from elsewhere one walk fixes it (no cart, no transport)", async () => {
+    const w = makeWorld("stemi-inferior-rv", { caseDef: withRecordReview(["mri"]) });
+    const intent = order("outside-echo");
+    const far = failure(w.runtime.checkSpatial(A, intent));
+    expect(["not-at-patient", "no-provider-in-reach"]).toContain(far.reason);
+    expect(far.hint?.then).toBeUndefined();
+    expect(await follow(w, intent, far)).toMatchObject({ ok: true });
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "ed-records" })).status).toBe("completed");
+    expect(w.runtime.checkSpatial(A, intent)).toMatchObject({ ok: true, satisfiedBy: ["eq:ed-records"] });
+    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect(w.runtime.checkSpatial(A, intent)).toMatchObject({ ok: true, satisfiedBy: [w.patientId] });
+    expect(w.runtime.checkSpatial(A, read("outside-echo"))).toMatchObject({ ok: true });
+  });
+
+  it("a records terminal's order/read operations retrieve it; no device's use does", async () => {
+    const w = makeWorld("stemi-inferior-rv", { caseDef: withRecordReview(["mri"]) });
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "ed-records" })).status).toBe("completed");
+    const ordered = await w.act({ actorId: A, operation: "order", targetId: "eq:ed-records", parameters: { investigation: "outside-echo" } });
+    expect(ordered.status, ordered.message).toBe("completed");
+    expect(w.harness.state().orders.map((o) => o.investigationId)).toContain("outside-echo");
+    const shown = await w.act({ actorId: A, operation: "read", targetId: "eq:ed-records", parameters: { investigation: "outside-echo" } });
+    expect(shown.status, shown.message).toBe("completed");
+  });
+
+  it("the refusal at a distance says where (localised)", () => {
+    const w = makeWorld("stemi-inferior-rv", { caseDef: withRecordReview(["records"]), locale: "zh-CN" });
+    const f = failure(w.runtime.checkSpatial(A, order("outside-echo")));
+    expect(f.message).toMatch(/病历|电子病历终端/);
+  });
+});
+
 describe("property: hints lead to a passing check for every item of every built-in case", () => {
   for (const caseId of caseIds()) {
     it(caseId, async () => {
@@ -422,13 +484,16 @@ describe("property: hints lead to a passing check for every item of every built-
         VITALS,
       ];
       const caps = facilityCapabilities(w.facility, catalogs());
+      // Where the case itself takes the patient (a phase's location, a transfer's destination): an item that needs a
+      // fixed device there — an ICU ventilator, a fluoroscopy suite — is done once the patient has been moved.
+      const places = [...c.phases.flatMap((p) => (p.location ? [p.location] : [])), ...c.interventions.flatMap((i) => (i.destination ? [i.destination] : []))];
       const stuck: string[] = [];
-      const satisfy = async (intent: ClinicalIntent, depth = 0): Promise<SpatialCheck> => {
+      const satisfy = async (world: TestWorld, intent: ClinicalIntent, depth = 0): Promise<SpatialCheck> => {
         const item = intent.investigationId ?? intent.interventionId ?? intent.findingId ?? intent.kind;
-        let check = w.runtime.checkSpatial(A, intent);
+        let check = world.runtime.checkSpatial(A, intent);
         const seen = new Set<string>();
         for (let step = 0; step < 8 && !check.ok; step++) {
-          const here = w.runtime.actor(A)!.pose;
+          const here = world.runtime.actor(A)!.pose;
           const key = `${Math.round(here.x * 4)},${Math.round(here.z * 4)},${here.level}|${check.reason}|${JSON.stringify(check.hint?.goal ?? null)}`;
           if (seen.has(key)) throw new Error(`${caseId} ${intent.kind} ${item}: hint loop at ${key}`);
           seen.add(key);
@@ -436,23 +501,35 @@ describe("property: hints lead to a passing check for every item of every built-
             const pre = check.details?.prerequisite as { tool: string; intervention_id: string } | undefined;
             expect(pre, `${caseId} ${item}: a prerequisite without its act`).toBeDefined();
             expect(depth, `${caseId} ${item}: nested prerequisites`).toBeLessThan(2);
-            const done = await satisfy(intervene(pre!.intervention_id), depth + 1);
+            const done = await satisfy(world, intervene(pre!.intervention_id), depth + 1);
             expect(done.ok, `${caseId} ${item}: its prerequisite ${pre!.intervention_id} cannot be done`).toBe(true);
-            w.harness.dispatch({ type: "intervene", interventionId: pre!.intervention_id, by: "agent" });
-            check = w.runtime.checkSpatial(A, intent);
+            world.harness.dispatch({ type: "intervene", interventionId: pre!.intervention_id, by: "agent" });
+            check = world.runtime.checkSpatial(A, intent);
             continue;
           }
           if (!check.hint) break;
-          check = await follow(w, intent, check);
+          check = await follow(world, intent, check);
         }
         return check;
       };
+      const attempt = async (world: TestWorld, intent: ClinicalIntent): Promise<SpatialCheck> => {
+        world.runtime.updatePose(A, spawnOf(world));
+        // a read needs its order first (the engine refuses otherwise): order it through the same rules
+        if (intent.kind === "read" && !world.harness.state().orders.some((o) => o.investigationId === intent.investigationId)) world.harness.dispatch({ type: "order", investigationId: intent.investigationId!, by: "agent" });
+        return satisfy(world, intent);
+      };
       for (const intent of intents) {
         const item = intent.investigationId ?? intent.interventionId ?? intent.findingId ?? intent.kind;
-        w.runtime.updatePose(A, spawnOf(w));
-        // a read needs its order first (the engine refuses otherwise): order it through the same rules
-        if (intent.kind === "read" && !w.harness.state().orders.some((o) => o.investigationId === intent.investigationId)) w.harness.dispatch({ type: "order", investigationId: intent.investigationId!, by: "agent" });
-        const check = await satisfy(intent);
+        let check = await attempt(w, intent);
+        for (const place of check.ok || check.reason === "no-provider-in-facility" ? [] : places) {
+          const moved = makeWorld(caseId);
+          if (!moved.runtime.relocatePatient(place).ok) continue;
+          const there = await attempt(moved, intent);
+          if (there.ok) {
+            check = there;
+            break;
+          }
+        }
         if (check.ok) continue;
         // only nothing in the facility may stop an item: an absent capability, never a missing hint or a loop
         expect(check.reason, `${caseId} ${intent.kind} ${item}: ${check.message}`).toBe("no-provider-in-facility");

@@ -50,10 +50,13 @@ test("map, inventory, crafting, help, atlas, autopilot", async ({ page }) => {
   await shot(page, "atlas");
   await page.keyboard.press("Escape");
 
-  // source & scope + original figure placeholder
+  // source & scope + original figure placeholder; a published case's citation and DOI may name the diagnosis, so
+  // mid-case the panel says when they are shown (docs/GLOSSARY.md §4) — smzl.spec.ts sees them after the case
   await page.locator("#journal-btn").click();
   await page.locator("#source-btn").click();
-  await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("DOI");
+  const sources = page.locator('#panel .window[data-panel="source"]');
+  await expect(sources).toContainText("病例完成后在复盘中显示");
+  await expect(sources).not.toContainText("DOI");
   await shot(page, "source");
   await page.evaluate(() => {
     const qa = (window as any).__QA__;

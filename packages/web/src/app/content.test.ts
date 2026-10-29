@@ -197,7 +197,8 @@ describe("server content (C5)", () => {
         const offset = Number(page[1]);
         return { total: entries.length, offset, limit: 200, items: entries.slice(offset, offset + 200), issues: [] };
       }
-      if (url === "/api/content/cases/review-demo-case") return serverCase;
+      // the web asks for the source too (`?spoilers=1`): it shows it only once the case is complete
+      if (url === "/api/content/cases/review-demo-case?spoilers=1") return serverCase;
       return null;
     };
     const added = await loadServerContent(index, get);
@@ -211,7 +212,7 @@ describe("server content (C5)", () => {
     expect(index.facilitiesFor(card).map((f) => f.id)).toContain("general-hospital");
     const loaded = await index.loadCase("review-demo-case");
     expect(loaded.ok && loaded.def.title).toEqual({ "zh-CN": "服务器病例", en: "Server case" });
-    expect(asked.filter((u) => u === "/api/content/cases/review-demo-case")).toHaveLength(1);
+    expect(asked.filter((u) => u === "/api/content/cases/review-demo-case?spoilers=1")).toHaveLength(1);
     const missing = await index.loadCase("bulk-3");
     expect(missing).toEqual({ ok: false, reason: "failed", issues: ['the server did not send case "bulk-3"'] });
   });

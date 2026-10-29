@@ -7,7 +7,9 @@
  * their agent (default: the current interlocutor).
  */
 import {
+  assess,
   currentObjective,
+  historyVoice,
   orderStatus,
   presentedOptions,
   progress,
@@ -23,12 +25,13 @@ import type { SlashCommand } from "./agents/types.js";
 import type { PlanItem, RuntimeConfigPatch } from "./protocol.js";
 import { PROVIDER_TEMPLATES, localizedName } from "./providers/catalog.js";
 import type { SessionSnapshot } from "./session/types.js";
-import { agentLabel, isZh, joinList, rt, type RuntimeKey } from "./session/i18n.js";
+import { agentLabel, isZh, joinList, reviewStatusLine, rt, type RuntimeKey } from "./session/i18n.js";
 import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
 import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
 import { executeEmbodiedCommand } from "./commands-world.js";
+import { criticalMisses } from "./critical.js";
 import type { ToolOutput } from "./tools/types.js";
 
 /** What commands need from the session. */
@@ -293,6 +296,11 @@ async function askCommand(host: CommandHost, args: string): Promise<void> {
   if (!args) {
     const listed = listOptionsText({ caseDef: c, locale: L, state: () => host.state() }, "history");
     const items = listed.data as { id: string; question: string; asked: boolean }[];
+    // Nobody can answer now (the patient cannot speak, no companion): say so instead of an empty list.
+    if (items.length === 0 && historyVoice(c, host.state()) === "none") {
+      host.output(listed.text, { items });
+      return;
+    }
     const rows = items.map((it, i) => [`${i + 1}.`, `${it.asked ? "✓" : " "} ${it.question}`]);
     host.output(`${rt(L, "label.history")}:\n${table(rows)}`, { items });
     return;
@@ -395,25 +403,42 @@ function debriefCommand(host: CommandHost): void {
     return;
   }
   const d = c.debrief;
-  const section = (key: RuntimeKey, items: string[]) => (items.length > 0 ? [`${rt(L, key)}:`, ...items.map((x) => `  - ${x}`)] : []);
+  const colon = isZh(L) ? "：" : ": ";
+  // Critical items missed come first, prominently (they do not cap the score).
+  const critical = criticalMisses(c, assess(c, s), L);
+  const section = (key: RuntimeKey, items: string[], marker: (i: number) => string = () => "-") =>
+    items.length > 0 ? [`${rt(L, key)}${colon.trimEnd()}`, ...items.map((x, i) => `  ${marker(i)} ${x}`)] : [];
+  // The case's learning outcomes (they name the diagnosis: listed here, once the debrief is unlocked) and who
+  // reviewed the content (docs/GLOSSARY.md §4).
+  const outcomes = c.learningOutcomes.map((x) => t(x, L)).filter(Boolean);
+  const review = c.provenance.review;
+  const reviewLine = reviewStatusLine(L, review);
+  const guidelines = review?.guidelines ?? [];
   const lines = [
     t(d.title, L),
+    ...critical.map((x) => rt(L, "critical.missed", { text: x.text })),
     t(d.conclusion, L),
     ...section("cmd.debrief.reasoning", d.keyReasoning.map((x) => t(x, L))),
+    ...section("cmd.debrief.outcomes", outcomes, (i) => `${i + 1}.`),
     ...section("cmd.debrief.teaching", d.teachingPoints.map((x) => t(x, L))),
-    ...(d.boundaries ? [`${rt(L, "cmd.debrief.boundaries")}: ${t(d.boundaries, L)}`] : []),
+    ...(d.boundaries ? [`${rt(L, "cmd.debrief.boundaries")}${colon}${t(d.boundaries, L)}`] : []),
     ...section("cmd.debrief.unknowns", d.unknowns.map((x) => t(x, L))),
     ...section("cmd.debrief.references", d.references),
+    ...(reviewLine ? [`${rt(L, "cmd.debrief.review")}${colon}${reviewLine}`] : []),
+    ...(reviewLine && guidelines.length > 0 ? [`${rt(L, "cmd.debrief.guidelines")}${colon}${guidelines.join("; ")}`] : []),
     d.notice ? t(d.notice, L) : rt(L, "cmd.debrief.notice"),
   ];
   host.output(lines.join("\n"), {
     title: t(d.title, L),
+    criticalMissed: critical,
     conclusion: t(d.conclusion, L),
     keyReasoning: d.keyReasoning.map((x) => t(x, L)),
+    learningOutcomes: outcomes,
     teachingPoints: d.teachingPoints.map((x) => t(x, L)),
     boundaries: d.boundaries ? t(d.boundaries, L) : null,
     unknowns: d.unknowns.map((x) => t(x, L)),
     references: d.references,
+    review: review ? { status: review.status, reviewedAt: review.reviewedAt ?? null, text: reviewLine, guidelines } : null,
     notice: d.notice ? t(d.notice, L) : rt(L, "cmd.debrief.notice"),
   });
 }

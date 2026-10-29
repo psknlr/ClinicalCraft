@@ -1,16 +1,17 @@
 /**
- * Runtime strings of embodied mode (docs/EMBODIED.md): world tools, spatial
- * refusals, delegation, skills, embodied slash commands and the embodied
- * autopilot's narration. Merged into the runtime tables of `./i18n.ts`
+ * Runtime strings of embodied mode — "in-world mode" / 实景模式 to learners
+ * (docs/GLOSSARY.md; design: docs/EMBODIED.md): world tools, spatial
+ * refusals, delegation, skills, the in-world slash commands and the embodied
+ * autopilot's (demonstration's) narration. Merged into the runtime tables of `./i18n.ts`
  * (`rt(locale, key)` resolves them like every other runtime string).
  */
 
 export const EMBODIED_EN = {
   // session / configuration
-  "embodied.requiresFacility": "Embodied mode needs a facility (a world to act in); this session has none.",
-  "embodied.noSlot": "{facility} has no place for this case (its setting: {setting}): an embodied encounter needs a bed or spot for the patient there. Choose another facility, or play the case in clinical mode.",
-  "embodied.notEmbodied": "This session is not embodied (embodiment: clinical): world actions are not available.",
-  "embodied.fixed": "embodiment is fixed for an encounter (this one is {mode})",
+  "embodied.requiresFacility": "In-world mode needs a facility (a world to act in); this session has none.",
+  "embodied.noSlot": "{facility} has no place for this case (its setting: {setting}): an in-world encounter needs a bed or spot for the patient there. Choose another facility, or play the case in clinical mode.",
+  "embodied.notEmbodied": "This session is in clinical mode (embodiment: clinical): world actions need in-world mode.",
+  "embodied.fixed": "the mode (in-world or clinical; setting embodiment) is fixed for an encounter (this one: embodiment {mode})",
   "embodied.skillIssue": "Project skill not loaded: {issue}",
   "embodied.skillsUntrusted": "{files} project skill file(s) in {dir} were not loaded: this project is not trusted. Review them, then run `clinicalcraft trust` in the project to use them.",
 
@@ -162,17 +163,17 @@ export const EMBODIED_EN = {
   "clinician.narrate.transportBy": "Asking the {role} to take the patient to {target}.",
 
   // embodied slash commands
-  "cmd.look": "Look around (embodied mode)",
-  "cmd.where": "Where am I (embodied mode)",
-  "cmd.find": "Find people, equipment or rooms by name (embodied mode)",
-  "cmd.go": "Walk to a target: patient, an entity id or a room (embodied mode)",
-  "cmd.inspect": "Inspect an entity: state and operations (embodied mode)",
-  "cmd.use": "Operate equipment: /use <target> <operation> [key=value…] (embodied mode)",
-  "cmd.map": "Rooms of the facility, nearest first (embodied mode)",
-  "cmd.skill": "Run a skill: /skill <id> [key=value…] (embodied mode)",
-  "cmd.delegate": "Delegate a task to staff: /delegate <role> <task> [target] (embodied mode)",
-  "cmd.transport": "Take the patient somewhere on their trolley: /transport <destination|home> (embodied mode)",
-  "cmd.embodiedOnly": "/{name} works in embodied mode only (start with --embodied).",
+  "cmd.look": "Look around (in-world mode)",
+  "cmd.where": "Where am I (in-world mode)",
+  "cmd.find": "Find people, equipment or rooms by name (in-world mode)",
+  "cmd.go": "Walk to a target: patient, an entity id or a room (in-world mode)",
+  "cmd.inspect": "Inspect an entity: state and operations (in-world mode)",
+  "cmd.use": "Operate equipment: /use <target> <operation> [key=value…] (in-world mode)",
+  "cmd.map": "Rooms of the facility, nearest first (in-world mode)",
+  "cmd.skill": "Run a skill: /skill <id> [key=value…] (in-world mode)",
+  "cmd.delegate": "Delegate a task to staff: /delegate <role> <task> [target] (in-world mode)",
+  "cmd.transport": "Take the patient somewhere on their trolley: /transport <destination|home> (in-world mode)",
+  "cmd.embodiedOnly": "/{name} needs in-world mode (start with --embodied).",
   "cmd.skills.list": "Skills:",
   "cmd.map.header": "Rooms (nearest first):",
 
@@ -197,10 +198,10 @@ export const EMBODIED_EN = {
 export type EmbodiedKey = keyof typeof EMBODIED_EN;
 
 export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
-  "embodied.requiresFacility": "具身模式需要一个场馆（可以行动的世界）；本会话没有场馆。",
-  "embodied.noSlot": "{facility}中没有适合本病例的位置（病例场景：{setting}）：具身诊疗需要在那里为患者安排床位或地点。请选择其他场馆，或以临床模式进行本病例。",
-  "embodied.notEmbodied": "本会话不是具身模式（embodiment: clinical），无法执行世界动作。",
-  "embodied.fixed": "接诊的具身模式在本次接诊中固定不变（当前为 {mode}）",
+  "embodied.requiresFacility": "实景模式需要一个场馆（可以行动的世界）；本会话没有场馆。",
+  "embodied.noSlot": "{facility}中没有适合本病例的位置（病例场景：{setting}）：实景接诊需要在那里为患者安排床位或地点。请选择其他场馆，或以临床模式进行本病例。",
+  "embodied.notEmbodied": "本会话为临床模式（embodiment: clinical）：世界动作需要实景模式。",
+  "embodied.fixed": "接诊模式（实景或临床，设置项 embodiment）在本次接诊中固定不变（本次接诊：embodiment {mode}）",
   "embodied.skillIssue": "项目技能未加载：{issue}",
   "embodied.skillsUntrusted": "{dir} 中的 {files} 个项目技能文件未加载：此项目未被信任。请先审阅，然后在项目中运行 `clinicalcraft trust` 再使用。",
 
@@ -344,29 +345,29 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "clinician.narrate.transport": "我把患者送到{target}。",
   "clinician.narrate.transportBy": "请{role}把患者送到{target}。",
 
-  "cmd.look": "环顾四周（具身模式）",
-  "cmd.where": "我在哪里（具身模式）",
-  "cmd.find": "按名称查找人员、设备或房间（具身模式）",
-  "cmd.go": "走到目标处：patient、实体 ID 或房间（具身模式）",
-  "cmd.inspect": "查看实体的状态与可执行操作（具身模式）",
-  "cmd.use": "操作设备：/use <目标> <操作> [键=值…]（具身模式）",
-  "cmd.map": "本场馆的房间（由近及远，具身模式）",
-  "cmd.skill": "执行技能：/skill <id> [键=值…]（具身模式）",
-  "cmd.delegate": "把任务交给工作人员：/delegate <角色> <任务> [目标]（具身模式）",
-  "cmd.transport": "用推床把患者送到某处：/transport <目的地|home>（具身模式）",
-  "cmd.embodiedOnly": "/{name} 仅在具身模式下可用（用 --embodied 启动）。",
+  "cmd.look": "环顾四周（实景模式）",
+  "cmd.where": "我在哪里（实景模式）",
+  "cmd.find": "按名称查找人员、设备或房间（实景模式）",
+  "cmd.go": "走到目标处：patient、实体 ID 或房间（实景模式）",
+  "cmd.inspect": "查看实体的状态与可执行操作（实景模式）",
+  "cmd.use": "操作设备：/use <目标> <操作> [键=值…]（实景模式）",
+  "cmd.map": "本场馆的房间（由近及远，实景模式）",
+  "cmd.skill": "执行技能：/skill <id> [键=值…]（实景模式）",
+  "cmd.delegate": "把任务交给工作人员：/delegate <角色> <任务> [目标]（实景模式）",
+  "cmd.transport": "用推床把患者送到某处：/transport <目的地|home>（实景模式）",
+  "cmd.embodiedOnly": "/{name} 仅在实景模式下可用（用 --embodied 启动）。",
   "cmd.skills.list": "技能：",
   "cmd.map.header": "房间（由近及远）：",
 
   "bridge.invalidCall": "外部工具调用需要调用 ID、工具名称和对象形式的参数。",
   "bridge.duplicateCall": "ID 为 {callId} 的外部工具调用已在排队或执行中。",
-  "bridge.cancelledBeforeStart": "外部代理的 {tool} 调用在开始前已被取消。",
-  "bridge.deadlinePassed": "外部代理的 {tool} 调用未执行：调用方已停止等待（已超过截止时间）。",
+  "bridge.cancelledBeforeStart": "外部智能体的 {tool} 调用在开始前已被取消。",
+  "bridge.deadlinePassed": "外部智能体的 {tool} 调用未执行：调用方已停止等待（已超过截止时间）。",
   "bridge.notRun": "该调用未执行（已被取消，或会话已结束）。",
-  "bridge.toolNotAllowed": "本会话不允许外部代理使用 {tool}。",
-  "bridge.bypass": "外部控制已暂停：本会话的审批模式为 bypass，任何操作都不会征求学员同意。请改用其他审批模式后再让外部代理操作。",
+  "bridge.toolNotAllowed": "本会话不允许外部智能体使用 {tool}。",
+  "bridge.bypass": "外部控制已暂停：本会话的审批模式为“绕过”（bypass），任何操作都不会征求学员同意。请改用其他审批模式后再让外部智能体操作。",
   "bridge.closed": "学员的会话已结束。",
-  "bridge.disconnected": "学员已断开外部代理。",
+  "bridge.disconnected": "学员已断开外部智能体。",
   "bridge.unauthorized": "ClinicalCraft 服务需要访问令牌：请先用 ?token=<令牌> 打开一次本页面。",
   "bridge.unsupported": "此 ClinicalCraft 服务不支持外部控制，请更新。",
   "bridge.refused": "ClinicalCraft 服务拒绝了连接：{message}",

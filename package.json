@@ -29,7 +29,7 @@
     "test:e2e": "npm run test:e2e -w @clinicalcraft/web",
     "dev": "npm run dev -w @clinicalcraft/web",
     "cc": "tsx --conditions=source packages/cli/src/bin.ts",
-    "validate:content": "tsx --conditions=source packages/cli/src/bin.ts cases validate --all",
+    "validate:content": "tsx --conditions=source packages/cli/src/bin.ts cases validate --all --strict",
     "schemas": "tsx scripts/gen-json-schemas.ts",
     "clean": "rm -rf packages/*/dist packages/*/tsconfig.tsbuildinfo"
   },

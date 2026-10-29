@@ -43,6 +43,7 @@ import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ProviderErrorInfo
 import { availableInPhase } from "../tools/format.js";
 import { checkNonverbal, verifyGrounding, type GroundingCheck, type VerifyOptions } from "./grounding.js";
 import { isZh, joinSentences, languageName, rt, type RuntimeKey } from "./i18n.js";
+import { narratedLine, nonVerbalNarration, nonVerbalReason, plainName, spokenAnswer } from "./nonverbal.js";
 
 /* ------------------------------------------------------------------ */
 /* 1. Routing                                                          */
@@ -256,7 +257,8 @@ export interface PatientLlm {
   retry?: RetryPolicy | false;
 }
 
-export type Grounding = "llm" | "template" | "offline" | "deflected" | "opening" | "greeting" | "clarify";
+/** How a reply was produced (`agent_message.grounding`); `narrated`: the patient cannot speak — a narration in the narrator's voice, no fact revealed. */
+export type Grounding = "llm" | "template" | "offline" | "deflected" | "opening" | "greeting" | "clarify" | "narrated";
 
 export interface PatientTurnInput {
   caseDef: CaseDefinition;
@@ -305,6 +307,12 @@ export interface PatientTurnResult {
    * violation categories alone.
    */
   diagnostics?: string[];
+  /**
+   * The reply is a narration, not speech (the patient cannot speak — `patient.nonVerbalWhen` —, or an opening
+   * line written as an aside): `speakerName` is the narrator's label; it is never streamed or kept as the
+   * patient's words.
+   */
+  narrated?: boolean;
   /** Messages to append to this speaker's voice history. */
   messages: ChatMessage[];
   usage: TokenUsage;
@@ -372,8 +380,8 @@ export function groundingReason(locale: string, check: Pick<GroundingCheck, "kin
   return kinds.map((k) => rt(locale, `grounding.kind.${k}` as RuntimeKey)).join(isZh(locale) ? "、" : ", ");
 }
 
-/** Persona-level texts the voice may draw numbers from (age, persona, opening line, fallback). */
-function personaSources(c: CaseDefinition, locale: string): string[] {
+/** Persona-level texts the voice may draw numbers from (age, persona, opening line, fallback; the reason the patient cannot speak, while it holds). */
+function personaSources(c: CaseDefinition, locale: string, s?: SessionState): string[] {
   const p = c.patient.persona;
   const out = [
     `${c.patient.age}`,
@@ -385,6 +393,8 @@ function personaSources(c: CaseDefinition, locale: string): string[] {
     ...p.concerns.map((x) => t(x, locale)),
   ];
   if (p.companion) out.push(t(p.companion.persona, locale), t(p.companion.name, locale));
+  const reason = s ? nonVerbalReason(c, s, locale) : null;
+  if (reason) out.push(reason);
   return out;
 }
 
@@ -408,7 +418,7 @@ export function voiceGroundingInputs(
   locale: string,
 ): { sources: string[]; options: VerifyOptions } {
   const answered = used.map((id) => answerOf(c, id, locale)).filter(Boolean);
-  const sources = [...answered, ...personaSources(c, locale), utterance, clarify ?? ""];
+  const sources = [...answered, ...personaSources(c, locale, state), utterance, clarify ?? ""];
   return {
     sources,
     options: {
@@ -450,6 +460,7 @@ export function buildPatientContext(input: Pick<PatientTurnInput, "caseDef" | "l
     clarify,
     locale: L,
     scene: input.scene ?? null,
+    patientNonVerbal: nonVerbalReason(c, state, L),
     ...(withIndex
       ? {
           factIndex: c.history
@@ -634,14 +645,34 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   const done = (partial: Partial<PatientTurnResult> & Pick<PatientTurnResult, "text" | "grounding" | "route">) =>
     result(input, { ...partial, warnings: [...warnings, ...(partial.warnings ?? [])] }, usage);
 
-  // Approach (empty message): opening line once, then a short greeting.
+  // The patient cannot speak now (`patient.nonVerbalWhen`): `reason` is the authored why ("" without one).
+  const reason = nonVerbalReason(c, input.state(), L);
+  /** A narration in the narrator's voice: nothing said by (or credited from) the patient. */
+  const narrate = (text: string) => done({ text, grounding: "narrated", route: "in-fiction", narrated: true, speakerName: rt(L, "speaker.narrator") });
+
+  // Approach (empty message): opening line once, then a short greeting. An opening line written as an aside
+  // ("(He is on a ventilator…)") is narration; while the patient cannot speak it is only ever narration — else
+  // the narrator says why — and the companion does not borrow the patient's words.
   if (!utterance) {
+    const opening = t(persona.openingLine, L);
+    const aside = narratedLine(opening);
+    if (reason !== null) {
+      if (aside && !input.memory.approached) {
+        input.memory.approached = true;
+        return narrate(aside);
+      }
+      if (input.speaker === "patient") return narrate(nonVerbalNarration(c, reason, L, true));
+      return done({ text: rt(L, "companion.generic", { name: plainName(t(c.patient.displayName, L)) }), grounding: "greeting", route: "in-fiction" });
+    }
     if (!input.memory.approached) {
       input.memory.approached = true;
-      return done({ text: t(persona.openingLine, L), grounding: "opening", route: "in-fiction" });
+      return aside ? narrate(aside) : done({ text: opening, grounding: "opening", route: "in-fiction" });
     }
     return done({ text: rt(L, "patient.greeting"), grounding: "greeting", route: "in-fiction" });
   }
+  // Nothing in the patient's voice while they cannot speak — whatever was said (the runtime routes questions to
+  // the companion when the case has one); the opening line waits until they can.
+  if (reason !== null && input.speaker === "patient") return narrate(nonVerbalNarration(c, reason, L));
   input.memory.approached = true;
 
   // 1. Route.
@@ -650,9 +681,9 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
     return done({ text: deflection(L, route), grounding: "deflected", route, warnings: [rt(L, "warning.outOfFiction", { agent: input.speaker, kind: route })] });
   }
 
-  // A companion who does not answer history defers history questions to the patient.
+  // A companion who does not answer history defers history questions to the patient — unless the patient cannot speak.
   const companion = persona.companion;
-  const companionDefers = input.speaker === "companion" && companion !== undefined && !companion.answersHistory;
+  const companionDefers = input.speaker === "companion" && companion !== undefined && !companion.answersHistory && reason === null;
 
   // Tool pipeline (the model calls reveal_facts itself).
   if (input.pipeline === "tool" && input.llm && input.runToolTurn && !companionDefers) {
@@ -678,7 +709,7 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   const clarify = clarifyFromSelection(L, selection);
   const spokenIds = [...selection.selected, ...volunteerIds];
   const template = (() => {
-    const answers = spokenIds.map((id) => answerOf(c, id, L)).filter(Boolean);
+    const answers = spokenIds.map((id) => spokenAnswer(c, state, id, L, input.speaker)).filter(Boolean);
     if (answers.length > 0) return joinSentences(L, answers);
     if (companionDefers) return rt(L, "companion.generic", { name: t(c.patient.displayName, L) });
     return clarify ?? t(persona.fallbackUnknown, L);
@@ -785,7 +816,7 @@ async function runToolPipeline(input: PatientTurnInput, usage: TokenUsage, warni
   const revealed = turn.grounded;
   const newlyRevealed = revealed.filter((id) => !before.has(id));
   const known = [...new Set([...input.state().asked, ...revealed])];
-  const sources = [...known.map((id) => answerOf(c, id, L)), ...personaSources(c, L), input.utterance];
+  const sources = [...known.map((id) => answerOf(c, id, L)), ...personaSources(c, L, input.state()), input.utterance];
   const check = verifyGrounding(turn.text, sources, { drugLexicon: caseDrugLexicon(c) });
   if (!check.ok && input.strictGrounding) {
     const answers = revealed.map((id) => answerOf(c, id, L)).filter(Boolean);

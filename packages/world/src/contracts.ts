@@ -561,6 +561,8 @@ export interface PatientCues {
   distressed?: boolean;
   accessory?: string | null;
   speaking?: boolean;
+  /** The patient cannot speak now (`patient.nonVerbalWhen`): the authored reason in the session language ("" without one). */
+  cannotSpeak?: string;
 }
 
 /** Read-only view of the clinical side the world needs (supplied by the session). */
@@ -678,7 +680,8 @@ export interface NavigationRecord {
  * (`DELIVERED_CAPABILITIES`: pharmacy-dispensed drugs, blood products) — they
  * need an in-service provider somewhere in the facility, never one at the
  * bedside. `at-patient` `why`: what is done there (`sample`: the specimen is
- * taken at the patient; `observations`: vitals by hand), for the message.
+ * taken at the patient; `observations`: vitals by hand; `notes`: a record
+ * review read in the notes at the bedside), for the message.
  * `monitor-screen`: the patient's attached monitor read from its screen —
  * within `range` with line of sight from the monitor's own room.
  * `clinical`: a fact of the patient's clinical state the engine must hold
@@ -689,7 +692,7 @@ export interface NavigationRecord {
 export type SpatialRequirement =
   | { kind: "anywhere" }
   | { kind: "near-patient"; range: number; lineOfSight: boolean }
-  | { kind: "at-patient"; range: number; why?: "sample" | "observations" }
+  | { kind: "at-patient"; range: number; why?: "sample" | "observations" | "notes" }
   | { kind: "at-provider"; capabilities: string[]; range?: number; fixedOnly?: boolean; providerKinds?: InteractionKind[] }
   | { kind: "bedside-provider"; capabilities: string[]; patientRange: number; delivered?: string[] }
   | { kind: "monitor-screen"; range: number }

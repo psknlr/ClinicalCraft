@@ -5,7 +5,8 @@
  * conversation. Derived from the session state and the store's event log —
  * never from a second history.
  */
-import { assess, t, type CaseDefinition } from "@clinicalcraft/core";
+import { citesSource } from "@clinicalcraft/agent";
+import { assess, progress, t, type CaseDefinition } from "@clinicalcraft/core";
 import type { Game } from "./context.js";
 import type { RuntimeChoice } from "./llm.js";
 
@@ -18,6 +19,8 @@ export function buildLearningRecord(game: Game, locale: string, choice: RuntimeC
   const state = session.state;
   const snapshot = session.snapshot();
   const report = store.assessment?.report ?? assess(c, state);
+  // A published case's citation usually names the diagnosis: in the record once the case is complete (as the debrief).
+  const source = !citesSource(c) || state.finished || progress(c, state).complete;
   return {
     format: LEARNING_RECORD_FORMAT,
     exportedAt: new Date().toISOString(),
@@ -27,8 +30,8 @@ export function buildLearningRecord(game: Game, locale: string, choice: RuntimeC
       version: c.version,
       title: t(c.title, locale),
       provenance: c.provenance.kind,
-      citation: c.provenance.citation ?? null,
-      doi: c.provenance.doi ?? null,
+      citation: source ? (c.provenance.citation ?? null) : null,
+      doi: source ? (c.provenance.doi ?? null) : null,
     },
     facility: game.facility.id,
     sessionId: session.id,

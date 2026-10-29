@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "smzl-lung-adeno",
-  "version": "1.1.0",
+  "version": "1.2.2",
   "title": {
     "zh-CN": "左上腹痛与脾大 · 74岁男性",
     "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"
@@ -23,6 +23,32 @@
     "en"
   ],
   "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "整合血常规、腹部影像、骨髓活检及流式细胞术，诊断脾边缘区淋巴瘤（SMZL）伴骨髓侵犯，并把已知的肺腺癌作为另一条独立的证据链处理（BSH 2024）。",
+      "en": "Integrate the blood count, abdominal imaging, bone marrow biopsy and flow cytometry to diagnose splenic marginal zone lymphoma (SMZL) with marrow involvement, and keep the known lung adenocarcinoma on a separate evidence chain (BSH 2024)."
+    },
+    {
+      "zh-CN": "抗CD20治疗前完成HBsAg、抗-HBc及HBV DNA评估；抗-HBc阳性时，即使HBV DNA低于检测限，也要制定再激活的预防与监测方案（EASL 2025）。",
+      "en": "Before anti-CD20 therapy, assess HBsAg, anti-HBc and HBV DNA, and when anti-HBc is positive plan reactivation prophylaxis and monitoring even if HBV DNA is below the detection limit (EASL 2025)."
+    },
+    {
+      "zh-CN": "正确解读骨髓核型t(4;12)(q23;q13)：它是本例淋巴瘤克隆的发现；两种肿瘤是否同源、是否存在融合基因，需要配对组织的分子证据。",
+      "en": "Interpret the marrow karyotype t(4;12)(q23;q13) correctly: it is a finding in this patient’s lymphoma clone, and a shared origin with the lung cancer or a fusion gene needs molecular evidence from paired tissue."
+    },
+    {
+      "zh-CN": "区分骨髓穿刺细胞学、骨髓组织活检与流式细胞术，不把分母不同的百分比直接比较。",
+      "en": "Distinguish bone marrow aspirate cytology, trephine biopsy and flow cytometry, and do not compare percentages that have different denominators."
+    },
+    {
+      "zh-CN": "治疗后对两种肿瘤分别复评：流式改善支持淋巴瘤有治疗反应，但不能单独判定完全缓解，也不能替代肺癌复评（BSH 2024；血液肿瘤合并实体肿瘤诊疗专家共识2025）。",
+      "en": "Re-evaluate each tumour separately after treatment: improvement on flow cytometry supports a lymphoma response but neither establishes complete remission on its own nor replaces re-evaluation of the lung cancer (BSH 2024; 2025 Chinese consensus on haematological malignancy with a solid tumour)."
+    },
+    {
+      "zh-CN": "当病例记录缺失（吸烟史、家族史、EGFR位点、TNM分期、HBsAg）时，如实向患者说明，不施压、不替患者补全。",
+      "en": "When the record is silent (smoking, family history, the EGFR variant, TNM stage, HBsAg), say so honestly to the patient without pressing or filling the gap."
+    }
+  ],
   "tags": [
     "published-case",
     "v4-port",
@@ -46,6 +72,23 @@
     "notes": {
       "zh-CN": "病例：丁凤丽、秦彩霞、汪家吉，2026。DOI：10.3760/cma.cmcr20260128-00421。由 Virtual Patient V4（临床方块世界 CASE 01）移植。7张PNG原图与原病例PDF来自用户提供的V4压缩包，原图版权归原权利人；仅在本机安装（clinicalcraft import-v4），不随仓库分发。问诊回答依原文整理。缺失数据保持未知；报告按原始时间呈现。肺癌进展在正文既往史与讨论中的叙述不一致，复盘保留此限制。原CT配图为腹部，没有肺结节局部原图；没有原始流式散点图，也没有完整DICOM序列。人体图谱为标准人体模型，未重建本例病灶大小、肺结节或骨髓浸润范围。患者是使用化名的通用教学NPC，不还原真实患者容貌。V5在V4基础上补充的病史条目与复评期体格检查均摘自原文并逐条注明来源；原文体格检查记录于第3周期治疗入院时，诊断期体格检查未记录。完成度不是已验证的临床能力评分。",
       "en": "Case: Ding Fengli, Qin Caixia, Wang Jiaji, 2026. DOI: 10.3760/cma.cmcr20260128-00421. Ported from Virtual Patient V4 (Clinical Craft CASE 01). The seven original PNG figures and the source PDF come from the V4 package supplied by the user; figure copyright remains with the original rights holders. They are installed locally only (clinicalcraft import-v4) and are not distributed with the repository. Interview answers are compiled from the source text. Missing data stay unknown; reports are presented with their original dates. The main text's past history and discussion are inconsistent about lung cancer progression, and the review keeps this limitation. The original CT figures show the abdomen only — there is no local image of the lung nodule, no raw flow cytometry plot and no complete DICOM series. The anatomy atlas is a standard human model and does not reconstruct this patient's lesion size, lung nodule or extent of marrow infiltration. The patient is a generic teaching NPC with a pseudonym and does not reproduce a real patient's appearance. History items and the re-evaluation-phase physical examination that V5 adds to V4 are taken from the source text, each with its source noted; the source's physical examination was recorded on admission for treatment cycle 3, and no diagnostic-phase examination is recorded. Completion is not a validated clinical competency score."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "BSH 2024 marginal zone lymphoma (Walewska et al.)",
+        "JSH 2023 practical guidelines: marginal zone lymphoma",
+        "血液肿瘤合并实体肿瘤诊疗专家共识（2025年版）",
+        "EASL 2025 hepatitis B"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -2623,7 +2666,8 @@
             "decidedFirstTry": "safety"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-dx-genetics",
@@ -2702,6 +2746,18 @@
         "hints": {
           "lte": 2
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "diagnosis"
+          },
+          {
+            "hints": {
+              "gte": 3
+            }
+          }
+        ]
       }
     },
     {
@@ -2713,7 +2769,7 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "学习者用患者能理解的话解释为何需要血常规、影像及骨髓检查；避免堆砌术语；确认患者理解并留出提问机会；在证据充分前不向患者下诊断结论。",
+        "zh-CN": "学员用患者能理解的话解释为何需要血常规、影像及骨髓检查；避免堆砌术语；确认患者理解并留出提问机会；在证据充分前不向患者下诊断结论。",
         "en": "The learner explains in words the patient can follow why blood tests, imaging and bone marrow tests are needed; avoids piling up jargon; checks understanding and invites questions; and does not give the patient a diagnosis before the evidence supports it."
       }
     },
@@ -2726,7 +2782,7 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "当患者无法回答（如吸烟史、家族史、EGFR位点、肺癌TNM、HBsAg）时，学习者承认信息缺失，不施压、不替患者补造事实，并说明将如何获取这些信息。",
+        "zh-CN": "当患者无法回答（如吸烟史、家族史、EGFR位点、肺癌TNM、HBsAg）时，学员承认信息缺失，不施压、不替患者补造事实，并说明将如何获取这些信息。",
         "en": "When the patient cannot answer (e.g. smoking, family history, EGFR variant, lung cancer TNM stage, HBsAg), the learner acknowledges the gap, neither pressures the patient nor supplies invented facts, and says how the information would be obtained."
       }
     }
@@ -2735,11 +2791,11 @@
     {
       "role": "radiologist",
       "name": {
-        "zh-CN": "影像科医生",
+        "zh-CN": "放射科医生",
         "en": "Radiologist"
       },
       "knowledge": {
-        "zh-CN": "只依据学习者已调阅的报告文字与原包代表图解读，不补充报告以外的发现。原包只有代表层面截图，没有完整DICOM序列：不能重建图像或测量体积，不用二维测量值推算脾脏体积；不同时间点的代表图未经配准。原包仅有增强CT代表图，平扫与增强CT不能视为等价。胸部CT和浅表淋巴结超声只有文字记录，没有原图；肺结节直径未提供；原文关于肺癌是否进展的叙述前后不一致。PET/CT代谢增高本身不等于病理确诊，且只有治疗前PET/CT。不对病理、分期或最终诊断下结论。",
+        "zh-CN": "只依据学员已调阅的报告文字与原包代表图解读，不补充报告以外的发现。原包只有代表层面截图，没有完整DICOM序列：不能重建图像或测量体积，不用二维测量值推算脾脏体积；不同时间点的代表图未经配准。原包仅有增强CT代表图，平扫与增强CT不能视为等价。胸部CT和浅表淋巴结超声只有文字记录，没有原图；肺结节直径未提供；原文关于肺癌是否进展的叙述前后不一致。PET/CT代谢增高本身不等于病理确诊，且只有治疗前PET/CT。不对病理、分期或最终诊断下结论。",
         "en": "Interprets only the report text and the representative images in the source package that the learner has already retrieved, and adds no findings beyond the reports. The package contains only representative slices, not full DICOM series: no reconstruction or volume measurement is possible, and spleen volume must not be estimated from two-dimensional measurements; images from different time points are not co-registered. Only contrast-enhanced CT images exist, so a non-contrast CT is not equivalent. The chest CT and the superficial lymph node ultrasound exist only as text, with no images; the lung nodule diameter is not given; the source is internally inconsistent about whether the lung cancer progressed. Increased metabolism on PET/CT is not by itself a pathological diagnosis, and only a pre-treatment PET/CT exists. Does not draw conclusions about pathology, staging or the final diagnosis."
       },
       "interprets": [
@@ -2758,7 +2814,7 @@
         "en": "Pathologist"
       },
       "knowledge": {
-        "zh-CN": "只依据学习者已调阅的骨髓细胞学、骨髓活检／免疫组化、流式细胞术、染色体核型及EGFR检测记录解读，不补充报告以外的抗体或结果。骨髓穿刺细胞学与骨髓活检是不同取材方法；细胞学、流式与活检的比例分母不同，不能直接比较；不能仅凭CD5、CD10阴性单独定性，需结合形态与完整免疫表型。图5未逐一标明A/B切片的抗体名称，不擅自补注。核型不能确定融合基因，也不能证明与肺癌同源；同源性及驱动机制需要两种肿瘤的配对分子证据。没有原始流式散点图、治疗后活检图或复查核型。EGFR具体位点、检测平台和原始报告未提供，不补写19del或L858R。",
+        "zh-CN": "只依据学员已调阅的骨髓细胞学、骨髓活检／免疫组化、流式细胞术、染色体核型及EGFR检测记录解读，不补充报告以外的抗体或结果。骨髓穿刺细胞学与骨髓活检是不同取材方法；细胞学、流式与活检的比例分母不同，不能直接比较；不能仅凭CD5、CD10阴性单独定性，需结合形态与完整免疫表型。图5未逐一标明A/B切片的抗体名称，不擅自补注。核型不能确定融合基因，也不能证明与肺癌同源；同源性及驱动机制需要两种肿瘤的配对分子证据。没有原始流式散点图、治疗后活检图或复查核型。EGFR具体位点、检测平台和原始报告未提供，不补写19del或L858R。",
         "en": "Interprets only the bone marrow cytology, bone marrow biopsy / immunohistochemistry, flow cytometry, karyotype and EGFR testing record that the learner has already retrieved, and adds no antibodies or results beyond the reports. Marrow aspirate cytology and marrow biopsy are different sampling methods; the percentages from cytology, flow cytometry and biopsy have different denominators and cannot be compared directly; CD5/CD10 negativity alone cannot characterise the disease — morphology and the full immunophenotype must be considered. Fig. 5 does not label the antibody for each of panels A/B, and none should be added. A karyotype cannot identify a fusion gene or prove a common origin with the lung cancer; common origin and driver mechanisms require paired molecular evidence from both tumours. There are no raw flow cytometry plots, no post-treatment biopsy images and no repeat karyotype. The specific EGFR variant, testing platform and original report are not provided; 19del or L858R must not be filled in."
       },
       "interprets": [
@@ -2777,7 +2833,7 @@
         "en": "Attending preceptor"
       },
       "knowledge": {
-        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学习者把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；约30年前就发现脾大，不能据此认定淋巴瘤已经持续30年；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
+        "zh-CN": "以苏格拉底式提问带教，不直接给出诊断或判断题答案。引导顺序：问诊（疼痛、脾大病程、既往肿瘤）→ 血常规与腹部影像 → 骨髓活检与流式 → 会诊板提交诊断推理 → 乙肝筛查、染色体核型与治疗后复评。当学员把所有异常归因于单一疾病时，追问哪些证据支持、哪些证据不支持。提醒：缺失资料保持未知，不补造；结果按原始日期呈现；切换病例时期是历史资料回看，不推进患者实时病情；不同取材方法的比例不能直接比较；约30年前就发现脾大，不能据此认定淋巴瘤已经持续30年；完成度与判断记录是教学脚本指标，不是经过验证的能力评分。",
         "en": "Teaches by Socratic questioning and never gives the diagnosis or the answers to the decisions directly. Suggested path: history (pain, course of the splenomegaly, previous tumours) → blood count and abdominal imaging → bone marrow biopsy and flow cytometry → submit the diagnostic reasoning at the board → hepatitis B screen, karyotype and post-treatment re-evaluation. When the learner attributes every abnormality to a single disease, ask which evidence supports that and which does not. Reminders: missing data stay unknown and are never invented; results keep their original dates; switching case phase is a review of historical records, not live progression; percentages from different sampling methods cannot be compared directly; a spleen known to be enlarged for about 30 years does not by itself establish that a lymphoma has been present for 30 years; completion and decision records are teaching-script measures, not a validated competency score."
       },
       "interprets": [],
@@ -3282,7 +3338,7 @@
     },
     "testUtterances": [
       {
-        "text": "哪里疼，什么时候开始？",
+        "text": "您是哪里疼？从什么时候开始的？",
         "locale": "zh-CN",
         "expect": [
           "pain"
@@ -3303,7 +3359,7 @@
         ]
       },
       {
-        "text": "以前是否发现过脾大？",
+        "text": "以前有没有人说过您脾大？",
         "locale": "zh-CN",
         "expect": [
           "spleen"
@@ -3317,7 +3373,7 @@
         ]
       },
       {
-        "text": "既往有哪些肿瘤及治疗？",
+        "text": "您以前得过哪种肿瘤？是怎么治疗的？",
         "locale": "zh-CN",
         "expect": [
           "lung"
@@ -3339,7 +3395,7 @@
         ]
       },
       {
-        "text": "吸烟史、家族史能否补充？",
+        "text": "您抽不抽烟？家里人有类似的病吗？",
         "locale": "zh-CN",
         "expect": [
           "other"
@@ -3389,7 +3445,7 @@
         ]
       },
       {
-        "text": "确诊后做过哪些治疗？",
+        "text": "确诊后的治疗是怎么做的？",
         "locale": "zh-CN",
         "expect": [
           "treatment-course"
@@ -3410,7 +3466,7 @@
         ]
       },
       {
-        "text": "Where does it hurt, and when did it start?",
+        "text": "Where's the pain, and when did it begin?",
         "locale": "en",
         "expect": [
           "pain"
@@ -3424,7 +3480,7 @@
         ]
       },
       {
-        "text": "Has an enlarged spleen ever been found before?",
+        "text": "Has a doctor ever told you that your spleen was enlarged?",
         "locale": "en",
         "expect": [
           "spleen"
@@ -3489,7 +3545,7 @@
         ]
       },
       {
-        "text": "Have you had any operations?",
+        "text": "Have you ever had surgery?",
         "locale": "en",
         "expect": [
           "psh"
@@ -3510,7 +3566,7 @@
         ]
       },
       {
-        "text": "What treatment have you had since the diagnosis?",
+        "text": "What treatment have you had so far?",
         "locale": "en",
         "expect": [
           "treatment-course"

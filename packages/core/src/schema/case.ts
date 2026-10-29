@@ -99,6 +99,19 @@ export const PatientSchema = z
     persona: PersonaSchema,
     appearance: AppearanceSchema.default({}),
     posture: z.enum(["standing", "sitting", "lying"]).default("standing"),
+    /**
+     * While this holds the patient cannot speak — intubated and sedated, in theatre, an infant, in a coma
+     * (`{ "intervened": "intubation" }`, `{ "phase": "icu" }`, `{ "always": true }`): the patient never speaks.
+     * History goes to the companion when the case has one (whatever `answersHistory` says); otherwise nobody
+     * can answer — the engine refuses the question (`cannot-answer`), no fact is revealed, and the runtime
+     * narrates why (`nonVerbalReason`). docs/CASE_AUTHORING.md §2.
+     */
+    nonVerbalWhen: ConditionSchema.optional(),
+    /**
+     * Why the patient cannot speak, as narrated after "<name> cannot answer:" ("intubated and sedated on
+     * VA-ECMO" / "气管插管镇静中"). A clause or a short sentence; learner-facing, so no diagnosis spoiler.
+     */
+    nonVerbalReason: LocalizedTextSchema.optional(),
   })
   .strict();
 export type Patient = z.infer<typeof PatientSchema>;
@@ -133,7 +146,11 @@ export const PhaseSchema = z
     id: IdSchema,
     label: LocalizedTextSchema,
     description: LocalizedTextSchema.optional(),
-    /** Learner may switch to this phase manually (V4 evidence-board time travel). */
+    /**
+     * Learner may switch to this phase manually (V4 evidence-board time travel). A phase that is not switchable
+     * opens to the learner once its `enterWhen` holds (the case has reached it), so a learner who looked back at an
+     * earlier phase can return.
+     */
     learnerSwitchable: z.boolean().default(true),
     /** Automatic transition into this phase when the condition becomes true. */
     enterWhen: ConditionSchema.optional(),
@@ -359,9 +376,12 @@ export const InvestigationSchema = z
      * Where the study is done on the patient (embodied mode, docs/EMBODIED.md §6): `provider` — the patient is
      * brought to the equipment (the default for CT, MRI, PET-CT, fluoroscopy, endoscopy, a fixed X-ray machine,
      * and the peak-flow or weighing station of a patient-performed test); `bedside` — a mobile unit comes to the
-     * patient (a portable chest X-ray), so nobody is moved.
+     * patient (a portable chest X-ray), so nobody is moved; `records` — an existing report retrieved from the
+     * chart (an earlier MRI report, the outside hospital's records): read at a records terminal or in the notes
+     * at the bedside — never a transport, a sample or a device, and no procedure risk (`requires` at most
+     * `records`; `cases validate` warns otherwise).
      */
-    performedAt: z.enum(["bedside", "provider"]).optional(),
+    performedAt: z.enum(["bedside", "provider", "records"]).optional(),
     /** Investigations that are reasonable but not essential are `neutral`; wasteful ones `low-value`. */
     value: z.enum(["essential", "useful", "neutral", "low-value", "harmful"]).default("useful"),
     /**
@@ -691,6 +711,17 @@ export const RubricItemSchema = z
     met: ConditionSchema.optional(),
     /** For transcript-judged items: what good looks like. */
     judgeGuidance: LocalizedTextSchema.optional(),
+    /**
+     * The item counts only once this holds (before: neither earned nor possible) — e.g. an avoided-harm item
+     * ("no thrombolysis while contraindicated") counts once the learner has started treatment or reached the
+     * decision where the harm was possible, so doing nothing does not earn it. Evaluated on the final state.
+     */
+    scoredWhen: ConditionSchema.optional(),
+    /**
+     * A critical item: its miss (scored and not met) is shown prominently in every debrief (web, CLI, MCP;
+     * `AssessmentReport.criticalMissed`). It does not cap the score.
+     */
+    critical: z.boolean().optional(),
   })
   .strict();
 export type RubricItem = z.infer<typeof RubricItemSchema>;
@@ -751,6 +782,12 @@ export const CaseSchema = z
     /** Content languages; the first is the source language. */
     locales: z.array(LocaleTagSchema).min(1),
     estimatedMinutes: z.number().positive().optional(),
+    /**
+     * What the learner will be able to do after the case: measurable outcomes (an action verb and its standard,
+     * e.g. "Recognise right-ventricular involvement from V4R and avoid nitrates"), shown on the case card and in the
+     * debrief. Distinct from `objectives` — the in-game task list the HUD tracks.
+     */
+    learningOutcomes: z.array(LocalizedTextSchema).default([]),
     tags: z.array(z.string()).default([]),
     provenance: z
       .object({
@@ -760,6 +797,24 @@ export const CaseSchema = z
         authors: z.array(z.string()).default([]),
         license: z.string().optional(),
         notes: LocalizedTextSchema.optional(),
+        /**
+         * Clinical governance — how far the content has been checked, stated honestly: `unreviewed`; `editorial`
+         * (internal editorial review against the cited guidance, not by a licensed clinician); `clinician-reviewed`
+         * (reviewed by a licensed clinician of the specialty). Front-ends say so wherever the case is offered.
+         */
+        review: z
+          .object({
+            status: z.enum(["unreviewed", "editorial", "clinician-reviewed"]),
+            /** Date of the last review against current guidance (YYYY-MM-DD). */
+            reviewedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD").optional(),
+            /** Who reviewed: roles, or names given with consent. */
+            reviewers: z.array(z.string()).default([]),
+            /** The guidance the content was checked against, with its version (e.g. "ESC 2023 ACS"). */
+            guidelines: z.array(z.string()).default([]),
+            notes: LocalizedTextSchema.optional(),
+          })
+          .strict()
+          .optional(),
       })
       .strict(),
     disclaimer: LocalizedTextSchema.optional(),

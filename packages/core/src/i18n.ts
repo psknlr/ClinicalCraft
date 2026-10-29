@@ -118,6 +118,7 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   suction: { "zh-CN": "吸引装置", en: "suction" },
   airway: { "zh-CN": "高级气道设备", en: "advanced airway equipment" },
   ventilator: { "zh-CN": "呼吸机", en: "a ventilator" },
+  niv: { "zh-CN": "无创呼吸机", en: "a non-invasive ventilator" },
   nebulizer: { "zh-CN": "雾化器", en: "a nebuliser" },
   "iv-access": { "zh-CN": "静脉通路", en: "IV access" },
   "infusion-pump": { "zh-CN": "输液泵", en: "an infusion pump" },
@@ -131,7 +132,7 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   dialysis: { "zh-CN": "血液透析", en: "haemodialysis" },
   // Teaching & records
   "anatomy-atlas": { "zh-CN": "解剖图谱", en: "the anatomy atlas" },
-  "evidence-board": { "zh-CN": "证据板", en: "the evidence board" },
+  "evidence-board": { "zh-CN": "会诊板", en: "the case board" },
   records: { "zh-CN": "电子病历终端", en: "an electronic health record terminal" },
   crafting: { "zh-CN": "制作台", en: "a crafting bench" },
 };
@@ -145,4 +146,65 @@ export function capabilityLabel(capability: string, locale: Locale = DEFAULT_LOC
 /** Display labels of capabilities, in order (`capabilityLabel` of each). */
 export function capabilityLabels(capabilities: readonly string[], locale: Locale = DEFAULT_LOCALE): string[] {
   return capabilities.map((c) => capabilityLabel(c, locale));
+}
+
+/* ------------------------------------------------------------------ */
+/* Specialty display labels                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Display labels of the case specialties (`CaseDefinition.specialty` ids): what the web library, the CLI and
+ * MCP show — "急诊医学" / "Emergency medicine", never `emergency-medicine`. One table for every front-end;
+ * British spelling and sentence case in English, department names in Chinese. A specialty outside the table
+ * is shown as words (its id without hyphens), never invented.
+ */
+export const SPECIALTY_LABELS: Readonly<Record<string, { "zh-CN": string; en: string }>> = {
+  "acute-medicine": { "zh-CN": "急症内科", en: "Acute medicine" },
+  "allergy-immunology": { "zh-CN": "变态反应与免疫", en: "Allergy & immunology" },
+  anesthesiology: { "zh-CN": "麻醉科", en: "Anaesthesia" },
+  "cardiac-surgery": { "zh-CN": "心脏外科", en: "Cardiac surgery" },
+  cardiology: { "zh-CN": "心内科", en: "Cardiology" },
+  "clinical-pharmacology": { "zh-CN": "临床药理", en: "Clinical pharmacology" },
+  "colorectal-surgery": { "zh-CN": "结直肠外科", en: "Colorectal surgery" },
+  "critical-care": { "zh-CN": "重症医学", en: "Critical care" },
+  dermatology: { "zh-CN": "皮肤科", en: "Dermatology" },
+  "emergency-medicine": { "zh-CN": "急诊医学", en: "Emergency medicine" },
+  endocrinology: { "zh-CN": "内分泌", en: "Endocrinology" },
+  "general-practice": { "zh-CN": "全科医学", en: "General practice" },
+  "general-surgery": { "zh-CN": "普通外科", en: "General surgery" },
+  genetics: { "zh-CN": "医学遗传学", en: "Clinical genetics" },
+  hematology: { "zh-CN": "血液科", en: "Haematology" },
+  "hepatobiliary-surgery": { "zh-CN": "肝胆外科", en: "Hepatobiliary surgery" },
+  hepatology: { "zh-CN": "肝病科", en: "Hepatology" },
+  immunology: { "zh-CN": "免疫科", en: "Immunology" },
+  "integrative-medicine": { "zh-CN": "中西医结合", en: "Integrative medicine" },
+  "infectious-disease": { "zh-CN": "感染科", en: "Infectious disease" },
+  "internal-medicine": { "zh-CN": "内科", en: "Internal medicine" },
+  neonatology: { "zh-CN": "新生儿科", en: "Neonatology" },
+  nephrology: { "zh-CN": "肾内科", en: "Nephrology" },
+  neurology: { "zh-CN": "神经内科", en: "Neurology" },
+  obstetrics: { "zh-CN": "产科", en: "Obstetrics" },
+  oncology: { "zh-CN": "肿瘤科", en: "Oncology" },
+  pathology: { "zh-CN": "病理科", en: "Pathology" },
+  "pediatric-cardiology": { "zh-CN": "小儿心血管科", en: "Paediatric cardiology" },
+  pediatrics: { "zh-CN": "儿科", en: "Paediatrics" },
+  pulmonology: { "zh-CN": "呼吸内科", en: "Pulmonology" },
+  respiratory: { "zh-CN": "呼吸", en: "Respiratory" },
+  "respiratory-medicine": { "zh-CN": "呼吸内科", en: "Respiratory medicine" },
+  rheumatology: { "zh-CN": "风湿免疫科", en: "Rheumatology" },
+  "sleep-medicine": { "zh-CN": "睡眠医学", en: "Sleep medicine" },
+  "traditional-chinese-medicine": { "zh-CN": "中医", en: "Traditional Chinese medicine" },
+  urology: { "zh-CN": "泌尿外科", en: "Urology" },
+  "vascular-medicine": { "zh-CN": "血管医学", en: "Vascular medicine" },
+};
+
+/** Display label of a specialty in `locale` (`SPECIALTY_LABELS`); an unknown id reads as words ("space medicine"). */
+export function specialtyLabel(specialty: string, locale: Locale = DEFAULT_LOCALE): string {
+  const label = SPECIALTY_LABELS[specialty];
+  return label ? t(label, locale) : specialty.replace(/-/g, " ");
+}
+
+/** Display labels of specialties, in order (`specialtyLabel` of each). */
+export function specialtyLabels(specialties: readonly string[], locale: Locale = DEFAULT_LOCALE): string[] {
+  return specialties.map((s) => specialtyLabel(s, locale));
 }

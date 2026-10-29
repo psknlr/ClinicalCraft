@@ -201,7 +201,7 @@ describe("NPC agents offline", () => {
     const read = msgsOf(await t.session.run({ type: "user_message", text: "@radiologist ct chest?" }), "agent_message")[0]!.text;
     expect(read).toContain("No aortic dissection.");
     // The evidence boundary is stated, but the authored knowledge brief is never recited (it may describe other studies).
-    expect(read).toMatch(/Boundaries: I interpret only results you have obtained/);
+    expect(read).toMatch(/Evidence boundaries: I interpret only results you have obtained/);
     expect(read).not.toContain("Interprets only reports already reviewed.");
   });
 
@@ -454,7 +454,7 @@ describe("consultants never recite their knowledge brief", () => {
     expect(t.session.state.seen.some((k) => k.startsWith("pocus@"))).toBe(true);
     const said = reply(await t.session.run({ type: "user_message", text: "what does the pocus show?", to: "radiologist" }), "radiologist");
     expect(said).not.toMatch(/consolidation with air bronchograms|right effusion|lower rather than the middle lobe/);
-    expect(said).toMatch(/Boundaries/);
+    expect(said).toMatch(/Evidence boundaries/);
 
     const a = await makeSession({ caseDef: ana!, settingsPatch: { approvalMode: "bypass" } });
     const cxr = ana!.investigations.find((i) => /cxr/.test(i.id))!;

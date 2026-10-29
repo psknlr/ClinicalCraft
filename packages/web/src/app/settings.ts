@@ -214,7 +214,7 @@ export function resolveAgentSettings(
 }
 
 /**
- * "Embodied agents" (docs/EMBODIED.md R3): the mode a NEW encounter starts in — embodied by default in
+ * "In-world mode" (the embodiment; docs/EMBODIED.md R3): the mode a NEW encounter starts in — embodied by default in
  * the 3D world (`agent.embodiment` unset), clinical when the learner turned it off. A running or saved
  * encounter keeps its own mode.
  */

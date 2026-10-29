@@ -15,6 +15,7 @@ export {
   MAX_LISTING_LIMIT,
   parseListingQuery,
   publicCase,
+  learnerCase,
   type CaseListing,
   type CaseSummary,
   type CatalogSummary,

@@ -984,6 +984,10 @@ div#target {
   place-items: center;
   margin: 10px auto 20px;
 }
+.done-mark.ended {
+  background: #8c8471;
+  color: #fff2cd;
+}
 .setting {
   display: flex;
   align-items: center;

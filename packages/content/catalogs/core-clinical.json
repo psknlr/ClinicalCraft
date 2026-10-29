@@ -541,7 +541,7 @@
         "zh-CN": "选择通气模式并设置潮气量（约 6–8 mL/kg 理想体重）、呼吸频率、PEEP 和 FiO₂，之后根据血气、气道压力和氧合调整。",
         "en": "Choose a mode and set tidal volume (about 6–8 mL/kg ideal body weight), rate, PEEP and FiO₂, then adjust to blood gases, airway pressures and oxygenation."
       },
-      "capabilities": ["ventilator"],
+      "capabilities": ["ventilator","niv"],
       "footprint": {"w":0.7,"d":0.75,"h":1.6},
       "solid": true,
       "interaction": {
@@ -688,6 +688,52 @@
         {"m":"lead-glass","p":[-0.126,1.05,0.075],"s":[0.128,0.14,0.13]},
         {"m":"green","p":[-0.125,1.047,0.005],"s":[0.14,0.015,0.01]},
         {"m":"paper","p":[-0.14,0.855,-0.08],"s":[0.1,0.05,0.1]}
+      ]
+    },
+    {
+      "id": "niv-ventilator",
+      "name": {"zh-CN":"无创呼吸机","en":"Non-invasive ventilator"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "可推至床旁的无创正压通气（BiPAP/CPAP）呼吸机，配口鼻面罩、单回路管路和加温湿化器。",
+        "en": "Mobile non-invasive positive-pressure ventilator (BiPAP/CPAP) on a rolling stand, with an oronasal mask, a single-limb circuit and a heated humidifier."
+      },
+      "usage": {
+        "zh-CN": "选择合适的面罩，设置吸气压（IPAP）、呼气压（EPAP）和吸氧浓度，观察漏气、人机同步和呼吸频率；1–2 小时后复查血气，无改善或意识下降时考虑有创通气。",
+        "en": "Fit the mask, set IPAP, EPAP and the inspired oxygen, and watch leak, synchrony and respiratory rate; recheck blood gases after 1–2 hours and consider invasive ventilation if there is no improvement or consciousness falls."
+      },
+      "capabilities": ["niv"],
+      "footprint": {"w":0.5,"d":0.5,"h":1.2},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 设置无创通气","en":"E · Set up NIV"}
+      },
+      "screen": "none",
+      "tags": ["respiratory","ward","ed","airway"],
+      "portable": "cart",
+      "parts": [
+        {"m":"coal","p":[0,0.08,0],"s":[0.46,0.04,0.06]},
+        {"m":"coal","p":[0,0.08,0],"s":[0.06,0.036,0.46]},
+        {"m":"rubber","p":[-0.2,0.03,0],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0.2,0.03,0],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0,0.03,-0.2],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0,0.03,0.2],"s":[0.06,0.06,0.06]},
+        {"m":"steel","p":[0,0.12,0],"s":[0.08,0.04,0.08]},
+        {"m":"chrome","p":[0,0.5,0],"s":[0.036,0.72,0.036]},
+        {"m":"steel","p":[0,0.86,0],"s":[0.1,0.04,0.1]},
+        {"m":"plastic","p":[0,0.895,0.01],"s":[0.4,0.03,0.32]},
+        {"m":"plastic","p":[0.04,1.01,0],"s":[0.3,0.2,0.26]},
+        {"m":"mint","p":[0.04,1.03,0.132],"s":[0.22,0.12,0.006]},
+        {"m":"teal","p":[0.04,1.105,0.133],"s":[0.26,0.015,0.005]},
+        {"m":"black","p":[-0.07,0.95,0.132],"s":[0.04,0.03,0.004]},
+        {"m":"led-green","p":[0.15,0.95,0.133],"s":[0.03,0.03,0.006]},
+        {"m":"lead-glass","p":[-0.15,0.96,0.05],"s":[0.09,0.1,0.09]},
+        {"m":"water","p":[-0.15,0.935,0.05],"s":[0.07,0.04,0.07]},
+        {"m":"clin-hose-blue","p":[-0.15,1.09,0.05],"s":[0.03,0.16,0.03]},
+        {"m":"clin-hose-blue","p":[-0.2,1.16,0.09],"s":[0.11,0.03,0.03]},
+        {"m":"plastic","p":[-0.24,1.09,0.12],"s":[0.09,0.08,0.05]},
+        {"m":"green","p":[-0.24,1.09,0.148],"s":[0.06,0.05,0.006]}
       ]
     },
     {

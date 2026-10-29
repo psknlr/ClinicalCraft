@@ -66,10 +66,12 @@ interface Item {
   id: string;
   name: string;
   requires: string[];
+  /** An investigation that is a record review (`performedAt: "records"`): a records terminal retrieves it. */
+  record?: true;
 }
 
 function items(c: CaseDefinition, kind: ItemKind, locale: string): Item[] {
-  if (kind === "investigation") return c.investigations.map((i) => ({ id: i.id, name: t(i.name, locale), requires: i.requires }));
+  if (kind === "investigation") return c.investigations.map((i) => ({ id: i.id, name: t(i.name, locale), requires: i.requires, ...(i.performedAt === "records" ? { record: true as const } : {}) }));
   if (kind === "intervention") return c.interventions.map((i) => ({ id: i.id, name: t(i.name, locale), requires: i.requires }));
   return c.exam.map((f) => ({ id: f.id, name: t(f.maneuver, locale), requires: f.requires }));
 }
@@ -154,10 +156,13 @@ function argsFor(tool: ClinicalEffect["tool"], itemId: string | null, parameters
  * viewer (EMBODIED §6): it orders laboratory investigations (the sample is
  * taken at the patient; the policy checks it) and shows laboratory and
  * bedside results — never a bedside test's order (that is done at the
- * patient with the device).
+ * patient with the device) — and it retrieves a record review
+ * (`performedAt: "records"`), whatever its `requires` say.
  */
-function orderEntry(tool: ClinicalEffect["tool"], requires: readonly string[], caps: readonly string[]): boolean {
-  if (!caps.includes(CHART_CAPABILITY) || !requires.length) return false;
+function orderEntry(tool: ClinicalEffect["tool"], requires: readonly string[], caps: readonly string[], record = false): boolean {
+  if (!caps.includes(CHART_CAPABILITY)) return false;
+  if (record) return tool === "order_test" || tool === "read_result";
+  if (!requires.length) return false;
   if (tool === "order_test") return requires.every((r) => LAB_CAPABILITIES.includes(r));
   if (tool === "read_result") return requires.every((r) => LAB_CAPABILITIES.includes(r) || BEDSIDE_CAPABILITIES.includes(r));
   return false;
@@ -218,7 +223,8 @@ export function selectClinical(opts: {
   if (!wanted) return { ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.missingParam", L, { param: kind }) }) };
   const item = all.find((i) => i.id === wanted);
   if (!item) return unknown(wanted);
-  const fits = opts.match === "subset" ? item.requires.every((r) => caps.includes(r)) || orderEntry(tool, item.requires, caps) : item.requires.some((r) => caps.includes(r));
+  // a record review is retrieved at a records terminal, never with a device (`use`)
+  const fits = opts.match === "subset" ? item.requires.every((r) => caps.includes(r)) || orderEntry(tool, item.requires, caps, item.record) : !item.record && item.requires.some((r) => caps.includes(r));
   if (!fits) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: item.name, caps: listText(capabilityLabels(item.requires, L), L) || "—" }), intent: intentFor(tool, item.id) };
   return done(item);
 }

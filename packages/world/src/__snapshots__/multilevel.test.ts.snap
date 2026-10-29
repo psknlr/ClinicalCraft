@@ -2,11 +2,11 @@
 
 exports[`teaching hospital: content and collision model > pins the model (counts by kind and a digest of every box) 1`] = `
 {
-  "digest": "7dd7d1b1",
+  "digest": "1ce2988a",
   "doors": 23,
   "kinds": {
     "door": 36,
-    "equipment": 240,
+    "equipment": 243,
     "npc": 11,
     "partition": 104,
     "rail": 3,
@@ -17,6 +17,6 @@ exports[`teaching hospital: content and collision model > pins the model (counts
     "wall": 114,
     "window": 34,
   },
-  "total": 562,
+  "total": 565,
 }
 `;

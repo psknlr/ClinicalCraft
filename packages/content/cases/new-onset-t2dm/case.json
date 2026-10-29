@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "new-onset-t2dm",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "乏力、口干 · 48岁男性",
     "en": "Tiredness and thirst · 48-year-old man"
@@ -23,6 +23,32 @@
     "en"
   ],
   "estimatedMinutes": 40,
+  "learningOutcomes": [
+    {
+      "zh-CN": "依据同一份空腹血样两项一致的异常结果（FPG ≥ 7.0 mmol/L且HbA1c ≥ 6.5%）诊断2型糖尿病，不依赖OGTT或指尖血糖仪，并用酮体、阴离子间隙和渗透压排除高血糖危象。",
+      "en": "Diagnose type 2 diabetes from two concordant abnormal results on the same fasting sample (FPG ≥ 7.0 mmol/L and HbA1c ≥ 6.5%) without an OGTT or a capillary meter, and exclude a hyperglycaemic emergency with ketones, the anion gap and osmolality."
+    },
+    {
+      "zh-CN": "在诊断时完成基线并发症和危险评估：BMI和腰围、规范血压测量、完整足部检查、血脂、eGFR、UACR、肝功能与FIB-4，并转诊规范的视网膜筛查。",
+      "en": "Complete the baseline complication and risk assessment at diagnosis: BMI and waist, standardised BP, a full foot examination, lipids, eGFR, UACR, liver tests with FIB-4, and a referral for formal retinal screening."
+    },
+    {
+      "zh-CN": "核对eGFR后启动生活方式干预、DSMES和自500 mg/日起逐周加量的二甲双胍，并说明为何不需要胰岛素和磺脲类（ADA与中国指南的阈值、驾驶者的低血糖风险）。",
+      "en": "Start lifestyle therapy with DSMES and metformin titrated weekly from 500 mg/day after checking the eGFR, and justify why insulin and a sulfonylurea are not indicated (ADA and Chinese thresholds, hypoglycaemia risk for a driver)."
+    },
+    {
+      "zh-CN": "从初诊起管理心肾风险：高强度他汀，高血压合并白蛋白尿时用ACEI（1–2周后查血钾和肌酐），药物辅助戒烟；不常规用阿司匹林、不做冠脉筛查。",
+      "en": "Treat cardiorenal risk from the first visit — a high-intensity statin, an ACE inhibitor for hypertension with albuminuria (potassium and creatinine at 1–2 weeks) and pharmacological smoking cessation — with no routine aspirin or coronary screening."
+    },
+    {
+      "zh-CN": "根据相隔 ≥ 3个月的两次UACR升高确认持续白蛋白尿，随后不论HbA1c如何，加用SGLT2抑制剂并将ACEI加至最大耐受剂量。",
+      "en": "Confirm persistent albuminuria from two raised UACRs at least 3 months apart, then add an SGLT2 inhibitor and up-titrate the ACE inhibitor regardless of the HbA1c."
+    },
+    {
+      "zh-CN": "运用共同决策和复述确认（teach-back）回应他对胰岛素和开车的担忧，并共同设定具体的行为改变目标。",
+      "en": "Use shared decision-making and teach-back to address his fears about insulin and driving, and agree specific behaviour-change goals with him."
+    }
+  ],
   "tags": [
     "synthetic",
     "outpatient",
@@ -39,8 +65,28 @@
     ],
     "license": "MIT",
     "notes": {
-      "zh-CN": "依据新诊断2型糖尿病的典型门诊表现和现行指南（ADA 2025、中国糖尿病防治指南2024版、KDIGO等）编写的虚构教学病例；姓名、单位、家庭成员及所有数据均为虚构，不基于任何真实患者。",
-      "en": "Fictional teaching case written from the typical outpatient presentation of new-onset type 2 diabetes and current guidelines (ADA 2025, Chinese Diabetes Society 2024, KDIGO and others); the name, employer, family and every value are invented and not based on any real patient."
+      "zh-CN": "依据新诊断2型糖尿病的典型门诊表现和现行指南（ADA 2025、中国糖尿病防治指南2024版、KDIGO等）编写、2026年对照ADA 2026审校的虚构教学病例；姓名、单位、家庭成员及所有数据均为虚构，不基于任何真实患者。",
+      "en": "Fictional teaching case written from the typical outpatient presentation of new-onset type 2 diabetes and current guidelines (ADA 2025, Chinese Diabetes Society 2024, KDIGO and others) and reviewed against ADA 2026; the name, employer, family and every value are invented and not based on any real patient."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ADA Standards of Care in Diabetes 2026 (Sections 2, 9, 10 and 11; summary of revisions)",
+        "ADA/EASD 2022 consensus: management of hyperglycaemia in type 2 diabetes",
+        "KDIGO 2022 diabetes management in CKD",
+        "KDIGO 2024 CKD evaluation and management",
+        "中国血脂管理指南（2023年）",
+        "EASL–EASD–EASO 2024 MASLD",
+        "WHO 2024 tobacco cessation in adults"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
     }
   },
   "disclaimer": {
@@ -6096,8 +6142,8 @@
         "en": "Diagnosis"
       },
       "hint": {
-        "zh-CN": "空腹静脉血浆葡萄糖和HbA1c是诊断性检测，床旁血糖仪读数不能用于诊断；同时查尿酮或血酮，排除酮症。想一想“两项异常结果”规则：同一份血样的两项检测也算。",
-        "en": "Fasting venous plasma glucose and HbA1c are diagnostic tests; a meter reading is not. Check urine or blood ketones to exclude ketosis. Think about the 'two abnormal results' rule — two different tests on the same sample count."
+        "zh-CN": "空腹静脉血浆葡萄糖和HbA1c是诊断性检测，床旁血糖仪读数不能用于诊断；同时查尿酮或血酮，排除酮症。确诊需要几项异常结果？它们来自同一份血样有没有关系？",
+        "en": "Fasting venous plasma glucose and HbA1c are diagnostic tests; a meter reading is not. Check urine or blood ketones to exclude ketosis. How many abnormal results does the diagnosis need — and does it matter that they come from the same sample?"
       },
       "guidance": {
         "zh-CN": "开具并查看诊断所需的检验，然后在证据板上回答诊断问题。",
@@ -6166,8 +6212,8 @@
         "en": "Baseline work-up"
       },
       "hint": {
-        "zh-CN": "新诊断时就做基线评估：血脂、肾功能（eGFR）、尿白蛋白/肌酐比（UACR）、肝功能，并安排视网膜筛查。单次UACR升高需要复查确认。",
-        "en": "Do the baseline assessment at diagnosis: lipids, renal function (eGFR), urine albumin-to-creatinine ratio (UACR), liver tests, and arrange retinal screening. A single raised UACR needs confirming."
+        "zh-CN": "新诊断时就做基线评估：血脂、肾功能（eGFR）、尿白蛋白/肌酐比（UACR）、肝功能，并安排视网膜筛查。单次UACR升高能说明什么、不能说明什么？",
+        "en": "Do the baseline assessment at diagnosis: lipids, renal function (eGFR), urine albumin-to-creatinine ratio (UACR), liver tests, and arrange retinal screening. What does a single raised UACR tell you — and what does it not?"
       },
       "guidance": {
         "zh-CN": "完成基线并发症和心血管风险评估。",
@@ -6226,8 +6272,8 @@
         "en": "Initial plan"
       },
       "hint": {
-        "zh-CN": "降糖：生活方式+DSMES+二甲双胍（先看eGFR，逐步加量）。心肾风险：他汀、ACEI/ARB（血压与白蛋白尿）、戒烟。想想什么情况才需要胰岛素，以及不同药物对开车（低血糖）的影响；最后请他复述计划。",
-        "en": "Glucose: lifestyle + DSMES + metformin (check the eGFR, titrate slowly). Cardiorenal risk: statin, ACE inhibitor/ARB (blood pressure and albuminuria), smoking cessation. Think about when insulin is actually needed and how each drug affects driving (hypoglycaemia) — then ask him to teach the plan back."
+        "zh-CN": "先说降糖：哪种一线药物适合他？开药前必须先查什么？怎样起始和加量？再看心肾：今天发现的危险因素中，哪些现在就能处理？用什么处理？想想什么情况才需要胰岛素，以及不同药物对开车（低血糖）的影响；最后请他复述计划。",
+        "en": "Glucose first: which first-line drug suits him, what must you check before prescribing it, and how will you start and step it up? Then his heart and kidneys: which of the risks you found today can you treat now, and with what? Think about when insulin is actually needed and how each drug affects driving (hypoglycaemia) — then ask him to teach the plan back."
       },
       "guidance": {
         "zh-CN": "在证据板上回答治疗决策，开具处方和转介，并用他听得懂的话解释。",
@@ -6287,8 +6333,8 @@
         "en": "Review"
       },
       "hint": {
-        "zh-CN": "初诊的任务全部完成后，在“处置”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：若相隔≥3个月两次均升高，说明白蛋白尿持续存在。",
-        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the Treat options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: if both are raised ≥ 3 months apart, the albuminuria is persistent."
+        "zh-CN": "初诊的任务全部完成后，在“处置”中为他安排3个月复诊（含复诊前复查的抽血和留尿），病例随即进入复诊阶段。复诊时问依从性和副作用，复查HbA1c、血脂、肾功能和UACR。比较两次UACR：怎样才算持续性白蛋白尿？确认后治疗要做什么调整？",
+        "en": "When every first-visit task is done, arrange his three-month review (with the bloods and urine beforehand) from the Treat options; the case then moves to the review visit. At the review ask about adherence and side effects, and repeat the HbA1c, lipids, renal function and UACR. Compare the two UACRs: what makes albuminuria persistent, and what does confirming it change?"
       },
       "guidance": {
         "zh-CN": "安排3个月复诊；进入复诊后复评并调整治疗。",
@@ -7055,7 +7101,7 @@
         "zh-CN": "未在无指征时使用胰岛素、磺脲类或“只观察不用药”，且未在看到肾功能（eGFR）前开始二甲双胍、ACEI或SGLT2抑制剂",
         "en": "Avoided insulin, a sulfonylurea or 'lifestyle only' without an indication, and started no metformin, ACE inhibitor or SGLT2 inhibitor before seeing the renal function (eGFR)"
       },
-      "weight": 2,
+      "weight": 3,
       "met": {
         "not": {
           "any": [
@@ -7073,6 +7119,28 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-first-line"
+          },
+          {
+            "intervened": "iv-metformin"
+          },
+          {
+            "intervened": "iv-insulin"
+          },
+          {
+            "intervened": "iv-sulfonylurea"
+          },
+          {
+            "intervened": "iv-lifestyle-only"
+          },
+          {
+            "flag": "rx-before-egfr"
+          }
+        ]
       }
     },
     {
@@ -7094,6 +7162,19 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-diagnosis"
+          },
+          {
+            "ordered": "inv-ogtt"
+          },
+          {
+            "ordered": "inv-ctca"
+          }
+        ]
       }
     },
     {
@@ -7327,16 +7408,19 @@
       }
     ],
     "references": [
-      "American Diabetes Association Professional Practice Committee. Standards of Care in Diabetes—2025. Diabetes Care 2025;48(Suppl 1).",
-      "中华医学会糖尿病学分会. 中国糖尿病防治指南（2024版）. 中华糖尿病杂志, 2025.",
-      "Davies MJ, Aroda VR, Collins BS, et al. Management of hyperglycaemia in type 2 diabetes, 2022. A consensus report by the American Diabetes Association (ADA) and the European Association for the Study of Diabetes (EASD). Diabetes Care 2022 / Diabetologia 2022.",
-      "Kidney Disease: Improving Global Outcomes (KDIGO) Diabetes Work Group. KDIGO 2022 Clinical Practice Guideline for Diabetes Management in Chronic Kidney Disease. Kidney International 2022.",
-      "Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney International 2024.",
-      "中国血脂管理指南修订联合专家委员会. 中国血脂管理指南（2023年）. 中华心血管病杂志, 2023.",
-      "中国高血压防治指南修订委员会等. 中国高血压防治指南（2024年修订版）. 中华高血压杂志, 2024.",
-      "International Working Group on the Diabetic Foot (IWGDF). IWGDF Guidelines on the prevention and management of diabetes-related foot disease, 2023 update.",
-      "European Association for the Study of the Liver (EASL), European Association for the Study of Diabetes (EASD), European Association for the Study of Obesity (EASO). EASL–EASD–EASO Clinical Practice Guidelines on the management of metabolic dysfunction-associated steatotic liver disease (MASLD). Journal of Hepatology 2024.",
-      "World Health Organization. WHO clinical treatment guideline for tobacco cessation in adults. Geneva: WHO, 2024."
+      "American Diabetes Association Professional Practice Committee. 2. Diagnosis and classification of diabetes: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S27-S49. doi:10.2337/dc26-S002",
+      "American Diabetes Association Professional Practice Committee. 9. Pharmacologic approaches to glycemic treatment: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S183-S215. doi:10.2337/dc26-S009",
+      "American Diabetes Association Professional Practice Committee. 10. Cardiovascular disease and risk management: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S216-S245. doi:10.2337/dc26-S010",
+      "American Diabetes Association Professional Practice Committee. 11. Chronic kidney disease and risk management: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S246-S260. doi:10.2337/dc26-S011",
+      "中华医学会糖尿病学分会. 中国糖尿病防治指南（2024版）. 中华糖尿病杂志. 2025;17(1):16-139.",
+      "Davies MJ, Aroda VR, Collins BS, et al. Management of hyperglycemia in type 2 diabetes, 2022. A consensus report by the American Diabetes Association (ADA) and the European Association for the Study of Diabetes (EASD). Diabetes Care. 2022;45(11):2753-2786. doi:10.2337/dci22-0034",
+      "Kidney Disease: Improving Global Outcomes (KDIGO) Diabetes Work Group. KDIGO 2022 clinical practice guideline for diabetes management in chronic kidney disease. Kidney Int. 2022;102(5S):S1-S127. doi:10.1016/j.kint.2022.06.008",
+      "Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 clinical practice guideline for the evaluation and management of chronic kidney disease. Kidney Int. 2024;105(4S):S117-S314. doi:10.1016/j.kint.2023.10.018",
+      "中国血脂管理指南修订联合专家委员会. 中国血脂管理指南（2023年）. 中华心血管病杂志. 2023;51(3):221-255.",
+      "中国高血压防治指南修订委员会, 高血压联盟（中国）, 中国医疗保健国际交流促进会高血压病学分会, 等. 中国高血压防治指南（2024年修订版）. 中华高血压杂志. 2024;32(7):603-700.",
+      "Schaper NC, van Netten JJ, Apelqvist J, et al. Practical guidelines on the prevention and management of diabetes-related foot disease (IWGDF 2023 update). Diabetes Metab Res Rev. 2024;40(3):e3657. doi:10.1002/dmrr.3657",
+      "European Association for the Study of the Liver (EASL), European Association for the Study of Diabetes (EASD), European Association for the Study of Obesity (EASO). EASL–EASD–EASO clinical practice guidelines on the management of metabolic dysfunction-associated steatotic liver disease (MASLD). J Hepatol. 2024;81(3):492-542. doi:10.1016/j.jhep.2024.04.031",
+      "World Health Organization. WHO clinical treatment guideline for tobacco cessation in adults. Geneva: World Health Organization; 2024."
     ],
     "notice": {
       "zh-CN": "完成度和得分是教学脚本的形成性评价，不是经过验证的临床能力评分。",
@@ -7790,7 +7874,7 @@
   "extensions": {
     "testUtterances": [
       {
-        "text": "今天哪里不舒服？",
+        "text": "今天来是哪里不舒服？",
         "locale": "zh-CN",
         "expect": [
           "hx-chief"
@@ -7853,7 +7937,7 @@
         ]
       },
       {
-        "text": "以前查过血糖吗？",
+        "text": "以前体检查过血糖没有？",
         "locale": "zh-CN",
         "expect": [
           "hx-prior-glucose"
@@ -7949,7 +8033,7 @@
         "expect": []
       },
       {
-        "text": "What brings you in today?",
+        "text": "So what's brought you in today?",
         "locale": "en",
         "expect": [
           "hx-chief"
@@ -8026,14 +8110,14 @@
         ]
       },
       {
-        "text": "Any problems with erections?",
+        "text": "Have you had any trouble getting an erection?",
         "locale": "en",
         "expect": [
           "hx-erectile"
         ]
       },
       {
-        "text": "What's your diet like?",
+        "text": "What do you eat on a typical day?",
         "locale": "en",
         "expect": [
           "hx-diet"
@@ -8054,7 +8138,7 @@
         ]
       },
       {
-        "text": "How's the stopping smoking going?",
+        "text": "Have you managed to quit smoking?",
         "locale": "en",
         "expect": [
           "hx-rv-smoking"
@@ -8281,14 +8365,14 @@
         ]
       },
       {
-        "text": "have you been checking your blood pressure at home?",
+        "text": "have you been taking your BP at home?",
         "locale": "en",
         "expect": [
           "hx-rv-home-bp"
         ]
       },
       {
-        "text": "在家量血压了吗？",
+        "text": "最近在家里自己量过血压吗？",
         "locale": "zh-CN",
         "expect": [
           "hx-rv-home-bp"

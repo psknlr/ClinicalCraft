@@ -155,9 +155,10 @@ export interface TestWorld {
 /** A world for a built-in case in a facility (default: the case's own, its first accepting slot). */
 export function makeWorld(
   caseId: string,
-  opts: { facility?: FacilityDefinition | "clinic-v4" | "general-hospital"; slotId?: string; locale?: string; mover?: Mover; spawn?: Pose; catalogs?: EquipmentCatalog[]; extra?: Partial<WorldRuntimeOptions> } = {},
+  opts: { facility?: FacilityDefinition | "clinic-v4" | "general-hospital"; slotId?: string; locale?: string; mover?: Mover; spawn?: Pose; catalogs?: EquipmentCatalog[]; extra?: Partial<WorldRuntimeOptions>; caseDef?: CaseDefinition } = {},
 ): TestWorld {
-  const caseDef = loadCase(caseId);
+  // `caseDef`: a variant of the built-in case (an added item), bound like the case itself
+  const caseDef = opts.caseDef ?? loadCase(caseId);
   const facility = typeof opts.facility === "object" ? opts.facility : loadFacility(opts.facility ?? (caseDef.facility as "clinic-v4" | "general-hospital"));
   const slotId = opts.slotId ?? assignPatientSlot(facility, caseDef)!.id;
   const harness = clinicalHarness(caseDef);

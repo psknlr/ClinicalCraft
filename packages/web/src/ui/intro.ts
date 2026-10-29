@@ -3,16 +3,20 @@
  * cards (title, specialty, difficulty dots, setting, minutes, provenance,
  * locales, saved progress), specialty/setting filters and search, the
  * facility selector (case default preselected; clinic-v4 only for
- * outpatient cases) and the case's teaching-case disclaimer, Continue /
- * Start new, language toggle, LLM status pill
+ * outpatient cases), the case's clinical review status (on every card and
+ * the selected case) and its learning outcomes (a closed disclosure with the
+ * full case's text: they usually name the diagnosis, so the index carries a
+ * count only — docs/GLOSSARY.md §4), the teaching-case
+ * disclaimer, Continue / Start new, language toggle, LLM status pill
  * (opens settings) and help. The library is the case index; the selected
  * case's full file loads in the background (its status line: loading,
  * failed — with a retry, or a page reload for a bundled case —, invalid).
  */
+import { specialtyLabel as sharedSpecialtyLabel } from "@clinicalcraft/core";
 import type { ClinicalCraftApp } from "../app/app.js";
 import type { CaseCard } from "../app/content.js";
 import { statusLabel } from "../app/llm.js";
-import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
+import { caseDisclaimer, ct, getLocale, reviewLine, tr, trMaybe } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
 
 type Status = "loading" | "ready" | "failed";
@@ -27,8 +31,9 @@ function relativeTime(iso: string): string {
   }
 }
 
+/** A specialty by its label in the UI language — core's one table for every front-end (`SPECIALTY_LABELS`). */
 export function specialtyLabel(id: string): string {
-  return trMaybe(`spec.${id}`, id.replace(/-/g, " "));
+  return sharedSpecialtyLabel(id, getLocale());
 }
 
 export class Intro {
@@ -39,6 +44,8 @@ export class Intro {
   private setting = "";
   private listEl: HTMLElement | null = null;
   private countEl: HTMLElement | null = null;
+  /** The case whose learning-outcomes disclosure the learner opened (kept across re-renders). */
+  private outcomesOpenFor: string | null = null;
 
   constructor(
     root: HTMLElement,
@@ -176,6 +183,10 @@ export class Intro {
     const card = this.selectedCard();
     if (!el || !card) return;
     el.replaceWith(this.caseStatusLine(card));
+    // The learning outcomes are the full case's: fill them in once it has loaded (open state kept).
+    const outcomes = this.root.querySelector<HTMLElement>("#case-outcomes");
+    const fresh = outcomes ? this.outcomesDisclosure(card) : null;
+    if (outcomes && fresh) outcomes.replaceWith(fresh);
   }
 
   /**
@@ -208,6 +219,8 @@ export class Intro {
     const options = app.content.facilitiesFor(card);
     const def = app.content.defaultFacility(card);
     const sel = app.selection;
+    // The review notes are the full case's (the index carries status and date only).
+    const reviewNotes = app.content.peekCase(card.id)?.provenance.review?.notes;
     const facility = h(
       "select",
       {
@@ -222,17 +235,54 @@ export class Intro {
       { class: "intro-selected" },
       h("div", { class: "eyebrow" }, tr("intro.selected")),
       h("b", { id: "selected-case" }, ct(card.title)),
+      card.review
+        ? h("p", { id: "case-review", class: ["case-review", `review-${card.review.status}`], title: reviewNotes ? ct(reviewNotes) : null, dataset: { status: card.review.status } }, reviewLine(card.review))
+        : null,
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
       this.embodimentRow(card),
       h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
+      this.outcomesDisclosure(card),
       this.caseStatusLine(card),
     );
   }
 
   /**
-   * "Embodied agents" at case start (docs/EMBODIED.md R3): the mode of a new encounter — fixed while it
-   * runs; continuing a save keeps the saved mode (said under the switch). Clinical without a 3D world.
+   * The case's learning outcomes, closed by default: specific outcomes usually name the diagnosis, so a
+   * learner opens them only on purpose (a facilitator preparing the session); the debrief lists them too.
+   */
+  private outcomesDisclosure(card: CaseCard): HTMLElement | null {
+    const n = card.learningOutcomeCount;
+    if (n <= 0) return null;
+    // The text comes from the full case (loaded in the background once selected): the index carries the count only.
+    const content = this.app.content;
+    const def = content.peekCase(card.id);
+    const outcomes = def ? def.learningOutcomes.map((o) => ct(o)).filter(Boolean) : [];
+    const status = content.caseStatus(card.id);
+    return h(
+      "details",
+      {
+        id: "case-outcomes",
+        class: "case-outcomes",
+        open: this.outcomesOpenFor === card.id,
+        ontoggle: (e: Event) => {
+          this.outcomesOpenFor = (e.target as HTMLDetailsElement).open ? card.id : null;
+        },
+      },
+      h("summary", null, tr("outcomes.disclosure", { n })),
+      h("small", { class: "case-outcomes-hint" }, tr("outcomes.disclosureHint")),
+      outcomes.length > 0
+        ? h("ol", null, outcomes.map((o) => h("li", null, o)))
+        : status === "failed" || status === "invalid"
+          ? null
+          : h("small", { class: "case-outcomes-hint" }, tr("library.caseLoading")),
+    );
+  }
+
+  /**
+   * "In-world mode" at case start (docs/EMBODIED.md R3; technically the embodiment): the mode of a new
+   * encounter — fixed while it runs; continuing a save keeps the saved mode (said under the switch).
+   * Clinical without a 3D world.
    */
   private embodimentRow(card: CaseCard): HTMLElement {
     const app = this.app;
@@ -377,6 +427,7 @@ export class Intro {
           c.source === "server" ? h("span", { class: "setting-tag server-tag", title: tr("library.serverCase.title") }, tr("library.serverCase")) : null,
           h("span", { class: "setting-tag" }, trMaybe(`setting.${c.setting}`, c.setting)),
           c.physiology ? h("span", { class: "phys-tag", title: tr("library.physiology") }, "♥ ", tr("library.physiology")) : null,
+          c.review ? h("span", { class: ["review-tag", `review-${c.review.status}`], title: reviewLine(c.review) }, trMaybe(`library.review.${c.review.status}`, c.review.status)) : null,
         ),
         h("b", { class: "case-title" }, ct(c.title)),
         h("small", { class: "case-spec" }, c.specialty.map(specialtyLabel).join(" · ")),

@@ -5,7 +5,7 @@
  * this object; the world only talks to it through `WorldCallbacks`.
  */
 import type { Op } from "@clinicalcraft/agent";
-import { regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import { historyVoice, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
@@ -475,7 +475,7 @@ export class ClinicalCraftApp implements App {
     }, 1500);
   }
 
-  /** The mode a new encounter starts in: the "Embodied agents" preference, clinical without a 3D world. */
+  /** The mode a new encounter starts in: the "In-world mode" preference, clinical without a 3D world. */
   preferredEmbodiment(): "clinical" | "embodied" {
     return this.worldFailed ? "clinical" : preferredEmbodiment(this.prefs.value);
   }
@@ -740,7 +740,7 @@ export class ClinicalCraftApp implements App {
         served: !!this.server?.served,
         resume: save?.snapshot ?? null,
         onTranscriptStopped: () => this.toast(tr("toast.transcriptStopped"), tr("toast.transcriptStoppedBody"), "warning", "transcript-stopped"),
-        // "Embodied agents" (a save keeps the mode it was recorded in)
+        // "In-world mode" (a save keeps the mode it was recorded in)
         embodiment: this.preferredEmbodiment(),
         embodied: { mover: this.mover, camera: this.camera },
       });
@@ -803,8 +803,9 @@ export class ClinicalCraftApp implements App {
       this.game = game;
       // the scene shows the world's physical state (a restored world: staff, carts, locks)
       embodied?.syncScene();
+      // Who answers history first (core `historyVoice`): the companion who answers it, or any companion while the patient cannot speak.
       this.lastTalk = {
-        agent: caseDef.patient.persona.companion?.answersHistory ? "companion" : "patient",
+        agent: historyVoice(caseDef, session.session.state) === "companion" ? "companion" : "patient",
       };
       this.storeOff.push(
         session.store.onEntry((e) => this.onEntry(e)),

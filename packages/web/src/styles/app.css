@@ -221,6 +221,52 @@ html[lang="en"] .intro-card h2 {
   font-size: 10px;
   color: var(--muted);
 }
+.case-review {
+  margin: -4px 0 8px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #6e5718;
+}
+.case-review.review-unreviewed {
+  color: #7a3426;
+}
+.case-review.review-clinician-reviewed {
+  color: #2f5a3a;
+}
+.case-outcomes {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #4f5d45;
+}
+.case-outcomes summary {
+  cursor: pointer;
+  font-weight: 650;
+  color: #47724c;
+}
+.case-outcomes-hint {
+  display: block;
+  margin: 4px 0 2px;
+  color: var(--muted);
+}
+.case-outcomes ol {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+.case-outcomes li + li {
+  margin-top: 3px;
+}
+/* Desktop: the library is a fixed-height column (100vh − 140px). The selected-case summary keeps its natural
+   height, but once it outgrows the room that leaves the case list one card (learning outcomes open) it scrolls in
+   place instead of squeezing the list away. */
+@media (min-width: 901px) {
+  .intro-selected {
+    flex-shrink: 0;
+    max-height: max(240px, calc(100vh - 450px));
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
 .case-disclaimer {
   margin: 8px 0 0;
   padding-left: 8px;
@@ -351,7 +397,8 @@ html[lang="en"] .intro-card h2 {
 }
 .prov,
 .setting-tag,
-.phys-tag {
+.phys-tag,
+.review-tag {
   font: 700 9px var(--mono);
   letter-spacing: 1px;
   padding: 3px 6px;
@@ -372,6 +419,19 @@ html[lang="en"] .intro-card h2 {
 .phys-tag {
   background: #f3d9cc;
   color: #8a2e1a;
+}
+/* Clinical review status (docs/GLOSSARY.md §4): honest, never louder than the case itself. */
+.review-tag {
+  background: #efe3bf;
+  color: #6e5718;
+}
+.review-tag.review-unreviewed {
+  background: #ead4cc;
+  color: #7a3426;
+}
+.review-tag.review-clinician-reviewed {
+  background: #d3e4cf;
+  color: #2f5a3a;
 }
 .case-title {
   font-size: 14px;
@@ -1759,6 +1819,31 @@ details.topic .question {
 }
 .pill.judged {
   box-shadow: inset 0 0 0 1px currentColor;
+}
+.pill.critical {
+  margin-left: 6px;
+  background: var(--danger-soft);
+  color: #7a2b18;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rubric-table tr.critical td:first-child {
+  box-shadow: inset 3px 0 0 #b0442a;
+}
+/* Critical rubric items missed: shown first in the unlocked debrief */
+.critical-missed {
+  margin: 14px 0;
+  padding: 12px 14px;
+  background: var(--danger-soft);
+  border-left: 4px solid #b0442a;
+  color: #5c1f10;
+}
+.critical-missed h4 {
+  margin: 0 0 6px;
+}
+.critical-missed ul {
+  margin: 0;
+  padding-left: 18px;
 }
 .narrative {
   margin-top: 16px;

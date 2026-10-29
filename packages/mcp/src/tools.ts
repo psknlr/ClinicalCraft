@@ -101,7 +101,7 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   answer_decision: { title: "Answer a decision", ...RECORDS },
   set_phase: { title: "Switch phase", ...RECORDS, idempotentHint: true },
   wait: { title: "Wait", ...RECORDS },
-  update_workup: { title: "Update the workup plan", ...RECORDS, idempotentHint: true },
+  update_workup: { title: "Update the work-up plan", ...RECORDS, idempotentHint: true },
   case_status: { title: "Case status", ...READ_ONLY },
   finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
@@ -177,7 +177,7 @@ function worldSpec(spec: WorldToolSpec): McpToolSpec {
     name: spec.name,
     title: annotations.title,
     description:
-      `${spec.description} Embodied sessions only (start_case with embodied: true); requires session_id.` +
+      `${spec.description} In-world (embodied) sessions only (start_case with embodied: true); requires session_id.` +
       (readOnly ? "" : " A step that needs approval (e.g. a device giving a high-risk drug) needs a second call with confirm: true after the user agreed."),
     inputSchema: readOnly ? schema : withConfirm(schema),
     annotations,
@@ -192,7 +192,9 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
     {
       name: "list_cases",
       title: toolAnnotations("list_cases").title,
-      description: "List the available clinical cases (opaque id handle, spoiler-free title and summary, specialty, difficulty).",
+      description:
+        "List the available clinical cases (opaque id handle, spoiler-free title and summary, specialty, difficulty, clinical review status, " +
+        "and how many learning outcomes the case has — get_debrief lists them once the case is complete, since they usually name the diagnosis).",
       inputSchema: { type: "object", properties: { locale: LOCALE_SCHEMA }, additionalProperties: false },
       annotations: toolAnnotations("list_cases"),
     },
@@ -212,7 +214,7 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
           embodied: {
             type: "boolean",
             description:
-              "Embodied mode: you get a body in the case's hospital (a headless world) — walk with navigate_to, look with observe_world, operate equipment with interact_object; " +
+              "In-world mode (embodied): you get a body in the case's hospital (a headless world) — walk with navigate_to, look with observe_world, operate equipment with interact_object; " +
               "clinical tools then need you in the right place. Fixed for the encounter. Default: the server settings (embodiment).",
           },
         },
@@ -228,7 +230,7 @@ export function mcpTools(host: Pick<ToolHost, "practiceScope" | "deny">): McpToo
       title: toolAnnotations("get_debrief").title,
       description:
         "Assess the encounter so far (objectives, required history/exam, essential investigations, decisions, safety, examiner judgements) " +
-        "and, once the case is complete, the case debrief. A teaching-script measure, not a validated competency score.",
+        "and, once the case is complete, the case debrief with its learning outcomes and review status. A teaching-script measure, not a validated competency score.",
       inputSchema: { type: "object", properties: { session_id: SESSION_ID_SCHEMA }, required: ["session_id"], additionalProperties: false },
       annotations: toolAnnotations("get_debrief"),
     },
@@ -347,12 +349,14 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
     const c = session.caseDef;
     const opening = replies.map((r) => r.text).join("\n") || t(c.patient.persona.openingLine, SL);
     const speaker = replies[0]?.speaker ?? t(c.patient.displayName, SL);
+    // A narration (the patient cannot speak, or an opening line written as an aside) is no one's words.
+    const narrated = replies[0]?.grounding === "narrated";
     const embodied = session.embodiment === "embodied";
     const place = session.placeLabel();
     const text = [
       mm(SL, "start.header", { session: session.id }),
       card?.text ?? "",
-      mm(SL, "start.says", { speaker, text: opening }),
+      narrated ? mm(SL, "start.narration", { text: opening }) : mm(SL, "start.says", { speaker, text: opening }),
       mm(SL, "start.next", { session: session.id }),
       embodied ? mm(SL, "start.embodied", { place: place ?? "-" }) : "",
       noticeLines(SL, warnings),
@@ -399,7 +403,7 @@ async function debrief(entry: McpSession): Promise<McpToolResult> {
     const out = (await session.run({ type: "slash_command", name: "debrief", args: "" })).flatMap((e) => (e.msg.type === "command_output" ? [e.msg] : []))[0];
     if (out) caseDebrief = { text: out.text, data: out.data ?? null };
   }
-  const summary = assessmentText(c, assessment.report, assessment.narrative, assessment.judged, L, { notice: caseDebrief === null, final: complete });
+  const summary = assessmentText(c, assessment.report, assessment.narrative, assessment.judged, L, { notice: caseDebrief === null, final: complete, critical: caseDebrief === null });
   const text = caseDebrief ? `${summary}\n\n${caseDebrief.text}` : summary;
   return textResult(text, {
     session_id: entry.id,

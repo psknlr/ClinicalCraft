@@ -17,11 +17,34 @@ left upper lung**. The case teaches:
 
 | | |
 |---|---|
-| id / version | `smzl-lung-adeno` / `1.1.0` |
+| id / version | `smzl-lung-adeno` / `1.2.2` |
 | setting / facility | `outpatient` / `clinic-v4` (the V4 world) |
 | locales | `zh-CN` (source language; V4 text verbatim), `en` (translation) |
 | phases | `pre` 诊断期 Diagnostic phase · `post` 治疗后复评期 Post-treatment re-evaluation (learner-switchable; static clock) |
 | difficulty | 4 / 5 |
+
+## Learning outcomes
+
+Listed in the debrief; shown before play only on request, because they name the diagnosis.
+
+1. Integrate the blood count, abdominal imaging, bone marrow biopsy and flow cytometry to diagnose SMZL with marrow
+   involvement, and keep the known lung adenocarcinoma on a separate evidence chain (BSH 2024).
+2. Before anti-CD20 therapy, assess HBsAg, anti-HBc and HBV DNA; with anti-HBc positive, plan reactivation prophylaxis
+   and monitoring even when HBV DNA is below the detection limit (EASL 2025).
+3. Interpret t(4;12)(q23;q13) as a finding in this patient's lymphoma clone; a shared origin or a fusion gene needs
+   molecular evidence from paired tissue.
+4. Distinguish aspirate cytology, trephine biopsy and flow cytometry, and do not compare percentages with different
+   denominators.
+5. Re-evaluate each tumour separately after treatment: flow improvement supports a lymphoma response but neither
+   establishes complete remission nor replaces re-evaluation of the lung cancer (BSH 2024; 2025 Chinese consensus).
+6. When the record is silent (smoking, family history, EGFR variant, TNM stage, HBsAg), say so honestly to the patient.
+
+## Review status
+
+`provenance.review`: **editorial**, 2026-10-28 — AI-assisted authoring and editorial review against BSH 2024 (marginal
+zone lymphoma), JSH 2023 (marginal zone lymphoma), the 2025 Chinese expert consensus on haematological malignancy with a
+solid tumour, and EASL 2025 (hepatitis B). Not yet reviewed by a licensed clinician: have a haematologist review it before
+teaching use.
 
 ## Provenance
 
@@ -133,7 +156,7 @@ sentence — and keeps every other carried-over string strict.
 | Physical examination (7 findings, **post only**) | 正文·体格检查, recorded **on admission for cycle 3**, after 2 cycles of rituximab |
 | `examNotRecorded`; the pre-phase examination is explicitly not recorded | (absence in the source) |
 | NPC briefs: radiologist, pathologist, Socratic attending (`revealsDiagnosis: false`) | caveats restated from V4 report notes; the attending also carries V4's spleen-history caveat (see divergences) |
-| Rubric: 11 deterministic items + 2 communication items judged from the transcript. The four decision items (`rb-dx-combination`, `rb-safety-hbv`, `rb-dx-genetics`, `rb-mgmt-phase-review`) use `decidedFirstTry`: with 2–3 options and feedback on each, a wrong first answer followed by the right one must not score full marks | design |
+| Rubric: 11 deterministic items + 2 communication items judged from the transcript. The four decision items (`rb-dx-combination`, `rb-safety-hbv`, `rb-dx-genetics`, `rb-mgmt-phase-review`) use `decidedFirstTry`: with 2–3 options and feedback on each, a wrong first answer followed by the right one must not score full marks. `rb-eff-hints` counts only once the diagnosis has been attempted or a third hint used (`scoredWhen`) | design |
 | Spoiler-free library title and summary (V4's label `CASE 01 · SMZL 与肺腺癌并存` is kept in `extensions.v4.caseLabel`) | design |
 | Debrief key reasoning 2: MCL (CD5, cyclin D1) and FL (CD10, BCL6) differential against this immunophenotype | 正文·诊断与鉴别诊断 |
 | Debrief key reasoning 3: splenic histology is the gold standard; marrow biopsy with a matching immunophenotype can support SMZL; SDRPL still to be distinguished | 正文·讨论 |
@@ -185,6 +208,21 @@ hypertension items.
   but sees `abdct` under "essential investigations missed".
 - Results are narrative text only (no `values` tables), as in V4; no
   `sha256` on the local-only assets yet.
+
+## Changelog
+
+- **1.2.2 — 2026-10-29 (assessment integrity).** `rb-eff-hints` (at most two preceptor hints) counts once the
+  learner has attempted the diagnosis decision or used a third hint (`scoredWhen`), so a learner who does nothing no
+  longer earns it: doing nothing now scores 0. No change to the case record, decisions or the V4-parity texts.
+- **1.2.1 — 2026-10-28 (assessment integrity).** `rb-safety-hbv` is **critical** (`critical: true`): ruling out HBV
+  reactivation on an undetectable HBV DNA, or no HBV check before anti-CD20 therapy, is named first in the debrief (no
+  score cap). Nine `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
+  (`cases validate --strict`). No item needed `scoredWhen`: none is earned by avoiding a harm (`rb-eff-hints`, at most
+  two hints, is still earned by doing nothing: 0.5 of 12). No change to the case record, decisions or the V4-parity
+  texts.
+- **1.2.0 — 2026-10-28 (editorial review).** Six learning outcomes and the `provenance.review` block (editorial, with the
+  guidance checked); the radiologist is 放射科医生 and model-facing texts say 学员 (docs/GLOSSARY.md). No change to the
+  case record, decisions, rubric or the V4-parity texts.
 
 ## Checking the case
 

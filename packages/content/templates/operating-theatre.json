@@ -2,7 +2,7 @@
   "schema": "clinicalcraft/room-template@1",
   "id": "operating-theatre",
   "name": {"zh-CN": "手术室", "en": "Operating theatre"},
-  "description": {"zh-CN": "手术室：手术台、无影灯、麻醉机、监护仪、C 形臂、器械台、吸引、输液和刷手池；无菌区仅限临床人员。", "en": "An operating theatre: table, surgical light, anaesthesia machine, monitor, C-arm, instrument table, suction, infusion and a scrub sink; the sterile area is for clinical staff only."},
+  "description": {"zh-CN": "手术室：手术台、无影灯、麻醉机、监护仪、C 形臂、器械台、吸引、输液、电子病历终端和刷手池；无菌区仅限临床人员。", "en": "An operating theatre: table, surgical light, anaesthesia machine, monitor, C-arm, instrument table, suction, infusion, a records terminal and a scrub sink; the sterile area is for clinical staff only."},
   "kind": "operating-room",
   "size": {"w": 10, "d": 8},
   "floor": "tile-white",
@@ -31,7 +31,8 @@
     {"id": "cabinet-1", "type": "cabinet", "x": -3, "z": -3.575},
     {"id": "cabinet-2", "type": "cabinet", "x": 3, "z": -3.575},
     {"id": "scrub-sink", "type": "scrub-sink", "x": 3.4, "z": 3.475, "rot": 180, "label": {"zh-CN": "刷手池", "en": "Scrub sink"}},
-    {"id": "treatment-cart", "type": "treatment-cart", "x": -2.6, "z": 3.3, "label": {"zh-CN": "麻醉治疗车", "en": "Anaesthetic treatment cart"}}
+    {"id": "treatment-cart", "type": "treatment-cart", "x": -2.6, "z": 3.3, "label": {"zh-CN": "麻醉治疗车", "en": "Anaesthetic treatment cart"}},
+    {"id": "records", "type": "records-terminal", "x": 4.475, "z": 1.6, "rot": 270, "label": {"zh-CN": "手术室电子病历终端", "en": "Theatre records terminal"}}
   ],
   "patientSlots": [
     {"id": "slot", "x": 0, "z": -1.2, "rot": 90, "posture": "lying", "bed": "table", "monitor": "monitor", "accepts": ["operating-room"]}
@@ -39,6 +40,6 @@
   "zones": [
     {"id": "sterile", "name": {"zh-CN": "手术室无菌区", "en": "Theatre sterile area"}, "rect": {"x": 0, "z": 0, "w": 10, "d": 8}, "roles": ["clinician", "attending", "nurse", "porter"]}
   ],
-  "capabilities": ["surgery", "anesthesia", "airway", "cardiac-monitor", "capnography", "suction", "oxygen", "infusion-pump", "iv-access", "fluoroscopy", "medications"],
+  "capabilities": ["surgery", "anesthesia", "airway", "cardiac-monitor", "capnography", "suction", "oxygen", "infusion-pump", "iv-access", "fluoroscopy", "medications", "records"],
   "tags": ["surgery", "restricted"]
 }

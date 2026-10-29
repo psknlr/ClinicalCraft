@@ -126,7 +126,7 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   // evidence board: answer the diagnosis decision with the scripted answer
   await page.evaluate(() => (window as any).__QA__.route("board"));
   const card = page.locator('.decision[data-decision="diagnosis"]');
-  await expect(card).toContainText("可以判断");
+  await expect(card).toContainText("可以作答");
   const correct = await page.evaluate(() => (window as any).__QA__.game.caseDef.decisions.find((d: any) => d.id === "diagnosis").options.find((o: any) => o.correct).id as string);
   await card.locator(`[data-option="${correct}"]`).click();
   await expect(card).toHaveClass(/correct/);
@@ -144,8 +144,14 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   await expect(page.locator(".formative")).toBeVisible();
   await expect(page.locator(".metric-grid")).toBeVisible();
   await shot(page, "debrief");
+  // the reference path misses no critical item (rubric[].critical): no alarm box
+  await expect(page.locator("#debrief-critical")).toHaveCount(0);
   await page.locator(".window-body").evaluate((el) => (el.scrollTop = el.scrollHeight));
   await shot(page, "debrief-assessment");
+  // the case is complete: the sources panel now gives the published case's citation and DOI
+  await page.evaluate(() => (window as any).__QA__.route("source"));
+  await expect(page.locator('#panel .window[data-panel="source"]')).toContainText("DOI");
+  await expect(page.locator('#panel .window[data-panel="source"]')).not.toContainText("病例完成后在复盘中显示");
 
   expect(errors).toEqual([]);
 });

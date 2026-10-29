@@ -144,3 +144,37 @@ describe("SessionStore: spatial refusals shown to the learner", () => {
     expect(store.chatFor(patientView).at(-1)).toMatchObject({ text: "HR 54\nBP 98/62", tone: "command" });
   });
 });
+
+describe("SessionStore: a patient who cannot speak (patient.nonVerbalWhen)", () => {
+  const quiet = (answersHistory: boolean) => {
+    const raw = JSON.parse(fs.readFileSync(path.resolve(here, "../../../content/cases/stemi-inferior-rv/case.json"), "utf8"));
+    raw.patient.nonVerbalWhen = { always: true };
+    raw.patient.nonVerbalReason = { "zh-CN": "气管插管镇静中", en: "intubated and sedated" };
+    raw.patient.persona.companion.answersHistory = answersHistory;
+    const r = parseCase(raw);
+    if (!r.ok) throw new Error("variant does not parse");
+    return r.value;
+  };
+
+  it("a narration is a note in the conversation, labelled by the narrator — never the patient's words", () => {
+    const store = new SessionStore(quiet(false));
+    store.op("n1", { type: "user_message", text: "Where does it hurt?", to: "patient" });
+    store.event(ev("n1", { type: "agent_message_delta", turnId: "t1", agent: "patient", delta: "Scene" }));
+    store.event(ev("n1", { type: "agent_message", turnId: "t1", agent: "patient", speaker: "Scene", text: "Liu Zhenhua cannot answer: intubated and sedated.", grounded: [], grounding: "narrated" }));
+    const chat = store.chatFor(patientView);
+    expect(chat.map((m) => [m.role, m.tone, m.speaker, m.text])).toEqual([
+      ["learner", "speech", "learner", "Where does it hurt?"],
+      ["system", "note", "Scene", "Liu Zhenhua cannot answer: intubated and sedated."],
+    ]);
+  });
+
+  it("a button question shows in the companion's conversation while the patient cannot speak", () => {
+    const store = new SessionStore(quiet(false));
+    store.op("q1", { type: "clinical_action", action: { type: "ask", itemId: caseDefFirstHistory(), via: "button" } });
+    expect(store.chat.at(-1)).toMatchObject({ role: "learner", agent: "companion" });
+  });
+});
+
+function caseDefFirstHistory(): string {
+  return caseDef.history[0]!.id;
+}

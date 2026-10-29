@@ -84,6 +84,82 @@ describe("buildSystemSections", () => {
   });
 });
 
+describe("persona standards (PROTOCOL §8; docs/GLOSSARY.md §3)", () => {
+  const prompt = (name: string) => builtinAgent(name)!.prompt;
+  const patientCtx = () => buildPatientContext({ caseDef, locale: "en", speaker: "patient", memory: { approached: true, affectIntensity: 1 }, scene: null }, state, [], [], null);
+
+  it("the patient and the companion are portrayed as standardised patients / participants (ASPE SOBP 2017)", () => {
+    const p = prompt("patient");
+    expect(p).toContain("ASPE Standards of Best Practice");
+    expect(p).toContain("the same story, the same feelings and the same level of detail whoever the learner is");
+    expect(p).toContain("Answer what was asked, and only that.");
+    expect(p).toContain("everyday words that match your health literacy");
+    expect(p).toContain("Emotional realism");
+    expect(p).toContain("never coach, hint, praise or grade the learner");
+    expect(p).toContain("Stay in role for the whole encounter");
+    const c = prompt("companion");
+    expect(c).toContain("standardised participant");
+    expect(c).toContain("you never interpret tests or examination findings");
+    expect(c).toContain("never coach the learner");
+  });
+
+  it("an override of the patient keeps the non-removable rules: no invented facts, no diagnosis or results, no medical advice", () => {
+    const override: AgentProfile = { ...builtinAgent("patient")!, source: "project", prompt: "You are {{patient.displayName}}. Be chatty and helpful." };
+    for (const patientToolPipeline of [false, true]) {
+      const t = text(override, { patient: patientCtx(), locale: "en", patientToolPipeline });
+      expect(t).toContain("Never invent symptoms, history, medicines, doses, numbers, dates, test results or diagnoses");
+      expect(t).toContain("You do not know your diagnosis or any test result unless a known fact says you were told it.");
+      expect(t).toContain("Never give medical advice, and never tell the learner what to ask, examine, order or conclude");
+    }
+  });
+
+  it("the nurse hands over in ISBAR, escalates in SBAR, reads verbal orders back and never claims an act", () => {
+    const n = prompt("nurse");
+    expect(n).toContain("Handover in ISBAR");
+    expect(n).toContain("Escalate in SBAR, without being asked");
+    expect(n).toContain("CUS: I'm Concerned, I'm Uncomfortable, this is a Safety issue");
+    expect(n).toContain("read it back");
+    const override: AgentProfile = { ...builtinAgent("nurse")!, source: "project", prompt: "You are {{npc.name}}." };
+    expect(text(override)).toContain("You have no hands in this conversation: never say you have given a drug");
+  });
+
+  it("the attending gives specific, behavioural, non-judgemental feedback, challenges with advocacy–inquiry and debriefs with PEARLS", () => {
+    const a = prompt("attending");
+    expect(a).toContain("Feedback is specific, behavioural and non-judgemental");
+    expect(a).toContain("advocacy–inquiry");
+    expect(a).toContain("Patient safety comes before pedagogy");
+    expect(a).toContain("follow PEARLS, one step per reply: Reactions");
+    for (const step of ["Description", "Analysis", "Summary"]) expect(a).toContain(step);
+  });
+
+  it("the examiner judges communication against the Calgary–Cambridge guide and keeps its JSON contract", () => {
+    const e = prompt("examiner");
+    expect(e).toContain("Calgary–Cambridge guide");
+    expect(e).toContain("When in doubt, met = false.");
+    expect(e).toContain("specific, behavioural and non-judgemental");
+    expect(e).toContain('{"items":[{"id","met","evidence"}],"narrative"}');
+    expect(e).toContain("not a validated competency score");
+  });
+
+  it("the radiologist and the pathologist discuss a report and leave the clinical conclusion to the learner", () => {
+    for (const name of ["radiologist", "pathologist"]) {
+      const r = prompt(name);
+      expect(r, name).toContain("Always call get_results first");
+      expect(r, name).toMatch(/the clinical conclusion stays with the learner/i);
+      expect(r, name).toContain("critical finding");
+    }
+  });
+
+  it("the demonstration clinician models a Calgary–Cambridge history, ABCDE first and SBAR requests", () => {
+    const c = prompt("clinician");
+    expect(c).toContain("demonstrating to a learner");
+    expect(c).toContain("open before closed (Calgary–Cambridge)");
+    expect(c).toContain("ABCDE first");
+    expect(c).toContain("with a clear request (SBAR)");
+    expect(c).toContain("Use only information returned by tools");
+  });
+});
+
 describe("offline clinician plan", () => {
   it("maps the reference solution to tool calls with localised narration", () => {
     const steps = clinicianOfflineSteps(caseDef, "zh-CN");

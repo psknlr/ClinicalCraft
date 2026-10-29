@@ -182,7 +182,7 @@ export const PROVIDER_TEMPLATES: readonly ProviderTemplate[] = [
     browserDirect: true,
     noKey: true,
     notes: {
-      "zh-CN": "浏览器经 `clinicalcraft serve` 调用模型，密钥只保存在服务器端。可用 `proxy:<供应商>` 指定上游。",
+      "zh-CN": "浏览器经 `clinicalcraft serve` 调用模型，密钥只保存在服务器端。可用 `proxy:<服务商>` 指定上游。",
       en: "The browser calls models through `clinicalcraft serve`; keys stay server-side. Use `proxy:<provider>` to pick the upstream.",
     },
   },

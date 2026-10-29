@@ -121,18 +121,27 @@ function tidy(value: number): number {
   return Math.round(value * 1e6) / 1e6;
 }
 
-function rubricSummary(c: CaseDefinition, s: SessionState) {
-  const rubric = c.rubric.map((item) => ({
+/**
+ * The rubric as assessed: each item's `met` (null for a judged item), `scored: false` while its `scoredWhen`
+ * does not hold (it then counts neither as earned nor as possible — an avoided-harm item is not earned by
+ * doing nothing), `critical: true` for a critical item; the score over the scored deterministic items; and,
+ * when the case marks critical items, the ones missed.
+ */
+function rubricSummary(c: CaseDefinition, s: SessionState): Pick<AssessmentReport, "rubric" | "score" | "criticalMissed"> {
+  const rubric: AssessmentReport["rubric"] = c.rubric.map((item) => ({
     id: item.id,
     domain: item.domain,
     weight: item.weight,
     met: item.met ? evaluate(c, s, item.met) : null,
+    ...(item.scoredWhen && !evaluate(c, s, item.scoredWhen) ? { scored: false as const } : {}),
+    ...(item.critical ? { critical: true as const } : {}),
   }));
-  const scored = rubric.filter((r) => r.met !== null);
+  const scored = rubric.filter((r) => r.met !== null && r.scored !== false);
   const possible = scored.reduce((sum, r) => sum + r.weight, 0);
   const earned = scored.filter((r) => r.met).reduce((sum, r) => sum + r.weight, 0);
   const percent = possible > 0 ? Math.round((earned / possible) * 100) : 0;
-  return { rubric, score: { earned: tidy(earned), possible: tidy(possible), percent } };
+  const critical = c.rubric.some((item) => item.critical) ? { criticalMissed: scored.filter((r) => r.critical && r.met === false).map((r) => r.id) } : {};
+  return { rubric, score: { earned: tidy(earned), possible: tidy(possible), percent }, ...critical };
 }
 
 /** Assess a session against its case (pure). */
@@ -141,7 +150,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   // Required history asked through a phase twin (`supersedes`) is credited; `asked` counts the questions really asked.
   const history = coverage(c.history, s.asked, creditedHistory(c, s));
   const exam = coverage(c.exam, s.examined);
-  const { rubric, score } = rubricSummary(c, s);
+  const { rubric, score, criticalMissed } = rubricSummary(c, s);
   return {
     caseId: c.id,
     completed: p.complete,
@@ -158,5 +167,6 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
     },
     rubric,
     score,
+    ...(criticalMissed ? { criticalMissed } : {}),
   };
 }

@@ -19,6 +19,7 @@ import {
 import { t } from "../i18n.js";
 import { evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
+import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
@@ -135,6 +136,8 @@ function onAsk(ctx: Ctx, a: Action<"ask">): Outcome {
   if (item.phases && !item.phases.includes(s.phase)) return rejected("phase-locked", `history item "${item.id}" is not available in phase "${s.phase}"`);
   const twin = supersededIn(c, item.id, s.phase);
   if (twin) return rejected("phase-locked", `history item "${item.id}" is superseded by "${twin}" in phase "${s.phase}"`);
+  // The patient cannot speak (`patient.nonVerbalWhen`) and no companion can answer: nothing is learned.
+  if (historyVoice(c, s, item.id) === "none") return rejected("cannot-answer", `the patient cannot speak now and the case has no companion to answer "${item.id}"`);
   const firstTime = !s.asked.includes(item.id);
   if (firstTime) s.asked.push(item.id);
   ctx.events.push({ type: "history.asked", itemId: item.id, firstTime, disclosure: item.disclosure });
@@ -196,7 +199,10 @@ function onSetPhase(ctx: Ctx, a: Action<"set-phase">): Outcome {
   const { c, s } = ctx;
   const phase = c.phases.find((p) => p.id === a.phase);
   if (!phase) return rejected("unknown-id", `unknown phase "${a.phase}"`);
-  if (!phase.learnerSwitchable) return rejected("phase-locked", `phase "${phase.id}" cannot be selected manually`);
+  // A locked phase opens to the learner once the case has reached it (its `enterWhen` holds): a learner who looked
+  // back at an earlier phase can return — the automatic transition fires only on a false→true edge.
+  const reached = phase.enterWhen != null && evaluate(c, s, phase.enterWhen);
+  if (!phase.learnerSwitchable && !reached) return rejected("phase-locked", `phase "${phase.id}" cannot be selected manually`);
   if (s.phase !== phase.id) {
     ctx.events.push({ type: "phase.changed", from: s.phase, to: phase.id, automatic: false });
     s.phase = phase.id;
