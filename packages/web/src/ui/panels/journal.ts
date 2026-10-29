@@ -129,9 +129,10 @@ export function sourcePanel(app: App): () => PanelView {
     if (!game) throw new Error("no game");
     const c = game.caseDef;
     const p = c.provenance;
-    // A published case's source usually names the diagnosis: its citation, DOI, authors, notes and the figure
-    // credits (which name the authors) wait for the unlocked debrief (docs/GLOSSARY.md §4 — the CLI, MCP and the
-    // server content API keep them back too; the source PDF button in the journal is locked alike).
+    // A published case's source usually names the diagnosis: its citation, DOI, authors and notes, and the list of
+    // its figures and PDF (the titles follow the report's captions), wait for the unlocked debrief (docs/GLOSSARY.md
+    // §4 — the CLI, MCP and the server content API keep the source back too; the source PDF button in the journal
+    // is locked alike).
     const hidden = !sourceMaterialUnlocked(c, game.session.store.snapshot?.state ?? game.session.session.state);
     const rows: [string, string][] = [];
     if (hidden && (p.citation || p.doi || p.authors.length)) rows.push([tr("source.citation"), tr("source.hidden")]);
@@ -140,14 +141,14 @@ export function sourcePanel(app: App): () => PanelView {
     if (p.authors.length && !hidden) rows.push([tr("source.authors"), p.authors.join("; ")]);
     if (p.license) rows.push([tr("source.license"), p.license]);
     const assets = h("ul", { class: "asset-list" });
-    for (const a of c.assets) {
+    for (const a of hidden ? [] : c.assets) {
       const { url } = caseAssetUrl(c, a.id);
       const status = h("span", { class: "asset-status" }, "…");
       void assetExists(url).then((ok) => {
         status.textContent = ok ? tr("source.assetInstalled") : tr("source.assetMissing");
         status.className = `asset-status ${ok ? "ok" : "missing"}`;
       });
-      assets.append(h("li", null, h("b", null, ct(a.title) || a.id), a.credit && !hidden ? h("small", null, ` · ${ct(a.credit)}`) : null, a.license ? h("small", { class: "muted" }, ` · ${a.license}`) : null, " ", status));
+      assets.append(h("li", null, h("b", null, ct(a.title) || a.id), a.credit ? h("small", null, ` · ${ct(a.credit)}`) : null, a.license ? h("small", { class: "muted" }, ` · ${a.license}`) : null, " ", status));
     }
     return {
       id: "source",
@@ -171,7 +172,7 @@ export function sourcePanel(app: App): () => PanelView {
             )
           : null,
         h("p", { class: "notice", id: "source-disclaimer" }, h("b", null, tr("source.disclaimer")), " ", caseDisclaimer(c.disclaimer)),
-        c.assets.length ? [h("h3", null, tr("source.assets")), assets] : null,
+        c.assets.length && !hidden ? [h("h3", null, tr("source.assets")), assets] : null,
         h("p", null, tr("source.agents")),
         h("p", null, tr("source.engine")),
         h("p", null, tr("source.anatomy")),

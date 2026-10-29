@@ -43,7 +43,7 @@ const zh = {
   "library.allSettings": "全部场景",
   "library.allCollections": "全部病例集",
   "library.cmcrCollection": "中华病例说 · {n} 例",
-  "source.locked": "论文标题、作者、DOI 与原文 PDF 将在完成病例后开放。请先通过问诊、查体与分期检查形成判断，再对照原报告复盘。",
+  "source.locked": "原报告的标题、作者与出处，以及原文配图和 PDF，将在完成病例后开放。请先通过问诊、查体与分期检查形成判断，再对照原报告复盘。",
   "journal.pdfLocked": "完成病例后可查看完整原始 PDF",
   "library.count": "{n} 个病例",
   "library.empty": "没有匹配的病例。",

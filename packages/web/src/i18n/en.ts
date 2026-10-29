@@ -41,7 +41,7 @@ const en: Messages = {
   "library.allSettings": "All settings",
   "library.allCollections": "All collections",
   "library.cmcrCollection": "CMCR · {n} cases",
-  "source.locked": "The article's title, authors, DOI and the source PDF unlock once the case is complete. Form your judgement from the history, examination and staged investigations before you review the source report.",
+  "source.locked": "The report's title, authors and citation, with its figures and the source PDF, unlock once the case is complete. Form your judgement from the history, examination and staged investigations before you review the source report.",
   "journal.pdfLocked": "Complete the case to open the full source PDF",
   "library.count": "{n} cases",
   "library.empty": "No matching cases.",
