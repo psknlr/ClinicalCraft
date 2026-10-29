@@ -203,6 +203,25 @@ describe("set-phase / hint / flag / note", () => {
     expect(same.state.seq).toBe(s.seq + 1);
   });
 
+  it("lets a learner who looked back return to a locked phase the case has reached", () => {
+    const reached = play(SIM, [
+      { type: "start" },
+      { type: "intervene", interventionId: "epi" },
+      { type: "intervene", interventionId: "oxygen" },
+    ]).state;
+    expect(reached.phase).toBe("observation");
+    // Back to the switchable arrival phase: the locked phase's condition stays true, so no automatic edge brings
+    // the learner back — selecting it by hand must work, or the case can never be finished.
+    const back = play(SIM, [{ type: "set-phase", phase: "arrival" }], reached).state;
+    expect(back.phase).toBe("arrival");
+    const returned = reduce(SIM, back, { type: "set-phase", phase: "observation" });
+    expect(returned.rejected).toBeUndefined();
+    expect(returned.state.phase).toBe("observation");
+    expect(returned.events).toContainEqual({ type: "phase.changed", from: "arrival", to: "observation", automatic: false });
+    // Before the case reaches it, the phase stays locked.
+    expectRejected(SIM, play(SIM, [{ type: "start" }]).state, { type: "set-phase", phase: "observation" }, "phase-locked");
+  });
+
   it("hint reports the current objective", () => {
     const { state, events } = play(V4, [{ type: "start" }, { type: "hint" }, { type: "ask", itemId: "pain" }, { type: "ask", itemId: "spleen" }, { type: "ask", itemId: "lung" }, { type: "hint" }]);
     expect(state.hints).toBe(2);

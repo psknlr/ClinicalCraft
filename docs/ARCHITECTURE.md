@@ -410,7 +410,8 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   **No**: a missing result cannot be read; the UI shows "no record" from
   `resultFor` before ordering). Adds key to `seen`.
 * `set-phase` — unknown phase → `unknown-id`; `learnerSwitchable: false` →
-  `phase-locked`.
+  `phase-locked` until the phase's `enterWhen` holds (the case has reached it:
+  a learner who looked back at an earlier phase can return).
 * `hint` — increments `hints`; emits `hint.used` with current objective id.
 * `answer` — decision not unlocked (`requires` false) → `requirements-unmet`;
   already decided → `already-decided`. Correct iff (single) the chosen option

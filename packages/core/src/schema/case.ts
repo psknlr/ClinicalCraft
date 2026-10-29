@@ -146,7 +146,11 @@ export const PhaseSchema = z
     id: IdSchema,
     label: LocalizedTextSchema,
     description: LocalizedTextSchema.optional(),
-    /** Learner may switch to this phase manually (V4 evidence-board time travel). */
+    /**
+     * Learner may switch to this phase manually (V4 evidence-board time travel). A phase that is not switchable
+     * opens to the learner once its `enterWhen` holds (the case has reached it), so a learner who looked back at an
+     * earlier phase can return.
+     */
     learnerSwitchable: z.boolean().default(true),
     /** Automatic transition into this phase when the condition becomes true. */
     enterWhen: ConditionSchema.optional(),

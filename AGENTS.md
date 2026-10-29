@@ -18,7 +18,7 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 npm install               # no build needed: `npm run cc`, `npm run dev` and vitest run workspace packages from source
 npm run typecheck          # tsc -b for libraries (also emits dist) + web tsc --noEmit
 npm test                   # vitest (all packages)
-npm run cc -- cases validate --all && npm run cc -- cases verify --all
+npm run cc -- cases validate --all --strict && npm run cc -- cases verify --all   # --strict: content-standard lints fail
 npm run cc -- facilities validate --all
 npx tsx scripts/gen-json-schemas.ts --check   # JSON Schemas in step with the zod schemas (`npm run schemas` rewrites them)
 npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --agent scripted-llm   # must stay 100 %

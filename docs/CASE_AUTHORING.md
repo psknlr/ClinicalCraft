@@ -339,6 +339,13 @@ solution is sent to the browser).
   Objectives are the in-game task list (任务目标); the case's
   `learningOutcomes` (学习目标) are what the learner should be able to do
   afterwards (§9.4) — keep the two distinct.
+* `phases` stage the case (presentation → work-up → treatment → follow-up).
+  A phase with `learnerSwitchable: false` and an `enterWhen` opens on its own
+  when the condition first becomes true, and stays reachable afterwards: a
+  learner who looks back at an earlier, switchable phase can select it again
+  (until the case reaches it, it is `phase-locked`). Gate a phase on the
+  objectives or decisions that precede it, never on reading the result that
+  answers a later decision.
 * 2–5 `decisions` (single best answer or select-all) with educational feedback
   on **every** option, unlocked by `requires` once the evidence exists. A
   locked decision is shown only by number and `need`; once unlocked its
