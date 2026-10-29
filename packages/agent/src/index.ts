@@ -77,6 +77,8 @@ export * from "./session/device-ops.js";
 export * from "./session/delegation.js";
 export * from "./session/embodied.js";
 export * from "./session/embodied-autopilot.js";
+export * from "./session/movement-intents.js";
+export * from "./session/staff-voice.js";
 export * from "./session/session.js";
 
 // world bridge: an external agent in a live browser session (docs/EMBODIED.md §12)

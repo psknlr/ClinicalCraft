@@ -131,7 +131,8 @@ export interface TargetRecord {
 }
 
 export interface NpcRecord {
-  kind: "patient" | "staff";
+  /** A patient, a staff member, or a patient's companion (drawn at their side: no body in the world model). */
+  kind: "patient" | "staff" | "companion";
   id: string;
   rig: PersonRig;
   x: number;

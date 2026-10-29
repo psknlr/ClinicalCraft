@@ -92,6 +92,11 @@ export interface App {
   /** Submit an op to the running session (`view`: the conversation it was typed in). */
   submit(op: Op, view?: string): string | null;
   act(action: ClinicalAction, rationale?: string): string | null;
+  /**
+   * The learner's words to an agent (`staff`: the colleague addressed by name). In-world mode: words for the patient
+   * or the companion need the learner within earshot — a short walk there, or the refusal with "Go there".
+   */
+  say(text: string, to: string, staff?: string | null): string | null;
   save(): boolean;
   /** Player position in the world (spawn when there is no world). */
   playerPos(): { x: number; z: number };

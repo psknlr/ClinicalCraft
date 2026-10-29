@@ -11,6 +11,7 @@ import type { ChatMessage } from "../providers/types.js";
 import type { DialogueEntry, TranscriptItem } from "./types.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
+import { agentOfKey } from "./staff-voice.js";
 
 /** The conversations and the dialogue of one session. */
 export class ConversationLog {
@@ -102,9 +103,9 @@ export class ConversationLog {
     await this.compactAgent(id, agent, "auto", signal);
   }
 
-  /** Compact one agent's conversation, or every conversation (`agent` null). */
+  /** Compact one agent's conversations (its own and each colleague's who speaks through it: `nurse#ed-nurse`), or every conversation (`agent` null). */
   async compact(id: string, agent: AgentRole | null, trigger: "manual" | "auto", signal?: AbortSignal): Promise<void> {
-    const targets = agent ? [agent] : [...this.byAgent.keys()];
+    const targets = agent ? [...new Set([agent, ...[...this.byAgent.keys()].filter((key) => agentOfKey(key) === agent)])] : [...this.byAgent.keys()];
     for (const name of targets) {
       if (signal?.aborted) return;
       await this.compactAgent(id, name, trigger, signal);
@@ -122,7 +123,8 @@ export class ConversationLog {
       return;
     }
     const before = estimateTokens(history);
-    const provider = k.profiles.has(agent) ? k.models.model(agent, false).provider : null;
+    const profile = agentOfKey(agent);
+    const provider = k.profiles.has(profile) ? k.models.model(profile, false).provider : null;
     const result = await compactConversation({ provider, messages: history, locale: k.locale, ...(signal ? { signal } : {}) });
     if (result.compactedCount === 0) return;
     if (provider && result.deterministic && !signal?.aborted) k.emit(id, { type: "warning", message: rt(k.locale, "warning.compactFallback", { agent }) });

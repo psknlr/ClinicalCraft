@@ -42,6 +42,7 @@
 import type { CaseDefinition, FacilityDefinition } from "@clinicalcraft/core";
 import { permits } from "./authority.js";
 import type { DeviceRules } from "./behaviors.js";
+import { escortPatient } from "./escort.js";
 import type { PatientBody } from "./patient.js";
 import { refreshPatient, relocatePatient, transportPatient, type TransportHost } from "./transport.js";
 import type {
@@ -476,6 +477,7 @@ export class ActionBus implements EffectsHost, TransportHost {
       return failed(spatial.code, `${spatial.message} ${worldMessage("NO_ROUTE_HINT", L, { target: locator.name(targetId), reason: plan.code })}`, { hint: null });
     }
     if (o.effect === "transport") return transportPatient(this, request, actor, targetId, signal);
+    if (o.effect === "escort" || o.effect === "release") return escortPatient(this, request, actor, targetId, o.effect === "escort");
     return runOperation(this, request, actor, targetId, o, signal);
   }
 

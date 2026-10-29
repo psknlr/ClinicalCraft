@@ -547,9 +547,14 @@ export class SpatialChecker {
     const all = rankedPatientProviders(deps, caps);
     if (!all.length) return { ok: false, failures: [{ reason: "no-provider-in-facility", details: { capabilities: [...caps] }, candidates: [], message: () => worldMessage("spatial.no-provider-in-facility", L, { caps: capsText }) }] };
     const free = all.filter((id) => !this.busyBy(actor, id));
+    // a study done ON the patient needs them positioned on the device (brought there: on its table, by the C-arm) —
+    // standing beside a scanner, walking with someone, is not being scanned; a station's test needs them there
+    const studies = this.d.policy instanceof DefaultSpatialPolicy ? this.d.policy.onDevice : new Set(PATIENT_AT_PROVIDER_CAPABILITIES);
+    const onDevice = caps.some((c) => studies.has(c));
+    const at = onDevice ? (loc.patientBody?.place()?.provider ?? null) : null;
     for (const id of free) {
       const p = loc.place(id);
-      if (p && this.patientWithin(patient, p)) return { ok: true, satisfiedBy: [id] };
+      if (p && this.patientWithin(patient, p) && (!onDevice || at === id)) return { ok: true, satisfiedBy: [id] };
     }
     if (!free.length) {
       const holder = this.busyBy(actor, all[0]!)!;

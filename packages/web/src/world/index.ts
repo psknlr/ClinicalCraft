@@ -71,6 +71,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
       const n = ctx.npcs.get(`staff:${staffId}`);
       if (n) n.speaking = speaking;
     },
+    setCompanionSpeaking: (slotId, speaking) => world.people.setCompanionSpeaking(slotId, speaking),
     setWaypoint: (target) => world.overlay.setWaypoint(target),
     walkTo: (target, signal) => world.walk.walkTo(target, signal),
     drawMap: (target, o) => world.map.draw(target, o),
@@ -99,6 +100,7 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     pushEquipment: (placementId, by) => world.carts.push(placementId, by),
     placePatient: (slotId, at) => world.people.placeAt(slotId, at),
     pushPatient: (slotId, by, posture) => world.people.push(slotId, by, posture),
+    escortPatient: (slotId, by) => world.people.escort(slotId, by),
     setDoor: (doorId, open) => world.doors.set(doorId, open),
     setDoorLocked: (doorId, locked) => world.doors.setLocked(doorId, locked),
     captureFrame(o) {

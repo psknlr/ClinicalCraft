@@ -21,6 +21,7 @@ import { runExaminer, runExaminerPrompt, type ExaminerVerdict } from "./examiner
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { runPatientTurn, selectFacts } from "./patient-pipeline.js";
+import { conversationKey, type StaffVoice } from "./staff-voice.js";
 
 /** How learner text reaches an agent: a message, or a custom slash command's prompt (PROTOCOL §9). */
 export type AgentTurnMode = "message" | "prompt";
@@ -35,6 +36,8 @@ export class AgentTurns {
    * Run one agent turn (also used for nested asks from tools). `mode`
    * "prompt" (custom slash commands): the examiner answers the text instead
    * of running an assessment; every other agent takes it as a message.
+   * `voice`: the staff member the learner addressed (`user_message.staff`) —
+   * they answer under their own name, with their own conversation.
    */
   async runAgent(
     id: string,
@@ -43,13 +46,14 @@ export class AgentTurns {
     signal?: AbortSignal,
     extraContext: readonly string[] = [],
     mode: AgentTurnMode = "message",
+    voice: StaffVoice | null = null,
   ): Promise<{ text: string; grounded: string[] }> {
     const k = this.k;
     const turnId = k.newId();
     const started = k.now();
-    // Staff speak under their case/facility name: say it now, before the first streamed text.
-    const speaker = TOP_AGENT_ROLES.has(name) ? null : npcDisplayName(k.caseDef, k.facility, name, k.locale);
-    k.emit(id, { type: "turn_started", turnId, agent: name, ...(speaker && speaker !== name ? { speaker } : {}) });
+    // Staff speak under their case/facility name — the addressed colleague's own: say it now, before the first streamed text.
+    const speaker = TOP_AGENT_ROLES.has(name) ? null : (voice?.name ?? npcDisplayName(k.caseDef, k.facility, name, k.locale));
+    k.emit(id, { type: "turn_started", turnId, agent: name, ...(speaker && speaker !== name ? { speaker } : {}), ...(voice ? { staffId: voice.staffId } : {}) });
     let outcome: AgentOutcome;
     try {
       const profile = k.profiles.get(name);
@@ -60,7 +64,7 @@ export class AgentTurns {
         if (kind === "patient" || kind === "companion") outcome = await this.runPatientAgent(id, turnId, kind, utterance, signal);
         else if (kind === "examiner") outcome = mode === "prompt" ? await this.examinerPromptTurn(id, turnId, profile, utterance, signal) : await this.examinerTurn(id, turnId, signal);
         else if (kind === "clinician" && !k.models.model("clinician").provider) outcome = await this.offlineClinicianBlock(id, turnId, k.models.model("clinician").maxToolRounds, signal);
-        else outcome = await this.runModelAgent(id, turnId, profile, utterance, signal, extraContext);
+        else outcome = await this.runModelAgent(id, turnId, profile, utterance, signal, extraContext, voice);
       }
     } catch (err) {
       outcome = { status: "error", text: "", grounded: [], error: { message: err instanceof Error ? err.message : String(err) } };
@@ -104,10 +108,10 @@ export class AgentTurns {
     k.emit(id, { type: "turn_phase", turnId, agent, phase: "idle" });
   }
 
-  private emitAgentMessage(id: string, turnId: string, agent: AgentRole, text: string, grounded: string[]): void {
+  private emitAgentMessage(id: string, turnId: string, agent: AgentRole, text: string, grounded: string[], voice: StaffVoice | null = null): void {
     const k = this.k;
-    const speaker = TOP_AGENT_ROLES.has(agent) ? agent : npcDisplayName(k.caseDef, k.facility, agent, k.locale);
-    k.emit(id, { type: "agent_message", turnId, agent, speaker, text, grounded });
+    const speaker = TOP_AGENT_ROLES.has(agent) ? agent : (voice?.name ?? npcDisplayName(k.caseDef, k.facility, agent, k.locale));
+    k.emit(id, { type: "agent_message", turnId, agent, speaker, text, grounded, ...(voice ? { staffId: voice.staffId } : {}) });
     k.conversations.addDialogue({ who: agent, speaker, text });
   }
 
@@ -209,19 +213,21 @@ export class AgentTurns {
     }
   }
 
-  private async runModelAgent(id: string, turnId: string, profile: AgentProfile, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = []): Promise<AgentOutcome> {
+  private async runModelAgent(id: string, turnId: string, profile: AgentProfile, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = [], voice: StaffVoice | null = null): Promise<AgentOutcome> {
     const k = this.k;
     const m = k.models.model(profile.name);
-    if (!m.provider) return this.offlineReply(id, turnId, profile, utterance, false);
-    await k.conversations.maybeAutoCompact(id, profile.name, signal);
+    if (!m.provider) return this.offlineReply(id, turnId, profile, utterance, false, voice);
+    // each colleague keeps their own conversation with the learner (two nurses share a profile, never a memory)
+    const key = conversationKey(profile.name, voice);
+    await k.conversations.maybeAutoCompact(id, key, signal);
     const parts: ChatPart[] = [{ type: "text", text: utterance.trim() || rt(k.locale, "npc.approach") }];
     for (const extra of extraContext) parts.push({ type: "text", text: extra });
     const turn = await runAgentTurn({
       host: k.tools.loopHost(id),
       agent: profile,
       provider: m.provider,
-      system: buildSystemSections(profile, k.promptContext()),
-      history: k.conversations.of(profile.name),
+      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}) }),
+      history: k.conversations.of(key),
       userParts: parts,
       tools: k.toolsFor(profile.name),
       maxToolRounds: m.maxToolRounds,
@@ -230,26 +236,26 @@ export class AgentTurns {
       ...(signal ? { signal } : {}),
       request: k.models.requestOptions(m),
       ...retryOption(k.models.retryFor(m)),
-      onAssistantText: (text) => this.emitAgentMessage(id, turnId, profile.name, text, []),
+      onAssistantText: (text) => this.emitAgentMessage(id, turnId, profile.name, text, [], voice),
       onUsage: (u) => k.models.trackUsage(id, profile.name, u),
       now: k.now,
     });
-    k.conversations.commitTurn(profile.name, turn);
+    k.conversations.commitTurn(key, turn);
     const fallback = k.settings.patient.offlineFallback && agentKind(profile) !== "clinician" && !signal?.aborted;
     if (turn.stopReason === "error" && fallback) {
       k.emit(id, { type: "warning", message: rt(k.locale, "warning.offlineFallback", { agent: profile.name, error: turn.error?.message ?? "error" }) });
-      return this.offlineReply(id, turnId, profile, utterance, true);
+      return this.offlineReply(id, turnId, profile, utterance, true, voice);
     }
     // A refusal with nothing said (the loop already warned): the deterministic responder answers, as for an error.
     if (turn.stopReason === "refusal" && !turn.text.trim() && fallback) {
       k.emit(id, { type: "warning", message: rt(k.locale, "warning.refusalFallback", { agent: profile.name }) });
-      return this.offlineReply(id, turnId, profile, utterance, true);
+      return this.offlineReply(id, turnId, profile, utterance, true, voice);
     }
     return { status: turn.stopReason, text: turn.text, grounded: turn.grounded, ...(turn.error ? { error: turn.error } : {}), toolCalls: turn.toolCalls };
   }
 
   /** Deterministic responder for agents without a model. */
-  private offlineReply(id: string, turnId: string, profile: AgentProfile, utterance: string, userAlreadyRecorded: boolean): AgentOutcome {
+  private offlineReply(id: string, turnId: string, profile: AgentProfile, utterance: string, userAlreadyRecorded: boolean, voice: StaffVoice | null = null): AgentOutcome {
     const k = this.k;
     const ctx = { caseDef: k.caseDef, locale: k.locale, state: () => k.state };
     const kind = agentKind(profile);
@@ -274,9 +280,9 @@ export class AgentTurns {
     const messages: ChatMessage[] = [];
     if (utterance.trim() && !userAlreadyRecorded) messages.push({ role: "user", content: [{ type: "text", text: utterance }] });
     messages.push({ role: "assistant", content: [{ type: "text", text }] });
-    k.conversations.append(profile.name, messages);
+    k.conversations.append(conversationKey(profile.name, voice), messages);
     k.emit(id, { type: "agent_message_delta", turnId, agent: profile.name, delta: text });
-    this.emitAgentMessage(id, turnId, profile.name, text, []);
+    this.emitAgentMessage(id, turnId, profile.name, text, [], voice);
     return { status: "end_turn", text, grounded: [] };
   }
 

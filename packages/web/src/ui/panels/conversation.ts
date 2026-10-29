@@ -8,7 +8,15 @@
  * there with her own body (`/delegate staff:<id> <task>`, the session's
  * `delegate_task`), the outcome shows in this conversation. A colleague is
  * always a named staff member (`app/staff.ts`: the one the world would send
- * to this patient when the window was opened for a role, e.g. `@nurse`).
+ * to this patient when the window was opened for a role, e.g. `@nurse`), and
+ * the learner's words go to that person (`user_message.staff`): they answer
+ * in their own name, this window shows only their thread.
+ *
+ * Moving the patient (embodied, EMBODIED §8.4) is said, not clicked through a
+ * menu: the patient window offers "Please follow me", "Please wait here",
+ * "Back to bed" and "Please come with me to ‹the CT scanner›" — sentences the
+ * session understands the same way when typed —, and a nurse, paramedic,
+ * porter or attending can be asked to take the patient to a study or back.
  */
 import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, type Resolution } from "@clinicalcraft/agent";
 import {
@@ -28,6 +36,7 @@ import { trTask } from "../../app/embodied-link.js";
 import { missingCaps } from "../../app/stations.js";
 import { delegateLine, delegationSummary, staffById, staffForAgent, type StaffRef } from "../../app/staff.js";
 import type { ChatItem } from "../../app/store.js";
+import { awayFromBed, studyDestinations } from "../../app/destinations.js";
 import { ageText, sexText } from "../../app/world-bridge.js";
 import { ct, getLocale, tr, trList, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
@@ -79,6 +88,8 @@ function roleLabel(agent: string): string {
 /** Staff roles a learner may delegate bedside tasks to (embodied mode) and the tasks offered. */
 export const DELEGATE_ROLES: ReadonlySet<string> = new Set(["nurse", "paramedic"]);
 export const DELEGATE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access"] as const;
+/** Staff roles who take the patient somewhere when asked (the world's transport roles that speak to the learner). */
+export const TRANSPORT_ROLES: ReadonlySet<string> = new Set(["nurse", "paramedic", "porter", "attending"]);
 
 export function conversationPanel(app: App, args: ConversationArgs): () => PanelView {
   return () => {
@@ -140,7 +151,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
         agents.add(to);
         renderedVersion = -1;
       }
-      app.submit({ type: "user_message", text: addressed.text, to });
+      // the colleague of this window by name; in-world, words for the patient need the learner within earshot
+      app.say(addressed.text, to, staff && to === args.agent ? staff.staffId : null);
     };
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
@@ -190,7 +202,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
           h(
             "div",
             { class: "chips" },
-            prompts.map((p) => h("button", { type: "button", onclick: () => app.submit({ type: "user_message", text: p, to: args.agent }) }, p)),
+            prompts.map((p) => h("button", { type: "button", onclick: () => app.say(p, args.agent, staff?.staffId ?? null) }, p)),
           ),
         );
         // embodied: delegate a bedside task to this staff member (she walks there herself)
@@ -205,7 +217,39 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             ),
           );
         }
+        // embodied: ask this colleague to take the patient to a study or back to bed — in words, as typed
+        const world = game.embodied ? game.session.world() : null;
+        if (world && staff && TRANSPORT_ROLES.has(staff.role)) {
+          const take = (text: string, dest: string) => h("button", { type: "button", dataset: { take: dest }, onclick: () => app.say(text, args.agent, staff.staffId) }, text);
+          suggestions.append(
+            h("div", { class: "eyebrow delegate-head" }, tr("conv.moveTake")),
+            h("p", { class: "small muted" }, tr("conv.moveTakeHint", { name: staffName })),
+            h(
+              "div",
+              { class: "chips move-chips", id: "take-chips" },
+              studyDestinations(world, c, getLocale()).map((d) => take(tr("move.take", { place: d.name }), d.id)),
+              awayFromBed(world) ? take(tr("move.takeBack"), "home") : null,
+            ),
+          );
+        }
         return;
+      }
+      // embodied: walking with the patient — said to them (the session understands the same sentences typed)
+      const world = game.embodied ? game.session.world() : null;
+      if (world) {
+        const say = (text: string, kind: string, label = text) => h("button", { type: "button", dataset: { move: kind }, onclick: () => app.say(text, "patient") }, label);
+        const escorted = world.patientPlace()?.escort !== undefined;
+        suggestions.append(
+          h("div", { class: "eyebrow delegate-head" }, tr("conv.move")),
+          h("p", { class: "small muted" }, tr("conv.moveHint")),
+          h(
+            "div",
+            { class: "chips move-chips", id: "move-chips" },
+            escorted ? say(tr("move.wait"), "wait") : say(tr("move.follow"), "follow"),
+            studyDestinations(world, c, getLocale()).map((d) => say(tr("move.withMe", { place: d.name }), d.id)),
+            awayFromBed(world) ? say(tr("move.back"), "home", tr("move.backLabel")) : null,
+          ),
+        );
       }
       const state = store.snapshot?.state ?? game.session.session.state;
       const items = suggestedHistory(c, state);
@@ -246,7 +290,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       renderedVersion = store.version;
       const nearBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 60;
       clear(log);
-      const items = store.chatFor(agents);
+      const items = store.chatFor(agents, staff?.staffId ?? null);
       if (!items.length) log.append(h("div", { class: "chat-empty" }, isPatient ? tr("conv.empty") : staff ? tr("conv.emptyStaff", { name: staffName }) : tr("conv.emptyRole", { role: staffName })));
       const nameOf = (id: string) => staffById(id, staffCtx)?.name ?? null;
       // world entities and actors by name (a delegation's steps)
@@ -510,6 +554,12 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
     select(tab);
 
     let lastState = store.snapshot?.state;
+    // where the patient is and whom they walk with (the movement chips follow the world, not clinical state)
+    const placeKey = (): string => {
+      const p = game.embodied ? game.session.world()?.patientPlace() : null;
+      return p ? `${p.slot ?? ""}|${p.provider ?? ""}|${p.escort ?? ""}` : "";
+    };
+    let lastPlace = placeKey();
     return {
       id: "conversation",
       kicker: isPatient ? tr("conv.kicker") : tr("conv.kickerStaff"),
@@ -519,11 +569,14 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       focus: args.focusInput || !isPatient ? input : null,
       update() {
         const state = store.snapshot?.state;
+        const place = placeKey();
+        const placeChanged = place !== lastPlace;
+        lastPlace = place;
         const stateChanged = state !== lastState;
         lastState = state;
         if (tab === "talk") {
           renderLog();
-          if (stateChanged) renderSuggestions();
+          if (stateChanged || placeChanged) renderSuggestions();
           renderBadge();
         } else if (stateChanged) {
           const scroll = tabBody.parentElement?.scrollTop ?? 0;

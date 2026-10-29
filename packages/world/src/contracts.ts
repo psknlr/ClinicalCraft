@@ -336,6 +336,12 @@ export interface PatientPlaceState {
   trolley: EntityId | null;
   /** What the patient lies or sits on at the spot (a table, the scanner, the trolley), or null (standing). In a slot: its bed. */
   support: EntityId | null;
+  /**
+   * The actor the patient walks with (`escort_patient`, EMBODIED §8.4): while set, the patient is at that actor's
+   * side wherever the actor goes — derived from the actor's pose, never stored step by step — standing, with no
+   * body on the floor of their own. Absent or null: they stay where they are.
+   */
+  escort?: ActorId | null;
 }
 
 /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
@@ -362,6 +368,8 @@ export interface PatientPlace {
    * (null: walking), in which posture — renderers draw them travelling with the walker. Absent otherwise.
    */
   transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture };
+  /** The actor the patient walks with now (`escort_patient`): renderers draw them following that actor. Absent otherwise. */
+  escort?: ActorId;
 }
 
 /**
@@ -449,6 +457,11 @@ export type WorldEvent = (
   | { id: string; type: "patient.moved"; entityId: EntityId; from: PatientPlace; to: PatientPlace; by: ActorId | null; distance: number; path: PathPoint[] }
   /** The patient's posture changed where they are (clinical state: positioning, a transfer). */
   | { id: string; type: "patient.posture"; entityId: EntityId; from: BodyPosture; to: BodyPosture }
+  /**
+   * The patient started walking with an actor (`escort`: that actor) or stopped (`escort` null: they stay where
+   * they are); `actorId` asked for it (null: it ended by itself — a transport, a transfer, clinical state).
+   */
+  | { id: string; type: "patient.escort"; entityId: EntityId; escort: ActorId | null; actorId: ActorId | null }
 ) & {
   /**
    * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a

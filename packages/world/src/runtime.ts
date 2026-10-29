@@ -54,6 +54,10 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     initialPosture: bindingPosture(binding, facility),
     staticBody: staticBody ? { minX: staticBody.minX, maxX: staticBody.maxX, minZ: staticBody.minZ, maxZ: staticBody.maxZ } : null,
     locale,
+    // walking with someone (`escort_patient`): at that actor's side, on their side of any wall
+    actorPose: (id) => store.actor(id)?.pose ?? null,
+    clear: (level, a, b) => visibility.lineOfSight(level, a, b),
+    cues: () => (slot ? clinical.cues(slot.id) : {}),
   });
   // the grids and the occlusion read the physical state (doors, obstacles, moved carts and beds, carried items, the patient's body) as they are built
   const dynamics: WorldDynamics = {

@@ -40,6 +40,7 @@ import { BrowserCamera, BrowserMover } from "./embodied.js";
 import { EmbodiedLink } from "./embodied-link.js";
 import { ExternalControl, externalOffered } from "./external.js";
 import { coarse, preferredEmbodiment, Prefs } from "./settings.js";
+import { staffForAgent } from "./staff.js";
 import type { LogEntry } from "./store.js";
 import { GameWorldLink, patientFor, routeInteraction, slotFor, WorldHost, type Route, type WorldSpec } from "./world-bridge.js";
 
@@ -435,6 +436,14 @@ export class ClinicalCraftApp implements App {
     return this.game.session.act(action, rationale);
   }
 
+  say(text: string, to: string, staff?: string | null): string | null {
+    if (!this.game) return null;
+    const op = { type: "user_message" as const, text, to, ...(staff ? { staff } : {}) };
+    // embodied: words for the patient are checked against the world first (within earshot), like an act
+    if (this.game.embodied) return this.game.embodied.say(op);
+    return this.submit(op);
+  }
+
   externalOffered(): boolean {
     return externalOffered(this.server);
   }
@@ -771,6 +780,7 @@ export class ClinicalCraftApp implements App {
         locale: () => getLocale(),
         playing: () => this.isPlaying(),
         activeStaff: () => this.game?.activeStaff ?? null,
+        staffFor: (agent) => staffForAgent(agent, { facility, slotId: slot?.id ?? null, world: session.world() })?.staffId ?? null,
         agentDriving: () => this.game?.embodied?.agentDriving() ?? false,
         embodied: () => this.game?.embodied ?? null,
       });
@@ -1118,6 +1128,8 @@ export class ClinicalCraftApp implements App {
       interact: (target: InteractionTarget) => app.callbacks().onInteract(target),
       act: (action: ClinicalAction) => app.act(action),
       submit: (op: Op) => app.submit(op),
+      /** The learner's words through the UI's path (in-world: within earshot of the patient first). */
+      say: (text: string, to = "patient", staff?: string) => app.say(text, to, staff ?? null),
       /** Deterministic engine action without the approval gate (test set-up only). */
       dispatch: (action: ClinicalAction) => app.game?.session.session.dispatch(action) ?? null,
       start: (caseId: string, facilityId?: string, resume = false) => {

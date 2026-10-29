@@ -117,6 +117,8 @@ export const OPERATION_NAMES: Record<string, Pair> = {
   put_down: { "zh-CN": "放下", en: "Put down" },
   equip: { "zh-CN": "佩戴", en: "Equip" },
   transport_patient: { "zh-CN": "转运患者", en: "Transport the patient" },
+  escort_patient: { "zh-CN": "请患者跟着走", en: "Ask the patient to walk with you" },
+  release_patient: { "zh-CN": "请患者在此等候", en: "Ask the patient to wait here" },
 };
 
 /** Room kinds in words (a destination's `roomKind`). */
@@ -205,6 +207,11 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.noDestination": { "zh-CN": "要把患者送到哪里？请给出目的地：设备、床位、房间，或送回原床位", en: "where to? Give a destination: a device, a bed space, a room, or back to their own bed space" },
   "pre.unknownDestination": { "zh-CN": "这里没有可以把患者送去的「{destination}」。", en: 'There is no "{destination}" here to take the patient to.' },
   "pre.patientBusy": { "zh-CN": "{patient}正由{holder}转运中。", en: "{patient} is being moved by {holder}." },
+  "pre.notEscorted": { "zh-CN": "{patient}没有跟着谁走。", en: "{patient} is not walking with anyone." },
+  "pre.alreadyEscorted": { "zh-CN": "{patient}已经跟着你了。", en: "{patient} is already walking with you." },
+  "pre.cannotWalk.lying": { "zh-CN": "{patient}现在需要卧床，不能走动：请连床一起转运。", en: "{patient} has to stay lying down and cannot walk: take them on their bed." },
+  "pre.cannotWalk.unresponsive": { "zh-CN": "{patient}无法回应，不能跟你走。", en: "{patient} cannot respond and cannot walk with you." },
+  "pre.cannotWalk.unwell": { "zh-CN": "{patient}情况不稳定，现在不宜走动。", en: "{patient} is too unwell to walk now." },
   // range / sight
   NOT_IN_RANGE: { "zh-CN": "距「{target}」{distance} 米，需在 {range} 米内。", en: '"{target}" is {distance} m away; within {range} m is needed.' },
   NOT_IN_RANGE_LEVEL: { "zh-CN": "「{target}」在另一层（{level}）。", en: '"{target}" is on another level ({level}).' },
@@ -223,6 +230,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
   "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
   "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
+  "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
+  "ok.patientWaits": { "zh-CN": "{patient}停下来，在{place}等候。", en: "{patient} stops and waits in {place}." },
   // relocation by the team (a transfer, a phase with a location)
   "relocate.done": { "zh-CN": "{patient}已被送到{place}。", en: "{patient} has been moved to {place}." },
   "relocate.already": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
@@ -324,6 +333,9 @@ export const EVENT_SUMMARIES: Record<string, Pair> = {
   "patient.transported": { "zh-CN": "{actor}把{patient}送到{place}", en: "{actor} took {patient} to {place}" },
   "self.transported": { "zh-CN": "你把{patient}送到{place}", en: "You took {patient} to {place}" },
   "patient.posture": { "zh-CN": "{patient}现在{posture}", en: "{patient} is now {posture}" },
+  "patient.escort": { "zh-CN": "{patient}跟着{actor}走", en: "{patient} walks with {actor}" },
+  "self.escort": { "zh-CN": "{patient}跟着你走", en: "{patient} walks with you" },
+  "patient.stays": { "zh-CN": "{patient}停下来等候", en: "{patient} stopped and waits" },
 };
 
 /** Localised world message for a key ({placeholders} filled from vars; unknown keys are returned as is). */

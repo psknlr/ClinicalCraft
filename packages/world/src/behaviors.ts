@@ -32,12 +32,13 @@ import { monitorAttached, type ClinicalEffect, type LocalizedText } from "@clini
 import { permits, rolesFor, operationClass } from "./authority.js";
 import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
+import { escortProblem } from "./escort.js";
 import type { Placed, WorldLocator } from "./locate.js";
 import { MIN_RANGE } from "./nav/backend.js";
 import type { WorldStateStore } from "./state.js";
 
 /** Built-in effects of operations (beyond a declarative state transition). */
-export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "transport";
+export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "transport" | "escort" | "release";
 
 /** One operation an entity offers (built-in or from the catalog). */
 export interface OperationSpec {
@@ -126,13 +127,18 @@ export const TRANSPORT_ROLES: readonly ActorRole[] = ["clinician", "attending", 
 /**
  * The patient (EMBODIED §8, patient transport): `transport_patient {destination}` — wheel the bed (or walk
  * the patient) to a provider, a bed space or back home; from the patient's side (physical class, narrowed to
- * `TRANSPORT_ROLES`).
+ * `TRANSPORT_ROLES`). `escort_patient` — the patient gets up and walks with the actor wherever they go — and
+ * `release_patient` — they wait where they are — are asked from conversation range (`escort.ts`).
  */
 export const PATIENT_BEHAVIOR: BehaviorSpec = {
   stateSource: "none",
   initial: null,
   states: {},
-  operations: [op("transport_patient", { effect: "transport", requires: [{ patientWithin: RANGES.contact }], roles: TRANSPORT_ROLES })],
+  operations: [
+    op("transport_patient", { effect: "transport", requires: [{ patientWithin: RANGES.contact }], roles: TRANSPORT_ROLES }),
+    op("escort_patient", { effect: "escort", requires: [{ patientWithin: RANGES.talk }], roles: TRANSPORT_ROLES }),
+    op("release_patient", { effect: "release", requires: [{ patientWithin: RANGES.talk }], roles: TRANSPORT_ROLES }),
+  ],
 };
 
 /** Built-in effects that attach by operation name, per interaction kind (catalog behaviours included). */
@@ -397,6 +403,12 @@ export class DeviceRules {
         return s.data?.equipped ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.equipped", L, { target }) } : null;
       case "move-to":
         return s?.heldBy ? { code: "DEVICE_BUSY", message: worldMessage("pre.heldByOther", L, { target, holder: this.d.locator.name(s.heldBy) }) } : null;
+      case "escort":
+      case "release": {
+        const body = this.d.locator.patientBody;
+        const problem = body ? escortProblem(body, target, actor, o.effect === "escort", L) : worldMessage("pre.noPatient", L);
+        return problem ? { code: "PRECONDITION_FAILED", message: problem } : null;
+      }
       case "door-close": {
         const door = this.d.collision.doors.find((d) => d.id === id);
         if (!door) return null;

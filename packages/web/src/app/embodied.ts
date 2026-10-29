@@ -4,7 +4,7 @@
  *   BrowserMover   `Mover` of the world model: the avatar follows the route the world planned with the
  *                  renderer's auto-walk (arrival tolerance, local detours, WASD / abort), staff NPC rigs
  *                  walk theirs, carts are drawn where they were parked, a patient being transported travels
- *                  with the walker (lying on the trolley it pushes — EMBODIED §8), doors open and close; the world
+ *                  with the walker (lying on the trolley it pushes, or walking upright behind — EMBODIED §8), doors open and close; the world
  *                  commits the pose the mover reports and charges the travel time once. A hidden tab
  *                  draws no frames: there a body is treated as undrawn — put at its target at once (also
  *                  a walk under way when the tab is hidden), so an external agent's `navigate_to` does
@@ -79,7 +79,7 @@ export class BrowserMover implements Mover {
     }
     const cart = this.hooks.pushing?.(actorId) ?? null;
     if (cart) api!.pushEquipment(cart, staff ?? "avatar");
-    // the patient travels with the walker (on the pushed trolley, or walking ahead): placed by the world model after
+    // the patient travels with the walker (lying on the pushed trolley, or walking upright behind): placed by the world model after
     const patient = this.hooks.carrying?.(actorId) ?? null;
     if (patient) api!.pushPatient(patient.slotId, staff ?? "avatar", patient.posture);
     // The walk stops when the caller cancels — or when the tab is hidden, and then the move completes without frames.
