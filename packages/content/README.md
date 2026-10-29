@@ -31,8 +31,8 @@ Authoring guides: [docs/CASE_AUTHORING.md](../../docs/CASE_AUTHORING.md) and
 checks:
 
 ```bash
-npm run cc -- cases validate --all     # schema + referential integrity
-npm run cc -- cases verify --all       # replays each `solution` + the extensions.testUtterances corpus
+npm run cc -- cases validate --all --strict   # schema, referential integrity and the content-standard lints
+npm run cc -- cases verify --all              # replays each `solution` + the extensions.testUtterances corpus
 npm run cc -- facilities validate --all  # facilities (compiled), room templates and catalogs
 npm run cc -- facilities compile teaching-hospital   # the flat facility a front-end loads
 ```
