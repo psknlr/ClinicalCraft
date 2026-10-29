@@ -25,9 +25,10 @@ for (const locale of ["zh-CN", "en"] as const) {
     await page.locator("#library-search").scrollIntoViewIfNeeded();
     const dimensions = await page.locator(".library").evaluate((library) => {
       const list = library.querySelector<HTMLElement>(".case-list")!;
-      return { right: library.getBoundingClientRect().right, width: innerWidth, listHeight: list.clientHeight, viewportHeight: innerHeight, overflow: list.scrollHeight > list.clientHeight };
+      return { right: library.getBoundingClientRect().right, width: innerWidth, contentWidth: library.scrollWidth, clientWidth: library.clientWidth, listHeight: list.clientHeight, viewportHeight: innerHeight, overflow: list.scrollHeight > list.clientHeight };
     });
     expect(dimensions.right).toBeLessThanOrEqual(dimensions.width);
+    expect(dimensions.contentWidth).toBeLessThanOrEqual(dimensions.clientWidth);
     expect(dimensions.listHeight).toBeLessThan(dimensions.viewportHeight * 0.6);
     expect(dimensions.overflow).toBe(true);
     await shot(page, `real-library-105-mobile-${locale}`);

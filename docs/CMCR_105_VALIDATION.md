@@ -46,7 +46,13 @@ The remaining 187 test files were also run, excluding the three content/in-world
 
 Seven selected failures reproduce on an isolated checkout of the exact base commit: Windows path separators, shell hooks and an oversized-request connection reset. Independent spawn probes also confirm that `sh` and the extensionless `.bin/tsx` command used by the subprocess tests are unavailable in this Windows environment. This evidence does not establish that every failure is pre-existing.
 
-The initial run also includes 23 timing failures and three label/index assertions collected while content was still changing. These are being rechecked separately with the original timeout thresholds; results will be added before the final handoff. The draft remains open for review rather than being merged with unresolved checks.
+Five of the 23 timing failures passed a focused local repeat with unchanged thresholds (the SMZL random walk, spatial policy and three embodied-mode assertions). The remaining 18 did not obtain a completed local repeat after the test process was interrupted; they are not counted as local passes. The three label/index failures collected while content was changing also passed the final two-file, seven-assertion repeat.
+
+Independently, the committed snapshot `6a6ec32` passed the complete Linux [CI build-test job](https://github.com/psknlr/ClinicalCraft/actions/runs/40866266668/job/123421712276): all unit/integration tests, strict content validation, reference solutions, type checking, production build, the built-binary offline smoke for every case, and both required embodied benchmarks. This verifies the full code/content snapshot in CI while preserving the Windows limitations above.
+
+The first CI browser run passed 55 of 58 tests, including all four adult/infant bilingual completion flows and the original CMCR collection. Its three failures exposed an English mobile-width overflow in two library tests and an older search test's assumption that the broad query “脾” matches only one case. These findings are addressed separately from the Windows timing failures.
+
+The follow-up uses shrinkable grid tracks for the mobile catalogue and its filters. Both layout checks retain the viewport boundary assertion and additionally reject internal horizontal overflow. The older search check now verifies the expected broad-query match and uses a specific presenting complaint for its unique-match assertion. All three previously failing browser tests passed a focused local run (3.3 minutes), including the full SMZL clinical flow, without increasing timeouts. This is a targeted repeat; the next CI run remains a separate result.
 
 ## Sources, assets and review limits
 

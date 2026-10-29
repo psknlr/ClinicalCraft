@@ -57,9 +57,10 @@ for (const locale of ["zh-CN", "en"] as const) {
     const dimensions = await page.locator(".library").evaluate((library) => {
       const list = library.querySelector<HTMLElement>(".case-list")!;
       const box = library.getBoundingClientRect();
-      return { right: box.right, width: window.innerWidth, listHeight: list.clientHeight, viewportHeight: window.innerHeight, overflowing: list.scrollHeight > list.clientHeight };
+      return { right: box.right, width: window.innerWidth, contentWidth: library.scrollWidth, clientWidth: library.clientWidth, listHeight: list.clientHeight, viewportHeight: window.innerHeight, overflowing: list.scrollHeight > list.clientHeight };
     });
     expect(dimensions.right).toBeLessThanOrEqual(dimensions.width);
+    expect(dimensions.contentWidth).toBeLessThanOrEqual(dimensions.clientWidth);
     expect(dimensions.listHeight).toBeLessThan(dimensions.viewportHeight * 0.6);
     expect(dimensions.overflowing).toBe(true);
     await shot(page, `library-135-mobile-${locale}`);
