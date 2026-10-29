@@ -3,8 +3,9 @@
  * `scoredWhen` counts only once its precondition holds — an "avoided harm"
  * item is not earned by doing nothing — and a `critical` item's miss is
  * reported (`criticalMissed`) so every debrief can show it prominently.
+ * Every built-in case scores 0 for a learner who does nothing.
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction } from "../schema/session.js";
@@ -87,5 +88,22 @@ describe("rubric critical", () => {
     const report = scoreOf(c, [{ type: "start" }, { type: "intervene", interventionId: "beta-blocker" }, { type: "examine", findingId: "airway" }]);
     expect(report.criticalMissed).toEqual(["epi-given", "no-beta"]);
     expect(report.score).toEqual({ earned: 1, possible: 6, percent: 17 });
+  });
+});
+
+describe("the built-in library", () => {
+  const dir = new URL("../../../content/cases/", import.meta.url);
+  const library = readdirSync(dir).map((id) => {
+    const parsed = parseCase(JSON.parse(readFileSync(new URL(`${id}/case.json`, dir), "utf8")));
+    if (!parsed.ok) throw new Error(`${id}: ${JSON.stringify(parsed.issues)}`);
+    return parsed.value;
+  });
+
+  it.each(library.map((c) => [c.id, c] as const))("%s: a learner who does nothing earns nothing, at once or at the time limit", (_id, c) => {
+    expect(scoreOf(c, NOTHING).score.earned, "finished at once").toBe(0);
+    if (c.clock.mode === "simulated") {
+      const waited = scoreOf(c, [{ type: "start" }, { type: "advance-time", minutes: c.clock.limitMinutes ?? 120 }, { type: "finish" }]);
+      expect(waited.score.earned, "waited out the time limit").toBe(0);
+    }
   });
 });

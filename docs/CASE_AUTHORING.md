@@ -373,7 +373,10 @@ solution is sent to the browser).
   warns when a harm in `met` would leave the item unscored (§9.8) and when
   `scoredWhen` can never hold. (Gating inside `met` instead — `"all":
   [{ "flag": "anticoagulated" }, { "not": … }]` — makes inaction a miss, not
-  "not scored".)
+  "not scored".) The same goes for any item inaction meets: "at most two
+  hints" counts once the diagnosis is attempted or a third hint used. A
+  learner who does nothing scores 0 in every built-in case (core
+  `rubric-scoring.test.ts`).
 * `critical: true` marks the item whose miss is the case's dangerous error or
   missed life-saving act (IM adrenaline within 5 minutes; no thrombolysis in a
   post-operative PE): a scored, unmet critical item is named first in every

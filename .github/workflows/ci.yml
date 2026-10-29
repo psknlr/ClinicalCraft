@@ -30,8 +30,9 @@ jobs:
       - name: Unit & integration tests
         run: npm test
       # `npm run cc` runs every workspace package from source (the "source" export condition): no build needed.
+      # `--strict`: a content-standard lint warning (docs/CASE_AUTHORING.md §9.8) fails the job too.
       - name: Validate and verify built-in content
-        run: npm run -s cc -- cases validate --all && npm run -s cc -- cases verify --all
+        run: npm run -s cc -- cases validate --all --strict && npm run -s cc -- cases verify --all
       - name: Build
         run: npm run build
       - name: Offline autopilot smoke (every case, built binary)

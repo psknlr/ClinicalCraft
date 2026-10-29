@@ -17,7 +17,7 @@ left upper lung**. The case teaches:
 
 | | |
 |---|---|
-| id / version | `smzl-lung-adeno` / `1.2.1` |
+| id / version | `smzl-lung-adeno` / `1.2.2` |
 | setting / facility | `outpatient` / `clinic-v4` (the V4 world) |
 | locales | `zh-CN` (source language; V4 text verbatim), `en` (translation) |
 | phases | `pre` 诊断期 Diagnostic phase · `post` 治疗后复评期 Post-treatment re-evaluation (learner-switchable; static clock) |
@@ -156,7 +156,7 @@ sentence — and keeps every other carried-over string strict.
 | Physical examination (7 findings, **post only**) | 正文·体格检查, recorded **on admission for cycle 3**, after 2 cycles of rituximab |
 | `examNotRecorded`; the pre-phase examination is explicitly not recorded | (absence in the source) |
 | NPC briefs: radiologist, pathologist, Socratic attending (`revealsDiagnosis: false`) | caveats restated from V4 report notes; the attending also carries V4's spleen-history caveat (see divergences) |
-| Rubric: 11 deterministic items + 2 communication items judged from the transcript. The four decision items (`rb-dx-combination`, `rb-safety-hbv`, `rb-dx-genetics`, `rb-mgmt-phase-review`) use `decidedFirstTry`: with 2–3 options and feedback on each, a wrong first answer followed by the right one must not score full marks | design |
+| Rubric: 11 deterministic items + 2 communication items judged from the transcript. The four decision items (`rb-dx-combination`, `rb-safety-hbv`, `rb-dx-genetics`, `rb-mgmt-phase-review`) use `decidedFirstTry`: with 2–3 options and feedback on each, a wrong first answer followed by the right one must not score full marks. `rb-eff-hints` counts only once the diagnosis has been attempted or a third hint used (`scoredWhen`) | design |
 | Spoiler-free library title and summary (V4's label `CASE 01 · SMZL 与肺腺癌并存` is kept in `extensions.v4.caseLabel`) | design |
 | Debrief key reasoning 2: MCL (CD5, cyclin D1) and FL (CD10, BCL6) differential against this immunophenotype | 正文·诊断与鉴别诊断 |
 | Debrief key reasoning 3: splenic histology is the gold standard; marrow biopsy with a matching immunophenotype can support SMZL; SDRPL still to be distinguished | 正文·讨论 |
@@ -211,6 +211,9 @@ hypertension items.
 
 ## Changelog
 
+- **1.2.2 — 2026-10-29 (assessment integrity).** `rb-eff-hints` (at most two preceptor hints) counts once the
+  learner has attempted the diagnosis decision or used a third hint (`scoredWhen`), so a learner who does nothing no
+  longer earns it: doing nothing now scores 0. No change to the case record, decisions or the V4-parity texts.
 - **1.2.1 — 2026-10-28 (assessment integrity).** `rb-safety-hbv` is **critical** (`critical: true`): ruling out HBV
   reactivation on an undetectable HBV DNA, or no HBV check before anti-CD20 therapy, is named first in the debrief (no
   score cap). Nine `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
