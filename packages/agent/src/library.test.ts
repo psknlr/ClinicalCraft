@@ -129,6 +129,17 @@ describe("capabilityNeeds (facility choice without the full case)", () => {
     if (t2dm && clinic) expect(canCompleteWith(caseIndexEntry(t2dm, HASH)!, facilityCapabilities(clinic, catalogsFor(clinic)))).toBe(false);
   });
 
+  it("a record review needs no capability, as in core's investigationNeeds (the chart can be read at the bedside)", () => {
+    const raw = (performedAt?: string) => ({
+      id: "chart-case",
+      investigations: [{ id: "chart", requires: ["records"], ...(performedAt ? { performedAt } : {}) }],
+      objectives: [{ id: "o", completeWhen: { read: "chart" } }],
+    });
+    const noRecords = new Set(["oxygen"]);
+    expect(canCompleteWith(caseIndexEntry(raw("records"), HASH)!, noRecords)).toBe(true);
+    expect(canCompleteWith(caseIndexEntry(raw(), HASH)!, noRecords)).toBe(false);
+  });
+
   it("agrees with caseCapabilityGaps on random conditions, requirements and facilities (incl. empty any, not, unknown items)", () => {
     const base = defs.find((d) => d.exam.length > 2 && d.investigations.length > 2 && d.interventions.length > 2);
     if (!base) return;

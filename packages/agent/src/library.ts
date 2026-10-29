@@ -191,7 +191,8 @@ function itemRequirements(raw: Raw): Map<string, string[]> {
     if (!Array.isArray(list)) return;
     for (const item of list) {
       const o = obj(item);
-      if (typeof o.id === "string") out.set(`${kind}:${o.id}`, [...new Set(strings(o.requires))]);
+      // A record review needs no capability (core `investigationNeeds`): the chart is read at a terminal or the bedside.
+      if (typeof o.id === "string") out.set(`${kind}:${o.id}`, kind === "investigation" && o.performedAt === "records" ? [] : [...new Set(strings(o.requires))]);
     }
   };
   add("exam", raw.exam);
