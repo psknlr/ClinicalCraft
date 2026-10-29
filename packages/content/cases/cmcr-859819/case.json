@@ -1503,7 +1503,7 @@
       },
       "kind": "airway",
       "requires": [
-        "ventilator"
+        "niv"
       ],
       "risk": "low",
       "dose": {
@@ -2560,6 +2560,9 @@
           },
           {
             "intervened": "oseltamivir"
+          },
+          {
+            "intervened": "recruitment"
           }
         ]
       },

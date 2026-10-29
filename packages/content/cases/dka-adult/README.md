@@ -15,7 +15,7 @@ medical advice.
 
 | | |
 |---|---|
-| id / version | `dka-adult` / `1.1.0` |
+| id / version | `dka-adult` / `1.1.1` |
 | setting / facility | `emergency` (resus bay 1, managed to HDU/ICU level 2) / `general-hospital` |
 | specialty | emergency medicine, endocrinology, critical care |
 | difficulty | 3 / 5 |
@@ -164,13 +164,13 @@ potassium down further?", "which number recovers first?").
 | `r-inv-ecg-hcg` | investigations | 1 | ECG read in `resus` and urine hCG read |
 | `r-dx` | diagnosis | 1 | `dx-severity` right first time and `precipitant` answered |
 | `r-mx-fluids` | management | 1 | fluids started by minute 30 |
-| `r-safety-k-first` | safety | **2** | potassium before insulin, insulin only after the repeat K⁺ |
+| `r-safety-k-first` | safety | **2** | potassium before insulin, insulin only after the repeat K⁺; **critical** |
 | `r-mx-friii` | management | 1 | FRIII without a bolus |
 | `r-mx-dextrose` | management | 1 | 10% glucose given, no hypoglycaemia |
 | `r-mx-level-monitoring` | management | 1 | HDU referral and hourly monitoring plan |
-| `r-safety-avoid` | safety | **2** | no bicarbonate, no KCl push (a never event), no insulin through the old pump set |
+| `r-safety-avoid` | safety | **2** | no bicarbonate, no KCl push (a never event), no insulin through the old pump set — scored once treatment has started (fluids, potassium or insulin) or one of these is given |
 | `r-transition` | management | 1 | SC insulin before stopping FRIII, no gap, diabetes team |
-| `r-efficiency` | efficiency | 1 | no ABG, CT abdomen or empirical antibiotics |
+| `r-efficiency` | efficiency | 1 | no ABG, CT abdomen or empirical antibiotics — scored once the severity decision is reached or one of them is ordered or given |
 | `r-comm` | communication | — | examiner-judged: blame-free explanation, ICE, sick-day rules, SBAR handover |
 
 ### How wrong choices score
@@ -513,6 +513,21 @@ them:
   ≥ 8 mmol/L) depend on the strip brand.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+- **Avoided-harm items count only once the harm was possible** (`scoredWhen`):
+  `r-safety-avoid` once treatment has started (fluids, potassium or insulin)
+  or a harmful step is taken; `r-efficiency` once the severity decision is
+  reached or a low-value test or antibiotic is ordered or given. Doing nothing
+  scored 3/16 (19 %) from these two items and now scores 0/13 (0 %); the
+  reference path keeps 16/16, and bicarbonate or a correction bolus through the
+  pump still costs `r-safety-avoid` (14/16).
+- `r-safety-k-first` is **critical** (`critical: true`): insulin before the
+  potassium is replaced is named first in the debrief (no score cap).
+- **Matcher corpus:** three `extensions.testUtterances` that repeated their
+  item's canonical question are now paraphrases (`cases validate --strict`);
+  no history item, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

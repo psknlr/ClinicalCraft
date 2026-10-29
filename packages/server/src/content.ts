@@ -6,7 +6,7 @@
  * `solution` removed, facilities and equipment catalogs.
  */
 import type { CaseDefinition, EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
-import type { CaseIndexEntry } from "@clinicalcraft/agent";
+import { citesSource, withoutSource, type CaseIndexEntry } from "@clinicalcraft/agent";
 import type { CaseIndexIssue, LoadedContent } from "@clinicalcraft/agent/node";
 
 /** One case in the library index (localised fields keep all locales). */
@@ -104,10 +104,24 @@ export function legacyContentIndex(entries: readonly CaseIndexEntry[], content: 
   return { cases: entries.map(caseSummaryOf).sort(byId), ...facilityAndCatalogSummaries(content) };
 }
 
-/** A case as served to clients: everything except the reference walkthrough. */
+/** A case as served with `?spoilers=1`: everything except the reference walkthrough. */
 export function publicCase(c: CaseDefinition): Omit<CaseDefinition, "solution"> {
   const { solution: _solution, ...rest } = c;
   return rest;
+}
+
+/**
+ * A case as served by default (`GET /api/content/cases/:id`): no reference walkthrough and — for a published
+ * or adapted case — no source (citation, DOI, authors, notes, debrief references: they usually name the
+ * diagnosis). `?spoilers=1` asks for `publicCase`; the web does, and shows the source once the case is complete.
+ */
+export function learnerCase(c: CaseDefinition): Omit<CaseDefinition, "solution"> {
+  return withoutSource(publicCase(c));
+}
+
+/** True when the two forms of a case differ (a published or adapted case). */
+export function hasSpoilers(c: CaseDefinition): boolean {
+  return citesSource(c);
 }
 
 /* ------------------------------------------------------------------ */

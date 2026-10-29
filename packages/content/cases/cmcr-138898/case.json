@@ -4372,7 +4372,23 @@
         ]
       },
       "scoredWhen": {
-        "attempted": "next-step"
+        "any": [
+          {
+            "attempted": "next-step"
+          },
+          {
+            "intervened": "aml-induction"
+          },
+          {
+            "intervened": "hypertonic-bolus"
+          },
+          {
+            "intervened": "rapid-correction"
+          },
+          {
+            "intervened": "pancreatitis-nbm"
+          }
+        ]
       },
       "critical": true
     },

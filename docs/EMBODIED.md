@@ -562,6 +562,7 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
 | `order_test`: other **bedside tests** (all in `BEDSIDE_CAPABILITIES`) | `any-of` [`bedside-provider` (the device at the bedside **and** the actor within 1.5 m of the patient), `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`]] | the test is done on the patient with the device there; a fixed station counts only with the patient within its reach |
 | `order_test`: **laboratory** (all in `LAB_CAPABILITIES`) | `at-patient` 1.5 m (`why: "sample"`: ordered there, sent by pneumatic tube) — or, for blood samples (`BLOOD_SAMPLE_CAPABILITIES`: every laboratory capability but urinalysis) once the case's IV-access procedure has drawn the bloods (`clinical`), order entry at a `records` terminal or a laboratory station | the specimen is drawn at the patient and the order entered at the bedside or any EHR terminal: nobody walks to the analyser — and nobody orders bloods that were never drawn |
 | `order_test`: otherwise | `at-provider` (a station that provides it) | |
+| `order_test` / `read_result` of a **record review** (`performedAt: "records"`: an existing report retrieved from the chart — an outside scan, an old echo, the operative note, the drug chart) | `any-of` [`at-provider` `records` (a records terminal or a nursing-station desk), `at-patient` 1.5 m (`why: "notes"`: the notes at the bedside)] — never a transport, a sample or a device, whatever `requires` says; no capability gap (`caseCapabilityGaps`) and no procedure risk at the approval gate | a report that already exists is looked up in the EHR or in the notes at the bedside, not performed again |
 | `read_result` | no capability: anywhere · personal kit only: `at-patient` · bedside tests: `any-of` [`at-patient`, `at-provider` `records`, a fixed workstation providing them (`fixedOnly`, `providerKinds: ["workstation"]`)] — **never the device** · laboratory: `any-of` [`at-provider` `records`, `at-patient`, a laboratory station] · otherwise `at-provider` (the report at a console — never the patient) | a recorded ECG is read on paper or in the EHR, not by wheeling the cart back; a report is read without the patient |
 | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) | |
 | `intervene`, other kinds (`medication`, `fluid`, `oxygen`, `procedure`, `positioning`, `airway`, `monitoring`, `other`) | its capabilities — an empty `requires` takes the kind's defaults (`KIND_DEFAULT_CAPABILITIES`: oxygen → `oxygen`, monitoring → `cardiac-monitor`, fluid → `iv-access`, airway → `airway`) — minus the personal kit: nothing left → `at-patient` 1.5 m; otherwise `bedside-provider` for them, except **delivered** capabilities (`DELIVERED_CAPABILITIES`: `medications`, `blood-bank`), which need only an in-service provider somewhere in the facility. `iv-access` is **patient state**: `all-of` [`clinical` {intervened: the case's IV-access procedure}, …] — skipped when the case authors `extensions.embodied.ivAccessInSitu` or has no such procedure; that procedure itself needs the cannulation kit (a crash or treatment cart) at the bedside | the kit must be at the bed (in a garden it is brought); an IV drug needs a cannula in the patient, not an IV pole beside the bed |
@@ -625,6 +626,12 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
   establishes it in `details.prerequisite` (`{ tool: "intervene",
   intervention_id }`): "There is no IV access yet: place a cannula first
   (‹procedure›), then give this." / "还没有静脉通路：请先建立静脉通路（‹操作›），再给药。"
+* **Records terminals in theatre.** Every operating theatre has one: the
+  general hospital's `or-records` and the teaching hospital's
+  `operating-theatre` template (`records`, so every theatre built from it),
+  each placed free of the table's working area and reachable
+  (`facilities validate --all`). Results and record reviews (§5 of
+  CASE_AUTHORING) are read there without leaving the theatre.
 * **Capability groups.** `BEDSIDE_CAPABILITIES` = `ecg-12lead`,
   `point-of-care`, `ultrasound`, `echocardiography`, `peak-flow`, `scale`,
   `cardiac-monitor`, `capnography`, `oxygen`, `suction`. A bedside test may
@@ -969,7 +976,12 @@ couch no longer blocks the floor) and what the web NPC shows; a place may
 force one (lying on a scanner table or a trolley, standing at a station).
 `distressed` is a critical alarm, or no monitor and `inExtremis`. The oxygen
 accessory reads the intervention's `device` (else its dose / name text in
-either language): a non-rebreather or Venturi mask is a mask.
+either language): a non-rebreather or Venturi mask is a mask. A patient who
+cannot speak (`patient.nonVerbalWhen` holds — intubated, sedated, in theatre)
+shows it: `ClinicalView.cues().cannotSpeak` carries the authored reason and
+perception reports the patient's `speech` cue "cannot speak: <reason>" /
+"无法说话：<reason>"; what they would say is narration in every channel
+(PROTOCOL §4), and the companion answers the history.
 
 **In the browser** the bed is pushed in front of the walker — the learner's
 avatar or a staff member — (turned along the way) with the patient lying on
@@ -999,28 +1011,29 @@ en and zh-CN identical; re-measured 2026-10-20):
 | `acute-appendicitis`, `dka-adult`, `new-onset-t2dm`, `septic-shock-cap` | — | no study on the patient at a fixed device in the reference path (portable CXRs are `performedAt: "bedside"`) | — | — |
 
 **Final clocks** in their own facilities (offline autopilot, embodied vs
-clinical mode, simulated minutes; `exec --autopilot`, 2026-10-20): stroke
-80.2 / 79.7 (en / zh-CN) vs 75.5, PE 87.3 vs 86, STEMI 66.7 vs 60.5, asthma
-265.6 vs 265.5, sepsis 81.7 vs 80.5, anaphylaxis 115.0 / 114.5 (en / zh-CN)
-vs 114.5, the others equal (appendicitis 120, DKA 656, T2DM and SMZL 0 —
-static clocks). Every embodied score equals the clinical one (100 % in all
-40 runs: 10 cases × 2 languages × 2 modes). The ≈ 0.5-minute difference
-between en and zh-CN in the stroke and anaphylaxis embodied runs predates
-this release and is listed in §14.3.
+clinical mode, simulated minutes; `exec --autopilot --approval bypass`,
+re-measured 2026-10-29): stroke 79.7 vs 75.5, PE 86.4 vs 86, STEMI 66.2 vs
+60.5, asthma 265.6 vs 265.5, sepsis 81.7 vs 80.5, the others equal
+(anaphylaxis 114.5, appendicitis 120, DKA 656, T2DM and SMZL 0 — static
+clocks); en and zh-CN identical. Every embodied score equals the clinical one
+(100 % in all 40 runs: 10 cases × 2 languages × 2 modes). The ≈ 0.5-minute
+en / zh-CN difference in the stroke and anaphylaxis embodied runs measured on
+2026-10-20 (80.2 / 79.7 and 115.0 / 114.5) no longer reproduces (§14.3).
 
 **In `teaching-hospital`** the porter does the transports (stroke CT 34 m /
 35 m, asthma peak flow in ED cubicle 1 ×2, PE CT 59 m / 62 m by the lift,
 SMZL CT ×3); the transfers go to the hybrid theatre's C-arm (46 m) and ICU 1
-(38 m). There the PE encounter scores **89 %** (17 / 19, 91.8 simulated
-minutes): the heparin comes at minute 35.5, just after the nurse's
-anticoagulation prompt at minute 35 — the ward's ECG cart is fetched and its
-recording takes four simulated minutes (prepare, ten electrodes, record,
-reset) before it. (The reference solution already starts the heparin before
-the CTPA trip, as the case's own teaching point and ESC 2019 say; in its own
-facility the heparin comes at minute 32.4.) Every other
-case it hosts scores 100 % in both modes and languages; `anaphylaxis-garden`
-cannot be played embodied there (no place for a `community` patient —
-`embodiment_no_slot`).
+(38 m). There the PE encounter scores **100 %** (22 / 22 in en and zh-CN,
+90.8 simulated minutes; `exec --embodied --autopilot --facility
+teaching-hospital --approval bypass`, re-measured 2026-10-29): the heparin
+goes in at minute 34.5, before the nurse's anticoagulation prompt at minute
+35, after the ward's ECG cart has been fetched and its recording has taken
+four simulated minutes (prepare, ten electrodes, record, reset); in its own
+facility the heparin comes at minute 31.4. On 2026-10-20 the same run scored
+89 % (17 / 19 under the case's 1.0.0 weights) with the heparin at minute
+35.5, just after the prompt. Every case it hosts scores 100 % in both modes
+and languages (38 runs, 2026-10-29); `anaphylaxis-garden` cannot be played
+embodied there (no place for a `community` patient — `embodiment_no_slot`).
 
 ## 9. Skills
 
@@ -1568,13 +1581,13 @@ and no unauthorised act; otherwise it exits 1. Samples:
 41 scenarios × seeds 1–3 = 123 runs per agent. The committed sample reports
 ([`bench/bench-report.reference.md`](bench/bench-report.reference.md),
 [`bench/bench-report.scripted-llm.md`](bench/bench-report.scripted-llm.md);
-4-CPU Linux container, Node 22, 2026-10-20 06:51 UTC; wall time of a whole
-suite 12.9 s and 11.5 s):
+4-CPU Linux container, Node 22, 2026-10-29 01:23 UTC; wall time of a whole
+suite 19.9 s and 17.9 s):
 
 | agent | task success | Wilson 95 % | spatial violations | unauthorised acceptances | avg tool calls | run latency p50 / p95 |
 |---|---|---|---|---|---|---|
-| `reference` | 123 / 123 (100 %) | 97.0 % – 100 % | 0 / 234 accepted acts | 0 / 249 accepted acts | 4.8 | 76 / 204 ms |
-| `scripted-llm` | 123 / 123 (100 %) | 97.0 % – 100 % | 0 / 240 accepted acts | 0 / 255 accepted acts | 4.6 | 70 / 180 ms |
+| `reference` | 123 / 123 (100 %) | 97.0 % – 100 % | 0 / 234 accepted acts | 0 / 249 accepted acts | 4.8 | 103 / 353 ms |
+| `scripted-llm` | 123 / 123 (100 %) | 97.0 % – 100 % | 0 / 237 accepted acts | 0 / 252 accepted acts | 4.6 | 100 / 308 ms |
 
 Every per-category task success is 100 % as well (Wilson lower bounds 70.1 %
 for 9 runs to 91.0 % for 39); the scripted model's synthetic token use
@@ -1587,10 +1600,13 @@ on the load (19.7 s and 14.9 s, run latency p50 / p95 118 / 343 ms and
 The demonstration ([`bench/demo.en.md`](bench/demo.en.md),
 [`bench/demo.zh-CN.md`](bench/demo.zh-CN.md)) passes in both languages: 50
 steps, 288 spans, 26 world actions of which 3 were refused and recovered
-from, 4 approvals, 44 spatially gated and 49 permission-gated acts audited
-with no violation, 66.7 simulated minutes, score 20 / 20. Its trace is
-byte-identical when regenerated, and a regenerated `demo.md` differs from
-the committed one only in its header line (commit and time). With patient
+from, 4 approvals, 66.2 simulated minutes, score 22 / 22 (regenerated on
+2026-10-29: 43 spatially gated and 48 permission-gated acts audited with no
+violation; the 2026-10-20 run audited 44 and 49 and took 66.7 minutes, before
+the case's 1.1.0 revision raised its rubric total from 20 to 22). Its trace
+is byte-identical when regenerated — also from the base commit of the
+2026-10-28 framework round (c14375f) — and a regenerated `demo.md` differs
+from the committed one only in its header line (commit and time). With patient
 transport the team takes the patient to the cath-lab table at
 `transfer-cath-lab`, the monitor the run verifies is the cath lab's, and
 the post-PCI ECG is recorded there with the resus bay's ECG cart wheeled
@@ -1651,19 +1667,19 @@ the measurements of §4, §7, §11).
 | Navigation (`GridAStarBackend`, `NavGrids`, portal graph; goal cost bound S7; interrupted multi-level walks C11) | yes (W1) | unit: real routes in the three facilities, every interactive placement and door, failures, locks, zones, obstacles, moved carts, a two-level fixture, the reviewer's DoS shapes refused or < 1 s, a walk stopped at every point of a stairs route | measured (§7); navigation scenarios | no — larger hospitals unmeasured; evaluated alternatives (navmesh) not adopted (R12). Perf |
 | State store (`WorldStateStore`: actors, versions, events, idempotency window, canonical snapshots) | yes (W2) | unit: version rules incl. sensor updates, dynamics, bounded log, snapshot identity and refusal | `--continue` restores an embodied session's place; the demonstration's trace is byte-identical when regenerated | no — the snapshot format (`clinicalcraft-world@1`) has no migration; transcripts are local files. Rel, Ops |
 | Device behaviours and authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog: operations per kind, predicates, the ECG state machine with reservation and durations, the derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions | interaction and recovery scenarios; the STEMI demonstration (ECG prepare / connect / record / reset, monitor attach) | no — only two catalog behaviours authored (`ecg-machine`, `patient-monitor`); handheld items exist only in the test catalog |
-| Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`): THE bedside rule, THE screen rule, vitals by screen / hands / chart, kind defaults, IV access as patient state, labs sampled at the patient, results never on the device, delivered drugs, busy devices, `patient-at-provider`, capability labels | yes (W2; reviews G4–G10, G8, C14) | every §6 row (ok, each failure reason, the hint that fixes it); the hint property over every item of the 10 cases (transports included); the bedside rule over every slot of the three hospitals; the device-operation convergence sweep (C7); screen rule ⇔ policy; lazy-hint budget | `cases verify --all`; the embodied autopilot over the library (40 / 40 at the clinical score); both benchmark agents with 0 accepted violations | no — validated on the 10 built-in cases and 3 facilities only; no review of the rules by clinical educators is recorded |
+| Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`): THE bedside rule, THE screen rule, vitals by screen / hands / chart, kind defaults, IV access as patient state, labs sampled at the patient, results never on the device, record reviews at a records terminal or the bedside, delivered drugs, busy devices, `patient-at-provider`, capability labels | yes (W2; reviews G4–G10, G8, C14) | every §6 row (ok, each failure reason, the hint that fixes it); the hint property over every item of the 10 cases (transports included); the bedside rule over every slot of the three hospitals; the device-operation convergence sweep (C7); screen rule ⇔ policy; lazy-hint budget | `cases verify --all`; the embodied autopilot over the library (40 / 40 at the clinical score); both benchmark agents with 0 accepted violations | no — validated on the 10 built-in cases and 3 facilities only; no review of the rules by clinical educators is recorded |
 | Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`; awareness, whereabouts, recent events, region names, cross-level reachability) | yes (W2; G13, lead notes 1–2, C16) | unit: awareness levels, bounds, bearings, cues, screen rules, memory without versions, whereabouts and their snapshot, second/third-person events, exits by name, the ICU upstairs reachable and path-sorted; no case fact in any observation | perception / spatial scenarios; `/delegate staff:ed-nurse record_ecg` from the nurse's post (general and teaching hospital) | no — navigation by id goes to the real place, not the believed one (§14.3); `find {}` costs 7–12 ms. Perf |
 | Action bus, runtime (`createWorldRuntime`), world traces | yes (W2) | unit over a fake session on the real engine: commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees | wired into the agent session (CLI, MCP, benchmark, web); every scenario deterministic across seeds | no — the HTTP server hosts no world runtime of its own (it only routes bridge calls). Rel |
 | Room templates (`clinicalcraft/room-template@1`, `compileFacility`, `checkRoomTemplate`; 15 templates) | yes (A4) | core unit: rotations 0/90/180/270 incl. door offsets, ids, determinism, levels and buildings, overrides, every validation error, nested vs partial overlaps, the standalone template check | compiled at load time by every loader (node `loadContent`, the web app, the harness, the server); `facilities compile teaching-hospital` | no — Rel, Perf (§14.4); only one two-level facility built from them |
-| Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate`: no issue; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, the accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e `teaching-hospital.spec.ts` (stairs up, elevator down, map floors); `navigation-icu-upstairs`; the autopilot there: 100 % but PE 89 % | no — PE scores 89 % there; `anaphylaxis-garden` has no place there (§14.3) |
+| Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate`: no issue; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, the accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e `teaching-hospital.spec.ts` (stairs up, elevator down, map floors); `navigation-icu-upstairs`; the autopilot there: 100 % in every case it hosts, both modes and languages (38 runs, 2026-10-29) | no — `anaphylaxis-garden` has no place there (§14.3) |
 | Multi-level collision model and physics (`slab`, `ramp`, `rail` colliders; `stepPlayer` on ramps) | yes (A4) | unit: ramp surface, step-up / snap-down limits, flight sides and underside, the real stairs up and down, guarded stairwell; single-level pins unchanged | browser QA walking the real stairs; e2e | no — Perf, Rel |
 | Multi-level web world (storeys, stairs, elevator ride, level culling, floor-aware lights / aim / region, map floor tabs, cross-level autopilot) | yes (A4) | unit: levels and culling, regions per level, elevator cars, routes across levels; e2e (the existing suite unchanged for `clinic-v4` / `general-hospital`) | visual QA of both levels, the stairs and the elevator | no — frame times and draw calls not budgeted; Chromium only. Perf |
 | GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache`) | yes (A4) | unit with GLBs generated in code; CLI tests; renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy) | `assets inspect` on a generated GLB, with and without `--type`; harness QA (`?model=<type>`) | no — **no built-in catalog ships a model**; no real-world model has been loaded; meshopt / DRACO models fall back to voxels under `serve`'s CSP |
 | Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 18 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5; `transport_patient` FX-T) | agent unit + integration on built-in cases: refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, a scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies | CLI `--embodied` (play, exec, eval) and MCP `start_case {embodied}`; the web (§2.1) | no — **no live model has driven the embodied tools**; prompt-injection resistance not tested with real models. Sec |
-| Role authority and scope of practice (S3) | yes | agent `scope-review.test.ts` (receptionist, lab technician, pharmacist, radiologist, nurse, paramedic, porter; approvals naming the staff member; authored `scope`), bench `audit-scope.test.ts` | the authorisation audit over every benchmark run (0 / 249 and 0 / 255 accepted acts unauthorised) | no — a teaching simplification, not any jurisdiction's rules; not reviewed by clinical educators |
+| Role authority and scope of practice (S3) | yes | agent `scope-review.test.ts` (receptionist, lab technician, pharmacist, radiologist, nurse, paramedic, porter; approvals naming the staff member; authored `scope`), bench `audit-scope.test.ts` | the authorisation audit over every benchmark run (0 / 249 and 0 / 252 accepted acts unauthorised) | no — a teaching simplification, not any jurisdiction's rules; not reviewed by clinical educators |
 | Vitals channels (G3 / G11: `vitalsView`, `learnerVitals`) | yes | unit: the clinician's `<monitor>` section, `wait`, skill `vital` predicates, the MCP state resource, the REPL status line (`monitor-status.test.ts`) | REPL "vitals: not in view" away from the bedside; web monitor panel "out of view" (e2e) | no — Perf, Rel (§14.4) |
 | Web embodied runtime (§2.1: embodied by default, mode per encounter; `BrowserMover` / `BrowserCamera`; `world_pose`; panel operations as `world_action`, auto-approach and "Go there"; the R8 tick pause; staff walkers, parked carts, locks; world verdicts in the UI; badge, toasts, map actors, live trace) | yes (A6 and the learner-facing review) | unit: frame-rate independent steering, route legs, mover and camera over a fake renderer, portable promotion, spatial helpers and refusal text, world-view verdicts, store folding, trace grouping, embodied start / resume / save validation; e2e `embodied*.spec.ts`, `transport.spec.ts`, `review.spec.ts` and the rest of the suite (45 tests) | the full web e2e suite in embodied mode (Chromium + SwiftShader); the offline standalone page from `file://` | no — Chromium + SwiftShader only (no Firefox / Safari, no real GPU, no phone hardware); known UI behaviours (§14.3). Perf |
-| Embodied offline autopilot | yes (A5) | every built-in case × zh-CN / en finishes in its own facility with the clinical-mode score (test); the STEMI trace chain | `exec --embodied --autopilot`: 40 / 40 runs (both modes) at the clinical score; teaching hospital: PE 89 % | no — a deterministic replay of the reference solution: it shows the plumbing, not reasoning |
+| Embodied offline autopilot | yes (A5) | every built-in case × zh-CN / en finishes in its own facility with the clinical-mode score (test); the STEMI trace chain | `exec --embodied --autopilot`: 40 / 40 runs (both modes) at the clinical score; teaching hospital: 38 / 38 at 100 % (2026-10-29) | no — a deterministic replay of the reference solution: it shows the plumbing, not reasoning |
 | Delegation (`delegate_task`: `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention`, `transport_patient`) | yes (A5; review: the bedside rule, fetch hints followed, `onBehalfOf`, scope before a step, `cancelled` C17, nothing left reserved C3) | the nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller; `/delegate staff:ed-nurse record_ecg` (general hospital) and `staff:ed-station.nurse` (teaching hospital, the cart fetched to the bed first); porter transports | multi-agent scenarios; REPL `/delegate nurse attach_monitor` | no — staff follow deterministic scripts; no model drives a staff member |
 | Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5; review S2, S8, G1, C3, C8–C10) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader, risk from the steps | REPL `/skill` lists the 11; **no benchmark scenario runs a skill** | no — not validated end to end; no live model has proposed an inline skill. Sec |
 | Session traces, `world` transcript items, resume | yes (A5) | trace scopes, JSONL, the STEMI chain; resume from memory and from JSONL (`createNodeSession`), embodiment kept / an explicit other one refused | `exec --trace` (a header + 287 spans for STEMI); `--continue` restores the world | no — transcripts are local JSONL files without retention or backup policy. Ops |
@@ -1671,37 +1687,40 @@ the measurements of §4, §7, §11).
 | World bridge: MCP ⇄ live browser world (`WorldSessionRouter`; ops `external_tool_call` / `external_tool_cancel`; `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`; the web switch, badge and labelled approvals) | yes (A8, A8b; hardening S5, S9, S10, S11) | router over HTTP (token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation, expiry and heartbeats, DELETE, re-delivery, limits, CORS, shutdown); session ops; the browser client against a real server in Node and against a fake server; MCP attach over stdio with a stubbed server; the review reproductions as regression tests; web `ExternalControl` / `BrowserMover` in hidden tabs; Playwright `external-agent.spec.ts` (en + zh-CN) | end to end with real processes (`world-attach.e2e.test.ts`: `serve` + a headless embodied STEMI session through the client + `mcp --attach` over stdio; a decoy session of another token holder never reached); Playwright: a served build, the switch, `mcp --attach` paired by the id and key read from the badge, the ECG through the cart, an approval clicked in the labelled dialog, a hidden tab's walk, a denial, disconnect → `session_closed`, a resumed encounter starting off | no — hardened against the review's reproductions, never independently audited; plain HTTP (terminate TLS in front of `serve`); one shared server token, no user accounts; the registry is in memory (a restart drops live sessions until the browser re-registers); 16 live sessions, 4 per client. Sec, Rel, Dep, Ops |
 | Embodied benchmark (`@clinicalcraft/bench`: scenario schema, suite `embodied-v1` with 41 scenarios in 8 categories, isolated deterministic runs, recorder, spatial / authorisation / safety audits, predicates on authoritative state, Wilson intervals, JSON + Markdown reports; agents `reference`, `scripted-llm`, `llm`) | yes (A7; transport scenarios FX-T) | every scenario file validates (schema + references); every predicate kind true and false on a real run; Wilson against Newcombe 1998; 3 scenarios × each agent kind (the `llm` agent with a fake provider); a broken agent that only claims success scores 0; limits, budget, live-agent refusals; CLI | `reference` and `scripted-llm`: 123 / 123 runs each, 0 accepted spatial or authorisation violations, every trace identical across seeds (local run and CI); the live-run refusals | no — **no live-model run recorded: model competence is unmeasured**; 23 of the 41 scenarios use the STEMI case; one acting agent (the clinician) per run |
 | Patient transport (G8, FX-T: `transport_patient` operation, learner tool, `/transport`, `delegate_task … transport_patient`; relocations by authored `destination` / phase `location`; `patient-at-provider`; the bedside, the patient's monitor and the screen follow the patient; web: the bed pushed with the patient on it, `placePatient`) | yes (FX-T) | world `transport.test.ts`, `nav/backend.test.ts` (`ignoreObstacles`: through an obstacle, never a locked door), the hint property with transports, operability with the peak-flow station; agent `session/transport.test.ts`; autopilot transports (PE: the clinician; stroke in `teaching-hospital`: the porter); bench `workflow-pe-ctpa-transport`; web unit and e2e `transport.spec.ts` | the 10 cases × 2 languages in their own facility at the clinical-mode score; the teaching hospital's porter transports | no — team relocations are not animated in the browser (§14.3) |
-| Truthful bystander cues (G12): posture from clinical state (authored `posture`), oxygen accessory from the authored `device` | yes (FX-T) | core `transport-fields.test.ts`, `cues.test.ts`; world perception / posture; agent anaphylaxis posture; web e2e (sitting up changes the drawn patient) | the 10 cases' authored fields (`cases verify --all`) | no — Rel, Perf (§14.4) |
+| Truthful bystander cues (G12): posture from clinical state (authored `posture`), oxygen accessory from the authored `device`, a patient who cannot speak (`patient.nonVerbalWhen` → `cannotSpeak`) | yes (FX-T; cannot speak: the content-standard round) | core `transport-fields.test.ts`, `cues.test.ts`, `nonverbal.test.ts`; world perception / posture / `speech` cue; agent anaphylaxis posture, `session/nonverbal.test.ts`; web e2e (sitting up changes the drawn patient) | the 10 cases' authored fields (`cases verify --all`) | no — Rel, Perf (§14.4) |
 | Screen rule, learner text, lazy hints (extra review items 1–5) | yes (FX-T round) | `screen-rule.test.ts` (read ⇔ policy over sampled points; the reviewer's spots), world `i18n.test.ts` (no raw tool id; both languages, same placeholders), unsupported operations named, `hint-cost.test.ts` (budget, identical results), delegation sentences | web e2e (out of view, "Go there") | no — ranking a hint still costs a reachability flood per new cell (≈ 1.3–1.8 s for 60 cold cells), paid only when read. Perf |
-| Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-10-20: identical but for the header (50 steps, 26 world actions, 0 violations) | no — demonstrates the infrastructure (a replay), not clinical reasoning |
+| Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-10-29: 50 steps, 26 world actions, 0 violations, 22 / 22; the trace is byte-identical when regenerated | no — demonstrates the infrastructure (a replay), not clinical reasoning |
 | Content scale (case index, lazy per-case chunks, paginated ETag'd server API, `CaseLibrary` in the CLI and MCP) | yes | unit: indexer, case store, server content API, the web index plugin | measured with 100–1 000 synthetic cases (§11) | no — browser start-up and case switching with a large catalogue unmeasured; first-load validation ≈ 150–230 ms per case. Perf |
 
 ### 14.3 Known limitations
 
-Stated as they are; none was changed in this behaviour-preserving release.
+Stated as they are; none was changed in this behaviour-preserving release
+(items 2 and 3, re-measured on 2026-10-29, no longer reproduce).
 
 1. **Team relocations are not animated in the browser.** A transfer or a
    phase with a location draws the patient where they arrive, with a toast
    naming the place; walker transports (`transport_patient`) are animated.
-2. **`teaching-hospital` PE: 89 %.** With the offline autopilot the
-   pulmonary-embolism case scores 89 % there (17 / 19): fetching the ward's
-   ECG cart and recording the tracing (four simulated minutes) put the
-   heparin at minute 35.5, just after the nurse's anticoagulation prompt at
-   minute 35. The autopilot replays the reference order and does not hand
-   the ECG to the nurse. Own-facility parity (embodied score = clinical
-   score) holds for all 10 cases.
-3. **≈ 0.5-minute en / zh-CN clock difference** in the stroke (80.17 vs
-   79.67 min) and anaphylaxis (114.98 vs 114.5 min) embodied runs; it
-   predates this release and changes no score.
+2. **`teaching-hospital` PE** scored 89 % there on 2026-10-20 (17 / 19:
+   fetching the ward's ECG cart and recording the tracing put the heparin at
+   minute 35.5, just after the nurse's anticoagulation prompt at minute 35).
+   Re-measured on 2026-10-29 it scores 100 % (22 / 22, en and zh-CN; the
+   heparin at minute 34.5). The autopilot still replays the reference order
+   and does not hand the ECG to the nurse, so the margin before the prompt is
+   half a simulated minute.
+3. **The en / zh-CN clock difference** in the stroke (80.17 vs 79.67 min) and
+   anaphylaxis (114.98 vs 114.5 min) embodied runs measured on 2026-10-20 no
+   longer reproduces: on 2026-10-29 both languages finish at 79.7 and
+   114.5 minutes.
 4. **No live language model was exercised** in this work: benchmark live
    runs are opt-in and never run in CI, and nothing records a model driving
    the embodied tools, the MCP server or the bridge. **No GLB model ships**:
    the model pipeline is tested with generated fixtures only.
 5. **The reports and demonstrations in `docs/bench/` are generated
-   artefacts** (regenerated by the patient-transport round; their header
-   names the working tree they came from, `ddbb594d96df` with uncommitted
-   changes — the tree committed as cc5f6a7). Regenerating them changes only
-   that header line and the timings.
+   artefacts.** Their header names the working tree they came from (the
+   reports: `ddbb594d96df` with uncommitted changes — the tree committed as
+   cc5f6a7; the demonstrations, regenerated on 2026-10-29: `22c4d6914a38`
+   with uncommitted changes). Regenerating them changes only that header
+   line and the timings.
 6. **The simulated clock keeps advancing while the browser tab is hidden**
    (the 250 ms real-time tick is not paused; the browser only throttles it).
 7. **On a phone, toasts at the top can briefly cover HUD buttons** (by

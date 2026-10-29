@@ -1960,6 +1960,7 @@
     {"id": "ward-defibrillator", "type": "defibrillator", "x": -26.5, "z": -30.6, "rot": 270, "room": "ward"},
     {"id": "ward-ecg", "type": "ecg-machine", "x": -26.5, "z": -31.6, "rot": 270, "room": "ward", "label": {"zh-CN": "病房心电图机", "en": "Ward ECG Cart"}},
     {"id": "ward-glucometer", "type": "glucometer-station", "x": -26.45, "z": -32.6, "rot": 270, "room": "ward", "label": {"zh-CN": "床旁快速检测站", "en": "Point-of-Care Testing Station"}},
+    {"id": "ward-niv", "type": "niv-ventilator", "x": -26.5, "z": -33.7, "rot": 270, "room": "ward", "label": {"zh-CN": "病房无创呼吸机", "en": "Ward Non-invasive Ventilator"}},
     {"id": "ward-sanitizer", "type": "hand-sanitizer", "x": -40.6, "z": -24.425, "rot": 180, "room": "ward"},
     {"id": "icu-bed-1", "type": "hospital-bed", "x": -22.5, "z": -39.1, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 床 1", "en": "ICU Bed 1"}},
     {"id": "icu-monitor-1", "type": "patient-monitor", "x": -23.8, "z": -41.15, "rot": 0, "room": "icu", "label": {"zh-CN": "ICU 监护仪 1", "en": "ICU Monitor 1"}},

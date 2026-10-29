@@ -326,7 +326,9 @@ const orderTest: ToolDefinition<ToolArgs> = {
   scope: "workup",
   risk(args, ctx) {
     const r = resolveInvestigation(ctx.caseDef, args, ctx.locale);
-    return r.kind === "id" ? (ctx.caseDef.investigations.find((i) => i.id === r.id)?.risk ?? "none") : "none";
+    const inv = r.kind === "id" ? ctx.caseDef.investigations.find((i) => i.id === r.id) : undefined;
+    // a record review retrieves an existing report: no procedure, so no procedure risk (CASE_AUTHORING §5)
+    return inv && inv.performedAt !== "records" ? inv.risk : "none";
   },
   summarize(args, ctx) {
     const r = resolveInvestigation(ctx.caseDef, args, ctx.locale);

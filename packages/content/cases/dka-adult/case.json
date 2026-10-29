@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "dka-adult",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "呕吐、腹痛伴呼吸急促 · 24岁女性",
     "en": "Vomiting, abdominal pain and fast breathing · 24-year-old woman"
@@ -8979,7 +8979,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-mx-friii",
@@ -9064,6 +9065,31 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "nacl-1l-1h"
+          },
+          {
+            "intervened": "balanced-1l-1h"
+          },
+          {
+            "intervened": "kcl-replacement"
+          },
+          {
+            "intervened": "friii"
+          },
+          {
+            "intervened": "sodium-bicarbonate"
+          },
+          {
+            "intervened": "kcl-push"
+          },
+          {
+            "intervened": "pump-correction-bolus"
+          }
+        ]
       }
     },
     {
@@ -9115,6 +9141,22 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dx-severity"
+          },
+          {
+            "ordered": "abg"
+          },
+          {
+            "ordered": "ct-abdomen"
+          },
+          {
+            "intervened": "antibiotics"
+          }
+        ]
       }
     },
     {
@@ -9979,7 +10021,7 @@
         ]
       },
       {
-        "text": "Does anything run in your family?",
+        "text": "Are there any illnesses that run in the family?",
         "locale": "en",
         "expect": [
           "hx-family"
@@ -10168,7 +10210,7 @@
         ]
       },
       {
-        "text": "While you've been ill, how have you been doing your insulin — meal boluses and corrections?",
+        "text": "Since you've been unwell, have you kept up your meal boluses and corrections?",
         "locale": "en",
         "expect": [
           "hx-insulin-omitted"
@@ -10255,7 +10297,7 @@
         ]
       },
       {
-        "text": "最近体重有变化吗？",
+        "text": "最近是不是瘦了？",
         "locale": "zh-CN",
         "expect": [
           "hx-weight-loss"

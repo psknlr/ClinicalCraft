@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `acute-ischemic-stroke` · v1.1.0 |
+| Case | `acute-ischemic-stroke` · v1.1.1 |
 | Setting | Emergency department, resus bay 1 (`emergency`); later the neuro-angiography suite |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 4 / 5 |
@@ -240,8 +240,8 @@ scored and the CT head and the CTA have been read (plus the pre-stroke function 
 | Investigations | Glucose read before any thrombolytic | 1 |
 | Investigations | NCCT + CTA read, with the CT ordered within 20 min | 1 |
 | Diagnosis | Left MCA / cardioembolic, correct at the **first attempt** (`decidedFirstTry`) | 1 |
-| Safety | BP < 185/110 with an IV agent before lysis, no nifedipine and no over-lowering | 2 |
-| Safety | No aspirin or heparin within 24 h of lysis | 2 |
+| Safety | BP < 185/110 with an IV agent before lysis, no nifedipine and no over-lowering (**critical**) | 2 |
+| Safety | No aspirin or heparin within 24 h of lysis (**critical**; scored once the lysis decision is reached or a lytic, aspirin or heparin is given) | 2 |
 | Safety | Swallow screen and no oral intake | 1 |
 | Management | DTN ≤ 60 min with a safe checklist | 2 |
 | Management | Bridging EVT (decision, neurointervention call, transfer) | 2 |
@@ -250,6 +250,7 @@ scored and the CT head and the CTA have been read (plus the pre-stroke function 
 | Communication (examiner) | SBAR handover to neurointervention | 1 |
 
 The lysis items (BP, DTN, no lab wait) are unmet when thrombectomy reperfused him before any lytic.
+A missed **critical** item (`critical: true`) is named first in the debrief; it does not cap the score.
 
 ### How wrong choices score
 
@@ -493,6 +494,16 @@ journal, volume and pages); none was added from memory.
   AHA/ASA cites no class or level of evidence; check the wording against ref. 1.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+* `r-no-antithrombotic` counts only once the lysis decision is reached or a lytic, aspirin or heparin is given
+  (`scoredWhen`): doing nothing scored 2/18 (11 %) from it alone and now scores 0/16 (0 %). The reference path keeps
+  18/18; aspirin after lysis still costs the item (16/18).
+* `r-bp-before-lysis` and `r-no-antithrombotic` are **critical** (`critical: true`): a miss is named first in the
+  debrief (no score cap).
+* Matcher corpus: four `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
+  (`cases validate --strict`); no history question, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

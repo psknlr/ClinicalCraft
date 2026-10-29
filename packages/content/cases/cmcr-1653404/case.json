@@ -2809,7 +2809,14 @@
         }
       },
       "scoredWhen": {
-        "attempted": "long-term"
+        "any": [
+          {
+            "attempted": "long-term"
+          },
+          {
+            "intervened": "live-vaccine"
+          }
+        ]
       },
       "critical": true
     },

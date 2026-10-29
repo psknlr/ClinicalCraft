@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "anaphylaxis-garden",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": { "zh-CN": "花园蜇伤后呼吸困难 · 30岁女性", "en": "Breathless after a sting in the garden · 30-year-old woman" },
   "summary": {
     "zh-CN": "午后的医院疗愈花园里，一位来探视家属的年轻女性在长椅旁突然不适。你和带着病区急救包赶来的护士一起，在没有抢救室设备的户外完成快速评估与处理，随后安排转运、检查与去向。",
@@ -4576,7 +4576,8 @@
         "zh-CN": "5分钟内肌注肾上腺素0.5 mg（1 mg/mL）于大腿前外侧",
         "en": "IM adrenaline 0.5 mg (1 mg/mL) into the anterolateral thigh within 5 minutes"
       },
-      "met": { "all": [{ "intervened": "adrenaline-im" }, { "not": { "flag": "adrenaline-delayed" } }] }
+      "met": { "all": [{ "intervened": "adrenaline-im" }, { "not": { "flag": "adrenaline-delayed" } }] },
+      "critical": true
     },
     {
       "id": "r-adr-repeat",
@@ -4637,7 +4638,8 @@
           { "not": { "intervened": "adrenaline-iv-bolus" } },
           { "not": { "intervened": "adrenaline-sc" } }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-safe-posture",
@@ -4932,7 +4934,7 @@
       { "text": "皮肤痒不痒，有没有起疹子？", "locale": "zh-CN", "expect": ["hpi-itch-rash"] },
       { "text": "Is your tongue swollen?", "locale": "en", "expect": ["hpi-lips-tongue"] },
       { "text": "Do you feel sick? Any vomiting?", "locale": "en", "expect": ["hpi-gi"] },
-      { "text": "Any chest pain or palpitations?", "locale": "en", "expect": ["hpi-chest-palp"] },
+      { "text": "Is your heart racing, or do you have chest pain?", "locale": "en", "expect": ["hpi-chest-palp"] },
       { "text": "Is the sting still in your skin?", "locale": "en", "expect": ["hpi-sting-site"] },
       { "text": "What stung you, a bee or a wasp?", "locale": "en", "expect": ["hpi-insect"] },
       { "text": "被蜇之前吃过什么东西吗？", "locale": "zh-CN", "expect": ["hpi-other-triggers"] },
@@ -4954,10 +4956,10 @@
       { "text": "Do you smoke or drink?", "locale": "en", "expect": ["social-habits"] },
       { "text": "What do you do for work?", "locale": "en", "expect": ["social-occupation"] },
       { "text": "What are you most worried about?", "locale": "en", "expect": ["ice-concern"] },
-      { "text": "Have you ever had allergy testing?", "locale": "en", "expect": ["prior-testing"] },
+      { "text": "Has anyone ever done allergy tests on you?", "locale": "en", "expect": ["prior-testing"] },
       { "text": "When was your last tetanus jab?", "locale": "en", "expect": ["unknown-tetanus"] },
       { "text": "你平时血压多少？", "locale": "zh-CN", "expect": ["unknown-usual-bp"] },
-      { "text": "家里人有严重过敏的吗？", "locale": "zh-CN", "expect": ["family"] },
+      { "text": "你家里人有没有过敏特别严重的？", "locale": "zh-CN", "expect": ["family"] },
       { "text": "刚才有没有晕过去？", "locale": "zh-CN", "expect": ["hpi-loc"] },
       { "text": "Any itchy eyes or runny nose?", "locale": "en", "expect": ["ros-other"] },
       { "text": "咋回事啊？", "locale": "zh-CN", "expect": ["pc-sting"] },
@@ -4975,7 +4977,7 @@
       { "text": "any bp tablets or beta blockers", "locale": "en", "expect": ["meds-bb"] },
       { "text": "do u have an epi pen", "locale": "en", "expect": ["aai-own"] },
       {
-        "text": "how are you feeling now?",
+        "text": "how do you feel now?",
         "locale": "en",
         "expect": ["status-scene", "status-treated", "status-ed"]
       },

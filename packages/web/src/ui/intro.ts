@@ -12,6 +12,7 @@
  * case's full file loads in the background (its status line: loading,
  * failed — with a retry, or a page reload for a bundled case —, invalid).
  */
+import { specialtyLabel as sharedSpecialtyLabel } from "@clinicalcraft/core";
 import type { ClinicalCraftApp } from "../app/app.js";
 import type { CaseCard } from "../app/content.js";
 import { statusLabel } from "../app/llm.js";
@@ -30,8 +31,9 @@ function relativeTime(iso: string): string {
   }
 }
 
+/** A specialty by its label in the UI language — core's one table for every front-end (`SPECIALTY_LABELS`). */
 export function specialtyLabel(id: string): string {
-  return trMaybe(`spec.${id}`, id.replace(/-/g, " "));
+  return sharedSpecialtyLabel(id, getLocale());
 }
 
 export class Intro {

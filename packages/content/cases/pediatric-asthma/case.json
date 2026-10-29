@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pediatric-asthma",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "夜间喘息加重 · 6岁男孩",
     "en": "Worsening wheeze overnight · 6-year-old boy"
@@ -9235,6 +9235,28 @@
             }
           }
         ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-severity"
+          },
+          {
+            "ordered": "cxr"
+          },
+          {
+            "ordered": "vbg"
+          },
+          {
+            "ordered": "cbc"
+          },
+          {
+            "ordered": "crp"
+          },
+          {
+            "ordered": "blood-culture"
+          }
+        ]
       }
     },
     {
@@ -9256,7 +9278,27 @@
             }
           ]
         }
-      }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "salbutamol-neb"
+          },
+          {
+            "intervened": "salbutamol-mdi"
+          },
+          {
+            "attempted": "dec-first-line"
+          },
+          {
+            "intervened": "sedation"
+          },
+          {
+            "flag": "premature-discharge"
+          }
+        ]
+      },
+      "critical": true
     },
     {
       "id": "r-escalation",
@@ -9305,6 +9347,19 @@
             ]
           }
         ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "flag": "tiring"
+          },
+          {
+            "flag": "life-threatening"
+          },
+          {
+            "attempted": "dec-response"
+          }
+        ]
       }
     },
     {
@@ -9340,6 +9395,28 @@
                 }
               }
             ]
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "salbutamol-neb"
+          },
+          {
+            "intervened": "salbutamol-mdi"
+          },
+          {
+            "attempted": "dec-first-line"
+          },
+          {
+            "intervened": "antibiotic-amoxicillin"
+          },
+          {
+            "intervened": "magnesium-iv"
+          },
+          {
+            "intervened": "aminophylline-iv"
           }
         ]
       }
@@ -10015,7 +10092,7 @@
         ]
       },
       {
-        "text": "家里有人抽烟吗？",
+        "text": "你们家里有没有人抽烟？",
         "locale": "zh-CN",
         "expect": [
           "hx-smoke"
@@ -10169,7 +10246,7 @@
         ]
       },
       {
-        "text": "What are you most worried about?",
+        "text": "What's worrying you the most?",
         "locale": "en",
         "expect": [
           "hx-ice-concerns"

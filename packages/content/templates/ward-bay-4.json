@@ -2,7 +2,7 @@
   "schema": "clinicalcraft/room-template@1",
   "id": "ward-bay-4",
   "name": {"zh-CN": "四人病房", "en": "Four-bed ward bay"},
-  "description": {"zh-CN": "内科病房：四张病床，每床配监护仪和吸氧吸引接口，两两共用床头服务通道，两台输液泵，床间隔帘。", "en": "A medical ward bay: four beds, each with a monitor and an oxygen/suction outlet, paired around shared bed-head service gaps, two infusion pumps and curtains between beds."},
+  "description": {"zh-CN": "内科病房：四张病床，每床配监护仪和吸氧吸引接口，两两共用床头服务通道，两台输液泵，床间隔帘，一台可推至床旁的无创呼吸机。", "en": "A medical ward bay: four beds, each with a monitor and an oxygen/suction outlet, paired around shared bed-head service gaps, two infusion pumps, curtains between beds and a mobile non-invasive ventilator."},
   "kind": "ward",
   "size": {"w": 12, "d": 8},
   "floor": "lino",
@@ -40,7 +40,8 @@
     {"id": "table-4", "type": "overbed-table", "x": 4.3, "z": 0.2},
     {"id": "sink", "type": "sink", "x": -5.55, "z": 2.4, "rot": 90},
     {"id": "sanitizer", "type": "hand-sanitizer", "x": 5.3, "z": 3.3},
-    {"id": "treatment-cart", "type": "treatment-cart", "x": 3.2, "z": 3.35, "label": {"zh-CN": "病房治疗车", "en": "Ward treatment cart"}}
+    {"id": "treatment-cart", "type": "treatment-cart", "x": 3.2, "z": 3.35, "label": {"zh-CN": "病房治疗车", "en": "Ward treatment cart"}},
+    {"id": "niv", "type": "niv-ventilator", "x": -3.2, "z": 3.35, "label": {"zh-CN": "病房无创呼吸机", "en": "Ward non-invasive ventilator"}}
   ],
   "patientSlots": [
     {"id": "bed-1", "x": -4.3, "z": -2.2, "posture": "lying", "bed": "bed-1", "monitor": "monitor-1", "accepts": ["inpatient", "ward"]},
@@ -48,6 +49,6 @@
     {"id": "bed-3", "x": 1.7, "z": -2.2, "posture": "lying", "bed": "bed-3", "monitor": "monitor-3", "accepts": ["inpatient", "ward"]},
     {"id": "bed-4", "x": 4.3, "z": -2.2, "posture": "lying", "bed": "bed-4", "monitor": "monitor-4", "accepts": ["inpatient", "ward"]}
   ],
-  "capabilities": ["cardiac-monitor", "oxygen", "suction", "infusion-pump", "iv-access"],
+  "capabilities": ["cardiac-monitor", "oxygen", "suction", "infusion-pump", "iv-access", "niv"],
   "tags": ["ward", "inpatient"]
 }

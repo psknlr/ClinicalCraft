@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "smzl-lung-adeno",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "title": {
     "zh-CN": "左上腹痛与脾大 · 74岁男性",
     "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"
@@ -2666,7 +2666,8 @@
             "decidedFirstTry": "safety"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "rb-dx-genetics",
@@ -3325,7 +3326,7 @@
     },
     "testUtterances": [
       {
-        "text": "哪里疼，什么时候开始？",
+        "text": "您是哪里疼？从什么时候开始的？",
         "locale": "zh-CN",
         "expect": [
           "pain"
@@ -3346,7 +3347,7 @@
         ]
       },
       {
-        "text": "以前是否发现过脾大？",
+        "text": "以前有没有人说过您脾大？",
         "locale": "zh-CN",
         "expect": [
           "spleen"
@@ -3360,7 +3361,7 @@
         ]
       },
       {
-        "text": "既往有哪些肿瘤及治疗？",
+        "text": "您以前得过哪种肿瘤？是怎么治疗的？",
         "locale": "zh-CN",
         "expect": [
           "lung"
@@ -3382,7 +3383,7 @@
         ]
       },
       {
-        "text": "吸烟史、家族史能否补充？",
+        "text": "您抽不抽烟？家里人有类似的病吗？",
         "locale": "zh-CN",
         "expect": [
           "other"
@@ -3432,7 +3433,7 @@
         ]
       },
       {
-        "text": "确诊后做过哪些治疗？",
+        "text": "确诊后的治疗是怎么做的？",
         "locale": "zh-CN",
         "expect": [
           "treatment-course"
@@ -3453,7 +3454,7 @@
         ]
       },
       {
-        "text": "Where does it hurt, and when did it start?",
+        "text": "Where's the pain, and when did it begin?",
         "locale": "en",
         "expect": [
           "pain"
@@ -3467,7 +3468,7 @@
         ]
       },
       {
-        "text": "Has an enlarged spleen ever been found before?",
+        "text": "Has a doctor ever told you that your spleen was enlarged?",
         "locale": "en",
         "expect": [
           "spleen"
@@ -3532,7 +3533,7 @@
         ]
       },
       {
-        "text": "Have you had any operations?",
+        "text": "Have you ever had surgery?",
         "locale": "en",
         "expect": [
           "psh"
@@ -3553,7 +3554,7 @@
         ]
       },
       {
-        "text": "What treatment have you had since the diagnosis?",
+        "text": "What treatment have you had so far?",
         "locale": "en",
         "expect": [
           "treatment-course"

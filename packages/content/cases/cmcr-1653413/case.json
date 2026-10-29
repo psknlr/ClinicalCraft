@@ -1482,7 +1482,7 @@
       },
       "kind": "airway",
       "requires": [
-        "ventilator"
+        "niv"
       ],
       "risk": "low",
       "dose": {
@@ -2374,6 +2374,9 @@
           },
           {
             "intervened": "niv-continue"
+          },
+          {
+            "intervened": "tcm-decoction-aconite"
           }
         ]
       },

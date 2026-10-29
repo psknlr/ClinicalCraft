@@ -150,19 +150,22 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
               r.rubric.map((item) => {
                 const def = c.rubric.find((x) => x.id === item.id);
                 const j = judged.get(item.id);
+                // `scored: false`: its precondition (`scoredWhen`) did not arise — it counts neither way
                 const status =
-                  item.met === true
-                    ? h("span", { class: "pill ok" }, tr("debrief.met"))
-                    : item.met === false
-                      ? h("span", { class: "pill no" }, tr("debrief.unmet"))
-                      : j
-                        ? h("span", { class: `pill ${j.met ? "ok" : "no"} judged` }, j.met ? tr("debrief.judgedMet") : tr("debrief.judgedUnmet"))
-                        : h("span", { class: "pill pending" }, tr("debrief.needsExaminer"));
+                  item.scored === false
+                    ? h("span", { class: "pill pending", title: tr("debrief.notScoredHint") }, tr("debrief.notScored"))
+                    : item.met === true
+                      ? h("span", { class: "pill ok" }, tr("debrief.met"))
+                      : item.met === false
+                        ? h("span", { class: "pill no" }, tr("debrief.unmet"))
+                        : j
+                          ? h("span", { class: `pill ${j.met ? "ok" : "no"} judged` }, j.met ? tr("debrief.judgedMet") : tr("debrief.judgedUnmet"))
+                          : h("span", { class: "pill pending" }, tr("debrief.needsExaminer"));
                 return h(
                   "tr",
-                  null,
+                  { class: item.critical ? "critical" : undefined, dataset: { item: item.id } },
                   h("td", { class: "domain" }, trMaybe(`debrief.domain.${item.domain}`, item.domain)),
-                  h("td", null, ct(def?.text) || item.id, j?.evidence ? h("small", { class: "evidence" }, tr("debrief.evidence", { text: j.evidence })) : null),
+                  h("td", null, ct(def?.text) || item.id, item.critical ? h("span", { class: "pill critical" }, tr("debrief.critical")) : null, j?.evidence ? h("small", { class: "evidence" }, tr("debrief.evidence", { text: j.evidence })) : null),
                   h("td", { class: "num" }, `×${item.weight}`),
                   h("td", null, status),
                 );
@@ -175,10 +178,30 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
   );
 }
 
-/** "病例完成 · {title}" unless the case title already carries that prefix (V4 SMZL does). */
-function debriefTitle(title: string): string {
+/**
+ * "病例完成 · {title}" unless the case title already carries that prefix (V4 SMZL does); "病例结束 · {title}"
+ * when the case ended (finished or timed out) before every objective was done — never "complete" then.
+ */
+function debriefTitle(title: string, ended: boolean): string {
   const prefix = tr("debrief.title", { title: "" }).replace(/[\s·:：-]+$/, "");
-  return prefix && title.toLowerCase().startsWith(prefix.toLowerCase()) ? title : tr("debrief.title", { title });
+  const carries = !!prefix && title.toLowerCase().startsWith(prefix.toLowerCase());
+  if (!ended) return carries ? title : tr("debrief.title", { title });
+  return tr("debrief.endedTitle", { title: carries ? title.slice(prefix.length).replace(/^[\s·:：-]+/, "") : title });
+}
+
+/** The debrief's opening line: completed (✓), or ended with objectives open — by the time limit (⏱) or by finishing early. */
+function leadBlock(c: CaseDefinition, s: SessionState): HTMLElement {
+  const ended = !progress(c, s).complete;
+  const timeUp = ended && c.clock.limitMinutes != null && s.clock >= c.clock.limitMinutes;
+  const mark = !ended ? "✓" : timeUp ? "⏱" : "–";
+  const lead = !ended ? "debrief.lead" : timeUp ? "debrief.endedLeadTime" : "debrief.endedLead";
+  return h(
+    "div",
+    { style: "text-align:center", id: "debrief-lead", "data-ended": ended ? (timeUp ? "time" : "early") : "no" },
+    h("div", { class: ended ? "done-mark ended" : "done-mark" }, mark),
+    h("h3", null, tr(lead)),
+    h("p", null, tr(ended ? "debrief.endedLeadSub" : "debrief.leadSub")),
+  );
 }
 
 export function debriefPanel(app: App): () => PanelView {
@@ -189,7 +212,10 @@ export function debriefPanel(app: App): () => PanelView {
     const store = game.session.store;
     if (!store.assessment && !store.assessing) app.submit({ type: "assess" });
     const content = h("div", { class: "debrief" });
-    const openedUnlocked = debriefUnlocked(c, store.snapshot?.state ?? game.session.session.state);
+    const opened = store.snapshot?.state ?? game.session.session.state;
+    const openedUnlocked = debriefUnlocked(c, opened);
+    // Unlocked by finishing (or the time limit) with objectives open: the case ended, it was not completed.
+    const openedEnded = openedUnlocked && !progress(c, opened).complete;
     const render = (): void => {
       clear(content);
       const s = store.snapshot?.state ?? game.session.session.state;
@@ -203,9 +229,12 @@ export function debriefPanel(app: App): () => PanelView {
       const outcomes = c.learningOutcomes.map((x) => ct(x)).filter(Boolean);
       const review = reviewLine(c.provenance.review);
       const guidelines = c.provenance.review?.guidelines ?? [];
+      // Critical items missed (`rubric[].critical`), prominently — once the debrief is unlocked (mid-case they would be an answer key).
+      const critical = unlocked ? (report?.criticalMissed ?? []).map((id) => ct(c.rubric.find((x) => x.id === id)?.text) || id) : [];
       mount(
         content,
-        unlocked ? h("div", { style: "text-align:center" }, h("div", { class: "done-mark" }, "✓"), h("h3", null, tr("debrief.lead")), h("p", null, tr("debrief.leadSub"))) : null,
+        unlocked ? leadBlock(c, s) : null,
+        critical.length ? h("div", { class: "critical-missed", id: "debrief-critical", role: "alert" }, h("h4", null, `⚠ ${tr("debrief.criticalMissed")}`), h("ul", null, critical.map((x) => h("li", null, x)))) : null,
         !s.finished ? h("p", { class: "notice" }, tr("debrief.notFinished")) : null,
         !unlocked ? h("p", { class: "notice", id: "debrief-locked" }, tr("debrief.locked")) : null,
         h(
@@ -253,9 +282,9 @@ export function debriefPanel(app: App): () => PanelView {
     let last = store.version;
     return {
       id: "debrief",
-      kicker: openedUnlocked ? tr("debrief.kicker") : tr("debrief.progressKicker"),
+      kicker: openedUnlocked ? tr(openedEnded ? "debrief.endedKicker" : "debrief.kicker") : tr("debrief.progressKicker"),
       // The debrief title names the diagnosis: mid-case the panel is the progress view.
-      title: openedUnlocked ? debriefTitle(ct(c.debrief.title)) : tr("debrief.progressTitle"),
+      title: openedUnlocked ? debriefTitle(ct(c.debrief.title), openedEnded) : tr("debrief.progressTitle"),
       variant: "wide",
       body: content,
       update() {

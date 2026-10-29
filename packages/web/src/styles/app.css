@@ -1820,6 +1820,31 @@ details.topic .question {
 .pill.judged {
   box-shadow: inset 0 0 0 1px currentColor;
 }
+.pill.critical {
+  margin-left: 6px;
+  background: var(--danger-soft);
+  color: #7a2b18;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rubric-table tr.critical td:first-child {
+  box-shadow: inset 3px 0 0 #b0442a;
+}
+/* Critical rubric items missed: shown first in the unlocked debrief */
+.critical-missed {
+  margin: 14px 0;
+  padding: 12px 14px;
+  background: var(--danger-soft);
+  border-left: 4px solid #b0442a;
+  color: #5c1f10;
+}
+.critical-missed h4 {
+  margin: 0 0 6px;
+}
+.critical-missed ul {
+  margin: 0;
+  padding-left: 18px;
+}
 .narrative {
   margin-top: 16px;
   padding: 14px 16px;

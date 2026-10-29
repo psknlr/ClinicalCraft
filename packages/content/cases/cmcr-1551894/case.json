@@ -3833,7 +3833,14 @@
         ]
       },
       "scoredWhen": {
-        "attempted": "dec-management"
+        "any": [
+          {
+            "attempted": "dec-management"
+          },
+          {
+            "intervened": "tips"
+          }
+        ]
       }
     },
     {

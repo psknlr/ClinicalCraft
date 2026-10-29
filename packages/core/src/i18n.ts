@@ -118,6 +118,7 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   suction: { "zh-CN": "吸引装置", en: "suction" },
   airway: { "zh-CN": "高级气道设备", en: "advanced airway equipment" },
   ventilator: { "zh-CN": "呼吸机", en: "a ventilator" },
+  niv: { "zh-CN": "无创呼吸机", en: "a non-invasive ventilator" },
   nebulizer: { "zh-CN": "雾化器", en: "a nebuliser" },
   "iv-access": { "zh-CN": "静脉通路", en: "IV access" },
   "infusion-pump": { "zh-CN": "输液泵", en: "an infusion pump" },

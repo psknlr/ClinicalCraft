@@ -3855,7 +3855,23 @@
         ]
       },
       "scoredWhen": {
-        "attempted": "mdt-sequence"
+        "any": [
+          {
+            "attempted": "mdt-sequence"
+          },
+          {
+            "intervened": "simultaneous-resection"
+          },
+          {
+            "intervened": "palliative-capecitabine"
+          },
+          {
+            "intervened": "continue-until-cr"
+          },
+          {
+            "intervened": "abandon-surgery-chemo"
+          }
+        ]
       },
       "critical": true
     },

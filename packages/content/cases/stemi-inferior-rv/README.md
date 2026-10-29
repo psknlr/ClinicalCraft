@@ -11,7 +11,7 @@ pseudonym (刘振华（化名）/ Liu Zhenhua; his wife 王丽（化名）/ Wang
 
 | | |
 |---|---|
-| id / version | `stemi-inferior-rv` / `1.1.0` |
+| id / version | `stemi-inferior-rv` / `1.1.1` |
 | setting / facility | `emergency` / `general-hospital` (resus bay 1) |
 | specialty | emergency medicine, cardiology |
 | difficulty / estimated time | 3 / 5 · 35 min (simulated clock, 120-min limit) |
@@ -138,9 +138,9 @@ never state a result.
 | `r-reperfusion-choice` | management | 1 | `reperfusion-strategy` right at the first attempt |
 | `r-antithrombotics` | management | 2 | aspirin + P2Y12 + anticoagulant given |
 | `r-fluid` | management | 1 | fluid bolus given |
-| `r-no-nitrate` | safety | **3** | no nitroglycerin |
-| `r-no-routine-o2` | safety | 1 | no `routine-oxygen` flag |
-| `r-no-harmful-drugs` | safety | **2** | no tenecteplase, fondaparinux, furosemide, IV metoprolol or CCU admission |
+| `r-no-nitrate` | safety | **3** | no nitroglycerin — scored once the nitrate decision is reached or a nitrate is given; **critical** |
+| `r-no-routine-o2` | safety | 1 | no `routine-oxygen` flag — scored once aspirin is given, the cath lab is called or routine oxygen is given |
+| `r-no-harmful-drugs` | safety | **2** | no tenecteplase, fondaparinux, furosemide, IV metoprolol or CCU admission — scored once the reperfusion or antithrombotic decision is reached or one of them is given |
 | `r-door-to-lab` | efficiency | 2 | transferred after activation, before 60 min, no VF |
 | `r-explain-consent` | communication | 1 | examiner-judged (plain explanation, consent, his fear) |
 | `r-handover` | communication | 1 | examiner-judged (SBAR, read-back) |
@@ -149,7 +149,8 @@ never state a result.
 (`decidedFirstTry`), so trying every option earns nothing. A nitrate costs 3 points plus the physiological crash; any
 of the five harmful options costs 2; routine oxygen, troponin-waiting, a late ECG, a transfer before activation and a
 VF arrest each fail their own item. Contraindicated interventions are also logged as safety events with their `harm`
-text.
+text. Doing nothing earns none of the three avoided-harm items (each counts once its decision point is reached:
+`scoredWhen`), and a missed `r-no-nitrate` is named first in the debrief (`critical`).
 
 ## Reference path (`solution`)
 
@@ -366,6 +367,18 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
 - Ref. 2: the issue number (cited without it); ref. 4: a DOI (none could be verified, so none is given).
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+- **Avoided-harm items count only once the harm was possible** (`scoredWhen`): `r-no-nitrate` once the nurse's nitrate
+  question (`nitrate-safety`) is reached or a nitrate is given; `r-no-routine-o2` once aspirin is given, the cath lab
+  is called or routine oxygen is given; `r-no-harmful-drugs` once the reperfusion or antithrombotic decision is reached
+  or one of the drugs is given. Doing nothing scored 6/22 (27 %) from these three items and now scores 0/16 (0 %); the
+  reference path keeps 22/22 and a nitrate still costs 3 (19/22).
+- `r-no-nitrate` is **critical** (`critical: true`): a nitrate in this RV infarct is named first in the debrief (no
+  score cap).
+- Matcher corpus: one `extensions.testUtterances` entry that repeated its item's canonical question is now a
+  paraphrase (`cases validate --strict`); no history item, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

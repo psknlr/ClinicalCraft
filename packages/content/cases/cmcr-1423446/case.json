@@ -3389,7 +3389,14 @@
         }
       },
       "scoredWhen": {
-        "attempted": "abx-indication"
+        "any": [
+          {
+            "attempted": "abx-indication"
+          },
+          {
+            "intervened": "levofloxacin-iv"
+          }
+        ]
       }
     },
     {

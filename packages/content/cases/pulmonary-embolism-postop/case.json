@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pulmonary-embolism-postop",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "胸痛伴气促 · 52岁女性（术后第3天）",
     "en": "Chest pain and breathlessness · 52-year-old woman (post-op day 3)"
@@ -7230,7 +7230,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-safety-no-harm",
@@ -7998,7 +7999,7 @@
         ]
       },
       {
-        "text": "Have you coughed up any blood?",
+        "text": "Have you been coughing up blood?",
         "locale": "en",
         "expect": [
           "h-haemoptysis"
@@ -8040,7 +8041,7 @@
         ]
       },
       {
-        "text": "Do you smoke?",
+        "text": "Do you smoke cigarettes at all?",
         "locale": "en",
         "expect": [
           "h-smoking"

@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "new-onset-t2dm",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "乏力、口干 · 48岁男性",
     "en": "Tiredness and thirst · 48-year-old man"
@@ -7119,6 +7119,28 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-first-line"
+          },
+          {
+            "intervened": "iv-metformin"
+          },
+          {
+            "intervened": "iv-insulin"
+          },
+          {
+            "intervened": "iv-sulfonylurea"
+          },
+          {
+            "intervened": "iv-lifestyle-only"
+          },
+          {
+            "flag": "rx-before-egfr"
+          }
+        ]
       }
     },
     {
@@ -7140,6 +7162,19 @@
             }
           ]
         }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-diagnosis"
+          },
+          {
+            "ordered": "inv-ogtt"
+          },
+          {
+            "ordered": "inv-ctca"
+          }
+        ]
       }
     },
     {
@@ -7839,7 +7874,7 @@
   "extensions": {
     "testUtterances": [
       {
-        "text": "今天哪里不舒服？",
+        "text": "今天来是哪里不舒服？",
         "locale": "zh-CN",
         "expect": [
           "hx-chief"
@@ -7902,7 +7937,7 @@
         ]
       },
       {
-        "text": "以前查过血糖吗？",
+        "text": "以前体检查过血糖没有？",
         "locale": "zh-CN",
         "expect": [
           "hx-prior-glucose"
@@ -7998,7 +8033,7 @@
         "expect": []
       },
       {
-        "text": "What brings you in today?",
+        "text": "So what's brought you in today?",
         "locale": "en",
         "expect": [
           "hx-chief"
@@ -8075,14 +8110,14 @@
         ]
       },
       {
-        "text": "Any problems with erections?",
+        "text": "Have you had any trouble getting an erection?",
         "locale": "en",
         "expect": [
           "hx-erectile"
         ]
       },
       {
-        "text": "What's your diet like?",
+        "text": "What do you eat on a typical day?",
         "locale": "en",
         "expect": [
           "hx-diet"
@@ -8103,7 +8138,7 @@
         ]
       },
       {
-        "text": "How's the stopping smoking going?",
+        "text": "Have you managed to quit smoking?",
         "locale": "en",
         "expect": [
           "hx-rv-smoking"
@@ -8330,14 +8365,14 @@
         ]
       },
       {
-        "text": "have you been checking your blood pressure at home?",
+        "text": "have you been taking your BP at home?",
         "locale": "en",
         "expect": [
           "hx-rv-home-bp"
         ]
       },
       {
-        "text": "在家量血压了吗？",
+        "text": "最近在家里自己量过血压吗？",
         "locale": "zh-CN",
         "expect": [
           "hx-rv-home-bp"

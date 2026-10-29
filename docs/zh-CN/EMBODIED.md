@@ -454,6 +454,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | `order_test`：其他**床旁检查**（全部属于 `BEDSIDE_CAPABILITIES`） | `any-of` [`bedside-provider`（设备在床旁，**且**行动者距患者 1.5 m 以内），`all-of` [`patient-at-provider`，`fixedOnly` 的 `at-provider`]] | 检查在患者身上用身边的设备完成；固定工作站只有在患者处于其够及范围内时才算数 |
 | `order_test`：**化验**（全部属于 `LAB_CAPABILITIES`） | `at-patient` 1.5 m（`why: "sample"`：在患者身边下单，经气动物流送检）——或者，对血标本（`BLOOD_SAMPLE_CAPABILITIES`：除尿液分析外的全部化验能力），在病例的建立静脉通路操作已顺带采血之后（`clinical`），可在 `records` 终端或化验工作站录入医嘱 | 标本在患者身边采集，医嘱在床旁或任意电子病历终端录入：没有人走去分析仪——也没有人给从未采过的血下化验单 |
 | `order_test`：其他 | `at-provider`（能提供该检查的工作站） | |
+| **病历查阅**（`performedAt: "records"`：从病历中调阅已有的报告——外院影像、既往超声心动图、手术记录、用药记录）的 `order_test` / `read_result` | `any-of` [`at-provider` `records`（电子病历终端或护士站工作台），`at-patient` 1.5 m（`why: "notes"`：在床旁查阅病历记录）]——无论 `requires` 写了什么，都从不需要转运、采样或设备；不产生能力缺口（`caseCapabilityGaps`），审批闸门处也没有操作风险 | 已有的报告是在电子病历或床旁病历里查到的，不必再做一遍 |
 | `read_result` | 无能力要求：任意位置 · 仅需随身器械：`at-patient` · 床旁检查：`any-of` [`at-patient`，`at-provider` `records`，提供这些能力的固定工作站（`fixedOnly`，`providerKinds: ["workstation"]`）]——**从不在设备上** · 化验：`any-of` [`at-provider` `records`，`at-patient`，化验工作站] · 其他：`at-provider`（在控制台读报告——从不在患者处） | 已记录的心电图在纸上或电子病历里看，而不是把推车再推回来；读报告不需要患者在场 |
 | `intervene`，kind 为 `consult` / `disposition` | 任意位置（电话 / 寻呼） | |
 | `intervene`，其他 kind（`medication`、`fluid`、`oxygen`、`procedure`、`positioning`、`airway`、`monitoring`、`other`） | 其所需能力——`requires` 为空时取该 kind 的默认值（`KIND_DEFAULT_CAPABILITIES`：oxygen → `oxygen`，monitoring → `cardiac-monitor`，fluid → `iv-access`，airway → `airway`）——去掉随身器械：不剩任何能力 → `at-patient` 1.5 m；否则对这些能力要求 `bedside-provider`，但**配送类**能力（`DELIVERED_CAPABILITIES`：`medications`、`blood-bank`）只需场馆某处有在用的提供者。`iv-access` 是**患者状态**：`all-of` [`clinical` {intervened: 病例的建立静脉通路操作}，…]——若病例标注了 `extensions.embodied.ivAccessInSitu` 或没有此类操作则跳过；建立静脉通路操作本身需要穿刺包（抢救车或治疗车）在床旁 | 器械必须在床边（在花园里就得带过去）；静脉用药需要患者身上有留置针，而不是床边有输液架 |
@@ -502,6 +503,10 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   （`{ tool: "intervene", intervention_id }`）中指明建立该事实的操作："There is no
   IV access yet: place a cannula first (‹procedure›), then give this." /
   "还没有静脉通路：请先建立静脉通路（‹操作›），再给药。"
+* **手术室里的电子病历终端。** 每间手术室都有一台：综合医院的 `or-records`，以及教学
+  医院 `operating-theatre` 模板中的 `records`（由该模板建成的每间手术室都有）；它们都
+  放在手术台工作区之外、可以到达（`facilities validate --all`）。不出手术室就能查看
+  结果和查阅病历（CASE_AUTHORING §5）。
 * **能力分组。** `BEDSIDE_CAPABILITIES` = `ecg-12lead`、`point-of-care`、
   `ultrasound`、`echocardiography`、`peak-flow`、`scale`、`cardiac-monitor`、
   `capnography`、`oxygen`、`suction`。床旁检查也可以在其**固定**提供者处申请
@@ -768,7 +773,10 @@ reference 行走者（基准测试）和具身示范接诊会规划这些转运�
 躺到诊查床上的患者不再挡住地面），也是网页 NPC 所显示的；某些位置会强制体位（躺在
 扫描床或平车上、站在测定站前）。`distressed` 表示有危急报警，或没有监护且
 `inExtremis`。吸氧附件读取处置的 `device`（否则读取其剂量 / 名称文字，任一语言）：
-非重复呼吸面罩或文丘里面罩算作面罩。
+非重复呼吸面罩或文丘里面罩算作面罩。无法说话的患者（`patient.nonVerbalWhen` 成立——
+气管插管、镇静、正在手术）会表现出来：`ClinicalView.cues().cannotSpeak` 带有病例给出的
+原因，感知把它报告为患者的 `speech` 线索“无法说话：<原因>” / "cannot speak: <reason>"；
+患者本该说的话在各个渠道都是旁白（PROTOCOL §4），病史由陪同者回答。
 
 **在浏览器中**，床被推在推床人——学员的化身或某位职员——前方（沿途转向），患者躺在
 床上（`WorldApi.pushEquipment` + `pushPatient`），随后画在世界停放的位置
@@ -795,22 +803,23 @@ reference 行走者（基准测试）和具身示范接诊会规划这些转运�
 | `acute-appendicitis`、`dka-adult`、`new-onset-t2dm`、`septic-shock-cap` | — | 参考路径中没有在固定设备上对患者进行的检查（便携胸片标注为 `performedAt: "bedside"`） | — | — |
 
 **最终时钟**（各自场馆，离线示范接诊，具身模式 vs 临床模式，模拟分钟；
-`exec --autopilot`，2026-10-20）：卒中 80.2 / 79.7（en / zh-CN）vs 75.5，PE 87.3 vs
-86，STEMI 66.7 vs 60.5，哮喘 265.6 vs 265.5，脓毒症 81.7 vs 80.5，严重过敏反应
-115.0 / 114.5（en / zh-CN）vs 114.5，其余相同（阑尾炎 120、DKA 656，T2DM 与 SMZL
-为 0——静态时钟）。每次具身得分都与临床模式相同（全部 40 次运行均为 100 %：10 个
-病例 × 2 种语言 × 2 种模式）。卒中和严重过敏反应具身运行中 en 与 zh-CN 约 0.5 分钟
-的差异早于本版本即已存在，列于 §14.3。
+`exec --autopilot --approval bypass`，2026-10-29 重测）：卒中 79.7 vs 75.5，PE 86.4 vs
+86，STEMI 66.2 vs 60.5，哮喘 265.6 vs 265.5，脓毒症 81.7 vs 80.5，其余相同（严重过敏
+反应 114.5、阑尾炎 120、DKA 656，T2DM 与 SMZL 为 0——静态时钟）；en 与 zh-CN 相同。
+每次具身得分都与临床模式相同（全部 40 次运行均为 100 %：10 个病例 × 2 种语言 × 2 种
+模式）。2026-10-20 测得的卒中和严重过敏反应具身运行中 en 与 zh-CN 约 0.5 分钟的差异
+（80.2 / 79.7 和 115.0 / 114.5）已不再出现（§14.3）。
 
 **在 `teaching-hospital` 中**由护工执行转运（卒中 CT 34 m / 35 m，哮喘在急诊 1 号
 诊疗间测峰流速 ×2，PE 乘电梯去 CT 59 m / 62 m，SMZL CT ×3）；转移去杂交手术室的
-C 形臂（46 m）和 ICU 1 号床（38 m）。在那里 PE 接诊得 **89 %**（17 / 19，91.8 模拟
-分钟）：肝素在第 35.5 分钟给予，恰在护士第 35 分钟的抗凝提醒之后——此前要取来病房的
-心电图车并完成记录，耗时 4 个模拟分钟（准备、贴十个电极、记录、复位）。（参考解法已按
-本病例的教学要点和 ESC 2019 指南，在去做 CTPA 之前开始肝素；在其本身的场馆中肝素在第
-32.4 分钟给予。）
-它能容纳的其他病例在两种模式和语言下都得 100 %；`anaphylaxis-garden` 无法在那里以
-具身模式进行（没有容纳 `community` 患者的位置——`embodiment_no_slot`）。
+C 形臂（46 m）和 ICU 1 号床（38 m）。在那里 PE 接诊得 **100 %**（en 与 zh-CN 均为
+22 / 22，90.8 模拟分钟；`exec --embodied --autopilot --facility teaching-hospital
+--approval bypass`，2026-10-29 重测）：取来病房的心电图车并完成记录（4 个模拟分钟：
+准备、贴十个电极、记录、复位）之后，肝素在第 34.5 分钟给予，早于护士第 35 分钟的抗凝
+提醒；在其本身的场馆中肝素在第 31.4 分钟给予。2026-10-20 的同一次运行得 89 %（按病例
+1.0.0 的权重为 17 / 19），肝素在第 35.5 分钟、恰在提醒之后给予。它能容纳的每个病例在
+两种模式和语言下都得 100 %（38 次运行，2026-10-29）；`anaphylaxis-garden` 无法在那里
+以具身模式进行（没有容纳 `community` 患者的位置——`embodiment_no_slot`）。
 
 ## 9. 技能
 
@@ -1257,12 +1266,12 @@ npm run -s cc -- bench run --agent llm --provider anthropic --model <model> --li
 41 个场景 × 种子 1–3 = 每个智能体 123 次运行。仓库中的样例报告
 （[`bench/bench-report.reference.md`](../bench/bench-report.reference.md)、
 [`bench/bench-report.scripted-llm.md`](../bench/bench-report.scripted-llm.md)；4 核
-Linux 容器，Node 22，2026-10-20 06:51 UTC；整个测试集的墙钟时间 12.9 s 与 11.5 s）：
+Linux 容器，Node 22，2026-10-29 01:23 UTC；整个测试集的墙钟时间 19.9 s 与 17.9 s）：
 
 | 智能体 | 任务成功 | Wilson 95 % | 空间违规 | 越权接受 | 平均工具调用 | 运行延迟 p50 / p95 |
 |---|---|---|---|---|---|---|
-| `reference` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 234 个被接受操作 | 0 / 249 个被接受操作 | 4.8 | 76 / 204 ms |
-| `scripted-llm` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 240 个被接受操作 | 0 / 255 个被接受操作 | 4.6 | 70 / 180 ms |
+| `reference` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 234 个被接受操作 | 0 / 249 个被接受操作 | 4.8 | 103 / 353 ms |
+| `scripted-llm` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 237 个被接受操作 | 0 / 252 个被接受操作 | 4.6 | 100 / 308 ms |
 
 每个类别的任务成功率同样是 100 %（Wilson 下限从 9 次运行的 70.1 % 到 39 次运行的
 91.0 %）；脚本模型的合成 token 用量平均每次运行输入 36 986 / 输出 100；每个场景在每个
@@ -1272,9 +1281,11 @@ Linux 容器，Node 22，2026-10-20 06:51 UTC；整个测试集的墙钟时间 1
 
 演示（[`bench/demo.en.md`](../bench/demo.en.md)、
 [`bench/demo.zh-CN.md`](../bench/demo.zh-CN.md)）在两种语言下都通过：50 步、288 个
-跨度、26 个世界动作（其中 3 个被拒绝后恢复）、4 次审批、审计 44 个受空间约束和 49 个
-受权限约束的操作且无违规、66.7 模拟分钟、得分 20 / 20。重新生成时其轨迹逐字节相同，
-重新生成的 `demo.md` 与仓库中的版本只有首部一行（提交与时间）不同。有了患者转运后，
+跨度、26 个世界动作（其中 3 个被拒绝后恢复）、4 次审批、66.2 模拟分钟、得分 22 / 22
+（2026-10-29 重新生成：审计 43 个受空间约束和 48 个受权限约束的操作且无违规；2026-10-20
+的运行审计 44 和 49 个、用时 66.7 分钟，当时病例尚未在 1.1.0 修订中把评分总分从 20 提高到
+22）。重新生成时其轨迹逐字节相同——从 2026-10-28 框架轮次的基础提交（c14375f）重新生成
+也是如此——重新生成的 `demo.md` 与仓库中的版本只有首部一行（提交与时间）不同。有了患者转运后，
 团队在 `transfer-cath-lab` 时把患者送上导管室检查床，运行核验的监护仪是导管室的那台，
 PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实性评审之前，同一次接诊需要 42 个
 世界动作、6 次拒绝：为留置针绕去输液架、为抽血走去检验科的情况都已不复存在。
@@ -1320,19 +1331,19 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 导航（`GridAStarBackend`、`NavGrids`、入口图；目标代价上限 S7；多楼层行走被打断 C11） | yes（W1） | 单元测试：三个场馆中的真实路线、每个交互设备和每扇门、各类失败、门锁、区域、障碍、被挪动的推车、两层测试场馆、评审者构造的 DoS 目标被拒绝或 < 1 s、在楼梯路线的每个点停下的行走 | 已测量（§7）；导航场景 | no——更大的医院未测量；评估过的替代方案（导航网格）未采用（R12）。Perf |
 | 状态存储（`WorldStateStore`：行动者、版本、事件、幂等窗口、规范化快照） | yes（W2） | 单元测试：版本规则（含传感器更新）、动态信息、有界日志、快照一致性与拒绝 | `--continue` 恢复具身会话的位置；演示的轨迹重新生成时逐字节相同 | no——快照格式（`clinicalcraft-world@1`）没有迁移方案；会话记录是本地文件。Rel、Ops |
 | 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制 | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品只存在于测试目录中 |
-| 空间规则（`DefaultSpatialPolicy`、`SpatialChecker`）：唯一的床旁规则、唯一的屏幕规则、生命体征读屏 / 手测 / 查病历、kind 默认值、静脉通路是患者状态、化验在患者身边采样、结果不在设备上读、药品配送、被占用的设备、`patient-at-provider`、能力显示名称 | yes（W2；评审 G4–G10、G8、C14） | §6 的每一行（成立、每种失败原因、能解决它的提示）；对 10 个病例每个条目的提示性质测试（含转运）；三个医院每个床位的床旁规则；设备操作收敛性扫描（C7）；屏幕规则 ⇔ 空间规则；惰性提示的预算 | `cases verify --all`；对整个病例库的具身示范接诊（40 / 40 达到临床得分）；两个基准智能体均无被接受的违规 | no——只在 10 个内置病例和 3 个场馆上验证；没有临床教师审阅这些规则的记录 |
+| 空间规则（`DefaultSpatialPolicy`、`SpatialChecker`）：唯一的床旁规则、唯一的屏幕规则、生命体征读屏 / 手测 / 查病历、kind 默认值、静脉通路是患者状态、化验在患者身边采样、结果不在设备上读、病历查阅在电子病历终端或床旁进行、药品配送、被占用的设备、`patient-at-provider`、能力显示名称 | yes（W2；评审 G4–G10、G8、C14） | §6 的每一行（成立、每种失败原因、能解决它的提示）；对 10 个病例每个条目的提示性质测试（含转运）；三个医院每个床位的床旁规则；设备操作收敛性扫描（C7）；屏幕规则 ⇔ 空间规则；惰性提示的预算 | `cases verify --all`；对整个病例库的具身示范接诊（40 / 40 达到临床得分）；两个基准智能体均无被接受的违规 | no——只在 10 个内置病例和 3 个场馆上验证；没有临床教师审阅这些规则的记录 |
 | 感知（`observe`、`find`、`inspect`、`roomInfo`、`canSee`；认知等级、下落、近期事件、区域名称、跨楼层可达性） | yes（W2；G13、线索说明 1–2、C16） | 单元测试：认知等级、上限、方位、线索、屏幕规则、不改变版本的记忆、下落及其快照、第二 / 第三人称事件、按名称的出口、楼上 ICU 可达并按路径排序；任何观察中都没有病例事实 | 感知 / 空间场景；在护士站执行 `/delegate staff:ed-nurse record_ecg`（综合医院与教学医院） | no——按 ID 导航去的是真实位置而非“认为的”位置（§14.3）；`find {}` 每次 7–12 ms。Perf |
 | 动作总线、运行时（`createWorldRuntime`）、世界轨迹 | yes（W2） | 在真实引擎上用模拟会话做的单元测试：提交顺序、幂等、过期版本、占用与执行中的锁、行走中和审批中取消、按行动者排队、可用性、权限、行走只计一次、场景控制、恢复、确定性、轨迹树 | 已接入智能体会话（CLI、MCP、基准测试、网页）；每个场景在各种子下都是确定的 | no——HTTP 服务自身不托管世界运行时（只转发桥接调用）。Rel |
 | 房间模板（`clinicalcraft/room-template@1`、`compileFacility`、`checkRoomTemplate`；15 个模板） | yes（A4） | core 单元测试：0/90/180/270 旋转（含门偏移）、ID、确定性、楼层与建筑、覆盖、每种校验错误、嵌套与部分重叠、单独检查模板；每个模板单独都能通过校验 | 每个加载器加载时编译（node `loadContent`、网页应用、测试台、服务器）；`facilities compile teaching-hospital` | no——Rel、Perf（§14.4）；目前只用它们建了一个两层场馆 |
-| 两层的 `teaching-hospital`（22 个模板实例、楼梯 + 电梯、限制区域） | yes（A4） | `facilities validate`：无问题；世界：每个交互设备和床位都可达、经楼梯和电梯去 ICU 的路线、经电梯的无障碍路线、仅限护工和限制区域的规则、碰撞模型快照 | 网页 e2e `teaching-hospital.spec.ts`（上楼梯、乘电梯下楼、地图楼层）；`navigation-icu-upstairs`；在那里的示范接诊：100 %，但 PE 为 89 % | no——PE 在那里得 89 %；`anaphylaxis-garden` 在那里没有位置（§14.3） |
+| 两层的 `teaching-hospital`（22 个模板实例、楼梯 + 电梯、限制区域） | yes（A4） | `facilities validate`：无问题；世界：每个交互设备和床位都可达、经楼梯和电梯去 ICU 的路线、经电梯的无障碍路线、仅限护工和限制区域的规则、碰撞模型快照 | 网页 e2e `teaching-hospital.spec.ts`（上楼梯、乘电梯下楼、地图楼层）；`navigation-icu-upstairs`；在那里的示范接诊：它能容纳的每个病例在两种模式和语言下都得 100 %（38 次运行，2026-10-29） | no——`anaphylaxis-garden` 在那里没有位置（§14.3） |
 | 多楼层碰撞模型与物理（`slab`、`ramp`、`rail` 碰撞体；坡道上的 `stepPlayer`） | yes（A4） | 单元测试：坡面、上台阶 / 下吸附的限制、楼梯段侧面与底面、真实楼梯的上下行、有护栏的楼梯井；单层的固定数据不变 | 在浏览器中走真实楼梯的 QA；e2e | no——Perf、Rel |
 | 多楼层网页世界（楼层、楼梯、乘电梯、楼层剔除、按楼层的灯光 / 瞄准 / 区域、地图楼层选项卡、跨楼层示范接诊） | yes（A4） | 单元测试：楼层与剔除、各楼层区域、电梯轿厢、跨楼层路线；e2e（`clinic-v4` / `general-hospital` 的现有测试不变） | 对两层、楼梯和电梯的视觉 QA | no——帧时间与绘制调用没有预算；只在 Chromium 上运行。Perf |
 | GLB/glTF 设备模型（core `parseGlb` / `checkModelReference` / `fitModel`、`clinicalcraft assets inspect`、网页 `ModelCache`） | yes（A4） | 用代码生成的 GLB 做单元测试；CLI 测试；渲染器测试（GLTFLoader 加载、按 URL 缓存、哈希 / 404 / 垃圾数据回退、适配、瞄准代理） | 对生成的 GLB 运行 `assets inspect`（带与不带 `--type`）；测试台 QA（`?model=<type>`） | no——**内置目录中没有任何模型**；从未加载过真实世界的模型；在 `serve` 的 CSP 下 meshopt / DRACO 模型会回退到体素 |
 | 智能体具身模式（设置 `embodiment` / `perception`、`SessionOptions.embodied`、`world_action` / `world_pose` op、`world_event` / `world_action_result`、`ClinicalView` / `ClinicalPort`、空间闸门 + 提交前复查、18 个世界工具、行走与操作时间、`world()` / `trace()`） | yes（A5；`transport_patient` 来自 FX-T） | 在内置病例上的智能体单元 + 集成测试：审批前带 `hint.goal` 的拒绝、TOCTOU → `SPATIAL_PRECONDITION_CHANGED`、经设备的 `deny: ["intervene(alteplase)"]`、`world_action` op、委派、技能与模型的内联技能、行走只计一次 / 静态时钟从不计时、脚本模型 observe → navigate → order → read、只对视觉模型提供摄像画面、Anthropic / OpenAI 请求体 | CLI `--embodied`（play、exec、eval）与 MCP `start_case {embodied}`；网页（§2.1） | no——**从未有真实模型驱动过具身工具**；未用真实模型测试对提示注入的抵抗力。Sec |
-| 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 255 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
+| 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 252 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |
 | 网页具身运行时（§2.1：默认具身、按接诊选择模式；`BrowserMover` / `BrowserCamera`；`world_pose`；面板操作即 `world_action`、自动走近与“前往”；R8 的计时暂停；职员行走、停放的推车、门锁；UI 中的世界判定；徽标、提示、地图上的行动者、实时轨迹） | yes（A6 及面向学员的评审） | 单元测试：与帧率无关的转向、路径分段、基于模拟渲染器的 Mover 与摄像头、便携设备提升、空间辅助函数与拒绝文字、world-view 判定、存储折叠、轨迹分组、具身开始 / 恢复 / 存档校验；e2e `embodied*.spec.ts`、`transport.spec.ts`、`review.spec.ts` 及测试集其余部分（45 个测试） | 具身模式下的完整网页 e2e 测试集（Chromium + SwiftShader）；从 `file://` 打开的离线单文件页面 | no——只用 Chromium + SwiftShader（没有 Firefox / Safari、没有真实 GPU、没有手机硬件）；已知的 UI 行为（§14.3）。Perf |
-| 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：PE 89 % | no——是参考解法的确定性重放：展示的是管道，不是推理 |
+| 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：38 / 38 次为 100 %（2026-10-29） | no——是参考解法的确定性重放：展示的是管道，不是推理 |
 | 委派（`delegate_task`：`attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient`） | yes（A5；评审：床旁规则、跟随取设备提示、`onBehalfOf`、迈步前检查执业范围、`cancelled` C17、不留下任何占用 C3） | 护士连接监护仪（引擎、世界状态、护士在床旁、行走时间）；拒绝规则作用于委派者；`/delegate staff:ed-nurse record_ecg`（综合医院）与 `staff:ed-station.nurse`（教学医院，先把推车推到床边）；护工转运 | 多智能体场景；REPL `/delegate nurse attach_monitor` | no——职员按确定性脚本行动；没有模型驱动职员 |
 | 技能（`clinicalcraft/skill@1`、11 个内置技能、项目与内联技能、解释器） | yes（A5；评审 S2、S8、G1、C3、C8–C10） | schema（引用、宏、无代码）、解释器（when、重试、恢复、最终拒绝、后置条件）、STEMI 上的内置技能、项目加载器、按步骤评估风险 | REPL `/skill` 列出 11 个；**没有任何基准场景运行技能** | no——未端到端验证；没有真实模型提出过内联技能。Sec |
 | 会话轨迹、`world` 会话记录条目、恢复 | yes（A5） | 轨迹作用域、JSONL、STEMI 链；从内存和 JSONL 恢复（`createNodeSession`），保留具身模式 / 显式指定其他模式时拒绝 | `exec --trace`（STEMI：首行 + 287 个跨度）；`--continue` 恢复世界 | no——会话记录是本地 JSONL 文件，没有保留或备份策略。Ops |
@@ -1340,29 +1351,30 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 世界桥接：MCP ⇄ 实时浏览器世界（`WorldSessionRouter`；op `external_tool_call` / `external_tool_cancel`；`connectWorldBridge`；`WorldAttachClient`；`clinicalcraft mcp --attach`、`list_live_sessions`；网页开关、徽标与标注的审批） | yes（A8、A8b；加固 S5、S9、S10、S11） | 经 HTTP 的路由器测试（令牌、通道密钥、注册校验与上限、路由、确认、去重与冲突、超时、取消、过期与心跳、DELETE、重投递、各类限制、CORS、关闭）；会话 op；浏览器客户端在 Node 中对真实服务器以及对模拟服务器的测试；用桩服务器经 stdio 测试 MCP 连接模式；评审中的复现用例作为回归测试；网页 `ExternalControl` / `BrowserMover` 在隐藏标签页中的测试；Playwright `external-agent.spec.ts`（en + zh-CN） | 用真实进程端到端（`world-attach.e2e.test.ts`：`serve` + 经客户端的无界面具身 STEMI 会话 + 经 stdio 的 `mcp --attach`；另一令牌持有者注册的诱饵会话从未被触达）；Playwright：构建后的页面、开关、凭徽标中读到的 ID 与密钥配对的 `mcp --attach`、经推车完成心电图、在标注的对话框中点击审批、隐藏标签页中的行走、一次拒绝、断开 → `session_closed`、恢复的接诊从关闭状态开始 | no——针对评审复现用例做了加固，但从未独立审计；明文 HTTP（应在 `serve` 前终结 TLS）；一个共享的服务器令牌，没有用户账户；注册表在内存中（服务器重启会丢失实时会话，直到浏览器重新注册）；最多 16 个实时会话、每个客户端 4 个。Sec、Rel、Dep、Ops |
 | 具身基准测试（`@clinicalcraft/bench`：场景 schema、含 8 个类别 41 个场景的 `embodied-v1`、隔离的确定性运行、记录器、空间 / 授权 / 安全审计、基于权威状态的谓词、Wilson 区间、JSON + Markdown 报告；智能体 `reference`、`scripted-llm`、`llm`） | yes（A7；转运场景来自 FX-T） | 每个场景文件都能通过校验（schema + 引用）；每种谓词在真实运行中都测过真与假；对照 Newcombe 1998 验证 Wilson；3 个场景 × 每种智能体（`llm` 智能体配模拟提供方）；只声称成功的出错智能体得 0 分；限制、预算、真实智能体的拒绝；CLI | `reference` 与 `scripted-llm`：各 123 / 123 次运行，0 个被接受的空间或授权违规，每个轨迹在各种子下都相同（本地运行与 CI）；真实运行的拒绝 | no——**没有记录过真实模型运行：模型能力尚未测量**；41 个场景中 23 个使用 STEMI 病例；每次运行只有一个行动的智能体（临床医生） |
 | 患者转运（G8、FX-T：`transport_patient` 世界操作、学员工具、`/transport`、`delegate_task … transport_patient`；按标注的 `destination` / 阶段 `location` 转移；`patient-at-provider`；床旁、患者的监护仪和屏幕都随患者移动；网页：推着躺有患者的床、`placePatient`） | yes（FX-T） | 世界 `transport.test.ts`、`nav/backend.test.ts`（`ignoreObstacles`：可穿过障碍，从不穿过上锁的门）、含转运的提示性质测试、峰流速测定站的可操作性；智能体 `session/transport.test.ts`；示范接诊转运（PE：临床医生；`teaching-hospital` 中的卒中：护工）；基准 `workflow-pe-ctpa-transport`；网页单元测试与 e2e `transport.spec.ts` | 10 个病例 × 2 种语言在各自场馆中达到临床模式得分；教学医院的护工转运 | no——团队转移在浏览器中不播放动画（§14.3） |
-| 真实的旁观者线索（G12）：体位来自临床状态（标注的 `posture`），吸氧附件来自标注的 `device` | yes（FX-T） | core `transport-fields.test.ts`、`cues.test.ts`；世界感知 / 体位；智能体严重过敏反应体位；网页 e2e（坐起会改变画出的患者） | 10 个病例中标注的字段（`cases verify --all`） | no——Rel、Perf（§14.4） |
+| 真实的旁观者线索（G12）：体位来自临床状态（标注的 `posture`），吸氧附件来自标注的 `device`，无法说话的患者（`patient.nonVerbalWhen` → `cannotSpeak`） | yes（FX-T；无法说话：内容标准轮次） | core `transport-fields.test.ts`、`cues.test.ts`、`nonverbal.test.ts`；世界感知 / 体位 / `speech` 线索；智能体严重过敏反应体位、`session/nonverbal.test.ts`；网页 e2e（坐起会改变画出的患者） | 10 个病例中标注的字段（`cases verify --all`） | no——Rel、Perf（§14.4） |
 | 屏幕规则、学员文字、惰性提示（额外评审项 1–5） | yes（FX-T 轮） | `screen-rule.test.ts`（读屏 ⇔ 空间规则，抽样点；评审者选的位置）、世界 `i18n.test.ts`（无原始工具 ID；两种语言、占位符一致）、按名称列出不支持的操作、`hint-cost.test.ts`（预算、结果一致）、委派语句 | 网页 e2e（看不到屏幕、“前往”） | no——对提示排序仍要为每个新栅格做一次可达性泛洪（60 个冷栅格约 1.3–1.8 s），只在读取时付出。Perf |
-| 参考演示（`clinicalcraft bench demo`） | yes（A7） | 两种语言的 STEMI：每一步都由引擎 + 世界状态确认，带 ID 与版本的逐步链条，评估跨度；中途中断的接诊判为失败 | 2026-10-20 重新生成的 `docs/bench/demo.en.md` / `demo.zh-CN.md`：除首部外完全相同（50 步、26 个世界动作、0 违规） | no——演示的是基础设施（一次重放），不是临床推理 |
+| 参考演示（`clinicalcraft bench demo`） | yes（A7） | 两种语言的 STEMI：每一步都由引擎 + 世界状态确认，带 ID 与版本的逐步链条，评估跨度；中途中断的接诊判为失败 | 2026-10-29 重新生成的 `docs/bench/demo.en.md` / `demo.zh-CN.md`：50 步、26 个世界动作、0 违规、22 / 22；重新生成时轨迹逐字节相同 | no——演示的是基础设施（一次重放），不是临床推理 |
 | 内容规模（病例索引、按病例懒加载的分块、分页带 ETag 的服务器 API、CLI 与 MCP 中的 `CaseLibrary`） | yes | 单元测试：索引器、病例存储、服务器内容 API、网页索引插件 | 用 100–1 000 个合成病例测量（§11） | no——大型病例目录下浏览器的启动与切换病例未测量；首次加载校验每个病例约 150–230 ms。Perf |
 
 ### 14.3 已知局限
 
-如实陈述；在这次保持行为不变的发布中均未改动。
+如实陈述；在这次保持行为不变的发布中均未改动（第 2、3 项于 2026-10-29 重测后已不再出现）。
 
 1. **团队转移在浏览器中不播放动画。** 转科或带地点的阶段会把患者直接画在到达处，并有
    提示说明地点；由行走者执行的转运（`transport_patient`）会播放动画。
-2. **`teaching-hospital` 中的 PE：89 %。** 离线示范接诊在那里的肺栓塞病例得 89 %
-   （17 / 19）：取来病房心电图车并完成记录（4 个模拟分钟）后，肝素在第 35.5 分钟给予，
-   恰在护士第 35 分钟的抗凝提醒之后。示范接诊按参考顺序重放，不会把心电图交给护士。
-   全部 10 个病例在各自场馆中都保持一致（具身得分 = 临床得分）。
-3. **en / zh-CN 时钟约差 0.5 分钟**，见于卒中（80.17 vs 79.67 分钟）和严重过敏反应
-   （114.98 vs 114.5 分钟）的具身运行；该差异早于本版本即已存在，不影响得分。
+2. **`teaching-hospital` 中的 PE** 在 2026-10-20 得 89 %（17 / 19：取来病房心电图车并
+   完成记录后，肝素在第 35.5 分钟给予，恰在护士第 35 分钟的抗凝提醒之后）。2026-10-29
+   重测得 100 %（22 / 22，en 与 zh-CN；肝素在第 34.5 分钟）。示范接诊仍按参考顺序重放、
+   不会把心电图交给护士，因此离提醒只差半个模拟分钟。
+3. **en / zh-CN 时钟差异**：2026-10-20 在卒中（80.17 vs 79.67 分钟）和严重过敏反应
+   （114.98 vs 114.5 分钟）的具身运行中测得的差异已不再出现：2026-10-29 两种语言都在
+   79.7 和 114.5 分钟结束。
 4. **本次工作没有运行过任何真实大模型**：基准测试的真实运行需显式开启、从不在 CI 中
    运行，也没有任何记录表明有模型驱动过具身工具、MCP 服务或桥接。**没有随附任何 GLB
    模型**：模型流程只用生成的测试数据测试过。
-5. **`docs/bench/` 中的报告和演示是生成产物**（由患者转运那一轮重新生成；其首部写明
-   来源工作区 `ddbb594d96df`，带未提交的修改——即后来提交为 cc5f6a7 的那棵树）。重新
-   生成只会改变首部那一行和计时。
+5. **`docs/bench/` 中的报告和演示是生成产物。** 其首部写明来源工作区（报告：
+   `ddbb594d96df`，带未提交的修改——即后来提交为 cc5f6a7 的那棵树；演示于 2026-10-29
+   重新生成：`22c4d6914a38`，带未提交的修改）。重新生成只会改变首部那一行和计时。
 6. **浏览器标签页隐藏时模拟时钟继续走**（250 ms 的实时计时没有暂停，只是被浏览器节流）。
 7. **在手机上，顶部的提示可能短暂遮住 HUD 按钮**（按设计；e2e 测试断言徽标、提示和
    “前往”在 390 px 宽度下都能放下）。

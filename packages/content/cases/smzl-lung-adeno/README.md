@@ -17,7 +17,7 @@ left upper lung**. The case teaches:
 
 | | |
 |---|---|
-| id / version | `smzl-lung-adeno` / `1.2.0` |
+| id / version | `smzl-lung-adeno` / `1.2.1` |
 | setting / facility | `outpatient` / `clinic-v4` (the V4 world) |
 | locales | `zh-CN` (source language; V4 text verbatim), `en` (translation) |
 | phases | `pre` 诊断期 Diagnostic phase · `post` 治疗后复评期 Post-treatment re-evaluation (learner-switchable; static clock) |
@@ -211,6 +211,12 @@ hypertension items.
 
 ## Changelog
 
+- **1.2.1 — 2026-10-28 (assessment integrity).** `rb-safety-hbv` is **critical** (`critical: true`): ruling out HBV
+  reactivation on an undetectable HBV DNA, or no HBV check before anti-CD20 therapy, is named first in the debrief (no
+  score cap). Nine `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
+  (`cases validate --strict`). No item needed `scoredWhen`: none is earned by avoiding a harm (`rb-eff-hints`, at most
+  two hints, is still earned by doing nothing: 0.5 of 12). No change to the case record, decisions or the V4-parity
+  texts.
 - **1.2.0 — 2026-10-28 (editorial review).** Six learning outcomes and the `provenance.review` block (editorial, with the
   guidance checked); the radiologist is 放射科医生 and model-facing texts say 学员 (docs/GLOSSARY.md). No change to the
   case record, decisions, rubric or the V4-parity texts.

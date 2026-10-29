@@ -14,7 +14,7 @@ not medical advice.).
 
 | | |
 |---|---|
-| id / version | `new-onset-t2dm` / `1.1.0` |
+| id / version | `new-onset-t2dm` / `1.1.1` |
 | setting / facility | `outpatient` / `general-hospital` (outpatient consulting room) |
 | specialty | endocrinology, general practice, internal medicine |
 | difficulty | 3 / 5 |
@@ -222,8 +222,8 @@ it?") rather than naming the answers.
 | `r-dx` | diagnosis | 2 | `dec-diagnosis` right first time |
 | `r-mgmt-glycaemic` | management | 2 | `dec-first-line` right first time; lifestyle and titrated metformin |
 | `r-mgmt-cvr` | management | 2 | statin, ACE inhibitor, smoking cessation |
-| `r-safety` | safety | **3** | no insulin, sulfonylurea or "lifestyle only", and no renally dosed drug before the eGFR was read |
-| `r-efficiency` | efficiency | 1 | no OGTT, no coronary CTA or stress test |
+| `r-safety` | safety | **3** | no insulin, sulfonylurea or "lifestyle only", and no renally dosed drug before the eGFR was read — scored once the first-line decision is reached, metformin is started or one of these is prescribed |
+| `r-efficiency` | efficiency | 1 | no OGTT, no coronary CTA or stress test — scored once the diagnosis decision is reached or one of them is ordered |
 | `r-review` | management | 2 | `dec-review` answered and SGLT2 inhibitor added |
 
 Three examiner-judged communication items: shared decision-making about
@@ -524,6 +524,19 @@ against a publisher record.
   代谢功能障碍相关脂肪性肝病 as the literal rendering of MASLD.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+- **Avoided-harm items count only once the harm was possible** (`scoredWhen`):
+  `r-safety` once the first-line decision is reached, metformin is started or
+  one of its harms happens; `r-efficiency` once the diagnosis decision is
+  reached or an OGTT or coronary CTA is ordered. Doing nothing scored 4/22
+  (18 %) from these two items and now scores 0/18 (0 %); the reference path
+  keeps 22/22, and insulin, a sulfonylurea, "lifestyle only" or metformin
+  before the eGFR still cost `r-safety`.
+- **Matcher corpus:** eight `extensions.testUtterances` that repeated their
+  item's canonical question are now paraphrases (`cases validate --strict`);
+  no history item, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

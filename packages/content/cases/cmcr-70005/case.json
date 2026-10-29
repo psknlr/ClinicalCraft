@@ -4587,8 +4587,15 @@
         ]
       },
       "scoredWhen": {
-        "read": "culture",
-        "phase": "picu"
+        "any": [
+          {
+            "read": "culture",
+            "phase": "picu"
+          },
+          {
+            "intervened": "ceftriaxone"
+          }
+        ]
       }
     },
     {

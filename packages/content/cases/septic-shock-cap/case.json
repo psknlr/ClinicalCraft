@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "septic-shock-cap",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "发热、咳嗽伴意识模糊 · 72岁女性",
     "en": "Fever, cough and confusion · 72-year-old woman"
@@ -206,7 +206,14 @@
       "gown": true,
       "accessory": "none"
     },
-    "posture": "lying"
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "intervened": "intubation"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "快速顺序诱导后已气管插管、镇静，正在机械通气",
+      "en": "intubated, sedated and on mechanical ventilation after rapid-sequence induction"
+    }
   },
   "phases": [
     {
@@ -8880,7 +8887,8 @@
             }
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-abx-regimen",
@@ -8983,6 +8991,31 @@
             "not": {
               "intervened": "ward-admission"
             }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "flag": "any-abx"
+          },
+          {
+            "intervened": "fluid-restrict"
+          },
+          {
+            "intervened": "defer-abx-ct"
+          },
+          {
+            "flag": "ct-before-abx"
+          },
+          {
+            "intervened": "intubation"
+          },
+          {
+            "intervened": "ward-admission"
           }
         ]
       }
@@ -9722,7 +9755,7 @@
         ]
       },
       {
-        "text": "她抽烟吗？",
+        "text": "你妈妈平时抽烟吗？",
         "locale": "zh-CN",
         "expect": [
           "hx-smoking"

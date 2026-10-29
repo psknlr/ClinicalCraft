@@ -22,7 +22,7 @@ grounding/<suite>/<split>/*.json  grounding benchmark items (clinicalcraft/groun
 | cases | 10 (9 synthetic, 1 adapted from a published case report), all `zh-CN` + `en` |
 | facilities | 3 — `clinic-v4` (7 rooms, 21 placements, 1 patient slot), `general-hospital` (37 rooms, 258 placements, 14 patient slots, 10 staff) and `teaching-hospital` (2 levels; 22 room-template instances + 10 authored rooms → 32 rooms (18 on L0, 14 on L1), 275 placements (138 / 137), 17 patient slots (6 / 11), 11 staff (7 / 4), stairs + elevator, 2 access zones) |
 | room templates | 15 — ED resus bay, ED cubicle, outpatient consult, orthopaedic examination, operating theatre, CT, X-ray, clinical laboratory, 4-bed ward bay, ICU bed space, rehabilitation gym, pharmacy, nursing station, teaching room, elevator car |
-| equipment types | 96 — 39 furniture/scenery, 31 clinical, 26 diagnostic |
+| equipment types | 97 — 39 furniture/scenery, 32 clinical, 26 diagnostic |
 | materials | procedural pixel textures in `materials.json` (V4 palette + clinical additions) and a few catalog-specific ones |
 | benchmark scenarios | 41 in `bench/embodied-v1` — 8 categories, 15 in zh-CN, 26 in en ([docs/EMBODIED.md §13](../../docs/EMBODIED.md#13-benchmark)) |
 

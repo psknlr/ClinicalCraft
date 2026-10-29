@@ -3144,7 +3144,14 @@
         ]
       },
       "scoredWhen": {
-        "attempted": "dec-workup"
+        "any": [
+          {
+            "attempted": "dec-workup"
+          },
+          {
+            "intervened": "hypnotic-escalation"
+          }
+        ]
       }
     },
     {
