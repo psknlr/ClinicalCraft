@@ -167,6 +167,10 @@ test.describe("critical items and items not scored (rubric[].critical, rubric[].
     await expect(page.locator('tr[data-item="r-no-harmful-drugs"]')).toContainText("未计分");
     // never given, never scored: no critical miss to report
     await expect(page.locator("#debrief-critical")).toHaveCount(0);
+    // the time limit ended the case with objectives open: it says so, never "complete"
+    await expect(page.locator("#debrief-lead")).toHaveAttribute("data-ended", "time");
+    await expect(page.locator("#panel-title")).toContainText("病例结束");
+    await expect(page.locator("#panel-title")).not.toContainText("病例完成");
     await shot(page, "debrief-not-scored-zh");
   });
 });

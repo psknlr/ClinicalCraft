@@ -1266,12 +1266,12 @@ npm run -s cc -- bench run --agent llm --provider anthropic --model <model> --li
 41 个场景 × 种子 1–3 = 每个智能体 123 次运行。仓库中的样例报告
 （[`bench/bench-report.reference.md`](../bench/bench-report.reference.md)、
 [`bench/bench-report.scripted-llm.md`](../bench/bench-report.scripted-llm.md)；4 核
-Linux 容器，Node 22，2026-10-20 06:51 UTC；整个测试集的墙钟时间 12.9 s 与 11.5 s）：
+Linux 容器，Node 22，2026-10-29 01:23 UTC；整个测试集的墙钟时间 19.9 s 与 17.9 s）：
 
 | 智能体 | 任务成功 | Wilson 95 % | 空间违规 | 越权接受 | 平均工具调用 | 运行延迟 p50 / p95 |
 |---|---|---|---|---|---|---|
-| `reference` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 234 个被接受操作 | 0 / 249 个被接受操作 | 4.8 | 76 / 204 ms |
-| `scripted-llm` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 240 个被接受操作 | 0 / 255 个被接受操作 | 4.6 | 70 / 180 ms |
+| `reference` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 234 个被接受操作 | 0 / 249 个被接受操作 | 4.8 | 103 / 353 ms |
+| `scripted-llm` | 123 / 123（100 %） | 97.0 % – 100 % | 0 / 237 个被接受操作 | 0 / 252 个被接受操作 | 4.6 | 100 / 308 ms |
 
 每个类别的任务成功率同样是 100 %（Wilson 下限从 9 次运行的 70.1 % 到 39 次运行的
 91.0 %）；脚本模型的合成 token 用量平均每次运行输入 36 986 / 输出 100；每个场景在每个
@@ -1340,7 +1340,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 多楼层网页世界（楼层、楼梯、乘电梯、楼层剔除、按楼层的灯光 / 瞄准 / 区域、地图楼层选项卡、跨楼层示范接诊） | yes（A4） | 单元测试：楼层与剔除、各楼层区域、电梯轿厢、跨楼层路线；e2e（`clinic-v4` / `general-hospital` 的现有测试不变） | 对两层、楼梯和电梯的视觉 QA | no——帧时间与绘制调用没有预算；只在 Chromium 上运行。Perf |
 | GLB/glTF 设备模型（core `parseGlb` / `checkModelReference` / `fitModel`、`clinicalcraft assets inspect`、网页 `ModelCache`） | yes（A4） | 用代码生成的 GLB 做单元测试；CLI 测试；渲染器测试（GLTFLoader 加载、按 URL 缓存、哈希 / 404 / 垃圾数据回退、适配、瞄准代理） | 对生成的 GLB 运行 `assets inspect`（带与不带 `--type`）；测试台 QA（`?model=<type>`） | no——**内置目录中没有任何模型**；从未加载过真实世界的模型；在 `serve` 的 CSP 下 meshopt / DRACO 模型会回退到体素 |
 | 智能体具身模式（设置 `embodiment` / `perception`、`SessionOptions.embodied`、`world_action` / `world_pose` op、`world_event` / `world_action_result`、`ClinicalView` / `ClinicalPort`、空间闸门 + 提交前复查、18 个世界工具、行走与操作时间、`world()` / `trace()`） | yes（A5；`transport_patient` 来自 FX-T） | 在内置病例上的智能体单元 + 集成测试：审批前带 `hint.goal` 的拒绝、TOCTOU → `SPATIAL_PRECONDITION_CHANGED`、经设备的 `deny: ["intervene(alteplase)"]`、`world_action` op、委派、技能与模型的内联技能、行走只计一次 / 静态时钟从不计时、脚本模型 observe → navigate → order → read、只对视觉模型提供摄像画面、Anthropic / OpenAI 请求体 | CLI `--embodied`（play、exec、eval）与 MCP `start_case {embodied}`；网页（§2.1） | no——**从未有真实模型驱动过具身工具**；未用真实模型测试对提示注入的抵抗力。Sec |
-| 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 255 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
+| 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 252 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |
 | 网页具身运行时（§2.1：默认具身、按接诊选择模式；`BrowserMover` / `BrowserCamera`；`world_pose`；面板操作即 `world_action`、自动走近与“前往”；R8 的计时暂停；职员行走、停放的推车、门锁；UI 中的世界判定；徽标、提示、地图上的行动者、实时轨迹） | yes（A6 及面向学员的评审） | 单元测试：与帧率无关的转向、路径分段、基于模拟渲染器的 Mover 与摄像头、便携设备提升、空间辅助函数与拒绝文字、world-view 判定、存储折叠、轨迹分组、具身开始 / 恢复 / 存档校验；e2e `embodied*.spec.ts`、`transport.spec.ts`、`review.spec.ts` 及测试集其余部分（45 个测试） | 具身模式下的完整网页 e2e 测试集（Chromium + SwiftShader）；从 `file://` 打开的离线单文件页面 | no——只用 Chromium + SwiftShader（没有 Firefox / Safari、没有真实 GPU、没有手机硬件）；已知的 UI 行为（§14.3）。Perf |
 | 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：38 / 38 次为 100 %（2026-10-29） | no——是参考解法的确定性重放：展示的是管道，不是推理 |
