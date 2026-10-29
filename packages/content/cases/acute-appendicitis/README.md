@@ -15,7 +15,7 @@ Fictional teaching case — not medical advice.
 
 | | |
 |---|---|
-| id / version | `acute-appendicitis` / `1.1.0` |
+| id / version | `acute-appendicitis` / `1.1.1` |
 | setting / facility | `emergency` (night shift; the first slot accepting `emergency`, currently `resus-1`) / `general-hospital` |
 | specialty | emergency medicine, general surgery |
 | difficulty | 2 / 5 |
@@ -195,8 +195,8 @@ antibiotic cover?").
 | `r-mx-supportive` | management | 1 | nil by mouth and IV fluids |
 | `r-mx-abx` | management | 2 | exactly one of the two pre-operative regimens, no meropenem |
 | `r-mx-definitive` | management | 2 | surgical referral, `dec-definitive` right first time, theatre listed only after review, imaging and consent |
-| `r-safety` | safety | **3** | no withheld analgesia, discharge, laxative or oral intake; no premature theatre booking; no antibiotics-first without CT; no perforation from delay |
-| `r-eff-lowvalue` | efficiency | 1 | no plain abdominal film, chest film or blood cultures |
+| `r-safety` | safety | **3** | no withheld analgesia, discharge, laxative or oral intake; no premature theatre booking; no antibiotics-first without CT; no perforation from delay — scored once supportive care has begun (`dec-supportive` attempted or an analgesic given) or one of these has happened |
+| `r-eff-lowvalue` | efficiency | 1 | no plain abdominal film, chest film or blood cultures — scored once the imaging decision is reached or one of them is ordered |
 | `r-eff-timely` | efficiency | 2 | an antibiotic before the nurse's 3-hour escalation |
 
 Three examiner-judged communication items: plain-language explanation,
@@ -240,6 +240,7 @@ Replayed paths (the engine, 2026-10-28):
 | path | score |
 |---|---|
 | reference solution | 25/25 (100 %) |
+| nothing done (the learner stops at once) | 0/21 (0 %): `r-safety` and `r-eff-lowvalue` are not scored before care begins (4/25 in 1.1.0) |
 | CT instead of ultrasound | 92 % (`r-inv-us-first`) |
 | meropenem instead of cefuroxime + metronidazole | 92 % (`r-mx-abx`) |
 | guessing the diagnosis, or antibiotics-first before laparoscopy in the definitive decision | 92 % (`r-dx`, or `r-mx-definitive`) |
@@ -577,6 +578,19 @@ them:
   out.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+- **Avoided-harm items count only once the harm was possible** (`scoredWhen`):
+  `r-safety` counts once supportive care has begun (`dec-supportive`
+  attempted or an analgesic given) or one of its harms has happened;
+  `r-eff-lowvalue` once the imaging decision is reached or a low-value test is
+  ordered. Doing nothing scored 4/25 (16 %) from these two items alone and now
+  scores 0/21 (0 %); the reference path keeps 25/25 and every path in the
+  table above scores as before (replayed with the engine).
+- **Matcher corpus:** four `extensions.testUtterances` that repeated their
+  item's canonical question are now paraphrases (`cases validate --strict`);
+  no history item, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

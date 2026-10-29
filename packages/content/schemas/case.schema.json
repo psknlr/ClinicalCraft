@@ -1299,6 +1299,12 @@
                 "lying"
               ],
               "default": "standing"
+            },
+            "nonVerbalWhen": {
+              "$ref": "#/definitions/Condition"
+            },
+            "nonVerbalReason": {
+              "$ref": "#/definitions/LocalizedText"
             }
           },
           "required": [
@@ -1689,7 +1695,8 @@
                 "type": "string",
                 "enum": [
                   "bedside",
-                  "provider"
+                  "provider",
+                  "records"
                 ]
               },
               "value": {
@@ -2584,6 +2591,12 @@
               },
               "judgeGuidance": {
                 "$ref": "#/definitions/LocalizedText"
+              },
+              "scoredWhen": {
+                "$ref": "#/definitions/Condition"
+              },
+              "critical": {
+                "type": "boolean"
               }
             },
             "required": [

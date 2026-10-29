@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "smzl-lung-adeno",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "title": {
     "zh-CN": "左上腹痛与脾大 · 74岁男性",
     "en": "Left upper abdominal pain and an enlarged spleen · 74-year-old man"

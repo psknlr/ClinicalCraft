@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "new-onset-t2dm",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "乏力、口干 · 48岁男性",
     "en": "Tiredness and thirst · 48-year-old man"

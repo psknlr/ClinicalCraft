@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pediatric-asthma",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "夜间喘息加重 · 6岁男孩",
     "en": "Worsening wheeze overnight · 6-year-old boy"

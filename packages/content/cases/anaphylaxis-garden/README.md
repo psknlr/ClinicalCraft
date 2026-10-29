@@ -13,7 +13,7 @@
 
 | | |
 |---|---|
-| Case | `anaphylaxis-garden` · v1.1.0 |
+| Case | `anaphylaxis-garden` · v1.1.1 |
 | Setting | `community` — the hospital's healing garden (garden-bench patient slot), then the ED resus bay |
 | Facility | `general-hospital` (not playable embodied in `teaching-hospital`: no slot for a `community` patient) |
 | Difficulty | 3 / 5 |
@@ -212,8 +212,8 @@ referral.
 
 | Domain | Item | Weight |
 |---|---|---|
-| Management | IM adrenaline 0.5 mg into the anterolateral thigh within 5 minutes | 3 |
-| Safety | IM route — never an IV bolus or subcutaneous | 2 |
+| Management | IM adrenaline 0.5 mg into the anterolateral thigh within 5 minutes (**critical**) | 3 |
+| Safety | IM route — never an IV bolus or subcutaneous (**critical**) | 2 |
 | Safety | Transferred lying flat; never sat up, stood or walked while hypotensive | 2 |
 | Management | ≥ 12 h observation at the first attempt + two auto-injectors + allergy referral | 2 |
 | Safety | Adrenaline first: no antihistamine, steroid or salbutamol and no moving her before it | 1 |
@@ -230,7 +230,8 @@ referral.
 | Communication (examiner) | Discharge counselling and safety-netting | 1 |
 
 The safety items require the safe action itself (IM route given; transfer lying flat), so doing
-nothing does not earn them.
+nothing does not earn them. A missed **critical** item (`critical: true`) is named first in the debrief; it does not
+cap the score.
 
 ### Tempting wrong choices (all playable)
 
@@ -560,6 +561,14 @@ T/CADERM 3008—2019 have no DOI.
   wording follows RCUK 2021 and was not compared with the NG258 text.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+* `r-adr-early` (IM adrenaline within 5 minutes) and `r-safe-route` (never an IV bolus or subcutaneous) are
+  **critical** (`critical: true`): a miss is named first in the debrief; the score is not capped. No item needed
+  `scoredWhen`: every safety item already requires the safe action, so doing nothing scores 0/18.
+* Matcher corpus: four `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
+  (`cases validate --strict`); no history question, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

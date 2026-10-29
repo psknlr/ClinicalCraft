@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "septic-shock-cap",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "发热、咳嗽伴意识模糊 · 72岁女性",
     "en": "Fever, cough and confusion · 72-year-old woman"

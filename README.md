@@ -705,7 +705,7 @@ one before use. See [docs/ASSETS.md](docs/ASSETS.md).
 ```bash
 npm run typecheck        # tsc -b for the libraries (also emits dist/) + web tsc --noEmit
 npm test                 # vitest, every package (workspace packages from source)
-npm run cc -- cases validate --all && npm run cc -- cases verify --all
+npm run cc -- cases validate --all --strict && npm run cc -- cases verify --all   # --strict: a content-lint warning fails too
 npm run cc -- facilities validate --all
 npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --agent scripted-llm
 npm run test:e2e         # Playwright, web world (Chromium with SwiftShader WebGL)

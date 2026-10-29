@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-appendicitis",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "腹痛 · 19岁男性",
     "en": "Abdominal pain · 19-year-old man"

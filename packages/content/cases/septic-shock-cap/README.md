@@ -12,7 +12,7 @@ medical advice and does not replace local protocols or current guidelines. 虚�
 
 | | |
 |---|---|
-| id / version | `septic-shock-cap` / `1.1.0` |
+| id / version | `septic-shock-cap` / `1.1.1` |
 | setting / facility | `emergency` (ED resus bay 1, night shift) / `general-hospital` |
 | specialty | emergency medicine, critical care, infectious diseases, respiratory medicine |
 | difficulty / estimated time | 4 / 5 · ~45 min (simulated clock from 21:30, 180-min limit) |
@@ -146,11 +146,11 @@ norepinephrine first line and the key history (2 each).
 | `r-o2` | management | 1 | oxygen given and SpO₂ 94–98 % at the end |
 | `r-lactate` | investigations | 1 | lactate read in `resus` and again in a reassessment phase |
 | `r-cultures` | investigations | 1 | blood cultures before any antibiotic (`cultures-first`) |
-| `r-abx-1h` | management | **3** | an effective antibiotic given and `abx-late` not set (within 60 min of resus) |
+| `r-abx-1h` | management | **3** | an effective antibiotic given and `abx-late` not set (within 60 min of resus); **critical** |
 | `r-abx-regimen` | management | 1 | a β-lactam plus atypical cover |
 | `r-fluids` | management | 1 | ≥ 3 boluses and a post-fluid perfusion reassessment |
 | `r-norepi` | management | 2 | norepinephrine, and no dopamine |
-| `r-safety` | safety | **3** | no fluid restriction, no antibiotic hold for CT and no CT before antibiotics, no intubation, no ward admission |
+| `r-safety` | safety | **3** | no fluid restriction, no antibiotic hold for CT and no CT before antibiotics, no intubation, no ward admission — scored once resuscitation has started (a bolus or an antibiotic) or one of these has happened |
 | `r-med-safety` | safety | 1 | the home ibuprofen elicited and home medicines held |
 | `r-icu` | efficiency | 1 | ICU referral within 90 min of resus |
 | `r-comm-family` | communication | 1 (judged) | plain-language explanation, the husband at home, goals of care, teach-back |
@@ -165,7 +165,7 @@ norepinephrine first line and the key history (2 each).
 | Dopamine | `contraindicated` (always); AF event |
 | Hydrocortisone before norepinephrine | `neutral` (not a contraindication — corticosteroids are an adjunct in septic shock and severe CAP: SCCM 2024, ATS 2025); sets `steroid-before-pressor` and the pharmacist asks whether a vasopressor is starting. The trap "steroids *instead of* a vasopressor" is tested by the `vasopressor` decision |
 | 5th bolus (> 2 L) | `contraindicated`; overload event on the 5th |
-| Intubation (GCS ≥ 9 or no vasopressor) | `contraindicated`, BP drops on induction |
+| Intubation (GCS ≥ 9 or no vasopressor) | `contraindicated`, BP drops on induction; she is then sedated and ventilated and cannot speak (`patient.nonVerbalWhen`), so her daughter answers the history |
 | Azithromycin + moxifloxacin together | the second one is `contraindicated` (QT stacking) |
 | Ward admission | `contraindicated` |
 | Antibiotics after 60 min | `abx-late` (critical event, BP/GCS step down), `r-abx-1h` lost, case continues in `reassess-late` with a rising lactate |
@@ -190,7 +190,7 @@ named, unless stated):
 | i. Moxifloxacin alone (no β-lactam) | 20/21 (95 %); cannot finish (`obj-hour1` open) | `r-abx-regimen` 1 |
 | j. Ibuprofen not asked, home medicines not held | 20/21 (95 %) | `r-med-safety` 1 |
 | k. ICU called after 90 min | 20/21 (95 %) | `r-icu` 1 |
-| l. Nothing done for 180 min | 3/21 (14 %); 0/6 objectives | everything but `r-safety` (see Fidelity limits) |
+| l. Nothing done for 180 min | 0/18 (0 %); 0/6 objectives | everything; `r-safety` is not scored before resuscitation starts (3/21 in 1.1.0) |
 
 ## Reference path (`solution`)
 
@@ -338,8 +338,8 @@ critical alarm in any run. The embodied score equals the clinical score (`embodi
   they would titrate down; the engine does not score the MAP reached.
 * Venous gases only (no arterial sample), so the P/F ratio and respiratory SOFA are unknown.
 * No final blood-culture result exists for the ED phase; the ICU course and outcome are not simulated.
-* `r-safety` is "no harmful choice", so it is met by omission: a learner who does nothing keeps its 3 points (path l,
-  3/21) while losing everything else.
+* `r-safety` is "no harmful choice". Since 1.1.1 it counts only once resuscitation has started or a harmful choice has
+  been made (`scoredWhen`), so a learner who does nothing no longer keeps its 3 points (path l: 0/18, was 3/21).
 * `assess()` alternatives are not phase-aware (the `essentialMissing` note above).
 * Local antibiograms, drug formulations (e.g. norepinephrine labelled as base or salt) and protocols differ — follow
   local guidance.
@@ -431,6 +431,19 @@ Ref. 13 is the CAPE COD trial; ref. 14 derives CURB-65.
 
 ## Changelog
 
+### 1.1.1 — 2026-10-28 (assessment integrity; no speech after intubation)
+
+- **`r-safety` counts only once the harm was possible** (`scoredWhen`): once resuscitation has started (a fluid bolus
+  or an antibiotic) or a harmful choice has been made. Doing nothing kept its 3 points (path l, 3/21) and now scores
+  0/18; the reference path keeps 21/21 and every other path in the table scores as before.
+- `r-abx-1h` is **critical** (`critical: true`): antibiotics missed or given after 60 min are named first in the
+  debrief (no score cap).
+- **She cannot speak once intubated.** `patient.nonVerbalWhen: { "intervened": "intubation" }` with the reason
+  "intubated, sedated and on mechanical ventilation after rapid-sequence induction": after the (contraindicated)
+  intubation her daughter answers the history, and the patient's own words are never voiced.
+- Matcher corpus: one `extensions.testUtterances` entry that repeated its item's canonical question is now a
+  paraphrase (`cases validate --strict`); no history item, answer or keyword changed.
+
 ### 1.1.0 — 2026-10-28 (editorial review)
 
 - **MAP target updated to SSC 2026.** SSC 2026 keeps an initial MAP target of 65 mmHg and suggests 60–65 mmHg for
@@ -467,7 +480,7 @@ Ref. 13 is the CAPE COD trial; ref. 14 derives CURB-65.
 ```bash
 npm run -s cc -- cases validate packages/content/cases/septic-shock-cap/case.json
 npm run -s cc -- cases verify septic-shock-cap      # reference solution: 6 objectives, 5 decisions, 21/21
-npm run -s cc -- exec --autopilot --embodied --case septic-shock-cap --facility general-hospital --provider offline -q "manage the patient"
+npm run -s cc -- exec --autopilot --embodied --case septic-shock-cap --facility general-hospital --provider offline --approval bypass -q "manage the patient"
 npx vitest run packages/agent/src/session/embodied-autopilot.test.ts
 npm run -s cc -- bench grounding --split dev && npm run -s cc -- bench grounding --split test --failures 0
 ```

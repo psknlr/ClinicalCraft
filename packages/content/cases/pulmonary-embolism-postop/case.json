@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pulmonary-embolism-postop",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "胸痛伴气促 · 52岁女性（术后第3天）",
     "en": "Chest pain and breathlessness · 52-year-old woman (post-op day 3)"

@@ -113,6 +113,8 @@ developer documents use.
 | test | test (formal: investigation) | 检查（正式：辅助检查） | `order_test`, `investigations[]` |
 | treatment | treatment; give (formal: intervention) | 处置；给予 | `intervene`, `interventions[]` |
 | result, critical result | result, critical result | 结果、危急值 | `read_result`, `critical` |
+| record review | record review (an existing report read from the notes or the EHR) | 病历查阅（在病历或电子病历中调阅已有报告） | `investigations[].performedAt: "records"` |
+| cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |
 | bedside | bedside | 床旁 | the bedside rule (EMBODIED §6) |
 | bedside monitor; attach the monitor | bedside monitor; attach the monitor | 床旁监护仪；连接监护 | `patient-monitor`, operation `attach` |
@@ -132,6 +134,8 @@ developer documents use.
 | formative feedback | formative feedback | 形成性反馈 | | |
 | the score notice | "a teaching-script measure, not a validated competency score" | “教学脚本评估，并非经过验证的能力评分” | `cmd.debrief.notice` | on every score |
 | rubric | rubric | 评分细则 | `rubric[]` | |
+| critical item | critical item; in the debrief "Critical items missed" | 关键项；复盘中“未达成的关键项” | `rubric[].critical`, `AssessmentReport.criticalMissed` | the case's dangerous error or missed life-saving act, named first in every debrief; never caps the score |
+| not scored | not scored ("the situation this item scores did not arise") | 未计分（“本次接诊中没有出现该项评分的情形”） | `rubric[].scoredWhen`, rubric result `scored: false` | an avoided-harm item counts only once the harm was possible |
 | debrief | debrief | 复盘 | `/debrief`, `debrief` | the method is debriefing (引导性反馈), here PEARLS |
 | key reasoning, teaching points, evidence boundaries, unknowns, references | key reasoning, teaching points, evidence boundaries, unknowns, references | 关键推理、教学要点、证据边界、仍未知的信息、参考文献 | `debrief.*` | |
 
@@ -243,6 +247,19 @@ Short tag on a library card: "Not yet reviewed" / 尚未审核, "Editorial revie
 `cases list` column and case picker, each followed by a one-line legend: an
 editorial review is not a review by a licensed clinician). Never claim
 clinician review the case does not record.
+
+**A published or adapted case's source** — its citation, DOI, authors, notes
+and source references (`provenance.citation`, `doi`, `authors`, `notes`,
+`debrief.references`) — usually names the diagnosis (a case report's title
+does), so it is kept back until the case is complete:
+
+| where | what |
+|---|---|
+| web journal's sources panel, learning record | until then: "Shown in the debrief once the case is complete (a case report’s title may name the diagnosis)." / “病例完成后在复盘中显示（病例报告的标题可能提示诊断）。” |
+| CLI `cases show`, `cases list --details` | "The citation, DOI and source references are hidden: they may name the diagnosis (--spoilers shows them)." / “出处、DOI 与来源文献已隐藏：可能提示诊断（加 --spoilers 显示）。”; shown with `--spoilers` (`cases show --json`: left out unless `--spoilers` or `--full`) |
+| MCP `list_cases`, `clinicalcraft://cases`, session resources, a mid-case `get_debrief` | never |
+| server `GET /api/content/cases/:id` | left out unless `?spoilers=1` (the web asks, and gates it as above) |
+| the debrief of a completed case (web, `/debrief`, MCP `get_debrief`) | the references |
 
 ## 5. Adding a term
 

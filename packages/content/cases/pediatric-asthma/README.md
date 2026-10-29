@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `pediatric-asthma` · v1.1.0 |
+| Case | `pediatric-asthma` · v1.1.1 |
 | Setting | Paediatric emergency department, resus cubicle (`emergency`) — on the monitor from arrival |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 3 / 5 |
@@ -206,8 +206,8 @@ the PEF, which it does not require).
 | Diagnosis | Graded acute severe without life-threatening features, **at the first attempt** | 2 |
 | Management | Inhaled bronchodilator within 15 min + controlled oxygen | 2 |
 | Management | Systemic corticosteroid within the first hour | 2 |
-| Safety | No sedatives, no discharge before the criteria are met | 2 |
-| Safety | Poor response or deterioration recognised and escalated (senior review, IV magnesium, PICU if life-threatening) | 2 |
+| Safety | No sedatives, no discharge before the criteria are met (**critical**; scored once treatment has started or either happens) | 2 |
+| Safety | Poor response or deterioration recognised and escalated (senior review, IV magnesium, PICU if life-threatening; scored once he tires or the one-hour response decision is reached) | 2 |
 | Management | Discharge bundle: action plan, inhaler teach-back, controller, smoke-free advice, explicit criteria and follow-up | 2 |
 | History | Course of this attack, viral trigger, overnight reliever use | 1 |
 | History | Fatal-asthma risk factors: admissions, ICU/intubation, oral steroid courses | 1 |
@@ -215,8 +215,8 @@ the PEF, which it does not require).
 | Examination | Speech, work of breathing, auscultation, conscious level | 1 |
 | Management | Three salbutamol rounds with three ipratropium doses in the first hour | 1 |
 | Management | Reassessed at 1 hour with the same tool (PRAM + auscultation) | 1 |
-| Investigations | No routine CXR, blood gas, FBC, CRP or blood culture (exempt on the tiring branch) | 1 |
-| Management | No antibiotics; IV escalation only for poor response or life-threatening features | 1 |
+| Investigations | No routine CXR, blood gas, FBC, CRP or blood culture (exempt on the tiring branch; scored once severity is graded or one is ordered) | 1 |
+| Management | No antibiotics; IV escalation only for poor response or life-threatening features (scored once treatment has started or one is given) | 1 |
 | Communication (examiner) | Anxious, guilty parent: severity and plan, adherence without blame, steroid fears, teach-back | 2 |
 | Communication (examiner) | Age-appropriate communication with the 6-year-old | 1 |
 
@@ -498,6 +498,18 @@ because none could be confirmed; guideline documents 1–4 have none.
 * The 2020 recommendations (ref. 7): DOI not confirmed.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+* **Avoided-harm items count only once the harm was possible** (`scoredWhen`): the sedation/discharge item once
+  treatment has started (a bronchodilator or the first-line decision) or either harm happens; the escalation item once
+  he tires or becomes life-threatening, or the one-hour response decision is reached; the routine-tests item once
+  severity is graded or a routine test is ordered; the stewardship item once treatment has started or an antibiotic or
+  IV escalation is given. Doing nothing scored 6/20 (30 %) from these four items and now scores 0/14 (0 %); waiting
+  out the time limit scored 4/20 and now 0/16. The reference path keeps 20/20; a sedative still costs its item (18/20).
+* The sedation/discharge item is **critical** (`critical: true`): a miss is named first in the debrief (no score cap).
+* Matcher corpus: two `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
+  (`cases validate --strict`); no history question, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial review)
 

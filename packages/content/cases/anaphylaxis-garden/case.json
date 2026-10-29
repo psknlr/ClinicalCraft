@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "anaphylaxis-garden",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": { "zh-CN": "花园蜇伤后呼吸困难 · 30岁女性", "en": "Breathless after a sting in the garden · 30-year-old woman" },
   "summary": {
     "zh-CN": "午后的医院疗愈花园里，一位来探视家属的年轻女性在长椅旁突然不适。你和带着病区急救包赶来的护士一起，在没有抢救室设备的户外完成快速评估与处理，随后安排转运、检查与去向。",

@@ -95,6 +95,18 @@ describe("clinical tools", () => {
     expect(given.output).toBe("已给予：阿司匹林 300 mg 嚼服。\n反应：患者嚼服了阿司匹林。");
   });
 
+  it("order_test: a record review carries no procedure risk, whatever the case says", () => {
+    const h = harness("en", "clinician", null, (input) => {
+      const ct = (input.investigations as Record<string, unknown>[]).find((i) => i.id === "ct-head")!;
+      ct.risk = "low";
+      const old = { ...ct, id: "old-ct", performedAt: "records", requires: ["records"], risk: "low", aliases: [] };
+      (input.investigations as Record<string, unknown>[]).push(old);
+    });
+    const tool = h.registry.get("order_test")!;
+    expect(tool.risk({ investigation_id: "ct-head" }, h.ctx)).toBe("low");
+    expect(tool.risk({ investigation_id: "old-ct" }, h.ctx)).toBe("none");
+  });
+
   it("intervene: a negated instruction acts on nothing and says why (en + zh-CN)", async () => {
     const en = harness("en");
     const tool = en.registry.get("intervene")!;

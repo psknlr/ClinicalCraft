@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-ischemic-stroke",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "右侧无力伴言语困难 · 67岁男性",
     "en": "Right-sided weakness and difficulty speaking · 67-year-old man"

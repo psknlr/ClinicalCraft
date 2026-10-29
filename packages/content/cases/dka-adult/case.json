@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "dka-adult",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "呕吐、腹痛伴呼吸急促 · 24岁女性",
     "en": "Vomiting, abdominal pain and fast breathing · 24-year-old woman"

@@ -7,7 +7,9 @@
  *  - a test that has not been ordered is offered as "开具 / Order", not
  *    "调阅 / Open" (a click places an order), and the device panel's empty
  *    state does not ask for typing (it has no search box);
- *  - a saved game resumes with its published workup plan.
+ *  - a saved game resumes with its published workup plan;
+ *  - a missed critical rubric item is named first in the debrief, and an
+ *    avoided-harm item whose situation never arose reads "not scored".
  */
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import fs from "node:fs";
@@ -128,6 +130,44 @@ test.describe("review status and learning outcomes on the case card (docs/GLOSSA
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
       await shot(page, "debrief-outcomes-phone-en");
     });
+  });
+});
+
+test.describe("critical items and items not scored (rubric[].critical, rubric[].scoredWhen)", () => {
+  const rubricText = (id: string): Record<"zh-CN" | "en", string> =>
+    (JSON.parse(fs.readFileSync(path.resolve(here, "../../content/cases/stemi-inferior-rv/case.json"), "utf8")).rubric as { id: string; text: Record<"zh-CN" | "en", string> }[]).find((r) => r.id === id)!.text;
+
+  test("a missed critical item is named first in the debrief (zh-CN)", async ({ page }) => {
+    await freshStart(page);
+    await enterCase(page, "stemi-inferior-rv");
+    // the reference path with a sublingual nitrate after the first ECG: the case completes, the critical item is missed
+    await page.evaluate(() => {
+      const q = (window as any).__QA__;
+      const path = [...q.game.caseDef.solution];
+      const ecg = path.findIndex((a: any) => a.type === "read" && a.investigationId === "ecg-12lead");
+      path.splice(ecg + 1, 0, { type: "intervene", interventionId: "nitroglycerin" });
+      for (const a of path) q.dispatch(a);
+    });
+    await qa(page, (q) => q.route("debrief"));
+    await expect(page.locator("#panel .debrief .assessment")).toBeVisible({ timeout: 60_000 });
+    const box = page.locator("#debrief-critical");
+    await expect(box).toContainText("未达成的关键项");
+    await expect(box).toContainText(rubricText("r-no-nitrate")["zh-CN"]);
+    await expect(page.locator('tr[data-item="r-no-nitrate"] .pill.critical')).toHaveText("关键项");
+    await shot(page, "debrief-critical-zh");
+  });
+
+  test("doing nothing until the time limit: the avoided-harm items are not scored (zh-CN)", async ({ page }) => {
+    await freshStart(page);
+    await enterCase(page, "stemi-inferior-rv");
+    await page.evaluate(() => (window as any).__QA__.dispatch({ type: "advance-time", minutes: 120 }));
+    await qa(page, (q) => q.route("debrief"));
+    await expect(page.locator("#panel .debrief .assessment")).toBeVisible({ timeout: 60_000 });
+    await expect(page.locator('tr[data-item="r-no-nitrate"]')).toContainText("未计分");
+    await expect(page.locator('tr[data-item="r-no-harmful-drugs"]')).toContainText("未计分");
+    // never given, never scored: no critical miss to report
+    await expect(page.locator("#debrief-critical")).toHaveCount(0);
+    await shot(page, "debrief-not-scored-zh");
   });
 });
 

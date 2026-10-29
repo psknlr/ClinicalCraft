@@ -11,7 +11,7 @@ advice and does not replace local protocols or current guidelines.
 
 | | |
 |---|---|
-| id / version | `pulmonary-embolism-postop` / `1.1.0` |
+| id / version | `pulmonary-embolism-postop` / `1.1.1` |
 | setting / facility | `inpatient` (surgical ward bed) / `general-hospital` (ward bed 1) |
 | specialty | acute medicine, respiratory medicine, general surgery |
 | difficulty / estimated time | 4 / 5 · ~40 min (simulated clock from 16:20, 180-min limit) |
@@ -172,7 +172,7 @@ UFH or LMWH given — or, in the haemorrhage branch, a filter) → `obj-confirm`
 | `r-mx-escalation` | management | 1 | monitored bed and PERT |
 | `r-mx-analgesia` | management | 1 | titrated morphine |
 | `r-safety-bleeding` | safety | **2** | bleeding history, wound and surgeons before anticoagulating |
-| `r-safety-no-lysis` | safety | **3** | anticoagulated, no alteplase |
+| `r-safety-no-lysis` | safety | **3** | anticoagulated, no alteplase; **critical** |
 | `r-safety-no-harm` | safety | **2** | `obj-treat` done and none of the harmful measures |
 | `r-comm-patient` | communication | 1 | examiner-judged |
 | `r-comm-team` | communication | 1 | examiner-judged (SBAR, closed loop) |
@@ -200,7 +200,8 @@ anticoagulation in the lytic-haemorrhage branch, where it is contraindicated.
 | Every tempting harmful choice (including aspirin and GTN) | 1/22 (5 %), not completed |
 | No action for 180 min (timeout) | 0/22 (0 %) |
 
-A single catastrophic act costs only its own item: the managed-lysis path still scores 73 % (see Fidelity limits).
+A single catastrophic act costs only its own item: the managed-lysis path still scores 73 %, but `r-safety-no-lysis`
+is a **critical** item, so the debrief names that miss first (see Fidelity limits).
 
 ## Reference path (`solution`)
 
@@ -315,15 +316,16 @@ mode she is wheeled there on her ward bed (the bed is parked beside the scanner 
 `destination: {"setting": "icu"}` (the team moves her to the first ICU/HDU bed space when it is given; her ward bed
 goes back to the ward); `positioning` sets `posture: "sitting"` (head of bed up); `cxr` is `performedAt: "bedside"`
 (portable); `o2-nasal` and `o2-nrb` name `device` `nasal-cannula` and `non-rebreather-mask`. Re-measured 2026-10-28
-with the offline autopilot (`exec --autopilot --embodied`): 100 % (22/22) in `general-hospital` and in
+with the offline autopilot (`exec --autopilot --embodied --approval bypass`): 100 % (22/22) in `general-hospital` and in
 `teaching-hospital`, en and zh-CN (teaching hospital: `obj-treat` at 34.5 min, finish at 90.8 min).
 
 ## Fidelity limits
 
 * Single phase, simplified physiology: vital-sign drift and drug effects are linear teaching models; no heparin
   titration (repeat APTT/anti-Xa), no HIT, no long-term course.
-* The rubric has no "critical fail": the managed-lysis path loses only `r-safety-no-lysis` (3), `r-mx-anticoag-timely`
-  and `r-mx-ufh`, and still scores 73 %. The debrief and harm text carry the weight of that error.
+* The rubric has no score cap: the managed-lysis path loses only `r-safety-no-lysis` (3), `r-mx-anticoag-timely` and
+  `r-mx-ufh`, and still scores 73 %. `r-safety-no-lysis` is `critical`, so every debrief (web, CLI, MCP) names that miss
+  first; the harm text carries the rest of the weight of that error.
 * The board classifies risk by ESC 2019; the AHA/ACC 2026 clinical categories (A–E) are named in the debrief only.
 * **Explicitly unknown** (history items with `disclosure: "unknown"`, case `unknowns`, debrief unknowns): final tumour
   pathology and stage; thrombophilia status; any prior echocardiogram; intra-operative details; the post-heparin
@@ -437,6 +439,15 @@ Refs. 16 and 17 are the PEITHO and PREPIC2 trials.
 
 ## Changelog
 
+### 1.1.1 — 2026-10-28 (assessment integrity)
+
+- `r-safety-no-lysis` is **critical** (`critical: true`): systemic thrombolysis in this early post-operative patient
+  (or no anticoagulation at all) is named first in every debrief. The score is not capped — the managed-lysis path
+  still scores 16/22 (73 %). No item needed `scoredWhen`: the negative items were already gated on reaching their
+  stage, and doing nothing scores 0/22.
+- Matcher corpus: two `extensions.testUtterances` that repeated their item's canonical question are now paraphrases
+  (`cases validate --strict`); no history item, answer or keyword changed.
+
 ### 1.1.0 — 2026-10-28 (editorial review)
 
 - **Anticoagulant choice framed against current guidance.** The 2026 AHA/ACC acute PE guideline (new) and ESC 2019
@@ -464,7 +475,7 @@ Refs. 16 and 17 are the PEITHO and PREPIC2 trials.
 npm run -s cc -- cases validate packages/content/cases/pulmonary-embolism-postop/case.json
 npm run -s cc -- cases verify pulmonary-embolism-postop      # reference solution: 5 objectives, 4 decisions, 22/22
 npm run -s cc -- play pulmonary-embolism-postop --provider offline
-npm run -s cc -- exec --autopilot --embodied --case pulmonary-embolism-postop --facility teaching-hospital --provider offline -q "manage the patient"
+npm run -s cc -- exec --autopilot --embodied --case pulmonary-embolism-postop --facility teaching-hospital --provider offline --approval bypass -q "manage the patient"
 npm run -s cc -- bench grounding --split dev && npm run -s cc -- bench grounding --split test --failures 0
 ```
 
