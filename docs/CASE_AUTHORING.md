@@ -646,7 +646,10 @@ Every case README follows one template, in this order:
 16. 中文摘要 — a Chinese facilitator summary: 病例概要、学习目标、关键决策、复盘要点
 
 Move and tidy the content of the existing technical sections into it; drop
-none.
+none. One exception: `smzl-lung-adeno`, the port of the V4 page, keeps its
+parity-oriented README (V4 → V5 mapping, deliberate divergences, evidence
+boundaries), which core `smzl-parity.test.ts` is written against; it carries
+the learning outcomes, the review status and the changelog.
 
 ### 9.7 Must stay green
 
